@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; * V4L2 driver for SN9C10x PC Camera Controllers                           *&n; *                                                                         *&n; * Copyright (C) 2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;       *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * V4L2 driver for SN9C10x PC Camera Controllers                           *&n; *                                                                         *&n; * Copyright (C) 2004-2005 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;  *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#ifndef _SN9C102_H_
 DECL|macro|_SN9C102_H_
 mdefine_line|#define _SN9C102_H_
@@ -24,6 +24,8 @@ DECL|macro|SN9C102_MAX_DEVICES
 mdefine_line|#define SN9C102_MAX_DEVICES       64
 DECL|macro|SN9C102_PRESERVE_IMGSCALE
 mdefine_line|#define SN9C102_PRESERVE_IMGSCALE 0
+DECL|macro|SN9C102_FORCE_MUNMAP
+mdefine_line|#define SN9C102_FORCE_MUNMAP      0
 DECL|macro|SN9C102_MAX_FRAMES
 mdefine_line|#define SN9C102_MAX_FRAMES        32
 DECL|macro|SN9C102_URBS
@@ -46,9 +48,9 @@ mdefine_line|#define SN9C102_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo
 DECL|macro|SN9C102_MODULE_LICENSE
 mdefine_line|#define SN9C102_MODULE_LICENSE  &quot;GPL&quot;
 DECL|macro|SN9C102_MODULE_VERSION
-mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.20&quot;
+mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.22&quot;
 DECL|macro|SN9C102_MODULE_VERSION_CODE
-mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 20)
+mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 22)
 DECL|enum|sn9c102_bridge
 r_enum
 id|sn9c102_bridge
@@ -208,6 +210,16 @@ id|frame_header
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|sn9c102_module_param
+r_struct
+id|sn9c102_module_param
+(brace
+DECL|member|force_munmap
+id|u8
+id|force_munmap
+suffix:semicolon
+)brace
+suffix:semicolon
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -336,6 +348,11 @@ id|reg
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|member|module_param
+r_struct
+id|sn9c102_module_param
+id|module_param
 suffix:semicolon
 DECL|member|state
 r_enum
