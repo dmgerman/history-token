@@ -108,10 +108,20 @@ mdefine_line|#define X86_FEATURE_P3&t;&t;(3*32+ 6) /* P3 */
 DECL|macro|X86_FEATURE_P4
 mdefine_line|#define X86_FEATURE_P4&t;&t;(3*32+ 7) /* P4 */
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001 (ecx), word 4 */
-DECL|macro|X86_FEATURE_EST
-mdefine_line|#define X86_FEATURE_EST&t;&t;(4*32+ 7) /* Enhanced SpeedStep */
+DECL|macro|X86_FEATURE_XMM3
+mdefine_line|#define X86_FEATURE_XMM3&t;(4*32+ 0) /* Streaming SIMD Extensions-3 */
 DECL|macro|X86_FEATURE_MWAIT
 mdefine_line|#define X86_FEATURE_MWAIT&t;(4*32+ 3) /* Monitor/Mwait support */
+DECL|macro|X86_FEATURE_DSCPL
+mdefine_line|#define X86_FEATURE_DSCPL&t;(4*32+ 4) /* CPL Qualified Debug Store */
+DECL|macro|X86_FEATURE_EST
+mdefine_line|#define X86_FEATURE_EST&t;&t;(4*32+ 7) /* Enhanced SpeedStep */
+DECL|macro|X86_FEATURE_TM2
+mdefine_line|#define X86_FEATURE_TM2&t;&t;(4*32+ 8) /* Thermal Monitor 2 */
+DECL|macro|X86_FEATURE_CID
+mdefine_line|#define X86_FEATURE_CID&t;&t;(4*32+10) /* Context ID */
+DECL|macro|X86_FEATURE_XTPR
+mdefine_line|#define X86_FEATURE_XTPR&t;(4*32+14) /* Send Task Priority Messages */
 multiline_comment|/* VIA/Cyrix/Centaur-defined CPU features, CPUID level 0xC0000001, word 5 */
 DECL|macro|X86_FEATURE_XSTORE
 mdefine_line|#define X86_FEATURE_XSTORE&t;(5*32+ 2) /* on-CPU RNG present (xstore insn) */
@@ -139,8 +149,6 @@ DECL|macro|cpu_has_pae
 mdefine_line|#define cpu_has_pae&t;&t;boot_cpu_has(X86_FEATURE_PAE)
 DECL|macro|cpu_has_pge
 mdefine_line|#define cpu_has_pge&t;&t;boot_cpu_has(X86_FEATURE_PGE)
-DECL|macro|cpu_has_sse2
-mdefine_line|#define cpu_has_sse2&t;&t;boot_cpu_has(X86_FEATURE_XMM2)
 DECL|macro|cpu_has_apic
 mdefine_line|#define cpu_has_apic&t;&t;boot_cpu_has(X86_FEATURE_APIC)
 DECL|macro|cpu_has_sep
@@ -153,6 +161,10 @@ DECL|macro|cpu_has_fxsr
 mdefine_line|#define cpu_has_fxsr&t;&t;boot_cpu_has(X86_FEATURE_FXSR)
 DECL|macro|cpu_has_xmm
 mdefine_line|#define cpu_has_xmm&t;&t;boot_cpu_has(X86_FEATURE_XMM)
+DECL|macro|cpu_has_xmm2
+mdefine_line|#define cpu_has_xmm2&t;&t;boot_cpu_has(X86_FEATURE_XMM2)
+DECL|macro|cpu_has_xmm3
+mdefine_line|#define cpu_has_xmm3&t;&t;boot_cpu_has(X86_FEATURE_XMM3)
 DECL|macro|cpu_has_ht
 mdefine_line|#define cpu_has_ht&t;&t;boot_cpu_has(X86_FEATURE_HT)
 DECL|macro|cpu_has_mp

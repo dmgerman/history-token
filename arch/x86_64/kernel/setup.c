@@ -4901,9 +4901,9 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_string|&quot;tm2&quot;
-comma
 l_string|&quot;est&quot;
+comma
+l_string|&quot;tm2&quot;
 comma
 l_int|NULL
 comma
@@ -4913,9 +4913,9 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_string|&quot;cmpxchg16b&quot;
+l_string|&quot;cx16&quot;
 comma
-l_int|NULL
+l_string|&quot;xtpr&quot;
 comma
 l_int|NULL
 comma
