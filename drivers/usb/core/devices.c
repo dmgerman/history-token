@@ -882,7 +882,7 @@ r_return
 id|start
 suffix:semicolon
 )brace
-multiline_comment|/* TBD:&n; * 0. TBDs&n; * 1. marking active config and ifaces (code lists all, but should mark&n; *    which ones are active, if any)&n; * 2. add &lt;halted&gt; status to each endpoint line&n; */
+multiline_comment|/* TBD:&n; * 0. TBDs&n; * 1. marking active interface altsettings (code lists all, but should mark&n; *    which ones are active, if any)&n; */
 DECL|function|usb_dump_config_descriptor
 r_static
 r_char

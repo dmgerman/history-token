@@ -550,25 +550,7 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-multiline_comment|/* reset the toggles and endpoint flags */
-id|usb_endpoint_running
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|usb_pipeendpoint
-c_func
-(paren
-id|pipe
-)paren
-comma
-id|usb_pipeout
-c_func
-(paren
-id|pipe
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* reset the endpoint toggle */
 id|usb_settoggle
 c_func
 (paren

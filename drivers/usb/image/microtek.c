@@ -146,28 +146,12 @@ id|desc
 id|MTS_DEBUG
 c_func
 (paren
-l_string|&quot;desc at 0x%x: halted = %02x%02x, toggle = %02x%02x&bslash;n&quot;
+l_string|&quot;desc at 0x%x: toggle = %02x%02x&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
 id|desc
-comma
-(paren
-r_int
-)paren
-id|desc-&gt;usb_dev-&gt;halted
-(braket
-l_int|1
-)braket
-comma
-(paren
-r_int
-)paren
-id|desc-&gt;usb_dev-&gt;halted
-(braket
-l_int|0
-)braket
 comma
 (paren
 r_int
