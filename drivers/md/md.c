@@ -7715,7 +7715,7 @@ c_func
 (paren
 id|rdev
 comma
-l_int|NULL
+id|rdev0
 )paren
 suffix:semicolon
 r_if
