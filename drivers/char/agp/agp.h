@@ -497,6 +497,14 @@ DECL|member|capndx
 r_int
 id|capndx
 suffix:semicolon
+DECL|member|major_version
+r_char
+id|major_version
+suffix:semicolon
+DECL|member|minor_version
+r_char
+id|minor_version
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|OUTREG64
@@ -1085,7 +1093,7 @@ id|agp_v3
 )paren
 suffix:semicolon
 r_int
-id|agp_3_0_node_enable
+id|agp_3_0_enable
 c_func
 (paren
 r_struct
@@ -1095,9 +1103,19 @@ id|bridge
 comma
 id|u32
 id|mode
+)paren
+suffix:semicolon
+r_int
+id|agp_3_5_enable
+c_func
+(paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 comma
 id|u32
-id|minor
+id|mode
 )paren
 suffix:semicolon
 r_void
@@ -1107,32 +1125,58 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|get_agp_version
+c_func
+(paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+)paren
+suffix:semicolon
 multiline_comment|/* Standard agp registers */
 DECL|macro|AGPSTAT
 mdefine_line|#define AGPSTAT&t;&t;&t;0x4
 DECL|macro|AGPCMD
 mdefine_line|#define AGPCMD&t;&t;&t;0x8
+DECL|macro|AGPNISTAT
+mdefine_line|#define AGPNISTAT&t;&t;0xc
 DECL|macro|AGPNEPG
 mdefine_line|#define AGPNEPG&t;&t;&t;0x16
+DECL|macro|AGPNICMD
+mdefine_line|#define AGPNICMD&t;&t;0x20
 DECL|macro|AGP_MAJOR_VERSION_SHIFT
 mdefine_line|#define AGP_MAJOR_VERSION_SHIFT&t;(20)
 DECL|macro|AGP_MINOR_VERSION_SHIFT
 mdefine_line|#define AGP_MINOR_VERSION_SHIFT&t;(16)
 DECL|macro|AGPSTAT_RQ_DEPTH
 mdefine_line|#define AGPSTAT_RQ_DEPTH&t;(0xff000000)
+DECL|macro|AGPSTAT_CAL_MASK
+mdefine_line|#define AGPSTAT_CAL_MASK&t;(1&lt;&lt;12|1&lt;&lt;11|1&lt;&lt;10)
+DECL|macro|AGPSTAT_ARQSZ
+mdefine_line|#define AGPSTAT_ARQSZ&t;&t;(1&lt;&lt;15|1&lt;&lt;14|1&lt;&lt;13)
 DECL|macro|AGPSTAT_ARQSZ_SHIFT
 mdefine_line|#define AGPSTAT_ARQSZ_SHIFT&t;13
-DECL|macro|AGPSTAT_AGP_ENABLE
-mdefine_line|#define AGPSTAT_AGP_ENABLE&t;(1&lt;&lt;8)
 DECL|macro|AGPSTAT_SBA
 mdefine_line|#define AGPSTAT_SBA&t;&t;(1&lt;&lt;9)
+DECL|macro|AGPSTAT_AGP_ENABLE
+mdefine_line|#define AGPSTAT_AGP_ENABLE&t;(1&lt;&lt;8)
+DECL|macro|AGPSTAT_FW
+mdefine_line|#define AGPSTAT_FW&t;&t;(1&lt;&lt;4)
+DECL|macro|AGPSTAT_MODE_3_0
+mdefine_line|#define AGPSTAT_MODE_3_0&t;(1&lt;&lt;3)
 DECL|macro|AGPSTAT2_1X
 mdefine_line|#define AGPSTAT2_1X&t;&t;(1&lt;&lt;0)
 DECL|macro|AGPSTAT2_2X
 mdefine_line|#define AGPSTAT2_2X&t;&t;(1&lt;&lt;1)
 DECL|macro|AGPSTAT2_4X
 mdefine_line|#define AGPSTAT2_4X&t;&t;(1&lt;&lt;2)
-DECL|macro|AGPSTAT_FW
-mdefine_line|#define AGPSTAT_FW&t;&t;(1&lt;&lt;4)
+DECL|macro|AGPSTAT3_RSVD
+mdefine_line|#define AGPSTAT3_RSVD&t;&t;(1&lt;&lt;2)
+DECL|macro|AGPSTAT3_8X
+mdefine_line|#define AGPSTAT3_8X&t;&t;(1&lt;&lt;1)
+DECL|macro|AGPSTAT3_4X
+mdefine_line|#define AGPSTAT3_4X&t;&t;(1)
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
 eof
