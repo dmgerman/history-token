@@ -83,6 +83,10 @@ DECL|macro|MSR_P6_EVNTSEL0
 mdefine_line|#define MSR_P6_EVNTSEL0&t;&t;&t;0x186
 DECL|macro|MSR_P6_EVNTSEL1
 mdefine_line|#define MSR_P6_EVNTSEL1&t;&t;&t;0x187
+DECL|macro|MSR_IA32_PERF_STATUS
+mdefine_line|#define MSR_IA32_PERF_STATUS&t;&t;0x198
+DECL|macro|MSR_IA32_PERF_CTL
+mdefine_line|#define MSR_IA32_PERF_CTL&t;&t;0x199
 DECL|macro|MSR_IA32_THERM_CONTROL
 mdefine_line|#define MSR_IA32_THERM_CONTROL&t;&t;0x19a
 DECL|macro|MSR_IA32_THERM_INTERRUPT
