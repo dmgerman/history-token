@@ -461,6 +461,8 @@ DECL|macro|pte_free_tlb
 mdefine_line|#define pte_free_tlb(mp,ptepage) pte_free(ptepage)
 DECL|macro|pmd_free_tlb
 mdefine_line|#define pmd_free_tlb(mp,pmdp) pmd_free(pmdp)
+DECL|macro|pud_free_tlb
+mdefine_line|#define pud_free_tlb(tlb,pudp) __pud_free_tlb(tlb,pudp)
 DECL|macro|tlb_migrate_finish
 mdefine_line|#define tlb_migrate_finish(mm)&t;do { } while (0)
 DECL|macro|tlb_start_vma
