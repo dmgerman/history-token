@@ -528,7 +528,6 @@ suffix:semicolon
 DECL|function|pcf_isa_exit
 r_static
 r_void
-id|__exit
 id|pcf_isa_exit
 c_func
 (paren
