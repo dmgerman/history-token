@@ -60,7 +60,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Boot a secondary CPU, and assign it the specified idle task.&n; * This also gives us the initial stack to use for this CPU.&n; */
 r_extern
 r_int
-id|__init
 id|boot_secondary
 c_func
 (paren
