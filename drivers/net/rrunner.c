@@ -4587,7 +4587,7 @@ suffix:semicolon
 )brace
 DECL|function|rr_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|rr_interrupt
 c_func
 (paren
@@ -4668,6 +4668,7 @@ id|RR_INT
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -4976,6 +4977,9 @@ c_func
 op_amp
 id|rrpriv-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|rr_timer

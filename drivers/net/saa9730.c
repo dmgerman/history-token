@@ -3085,7 +3085,7 @@ suffix:semicolon
 )brace
 DECL|function|lan_saa9730_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|lan_saa9730_interrupt
 c_func
 (paren
@@ -3206,6 +3206,7 @@ id|lp
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|lan_saa9730_open_fail

@@ -1640,7 +1640,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*      Control signal change interrupt event&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|fst_intr_ctlchg
 id|fst_intr_ctlchg
 (paren
@@ -1750,6 +1750,9 @@ id|port
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*      Rx complete interrupt&n; */
 r_static

@@ -529,7 +529,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The typical workload of the driver:&n; * Handle the network interface interrupts.&n; */
 DECL|function|sonic_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sonic_interrupt
 c_func
 (paren
@@ -589,6 +589,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|lp
@@ -1005,6 +1006,9 @@ id|SONIC_ISR
 comma
 id|status
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We have a good packet(s), get it/them out of the buffers.&n; */

@@ -249,7 +249,7 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|cpc_intr
 c_func
 (paren
@@ -14516,7 +14516,7 @@ suffix:semicolon
 )brace
 DECL|function|cpc_intr
 r_static
-r_void
+id|irqreturn_t
 id|cpc_intr
 c_func
 (paren
@@ -14568,6 +14568,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* spurious intr */
 )brace
@@ -14590,6 +14591,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* spurious intr */
 )brace
@@ -14678,6 +14680,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|cpc_sca_status
 r_void

@@ -856,7 +856,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|el3_interrupt
 c_func
 (paren
@@ -4564,7 +4564,7 @@ suffix:semicolon
 multiline_comment|/* The EL3 interrupt handler. */
 DECL|function|el3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|el3_interrupt
 c_func
 (paren
@@ -4606,6 +4606,11 @@ id|work_budget
 op_assign
 id|max_interrupt_work
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4617,6 +4622,7 @@ id|dev
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -4707,6 +4713,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5033,6 +5043,11 @@ id|lp-&gt;window_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;    This timer serves two purposes: to check for missed interrupts&n;&t;(and as a last resort, poll the NIC for events), and to monitor&n;&t;the MII, reporting changes in cable status.&n;*/

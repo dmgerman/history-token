@@ -1297,7 +1297,7 @@ id|cosa
 suffix:semicolon
 multiline_comment|/* Interrupt handling */
 r_static
-r_void
+id|irqreturn_t
 id|cosa_interrupt
 c_func
 (paren
@@ -9545,7 +9545,7 @@ suffix:semicolon
 )brace
 DECL|function|cosa_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cosa_interrupt
 c_func
 (paren
@@ -9727,6 +9727,9 @@ id|cosa-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/* ---------- I/O debugging routines ---------- */

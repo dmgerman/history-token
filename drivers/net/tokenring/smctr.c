@@ -579,7 +579,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|smctr_interrupt
 c_func
 (paren
@@ -9769,7 +9769,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The typical workload of the driver: Handle the network interface interrupts.&n; */
 DECL|function|smctr_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|smctr_interrupt
 c_func
 (paren
@@ -9845,6 +9845,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -9869,6 +9870,7 @@ id|NOT_INITIALIZED
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|spin_lock
@@ -9976,6 +9978,7 @@ id|tp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|err
@@ -11372,6 +11375,7 @@ id|tp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|smctr_issue_enable_int_cmd

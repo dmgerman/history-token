@@ -1,7 +1,8 @@
 macro_line|#ifndef _RRUNNER_H_
 DECL|macro|_RRUNNER_H_
 mdefine_line|#define _RRUNNER_H_
-macro_line|#include&lt;linux/config.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#if ((BITS_PER_LONG != 32) &amp;&amp; (BITS_PER_LONG != 64))
 macro_line|#error &quot;BITS_PER_LONG not defined or not valid&quot;
 macro_line|#endif
@@ -2130,7 +2131,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|rr_interrupt
 c_func
 (paren
