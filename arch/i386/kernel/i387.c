@@ -82,19 +82,19 @@ id|i387_fsave_struct
 suffix:semicolon
 id|tsk-&gt;thread.i387.fsave.cwd
 op_assign
-l_int|0xffff037f
+l_int|0xffff037fu
 suffix:semicolon
 id|tsk-&gt;thread.i387.fsave.swd
 op_assign
-l_int|0xffff0000
+l_int|0xffff0000u
 suffix:semicolon
 id|tsk-&gt;thread.i387.fsave.twd
 op_assign
-l_int|0xffffffff
+l_int|0xffffffffu
 suffix:semicolon
 id|tsk-&gt;thread.i387.fsave.fos
 op_assign
-l_int|0xffff0000
+l_int|0xffff0000u
 suffix:semicolon
 )brace
 id|tsk-&gt;used_math
@@ -324,7 +324,7 @@ r_int
 r_int
 id|ret
 op_assign
-l_int|0xffff0000
+l_int|0xffff0000u
 suffix:semicolon
 r_int
 id|i
@@ -663,7 +663,7 @@ r_int
 )paren
 id|cwd
 op_or
-l_int|0xffff0000
+l_int|0xffff0000u
 )paren
 suffix:semicolon
 )brace
@@ -704,7 +704,7 @@ r_int
 )paren
 id|swd
 op_or
-l_int|0xffff0000
+l_int|0xffff0000u
 )paren
 suffix:semicolon
 )brace
@@ -749,7 +749,7 @@ r_int
 )paren
 id|twd
 op_or
-l_int|0xffff0000
+l_int|0xffff0000u
 )paren
 suffix:semicolon
 )brace
@@ -794,6 +794,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 comma
@@ -812,6 +813,7 @@ l_int|7
 suffix:semicolon
 r_struct
 id|_fpreg
+id|__user
 op_star
 id|to
 suffix:semicolon
@@ -834,7 +836,7 @@ r_int
 )paren
 id|fxsave-&gt;cwd
 op_or
-l_int|0xffff0000
+l_int|0xffff0000ul
 suffix:semicolon
 id|env
 (braket
@@ -847,7 +849,7 @@ r_int
 )paren
 id|fxsave-&gt;swd
 op_or
-l_int|0xffff0000
+l_int|0xffff0000ul
 suffix:semicolon
 id|env
 (braket
@@ -1043,6 +1045,7 @@ id|fxsave
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1061,6 +1064,7 @@ id|to
 suffix:semicolon
 r_struct
 id|_fpreg
+id|__user
 op_star
 id|from
 suffix:semicolon
@@ -1157,7 +1161,7 @@ id|env
 l_int|4
 )braket
 op_amp
-l_int|0xffff0000
+l_int|0xffff0000ul
 )paren
 op_rshift
 l_int|16
@@ -1308,6 +1312,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1363,6 +1368,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1469,6 +1475,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1541,6 +1548,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1583,6 +1591,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1652,6 +1661,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1724,6 +1734,7 @@ c_func
 (paren
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 comma
@@ -1759,6 +1770,7 @@ c_func
 (paren
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 comma
@@ -1775,6 +1787,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 )paren
 id|buf
@@ -1791,6 +1804,7 @@ c_func
 (paren
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 comma
@@ -1847,6 +1861,7 @@ comma
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 )paren
 id|buf
@@ -1868,6 +1883,7 @@ id|tsk
 comma
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 )paren
@@ -1903,6 +1919,7 @@ id|tsk
 comma
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 )paren
@@ -1917,6 +1934,7 @@ comma
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 )paren
 id|buf
@@ -1935,6 +1953,7 @@ id|tsk
 comma
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 )paren
@@ -1986,6 +2005,7 @@ comma
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 )paren
 id|buf
@@ -2000,6 +2020,7 @@ c_func
 (paren
 r_struct
 id|user_fxsr_struct
+id|__user
 op_star
 id|buf
 comma
@@ -2021,10 +2042,6 @@ c_cond
 id|__copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|buf
 comma
 op_amp
@@ -2065,6 +2082,7 @@ id|tsk
 comma
 r_struct
 id|user_fxsr_struct
+id|__user
 op_star
 id|buf
 )paren
@@ -2081,10 +2099,6 @@ c_func
 op_amp
 id|tsk-&gt;thread.i387.fxsave
 comma
-(paren
-r_void
-op_star
-)paren
 id|buf
 comma
 r_sizeof
