@@ -2956,14 +2956,14 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-multiline_comment|/* Hold the sock, since inet_sock_release() will put sock_put()&n;&t; * and we have just a little more cleanup.&n;&t; */
+multiline_comment|/* Hold the sock, since sk_common_release() will put sock_put()&n;&t; * and we have just a little more cleanup.&n;&t; */
 id|sock_hold
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-id|inet_sock_release
+id|sk_common_release
 c_func
 (paren
 id|sk

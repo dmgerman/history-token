@@ -8800,7 +8800,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tcp_v4_destroy_sock
-r_static
 r_int
 id|tcp_v4_destroy_sock
 c_func
@@ -8874,6 +8873,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|tcp_v4_destroy_sock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_v4_destroy_sock
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* Proc filesystem TCP sock list dumping. */
 DECL|function|tw_head
