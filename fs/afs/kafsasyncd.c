@@ -258,20 +258,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,3)
 id|recalc_sigpending
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|recalc_sigpending
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_unlock_irq
 c_func
 (paren
