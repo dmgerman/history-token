@@ -784,10 +784,13 @@ c_func
 (paren
 id|agp_bridge
 comma
+id|readl
+c_func
+(paren
 id|agp_bridge-&gt;gatt_table
-(braket
+op_plus
 id|j
-)braket
+)paren
 )paren
 )paren
 r_return
