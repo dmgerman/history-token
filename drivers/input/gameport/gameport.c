@@ -2104,6 +2104,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|gameport-&gt;dev.bus
+op_assign
+op_amp
+id|gameport_bus
+suffix:semicolon
 id|gameport-&gt;dev.release
 op_assign
 id|gameport_release_port
