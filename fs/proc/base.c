@@ -4101,6 +4101,14 @@ op_assign
 id|task-&gt;egid
 suffix:semicolon
 )brace
+id|security_task_to_inode
+c_func
+(paren
+id|task
+comma
+id|inode
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return
