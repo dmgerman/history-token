@@ -253,7 +253,7 @@ id|fsidp
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
@@ -350,7 +350,7 @@ id|mp-&gt;m_fixedfsid
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
@@ -532,7 +532,7 @@ id|mp-&gt;m_fixedfsid
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
@@ -806,7 +806,7 @@ id|mp-&gt;m_fixedfsid
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
