@@ -160,7 +160,7 @@ c_func
 id|z_streamp
 id|strm
 comma
-id|Bytef
+id|Byte
 op_star
 id|buf
 comma
@@ -412,7 +412,7 @@ DECL|macro|INSERT_STRING
 mdefine_line|#define INSERT_STRING(s, str, match_head) &bslash;&n;   (UPDATE_HASH(s, s-&gt;ins_h, s-&gt;window[(str) + (MIN_MATCH-1)]), &bslash;&n;    s-&gt;prev[(str) &amp; s-&gt;w_mask] = match_head = s-&gt;head[s-&gt;ins_h], &bslash;&n;    s-&gt;head[s-&gt;ins_h] = (Pos)(str))
 multiline_comment|/* ===========================================================================&n; * Initialize the hash table (avoiding 64K overflow for 16 bit systems).&n; * prev[] will be initialized on the fly.&n; */
 DECL|macro|CLEAR_HASH
-mdefine_line|#define CLEAR_HASH(s) &bslash;&n;    s-&gt;head[s-&gt;hash_size-1] = NIL; &bslash;&n;    memset((charf *)s-&gt;head, 0, (unsigned)(s-&gt;hash_size-1)*sizeof(*s-&gt;head));
+mdefine_line|#define CLEAR_HASH(s) &bslash;&n;    s-&gt;head[s-&gt;hash_size-1] = NIL; &bslash;&n;    memset((char *)s-&gt;head, 0, (unsigned)(s-&gt;hash_size-1)*sizeof(*s-&gt;head));
 multiline_comment|/* ========================================================================= */
 DECL|function|zlib_deflateInit_
 r_int
@@ -510,7 +510,7 @@ id|deflate_workspace
 op_star
 id|mem
 suffix:semicolon
-id|ushf
+id|ush
 op_star
 id|overlay
 suffix:semicolon
@@ -640,7 +640,6 @@ op_assign
 (paren
 r_struct
 id|internal_state
-id|FAR
 op_star
 )paren
 id|s
@@ -704,7 +703,7 @@ suffix:semicolon
 id|s-&gt;window
 op_assign
 (paren
-id|Bytef
+id|Byte
 op_star
 )paren
 id|mem-&gt;window_memory
@@ -712,7 +711,7 @@ suffix:semicolon
 id|s-&gt;prev
 op_assign
 (paren
-id|Posf
+id|Pos
 op_star
 )paren
 id|mem-&gt;prev_memory
@@ -720,7 +719,7 @@ suffix:semicolon
 id|s-&gt;head
 op_assign
 (paren
-id|Posf
+id|Pos
 op_star
 )paren
 id|mem-&gt;head_memory
@@ -739,7 +738,7 @@ multiline_comment|/* 16K elements by default */
 id|overlay
 op_assign
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 id|mem-&gt;overlay_memory
@@ -747,7 +746,7 @@ suffix:semicolon
 id|s-&gt;pending_buf
 op_assign
 (paren
-id|uchf
+id|uch
 op_star
 )paren
 id|overlay
@@ -827,7 +826,7 @@ id|z_streamp
 id|strm
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|dictionary
 comma
@@ -944,7 +943,7 @@ id|memcpy
 c_func
 (paren
 (paren
-id|charf
+r_char
 op_star
 )paren
 id|s-&gt;window
@@ -2153,7 +2152,7 @@ id|deflate_state
 op_star
 id|ss
 suffix:semicolon
-id|ushf
+id|ush
 op_star
 id|overlay
 suffix:semicolon
@@ -2215,7 +2214,6 @@ op_assign
 (paren
 r_struct
 id|internal_state
-id|FAR
 op_star
 )paren
 id|ds
@@ -2233,7 +2231,7 @@ suffix:semicolon
 id|ds-&gt;window
 op_assign
 (paren
-id|Bytef
+id|Byte
 op_star
 )paren
 id|mem-&gt;window_memory
@@ -2241,7 +2239,7 @@ suffix:semicolon
 id|ds-&gt;prev
 op_assign
 (paren
-id|Posf
+id|Pos
 op_star
 )paren
 id|mem-&gt;prev_memory
@@ -2249,7 +2247,7 @@ suffix:semicolon
 id|ds-&gt;head
 op_assign
 (paren
-id|Posf
+id|Pos
 op_star
 )paren
 id|mem-&gt;head_memory
@@ -2257,7 +2255,7 @@ suffix:semicolon
 id|overlay
 op_assign
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 id|mem-&gt;overlay_memory
@@ -2265,7 +2263,7 @@ suffix:semicolon
 id|ds-&gt;pending_buf
 op_assign
 (paren
-id|uchf
+id|uch
 op_star
 )paren
 id|overlay
@@ -2393,7 +2391,7 @@ c_func
 id|z_streamp
 id|strm
 comma
-id|Bytef
+id|Byte
 op_star
 id|buf
 comma
@@ -2608,7 +2606,7 @@ id|s-&gt;max_chain_length
 suffix:semicolon
 multiline_comment|/* max hash chain length */
 r_register
-id|Bytef
+id|Byte
 op_star
 id|scan
 op_assign
@@ -2618,7 +2616,7 @@ id|s-&gt;strstart
 suffix:semicolon
 multiline_comment|/* current string */
 r_register
-id|Bytef
+id|Byte
 op_star
 id|match
 suffix:semicolon
@@ -2669,7 +2667,7 @@ suffix:colon
 id|NIL
 suffix:semicolon
 multiline_comment|/* Stop when cur_match becomes &lt;= limit. To simplify the code,&n;     * we prevent matches with the string of window index 0.&n;     */
-id|Posf
+id|Pos
 op_star
 id|prev
 op_assign
@@ -2683,7 +2681,7 @@ suffix:semicolon
 macro_line|#ifdef UNALIGNED_OK
 multiline_comment|/* Compare two bytes at a time. Note: this is not always beneficial.&n;     * Try with and without -DUNALIGNED_OK to check.&n;     */
 r_register
-id|Bytef
+id|Byte
 op_star
 id|strend
 op_assign
@@ -2701,7 +2699,7 @@ id|scan_start
 op_assign
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 id|scan
@@ -2712,7 +2710,7 @@ id|scan_end
 op_assign
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2725,7 +2723,7 @@ l_int|1
 suffix:semicolon
 macro_line|#else
 r_register
-id|Bytef
+id|Byte
 op_star
 id|strend
 op_assign
@@ -2841,7 +2839,7 @@ c_cond
 (paren
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2856,7 +2854,7 @@ id|scan_end
 op_logical_or
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 id|match
@@ -2896,7 +2894,7 @@ c_loop
 (paren
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2907,7 +2905,7 @@ l_int|2
 op_eq
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2918,7 +2916,7 @@ l_int|2
 op_logical_and
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2929,7 +2927,7 @@ l_int|2
 op_eq
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2940,7 +2938,7 @@ l_int|2
 op_logical_and
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2951,7 +2949,7 @@ l_int|2
 op_eq
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2962,7 +2960,7 @@ l_int|2
 op_logical_and
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -2973,7 +2971,7 @@ l_int|2
 op_eq
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -3249,7 +3247,7 @@ id|scan_end
 op_assign
 op_star
 (paren
-id|ushf
+id|ush
 op_star
 )paren
 (paren
@@ -3356,7 +3354,7 @@ id|memcmp
 c_func
 (paren
 (paren
-id|charf
+r_char
 op_star
 )paren
 id|s-&gt;window
@@ -3364,7 +3362,7 @@ op_plus
 id|match
 comma
 (paren
-id|charf
+r_char
 op_star
 )paren
 id|s-&gt;window
@@ -3503,7 +3501,7 @@ comma
 id|m
 suffix:semicolon
 r_register
-id|Posf
+id|Pos
 op_star
 id|p
 suffix:semicolon
@@ -3599,13 +3597,13 @@ id|memcpy
 c_func
 (paren
 (paren
-id|charf
+r_char
 op_star
 )paren
 id|s-&gt;window
 comma
 (paren
-id|charf
+r_char
 op_star
 )paren
 id|s-&gt;window
@@ -3836,7 +3834,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Flush the current block, with given end-of-file flag.&n; * IN assertion: strstart is set to the end of the current match.&n; */
 DECL|macro|FLUSH_BLOCK_ONLY
-mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (charf *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   (charf *)Z_NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
+mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (char *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   (char *)Z_NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
 multiline_comment|/* Same but force premature exit if necessary. */
 DECL|macro|FLUSH_BLOCK
 mdefine_line|#define FLUSH_BLOCK(s, eof) { &bslash;&n;   FLUSH_BLOCK_ONLY(s, eof); &bslash;&n;   if (s-&gt;strm-&gt;avail_out == 0) return (eof) ? finish_started : need_more; &bslash;&n;}

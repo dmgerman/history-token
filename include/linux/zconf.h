@@ -48,10 +48,6 @@ macro_line|#ifndef ZEXTERN
 DECL|macro|ZEXTERN
 macro_line|#  define ZEXTERN extern
 macro_line|#endif
-macro_line|#ifndef FAR
-DECL|macro|FAR
-macro_line|#   define FAR
-macro_line|#endif
 DECL|typedef|Byte
 r_typedef
 r_int
@@ -73,43 +69,6 @@ r_int
 id|uLong
 suffix:semicolon
 multiline_comment|/* 32 bits or more */
-DECL|typedef|Bytef
-r_typedef
-id|Byte
-id|FAR
-id|Bytef
-suffix:semicolon
-DECL|typedef|charf
-r_typedef
-r_char
-id|FAR
-id|charf
-suffix:semicolon
-DECL|typedef|intf
-r_typedef
-r_int
-id|FAR
-id|intf
-suffix:semicolon
-DECL|typedef|uIntf
-r_typedef
-id|uInt
-id|FAR
-id|uIntf
-suffix:semicolon
-DECL|typedef|uLongf
-r_typedef
-id|uLong
-id|FAR
-id|uLongf
-suffix:semicolon
-DECL|typedef|voidpf
-r_typedef
-r_void
-id|FAR
-op_star
-id|voidpf
-suffix:semicolon
 DECL|typedef|voidp
 r_typedef
 r_void

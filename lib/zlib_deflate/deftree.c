@@ -343,7 +343,7 @@ suffix:semicolon
 multiline_comment|/* static tree or NULL */
 DECL|member|extra_bits
 r_const
-id|intf
+r_int
 op_star
 id|extra_bits
 suffix:semicolon
@@ -499,7 +499,7 @@ comma
 r_int
 id|max_code
 comma
-id|ushf
+id|ush
 op_star
 id|bl_count
 )paren
@@ -683,7 +683,7 @@ id|deflate_state
 op_star
 id|s
 comma
-id|charf
+r_char
 op_star
 id|buf
 comma
@@ -1679,7 +1679,7 @@ op_assign
 id|desc-&gt;stat_desc-&gt;static_tree
 suffix:semicolon
 r_const
-id|intf
+r_int
 op_star
 id|extra
 op_assign
@@ -2135,7 +2135,7 @@ r_int
 id|max_code
 comma
 multiline_comment|/* largest code with non zero frequency */
-id|ushf
+id|ush
 op_star
 id|bl_count
 multiline_comment|/* number of codes at each bit length */
@@ -3780,7 +3780,7 @@ id|deflate_state
 op_star
 id|s
 comma
-id|charf
+r_char
 op_star
 id|buf
 comma
@@ -4004,7 +4004,7 @@ id|deflate_state
 op_star
 id|s
 comma
-id|charf
+r_char
 op_star
 id|buf
 comma
@@ -4253,7 +4253,7 @@ c_cond
 id|buf
 op_eq
 (paren
-id|charf
+r_char
 op_star
 )paren
 l_int|0
@@ -5197,7 +5197,7 @@ id|deflate_state
 op_star
 id|s
 comma
-id|charf
+r_char
 op_star
 id|buf
 comma

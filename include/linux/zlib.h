@@ -11,47 +11,6 @@ macro_line|#endif
 DECL|macro|ZLIB_VERSION
 mdefine_line|#define ZLIB_VERSION &quot;1.1.3&quot;
 multiline_comment|/* &n;     The &squot;zlib&squot; compression library provides in-memory compression and&n;  decompression functions, including integrity checks of the uncompressed&n;  data.  This version of the library supports only one compression method&n;  (deflation) but other algorithms will be added later and will have the same&n;  stream interface.&n;&n;     Compression can be done in a single step if the buffers are large&n;  enough (for example if an input file is mmap&squot;ed), or can be done by&n;  repeated calls of the compression function.  In the latter case, the&n;  application must provide more input and/or consume the output&n;  (providing more output space) before each call.&n;&n;     The library also supports reading and writing files in gzip (.gz) format&n;  with an interface similar to that of stdio.&n;&n;     The library does not install any signal handler. The decoder checks&n;  the consistency of the compressed data, so the library should never&n;  crash even in case of corrupted input.&n;*/
-DECL|typedef|alloc_func
-r_typedef
-id|voidpf
-(paren
-op_star
-id|alloc_func
-)paren
-id|OF
-c_func
-(paren
-(paren
-id|voidpf
-id|opaque
-comma
-id|uInt
-id|items
-comma
-id|uInt
-id|size
-)paren
-)paren
-suffix:semicolon
-DECL|typedef|free_func
-r_typedef
-r_void
-(paren
-op_star
-id|free_func
-)paren
-id|OF
-c_func
-(paren
-(paren
-id|voidpf
-id|opaque
-comma
-id|voidpf
-id|address
-)paren
-)paren
-suffix:semicolon
 r_struct
 id|internal_state
 suffix:semicolon
@@ -61,7 +20,7 @@ r_struct
 id|z_stream_s
 (brace
 DECL|member|next_in
-id|Bytef
+id|Byte
 op_star
 id|next_in
 suffix:semicolon
@@ -77,7 +36,7 @@ id|total_in
 suffix:semicolon
 multiline_comment|/* total nb of input bytes read so far */
 DECL|member|next_out
-id|Bytef
+id|Byte
 op_star
 id|next_out
 suffix:semicolon
@@ -101,7 +60,6 @@ multiline_comment|/* last error message, NULL if no error */
 DECL|member|state
 r_struct
 id|internal_state
-id|FAR
 op_star
 id|state
 suffix:semicolon
@@ -134,7 +92,6 @@ suffix:semicolon
 DECL|typedef|z_streamp
 r_typedef
 id|z_stream
-id|FAR
 op_star
 id|z_streamp
 suffix:semicolon
@@ -321,7 +278,7 @@ id|z_streamp
 id|strm
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|dictionary
 comma
@@ -395,7 +352,7 @@ id|z_streamp
 id|strm
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|dictionary
 comma
@@ -606,7 +563,7 @@ id|z
 suffix:semicolon
 id|ZEXTERN
 r_const
-id|uLongf
+id|uLong
 op_star
 id|ZEXPORT
 id|zlib_get_crc_table

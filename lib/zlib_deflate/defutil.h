@@ -76,7 +76,6 @@ id|dl
 suffix:semicolon
 DECL|typedef|ct_data
 )brace
-id|FAR
 id|ct_data
 suffix:semicolon
 DECL|macro|Freq
@@ -117,19 +116,12 @@ suffix:semicolon
 multiline_comment|/* the corresponding static tree */
 DECL|typedef|tree_desc
 )brace
-id|FAR
 id|tree_desc
 suffix:semicolon
 DECL|typedef|Pos
 r_typedef
 id|ush
 id|Pos
-suffix:semicolon
-DECL|typedef|Posf
-r_typedef
-id|Pos
-id|FAR
-id|Posf
 suffix:semicolon
 DECL|typedef|IPos
 r_typedef
@@ -153,7 +145,7 @@ id|status
 suffix:semicolon
 multiline_comment|/* as the name implies */
 DECL|member|pending_buf
-id|Bytef
+id|Byte
 op_star
 id|pending_buf
 suffix:semicolon
@@ -164,7 +156,7 @@ id|pending_buf_size
 suffix:semicolon
 multiline_comment|/* size of pending_buf */
 DECL|member|pending_out
-id|Bytef
+id|Byte
 op_star
 id|pending_out
 suffix:semicolon
@@ -211,7 +203,7 @@ id|w_mask
 suffix:semicolon
 multiline_comment|/* w_size - 1 */
 DECL|member|window
-id|Bytef
+id|Byte
 op_star
 id|window
 suffix:semicolon
@@ -222,13 +214,13 @@ id|window_size
 suffix:semicolon
 multiline_comment|/* Actual size of window: 2*wSize, except when the user input buffer&n;     * is directly used as sliding window.&n;     */
 DECL|member|prev
-id|Posf
+id|Pos
 op_star
 id|prev
 suffix:semicolon
 multiline_comment|/* Link to older string with same hash index. To limit the size of this&n;     * array to 64K, this link is maintained only for the last 32K strings.&n;     * An index in this array is thus a window index modulo 32K.&n;     */
 DECL|member|head
-id|Posf
+id|Pos
 op_star
 id|head
 suffix:semicolon
@@ -432,7 +424,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Depth of each subtree used as tie breaker for trees of equal frequency&n;     */
 DECL|member|l_buf
-id|uchf
+id|uch
 op_star
 id|l_buf
 suffix:semicolon
@@ -448,7 +440,7 @@ id|last_lit
 suffix:semicolon
 multiline_comment|/* running index in l_buf */
 DECL|member|d_buf
-id|ushf
+id|ush
 op_star
 id|d_buf
 suffix:semicolon
@@ -497,7 +489,6 @@ suffix:semicolon
 multiline_comment|/* Number of valid bits in bi_buf.  All bits above the last valid bit&n;     * are always zero.&n;     */
 DECL|typedef|deflate_state
 )brace
-id|FAR
 id|deflate_state
 suffix:semicolon
 DECL|struct|deflate_workspace
@@ -623,7 +614,7 @@ id|deflate_state
 op_star
 id|s
 comma
-id|charf
+r_char
 op_star
 id|buf
 comma
@@ -657,7 +648,7 @@ id|deflate_state
 op_star
 id|s
 comma
-id|charf
+r_char
 op_star
 id|buf
 comma

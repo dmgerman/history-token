@@ -10,7 +10,6 @@ DECL|typedef|inflate_blocks_statef
 r_typedef
 r_struct
 id|inflate_blocks_state
-id|FAR
 id|inflate_blocks_statef
 suffix:semicolon
 r_extern
@@ -63,7 +62,7 @@ op_star
 comma
 id|z_streamp
 comma
-id|uLongf
+id|uLong
 op_star
 )paren
 )paren
@@ -95,7 +94,7 @@ op_star
 id|s
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|d
 comma

@@ -8,7 +8,6 @@ DECL|typedef|inflate_huft
 r_typedef
 r_struct
 id|inflate_huft_s
-id|FAR
 id|inflate_huft
 suffix:semicolon
 DECL|struct|inflate_huft_s
@@ -60,17 +59,16 @@ id|OF
 c_func
 (paren
 (paren
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* 19 code lengths */
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* bits tree desired/actual depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 comma
 multiline_comment|/* bits tree result */
@@ -96,27 +94,25 @@ multiline_comment|/* number of literal/length codes */
 id|uInt
 comma
 multiline_comment|/* number of distance codes */
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* that many (total) code lengths */
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* literal desired/actual bit depth */
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* distance desired/actual bit depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 comma
 multiline_comment|/* literal/length tree result */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 comma
 multiline_comment|/* distance tree result */
@@ -136,23 +132,21 @@ id|OF
 c_func
 (paren
 (paren
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* literal desired/actual bit depth */
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* distance desired/actual bit depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 comma
 multiline_comment|/* literal/length tree result */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 comma
 multiline_comment|/* distance tree result */

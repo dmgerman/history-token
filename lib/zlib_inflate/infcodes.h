@@ -11,7 +11,6 @@ DECL|typedef|inflate_codes_statef
 r_typedef
 r_struct
 id|inflate_codes_state
-id|FAR
 id|inflate_codes_statef
 suffix:semicolon
 r_extern
