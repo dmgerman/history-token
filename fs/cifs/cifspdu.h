@@ -1907,12 +1907,12 @@ id|hdr
 suffix:semicolon
 multiline_comment|/* wct = 1 */
 DECL|member|SearchAttributes
-id|__u16
+id|__le16
 id|SearchAttributes
 suffix:semicolon
 multiline_comment|/* target file attributes */
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|BufferFormat
