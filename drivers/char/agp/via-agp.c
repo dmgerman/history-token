@@ -1669,12 +1669,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|get_agp_version
-c_func
-(paren
-id|bridge
-)paren
-suffix:semicolon
 id|bridge-&gt;dev
 op_assign
 id|pdev
@@ -1723,6 +1717,12 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* If this is an AGP3 bridge, check which mode its in and adjust. */
+id|get_agp_version
+c_func
+(paren
+id|bridge
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
