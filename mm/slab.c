@@ -5880,6 +5880,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* &n; * If slab debugging is enabled, don&squot;t batch slabs&n; * on the per-cpu lists by defaults.&n; */
 DECL|function|enable_cpucache
 r_static
 r_void
@@ -5890,6 +5891,7 @@ op_star
 id|cachep
 )paren
 (brace
+macro_line|#ifndef CONFIG_DEBUG_SLAB
 r_int
 id|err
 suffix:semicolon
@@ -5965,6 +5967,7 @@ op_minus
 id|err
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|enable_all_cpucaches
 r_static
