@@ -4327,11 +4327,31 @@ id|status
 )paren
 suffix:semicolon
 multiline_comment|/* return an error on purpose. */
+id|kfree
+(paren
+id|firmware_version
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|rom_desc
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|ti_manuf_desc
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|kfree
+(paren
+id|firmware_version
+)paren
+suffix:semicolon
 )brace
 singleline_comment|// Search for type 0xF2 record (firmware blank record)
 r_else
