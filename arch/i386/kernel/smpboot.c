@@ -13,20 +13,21 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/smpboot.h&gt;
-multiline_comment|/* Set if we find a B stepping CPU&t;&t;&t;*/
+multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static
 r_int
+id|__initdata
 id|smp_b_stepping
 suffix:semicolon
 multiline_comment|/* Setup configured maximum number of CPUs to activate */
 DECL|variable|max_cpus
 r_static
 r_int
+id|__initdata
 id|max_cpus
 op_assign
-op_minus
-l_int|1
+id|NR_CPUS
 suffix:semicolon
 multiline_comment|/* Number of siblings per CPU package */
 DECL|variable|smp_num_siblings
@@ -3908,19 +3909,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|max_cpus
-op_ge
-l_int|0
-)paren
-op_logical_and
-(paren
 id|max_cpus
 op_le
 id|cpucount
 op_plus
 l_int|1
-)paren
 )paren
 r_continue
 suffix:semicolon
