@@ -2196,6 +2196,11 @@ id|fhp
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* keep this filehandle for possible reference  when encoding attributes */
+id|rqstp-&gt;rq_reffh
+op_assign
+id|fhp
+suffix:semicolon
 r_if
 c_cond
 (paren

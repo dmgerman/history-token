@@ -298,6 +298,13 @@ op_star
 id|rq_cacherep
 suffix:semicolon
 multiline_comment|/* cache info */
+DECL|member|rq_reffh
+r_struct
+id|knfsd_fh
+op_star
+id|rq_reffh
+suffix:semicolon
+multiline_comment|/* Referrence filehandle, used to&n;&t;&t;&t;&t;&t;&t; * determine what device number&n;&t;&t;&t;&t;&t;&t; * to report (real or virtual)&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|rq_wait
 id|wait_queue_head_t
 id|rq_wait
