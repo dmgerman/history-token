@@ -1621,6 +1621,15 @@ id|ppos
 suffix:semicolon
 multiline_comment|/* inode.c */
 r_void
+id|hpfs_init_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_void
 id|hpfs_read_inode
 c_func
 (paren
