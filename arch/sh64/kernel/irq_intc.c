@@ -4,11 +4,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/platform.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;&t;&t;/* this includes also &lt;asm/registers.h */
+macro_line|#include &lt;linux/bitops.h&gt;       /* this includes also &lt;asm/registers.h */
 multiline_comment|/* which is required to remap register */
 multiline_comment|/* names used into __asm__ blocks...   */
+macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/platform.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;

@@ -31,11 +31,11 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* default maximum number of failures */
 DECL|macro|IDE_DEFAULT_MAX_FAILURES
 mdefine_line|#define IDE_DEFAULT_MAX_FAILURES &t;1

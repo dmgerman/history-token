@@ -17,12 +17,12 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; *&t;The following are used to debug the driver.&n; */
 DECL|macro|IDEFLOPPY_DEBUG_LOG
 mdefine_line|#define IDEFLOPPY_DEBUG_LOG&t;&t;0

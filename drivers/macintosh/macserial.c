@@ -20,6 +20,7 @@ macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -27,7 +28,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;

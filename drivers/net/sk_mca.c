@@ -14,8 +14,8 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|_SK_MCA_DRIVER_
 mdefine_line|#define _SK_MCA_DRIVER_

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * net/sched/sch_netem.c&t;Network emulator&n; *&n; * &t;&t;This program is free software; you can redistribute it and/or&n; * &t;&t;modify it under the terms of the GNU General Public License&n; * &t;&t;as published by the Free Software Foundation; either version&n; * &t;&t;2 of the License, or (at your option) any later version.&n; *&n; *  &t;&t;Many of the algorithms and ideas for this came from&n; *&t;&t;NIST Net which is not copyrighted. &n; *&n; * Authors:&t;Stephen Hemminger &lt;shemminger@osdl.org&gt;&n; *&t;&t;Catalin(ux aka Dino) BOIE &lt;catab at umbrella dot ro&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

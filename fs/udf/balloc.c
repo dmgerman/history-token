@@ -2,7 +2,7 @@ multiline_comment|/*&n; * balloc.c&n; *&n; * PURPOSE&n; *&t;Block allocation han
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
 DECL|macro|udf_clear_bit

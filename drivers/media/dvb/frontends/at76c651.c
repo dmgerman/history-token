@@ -5,9 +5,7 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#if defined(__powerpc__)
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 DECL|macro|FRONTEND_NAME
 mdefine_line|#define FRONTEND_NAME &quot;dvbfe_at76c651&quot;

@@ -21,10 +21,10 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;olympic.h&quot;
 multiline_comment|/* I&squot;ve got to put some intelligence into the version number so that Peter and I know&n; * which version of the code somebody has got. &n; * Version Number = a.b.c.d  where a.b.c is the level of code and d is the latest author.&n; * So 0.0.1.pds = Peter, 0.0.1.mlp = Mike&n; * &n; * Official releases will only have an a.b.c version number format. &n; */
 DECL|variable|__devinitdata

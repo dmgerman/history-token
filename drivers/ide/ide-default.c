@@ -14,12 +14,12 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 DECL|macro|IDEDEFAULT_VERSION
 mdefine_line|#define IDEDEFAULT_VERSION&t;&quot;0.9.newide&quot;
 multiline_comment|/*&n; *&t;Driver initialization.&n; */

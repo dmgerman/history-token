@@ -1,4 +1,4 @@
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 multiline_comment|/**&n; * find_next_bit - find the next set bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
 DECL|function|find_next_bit
 r_int
