@@ -323,7 +323,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_addr_is_valid
+id|af
+op_member_access_from_pointer
+id|addr_valid
 c_func
 (paren
 op_amp
@@ -331,7 +333,9 @@ id|src
 )paren
 op_logical_or
 op_logical_neg
-id|sctp_addr_is_valid
+id|af
+op_member_access_from_pointer
+id|addr_valid
 c_func
 (paren
 op_amp
@@ -463,6 +467,12 @@ id|sctp_init_addrs
 c_func
 (paren
 id|chunk
+comma
+op_amp
+id|src
+comma
+op_amp
+id|dest
 )paren
 suffix:semicolon
 multiline_comment|/* Remember where we came from.  */
