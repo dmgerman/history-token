@@ -1477,11 +1477,8 @@ suffix:semicolon
 DECL|function|tcp_twkill
 r_static
 r_void
-id|SMP_TIMER_NAME
-c_func
-(paren
 id|tcp_twkill
-)paren
+c_func
 (paren
 r_int
 r_int
@@ -1637,14 +1634,6 @@ id|tw_death_lock
 )paren
 suffix:semicolon
 )brace
-id|SMP_TIMER_DEFINE
-c_func
-(paren
-id|tcp_twkill
-comma
-id|tcp_twkill_task
-)paren
-suffix:semicolon
 multiline_comment|/* These are always called from BH context.  See callers in&n; * tcp_input.c to verify this.&n; */
 multiline_comment|/* This is for handling early-kills of TIME_WAIT sockets. */
 DECL|function|tcp_tw_deschedule
@@ -2110,11 +2099,8 @@ suffix:semicolon
 )brace
 DECL|function|tcp_twcal_tick
 r_void
-id|SMP_TIMER_NAME
-c_func
-(paren
 id|tcp_twcal_tick
-)paren
+c_func
 (paren
 r_int
 r_int
@@ -2360,14 +2346,6 @@ id|tw_death_lock
 )paren
 suffix:semicolon
 )brace
-id|SMP_TIMER_DEFINE
-c_func
-(paren
-id|tcp_twcal_tick
-comma
-id|tcp_twcal_tasklet
-)paren
-suffix:semicolon
 multiline_comment|/* This is not only more efficient than what we used to do, it eliminates&n; * a lot of code duplication between IPv4/IPv6 SYN recv processing. -DaveM&n; *&n; * Actually, we could lots of memory writes here. tp of listening&n; * socket contains all necessary default parameters.&n; */
 DECL|function|tcp_create_openreq_child
 r_struct
