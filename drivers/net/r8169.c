@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|RTL8169_VERSION
 mdefine_line|#define RTL8169_VERSION &quot;1.2&quot;
 DECL|macro|MODULENAME

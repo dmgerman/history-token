@@ -1821,7 +1821,7 @@ mdefine_line|#define VIDIOC_S_JPEGCOMP&t;_IOW  (&squot;V&squot;, 62, struct v4l2
 DECL|macro|VIDIOC_QUERYSTD
 mdefine_line|#define VIDIOC_QUERYSTD      &t;_IOR  (&squot;V&squot;, 63, v4l2_std_id)
 DECL|macro|VIDIOC_TRY_FMT
-mdefine_line|#define VIDIOC_TRY_FMT      &t;_IOWR (&squot;V&squot;, 63, struct v4l2_format)
+mdefine_line|#define VIDIOC_TRY_FMT      &t;_IOWR (&squot;V&squot;, 64, struct v4l2_format)
 DECL|macro|BASE_VIDIOC_PRIVATE
 mdefine_line|#define BASE_VIDIOC_PRIVATE&t;192&t;&t;/* 192-255 are private */
 macro_line|#ifdef __KERNEL__

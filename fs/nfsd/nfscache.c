@@ -1370,7 +1370,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;nfsd: cached reply too large (%d).&bslash;n&quot;
+l_string|&quot;nfsd: cached reply too large (%Zd).&bslash;n&quot;
 comma
 id|data-&gt;iov_len
 )paren

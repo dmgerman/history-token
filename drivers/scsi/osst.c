@@ -19176,7 +19176,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s:W: Nothing can be transfered, requested %d, tape block size (%d%c).&bslash;n&quot;
+l_string|&quot;%s:W: Nothing can be transfered, requested %Zd, tape block size (%d%c).&bslash;n&quot;
 comma
 id|name
 comma

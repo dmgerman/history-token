@@ -25,4 +25,8 @@ DECL|macro|MA620_VENDOR_ID
 mdefine_line|#define MA620_VENDOR_ID&t;&t;0x0df7
 DECL|macro|MA620_PRODUCT_ID
 mdefine_line|#define MA620_PRODUCT_ID&t;0x0620
+DECL|macro|RATOC_VENDOR_ID
+mdefine_line|#define RATOC_VENDOR_ID&t;&t;0x0584
+DECL|macro|RATOC_PRODUCT_ID
+mdefine_line|#define RATOC_PRODUCT_ID&t;0xb000
 eof

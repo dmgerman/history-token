@@ -3884,7 +3884,7 @@ id|cachep
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * kmem_cache_destroy - delete a cache&n; * @cachep: the cache to destroy&n; *&n; * Remove a kmem_cache_t object from the slab cache.&n; * Returns 0 on success.&n; *&n; * It is expected this function will be called by a module when it is&n; * unloaded.  This will remove the cache completely, and avoid a duplicate&n; * cache being allocated each time a module is loaded and unloaded, if the&n; * module doesn&squot;t have persistent in-kernel storage across loads and unloads.&n; *&n; * The caller must guarantee that noone will allocate memory from the cache&n; * during the kmem_cache_destroy().&n; */
+multiline_comment|/**&n; * kmem_cache_destroy - delete a cache&n; * @cachep: the cache to destroy&n; *&n; * Remove a kmem_cache_t object from the slab cache.&n; * Returns 0 on success.&n; *&n; * It is expected this function will be called by a module when it is&n; * unloaded.  This will remove the cache completely, and avoid a duplicate&n; * cache being allocated each time a module is loaded and unloaded, if the&n; * module doesn&squot;t have persistent in-kernel storage across loads and unloads.&n; *&n; * The cache must be empty before calling this function.&n; *&n; * The caller must guarantee that noone will allocate memory from the cache&n; * during the kmem_cache_destroy().&n; */
 DECL|function|kmem_cache_destroy
 r_int
 id|kmem_cache_destroy

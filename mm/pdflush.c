@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;&t;
-singleline_comment|// Needed by writeback.h
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;
 singleline_comment|// Needed by writeback.h
 macro_line|#include &lt;linux/writeback.h&gt;&t;

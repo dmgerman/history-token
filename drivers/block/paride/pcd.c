@@ -208,6 +208,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|pcd_lock
 r_static
@@ -367,10 +368,6 @@ l_string|&quot;1-6i&quot;
 )paren
 suffix:semicolon
 macro_line|#include &quot;paride.h&quot;
-multiline_comment|/* set up defines for blk.h,  why don&squot;t all drivers do it this way ? */
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR&t;major
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;pseudo.h&quot;
 DECL|macro|PCD_RETRIES
 mdefine_line|#define PCD_RETRIES&t;     5
@@ -4865,7 +4862,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major
 comma
 id|name
 comma
@@ -4879,7 +4876,7 @@ c_func
 (paren
 l_string|&quot;pcd: unable to get major number %d&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|major
 )paren
 suffix:semicolon
 r_for
@@ -5065,7 +5062,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major
 comma
 id|name
 )paren

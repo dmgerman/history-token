@@ -91,10 +91,6 @@ r_struct
 id|request_queue
 id|floppy_queue
 suffix:semicolon
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
 DECL|macro|QUEUE
 mdefine_line|#define QUEUE (&amp;floppy_queue)
 DECL|macro|CURRENT
@@ -8620,7 +8616,7 @@ c_func
 id|mk_kdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 id|drive
 op_plus
@@ -9181,7 +9177,7 @@ id|drive
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -9375,7 +9371,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 comma
@@ -9389,7 +9385,7 @@ c_func
 (paren
 l_string|&quot;fd: Unable to get major %d for floppy&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 )paren
 suffix:semicolon
 r_return
@@ -9424,7 +9420,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren
@@ -9474,7 +9470,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren
@@ -9527,7 +9523,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren
@@ -9588,7 +9584,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren
@@ -9645,7 +9641,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren
@@ -9661,7 +9657,7 @@ c_func
 id|MKDEV
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_int|0
 )paren
@@ -9999,7 +9995,7 @@ c_func
 id|MKDEV
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_int|0
 )paren
@@ -10054,7 +10050,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren

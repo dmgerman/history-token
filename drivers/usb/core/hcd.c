@@ -25,6 +25,12 @@ id|LIST_HEAD
 id|usb_bus_list
 )paren
 suffix:semicolon
+DECL|variable|usb_bus_list
+id|EXPORT_SYMBOL_GPL
+(paren
+id|usb_bus_list
+)paren
+suffix:semicolon
 multiline_comment|/* used when allocating bus numbers */
 DECL|macro|USB_MAXBUS
 mdefine_line|#define USB_MAXBUS&t;&t;64
@@ -66,6 +72,12 @@ id|usb_bus_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* exported only for usbfs */
+DECL|variable|usb_bus_list_lock
+id|EXPORT_SYMBOL_GPL
+(paren
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 multiline_comment|/* used when updating hcd data */
 DECL|variable|hcd_data_lock
 r_static
@@ -1083,6 +1095,8 @@ id|usb_hcd_giveback_urb
 id|hcd
 comma
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1326,6 +1340,8 @@ suffix:semicolon
 id|urb-&gt;complete
 (paren
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1386,6 +1402,8 @@ id|usb_hcd_giveback_urb
 id|hcd
 comma
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1526,6 +1544,8 @@ id|usb_hcd_giveback_urb
 id|hcd
 comma
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3007,16 +3027,8 @@ id|done
 suffix:semicolon
 multiline_comment|/* original urb data */
 DECL|member|complete
-r_void
-(paren
-op_star
+id|usb_complete_t
 id|complete
-)paren
-(paren
-r_struct
-id|urb
-op_star
-)paren
 suffix:semicolon
 DECL|member|context
 r_void
@@ -3034,6 +3046,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -3062,6 +3079,8 @@ suffix:semicolon
 id|urb-&gt;complete
 (paren
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 multiline_comment|/* then let the synchronous unlink call complete */
@@ -3699,7 +3718,7 @@ id|usb_hcd_operations
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause problems if it frees, modifies,&n; * or resubmits this URB.&n; */
+multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * @regs: pt_regs, passed down to the URB completion handler&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause problems if it frees, modifies,&n; * or resubmits this URB.&n; */
 DECL|function|usb_hcd_giveback_urb
 r_void
 id|usb_hcd_giveback_urb
@@ -3713,6 +3732,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|urb_unlink
@@ -3789,6 +3813,8 @@ multiline_comment|/* pass ownership to the completion handler */
 id|urb-&gt;complete
 (paren
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 id|usb_put_urb
@@ -3804,7 +3830,7 @@ id|usb_hcd_giveback_urb
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_hcd_irq - hook IRQs to HCD framework (bus glue)&n; * @irq: the IRQ being raised&n; * @__hcd: pointer to the HCD whose IRQ is beinng signaled&n; * @r: saved hardware registers (not passed to HCD)&n; *&n; * When registering a USB bus through the HCD framework code, use this&n; * to handle interrupts.  The PCI glue layer does so automatically; only&n; * bus glue for non-PCI system busses will need to use this.&n; */
+multiline_comment|/**&n; * usb_hcd_irq - hook IRQs to HCD framework (bus glue)&n; * @irq: the IRQ being raised&n; * @__hcd: pointer to the HCD whose IRQ is beinng signaled&n; * @r: saved hardware registers&n; *&n; * When registering a USB bus through the HCD framework code, use this&n; * to handle interrupts.  The PCI glue layer does so automatically; only&n; * bus glue for non-PCI system busses will need to use this.&n; */
 DECL|function|usb_hcd_irq
 r_void
 id|usb_hcd_irq
@@ -3850,6 +3876,8 @@ suffix:semicolon
 id|hcd-&gt;driver-&gt;irq
 (paren
 id|hcd
+comma
+id|r
 )paren
 suffix:semicolon
 r_if

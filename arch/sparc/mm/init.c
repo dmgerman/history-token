@@ -108,6 +108,17 @@ DECL|variable|kmap_prot
 id|pgprot_t
 id|kmap_prot
 suffix:semicolon
+multiline_comment|/* These are set in {srmmu,sun4c}_paging_init() */
+DECL|variable|fix_kmap_begin
+r_int
+r_int
+id|fix_kmap_begin
+suffix:semicolon
+DECL|variable|fix_kmap_end
+r_int
+r_int
+id|fix_kmap_end
+suffix:semicolon
 DECL|macro|kmap_get_fixed_pte
 mdefine_line|#define kmap_get_fixed_pte(vaddr) &bslash;&n;&t;pte_offset_kernel(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))
 DECL|function|kmap_init
@@ -125,7 +136,7 @@ op_assign
 id|kmap_get_fixed_pte
 c_func
 (paren
-id|FIX_KMAP_BEGIN
+id|fix_kmap_begin
 )paren
 suffix:semicolon
 id|kmap_prot

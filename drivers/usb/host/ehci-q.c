@@ -741,6 +741,8 @@ op_amp
 id|ehci-&gt;hcd
 comma
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_lock

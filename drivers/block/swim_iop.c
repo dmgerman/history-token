@@ -164,12 +164,6 @@ id|swim_iop_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR  FLOPPY_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;swim_queue)
 DECL|macro|CURRENT
 mdefine_line|#define CURRENT elv_next_request(&amp;swim_queue)
 DECL|variable|drive_names
@@ -541,7 +535,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 comma
@@ -556,7 +550,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;SWIM-IOP: Unable to get major %d for floppy&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 )paren
 suffix:semicolon
 r_return
@@ -842,7 +836,7 @@ r_continue
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -2344,7 +2338,8 @@ op_logical_neg
 id|blk_queue_empty
 c_func
 (paren
-id|QUEUE
+op_amp
+id|swim_queue
 )paren
 op_logical_and
 id|fs-&gt;state
@@ -2367,8 +2362,7 @@ id|CURRENT-&gt;bh
 id|panic
 c_func
 (paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
+l_string|&quot;floppy: block not locked&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0

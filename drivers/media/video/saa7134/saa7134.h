@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &quot;video-buf.h&quot;
 DECL|macro|SAA7134_VERSION_CODE
-mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,1)
+mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,2)
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 macro_line|# define TRUE (1==1)

@@ -247,9 +247,9 @@ id|word
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* __HAVE_ARCH_SIG_BITOPS */
 DECL|macro|sigmask
 mdefine_line|#define sigmask(sig)&t;(1UL &lt;&lt; ((sig) - 1))
-macro_line|#endif /* __HAVE_ARCH_SIG_BITOPS */
 macro_line|#ifndef __HAVE_ARCH_SIG_SETOPS
 macro_line|#include &lt;linux/string.h&gt;
 DECL|macro|_SIG_SET_BINOP

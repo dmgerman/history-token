@@ -74,20 +74,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Architecture-independent suspend facility&n; */
-r_extern
-r_void
-id|software_suspend
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|software_suspend_enabled
-suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* _LINUX_REBOOT_H */
 eof

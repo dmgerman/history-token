@@ -37,6 +37,10 @@ r_int
 id|dump_fpu
 c_func
 (paren
+r_struct
+id|pt_regs
+op_star
+comma
 id|elf_fpregset_t
 op_star
 )paren
