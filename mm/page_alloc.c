@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 id|DECLARE_BITMAP
 c_func
 (paren
@@ -1004,6 +1005,18 @@ op_amp
 id|list
 )paren
 suffix:semicolon
+id|kernel_map_pages
+c_func
+(paren
+id|page
+comma
+l_int|1
+op_lshift
+id|order
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|free_pages_bulk
 c_func
 (paren
@@ -1831,6 +1844,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|kernel_map_pages
+c_func
+(paren
+id|page
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|inc_page_state
 c_func
 (paren
@@ -2362,8 +2385,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 id|min
@@ -2492,8 +2515,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 id|min
@@ -2572,8 +2595,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 r_goto
@@ -2695,8 +2718,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 id|min
@@ -2802,6 +2825,23 @@ suffix:semicolon
 )brace
 r_return
 l_int|NULL
+suffix:semicolon
+id|got_pg
+suffix:colon
+id|kernel_map_pages
+c_func
+(paren
+id|page
+comma
+l_int|1
+op_lshift
+id|order
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|page
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Common helper functions.&n; */

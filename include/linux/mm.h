@@ -2247,6 +2247,28 @@ id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DEBUG_PAGEALLOC
+r_static
+r_inline
+r_void
+DECL|function|kernel_map_pages
+id|kernel_map_pages
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|numpages
+comma
+r_int
+id|enable
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MM_H */
 eof

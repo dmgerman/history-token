@@ -43,5 +43,24 @@ id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_PAGEALLOC
+multiline_comment|/* internal debugging function */
+r_void
+id|kernel_map_pages
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|numpages
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _I386_CACHEFLUSH_H */
 eof

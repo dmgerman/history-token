@@ -394,6 +394,15 @@ id|kmem_cache_t
 op_star
 id|bio_cachep
 suffix:semicolon
+r_void
+id|ptrinfo
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_SLAB_H */
 eof
