@@ -1572,15 +1572,6 @@ c_cond
 (paren
 op_logical_neg
 id|_ep
-op_logical_or
-(paren
-op_logical_neg
-id|ep-&gt;desc
-op_logical_and
-id|ep-&gt;num
-op_ne
-l_int|0
-)paren
 )paren
 r_return
 l_int|0
