@@ -21,10 +21,8 @@ op_star
 id|mt
 )paren
 (brace
-DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_g450_info*)md)
 DECL|macro|minfo
-mdefine_line|#define minfo (m2info-&gt;primary_dev)
+mdefine_line|#define minfo ((struct matrox_fb_info*)md)
 id|ACCESS_FBINFO
 c_func
 (paren
@@ -37,8 +35,6 @@ id|mt-&gt;pixclock
 suffix:semicolon
 DECL|macro|minfo
 macro_line|#undef minfo
-DECL|macro|m2info
-macro_line|#undef m2info
 r_return
 l_int|0
 suffix:semicolon
@@ -54,10 +50,8 @@ op_star
 id|md
 )paren
 (brace
-DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_g450_info*)md)
 DECL|macro|minfo
-mdefine_line|#define minfo (m2info-&gt;primary_dev)
+mdefine_line|#define minfo ((struct matrox_fb_info*)md)
 id|matroxfb_g450_setclk
 c_func
 (paren
@@ -75,8 +69,6 @@ id|M_VIDEO_PLL
 suffix:semicolon
 DECL|macro|minfo
 macro_line|#undef minfo
-DECL|macro|m2info
-macro_line|#undef m2info&t;
 r_return
 l_int|0
 suffix:semicolon
@@ -209,11 +201,6 @@ c_func
 id|WPMINFO2
 )paren
 (brace
-r_struct
-id|matroxfb_g450_info
-op_star
-id|m2info
-suffix:semicolon
 multiline_comment|/* hardware is not G450... */
 r_if
 c_cond
@@ -227,56 +214,6 @@ id|devflags.g450dac
 )paren
 r_return
 suffix:semicolon
-id|m2info
-op_assign
-(paren
-r_struct
-id|matroxfb_g450_info
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|m2info
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|m2info
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;matroxfb_g450: Not enough memory for G450 DAC control structs&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|m2info
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|m2info
-)paren
-)paren
-suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -288,17 +225,13 @@ id|altout.lock
 )paren
 )paren
 suffix:semicolon
-id|m2info-&gt;primary_dev
-op_assign
-id|MINFO
-suffix:semicolon
 id|ACCESS_FBINFO
 c_func
 (paren
 id|altout.device
 )paren
 op_assign
-id|m2info
+id|MINFO
 suffix:semicolon
 id|ACCESS_FBINFO
 c_func
@@ -389,16 +322,6 @@ id|ACCESS_FBINFO
 c_func
 (paren
 id|altout.lock
-)paren
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ACCESS_FBINFO
-c_func
-(paren
-id|altout.device
 )paren
 )paren
 suffix:semicolon
