@@ -2498,7 +2498,11 @@ id|VC_MEDIUMRAW
 op_logical_and
 id|value
 op_ne
+id|KVAL
+c_func
+(paren
 id|K_SAK
+)paren
 )paren
 r_return
 suffix:semicolon

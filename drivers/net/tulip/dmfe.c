@@ -2604,13 +2604,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* free this SKB */
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 multiline_comment|/* Restore CR7 to enable interrupt */
 id|spin_unlock_irqrestore
 c_func
@@ -2629,6 +2622,13 @@ comma
 id|dev-&gt;base_addr
 op_plus
 id|DCR7
+)paren
+suffix:semicolon
+multiline_comment|/* free this SKB */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return

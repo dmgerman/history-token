@@ -3,7 +3,6 @@ multiline_comment|/*&n; * Modification history timex.h&n; *&n; * 29 Dec 97&t;Rus
 macro_line|#ifndef _LINUX_TIMEX_H
 DECL|macro|_LINUX_TIMEX_H
 mdefine_line|#define _LINUX_TIMEX_H
-macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 multiline_comment|/*&n; * The following defines establish the engineering parameters of the PLL&n; * model. The HZ variable establishes the timer interrupt frequency, 100 Hz&n; * for the SunOS kernel, 256 Hz for the Ultrix kernel and 1024 Hz for the&n; * OSF/1 kernel. The SHIFT_HZ define expresses the same value as the&n; * nearest power of two in order to avoid hardware multiply operations.&n; */
 macro_line|#if HZ &gt;= 12 &amp;&amp; HZ &lt; 24
@@ -89,6 +88,7 @@ multiline_comment|/* TICK_NSEC is the time between ticks in nsec assuming real A
 multiline_comment|/* a value TUSEC for TICK_USEC (can be set bij adjtimex)&t;&t;*/
 DECL|macro|TICK_NSEC
 mdefine_line|#define TICK_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000, ACTHZ, 8))
+macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/*&n; * syscall interface - used (mainly by NTP daemon)&n; * to discipline kernel clock oscillator&n; */
 DECL|struct|timex
 r_struct

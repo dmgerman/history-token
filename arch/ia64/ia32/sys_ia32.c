@@ -17172,8 +17172,6 @@ DECL|macro|ca32_client
 mdefine_line|#define ca32_client&t;u.u32_client
 DECL|macro|ca32_export
 mdefine_line|#define ca32_export&t;u.u32_export
-DECL|macro|ca32_authd
-mdefine_line|#define ca32_authd&t;u.u32_authd
 DECL|macro|ca32_debug
 mdefine_line|#define ca32_debug&t;u.u32_debug
 )brace

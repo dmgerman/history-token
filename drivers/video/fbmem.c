@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -2992,7 +2993,7 @@ suffix:semicolon
 multiline_comment|/* Return if no suitable logo was found */
 id|fb_logo.logo
 op_assign
-id|find_logo
+id|fb_find_logo
 c_func
 (paren
 id|info-&gt;var.bits_per_pixel

@@ -58,8 +58,7 @@ r_const
 r_struct
 id|linux_logo
 op_star
-id|__init
-id|find_logo
+id|fb_find_logo
 c_func
 (paren
 r_int

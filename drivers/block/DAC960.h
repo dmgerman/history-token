@@ -20,7 +20,7 @@ DECL|macro|DAC960_V1_MaxPhysicalDevices
 mdefine_line|#define DAC960_V1_MaxPhysicalDevices&t;&t;45
 DECL|macro|DAC960_V2_MaxPhysicalDevices
 mdefine_line|#define DAC960_V2_MaxPhysicalDevices&t;&t;272
-multiline_comment|/*&n;  Define the pci dma mask supported by DAC960 V1 and V2 Firmware Controlers&n;&n;  For now set the V2 mask to only 32 bits.  The controller IS capable&n;  of doing 64 bit dma.  But I have yet to find out whether this needs to&n;  be explicitely enabled in the controller, or of the controller adapts&n;  automatically.&n; */
+multiline_comment|/*&n;  Define the pci dma mask supported by DAC960 V1 and V2 Firmware Controlers&n; */
 DECL|macro|DAC690_V1_PciDmaMask
 mdefine_line|#define DAC690_V1_PciDmaMask&t;0xffffffff
 DECL|macro|DAC690_V2_PciDmaMask
@@ -8830,6 +8830,10 @@ DECL|member|ControllerUsageCount
 r_int
 r_int
 id|ControllerUsageCount
+suffix:semicolon
+DECL|member|BounceBufferLimit
+id|u64
+id|BounceBufferLimit
 suffix:semicolon
 DECL|member|CombinedStatusBufferLength
 r_int

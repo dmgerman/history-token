@@ -373,8 +373,7 @@ id|dentry-&gt;d_lru
 )paren
 (brace
 id|dentry-&gt;d_vfs_flags
-op_and_assign
-op_complement
+op_or_assign
 id|DCACHE_REFERENCED
 suffix:semicolon
 id|list_add
@@ -397,10 +396,6 @@ c_func
 op_amp
 id|dentry-&gt;d_lock
 )paren
-suffix:semicolon
-id|dentry-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -657,10 +652,6 @@ c_func
 op_amp
 id|dentry-&gt;d_count
 )paren
-suffix:semicolon
-id|dentry-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
 suffix:semicolon
 r_if
 c_cond
@@ -1143,6 +1134,28 @@ op_amp
 id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
+multiline_comment|/* leave inuse dentries */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_count
+)paren
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* If the dentry was recently referenced, don&squot;t free it. */
 r_if
 c_cond
@@ -1157,19 +1170,6 @@ op_and_assign
 op_complement
 id|DCACHE_REFERENCED
 suffix:semicolon
-multiline_comment|/* don&squot;t add non zero d_count dentries &n;&t;&t;&t; * back to d_lru list&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|atomic_read
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_count
-)paren
-)paren
-(brace
 id|list_add
 c_func
 (paren
@@ -1183,7 +1183,6 @@ suffix:semicolon
 id|dentry_stat.nr_unused
 op_increment
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -1651,6 +1650,21 @@ id|next
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lru
+)paren
+)paren
+(brace
+id|dentry_stat.nr_unused
+op_decrement
+suffix:semicolon
 id|list_del_init
 c_func
 (paren
@@ -1658,7 +1672,8 @@ op_amp
 id|dentry-&gt;d_lru
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t add non zero d_count dentries &n;&t;&t; * back to d_lru list&n;&t;&t; */
+)brace
+multiline_comment|/* &n;&t;&t; * move only zero ref count dentries to the end &n;&t;&t; * of the unused list for prune_dcache&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1679,6 +1694,9 @@ id|dentry-&gt;d_lru
 comma
 id|dentry_unused.prev
 )paren
+suffix:semicolon
+id|dentry_stat.nr_unused
+op_increment
 suffix:semicolon
 id|found
 op_increment
@@ -1862,6 +1880,21 @@ comma
 id|d_hash
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|this-&gt;d_lru
+)paren
+)paren
+(brace
+id|dentry_stat.nr_unused
+op_decrement
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -1869,7 +1902,8 @@ op_amp
 id|this-&gt;d_lru
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t add non zero d_count dentries &n;&t;&t;&t; * back to d_lru list&n;&t;&t;&t; */
+)brace
+multiline_comment|/* &n;&t;&t;&t; * move only zero ref count dentries to the end &n;&t;&t;&t; * of the unused list for prune_dcache&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1891,6 +1925,9 @@ comma
 op_amp
 id|dentry_unused
 )paren
+suffix:semicolon
+id|dentry_stat.nr_unused
+op_increment
 suffix:semicolon
 id|found
 op_increment
@@ -3269,10 +3306,6 @@ c_func
 op_amp
 id|dentry-&gt;d_count
 )paren
-suffix:semicolon
-id|dentry-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
 suffix:semicolon
 id|found
 op_assign

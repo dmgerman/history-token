@@ -119,6 +119,13 @@ comma
 r_int
 r_int
 id|count
+comma
+r_int
+r_int
+id|flags
+comma
+id|pgprot_t
+id|prot
 )paren
 suffix:semicolon
 r_extern

@@ -307,8 +307,10 @@ op_star
 id|attr
 comma
 r_int
+r_int
 id|major
 comma
+r_int
 r_int
 id|minor
 )paren
