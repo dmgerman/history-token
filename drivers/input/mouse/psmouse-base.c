@@ -926,20 +926,9 @@ suffix:semicolon
 )brace
 id|rc
 op_assign
-id|psmouse-&gt;type
-op_eq
-id|PSMOUSE_SYNAPTICS
-ques
-c_cond
-id|synaptics_process_byte
-c_func
-(paren
 id|psmouse
-comma
-id|regs
-)paren
-suffix:colon
-id|psmouse_process_byte
+op_member_access_from_pointer
+id|protocol_handler
 c_func
 (paren
 id|psmouse
@@ -1782,6 +1771,10 @@ suffix:semicolon
 id|psmouse-&gt;model
 op_assign
 l_int|0
+suffix:semicolon
+id|psmouse-&gt;protocol_handler
+op_assign
+id|psmouse_process_byte
 suffix:semicolon
 multiline_comment|/*&n; * Try Synaptics TouchPad&n; */
 r_if

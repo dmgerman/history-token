@@ -3,22 +3,6 @@ macro_line|#ifndef _SYNAPTICS_H
 DECL|macro|_SYNAPTICS_H
 mdefine_line|#define _SYNAPTICS_H
 r_extern
-id|psmouse_ret_t
-id|synaptics_process_byte
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|synaptics_detect
 c_func
