@@ -663,9 +663,6 @@ id|buf
 comma
 r_int
 id|len
-comma
-r_int
-id|user
 )paren
 suffix:semicolon
 r_int
@@ -682,9 +679,6 @@ id|buf
 comma
 r_int
 id|len
-comma
-r_int
-id|user
 )paren
 suffix:semicolon
 r_int
