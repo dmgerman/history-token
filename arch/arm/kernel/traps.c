@@ -896,9 +896,9 @@ c_func
 (paren
 l_string|&quot;Process %s (pid: %d, stack limit = 0x%p)&bslash;n&quot;
 comma
-id|current-&gt;comm
+id|tsk-&gt;comm
 comma
-id|current-&gt;pid
+id|tsk-&gt;pid
 comma
 id|tsk-&gt;thread_info
 op_plus
@@ -926,15 +926,7 @@ c_func
 (paren
 l_string|&quot;Stack: &quot;
 comma
-(paren
-r_int
-r_int
-)paren
-(paren
-id|regs
-op_plus
-l_int|1
-)paren
+id|regs-&gt;ARM_sp
 comma
 l_int|8192
 op_plus
