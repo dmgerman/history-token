@@ -177,6 +177,8 @@ suffix:semicolon
 id|u8
 op_star
 id|buffer
+op_assign
+l_int|NULL
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
@@ -206,6 +208,15 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Create an actual buffer only if size &gt; 0 */
+r_if
+c_cond
+(paren
+id|buffer_size
+OG
+l_int|0
+)paren
+(brace
 multiline_comment|/* Allocate the actual buffer */
 id|buffer
 op_assign
@@ -243,6 +254,7 @@ id|return_PTR
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Complete buffer object initialization */
 id|buffer_desc-&gt;buffer.flags

@@ -1347,15 +1347,67 @@ DECL|macro|ACPI_INTERRUPT_NOT_HANDLED
 mdefine_line|#define ACPI_INTERRUPT_NOT_HANDLED      0x00
 DECL|macro|ACPI_INTERRUPT_HANDLED
 mdefine_line|#define ACPI_INTERRUPT_HANDLED          0x01
-multiline_comment|/* Structure and flags for acpi_get_device_info */
-DECL|macro|ACPI_VALID_HID
-mdefine_line|#define ACPI_VALID_HID                  0x1
-DECL|macro|ACPI_VALID_UID
-mdefine_line|#define ACPI_VALID_UID                  0x2
-DECL|macro|ACPI_VALID_ADR
-mdefine_line|#define ACPI_VALID_ADR                  0x4
+multiline_comment|/* Common string version of device HIDs and UIDs */
+DECL|struct|acpi_device_id
+r_struct
+id|acpi_device_id
+(brace
+DECL|member|value
+r_char
+id|value
+(braket
+id|ACPI_DEVICE_ID_LENGTH
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Common string version of device CIDs */
+DECL|struct|acpi_compatible_id
+r_struct
+id|acpi_compatible_id
+(brace
+DECL|member|value
+r_char
+id|value
+(braket
+id|ACPI_MAX_CID_LENGTH
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|acpi_compatible_id_list
+r_struct
+id|acpi_compatible_id_list
+(brace
+DECL|member|count
+id|u32
+id|count
+suffix:semicolon
+DECL|member|size
+id|u32
+id|size
+suffix:semicolon
+DECL|member|id
+r_struct
+id|acpi_compatible_id
+id|id
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Structure and flags for acpi_get_object_info */
 DECL|macro|ACPI_VALID_STA
-mdefine_line|#define ACPI_VALID_STA                  0x8
+mdefine_line|#define ACPI_VALID_STA                  0x0001
+DECL|macro|ACPI_VALID_ADR
+mdefine_line|#define ACPI_VALID_ADR                  0x0002
+DECL|macro|ACPI_VALID_HID
+mdefine_line|#define ACPI_VALID_HID                  0x0004
+DECL|macro|ACPI_VALID_UID
+mdefine_line|#define ACPI_VALID_UID                  0x0008
+DECL|macro|ACPI_VALID_CID
+mdefine_line|#define ACPI_VALID_CID                  0x0010
 DECL|macro|ACPI_COMMON_OBJ_INFO
 mdefine_line|#define ACPI_COMMON_OBJ_INFO &bslash;&n;&t;acpi_object_type                    type;           /* ACPI object type */ &bslash;&n;&t;acpi_name                           name            /* ACPI object Name */
 DECL|struct|acpi_obj_info_header
@@ -1367,6 +1419,7 @@ id|ACPI_COMMON_OBJ_INFO
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Structure returned from Get Object Info */
 DECL|struct|acpi_device_info
 r_struct
 id|acpi_device_info
@@ -1378,33 +1431,35 @@ DECL|member|valid
 id|u32
 id|valid
 suffix:semicolon
-multiline_comment|/*  Are the next bits legit? */
-DECL|member|hardware_id
-r_char
-id|hardware_id
-(braket
-l_int|9
-)braket
-suffix:semicolon
-multiline_comment|/*  _HID value if any */
-DECL|member|unique_id
-r_char
-id|unique_id
-(braket
-l_int|9
-)braket
-suffix:semicolon
-multiline_comment|/*  _UID value if any */
-DECL|member|address
-id|acpi_integer
-id|address
-suffix:semicolon
-multiline_comment|/*  _ADR value if any */
+multiline_comment|/* Indicates which fields are valid */
 DECL|member|current_status
 id|u32
 id|current_status
 suffix:semicolon
-multiline_comment|/*  _STA value */
+multiline_comment|/* _STA value */
+DECL|member|address
+id|acpi_integer
+id|address
+suffix:semicolon
+multiline_comment|/* _ADR value if any */
+DECL|member|hardware_id
+r_struct
+id|acpi_device_id
+id|hardware_id
+suffix:semicolon
+multiline_comment|/* _HID value if any */
+DECL|member|unique_id
+r_struct
+id|acpi_device_id
+id|unique_id
+suffix:semicolon
+multiline_comment|/* _UID value if any */
+DECL|member|compatibility_id
+r_struct
+id|acpi_compatible_id_list
+id|compatibility_id
+suffix:semicolon
+multiline_comment|/* List of _CIDs if any */
 )brace
 suffix:semicolon
 multiline_comment|/* Context structs for address space handlers */

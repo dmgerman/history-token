@@ -1616,22 +1616,6 @@ DECL|macro|ACPI_RDESC_TYPE_EXTENDED_XRUPT
 mdefine_line|#define ACPI_RDESC_TYPE_EXTENDED_XRUPT          0x89
 DECL|macro|ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE
 mdefine_line|#define ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE     0x8A
-multiline_comment|/* String version of device HIDs and UIDs */
-DECL|macro|ACPI_DEVICE_ID_LENGTH
-mdefine_line|#define ACPI_DEVICE_ID_LENGTH                   0x09
-DECL|struct|acpi_device_id
-r_struct
-id|acpi_device_id
-(brace
-DECL|member|buffer
-r_char
-id|buffer
-(braket
-id|ACPI_DEVICE_ID_LENGTH
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Miscellaneous&n; *&n; ****************************************************************************/
 DECL|macro|ACPI_ASCII_ZERO
 mdefine_line|#define ACPI_ASCII_ZERO                      0x30

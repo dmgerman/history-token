@@ -376,7 +376,7 @@ op_logical_neg
 (paren
 id|ACPI_STRNCMP
 (paren
-id|object_hID.buffer
+id|object_hID.value
 comma
 id|PCI_ROOT_HID_STRING
 comma

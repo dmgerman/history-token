@@ -296,11 +296,23 @@ id|status
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|msg
+)paren
+(brace
 id|acpi_os_printf
 (paren
-l_string|&quot;%s [%s] (Node %p)&quot;
+l_string|&quot;%s &quot;
 comma
 id|msg
+)paren
+suffix:semicolon
+)brace
+id|acpi_os_printf
+(paren
+l_string|&quot;[%s] (Node %p)&quot;
 comma
 (paren
 r_char
