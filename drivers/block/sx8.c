@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  carmel.c: Driver for Promise SATA SX8 looks-like-I2O hardware&n; *&n; *  Copyright 2004 Red Hat, Inc.&n; *&n; *  Author/maintainer:  Jeff Garzik &lt;jgarzik@pobox.com&gt;&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; *  for more details.&n; */
+multiline_comment|/*&n; *  sx8.c: Driver for Promise SATA SX8 looks-like-I2O hardware&n; *&n; *  Copyright 2004 Red Hat, Inc.&n; *&n; *  Author/maintainer:  Jeff Garzik &lt;jgarzik@pobox.com&gt;&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -33,7 +33,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Promise SATA SX8 (carmel) block driver&quot;
+l_string|&quot;Promise SATA SX8 block driver&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -48,7 +48,7 @@ macro_line|#endif
 DECL|macro|CARM_NDEBUG
 macro_line|#undef CARM_NDEBUG
 DECL|macro|DRV_NAME
-mdefine_line|#define DRV_NAME &quot;carmel&quot;
+mdefine_line|#define DRV_NAME &quot;sx8&quot;
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION &quot;0.8&quot;
 DECL|macro|PFX
