@@ -2460,6 +2460,7 @@ id|apm_info.bios
 op_assign
 id|APM_BIOS_INFO
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_SLEEP
 id|saved_videomode
 op_assign
 id|VIDEO_MODE
@@ -2472,6 +2473,7 @@ comma
 id|saved_videomode
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
