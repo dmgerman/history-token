@@ -7109,6 +7109,16 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|writeout_one_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|generic_file_mmap
 c_func
 (paren

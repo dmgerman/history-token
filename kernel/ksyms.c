@@ -1046,13 +1046,6 @@ c_func
 id|generic_block_bmap
 )paren
 suffix:semicolon
-DECL|variable|waitfor_one_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|waitfor_one_page
-)paren
-suffix:semicolon
 DECL|variable|generic_file_read
 id|EXPORT_SYMBOL
 c_func
