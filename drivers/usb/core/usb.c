@@ -8524,13 +8524,6 @@ c_func
 id|usb_free_dev
 )paren
 suffix:semicolon
-DECL|variable|usb_inc_dev_use
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_inc_dev_use
-)paren
-suffix:semicolon
 DECL|variable|usb_find_interface_driver_for_ifnum
 id|EXPORT_SYMBOL
 c_func
