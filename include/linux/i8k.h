@@ -7,9 +7,9 @@ mdefine_line|#define I8K_PROC&t;&t;&quot;/proc/i8k&quot;
 DECL|macro|I8K_PROC_FMT
 mdefine_line|#define I8K_PROC_FMT&t;&t;&quot;1.0&quot;
 DECL|macro|I8K_BIOS_VERSION
-mdefine_line|#define I8K_BIOS_VERSION&t;_IOR (&squot;i&squot;, 0x80, 4)
+mdefine_line|#define I8K_BIOS_VERSION&t;_IOR (&squot;i&squot;, 0x80, int)&t;/* broken: meant 4 bytes */
 DECL|macro|I8K_MACHINE_ID
-mdefine_line|#define I8K_MACHINE_ID&t;&t;_IOR (&squot;i&squot;, 0x81, 16)
+mdefine_line|#define I8K_MACHINE_ID&t;&t;_IOR (&squot;i&squot;, 0x81, int)&t;/* broken: meant 16 bytes */
 DECL|macro|I8K_POWER_STATUS
 mdefine_line|#define I8K_POWER_STATUS&t;_IOR (&squot;i&squot;, 0x82, size_t)
 DECL|macro|I8K_FN_STATUS

@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-singleline_comment|//#include &lt;asm/arch.h&gt;
 macro_line|#include &lt;asm/map.h&gt;
 DECL|macro|TABLE_SIZE
 mdefine_line|#define TABLE_SIZE&t;PTRS_PER_PTE * sizeof(pte_t))
@@ -55,6 +54,14 @@ id|__init_begin
 comma
 id|__init_end
 suffix:semicolon
+macro_line|#ifdef CONFIG_XIP_KERNEL
+r_extern
+r_char
+id|_endtext
+comma
+id|_sdata
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 r_int
@@ -571,109 +578,6 @@ op_lshift
 id|PAGE_SHIFT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reserve the various regions of node 0&n; */
-DECL|function|reserve_node_zero
-r_static
-id|__init
-r_void
-id|reserve_node_zero
-c_func
-(paren
-r_int
-r_int
-id|bootmap_pfn
-comma
-r_int
-r_int
-id|bootmap_pages
-)paren
-(brace
-id|pg_data_t
-op_star
-id|pgdat
-op_assign
-id|NODE_DATA
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Register the kernel text and data with bootmem.&n;&t; * Note that this can only be in node 0.&n;&t; */
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-id|__pa
-c_func
-(paren
-op_amp
-id|_stext
-)paren
-comma
-op_amp
-id|_end
-op_minus
-op_amp
-id|_stext
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * And don&squot;t forget to reserve the allocator bitmap,&n;&t; * which will be freed later.&n;&t; */
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-id|bootmap_pfn
-op_lshift
-id|PAGE_SHIFT
-comma
-id|bootmap_pages
-op_lshift
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * These should likewise go elsewhere.  They pre-reserve&n;&t; * the screen memory region at the start of main system&n;&t; * memory.&n;&t; */
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-l_int|0x02000000
-comma
-l_int|0x00080000
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|initrd_start
-op_assign
-id|phys_initrd_start
-suffix:semicolon
-id|initrd_end
-op_assign
-id|initrd_start
-op_plus
-id|phys_initrd_size
-suffix:semicolon
-multiline_comment|/* Achimedes machines only have one node, so initrd is in node 0 */
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-id|__pa
-c_func
-(paren
-id|initrd_start
-)paren
-comma
-id|initrd_end
-op_minus
-id|initrd_start
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/*&n; * Initialise the bootmem allocator for all nodes.  This is called&n; * early during the architecture specific initialisation.&n; */
 DECL|function|bootmem_init
 r_void
@@ -694,6 +598,16 @@ suffix:semicolon
 r_int
 r_int
 id|bootmap_pfn
+suffix:semicolon
+id|pg_data_t
+op_star
+id|pgdat
+op_assign
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|find_memend_and_nodes
 c_func
@@ -731,11 +645,7 @@ multiline_comment|/*&n;&t; * Initialise the bootmem allocator.&n;&t; */
 id|init_bootmem_node
 c_func
 (paren
-id|NODE_DATA
-c_func
-(paren
-id|node
-)paren
+id|pgdat
 comma
 id|bootmap_pfn
 comma
@@ -748,26 +658,131 @@ multiline_comment|/*&n;&t; * Register all available RAM in this node with the bo
 id|free_bootmem_node
 c_func
 (paren
-id|NODE_DATA
-c_func
-(paren
-id|node
-)paren
+id|pgdat
 comma
 id|mi-&gt;bank-&gt;start
 comma
 id|mi-&gt;bank-&gt;size
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Reserve ram for stuff like initrd, video, kernel, etc.&n;&t; */
-id|reserve_node_zero
+multiline_comment|/*&n;         * Register the kernel text and data with bootmem.&n;         * Note: with XIP we dont register .text since&n;         * its in ROM.&n;         */
+macro_line|#ifdef CONFIG_XIP_KERNEL
+id|reserve_bootmem_node
 c_func
 (paren
-id|bootmap_pfn
+id|pgdat
 comma
-id|node_info.bootmap_pages
+id|__pa
+c_func
+(paren
+op_amp
+id|_sdata
+)paren
+comma
+op_amp
+id|_end
+op_minus
+op_amp
+id|_sdata
 )paren
 suffix:semicolon
+macro_line|#else
+id|reserve_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+id|__pa
+c_func
+(paren
+op_amp
+id|_stext
+)paren
+comma
+op_amp
+id|_end
+op_minus
+op_amp
+id|_stext
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n;         * And don&squot;t forget to reserve the allocator bitmap,&n;         * which will be freed later.&n;         */
+id|reserve_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+id|bootmap_pfn
+op_lshift
+id|PAGE_SHIFT
+comma
+id|node_info.bootmap_pages
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+multiline_comment|/*&n;         * These should likewise go elsewhere.  They pre-reserve&n;         * the screen memory region at the start of main system&n;         * memory. FIXME - screen RAM is not 512K!&n;         */
+id|reserve_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+l_int|0x02000000
+comma
+l_int|0x00080000
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+id|initrd_start
+op_assign
+id|phys_initrd_start
+suffix:semicolon
+id|initrd_end
+op_assign
+id|initrd_start
+op_plus
+id|phys_initrd_size
+suffix:semicolon
+multiline_comment|/* Achimedes machines only have one node, so initrd is in node 0 */
+macro_line|#ifdef CONFIG_XIP_KERNEL
+multiline_comment|/* Only reserve initrd space if it is in RAM */
+r_if
+c_cond
+(paren
+id|initrd_start
+op_logical_and
+id|initrd_start
+OL
+l_int|0x03000000
+)paren
+(brace
+macro_line|#else
+r_if
+c_cond
+(paren
+id|initrd_start
+)paren
+(brace
+macro_line|#endif
+id|reserve_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+id|__pa
+c_func
+(paren
+id|initrd_start
+)paren
+comma
+id|initrd_end
+op_minus
+id|initrd_start
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif   /* CONFIG_BLK_DEV_INITRD */
 )brace
 multiline_comment|/*&n; * paging_init() sets up the page tables, initialises the zone memory&n; * maps, and sets up the zero page, bad page and bad page tables.&n; */
 DECL|function|paging_init
@@ -932,12 +947,18 @@ id|bdata-&gt;node_boot_start
 op_rshift
 id|PAGE_SHIFT
 comma
-l_int|0
+id|zhole_size
 )paren
 suffix:semicolon
 id|mem_map
 op_assign
-id|contig_page_data.node_mem_map
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|node_mem_map
 suffix:semicolon
 multiline_comment|/*&n;&t; * finish off the bad pages once&n;&t; * the mem_map is initialised&n;&t; */
 id|memzero
@@ -1088,14 +1109,25 @@ r_extern
 r_int
 id|sysctl_overcommit_memory
 suffix:semicolon
+multiline_comment|/* Note: data pages includes BSS */
+macro_line|#ifdef CONFIG_XIP_KERNEL
+id|codepages
+op_assign
+op_amp
+id|_endtext
+op_minus
+op_amp
+id|_text
+suffix:semicolon
 id|datapages
 op_assign
 op_amp
 id|_end
 op_minus
 op_amp
-id|_etext
+id|_sdata
 suffix:semicolon
+macro_line|#else
 id|codepages
 op_assign
 op_amp
@@ -1104,6 +1136,15 @@ op_minus
 op_amp
 id|_text
 suffix:semicolon
+id|datapages
+op_assign
+op_amp
+id|_end
+op_minus
+op_amp
+id|_etext
+suffix:semicolon
+macro_line|#endif
 id|initpages
 op_assign
 op_amp
@@ -1150,13 +1191,6 @@ c_func
 id|pgdat
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Memory:&quot;
-)paren
-suffix:semicolon
 id|num_physpages
 op_assign
 id|meminfo.bank
@@ -1171,7 +1205,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; = %luMB total&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Memory: %luMB total&bslash;n&quot;
 comma
 id|num_physpages
 op_rshift
@@ -1244,12 +1279,14 @@ suffix:semicolon
 )brace
 DECL|function|free_initmem
 r_void
+(def_block
 id|free_initmem
 c_func
 (paren
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_XIP_KERNEL
 id|free_area
 c_func
 (paren
@@ -1274,7 +1311,9 @@ comma
 l_string|&quot;init&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
+)def_block
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 DECL|variable|keep_initrd
 r_static
@@ -1295,12 +1334,26 @@ r_int
 id|end
 )paren
 (brace
+macro_line|#ifdef CONFIG_XIP_KERNEL
+multiline_comment|/* Only bin initrd if it is in RAM... */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|keep_initrd
+op_logical_and
+id|start
+OL
+l_int|0x03000000
+)paren
+macro_line|#else
 r_if
 c_cond
 (paren
 op_logical_neg
 id|keep_initrd
 )paren
+macro_line|#endif
 id|free_area
 c_func
 (paren

@@ -39,7 +39,7 @@ multiline_comment|/*&n; * CAPI_GET_MANUFACTURER&n; */
 DECL|macro|CAPI_MANUFACTURER_LEN
 mdefine_line|#define CAPI_MANUFACTURER_LEN&t;&t;64
 DECL|macro|CAPI_GET_MANUFACTURER
-mdefine_line|#define&t;CAPI_GET_MANUFACTURER&t;_IOWR(&squot;C&squot;,0x06,CAPI_MANUFACTURER_LEN)
+mdefine_line|#define&t;CAPI_GET_MANUFACTURER&t;_IOWR(&squot;C&squot;,0x06,int)&t;/* broken: wanted size 64 (CAPI_MANUFACTURER_LEN) */
 multiline_comment|/*&n; * CAPI_GET_VERSION&n; */
 DECL|struct|capi_version
 r_typedef
@@ -72,7 +72,7 @@ multiline_comment|/*&n; * CAPI_GET_SERIAL&n; */
 DECL|macro|CAPI_SERIAL_LEN
 mdefine_line|#define CAPI_SERIAL_LEN&t;&t;8
 DECL|macro|CAPI_GET_SERIAL
-mdefine_line|#define CAPI_GET_SERIAL&t;&t;_IOWR(&squot;C&squot;,0x08, CAPI_SERIAL_LEN)
+mdefine_line|#define CAPI_GET_SERIAL&t;&t;_IOWR(&squot;C&squot;,0x08,int)&t;/* broken: wanted size 8 (CAPI_SERIAL_LEN) */
 multiline_comment|/*&n; * CAPI_GET_PROFILE&n; */
 DECL|struct|capi_profile
 r_typedef

@@ -405,7 +405,7 @@ r_char
 op_star
 id|irqaddr
 suffix:semicolon
-multiline_comment|/* address of IRQ register&t;*/
+multiline_comment|/* address of IRQ register */
 DECL|member|fiqaddr
 r_volatile
 r_int
@@ -413,85 +413,85 @@ r_char
 op_star
 id|fiqaddr
 suffix:semicolon
-multiline_comment|/* address of FIQ register&t;*/
+multiline_comment|/* address of FIQ register */
 DECL|member|irqmask
 r_int
 r_char
 id|irqmask
 suffix:semicolon
-multiline_comment|/* IRQ mask&t;&t;&t;*/
+multiline_comment|/* IRQ mask */
 DECL|member|fiqmask
 r_int
 r_char
 id|fiqmask
 suffix:semicolon
-multiline_comment|/* FIQ mask&t;&t;&t;*/
+multiline_comment|/* FIQ mask */
 DECL|member|claimed
 r_int
 r_char
 id|claimed
 suffix:semicolon
-multiline_comment|/* Card claimed?&t;&t;*/
+multiline_comment|/* Card claimed? */
 DECL|member|irq_data
 r_void
 op_star
 id|irq_data
 suffix:semicolon
-multiline_comment|/* Data for use for IRQ by card&t;*/
+multiline_comment|/* Data for use for IRQ by card */
 DECL|member|fiq_data
 r_void
 op_star
 id|fiq_data
 suffix:semicolon
-multiline_comment|/* Data for use for FIQ by card&t;*/
+multiline_comment|/* Data for use for FIQ by card */
 DECL|member|ops
 r_const
 id|expansioncard_ops_t
 op_star
 id|ops
 suffix:semicolon
-multiline_comment|/* Enable/Disable Ops for card&t;*/
+multiline_comment|/* Enable/Disable Ops for card */
 DECL|member|slot_no
 id|CONST
 r_int
 r_int
 id|slot_no
 suffix:semicolon
-multiline_comment|/* Slot number&t;&t;&t;*/
+multiline_comment|/* Slot number */
 DECL|member|dma
 id|CONST
 r_int
 r_int
 id|dma
 suffix:semicolon
-multiline_comment|/* DMA number (for request_dma)&t;*/
+multiline_comment|/* DMA number (for request_dma) */
 DECL|member|irq
 id|CONST
 r_int
 r_int
 id|irq
 suffix:semicolon
-multiline_comment|/* IRQ number (for request_irq)&t;*/
+multiline_comment|/* IRQ number (for request_irq) */
 DECL|member|fiq
 id|CONST
 r_int
 r_int
 id|fiq
 suffix:semicolon
-multiline_comment|/* FIQ number (for request_irq)&t;*/
+multiline_comment|/* FIQ number (for request_irq) */
 DECL|member|type
 id|CONST
 id|card_type_t
 id|type
 suffix:semicolon
-multiline_comment|/* Type of card&t;&t;&t;*/
+multiline_comment|/* Type of card */
 DECL|member|cid
 id|CONST
 r_struct
 id|in_ecid
 id|cid
 suffix:semicolon
-multiline_comment|/* Card Identification&t;&t;*/
+multiline_comment|/* Card Identification */
 multiline_comment|/* Private internal data */
 DECL|member|card_desc
 r_const
@@ -499,14 +499,14 @@ r_char
 op_star
 id|card_desc
 suffix:semicolon
-multiline_comment|/* Card description&t;&t;*/
+multiline_comment|/* Card description */
 DECL|member|podaddr
 id|CONST
 r_int
 r_int
 id|podaddr
 suffix:semicolon
-multiline_comment|/* Base Linux address for card&t;*/
+multiline_comment|/* Base Linux address for card */
 DECL|member|loader
 id|CONST
 id|loader_t

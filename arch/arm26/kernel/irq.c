@@ -15,6 +15,15 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irqchip.h&gt;
+singleline_comment|//FIXME - this ought to be in a header IMO
+r_void
+id|__init
+id|arc_init_irq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Maximum IRQ count.  Currently, this is arbitary.  However, it should&n; * not be set too low to prevent false triggering.  Conversely, if it&n; * is set too high, then you could miss a stuck IRQ.&n; *&n; * FIXME Maybe we ought to set a timer and re-enable the IRQ at a later time?&n; */
 DECL|macro|MAX_IRQ_CNT
 mdefine_line|#define MAX_IRQ_CNT&t;100000

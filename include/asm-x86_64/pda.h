@@ -35,7 +35,7 @@ r_int
 r_int
 id|kernelstack
 suffix:semicolon
-multiline_comment|/* TOS for current process */
+multiline_comment|/* top of kernel stack for current */
 DECL|member|oldrsp
 r_int
 r_int
@@ -71,6 +71,7 @@ r_volatile
 op_star
 id|level4_pgt
 suffix:semicolon
+multiline_comment|/* Per CPU top level page table */
 DECL|member|__softirq_pending
 r_int
 r_int
@@ -81,14 +82,7 @@ r_int
 r_int
 id|__nmi_count
 suffix:semicolon
-multiline_comment|/* arch dependent */
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
-suffix:semicolon
-multiline_comment|/* waitqueue is too large */
+multiline_comment|/* number of NMI on this CPUs */
 DECL|member|active_mm
 r_struct
 id|mm_struct

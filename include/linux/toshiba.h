@@ -7,7 +7,7 @@ mdefine_line|#define TOSH_PROC &quot;/proc/toshiba&quot;
 DECL|macro|TOSH_DEVICE
 mdefine_line|#define TOSH_DEVICE &quot;/dev/toshiba&quot;
 DECL|macro|TOSH_SMM
-mdefine_line|#define TOSH_SMM _IOWR(&squot;t&squot;, 0x90, 24)
+mdefine_line|#define TOSH_SMM _IOWR(&squot;t&squot;, 0x90, int)&t;/* broken: meant 24 bytes */
 r_typedef
 r_struct
 (brace

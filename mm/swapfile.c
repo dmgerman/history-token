@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|swaplock
 id|spinlock_t

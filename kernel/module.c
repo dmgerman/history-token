@@ -5754,7 +5754,7 @@ op_ne
 op_complement
 l_int|0UL
 op_logical_or
-id|strstr
+id|strncmp
 c_func
 (paren
 id|secstrings
@@ -5762,7 +5762,11 @@ op_plus
 id|s-&gt;sh_name
 comma
 l_string|&quot;.init&quot;
+comma
+l_int|5
 )paren
+op_eq
+l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -5890,8 +5894,7 @@ op_ne
 op_complement
 l_int|0UL
 op_logical_or
-op_logical_neg
-id|strstr
+id|strncmp
 c_func
 (paren
 id|secstrings
@@ -5899,7 +5902,11 @@ op_plus
 id|s-&gt;sh_name
 comma
 l_string|&quot;.init&quot;
+comma
+l_int|5
 )paren
+op_ne
+l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -7075,7 +7082,7 @@ multiline_comment|/* Don&squot;t load .exit sections */
 r_if
 c_cond
 (paren
-id|strstr
+id|strncmp
 c_func
 (paren
 id|secstrings
@@ -7088,7 +7095,11 @@ dot
 id|sh_name
 comma
 l_string|&quot;.exit&quot;
+comma
+l_int|5
 )paren
+op_eq
+l_int|0
 )paren
 id|sechdrs
 (braket

@@ -369,6 +369,7 @@ l_int|1
 (brace
 suffix:semicolon
 )brace
+singleline_comment|//FIXME - hack to stop debug going nutso
 macro_line|#endif
 id|tsk-&gt;thread.address
 op_assign
@@ -674,9 +675,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;do_page_fault: pid: %d&bslash;n&quot;
+l_string|&quot;do_page_fault: pid: %d      %08x&bslash;n&quot;
 comma
 id|tsk-&gt;pid
+comma
+id|addr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t; * context, we must not take the fault..&n;&t; */
@@ -746,7 +749,7 @@ r_goto
 id|do_sigbus
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we are in kernel mode at this point, we&n;&t; * have no context to handle this fault with.&n;&t; */
+multiline_comment|/*&n;&t; * If we are in kernel mode at this point, we&n;&t; * have no context to handle this fault with.&n;         * FIXME - is this test right?&n;&t; */
 r_if
 c_cond
 (paren

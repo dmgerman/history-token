@@ -4,6 +4,14 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
+r_extern
+r_void
+id|alternative_instructions
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|check_bugs
 r_static
 r_void
@@ -36,5 +44,10 @@ id|boot_cpu_data
 )paren
 suffix:semicolon
 macro_line|#endif
+id|alternative_instructions
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof
