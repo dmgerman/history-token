@@ -2710,34 +2710,9 @@ r_if
 c_cond
 (paren
 id|emu-&gt;audigy
-op_logical_and
-id|emu-&gt;revision
-op_eq
-l_int|4
 )paren
 (brace
-multiline_comment|/* Master/PCM controls on ac97 of Audigy2 has no effect */
-multiline_comment|/* FIXME: keep master volume/switch to be sure.&n;&t;&t;&t; * once after we check that they play really no roles,&n;&t;&t;&t; * they shall be removed.&n;&t;&t;&t; */
-id|rename_ctl
-c_func
-(paren
-id|card
-comma
-l_string|&quot;Master Playback Switch&quot;
-comma
-l_string|&quot;AC97 Master Playback Switch&quot;
-)paren
-suffix:semicolon
-id|rename_ctl
-c_func
-(paren
-id|card
-comma
-l_string|&quot;Master Playback Volume&quot;
-comma
-l_string|&quot;AC97 Master Playback Volume&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* Master/PCM controls on ac97 of Audigy has no effect */
 multiline_comment|/* pcm controls are removed */
 id|remove_ctl
 c_func
@@ -2753,6 +2728,46 @@ c_func
 id|card
 comma
 l_string|&quot;PCM Playback Volume&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Master Mono Playback Switch&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Master Mono Playback Volume&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Master Playback Switch&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Master Playback Volume&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;PCM Out Path &amp; Mute&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2800,13 +2815,8 @@ r_if
 c_cond
 (paren
 id|emu-&gt;audigy
-op_logical_and
-id|emu-&gt;revision
-op_eq
-l_int|4
 )paren
 (brace
-multiline_comment|/* Audigy2 and Audigy2 EX */
 multiline_comment|/* use the conventional names */
 id|rename_ctl
 c_func
@@ -2818,16 +2828,7 @@ comma
 l_string|&quot;PCM Playback Volume&quot;
 )paren
 suffix:semicolon
-id|rename_ctl
-c_func
-(paren
-id|card
-comma
-l_string|&quot;Wave Playback Volume&quot;
-comma
-l_string|&quot;PCM Capture Volume&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* rename_ctl(card, &quot;Wave Capture Volume&quot;, &quot;PCM Capture Volume&quot;); */
 id|rename_ctl
 c_func
 (paren

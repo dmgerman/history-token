@@ -2995,10 +2995,10 @@ mdefine_line|#define CC_REG_SATURATE&t;C_00000010
 DECL|macro|CC_REG_NONZERO
 mdefine_line|#define CC_REG_NONZERO&t;C_00000100
 multiline_comment|/* FX buses */
-DECL|macro|FXBUS_PCM_LEFT
-mdefine_line|#define FXBUS_PCM_LEFT&t;&t;0x00
-DECL|macro|FXBUS_PCM_RIGHT
-mdefine_line|#define FXBUS_PCM_RIGHT&t;&t;0x01
+DECL|macro|FXBUS_WAVE_LEFT
+mdefine_line|#define FXBUS_WAVE_LEFT&t;&t;0x00
+DECL|macro|FXBUS_WAVE_RIGHT
+mdefine_line|#define FXBUS_WAVE_RIGHT&t;0x01
 DECL|macro|FXBUS_PCM_LEFT_REAR
 mdefine_line|#define FXBUS_PCM_LEFT_REAR&t;0x02
 DECL|macro|FXBUS_PCM_RIGHT_REAR
@@ -3011,14 +3011,18 @@ DECL|macro|FXBUS_PCM_CENTER
 mdefine_line|#define FXBUS_PCM_CENTER&t;0x06
 DECL|macro|FXBUS_PCM_LFE
 mdefine_line|#define FXBUS_PCM_LFE&t;&t;0x07
-DECL|macro|FXBUS_PT_LEFT
-mdefine_line|#define FXBUS_PT_LEFT&t;&t;20
-DECL|macro|FXBUS_PT_RIGHT
-mdefine_line|#define FXBUS_PT_RIGHT&t;&t;21
+DECL|macro|FXBUS_PCM_LEFT
+mdefine_line|#define FXBUS_PCM_LEFT&t;&t;0x08
+DECL|macro|FXBUS_PCM_RIGHT
+mdefine_line|#define FXBUS_PCM_RIGHT&t;&t;0x09
 DECL|macro|FXBUS_MIDI_REVERB
 mdefine_line|#define FXBUS_MIDI_REVERB&t;0x0c
 DECL|macro|FXBUS_MIDI_CHORUS
 mdefine_line|#define FXBUS_MIDI_CHORUS&t;0x0d
+DECL|macro|FXBUS_PT_LEFT
+mdefine_line|#define FXBUS_PT_LEFT&t;&t;0x14
+DECL|macro|FXBUS_PT_RIGHT
+mdefine_line|#define FXBUS_PT_RIGHT&t;&t;0x15
 multiline_comment|/* Inputs */
 DECL|macro|EXTIN_AC97_L
 mdefine_line|#define EXTIN_AC97_L&t;   0x00&t;/* AC&squot;97 capture channel - left */
@@ -3188,8 +3192,10 @@ DECL|macro|A_C_5a7ef9db
 mdefine_line|#define A_C_5a7ef9db&t;0xd4
 DECL|macro|A_C_00100000
 mdefine_line|#define A_C_00100000&t;0xd5
-multiline_comment|/* 0xd6 = 0x7fffffff  (?) ACCUM? */
-multiline_comment|/* 0xd7 = 0x0000000   CCR */
+DECL|macro|A_GPR_ACCU
+mdefine_line|#define A_GPR_ACCU&t;0xd6&t;&t;/* ACCUM, accumulator */
+DECL|macro|A_GPR_COND
+mdefine_line|#define A_GPR_COND&t;0xd7&t;&t;/* CCR, condition register */
 multiline_comment|/* 0xd8 = noise1 */
 multiline_comment|/* 0xd9 = noise2 */
 multiline_comment|/* definitions for debug register */
