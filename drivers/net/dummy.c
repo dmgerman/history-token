@@ -281,9 +281,9 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|numdimmies
+id|numdummies
 comma
-l_string|&quot;Number of dummy psuedo devices&quot;
+l_string|&quot;Number of dummy pseudo devices&quot;
 )paren
 suffix:semicolon
 DECL|function|dummy_init_one

@@ -29,6 +29,14 @@ DECL|member|last_off
 r_int
 id|last_off
 suffix:semicolon
+DECL|member|last_size
+r_int
+id|last_size
+suffix:semicolon
+DECL|member|first_free
+r_int
+id|first_free
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

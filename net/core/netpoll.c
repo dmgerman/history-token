@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common framework for low-level network console, dump, and debugger code&n; *&n; * Sep 8 2003  Matt Mackall &lt;mpm@selenic.com&gt;&n; */
+multiline_comment|/*&n; * Common framework for low-level network console, dump, and debugger code&n; *&n; * Sep 8 2003  Matt Mackall &lt;mpm@selenic.com&gt;&n; *&n; * based on the netconsole code from:&n; *&n; * Copyright (C) 2001  Ingo Molnar &lt;mingo@redhat.com&gt;&n; * Copyright (C) 2002  Red Hat, Inc.&n; */
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
