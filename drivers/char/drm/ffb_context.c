@@ -2122,7 +2122,7 @@ op_star
 )paren
 id|dev-&gt;dev_private
 suffix:semicolon
-macro_line|#if DRM_DMA_HISTOGRAM
+macro_line|#ifdef DRM_DMA_HISTOGRAM
 id|dev-&gt;ctx_start
 op_assign
 id|get_cycles
@@ -2254,6 +2254,7 @@ id|res
 comma
 (paren
 id|drm_ctx_res_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2348,6 +2349,7 @@ c_func
 (paren
 (paren
 id|drm_ctx_res_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2425,6 +2427,7 @@ id|ctx
 comma
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2487,6 +2490,7 @@ c_func
 (paren
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2579,6 +2583,7 @@ id|ctx
 comma
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2727,6 +2732,7 @@ id|ctx
 comma
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2804,6 +2810,7 @@ c_func
 (paren
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2878,6 +2885,7 @@ id|ctx
 comma
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2956,6 +2964,7 @@ id|ctx
 comma
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
@@ -3048,6 +3057,7 @@ id|ctx
 comma
 (paren
 id|drm_ctx_t
+id|__user
 op_star
 )paren
 id|arg
