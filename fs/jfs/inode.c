@@ -191,7 +191,7 @@ r_if
 c_cond
 (paren
 id|inode-&gt;i_size
-OG
+op_ge
 id|IDATASIZE
 )paren
 (brace
