@@ -1784,11 +1784,11 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;get_index()&n; *&n; *&t;reads a directory table slot&n; */
-DECL|function|get_index
+multiline_comment|/*&n; *&t;read_index()&n; *&n; *&t;reads a directory table slot&n; */
+DECL|function|read_index
 r_static
 r_int
-id|get_index
+id|read_index
 c_func
 (paren
 r_struct
@@ -10830,7 +10830,7 @@ id|repeat
 suffix:colon
 id|rc
 op_assign
-id|get_index
+id|read_index
 c_func
 (paren
 id|ip
