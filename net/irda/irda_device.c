@@ -1154,7 +1154,7 @@ r_return
 id|finished
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_task_execute (instance, function, finished)&n; *&n; *    This function registers and tries to execute tasks that may take some&n; *    time to complete. We do it this hairy way since we may have been&n; *    called from interrupt context, so it&squot;s not possible to use&n; *    schedule_timeout() &n; */
+multiline_comment|/*&n; * Function irda_task_execute (instance, function, finished)&n; *&n; *    This function registers and tries to execute tasks that may take some&n; *    time to complete. We do it this hairy way since we may have been&n; *    called from interrupt context, so it&squot;s not possible to use&n; *    schedule_timeout() &n; * Two important notes :&n; *&t;o Make sure you irda_task_delete(task); in case you delete the&n; *&t;  calling instance.&n; *&t;o No real need to lock when calling this function, but you may&n; *&t;  want to lock within the task handler.&n; * Jean II&n; */
 DECL|function|irda_task_execute
 r_struct
 id|irda_task
@@ -1439,7 +1439,7 @@ r_return
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_device_init_dongle (self, type, qos)&n; *&n; *    Initialize attached dongle.&n; */
+multiline_comment|/*&n; * Function irda_device_init_dongle (self, type, qos)&n; *&n; *    Initialize attached dongle.&n; *&n; * Important : request_module require us to call this function with&n; * a process context and irq enabled. - Jean II&n; */
 DECL|function|irda_device_dongle_init
 id|dongle_t
 op_star
@@ -1483,6 +1483,20 @@ id|modname
 (braket
 l_int|32
 )braket
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+comma
+r_return
+l_int|NULL
+suffix:semicolon
+)paren
 suffix:semicolon
 multiline_comment|/* Try to load the module needed */
 id|sprintf
