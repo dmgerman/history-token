@@ -171,6 +171,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* machine dependent keyboard functions */
+macro_line|#ifdef CONFIG_VT
 r_int
 (paren
 op_star
@@ -232,11 +233,7 @@ id|raw_mode
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|SYSRQ_KEY
-r_int
-r_int
-id|SYSRQ_KEY
-suffix:semicolon
+macro_line|#endif
 multiline_comment|/* machine dependent irq functions */
 r_void
 (paren
@@ -471,6 +468,11 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+DECL|variable|SYSRQ_KEY
+r_int
+r_int
+id|SYSRQ_KEY
+suffix:semicolon
 DECL|variable|mach_sysrq_key
 r_int
 id|mach_sysrq_key

@@ -611,6 +611,7 @@ id|mach_sched_init
 op_assign
 id|mvme16x_sched_init
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|mvme16x_keyb_init
@@ -619,6 +620,7 @@ id|mach_kbdrate
 op_assign
 id|mvme16x_kbdrate
 suffix:semicolon
+macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|mvme16x_init_IRQ
@@ -635,7 +637,9 @@ id|mach_set_clock_mmss
 op_assign
 id|mvme16x_set_clock_mmss
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 multiline_comment|/*  kd_mksound           = mvme16x_mksound; */
+macro_line|#endif
 id|mach_reset
 op_assign
 id|mvme16x_reset

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 multiline_comment|/* keyb */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 DECL|macro|BOOTINFO_COMPAT_1_0
 mdefine_line|#define BOOTINFO_COMPAT_1_0
 macro_line|#include &lt;asm/setup.h&gt;
@@ -209,20 +210,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-(paren
-op_star
-id|kd_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|mac_mksound
 c_func
 (paren
@@ -257,20 +244,6 @@ c_func
 (paren
 r_int
 comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|kd_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
 r_int
 )paren
 suffix:semicolon
@@ -785,6 +758,7 @@ id|mach_kbd_translate
 op_assign
 id|mackbd_translate
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 id|mach_sysrq_xlate
 op_assign
 id|mackbd_sysrq_xlate
@@ -793,6 +767,7 @@ id|SYSRQ_KEY
 op_assign
 l_int|0x69
 suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 macro_line|#endif /* CONFIG_INPUT_ADBHID */
 macro_line|#endif /* CONFIG_VT */
 id|mach_sched_init
@@ -865,11 +840,13 @@ id|mach_power_off
 op_assign
 id|mac_poweroff
 suffix:semicolon
+macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp
 op_assign
 op_amp
 id|dummy_con
 suffix:semicolon
+macro_line|#endif
 id|mach_max_dma_address
 op_assign
 l_int|0xffffffff
@@ -880,10 +857,12 @@ op_assign
 id|mac_debug_init
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 id|kd_mksound
 op_assign
 id|mac_mksound
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
 macro_line|#if 0
 id|mach_heartbeat

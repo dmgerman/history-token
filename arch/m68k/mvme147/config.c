@@ -388,6 +388,7 @@ id|mach_sched_init
 op_assign
 id|mvme147_sched_init
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|mvme147_keyb_init
@@ -396,6 +397,7 @@ id|mach_kbdrate
 op_assign
 id|mvme147_kbdrate
 suffix:semicolon
+macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|mvme147_init_IRQ

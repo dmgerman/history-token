@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#ifdef CONFIG_ZORRO
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#endif
@@ -654,20 +655,6 @@ l_string|&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;00
 suffix:semicolon
 multiline_comment|/* 0x70 - 0x7f */
 macro_line|#endif
-r_extern
-r_void
-(paren
-op_star
-id|kd_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     *  Motherboard Resources present in all Amiga models&n;     */
 r_static
 r_struct
@@ -1771,6 +1758,7 @@ id|mach_sched_init
 op_assign
 id|amiga_sched_init
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|amiga_keyb_init
@@ -1783,10 +1771,7 @@ id|mach_kbd_translate
 op_assign
 id|amiga_kbd_translate
 suffix:semicolon
-id|SYSRQ_KEY
-op_assign
-l_int|0xff
-suffix:semicolon
+macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|amiga_init_IRQ
@@ -1905,11 +1890,17 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 id|kd_mksound
 op_assign
 id|amiga_mksound
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|SYSRQ_KEY
+op_assign
+l_int|0xff
+suffix:semicolon
 id|mach_sysrq_key
 op_assign
 l_int|0x5f

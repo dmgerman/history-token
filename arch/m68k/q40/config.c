@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -267,20 +268,6 @@ r_void
 id|q40_set_vectors
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|kd_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_void
@@ -761,6 +748,7 @@ id|mach_sched_init
 op_assign
 id|q40_sched_init
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|q40kbd_init_hw
@@ -769,6 +757,7 @@ id|mach_kbd_translate
 op_assign
 id|q40kbd_translate
 suffix:semicolon
+macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|q40_init_IRQ
@@ -826,10 +815,12 @@ id|mach_get_hardware_list
 op_assign
 id|q40_get_hardware_list
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|kd_mksound
 op_assign
 id|q40_mksound
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 id|mach_sysrq_key
 op_assign
@@ -846,11 +837,13 @@ id|mach_halt
 op_assign
 id|q40_halt
 suffix:semicolon
+macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp
 op_assign
 op_amp
 id|dummy_con
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* disable a few things that SMSQ might have left enabled */
 id|q40_disable_irqs
 c_func
