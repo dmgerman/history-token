@@ -3404,10 +3404,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bdev_read_only
+id|xfs_readonly_buftarg
 c_func
 (paren
-id|log-&gt;l_mp-&gt;m_logdev_targp-&gt;pbr_bdev
+id|log-&gt;l_mp-&gt;m_logdev_targp
 )paren
 )paren
 (brace
