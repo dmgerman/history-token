@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: file.c,v 1.96 2003/10/11 11:47:23 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: file.c,v 1.98 2004/03/19 16:41:09 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -233,7 +233,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|D1
+id|D2
 c_func
 (paren
 id|printk
@@ -339,7 +339,7 @@ c_func
 id|pg
 )paren
 suffix:semicolon
-id|D1
+id|D2
 c_func
 (paren
 id|printk
@@ -1076,6 +1076,14 @@ op_star
 id|ri
 suffix:semicolon
 r_int
+id|aligned_start
+op_assign
+id|start
+op_amp
+op_complement
+l_int|3
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|0
@@ -1240,7 +1248,7 @@ c_func
 id|pg
 )paren
 op_plus
-id|start
+id|aligned_start
 comma
 (paren
 id|pg-&gt;index
@@ -1248,11 +1256,11 @@ op_lshift
 id|PAGE_CACHE_SHIFT
 )paren
 op_plus
-id|start
+id|aligned_start
 comma
 id|end
 op_minus
-id|start
+id|aligned_start
 comma
 op_amp
 id|writtenlen
@@ -1278,6 +1286,31 @@ id|pg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Adjust writtenlen for the padding we did, so we don&squot;t confuse our caller */
+r_if
+c_cond
+(paren
+id|writtenlen
+OL
+(paren
+id|start
+op_amp
+l_int|3
+)paren
+)paren
+id|writtenlen
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+id|writtenlen
+op_sub_assign
+(paren
+id|start
+op_amp
+l_int|3
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

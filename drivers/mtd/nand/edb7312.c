@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/edb7312.c&n; *&n; *  Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *&n; *  Derived from drivers/mtd/nand/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: edb7312.c,v 1.5 2003/04/20 07:24:40 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   CLEP7312 board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/edb7312.c&n; *&n; *  Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *&n; *  Derived from drivers/mtd/nand/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: edb7312.c,v 1.8 2004/07/12 15:03:26 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   CLEP7312 board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
@@ -140,6 +141,11 @@ r_void
 id|ep7312_hwcontrol
 c_func
 (paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
 r_int
 id|cmd
 )paren
@@ -284,13 +290,32 @@ r_int
 id|ep7312_device_ready
 c_func
 (paren
-r_void
+r_struct
+id|mtd_info
+op_star
+id|mtd
 )paren
 (brace
 r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
+DECL|variable|part_probes
+r_const
+r_char
+op_star
+id|part_probes
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;cmdlinepart&quot;
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Main initialization routine&n; */
 DECL|function|ep7312_init
 r_static
@@ -502,6 +527,8 @@ c_cond
 id|nand_scan
 (paren
 id|ep7312_mtd
+comma
+l_int|1
 )paren
 )paren
 (brace
@@ -577,18 +604,24 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MTD_CMDLINE_PARTS
+macro_line|#ifdef CONFIG_PARTITIONS
+id|ep7312_mtd-&gt;name
+op_assign
+l_string|&quot;edb7312-nand&quot;
+suffix:semicolon
 id|mtd_parts_nb
 op_assign
-id|parse_cmdline_partitions
+id|parse_mtd_partitions
 c_func
 (paren
 id|ep7312_mtd
 comma
+id|part_probes
+comma
 op_amp
 id|mtd_parts
 comma
-l_string|&quot;edb7312-nand&quot;
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.9 2003/04/30 11:15:22 dwmw2 Exp $&n; *&n; */
+multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.14 2004/06/15 16:44:59 nico Exp $&n; *&n; */
 macro_line|#ifndef __MTD_FLASHCHIP_H__
 DECL|macro|__MTD_FLASHCHIP_H__
 mdefine_line|#define __MTD_FLASHCHIP_H__
@@ -64,7 +64,7 @@ DECL|typedef|flstate_t
 )brace
 id|flstate_t
 suffix:semicolon
-multiline_comment|/* NOTE: confusingly, this can be used to refer to more than one chip at a time, &n;   if they&squot;re interleaved. */
+multiline_comment|/* NOTE: confusingly, this can be used to refer to more than one chip at a time, &n;   if they&squot;re interleaved.  This can even refer to individual partitions on&n;   the same physical chip when present. */
 DECL|struct|flchip
 r_struct
 id|flchip
@@ -101,6 +101,11 @@ id|erase_suspended
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|in_progress_block_addr
+r_int
+r_int
+id|in_progress_block_addr
+suffix:semicolon
 DECL|member|mutex
 id|spinlock_t
 op_star
@@ -127,6 +132,34 @@ suffix:semicolon
 DECL|member|erase_time
 r_int
 id|erase_time
+suffix:semicolon
+DECL|member|priv
+r_void
+op_star
+id|priv
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* This is used to handle contention on write/erase operations&n;   between partitions of the same physical chip. */
+DECL|struct|flchip_shared
+r_struct
+id|flchip_shared
+(brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|writing
+r_struct
+id|flchip
+op_star
+id|writing
+suffix:semicolon
+DECL|member|erasing
+r_struct
+id|flchip
+op_star
+id|erasing
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *      Copyright (c) 2001 Maciej W. Rozycki&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;$Id: ms02-nv.c,v 1.4 2003/05/20 21:03:07 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *&t;Copyright (c) 2001 Maciej W. Rozycki&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;$Id: ms02-nv.c,v 1.6 2003/08/19 09:25:36 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -42,7 +42,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Addresses we probe for an MS02-NV at.  Modules may be located&n; * at any 8MB boundary within a 0MB up to 112MB range or at any 32MB&n; * boundary within a 0MB up to 448MB range.  We don&squot;t support a module&n; * at 0MB, though.&n; */
+multiline_comment|/*&n; * Addresses we probe for an MS02-NV at.  Modules may be located&n; * at any 8MiB boundary within a 0MiB up to 112MiB range or at any 32MiB&n; * boundary within a 0MiB up to 448MiB range.  We don&squot;t support a module&n; * at 0MiB, though.&n; */
 DECL|variable|__initdata
 r_static
 id|ulong
@@ -454,7 +454,7 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* The module decodes 8MB of address space. */
+multiline_comment|/* The module decodes 8MiB of address space. */
 id|mod_res
 op_assign
 id|kmalloc
@@ -994,7 +994,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;mtd%d: %s at 0x%08lx, size %uMB.&bslash;n&quot;
+l_string|&quot;mtd%d: %s at 0x%08lx, size %uMiB.&bslash;n&quot;
 comma
 id|mtd-&gt;index
 comma
@@ -1240,7 +1240,7 @@ r_volatile
 id|u32
 op_star
 )paren
-id|KN02_CSR_ADDR
+id|KN02_CSR_BASE
 suffix:semicolon
 r_if
 c_cond
@@ -1260,7 +1260,7 @@ r_case
 id|MACH_DS5000_2X0
 suffix:colon
 r_case
-id|MACH_DS5000
+id|MACH_DS5900
 suffix:colon
 id|csr
 op_assign

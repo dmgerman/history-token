@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.37 2003/10/11 11:47:23 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.47 2004/07/14 13:20:23 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_OS_LINUX_H__
 DECL|macro|__JFFS2_OS_LINUX_H__
 mdefine_line|#define __JFFS2_OS_LINUX_H__
@@ -12,6 +12,12 @@ macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,73)
 DECL|macro|kstatfs
 mdefine_line|#define kstatfs statfs
 macro_line|#endif
+r_struct
+id|kstatfs
+suffix:semicolon
+r_struct
+id|kvec
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2)
 DECL|macro|JFFS2_INODE_INFO
 mdefine_line|#define JFFS2_INODE_INFO(i) (list_entry(i, struct jffs2_inode_info, vfs_inode))
@@ -82,14 +88,6 @@ DECL|macro|JFFS2_F_I_MTIME
 mdefine_line|#define JFFS2_F_I_MTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_mtime)
 DECL|macro|JFFS2_F_I_ATIME
 mdefine_line|#define JFFS2_F_I_ATIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_atime)
-macro_line|#endif
-multiline_comment|/* Hmmm. P&squot;raps generic code should only ever see versions of signal&n;   functions which do the locking automatically? */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,40) &amp;&amp; !defined(__rh_config_h__)
-DECL|macro|current_sig_lock
-mdefine_line|#define current_sig_lock current-&gt;sigmask_lock
-macro_line|#else
-DECL|macro|current_sig_lock
-mdefine_line|#define current_sig_lock current-&gt;sighand-&gt;siglock
 macro_line|#endif
 DECL|macro|sleep_on_spinunlock
 mdefine_line|#define sleep_on_spinunlock(wq, s)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DECLARE_WAITQUEUE(__wait, current);&t;&t;&bslash;&n;&t;&t;add_wait_queue((wq), &amp;__wait);&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE);&t;&bslash;&n;&t;&t;spin_unlock(s);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;schedule();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;remove_wait_queue((wq), &amp;__wait);&t;&t;&bslash;&n;&t;} while(0)
@@ -172,10 +170,8 @@ DECL|macro|jffs2_flush_wbuf_pad
 mdefine_line|#define jffs2_flush_wbuf_pad(c) ({ (void)(c), 0; })
 DECL|macro|jffs2_flush_wbuf_gc
 mdefine_line|#define jffs2_flush_wbuf_gc(c, i) ({ (void)(c), (void) i, 0; })
-DECL|macro|jffs2_nand_read_failcnt
-mdefine_line|#define jffs2_nand_read_failcnt(c,jeb) do { ; } while(0)
 DECL|macro|jffs2_write_nand_badblock
-mdefine_line|#define jffs2_write_nand_badblock(c,jeb) do { ; } while(0)
+mdefine_line|#define jffs2_write_nand_badblock(c,jeb,bad_offset) (1)
 DECL|macro|jffs2_nand_flash_setup
 mdefine_line|#define jffs2_nand_flash_setup(c) (0)
 DECL|macro|jffs2_nand_flash_cleanup
@@ -199,12 +195,6 @@ DECL|macro|jffs2_flash_read_oob
 mdefine_line|#define jffs2_flash_read_oob(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;read_oob((c)-&gt;mtd, ofs, len, retlen, buf))
 DECL|macro|jffs2_wbuf_dirty
 mdefine_line|#define jffs2_wbuf_dirty(c) (!!(c)-&gt;wbuf_len)
-r_struct
-id|kstatfs
-suffix:semicolon
-r_struct
-id|kvec
-suffix:semicolon
 multiline_comment|/* wbuf.c */
 r_int
 id|jffs2_flash_writev
@@ -346,6 +336,9 @@ r_struct
 id|jffs2_eraseblock
 op_star
 id|jeb
+comma
+r_uint32
+id|bad_offset
 )paren
 suffix:semicolon
 r_void
@@ -387,6 +380,31 @@ id|c
 )paren
 suffix:semicolon
 macro_line|#endif /* NAND */
+multiline_comment|/* erase.c */
+DECL|function|jffs2_erase_pending_trigger
+r_static
+r_inline
+r_void
+id|jffs2_erase_pending_trigger
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+(brace
+id|OFNI_BS_2SFFJ
+c_func
+(paren
+id|c
+)paren
+op_member_access_from_pointer
+id|s_dirt
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* background.c */
 r_int
 id|jffs2_start_garbage_collect_thread
@@ -667,6 +685,105 @@ r_int
 id|silent
 )paren
 suffix:semicolon
+r_void
+id|jffs2_gc_release_inode
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_struct
+id|jffs2_inode_info
+op_star
+id|f
+)paren
+suffix:semicolon
+r_struct
+id|jffs2_inode_info
+op_star
+id|jffs2_gc_fetch_inode
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_int
+id|inum
+comma
+r_int
+id|nlink
+)paren
+suffix:semicolon
+r_int
+r_char
+op_star
+id|jffs2_gc_fetch_page
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_struct
+id|jffs2_inode_info
+op_star
+id|f
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+op_star
+id|priv
+)paren
+suffix:semicolon
+r_void
+id|jffs2_gc_release_page
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_int
+r_char
+op_star
+id|pg
+comma
+r_int
+r_int
+op_star
+id|priv
+)paren
+suffix:semicolon
+r_int
+id|jffs2_flash_setup
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
+r_void
+id|jffs2_flash_cleanup
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
 multiline_comment|/* writev.c */
 r_int
 id|jffs2_flash_direct_writev
@@ -695,6 +812,5 @@ op_star
 id|retlen
 )paren
 suffix:semicolon
-multiline_comment|/* super.c */
 macro_line|#endif /* __JFFS2_OS_LINUX_H__ */
 eof

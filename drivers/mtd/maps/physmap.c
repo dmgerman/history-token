@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: physmap.c,v 1.29 2003/05/29 09:24:10 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; */
+multiline_comment|/*&n; * $Id: physmap.c,v 1.33 2004/07/12 14:37:24 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; *&n; * Copyright (C) 2003 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * 031022 - [jsun] add run-time configure and partition setup&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,12 +9,6 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
-DECL|macro|WINDOW_ADDR
-mdefine_line|#define WINDOW_ADDR CONFIG_MTD_PHYSMAP_START
-DECL|macro|WINDOW_SIZE
-mdefine_line|#define WINDOW_SIZE CONFIG_MTD_PHYSMAP_LEN
-DECL|macro|BUSWIDTH
-mdefine_line|#define BUSWIDTH CONFIG_MTD_PHYSMAP_BUSWIDTH
 DECL|variable|mymtd
 r_static
 r_struct
@@ -31,23 +25,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Physically mapped flash&quot;
-comma
-dot
-id|size
-op_assign
-id|WINDOW_SIZE
-comma
-dot
-id|buswidth
-op_assign
-id|BUSWIDTH
-comma
-dot
-id|phys
-op_assign
-id|WINDOW_ADDR
-comma
+l_string|&quot;phys_mapped_flash&quot;
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTD_PARTITIONS
@@ -63,118 +41,27 @@ r_static
 r_int
 id|mtd_parts_nb
 suffix:semicolon
+DECL|variable|num_physmap_partitions
+r_static
+r_int
+id|num_physmap_partitions
+suffix:semicolon
 DECL|variable|physmap_partitions
 r_static
 r_struct
 id|mtd_partition
+op_star
 id|physmap_partitions
-(braket
-)braket
-op_assign
-(brace
-macro_line|#if 0
-multiline_comment|/* Put your own partition definitions here */
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;bootROM&quot;
-comma
-dot
-id|size
-op_assign
-l_int|0x80000
-comma
-dot
-id|offset
-op_assign
-l_int|0
-comma
-dot
-id|mask_flags
-op_assign
-id|MTD_WRITEABLE
-comma
-multiline_comment|/* force read-only */
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;zImage&quot;
-comma
-dot
-id|size
-op_assign
-l_int|0x100000
-comma
-dot
-id|offset
-op_assign
-id|MTDPART_OFS_APPEND
-comma
-dot
-id|mask_flags
-op_assign
-id|MTD_WRITEABLE
-comma
-multiline_comment|/* force read-only */
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;ramdisk.gz&quot;
-comma
-dot
-id|size
-op_assign
-l_int|0x300000
-comma
-dot
-id|offset
-op_assign
-id|MTDPART_OFS_APPEND
-comma
-dot
-id|mask_flags
-op_assign
-id|MTD_WRITEABLE
-comma
-multiline_comment|/* force read-only */
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;User FS&quot;
-comma
-dot
-id|size
-op_assign
-id|MTDPART_SIZ_FULL
-comma
-dot
-id|offset
-op_assign
-id|MTDPART_OFS_APPEND
-comma
-)brace
-macro_line|#endif
-)brace
 suffix:semicolon
-DECL|macro|NUM_PARTITIONS
-mdefine_line|#define NUM_PARTITIONS&t;(sizeof(physmap_partitions)/sizeof(struct mtd_partition))
-DECL|variable|part_probes
+DECL|variable|__initdata
+r_static
 r_const
 r_char
 op_star
 id|part_probes
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_string|&quot;cmdlinepart&quot;
@@ -184,8 +71,32 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+DECL|function|physmap_set_partitions
+r_void
+id|physmap_set_partitions
+c_func
+(paren
+r_struct
+id|mtd_partition
+op_star
+id|parts
+comma
+r_int
+id|num_parts
+)paren
+(brace
+id|physmap_partitions
+op_assign
+id|parts
+suffix:semicolon
+id|num_physmap_partitions
+op_assign
+id|num_parts
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_MTD_PARTITIONS */
 DECL|function|init_physmap
+r_static
 r_int
 id|__init
 id|init_physmap
@@ -222,11 +133,11 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;physmap flash device: %x at %x&bslash;n&quot;
+l_string|&quot;physmap flash device: %lx at %lx&bslash;n&quot;
 comma
-id|WINDOW_SIZE
+id|physmap_map.size
 comma
-id|WINDOW_ADDR
+id|physmap_map.phys
 )paren
 suffix:semicolon
 id|physmap_map.virt
@@ -238,9 +149,9 @@ r_int
 id|ioremap
 c_func
 (paren
-id|WINDOW_ADDR
+id|physmap_map.phys
 comma
-id|WINDOW_SIZE
+id|physmap_map.size
 )paren
 suffix:semicolon
 r_if
@@ -353,7 +264,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|NUM_PARTITIONS
+id|num_physmap_partitions
 op_ne
 l_int|0
 )paren
@@ -371,7 +282,7 @@ id|mymtd
 comma
 id|physmap_partitions
 comma
-id|NUM_PARTITIONS
+id|num_physmap_partitions
 )paren
 suffix:semicolon
 r_return
@@ -438,7 +349,7 @@ r_else
 r_if
 c_cond
 (paren
-id|NUM_PARTITIONS
+id|num_physmap_partitions
 )paren
 (brace
 id|del_mtd_partitions

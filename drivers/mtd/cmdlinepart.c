@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cmdlinepart.c,v 1.9 2003/05/16 17:08:24 dwmw2 Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique id used in mapping driver/device&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
+multiline_comment|/*&n; * $Id: cmdlinepart.c,v 1.14 2004/07/12 12:34:23 dwmw2 Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique name used in mapping driver/device (mtd-&gt;name)&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -1190,36 +1190,11 @@ id|cmdline_parser
 )paren
 suffix:semicolon
 )brace
-DECL|function|cmdline_parser_exit
-r_static
-r_void
-id|__exit
-id|cmdline_parser_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-id|deregister_mtd_parser
-c_func
-(paren
-op_amp
-id|cmdline_parser
-)paren
-suffix:semicolon
-)brace
 DECL|variable|cmdline_parser_init
 id|module_init
 c_func
 (paren
 id|cmdline_parser_init
-)paren
-suffix:semicolon
-DECL|variable|cmdline_parser_exit
-id|module_exit
-c_func
-(paren
-id|cmdline_parser_exit
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

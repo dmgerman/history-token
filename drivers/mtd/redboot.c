@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: redboot.c,v 1.11 2003/05/21 10:39:26 dwmw2 Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
+multiline_comment|/*&n; * $Id: redboot.c,v 1.13 2004/04/01 10:17:40 gthomas Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -185,6 +185,12 @@ id|namelen
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|nulllen
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
 r_static
 r_char
 id|nullstring
@@ -193,12 +199,13 @@ id|nullstring
 op_assign
 l_string|&quot;unallocated&quot;
 suffix:semicolon
+macro_line|#endif
 id|buf
 op_assign
 id|kmalloc
 c_func
 (paren
-id|PAGE_SIZE
+id|master-&gt;erasesize
 comma
 id|GFP_KERNEL
 )paren
@@ -227,7 +234,7 @@ id|master-&gt;size
 op_minus
 id|master-&gt;erasesize
 comma
-id|PAGE_SIZE
+id|master-&gt;erasesize
 comma
 op_amp
 id|retlen
@@ -252,7 +259,7 @@ c_cond
 (paren
 id|retlen
 op_ne
-id|PAGE_SIZE
+id|master-&gt;erasesize
 )paren
 (brace
 id|ret
@@ -337,7 +344,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|PAGE_SIZE
+id|master-&gt;erasesize
 op_div
 r_sizeof
 (paren
@@ -521,14 +528,24 @@ id|nrparts
 op_increment
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
 r_if
 c_cond
 (paren
 id|fl-&gt;img-&gt;flash_base
 )paren
+(brace
 id|nrparts
 op_increment
 suffix:semicolon
+id|nulllen
+op_assign
+r_sizeof
+(paren
+id|nullstring
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -551,13 +568,23 @@ op_plus
 id|tmp_fl-&gt;img-&gt;size
 op_plus
 id|master-&gt;erasesize
-OL
+op_le
 id|tmp_fl-&gt;next-&gt;img-&gt;flash_base
 )paren
+(brace
 id|nrparts
 op_increment
 suffix:semicolon
+id|nulllen
+op_assign
+r_sizeof
+(paren
+id|nullstring
+)paren
+suffix:semicolon
 )brace
+)brace
+macro_line|#endif
 id|parts
 op_assign
 id|kmalloc
@@ -571,10 +598,7 @@ id|parts
 op_star
 id|nrparts
 op_plus
-r_sizeof
-(paren
-id|nullstring
-)paren
+id|nulllen
 op_plus
 id|namelen
 comma
@@ -612,10 +636,11 @@ id|parts
 op_star
 id|nrparts
 op_plus
+id|nulllen
+op_plus
 id|namelen
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Include nullname only if it&squot;s used */
 id|nullname
 op_assign
 (paren
@@ -628,7 +653,16 @@ id|parts
 id|nrparts
 )braket
 suffix:semicolon
-id|sprintf
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
+r_if
+c_cond
+(paren
+id|nulllen
+OG
+l_int|0
+)paren
+(brace
+id|strcpy
 c_func
 (paren
 id|nullname
@@ -636,19 +670,19 @@ comma
 id|nullstring
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 id|names
 op_assign
 id|nullname
 op_plus
-r_sizeof
-(paren
-id|nullstring
-)paren
+id|nulllen
 suffix:semicolon
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
 r_if
 c_cond
 (paren
@@ -682,7 +716,11 @@ id|offset
 op_assign
 l_int|0
 suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
 )brace
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -730,6 +768,55 @@ comma
 id|fl-&gt;img-&gt;name
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|names
+comma
+l_string|&quot;RedBoot&quot;
+comma
+l_int|8
+)paren
+op_logical_or
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|names
+comma
+l_string|&quot;RedBoot config&quot;
+comma
+l_int|15
+)paren
+op_logical_or
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|names
+comma
+l_string|&quot;FIS directory&quot;
+comma
+l_int|14
+)paren
+)paren
+(brace
+id|parts
+(braket
+id|i
+)braket
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+suffix:semicolon
+)brace
+macro_line|#endif
 id|names
 op_add_assign
 id|strlen
@@ -740,6 +827,7 @@ id|names
 op_plus
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
 r_if
 c_cond
 (paren
@@ -750,7 +838,7 @@ op_plus
 id|fl-&gt;img-&gt;size
 op_plus
 id|master-&gt;erasesize
-OL
+op_le
 id|fl-&gt;next-&gt;img-&gt;flash_base
 )paren
 (brace
@@ -808,6 +896,7 @@ op_assign
 id|nullname
 suffix:semicolon
 )brace
+macro_line|#endif
 id|tmp_fl
 op_assign
 id|fl

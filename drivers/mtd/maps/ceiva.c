@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Ceiva flash memory driver.&n; * Copyright (C) 2002 Rob Scott &lt;rscott@mtrob.fdns.net&gt;&n; *&n; * Note: this driver supports jedec compatible devices. Modification&n; * for CFI compatible devices should be straight forward: change&n; * jedec_probe to cfi_probe.&n; *&n; * Based on: sa1100-flash.c, which has the following copyright:&n; * Flash memory access on SA11x0 based devices&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * $Id: ceiva.c,v 1.8 2003/05/21 12:45:18 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Ceiva flash memory driver.&n; * Copyright (C) 2002 Rob Scott &lt;rscott@mtrob.fdns.net&gt;&n; *&n; * Note: this driver supports jedec compatible devices. Modification&n; * for CFI compatible devices should be straight forward: change&n; * jedec_probe to cfi_probe.&n; *&n; * Based on: sa1100-flash.c, which has the following copyright:&n; * Flash memory access on SA11x0 based devices&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * $Id: ceiva.c,v 1.10 2004/07/12 21:59:43 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -509,7 +509,7 @@ id|clps
 id|i
 )braket
 dot
-id|map-&gt;buswidth
+id|map-&gt;bankwidth
 op_assign
 id|clps
 (braket

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001.c,v 1.41 2003/06/11 09:45:19 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001.c,v 1.42 2004/04/04 12:36:45 gleixner Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &lt;linux/mtd/doc2000.h&gt;
@@ -97,10 +98,8 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_struct
-id|nand_oobinfo
-op_star
-id|unused
+r_int
+id|oobsel
 )paren
 suffix:semicolon
 r_static
@@ -132,10 +131,8 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_struct
-id|nand_oobinfo
-op_star
-id|unused
+r_int
+id|oobsel
 )paren
 suffix:semicolon
 r_static
@@ -1054,12 +1051,22 @@ id|id
 suffix:semicolon
 id|doc-&gt;chipshift
 op_assign
+id|ffs
+c_func
+(paren
+(paren
 id|nand_flash_ids
 (braket
 id|i
 )braket
 dot
-id|chipshift
+id|chipsize
+op_lshift
+l_int|20
+)paren
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1807,7 +1814,7 @@ id|buf
 comma
 l_int|NULL
 comma
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1839,10 +1846,8 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_struct
-id|nand_oobinfo
-op_star
-id|unused
+r_int
+id|oobsel
 )paren
 (brace
 r_int
@@ -2471,7 +2476,7 @@ id|buf
 comma
 id|eccbuf
 comma
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2504,10 +2509,8 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_struct
-id|nand_oobinfo
-op_star
-id|unused
+r_int
+id|oobsel
 )paren
 (brace
 r_int

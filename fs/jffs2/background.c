@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.44 2003/10/08 13:29:55 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.49 2004/07/13 08:56:40 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -12,17 +12,6 @@ c_func
 (paren
 r_void
 op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|thread_should_wake
-c_func
-(paren
-r_struct
-id|jffs2_sb_info
-op_star
-id|c
 )paren
 suffix:semicolon
 DECL|function|jffs2_garbage_collect_trigger
@@ -48,7 +37,7 @@ c_cond
 (paren
 id|c-&gt;gc_task
 op_logical_and
-id|thread_should_wake
+id|jffs2_thread_should_wake
 c_func
 (paren
 id|c
@@ -331,7 +320,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|thread_should_wake
+id|jffs2_thread_should_wake
 c_func
 (paren
 id|c
@@ -354,7 +343,7 @@ l_string|&quot;jffs2_garbage_collect_thread sleeping...&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Yes, there&squot;s a race here; we checked thread_should_wake() before&n;&t;&t;&t;   setting current-&gt;state to TASK_INTERRUPTIBLE. But it doesn&squot;t&n;&t;&t;&t;   matter - We don&squot;t care if we miss a wakeup, because the GC thread&n;&t;&t;&t;   is only an optimisation anyway. */
+multiline_comment|/* Yes, there&squot;s a race here; we checked jffs2_thread_should_wake()&n;&t;&t;&t;   before setting current-&gt;state to TASK_INTERRUPTIBLE. But it doesn&squot;t&n;&t;&t;&t;   matter - We don&squot;t care if we miss a wakeup, because the GC thread&n;&t;&t;&t;   is only an optimisation anyway. */
 id|schedule
 c_func
 (paren
@@ -570,109 +559,6 @@ id|c-&gt;gc_thread_exit
 comma
 l_int|0
 )paren
-suffix:semicolon
-)brace
-DECL|function|thread_should_wake
-r_static
-r_int
-id|thread_should_wake
-c_func
-(paren
-r_struct
-id|jffs2_sb_info
-op_star
-id|c
-)paren
-(brace
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_uint32
-id|dirty
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|c-&gt;unchecked_size
-)paren
-(brace
-id|D1
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;thread_should_wake(): unchecked_size %d, checked_ino #%d&bslash;n&quot;
-comma
-id|c-&gt;unchecked_size
-comma
-id|c-&gt;checked_ino
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* dirty_size contains blocks on erase_pending_list&n;&t; * those blocks are counted in c-&gt;nr_erasing_blocks.&n;&t; * If one block is actually erased, it is not longer counted as dirty_space&n;&t; * but it is counted in c-&gt;nr_erasing_blocks, so we add it and subtract it&n;&t; * with c-&gt;nr_erasing_blocks * c-&gt;sector_size again.&n;&t; * Blocks on erasable_list are counted as dirty_size, but not in c-&gt;nr_erasing_blocks&n;&t; * This helps us to force gc and pick eventually a clean block to spread the load.&n;&t; */
-id|dirty
-op_assign
-id|c-&gt;dirty_size
-op_plus
-id|c-&gt;erasing_size
-op_minus
-id|c-&gt;nr_erasing_blocks
-op_star
-id|c-&gt;sector_size
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|c-&gt;nr_free_blocks
-op_plus
-id|c-&gt;nr_erasing_blocks
-OL
-id|c-&gt;resv_blocks_gctrigger
-op_logical_and
-(paren
-id|dirty
-OG
-id|c-&gt;nospc_dirty_size
-)paren
-)paren
-id|ret
-op_assign
-l_int|1
-suffix:semicolon
-id|D1
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;thread_should_wake(): nr_free_blocks %d, nr_erasing_blocks %d, dirty_size 0x%x: %s&bslash;n&quot;
-comma
-id|c-&gt;nr_free_blocks
-comma
-id|c-&gt;nr_erasing_blocks
-comma
-id|c-&gt;dirty_size
-comma
-id|ret
-ques
-c_cond
-l_string|&quot;yes&quot;
-suffix:colon
-l_string|&quot;no&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 eof

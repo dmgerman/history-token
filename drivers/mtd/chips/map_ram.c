@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.17 2003/05/28 12:51:49 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.19 2004/07/12 21:58:44 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -500,9 +500,20 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
+id|map_word
+id|allff
+suffix:semicolon
 r_int
 r_int
 id|i
+suffix:semicolon
+id|allff
+op_assign
+id|map_word_ff
+c_func
+(paren
+id|map
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -516,19 +527,28 @@ OL
 id|instr-&gt;len
 suffix:semicolon
 id|i
-op_increment
+op_add_assign
+id|map_bankwidth
+c_func
+(paren
+id|map
 )paren
-id|map_write8
+)paren
+id|map_write
 c_func
 (paren
 id|map
 comma
-l_int|0xFF
+id|allff
 comma
 id|instr-&gt;addr
 op_plus
 id|i
 )paren
+suffix:semicolon
+id|instr-&gt;state
+op_assign
+id|MTD_ERASE_DONE
 suffix:semicolon
 r_if
 c_cond

@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * (C) 2001, 2001 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.h,v 1.1 2001/09/02 18:50:13 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * (C) 2001, 2001 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.h,v 1.2 2003/11/08 00:51:21 dsaxena Exp $&n; */
 macro_line|#ifndef __LINUX_MTD_GEN_PROBE_H__
 DECL|macro|__LINUX_MTD_GEN_PROBE_H__
 mdefine_line|#define __LINUX_MTD_GEN_PROBE_H__
 macro_line|#include &lt;linux/mtd/flashchip.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt; 
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 DECL|struct|chip_probe
 r_struct
 id|chip_probe
@@ -29,10 +30,10 @@ comma
 id|__u32
 id|base
 comma
-r_struct
-id|flchip
+r_int
+r_int
 op_star
-id|chips
+id|chip_map
 comma
 r_struct
 id|cfi_private

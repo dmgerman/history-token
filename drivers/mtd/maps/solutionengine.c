@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: solutionengine.c,v 1.10 2003/05/21 12:45:20 dwmw2 Exp $&n; *&n; * Flash and EPROM on Hitachi Solution Engine and similar boards.&n; *&n; * (C) 2001 Red Hat, Inc.&n; *&n; * GPL&squot;d&n; */
+multiline_comment|/*&n; * $Id: solutionengine.c,v 1.13 2004/07/12 21:59:45 dwmw2 Exp $&n; *&n; * Flash and EPROM on Hitachi Solution Engine and similar boards.&n; *&n; * (C) 2001 Red Hat, Inc.&n; *&n; * GPL&squot;d&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 DECL|variable|flash_mtd
 r_static
 r_struct
@@ -46,7 +47,7 @@ op_assign
 l_int|0x400000
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma
@@ -69,7 +70,7 @@ op_assign
 l_int|0x400000
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma

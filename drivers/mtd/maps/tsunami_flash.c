@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * tsunami_flash.c&n; *&n; * flash chip on alpha ds10...&n; * $Id: tsunami_flash.c,v 1.6 2003/05/21 15:15:08 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * tsunami_flash.c&n; *&n; * flash chip on alpha ds10...&n; * $Id: tsunami_flash.c,v 1.9 2004/07/14 09:52:55 dwmw2 Exp $&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/core_tsunami.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -15,7 +15,7 @@ mdefine_line|#define MAX_TIG_FLASH_SIZE (12*1024*1024)
 DECL|function|tsunami_flash_read8
 r_static
 r_inline
-id|__u8
+id|map_word
 id|tsunami_flash_read8
 c_func
 (paren
@@ -29,12 +29,22 @@ r_int
 id|offset
 )paren
 (brace
-r_return
+id|map_word
+id|val
+suffix:semicolon
+id|val.x
+(braket
+l_int|0
+)braket
+op_assign
 id|tsunami_tig_readb
 c_func
 (paren
 id|offset
 )paren
+suffix:semicolon
+r_return
+id|val
 suffix:semicolon
 )brace
 DECL|function|tsunami_flash_write8
@@ -48,7 +58,7 @@ id|map_info
 op_star
 id|map
 comma
-id|__u8
+id|map_word
 id|value
 comma
 r_int
@@ -59,7 +69,10 @@ id|offset
 id|tsunami_tig_writeb
 c_func
 (paren
-id|value
+id|value.x
+(braket
+l_int|0
+)braket
 comma
 id|offset
 )paren
@@ -219,12 +232,12 @@ op_assign
 id|NO_XIP
 suffix:semicolon
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|1
 comma
 dot
-id|read8
+id|read
 op_assign
 id|tsunami_flash_read8
 comma
@@ -234,7 +247,7 @@ op_assign
 id|tsunami_flash_copy_from
 comma
 dot
-id|write8
+id|write
 op_assign
 id|tsunami_flash_write8
 comma
@@ -320,7 +333,7 @@ l_string|&quot;jedec_probe&quot;
 comma
 l_string|&quot;map_rom&quot;
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 r_char

@@ -1,4 +1,4 @@
-multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.35 2003/05/28 15:37:32 dwmw2 Exp $&n; */
+multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.44 2004/07/13 22:32:52 dwmw2 Exp $&n; */
 macro_line|#ifndef __MTD_CFI_H__
 DECL|macro|__MTD_CFI_H__
 mdefine_line|#define __MTD_CFI_H__
@@ -8,223 +8,112 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mtd/flashchip.h&gt;
+macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/cfi_endian.h&gt;
-multiline_comment|/*&n; * You can optimize the code size and performance by defining only &n; * the geometry(ies) available on your hardware.&n; * CFIDEV_INTERLEAVE_n, where  represents the interleave (number of chips to fill the bus width)&n; * CFIDEV_BUSWIDTH_n, where n is the bus width in bytes (1, 2, 4 or 8 bytes)&n; *&n; * By default, all (known) geometries are supported.&n; */
-macro_line|#ifndef CONFIG_MTD_CFI_GEOMETRY
-multiline_comment|/* The default case - support all but 64-bit, which has&n;   a performance penalty */
-DECL|macro|CFIDEV_INTERLEAVE_1
-mdefine_line|#define CFIDEV_INTERLEAVE_1 (1)
-DECL|macro|CFIDEV_INTERLEAVE_2
-mdefine_line|#define CFIDEV_INTERLEAVE_2 (2)
-DECL|macro|CFIDEV_INTERLEAVE_4
-mdefine_line|#define CFIDEV_INTERLEAVE_4 (4)
-DECL|macro|CFIDEV_BUSWIDTH_1
-mdefine_line|#define CFIDEV_BUSWIDTH_1 (1)
-DECL|macro|CFIDEV_BUSWIDTH_2
-mdefine_line|#define CFIDEV_BUSWIDTH_2 (2)
-DECL|macro|CFIDEV_BUSWIDTH_4
-mdefine_line|#define CFIDEV_BUSWIDTH_4 (4)
-DECL|typedef|cfi_word
-r_typedef
-id|__u32
-id|cfi_word
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* Explicitly configured buswidth/interleave support */
 macro_line|#ifdef CONFIG_MTD_CFI_I1
-DECL|macro|CFIDEV_INTERLEAVE_1
-mdefine_line|#define CFIDEV_INTERLEAVE_1 (1)
+DECL|macro|cfi_interleave
+mdefine_line|#define cfi_interleave(cfi) 1
+DECL|macro|cfi_interleave_is_1
+mdefine_line|#define cfi_interleave_is_1(cfi) (cfi_interleave(cfi) == 1)
+macro_line|#else
+DECL|macro|cfi_interleave_is_1
+mdefine_line|#define cfi_interleave_is_1(cfi) (0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_MTD_CFI_I2
-DECL|macro|CFIDEV_INTERLEAVE_2
-mdefine_line|#define CFIDEV_INTERLEAVE_2 (2)
+macro_line|# ifdef cfi_interleave
+DECL|macro|cfi_interleave
+macro_line|#  undef cfi_interleave
+DECL|macro|cfi_interleave
+macro_line|#  define cfi_interleave(cfi) ((cfi)-&gt;interleave)
+macro_line|# else
+DECL|macro|cfi_interleave
+macro_line|#  define cfi_interleave(cfi) 2
+macro_line|# endif
+DECL|macro|cfi_interleave_is_2
+mdefine_line|#define cfi_interleave_is_2(cfi) (cfi_interleave(cfi) == 2)
+macro_line|#else
+DECL|macro|cfi_interleave_is_2
+mdefine_line|#define cfi_interleave_is_2(cfi) (0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_MTD_CFI_I4
-DECL|macro|CFIDEV_INTERLEAVE_4
-mdefine_line|#define CFIDEV_INTERLEAVE_4 (4)
+macro_line|# ifdef cfi_interleave
+DECL|macro|cfi_interleave
+macro_line|#  undef cfi_interleave
+DECL|macro|cfi_interleave
+macro_line|#  define cfi_interleave(cfi) ((cfi)-&gt;interleave)
+macro_line|# else
+DECL|macro|cfi_interleave
+macro_line|#  define cfi_interleave(cfi) 4
+macro_line|# endif
+DECL|macro|cfi_interleave_is_4
+mdefine_line|#define cfi_interleave_is_4(cfi) (cfi_interleave(cfi) == 4)
+macro_line|#else
+DECL|macro|cfi_interleave_is_4
+mdefine_line|#define cfi_interleave_is_4(cfi) (0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_MTD_CFI_I8
-DECL|macro|CFIDEV_INTERLEAVE_8
-mdefine_line|#define CFIDEV_INTERLEAVE_8 (8)
-macro_line|#endif
-macro_line|#ifdef CONFIG_MTD_CFI_B1
-DECL|macro|CFIDEV_BUSWIDTH_1
-mdefine_line|#define CFIDEV_BUSWIDTH_1 (1)
-macro_line|#endif
-macro_line|#ifdef CONFIG_MTD_CFI_B2
-DECL|macro|CFIDEV_BUSWIDTH_2
-mdefine_line|#define CFIDEV_BUSWIDTH_2 (2)
-macro_line|#endif
-macro_line|#ifdef CONFIG_MTD_CFI_B4
-DECL|macro|CFIDEV_BUSWIDTH_4
-mdefine_line|#define CFIDEV_BUSWIDTH_4 (4)
-macro_line|#endif
-macro_line|#ifdef CONFIG_MTD_CFI_B8
-DECL|macro|CFIDEV_BUSWIDTH_8
-mdefine_line|#define CFIDEV_BUSWIDTH_8 (8)
-macro_line|#endif
-multiline_comment|/* pick the largest necessary */
-macro_line|#ifdef CONFIG_MTD_CFI_B8
-DECL|typedef|cfi_word
-r_typedef
-id|__u64
-id|cfi_word
-suffix:semicolon
-multiline_comment|/* This only works if asm/io.h is included first */
-macro_line|#ifndef __raw_readll
-DECL|macro|__raw_readll
-mdefine_line|#define __raw_readll(addr)&t;(*(volatile __u64 *)(addr))
-macro_line|#endif
-macro_line|#ifndef __raw_writell
-DECL|macro|__raw_writell
-mdefine_line|#define __raw_writell(v, addr)&t;(*(volatile __u64 *)(addr) = (v))
-macro_line|#endif
-DECL|macro|CFI_WORD_64
-mdefine_line|#define CFI_WORD_64
-macro_line|#else  /* CONFIG_MTD_CFI_B8 */
-multiline_comment|/* All others can use 32-bits. It&squot;s probably more efficient than&n;   the smaller types anyway */
-DECL|typedef|cfi_word
-r_typedef
-id|__u32
-id|cfi_word
-suffix:semicolon
-macro_line|#endif /* CONFIG_MTD_CFI_B8 */
-macro_line|#endif
-multiline_comment|/*&n; * The following macros are used to select the code to execute:&n; *   cfi_buswidth_is_*()&n; *   cfi_interleave_is_*()&n; *   [where * is either 1, 2, 4, or 8]&n; * Those macros should be used with &squot;if&squot; statements.  If only one of few&n; * geometry arrangements are selected, they expand to constants thus allowing&n; * the compiler (most of them being 0) to optimize away all the unneeded code,&n; * while still validating the syntax (which is not possible with embedded &n; * #if ... #endif constructs).&n; * The exception to this is the 64-bit versions, which need an extension&n; * to the cfi_word type, and cause compiler warnings about shifts being&n; * out of range.&n; */
-macro_line|#ifdef CFIDEV_INTERLEAVE_1
-macro_line|# ifdef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  undef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE (cfi-&gt;interleave)
+macro_line|# ifdef cfi_interleave
+DECL|macro|cfi_interleave
+macro_line|#  undef cfi_interleave
+DECL|macro|cfi_interleave
+macro_line|#  define cfi_interleave(cfi) ((cfi)-&gt;interleave)
 macro_line|# else
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE CFIDEV_INTERLEAVE_1
-macro_line|# endif
-DECL|macro|cfi_interleave_is_1
-macro_line|# define cfi_interleave_is_1() (CFIDEV_INTERLEAVE == CFIDEV_INTERLEAVE_1)
-macro_line|#else
-DECL|macro|cfi_interleave_is_1
-macro_line|# define cfi_interleave_is_1() (0)
-macro_line|#endif
-macro_line|#ifdef CFIDEV_INTERLEAVE_2
-macro_line|# ifdef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  undef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE (cfi-&gt;interleave)
-macro_line|# else
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE CFIDEV_INTERLEAVE_2
-macro_line|# endif
-DECL|macro|cfi_interleave_is_2
-macro_line|# define cfi_interleave_is_2() (CFIDEV_INTERLEAVE == CFIDEV_INTERLEAVE_2)
-macro_line|#else
-DECL|macro|cfi_interleave_is_2
-macro_line|# define cfi_interleave_is_2() (0)
-macro_line|#endif
-macro_line|#ifdef CFIDEV_INTERLEAVE_4
-macro_line|# ifdef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  undef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE (cfi-&gt;interleave)
-macro_line|# else
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE CFIDEV_INTERLEAVE_4
-macro_line|# endif
-DECL|macro|cfi_interleave_is_4
-macro_line|# define cfi_interleave_is_4() (CFIDEV_INTERLEAVE == CFIDEV_INTERLEAVE_4)
-macro_line|#else
-DECL|macro|cfi_interleave_is_4
-macro_line|# define cfi_interleave_is_4() (0)
-macro_line|#endif
-macro_line|#ifdef CFIDEV_INTERLEAVE_8
-macro_line|# ifdef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  undef CFIDEV_INTERLEAVE
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE (cfi-&gt;interleave)
-macro_line|# else
-DECL|macro|CFIDEV_INTERLEAVE
-macro_line|#  define CFIDEV_INTERLEAVE CFIDEV_INTERLEAVE_8
+DECL|macro|cfi_interleave
+macro_line|#  define cfi_interleave(cfi) 8
 macro_line|# endif
 DECL|macro|cfi_interleave_is_8
-macro_line|# define cfi_interleave_is_8() (CFIDEV_INTERLEAVE == CFIDEV_INTERLEAVE_8)
+mdefine_line|#define cfi_interleave_is_8(cfi) (cfi_interleave(cfi) == 8)
 macro_line|#else
 DECL|macro|cfi_interleave_is_8
-macro_line|# define cfi_interleave_is_8() (0)
+mdefine_line|#define cfi_interleave_is_8(cfi) (0)
 macro_line|#endif
-macro_line|#ifndef CFIDEV_INTERLEAVE
-macro_line|#error You must define at least one interleave to support!
+DECL|function|cfi_interleave_supported
+r_static
+r_inline
+r_int
+id|cfi_interleave_supported
+c_func
+(paren
+r_int
+id|i
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|i
+)paren
+(brace
+macro_line|#ifdef CONFIG_MTD_CFI_I1
+r_case
+l_int|1
+suffix:colon
 macro_line|#endif
-macro_line|#ifdef CFIDEV_BUSWIDTH_1
-macro_line|# ifdef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  undef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH (map-&gt;buswidth)
-macro_line|# else
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH CFIDEV_BUSWIDTH_1
-macro_line|# endif
-DECL|macro|cfi_buswidth_is_1
-macro_line|# define cfi_buswidth_is_1() (CFIDEV_BUSWIDTH == CFIDEV_BUSWIDTH_1)
-macro_line|#else
-DECL|macro|cfi_buswidth_is_1
-macro_line|# define cfi_buswidth_is_1() (0)
+macro_line|#ifdef CONFIG_MTD_CFI_I2
+r_case
+l_int|2
+suffix:colon
 macro_line|#endif
-macro_line|#ifdef CFIDEV_BUSWIDTH_2
-macro_line|# ifdef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  undef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH (map-&gt;buswidth)
-macro_line|# else
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH CFIDEV_BUSWIDTH_2
-macro_line|# endif
-DECL|macro|cfi_buswidth_is_2
-macro_line|# define cfi_buswidth_is_2() (CFIDEV_BUSWIDTH == CFIDEV_BUSWIDTH_2)
-macro_line|#else
-DECL|macro|cfi_buswidth_is_2
-macro_line|# define cfi_buswidth_is_2() (0)
+macro_line|#ifdef CONFIG_MTD_CFI_I4
+r_case
+l_int|4
+suffix:colon
 macro_line|#endif
-macro_line|#ifdef CFIDEV_BUSWIDTH_4
-macro_line|# ifdef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  undef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH (map-&gt;buswidth)
-macro_line|# else
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH CFIDEV_BUSWIDTH_4
-macro_line|# endif
-DECL|macro|cfi_buswidth_is_4
-macro_line|# define cfi_buswidth_is_4() (CFIDEV_BUSWIDTH == CFIDEV_BUSWIDTH_4)
-macro_line|#else
-DECL|macro|cfi_buswidth_is_4
-macro_line|# define cfi_buswidth_is_4() (0)
+macro_line|#ifdef CONFIG_MTD_CFI_I8
+r_case
+l_int|8
+suffix:colon
 macro_line|#endif
-macro_line|#ifdef CFIDEV_BUSWIDTH_8
-macro_line|# ifdef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  undef CFIDEV_BUSWIDTH
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH (map-&gt;buswidth)
-macro_line|# else
-DECL|macro|CFIDEV_BUSWIDTH
-macro_line|#  define CFIDEV_BUSWIDTH CFIDEV_BUSWIDTH_8
-macro_line|# endif
-DECL|macro|cfi_buswidth_is_8
-macro_line|# define cfi_buswidth_is_8() (CFIDEV_BUSWIDTH == CFIDEV_BUSWIDTH_8)
-macro_line|#else
-DECL|macro|cfi_buswidth_is_8
-macro_line|# define cfi_buswidth_is_8() (0)
-macro_line|#endif
-macro_line|#ifndef CFIDEV_BUSWIDTH
-macro_line|#error You must define at least one bus width to support!
-macro_line|#endif
+r_return
+l_int|1
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* NB: these values must represents the number of bytes needed to meet the &n; *     device type (x8, x16, x32).  Eg. a 32 bit device is 4 x 8 bytes. &n; *     These numbers are used in calculations.&n; */
 DECL|macro|CFI_DEVICETYPE_X8
 mdefine_line|#define CFI_DEVICETYPE_X8  (8 / 8)
@@ -241,94 +130,94 @@ r_struct
 id|cfi_ident
 (brace
 DECL|member|qry
-id|__u8
+r_uint8
 id|qry
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|P_ID
-id|__u16
+r_uint16
 id|P_ID
 suffix:semicolon
 DECL|member|P_ADR
-id|__u16
+r_uint16
 id|P_ADR
 suffix:semicolon
 DECL|member|A_ID
-id|__u16
+r_uint16
 id|A_ID
 suffix:semicolon
 DECL|member|A_ADR
-id|__u16
+r_uint16
 id|A_ADR
 suffix:semicolon
 DECL|member|VccMin
-id|__u8
+r_uint8
 id|VccMin
 suffix:semicolon
 DECL|member|VccMax
-id|__u8
+r_uint8
 id|VccMax
 suffix:semicolon
 DECL|member|VppMin
-id|__u8
+r_uint8
 id|VppMin
 suffix:semicolon
 DECL|member|VppMax
-id|__u8
+r_uint8
 id|VppMax
 suffix:semicolon
 DECL|member|WordWriteTimeoutTyp
-id|__u8
+r_uint8
 id|WordWriteTimeoutTyp
 suffix:semicolon
 DECL|member|BufWriteTimeoutTyp
-id|__u8
+r_uint8
 id|BufWriteTimeoutTyp
 suffix:semicolon
 DECL|member|BlockEraseTimeoutTyp
-id|__u8
+r_uint8
 id|BlockEraseTimeoutTyp
 suffix:semicolon
 DECL|member|ChipEraseTimeoutTyp
-id|__u8
+r_uint8
 id|ChipEraseTimeoutTyp
 suffix:semicolon
 DECL|member|WordWriteTimeoutMax
-id|__u8
+r_uint8
 id|WordWriteTimeoutMax
 suffix:semicolon
 DECL|member|BufWriteTimeoutMax
-id|__u8
+r_uint8
 id|BufWriteTimeoutMax
 suffix:semicolon
 DECL|member|BlockEraseTimeoutMax
-id|__u8
+r_uint8
 id|BlockEraseTimeoutMax
 suffix:semicolon
 DECL|member|ChipEraseTimeoutMax
-id|__u8
+r_uint8
 id|ChipEraseTimeoutMax
 suffix:semicolon
 DECL|member|DevSize
-id|__u8
+r_uint8
 id|DevSize
 suffix:semicolon
 DECL|member|InterfaceDesc
-id|__u16
+r_uint16
 id|InterfaceDesc
 suffix:semicolon
 DECL|member|MaxBufWriteSize
-id|__u16
+r_uint16
 id|MaxBufWriteSize
 suffix:semicolon
 DECL|member|NumEraseRegions
-id|__u8
+r_uint8
 id|NumEraseRegions
 suffix:semicolon
 DECL|member|EraseRegionInfo
-id|__u32
+r_uint32
 id|EraseRegionInfo
 (braket
 l_int|0
@@ -350,18 +239,18 @@ r_struct
 id|cfi_extquery
 (brace
 DECL|member|pri
-id|__u8
+r_uint8
 id|pri
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|MajorVersion
-id|__u8
+r_uint8
 id|MajorVersion
 suffix:semicolon
 DECL|member|MinorVersion
-id|__u8
+r_uint8
 id|MinorVersion
 suffix:semicolon
 )brace
@@ -379,55 +268,130 @@ r_struct
 id|cfi_pri_intelext
 (brace
 DECL|member|pri
-id|__u8
+r_uint8
 id|pri
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|MajorVersion
-id|__u8
+r_uint8
 id|MajorVersion
 suffix:semicolon
 DECL|member|MinorVersion
-id|__u8
+r_uint8
 id|MinorVersion
 suffix:semicolon
 DECL|member|FeatureSupport
-id|__u32
+r_uint32
 id|FeatureSupport
 suffix:semicolon
+multiline_comment|/* if bit 31 is set then an additional uint32_t feature&n;&t;&t;&t;&t;    block follows - FIXME - not currently supported */
 DECL|member|SuspendCmdSupport
-id|__u8
+r_uint8
 id|SuspendCmdSupport
 suffix:semicolon
 DECL|member|BlkStatusRegMask
-id|__u16
+r_uint16
 id|BlkStatusRegMask
 suffix:semicolon
 DECL|member|VccOptimal
-id|__u8
+r_uint8
 id|VccOptimal
 suffix:semicolon
 DECL|member|VppOptimal
-id|__u8
+r_uint8
 id|VppOptimal
 suffix:semicolon
 DECL|member|NumProtectionFields
-id|__u8
+r_uint8
 id|NumProtectionFields
 suffix:semicolon
 DECL|member|ProtRegAddr
-id|__u16
+r_uint16
 id|ProtRegAddr
 suffix:semicolon
 DECL|member|FactProtRegSize
-id|__u8
+r_uint8
 id|FactProtRegSize
 suffix:semicolon
 DECL|member|UserProtRegSize
-id|__u8
+r_uint8
 id|UserProtRegSize
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Vendor-Specific PRI for AMD/Fujitsu Extended Command Set (0x0002) */
+DECL|struct|cfi_pri_amdstd
+r_struct
+id|cfi_pri_amdstd
+(brace
+DECL|member|pri
+r_uint8
+id|pri
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|MajorVersion
+r_uint8
+id|MajorVersion
+suffix:semicolon
+DECL|member|MinorVersion
+r_uint8
+id|MinorVersion
+suffix:semicolon
+DECL|member|SiliconRevision
+r_uint8
+id|SiliconRevision
+suffix:semicolon
+multiline_comment|/* bits 1-0: Address Sensitive Unlock */
+DECL|member|EraseSuspend
+r_uint8
+id|EraseSuspend
+suffix:semicolon
+DECL|member|BlkProt
+r_uint8
+id|BlkProt
+suffix:semicolon
+DECL|member|TmpBlkUnprotect
+r_uint8
+id|TmpBlkUnprotect
+suffix:semicolon
+DECL|member|BlkProtUnprot
+r_uint8
+id|BlkProtUnprot
+suffix:semicolon
+DECL|member|SimultaneousOps
+r_uint8
+id|SimultaneousOps
+suffix:semicolon
+DECL|member|BurstMode
+r_uint8
+id|BurstMode
+suffix:semicolon
+DECL|member|PageMode
+r_uint8
+id|PageMode
+suffix:semicolon
+DECL|member|VppMin
+r_uint8
+id|VppMin
+suffix:semicolon
+DECL|member|VppMax
+r_uint8
+id|VppMax
+suffix:semicolon
+DECL|member|TopBottom
+r_uint8
+id|TopBottom
 suffix:semicolon
 )brace
 id|__attribute__
@@ -443,11 +407,11 @@ r_struct
 id|cfi_pri_query
 (brace
 DECL|member|NumFields
-id|__u8
+r_uint8
 id|NumFields
 suffix:semicolon
 DECL|member|ProtField
-id|__u32
+r_uint32
 id|ProtField
 (braket
 l_int|1
@@ -468,15 +432,15 @@ r_struct
 id|cfi_bri_query
 (brace
 DECL|member|PageModeReadCap
-id|__u8
+r_uint8
 id|PageModeReadCap
 suffix:semicolon
 DECL|member|NumFields
-id|__u8
+r_uint8
 id|NumFields
 suffix:semicolon
 DECL|member|ConfField
-id|__u32
+r_uint32
 id|ConfField
 (braket
 l_int|1
@@ -502,10 +466,14 @@ DECL|macro|P_ID_INTEL_STD
 mdefine_line|#define P_ID_INTEL_STD 3
 DECL|macro|P_ID_AMD_EXT
 mdefine_line|#define P_ID_AMD_EXT 4
+DECL|macro|P_ID_ST_ADV
+mdefine_line|#define P_ID_ST_ADV 32
 DECL|macro|P_ID_MITSUBISHI_STD
 mdefine_line|#define P_ID_MITSUBISHI_STD 256
 DECL|macro|P_ID_MITSUBISHI_EXT
 mdefine_line|#define P_ID_MITSUBISHI_EXT 257
+DECL|macro|P_ID_SST_PAGE
+mdefine_line|#define P_ID_SST_PAGE 258
 DECL|macro|P_ID_RESERVED
 mdefine_line|#define P_ID_RESERVED 65535
 DECL|macro|CFI_MODE_CFI
@@ -517,7 +485,7 @@ r_struct
 id|cfi_private
 (brace
 DECL|member|cmdset
-id|__u16
+r_uint16
 id|cmdset
 suffix:semicolon
 DECL|member|cmdset_priv
@@ -545,10 +513,6 @@ suffix:semicolon
 DECL|member|addr_unlock2
 r_int
 id|addr_unlock2
-suffix:semicolon
-DECL|member|fast_prog
-r_int
-id|fast_prog
 suffix:semicolon
 DECL|member|cmdset_setup
 r_struct
@@ -606,17 +570,15 @@ suffix:semicolon
 multiline_comment|/* per-chip data structure for each chip */
 )brace
 suffix:semicolon
-DECL|macro|MAX_CFI_CHIPS
-mdefine_line|#define MAX_CFI_CHIPS 8 /* Entirely arbitrary to avoid realloc() */
 multiline_comment|/*&n; * Returns the command address according to the given geometry.&n; */
 DECL|function|cfi_build_cmd_addr
 r_static
 r_inline
-id|__u32
+r_uint32
 id|cfi_build_cmd_addr
 c_func
 (paren
-id|__u32
+r_uint32
 id|cmd_ofs
 comma
 r_int
@@ -636,11 +598,11 @@ op_star
 id|interleave
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transforms the CFI command for the given geometry (bus width &amp; interleave.&n; */
+multiline_comment|/*&n; * Transforms the CFI command for the given geometry (bus width &amp; interleave).&n; * It looks too long to be inline, but in the common case it should almost all&n; * get optimised away. &n; */
 DECL|function|cfi_build_cmd
 r_static
 r_inline
-id|cfi_word
+id|map_word
 id|cfi_build_cmd
 c_func
 (paren
@@ -658,321 +620,248 @@ op_star
 id|cfi
 )paren
 (brace
-id|cfi_word
+id|map_word
 id|val
+op_assign
+(brace
+(brace
+l_int|0
+)brace
+)brace
+suffix:semicolon
+r_int
+id|wordwidth
+comma
+id|words_per_bus
+comma
+id|chip_mode
+comma
+id|chips_per_word
+suffix:semicolon
+r_int
+r_int
+id|onecmd
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* We do it this way to give the compiler a fighting chance &n;&t;   of optimising away all the crap for &squot;bankwidth&squot; larger than&n;&t;   an unsigned long, in the common case where that support is&n;&t;   disabled */
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_large
+c_func
+(paren
+id|map
+)paren
+)paren
+(brace
+id|wordwidth
+op_assign
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+id|words_per_bus
+op_assign
+(paren
+id|map_bankwidth
+c_func
+(paren
+id|map
+)paren
+)paren
+op_div
+id|wordwidth
+suffix:semicolon
+singleline_comment|// i.e. normally 1
+)brace
+r_else
+(brace
+id|wordwidth
+op_assign
+id|map_bankwidth
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
+id|words_per_bus
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+id|chip_mode
+op_assign
+id|map_bankwidth
+c_func
+(paren
+id|map
+)paren
+op_div
+id|cfi_interleave
+c_func
+(paren
+id|cfi
+)paren
+suffix:semicolon
+id|chips_per_word
+op_assign
+id|wordwidth
+op_star
+id|cfi_interleave
+c_func
+(paren
+id|cfi
+)paren
+op_div
+id|map_bankwidth
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
+multiline_comment|/* First, determine what the bit-pattern should be for a single&n;&t;   device, according to chip mode and endianness... */
+r_switch
+c_cond
+(paren
+id|chip_mode
+)paren
+(brace
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|onecmd
+op_assign
+id|cmd
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|onecmd
+op_assign
+id|cpu_to_cfi16
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|onecmd
+op_assign
+id|cpu_to_cfi32
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Now replicate it across the size of an unsigned long, or &n;&t;   just to the bus width as appropriate */
+r_switch
+c_cond
+(paren
+id|chips_per_word
+)paren
+(brace
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#if BITS_PER_LONG &gt;= 64
+r_case
+l_int|8
+suffix:colon
+id|onecmd
+op_or_assign
+(paren
+id|onecmd
+op_lshift
+(paren
+id|chip_mode
+op_star
+l_int|32
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+r_case
+l_int|4
+suffix:colon
+id|onecmd
+op_or_assign
+(paren
+id|onecmd
+op_lshift
+(paren
+id|chip_mode
+op_star
+l_int|16
+)paren
+)paren
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|onecmd
+op_or_assign
+(paren
+id|onecmd
+op_lshift
+(paren
+id|chip_mode
+op_star
+l_int|8
+)paren
+)paren
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+suffix:semicolon
+)brace
+multiline_comment|/* And finally, for the multi-word case, replicate it &n;&t;   in all words in the structure */
+r_for
+c_loop
+(paren
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_1
-c_func
-(paren
-)paren
+id|i
+OL
+id|words_per_bus
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
-multiline_comment|/* 1 x8 device */
-id|val
+id|val.x
+(braket
+id|i
+)braket
 op_assign
-id|cmd
+id|onecmd
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_2
-c_func
-(paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_1
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 1 x16 device in x16 mode */
-id|val
-op_assign
-id|cpu_to_cfi16
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_2
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 2 (x8, x16 or x32) devices in x8 mode */
-id|val
-op_assign
-id|cpu_to_cfi16
-c_func
-(paren
-(paren
-id|cmd
-op_lshift
-l_int|8
-)paren
-op_or
-id|cmd
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_4
-c_func
-(paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_1
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 1 x32 device in x32 mode */
-id|val
-op_assign
-id|cpu_to_cfi32
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_2
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 2 x16 device in x16 mode */
-id|val
-op_assign
-id|cpu_to_cfi32
-c_func
-(paren
-(paren
-id|cmd
-op_lshift
-l_int|16
-)paren
-op_or
-id|cmd
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_4
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 4 (x8, x16 or x32) devices in x8 mode */
-id|val
-op_assign
-(paren
-id|cmd
-op_lshift
-l_int|16
-)paren
-op_or
-id|cmd
-suffix:semicolon
-id|val
-op_assign
-id|cpu_to_cfi32
-c_func
-(paren
-(paren
-id|val
-op_lshift
-l_int|8
-)paren
-op_or
-id|val
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef CFI_WORD_64
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_8
-c_func
-(paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_1
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 1 x64 device in x64 mode */
-id|val
-op_assign
-id|cpu_to_cfi64
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_2
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 2 x32 device in x32 mode */
-id|val
-op_assign
-id|cmd
-suffix:semicolon
-id|val
-op_assign
-id|cpu_to_cfi64
-c_func
-(paren
-(paren
-id|val
-op_lshift
-l_int|32
-)paren
-op_or
-id|val
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_4
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 4 (x16, x32 or x64) devices in x16 mode */
-id|val
-op_assign
-(paren
-id|cmd
-op_lshift
-l_int|16
-)paren
-op_or
-id|cmd
-suffix:semicolon
-id|val
-op_assign
-id|cpu_to_cfi64
-c_func
-(paren
-(paren
-id|val
-op_lshift
-l_int|32
-)paren
-op_or
-id|val
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_interleave_is_8
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* 8 (x8, x16 or x32) devices in x8 mode */
-id|val
-op_assign
-(paren
-id|cmd
-op_lshift
-l_int|8
-)paren
-op_or
-id|cmd
-suffix:semicolon
-id|val
-op_assign
-(paren
-id|val
-op_lshift
-l_int|16
-)paren
-op_or
-id|val
-suffix:semicolon
-id|val
-op_assign
-(paren
-id|val
-op_lshift
-l_int|32
-)paren
-op_or
-id|val
-suffix:semicolon
-id|val
-op_assign
-id|cpu_to_cfi64
-c_func
-(paren
-id|val
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CFI_WORD_64 */
 )brace
 r_return
 id|val
@@ -980,228 +869,21 @@ suffix:semicolon
 )brace
 DECL|macro|CMD
 mdefine_line|#define CMD(x)  cfi_build_cmd((x), map, cfi)
-multiline_comment|/*&n; * Read a value according to the bus width.&n; */
-DECL|function|cfi_read
-r_static
-r_inline
-id|cfi_word
-id|cfi_read
-c_func
-(paren
-r_struct
-id|map_info
-op_star
-id|map
-comma
-id|__u32
-id|addr
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_1
-c_func
-(paren
-)paren
-)paren
-(brace
-r_return
-id|map_read8
-c_func
-(paren
-id|map
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_2
-c_func
-(paren
-)paren
-)paren
-(brace
-r_return
-id|map_read16
-c_func
-(paren
-id|map
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_4
-c_func
-(paren
-)paren
-)paren
-(brace
-r_return
-id|map_read32
-c_func
-(paren
-id|map
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_8
-c_func
-(paren
-)paren
-)paren
-(brace
-r_return
-id|map_read64
-c_func
-(paren
-id|map
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n; * Write a value according to the bus width.&n; */
-DECL|function|cfi_write
-r_static
-r_inline
-r_void
-id|cfi_write
-c_func
-(paren
-r_struct
-id|map_info
-op_star
-id|map
-comma
-id|cfi_word
-id|val
-comma
-id|__u32
-id|addr
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_1
-c_func
-(paren
-)paren
-)paren
-(brace
-id|map_write8
-c_func
-(paren
-id|map
-comma
-id|val
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_2
-c_func
-(paren
-)paren
-)paren
-(brace
-id|map_write16
-c_func
-(paren
-id|map
-comma
-id|val
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_4
-c_func
-(paren
-)paren
-)paren
-(brace
-id|map_write32
-c_func
-(paren
-id|map
-comma
-id|val
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_8
-c_func
-(paren
-)paren
-)paren
-(brace
-id|map_write64
-c_func
-(paren
-id|map
-comma
-id|val
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n; * Sends a CFI command to a bank of flash for the given geometry.&n; *&n; * Returns the offset in flash where the command was written.&n; * If prev_val is non-null, it will be set to the value at the command address,&n; * before the command was written.&n; */
 DECL|function|cfi_send_gen_cmd
 r_static
 r_inline
-id|__u32
+r_uint32
 id|cfi_send_gen_cmd
 c_func
 (paren
 id|u_char
 id|cmd
 comma
-id|__u32
+r_uint32
 id|cmd_addr
 comma
-id|__u32
+r_uint32
 id|base
 comma
 r_struct
@@ -1217,15 +899,15 @@ comma
 r_int
 id|type
 comma
-id|cfi_word
+id|map_word
 op_star
 id|prev_val
 )paren
 (brace
-id|cfi_word
+id|map_word
 id|val
 suffix:semicolon
-id|__u32
+r_uint32
 id|addr
 op_assign
 id|base
@@ -1235,7 +917,11 @@ c_func
 (paren
 id|cmd_addr
 comma
-id|CFIDEV_INTERLEAVE
+id|cfi_interleave
+c_func
+(paren
+id|cfi
+)paren
 comma
 id|type
 )paren
@@ -1260,7 +946,7 @@ id|prev_val
 op_star
 id|prev_val
 op_assign
-id|cfi_read
+id|map_read
 c_func
 (paren
 id|map
@@ -1268,7 +954,7 @@ comma
 id|addr
 )paren
 suffix:semicolon
-id|cfi_write
+id|map_write
 c_func
 (paren
 id|map
@@ -1287,7 +973,7 @@ suffix:semicolon
 DECL|function|cfi_read_query
 r_static
 r_inline
-id|__u8
+r_uint8
 id|cfi_read_query
 c_func
 (paren
@@ -1296,21 +982,14 @@ id|map_info
 op_star
 id|map
 comma
-id|__u32
+r_uint32
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_1
-c_func
-(paren
-)paren
-)paren
-(brace
-r_return
-id|map_read8
+id|map_word
+id|val
+op_assign
+id|map_read
 c_func
 (paren
 id|map
@@ -1318,14 +997,31 @@ comma
 id|addr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_1
+c_func
+(paren
+id|map
+)paren
+)paren
+(brace
+r_return
+id|val.x
+(braket
+l_int|0
+)braket
+suffix:semicolon
 )brace
 r_else
 r_if
 c_cond
 (paren
-id|cfi_buswidth_is_2
+id|map_bankwidth_is_2
 c_func
 (paren
+id|map
 )paren
 )paren
 (brace
@@ -1333,68 +1029,25 @@ r_return
 id|cfi16_to_cpu
 c_func
 (paren
-id|map_read16
-c_func
-(paren
-id|map
-comma
-id|addr
-)paren
+id|val.x
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_4
-c_func
-(paren
-)paren
-)paren
 (brace
+multiline_comment|/* No point in a 64-bit byteswap since that would just be&n;&t;&t;   swapping the responses from different chips, and we are&n;&t;&t;   only interested in one chip (a representative sample) */
 r_return
 id|cfi32_to_cpu
 c_func
 (paren
-id|map_read32
-c_func
-(paren
-id|map
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cfi_buswidth_is_8
-c_func
-(paren
-)paren
-)paren
-(brace
-r_return
-id|cfi64_to_cpu
-c_func
-(paren
-id|map_read64
-c_func
-(paren
-id|map
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_return
+id|val.x
+(braket
 l_int|0
+)braket
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1492,5 +1145,83 @@ id|mutex
 )paren
 suffix:semicolon
 )brace
+r_struct
+id|cfi_extquery
+op_star
+id|cfi_read_pri
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+r_uint16
+id|adr
+comma
+r_uint16
+id|size
+comma
+r_const
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+DECL|struct|cfi_fixup
+r_struct
+id|cfi_fixup
+(brace
+DECL|member|mfr
+r_uint16
+id|mfr
+suffix:semicolon
+DECL|member|id
+r_uint16
+id|id
+suffix:semicolon
+DECL|member|fixup
+r_void
+(paren
+op_star
+id|fixup
+)paren
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+r_void
+op_star
+id|param
+)paren
+suffix:semicolon
+DECL|member|param
+r_void
+op_star
+id|param
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|CFI_MFR_ANY
+mdefine_line|#define CFI_MFR_ANY 0xffff
+DECL|macro|CFI_ID_ANY
+mdefine_line|#define CFI_ID_ANY  0xffff
+r_void
+id|cfi_fixup
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+r_struct
+id|cfi_fixup
+op_star
+id|fixups
+)paren
+suffix:semicolon
 macro_line|#endif /* __MTD_CFI_H__ */
 eof

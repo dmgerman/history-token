@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.1 2004/05/13 22:21:26 dsaxena Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
+multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.3 2004/07/12 22:38:29 dwmw2 Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -24,9 +24,9 @@ mdefine_line|#define&t;BYTE0(h)&t;(((h) &gt;&gt; 8) &amp; 0xFF)
 DECL|macro|BYTE1
 mdefine_line|#define&t;BYTE1(h)&t;((h) &amp; 0xFF)
 macro_line|#endif
-r_static
-id|__u16
 DECL|function|ixp4xx_read16
+r_static
+id|map_word
 id|ixp4xx_read16
 c_func
 (paren
@@ -40,7 +40,14 @@ r_int
 id|ofs
 )paren
 (brace
-r_return
+id|map_word
+id|val
+suffix:semicolon
+id|val.x
+(braket
+l_int|0
+)braket
+op_assign
 op_star
 (paren
 id|__u16
@@ -52,11 +59,14 @@ op_plus
 id|ofs
 )paren
 suffix:semicolon
+r_return
+id|val
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * The IXP4xx expansion bus only allows 16-bit wide acceses&n; * when attached to a 16-bit wide device (such as the 28F128J3A),&n; * so we can&squot;t just memcpy_fromio().&n; */
+DECL|function|ixp4xx_copy_from
 r_static
 r_void
-DECL|function|ixp4xx_copy_from
 id|ixp4xx_copy_from
 c_func
 (paren
@@ -186,9 +196,9 @@ id|i
 )paren
 suffix:semicolon
 )brace
+DECL|function|ixp4xx_write16
 r_static
 r_void
-DECL|function|ixp4xx_write16
 id|ixp4xx_write16
 c_func
 (paren
@@ -197,7 +207,7 @@ id|map_info
 op_star
 id|map
 comma
-id|__u16
+id|map_word
 id|d
 comma
 r_int
@@ -216,7 +226,10 @@ op_plus
 id|adr
 )paren
 op_assign
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 DECL|struct|ixp4xx_flash_info
@@ -265,9 +278,9 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+DECL|function|ixp4xx_flash_remove
 r_static
 r_int
-DECL|function|ixp4xx_flash_remove
 id|ixp4xx_flash_remove
 c_func
 (paren
@@ -575,7 +588,7 @@ op_plus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * We only support 16-bit accesses for now. If and when&n;&t; * any board use 8-bit access, we&squot;ll fixup the driver to&n;&t; * handle that.&n;&t; */
-id|info-&gt;map.buswidth
+id|info-&gt;map.bankwidth
 op_assign
 l_int|2
 suffix:semicolon
@@ -583,11 +596,11 @@ id|info-&gt;map.name
 op_assign
 id|dev-&gt;dev.bus_id
 suffix:semicolon
-id|info-&gt;map.read16
+id|info-&gt;map.read
 op_assign
 id|ixp4xx_read16
 comma
-id|info-&gt;map.write16
+id|info-&gt;map.write
 op_assign
 id|ixp4xx_write16
 comma

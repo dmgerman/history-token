@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on SA11x0 based devices&n; * &n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; * &n; * $Id: sa1100-flash.c,v 1.36 2003/05/29 08:59:35 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Flash memory access on SA11x0 based devices&n; * &n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; * &n; * $Id: sa1100-flash.c,v 1.39 2004/07/12 21:59:44 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3452,7 +3452,7 @@ id|sa
 id|i
 )braket
 dot
-id|map-&gt;buswidth
+id|map-&gt;bankwidth
 op_assign
 id|sa
 (braket
@@ -4057,7 +4057,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|sa1100_probe_map.buswidth
+id|sa1100_probe_map.bankwidth
 op_assign
 id|msc
 op_amp
@@ -5201,7 +5201,7 @@ l_int|0
 r_return
 id|nr
 suffix:semicolon
-multiline_comment|/*&n;&t; * Retrieve the buswidth from the MSC registers.&n;&t; * We currently only implement CS0 and CS1 here.&n;&t; */
+multiline_comment|/*&n;&t; * Retrieve the bankwidth from the MSC registers.&n;&t; * We currently only implement CS0 and CS1 here.&n;&t; */
 r_for
 c_loop
 (paren

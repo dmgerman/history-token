@@ -1,5 +1,5 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.4 2003/05/20 20:59:30 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.5 2004/07/12 21:59:44 dwmw2 Exp $&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -84,7 +84,7 @@ op_assign
 l_int|0
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|INTEL_BUSWIDTH
 comma
@@ -213,7 +213,7 @@ op_assign
 id|AMD_WINDOW_MAXSIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|AMD_BUSWIDTH
 comma

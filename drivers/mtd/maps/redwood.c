@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: redwood.c,v 1.6 2003/05/21 12:45:19 dwmw2 Exp $&n; *&n; * drivers/mtd/maps/redwood.c&n; *&n; * FLASH map for the IBM Redwood 4/5/6 boards.&n; *&n; *&n; * Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; *&n; * 2001-2002 (c) MontaVista, Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * $Id: redwood.c,v 1.8 2004/07/12 21:59:44 dwmw2 Exp $&n; *&n; * drivers/mtd/maps/redwood.c&n; *&n; * FLASH map for the IBM Redwood 4/5/6 boards.&n; *&n; * Author: MontaVista Software, Inc. &lt;source@mvista.com&gt;&n; *&n; * 2001-2003 (c) MontaVista, Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -181,7 +181,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Redwood kernel&quot;
+l_string|&quot;Redwood filesystem&quot;
 comma
 dot
 id|offset
@@ -221,7 +221,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Redwood filesystem&quot;
+l_string|&quot;Redwood kernel&quot;
 comma
 dot
 id|offset
@@ -276,7 +276,7 @@ op_assign
 id|WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|2
 comma
@@ -457,7 +457,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Armin Kuster &lt;akuster@mvista.com&gt;&quot;
+l_string|&quot;MontaVista Software &lt;source@mvista.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

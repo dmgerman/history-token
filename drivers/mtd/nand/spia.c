@@ -1,4 +1,6 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; *&n; *&t;10-29-2001 TG&t;change to support hardwarespecific access&n; *&t;&t;&t;to controllines&t;(due to change in nand.c)&n; *&t;&t;&t;page_cache added&n; *&n; * $Id: spia.c,v 1.19 2003/04/20 07:24:40 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; *&n; *&t;10-29-2001 TG&t;change to support hardwarespecific access&n; *&t;&t;&t;to controllines&t;(due to change in nand.c)&n; *&t;&t;&t;page_cache added&n; *&n; * $Id: spia.c,v 1.21 2003/07/11 15:12:29 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -16,14 +18,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * Values specific to the SPIA board (used with EP7212 processor)&n; */
-DECL|macro|SPIA_IO_ADDR
-mdefine_line|#define SPIA_IO_ADDR&t;= 0xd0000000&t;/* Start of EP7212 IO address space */
-DECL|macro|SPIA_FIO_ADDR
-mdefine_line|#define SPIA_FIO_ADDR&t;= 0xf0000000&t;/* Address where flash is mapped */
+DECL|macro|SPIA_IO_BASE
+mdefine_line|#define SPIA_IO_BASE&t;0xd0000000&t;/* Start of EP7212 IO address space */
+DECL|macro|SPIA_FIO_BASE
+mdefine_line|#define SPIA_FIO_BASE&t;0xf0000000&t;/* Address where flash is mapped */
 DECL|macro|SPIA_PEDR
-mdefine_line|#define SPIA_PEDR&t;= 0x0080&t;/*&n;&t;&t;&t;&t;&t; * IO offset to Port E data register&n;&t;&t;&t;&t;&t; * where the CLE, ALE and NCE pins&n;&t;&t;&t;&t;&t; * are wired to.&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define SPIA_PEDR&t;0x0080&t;&t;/*&n;&t;&t;&t;&t;&t; * IO offset to Port E data register&n;&t;&t;&t;&t;&t; * where the CLE, ALE and NCE pins&n;&t;&t;&t;&t;&t; * are wired to.&n;&t;&t;&t;&t;&t; */
 DECL|macro|SPIA_PEDDR
-mdefine_line|#define SPIA_PEDDR&t;= 0x00c0&t;/*&n;&t;&t;&t;&t;&t; * IO offset to Port E data direction&n;&t;&t;&t;&t;&t; * register so we can control the IO&n;&t;&t;&t;&t;&t; * lines.&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define SPIA_PEDDR&t;0x00c0&t;&t;/*&n;&t;&t;&t;&t;&t; * IO offset to Port E data direction&n;&t;&t;&t;&t;&t; * register so we can control the IO&n;&t;&t;&t;&t;&t; * lines.&n;&t;&t;&t;&t;&t; */
 multiline_comment|/*&n; * Module stuff&n; */
 DECL|variable|spia_io_base
 r_static
@@ -83,38 +85,6 @@ c_func
 id|spia_peddr
 comma
 l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;spia_io_base=&quot;
-comma
-id|spia_io_base
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;spia_fio_base=&quot;
-comma
-id|spia_fio_base
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;spia_pedr=&quot;
-comma
-id|spia_pedr
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;spia_peddr=&quot;
-comma
-id|spia_peddr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Define partitions for flash device&n; */
@@ -179,11 +149,17 @@ DECL|macro|NUM_PARTITIONS
 mdefine_line|#define NUM_PARTITIONS 2
 multiline_comment|/* &n; *&t;hardware specific access to control-lines&n;*/
 DECL|function|spia_hwcontrol
+r_static
 r_void
 (def_block
 id|spia_hwcontrol
 c_func
 (paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
 r_int
 id|cmd
 )paren
@@ -485,6 +461,8 @@ c_cond
 id|nand_scan
 (paren
 id|spia_mtd
+comma
+l_int|1
 )paren
 )paren
 (brace

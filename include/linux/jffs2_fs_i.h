@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_i.h,v 1.15 2002/11/12 09:42:49 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_i.h,v 1.16 2003/01/09 14:03:21 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_I
 DECL|macro|_JFFS2_FS_I
 mdefine_line|#define _JFFS2_FS_I
@@ -55,12 +55,14 @@ DECL|member|usercompr
 r_uint8
 id|usercompr
 suffix:semicolon
+macro_line|#if !defined (__ECOS)
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2)
 DECL|member|vfs_inode
 r_struct
 id|inode
 id|vfs_inode
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 )brace
 suffix:semicolon

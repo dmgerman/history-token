@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: read.c,v 1.34 2003/10/04 08:33:06 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: read.c,v 1.36 2004/05/25 11:12:32 havasi Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
+macro_line|#include &quot;compr.h&quot;
 DECL|function|jffs2_read_dnode
 r_int
 id|jffs2_read_dnode
@@ -15,6 +16,11 @@ r_struct
 id|jffs2_sb_info
 op_star
 id|c
+comma
+r_struct
+id|jffs2_inode_info
+op_star
+id|f
 comma
 r_struct
 id|jffs2_full_dnode
@@ -701,7 +707,17 @@ op_assign
 id|jffs2_decompress
 c_func
 (paren
+id|c
+comma
+id|f
+comma
 id|ri-&gt;compr
+op_or
+(paren
+id|ri-&gt;usercompr
+op_lshift
+l_int|8
+)paren
 comma
 id|readbuf
 comma
@@ -1166,6 +1182,8 @@ c_func
 (paren
 id|c
 comma
+id|f
+comma
 id|frag-&gt;node
 comma
 id|buf
@@ -1368,6 +1386,8 @@ id|jffs2_read_dnode
 c_func
 (paren
 id|c
+comma
+id|f
 comma
 id|f-&gt;metadata
 comma

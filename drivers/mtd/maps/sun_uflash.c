@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sun_uflash.c,v 1.7 2003/05/20 20:59:32 dwmw2 Exp $&n; *&n; * sun_uflash - Driver implementation for user-programmable flash&n; * present on many Sun Microsystems SME boardsets.&n; *&n; * This driver does NOT provide access to the OBP-flash for&n; * safety reasons-- use &lt;linux&gt;/drivers/sbus/char/flash.c instead.&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
+multiline_comment|/* $Id: sun_uflash.c,v 1.9 2004/07/12 21:59:45 dwmw2 Exp $&n; *&n; * sun_uflash - Driver implementation for user-programmable flash&n; * present on many Sun Microsystems SME boardsets.&n; *&n; * This driver does NOT provide access to the OBP-flash for&n; * safety reasons-- use &lt;linux&gt;/drivers/sbus/char/flash.c instead.&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -93,7 +93,7 @@ op_assign
 id|UFLASH_WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|UFLASH_BUSWIDTH
 comma

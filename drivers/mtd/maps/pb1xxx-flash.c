@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.9 2003/06/23 11:48:18 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.11 2004/07/12 21:59:44 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
@@ -21,38 +21,6 @@ DECL|macro|WINDOW_ADDR
 mdefine_line|#define WINDOW_ADDR 0x1F800000
 DECL|macro|WINDOW_SIZE
 mdefine_line|#define WINDOW_SIZE 0x800000
-macro_line|#endif
-DECL|variable|pb1xxx_map
-r_static
-r_struct
-id|map_info
-id|pb1xxx_map
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Pb1xxx flash&quot;
-comma
-)brace
-suffix:semicolon
-macro_line|#ifdef CONFIG_MIPS_PB1000
-DECL|variable|flash_size
-r_static
-r_int
-r_int
-id|flash_size
-op_assign
-l_int|0x00800000
-suffix:semicolon
-DECL|variable|flash_buswidth
-r_static
-r_int
-r_char
-id|flash_buswidth
-op_assign
-l_int|4
-suffix:semicolon
 DECL|variable|pb1xxx_partitions
 r_static
 r_struct
@@ -143,24 +111,8 @@ l_int|0x500000
 )brace
 suffix:semicolon
 macro_line|#elif defined(CONFIG_MIPS_PB1500) || defined(CONFIG_MIPS_PB1100)
-DECL|variable|flash_buswidth
-r_static
-r_int
-r_char
-id|flash_buswidth
-op_assign
-l_int|4
-suffix:semicolon
 macro_line|#if defined(CONFIG_MTD_PB1500_BOOT) &amp;&amp; defined(CONFIG_MTD_PB1500_USER)
-multiline_comment|/* both 32MiB banks will be used. Combine the first 32MiB bank and the&n; * first 28MiB of the second bank together into a single jffs/jffs2&n; * partition.&n; */
-DECL|variable|flash_size
-r_static
-r_int
-r_int
-id|flash_size
-op_assign
-l_int|0x04000000
-suffix:semicolon
+multiline_comment|/* both 32MB banks will be used. Combine the first 32MB bank and the&n; * first 28MB of the second bank together into a single jffs/jffs2&n; * partition.&n; */
 DECL|macro|WINDOW_ADDR
 mdefine_line|#define WINDOW_ADDR 0x1C000000
 DECL|macro|WINDOW_SIZE
@@ -232,14 +184,6 @@ l_int|0x3d00000
 )brace
 suffix:semicolon
 macro_line|#elif defined(CONFIG_MTD_PB1500_BOOT) &amp;&amp; !defined(CONFIG_MTD_PB1500_USER)
-DECL|variable|flash_size
-r_static
-r_int
-r_int
-id|flash_size
-op_assign
-l_int|0x02000000
-suffix:semicolon
 DECL|macro|WINDOW_ADDR
 mdefine_line|#define WINDOW_ADDR 0x1E000000
 DECL|macro|WINDOW_SIZE
@@ -311,14 +255,6 @@ l_int|0x1d00000
 )brace
 suffix:semicolon
 macro_line|#elif !defined(CONFIG_MTD_PB1500_BOOT) &amp;&amp; defined(CONFIG_MTD_PB1500_USER)
-DECL|variable|flash_size
-r_static
-r_int
-r_int
-id|flash_size
-op_assign
-l_int|0x02000000
-suffix:semicolon
 DECL|macro|WINDOW_ADDR
 mdefine_line|#define WINDOW_ADDR 0x1C000000
 DECL|macro|WINDOW_SIZE
@@ -374,19 +310,51 @@ macro_line|#endif
 macro_line|#else
 macro_line|#error Unsupported board
 macro_line|#endif
-DECL|variable|parsed_parts
+DECL|macro|NAME
+mdefine_line|#define NAME     &t;&quot;Pb1x00 Linux Flash&quot;
+DECL|macro|PADDR
+mdefine_line|#define PADDR    &t;WINDOW_ADDR
+DECL|macro|BUSWIDTH
+mdefine_line|#define BUSWIDTH&t;4
+DECL|macro|SIZE
+mdefine_line|#define SIZE&t;&t;WINDOW_SIZE
+DECL|macro|PARTITIONS
+mdefine_line|#define PARTITIONS&t;4
+DECL|variable|pb1xxx_mtd_map
 r_static
 r_struct
-id|mtd_partition
-op_star
-id|parsed_parts
+id|map_info
+id|pb1xxx_mtd_map
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|NAME
+comma
+dot
+id|size
+op_assign
+id|SIZE
+comma
+dot
+id|bankwidth
+op_assign
+id|BUSWIDTH
+comma
+dot
+id|phys
+op_assign
+id|PADDR
+comma
+)brace
 suffix:semicolon
-DECL|variable|mymtd
+DECL|variable|pb1xxx_mtd
 r_static
 r_struct
 id|mtd_info
 op_star
-id|mymtd
+id|pb1xxx_mtd
 suffix:semicolon
 DECL|function|pb1xxx_mtd_init
 r_int
@@ -411,11 +379,6 @@ r_char
 op_star
 id|part_type
 suffix:semicolon
-multiline_comment|/* Default flash buswidth */
-id|pb1xxx_map.buswidth
-op_assign
-id|flash_buswidth
-suffix:semicolon
 multiline_comment|/*&n;&t; * Static partition definition selection&n;&t; */
 id|part_type
 op_assign
@@ -433,10 +396,6 @@ c_func
 id|pb1xxx_partitions
 )paren
 suffix:semicolon
-id|pb1xxx_map.size
-op_assign
-id|flash_size
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now let&squot;s probe for the actual flash.  Do it here since&n;&t; * specific machine settings might have been set above.&n;&t; */
 id|printk
 c_func
@@ -444,16 +403,12 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;Pb1xxx flash: probing %d-bit flash bus&bslash;n&quot;
 comma
-id|pb1xxx_map.buswidth
+id|BUSWIDTH
 op_star
 l_int|8
 )paren
 suffix:semicolon
-id|pb1xxx_map.phys
-op_assign
-id|WINDOW_ADDR
-suffix:semicolon
-id|pb1xxx_map.virt
+id|pb1xxx_mtd_map.virt
 op_assign
 (paren
 r_int
@@ -471,10 +426,10 @@ id|simple_map_init
 c_func
 (paren
 op_amp
-id|pb1xxx_map
+id|pb1xxx_mtd_map
 )paren
 suffix:semicolon
-id|mymtd
+id|pb1xxx_mtd
 op_assign
 id|do_map_probe
 c_func
@@ -482,35 +437,27 @@ c_func
 l_string|&quot;cfi_probe&quot;
 comma
 op_amp
-id|pb1xxx_map
+id|pb1xxx_mtd_map
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|mymtd
+id|pb1xxx_mtd
 )paren
-(brace
-id|iounmap
-c_func
-(paren
-id|pb1xxx_map.virt
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
-id|mymtd-&gt;owner
+id|pb1xxx_mtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
 id|add_mtd_partitions
 c_func
 (paren
-id|mymtd
+id|pb1xxx_mtd
 comma
 id|parts
 comma
@@ -534,44 +481,32 @@ r_void
 r_if
 c_cond
 (paren
-id|mymtd
+id|pb1xxx_mtd
 )paren
 (brace
 id|del_mtd_partitions
 c_func
 (paren
-id|mymtd
+id|pb1xxx_mtd
 )paren
 suffix:semicolon
 id|map_destroy
 c_func
 (paren
-id|mymtd
+id|pb1xxx_mtd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|parsed_parts
-)paren
-id|kfree
-c_func
-(paren
-id|parsed_parts
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|pb1xxx_map.virt
-)paren
 id|iounmap
 c_func
 (paren
-id|pb1xxx_map.virt
+(paren
+r_void
+op_star
+)paren
+id|pb1xxx_mtd_map.virt
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|variable|pb1xxx_mtd_init
 id|module_init

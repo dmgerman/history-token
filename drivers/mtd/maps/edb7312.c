@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: edb7312.c,v 1.9 2003/06/23 11:48:18 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on Cogent EDB7312 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: edb7312.c,v 1.11 2004/07/14 09:52:55 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on Cogent EDB7312 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -20,9 +20,9 @@ DECL|macro|FLASH_BLOCKSIZE_MAIN
 mdefine_line|#define FLASH_BLOCKSIZE_MAIN&t;0x20000
 DECL|macro|FLASH_NUMBLOCKS_MAIN
 mdefine_line|#define FLASH_NUMBLOCKS_MAIN&t;128
-multiline_comment|/* can be &quot;cfi_probe&quot;, &quot;jedec_probe&quot;, &quot;map_rom&quot;, 0 }; */
+multiline_comment|/* can be &quot;cfi_probe&quot;, &quot;jedec_probe&quot;, &quot;map_rom&quot;, NULL }; */
 DECL|macro|PROBETYPES
-mdefine_line|#define PROBETYPES { &quot;cfi_probe&quot;, 0 }
+mdefine_line|#define PROBETYPES { &quot;cfi_probe&quot;, NULL }
 DECL|macro|MSG_PREFIX
 mdefine_line|#define MSG_PREFIX &quot;EDB7312-NOR:&quot;   /* prefix for our printk()&squot;s */
 DECL|macro|MTDID
@@ -51,7 +51,7 @@ op_assign
 id|WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|BUSWIDTH
 comma

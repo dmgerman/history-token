@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD device concatenation layer&n; *&n; * (C) 2002 Robert Kaiser &lt;rkaiser@sysgo.de&gt;&n; *&n; * NAND support by Christian Gan &lt;cgan@iders.ca&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdconcat.c,v 1.8 2003/06/30 11:01:26 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * MTD device concatenation layer&n; *&n; * (C) 2002 Robert Kaiser &lt;rkaiser@sysgo.de&gt;&n; *&n; * NAND support by Christian Gan &lt;cgan@iders.ca&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdconcat.c,v 1.9 2004/06/30 15:17:41 dbrown Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1537,6 +1537,10 @@ id|err
 suffix:semicolon
 id|u_int32_t
 id|length
+comma
+id|offset
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|erase_info
@@ -1735,6 +1739,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|instr-&gt;fail_addr
+op_assign
+l_int|0xffffffff
+suffix:semicolon
 multiline_comment|/* make a local copy of instr to avoid modifying the caller&squot;s struct */
 id|erase
 op_assign
@@ -1800,13 +1808,21 @@ id|subdev-&gt;size
 op_le
 id|erase-&gt;addr
 )paren
+(brace
 id|erase-&gt;addr
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+id|offset
+op_add_assign
+id|subdev-&gt;size
+suffix:semicolon
+)brace
 r_else
+(brace
 r_break
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* must never happen since size limit has been verified above */
 r_if
@@ -1921,6 +1937,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|erase-&gt;fail_addr
+op_ne
+l_int|0xffffffff
+)paren
+id|instr-&gt;fail_addr
+op_assign
+id|erase-&gt;fail_addr
+op_plus
+id|offset
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1929,7 +1958,15 @@ id|erase-&gt;addr
 op_assign
 l_int|0
 suffix:semicolon
+id|offset
+op_add_assign
+id|subdev-&gt;size
+suffix:semicolon
 )brace
+id|instr-&gt;state
+op_assign
+id|erase-&gt;state
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1943,10 +1980,6 @@ id|err
 )paren
 r_return
 id|err
-suffix:semicolon
-id|instr-&gt;state
-op_assign
-id|MTD_ERASE_DONE
 suffix:semicolon
 r_if
 c_cond
