@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
@@ -6230,11 +6231,13 @@ c_cond
 op_logical_neg
 id|data-&gt;valid
 op_logical_or
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_reading
-OG
+op_plus
 id|LM85_DATA_INTERVAL
 )paren
 )paren
@@ -6519,11 +6522,13 @@ c_cond
 op_logical_neg
 id|data-&gt;valid
 op_logical_or
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_config
-OG
+op_plus
 id|LM85_CONFIG_INTERVAL
 )paren
 )paren

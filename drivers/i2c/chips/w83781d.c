@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
@@ -6814,30 +6815,17 @@ r_if
 c_cond
 (paren
 id|time_after
-(paren
-id|jiffies
-op_minus
-id|data-&gt;last_updated
-comma
-(paren
-r_int
-r_int
-)paren
-(paren
-id|HZ
-op_plus
-id|HZ
-op_div
-l_int|2
-)paren
-)paren
-op_logical_or
-id|time_before
 c_func
 (paren
 id|jiffies
 comma
 id|data-&gt;last_updated
+op_plus
+id|HZ
+op_plus
+id|HZ
+op_div
+l_int|2
 )paren
 op_logical_or
 op_logical_neg

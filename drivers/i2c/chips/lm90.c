@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/*&n; * Addresses to scan&n; * Address is fully defined internally and cannot be changed except for&n; * MAX6659.&n; * LM86, LM89, LM90, LM99, ADM1032, MAX6657 and MAX6658 have address 0x4c.&n; * LM89-1, and LM99-1 have address 0x4d.&n; * MAX6659 can have address 0x4c, 0x4d or 0x4e (unsupported).&n; */
@@ -1589,20 +1590,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_star
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg
