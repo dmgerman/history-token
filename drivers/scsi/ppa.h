@@ -124,23 +124,5 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_static
-r_int
-id|ppa_init
-c_func
-(paren
-id|ppa_struct
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|ppa_interrupt
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _PPA_H */
 eof
