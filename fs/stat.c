@@ -69,10 +69,6 @@ id|stat-&gt;ctime
 op_assign
 id|inode-&gt;i_ctime
 suffix:semicolon
-id|stat-&gt;ctime
-op_assign
-id|inode-&gt;i_ctime
-suffix:semicolon
 id|stat-&gt;size
 op_assign
 id|inode-&gt;i_size
