@@ -7033,13 +7033,6 @@ op_star
 id|rx
 )paren
 (brace
-r_int
-r_int
-id|rx_offset
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* u32 align protocol headers */
 r_if
 c_cond
 (paren
@@ -7052,7 +7045,7 @@ c_func
 (paren
 id|RFD_BUF_LEN
 op_plus
-id|rx_offset
+id|NET_IP_ALIGN
 )paren
 )paren
 )paren
@@ -7072,7 +7065,7 @@ c_func
 (paren
 id|rx-&gt;skb
 comma
-id|rx_offset
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|memcpy
