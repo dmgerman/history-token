@@ -975,14 +975,6 @@ id|i
 suffix:semicolon
 r_else
 (brace
-id|DQUOT_FREE_BLOCK
-c_func
-(paren
-id|inode
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|gdp-&gt;bg_free_blocks_count
 op_assign
 id|cpu_to_le16
@@ -1071,7 +1063,13 @@ id|unlock_super
 id|sb
 )paren
 suffix:semicolon
-r_return
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|inode
+comma
+id|freed
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ext2_new_block uses a goal block to assist allocation.  If the goal is&n; * free, or there is a free block within 32 blocks of the goal, that block&n; * is allocated.  Otherwise a forward search is made for a free block; within &n; * each block group the search first looks for an entire free byte in the block&n; * bitmap, and then for any free bit if that fails.&n; * This function also updates quota and i_blocks field.&n; */
