@@ -1621,11 +1621,9 @@ id|size
 )paren
 op_logical_and
 (paren
-id|end
-op_minus
-id|a1ea
-op_ge
-id|size
+id|a2sa
+OG
+id|start
 )paren
 )paren
 (brace

@@ -8,10 +8,12 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 DECL|macro|CSR1212_MALLOC
-mdefine_line|#define CSR1212_MALLOC(size)&t;&t;kmalloc((size), in_interrupt() ? GFP_ATOMIC : GFP_KERNEL)
+mdefine_line|#define CSR1212_MALLOC(size)&t;&t;vmalloc((size))
 DECL|macro|CSR1212_FREE
-mdefine_line|#define CSR1212_FREE(ptr)&t;&t;kfree(ptr)
+mdefine_line|#define CSR1212_FREE(ptr)&t;&t;vfree(ptr)
 DECL|macro|CSR1212_BE16_TO_CPU
 mdefine_line|#define CSR1212_BE16_TO_CPU(quad)&t;be16_to_cpu(quad)
 DECL|macro|CSR1212_CPU_TO_BE16
