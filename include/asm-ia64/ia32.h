@@ -72,6 +72,27 @@ op_star
 id|childregs
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ia32_copy_partial_page_list
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia32_drop_partial_page_list
+(paren
+r_struct
+id|partial_page_list
+op_star
+)paren
+suffix:semicolon
 macro_line|# endif /* !CONFIG_IA32_SUPPORT */
 multiline_comment|/* Declare this unconditionally, so we don&squot;t get warnings for unreachable code.  */
 r_extern

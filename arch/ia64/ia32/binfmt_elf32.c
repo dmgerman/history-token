@@ -745,6 +745,14 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+multiline_comment|/* Can&squot;t do it in ia64_elf32_init(). Needs to be done before calls to&n;&t;   elf32_map() */
+id|current-&gt;thread.ppl
+op_assign
+id|ia32_init_pp_list
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

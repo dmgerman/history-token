@@ -1730,6 +1730,23 @@ comma
 id|child_ptregs
 )paren
 suffix:semicolon
+multiline_comment|/* Copy partially mapped page list */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|retval
+)paren
+id|retval
+op_assign
+id|ia32_copy_partial_page_list
+c_func
+(paren
+id|p
+comma
+id|clone_flags
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
@@ -2954,6 +2971,27 @@ c_func
 id|current
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+r_if
+c_cond
+(paren
+id|IS_IA32_PROCESS
+c_func
+(paren
+id|ia64_task_regs
+c_func
+(paren
+id|current
+)paren
+)paren
+)paren
+id|ia32_drop_partial_page_list
+c_func
+(paren
+id|current-&gt;thread.ppl
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Clean up state associated with current thread.  This is called when&n; * the thread calls exit().&n; */
 r_void
@@ -2994,6 +3032,27 @@ id|pfm_release_debug_registers
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+r_if
+c_cond
+(paren
+id|IS_IA32_PROCESS
+c_func
+(paren
+id|ia64_task_regs
+c_func
+(paren
+id|current
+)paren
+)paren
+)paren
+id|ia32_drop_partial_page_list
+c_func
+(paren
+id|current-&gt;thread.ppl
 )paren
 suffix:semicolon
 macro_line|#endif
