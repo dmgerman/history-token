@@ -377,7 +377,7 @@ id|value
 )paren
 (brace
 r_return
-id|EFF_PTR
+id|ERR_PTR
 c_func
 (paren
 op_minus
