@@ -5,8 +5,93 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &quot;mmu_decl.h&quot;
-multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_kernel_range(start, end) flushes kernel pages&n; *&n; * since the hardware hash table functions as an extension of the&n; * tlb as far as the linux tables are concerned, flush it too.&n; *    -- Cort&n; */
+multiline_comment|/*&n; * Called when unmapping pages to flush entries from the TLB/hash table.&n; */
+DECL|function|flush_hash_entry
+r_void
+id|flush_hash_entry
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+id|pte_t
+op_star
+id|ptep
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_int
+r_int
+id|ptephys
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Hash
+op_ne
+l_int|0
+)paren
+(brace
+id|ptephys
+op_assign
+id|__pa
+c_func
+(paren
+id|ptep
+)paren
+op_amp
+id|PAGE_MASK
+suffix:semicolon
+id|flush_hash_pages
+c_func
+(paren
+id|mm-&gt;context
+comma
+id|addr
+comma
+id|ptephys
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; * Called at the end of a mmu_gather operation to make sure the&n; * TLB flush is completely done.&n; */
+DECL|function|tlb_flush
+r_void
+id|tlb_flush
+c_func
+(paren
+id|mmu_gather_t
+op_star
+id|tlb
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|Hash
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * 603 needs to flush the whole TLB here since&n;&t;&t; * it doesn&squot;t use a hash table.&n;&t;&t; */
+id|_tlbia
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_kernel_range(start, end) flushes kernel pages&n; *&n; * since the hardware hash table functions as an extension of the&n; * tlb as far as the linux tables are concerned, flush it too.&n; *    -- Cort&n; */
 multiline_comment|/*&n; * 750 SMP is a Bad Idea because the 750 doesn&squot;t broadcast all&n; * the cache operations on the bus.  Hence we need to use an IPI&n; * to get the other CPU(s) to invalidate their TLBs.&n; */
 macro_line|#ifdef CONFIG_SMP_750
 DECL|macro|FINISH_FLUSH
@@ -204,44 +289,6 @@ id|pmd
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Flush all tlb/hash table entries (except perhaps for those&n; * mapping RAM starting at PAGE_OFFSET, since they never change).&n; */
-r_void
-DECL|function|flush_tlb_all
-id|flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/*&n;&t; * Just flush the kernel part of the address space, that&squot;s&n;&t; * all that the current callers of this require.&n;&t; * Eventually I hope to persuade the powers that be that&n;&t; * we can and should dispense with flush_tlb_all().&n;&t; *  -- paulus.&n;&t; *&n;&t; * In fact this should never get called now that we&n;&t; * have flush_tlb_kernel_range.  -- paulus&n;&t; */
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;flush_tlb_all called from %p&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|flush_range
-c_func
-(paren
-op_amp
-id|init_mm
-comma
-id|TASK_SIZE
-comma
-op_complement
-l_int|0UL
-)paren
-suffix:semicolon
-id|FINISH_FLUSH
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Flush kernel TLB entries in the given range&n; */
 DECL|function|flush_tlb_kernel_range
 r_void
@@ -271,7 +318,7 @@ suffix:semicolon
 id|FINISH_FLUSH
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flush all the (user) entries for the address space described&n; * by mm.  We can&squot;t rely on mm-&gt;mmap describing all the entries&n; * that might be in the hash table.&n; */
+multiline_comment|/*&n; * Flush all the (user) entries for the address space described by mm.&n; */
 DECL|function|flush_tlb_mm
 r_void
 id|flush_tlb_mm
@@ -283,6 +330,11 @@ op_star
 id|mm
 )paren
 (brace
+r_struct
+id|vm_area_struct
+op_star
+id|mp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -299,17 +351,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|mm-&gt;map_count
-)paren
-(brace
-r_struct
-id|vm_area_struct
-op_star
-id|mp
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -335,20 +376,6 @@ comma
 id|mp-&gt;vm_end
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|flush_range
-c_func
-(paren
-id|mm
-comma
-l_int|0
-comma
-id|TASK_SIZE
-)paren
-suffix:semicolon
-)brace
 id|FINISH_FLUSH
 suffix:semicolon
 )brace
