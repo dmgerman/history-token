@@ -14439,6 +14439,17 @@ id|clear_buffer_journal_dirty
 id|bh
 )paren
 suffix:semicolon
+id|clear_buffer_dirty
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|clear_buffer_journal_test
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|put_bh
 c_func
 (paren
@@ -15705,6 +15716,18 @@ id|cleaned
 (brace
 multiline_comment|/* remove_from_transaction will brelse the buffer if it was &n;&t;    ** in the current trans&n;&t;    */
 id|clear_buffer_journal_dirty
+(paren
+id|cn-&gt;bh
+)paren
+suffix:semicolon
+id|clear_buffer_dirty
+c_func
+(paren
+id|cn-&gt;bh
+)paren
+suffix:semicolon
+id|clear_buffer_journal_test
+c_func
 (paren
 id|cn-&gt;bh
 )paren
