@@ -83,7 +83,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 555 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 578 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 id|MODULE_PARM
@@ -2108,6 +2108,8 @@ l_int|0
 )paren
 op_plus
 id|OHCI1394_REGISTER_SIZE
+op_minus
+l_int|1
 comma
 id|ohci-&gt;max_packet_size
 )paren
@@ -3291,10 +3293,6 @@ op_star
 id|d
 suffix:semicolon
 r_int
-r_char
-id|tcode
-suffix:semicolon
-r_int
 r_int
 id|flags
 suffix:semicolon
@@ -3323,23 +3321,23 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Decide wether we have an iso, a request, or a response packet */
-id|tcode
-op_assign
-(paren
-id|packet-&gt;header
-(braket
-l_int|0
-)braket
-op_rshift
-l_int|4
-)paren
-op_amp
-l_int|0xf
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcode
+id|packet-&gt;type
+op_eq
+id|hpsb_raw
+)paren
+id|d
+op_assign
+op_amp
+id|ohci-&gt;at_req_context
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|packet-&gt;tcode
 op_eq
 id|TCODE_ISO_DATA
 )paren
@@ -3352,7 +3350,7 @@ r_else
 r_if
 c_cond
 (paren
-id|tcode
+id|packet-&gt;tcode
 op_amp
 l_int|0x02
 )paren

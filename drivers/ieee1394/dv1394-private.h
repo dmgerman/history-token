@@ -887,8 +887,9 @@ r_int
 id|data
 suffix:semicolon
 multiline_comment|/* Max # of packets per frame */
+multiline_comment|/* 320 is enough for NTSC, need to check what PAL is */
 DECL|macro|MAX_PACKETS
-mdefine_line|#define MAX_PACKETS 320
+mdefine_line|#define MAX_PACKETS 500
 multiline_comment|/* a PAGE_SIZE memory pool for allocating CIP headers&n;&t;   !header_pool must be aligned to PAGE_SIZE! */
 DECL|member|header_pool
 r_struct
