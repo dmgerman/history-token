@@ -85,6 +85,7 @@ suffix:semicolon
 DECL|variable|io_mem
 r_static
 r_void
+id|__iomem
 op_star
 id|io_mem
 suffix:semicolon

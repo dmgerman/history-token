@@ -154,6 +154,7 @@ id|controller
 op_star
 comma
 r_void
+id|__iomem
 op_star
 comma
 id|u8
@@ -168,6 +169,7 @@ id|controller
 op_star
 comma
 r_void
+id|__iomem
 op_star
 comma
 id|u8
@@ -259,6 +261,7 @@ id|controller
 op_star
 comma
 r_void
+id|__iomem
 op_star
 comma
 id|u8
@@ -332,6 +335,7 @@ op_star
 id|ctlr_ptr
 comma
 r_void
+id|__iomem
 op_star
 id|WPGBbar
 comma
@@ -346,6 +350,7 @@ r_int
 id|i
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|wpg_addr
 suffix:semicolon
@@ -744,6 +749,7 @@ op_star
 id|ctlr_ptr
 comma
 r_void
+id|__iomem
 op_star
 id|WPGBbar
 comma
@@ -758,6 +764,7 @@ id|u8
 id|rc
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|wpg_addr
 suffix:semicolon
@@ -1338,6 +1345,7 @@ op_star
 id|ctlr
 comma
 r_void
+id|__iomem
 op_star
 id|base
 comma
@@ -1423,6 +1431,7 @@ op_star
 id|ctlr
 comma
 r_void
+id|__iomem
 op_star
 id|base
 comma
@@ -1757,6 +1766,7 @@ id|pstatus
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|wpg_bbar
 op_assign
@@ -2351,6 +2361,7 @@ id|cmd
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|wpg_bbar
 op_assign
@@ -4078,6 +4089,7 @@ op_star
 id|ctlr_ptr
 comma
 r_void
+id|__iomem
 op_star
 id|wpg_bbar
 comma
