@@ -638,6 +638,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -722,7 +723,7 @@ id|vxfs_inode_info
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL
 comma

@@ -12297,10 +12297,16 @@ multiline_comment|/* Everything in here is from the Windows driver */
 DECL|macro|FIRMWARE_VERSION
 mdefine_line|#define FIRMWARE_VERSION(x,y) (params-&gt;version.firmwareVersion == (x) &amp;&amp; &bslash;&n;                               params-&gt;version.firmwareRevision == (y))
 multiline_comment|/* define for compgain calculation */
-DECL|macro|COMPGAIN
+macro_line|#if 0
 mdefine_line|#define COMPGAIN(base, curexp, newexp) &bslash;&n;    (u8) ((((float) base - 128.0) * ((float) curexp / (float) newexp)) + 128.5)
-DECL|macro|EXP_FROM_COMP
 mdefine_line|#define EXP_FROM_COMP(basecomp, curcomp, curexp) &bslash;&n;    (u16)((float)curexp * (float)(u8)(curcomp + 128) / (float)(u8)(basecomp - 128))
+macro_line|#else
+multiline_comment|/* equivalent functions without floating point math */
+DECL|macro|COMPGAIN
+mdefine_line|#define COMPGAIN(base, curexp, newexp) &bslash;&n;    (u8)(128 + (((u32)(2*(base-128)*curexp + newexp)) / (2* newexp)) )
+DECL|macro|EXP_FROM_COMP
+mdefine_line|#define EXP_FROM_COMP(basecomp, curcomp, curexp) &bslash;&n;     (u16)(((u32)(curexp * (u8)(curcomp + 128)) / (u8)(basecomp - 128)))
+macro_line|#endif
 r_int
 id|currentexp
 op_assign

@@ -511,11 +511,6 @@ r_int
 r_int
 id|rsp0
 suffix:semicolon
-DECL|member|rip
-r_int
-r_int
-id|rip
-suffix:semicolon
 DECL|member|rsp
 r_int
 r_int
@@ -552,15 +547,36 @@ comma
 id|gsindex
 suffix:semicolon
 multiline_comment|/* Hardware debugging registers */
-DECL|member|debugreg
+DECL|member|debugreg0
 r_int
 r_int
-id|debugreg
-(braket
-l_int|8
-)braket
+id|debugreg0
 suffix:semicolon
-multiline_comment|/* %%db0-7 debug registers */
+DECL|member|debugreg1
+r_int
+r_int
+id|debugreg1
+suffix:semicolon
+DECL|member|debugreg2
+r_int
+r_int
+id|debugreg2
+suffix:semicolon
+DECL|member|debugreg3
+r_int
+r_int
+id|debugreg3
+suffix:semicolon
+DECL|member|debugreg6
+r_int
+r_int
+id|debugreg6
+suffix:semicolon
+DECL|member|debugreg7
+r_int
+r_int
+id|debugreg7
+suffix:semicolon
 multiline_comment|/* fault info */
 DECL|member|cr2
 DECL|member|trap_no
@@ -768,17 +784,81 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_has_fpu
 mdefine_line|#define cpu_has_fpu 1
-macro_line|#if 0
-multiline_comment|/* disabled for now to work around opteron errata #91. Also gcc 3.2&n;   doesn&squot;t like this in some cases. */
+multiline_comment|/* Some early Opteron versions incorrectly fault on prefetch (errata #91). &n;   If this happens just jump back. */
+DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
-mdefine_line|#define prefetch(x) __builtin_prefetch((x),0,1)
-macro_line|#endif
+DECL|function|prefetch
+r_static
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_void
+op_star
+id|x
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;2: prefetchnta %0&bslash;n1:&bslash;t&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;  .align 8&bslash;n&bslash;t&quot;
+l_string|&quot;  .quad  2b,1b&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&quot;
+op_scope_resolution
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|ARCH_HAS_PREFETCHW
 mdefine_line|#define ARCH_HAS_PREFETCHW
+DECL|function|prefetchw
+r_static
+r_inline
+r_void
+id|prefetchw
+c_func
+(paren
+r_void
+op_star
+id|x
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;2: prefetchw %0&bslash;n1:&bslash;t&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;  .align 8&bslash;n&bslash;t&quot;
+l_string|&quot;  .quad  2b,1b&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&quot;
+op_scope_resolution
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
-DECL|macro|prefetchw
-mdefine_line|#define prefetchw(x) __builtin_prefetch((x),1,1)
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)  prefetchw(x)
 DECL|macro|cpu_relax

@@ -153,6 +153,7 @@ r_void
 id|uninorth_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -329,6 +330,7 @@ r_int
 id|uninorth_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -1308,16 +1310,6 @@ dot
 id|agp_destroy_page
 op_assign
 id|agp_generic_destroy_page
-comma
-dot
-id|suspend
-op_assign
-id|agp_generic_suspend
-comma
-dot
-id|resume
-op_assign
-id|agp_generic_resume
 comma
 dot
 id|cant_use_aperture

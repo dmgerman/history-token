@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_ttp.c&n; * Version:       1.0&n; * Description:   Interface between IrCOMM and IrTTP&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 20:48:27 1999&n; * Modified at:   Mon Dec 13 11:35:13 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_ttp.c&n; * Version:       1.0&n; * Description:   Interface between IrCOMM and IrTTP&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 20:48:27 1999&n; * Modified at:   Mon Dec 13 11:35:13 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -64,14 +64,17 @@ id|notify.instance
 op_assign
 id|self
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|notify.name
 comma
 l_string|&quot;IrCOMM&quot;
 comma
-id|NOTIFY_MAX_NAME
+r_sizeof
+(paren
+id|notify.name
+)paren
 )paren
 suffix:semicolon
 id|self-&gt;tsap
@@ -171,6 +174,20 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - should be NULL anyway */
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+(brace
+id|skb_get
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|irttp_connect_request
@@ -209,7 +226,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|userdata
 )paren
 (brace
 r_int
@@ -225,6 +242,20 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - should be NULL anyway */
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+(brace
+id|skb_get
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|irttp_connect_response
@@ -234,7 +265,7 @@ id|self-&gt;tsap
 comma
 id|TTP_SAR_DISABLE
 comma
-id|skb
+id|userdata
 )paren
 suffix:semicolon
 r_return
@@ -307,6 +338,13 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - see ircomm_tty_do_softint() */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|skb_push
 c_func
 (paren
@@ -346,12 +384,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* irttp_data_request already free the packet */
 )brace
 r_return
 id|ret
@@ -448,6 +481,13 @@ comma
 id|skb
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see ircomm_tty_data_indication(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -550,7 +590,8 @@ id|qos
 op_ne
 l_int|NULL
 comma
-r_return
+r_goto
+id|out
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -570,13 +611,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|info.max_data_size
@@ -610,6 +646,15 @@ id|skb
 comma
 op_amp
 id|info
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+multiline_comment|/* Drop reference count - see ircomm_tty_connect_confirm(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 )brace
@@ -710,7 +755,8 @@ id|qos
 op_ne
 l_int|NULL
 comma
-r_return
+r_goto
+id|out
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -730,13 +776,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|info.max_data_size
@@ -772,6 +813,15 @@ op_amp
 id|info
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+multiline_comment|/* Drop reference count - see ircomm_tty_connect_indication(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_ttp_disconnect_request (self, userdata, info)&n; *&n; *    &n; *&n; */
 DECL|function|ircomm_ttp_disconnect_request
@@ -798,6 +848,20 @@ id|info
 r_int
 id|ret
 suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - should be NULL anyway */
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+(brace
+id|skb_get
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|irttp_disconnect_request
@@ -902,6 +966,20 @@ op_amp
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count - see ircomm_tty_disconnect_indication(). */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function ircomm_ttp_flow_indication (instance, sap, cmd)&n; *&n; *    Layer below is telling us to start or stop the flow of data&n; *&n; */
 DECL|function|ircomm_ttp_flow_indication

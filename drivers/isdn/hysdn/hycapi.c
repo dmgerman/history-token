@@ -1091,7 +1091,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HYSDN: apl %d allready registered&bslash;n&quot;
+l_string|&quot;HYSDN: apl %d already registered&bslash;n&quot;
 comma
 id|appl
 )paren
@@ -3646,11 +3646,9 @@ comma
 id|cinfo-&gt;cardname
 )paren
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|ctrl
-)paren
+id|ctrl-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|retval
 op_assign

@@ -983,9 +983,10 @@ op_star
 id|device_node
 comma
 r_struct
-id|acpi_device_id
+id|acpi_compatible_id_list
 op_star
-id|cid
+op_star
+id|return_cid_list
 )paren
 suffix:semicolon
 id|acpi_status

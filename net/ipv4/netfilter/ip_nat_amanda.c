@@ -898,6 +898,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|amanda
+id|NEEDS_CONNTRACK
+c_func
+(paren
+id|amanda
+)paren
+suffix:semicolon
 DECL|variable|init
 id|module_init
 c_func

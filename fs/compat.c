@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;net/sock.h&gt;&t;&t;/* siocdevprivate_ioctl */
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Not all architectures have sys_utime, so implement this in terms&n; * of sys_utimes.&n; */
 DECL|function|compat_sys_utime
@@ -1829,6 +1830,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef HAVE_ARCH_GET_COMPAT_FLOCK64
 DECL|function|get_compat_flock64
 r_static
 r_int
@@ -1917,6 +1919,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef HAVE_ARCH_PUT_COMPAT_FLOCK64
 DECL|function|put_compat_flock64
 r_static
 r_int
@@ -2005,6 +2009,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 r_extern
 id|asmlinkage
 r_int

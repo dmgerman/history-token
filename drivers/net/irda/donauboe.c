@@ -4276,6 +4276,10 @@ id|toshoboe_checkstuck
 id|self
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 multiline_comment|/* Check if we need to change the speed */
 multiline_comment|/* But not now. Wait after transmission if mtt not required */
 id|speed

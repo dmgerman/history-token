@@ -466,14 +466,14 @@ op_mod
 id|rax
 dot
 id|endm
+DECL|macro|REST_SKIP
+mdefine_line|#define REST_SKIP 6*8&t;&t;&t;
 dot
 id|macro
 id|SAVE_REST
 id|subq
 "$"
-l_int|6
-op_star
-l_int|8
+id|REST_SKIP
 comma
 op_mod
 id|rsp
@@ -548,8 +548,6 @@ id|rsp
 )paren
 dot
 id|endm
-DECL|macro|REST_SKIP
-mdefine_line|#define REST_SKIP 6*8
 dot
 id|macro
 id|RESTORE_REST

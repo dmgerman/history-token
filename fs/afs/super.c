@@ -96,6 +96,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -255,6 +256,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|afs_i_init_once
 comma
@@ -1697,11 +1700,11 @@ suffix:semicolon
 multiline_comment|/* end afs_fill_super() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * get an AFS superblock&n; * - TODO: don&squot;t use get_sb_nodev(), but rather call sget() directly&n; */
-DECL|function|afs_get_sb
 r_static
 r_struct
 id|super_block
 op_star
+DECL|function|afs_get_sb
 id|afs_get_sb
 c_func
 (paren
@@ -1713,6 +1716,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

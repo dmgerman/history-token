@@ -9738,6 +9738,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 id|dev-&gt;open
 op_assign
 id|de_open

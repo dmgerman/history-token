@@ -1174,7 +1174,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|floppy_irq
 (paren
 r_int
@@ -2136,7 +2136,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|floppy_irq
 r_static
-r_void
+id|irqreturn_t
 id|floppy_irq
 (paren
 r_int
@@ -2229,6 +2229,9 @@ l_string|&quot;FDC irq, no handler&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* Error handling: If some error happened, retry some times, then&n; * recalibrate, then try again, and fail after MAX_ERRORS.&n; */
 DECL|function|fd_error
@@ -6159,11 +6162,11 @@ multiline_comment|/* get the parameters from user space */
 r_if
 c_cond
 (paren
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 l_int|1
 op_logical_and
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 op_minus
 l_int|1
@@ -6350,7 +6353,7 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-id|p-&gt;disk
+id|floppy-&gt;disk
 comma
 id|UDT-&gt;blocks
 )paren
@@ -6534,7 +6537,7 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-id|p-&gt;disk
+id|floppy-&gt;disk
 comma
 id|UDT-&gt;blocks
 )paren
@@ -6582,11 +6585,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 l_int|1
 op_logical_and
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 op_minus
 l_int|1
@@ -6652,7 +6655,7 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-id|p-&gt;disk
+id|floppy-&gt;disk
 comma
 id|MAX_DISK_SIZE
 op_star
@@ -7448,7 +7451,7 @@ suffix:semicolon
 DECL|function|floppy_find
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|floppy_find
 c_func

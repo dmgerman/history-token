@@ -104,8 +104,6 @@ id|ACPI_BITMASK_ALL_FIXED_STATUS
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1092,9 +1090,6 @@ id|value2
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
-id|bank_offset
-suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
@@ -1155,8 +1150,6 @@ id|value1
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1172,6 +1165,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
+multiline_comment|/* PM1B is optional */
 id|status
 op_assign
 id|acpi_hw_low_level_read
@@ -1183,8 +1177,6 @@ id|value2
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|value1
@@ -1196,14 +1188,7 @@ suffix:semicolon
 r_case
 id|ACPI_REGISTER_PM1_ENABLE
 suffix:colon
-multiline_comment|/* 16-bit access*/
-id|bank_offset
-op_assign
-id|ACPI_DIV_2
-(paren
-id|acpi_gbl_FADT-&gt;pm1_evt_len
-)paren
-suffix:semicolon
+multiline_comment|/* 16-bit access */
 id|status
 op_assign
 id|acpi_hw_low_level_read
@@ -1214,9 +1199,7 @@ op_amp
 id|value1
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
-comma
-id|bank_offset
+id|acpi_gbl_xpm1a_enable
 )paren
 suffix:semicolon
 r_if
@@ -1232,6 +1215,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
+multiline_comment|/* PM1B is optional */
 id|status
 op_assign
 id|acpi_hw_low_level_read
@@ -1242,9 +1226,7 @@ op_amp
 id|value2
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
-comma
-id|bank_offset
+id|acpi_gbl_xpm1b_enable
 )paren
 suffix:semicolon
 id|value1
@@ -1268,8 +1250,6 @@ id|value1
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1a_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1296,8 +1276,6 @@ id|value2
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1b_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|value1
@@ -1321,8 +1299,6 @@ id|value1
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm2_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1342,8 +1318,6 @@ id|value1
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm_tmr_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1441,9 +1415,6 @@ id|u32
 id|value
 )paren
 (brace
-id|u32
-id|bank_offset
-suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
@@ -1503,8 +1474,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1520,6 +1489,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
+multiline_comment|/* PM1B is optional */
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -1530,8 +1500,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1540,13 +1508,6 @@ r_case
 id|ACPI_REGISTER_PM1_ENABLE
 suffix:colon
 multiline_comment|/* 16-bit access*/
-id|bank_offset
-op_assign
-id|ACPI_DIV_2
-(paren
-id|acpi_gbl_FADT-&gt;pm1_evt_len
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -1556,9 +1517,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
-comma
-id|bank_offset
+id|acpi_gbl_xpm1a_enable
 )paren
 suffix:semicolon
 r_if
@@ -1574,6 +1533,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
+multiline_comment|/* PM1B is optional */
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -1583,9 +1543,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
-comma
-id|bank_offset
+id|acpi_gbl_xpm1b_enable
 )paren
 suffix:semicolon
 r_break
@@ -1604,8 +1562,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1a_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1631,8 +1587,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1b_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1651,8 +1605,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1a_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1671,8 +1623,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm1b_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1691,8 +1641,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm2_cnt_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1711,8 +1659,6 @@ id|value
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm_tmr_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -1769,7 +1715,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_read&n; *&n; * PARAMETERS:  Register            - GAS register structure&n; *              Offset              - Offset from the base address in the GAS&n; *              Width               - 8, 16, or 32&n; *&n; * RETURN:      Value read&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_read&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - Where the value is returned&n; *              Register            - GAS register structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_low_level_read
 id|acpi_hw_low_level_read
@@ -1785,17 +1731,8 @@ r_struct
 id|acpi_generic_address
 op_star
 id|reg
-comma
-id|u32
-id|offset
 )paren
 (brace
-id|acpi_physical_address
-id|mem_address
-suffix:semicolon
-id|acpi_io_address
-id|io_address
-suffix:semicolon
 r_struct
 id|acpi_pci_id
 id|pci_id
@@ -1847,22 +1784,14 @@ id|reg-&gt;address_space_id
 r_case
 id|ACPI_ADR_SPACE_SYSTEM_MEMORY
 suffix:colon
-id|mem_address
-op_assign
-(paren
-id|reg-&gt;address
-op_plus
-(paren
-id|acpi_physical_address
-)paren
-id|offset
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|acpi_os_read_memory
 (paren
-id|mem_address
+(paren
+id|acpi_physical_address
+)paren
+id|reg-&gt;address
 comma
 id|value
 comma
@@ -1874,25 +1803,14 @@ suffix:semicolon
 r_case
 id|ACPI_ADR_SPACE_SYSTEM_IO
 suffix:colon
-id|io_address
-op_assign
-(paren
-id|acpi_io_address
-)paren
-(paren
-id|reg-&gt;address
-op_plus
-(paren
-id|acpi_physical_address
-)paren
-id|offset
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|acpi_os_read_port
 (paren
-id|io_address
+(paren
+id|acpi_io_address
+)paren
+id|reg-&gt;address
 comma
 id|value
 comma
@@ -1931,13 +1849,9 @@ op_assign
 (paren
 id|u16
 )paren
-(paren
 id|ACPI_PCI_REGISTER
 (paren
 id|reg-&gt;address
-)paren
-op_plus
-id|offset
 )paren
 suffix:semicolon
 id|status
@@ -1982,7 +1896,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_write&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - To be written&n; *              Register            - GAS register structure&n; *              Offset              - Offset from the base address in the GAS&n; *&n; *&n; * RETURN:      Value read&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_write&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - To be written&n; *              Register            - GAS register structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Write to either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_low_level_write
 id|acpi_hw_low_level_write
@@ -1997,17 +1911,8 @@ r_struct
 id|acpi_generic_address
 op_star
 id|reg
-comma
-id|u32
-id|offset
 )paren
 (brace
-id|acpi_physical_address
-id|mem_address
-suffix:semicolon
-id|acpi_io_address
-id|io_address
-suffix:semicolon
 r_struct
 id|acpi_pci_id
 id|pci_id
@@ -2054,22 +1959,14 @@ id|reg-&gt;address_space_id
 r_case
 id|ACPI_ADR_SPACE_SYSTEM_MEMORY
 suffix:colon
-id|mem_address
-op_assign
-(paren
-id|reg-&gt;address
-op_plus
-(paren
-id|acpi_physical_address
-)paren
-id|offset
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|acpi_os_write_memory
 (paren
-id|mem_address
+(paren
+id|acpi_physical_address
+)paren
+id|reg-&gt;address
 comma
 id|value
 comma
@@ -2081,25 +1978,14 @@ suffix:semicolon
 r_case
 id|ACPI_ADR_SPACE_SYSTEM_IO
 suffix:colon
-id|io_address
-op_assign
-(paren
-id|acpi_io_address
-)paren
-(paren
-id|reg-&gt;address
-op_plus
-(paren
-id|acpi_physical_address
-)paren
-id|offset
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|acpi_os_write_port
 (paren
-id|io_address
+(paren
+id|acpi_io_address
+)paren
+id|reg-&gt;address
 comma
 id|value
 comma
@@ -2138,13 +2024,9 @@ op_assign
 (paren
 id|u16
 )paren
-(paren
 id|ACPI_PCI_REGISTER
 (paren
 id|reg-&gt;address
-)paren
-op_plus
-id|offset
 )paren
 suffix:semicolon
 id|status

@@ -32,23 +32,23 @@ r_int
 id|fop
 suffix:semicolon
 DECL|member|rip
-id|u64
+id|__u64
 id|rip
 suffix:semicolon
 DECL|member|rdp
-id|u64
+id|__u64
 id|rdp
 suffix:semicolon
 DECL|member|mxcsr
-id|u32
+id|__u32
 id|mxcsr
 suffix:semicolon
 DECL|member|mxcsr_mask
-id|u32
+id|__u32
 id|mxcsr_mask
 suffix:semicolon
 DECL|member|st_space
-id|u32
+id|__u32
 id|st_space
 (braket
 l_int|32
@@ -56,7 +56,7 @@ l_int|32
 suffix:semicolon
 multiline_comment|/* 8*16 bytes for each FP-reg = 128 bytes */
 DECL|member|xmm_space
-id|u32
+id|__u32
 id|xmm_space
 (braket
 l_int|64
@@ -64,7 +64,7 @@ l_int|64
 suffix:semicolon
 multiline_comment|/* 16*16 bytes for each XMM-reg = 256 bytes */
 DECL|member|padding
-id|u32
+id|__u32
 id|padding
 (braket
 l_int|24

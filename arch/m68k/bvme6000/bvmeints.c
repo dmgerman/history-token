@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 r_static
-r_void
+id|irqreturn_t
 id|bvme6000_defhand
 (paren
 r_int
@@ -29,7 +29,7 @@ r_static
 r_struct
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -154,7 +154,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -493,7 +493,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|bvme6000_process_int
-r_void
+id|irqreturn_t
 id|bvme6000_process_int
 (paren
 r_int
@@ -513,6 +513,7 @@ id|vec
 OG
 l_int|255
 )paren
+(brace
 id|printk
 (paren
 l_string|&quot;bvme6000_process_int: Illegal vector %ld&quot;
@@ -520,6 +521,10 @@ comma
 id|vec
 )paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
 r_else
 (brace
 id|irq_tab
@@ -549,6 +554,9 @@ id|dev_id
 comma
 id|fp
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -636,7 +644,7 @@ suffix:semicolon
 )brace
 DECL|function|bvme6000_defhand
 r_static
-r_void
+id|irqreturn_t
 id|bvme6000_defhand
 (paren
 r_int
@@ -658,6 +666,9 @@ l_string|&quot;Unknown interrupt 0x%02x&bslash;n&quot;
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 DECL|function|bvme6000_enable_irq

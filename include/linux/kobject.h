@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|KOBJ_NAME_LEN
-mdefine_line|#define KOBJ_NAME_LEN&t;16
+mdefine_line|#define KOBJ_NAME_LEN&t;20
 DECL|struct|kobject
 r_struct
 id|kobject

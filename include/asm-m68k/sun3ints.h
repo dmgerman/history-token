@@ -39,7 +39,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -77,7 +77,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|sun3_default_handler
@@ -96,7 +96,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|sun3_inthandler
@@ -155,7 +155,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|sun3_process_int
 c_func
 (paren

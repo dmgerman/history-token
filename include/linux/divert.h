@@ -169,6 +169,7 @@ mdefine_line|#define DIVARG1_REMOVE&t;&t;&t;3 /* REMOVE something */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* diverter functions */
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#ifdef CONFIG_NET_DIVERT
 r_int
 id|alloc_divert_blk
 c_func
@@ -211,6 +212,44 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+DECL|function|handle_diverter
+r_static
+r_inline
+r_void
+id|handle_diverter
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+multiline_comment|/* if diversion is supported on device, then divert */
+r_if
+c_cond
+(paren
+id|skb-&gt;dev-&gt;divert
+op_logical_and
+id|skb-&gt;dev-&gt;divert-&gt;divert
+)paren
+id|divert_frame
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|alloc_divert_blk
+macro_line|# define alloc_divert_blk(dev)&t;&t;(0)
+DECL|macro|free_divert_blk
+macro_line|# define free_divert_blk(dev)&t;&t;do {} while (0)
+DECL|macro|divert_ioctl
+macro_line|# define divert_ioctl(cmd, arg)&t;&t;(-ENOPKG)
+DECL|macro|handle_diverter
+macro_line|# define handle_diverter(skb)&t;&t;do {} while (0)
+macro_line|#endif
 macro_line|#endif 
 macro_line|#endif&t;/* _LINUX_DIVERT_H */
 eof

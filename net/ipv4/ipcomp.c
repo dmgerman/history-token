@@ -1835,6 +1835,11 @@ op_assign
 l_string|&quot;IPCOMP4&quot;
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|proto
 op_assign
 id|IPPROTO_COMP
@@ -1894,13 +1899,6 @@ c_func
 r_void
 )paren
 (brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|ipcomp_type
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

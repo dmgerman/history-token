@@ -13529,10 +13529,12 @@ id|SIS_CMDTYPE
 id|cmd_type
 suffix:semicolon
 macro_line|#ifndef AGPOFF
+r_struct
 id|agp_kern_info
 op_star
 id|agp_info
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 id|agp
@@ -13731,7 +13733,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|agp_kern_info
+op_star
+id|agp_info
 )paren
 )paren
 suffix:semicolon
@@ -13748,7 +13751,8 @@ l_int|0x00
 comma
 r_sizeof
 (paren
-id|agp_kern_info
+op_star
+id|agp_info
 )paren
 )paren
 suffix:semicolon

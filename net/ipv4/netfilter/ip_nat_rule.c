@@ -619,10 +619,6 @@ op_star
 op_star
 id|pskb
 comma
-r_int
-r_int
-id|hooknum
-comma
 r_const
 r_struct
 id|net_device
@@ -634,6 +630,10 @@ r_struct
 id|net_device
 op_star
 id|out
+comma
+r_int
+r_int
+id|hooknum
 comma
 r_const
 r_void
@@ -722,10 +722,6 @@ op_star
 op_star
 id|pskb
 comma
-r_int
-r_int
-id|hooknum
-comma
 r_const
 r_struct
 id|net_device
@@ -737,6 +733,10 @@ r_struct
 id|net_device
 op_star
 id|out
+comma
+r_int
+r_int
+id|hooknum
 comma
 r_const
 r_void

@@ -373,7 +373,7 @@ op_amp
 id|cls-&gt;interfaces
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cls-&gt;subsys.kset.kobj.name
@@ -1178,7 +1178,7 @@ id|class_dev-&gt;class_id
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|class_dev-&gt;kobj.name

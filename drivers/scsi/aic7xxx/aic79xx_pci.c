@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *&t;aic7901 and aic7902 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx_pci.c#71 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *&t;aic7901 and aic7902 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx_pci.c#73 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
@@ -65,32 +65,36 @@ suffix:semicolon
 )brace
 DECL|macro|ID_ALL_MASK
 mdefine_line|#define ID_ALL_MASK&t;&t;&t;0xFFFFFFFFFFFFFFFFull
+DECL|macro|ID_ALL_IROC_MASK
+mdefine_line|#define ID_ALL_IROC_MASK&t;&t;0xFFFFFF7FFFFFFFFFull
 DECL|macro|ID_DEV_VENDOR_MASK
 mdefine_line|#define ID_DEV_VENDOR_MASK&t;&t;0xFFFFFFFF00000000ull
 DECL|macro|ID_9005_GENERIC_MASK
 mdefine_line|#define ID_9005_GENERIC_MASK&t;&t;0xFFF0FFFF00000000ull
+DECL|macro|ID_9005_GENERIC_IROC_MASK
+mdefine_line|#define ID_9005_GENERIC_IROC_MASK&t;0xFFF0FF7F00000000ull
 DECL|macro|ID_AIC7901
 mdefine_line|#define ID_AIC7901&t;&t;&t;0x800F9005FFFF9005ull
-DECL|macro|ID_AIC7901A
-mdefine_line|#define ID_AIC7901A&t;&t;&t;0x801E9005FFFF9005ull
-DECL|macro|ID_AIC7901A_IROC
-mdefine_line|#define ID_AIC7901A_IROC&t;&t;0x809E9005FFFF9005ull
 DECL|macro|ID_AHA_29320A
 mdefine_line|#define ID_AHA_29320A&t;&t;&t;0x8000900500609005ull
+DECL|macro|ID_AHA_29320ALP
+mdefine_line|#define ID_AHA_29320ALP&t;&t;&t;0x8017900500449005ull
+DECL|macro|ID_AIC7901A
+mdefine_line|#define ID_AIC7901A&t;&t;&t;0x801E9005FFFF9005ull
+DECL|macro|ID_AHA_29320
+mdefine_line|#define ID_AHA_29320&t;&t;&t;0x8012900500429005ull
+DECL|macro|ID_AHA_29320B
+mdefine_line|#define ID_AHA_29320B&t;&t;&t;0x8013900500439005ull
 DECL|macro|ID_AHA_29320LP
 mdefine_line|#define ID_AHA_29320LP&t;&t;&t;0x8014900500449005ull
-DECL|macro|ID_AHA_29320LP_IROC
-mdefine_line|#define ID_AHA_29320LP_IROC&t;&t;0x8094900500449005ull
 DECL|macro|ID_AIC7902
 mdefine_line|#define ID_AIC7902&t;&t;&t;0x801F9005FFFF9005ull
-DECL|macro|ID_AIC7902_IROC
-mdefine_line|#define ID_AIC7902_IROC&t;&t;&t;0x809F9005FFFF9005ull
 DECL|macro|ID_AIC7902_B
 mdefine_line|#define ID_AIC7902_B&t;&t;&t;0x801D9005FFFF9005ull
-DECL|macro|ID_AIC7902_B_IROC
-mdefine_line|#define ID_AIC7902_B_IROC&t;&t;0x809D9005FFFF9005ull
 DECL|macro|ID_AHA_39320
 mdefine_line|#define ID_AHA_39320&t;&t;&t;0x8010900500409005ull
+DECL|macro|ID_AHA_39320_B
+mdefine_line|#define ID_AHA_39320_B&t;&t;&t;0x8015900500409005ull
 DECL|macro|ID_AHA_39320A
 mdefine_line|#define ID_AHA_39320A&t;&t;&t;0x8016900500409005ull
 DECL|macro|ID_AHA_39320D
@@ -101,10 +105,6 @@ DECL|macro|ID_AHA_39320D_HP
 mdefine_line|#define ID_AHA_39320D_HP&t;&t;0x8011900500AC0E11ull
 DECL|macro|ID_AHA_39320D_B_HP
 mdefine_line|#define ID_AHA_39320D_B_HP&t;&t;0x801C900500AC0E11ull
-DECL|macro|ID_AHA_29320
-mdefine_line|#define ID_AHA_29320&t;&t;&t;0x8012900500429005ull
-DECL|macro|ID_AHA_29320B
-mdefine_line|#define ID_AHA_29320B&t;&t;&t;0x8013900500439005ull
 DECL|macro|ID_AIC7902_PCI_REV_A4
 mdefine_line|#define ID_AIC7902_PCI_REV_A4&t;&t;0x3
 DECL|macro|ID_AIC7902_PCI_REV_B0
@@ -141,6 +141,11 @@ DECL|macro|SUBID_9005_SEEPTYPE_NONE
 mdefine_line|#define&t;&t;SUBID_9005_SEEPTYPE_NONE&t;0x0
 DECL|macro|SUBID_9005_SEEPTYPE_4K
 mdefine_line|#define&t;&t;SUBID_9005_SEEPTYPE_4K&t;&t;0x1
+DECL|variable|ahd_aic7901_setup
+r_static
+id|ahd_device_setup_t
+id|ahd_aic7901_setup
+suffix:semicolon
 DECL|variable|ahd_aic7901A_setup
 r_static
 id|ahd_device_setup_t
@@ -159,7 +164,48 @@ id|ahd_pci_ident_table
 )braket
 op_assign
 (brace
+multiline_comment|/* aic7901 based controllers */
+(brace
+id|ID_AHA_29320A
+comma
+id|ID_ALL_MASK
+comma
+l_string|&quot;Adaptec 29320A Ultra320 SCSI adapter&quot;
+comma
+id|ahd_aic7901_setup
+)brace
+comma
+(brace
+id|ID_AHA_29320ALP
+comma
+id|ID_ALL_MASK
+comma
+l_string|&quot;Adaptec 29320ALP Ultra320 SCSI adapter&quot;
+comma
+id|ahd_aic7901_setup
+)brace
+comma
 multiline_comment|/* aic7901A based controllers */
+(brace
+id|ID_AHA_29320
+comma
+id|ID_ALL_MASK
+comma
+l_string|&quot;Adaptec 29320 Ultra320 SCSI adapter&quot;
+comma
+id|ahd_aic7901A_setup
+)brace
+comma
+(brace
+id|ID_AHA_29320B
+comma
+id|ID_ALL_MASK
+comma
+l_string|&quot;Adaptec 29320B Ultra320 SCSI adapter&quot;
+comma
+id|ahd_aic7901A_setup
+)brace
+comma
 (brace
 id|ID_AHA_29320LP
 comma
@@ -170,19 +216,19 @@ comma
 id|ahd_aic7901A_setup
 )brace
 comma
-(brace
-id|ID_AHA_29320A
-comma
-id|ID_ALL_MASK
-comma
-l_string|&quot;Adaptec 29320A Ultra320 SCSI adapter&quot;
-comma
-id|ahd_aic7901A_setup
-)brace
-comma
 multiline_comment|/* aic7902 based controllers */
 (brace
 id|ID_AHA_39320
+comma
+id|ID_ALL_MASK
+comma
+l_string|&quot;Adaptec 39320 Ultra320 SCSI adapter&quot;
+comma
+id|ahd_aic7902_setup
+)brace
+comma
+(brace
+id|ID_AHA_39320_B
 comma
 id|ID_ALL_MASK
 comma
@@ -262,6 +308,18 @@ id|ahd_aic7902_setup
 )brace
 comma
 multiline_comment|/* Generic chip probes for devices we don&squot;t know &squot;exactly&squot; */
+(brace
+id|ID_AIC7901
+op_amp
+id|ID_DEV_VENDOR_MASK
+comma
+id|ID_DEV_VENDOR_MASK
+comma
+l_string|&quot;Adaptec AIC7901 Ultra320 SCSI adapter&quot;
+comma
+id|ahd_aic7901_setup
+)brace
+comma
 (brace
 id|ID_AIC7901A
 op_amp
@@ -821,7 +879,7 @@ comma
 id|PCIR_COMMAND
 comma
 multiline_comment|/*bytes*/
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 id|command
@@ -838,7 +896,7 @@ comma
 id|command
 comma
 multiline_comment|/*bytes*/
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 id|error
@@ -3450,6 +3508,51 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|ahd_aic7901_setup
+id|ahd_aic7901_setup
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+)paren
+(brace
+r_int
+id|error
+suffix:semicolon
+id|error
+op_assign
+id|ahd_aic7902_setup
+c_func
+(paren
+id|ahd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_ne
+l_int|0
+)paren
+r_return
+(paren
+id|error
+)paren
+suffix:semicolon
+id|ahd-&gt;chip
+op_assign
+id|AHD_AIC7901
+suffix:semicolon
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
 DECL|function|ahd_aic7901A_setup
 id|ahd_aic7901A_setup
 c_func
@@ -3560,7 +3663,7 @@ comma
 l_int|0
 comma
 multiline_comment|/*bytes*/
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_return

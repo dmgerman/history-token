@@ -38,13 +38,14 @@ mdefine_line|#define TABLE_OFFSET&t;0
 macro_line|#endif
 DECL|macro|TABLE_SIZE
 mdefine_line|#define TABLE_SIZE&t;((TABLE_OFFSET + PTRS_PER_PTE) * sizeof(pte_t))
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 r_extern
 id|pgd_t

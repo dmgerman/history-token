@@ -2767,6 +2767,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|esp4_init
+r_static
 r_int
 id|__init
 id|esp4_init
@@ -2808,13 +2809,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|esp_type
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

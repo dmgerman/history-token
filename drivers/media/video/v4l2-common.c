@@ -169,7 +169,7 @@ op_assign
 l_int|625
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|vs-&gt;name

@@ -47,10 +47,10 @@ DECL|macro|ACPI_MTX_DEBUG_CMD_COMPLETE
 mdefine_line|#define ACPI_MTX_DEBUG_CMD_COMPLETE     11
 DECL|macro|ACPI_MTX_DEBUG_CMD_READY
 mdefine_line|#define ACPI_MTX_DEBUG_CMD_READY        12
-DECL|macro|MAX_MTX
-mdefine_line|#define MAX_MTX                         12
-DECL|macro|NUM_MTX
-mdefine_line|#define NUM_MTX                         MAX_MTX+1
+DECL|macro|MAX_MUTEX
+mdefine_line|#define MAX_MUTEX                       12
+DECL|macro|NUM_MUTEX
+mdefine_line|#define NUM_MUTEX                       MAX_MUTEX+1
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 macro_line|#ifdef DEFINE_ACPI_GLOBALS
 multiline_comment|/* Names for the mutexes used in the subsystem */
@@ -130,12 +130,9 @@ mdefine_line|#define ACPI_OWNER_TYPE_TABLE           0x0
 DECL|macro|ACPI_OWNER_TYPE_METHOD
 mdefine_line|#define ACPI_OWNER_TYPE_METHOD          0x1
 DECL|macro|ACPI_FIRST_METHOD_ID
-mdefine_line|#define ACPI_FIRST_METHOD_ID            0x0000
+mdefine_line|#define ACPI_FIRST_METHOD_ID            0x0001
 DECL|macro|ACPI_FIRST_TABLE_ID
-mdefine_line|#define ACPI_FIRST_TABLE_ID             0x8000
-multiline_comment|/* TBD: [Restructure] get rid of the need for this! */
-DECL|macro|TABLE_ID_DSDT
-mdefine_line|#define TABLE_ID_DSDT                   (acpi_owner_id) 0x8000
+mdefine_line|#define ACPI_FIRST_TABLE_ID             0xF000
 multiline_comment|/* Field access granularities */
 DECL|macro|ACPI_FIELD_BYTE_GRANULARITY
 mdefine_line|#define ACPI_FIELD_BYTE_GRANULARITY     1
@@ -307,10 +304,6 @@ DECL|member|length
 id|acpi_size
 id|length
 suffix:semicolon
-DECL|member|count
-id|u32
-id|count
-suffix:semicolon
 DECL|member|table_id
 id|acpi_owner_id
 id|table_id
@@ -326,6 +319,22 @@ suffix:semicolon
 DECL|member|loaded_into_namespace
 id|u8
 id|loaded_into_namespace
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|acpi_table_list
+r_struct
+id|acpi_table_list
+(brace
+DECL|member|next
+r_struct
+id|acpi_table_desc
+op_star
+id|next
+suffix:semicolon
+DECL|member|count
+id|u32
+id|count
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1607,22 +1616,6 @@ DECL|macro|ACPI_RDESC_TYPE_EXTENDED_XRUPT
 mdefine_line|#define ACPI_RDESC_TYPE_EXTENDED_XRUPT          0x89
 DECL|macro|ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE
 mdefine_line|#define ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE     0x8A
-multiline_comment|/* String version of device HIDs and UIDs */
-DECL|macro|ACPI_DEVICE_ID_LENGTH
-mdefine_line|#define ACPI_DEVICE_ID_LENGTH                   0x09
-DECL|struct|acpi_device_id
-r_struct
-id|acpi_device_id
-(brace
-DECL|member|buffer
-r_char
-id|buffer
-(braket
-id|ACPI_DEVICE_ID_LENGTH
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Miscellaneous&n; *&n; ****************************************************************************/
 DECL|macro|ACPI_ASCII_ZERO
 mdefine_line|#define ACPI_ASCII_ZERO                      0x30

@@ -8846,10 +8846,15 @@ c_cond
 op_logical_neg
 id|tmp_stats
 )paren
-r_return
+(brace
+id|status
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|spin_lock_irqsave
 c_func
 (paren

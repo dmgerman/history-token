@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_MACINTOSH_H
 DECL|macro|__ASM_MACINTOSH_H
 mdefine_line|#define __ASM_MACINTOSH_H
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/*&n; *&t;Apple Macintoshisms&n; */
 r_extern
 r_void
@@ -34,7 +35,7 @@ id|mac_request_irq
 r_int
 r_int
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 )paren

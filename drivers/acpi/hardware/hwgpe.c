@@ -41,8 +41,6 @@ id|in_byte
 comma
 op_amp
 id|gpe_event_info-&gt;register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -75,8 +73,6 @@ id|gpe_event_info-&gt;bit_mask
 comma
 op_amp
 id|gpe_event_info-&gt;register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -182,8 +178,6 @@ id|in_byte
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -219,8 +213,6 @@ id|gpe_event_info-&gt;bit_mask
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -322,8 +314,6 @@ id|gpe_event_info-&gt;bit_mask
 comma
 op_amp
 id|gpe_event_info-&gt;register_info-&gt;status_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -405,8 +395,6 @@ id|in_byte
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -461,8 +449,6 @@ id|in_byte
 comma
 op_amp
 id|gpe_register_info-&gt;status_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -570,11 +556,6 @@ id|i
 )braket
 dot
 id|enable_address
-comma
-(paren
-id|u32
-)paren
-id|i
 )paren
 suffix:semicolon
 r_if
@@ -662,11 +643,6 @@ id|i
 )braket
 dot
 id|status_address
-comma
-(paren
-id|u32
-)paren
-id|i
 )paren
 suffix:semicolon
 r_if
@@ -755,8 +731,6 @@ id|in_value
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -792,8 +766,6 @@ id|gpe_register_info-&gt;wake_enable
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -910,8 +882,6 @@ id|gpe_register_info-&gt;enable
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if

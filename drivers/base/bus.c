@@ -1049,7 +1049,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the error from bus_match(), since it&squot;s perfectly&n; *&t;valid for a driver not to bind to any devices.&n; */
 DECL|function|driver_attach
-r_static
 r_void
 id|driver_attach
 c_func
@@ -1446,7 +1445,7 @@ comma
 id|drv-&gt;name
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|drv-&gt;kobj.name
@@ -1780,7 +1779,7 @@ op_star
 id|bus
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;subsys.kset.kobj.name
@@ -1805,14 +1804,14 @@ op_amp
 id|bus-&gt;subsys
 )paren
 suffix:semicolon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;devices.kobj.name
 comma
-id|KOBJ_NAME_LEN
-comma
 l_string|&quot;devices&quot;
+comma
+id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 id|bus-&gt;devices.subsys
@@ -1827,14 +1826,14 @@ op_amp
 id|bus-&gt;devices
 )paren
 suffix:semicolon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;drivers.kobj.name
 comma
-id|KOBJ_NAME_LEN
-comma
 l_string|&quot;drivers&quot;
+comma
+id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 id|bus-&gt;drivers.subsys

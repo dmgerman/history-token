@@ -81,6 +81,7 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EPOLL
 multiline_comment|/* Used to initialize the epoll bits inside the &quot;struct file&quot; */
 r_void
 id|eventpoll_init_file
@@ -103,6 +104,36 @@ op_star
 id|file
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|eventpoll_init_file
+r_static
+r_inline
+r_void
+id|eventpoll_init_file
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+)brace
+DECL|function|eventpoll_release
+r_static
+r_inline
+r_void
+id|eventpoll_release
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#endif /* #ifdef __KERNEL__ */
 macro_line|#endif /* #ifndef _LINUX_EVENTPOLL_H */
 eof

@@ -7,7 +7,7 @@ r_void
 id|stdma_lock
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

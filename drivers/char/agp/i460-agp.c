@@ -481,6 +481,7 @@ r_static
 r_void
 id|i460_tlb_flush
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -941,6 +942,7 @@ r_static
 r_int
 id|i460_insert_memory_small_io_page
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -1183,6 +1185,7 @@ r_int
 id|i460_remove_memory_small_io_page
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -1465,6 +1468,7 @@ r_static
 r_int
 id|i460_insert_memory_large_io_page
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -1817,6 +1821,7 @@ r_static
 r_int
 id|i460_remove_memory_large_io_page
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -2044,6 +2049,7 @@ r_static
 r_int
 id|i460_insert_memory
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -2091,6 +2097,7 @@ r_static
 r_int
 id|i460_remove_memory
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

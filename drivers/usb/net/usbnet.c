@@ -8967,6 +8967,16 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+op_amp
+id|dev-&gt;net
+comma
+op_amp
+id|dev-&gt;udev-&gt;dev
+)paren
+suffix:semicolon
 id|register_netdev
 (paren
 op_amp

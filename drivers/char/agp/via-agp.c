@@ -240,6 +240,7 @@ r_void
 id|via_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -551,6 +552,7 @@ r_void
 id|via_tlbflush_agp3
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

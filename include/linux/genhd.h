@@ -1398,7 +1398,7 @@ id|minors
 suffix:semicolon
 r_extern
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|get_disk
 c_func
@@ -1438,7 +1438,7 @@ op_star
 id|module
 comma
 r_struct
-id|gendisk
+id|kobject
 op_star
 (paren
 op_star

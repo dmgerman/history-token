@@ -1313,6 +1313,9 @@ r_struct
 id|acpi_table_rsdp
 op_star
 )paren
+(paren
+id|u32
+)paren
 id|rsdp_address-&gt;pointer.physical
 suffix:semicolon
 )brace

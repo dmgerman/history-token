@@ -174,7 +174,7 @@ r_case
 id|PROM_V3
 suffix:colon
 multiline_comment|/*&n;&t;&t; * V3 PROM cannot supply as with more than 128 bytes&n;&t;&t; * of an argument. But a smart bootstrap loader can.&n;&t;&t; */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|barg_buf
@@ -182,9 +182,10 @@ comma
 op_star
 id|romvec-&gt;pv_v2bootargs.bootargs
 comma
-id|BARG_LEN
-op_minus
-l_int|1
+r_sizeof
+(paren
+id|barg_buf
+)paren
 )paren
 suffix:semicolon
 r_break

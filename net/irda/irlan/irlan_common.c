@@ -1527,14 +1527,17 @@ id|notify.instance
 op_assign
 id|self
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|notify.name
 comma
 l_string|&quot;IrLAN data&quot;
 comma
-id|NOTIFY_MAX_NAME
+r_sizeof
+(paren
+id|notify.name
+)paren
 )paren
 suffix:semicolon
 id|tsap
@@ -4429,32 +4432,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-)brace
-DECL|function|irlan_mod_inc_use_count
-r_void
-id|irlan_mod_inc_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-)brace
-DECL|function|irlan_mod_dec_use_count
-r_void
-id|irlan_mod_dec_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 )brace
 id|MODULE_AUTHOR
 c_func

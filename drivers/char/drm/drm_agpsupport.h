@@ -54,6 +54,7 @@ id|dev
 op_assign
 id|priv-&gt;dev
 suffix:semicolon
+r_struct
 id|agp_kern_info
 op_star
 id|kern
@@ -484,6 +485,7 @@ id|drm_agp_mem_t
 op_star
 id|entry
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 id|memory
@@ -1467,6 +1469,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|agp_allocate_memory
+r_struct
 id|agp_memory
 op_star
 id|DRM
@@ -1511,6 +1514,7 @@ c_func
 id|agp_free_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -1548,6 +1552,7 @@ c_func
 id|agp_bind_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -1589,6 +1594,7 @@ c_func
 id|agp_unbind_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle

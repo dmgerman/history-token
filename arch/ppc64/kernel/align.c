@@ -5,6 +5,14 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+r_void
+id|disable_kernel_fp
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* asm function from head.S */
 DECL|struct|aligninfo
 r_struct
 id|aligninfo

@@ -156,8 +156,6 @@ op_amp
 id|dasd_ioctl_list
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -233,8 +231,6 @@ c_func
 (paren
 id|old
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

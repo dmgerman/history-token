@@ -1170,7 +1170,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;name
@@ -1409,6 +1409,11 @@ c_func
 (paren
 op_amp
 id|NCR_D700_driver
+)paren
+suffix:semicolon
+id|scsi_sysfs_release_attributes
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

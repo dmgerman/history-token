@@ -823,7 +823,7 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|strncpy
+id|strncmp
 c_func
 (paren
 id|q-&gt;name

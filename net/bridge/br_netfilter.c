@@ -1515,8 +1515,7 @@ id|pskb
 op_member_access_from_pointer
 id|nf_bridge
 suffix:semicolon
-multiline_comment|/* FIXME: skb as not been linearized.  Is this still true? --RR */
-multiline_comment|/* Be very paranoid.  */
+multiline_comment|/* Be very paranoid. Must be a device driver bug. */
 r_if
 c_cond
 (paren
@@ -2142,8 +2141,6 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|macro|NUMHOOKS
-mdefine_line|#define NUMHOOKS (sizeof(br_nf_ops)/sizeof(br_nf_ops[0]))
 DECL|function|br_netfilter_init
 r_int
 id|br_netfilter_init
@@ -2164,7 +2161,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMHOOKS
+id|ARRAY_SIZE
+c_func
+(paren
+id|br_nf_ops
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -2241,7 +2242,11 @@ c_loop
 (paren
 id|i
 op_assign
-id|NUMHOOKS
+id|ARRAY_SIZE
+c_func
+(paren
+id|br_nf_ops
+)paren
 op_minus
 l_int|1
 suffix:semicolon

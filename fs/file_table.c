@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/eventpoll.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/cdev.h&gt;
 multiline_comment|/* sysctl tunables... */
 DECL|variable|files_stat
 r_struct
@@ -611,6 +612,23 @@ id|security_file_free
 c_func
 (paren
 id|file
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|inode-&gt;i_cdev
+op_ne
+l_int|NULL
+)paren
+)paren
+id|cdev_put
+c_func
+(paren
+id|inode-&gt;i_cdev
 )paren
 suffix:semicolon
 id|fops_put

@@ -595,6 +595,7 @@ r_int
 id|nvidia_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -761,6 +762,7 @@ r_int
 id|nvidia_remove_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -845,6 +847,7 @@ r_void
 id|nvidia_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

@@ -457,6 +457,7 @@ r_void
 id|intel_i810_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -484,6 +485,7 @@ r_int
 id|intel_i810_insert_entries
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -776,6 +778,7 @@ r_int
 id|intel_i810_remove_entries
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -846,6 +849,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The i810/i830 requires a physical address to program its mouse&n; * pointer into hardware.&n; * However the Xserver still writes to it through the agp aperture.&n; */
 DECL|function|alloc_agpphysmem_i8xx
 r_static
+r_struct
 id|agp_memory
 op_star
 id|alloc_agpphysmem_i8xx
@@ -858,6 +862,7 @@ r_int
 id|type
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 r_new
@@ -961,6 +966,7 @@ suffix:semicolon
 )brace
 DECL|function|intel_i810_alloc_by_type
 r_static
+r_struct
 id|agp_memory
 op_star
 id|intel_i810_alloc_by_type
@@ -973,6 +979,7 @@ r_int
 id|type
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 r_new
@@ -1069,6 +1076,7 @@ r_void
 id|intel_i810_free_by_type
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -1975,6 +1983,7 @@ r_int
 id|intel_i830_insert_entries
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -2164,6 +2173,7 @@ r_int
 id|intel_i830_remove_entries
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -2258,6 +2268,7 @@ suffix:semicolon
 )brace
 DECL|function|intel_i830_alloc_by_type
 r_static
+r_struct
 id|agp_memory
 op_star
 id|intel_i830_alloc_by_type
@@ -2553,6 +2564,7 @@ r_void
 id|intel_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -2585,6 +2597,7 @@ r_void
 id|intel_8xx_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -3074,6 +3087,7 @@ r_void
 id|intel_820_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

@@ -246,7 +246,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else
-macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#include &lt;mach_apicdef.h&gt;
 DECL|function|hard_smp_processor_id
 r_static
 r_inline

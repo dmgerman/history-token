@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
@@ -248,6 +249,52 @@ id|dr
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Any space to write?&n; */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|svc_sock_wspace
+id|svc_sock_wspace
+c_func
+(paren
+r_struct
+id|svc_sock
+op_star
+id|svsk
+)paren
+(brace
+r_int
+id|wspace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|svsk-&gt;sk_sock-&gt;type
+op_eq
+id|SOCK_STREAM
+)paren
+id|wspace
+op_assign
+id|tcp_wspace
+c_func
+(paren
+id|svsk-&gt;sk_sk
+)paren
+suffix:semicolon
+r_else
+id|wspace
+op_assign
+id|sock_wspace
+c_func
+(paren
+id|svsk-&gt;sk_sk
+)paren
+suffix:semicolon
+r_return
+id|wspace
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Queue up a socket with data pending. If there are idle nfsd&n; * processes, wake &squot;em up.&n; *&n; */
 r_static
 r_void
@@ -394,6 +441,15 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+id|set_bit
+c_func
+(paren
+id|SOCK_NOSPACE
+comma
+op_amp
+id|svsk-&gt;sk_sock-&gt;flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -406,10 +462,10 @@ id|serv-&gt;sv_bufsz
 op_star
 l_int|2
 OG
-id|sock_wspace
+id|svc_sock_wspace
 c_func
 (paren
-id|svsk-&gt;sk_sk
+id|svsk
 )paren
 )paren
 op_logical_and
@@ -446,10 +502,10 @@ id|svsk-&gt;sk_reserved
 op_plus
 id|serv-&gt;sv_bufsz
 comma
-id|sock_wspace
+id|svc_sock_wspace
 c_func
 (paren
-id|svsk-&gt;sk_sk
+id|svsk
 )paren
 )paren
 suffix:semicolon
@@ -457,6 +513,15 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+id|clear_bit
+c_func
+(paren
+id|SOCK_NOSPACE
+comma
+op_amp
+id|svsk-&gt;sk_sock-&gt;flags
+)paren
+suffix:semicolon
 multiline_comment|/* Mark socket as busy. It will remain in this state until the&n;&t; * server has processed all pending data and put the socket back&n;&t; * on the idle list.&n;&t; */
 id|set_bit
 c_func
@@ -1070,14 +1135,6 @@ id|slen
 op_assign
 id|xdr-&gt;len
 suffix:semicolon
-multiline_comment|/* Grab svsk-&gt;sk_sem to serialize outgoing data. */
-id|down
-c_func
-(paren
-op_amp
-id|svsk-&gt;sk_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1392,13 +1449,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|svsk-&gt;sk_sem
-)paren
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -3566,9 +3616,29 @@ id|len
 OL
 id|want
 )paren
-r_return
-l_int|0
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;svc: short recvfrom while reading record length (%d of %lu)&bslash;n&quot;
+comma
+id|len
+comma
+id|want
+)paren
 suffix:semicolon
+id|svc_sock_received
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+multiline_comment|/* record header not complete */
+)brace
 id|svsk-&gt;sk_reclen
 op_assign
 id|ntohl
@@ -4081,6 +4151,17 @@ id|sk
 op_assign
 id|svsk-&gt;sk_sk
 suffix:semicolon
+r_struct
+id|tcp_opt
+op_star
+id|tp
+op_assign
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|svsk-&gt;sk_recvfrom
 op_assign
 id|svc_tcp_recvfrom
@@ -4145,6 +4226,11 @@ id|svsk-&gt;sk_tcplen
 op_assign
 l_int|0
 suffix:semicolon
+id|tp-&gt;nonagle
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* disable Nagle&squot;s algorithm */
 multiline_comment|/* initialise setting must have enough space to&n;&t;&t; * receive and respond to one request.  &n;&t;&t; * svc_tcp_recvfrom will re-adjust if necessary&n;&t;&t; */
 id|svc_sock_setbufsize
 c_func
@@ -5030,6 +5116,32 @@ l_int|0
 dot
 id|iov_len
 suffix:semicolon
+multiline_comment|/* Grab svsk-&gt;sk_sem to serialize outgoing data. */
+id|down
+c_func
+(paren
+op_amp
+id|svsk-&gt;sk_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|SK_DEAD
+comma
+op_amp
+id|svsk-&gt;sk_flags
+)paren
+)paren
+id|len
+op_assign
+op_minus
+id|ENOTCONN
+suffix:semicolon
+r_else
 id|len
 op_assign
 id|svsk
@@ -5038,6 +5150,13 @@ id|sk_sendto
 c_func
 (paren
 id|rqstp
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|svsk-&gt;sk_sem
 )paren
 suffix:semicolon
 id|svc_sock_release

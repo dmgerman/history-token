@@ -267,6 +267,7 @@ id|attr-&gt;ia_size
 op_ne
 id|inode-&gt;i_size
 )paren
+(brace
 id|error
 op_assign
 id|vmtruncate
@@ -291,6 +292,17 @@ id|ATTR_SIZE
 r_goto
 id|out
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We skipped the truncate but must still update&n;&t;&t;&t; * timestamps&n;&t;&t;&t; */
+id|ia_valid
+op_or_assign
+id|ATTR_MTIME
+op_or
+id|ATTR_CTIME
+suffix:semicolon
+)brace
 )brace
 id|lock_kernel
 c_func

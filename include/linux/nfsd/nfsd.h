@@ -33,7 +33,7 @@ mdefine_line|#define MAY_OWNER_OVERRIDE&t;64
 DECL|macro|MAY_LOCAL_ACCESS
 mdefine_line|#define&t;MAY_LOCAL_ACCESS&t;128 /* IRIX doing local access check on device special file*/
 macro_line|#if (MAY_SATTR | MAY_TRUNC | MAY_LOCK | MAY_OWNER_OVERRIDE | MAY_LOCAL_ACCESS) &amp; (MAY_READ | MAY_WRITE | MAY_EXEC)
-macro_line|# error &quot;please use a different value for MAY_SATTR or MAY_TRUNC or MAY_LOCK or MAY_OWNER_OVERRIDE.&quot;
+macro_line|# error &quot;please use a different value for MAY_SATTR or MAY_TRUNC or MAY_LOCK or MAY_LOCAL_ACCESS or MAY_OWNER_OVERRIDE.&quot;
 macro_line|#endif
 DECL|macro|MAY_CREATE
 mdefine_line|#define MAY_CREATE&t;&t;(MAY_EXEC|MAY_WRITE)
@@ -744,6 +744,8 @@ DECL|macro|nfserr_badtype
 mdefine_line|#define&t;nfserr_badtype&t;&t;__constant_htonl(NFSERR_BADTYPE)
 DECL|macro|nfserr_jukebox
 mdefine_line|#define&t;nfserr_jukebox&t;&t;__constant_htonl(NFSERR_JUKEBOX)
+DECL|macro|nfserr_expired
+mdefine_line|#define nfserr_expired          __constant_htonl(NFSERR_EXPIRED)
 DECL|macro|nfserr_bad_cookie
 mdefine_line|#define&t;nfserr_bad_cookie&t;__constant_htonl(NFSERR_BAD_COOKIE)
 DECL|macro|nfserr_same
@@ -758,6 +760,16 @@ DECL|macro|nfserr_nofilehandle
 mdefine_line|#define&t;nfserr_nofilehandle&t;__constant_htonl(NFSERR_NOFILEHANDLE)
 DECL|macro|nfserr_minor_vers_mismatch
 mdefine_line|#define&t;nfserr_minor_vers_mismatch&t;__constant_htonl(NFSERR_MINOR_VERS_MISMATCH)
+DECL|macro|nfserr_share_denied
+mdefine_line|#define nfserr_share_denied&t;__constant_htonl(NFSERR_SHARE_DENIED)
+DECL|macro|nfserr_stale_stateid
+mdefine_line|#define nfserr_stale_stateid&t;__constant_htonl(NFSERR_STALE_STATEID)
+DECL|macro|nfserr_old_stateid
+mdefine_line|#define nfserr_old_stateid&t;__constant_htonl(NFSERR_OLD_STATEID)
+DECL|macro|nfserr_bad_stateid
+mdefine_line|#define nfserr_bad_stateid&t;__constant_htonl(NFSERR_BAD_STATEID)
+DECL|macro|nfserr_bad_seqid
+mdefine_line|#define nfserr_bad_seqid&t;__constant_htonl(NFSERR_BAD_SEQID)
 DECL|macro|nfserr_symlink
 mdefine_line|#define&t;nfserr_symlink&t;&t;__constant_htonl(NFSERR_SYMLINK)
 DECL|macro|nfserr_not_same

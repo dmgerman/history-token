@@ -3374,7 +3374,7 @@ r_if
 c_cond
 (paren
 id|value
-OG
+op_ge
 l_int|0
 )paren
 (brace

@@ -4801,7 +4801,7 @@ op_assign
 id|ioc-&gt;biosVersion
 suffix:semicolon
 multiline_comment|/* Set the Version Strings.&n;&t; */
-id|strncpy
+id|strlcpy
 (paren
 id|karg.driverVersion
 comma
@@ -5547,7 +5547,7 @@ op_assign
 id|ioc-&gt;chip_type
 suffix:semicolon
 macro_line|#endif
-id|strncpy
+id|strlcpy
 (paren
 id|karg.name
 comma
@@ -5556,7 +5556,7 @@ comma
 id|MPT_MAX_NAME
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|karg.product
 comma
@@ -9324,14 +9324,17 @@ id|cfg.timeout
 op_assign
 l_int|10
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|karg.serial_number
 comma
 l_string|&quot; &quot;
 comma
-l_int|24
+r_sizeof
+(paren
+id|karg.serial_number
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -9423,14 +9426,17 @@ id|pdata-&gt;BoardTracerNumber
 OG
 l_int|1
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|karg.serial_number
 comma
 id|pdata-&gt;BoardTracerNumber
 comma
-l_int|24
+r_sizeof
+(paren
+id|karg.serial_number
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -36,6 +36,7 @@ l_string|&quot;0.46&quot;
 suffix:semicolon
 multiline_comment|/* Current version */
 DECL|function|dv_init
+r_static
 r_int
 id|__init
 id|dv_init
@@ -57,6 +58,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|dv_init
+id|module_init
+c_func
+(paren
+id|dv_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Allocate a divert_blk for a device. This must be an ethernet nic.&n; */
 DECL|function|alloc_divert_blk
 r_int

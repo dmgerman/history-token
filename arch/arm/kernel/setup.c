@@ -2343,7 +2343,7 @@ op_star
 id|tag
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|default_command_line
@@ -2352,15 +2352,6 @@ id|tag-&gt;u.cmdline.cmdline
 comma
 id|COMMAND_LINE_SIZE
 )paren
-suffix:semicolon
-id|default_command_line
-(braket
-id|COMMAND_LINE_SIZE
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 r_return
 l_int|0

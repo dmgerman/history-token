@@ -14,14 +14,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|arcnet_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|scc_enet_init
 c_func
 (paren
@@ -47,22 +39,6 @@ suffix:semicolon
 r_extern
 r_int
 id|sdla_c_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|lmc_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|madgemc_probe
 c_func
 (paren
 r_void
@@ -117,14 +93,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCNET)
-(brace
-id|arcnet_init
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#if defined(CONFIG_SCC_ENET)
 (brace
 id|scc_enet_init
@@ -136,23 +104,6 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_FEC_ENET)
 (brace
 id|fec_enet_init
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#if defined(CONFIG_LANMEDIA)
-(brace
-id|lmc_setup
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-multiline_comment|/*&n; *&t;Token Ring Drivers&n; */
-macro_line|#ifdef CONFIG_MADGEMC
-(brace
-id|madgemc_probe
 comma
 l_int|0
 )brace

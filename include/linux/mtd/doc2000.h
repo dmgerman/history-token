@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for Disk-On-Chip 2000       */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.   */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@mvhi.com&gt; */
-multiline_comment|/* $Id: doc2000.h,v 1.15 2001/09/19 00:22:15 dwmw2 Exp $ */
+multiline_comment|/* $Id: doc2000.h,v 1.16 2003/05/23 11:29:33 dwmw2 Exp $ */
 macro_line|#ifndef __MTD_DOC2000_H__
 DECL|macro|__MTD_DOC2000_H__
 mdefine_line|#define __MTD_DOC2000_H__
@@ -56,6 +56,62 @@ DECL|macro|DoC_Mil_CDSN_IO
 mdefine_line|#define DoC_Mil_CDSN_IO &t;0x0800
 DECL|macro|DoC_2k_CDSN_IO
 mdefine_line|#define DoC_2k_CDSN_IO &t;&t;0x1800
+DECL|macro|DoC_Mplus_NOP
+mdefine_line|#define DoC_Mplus_NOP&t;&t;&t;0x1002
+DECL|macro|DoC_Mplus_AliasResolution
+mdefine_line|#define DoC_Mplus_AliasResolution&t;0x1004
+DECL|macro|DoC_Mplus_DOCControl
+mdefine_line|#define DoC_Mplus_DOCControl&t;&t;0x1006
+DECL|macro|DoC_Mplus_AccessStatus
+mdefine_line|#define DoC_Mplus_AccessStatus&t;&t;0x1008
+DECL|macro|DoC_Mplus_DeviceSelect
+mdefine_line|#define DoC_Mplus_DeviceSelect&t;&t;0x1008
+DECL|macro|DoC_Mplus_Configuration
+mdefine_line|#define DoC_Mplus_Configuration&t;&t;0x100a
+DECL|macro|DoC_Mplus_OutputControl
+mdefine_line|#define DoC_Mplus_OutputControl&t;&t;0x1002
+DECL|macro|DoC_Mplus_FlashControl
+mdefine_line|#define DoC_Mplus_FlashControl&t;&t;0x1020
+DECL|macro|DoC_Mplus_FlashSelect
+mdefine_line|#define DoC_Mplus_FlashSelect &t;&t;0x1022
+DECL|macro|DoC_Mplus_FlashCmd
+mdefine_line|#define DoC_Mplus_FlashCmd&t;&t;0x1024
+DECL|macro|DoC_Mplus_FlashAddress
+mdefine_line|#define DoC_Mplus_FlashAddress&t;&t;0x1026
+DECL|macro|DoC_Mplus_FlashData0
+mdefine_line|#define DoC_Mplus_FlashData0&t;&t;0x1028
+DECL|macro|DoC_Mplus_FlashData1
+mdefine_line|#define DoC_Mplus_FlashData1&t;&t;0x1029
+DECL|macro|DoC_Mplus_ReadPipeInit
+mdefine_line|#define DoC_Mplus_ReadPipeInit&t;&t;0x102a
+DECL|macro|DoC_Mplus_LastDataRead
+mdefine_line|#define DoC_Mplus_LastDataRead&t;&t;0x102c
+DECL|macro|DoC_Mplus_LastDataRead1
+mdefine_line|#define DoC_Mplus_LastDataRead1&t;&t;0x102d
+DECL|macro|DoC_Mplus_WritePipeTerm
+mdefine_line|#define DoC_Mplus_WritePipeTerm &t;0x102e
+DECL|macro|DoC_Mplus_ECCSyndrome0
+mdefine_line|#define DoC_Mplus_ECCSyndrome0&t;&t;0x1040
+DECL|macro|DoC_Mplus_ECCSyndrome1
+mdefine_line|#define DoC_Mplus_ECCSyndrome1&t;&t;0x1041
+DECL|macro|DoC_Mplus_ECCSyndrome2
+mdefine_line|#define DoC_Mplus_ECCSyndrome2&t;&t;0x1042
+DECL|macro|DoC_Mplus_ECCSyndrome3
+mdefine_line|#define DoC_Mplus_ECCSyndrome3&t;&t;0x1043
+DECL|macro|DoC_Mplus_ECCSyndrome4
+mdefine_line|#define DoC_Mplus_ECCSyndrome4&t;&t;0x1044
+DECL|macro|DoC_Mplus_ECCSyndrome5
+mdefine_line|#define DoC_Mplus_ECCSyndrome5&t;&t;0x1045
+DECL|macro|DoC_Mplus_ECCConf
+mdefine_line|#define DoC_Mplus_ECCConf &t;&t;0x1046
+DECL|macro|DoC_Mplus_Toggle
+mdefine_line|#define DoC_Mplus_Toggle&t;&t;0x1046
+DECL|macro|DoC_Mplus_DownloadStatus
+mdefine_line|#define DoC_Mplus_DownloadStatus&t;0x1074
+DECL|macro|DoC_Mplus_CtrlConfirm
+mdefine_line|#define DoC_Mplus_CtrlConfirm&t;&t;0x1076
+DECL|macro|DoC_Mplus_Power
+mdefine_line|#define DoC_Mplus_Power&t;&t;&t;0x1fff
 multiline_comment|/* How to access the device? &n; * On ARM, it&squot;ll be mmap&squot;d directly with 32-bit wide accesses. &n; * On PPC, it&squot;s mmap&squot;d and 16-bit wide.&n; * Others use readb/writeb &n; */
 macro_line|#if defined(__arm__)
 DECL|macro|ReadDOC_
@@ -96,16 +152,28 @@ DECL|macro|DOC_MODE_RESERVED1
 mdefine_line|#define DOC_MODE_RESERVED1 &t;2
 DECL|macro|DOC_MODE_RESERVED2
 mdefine_line|#define DOC_MODE_RESERVED2 &t;3
-DECL|macro|DOC_MODE_MDWREN
-mdefine_line|#define DOC_MODE_MDWREN &t;4
 DECL|macro|DOC_MODE_CLR_ERR
 mdefine_line|#define DOC_MODE_CLR_ERR &t;0x80
+DECL|macro|DOC_MODE_RST_LAT
+mdefine_line|#define&t;DOC_MODE_RST_LAT&t;0x10
+DECL|macro|DOC_MODE_BDECT
+mdefine_line|#define&t;DOC_MODE_BDECT&t;&t;0x08
+DECL|macro|DOC_MODE_MDWREN
+mdefine_line|#define DOC_MODE_MDWREN &t;0x04
 DECL|macro|DOC_ChipID_Doc2k
 mdefine_line|#define DOC_ChipID_Doc2k &t;0x20
 DECL|macro|DOC_ChipID_DocMil
 mdefine_line|#define DOC_ChipID_DocMil &t;0x30
+DECL|macro|DOC_ChipID_DocMilPlus32
+mdefine_line|#define DOC_ChipID_DocMilPlus32&t;0x40
+DECL|macro|DOC_ChipID_DocMilPlus16
+mdefine_line|#define DOC_ChipID_DocMilPlus16&t;0x41
 DECL|macro|CDSN_CTRL_FR_B
 mdefine_line|#define CDSN_CTRL_FR_B &t;&t;0x80
+DECL|macro|CDSN_CTRL_FR_B0
+mdefine_line|#define CDSN_CTRL_FR_B0&t;&t;0x40
+DECL|macro|CDSN_CTRL_FR_B1
+mdefine_line|#define CDSN_CTRL_FR_B1&t;&t;0x80
 DECL|macro|CDSN_CTRL_ECC_IO
 mdefine_line|#define CDSN_CTRL_ECC_IO &t;0x20
 DECL|macro|CDSN_CTRL_FLASH_IO
@@ -132,6 +200,12 @@ DECL|macro|DOC_ECC_RESV
 mdefine_line|#define DOC_ECC_RESV &t;&t;0x02
 DECL|macro|DOC_ECC_IGNORE
 mdefine_line|#define DOC_ECC_IGNORE&t;&t;0x01
+DECL|macro|DOC_FLASH_CE
+mdefine_line|#define DOC_FLASH_CE&t;&t;0x80
+DECL|macro|DOC_FLASH_WP
+mdefine_line|#define DOC_FLASH_WP&t;&t;0x40
+DECL|macro|DOC_FLASH_BANK
+mdefine_line|#define DOC_FLASH_BANK&t;&t;0x02
 multiline_comment|/* We have to also set the reserved bit 1 for enable */
 DECL|macro|DOC_ECC_EN
 mdefine_line|#define DOC_ECC_EN (DOC_ECC__EN | DOC_ECC_RESV)
@@ -169,6 +243,10 @@ DECL|macro|MAX_FLOORS_MIL
 mdefine_line|#define MAX_FLOORS_MIL 4
 DECL|macro|MAX_CHIPS_MIL
 mdefine_line|#define MAX_CHIPS_MIL 1
+DECL|macro|MAX_FLOORS_MPLUS
+mdefine_line|#define MAX_FLOORS_MPLUS 1
+DECL|macro|MAX_CHIPS_MPLUS
+mdefine_line|#define MAX_CHIPS_MPLUS 1
 DECL|macro|ADDR_COLUMN
 mdefine_line|#define ADDR_COLUMN 1
 DECL|macro|ADDR_PAGE
@@ -226,6 +304,11 @@ DECL|member|pageadrlen
 r_char
 id|pageadrlen
 suffix:semicolon
+DECL|member|interleave
+r_char
+id|interleave
+suffix:semicolon
+multiline_comment|/* Internal interleaving - Millennium Plus style */
 DECL|member|erasesize
 r_int
 r_int

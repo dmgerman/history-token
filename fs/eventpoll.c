@@ -790,6 +790,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -5557,11 +5558,11 @@ id|error
 )paren
 suffix:semicolon
 )brace
-DECL|function|eventpollfs_get_sb
 r_static
 r_struct
 id|super_block
 op_star
+DECL|function|eventpollfs_get_sb
 id|eventpollfs_get_sb
 c_func
 (paren
@@ -5573,6 +5574,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

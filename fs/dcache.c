@@ -4072,7 +4072,7 @@ id|dcache_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * d_path - return the path of a dentry&n; * @dentry: dentry to report&n; * @vfsmnt: vfsmnt to which the dentry belongs&n; * @root: root dentry&n; * @rootmnt: vfsmnt to which the root dentry belongs&n; * @buffer: buffer to return value in&n; * @buflen: buffer length&n; *&n; * Convert a dentry into an ASCII path name. If the entry has been deleted&n; * the string &quot; (deleted)&quot; is appended. Note that this is ambiguous. Returns&n; * the buffer.&n; *&n; * &quot;buflen&quot; should be %PAGE_SIZE or more. Caller holds the dcache_lock.&n; */
+multiline_comment|/**&n; * d_path - return the path of a dentry&n; * @dentry: dentry to report&n; * @vfsmnt: vfsmnt to which the dentry belongs&n; * @root: root dentry&n; * @rootmnt: vfsmnt to which the root dentry belongs&n; * @buffer: buffer to return value in&n; * @buflen: buffer length&n; *&n; * Convert a dentry into an ASCII path name. If the entry has been deleted&n; * the string &quot; (deleted)&quot; is appended. Note that this is ambiguous.&n; *&n; * Returns the buffer or an error code if the path was too long.&n; *&n; * &quot;buflen&quot; should be positive. Caller holds the dcache_lock.&n; */
 DECL|function|__d_path
 r_static
 r_char
@@ -4157,6 +4157,16 @@ id|end
 op_sub_assign
 l_int|10
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|buflen
+OL
+l_int|0
+)paren
+r_goto
+id|Elong
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -4168,6 +4178,16 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|buflen
+OL
+l_int|1
+)paren
+r_goto
+id|Elong
+suffix:semicolon
 multiline_comment|/* Get &squot;/&squot; right */
 id|retval
 op_assign
@@ -4268,13 +4288,8 @@ id|buflen
 OL
 l_int|0
 )paren
-r_return
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENAMETOOLONG
-)paren
+r_goto
+id|Elong
 suffix:semicolon
 id|end
 op_sub_assign
@@ -4322,10 +4337,12 @@ r_if
 c_cond
 (paren
 id|buflen
-op_ge
+OL
 l_int|0
 )paren
-(brace
+r_goto
+id|Elong
+suffix:semicolon
 id|retval
 op_sub_assign
 id|namelen
@@ -4343,19 +4360,18 @@ comma
 id|namelen
 )paren
 suffix:semicolon
-)brace
-r_else
+r_return
 id|retval
-op_assign
+suffix:semicolon
+id|Elong
+suffix:colon
+r_return
 id|ERR_PTR
 c_func
 (paren
 op_minus
 id|ENAMETOOLONG
 )paren
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* write full pathname into buffer and return start of pathname */
@@ -5128,6 +5144,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL
 comma
@@ -5362,6 +5380,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|chrdev_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|vfs_caches_init
 r_void
 id|__init
@@ -5464,6 +5490,11 @@ id|mempages
 )paren
 suffix:semicolon
 id|bdev_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|chrdev_init
 c_func
 (paren
 )paren

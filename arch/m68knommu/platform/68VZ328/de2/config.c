@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/m68knommu/platform/MC68VZ328/de2/config.c&n; *&n; *  Copyright (C) 1993 Hamish Macdonald&n; *  Copyright (C) 1999 D. Jeff Dionne&n; *  Copyright (C) 2001 Georges Menie, Ken Desmet&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
-macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,11 +13,19 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/MC68VZ328.h&gt;
-DECL|macro|CLOCK_COMPARE
-mdefine_line|#define CLOCK_COMPARE (32768/HZ)
-DECL|function|dragen2_sched_init
+macro_line|#ifdef CONFIG_INIT_LCD
+macro_line|#include &quot;screen.h&quot;
+macro_line|#endif
+multiline_comment|/* with a 33.16 MHz clock, this will give usec resolution to the time functions */
+DECL|macro|CLOCK_SOURCE
+mdefine_line|#define CLOCK_SOURCE TCTL_CLKSOURCE_SYSCLK
+DECL|macro|CLOCK_PRE
+mdefine_line|#define CLOCK_PRE 7
+DECL|macro|TICKS_PER_JIFFY
+mdefine_line|#define TICKS_PER_JIFFY 41450
 r_static
 r_void
+DECL|function|dragen2_sched_init
 id|dragen2_sched_init
 c_func
 (paren
@@ -45,6 +52,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* set ISR */
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -58,25 +68,29 @@ l_string|&quot;timer&quot;
 comma
 l_int|NULL
 )paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Unable to attach timer interrupt&bslash;n&quot;
+)paren
 suffix:semicolon
-multiline_comment|/* Restart mode, Enable int, 32KHz */
+multiline_comment|/* Restart mode, Enable int, Set clock source */
 id|TCTL
 op_assign
 id|TCTL_OM
 op_or
 id|TCTL_IRQEN
 op_or
-id|TCTL_CLKSOURCE_32KHZ
+id|CLOCK_SOURCE
 suffix:semicolon
 id|TPRER
 op_assign
-l_int|0
+id|CLOCK_PRE
 suffix:semicolon
 id|TCMP
 op_assign
-id|CLOCK_COMPARE
-op_minus
-l_int|1
+id|TICKS_PER_JIFFY
 suffix:semicolon
 multiline_comment|/* Enable timer 1 */
 id|TCTL
@@ -112,30 +126,25 @@ r_void
 r_int
 r_int
 id|ticks
+op_assign
+id|TCN
 comma
 id|offset
 op_assign
 l_int|0
 suffix:semicolon
-id|ticks
-op_assign
-id|TCN
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ticks
-OG
-(paren
-id|CLOCK_COMPARE
-op_rshift
-l_int|1
-)paren
-)paren
-(brace
 multiline_comment|/* check for pending interrupt */
 r_if
 c_cond
+(paren
+id|ticks
+OL
+(paren
+id|TICKS_PER_JIFFY
+op_rshift
+l_int|1
+)paren
+op_logical_and
 (paren
 id|ISR
 op_amp
@@ -145,30 +154,24 @@ op_lshift
 id|TMR_IRQ_NUM
 )paren
 )paren
+)paren
 id|offset
 op_assign
 l_int|1000000
 op_div
 id|HZ
 suffix:semicolon
-)brace
-id|ticks
-op_assign
-id|CLOCK_COMPARE
-op_minus
-id|ticks
-suffix:semicolon
 id|ticks
 op_assign
 (paren
+id|ticks
+op_star
 l_int|1000000
 op_div
 id|HZ
-op_star
-id|ticks
 )paren
 op_div
-id|CLOCK_COMPARE
+id|TICKS_PER_JIFFY
 suffix:semicolon
 r_return
 id|ticks
@@ -267,43 +270,31 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-"&quot;"
-id|movel
-macro_line|#-1, 0xFFFFF304;
-id|moveb
-macro_line|#0, 0xFFFFF300;
-id|moveal
-macro_line|#0x04000000, %a0;
-id|moveal
+macro_line|#ifdef CONFIG_INIT_LCD
+id|PBDATA
+op_or_assign
+l_int|0x20
+suffix:semicolon
+multiline_comment|/* disable CCFL light */
+id|PKDATA
+op_or_assign
+l_int|0x4
+suffix:semicolon
+multiline_comment|/* disable LCD controller */
+id|LCKCON
+op_assign
 l_int|0
-(paren
-op_mod
-id|a0
-)paren
-comma
-op_mod
-id|sp
 suffix:semicolon
-id|moveal
-l_int|4
+macro_line|#endif
+id|__asm__
+id|__volatile__
+c_func
 (paren
-op_mod
-id|a0
-)paren
-comma
-op_mod
-id|a0
-suffix:semicolon
-id|jmp
-(paren
-op_mod
-id|a0
-)paren
-suffix:semicolon
-"&quot;"
+l_string|&quot;reset&bslash;n&bslash;t&quot;
+l_string|&quot;moveal #0x04000000, %a0&bslash;n&bslash;t&quot;
+l_string|&quot;moveal 0(%a0), %sp&bslash;n&bslash;t&quot;
+l_string|&quot;moveal 4(%a0), %a0&bslash;n&bslash;t&quot;
+l_string|&quot;jmp (%a0)&quot;
 )paren
 suffix:semicolon
 )brace
@@ -316,6 +307,21 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+(brace
+r_static
+r_int
+id|nbdev
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|nbdev
+op_eq
+l_int|1
 )paren
 (brace
 multiline_comment|/* Set the ETH hardware address from its flash monitor location */
@@ -343,6 +349,11 @@ op_assign
 l_int|0x08000041
 suffix:semicolon
 )brace
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* no more interface */
+)brace
 DECL|function|init_hardware
 r_static
 r_void
@@ -352,6 +363,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_DIRECT_IO_ACCESS
+id|SCR
+op_assign
+l_int|0x10
+suffix:semicolon
+multiline_comment|/* allow user access to internal registers */
+macro_line|#endif
 multiline_comment|/* CSGB Init */
 id|CSGBB
 op_assign
@@ -429,7 +447,6 @@ l_int|5
 )paren
 suffix:semicolon
 (brace
-r_volatile
 r_int
 id|i
 suffix:semicolon
@@ -507,6 +524,98 @@ l_int|4
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_INIT_LCD
+multiline_comment|/* initialize LCD controller */
+id|LSSA
+op_assign
+(paren
+r_int
+)paren
+id|screen_bits
+suffix:semicolon
+id|LVPW
+op_assign
+l_int|0x14
+suffix:semicolon
+id|LXMAX
+op_assign
+l_int|0x140
+suffix:semicolon
+id|LYMAX
+op_assign
+l_int|0xef
+suffix:semicolon
+id|LRRA
+op_assign
+l_int|0
+suffix:semicolon
+id|LPXCD
+op_assign
+l_int|3
+suffix:semicolon
+id|LPICF
+op_assign
+l_int|0x08
+suffix:semicolon
+id|LPOLCF
+op_assign
+l_int|0
+suffix:semicolon
+id|LCKCON
+op_assign
+l_int|0x80
+suffix:semicolon
+id|PCPDEN
+op_assign
+l_int|0xff
+suffix:semicolon
+id|PCSEL
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Enable LCD controller */
+id|PKDIR
+op_or_assign
+l_int|0x4
+suffix:semicolon
+id|PKSEL
+op_or_assign
+l_int|0x4
+suffix:semicolon
+id|PKDATA
+op_and_assign
+op_complement
+l_int|0x4
+suffix:semicolon
+multiline_comment|/* Enable CCFL backlighting circuit */
+id|PBDIR
+op_or_assign
+l_int|0x20
+suffix:semicolon
+id|PBSEL
+op_or_assign
+l_int|0x20
+suffix:semicolon
+id|PBDATA
+op_and_assign
+op_complement
+l_int|0x20
+suffix:semicolon
+multiline_comment|/* contrast control register */
+id|PFDIR
+op_or_assign
+l_int|0x1
+suffix:semicolon
+id|PFSEL
+op_and_assign
+op_complement
+l_int|0x1
+suffix:semicolon
+id|PWMR
+op_assign
+l_int|0x037F
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|config_BSP
 r_void
@@ -559,11 +668,6 @@ suffix:semicolon
 id|mach_gettod
 op_assign
 id|dragen2_gettod
-suffix:semicolon
-id|config_M68328_irq
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 eof

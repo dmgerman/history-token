@@ -626,6 +626,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -1135,7 +1136,7 @@ l_int|1
 )braket
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|rev
@@ -1149,18 +1150,6 @@ r_sizeof
 id|rev
 )paren
 )paren
-suffix:semicolon
-id|rev
-(braket
-r_sizeof
-(paren
-id|rev
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -639,7 +639,7 @@ id|acpi_gbl_DSDT-&gt;length
 )paren
 suffix:semicolon
 multiline_comment|/* Always delete the RSDP mapping, we are done with it */
-id|acpi_tb_delete_acpi_table
+id|acpi_tb_delete_tables_by_type
 (paren
 id|ACPI_TABLE_RSDP
 )paren

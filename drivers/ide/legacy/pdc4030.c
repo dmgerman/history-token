@@ -22,6 +22,24 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;pdc4030.h&quot;
+r_static
+id|ide_startstop_t
+id|promise_rw_disk
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_int
+r_int
+id|block
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * promise_selectproc() is invoked by ide.c&n; * in preparation for access to the specified drive.&n; */
 DECL|function|promise_selectproc
 r_static
@@ -664,6 +682,15 @@ id|hwif2-&gt;identify
 op_assign
 op_amp
 id|pdc4030_identify
+suffix:semicolon
+multiline_comment|/* Override the normal ide disk read/write. */
+id|hwif-&gt;rw_disk
+op_assign
+id|promise_rw_disk
+suffix:semicolon
+id|hwif2-&gt;rw_disk
+op_assign
+id|promise_rw_disk
 suffix:semicolon
 multiline_comment|/* Shift the remaining interfaces up by one */
 r_for
@@ -3207,6 +3234,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|promise_rw_disk
+r_static
 id|ide_startstop_t
 id|promise_rw_disk
 (paren

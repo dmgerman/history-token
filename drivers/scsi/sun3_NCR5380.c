@@ -1749,6 +1749,8 @@ op_assign
 id|NCR5380_proc_info
 c_func
 (paren
+id|instance
+comma
 id|pr_bfr
 comma
 op_amp
@@ -1757,8 +1759,6 @@ comma
 l_int|0
 comma
 id|PAGE_SIZE
-comma
-id|HOSTNO
 comma
 l_int|0
 )paren
@@ -1821,6 +1821,11 @@ r_static
 r_int
 id|NCR5380_proc_info
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|instance
+comma
 r_char
 op_star
 id|buffer
@@ -1837,9 +1842,6 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|inout
 )paren
 (brace
@@ -1848,11 +1850,6 @@ op_star
 id|pos
 op_assign
 id|buffer
-suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|instance
 suffix:semicolon
 r_struct
 id|NCR5380_hostdata
@@ -1874,24 +1871,6 @@ l_int|0
 suffix:semicolon
 DECL|macro|check_offset
 mdefine_line|#define check_offset()&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (pos - buffer &lt; offset - begin) {&t;&bslash;&n;&t;    begin += pos - buffer;&t;&t;&bslash;&n;&t;    pos = buffer;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;    } while (0)
-id|instance
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|instance
-)paren
-r_return
-op_minus
-id|ESRCH
-suffix:semicolon
 id|hostdata
 op_assign
 (paren
@@ -3619,7 +3598,7 @@ macro_line|#endif /* REAL_DMA */
 multiline_comment|/*&n; * Function : void NCR5380_intr (int irq)&n; * &n; * Purpose : handle interrupts, reestablishing I_T_L or I_T_L_Q nexuses&n; *&t;from the disconnected queue, and restarting NCR5380_main() &n; *&t;as required.&n; *&n; * Inputs : int irq, irq that caused this interrupt.&n; *&n; */
 DECL|function|NCR5380_intr
 r_static
-r_void
+id|irqreturn_t
 id|NCR5380_intr
 (paren
 r_int
@@ -3646,6 +3625,10 @@ r_int
 id|done
 op_assign
 l_int|1
+comma
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_char
@@ -3922,6 +3905,10 @@ macro_line|#endif
 )brace
 )brace
 multiline_comment|/* if !(SELECTION || PARITY) */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/* BASR &amp; IRQ */
 r_else
@@ -3988,6 +3975,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef NCR5380_STATS
 DECL|function|collect_stats

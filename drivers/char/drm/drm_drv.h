@@ -2099,6 +2099,8 @@ id|ioremapfree
 id|map-&gt;handle
 comma
 id|map-&gt;size
+comma
+id|dev
 )paren
 suffix:semicolon
 r_break
@@ -2527,9 +2529,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#if __HAVE_CTX_BITMAP
 r_int
 id|retcode
 suffix:semicolon
+macro_line|#endif
 id|DRM_DEBUG
 c_func
 (paren

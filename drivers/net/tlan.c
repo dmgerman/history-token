@@ -1791,6 +1791,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 id|priv
 op_assign
 id|dev-&gt;priv
@@ -5355,7 +5364,7 @@ id|u32
 )paren
 id|t
 suffix:semicolon
-macro_line|#ifdef __LP64__
+macro_line|#if BITS_PER_LONG==64
 macro_line|#error &quot;Not 64bit clean&quot;
 macro_line|#endif&t;&t;&t;&t;
 id|head_list-&gt;buffer

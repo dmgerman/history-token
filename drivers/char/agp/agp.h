@@ -242,6 +242,7 @@ op_star
 id|tlb_flush
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 )paren
@@ -297,6 +298,7 @@ op_star
 id|insert_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 comma
@@ -312,6 +314,7 @@ op_star
 id|remove_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 comma
@@ -321,6 +324,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|alloc_by_type
+r_struct
 id|agp_memory
 op_star
 (paren
@@ -340,6 +344,7 @@ op_star
 id|free_by_type
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 )paren
@@ -944,6 +949,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 id|agp_create_memory
@@ -957,6 +963,7 @@ r_int
 id|agp_generic_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -972,6 +979,7 @@ r_int
 id|agp_generic_remove_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -983,6 +991,7 @@ r_int
 id|type
 )paren
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 id|agp_generic_alloc_by_type
@@ -999,6 +1008,7 @@ r_void
 id|agp_generic_free_by_type
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr

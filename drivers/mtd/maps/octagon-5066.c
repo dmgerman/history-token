@@ -1,4 +1,4 @@
-singleline_comment|// $Id: octagon-5066.c,v 1.19 2001/10/02 15:05:14 dwmw2 Exp $
+singleline_comment|// $Id: octagon-5066.c,v 1.24 2003/05/21 15:15:07 dwmw2 Exp $
 multiline_comment|/* ######################################################################&n;&n;   Octagon 5066 MTD Driver. &n;  &n;   The Octagon 5066 is a SBC based on AMD&squot;s 586-WB running at 133 MHZ. It&n;   comes with a builtin AMD 29F016 flash chip and a socketed EEPROM that&n;   is replacable by flash. Both units are mapped through a multiplexer&n;   into a 32k memory window at 0xe8000. The control register for the &n;   multiplexing unit is located at IO 0x208 with a bit map of&n;     0-5 Page Selection in 32k increments&n;     6-7 Device selection:&n;        00 SSD off&n;        01 SSD 0 (Socket)&n;        10 SSD 1 (Flash chip)&n;        11 undefined&n;  &n;   On each SSD, the first 128k is reserved for use by the bios&n;   (actually it IS the bios..) This only matters if you are booting off the &n;   flash, you must not put a file system starting there.&n;   &n;   The driver tries to do a detection algorithm to guess what sort of devices&n;   are plugged into the sockets.&n;   &n;   ##################################################################### */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 DECL|macro|WINDOW_START
 mdefine_line|#define WINDOW_START 0xe8000
 DECL|macro|WINDOW_LENGTH
@@ -689,6 +690,11 @@ op_assign
 l_string|&quot;Octagon 5066 Socket&quot;
 comma
 dot
+id|phys
+op_assign
+id|NO_XIP
+comma
+dot
 id|size
 op_assign
 l_int|512
@@ -753,6 +759,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Octagon 5066 Internal Flash&quot;
+comma
+dot
+id|phys
+op_assign
+id|NO_XIP
 comma
 dot
 id|size
@@ -1057,24 +1068,31 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 singleline_comment|// Do an autoprobe sequence
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|PAGE_IO
 comma
 l_int|1
+comma
+l_string|&quot;Octagon SSD&quot;
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;5066: Page Register in Use&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1107,12 +1125,17 @@ id|iomapadr
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Failed to ioremap memory region&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|out_rel
 suffix:semicolon
 )brace
 r_if
@@ -1129,6 +1152,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;5066: Octagon Probe Failed, is this an Octagon 5066 SBC?&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1142,21 +1166,15 @@ op_star
 id|iomapadr
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
-id|request_region
-c_func
-(paren
-id|PAGE_IO
-comma
-l_int|1
-comma
-l_string|&quot;Octagon SSD&quot;
-)paren
+r_goto
+id|out_unmap
 suffix:semicolon
+)brace
 singleline_comment|// Print out our little header..
 id|printk
 c_func
@@ -1296,7 +1314,7 @@ id|oct5066_mtd
 id|i
 )braket
 op_member_access_from_pointer
-id|module
+id|owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
@@ -1339,6 +1357,31 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+id|out_unmap
+suffix:colon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|iomapadr
+)paren
+suffix:semicolon
+id|out_rel
+suffix:colon
+id|release_region
+c_func
+(paren
+id|PAGE_IO
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|init_oct5066

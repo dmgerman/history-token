@@ -32,11 +32,6 @@ id|hints
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* For spinlock */
-r_int
 id|index
 suffix:semicolon
 multiline_comment|/* In the log */
@@ -61,13 +56,11 @@ id|name
 )paren
 suffix:semicolon
 multiline_comment|/* Protect this section via spinlock.&n;   * Note : as we are the only event producer, we only need to exclude&n;   * ourself when touching the log, which is nice and easy.&n;   */
-id|spin_lock_irqsave
+id|spin_lock_bh
 c_func
 (paren
 op_amp
 id|irnet_events.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Copy the event in the log */
@@ -213,13 +206,11 @@ id|irnet_events.index
 )paren
 suffix:semicolon
 multiline_comment|/* Spin lock end */
-id|spin_unlock_irqrestore
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|irnet_events.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Now : wake up everybody waiting for events... */
@@ -325,14 +316,17 @@ id|notify.instance
 op_assign
 id|self
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|notify.name
 comma
 id|IRNET_NOTIFY_NAME
 comma
-id|NOTIFY_MAX_NAME
+r_sizeof
+(paren
+id|notify.name
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Open an IrTTP instance */
@@ -1504,17 +1498,11 @@ l_int|NULL
 )paren
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|hashbin_insert
@@ -1533,13 +1521,11 @@ comma
 id|self-&gt;rname
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|DEBUG
@@ -1727,10 +1713,6 @@ id|irnet_socket
 op_star
 id|entry
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -1739,13 +1721,11 @@ comma
 l_string|&quot;Removing from hash..&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|entry
@@ -1766,13 +1746,11 @@ id|self-&gt;q.q_next
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|DASSERT
@@ -2045,7 +2023,7 @@ id|self-&gt;daddr
 )paren
 (brace
 multiline_comment|/* Yes !!! Get it.. */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|self-&gt;rname
@@ -2057,7 +2035,10 @@ id|i
 dot
 id|info
 comma
-id|NICKNAME_MAX_LEN
+r_sizeof
+(paren
+id|self-&gt;rname
+)paren
 )paren
 suffix:semicolon
 id|self-&gt;rname
@@ -2148,10 +2129,6 @@ op_star
 l_int|NULL
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|err
 suffix:semicolon
 id|DENTER
@@ -2195,13 +2172,11 @@ id|self
 )paren
 suffix:semicolon
 multiline_comment|/* Protect access to the instance list */
-id|spin_lock_irqsave
+id|spin_lock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* So now, try to get an socket having specifically&n;   * requested that nickname */
@@ -2462,13 +2437,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Spin lock end */
-id|spin_unlock_irqrestore
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|DEXIT
@@ -3577,6 +3550,8 @@ c_cond
 id|test_open
 )paren
 (brace
+macro_line|#ifdef MISSING_PPP_API
+multiline_comment|/* ppp_unregister_channel() wants a user context, which we&n;&t;   * are guaranteed to NOT have here. What are we supposed&n;&t;   * to do here ? Jean II */
 multiline_comment|/* If we were connected, cleanup &amp; close the PPP channel,&n;&t;   * which will kill pppd (hangup) and the rest */
 id|ppp_unregister_channel
 c_func
@@ -3589,6 +3564,7 @@ id|self-&gt;ppp_open
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -5177,10 +5153,6 @@ op_star
 id|state
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|i
 op_assign
 l_int|0
@@ -5264,13 +5236,11 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/* Protect access to the instance list */
-id|spin_lock_irqsave
+id|spin_lock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Get the sockets one by one... */
@@ -5563,13 +5533,11 @@ id|irnet_server.list
 suffix:semicolon
 )brace
 multiline_comment|/* Spin lock end */
-id|spin_unlock_irqrestore
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|irnet_server.spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return

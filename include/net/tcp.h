@@ -20,6 +20,7 @@ macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/seq_file.h&gt;
 multiline_comment|/* This is for all connections with a full identity, no wildcards.&n; * New scheme, half the table is for TIME_WAIT, the other half is&n; * for the rest.  I&squot;ll experiment with dynamic table growth later.&n; */
 DECL|struct|tcp_ehash_bucket
 r_struct
@@ -454,6 +455,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|macro|tcptw_sk
+mdefine_line|#define tcptw_sk(__sk)&t;((struct tcp_tw_bucket *)(__sk))
 r_extern
 id|kmem_cache_t
 op_star
@@ -571,12 +574,16 @@ DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr) &bslash;&n;&t;__u64 __name = (((__u64)(__daddr))&lt;&lt;32)|((__u64)(__saddr));
 macro_line|#endif /* __BIG_ENDIAN */
 DECL|macro|TCP_IPV4_MATCH
-mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(inet_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(inet_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+DECL|macro|TCP_IPV4_TW_MATCH
+mdefine_line|#define TCP_IPV4_TW_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(tcptw_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(tcptw_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 macro_line|#else /* 32-bit arch */
 DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr)
 DECL|macro|TCP_IPV4_MATCH
 mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((inet_sk(__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (inet_sk(__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+DECL|macro|TCP_IPV4_TW_MATCH
+mdefine_line|#define TCP_IPV4_TW_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((tcptw_sk(__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (tcptw_sk(__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(tcptw_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 macro_line|#endif /* 64-bit arch */
 DECL|macro|TCP_IPV6_MATCH
 mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
@@ -707,11 +714,6 @@ DECL|macro|MAX_TCP_KEEPCNT
 mdefine_line|#define MAX_TCP_KEEPCNT&t;&t;127
 DECL|macro|MAX_TCP_SYNCNT
 mdefine_line|#define MAX_TCP_SYNCNT&t;&t;127
-multiline_comment|/* TIME_WAIT reaping mechanism. */
-DECL|macro|TCP_TWKILL_SLOTS
-mdefine_line|#define TCP_TWKILL_SLOTS&t;8&t;/* Please keep this a power of 2. */
-DECL|macro|TCP_TWKILL_PERIOD
-mdefine_line|#define TCP_TWKILL_PERIOD&t;(TCP_TIMEWAIT_LEN/TCP_TWKILL_SLOTS)
 DECL|macro|TCP_SYNQ_INTERVAL
 mdefine_line|#define TCP_SYNQ_INTERVAL&t;(HZ/5)&t;/* Period of SYNACK timer */
 DECL|macro|TCP_SYNQ_HSIZE
@@ -7223,5 +7225,129 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* /proc */
+DECL|enum|tcp_seq_states
+r_enum
+id|tcp_seq_states
+(brace
+DECL|enumerator|TCP_SEQ_STATE_LISTENING
+id|TCP_SEQ_STATE_LISTENING
+comma
+DECL|enumerator|TCP_SEQ_STATE_OPENREQ
+id|TCP_SEQ_STATE_OPENREQ
+comma
+DECL|enumerator|TCP_SEQ_STATE_ESTABLISHED
+id|TCP_SEQ_STATE_ESTABLISHED
+comma
+DECL|enumerator|TCP_SEQ_STATE_TIME_WAIT
+id|TCP_SEQ_STATE_TIME_WAIT
+comma
+)brace
+suffix:semicolon
+DECL|struct|tcp_seq_afinfo
+r_struct
+id|tcp_seq_afinfo
+(brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|family
+id|sa_family_t
+id|family
+suffix:semicolon
+DECL|member|seq_show
+r_int
+(paren
+op_star
+id|seq_show
+)paren
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+suffix:semicolon
+DECL|member|seq_fops
+r_struct
+id|file_operations
+op_star
+id|seq_fops
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|tcp_iter_state
+r_struct
+id|tcp_iter_state
+(brace
+DECL|member|family
+id|sa_family_t
+id|family
+suffix:semicolon
+DECL|member|state
+r_enum
+id|tcp_seq_states
+id|state
+suffix:semicolon
+DECL|member|syn_wait_sk
+r_struct
+id|sock
+op_star
+id|syn_wait_sk
+suffix:semicolon
+DECL|member|bucket
+DECL|member|sbucket
+DECL|member|num
+DECL|member|uid
+r_int
+id|bucket
+comma
+id|sbucket
+comma
+id|num
+comma
+id|uid
+suffix:semicolon
+DECL|member|seq_ops
+r_struct
+id|seq_operations
+id|seq_ops
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|tcp_proc_register
+c_func
+(paren
+r_struct
+id|tcp_seq_afinfo
+op_star
+id|afinfo
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tcp_proc_unregister
+c_func
+(paren
+r_struct
+id|tcp_seq_afinfo
+op_star
+id|afinfo
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* _TCP_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand_ecc.h&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: nand_ecc.h,v 1.1 2000/10/12 00:57:15 sjhill Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This file is the header for the ECC algorithm.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand_ecc.h&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; * $Id: nand_ecc.h,v 1.2 2003/02/20 13:34:20 sjhill Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This file is the header for the ECC algorithm.&n; */
 multiline_comment|/*&n; * Creates non-inverted ECC code from line parity&n; */
 r_void
 id|nand_trans_result

@@ -366,7 +366,7 @@ id|s
 (brace
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|parport_atari_interrupt
 id|parport_atari_interrupt
 c_func
@@ -398,6 +398,9 @@ id|dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

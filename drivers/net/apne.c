@@ -176,7 +176,7 @@ id|start_page
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|apne_interrupt
 c_func
 (paren
@@ -2268,7 +2268,7 @@ suffix:semicolon
 )brace
 DECL|function|apne_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|apne_interrupt
 c_func
 (paren
@@ -2300,6 +2300,7 @@ id|GAYLE_IRQ_IRQ
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|pcmcia_intreq
 op_assign
@@ -2326,6 +2327,7 @@ id|pcmcia_intreq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -2372,6 +2374,9 @@ id|pcmcia_enable_irq
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE

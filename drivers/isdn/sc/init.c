@@ -1296,11 +1296,9 @@ id|isdn_if
 )paren
 )paren
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|interface
-)paren
+id|interface-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|interface-&gt;hl_hdrlen
 op_assign

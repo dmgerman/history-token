@@ -303,6 +303,7 @@ c_func
 op_amp
 id|iph-&gt;daddr
 comma
+op_amp
 id|fl-&gt;fl6_dst
 )paren
 suffix:semicolon
@@ -1529,10 +1530,15 @@ r_goto
 id|exit_f
 suffix:semicolon
 )brace
+id|ipv6_addr_copy
+c_func
+(paren
+op_amp
 id|fl-&gt;fl6_src
-op_assign
+comma
 op_amp
 id|src_info-&gt;ipi6_addr
+)paren
 suffix:semicolon
 )brace
 r_break

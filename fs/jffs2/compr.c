@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr.c,v 1.24 2002/05/20 14:56:37 dwmw2 Exp $&n; *&n; */
-macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr.c,v 1.26 2003/01/12 13:21:28 dwmw2 Exp $&n; *&n; */
+macro_line|#if defined(__KERNEL__) || defined (__ECOS)
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#else 
 DECL|macro|KERN_DEBUG
 mdefine_line|#define KERN_DEBUG

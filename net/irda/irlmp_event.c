@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlmp_event.c&n; * Version:       0.8&n; * Description:   An IrDA LMP event driver for Linux&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 23:04:16 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlmp_event.c&n; * Version:       0.8&n; * Description:   An IrDA LMP event driver for Linux&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 23:04:16 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -936,17 +936,6 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1202,17 +1191,6 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1408,17 +1386,6 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1496,6 +1463,7 @@ macro_line|#ifdef CONFIG_IRDA_ULTRA
 r_case
 id|LM_UDATA_INDICATION
 suffix:colon
+multiline_comment|/* This is most bizzare. Those packets are  aka unreliable&n;&t;&t; * connected, aka IrLPT or SOCK_DGRAM/IRDAPROTO_UNITDATA.&n;&t;&t; * Why do we pass them as Ultra ??? Jean II */
 id|irlmp_connless_data_indication
 c_func
 (paren
@@ -1539,6 +1507,13 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+multiline_comment|/* Don&squot;t forget to refcount it (see irlmp_connect_request()) */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|self-&gt;conn_skb
 op_assign
 id|skb
@@ -1596,6 +1571,13 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+multiline_comment|/* Don&squot;t forget to refcount it (see irlap_driver_rcv()) */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|self-&gt;conn_skb
 op_assign
 id|skb
@@ -1648,17 +1630,6 @@ id|event
 )braket
 comma
 id|self-&gt;slsap_sel
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break
@@ -1897,17 +1868,6 @@ comma
 id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1936,6 +1896,11 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|sk_buff
+op_star
+id|tx_skb
+suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -2044,7 +2009,7 @@ comma
 id|LSAP_CONNECT
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|self-&gt;conn_skb
 suffix:semicolon
@@ -2057,7 +2022,14 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see irlmp_connect_indication(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
 )paren
 suffix:semicolon
 r_break
@@ -2125,17 +2097,6 @@ id|event
 )braket
 comma
 id|self-&gt;slsap_sel
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break
@@ -2334,7 +2295,7 @@ c_func
 l_int|0
 comma
 l_string|&quot;%s(), LM_CONNECT_RESPONSE, &quot;
-l_string|&quot;error, LSAP allready connected&bslash;n&quot;
+l_string|&quot;error, LSAP already connected&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2548,17 +2509,6 @@ id|event
 )braket
 comma
 id|self-&gt;slsap_sel
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break
@@ -2909,17 +2859,6 @@ comma
 id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2948,6 +2887,11 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|sk_buff
+op_star
+id|tx_skb
+suffix:semicolon
 id|LM_REASON
 id|reason
 suffix:semicolon
@@ -3014,7 +2958,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|self-&gt;conn_skb
 suffix:semicolon
@@ -3033,7 +2977,14 @@ id|self-&gt;slsap_sel
 comma
 id|CONNECT_CMD
 comma
-id|skb
+id|tx_skb
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see irlap_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
 )paren
 suffix:semicolon
 id|irlmp_next_lsap_state
@@ -3158,17 +3109,6 @@ id|event
 )braket
 comma
 id|self-&gt;slsap_sel
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break

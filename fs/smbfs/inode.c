@@ -245,6 +245,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
 comma
@@ -1490,7 +1492,7 @@ suffix:semicolon
 r_case
 l_char|&squot;i&squot;
 suffix:colon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|mnt-&gt;codepage.local_name
@@ -1505,7 +1507,7 @@ suffix:semicolon
 r_case
 l_char|&squot;c&squot;
 suffix:colon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|mnt-&gt;codepage.remote_name
@@ -2180,7 +2182,7 @@ id|smb_mount_data_kernel
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|mnt-&gt;codepage.local_name
@@ -2190,7 +2192,7 @@ comma
 id|SMB_NLS_MAXNAMELEN
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|mnt-&gt;codepage.remote_name
@@ -3139,6 +3141,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

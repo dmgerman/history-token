@@ -92,7 +92,7 @@ DECL|macro|invoke_softirq
 mdefine_line|#define invoke_softirq() do_call_softirq()
 macro_line|#ifdef CONFIG_PREEMPT
 DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(in_interrupt() || preempt_count() == PREEMPT_ACTIVE)
+macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  toshiba_acpi.c - Toshiba Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002-2003 John Belmonte&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The devolpment page for this driver is located at&n; *  http://memebeam.org/toys/ToshibaAcpiDriver.&n; *&n; *  Credits:&n; *&t;Jonathan A. Buzzard - Toshiba HCI info, and critical tips on reverse&n; *&t;&t;engineering the Windows drivers&n; *&t;Yasushi Nagato - changes for linux kernel 2.4 -&gt; 2.5&n; *&t;Rob Miller - TV out and hotkeys help&n; *&n; *&n; *  TODO&n; *&n; */
 DECL|macro|TOSHIBA_ACPI_VERSION
-mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.14&quot;
+mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.15&quot;
 DECL|macro|PROC_INTERFACE_VERSION
 mdefine_line|#define PROC_INTERFACE_VERSION&t;1
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -168,7 +168,7 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|str2
@@ -177,13 +177,6 @@ id|str
 comma
 id|n
 )paren
-suffix:semicolon
-id|str2
-(braket
-id|n
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|va_start
 c_func
@@ -500,9 +493,7 @@ id|in
 id|i
 )braket
 suffix:semicolon
-multiline_comment|/*printk(&quot;%04x &quot;, in[i]);*/
 )brace
-multiline_comment|/*printk(&quot;&bslash;n&quot;);*/
 id|results.length
 op_assign
 r_sizeof
@@ -573,9 +564,7 @@ id|i
 dot
 id|integer.value
 suffix:semicolon
-multiline_comment|/*printk(&quot;%04x &quot;, out[i]);*/
 )brace
-multiline_comment|/*printk(&quot;&bslash;n&quot;);*/
 )brace
 r_return
 id|status
@@ -771,6 +760,7 @@ r_struct
 id|_ProcItem
 (brace
 DECL|member|name
+r_const
 r_char
 op_star
 id|name
@@ -1067,11 +1057,9 @@ id|count
 r_int
 id|value
 suffix:semicolon
-multiline_comment|/*int byte_count;*/
 id|u32
 id|hci_result
 suffix:semicolon
-multiline_comment|/* ISSUE: %i doesn&squot;t work with hex values as advertised */
 r_if
 c_cond
 (paren
@@ -1778,6 +1766,28 @@ id|HCI_EMPTY
 )paren
 (brace
 multiline_comment|/* better luck next time */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|hci_result
+op_eq
+id|HCI_NOT_SUPPORTED
+)paren
+(brace
+multiline_comment|/* This is a workaround for an unresolved issue on&n;&t;&t;&t; * some machines where system events sporadically&n;&t;&t;&t; * become disabled. */
+id|hci_write1
+c_func
+(paren
+id|HCI_SYSTEM_EVENT
+comma
+l_int|1
+comma
+op_amp
+id|hci_result
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

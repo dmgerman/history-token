@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
+macro_line|#include &lt;linux/nfsd/state.h&gt;
 macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;&t;NFSDDBG_PROC
@@ -97,9 +98,9 @@ id|rqstp
 comma
 id|current_fh
 comma
-id|open-&gt;op_name
+id|open-&gt;op_fname.data
 comma
-id|open-&gt;op_namelen
+id|open-&gt;op_fname.len
 comma
 op_amp
 id|open-&gt;op_iattr
@@ -131,9 +132,9 @@ id|rqstp
 comma
 id|current_fh
 comma
-id|open-&gt;op_name
+id|open-&gt;op_fname.data
 comma
-id|open-&gt;op_namelen
+id|open-&gt;op_fname.len
 comma
 op_amp
 id|resfh
@@ -228,100 +229,6 @@ id|status
 suffix:semicolon
 )brace
 r_static
-r_int
-DECL|function|nfsd4_process_open2
-id|nfsd4_process_open2
-c_func
-(paren
-r_struct
-id|svc_rqst
-op_star
-id|rqstp
-comma
-r_struct
-id|svc_fh
-op_star
-id|current_fh
-comma
-r_struct
-id|nfsd4_open
-op_star
-id|open
-)paren
-(brace
-r_struct
-id|iattr
-id|iattr
-suffix:semicolon
-r_int
-id|status
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|open-&gt;op_truncate
-)paren
-(brace
-id|iattr.ia_valid
-op_assign
-id|ATTR_SIZE
-suffix:semicolon
-id|iattr.ia_size
-op_assign
-l_int|0
-suffix:semicolon
-id|status
-op_assign
-id|nfsd_setattr
-c_func
-(paren
-id|rqstp
-comma
-id|current_fh
-comma
-op_amp
-id|iattr
-comma
-l_int|0
-comma
-(paren
-id|time_t
-)paren
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-)paren
-r_return
-id|status
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-op_amp
-id|open-&gt;op_stateid
-comma
-l_int|0xff
-comma
-r_sizeof
-(paren
-id|stateid_t
-)paren
-)paren
-suffix:semicolon
-id|open-&gt;op_delegate_type
-op_assign
-id|NFS4_OPEN_DELEGATE_NONE
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
 r_inline
 r_int
 DECL|function|nfsd4_open
@@ -347,6 +254,16 @@ id|open
 r_int
 id|status
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;NFSD: nfsd4_open filename %.*s&bslash;n&quot;
+comma
+id|open-&gt;op_fname.len
+comma
+id|open-&gt;op_fname.data
+)paren
+suffix:semicolon
 multiline_comment|/* This check required by spec. */
 r_if
 c_cond
@@ -360,18 +277,24 @@ id|NFS4_OPEN_CLAIM_NULL
 r_return
 id|nfserr_inval
 suffix:semicolon
-multiline_comment|/*&n;&t; * For now, we have no state, so we may as well implement an&n;&t; * even stronger check...&n;&t; */
+multiline_comment|/* check seqid for replay. set nfs4_owner */
+id|status
+op_assign
+id|nfsd4_process_open1
+c_func
+(paren
+id|open
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|open-&gt;op_claim_type
-op_ne
-id|NFS4_OPEN_CLAIM_NULL
+id|status
 )paren
 r_return
-id|nfserr_notsupp
+id|status
 suffix:semicolon
-multiline_comment|/*&n;&t; * This block of code will (1) set CURRENT_FH to the file being opened,&n;&t; * creating it if necessary, (2) set open-&gt;op_cinfo, (3) set open-&gt;op_truncate&n;&t; * if the file is to be truncated after opening, (4) do permission checking.&n;&t; */
+multiline_comment|/*&n;&t; * This block of code will (1) set CURRENT_FH to the file being opened,&n;&t; * creating it if necessary, (2) set open-&gt;op_cinfo, &n;&t; * (3) set open-&gt;op_truncate if the file is to be truncated &n;&t; * after opening, (4) do permission checking.&n;&t; */
 id|status
 op_assign
 id|do_open_lookup
@@ -565,6 +488,9 @@ c_func
 id|rqstp-&gt;rq_client
 comma
 id|current_fh
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 suffix:semicolon
 )brace

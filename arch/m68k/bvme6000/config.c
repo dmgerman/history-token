@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/bvme6000hw.h&gt;
 r_extern
-r_void
+id|irqreturn_t
 id|bvme6000_process_int
 (paren
 r_int
@@ -108,7 +108,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -143,7 +143,7 @@ r_void
 id|bvme6000_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -231,7 +231,7 @@ suffix:semicolon
 multiline_comment|/* Save tick handler routine pointer, will point to do_timer() in&n; * kernel/sched.c, called via bvme6000_process_int() */
 DECL|variable|tick_handler
 r_static
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|tick_handler
@@ -558,7 +558,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|bvme6000_abort_int
-r_void
+id|irqreturn_t
 id|bvme6000_abort_int
 (paren
 r_int
@@ -674,10 +674,13 @@ l_int|0x1f
 )paren
 suffix:semicolon
 multiline_comment|/* ABORT switch */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|bvme6000_timer_int
 r_static
-r_void
+id|irqreturn_t
 id|bvme6000_timer_int
 (paren
 r_int
@@ -717,6 +720,7 @@ op_or
 l_int|0x20
 suffix:semicolon
 multiline_comment|/* Ack the interrupt */
+r_return
 id|tick_handler
 c_func
 (paren
@@ -733,7 +737,7 @@ DECL|function|bvme6000_sched_init
 r_void
 id|bvme6000_sched_init
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine

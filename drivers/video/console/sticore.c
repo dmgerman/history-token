@@ -1168,7 +1168,7 @@ c_cond
 (paren
 id|str
 )paren
-id|strncpy
+id|strlcpy
 (paren
 id|default_sti_path
 comma

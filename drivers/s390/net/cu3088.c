@@ -289,7 +289,7 @@ op_minus
 id|start
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|bus_ids
 (braket
@@ -300,16 +300,6 @@ id|start
 comma
 id|len
 )paren
-suffix:semicolon
-id|bus_ids
-(braket
-id|i
-)braket
-(braket
-id|len
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|argv
 (braket

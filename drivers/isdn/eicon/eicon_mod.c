@@ -3888,12 +3888,9 @@ r_int
 id|card
 )paren
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|card-&gt;interface
-)paren
+id|card-&gt;interface.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|card-&gt;interface.maxbufsize
 op_assign
@@ -3935,7 +3932,7 @@ id|card-&gt;ptype
 op_assign
 id|ISDN_PTYPE_UNKNOWN
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|card-&gt;interface.id
@@ -3946,8 +3943,6 @@ r_sizeof
 (paren
 id|card-&gt;interface.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|card-&gt;myid

@@ -1,4 +1,4 @@
-multiline_comment|/* airport.c 0.13a&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
+multiline_comment|/* airport.c 0.13e&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -243,8 +242,7 @@ id|dev
 )paren
 suffix:semicolon
 id|priv-&gt;hw_unavailable
-op_assign
-l_int|1
+op_increment
 suffix:semicolon
 id|orinoco_unlock
 c_func
@@ -354,10 +352,18 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|priv-&gt;hw_unavailable
+op_decrement
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|priv-&gt;open
+op_logical_and
+(paren
+op_logical_neg
+id|priv-&gt;hw_unavailable
+)paren
 )paren
 (brace
 id|err
@@ -385,10 +391,6 @@ id|err
 )paren
 suffix:semicolon
 )brace
-id|priv-&gt;hw_unavailable
-op_assign
-l_int|0
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -406,6 +408,102 @@ id|PBOOK_SLEEP_OK
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
+DECL|function|airport_hard_reset
+r_static
+r_int
+id|airport_hard_reset
+c_func
+(paren
+r_struct
+id|orinoco_private
+op_star
+id|priv
+)paren
+(brace
+multiline_comment|/* It would be nice to power cycle the Airport for a real hard&n;&t; * reset, but for some reason although it appears to&n;&t; * re-initialize properly, it falls in a screaming heap&n;&t; * shortly afterwards. */
+macro_line|#if 0
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|priv-&gt;ndev
+suffix:semicolon
+r_struct
+id|airport
+op_star
+id|card
+op_assign
+id|priv-&gt;card
+suffix:semicolon
+multiline_comment|/* Vitally important.  If we don&squot;t do this it seems we get an&n;&t; * interrupt somewhere during the power cycle, since&n;&t; * hw_unavailable is already set it doesn&squot;t get ACKed, we get&n;&t; * into an interrupt loop and the the PMU decides to turn us&n;&t; * off. */
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_AIRPORT_ENABLE
+comma
+id|card-&gt;node
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_AIRPORT_ENABLE
+comma
+id|card-&gt;node
+comma
+l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_static
 r_struct
 id|net_device
@@ -478,7 +576,7 @@ op_star
 id|card
 )paren
 comma
-l_int|NULL
+id|airport_hard_reset
 )paren
 suffix:semicolon
 r_if
@@ -681,11 +779,7 @@ l_int|0
 comma
 l_string|&quot;Airport&quot;
 comma
-(paren
-r_void
-op_star
-)paren
-id|priv
+id|dev
 )paren
 )paren
 (brace
@@ -743,27 +837,6 @@ id|card-&gt;ndev_registered
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* And give us the proc nodes for debugging */
-r_if
-c_cond
-(paren
-id|orinoco_proc_dev_init
-c_func
-(paren
-id|dev
-)paren
-op_ne
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;airport: Failed to create /proc node for %s&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 id|pmu_register_sleep_notifier
 c_func
@@ -816,13 +889,6 @@ id|card
 op_assign
 id|priv-&gt;card
 suffix:semicolon
-multiline_comment|/* Unregister proc entry */
-id|orinoco_proc_dev_cleanup
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 id|pmu_unregister_sleep_notifier
 c_func
@@ -857,7 +923,7 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-id|priv
+id|dev
 )paren
 suffix:semicolon
 id|card-&gt;irq_requested
@@ -929,7 +995,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;airport.c 0.13a (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
+l_string|&quot;airport.c 0.13e (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -973,8 +1039,6 @@ comma
 id|version
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Lookup card in device tree */
 id|airport_node
 op_assign
@@ -1005,8 +1069,6 @@ c_func
 (paren
 id|airport_node
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|airport_dev

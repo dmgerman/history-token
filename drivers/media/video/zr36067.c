@@ -361,7 +361,7 @@ op_star
 id|zr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *   Allocate the V4L grab buffers&n; *&n; *   These have to be pysically contiguous.&n; *   If v4l_bufsize &lt;= MAX_KMALLOC_MEM we use kmalloc&n; *   else we try to allocate them with bigphysarea_alloc_pages&n; *   if the bigphysarea patch is present in the kernel,&n; *   else we try to use high memory (if the user has bootet&n; *   Linux with the necessary memory left over).&n; */
+multiline_comment|/*&n; *   Allocate the V4L grab buffers&n; *&n; *   These have to be physically contiguous.&n; *   If v4l_bufsize &lt;= MAX_KMALLOC_MEM we use kmalloc&n; *   else we try to allocate them with bigphysarea_alloc_pages&n; *   if the bigphysarea patch is present in the kernel,&n; *   else we try to use high memory (if the user has booted&n; *   Linux with the necessary memory left over).&n; */
 DECL|function|v4l_fbuffer_alloc
 r_static
 r_int
@@ -413,7 +413,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: v4l_fbuffer_alloc: buffer %d allready allocated ???&bslash;n&quot;
+l_string|&quot;%s: v4l_fbuffer_alloc: buffer %d already allocated ???&bslash;n&quot;
 comma
 id|zr-&gt;name
 comma
@@ -935,7 +935,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: jpg_fbuffer_alloc: buffer %d allready allocated ???&bslash;n&quot;
+l_string|&quot;%s: jpg_fbuffer_alloc: buffer %d already allocated ???&bslash;n&quot;
 comma
 id|zr-&gt;name
 comma
@@ -1148,7 +1148,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* jpg_bufsize is allreay page aligned */
+multiline_comment|/* jpg_bufsize is already page aligned */
 r_for
 c_loop
 (paren
@@ -3360,7 +3360,7 @@ comma
 id|fmt
 )paren
 suffix:semicolon
-multiline_comment|/* Start and length of each line MUST be 4-byte aligned.&n;&t;&t;   This should be allready checked before the call to this routine.&n;&t;&t;   All error messages are internal driver checking only! */
+multiline_comment|/* Start and length of each line MUST be 4-byte aligned.&n;&t;&t;   This should be already checked before the call to this routine.&n;&t;&t;   All error messages are internal driver checking only! */
 multiline_comment|/* video display top and bottom registers */
 id|reg
 op_assign
@@ -13998,7 +13998,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: zoran_open: Buz is allready in use&bslash;n&quot;
+l_string|&quot;%s: zoran_open: Buz is already in use&bslash;n&quot;
 comma
 id|zr-&gt;name
 )paren
@@ -14438,7 +14438,7 @@ id|zr-&gt;name
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|b.name
@@ -16978,7 +16978,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: BUZIOC_REQBUFS: buffers allready allocated&bslash;n&quot;
+l_string|&quot;%s: BUZIOC_REQBUFS: buffers already allocated&bslash;n&quot;
 comma
 id|zr-&gt;name
 )paren

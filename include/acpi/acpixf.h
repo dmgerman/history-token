@@ -355,12 +355,12 @@ id|acpi_status
 id|acpi_get_object_info
 (paren
 id|acpi_handle
-id|device
+id|handle
 comma
 r_struct
-id|acpi_device_info
+id|acpi_buffer
 op_star
-id|info
+id|return_buffer
 )paren
 suffix:semicolon
 id|acpi_status

@@ -701,6 +701,15 @@ id|SET_MODULE_OWNER
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 macro_line|#ifdef MEM_MAPPING
 id|ioaddr
 op_assign

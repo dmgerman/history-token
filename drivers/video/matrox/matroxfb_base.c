@@ -13760,7 +13760,7 @@ comma
 l_int|5
 )paren
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|fontname
@@ -13773,8 +13773,6 @@ r_sizeof
 (paren
 id|fontname
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -13908,7 +13906,7 @@ comma
 l_int|5
 )paren
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|videomode
@@ -13921,8 +13919,6 @@ r_sizeof
 (paren
 id|videomode
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -14511,7 +14507,7 @@ id|value
 suffix:semicolon
 r_else
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|videomode
@@ -14522,8 +14518,6 @@ r_sizeof
 (paren
 id|videomode
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace

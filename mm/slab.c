@@ -33,10 +33,10 @@ mdefine_line|#define&t;BYTES_PER_WORD&t;&t;sizeof(void *)
 multiline_comment|/* Legal flag mask for kmem_cache_create(). */
 macro_line|#if DEBUG
 DECL|macro|CREATE_MASK
-macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA | &bslash;&n;&t;&t;&t; SLAB_MUST_HWCACHE_ALIGN | SLAB_STORE_USER)
+macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA | &bslash;&n;&t;&t;&t; SLAB_MUST_HWCACHE_ALIGN | SLAB_STORE_USER | &bslash;&n;&t;&t;&t; SLAB_RECLAIM_ACCOUNT )
 macro_line|#else
 DECL|macro|CREATE_MASK
-macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | &bslash;&n;&t;&t;&t; SLAB_CACHE_DMA | SLAB_MUST_HWCACHE_ALIGN)
+macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | &bslash;&n;&t;&t;&t; SLAB_CACHE_DMA | SLAB_MUST_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_RECLAIM_ACCOUNT)
 macro_line|#endif
 multiline_comment|/*&n; * kmem_bufctl_t:&n; *&n; * Bufctl&squot;s are used for linking objs within a slab&n; * linked offsets.&n; *&n; * This implementation relies on &quot;struct page&quot; for locating the cache &amp;&n; * slab an object belongs to.&n; * This allows the bufctl structure to be small (one int), but limits&n; * the number of objects a slab (not a cache) can contain when off-slab&n; * bufctls are used. The limit is the size of the largest general cache&n; * that does not use off-slab slabs.&n; * For 32bit archs with 4 kB pages, is this 56.&n; * This is not serious, as it is only for large objects, when it is unwise&n; * to have too many per slab.&n; * Note: This limit can be raised by introducing a general cache whose size&n; * is less than 512 (PAGE_SIZE&lt;&lt;3), but greater than 256.&n; */
 DECL|macro|BUFCTL_END
@@ -675,6 +675,11 @@ DECL|variable|cache_chain
 r_struct
 id|list_head
 id|cache_chain
+suffix:semicolon
+multiline_comment|/*&n; * vm_enough_memory() looks at this to determine how many&n; * slab-allocated pages are possibly freeable under pressure&n; *&n; * SLAB_RECLAIM_ACCOUNT turns this on per-slab&n; */
+DECL|variable|slab_reclaim_pages
+id|atomic_t
+id|slab_reclaim_pages
 suffix:semicolon
 multiline_comment|/*&n; * chicken and egg problem: delay the per-cpu array allocation&n; * until the general caches are up.&n; */
 r_enum
@@ -1837,6 +1842,24 @@ id|flags
 op_or_assign
 id|cachep-&gt;gfpflags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_RECLAIM_ACCOUNT
+)paren
+id|atomic_add
+c_func
+(paren
+l_int|1
+op_lshift
+id|cachep-&gt;gfporder
+comma
+op_amp
+id|slab_reclaim_pages
+)paren
+suffix:semicolon
 id|addr
 op_assign
 (paren
@@ -1945,6 +1968,24 @@ r_int
 id|addr
 comma
 id|cachep-&gt;gfporder
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_RECLAIM_ACCOUNT
+)paren
+id|atomic_sub
+c_func
+(paren
+l_int|1
+op_lshift
+id|cachep-&gt;gfporder
+comma
+op_amp
+id|slab_reclaim_pages
 )paren
 suffix:semicolon
 )brace

@@ -515,7 +515,6 @@ id|u32
 id|count
 )paren
 (brace
-r_return
 id|outsl
 c_func
 (paren
@@ -1592,7 +1591,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ATARI */
+macro_line|#endif /* CONFIG_ATARI || CONFIG_Q40 */
 id|hwif
 op_member_access_from_pointer
 id|ata_input_data
@@ -1705,7 +1704,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ATARI */
+macro_line|#endif /* CONFIG_ATARI || CONFIG_Q40 */
 id|hwif
 op_member_access_from_pointer
 id|ata_output_data

@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_X86_GENERICARCH
 DECL|macro|x86_summit
 mdefine_line|#define x86_summit 1&t;/* must be an constant expressiona for generic arch */
@@ -162,34 +163,6 @@ id|bios_cpu_apicid
 (braket
 )braket
 suffix:semicolon
-DECL|function|get_apic_id
-r_static
-r_inline
-r_int
-id|get_apic_id
-c_func
-(paren
-r_int
-r_int
-id|x
-)paren
-(brace
-r_return
-(paren
-(paren
-(paren
-id|x
-)paren
-op_rshift
-l_int|24
-)paren
-op_amp
-l_int|0xFF
-)paren
-suffix:semicolon
-)brace
-DECL|macro|GET_APIC_ID
-mdefine_line|#define&t;&t;GET_APIC_ID(x)&t;get_apic_id(x)
 DECL|function|init_apic_ldr
 r_static
 r_inline
@@ -216,20 +189,9 @@ op_assign
 id|xapic_phys_to_log_apicid
 c_func
 (paren
-id|GET_APIC_ID
+id|hard_smp_processor_id
 c_func
 (paren
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|APIC_BASE
-op_plus
-id|APIC_ID
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -564,8 +526,6 @@ id|phys_cpu_present_map
 )paren
 suffix:semicolon
 )brace
-DECL|macro|APIC_ID_MASK
-mdefine_line|#define&t;&t;APIC_ID_MASK&t;&t;(0xFF&lt;&lt;24)
 DECL|function|cpu_mask_to_apicid
 r_static
 r_inline

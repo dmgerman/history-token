@@ -77,6 +77,7 @@ r_void
 id|amd_x86_64_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|temp
@@ -102,6 +103,7 @@ r_int
 id|x86_64_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

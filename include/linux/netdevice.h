@@ -5,7 +5,7 @@ mdefine_line|#define _LINUX_NETDEVICE_H
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_packet.h&gt;
-macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -1265,16 +1265,25 @@ op_star
 id|divert
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
-multiline_comment|/* generic object representation */
-DECL|member|kobj
+multiline_comment|/* class/net/name entry */
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
+multiline_comment|/* statistics sub-directory */
+DECL|member|stats_kobj
 r_struct
 id|kobject
-id|kobj
+id|stats_kobj
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev) do { } while (0)
+multiline_comment|/* Set the sysfs physical device reference for the network logical device&n; * if set prior to registration will cause a symlink during initialization.&n; */
+DECL|macro|SET_NETDEV_DEV
+mdefine_line|#define SET_NETDEV_DEV(net, pdev)&t;((net)-&gt;class_dev.dev = (pdev))
 DECL|struct|packet_type
 r_struct
 id|packet_type
@@ -1975,6 +1984,7 @@ r_int
 id|netif_queue_stopped
 c_func
 (paren
+r_const
 r_struct
 id|net_device
 op_star
@@ -1999,6 +2009,7 @@ r_int
 id|netif_running
 c_func
 (paren
+r_const
 r_struct
 id|net_device
 op_star
@@ -2172,7 +2183,30 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|dev_get_flags
+c_func
+(paren
+r_const
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|dev_change_flags
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dev_set_mtu
 c_func
 (paren
 r_struct
@@ -2307,6 +2341,7 @@ r_int
 id|netif_carrier_ok
 c_func
 (paren
+r_const
 r_struct
 id|net_device
 op_star

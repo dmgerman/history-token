@@ -76,6 +76,7 @@ r_int
 r_int
 id|dsisr
 suffix:semicolon
+multiline_comment|/* on 4xx/Book-E used for ESR */
 DECL|member|result
 r_int
 r_int

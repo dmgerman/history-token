@@ -1197,6 +1197,17 @@ id|AOPOBJ_STATIC_POINTER
 (brace
 id|dest_desc-&gt;buffer.pointer
 op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Create an actual buffer only if length &gt; 0 */
+r_if
+c_cond
+(paren
+id|source_desc-&gt;buffer.length
+)paren
+(brace
+id|dest_desc-&gt;buffer.pointer
+op_assign
 id|ACPI_MEM_ALLOCATE
 (paren
 id|source_desc-&gt;buffer.length
@@ -1215,6 +1226,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Copy the actual buffer data */
 id|ACPI_MEMCPY
 (paren
 id|dest_desc-&gt;buffer.pointer
@@ -1224,6 +1236,7 @@ comma
 id|source_desc-&gt;buffer.length
 )paren
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon

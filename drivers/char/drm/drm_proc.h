@@ -2140,8 +2140,6 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#if DRM_DEBUG_CODE
-DECL|macro|DRM_VMA_VERBOSE
-mdefine_line|#define DRM_VMA_VERBOSE 0
 DECL|function|_vma_info
 r_static
 r_int
@@ -2199,28 +2197,6 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-macro_line|#if DRM_VMA_VERBOSE
-r_int
-r_int
-id|i
-suffix:semicolon
-r_int
-r_int
-id|address
-suffix:semicolon
-id|pgd_t
-op_star
-id|pgd
-suffix:semicolon
-id|pmd_t
-op_star
-id|pmd
-suffix:semicolon
-id|pte_t
-op_star
-id|pte
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(__i386__)
 r_int
 r_int

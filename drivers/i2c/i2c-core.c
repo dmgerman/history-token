@@ -254,7 +254,7 @@ op_assign
 op_amp
 id|i2c_adapter_class
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|adap-&gt;class_dev.class_id

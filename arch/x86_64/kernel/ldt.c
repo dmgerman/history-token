@@ -79,6 +79,9 @@ c_cond
 (paren
 id|mincount
 op_le
+(paren
+r_int
+)paren
 id|pc-&gt;size
 )paren
 r_return
@@ -231,7 +234,7 @@ c_cond
 id|current-&gt;mm-&gt;cpu_vm_mask
 op_ne
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|smp_processor_id
 c_func
@@ -466,6 +469,9 @@ id|mm-&gt;context.size
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|mm-&gt;context.size
 op_star
 id|LDT_ENTRY_SIZE
@@ -821,6 +827,9 @@ c_cond
 (paren
 id|ldt_info.entry_number
 op_ge
+(paren
+r_int
+)paren
 id|mm-&gt;context.size
 )paren
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.25 2001/10/02 15:05:13 dwmw2 Exp $&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.30 2003/05/20 21:03:08 dwmw2 Exp $&n;&n;  This driver provides a method to access memory not used by the kernel&n;  itself (i.e. if the kernel commandline mem=xxx is used). To actually&n;  use slram at least mtdblock or mtdchar is required (for block or&n;  character device access).&n;&n;  Usage:&n;&n;  if compiled as loadable module:&n;    modprobe slram map=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;  if statically linked into the kernel use the following kernel cmd.line&n;    slram=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;&n;  &lt;name&gt;: name of the device that will be listed in /proc/mtd&n;  &lt;start&gt;: start of the memory region, decimal or hex (0xabcdef)&n;  &lt;end/offset&gt;: end of the memory region. It&squot;s possible to use +0x1234&n;                to specify the offset instead of the absolute address&n;    &n;  NOTE:&n;  With slram it&squot;s only possible to map a contigous memory region. Therfore&n;  if there&squot;s a device mapped somewhere in the region specified slram will&n;  fail to load (see kernel log if modprobe fails).&n;&n;  -&n;  &n;  Jochen Schaeuble &lt;psionic@psionic.de&gt;&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 DECL|macro|SLRAM_MAX_DEVICES_PARAMS
 mdefine_line|#define SLRAM_MAX_DEVICES_PARAMS 6&t;&t;/* 3 parameters / device */
@@ -153,6 +152,10 @@ op_star
 comma
 id|u_char
 op_star
+comma
+id|loff_t
+comma
+r_int
 )paren
 suffix:semicolon
 r_int
@@ -343,6 +346,12 @@ comma
 id|u_char
 op_star
 id|addr
+comma
+id|loff_t
+id|from
+comma
+r_int
+id|len
 )paren
 (brace
 )brace
@@ -859,7 +868,7 @@ op_star
 id|curmtd
 )paren
 op_member_access_from_pointer
-id|mtdinfo-&gt;module
+id|mtdinfo-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
@@ -879,7 +888,7 @@ id|curmtd
 op_member_access_from_pointer
 id|mtdinfo-&gt;erasesize
 op_assign
-l_int|0x10000
+l_int|0x0
 suffix:semicolon
 r_if
 c_cond

@@ -6,13 +6,13 @@ mdefine_line|#define __ACTYPES_H__
 multiline_comment|/*! [Begin] no source code translation (keep the typedefs) */
 multiline_comment|/*&n; * Data type ranges&n; */
 DECL|macro|ACPI_UINT8_MAX
-mdefine_line|#define ACPI_UINT8_MAX                  (UINT8)  0xFF
+mdefine_line|#define ACPI_UINT8_MAX                  (~((UINT8)  0))
 DECL|macro|ACPI_UINT16_MAX
-mdefine_line|#define ACPI_UINT16_MAX                 (UINT16) 0xFFFF
+mdefine_line|#define ACPI_UINT16_MAX                 (~((UINT16) 0))
 DECL|macro|ACPI_UINT32_MAX
-mdefine_line|#define ACPI_UINT32_MAX                 (UINT32) 0xFFFFFFFF
+mdefine_line|#define ACPI_UINT32_MAX                 (~((UINT32) 0))
 DECL|macro|ACPI_UINT64_MAX
-mdefine_line|#define ACPI_UINT64_MAX                 (UINT64) 0xFFFFFFFFFFFFFFFF
+mdefine_line|#define ACPI_UINT64_MAX                 (~((UINT64) 0))
 DECL|macro|ACPI_ASCII_MAX
 mdefine_line|#define ACPI_ASCII_MAX                  0x7F
 macro_line|#ifdef DEFINE_ALTERNATE_TYPES
@@ -491,8 +491,13 @@ DECL|macro|ACPI_INTEGER_MAX
 mdefine_line|#define ACPI_INTEGER_MAX                ACPI_UINT64_MAX
 DECL|macro|ACPI_INTEGER_BIT_SIZE
 mdefine_line|#define ACPI_INTEGER_BIT_SIZE           64
+macro_line|#if ACPI_MACHINE_WIDTH == 64
 DECL|macro|ACPI_MAX_BCD_VALUE
-mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999
+mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999UL
+macro_line|#else
+DECL|macro|ACPI_MAX_BCD_VALUE
+mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999ULL
+macro_line|#endif
 DECL|macro|ACPI_MAX_BCD_DIGITS
 mdefine_line|#define ACPI_MAX_BCD_DIGITS             16
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
@@ -612,8 +617,8 @@ DECL|macro|ACPI_TABLE_XSDT
 mdefine_line|#define ACPI_TABLE_XSDT                 (acpi_table_type) 6
 DECL|macro|ACPI_TABLE_MAX
 mdefine_line|#define ACPI_TABLE_MAX                  6
-DECL|macro|NUM_ACPI_TABLES
-mdefine_line|#define NUM_ACPI_TABLES                 (ACPI_TABLE_MAX+1)
+DECL|macro|NUM_ACPI_TABLE_TYPES
+mdefine_line|#define NUM_ACPI_TABLE_TYPES            (ACPI_TABLE_MAX+1)
 multiline_comment|/*&n; * Types associated with ACPI names and objects.  The first group of&n; * values (up to ACPI_TYPE_EXTERNAL_MAX) correspond to the definition&n; * of the ACPI object_type() operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * Types must be kept in sync with the global acpi_ns_properties&n; * and acpi_ns_type_names arrays.&n; */
 DECL|typedef|acpi_object_type
 r_typedef
@@ -1141,7 +1146,7 @@ r_struct
 id|acpi_table_info
 id|table_info
 (braket
-id|NUM_ACPI_TABLES
+id|NUM_ACPI_TABLE_TYPES
 )braket
 suffix:semicolon
 )brace
@@ -1347,15 +1352,67 @@ DECL|macro|ACPI_INTERRUPT_NOT_HANDLED
 mdefine_line|#define ACPI_INTERRUPT_NOT_HANDLED      0x00
 DECL|macro|ACPI_INTERRUPT_HANDLED
 mdefine_line|#define ACPI_INTERRUPT_HANDLED          0x01
-multiline_comment|/* Structure and flags for acpi_get_device_info */
-DECL|macro|ACPI_VALID_HID
-mdefine_line|#define ACPI_VALID_HID                  0x1
-DECL|macro|ACPI_VALID_UID
-mdefine_line|#define ACPI_VALID_UID                  0x2
-DECL|macro|ACPI_VALID_ADR
-mdefine_line|#define ACPI_VALID_ADR                  0x4
+multiline_comment|/* Common string version of device HIDs and UIDs */
+DECL|struct|acpi_device_id
+r_struct
+id|acpi_device_id
+(brace
+DECL|member|value
+r_char
+id|value
+(braket
+id|ACPI_DEVICE_ID_LENGTH
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Common string version of device CIDs */
+DECL|struct|acpi_compatible_id
+r_struct
+id|acpi_compatible_id
+(brace
+DECL|member|value
+r_char
+id|value
+(braket
+id|ACPI_MAX_CID_LENGTH
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|acpi_compatible_id_list
+r_struct
+id|acpi_compatible_id_list
+(brace
+DECL|member|count
+id|u32
+id|count
+suffix:semicolon
+DECL|member|size
+id|u32
+id|size
+suffix:semicolon
+DECL|member|id
+r_struct
+id|acpi_compatible_id
+id|id
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Structure and flags for acpi_get_object_info */
 DECL|macro|ACPI_VALID_STA
-mdefine_line|#define ACPI_VALID_STA                  0x8
+mdefine_line|#define ACPI_VALID_STA                  0x0001
+DECL|macro|ACPI_VALID_ADR
+mdefine_line|#define ACPI_VALID_ADR                  0x0002
+DECL|macro|ACPI_VALID_HID
+mdefine_line|#define ACPI_VALID_HID                  0x0004
+DECL|macro|ACPI_VALID_UID
+mdefine_line|#define ACPI_VALID_UID                  0x0008
+DECL|macro|ACPI_VALID_CID
+mdefine_line|#define ACPI_VALID_CID                  0x0010
 DECL|macro|ACPI_COMMON_OBJ_INFO
 mdefine_line|#define ACPI_COMMON_OBJ_INFO &bslash;&n;&t;acpi_object_type                    type;           /* ACPI object type */ &bslash;&n;&t;acpi_name                           name            /* ACPI object Name */
 DECL|struct|acpi_obj_info_header
@@ -1367,6 +1424,7 @@ id|ACPI_COMMON_OBJ_INFO
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Structure returned from Get Object Info */
 DECL|struct|acpi_device_info
 r_struct
 id|acpi_device_info
@@ -1378,33 +1436,35 @@ DECL|member|valid
 id|u32
 id|valid
 suffix:semicolon
-multiline_comment|/*  Are the next bits legit? */
-DECL|member|hardware_id
-r_char
-id|hardware_id
-(braket
-l_int|9
-)braket
-suffix:semicolon
-multiline_comment|/*  _HID value if any */
-DECL|member|unique_id
-r_char
-id|unique_id
-(braket
-l_int|9
-)braket
-suffix:semicolon
-multiline_comment|/*  _UID value if any */
-DECL|member|address
-id|acpi_integer
-id|address
-suffix:semicolon
-multiline_comment|/*  _ADR value if any */
+multiline_comment|/* Indicates which fields are valid */
 DECL|member|current_status
 id|u32
 id|current_status
 suffix:semicolon
-multiline_comment|/*  _STA value */
+multiline_comment|/* _STA value */
+DECL|member|address
+id|acpi_integer
+id|address
+suffix:semicolon
+multiline_comment|/* _ADR value if any */
+DECL|member|hardware_id
+r_struct
+id|acpi_device_id
+id|hardware_id
+suffix:semicolon
+multiline_comment|/* _HID value if any */
+DECL|member|unique_id
+r_struct
+id|acpi_device_id
+id|unique_id
+suffix:semicolon
+multiline_comment|/* _UID value if any */
+DECL|member|compatibility_id
+r_struct
+id|acpi_compatible_id_list
+id|compatibility_id
+suffix:semicolon
+multiline_comment|/* List of _CIDs if any */
 )brace
 suffix:semicolon
 multiline_comment|/* Context structs for address space handlers */

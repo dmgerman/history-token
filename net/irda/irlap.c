@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap.c&n; * Version:       1.0&n; * Description:   IrLAP implementation for Linux&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 09:26:44 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap.c&n; * Version:       1.0&n; * Description:   IrLAP implementation for Linux&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 09:26:44 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -288,26 +288,18 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|self-&gt;hw_name
 comma
 id|hw_name
 comma
-l_int|2
-op_star
-id|IFNAMSIZ
-)paren
-suffix:semicolon
+r_sizeof
+(paren
 id|self-&gt;hw_name
-(braket
-l_int|2
-op_star
-id|IFNAMSIZ
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
+)paren
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -784,13 +776,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* No user QoS! */
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/*LEVEL4*/
 id|irlmp_link_connect_indication
 c_func
 (paren
@@ -821,7 +806,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|userdata
 )paren
 (brace
 id|IRDA_DEBUG
@@ -841,15 +826,9 @@ id|self
 comma
 id|CONNECT_RESPONSE
 comma
-id|skb
+id|userdata
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -1002,13 +981,6 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/*LEVEL4*/
 id|irlmp_link_connect_confirm
 c_func
 (paren
@@ -1052,13 +1024,6 @@ op_plus
 id|LAP_CTRL_HEADER
 )paren
 suffix:semicolon
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/*LEVEL4*/
 id|irlmp_link_data_indication
 c_func
 (paren
@@ -1171,6 +1136,13 @@ l_int|1
 )braket
 op_assign
 id|I_FRAME
+suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - see irlmp_connect_request(). */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 multiline_comment|/* Add at the end of the queue (keep ordering) - Jean II */
 id|skb_queue_tail
@@ -1329,6 +1301,7 @@ l_int|1
 op_assign
 id|UI_FRAME
 suffix:semicolon
+multiline_comment|/* Don&squot;t need to refcount, see irlmp_connless_data_request() */
 id|skb_queue_tail
 c_func
 (paren
@@ -1424,13 +1397,6 @@ op_plus
 id|LAP_CTRL_HEADER
 )paren
 suffix:semicolon
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/*LEVEL4*/
 id|irlmp_link_unitdata_indication
 c_func
 (paren

@@ -131,6 +131,9 @@ DECL|macro|US_BULK_CS_WRAP_LEN
 mdefine_line|#define US_BULK_CS_WRAP_LEN&t;13
 DECL|macro|US_BULK_CS_SIGN
 mdefine_line|#define US_BULK_CS_SIGN&t;&t;0x53425355&t;/* spells out &squot;USBS&squot; */
+multiline_comment|/* This is for Olympus Camedia digital cameras */
+DECL|macro|US_BULK_CS_OLYMPUS_SIGN
+mdefine_line|#define US_BULK_CS_OLYMPUS_SIGN&t;&t;0x55425355&t;/* spells out &squot;USBU&squot; */
 DECL|macro|US_BULK_STAT_OK
 mdefine_line|#define US_BULK_STAT_OK&t;&t;0
 DECL|macro|US_BULK_STAT_FAIL
@@ -502,49 +505,5 @@ op_star
 id|residual
 )paren
 suffix:semicolon
-DECL|function|usb_stor_bulk_transfer_srb
-r_static
-id|__inline__
-r_int
-id|usb_stor_bulk_transfer_srb
-c_func
-(paren
-r_struct
-id|us_data
-op_star
-id|us
-comma
-r_int
-r_int
-id|pipe
-comma
-id|Scsi_Cmnd
-op_star
-id|srb
-comma
-r_int
-r_int
-id|length
-)paren
-(brace
-r_return
-id|usb_stor_bulk_transfer_sg
-c_func
-(paren
-id|us
-comma
-id|pipe
-comma
-id|srb-&gt;request_buffer
-comma
-id|length
-comma
-id|srb-&gt;use_sg
-comma
-op_amp
-id|srb-&gt;resid
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 eof

@@ -2230,6 +2230,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -2422,11 +2423,6 @@ c_func
 )paren
 suffix:semicolon
 id|nfsd_lockd_shutdown
-c_func
-(paren
-)paren
-suffix:semicolon
-id|nfs4_state_shutdown
 c_func
 (paren
 )paren

@@ -725,6 +725,11 @@ r_static
 r_int
 id|usb_storage_proc_info
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|hostptr
+comma
 r_char
 op_star
 id|buffer
@@ -741,9 +746,6 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|inout
 )paren
 (brace
@@ -758,11 +760,6 @@ id|pos
 op_assign
 id|buffer
 suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|hostptr
-suffix:semicolon
 r_int
 r_int
 id|f
@@ -776,28 +773,6 @@ id|inout
 r_return
 id|length
 suffix:semicolon
-multiline_comment|/* find our data from the given hostno */
-id|hostptr
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hostptr
-)paren
-(brace
-multiline_comment|/* if we couldn&squot;t find it, we return an error */
-r_return
-op_minus
-id|ESRCH
-suffix:semicolon
-)brace
 id|us
 op_assign
 (paren
@@ -810,32 +785,13 @@ id|hostptr-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* if we couldn&squot;t find it, we return an error */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|us
-)paren
-(brace
-id|scsi_host_put
-c_func
-(paren
-id|hostptr
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ESRCH
-suffix:semicolon
-)brace
 multiline_comment|/* print the controller name */
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;   Host scsi%d: usb-storage&bslash;n&quot;
 comma
-id|hostno
+id|hostptr-&gt;host_no
 )paren
 suffix:semicolon
 multiline_comment|/* print product, vendor, and serial number strings */
@@ -960,13 +916,6 @@ op_assign
 l_char|&squot;&bslash;n&squot;
 suffix:semicolon
 )brace
-multiline_comment|/* release the reference count on this host */
-id|scsi_host_put
-c_func
-(paren
-id|hostptr
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate start of next buffer, and return value.&n;&t; */
 op_star
 id|start

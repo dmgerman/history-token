@@ -1,10 +1,13 @@
-multiline_comment|/*&n; * $Id: chipreg.c,v 1.12 2001/10/02 15:29:53 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
+multiline_comment|/*&n; * $Id: chipreg.c,v 1.15 2003/05/21 15:15:05 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/mtd/compatmac.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 DECL|variable|chip_drvs_lock
 id|spinlock_t
 id|chip_drvs_lock
@@ -94,6 +97,7 @@ id|mtd_chip_driver
 op_star
 id|get_mtd_chip_driver
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -180,13 +184,10 @@ c_func
 id|ret-&gt;module
 )paren
 )paren
-(brace
-multiline_comment|/* Eep. Failed. */
 id|ret
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -206,6 +207,7 @@ op_star
 id|do_map_probe
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -295,6 +297,51 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Destroy an MTD device which was created for a map device.&n; * Make sure the MTD device is already unregistered before calling this&n; */
+DECL|function|map_destroy
+r_void
+id|map_destroy
+c_func
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+)paren
+(brace
+r_struct
+id|map_info
+op_star
+id|map
+op_assign
+id|mtd-&gt;priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|map-&gt;fldrv-&gt;destroy
+)paren
+id|map-&gt;fldrv
+op_member_access_from_pointer
+id|destroy
+c_func
+(paren
+id|mtd
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|map-&gt;fldrv-&gt;module
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mtd
+)paren
+suffix:semicolon
+)brace
 DECL|variable|register_mtd_chip_driver
 id|EXPORT_SYMBOL
 c_func
@@ -314,6 +361,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|do_map_probe
+)paren
+suffix:semicolon
+DECL|variable|map_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|map_destroy
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

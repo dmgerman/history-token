@@ -861,17 +861,29 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Just pluck the pointer out of the global table!&n;&t;&t; * Will be null if no table is present&n;&t;&t; */
-op_star
-id|table_ptr_loc
-op_assign
-id|acpi_gbl_acpi_tables
+multiline_comment|/* Get the first */
+r_if
+c_cond
+(paren
+id|acpi_gbl_table_lists
 (braket
 id|table_type
 )braket
 dot
-id|pointer
+id|next
+)paren
+(brace
+op_star
+id|table_ptr_loc
+op_assign
+id|acpi_gbl_table_lists
+(braket
+id|table_type
+)braket
+dot
+id|next-&gt;pointer
 suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
@@ -884,7 +896,7 @@ c_cond
 (paren
 id|instance
 OG
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|table_type
 )braket
@@ -901,7 +913,7 @@ suffix:semicolon
 multiline_comment|/* Walk the list to get the desired table&n;&t; * Since the if (Instance == 1) check above checked for the&n;&t; * first table, setting table_desc equal to the .Next member&n;&t; * is actually pointing to the second table.  Therefore, we&n;&t; * need to walk from the 2nd table until we reach the Instance&n;&t; * that the user is looking for and return its table pointer.&n;&t; */
 id|table_desc
 op_assign
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|table_type
 )braket

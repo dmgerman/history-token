@@ -36,14 +36,6 @@ comma
 r_int
 id|offset
 comma
-r_const
-r_void
-op_star
-id|hdr
-comma
-id|u_int16_t
-id|datalen
-comma
 r_int
 op_star
 id|hotdrop

@@ -1540,7 +1540,7 @@ op_minus
 id|ESHUTDOWN
 suffix:colon
 multiline_comment|/* disconnect from host */
-id|DEBUG
+id|VDEBUG
 (paren
 id|dev
 comma
@@ -3007,7 +3007,6 @@ op_amp
 id|dev-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* change hardware configuration!&n;&t;&t; * no response queued, just zero status == success&n;&t;&t; */
 id|value
 op_assign
 id|zero_set_config
@@ -3216,7 +3215,7 @@ r_if
 c_cond
 (paren
 id|value
-OG
+op_ge
 l_int|0
 )paren
 (brace
@@ -3605,7 +3604,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* a real value would likely come through some id prom&n;&t; * or module option.  this one takes at least two packets.&n;&t; */
-id|strncpy
+id|strlcpy
 (paren
 id|serial
 comma
@@ -3614,16 +3613,6 @@ comma
 r_sizeof
 id|serial
 )paren
-suffix:semicolon
-id|serial
-(braket
-r_sizeof
-id|serial
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 id|usb_gadget_register_driver

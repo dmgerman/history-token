@@ -5,6 +5,18 @@ mdefine_line|#define _LINUX_REISER_FS_SB
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#endif
+r_typedef
+r_enum
+(brace
+DECL|enumerator|reiserfs_attrs_cleared
+id|reiserfs_attrs_cleared
+op_assign
+l_int|0x00000001
+comma
+DECL|typedef|reiserfs_super_block_flags
+)brace
+id|reiserfs_super_block_flags
+suffix:semicolon
 multiline_comment|/* struct reiserfs_super_block accessors/mutators&n; * since this is a disk structure, it will always be in &n; * little endian format. */
 DECL|macro|sb_block_count
 mdefine_line|#define sb_block_count(sbp)         (le32_to_cpu((sbp)-&gt;s_v1.s_block_count))
@@ -1201,8 +1213,6 @@ DECL|macro|REISERFS_NO_UNHASHED_RELOCATION
 mdefine_line|#define REISERFS_NO_UNHASHED_RELOCATION 12
 DECL|macro|REISERFS_HASHED_RELOCATION
 mdefine_line|#define REISERFS_HASHED_RELOCATION 13
-DECL|macro|REISERFS_TEST4
-mdefine_line|#define REISERFS_TEST4 14 
 DECL|macro|REISERFS_ATTRS
 mdefine_line|#define REISERFS_ATTRS 15
 DECL|macro|REISERFS_TEST1
@@ -1237,6 +1247,8 @@ DECL|macro|replay_only
 mdefine_line|#define replay_only(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REPLAYONLY))
 DECL|macro|reiserfs_dont_log
 mdefine_line|#define reiserfs_dont_log(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_NOLOG))
+DECL|macro|reiserfs_attrs
+mdefine_line|#define reiserfs_attrs(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ATTRS))
 DECL|macro|old_format_only
 mdefine_line|#define old_format_only(s) (REISERFS_SB(s)-&gt;s_properties &amp; (1 &lt;&lt; REISERFS_3_5))
 DECL|macro|convert_reiserfs

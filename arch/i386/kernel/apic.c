@@ -18,6 +18,14 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
+r_static
+r_void
+id|apic_pm_activate
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|apic_intr_init
 r_void
 id|__init
@@ -942,6 +950,7 @@ id|value
 op_or_assign
 id|APIC_SPIV_APIC_ENABLED
 suffix:semicolon
+multiline_comment|/* This bit is reserved on P4/Xeon and should be cleared */
 r_if
 c_cond
 (paren
@@ -1441,6 +1450,11 @@ op_eq
 id|NMI_LOCAL_APIC
 )paren
 id|setup_apic_nmi_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
+id|apic_pm_activate
 c_func
 (paren
 )paren
@@ -2100,7 +2114,6 @@ suffix:semicolon
 macro_line|#else&t;/* CONFIG_PM */
 DECL|function|apic_pm_activate
 r_static
-r_inline
 r_void
 id|apic_pm_activate
 c_func

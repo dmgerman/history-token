@@ -1275,7 +1275,7 @@ op_amp
 id|ktype_cpufreq
 suffix:semicolon
 singleline_comment|//&t;policy-&gt;dev = dev-&gt;dev;
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|policy-&gt;kobj.name

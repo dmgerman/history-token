@@ -753,6 +753,7 @@ c_func
 id|irda_start_timer
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISA
 DECL|variable|setup_dma
 id|EXPORT_SYMBOL
 c_func
@@ -760,6 +761,7 @@ c_func
 id|setup_dma
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|infrared_mode
 id|EXPORT_SYMBOL
 c_func
@@ -997,14 +999,17 @@ id|notify-&gt;instance
 op_assign
 l_int|NULL
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|notify-&gt;name
 comma
 l_string|&quot;Unknown&quot;
 comma
-id|NOTIFY_MAX_NAME
+r_sizeof
+(paren
+id|notify-&gt;name
+)paren
 )paren
 suffix:semicolon
 )brace

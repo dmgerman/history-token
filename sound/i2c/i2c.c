@@ -383,7 +383,7 @@ op_assign
 id|master
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;name
@@ -394,8 +394,6 @@ r_sizeof
 (paren
 id|bus-&gt;name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -516,7 +514,7 @@ id|device-&gt;addr
 op_assign
 id|addr
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|device-&gt;name
@@ -527,8 +525,6 @@ r_sizeof
 (paren
 id|device-&gt;name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|list_add_tail

@@ -2031,7 +2031,7 @@ id|nr_bufs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ace_interrupt
 c_func
 (paren

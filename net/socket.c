@@ -880,6 +880,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
 comma
@@ -941,6 +943,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -3085,7 +3088,6 @@ r_case
 id|SIOCSIFDIVERT
 suffix:colon
 multiline_comment|/* Convert this to call through a hook */
-macro_line|#ifdef CONFIG_NET_DIVERT
 id|err
 op_assign
 id|divert_ioctl
@@ -3101,13 +3103,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-macro_line|#else
-id|err
-op_assign
-op_minus
-id|ENOPKG
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_NET_DIVERT */
 r_break
 suffix:semicolon
 r_case

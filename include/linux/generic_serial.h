@@ -170,11 +170,6 @@ r_struct
 id|termios
 id|normal_termios
 suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
-suffix:semicolon
 DECL|member|open_wait
 id|wait_queue_head_t
 id|open_wait
@@ -182,14 +177,6 @@ suffix:semicolon
 DECL|member|close_wait
 id|wait_queue_head_t
 id|close_wait
-suffix:semicolon
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-DECL|member|pgrp
-r_int
-id|pgrp
 suffix:semicolon
 DECL|member|count
 r_int
@@ -253,8 +240,6 @@ DECL|macro|GS_ACTIVE
 mdefine_line|#define GS_ACTIVE        0x00200000
 DECL|macro|GS_TYPE_NORMAL
 mdefine_line|#define GS_TYPE_NORMAL   1
-DECL|macro|GS_TYPE_CALLOUT
-mdefine_line|#define GS_TYPE_CALLOUT  2
 DECL|macro|GS_DEBUG_FLUSH
 mdefine_line|#define GS_DEBUG_FLUSH   0x00000001
 DECL|macro|GS_DEBUG_BTR

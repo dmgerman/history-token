@@ -2521,6 +2521,23 @@ op_star
 id|pnp_dev
 suffix:semicolon
 multiline_comment|/* for PnP devices */
+DECL|member|rw_disk
+id|ide_startstop_t
+(paren
+op_star
+id|rw_disk
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+id|sector_t
+)paren
+suffix:semicolon
 macro_line|#if 0
 id|ide_hwif_ops_t
 op_star
@@ -3342,6 +3359,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* this interface exists */
+DECL|member|hold
+r_int
+id|hold
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* this interface is always present */
 DECL|member|serialized
 r_int
 id|serialized
@@ -4525,25 +4549,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This routine is called from the partition-table code in genhd.c&n; * to &quot;convert&quot; a drive to a logical geometry with fewer than 1024 cyls.&n; */
-r_extern
-r_int
-id|ide_xlate_1024
-c_func
-(paren
-r_struct
-id|block_device
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
 r_extern
 r_int
@@ -5440,6 +5445,23 @@ id|drive
 comma
 id|u8
 op_star
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|__ide_do_rw_disk
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+id|sector_t
+id|block
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; */

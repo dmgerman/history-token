@@ -254,7 +254,7 @@ id|info-&gt;subdevice
 op_assign
 id|substream-&gt;number
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;id
@@ -265,11 +265,9 @@ r_sizeof
 (paren
 id|info-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;name
@@ -280,8 +278,6 @@ r_sizeof
 (paren
 id|info-&gt;name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|info-&gt;dev_class
@@ -302,7 +298,7 @@ id|pstr-&gt;substream_count
 op_minus
 id|pstr-&gt;substream_opened
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;subname
@@ -313,8 +309,6 @@ r_sizeof
 (paren
 id|info-&gt;subname
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|runtime

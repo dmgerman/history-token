@@ -1691,7 +1691,7 @@ id|pt_regs
 )paren
 suffix:semicolon
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -1815,6 +1815,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
+)paren
+suffix:semicolon
 multiline_comment|/*&n;         * We remove it from the pidhash and the runqueue&n;         * once we got the process:&n;         */
 id|init_idle
 c_func
@@ -1873,20 +1879,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;la    1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;stam  0,15,0(1)&quot;
+l_string|&quot;stam  0,15,0(%0)&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
+op_amp
 id|cpu_lowcore-&gt;access_regs_save_area
-(braket
-l_int|0
-)braket
 )paren
 suffix:colon
-suffix:colon
-l_string|&quot;1&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon

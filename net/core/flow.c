@@ -897,6 +897,17 @@ id|fle-&gt;object_ref
 op_assign
 id|obj_ref
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|obj
+)paren
+id|atomic_inc
+c_func
+(paren
+id|fle-&gt;object_ref
+)paren
+suffix:semicolon
 id|flow_count
 c_func
 (paren

@@ -5978,15 +5978,6 @@ l_int|1
 )paren
 )paren
 (brace
-id|u8
-id|irq
-op_assign
-l_int|0
-comma
-id|irq2
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren

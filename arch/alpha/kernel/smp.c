@@ -1433,7 +1433,7 @@ id|pt_regs
 id|regs
 suffix:semicolon
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -1497,6 +1497,12 @@ c_func
 l_string|&quot;failed fork for CPU %d&quot;
 comma
 id|cpuid
+)paren
+suffix:semicolon
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
 )paren
 suffix:semicolon
 id|init_idle

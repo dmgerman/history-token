@@ -700,11 +700,9 @@ id|base_addr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_DIVERT
 r_int
 id|ret
 suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
 r_while
 c_loop
 (paren
@@ -730,7 +728,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* probe given addr */
-macro_line|#ifdef CONFIG_NET_DIVERT
 id|ret
 op_assign
 id|alloc_divert_blk
@@ -747,7 +744,6 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
 r_return
 l_int|0
 suffix:semicolon
@@ -781,7 +777,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#ifdef CONFIG_NET_DIVERT
 id|ret
 op_assign
 id|alloc_divert_blk
@@ -798,7 +793,6 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
 r_return
 l_int|0
 suffix:semicolon

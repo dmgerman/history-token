@@ -108,6 +108,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|agp_create_memory
+r_struct
 id|agp_memory
 op_star
 id|agp_create_memory
@@ -117,6 +118,7 @@ r_int
 id|scratch_pages
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 r_new
@@ -128,6 +130,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_memory
 )paren
 comma
@@ -153,6 +156,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_memory
 )paren
 )paren
@@ -249,6 +253,7 @@ r_void
 id|agp_free_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -376,6 +381,7 @@ DECL|macro|ENTRIES_PER_PAGE
 mdefine_line|#define ENTRIES_PER_PAGE&t;&t;(PAGE_SIZE / sizeof(unsigned long))
 multiline_comment|/**&n; *&t;agp_allocate_memory  -  allocate a group of pages of a certain type.&n; *&n; *&t;@page_count:&t;size_t argument of the number of pages&n; *&t;@type:&t;u32 argument of the type of memory to be allocated.  &n; *&n; *&t;Every agp bridge device will allow you to allocate AGP_NORMAL_MEMORY which&n; *&t;maps to physical ram.  Any other type is device dependent.&n; *&n; *&t;It returns NULL whenever memory is unavailable. &n; */
 DECL|function|agp_allocate_memory
+r_struct
 id|agp_memory
 op_star
 id|agp_allocate_memory
@@ -391,6 +397,7 @@ id|type
 r_int
 id|scratch_pages
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 r_new
@@ -841,6 +848,7 @@ r_int
 id|agp_copy_info
 c_func
 (paren
+r_struct
 id|agp_kern_info
 op_star
 id|info
@@ -855,6 +863,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_kern_info
 )paren
 )paren
@@ -958,6 +967,7 @@ r_int
 id|agp_bind_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -983,14 +993,28 @@ id|curr
 op_eq
 l_int|NULL
 )paren
-op_logical_or
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|curr-&gt;is_bound
 op_eq
 id|TRUE
 )paren
-)paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;memory %p is already bound!&bslash;n&quot;
+comma
+id|curr
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -1065,6 +1089,7 @@ r_int
 id|agp_unbind_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -1099,10 +1124,21 @@ id|curr-&gt;is_bound
 op_ne
 id|TRUE
 )paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;memory %p was not bound!&bslash;n&quot;
+comma
+id|curr
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|ret_val
 op_assign
 id|agp_bridge-&gt;driver
@@ -1200,40 +1236,6 @@ id|cmd
 op_and_assign
 op_complement
 id|AGPSTAT_SBA
-suffix:semicolon
-multiline_comment|/* disable FW if it&squot;s not supported */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-op_star
-id|cmd
-op_amp
-id|AGPSTAT_FW
-)paren
-op_logical_and
-(paren
-op_star
-id|tmp
-op_amp
-id|AGPSTAT_FW
-)paren
-op_logical_and
-(paren
-op_star
-id|mode
-op_amp
-id|AGPSTAT_FW
-)paren
-)paren
-)paren
-op_star
-id|cmd
-op_and_assign
-op_complement
-id|AGPSTAT_FW
 suffix:semicolon
 multiline_comment|/* Set speed */
 r_if
@@ -1486,40 +1488,6 @@ op_star
 id|cmd
 op_or_assign
 id|AGPSTAT_SBA
-suffix:semicolon
-multiline_comment|/* disable FW if it&squot;s not supported */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-op_star
-id|cmd
-op_amp
-id|AGPSTAT_FW
-)paren
-op_logical_and
-(paren
-op_star
-id|tmp
-op_amp
-id|AGPSTAT_FW
-)paren
-op_logical_and
-(paren
-op_star
-id|mode
-op_amp
-id|AGPSTAT_FW
-)paren
-)paren
-)paren
-op_star
-id|cmd
-op_and_assign
-op_complement
-id|AGPSTAT_FW
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set speed.&n;&t; * Check for invalid speeds. This can happen when applications&n;&t; * written before the AGP 3.0 standard pass AGP2.x modes to AGP3 hardware&n;&t; */
 r_if
@@ -1811,6 +1779,37 @@ id|AGPSTAT_RQ_DEPTH
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* disable FW if it&squot;s not supported */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+(paren
+id|cmd
+op_amp
+id|AGPSTAT_FW
+)paren
+op_logical_and
+(paren
+id|tmp
+op_amp
+id|AGPSTAT_FW
+)paren
+op_logical_and
+(paren
+id|mode
+op_amp
+id|AGPSTAT_FW
+)paren
+)paren
+)paren
+id|cmd
+op_and_assign
+op_complement
+id|AGPSTAT_FW
+suffix:semicolon
+multiline_comment|/* Check to see if we are operating in 3.0 mode */
 id|pci_read_config_dword
 c_func
 (paren
@@ -1824,7 +1823,6 @@ op_amp
 id|agp3
 )paren
 suffix:semicolon
-multiline_comment|/* Check to see if we are operating in 3.0 mode */
 r_if
 c_cond
 (paren
@@ -3004,6 +3002,7 @@ r_int
 id|agp_generic_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -3292,6 +3291,7 @@ r_int
 id|agp_generic_remove_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -3376,6 +3376,7 @@ id|agp_generic_remove_memory
 )paren
 suffix:semicolon
 DECL|function|agp_generic_alloc_by_type
+r_struct
 id|agp_memory
 op_star
 id|agp_generic_alloc_by_type
@@ -3404,6 +3405,7 @@ r_void
 id|agp_generic_free_by_type
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr

@@ -508,7 +508,7 @@ multiline_comment|/*&n; * Here come the actual hardware access and helper functi
 multiline_comment|/* Milliseconds timer */
 DECL|function|ms_isr
 r_static
-r_void
+id|irqreturn_t
 id|ms_isr
 c_func
 (paren
@@ -536,6 +536,9 @@ c_func
 op_amp
 id|ms_wait
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* all waits are queued up &n;   A more generic routine would do a schedule a la timer.device */
@@ -2180,7 +2183,7 @@ suffix:semicolon
 )brace
 DECL|function|fd_block_done
 r_static
-r_void
+id|irqreturn_t
 id|fd_block_done
 c_func
 (paren
@@ -2252,6 +2255,9 @@ id|wait_fd_block
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|raw_read
 r_static
@@ -9189,7 +9195,7 @@ suffix:semicolon
 DECL|function|floppy_find
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|floppy_find
 c_func

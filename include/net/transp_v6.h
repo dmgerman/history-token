@@ -25,14 +25,6 @@ suffix:semicolon
 multiline_comment|/* extention headers */
 r_extern
 r_void
-id|ipv6_hopopts_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|ipv6_rthdr_init
 c_func
 (paren

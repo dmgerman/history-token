@@ -351,7 +351,7 @@ id|write_flag
 suffix:semicolon
 macro_line|#endif
 r_static
-r_void
+id|irqreturn_t
 id|scsi_tt_intr
 c_func
 (paren
@@ -369,7 +369,7 @@ id|fp
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scsi_falcon_intr
 c_func
 (paren
@@ -836,7 +836,7 @@ macro_line|#endif
 macro_line|#endif
 DECL|function|scsi_tt_intr
 r_static
-r_void
+id|irqreturn_t
 id|scsi_tt_intr
 (paren
 r_int
@@ -1085,10 +1085,13 @@ id|IRQ_TT_MFP_SCSI
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|scsi_falcon_intr
 r_static
-r_void
+id|irqreturn_t
 id|scsi_falcon_intr
 (paren
 r_int
@@ -1250,6 +1253,9 @@ l_int|0
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef REAL_DMA

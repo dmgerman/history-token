@@ -26,7 +26,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|mvme147_intr
 r_static
-r_void
+id|irqreturn_t
 id|mvme147_intr
 (paren
 r_int
@@ -60,6 +60,9 @@ op_assign
 l_int|0x89
 suffix:semicolon
 multiline_comment|/* Ack and enable ints */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|dma_setup
 r_static
@@ -404,6 +407,28 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|mvme147_bus_reset
+r_static
+r_int
+id|mvme147_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+multiline_comment|/* FIXME perform bus-specific reset */
+id|wd33c93_host_reset
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+r_return
+id|SUCCESS
+suffix:semicolon
+)brace
 DECL|macro|HOSTS_C
 mdefine_line|#define HOSTS_C
 macro_line|#include &quot;mvme147.h&quot;
@@ -439,14 +464,19 @@ op_assign
 id|wd33c93_queuecommand
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
 id|wd33c93_abort
 comma
 dot
-id|reset
+id|eh_bus_reset_handler
 op_assign
-id|wd33c93_reset
+id|mvme147_bus_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|wd33c93_host_reset
 comma
 dot
 id|can_queue

@@ -3933,10 +3933,6 @@ id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill it in.&n;&t; */
-id|agp-&gt;type
-op_assign
-id|ALPHA_CORE_AGP
-suffix:semicolon
 id|agp-&gt;hose
 op_assign
 id|hose

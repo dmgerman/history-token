@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/if_arp.h&gt;       /* ARPHRD_HWX25 */
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
-macro_line|#include &lt;linux/module.h&gt;&t;/* SET_MODULE_OWNER */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
 macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
@@ -14,10 +14,10 @@ macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;linux/cyclomx.h&gt;&t;/* Cyclom 2X common user API definitions */
 macro_line|#include &lt;linux/cycx_x25.h&gt;&t;/* X.25 firmware API definitions */
 multiline_comment|/* Defines &amp; Macros */
-DECL|macro|MAX_CMD_RETRY
-mdefine_line|#define MAX_CMD_RETRY&t;5
-DECL|macro|X25_CHAN_MTU
-mdefine_line|#define X25_CHAN_MTU&t;2048&t;/* unfragmented logical channel MTU */
+DECL|macro|CYCX_X25_MAX_CMD_RETRY
+mdefine_line|#define CYCX_X25_MAX_CMD_RETRY 5
+DECL|macro|CYCX_X25_CHAN_MTU
+mdefine_line|#define CYCX_X25_CHAN_MTU 2048&t;/* unfragmented logical channel MTU */
 multiline_comment|/* Data Structures */
 multiline_comment|/* This is an extension of the &squot;struct net_device&squot; we create for each network&n;   interface to keep the rest of X.25 channel-specific data. */
 DECL|struct|cycx_x25_channel
@@ -124,7 +124,7 @@ multiline_comment|/* Function Prototypes */
 multiline_comment|/* WAN link driver entry points. These are called by the WAN router module. */
 r_static
 r_int
-id|update
+id|cycx_wan_update
 c_func
 (paren
 r_struct
@@ -133,7 +133,7 @@ op_star
 id|wandev
 )paren
 comma
-id|new_if
+id|cycx_wan_new_if
 c_func
 (paren
 r_struct
@@ -151,7 +151,7 @@ op_star
 id|conf
 )paren
 comma
-id|del_if
+id|cycx_wan_del_if
 c_func
 (paren
 r_struct
@@ -168,7 +168,7 @@ suffix:semicolon
 multiline_comment|/* Network device interface */
 r_static
 r_int
-id|if_init
+id|cycx_netdevice_init
 c_func
 (paren
 r_struct
@@ -177,7 +177,7 @@ op_star
 id|dev
 )paren
 comma
-id|if_open
+id|cycx_netdevice_open
 c_func
 (paren
 r_struct
@@ -186,7 +186,7 @@ op_star
 id|dev
 )paren
 comma
-id|if_close
+id|cycx_netdevice_stop
 c_func
 (paren
 r_struct
@@ -195,7 +195,7 @@ op_star
 id|dev
 )paren
 comma
-id|if_header
+id|cycx_netdevice_hard_header
 c_func
 (paren
 r_struct
@@ -223,7 +223,7 @@ r_int
 id|len
 )paren
 comma
-id|if_rebuild_hdr
+id|cycx_netdevice_rebuild_header
 c_func
 (paren
 r_struct
@@ -232,7 +232,7 @@ op_star
 id|skb
 )paren
 comma
-id|if_send
+id|cycx_netdevice_hard_start_xmit
 c_func
 (paren
 r_struct
@@ -250,7 +250,7 @@ r_static
 r_struct
 id|net_device_stats
 op_star
-id|if_stats
+id|cycx_netdevice_get_stats
 c_func
 (paren
 r_struct
@@ -262,7 +262,7 @@ suffix:semicolon
 multiline_comment|/* Interrupt handlers */
 r_static
 r_void
-id|cyx_isr
+id|cycx_x25_irq_handler
 c_func
 (paren
 r_struct
@@ -271,21 +271,7 @@ op_star
 id|card
 )paren
 comma
-id|tx_intr
-c_func
-(paren
-r_struct
-id|cycx_device
-op_star
-id|card
-comma
-r_struct
-id|cycx_x25_cmd
-op_star
-id|cmd
-)paren
-comma
-id|rx_intr
+id|cycx_x25_irq_tx
 c_func
 (paren
 r_struct
@@ -299,7 +285,7 @@ op_star
 id|cmd
 )paren
 comma
-id|log_intr
+id|cycx_x25_irq_rx
 c_func
 (paren
 r_struct
@@ -313,7 +299,7 @@ op_star
 id|cmd
 )paren
 comma
-id|stat_intr
+id|cycx_x25_irq_log
 c_func
 (paren
 r_struct
@@ -327,7 +313,7 @@ op_star
 id|cmd
 )paren
 comma
-id|connect_confirm_intr
+id|cycx_x25_irq_stat
 c_func
 (paren
 r_struct
@@ -341,7 +327,7 @@ op_star
 id|cmd
 )paren
 comma
-id|disconnect_confirm_intr
+id|cycx_x25_irq_connect_confirm
 c_func
 (paren
 r_struct
@@ -355,7 +341,7 @@ op_star
 id|cmd
 )paren
 comma
-id|connect_intr
+id|cycx_x25_irq_disconnect_confirm
 c_func
 (paren
 r_struct
@@ -369,7 +355,7 @@ op_star
 id|cmd
 )paren
 comma
-id|disconnect_intr
+id|cycx_x25_irq_connect
 c_func
 (paren
 r_struct
@@ -383,7 +369,21 @@ op_star
 id|cmd
 )paren
 comma
-id|spur_intr
+id|cycx_x25_irq_disconnect
+c_func
+(paren
+r_struct
+id|cycx_device
+op_star
+id|card
+comma
+r_struct
+id|cycx_x25_cmd
+op_star
+id|cmd
+)paren
+comma
+id|cycx_x25_irq_spurious
 c_func
 (paren
 r_struct
@@ -400,7 +400,7 @@ suffix:semicolon
 multiline_comment|/* X.25 firmware interface functions */
 r_static
 r_int
-id|x25_configure
+id|cycx_x25_configure
 c_func
 (paren
 r_struct
@@ -414,7 +414,7 @@ op_star
 id|conf
 )paren
 comma
-id|x25_get_stats
+id|cycx_x25_get_stats
 c_func
 (paren
 r_struct
@@ -423,7 +423,7 @@ op_star
 id|card
 )paren
 comma
-id|x25_send
+id|cycx_x25_send
 c_func
 (paren
 r_struct
@@ -448,7 +448,7 @@ op_star
 id|buf
 )paren
 comma
-id|x25_connect_response
+id|cycx_x25_connect_response
 c_func
 (paren
 r_struct
@@ -462,7 +462,7 @@ op_star
 id|chan
 )paren
 comma
-id|x25_disconnect_response
+id|cycx_x25_disconnect_response
 c_func
 (paren
 r_struct
@@ -480,7 +480,7 @@ suffix:semicolon
 multiline_comment|/* channel functions */
 r_static
 r_int
-id|chan_connect
+id|cycx_x25_chan_connect
 c_func
 (paren
 r_struct
@@ -489,7 +489,7 @@ op_star
 id|dev
 )paren
 comma
-id|chan_send
+id|cycx_x25_chan_send
 c_func
 (paren
 r_struct
@@ -505,7 +505,7 @@ id|skb
 suffix:semicolon
 r_static
 r_void
-id|chan_disconnect
+id|cycx_x25_chan_disconnect
 c_func
 (paren
 r_struct
@@ -514,7 +514,7 @@ op_star
 id|dev
 )paren
 comma
-id|chan_x25_send_event
+id|cycx_x25_chan_send_event
 c_func
 (paren
 r_struct
@@ -529,7 +529,7 @@ suffix:semicolon
 multiline_comment|/* Miscellaneous functions */
 r_static
 r_void
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 r_struct
@@ -541,7 +541,7 @@ id|u8
 id|state
 )paren
 comma
-id|chan_timer
+id|cycx_x25_chan_timer
 c_func
 (paren
 r_int
@@ -613,7 +613,7 @@ r_static
 r_struct
 id|net_device
 op_star
-id|get_dev_by_lcn
+id|cycx_x25_get_dev_by_lcn
 c_func
 (paren
 r_struct
@@ -629,7 +629,7 @@ r_static
 r_struct
 id|net_device
 op_star
-id|get_dev_by_dte_addr
+id|cycx_x25_get_dev_by_dte_addr
 c_func
 (paren
 r_struct
@@ -663,7 +663,7 @@ id|len
 suffix:semicolon
 r_static
 r_void
-id|x25_dump_config
+id|cycx_x25_dump_config
 c_func
 (paren
 r_struct
@@ -674,7 +674,7 @@ id|conf
 suffix:semicolon
 r_static
 r_void
-id|x25_dump_stats
+id|cycx_x25_dump_stats
 c_func
 (paren
 r_struct
@@ -685,7 +685,7 @@ id|stats
 suffix:semicolon
 r_static
 r_void
-id|x25_dump_devs
+id|cycx_x25_dump_devs
 c_func
 (paren
 r_struct
@@ -697,18 +697,18 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|hex_dump
 mdefine_line|#define hex_dump(msg, p, len)
-DECL|macro|x25_dump_config
-mdefine_line|#define x25_dump_config(conf)
-DECL|macro|x25_dump_stats
-mdefine_line|#define x25_dump_stats(stats)
-DECL|macro|x25_dump_devs
-mdefine_line|#define x25_dump_devs(wandev)
+DECL|macro|cycx_x25_dump_config
+mdefine_line|#define cycx_x25_dump_config(conf)
+DECL|macro|cycx_x25_dump_stats
+mdefine_line|#define cycx_x25_dump_stats(stats)
+DECL|macro|cycx_x25_dump_devs
+mdefine_line|#define cycx_x25_dump_devs(wandev)
 macro_line|#endif
 multiline_comment|/* Public Functions */
 multiline_comment|/* X.25 Protocol Initialization routine.&n; *&n; * This routine is called by the main Cyclom 2X module during setup.  At this&n; * point adapter is completely initialized and X.25 firmware is running.&n; *  o configure adapter&n; *  o initialize protocol-specific fields of the adapter data space.&n; *&n; * Return:&t;0&t;o.k.&n; *&t;&t;&lt; 0&t;failure.  */
-DECL|function|cyx_init
+DECL|function|cycx_x25_wan_init
 r_int
-id|cyx_init
+id|cycx_x25_wan_init
 c_func
 (paren
 r_struct
@@ -1170,7 +1170,7 @@ multiline_comment|/* initialize adapter */
 r_if
 c_cond
 (paren
-id|x25_configure
+id|cycx_x25_configure
 c_func
 (paren
 id|card
@@ -1202,7 +1202,7 @@ id|conf-&gt;station
 suffix:semicolon
 id|card-&gt;isr
 op_assign
-id|cyx_isr
+id|cycx_x25_irq_handler
 suffix:semicolon
 id|card-&gt;exec
 op_assign
@@ -1210,15 +1210,15 @@ l_int|NULL
 suffix:semicolon
 id|card-&gt;wandev.update
 op_assign
-id|update
+id|cycx_wan_update
 suffix:semicolon
 id|card-&gt;wandev.new_if
 op_assign
-id|new_if
+id|cycx_wan_new_if
 suffix:semicolon
 id|card-&gt;wandev.del_if
 op_assign
-id|del_if
+id|cycx_wan_del_if
 suffix:semicolon
 id|card-&gt;wandev.state
 op_assign
@@ -1230,10 +1230,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* WAN Device Driver Entry Points */
 multiline_comment|/* Update device status &amp; statistics. */
-DECL|function|update
+DECL|function|cycx_wan_update
 r_static
 r_int
-id|update
+id|cycx_wan_update
 c_func
 (paren
 r_struct
@@ -1269,7 +1269,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|x25_get_stats
+id|cycx_x25_get_stats
 c_func
 (paren
 id|wandev
@@ -1282,10 +1282,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Create new logical channel.&n; * This routine is called by the router when ROUTER_IFNEW IOCTL is being&n; * handled.&n; * o parse media- and hardware-specific configuration&n; * o make sure that a new channel can be created&n; * o allocate resources, if necessary&n; * o prepare network device structure for registration.&n; *&n; * Return:&t;0&t;o.k.&n; *&t;&t;&lt; 0&t;failure (channel will not be created) */
-DECL|function|new_if
+DECL|function|cycx_wan_new_if
 r_static
 r_int
-id|new_if
+id|cycx_wan_new_if
 c_func
 (paren
 r_struct
@@ -1555,7 +1555,7 @@ id|chan-&gt;timer
 suffix:semicolon
 id|chan-&gt;timer.function
 op_assign
-id|chan_timer
+id|cycx_x25_chan_timer
 suffix:semicolon
 id|chan-&gt;timer.data
 op_assign
@@ -1696,7 +1696,7 @@ id|chan-&gt;name
 suffix:semicolon
 id|dev-&gt;init
 op_assign
-id|if_init
+id|cycx_netdevice_init
 suffix:semicolon
 id|dev-&gt;priv
 op_assign
@@ -1707,10 +1707,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Delete logical channel. */
-DECL|function|del_if
+DECL|function|cycx_wan_del_if
 r_static
 r_int
-id|del_if
+id|cycx_wan_del_if
 c_func
 (paren
 r_struct
@@ -1786,10 +1786,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* Network Device Interface */
 multiline_comment|/* Initialize Linux network interface.&n; *&n; * This routine is called only once for each interface, during Linux network&n; * interface registration.  Returning anything but zero will fail interface&n; * registration. */
-DECL|function|if_init
+DECL|function|cycx_netdevice_init
 r_static
 r_int
-id|if_init
+id|cycx_netdevice_init
 c_func
 (paren
 r_struct
@@ -1823,32 +1823,32 @@ suffix:semicolon
 multiline_comment|/* Initialize device driver entry points */
 id|dev-&gt;open
 op_assign
-id|if_open
+id|cycx_netdevice_open
 suffix:semicolon
 id|dev-&gt;stop
 op_assign
-id|if_close
+id|cycx_netdevice_stop
 suffix:semicolon
 id|dev-&gt;hard_header
 op_assign
-id|if_header
+id|cycx_netdevice_hard_header
 suffix:semicolon
 id|dev-&gt;rebuild_header
 op_assign
-id|if_rebuild_hdr
+id|cycx_netdevice_rebuild_header
 suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
-id|if_send
+id|cycx_netdevice_hard_start_xmit
 suffix:semicolon
 id|dev-&gt;get_stats
 op_assign
-id|if_stats
+id|cycx_netdevice_get_stats
 suffix:semicolon
 multiline_comment|/* Initialize media-specific parameters */
 id|dev-&gt;mtu
 op_assign
-id|X25_CHAN_MTU
+id|CYCX_X25_CHAN_MTU
 suffix:semicolon
 id|dev-&gt;type
 op_assign
@@ -1935,7 +1935,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize socket buffers */
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -1948,10 +1948,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Open network interface.&n; * o prevent module from unloading by incrementing use count&n; * o if link is disconnected then initiate connection&n; *&n; * Return 0 if O.k. or errno.  */
-DECL|function|if_open
+DECL|function|cycx_netdevice_open
 r_static
 r_int
-id|if_open
+id|cycx_netdevice_open
 c_func
 (paren
 r_struct
@@ -1985,10 +1985,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Close network interface.&n; * o reset flags.&n; * o if there&squot;s no more open channels then disconnect physical link. */
-DECL|function|if_close
+DECL|function|cycx_netdevice_stop
 r_static
 r_int
-id|if_close
+id|cycx_netdevice_stop
 c_func
 (paren
 r_struct
@@ -2021,7 +2021,7 @@ id|chan-&gt;state
 op_eq
 id|WAN_CONNECTING
 )paren
-id|chan_disconnect
+id|cycx_x25_chan_disconnect
 c_func
 (paren
 id|dev
@@ -2032,10 +2032,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Build media header.&n; * o encapsulate packet according to encapsulation type.&n; *&n; * The trick here is to put packet type (Ethertype) into &squot;protocol&squot; field of&n; * the socket buffer, so that we don&squot;t forget it.  If encapsulation fails,&n; * set skb-&gt;protocol to 0 and discard packet later.&n; *&n; * Return:&t;media header length. */
-DECL|function|if_header
+DECL|function|cycx_netdevice_hard_header
 r_static
 r_int
-id|if_header
+id|cycx_netdevice_hard_header
 c_func
 (paren
 r_struct
@@ -2072,10 +2072,10 @@ id|dev-&gt;hard_header_len
 suffix:semicolon
 )brace
 multiline_comment|/* * Re-build media header.&n; * Return:&t;1&t;physical address resolved.&n; *&t;&t;0&t;physical address not resolved */
-DECL|function|if_rebuild_hdr
+DECL|function|cycx_netdevice_rebuild_header
 r_static
 r_int
-id|if_rebuild_hdr
+id|cycx_netdevice_rebuild_header
 c_func
 (paren
 r_struct
@@ -2089,10 +2089,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Send a packet on a network interface.&n; * o set busy flag (marks start of the transmission).&n; * o check link state. If link is not up, then drop the packet.&n; * o check channel status. If it&squot;s down then initiate a call.&n; * o pass a packet to corresponding WAN device.&n; * o free socket buffer&n; *&n; * Return:&t;0&t;complete (socket buffer must be freed)&n; *&t;&t;non-0&t;packet may be re-transmitted (tbusy must be set)&n; *&n; * Notes:&n; * 1. This routine is called either by the protocol stack or by the &quot;net&n; *    bottom half&quot; (with interrupts enabled).&n; * 2. Setting tbusy flag will inhibit further transmit requests from the&n; *    protocol stack and can be used for flow control with protocol layer. */
-DECL|function|if_send
+DECL|function|cycx_netdevice_hard_start_xmit
 r_static
 r_int
-id|if_send
+id|cycx_netdevice_hard_start_xmit
 c_func
 (paren
 r_struct
@@ -2191,7 +2191,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|chan_connect
+id|cycx_x25_chan_connect
 c_func
 (paren
 id|dev
@@ -2232,7 +2232,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chan_send
+id|cycx_x25_chan_send
 c_func
 (paren
 id|dev
@@ -2277,7 +2277,7 @@ r_case
 l_int|1
 suffix:colon
 multiline_comment|/* Connect request */
-id|chan_connect
+id|cycx_x25_chan_connect
 c_func
 (paren
 id|dev
@@ -2290,7 +2290,7 @@ r_case
 l_int|2
 suffix:colon
 multiline_comment|/* Disconnect request */
-id|chan_disconnect
+id|cycx_x25_chan_disconnect
 c_func
 (paren
 id|dev
@@ -2352,7 +2352,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chan_send
+id|cycx_x25_chan_send
 c_func
 (paren
 id|dev
@@ -2389,12 +2389,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Get Ethernet-style interface statistics.&n; * Return a pointer to struct net_device_stats */
-DECL|function|if_stats
+DECL|function|cycx_netdevice_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-id|if_stats
+id|cycx_netdevice_get_stats
 c_func
 (paren
 r_struct
@@ -2422,10 +2422,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* Interrupt Handlers */
 multiline_comment|/* X.25 Interrupt Service Routine. */
-DECL|function|cyx_isr
+DECL|function|cycx_x25_irq_handler
 r_static
 r_void
-id|cyx_isr
+id|cycx_x25_irq_handler
 c_func
 (paren
 r_struct
@@ -2477,7 +2477,7 @@ id|cmd.command
 r_case
 id|X25_DATA_INDICATION
 suffix:colon
-id|rx_intr
+id|cycx_x25_irq_rx
 c_func
 (paren
 id|card
@@ -2491,7 +2491,7 @@ suffix:semicolon
 r_case
 id|X25_ACK_FROM_VC
 suffix:colon
-id|tx_intr
+id|cycx_x25_irq_tx
 c_func
 (paren
 id|card
@@ -2505,7 +2505,7 @@ suffix:semicolon
 r_case
 id|X25_LOG
 suffix:colon
-id|log_intr
+id|cycx_x25_irq_log
 c_func
 (paren
 id|card
@@ -2519,7 +2519,7 @@ suffix:semicolon
 r_case
 id|X25_STATISTIC
 suffix:colon
-id|stat_intr
+id|cycx_x25_irq_stat
 c_func
 (paren
 id|card
@@ -2533,7 +2533,7 @@ suffix:semicolon
 r_case
 id|X25_CONNECT_CONFIRM
 suffix:colon
-id|connect_confirm_intr
+id|cycx_x25_irq_connect_confirm
 c_func
 (paren
 id|card
@@ -2547,7 +2547,7 @@ suffix:semicolon
 r_case
 id|X25_CONNECT_INDICATION
 suffix:colon
-id|connect_intr
+id|cycx_x25_irq_connect
 c_func
 (paren
 id|card
@@ -2561,7 +2561,7 @@ suffix:semicolon
 r_case
 id|X25_DISCONNECT_INDICATION
 suffix:colon
-id|disconnect_intr
+id|cycx_x25_irq_disconnect
 c_func
 (paren
 id|card
@@ -2575,7 +2575,7 @@ suffix:semicolon
 r_case
 id|X25_DISCONNECT_CONFIRM
 suffix:colon
-id|disconnect_confirm_intr
+id|cycx_x25_irq_disconnect_confirm
 c_func
 (paren
 id|card
@@ -2589,7 +2589,7 @@ suffix:semicolon
 r_case
 id|X25_LINE_ON
 suffix:colon
-id|cyclomx_set_state
+id|cycx_set_state
 c_func
 (paren
 id|card
@@ -2602,7 +2602,7 @@ suffix:semicolon
 r_case
 id|X25_LINE_OFF
 suffix:colon
-id|cyclomx_set_state
+id|cycx_set_state
 c_func
 (paren
 id|card
@@ -2614,7 +2614,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|spur_intr
+id|cycx_x25_irq_spurious
 c_func
 (paren
 id|card
@@ -2623,7 +2623,8 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* unwanted interrupt */
+r_break
+suffix:semicolon
 )brace
 id|cycx_poke
 c_func
@@ -2665,10 +2666,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Transmit interrupt handler.&n; *&t;o Release socket buffer&n; *&t;o Clear &squot;tbusy&squot; flag */
-DECL|function|tx_intr
+DECL|function|cycx_x25_irq_tx
 r_static
 r_void
-id|tx_intr
+id|cycx_x25_irq_tx
 c_func
 (paren
 r_struct
@@ -2716,22 +2717,20 @@ id|lcn
 )paren
 suffix:semicolon
 multiline_comment|/* unbusy device and then dev_tint(); */
-r_if
-c_cond
-(paren
-(paren
 id|dev
 op_assign
-id|get_dev_by_lcn
+id|cycx_x25_get_dev_by_lcn
 c_func
 (paren
 id|wandev
 comma
 id|lcn
 )paren
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
 )paren
 (brace
 id|card-&gt;buff_int_mode_unbusy
@@ -2759,10 +2758,10 @@ id|lcn
 suffix:semicolon
 )brace
 multiline_comment|/* Receive interrupt handler.&n; * This routine handles fragmented IP packets using M-bit according to the&n; * RFC1356.&n; * o map logical channel number to network interface.&n; * o allocate socket buffer or append received packet to the existing one.&n; * o if M-bit is reset (i.e. it&squot;s the last packet in a sequence) then&n; *   decapsulate packet and pass socket buffer to the protocol stack.&n; *&n; * Notes:&n; * 1. When allocating a socket buffer, if M-bit is set then more data is&n; *    coming and we have to allocate buffer for the maximum IP packet size&n; *    expected on this channel.&n; * 2. If something goes wrong and X.25 packet has to be dropped (e.g. no&n; *    socket buffers available) the whole packet sequence must be discarded. */
-DECL|function|rx_intr
+DECL|function|cycx_x25_irq_rx
 r_static
 r_void
-id|rx_intr
+id|cycx_x25_irq_rx
 c_func
 (paren
 r_struct
@@ -2851,22 +2850,21 @@ id|bitm
 op_and_assign
 l_int|0x10
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|dev
 op_assign
-id|get_dev_by_lcn
+id|cycx_x25_get_dev_by_lcn
 c_func
 (paren
 id|wandev
 comma
 id|lcn
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
 )paren
 (brace
 multiline_comment|/* Invalid channel, discard packet */
@@ -3128,10 +3126,10 @@ suffix:semicolon
 multiline_comment|/* timestamp */
 )brace
 multiline_comment|/* Connect interrupt handler. */
-DECL|function|connect_intr
+DECL|function|cycx_x25_irq_connect
 r_static
 r_void
-id|connect_intr
+id|cycx_x25_irq_connect
 c_func
 (paren
 r_struct
@@ -3311,7 +3309,9 @@ c_func
 l_int|1
 comma
 id|KERN_INFO
-l_string|&quot;connect_intr:lcn=%d, local=%s, remote=%s&bslash;n&quot;
+l_string|&quot;%s:lcn=%d, local=%s, remote=%s&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|lcn
 comma
@@ -3320,22 +3320,21 @@ comma
 id|rem
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|dev
 op_assign
-id|get_dev_by_dte_addr
+id|cycx_x25_get_dev_by_dte_addr
 c_func
 (paren
 id|wandev
 comma
 id|rem
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
 )paren
 (brace
 multiline_comment|/* Invalid channel, discard packet */
@@ -3361,7 +3360,7 @@ id|chan-&gt;lcn
 op_assign
 id|lcn
 suffix:semicolon
-id|x25_connect_response
+id|cycx_x25_connect_response
 c_func
 (paren
 id|card
@@ -3369,7 +3368,7 @@ comma
 id|chan
 )paren
 suffix:semicolon
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -3379,10 +3378,10 @@ id|WAN_CONNECTED
 suffix:semicolon
 )brace
 multiline_comment|/* Connect confirm interrupt handler. */
-DECL|function|connect_confirm_intr
+DECL|function|cycx_x25_irq_connect_confirm
 r_static
 r_void
-id|connect_confirm_intr
+id|cycx_x25_irq_connect_confirm
 c_func
 (paren
 r_struct
@@ -3461,22 +3460,20 @@ c_func
 l_int|1
 comma
 id|KERN_INFO
-l_string|&quot;%s: connect_confirm_intr:lcn=%d, key=%d&bslash;n&quot;
+l_string|&quot;%s: %s:lcn=%d, key=%d&bslash;n&quot;
 comma
 id|card-&gt;devname
+comma
+id|__FUNCTION__
 comma
 id|lcn
 comma
 id|key
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|dev
 op_assign
-id|get_dev_by_lcn
+id|cycx_x25_get_dev_by_lcn
 c_func
 (paren
 id|wandev
@@ -3484,9 +3481,12 @@ comma
 op_minus
 id|key
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
 )paren
 (brace
 multiline_comment|/* Invalid channel, discard packet */
@@ -3543,7 +3543,7 @@ id|chan-&gt;lcn
 op_assign
 id|lcn
 suffix:semicolon
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -3553,10 +3553,10 @@ id|WAN_CONNECTED
 suffix:semicolon
 )brace
 multiline_comment|/* Disconnect confirm interrupt handler. */
-DECL|function|disconnect_confirm_intr
+DECL|function|cycx_x25_irq_disconnect_confirm
 r_static
 r_void
-id|disconnect_confirm_intr
+id|cycx_x25_irq_disconnect_confirm
 c_func
 (paren
 r_struct
@@ -3609,9 +3609,21 @@ c_func
 l_int|1
 comma
 id|KERN_INFO
-l_string|&quot;%s: disconnect_confirm_intr:lcn=%d&bslash;n&quot;
+l_string|&quot;%s: %s:lcn=%d&bslash;n&quot;
 comma
 id|card-&gt;devname
+comma
+id|__FUNCTION__
+comma
+id|lcn
+)paren
+suffix:semicolon
+id|dev
+op_assign
+id|cycx_x25_get_dev_by_lcn
+c_func
+(paren
+id|wandev
 comma
 id|lcn
 )paren
@@ -3619,19 +3631,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|dev
-op_assign
-id|get_dev_by_lcn
-c_func
-(paren
-id|wandev
-comma
-id|lcn
-)paren
-)paren
-op_eq
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* Invalid channel, discard packet */
@@ -3649,7 +3650,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -3659,10 +3660,10 @@ id|WAN_DISCONNECTED
 suffix:semicolon
 )brace
 multiline_comment|/* disconnect interrupt handler. */
-DECL|function|disconnect_intr
+DECL|function|cycx_x25_irq_disconnect
 r_static
 r_void
-id|disconnect_intr
+id|cycx_x25_irq_disconnect
 c_func
 (paren
 r_struct
@@ -3715,7 +3716,19 @@ c_func
 l_int|1
 comma
 id|KERN_INFO
-l_string|&quot;disconnect_intr:lcn=%d&bslash;n&quot;
+l_string|&quot;%s:lcn=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|lcn
+)paren
+suffix:semicolon
+id|dev
+op_assign
+id|cycx_x25_get_dev_by_lcn
+c_func
+(paren
+id|wandev
 comma
 id|lcn
 )paren
@@ -3723,19 +3736,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|dev
-op_assign
-id|get_dev_by_lcn
-c_func
-(paren
-id|wandev
-comma
-id|lcn
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 r_struct
@@ -3745,7 +3746,7 @@ id|chan
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|x25_disconnect_response
+id|cycx_x25_disconnect_response
 c_func
 (paren
 id|card
@@ -3755,7 +3756,7 @@ comma
 id|lcn
 )paren
 suffix:semicolon
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -3765,7 +3766,7 @@ id|WAN_DISCONNECTED
 suffix:semicolon
 )brace
 r_else
-id|x25_disconnect_response
+id|cycx_x25_disconnect_response
 c_func
 (paren
 id|card
@@ -3777,10 +3778,10 @@ id|lcn
 suffix:semicolon
 )brace
 multiline_comment|/* LOG interrupt handler. */
-DECL|function|log_intr
+DECL|function|cycx_x25_irq_log
 r_static
 r_void
-id|log_intr
+id|cycx_x25_irq_log
 c_func
 (paren
 r_struct
@@ -3940,7 +3941,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cyx_isr: X25_LOG (0x4500) indic.:&bslash;n&quot;
+l_string|&quot;cycx_x25_irq_handler: X25_LOG (0x4500) indic.:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -4010,10 +4011,10 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* STATISTIC interrupt handler. */
-DECL|function|stat_intr
+DECL|function|cycx_x25_irq_stat
 r_static
 r_void
-id|stat_intr
+id|cycx_x25_irq_stat
 c_func
 (paren
 r_struct
@@ -4047,7 +4048,7 @@ suffix:semicolon
 id|hex_dump
 c_func
 (paren
-l_string|&quot;stat_intr&quot;
+l_string|&quot;cycx_x25_irq_stat&quot;
 comma
 (paren
 r_int
@@ -4063,7 +4064,7 @@ id|card-&gt;u.x.stats
 )paren
 )paren
 suffix:semicolon
-id|x25_dump_stats
+id|cycx_x25_dump_stats
 c_func
 (paren
 op_amp
@@ -4079,10 +4080,10 @@ id|card-&gt;wait_stats
 suffix:semicolon
 )brace
 multiline_comment|/* Spurious interrupt handler.&n; * o print a warning&n; * If number of spurious interrupts exceeded some limit, then ??? */
-DECL|function|spur_intr
+DECL|function|cycx_x25_irq_spurious
 r_static
 r_void
-id|spur_intr
+id|cycx_x25_irq_spurious
 c_func
 (paren
 r_struct
@@ -4260,7 +4261,7 @@ suffix:semicolon
 id|u8
 id|retry
 op_assign
-id|MAX_CMD_RETRY
+id|CYCX_X25_MAX_CMD_RETRY
 suffix:semicolon
 r_int
 id|err
@@ -4456,10 +4457,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Configure adapter. */
-DECL|function|x25_configure
+DECL|function|cycx_x25_configure
 r_static
 r_int
-id|x25_configure
+id|cycx_x25_configure
 c_func
 (paren
 r_struct
@@ -4561,7 +4562,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* default = RS232 */
-id|x25_dump_config
+id|cycx_x25_dump_config
 c_func
 (paren
 op_amp
@@ -4571,7 +4572,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|x25_dump_config
+id|cycx_x25_dump_config
 c_func
 (paren
 op_amp
@@ -4606,10 +4607,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Get protocol statistics. */
-DECL|function|x25_get_stats
+DECL|function|cycx_x25_get_stats
 r_static
 r_int
-id|x25_get_stats
+id|cycx_x25_get_stats
 c_func
 (paren
 r_struct
@@ -4727,7 +4728,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* not available from fw */
-id|x25_dump_devs
+id|cycx_x25_dump_devs
 c_func
 (paren
 op_amp
@@ -5241,10 +5242,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Place X.25 CONNECT RESPONSE. */
-DECL|function|x25_connect_response
+DECL|function|cycx_x25_connect_response
 r_static
 r_int
-id|x25_connect_response
+id|cycx_x25_connect_response
 c_func
 (paren
 r_struct
@@ -5333,10 +5334,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Place X.25 DISCONNECT RESPONSE.  */
-DECL|function|x25_disconnect_response
+DECL|function|cycx_x25_disconnect_response
 r_static
 r_int
-id|x25_disconnect_response
+id|cycx_x25_disconnect_response
 c_func
 (paren
 r_struct
@@ -5522,10 +5523,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Send X.25 data packet. */
-DECL|function|x25_send
+DECL|function|cycx_x25_send
 r_static
 r_int
-id|x25_send
+id|cycx_x25_send
 c_func
 (paren
 r_struct
@@ -5599,12 +5600,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* Miscellaneous */
 multiline_comment|/* Find network device by its channel number.  */
-DECL|function|get_dev_by_lcn
+DECL|function|cycx_x25_get_dev_by_lcn
 r_static
 r_struct
 id|net_device
 op_star
-id|get_dev_by_lcn
+id|cycx_x25_get_dev_by_lcn
 c_func
 (paren
 r_struct
@@ -5662,12 +5663,12 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* Find network device by its remote dte address. */
-DECL|function|get_dev_by_dte_addr
 r_static
 r_struct
 id|net_device
 op_star
-id|get_dev_by_dte_addr
+DECL|function|cycx_x25_get_dev_by_dte_addr
+id|cycx_x25_get_dev_by_dte_addr
 c_func
 (paren
 r_struct
@@ -5731,10 +5732,10 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* Initiate connection on the logical channel.&n; * o for PVC we just get channel configuration&n; * o for SVCs place an X.25 call&n; *&n; * Return:&t;0&t;connected&n; *&t;&t;&gt;0&t;connection in progress&n; *&t;&t;&lt;0&t;failure */
-DECL|function|chan_connect
+DECL|function|cycx_x25_chan_connect
 r_static
 r_int
-id|chan_connect
+id|cycx_x25_chan_connect
 c_func
 (paren
 r_struct
@@ -5805,7 +5806,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -5818,7 +5819,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -5831,10 +5832,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Disconnect logical channel.&n; * o if SVC then clear X.25 call */
-DECL|function|chan_disconnect
+DECL|function|cycx_x25_chan_disconnect
 r_static
 r_void
-id|chan_disconnect
+id|cycx_x25_chan_disconnect
 c_func
 (paren
 r_struct
@@ -5870,7 +5871,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -5880,7 +5881,7 @@ id|WAN_DISCONNECTING
 suffix:semicolon
 )brace
 r_else
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 id|dev
@@ -5890,10 +5891,10 @@ id|WAN_DISCONNECTED
 suffix:semicolon
 )brace
 multiline_comment|/* Called by kernel timer */
-DECL|function|chan_timer
+DECL|function|cycx_x25_chan_timer
 r_static
 r_void
-id|chan_timer
+id|cycx_x25_chan_timer
 c_func
 (paren
 r_int
@@ -5927,7 +5928,7 @@ id|chan-&gt;state
 op_eq
 id|WAN_CONNECTED
 )paren
-id|chan_disconnect
+id|cycx_x25_chan_disconnect
 c_func
 (paren
 id|dev
@@ -5938,19 +5939,21 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: chan_timer for svc (%s) not connected!&bslash;n&quot;
+l_string|&quot;%s: %s for svc (%s) not connected!&bslash;n&quot;
 comma
 id|chan-&gt;card-&gt;devname
+comma
+id|__FUNCTION__
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Set logical channel state. */
-DECL|function|set_chan_state
+DECL|function|cycx_x25_set_chan_state
 r_static
 r_void
-id|set_chan_state
+id|cycx_x25_set_chan_state
 c_func
 (paren
 r_struct
@@ -6064,7 +6067,7 @@ id|chan-&gt;protocol
 op_eq
 id|ETH_P_X25
 )paren
-id|chan_x25_send_event
+id|cycx_x25_chan_send_event
 c_func
 (paren
 id|dev
@@ -6127,7 +6130,7 @@ id|chan-&gt;protocol
 op_eq
 id|ETH_P_X25
 )paren
-id|chan_x25_send_event
+id|cycx_x25_chan_send_event
 c_func
 (paren
 id|dev
@@ -6173,10 +6176,10 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Send packet on a logical channel.&n; *&t;When this function is called, tx_skb field of the channel data space&n; *&t;points to the transmit socket buffer.  When transmission is complete,&n; *&t;release socket buffer and reset &squot;tbusy&squot; flag.&n; *&n; * Return:&t;0&t;- transmission complete&n; *&t;&t;1&t;- busy&n; *&n; * Notes:&n; * 1. If packet length is greater than MTU for this channel, we&squot;ll fragment&n; *    the packet into &squot;complete sequence&squot; using M-bit.&n; * 2. When transmission is complete, an event notification should be issued&n; *    to the router.  */
-DECL|function|chan_send
+DECL|function|cycx_x25_chan_send
 r_static
 r_int
-id|chan_send
+id|cycx_x25_chan_send
 c_func
 (paren
 r_struct
@@ -6236,7 +6239,7 @@ multiline_comment|/* set M-bit (more data) */
 r_if
 c_cond
 (paren
-id|x25_send
+id|cycx_x25_send
 c_func
 (paren
 id|card
@@ -6285,10 +6288,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Send event (connection, disconnection, etc) to X.25 socket layer */
-DECL|function|chan_x25_send_event
+DECL|function|cycx_x25_chan_send_event
 r_static
 r_void
-id|chan_x25_send_event
+id|cycx_x25_chan_send_event
 c_func
 (paren
 r_struct
@@ -6660,10 +6663,10 @@ id|HZ
 suffix:semicolon
 )brace
 macro_line|#ifdef CYCLOMX_X25_DEBUG
-DECL|function|x25_dump_config
+DECL|function|cycx_x25_dump_config
 r_static
 r_void
-id|x25_dump_config
+id|cycx_x25_dump_config
 c_func
 (paren
 r_struct
@@ -6838,10 +6841,10 @@ id|conf-&gt;flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|x25_dump_stats
+DECL|function|cycx_x25_dump_stats
 r_static
 r_void
-id|x25_dump_stats
+id|cycx_x25_dump_stats
 c_func
 (paren
 r_struct
@@ -6955,10 +6958,10 @@ id|stats-&gt;rx_aborts
 )paren
 suffix:semicolon
 )brace
-DECL|function|x25_dump_devs
+DECL|function|cycx_x25_dump_devs
 r_static
 r_void
-id|x25_dump_devs
+id|cycx_x25_dump_devs
 c_func
 (paren
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.67 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.69 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -224,7 +224,7 @@ id|mask
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* FIXME: this is _always_ called for every subchannel. shouldn&squot;t we&n; *&t;  process more than one at a time?*/
+multiline_comment|/* FIXME: this is _always_ called for every subchannel. shouldn&squot;t we&n; *&t;  process more than one at a time? */
 r_static
 r_int
 DECL|function|chsc_get_sch_desc_irq
@@ -233,6 +233,10 @@ c_func
 (paren
 r_int
 id|irq
+comma
+r_void
+op_star
+id|page
 )paren
 (brace
 r_int
@@ -241,9 +245,6 @@ comma
 id|chpid
 comma
 id|j
-suffix:semicolon
-r_int
-id|ret
 suffix:semicolon
 r_struct
 (brace
@@ -334,38 +335,8 @@ id|ssd_area
 suffix:semicolon
 id|ssd_area
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|get_zeroed_page
-c_func
-(paren
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
-)paren
+id|page
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ssd_area
-)paren
-(brace
-id|CIO_CRW_EVENT
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;No memory for ssd area!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|ssd_area-&gt;request
 op_assign
 (paren
@@ -417,8 +388,7 @@ comma
 id|ccode
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 (paren
 id|ccode
 op_eq
@@ -432,9 +402,6 @@ suffix:colon
 op_minus
 id|EBUSY
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
 r_switch
 c_cond
@@ -446,10 +413,6 @@ r_case
 l_int|0x0001
 suffix:colon
 multiline_comment|/* everything ok */
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -474,8 +437,7 @@ comma
 l_string|&quot;Error in chsc request block!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -492,8 +454,7 @@ comma
 l_string|&quot;Model does not provide ssd&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
@@ -511,24 +472,13 @@ comma
 id|ssd_area-&gt;response.code
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 op_minus
 id|EIO
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-l_int|0
-)paren
-r_goto
-id|out
-suffix:semicolon
 multiline_comment|/*&n;&t; * ssd_area-&gt;st stores the type of the detected&n;&t; * subchannel, with the following definitions:&n;&t; *&n;&t; * 0: I/O subchannel:&t;  All fields have meaning&n;&t; * 1: CHSC subchannel:&t;  Only sch_val, st and sch&n;&t; *&t;&t;&t;  have meaning&n;&t; * 2: Message subchannel: All fields except unit_addr&n;&t; *&t;&t;&t;  have meaning&n;&t; * 3: ADM subchannel:&t;  Only sch_val, st and sch&n;&t; *&t;&t;&t;  have meaning&n;&t; *&n;&t; * Other types are currently undefined.&n;&t; */
 r_if
 c_cond
@@ -553,8 +503,8 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * There may have been a new subchannel type defined in the&n;&t;&t; * time since this code was written; since we don&squot;t know which&n;&t;&t; * fields have meaning and what to do with it we just jump out&n;&t;&t; */
-r_goto
-id|out
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -603,8 +553,8 @@ op_eq
 l_int|NULL
 )paren
 multiline_comment|/* FIXME: we should do device rec. here... */
-r_goto
-id|out
+r_return
+l_int|0
 suffix:semicolon
 id|ioinfo
 (braket
@@ -737,19 +687,8 @@ id|j
 suffix:semicolon
 )brace
 )brace
-id|out
-suffix:colon
-id|free_page
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ssd_area
-)paren
-suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -767,6 +706,10 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_void
+op_star
+id|page
+suffix:semicolon
 id|CIO_TRACE_EVENT
 c_func
 (paren
@@ -776,6 +719,30 @@ l_string|&quot;gsdesc&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * get information about chpids and link addresses&n;&t; * by executing the chsc command &squot;store subchannel description&squot;&n;&t; */
+id|page
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|get_zeroed_page
+c_func
+(paren
+id|GFP_KERNEL
+op_or
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -798,6 +765,8 @@ id|chsc_get_sch_desc_irq
 c_func
 (paren
 id|irq
+comma
+id|page
 )paren
 suffix:semicolon
 r_if
@@ -838,10 +807,26 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|clear_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 id|cio_chsc_desc_avail
 op_assign
 l_int|1
+suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|page
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1372,6 +1357,10 @@ r_struct
 id|subchannel
 op_star
 id|sch
+comma
+r_void
+op_star
+id|page
 )paren
 (brace
 r_int
@@ -1391,6 +1380,8 @@ id|chsc_get_sch_desc_irq
 c_func
 (paren
 id|sch-&gt;irq
+comma
+id|page
 )paren
 )paren
 r_return
@@ -1516,6 +1507,10 @@ id|dbf_txt
 l_int|15
 )braket
 suffix:semicolon
+r_void
+op_star
+id|page
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -1566,38 +1561,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cio_chsc_desc_avail
-)paren
-id|chsc_get_sch_descriptions
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cio_chsc_desc_avail
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Something went wrong...&n;&t;&t; */
-id|CIO_CRW_EVENT
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;Error: Could not retrieve &quot;
-l_string|&quot;subchannel descriptions, will not process css&quot;
-l_string|&quot;machine check...&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -1609,6 +1572,28 @@ id|chpids_logical
 r_return
 suffix:semicolon
 multiline_comment|/* no need to do the rest */
+id|page
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|get_zeroed_page
+c_func
+(paren
+id|GFP_KERNEL
+op_or
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1683,6 +1668,14 @@ comma
 id|fla_mask
 comma
 id|sch
+comma
+id|page
+)paren
+suffix:semicolon
+id|clear_page
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 r_if
@@ -1756,6 +1749,16 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|page
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void

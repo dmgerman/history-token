@@ -155,6 +155,7 @@ mdefine_line|#define __io_virt(x) __io_virt_debug((unsigned long)(x), __FILE__, 
 macro_line|#else
 mdefine_line|#define __io_virt(x) ((void *)(x))
 macro_line|#endif
+macro_line|#ifndef __i386__
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are pretty trivial&n; */
 DECL|function|virt_to_phys
 r_extern
@@ -199,6 +200,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#include &lt;asm/mmzone.h&gt;
@@ -453,6 +455,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#ifndef __i386__
 multiline_comment|/**&n; *&t;isa_check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check &n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the ISA mmio address io_addr.&n; *&t;Returns 1 on a match.&n; *&n; *&t;This function is deprecated. New drivers should use ioremap and&n; *&t;check_signature.&n; */
 DECL|function|isa_check_signature
 r_static
@@ -523,6 +526,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Nothing to do */
 DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)

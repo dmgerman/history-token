@@ -410,6 +410,12 @@ DECL|enumerator|NFSERR_LOCKS_HELD
 id|NFSERR_LOCKS_HELD
 op_assign
 l_int|10037
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_REPLAY_ME
+id|NFSERR_REPLAY_ME
+op_assign
+l_int|10038
 multiline_comment|/*       v4 */
 )brace
 suffix:semicolon

@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|APIC_DEBUG
-mdefine_line|#define APIC_DEBUG 1
+mdefine_line|#define APIC_DEBUG 0
 macro_line|#if APIC_DEBUG
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...) printk(x)
