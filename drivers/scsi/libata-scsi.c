@@ -455,14 +455,6 @@ id|tf-&gt;flags
 op_amp
 id|ATA_TFLAG_LBA48
 suffix:semicolon
-id|qc-&gt;cursect
-op_assign
-id|qc-&gt;cursg
-op_assign
-id|qc-&gt;cursg_ofs
-op_assign
-l_int|0
-suffix:semicolon
 id|tf-&gt;flags
 op_or_assign
 id|ATA_TFLAG_ISADDR
