@@ -1103,6 +1103,11 @@ c_func
 (paren
 id|buf
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|src
 comma
 id|c

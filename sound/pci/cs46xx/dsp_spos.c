@@ -4613,11 +4613,8 @@ id|debug_tree
 )paren
 id|printk
 (paren
-l_string|&quot;addr %08x, val %08x&bslash;n&quot;
+l_string|&quot;addr %p, val %08x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|spdst
 comma
 id|task_data
@@ -4714,11 +4711,8 @@ id|debug_scb
 )paren
 id|printk
 (paren
-l_string|&quot;addr %08x, val %08x&bslash;n&quot;
+l_string|&quot;addr %p, val %08x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|spdst
 comma
 id|scb_data
