@@ -9372,6 +9372,7 @@ id|SNDRV_SEQ_VERSION
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -9395,6 +9396,7 @@ id|client-&gt;number
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -9445,11 +9447,6 @@ c_func
 (paren
 id|client
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -10166,7 +10163,6 @@ r_int
 id|cmd
 comma
 r_void
-id|__user
 op_star
 id|arg
 )paren
