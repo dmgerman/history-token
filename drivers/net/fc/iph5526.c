@@ -17261,7 +17261,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_else
 id|netif_wake_queue
 c_func
 (paren
