@@ -43,7 +43,7 @@ macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
 macro_line|#include &quot;scsi_logging.h&quot;
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 r_static
 r_int
@@ -928,7 +928,7 @@ op_star
 id|sclp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 r_int
 id|sg_last_dev
@@ -3538,6 +3538,8 @@ id|scsi_allocate_request
 c_func
 (paren
 id|sdp-&gt;device
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -8206,13 +8208,13 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 id|sg_proc_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
 r_return
 l_int|0
 suffix:semicolon
@@ -8227,13 +8229,13 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 id|sg_proc_cleanup
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
 id|scsi_unregister_interface
 c_func
 (paren
@@ -11984,7 +11986,7 @@ r_return
 id|resp
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 id|Sg_request
 op_star
@@ -12404,7 +12406,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 id|Sg_fd
 op_star
@@ -13611,7 +13613,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 r_int
 DECL|function|sg_last_dev
@@ -13757,7 +13759,7 @@ r_return
 id|sdp
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 DECL|variable|sg_proc_sgp
 r_static
 r_struct
@@ -13774,7 +13776,7 @@ id|sg_proc_sg_dirname
 (braket
 )braket
 op_assign
-l_string|&quot;sg&quot;
+l_string|&quot;scsi/sg&quot;
 suffix:semicolon
 r_static
 r_int
@@ -14287,13 +14289,6 @@ DECL|macro|PRINT_PROC
 mdefine_line|#define PRINT_PROC(fmt,args...)                                 &bslash;&n;    do {                                                        &bslash;&n;&t;*len += sprintf(buffer + *len, fmt, ##args);            &bslash;&n;&t;if (*begin + *len &gt; offset + size)                      &bslash;&n;&t;    return 0;                                           &bslash;&n;&t;if (*begin + *len &lt; offset) {                           &bslash;&n;&t;    *begin += *len;                                     &bslash;&n;&t;    *len = 0;                                           &bslash;&n;&t;}                                                       &bslash;&n;    } while(0)
 DECL|macro|SG_PROC_READ_FN
 mdefine_line|#define SG_PROC_READ_FN(infofp)                                 &bslash;&n;    do {                                                        &bslash;&n;&t;int len = 0;                                            &bslash;&n;&t;off_t begin = 0;                                        &bslash;&n;&t;*eof = infofp(buffer, &amp;len, &amp;begin, offset, size);      &bslash;&n;&t;if (offset &gt;= (begin + len))                            &bslash;&n;&t;    return 0;                                           &bslash;&n;&t;*start = buffer + offset - begin;&t;&t;&t;&bslash;&n;&t;return (size &lt; (begin + len - offset)) ?                &bslash;&n;&t;&t;&t;&t;size : begin + len - offset;    &bslash;&n;    } while(0)
-multiline_comment|/* this should _really_ be private to the scsi midlayer.  But&n;   /proc/scsi/sg is an established name, so.. */
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_scsi
-suffix:semicolon
 r_static
 r_int
 DECL|function|sg_proc_init
@@ -14334,15 +14329,6 @@ id|sg_proc_leaf
 op_star
 id|leaf
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|proc_scsi
-)paren
-r_return
-l_int|1
-suffix:semicolon
 id|sg_proc_sgp
 op_assign
 id|create_proc_entry
@@ -14356,7 +14342,7 @@ id|S_IRUGO
 op_or
 id|S_IXUGO
 comma
-id|proc_scsi
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -14470,15 +14456,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|proc_scsi
-)paren
-op_logical_or
-(paren
 op_logical_neg
 id|sg_proc_sgp
-)paren
 )paren
 r_return
 suffix:semicolon
@@ -14514,7 +14493,7 @@ c_func
 (paren
 id|sg_proc_sg_dirname
 comma
-id|proc_scsi
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -15999,7 +15978,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
 DECL|variable|init_sg
 id|module_init
 c_func

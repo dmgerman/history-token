@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * P4 specific Machine Check Exception Reporting&n; */
+multiline_comment|/*&n; * Non Fatal Machine Check Exception Reporting&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

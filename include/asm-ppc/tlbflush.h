@@ -25,6 +25,13 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_4xx)
+macro_line|#ifndef CONFIG_44x
+DECL|macro|__tlbia
+mdefine_line|#define __tlbia()&t;asm volatile (&quot;sync; tlbia; isync&quot; : : : &quot;memory&quot;)
+macro_line|#else
+DECL|macro|__tlbia
+mdefine_line|#define __tlbia&t;&t;_tlbia
+macro_line|#endif
 DECL|function|flush_tlb_mm
 r_static
 r_inline
@@ -38,7 +45,7 @@ op_star
 id|mm
 )paren
 (brace
-id|_tlbia
+id|__tlbia
 c_func
 (paren
 )paren
@@ -89,7 +96,7 @@ r_int
 id|end
 )paren
 (brace
-id|_tlbia
+id|__tlbia
 c_func
 (paren
 )paren
@@ -111,7 +118,7 @@ r_int
 id|end
 )paren
 (brace
-id|_tlbia
+id|__tlbia
 c_func
 (paren
 )paren

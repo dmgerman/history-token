@@ -1665,5 +1665,10 @@ DECL|macro|dev_info
 mdefine_line|#define dev_info(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_INFO , dev , format , ## arg)
 DECL|macro|dev_warn
 mdefine_line|#define dev_warn(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_WARNING , dev , format , ## arg)
+multiline_comment|/* Create alias, so I can be autoloaded. */
+DECL|macro|MODULE_ALIAS_CHARDEV
+mdefine_line|#define MODULE_ALIAS_CHARDEV(major,minor) &bslash;&n;&t;MODULE_ALIAS(&quot;char-major-&quot; __stringify(major) &quot;-&quot; __stringify(minor))
+DECL|macro|MODULE_ALIAS_CHARDEV_MAJOR
+mdefine_line|#define MODULE_ALIAS_CHARDEV_MAJOR(major) &bslash;&n;&t;MODULE_ALIAS(&quot;char-major-&quot; __stringify(major) &quot;-*&quot;)
 macro_line|#endif /* _DEVICE_H_ */
 eof

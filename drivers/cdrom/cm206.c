@@ -6958,5 +6958,12 @@ id|cm206_setup
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* !MODULE */
+DECL|variable|CM206_CDROM_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|CM206_CDROM_MAJOR
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -m486 -DMODULE -DMODVERSIONS -include /usr/src/linux/include/linux/modversions.h  -c -o cm206.o cm206.c&quot;&n; * End:&n; */
 eof

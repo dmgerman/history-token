@@ -4337,18 +4337,6 @@ id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
-id|llc_ui_banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;NET4.0 IEEE 802.2 BSD sockets, Jay Schulist, 2001, &quot;
-l_string|&quot;Arnaldo C. Melo, 2002-2003&bslash;n&quot;
-suffix:semicolon
 DECL|function|llc_ui_init
 r_int
 id|__init
@@ -4367,12 +4355,6 @@ c_func
 (paren
 op_amp
 id|llc_ui_family_ops
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|llc_ui_banner
 )paren
 suffix:semicolon
 r_return

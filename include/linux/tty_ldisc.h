@@ -256,5 +256,7 @@ DECL|macro|TTY_LDISC_MAGIC
 mdefine_line|#define TTY_LDISC_MAGIC&t;0x5403
 DECL|macro|LDISC_FLAG_DEFINED
 mdefine_line|#define LDISC_FLAG_DEFINED&t;0x00000001
+DECL|macro|MODULE_ALIAS_LDISC
+mdefine_line|#define MODULE_ALIAS_LDISC(ldisc) &bslash;&n;&t;MODULE_ALIAS(&quot;tty-ldisc-&quot; __stringify(ldisc))
 macro_line|#endif /* _LINUX_TTY_LDISC_H */
 eof

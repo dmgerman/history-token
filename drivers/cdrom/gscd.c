@@ -3695,4 +3695,11 @@ c_func
 id|gscd_exit
 )paren
 suffix:semicolon
+DECL|variable|GOLDSTAR_CDROM_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|GOLDSTAR_CDROM_MAJOR
+)paren
+suffix:semicolon
 eof

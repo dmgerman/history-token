@@ -42,14 +42,19 @@ DECL|macro|QL1280_LUN_SUPPORT
 mdefine_line|#define  QL1280_LUN_SUPPORT&t;0
 DECL|macro|WATCHDOGTIMER
 mdefine_line|#define  WATCHDOGTIMER&t;&t;0
-DECL|macro|MEMORY_MAPPED_IO
-mdefine_line|#define  MEMORY_MAPPED_IO&t;1
 DECL|macro|DEBUG_QLA1280_INTR
 mdefine_line|#define  DEBUG_QLA1280_INTR&t;0
 DECL|macro|DEBUG_PRINT_NVRAM
 mdefine_line|#define  DEBUG_PRINT_NVRAM&t;0
 DECL|macro|DEBUG_QLA1280
 mdefine_line|#define  DEBUG_QLA1280&t;&t;0
+macro_line|#ifdef&t;CONFIG_SCSI_QLOGIC_1280_PIO
+DECL|macro|MEMORY_MAPPED_IO
+mdefine_line|#define&t;MEMORY_MAPPED_IO&t;0
+macro_line|#else
+DECL|macro|MEMORY_MAPPED_IO
+mdefine_line|#define&t;MEMORY_MAPPED_IO&t;1
+macro_line|#endif
 DECL|macro|UNIQUE_FW_NAME
 mdefine_line|#define UNIQUE_FW_NAME
 macro_line|#include &quot;qla1280.h&quot;
@@ -13557,7 +13562,7 @@ multiline_comment|/* Enable simple tag queuing if device supports it. */
 r_if
 c_cond
 (paren
-id|cmd-&gt;device-&gt;tagged_queue
+id|cmd-&gt;device-&gt;simple_tags
 )paren
 id|pkt-&gt;control_flags
 op_or_assign
@@ -14948,7 +14953,7 @@ multiline_comment|/* Enable simple tag queuing if device supports it. */
 r_if
 c_cond
 (paren
-id|cmd-&gt;device-&gt;tagged_queue
+id|cmd-&gt;device-&gt;simple_tags
 )paren
 id|pkt-&gt;control_flags
 op_or_assign
@@ -18723,7 +18728,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|device-&gt;tagged_queue
+id|device-&gt;simple_tags
 )paren
 id|printk
 c_func

@@ -168,6 +168,8 @@ DECL|macro|VM_ACCOUNT
 mdefine_line|#define VM_ACCOUNT&t;0x00100000&t;/* Is a VM accounted object */
 DECL|macro|VM_HUGETLB
 mdefine_line|#define VM_HUGETLB&t;0x00400000&t;/* Huge TLB Page VM */
+DECL|macro|VM_NONLINEAR
+mdefine_line|#define VM_NONLINEAR&t;0x00800000&t;/* Is non-linear (remap_file_pages) */
 macro_line|#ifndef VM_STACK_DEFAULT_FLAGS&t;&t;/* arch can override this */
 DECL|macro|VM_STACK_DEFAULT_FLAGS
 mdefine_line|#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS

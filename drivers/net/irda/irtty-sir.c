@@ -2126,6 +2126,13 @@ c_func
 l_string|&quot;IrDA TTY device driver&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_IRDA
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_IRDA
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

@@ -8291,17 +8291,6 @@ c_func
 id|ax25_display_timer
 )paren
 suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
-id|banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;NET4: G4KLX/GW4PTS AX.25 for Linux. Version 0.37 for Linux NET4.0&bslash;n&quot;
-suffix:semicolon
 DECL|function|ax25_init
 r_static
 r_int
@@ -8369,12 +8358,6 @@ id|S_IRUGO
 comma
 op_amp
 id|ax25_uid_fops
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|banner
 )paren
 suffix:semicolon
 r_return

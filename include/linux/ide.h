@@ -4108,12 +4108,6 @@ id|busy
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|supports_dma
-r_int
-id|supports_dma
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|supports_dsc_overlap
 r_int
 id|supports_dsc_overlap

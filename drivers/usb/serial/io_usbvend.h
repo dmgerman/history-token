@@ -1,4 +1,4 @@
-multiline_comment|/************************************************************************&n; *&n; *&t;USBVEND.H&t;&t;Vendor-specific USB definitions&n; *&n; *&t;NOTE: This must be kept in sync with the Edgeport firmware and&n; *&t;must be kept backward-compatible with older firmware.&n; *&n; ************************************************************************&n; *&n; *&t;Copyright (c) 1998 Inside Out Networks, Inc.&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; ************************************************************************/
+multiline_comment|/************************************************************************&n; *&n; *&t;USBVEND.H&t;&t;Vendor-specific USB definitions&n; *&n; *&t;NOTE: This must be kept in sync with the Edgeport firmware and&n; *&t;must be kept backward-compatible with older firmware.&n; *&n; ************************************************************************&n; *&n; *&t;Copyright (C) 1998 Inside Out Networks, Inc.&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; ************************************************************************/
 macro_line|#if !defined(_USBVEND_H)
 DECL|macro|_USBVEND_H
 mdefine_line|#define&t;_USBVEND_H
@@ -170,6 +170,8 @@ DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_42
 mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_42&t;&t;0x0217&t;/* Edgeport/42 4 hub 2 RS232 */
 DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_22
 mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_22&t;&t;0x021A&t;/* Edgeport/22  Edgeport/22I is an Edgeport/4 with ports 1&amp;2 RS422 and ports 3&amp;4 RS232 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_2C
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_2C&t;&t;0x021B&t;/* Edgeport/2c RS232 */
 DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_421_BOOT
 mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_421_BOOT&t;0x0240&t;/* Edgeport/421 in boot mode */
 DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_421_DOWN

@@ -4708,9 +4708,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hostdata-&gt;connected-&gt;device-&gt;tagged_queue
+id|hostdata-&gt;conneted-&gt;device-&gt;simple_tags
 )paren
-macro_line|#endif
+macro_line|#else
 id|hostdata-&gt;busy
 (braket
 id|hostdata-&gt;connected-&gt;device-&gt;id
@@ -4967,7 +4967,6 @@ l_string|&quot;end of intr&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_intr_disconnect(struct Scsi_Host *instance)&n;*&n;* Purpose : manage target disconnection&n;*&n;* Inputs : instance -- which AM53C974&n;* &n;* Returns : nothing&n;**************************************************************************/
-DECL|function|AM53C974_intr_disconnect
 r_static
 r_void
 id|AM53C974_intr_disconnect
@@ -5598,7 +5597,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : int AM53C974_sync_neg(struct Scsi_Host *instance, int target, unsigned char *msg)&n;*&n;* Purpose : setup message string for sync. negotiation&n;*&n;* Inputs : instance -- which AM53C974&n;*          target -- which SCSI target to deal with&n;*          msg -- input message string&n;* &n;* Returns : 0 if parameters accepted or 1 if not accepted&n;*&n;* Side effects: hostdata is changed&n;*&n;* Note: we assume here that fastclk is enabled&n;**************************************************************************/
-DECL|function|AM53C974_sync_neg
 r_static
 r_int
 id|AM53C974_sync_neg
@@ -5876,7 +5874,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_set_async(struct Scsi_Host *instance, int target)&n;*&n;* Purpose : put controller into async. mode&n;*&n;* Inputs : instance -- which AM53C974&n;*          target -- which SCSI target to deal with&n;* &n;* Returns : nothing&n;**************************************************************************/
-DECL|function|AM53C974_set_async
 r_static
 id|__inline__
 r_void
@@ -5946,7 +5943,6 @@ l_int|4
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_set_sync(struct Scsi_Host *instance, int target)&n;*&n;* Purpose : put controller into sync. mode&n;*&n;* Inputs : instance -- which AM53C974&n;*          target -- which SCSI target to deal with&n;* &n;* Returns : nothing&n;**************************************************************************/
-DECL|function|AM53C974_set_sync
 r_static
 id|__inline__
 r_void
@@ -6025,7 +6021,6 @@ l_int|4
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n;* Function : AM53C974_information_transfer(struct Scsi_Host *instance, *&n;*                          unsigned char statreg, unsigned char isreg, *&n;*                         unsigned char instreg, unsigned char cfifo,  *&n;*                         unsigned char dmastatus)                     *&n;*                                                                      *&n;* Purpose : handle phase changes                                       *&n;*                                                                      *&n;* Inputs : instance - which AM53C974                                   *&n;*          statreg - status register                                     *&n;*          isreg - internal state register                             *&n;*          instreg - interrupt status register                         *&n;*          cfifo - number of bytes in FIFO                             *&n;*          dmastatus - dma status register                             *&n;*                                                                      *&n;* Returns : nothing                                                    *&n;************************************************************************/
-DECL|function|AM53C974_information_transfer
 r_static
 r_void
 id|AM53C974_information_transfer
@@ -7073,7 +7068,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n;* Function : int AM53C974_message(struct Scsi_Host *instance, Scsi_Cmnd *cmd,&n;*                                 unsigned char msg)                &n;*&n;* Purpose : handle SCSI messages&n;*&n;* Inputs : instance -- which AM53C974&n;*          cmd -- SCSI command the message belongs to&n;*          msg -- message id byte&n;* &n;* Returns : 1 on success, 0 on failure.&n;**************************************************************************/
-DECL|function|AM53C974_message
 r_static
 r_int
 id|AM53C974_message
@@ -7672,7 +7666,7 @@ suffix:colon
 r_case
 id|SIMPLE_QUEUE_TAG
 suffix:colon
-id|cmd-&gt;device-&gt;tagged_queue
+id|cmd-&gt;device-&gt;simple_tags
 op_assign
 l_int|0
 suffix:semicolon
@@ -8166,7 +8160,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_select(struct Scsi_Host *instance, Scsi_Cmnd *cmd, int tag)&n;*&n;* Purpose : try to establish nexus for the command;&n;*           start sync negotiation via start stop and transfer the command in &n;*           cmdout phase in case of an inquiry or req. sense command with no &n;*           sync. neg. performed yet&n;*&n;* Inputs : instance -- which AM53C974&n;*          cmd -- command which requires the selection&n;*          tag -- tagged queueing&n;* &n;* Returns : nothing&n;*        &n;* Note: this function initializes the selection process, which is continued &n;*       in the interrupt handler&n;**************************************************************************/
-DECL|function|AM53C974_select
 r_static
 r_void
 id|AM53C974_select
@@ -8300,7 +8293,7 @@ macro_line|#ifdef SCSI2
 r_if
 c_cond
 (paren
-id|cmd-&gt;device-&gt;tagged_queue
+id|cmd-&gt;device-&gt;simple_tags
 op_logical_and
 (paren
 id|tag
@@ -8658,7 +8651,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_intr_select(struct Scsi_Host *instance, unsigned char statreg)&n;*&n;* Purpose : handle reselection &n;*&n;* Inputs : instance -- which AM53C974&n;*          statreg -- status register&n;* &n;* Returns : nothing&n;*&n;* side effects: manipulates hostdata&n;**************************************************************************/
-DECL|function|AM53C974_intr_reselect
 r_static
 r_void
 id|AM53C974_intr_reselect
@@ -9249,7 +9241,6 @@ id|PHASE_CMDOUT
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_transfer_dma(struct Scsi_Host *instance, short dir,&n;*                                  unsigned long length, char *data)&n;*&n;* Purpose : setup DMA transfer&n;*&n;* Inputs : instance -- which AM53C974&n;*          dir -- direction flag, 0: write to device, read from memory; &n;*                                 1: read from device, write to memory&n;*          length -- number of bytes to transfer to from buffer&n;*          data -- pointer to data buffer&n;* &n;* Returns : nothing&n;**************************************************************************/
-DECL|function|AM53C974_transfer_dma
 r_static
 id|__inline__
 r_void
@@ -9413,7 +9404,6 @@ id|DMACMD_START
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_dma_blast(struct Scsi_Host *instance, unsigned char dmastatus,&n;*                               unsigned char statreg)&n;*&n;* Purpose : cleanup DMA transfer&n;*&n;* Inputs : instance -- which AM53C974&n;*          dmastatus -- dma status register&n;*          statreg -- status register&n;* &n;* Returns : nothing&n;**************************************************************************/
-DECL|function|AM53C974_dma_blast
 r_static
 r_void
 id|AM53C974_dma_blast
@@ -9694,7 +9684,6 @@ id|ctcreg
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : AM53C974_intr_bus_reset(struct Scsi_Host *instance)&n;*&n;* Purpose : handle bus reset interrupt&n;*&n;* Inputs : instance -- which AM53C974&n;* &n;* Returns : nothing&n;**************************************************************************/
-DECL|function|AM53C974_intr_bus_reset
 r_static
 r_void
 id|AM53C974_intr_bus_reset
@@ -9757,7 +9746,6 @@ id|CNTLREG1_DISR
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n;* Function : int AM53C974_abort(Scsi_Cmnd *cmd)&n;*&n;* Purpose : abort a command&n;*&n;* Inputs : cmd - the Scsi_Cmnd to abort, code - code to set the &n;* &t;host byte of the result field to, if zero DID_ABORTED is &n;*&t;used.&n;*&n;* Returns : 0 - success, -1 on failure.&n; **************************************************************************/
-DECL|function|AM53C974_abort
 r_static
 r_int
 id|AM53C974_abort
@@ -10209,7 +10197,6 @@ id|SCSI_ABORT_NOT_RUNNING
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************** &n;* Function : int AM53C974_reset(Scsi_Cmnd *cmd)&n;*&n;* Purpose : reset the SCSI controller and bus&n;*&n;* Inputs : cmd -- which command within the command block was responsible for the reset&n;* &n;* Returns : status (SCSI_ABORT_SUCCESS)&n;* &n;* FIXME(eric) the reset_flags are ignored.&n;**************************************************************************/
-DECL|function|AM53C974_reset
 r_static
 r_int
 id|AM53C974_reset
@@ -10468,7 +10455,6 @@ id|SCSI_ABORT_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * AM53C974_release()&n; *&n; * Release resources allocated for a single AM53C974 adapter.&n; */
-DECL|function|AM53C974_release
 r_static
 r_int
 id|AM53C974_release
@@ -10521,7 +10507,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template

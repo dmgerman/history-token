@@ -13396,7 +13396,7 @@ id|TCVR_REG_SIZE
 suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -15098,7 +15098,7 @@ id|qfe_slot
 op_assign
 l_int|NULL
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

@@ -3555,8 +3555,8 @@ c_func
 id|pd
 )paren
 suffix:semicolon
-r_goto
-id|err
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|card-&gt;para
@@ -3659,8 +3659,8 @@ id|KERN_ERR
 l_string|&quot;Sedlbauer PnP: PnP error card found, no device&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|err
+r_return
+l_int|0
 suffix:semicolon
 )brace
 )brace

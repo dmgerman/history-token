@@ -175,6 +175,7 @@ id|usb_stv
 DECL|member|vdev
 r_struct
 id|video_device
+op_star
 id|vdev
 suffix:semicolon
 DECL|member|udev
@@ -410,13 +411,6 @@ id|wait_queue_head_t
 id|wq
 suffix:semicolon
 multiline_comment|/* Processes waiting */
-DECL|member|proc_entry
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_entry
-suffix:semicolon
-multiline_comment|/* /proc/stv680/videoX */
 DECL|member|nullpackets
 r_int
 id|nullpackets

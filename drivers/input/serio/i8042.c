@@ -1943,6 +1943,10 @@ comma
 id|index
 )paren
 suffix:semicolon
+id|i8042_last_e0
+op_assign
+l_int|0
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -2410,6 +2414,10 @@ r_int
 r_char
 id|param
 suffix:semicolon
+r_static
+r_int
+id|i8042_check_mux_cookie
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -2428,7 +2436,8 @@ id|SA_SHIRQ
 comma
 l_string|&quot;i8042&quot;
 comma
-id|i8042_request_irq_cookie
+op_amp
+id|i8042_check_mux_cookie
 )paren
 )paren
 r_return
@@ -2440,7 +2449,8 @@ c_func
 (paren
 id|values-&gt;irq
 comma
-id|i8042_request_irq_cookie
+op_amp
+id|i8042_check_mux_cookie
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Get rid of bytes in the queue.&n; */
@@ -2633,6 +2643,10 @@ r_int
 r_char
 id|param
 suffix:semicolon
+r_static
+r_int
+id|i8042_check_aux_cookie
+suffix:semicolon
 multiline_comment|/*&n; * Check if AUX irq is available. If it isn&squot;t, then there is no point&n; * in trying to detect AUX presence.&n; */
 r_if
 c_cond
@@ -2648,7 +2662,8 @@ id|SA_SHIRQ
 comma
 l_string|&quot;i8042&quot;
 comma
-id|i8042_request_irq_cookie
+op_amp
+id|i8042_check_aux_cookie
 )paren
 )paren
 r_return
@@ -2660,7 +2675,8 @@ c_func
 (paren
 id|values-&gt;irq
 comma
-id|i8042_request_irq_cookie
+op_amp
+id|i8042_check_aux_cookie
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Get rid of bytes in the queue.&n; */

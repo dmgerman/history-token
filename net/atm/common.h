@@ -266,6 +266,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_int
 id|atm_proc_init
 c_func
@@ -280,6 +281,34 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|atm_proc_init
+r_static
+r_inline
+r_int
+id|atm_proc_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|atm_proc_exit
+r_static
+r_inline
+r_void
+id|atm_proc_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* nothing */
+)brace
+macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* SVC */
 r_void
 id|svc_callback

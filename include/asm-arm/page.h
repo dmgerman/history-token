@@ -1,8 +1,19 @@
+multiline_comment|/*&n; *  linux/include/asm-arm/page.h&n; *&n; *  Copyright (C) 1995-2003 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _ASMARM_PAGE_H
 DECL|macro|_ASMARM_PAGE_H
 mdefine_line|#define _ASMARM_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* PAGE_SHIFT determines the page size */
+DECL|macro|PAGE_SHIFT
+mdefine_line|#define PAGE_SHIFT&t;&t;12
+DECL|macro|PAGE_SIZE
+mdefine_line|#define PAGE_SIZE&t;&t;(1UL &lt;&lt; PAGE_SHIFT)
+DECL|macro|PAGE_MASK
+mdefine_line|#define PAGE_MASK&t;&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* to align the pointer to the (next) page boundary */
+DECL|macro|PAGE_ALIGN
+mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/glue.h&gt;
 multiline_comment|/*&n; *&t;User Space Model&n; *&t;================&n; *&n; *&t;This section selects the correct set of functions for dealing with&n; *&t;page-based copying and clearing for user space for the particular&n; *&t;processor(s) we&squot;re building for.&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3&t;&t;- ARMv3&n; *&t;  v4wt&t;&t;- ARMv4 with writethrough cache, without minicache&n; *&t;  v4wb&t;&t;- ARMv4 with writeback cache, without minicache&n; *&t;  v4_mc&t;&t;- ARMv4 with minicache&n; *&t;  xscale&t;- Xscale&n; */
@@ -198,6 +209,21 @@ suffix:semicolon
 )brace
 id|pmd_t
 suffix:semicolon
+DECL|member|pgd
+DECL|typedef|pgd_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pgd
+(braket
+l_int|2
+)braket
+suffix:semicolon
+)brace
+id|pgd_t
+suffix:semicolon
 DECL|member|pgprot
 DECL|typedef|pgprot_t
 r_typedef
@@ -214,6 +240,8 @@ DECL|macro|pte_val
 mdefine_line|#define pte_val(x)      ((x).pte)
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)      ((x).pmd)
+DECL|macro|pgd_val
+mdefine_line|#define pgd_val(x)&t;((x).pgd[0])
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)   ((x).pgprot)
 DECL|macro|__pte
@@ -236,6 +264,15 @@ r_int
 r_int
 id|pmd_t
 suffix:semicolon
+DECL|typedef|pgd_t
+r_typedef
+r_int
+r_int
+id|pgd_t
+(braket
+l_int|2
+)braket
+suffix:semicolon
 DECL|typedef|pgprot_t
 r_typedef
 r_int
@@ -246,6 +283,8 @@ DECL|macro|pte_val
 mdefine_line|#define pte_val(x)      (x)
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)      (x)
+DECL|macro|pgd_val
+mdefine_line|#define pgd_val(x)&t;((x)[0])
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)   (x)
 DECL|macro|__pte
@@ -255,18 +294,6 @@ mdefine_line|#define __pmd(x)        (x)
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)     (x)
 macro_line|#endif /* STRICT_MM_TYPECHECKS */
-macro_line|#endif /* !__ASSEMBLY__ */
-macro_line|#endif /* __KERNEL__ */
-macro_line|#include &lt;asm/proc/page.h&gt;
-DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE&t;&t;(1UL &lt;&lt; PAGE_SHIFT)
-DECL|macro|PAGE_MASK
-mdefine_line|#define PAGE_MASK&t;&t;(~(PAGE_SIZE-1))
-multiline_comment|/* to align the pointer to the (next) page boundary */
-DECL|macro|PAGE_ALIGN
-mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
-macro_line|#ifdef __KERNEL__
-macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_static

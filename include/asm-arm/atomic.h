@@ -21,7 +21,7 @@ suffix:semicolon
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)&t;{ (i) }
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/proc/system.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|atomic_read
 mdefine_line|#define atomic_read(v)&t;((v)-&gt;counter)
 DECL|macro|atomic_set

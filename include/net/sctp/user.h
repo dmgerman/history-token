@@ -949,7 +949,7 @@ id|sstat_primary
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * 8.3, 8.5 get all peer/local addresses on a socket&n; * This parameter struct is for getsockopt&n; */
+multiline_comment|/*&n; * 8.3, 8.5 get all peer/local addresses in an association.&n; * This parameter struct is used by SCTP_GET_PEER_ADDRS and &n; * SCTP_GET_LOCAL_ADDRS socket options used internally to implement&n; * sctp_getpaddrs() and sctp_getladdrs() API. &n; */
 DECL|struct|sctp_getaddrs
 r_struct
 id|sctp_getaddrs
@@ -964,7 +964,7 @@ id|addr_num
 suffix:semicolon
 DECL|member|addrs
 r_struct
-id|sockaddr_storage
+id|sockaddr
 op_star
 id|addrs
 suffix:semicolon

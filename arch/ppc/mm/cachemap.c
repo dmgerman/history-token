@@ -36,8 +36,7 @@ r_int
 r_int
 id|va
 comma
-r_int
-r_int
+id|phys_addr_t
 id|pa
 comma
 r_int
@@ -78,10 +77,11 @@ comma
 op_star
 id|end
 suffix:semicolon
-r_int
-r_int
+id|phys_addr_t
 id|pa
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 comma
 id|offset

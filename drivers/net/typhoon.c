@@ -10957,7 +10957,7 @@ id|pdev
 suffix:semicolon
 id|error_out_dev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

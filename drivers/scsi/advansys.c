@@ -15555,17 +15555,22 @@ id|device-&gt;host-&gt;cmd_per_lun
 )paren
 suffix:semicolon
 )brace
-id|ASC_DBG3
+id|ASC_DBG4
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;advansys_slave_configure: shp 0x%lx, id %d, depth %d&bslash;n&quot;
+l_string|&quot;advansys_slave_configure: device 0x%lx, boardp 0x%lx, id %d, depth %d&bslash;n&quot;
 comma
 (paren
 id|ulong
 )paren
-id|shp
+id|device
+comma
+(paren
+id|ulong
+)paren
+id|boardp
 comma
 id|device-&gt;id
 comma
@@ -27405,12 +27410,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; next 0x%lx, host_busy %u, host_no %d, last_reset %d,&bslash;n&quot;
-comma
-(paren
-id|ulong
-)paren
-id|s-&gt;next
+l_string|&quot; host_busy %u, host_no %d, last_reset %d,&bslash;n&quot;
 comma
 id|s-&gt;host_busy
 comma
@@ -27599,18 +27599,18 @@ comma
 (paren
 id|ulong
 )paren
-id|s-&gt;host
+id|s-&gt;device-&gt;host
 comma
 (paren
 id|ulong
 )paren
 id|s-&gt;device
 comma
-id|s-&gt;target
+id|s-&gt;device-&gt;id
 comma
-id|s-&gt;lun
+id|s-&gt;device-&gt;lun
 comma
-id|s-&gt;channel
+id|s-&gt;device-&gt;channel
 )paren
 suffix:semicolon
 id|asc_prt_hex

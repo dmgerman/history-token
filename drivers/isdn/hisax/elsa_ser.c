@@ -1089,7 +1089,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-r_int
+id|u_int
 id|count
 comma
 id|len
@@ -2071,11 +2071,11 @@ id|u8
 op_star
 id|buf
 comma
-r_int
+id|u_int
 id|len
 )paren
 (brace
-r_int
+id|u_int
 id|count
 comma
 id|fp

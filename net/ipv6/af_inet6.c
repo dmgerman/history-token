@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
@@ -2919,13 +2918,6 @@ id|ipv6_unload
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;IPv6 v0.8 for NET4.0&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -558,7 +558,8 @@ r_return
 id|err
 suffix:semicolon
 macro_line|#endif
-id|down_read
+multiline_comment|/* We need down_write() to change vma-&gt;vm_flags. */
+id|down_write
 c_func
 (paren
 op_amp
@@ -603,6 +604,37 @@ id|end
 op_le
 id|vma-&gt;vm_end
 )paren
+(brace
+multiline_comment|/* Must set VM_NONLINEAR before any pages are populated. */
+r_if
+c_cond
+(paren
+id|pgoff
+op_ne
+(paren
+(paren
+id|start
+op_minus
+id|vma-&gt;vm_start
+)paren
+op_rshift
+id|PAGE_SHIFT
+)paren
+op_plus
+id|vma-&gt;vm_pgoff
+)paren
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_NONLINEAR
+suffix:semicolon
+multiline_comment|/* -&gt;populate can take a long time, so downgrade the lock. */
+id|downgrade_write
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|vma-&gt;vm_ops
@@ -625,6 +657,7 @@ op_amp
 id|MAP_NONBLOCK
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We can&squot;t clear VM_NONLINEAR because we&squot;d have to do&n;&t;&t; * it after -&gt;populate completes, and that would prevent&n;&t;&t; * downgrading the lock.  (Locks can&squot;t be upgraded).&n;&t;&t; */
 id|up_read
 c_func
 (paren
@@ -632,6 +665,17 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|up_write
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon

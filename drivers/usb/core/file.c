@@ -428,7 +428,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 )braket
 suffix:semicolon
 r_struct
@@ -538,7 +538,7 @@ c_func
 (paren
 id|name
 comma
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 comma
 id|class_driver-&gt;name
 comma
@@ -724,7 +724,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
@@ -774,7 +774,7 @@ c_func
 (paren
 id|name
 comma
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 comma
 id|class_driver-&gt;name
 comma

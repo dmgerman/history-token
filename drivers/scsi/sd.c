@@ -1543,15 +1543,16 @@ r_if
 c_cond
 (paren
 id|sdev-&gt;removable
+op_logical_or
+id|sdkp-&gt;write_prot
 )paren
-(brace
 id|check_disk_change
 c_func
 (paren
 id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the drive is empty, just let the open fail.&n;&t;&t; */
+multiline_comment|/*&n;&t; * If the drive is empty, just let the open fail.&n;&t; */
 id|retval
 op_assign
 op_minus
@@ -1560,10 +1561,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+id|sdev-&gt;removable
+op_logical_and
 op_logical_neg
 id|sdkp-&gt;media_present
-)paren
 op_logical_and
 op_logical_neg
 (paren
@@ -1575,7 +1576,7 @@ id|O_NDELAY
 r_goto
 id|error_out
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Similarly, if the device has the write protect tab set,&n;&t;&t; * have the open fail if the user expects to be able to write&n;&t;&t; * to the thing.&n;&t;&t; */
+multiline_comment|/*&n;&t; * If the device has the write protect tab set, have the open fail&n;&t; * if the user expects to be able to write to the thing.&n;&t; */
 id|retval
 op_assign
 op_minus
@@ -1584,9 +1585,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|sdkp-&gt;write_prot
-)paren
 op_logical_and
 (paren
 id|filp-&gt;f_mode
@@ -1597,7 +1596,6 @@ id|FMODE_WRITE
 r_goto
 id|error_out
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * It is possible that the disk changing stuff resulted in&n;&t; * the device being taken offline.  If this is the case,&n;&t; * report this to the user, and don&squot;t pretend that the&n;&t; * open actually succeeded.&n;&t; */
 id|retval
 op_assign
@@ -4927,6 +4925,8 @@ id|scsi_allocate_request
 c_func
 (paren
 id|sdp
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -5636,6 +5636,8 @@ id|scsi_allocate_request
 c_func
 (paren
 id|sdp
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

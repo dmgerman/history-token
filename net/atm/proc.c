@@ -3282,6 +3282,16 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+multiline_comment|/* No proc info */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;ops-&gt;proc_read
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|error
 op_assign
 op_minus
@@ -3417,6 +3427,14 @@ op_star
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;ops-&gt;proc_read
+)paren
+r_return
+suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren

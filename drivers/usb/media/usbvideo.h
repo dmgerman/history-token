@@ -3,14 +3,11 @@ macro_line|#ifndef usbvideo_h
 DECL|macro|usbvideo_h
 mdefine_line|#define&t;usbvideo_h
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 multiline_comment|/* Most helpful debugging aid */
 DECL|macro|assert
 mdefine_line|#define assert(expr) ((void) ((expr) ? 0 : (err(&quot;assert failed at line %d&quot;,__LINE__))))
-DECL|macro|USES_PROC_FS
-mdefine_line|#define USES_PROC_FS&t;(defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS))
 DECL|macro|USBVIDEO_REPORT_STATS
 mdefine_line|#define USBVIDEO_REPORT_STATS&t;1&t;/* Set to 0 to block statistics on close */
 multiline_comment|/* Bit flags (options) */
@@ -545,13 +542,6 @@ r_struct
 id|usbvideo_statistics
 id|stats
 suffix:semicolon
-DECL|member|procfs_vEntry
-r_struct
-id|proc_dir_entry
-op_star
-id|procfs_vEntry
-suffix:semicolon
-multiline_comment|/* /proc/video/MYDRIVER/video2 */
 DECL|member|videoName
 r_char
 id|videoName
@@ -730,63 +720,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|member|procfs_read
-r_int
-(paren
-op_star
-id|procfs_read
-)paren
-(paren
-r_char
-op_star
-id|page
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|off
-comma
-r_int
-id|count
-comma
-r_int
-op_star
-id|eof
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-DECL|member|procfs_write
-r_int
-(paren
-op_star
-id|procfs_write
-)paren
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_const
-r_char
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|count
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
 DECL|member|startDataPump
 r_int
 (paren
@@ -881,18 +814,6 @@ op_star
 id|cam
 suffix:semicolon
 multiline_comment|/* Array of camera structures */
-DECL|member|uses_procfs
-r_int
-id|uses_procfs
-suffix:semicolon
-multiline_comment|/* Non-zero if we create /proc entries */
-DECL|member|procfs_dEntry
-r_struct
-id|proc_dir_entry
-op_star
-id|procfs_dEntry
-suffix:semicolon
-multiline_comment|/* /proc/video/MYDRIVER */
 DECL|member|md_module
 r_struct
 id|module

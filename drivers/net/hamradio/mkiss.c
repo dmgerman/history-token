@@ -4107,6 +4107,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_AX25
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_AX25
+)paren
+suffix:semicolon
 DECL|variable|mkiss_init_driver
 id|module_init
 c_func

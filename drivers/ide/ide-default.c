@@ -33,7 +33,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; *&n; *&t;idedefault *must* support DMA because it will be&n; *&t;attached before the other drivers are loaded and&n; *&t;we don&squot;t want to lose the DMA status at probe&n; *&t;time.&n; */
+multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idedefault_driver
 id|ide_driver_t
 id|idedefault_driver
@@ -53,11 +53,6 @@ dot
 id|attach
 op_assign
 id|idedefault_attach
-comma
-dot
-id|supports_dma
-op_assign
-l_int|1
 comma
 dot
 id|drives

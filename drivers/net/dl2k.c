@@ -1643,7 +1643,7 @@ suffix:semicolon
 id|err_out_dev
 suffix:colon
 macro_line|#endif
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

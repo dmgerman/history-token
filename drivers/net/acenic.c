@@ -1198,7 +1198,7 @@ id|pdev
 )paren
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1368,7 +1368,7 @@ id|KERN_ERR
 l_string|&quot;acenic: device registration failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1668,7 +1668,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1689,7 +1689,7 @@ id|dev
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * ace_allocate_descriptors() calls&n;&t;&t;&t; * ace_init_cleanup() on error.&n;&t;&t;&t; */
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1732,7 +1732,7 @@ id|dev
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * ace_init() calls ace_init_cleanup() on error.&n;&t;&t;&t; */
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
