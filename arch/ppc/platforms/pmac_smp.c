@@ -528,7 +528,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-r_void
+id|irqreturn_t
 id|__pmac
 DECL|function|psurge_primary_intr
 id|psurge_primary_intr
@@ -552,6 +552,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
