@@ -567,6 +567,7 @@ id|end
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Why flush ? filemap_sync_pte already flushed the tlbs with the&n;&t; * dirty bits.&n;&t; */
 id|flush_tlb_range
 c_func
 (paren

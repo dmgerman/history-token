@@ -3945,6 +3945,7 @@ id|end
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Why flush? zeromap_pte_range has a BUG_ON for !pte_none()&n;&t; */
 id|flush_tlb_range
 c_func
 (paren
@@ -4440,6 +4441,7 @@ id|end
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Why flush? remap_pte_range has a BUG_ON for !pte_none()&n;&t; */
 id|flush_tlb_range
 c_func
 (paren
