@@ -535,6 +535,8 @@ id|SUBMIT_URB
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace

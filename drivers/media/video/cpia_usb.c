@@ -1114,6 +1114,8 @@ l_int|0
 )braket
 dot
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1146,6 +1148,8 @@ l_int|1
 )braket
 dot
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

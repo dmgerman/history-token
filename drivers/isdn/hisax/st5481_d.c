@@ -1281,6 +1281,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 OL
 l_int|0
@@ -1295,6 +1297,8 @@ id|SUBMIT_URB
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
@@ -1727,6 +1731,8 @@ id|SUBMIT_URB
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace

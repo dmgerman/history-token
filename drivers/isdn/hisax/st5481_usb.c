@@ -141,6 +141,8 @@ id|SUBMIT_URB
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
@@ -1313,6 +1315,8 @@ id|SUBMIT_URB
 c_func
 (paren
 id|intr-&gt;urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_while
@@ -2120,6 +2124,8 @@ id|SUBMIT_URB
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
@@ -2459,6 +2465,8 @@ id|in-&gt;urb
 (braket
 l_int|0
 )braket
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|in-&gt;urb
@@ -2477,6 +2485,8 @@ id|in-&gt;urb
 (braket
 l_int|1
 )braket
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
