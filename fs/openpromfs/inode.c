@@ -5215,6 +5215,11 @@ id|len
 op_assign
 id|dentry-&gt;d_name.len
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5316,6 +5321,11 @@ id|buffer
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -936,6 +936,11 @@ id|dentry-&gt;d_name.name
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bh
 op_assign
 id|qnx4_find_entry
@@ -962,6 +967,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT
@@ -1075,6 +1085,11 @@ l_int|0
 suffix:semicolon
 id|end_unlink
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|brelse
 c_func
 (paren

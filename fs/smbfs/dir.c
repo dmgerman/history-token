@@ -2248,6 +2248,11 @@ r_int
 id|error
 suffix:semicolon
 multiline_comment|/*&n;&t; * Close the file if it&squot;s open.&n;&t; */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smb_close
 c_func
 (paren
@@ -2278,6 +2283,11 @@ id|smb_renew_times
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

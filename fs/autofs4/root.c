@@ -1474,6 +1474,11 @@ id|dentry
 )paren
 suffix:semicolon
 multiline_comment|/* This allows root to remove symlinks */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1491,10 +1496,17 @@ c_func
 id|CAP_SYS_ADMIN
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EACCES
 suffix:semicolon
+)brace
 id|dput
 c_func
 (paren
@@ -1517,6 +1529,11 @@ id|d_drop
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

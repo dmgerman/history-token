@@ -895,6 +895,11 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bh
 op_assign
 id|bfs_find_entry
@@ -992,6 +997,11 @@ id|brelse
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

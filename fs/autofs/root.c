@@ -1462,6 +1462,11 @@ r_int
 id|n
 suffix:semicolon
 multiline_comment|/* This allows root to remove symlinks */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1479,10 +1484,17 @@ c_func
 id|CAP_SYS_ADMIN
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EACCES
 suffix:semicolon
+)brace
 id|ent
 op_assign
 id|autofs_hash_lookup
@@ -1500,10 +1512,17 @@ c_cond
 op_logical_neg
 id|ent
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+)brace
 id|n
 op_assign
 id|ent-&gt;ino
@@ -1517,11 +1536,18 @@ id|n
 op_ge
 id|AUTOFS_MAX_SYMLINKS
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EISDIR
 suffix:semicolon
 multiline_comment|/* It&squot;s a directory, dummy */
+)brace
 r_if
 c_cond
 (paren
@@ -1534,11 +1560,18 @@ comma
 id|sbi-&gt;symlink_bitmap
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Nonexistent symlink?  Shouldn&squot;t happen */
+)brace
 id|dentry-&gt;d_time
 op_assign
 (paren
@@ -1581,6 +1614,11 @@ id|d_drop
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

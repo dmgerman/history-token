@@ -4015,6 +4015,11 @@ id|handle_t
 op_star
 id|handle
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -4034,6 +4039,12 @@ c_func
 id|handle
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|PTR_ERR
 c_func
@@ -4041,6 +4052,7 @@ c_func
 id|handle
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4220,6 +4232,11 @@ c_func
 id|handle
 comma
 id|dir
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|brelse
@@ -5321,7 +5338,6 @@ id|unlink
 suffix:colon
 id|ext3_unlink
 comma
-multiline_comment|/* BKL held */
 id|symlink
 suffix:colon
 id|ext3_symlink

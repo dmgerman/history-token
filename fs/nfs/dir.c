@@ -3611,6 +3611,11 @@ comma
 id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|nfs_sillyrename
@@ -3655,6 +3660,11 @@ id|dentry
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

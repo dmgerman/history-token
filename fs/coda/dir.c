@@ -2060,6 +2060,11 @@ id|len
 op_assign
 id|de-&gt;d_name.len
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|coda_vfs_stat.unlink
 op_increment
 suffix:semicolon
@@ -2115,6 +2120,11 @@ comma
 id|error
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -2129,6 +2139,11 @@ l_int|0
 suffix:semicolon
 id|de-&gt;d_inode-&gt;i_nlink
 op_decrement
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

@@ -4049,6 +4049,11 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|D3
 c_func
 (paren
@@ -4103,6 +4108,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
