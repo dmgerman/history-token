@@ -5393,6 +5393,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hcd-&gt;driver-&gt;free_config
+)paren
 id|hcd-&gt;driver-&gt;free_config
 (paren
 id|hcd
