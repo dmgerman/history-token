@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.10 2003/05/13 16:06:03 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.13 2003/06/18 15:29:32 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -1490,13 +1490,6 @@ id|ttymajor
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|cuamajor
-r_static
-r_int
-id|cuamajor
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|debug_level
 r_static
 r_int
@@ -1593,14 +1586,6 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|cuamajor
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|debug_level
 comma
 l_string|&quot;i&quot;
@@ -1654,7 +1639,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;$Revision: 4.10 $&quot;
+l_string|&quot;$Revision: 4.13 $&quot;
 suffix:semicolon
 DECL|variable|serial_driver
 r_static
@@ -5222,16 +5207,6 @@ id|info-&gt;open_wait
 )paren
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_NOHUP
-)paren
-)paren
 (brace
 r_if
 c_cond
@@ -11063,9 +11038,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|info
-op_logical_or
 id|mgslpc_paranoia_check
 c_func
 (paren
@@ -11104,7 +11076,12 @@ c_cond
 (paren
 op_logical_neg
 id|info-&gt;count
-op_logical_or
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|tty_hung_up_p
 c_func
 (paren
@@ -12205,38 +12182,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|info
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s(%d):Can&squot;t find specified device on open (line=%d)&bslash;n&quot;
-comma
-id|__FILE__
-comma
-id|__LINE__
-comma
-id|line
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-id|tty-&gt;driver_data
-op_assign
-id|info
-suffix:semicolon
-id|info-&gt;tty
-op_assign
-id|tty
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|mgslpc_paranoia_check
 c_func
 (paren
@@ -12250,6 +12195,14 @@ l_string|&quot;mgslpc_open&quot;
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+id|tty-&gt;driver_data
+op_assign
+id|info
+suffix:semicolon
+id|info-&gt;tty
+op_assign
+id|tty
 suffix:semicolon
 r_if
 c_cond
@@ -12482,6 +12435,18 @@ c_cond
 id|retval
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tty-&gt;count
+op_eq
+l_int|1
+)paren
+id|info-&gt;tty
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* tty layer will release tty struct */
 r_if
 c_cond
 (paren
