@@ -2454,7 +2454,7 @@ id|priv-&gt;dmaStorageDMA
 suffix:semicolon
 id|err_out_free_dev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -2559,7 +2559,7 @@ id|TLan_Eisa_Devices
 op_assign
 id|priv-&gt;nextDevice
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

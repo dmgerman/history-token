@@ -1658,7 +1658,7 @@ c_cond
 id|rc
 )paren
 r_goto
-id|err_out
+id|err_out_disable
 suffix:semicolon
 id|mmio_start
 op_assign
@@ -1726,7 +1726,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out
+id|err_out_disable
 suffix:semicolon
 )brace
 singleline_comment|// check for weird/broken PCI region reporting
@@ -1752,7 +1752,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out
+id|err_out_disable
 suffix:semicolon
 )brace
 id|rc
@@ -1771,7 +1771,7 @@ c_cond
 id|rc
 )paren
 r_goto
-id|err_out
+id|err_out_disable
 suffix:semicolon
 singleline_comment|// enable PCI bus-mastering
 id|pci_set_master
@@ -1882,7 +1882,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|err_out
+id|err_out_disable
 suffix:colon
 id|pci_disable_device
 c_func
@@ -1890,7 +1890,9 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|kfree
+id|err_out
+suffix:colon
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -2281,7 +2283,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

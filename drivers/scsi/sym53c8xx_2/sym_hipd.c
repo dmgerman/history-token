@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1010 family &n; * of PCI-SCSI IO processors.&n; *&n; * Copyright (C) 1999-2001  Gerard Roudier &lt;groudier@free.fr&gt;&n; *&n; * This driver is derived from the Linux sym53c8xx driver.&n; * Copyright (C) 1998-2000  Gerard Roudier&n; *&n; * The sym53c8xx driver is derived from the ncr53c8xx driver that had been &n; * a port of the FreeBSD ncr driver to Linux-1.2.13.&n; *&n; * The original ncr driver has been written for 386bsd and FreeBSD by&n; *         Wolfgang Stanglmeier        &lt;wolf@cologne.de&gt;&n; *         Stefan Esser                &lt;se@mi.Uni-Koeln.de&gt;&n; * Copyright (C) 1994  Wolfgang Stanglmeier&n; *&n; * Other major contributions:&n; *&n; * NVRAM detection and reading.&n; * Copyright (C) 1997 Richard Waltham &lt;dormouse@farsrobt.demon.co.uk&gt;&n; *&n; *-----------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions and the following disclaimer.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
 DECL|macro|SYM_DRIVER_NAME
-mdefine_line|#define SYM_DRIVER_NAME&t;&quot;sym-2.1.16a&quot;
+mdefine_line|#define SYM_DRIVER_NAME&t;&quot;sym-2.1.17a&quot;
 macro_line|#ifdef __FreeBSD__
 macro_line|#include &lt;dev/sym/sym_glue.h&gt;
 macro_line|#else
@@ -989,11 +989,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|np-&gt;features
-op_amp
-id|FE_WIDE
-)paren
+id|np-&gt;maxwide
 )paren
 id|term
 op_and_assign
@@ -2624,6 +2620,22 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_PARISC
+r_int
+r_int
+id|pdc_period
+suffix:semicolon
+r_char
+id|scsi_mode
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_struct
+id|hardware_path
+id|hwpath
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *  Wide ?&n;&t; */
 id|np-&gt;maxwide
 op_assign
@@ -2790,6 +2802,101 @@ l_int|1
 op_div
 id|np-&gt;clock_khz
 suffix:semicolon
+macro_line|#if defined(CONFIG_PARISC)
+multiline_comment|/* Host firmware (PDC) keeps a table for crippling SCSI capabilities.&n;&t; * Many newer machines export one channel of 53c896 chip&n;&t; * as SE, 50-pin HD.  Also used for Multi-initiator SCSI clusters&n;&t; * to set the SCSI Initiator ID.&n;&t; */
+id|get_pci_node_path
+c_func
+(paren
+id|np-&gt;s.device
+comma
+op_amp
+id|hwpath
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdc_get_initiator
+c_func
+(paren
+op_amp
+id|hwpath
+comma
+op_amp
+id|np-&gt;myaddr
+comma
+op_amp
+id|pdc_period
+comma
+op_amp
+id|np-&gt;maxwide
+comma
+op_amp
+id|scsi_mode
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|scsi_mode
+op_ge
+l_int|0
+)paren
+(brace
+multiline_comment|/* C3000 PDC reports period/mode */
+id|SYM_SETUP_SCSI_DIFF
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|scsi_mode
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|np-&gt;scsi_mode
+op_assign
+id|SMODE_SE
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|np-&gt;scsi_mode
+op_assign
+id|SMODE_HVD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|np-&gt;scsi_mode
+op_assign
+id|SMODE_LVD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+)brace
+id|period
+op_assign
+(paren
+id|u32
+)paren
+id|pdc_period
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3049,7 +3156,7 @@ c_cond
 (paren
 id|np-&gt;device_id
 op_eq
-id|PCI_ID_LSI53C1010
+id|PCI_ID_LSI53C1010_33
 op_logical_and
 id|np-&gt;revision_id
 OL
@@ -5267,7 +5374,7 @@ id|FE_LCKFRQ
 )brace
 comma
 (brace
-id|PCI_ID_LSI53C1010
+id|PCI_ID_LSI53C1010_33
 comma
 l_int|0x00
 comma
@@ -5317,7 +5424,7 @@ id|FE_C10
 )brace
 comma
 (brace
-id|PCI_ID_LSI53C1010
+id|PCI_ID_LSI53C1010_33
 comma
 l_int|0xff
 comma
@@ -5369,7 +5476,7 @@ id|FE_U3EN
 )brace
 comma
 (brace
-id|PCI_ID_LSI53C1010_2
+id|PCI_ID_LSI53C1010_66
 comma
 l_int|0xff
 comma
@@ -6969,7 +7076,7 @@ c_cond
 (paren
 id|np-&gt;device_id
 op_eq
-id|PCI_ID_LSI53C1010_2
+id|PCI_ID_LSI53C1010_66
 )paren
 id|OUTB
 (paren
@@ -6984,7 +7091,7 @@ c_cond
 (paren
 id|np-&gt;device_id
 op_eq
-id|PCI_ID_LSI53C1010
+id|PCI_ID_LSI53C1010_33
 op_logical_and
 id|np-&gt;revision_id
 OL

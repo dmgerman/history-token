@@ -12,9 +12,6 @@ macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_NET_PROFILE
-macro_line|#include &lt;net/profile.h&gt;
-macro_line|#endif
 r_struct
 id|divert_blk
 suffix:semicolon
@@ -1398,6 +1395,14 @@ id|rwlock_t
 id|dev_base_lock
 suffix:semicolon
 multiline_comment|/* Device list lock */
+r_extern
+r_void
+id|probe_old_netdevs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|netdev_boot_setup_add

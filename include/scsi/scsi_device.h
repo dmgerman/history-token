@@ -304,13 +304,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Supports SCSI-II tagged queuing */
-DECL|member|tagged_queue
-r_int
-id|tagged_queue
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* This is going away!!!!  Look at simple_tags&n;&t;&t;&t;&t;   instead!!!  Please fix your driver now!! */
 DECL|member|simple_tags
 r_int
 id|simple_tags

@@ -4535,7 +4535,7 @@ c_loop
 id|i
 op_decrement
 )paren
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|qe_devs
