@@ -598,7 +598,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_match_prw_and_gpe&n; *&n; * PARAMETERS:  Callback from walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              Device.  Run the _PRW method.  If present, extract the GPE&n; *              number and mark the GPE as a WAKE GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_match_prw_and_gpe&n; *&n; * PARAMETERS:  Callback from walk_namespace&n; *&n; * RETURN:      Status.  NOTE: We ignore errors so that the _PRW walk is&n; *              not aborted on a single _PRW failure.&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              Device.  Run the _PRW method.  If present, extract the GPE&n; *              number and mark the GPE as a WAKE GPE.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ev_match_prw_and_gpe
