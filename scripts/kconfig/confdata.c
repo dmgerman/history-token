@@ -1090,6 +1090,17 @@ c_func
 id|in
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|modules_sym
+)paren
+id|sym_calc_value
+c_func
+(paren
+id|modules_sym
+)paren
+suffix:semicolon
 id|for_all_symbols
 c_func
 (paren
