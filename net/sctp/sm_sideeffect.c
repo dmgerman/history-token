@@ -445,7 +445,7 @@ c_cond
 (paren
 id|error
 )paren
-id|asoc-&gt;base.sk-&gt;err
+id|asoc-&gt;base.sk-&gt;sk_err
 op_assign
 op_minus
 id|error
@@ -588,7 +588,7 @@ c_cond
 (paren
 id|error
 )paren
-id|asoc-&gt;base.sk-&gt;err
+id|asoc-&gt;base.sk-&gt;sk_err
 op_assign
 op_minus
 id|error
@@ -891,7 +891,7 @@ c_cond
 (paren
 id|error
 )paren
-id|asoc-&gt;base.sk-&gt;err
+id|asoc-&gt;base.sk-&gt;sk_err
 op_assign
 op_minus
 id|error
@@ -1812,7 +1812,7 @@ id|TCP
 )paren
 )paren
 (brace
-multiline_comment|/* Change the sk-&gt;state of a TCP-style socket that has &n;&t;&t; * sucessfully completed a connect() call.&n;&t;&t; */
+multiline_comment|/* Change the sk-&gt;sk_state of a TCP-style socket that has &n;&t;&t; * sucessfully completed a connect() call.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1832,7 +1832,7 @@ comma
 id|CLOSED
 )paren
 )paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|SCTP_SS_ESTABLISHED
 suffix:semicolon
@@ -1856,7 +1856,7 @@ comma
 id|ESTABLISHED
 )paren
 )paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_or_assign
 id|RCV_SHUTDOWN
 suffix:semicolon
@@ -1922,7 +1922,7 @@ id|UDP
 )paren
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk

@@ -5700,12 +5700,10 @@ c_cond
 id|strcmp
 c_func
 (paren
-id|sk-&gt;prot-&gt;name
+id|sk-&gt;sk_prot-&gt;name
 comma
 l_string|&quot;TCP&quot;
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 id|DEBUGP

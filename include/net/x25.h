@@ -361,7 +361,7 @@ multiline_comment|/* inc_call facilities mask */
 )brace
 suffix:semicolon
 DECL|macro|x25_sk
-mdefine_line|#define x25_sk(__sk) ((struct x25_opt *)(__sk)-&gt;protinfo)
+mdefine_line|#define x25_sk(__sk) ((struct x25_opt *)(__sk)-&gt;sk_protinfo)
 multiline_comment|/* af_x25.c */
 r_extern
 r_int

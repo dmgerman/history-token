@@ -32,11 +32,11 @@ id|sk
 )paren
 (brace
 r_return
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_SEQPACKET
 op_logical_or
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_STREAM
 suffix:semicolon
@@ -74,7 +74,7 @@ suffix:semicolon
 id|prepare_to_wait_exclusive
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -107,7 +107,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 r_goto
@@ -117,7 +117,7 @@ multiline_comment|/* Socket shut down? */
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -141,11 +141,11 @@ id|sk
 op_logical_and
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_ESTABLISHED
 op_logical_or
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
@@ -185,7 +185,7 @@ suffix:colon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -262,7 +262,7 @@ suffix:semicolon
 r_int
 id|timeo
 suffix:semicolon
-multiline_comment|/* Caller is allowed not to check sk-&gt;err before skb_recv_datagram() */
+multiline_comment|/*&n;&t; * Caller is allowed not to check sk-&gt;sk_err before skb_recv_datagram()&n;&t; */
 r_int
 id|error
 op_assign
@@ -309,7 +309,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue.lock
+id|sk-&gt;sk_receive_queue.lock
 comma
 id|cpu_flags
 )paren
@@ -320,7 +320,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -339,7 +339,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue.lock
+id|sk-&gt;sk_receive_queue.lock
 comma
 id|cpu_flags
 )paren
@@ -352,7 +352,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -1613,7 +1613,7 @@ c_func
 (paren
 id|file
 comma
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 id|wait
 )paren
@@ -1626,14 +1626,14 @@ multiline_comment|/* exceptional events? */
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 op_logical_neg
 id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 )paren
 id|mask
@@ -1643,7 +1643,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_eq
 id|SHUTDOWN_MASK
 )paren
@@ -1660,11 +1660,11 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -1689,7 +1689,7 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 )paren
@@ -1701,7 +1701,7 @@ multiline_comment|/* connection hasn&squot;t started yet? */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_SYN_SENT
 )paren
@@ -1734,7 +1734,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 r_return

@@ -98,7 +98,7 @@ DECL|macro|sco_conn_unlock
 mdefine_line|#define sco_conn_unlock(c)&t;spin_unlock(&amp;c-&gt;lock);
 multiline_comment|/* ----- SCO socket info ----- */
 DECL|macro|sco_pi
-mdefine_line|#define sco_pi(sk)   ((struct sco_pinfo *) sk-&gt;protinfo)
+mdefine_line|#define sco_pi(sk)   ((struct sco_pinfo *)sk-&gt;sk_protinfo)
 DECL|struct|sco_pinfo
 r_struct
 id|sco_pinfo

@@ -1710,7 +1710,7 @@ id|state
 )paren
 (brace
 r_return
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|state
 suffix:semicolon

@@ -321,7 +321,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ipx_sk
-mdefine_line|#define ipx_sk(__sk) ((struct ipx_opt *)(__sk)-&gt;protinfo)
+mdefine_line|#define ipx_sk(__sk) ((struct ipx_opt *)(__sk)-&gt;sk_protinfo)
 DECL|macro|IPX_SKB_CB
 mdefine_line|#define IPX_SKB_CB(__skb) ((struct ipx_cb *)&amp;((__skb)-&gt;cb[0]))
 macro_line|#endif

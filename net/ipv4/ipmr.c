@@ -3448,7 +3448,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_RAW
 op_logical_or
@@ -3462,12 +3462,10 @@ id|num
 op_ne
 id|IPPROTO_IGMP
 )paren
-(brace
 r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

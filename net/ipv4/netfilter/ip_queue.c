@@ -2154,7 +2154,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -2187,7 +2187,7 @@ c_loop
 (paren
 id|ipqnl
 op_logical_and
-id|ipqnl-&gt;receive_queue.qlen
+id|ipqnl-&gt;sk_receive_queue.qlen
 )paren
 suffix:semicolon
 )brace
@@ -2775,7 +2775,7 @@ suffix:colon
 id|sock_release
 c_func
 (paren
-id|ipqnl-&gt;socket
+id|ipqnl-&gt;sk_socket
 )paren
 suffix:semicolon
 id|down

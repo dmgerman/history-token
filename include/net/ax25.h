@@ -567,7 +567,7 @@ DECL|typedef|ax25_cb
 id|ax25_cb
 suffix:semicolon
 DECL|macro|ax25_sk
-mdefine_line|#define ax25_sk(__sk) ((ax25_cb *)(__sk)-&gt;protinfo)
+mdefine_line|#define ax25_sk(__sk) ((ax25_cb *)(__sk)-&gt;sk_protinfo)
 multiline_comment|/* af_ax25.c */
 r_extern
 id|ax25_cb

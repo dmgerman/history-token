@@ -143,7 +143,7 @@ c_func
 id|size
 )paren
 suffix:semicolon
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_add_assign
 id|amt
 op_star
@@ -248,7 +248,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 OL
 id|sysctl_tcp_rmem
@@ -261,11 +261,10 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 OL
 id|sysctl_tcp_wmem
 (braket
@@ -275,7 +274,6 @@ l_int|0
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -297,16 +295,16 @@ op_star
 id|TCP_PAGES
 c_func
 (paren
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_plus
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_plus
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 )paren
 )paren
 r_return
@@ -331,18 +329,18 @@ multiline_comment|/* Fail only if socket is _under_ its sndbuf.&n;&t;&t; * In th
 r_if
 c_cond
 (paren
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_plus
 id|size
 op_ge
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 )paren
 r_return
 l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Alas. Undo changes. */
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_sub_assign
 id|amt
 op_star
@@ -375,7 +373,7 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_ge
 id|TCP_MEM_QUANTUM
 )paren
@@ -383,7 +381,7 @@ id|TCP_MEM_QUANTUM
 id|atomic_sub
 c_func
 (paren
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_div
 id|TCP_MEM_QUANTUM
 comma
@@ -391,7 +389,7 @@ op_amp
 id|tcp_memory_allocated
 )paren
 suffix:semicolon
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_and_assign
 id|TCP_MEM_QUANTUM
 op_minus
@@ -444,10 +442,10 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 suffix:semicolon
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_add_assign
 id|skb-&gt;truesize
 suffix:semicolon
@@ -539,7 +537,7 @@ c_func
 (paren
 id|file
 comma
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 id|wait
 )paren
@@ -547,7 +545,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
@@ -568,7 +566,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 id|mask
 op_assign
@@ -578,11 +576,11 @@ multiline_comment|/*&n;&t; * POLLHUP is certainly not done right. But poll() doe
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_eq
 id|SHUTDOWN_MASK
 op_logical_or
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 )paren
@@ -593,7 +591,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -610,7 +608,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 op_complement
@@ -621,7 +619,7 @@ id|TCPF_SYN_RECV
 )paren
 )paren
 (brace
-multiline_comment|/* Potential race condition. If read of tp below will&n;&t;&t; * escape above sk-&gt;state, we can be illegally awaken&n;&t;&t; * in SYN_* states. */
+multiline_comment|/* Potential race condition. If read of tp below will&n;&t;&t; * escape above sk-&gt;sk_state, we can be illegally awaken&n;&t;&t; * in SYN_* states. */
 r_if
 c_cond
 (paren
@@ -665,7 +663,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -703,7 +701,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|set_bit
@@ -712,7 +710,7 @@ c_func
 id|SOCK_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 multiline_comment|/* Race breaker. If space is freed after&n;&t;&t;&t;&t; * wspace test but before the flags are set,&n;&t;&t;&t;&t; * IO signal will be lost.&n;&t;&t;&t;&t; */
@@ -772,7 +770,7 @@ id|socket
 op_star
 id|sock
 op_assign
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 suffix:semicolon
 r_if
 c_cond
@@ -804,18 +802,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 op_logical_and
 id|waitqueue_active
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 )paren
 id|wake_up_interruptible
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_if
@@ -825,7 +823,7 @@ id|sock-&gt;fasync_list
 op_logical_and
 op_logical_neg
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -886,7 +884,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
@@ -906,7 +904,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -969,7 +967,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 id|answ
@@ -980,7 +978,7 @@ r_struct
 id|sk_buff
 op_star
 )paren
-id|sk-&gt;receive_queue.prev
+id|sk-&gt;sk_receive_queue.prev
 )paren
 op_member_access_from_pointer
 id|h.th-&gt;fin
@@ -1020,7 +1018,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
@@ -1034,7 +1032,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -1116,11 +1114,11 @@ id|tcp_listen_opt
 op_star
 id|lopt
 suffix:semicolon
-id|sk-&gt;max_ack_backlog
+id|sk-&gt;sk_max_ack_backlog
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_assign
 l_int|0
 suffix:semicolon
@@ -1230,7 +1228,7 @@ id|tp-&gt;syn_wait_lock
 )paren
 suffix:semicolon
 multiline_comment|/* There is race window here: we announce ourselves listening,&n;&t; * but this transition is still not validated by get_port().&n;&t; * It is OK, because this socket enters to hash table only&n;&t; * after validation is complete.&n;&t; */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_LISTEN
 suffix:semicolon
@@ -1238,7 +1236,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|get_port
 c_func
@@ -1263,7 +1261,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|hash
 c_func
@@ -1275,7 +1273,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
@@ -1565,7 +1563,7 @@ id|BUG_TRAP
 c_func
 (paren
 op_logical_neg
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 )paren
 suffix:semicolon
 )brace
@@ -1619,7 +1617,7 @@ c_loop
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 op_complement
@@ -1633,7 +1631,7 @@ id|TCPF_CLOSE_WAIT
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 r_return
 id|sock_error
@@ -1648,7 +1646,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 op_complement
@@ -1693,7 +1691,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1729,7 +1727,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1757,9 +1755,9 @@ id|sk
 )paren
 (brace
 r_return
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 OL
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Wait for more memory for a socket&n; */
@@ -1853,13 +1851,13 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1870,10 +1868,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -1909,7 +1907,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 r_if
@@ -1932,7 +1930,7 @@ c_func
 id|SOCK_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|tp-&gt;write_pending
@@ -2023,7 +2021,7 @@ suffix:colon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2357,7 +2355,7 @@ id|__skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -2468,7 +2466,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|sk-&gt;write_queue.prev
+id|sk-&gt;sk_write_queue.prev
 suffix:semicolon
 r_if
 c_cond
@@ -2661,7 +2659,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 op_complement
@@ -2700,7 +2698,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|mss_now
@@ -2730,10 +2728,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -2754,7 +2752,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|sk-&gt;write_queue.prev
+id|sk-&gt;sk_write_queue.prev
 suffix:semicolon
 r_struct
 id|page
@@ -2838,7 +2836,7 @@ l_int|0
 comma
 id|tp-&gt;mss_cache
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -3100,7 +3098,7 @@ c_func
 id|SOCK_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|wait_for_memory
@@ -3254,14 +3252,14 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|NETIF_F_SG
 )paren
 op_logical_or
 op_logical_neg
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|TCP_ZC_CSUM_FLAGS
 )paren
@@ -3464,11 +3462,11 @@ id|skb-&gt;truesize
 op_add_assign
 id|copy
 suffix:semicolon
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_add_assign
 id|copy
 suffix:semicolon
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_sub_assign
 id|copy
 suffix:semicolon
@@ -3630,7 +3628,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|NETIF_F_SG
 )paren
@@ -3768,7 +3766,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 op_complement
@@ -3808,7 +3806,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|mss_now
@@ -3847,10 +3845,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -3895,7 +3893,7 @@ id|copy
 suffix:semicolon
 id|skb
 op_assign
-id|sk-&gt;write_queue.prev
+id|sk-&gt;sk_write_queue.prev
 suffix:semicolon
 r_if
 c_cond
@@ -3947,7 +3945,7 @@ id|tp
 comma
 l_int|0
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -3963,7 +3961,7 @@ multiline_comment|/*&n;&t;&t;&t;&t; * Check whether we can use HW checksum.&n;&t
 r_if
 c_cond
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 (paren
 id|NETIF_F_IP_CSUM
@@ -4138,7 +4136,7 @@ id|i
 op_logical_and
 op_logical_neg
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|NETIF_F_SG
 )paren
@@ -4537,7 +4535,7 @@ c_func
 id|SOCK_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|wait_for_memory
@@ -4784,7 +4782,7 @@ multiline_comment|/* Yes this is right ! */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 op_logical_and
@@ -4892,12 +4890,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -4936,7 +4934,7 @@ c_func
 id|skb
 comma
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|__kfree_skb
@@ -4988,7 +4986,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|BUG_TRAP
@@ -5056,7 +5054,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 )paren
 )paren
@@ -5078,7 +5076,7 @@ id|time_to_ack
 op_logical_and
 op_logical_neg
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -5143,7 +5141,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now socket state including sk-&gt;err is changed only under lock,&n; * hence we may omit checks after joining wait queue.&n; * We check receive queue before schedule() only as optimization;&n; * it is very likely that release_sock() added new data.&n; */
+multiline_comment|/* Now socket state including sk-&gt;sk_err is changed only under lock,&n; * hence we may omit checks after joining wait queue.&n; * We check receive queue before schedule() only as optimization;&n; * it is very likely that release_sock() added new data.&n; */
 DECL|function|tcp_data_wait
 r_static
 r_int
@@ -5168,7 +5166,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -5182,7 +5180,7 @@ c_func
 id|SOCK_ASYNC_WAITDATA
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|release_sock
@@ -5198,7 +5196,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 id|timeo
@@ -5221,13 +5219,13 @@ c_func
 id|SOCK_ASYNC_WAITDATA
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -5302,7 +5300,7 @@ l_int|NULL
 )paren
 id|sk
 op_member_access_from_pointer
-id|backlog_rcv
+id|sk_backlog_rcv
 c_func
 (paren
 id|sk
@@ -5355,7 +5353,7 @@ id|skb_queue_walk
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -5455,7 +5453,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
@@ -5740,7 +5738,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
@@ -5872,7 +5870,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_do
@@ -5990,7 +5988,7 @@ id|sk_buff
 op_star
 )paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 multiline_comment|/* Well, if we have backlog, try to process it now yet. */
@@ -6002,7 +6000,7 @@ op_ge
 id|target
 op_logical_and
 op_logical_neg
-id|sk-&gt;backlog.tail
+id|sk-&gt;sk_backlog.tail
 )paren
 r_break
 suffix:semicolon
@@ -6015,14 +6013,14 @@ id|copied
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -6057,7 +6055,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 (brace
 id|copied
@@ -6074,7 +6072,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -6083,7 +6081,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 )paren
@@ -6866,7 +6864,7 @@ r_int
 )paren
 id|new_state
 (braket
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )braket
 suffix:semicolon
 r_int
@@ -6925,7 +6923,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -6975,7 +6973,7 @@ r_return
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -7005,7 +7003,7 @@ id|__skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 multiline_comment|/* Next, the error queue. */
@@ -7013,7 +7011,7 @@ id|__skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 suffix:semicolon
 multiline_comment|/* Next, the write queue. */
@@ -7024,7 +7022,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 suffix:semicolon
@@ -7039,14 +7037,14 @@ id|BUG_TRAP
 c_func
 (paren
 op_logical_neg
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 )paren
 suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
 op_logical_neg
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 )paren
 suffix:semicolon
 multiline_comment|/* It is _impossible_ for the backlog to contain anything&n;&t; * when we get here.  All user references to this socket&n;&t; * have gone away, only the net layer knows can touch it.&n;&t; */
@@ -7066,7 +7064,7 @@ id|sk
 id|BUG_TRAP
 c_func
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 )paren
@@ -7088,7 +7086,7 @@ id|BUG_TRAP
 c_func
 (paren
 op_logical_neg
-id|sk-&gt;pprev
+id|sk-&gt;sk_pprev
 )paren
 suffix:semicolon
 multiline_comment|/* If it has not 0 inet_sk(sk)-&gt;num, it must be bound */
@@ -7104,14 +7102,14 @@ id|sk
 op_member_access_from_pointer
 id|num
 op_logical_or
-id|sk-&gt;prev
+id|sk-&gt;sk_prev
 )paren
 suffix:semicolon
 macro_line|#ifdef TCP_DEBUG
 r_if
 c_cond
 (paren
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 (brace
 id|printk
@@ -7130,12 +7128,12 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|destroy
 c_func
@@ -7163,7 +7161,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -7181,7 +7179,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -7231,14 +7229,14 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_assign
 id|SHUTDOWN_MASK
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
@@ -7273,7 +7271,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -7362,11 +7360,11 @@ id|SOCK_LINGER
 )paren
 op_logical_and
 op_logical_neg
-id|sk-&gt;lingertime
+id|sk-&gt;sk_lingertime
 )paren
 (brace
 multiline_comment|/* Check zero linger _after_ checking for unread data. */
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|disconnect
 c_func
@@ -7427,7 +7425,7 @@ r_do
 id|prepare_to_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -7484,7 +7482,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -7539,7 +7537,7 @@ multiline_comment|/*&t;This is a (useful) BSD violating of the RFC. There is a&n
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_FIN_WAIT2
 )paren
@@ -7646,7 +7644,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_CLOSE
 )paren
@@ -7670,7 +7668,7 @@ OG
 id|sysctl_tcp_max_orphans
 op_logical_or
 (paren
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 OG
 id|SOCK_MIN_SNDBUF
 op_logical_and
@@ -7738,7 +7736,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 )paren
@@ -7838,16 +7836,14 @@ id|sk
 )paren
 suffix:semicolon
 r_int
-id|old_state
-suffix:semicolon
-r_int
 id|err
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 id|old_state
 op_assign
-id|sk-&gt;state
+id|sk-&gt;sk_state
 suffix:semicolon
 r_if
 c_cond
@@ -7921,7 +7917,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|ECONNRESET
 suffix:semicolon
@@ -7934,7 +7930,7 @@ id|old_state
 op_eq
 id|TCP_SYN_SENT
 )paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|ECONNRESET
 suffix:semicolon
@@ -7948,7 +7944,7 @@ id|__skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|tcp_writequeue_purge
@@ -7973,7 +7969,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;userlocks
+id|sk-&gt;sk_userlocks
 op_amp
 id|SOCK_BINDADDR_LOCK
 )paren
@@ -7984,7 +7980,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_assign
 l_int|0
 suffix:semicolon
@@ -8083,12 +8079,12 @@ c_func
 op_logical_neg
 id|inet-&gt;num
 op_logical_or
-id|sk-&gt;prev
+id|sk-&gt;sk_prev
 )paren
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|error_report
+id|sk_error_report
 c_func
 (paren
 id|sk
@@ -8145,7 +8141,7 @@ suffix:semicolon
 id|prepare_to_wait_exclusive
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -8198,7 +8194,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_LISTEN
 )paren
@@ -8240,7 +8236,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -8310,7 +8306,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_LISTEN
 )paren
@@ -8410,7 +8406,7 @@ suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
-id|newsk-&gt;state
+id|newsk-&gt;sk_state
 op_ne
 id|TCP_SYN_RECV
 )paren
@@ -8714,7 +8710,7 @@ op_logical_neg
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -8921,7 +8917,7 @@ id|val
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_CLOSE
 )paren
@@ -8984,7 +8980,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -9181,7 +9177,7 @@ op_logical_and
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -9377,7 +9373,7 @@ id|EFAULT
 suffix:semicolon
 id|info.tcpi_state
 op_assign
-id|sk-&gt;state
+id|sk-&gt;sk_state
 suffix:semicolon
 id|info.tcpi_ca_state
 op_assign

@@ -735,7 +735,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|atmvcc-&gt;sk-&gt;wmem_alloc
+id|atmvcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 id|ATM_SKB
@@ -2520,7 +2520,7 @@ id|skb_migrate
 c_func
 (paren
 op_amp
-id|atmvcc-&gt;sk-&gt;receive_queue
+id|atmvcc-&gt;sk-&gt;sk_receive_queue
 comma
 op_amp
 id|copy

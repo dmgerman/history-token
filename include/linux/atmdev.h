@@ -22,7 +22,7 @@ DECL|macro|ATM_DS3_PCR
 mdefine_line|#define ATM_DS3_PCR&t;(8000*12)
 multiline_comment|/* DS3: 12 cells in a 125 usec time slot */
 DECL|macro|atm_sk
-mdefine_line|#define atm_sk(__sk) ((struct atm_vcc *)(__sk)-&gt;protinfo)
+mdefine_line|#define atm_sk(__sk) ((struct atm_vcc *)(__sk)-&gt;sk_protinfo)
 DECL|macro|ATM_SD
 mdefine_line|#define ATM_SD(s)&t;(atm_sk((s)-&gt;sk))
 DECL|macro|__AAL_STAT_ITEMS
@@ -1293,7 +1293,7 @@ c_func
 id|truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -1319,7 +1319,7 @@ c_func
 id|truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -1348,11 +1348,11 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 )paren
 OL
-id|vcc-&gt;sk-&gt;sndbuf
+id|vcc-&gt;sk-&gt;sk_sndbuf
 suffix:semicolon
 )brace
 DECL|function|atm_dev_hold

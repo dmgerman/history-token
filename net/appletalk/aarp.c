@@ -2459,7 +2459,7 @@ id|skb-&gt;sk
 )paren
 id|skb-&gt;priority
 op_assign
-id|skb-&gt;sk-&gt;priority
+id|skb-&gt;sk-&gt;sk_priority
 suffix:semicolon
 id|dev_queue_xmit
 c_func

@@ -3314,11 +3314,11 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 OG
 (paren
-id|vcc-&gt;sk-&gt;sndbuf
+id|vcc-&gt;sk-&gt;sk_sndbuf
 op_rshift
 l_int|1
 )paren
@@ -9837,7 +9837,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 id|memcpy

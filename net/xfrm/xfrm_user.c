@@ -4599,7 +4599,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -4625,7 +4625,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -4660,7 +4660,7 @@ c_loop
 (paren
 id|xfrm_nl
 op_logical_and
-id|xfrm_nl-&gt;receive_queue.qlen
+id|xfrm_nl-&gt;sk_receive_queue.qlen
 )paren
 suffix:semicolon
 )brace
@@ -5490,7 +5490,7 @@ suffix:semicolon
 id|sock_release
 c_func
 (paren
-id|xfrm_nl-&gt;socket
+id|xfrm_nl-&gt;sk_socket
 )paren
 suffix:semicolon
 )brace
