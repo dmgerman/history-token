@@ -2977,11 +2977,21 @@ id|printk
 c_func
 (paren
 l_string|&quot;scsi(%ld): Port Update -- &quot;
-l_string|&quot;creating RSCN fcport %p for login.&bslash;n&quot;
+l_string|&quot;creating RSCN fcport %p for %x/%x.&bslash;n&quot;
 comma
 id|ha-&gt;host_no
 comma
 id|rscn_fcport
+comma
+id|mb
+(braket
+l_int|1
+)braket
+comma
+id|mb
+(braket
+l_int|2
+)braket
 )paren
 )paren
 suffix:semicolon
@@ -5683,7 +5693,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%ld:%d:%d:%d): TIMEOUT status detected 0x%x-0x%x.&bslash;n&quot;
+l_string|&quot;scsi(%ld:%d:%d:%d): TIMEOUT status detected 0x%x-0x%x &quot;
+l_string|&quot;sflags=%x.&bslash;n&quot;
 comma
 id|ha-&gt;host_no
 comma
@@ -5696,6 +5707,12 @@ comma
 id|comp_status
 comma
 id|scsi_status
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|pkt-&gt;status_flags
+)paren
 )paren
 )paren
 suffix:semicolon

@@ -2118,7 +2118,7 @@ id|alternate_node_name
 id|WWN_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * BIT 0 = Boot Zoning&n;&t; * BIT 1 = Alt-Boot Enable&n;&t; * BIT 2 = Report SCSI Path&n;&t; * BIT 3 = unused&n;&t; * BIT 4 = unused&n;&t; * BIT 5 = unused&n;&t; * BIT 6 = unused&n;&t; * BIT 7 = unused&n;&t; */
+multiline_comment|/*&n;&t; * BIT 0 = Selective Login&n;&t; * BIT 1 = Alt-Boot Enable&n;&t; * BIT 2 =&n;&t; * BIT 3 = Boot Order List&n;&t; * BIT 4 =&n;&t; * BIT 5 = Selective LUN&n;&t; * BIT 6 =&n;&t; * BIT 7 = unused&n;&t; */
 DECL|member|efi_parameters
 r_uint8
 id|efi_parameters
@@ -2921,6 +2921,8 @@ mdefine_line|#define CS_RETRY&t;&t;0x82&t;/* Driver defined */
 DECL|macro|CS_LOOP_DOWN_ABORT
 mdefine_line|#define CS_LOOP_DOWN_ABORT&t;0x83&t;/* Driver defined */
 multiline_comment|/*&n; * Status entry status flags&n; */
+DECL|macro|SF_ABTS_TERMINATED
+mdefine_line|#define SF_ABTS_TERMINATED&t;BIT_10
 DECL|macro|SF_LOGOUT_SENT
 mdefine_line|#define SF_LOGOUT_SENT&t;&t;BIT_13
 multiline_comment|/*&n; * ISP queue - status continuation entry structure definition.&n; */
@@ -3668,6 +3670,8 @@ r_int
 r_int
 id|q_flag
 suffix:semicolon
+DECL|macro|LUN_MPIO_RESET_CNTS
+mdefine_line|#define LUN_MPIO_RESET_CNTS&t;1&t;/* Lun */
 DECL|macro|LUN_MPIO_BUSY
 mdefine_line|#define LUN_MPIO_BUSY&t;&t;2&t;/* Lun is changing paths  */
 DECL|macro|LUN_EXEC_DELAYED
@@ -3974,6 +3978,10 @@ DECL|macro|FCF_FAILBACK_DISABLE
 mdefine_line|#define FCF_FAILBACK_DISABLE&t;BIT_21
 DECL|macro|FCF_FAILOVER_DISABLE
 mdefine_line|#define FCF_FAILOVER_DISABLE&t;BIT_22
+DECL|macro|FCF_DSXXX_DEVICE
+mdefine_line|#define FCF_DSXXX_DEVICE&t;BIT_23
+DECL|macro|FCF_AA_EVA_DEVICE
+mdefine_line|#define FCF_AA_EVA_DEVICE&t;BIT_24
 multiline_comment|/* No loop ID flag. */
 DECL|macro|FC_NO_LOOP_ID
 mdefine_line|#define FC_NO_LOOP_ID&t;&t;0x1000
@@ -5055,6 +5063,8 @@ DECL|macro|IODESC_PROCESS_NEEDED
 mdefine_line|#define IODESC_PROCESS_NEEDED&t;22      /* IO descriptor processing needed */
 DECL|macro|IOCTL_ERROR_RECOVERY
 mdefine_line|#define IOCTL_ERROR_RECOVERY&t;23      
+DECL|macro|LOOP_RESET_NEEDED
+mdefine_line|#define LOOP_RESET_NEEDED&t;24
 DECL|member|device_flags
 r_uint32
 id|device_flags

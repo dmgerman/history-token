@@ -3065,7 +3065,7 @@ id|sp-&gt;r_start
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/* time the request was received */
+multiline_comment|/* Time the request was recieved. */
 id|sp-&gt;u_start
 op_assign
 l_int|0
@@ -14322,7 +14322,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;scsi(%ld): Found in Pending queue pid %ld, &quot;
-l_string|&quot;State = %x., fcport state=%d jiffies=%lx&bslash;n&quot;
+l_string|&quot;State = %x., fcport state=%d sjiffs=%lx njiffs=%lx&bslash;n&quot;
 comma
 id|vis_ha-&gt;host_no
 comma
@@ -14336,6 +14336,8 @@ c_func
 op_amp
 id|fcport-&gt;state
 )paren
+comma
+id|sp-&gt;r_start
 comma
 id|jiffies
 )paren
@@ -15205,7 +15207,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;scsi(%ld:%d:%d) %s: did_error &quot;
-l_string|&quot;= %d, comp-scsi= 0x%x-0x%x.&bslash;n&quot;
+l_string|&quot;= %d, comp-scsi= 0x%x-0x%x pid=%ld.&bslash;n&quot;
 comma
 id|vis_ha-&gt;host_no
 comma
@@ -15232,6 +15234,8 @@ c_func
 (paren
 id|cmd
 )paren
+comma
+id|cmd-&gt;serial_number
 )paren
 )paren
 suffix:semicolon
@@ -15553,9 +15557,11 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(%ld): port=(0x%x) retry_q(%d) &quot;
-l_string|&quot;loop state = %d, loop counter = 0x%x dpc flags &quot;
-l_string|&quot;= 0x%lx&bslash;n&quot;
+l_string|&quot;scsi(%ld): pid=%ld port=0x%x state=%d &quot;
+l_string|&quot;loop state=%d, loop counter=0x%x &quot;
+l_string|&quot;dpc_flags=0x%lx&bslash;n&quot;
+comma
+id|sp-&gt;cmd-&gt;serial_number
 comma
 id|dest_ha-&gt;host_no
 comma
