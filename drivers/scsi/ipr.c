@@ -16549,6 +16549,10 @@ id|res-&gt;del_from_ml
 op_assign
 l_int|1
 suffix:semicolon
+id|res-&gt;sdev-&gt;hostdata
+op_assign
+l_int|NULL
+suffix:semicolon
 id|list_move_tail
 c_func
 (paren
