@@ -100,6 +100,10 @@ id|init_tss
 op_plus
 id|cpu
 suffix:semicolon
+id|tss-&gt;ss1
+op_assign
+id|__KERNEL_CS
+suffix:semicolon
 id|wrmsr
 c_func
 (paren
