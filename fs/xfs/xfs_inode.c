@@ -3143,6 +3143,18 @@ suffix:semicolon
 id|INT_XLATE
 c_func
 (paren
+id|buf_core-&gt;di_flushiter
+comma
+id|mem_core-&gt;di_flushiter
+comma
+id|dir
+comma
+id|arch
+)paren
+suffix:semicolon
+id|INT_XLATE
+c_func
+(paren
 id|buf_core-&gt;di_atime.t_sec
 comma
 id|mem_core-&gt;di_atime.t_sec
@@ -3702,6 +3714,16 @@ id|INT_GET
 c_func
 (paren
 id|dip-&gt;di_core.di_gen
+comma
+id|ARCH_CONVERT
+)paren
+suffix:semicolon
+id|ip-&gt;i_d.di_flushiter
+op_assign
+id|INT_GET
+c_func
+(paren
+id|dip-&gt;di_core.di_flushiter
 comma
 id|ARCH_CONVERT
 )paren
@@ -11760,6 +11782,10 @@ r_goto
 id|corrupt_out
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * bump the flush iteration count, used to detect flushes which&n;&t; * postdate a log record during recovery.&n;&t; */
+id|ip-&gt;i_d.di_flushiter
+op_increment
+suffix:semicolon
 multiline_comment|/*&n;&t; * Copy the dirty parts of the inode into the on-disk&n;&t; * inode.  We always copy out the core of the inode,&n;&t; * because if the inode is dirty at all the core must&n;&t; * be.&n;&t; */
 id|xfs_xlate_dinode_core
 c_func
@@ -11782,6 +11808,18 @@ l_int|1
 comma
 id|ARCH_CONVERT
 )paren
+suffix:semicolon
+multiline_comment|/* Wrap, we never let the log put out DI_MAX_FLUSH */
+r_if
+c_cond
+(paren
+id|ip-&gt;i_d.di_flushiter
+op_eq
+id|DI_MAX_FLUSH
+)paren
+id|ip-&gt;i_d.di_flushiter
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * If this is really an old format inode and the superblock version&n;&t; * has not been updated to support only new format inodes, then&n;&t; * convert back to the old inode format.  If the superblock version&n;&t; * has been updated, then make the conversion permanent.&n;&t; */
 id|ASSERT
