@@ -340,12 +340,14 @@ id|sk_buff
 op_star
 id|current_skb
 suffix:semicolon
+multiline_comment|/* being emptied */
 DECL|member|current_buffer
 r_struct
 id|udsl_send_buffer
 op_star
 id|current_buffer
 suffix:semicolon
+multiline_comment|/* being filled */
 DECL|member|filled_buffers
 r_struct
 id|list_head
@@ -1045,11 +1047,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|PDEBUG
-(paren
-l_string|&quot;udsl_complete_receive entered&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1079,6 +1076,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|PDEBUG
+(paren
+l_string|&quot;udsl_complete_receive entered (urb 0x%p, status %d)&bslash;n&quot;
+comma
+id|urb
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
 id|tasklet_schedule
 (paren
 op_amp
@@ -1176,6 +1182,9 @@ op_star
 id|tmp
 op_assign
 l_int|NULL
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|PDEBUG
 (paren
@@ -1504,6 +1513,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
+id|err
+op_assign
 id|usb_submit_urb
 (paren
 id|urb
@@ -1511,11 +1523,14 @@ comma
 id|GFP_ATOMIC
 )paren
 )paren
+)paren
 r_break
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;udsl_process_receive: submission failed&bslash;n&quot;
+l_string|&quot;udsl_process_receive: submission failed (%d)&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 multiline_comment|/* fall through */
@@ -1785,11 +1800,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|PDEBUG
-(paren
-l_string|&quot;udsl_complete_send entered&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1819,6 +1829,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|PDEBUG
+(paren
+l_string|&quot;udsl_complete_send entered (urb 0x%p, status %d)&bslash;n&quot;
+comma
+id|urb
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
 id|tasklet_schedule
 (paren
 op_amp
@@ -1913,6 +1932,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|PDEBUG
 (paren
 l_string|&quot;udsl_process_send entered&bslash;n&quot;
@@ -1970,7 +1992,9 @@ id|buf-&gt;list
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;sending filled buffer&bslash;n&quot;
+l_string|&quot;sending filled buffer (0x%p)&bslash;n&quot;
+comma
+id|buf
 )paren
 suffix:semicolon
 )brace
@@ -1991,7 +2015,9 @@ l_int|NULL
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;sending current buffer&bslash;n&quot;
+l_string|&quot;sending current buffer (0x%p)&bslash;n&quot;
+comma
+id|buf
 )paren
 suffix:semicolon
 )brace
@@ -2059,7 +2085,9 @@ id|snd
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;submitting urb, contains %d cells&bslash;n&quot;
+l_string|&quot;submitting urb 0x%p, contains %d cells&bslash;n&quot;
+comma
+id|snd-&gt;urb
 comma
 id|UDSL_SND_BUFFER_SIZE
 op_minus
@@ -2069,6 +2097,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|usb_submit_urb
 c_func
 (paren
@@ -2076,13 +2107,16 @@ id|snd-&gt;urb
 comma
 id|GFP_ATOMIC
 )paren
+)paren
 OL
 l_int|0
 )paren
 (brace
 id|PDEBUG
 (paren
-l_string|&quot;submission failed!&bslash;n&quot;
+l_string|&quot;submission failed (%d)!&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2641,7 +2675,7 @@ id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;udsl_atm_send called (skb 0x%p, skb-&gt;len %u)&bslash;n&quot;
+l_string|&quot;udsl_atm_send called (skb 0x%p, len %u)&bslash;n&quot;
 comma
 id|skb
 comma
