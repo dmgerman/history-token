@@ -2068,6 +2068,13 @@ c_func
 id|snd_card_set_pm_callback
 )paren
 suffix:semicolon
+DECL|variable|snd_card_set_dev_pm_callback
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_card_set_dev_pm_callback
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 DECL|variable|snd_card_pci_suspend
 id|EXPORT_SYMBOL
@@ -2081,15 +2088,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_card_pci_resume
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISA
-DECL|variable|snd_card_set_isa_pm_callback
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_card_set_isa_pm_callback
 )paren
 suffix:semicolon
 macro_line|#endif

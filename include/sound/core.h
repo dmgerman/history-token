@@ -776,12 +776,15 @@ id|private_data
 )paren
 suffix:semicolon
 r_int
-id|snd_card_set_isa_pm_callback
+id|snd_card_set_dev_pm_callback
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
+comma
+r_int
+id|type
 comma
 r_int
 (paren
@@ -814,6 +817,8 @@ op_star
 id|private_data
 )paren
 suffix:semicolon
+DECL|macro|snd_card_set_isa_pm_callback
+mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) &bslash;&n;&t;snd_card_set_dev_pm_callback(card, PM_ISA_DEV, suspend, resume, data)
 macro_line|#ifndef SND_PCI_PM_CALLBACKS
 r_int
 id|snd_card_pci_suspend
@@ -877,6 +882,8 @@ DECL|macro|snd_power_change_state
 mdefine_line|#define snd_power_change_state(card, state)&t;do { (void)(card); } while (0)
 DECL|macro|snd_card_set_pm_callback
 mdefine_line|#define snd_card_set_pm_callback(card,suspend,resume,data) -EINVAL
+DECL|macro|snd_card_set_dev_pm_callback
+mdefine_line|#define snd_card_set_dev_pm_callback(card,suspend,resume,data) -EINVAL
 DECL|macro|snd_card_set_isa_pm_callback
 mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) -EINVAL
 DECL|macro|SND_PCI_PM_CALLBACKS

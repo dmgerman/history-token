@@ -2957,11 +2957,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISA
-DECL|function|snd_isa_pm_callback
+DECL|function|snd_generic_pm_callback
 r_static
 r_int
-id|snd_isa_pm_callback
+id|snd_generic_pm_callback
 c_func
 (paren
 r_struct
@@ -3026,15 +3025,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_card_set_isa_pm_callback - set the ISA power-management callbacks&n; * @card: soundcard structure&n; * @suspend: suspend callback function&n; * @resume: resume callback function&n; * @private_data: private data to pass to the callback functions&n; *&n; * Registers the power-management and sets the lowlevel callbacks for&n; * the given ISA card.  These callbacks are called from the ALSA&squot;s&n; * common PM handler and from the control API.&n; */
-DECL|function|snd_card_set_isa_pm_callback
+multiline_comment|/**&n; * snd_card_set_dev_pm_callback - set the generic power-management callbacks&n; * @card: soundcard structure&n; * @type: PM device type (PM_XXX)&n; * @suspend: suspend callback function&n; * @resume: resume callback function&n; * @private_data: private data to pass to the callback functions&n; *&n; * Registers the power-management and sets the lowlevel callbacks for&n; * the given card with the given PM type.  These callbacks are called&n; * from the ALSA&squot;s common PM handler and from the control API.&n; */
+DECL|function|snd_card_set_dev_pm_callback
 r_int
-id|snd_card_set_isa_pm_callback
+id|snd_card_set_dev_pm_callback
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
+comma
+r_int
+id|type
 comma
 r_int
 (paren
@@ -3072,11 +3074,11 @@ op_assign
 id|pm_register
 c_func
 (paren
-id|PM_ISA_DEV
+id|type
 comma
 l_int|0
 comma
-id|snd_isa_pm_callback
+id|snd_generic_pm_callback
 )paren
 suffix:semicolon
 r_if
@@ -3093,7 +3095,6 @@ id|card-&gt;pm_dev-&gt;data
 op_assign
 id|card
 suffix:semicolon
-r_return
 id|snd_card_set_pm_callback
 c_func
 (paren
@@ -3106,8 +3107,10 @@ comma
 id|private_data
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 DECL|function|snd_card_pci_suspend
 r_int
