@@ -163,7 +163,7 @@ l_int|2484
 )brace
 suffix:semicolon
 DECL|macro|NUM_CHANNELS
-mdefine_line|#define NUM_CHANNELS ( sizeof(channel_frequency) / sizeof(channel_frequency[0]) )
+mdefine_line|#define NUM_CHANNELS ARRAY_SIZE(channel_frequency)
 multiline_comment|/* This tables gives the actual meanings of the bitrate IDs returned by the firmware. */
 r_struct
 (brace
@@ -275,7 +275,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|BITRATE_TABLE_SIZE
-mdefine_line|#define BITRATE_TABLE_SIZE (sizeof(bitrate_table) / sizeof(bitrate_table[0]))
+mdefine_line|#define BITRATE_TABLE_SIZE ARRAY_SIZE(bitrate_table)
 multiline_comment|/********************************************************************/
 multiline_comment|/* Data types                                                       */
 multiline_comment|/********************************************************************/
