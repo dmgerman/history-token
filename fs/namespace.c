@@ -3693,6 +3693,26 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|data_page
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|data_page
+)paren
+(braket
+id|PAGE_SIZE
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Separate the per-mountpoint flags */
 r_if
 c_cond
