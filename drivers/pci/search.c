@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * &t;PCI searching functions.&n; *&n; *&t;Copyright 1993 -- 1997 Drew Eckhardt, Frederic Potter,&n; *&t;&t;&t;&t;David Mosberger-Tang&n; *&t;Copyright 1997 -- 2000 Martin Mares &lt;mj@ucw.cz&gt;&n; *&t;Copyright 2003 -- Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|variable|pci_bus_lock
 id|spinlock_t
 id|pci_bus_lock
@@ -181,7 +182,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren
@@ -337,7 +338,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren
@@ -530,7 +531,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren
@@ -729,7 +730,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren
