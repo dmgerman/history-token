@@ -25,6 +25,12 @@ DECL|macro|RPC_MAX_UDP_TIMEOUT
 mdefine_line|#define RPC_MAX_UDP_TIMEOUT&t;(60*HZ)
 DECL|macro|RPC_MAX_TCP_TIMEOUT
 mdefine_line|#define RPC_MAX_TCP_TIMEOUT&t;(600*HZ)
+multiline_comment|/*&n; * Wait duration for an RPC TCP connection to be established.  Solaris&n; * NFS over TCP uses 60 seconds, for example, which is in line with how&n; * long a server takes to reboot.&n; */
+DECL|macro|RPC_CONNECT_TIMEOUT
+mdefine_line|#define RPC_CONNECT_TIMEOUT&t;(60*HZ)
+multiline_comment|/*&n; * Delay an arbitrary number of seconds before attempting to reconnect&n; * after an error.&n; */
+DECL|macro|RPC_REESTABLISH_TIMEOUT
+mdefine_line|#define RPC_REESTABLISH_TIMEOUT&t;(15*HZ)
 multiline_comment|/* RPC call and reply header size as number of 32bit words (verifier&n; * size computed separately)&n; */
 DECL|macro|RPC_CALLHDRSIZE
 mdefine_line|#define RPC_CALLHDRSIZE&t;&t;6
