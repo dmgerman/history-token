@@ -1794,7 +1794,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|module_refcount
-r_static
 r_int
 r_int
 id|module_refcount
@@ -1846,6 +1845,13 @@ r_return
 id|total
 suffix:semicolon
 )brace
+DECL|variable|module_refcount
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|module_refcount
+)paren
+suffix:semicolon
 multiline_comment|/* This exists whether we can unload or not */
 r_static
 r_void
