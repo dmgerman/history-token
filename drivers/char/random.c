@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -44,6 +45,27 @@ r_int
 id|random_write_wakeup_thresh
 op_assign
 l_int|128
+suffix:semicolon
+multiline_comment|/*&n; * When the input pool goes over trickle_thresh, start dropping most&n; * samples to avoid wasting CPU time and reduce lock contention.&n; */
+DECL|variable|trickle_thresh
+r_static
+r_int
+id|trickle_thresh
+op_assign
+id|DEFAULT_POOL_SIZE
+op_star
+l_int|7
+suffix:semicolon
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_int
+comma
+id|trickle_count
+)paren
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * A pool of size .poolwords is stirred with a primitive polynomial&n; * of degree .poolwords over GF(2).  The taps for various sizes are&n; * defined below.  They are chosen to be evenly spaced (minimum RMS&n; * distance from evenly spaced; the numbers in the comments are a&n; * scaled squared error sum) except for the last tap, which is 1 to&n; * get the twisting happening as fast as possible.&n; */
 DECL|struct|poolinfo
@@ -1746,6 +1768,27 @@ r_int
 id|entropy
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* if over the trickle threshold, use only 1 in 4096 samples */
+r_if
+c_cond
+(paren
+id|random_state-&gt;entropy_count
+OG
+id|trickle_thresh
+op_logical_and
+(paren
+id|__get_cpu_var
+c_func
+(paren
+id|trickle_count
+)paren
+op_increment
+op_amp
+l_int|0xfff
+)paren
+)paren
+r_return
 suffix:semicolon
 macro_line|#if defined (__i386__) || defined (__x86_64__)
 r_if
