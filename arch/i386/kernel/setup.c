@@ -4775,6 +4775,8 @@ r_void
 (brace
 r_int
 r_int
+id|gapstart
+comma
 id|gapsize
 suffix:semicolon
 r_int
@@ -4850,10 +4852,14 @@ id|i
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Tell the PCI layer not to allocate too close to the RAM area.. */
+multiline_comment|/*&n;&t; * Search for the bigest gap in the low 32 bits of the e820&n;&t; * memory space.&n;&t; */
 id|last
 op_assign
 l_int|0x100000000ull
+suffix:semicolon
+id|gapstart
+op_assign
+l_int|0x10000000
 suffix:semicolon
 id|gapsize
 op_assign
@@ -4927,20 +4933,9 @@ id|gapsize
 op_assign
 id|gap
 suffix:semicolon
-id|pci_mem_start
+id|gapstart
 op_assign
-(paren
-(paren
-r_int
-r_int
-)paren
 id|end
-op_plus
-l_int|0xfffff
-)paren
-op_amp
-op_complement
-l_int|0xfffff
 suffix:semicolon
 )brace
 )brace
@@ -4956,12 +4951,28 @@ op_assign
 id|start
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Start allocating dynamic PCI memory a bit into the gap,&n;&t; * aligned up to the nearest megabyte.&n;&t; *&n;&t; * Question: should we try to pad it up a bit (do something&n;&t; * like &quot; + (gapsize &gt;&gt; 3)&quot; in there too?). We now have the&n;&t; * technology.&n;&t; */
+id|pci_mem_start
+op_assign
+(paren
+id|gapstart
+op_plus
+l_int|0xfffff
+)paren
+op_amp
+op_complement
+l_int|0xfffff
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Allocating PCI resources starting at %08lx&bslash;n&quot;
+l_string|&quot;Allocating PCI resources starting at %08lx (gap: %08lx:%08lx)&bslash;n&quot;
 comma
 id|pci_mem_start
+comma
+id|gapstart
+comma
+id|gapsize
 )paren
 suffix:semicolon
 )brace
