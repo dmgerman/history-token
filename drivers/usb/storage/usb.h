@@ -89,8 +89,9 @@ DECL|macro|US_STATE_ABORTING
 mdefine_line|#define US_STATE_ABORTING&t;4
 DECL|macro|USB_STOR_STRING_LEN
 mdefine_line|#define USB_STOR_STRING_LEN 32
+multiline_comment|/*&n; * We provide a DMA-mapped I/O buffer for use with small USB transfers.&n; * It turns out that CB[I] needs a 12-byte buffer and Bulk-only needs a&n; * 31-byte buffer.  But Freecom needs a 64-byte buffer, so that&squot;s the&n; * size we&squot;ll allocate.&n; */
 DECL|macro|US_IOBUF_SIZE
-mdefine_line|#define US_IOBUF_SIZE&t;&t;32&t;/* Big enough for bulk-only CBW */
+mdefine_line|#define US_IOBUF_SIZE&t;&t;64&t;/* Size of the DMA-mapped I/O buffer */
 DECL|typedef|trans_cmnd
 r_typedef
 r_int
@@ -337,6 +338,15 @@ op_star
 id|iobuf
 suffix:semicolon
 multiline_comment|/* I/O buffer&t;&t; */
+DECL|member|cr_dma
+id|dma_addr_t
+id|cr_dma
+suffix:semicolon
+multiline_comment|/* buffer DMA addresses */
+DECL|member|iobuf_dma
+id|dma_addr_t
+id|iobuf_dma
+suffix:semicolon
 multiline_comment|/* mutual exclusion structures */
 DECL|member|sema
 r_struct
