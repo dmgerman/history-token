@@ -721,6 +721,31 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* Entry and supporting patch by Theodore Kilgore &lt;kilgota@auburn.edu&gt;.&n; * Device uses standards-violating 32-byte Bulk Command Block Wrappers and&n; * reports itself as &quot;Proprietary SCSI Bulk.&quot; Cf. device entry 0x084d:0x0011.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04fc
+comma
+l_int|0x80c2
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kobian Mercury&quot;
+comma
+l_string|&quot;Binocam DCB-132&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_BULK32
+)paren
+comma
 multiline_comment|/* Reported by Bob Sass &lt;rls@vectordb.com&gt; -- only rev 1.33 tested */
 id|UNUSUAL_DEV
 c_func
@@ -2279,6 +2304,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Entry and supporting patch by Theodore Kilgore &lt;kilgota@auburn.edu&gt;.&n; * Flag will support Bulk devices which use a standards-violating 32-byte&n; * Command Block Wrapper. Here, the &quot;DC2MEGA&quot; cameras (several brands) with&n; * Grandtech GT892x chip, which request &quot;Proprietary SCSI Bulk&quot; support.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x084d
+comma
+l_int|0x0011
+comma
+l_int|0x0110
+comma
+l_int|0x0110
+comma
+l_string|&quot;Grandtech&quot;
+comma
+l_string|&quot;DC2MEGA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_BULK32
 )paren
 comma
 multiline_comment|/* Aiptek PocketCAM 3Mega&n; * Nicolas DUPEUX &lt;nicolas@dupeux.net&gt; &n; */
