@@ -8910,9 +8910,9 @@ l_int|0
 suffix:semicolon
 macro_line|#ifdef USE_TPD_POOL
 r_struct
-id|list_head
+id|he_tpd
 op_star
-id|p
+id|__tpd
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* 2.1.6 transmit buffer return queue */
@@ -8968,31 +8968,17 @@ id|tpd
 op_assign
 l_int|NULL
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|p
+id|__tpd
 comma
 op_amp
 id|he_dev-&gt;outstanding_tpds
-)paren
-(brace
-r_struct
-id|he_tpd
-op_star
-id|__tpd
-op_assign
-id|list_entry
-c_func
-(paren
-id|p
-comma
-r_struct
-id|he_tpd
 comma
 id|entry
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
