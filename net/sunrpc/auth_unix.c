@@ -264,7 +264,7 @@ c_func
 op_amp
 id|cred-&gt;uc_count
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|cred-&gt;uc_flags

@@ -212,7 +212,7 @@ c_func
 op_amp
 id|cred-&gt;cr_count
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|cred-&gt;cr_flags
