@@ -74,11 +74,17 @@ c_func
 (paren
 )paren
 )paren
+(brace
 id|gfp_mask
 op_and_assign
 op_complement
 id|__GFP_WAIT
 suffix:semicolon
+id|gfp_mask
+op_or_assign
+id|__GFP_HIGH
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * if sg table allocation fails, requeue request later.&n;&t; */
 id|sgpnt
 op_assign
