@@ -960,6 +960,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_ACPI_HT_ONLY
 id|result
 op_assign
 id|acpi_table_parse_madt
@@ -991,12 +992,14 @@ r_return
 id|result
 suffix:semicolon
 )brace
+macro_line|#endif /*!CONFIG_ACPI_HT_ONLY*/
 id|acpi_lapic
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifndef CONFIG_ACPI_HT_ONLY
 multiline_comment|/* &n;&t; * I/O APIC &n;&t; * --------&n;&t; */
 id|result
 op_assign
@@ -1125,6 +1128,7 @@ id|acpi_ioapic
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif /*!CONFIG_ACPI_HT_ONLY*/
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_if
