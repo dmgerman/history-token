@@ -635,11 +635,6 @@ DECL|struct|crypto_tfm
 r_struct
 id|crypto_tfm
 (brace
-DECL|member|crt_ctx
-r_void
-op_star
-id|crt_ctx
-suffix:semicolon
 DECL|member|crt_flags
 id|u32
 id|crt_flags
