@@ -7925,6 +7925,11 @@ id|MODULE_DESCRIPTION
 id|DRIVER_DESC
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|auerswald_init
 id|module_init
 (paren
