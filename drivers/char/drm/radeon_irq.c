@@ -79,20 +79,11 @@ id|dev_priv-&gt;irq_received
 )paren
 suffix:semicolon
 macro_line|#ifdef __linux__
-id|queue_task
+id|schedule_task
 c_func
 (paren
 op_amp
 id|dev-&gt;tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 macro_line|#endif /* __linux__ */
