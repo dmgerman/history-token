@@ -3661,7 +3661,7 @@ c_cond
 (paren
 id|left
 op_assign
-id|sb_get_hash_table
+id|sb_find_get_block
 c_func
 (paren
 id|p_s_sb

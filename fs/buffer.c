@@ -1338,12 +1338,12 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Various filesystems appear to want __get_hash_table to be non-blocking.&n; * But it&squot;s the page lock which protects the buffers.  To get around this,&n; * we get exclusion from try_to_free_buffers with the blockdev mapping&squot;s&n; * private_lock.&n; *&n; * Hack idea: for the blockdev mapping, i_bufferlist_lock contention&n; * may be quite high.  This code could TryLock the page, and if that&n; * succeeds, there is no need to take private_lock. (But if&n; * private_lock is contended then so is mapping-&gt;page_lock).&n; */
+multiline_comment|/*&n; * Various filesystems appear to want __find_get_block to be non-blocking.&n; * But it&squot;s the page lock which protects the buffers.  To get around this,&n; * we get exclusion from try_to_free_buffers with the blockdev mapping&squot;s&n; * private_lock.&n; *&n; * Hack idea: for the blockdev mapping, i_bufferlist_lock contention&n; * may be quite high.  This code could TryLock the page, and if that&n; * succeeds, there is no need to take private_lock. (But if&n; * private_lock is contended then so is mapping-&gt;page_lock).&n; */
 r_struct
 id|buffer_head
 op_star
-DECL|function|__get_hash_table
-id|__get_hash_table
+DECL|function|__find_get_block
+id|__find_get_block
 c_func
 (paren
 r_struct
@@ -3589,7 +3589,7 @@ id|bh
 r_goto
 id|failed
 suffix:semicolon
-multiline_comment|/*&n;&t; * Link the page to the buffers and initialise them.  Take the&n;&t; * lock to be atomic wrt __get_hash_table(), which does not&n;&t; * run under the page lock.&n;&t; */
+multiline_comment|/*&n;&t; * Link the page to the buffers and initialise them.  Take the&n;&t; * lock to be atomic wrt __find_get_block(), which does not&n;&t; * run under the page lock.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -3825,7 +3825,7 @@ id|bh
 suffix:semicolon
 id|bh
 op_assign
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 id|bdev
@@ -4720,7 +4720,7 @@ id|old_bh
 suffix:semicolon
 id|old_bh
 op_assign
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 id|bdev

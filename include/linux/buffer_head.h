@@ -554,7 +554,7 @@ suffix:semicolon
 r_struct
 id|buffer_head
 op_star
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 r_struct
@@ -1083,8 +1083,8 @@ r_inline
 r_struct
 id|buffer_head
 op_star
-DECL|function|sb_get_hash_table
-id|sb_get_hash_table
+DECL|function|sb_find_get_block
+id|sb_find_get_block
 c_func
 (paren
 r_struct
@@ -1097,7 +1097,7 @@ id|block
 )paren
 (brace
 r_return
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 id|sb-&gt;s_bdev

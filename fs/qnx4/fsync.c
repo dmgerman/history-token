@@ -57,7 +57,7 @@ id|block
 suffix:semicolon
 id|bh
 op_assign
-id|sb_get_hash_table
+id|sb_find_get_block
 c_func
 (paren
 id|inode-&gt;i_sb
