@@ -991,10 +991,6 @@ id|super_block
 op_star
 id|i_sb
 suffix:semicolon
-DECL|member|i_wait
-id|wait_queue_head_t
-id|i_wait
-suffix:semicolon
 DECL|member|i_flock
 r_struct
 id|file_lock
