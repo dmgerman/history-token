@@ -1411,10 +1411,6 @@ r_int
 id|data_len
 )paren
 (brace
-id|sctp_chunk_t
-op_star
-id|retval
-suffix:semicolon
 id|__u16
 id|ssn
 suffix:semicolon
