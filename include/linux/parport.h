@@ -1163,11 +1163,10 @@ id|parport
 op_star
 )paren
 suffix:semicolon
-DECL|member|next
+DECL|member|list
 r_struct
-id|parport_driver
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 )brace
 suffix:semicolon
