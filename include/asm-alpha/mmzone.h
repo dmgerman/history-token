@@ -140,16 +140,6 @@ macro_line|#ifdef CONFIG_NUMA_SCHED
 DECL|macro|NODE_SCHEDULE_DATA
 mdefine_line|#define NODE_SCHEDULE_DATA(nid)&t;(&amp;((PLAT_NODE_DATA(nid))-&gt;schedule_data))
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALPHA_WILDFIRE
-multiline_comment|/* With wildfire assume 4 CPUs per node */
-DECL|macro|cputonode
-mdefine_line|#define cputonode(cpu)&t;((cpu) &gt;&gt; 2)
-macro_line|#else
-DECL|macro|cputonode
-mdefine_line|#define cputonode(cpu)&t;0
-macro_line|#endif /* CONFIG_ALPHA_WILDFIRE */
-DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;cputonode(smp_processor_id())
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_MMZONE_H_ */

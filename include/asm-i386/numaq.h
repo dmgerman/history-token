@@ -17,10 +17,6 @@ DECL|macro|PHYSADDR_TO_NID
 mdefine_line|#define PHYSADDR_TO_NID(pa) pfn_to_nid(pa &gt;&gt; PAGE_SHIFT)
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
-macro_line|#ifdef CONFIG_NUMA
-DECL|macro|_cpu_to_node
-mdefine_line|#define _cpu_to_node(cpu) (cpu_to_logical_apicid(cpu) &gt;&gt; 4)
-macro_line|#endif /* CONFIG_NUMA */
 r_extern
 r_int
 id|pfn_to_nid

@@ -96,7 +96,7 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 (def_block
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|task
@@ -171,7 +171,7 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 (def_block
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|task

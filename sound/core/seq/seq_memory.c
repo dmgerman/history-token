@@ -339,10 +339,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * exported:&n; * expand the variable length event to linear buffer space.&n; */
-DECL|function|copy_in_kernel
+DECL|function|seq_copy_in_kernel
 r_static
 r_int
-id|copy_in_kernel
+id|seq_copy_in_kernel
 c_func
 (paren
 r_char
@@ -379,10 +379,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|copy_in_user
+DECL|function|seq_copy_in_user
 r_static
 r_int
-id|copy_in_user
+id|seq_copy_in_user
 c_func
 (paren
 r_char
@@ -568,12 +568,12 @@ c_cond
 (paren
 id|snd_seq_dump_func_t
 )paren
-id|copy_in_kernel
+id|seq_copy_in_kernel
 suffix:colon
 (paren
 id|snd_seq_dump_func_t
 )paren
-id|copy_in_user
+id|seq_copy_in_user
 comma
 op_amp
 id|buf

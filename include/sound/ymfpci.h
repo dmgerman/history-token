@@ -1065,6 +1065,9 @@ c_func
 id|ymfpci_t
 op_star
 id|chip
+comma
+r_int
+id|rear_switch
 )paren
 suffix:semicolon
 r_int

@@ -3977,20 +3977,11 @@ op_star
 )paren
 id|handler
 suffix:semicolon
-id|queue_task
+id|schedule_task
 c_func
 (paren
 op_amp
 id|floppy_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -19218,11 +19209,9 @@ c_func
 l_string|&quot;no floppy controllers found&bslash;n&quot;
 )paren
 suffix:semicolon
-id|run_task_queue
+id|flush_scheduled_tasks
 c_func
 (paren
-op_amp
-id|tq_immediate
 )paren
 suffix:semicolon
 r_if

@@ -1858,7 +1858,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|tsk-&gt;sigmask_lock
+id|tsk-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -1877,7 +1877,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|tsk-&gt;sigmask_lock
+id|tsk-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|daemonize

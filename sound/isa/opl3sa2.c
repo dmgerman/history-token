@@ -316,6 +316,7 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
+macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
@@ -346,6 +347,7 @@ comma
 id|SNDRV_ISAPNP_DESC
 )paren
 suffix:semicolon
+macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren

@@ -25,6 +25,7 @@ r_void
 id|lapb_send_iframe
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -46,9 +47,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb
-op_eq
-l_int|NULL
 )paren
 r_return
 suffix:semicolon
@@ -82,20 +82,16 @@ id|frame
 l_int|0
 )braket
 op_or_assign
-(paren
 id|lapb-&gt;vs
 op_lshift
 l_int|1
-)paren
 suffix:semicolon
 id|frame
 (braket
 l_int|1
 )braket
 op_assign
-(paren
 id|poll_bit
-)paren
 ques
 c_cond
 id|LAPB_EPF
@@ -107,11 +103,9 @@ id|frame
 l_int|1
 )braket
 op_or_assign
-(paren
 id|lapb-&gt;vr
 op_lshift
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -134,9 +128,7 @@ suffix:semicolon
 op_star
 id|frame
 op_or_assign
-(paren
 id|poll_bit
-)paren
 ques
 c_cond
 id|LAPB_SPF
@@ -146,20 +138,16 @@ suffix:semicolon
 op_star
 id|frame
 op_or_assign
-(paren
 id|lapb-&gt;vr
 op_lshift
 l_int|5
-)paren
 suffix:semicolon
 op_star
 id|frame
 op_or_assign
-(paren
 id|lapb-&gt;vs
 op_lshift
 l_int|1
-)paren
 suffix:semicolon
 )brace
 macro_line|#if LAPB_DEBUG &gt; 1
@@ -197,6 +185,7 @@ r_void
 id|lapb_kick
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -233,15 +222,12 @@ id|LAPB_SMODULUS
 suffix:semicolon
 id|start
 op_assign
-(paren
+op_logical_neg
 id|skb_peek
 c_func
 (paren
 op_amp
 id|lapb-&gt;ack_queue
-)paren
-op_eq
-l_int|NULL
 )paren
 ques
 c_cond
@@ -279,8 +265,6 @@ c_func
 op_amp
 id|lapb-&gt;write_queue
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
 id|lapb-&gt;vs
@@ -333,8 +317,6 @@ r_if
 c_cond
 (paren
 id|skb-&gt;sk
-op_ne
-l_int|NULL
 )paren
 id|skb_set_owner_w
 c_func
@@ -425,6 +407,7 @@ r_void
 id|lapb_transmit_buffer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -637,6 +620,7 @@ r_void
 id|lapb_establish_data_link
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -730,6 +714,7 @@ r_void
 id|lapb_enquiry_response
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -773,6 +758,7 @@ r_void
 id|lapb_timeout_response
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -816,6 +802,7 @@ r_void
 id|lapb_check_iframes_acked
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -853,7 +840,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -878,12 +864,12 @@ id|lapb
 suffix:semicolon
 )brace
 )brace
-)brace
 DECL|function|lapb_check_need_response
 r_void
 id|lapb_check_need_response
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb

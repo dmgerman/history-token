@@ -100,8 +100,8 @@ DECL|macro|ISDN_NET_ENCAP_CISCOHDLCK
 mdefine_line|#define ISDN_NET_ENCAP_CISCOHDLCK 6 /* With SLARP and keepalive    */
 DECL|macro|ISDN_NET_ENCAP_X25IFACE
 mdefine_line|#define ISDN_NET_ENCAP_X25IFACE   7 /* Documentation/networking/x25-iface.txt*/
-DECL|macro|ISDN_NET_ENCAP_MAX_ENCAP
-mdefine_line|#define ISDN_NET_ENCAP_MAX_ENCAP  ISDN_NET_ENCAP_X25IFACE
+DECL|macro|ISDN_NET_ENCAP_NR
+mdefine_line|#define ISDN_NET_ENCAP_NR         8
 multiline_comment|/* Facility which currently uses an ISDN-channel */
 DECL|macro|ISDN_USAGE_NONE
 mdefine_line|#define ISDN_USAGE_NONE       0
@@ -470,8 +470,6 @@ DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
 multiline_comment|/*=================== Start of ip-over-ISDN stuff =========================*/
 multiline_comment|/* Feature- and status-flags for a net-interface */
-DECL|macro|ISDN_NET_CONNECTED
-mdefine_line|#define ISDN_NET_CONNECTED  0x01       /* Bound to ISDN-Channel             */
 DECL|macro|ISDN_NET_SECURE
 mdefine_line|#define ISDN_NET_SECURE     0x02       /* Accept calls from phonelist only  */
 DECL|macro|ISDN_NET_CALLBACK
@@ -502,76 +500,237 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n;   Principles when extending structures for generic encapsulation protocol&n;   (&quot;concap&quot;) support:&n;   - Stuff which is hardware specific (here i4l-specific) goes in &n;     the netdev -&gt; local structure (here: isdn_net_local)&n;   - Stuff which is encapsulation protocol specific goes in the structure&n;     which holds the linux device structure (here: isdn_net_device)&n;*/
+r_struct
+id|isdn_net_dev_s
+suffix:semicolon
+r_struct
+id|isdn_net_local_s
+suffix:semicolon
+DECL|struct|isdn_netif_ops
+r_struct
+id|isdn_netif_ops
+(brace
+DECL|member|hard_header
+r_int
+(paren
+op_star
+id|hard_header
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|type
+comma
+r_void
+op_star
+id|daddr
+comma
+r_void
+op_star
+id|saddr
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|member|do_ioctl
+r_int
+(paren
+op_star
+id|do_ioctl
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+comma
+r_int
+id|cmd
+)paren
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* interface flags (a la BSD)&t;*/
+DECL|member|type
+r_int
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* interface hardware type&t;*/
+DECL|member|addr_len
+r_int
+r_char
+id|addr_len
+suffix:semicolon
+multiline_comment|/* hardware address length&t;*/
+DECL|member|receive
+r_void
+(paren
+op_star
+id|receive
+)paren
+(paren
+r_struct
+id|isdn_net_dev_s
+op_star
+id|p
+comma
+r_struct
+id|isdn_net_local_s
+op_star
+id|olp
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+DECL|member|connected
+r_void
+(paren
+op_star
+id|connected
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|disconnected
+r_void
+(paren
+op_star
+id|disconnected
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|bind
+r_int
+(paren
+op_star
+id|bind
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|unbind
+r_void
+(paren
+op_star
+id|unbind
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|init
+r_int
+(paren
+op_star
+id|init
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|cleanup
+r_void
+(paren
+op_star
+id|cleanup
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|open
+r_int
+(paren
+op_star
+id|open
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|close
+r_void
+(paren
+op_star
+id|close
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Local interface-data */
 DECL|struct|isdn_net_local_s
 r_typedef
 r_struct
 id|isdn_net_local_s
 (brace
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|member|magic
 id|ulong
 id|magic
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|10
-)braket
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
-multiline_comment|/* Name of device                   */
-DECL|member|dial_timer
-r_struct
-id|timer_list
-id|dial_timer
-suffix:semicolon
-multiline_comment|/* dial events timer                */
-DECL|member|dial_event
-r_int
-id|dial_event
-suffix:semicolon
-multiline_comment|/* event in case of timer expiry    */
 DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
-DECL|member|hup_timer
-r_struct
-id|timer_list
-id|hup_timer
-suffix:semicolon
-multiline_comment|/* auto hangup timer                */
-DECL|member|isdn_slot
-r_int
-id|isdn_slot
-suffix:semicolon
-multiline_comment|/* Index to isdn device/channel     */
-DECL|member|ppp_slot
-r_int
-id|ppp_slot
-suffix:semicolon
-multiline_comment|/* PPPD device slot number          */
-DECL|member|pre_device
-r_int
-id|pre_device
-suffix:semicolon
-multiline_comment|/* Preselected isdn-device          */
-DECL|member|pre_channel
-r_int
-id|pre_channel
-suffix:semicolon
-multiline_comment|/* Preselected isdn-channel         */
-DECL|member|exclusive
-r_int
-id|exclusive
-suffix:semicolon
-multiline_comment|/* If non-zero idx to reserved chan.*/
 DECL|member|flags
 r_int
 id|flags
@@ -587,6 +746,16 @@ r_int
 id|dialmax
 suffix:semicolon
 multiline_comment|/* Max. Number of Dial-retries      */
+DECL|member|dialtimeout
+r_int
+id|dialtimeout
+suffix:semicolon
+multiline_comment|/* How long shall we try on dialing */
+DECL|member|dialwait
+r_int
+id|dialwait
+suffix:semicolon
+multiline_comment|/* wait after failed attempt        */
 DECL|member|cbdelay
 r_int
 id|cbdelay
@@ -605,102 +774,31 @@ id|u_char
 id|cbhup
 suffix:semicolon
 multiline_comment|/* Flag: Reject Call before Callback*/
-DECL|member|dialstate
-id|u_char
-id|dialstate
-suffix:semicolon
-multiline_comment|/* State for dialing                */
-DECL|member|p_encap
-id|u_char
-id|p_encap
-suffix:semicolon
-multiline_comment|/* Packet encapsulation             */
-multiline_comment|/*   0 = Ethernet over ISDN         */
-multiline_comment|/*   1 = RAW-IP                     */
-multiline_comment|/*   2 = IP with type field         */
-DECL|member|l2_proto
-id|u_char
-id|l2_proto
-suffix:semicolon
-multiline_comment|/* Layer-2-protocol                 */
-multiline_comment|/* See ISDN_PROTO_L2..-constants in */
-multiline_comment|/* isdnif.h                         */
-multiline_comment|/*   0 = X75/LAPB with I-Frames     */
-multiline_comment|/*   1 = X75/LAPB with UI-Frames    */
-multiline_comment|/*   2 = X75/LAPB with BUI-Frames   */
-multiline_comment|/*   3 = HDLC                       */
-DECL|member|l3_proto
-id|u_char
-id|l3_proto
-suffix:semicolon
-multiline_comment|/* Layer-3-protocol                 */
-multiline_comment|/* See ISDN_PROTO_L3..-constants in */
-multiline_comment|/* isdnif.h                         */
-multiline_comment|/*   0 = Transparent                */
-DECL|member|huptimer
-r_int
-id|huptimer
-suffix:semicolon
-multiline_comment|/* Timeout-counter for auto-hangup  */
-DECL|member|charge
-r_int
-id|charge
-suffix:semicolon
-multiline_comment|/* Counter for charging units       */
-DECL|member|charge_state
-r_int
-id|charge_state
-suffix:semicolon
-multiline_comment|/* ChargeInfo state machine         */
-DECL|member|chargetime
-id|ulong
-id|chargetime
-suffix:semicolon
-multiline_comment|/* Timer for Charging info          */
 DECL|member|hupflags
 r_int
 id|hupflags
 suffix:semicolon
 multiline_comment|/* Flags for charge-unit-hangup:    */
-multiline_comment|/* bit0: chargeint is invalid       */
-multiline_comment|/* bit1: Getting charge-interval    */
-multiline_comment|/* bit2: Do charge-unit-hangup      */
-multiline_comment|/* bit3: Do hangup even on incoming */
-DECL|member|outgoing
-r_int
-id|outgoing
-suffix:semicolon
-multiline_comment|/* Flag: outgoing call              */
 DECL|member|onhtime
 r_int
 id|onhtime
 suffix:semicolon
 multiline_comment|/* Time to keep link up             */
-DECL|member|chargeint
-r_int
-id|chargeint
+DECL|member|p_encap
+id|u_char
+id|p_encap
 suffix:semicolon
-multiline_comment|/* Interval between charge-infos    */
-DECL|member|onum
-r_int
-id|onum
+multiline_comment|/* Packet encapsulation             */
+DECL|member|l2_proto
+id|u_char
+id|l2_proto
 suffix:semicolon
-multiline_comment|/* Flag: at least 1 outgoing number */
-DECL|member|cps
-r_int
-id|cps
+multiline_comment|/* Layer-2-protocol                 */
+DECL|member|l3_proto
+id|u_char
+id|l3_proto
 suffix:semicolon
-multiline_comment|/* current speed of this interface  */
-DECL|member|transcount
-r_int
-id|transcount
-suffix:semicolon
-multiline_comment|/* byte-counter for cps-calculation */
-DECL|member|last_jiffies
-r_int
-id|last_jiffies
-suffix:semicolon
-multiline_comment|/* when transcount was reset        */
+multiline_comment|/* Layer-3-protocol                 */
 DECL|member|sqfull
 r_int
 id|sqfull
@@ -732,11 +830,6 @@ suffix:semicolon
 multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
-DECL|member|dial
-r_int
-id|dial
-suffix:semicolon
-multiline_comment|/* # of phone number just dialed    */
 DECL|member|master
 r_struct
 id|net_device
@@ -793,75 +886,6 @@ suffix:semicolon
 multiline_comment|/* used to protect the xmit path of */
 multiline_comment|/* a particular channel (including  */
 multiline_comment|/* the frame_cnt                    */
-DECL|member|org_hhc
-r_int
-(paren
-op_star
-id|org_hhc
-)paren
-(paren
-r_struct
-id|neighbour
-op_star
-id|neigh
-comma
-r_struct
-id|hh_cache
-op_star
-id|hh
-)paren
-suffix:semicolon
-multiline_comment|/* Ptr to orig. header_cache_update */
-DECL|member|org_hcu
-r_void
-(paren
-op_star
-id|org_hcu
-)paren
-(paren
-r_struct
-id|hh_cache
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_char
-op_star
-)paren
-suffix:semicolon
-DECL|member|pppbind
-r_int
-id|pppbind
-suffix:semicolon
-multiline_comment|/* ippp device for bindings         */
-DECL|member|dialtimeout
-r_int
-id|dialtimeout
-suffix:semicolon
-multiline_comment|/* How long shall we try on dialing? (jiffies) */
-DECL|member|dialwait
-r_int
-id|dialwait
-suffix:semicolon
-multiline_comment|/* How long shall we wait after failed attempt? (jiffies) */
-DECL|member|dialstarted
-id|ulong
-id|dialstarted
-suffix:semicolon
-multiline_comment|/* jiffies of first dialing-attempt */
-DECL|member|dialwait_timer
-id|ulong
-id|dialwait_timer
-suffix:semicolon
-multiline_comment|/* jiffies of earliest next dialing-attempt */
-DECL|member|huptimeout
-r_int
-id|huptimeout
-suffix:semicolon
-multiline_comment|/* How long will the connection be up? (seconds) */
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|dops
 r_struct
@@ -917,6 +941,12 @@ r_struct
 id|tq_struct
 id|tqueue
 suffix:semicolon
+DECL|member|ops
+r_struct
+id|isdn_netif_ops
+op_star
+id|ops
+suffix:semicolon
 DECL|typedef|isdn_net_local
 )brace
 id|isdn_net_local
@@ -931,6 +961,121 @@ DECL|member|local
 id|isdn_net_local
 id|local
 suffix:semicolon
+DECL|member|isdn_slot
+r_int
+id|isdn_slot
+suffix:semicolon
+multiline_comment|/* Index to isdn device/channel     */
+DECL|member|pre_device
+r_int
+id|pre_device
+suffix:semicolon
+multiline_comment|/* Preselected isdn-device          */
+DECL|member|pre_channel
+r_int
+id|pre_channel
+suffix:semicolon
+multiline_comment|/* Preselected isdn-channel         */
+DECL|member|exclusive
+r_int
+id|exclusive
+suffix:semicolon
+multiline_comment|/* -1 if non excl./idx to excl chan */
+DECL|member|dial_timer
+r_struct
+id|timer_list
+id|dial_timer
+suffix:semicolon
+multiline_comment|/* dial events timer                */
+DECL|member|dial_event
+r_int
+id|dial_event
+suffix:semicolon
+multiline_comment|/* event in case of timer expiry    */
+DECL|member|dialstate
+r_int
+id|dialstate
+suffix:semicolon
+multiline_comment|/* State for dialing                */
+DECL|member|dial
+r_int
+id|dial
+suffix:semicolon
+multiline_comment|/* # of phone number just dialed    */
+DECL|member|outgoing
+r_int
+id|outgoing
+suffix:semicolon
+multiline_comment|/* Flag: outgoing call              */
+DECL|member|dialstarted
+r_int
+r_int
+id|dialstarted
+suffix:semicolon
+multiline_comment|/* first dialing-attempt           */
+DECL|member|dialwait_timer
+r_int
+r_int
+id|dialwait_timer
+suffix:semicolon
+multiline_comment|/* earliest next dialing-attempt   */
+DECL|member|cps
+r_int
+id|cps
+suffix:semicolon
+multiline_comment|/* current speed of this interface  */
+DECL|member|transcount
+r_int
+id|transcount
+suffix:semicolon
+multiline_comment|/* byte-counter for cps-calculation */
+DECL|member|last_jiffies
+r_int
+id|last_jiffies
+suffix:semicolon
+multiline_comment|/* when transcount was reset        */
+DECL|member|hup_timer
+r_struct
+id|timer_list
+id|hup_timer
+suffix:semicolon
+multiline_comment|/* auto hangup timer                */
+DECL|member|huptimer
+r_int
+id|huptimer
+suffix:semicolon
+multiline_comment|/* Timeout-counter for auto-hangup  */
+DECL|member|charge
+r_int
+id|charge
+suffix:semicolon
+multiline_comment|/* Counter for charging units       */
+DECL|member|charge_state
+r_int
+id|charge_state
+suffix:semicolon
+multiline_comment|/* ChargeInfo state machine         */
+DECL|member|chargetime
+r_int
+r_int
+id|chargetime
+suffix:semicolon
+multiline_comment|/* Timer for Charging info          */
+DECL|member|chargeint
+r_int
+id|chargeint
+suffix:semicolon
+multiline_comment|/* Interval between charge-infos    */
+DECL|member|pppbind
+r_int
+id|pppbind
+suffix:semicolon
+multiline_comment|/* ippp device for bindings         */
+DECL|member|ppp_slot
+r_int
+id|ppp_slot
+suffix:semicolon
+multiline_comment|/* PPPD device slot number          */
 DECL|member|queue
 id|isdn_net_local
 op_star
@@ -942,6 +1087,14 @@ id|spinlock_t
 id|queue_lock
 suffix:semicolon
 multiline_comment|/* lock to protect queue            */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|10
+)braket
+suffix:semicolon
+multiline_comment|/* Name of device                   */
 DECL|member|global_list
 r_struct
 id|list_head

@@ -48,8 +48,6 @@ DECL|macro|PLAT_NODE_DATA_SIZE
 mdefine_line|#define PLAT_NODE_DATA_SIZE(n)&t;     (PLAT_NODE_DATA(n)-&gt;gendata.node_size)
 DECL|macro|PLAT_NODE_DATA_LOCALNR
 mdefine_line|#define PLAT_NODE_DATA_LOCALNR(p, n) &bslash;&n;&t;&t;(((p) &gt;&gt; PAGE_SHIFT) - PLAT_NODE_DATA(n)-&gt;gendata.node_start_pfn)
-DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;cputocnode(current-&gt;processor)
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */

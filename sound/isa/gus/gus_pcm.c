@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
+macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &quot;gus_tables.h&quot;
 DECL|macro|chip_t
 mdefine_line|#define chip_t snd_gus_card_t

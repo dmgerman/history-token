@@ -675,7 +675,7 @@ id|IRQ_NEPONSET_SA1111
 suffix:semicolon
 )brace
 DECL|variable|neponset_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|neponset_init

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
@@ -5771,6 +5772,13 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5868,6 +5876,13 @@ id|write_sq.sync_queue
 )paren
 suffix:semicolon
 multiline_comment|/* We are not playing after AtaPlay(), so there&n;&t;   is nothing to play any more. Wake up a process&n;&t;   waiting for audio output to drain. */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*** Mid level stuff *********************************************************/
 multiline_comment|/*&n; * /dev/mixer abstraction&n; */
@@ -5991,6 +6006,10 @@ id|arg
 r_int
 id|data
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6011,9 +6030,13 @@ id|MACH_IS_TT
 r_int
 id|porta
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|sound_ym.rd_data_reg_sel
@@ -6024,9 +6047,13 @@ id|porta
 op_assign
 id|sound_ym.rd_data_reg_sel
 suffix:semicolon
-id|sti
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -6094,9 +6121,13 @@ comma
 id|data
 )paren
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|sound_ym.rd_data_reg_sel
@@ -6127,9 +6158,13 @@ id|sound_ym.wd_data
 op_assign
 id|porta
 suffix:semicolon
-id|sti
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return

@@ -89,8 +89,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: SA-1111 initialization failed (%d)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: SA-1111 initialization failed (%d)&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -250,7 +251,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|badge4_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|badge4_init
@@ -330,8 +331,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+l_string|&quot;%s: enabling 5V supply rail&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: enabling 5V supply rail&bslash;n&quot;
 )paren
 suffix:semicolon
 id|GPSR
@@ -358,8 +360,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+l_string|&quot;%s: disabling 5V supply rail&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: disabling 5V supply rail&bslash;n&quot;
 )paren
 suffix:semicolon
 id|GPCR

@@ -998,6 +998,13 @@ id|file
 op_assign
 id|tmp-&gt;vm_file
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|tmp-&gt;shared
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3124,13 +3131,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|p-&gt;sigmask_lock
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 id|p-&gt;array

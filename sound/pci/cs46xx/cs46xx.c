@@ -127,7 +127,6 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifndef CONFIG_SND_CS46XX_ACCEPT_VALID
 DECL|variable|snd_mmap_valid
 r_static
 r_int
@@ -152,7 +151,6 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
@@ -307,7 +305,6 @@ l_string|&quot;,&quot;
 id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SND_CS46XX_ACCEPT_VALID
 id|MODULE_PARM
 c_func
 (paren
@@ -340,7 +337,6 @@ l_string|&quot;,&quot;
 id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -554,12 +550,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_CS46XX_ACCEPT_VALID
-id|chip-&gt;accept_valid
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
 id|chip-&gt;accept_valid
 op_assign
 id|snd_mmap_valid
@@ -567,7 +557,6 @@ id|snd_mmap_valid
 id|dev
 )braket
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

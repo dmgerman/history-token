@@ -1,11 +1,11 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
-multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version LK1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version LK1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&n;&t;Version LK1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&n;&t;Version LK1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;&t;Version LK1.04a:&n;&t;- Remove unused/constant members from struct pci_id_info&n;&t;(which then allows removal of &squot;drv_flags&squot; from private struct)&n;&t;(jgarzik)&n;&t;- If no phy is found, fail to load that board (jgarzik)&n;&t;- Always start phy id scan at id 1 to avoid problems (Donald Becker)&n;&t;- Autodetect where mii_preable_required is needed,&n;&t;default to not needed.  (Donald Becker)&n;&n;&t;Version LK1.04b:&n;&t;- Remove mii_preamble_required module parameter (Donald Becker)&n;&t;- Add per-interface mii_preamble_required (setting is autodetected)&n;&t;  (Donald Becker)&n;&t;- Remove unnecessary cast from void pointer (jgarzik)&n;&t;- Re-align comments in private struct (jgarzik)&n;&n;&t;Version LK1.04c (jgarzik):&n;&t;- Support bitmapped message levels (NETIF_MSG_xxx), and the&n;&t;  two ethtool ioctls that get/set them&n;&t;- Don&squot;t hand-code MII ethtool support, use standard API/lib&n;&n;&t;Version LK1.04d:&n;&t;- Merge from Donald Becker&squot;s sundance.c: (Jason Lunz)&n;&t;&t;* proper support for variably-sized MTUs&n;&t;&t;* default to PIO, to fix chip bugs&n;&t;- Add missing unregister_netdev (Jason Lunz)&n;&t;- Add CONFIG_SUNDANCE_MMIO config option (jgarzik)&n;&t;- Better rx buf size calculation (Donald Becker)&n;&n;*/
+multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version LK1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version LK1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&n;&t;Version LK1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&n;&t;Version LK1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;&t;Version LK1.04a:&n;&t;- Remove unused/constant members from struct pci_id_info&n;&t;(which then allows removal of &squot;drv_flags&squot; from private struct)&n;&t;(jgarzik)&n;&t;- If no phy is found, fail to load that board (jgarzik)&n;&t;- Always start phy id scan at id 1 to avoid problems (Donald Becker)&n;&t;- Autodetect where mii_preable_required is needed,&n;&t;default to not needed.  (Donald Becker)&n;&n;&t;Version LK1.04b:&n;&t;- Remove mii_preamble_required module parameter (Donald Becker)&n;&t;- Add per-interface mii_preamble_required (setting is autodetected)&n;&t;  (Donald Becker)&n;&t;- Remove unnecessary cast from void pointer (jgarzik)&n;&t;- Re-align comments in private struct (jgarzik)&n;&n;&t;Version LK1.04c (jgarzik):&n;&t;- Support bitmapped message levels (NETIF_MSG_xxx), and the&n;&t;  two ethtool ioctls that get/set them&n;&t;- Don&squot;t hand-code MII ethtool support, use standard API/lib&n;&n;&t;Version LK1.04d:&n;&t;- Merge from Donald Becker&squot;s sundance.c: (Jason Lunz)&n;&t;&t;* proper support for variably-sized MTUs&n;&t;&t;* default to PIO, to fix chip bugs&n;&t;- Add missing unregister_netdev (Jason Lunz)&n;&t;- Add CONFIG_SUNDANCE_MMIO config option (jgarzik)&n;&t;- Better rx buf size calculation (Donald Becker)&n;&n;&t;Version LK1.05 (D-Link):&n;&t;- fix DFE-580TX packet drop issue&n;&t;- fix reset_tx logic&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sundance&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.01+LK1.04d&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.01+LK1.05&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;19-Sep-2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;28-Sep-2002&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -106,18 +106,21 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#ifndef _LOCAL_CRC32
+macro_line|#ifndef _COMPAT_WITH_OLD_KERNEL
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#else
 macro_line|#include &quot;crc32.h&quot;
+macro_line|#include &quot;ethtool.h&quot;
+macro_line|#include &quot;mii.h&quot;
+macro_line|#include &quot;compat.h&quot;
 macro_line|#endif
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
@@ -487,6 +490,16 @@ DECL|enumerator|RxListPtr
 id|RxListPtr
 op_assign
 l_int|0x10
+comma
+DECL|enumerator|DebugCtrl0
+id|DebugCtrl0
+op_assign
+l_int|0x1a
+comma
+DECL|enumerator|DebugCtrl1
+id|DebugCtrl1
+op_assign
+l_int|0x1c
 comma
 DECL|enumerator|RxDMABurstThresh
 id|RxDMABurstThresh
@@ -1340,9 +1353,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-id|irq
 )paren
 suffix:semicolon
 r_static
@@ -1822,6 +1832,14 @@ suffix:semicolon
 id|np-&gt;mii_if.mdio_write
 op_assign
 id|mdio_write
+suffix:semicolon
+id|np-&gt;mii_if.phy_id_mask
+op_assign
+l_int|0x1f
+suffix:semicolon
+id|np-&gt;mii_if.reg_num_mask
+op_assign
+l_int|0x1f
 suffix:semicolon
 multiline_comment|/* The chip-specific entries in the device structure. */
 id|dev-&gt;open
@@ -3453,6 +3471,17 @@ op_plus
 id|TxDMAPollPeriod
 )paren
 suffix:semicolon
+multiline_comment|/* Fix DFE-580TX packet drop issue */
+id|writeb
+c_func
+(paren
+l_int|0x01
+comma
+id|ioaddr
+op_plus
+id|DebugCtrl1
+)paren
+suffix:semicolon
 id|netif_start_queue
 c_func
 (paren
@@ -3883,6 +3912,16 @@ suffix:semicolon
 r_int
 id|flag
 suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|IntrEnable
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3997,6 +4036,28 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;cur_tx=%d dirty_tx=%d&bslash;n&quot;
+comma
+id|np-&gt;cur_tx
+comma
+id|np-&gt;dirty_tx
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;cur_rx=%d dirty_rx=%d&bslash;n&quot;
+comma
+id|np-&gt;cur_rx
+comma
+id|np-&gt;dirty_rx
+)paren
+suffix:semicolon
 )brace
 id|spin_lock_irqsave
 c_func
@@ -4011,8 +4072,6 @@ id|reset_tx
 c_func
 (paren
 id|dev
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -4620,6 +4679,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Reset hardware tx and reset TxListPtr to TxFrameId */
 r_static
 r_int
 DECL|function|reset_tx
@@ -4629,9 +4689,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-id|irq
 )paren
 (brace
 r_struct
@@ -4651,20 +4708,30 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
 r_int
-id|frame_id
-suffix:semicolon
-id|frame_id
+id|irq
 op_assign
-id|readb
+id|in_interrupt
 c_func
 (paren
-id|ioaddr
+)paren
+suffix:semicolon
+multiline_comment|/* reset tx logic */
+id|writel
+(paren
+l_int|0
+comma
+id|dev-&gt;base_addr
 op_plus
-id|TxFrameId
+id|TxListPtr
 )paren
 suffix:semicolon
 id|writew
@@ -4727,57 +4794,35 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* free all tx skbuff */
 r_for
 c_loop
 (paren
-suffix:semicolon
-id|np-&gt;cur_tx
-op_minus
-id|np-&gt;dirty_tx
-OG
+id|i
+op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;dirty_tx
+id|i
+OL
+id|TX_RING_SIZE
+suffix:semicolon
+id|i
 op_increment
 )paren
 (brace
-r_int
-id|entry
-op_assign
-id|np-&gt;dirty_tx
-op_mod
-id|TX_RING_SIZE
-suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|status
-op_amp
-l_int|0x00010000
-)paren
-)paren
-r_break
-suffix:semicolon
 id|skb
 op_assign
 id|np-&gt;tx_skbuff
 (braket
-id|entry
+id|i
 )braket
 suffix:semicolon
-multiline_comment|/* Free the original skb. */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+(brace
 id|pci_unmap_single
 c_func
 (paren
@@ -4785,7 +4830,7 @@ id|np-&gt;pci_dev
 comma
 id|np-&gt;tx_ring
 (braket
-id|entry
+id|i
 )braket
 dot
 id|frag
@@ -4807,45 +4852,32 @@ id|irq
 )paren
 id|dev_kfree_skb_irq
 (paren
-id|np-&gt;tx_skbuff
-(braket
-id|entry
-)braket
+id|skb
 )paren
 suffix:semicolon
 r_else
 id|dev_kfree_skb
 (paren
-id|np-&gt;tx_skbuff
-(braket
-id|entry
-)braket
+id|skb
 )paren
 suffix:semicolon
 id|np-&gt;tx_skbuff
 (braket
-id|entry
+id|i
 )braket
 op_assign
 l_int|0
 suffix:semicolon
+id|np-&gt;stats.tx_dropped
+op_increment
+suffix:semicolon
 )brace
-id|writel
-(paren
-id|np-&gt;tx_ring_dma
-op_plus
-id|frame_id
-op_star
-r_sizeof
-(paren
-op_star
-id|np-&gt;tx_ring
-)paren
-comma
-id|dev-&gt;base_addr
-op_plus
-id|TxListPtr
-)paren
+)brace
+id|np-&gt;cur_tx
+op_assign
+id|np-&gt;dirty_tx
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -4895,6 +4927,9 @@ r_int
 id|boguscnt
 op_assign
 id|max_interrupt_work
+suffix:semicolon
+r_int
+id|hw_frame_id
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -5123,8 +5158,6 @@ id|reset_tx
 c_func
 (paren
 id|dev
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -5191,6 +5224,16 @@ op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
+id|hw_frame_id
+op_assign
+id|readb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|TxFrameId
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5217,10 +5260,11 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+r_int
+id|sw_frame_id
+suffix:semicolon
+id|sw_frame_id
+op_assign
 (paren
 id|np-&gt;tx_ring
 (braket
@@ -5228,9 +5272,18 @@ id|entry
 )braket
 dot
 id|status
-op_amp
-l_int|0x00010000
+op_rshift
+l_int|2
 )paren
+op_amp
+l_int|0xff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sw_frame_id
+op_eq
+id|hw_frame_id
 )paren
 r_break
 suffix:semicolon
@@ -7306,6 +7359,13 @@ id|cmd
 )paren
 (brace
 r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_struct
 id|mii_ioctl_data
 op_star
 id|data
@@ -7318,16 +7378,32 @@ op_star
 op_amp
 id|rq-&gt;ifr_data
 suffix:semicolon
-r_switch
+r_int
+id|rc
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
 c_cond
 (paren
 id|cmd
-)paren
-(brace
-r_case
+op_eq
 id|SIOCETHTOOL
-suffix:colon
-r_return
+)paren
+id|rc
+op_assign
 id|netdev_ethtool_ioctl
 c_func
 (paren
@@ -7340,96 +7416,41 @@ op_star
 id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
-r_case
-id|SIOCGMIIPHY
-suffix:colon
-multiline_comment|/* Get address of MII PHY in use. */
-id|data-&gt;phy_id
+r_else
+(brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+id|rc
 op_assign
-(paren
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|phys
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0x1f
-suffix:semicolon
-multiline_comment|/* Fall Through */
-r_case
-id|SIOCGMIIREG
-suffix:colon
-multiline_comment|/* Read MII PHY register. */
-id|data-&gt;val_out
-op_assign
-id|mdio_read
+id|generic_mii_ioctl
 c_func
 (paren
-id|dev
-comma
-id|data-&gt;phy_id
 op_amp
-l_int|0x1f
+id|np-&gt;mii_if
 comma
-id|data-&gt;reg_num
-op_amp
-l_int|0x1f
+id|data
+comma
+id|cmd
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-r_case
-id|SIOCSMIIREG
-suffix:colon
-multiline_comment|/* Write MII PHY register. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
+id|spin_unlock_irq
 c_func
 (paren
-id|CAP_NET_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
-id|mdio_write
-c_func
-(paren
-id|dev
-comma
-id|data-&gt;phy_id
 op_amp
-l_int|0x1f
-comma
-id|data-&gt;reg_num
-op_amp
-l_int|0x1f
-comma
-id|data-&gt;val_in
+id|np-&gt;lock
 )paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EOPNOTSUPP
 suffix:semicolon
 )brace
+r_return
+id|rc
+suffix:semicolon
 )brace
 DECL|function|netdev_close
 r_static

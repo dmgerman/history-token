@@ -1,4 +1,7 @@
 multiline_comment|/* $Id: isdn_net.h,v 1.19.6.4 2001/09/28 08:05:29 kai Exp $&n; *&n; * header for Linux ISDN subsystem, network related functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/isdn.h&gt;
 multiline_comment|/* Definitions for hupflags:                */
 DECL|macro|ISDN_CHARGEHUP
 mdefine_line|#define ISDN_CHARGEHUP   4      /* We want to use the charge mechanism      */
@@ -23,6 +26,14 @@ DECL|macro|CISCO_SLARP_REPLY
 mdefine_line|#define CISCO_SLARP_REPLY     1
 DECL|macro|CISCO_SLARP_KEEPALIVE
 mdefine_line|#define CISCO_SLARP_KEEPALIVE 2
+r_extern
+r_void
+id|isdn_net_init_module
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|isdn_net_new
@@ -153,7 +164,7 @@ r_void
 id|isdn_net_hangup
 c_func
 (paren
-id|isdn_net_local
+id|isdn_net_dev
 op_star
 )paren
 suffix:semicolon
@@ -244,6 +255,41 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|isdn_net_online
+c_func
+(paren
+id|isdn_net_dev
+op_star
+id|idev
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|isdn_net_reset_huptimer
+id|isdn_net_reset_huptimer
+c_func
+(paren
+id|isdn_net_dev
+op_star
+id|idev
+comma
+id|isdn_net_dev
+op_star
+id|idev2
+)paren
+(brace
+id|idev-&gt;huptimer
+op_assign
+l_int|0
+suffix:semicolon
+id|idev2-&gt;huptimer
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 DECL|macro|ISDN_NET_MAX_QUEUE_LENGTH
 mdefine_line|#define ISDN_NET_MAX_QUEUE_LENGTH 2
 multiline_comment|/*&n; * is this particular channel busy?&n; */
@@ -555,6 +601,57 @@ id|master_lp-&gt;netdev-&gt;queue_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * wake up the network -&gt; net_device queue.&n; * For slaves, wake the corresponding master interface.&n; */
+DECL|function|isdn_net_device_wake_queue
+r_static
+r_inline
+r_void
+id|isdn_net_device_wake_queue
+c_func
+(paren
+id|isdn_net_local
+op_star
+id|lp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|lp-&gt;master
+)paren
+id|netif_wake_queue
+c_func
+(paren
+id|lp-&gt;master
+)paren
+suffix:semicolon
+r_else
+id|netif_wake_queue
+c_func
+(paren
+op_amp
+id|lp-&gt;netdev-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|isdn_net_bound
+r_static
+r_inline
+r_int
+id|isdn_net_bound
+c_func
+(paren
+id|isdn_net_dev
+op_star
+id|idev
+)paren
+(brace
+r_return
+id|idev-&gt;isdn_slot
+op_ge
+l_int|0
 suffix:semicolon
 )brace
 r_static
