@@ -72,7 +72,7 @@ id|AC97_AD_MISC
 comma
 id|control
 op_or
-l_int|0x0420
+l_int|0x4420
 )paren
 suffix:semicolon
 multiline_comment|/* We could refuse the device since we dont need to hang around,&n;&t;   but we will claim it */
