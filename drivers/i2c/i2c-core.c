@@ -60,11 +60,6 @@ id|adapters
 id|I2C_ADAP_MAX
 )braket
 suffix:semicolon
-DECL|variable|adap_count
-r_static
-r_int
-id|adap_count
-suffix:semicolon
 multiline_comment|/**** drivers list */
 DECL|variable|drivers
 r_static
@@ -75,11 +70,6 @@ id|drivers
 (braket
 id|I2C_DRIVER_MAX
 )braket
-suffix:semicolon
-DECL|variable|driver_count
-r_static
-r_int
-id|driver_count
 suffix:semicolon
 multiline_comment|/**** debug level */
 DECL|variable|i2c_debug
@@ -239,9 +229,6 @@ id|i
 )braket
 op_assign
 id|adap
-suffix:semicolon
-id|adap_count
-op_increment
 suffix:semicolon
 id|ADAP_UNLOCK
 c_func
@@ -424,9 +411,6 @@ id|i
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
-id|adap_count
-op_decrement
 suffix:semicolon
 id|ERROR0
 suffix:colon
@@ -702,9 +686,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-id|adap_count
-op_decrement
-suffix:semicolon
 id|ADAP_UNLOCK
 c_func
 (paren
@@ -827,9 +808,6 @@ id|i
 )braket
 op_assign
 id|driver
-suffix:semicolon
-id|driver_count
-op_increment
 suffix:semicolon
 id|DRV_UNLOCK
 c_func
@@ -1221,9 +1199,6 @@ id|i
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
-id|driver_count
-op_decrement
 suffix:semicolon
 id|DRV_UNLOCK
 c_func
