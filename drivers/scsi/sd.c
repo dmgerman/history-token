@@ -2438,14 +2438,14 @@ id|sdp
 )paren
 id|retval
 op_assign
-id|scsi_ioctl
+id|scsi_test_unit_ready
 c_func
 (paren
 id|sdp
 comma
-id|SCSI_IOCTL_TEST_UNIT_READY
+id|SD_TIMEOUT
 comma
-l_int|NULL
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unable to test, unit probably not ready.   This usually&n;&t; * means there is no disc in the drive.  Mark as changed,&n;&t; * and we will figure it out later once the drive is&n;&t; * available again.&n;&t; */

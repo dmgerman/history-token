@@ -508,14 +508,14 @@ suffix:semicolon
 )brace
 id|retval
 op_assign
-id|scsi_ioctl
+id|scsi_test_unit_ready
 c_func
 (paren
 id|cd-&gt;device
 comma
-id|SCSI_IOCTL_TEST_UNIT_READY
+id|SR_TIMEOUT
 comma
-l_int|NULL
+id|MAX_RETRIES
 )paren
 suffix:semicolon
 r_if
