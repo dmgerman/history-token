@@ -3375,6 +3375,12 @@ op_amp
 id|bufout
 )paren
 suffix:semicolon
+id|gss_put_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -3558,8 +3564,8 @@ r_int
 id|len
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out_bad
 suffix:semicolon
 )brace
 id|dprintk
@@ -3592,8 +3598,8 @@ r_int
 id|flav
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out_bad
 suffix:semicolon
 )brace
 id|seq
@@ -3652,8 +3658,8 @@ id|qop_state
 op_ne
 l_int|0
 )paren
-r_return
-l_int|NULL
+r_goto
+id|out_bad
 suffix:semicolon
 id|task-&gt;tk_auth-&gt;au_rslack
 op_assign
@@ -3671,6 +3677,12 @@ c_func
 l_string|&quot;RPC: GSS gss_validate: gss_verify_mic succeeded.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|gss_put_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
 r_return
 id|p
 op_plus
@@ -3679,6 +3691,17 @@ c_func
 (paren
 id|len
 )paren
+suffix:semicolon
+id|out_bad
+suffix:colon
+id|gss_put_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|authgss_ops
