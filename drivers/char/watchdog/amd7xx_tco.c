@@ -962,6 +962,7 @@ c_cond
 op_logical_neg
 id|nowayout
 )paren
+(brace
 r_int
 id|i
 suffix:semicolon
@@ -1027,6 +1028,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
+DECL|function|amdtco_notify_sys
 r_static
 r_int
 id|amdtco_notify_sys
@@ -1066,6 +1068,7 @@ r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
+DECL|variable|amdtco_notifier
 r_static
 r_struct
 id|notifier_block
@@ -1079,6 +1082,7 @@ id|amdtco_notify_sys
 comma
 )brace
 suffix:semicolon
+DECL|variable|amdtco_fops
 r_static
 r_struct
 id|file_operations
@@ -1112,6 +1116,7 @@ id|amdtco_fop_release
 comma
 )brace
 suffix:semicolon
+DECL|variable|amdtco_miscdev
 r_static
 r_struct
 id|miscdevice
@@ -1136,6 +1141,7 @@ id|amdtco_fops
 comma
 )brace
 suffix:semicolon
+DECL|variable|amdtco_pci_tbl
 r_static
 r_struct
 id|pci_device_id
@@ -1170,6 +1176,7 @@ comma
 id|amdtco_pci_tbl
 )paren
 suffix:semicolon
+DECL|function|amdtco_init
 r_static
 r_int
 id|__init
@@ -1375,6 +1382,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|amdtco_exit
 r_static
 r_void
 id|__exit
@@ -1400,6 +1408,7 @@ id|amdtco_notifier
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
+DECL|function|amdtco_setup
 r_static
 r_int
 id|__init
@@ -1476,12 +1485,14 @@ id|amdtco_setup
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|amdtco_init
 id|module_init
 c_func
 (paren
 id|amdtco_init
 )paren
 suffix:semicolon
+DECL|variable|amdtco_exit
 id|module_exit
 c_func
 (paren
