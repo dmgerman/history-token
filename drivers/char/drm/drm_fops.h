@@ -156,12 +156,19 @@ id|priv-&gt;lock_count
 op_assign
 l_int|0
 suffix:semicolon
-id|DRIVER_OPEN_HELPER
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.open_helper
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|open_helper
 c_func
 (paren
-id|priv
-comma
 id|dev
+comma
+id|priv
 )paren
 suffix:semicolon
 id|down
@@ -422,7 +429,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if !__HAVE_DRIVER_FOPS_POLL
 multiline_comment|/** No-op. */
 DECL|function|poll
 r_int
@@ -448,8 +454,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if !__HAVE_DRIVER_FOPS_READ
 multiline_comment|/** No-op. */
 DECL|function|read
 id|ssize_t
@@ -481,5 +485,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

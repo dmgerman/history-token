@@ -1,13 +1,10 @@
 multiline_comment|/* drm_context.h -- IOCTLs for generic contexts -*- linux-c -*-&n; * Created: Fri Nov 24 18:31:37 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; * ChangeLog:&n; *  2001-11-16&t;Torsten Duwe &lt;duwe@caldera.de&gt;&n; *&t;&t;added context constructor/destructor hooks,&n; *&t;&t;needed by SiS driver&squot;s memory management.&n; */
 multiline_comment|/* ================================================================&n; * Old-style context support -- only used by gamma.  &n; */
 multiline_comment|/* The drm_read and drm_write_string code (especially that which manages&n;   the circular buffer), is based on Alessandro Rubini&squot;s LINUX DEVICE&n;   DRIVERS (Cambridge: O&squot;Reilly, 1998), pages 111-113. */
-DECL|function|read
+DECL|function|gamma_fops_read
 id|ssize_t
-id|DRM
+id|gamma_fops_read
 c_func
-(paren
-id|read
-)paren
 (paren
 r_struct
 id|file
@@ -448,14 +445,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|poll
+DECL|function|gamma_fops_poll
 r_int
 r_int
-id|DRM
+id|gamma_fops_poll
 c_func
-(paren
-id|poll
-)paren
 (paren
 r_struct
 id|file

@@ -402,23 +402,6 @@ comma
 id|DRM_MEM_BUFS
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_FREELIST
-id|DRM
-c_func
-(paren
-id|freelist_destroy
-)paren
-(paren
-op_amp
-id|dma-&gt;bufs
-(braket
-id|i
-)braket
-dot
-id|freelist
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_if
@@ -558,37 +541,6 @@ id|buf-&gt;dma_wait
 )paren
 suffix:semicolon
 )brace
-macro_line|#if __HAVE_DMA_FREELIST
-r_else
-(brace
-id|drm_device_dma_t
-op_star
-id|dma
-op_assign
-id|dev-&gt;dma
-suffix:semicolon
-multiline_comment|/* If processes are waiting, the last one&n;&t;&t;&t;&t;   to wake will put the buffer on the free&n;&t;&t;&t;&t;   list.  If no processes are waiting, we&n;&t;&t;&t;&t;   put the buffer on the freelist here. */
-id|DRM
-c_func
-(paren
-id|freelist_put
-)paren
-(paren
-id|dev
-comma
-op_amp
-id|dma-&gt;bufs
-(braket
-id|buf-&gt;order
-)braket
-dot
-id|freelist
-comma
-id|buf
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 macro_line|#if !__HAVE_DMA_RECLAIM
 multiline_comment|/**&n; * Reclaim the buffers.&n; *&n; * &bslash;param filp file pointer.&n; *&n; * Frees each buffer associated with &bslash;p filp not already on the hardware.&n; */

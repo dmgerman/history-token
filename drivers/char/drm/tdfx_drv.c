@@ -16,4 +16,18 @@ macro_line|#include &quot;drm_memory.h&quot;
 macro_line|#include &quot;drm_proc.h&quot;
 macro_line|#include &quot;drm_vm.h&quot;
 macro_line|#include &quot;drm_stub.h&quot;
+DECL|function|driver_register_fns
+r_void
+id|DRM
+c_func
+(paren
+id|driver_register_fns
+)paren
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+(brace
+)brace
 eof

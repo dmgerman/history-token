@@ -1372,7 +1372,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef DRIVER_CTX_CTOR
 r_if
 c_cond
 (paren
@@ -1380,14 +1379,23 @@ id|ctx.handle
 op_ne
 id|DRM_KERNEL_CONTEXT
 )paren
-id|DRIVER_CTX_CTOR
+(brace
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.context_ctor
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|context_ctor
 c_func
 (paren
+id|dev
+comma
 id|ctx.handle
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: also pass dev ? */
-macro_line|#endif
+)brace
 id|ctx_entry
 op_assign
 id|DRM
@@ -1900,15 +1908,21 @@ op_ne
 id|DRM_KERNEL_CONTEXT
 )paren
 (brace
-macro_line|#ifdef DRIVER_CTX_DTOR
-id|DRIVER_CTX_DTOR
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.context_dtor
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|context_dtor
 c_func
 (paren
+id|dev
+comma
 id|ctx.handle
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: also pass dev ? */
-macro_line|#endif
 id|DRM
 c_func
 (paren

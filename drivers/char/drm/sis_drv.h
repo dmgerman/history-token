@@ -8,11 +8,6 @@ r_typedef
 r_struct
 id|drm_sis_private
 (brace
-DECL|member|buffers
-id|drm_map_t
-op_star
-id|buffers
-suffix:semicolon
 DECL|member|AGPHeap
 id|memHeap_t
 op_star
