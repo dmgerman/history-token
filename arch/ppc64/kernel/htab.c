@@ -1387,6 +1387,24 @@ id|repeat
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|slot
+op_eq
+op_minus
+l_int|2
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;hash_page: pte_insert failed&bslash;n&quot;
+)paren
+suffix:semicolon
 id|pte_val
 c_func
 (paren

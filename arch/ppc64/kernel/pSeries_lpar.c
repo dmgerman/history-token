@@ -1963,6 +1963,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * Since we try and ioremap PHBs we dont own, the pte insert&n;&t; * will fail. However we must catch the failure in hash_page&n;&t; * or we will loop forever, so return -2 in this case.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1970,13 +1971,9 @@ id|lpar_rc
 op_ne
 id|H_Success
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;Bad return code from pte enter rc = %lx&bslash;n&quot;
-comma
-id|lpar_rc
-)paren
+r_return
+op_minus
+l_int|2
 suffix:semicolon
 r_return
 id|slot
