@@ -2135,6 +2135,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 singleline_comment|//printk(&quot;irqh()&bslash;n&quot;);

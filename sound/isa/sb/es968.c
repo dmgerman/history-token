@@ -350,7 +350,7 @@ DECL|macro|DRIVER_NAME
 mdefine_line|#define&t;DRIVER_NAME&t;&quot;snd-card-es968&quot;
 DECL|function|snd_card_es968_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_card_es968_interrupt
 c_func
 (paren
@@ -379,6 +379,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_if
@@ -405,6 +406,9 @@ id|chip
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_card_es968_pnp
 r_static
