@@ -1976,7 +1976,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|usb_free_dev
+id|usb_put_dev
 (paren
 id|usb_dev
 )paren

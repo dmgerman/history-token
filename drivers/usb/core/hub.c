@@ -1828,10 +1828,9 @@ id|usb_hub
 op_star
 id|hub
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_int
@@ -1846,10 +1845,9 @@ id|hub
 )paren
 r_return
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren
@@ -2234,10 +2232,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|hub
 )paren
@@ -3612,7 +3609,7 @@ id|delay
 )paren
 )paren
 (brace
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -3778,7 +3775,7 @@ r_goto
 id|done
 suffix:semicolon
 multiline_comment|/* Free the configuration if there was an error */
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 id|dev

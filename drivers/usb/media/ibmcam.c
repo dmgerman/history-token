@@ -25274,10 +25274,9 @@ suffix:semicolon
 )brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|uvd
 )paren

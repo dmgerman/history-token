@@ -329,10 +329,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -634,10 +636,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting write urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1021,10 +1025,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

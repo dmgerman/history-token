@@ -2171,14 +2171,6 @@ suffix:semicolon
 id|kaweth_dbg
 c_func
 (paren
-l_string|&quot;Dev usage: %d&quot;
-comma
-id|kaweth-&gt;dev-&gt;refcnt.counter
-)paren
-suffix:semicolon
-id|kaweth_dbg
-c_func
-(paren
 l_string|&quot;Opening network device.&quot;
 )paren
 suffix:semicolon
@@ -2318,14 +2310,6 @@ id|kaweth-&gt;status
 op_and_assign
 op_complement
 id|KAWETH_STATUS_CLOSING
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Dev usage: %d&quot;
-comma
-id|kaweth-&gt;dev-&gt;refcnt.counter
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4070,10 +4054,10 @@ c_func
 l_string|&quot;Kaweth probe returning.&quot;
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|kaweth
 )paren
@@ -4136,10 +4120,10 @@ id|kaweth_device
 op_star
 id|kaweth
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 id|kaweth_info
@@ -4148,10 +4132,10 @@ c_func
 l_string|&quot;Unregistering&quot;
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren

@@ -414,6 +414,13 @@ id|interface-&gt;max_altsetting
 op_assign
 id|USB_ALTSETTINGALLOC
 suffix:semicolon
+id|device_initialize
+c_func
+(paren
+op_amp
+id|interface-&gt;dev
+)paren
+suffix:semicolon
 id|interface-&gt;altsetting
 op_assign
 id|kmalloc

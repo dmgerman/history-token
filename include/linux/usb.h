@@ -60,31 +60,6 @@ id|ms
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * USB device number allocation bitmap. There&squot;s one bitmap&n; * per USB tree.&n; */
-DECL|struct|usb_devmap
-r_struct
-id|usb_devmap
-(brace
-DECL|member|devicemap
-r_int
-r_int
-id|devicemap
-(braket
-l_int|128
-op_div
-(paren
-l_int|8
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 r_struct
 id|usb_device
 suffix:semicolon
@@ -188,17 +163,59 @@ id|device
 id|dev
 suffix:semicolon
 multiline_comment|/* interface specific device info */
-DECL|member|private_data
-r_void
-op_star
-id|private_data
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_usb_interface
 mdefine_line|#define&t;to_usb_interface(d) container_of(d, struct usb_interface, dev)
 DECL|macro|interface_to_usbdev
 mdefine_line|#define&t;interface_to_usbdev(intf) &bslash;&n;&t;container_of(intf-&gt;dev.parent, struct usb_device, dev)
+DECL|function|usb_get_intfdata
+r_static
+r_inline
+r_void
+op_star
+id|usb_get_intfdata
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+(brace
+r_return
+id|dev_get_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|usb_set_intfdata
+r_static
+r_inline
+r_void
+id|usb_set_intfdata
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* USB_DT_CONFIG: Configuration descriptor information.&n; *&n; * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the&n; * descriptor type is different.  Highspeed-capable devices can look&n; * different depending on what speed they&squot;re currently running.  Only&n; * devices with a USB_DT_DEVICE_QUALIFIER have an OTHER_SPEED_CONFIG.&n; */
 DECL|struct|usb_host_config
 r_struct
@@ -274,11 +291,43 @@ multiline_comment|/* -----------------------------------------------------------
 r_struct
 id|usb_operations
 suffix:semicolon
-multiline_comment|/*&n; * Allocated per bus we have&n; */
+multiline_comment|/* USB device number allocation bitmap */
+DECL|struct|usb_devmap
+r_struct
+id|usb_devmap
+(brace
+DECL|member|devicemap
+r_int
+r_int
+id|devicemap
+(braket
+l_int|128
+op_div
+(paren
+l_int|8
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Allocated per bus (tree of devices) we have:&n; */
 DECL|struct|usb_bus
 r_struct
 id|usb_bus
 (brace
+DECL|member|controller
+r_struct
+id|device
+op_star
+id|controller
+suffix:semicolon
+multiline_comment|/* host/master side hardware */
 DECL|member|busnum
 r_int
 id|busnum
@@ -404,11 +453,6 @@ r_int
 id|ttport
 suffix:semicolon
 multiline_comment|/* device port on that tt hub */
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
-suffix:semicolon
-multiline_comment|/* Reference count */
 DECL|member|serialize
 r_struct
 id|semaphore
@@ -582,16 +626,15 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 r_struct
 id|usb_device
 op_star
+id|dev
 )paren
 suffix:semicolon
-DECL|macro|usb_put_dev
-mdefine_line|#define usb_put_dev usb_free_dev
 multiline_comment|/* mostly for devices emulating SCSI over USB */
 r_extern
 r_int

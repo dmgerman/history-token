@@ -2441,10 +2441,9 @@ id|usbtest_dev
 op_star
 id|dev
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_struct
@@ -3877,10 +3876,9 @@ l_string|&quot; bulk-out&quot;
 suffix:semicolon
 )brace
 )brace
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|dev
 )paren
@@ -3971,10 +3969,9 @@ id|usbtest_dev
 op_star
 id|dev
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 id|down
@@ -3983,12 +3980,11 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info
@@ -3996,11 +3992,6 @@ id|info
 l_string|&quot;unbound %s&quot;
 comma
 id|dev-&gt;id
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|intf-&gt;private_data
 )paren
 suffix:semicolon
 )brace

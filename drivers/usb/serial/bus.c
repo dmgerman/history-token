@@ -180,9 +180,13 @@ id|driver-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;module get failed, exiting&quot;
+op_star
+id|dev
+comma
+l_string|&quot;module get failed, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -230,10 +234,13 @@ comma
 id|minor
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s converter now attached to ttyUSB%d (or usb/tts/%d for devfs)&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s converter now attached to ttyUSB%d (or usb/tts/%d for devfs)&bslash;n&quot;
 comma
 id|driver-&gt;name
 comma
@@ -318,9 +325,13 @@ id|driver-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;module get failed, exiting&quot;
+op_star
+id|dev
+comma
+l_string|&quot;module get failed, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -360,10 +371,13 @@ comma
 id|minor
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s converter now disconnected from ttyUSB%d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s converter now disconnected from ttyUSB%d&bslash;n&quot;
 comma
 id|driver-&gt;name
 comma

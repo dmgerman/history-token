@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB NB Camera driver&n; */
+multiline_comment|/*&n; * USB NB Camera driver&n; *&n; * HISTORY:&n; * 25-Dec-2002 Dmitri      Removed lighting, sharpness parameters, methods.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
@@ -75,12 +75,6 @@ id|min_canvasHeight
 op_assign
 l_int|4
 suffix:semicolon
-singleline_comment|//static int lighting = 1; /* Medium */
-DECL|macro|SHARPNESS_MIN
-mdefine_line|#define SHARPNESS_MIN&t;0
-DECL|macro|SHARPNESS_MAX
-mdefine_line|#define SHARPNESS_MAX&t;6
-singleline_comment|//static int sharpness = 4; /* Low noise, good details */
 DECL|macro|FRAMERATE_MIN
 mdefine_line|#define FRAMERATE_MIN&t;0
 DECL|macro|FRAMERATE_MAX
@@ -181,38 +175,6 @@ c_func
 id|framerate
 comma
 l_string|&quot;Framerate setting: 0=slowest, 6=fastest (default=2)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|lighting
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|lighting
-comma
-l_string|&quot;Photosensitivity: 0=bright, 1=medium (default), 2=low light&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|sharpness
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|sharpness
-comma
-l_string|&quot;Model1 noise reduction: 0=smooth, 6=sharp (default=4)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -674,34 +636,6 @@ id|uvd
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * ultracam_change_lighting_conditions()&n; */
-DECL|function|ultracam_change_lighting_conditions
-r_static
-r_void
-id|ultracam_change_lighting_conditions
-c_func
-(paren
-r_struct
-id|uvd
-op_star
-id|uvd
-)paren
-(brace
-)brace
-multiline_comment|/*&n; * ultracam_set_sharpness()&n; *&n; * Cameras model 1 have internal smoothing feature. It is controlled by value in&n; * range [0..6], where 0 is most smooth and 6 is most sharp (raw image, I guess).&n; * Recommended value is 4. Cameras model 2 do not have this feature at all.&n; */
-DECL|function|ultracam_set_sharpness
-r_static
-r_void
-id|ultracam_set_sharpness
-c_func
-(paren
-r_struct
-id|uvd
-op_star
-id|uvd
-)paren
-(brace
-)brace
 multiline_comment|/*&n; * ultracam_set_brightness()&n; *&n; * This procedure changes brightness of the picture.&n; */
 DECL|function|ultracam_set_brightness
 r_static
@@ -804,18 +738,6 @@ op_star
 id|uvd
 )paren
 (brace
-id|ultracam_change_lighting_conditions
-c_func
-(paren
-id|uvd
-)paren
-suffix:semicolon
-id|ultracam_set_sharpness
-c_func
-(paren
-id|uvd
-)paren
-suffix:semicolon
 id|ultracam_reinit_iso
 c_func
 (paren
@@ -4280,10 +4202,9 @@ c_cond
 id|uvd
 )paren
 (brace
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|uvd
 )paren

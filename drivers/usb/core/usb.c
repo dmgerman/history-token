@@ -1,5 +1,12 @@
 multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
+macro_line|#else
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -10,14 +17,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#ifdef CONFIG_USB_DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;usb.h&quot;
 r_extern
@@ -792,9 +796,13 @@ id|iface-&gt;driver
 op_assign
 id|driver
 suffix:semicolon
-id|iface-&gt;private_data
-op_assign
+id|usb_set_intfdata
+c_func
+(paren
+id|iface
+comma
 id|priv
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_interface_claimed - returns true iff an interface is claimed&n; * @iface: the interface being checked&n; *&n; * This should be used by drivers to check other interfaces to see if&n; * they are available or not.  If another driver has claimed the interface,&n; * they may not claim it.  Otherwise it&squot;s OK to claim it using&n; * usb_driver_claim_interface().&n; *&n; * Returns true (nonzero) iff the interface is claimed, else false (zero).&n; */
@@ -861,9 +869,13 @@ id|iface-&gt;driver
 op_assign
 l_int|NULL
 suffix:semicolon
-id|iface-&gt;private_data
-op_assign
+id|usb_set_intfdata
+c_func
+(paren
+id|iface
+comma
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_match_id - find first usb_device_id matching device or interface&n; * @interface: the interface of interest&n; * @id: array of usb_device_id structures, terminated by zero entry&n; *&n; * usb_match_id searches an array of usb_device_id&squot;s and returns&n; * the first one matching the device or interface, or null.&n; * This is used when binding (or rebinding) a driver to an interface.&n; * Most USB device drivers will use this indirectly, through the usb core,&n; * but some layered driver frameworks use it directly.&n; * These device tables are exported with MODULE_DEVICE_TABLE, through&n; * modutils and &quot;modules.usbmap&quot;, to support the driver loading&n; * functionality of USB hotplugging.&n; *&n; * What Matches:&n; *&n; * The &quot;match_flags&quot; element in a usb_device_id controls which&n; * members are used.  If the corresponding bit is set, the&n; * value in the device_id must match its corresponding member&n; * in the device or interface descriptor, or else the device_id&n; * does not match.&n; *&n; * &quot;driver_info&quot; is normally used only by device drivers,&n; * but you can create a wildcard &quot;matches anything&quot; usb_device_id&n; * as a driver&squot;s &quot;modules.usbmap&quot; entry if you provide an id with&n; * only a nonzero &quot;driver_info&quot; field.  If you do this, the USB device&n; * driver&squot;s probe() routine should use additional intelligence to&n; * decide whether to bind to the specified interface.&n; * &n; * What Makes Good usb_device_id Tables:&n; *&n; * The match algorithm is very simple, so that intelligence in&n; * driver selection must come from smart driver id records.&n; * Unless you have good reasons to use another selection policy,&n; * provide match elements only in related groups, and order match&n; * specifiers from specific to general.  Use the macros provided&n; * for that purpose if you can.&n; *&n; * The most specific match specifiers use device descriptor&n; * data.  These are commonly used with product-specific matches;&n; * the USB_DEVICE macro lets you provide vendor and product IDs,&n; * and you can also match against ranges of product revisions.&n; * These are widely used for devices with application or vendor&n; * specific bDeviceClass values.&n; *&n; * Matches based on device class/subclass/protocol specifications&n; * are slightly more general; use the USB_DEVICE_INFO macro, or&n; * its siblings.  These are used with single-function devices&n; * where bDeviceClass doesn&squot;t specify that each interface has&n; * its own class. &n; *&n; * Matches based on interface class/subclass/protocol are the&n; * most general; they let drivers bind to any interface on a&n; * multiple-function device.  Use the USB_INTERFACE_INFO&n; * macro, or its siblings, to match class-per-interface style &n; * devices (as recorded in bDeviceClass).&n; *  &n; * Within those groups, remember that not all combinations are&n; * meaningful.  For example, don&squot;t give a product version range&n; * without vendor and product IDs; or specify a protocol without&n; * its associated class and subclass.&n; */
@@ -1817,6 +1829,13 @@ id|dev
 )paren
 )paren
 suffix:semicolon
+id|device_initialize
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
 id|usb_bus_get
 c_func
 (paren
@@ -1843,15 +1862,6 @@ suffix:semicolon
 id|dev-&gt;parent
 op_assign
 id|parent
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|dev-&gt;refcnt
-comma
-l_int|1
-)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -1884,7 +1894,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_get_dev - increments the reference count of the device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them by calling usb_put_dev(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
+multiline_comment|/**&n; * usb_get_dev - increments the reference count of the usb device structure&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them by calling usb_put_dev(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
 DECL|function|usb_get_dev
 r_struct
 id|usb_device
@@ -1897,30 +1907,50 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|tmp
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev
 )paren
-(brace
-id|atomic_inc
+r_return
+l_int|NULL
+suffix:semicolon
+id|tmp
+op_assign
+id|get_device
+c_func
 (paren
 op_amp
-id|dev-&gt;refcnt
+id|dev-&gt;dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+)paren
 r_return
-id|dev
+id|to_usb_device
+c_func
+(paren
+id|tmp
+)paren
 suffix:semicolon
-)brace
+r_else
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_free_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
-DECL|function|usb_free_dev
+multiline_comment|/**&n; * usb_put_dev - release a use of the usb device structure&n; * @dev: device that&squot;s been disconnected&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; */
+DECL|function|usb_put_dev
 r_void
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 r_struct
@@ -1932,43 +1962,82 @@ id|dev
 r_if
 c_cond
 (paren
-id|atomic_dec_and_test
+id|dev
+)paren
+id|put_device
 c_func
 (paren
 op_amp
-id|dev-&gt;refcnt
+id|dev-&gt;dev
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_release_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; *&n; * Will be called only by the device core when all users of this usb device are&n; * done.&n; */
+DECL|function|usb_release_dev
+r_static
+r_void
+id|usb_release_dev
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|udev
+suffix:semicolon
+id|udev
+op_assign
+id|to_usb_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;bus-&gt;op-&gt;deallocate
+op_logical_neg
+id|udev
 )paren
-id|dev-&gt;bus-&gt;op
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|udev-&gt;bus
+op_logical_and
+id|udev-&gt;bus-&gt;op
+op_logical_and
+id|udev-&gt;bus-&gt;op-&gt;deallocate
+)paren
+id|udev-&gt;bus-&gt;op
 op_member_access_from_pointer
 id|deallocate
 c_func
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 id|usb_destroy_configuration
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 id|usb_bus_put
 (paren
-id|dev-&gt;bus
+id|udev-&gt;bus
 )paren
 suffix:semicolon
 id|kfree
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; * usb_get_current_frame_number - return current bus frame number&n; * @dev: the device whose bus is being queried&n; *&n; * Returns the current frame number for the USB host controller&n; * used with the given USB device.  This can be used when scheduling&n; * isochronous requests.&n; *&n; * Note that different kinds of host controller have different&n; * &quot;scheduling horizons&quot;.  While one type might support scheduling only&n; * 32 frames into the future, others could support scheduling up to&n; * 1024 frames into the future.&n; */
 DECL|function|usb_get_current_frame_number
@@ -2128,10 +2197,11 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|info
-c_func
+id|dev_info
 (paren
-l_string|&quot;USB disconnect on device %d&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;USB disconnect, address %d&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 )paren
@@ -2175,11 +2245,11 @@ id|child
 )paren
 suffix:semicolon
 )brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unregistering interfaces on device %d&quot;
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;unregistering interfaces&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2224,11 +2294,11 @@ id|interface-&gt;dev
 suffix:semicolon
 )brace
 )brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unregistering the device %d&quot;
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;unregistering device&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Free the device number and remove the /proc/bus/usb entry */
@@ -2519,9 +2589,12 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef DEBUG
-id|printk
+id|dev_printk
 (paren
 id|KERN_INFO
+comma
+id|dev-&gt;dev
+comma
 l_string|&quot;Product: %s&bslash;n&quot;
 comma
 id|prod_str
@@ -2556,9 +2629,12 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef DEBUG
-id|printk
+id|dev_printk
 (paren
 id|KERN_INFO
+comma
+id|dev-&gt;dev
+comma
 l_string|&quot;Manufacturer: %s&bslash;n&quot;
 comma
 id|mfgr_str
@@ -2707,6 +2783,16 @@ op_assign
 op_amp
 id|usb_bus_type
 suffix:semicolon
+id|dev-&gt;dev.release
+op_assign
+id|usb_release_dev
+suffix:semicolon
+id|usb_get_dev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2731,6 +2817,11 @@ id|dev-&gt;bus-&gt;busnum
 comma
 id|dev-&gt;devpath
 )paren
+suffix:semicolon
+multiline_comment|/* dma masks come from the controller; readonly, except to hcd */
+id|dev-&gt;dev.dma_mask
+op_assign
+id|parent-&gt;dma_mask
 suffix:semicolon
 multiline_comment|/* USB device state == default ... it&squot;s not usable yet */
 multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
@@ -3153,10 +3244,12 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* USB device state == configured ... tell the world! */
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;new device strings: Mfr=%d, Product=%d, SerialNumber=%d&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;new device strings: Mfr=%d, Product=%d, SerialNumber=%d&bslash;n&quot;
 comma
 id|dev-&gt;descriptor.iManufacturer
 comma
@@ -3190,7 +3283,7 @@ macro_line|#endif
 multiline_comment|/* put into sysfs, with device and config specific files */
 id|err
 op_assign
-id|device_register
+id|device_add
 (paren
 op_amp
 id|dev-&gt;dev
@@ -3265,6 +3358,10 @@ op_assign
 op_amp
 id|usb_bus_type
 suffix:semicolon
+id|interface-&gt;dev.dma_mask
+op_assign
+id|parent-&gt;dma_mask
+suffix:semicolon
 id|sprintf
 (paren
 op_amp
@@ -3331,7 +3428,7 @@ comma
 id|interface-&gt;dev.bus_id
 )paren
 suffix:semicolon
-id|device_register
+id|device_add
 (paren
 op_amp
 id|interface-&gt;dev
@@ -3476,9 +3573,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3503,28 +3600,21 @@ id|urb-&gt;dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_map
 )paren
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
+id|urb-&gt;transfer_dma
+op_assign
+id|dma_map_single
 (paren
-id|op-&gt;buffer_map
-(paren
-id|bus
+id|controller
 comma
 id|urb-&gt;transfer_buffer
-comma
-op_amp
-id|urb-&gt;transfer_dma
 comma
 id|urb-&gt;transfer_buffer_length
 comma
@@ -3534,14 +3624,13 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
+singleline_comment|// FIXME generic api broken like pci, can&squot;t report errors
+singleline_comment|// if (urb-&gt;transfer_dma == DMA_ADDR_INVALID) return 0;
 id|urb-&gt;transfer_flags
 op_or_assign
 id|URB_NO_DMA_MAP
@@ -3567,9 +3656,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3596,19 +3685,16 @@ id|urb-&gt;dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_dmasync
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_dmasync
+id|dma_sync_single
 (paren
-id|bus
+id|controller
 comma
 id|urb-&gt;transfer_dma
 comma
@@ -3620,9 +3706,9 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -3643,9 +3729,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3672,19 +3758,16 @@ id|urb-&gt;dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_unmap
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_unmap
+id|dma_unmap_single
 (paren
-id|bus
+id|controller
 comma
 id|urb-&gt;transfer_dma
 comma
@@ -3696,13 +3779,13 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
+multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; * Better yet, use the usb_sg_*() calls, which do that (and more) for you.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
 DECL|function|usb_buffer_map_sg
 r_int
 id|usb_buffer_map_sg
@@ -3730,12 +3813,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
-suffix:semicolon
-r_int
-id|n_hw_ents
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3757,29 +3837,22 @@ id|dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_map_sg
 )paren
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
+singleline_comment|// FIXME generic api broken like pci, can&squot;t report errors
+r_return
+id|dma_map_sg
 (paren
-id|op-&gt;buffer_map_sg
-(paren
-id|bus
+id|controller
 comma
 id|sg
-comma
-op_amp
-id|n_hw_ents
 comma
 id|nents
 comma
@@ -3789,17 +3862,10 @@ id|pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-id|n_hw_ents
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_buffer_dmasync_sg - synchronize DMA and CPU view of scatterlist buffer(s)&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to synchronize&n; * @n_hw_ents: the positive return value from usb_buffer_map_sg&n; *&n; * Use this when you are re-using a scatterlist&squot;s data buffers for&n; * another USB request.&n; */
@@ -3830,9 +3896,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3849,19 +3915,16 @@ id|dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_dmasync_sg
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_dmasync_sg
+id|dma_sync_sg
 (paren
-id|bus
+id|controller
 comma
 id|sg
 comma
@@ -3873,9 +3936,9 @@ id|pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -3907,9 +3970,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3926,19 +3989,16 @@ id|dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_unmap_sg
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_unmap_sg
+id|dma_unmap_sg
 (paren
-id|bus
+id|controller
 comma
 id|sg
 comma
@@ -3950,9 +4010,9 @@ id|pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -4196,11 +4256,11 @@ c_func
 id|usb_alloc_dev
 )paren
 suffix:semicolon
-DECL|variable|usb_free_dev
+DECL|variable|usb_put_dev
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|usb_free_dev
+id|usb_put_dev
 )paren
 suffix:semicolon
 DECL|variable|usb_get_dev
