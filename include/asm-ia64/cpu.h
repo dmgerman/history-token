@@ -33,5 +33,24 @@ comma
 id|cpu_state
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|arch_register_cpu
+c_func
+(paren
+r_int
+id|num
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+r_extern
+r_void
+id|arch_unregister_cpu
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _ASM_IA64_CPU_H_ */
 eof
