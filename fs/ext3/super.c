@@ -1977,7 +1977,7 @@ id|statfs
 suffix:colon
 id|ext3_statfs
 comma
-multiline_comment|/* BKL held */
+multiline_comment|/* BKL not held. */
 id|remount_fs
 suffix:colon
 id|ext3_remount

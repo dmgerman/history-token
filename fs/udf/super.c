@@ -9080,6 +9080,11 @@ op_star
 id|buf
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|buf-&gt;f_type
 op_assign
 id|UDF_SUPER_MAGIC
@@ -9163,6 +9168,11 @@ multiline_comment|/* __kernel_fsid_t f_fsid */
 id|buf-&gt;f_namelen
 op_assign
 id|UDF_NAME_LEN
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

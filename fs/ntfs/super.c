@@ -4557,6 +4557,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_put_super - called by the vfs to unmount a volume&n; * @vfs_sb:&t;vfs superblock of volume to unmount&n; *&n; * ntfs_put_super() is called by the VFS (from fs/super.c::do_umount()) when&n; * the volume is being unmounted (umount system call has been invoked) and it&n; * releases all inodes and memory belonging to the NTFS specific part of the&n; * super block.&n; */
 DECL|function|ntfs_put_super
+r_static
 r_void
 id|ntfs_put_super
 c_func
@@ -4853,6 +4854,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_nr_free_clusters - return the number of free clusters on a volume&n; * @vol:&t;ntfs volume for which to obtain free cluster count&n; *&n; * Calculate the number of free clusters on the mounted NTFS volume @vol.&n; *&n; * Errors are ignored and we just return the number of free clusters we have&n; * found. This means we return an underestimate on error.&n; */
 DECL|function|get_nr_free_clusters
+r_static
 id|s64
 id|get_nr_free_clusters
 c_func
@@ -5188,11 +5190,12 @@ r_return
 id|nr_free
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * get_nr_free_mft_records - return the number of free inodes on a volume&n; * @vol:&t;ntfs volume for which to obtain free inode count&n; *&n; * Calculate the number of free mft records (inodes) on the mounted NTFS&n; * volume @vol.&n; *&n; * Errors are ignored and we just return the number of free inodes we have&n; * found. This means we return an underestimate on error.&n; */
-DECL|function|get_nr_free_mft_records
+multiline_comment|/**&n; * __get_nr_free_mft_records - return the number of free inodes on a volume&n; * @vol:&t;ntfs volume for which to obtain free inode count&n; *&n; * Calculate the number of free mft records (inodes) on the mounted NTFS&n; * volume @vol.&n; *&n; * Errors are ignored and we just return the number of free inodes we have&n; * found. This means we return an underestimate on error.&n; *&n; * NOTE: Caller must hold mftbmp_lock rw_semaphore for reading or writing.&n; */
+DECL|function|__get_nr_free_mft_records
+r_static
 r_int
 r_int
-id|get_nr_free_mft_records
+id|__get_nr_free_mft_records
 c_func
 (paren
 id|ntfs_volume
@@ -5241,13 +5244,6 @@ l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Serialize accesses to the inode bitmap. */
-id|down_read
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_lock
-)paren
-suffix:semicolon
 id|mapping
 op_assign
 op_amp
@@ -5525,13 +5521,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|up_read
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_lock
-)paren
-suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -5544,6 +5533,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_statfs - return information about mounted NTFS volume&n; * @sb:&t;&t;super block of mounted volume&n; * @sfs:&t;statfs structure in which to return the information&n; *&n; * Return information about the mounted NTFS volume @sb in the statfs structure&n; * pointed to by @sfs (this is initialized with zeros before ntfs_statfs is&n; * called). We interpret the values to be correct of the moment in time at&n; * which we are called. Most values are variable otherwise and this isn&squot;t just&n; * the free values but the totals as well. For example we can increase the&n; * total number of file nodes if we run out and we can keep doing this until&n; * there is no more space on the volume left at all.&n; *&n; * Called from vfs_statfs which is used to handle the statfs, fstatfs, and&n; * ustat system calls.&n; *&n; * Return 0 on success or -errno on error.&n; */
 DECL|function|ntfs_statfs
+r_static
 r_int
 id|ntfs_statfs
 c_func
@@ -5628,6 +5618,13 @@ id|sfs-&gt;f_bfree
 op_assign
 id|size
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Total file nodes in file system (at this moment in time). */
 id|sfs-&gt;f_files
 op_assign
@@ -5638,10 +5635,17 @@ suffix:semicolon
 multiline_comment|/* Free file nodes in fs (based on current total count). */
 id|sfs-&gt;f_ffree
 op_assign
-id|get_nr_free_mft_records
+id|__get_nr_free_mft_records
 c_func
 (paren
 id|vol
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * File system id. This is extremely *nix flavour dependent and even&n;&t; * within Linux itself all fs do their own thing. I interpret this to&n;&t; * mean a unique id associated with the mounted fs and not the id&n;&t; * associated with the file system driver, the latter is already given&n;&t; * by the file system type in sfs-&gt;f_type. Thus we use the 64-bit&n;&t; * volume serial number splitting it into two 32-bit parts. We enter&n;&t; * the least significant 32-bits in f_fsid[0] and the most significant&n;&t; * 32-bits in f_fsid[1].&n;&t; */

@@ -2455,6 +2455,13 @@ id|buf
 (brace
 r_int
 id|result
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|result
 op_assign
 id|smb_proc_dskattr
 c_func
@@ -2462,6 +2469,11 @@ c_func
 id|sb
 comma
 id|buf
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|buf-&gt;f_type

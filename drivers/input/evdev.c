@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: evdev.c,v 1.42 2002/01/02 11:59:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  Event char devices, giving access to raw input device events.&n; */
+multiline_comment|/*&n; * $Id: evdev.c,v 1.48 2002/05/26 14:28:26 jdeneux Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  Event char devices, giving access to raw input device events.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 DECL|macro|EVDEV_MINOR_BASE
 mdefine_line|#define EVDEV_MINOR_BASE&t;64
@@ -23,10 +23,6 @@ suffix:semicolon
 DECL|member|open
 r_int
 id|open
-suffix:semicolon
-DECL|member|open_for_write
-r_int
-id|open_for_write
 suffix:semicolon
 DECL|member|minor
 r_int
@@ -304,21 +300,34 @@ op_star
 id|file
 )paren
 (brace
-r_return
-id|input_flush_device
-c_func
-(paren
-op_amp
-(paren
+r_struct
+id|evdev_list
+op_star
+id|list
+op_assign
 (paren
 r_struct
 id|evdev_list
 op_star
 )paren
 id|file-&gt;private_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list-&gt;evdev-&gt;exist
 )paren
-op_member_access_from_pointer
-id|evdev-&gt;handle
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_return
+id|input_flush_device
+c_func
+(paren
+op_amp
+id|list-&gt;evdev-&gt;handle
 comma
 id|file
 )paren
@@ -671,6 +680,16 @@ r_int
 id|retval
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list-&gt;evdev-&gt;exist
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_while
 c_loop
@@ -1058,6 +1077,16 @@ comma
 id|t
 comma
 id|u
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|evdev-&gt;exist
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_switch
 c_cond
@@ -1645,7 +1674,7 @@ id|effect
 (brace
 r_return
 op_minus
-id|EINVAL
+id|EFAULT
 suffix:semicolon
 )brace
 id|err
@@ -1687,7 +1716,7 @@ id|id
 (brace
 r_return
 op_minus
-id|EINVAL
+id|EFAULT
 suffix:semicolon
 )brace
 r_return
@@ -1731,6 +1760,12 @@ suffix:semicolon
 r_case
 id|EVIOCGEFFECTS
 suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|retval
+op_assign
 id|put_user
 c_func
 (paren
@@ -1742,6 +1777,10 @@ op_star
 )paren
 id|arg
 )paren
+)paren
+)paren
+r_return
+id|retval
 suffix:semicolon
 r_return
 l_int|0

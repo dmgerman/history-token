@@ -4098,6 +4098,8 @@ c_func
 (paren
 id|en-&gt;name
 )paren
+op_plus
+l_int|1
 comma
 l_int|4
 )paren
@@ -4265,6 +4267,8 @@ c_func
 (paren
 id|men-&gt;name
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|en.n_descsz
 op_assign
