@@ -556,6 +556,10 @@ op_star
 id|substream
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|snd_rawmidi_runtime_t
 op_star
 id|runtime
@@ -574,7 +578,15 @@ id|runtime-&gt;drain
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* interrupts are not enabled at this moment,&n;&t;   so spinlock is not required */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|runtime-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|runtime-&gt;appl_ptr
 op_assign
 id|runtime-&gt;hw_ptr
@@ -584,6 +596,15 @@ suffix:semicolon
 id|runtime-&gt;avail
 op_assign
 id|runtime-&gt;buffer_size
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|runtime-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -740,6 +761,10 @@ op_star
 id|substream
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|snd_rawmidi_runtime_t
 op_star
 id|runtime
@@ -758,7 +783,15 @@ id|runtime-&gt;drain
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* interrupts aren&squot;t enabled at this moment, so spinlock isn&squot;t needed */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|runtime-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|runtime-&gt;appl_ptr
 op_assign
 id|runtime-&gt;hw_ptr
@@ -768,6 +801,15 @@ suffix:semicolon
 id|runtime-&gt;avail
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|runtime-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_return
 l_int|0
