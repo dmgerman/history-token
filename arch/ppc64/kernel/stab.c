@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pmc.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 r_int
 id|make_ste
 c_func
@@ -81,10 +82,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_has_slb
-c_func
-(paren
-)paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
 )paren
 (brace
 multiline_comment|/* Invalidate the entire SLB &amp; all the ERATS */
@@ -899,10 +899,9 @@ id|kernel_segment
 r_if
 c_cond
 (paren
-id|cpu_has_slb
-c_func
-(paren
-)paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
 )paren
 (brace
 macro_line|#ifndef CONFIG_PPC_ISERIES
@@ -1165,9 +1164,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_has_slb
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
 )paren
 )paren
 (brace
@@ -1446,9 +1446,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_has_slb
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
 )paren
 )paren
 (brace
@@ -1485,10 +1486,9 @@ id|mm
 r_if
 c_cond
 (paren
-id|cpu_has_slb
-c_func
-(paren
-)paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * XXX disable 32bit slb invalidate optimisation until we fix&n;&t;&t; * the issue where a 32bit app execed out of a 64bit app can&n;&t;&t; * cause segments above 4GB not to be flushed - Anton&n;&t;&t; */

@@ -65,17 +65,12 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_void
-id|init_ras_IRQ
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* #define DEBUG */
 multiline_comment|/*&n; * Initialize handlers for the set of interrupts caused by hardware errors&n; * and power system events.&n; */
 DECL|function|init_ras_IRQ
-r_void
+r_static
+r_int
+id|__init
 id|init_ras_IRQ
 c_func
 (paren
@@ -266,7 +261,17 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
+DECL|variable|init_ras_IRQ
+id|__initcall
+c_func
+(paren
+id|init_ras_IRQ
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Handle power subsystem events (EPOW).&n; *&n; * Presently we just log the event has occurred.  This should be fixed&n; * to examine the type of power failure and take appropriate action where&n; * the time horizon permits something useful to be done.&n; */
 r_static
 id|irqreturn_t

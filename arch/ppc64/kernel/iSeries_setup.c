@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;iSeries_setup.h&quot;
 macro_line|#include &lt;asm/naca.h&gt;
@@ -1089,17 +1090,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__is_processor
-c_func
-(paren
-id|PV_POWER4
-)paren
-op_logical_or
-id|__is_processor
-c_func
-(paren
-id|PV_POWER4p
-)paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
 )paren
 id|mem_blocks
 op_assign
@@ -1300,10 +1293,6 @@ suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign
 id|iSeries_init_IRQ
-suffix:semicolon
-id|ppc_md.init_ras_IRQ
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
