@@ -2,6 +2,7 @@ macro_line|#ifndef _MOTOROLA_PGALLOC_H
 DECL|macro|_MOTOROLA_PGALLOC_H
 mdefine_line|#define _MOTOROLA_PGALLOC_H
 macro_line|#include &lt;asm/tlb.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 r_extern
 id|pmd_t
 op_star
