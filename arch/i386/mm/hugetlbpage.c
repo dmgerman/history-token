@@ -13,16 +13,16 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|htlbpagemem
+r_static
 r_int
 id|htlbpagemem
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|htlbpage_max
 r_int
 id|htlbpage_max
 suffix:semicolon
 DECL|variable|htlbzone_pages
+r_static
 r_int
 id|htlbzone_pages
 suffix:semicolon
@@ -48,6 +48,7 @@ suffix:semicolon
 DECL|macro|MAX_ID
 mdefine_line|#define MAX_ID &t;32
 DECL|struct|htlbpagekey
+r_static
 r_struct
 id|htlbpagekey
 (brace
@@ -524,6 +525,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|make_hugetlb_pages_present
+r_static
 r_int
 id|make_hugetlb_pages_present
 c_func
