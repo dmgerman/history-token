@@ -2363,7 +2363,7 @@ r_sizeof
 id|rmidi-&gt;name
 )paren
 comma
-l_string|&quot;%s MPU-401&quot;
+l_string|&quot;%s MIDI&quot;
 comma
 id|card-&gt;shortname
 )paren
@@ -2374,7 +2374,7 @@ c_func
 (paren
 id|rmidi-&gt;name
 comma
-l_string|&quot;MPU-401 (UART) %d-%d&quot;
+l_string|&quot;MPU-401 MIDI %d-%d&quot;
 comma
 id|card-&gt;number
 comma

@@ -887,16 +887,10 @@ id|shadow_entries
 suffix:semicolon
 multiline_comment|/* shadow entries with virtual addresses */
 DECL|member|buffer
-r_void
-op_star
+r_struct
+id|snd_dma_buffer
 id|buffer
 suffix:semicolon
-multiline_comment|/* pointer for table calloc */
-DECL|member|buffer_dmaaddr
-id|dma_addr_t
-id|buffer_dmaaddr
-suffix:semicolon
-multiline_comment|/* not accessible PCI BUS physical address */
 DECL|member|memhdr
 id|snd_util_memhdr_t
 op_star
@@ -904,16 +898,10 @@ id|memhdr
 suffix:semicolon
 multiline_comment|/* page allocation list */
 DECL|member|silent_page
-r_void
-op_star
+r_struct
+id|snd_dma_buffer
 id|silent_page
 suffix:semicolon
-multiline_comment|/* silent page */
-DECL|member|silent_page_dmaaddr
-id|dma_addr_t
-id|silent_page_dmaaddr
-suffix:semicolon
-multiline_comment|/* not accessible PCI BUS physical address */
 DECL|typedef|snd_trident_tlb_t
 )brace
 id|snd_trident_tlb_t
@@ -1409,6 +1397,11 @@ suffix:semicolon
 DECL|member|voice_alloc
 id|spinlock_t
 id|voice_alloc
+suffix:semicolon
+DECL|member|dma_dev
+r_struct
+id|snd_dma_device
+id|dma_dev
 suffix:semicolon
 DECL|member|pci
 r_struct
