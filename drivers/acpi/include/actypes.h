@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 237 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 238 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
@@ -392,10 +392,23 @@ DECL|typedef|ACPI_POINTER
 id|ACPI_POINTER
 suffix:semicolon
 multiline_comment|/* Pointer_types for above */
-DECL|macro|ACPI_LOGICAL_POINTER
-mdefine_line|#define ACPI_LOGICAL_POINTER            0x01
 DECL|macro|ACPI_PHYSICAL_POINTER
-mdefine_line|#define ACPI_PHYSICAL_POINTER           0x02
+mdefine_line|#define ACPI_PHYSICAL_POINTER           0x01
+DECL|macro|ACPI_LOGICAL_POINTER
+mdefine_line|#define ACPI_LOGICAL_POINTER            0x02
+multiline_comment|/* Processor mode */
+DECL|macro|ACPI_PHYSICAL_ADDRESSING
+mdefine_line|#define ACPI_PHYSICAL_ADDRESSING        0x04
+DECL|macro|ACPI_LOGICAL_ADDRESSING
+mdefine_line|#define ACPI_LOGICAL_ADDRESSING         0x08
+DECL|macro|ACPI_MEMORY_MODE
+mdefine_line|#define ACPI_MEMORY_MODE                0x0C
+DECL|macro|ACPI_PHYSMODE_PHYSPTR
+mdefine_line|#define ACPI_PHYSMODE_PHYSPTR           ACPI_PHYSICAL_ADDRESSING | ACPI_PHYSICAL_POINTER
+DECL|macro|ACPI_LOGMODE_PHYSPTR
+mdefine_line|#define ACPI_LOGMODE_PHYSPTR            ACPI_LOGICAL_ADDRESSING  | ACPI_PHYSICAL_POINTER
+DECL|macro|ACPI_LOGMODE_LOGPTR
+mdefine_line|#define ACPI_LOGMODE_LOGPTR             ACPI_LOGICAL_ADDRESSING  | ACPI_LOGICAL_POINTER
 multiline_comment|/*&n; * Useful defines&n; */
 macro_line|#ifdef FALSE
 DECL|macro|FALSE
