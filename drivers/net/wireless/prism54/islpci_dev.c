@@ -16,6 +16,8 @@ macro_line|#include &quot;islpci_eth.h&quot;
 macro_line|#include &quot;oid_mgt.h&quot;
 DECL|macro|ISL3877_IMAGE_FILE
 mdefine_line|#define ISL3877_IMAGE_FILE&t;&quot;isl3877&quot;
+DECL|macro|ISL3886_IMAGE_FILE
+mdefine_line|#define ISL3886_IMAGE_FILE&t;&quot;isl3886&quot;
 DECL|macro|ISL3890_IMAGE_FILE
 mdefine_line|#define ISL3890_IMAGE_FILE&t;&quot;isl3890&quot;
 r_static
@@ -2961,23 +2963,7 @@ id|pdev-&gt;device
 )paren
 (brace
 r_case
-id|PCIDEVICE_ISL3890
-suffix:colon
-r_case
-id|PCIDEVICE_3COM6001
-suffix:colon
-id|strcpy
-c_func
-(paren
-id|priv-&gt;firmware
-comma
-id|ISL3890_IMAGE_FILE
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PCIDEVICE_ISL3877
+l_int|0x3877
 suffix:colon
 id|strcpy
 c_func
@@ -2985,6 +2971,19 @@ c_func
 id|priv-&gt;firmware
 comma
 id|ISL3877_IMAGE_FILE
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x3886
+suffix:colon
+id|strcpy
+c_func
+(paren
+id|priv-&gt;firmware
+comma
+id|ISL3886_IMAGE_FILE
 )paren
 suffix:semicolon
 r_break

@@ -1,4 +1,8 @@
-multiline_comment|/* orinoco_tmd.c 0.01&n; * &n; * Driver for Prism II devices which would usually be driven by orinoco_cs,&n; * but are connected to the PCI bus by a TMD7160. &n; *&n; * Copyright (C) 2003 Joerg Dorchain &lt;joerg@dorchain.net&gt;&n; * based heavily upon orinoco_plx.c Copyright (C) 2001 Daniel Barlow &lt;dan@telent.net&gt;&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n;&n; * Caution: this is experimental and probably buggy.  For success and&n; * failure reports for different cards and adaptors, see&n; * orinoco_tmd_pci_id_table near the end of the file.  If you have a&n; * card we don&squot;t have the PCI id for, and looks like it should work,&n; * drop me mail with the id and &quot;it works&quot;/&quot;it doesn&squot;t work&quot;.&n; *&n; * Note: if everything gets detected fine but it doesn&squot;t actually send&n; * or receive packets, your first port of call should probably be to   &n; * try newer firmware in the card.  Especially if you&squot;re doing Ad-Hoc&n; * modes&n; *&n; * The actual driving is done by orinoco.c, this is just resource&n; * allocation stuff.&n; *&n; * This driver is modeled after the orinoco_plx driver. The main&n; * difference is that the TMD chip has only IO port ranges and no&n; * memory space, i.e.  no access to the CIS. Compared to the PLX chip,&n; * the io range functionalities are exchanged.&n; *&n; * Pheecom sells cards with the TMD chip as &quot;ASIC version&quot;&n; */
+multiline_comment|/* orinoco_tmd.c&n; * &n; * Driver for Prism II devices which would usually be driven by orinoco_cs,&n; * but are connected to the PCI bus by a TMD7160. &n; *&n; * Copyright (C) 2003 Joerg Dorchain &lt;joerg AT dorchain.net&gt;&n; * based heavily upon orinoco_plx.c Copyright (C) 2001 Daniel Barlow&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n;&n; * Caution: this is experimental and probably buggy.  For success and&n; * failure reports for different cards and adaptors, see&n; * orinoco_tmd_pci_id_table near the end of the file.  If you have a&n; * card we don&squot;t have the PCI id for, and looks like it should work,&n; * drop me mail with the id and &quot;it works&quot;/&quot;it doesn&squot;t work&quot;.&n; *&n; * Note: if everything gets detected fine but it doesn&squot;t actually send&n; * or receive packets, your first port of call should probably be to   &n; * try newer firmware in the card.  Especially if you&squot;re doing Ad-Hoc&n; * modes&n; *&n; * The actual driving is done by orinoco.c, this is just resource&n; * allocation stuff.&n; *&n; * This driver is modeled after the orinoco_plx driver. The main&n; * difference is that the TMD chip has only IO port ranges and no&n; * memory space, i.e.  no access to the CIS. Compared to the PLX chip,&n; * the io range functionalities are exchanged.&n; *&n; * Pheecom sells cards with the TMD chip as &quot;ASIC version&quot;&n; */
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &quot;orinoco_tmd&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX DRIVER_NAME &quot;: &quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,24 +19,14 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
-DECL|variable|dev_info
-r_static
-r_char
-id|dev_info
-(braket
-)braket
-op_assign
-l_string|&quot;orinoco_tmd&quot;
-suffix:semicolon
 DECL|macro|COR_VALUE
-mdefine_line|#define COR_VALUE     (COR_LEVEL_REQ | COR_FUNC_ENA | COR_FUNC_ENA) /* Enable PC card with level triggered irqs and irq requests */
+mdefine_line|#define COR_VALUE&t;(COR_LEVEL_REQ | COR_FUNC_ENA) /* Enable PC card with interrupt in level trigger */
 DECL|function|orinoco_tmd_init_one
 r_static
 r_int
@@ -108,6 +102,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+id|PFX
 l_string|&quot;TMD setup&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -142,7 +137,7 @@ id|pccard_ioaddr
 comma
 id|pccard_iolen
 comma
-id|dev_info
+id|DRIVER_NAME
 )paren
 )paren
 (brace
@@ -150,7 +145,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_tmd: I/O resource at 0x%lx len 0x%lx busy&bslash;n&quot;
+id|PFX
+l_string|&quot;I/O resource at 0x%lx len 0x%lx busy&bslash;n&quot;
 comma
 id|pccard_ioaddr
 comma
@@ -214,7 +210,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_tmd: Error setting TMD COR values %x should be %x&bslash;n&quot;
+id|PFX
+l_string|&quot;Error setting TMD COR values %x should be %x&bslash;n&quot;
 comma
 id|reg
 comma
@@ -230,6 +227,7 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+multiline_comment|/* Allocate network device */
 id|dev
 op_assign
 id|alloc_orinocodev
@@ -258,7 +256,11 @@ suffix:semicolon
 )brace
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
@@ -283,7 +285,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Detected Orinoco/Prism2 TMD device at %s irq:%d, io addr:0x%lx&bslash;n&quot;
+id|PFX
+l_string|&quot;Detected Orinoco/Prism2 TMD device &quot;
+l_string|&quot;at %s irq:%d, io addr:0x%lx&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -345,7 +349,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_tmd: Error allocating IRQ %d.&bslash;n&quot;
+id|PFX
+l_string|&quot;Error allocating IRQ %d.&bslash;n&quot;
 comma
 id|pdev-&gt;irq
 )paren
@@ -382,14 +387,14 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* succeeded */
 id|fail
 suffix:colon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;orinoco_tmd: init_one(), FAIL!&bslash;n&quot;
+id|PFX
+l_string|&quot;init_one(), FAIL!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -465,15 +470,11 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|dev
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|unregister_netdev
@@ -582,7 +583,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;orinoco_tmd&quot;
+id|DRIVER_NAME
 comma
 dot
 id|id_table
@@ -613,7 +614,10 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_tmd.c 0.01 (Joerg Dorchain &lt;joerg@dorchain.net&gt;)&quot;
+id|DRIVER_NAME
+l_string|&quot; &quot;
+id|DRIVER_VERSION
+l_string|&quot; (Joerg Dorchain &lt;joerg@dorchain.net&gt;)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -627,14 +631,12 @@ c_func
 l_string|&quot;Driver for wireless LAN cards using the TMD7160 PCI bridge&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|orinoco_tmd_init
 r_static
 r_int
@@ -664,6 +666,7 @@ id|orinoco_tmd_driver
 suffix:semicolon
 )brace
 DECL|function|orinoco_tmd_exit
+r_static
 r_void
 id|__exit
 id|orinoco_tmd_exit

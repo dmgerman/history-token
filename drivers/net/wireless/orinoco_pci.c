@@ -1,5 +1,9 @@
-multiline_comment|/* orinoco_pci.c 0.13e&n; * &n; * Driver for Prism II devices that have a direct PCI interface&n; * (i.e., not in a Pcmcia or PLX bridge)&n; *&n; * Specifically here we&squot;re talking about the Linksys WMP11&n; *&n; * Some of this code is borrowed from orinoco_plx.c&n; *&t;Copyright (C) 2001 Daniel Barlow &lt;dan@telent.net&gt;&n; * Some of this code is &quot;inspired&quot; by linux-wlan-ng-0.1.10, but nothing&n; * has been copied from it. linux-wlan-ng-0.1.10 is originally :&n; *&t;Copyright (C) 1999 AbsoluteValue Systems, Inc.  All Rights Reserved.&n; * This file originally written by:&n; *&t;Copyright (C) 2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; * And is now maintained by:&n; *&t;Copyright (C) 2002 David Gibson, IBM Corporation &lt;herme@gibson.dropbear.id.au&gt;&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
+multiline_comment|/* orinoco_pci.c&n; * &n; * Driver for Prism II devices that have a direct PCI interface&n; * (i.e., not in a Pcmcia or PLX bridge)&n; *&n; * Specifically here we&squot;re talking about the Linksys WMP11&n; *&n; * Current maintainers (as of 29 September 2003) are:&n; * &t;Pavel Roskin &lt;proski AT gnu.org&gt;&n; * and&t;David Gibson &lt;hermes AT gibson.dropbear.id.au&gt;&n; *&n; * Some of this code is borrowed from orinoco_plx.c&n; *&t;Copyright (C) 2001 Daniel Barlow &lt;dan AT telent.net&gt;&n; * Some of this code is &quot;inspired&quot; by linux-wlan-ng-0.1.10, but nothing&n; * has been copied from it. linux-wlan-ng-0.1.10 is originally :&n; *&t;Copyright (C) 1999 AbsoluteValue Systems, Inc.  All Rights Reserved.&n; * This file originally written by:&n; *&t;Copyright (C) 2001 Jean Tourrilhes &lt;jt AT hpl.hp.com&gt;&n; * And is now maintained by:&n; *&t;(C) Copyright David Gibson, IBM Corp. 2002-2003.&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
 multiline_comment|/*&n; * Theory of operation...&n; * -------------------&n; * Maybe you had a look in orinoco_plx. Well, this is totally different...&n; *&n; * The card contains only one PCI region, which contains all the usual&n; * hermes registers.&n; *&n; * The driver will memory map this region in normal memory. Because&n; * the hermes registers are mapped in normal memory and not in ISA I/O&n; * post space, we can&squot;t use the usual inw/outw macros and we need to&n; * use readw/writew.&n; * This slight difference force us to compile our own version of&n; * hermes.c with the register access macro changed. That&squot;s a bit&n; * hackish but works fine.&n; *&n; * Note that the PCI region is pretty big (4K). That&squot;s much more than&n; * the usual set of hermes register (0x0 -&gt; 0x3E). I&squot;ve got a strong&n; * suspicion that the whole memory space of the adapter is in fact in&n; * this region. Accessing directly the adapter memory instead of going&n; * through the usual register would speed up significantely the&n; * operations...&n; *&n; * Finally, the card looks like this :&n;-----------------------&n;  Bus  0, device  14, function  0:&n;    Network controller: PCI device 1260:3873 (Harris Semiconductor) (rev 1).&n;      IRQ 11.&n;      Master Capable.  Latency=248.  &n;      Prefetchable 32 bit memory at 0xffbcc000 [0xffbccfff].&n;-----------------------&n;00:0e.0 Network controller: Harris Semiconductor: Unknown device 3873 (rev 01)&n;        Subsystem: Unknown device 1737:3874&n;        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B-&n;        Status: Cap+ 66Mhz- UDF- FastB2B+ ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n;        Latency: 248 set, cache line size 08&n;        Interrupt: pin A routed to IRQ 11&n;        Region 0: Memory at ffbcc000 (32-bit, prefetchable) [size=4K]&n;        Capabilities: [dc] Power Management version 2&n;                Flags: PMEClk- AuxPwr- DSI- D1+ D2+ PME+&n;                Status: D0 PME-Enable- DSel=0 DScale=0 PME-&n;-----------------------&n; *&n; * That&squot;s all..&n; *&n; * Jean II&n; */
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &quot;orinoco_pci&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX DRIVER_NAME &quot;: &quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,7 +17,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -262,7 +265,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_pci: Busy timeout&bslash;n&quot;
+id|PFX
+l_string|&quot;Busy timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -396,7 +400,7 @@ id|pci_iorange
 r_goto
 id|fail
 suffix:semicolon
-multiline_comment|/* Usual setup of structures */
+multiline_comment|/* Allocate network device */
 id|dev
 op_assign
 id|alloc_orinocodev
@@ -425,7 +429,11 @@ suffix:semicolon
 )brace
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
@@ -466,6 +474,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+id|PFX
 l_string|&quot;Detected Orinoco/Prism2 PCI device at %s, mem:0x%lX to 0x%lX -&gt; 0x%p, irq:%d&bslash;n&quot;
 comma
 id|pci_name
@@ -530,7 +539,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_pci: Error allocating IRQ %d.&bslash;n&quot;
+id|PFX
+l_string|&quot;Error allocating IRQ %d.&bslash;n&quot;
 comma
 id|pdev-&gt;irq
 )paren
@@ -614,7 +624,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* succeeded */
 id|fail
 suffix:colon
 r_if
@@ -693,7 +702,11 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|unregister_netdev
 c_func
@@ -782,7 +795,11 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -906,7 +923,11 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -1029,6 +1050,7 @@ id|orinoco_pci_pci_id_table
 )braket
 op_assign
 (brace
+multiline_comment|/* Intersil Prism 3 */
 (brace
 l_int|0x1260
 comma
@@ -1040,6 +1062,7 @@ id|PCI_ANY_ID
 comma
 )brace
 comma
+multiline_comment|/* Intersil Prism 2.5 */
 (brace
 l_int|0x1260
 comma
@@ -1076,7 +1099,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;orinoco_pci&quot;
+id|DRIVER_NAME
 comma
 dot
 id|id_table
@@ -1117,12 +1140,17 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_pci.c 0.13e (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; &amp; Jean Tourrilhes &lt;jt@hpl.hp.com&gt;)&quot;
+id|DRIVER_NAME
+l_string|&quot; &quot;
+id|DRIVER_VERSION
+l_string|&quot; (Pavel Roskin &lt;proski@gnu.org&gt;,&quot;
+l_string|&quot; David Gibson &lt;hermes@gibson.dropbear.id.au&gt; &amp;&quot;
+l_string|&quot; Jean Tourrilhes &lt;jt@hpl.hp.com&gt;)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+l_string|&quot;Pavel Roskin &lt;proski@gnu.org&gt; &amp; David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1166,6 +1194,7 @@ id|orinoco_pci_driver
 suffix:semicolon
 )brace
 DECL|function|orinoco_pci_exit
+r_static
 r_void
 id|__exit
 id|orinoco_pci_exit
