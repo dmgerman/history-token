@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
-r_extern
 id|asmlinkage
 r_int
 id|sys_unlink
@@ -19,7 +18,6 @@ op_star
 id|name
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_int
 id|sys_mknod
@@ -37,7 +35,6 @@ id|dev_t
 id|dev
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_int
 id|sys_newstat
@@ -53,7 +50,22 @@ op_star
 id|statbuf
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
+r_int
+id|sys_ioctl
+c_func
+(paren
+r_int
+id|fd
+comma
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 id|asmlinkage
 r_int
 id|sys_mount
@@ -80,7 +92,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_int
 id|sys_umount
@@ -92,6 +103,15 @@ id|name
 comma
 r_int
 id|flags
+)paren
+suffix:semicolon
+id|dev_t
+id|name_to_dev_t
+c_func
+(paren
+r_char
+op_star
+id|name
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
@@ -191,6 +211,27 @@ comma
 id|dev
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_MD
+r_void
+id|md_run_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|md_run_setup
+r_static
+r_inline
+r_void
+id|md_run_setup
+c_func
+(paren
+r_void
+)paren
+(brace
 )brace
 macro_line|#endif
 eof
