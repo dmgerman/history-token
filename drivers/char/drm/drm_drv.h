@@ -32,21 +32,9 @@ macro_line|#ifndef __HAVE_SG
 DECL|macro|__HAVE_SG
 mdefine_line|#define __HAVE_SG&t;&t;&t;0
 macro_line|#endif
-macro_line|#ifndef __HAVE_DRIVER_FOPS_READ
-DECL|macro|__HAVE_DRIVER_FOPS_READ
-mdefine_line|#define __HAVE_DRIVER_FOPS_READ&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_DRIVER_FOPS_POLL
-DECL|macro|__HAVE_DRIVER_FOPS_POLL
-mdefine_line|#define __HAVE_DRIVER_FOPS_POLL&t;&t;0
-macro_line|#endif
 macro_line|#ifndef DRIVER_IOCTLS
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS
-macro_line|#endif
-macro_line|#ifndef DRIVER_FOPS
-DECL|macro|DRIVER_FOPS
-mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;.owner   = THIS_MODULE,&t;&t;&t;&bslash;&n;&t;.open&t; = DRM(open),&t;&t;&t;&bslash;&n;&t;.flush&t; = DRM(flush),&t;&t;&t;&bslash;&n;&t;.release = DRM(release),&t;&t;&bslash;&n;&t;.ioctl&t; = DRM(ioctl),&t;&t;&t;&bslash;&n;&t;.mmap&t; = DRM(mmap),&t;&t;&t;&bslash;&n;&t;.fasync  = DRM(fasync),&t;&t;&t;&bslash;&n;&t;.poll&t; = DRM(poll),&t;&t;&t;&bslash;&n;&t;.read&t; = DRM(read),&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 macro_line|#ifndef MODULE
 multiline_comment|/** Use an additional macro to avoid preprocessor troubles */
@@ -117,7 +105,94 @@ id|numdevs
 op_assign
 l_int|0
 suffix:semicolon
-id|DRIVER_FOPS
+DECL|variable|fops
+r_struct
+id|file_operations
+id|DRM
+c_func
+(paren
+id|fops
+)paren
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|open
+op_assign
+id|DRM
+c_func
+(paren
+id|open
+)paren
+comma
+dot
+id|flush
+op_assign
+id|DRM
+c_func
+(paren
+id|flush
+)paren
+comma
+dot
+id|release
+op_assign
+id|DRM
+c_func
+(paren
+id|release
+)paren
+comma
+dot
+id|ioctl
+op_assign
+id|DRM
+c_func
+(paren
+id|ioctl
+)paren
+comma
+dot
+id|mmap
+op_assign
+id|DRM
+c_func
+(paren
+id|mmap
+)paren
+comma
+dot
+id|fasync
+op_assign
+id|DRM
+c_func
+(paren
+id|fasync
+)paren
+comma
+dot
+id|poll
+op_assign
+id|DRM
+c_func
+(paren
+id|poll
+)paren
+comma
+dot
+id|read
+op_assign
+id|DRM
+c_func
+(paren
+id|read
+)paren
+comma
+)brace
 suffix:semicolon
 multiline_comment|/** Ioctl table */
 id|drm_ioctl_desc_t

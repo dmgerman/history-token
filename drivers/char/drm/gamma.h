@@ -54,10 +54,6 @@ DECL|macro|__HAVE_OLD_DMA
 mdefine_line|#define __HAVE_OLD_DMA&t;&t;&t;1
 DECL|macro|__HAVE_PCI_DMA
 mdefine_line|#define __HAVE_PCI_DMA&t;&t;&t;1
-DECL|macro|__HAVE_DRIVER_FOPS_READ
-mdefine_line|#define __HAVE_DRIVER_FOPS_READ&t;&t;1
-DECL|macro|__HAVE_DRIVER_FOPS_POLL
-mdefine_line|#define __HAVE_DRIVER_FOPS_POLL&t;&t;1
 DECL|macro|__HAVE_MULTIPLE_DMA_QUEUES
 mdefine_line|#define __HAVE_MULTIPLE_DMA_QUEUES&t;1
 DECL|macro|__HAVE_DMA_WAITQUEUE

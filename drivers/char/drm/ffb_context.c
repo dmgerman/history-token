@@ -3380,6 +3380,16 @@ op_star
 id|dev
 )paren
 (brace
+id|DRM
+c_func
+(paren
+id|fops
+)paren
+dot
+id|get_unmapped_area
+op_assign
+id|ffb_get_unmapped_area
+suffix:semicolon
 id|dev-&gt;fn_tbl.release
 op_assign
 id|ffb_driver_release

@@ -429,7 +429,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if !__HAVE_DRIVER_FOPS_POLL
 multiline_comment|/** No-op. */
 DECL|function|poll
 r_int
@@ -455,8 +454,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if !__HAVE_DRIVER_FOPS_READ
 multiline_comment|/** No-op. */
 DECL|function|read
 id|ssize_t
@@ -488,5 +485,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 eof
