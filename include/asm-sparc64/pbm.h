@@ -300,6 +300,10 @@ r_struct
 id|linux_prom_pci_intmask
 id|pbm_intmask
 suffix:semicolon
+DECL|member|ino_bitmap
+id|u64
+id|ino_bitmap
+suffix:semicolon
 multiline_comment|/* PBM I/O and Memory space resources. */
 DECL|member|io_space
 r_struct
