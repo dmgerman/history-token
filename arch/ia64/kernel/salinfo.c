@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * salinfo.c&n; *&n; * Creates entries in /proc/sal for various system features.&n; *&n; * Copyright (c) 2003 Silicon Graphics, Inc.  All rights reserved.&n; * Copyright (c) 2003 Hewlett-Packard Co&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * 10/30/2001&t;jbarnes@sgi.com&t;&t;copied much of Stephane&squot;s palinfo&n; *&t;&t;&t;&t;&t;code to create this file&n; * Oct 23 2003&t;kaos@sgi.com&n; *   Replace IPI with set_cpus_allowed() to read a record from the required cpu.&n; *   Redesign salinfo log processing to separate interrupt and user space&n; *   contexts.&n; *   Cache the record across multi-block reads from user space.&n; *   Support &gt; 64 cpus.&n; *   Delete module_exit and MOD_INC/DEC_COUNT, salinfo cannot be a module.&n; */
+multiline_comment|/*&n; * salinfo.c&n; *&n; * Creates entries in /proc/sal for various system features.&n; *&n; * Copyright (c) 2003 Silicon Graphics, Inc.  All rights reserved.&n; * Copyright (c) 2003 Hewlett-Packard Co&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * 10/30/2001&t;jbarnes@sgi.com&t;&t;copied much of Stephane&squot;s palinfo&n; *&t;&t;&t;&t;&t;code to create this file&n; * Oct 23 2003&t;kaos@sgi.com&n; *   Replace IPI with set_cpus_allowed() to read a record from the required cpu.&n; *   Redesign salinfo log processing to separate interrupt and user space&n; *   contexts.&n; *   Cache the record across multi-block reads from user space.&n; *   Support &gt; 64 cpus.&n; *   Delete module_exit and MOD_INC/DEC_COUNT, salinfo cannot be a module.&n; *&n; * Jan 28 2004&t;kaos@sgi.com&n; *   Periodically check for outstanding MCA or INIT records.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
@@ -443,7 +444,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This routine is invoked in interrupt context.  Note: mca.c enables&n; * interrupts before calling this code for CMC/CPE.  MCA and INIT events are&n; * not irq safe, do not call any routines that use spinlocks, they may deadlock.&n; *&n; * The buffer passed from mca.c points to the output from ia64_log_get. This is&n; * a persistent buffer but its contents can change between the interrupt and&n; * when user space processes the record.  Save the record id to identify&n; * changes.&n; */
+multiline_comment|/* This routine is invoked in interrupt context.  Note: mca.c enables&n; * interrupts before calling this code for CMC/CPE.  MCA and INIT events are&n; * not irq safe, do not call any routines that use spinlocks, they may deadlock.&n; * MCA and INIT records are recorded, a timer event will look for any&n; * outstanding events and wake up the user space code.&n; *&n; * The buffer passed from mca.c points to the output from ia64_log_get. This is&n; * a persistent buffer but its contents can change between the interrupt and&n; * when user space processes the record.  Save the record id to identify&n; * changes.&n; */
 r_void
 DECL|function|salinfo_log_wakeup
 id|salinfo_log_wakeup
@@ -668,6 +669,117 @@ id|data-&gt;sem
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* Check for outstanding MCA/INIT records every 5 minutes (arbitrary) */
+DECL|macro|SALINFO_TIMER_DELAY
+mdefine_line|#define SALINFO_TIMER_DELAY (5*60*HZ)
+DECL|variable|salinfo_timer
+r_static
+r_struct
+id|timer_list
+id|salinfo_timer
+suffix:semicolon
+r_static
+r_void
+DECL|function|salinfo_timeout_check
+id|salinfo_timeout_check
+c_func
+(paren
+r_struct
+id|salinfo_data
+op_star
+id|data
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|data-&gt;open
+)paren
+r_return
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|i
+comma
+op_amp
+id|data-&gt;cpu_event
+)paren
+)paren
+(brace
+multiline_comment|/* double up() is not a problem, user space will see no&n;&t;&t;&t; * records for the additional &quot;events&quot;.&n;&t;&t;&t; */
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;sem
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+r_static
+r_void
+DECL|function|salinfo_timeout
+id|salinfo_timeout
+(paren
+r_int
+r_int
+id|arg
+)paren
+(brace
+id|salinfo_timeout_check
+c_func
+(paren
+id|salinfo_data
+op_plus
+id|SAL_INFO_TYPE_MCA
+)paren
+suffix:semicolon
+id|salinfo_timeout_check
+c_func
+(paren
+id|salinfo_data
+op_plus
+id|SAL_INFO_TYPE_INIT
+)paren
+suffix:semicolon
+id|salinfo_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|SALINFO_TIMER_DELAY
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|salinfo_timer
+)paren
+suffix:semicolon
 )brace
 r_static
 r_int
@@ -2472,6 +2584,31 @@ id|sdir
 op_increment
 op_assign
 id|salinfo_dir
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|salinfo_timer
+)paren
+suffix:semicolon
+id|salinfo_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|SALINFO_TIMER_DELAY
+suffix:semicolon
+id|salinfo_timer.function
+op_assign
+op_amp
+id|salinfo_timeout
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|salinfo_timer
+)paren
 suffix:semicolon
 r_return
 l_int|0
