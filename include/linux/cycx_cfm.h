@@ -152,7 +152,7 @@ r_int
 r_char
 id|image
 (braket
-l_int|1
+l_int|0
 )braket
 suffix:semicolon
 )brace

@@ -66,7 +66,8 @@ id|wait_stats
 suffix:semicolon
 multiline_comment|/* to wait for the STATS indication */
 DECL|member|mbox
-id|u32
+r_void
+op_star
 id|mbox
 suffix:semicolon
 multiline_comment|/* -&gt; mailbox */
