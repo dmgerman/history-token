@@ -1336,9 +1336,10 @@ DECL|macro|get_file
 mdefine_line|#define get_file(x)&t;atomic_inc(&amp;(x)-&gt;f_count)
 DECL|macro|file_count
 mdefine_line|#define file_count(x)&t;atomic_read(&amp;(x)-&gt;f_count)
+multiline_comment|/* Initialize and open a private file and allocate its security structure. */
 r_extern
 r_int
-id|init_private_file
+id|open_private_file
 c_func
 (paren
 r_struct
@@ -1350,6 +1351,18 @@ id|dentry
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+multiline_comment|/* Release a private file and free its security structure. */
+r_extern
+r_void
+id|close_private_file
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
 )paren
 suffix:semicolon
 DECL|macro|MAX_NON_LFS

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 DECL|macro|DCACHE_PARANOIA
 mdefine_line|#define DCACHE_PARANOIA 1
 multiline_comment|/* #define DCACHE_DEBUG 1 */
@@ -2124,6 +2125,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|security_d_instantiate
+c_func
+(paren
+id|entry
+comma
+id|inode
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -2545,6 +2554,14 @@ id|inode-&gt;i_mode
 )paren
 )paren
 (brace
+id|security_d_instantiate
+c_func
+(paren
+id|dentry
+comma
+id|inode
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
