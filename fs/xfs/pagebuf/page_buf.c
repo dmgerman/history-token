@@ -396,8 +396,10 @@ DECL|function|_bhash
 id|_bhash
 c_func
 (paren
-id|dev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 id|loff_t
 id|base
@@ -412,10 +414,15 @@ id|base
 op_rshift_assign
 l_int|9
 suffix:semicolon
-multiline_comment|/*&n;&t; * dev_t is 16 bits, loff_t is always 64 bits&n;&t; */
 id|base
 op_xor_assign
-id|dev
+(paren
+r_int
+r_int
+)paren
+id|bdev
+op_div
+id|L1_CACHE_BYTES
 suffix:semicolon
 r_for
 c_loop
@@ -2046,7 +2053,7 @@ op_assign
 id|_bhash
 c_func
 (paren
-id|target-&gt;pbr_bdev-&gt;bd_dev
+id|target-&gt;pbr_bdev
 comma
 id|range_base
 )paren

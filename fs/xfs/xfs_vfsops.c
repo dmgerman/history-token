@@ -2838,7 +2838,11 @@ id|statp-&gt;f_fsid.val
 l_int|0
 )braket
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|mp-&gt;m_dev
+)paren
 suffix:semicolon
 id|statp-&gt;f_fsid.val
 (braket

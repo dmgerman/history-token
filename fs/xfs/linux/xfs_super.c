@@ -440,7 +440,7 @@ id|ip-&gt;i_df.if_u2.if_rdev
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-id|XFS_DEV_TO_KDEVT
+id|XFS_DEV_TO_DEVT
 c_func
 (paren
 id|dev
@@ -985,15 +985,21 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;XFS: Cannot set_blocksize to %u on device 0x%lx&bslash;n&quot;
+l_string|&quot;XFS: Cannot set_blocksize to %u on device %u:%u&bslash;n&quot;
 comma
 id|sectorsize
 comma
+id|MAJOR
+c_func
 (paren
-r_int
-r_int
-)paren
 id|btp-&gt;pbr_dev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|btp-&gt;pbr_dev
+)paren
 )paren
 suffix:semicolon
 )brace

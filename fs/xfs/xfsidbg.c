@@ -7589,13 +7589,23 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot; i_mode = 0x%x  i_nlink = %d  i_rdev = 0x%x i_state = 0x%lx&bslash;n&quot;
+l_string|&quot; i_mode = 0x%x  i_nlink = %d  i_rdev = %u:%u i_state = 0x%lx&bslash;n&quot;
 comma
 id|ip-&gt;i_mode
 comma
 id|ip-&gt;i_nlink
 comma
+id|MAJOR
+c_func
+(paren
 id|ip-&gt;i_rdev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|ip-&gt;i_rdev
+)paren
 comma
 id|ip-&gt;i_state
 )paren
@@ -18611,7 +18621,7 @@ macro_line|#ifdef XFS_DABUF_DEBUG
 id|kdb_printf
 c_func
 (paren
-l_string|&quot; ra 0x%x prev 0x%x next 0x%x dev 0x%x blkno 0x%x&bslash;n&quot;
+l_string|&quot; ra 0x%x prev 0x%x next 0x%x dev %u:%u blkno 0x%x&bslash;n&quot;
 comma
 id|dabuf-&gt;ra
 comma
@@ -18619,7 +18629,17 @@ id|dabuf-&gt;prev
 comma
 id|dabuf-&gt;next
 comma
+id|MAJOR
+c_func
+(paren
 id|dabuf-&gt;dev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|dabuf-&gt;dev
+)paren
 comma
 id|dabuf-&gt;blkno
 )paren
@@ -21544,9 +21564,19 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;  dev: 0x%x logBBstart: %lld logsize: %d logBBsize: %d&bslash;n&quot;
+l_string|&quot;  dev: %u:%u logBBstart: %lld logsize: %d logBBsize: %d&bslash;n&quot;
 comma
+id|MAJOR
+c_func
+(paren
 id|log-&gt;l_dev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|log-&gt;l_dev
+)paren
 comma
 (paren
 r_int
@@ -23311,7 +23341,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;sb_lock 0x%p sb_bp 0x%p dev 0x%x logdev 0x%x rtdev 0x%x&bslash;n&quot;
+l_string|&quot;sb_lock 0x%p sb_bp 0x%p dev %u:%u logdev %u:%u rtdev %u:%u&bslash;n&quot;
 comma
 op_amp
 id|mp-&gt;m_sb_lock
@@ -23321,21 +23351,66 @@ comma
 id|mp-&gt;m_ddev_targp
 ques
 c_cond
+id|MAJOR
+c_func
+(paren
 id|mp-&gt;m_ddev_targp-&gt;pbr_dev
+)paren
+suffix:colon
+l_int|0
+comma
+id|mp-&gt;m_ddev_targp
+ques
+c_cond
+id|MINOR
+c_func
+(paren
+id|mp-&gt;m_ddev_targp-&gt;pbr_dev
+)paren
 suffix:colon
 l_int|0
 comma
 id|mp-&gt;m_logdev_targp
 ques
 c_cond
+id|MAJOR
+c_func
+(paren
 id|mp-&gt;m_logdev_targp-&gt;pbr_dev
+)paren
+suffix:colon
+l_int|0
+comma
+id|mp-&gt;m_logdev_targp
+ques
+c_cond
+id|MINOR
+c_func
+(paren
+id|mp-&gt;m_logdev_targp-&gt;pbr_dev
+)paren
 suffix:colon
 l_int|0
 comma
 id|mp-&gt;m_rtdev_targp
 ques
 c_cond
+id|MAJOR
+c_func
+(paren
 id|mp-&gt;m_rtdev_targp-&gt;pbr_dev
+)paren
+suffix:colon
+l_int|0
+comma
+id|mp-&gt;m_rtdev_targp
+ques
+c_cond
+id|MINOR
+c_func
+(paren
+id|mp-&gt;m_rtdev_targp-&gt;pbr_dev
+)paren
 suffix:colon
 l_int|0
 )paren
@@ -24194,9 +24269,19 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;dev %x ino %s&bslash;n&quot;
+l_string|&quot;dev %u:%u ino %s&bslash;n&quot;
 comma
+id|MAJOR
+c_func
+(paren
 id|ip-&gt;i_mount-&gt;m_dev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|ip-&gt;i_mount-&gt;m_dev
+)paren
 comma
 id|xfs_fmtino
 c_func
