@@ -6,86 +6,38 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-multiline_comment|/*&n; * Power management requests&n; */
-r_enum
-(brace
-DECL|enumerator|PM_SUSPEND
-id|PM_SUSPEND
-comma
-multiline_comment|/* enter D1-D3 */
-DECL|enumerator|PM_RESUME
-id|PM_RESUME
-comma
-multiline_comment|/* enter D0 */
-DECL|enumerator|PM_SAVE_STATE
-id|PM_SAVE_STATE
-comma
-multiline_comment|/* save device&squot;s state */
-multiline_comment|/* enable wake-on */
-DECL|enumerator|PM_SET_WAKEUP
-id|PM_SET_WAKEUP
-comma
-multiline_comment|/* bus resource management */
-DECL|enumerator|PM_GET_RESOURCES
-id|PM_GET_RESOURCES
-comma
-DECL|enumerator|PM_SET_RESOURCES
-id|PM_SET_RESOURCES
-comma
-multiline_comment|/* base station management */
-DECL|enumerator|PM_EJECT
-id|PM_EJECT
-comma
-DECL|enumerator|PM_LOCK
-id|PM_LOCK
-comma
-)brace
-suffix:semicolon
+multiline_comment|/*&n; * Power management requests... these are passed to pm_send_all() and friends.&n; *&n; * these functions are old and deprecated, see below.&n; */
 DECL|typedef|pm_request_t
 r_typedef
 r_int
+id|__bitwise
 id|pm_request_t
 suffix:semicolon
-multiline_comment|/*&n; * Device types&n; */
-r_enum
-(brace
-DECL|enumerator|PM_UNKNOWN_DEV
-id|PM_UNKNOWN_DEV
-op_assign
-l_int|0
-comma
-multiline_comment|/* generic */
-DECL|enumerator|PM_SYS_DEV
-id|PM_SYS_DEV
-comma
-multiline_comment|/* system device (fan, KB controller, ...) */
-DECL|enumerator|PM_PCI_DEV
-id|PM_PCI_DEV
-comma
-multiline_comment|/* PCI device */
-DECL|enumerator|PM_USB_DEV
-id|PM_USB_DEV
-comma
-multiline_comment|/* USB device */
-DECL|enumerator|PM_SCSI_DEV
-id|PM_SCSI_DEV
-comma
-multiline_comment|/* SCSI device */
-DECL|enumerator|PM_ISA_DEV
-id|PM_ISA_DEV
-comma
-multiline_comment|/* ISA device */
-DECL|enumerator|PM_MTD_DEV
-id|PM_MTD_DEV
-comma
-multiline_comment|/* Memory Technology Device */
-)brace
-suffix:semicolon
+DECL|macro|PM_SUSPEND
+mdefine_line|#define PM_SUSPEND&t;((__force pm_request_t) 1)&t;/* enter D1-D3 */
+DECL|macro|PM_RESUME
+mdefine_line|#define PM_RESUME&t;((__force pm_request_t) 2)&t;/* enter D0 */
+multiline_comment|/*&n; * Device types... these are passed to pm_register&n; */
 DECL|typedef|pm_dev_t
 r_typedef
 r_int
+id|__bitwise
 id|pm_dev_t
 suffix:semicolon
+DECL|macro|PM_UNKNOWN_DEV
+mdefine_line|#define PM_UNKNOWN_DEV&t;((__force pm_dev_t) 0)&t;/* generic */
+DECL|macro|PM_SYS_DEV
+mdefine_line|#define PM_SYS_DEV&t;((__force pm_dev_t) 1)&t;/* system device (fan, KB controller, ...) */
+DECL|macro|PM_PCI_DEV
+mdefine_line|#define PM_PCI_DEV&t;((__force pm_dev_t) 2)&t;/* PCI device */
+DECL|macro|PM_USB_DEV
+mdefine_line|#define PM_USB_DEV&t;((__force pm_dev_t) 3)&t;/* USB device */
+DECL|macro|PM_SCSI_DEV
+mdefine_line|#define PM_SCSI_DEV&t;((__force pm_dev_t) 4)&t;/* SCSI device */
+DECL|macro|PM_ISA_DEV
+mdefine_line|#define PM_ISA_DEV&t;((__force pm_dev_t) 5)&t;/* ISA device */
+DECL|macro|PM_MTD_DEV
+mdefine_line|#define&t;PM_MTD_DEV&t;((__force pm_dev_t) 6)&t;/* Memory Technology Device */
 multiline_comment|/*&n; * System device hardware ID (PnP) values&n; */
 r_enum
 (brace
@@ -216,6 +168,7 @@ mdefine_line|#define PM_IS_ACTIVE() (pm_active != 0)
 multiline_comment|/*&n; * Register a device with power management&n; */
 r_struct
 id|pm_dev
+id|__deprecated
 op_star
 id|pm_register
 c_func
@@ -233,6 +186,7 @@ id|callback
 suffix:semicolon
 multiline_comment|/*&n; * Unregister a device with power management&n; */
 r_void
+id|__deprecated
 id|pm_unregister
 c_func
 (paren
@@ -244,6 +198,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/*&n; * Unregister all devices with matching callback&n; */
 r_void
+id|__deprecated
 id|pm_unregister_all
 c_func
 (paren
@@ -253,6 +208,7 @@ id|callback
 suffix:semicolon
 multiline_comment|/*&n; * Send a request to a single device&n; */
 r_int
+id|__deprecated
 id|pm_send
 c_func
 (paren
@@ -271,6 +227,7 @@ id|data
 suffix:semicolon
 multiline_comment|/*&n; * Send a request to all devices&n; */
 r_int
+id|__deprecated
 id|pm_send_all
 c_func
 (paren
@@ -282,34 +239,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-DECL|function|pm_access
-r_static
-r_inline
-r_void
-id|pm_access
-c_func
-(paren
-r_struct
-id|pm_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
-DECL|function|pm_dev_idle
-r_static
-r_inline
-r_void
-id|pm_dev_idle
-c_func
-(paren
-r_struct
-id|pm_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
 macro_line|#else /* CONFIG_PM */
 DECL|macro|PM_IS_ACTIVE
 mdefine_line|#define PM_IS_ACTIVE() 0
@@ -406,57 +335,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pm_find
-r_static
-r_inline
-r_struct
-id|pm_dev
-op_star
-id|pm_find
-c_func
-(paren
-id|pm_dev_t
-id|type
-comma
-r_struct
-id|pm_dev
-op_star
-id|from
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|pm_access
-r_static
-r_inline
-r_void
-id|pm_access
-c_func
-(paren
-r_struct
-id|pm_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
-DECL|function|pm_dev_idle
-r_static
-r_inline
-r_void
-id|pm_dev_idle
-c_func
-(paren
-r_struct
-id|pm_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
 macro_line|#endif /* CONFIG_PM */
+multiline_comment|/* Functions above this comment are list-based old-style power&n; * managment. Please avoid using them.  */
 multiline_comment|/*&n; * Callbacks for platform drivers to implement.&n; */
 r_extern
 r_void
