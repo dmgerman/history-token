@@ -10,7 +10,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ide-timing.h&quot;
-macro_line|#include &quot;amd74xx.h&quot;
+DECL|macro|DISPLAY_AMD_TIMINGS
+mdefine_line|#define DISPLAY_AMD_TIMINGS
 DECL|macro|AMD_IDE_ENABLE
 mdefine_line|#define AMD_IDE_ENABLE&t;&t;(0x00 + amd_config-&gt;base)
 DECL|macro|AMD_IDE_CONFIG
@@ -2796,6 +2797,111 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|macro|DECLARE_AMD_DEV
+mdefine_line|#define DECLARE_AMD_DEV(name_str)&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_amd74xx,&t;&t;&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_amd74xx,&t;&t;&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x40,0x02,0x02}, {0x40,0x01,0x01}},&t;&bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&t;&t;&bslash;&n;&t;}
+DECL|macro|DECLARE_NV_DEV
+mdefine_line|#define DECLARE_NV_DEV(name_str)&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_amd74xx,&t;&t;&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_amd74xx,&t;&t;&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x50,0x02,0x02}, {0x50,0x01,0x01}},&t;&bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&t;&t;&bslash;&n;&t;}
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|amd74xx_chipsets
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+multiline_comment|/*  0 */
+id|DECLARE_AMD_DEV
+c_func
+(paren
+l_string|&quot;AMD7401&quot;
+)paren
+comma
+multiline_comment|/*  1 */
+id|DECLARE_AMD_DEV
+c_func
+(paren
+l_string|&quot;AMD7409&quot;
+)paren
+comma
+multiline_comment|/*  2 */
+id|DECLARE_AMD_DEV
+c_func
+(paren
+l_string|&quot;AMD7411&quot;
+)paren
+comma
+multiline_comment|/*  3 */
+id|DECLARE_AMD_DEV
+c_func
+(paren
+l_string|&quot;AMD7441&quot;
+)paren
+comma
+multiline_comment|/*  4 */
+id|DECLARE_AMD_DEV
+c_func
+(paren
+l_string|&quot;AMD8111&quot;
+)paren
+comma
+multiline_comment|/*  5 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE&quot;
+)paren
+comma
+multiline_comment|/*  6 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE2&quot;
+)paren
+comma
+multiline_comment|/*  7 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE2S&quot;
+)paren
+comma
+multiline_comment|/*  8 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE2S-SATA&quot;
+)paren
+comma
+multiline_comment|/*  9 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE3&quot;
+)paren
+comma
+multiline_comment|/* 10 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE3S&quot;
+)paren
+comma
+multiline_comment|/* 11 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE3S-SATA&quot;
+)paren
+comma
+multiline_comment|/* 12 */
+id|DECLARE_NV_DEV
+c_func
+(paren
+l_string|&quot;NFORCE3S-SATA2&quot;
+)paren
+)brace
+suffix:semicolon
 DECL|function|amd74xx_probe
 r_static
 r_int
