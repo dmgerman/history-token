@@ -1688,7 +1688,7 @@ id|ss2
 )paren
 (brace
 r_struct
-id|sctp_func
+id|sctp_af
 op_star
 id|af
 suffix:semicolon
