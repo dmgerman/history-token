@@ -1569,7 +1569,7 @@ c_func
 (paren
 id|pci
 comma
-id|chip
+id|card
 )paren
 suffix:semicolon
 id|dev
@@ -1607,52 +1607,22 @@ op_star
 id|pci
 )paren
 (brace
-id|vortex_t
-op_star
-id|vortex
-op_assign
-id|snd_magic_cast
+id|snd_card_free
 c_func
 (paren
-id|vortex_t
-comma
 id|pci_get_drvdata
 c_func
 (paren
 id|pci
 )paren
-comma
-r_return
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vortex
-)paren
-(brace
-singleline_comment|// Release ALSA stuff.
-id|snd_card_free
-c_func
-(paren
-id|vortex-&gt;card
-)paren
-suffix:semicolon
-singleline_comment|// Free Vortex struct.
 id|pci_set_drvdata
 c_func
 (paren
 id|pci
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;snd_vortex_remove called more than one time!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1701,42 +1671,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
+r_return
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|driver
 )paren
-)paren
-OL
-l_int|0
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Aureal soundcard not found &quot;
-l_string|&quot;or device busy&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|err
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 singleline_comment|// clean up the module

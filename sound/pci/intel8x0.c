@@ -14022,20 +14022,9 @@ id|driver
 OL
 l_int|0
 )paren
-(brace
-macro_line|#ifdef MODULE
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Intel ICH soundcard not found or device busy&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
-)brace
 macro_line|#if defined(SUPPORT_JOYSTICK) || defined(SUPPORT_MIDI)
 r_if
 c_cond

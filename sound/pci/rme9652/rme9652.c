@@ -12086,35 +12086,13 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_return
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|driver
 )paren
-OL
-l_int|0
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;RME Digi9652/Digi9636: no cards found&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|alsa_card_hammerfall_exit
