@@ -46,6 +46,11 @@ id|kmem_cache_t
 op_star
 id|dentry_cache
 suffix:semicolon
+multiline_comment|/*&n; * The allocation size for each dentry.  It is a multiple of 16 bytes.  We&n; * leave the final 32-47 bytes for the inline name.&n; */
+DECL|macro|DENTRY_STORAGE
+mdefine_line|#define DENTRY_STORAGE&t;(((sizeof(struct dentry)+32) + 15) &amp; ~15)
+DECL|macro|DNAME_INLINE_LEN
+mdefine_line|#define DNAME_INLINE_LEN (DENTRY_STORAGE - sizeof(struct dentry))
 multiline_comment|/*&n; * This is the single most critical data structure when it comes&n; * to the dcache: the hashtable for lookups. Somebody should try&n; * to make this good - I&squot;ve just made it work.&n; *&n; * This hash-function tries to avoid losing too many bits of hash&n; * information, yet avoid using a prime hash-size or similar.&n; */
 DECL|macro|D_HASHBITS
 mdefine_line|#define D_HASHBITS     d_hash_shift
@@ -2035,8 +2040,6 @@ r_return
 id|dentry_stat.nr_unused
 suffix:semicolon
 )brace
-DECL|macro|NAME_ALLOC_LEN
-mdefine_line|#define NAME_ALLOC_LEN(len)&t;((len+16) &amp; ~15)
 multiline_comment|/**&n; * d_alloc&t;-&t;allocate a dcache entry&n; * @parent: parent of entry to allocate&n; * @name: qstr of the name&n; *&n; * Allocates a dentry. It returns %NULL if there is insufficient memory&n; * available. On a success the dentry is returned. The name passed in is&n; * copied and the copy passed in may be reused after this call.&n; */
 DECL|function|d_alloc
 r_struct
@@ -2111,11 +2114,9 @@ op_star
 id|qstr
 )paren
 op_plus
-id|NAME_ALLOC_LEN
-c_func
-(paren
 id|name-&gt;len
-)paren
+op_plus
+l_int|1
 comma
 id|GFP_KERNEL
 )paren
@@ -5205,11 +5206,7 @@ c_func
 (paren
 l_string|&quot;dentry_cache&quot;
 comma
-r_sizeof
-(paren
-r_struct
-id|dentry
-)paren
+id|DENTRY_STORAGE
 comma
 l_int|0
 comma

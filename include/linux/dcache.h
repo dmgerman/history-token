@@ -203,8 +203,6 @@ id|hash
 )paren
 suffix:semicolon
 )brace
-DECL|macro|DNAME_INLINE_LEN_MIN
-mdefine_line|#define DNAME_INLINE_LEN_MIN 24
 r_struct
 id|dcookie_struct
 suffix:semicolon
@@ -347,14 +345,12 @@ r_int
 r_char
 id|d_iname
 (braket
-id|DNAME_INLINE_LEN_MIN
+l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* small names */
 )brace
 suffix:semicolon
-DECL|macro|DNAME_INLINE_LEN
-mdefine_line|#define DNAME_INLINE_LEN&t;(sizeof(struct dentry)-offsetof(struct dentry,d_iname))
 DECL|struct|dentry_operations
 r_struct
 id|dentry_operations
