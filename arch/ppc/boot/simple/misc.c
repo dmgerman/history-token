@@ -246,6 +246,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 id|com_port
 op_assign
 id|serial_init
@@ -256,6 +257,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_44x
 multiline_comment|/* Reset MAL */
 id|mtdcr
@@ -1180,6 +1182,14 @@ comma
 r_int
 r_int
 id|cksum
+comma
+r_void
+op_star
+id|ign1
+comma
+r_void
+op_star
+id|ign2
 )paren
 (brace
 r_return

@@ -911,6 +911,14 @@ comma
 r_int
 r_int
 id|cksum
+comma
+r_void
+op_star
+id|ign1
+comma
+r_void
+op_star
+id|ign2
 )paren
 (brace
 r_int
