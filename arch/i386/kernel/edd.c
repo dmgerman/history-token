@@ -750,7 +750,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;&bslash;t%02x:%02x.%01x  channel: %u&bslash;n&quot;
+l_string|&quot;&bslash;t%02x:%02x.%d  channel: %u&bslash;n&quot;
 comma
 id|info-&gt;params.interface_path.pci.bus
 comma
@@ -1741,7 +1741,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;  about a PCI device at %02x:%02x.%01x&bslash;n&quot;
+l_string|&quot;  about a PCI device at %02x:%02x.%d&bslash;n&quot;
 comma
 id|info-&gt;params.interface_path.pci.bus
 comma
@@ -1765,6 +1765,15 @@ r_if
 c_cond
 (paren
 id|found_pci
+op_logical_and
+op_logical_neg
+id|edd_dev_is_type
+c_func
+(paren
+id|edev
+comma
+l_string|&quot;SCSI&quot;
+)paren
 )paren
 (brace
 id|sd
