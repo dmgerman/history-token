@@ -731,12 +731,29 @@ DECL|typedef|sctp_signed_cookie_t
 )brace
 id|sctp_signed_cookie_t
 suffix:semicolon
-multiline_comment|/* This convenience type allows us to avoid casting when walking&n; * through a parameter list.&n; */
+multiline_comment|/* This is another convenience type to allocate memory for address&n; * params for the maximum size and pass such structures around&n; * internally.&n; */
 r_typedef
 r_union
 (brace
+DECL|member|v4
+id|sctp_ipv4addr_param_t
+id|v4
+suffix:semicolon
+DECL|member|v6
+id|sctp_ipv6addr_param_t
+id|v6
+suffix:semicolon
+DECL|typedef|sctp_addr_param_t
+)brace
+id|sctp_addr_param_t
+suffix:semicolon
+multiline_comment|/* A convenience type to allow walking through the various&n; * parameters and avoid casting all over the place.&n; */
+DECL|union|sctp_params
+r_union
+id|sctp_params
+(brace
 DECL|member|v
-id|__u8
+r_void
 op_star
 id|v
 suffix:semicolon
@@ -745,10 +762,10 @@ id|sctp_paramhdr_t
 op_star
 id|p
 suffix:semicolon
-DECL|member|bht
+DECL|member|life
 id|sctp_cookie_preserve_param_t
 op_star
-id|bht
+id|life
 suffix:semicolon
 DECL|member|dns
 id|sctp_hostname_param_t
@@ -775,25 +792,12 @@ id|sctp_ipv6addr_param_t
 op_star
 id|v6
 suffix:semicolon
-DECL|typedef|sctpParam_t
-)brace
-id|sctpParam_t
-suffix:semicolon
-multiline_comment|/* This is another convenience type to allocate memory for address&n; * params for the maximum size and pass such structures around&n; * internally.&n; */
-r_typedef
-r_union
-(brace
-DECL|member|v4
-id|sctp_ipv4addr_param_t
-id|v4
-suffix:semicolon
-DECL|member|v6
-id|sctp_ipv6addr_param_t
-id|v6
-suffix:semicolon
-DECL|typedef|sctp_addr_param_t
-)brace
+DECL|member|addr
 id|sctp_addr_param_t
+op_star
+id|addr
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/* RFC 2960.  Section 3.3.5 Heartbeat.&n; *    Heartbeat Information: variable length&n; *    The Sender-specific Heartbeat Info field should normally include&n; *    information about the sender&squot;s current time when this HEARTBEAT&n; *    chunk is sent and the destination transport address to which this&n; *    HEARTBEAT is sent (see Section 8.3).&n; */
 DECL|struct|sctp_sender_hb_info
@@ -869,7 +873,8 @@ suffix:semicolon
 multiline_comment|/* These are the SCTP headers by reverse order in a packet.&n;&t; * Note that some of these may happen more than once.  In that&n;&t; * case, we point at the &quot;current&quot; one, whatever that means&n;&t; * for that level of header.&n;&t; */
 multiline_comment|/* We point this at the FIRST TLV parameter to chunk_hdr.  */
 DECL|member|param_hdr
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param_hdr
 suffix:semicolon
 r_union
@@ -2090,7 +2095,8 @@ id|sockaddr_storage_t
 op_star
 )paren
 suffix:semicolon
-id|sctpParam_t
+r_union
+id|sctp_params
 id|sctp_bind_addrs_to_raw
 c_func
 (paren
@@ -2502,7 +2508,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 comma
 id|sctp_cid_t
@@ -2527,7 +2534,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 comma
 id|sctp_chunk_t
@@ -2572,7 +2580,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 comma
 r_const

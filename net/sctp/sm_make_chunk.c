@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file includes part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement the state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    C. Robin              &lt;chris@hundredacre.ac.uk&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file includes part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement the state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    C. Robin              &lt;chris@hundredacre.ac.uk&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -179,7 +179,8 @@ id|priority
 id|sctp_inithdr_t
 id|init
 suffix:semicolon
-id|sctpParam_t
+r_union
+id|sctp_params
 id|addrs
 suffix:semicolon
 r_int
@@ -410,7 +411,8 @@ id|sctp_chunk_t
 op_star
 id|retval
 suffix:semicolon
-id|sctpParam_t
+r_union
+id|sctp_params
 id|addrs
 suffix:semicolon
 r_int
@@ -4475,53 +4477,20 @@ op_star
 id|err_chk_p
 )paren
 (brace
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 suffix:semicolon
-r_uint8
-op_star
-id|end
-suffix:semicolon
-multiline_comment|/* FIXME - Verify the fixed fields of the INIT chunk. Also, verify&n;&t; * the mandatory parameters somewhere here and generate either the&n;&t; * &quot;Missing mandatory parameter&quot; error or the &quot;Invalid mandatory&n;&t; * parameter&quot; error. */
+multiline_comment|/* FIXME - Verify the fixed fields of the INIT chunk. Also, verify&n;&t; * the mandatory parameters somewhere here and generate either the&n;&t; * &quot;Missing mandatory parameter&quot; error or the &quot;Invalid mandatory&n;&t; * parameter&quot; error.&n;&t; */
 multiline_comment|/* Find unrecognized parameters. */
-id|end
-op_assign
+id|sctp_walk_params
+c_func
 (paren
-(paren
-r_uint8
-op_star
-)paren
+id|param
+comma
 id|peer_init
-op_plus
-id|ntohs
-c_func
-(paren
-id|peer_init-&gt;chunk_hdr.length
-)paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|param.v
-op_assign
-id|peer_init-&gt;init_hdr.params
-suffix:semicolon
-id|param.v
-OL
-id|end
-suffix:semicolon
-id|param.v
-op_add_assign
-id|WORD_ROUND
-c_func
-(paren
-id|ntohs
-c_func
-(paren
-id|param.p-&gt;length
-)paren
-)paren
+comma
+id|init_hdr.params
 )paren
 (brace
 r_if
@@ -4562,7 +4531,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 comma
 id|sctp_cid_t
@@ -4667,7 +4637,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 comma
 id|sctp_chunk_t
@@ -4882,12 +4853,9 @@ r_int
 id|priority
 )paren
 (brace
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
-suffix:semicolon
-id|__u8
-op_star
-id|end
 suffix:semicolon
 id|sctp_transport_t
 op_star
@@ -4923,44 +4891,14 @@ id|priority
 )paren
 suffix:semicolon
 multiline_comment|/* Process the initialization parameters.  */
-id|end
-op_assign
+id|sctp_walk_params
+c_func
 (paren
-(paren
-id|__u8
-op_star
-)paren
+id|param
+comma
 id|peer_init
-op_plus
-id|ntohs
-c_func
-(paren
-id|peer_init-&gt;chunk_hdr.length
-)paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|param.v
-op_assign
-id|peer_init-&gt;init_hdr.params
-suffix:semicolon
-id|param.v
-OL
-id|end
-suffix:semicolon
-id|param.v
-op_add_assign
-id|WORD_ROUND
-c_func
-(paren
-id|ntohs
-c_func
-(paren
-id|param.p-&gt;length
-)paren
-)paren
+comma
+id|init_hdr.params
 )paren
 (brace
 r_if
@@ -5197,7 +5135,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 comma
 r_const
@@ -5368,7 +5307,7 @@ op_assign
 id|ntohl
 c_func
 (paren
-id|param.bht-&gt;lifespan_increment
+id|param.life-&gt;lifespan_increment
 )paren
 suffix:semicolon
 r_break
@@ -5726,7 +5665,8 @@ r_int
 id|sctp_addr2sockaddr
 c_func
 (paren
-id|sctpParam_t
+r_union
+id|sctp_params
 id|p
 comma
 id|sockaddr_storage_t
@@ -5734,15 +5674,6 @@ op_star
 id|sa
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|p.v
-)paren
-r_return
-l_int|0
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5855,7 +5786,7 @@ r_return
 id|family
 suffix:semicolon
 )brace
-multiline_comment|/* Convert a sockaddr_in to an IP address in an SCTP param.&n; * Returns len if a valid conversion was possible.  &n; */
+multiline_comment|/* Convert a sockaddr_in to an IP address in an SCTP param.&n; * Returns len if a valid conversion was possible.&n; */
 DECL|function|sockaddr2sctp_addr
 r_int
 id|sockaddr2sctp_addr
