@@ -52,9 +52,11 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|max_luns
+comma
 id|max_scsi_luns
 comma
 r_int
@@ -67,7 +69,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|max_scsi_luns
+id|max_luns
 comma
 l_string|&quot;last scsi LUN (should be between 1 and 2^32-1)&quot;
 )paren
@@ -82,9 +84,11 @@ id|max_scsi_report_luns
 op_assign
 l_int|128
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|max_report_luns
+comma
 id|max_scsi_report_luns
 comma
 r_int
@@ -97,7 +101,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|max_scsi_report_luns
+id|max_report_luns
 comma
 l_string|&quot;REPORT LUNS maximum number of LUNS received (should be&quot;
 l_string|&quot; between 1 and 16384)&quot;

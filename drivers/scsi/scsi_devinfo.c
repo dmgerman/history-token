@@ -2333,7 +2333,7 @@ suffix:semicolon
 id|module_param_string
 c_func
 (paren
-id|scsi_dev_flags
+id|dev_flags
 comma
 id|scsi_dev_flags
 comma
@@ -2348,16 +2348,18 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|scsi_dev_flags
+id|dev_flags
 comma
 l_string|&quot;Given scsi_dev_flags=vendor:model:flags[,v:m:f] add black/white&quot;
 l_string|&quot; list entries for vendor and model with an integer value of flags&quot;
 l_string|&quot; to the scsi device info list&quot;
 )paren
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|default_dev_flags
+comma
 id|scsi_default_dev_flags
 comma
 r_int
@@ -2370,7 +2372,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|scsi_default_dev_flags
+id|default_dev_flags
 comma
 l_string|&quot;scsi default device flag integer value&quot;
 )paren
