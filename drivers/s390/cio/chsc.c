@@ -2233,12 +2233,10 @@ r_case
 id|CHP_OFFLINE
 suffix:colon
 r_return
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|buf
-comma
-id|count
 comma
 l_string|&quot;n/a&bslash;n&quot;
 )paren
@@ -2247,12 +2245,10 @@ r_case
 id|CHP_LOGICALLY_OFFLINE
 suffix:colon
 r_return
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|buf
-comma
-id|count
 comma
 l_string|&quot;logically offline&bslash;n&quot;
 )paren
@@ -2261,12 +2257,10 @@ r_case
 id|CHP_STANDBY
 suffix:colon
 r_return
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|buf
-comma
-id|count
 comma
 l_string|&quot;n/a&bslash;n&quot;
 )paren
@@ -2275,12 +2269,10 @@ r_case
 id|CHP_ONLINE
 suffix:colon
 r_return
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|buf
-comma
-id|count
 comma
 l_string|&quot;online&bslash;n&quot;
 )paren
