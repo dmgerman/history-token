@@ -1087,8 +1087,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FILE
 )paren
 suffix:semicolon
 )brace

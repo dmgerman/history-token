@@ -2430,8 +2430,6 @@ id|dev_name
 comma
 id|flags
 comma
-id|BDEV_FS
-comma
 id|fs_type
 )paren
 suffix:semicolon
@@ -2632,8 +2630,6 @@ id|close_bdev_excl
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 r_return
@@ -2683,8 +2679,6 @@ id|close_bdev_excl
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 )brace

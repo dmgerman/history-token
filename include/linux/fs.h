@@ -4880,21 +4880,6 @@ DECL|macro|__getname
 mdefine_line|#define __getname()&t;kmem_cache_alloc(names_cachep, SLAB_KERNEL)
 DECL|macro|putname
 mdefine_line|#define putname(name)&t;kmem_cache_free(names_cachep, (void *)(name))
-DECL|enumerator|BDEV_FILE
-DECL|enumerator|BDEV_SWAP
-DECL|enumerator|BDEV_FS
-DECL|enumerator|BDEV_RAW
-r_enum
-(brace
-id|BDEV_FILE
-comma
-id|BDEV_SWAP
-comma
-id|BDEV_FS
-comma
-id|BDEV_RAW
-)brace
-suffix:semicolon
 r_extern
 r_int
 id|register_blkdev
@@ -4976,8 +4961,6 @@ c_func
 id|dev_t
 comma
 r_int
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -5051,8 +5034,6 @@ comma
 id|mode_t
 comma
 r_int
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -5063,8 +5044,6 @@ c_func
 r_struct
 id|block_device
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -5241,8 +5220,6 @@ op_star
 comma
 r_int
 comma
-r_int
-comma
 r_void
 op_star
 )paren
@@ -5255,8 +5232,6 @@ c_func
 r_struct
 id|block_device
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern

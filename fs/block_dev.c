@@ -2158,9 +2158,6 @@ id|dev
 comma
 r_int
 id|mode
-comma
-r_int
-id|kind
 )paren
 (brace
 r_struct
@@ -2207,8 +2204,6 @@ comma
 id|mode
 comma
 id|flags
-comma
-id|kind
 )paren
 suffix:semicolon
 r_return
@@ -2654,8 +2649,6 @@ comma
 id|file-&gt;f_mode
 comma
 id|file-&gt;f_flags
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_if
@@ -2886,8 +2879,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev-&gt;bd_contains
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 id|bdev-&gt;bd_contains
@@ -2950,9 +2941,6 @@ id|mode
 comma
 r_int
 id|flags
-comma
-r_int
-id|kind
 )paren
 (brace
 multiline_comment|/*&n;&t; * This crockload is due to bad choice of -&gt;open() type.&n;&t; * It will go away.&n;&t; * For now, block device -&gt;open() routine must _not_&n;&t; * examine anything in &squot;inode&squot; argument except -&gt;i_rdev.&n;&t; */
@@ -3096,8 +3084,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FILE
 )paren
 suffix:semicolon
 r_return
@@ -3120,9 +3106,6 @@ r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-id|kind
 )paren
 (brace
 r_int
@@ -3290,8 +3273,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev-&gt;bd_contains
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 )brace
@@ -3375,8 +3356,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FILE
 )paren
 suffix:semicolon
 )brace
@@ -3888,7 +3867,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * open_bdev_excl  -  open a block device by name and set it up for use&n; *&n; * @path:&t;special file representing the block device&n; * @flags:&t;%MS_RDONLY for opening read-only&n; * @kind:&t;usage (same as the 4th paramter to blkdev_get)&n; * @holder:&t;owner for exclusion&n; *&n; * Open the blockdevice described by the special file at @path, claim it&n; * for the @holder and properly set it up for @kind usage.&n; */
+multiline_comment|/**&n; * open_bdev_excl  -  open a block device by name and set it up for use&n; *&n; * @path:&t;special file representing the block device&n; * @flags:&t;%MS_RDONLY for opening read-only&n; * @holder:&t;owner for exclusion&n; *&n; * Open the blockdevice described by the special file at @path, claim it&n; * for the @holder.&n; */
 DECL|function|open_bdev_excl
 r_struct
 id|block_device
@@ -3903,9 +3882,6 @@ id|path
 comma
 r_int
 id|flags
-comma
-r_int
-id|kind
 comma
 r_void
 op_star
@@ -3971,8 +3947,6 @@ comma
 id|mode
 comma
 l_int|0
-comma
-id|kind
 )paren
 suffix:semicolon
 r_if
@@ -4038,8 +4012,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 r_return
@@ -4057,7 +4029,7 @@ c_func
 id|open_bdev_excl
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * close_bdev_excl  -  release a blockdevice openen by open_bdev_excl()&n; *&n; * @bdev:&t;blockdevice to close&n; * @kind:&t;usage (same as the 4th paramter to blkdev_get)&n; *&n; * This is the counterpart to open_bdev_excl().&n; */
+multiline_comment|/**&n; * close_bdev_excl  -  release a blockdevice openen by open_bdev_excl()&n; *&n; * @bdev:&t;blockdevice to close&n; *&n; * This is the counterpart to open_bdev_excl().&n; */
 DECL|function|close_bdev_excl
 r_void
 id|close_bdev_excl
@@ -4067,9 +4039,6 @@ r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-id|kind
 )paren
 (brace
 id|bd_release
@@ -4082,8 +4051,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|kind
 )paren
 suffix:semicolon
 )brace

@@ -149,8 +149,6 @@ comma
 id|filp-&gt;f_mode
 comma
 l_int|0
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_if
@@ -254,8 +252,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 id|out
@@ -363,8 +359,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_return

@@ -1329,8 +1329,6 @@ c_func
 id|dev
 comma
 id|d-&gt;mode
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_if
@@ -1368,8 +1366,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_else
@@ -1412,8 +1408,6 @@ id|blkdev_put
 c_func
 (paren
 id|d-&gt;bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 id|d-&gt;bdev
