@@ -95,6 +95,11 @@ mdefine_line|#define UNI_N_HWINIT_STATE_RUNNING&t;0x02
 multiline_comment|/* This last bit appear to be used by the bootROM to know the second&n; * CPU has started and will enter it&squot;s sleep loop with IP=0&n; */
 DECL|macro|UNI_N_HWINIT_STATE_CPU1_FLAG
 mdefine_line|#define UNI_N_HWINIT_STATE_CPU1_FLAG&t;0x10000000
+multiline_comment|/* This register controls AACK delay, which is set when 2004 iBook/PowerBook&n; * is in low speed mode.&n; */
+DECL|macro|UNI_N_AACK_DELAY
+mdefine_line|#define UNI_N_AACK_DELAY&t;&t;0x0100
+DECL|macro|UNI_N_AACK_DELAY_ENABLE
+mdefine_line|#define UNI_N_AACK_DELAY_ENABLE&t;&t;0x00000001
 multiline_comment|/* Uninorth 1.5 rev. has additional perf. monitor registers at 0xf00-0xf50 */
 multiline_comment|/*&n; * U3 specific registers&n; */
 multiline_comment|/* U3 Toggle */
