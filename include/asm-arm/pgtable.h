@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/pgtable.h&n; *&n; *  Copyright (C) 2000-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/pgtable.h&n; *&n; *  Copyright (C) 2000-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _ASMARM_PGTABLE_H
 DECL|macro|_ASMARM_PGTABLE_H
 mdefine_line|#define _ASMARM_PGTABLE_H
@@ -8,8 +8,13 @@ macro_line|#include &lt;asm/arch/vmalloc.h&gt;
 multiline_comment|/*&n; * PMD_SHIFT determines the size of the area a second-level page table can map&n; * PGDIR_SHIFT determines what a third-level page table entry can map&n; */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;&t;20
+macro_line|#ifdef CONFIG_CPU_32
+DECL|macro|PGDIR_SHIFT
+mdefine_line|#define PGDIR_SHIFT&t;&t;21
+macro_line|#else
 DECL|macro|PGDIR_SHIFT
 mdefine_line|#define PGDIR_SHIFT&t;&t;20
+macro_line|#endif
 DECL|macro|LIBRARY_TEXT_START
 mdefine_line|#define LIBRARY_TEXT_START&t;0x0c000000
 macro_line|#ifndef __ASSEMBLY__
@@ -145,8 +150,6 @@ DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_present
 mdefine_line|#define pmd_present(pmd)&t;(pmd_val(pmd))
-DECL|macro|pmd_clear
-mdefine_line|#define pmd_clear(pmdp)&t;&t;set_pmd(pmdp, __pmd(0))
 multiline_comment|/*&n; * Permanent address of a page. We never have highmem, so this is trivial.&n; */
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20 - PAGE_SHIFT))
@@ -166,15 +169,10 @@ id|pgprot_t
 id|pgprot
 )paren
 (brace
-id|pte_t
-id|pte
-suffix:semicolon
-id|pte_val
+r_return
+id|__pte
 c_func
 (paren
-id|pte
-)paren
-op_assign
 id|physpage
 op_or
 id|pgprot_val
@@ -182,13 +180,11 @@ c_func
 (paren
 id|pgprot
 )paren
-suffix:semicolon
-r_return
-id|pte
+)paren
 suffix:semicolon
 )brace
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = __pa(page_address(page)) +&t;&bslash;&n;&t;&t;&t;   pgprot_val(pgprot);&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define mk_pte(page,pgprot)&t;mk_pte_phys(__pa(page_address(page)), pgprot)
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(pgd)&t;&t;(0)
@@ -197,7 +193,7 @@ mdefine_line|#define pgd_bad(pgd)&t;&t;(0)
 DECL|macro|pgd_present
 mdefine_line|#define pgd_present(pgd)&t;(1)
 DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(pgdp)
+mdefine_line|#define pgd_clear(pgdp)&t;&t;do { } while (0)
 DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page,prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
@@ -218,20 +214,6 @@ mdefine_line|#define pmd_offset(dir, addr)&t;((pmd_t *)(dir))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_index
 mdefine_line|#define __pte_index(addr)&t;(((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
-DECL|macro|pmd_page
-mdefine_line|#define pmd_page(dir)&t;&t;((struct page *)__pmd_page(dir))
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(dir, addr)&t;((pte_t *)__pmd_page(*(dir)) + __pte_index(addr))
-DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel&t;__pte_offset
-DECL|macro|pte_offset_map
-mdefine_line|#define pte_offset_map&t;&t;__pte_offset
-DECL|macro|pte_offset_map_nested
-mdefine_line|#define pte_offset_map_nested&t;__pte_offset
-DECL|macro|pte_unmap
-mdefine_line|#define pte_unmap(pte)&t;&t;do { } while (0)
-DECL|macro|pte_unmap_nested
-mdefine_line|#define pte_unmap_nested(pte)&t;do { } while (0)
 macro_line|#include &lt;asm/proc/pgtable.h&gt;
 DECL|function|pte_modify
 r_static
@@ -296,14 +278,6 @@ multiline_comment|/* FIXME: this is not correct */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
-r_extern
-r_void
-id|pgtable_cache_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * remap a physical address `phys&squot; of size `size&squot; with page protection `prot&squot;&n; * into virtual address `from&squot;&n; */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma,from,phys,size,prot) &bslash;&n;&t;&t;remap_page_range(vma,from,phys,size,prot)
