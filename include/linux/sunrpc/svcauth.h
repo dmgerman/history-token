@@ -82,9 +82,6 @@ comma
 id|u32
 op_star
 id|authp
-comma
-r_int
-id|proc
 )paren
 suffix:semicolon
 DECL|member|release
@@ -151,14 +148,7 @@ id|rqstp
 comma
 id|u32
 op_star
-id|statp
-comma
-id|u32
-op_star
 id|authp
-comma
-r_int
-id|proc
 )paren
 suffix:semicolon
 r_extern

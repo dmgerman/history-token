@@ -1600,9 +1600,6 @@ comma
 id|u32
 op_star
 id|authp
-comma
-r_int
-id|proc
 )paren
 (brace
 r_struct
@@ -1871,7 +1868,7 @@ id|rqstp-&gt;rq_client
 op_eq
 l_int|NULL
 op_logical_and
-id|proc
+id|rqstp-&gt;rq_proc
 op_ne
 l_int|0
 )paren
@@ -1957,9 +1954,6 @@ comma
 id|u32
 op_star
 id|authp
-comma
-r_int
-id|proc
 )paren
 (brace
 r_struct
@@ -2391,7 +2385,7 @@ id|rqstp-&gt;rq_client
 op_eq
 l_int|NULL
 op_logical_and
-id|proc
+id|rqstp-&gt;rq_proc
 op_ne
 l_int|0
 )paren
