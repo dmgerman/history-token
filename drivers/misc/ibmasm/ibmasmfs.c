@@ -617,6 +617,7 @@ r_int
 id|ibmasmfs_register
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return
@@ -633,6 +634,7 @@ r_void
 id|ibmasmfs_unregister
 c_func
 (paren
+r_void
 )paren
 (brace
 id|unregister_filesystem
@@ -857,6 +859,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1048,6 +1051,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|ubuff
 comma
@@ -1146,16 +1150,8 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|cmd-&gt;buffer
 comma
-(paren
-r_void
-op_star
-)paren
 id|ubuff
 comma
 id|count
@@ -1386,6 +1382,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1517,6 +1514,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1711,6 +1709,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1848,6 +1847,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1973,6 +1973,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2152,6 +2153,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|ubuff
 comma
@@ -2257,16 +2259,8 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|buff
 comma
-(paren
-r_void
-op_star
-)paren
 id|ubuff
 comma
 id|count
@@ -2468,6 +2462,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2685,6 +2680,7 @@ id|event_file_read
 comma
 dot
 id|write
+op_assign
 id|event_file_write
 comma
 )brace
