@@ -11,7 +11,6 @@ r_struct
 id|isdn_netif_ops
 id|isdn_ppp_ops
 suffix:semicolon
-r_extern
 r_int
 id|isdn_ppp_init
 c_func
@@ -19,7 +18,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|isdn_ppp_cleanup
 c_func
@@ -27,7 +25,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|isdn_ppp_dial_slave
 c_func
@@ -36,7 +33,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|isdn_ppp_hangup_slave
 c_func
@@ -45,16 +41,41 @@ r_char
 op_star
 )paren
 suffix:semicolon
-DECL|macro|IPPP_OPEN
-mdefine_line|#define IPPP_OPEN&t;0x01
-DECL|macro|IPPP_CONNECT
-mdefine_line|#define IPPP_CONNECT&t;0x02
-DECL|macro|IPPP_CLOSEWAIT
-mdefine_line|#define IPPP_CLOSEWAIT&t;0x04
-DECL|macro|IPPP_NOBLOCK
-mdefine_line|#define IPPP_NOBLOCK&t;0x08
-DECL|macro|IPPP_ASSIGNED
-mdefine_line|#define IPPP_ASSIGNED&t;0x10
+r_void
+id|isdn_ppp_frame_log
+c_func
+(paren
+r_char
+op_star
+id|info
+comma
+r_char
+op_star
+id|data
+comma
+r_int
+id|len
+comma
+r_int
+id|maxlen
+comma
+r_int
+id|unit
+comma
+r_int
+id|slot
+)paren
+suffix:semicolon
+r_int
+id|isdn_ppp_strip_proto
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
 DECL|macro|IPPP_MAX_HEADER
 mdefine_line|#define IPPP_MAX_HEADER 10
 eof
