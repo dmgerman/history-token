@@ -607,9 +607,13 @@ multiline_comment|/*&n;&t;&t;&t; * Notification Workaround: When the max&n;&t;&t
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|bte-&gt;idealTransferTimeout
+)paren
 )paren
 (brace
 id|bte-&gt;notify

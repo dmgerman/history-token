@@ -840,6 +840,22 @@ id|COMET
 )brace
 comma
 (brace
+l_int|0x1259
+comma
+l_int|0xa120
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|COMET
+)brace
+comma
+(brace
 l_int|0x11F6
 comma
 l_int|0x9881
@@ -7639,10 +7655,6 @@ id|dev-&gt;base_addr
 op_assign
 id|ioaddr
 suffix:semicolon
-id|dev-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
 macro_line|#ifdef CONFIG_TULIP_MWI
 r_if
 c_cond
@@ -8470,6 +8482,10 @@ id|i
 )braket
 suffix:semicolon
 id|last_irq
+op_assign
+id|irq
+suffix:semicolon
+id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
