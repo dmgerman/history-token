@@ -8174,6 +8174,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|tty-&gt;read_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8196,13 +8205,6 @@ id|tty-&gt;flip.buf_num
 op_assign
 l_int|0
 suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 id|tty-&gt;flip.char_buf_ptr
 op_assign
 id|tty-&gt;flip.char_buf
@@ -8226,13 +8228,6 @@ id|tty-&gt;flip.buf_num
 op_assign
 l_int|1
 suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 id|tty-&gt;flip.char_buf_ptr
 op_assign
 id|tty-&gt;flip.char_buf
@@ -8254,13 +8249,15 @@ id|tty-&gt;flip.count
 op_assign
 l_int|0
 suffix:semicolon
-id|local_irq_restore
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|tty-&gt;read_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 id|tty-&gt;ldisc
 dot
 id|receive_buf
