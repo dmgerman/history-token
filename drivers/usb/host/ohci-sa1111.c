@@ -896,66 +896,79 @@ id|hc_driver
 id|ohci_sa1111_hc_driver
 op_assign
 (brace
+dot
 id|description
-suffix:colon
+op_assign
 id|hcd_name
 comma
 multiline_comment|/*&n;&t; * generic hardware linkage&n;&t; */
+dot
 id|irq
-suffix:colon
+op_assign
 id|ohci_irq
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|HCD_USB11
 comma
 multiline_comment|/*&n;&t; * basic lifecycle operations&n;&t; */
+dot
 id|start
-suffix:colon
+op_assign
 id|ohci_sa1111_start
 comma
 macro_line|#ifdef&t;CONFIG_PM
 multiline_comment|/* suspend:&t;&t;ohci_sa1111_suspend,  -- tbd */
 multiline_comment|/* resume:&t;&t;ohci_sa1111_resume,   -- tbd */
 macro_line|#endif
+dot
 id|stop
-suffix:colon
+op_assign
 id|ohci_stop
 comma
 multiline_comment|/*&n;&t; * memory lifecycle (except per-request)&n;&t; */
+dot
 id|hcd_alloc
-suffix:colon
+op_assign
 id|ohci_hcd_alloc
 comma
+dot
 id|hcd_free
-suffix:colon
+op_assign
 id|ohci_hcd_free
 comma
 multiline_comment|/*&n;&t; * managing i/o requests and associated device resources&n;&t; */
+dot
 id|urb_enqueue
-suffix:colon
+op_assign
 id|ohci_urb_enqueue
 comma
+dot
 id|urb_dequeue
-suffix:colon
+op_assign
 id|ohci_urb_dequeue
 comma
+dot
 id|free_config
-suffix:colon
+op_assign
 id|ohci_free_config
 comma
 multiline_comment|/*&n;&t; * scheduling support&n;&t; */
+dot
 id|get_frame_number
-suffix:colon
+op_assign
 id|ohci_get_frame
 comma
 multiline_comment|/*&n;&t; * root hub support&n;&t; */
+dot
 id|hub_status_data
-suffix:colon
+op_assign
 id|ohci_hub_status_data
 comma
+dot
 id|hub_control
-suffix:colon
+op_assign
 id|ohci_hub_control
 comma
 )brace

@@ -95,108 +95,6 @@ suffix:semicolon
 multiline_comment|/* the next part of the message follows immediately */
 )brace
 suffix:semicolon
-multiline_comment|/* one msg_msg structure for each message */
-DECL|struct|msg_msg
-r_struct
-id|msg_msg
-(brace
-DECL|member|m_list
-r_struct
-id|list_head
-id|m_list
-suffix:semicolon
-DECL|member|m_type
-r_int
-id|m_type
-suffix:semicolon
-DECL|member|m_ts
-r_int
-id|m_ts
-suffix:semicolon
-multiline_comment|/* message text size */
-DECL|member|next
-r_struct
-id|msg_msgseg
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* the actual message follows immediately */
-)brace
-suffix:semicolon
-DECL|macro|DATALEN_MSG
-mdefine_line|#define DATALEN_MSG&t;(PAGE_SIZE-sizeof(struct msg_msg))
-DECL|macro|DATALEN_SEG
-mdefine_line|#define DATALEN_SEG&t;(PAGE_SIZE-sizeof(struct msg_msgseg))
-multiline_comment|/* one msq_queue structure for each present queue on the system */
-DECL|struct|msg_queue
-r_struct
-id|msg_queue
-(brace
-DECL|member|q_perm
-r_struct
-id|kern_ipc_perm
-id|q_perm
-suffix:semicolon
-DECL|member|q_stime
-id|time_t
-id|q_stime
-suffix:semicolon
-multiline_comment|/* last msgsnd time */
-DECL|member|q_rtime
-id|time_t
-id|q_rtime
-suffix:semicolon
-multiline_comment|/* last msgrcv time */
-DECL|member|q_ctime
-id|time_t
-id|q_ctime
-suffix:semicolon
-multiline_comment|/* last change time */
-DECL|member|q_cbytes
-r_int
-r_int
-id|q_cbytes
-suffix:semicolon
-multiline_comment|/* current number of bytes on queue */
-DECL|member|q_qnum
-r_int
-r_int
-id|q_qnum
-suffix:semicolon
-multiline_comment|/* number of messages in queue */
-DECL|member|q_qbytes
-r_int
-r_int
-id|q_qbytes
-suffix:semicolon
-multiline_comment|/* max number of bytes on queue */
-DECL|member|q_lspid
-id|pid_t
-id|q_lspid
-suffix:semicolon
-multiline_comment|/* pid of last msgsnd */
-DECL|member|q_lrpid
-id|pid_t
-id|q_lrpid
-suffix:semicolon
-multiline_comment|/* last receive pid */
-DECL|member|q_messages
-r_struct
-id|list_head
-id|q_messages
-suffix:semicolon
-DECL|member|q_receivers
-r_struct
-id|list_head
-id|q_receivers
-suffix:semicolon
-DECL|member|q_senders
-r_struct
-id|list_head
-id|q_senders
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|SEARCH_ANY
 mdefine_line|#define SEARCH_ANY&t;&t;1
 DECL|macro|SEARCH_EQUAL
@@ -375,6 +273,18 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|msq-&gt;q_perm.mode
+op_assign
+(paren
+id|msgflg
+op_amp
+id|S_IRWXUGO
+)paren
+suffix:semicolon
+id|msq-&gt;q_perm.key
+op_assign
+id|key
+suffix:semicolon
 id|id
 op_assign
 id|ipc_addid
@@ -409,18 +319,6 @@ op_minus
 id|ENOSPC
 suffix:semicolon
 )brace
-id|msq-&gt;q_perm.mode
-op_assign
-(paren
-id|msgflg
-op_amp
-id|S_IRWXUGO
-)paren
-suffix:semicolon
-id|msq-&gt;q_perm.key
-op_assign
-id|key
-suffix:semicolon
 id|msq-&gt;q_stime
 op_assign
 id|msq-&gt;q_rtime

@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
@@ -1609,6 +1610,10 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+id|kstat.pgfree
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

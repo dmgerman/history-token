@@ -2,18 +2,11 @@ macro_line|#ifndef _MULTIPATH_H
 DECL|macro|_MULTIPATH_H
 mdefine_line|#define _MULTIPATH_H
 macro_line|#include &lt;linux/raid/md.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 DECL|struct|multipath_info
 r_struct
 id|multipath_info
 (brace
-DECL|member|number
-r_int
-id|number
-suffix:semicolon
-DECL|member|raid_disk
-r_int
-id|raid_disk
-suffix:semicolon
 DECL|member|bdev
 r_struct
 id|block_device
@@ -24,10 +17,6 @@ multiline_comment|/*&n;&t; * State bits:&n;&t; */
 DECL|member|operational
 r_int
 id|operational
-suffix:semicolon
-DECL|member|spare
-r_int
-id|spare
 suffix:semicolon
 DECL|member|used_slot
 r_int
@@ -52,10 +41,6 @@ id|multipaths
 id|MD_SB_DISKS
 )braket
 suffix:semicolon
-DECL|member|nr_disks
-r_int
-id|nr_disks
-suffix:semicolon
 DECL|member|raid_disks
 r_int
 id|raid_disks
@@ -69,35 +54,14 @@ id|mdk_thread_t
 op_star
 id|thread
 suffix:semicolon
-DECL|member|spare
-r_struct
-id|multipath_info
-op_star
-id|spare
-suffix:semicolon
 DECL|member|device_lock
 id|spinlock_t
 id|device_lock
 suffix:semicolon
-multiline_comment|/* buffer pool */
-multiline_comment|/* buffer_heads that we have pre-allocated have b_pprev -&gt; &amp;freebh&n;&t; * and are linked into a stack using b_next&n;&t; * multipath_bh that are pre-allocated have MPBH_PreAlloc set.&n;&t; * All these variable are protected by device_lock&n;&t; */
-DECL|member|freer1
-r_struct
-id|multipath_bh
+DECL|member|pool
+id|mempool_t
 op_star
-id|freer1
-suffix:semicolon
-DECL|member|freer1_blocked
-r_int
-id|freer1_blocked
-suffix:semicolon
-DECL|member|freer1_cnt
-r_int
-id|freer1_cnt
-suffix:semicolon
-DECL|member|wait_buffer
-id|wait_queue_head_t
-id|wait_buffer
+id|pool
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -115,20 +79,6 @@ DECL|struct|multipath_bh
 r_struct
 id|multipath_bh
 (brace
-DECL|member|remaining
-id|atomic_t
-id|remaining
-suffix:semicolon
-multiline_comment|/* &squot;have we finished&squot; count,&n;&t;&t;&t;&t;&t;    * used from IRQ handlers&n;&t;&t;&t;&t;&t;    */
-DECL|member|cmd
-r_int
-id|cmd
-suffix:semicolon
-DECL|member|state
-r_int
-r_int
-id|state
-suffix:semicolon
 DECL|member|mddev
 id|mddev_t
 op_star
@@ -143,8 +93,11 @@ suffix:semicolon
 DECL|member|bio
 r_struct
 id|bio
-op_star
 id|bio
+suffix:semicolon
+DECL|member|path
+r_int
+id|path
 suffix:semicolon
 DECL|member|next_mp
 r_struct
@@ -152,15 +105,8 @@ id|multipath_bh
 op_star
 id|next_mp
 suffix:semicolon
-multiline_comment|/* next for retry or in free list */
+multiline_comment|/* next for retry */
 )brace
 suffix:semicolon
-multiline_comment|/* bits for multipath_bh.state */
-DECL|macro|MPBH_Uptodate
-mdefine_line|#define&t;MPBH_Uptodate&t;1
-DECL|macro|MPBH_SyncPhase
-mdefine_line|#define&t;MPBH_SyncPhase&t;2
-DECL|macro|MPBH_PreAlloc
-mdefine_line|#define&t;MPBH_PreAlloc&t;3&t;/* this was pre-allocated, add to free list */
 macro_line|#endif
 eof

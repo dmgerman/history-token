@@ -229,7 +229,7 @@ id|pipe
 )paren
 )paren
 )paren
-op_ne
+op_eq
 l_int|0
 )paren
 id|size

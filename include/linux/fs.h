@@ -424,9 +424,6 @@ suffix:semicolon
 r_struct
 id|address_space
 suffix:semicolon
-r_struct
-id|kiobuf
-suffix:semicolon
 DECL|struct|address_space_operations
 r_struct
 id|address_space_operations
@@ -1463,17 +1460,6 @@ DECL|member|private_data
 r_void
 op_star
 id|private_data
-suffix:semicolon
-multiline_comment|/* preallocated helper kiobuf to speedup O_DIRECT */
-DECL|member|f_iobuf
-r_struct
-id|kiobuf
-op_star
-id|f_iobuf
-suffix:semicolon
-DECL|member|f_iobuf_lock
-r_int
-id|f_iobuf_lock
 suffix:semicolon
 )brace
 suffix:semicolon

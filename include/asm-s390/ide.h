@@ -8,8 +8,6 @@ macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;0
 macro_line|#endif
-DECL|macro|ide__sti
-mdefine_line|#define ide__sti()&t;do {} while (0)
 multiline_comment|/*&n; * We always use the new IDE port registering,&n; * so these are fixed here.&n; */
 DECL|macro|ide_default_io_base
 mdefine_line|#define ide_default_io_base(i)&t;&t;((ide_ioreg_t)0)

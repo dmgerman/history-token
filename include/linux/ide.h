@@ -45,12 +45,10 @@ DECL|macro|ERROR_MAX
 mdefine_line|#define ERROR_MAX&t;8&t;/* Max read/write errors per sector */
 DECL|macro|ERROR_RESET
 mdefine_line|#define ERROR_RESET&t;3&t;/* Reset controller every 4th retry */
-DECL|macro|ERROR_RECAL
-mdefine_line|#define ERROR_RECAL&t;1&t;/* Recalibrate every 2nd retry */
-multiline_comment|/*&n; * state flags&n; */
+multiline_comment|/*&n; * State flags.&n; */
 DECL|macro|DMA_PIO_RETRY
 mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
-multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
+multiline_comment|/*&n; * Definitions for accessing IDE controller registers.&n; */
 r_enum
 (brace
 DECL|enumerator|IDE_DATA_OFFSET
@@ -306,9 +304,16 @@ id|dma
 suffix:semicolon
 multiline_comment|/* our dma entry */
 DECL|member|ack_intr
-id|ide_ack_intr_t
+r_int
+(paren
 op_star
 id|ack_intr
+)paren
+(paren
+r_struct
+id|ata_channel
+op_star
+)paren
 suffix:semicolon
 multiline_comment|/* acknowledge interrupt */
 DECL|member|chipset
@@ -320,6 +325,7 @@ DECL|typedef|hw_regs_t
 id|hw_regs_t
 suffix:semicolon
 multiline_comment|/*&n; * Set up hw_regs_t structure before calling ide_register_hw (optional)&n; */
+r_extern
 r_void
 id|ide_setup_ports
 c_func
@@ -341,9 +347,16 @@ comma
 id|ide_ioreg_t
 id|intr
 comma
-id|ide_ack_intr_t
+r_int
+(paren
 op_star
 id|ack_intr
+)paren
+(paren
+r_struct
+id|ata_channel
+op_star
+)paren
 comma
 r_int
 id|irq
@@ -509,7 +522,6 @@ r_char
 id|type
 suffix:semicolon
 multiline_comment|/* distingiush different devices: disk, cdrom, tape, floppy, ... */
-multiline_comment|/* NOTE: If we had proper separation between channel and host chip, we&n;&t; * could move this to the channel and many sync problems would&n;&t; * magically just go away.&n;&t; */
 DECL|member|queue
 id|request_queue_t
 id|queue
@@ -959,6 +971,10 @@ multiline_comment|/* awaiting an interrupt */
 DECL|enumerator|IDE_SLEEP
 id|IDE_SLEEP
 comma
+DECL|enumerator|IDE_PIO
+id|IDE_PIO
+comma
+multiline_comment|/* PIO in progress */
 DECL|enumerator|IDE_DMA
 id|IDE_DMA
 multiline_comment|/* DMA in progress */
@@ -1009,6 +1025,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* irq handler, if active */
+multiline_comment|/* FIXME: Only still used in PDC4030.  Localize this code there by&n;&t; * replacing with busy waits.&n;&t; */
 DECL|member|timer
 r_struct
 id|timer_list
@@ -1616,9 +1633,6 @@ id|ata_channel
 op_star
 )paren
 suffix:semicolon
-r_struct
-id|ata_taskfile
-suffix:semicolon
 DECL|macro|IDE_MAX_TAG
 mdefine_line|#define IDE_MAX_TAG&t;32
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
@@ -1996,7 +2010,7 @@ mdefine_line|#define DEVICE_NR(device)&t;(minor(device) &gt;&gt; PARTN_BITS)
 macro_line|#include &lt;linux/blk.h&gt;
 r_extern
 r_int
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 r_struct
@@ -2116,44 +2130,9 @@ id|kdev_t
 id|i_rdev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * &quot;action&quot; parameter type for ide_do_drive_cmd() below.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|ide_wait
-id|ide_wait
-comma
-multiline_comment|/* insert rq at end of list, and wait for it */
-DECL|enumerator|ide_preempt
-id|ide_preempt
-comma
-multiline_comment|/* insert rq in front of current request */
-DECL|enumerator|ide_end
-id|ide_end
-multiline_comment|/* insert rq at end of list, but don&squot;t wait for it */
-DECL|typedef|ide_action_t
-)brace
-id|ide_action_t
-suffix:semicolon
 multiline_comment|/*&n; * temporarily mapping a (possible) highmem bio for PIO transfer&n; */
 DECL|macro|ide_rq_offset
 mdefine_line|#define ide_rq_offset(rq) (((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
-r_extern
-r_int
-id|ide_do_drive_cmd
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-comma
-id|ide_action_t
-)paren
-suffix:semicolon
 DECL|struct|ata_taskfile
 r_struct
 id|ata_taskfile
@@ -2242,17 +2221,6 @@ op_star
 comma
 r_char
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ide_fix_driveid
-c_func
-(paren
-r_struct
-id|hd_driveid
-op_star
-id|id
 )paren
 suffix:semicolon
 r_extern
@@ -2988,17 +2956,6 @@ id|ide_lock
 suffix:semicolon
 DECL|macro|DRIVE_LOCK
 mdefine_line|#define DRIVE_LOCK(drive)&t;((drive)-&gt;queue.queue_lock)
-r_extern
-r_int
-id|drive_is_ready
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-suffix:semicolon
 multiline_comment|/* Low level device access functions. */
 r_extern
 r_void
@@ -3035,6 +2992,17 @@ comma
 id|u8
 comma
 id|u8
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_status_irq
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
 )paren
 suffix:semicolon
 r_extern

@@ -653,19 +653,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 r_for
 c_loop
 (paren
@@ -764,13 +757,12 @@ comma
 id|base_port
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 r_if
 c_cond
 (paren
@@ -796,13 +788,12 @@ id|base_port
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 r_return
 l_int|0
 suffix:semicolon
@@ -830,19 +821,12 @@ suffix:semicolon
 id|u8
 id|t
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|outb_p
 c_func
 (paren
@@ -899,13 +883,12 @@ comma
 id|base_port
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 r_return
 id|t
 suffix:semicolon

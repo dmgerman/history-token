@@ -449,7 +449,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -543,7 +543,7 @@ op_logical_neg
 id|rq-&gt;current_nr_sectors
 op_logical_and
 op_logical_neg
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -836,7 +836,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -961,7 +961,7 @@ op_logical_neg
 id|rq-&gt;nr_sectors
 )paren
 (brace
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -1263,7 +1263,7 @@ comma
 l_string|&quot;idedisk_do_request - bad command&quot;
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2182,7 +2182,7 @@ r_return
 id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Warning check for race between handler and prehandler&n;&t;&t; * for writing first block of data.  however since we are well&n;&t;&t; * inside the boundaries of the seek, we should be okay.&n;&t;&t; * FIXME: should be fixed  --bzolnier&n;&t;&t; */
+multiline_comment|/* FIXME: Warning check for race between handlers for writing&n;&t;&t; * first block of data.  However since we are well inside the&n;&t;&t; * boundaries of the seek, we should be okay.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2330,7 +2330,7 @@ r_else
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Polling wait until the drive is ready.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Stuff the first sector(s) by calling the&n;&t;&t;&t;&t; * handler driectly therafter.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * FIXME: Replace hard-coded 100, what about&n;&t;&t;&t;&t; * error handling?&n;&t;&t;&t;&t; */
+multiline_comment|/* Polling wait until the drive is ready.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Stuff the first sector(s) by calling the&n;&t;&t;&t;&t; * handler driectly therafter.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * FIXME: Replace hard-coded 100, what about&n;&t;&t;&t;&t; * error handling?&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * FIXME: Whatabout the IRE clearing and not clearing case?!&n;&t;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -2349,7 +2349,7 @@ id|i
 r_if
 c_cond
 (paren
-id|drive_is_ready
+id|ata_status_irq
 c_func
 (paren
 id|drive
@@ -2362,7 +2362,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|drive_is_ready
+id|ata_status_irq
 c_func
 (paren
 id|drive
@@ -5048,7 +5048,7 @@ comma
 r_struct
 id|file
 op_star
-id|file
+id|__fp
 comma
 r_int
 r_int
@@ -5560,53 +5560,65 @@ id|ata_operations
 id|idedisk_driver
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|attach
-suffix:colon
+op_assign
 id|idedisk_attach
 comma
+dot
 id|cleanup
-suffix:colon
+op_assign
 id|idedisk_cleanup
 comma
+dot
 id|standby
-suffix:colon
+op_assign
 id|idedisk_standby
 comma
+dot
 id|do_request
-suffix:colon
+op_assign
 id|idedisk_do_request
 comma
+dot
 id|end_request
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|idedisk_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|idedisk_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|idedisk_release
 comma
+dot
 id|check_media_change
-suffix:colon
+op_assign
 id|idedisk_check_media_change
 comma
+dot
 id|revalidate
-suffix:colon
+op_assign
 l_int|NULL
 comma
 multiline_comment|/* use default method */
+dot
 id|capacity
-suffix:colon
+op_assign
 id|idedisk_capacity
 comma
 )brace

@@ -214,7 +214,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Probe for a Gayle IDE interface (and optionally for an IDE doubler)&n;     */
+multiline_comment|/*&n; *  Probe for a Gayle IDE interface (and optionally for an IDE doubler)&n; */
 DECL|function|gayle_init
 r_void
 id|__init
@@ -282,9 +282,16 @@ id|ctrlport
 comma
 id|irqport
 suffix:semicolon
-id|ide_ack_intr_t
+r_int
+(paren
 op_star
 id|ack_intr
+)paren
+(paren
+r_struct
+id|ata_channel
+op_star
+)paren
 suffix:semicolon
 id|hw_regs_t
 id|hw
