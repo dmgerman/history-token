@@ -794,8 +794,7 @@ id|sk
 comma
 id|dst
 comma
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp

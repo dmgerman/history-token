@@ -1293,8 +1293,7 @@ id|fq-&gt;id
 op_eq
 id|fq_in-&gt;id
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1304,8 +1303,7 @@ op_amp
 id|fq-&gt;saddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1660,8 +1658,7 @@ id|fq-&gt;id
 op_eq
 id|id
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|src
@@ -1670,8 +1667,7 @@ op_amp
 id|fq-&gt;saddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|dst

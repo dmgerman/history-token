@@ -1121,7 +1121,8 @@ id|np-&gt;rcv_saddr
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1392,8 +1393,7 @@ id|PF_INET6
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1402,8 +1402,7 @@ comma
 id|saddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1806,8 +1805,7 @@ id|family
 op_eq
 id|AF_INET6
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1816,8 +1814,7 @@ comma
 id|raddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2126,8 +2123,7 @@ id|sk2-&gt;sk_family
 op_eq
 id|PF_INET6
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2136,8 +2132,7 @@ comma
 id|saddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2831,7 +2826,8 @@ c_cond
 (paren
 id|tp-&gt;ts_recent_stamp
 op_logical_and
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
