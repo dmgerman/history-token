@@ -40,15 +40,18 @@ mdefine_line|#define DPRINTK(x) (void) 0
 DECL|macro|DNPRINTK
 mdefine_line|#define DNPRINTK(n, x) (void) 0
 macro_line|#endif /* #if DEBUG_EPOLL &gt; 0 */
-DECL|macro|DEBUG_DPI
-mdefine_line|#define DEBUG_DPI 0
-macro_line|#if DEBUG_DPI != 0
-DECL|macro|DPI_SLAB_DEBUG
-mdefine_line|#define DPI_SLAB_DEBUG (SLAB_DEBUG_FREE | SLAB_RED_ZONE /* | SLAB_POISON */)
-macro_line|#else /* #if DEBUG_DPI != 0 */
-DECL|macro|DPI_SLAB_DEBUG
-mdefine_line|#define DPI_SLAB_DEBUG 0
-macro_line|#endif /* #if DEBUG_DPI != 0 */
+DECL|macro|DEBUG_EPI
+mdefine_line|#define DEBUG_EPI 0
+macro_line|#if DEBUG_EPI != 0
+DECL|macro|EPI_SLAB_DEBUG
+mdefine_line|#define EPI_SLAB_DEBUG (SLAB_DEBUG_FREE | SLAB_RED_ZONE /* | SLAB_POISON */)
+macro_line|#else /* #if DEBUG_EPI != 0 */
+DECL|macro|EPI_SLAB_DEBUG
+mdefine_line|#define EPI_SLAB_DEBUG 0
+macro_line|#endif /* #if DEBUG_EPI != 0 */
+multiline_comment|/* Maximum number of poll wake up nests we are allowing */
+DECL|macro|EP_MAX_POLLWAKE_NESTS
+mdefine_line|#define EP_MAX_POLLWAKE_NESTS 4
 multiline_comment|/* Maximum size of the hash in bits ( 2^N ) */
 DECL|macro|EP_MAX_HASH_BITS
 mdefine_line|#define EP_MAX_HASH_BITS 17
@@ -65,11 +68,11 @@ multiline_comment|/* Number of pages allocated for an &quot;hbits&quot; sized ha
 DECL|macro|EP_HASH_PAGES
 mdefine_line|#define EP_HASH_PAGES(hbits) ((int) ((1 &lt;&lt; (hbits)) / EP_HENTRY_X_PAGE + &bslash;&n;&t;&t;&t;&t;     ((1 &lt;&lt; (hbits)) % EP_HENTRY_X_PAGE ? 1: 0)))
 multiline_comment|/* Macro to allocate a &quot;struct epitem&quot; from the slab cache */
-DECL|macro|DPI_MEM_ALLOC
-mdefine_line|#define DPI_MEM_ALLOC()&t;(struct epitem *) kmem_cache_alloc(dpi_cache, SLAB_KERNEL)
+DECL|macro|EPI_MEM_ALLOC
+mdefine_line|#define EPI_MEM_ALLOC()&t;(struct epitem *) kmem_cache_alloc(epi_cache, SLAB_KERNEL)
 multiline_comment|/* Macro to free a &quot;struct epitem&quot; to the slab cache */
-DECL|macro|DPI_MEM_FREE
-mdefine_line|#define DPI_MEM_FREE(p) kmem_cache_free(dpi_cache, p)
+DECL|macro|EPI_MEM_FREE
+mdefine_line|#define EPI_MEM_FREE(p) kmem_cache_free(epi_cache, p)
 multiline_comment|/* Macro to allocate a &quot;struct eppoll_entry&quot; from the slab cache */
 DECL|macro|PWQ_MEM_ALLOC
 mdefine_line|#define PWQ_MEM_ALLOC()&t;(struct eppoll_entry *) kmem_cache_alloc(pwq_cache, SLAB_KERNEL)
@@ -90,13 +93,51 @@ DECL|macro|EP_ITEM_FROM_WAIT
 mdefine_line|#define EP_ITEM_FROM_WAIT(p) ((struct epitem *) container_of(p, struct eppoll_entry, wait)-&gt;base)
 multiline_comment|/* Get the &quot;struct epitem&quot; from an epoll queue wrapper */
 DECL|macro|EP_ITEM_FROM_EPQUEUE
-mdefine_line|#define EP_ITEM_FROM_EPQUEUE(p) (container_of(p, struct ep_pqueue, pt)-&gt;dpi)
+mdefine_line|#define EP_ITEM_FROM_EPQUEUE(p) (container_of(p, struct ep_pqueue, pt)-&gt;epi)
 multiline_comment|/*&n; * This is used to optimize the event transfer to userspace. Since this&n; * is kept on stack, it should be pretty small.&n; */
 DECL|macro|EP_MAX_BUF_EVENTS
 mdefine_line|#define EP_MAX_BUF_EVENTS 32
 multiline_comment|/*&n; * Used to optimize ready items collection by reducing the irqlock/irqunlock&n; * switching rate. This is kept in stack too, so do not go wild with this number.&n; */
 DECL|macro|EP_MAX_COLLECT_ITEMS
 mdefine_line|#define EP_MAX_COLLECT_ITEMS 64
+multiline_comment|/*&n; * Node that is linked into the &quot;wake_task_list&quot; member of the &quot;struct poll_safewake&quot;.&n; * It is used to keep track on all tasks that are currently inside the wake_up() code&n; * to 1) short-circuit the one coming from the same task and same wait queue head&n; * ( loop ) 2) allow a maximum number of epoll descriptors inclusion nesting&n; * 3) let go the ones coming from other tasks.&n; */
+DECL|struct|wake_task_node
+r_struct
+id|wake_task_node
+(brace
+DECL|member|llink
+r_struct
+id|list_head
+id|llink
+suffix:semicolon
+DECL|member|task
+id|task_t
+op_star
+id|task
+suffix:semicolon
+DECL|member|wq
+id|wait_queue_head_t
+op_star
+id|wq
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * This is used to implement the safe poll wake up avoiding to reenter&n; * the poll callback from inside wake_up().&n; */
+DECL|struct|poll_safewake
+r_struct
+id|poll_safewake
+(brace
+DECL|member|wake_task_list
+r_struct
+id|list_head
+id|wake_task_list
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * This structure is stored inside the &quot;private_data&quot; member of the file&n; * structure and rapresent the main data sructure for the eventpoll&n; * interface.&n; */
 DECL|struct|eventpoll
 r_struct
@@ -213,10 +254,10 @@ op_star
 id|file
 suffix:semicolon
 multiline_comment|/* The structure that describe the interested events and the source fd */
-DECL|member|pfd
+DECL|member|event
 r_struct
-id|pollfd
-id|pfd
+id|epoll_event
+id|event
 suffix:semicolon
 multiline_comment|/*&n;&t; * Used to keep track of the usage count of the structure. This avoids&n;&t; * that the structure will desappear from underneath our processing.&n;&t; */
 DECL|member|usecnt
@@ -240,13 +281,39 @@ DECL|member|pt
 id|poll_table
 id|pt
 suffix:semicolon
-DECL|member|dpi
+DECL|member|epi
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 suffix:semicolon
 )brace
+suffix:semicolon
+r_static
+r_void
+id|ep_poll_safewake_init
+c_func
+(paren
+r_struct
+id|poll_safewake
+op_star
+id|psw
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ep_poll_safewake
+c_func
+(paren
+r_struct
+id|poll_safewake
+op_star
+id|psw
+comma
+id|wait_queue_head_t
+op_star
+id|wq
+)paren
 suffix:semicolon
 r_static
 r_int
@@ -410,7 +477,7 @@ c_func
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 r_static
@@ -421,7 +488,7 @@ c_func
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 r_static
@@ -454,9 +521,9 @@ op_star
 id|ep
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
-id|pfd
+id|event
 comma
 r_struct
 id|file
@@ -477,11 +544,12 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 comma
-r_int
-r_int
-id|events
+r_struct
+id|epoll_event
+op_star
+id|event
 )paren
 suffix:semicolon
 r_static
@@ -497,7 +565,7 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 r_static
@@ -513,7 +581,7 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 r_static
@@ -529,7 +597,7 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 r_static
@@ -594,10 +662,10 @@ r_struct
 id|epitem
 op_star
 op_star
-id|adpi
+id|aepi
 comma
 r_int
-id|maxdpi
+id|maxepi
 )paren
 suffix:semicolon
 r_static
@@ -614,13 +682,13 @@ r_struct
 id|epitem
 op_star
 op_star
-id|adpi
+id|aepi
 comma
 r_int
-id|ndpi
+id|nepi
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 )paren
@@ -636,7 +704,7 @@ op_star
 id|ep
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 comma
@@ -655,7 +723,7 @@ op_star
 id|ep
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 comma
@@ -711,18 +779,26 @@ op_star
 id|data
 )paren
 suffix:semicolon
+multiline_comment|/* Safe wake up implementation */
+DECL|variable|psw
+r_static
+r_struct
+id|poll_safewake
+id|psw
+suffix:semicolon
 multiline_comment|/*&n; * This semaphore is used to ensure that files are not removed&n; * while epoll is using them. Namely the f_op-&gt;poll(), since&n; * it has to be called from outside the lock, must be protected.&n; * This is read-held during the event transfer loop to userspace&n; * and it is write-held during the file cleanup path and the epoll&n; * file exit code.&n; */
 DECL|variable|epsem
+r_static
 r_struct
 id|rw_semaphore
 id|epsem
 suffix:semicolon
 multiline_comment|/* Slab cache used to allocate &quot;struct epitem&quot; */
-DECL|variable|dpi_cache
+DECL|variable|epi_cache
 r_static
 id|kmem_cache_t
 op_star
-id|dpi_cache
+id|epi_cache
 suffix:semicolon
 multiline_comment|/* Slab cache used to allocate &quot;struct eppoll_entry&quot; */
 DECL|variable|pwq_cache
@@ -798,6 +874,212 @@ id|eventpollfs_delete_dentry
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Initialize the poll safe wake up structure */
+DECL|function|ep_poll_safewake_init
+r_static
+r_void
+id|ep_poll_safewake_init
+c_func
+(paren
+r_struct
+id|poll_safewake
+op_star
+id|psw
+)paren
+(brace
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|psw-&gt;wake_task_list
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|psw-&gt;lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Perform a safe wake up of the poll wait list. The problem is that&n; * with the new callback&squot;d wake up system, it is possible that the&n; * poll callback is reentered from inside the call to wake_up() done&n; * on the poll wait queue head. The rule is that we cannot reenter the&n; * wake up code from the same task more than EP_MAX_POLLWAKE_NESTS times,&n; * and we cannot reenter the same wait queue head at all. This will&n; * enable to have a hierarchy of epoll file descriptor of no more than&n; * EP_MAX_POLLWAKE_NESTS deep. We need the irq version of the spin lock&n; * because this one gets called by the poll callback, that in turn is called&n; * from inside a wake_up(), that might be called from irq context.&n; */
+DECL|function|ep_poll_safewake
+r_static
+r_void
+id|ep_poll_safewake
+c_func
+(paren
+r_struct
+id|poll_safewake
+op_star
+id|psw
+comma
+id|wait_queue_head_t
+op_star
+id|wq
+)paren
+(brace
+r_int
+id|wake_nests
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|task_t
+op_star
+id|this_task
+op_assign
+id|current
+suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|lsthead
+op_assign
+op_amp
+id|psw-&gt;wake_task_list
+comma
+op_star
+id|lnk
+suffix:semicolon
+r_struct
+id|wake_task_node
+id|tnode
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|psw-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Try to see if the current task is already inside this wakeup call */
+id|list_for_each
+c_func
+(paren
+id|lnk
+comma
+id|lsthead
+)paren
+(brace
+r_struct
+id|wake_task_node
+op_star
+id|tncur
+op_assign
+id|list_entry
+c_func
+(paren
+id|lnk
+comma
+r_struct
+id|wake_task_node
+comma
+id|llink
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tncur-&gt;task
+op_eq
+id|this_task
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tncur-&gt;wq
+op_eq
+id|wq
+op_logical_or
+op_increment
+id|wake_nests
+OG
+id|EP_MAX_POLLWAKE_NESTS
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Ops ... loop detected or maximum nest level reached.&n;&t;&t;&t;&t; * We abort this wake by breaking the cycle itself.&n;&t;&t;&t;&t; */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|psw-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/* Add the current task to the list */
+id|tnode.task
+op_assign
+id|this_task
+suffix:semicolon
+id|tnode.wq
+op_assign
+id|wq
+suffix:semicolon
+id|list_add
+c_func
+(paren
+op_amp
+id|tnode.llink
+comma
+id|lsthead
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|psw-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Do really wake up now */
+id|wake_up
+c_func
+(paren
+id|wq
+)paren
+suffix:semicolon
+multiline_comment|/* Remove the current task from the list */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|psw-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|tnode.llink
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|psw-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Calculate the size of the hash in bits. The returned size will be&n; * bounded between EP_MIN_HASH_BITS and EP_MAX_HASH_BITS.&n; */
 DECL|function|ep_get_hash_bits
 r_static
@@ -905,7 +1187,7 @@ suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fast check to avoid the get/release of the semaphore. Since&n;&t; * we&squot;re doing this outside the semaphore lock, it might return&n;&t; * false negatives, but we don&squot;t care. It&squot;ll help in 99.99% of cases&n;&t; * to avoid the semaphore lock. False positives simply cannot happen&n;&t; * because the file in on the way to be removed and nobody ( but&n;&t; * eventpoll ) has still a reference to this file.&n;&t; */
 r_if
@@ -938,7 +1220,7 @@ id|lsthead
 )paren
 )paren
 (brace
-id|dpi
+id|epi
 op_assign
 id|list_entry
 c_func
@@ -955,15 +1237,15 @@ id|EP_LIST_DEL
 c_func
 (paren
 op_amp
-id|dpi-&gt;fllink
+id|epi-&gt;fllink
 )paren
 suffix:semicolon
 id|ep_remove
 c_func
 (paren
-id|dpi-&gt;ep
+id|epi-&gt;ep
 comma
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 )brace
@@ -1143,9 +1425,10 @@ comma
 r_int
 id|fd
 comma
-r_int
-r_int
-id|events
+r_struct
+id|epoll_event
+op_star
+id|event
 )paren
 (brace
 r_int
@@ -1167,11 +1450,11 @@ suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 suffix:semicolon
 r_struct
-id|pollfd
-id|pfd
+id|epoll_event
+id|epds
 suffix:semicolon
 id|DNPRINTK
 c_func
@@ -1190,9 +1473,35 @@ id|op
 comma
 id|fd
 comma
-id|events
+id|event-&gt;events
 )paren
 )paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|epds
+comma
+id|event
+comma
+r_sizeof
+(paren
+r_struct
+id|epoll_event
+)paren
+)paren
+)paren
+r_goto
+id|eexit_1
 suffix:semicolon
 multiline_comment|/* Get the &quot;struct file *&quot; for the eventpoll file */
 id|error
@@ -1253,7 +1562,7 @@ id|tfile-&gt;f_op-&gt;poll
 r_goto
 id|eexit_3
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have to check that the file structure underneath the file descriptor&n;&t; * the user passed to us _is_ an eventpoll file.&n;&t; */
+multiline_comment|/*&n;&t; * We have to check that the file structure underneath the file descriptor&n;&t; * the user passed to us _is_ an eventpoll file. And also we do not permit&n;&t; * adding an epoll file descriptor inside itself.&n;&t; */
 id|error
 op_assign
 op_minus
@@ -1262,6 +1571,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|file
+op_eq
+id|tfile
+op_logical_or
 op_logical_neg
 id|IS_FILE_EPOLL
 c_func
@@ -1278,7 +1591,7 @@ op_assign
 id|file-&gt;private_data
 suffix:semicolon
 multiline_comment|/*&n;&t; * Try to lookup the file inside our hash table. When an item is found&n;&t; * ep_find() increases the usage count of the item so that it won&squot;t&n;&t; * desappear underneath us. The only thing that might happen, if someone&n;&t; * tries very hard, is a double insertion of the same file descriptor.&n;&t; * This does not rapresent a problem though and we don&squot;t really want&n;&t; * to put an extra syncronization object to deal with this harmless condition.&n;&t; */
-id|dpi
+id|epi
 op_assign
 id|ep_find
 c_func
@@ -1300,30 +1613,20 @@ id|op
 )paren
 (brace
 r_case
-id|EP_CTL_ADD
+id|EPOLL_CTL_ADD
 suffix:colon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|dpi
+id|epi
 )paren
 (brace
-id|pfd.fd
-op_assign
-id|fd
-suffix:semicolon
-id|pfd.events
-op_assign
-id|events
-op_or
+id|epds.events
+op_or_assign
 id|POLLERR
 op_or
 id|POLLHUP
-suffix:semicolon
-id|pfd.revents
-op_assign
-l_int|0
 suffix:semicolon
 id|error
 op_assign
@@ -1333,7 +1636,7 @@ c_func
 id|ep
 comma
 op_amp
-id|pfd
+id|epds
 comma
 id|tfile
 )paren
@@ -1348,12 +1651,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|EP_CTL_DEL
+id|EPOLL_CTL_DEL
 suffix:colon
 r_if
 c_cond
 (paren
-id|dpi
+id|epi
 )paren
 id|error
 op_assign
@@ -1362,7 +1665,7 @@ c_func
 (paren
 id|ep
 comma
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 r_else
@@ -1374,13 +1677,20 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|EP_CTL_MOD
+id|EPOLL_CTL_MOD
 suffix:colon
 r_if
 c_cond
 (paren
-id|dpi
+id|epi
 )paren
+(brace
+id|epds.events
+op_or_assign
+id|POLLERR
+op_or
+id|POLLHUP
+suffix:semicolon
 id|error
 op_assign
 id|ep_modify
@@ -1388,15 +1698,13 @@ c_func
 (paren
 id|ep
 comma
-id|dpi
+id|epi
 comma
-id|events
-op_or
-id|POLLERR
-op_or
-id|POLLHUP
+op_amp
+id|epds
 )paren
 suffix:semicolon
+)brace
 r_else
 id|error
 op_assign
@@ -1410,12 +1718,12 @@ multiline_comment|/*&n;&t; * The function ep_find() increments the usage count o
 r_if
 c_cond
 (paren
-id|dpi
+id|epi
 )paren
 id|ep_release_epitem
 c_func
 (paren
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 id|eexit_3
@@ -1453,7 +1761,7 @@ id|op
 comma
 id|fd
 comma
-id|events
+id|event-&gt;events
 comma
 id|error
 )paren
@@ -1474,7 +1782,7 @@ r_int
 id|epfd
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 comma
@@ -1550,7 +1858,7 @@ op_star
 r_sizeof
 (paren
 r_struct
-id|pollfd
+id|epoll_event
 )paren
 )paren
 )paren
@@ -2529,7 +2837,7 @@ id|lsthead
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 op_assign
 id|list_entry
 c_func
@@ -2547,7 +2855,7 @@ c_func
 (paren
 id|ep
 comma
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 )brace
@@ -2598,7 +2906,7 @@ id|lsthead
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 op_assign
 id|list_entry
 c_func
@@ -2616,7 +2924,7 @@ c_func
 (paren
 id|ep
 comma
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 )brace
@@ -2677,7 +2985,7 @@ suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2714,7 +3022,7 @@ comma
 id|lsthead
 )paren
 (brace
-id|dpi
+id|epi
 op_assign
 id|list_entry
 c_func
@@ -2730,7 +3038,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dpi-&gt;file
+id|epi-&gt;file
 op_eq
 id|file
 )paren
@@ -2738,13 +3046,13 @@ id|file
 id|ep_use_epitem
 c_func
 (paren
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dpi
+id|epi
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2771,12 +3079,12 @@ id|current
 comma
 id|file
 comma
-id|dpi
+id|epi
 )paren
 )paren
 suffix:semicolon
 r_return
-id|dpi
+id|epi
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Increment the usage count of the &quot;struct epitem&quot; making it sure&n; * that the user will have a valid pointer to reference.&n; */
@@ -2789,14 +3097,14 @@ c_func
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 (brace
 id|atomic_inc
 c_func
 (paren
 op_amp
-id|dpi-&gt;usecnt
+id|epi-&gt;usecnt
 )paren
 suffix:semicolon
 )brace
@@ -2810,7 +3118,7 @@ c_func
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 (brace
 r_if
@@ -2820,13 +3128,13 @@ id|atomic_dec_and_test
 c_func
 (paren
 op_amp
-id|dpi-&gt;usecnt
+id|epi-&gt;usecnt
 )paren
 )paren
-id|DPI_MEM_FREE
+id|EPI_MEM_FREE
 c_func
 (paren
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 )brace
@@ -2854,7 +3162,7 @@ id|pt
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 op_assign
 id|EP_ITEM_FROM_EPQUEUE
 c_func
@@ -2870,7 +3178,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dpi-&gt;nwait
+id|epi-&gt;nwait
 op_ge
 l_int|0
 op_logical_and
@@ -2899,7 +3207,7 @@ id|whead
 suffix:semicolon
 id|pwq-&gt;base
 op_assign
-id|dpi
+id|epi
 suffix:semicolon
 id|add_wait_queue
 c_func
@@ -2917,17 +3225,17 @@ op_amp
 id|pwq-&gt;llink
 comma
 op_amp
-id|dpi-&gt;pwqlist
+id|epi-&gt;pwqlist
 )paren
 suffix:semicolon
-id|dpi-&gt;nwait
+id|epi-&gt;nwait
 op_increment
 suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/* We have to signal that an error occured */
-id|dpi-&gt;nwait
+id|epi-&gt;nwait
 op_assign
 op_minus
 l_int|1
@@ -2946,9 +3254,9 @@ op_star
 id|ep
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
-id|pfd
+id|event
 comma
 r_struct
 id|file
@@ -2960,6 +3268,10 @@ r_int
 id|error
 comma
 id|revents
+comma
+id|pwake
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -2968,7 +3280,7 @@ suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 suffix:semicolon
 r_struct
 id|ep_pqueue
@@ -2984,9 +3296,9 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|dpi
+id|epi
 op_assign
-id|DPI_MEM_ALLOC
+id|EPI_MEM_ALLOC
 c_func
 (paren
 )paren
@@ -3000,60 +3312,60 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|dpi-&gt;llink
+id|epi-&gt;llink
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|dpi-&gt;fllink
+id|epi-&gt;fllink
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|dpi-&gt;pwqlist
+id|epi-&gt;pwqlist
 )paren
 suffix:semicolon
-id|dpi-&gt;ep
+id|epi-&gt;ep
 op_assign
 id|ep
 suffix:semicolon
-id|dpi-&gt;file
+id|epi-&gt;file
 op_assign
 id|tfile
 suffix:semicolon
-id|dpi-&gt;pfd
+id|epi-&gt;event
 op_assign
 op_star
-id|pfd
+id|event
 suffix:semicolon
 id|atomic_set
 c_func
 (paren
 op_amp
-id|dpi-&gt;usecnt
+id|epi-&gt;usecnt
 comma
 l_int|1
 )paren
 suffix:semicolon
-id|dpi-&gt;nwait
+id|epi-&gt;nwait
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Initialize the poll table using the queue callback */
-id|epq.dpi
+id|epq.epi
 op_assign
-id|dpi
+id|epi
 suffix:semicolon
 id|init_poll_funcptr
 c_func
@@ -3082,12 +3394,37 @@ multiline_comment|/*&n;&t; * We have to check if something went wrong during the
 r_if
 c_cond
 (paren
-id|dpi-&gt;nwait
+id|epi-&gt;nwait
 OL
 l_int|0
 )paren
 r_goto
 id|eexit_2
+suffix:semicolon
+multiline_comment|/* Add the current item to the list of active epoll hook for this file */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tfile-&gt;f_ep_lock
+)paren
+suffix:semicolon
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|epi-&gt;fllink
+comma
+op_amp
+id|tfile-&gt;f_ep_links
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tfile-&gt;f_ep_lock
+)paren
 suffix:semicolon
 multiline_comment|/* We have to drop the new item inside our item list to keep track of it */
 id|write_lock_irqsave
@@ -3104,7 +3441,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|dpi-&gt;llink
+id|epi-&gt;llink
 comma
 id|ep_hash_entry
 c_func
@@ -3128,7 +3465,7 @@ c_cond
 (paren
 id|revents
 op_amp
-id|pfd-&gt;events
+id|event-&gt;events
 )paren
 op_logical_and
 op_logical_neg
@@ -3136,7 +3473,7 @@ id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 )paren
 (brace
@@ -3144,7 +3481,7 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 comma
 op_amp
 id|ep-&gt;rdllist
@@ -3178,12 +3515,8 @@ op_amp
 id|ep-&gt;poll_wait
 )paren
 )paren
-id|wake_up
-c_func
-(paren
-op_amp
-id|ep-&gt;poll_wait
-)paren
+id|pwake
+op_increment
 suffix:semicolon
 )brace
 id|write_unlock_irqrestore
@@ -3195,29 +3528,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Add the current item to the list of active epoll hook for this file */
-id|spin_lock
-c_func
+multiline_comment|/* We have to call this outside the lock */
+r_if
+c_cond
 (paren
-op_amp
-id|tfile-&gt;f_ep_lock
+id|pwake
 )paren
-suffix:semicolon
-id|list_add_tail
+id|ep_poll_safewake
 c_func
 (paren
 op_amp
-id|dpi-&gt;fllink
+id|psw
 comma
 op_amp
-id|tfile-&gt;f_ep_links
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|tfile-&gt;f_ep_lock
+id|ep-&gt;poll_wait
 )paren
 suffix:semicolon
 id|DNPRINTK
@@ -3227,13 +3551,13 @@ l_int|3
 comma
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: ep_insert(%p, %d)&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: ep_insert(%p, %p)&bslash;n&quot;
 comma
 id|current
 comma
 id|ep
 comma
-id|pfd-&gt;fd
+id|tfile
 )paren
 )paren
 suffix:semicolon
@@ -3247,7 +3571,7 @@ c_func
 (paren
 id|ep
 comma
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to do this because an event could have been arrived on some&n;&t; * allocated wait queue.&n;&t; */
@@ -3267,14 +3591,14 @@ id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 )paren
 id|EP_LIST_DEL
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 suffix:semicolon
 id|write_unlock_irqrestore
@@ -3286,10 +3610,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|DPI_MEM_FREE
+id|EPI_MEM_FREE
 c_func
 (paren
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 id|eexit_1
@@ -3313,13 +3637,19 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 comma
-r_int
-r_int
-id|events
+r_struct
+id|epoll_event
+op_star
+id|event
 )paren
 (brace
+r_int
+id|pwake
+op_assign
+l_int|0
+suffix:semicolon
 r_int
 r_int
 id|revents
@@ -3329,19 +3659,19 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the new event interest mask before calling f_op-&gt;poll(), otherwise&n;&t; * a potential race might occur. In fact if we do this operation inside&n;&t; * the lock, an event might happen between the f_op-&gt;poll() call and the&n;&t; * new event set registering.&n;&t; */
-id|dpi-&gt;pfd.events
+id|epi-&gt;event.events
 op_assign
-id|events
+id|event-&gt;events
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get current event bits. We can safely use the file* here because&n;&t; * its usage count has been increased by the caller of this function.&n;&t; */
 id|revents
 op_assign
-id|dpi-&gt;file-&gt;f_op
+id|epi-&gt;file-&gt;f_op
 op_member_access_from_pointer
 id|poll
 c_func
 (paren
-id|dpi-&gt;file
+id|epi-&gt;file
 comma
 l_int|NULL
 )paren
@@ -3355,6 +3685,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Copy the data member from inside the lock */
+id|epi-&gt;event.data
+op_assign
+id|event-&gt;data
+suffix:semicolon
 multiline_comment|/* If the file is already &quot;ready&quot; we drop it inside the ready list */
 r_if
 c_cond
@@ -3362,14 +3697,14 @@ c_cond
 (paren
 id|revents
 op_amp
-id|events
+id|event-&gt;events
 )paren
 op_logical_and
 id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;llink
+id|epi-&gt;llink
 )paren
 op_logical_and
 op_logical_neg
@@ -3377,7 +3712,7 @@ id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 )paren
 (brace
@@ -3385,7 +3720,7 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 comma
 op_amp
 id|ep-&gt;rdllist
@@ -3419,12 +3754,8 @@ op_amp
 id|ep-&gt;poll_wait
 )paren
 )paren
-id|wake_up
-c_func
-(paren
-op_amp
-id|ep-&gt;poll_wait
-)paren
+id|pwake
+op_increment
 suffix:semicolon
 )brace
 id|write_unlock_irqrestore
@@ -3434,6 +3765,22 @@ op_amp
 id|ep-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* We have to call this outside the lock */
+r_if
+c_cond
+(paren
+id|pwake
+)paren
+id|ep_poll_safewake
+c_func
+(paren
+op_amp
+id|psw
+comma
+op_amp
+id|ep-&gt;poll_wait
 )paren
 suffix:semicolon
 r_return
@@ -3455,7 +3802,7 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 (brace
 r_int
@@ -3467,7 +3814,7 @@ op_star
 id|lsthead
 op_assign
 op_amp
-id|dpi-&gt;pwqlist
+id|epi-&gt;pwqlist
 suffix:semicolon
 r_struct
 id|eppoll_entry
@@ -3481,7 +3828,7 @@ id|xchg
 c_func
 (paren
 op_amp
-id|dpi-&gt;nwait
+id|epi-&gt;nwait
 comma
 l_int|0
 )paren
@@ -3556,7 +3903,7 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 (brace
 r_int
@@ -3576,7 +3923,7 @@ id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;llink
+id|epi-&gt;llink
 )paren
 )paren
 r_goto
@@ -3587,7 +3934,7 @@ id|EP_LIST_DEL
 c_func
 (paren
 op_amp
-id|dpi-&gt;llink
+id|epi-&gt;llink
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the item we are going to remove is inside the ready file descriptors&n;&t; * we want to remove it from this list to avoid stale events.&n;&t; */
@@ -3598,14 +3945,14 @@ id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 )paren
 id|EP_LIST_DEL
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 suffix:semicolon
 id|error
@@ -3621,13 +3968,13 @@ l_int|3
 comma
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: ep_unlink(%p, %d) = %d&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: ep_unlink(%p, %p) = %d&bslash;n&quot;
 comma
 id|current
 comma
 id|ep
 comma
-id|dpi-&gt;pfd.fd
+id|epi-&gt;file
 comma
 id|error
 )paren
@@ -3652,7 +3999,7 @@ comma
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 )paren
 (brace
 r_int
@@ -3668,7 +4015,7 @@ c_func
 (paren
 id|ep
 comma
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 multiline_comment|/* Remove the current item from the list of epoll hooks */
@@ -3676,7 +4023,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dpi-&gt;file-&gt;f_ep_lock
+id|epi-&gt;file-&gt;f_ep_lock
 )paren
 suffix:semicolon
 r_if
@@ -3686,21 +4033,21 @@ id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;fllink
+id|epi-&gt;fllink
 )paren
 )paren
 id|EP_LIST_DEL
 c_func
 (paren
 op_amp
-id|dpi-&gt;fllink
+id|epi-&gt;fllink
 )paren
 suffix:semicolon
 id|spin_unlock
 c_func
 (paren
 op_amp
-id|dpi-&gt;file-&gt;f_ep_lock
+id|epi-&gt;file-&gt;f_ep_lock
 )paren
 suffix:semicolon
 multiline_comment|/* We need to acquire the write IRQ lock before calling ep_unlink() */
@@ -3721,7 +4068,7 @@ c_func
 (paren
 id|ep
 comma
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 id|write_unlock_irqrestore
@@ -3745,7 +4092,7 @@ multiline_comment|/* At this point it is safe to free the eventpoll item */
 id|ep_release_epitem
 c_func
 (paren
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 id|error
@@ -3761,13 +4108,13 @@ l_int|3
 comma
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: ep_remove(%p, %d) = %d&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: ep_remove(%p, %p) = %d&bslash;n&quot;
 comma
 id|current
 comma
 id|ep
 comma
-id|dpi-&gt;pfd.fd
+id|epi-&gt;file
 comma
 id|error
 )paren
@@ -3796,13 +4143,18 @@ id|sync
 )paren
 (brace
 r_int
+id|pwake
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 op_assign
 id|EP_ITEM_FROM_WAIT
 c_func
@@ -3815,7 +4167,7 @@ id|eventpoll
 op_star
 id|ep
 op_assign
-id|dpi-&gt;ep
+id|epi-&gt;ep
 suffix:semicolon
 id|DNPRINTK
 c_func
@@ -3824,13 +4176,13 @@ l_int|3
 comma
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: poll_callback(%p) dpi=%p ep=%p&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: poll_callback(%p) epi=%p ep=%p&bslash;n&quot;
 comma
 id|current
 comma
-id|dpi-&gt;file
+id|epi-&gt;file
 comma
-id|dpi
+id|epi
 comma
 id|ep
 )paren
@@ -3853,7 +4205,7 @@ id|EP_IS_LINKED
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 )paren
 r_goto
@@ -3863,7 +4215,7 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 comma
 op_amp
 id|ep-&gt;rdllist
@@ -3899,12 +4251,8 @@ op_amp
 id|ep-&gt;poll_wait
 )paren
 )paren
-id|wake_up
-c_func
-(paren
-op_amp
-id|ep-&gt;poll_wait
-)paren
+id|pwake
+op_increment
 suffix:semicolon
 id|write_unlock_irqrestore
 c_func
@@ -3913,6 +4261,22 @@ op_amp
 id|ep-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* We have to call this outside the lock */
+r_if
+c_cond
+(paren
+id|pwake
+)paren
+id|ep_poll_safewake
+c_func
+(paren
+op_amp
+id|psw
+comma
+op_amp
+id|ep-&gt;poll_wait
 )paren
 suffix:semicolon
 r_return
@@ -4083,14 +4447,14 @@ r_struct
 id|epitem
 op_star
 op_star
-id|adpi
+id|aepi
 comma
 r_int
-id|maxdpi
+id|maxepi
 )paren
 (brace
 r_int
-id|ndpi
+id|nepi
 suffix:semicolon
 r_int
 r_int
@@ -4116,13 +4480,13 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|ndpi
+id|nepi
 op_assign
 l_int|0
 suffix:semicolon
-id|ndpi
+id|nepi
 OL
-id|maxdpi
+id|maxepi
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -4136,7 +4500,7 @@ suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 op_assign
 id|list_entry
 c_func
@@ -4154,23 +4518,23 @@ id|EP_LIST_DEL
 c_func
 (paren
 op_amp
-id|dpi-&gt;rdllink
+id|epi-&gt;rdllink
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We need to increase the usage count of the &quot;struct epitem&quot; because&n;&t;&t; * another thread might call EP_CTL_DEL on this target and make the&n;&t;&t; * object to vanish underneath our nose.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We need to increase the usage count of the &quot;struct epitem&quot; because&n;&t;&t; * another thread might call EPOLL_CTL_DEL on this target and make the&n;&t;&t; * object to vanish underneath our nose.&n;&t;&t; */
 id|ep_use_epitem
 c_func
 (paren
-id|dpi
+id|epi
 )paren
 suffix:semicolon
-id|adpi
+id|aepi
 (braket
-id|ndpi
+id|nepi
 op_increment
 )braket
 op_assign
-id|dpi
+id|epi
 suffix:semicolon
 )brace
 id|write_unlock_irqrestore
@@ -4183,7 +4547,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ndpi
+id|nepi
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is called without holding the &quot;ep-&gt;lock&quot; since the call to&n; * __copy_to_user() might sleep, and also f_op-&gt;poll() might reenable the IRQ&n; * because of the way poll() is traditionally implemented in Linux.&n; */
@@ -4202,13 +4566,13 @@ r_struct
 id|epitem
 op_star
 op_star
-id|adpi
+id|aepi
 comma
 r_int
-id|ndpi
+id|nepi
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 )paren
@@ -4225,11 +4589,11 @@ suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|dpi
+id|epi
 suffix:semicolon
 r_struct
-id|pollfd
-id|pfd
+id|epoll_event
+id|event
 (braket
 id|EP_MAX_BUF_EVENTS
 )braket
@@ -4251,29 +4615,29 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|ndpi
+id|nepi
 suffix:semicolon
 id|i
 op_increment
 comma
-id|adpi
+id|aepi
 op_increment
 )paren
 (brace
-id|dpi
+id|epi
 op_assign
 op_star
-id|adpi
+id|aepi
 suffix:semicolon
 multiline_comment|/* Get the ready file event set */
 id|revents
 op_assign
-id|dpi-&gt;file-&gt;f_op
+id|epi-&gt;file-&gt;f_op
 op_member_access_from_pointer
 id|poll
 c_func
 (paren
-id|dpi-&gt;file
+id|epi-&gt;file
 comma
 l_int|NULL
 )paren
@@ -4283,31 +4647,24 @@ c_cond
 (paren
 id|revents
 op_amp
-id|dpi-&gt;pfd.events
+id|epi-&gt;event.events
 )paren
 (brace
-id|pfd
+id|event
 (braket
 id|eventbuf
 )braket
 op_assign
-id|dpi-&gt;pfd
+id|epi-&gt;event
 suffix:semicolon
-id|pfd
-(braket
-id|eventbuf
-)braket
-dot
-id|revents
-op_assign
-id|revents
-op_amp
-id|pfd
+id|event
 (braket
 id|eventbuf
 )braket
 dot
 id|events
+op_and_assign
+id|revents
 suffix:semicolon
 id|eventbuf
 op_increment
@@ -4332,14 +4689,14 @@ id|events
 id|eventcnt
 )braket
 comma
-id|pfd
+id|event
 comma
 id|eventbuf
 op_star
 r_sizeof
 (paren
 r_struct
-id|pollfd
+id|epoll_event
 )paren
 )paren
 )paren
@@ -4350,19 +4707,19 @@ c_loop
 suffix:semicolon
 id|i
 OL
-id|ndpi
+id|nepi
 suffix:semicolon
 id|i
 op_increment
 comma
-id|adpi
+id|aepi
 op_increment
 )paren
 id|ep_release_epitem
 c_func
 (paren
 op_star
-id|adpi
+id|aepi
 )paren
 suffix:semicolon
 r_return
@@ -4383,7 +4740,7 @@ suffix:semicolon
 id|ep_release_epitem
 c_func
 (paren
-id|dpi
+id|epi
 )paren
 suffix:semicolon
 )brace
@@ -4405,14 +4762,14 @@ id|events
 id|eventcnt
 )braket
 comma
-id|pfd
+id|event
 comma
 id|eventbuf
 op_star
 r_sizeof
 (paren
 r_struct
-id|pollfd
+id|epoll_event
 )paren
 )paren
 )paren
@@ -4442,7 +4799,7 @@ op_star
 id|ep
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 comma
@@ -4453,16 +4810,16 @@ id|maxevents
 r_int
 id|eventcnt
 comma
-id|ndpi
+id|nepi
 comma
-id|sdpi
+id|sepi
 comma
-id|maxdpi
+id|maxepi
 suffix:semicolon
 r_struct
 id|epitem
 op_star
-id|adpi
+id|aepi
 (braket
 id|EP_MAX_COLLECT_ITEMS
 )braket
@@ -4489,7 +4846,7 @@ suffix:semicolon
 )paren
 (brace
 multiline_comment|/* Maximum items we can extract this time */
-id|maxdpi
+id|maxepi
 op_assign
 id|min
 c_func
@@ -4502,35 +4859,35 @@ id|eventcnt
 )paren
 suffix:semicolon
 multiline_comment|/* Collect/extract ready items */
-id|ndpi
+id|nepi
 op_assign
 id|ep_collect_ready_items
 c_func
 (paren
 id|ep
 comma
-id|adpi
+id|aepi
 comma
-id|maxdpi
+id|maxepi
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ndpi
+id|nepi
 )paren
 (brace
 multiline_comment|/* Send events to userspace */
-id|sdpi
+id|sepi
 op_assign
 id|ep_send_events
 c_func
 (paren
 id|ep
 comma
-id|adpi
+id|aepi
 comma
-id|ndpi
+id|nepi
 comma
 op_amp
 id|events
@@ -4542,7 +4899,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdpi
+id|sepi
 OL
 l_int|0
 )paren
@@ -4555,20 +4912,20 @@ id|epsem
 )paren
 suffix:semicolon
 r_return
-id|sdpi
+id|sepi
 suffix:semicolon
 )brace
 id|eventcnt
 op_add_assign
-id|sdpi
+id|sepi
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|ndpi
+id|nepi
 OL
-id|maxdpi
+id|maxepi
 )paren
 r_break
 suffix:semicolon
@@ -4596,7 +4953,7 @@ op_star
 id|ep
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 comma
@@ -4994,18 +5351,26 @@ op_amp
 id|epsem
 )paren
 suffix:semicolon
+multiline_comment|/* Initialize the structure used to perform safe poll wait head wake ups */
+id|ep_poll_safewake_init
+c_func
+(paren
+op_amp
+id|psw
+)paren
+suffix:semicolon
 multiline_comment|/* Allocates slab cache used to allocate &quot;struct epitem&quot; items */
 id|error
 op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|dpi_cache
+id|epi_cache
 op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;eventpoll dpi&quot;
+l_string|&quot;eventpoll epi&quot;
 comma
 r_sizeof
 (paren
@@ -5017,7 +5382,7 @@ l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
 op_or
-id|DPI_SLAB_DEBUG
+id|EPI_SLAB_DEBUG
 comma
 l_int|NULL
 comma
@@ -5028,7 +5393,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dpi_cache
+id|epi_cache
 )paren
 r_goto
 id|eexit_1
@@ -5054,7 +5419,7 @@ id|eppoll_entry
 comma
 l_int|0
 comma
-id|DPI_SLAB_DEBUG
+id|EPI_SLAB_DEBUG
 comma
 l_int|NULL
 comma
@@ -5152,7 +5517,7 @@ suffix:colon
 id|kmem_cache_destroy
 c_func
 (paren
-id|dpi_cache
+id|epi_cache
 )paren
 suffix:semicolon
 id|eexit_1
@@ -5194,7 +5559,7 @@ suffix:semicolon
 id|kmem_cache_destroy
 c_func
 (paren
-id|dpi_cache
+id|epi_cache
 )paren
 suffix:semicolon
 )brace

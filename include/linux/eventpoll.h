@@ -3,19 +3,30 @@ macro_line|#ifndef _LINUX_EVENTPOLL_H
 DECL|macro|_LINUX_EVENTPOLL_H
 mdefine_line|#define _LINUX_EVENTPOLL_H
 multiline_comment|/* Valid opcodes to issue to sys_epoll_ctl() */
-DECL|macro|EP_CTL_ADD
-mdefine_line|#define EP_CTL_ADD 1
-DECL|macro|EP_CTL_DEL
-mdefine_line|#define EP_CTL_DEL 2
-DECL|macro|EP_CTL_MOD
-mdefine_line|#define EP_CTL_MOD 3
+DECL|macro|EPOLL_CTL_ADD
+mdefine_line|#define EPOLL_CTL_ADD 1
+DECL|macro|EPOLL_CTL_DEL
+mdefine_line|#define EPOLL_CTL_DEL 2
+DECL|macro|EPOLL_CTL_MOD
+mdefine_line|#define EPOLL_CTL_MOD 3
+DECL|struct|epoll_event
+r_struct
+id|epoll_event
+(brace
+DECL|member|events
+id|__u32
+id|events
+suffix:semicolon
+DECL|member|data
+id|__u64
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Forward declarations to avoid compiler errors */
 r_struct
 id|file
-suffix:semicolon
-r_struct
-id|pollfd
 suffix:semicolon
 multiline_comment|/* Kernel space functions implementing the user space &quot;epoll&quot; API */
 id|asmlinkage
@@ -41,9 +52,10 @@ comma
 r_int
 id|fd
 comma
-r_int
-r_int
-id|events
+r_struct
+id|epoll_event
+op_star
+id|event
 )paren
 suffix:semicolon
 id|asmlinkage
@@ -55,7 +67,7 @@ r_int
 id|epfd
 comma
 r_struct
-id|pollfd
+id|epoll_event
 op_star
 id|events
 comma
