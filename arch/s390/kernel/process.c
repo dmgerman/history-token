@@ -546,37 +546,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_ARCH_S390X
 id|__asm__
 c_func
 (paren
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;kernel_thread_starter:&bslash;n&quot;
-l_string|&quot;    l     15,0(8)&bslash;n&quot;
-l_string|&quot;    sr    15,7&bslash;n&quot;
-l_string|&quot;    stosm 24(15),3&bslash;n&quot;
-l_string|&quot;    lr    2,10&bslash;n&quot;
+l_string|&quot;    la    2,0(10)&bslash;n&quot;
 l_string|&quot;    basr  14,9&bslash;n&quot;
-l_string|&quot;    sr    2,2&bslash;n&quot;
+l_string|&quot;    la    2,0&bslash;n&quot;
 l_string|&quot;    br    11&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else /* CONFIG_ARCH_S390X */
-id|__asm__
-c_func
-(paren
-l_string|&quot;.align 4&bslash;n&quot;
-l_string|&quot;kernel_thread_starter:&bslash;n&quot;
-l_string|&quot;    lg    15,0(8)&bslash;n&quot;
-l_string|&quot;    sgr   15,7&bslash;n&quot;
-l_string|&quot;    stosm 48(15),3&bslash;n&quot;
-l_string|&quot;    lgr   2,10&bslash;n&quot;
-l_string|&quot;    basr  14,9&bslash;n&quot;
-l_string|&quot;    sgr   2,2&bslash;n&quot;
-l_string|&quot;    br    11&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_ARCH_S390X */
 DECL|function|kernel_thread
 r_int
 id|kernel_thread
@@ -622,6 +602,10 @@ suffix:semicolon
 id|regs.psw.mask
 op_assign
 id|PSW_KERNEL_BITS
+op_or
+id|PSW_MASK_IO
+op_or
+id|PSW_MASK_EXT
 suffix:semicolon
 id|regs.psw.addr
 op_assign
@@ -632,26 +616,6 @@ r_int
 id|kernel_thread_starter
 op_or
 id|PSW_ADDR_AMODE
-suffix:semicolon
-id|regs.gprs
-(braket
-l_int|7
-)braket
-op_assign
-id|STACK_FRAME_OVERHEAD
-op_plus
-r_sizeof
-(paren
-r_struct
-id|pt_regs
-)paren
-suffix:semicolon
-id|regs.gprs
-(braket
-l_int|8
-)braket
-op_assign
-id|__LC_KERNEL_STACK
 suffix:semicolon
 id|regs.gprs
 (braket
