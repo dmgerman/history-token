@@ -7792,6 +7792,29 @@ comma
 dot
 id|vendor
 op_assign
+l_int|0x10f1
+comma
+dot
+id|device
+op_assign
+l_int|0x2885
+comma
+dot
+id|name
+op_assign
+l_string|&quot;AMD64 Mobo&quot;
+comma
+multiline_comment|/* ALC650 */
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x110a
 comma
 dot
@@ -7826,6 +7849,28 @@ dot
 id|name
 op_assign
 l_string|&quot;ADI AD1985 (discrete)&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1462
+comma
+dot
+id|device
+op_assign
+l_int|0x5470
+comma
+dot
+id|name
+op_assign
+l_string|&quot;MSI P4 ATX 645 Ultra&quot;
 comma
 dot
 id|type
