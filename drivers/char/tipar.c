@@ -166,7 +166,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----- global defines ----------------------------------------------- */
 DECL|macro|START
-mdefine_line|#define START(x) { x=jiffies+HZ/(timeout/10); }
+mdefine_line|#define START(x) { x = jiffies + (HZ * timeout) / 10; }
 DECL|macro|WAIT
 mdefine_line|#define WAIT(x)  { &bslash;&n;  if (time_before((x), jiffies)) return -1; &bslash;&n;  if (need_resched()) schedule(); }
 multiline_comment|/* ----- D-bus bit-banging functions ---------------------------------- */
