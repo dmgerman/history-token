@@ -505,10 +505,10 @@ op_assign
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/* checksum the plaintext data and the first 8 bytes of the krb5 token header,&n; * as specified by the rfc: */
+multiline_comment|/* checksum the plaintext data and hdrlen bytes of the token header */
 id|s32
-DECL|function|krb5_make_checksum
-id|krb5_make_checksum
+DECL|function|make_checksum
+id|make_checksum
 c_func
 (paren
 id|s32
@@ -517,6 +517,9 @@ comma
 r_char
 op_star
 id|header
+comma
+r_int
+id|hdrlen
 comma
 r_struct
 id|xdr_buf
@@ -653,7 +656,7 @@ id|sg
 comma
 id|header
 comma
-l_int|8
+id|hdrlen
 )paren
 suffix:semicolon
 id|crypto_digest_update

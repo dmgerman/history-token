@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth_gss.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcauth_gss.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_asn1.h&gt;
+macro_line|#include &lt;linux/sunrpc/gss_krb5.h&gt;
 multiline_comment|/* sec_triples: */
 DECL|variable|gss_register_triple
 id|EXPORT_SYMBOL
@@ -107,6 +108,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|g_token_size
+)paren
+suffix:semicolon
+DECL|variable|make_checksum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|make_checksum
+)paren
+suffix:semicolon
+DECL|variable|krb5_encrypt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|krb5_encrypt
+)paren
+suffix:semicolon
+DECL|variable|krb5_decrypt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|krb5_decrypt
 )paren
 suffix:semicolon
 multiline_comment|/* debug */

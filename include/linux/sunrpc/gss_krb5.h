@@ -202,7 +202,7 @@ mdefine_line|#define ENCTYPE_DES3_CBC_SHA1   0x0010
 DECL|macro|ENCTYPE_UNKNOWN
 mdefine_line|#define ENCTYPE_UNKNOWN         0x01ff
 id|s32
-id|krb5_make_checksum
+id|make_checksum
 c_func
 (paren
 id|s32
@@ -211,6 +211,9 @@ comma
 r_char
 op_star
 id|header
+comma
+r_int
+id|hdrlen
 comma
 r_struct
 id|xdr_buf
