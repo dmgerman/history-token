@@ -12,7 +12,7 @@ DECL|macro|MAX_NASIDS
 mdefine_line|#define MAX_NASIDS              2048
 multiline_comment|/*&n; * This is the maximum number of nodes that can be part of a kernel.&n; * Effectively, it&squot;s the maximum number of compact node ids (cnodeid_t).&n; * This is not necessarily the same as MAX_NASIDS.&n; */
 DECL|macro|MAX_COMPACT_NODES
-mdefine_line|#define MAX_COMPACT_NODES       128
+mdefine_line|#define MAX_COMPACT_NODES       2048
 multiline_comment|/*&n; * MAX_REGIONS refers to the maximum number of hardware partitioned regions.&n; */
 DECL|macro|MAX_REGIONS
 mdefine_line|#define&t;MAX_REGIONS&t;&t;64
