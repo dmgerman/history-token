@@ -570,13 +570,6 @@ id|unix_domain_find
 )paren
 suffix:semicolon
 multiline_comment|/* Generic XDR */
-DECL|variable|xdr_encode_array
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xdr_encode_array
-)paren
-suffix:semicolon
 DECL|variable|xdr_encode_string
 id|EXPORT_SYMBOL
 c_func
