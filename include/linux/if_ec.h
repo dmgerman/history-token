@@ -142,6 +142,8 @@ id|net
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|ec_sk
+mdefine_line|#define ec_sk(__sk) ((struct econet_opt *)(__sk)-&gt;protinfo)
 DECL|struct|ec_device
 r_struct
 id|ec_device

@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/if_packet.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
+macro_line|#include &lt;net/dn.h&gt;
 macro_line|#include &lt;net/dn_nsp.h&gt;
 macro_line|#include &lt;net/dn_dev.h&gt;
 macro_line|#include &lt;net/dn_route.h&gt;
@@ -1417,7 +1418,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|before_or_equal
+id|dn_before_or_equal
 c_func
 (paren
 id|cb2-&gt;segnum
@@ -1509,7 +1510,7 @@ l_int|1
 r_if
 c_cond
 (paren
-id|equal
+id|dn_equal
 c_func
 (paren
 id|segnum

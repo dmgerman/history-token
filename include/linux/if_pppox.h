@@ -219,6 +219,74 @@ id|packed
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+DECL|struct|pppoe_opt
+r_struct
+id|pppoe_opt
+(brace
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* device associated with socket*/
+DECL|member|pa
+r_struct
+id|pppoe_addr
+id|pa
+suffix:semicolon
+multiline_comment|/* what this socket is bound to*/
+DECL|member|relay
+r_struct
+id|sockaddr_pppox
+id|relay
+suffix:semicolon
+multiline_comment|/* what socket data will be&n;&t;&t;&t;&t;&t;     relayed to (PPPoE relaying) */
+)brace
+suffix:semicolon
+DECL|struct|pppox_opt
+r_struct
+id|pppox_opt
+(brace
+DECL|member|chan
+r_struct
+id|ppp_channel
+id|chan
+suffix:semicolon
+DECL|member|sk
+r_struct
+id|sock
+op_star
+id|sk
+suffix:semicolon
+DECL|member|next
+r_struct
+id|pppox_opt
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* for hash table */
+r_union
+(brace
+DECL|member|pppoe
+r_struct
+id|pppoe_opt
+id|pppoe
+suffix:semicolon
+DECL|member|proto
+)brace
+id|proto
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|pppoe_dev
+mdefine_line|#define pppoe_dev&t;proto.pppoe.dev
+DECL|macro|pppoe_pa
+mdefine_line|#define pppoe_pa&t;proto.pppoe.pa
+DECL|macro|pppoe_relay
+mdefine_line|#define pppoe_relay&t;proto.pppoe.relay
+DECL|macro|pppox_sk
+mdefine_line|#define pppox_sk(__sk) ((struct pppox_opt *)(__sk)-&gt;protinfo)
 DECL|struct|pppox_proto
 r_struct
 id|pppox_proto

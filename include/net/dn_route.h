@@ -377,8 +377,11 @@ id|dn_scp
 op_star
 id|scp
 op_assign
-op_amp
-id|sk-&gt;protinfo.dn
+id|DN_SK
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|dst_entry

@@ -6,6 +6,7 @@ mdefine_line|#define _CHECKSUM_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#ifndef _HAVE_ARCH_IPV6_CSUM

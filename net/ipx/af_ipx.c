@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Implements an IPX socket layer.&n; *&n; *&t;This code is derived from work by&n; *&t;&t;Ross Biro&t;: &t;Writing the original IP stack&n; *&t;&t;Fred Van Kempen :&t;Tidying up the TCP/IP&n; *&n; *&t;Many thanks go to Keith Baker, Institute For Industrial Information&n; *&t;Technology Ltd, Swansea University for allowing me to work on this&n; *&t;in my own time even though it was in some ways related to commercial&n; *&t;work I am currently employed to do there.&n; *&n; *&t;All the material in this file is subject to the Gnu license version 2.&n; *&t;Neither Alan Cox nor the Swansea University Computer Society admit &n; *&t;liability nor provide warranty for any of this software. This material&n; *&t;is provided as is and at no charge.&n; *&n; *&t;Revision 0.21:&t;Uses the new generic socket option code.&n; *&t;Revision 0.22:&t;Gcc clean ups and drop out device registration. Use the&n; *&t;&t;&t;new multi-protocol edition of hard_header&n; *&t;Revision 0.23:  IPX /proc by Mark Evans. Adding a route will&n; *     &t;&t;&t;will overwrite any existing route to the same network.&n; *&t;Revision 0.24:&t;Supports new /proc with no 4K limit&n; *&t;Revision 0.25:&t;Add ephemeral sockets, passive local network&n; *&t;&t;&t;identification, support for local net 0 and&n; *&t;&t;&t;multiple datalinks &lt;Greg Page&gt;&n; *&t;Revision 0.26:  Device drop kills IPX routes via it. (needed for module)&n; *&t;Revision 0.27:  Autobind &lt;Mark Evans&gt;&n; *&t;Revision 0.28:  Small fix for multiple local networks &lt;Thomas Winder&gt;&n; *&t;Revision 0.29:  Assorted major errors removed &lt;Mark Evans&gt;&n; *&t;&t;&t;Small correction to promisc mode error fix &lt;Alan Cox&gt;&n; *&t;&t;&t;Asynchronous I/O support. Changed to use notifiers&n; *&t;&t;&t;and the newer packet_type stuff. Assorted major&n; *&t;&t;&t;fixes &lt;Alejandro Liu&gt;&n; *&t;Revision 0.30:&t;Moved to net/ipx/...&t;&lt;Alan Cox&gt;&n; *&t;&t;&t;Don&squot;t set address length on recvfrom that errors.&n; *&t;&t;&t;Incorrect verify_area.&n; *&t;Revision 0.31:&t;New sk_buffs. This still needs a lot of &n; *&t;&t;&t;testing. &lt;Alan Cox&gt;&n; *&t;Revision 0.32:  Using sock_alloc_send_skb, firewall hooks. &lt;Alan Cox&gt;&n; *&t;&t;&t;Supports sendmsg/recvmsg&n; *&t;Revision 0.33:&t;Internal network support, routing changes, uses a&n; *&t;&t;&t;protocol private area for ipx data.&n; *&t;Revision 0.34:&t;Module support. &lt;Jim Freeman&gt;&n; *&t;Revision 0.35:  Checksum support. &lt;Neil Turton&gt;, hooked in by &lt;Alan Cox&gt;&n; *&t;&t;&t;Handles WIN95 discovery packets &lt;Volker Lendecke&gt;&n; *&t;Revision 0.36:&t;Internal bump up for 2.1&n; *&t;Revision 0.37:&t;Began adding POSIXisms.&n; *&t;Revision 0.38:  Asynchronous socket stuff made current.&n; *&t;Revision 0.39:  SPX interfaces&n; *&t;Revision 0.40:  Tiny SIOCGSTAMP fix (chris@cybernet.co.nz)&n; *      Revision 0.41:  802.2TR removed (p.norton@computer.org)&n; *&t;&t;&t;Fixed connecting to primary net,&n; *&t;&t;&t;Automatic binding on send &amp; receive,&n; *&t;&t;&t;Martijn van Oosterhout &lt;kleptogimp@geocities.com&gt;&n; *&t;Revision 042:   Multithreading - use spinlocks and refcounting to&n; *&t;&t;&t;protect some structures: ipx_interface sock list, list&n; *&t;&t;&t;of ipx interfaces, etc. &n; *&t;&t;&t;Bugfixes - do refcounting on net_devices, check function&n; *&t;&t;&t;results, etc. Thanks to davem and freitag for&n; *&t;&t;&t;suggestions and guidance.&n; *&t;&t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;,&n; *&t;&t;&t;November, 2000&n; *&t;Revision 043:&t;Shared SKBs, don&squot;t mangle packets, some cleanups&n; *&t;&t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;,&n; *&t;&t;&t;December, 2000&n; *&t;Revision 044:&t;Call ipxitf_hold on NETDEV_UP (acme)&n; *&t;Revision 045:&t;fix PPROP routing bug (acme)&n; *&t;Revision 046:&t;Further fixes to PPROP, ipxitf_create_internal was&n; *&t;&t;&t;doing an unneeded MOD_INC_USE_COUNT, implement&n; *&t;&t;&t;sysctl for ipx_pprop_broacasting, fix the ipx sysctl&n; *&t;&t;&t;handling, making it dynamic, some cleanups, thanks to&n; *&t;&t;&t;Petr Vandrovec for review and good suggestions. (acme)&n; *&t;Revision 047:&t;Cleanups, CodingStyle changes, move the ncp connection&n; *&t;&t;&t;hack out of line (acme)&n; *&n; *&t;Protect the module by a MOD_INC_USE_COUNT/MOD_DEC_USE_COUNT&n; *&t;pair. Also, now usage count is managed this way&n; *&t;-Count one if the auto_interface mode is on&n; *      -Count one per configured interface&n; *&n; *&t;Jacques Gelinas (jacques@solucorp.qc.ca)&n; *&n; *&n; * &t;Portions Copyright (c) 1995 Caldera, Inc. &lt;greg@caldera.com&gt;&n; *&t;Neither Greg Page nor Caldera, Inc. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; */
+multiline_comment|/*&n; *&t;Implements an IPX socket layer.&n; *&n; *&t;This code is derived from work by&n; *&t;&t;Ross Biro&t;: &t;Writing the original IP stack&n; *&t;&t;Fred Van Kempen :&t;Tidying up the TCP/IP&n; *&n; *&t;Many thanks go to Keith Baker, Institute For Industrial Information&n; *&t;Technology Ltd, Swansea University for allowing me to work on this&n; *&t;in my own time even though it was in some ways related to commercial&n; *&t;work I am currently employed to do there.&n; *&n; *&t;All the material in this file is subject to the Gnu license version 2.&n; *&t;Neither Alan Cox nor the Swansea University Computer Society admit &n; *&t;liability nor provide warranty for any of this software. This material&n; *&t;is provided as is and at no charge.&n; *&n; *&t;Revision 0.21:&t;Uses the new generic socket option code.&n; *&t;Revision 0.22:&t;Gcc clean ups and drop out device registration. Use the&n; *&t;&t;&t;new multi-protocol edition of hard_header&n; *&t;Revision 0.23:  IPX /proc by Mark Evans. Adding a route will&n; *     &t;&t;&t;will overwrite any existing route to the same network.&n; *&t;Revision 0.24:&t;Supports new /proc with no 4K limit&n; *&t;Revision 0.25:&t;Add ephemeral sockets, passive local network&n; *&t;&t;&t;identification, support for local net 0 and&n; *&t;&t;&t;multiple datalinks &lt;Greg Page&gt;&n; *&t;Revision 0.26:  Device drop kills IPX routes via it. (needed for module)&n; *&t;Revision 0.27:  Autobind &lt;Mark Evans&gt;&n; *&t;Revision 0.28:  Small fix for multiple local networks &lt;Thomas Winder&gt;&n; *&t;Revision 0.29:  Assorted major errors removed &lt;Mark Evans&gt;&n; *&t;&t;&t;Small correction to promisc mode error fix &lt;Alan Cox&gt;&n; *&t;&t;&t;Asynchronous I/O support. Changed to use notifiers&n; *&t;&t;&t;and the newer packet_type stuff. Assorted major&n; *&t;&t;&t;fixes &lt;Alejandro Liu&gt;&n; *&t;Revision 0.30:&t;Moved to net/ipx/...&t;&lt;Alan Cox&gt;&n; *&t;&t;&t;Don&squot;t set address length on recvfrom that errors.&n; *&t;&t;&t;Incorrect verify_area.&n; *&t;Revision 0.31:&t;New sk_buffs. This still needs a lot of &n; *&t;&t;&t;testing. &lt;Alan Cox&gt;&n; *&t;Revision 0.32:  Using sock_alloc_send_skb, firewall hooks. &lt;Alan Cox&gt;&n; *&t;&t;&t;Supports sendmsg/recvmsg&n; *&t;Revision 0.33:&t;Internal network support, routing changes, uses a&n; *&t;&t;&t;protocol private area for ipx data.&n; *&t;Revision 0.34:&t;Module support. &lt;Jim Freeman&gt;&n; *&t;Revision 0.35:  Checksum support. &lt;Neil Turton&gt;, hooked in by &lt;Alan Cox&gt;&n; *&t;&t;&t;Handles WIN95 discovery packets &lt;Volker Lendecke&gt;&n; *&t;Revision 0.36:&t;Internal bump up for 2.1&n; *&t;Revision 0.37:&t;Began adding POSIXisms.&n; *&t;Revision 0.38:  Asynchronous socket stuff made current.&n; *&t;Revision 0.39:  SPX interfaces&n; *&t;Revision 0.40:  Tiny SIOCGSTAMP fix (chris@cybernet.co.nz)&n; *      Revision 0.41:  802.2TR removed (p.norton@computer.org)&n; *&t;&t;&t;Fixed connecting to primary net,&n; *&t;&t;&t;Automatic binding on send &amp; receive,&n; *&t;&t;&t;Martijn van Oosterhout &lt;kleptogimp@geocities.com&gt;&n; *&t;Revision 042:   Multithreading - use spinlocks and refcounting to&n; *&t;&t;&t;protect some structures: ipx_interface sock list, list&n; *&t;&t;&t;of ipx interfaces, etc. &n; *&t;&t;&t;Bugfixes - do refcounting on net_devices, check function&n; *&t;&t;&t;results, etc. Thanks to davem and freitag for&n; *&t;&t;&t;suggestions and guidance.&n; *&t;&t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;,&n; *&t;&t;&t;November, 2000&n; *&t;Revision 043:&t;Shared SKBs, don&squot;t mangle packets, some cleanups&n; *&t;&t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;,&n; *&t;&t;&t;December, 2000&n; *&t;Revision 044:&t;Call ipxitf_hold on NETDEV_UP (acme)&n; *&t;Revision 045:&t;fix PPROP routing bug (acme)&n; *&t;Revision 046:&t;Further fixes to PPROP, ipxitf_create_internal was&n; *&t;&t;&t;doing an unneeded MOD_INC_USE_COUNT, implement&n; *&t;&t;&t;sysctl for ipx_pprop_broacasting, fix the ipx sysctl&n; *&t;&t;&t;handling, making it dynamic, some cleanups, thanks to&n; *&t;&t;&t;Petr Vandrovec for review and good suggestions. (acme)&n; *&t;Revision 047:&t;Cleanups, CodingStyle changes, move the ncp connection&n; *&t;&t;&t;hack out of line (acme)&n; *&t;Revision 048:&t;Use sk-&gt;protinfo to store the pointer to IPX private&n; *&t;&t;&t;area, remove af_ipx from sk-&gt;protinfo and move ipx_opt&n; *&t;&t;&t;to include/net/ipx.h, use IPX_SK like DecNET, etc&n; *&n; *&t;Protect the module by a MOD_INC_USE_COUNT/MOD_DEC_USE_COUNT&n; *&t;pair. Also, now usage count is managed this way&n; *&t;-Count one if the auto_interface mode is on&n; *      -Count one per configured interface&n; *&n; *&t;Jacques Gelinas (jacques@solucorp.qc.ca)&n; *&n; *&n; * &t;Portions Copyright (c) 1995 Caldera, Inc. &lt;greg@caldera.com&gt;&n; *&t;Neither Greg Page nor Caldera, Inc. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/ipx.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -156,8 +157,6 @@ id|ipx_interface
 op_star
 id|ipx_internal_net
 suffix:semicolon
-DECL|macro|IPX_SKB_CB
-mdefine_line|#define IPX_SKB_CB(__skb) ((struct ipx_cb *)&amp;((__skb)-&gt;cb[0]))
 DECL|macro|IPX_REFCNT_DEBUG
 macro_line|#undef IPX_REFCNT_DEBUG
 macro_line|#ifdef IPX_REFCNT_DEBUG
@@ -387,14 +386,18 @@ id|sock
 op_star
 id|s
 suffix:semicolon
+multiline_comment|/* Determine interface with which socket is associated */
 id|ipx_interface
 op_star
 id|intrfc
-suffix:semicolon
-multiline_comment|/* Determine interface with which socket is associated */
-id|intrfc
 op_assign
-id|sk-&gt;protinfo.af_ipx.intrfc
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|intrfc
 suffix:semicolon
 r_if
 c_cond
@@ -822,7 +825,13 @@ op_amp
 id|intrfc-&gt;if_sklist_lock
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo.af_ipx.intrfc
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|intrfc
 op_assign
 id|intrfc
 suffix:semicolon
@@ -907,7 +916,13 @@ c_loop
 (paren
 id|s
 op_logical_and
-id|s-&gt;protinfo.af_ipx.port
+id|ipx_sk
+c_func
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|port
 op_ne
 id|port
 )paren
@@ -1032,10 +1047,21 @@ c_loop
 id|s
 )paren
 (brace
+r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 op_eq
 id|port
 op_logical_and
@@ -1045,7 +1071,7 @@ c_func
 (paren
 id|node
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -1129,6 +1155,17 @@ id|s
 suffix:semicolon
 )paren
 (brace
+r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 id|s-&gt;err
 op_assign
 id|ENOLINK
@@ -1141,11 +1178,11 @@ c_func
 id|s
 )paren
 suffix:semicolon
-id|s-&gt;protinfo.af_ipx.intrfc
+id|ipxs-&gt;intrfc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|s-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 op_assign
 l_int|0
 suffix:semicolon
@@ -1523,10 +1560,21 @@ c_loop
 id|s
 )paren
 (brace
+r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 op_eq
 id|ipx-&gt;ipx_dest.sock
 op_logical_and
@@ -1539,7 +1587,7 @@ c_func
 (paren
 id|ipx-&gt;ipx_dest.node
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -1811,7 +1859,13 @@ id|intrfc-&gt;if_sklist
 suffix:semicolon
 id|sk
 op_logical_and
-id|sk-&gt;protinfo.af_ipx.ipx_ncp_conn
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|ipx_ncp_conn
 op_ne
 id|connection
 suffix:semicolon
@@ -2682,7 +2736,7 @@ id|dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IPX
@@ -3887,7 +3941,7 @@ id|IPX_FRAME_ETHERII
 suffix:colon
 id|ret
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IPX
@@ -3900,7 +3954,7 @@ id|IPX_FRAME_8022
 suffix:colon
 id|ret
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_802_2
@@ -3913,7 +3967,7 @@ id|IPX_FRAME_SNAP
 suffix:colon
 id|ret
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_SNAP
@@ -3926,7 +3980,7 @@ id|IPX_FRAME_8023
 suffix:colon
 id|ret
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_802_3
@@ -4099,7 +4153,7 @@ id|IPX_FRAME_8022
 suffix:colon
 id|dlink_type
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_802_2
@@ -4124,7 +4178,7 @@ id|ARPHRD_IEEE802
 (brace
 id|dlink_type
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IPX
@@ -4153,7 +4207,7 @@ id|IPX_FRAME_SNAP
 suffix:colon
 id|dlink_type
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_SNAP
@@ -4170,7 +4224,7 @@ id|IPX_FRAME_8023
 suffix:colon
 id|dlink_type
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_802_3
@@ -5762,7 +5816,7 @@ c_cond
 (paren
 id|packet-&gt;ipx_pktsize
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|1
@@ -5843,6 +5897,17 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+suffix:semicolon
+r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|ipx_interface
 op_star
@@ -6052,14 +6117,14 @@ id|skb
 op_member_access_from_pointer
 id|ipx_source_net
 op_assign
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_netnum
+id|ipxs-&gt;intrfc-&gt;if_netnum
 suffix:semicolon
 id|memcpy
 c_func
 (paren
 id|ipx-&gt;ipx_source.node
 comma
-id|sk-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -6070,7 +6135,7 @@ op_assign
 id|ntohs
 c_func
 (paren
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 )paren
 suffix:semicolon
 r_if
@@ -6117,14 +6182,14 @@ id|skb
 op_member_access_from_pointer
 id|ipx_source_net
 op_assign
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_netnum
+id|ipxs-&gt;intrfc-&gt;if_netnum
 suffix:semicolon
 id|memcpy
 c_func
 (paren
 id|ipx-&gt;ipx_source.node
 comma
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_node
+id|ipxs-&gt;intrfc-&gt;if_node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -6133,7 +6198,7 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_IPX_INTERN */
 id|ipx-&gt;ipx_source.sock
 op_assign
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 suffix:semicolon
 id|IPX_SKB_CB
 c_func
@@ -7106,6 +7171,17 @@ op_assign
 id|s-&gt;next
 )paren
 (brace
+r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_IPX_INTERN
 id|len
 op_add_assign
@@ -7125,35 +7201,35 @@ r_int
 id|htonl
 c_func
 (paren
-id|s-&gt;protinfo.af_ipx.intrfc-&gt;if_netnum
+id|ipxs-&gt;intrfc-&gt;if_netnum
 )paren
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 (braket
 l_int|0
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 (braket
 l_int|1
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 (braket
 l_int|2
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 (braket
 l_int|3
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 (braket
 l_int|4
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 (braket
 l_int|5
 )braket
@@ -7161,7 +7237,7 @@ comma
 id|htons
 c_func
 (paren
-id|s-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 )paren
 )paren
 suffix:semicolon
@@ -7190,7 +7266,7 @@ comma
 id|htons
 c_func
 (paren
-id|s-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 )paren
 )paren
 suffix:semicolon
@@ -7236,35 +7312,35 @@ r_int
 id|htonl
 c_func
 (paren
-id|s-&gt;protinfo.af_ipx.dest_addr.net
+id|ipxs-&gt;dest_addr.net
 )paren
 comma
-id|s-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 (braket
 l_int|0
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 (braket
 l_int|1
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 (braket
 l_int|2
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 (braket
 l_int|3
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 (braket
 l_int|4
 )braket
 comma
-id|s-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 (braket
 l_int|5
 )braket
@@ -7272,7 +7348,7 @@ comma
 id|htons
 c_func
 (paren
-id|s-&gt;protinfo.af_ipx.dest_addr.sock
+id|ipxs-&gt;dest_addr.sock
 )paren
 )paren
 suffix:semicolon
@@ -7771,7 +7847,13 @@ id|IPX_TYPE
 r_goto
 id|out
 suffix:semicolon
-id|sk-&gt;protinfo.af_ipx.type
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
 op_assign
 id|opt
 suffix:semicolon
@@ -7851,7 +7933,13 @@ id|out
 suffix:semicolon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_ipx.type
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
 suffix:semicolon
 id|ret
 op_assign
@@ -7967,9 +8055,18 @@ op_minus
 id|ESOCKTNOSUPPORT
 suffix:semicolon
 r_struct
+id|ipx_opt
+op_star
+id|ipx
+op_assign
+l_int|NULL
+suffix:semicolon
+r_struct
 id|sock
 op_star
 id|sk
+suffix:semicolon
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_switch
 c_cond
@@ -7990,6 +8087,8 @@ comma
 id|GFP_KERNEL
 comma
 l_int|1
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|ret
@@ -8004,7 +8103,36 @@ op_logical_neg
 id|sk
 )paren
 r_goto
-id|out
+id|decmod
+suffix:semicolon
+id|ipx
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|ipx
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ipx
+)paren
+r_goto
+id|outsk
 suffix:semicolon
 id|sock-&gt;ops
 op_assign
@@ -8036,7 +8164,7 @@ id|protocol
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|decmod
 suffix:semicolon
 )brace
 multiline_comment|/* Fall through if SPX is not loaded */
@@ -8047,7 +8175,7 @@ multiline_comment|/* Allow higher levels to piggyback */
 r_default
 suffix:colon
 r_goto
-id|out
+id|decmod
 suffix:semicolon
 )brace
 macro_line|#ifdef IPX_REFCNT_DEBUG
@@ -8083,17 +8211,11 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;destruct
-op_assign
-l_int|NULL
-suffix:semicolon
 id|sk-&gt;no_check
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Checksum off by default */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|ret
 op_assign
 l_int|0
@@ -8102,6 +8224,21 @@ id|out
 suffix:colon
 r_return
 id|ret
+suffix:semicolon
+id|outsk
+suffix:colon
+id|sk_free
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|decmod
+suffix:colon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|ipx_release
@@ -8288,6 +8425,17 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|ipx_interface
 op_star
 id|intrfc
@@ -8406,7 +8554,7 @@ id|CAP_NET_ADMIN
 r_goto
 id|out_put
 suffix:semicolon
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 op_assign
 id|addr-&gt;sipx_port
 suffix:semicolon
@@ -8459,7 +8607,7 @@ id|IPX_NODE_LEN
 id|memcpy
 c_func
 (paren
-id|sk-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
 id|intrfc-&gt;if_node
 comma
@@ -8470,7 +8618,7 @@ r_else
 id|memcpy
 c_func
 (paren
-id|sk-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
 id|addr-&gt;sipx_node
 comma
@@ -8490,9 +8638,9 @@ c_func
 (paren
 id|intrfc
 comma
-id|sk-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 )paren
 )paren
 (brace
@@ -8524,7 +8672,7 @@ multiline_comment|/* Source addresses are easy. It must be our&n;&t;&t; * networ
 id|memcpy
 c_func
 (paren
-id|sk-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
 id|intrfc-&gt;if_node
 comma
@@ -8686,6 +8834,17 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|sockaddr_ipx
 op_star
 id|addr
@@ -8736,7 +8895,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 )paren
 (brace
 r_struct
@@ -8761,7 +8920,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_ipx.intrfc
+id|ipxs-&gt;intrfc
 )paren
 r_goto
 id|out
@@ -8772,7 +8931,7 @@ c_func
 (paren
 id|uaddr.sipx_node
 comma
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_node
+id|ipxs-&gt;intrfc-&gt;if_node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -8840,25 +8999,25 @@ id|ipx_primary_net
 r_goto
 id|out
 suffix:semicolon
-id|sk-&gt;protinfo.af_ipx.dest_addr.net
+id|ipxs-&gt;dest_addr.net
 op_assign
 id|addr-&gt;sipx_network
 suffix:semicolon
-id|sk-&gt;protinfo.af_ipx.dest_addr.sock
+id|ipxs-&gt;dest_addr.sock
 op_assign
 id|addr-&gt;sipx_port
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|sk-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 comma
 id|addr-&gt;sipx_node
 comma
 id|IPX_NODE_LEN
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo.af_ipx.type
+id|ipxs-&gt;type
 op_assign
 id|addr-&gt;sipx_type
 suffix:semicolon
@@ -8939,6 +9098,17 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -8975,7 +9145,7 @@ suffix:semicolon
 id|addr
 op_assign
 op_amp
-id|sk-&gt;protinfo.af_ipx.dest_addr
+id|ipxs-&gt;dest_addr
 suffix:semicolon
 id|sipx.sipx_network
 op_assign
@@ -9001,12 +9171,12 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_ipx.intrfc
+id|ipxs-&gt;intrfc
 )paren
 (brace
 id|sipx.sipx_network
 op_assign
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_netnum
+id|ipxs-&gt;intrfc-&gt;if_netnum
 suffix:semicolon
 macro_line|#ifdef CONFIG_IPX_INTERN
 id|memcpy
@@ -9014,7 +9184,7 @@ c_func
 (paren
 id|sipx.sipx_node
 comma
-id|sk-&gt;protinfo.af_ipx.node
+id|ipxs-&gt;node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -9025,7 +9195,7 @@ c_func
 (paren
 id|sipx.sipx_node
 comma
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_node
+id|ipxs-&gt;intrfc-&gt;if_node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -9051,7 +9221,7 @@ suffix:semicolon
 )brace
 id|sipx.sipx_port
 op_assign
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 suffix:semicolon
 )brace
 id|sipx.sipx_family
@@ -9060,7 +9230,7 @@ id|AF_IPX
 suffix:semicolon
 id|sipx.sipx_type
 op_assign
-id|sk-&gt;protinfo.af_ipx.type
+id|ipxs-&gt;type
 suffix:semicolon
 id|memcpy
 c_func
@@ -9365,6 +9535,17 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|sockaddr_ipx
 op_star
 id|usipx
@@ -9415,7 +9596,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 )paren
 (brace
 r_struct
@@ -9440,7 +9621,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_ipx.intrfc
+id|ipxs-&gt;intrfc
 )paren
 r_goto
 id|out
@@ -9451,7 +9632,7 @@ c_func
 (paren
 id|uaddr.sipx_node
 comma
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_node
+id|ipxs-&gt;intrfc-&gt;if_node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -9540,22 +9721,22 @@ id|AF_IPX
 suffix:semicolon
 id|usipx-&gt;sipx_type
 op_assign
-id|sk-&gt;protinfo.af_ipx.type
+id|ipxs-&gt;type
 suffix:semicolon
 id|usipx-&gt;sipx_port
 op_assign
-id|sk-&gt;protinfo.af_ipx.dest_addr.sock
+id|ipxs-&gt;dest_addr.sock
 suffix:semicolon
 id|usipx-&gt;sipx_network
 op_assign
-id|sk-&gt;protinfo.af_ipx.dest_addr.net
+id|ipxs-&gt;dest_addr.net
 suffix:semicolon
 id|memcpy
 c_func
 (paren
 id|usipx-&gt;sipx_node
 comma
-id|sk-&gt;protinfo.af_ipx.dest_addr.node
+id|ipxs-&gt;dest_addr.node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -9632,6 +9813,17 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
+id|ipx_opt
+op_star
+id|ipxs
+op_assign
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|sockaddr_ipx
 op_star
 id|sipx
@@ -9665,7 +9857,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_ipx.port
+id|ipxs-&gt;port
 )paren
 (brace
 r_struct
@@ -9690,7 +9882,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_ipx.intrfc
+id|ipxs-&gt;intrfc
 )paren
 r_goto
 id|out
@@ -9701,7 +9893,7 @@ c_func
 (paren
 id|uaddr.sipx_node
 comma
-id|sk-&gt;protinfo.af_ipx.intrfc-&gt;if_node
+id|ipxs-&gt;intrfc-&gt;if_node
 comma
 id|IPX_NODE_LEN
 )paren
@@ -10142,7 +10334,13 @@ r_return
 id|get_user
 c_func
 (paren
-id|sk-&gt;protinfo.af_ipx.ipx_ncp_conn
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|ipx_ncp_conn
 comma
 (paren
 r_const
@@ -10586,18 +10784,40 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
-id|banner
+id|ipx_banner
 (braket
 )braket
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;NET4: Linux IPX 0.47 for NET4.0&bslash;n&quot;
+l_string|&quot;NET4: Linux IPX 0.48 for NET4.0&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;IPX Portions Copyright (c) 1995 Caldera, Inc.&bslash;n&quot;
 "&bslash;"
 id|KERN_INFO
 l_string|&quot;IPX Portions Copyright (c) 2000, 2001 Conectiva, Inc.&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|ipx_llc_err_msg
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_CRIT
+l_string|&quot;IPX: Unable to register with 802.2&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|ipx_snap_err_msg
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_CRIT
+l_string|&quot;IPX: Unable to register with SNAP&bslash;n&quot;
 suffix:semicolon
 DECL|function|ipx_init
 r_static
@@ -10663,8 +10883,7 @@ id|p8022_datalink
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;IPX: Unable to register with 802.2&bslash;n&quot;
+id|ipx_llc_err_msg
 )paren
 suffix:semicolon
 id|pSNAP_datalink
@@ -10686,8 +10905,7 @@ id|pSNAP_datalink
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;IPX: Unable to register with SNAP&bslash;n&quot;
+id|ipx_snap_err_msg
 )paren
 suffix:semicolon
 id|register_netdevice_notifier
@@ -10737,7 +10955,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-id|banner
+id|ipx_banner
 )paren
 suffix:semicolon
 r_return

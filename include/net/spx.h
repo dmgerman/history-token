@@ -171,6 +171,8 @@ id|retransmit_queue
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|spx_sk
+mdefine_line|#define spx_sk(__sk) ((struct spx_opt *)(((struct sock *)(__sk)) + 1))
 multiline_comment|/* Packet connectino control defines */
 DECL|macro|CCTL_SPXII_XHD
 mdefine_line|#define CCTL_SPXII_XHD  0x01    /* SPX2 extended header */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 output functions&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_output.c,v 1.33 2001/09/20 00:35:35 davem Exp $&n; *&n; *&t;Based on linux/net/ipv4/ip_output.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; *&t;A.N.Kuznetsov&t;:&t;airthmetics in fragmentation.&n; *&t;&t;&t;&t;extension headers are implemented.&n; *&t;&t;&t;&t;route changes now work.&n; *&t;&t;&t;&t;ip6_forward does not confuse sniffers.&n; *&t;&t;&t;&t;etc.&n; *&n; *      H. von Brand    :       Added missing #include &lt;linux/string.h&gt;&n; *&t;Imran Patel&t;: &t;frag id should be in NBO&n; */
+multiline_comment|/*&n; *&t;IPv6 output functions&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_output.c,v 1.34 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;Based on linux/net/ipv4/ip_output.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; *&t;A.N.Kuznetsov&t;:&t;airthmetics in fragmentation.&n; *&t;&t;&t;&t;extension headers are implemented.&n; *&t;&t;&t;&t;route changes now work.&n; *&t;&t;&t;&t;ip6_forward does not confuse sniffers.&n; *&t;&t;&t;&t;etc.&n; *&n; *      H. von Brand    :       Added missing #include &lt;linux/string.h&gt;&n; *&t;Imran Patel&t;: &t;frag id should be in NBO&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6.h&gt;
@@ -287,6 +288,22 @@ id|skb-&gt;nh.ipv6h-&gt;daddr
 )paren
 )paren
 (brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|skb-&gt;sk
+ques
+c_cond
+id|inet6_sk
+c_func
+(paren
+id|skb-&gt;sk
+)paren
+suffix:colon
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -298,11 +315,10 @@ id|IFF_LOOPBACK
 )paren
 op_logical_and
 (paren
-id|skb-&gt;sk
-op_eq
-l_int|NULL
+op_logical_neg
+id|np
 op_logical_or
-id|skb-&gt;sk-&gt;net_pinfo.af_inet6.mc_loop
+id|np-&gt;mc_loop
 )paren
 op_logical_and
 id|ipv6_chk_mcast_addr
@@ -603,8 +619,11 @@ op_assign
 id|sk
 ques
 c_cond
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:colon
 l_int|NULL
 suffix:semicolon
@@ -995,8 +1014,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|ipv6hdr
@@ -2021,12 +2043,26 @@ id|flags
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|in6_addr
@@ -2333,7 +2369,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 )paren
 (brace
 id|pktlength
@@ -2581,7 +2617,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 )paren
 (brace
 id|ip6_bld_1
@@ -2746,7 +2782,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 op_logical_or
 id|jumbolen
 op_logical_or

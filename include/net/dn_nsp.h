@@ -746,11 +746,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * A collection of functions for manipulating the sequence&n; * numbers used in NSP. Similar in operation to the functions&n; * of the same name in TCP.&n; */
-DECL|function|before
+DECL|function|dn_before
 r_static
 id|__inline__
 r_int
-id|before
+id|dn_before
 c_func
 (paren
 r_int
@@ -787,11 +787,11 @@ OG
 l_int|2048
 suffix:semicolon
 )brace
-DECL|function|after
+DECL|function|dn_after
 r_static
 id|__inline__
 r_int
-id|after
+id|dn_after
 c_func
 (paren
 r_int
@@ -828,11 +828,11 @@ OG
 l_int|2048
 suffix:semicolon
 )brace
-DECL|function|equal
+DECL|function|dn_equal
 r_static
 id|__inline__
 r_int
-id|equal
+id|dn_equal
 c_func
 (paren
 r_int
@@ -858,11 +858,11 @@ op_eq
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|before_or_equal
+DECL|function|dn_before_or_equal
 r_static
 id|__inline__
 r_int
-id|before_or_equal
+id|dn_before_or_equal
 c_func
 (paren
 r_int
@@ -876,7 +876,7 @@ id|seq2
 (brace
 r_return
 (paren
-id|before
+id|dn_before
 c_func
 (paren
 id|seq1
@@ -884,7 +884,7 @@ comma
 id|seq2
 )paren
 op_logical_or
-id|equal
+id|dn_equal
 c_func
 (paren
 id|seq1
@@ -943,7 +943,7 @@ id|seq2
 )paren
 (brace
 r_return
-id|equal
+id|dn_equal
 c_func
 (paren
 id|seq1

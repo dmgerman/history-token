@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_output.c,v 1.145 2002/01/11 08:45:37 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_output.c,v 1.146 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 multiline_comment|/*&n; * Changes:&t;Pedro Roque&t;:&t;Retransmit queue handled by TCP.&n; *&t;&t;&t;&t;:&t;Fragmentation on mtu decrease&n; *&t;&t;&t;&t;:&t;Segment collapse on retransmit&n; *&t;&t;&t;&t;:&t;AF independence&n; *&n; *&t;&t;Linus Torvalds&t;:&t;send_delayed_ack&n; *&t;&t;David S. Miller&t;:&t;Charge memory using the right skb&n; *&t;&t;&t;&t;&t;during syn/ack processing.&n; *&t;&t;David S. Miller :&t;Output engine completely rewritten.&n; *&t;&t;Andrea Arcangeli:&t;SYNACK carry ts_recent in tsecr.&n; *&t;&t;Cacophonix Gaul :&t;draft-minshall-nagle-01&n; *&t;&t;J Hadi Salim&t;:&t;ECN support&n; *&n; */
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -143,9 +143,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -368,9 +369,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 id|tcp_dec_quickack_mode
@@ -407,9 +409,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 id|u32
@@ -504,9 +507,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -1011,9 +1015,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Advance write_seq and place onto the write_queue. */
@@ -1173,9 +1178,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -1683,8 +1689,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -2042,8 +2051,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|mss_now
@@ -2164,9 +2176,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_int
@@ -2359,8 +2372,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 multiline_comment|/* MSS for the peer&squot;s data.  Previous verions used mss_clamp&n;&t; * here.  I don&squot;t know if the value based on our guesses&n;&t; * of peer&squot;s MSS is better for the performance.  It&squot;s more correct&n;&t; * but may be worse for the performance because of rcv_mss&n;&t; * fluctuations.  --SAW  1998/11/1&n;&t; */
 r_int
@@ -2519,8 +2535,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -2846,9 +2865,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -3045,9 +3065,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_int
@@ -3496,9 +3517,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -3797,9 +3819,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -4003,9 +4026,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -4300,8 +4324,11 @@ suffix:semicolon
 id|TCP_ECN_send_synack
 c_func
 (paren
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 comma
 id|skb
 )paren
@@ -4362,9 +4389,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -4741,9 +4769,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Reserve space for headers. */
@@ -5110,8 +5139,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|ato
@@ -5315,9 +5347,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -5466,9 +5499,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -5609,9 +5643,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -5868,9 +5903,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_int

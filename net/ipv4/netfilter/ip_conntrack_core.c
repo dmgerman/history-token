@@ -7,6 +7,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;

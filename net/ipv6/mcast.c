@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.38 2001/08/15 07:36:31 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.40 2002/02/08 03:57:19 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* Changes:&n; *&n; *&t;yoshfuji&t;: fix format of router-alert option&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -121,8 +121,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|err
@@ -381,8 +384,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|ipv6_mc_socklist
@@ -538,8 +544,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|ipv6_mc_socklist
@@ -658,6 +667,17 @@ id|addr
 )paren
 (brace
 r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|ipv6_mc_socklist
 op_star
 id|mc
@@ -674,7 +694,7 @@ c_loop
 (paren
 id|mc
 op_assign
-id|sk-&gt;net_pinfo.af_inet6.ipv6_mc_list
+id|np-&gt;ipv6_mc_list
 suffix:semicolon
 id|mc
 suffix:semicolon
@@ -3401,6 +3421,11 @@ id|ops
 )paren
 (brace
 r_struct
+id|ipv6_pinfo
+op_star
+id|np
+suffix:semicolon
+r_struct
 id|sock
 op_star
 id|sk
@@ -3465,7 +3490,15 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;net_pinfo.af_inet6.hop_limit
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|np-&gt;hop_limit
 op_assign
 l_int|1
 suffix:semicolon

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/in_route.h&gt;
@@ -645,12 +646,24 @@ id|dst
 (brace
 r_return
 (paren
-id|sk-&gt;protinfo.af_inet.pmtudisc
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|pmtudisc
 op_eq
 id|IP_PMTUDISC_DO
 op_logical_or
 (paren
-id|sk-&gt;protinfo.af_inet.pmtudisc
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|pmtudisc
 op_eq
 id|IP_PMTUDISC_WANT
 op_logical_and
@@ -723,7 +736,6 @@ multiline_comment|/* This is only to work around buggy Windows95/2000&n;&t;&t; *
 id|iph-&gt;id
 op_assign
 (paren
-(paren
 id|sk
 op_logical_and
 id|sk-&gt;daddr
@@ -733,12 +745,17 @@ c_cond
 id|htons
 c_func
 (paren
-id|sk-&gt;protinfo.af_inet.id
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|id
 op_increment
 )paren
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_else

@@ -1922,6 +1922,8 @@ comma
 id|GFP_KERNEL
 comma
 l_int|1
+comma
+l_int|NULL
 )paren
 )paren
 )paren
@@ -2271,6 +2273,7 @@ comma
 id|create
 suffix:colon
 id|hci_sock_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|hci_sock_nblock

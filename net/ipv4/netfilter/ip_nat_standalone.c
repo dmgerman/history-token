@@ -2,6 +2,7 @@ multiline_comment|/* This file contains all the functions required for the stand
 multiline_comment|/* (c) 1999 Paul `Rusty&squot; Russell.  Licenced under the GNU General&n;   Public Licence. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
@@ -738,7 +739,7 @@ id|daddr
 )paren
 )paren
 r_return
-id|route_me_harder
+id|ip_route_me_harder
 c_func
 (paren
 id|pskb

@@ -14,6 +14,9 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
+macro_line|#include &lt;linux/ipv6.h&gt;
+macro_line|#endif
 multiline_comment|/* This is for all connections with a full identity, no wildcards.&n; * New scheme, half the table is for TIME_WAIT, the other half is&n; * for the rest.  I&squot;ll experiment with dynamic table growth later.&n; */
 DECL|struct|tcp_ehash_bucket
 r_struct
@@ -183,6 +186,12 @@ DECL|macro|tcp_lhash_wait
 mdefine_line|#define tcp_lhash_wait&t;(tcp_hashinfo.__tcp_lhash_wait)
 DECL|macro|tcp_portalloc_lock
 mdefine_line|#define tcp_portalloc_lock (tcp_hashinfo.__tcp_portalloc_lock)
+multiline_comment|/* SLAB cache for TCP socks */
+r_extern
+id|kmem_cache_t
+op_star
+id|tcp_sk_cachep
+suffix:semicolon
 r_extern
 id|kmem_cache_t
 op_star
@@ -549,7 +558,7 @@ DECL|macro|TCP_IPV4_MATCH
 mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&t;&bslash;&n;&t; ((__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&t;&bslash;&n;&t; ((*((__u32 *)&amp;((__sk)-&gt;dport)))== (__ports))   &amp;&amp;&t;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 macro_line|#endif /* 64-bit arch */
 DECL|macro|TCP_IPV6_MATCH
-mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;&t;&t;   &bslash;&n;&t;(((*((__u32 *)&amp;((__sk)-&gt;dport)))== (__ports))   &t;&t;&t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;family&t;&t;== AF_INET6)&t;&t;&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;(__sk)-&gt;net_pinfo.af_inet6.daddr, (__saddr))&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;(__sk)-&gt;net_pinfo.af_inet6.rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;((__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 multiline_comment|/* These can have wildcards, don&squot;t try too hard. */
 DECL|function|tcp_lhashfn
 r_static
@@ -2744,8 +2753,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -2867,8 +2879,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3012,8 +3027,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|dst_entry
@@ -3090,8 +3108,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -4510,8 +4531,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5729,8 +5753,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|req-&gt;sk
 op_assign
@@ -5825,7 +5852,13 @@ id|tcp_listen_opt
 op_star
 id|lopt
 op_assign
-id|sk-&gt;tp_pinfo.af_tcp.listen_opt
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|listen_opt
 suffix:semicolon
 r_if
 c_cond
@@ -5870,7 +5903,13 @@ id|tcp_listen_opt
 op_star
 id|lopt
 op_assign
-id|sk-&gt;tp_pinfo.af_tcp.listen_opt
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|listen_opt
 suffix:semicolon
 r_if
 c_cond
@@ -5906,7 +5945,13 @@ id|sk
 )paren
 (brace
 r_return
-id|sk-&gt;tp_pinfo.af_tcp.listen_opt-&gt;qlen
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|listen_opt-&gt;qlen
 suffix:semicolon
 )brace
 DECL|function|tcp_synq_young
@@ -5923,7 +5968,13 @@ id|sk
 )paren
 (brace
 r_return
-id|sk-&gt;tp_pinfo.af_tcp.listen_opt-&gt;qlen_young
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|listen_opt-&gt;qlen_young
 suffix:semicolon
 )brace
 DECL|function|tcp_synq_is_full
@@ -5946,7 +5997,13 @@ c_func
 id|sk
 )paren
 op_rshift
-id|sk-&gt;tp_pinfo.af_tcp.listen_opt-&gt;max_qlen_log
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|listen_opt-&gt;max_qlen_log
 suffix:semicolon
 )brace
 DECL|function|tcp_synq_unlink
@@ -6020,8 +6077,11 @@ id|prev
 id|tcp_synq_unlink
 c_func
 (paren
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 comma
 id|req
 comma
@@ -6143,7 +6203,13 @@ op_star
 id|skb
 )paren
 (brace
-id|sk-&gt;tp_pinfo.af_tcp.queue_shrunk
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|queue_shrunk
 op_assign
 l_int|1
 suffix:semicolon

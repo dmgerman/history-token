@@ -595,6 +595,8 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */
+DECL|macro|at_sk
+mdefine_line|#define at_sk(__sk) ((struct atalk_sock *)(__sk)-&gt;protinfo)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_ATALK_H__ */
 eof

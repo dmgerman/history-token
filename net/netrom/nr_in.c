@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;&t;&t;&t;/* For ip_rcv */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -51,6 +52,16 @@ id|skbn
 op_assign
 id|skb
 suffix:semicolon
+id|nr_cb
+op_star
+id|nr
+op_assign
+id|nr_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|skb_pull
 c_func
 (paren
@@ -73,7 +84,7 @@ c_cond
 id|more
 )paren
 (brace
-id|sk-&gt;protinfo.nr-&gt;fraglen
+id|nr-&gt;fraglen
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -81,7 +92,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.nr-&gt;frag_queue
+id|nr-&gt;frag_queue
 comma
 id|skb
 )paren
@@ -96,13 +107,13 @@ c_cond
 op_logical_neg
 id|more
 op_logical_and
-id|sk-&gt;protinfo.nr-&gt;fraglen
+id|nr-&gt;fraglen
 OG
 l_int|0
 )paren
 (brace
 multiline_comment|/* End of fragment */
-id|sk-&gt;protinfo.nr-&gt;fraglen
+id|nr-&gt;fraglen
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -110,7 +121,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.nr-&gt;frag_queue
+id|nr-&gt;frag_queue
 comma
 id|skb
 )paren
@@ -124,7 +135,7 @@ op_assign
 id|alloc_skb
 c_func
 (paren
-id|sk-&gt;protinfo.nr-&gt;fraglen
+id|nr-&gt;fraglen
 comma
 id|GFP_ATOMIC
 )paren
@@ -149,7 +160,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.nr-&gt;frag_queue
+id|nr-&gt;frag_queue
 )paren
 )paren
 op_ne
@@ -179,7 +190,7 @@ id|skbo
 )paren
 suffix:semicolon
 )brace
-id|sk-&gt;protinfo.nr-&gt;fraglen
+id|nr-&gt;fraglen
 op_assign
 l_int|0
 suffix:semicolon
@@ -224,6 +235,17 @@ id|frametype
 r_case
 id|NR_CONNACK
 suffix:colon
+(brace
+id|nr_cb
+op_star
+id|nr
+op_assign
+id|nr_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|nr_stop_t1timer
 c_func
 (paren
@@ -236,45 +258,45 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;your_index
+id|nr-&gt;your_index
 op_assign
 id|skb-&gt;data
 (braket
 l_int|17
 )braket
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;your_id
+id|nr-&gt;your_id
 op_assign
 id|skb-&gt;data
 (braket
 l_int|18
 )braket
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;vs
+id|nr-&gt;vs
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;va
+id|nr-&gt;va
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;vr
+id|nr-&gt;vr
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;vl
+id|nr-&gt;vl
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;state
+id|nr-&gt;state
 op_assign
 id|NR_STATE_3
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;n2count
+id|nr-&gt;n2count
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.nr-&gt;window
+id|nr-&gt;window
 op_assign
 id|skb-&gt;data
 (braket
@@ -301,6 +323,7 @@ id|sk
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 r_case
 id|NR_CONNACK
 op_or
@@ -421,6 +444,16 @@ r_int
 id|frametype
 )paren
 (brace
+id|nr_cb
+op_star
+id|nrom
+op_assign
+id|nr_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_struct
 id|sk_buff_head
 id|temp_queue
@@ -545,7 +578,7 @@ op_amp
 id|NR_CHOKE_FLAG
 )paren
 (brace
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_or_assign
 id|NR_COND_PEER_RX_BUSY
 suffix:semicolon
@@ -558,7 +591,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_and_assign
 op_complement
 id|NR_COND_PEER_RX_BUSY
@@ -614,7 +647,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_amp
 id|NR_COND_PEER_RX_BUSY
 )paren
@@ -698,7 +731,7 @@ op_amp
 id|NR_CHOKE_FLAG
 )paren
 (brace
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_or_assign
 id|NR_COND_PEER_RX_BUSY
 suffix:semicolon
@@ -711,7 +744,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_and_assign
 op_complement
 id|NR_COND_PEER_RX_BUSY
@@ -763,7 +796,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_amp
 id|NR_COND_PEER_RX_BUSY
 )paren
@@ -798,7 +831,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.nr-&gt;reseq_queue
+id|nrom-&gt;reseq_queue
 comma
 id|skb
 )paren
@@ -806,7 +839,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_amp
 id|NR_COND_OWN_RX_BUSY
 )paren
@@ -823,7 +856,7 @@ r_do
 (brace
 id|save_vr
 op_assign
-id|sk-&gt;protinfo.nr-&gt;vr
+id|nrom-&gt;vr
 suffix:semicolon
 r_while
 c_loop
@@ -835,7 +868,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.nr-&gt;reseq_queue
+id|nrom-&gt;reseq_queue
 )paren
 )paren
 op_ne
@@ -854,7 +887,7 @@ c_cond
 (paren
 id|ns
 op_eq
-id|sk-&gt;protinfo.nr-&gt;vr
+id|nrom-&gt;vr
 )paren
 (brace
 r_if
@@ -875,10 +908,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|sk-&gt;protinfo.nr-&gt;vr
+id|nrom-&gt;vr
 op_assign
 (paren
-id|sk-&gt;protinfo.nr-&gt;vr
+id|nrom-&gt;vr
 op_plus
 l_int|1
 )paren
@@ -888,7 +921,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_or_assign
 id|NR_COND_OWN_RX_BUSY
 suffix:semicolon
@@ -957,7 +990,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.nr-&gt;reseq_queue
+id|nrom-&gt;reseq_queue
 comma
 id|skbn
 )paren
@@ -969,7 +1002,7 @@ c_loop
 (paren
 id|save_vr
 op_ne
-id|sk-&gt;protinfo.nr-&gt;vr
+id|nrom-&gt;vr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Window is full, ack it immediately.&n;&t;&t;&t; */
@@ -978,15 +1011,15 @@ c_cond
 (paren
 (paren
 (paren
-id|sk-&gt;protinfo.nr-&gt;vl
+id|nrom-&gt;vl
 op_plus
-id|sk-&gt;protinfo.nr-&gt;window
+id|nrom-&gt;window
 )paren
 op_mod
 id|NR_MODULUS
 )paren
 op_eq
-id|sk-&gt;protinfo.nr-&gt;vr
+id|nrom-&gt;vr
 )paren
 (brace
 id|nr_enquiry_response
@@ -1003,13 +1036,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_amp
 id|NR_COND_ACK_PENDING
 )paren
 )paren
 (brace
-id|sk-&gt;protinfo.nr-&gt;condition
+id|nrom-&gt;condition
 op_or_assign
 id|NR_COND_ACK_PENDING
 suffix:semicolon
@@ -1049,6 +1082,16 @@ op_star
 id|skb
 )paren
 (brace
+id|nr_cb
+op_star
+id|nr
+op_assign
+id|nr_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|queued
 op_assign
@@ -1059,7 +1102,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.nr-&gt;state
+id|nr-&gt;state
 op_eq
 id|NR_STATE_0
 )paren
@@ -1076,7 +1119,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|sk-&gt;protinfo.nr-&gt;state
+id|nr-&gt;state
 )paren
 (brace
 r_case

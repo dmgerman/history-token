@@ -16,6 +16,7 @@ macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -3309,6 +3310,16 @@ op_eq
 id|ROSE_CALL_REQUEST
 )paren
 (brace
+id|rose_cb
+op_star
+id|rose
+op_assign
+id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 multiline_comment|/* Remove an existing unused socket */
 id|rose_clear_queues
 c_func
@@ -3316,26 +3327,26 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;cause
+id|rose-&gt;cause
 op_assign
 id|ROSE_NETWORK_CONGESTION
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;diagnostic
+id|rose-&gt;diagnostic
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;neighbour-&gt;use
+id|rose-&gt;neighbour-&gt;use
 op_decrement
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;neighbour
+id|rose-&gt;neighbour
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;lci
+id|rose-&gt;lci
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;state
+id|rose-&gt;state
 op_assign
 id|ROSE_STATE_0
 suffix:semicolon

@@ -78,6 +78,8 @@ DECL|macro|IGMP_LOCAL_GROUP_MASK
 mdefine_line|#define IGMP_LOCAL_GROUP_MASK&t;htonl(0xFFFFFF00L)
 multiline_comment|/*&n; * struct for keeping the multicast list in&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
 multiline_comment|/* ip_mc_socklist is real list now. Speed is not argument;&n;   this list never used in fast path code&n; */
 DECL|struct|ip_mc_socklist
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_timer.c,v 1.87 2001/09/21 21:27:34 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_timer.c,v 1.88 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 macro_line|#include &lt;net/tcp.h&gt;
 DECL|variable|sysctl_tcp_syn_retries
 r_int
@@ -100,8 +100,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|init_timer
 c_func
@@ -188,8 +191,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|tp-&gt;pending
 op_assign
@@ -337,9 +343,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_int
@@ -559,9 +566,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_int
@@ -723,9 +731,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 id|bh_lock_sock
@@ -1015,8 +1024,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|max_probes
@@ -1133,8 +1145,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1514,8 +1529,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|event
@@ -1697,9 +1715,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -2151,8 +2170,11 @@ comma
 id|keepalive_time_when
 c_func
 (paren
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2197,8 +2219,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|__u32
 id|elapsed

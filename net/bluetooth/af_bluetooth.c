@@ -347,9 +347,14 @@ id|net_proto_family
 id|bluez_sock_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_BLUETOOTH
 comma
+id|create
+suffix:colon
 id|bluez_sock_create
+comma
 )brace
 suffix:semicolon
 DECL|function|bluez_init

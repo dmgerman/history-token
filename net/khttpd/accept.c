@@ -21,6 +21,11 @@ id|Socket
 )paren
 (brace
 r_struct
+id|tcp_opt
+op_star
+id|tp
+suffix:semicolon
+r_struct
 id|http_request
 op_star
 id|NewRequest
@@ -77,11 +82,19 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+id|tp
+op_assign
+id|tcp_sk
+c_func
+(paren
+id|Socket-&gt;sk
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t;   Quick test to see if there are connections on the queue.&n;&t;   This is cheaper than accept() itself because this saves us&n;&t;   the allocation of a new socket. (Which doesn&squot;t seem to be &n;&t;   used anyway)&n;&t;*/
 r_if
 c_cond
 (paren
-id|Socket-&gt;sk-&gt;tp_pinfo.af_tcp.accept_queue
+id|tp-&gt;accept_queue
 op_eq
 l_int|NULL
 )paren

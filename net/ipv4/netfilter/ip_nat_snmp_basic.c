@@ -8,10 +8,11 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_helper.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/checksum.h&gt;
+macro_line|#include &lt;net/checksum.h&gt;
 DECL|macro|SNMP_PORT
 mdefine_line|#define SNMP_PORT 161
 DECL|macro|SNMP_TRAP_PORT

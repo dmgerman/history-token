@@ -204,5 +204,7 @@ DECL|macro|UDP_INC_STATS_BH
 mdefine_line|#define UDP_INC_STATS_BH(field)&t;&t;SNMP_INC_STATS_BH(udp_statistics, field)
 DECL|macro|UDP_INC_STATS_USER
 mdefine_line|#define UDP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(udp_statistics, field)
+DECL|macro|udp_sock
+mdefine_line|#define udp_sock inet_sock
 macro_line|#endif&t;/* _UDP_H */
 eof

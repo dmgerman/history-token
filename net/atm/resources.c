@@ -1,5 +1,6 @@
 multiline_comment|/* net/atm/resources.c - Staticly allocated resources */
 multiline_comment|/* Written 1995-2000 by Werner Almesberger, EPFL LRC/ICA */
+multiline_comment|/* Fixes&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * 2002/01 - don&squot;t free the whole struct sock on sk-&gt;destruct time,&n; * &t;     use the default destruct function initialized by sock_init_data */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -568,26 +569,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Handler for sk-&gt;destruct, invoked by sk_free() */
-DECL|function|atm_free_sock
-r_static
-r_void
-id|atm_free_sock
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|sk-&gt;protinfo.af_atm
-)paren
-suffix:semicolon
-)brace
 DECL|function|alloc_atm_vcc_sk
 r_struct
 id|sock
@@ -619,6 +600,8 @@ comma
 id|GFP_KERNEL
 comma
 l_int|1
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -632,7 +615,11 @@ l_int|NULL
 suffix:semicolon
 id|vcc
 op_assign
-id|sk-&gt;protinfo.af_atm
+id|atm_sk
+c_func
+(paren
+id|sk
+)paren
 op_assign
 id|kmalloc
 c_func
@@ -670,10 +657,6 @@ l_int|NULL
 comma
 id|sk
 )paren
-suffix:semicolon
-id|sk-&gt;destruct
-op_assign
-id|atm_free_sock
 suffix:semicolon
 id|memset
 c_func
@@ -820,7 +803,11 @@ id|sk
 id|unlink_vcc
 c_func
 (paren
-id|sk-&gt;protinfo.af_atm
+id|atm_sk
+c_func
+(paren
+id|sk
+)paren
 comma
 l_int|NULL
 )paren

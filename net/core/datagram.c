@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;

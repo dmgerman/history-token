@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;This file implements the various access functions for the&n; *&t;&t;PROC file system.  This is very similar to the IPv4 version,&n; *&t;&t;except it reports the sockets in the INET6 address family.&n; *&n; * Version:&t;$Id: proc.c,v 1.16 2002/01/24 15:45:51 davem Exp $&n; *&n; * Authors:&t;David S. Miller (davem@caip.rutgers.edu)&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;This file implements the various access functions for the&n; *&t;&t;PROC file system.  This is very similar to the IPv4 version,&n; *&t;&t;except it reports the sockets in the INET6 address family.&n; *&n; * Version:&t;$Id: proc.c,v 1.17 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;David S. Miller (davem@caip.rutgers.edu)&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;

@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *&t;This module implements the (SPP-derived) Sequenced Packet eXchange&n; *&t;(SPX) protocol for Linux 2.1.X as specified in&n; *&t;&t;NetWare SPX Services Specification, Semantics and API&n; *&t;&t; Revision:       1.00&n; *&t;&t; Revision Date:  February 9, 1993&n; *&n; *&t;Developers:&n; *      Jay Schulist    &lt;jschlst@samba.org&gt;&n; *&t;Jim Freeman&t;&lt;jfree@caldera.com&gt;&n; *&n; *&t;Changes:&n; *&t;Alan Cox&t;:&t;Fixed an skb_unshare check for NULL&n; *&t;&t;&t;&t;that crashed it under load. Renamed and&n; *&t;&t;&t;&t;made static the ipx ops. Removed the hack&n; *&t;&t;&t;&t;ipx methods interface. Dropped AF_SPX - its&n; *&t;&t;&t;&t;the wrong abstraction.&n; *&t;Eduardo Trapani&t;:&t;Added a check for the return value of&n; *&t;&t;&t;&t;ipx_if_offset that crashed sock_alloc_send_skb.&n; *&t;&t;&t;&t;Added spx_datagram_poll() so that select()&n; *&t;&t;&t;&t;works now on SPX sockets.  Added updating&n; *&t;&t;&t;&t;of the alloc count to follow rmt_seq.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;None of the authors or maintainers or their employers admit&n; *&t;liability nor provide warranty for any of this software.&n; *&t;This material is provided &quot;as is&quot; and at no charge.&n; */
+multiline_comment|/*&n; *&t;This module implements the (SPP-derived) Sequenced Packet eXchange&n; *&t;(SPX) protocol for Linux 2.1.X as specified in&n; *&t;&t;NetWare SPX Services Specification, Semantics and API&n; *&t;&t; Revision:       1.00&n; *&t;&t; Revision Date:  February 9, 1993&n; *&n; *&t;Developers:&n; *      Jay Schulist    &lt;jschlst@samba.org&gt;&n; *&t;Jim Freeman&t;&lt;jfree@caldera.com&gt;&n; *&n; *&t;Changes:&n; *&t;Alan Cox&t;:&t;Fixed an skb_unshare check for NULL&n; *&t;&t;&t;&t;that crashed it under load. Renamed and&n; *&t;&t;&t;&t;made static the ipx ops. Removed the hack&n; *&t;&t;&t;&t;ipx methods interface. Dropped AF_SPX - its&n; *&t;&t;&t;&t;the wrong abstraction.&n; *&t;Eduardo Trapani&t;:&t;Added a check for the return value of&n; *&t;&t;&t;&t;ipx_if_offset that crashed sock_alloc_send_skb.&n; *&t;&t;&t;&t;Added spx_datagram_poll() so that select()&n; *&t;&t;&t;&t;works now on SPX sockets.  Added updating&n; *&t;&t;&t;&t;of the alloc count to follow rmt_seq.&n; *&t;Arnaldo C. Melo :&t;Use a private slabcache for the old tp_pinfo&n; *&t;&t;&t;&t;struct sock member, use spx_sk and ipx_sk&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;None of the authors or maintainers or their employers admit&n; *&t;liability nor provide warranty for any of this software.&n; *&t;This material is provided &quot;as is&quot; and at no charge.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/ipx.h&gt;
 macro_line|#include &lt;net/spx.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -128,8 +129,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -269,8 +273,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|pdata-&gt;state
 op_assign
@@ -507,8 +514,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|pdata-&gt;state
 op_assign
@@ -549,8 +559,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -693,8 +706,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1126,9 +1142,21 @@ id|newsk-&gt;state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
-id|newsk-&gt;protinfo.af_ipx.dest_addr
+id|ipx_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|dest_addr
 op_assign
-id|newsk-&gt;tp_pinfo.af_spx.dest_addr
+id|spx_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|dest_addr
 suffix:semicolon
 r_return
 (paren
@@ -1172,8 +1200,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|sockaddr_ipx
@@ -1283,7 +1314,13 @@ suffix:semicolon
 )brace
 id|pdata-&gt;dest_addr
 op_assign
-id|sk-&gt;protinfo.af_ipx.dest_addr
+id|ipx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|dest_addr
 suffix:semicolon
 id|pdata-&gt;state
 op_assign
@@ -1752,8 +1789,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|ipxspxhdr
@@ -2204,8 +2244,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|del_timer
 c_func
@@ -2290,8 +2333,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -2641,8 +2687,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|skb
 op_assign
@@ -3243,7 +3292,13 @@ op_assign
 id|ipx_if_offset
 c_func
 (paren
-id|sk-&gt;tp_pinfo.af_spx.dest_addr.net
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|dest_addr.net
 )paren
 suffix:semicolon
 id|size
@@ -3448,8 +3503,11 @@ id|spx_opt
 op_star
 id|pdata
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_spx
+id|spx_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|sockaddr_ipx
@@ -4110,6 +4168,26 @@ id|create
 suffix:colon
 id|spx_create
 comma
+id|sk_size
+suffix:colon
+r_sizeof
+(paren
+r_struct
+id|sock
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|ipx_opt
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|spx_opt
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -4144,6 +4222,39 @@ id|__u16
 id|jiffies
 suffix:semicolon
 multiline_comment|/* initalize random */
+multiline_comment|/* allocate our sock slab cache */
+id|spx_family_ops.sk_cachep
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;spx_sock&quot;
+comma
+id|spx_family_ops.sk_size
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spx_family_ops.sk_cachep
+)paren
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+id|__FUNCTION__
+l_string|&quot;: Cannot create spx_sock SLAB cache!&bslash;n&quot;
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|ipx_register_spx

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1631,6 +1632,8 @@ comma
 id|gfp
 comma
 l_int|1
+comma
+l_int|NULL
 )paren
 )paren
 op_eq
@@ -1638,6 +1641,29 @@ l_int|NULL
 )paren
 r_goto
 id|no_sock
+suffix:semicolon
+id|scp
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|scp
+)paren
+comma
+id|gfp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scp
+)paren
+r_goto
+id|free_sock
 suffix:semicolon
 r_if
 c_cond
@@ -1659,13 +1685,13 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|scp
-op_assign
 id|DN_SK
 c_func
 (paren
 id|sk
 )paren
+op_assign
+id|scp
 suffix:semicolon
 id|sk-&gt;backlog_rcv
 op_assign
@@ -1898,6 +1924,14 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 id|sk
+suffix:semicolon
+id|free_sock
+suffix:colon
+id|sk_free
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|no_sock
 suffix:colon
