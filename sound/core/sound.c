@@ -1452,13 +1452,6 @@ comma
 id|snd_major
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
-id|snd_oss_cleanup_module
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EIO
@@ -1484,13 +1477,6 @@ l_int|0
 (brace
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
 id|snd_memory_done
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SND_OSSEMUL
-id|snd_oss_cleanup_module
 c_func
 (paren
 )paren
@@ -1649,11 +1635,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SND_OSSEMUL
 id|snd_info_minor_unregister
-c_func
-(paren
-)paren
-suffix:semicolon
-id|snd_oss_cleanup_module
 c_func
 (paren
 )paren
@@ -2043,6 +2024,7 @@ id|snd_dma_residue
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* info.c */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|snd_seq_root
 id|EXPORT_SYMBOL
 c_func
@@ -2134,8 +2116,9 @@ c_func
 id|snd_info_unregister
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* info_oss.c */
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_OSSEMUL) &amp;&amp; defined(CONFIG_PROC_FS)
 DECL|variable|snd_oss_info_register
 id|EXPORT_SYMBOL
 c_func

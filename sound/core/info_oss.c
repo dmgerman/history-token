@@ -7,7 +7,7 @@ macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_OSSEMUL) &amp;&amp; defined(CONFIG_PROC_FS)
 multiline_comment|/*&n; *  OSS compatible part&n; */
 r_static
 id|DECLARE_MUTEX

@@ -1678,7 +1678,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_AUDIO
 id|hwdep-&gt;ossreg
 op_assign
 l_int|0
@@ -1850,7 +1850,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_AUDIO
 r_if
 c_cond
 (paren
