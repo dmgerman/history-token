@@ -3627,6 +3627,10 @@ op_assign
 op_amp
 id|dev-&gt;dev
 suffix:semicolon
+id|interface-&gt;dev.driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|interface-&gt;dev.bus
 op_assign
 op_amp

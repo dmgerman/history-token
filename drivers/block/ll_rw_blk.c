@@ -6104,7 +6104,7 @@ c_func
 (paren
 id|bio
 comma
-l_int|0
+id|bio-&gt;bi_size
 comma
 op_minus
 id|EIO

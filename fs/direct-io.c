@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * The largest-sized BIO which this code will assemble, in bytes.  Set this&n; * to PAGE_SIZE if your drivers are broken.&n; */
 DECL|macro|DIO_BIO_MAX_SIZE
-mdefine_line|#define DIO_BIO_MAX_SIZE BIO_MAX_SIZE
+mdefine_line|#define DIO_BIO_MAX_SIZE (16*1024)
 multiline_comment|/*&n; * How many user pages to map in one call to get_user_pages().  This determines&n; * the size of a structure on the stack.&n; */
 DECL|macro|DIO_PAGES
 mdefine_line|#define DIO_PAGES&t;64

@@ -3,6 +3,46 @@ macro_line|#ifndef __LINUX_EHCI_HCD_H
 DECL|macro|__LINUX_EHCI_HCD_H
 mdefine_line|#define __LINUX_EHCI_HCD_H
 multiline_comment|/* definitions used for the EHCI driver */
+multiline_comment|/* statistics can be kept for for tuning/monitoring */
+DECL|struct|ehci_stats
+r_struct
+id|ehci_stats
+(brace
+multiline_comment|/* irq usage */
+DECL|member|normal
+r_int
+r_int
+id|normal
+suffix:semicolon
+DECL|member|error
+r_int
+r_int
+id|error
+suffix:semicolon
+DECL|member|reclaim
+r_int
+r_int
+id|reclaim
+suffix:semicolon
+multiline_comment|/* termination of urbs from core */
+DECL|member|complete
+r_int
+r_int
+id|complete
+suffix:semicolon
+DECL|member|unlink
+r_int
+r_int
+id|unlink
+suffix:semicolon
+multiline_comment|/* qhs patched to recover from td queueing race&n;&t; * (can avoid by using &squot;dummy td&squot;, allowing fewer irqs)&n;&t; */
+DECL|member|qpatch
+r_int
+r_int
+id|qpatch
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* ehci_hcd-&gt;lock guards shared data against other CPUs:&n; *   ehci_hcd:&t;async, reclaim, periodic (and shadow), ...&n; *   hcd_dev:&t;ep[]&n; *   ehci_qh:&t;qh_next, qtd_list&n; *   ehci_qtd:&t;qtd_list&n; *&n; * Also, hold this lock when talking to HC registers or&n; * when updating hw_* fields in shared qh/qtd/... structures.&n; */
 DECL|macro|EHCI_MAX_ROOT_PORTS
 mdefine_line|#define&t;EHCI_MAX_ROOT_PORTS&t;15&t;&t;/* see HCS_N_PORTS */
@@ -150,6 +190,18 @@ r_struct
 id|timer_list
 id|watchdog
 suffix:semicolon
+macro_line|#ifdef EHCI_STATS
+DECL|member|stats
+r_struct
+id|ehci_stats
+id|stats
+suffix:semicolon
+DECL|macro|COUNT
+macro_line|#&t;define COUNT(x) do { (x)++; } while (0)
+macro_line|#else
+DECL|macro|COUNT
+macro_line|#&t;define COUNT(x) do {} while (0)
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* unwrap an HCD pointer to get an EHCI_HCD pointer */
@@ -919,7 +971,32 @@ DECL|macro|SUBMIT_URB
 mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb)
 DECL|macro|STUB_DEBUG_FILES
 mdefine_line|#define STUB_DEBUG_FILES
+DECL|function|hcd_register_root
+r_static
+r_inline
+r_int
+id|hcd_register_root
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+id|usb_new_device
+(paren
+id|hcd_to_bus
+(paren
+id|hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
+)paren
+suffix:semicolon
+)brace
 macro_line|#else&t;/* LINUX_VERSION_CODE */
+singleline_comment|// hcd_to_bus() eventually moves to hcd.h on 2.5 too
 DECL|function|hcd_to_bus
 r_static
 r_inline
@@ -937,6 +1014,34 @@ id|hcd
 r_return
 op_amp
 id|hcd-&gt;self
+suffix:semicolon
+)brace
+singleline_comment|// ... as does hcd_register_root()
+DECL|function|hcd_register_root
+r_static
+r_inline
+r_int
+id|hcd_register_root
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+id|usb_register_root_hub
+(paren
+id|hcd_to_bus
+(paren
+id|hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
+comma
+op_amp
+id|hcd-&gt;pdev-&gt;dev
+)paren
 suffix:semicolon
 )brace
 DECL|macro|SUBMIT_URB

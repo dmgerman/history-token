@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************** &n; *                          USBLCD Kernel Driver                             *&n; *        See http://www.usblcd.de for Hardware and Documentation.           *&n; *                            Version 1.01                                   *&n; *             (C) 2002 Adams IT Services &lt;info@usblcd.de&gt;                   *&n; *                                                                           *&n; *     This file is licensed under the GPL. See COPYING in the package.      *&n; * Based on rio500.c by Cesar Miquel (miquel@df.uba.ar) which is based on    *&n; * hp_scanner.c by David E. Nelson (dnelson@jump.net)                        *&n; *                                                                           *&n; * 23.7.02 RA changed minor device number to the official assigned one       *&n; *****************************************************************************/
+multiline_comment|/***************************************************************************** &n; *                          USBLCD Kernel Driver                             *&n; *        See http://www.usblcd.de for Hardware and Documentation.           *&n; *                            Version 1.03                                   *&n; *             (C) 2002 Adams IT Services &lt;info@usblcd.de&gt;                   *&n; *                                                                           *&n; *     This file is licensed under the GPL. See COPYING in the package.      *&n; * Based on rio500.c by Cesar Miquel (miquel@df.uba.ar) which is based on    *&n; * hp_scanner.c by David E. Nelson (dnelson@jump.net)                        *&n; *                                                                           *&n; * 23.7.02 RA changed minor device number to the official assigned one       *&n; *****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;USBLCD Driver Version 1.01&quot;
+mdefine_line|#define DRIVER_VERSION &quot;USBLCD Driver Version 1.03&quot;
 DECL|macro|USBLCD_MINOR
 mdefine_line|#define USBLCD_MINOR&t;&t;144
 DECL|macro|IOCTL_GET_HARD_VERSION
@@ -16,7 +16,7 @@ DECL|macro|IOCTL_GET_DRV_VERSION
 mdefine_line|#define IOCTL_GET_DRV_VERSION&t;2
 multiline_comment|/* stall/wait timeout for USBLCD */
 DECL|macro|NAK_TIMEOUT
-mdefine_line|#define NAK_TIMEOUT&t;(HZ)
+mdefine_line|#define NAK_TIMEOUT&t;(10*HZ)
 DECL|macro|IBUF_SIZE
 mdefine_line|#define IBUF_SIZE&t;0x1000
 DECL|macro|OBUF_SIZE
@@ -1403,7 +1403,7 @@ op_assign
 dot
 id|idVendor
 op_assign
-l_int|0x1212
+l_int|0x10D2
 comma
 dot
 id|match_flags

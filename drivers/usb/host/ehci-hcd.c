@@ -33,15 +33,29 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by: Brad Hards, Rory Bolt, ...&n; *&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
+multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Aug-28&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-Sep-23&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB 2.0 &squot;Enhanced&squot; Host Controller (EHCI) Driver&quot;
+DECL|variable|hcd_name
+r_static
+r_const
+r_char
+id|hcd_name
+(braket
+)braket
+op_assign
+l_string|&quot;ehci-hcd&quot;
+suffix:semicolon
 singleline_comment|// #define EHCI_VERBOSE_DEBUG
 singleline_comment|// #define have_split_iso
+macro_line|#ifdef DEBUG
+DECL|macro|EHCI_STATS
+mdefine_line|#define EHCI_STATS
+macro_line|#endif
 DECL|macro|INTR_AUTOMAGIC
 mdefine_line|#define INTR_AUTOMAGIC&t;&t;/* to be removed later in 2.5 */
 multiline_comment|/* magic numbers that can affect system performance */
@@ -80,6 +94,28 @@ id|MODULE_PARM_DESC
 id|log2_irq_thresh
 comma
 l_string|&quot;log2 IRQ latency, 1-64 microframes&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* allow irqs at least every N URB completions */
+DECL|variable|max_completions
+r_static
+r_int
+id|max_completions
+op_assign
+l_int|16
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|max_completions
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|max_completions
+comma
+l_string|&quot;limit for urb completions called with irqs disenabled&quot;
 )paren
 suffix:semicolon
 DECL|macro|INTR_MASK
@@ -1215,7 +1251,7 @@ id|ehci-&gt;caps-&gt;hci_version
 suffix:semicolon
 id|info
 (paren
-l_string|&quot;USB %x.%x support enabled, EHCI rev %x.%02x&quot;
+l_string|&quot;USB %x.%x support enabled, EHCI rev %x.%02x, %s %s&quot;
 comma
 (paren
 (paren
@@ -1240,6 +1276,10 @@ comma
 id|temp
 op_amp
 l_int|0xff
+comma
+id|hcd_name
+comma
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * From here on, khubd concurrently accesses the root&n;&t; * hub; drivers will be talking to enumerated devices.&n;&t; *&n;&t; * Before this point the HC was idle/ready.  After, khubd&n;&t; * and device drivers may start it running.&n;&t; */
@@ -1252,34 +1292,17 @@ id|udev-&gt;speed
 op_assign
 id|USB_SPEED_HIGH
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
 r_if
 c_cond
 (paren
-id|usb_new_device
+id|hcd_register_root
 (paren
-id|udev
+id|hcd
 )paren
 op_ne
 l_int|0
 )paren
 (brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|usb_register_root_hub
-(paren
-id|udev
-comma
-op_amp
-id|ehci-&gt;hcd.pdev-&gt;dev
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1433,6 +1456,30 @@ id|ehci_mem_cleanup
 id|ehci
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;EHCI_STATS
+id|dbg
+(paren
+l_string|&quot;irq normal %ld err %ld reclaim %ld&quot;
+comma
+id|ehci-&gt;stats.normal
+comma
+id|ehci-&gt;stats.error
+comma
+id|ehci-&gt;stats.reclaim
+)paren
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;complete %ld unlink %ld qpatch %ld&quot;
+comma
+id|ehci-&gt;stats.complete
+comma
+id|ehci-&gt;stats.unlink
+comma
+id|ehci-&gt;stats.qpatch
+)paren
+suffix:semicolon
+macro_line|#endif
 id|dbg_status
 (paren
 id|ehci
@@ -1852,19 +1899,10 @@ op_star
 )paren
 id|param
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-singleline_comment|// FIXME don&squot;t pass flags; on sparc they aren&squot;t really flags.
-singleline_comment|// qh_completions can just leave irqs blocked,
-singleline_comment|// then have scan_async() allow IRQs if it&squot;s very busy 
-id|spin_lock_irqsave
+id|spin_lock_irq
 (paren
 op_amp
 id|ehci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1872,22 +1910,14 @@ c_cond
 (paren
 id|ehci-&gt;reclaim_ready
 )paren
-id|flags
-op_assign
 id|end_unlink_async
 (paren
 id|ehci
-comma
-id|flags
 )paren
 suffix:semicolon
-id|flags
-op_assign
 id|scan_async
 (paren
 id|ehci
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1898,21 +1928,15 @@ op_ne
 op_minus
 l_int|1
 )paren
-id|flags
-op_assign
 id|scan_periodic
 (paren
 id|ehci
-comma
-id|flags
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 (paren
 op_amp
 id|ehci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2044,10 +2068,37 @@ op_ne
 l_int|0
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|likely
+(paren
+(paren
+id|status
+op_amp
+id|STS_ERR
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+id|COUNT
+(paren
+id|ehci-&gt;stats.normal
+)paren
+suffix:semicolon
+r_else
+id|COUNT
+(paren
+id|ehci-&gt;stats.error
+)paren
+suffix:semicolon
 id|bh
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/* complete the unlinking of some qh [4.15.2.3] */
 r_if
 c_cond
@@ -2057,6 +2108,11 @@ op_amp
 id|STS_IAA
 )paren
 (brace
+id|COUNT
+(paren
+id|ehci-&gt;stats.reclaim
+)paren
+suffix:semicolon
 id|ehci-&gt;reclaim_ready
 op_assign
 l_int|1
@@ -2525,8 +2581,6 @@ id|QH_STATE_LINKED
 )paren
 (brace
 multiline_comment|/* messy, can spin or block a microframe ... */
-id|flags
-op_assign
 id|intr_deschedule
 (paren
 id|ehci
@@ -2534,21 +2588,15 @@ comma
 id|qh
 comma
 l_int|1
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* qh_state == IDLE */
 )brace
-id|flags
-op_assign
 id|qh_completions
 (paren
 id|ehci
 comma
 id|qh
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* reschedule QH iff another request is queued */
@@ -2971,16 +3019,6 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|variable|hcd_name
-r_static
-r_const
-r_char
-id|hcd_name
-(braket
-)braket
-op_assign
-l_string|&quot;ehci-hcd&quot;
-suffix:semicolon
 DECL|variable|ehci_driver
 r_static
 r_const

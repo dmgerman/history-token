@@ -428,7 +428,16 @@ id|use_sg
 )paren
 suffix:semicolon
 r_return
+(paren
 id|result
+op_eq
+id|USB_STOR_XFER_GOOD
+ques
+c_cond
+id|USB_STOR_TRANSPORT_GOOD
+suffix:colon
+id|USB_STOR_TRANSPORT_ERROR
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Block, waiting for an ATA device to become not busy or to report&n; * an error condition.&n; */
@@ -761,10 +770,10 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 r_return
 id|usbat_wait_not_busy
@@ -1092,10 +1101,10 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 singleline_comment|//US_DEBUGP(&quot;Transfer %s %d bytes, sg buffers %d&bslash;n&quot;,
@@ -1123,7 +1132,11 @@ c_cond
 (paren
 id|result
 op_eq
-id|US_BULK_TRANSFER_SHORT
+id|USB_STOR_XFER_SHORT
+op_logical_or
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * If we&squot;re reading and we stalled, then clear&n;&t;&t;&t; * the bulk output pipe only the first time.&n;&t;&t;&t; */
@@ -1239,10 +1252,10 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 r_else
 r_return
@@ -1463,10 +1476,10 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 r_return
 id|usbat_wait_not_busy
