@@ -766,9 +766,7 @@ l_int|16
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_SHORT
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R1
 suffix:semicolon
 id|err
 op_assign
@@ -1822,7 +1820,7 @@ id|ocr
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_SHORT
+id|MMC_RSP_R3
 suffix:semicolon
 r_for
 c_loop
@@ -1947,9 +1945,7 @@ l_int|0
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_LONG
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R2
 suffix:semicolon
 id|err
 op_assign
@@ -2091,9 +2087,7 @@ l_int|16
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_SHORT
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R1
 suffix:semicolon
 id|err
 op_assign
@@ -2181,9 +2175,7 @@ l_int|16
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_LONG
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R2
 suffix:semicolon
 id|err
 op_assign
@@ -2366,9 +2358,7 @@ l_int|16
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_SHORT
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R1
 suffix:semicolon
 id|err
 op_assign

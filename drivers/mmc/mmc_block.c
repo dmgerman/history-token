@@ -602,9 +602,7 @@ l_int|9
 suffix:semicolon
 id|brq.cmd.flags
 op_assign
-id|MMC_RSP_SHORT
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R1
 suffix:semicolon
 id|brq.data.req
 op_assign
@@ -646,11 +644,7 @@ l_int|0
 suffix:semicolon
 id|brq.stop.flags
 op_assign
-id|MMC_RSP_SHORT
-op_or
-id|MMC_RSP_CRC
-op_or
-id|MMC_RSP_BUSY
+id|MMC_RSP_R1B
 suffix:semicolon
 r_if
 c_cond
@@ -687,8 +681,8 @@ op_assign
 id|MMC_WRITE_BLOCK
 suffix:semicolon
 id|brq.cmd.flags
-op_or_assign
-id|MMC_RSP_BUSY
+op_assign
+id|MMC_RSP_R1B
 suffix:semicolon
 id|brq.data.flags
 op_or_assign
@@ -800,9 +794,7 @@ l_int|16
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_SHORT
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R1
 suffix:semicolon
 id|err
 op_assign
@@ -1365,9 +1357,7 @@ id|card-&gt;csd.read_blkbits
 suffix:semicolon
 id|cmd.flags
 op_assign
-id|MMC_RSP_SHORT
-op_or
-id|MMC_RSP_CRC
+id|MMC_RSP_R1
 suffix:semicolon
 id|err
 op_assign
