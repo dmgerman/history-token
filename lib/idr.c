@@ -614,7 +614,7 @@ l_int|1
 id|v
 op_add_assign
 (paren
-l_int|1
+l_int|1L
 op_lshift
 id|MAX_ID_SHIFT
 )paren
@@ -752,6 +752,8 @@ id|likely
 c_func
 (paren
 id|p
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace

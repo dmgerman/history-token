@@ -24,7 +24,7 @@ mdefine_line|#define MAX_LEVEL (BITS_PER_LONG - RESERVED_ID_BITS + IDR_BITS - 1)
 DECL|macro|MAX_ID_SHIFT
 mdefine_line|#define MAX_ID_SHIFT (BITS_PER_LONG - RESERVED_ID_BITS)
 DECL|macro|MAX_ID_BIT
-mdefine_line|#define MAX_ID_BIT (1 &lt;&lt; MAX_ID_SHIFT)
+mdefine_line|#define MAX_ID_BIT (1L &lt;&lt; MAX_ID_SHIFT)
 DECL|macro|MAX_ID_MASK
 mdefine_line|#define MAX_ID_MASK (MAX_ID_BIT - 1)
 multiline_comment|/* Number of id_layer structs to leave in free list */
