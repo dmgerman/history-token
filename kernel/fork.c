@@ -934,11 +934,6 @@ id|file
 op_star
 id|file
 suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1157,7 +1152,7 @@ c_cond
 id|retval
 )paren
 r_goto
-id|fail_nomem
+id|fail
 suffix:semicolon
 )brace
 id|retval
@@ -1189,6 +1184,13 @@ r_return
 id|retval
 suffix:semicolon
 id|fail_nomem
+suffix:colon
+id|retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|fail
 suffix:colon
 id|vm_unacct_memory
 c_func
