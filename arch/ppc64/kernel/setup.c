@@ -416,12 +416,14 @@ r_int
 id|r7
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_int
 r_int
 id|ret
 comma
 id|i
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_XMON_DEFAULT
 id|debugger
 op_assign
