@@ -256,7 +256,7 @@ l_int|3
 )paren
 suffix:colon
 id|INTERRUPT_RATE
-comma
+suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
 id|URB_NO_DMA_MAP
@@ -392,13 +392,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|retval
+op_eq
+l_int|0
+op_logical_and
 id|iterations
 op_decrement
 OG
-l_int|0
-op_logical_and
-id|retval
-op_eq
 l_int|0
 )paren
 (brace
@@ -454,7 +454,7 @@ id|urb-&gt;transfer_buffer_length
 suffix:semicolon
 id|len
 op_add_assign
-id|max
+id|vary
 suffix:semicolon
 id|len
 op_mod_assign
@@ -1262,7 +1262,7 @@ id|ep
 op_assign
 id|iface_as-&gt;endpoint
 (braket
-id|ep
+id|i
 )braket
 dot
 id|wMaxPacketSize
@@ -2518,7 +2518,7 @@ id|simple_alloc_urb
 (paren
 id|udev
 comma
-id|dev-&gt;out_pipe
+id|dev-&gt;in_pipe
 comma
 id|param-&gt;length
 )paren
@@ -3560,6 +3560,36 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* ezusb family device with dedicated usb test firmware*/
+DECL|variable|fw_info
+r_static
+r_struct
+id|usbtest_info
+id|fw_info
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;usb test device&quot;
+comma
+dot
+id|ep_in
+op_assign
+l_int|2
+comma
+dot
+id|ep_out
+op_assign
+l_int|2
+comma
+dot
+id|alt
+op_assign
+l_int|0
+comma
+)brace
+suffix:semicolon
 macro_line|#ifdef IBOT2
 multiline_comment|/* this is a nice source of high speed bulk data;&n; * uses an FX2, with firmware provided in the device&n; */
 DECL|variable|ibot2_info
@@ -3729,6 +3759,27 @@ r_int
 )paren
 op_amp
 id|ez2_info
+comma
+)brace
+comma
+multiline_comment|/* re-enumerated usb test device firmware */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0xfff0
+comma
+l_int|0xfff0
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|fw_info
 comma
 )brace
 comma

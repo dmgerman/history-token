@@ -2117,6 +2117,13 @@ id|child
 )paren
 suffix:semicolon
 )brace
+id|dbg
+(paren
+l_string|&quot;unregistering interfaces on device %d&quot;
+comma
+id|dev-&gt;devnum
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2159,6 +2166,13 @@ id|interface-&gt;dev
 suffix:semicolon
 )brace
 )brace
+id|dbg
+(paren
+l_string|&quot;unregistering the device %d&quot;
+comma
+id|dev-&gt;devnum
+)paren
+suffix:semicolon
 multiline_comment|/* Free the device number and remove the /proc/bus/usb entry */
 r_if
 c_cond
@@ -2182,6 +2196,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+)brace
 id|device_unregister
 c_func
 (paren
@@ -2189,7 +2204,6 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
 multiline_comment|/* it hits 0 which could very well be now */
 id|usb_put_dev
