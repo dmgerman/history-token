@@ -345,16 +345,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|le16_to_cpu
-c_func
-(paren
-id|header.NumEraseUnits
-)paren
-OG
-l_int|65536
-)paren
-op_logical_or
 id|header.BlockSize
 op_ne
 l_int|9
