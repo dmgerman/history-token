@@ -306,7 +306,7 @@ op_star
 id|raw_sk
 suffix:semicolon
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|ipprot
 suffix:semicolon

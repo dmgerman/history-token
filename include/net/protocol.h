@@ -10,9 +10,9 @@ macro_line|#endif
 DECL|macro|MAX_INET_PROTOS
 mdefine_line|#define MAX_INET_PROTOS&t;256&t;&t;/* Must be a power of 2&t;&t;*/
 multiline_comment|/* This is used to register protocols. */
-DECL|struct|inet_protocol
+DECL|struct|net_protocol
 r_struct
-id|inet_protocol
+id|net_protocol
 (brace
 DECL|member|handler
 r_int
@@ -174,13 +174,13 @@ DECL|macro|INET_PROTOSW_PERMANENT
 mdefine_line|#define INET_PROTOSW_PERMANENT 0x02  /* Permanent protocols are unremovable. */
 r_extern
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|inet_protocol_base
 suffix:semicolon
 r_extern
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|inet_protos
 (braket
@@ -204,7 +204,7 @@ id|inet_add_protocol
 c_func
 (paren
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|prot
 comma
@@ -219,7 +219,7 @@ id|inet_del_protocol
 c_func
 (paren
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|prot
 comma

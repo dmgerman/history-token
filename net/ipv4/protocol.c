@@ -23,7 +23,7 @@ macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 DECL|variable|inet_protos
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|inet_protos
 (braket
@@ -44,7 +44,7 @@ id|inet_add_protocol
 c_func
 (paren
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|prot
 comma
@@ -122,7 +122,7 @@ id|inet_del_protocol
 c_func
 (paren
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|prot
 comma
