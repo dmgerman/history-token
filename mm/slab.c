@@ -7138,7 +7138,7 @@ op_star
 id|slabp
 )paren
 (brace
-r_int
+id|kmem_bufctl_t
 id|i
 suffix:semicolon
 r_int
@@ -7187,10 +7187,6 @@ OG
 id|cachep-&gt;num
 op_logical_or
 id|i
-OL
-l_int|0
-op_logical_or
-id|i
 op_ge
 id|cachep-&gt;num
 )paren
@@ -7208,9 +7204,6 @@ op_minus
 id|slabp-&gt;inuse
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|bad
 suffix:colon
 id|printk
