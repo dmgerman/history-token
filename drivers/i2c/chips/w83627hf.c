@@ -1601,6 +1601,7 @@ id|show_regs_in_0
 comma
 l_int|NULL
 )paren
+suffix:semicolon
 r_static
 id|DEVICE_ATTR
 c_func
@@ -1615,6 +1616,7 @@ id|show_regs_in_min0
 comma
 id|store_regs_in_min0
 )paren
+suffix:semicolon
 r_static
 id|DEVICE_ATTR
 c_func
@@ -1629,6 +1631,7 @@ id|show_regs_in_max0
 comma
 id|store_regs_in_max0
 )paren
+suffix:semicolon
 DECL|macro|device_create_file_in
 mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in##offset##_input); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in##offset##_min); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in##offset##_max); &bslash;&n;} while (0)
 DECL|macro|show_fan_reg
