@@ -11563,6 +11563,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;card-&gt;pcidev-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac.swptr
@@ -11593,6 +11594,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;card-&gt;pcidev-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.swptr
@@ -17664,15 +17666,13 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* over-kill */
@@ -17812,9 +17812,12 @@ suffix:semicolon
 id|card-&gt;in_suspend
 op_increment
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -17842,15 +17845,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* over-kill */
@@ -18135,9 +18136,12 @@ id|s
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
