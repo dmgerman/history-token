@@ -2894,6 +2894,8 @@ id|wakeup_kswapd
 c_func
 (paren
 id|z
+comma
+id|order
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Go through the zonelist again. Let __GFP_HIGH and allocations&n;&t; * coming from realtime tasks to go deeper into reserves&n;&t; */
@@ -6403,6 +6405,10 @@ c_func
 op_amp
 id|pgdat-&gt;kswapd_wait
 )paren
+suffix:semicolon
+id|pgdat-&gt;kswapd_max_order
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop

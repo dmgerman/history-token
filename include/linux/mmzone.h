@@ -447,6 +447,10 @@ id|task_struct
 op_star
 id|kswapd
 suffix:semicolon
+DECL|member|kswapd_max_order
+r_int
+id|kswapd_max_order
+suffix:semicolon
 DECL|typedef|pg_data_t
 )brace
 id|pg_data_t
@@ -525,6 +529,9 @@ r_struct
 id|zone
 op_star
 id|zone
+comma
+r_int
+id|order
 )paren
 suffix:semicolon
 r_int
