@@ -1108,7 +1108,7 @@ id|softint_mask
 op_assign
 l_int|1UL
 op_lshift
-l_int|0
+l_int|16
 comma
 )brace
 suffix:semicolon
