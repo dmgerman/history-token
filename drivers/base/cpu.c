@@ -65,7 +65,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * register_cpu - Setup a driverfs device for a CPU.&n; * @num - CPU number to use when creating the device.&n; *&n; * Initialize and register the CPU device.&n; */
 DECL|function|register_cpu
-r_void
+r_int
 id|__init
 id|register_cpu
 c_func
@@ -127,6 +127,7 @@ op_assign
 op_amp
 id|cpu_driver
 suffix:semicolon
+r_return
 id|sys_device_register
 c_func
 (paren

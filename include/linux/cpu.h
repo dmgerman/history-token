@@ -21,7 +21,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|register_cpu
 c_func
 (paren

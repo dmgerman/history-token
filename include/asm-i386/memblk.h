@@ -28,7 +28,7 @@ suffix:semicolon
 DECL|function|arch_register_memblk
 r_static
 r_inline
-r_void
+r_int
 (def_block
 id|arch_register_memblk
 c_func
@@ -46,17 +46,7 @@ c_func
 id|num
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|p_node
-op_ge
-l_int|0
-op_logical_and
-id|p_node
-OL
-id|MAX_NR_MEMBLKS
-)paren
+r_return
 id|register_memblk
 c_func
 (paren

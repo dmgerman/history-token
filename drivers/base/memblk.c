@@ -66,7 +66,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * register_memblk - Setup a driverfs device for a MemBlk&n; * @num - MemBlk number to use when creating the device.&n; *&n; * Initialize and register the MemBlk device.&n; */
 DECL|function|register_memblk
-r_void
+r_int
 id|__init
 id|register_memblk
 c_func
@@ -128,6 +128,7 @@ op_assign
 op_amp
 id|memblk_driver
 suffix:semicolon
+r_return
 id|sys_device_register
 c_func
 (paren

@@ -288,7 +288,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * register_node - Setup a driverfs device for a node.&n; * @num - Node number to use when creating the device.&n; *&n; * Initialize and register the node device.&n; */
 DECL|function|register_node
-r_void
+r_int
 id|__init
 id|register_node
 c_func
@@ -307,6 +307,9 @@ op_star
 id|parent
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
 id|node-&gt;cpumap
 op_assign
 id|__node_to_cpu_mask
@@ -363,16 +366,20 @@ op_assign
 op_amp
 id|system_bus_type
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+id|error
+op_assign
 id|sys_register_root
 c_func
 (paren
 op_amp
 id|node-&gt;sysroot
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
 )paren
 (brace
 id|device_create_file
@@ -396,6 +403,9 @@ id|dev_attr_meminfo
 )paren
 suffix:semicolon
 )brace
+r_return
+id|error
+suffix:semicolon
 )brace
 DECL|function|register_node_type
 r_static
