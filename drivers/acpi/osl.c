@@ -625,7 +625,9 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Overriding _OS definition&bslash;n&quot;
+l_string|&quot;Overriding _OS definition %s&bslash;n&quot;
+comma
+id|acpi_os_name
 )paren
 suffix:semicolon
 op_star
