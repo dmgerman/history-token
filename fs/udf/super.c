@@ -7837,8 +7837,7 @@ suffix:semicolon
 )brace
 id|sb-&gt;s_maxbytes
 op_assign
-op_complement
-l_int|0ULL
+id|MAX_LFS_FILESIZE
 suffix:semicolon
 r_return
 id|sb

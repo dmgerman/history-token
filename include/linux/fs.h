@@ -304,6 +304,15 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|files_init
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* bh state bits */
 DECL|enum|bh_state_bits
 r_enum
@@ -1442,6 +1451,14 @@ r_int
 suffix:semicolon
 DECL|macro|MAX_NON_LFS
 mdefine_line|#define&t;MAX_NON_LFS&t;((1UL&lt;&lt;31) - 1)
+multiline_comment|/* Page cache limit. The filesystems should put that into their s_maxbytes &n;   limits, otherwise bad things can happen in VM. */
+macro_line|#if BITS_PER_LONG==32
+DECL|macro|MAX_LFS_FILESIZE
+mdefine_line|#define MAX_LFS_FILESIZE&t;(((u64)PAGE_CACHE_SIZE &lt;&lt; (BITS_PER_LONG-1))-1) 
+macro_line|#elif BITS_PER_LONG==64
+DECL|macro|MAX_LFS_FILESIZE
+mdefine_line|#define MAX_LFS_FILESIZE &t;0x7fffffffffffffff
+macro_line|#endif
 DECL|macro|FL_POSIX
 mdefine_line|#define FL_POSIX&t;1
 DECL|macro|FL_FLOCK
@@ -7551,36 +7568,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
-r_int
-id|generate_cluster
-c_func
-(paren
-id|kdev_t
-comma
-r_int
-id|b
-(braket
-)braket
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
-r_int
-id|generate_cluster_swab32
-c_func
-(paren
-id|kdev_t
-comma
-r_int
-id|b
-(braket
-)braket
-comma
-r_int
-)paren
-suffix:semicolon
 r_extern
 id|kdev_t
 id|ROOT_DEV

@@ -4256,6 +4256,12 @@ c_func
 id|mempages
 )paren
 suffix:semicolon
+id|files_init
+c_func
+(paren
+id|mempages
+)paren
+suffix:semicolon
 id|mnt_init
 c_func
 (paren
