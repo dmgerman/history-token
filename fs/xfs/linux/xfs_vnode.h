@@ -12,7 +12,7 @@ r_struct
 id|vattr
 suffix:semicolon
 r_struct
-id|page_buf_bmap_s
+id|xfs_iomap
 suffix:semicolon
 r_struct
 id|attrlist_cursor_kern
@@ -846,7 +846,7 @@ comma
 r_int
 comma
 r_struct
-id|page_buf_bmap_s
+id|xfs_iomap
 op_star
 comma
 r_int

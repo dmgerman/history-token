@@ -36,6 +36,7 @@ macro_line|#include &quot;xfs_attr.h&quot;
 macro_line|#include &quot;xfs_inode_item.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_utils.h&quot;
+macro_line|#include &quot;xfs_iomap.h&quot;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#if defined(XFS_RW_TRACE)
 r_void
@@ -3849,13 +3850,13 @@ comma
 r_int
 id|flags
 comma
-id|page_buf_bmap_t
+id|xfs_iomap_t
 op_star
-id|pbmapp
+id|iomapp
 comma
 r_int
 op_star
-id|npbmaps
+id|niomaps
 )paren
 (brace
 id|xfs_inode_t
@@ -3923,9 +3924,9 @@ id|count
 comma
 id|flags
 comma
-id|pbmapp
+id|iomapp
 comma
-id|npbmaps
+id|niomaps
 )paren
 suffix:semicolon
 )brace
