@@ -225,6 +225,12 @@ r_struct
 id|nfsctl_fsparm
 id|u_getfs
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The following dummy member is needed to preserve binary compatibility&n;&t;&t; * on platforms where alignof(void*)&gt;alignof(int).  It&squot;s needed because&n;&t;&t; * this union used to contain a member (u_umap) which contained a&n;&t;&t; * pointer.&n;&t;&t; */
+DECL|member|u_ptr
+r_void
+op_star
+id|u_ptr
+suffix:semicolon
 DECL|member|u
 )brace
 id|u
