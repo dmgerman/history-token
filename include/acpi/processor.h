@@ -18,6 +18,9 @@ mdefine_line|#define ACPI_PROCESSOR_MAX_THROTTLE&t;250&t;/* 25% */
 DECL|macro|ACPI_PROCESSOR_MAX_DUTY_WIDTH
 mdefine_line|#define ACPI_PROCESSOR_MAX_DUTY_WIDTH&t;4
 multiline_comment|/* Power Management */
+r_struct
+id|acpi_processor_cx
+suffix:semicolon
 DECL|struct|acpi_processor_cx_policy
 r_struct
 id|acpi_processor_cx_policy
@@ -27,7 +30,9 @@ id|u32
 id|count
 suffix:semicolon
 DECL|member|state
-id|u32
+r_struct
+id|acpi_processor_cx
+op_star
 id|state
 suffix:semicolon
 r_struct
