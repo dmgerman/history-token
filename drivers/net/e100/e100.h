@@ -2186,12 +2186,6 @@ id|u8
 id|rev_id
 suffix:semicolon
 multiline_comment|/* adapter PCI revision ID */
-DECL|member|device_type
-r_int
-r_int
-id|device_type
-suffix:semicolon
-multiline_comment|/* device type from e100_vendor.h */
 DECL|member|phy_addr
 r_int
 r_int
@@ -2320,11 +2314,6 @@ id|cfg_params
 id|params
 suffix:semicolon
 multiline_comment|/* adapter&squot;s command line parameters */
-DECL|member|id_string
-r_char
-op_star
-id|id_string
-suffix:semicolon
 DECL|member|speed_duplex_caps
 id|u32
 id|speed_duplex_caps
