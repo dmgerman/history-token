@@ -28,11 +28,6 @@ r_typedef
 r_struct
 id|SHT
 (brace
-DECL|member|shtp_list
-r_struct
-id|list_head
-id|shtp_list
-suffix:semicolon
 multiline_comment|/* Used with loadable modules so that we know when it is safe to unload */
 DECL|member|module
 r_struct
@@ -778,12 +773,6 @@ suffix:semicolon
 DECL|typedef|Scsi_Host_Name
 )brace
 id|Scsi_Host_Name
-suffix:semicolon
-r_extern
-r_struct
-id|Scsi_Device_Template
-op_star
-id|scsi_devicelist
 suffix:semicolon
 r_extern
 r_void
