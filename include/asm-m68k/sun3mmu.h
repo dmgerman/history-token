@@ -470,6 +470,20 @@ r_int
 id|type
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sun3_map_test
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_char
+op_star
+id|val
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* !__ASSEMBLY__ */
 macro_line|#endif&t;/* !__SUN3_MMU_H__ */
 eof

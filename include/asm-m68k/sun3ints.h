@@ -173,5 +173,14 @@ r_char
 op_star
 id|sun3_intreg
 suffix:semicolon
+multiline_comment|/* master list of VME vectors -- don&squot;t fuck with this */
+DECL|macro|SUN3_VEC_FLOPPY
+mdefine_line|#define SUN3_VEC_FLOPPY 0x40
+DECL|macro|SUN3_VEC_VMESCSI0
+mdefine_line|#define SUN3_VEC_VMESCSI0 0x40
+DECL|macro|SUN3_VEC_VMESCSI1
+mdefine_line|#define SUN3_VEC_VMESCSI1 0x41
+DECL|macro|SUN3_VEC_CG
+mdefine_line|#define SUN3_VEC_CG 0xA8
 macro_line|#endif /* SUN3INTS_H */
 eof

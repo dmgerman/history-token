@@ -445,4 +445,64 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* sun3_map_test(addr, val) -- Reads a byte from addr, storing to val,&n; * trapping the potential read fault.  Returns 0 if the access faulted,&n; * 1 on success.&n; *  &n; * This function is primarily used to check addresses on the VME bus.&n; *&n; * Mucking with the page fault handler seems a little hackish to me, but&n; * SunOS, NetBSD, and Mach all implemented this check in such a manner, &n; * so I figure we&squot;re allowed.&n; */
+DECL|function|sun3_map_test
+r_int
+id|sun3_map_test
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_char
+op_star
+id|val
+)paren
+(brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;.globl _sun3_map_test_start&bslash;n&quot;
+l_string|&quot;_sun3_map_test_start:&bslash;n&quot;
+l_string|&quot;1: moveb (%2), (%0)&bslash;n&quot;
+l_string|&quot;   moveq #1, %1&bslash;n&quot;
+l_string|&quot;2:&bslash;n&quot;
+l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;.even&bslash;n&quot;
+l_string|&quot;3: moveq #0, %1&bslash;n&quot;
+l_string|&quot;   jmp 2b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;.align 4&bslash;n&quot;
+l_string|&quot;.long 1b,3b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;.globl _sun3_map_test_end&bslash;n&quot;
+l_string|&quot;_sun3_map_test_end:&bslash;n&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|val
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 eof

@@ -1458,7 +1458,6 @@ id|SR_REQ
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;scsi%d: REQ not asserted, phase unknown.&bslash;n&quot;
 comma
 id|HOSTNO
@@ -1506,7 +1505,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;scsi%d: phase %s&bslash;n&quot;
 comma
 id|HOSTNO
@@ -1821,10 +1819,8 @@ r_int
 id|length
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_proc_info
-r_static
-macro_line|#endif
 DECL|function|NCR5380_proc_info
+r_static
 r_int
 id|NCR5380_proc_info
 (paren
@@ -2497,10 +2493,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : int NCR5380_queue_command (Scsi_Cmnd *cmd, &n; *&t;void (*done)(Scsi_Cmnd *)) &n; *&n; * Purpose :  enqueues a SCSI command&n; *&n; * Inputs : cmd - SCSI command, done - function called on completion, with&n; *&t;a pointer to the command descriptor.&n; * &n; * Returns : 0&n; *&n; * Side effects : &n; *      cmd is added to the per instance issue_queue, with minor &n; *&t;twiddling done to the host specific fields of cmd.  If the &n; *&t;main coroutine is not running, it is restarted.&n; *&n; */
 multiline_comment|/* Only make static if a wrapper function is used */
-macro_line|#ifndef NCR5380_queue_command
-r_static
-macro_line|#endif
 DECL|function|NCR5380_queue_command
+r_static
 r_int
 id|NCR5380_queue_command
 (paren
@@ -3936,10 +3930,9 @@ id|basr
 op_amp
 id|BASR_PHASE_MATCH
 )paren
-id|printk
+id|INT_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;scsi%d: unknown interrupt, &quot;
 l_string|&quot;BASR 0x%x, MR 0x%x, SR 0x%x&bslash;n&quot;
 comma
@@ -3969,6 +3962,12 @@ c_func
 id|RESET_PARITY_INTERRUPT_REG
 )paren
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 multiline_comment|/* if !(SELECTION || PARITY) */
@@ -4009,6 +4008,12 @@ c_func
 id|RESET_PARITY_INTERRUPT_REG
 )paren
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -5087,6 +5092,12 @@ id|cmd-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif    
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_INTR
+suffix:semicolon
+macro_line|#endif
 id|initialize_SCp
 c_func
 (paren
@@ -5794,7 +5805,8 @@ l_string|&quot;to&quot;
 suffix:colon
 l_string|&quot;from&quot;
 comma
-id|d
+op_star
+id|data
 )paren
 suffix:semicolon
 multiline_comment|/* netbsd turns off ints here, why not be safe and do it too */
@@ -5810,12 +5822,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* send start chain */
-id|sun3_udc_write
+id|sun3scsi_dma_start
 c_func
 (paren
-id|UDC_CHN_START
+id|c
 comma
-id|UDC_CSR
+op_star
+id|data
 )paren
 suffix:semicolon
 r_if
@@ -5926,6 +5939,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 id|restore_flags
 c_func
 (paren
@@ -6012,6 +6031,12 @@ op_star
 )paren
 id|hostdata-&gt;connected
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_INTR
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -6157,6 +6182,12 @@ id|cmd
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_INTR
+suffix:semicolon
 macro_line|#endif
 )brace
 r_if
@@ -7241,6 +7272,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * The SCSI data pointer is *IMPLICITLY* saved on a disconnect&n;&t;&t; * operation, in violation of the SCSI spec so we can safely &n;&t;&t; * ignore SAVE/RESTORE pointers calls.&n;&t;&t; *&n;&t;&t; * Unfortunately, some disks violate the SCSI spec and &n;&t;&t; * don&squot;t issue the required SAVE_POINTERS message before&n;&t;&t; * disconnecting, and we have to break spec to remain &n;&t;&t; * compatible.&n;&t;&t; */
@@ -8384,10 +8421,8 @@ id|tmp-&gt;tag
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function : int NCR5380_abort (Scsi_Cmnd *cmd)&n; *&n; * Purpose : abort a command&n; *&n; * Inputs : cmd - the Scsi_Cmnd to abort, code - code to set the &n; * &t;host byte of the result field to, if zero DID_ABORTED is &n; *&t;used.&n; *&n; * Returns : 0 - success, -1 on failure.&n; *&n; * XXX - there is no way to abort the command that is currently &n; * &t; connected, you have to wait for it to complete.  If this is &n; *&t; a problem, we could implement longjmp() / setjmp(), setjmp()&n; * &t; called where the loop started in NCR5380_main().&n; */
-macro_line|#ifndef NCR5380_abort
-r_static
-macro_line|#endif
 DECL|function|NCR5380_abort
+r_static
 r_int
 id|NCR5380_abort
 (paren
@@ -8959,6 +8994,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : int NCR5380_reset (Scsi_Cmnd *cmd, unsigned int reset_flags)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SCSI_RESET_WAKEUP&n; *&n; */
 DECL|function|NCR5380_reset
+r_static
 r_int
 id|NCR5380_reset
 c_func
