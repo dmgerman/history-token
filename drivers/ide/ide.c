@@ -7461,26 +7461,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|generic_subdriver_entries
-id|ide_proc_entry_t
-id|generic_subdriver_entries
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|function|ide_unregister
 r_void
 id|ide_unregister
@@ -7761,14 +7741,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|destroy_proc_ide_drives
-c_func
-(paren
-id|ch
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -8715,13 +8687,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|create_proc_ide_interfaces
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FIXME: Do we really have to call it second time here?! */
 id|ide_driver_module
 c_func
@@ -13524,43 +13489,6 @@ id|drive-&gt;suspend_reset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|ide_add_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|generic_subdriver_entries
-comma
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-)paren
-id|ide_add_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|proc
-comma
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -13653,39 +13581,6 @@ id|pnpide_init
 c_func
 (paren
 l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-)paren
-id|ide_remove_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|proc
-)paren
-suffix:semicolon
-id|ide_remove_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|generic_subdriver_entries
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -13998,22 +13893,6 @@ c_func
 id|ide_stall_queue
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|ide_add_proc_entries
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_add_proc_entries
-)paren
-suffix:semicolon
-DECL|variable|ide_remove_proc_entries
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_remove_proc_entries
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ide_add_setting
 id|EXPORT_SYMBOL
 c_func
@@ -14565,13 +14444,6 @@ multiline_comment|/* for atari only */
 )brace
 macro_line|# endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_ide_create
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize all device type driver modules.&n;&t; */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
 id|idedisk_init
@@ -14823,13 +14695,6 @@ id|h
 )paren
 suffix:semicolon
 )brace
-macro_line|# ifdef CONFIG_PROC_FS
-id|proc_ide_destroy
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|# endif
 id|devfs_unregister
 c_func
 (paren

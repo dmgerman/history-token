@@ -830,20 +830,13 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* directory for device */
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
-suffix:semicolon
-multiline_comment|/* /proc/ide/ directory entry */
 DECL|member|settings
 r_struct
 id|ide_settings_s
 op_star
 id|settings
 suffix:semicolon
-multiline_comment|/* /proc/ide/ drive settings */
+multiline_comment|/* ioctl entires */
 DECL|member|driver_req
 r_char
 id|driver_req
@@ -1941,108 +1934,8 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * /proc/ide interface&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|mode
-id|mode_t
-id|mode
-suffix:semicolon
-DECL|member|read_proc
-id|read_proc_t
-op_star
-id|read_proc
-suffix:semicolon
-DECL|member|write_proc
-id|write_proc_t
-op_star
-id|write_proc
-suffix:semicolon
-DECL|typedef|ide_proc_entry_t
-)brace
-id|ide_proc_entry_t
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_void
-id|proc_ide_create
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|proc_ide_destroy
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|destroy_proc_ide_drives
-c_func
-(paren
-r_struct
-id|ata_channel
-op_star
-)paren
-suffix:semicolon
-r_void
-id|create_proc_ide_interfaces
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|ide_add_proc_entries
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|dir
-comma
-id|ide_proc_entry_t
-op_star
-id|p
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-r_void
-id|ide_remove_proc_entries
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|dir
-comma
-id|ide_proc_entry_t
-op_star
-id|p
-)paren
-suffix:semicolon
-DECL|variable|proc_ide_read_geometry
-id|read_proc_t
-id|proc_ide_read_geometry
-suffix:semicolon
-multiline_comment|/*&n; * Standard exit stuff:&n; */
 DECL|macro|PROC_IDE_READ_RETURN
-mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) &bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;&t;len -= off;&t;&t;&t;&bslash;&n;&t;if (len &lt; count) {&t;&t;&bslash;&n;&t;&t;*eof = 1;&t;&t;&bslash;&n;&t;&t;if (len &lt;= 0)&t;&t;&bslash;&n;&t;&t;&t;return 0;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&bslash;&n;&t;&t;len = count;&t;&t;&bslash;&n;&t;*start = page + off;&t;&t;&bslash;&n;&t;return len;&t;&t;&t;&bslash;&n;}
-macro_line|#else
-DECL|macro|PROC_IDE_READ_RETURN
-macro_line|# define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
-macro_line|#endif
+mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 multiline_comment|/*&n; * This structure describes the operations possible on a particular device type&n; * (CD-ROM, tape, DISK and so on).&n; *&n; * This is the main hook for device type support submodules.&n; */
 DECL|struct|ata_operations
 r_struct
@@ -2215,11 +2108,6 @@ r_struct
 id|ata_device
 op_star
 )paren
-suffix:semicolon
-DECL|member|proc
-id|ide_proc_entry_t
-op_star
-id|proc
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2932,12 +2820,6 @@ r_extern
 r_struct
 id|block_device_operations
 id|ide_fops
-(braket
-)braket
-suffix:semicolon
-r_extern
-id|ide_proc_entry_t
-id|generic_subdriver_entries
 (braket
 )braket
 suffix:semicolon

@@ -11264,9 +11264,6 @@ id|capacity
 suffix:colon
 id|ide_cdrom_capacity
 comma
-id|proc
-suffix:colon
-l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/* options */

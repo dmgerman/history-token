@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|DISPLAY_ALI_TIMINGS
-mdefine_line|#define DISPLAY_ALI_TIMINGS
+macro_line|#undef DISPLAY_ALI_TIMINGS
 macro_line|#if defined(DISPLAY_ALI_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

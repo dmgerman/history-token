@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|DISPLAY_HPT366_TIMINGS
-mdefine_line|#define DISPLAY_HPT366_TIMINGS
+macro_line|#undef DISPLAY_HPT366_TIMINGS
 multiline_comment|/* various tuning parameters */
 DECL|macro|HPT_RESET_STATE_ENGINE
 mdefine_line|#define HPT_RESET_STATE_ENGINE
