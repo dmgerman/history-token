@@ -1399,7 +1399,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|ext3_htree_store_dirent
 c_func
 (paren
