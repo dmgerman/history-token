@@ -810,6 +810,7 @@ id|tp-&gt;timer
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the hardware here. Don&squot;t forget to set the station address. */
+macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -854,6 +855,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|err
 op_assign
 id|tms380tr_chipset_init
@@ -4458,6 +4460,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -4488,6 +4491,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|SIFWRITEW
 c_func
 (paren

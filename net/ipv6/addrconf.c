@@ -2955,7 +2955,7 @@ comma
 id|IFA_F_TEMPORARY
 )paren
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

@@ -71,7 +71,7 @@ id|u8
 op_star
 id|d7s_regs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|function|d7s_free
 r_static
@@ -355,6 +355,7 @@ id|ireg
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -417,6 +418,7 @@ id|regs
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

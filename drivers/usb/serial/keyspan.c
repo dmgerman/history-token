@@ -4806,7 +4806,7 @@ suffix:semicolon
 )brace
 id|port-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* download the firmware to a pre-renumeration device */

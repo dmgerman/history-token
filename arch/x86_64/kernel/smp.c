@@ -948,7 +948,7 @@ c_func
 (paren
 id|do_flush_tlb_all
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma

@@ -324,7 +324,7 @@ op_logical_neg
 id|dev
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 (paren
@@ -1962,11 +1962,11 @@ id|epdata-&gt;dev-&gt;lock
 suffix:semicolon
 id|priv-&gt;req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|priv-&gt;epdata
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4686,7 +4686,7 @@ id|dev-&gt;buf
 suffix:semicolon
 id|dev-&gt;buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|put_dev
 (paren
@@ -5241,7 +5241,7 @@ id|DMA_ADDR_INVALID
 suffix:semicolon
 id|req-&gt;context
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|value
 op_assign
@@ -5872,7 +5872,7 @@ id|ep-&gt;dentry
 suffix:semicolon
 id|ep-&gt;dentry
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|parent
 op_assign
@@ -5907,7 +5907,7 @@ id|ep-&gt;req
 suffix:semicolon
 id|ep-&gt;ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up
 (paren
@@ -6244,13 +6244,13 @@ id|dev
 suffix:semicolon
 id|gadget-&gt;ep0-&gt;driver_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|set_gadget_data
 (paren
 id|gadget
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* we&squot;ve already been disconnected ... no i/o is active */
@@ -6386,7 +6386,7 @@ id|enomem
 suffix:semicolon
 id|dev-&gt;req-&gt;context
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;req-&gt;complete
 op_assign
@@ -7060,7 +7060,7 @@ id|dev-&gt;buf
 suffix:semicolon
 id|dev-&gt;buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -7107,7 +7107,7 @@ id|dev-&gt;buf
 suffix:semicolon
 id|dev-&gt;buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|value
@@ -7431,7 +7431,7 @@ op_logical_neg
 id|dentry
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|inode
 op_assign
@@ -7466,7 +7466,7 @@ id|dentry
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|d_add
@@ -7571,7 +7571,7 @@ id|gadgetfs_make_inode
 (paren
 id|sb
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|simple_dir_operations
@@ -7759,7 +7759,7 @@ id|the_device
 suffix:semicolon
 id|the_device
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

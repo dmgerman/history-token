@@ -4227,7 +4227,7 @@ id|sc-&gt;lmc_rxq
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sc-&gt;lmc_rxring
 (braket
@@ -4699,7 +4699,7 @@ id|sc-&gt;lmc_txq
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|badtx
 op_increment
@@ -5668,7 +5668,7 @@ id|sc-&gt;lmc_rxq
 id|i
 )braket
 op_assign
-l_int|0x0
+l_int|NULL
 suffix:semicolon
 id|sc-&gt;lmc_rxring
 (braket
@@ -6846,7 +6846,7 @@ id|sc-&gt;lmc_txq
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sc-&gt;lmc_txring
 (braket

@@ -594,7 +594,7 @@ id|vcc-&gt;sk-&gt;sk_max_ack_backlog
 id|sigd_enq
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|as_reject
 comma

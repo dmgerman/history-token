@@ -77,7 +77,7 @@ id|p-&gt;start
 suffix:semicolon
 id|newblock-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|newblock-&gt;next
 op_assign
@@ -151,7 +151,7 @@ id|size
 suffix:semicolon
 id|newblock-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|newblock-&gt;next
 op_assign
@@ -350,7 +350,7 @@ id|p
 (brace
 id|p-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Assumes a single contiguous range.  Needs a special filp in&n;&t; * &squot;heap&squot; to stop it being subsumed.&n;&t; */
 r_if
@@ -534,7 +534,7 @@ id|size
 suffix:semicolon
 id|blocks-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|blocks-&gt;next
 op_assign
@@ -648,7 +648,7 @@ id|filp
 )paren
 id|p-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Assumes a single contiguous range.  Needs a special filp in&n;&t; * &squot;heap&squot; to stop it being subsumed.&n;&t; */
@@ -801,7 +801,7 @@ suffix:semicolon
 op_star
 id|heap
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* IOCTL HANDLERS */
@@ -845,7 +845,7 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

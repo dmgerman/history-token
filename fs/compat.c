@@ -4245,10 +4245,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_int
-r_int
-)paren
 id|dirent
 comma
 (paren

@@ -948,7 +948,7 @@ op_logical_neg
 id|cursor
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func

@@ -683,7 +683,7 @@ r_else
 op_star
 id|eoc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|1

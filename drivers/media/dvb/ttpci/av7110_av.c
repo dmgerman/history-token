@@ -208,7 +208,7 @@ id|buf
 comma
 id|len
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -271,7 +271,7 @@ id|data
 comma
 l_int|188
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -3941,7 +3941,7 @@ id|obuf
 comma
 l_int|188
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -6836,7 +6836,7 @@ op_assign
 dot
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|users
@@ -6916,7 +6916,7 @@ op_assign
 dot
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|users

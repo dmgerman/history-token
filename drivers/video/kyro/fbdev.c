@@ -234,10 +234,6 @@ DECL|variable|deviceInfo
 r_static
 id|device_info_t
 id|deviceInfo
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|__initdata
 r_static

@@ -661,7 +661,7 @@ id|link-&gt;priv
 op_member_access_from_pointer
 id|eth_dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Break the link with Card Services */
 r_if

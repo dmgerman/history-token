@@ -602,7 +602,7 @@ id|HasBrokenTx
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 comma
@@ -3798,7 +3798,7 @@ id|np-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Mark the last entry as wrapping the ring. */
@@ -3937,7 +3937,7 @@ id|np-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|np-&gt;tx_ring
 (braket
@@ -4074,7 +4074,7 @@ id|np-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_for
@@ -4136,7 +4136,7 @@ id|np-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -5220,7 +5220,7 @@ id|np-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if

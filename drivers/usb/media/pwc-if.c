@@ -2262,12 +2262,12 @@ r_char
 op_star
 id|fillptr
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|iso_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|awake
 op_assign

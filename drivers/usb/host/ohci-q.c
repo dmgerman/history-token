@@ -662,11 +662,11 @@ id|ED_OPER
 suffix:semicolon
 id|ed-&gt;ed_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ed-&gt;ed_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ed-&gt;hwNextED
 op_assign
@@ -1186,7 +1186,7 @@ id|ohci-&gt;ed_controltail
 )paren
 id|ohci-&gt;ed_controltail-&gt;ed_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -1282,7 +1282,7 @@ id|ohci-&gt;ed_bulktail
 )paren
 id|ohci-&gt;ed_bulktail-&gt;ed_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -1486,7 +1486,7 @@ id|ed
 suffix:semicolon
 id|ed
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|done
@@ -1714,7 +1714,7 @@ id|ohci-&gt;ed_rm_list
 suffix:semicolon
 id|ed-&gt;ed_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ohci-&gt;ed_rm_list
 op_assign
@@ -3492,7 +3492,7 @@ id|ed-&gt;ed_next
 suffix:semicolon
 id|ed-&gt;ed_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|modified
 op_assign

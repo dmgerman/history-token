@@ -782,7 +782,7 @@ id|adapter
 comma
 id|command
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|100000
 )paren
@@ -7375,7 +7375,7 @@ l_int|0
 suffix:semicolon
 id|adapter-&gt;dmaq1.buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|adapter-&gt;dmaq1.buffer
 op_assign
@@ -7474,7 +7474,7 @@ l_int|0
 suffix:semicolon
 id|adapter-&gt;dmaq2.buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|adapter-&gt;dmaq2.buffer
 op_assign
@@ -7610,7 +7610,7 @@ l_int|0
 suffix:semicolon
 id|adapter-&gt;dmaq1.buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -7653,7 +7653,7 @@ l_int|0
 suffix:semicolon
 id|adapter-&gt;dmaq2.buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -9961,7 +9961,7 @@ id|dvb_stop_feed
 suffix:semicolon
 id|dvbdemux-&gt;write_to_decoder
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dvbdemux-&gt;dmx.capabilities
 op_assign

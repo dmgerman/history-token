@@ -514,7 +514,7 @@ c_func
 (paren
 id|powerd
 comma
-l_int|0
+l_int|NULL
 comma
 id|CLONE_FS
 )paren

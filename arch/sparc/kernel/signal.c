@@ -632,7 +632,7 @@ id|last_task_used_math
 (brace
 id|last_task_used_math
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|regs-&gt;psr
 op_and_assign
@@ -1984,6 +1984,7 @@ c_func
 )paren
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|sig_address
 suffix:semicolon
@@ -2799,7 +2800,7 @@ id|current-&gt;thread.fpqdepth
 suffix:semicolon
 id|last_task_used_math
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|regs-&gt;psr
 op_and_assign

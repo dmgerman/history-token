@@ -836,7 +836,7 @@ id|resp-&gt;cookie
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_star
 id|p
@@ -904,7 +904,7 @@ id|resp-&gt;lock.oh
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|start
 op_assign

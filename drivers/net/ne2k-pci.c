@@ -335,7 +335,7 @@ l_int|0
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 )brace

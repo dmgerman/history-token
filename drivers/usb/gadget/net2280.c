@@ -403,7 +403,7 @@ id|ep-&gt;ep.maxpacket
 suffix:semicolon
 id|ep-&gt;dma
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* set type, direction, address; reset fifo counters */
@@ -896,7 +896,7 @@ id|tmp
 suffix:semicolon
 id|ep-&gt;desc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
@@ -1344,7 +1344,7 @@ op_logical_neg
 id|_ep
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ep
 op_assign
@@ -1376,7 +1376,7 @@ op_logical_neg
 id|req
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 (paren
@@ -1436,7 +1436,7 @@ id|req
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|td-&gt;dmacount
@@ -1622,7 +1622,7 @@ op_logical_neg
 id|_ep
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_star
 id|dma
@@ -1844,7 +1844,7 @@ l_int|0
 suffix:semicolon
 id|buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* write just one packet at a time */
@@ -3768,7 +3768,7 @@ suffix:semicolon
 multiline_comment|/* don&squot;t queue it */
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -4265,7 +4265,7 @@ comma
 op_star
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|reqmode
@@ -4820,7 +4820,7 @@ suffix:semicolon
 )brace
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* patch up hardware chaining data */
 )brace
@@ -8140,7 +8140,7 @@ suffix:semicolon
 multiline_comment|/* hook up the driver ... */
 id|driver-&gt;driver.bus
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;driver
 op_assign
@@ -8178,11 +8178,11 @@ id|retval
 suffix:semicolon
 id|dev-&gt;driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;gadget.dev.driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|retval
@@ -8280,7 +8280,7 @@ id|USB_SPEED_UNKNOWN
 )paren
 id|driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* stop hardware; prevent new request submissions;&n;&t; * and kill any outstanding requests.&n;&t; */
 id|usb_reset
@@ -8419,11 +8419,11 @@ id|dev-&gt;gadget
 suffix:semicolon
 id|dev-&gt;gadget.dev.driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|net2280_led_active
 (paren
@@ -8521,7 +8521,7 @@ suffix:semicolon
 r_else
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* ack all, and handle what we care about */
 id|t
@@ -8681,7 +8681,7 @@ id|write_fifo
 (paren
 id|ep
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -8779,7 +8779,7 @@ id|EOVERFLOW
 suffix:semicolon
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -8872,7 +8872,7 @@ id|ep-&gt;out_overflow
 (brace
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8930,7 +8930,7 @@ id|req-&gt;td_dma
 )paren
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -9157,7 +9157,7 @@ l_int|2
 )paren
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -9230,7 +9230,7 @@ id|ep
 suffix:semicolon
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -9263,7 +9263,7 @@ suffix:semicolon
 r_else
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -9409,7 +9409,7 @@ id|ep
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|handle_stat0_irqs
@@ -11212,7 +11212,7 @@ id|pci_set_drvdata
 (paren
 id|pdev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|INFO
@@ -11224,7 +11224,7 @@ l_string|&quot;unbind&bslash;n&quot;
 suffix:semicolon
 id|the_controller
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* wrap this driver around the specified device, but&n; * don&squot;t respond over USB until a gadget driver binds to us.&n; */
@@ -11260,7 +11260,7 @@ r_void
 op_star
 id|base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|retval

@@ -482,7 +482,7 @@ op_le
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|blocks
 op_assign
@@ -536,7 +536,7 @@ suffix:semicolon
 )brace
 r_else
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Checks if a pointer &squot;b&squot; is part of the heap &squot;heap&squot; */

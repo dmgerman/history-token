@@ -10102,7 +10102,7 @@ id|drm_buf_t
 op_star
 id|buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|idx

@@ -12572,7 +12572,7 @@ c_func
 (paren
 l_string|&quot;ipmi&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -138,7 +138,7 @@ mdefine_line|#define LCA_PMR_OCCEB   0xffff0000L             /* Override cycle c
 DECL|macro|LCA_PMR_OCCOB
 mdefine_line|#define LCA_PMR_OCCOB   0xffff000000000000L     /* Override cycle counter - even bits */
 DECL|macro|LCA_PMR_PRIMARY_MASK
-mdefine_line|#define LCA_PMR_PRIMARY_MASK    0xfffffffffffffff8
+mdefine_line|#define LCA_PMR_PRIMARY_MASK    0xfffffffffffffff8L
 multiline_comment|/* LCA PMR Macros */
 DECL|macro|LCA_READ_PMR
 mdefine_line|#define LCA_READ_PMR        (*(volatile unsigned long *)LCA_PMR_ADDR)

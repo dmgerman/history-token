@@ -1259,7 +1259,7 @@ id|Kiara_table_entry
 op_star
 id|pChoose
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|fps

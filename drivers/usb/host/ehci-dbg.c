@@ -2850,7 +2850,7 @@ l_string|&quot; ...&quot;
 suffix:semicolon
 id|p.ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon

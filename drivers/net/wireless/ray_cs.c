@@ -14613,7 +14613,7 @@ c_func
 (paren
 l_string|&quot;driver/ray_cs&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|create_proc_info_entry

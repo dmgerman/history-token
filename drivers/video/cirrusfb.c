@@ -9207,7 +9207,7 @@ id|cinfo-&gt;fbregs_phys
 suffix:semicolon
 id|cinfo-&gt;regbase
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* FIXME: this forces VGA.  alternatives? */
 )brace

@@ -273,13 +273,13 @@ id|in
 op_assign
 id|out
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|iso_in
 op_assign
 id|iso_out
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|alt
 op_assign
@@ -607,7 +607,7 @@ OL
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|urb
 op_assign
@@ -635,13 +635,13 @@ id|udev
 comma
 id|pipe
 comma
-l_int|0
+l_int|NULL
 comma
 id|bytes
 comma
 id|simple_callback
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|urb-&gt;interval
@@ -705,7 +705,7 @@ id|urb
 suffix:semicolon
 id|urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -1314,7 +1314,7 @@ op_logical_neg
 id|sg
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 (paren
@@ -1372,7 +1372,7 @@ id|i
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|memset
@@ -2324,7 +2324,7 @@ id|usb_qualifier_descriptor
 op_star
 id|d
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* device qualifier [9.6.2] */
 id|retval
@@ -3067,7 +3067,7 @@ id|status
 suffix:semicolon
 id|urb-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -3078,7 +3078,7 @@ suffix:semicolon
 r_else
 id|urb-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* signal completion when nothing&squot;s queued */
 r_if
@@ -5524,7 +5524,7 @@ op_logical_neg
 id|desc
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|maxp
 op_assign
@@ -5619,7 +5619,7 @@ id|urb
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|memset

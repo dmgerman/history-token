@@ -5237,7 +5237,7 @@ id|DMX_SECTION_FILTERING
 suffix:semicolon
 id|ttusb-&gt;dvb_demux.priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef TTUSB_HWSECTIONS
 id|ttusb-&gt;dvb_demux.filternum
@@ -5264,7 +5264,7 @@ id|ttusb_stop_feed
 suffix:semicolon
 id|ttusb-&gt;dvb_demux.write_to_decoder
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

@@ -4934,7 +4934,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * acpiphp_enable_slot - power on slot&n; */

@@ -8,22 +8,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-DECL|struct|kvec
-r_struct
-id|kvec
-(brace
-DECL|member|iov_base
-r_void
-op_star
-id|iov_base
-suffix:semicolon
-multiline_comment|/* and that should *never* hold a userland pointer */
-DECL|member|iov_len
-r_int
-id|iov_len
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 DECL|struct|erase_info_user
 r_struct

@@ -21274,7 +21274,7 @@ ques
 c_cond
 id|p
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|p
@@ -21300,7 +21300,7 @@ ques
 c_cond
 id|p
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|p
@@ -21854,7 +21854,7 @@ ques
 c_cond
 id|p
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|p
@@ -21884,7 +21884,7 @@ ques
 c_cond
 id|p
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|p

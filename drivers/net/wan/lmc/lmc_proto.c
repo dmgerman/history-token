@@ -211,7 +211,7 @@ id|IFF_POINTOPOINT
 suffix:semicolon
 id|dev-&gt;hard_header
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;hard_header_len
 op_assign

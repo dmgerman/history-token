@@ -7099,7 +7099,7 @@ l_int|NULL
 suffix:semicolon
 id|new_smi-&gt;handlers
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

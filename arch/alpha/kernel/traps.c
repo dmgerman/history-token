@@ -1043,7 +1043,7 @@ id|regs
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info.si_signo
@@ -1062,6 +1062,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -1184,7 +1185,7 @@ id|regs
 comma
 id|type
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1218,6 +1219,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -1271,6 +1273,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -1300,6 +1303,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -1501,6 +1505,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -1585,6 +1590,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -1659,6 +1665,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -1700,7 +1707,7 @@ id|regs
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info.si_signo
@@ -1719,6 +1726,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -3136,6 +3144,7 @@ id|do_entUnaUser
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|va
 comma

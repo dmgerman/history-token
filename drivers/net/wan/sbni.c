@@ -1545,7 +1545,7 @@ id|SBNI_IO_EXTENT
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|outb
@@ -1648,7 +1648,7 @@ id|SBNI_IO_EXTENT
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -1704,7 +1704,7 @@ id|SBNI_IO_EXTENT
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|dev-&gt;priv

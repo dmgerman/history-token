@@ -1624,8 +1624,12 @@ suffix:semicolon
 multiline_comment|/* These symbols are defined with the addresses in the vsyscall page.&n;   See vsyscall-sigreturn.S.  */
 r_extern
 r_void
+id|__user
 id|__kernel_sigreturn
-comma
+suffix:semicolon
+r_extern
+r_void
+id|__user
 id|__kernel_rt_sigreturn
 suffix:semicolon
 DECL|function|setup_frame
@@ -1653,6 +1657,7 @@ id|regs
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|restorer
 suffix:semicolon
@@ -2027,6 +2032,7 @@ id|regs
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|restorer
 suffix:semicolon

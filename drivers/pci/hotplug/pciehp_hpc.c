@@ -533,16 +533,12 @@ r_struct
 id|php_ctlr_state_s
 op_star
 id|php_ctlr_list_head
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* HPC state linked list */
 DECL|variable|ctlr_seq_num
 r_static
 r_int
 id|ctlr_seq_num
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Controller sequence # */
 DECL|variable|list_lock
@@ -2665,7 +2661,7 @@ id|php_ctlr-&gt;pci_dev
 )paren
 id|php_ctlr-&gt;pci_dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_lock
 c_func
@@ -5929,7 +5925,7 @@ id|php_ctlr_list_head
 suffix:semicolon
 id|p-&gt;pnext
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else

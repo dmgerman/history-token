@@ -8,11 +8,11 @@ multiline_comment|/*&n; * This driver also supplies ioctls to manually manipulat
 DECL|macro|BPP_PUT_PINS
 macro_line|# define BPP_PUT_PINS _IOW(&squot;B&squot;, 1, int)
 DECL|macro|BPP_GET_PINS
-macro_line|# define BPP_GET_PINS _IOR(&squot;B&squot;, 2, void)
+macro_line|# define BPP_GET_PINS _IOR(&squot;B&squot;, 2, char) /* that&squot;s bogus - should&squot;ve been _IO */
 DECL|macro|BPP_PUT_DATA
 macro_line|# define BPP_PUT_DATA _IOW(&squot;B&squot;, 3, int)
 DECL|macro|BPP_GET_DATA
-macro_line|# define BPP_GET_DATA _IOR(&squot;B&squot;, 4, void)
+macro_line|# define BPP_GET_DATA _IOR(&squot;B&squot;, 4, char) /* ditto */
 multiline_comment|/*&n; * Set the data bus to input mode. Disengage the data bin driver and&n; * be prepared to read values from the peripheral. If the arg is 0,&n; * then revert the bus to output mode.&n; */
 DECL|macro|BPP_SET_INPUT
 macro_line|# define BPP_SET_INPUT _IOW(&squot;B&squot;, 5, int)

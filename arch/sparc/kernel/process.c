@@ -2850,7 +2850,7 @@ id|PSR_EF
 suffix:semicolon
 id|last_task_used_math
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -311,8 +311,6 @@ r_struct
 id|mdc800_data
 op_star
 id|mdc800
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/***************************************************************************&n;&t;The USB Part of the driver&n;****************************************************************************/
 DECL|function|mdc800_endpoint_equals
@@ -1506,7 +1504,7 @@ id|mdc800-&gt;download_urb
 suffix:semicolon
 id|mdc800-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|usb_set_intfdata
 c_func
@@ -2964,11 +2962,11 @@ id|mdc800_table
 suffix:semicolon
 multiline_comment|/************************************************************************&n;&t;Init and Cleanup this driver (Main Functions)&n;*************************************************************************/
 DECL|macro|try
-mdefine_line|#define try(A)           if ((A) == 0) goto cleanup_on_fail;
+mdefine_line|#define try(A)           if (!(A)) goto cleanup_on_fail;
 DECL|macro|try_free_mem
-mdefine_line|#define try_free_mem(A)  if (A != 0) { kfree (A); A=0; }
+mdefine_line|#define try_free_mem(A)  if (A) { kfree (A); A=NULL; }
 DECL|macro|try_free_urb
-mdefine_line|#define try_free_urb(A)  if (A != 0) { usb_free_urb (A); A=0; }
+mdefine_line|#define try_free_urb(A)  if (A) { usb_free_urb (A); A=NULL; }
 DECL|function|usb_mdc800_init
 r_static
 r_int
@@ -3017,7 +3015,7 @@ id|mdc800_data
 suffix:semicolon
 id|mdc800-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mdc800-&gt;open
 op_assign

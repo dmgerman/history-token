@@ -251,7 +251,7 @@ c_func
 (paren
 id|flush_ldt
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma

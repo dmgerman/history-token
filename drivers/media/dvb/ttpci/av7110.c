@@ -1206,7 +1206,7 @@ id|av7110-&gt;debi_virt
 comma
 id|av7110-&gt;debilen
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -3229,7 +3229,7 @@ op_assign
 dot
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|users
@@ -4911,7 +4911,7 @@ id|demux-&gt;pesfilter
 id|feed-&gt;pes_type
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -7216,7 +7216,7 @@ id|av7110-&gt;arm_wait
 suffix:semicolon
 id|av7110-&gt;arm_thread
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* allocate and init buffers */
 id|av7110-&gt;debi_virt

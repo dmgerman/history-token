@@ -477,7 +477,7 @@ id|ohci
 comma
 id|urb
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|retval
@@ -868,7 +868,7 @@ id|ohci
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -986,7 +986,7 @@ id|dev-&gt;ep
 id|epnum
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|done
 suffix:colon
@@ -2383,7 +2383,7 @@ id|ohci-&gt;ed_rm_list
 suffix:semicolon
 id|ed-&gt;ed_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ohci-&gt;ed_rm_list
 op_assign
@@ -2434,7 +2434,7 @@ id|ohci
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irq

@@ -8083,7 +8083,7 @@ ques
 c_cond
 id|AdditionalInfo
 suffix:colon
-l_int|0
+l_int|NULL
 comma
 l_int|NULL
 comma
