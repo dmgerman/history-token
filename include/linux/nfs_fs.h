@@ -839,7 +839,7 @@ id|list_head
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_extern
 r_int
 id|nfs_commit_file

@@ -522,7 +522,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_if
 c_cond
 (paren

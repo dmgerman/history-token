@@ -1669,7 +1669,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 multiline_comment|/* Let&squot;s try to free up some completed NFSv3 unstable writes */
 id|nfs_scan_lru_commit
 c_func
