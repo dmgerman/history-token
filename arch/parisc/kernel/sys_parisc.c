@@ -748,7 +748,7 @@ id|r
 suffix:semicolon
 id|r
 op_assign
-id|sys_shmat
+id|do_shmat
 c_func
 (paren
 id|shmid

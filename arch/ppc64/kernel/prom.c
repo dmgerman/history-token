@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
@@ -34,6 +35,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 macro_line|#include &lt;linux/linux_logo.h&gt;
@@ -550,14 +552,6 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-r_extern
-r_char
-id|cmd_line
-(braket
-l_int|512
-)braket
-suffix:semicolon
-multiline_comment|/* XXX */
 DECL|variable|dev_tree_size
 r_int
 r_int
@@ -3403,27 +3397,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;    memory.lcd_size             = 0x&quot;
-)paren
-)paren
-suffix:semicolon
-id|prom_print_hex
-c_func
-(paren
-id|_lmb-&gt;memory.lcd_size
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3533,32 +3506,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;                      .type     = 0x&quot;
-)paren
-)paren
-suffix:semicolon
-id|prom_print_hex
-c_func
-(paren
-id|_lmb-&gt;memory.region
-(braket
-id|i
-)braket
-dot
-id|type
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 id|prom_print_nl
 c_func
@@ -3600,27 +3547,6 @@ id|prom_print_hex
 c_func
 (paren
 id|_lmb-&gt;reserved.size
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
-)paren
-suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;    reserved.lcd_size             = 0x&quot;
-)paren
-)paren
-suffix:semicolon
-id|prom_print_hex
-c_func
-(paren
-id|_lmb-&gt;reserved.lcd_size
 )paren
 suffix:semicolon
 id|prom_print_nl
@@ -3730,32 +3656,6 @@ id|i
 )braket
 dot
 id|size
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
-)paren
-suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;                      .type     = 0x&quot;
-)paren
-)paren
-suffix:semicolon
-id|prom_print_hex
-c_func
-(paren
-id|_lmb-&gt;reserved.region
-(braket
-id|i
-)braket
-dot
-id|type
 )paren
 suffix:semicolon
 id|prom_print_nl
@@ -4786,17 +4686,6 @@ id|__secondary_hold
 )paren
 suffix:semicolon
 r_struct
-id|naca_struct
-op_star
-id|_naca
-op_assign
-id|RELOC
-c_func
-(paren
-id|naca
-)paren
-suffix:semicolon
-r_struct
 id|systemcfg
 op_star
 id|_systemcfg
@@ -4834,6 +4723,19 @@ op_amp
 id|prom
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_struct
+id|naca_struct
+op_star
+id|_naca
+op_assign
+id|RELOC
+c_func
+(paren
+id|naca
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* On pmac, we just fill out the various global bitmasks and&n;&t; * arrays indicating our CPUs are here, they are actually started&n;&t; * later on from pmac_smp&n;&t; */
 r_if
 c_cond
@@ -5700,6 +5602,17 @@ l_string|&quot;ok&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* We have to get every CPU out of OF,&n;&t;&t;&t;&t; * even if we never start it. */
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+r_goto
+id|next
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Set the number of active processors. */
 id|_systemcfg-&gt;processorCount
@@ -5849,6 +5762,10 @@ id|cpu_present_at_boot
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+id|next
+suffix:colon
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Init paca for secondary threads.   They start later. */
 r_for
 c_loop
@@ -5867,6 +5784,15 @@ op_increment
 (brace
 id|cpuid
 op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+r_continue
 suffix:semicolon
 id|_xPaca
 (braket
@@ -6123,6 +6049,29 @@ l_string|&quot;Processor is not HMT capable&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;WARNING: maximum CPUs (&quot;
+id|__stringify
+c_func
+(paren
+id|NR_CPUS
+)paren
+l_string|&quot;) exceeded: ignoring extras&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG_PROM
 id|prom_print
 c_func
@@ -6471,7 +6420,11 @@ c_func
 (paren
 id|option
 comma
+id|RELOC
+c_func
+(paren
 l_string|&quot;off&quot;
+)paren
 )paren
 )paren
 id|my_smt_enabled
@@ -6488,7 +6441,11 @@ c_func
 (paren
 id|option
 comma
+id|RELOC
+c_func
+(paren
 l_string|&quot;on&quot;
+)paren
 )paren
 )paren
 id|my_smt_enabled
@@ -8493,7 +8450,7 @@ l_int|0
 op_ne
 l_int|0
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|RELOC
@@ -8511,22 +8468,6 @@ id|cmd_line
 )paren
 suffix:semicolon
 )brace
-id|RELOC
-c_func
-(paren
-id|cmd_line
-(braket
-r_sizeof
-(paren
-id|cmd_line
-)paren
-op_minus
-l_int|1
-)braket
-)paren
-op_assign
-l_int|0
-suffix:semicolon
 id|mem
 op_assign
 id|prom_initialize_lmb
@@ -15842,9 +15783,16 @@ c_cond
 op_logical_neg
 id|ints
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|intrcells
 op_assign
 id|prom_n_intr_cells

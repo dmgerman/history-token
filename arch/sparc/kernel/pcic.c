@@ -4097,7 +4097,7 @@ id|__LINE__
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We assume the caller is local cli()&squot;d when these are called, or else&n; * very bizarre behavior will result.&n; */
+multiline_comment|/* We assume the caller has disabled local interrupts when these are called,&n; * or else very bizarre behavior will result.&n; */
 DECL|function|pcic_disable_pil_irq
 r_static
 r_void

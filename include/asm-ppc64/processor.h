@@ -787,16 +787,8 @@ id|lower
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-op_star
-id|_get_SP
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+DECL|macro|__get_SP
+mdefine_line|#define __get_SP()&t;({unsigned long sp; &bslash;&n;&t;&t;&t;asm volatile(&quot;mr %0,1&quot;: &quot;=r&quot; (sp)); sp;})
 r_extern
 r_int
 id|have_of

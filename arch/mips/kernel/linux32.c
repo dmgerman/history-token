@@ -7503,7 +7503,7 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

@@ -368,12 +368,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
 r_struct
 id|device_node
 op_star

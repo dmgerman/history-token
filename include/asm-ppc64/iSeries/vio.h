@@ -1,7 +1,7 @@
 multiline_comment|/* -*- linux-c -*-&n; *  drivers/char/vio.h&n; *&n; *  iSeries Virtual I/O Message Path header&n; *&n; *  Authors: Dave Boutcher &lt;boutcher@us.ibm.com&gt;&n; *           Ryan Arnold &lt;ryanarn@us.ibm.com&gt;&n; *           Colin Devilbiss &lt;devilbis@us.ibm.com&gt;&n; *&n; * (C) Copyright 2000 IBM Corporation&n; * &n; * This header file is used by the iSeries virtual I/O device&n; * drivers.  It defines the interfaces to the common functions&n; * (implemented in drivers/char/viopath.h) as well as defining&n; * common functions and structures.  Currently (at the time I &n; * wrote this comment) the iSeries virtual I/O device drivers&n; * that use this are &n; *   drivers/block/viodasd.c &n; *   drivers/char/viocons.c&n; *   drivers/char/viotape.c&n; *   drivers/cdrom/viocd.c&n; *&n; * The iSeries virtual ethernet support (veth.c) uses a whole&n; * different set of functions.&n; * &n; * This program is free software;  you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) anyu later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.  &n; *&n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; */
-macro_line|#ifndef _VIO_H
-DECL|macro|_VIO_H
-mdefine_line|#define _VIO_H
+macro_line|#ifndef _ISERIES_VIO_H
+DECL|macro|_ISERIES_VIO_H
+mdefine_line|#define _ISERIES_VIO_H
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 multiline_comment|/* iSeries virtual I/O events use the subtype field in&n; * HvLpEvent to figure out what kind of vio event is coming&n; * in.  We use a table to route these, and this defines&n; * the maximum number of distinct subtypes&n; */
@@ -301,5 +301,5 @@ op_assign
 l_int|0x0301
 )brace
 suffix:semicolon
-macro_line|#endif /* _VIO_H */
+macro_line|#endif /* _ISERIES_VIO_H */
 eof

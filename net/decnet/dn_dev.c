@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * DECnet       An implementation of the DECnet protocol suite for the LINUX&n; *              operating system.  DECnet is implemented using the  BSD Socket&n; *              interface as the means of communication with the user level.&n; *&n; *              DECnet Device Layer&n; *&n; * Authors:     Steve Whitehouse &lt;SteveW@ACM.org&gt;&n; *              Eduardo Marcelo Serrat &lt;emserrat@geocities.com&gt;&n; *&n; * Changes:&n; *          Steve Whitehouse : Devices now see incoming frames so they&n; *                             can mark on who it came from.&n; *          Steve Whitehouse : Fixed bug in creating neighbours. Each neighbour&n; *                             can now have a device specific setup func.&n; *          Steve Whitehouse : Added /proc/sys/net/decnet/conf/&lt;dev&gt;/&n; *          Steve Whitehouse : Fixed bug which sometimes killed timer&n; *          Steve Whitehouse : Multiple ifaddr support&n; *          Steve Whitehouse : SIOCGIFCONF is now a compile time option&n; *          Steve Whitehouse : /proc/sys/net/decnet/conf/&lt;sys&gt;/forwarding&n; *          Steve Whitehouse : Removed timer1 - it&squot;s a user space issue now&n; *         Patrick Caulfield : Fixed router hello message format&n; *          Steve Whitehouse : Got rid of constant sizes for blksize for&n; *                             devices. All mtu based now.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -7155,21 +7156,31 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|addr
 r_static
 r_int
+id|__initdata
 id|addr
 (braket
 l_int|2
 )braket
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|num
+r_static
+r_int
+id|__initdata
+id|num
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|addr
 comma
-l_string|&quot;2i&quot;
+r_int
+comma
+id|num
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -7180,7 +7191,6 @@ comma
 l_string|&quot;The DECnet address of this machine: area,node&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|dn_dev_init
 r_void
 id|__init
@@ -7190,7 +7200,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef MODULE
 r_if
 c_cond
 (paren
@@ -7267,7 +7276,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dn_dev_devices_on
 c_func
 (paren
@@ -7406,81 +7414,4 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef MODULE
-DECL|function|decnet_setup
-r_static
-r_int
-id|__init
-id|decnet_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-r_int
-id|area
-op_assign
-id|simple_strtoul
-c_func
-(paren
-id|str
-comma
-op_amp
-id|str
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_int
-r_int
-id|node
-op_assign
-id|simple_strtoul
-c_func
-(paren
-op_star
-id|str
-OG
-l_int|0
-ques
-c_cond
-op_increment
-id|str
-suffix:colon
-id|str
-comma
-op_amp
-id|str
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|decnet_address
-op_assign
-id|dn_htons
-c_func
-(paren
-id|area
-op_lshift
-l_int|10
-op_or
-id|node
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;decnet=&quot;
-comma
-id|decnet_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 eof

@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.7&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.8&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 17, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 23, 2004&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -591,6 +591,22 @@ comma
 id|PCI_VENDOR_ID_ALTIMA
 comma
 id|PCI_DEVICE_ID_ALTIMA_AC9100
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_APPLE
+comma
+id|PCI_DEVICE_ID_APPLE_TIGON3
 comma
 id|PCI_ANY_ID
 comma
@@ -37539,6 +37555,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/* validate data reached card RAM correctly. */
 r_for
 c_loop
@@ -37616,6 +37633,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Now read it back. */
 id|ret
 op_assign

@@ -645,6 +645,9 @@ id|saved_sg
 op_assign
 id|sg
 suffix:semicolon
+r_int
+id|dma_flag
+suffix:semicolon
 multiline_comment|/* can&squot;t go anywhere w/o a direction in life */
 r_if
 c_cond
@@ -670,6 +673,26 @@ suffix:semicolon
 id|vhdl
 op_assign
 id|device_sysdata-&gt;vhdl
+suffix:semicolon
+multiline_comment|/*&n;&t; * 64 bit DMA mask can use direct translations&n;&t; * PCI only&n;&t; *   32 bit DMA mask might be able to use direct, otherwise use dma map&n;&t; * PCI-X&n;&t; *   only 64 bit DMA mask supported; both direct and dma map will fail&n;&t; */
+r_if
+c_cond
+(paren
+id|hwdev-&gt;dma_mask
+op_eq
+op_complement
+l_int|0UL
+)paren
+id|dma_flag
+op_assign
+id|PCIIO_DMA_DATA
+op_or
+id|PCIIO_DMA_A64
+suffix:semicolon
+r_else
+id|dma_flag
+op_assign
+id|PCIIO_DMA_DATA
 suffix:semicolon
 multiline_comment|/*&n;&t; * Setup a DMA address for each entry in the&n;&t; * scatterlist.&n;&t; */
 r_for
@@ -708,17 +731,6 @@ op_plus
 id|sg-&gt;offset
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Handle 32-63 bit cards via direct mapping&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|IS_PCI32G
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-(brace
 id|sg-&gt;dma_address
 op_assign
 id|pcibr_dmatrans_addr
@@ -732,25 +744,22 @@ id|phys_addr
 comma
 id|sg-&gt;length
 comma
-id|PCIIO_DMA_DATA
+id|dma_flag
 )paren
 suffix:semicolon
-id|sg-&gt;dma_length
-op_assign
-id|sg-&gt;length
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * See if we got a direct map entry&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|sg-&gt;dma_address
 )paren
 (brace
+id|sg-&gt;dma_length
+op_assign
+id|sg-&gt;length
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n;&t;&t; * It is a 32 bit card and we cannot do direct mapping,&n;&t;&t; * so we use an ATE.&n;&t;&t; */
 id|dma_map
 op_assign
 id|pcibr_dmamap_alloc
@@ -763,6 +772,14 @@ comma
 id|sg-&gt;length
 comma
 id|PCIIO_DMA_DATA
+op_or
+id|MINIMAL_ATE_FLAG
+c_func
+(paren
+id|phys_addr
+comma
+id|sg-&gt;length
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -990,6 +1007,9 @@ id|dma_map
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|dma_flag
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1001,19 +1021,6 @@ id|BUG
 c_func
 (paren
 )paren
-suffix:semicolon
-multiline_comment|/* SN cannot support DMA addresses smaller than 32 bits. */
-r_if
-c_cond
-(paren
-id|IS_PCI32L
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * find vertex for the device&n;&t; */
 id|device_sysdata
@@ -1028,11 +1035,6 @@ id|vhdl
 op_assign
 id|device_sysdata-&gt;vhdl
 suffix:semicolon
-multiline_comment|/*&n;&t; * Call our dmamap interface&n;&t; */
-id|dma_addr
-op_assign
-l_int|0
-suffix:semicolon
 id|phys_addr
 op_assign
 id|__pa
@@ -1041,17 +1043,26 @@ c_func
 id|ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Devices that support 32 bit to 63 bit DMA addresses get&n;&t; * 32 bit DMA addresses.&n;&t; *&n;&t; * First try to get a 32 bit direct map register.&n;&t; */
+multiline_comment|/*&n;&t; * 64 bit DMA mask can use direct translations&n;&t; * PCI only&n;&t; *   32 bit DMA mask might be able to use direct, otherwise use dma map&n;&t; * PCI-X&n;&t; *   only 64 bit DMA mask supported; both direct and dma map will fail&n;&t; */
 r_if
 c_cond
 (paren
-id|IS_PCI32G
-c_func
-(paren
-id|hwdev
+id|hwdev-&gt;dma_mask
+op_eq
+op_complement
+l_int|0UL
 )paren
-)paren
-(brace
+id|dma_flag
+op_assign
+id|PCIIO_DMA_DATA
+op_or
+id|PCIIO_DMA_A64
+suffix:semicolon
+r_else
+id|dma_flag
+op_assign
+id|PCIIO_DMA_DATA
+suffix:semicolon
 id|dma_addr
 op_assign
 id|pcibr_dmatrans_addr
@@ -1065,7 +1076,7 @@ id|phys_addr
 comma
 id|size
 comma
-id|PCIIO_DMA_DATA
+id|dma_flag
 )paren
 suffix:semicolon
 r_if
@@ -1076,7 +1087,6 @@ id|dma_addr
 r_return
 id|dma_addr
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * It&squot;s a 32 bit card and we cannot do direct mapping so&n;&t; * let&squot;s use the PMU instead.&n;&t; */
 id|dma_map
 op_assign

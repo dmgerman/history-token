@@ -686,9 +686,7 @@ macro_line|#ifdef CONFIG_SMP
 l_string|&quot;&bslash;&n;  c&t;print cpus stopped in xmon&bslash;n&bslash;&n;  ci&t;send xmon interrupt to all other cpus&bslash;n&bslash;&n;  c#&t;try to switch to cpu number h (in hex)&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&bslash;&n;  C&t;checksum&bslash;n&bslash;&n;  d&t;dump bytes&bslash;n&bslash;&n;  di&t;dump instructions&bslash;n&bslash;&n;  df&t;dump float values&bslash;n&bslash;&n;  dd&t;dump double values&bslash;n&bslash;&n;  e&t;print exception information&bslash;n&bslash;&n;  f&t;flush cache&bslash;n&bslash;&n;  m&t;examine/change memory&bslash;n&bslash;&n;  mm&t;move a block of memory&bslash;n&bslash;&n;  ms&t;set a block of memory&bslash;n&bslash;&n;  md&t;compare two blocks of memory&bslash;n&bslash;&n;  ml&t;locate a block of memory&bslash;n&bslash;&n;  mz&t;zero a block of memory&bslash;n&bslash;&n;  mi&t;show information about memory allocation&bslash;n&bslash;&n;  p &t;show the task list&bslash;n&bslash;&n;  r&t;print registers&bslash;n&bslash;&n;  s&t;single step&bslash;n&bslash;&n;  S&t;print special registers&bslash;n&bslash;&n;  t&t;print backtrace&bslash;n&bslash;&n;  T&t;Enable/Disable PPCDBG flags&bslash;n&bslash;&n;  x&t;exit monitor&bslash;n&bslash;&n;  u&t;dump segment table or SLB&bslash;n&bslash;&n;  ?&t;help&bslash;n&quot;
-macro_line|#ifndef CONFIG_PPC_ISERIES
 l_string|&quot;&bslash;&n;  zr&t;reboot&bslash;n&bslash;&n;  zh&t;halt&bslash;n&quot;
-macro_line|#endif
 suffix:semicolon
 DECL|variable|xmon_trace
 r_static
@@ -2164,7 +2162,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-macro_line|#ifndef CONFIG_PPC_ISERIES
 r_case
 l_char|&squot;z&squot;
 suffix:colon
@@ -2173,7 +2170,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_case
 l_char|&squot;T&squot;
 suffix:colon
@@ -5438,9 +5434,6 @@ r_int
 id|val
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|paca_struct
 op_star

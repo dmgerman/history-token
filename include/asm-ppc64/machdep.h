@@ -37,13 +37,6 @@ id|target
 comma
 r_int
 id|msg
-comma
-r_int
-r_int
-id|data
-comma
-r_int
-id|wait
 )paren
 suffix:semicolon
 DECL|member|probe
@@ -590,6 +583,13 @@ mdefine_line|#define COMMAND_LINE_SIZE 512
 r_extern
 r_char
 id|cmd_line
+(braket
+id|COMMAND_LINE_SIZE
+)braket
+suffix:semicolon
+r_extern
+r_char
+id|saved_command_line
 (braket
 id|COMMAND_LINE_SIZE
 )braket

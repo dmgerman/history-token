@@ -5,8 +5,8 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+r_static
 r_int
 id|make_ste
 c_func
@@ -24,6 +24,7 @@ r_int
 id|vsid
 )paren
 suffix:semicolon
+r_static
 r_void
 id|make_slbe
 c_func
@@ -210,6 +211,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Segment table stuff&n; */
 multiline_comment|/*&n; * Create a segment table entry for the given esid/vsid pair.&n; */
 DECL|function|make_ste
+r_static
 r_int
 id|make_ste
 c_func
@@ -350,9 +352,11 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
+(paren
 id|global_entry
 op_or
 id|entry
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -670,7 +674,6 @@ id|stab_entry
 suffix:semicolon
 r_int
 r_int
-op_star
 id|offset
 suffix:semicolon
 r_int
@@ -712,7 +715,6 @@ r_return
 suffix:semicolon
 id|offset
 op_assign
-op_amp
 id|__get_cpu_var
 c_func
 (paren
@@ -722,30 +724,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
 id|offset
 OL
 id|NR_STAB_CACHE_ENTRIES
 )paren
-(brace
 id|__get_cpu_var
 c_func
 (paren
 id|stab_cache
 (braket
-op_star
 id|offset
+op_increment
 )braket
 )paren
 op_assign
 id|stab_entry
 suffix:semicolon
-)brace
-(paren
-op_star
+r_else
 id|offset
+op_assign
+id|NR_STAB_CACHE_ENTRIES
+op_plus
+l_int|1
+suffix:semicolon
+id|__get_cpu_var
+c_func
+(paren
+id|stab_cache_ptr
 )paren
-op_increment
+op_assign
+id|offset
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate a segment table entry for the given ea.&n; */
@@ -1158,10 +1166,8 @@ id|ste
 suffix:semicolon
 r_int
 r_int
-op_star
 id|offset
 op_assign
-op_amp
 id|__get_cpu_var
 c_func
 (paren
@@ -1182,7 +1188,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
 id|offset
 op_le
 id|NR_STAB_CACHE_ENTRIES
@@ -1200,7 +1205,6 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-op_star
 id|offset
 suffix:semicolon
 id|i
@@ -1225,15 +1229,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;sync; slbia; sync&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1300,6 +1295,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+)brace
 id|asm
 r_volatile
 (paren
@@ -1309,9 +1305,11 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-)brace
-op_star
-id|offset
+id|__get_cpu_var
+c_func
+(paren
+id|stab_cache_ptr
+)paren
 op_assign
 l_int|0
 suffix:semicolon
@@ -1327,6 +1325,7 @@ suffix:semicolon
 multiline_comment|/*&n; * SLB stuff&n; */
 multiline_comment|/*&n; * Create a segment buffer entry for the given esid/vsid pair.&n; *&n; * NOTE: A context syncronising instruction is required before and after&n; * this, in the common case we use exception entry and rfid.&n; */
 DECL|function|make_slbe
+r_static
 r_void
 id|make_slbe
 c_func
@@ -1434,11 +1433,7 @@ op_eq
 id|GET_ESID
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|_get_SP
+id|__get_SP
 c_func
 (paren
 )paren
@@ -1502,7 +1497,7 @@ id|esid_data.data.index
 op_assign
 id|entry
 suffix:semicolon
-multiline_comment|/*&n;&t; * No need for an isync before or after this slbmte. The exception&n;         * we enter with and the rfid we exit with are context synchronizing.&n;&t; */
+multiline_comment|/*&n;&t; * No need for an isync before or after this slbmte. The exception&n;&t; * we enter with and the rfid we exit with are context synchronizing.&n;&t; */
 id|asm
 r_volatile
 (paren
@@ -1558,7 +1553,6 @@ id|SID_SHIFT
 suffix:semicolon
 r_int
 r_int
-op_star
 id|offset
 suffix:semicolon
 r_if
@@ -1626,7 +1620,6 @@ r_return
 suffix:semicolon
 id|offset
 op_assign
-op_amp
 id|__get_cpu_var
 c_func
 (paren
@@ -1636,30 +1629,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
 id|offset
 OL
 id|NR_STAB_CACHE_ENTRIES
 )paren
-(brace
 id|__get_cpu_var
 c_func
 (paren
 id|stab_cache
 (braket
-op_star
 id|offset
+op_increment
 )braket
 )paren
 op_assign
 id|esid
 suffix:semicolon
-)brace
-(paren
-op_star
+r_else
 id|offset
+op_assign
+id|NR_STAB_CACHE_ENTRIES
+op_plus
+l_int|1
+suffix:semicolon
+id|__get_cpu_var
+c_func
+(paren
+id|stab_cache_ptr
 )paren
-op_increment
+op_assign
+id|offset
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate a segment table entry for the given ea.&n; */
@@ -2048,10 +2047,8 @@ id|mm
 (brace
 r_int
 r_int
-op_star
 id|offset
 op_assign
-op_amp
 id|__get_cpu_var
 c_func
 (paren
@@ -2061,7 +2058,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
 id|offset
 op_le
 id|NR_STAB_CACHE_ENTRIES
@@ -2101,7 +2097,6 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-op_star
 id|offset
 suffix:semicolon
 id|i
@@ -2160,8 +2155,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-op_star
-id|offset
+id|__get_cpu_var
+c_func
+(paren
+id|stab_cache_ptr
+)paren
 op_assign
 l_int|0
 suffix:semicolon

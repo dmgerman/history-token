@@ -1289,9 +1289,14 @@ id|current-&gt;thread.fsr
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;flags
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|flags
 op_or_assign
-id|PF_USEDFPU
+id|_TIF_USEDFPU
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -1439,9 +1444,9 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|fpt-&gt;flags
+id|fpt-&gt;thread_info-&gt;flags
 op_amp
-id|PF_USEDFPU
+id|_TIF_USEDFPU
 )paren
 )paren
 (brace
@@ -1637,10 +1642,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* nope, better SIGFPE the offending process... */
 macro_line|#ifdef CONFIG_SMP
-id|fpt-&gt;flags
+id|fpt-&gt;thread_info-&gt;flags
 op_and_assign
 op_complement
-id|PF_USEDFPU
+id|_TIF_USEDFPU
 suffix:semicolon
 macro_line|#endif
 r_if

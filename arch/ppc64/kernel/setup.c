@@ -448,7 +448,7 @@ r_int
 id|r7
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PPC_PSERIES)
 r_int
 r_int
 id|ret
@@ -727,8 +727,8 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-)brace
 macro_line|#endif /* CONFIG_SMP */
+)brace
 macro_line|#endif /* CONFIG_PPC_PSERIES */
 macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
@@ -1836,7 +1836,7 @@ c_cond
 id|strstr
 c_func
 (paren
-id|cmd_line
+id|saved_command_line
 comma
 l_string|&quot;console=&quot;
 )paren

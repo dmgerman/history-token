@@ -195,6 +195,8 @@ DECL|macro|IXOFF
 mdefine_line|#define IXOFF&t;0x00001000
 DECL|macro|IMAXBEL
 mdefine_line|#define IMAXBEL&t;0x00002000
+DECL|macro|IUTF8
+mdefine_line|#define IUTF8&t;0x00004000
 multiline_comment|/* c_oflag bits */
 DECL|macro|OPOST
 mdefine_line|#define OPOST&t;0x00000001

@@ -4255,21 +4255,6 @@ op_amp
 id|inet_family_ops
 )paren
 suffix:semicolon
-multiline_comment|/* I wish inet_add_protocol had no constructor hook...&n;&t;   I had to move IPIP from net/ipv4/protocol.c :-( --ANK&n;&t; */
-macro_line|#ifdef CONFIG_NET_IPIP
-id|ipip_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_IPGRE
-id|ipgre_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *&t;Initialise the multicast router&n;&t; */
 macro_line|#if defined(CONFIG_IP_MROUTE)
 id|ip_mr_init

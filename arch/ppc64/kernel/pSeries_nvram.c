@@ -91,6 +91,8 @@ op_eq
 l_int|0
 op_logical_or
 id|nvram_fetch
+op_eq
+id|RTAS_UNKNOWN_SERVICE
 )paren
 r_return
 op_minus
@@ -299,6 +301,8 @@ op_eq
 l_int|0
 op_logical_or
 id|nvram_store
+op_eq
+id|RTAS_UNKNOWN_SERVICE
 )paren
 r_return
 op_minus

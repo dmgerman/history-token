@@ -1765,7 +1765,7 @@ op_or
 id|_SUN4C_PAGE_DIRTY
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1796,7 +1796,7 @@ id|ptep
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1805,7 +1805,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1862,7 +1862,7 @@ op_or
 id|_SUN4C_PAGE_VALID
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1893,7 +1893,7 @@ id|ptep
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1902,7 +1902,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -7,8 +7,6 @@ macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
 macro_line|#include &quot;elfcore32.h&quot;
-DECL|macro|CONFIG_BINFMT_ELF32
-mdefine_line|#define CONFIG_BINFMT_ELF32
 multiline_comment|/* Override some function names */
 DECL|macro|start_thread
 macro_line|#undef start_thread
@@ -20,18 +18,6 @@ DECL|macro|init_elf_binfmt
 mdefine_line|#define init_elf_binfmt&t;&t;&t;init_elf32_binfmt
 DECL|macro|exit_elf_binfmt
 mdefine_line|#define exit_elf_binfmt&t;&t;&t;exit_elf32_binfmt
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|#undef CONFIG_BINFMT_ELF
-macro_line|#ifdef CONFIG_BINFMT_ELF32
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|# define CONFIG_BINFMT_ELF&t;&t;CONFIG_BINFMT_ELF32
-macro_line|#endif
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|#undef CONFIG_BINFMT_ELF_MODULE
-macro_line|#ifdef CONFIG_BINFMT_ELF32_MODULE
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|# define CONFIG_BINFMT_ELF_MODULE&t;CONFIG_BINFMT_ELF32_MODULE
-macro_line|#endif
 DECL|macro|CLOCKS_PER_SEC
 macro_line|#undef CLOCKS_PER_SEC
 DECL|macro|CLOCKS_PER_SEC
