@@ -2121,6 +2121,7 @@ id|hwif-&gt;device.driver_data
 op_assign
 id|hwif
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_if
 c_cond
 (paren
@@ -2132,6 +2133,7 @@ op_amp
 id|hwif-&gt;pci_dev-&gt;dev
 suffix:semicolon
 r_else
+macro_line|#endif
 id|hwif-&gt;device.parent
 op_assign
 l_int|NULL

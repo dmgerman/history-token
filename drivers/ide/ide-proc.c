@@ -1786,9 +1786,7 @@ r_int
 r_int
 r_int
 )paren
-id|drive-&gt;driver
-op_member_access_from_pointer
-id|capacity
+id|ata_capacity
 c_func
 (paren
 id|drive

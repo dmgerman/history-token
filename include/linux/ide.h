@@ -39,28 +39,20 @@ DECL|macro|FANCY_STATUS_DUMPS
 mdefine_line|#define FANCY_STATUS_DUMPS&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640
-macro_line|#if 0&t;/* change to 1 when debugging cmd640 problems */
+macro_line|# if 0&t;/* change to 1 when debugging cmd640 problems */
 r_void
 id|cmd640_dump_regs
 (paren
 r_void
 )paren
 suffix:semicolon
-mdefine_line|#define CMD640_DUMP_REGS cmd640_dump_regs() /* for debugging cmd640 chipset */
+macro_line|#  define CMD640_DUMP_REGS cmd640_dump_regs() /* for debugging cmd640 chipset */
+macro_line|# endif
 macro_line|#endif
-macro_line|#endif  /* CONFIG_BLK_DEV_CMD640 */
 macro_line|#ifndef DISABLE_IRQ_NOSYNC
 DECL|macro|DISABLE_IRQ_NOSYNC
-mdefine_line|#define DISABLE_IRQ_NOSYNC&t;0
+macro_line|# define DISABLE_IRQ_NOSYNC&t;0
 macro_line|#endif
-multiline_comment|/*&n; * IDE_DRIVE_CMD is used to implement many features of the hdparm utility&n; */
-DECL|macro|IDE_DRIVE_CMD
-mdefine_line|#define IDE_DRIVE_CMD&t;&t;&t;99&t;/* (magic) undef to reduce kernel size*/
-DECL|macro|IDE_DRIVE_TASK
-mdefine_line|#define IDE_DRIVE_TASK&t;&t;&t;98
-multiline_comment|/*&n; * IDE_DRIVE_TASKFILE is used to implement many features needed for raw tasks&n; */
-DECL|macro|IDE_DRIVE_TASKFILE
-mdefine_line|#define IDE_DRIVE_TASKFILE&t;&t;97
 multiline_comment|/*&n; *  &quot;No user-serviceable parts&quot; beyond this point  :)&n; *****************************************************************************/
 DECL|typedef|byte
 r_typedef
@@ -82,7 +74,7 @@ mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
 multiline_comment|/*&n; * Ensure that various configuration flags have compatible settings&n; */
 macro_line|#ifdef REALLY_SLOW_IO
 DECL|macro|REALLY_FAST_IO
-macro_line|#undef REALLY_FAST_IO
+macro_line|# undef REALLY_FAST_IO
 macro_line|#endif
 DECL|macro|HWIF
 mdefine_line|#define HWIF(drive)&t;&t;((drive)-&gt;hwif)
@@ -2012,17 +2004,6 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-DECL|member|flushcache
-r_int
-(paren
-op_star
-id|flushcache
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|member|do_request
 id|ide_startstop_t
 (paren
@@ -2119,11 +2100,11 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-DECL|member|media_change
+DECL|member|check_media_change
 r_int
 (paren
 op_star
-id|media_change
+id|check_media_change
 )paren
 (paren
 id|ide_drive_t
@@ -2180,17 +2161,6 @@ id|ide_proc_entry_t
 op_star
 id|proc
 suffix:semicolon
-DECL|member|driver_reinit
-r_int
-(paren
-op_star
-id|driver_reinit
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
@@ -2198,6 +2168,17 @@ DECL|macro|ata_get
 mdefine_line|#define ata_get(ata) &bslash;&n;&t;(((ata) &amp;&amp; (ata)-&gt;owner)&t;&bslash;&n;&t;&t;? ( try_inc_mod_count((ata)-&gt;owner) ? (ata) : NULL ) &bslash;&n;&t;&t;: (ata))
 DECL|macro|ata_put
 mdefine_line|#define ata_put(ata) &bslash;&n;do {&t;&bslash;&n;&t;if ((ata) &amp;&amp; (ata)-&gt;owner) &bslash;&n;&t;&t;__MOD_DEC_USE_COUNT((ata)-&gt;owner);&t;&bslash;&n;} while(0)
+r_extern
+r_int
+r_int
+id|ata_capacity
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
 multiline_comment|/* FIXME: Actually implement and use them as soon as possible!  to make the&n; * ide_scan_devices() go away! */
 r_extern
 r_int
@@ -2435,26 +2416,6 @@ id|kdev_t
 id|i_rdev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
-r_int
-r_int
-id|current_capacity
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Revalidate (read partition tables)&n; */
-r_extern
-r_void
-id|ide_revalidate_drive
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Start a reset operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
 id|ide_startstop_t
 id|ide_do_reset
@@ -2526,7 +2487,7 @@ id|ide_action_t
 id|action
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd.&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_CMD).&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_TASK_MASK).&n; */
+multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd.&n; */
 r_void
 id|ide_end_drive_cmd
 (paren
@@ -2539,43 +2500,6 @@ id|stat
 comma
 id|byte
 id|err
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Issue ATA command and wait for completion. use for implementing commands in kernel&n; */
-r_int
-id|ide_wait_cmd
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-id|cmd
-comma
-r_int
-id|nsect
-comma
-r_int
-id|feature
-comma
-r_int
-id|sectors
-comma
-id|byte
-op_star
-id|buf
-)paren
-suffix:semicolon
-r_int
-id|ide_wait_cmd_task
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-id|byte
-op_star
-id|buf
 )paren
 suffix:semicolon
 DECL|struct|ide_task_s
