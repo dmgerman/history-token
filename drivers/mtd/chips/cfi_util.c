@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   Generic utility functions not dependant on command set&n; *&n; * Copyright (C) 2002 Red Hat&n; * Copyright (C) 2003 STMicroelectronics Limited&n; *&n; * This code is covered by the GPL.&n; *&n; * $Id: cfi_util.c,v 1.7 2004/11/05 22:41:05 nico Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   Generic utility functions not dependant on command set&n; *&n; * Copyright (C) 2002 Red Hat&n; * Copyright (C) 2003 STMicroelectronics Limited&n; *&n; * This code is covered by the GPL.&n; *&n; * $Id: cfi_util.c,v 1.8 2004/12/14 19:55:56 nico Exp $&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -622,10 +622,6 @@ id|len
 )paren
 (brace
 r_int
-r_int
-id|chipmask
-suffix:semicolon
-r_int
 id|size
 op_assign
 id|regions
@@ -669,31 +665,19 @@ id|adr
 op_add_assign
 id|size
 suffix:semicolon
+id|ofs
+op_add_assign
+id|size
+suffix:semicolon
 id|len
 op_sub_assign
 id|size
 suffix:semicolon
-id|chipmask
-op_assign
-(paren
-l_int|1
-op_lshift
-id|cfi-&gt;chipshift
-)paren
-op_minus
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|adr
-op_amp
-id|chipmask
-)paren
+id|ofs
 op_eq
-(paren
-(paren
 id|regions
 (braket
 id|i
@@ -709,10 +693,6 @@ id|i
 )braket
 dot
 id|numblocks
-)paren
-op_amp
-id|chipmask
-)paren
 )paren
 id|i
 op_increment
