@@ -38,7 +38,7 @@ mdefine_line|#define insw(p,d,l)&t;&t;__raw_readsw(alignw(___io(p)),d,l)
 DECL|macro|insl
 mdefine_line|#define insl(p,d,l)&t;&t;__raw_readsl(___io(p),d,l)
 macro_line|#ifdef CONFIG_ARCH_IXDP2X01
-multiline_comment|/*&n; * This is an ugly hack but the CS8900 on the 2x01&squot;s does not sit in any sort&n; * of &quot;I/O space&quot; and is just direct mapped into a 32-bit-only addressable&n; * bus. The address space for this bus is such that we can&squot;t really easilly&n; * make it contigous to the PCI I/O address range, and it also does not&n; * need swapping like PCI addresses do (IXDP2x01 is a BE platform).&n; * B/C of this we can&squot;t use the standard in/out functions and need to&n; * runtime check if the incoming address is a PCI address or for&n; * the CS89x0.&n; */
+multiline_comment|/*&n; * This is an ugly hack but the CS8900 on the 2x01&squot;s does not sit in any sort&n; * of &quot;I/O space&quot; and is just direct mapped into a 32-bit-only addressable&n; * bus. The address space for this bus is such that we can&squot;t really easily&n; * make it contiguous to the PCI I/O address range, and it also does not&n; * need swapping like PCI addresses do (IXDP2x01 is a BE platform).&n; * B/C of this we can&squot;t use the standard in/out functions and need to&n; * runtime check if the incoming address is a PCI address or for&n; * the CS89x0.&n; */
 DECL|macro|inw
 macro_line|#undef inw
 DECL|macro|outw
