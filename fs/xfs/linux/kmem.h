@@ -111,6 +111,12 @@ id|PFLAGS_TEST_FSTRANS
 c_func
 (paren
 )paren
+op_logical_or
+(paren
+id|flags
+op_amp
+id|KM_NOFS
+)paren
 )paren
 id|lflags
 op_and_assign
