@@ -85,44 +85,6 @@ id|QDISC_ALIGN_CONST
 )paren
 suffix:semicolon
 )brace
-DECL|macro|cls_set_class
-mdefine_line|#define cls_set_class(tp, clp, cl) tcf_set_class(tp, clp, cl)
-r_static
-r_inline
-r_int
-r_int
-DECL|function|__cls_set_class
-id|__cls_set_class
-c_func
-(paren
-r_int
-r_int
-op_star
-id|clp
-comma
-r_int
-r_int
-id|cl
-)paren
-(brace
-r_int
-r_int
-id|old_cl
-suffix:semicolon
-id|old_cl
-op_assign
-op_star
-id|clp
-suffix:semicolon
-op_star
-id|clp
-op_assign
-id|cl
-suffix:semicolon
-r_return
-id|old_cl
-suffix:semicolon
-)brace
 multiline_comment|/* &n;   Timer resolution MUST BE &lt; 10% of min_schedulable_packet_size/bandwidth&n;   &n;   Normal IP packet size ~ 512byte, hence:&n;&n;   0.5Kbyte/1Mbyte/sec = 0.5msec, so that we need 50usec timer for&n;   10Mbit ethernet.&n;&n;   10msec resolution -&gt; &lt;50Kbit/sec.&n;   &n;   The result: [34]86 is not good choice for QoS router :-(&n;&n;   The things are not so bad, because we may use artifical&n;   clock evaluated by integration of network data flow&n;   in the most critical places.&n;&n;   Note: we do not use fastgettimeofday.&n;   The reason is that, when it is not the same thing as&n;   gettimeofday, it returns invalid timestamp, which is&n;   not updated, when net_bh is active.&n; */
 multiline_comment|/* General note about internal clock.&n;&n;   Any clock source returns time intervals, measured in units&n;   close to 1usec. With source CONFIG_NET_SCH_CLK_GETTIMEOFDAY it is precisely&n;   microseconds, otherwise something close but different chosen to minimize&n;   arithmetic cost. Ratio usec/internal untis in form nominator/denominator&n;   may be read from /proc/net/psched.&n; */
 macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
