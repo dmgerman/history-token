@@ -4,13 +4,17 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#include &lt;asm/mpc8xx.h&gt;
-macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
+macro_line|#if defined(CONFIG_4xx)
+macro_line|#include &lt;asm/ibm4xx.h&gt;
+macro_line|#elif defined(CONFIG_8xx)
+macro_line|#include &lt;asm/mpc8xx.h&gt;
+macro_line|#elif defined(CONFIG_8260)
+macro_line|#include &lt;asm/mpc8260.h&gt;
+macro_line|#endif
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* The linker tells us where the image is. */
