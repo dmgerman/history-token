@@ -1117,7 +1117,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* This is a version of usb_clear_halt() that doesn&squot;t read the status from&n; * the device -- this is because some devices crash their internal firmware&n; * when the status is requested after a halt&n; */
+multiline_comment|/* This is a version of usb_clear_halt() that doesn&squot;t read the status from&n; * the device -- this is because some devices crash their internal firmware&n; * when the status is requested after a halt.&n; *&n; * A definitive list of these &squot;bad&squot; devices is too difficult to maintain or&n; * make complete enough to be useful.  This problem was first observed on the&n; * Hagiwara FlashGate DUAL unit.  However, bus traces reveal that neither&n; * MacOS nor Windows checks the status after clearing a halt.&n; *&n; * Since many vendors in this space limit their testing to interoperability&n; * with these two OSes, specification violations like this one are common.&n; */
 DECL|function|usb_stor_clear_halt
 r_int
 id|usb_stor_clear_halt
