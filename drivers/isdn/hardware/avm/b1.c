@@ -13,10 +13,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &quot;capilli.h&quot;
+macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
-macro_line|#include &quot;capicmd.h&quot;
-macro_line|#include &quot;capiutil.h&quot;
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
+macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 DECL|variable|revision
 r_static
 r_char

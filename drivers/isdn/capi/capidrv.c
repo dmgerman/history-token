@@ -19,8 +19,8 @@ macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;capiutil.h&quot;
-macro_line|#include &quot;capicmd.h&quot;
+macro_line|#include &lt;linux/isdn/capiutil.h&gt;
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &quot;capidrv.h&quot;
 DECL|variable|revision
 r_static
