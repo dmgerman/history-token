@@ -436,43 +436,6 @@ multiline_comment|/*&n; *  Calls to set up low-level &quot;Socket Services&quot;
 r_struct
 id|pcmcia_socket
 suffix:semicolon
-DECL|struct|pcmcia_socket_class_data
-r_struct
-id|pcmcia_socket_class_data
-(brace
-DECL|member|nsock
-r_int
-r_int
-id|nsock
-suffix:semicolon
-multiline_comment|/* number of sockets */
-DECL|member|sock_offset
-r_int
-r_int
-id|sock_offset
-suffix:semicolon
-multiline_comment|/* socket # (which is&n;&t; * returned to driver) = sock_offset + (0, 1, .. , (nsock-1) */
-DECL|member|ops
-r_struct
-id|pccard_operations
-op_star
-id|ops
-suffix:semicolon
-multiline_comment|/* see above */
-DECL|member|s_info
-r_struct
-id|pcmcia_socket
-op_star
-id|s_info
-suffix:semicolon
-DECL|member|class_dev
-r_struct
-id|class_device
-id|class_dev
-suffix:semicolon
-multiline_comment|/* generic class structure */
-)brace
-suffix:semicolon
 DECL|struct|erase_busy_t
 r_typedef
 r_struct
