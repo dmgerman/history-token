@@ -135,7 +135,7 @@ macro_line|#else
 DECL|macro|XFS_ALLOC_BLOCK_MINRECS
 mdefine_line|#define XFS_ALLOC_BLOCK_MINRECS(lev,cur)&t;&bslash;&n;&t;((cur)-&gt;bc_mp-&gt;m_alloc_mnr[lev != 0])
 macro_line|#endif
-multiline_comment|/*&n; * Minimum and maximum blocksize.&n; * The blocksize upper limit is pretty much arbitrary.&n; */
+multiline_comment|/*&n; * Minimum and maximum blocksize and sectorsize.&n; * The blocksize upper limit is pretty much arbitrary.&n; * The sectorsize upper limit is due to sizeof(sb_sectsize).&n; */
 DECL|macro|XFS_MIN_BLOCKSIZE_LOG
 mdefine_line|#define XFS_MIN_BLOCKSIZE_LOG&t;9&t;/* i.e. 512 bytes */
 DECL|macro|XFS_MAX_BLOCKSIZE_LOG
@@ -144,7 +144,15 @@ DECL|macro|XFS_MIN_BLOCKSIZE
 mdefine_line|#define XFS_MIN_BLOCKSIZE&t;(1 &lt;&lt; XFS_MIN_BLOCKSIZE_LOG)
 DECL|macro|XFS_MAX_BLOCKSIZE
 mdefine_line|#define XFS_MAX_BLOCKSIZE&t;(1 &lt;&lt; XFS_MAX_BLOCKSIZE_LOG)
-multiline_comment|/*&n; * block numbers in the AG; SB is BB 0, AGF is BB 1, AGI is BB 2, AGFL is BB 3&n; */
+DECL|macro|XFS_MIN_SECTORSIZE_LOG
+mdefine_line|#define XFS_MIN_SECTORSIZE_LOG&t;9       /* i.e. 512 bytes */
+DECL|macro|XFS_MAX_SECTORSIZE_LOG
+mdefine_line|#define XFS_MAX_SECTORSIZE_LOG&t;15      /* i.e. 32768 bytes */
+DECL|macro|XFS_MIN_SECTORSIZE
+mdefine_line|#define XFS_MIN_SECTORSIZE&t;(1 &lt;&lt; XFS_MIN_SECTORSIZE_LOG)
+DECL|macro|XFS_MAX_SECTORSIZE
+mdefine_line|#define XFS_MAX_SECTORSIZE&t;(1 &lt;&lt; XFS_MAX_SECTORSIZE_LOG)
+multiline_comment|/*&n; * Block numbers in the AG:&n; * SB is sector 0, AGF is sector 1, AGI is sector 2, AGFL is sector 3.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BNO_BLOCK)
 id|xfs_agblock_t
 id|xfs_bno_block

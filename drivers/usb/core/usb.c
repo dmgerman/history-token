@@ -118,6 +118,7 @@ id|generic_remove
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* needs to be called with BKL held */
 DECL|function|usb_device_probe
 r_int
 id|usb_device_probe
@@ -163,9 +164,6 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-r_int
-id|m
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -186,24 +184,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|driver-&gt;owner
-)paren
-(brace
-id|m
-op_assign
-id|try_inc_mod_count
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|driver-&gt;owner
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m
-op_eq
-l_int|0
 )paren
+(brace
+id|err
+(paren
+l_string|&quot;Can&squot;t get a module reference for %s&quot;
+comma
+id|driver-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -262,12 +257,7 @@ id|intf-&gt;driver
 op_assign
 id|driver
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|driver-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|driver-&gt;owner
@@ -297,9 +287,6 @@ r_struct
 id|usb_driver
 op_star
 id|driver
-suffix:semicolon
-r_int
-id|m
 suffix:semicolon
 id|intf
 op_assign
@@ -345,27 +332,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|driver-&gt;owner
-)paren
-(brace
-id|m
-op_assign
-id|try_inc_mod_count
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|driver-&gt;owner
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m
-op_eq
-l_int|0
 )paren
 (brace
 singleline_comment|// FIXME this happens even when we just rmmod
-singleline_comment|// drivers that aren&squot;t in active use... 
+singleline_comment|// drivers that aren&squot;t in active use...
 id|err
 c_func
 (paren
@@ -376,7 +352,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* if we sleep here on an umanaged driver &n;&t; * the holder of the lock guards against &n;&t; * module unload */
 id|down
@@ -422,12 +397,7 @@ op_amp
 id|driver-&gt;serialize
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|driver-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|driver-&gt;owner

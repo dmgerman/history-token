@@ -2341,6 +2341,7 @@ r_case
 l_int|108
 suffix:colon
 multiline_comment|/* SI_TCL_UNLINK */
+suffix:semicolon
 )brace
 r_return
 id|TNOTSUPPORT
@@ -3007,6 +3008,7 @@ r_case
 l_int|147
 suffix:colon
 multiline_comment|/* TI_SETPEERNAME */
+suffix:semicolon
 )brace
 r_return
 id|TNOTSUPPORT

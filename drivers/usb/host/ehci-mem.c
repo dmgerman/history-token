@@ -312,9 +312,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;no dummy td&quot;
+id|ehci
+comma
+l_string|&quot;no dummy td&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_pool_free
@@ -351,7 +353,6 @@ op_star
 id|qh
 )paren
 (brace
-singleline_comment|// dbg (&quot;get %p (%d++)&quot;, qh, qh-&gt;refcount.counter);
 id|atomic_inc
 (paren
 op_amp
@@ -378,7 +379,6 @@ op_star
 id|qh
 )paren
 (brace
-singleline_comment|// dbg (&quot;put %p (--%d)&quot;, qh, qh-&gt;refcount.counter);
 r_if
 c_cond
 (paren
@@ -405,9 +405,11 @@ op_logical_or
 id|qh-&gt;qh_next.ptr
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;unused qh not empty!&quot;
+id|ehci
+comma
+l_string|&quot;unused qh not empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|BUG
@@ -450,6 +452,22 @@ op_star
 id|ehci
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ehci-&gt;async
+)paren
+id|qh_put
+(paren
+id|ehci
+comma
+id|ehci-&gt;async
+)paren
+suffix:semicolon
+id|ehci-&gt;async
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* PCI consistent memory and pools */
 r_if
 c_cond
@@ -597,22 +615,11 @@ op_logical_neg
 id|ehci-&gt;qtd_pool
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;no qtd pool&quot;
-)paren
-suffix:semicolon
-id|ehci_mem_cleanup
-(paren
-id|ehci
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|fail
 suffix:semicolon
 )brace
-multiline_comment|/* QH for control/bulk/intr transfers */
+multiline_comment|/* QHs for control/bulk/intr transfers */
 id|ehci-&gt;qh_pool
 op_assign
 id|pci_pool_create
@@ -641,19 +648,28 @@ op_logical_neg
 id|ehci-&gt;qh_pool
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;no qh pool&quot;
-)paren
+r_goto
+id|fail
 suffix:semicolon
-id|ehci_mem_cleanup
+)brace
+id|ehci-&gt;async
+op_assign
+id|ehci_qh_alloc
 (paren
 id|ehci
+comma
+id|flags
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ehci-&gt;async
+)paren
+(brace
+r_goto
+id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* ITD for high speed ISO transfers */
@@ -685,19 +701,8 @@ op_logical_neg
 id|ehci-&gt;itd_pool
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;no itd pool&quot;
-)paren
-suffix:semicolon
-id|ehci_mem_cleanup
-(paren
-id|ehci
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* SITD for full/low speed split ISO transfers */
@@ -729,19 +734,8 @@ op_logical_neg
 id|ehci-&gt;sitd_pool
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;no sitd pool&quot;
-)paren
-suffix:semicolon
-id|ehci_mem_cleanup
-(paren
-id|ehci
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* Hardware periodic table */
@@ -774,19 +768,8 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;no hw periodic table&quot;
-)paren
-suffix:semicolon
-id|ehci_mem_cleanup
-(paren
-id|ehci
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|fail
 suffix:semicolon
 )brace
 r_for
@@ -834,19 +817,8 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;no shadow periodic table&quot;
-)paren
-suffix:semicolon
-id|ehci_mem_cleanup
-(paren
-id|ehci
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|memset
@@ -866,6 +838,24 @@ op_star
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|fail
+suffix:colon
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;couldn&squot;t init memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ehci_mem_cleanup
+(paren
+id|ehci
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 eof
