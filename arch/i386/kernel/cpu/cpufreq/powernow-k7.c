@@ -16,15 +16,6 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#endif
 macro_line|#include &quot;powernow-k7.h&quot;
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;powernow: &quot;
 DECL|struct|psb_s
@@ -287,6 +278,11 @@ r_static
 r_int
 id|acpi_force
 suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 DECL|variable|powernow_table
 r_static
 r_struct
@@ -344,6 +340,71 @@ r_static
 r_char
 id|have_a0
 suffix:semicolon
+DECL|function|dprintk
+r_static
+r_void
+id|dprintk
+c_func
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+(brace
+r_char
+id|s
+(braket
+l_int|256
+)braket
+suffix:semicolon
+id|va_list
+id|args
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+id|va_start
+c_func
+(paren
+id|args
+comma
+id|fmt
+)paren
+suffix:semicolon
+id|vsprintf
+c_func
+(paren
+id|s
+comma
+id|fmt
+comma
+id|args
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
+id|va_end
+c_func
+(paren
+id|args
+)paren
+suffix:semicolon
+)brace
 DECL|function|check_fsb
 r_static
 r_int
@@ -2847,6 +2908,24 @@ suffix:semicolon
 id|module_param
 c_func
 (paren
+id|debug
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;enable debug output.&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
 id|acpi_force
 comma
 r_int
@@ -2859,7 +2938,7 @@ c_func
 (paren
 id|acpi_force
 comma
-l_string|&quot;Force ACPI to be used&quot;
+l_string|&quot;Force ACPI to be used.&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
