@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * ACPI PCI Hot Plug Controller Driver&n; *&n; * Copyright (C) 1995,2001 Compaq Computer Corporation&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (C) 2001 IBM Corp.&n; * Copyright (C) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (C) 2002,2003 Takayoshi Kochi (t-kochi@bq.jp.nec.com)&n; * Copyright (C) 2002,2003 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;,&n; *&t;&t;    &lt;t-kochi@bq.jp.nec.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -58,20 +59,22 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
 id|debug
 comma
 l_string|&quot;Debugging mode enabled or not&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_bool
+comma
+l_int|644
 )paren
 suffix:semicolon
 r_static
