@@ -21069,6 +21069,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|variable|inverse
 r_static
 r_int
@@ -21076,6 +21077,7 @@ id|inverse
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 DECL|variable|userom
 r_static
 r_int
@@ -21673,6 +21675,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 r_if
 c_cond
 (paren
@@ -21684,6 +21687,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
