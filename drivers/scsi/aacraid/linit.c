@@ -2985,6 +2985,12 @@ id|shost-&gt;max_channel
 op_assign
 l_int|1
 suffix:semicolon
+id|aac_get_config_status
+c_func
+(paren
+id|aac
+)paren
+suffix:semicolon
 id|aac_get_containers
 c_func
 (paren

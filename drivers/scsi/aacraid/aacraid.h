@@ -80,6 +80,8 @@ DECL|macro|CT_PSEUDO_RAID
 mdefine_line|#define&t;&t;CT_PSEUDO_RAID&t;&t;13&t;/* really raid4 */
 DECL|macro|CT_LAST_VOLUME_TYPE
 mdefine_line|#define&t;&t;CT_LAST_VOLUME_TYPE&t;14
+DECL|macro|CT_OK
+mdefine_line|#define &t;CT_OK        &t;&t;218
 multiline_comment|/*&n; *&t;Types of objects addressable in some fashion by the client.&n; *&t;This is a superset of those objects handled just by the filesystem&n; *&t;and includes &quot;raw&quot; objects that an administrator would use to&n; *&t;configure containers and filesystems.&n; */
 DECL|macro|FT_REG
 mdefine_line|#define&t;&t;FT_REG&t;&t;1&t;/* regular file */
@@ -2771,6 +2773,134 @@ suffix:semicolon
 multiline_comment|/* valid iff ObjType == FT_FILESYS &amp;&amp; !(ContentState &amp; FSCS_NOTCLEAN) */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; *&t;Query for Container Configuration Status&n; */
+DECL|macro|CT_GET_CONFIG_STATUS
+mdefine_line|#define CT_GET_CONFIG_STATUS 147
+DECL|struct|aac_get_config_status
+r_struct
+id|aac_get_config_status
+(brace
+DECL|member|command
+id|u32
+id|command
+suffix:semicolon
+multiline_comment|/* VM_ContainerConfig */
+DECL|member|type
+id|u32
+id|type
+suffix:semicolon
+multiline_comment|/* CT_GET_CONFIG_STATUS */
+DECL|member|parm1
+id|u32
+id|parm1
+suffix:semicolon
+DECL|member|parm2
+id|u32
+id|parm2
+suffix:semicolon
+DECL|member|parm3
+id|u32
+id|parm3
+suffix:semicolon
+DECL|member|parm4
+id|u32
+id|parm4
+suffix:semicolon
+DECL|member|parm5
+id|u32
+id|parm5
+suffix:semicolon
+DECL|member|count
+id|u32
+id|count
+suffix:semicolon
+multiline_comment|/* sizeof(((struct aac_get_config_status_resp *)NULL)-&gt;data) */
+)brace
+suffix:semicolon
+DECL|macro|CFACT_CONTINUE
+mdefine_line|#define CFACT_CONTINUE 0
+DECL|macro|CFACT_PAUSE
+mdefine_line|#define CFACT_PAUSE    1
+DECL|macro|CFACT_ABORT
+mdefine_line|#define CFACT_ABORT    2
+DECL|struct|aac_get_config_status_resp
+r_struct
+id|aac_get_config_status_resp
+(brace
+DECL|member|response
+id|u32
+id|response
+suffix:semicolon
+multiline_comment|/* ST_OK */
+DECL|member|dummy0
+id|u32
+id|dummy0
+suffix:semicolon
+DECL|member|status
+id|u32
+id|status
+suffix:semicolon
+multiline_comment|/* CT_OK */
+DECL|member|parm1
+id|u32
+id|parm1
+suffix:semicolon
+DECL|member|parm2
+id|u32
+id|parm2
+suffix:semicolon
+DECL|member|parm3
+id|u32
+id|parm3
+suffix:semicolon
+DECL|member|parm4
+id|u32
+id|parm4
+suffix:semicolon
+DECL|member|parm5
+id|u32
+id|parm5
+suffix:semicolon
+r_struct
+(brace
+DECL|member|action
+id|u32
+id|action
+suffix:semicolon
+multiline_comment|/* CFACT_CONTINUE, CFACT_PAUSE or CFACT_ABORT */
+DECL|member|flags
+id|u16
+id|flags
+suffix:semicolon
+DECL|member|count
+id|s16
+id|count
+suffix:semicolon
+DECL|member|data
+)brace
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; *&t;Accept the configuration as-is&n; */
+DECL|macro|CT_COMMIT_CONFIG
+mdefine_line|#define CT_COMMIT_CONFIG 152
+DECL|struct|aac_commit_config
+r_struct
+id|aac_commit_config
+(brace
+DECL|member|command
+id|u32
+id|command
+suffix:semicolon
+multiline_comment|/* VM_ContainerConfig */
+DECL|member|type
+id|u32
+id|type
+suffix:semicolon
+multiline_comment|/* CT_COMMIT_CONFIG */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&t;Query for &quot;mountable&quot; objects, ie, objects that are typically&n; *&t;associated with a drive letter on the client (host) side.&n; */
 DECL|struct|aac_mntent
 r_struct
@@ -3447,6 +3577,16 @@ r_struct
 id|aac_dev
 op_star
 id|aac_init_adapter
+c_func
+(paren
+r_struct
+id|aac_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
+id|aac_get_config_status
 c_func
 (paren
 r_struct
