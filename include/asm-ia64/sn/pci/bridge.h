@@ -1974,9 +1974,9 @@ mdefine_line|#define PCIBR_TYPE1_CFG(ps)         PCIBRIDGE_TYPE1_CFG((ps)-&gt;bs
 DECL|macro|PCIBR_BUS_TYPE0_CFG_DEV0
 mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEV0(ps) PCIBR_TYPE0_CFG_DEV(ps, 0)
 DECL|macro|PCIBR_TYPE0_CFG_DEV
-mdefine_line|#define PCIBR_TYPE0_CFG_DEV(ps, s) &bslash;&n;    ((IS_PIC_SOFT(ps)) ? PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s+1) : &bslash;&n;&t;&t;  &t;     PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s))
+mdefine_line|#define PCIBR_TYPE0_CFG_DEV(ps, s) PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s+1)
 DECL|macro|PCIBR_BUS_TYPE0_CFG_DEVF
-mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEVF(ps,s,f) &bslash;&n;    ((IS_PIC_SOFT(ps)) ? PCIBRIDGE_TYPE0_CFG_DEVF((ps)-&gt;bs_busnum,(s+1),f) : &bslash;&n;&t;&t;&t;     PCIBRIDGE_TYPE0_CFG_DEVF((ps)-&gt;bs_busnum,s,f))
+mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEVF(ps,s,f) PCIBRIDGE_TYPE0_CFG_DEVF((ps)-&gt;bs_busnum,(s+1),f)
 macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
 DECL|macro|BRIDGE_EXTERNAL_FLASH
 mdefine_line|#define BRIDGE_EXTERNAL_FLASH&t;0x00C00000&t;/* External Flash PROMS */

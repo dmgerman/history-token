@@ -108,6 +108,8 @@ DECL|macro|L1_BRICKTYPE_C
 mdefine_line|#define L1_BRICKTYPE_C          0x43            /* C */
 DECL|macro|L1_BRICKTYPE_R
 mdefine_line|#define L1_BRICKTYPE_R          0x52            /* R */
+DECL|macro|L1_BRICKTYPE_CHI_CG
+mdefine_line|#define L1_BRICKTYPE_CHI_CG&t;0x76&t;&t;/* v */
 DECL|macro|L1_BRICKTYPE_N
 mdefine_line|#define L1_BRICKTYPE_N          0x4e            /* N */
 DECL|macro|L1_BRICKTYPE_PX
