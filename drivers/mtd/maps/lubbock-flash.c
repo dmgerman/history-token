@@ -278,7 +278,7 @@ op_assign
 r_int
 r_int
 )paren
-id|__ioremap
+id|ioremap
 c_func
 (paren
 id|lubbock_maps
@@ -289,8 +289,6 @@ dot
 id|phys
 comma
 id|WINDOW_SIZE
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -438,7 +436,6 @@ id|owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-r_int
 id|ret
 op_assign
 id|parse_mtd_partitions
