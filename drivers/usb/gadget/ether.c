@@ -447,6 +447,10 @@ macro_line|#ifdef CONFIG_USB_GADGET_PXA27X
 DECL|macro|DEV_CONFIG_CDC
 mdefine_line|#define DEV_CONFIG_CDC
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_AT91
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define DEV_CONFIG_CDC
+macro_line|#endif
 multiline_comment|/* For CDC-incapable hardware, choose the simple cdc subset.&n; * Anything that talks bulk (without notable bugs) can do this.&n; */
 macro_line|#ifdef CONFIG_USB_GADGET_PXA2XX
 DECL|macro|DEV_CONFIG_SUBSET
@@ -7960,6 +7964,25 @@ op_assign
 id|__constant_cpu_to_le16
 (paren
 l_int|0x0212
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_at91
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0213
 )paren
 suffix:semicolon
 )brace
