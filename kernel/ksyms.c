@@ -798,13 +798,6 @@ c_func
 id|invalidate_inodes
 )paren
 suffix:semicolon
-DECL|variable|invalidate_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|invalidate_device
-)paren
-suffix:semicolon
 DECL|variable|__invalidate_device
 id|EXPORT_SYMBOL
 c_func

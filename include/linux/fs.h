@@ -5071,10 +5071,12 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|invalidate_device
+id|invalidate_partition
 c_func
 (paren
-id|kdev_t
+r_struct
+id|gendisk
+op_star
 comma
 r_int
 )paren
