@@ -7194,6 +7194,13 @@ id|invert
 (brace
 r_return
 (paren
+(paren
+id|test_type
+op_eq
+l_int|0xFF
+)paren
+op_logical_or
+(paren
 id|type
 op_eq
 id|test_type
@@ -7205,6 +7212,7 @@ op_logical_and
 id|code
 op_le
 id|max_code
+)paren
 )paren
 op_xor
 id|invert
