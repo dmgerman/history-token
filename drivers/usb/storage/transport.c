@@ -1329,6 +1329,9 @@ comma
 id|pipe
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|usb_stor_clear_halt
 c_func
 (paren
@@ -1336,6 +1339,11 @@ id|us
 comma
 id|pipe
 )paren
+OL
+l_int|0
+)paren
+r_return
+id|US_BULK_TRANSFER_FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* did we abort this command? */
@@ -2787,7 +2795,7 @@ r_return
 id|US_BULK_TRANSFER_ABORTED
 suffix:semicolon
 )brace
-multiline_comment|/* STALL must be cleared when it is detected */
+multiline_comment|/* a stall indicates a protocol error */
 r_if
 c_cond
 (paren
@@ -2800,49 +2808,9 @@ id|EPIPE
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- Stall on control pipe. Clearing&bslash;n&quot;
+l_string|&quot;-- Stall on control pipe&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
-op_assign
-id|usb_stor_clear_halt
-c_func
-(paren
-id|us
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_control_msg(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|US_BULK_TRANSFER_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
@@ -3186,7 +3154,7 @@ r_return
 id|US_BULK_TRANSFER_ABORTED
 suffix:semicolon
 )brace
-multiline_comment|/* a stall is a fatal condition from the device */
+multiline_comment|/* a stall indicates a protocol error */
 r_if
 c_cond
 (paren
@@ -3199,49 +3167,9 @@ id|EPIPE
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- Stall on control pipe. Clearing&bslash;n&quot;
+l_string|&quot;-- Stall on control pipe&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
-op_assign
-id|usb_stor_clear_halt
-c_func
-(paren
-id|us
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_CB_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|US_BULK_TRANSFER_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
@@ -3402,34 +3330,6 @@ l_int|1
 r_return
 id|data
 suffix:semicolon
-multiline_comment|/* if we get a STALL, clear the stall */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|EPIPE
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;clearing endpoint halt for pipe 0x%x&bslash;n&quot;
-comma
-id|pipe
-)paren
-suffix:semicolon
-multiline_comment|/* Use usb_clear_halt() because this is not a&n;&t;&t; * scsi queued-command */
-id|usb_clear_halt
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|pipe
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* return the default -- no LUNs */
 r_return
 l_int|0
@@ -3701,6 +3601,16 @@ r_return
 id|US_BULK_TRANSFER_ABORTED
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+r_return
+id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
 id|result
 op_assign
 op_minus
@@ -3881,6 +3791,16 @@ r_return
 id|US_BULK_TRANSFER_ABORTED
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+r_return
+id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
 multiline_comment|/* get the status again */
 id|US_DEBUGP
 c_func

@@ -2700,21 +2700,7 @@ id|EPIPE
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- clearing stall on control interface&bslash;n&quot;
-)paren
-suffix:semicolon
-id|usb_clear_halt
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
+l_string|&quot;-- stall on control interface&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -1046,6 +1046,9 @@ comma
 id|pipe
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|usb_stor_clear_halt
 c_func
 (paren
@@ -1053,6 +1056,11 @@ id|us
 comma
 id|pipe
 )paren
+OL
+l_int|0
+)paren
+r_return
+id|ISD200_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* did we send all the data? */
@@ -1619,6 +1627,9 @@ comma
 id|pipe
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|usb_stor_clear_halt
 c_func
 (paren
@@ -1626,6 +1637,11 @@ id|us
 comma
 id|pipe
 )paren
+OL
+l_int|0
+)paren
+r_return
+id|ISD200_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 r_else
@@ -1747,6 +1763,9 @@ comma
 id|pipe
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|usb_stor_clear_halt
 c_func
 (paren
@@ -1754,6 +1773,11 @@ id|us
 comma
 id|pipe
 )paren
+OL
+l_int|0
+)paren
+r_return
+id|ISD200_TRANSPORT_ERROR
 suffix:semicolon
 multiline_comment|/* get the status again */
 id|US_DEBUGP
@@ -2922,47 +2946,6 @@ c_func
 l_string|&quot;   Request to write ISD200 Config Data failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* STALL must be cleared when they are detected */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|EPIPE
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- Stall on control pipe. Clearing&bslash;n&quot;
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|usb_stor_clear_halt
-c_func
-(paren
-id|us
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- usb_stor_clear_halt() returns %d&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-)brace
 id|retStatus
 op_assign
 id|ISD200_ERROR
@@ -3091,47 +3074,6 @@ c_func
 l_string|&quot;   Request to get ISD200 Config Data failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* STALL must be cleared when they are detected */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|EPIPE
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- Stall on control pipe. Clearing&bslash;n&quot;
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|usb_stor_clear_halt
-c_func
-(paren
-id|us
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- usb_stor_clear_halt() returns %d&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-)brace
 id|retStatus
 op_assign
 id|ISD200_ERROR

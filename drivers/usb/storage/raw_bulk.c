@@ -109,7 +109,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* a stall is a fatal condition from the device */
+multiline_comment|/* a stall indicates a protocol error */
 r_if
 c_cond
 (paren
@@ -122,25 +122,7 @@ id|EPIPE
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- Stall on control pipe. Clearing&bslash;n&quot;
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|usb_stor_clear_halt
-c_func
-(paren
-id|us
-comma
-id|pipe
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- usb_stor_clear_halt() returns %d&bslash;n&quot;
-comma
-id|result
+l_string|&quot;-- Stall on control pipe&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -256,6 +238,9 @@ op_star
 id|act_len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|usb_stor_clear_halt
 c_func
 (paren
@@ -263,6 +248,11 @@ id|us
 comma
 id|pipe
 )paren
+OL
+l_int|0
+)paren
+r_return
+id|US_BULK_TRANSFER_FAILED
 suffix:semicolon
 multiline_comment|/* return US_BULK_TRANSFER_SHORT; */
 )brace
