@@ -2952,6 +2952,12 @@ op_star
 id|bdp
 )paren
 (brace
+id|e100_phy_reset
+c_func
+(paren
+id|bdp
+)paren
+suffix:semicolon
 id|e100_phy_address_detect
 c_func
 (paren
@@ -2994,12 +3000,6 @@ suffix:semicolon
 id|bdp-&gt;zlock_state
 op_assign
 id|ZLOCK_INITIAL
-suffix:semicolon
-id|e100_phy_reset
-c_func
-(paren
-id|bdp
-)paren
 suffix:semicolon
 id|e100_phy_set_speed_duplex
 c_func
