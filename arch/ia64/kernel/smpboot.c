@@ -1758,7 +1758,7 @@ suffix:semicolon
 id|cpu_set
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 id|cpu_online_map
 )paren
@@ -1766,7 +1766,7 @@ suffix:semicolon
 id|cpu_set
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 id|phys_cpu_present_map
 )paren
