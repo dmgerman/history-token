@@ -307,12 +307,6 @@ c_cond
 (paren
 op_logical_neg
 id|lock_held
-op_logical_and
-id|PageLRU
-c_func
-(paren
-id|page
-)paren
 )paren
 (brace
 id|spin_lock
