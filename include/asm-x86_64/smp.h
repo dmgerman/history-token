@@ -243,15 +243,9 @@ id|cpu_online_map
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* RED-PEN different from i386 */
 DECL|macro|for_each_cpu
 mdefine_line|#define for_each_cpu(i) &bslash;&n;&t;for((i) = find_first_cpu(); (i)&gt;=0; (i)=find_next_cpu(i))
-r_extern
-r_volatile
-r_int
-r_int
-id|cpu_callout_map
-suffix:semicolon
-multiline_comment|/* We don&squot;t mark CPUs online until __cpu_up(), so we need another measure */
 DECL|function|num_booting_cpus
 r_static
 r_inline
@@ -270,6 +264,12 @@ id|cpu_callout_map
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_volatile
+r_int
+r_int
+id|cpu_callout_map
+suffix:semicolon
 multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; */
 r_extern
 r_volatile

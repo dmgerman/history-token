@@ -7,6 +7,8 @@ DECL|macro|__KERNEL_DS
 mdefine_line|#define __KERNEL_DS&t;0x18
 DECL|macro|__KERNEL32_CS
 mdefine_line|#define __KERNEL32_CS   0x38
+DECL|macro|__USER_LONGBASE
+mdefine_line|#define __USER_LONGBASE&t;((GDT_ENTRY_LONGBASE * 8)  | 3)
 multiline_comment|/* &n; * we cannot use the same code segment descriptor for user and kernel&n; * even not in the long flat model, because of different DPL /kkeil &n; * The segment offset needs to contain a RPL. Grr. -AK&n; * GDT layout to get 64bit syscall right (sysret hardcodes gdt offsets) &n; */
 DECL|macro|__USER32_CS
 mdefine_line|#define __USER32_CS   0x23   /* 4*8+3 */ 
@@ -26,6 +28,8 @@ DECL|macro|GDT_ENTRY_TLS_MIN
 mdefine_line|#define GDT_ENTRY_TLS_MIN 11
 DECL|macro|GDT_ENTRY_TLS_MAX
 mdefine_line|#define GDT_ENTRY_TLS_MAX 13
+DECL|macro|GDT_ENTRY_LONGBASE
+mdefine_line|#define GDT_ENTRY_LONGBASE 14
 DECL|macro|GDT_ENTRY_TLS_ENTRIES
 mdefine_line|#define GDT_ENTRY_TLS_ENTRIES 3
 DECL|macro|IDT_ENTRIES

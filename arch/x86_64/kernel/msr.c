@@ -120,7 +120,7 @@ l_string|&quot;3:&t;movl %4,%0&bslash;n&quot;
 l_string|&quot;&t;jmp 2b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;&t;.align 4&bslash;n&quot;
+l_string|&quot;&t;.align 8&bslash;n&quot;
 l_string|&quot;&t;.quad 1b,3b&bslash;n&quot;
 l_string|&quot;.previous&quot;
 suffix:colon
