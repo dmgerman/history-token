@@ -219,7 +219,12 @@ id|MAX_SKB_FRAGS
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/** &n; *&t;struct sk_buff - socket buffer&n; *&t;@next: Next buffer in list&n; *&t;@prev: Previous buffer in list&n; *&t;@list: List we are on&n; *&t;@sk: Socket we are owned by&n; *&t;@stamp: Time we arrived&n; *&t;@dev: Device we arrived on/are leaving by&n; *&t;@input_dev: Device we arrived on&n; *      @real_dev: The real device we are using&n; *&t;@h: Transport layer header&n; *&t;@nh: Network layer header&n; *&t;@mac: Link layer header&n; *&t;@dst: FIXME: Describe this field&n; *&t;@cb: Control buffer. Free for use by every layer. Put private vars here&n; *&t;@len: Length of actual data&n; *&t;@data_len: Data length&n; *&t;@mac_len: Length of link layer header&n; *&t;@csum: Checksum&n; *&t;@__unused: Dead field, may be reused&n; *&t;@cloned: Head may be cloned (check refcnt to be sure)&n; *&t;@pkt_type: Packet class&n; *&t;@ip_summed: Driver fed us an IP checksum&n; *&t;@priority: Packet queueing priority&n; *&t;@users: User count - see {datagram,tcp}.c&n; *&t;@protocol: Packet protocol from driver&n; *&t;@security: Security level of packet&n; *&t;@truesize: Buffer size &n; *&t;@head: Head of buffer&n; *&t;@data: Data head pointer&n; *&t;@tail: Tail pointer&n; *&t;@end: End pointer&n; *&t;@destructor: Destruct function&n; *&t;@nfmark: Can be used for communication between hooks&n; *&t;@nfcache: Cache info&n; *&t;@nfct: Associated connection, if any&n; *&t;@nfctinfo: Relationship of this skb to the connection&n; *&t;@nf_debug: Netfilter debugging&n; *&t;@nf_bridge: Saved data about a bridged frame - see br_netfilter.c&n; *      @private: Data which is private to the HIPPI implementation&n; *&t;@tc_index: Traffic control index&n; */
+multiline_comment|/* We divide dataref into two halves.  The higher 16 bits hold references&n; * to the payload part of skb-&gt;data.  The lower 16 bits hold references to&n; * the entire skb-&gt;data.  It is up to the users of the skb to agree on&n; * where the payload starts.&n; *&n; * All users must obey the rule that the skb-&gt;data reference count must be&n; * greater than or equal to the payload reference count.&n; *&n; * Holding a reference to the payload part means that the user does not&n; * care about modifications to the header part of skb-&gt;data.&n; */
+DECL|macro|SKB_DATAREF_SHIFT
+mdefine_line|#define SKB_DATAREF_SHIFT 16
+DECL|macro|SKB_DATAREF_MASK
+mdefine_line|#define SKB_DATAREF_MASK ((1 &lt;&lt; SKB_DATAREF_SHIFT) - 1)
+multiline_comment|/** &n; *&t;struct sk_buff - socket buffer&n; *&t;@next: Next buffer in list&n; *&t;@prev: Previous buffer in list&n; *&t;@list: List we are on&n; *&t;@sk: Socket we are owned by&n; *&t;@stamp: Time we arrived&n; *&t;@dev: Device we arrived on/are leaving by&n; *&t;@input_dev: Device we arrived on&n; *      @real_dev: The real device we are using&n; *&t;@h: Transport layer header&n; *&t;@nh: Network layer header&n; *&t;@mac: Link layer header&n; *&t;@dst: FIXME: Describe this field&n; *&t;@cb: Control buffer. Free for use by every layer. Put private vars here&n; *&t;@len: Length of actual data&n; *&t;@data_len: Data length&n; *&t;@mac_len: Length of link layer header&n; *&t;@csum: Checksum&n; *&t;@__unused: Dead field, may be reused&n; *&t;@cloned: Head may be cloned (check refcnt to be sure)&n; *&t;@nohdr: Payload reference only, must not modify header&n; *&t;@pkt_type: Packet class&n; *&t;@ip_summed: Driver fed us an IP checksum&n; *&t;@priority: Packet queueing priority&n; *&t;@users: User count - see {datagram,tcp}.c&n; *&t;@protocol: Packet protocol from driver&n; *&t;@security: Security level of packet&n; *&t;@truesize: Buffer size &n; *&t;@head: Head of buffer&n; *&t;@data: Data head pointer&n; *&t;@tail: Tail pointer&n; *&t;@end: End pointer&n; *&t;@destructor: Destruct function&n; *&t;@nfmark: Can be used for communication between hooks&n; *&t;@nfcache: Cache info&n; *&t;@nfct: Associated connection, if any&n; *&t;@nfctinfo: Relationship of this skb to the connection&n; *&t;@nf_debug: Netfilter debugging&n; *&t;@nf_bridge: Saved data about a bridged frame - see br_netfilter.c&n; *      @private: Data which is private to the HIPPI implementation&n; *&t;@tc_index: Traffic control index&n; */
 DECL|struct|sk_buff
 r_struct
 id|sk_buff
@@ -403,6 +408,13 @@ id|local_df
 comma
 DECL|member|cloned
 id|cloned
+suffix:colon
+l_int|1
+comma
+DECL|member|nohdr
+id|nohdr
+suffix:colon
+l_int|1
 comma
 DECL|member|pkt_type
 id|pkt_type
@@ -890,6 +902,7 @@ id|skb
 r_return
 id|skb-&gt;cloned
 op_logical_and
+(paren
 id|atomic_read
 c_func
 (paren
@@ -902,8 +915,53 @@ id|skb
 op_member_access_from_pointer
 id|dataref
 )paren
+op_amp
+id|SKB_DATAREF_MASK
+)paren
 op_ne
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;skb_header_release - release reference to header&n; *&t;@skb: buffer to operate on&n; *&n; *&t;Drop a reference to the header part of the buffer.  This is done&n; *&t;by acquiring a payload reference.  You must not read from the header&n; *&t;part of skb-&gt;data after this.&n; */
+DECL|function|skb_header_release
+r_static
+r_inline
+r_void
+id|skb_header_release
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|skb-&gt;nohdr
+)paren
+suffix:semicolon
+id|skb-&gt;nohdr
+op_assign
+l_int|1
+suffix:semicolon
+id|atomic_add
+c_func
+(paren
+l_int|1
+op_lshift
+id|SKB_DATAREF_SHIFT
+comma
+op_amp
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|dataref
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_shared - is the buffer shared&n; *&t;@skb: buffer to check&n; *&n; *&t;Returns true if more than one person has a reference to this&n; *&t;buffer.&n; */
