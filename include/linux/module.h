@@ -1429,7 +1429,9 @@ id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
+DECL|function|MODULE_PARM_
+r_static
+r_inline
 r_void
 id|__deprecated
 id|MODULE_PARM_
@@ -1437,14 +1439,15 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
+(brace
+)brace
 macro_line|#ifdef MODULE
 multiline_comment|/* DEPRECATED: Do not use. */
 DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type, &amp;MODULE_PARM_ };
 macro_line|#else
 DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(var,type) static void __attribute_unused__ *__parm_##var = &amp;MODULE_PARM_;
+mdefine_line|#define MODULE_PARM(var,type) static void __attribute__((__unused__)) *__parm_##var = &amp;MODULE_PARM_;
 macro_line|#endif
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
