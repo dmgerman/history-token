@@ -5648,6 +5648,10 @@ r_case
 l_int|0x103c006d
 suffix:colon
 multiline_comment|/* HP nx9105 */
+r_case
+l_int|0x17340088
+suffix:colon
+multiline_comment|/* FSC Scenic-W */
 multiline_comment|/* enable headphone jack sense */
 id|snd_ac97_update_bits
 c_func
