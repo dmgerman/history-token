@@ -2892,6 +2892,46 @@ l_int|0x0003
 )brace
 )brace
 comma
+(brace
+multiline_comment|/* Creative Sound Blaster MP3+ */
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x041e
+comma
+l_int|0x3010
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+(paren
+r_const
+id|snd_usb_audio_quirk_t
+)paren
+(brace
+dot
+id|vendor_name
+op_assign
+l_string|&quot;Creative Labs&quot;
+comma
+dot
+id|product_name
+op_assign
+l_string|&quot;Sound Blaster MP3+&quot;
+comma
+dot
+id|ifnum
+op_assign
+id|QUIRK_NO_INTERFACE
+)brace
+)brace
+comma
 DECL|macro|USB_DEVICE_VENDOR_SPEC
 macro_line|#undef USB_DEVICE_VENDOR_SPEC
 eof
