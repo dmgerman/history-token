@@ -3,13 +3,13 @@ macro_line|#ifndef __CHOOSE_MODE_H__
 DECL|macro|__CHOOSE_MODE_H__
 mdefine_line|#define __CHOOSE_MODE_H__
 macro_line|#include &quot;uml-config.h&quot;
-macro_line|#if defined(CONFIG_MODE_TT) &amp;&amp; defined(CONFIG_MODE_SKAS)
+macro_line|#if defined(UML_CONFIG_MODE_TT) &amp;&amp; defined(UML_CONFIG_MODE_SKAS)
 DECL|macro|CHOOSE_MODE
 mdefine_line|#define CHOOSE_MODE(tt, skas) (mode_tt ? (tt) : (skas))
-macro_line|#elif defined(CONFIG_MODE_SKAS)
+macro_line|#elif defined(UML_CONFIG_MODE_SKAS)
 DECL|macro|CHOOSE_MODE
 mdefine_line|#define CHOOSE_MODE(tt, skas) (skas)
-macro_line|#elif defined(CONFIG_MODE_TT)
+macro_line|#elif defined(UML_CONFIG_MODE_TT)
 DECL|macro|CHOOSE_MODE
 mdefine_line|#define CHOOSE_MODE(tt, skas) (tt)
 macro_line|#endif

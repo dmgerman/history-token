@@ -155,10 +155,6 @@ c_func
 (paren
 id|fd
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|map
 comma
@@ -258,10 +254,6 @@ c_func
 (paren
 id|fd
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|unmap
 comma
@@ -417,10 +409,6 @@ c_func
 (paren
 id|fd
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|protect
 comma

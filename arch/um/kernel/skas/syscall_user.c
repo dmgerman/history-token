@@ -17,7 +17,7 @@ r_void
 id|handle_syscall
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -28,12 +28,6 @@ id|result
 suffix:semicolon
 r_int
 id|index
-suffix:semicolon
-id|host_to_regs
-c_func
-(paren
-id|regs
-)paren
 suffix:semicolon
 id|index
 op_assign
@@ -63,7 +57,7 @@ suffix:semicolon
 id|REGS_SET_SYSCALL_RETURN
 c_func
 (paren
-id|regs-&gt;mode.skas.regs
+id|regs-&gt;skas.regs
 comma
 id|result
 )paren

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2001 Lennert Buytenhek (buytenh@gnu.org) and &n; * James Leu (jleu@mindspring.net).&n; * Copyright (C) 2001 by various other people who didn&squot;t put their name here.&n; * Licensed under the GPL.&n; */
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;unistd.h&gt;
+macro_line|#include &lt;stdint.h&gt;
 macro_line|#include &lt;sys/socket.h&gt;
 macro_line|#include &lt;sys/un.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
@@ -27,12 +28,11 @@ r_struct
 id|request_v3
 (brace
 DECL|member|magic
-r_int
-r_int
+r_uint32
 id|magic
 suffix:semicolon
 DECL|member|version
-r_int
+r_uint32
 id|version
 suffix:semicolon
 DECL|member|type
@@ -796,36 +796,44 @@ id|net_user_info
 id|daemon_user_info
 op_assign
 (brace
+dot
 id|init
-suffix:colon
+op_assign
 id|daemon_user_init
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|daemon_open
 comma
+dot
 id|close
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|daemon_remove
 comma
+dot
 id|set_mtu
-suffix:colon
+op_assign
 id|daemon_set_mtu
 comma
+dot
 id|add_address
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|delete_address
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|max_packet
-suffix:colon
+op_assign
 id|MAX_PACKET
 op_minus
 id|ETH_HEADER_OTHER

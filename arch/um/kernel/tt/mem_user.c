@@ -106,8 +106,8 @@ comma
 l_int|0
 )paren
 )paren
-OL
-l_int|0
+op_eq
+id|MAP_FAILED
 )paren
 (brace
 id|perror

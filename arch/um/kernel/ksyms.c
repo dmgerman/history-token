@@ -10,6 +10,7 @@ macro_line|#include &quot;asm/delay.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/pgalloc.h&quot;
+macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/tlbflush.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -154,6 +155,34 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|empty_zero_page
+)paren
+suffix:semicolon
+DECL|variable|um_virt_to_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|um_virt_to_phys
+)paren
+suffix:semicolon
+DECL|variable|mode_tt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mode_tt
+)paren
+suffix:semicolon
+DECL|variable|handle_page_fault
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|handle_page_fault
+)paren
+suffix:semicolon
+DECL|variable|os_getpid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_getpid
 )paren
 suffix:semicolon
 DECL|variable|os_open_file
