@@ -635,7 +635,7 @@ c_loop
 (paren
 id|tmp
 op_assign
-id|head-&gt;next
+id|head-&gt;prev
 )paren
 op_ne
 id|head

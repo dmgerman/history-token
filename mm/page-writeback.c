@@ -16,7 +16,7 @@ r_static
 r_int
 id|dirty_background_ratio
 op_assign
-l_int|30
+l_int|20
 suffix:semicolon
 multiline_comment|/*&n; * The generator of dirty data starts async writeback at this level&n; */
 DECL|variable|dirty_async_ratio
@@ -24,7 +24,7 @@ r_static
 r_int
 id|dirty_async_ratio
 op_assign
-l_int|45
+l_int|60
 suffix:semicolon
 multiline_comment|/*&n; * The generator of dirty data performs sync writeout at this level&n; */
 DECL|variable|dirty_sync_ratio
