@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -26,12 +27,12 @@ DECL|macro|CONFIG_IRLAN_SEND_GRATUITOUS_ARP
 macro_line|#undef CONFIG_IRLAN_SEND_GRATUITOUS_ARP
 multiline_comment|/* extern char sysctl_devname[]; */
 multiline_comment|/*&n; *  Master structure&n; */
-DECL|variable|irlan
-id|hashbin_t
-op_star
-id|irlan
-op_assign
-l_int|NULL
+r_static
+id|LIST_HEAD
+c_func
+(paren
+id|irlans
+)paren
 suffix:semicolon
 DECL|variable|ckey
 r_static
@@ -237,36 +238,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate master structure */
-id|irlan
-op_assign
-id|hashbin_new
-c_func
-(paren
-id|HB_LOCK
-)paren
-suffix:semicolon
-multiline_comment|/* protect from /proc */
-r_if
-c_cond
-(paren
-id|irlan
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;IrLAN: Can&squot;t allocate hashbin!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PROC_FS
 id|create_proc_info_entry
 c_func
@@ -362,6 +333,14 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|irlan_cb
+op_star
+id|self
+comma
+op_star
+id|next
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -394,16 +373,35 @@ id|proc_irda
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
-multiline_comment|/*&n;&t; *  Delete hashbin and close all irlan client instances in it&n;&t; */
-id|hashbin_delete
+multiline_comment|/* Cleanup any leftover network devices */
+id|rtnl_lock
 c_func
 (paren
-id|irlan
-comma
-(paren
-id|FREE_FUNC
 )paren
+suffix:semicolon
+id|list_for_each_entry_safe
+c_func
+(paren
+id|self
+comma
+id|next
+comma
+op_amp
+id|irlans
+comma
+id|dev_list
+)paren
+(brace
 id|__irlan_close
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
+)brace
+id|rtnl_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -532,18 +530,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|irlan
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|NULL
-suffix:semicolon
-)paren
-suffix:semicolon
 multiline_comment|/* &n;&t; *  Initialize the irlan structure. &n;&t; */
 id|self
 op_assign
@@ -656,20 +642,14 @@ op_amp
 id|self-&gt;open_wait
 )paren
 suffix:semicolon
-id|hashbin_insert
+id|list_add_rcu
 c_func
 (paren
-id|irlan
+op_amp
+id|self-&gt;dev_list
 comma
-(paren
-id|irda_queue_t
-op_star
-)paren
-id|self
-comma
-id|daddr
-comma
-l_int|NULL
+op_amp
+id|irlans
 )paren
 suffix:semicolon
 id|skb_queue_head_init
@@ -705,7 +685,7 @@ r_return
 id|self
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function __irlan_close (self)&n; *&n; *    This function closes and deallocates the IrLAN client instances. Be &n; *    aware that other functions which calles client_close() must call &n; *    hashbin_remove() first!!!&n; */
+multiline_comment|/*&n; * Function __irlan_close (self)&n; *&n; *    This function closes and deallocates the IrLAN client instances. Be &n; *    aware that other functions which calles client_close()&n; */
 DECL|function|__irlan_close
 r_static
 r_void
@@ -731,6 +711,11 @@ comma
 l_string|&quot;%s()&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|ASSERT_RTNL
+c_func
+(paren
 )paren
 suffix:semicolon
 id|ASSERT
@@ -808,7 +793,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|unregister_netdev
+id|unregister_netdevice
 c_func
 (paren
 op_amp
@@ -824,6 +809,41 @@ c_func
 (paren
 id|self
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* Find any instance of irlan, used for client discovery wakeup */
+DECL|function|irlan_get_any
+r_struct
+id|irlan_cb
+op_star
+id|irlan_get_any
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|irlan_cb
+op_star
+id|self
+suffix:semicolon
+id|list_for_each_entry_rcu
+c_func
+(paren
+id|self
+comma
+op_amp
+id|irlans
+comma
+id|dev_list
+)paren
+(brace
+r_return
+id|self
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_connect_indication (instance, sap, qos, max_sdu_size, skb)&n; *&n; *    Here we receive the connect indication for the data channel&n; *&n; */
@@ -3986,33 +4006,13 @@ id|irlan_cb
 op_star
 id|self
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|irlan
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|0
-suffix:semicolon
-)paren
-suffix:semicolon
 id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_lock_irqsave
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|irlan-&gt;hb_spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|len
@@ -4027,25 +4027,15 @@ comma
 l_string|&quot;IrLAN instances:&bslash;n&quot;
 )paren
 suffix:semicolon
-id|self
-op_assign
-(paren
-r_struct
-id|irlan_cb
-op_star
-)paren
-id|hashbin_get_first
+id|list_for_each_entry_rcu
 c_func
 (paren
-id|irlan
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
 id|self
-op_ne
-l_int|NULL
+comma
+op_amp
+id|irlans
+comma
+id|dev_list
 )paren
 (brace
 id|ASSERT
@@ -4263,27 +4253,10 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|self
-op_assign
-(paren
-r_struct
-id|irlan_cb
-op_star
-)paren
-id|hashbin_get_next
-c_func
-(paren
-id|irlan
-)paren
-suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|irlan-&gt;hb_spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return

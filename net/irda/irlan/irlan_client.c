@@ -432,17 +432,6 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|irlan
-op_ne
-l_int|NULL
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
 id|discovery
 op_ne
 l_int|NULL
@@ -472,17 +461,16 @@ op_assign
 id|discovery-&gt;daddr
 suffix:semicolon
 multiline_comment|/* Find instance */
-id|self
-op_assign
-(paren
-r_struct
-id|irlan_cb
-op_star
-)paren
-id|hashbin_get_first
+id|rcu_read_lock
 c_func
 (paren
-id|irlan
+)paren
+suffix:semicolon
+id|self
+op_assign
+id|irlan_get_any
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -525,6 +513,11 @@ id|daddr
 )paren
 suffix:semicolon
 )brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_client_data_indication (handle, skb)&n; *&n; *    This function gets the data that is received on the control channel&n; *&n; */
 DECL|function|irlan_client_ctrl_data_indication

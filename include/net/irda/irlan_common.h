@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;net/irda/irqueue.h&gt;
 macro_line|#include &lt;net/irda/irttp.h&gt;
 DECL|macro|IRLAN_MTU
 mdefine_line|#define IRLAN_MTU        1518
@@ -263,14 +262,14 @@ DECL|struct|irlan_cb
 r_struct
 id|irlan_cb
 (brace
-DECL|member|q
-id|irda_queue_t
-id|q
-suffix:semicolon
-multiline_comment|/* Must be first */
 DECL|member|magic
 r_int
 id|magic
+suffix:semicolon
+DECL|member|dev_list
+r_struct
+id|list_head
+id|dev_list
 suffix:semicolon
 DECL|member|dev
 r_struct
@@ -456,6 +455,15 @@ r_struct
 id|irlan_cb
 op_star
 id|self
+)paren
+suffix:semicolon
+r_struct
+id|irlan_cb
+op_star
+id|irlan_get_any
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_void
@@ -645,11 +653,6 @@ c_func
 id|__u8
 id|code
 )paren
-suffix:semicolon
-r_extern
-id|hashbin_t
-op_star
-id|irlan
 suffix:semicolon
 macro_line|#endif
 eof
