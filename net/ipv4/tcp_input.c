@@ -15230,7 +15230,7 @@ op_assign
 id|tcp_time_stamp
 suffix:semicolon
 )brace
-multiline_comment|/* When incoming ACK allowed to free some skb from write_queue,&n; * we remember this event in flag sk-&gt;sk_queue_shrunk and wake up socket&n; * on the exit from tcp input handler.&n; *&n; * PROBLEM: sndbuf expansion does not work well with largesend.&n; */
+multiline_comment|/* When incoming ACK allowed to free some skb from write_queue,&n; * we remember this event in flag SOCK_QUEUE_SHRUNK and wake up socket&n; * on the exit from tcp input handler.&n; *&n; * PROBLEM: sndbuf expansion does not work well with largesend.&n; */
 DECL|function|tcp_new_space
 r_static
 r_void
@@ -15378,12 +15378,22 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_queue_shrunk
+id|sock_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 )paren
 (brace
-id|sk-&gt;sk_queue_shrunk
-op_assign
-l_int|0
+id|sock_reset_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 suffix:semicolon
 r_if
 c_cond

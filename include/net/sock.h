@@ -96,7 +96,7 @@ id|skc_refcnt
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n;  *&t;struct sock - network layer representation of sockets&n;  *&t;@__sk_common - shared layout with tcp_tw_bucket&n;  *&t;@sk_shutdown - mask of %SEND_SHUTDOWN and/or %RCV_SHUTDOWN&n;  *&t;@sk_userlocks - %SO_SNDBUF and %SO_RCVBUF settings&n;  *&t;@sk_lock -&t;synchronizer&n;  *&t;@sk_rcvbuf - size of receive buffer in bytes&n;  *&t;@sk_sleep - sock wait queue&n;  *&t;@sk_dst_cache - destination cache&n;  *&t;@sk_dst_lock - destination cache lock&n;  *&t;@sk_policy - flow policy&n;  *&t;@sk_rmem_alloc - receive queue bytes committed&n;  *&t;@sk_receive_queue - incoming packets&n;  *&t;@sk_wmem_alloc - transmit queue bytes committed&n;  *&t;@sk_write_queue - Packet sending queue&n;  *&t;@sk_omem_alloc - &quot;o&quot; is &quot;option&quot; or &quot;other&quot;&n;  *&t;@sk_wmem_queued - persistent queue size&n;  *&t;@sk_forward_alloc - space allocated forward&n;  *&t;@sk_allocation - allocation mode&n;  *&t;@sk_sndbuf - size of send buffer in bytes&n;  *&t;@sk_flags - %SO_LINGER (l_onoff), %SO_BROADCAST, %SO_KEEPALIVE, %SO_OOBINLINE settings&n;  *&t;@sk_no_check - %SO_NO_CHECK setting, wether or not checkup packets&n;  *&t;@sk_route_caps - route capabilities (e.g. %NETIF_F_TSO)&n;  *&t;@sk_lingertime - %SO_LINGER l_linger setting&n;  *&t;@sk_hashent - hash entry in several tables (e.g. tcp_ehash)&n;  *&t;@sk_backlog - always used with the per-socket spinlock held&n;  *&t;@sk_callback_lock - used with the callbacks in the end of this struct&n;  *&t;@sk_error_queue - rarely used&n;  *&t;@sk_prot - protocol handlers inside a network family&n;  *&t;@sk_err - last error&n;  *&t;@sk_err_soft - errors that don&squot;t cause failure but are the cause of a persistent failure not just &squot;timed out&squot;&n;  *&t;@sk_ack_backlog - current listen backlog&n;  *&t;@sk_max_ack_backlog - listen backlog set in listen()&n;  *&t;@sk_priority - %SO_PRIORITY setting&n;  *&t;@sk_type - socket type (%SOCK_STREAM, etc)&n;  *&t;@sk_protocol - which protocol this socket belongs in this network family&n;  *&t;@sk_peercred - %SO_PEERCRED setting&n;  *&t;@sk_rcvlowat - %SO_RCVLOWAT setting&n;  *&t;@sk_rcvtimeo - %SO_RCVTIMEO setting&n;  *&t;@sk_sndtimeo - %SO_SNDTIMEO setting&n;  *&t;@sk_filter - socket filtering instructions&n;  *&t;@sk_protinfo - private area, net family specific, when not using slab&n;  *&t;@sk_slab - the slabcache this instance was allocated from&n;  *&t;@sk_timer - sock cleanup timer&n;  *&t;@sk_stamp - time stamp of last packet received&n;  *&t;@sk_socket - Identd and reporting IO signals&n;  *&t;@sk_user_data - RPC layer private data&n;  *&t;@sk_owner - module that owns this socket&n;  *&t;@sk_sndmsg_page - cached page for sendmsg&n;  *&t;@sk_sndmsg_off - cached offset for sendmsg&n;  *&t;@sk_send_head - front of stuff to transmit&n;  *&t;@sk_write_pending - a write to stream socket waits to start&n;  *&t;@sk_queue_shrunk - write queue has been shrunk recently&n;  *&t;@sk_state_change - callback to indicate change in the state of the sock&n;  *&t;@sk_data_ready - callback to indicate there is data to be processed&n;  *&t;@sk_write_space - callback to indicate there is bf sending space available&n;  *&t;@sk_error_report - callback to indicate errors (e.g. %MSG_ERRQUEUE)&n;  *&t;@sk_backlog_rcv - callback to process the backlog&n;  *&t;@sk_destruct - called at sock freeing time, i.e. when all refcnt == 0&n; */
+multiline_comment|/**&n;  *&t;struct sock - network layer representation of sockets&n;  *&t;@__sk_common - shared layout with tcp_tw_bucket&n;  *&t;@sk_shutdown - mask of %SEND_SHUTDOWN and/or %RCV_SHUTDOWN&n;  *&t;@sk_userlocks - %SO_SNDBUF and %SO_RCVBUF settings&n;  *&t;@sk_lock -&t;synchronizer&n;  *&t;@sk_rcvbuf - size of receive buffer in bytes&n;  *&t;@sk_sleep - sock wait queue&n;  *&t;@sk_dst_cache - destination cache&n;  *&t;@sk_dst_lock - destination cache lock&n;  *&t;@sk_policy - flow policy&n;  *&t;@sk_rmem_alloc - receive queue bytes committed&n;  *&t;@sk_receive_queue - incoming packets&n;  *&t;@sk_wmem_alloc - transmit queue bytes committed&n;  *&t;@sk_write_queue - Packet sending queue&n;  *&t;@sk_omem_alloc - &quot;o&quot; is &quot;option&quot; or &quot;other&quot;&n;  *&t;@sk_wmem_queued - persistent queue size&n;  *&t;@sk_forward_alloc - space allocated forward&n;  *&t;@sk_allocation - allocation mode&n;  *&t;@sk_sndbuf - size of send buffer in bytes&n;  *&t;@sk_flags - %SO_LINGER (l_onoff), %SO_BROADCAST, %SO_KEEPALIVE, %SO_OOBINLINE settings&n;  *&t;@sk_no_check - %SO_NO_CHECK setting, wether or not checkup packets&n;  *&t;@sk_route_caps - route capabilities (e.g. %NETIF_F_TSO)&n;  *&t;@sk_lingertime - %SO_LINGER l_linger setting&n;  *&t;@sk_hashent - hash entry in several tables (e.g. tcp_ehash)&n;  *&t;@sk_backlog - always used with the per-socket spinlock held&n;  *&t;@sk_callback_lock - used with the callbacks in the end of this struct&n;  *&t;@sk_error_queue - rarely used&n;  *&t;@sk_prot - protocol handlers inside a network family&n;  *&t;@sk_err - last error&n;  *&t;@sk_err_soft - errors that don&squot;t cause failure but are the cause of a persistent failure not just &squot;timed out&squot;&n;  *&t;@sk_ack_backlog - current listen backlog&n;  *&t;@sk_max_ack_backlog - listen backlog set in listen()&n;  *&t;@sk_priority - %SO_PRIORITY setting&n;  *&t;@sk_type - socket type (%SOCK_STREAM, etc)&n;  *&t;@sk_protocol - which protocol this socket belongs in this network family&n;  *&t;@sk_peercred - %SO_PEERCRED setting&n;  *&t;@sk_rcvlowat - %SO_RCVLOWAT setting&n;  *&t;@sk_rcvtimeo - %SO_RCVTIMEO setting&n;  *&t;@sk_sndtimeo - %SO_SNDTIMEO setting&n;  *&t;@sk_filter - socket filtering instructions&n;  *&t;@sk_protinfo - private area, net family specific, when not using slab&n;  *&t;@sk_slab - the slabcache this instance was allocated from&n;  *&t;@sk_timer - sock cleanup timer&n;  *&t;@sk_stamp - time stamp of last packet received&n;  *&t;@sk_socket - Identd and reporting IO signals&n;  *&t;@sk_user_data - RPC layer private data&n;  *&t;@sk_owner - module that owns this socket&n;  *&t;@sk_sndmsg_page - cached page for sendmsg&n;  *&t;@sk_sndmsg_off - cached offset for sendmsg&n;  *&t;@sk_send_head - front of stuff to transmit&n;  *&t;@sk_write_pending - a write to stream socket waits to start&n;  *&t;@sk_state_change - callback to indicate change in the state of the sock&n;  *&t;@sk_data_ready - callback to indicate there is data to be processed&n;  *&t;@sk_write_space - callback to indicate there is bf sending space available&n;  *&t;@sk_error_report - callback to indicate errors (e.g. %MSG_ERRQUEUE)&n;  *&t;@sk_backlog_rcv - callback to process the backlog&n;  *&t;@sk_destruct - called at sock freeing time, i.e. when all refcnt == 0&n; */
 DECL|struct|sock
 r_struct
 id|sock
@@ -373,10 +373,6 @@ DECL|member|sk_security
 r_void
 op_star
 id|sk_security
-suffix:semicolon
-DECL|member|sk_queue_shrunk
-id|__u8
-id|sk_queue_shrunk
 suffix:semicolon
 multiline_comment|/* three bytes hole, try to pack */
 DECL|member|sk_state_change
@@ -954,6 +950,10 @@ DECL|enumerator|SOCK_LOCALROUTE
 id|SOCK_LOCALROUTE
 comma
 multiline_comment|/* route locally only, %SO_DONTROUTE setting */
+DECL|enumerator|SOCK_QUEUE_SHRUNK
+id|SOCK_QUEUE_SHRUNK
+comma
+multiline_comment|/* write queue has been shrunk recently */
 )brace
 suffix:semicolon
 DECL|function|sock_set_flag
@@ -1229,9 +1229,13 @@ op_star
 id|skb
 )paren
 (brace
-id|sk-&gt;sk_queue_shrunk
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 suffix:semicolon
 id|sk-&gt;sk_wmem_queued
 op_sub_assign

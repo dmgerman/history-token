@@ -2461,10 +2461,6 @@ id|skb-&gt;truesize
 op_sub_assign
 id|len
 suffix:semicolon
-id|sk-&gt;sk_queue_shrunk
-op_assign
-l_int|1
-suffix:semicolon
 id|sk-&gt;sk_wmem_queued
 op_sub_assign
 id|len
@@ -2472,6 +2468,14 @@ suffix:semicolon
 id|sk-&gt;sk_forward_alloc
 op_add_assign
 id|len
+suffix:semicolon
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 suffix:semicolon
 multiline_comment|/* Any change of skb-&gt;len requires recalculation of tso&n;&t; * factor and mss.&n;&t; */
 r_if
