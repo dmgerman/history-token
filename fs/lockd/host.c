@@ -784,9 +784,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|xprt
-op_eq
-l_int|NULL
+)paren
 )paren
 r_goto
 id|forgetit
@@ -822,9 +824,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|clnt
-op_eq
-l_int|NULL
+)paren
 )paren
 (brace
 id|xprt_destroy

@@ -5774,7 +5774,12 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -6561,12 +6566,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|xprt
 )paren
-r_goto
-id|out_bad
+)paren
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC:      xprt_create_proto failed&bslash;n&quot;
+)paren
 suffix:semicolon
+r_else
 id|dprintk
 c_func
 (paren
@@ -6577,28 +6589,6 @@ id|xprt
 suffix:semicolon
 r_return
 id|xprt
-suffix:semicolon
-id|out_bad
-suffix:colon
-id|dprintk
-c_func
-(paren
-l_string|&quot;RPC:      xprt_create_proto failed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|xprt
-)paren
-id|kfree
-c_func
-(paren
-id|xprt
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prepare for transport shutdown.&n; */
