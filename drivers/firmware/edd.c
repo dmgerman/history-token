@@ -1659,7 +1659,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;0x%x&bslash;n&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
 id|info-&gt;legacy_max_cylinder
 )paren
@@ -1739,7 +1739,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;0x%x&bslash;n&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
 id|info-&gt;legacy_max_head
 )paren
@@ -1819,7 +1819,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;0x%x&bslash;n&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
 id|info-&gt;legacy_sectors_per_track
 )paren
@@ -1899,7 +1899,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;0x%x&bslash;n&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
 id|info-&gt;params.num_default_cylinders
 )paren
@@ -1979,7 +1979,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;0x%x&bslash;n&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
 id|info-&gt;params.num_default_heads
 )paren
@@ -2059,7 +2059,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;0x%x&bslash;n&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
 id|info-&gt;params.sectors_per_track
 )paren
@@ -2139,7 +2139,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;0x%llx&bslash;n&quot;
+l_string|&quot;%llu&bslash;n&quot;
 comma
 id|info-&gt;params.number_of_sectors
 )paren
