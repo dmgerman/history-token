@@ -2122,6 +2122,12 @@ c_func
 id|to_bvec-&gt;bv_page
 )paren
 suffix:semicolon
+id|IV
+op_add_assign
+id|from_bvec-&gt;bv_len
+op_rshift
+l_int|9
+suffix:semicolon
 )brace
 r_return
 id|ret
