@@ -548,5 +548,23 @@ r_int
 id|blen
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|get_word
+c_func
+(paren
+r_char
+op_star
+op_star
+id|bpp
+comma
+r_char
+op_star
+id|dest
+comma
+r_int
+id|bufsize
+)paren
+suffix:semicolon
 macro_line|#endif /*  _LINUX_SUNRPC_CACHE_H_ */
 eof
