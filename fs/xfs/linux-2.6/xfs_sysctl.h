@@ -95,6 +95,11 @@ id|xfs_sysctl_val_t
 id|inherit_nosym
 suffix:semicolon
 multiline_comment|/* Inherit the &quot;nosymlinks&quot; flag. */
+DECL|member|rotorstep
+id|xfs_sysctl_val_t
+id|rotorstep
+suffix:semicolon
+multiline_comment|/* inode32 AG rotoring control knob */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -172,6 +177,11 @@ DECL|enumerator|XFS_INHERIT_NOSYM
 id|XFS_INHERIT_NOSYM
 op_assign
 l_int|19
+comma
+DECL|enumerator|XFS_ROTORSTEP
+id|XFS_ROTORSTEP
+op_assign
+l_int|20
 comma
 )brace
 suffix:semicolon
