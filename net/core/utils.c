@@ -1,11 +1,12 @@
 multiline_comment|/*&n; *&t;Generic address resultion entity&n; *&n; *&t;Authors:&n; *&t;net_random Alan Cox&n; *&t;net_ratelimit Andy Kleen&n; *&n; *&t;Created by Alexey Kuznetsov &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|net_rand_seed
 r_static
 r_int
@@ -214,4 +215,25 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|net_random
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|net_random
+)paren
+suffix:semicolon
+DECL|variable|net_ratelimit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|net_ratelimit
+)paren
+suffix:semicolon
+DECL|variable|net_srandom
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|net_srandom
+)paren
+suffix:semicolon
 eof

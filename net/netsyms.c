@@ -122,28 +122,6 @@ c_func
 id|dst_destroy
 )paren
 suffix:semicolon
-multiline_comment|/*&t;misc. support routines */
-DECL|variable|net_ratelimit
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|net_ratelimit
-)paren
-suffix:semicolon
-DECL|variable|net_random
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|net_random
-)paren
-suffix:semicolon
-DECL|variable|net_srandom
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|net_srandom
-)paren
-suffix:semicolon
 multiline_comment|/* Needed by unix.o */
 DECL|variable|files_stat
 id|EXPORT_SYMBOL
