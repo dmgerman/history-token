@@ -1460,7 +1460,7 @@ c_func
 id|eh-&gt;h_proto
 )paren
 OG
-l_int|1500
+id|ETH_DATA_LEN
 )paren
 (brace
 multiline_comment|/* Ethernet-II frame */

@@ -32,7 +32,7 @@ op_assign
 l_string|&quot;orinoco_tmd&quot;
 suffix:semicolon
 DECL|macro|COR_VALUE
-mdefine_line|#define COR_VALUE&t;(COR_LEVEL_REQ | COR_FUNC_ENA | COR_FUNC_ENA) /* Enable PC card with interrupt in level trigger */
+mdefine_line|#define COR_VALUE&t;(COR_LEVEL_REQ | COR_FUNC_ENA) /* Enable PC card with interrupt in level trigger */
 DECL|function|orinoco_tmd_init_one
 r_static
 r_int
