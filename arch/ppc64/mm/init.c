@@ -2291,13 +2291,6 @@ c_func
 id|setup_kcore
 )paren
 suffix:semicolon
-r_void
-id|initialize_paca_hardware_interrupt_stack
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|mem_init
 r_void
 id|__init
@@ -2689,12 +2682,6 @@ macro_line|#endif
 id|mem_init_done
 op_assign
 l_int|1
-suffix:semicolon
-multiline_comment|/* set the last page of each hardware interrupt stack to be protected */
-id|initialize_paca_hardware_interrupt_stack
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 id|create_virtual_bus_tce_table

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/rwsem.h: R/W semaphores for PPC using the stuff&n; * in lib/rwsem.c.  Adapted largely from include/asm-i386/rwsem.h&n; * by Paul Mackerras &lt;paulus@samba.org&gt;.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * include/asm-ppc64/rwsem.h: R/W semaphores for PPC using the stuff&n; * in lib/rwsem.c.  Adapted largely from include/asm-i386/rwsem.h&n; * by Paul Mackerras &lt;paulus@samba.org&gt;.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _PPC64_RWSEM_H
 DECL|macro|_PPC64_RWSEM_H
 mdefine_line|#define _PPC64_RWSEM_H
@@ -166,6 +166,9 @@ id|sem
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|atomic_inc_return
 c_func
 (paren
@@ -178,15 +181,10 @@ op_amp
 id|sem-&gt;count
 )paren
 )paren
-OG
+op_le
 l_int|0
 )paren
-id|smp_wmb
-c_func
-(paren
 )paren
-suffix:semicolon
-r_else
 id|rwsem_down_read_failed
 c_func
 (paren
@@ -241,11 +239,6 @@ id|RWSEM_ACTIVE_READ_BIAS
 )paren
 )paren
 (brace
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -292,16 +285,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp
-op_eq
-id|RWSEM_ACTIVE_WRITE_BIAS
-)paren
-id|smp_wmb
+id|unlikely
 c_func
 (paren
+id|tmp
+op_ne
+id|RWSEM_ACTIVE_WRITE_BIAS
 )paren
-suffix:semicolon
-r_else
+)paren
 id|rwsem_down_write_failed
 c_func
 (paren
@@ -338,11 +329,6 @@ comma
 id|RWSEM_ACTIVE_WRITE_BIAS
 )paren
 suffix:semicolon
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|tmp
 op_eq
@@ -366,11 +352,6 @@ id|sem
 r_int
 id|tmp
 suffix:semicolon
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 id|tmp
 op_assign
 id|atomic_dec_return
@@ -389,6 +370,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|tmp
 OL
 op_minus
@@ -401,6 +385,7 @@ id|RWSEM_ACTIVE_MASK
 )paren
 op_eq
 l_int|0
+)paren
 )paren
 id|rwsem_wake
 c_func
@@ -423,13 +408,11 @@ op_star
 id|sem
 )paren
 (brace
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|atomic_sub_return
 c_func
@@ -447,6 +430,7 @@ id|sem-&gt;count
 )paren
 OL
 l_int|0
+)paren
 )paren
 id|rwsem_wake
 c_func
@@ -505,11 +489,6 @@ id|sem
 r_int
 id|tmp
 suffix:semicolon
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 id|tmp
 op_assign
 id|atomic_add_return
@@ -559,11 +538,6 @@ op_star
 id|sem
 )paren
 (brace
-id|smp_mb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|atomic_add_return
 c_func
