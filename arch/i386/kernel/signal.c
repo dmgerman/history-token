@@ -1774,7 +1774,7 @@ suffix:colon
 id|sig
 suffix:semicolon
 id|err
-op_or_assign
+op_assign
 id|__put_user
 c_func
 (paren
@@ -1793,7 +1793,7 @@ r_goto
 id|give_sigsegv
 suffix:semicolon
 id|err
-op_or_assign
+op_assign
 id|setup_sigcontext
 c_func
 (paren
@@ -1828,7 +1828,7 @@ l_int|1
 )paren
 (brace
 id|err
-op_or_assign
+op_assign
 id|__copy_to_user
 c_func
 (paren
@@ -1847,7 +1847,6 @@ id|frame-&gt;extramask
 )paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1856,6 +1855,7 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
+)brace
 id|restorer
 op_assign
 op_amp
