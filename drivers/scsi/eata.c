@@ -364,37 +364,37 @@ suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|haaval
-DECL|member|ata
-DECL|member|drqvld
-DECL|member|dmasup
-DECL|member|morsup
-DECL|member|trnxfr
-DECL|member|tarsup
 id|unchar
 id|haaval
 suffix:colon
 l_int|1
 comma
+DECL|member|ata
 id|ata
 suffix:colon
 l_int|1
 comma
+DECL|member|drqvld
 id|drqvld
 suffix:colon
 l_int|1
 comma
+DECL|member|dmasup
 id|dmasup
 suffix:colon
 l_int|1
 comma
+DECL|member|morsup
 id|morsup
 suffix:colon
 l_int|1
 comma
+DECL|member|trnxfr
 id|trnxfr
 suffix:colon
 l_int|1
 comma
+DECL|member|tarsup
 id|tarsup
 suffix:colon
 l_int|1
@@ -506,22 +506,22 @@ suffix:semicolon
 multiline_comment|/* Max number of entries in scatter/gather table */
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
 DECL|member|drqx
-DECL|member|second
-DECL|member|irq_tr
-DECL|member|irq
 id|unchar
 id|drqx
 suffix:colon
 l_int|2
 comma
+DECL|member|second
 id|second
 suffix:colon
 l_int|1
 comma
+DECL|member|irq_tr
 id|irq_tr
 suffix:colon
 l_int|1
 comma
+DECL|member|irq
 id|irq
 suffix:colon
 l_int|4
@@ -531,37 +531,37 @@ id|unchar
 id|sync
 suffix:semicolon
 DECL|member|unchar
-DECL|member|res1
-DECL|member|large_sg
-DECL|member|forcaddr
-DECL|member|isaena
 id|unchar
 suffix:colon
 l_int|4
 comma
+DECL|member|res1
 id|res1
 suffix:colon
 l_int|1
 comma
+DECL|member|large_sg
 id|large_sg
 suffix:colon
 l_int|1
 comma
+DECL|member|forcaddr
 id|forcaddr
 suffix:colon
 l_int|1
 comma
+DECL|member|isaena
 id|isaena
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|max_chan
-DECL|member|max_id
 id|unchar
 id|max_chan
 suffix:colon
 l_int|3
 comma
+DECL|member|max_id
 id|max_id
 suffix:colon
 l_int|5
@@ -571,22 +571,22 @@ id|unchar
 id|max_lun
 suffix:semicolon
 DECL|member|eisa
-DECL|member|pci
-DECL|member|idquest
-DECL|member|m1
 id|unchar
 id|eisa
 suffix:colon
 l_int|1
 comma
+DECL|member|pci
 id|pci
 suffix:colon
 l_int|1
 comma
+DECL|member|idquest
 id|idquest
 suffix:colon
 l_int|1
 comma
+DECL|member|m1
 id|m1
 suffix:colon
 l_int|1
@@ -732,26 +732,26 @@ suffix:semicolon
 multiline_comment|/* Number of bytes following this field */
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
 DECL|member|unchar
-DECL|member|tarena
-DECL|member|mdpena
-DECL|member|ocena
-DECL|member|edis
 id|unchar
 suffix:colon
 l_int|4
 comma
+DECL|member|tarena
 id|tarena
 suffix:colon
 l_int|1
 comma
+DECL|member|mdpena
 id|mdpena
 suffix:colon
 l_int|1
 comma
+DECL|member|ocena
 id|ocena
 suffix:colon
 l_int|1
 comma
+DECL|member|edis
 id|edis
 suffix:colon
 l_int|1
@@ -802,12 +802,12 @@ id|mssp
 (brace
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
 DECL|member|eoc
-DECL|member|adapter_status
 id|unchar
 id|eoc
 suffix:colon
 l_int|1
 comma
+DECL|member|adapter_status
 id|adapter_status
 suffix:colon
 l_int|7
@@ -881,21 +881,17 @@ id|mscp
 (brace
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
 DECL|member|din
-DECL|member|dout
-DECL|member|interp
-DECL|member|sg
-DECL|member|reqsen
-DECL|member|init
-DECL|member|sreset
 id|unchar
 id|din
 suffix:colon
 l_int|1
 comma
+DECL|member|dout
 id|dout
 suffix:colon
 l_int|1
 comma
+DECL|member|interp
 id|interp
 suffix:colon
 l_int|1
@@ -903,18 +899,22 @@ comma
 suffix:colon
 l_int|1
 comma
+DECL|member|sg
 id|sg
 suffix:colon
 l_int|1
 comma
+DECL|member|reqsen
 id|reqsen
 suffix:colon
 l_int|1
 comma
+DECL|member|init
 id|init
 suffix:colon
 l_int|1
 comma
+DECL|member|sreset
 id|sreset
 suffix:colon
 l_int|1
@@ -931,63 +931,63 @@ l_int|3
 )braket
 suffix:semicolon
 DECL|member|unchar
-DECL|member|fwnest
 id|unchar
 suffix:colon
 l_int|7
 comma
+DECL|member|fwnest
 id|fwnest
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|unchar
-DECL|member|hbaci
-DECL|member|iat
-DECL|member|phsunit
 id|unchar
 suffix:colon
 l_int|5
 comma
+DECL|member|hbaci
 id|hbaci
 suffix:colon
 l_int|1
 comma
+DECL|member|iat
 id|iat
 suffix:colon
 l_int|1
 comma
+DECL|member|phsunit
 id|phsunit
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|channel
-DECL|member|target
 id|unchar
 id|channel
 suffix:colon
 l_int|3
 comma
+DECL|member|target
 id|target
 suffix:colon
 l_int|5
 suffix:semicolon
 DECL|member|one
-DECL|member|dispri
-DECL|member|luntar
-DECL|member|lun
 id|unchar
 id|one
 suffix:colon
 l_int|1
 comma
+DECL|member|dispri
 id|dispri
 suffix:colon
 l_int|1
 comma
+DECL|member|luntar
 id|luntar
 suffix:colon
 l_int|1
 comma
+DECL|member|lun
 id|lun
 suffix:colon
 l_int|5
@@ -1151,7 +1151,7 @@ id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
-multiline_comment|/* All the cp structure is zero filled by queuecommand except the&n;      following CP_TAIL_SIZE bytes, initialized by detect */
+multiline_comment|/* All the cp structure is zero filled by queuecommand except the&n;&t;   following CP_TAIL_SIZE bytes, initialized by detect */
 DECL|member|cp_dma_addr
 id|dma_addr_t
 id|cp_dma_addr
@@ -1670,7 +1670,6 @@ c_func
 id|eata
 comma
 l_string|&quot; equivalent to the &bslash;&quot;eata=...&bslash;&quot; kernel boot option.&quot;
-"&bslash;"
 l_string|&quot;            Example: modprobe eata &bslash;&quot;eata=0x7410,0x230,lc:y,tm:0,mq:4,ep:n&bslash;&quot;&quot;
 )paren
 suffix:semicolon
@@ -1758,6 +1757,7 @@ id|dev-&gt;type
 op_logical_and
 id|dev-&gt;tagged_supported
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -1821,6 +1821,7 @@ id|tag_suffix
 op_assign
 l_string|&quot;, no tags&quot;
 suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -2274,6 +2275,7 @@ id|dev
 id|addr
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|dev
 comma
@@ -2296,7 +2298,7 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* we are in so much trouble for a pci hotplug system with this driver&n;       * anyway, so doing this at least lets people unload the driver and not&n;       * cause memory problems, but in general this is a bad thing to do (this&n;       * driver needs to be converted to the proper PCI api someday... */
+multiline_comment|/* we are in so much trouble for a pci hotplug system with this driver&n;&t;&t; * anyway, so doing this at least lets people unload the driver and not&n;&t;&t; * cause memory problems, but in general this is a bad thing to do (this&n;&t;&t; * driver needs to be converted to the proper PCI api someday... */
 id|pci_dev_put
 c_func
 (paren
@@ -2316,7 +2318,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-macro_line|#endif /* end CONFIG_PCI */
+macro_line|#endif&t;&t;&t;&t;/* end CONFIG_PCI */
 r_return
 l_int|NULL
 suffix:semicolon
@@ -2374,12 +2376,12 @@ r_if
 c_cond
 (paren
 id|pci_enable_device
+c_func
 (paren
 id|dev
 )paren
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;%s: warning, pci_enable_device failed, bus %d devfn 0x%x.&bslash;n&quot;
 comma
@@ -2391,13 +2393,13 @@ id|dev-&gt;devfn
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* end CONFIG_PCI */
+macro_line|#endif&t;&t;&t;&t;/* end CONFIG_PCI */
 )brace
 DECL|function|port_detect
 r_static
 r_int
 id|port_detect
-"&bslash;"
+c_func
 (paren
 r_int
 r_int
@@ -2687,7 +2689,6 @@ id|EATA_2_0A_SIZE
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;%s: config structure size (%d bytes) too short, detaching.&bslash;n&quot;
 comma
@@ -2883,7 +2884,6 @@ id|info.ata
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;%s: address 0x%03lx, unusable %s board (%d%d), detaching.&bslash;n&quot;
 comma
@@ -2996,7 +2996,6 @@ op_logical_neg
 id|info.irq_tr
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;%s: warning, LEVEL triggering is suggested for IRQ %u.&bslash;n&quot;
 comma
@@ -3026,7 +3025,6 @@ op_logical_neg
 id|pdev
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;%s: warning, failed to get pci_dev structure.&bslash;n&quot;
 comma
@@ -3187,7 +3185,6 @@ id|cf
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;%s: config, pci_alloc_consistent failed, detaching.&bslash;n&quot;
 comma
@@ -3250,7 +3247,6 @@ id|SET_CONFIG_DMA
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;%s: busy timeout sending configuration, detaching.&bslash;n&quot;
 comma
@@ -3910,11 +3906,43 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-r_if
+(brace
+r_int
+id|sz
+op_assign
+id|sh
+(braket
+id|j
+)braket
+op_member_access_from_pointer
+id|sg_tablesize
+op_star
+r_sizeof
+(paren
+r_struct
+id|sg_list
+)paren
+suffix:semicolon
+r_int
+r_int
+id|gfp_mask
+op_assign
+(paren
+id|sh
+(braket
+id|j
+)braket
+op_member_access_from_pointer
+id|unchecked_isa_dma
+ques
 c_cond
-(paren
-op_logical_neg
-(paren
+id|GFP_DMA
+suffix:colon
+l_int|0
+)paren
+op_or
+id|GFP_ATOMIC
+suffix:semicolon
 (paren
 op_amp
 id|HD
@@ -3934,40 +3962,33 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|sh
-(braket
-id|j
-)braket
-op_member_access_from_pointer
-id|sg_tablesize
-op_star
-r_sizeof
-(paren
-r_struct
-id|sg_list
-)paren
+id|sz
 comma
-(paren
-id|sh
-(braket
-id|j
-)braket
-op_member_access_from_pointer
-id|unchecked_isa_dma
-ques
+id|gfp_mask
+)paren
+suffix:semicolon
+r_if
 c_cond
-id|GFP_DMA
-suffix:colon
-l_int|0
+(paren
+op_logical_neg
+(paren
+op_amp
+id|HD
+c_func
+(paren
+id|j
 )paren
-op_or
-id|GFP_ATOMIC
+op_member_access_from_pointer
+id|cp
+(braket
+id|i
+)braket
 )paren
-)paren
+op_member_access_from_pointer
+id|sglist
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;%s: kmalloc SGlist failed, mbox %d, detaching.&bslash;n&quot;
 comma
@@ -3983,6 +4004,7 @@ suffix:semicolon
 r_goto
 id|release
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -4088,16 +4110,13 @@ l_int|0
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;EATA/DMA 2.0x: Copyright (C) 1994-2003 Dario Ballabio.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;%s config options -&gt; tm:%d, lc:%c, mq:%d, rs:%c, et:%c, &quot;
-"&bslash;"
 l_string|&quot;ip:%c, ep:%c, pp:%c.&bslash;n&quot;
 comma
 id|driver_name
@@ -4222,7 +4241,6 @@ OG
 l_int|8
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;%s: wide SCSI support enabled, max_id %u, max_lun %u.&bslash;n&quot;
 comma
@@ -4292,7 +4310,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;%s: Vers. 0x%x, ocs %u, tar %u, trnxfr %u, more %u, SYNC 0x%x, &quot;
-"&bslash;"
 l_string|&quot;sec. %u, infol %d, cpl %d spl %d.&bslash;n&quot;
 comma
 id|name
@@ -4333,7 +4350,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;%s: isaena %u, forcaddr %u, max_id %u, max_chan %u, &quot;
-"&bslash;"
 l_string|&quot;large_sg %u, res1 %u.&bslash;n&quot;
 comma
 id|name
@@ -4362,7 +4378,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;%s: max_lun %u, m1 %u, idquest %u, pci %u, eisa %u, &quot;
-"&bslash;"
 l_string|&quot;raidnum %u.&bslash;n&quot;
 comma
 id|name
@@ -5047,6 +5062,7 @@ r_if
 c_cond
 (paren
 id|pci_enable_device
+c_func
 (paren
 id|dev
 )paren
@@ -5054,7 +5070,6 @@ id|dev
 (brace
 macro_line|#if defined(DEBUG_PCI_DETECT)
 id|printk
-c_func
 (paren
 l_string|&quot;%s: detect, bus %d, devfn 0x%x, pci_enable_device failed.&bslash;n&quot;
 comma
@@ -5072,6 +5087,7 @@ suffix:semicolon
 id|addr
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|dev
 comma
@@ -5130,9 +5146,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif /* end CONFIG_PCI */
-r_return
-suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* end CONFIG_PCI */
 )brace
 DECL|function|eata2x_detect
 r_static
@@ -5167,14 +5181,12 @@ c_func
 id|boot_options
 )paren
 )paren
-(brace
 id|option_setup
 c_func
 (paren
 id|boot_options
 )paren
 suffix:semicolon
-)brace
 macro_line|#if defined(MODULE)
 multiline_comment|/* io_port could have been modified when loading as a module */
 r_if
@@ -5465,7 +5477,6 @@ id|H2DEV
 c_func
 (paren
 id|pci_map_single
-c_func
 (paren
 id|HD
 c_func
@@ -5528,9 +5539,13 @@ id|j
 op_member_access_from_pointer
 id|pdev
 comma
-id|SCpnt-&gt;request_buffer
+id|SCpnt
+op_member_access_from_pointer
+id|request_buffer
 comma
-id|SCpnt-&gt;request_bufflen
+id|SCpnt
+op_member_access_from_pointer
+id|request_bufflen
 comma
 id|pci_dir
 )paren
@@ -6426,7 +6441,7 @@ comma
 id|SCpnt
 )paren
 suffix:semicolon
-multiline_comment|/* i is the mailbox number, look for the first free mailbox&n;      starting from last_cp_used */
+multiline_comment|/* i is the mailbox number, look for the first free mailbox&n;&t;   starting from last_cp_used */
 id|i
 op_assign
 id|HD
@@ -7147,7 +7162,6 @@ op_assign
 id|FREE
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;%s, abort, mbox %d, eh_state timeout, pid %ld.&bslash;n&quot;
 comma
@@ -8086,7 +8100,6 @@ op_assign
 id|LOCKED
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;%s, reset, mbox %d locked, DID_RESET, pid %ld done.&bslash;n&quot;
 comma
@@ -8168,7 +8181,6 @@ op_assign
 id|FREE
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;%s, reset, mbox %d aborting, DID_RESET, pid %ld done.&bslash;n&quot;
 comma
@@ -8332,6 +8344,7 @@ suffix:semicolon
 )brace
 macro_line|#if defined (DEBUG_GEOMETRY)
 id|printk
+c_func
 (paren
 l_string|&quot;%s: bios_param, head=%d, sec=%d, cyl=%d.&bslash;n&quot;
 comma
@@ -8720,7 +8733,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;fc %d bc %d ic %d oc %d rc %d rs %d sc %d re %d&quot;
-"&bslash;"
 l_string|&quot; av %ldK as %ldK.&bslash;n&quot;
 comma
 id|flushcount
@@ -9391,10 +9403,8 @@ op_assign
 id|cpp-&gt;SCpnt
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;%s %d.%d:%d pid %ld mb %d fc %d nr %d sec %ld ns %ld&quot;
-"&bslash;"
 l_string|&quot; cur %ld s:%c r:%c rev:%c in:%c ov:%c xd %d.&bslash;n&quot;
 comma
 (paren
@@ -9700,10 +9710,8 @@ id|SEND_CP_DMA
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;%s: %s, target %d.%d:%d, pid %ld, mbox %d, adapter&quot;
-"&bslash;"
 l_string|&quot; busy, will abort.&bslash;n&quot;
 comma
 id|BN
@@ -9936,7 +9944,6 @@ id|REG_STATUS
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;%s: ihdlr, busy timeout error,  irq %d, reg 0x%x, count %d.&bslash;n&quot;
 comma
@@ -10124,7 +10131,6 @@ OG
 l_int|1
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;%s: ihdlr, spp-&gt;eoc == 0, irq %d, reg 0x%x, count %d.&bslash;n&quot;
 comma
@@ -10164,7 +10170,6 @@ op_member_access_from_pointer
 id|can_queue
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;%s: ihdlr, bad spp-&gt;cpp_index %d, irq %d, reg 0x%x, count %d.&bslash;n&quot;
 comma
@@ -10709,7 +10714,11 @@ id|target_redo
 id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;device-&gt;channel
+id|SCpnt
+op_member_access_from_pointer
+id|device
+op_member_access_from_pointer
+id|channel
 )braket
 )paren
 id|status
@@ -10773,7 +10782,9 @@ id|target_redo
 id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;device-&gt;channel
+id|SCpnt-&gt;device
+op_member_access_from_pointer
+id|channel
 )braket
 op_assign
 l_int|0
@@ -10821,7 +10832,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;%s: ihdlr, target %d.%d:%d, pid %ld, &quot;
-"&bslash;"
 l_string|&quot;target_status 0x%x, sense key 0x%x.&bslash;n&quot;
 comma
 id|BN
@@ -10939,7 +10949,9 @@ id|target_to
 id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;device-&gt;channel
+id|SCpnt-&gt;device
+op_member_access_from_pointer
+id|channel
 )braket
 op_increment
 suffix:semicolon
@@ -11181,7 +11193,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;%s: ihdlr, mbox %2d, err 0x%x:%x,&quot;
-"&bslash;"
 l_string|&quot; target %d.%d:%d, pid %ld, reg 0x%x, count %d.&bslash;n&quot;
 comma
 id|BN
@@ -11668,5 +11679,5 @@ comma
 id|option_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* end MODULE */
+macro_line|#endif&t;&t;&t;&t;/* end MODULE */
 eof
