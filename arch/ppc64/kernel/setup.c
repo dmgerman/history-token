@@ -2133,6 +2133,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|sort_exception_table
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|progress
