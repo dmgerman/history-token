@@ -277,6 +277,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|macro|activate_mm
 mdefine_line|#define activate_mm(prev, next) &bslash;&n;&t;switch_mm((prev),(next),NULL,smp_processor_id())
 macro_line|#endif

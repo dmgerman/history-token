@@ -2048,7 +2048,13 @@ r_void
 id|mm_release
 c_func
 (paren
-r_void
+r_struct
+id|task_struct
+op_star
+comma
+r_struct
+id|mm_struct
+op_star
 )paren
 suffix:semicolon
 r_extern

@@ -79,6 +79,8 @@ id|cpu
 )paren
 (brace
 )brace
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|function|activate_mm
 r_extern
 r_inline
