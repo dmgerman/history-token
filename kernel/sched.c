@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|cpu_to_node_mask
 mdefine_line|#define cpu_to_node_mask(cpu) node_to_cpumask(cpu_to_node(cpu))
@@ -212,24 +213,22 @@ DECL|member|nr_iowait
 id|atomic_t
 id|nr_iowait
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
-DECL|variable|__cacheline_aligned
 r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|runqueue
+comma
 id|runqueues
-(braket
-id|NR_CPUS
-)braket
-id|__cacheline_aligned
+)paren
 suffix:semicolon
 DECL|macro|cpu_rq
-mdefine_line|#define cpu_rq(cpu)&t;&t;(runqueues + (cpu))
+mdefine_line|#define cpu_rq(cpu)&t;&t;(&amp;per_cpu(runqueues, (cpu)))
 DECL|macro|this_rq
-mdefine_line|#define this_rq()&t;&t;cpu_rq(smp_processor_id())
+mdefine_line|#define this_rq()&t;&t;(&amp;__get_cpu_var(runqueues))
 DECL|macro|task_rq
 mdefine_line|#define task_rq(p)&t;&t;cpu_rq(task_cpu(p))
 DECL|macro|cpu_curr
