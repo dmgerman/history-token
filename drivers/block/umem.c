@@ -4672,7 +4672,7 @@ c_func
 r_void
 op_star
 )paren
-id|card-&gt;csr_base
+id|card-&gt;csr_remap
 )paren
 suffix:semicolon
 id|failed_remap_csr
