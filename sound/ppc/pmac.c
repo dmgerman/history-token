@@ -97,12 +97,10 @@ r_static
 r_int
 id|tumbler_freqs
 (braket
-l_int|2
+l_int|1
 )braket
 op_assign
 (brace
-l_int|48000
-comma
 l_int|44100
 )brace
 suffix:semicolon
@@ -2042,8 +2040,6 @@ id|typical_freqs
 )braket
 op_assign
 (brace
-l_int|48000
-comma
 l_int|44100
 comma
 l_int|22050
@@ -2061,8 +2057,6 @@ id|typical_freq_flags
 )braket
 op_assign
 (brace
-id|SNDRV_PCM_RATE_48000
-comma
 id|SNDRV_PCM_RATE_44100
 comma
 id|SNDRV_PCM_RATE_22050
@@ -3837,7 +3831,11 @@ l_int|1
 suffix:semicolon
 id|chip-&gt;num_freqs
 op_assign
-l_int|8
+id|ARRAY_SIZE
+c_func
+(paren
+id|awacs_freqs
+)paren
 suffix:semicolon
 id|chip-&gt;freq_table
 op_assign
@@ -4111,7 +4109,11 @@ suffix:semicolon
 singleline_comment|// chip-&gt;can_byte_swap = 0; /* FIXME: check this */
 id|chip-&gt;num_freqs
 op_assign
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|tumbler_freqs
+)paren
 suffix:semicolon
 id|chip-&gt;freq_table
 op_assign
@@ -4144,7 +4146,11 @@ suffix:semicolon
 singleline_comment|// chip-&gt;can_byte_swap = 0; /* FIXME: check this */
 id|chip-&gt;num_freqs
 op_assign
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|tumbler_freqs
+)paren
 suffix:semicolon
 id|chip-&gt;freq_table
 op_assign
