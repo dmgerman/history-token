@@ -577,8 +577,6 @@ DECL|macro|IDEFLOPPY_IOCTL_FORMAT_START
 mdefine_line|#define&t;IDEFLOPPY_IOCTL_FORMAT_START&t;&t;0x4602
 DECL|macro|IDEFLOPPY_IOCTL_FORMAT_GET_PROGRESS
 mdefine_line|#define IDEFLOPPY_IOCTL_FORMAT_GET_PROGRESS&t;0x4603
-DECL|macro|IDEFLOPPY_RQ
-mdefine_line|#define IDEFLOPPY_RQ&t;&t;&t;(REQ_SPECIAL)
 multiline_comment|/*&n; *&t;Error codes which are returned in rq-&gt;errors to the higher part&n; *&t;of the driver.&n; */
 DECL|macro|IDEFLOPPY_ERROR_GENERAL
 mdefine_line|#define&t;IDEFLOPPY_ERROR_GENERAL&t;&t;101
@@ -1807,7 +1805,7 @@ op_logical_neg
 (paren
 id|rq-&gt;flags
 op_amp
-id|IDEFLOPPY_RQ
+id|REQ_SPECIAL
 )paren
 )paren
 (brace
@@ -2244,7 +2242,7 @@ id|rq
 suffix:semicolon
 id|rq-&gt;flags
 op_assign
-id|IDEFLOPPY_RQ
+id|REQ_SPECIAL
 suffix:semicolon
 multiline_comment|/* FIXME: --mdcki */
 id|rq-&gt;buffer
@@ -4819,7 +4817,7 @@ c_cond
 (paren
 id|rq-&gt;flags
 op_amp
-id|IDEFLOPPY_RQ
+id|REQ_SPECIAL
 )paren
 (brace
 multiline_comment|/* FIXME: --mdcki */
@@ -4916,7 +4914,7 @@ id|pc
 suffix:semicolon
 id|rq.flags
 op_assign
-id|IDEFLOPPY_RQ
+id|REQ_SPECIAL
 suffix:semicolon
 r_return
 id|ide_do_drive_cmd
