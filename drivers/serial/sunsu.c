@@ -5478,11 +5478,13 @@ r_int
 id|channel
 )paren
 (brace
+macro_line|#ifdef CONFIG_SERIO
 r_struct
 id|serio
 op_star
 id|serio
 suffix:semicolon
+macro_line|#endif
 id|up-&gt;port.line
 op_assign
 id|channel
