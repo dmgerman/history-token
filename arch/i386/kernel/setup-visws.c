@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  Unmaintained SGI Visual Workstation support.&n; *  Split out from setup.c by davej@suse.de&n; */
+macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|visws_board_type
 r_char
 id|visws_board_type

@@ -1246,8 +1246,6 @@ l_string|&quot;REQ_DONTPREP&quot;
 comma
 l_string|&quot;REQ_QUEUED&quot;
 comma
-l_string|&quot;REQ_DRIVE_ACB&quot;
-comma
 l_string|&quot;REQ_PC&quot;
 comma
 l_string|&quot;REQ_BLOCK_PC&quot;

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  include/asm-i386/bugs.h&n; *&n; *  Copyright (C) 1994  Linus Torvalds&n; *&n; *  Cyrix stuff, June 1998 by:&n; *&t;- Rafael R. Reilova (moved everything from head.S),&n; *        &lt;rreilova@ececs.uc.edu&gt;&n; *&t;- Channing Corn (tests &amp; fixes),&n; *&t;- Andrew D. Balsa (code cleanup).&n; *&n; *  Pentium III FXSR, SSE support&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; */
 multiline_comment|/*&n; * This is included by init/main.c to check for architecture-dependent bugs.&n; *&n; * Needs:&n; *&t;void check_bugs(void);&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
