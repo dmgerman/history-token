@@ -3,6 +3,7 @@ macro_line|#ifndef __SND_SEQ_CLIENTMGR_H
 DECL|macro|__SND_SEQ_CLIENTMGR_H
 mdefine_line|#define __SND_SEQ_CLIENTMGR_H
 macro_line|#include &lt;sound/seq_kernel.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;seq_fifo.h&quot;
 macro_line|#include &quot;seq_ports.h&quot;
 macro_line|#include &quot;seq_lock.h&quot;
@@ -90,7 +91,7 @@ r_int
 id|filter
 suffix:semicolon
 multiline_comment|/* filter flags */
-id|bitmap_member
+id|DECLARE_BITMAP
 c_func
 (paren
 id|event_filter

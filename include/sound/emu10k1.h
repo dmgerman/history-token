@@ -3432,6 +3432,24 @@ op_star
 id|gpr_del_controls
 suffix:semicolon
 multiline_comment|/* IDs of GPR controls to remove */
+DECL|member|gpr_list_control_count
+r_int
+r_int
+id|gpr_list_control_count
+suffix:semicolon
+multiline_comment|/* count of GPR controls to list */
+DECL|member|gpr_list_control_total
+r_int
+r_int
+id|gpr_list_control_total
+suffix:semicolon
+multiline_comment|/* total count of GPR controls */
+DECL|member|gpr_list_controls
+id|emu10k1_fx8010_control_gpr_t
+op_star
+id|gpr_list_controls
+suffix:semicolon
+multiline_comment|/* listed GPR controls */
 DECL|member|tram_valid
 r_int
 r_int
