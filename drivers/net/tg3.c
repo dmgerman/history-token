@@ -24429,16 +24429,33 @@ id|GRC_MODE_HOST_STACKUP
 )paren
 suffix:semicolon
 multiline_comment|/* Setup the timer prescalar register.  Clock is always 66Mhz. */
-id|tw32
+id|val
+op_assign
+id|tr32
 c_func
 (paren
 id|GRC_MISC_CFG
-comma
+)paren
+suffix:semicolon
+id|val
+op_and_assign
+op_complement
+l_int|0xff
+suffix:semicolon
+id|val
+op_or_assign
 (paren
 l_int|65
 op_lshift
 id|GRC_MISC_CFG_PRESCALAR_SHIFT
 )paren
+suffix:semicolon
+id|tw32
+c_func
+(paren
+id|GRC_MISC_CFG
+comma
+id|val
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize MBUF/DESC pool. */
