@@ -2515,7 +2515,7 @@ op_assign
 (paren
 id|newpp
 op_amp
-l_int|3
+l_int|7
 )paren
 op_or
 id|H_AVPN
@@ -2527,12 +2527,6 @@ op_assign
 id|va
 op_rshift
 id|PAGE_SHIFT
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;updatepp&bslash;n&quot;
-)paren
 suffix:semicolon
 id|lpar_rc
 op_assign

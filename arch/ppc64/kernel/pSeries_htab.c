@@ -786,7 +786,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;ldarx&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;rldimi&t;%0,%2,0,62&bslash;n&bslash;&n;&t;&t;stdcx.&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;bne&t;1b&quot;
+l_string|&quot;1:&t;ldarx&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;rldimi&t;%0,%2,0,61&bslash;n&bslash;&n;&t;&t;stdcx.&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;bne&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -1005,12 +1005,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;updatepp&bslash;n&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
