@@ -316,25 +316,25 @@ suffix:semicolon
 DECL|variable|test_strings
 r_static
 r_char
-op_star
 id|test_strings
 (braket
 )braket
+(braket
+id|ETH_GSTRING_LEN
+)braket
 op_assign
 (brace
-l_string|&quot;E100_EEPROM_TEST_FAIL&quot;
+l_string|&quot;Link test     (on/offline)&quot;
 comma
-l_string|&quot;E100_CHIP_TIMEOUT&quot;
+l_string|&quot;Eeprom test   (on/offline)&quot;
 comma
-l_string|&quot;E100_ROM_TEST_FAIL&quot;
+l_string|&quot;Self test        (offline)&quot;
 comma
-l_string|&quot;E100_REG_TEST_FAIL&quot;
+l_string|&quot;Mac loopback     (offline)&quot;
 comma
-l_string|&quot;E100_MAC_TEST_FAIL&quot;
+l_string|&quot;Phy loopback     (offline)&quot;
 comma
-l_string|&quot;E100_LPBK_MAC_FAIL&quot;
-comma
-l_string|&quot;E100_LPBK_PHY_FAIL&quot;
+l_string|&quot;Cable diagnostic (offline)&quot;
 )brace
 suffix:semicolon
 r_static
@@ -13450,7 +13450,7 @@ op_star
 id|info
 )paren
 op_plus
-id|E100_MAX_TEST_RES
+id|max_test_res
 op_star
 r_sizeof
 (paren
@@ -13487,7 +13487,7 @@ op_star
 id|info
 )paren
 op_plus
-id|E100_MAX_TEST_RES
+id|max_test_res
 op_star
 r_sizeof
 (paren
@@ -13544,7 +13544,7 @@ op_star
 id|info
 )paren
 op_plus
-id|E100_MAX_TEST_RES
+id|max_test_res
 op_star
 r_sizeof
 (paren
@@ -13958,7 +13958,7 @@ l_int|1
 suffix:semicolon
 id|info.testinfo_len
 op_assign
-id|E100_MAX_TEST_RES
+id|max_test_res
 suffix:semicolon
 r_if
 c_cond
@@ -15474,11 +15474,11 @@ c_cond
 (paren
 id|info.len
 OG
-id|E100_MAX_TEST_RES
+id|max_test_res
 )paren
 id|info.len
 op_assign
-id|E100_MAX_TEST_RES
+id|max_test_res
 suffix:semicolon
 id|strings
 op_assign
@@ -15538,7 +15538,7 @@ id|i
 op_star
 id|ETH_GSTRING_LEN
 comma
-l_string|&quot;%-31s&quot;
+l_string|&quot;%s&quot;
 comma
 id|test_strings
 (braket

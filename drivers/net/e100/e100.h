@@ -32,8 +32,20 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+DECL|macro|E100_CABLE_UNKNOWN
+mdefine_line|#define E100_CABLE_UNKNOWN&t;0
+DECL|macro|E100_CABLE_OK
+mdefine_line|#define E100_CABLE_OK&t;&t;1&t;&t;
+DECL|macro|E100_CABLE_OPEN_NEAR
+mdefine_line|#define E100_CABLE_OPEN_NEAR&t;2&t;/* Open Circuit Near End  */
+DECL|macro|E100_CABLE_OPEN_FAR
+mdefine_line|#define E100_CABLE_OPEN_FAR&t;3&t;/* Open Circuit Far End   */
+DECL|macro|E100_CABLE_SHORT_NEAR
+mdefine_line|#define E100_CABLE_SHORT_NEAR&t;4&t;/* Short Circuit Near End */
+DECL|macro|E100_CABLE_SHORT_FAR
+mdefine_line|#define E100_CABLE_SHORT_FAR&t;5&t;/* Short Circuit Far End  */
 DECL|macro|E100_REGS_LEN
-mdefine_line|#define E100_REGS_LEN 1
+mdefine_line|#define E100_REGS_LEN 2
 multiline_comment|/*&n; *  Configure parameters for buffers per controller.&n; *  If the machine this is being used on is a faster machine (i.e. &gt; 150MHz)&n; *  and running on a 10MBS network then more queueing of data occurs. This&n; *  may indicate the some of the numbers below should be adjusted.  Here are&n; *  some typical numbers:&n; *                             MAX_TCB 64&n; *                             MAX_RFD 64&n; *  The default numbers give work well on most systems tests so no real&n; *  adjustments really need to take place.  Also, if the machine is connected&n; *  to a 100MBS network the numbers described above can be lowered from the&n; *  defaults as considerably less data will be queued.&n; */
 DECL|macro|TX_FRAME_CNT
 mdefine_line|#define TX_FRAME_CNT   8&t;/* consecutive transmit frames per interrupt */
@@ -2600,31 +2612,28 @@ DECL|enum|test_offsets
 r_enum
 id|test_offsets
 (brace
-DECL|enumerator|E100_EEPROM_TEST_FAIL
-id|E100_EEPROM_TEST_FAIL
-op_assign
-l_int|0
+DECL|enumerator|test_link
+id|test_link
 comma
-DECL|enumerator|E100_CHIP_TIMEOUT
-id|E100_CHIP_TIMEOUT
+DECL|enumerator|test_eeprom
+id|test_eeprom
 comma
-DECL|enumerator|E100_ROM_TEST_FAIL
-id|E100_ROM_TEST_FAIL
+DECL|enumerator|test_self_test
+id|test_self_test
 comma
-DECL|enumerator|E100_REG_TEST_FAIL
-id|E100_REG_TEST_FAIL
+DECL|enumerator|test_loopback_mac
+id|test_loopback_mac
 comma
-DECL|enumerator|E100_MAC_TEST_FAIL
-id|E100_MAC_TEST_FAIL
+DECL|enumerator|test_loopback_phy
+id|test_loopback_phy
 comma
-DECL|enumerator|E100_LPBK_MAC_FAIL
-id|E100_LPBK_MAC_FAIL
+DECL|enumerator|cable_diag
+id|cable_diag
 comma
-DECL|enumerator|E100_LPBK_PHY_FAIL
-id|E100_LPBK_PHY_FAIL
+DECL|enumerator|max_test_res
+id|max_test_res
 comma
-DECL|enumerator|E100_MAX_TEST_RES
-id|E100_MAX_TEST_RES
+multiline_comment|/* must be last */
 )brace
 suffix:semicolon
 macro_line|#endif
