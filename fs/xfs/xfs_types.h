@@ -480,22 +480,5 @@ DECL|typedef|xfs_btnum_t
 )brace
 id|xfs_btnum_t
 suffix:semicolon
-multiline_comment|/*&n; * Juggle IRIX device numbers - still used in ondisk structures&n; */
-DECL|macro|XFS_DEV_BITSMAJOR
-mdefine_line|#define XFS_DEV_BITSMAJOR&t;14
-DECL|macro|XFS_DEV_BITSMINOR
-mdefine_line|#define XFS_DEV_BITSMINOR&t;18
-DECL|macro|XFS_DEV_MAXMAJ
-mdefine_line|#define XFS_DEV_MAXMAJ&t;&t;0x1ff
-DECL|macro|XFS_DEV_MAXMIN
-mdefine_line|#define XFS_DEV_MAXMIN&t;&t;0x3ffff
-DECL|macro|XFS_DEV_MAJOR
-mdefine_line|#define XFS_DEV_MAJOR(dev)&t;((int)(((unsigned)(dev)&gt;&gt;XFS_DEV_BITSMINOR) &bslash;&n;&t;&t;&t;&t;    &amp; XFS_DEV_MAXMAJ))
-DECL|macro|XFS_DEV_MINOR
-mdefine_line|#define XFS_DEV_MINOR(dev)&t;((int)((dev)&amp;XFS_DEV_MAXMIN))
-DECL|macro|XFS_MKDEV
-mdefine_line|#define XFS_MKDEV(major,minor) ((xfs_dev_t)(((major)&lt;&lt;XFS_DEV_BITSMINOR) &bslash;&n;&t;&t;&t;&t;    | (minor&amp;XFS_DEV_MAXMIN)))
-DECL|macro|XFS_DEV_TO_KDEVT
-mdefine_line|#define XFS_DEV_TO_KDEVT(dev)&t;MKDEV(XFS_DEV_MAJOR(dev),XFS_DEV_MINOR(dev))
 macro_line|#endif&t;/* !__XFS_TYPES_H */
 eof

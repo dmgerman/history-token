@@ -1198,7 +1198,11 @@ id|task-&gt;tty-&gt;pgrp
 suffix:semicolon
 id|tty_nr
 op_assign
-id|task-&gt;tty-&gt;device
+id|tty_devnum
+c_func
+(paren
+id|task-&gt;tty
+)paren
 suffix:semicolon
 )brace
 id|task_unlock

@@ -52,7 +52,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* in/out */
 DECL|member|dev
-id|__kernel_dev_t
+id|__kernel_old_dev_t
 id|dev
 suffix:semicolon
 multiline_comment|/* in/out */
@@ -117,7 +117,7 @@ r_uint32
 id|count
 suffix:semicolon
 DECL|member|dev
-id|__kernel_dev_t
+id|__kernel_old_dev_t
 id|dev
 (braket
 l_int|0

@@ -378,20 +378,10 @@ id|inode-&gt;i_mode
 multiline_comment|/* For these, we don&squot;t actually need to read the old node */
 id|dev
 op_assign
-(paren
-id|imajor
+id|old_encode_dev
 c_func
 (paren
-id|dentry-&gt;d_inode
-)paren
-op_lshift
-l_int|8
-)paren
-op_or
-id|iminor
-c_func
-(paren
-id|dentry-&gt;d_inode
+id|dentry-&gt;d_inode-&gt;i_rdev
 )paren
 suffix:semicolon
 id|mdata

@@ -1376,7 +1376,11 @@ suffix:semicolon
 macro_line|#endif
 id|ROOT_DEV
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|ORIG_ROOT_DEV
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 id|rd_image_start

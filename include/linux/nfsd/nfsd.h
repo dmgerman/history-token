@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/nfsd/debug.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsfh.h&gt;
 macro_line|#include &lt;linux/nfsd/export.h&gt;
@@ -822,6 +823,67 @@ r_struct
 id|timeval
 id|nfssvc_boot
 suffix:semicolon
+DECL|function|is_fsid
+r_static
+r_inline
+r_int
+id|is_fsid
+c_func
+(paren
+r_struct
+id|svc_fh
+op_star
+id|fh
+comma
+r_struct
+id|knfsd_fh
+op_star
+id|reffh
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|fh-&gt;fh_export-&gt;ex_flags
+op_amp
+id|NFSEXP_FSID
+)paren
+(brace
+r_struct
+id|vfsmount
+op_star
+id|mnt
+op_assign
+id|fh-&gt;fh_export-&gt;ex_mnt
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|old_valid_dev
+c_func
+(paren
+id|mnt-&gt;mnt_sb-&gt;s_dev
+)paren
+op_logical_or
+(paren
+id|reffh-&gt;fh_version
+op_eq
+l_int|1
+op_logical_and
+id|reffh-&gt;fh_fsid_type
+op_eq
+l_int|1
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_NFSD_V4
 multiline_comment|/* before processing a COMPOUND operation, we have to check that there&n; * is enough space in the buffer for XDR encode to succeed.  otherwise,&n; * we might process an operation with side effects, and be unable to&n; * tell the client that the operation succeeded.&n; *&n; * COMPOUND_SLACK_SPACE - this is the minimum amount of buffer space&n; * needed to encode an &quot;ordinary&quot; _successful_ operation.  (GETATTR,&n; * READ, READDIR, and READLINK have their own buffer checks.)  if we&n; * fall below this level, we fail the next operation with NFS4ERR_RESOURCE.&n; *&n; * COMPOUND_ERR_SLACK_SPACE - this is the minimum amount of buffer space&n; * needed to encode an operation which has failed with NFS4ERR_RESOURCE.&n; * care is taken to ensure that we never fall below this level for any&n; * reason.&n; */
 DECL|macro|COMPOUND_SLACK_SPACE

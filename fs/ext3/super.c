@@ -7094,7 +7094,7 @@ suffix:semicolon
 id|dev_t
 id|journal_dev
 op_assign
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|le32_to_cpu

@@ -1969,9 +1969,19 @@ c_func
 (paren
 id|CE_NOTE
 comma
-l_string|&quot;log dev: 0x%x&quot;
+l_string|&quot;log dev: %u:%u&quot;
 comma
+id|MAJOR
+c_func
+(paren
 id|log_dev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|log_dev
+)paren
 )paren
 suffix:semicolon
 r_return
