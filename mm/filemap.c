@@ -2707,7 +2707,7 @@ id|inode
 suffix:semicolon
 id|mapping
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 suffix:semicolon
 id|inode
 op_assign
@@ -3392,7 +3392,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_int
 r_int
@@ -3494,7 +3494,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|page
@@ -3625,7 +3625,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|file_ra_state
@@ -4212,7 +4212,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|page
@@ -4529,7 +4529,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|inode
@@ -4801,7 +4801,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|inode
@@ -6469,7 +6469,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|address_space_operations
@@ -7457,7 +7457,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 id|ssize_t
 id|err
@@ -7561,7 +7561,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 id|ssize_t
 id|err
@@ -7824,7 +7824,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 id|ssize_t
 id|retval

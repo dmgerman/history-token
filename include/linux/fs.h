@@ -6830,7 +6830,7 @@ id|actor
 id|do_generic_mapping_read
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 comma
 op_amp
 id|filp-&gt;f_ra

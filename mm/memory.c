@@ -6453,7 +6453,7 @@ id|vma-&gt;vm_file
 (brace
 id|mapping
 op_assign
-id|vma-&gt;vm_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|vma-&gt;vm_file-&gt;f_mapping
 suffix:semicolon
 id|sequence
 op_assign

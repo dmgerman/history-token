@@ -351,9 +351,7 @@ op_assign
 id|i_size_read
 c_func
 (paren
-id|lo-&gt;lo_backing_file-&gt;f_dentry
-op_member_access_from_pointer
-id|d_inode-&gt;i_mapping-&gt;host
+id|lo-&gt;lo_backing_file-&gt;f_mapping-&gt;host
 )paren
 suffix:semicolon
 id|offset
@@ -519,7 +517,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|address_space_operations
@@ -3460,7 +3458,7 @@ suffix:semicolon
 id|mapping_set_gfp_mask
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 comma
 id|gfp
 )paren

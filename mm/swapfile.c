@@ -3943,7 +3943,7 @@ id|out
 suffix:semicolon
 id|mapping
 op_assign
-id|victim-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|victim-&gt;f_mapping
 suffix:semicolon
 id|prev
 op_assign
@@ -3997,7 +3997,7 @@ id|SWP_ACTIVE
 r_if
 c_cond
 (paren
-id|p-&gt;swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|p-&gt;swap_file-&gt;f_mapping
 op_eq
 id|mapping
 )paren
@@ -4342,7 +4342,7 @@ id|up
 c_func
 (paren
 op_amp
-id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host-&gt;i_sem
+id|swap_file-&gt;f_mapping-&gt;host-&gt;i_sem
 )paren
 suffix:semicolon
 )brace
@@ -5186,7 +5186,7 @@ id|swap_file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|mapping
 op_assign
-id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|swap_file-&gt;f_mapping
 suffix:semicolon
 id|error
 op_assign
@@ -5236,7 +5236,7 @@ c_cond
 (paren
 id|mapping
 op_eq
-id|q-&gt;swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|q-&gt;swap_file-&gt;f_mapping
 )paren
 r_goto
 id|bad_swap
