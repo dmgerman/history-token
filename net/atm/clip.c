@@ -548,7 +548,7 @@ comma
 id|entry
 )paren
 suffix:semicolon
-id|atm_async_release_vcc
+id|vcc_release_async
 c_func
 (paren
 id|clip_vcc-&gt;vcc
