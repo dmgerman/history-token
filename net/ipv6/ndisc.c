@@ -2021,8 +2021,16 @@ comma
 l_int|0
 )paren
 )paren
+(brace
+id|dst_free
+c_func
+(paren
+id|dst
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|src_addr
 op_assign
 op_amp
@@ -2061,12 +2069,6 @@ op_star
 )paren
 id|rt
 suffix:semicolon
-id|dst_clone
-c_func
-(paren
-id|dst
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|xfrm_lookup
@@ -2091,7 +2093,7 @@ OL
 l_int|0
 )paren
 (brace
-id|dst_release
+id|dst_free
 c_func
 (paren
 id|dst
@@ -2158,6 +2160,12 @@ id|ND_PRINTK1
 c_func
 (paren
 l_string|&quot;send_na: alloc skb failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dst_free
+c_func
+(paren
+id|dst
 )paren
 suffix:semicolon
 r_return

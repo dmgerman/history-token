@@ -21,7 +21,7 @@ multiline_comment|/*&n; * &t;Function Prototypes&n; */
 multiline_comment|/*&n; *&t;WAN device IOCTL handlers&n; */
 r_static
 r_int
-id|device_setup
+id|wanrouter_device_setup
 c_func
 (paren
 r_struct
@@ -36,7 +36,7 @@ id|u_conf
 suffix:semicolon
 r_static
 r_int
-id|device_stat
+id|wanrouter_device_stat
 c_func
 (paren
 r_struct
@@ -51,7 +51,7 @@ id|u_stat
 suffix:semicolon
 r_static
 r_int
-id|device_shutdown
+id|wanrouter_device_shutdown
 c_func
 (paren
 r_struct
@@ -62,7 +62,7 @@ id|wandev
 suffix:semicolon
 r_static
 r_int
-id|device_new_if
+id|wanrouter_device_new_if
 c_func
 (paren
 r_struct
@@ -77,7 +77,7 @@ id|u_conf
 suffix:semicolon
 r_static
 r_int
-id|device_del_if
+id|wanrouter_device_del_if
 c_func
 (paren
 r_struct
@@ -95,7 +95,8 @@ r_static
 r_struct
 id|wan_device
 op_star
-id|find_device
+id|wanrouter_find_device
+c_func
 (paren
 r_char
 op_star
@@ -104,7 +105,8 @@ id|name
 suffix:semicolon
 r_static
 r_int
-id|delete_interface
+id|wanrouter_delete_interface
+c_func
 (paren
 r_struct
 id|wan_device
@@ -145,52 +147,47 @@ id|smp_flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Global Data&n; */
-DECL|variable|fullname
+DECL|variable|wanrouter_fullname
 r_static
 r_char
-id|fullname
+id|wanrouter_fullname
 (braket
 )braket
 op_assign
 l_string|&quot;Sangoma WANPIPE Router&quot;
 suffix:semicolon
-DECL|variable|copyright
+DECL|variable|wanrouter_copyright
 r_static
 r_char
-id|copyright
+id|wanrouter_copyright
 (braket
 )braket
 op_assign
 l_string|&quot;(c) 1995-2000 Sangoma Technologies Inc.&quot;
 suffix:semicolon
-DECL|variable|modname
+DECL|variable|wanrouter_modname
 r_static
 r_char
-id|modname
+id|wanrouter_modname
 (braket
 )braket
 op_assign
 id|ROUTER_NAME
 suffix:semicolon
 multiline_comment|/* short module name */
-DECL|variable|router_devlist
+DECL|variable|wanrouter_router_devlist
 r_struct
 id|wan_device
 op_star
-id|router_devlist
+id|wanrouter_router_devlist
 suffix:semicolon
 multiline_comment|/* list of registered devices */
-DECL|variable|devcnt
-r_static
-r_int
-id|devcnt
-suffix:semicolon
 multiline_comment|/*&n; *&t;Organize Unique Identifiers for encapsulation/decapsulation&n; */
-DECL|variable|oui_ether
+DECL|variable|wanrouter_oui_ether
 r_static
 r_int
 r_char
-id|oui_ether
+id|wanrouter_oui_ether
 (braket
 )braket
 op_assign
@@ -206,7 +203,7 @@ macro_line|#if 0
 r_static
 r_int
 r_char
-id|oui_802_2
+id|wanrouter_oui_802_2
 (braket
 )braket
 op_assign
@@ -253,13 +250,13 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s v%u.%u %s&bslash;n&quot;
 comma
-id|fullname
+id|wanrouter_fullname
 comma
 id|ROUTER_VERSION
 comma
 id|ROUTER_RELEASE
 comma
-id|copyright
+id|wanrouter_copyright
 )paren
 suffix:semicolon
 id|err
@@ -274,17 +271,15 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: can&squot;t create entry in proc filesystem!&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;         *      Initialise compiled in boards&n;         */
 macro_line|#ifdef CONFIG_VENDOR_SANGOMA
 id|sdladrv_init
@@ -336,13 +331,13 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s v%u.%u %s&bslash;n&quot;
 comma
-id|fullname
+id|wanrouter_fullname
 comma
 id|ROUTER_VERSION
 comma
 id|ROUTER_RELEASE
 comma
-id|copyright
+id|wanrouter_copyright
 )paren
 suffix:semicolon
 id|err
@@ -357,17 +352,15 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: can&squot;t create entry in proc filesystem!&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 )paren
 suffix:semicolon
-)brace
 r_return
 id|err
 suffix:semicolon
@@ -457,13 +450,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|find_device
+id|wanrouter_find_device
 c_func
 (paren
 id|wandev-&gt;name
 )paren
-op_ne
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -476,7 +467,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: registering WAN device %s&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 comma
 id|wandev-&gt;name
 )paren
@@ -503,7 +494,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: can&squot;t create /proc/net/router/%s entry!&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 comma
 id|wandev-&gt;name
 )paren
@@ -523,14 +514,11 @@ l_int|NULL
 suffix:semicolon
 id|wandev-&gt;next
 op_assign
-id|router_devlist
+id|wanrouter_router_devlist
 suffix:semicolon
-id|router_devlist
+id|wanrouter_router_devlist
 op_assign
 id|wandev
-suffix:semicolon
-op_increment
-id|devcnt
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
@@ -574,7 +562,7 @@ c_loop
 (paren
 id|wandev
 op_assign
-id|router_devlist
+id|wanrouter_router_devlist
 comma
 id|prev
 op_assign
@@ -617,7 +605,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: unregistering WAN device %s&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 comma
 id|name
 )paren
@@ -630,7 +618,7 @@ id|wandev-&gt;state
 op_ne
 id|WAN_UNCONFIGURED
 )paren
-id|device_shutdown
+id|wanrouter_device_shutdown
 c_func
 (paren
 id|wandev
@@ -646,12 +634,9 @@ op_assign
 id|wandev-&gt;next
 suffix:semicolon
 r_else
-id|router_devlist
+id|wanrouter_router_devlist
 op_assign
 id|wandev-&gt;next
-suffix:semicolon
-op_decrement
-id|devcnt
 suffix:semicolon
 id|wanrouter_proc_delete
 c_func
@@ -764,11 +749,11 @@ id|skb-&gt;data
 l_int|2
 )braket
 comma
-id|oui_ether
+id|wanrouter_oui_ether
 comma
 r_sizeof
 (paren
-id|oui_ether
+id|wanrouter_oui_ether
 )paren
 )paren
 suffix:semicolon
@@ -803,7 +788,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: unsupported Ethertype 0x%04X on interface %s!&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 comma
 id|type
 comma
@@ -901,11 +886,11 @@ op_plus
 l_int|1
 )braket
 comma
-id|oui_ether
+id|wanrouter_oui_ether
 comma
 r_sizeof
 (paren
-id|oui_ether
+id|wanrouter_oui_ether
 )paren
 )paren
 )paren
@@ -917,7 +902,7 @@ id|KERN_INFO
 l_string|&quot;%s: unsupported SNAP OUI %02X-%02X-%02X &quot;
 l_string|&quot;on interface %s!&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 comma
 id|skb-&gt;data
 (braket
@@ -980,7 +965,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: unsupported NLPID 0x%02X on interface %s!&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 comma
 id|skb-&gt;data
 (braket
@@ -1141,7 +1126,7 @@ id|ROUTER_SETUP
 suffix:colon
 id|err
 op_assign
-id|device_setup
+id|wanrouter_device_setup
 c_func
 (paren
 id|wandev
@@ -1160,7 +1145,7 @@ id|ROUTER_DOWN
 suffix:colon
 id|err
 op_assign
-id|device_shutdown
+id|wanrouter_device_shutdown
 c_func
 (paren
 id|wandev
@@ -1173,7 +1158,7 @@ id|ROUTER_STAT
 suffix:colon
 id|err
 op_assign
-id|device_stat
+id|wanrouter_device_stat
 c_func
 (paren
 id|wandev
@@ -1192,7 +1177,7 @@ id|ROUTER_IFNEW
 suffix:colon
 id|err
 op_assign
-id|device_new_if
+id|wanrouter_device_new_if
 c_func
 (paren
 id|wandev
@@ -1211,7 +1196,7 @@ id|ROUTER_IFDEL
 suffix:colon
 id|err
 op_assign
-id|device_del_if
+id|wanrouter_device_del_if
 c_func
 (paren
 id|wandev
@@ -1278,10 +1263,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;WAN Driver IOCTL Handlers&n; */
 multiline_comment|/*&n; *&t;Setup WAN link device.&n; *&t;o verify user address space&n; *&t;o allocate kernel memory and copy configuration data to kernel space&n; *&t;o if configuration data includes extension, copy it to kernel space too&n; *&t;o call driver&squot;s setup() entry point&n; */
-DECL|function|device_setup
+DECL|function|wanrouter_device_setup
 r_static
 r_int
-id|device_setup
+id|wanrouter_device_setup
 c_func
 (paren
 r_struct
@@ -1590,10 +1575,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Shutdown WAN device.&n; *&t;o delete all not opened logical channels for this device&n; *&t;o call driver&squot;s shutdown() entry point&n; */
-DECL|function|device_shutdown
+DECL|function|wanrouter_device_shutdown
 r_static
 r_int
-id|device_shutdown
+id|wanrouter_device_shutdown
 c_func
 (paren
 r_struct
@@ -1642,22 +1627,20 @@ id|dev
 suffix:semicolon
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|err
 op_assign
-id|delete_interface
+id|wanrouter_delete_interface
 c_func
 (paren
 id|wandev
 comma
 id|dev-&gt;name
 )paren
-)paren
-op_ne
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_return
 id|err
@@ -1698,10 +1681,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Get WAN device status &amp; statistics.&n; */
-DECL|function|device_stat
+DECL|function|wanrouter_device_stat
 r_static
 r_int
-id|device_stat
+id|wanrouter_device_stat
 c_func
 (paren
 r_struct
@@ -1786,10 +1769,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Create new WAN interface.&n; *&t;o verify user address space&n; *&t;o copy configuration data to kernel address space&n; *&t;o allocate network interface data space&n; *&t;o call driver&squot;s new_if() entry point&n; *&t;o make sure there is no interface name conflict&n; *&t;o register network interface&n; */
-DECL|function|device_new_if
+DECL|function|wanrouter_device_new_if
 r_static
 r_int
-id|device_new_if
+id|wanrouter_device_new_if
 c_func
 (paren
 r_struct
@@ -2116,7 +2099,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: registering interface %s...&bslash;n&quot;
 comma
-id|modname
+id|wanrouter_modname
 comma
 id|dev-&gt;name
 )paren
@@ -2316,10 +2299,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Delete WAN logical channel.&n; *&t; o verify user address space&n; *&t; o copy configuration data to kernel address space&n; */
-DECL|function|device_del_if
+DECL|function|wanrouter_device_del_if
 r_static
 r_int
-id|device_del_if
+id|wanrouter_device_del_if
 c_func
 (paren
 r_struct
@@ -2388,7 +2371,7 @@ id|EFAULT
 suffix:semicolon
 id|err
 op_assign
-id|delete_interface
+id|wanrouter_delete_interface
 c_func
 (paren
 id|wandev
@@ -2429,12 +2412,12 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Miscellaneous Functions&n; */
 multiline_comment|/*&n; *&t;Find WAN device by name.&n; *&t;Return pointer to the WAN device data space or NULL if device not found.&n; */
-DECL|function|find_device
+DECL|function|wanrouter_find_device
 r_static
 r_struct
 id|wan_device
 op_star
-id|find_device
+id|wanrouter_find_device
 c_func
 (paren
 r_char
@@ -2452,7 +2435,7 @@ c_loop
 (paren
 id|wandev
 op_assign
-id|router_devlist
+id|wanrouter_router_devlist
 suffix:semicolon
 id|wandev
 op_logical_and
@@ -2474,10 +2457,10 @@ id|wandev
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Delete WAN logical channel identified by its name.&n; *&t;o find logical channel by its name&n; *&t;o call driver&squot;s del_if() entry point&n; *&t;o unregister network interface&n; *&t;o unlink channel data space from linked list of channels&n; *&t;o release channel data space&n; *&n; *&t;Return:&t;0&t;&t;success&n; *&t;&t;-ENODEV&t;&t;channel not found.&n; *&t;&t;-EBUSY&t;&t;interface is open&n; *&n; *&t;Note: If (force != 0), then device will be destroyed even if interface&n; *&t;associated with it is open. It&squot;s caller&squot;s responsibility to make&n; *&t;sure that opened interfaces are not removed!&n; */
-DECL|function|delete_interface
+DECL|function|wanrouter_delete_interface
 r_static
 r_int
-id|delete_interface
+id|wanrouter_delete_interface
 c_func
 (paren
 r_struct

@@ -6241,7 +6241,7 @@ comma
 dot
 id|release
 op_assign
-id|ip_seq_release
+id|seq_release_private
 comma
 )brace
 suffix:semicolon

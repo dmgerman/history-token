@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/arcdevice.h&gt;
 DECL|macro|VERSION
@@ -211,6 +210,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|com90xx_probe
+r_static
 r_int
 id|__init
 id|com90xx_probe
@@ -306,13 +306,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifndef MODULE
-id|arcnet_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|BUGLVL
 c_func
 (paren
@@ -2638,7 +2631,6 @@ id|count
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/* Module parameters */
 DECL|variable|io
 r_static
@@ -2701,9 +2693,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
+DECL|function|com90xx_init
+r_static
 r_int
-id|init_module
+id|__init
+id|com90xx_init
 c_func
 (paren
 r_void
@@ -2804,9 +2798,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|com90xx_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|com90xx_exit
 c_func
 (paren
 r_void
@@ -2910,7 +2906,21 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
+DECL|variable|com90xx_init
+id|module_init
+c_func
+(paren
+id|com90xx_init
+)paren
+suffix:semicolon
+DECL|variable|com90xx_exit
+id|module_exit
+c_func
+(paren
+id|com90xx_exit
+)paren
+suffix:semicolon
+macro_line|#ifndef MODULE
 DECL|function|com90xx_setup
 r_static
 r_int
@@ -2923,20 +2933,11 @@ op_star
 id|s
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 r_int
 id|ints
 (braket
 l_int|8
 )braket
-suffix:semicolon
-id|com90xx_skip_probe
-op_assign
-l_int|1
 suffix:semicolon
 id|s
 op_assign
@@ -2974,36 +2975,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|dev
-op_assign
-id|alloc_bootmem
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|dev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-)paren
-suffix:semicolon
-id|dev-&gt;init
-op_assign
-id|com90xx_probe
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3026,7 +2997,7 @@ r_case
 l_int|3
 suffix:colon
 multiline_comment|/* Mem address */
-id|dev-&gt;mem_start
+id|shmem
 op_assign
 id|ints
 (braket
@@ -3037,7 +3008,7 @@ r_case
 l_int|2
 suffix:colon
 multiline_comment|/* IRQ */
-id|dev-&gt;irq
+id|irq
 op_assign
 id|ints
 (braket
@@ -3048,7 +3019,7 @@ r_case
 l_int|1
 suffix:colon
 multiline_comment|/* IO address */
-id|dev-&gt;base_addr
+id|io
 op_assign
 id|ints
 (braket
@@ -3065,7 +3036,7 @@ id|s
 id|strncpy
 c_func
 (paren
-id|dev-&gt;name
+id|device
 comma
 id|s
 comma
@@ -3076,25 +3047,9 @@ r_else
 id|strcpy
 c_func
 (paren
-id|dev-&gt;name
+id|device
 comma
 l_string|&quot;arc%d&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|register_netdev
-c_func
-(paren
-id|dev
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;com90xx: Cannot register arcnet device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3109,5 +3064,5 @@ comma
 id|com90xx_setup
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
+macro_line|#endif
 eof
