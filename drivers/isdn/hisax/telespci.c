@@ -65,8 +65,8 @@ id|u8
 id|off
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -132,8 +132,8 @@ id|u8
 id|data
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -192,8 +192,8 @@ r_int
 id|size
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -283,8 +283,8 @@ r_int
 id|size
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -393,8 +393,8 @@ id|u8
 id|off
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -476,8 +476,8 @@ id|u8
 id|data
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -550,8 +550,8 @@ r_int
 id|size
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -651,8 +651,8 @@ r_int
 id|size
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|adr
 op_assign
 id|cs-&gt;hw.teles0.membase
@@ -1144,9 +1144,6 @@ suffix:semicolon
 )brace
 id|cs-&gt;hw.teles0.membase
 op_assign
-(paren
-id|u_long
-)paren
 id|ioremap
 c_func
 (paren
@@ -1279,7 +1276,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HiSax: %s config irq:%d mem:%lx&bslash;n&quot;
+l_string|&quot;HiSax: %s config irq:%d mem:%p&bslash;n&quot;
 comma
 id|CardType
 (braket

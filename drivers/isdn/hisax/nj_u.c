@@ -514,9 +514,6 @@ op_star
 id|card
 )paren
 (brace
-r_int
-id|bytecnt
-suffix:semicolon
 r_struct
 id|IsdnCardState
 op_star
@@ -898,10 +895,6 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
-id|bytecnt
-op_assign
-l_int|256
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -917,41 +910,22 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|request_region
+id|request_io
 c_func
 (paren
-id|cs-&gt;hw.njet.base
-comma
-id|bytecnt
-comma
-l_string|&quot;netspider-u isdn&quot;
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: %s config port %#lx-%#lx already in use&bslash;n&quot;
-comma
-id|CardType
-(braket
-id|card-&gt;typ
-)braket
+op_amp
+id|cs-&gt;rs
 comma
 id|cs-&gt;hw.njet.base
 comma
-id|cs-&gt;hw.njet.base
-op_plus
-id|bytecnt
+l_int|0x100
+comma
+l_string|&quot;netjet-s isdn&quot;
 )paren
-suffix:semicolon
+)paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
-)brace
 id|nj_u_reset
 c_func
 (paren
@@ -986,9 +960,7 @@ l_string|&quot;NETspider-U:&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 eof

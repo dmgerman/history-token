@@ -5693,12 +5693,10 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-id|release_region
+id|hisax_release_resources
 c_func
 (paren
-id|cs-&gt;hw.njet.base
-comma
-l_int|256
+id|cs
 )paren
 suffix:semicolon
 )brace
