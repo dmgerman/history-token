@@ -1521,7 +1521,7 @@ l_int|0x02
 comma
 l_int|0x04
 comma
-l_int|0x8
+l_int|0x8e
 comma
 l_int|732
 )brace
@@ -5982,6 +5982,7 @@ id|type
 OL
 id|TUNERS
 )paren
+(brace
 id|set_type
 c_func
 (paren
@@ -5992,6 +5993,25 @@ comma
 l_string|&quot;insmod option&quot;
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: The type=&lt;n&gt; insmod option will go away soon.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: Please use the tuner=&lt;n&gt; option provided by&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: tv card core driver (bttv, saa7134, ...) instead.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
