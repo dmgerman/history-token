@@ -389,7 +389,8 @@ r_void
 id|wv_ints_off
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -434,7 +435,8 @@ r_void
 id|wv_ints_on
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -792,7 +794,8 @@ r_void
 id|update_psa_checksum
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -2148,7 +2151,8 @@ r_void
 id|wv_ack
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -2342,7 +2346,8 @@ r_int
 id|wv_synchronous_cmd
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -2539,7 +2544,8 @@ DECL|function|wv_config_complete
 id|wv_config_complete
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -2832,7 +2838,8 @@ r_int
 id|wv_complete
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -3239,7 +3246,8 @@ r_void
 id|wv_82586_reconfig
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -3792,7 +3800,8 @@ r_void
 id|wv_mmc_show
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -4807,7 +4816,8 @@ r_void
 id|wv_ru_show
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -4844,7 +4854,8 @@ r_void
 id|wv_cu_show_one
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -4933,7 +4944,8 @@ r_void
 id|wv_cu_show
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -5038,7 +5050,8 @@ r_void
 id|wv_dev_show
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -5090,7 +5103,8 @@ r_void
 id|wv_local_show
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -5416,7 +5430,8 @@ r_void
 id|wv_init_info
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -5824,7 +5839,8 @@ op_star
 id|wavelan_get_stats
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -5863,7 +5879,8 @@ r_void
 id|wavelan_set_multicast_list
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -6052,7 +6069,8 @@ r_int
 id|wavelan_set_mac_address
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -7163,7 +7181,8 @@ r_void
 id|wl_spy_gather
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -7237,7 +7256,8 @@ r_void
 id|wl_his_gather
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -9974,7 +9994,8 @@ op_star
 id|wavelan_get_wireless_stats
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -10258,7 +10279,8 @@ DECL|function|wv_packet_read
 id|wv_packet_read
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -10573,7 +10595,8 @@ r_void
 id|wv_receive
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -11103,7 +11126,8 @@ r_int
 id|wv_packet_write
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -11637,7 +11661,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -11823,7 +11848,8 @@ r_int
 id|wv_mmc_init
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -12463,7 +12489,8 @@ r_int
 id|wv_ru_start
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -12890,7 +12917,8 @@ r_int
 id|wv_cu_start
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -13330,7 +13358,8 @@ r_int
 id|wv_82586_start
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -13903,7 +13932,8 @@ r_void
 id|wv_82586_config
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -14828,7 +14858,8 @@ r_void
 id|wv_82586_stop
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -14940,7 +14971,8 @@ r_int
 id|wv_hw_reset
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -15293,7 +15325,8 @@ op_star
 id|regs
 )paren
 (brace
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 suffix:semicolon
@@ -15788,7 +15821,8 @@ r_void
 id|wavelan_watchdog
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -16012,7 +16046,8 @@ r_int
 id|wavelan_open
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -16206,7 +16241,8 @@ r_int
 id|wavelan_close
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -16305,7 +16341,8 @@ id|__init
 id|wavelan_config
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -17070,7 +17107,7 @@ id|wavelan_list-&gt;next
 suffix:semicolon
 id|out
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -17310,7 +17347,7 @@ r_continue
 suffix:semicolon
 )brace
 )brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -17371,7 +17408,8 @@ c_loop
 id|wavelan_list
 )paren
 (brace
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 op_assign

@@ -294,7 +294,7 @@ c_func
 l_string|&quot;x25_asy_alloc() - register_netdev() failure.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

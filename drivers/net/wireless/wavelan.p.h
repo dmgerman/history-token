@@ -153,12 +153,6 @@ DECL|macro|SIOCGIPHISTO
 mdefine_line|#define SIOCGIPHISTO&t;SIOCIWFIRSTPRIV + 3&t;/* Get histogram values */
 multiline_comment|/****************************** TYPES ******************************/
 multiline_comment|/* Shortcuts */
-DECL|typedef|device
-r_typedef
-r_struct
-id|net_device
-id|device
-suffix:semicolon
 DECL|typedef|en_stats
 r_typedef
 r_struct
@@ -217,7 +211,8 @@ id|next
 suffix:semicolon
 multiline_comment|/* linked list of the devices */
 DECL|member|dev
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 suffix:semicolon
@@ -405,14 +400,16 @@ multiline_comment|/* hacr   */
 id|wv_ints_off
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
 id|wv_ints_on
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -594,7 +591,8 @@ r_void
 id|wv_ack
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -604,7 +602,8 @@ r_int
 id|wv_synchronous_cmd
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 r_const
@@ -615,7 +614,8 @@ comma
 id|wv_config_complete
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 id|u_long
@@ -629,7 +629,8 @@ r_int
 id|wv_complete
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 id|u_long
@@ -644,7 +645,8 @@ r_void
 id|wv_82586_reconfig
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -666,7 +668,8 @@ r_void
 id|wv_init_info
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -678,7 +681,8 @@ op_star
 id|wavelan_get_stats
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -688,7 +692,8 @@ r_void
 id|wavelan_set_multicast_list
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -699,7 +704,8 @@ r_void
 id|wv_packet_read
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Read a packet from a frame. */
@@ -711,7 +717,8 @@ comma
 id|wv_receive
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -723,7 +730,8 @@ r_int
 id|wv_packet_write
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Write a packet to the Tx buffer. */
@@ -743,7 +751,8 @@ id|sk_buff
 op_star
 comma
 multiline_comment|/* Send a packet. */
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -754,7 +763,8 @@ r_int
 id|wv_mmc_init
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -762,7 +772,8 @@ multiline_comment|/* Initialize the modem. */
 id|wv_ru_start
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -770,7 +781,8 @@ multiline_comment|/* Start the i82586 receiver unit. */
 id|wv_cu_start
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -778,7 +790,8 @@ multiline_comment|/* Start the i82586 command unit. */
 id|wv_82586_start
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -788,7 +801,8 @@ r_void
 id|wv_82586_config
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -799,7 +813,8 @@ r_void
 id|wv_82586_stop
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -808,7 +823,8 @@ r_int
 id|wv_hw_reset
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -846,7 +862,8 @@ r_void
 id|wavelan_watchdog
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -857,7 +874,8 @@ r_int
 id|wavelan_open
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -865,7 +883,8 @@ multiline_comment|/* Open the device. */
 id|wavelan_close
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -873,7 +892,8 @@ multiline_comment|/* Close the device. */
 id|wavelan_config
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 r_int

@@ -5954,20 +5954,11 @@ id|SET_MODULE_OWNER
 id|net
 )paren
 suffix:semicolon
-id|net-&gt;priv
-op_assign
-id|dev
-suffix:semicolon
 id|strcpy
 (paren
 id|net-&gt;name
 comma
 l_string|&quot;usb%d&quot;
-)paren
-suffix:semicolon
-id|ether_setup
-(paren
-id|net
 )paren
 suffix:semicolon
 multiline_comment|/* one random address for the gadget device ... both of these could&n;&t; * reasonably come from an id prom or a module parameter.&n;&t; */

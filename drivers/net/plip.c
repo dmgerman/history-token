@@ -5116,7 +5116,7 @@ id|unit
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_netdev
+id|alloc_etherdev
 c_func
 (paren
 r_sizeof
@@ -5124,10 +5124,6 @@ r_sizeof
 r_struct
 id|net_local
 )paren
-comma
-id|name
-comma
-id|ether_setup
 )paren
 suffix:semicolon
 r_if
@@ -5147,6 +5143,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|strcpy
+c_func
+(paren
+id|dev-&gt;name
+comma
+id|name
+)paren
+suffix:semicolon
 id|dev-&gt;init
 op_assign
 id|plip_init_netdev
