@@ -2917,6 +2917,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/*&n;&t;&t;&t; * Credits for cards based on STAC9758:&n;&t;&t;&t; *   James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n;&t;&t;&t; *   Voluspa &lt;voluspa@comhem.se&gt;&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
