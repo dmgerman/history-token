@@ -2266,11 +2266,11 @@ DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...) do {} while (0)
 macro_line|#endif
 DECL|macro|err
-mdefine_line|#define err(format, arg...) printk(KERN_ERR __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
 DECL|macro|info
-mdefine_line|#define info(format, arg...) printk(KERN_INFO __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
 DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk(KERN_WARNING __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
 macro_line|#endif  /* __KERNEL__ */
 macro_line|#endif
 eof

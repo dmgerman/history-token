@@ -9187,6 +9187,12 @@ r_int
 id|hcd-&gt;regs
 suffix:semicolon
 multiline_comment|/* Maybe kick BIOS off this hardware.  Then reset, so we won&squot;t get&n;&t; * interrupts from any previous setup.&n;&t; */
+id|reset_hc
+c_func
+(paren
+id|uhci
+)paren
+suffix:semicolon
 id|pci_write_config_word
 c_func
 (paren
@@ -9195,12 +9201,6 @@ comma
 id|USBLEGSUP
 comma
 id|USBLEGSUP_DEFAULT
-)paren
-suffix:semicolon
-id|reset_hc
-c_func
-(paren
-id|uhci
 )paren
 suffix:semicolon
 r_return

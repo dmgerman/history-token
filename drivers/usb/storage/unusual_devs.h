@@ -1267,6 +1267,31 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* Reported by Miguel A. Fosas &lt;amn3s1a@ono.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4017
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;DIMAGE E223&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1749,7 +1774,7 @@ l_int|0x1001
 comma
 l_int|0x1000
 comma
-l_int|0x9009
+l_int|0x5009
 comma
 l_string|&quot;Casio&quot;
 comma

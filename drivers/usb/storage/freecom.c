@@ -183,7 +183,9 @@ DECL|macro|FCM_PACKET_IDE_READ
 mdefine_line|#define FCM_PACKET_IDE_READ&t;0xC0
 multiline_comment|/* All packets (except for status) are 64 bytes long. */
 DECL|macro|FCM_PACKET_LENGTH
-mdefine_line|#define FCM_PACKET_LENGTH&t;64
+mdefine_line|#define FCM_PACKET_LENGTH&t;&t;64
+DECL|macro|FCM_STATUS_PACKET_LENGTH
+mdefine_line|#define FCM_STATUS_PACKET_LENGTH&t;4
 r_static
 r_int
 DECL|function|freecom_readdata
@@ -664,7 +666,7 @@ id|ipipe
 comma
 id|fst
 comma
-id|FCM_PACKET_LENGTH
+id|FCM_STATUS_PACKET_LENGTH
 comma
 op_amp
 id|partial
@@ -806,7 +808,7 @@ id|ipipe
 comma
 id|fst
 comma
-id|FCM_PACKET_LENGTH
+id|FCM_STATUS_PACKET_LENGTH
 comma
 op_amp
 id|partial
@@ -826,8 +828,8 @@ r_if
 c_cond
 (paren
 id|result
-OG
-id|USB_STOR_XFER_SHORT
+op_ne
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
 id|USB_STOR_TRANSPORT_ERROR
@@ -968,6 +970,15 @@ id|us-&gt;srb-&gt;sc_data_direction
 r_case
 id|SCSI_DATA_READ
 suffix:colon
+multiline_comment|/* catch bogus &quot;read 0 length&quot; case */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|length
+)paren
+r_break
+suffix:semicolon
 multiline_comment|/* Make sure that the status indicates that the device&n;&t;&t; * wants data as well. */
 r_if
 c_cond
@@ -1130,6 +1141,15 @@ suffix:semicolon
 r_case
 id|SCSI_DATA_WRITE
 suffix:colon
+multiline_comment|/* catch bogus &quot;write 0 length&quot; case */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|length
+)paren
+r_break
+suffix:semicolon
 multiline_comment|/* Make sure the status indicates that the device wants to&n;&t;&t; * send us data. */
 multiline_comment|/* !!IMPLEMENT!! */
 id|result
@@ -1253,6 +1273,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* should never hit here -- filtered in usb.c */
 id|US_DEBUGP
 (paren
 l_string|&quot;freecom unimplemented direction: %d&bslash;n&quot;
