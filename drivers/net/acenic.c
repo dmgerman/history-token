@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acenic.c: Linux driver for the Alteon AceNIC Gigabit Ethernet card&n; *           and other Tigon based cards.&n; *&n; * Copyright 1998-2002 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * Thanks to Alteon and 3Com for providing hardware and documentation&n; * enabling me to write this driver.&n; *&n; * A mailing list for discussing the use of this driver has been&n; * setup, please subscribe to the lists if you have any questions&n; * about the driver. Send mail to linux-acenic-help@sunsite.auc.dk to&n; * see how to subscribe.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Additional credits:&n; *   Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;: Initial Linux/Alpha and trace&n; *       dump support. The trace dump support has not been&n; *       integrated yet however.&n; *   Troy Benjegerdes: Big Endian (PPC) patches.&n; *   Nate Stahl: Better out of memory handling and stats support.&n; *   Aman Singla: Nasty race between interrupt handler and tx code dealing&n; *                with &squot;testing the tx_ret_csm and setting tx_full&squot;&n; *   David S. Miller &lt;davem@redhat.com&gt;: conversion to new PCI dma mapping&n; *                                       infrastructure and Sparc support&n; *   Pierrick Pinasseau (CERN): For lending me an Ultra 5 to test the&n; *                              driver under Linux/Sparc64&n; *   Matt Domsch &lt;Matt_Domsch@dell.com&gt;: Detect Alteon 1000baseT cards&n; *                                       ETHTOOL_GDRVINFO support&n; *   Chip Salzenberg &lt;chip@valinux.com&gt;: Fix race condition between tx&n; *                                       handler and close() cleanup.&n; *   Ken Aaker &lt;kdaaker@rchland.vnet.ibm.com&gt;: Correct check for whether&n; *                                       memory mapped IO is enabled to&n; *                                       make the driver work on RS/6000.&n; *   Takayoshi Kouchi &lt;kouchi@hpc.bs1.fc.nec.co.jp&gt;: Identifying problem&n; *                                       where the driver would disable&n; *                                       bus master mode if it had to disable&n; *                                       write and invalidate.&n; *   Stephen Hack &lt;stephen_hack@hp.com&gt;: Fixed ace_set_mac_addr for little&n; *                                       endian systems.&n; *   Val Henson &lt;vhenson@esscom.com&gt;:    Reset Jumbo skb producer and&n; *                                       rx producer index when&n; *                                       flushing the Jumbo ring.&n; *   Hans Grobler &lt;grobh@sun.ac.za&gt;:     Memory leak fixes in the&n; *                                       driver init path.&n; */
+multiline_comment|/*&n; * acenic.c: Linux driver for the Alteon AceNIC Gigabit Ethernet card&n; *           and other Tigon based cards.&n; *&n; * Copyright 1998-2002 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * Thanks to Alteon and 3Com for providing hardware and documentation&n; * enabling me to write this driver.&n; *&n; * A mailing list for discussing the use of this driver has been&n; * setup, please subscribe to the lists if you have any questions&n; * about the driver. Send mail to linux-acenic-help@sunsite.auc.dk to&n; * see how to subscribe.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Additional credits:&n; *   Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;: Initial Linux/Alpha and trace&n; *       dump support. The trace dump support has not been&n; *       integrated yet however.&n; *   Troy Benjegerdes: Big Endian (PPC) patches.&n; *   Nate Stahl: Better out of memory handling and stats support.&n; *   Aman Singla: Nasty race between interrupt handler and tx code dealing&n; *                with &squot;testing the tx_ret_csm and setting tx_full&squot;&n; *   David S. Miller &lt;davem@redhat.com&gt;: conversion to new PCI dma mapping&n; *                                       infrastructure and Sparc support&n; *   Pierrick Pinasseau (CERN): For lending me an Ultra 5 to test the&n; *                              driver under Linux/Sparc64&n; *   Matt Domsch &lt;Matt_Domsch@dell.com&gt;: Detect Alteon 1000baseT cards&n; *                                       ETHTOOL_GDRVINFO support&n; *   Chip Salzenberg &lt;chip@valinux.com&gt;: Fix race condition between tx&n; *                                       handler and close() cleanup.&n; *   Ken Aaker &lt;kdaaker@rchland.vnet.ibm.com&gt;: Correct check for whether&n; *                                       memory mapped IO is enabled to&n; *                                       make the driver work on RS/6000.&n; *   Takayoshi Kouchi &lt;kouchi@hpc.bs1.fc.nec.co.jp&gt;: Identifying problem&n; *                                       where the driver would disable&n; *                                       bus master mode if it had to disable&n; *                                       write and invalidate.&n; *   Stephen Hack &lt;stephen_hack@hp.com&gt;: Fixed ace_set_mac_addr for little&n; *                                       endian systems.&n; *   Val Henson &lt;vhenson@esscom.com&gt;:    Reset Jumbo skb producer and&n; *                                       rx producer index when&n; *                                       flushing the Jumbo ring.&n; *   Hans Grobler &lt;grobh@sun.ac.za&gt;:     Memory leak fixes in the&n; *                                       driver init path.&n; *   Grant Grundler &lt;grundler@cup.hp.com&gt;: PCI write posting fixes.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -69,6 +69,10 @@ multiline_comment|/*&n; * Farallon used the DEC vendor ID by mistake and they se
 macro_line|#ifndef PCI_DEVICE_ID_FARALLON_PN9000SX
 DECL|macro|PCI_DEVICE_ID_FARALLON_PN9000SX
 mdefine_line|#define PCI_DEVICE_ID_FARALLON_PN9000SX&t;0x1a
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_FARALLON_PN9100T
+DECL|macro|PCI_DEVICE_ID_FARALLON_PN9100T
+mdefine_line|#define PCI_DEVICE_ID_FARALLON_PN9100T  0xfa
 macro_line|#endif
 macro_line|#ifndef PCI_VENDOR_ID_SGI
 DECL|macro|PCI_VENDOR_ID_SGI
@@ -174,11 +178,28 @@ l_int|0xffff00
 comma
 )brace
 comma
-multiline_comment|/*&n;&t; * Farallon used the DEC vendor ID on their cards incorrectly.&n;&t; */
+multiline_comment|/*&n;&t; * Farallon used the DEC vendor ID on their cards incorrectly,&n;&t; * then later Alteon&squot;s ID.&n;&t; */
 (brace
 id|PCI_VENDOR_ID_DEC
 comma
 id|PCI_DEVICE_ID_FARALLON_PN9000SX
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_CLASS_NETWORK_ETHERNET
+op_lshift
+l_int|8
+comma
+l_int|0xffff00
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_ALTEON
+comma
+id|PCI_DEVICE_ID_FARALLON_PN9100T
 comma
 id|PCI_ANY_ID
 comma
@@ -244,16 +265,29 @@ mdefine_line|#define SMP_CACHE_BYTES&t;L1_CACHE_BYTES
 macro_line|#endif
 macro_line|#ifndef SET_MODULE_OWNER
 DECL|macro|SET_MODULE_OWNER
-mdefine_line|#define SET_MODULE_OWNER(dev)&t;&t;{do{} while(0);}
+mdefine_line|#define SET_MODULE_OWNER(dev)&t;&t;do{} while(0)
 DECL|macro|ACE_MOD_INC_USE_COUNT
 mdefine_line|#define ACE_MOD_INC_USE_COUNT&t;&t;MOD_INC_USE_COUNT
 DECL|macro|ACE_MOD_DEC_USE_COUNT
 mdefine_line|#define ACE_MOD_DEC_USE_COUNT&t;&t;MOD_DEC_USE_COUNT
 macro_line|#else
 DECL|macro|ACE_MOD_INC_USE_COUNT
-mdefine_line|#define ACE_MOD_INC_USE_COUNT&t;&t;{do{} while(0);}
+mdefine_line|#define ACE_MOD_INC_USE_COUNT&t;&t;do{} while(0)
 DECL|macro|ACE_MOD_DEC_USE_COUNT
-mdefine_line|#define ACE_MOD_DEC_USE_COUNT&t;&t;{do{} while(0);}
+mdefine_line|#define ACE_MOD_DEC_USE_COUNT&t;&t;do{} while(0)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x2051c
+DECL|macro|ace_sync_irq
+mdefine_line|#define ace_sync_irq(irq)&t;synchronize_irq(irq)
+macro_line|#else
+DECL|macro|ace_sync_irq
+mdefine_line|#define ace_sync_irq(irq)&t;synchronize_irq()
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; 0x2051e
+DECL|macro|local_irq_save
+mdefine_line|#define local_irq_save(flags)&t;&t;do{__save_flags(flags) ; &bslash;&n;&t;&t;&t;&t;&t;   __cli();} while(0)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
 macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &lt; 0x02030d)
 DECL|macro|pci_resource_start
@@ -339,10 +373,6 @@ DECL|macro|pci_set_dma_mask
 mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 0 : -EIO)
 DECL|macro|pci_dma_supported
 mdefine_line|#define pci_dma_supported(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 1 : 0)
-DECL|macro|DECLARE_PCI_UNMAP_ADDR
-mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
-DECL|macro|DECLARE_PCI_UNMAP_LEN
-mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
 macro_line|#elif (LINUX_VERSION_CODE &lt; 0x02040d)
 multiline_comment|/*&n; * 2.4.13 introduced pci_map_page()/pci_unmap_page() - for 2.4.12 and prior,&n; * fall back on pci_map_single()/pci_unnmap_single().&n; *&n; * We are guaranteed that the page is mapped at this point since&n; * pci_map_page() is only used upon valid struct skb&squot;s.&n; */
 r_static
@@ -416,10 +446,20 @@ suffix:semicolon
 )brace
 DECL|macro|pci_unmap_page
 mdefine_line|#define pci_unmap_page(cookie, dma_addr, size, dir)&t;&bslash;&n;&t;pci_unmap_single(cookie, dma_addr, size, dir)
+macro_line|#endif
+macro_line|#if (LINUX_VERSION_CODE &lt; 0x020412)
 DECL|macro|DECLARE_PCI_UNMAP_ADDR
 mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
 DECL|macro|DECLARE_PCI_UNMAP_LEN
 mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
+DECL|macro|pci_unmap_addr
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;0
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;do{} while(0)
+DECL|macro|pci_unmap_len
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;0
+DECL|macro|pci_unmap_len_set
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do{} while(0)
 macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032b)
 multiline_comment|/*&n; * SoftNet&n; *&n; * For pre-softnet kernels we need to tell the upper layer not to&n; * re-enter start_xmit() while we are in there. However softnet&n; * guarantees not to enter while we are in there so there is no need&n; * to do the netif_stop_queue() dance unless the transmit queue really&n; * gets stuck. This should also improve performance according to tests&n; * done by Aman Singla.&n; */
@@ -430,7 +470,7 @@ mdefine_line|#define netif_wake_queue(dev)&t;&t;&t;clear_bit(0, &amp;dev-&gt;tbu
 DECL|macro|netif_stop_queue
 mdefine_line|#define netif_stop_queue(dev)&t;&t;&t;set_bit(0, &amp;dev-&gt;tbusy)
 DECL|macro|late_stop_netif_stop_queue
-mdefine_line|#define late_stop_netif_stop_queue(dev)&t;&t;{do{} while(0);}
+mdefine_line|#define late_stop_netif_stop_queue(dev)&t;&t;do{} while(0)
 DECL|macro|early_stop_netif_stop_queue
 mdefine_line|#define early_stop_netif_stop_queue(dev)&t;test_and_set_bit(0,&amp;dev-&gt;tbusy)
 DECL|macro|early_stop_netif_wake_queue
@@ -468,7 +508,7 @@ mdefine_line|#define netif_queue_stopped(dev)&t;&t;dev-&gt;tbusy
 DECL|macro|netif_running
 mdefine_line|#define netif_running(dev)&t;&t;&t;dev-&gt;start
 DECL|macro|ace_if_down
-mdefine_line|#define ace_if_down(dev)&t;&t;&t;{do{dev-&gt;start = 0;} while(0);}
+mdefine_line|#define ace_if_down(dev)&t;&t;&t;do{dev-&gt;start = 0;} while(0)
 DECL|macro|tasklet_struct
 mdefine_line|#define tasklet_struct&t;&t;&t;&t;tq_struct
 DECL|function|tasklet_schedule
@@ -559,18 +599,18 @@ id|data
 suffix:semicolon
 )brace
 DECL|macro|tasklet_kill
-mdefine_line|#define tasklet_kill(tasklet)&t;&t;&t;{do{} while(0);}
+mdefine_line|#define tasklet_kill(tasklet)&t;&t;&t;do{} while(0)
 macro_line|#else
 DECL|macro|late_stop_netif_stop_queue
 mdefine_line|#define late_stop_netif_stop_queue(dev)&t;&t;netif_stop_queue(dev)
 DECL|macro|early_stop_netif_stop_queue
 mdefine_line|#define early_stop_netif_stop_queue(dev)&t;0
 DECL|macro|early_stop_netif_wake_queue
-mdefine_line|#define early_stop_netif_wake_queue(dev)&t;{do{} while(0);}
+mdefine_line|#define early_stop_netif_wake_queue(dev)&t;do{} while(0)
 DECL|macro|ace_mark_net_bh
-mdefine_line|#define ace_mark_net_bh()&t;&t;&t;{do{} while(0);}
+mdefine_line|#define ace_mark_net_bh()&t;&t;&t;do{} while(0)
 DECL|macro|ace_if_down
-mdefine_line|#define ace_if_down(dev)&t;&t;&t;{do{} while(0);}
+mdefine_line|#define ace_if_down(dev)&t;&t;&t;do{} while(0)
 macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02031b)
 DECL|macro|NEW_NETINIT
@@ -588,7 +628,7 @@ macro_line|#endif
 macro_line|#ifndef ARCH_HAS_PREFETCHW
 macro_line|#ifndef prefetchw
 DECL|macro|prefetchw
-mdefine_line|#define prefetchw(x)&t;&t;&t;&t;{do{} while(0);}
+mdefine_line|#define prefetchw(x)&t;&t;&t;&t;do{} while(0)
 macro_line|#endif
 macro_line|#endif
 DECL|macro|ACE_MAX_MOD_PARMS
@@ -780,7 +820,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;acenic.c: v0.89 03/15/2002  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
+l_string|&quot;acenic.c: v0.92 08/05/2002  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
 suffix:semicolon
 DECL|variable|root_dev
@@ -958,6 +998,21 @@ op_logical_and
 id|pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_FARALLON_PN9000SX
+)paren
+)paren
+op_logical_and
+op_logical_neg
+(paren
+(paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_ALTEON
+)paren
+op_logical_and
+(paren
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_FARALLON_PN9100T
 )paren
 )paren
 op_logical_and
@@ -1176,6 +1231,25 @@ id|version
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Enable master mode before we start playing with the&n;&t;&t; * pci_command word since pci_set_master() will modify&n;&t;&t; * it.&n;&t;&t; */
 id|pci_set_master
 c_func
@@ -1329,6 +1403,40 @@ id|pdev-&gt;vendor
 r_case
 id|PCI_VENDOR_ID_ALTEON
 suffix:colon
+r_if
+c_cond
+(paren
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_FARALLON_PN9100T
+)paren
+(brace
+id|strncpy
+c_func
+(paren
+id|ap-&gt;name
+comma
+l_string|&quot;Farallon PN9100-T &quot;
+l_string|&quot;Gigabit Ethernet&quot;
+comma
+r_sizeof
+(paren
+id|ap-&gt;name
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Farallon PN9100-T &quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|strncpy
 c_func
 (paren
@@ -1351,6 +1459,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1948,10 +2057,19 @@ op_amp
 id|regs-&gt;Mb0Lo
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure no other CPUs are processing interrupts&n;&t;&t; * on the card before the buffers are being released.&n;&t;&t; * Otherwise one might experience some `interesting&squot;&n;&t;&t; * effects.&n;&t;&t; *&n;&t;&t; * Then release the RX buffers - jumbo buffers were&n;&t;&t; * already released in ace_close().&n;&t;&t; */
-id|synchronize_irq
+id|readl
 c_func
 (paren
+op_amp
+id|regs-&gt;CpuCtrl
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
+multiline_comment|/*&n;&t;&t; * Make sure no other CPUs are processing interrupts&n;&t;&t; * on the card before the buffers are being released.&n;&t;&t; * Otherwise one might experience some `interesting&squot;&n;&t;&t; * effects.&n;&t;&t; *&n;&t;&t; * Then release the RX buffers - jumbo buffers were&n;&t;&t; * already released in ace_close().&n;&t;&t; */
+id|ace_sync_irq
+c_func
+(paren
+id|root_dev-&gt;irq
 )paren
 suffix:semicolon
 r_for
@@ -3155,43 +3273,23 @@ op_amp
 id|regs-&gt;HostCtrl
 )paren
 suffix:semicolon
-id|wmb
+id|readl
 c_func
 (paren
+op_amp
+id|regs-&gt;HostCtrl
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t access any other registes before this point!&n;&t; */
+multiline_comment|/* PCI write posting */
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Don&squot;t access any other registers before this point!&n;&t; */
 macro_line|#ifdef __BIG_ENDIAN
 multiline_comment|/*&n;&t; * This will most likely need BYTE_SWAP once we switch&n;&t; * to using __raw_writel()&n;&t; */
-macro_line|#ifdef __parisc__
-id|writel
-c_func
-(paren
-(paren
-id|WORD_SWAP
-op_or
-id|BYTE_SWAP
-op_or
-id|CLR_INT
-op_or
-(paren
-(paren
-id|WORD_SWAP
-op_or
-id|BYTE_SWAP
-op_or
-id|CLR_INT
-)paren
-op_lshift
-l_int|24
-)paren
-)paren
-comma
-op_amp
-id|regs-&gt;HostCtrl
-)paren
-suffix:semicolon
-macro_line|#else
 id|writel
 c_func
 (paren
@@ -3215,7 +3313,6 @@ op_amp
 id|regs-&gt;HostCtrl
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#else
 id|writel
 c_func
@@ -3241,11 +3338,14 @@ id|regs-&gt;HostCtrl
 )paren
 suffix:semicolon
 macro_line|#endif
-id|mb
+id|readl
 c_func
 (paren
+op_amp
+id|regs-&gt;HostCtrl
 )paren
 suffix:semicolon
+multiline_comment|/* PCI write posting */
 multiline_comment|/*&n;&t; * Stop the NIC CPU and clear pending interrupts&n;&t; */
 id|writel
 c_func
@@ -3263,6 +3363,14 @@ op_amp
 id|regs-&gt;CpuCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;CpuCtrl
+)paren
+suffix:semicolon
+multiline_comment|/* PCI write posting */
 id|writel
 c_func
 (paren
@@ -3360,6 +3468,14 @@ op_amp
 id|regs-&gt;CpuBCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;CpuBCtrl
+)paren
+suffix:semicolon
+multiline_comment|/* PCI write posting */
 multiline_comment|/*&n;&t;&t; * The SRAM bank size does _not_ indicate the amount&n;&t;&t; * of memory on the card, it controls the _bank_ size!&n;&t;&t; * Ie. a 1MB AceNIC will have two banks of 512KB.&n;&t;&t; */
 id|writel
 c_func
@@ -3450,11 +3566,14 @@ id|regs-&gt;ModeStat
 )paren
 suffix:semicolon
 macro_line|#endif
-id|mb
+id|readl
 c_func
 (paren
+op_amp
+id|regs-&gt;ModeStat
 )paren
 suffix:semicolon
+multiline_comment|/* PCI write posting */
 id|mac1
 op_assign
 l_int|0
@@ -4025,7 +4144,7 @@ id|tmp
 op_or_assign
 id|DMA_READ_MAX_128
 suffix:semicolon
-multiline_comment|/*&n;&t; * All the docs sy MUST NOT. Well, I did.&n;&t; * Nothing terrible happens, if we load wrong size.&n;&t; * Bit w&amp;i still works better!&n;&t; */
+multiline_comment|/*&n;&t; * All the docs say MUST NOT. Well, I did.&n;&t; * Nothing terrible happens, if we load wrong size.&n;&t; * Bit w&amp;i still works better!&n;&t; */
 id|tmp
 op_or_assign
 id|DMA_WRITE_MAX_128
@@ -4041,6 +4160,7 @@ id|regs-&gt;PciState
 )paren
 suffix:semicolon
 macro_line|#if 0
+multiline_comment|/*&n;&t; * The Host PCI bus controller driver has to set FBB.&n;&t; * If all devices on that PCI bus support FBB, then the controller&n;&t; * can enable FBB support in the Host PCI Bus controller (or on&n;&t; * the PCI-PCI bridge if that applies).&n;&t; * -ggg&n;&t; */
 multiline_comment|/*&n;&t; * I have received reports from people having problems when this&n;&t; * bit is enabled.&n;&t; */
 r_if
 c_cond
@@ -4365,15 +4485,6 @@ id|info-&gt;evt_ctrl.flags
 op_assign
 l_int|0
 suffix:semicolon
-id|set_aceaddr
-c_func
-(paren
-op_amp
-id|info-&gt;evt_prd_ptr
-comma
-id|ap-&gt;evt_prd_dma
-)paren
-suffix:semicolon
 op_star
 (paren
 id|ap-&gt;evt_prd
@@ -4384,6 +4495,15 @@ suffix:semicolon
 id|wmb
 c_func
 (paren
+)paren
+suffix:semicolon
+id|set_aceaddr
+c_func
+(paren
+op_amp
+id|info-&gt;evt_prd_ptr
+comma
+id|ap-&gt;evt_prd_dma
 )paren
 suffix:semicolon
 id|writel
@@ -5059,6 +5179,8 @@ op_amp
 id|regs-&gt;IfIdx
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/*&n;&t; * McKinley boxes do not like us fiddling with AssistState&n;&t; * this early&n;&t; */
 id|writel
 c_func
 (paren
@@ -5068,6 +5190,7 @@ op_amp
 id|regs-&gt;AssistState
 )paren
 suffix:semicolon
+macro_line|#endif
 id|writel
 c_func
 (paren
@@ -5614,6 +5737,17 @@ id|ap-&gt;stats
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;* Enable DMA engine now.&n;&t;* If we do this sooner, Mckinley box pukes.&n;&t;* I assume it&squot;s because Tigon II DMA engine wants to check&n;&t;* *something* even before the CPU is started.&n;&t;*/
+id|writel
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|regs-&gt;AssistState
+)paren
+suffix:semicolon
+multiline_comment|/* enable DMA */
 multiline_comment|/*&n;&t; * Start the NIC CPU&n;&t; */
 id|writel
 c_func
@@ -5632,6 +5766,13 @@ op_or
 id|CPU_TRACE
 )paren
 comma
+op_amp
+id|regs-&gt;CpuCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;CpuCtrl
 )paren
@@ -5698,6 +5839,13 @@ op_amp
 id|regs-&gt;CpuCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;CpuCtrl
+)paren
+suffix:semicolon
 multiline_comment|/* aman@sgi.com - account for badly behaving firmware/NIC:&n;&t;&t; * - have observed that the NIC may continue to generate&n;&t;&t; *   interrupts for some reason; attempt to stop it - halt&n;&t;&t; *   second CPU for Tigon II cards, and also clear Mb0&n;&t;&t; * - if we&squot;re a module, we&squot;ll fail to load if this was&n;&t;&t; *   the only GbE card in the system =&gt; if the kernel does&n;&t;&t; *   see an interrupt from the NIC, code to handle it is&n;&t;&t; *   gone and OOps! - so free_irq also&n;&t;&t; */
 r_if
 c_cond
@@ -5727,6 +5875,13 @@ c_func
 (paren
 l_int|0
 comma
+op_amp
+id|regs-&gt;Mb0Lo
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;Mb0Lo
 )paren
@@ -8437,6 +8592,13 @@ op_amp
 id|regs-&gt;Mb0Lo
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;Mb0Lo
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * There is no conflict between transmit handling in&n;&t; * start_xmit and receive processing, thus there is no reason&n;&t; * to take a spin lock for RX handling. Wait until we start&n;&t; * working on the other stuff - hey we don&squot;t need a spin lock&n;&t; * anymore.&n;&t; */
 id|rxretprd
 op_assign
@@ -8833,22 +8995,29 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|ace_mask_irq
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 id|ap-&gt;vlgrp
 op_assign
 id|grp
 suffix:semicolon
-id|restore_flags
+id|ace_unmask_irq
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8882,15 +9051,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|ace_mask_irq
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -8905,7 +9075,13 @@ id|vid
 op_assign
 l_int|NULL
 suffix:semicolon
-id|restore_flags
+id|ace_unmask_irq
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -9259,15 +9435,16 @@ id|ap-&gt;ace_tasklet
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure one CPU is not processing packets while&n;&t; * buffers are being released by another.&n;&t; */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|ace_mask_irq
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 r_for
@@ -9473,7 +9650,13 @@ id|cmd
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|ace_unmask_irq
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -10419,9 +10602,10 @@ id|ap-&gt;jumbo_refill_busy
 )paren
 )paren
 suffix:semicolon
-id|synchronize_irq
+id|ace_sync_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|ace_set_rxtx_parms
@@ -12175,6 +12359,13 @@ id|regs
 id|u32
 id|local
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -12205,6 +12396,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12225,6 +12423,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -12254,6 +12459,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12275,6 +12487,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -12340,6 +12559,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12396,6 +12622,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12416,6 +12649,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -12445,6 +12685,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -12498,6 +12745,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12518,6 +12772,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -12577,6 +12838,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12630,6 +12898,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12651,6 +12926,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -12679,6 +12961,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -12699,6 +12988,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -13041,6 +13337,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -13061,6 +13364,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -13134,6 +13444,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -13166,6 +13483,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -13188,6 +13512,13 @@ c_func
 (paren
 id|local
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
@@ -13219,6 +13550,13 @@ op_amp
 id|regs-&gt;LocalCtrl
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -13238,6 +13576,13 @@ op_amp
 op_complement
 id|EEPROM_CLK_OUT
 comma
+op_amp
+id|regs-&gt;LocalCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 op_amp
 id|regs-&gt;LocalCtrl
 )paren
