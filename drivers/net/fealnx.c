@@ -1704,13 +1704,18 @@ r_int
 id|crvalue
 )paren
 (brace
+r_int
+id|delay
+op_assign
+l_int|0x1000
+suffix:semicolon
 id|writel
 c_func
 (paren
 id|crvalue
 op_amp
-(paren
 op_complement
+(paren
 id|CR_W_RXEN
 )paren
 comma
@@ -1719,22 +1724,16 @@ op_plus
 id|TCRRCR
 )paren
 suffix:semicolon
-multiline_comment|/* wait for rx stop */
-(brace
-r_int
-id|i
-op_assign
-l_int|0
-comma
-id|delay
-op_assign
-l_int|0x1000
-suffix:semicolon
 r_while
 c_loop
 (paren
+op_decrement
+id|delay
+)paren
+(brace
+r_if
+c_cond
 (paren
-op_logical_neg
 (paren
 id|readl
 c_func
@@ -1746,19 +1745,11 @@ id|TCRRCR
 op_amp
 id|CR_R_RXSTOP
 )paren
+op_eq
+id|CR_R_RXSTOP
 )paren
-op_logical_and
-(paren
-id|i
-OL
-id|delay
-)paren
-)paren
-(brace
-op_increment
-id|i
+r_break
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|stop_nic_rxtx
@@ -1828,10 +1819,8 @@ op_plus
 id|CR_R_TXSTOP
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|fealnx_init_one
@@ -1915,6 +1904,7 @@ id|printed_version
 op_increment
 )paren
 id|printk
+c_func
 (paren
 id|version
 )paren
@@ -5869,12 +5859,7 @@ multiline_comment|/* buffer size */
 multiline_comment|/* for the last descriptor */
 id|next
 op_assign
-(paren
-r_struct
-id|fealnx
-op_star
-)paren
-id|np-&gt;cur_tx_copy.next_desc_logical
+id|np-&gt;cur_tx_copy-&gt;next_desc_logical
 suffix:semicolon
 id|next-&gt;skbuff
 op_assign
@@ -8044,6 +8029,7 @@ DECL|function|netdev_get_drvinfo
 r_static
 r_void
 id|netdev_get_drvinfo
+c_func
 (paren
 r_struct
 id|net_device
@@ -8064,6 +8050,7 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info-&gt;driver
 comma
@@ -8071,6 +8058,7 @@ id|DRV_NAME
 )paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info-&gt;version
 comma
@@ -8078,6 +8066,7 @@ id|DRV_VERSION
 )paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info-&gt;bus_info
 comma
@@ -8776,6 +8765,7 @@ r_void
 multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
 macro_line|#ifdef MODULE
 id|printk
+c_func
 (paren
 id|version
 )paren
