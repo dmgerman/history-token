@@ -1817,6 +1817,17 @@ op_amp
 id|inode-&gt;i_mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|file
+)paren
+id|fput
+c_func
+(paren
+id|file
+)paren
+suffix:semicolon
 id|mm-&gt;map_count
 op_decrement
 suffix:semicolon
