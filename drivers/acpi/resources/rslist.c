@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rslist - Linked list utilities&n; *              $Revision: 31 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rslist - Linked list utilities&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -87,7 +87,7 @@ id|output_buffer
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|bytes_parsed
 op_assign
 l_int|0
@@ -97,7 +97,7 @@ id|resource_type
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|bytes_consumed
 op_assign
 l_int|0
@@ -108,7 +108,7 @@ id|buffer
 op_assign
 id|output_buffer
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|structure_size
 op_assign
 l_int|0
@@ -601,7 +601,7 @@ id|acpi_resource
 op_star
 id|linked_list
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|byte_stream_size_needed
 comma
 id|u8
@@ -618,7 +618,7 @@ id|buffer
 op_assign
 id|output_buffer
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|bytes_consumed
 op_assign
 l_int|0

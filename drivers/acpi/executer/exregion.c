@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 81 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -16,7 +16,7 @@ id|acpi_ex_system_memory_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -55,7 +55,7 @@ suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|window_size
 suffix:semicolon
 macro_line|#ifndef _HW_ALIGNMENT_SUPPORT
@@ -218,7 +218,7 @@ multiline_comment|/*&n;&t;&t; * Don&squot;t attempt to map memory beyond the end
 id|window_size
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 (paren
 (paren
@@ -579,7 +579,7 @@ id|acpi_ex_system_io_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -651,7 +651,7 @@ op_assign
 id|acpi_os_read_port
 (paren
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 )paren
 id|address
 comma
@@ -670,7 +670,7 @@ op_assign
 id|acpi_os_write_port
 (paren
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 )paren
 id|address
 comma
@@ -705,7 +705,7 @@ id|acpi_ex_pci_config_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -854,7 +854,7 @@ id|acpi_ex_cmos_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -897,7 +897,7 @@ id|acpi_ex_pci_bar_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -940,7 +940,7 @@ id|acpi_ex_data_table_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsio - IO and DMA resource descriptors&n; *              $Revision: 22 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsio - IO and DMA resource descriptors&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -17,7 +17,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|bytes_consumed
 comma
@@ -26,7 +26,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|structure_size
 )paren
@@ -58,7 +58,7 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|struct_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
@@ -188,7 +188,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|bytes_consumed
 comma
@@ -197,7 +197,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|structure_size
 )paren
@@ -229,7 +229,7 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|struct_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
@@ -317,7 +317,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|bytes_consumed
 )paren
@@ -481,7 +481,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|bytes_consumed
 )paren
@@ -582,7 +582,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|bytes_consumed
 comma
@@ -591,7 +591,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|structure_size
 )paren
@@ -624,7 +624,7 @@ suffix:semicolon
 id|u8
 id|i
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|struct_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
@@ -719,7 +719,7 @@ id|struct_size
 op_add_assign
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|i
 op_minus
@@ -825,7 +825,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|bytes_consumed
 )paren

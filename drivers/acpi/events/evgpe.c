@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evgpe - General Purpose Event handling and dispatch&n; *              $Revision: 3 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evgpe - General Purpose Event handling and dispatch&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -17,10 +17,10 @@ id|acpi_ev_gpe_initialize
 r_void
 )paren
 (brace
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|i
 suffix:semicolon
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|j
 suffix:semicolon
 id|u32
@@ -35,7 +35,7 @@ suffix:semicolon
 id|u32
 id|gpe_number
 suffix:semicolon
-id|ACPI_GPE_REGISTER_INFO
+id|acpi_gpe_register_info
 op_star
 id|gpe_register_info
 suffix:semicolon
@@ -331,12 +331,12 @@ id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
-id|ACPI_GPE_INDEX_INFO
+id|acpi_gpe_index_info
 )paren
 op_star
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|acpi_gbl_gpe_number_max
 op_plus
@@ -378,12 +378,12 @@ id|ACPI_GPE_INVALID
 comma
 r_sizeof
 (paren
-id|ACPI_GPE_INDEX_INFO
+id|acpi_gpe_index_info
 )paren
 op_star
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|acpi_gbl_gpe_number_max
 op_plus
@@ -397,13 +397,13 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|acpi_gbl_gpe_register_count
 op_star
 r_sizeof
 (paren
-id|ACPI_GPE_REGISTER_INFO
+id|acpi_gpe_register_info
 )paren
 )paren
 suffix:semicolon
@@ -433,9 +433,9 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
-)paren
 (paren
+id|acpi_size
+)paren
 id|acpi_gbl_gpe_register_count
 op_star
 id|ACPI_GPE_REGISTER_WIDTH
@@ -443,7 +443,7 @@ id|ACPI_GPE_REGISTER_WIDTH
 op_star
 r_sizeof
 (paren
-id|ACPI_GPE_NUMBER_INFO
+id|acpi_gpe_number_info
 )paren
 )paren
 suffix:semicolon
@@ -633,6 +633,9 @@ id|gpe_number
 op_assign
 id|gpe_register_info-&gt;base_gpe_number
 op_plus
+(paren
+id|u32
+)paren
 id|j
 suffix:semicolon
 id|acpi_gbl_gpe_number_to_index
@@ -1193,7 +1196,7 @@ suffix:semicolon
 id|u8
 id|bit_mask
 suffix:semicolon
-id|ACPI_GPE_REGISTER_INFO
+id|acpi_gpe_register_info
 op_star
 id|gpe_register_info
 suffix:semicolon
@@ -1430,7 +1433,7 @@ suffix:semicolon
 id|u32
 id|gpe_number_index
 suffix:semicolon
-id|ACPI_GPE_NUMBER_INFO
+id|acpi_gpe_number_info
 id|gpe_info
 suffix:semicolon
 id|acpi_status
@@ -1603,7 +1606,7 @@ id|gpe_number
 id|u32
 id|gpe_number_index
 suffix:semicolon
-id|ACPI_GPE_NUMBER_INFO
+id|acpi_gpe_number_info
 op_star
 id|gpe_info
 suffix:semicolon

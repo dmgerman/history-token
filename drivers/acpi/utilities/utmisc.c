@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *              $Revision: 92 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -1234,7 +1234,7 @@ id|acpi_status
 DECL|function|acpi_ut_create_mutex
 id|acpi_ut_create_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 (brace
@@ -1323,7 +1323,7 @@ id|acpi_status
 DECL|function|acpi_ut_delete_mutex
 id|acpi_ut_delete_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 (brace
@@ -1392,7 +1392,7 @@ id|acpi_status
 DECL|function|acpi_ut_acquire_mutex
 id|acpi_ut_acquire_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 (brace
@@ -1627,7 +1627,7 @@ id|acpi_status
 DECL|function|acpi_ut_release_mutex
 id|acpi_ut_release_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 (brace
@@ -2126,7 +2126,7 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_create_thread_state&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Thread State&n; *&n; * DESCRIPTION: Create a &quot;Thread State&quot; - a flavor of the generic state used&n; *              to track per-thread info during method execution&n; *&n; ******************************************************************************/
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 DECL|function|acpi_ut_create_thread_state
 id|acpi_ut_create_thread_state
@@ -2177,7 +2177,7 @@ suffix:semicolon
 id|return_PTR
 (paren
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 )paren
 id|state
@@ -2440,7 +2440,7 @@ r_void
 op_star
 id|target_object
 comma
-id|ACPI_PKG_CALLBACK
+id|acpi_pkg_callback
 id|walk_callback
 comma
 r_void

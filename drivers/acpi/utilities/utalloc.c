@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utalloc - local cache and memory allocation routines&n; *              $Revision: 130 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utalloc - local cache and memory allocation routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 DECL|macro|_COMPONENT
@@ -20,7 +20,7 @@ op_star
 id|object
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|cache_info
 suffix:semicolon
@@ -144,7 +144,7 @@ id|u32
 id|list_id
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|cache_info
 suffix:semicolon
@@ -334,7 +334,7 @@ id|u32
 id|list_id
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|cache_info
 suffix:semicolon
@@ -481,7 +481,7 @@ id|acpi_buffer
 op_star
 id|buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|required_length
 )paren
 (brace
@@ -615,7 +615,7 @@ op_star
 DECL|function|acpi_ut_allocate
 id|acpi_ut_allocate
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -717,7 +717,7 @@ op_star
 DECL|function|acpi_ut_callocate
 id|acpi_ut_callocate
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -832,7 +832,7 @@ op_star
 DECL|function|acpi_ut_allocate_and_track
 id|acpi_ut_allocate_and_track
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -960,7 +960,7 @@ op_star
 DECL|function|acpi_ut_callocate_and_track
 id|acpi_ut_callocate_and_track
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -1345,7 +1345,7 @@ id|acpi_debug_mem_block
 op_star
 id|allocation
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u8
@@ -1362,7 +1362,7 @@ id|u32
 id|line
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|mem_list
 suffix:semicolon
@@ -1569,7 +1569,7 @@ id|u32
 id|line
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|mem_list
 suffix:semicolon
@@ -1734,7 +1734,7 @@ id|acpi_ut_dump_allocation_info
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t;ACPI_MEMORY_LIST        *Mem_list;&n;*/
+multiline_comment|/*&n;&t;acpi_memory_list        *Mem_list;&n;*/
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_dump_allocation_info&quot;
@@ -1761,7 +1761,7 @@ id|acpi_debug_mem_block
 op_star
 id|element
 suffix:semicolon
-id|ACPI_DESCRIPTOR
+id|acpi_descriptor
 op_star
 id|descriptor
 suffix:semicolon
@@ -1840,7 +1840,7 @@ id|descriptor
 op_assign
 id|ACPI_CAST_PTR
 (paren
-id|ACPI_DESCRIPTOR
+id|acpi_descriptor
 comma
 op_amp
 id|element-&gt;user_space

@@ -1,8 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed Event handling and dispatch&n; *              $Revision: 104 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed Event handling and dispatch&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME
@@ -257,7 +256,7 @@ id|acpi_ev_fixed_event_initialize
 r_void
 )paren
 (brace
-id|NATIVE_UINT
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|acpi_status
@@ -369,7 +368,7 @@ suffix:semicolon
 id|u32
 id|fixed_enable
 suffix:semicolon
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
@@ -465,6 +464,9 @@ id|int_status
 op_or_assign
 id|acpi_ev_fixed_event_dispatch
 (paren
+(paren
+id|u32
+)paren
 id|i
 )paren
 suffix:semicolon

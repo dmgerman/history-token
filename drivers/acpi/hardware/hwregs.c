@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 138 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -16,10 +16,10 @@ id|acpi_hw_clear_acpi_status
 r_void
 )paren
 (brace
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|i
 suffix:semicolon
-id|NATIVE_UINT
+id|acpi_native_uint
 id|gpe_block
 suffix:semicolon
 id|acpi_status
@@ -178,6 +178,9 @@ id|gpe_block
 dot
 id|block_address
 comma
+(paren
+id|u32
+)paren
 id|i
 )paren
 suffix:semicolon
@@ -522,7 +525,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_register_bit_mask&n; *&n; * PARAMETERS:  Register_id         - Index of ACPI Register to access&n; *&n; * RETURN:      The bit mask to be used when accessing the register&n; *&n; * DESCRIPTION: Map Register_id into a register bit mask.&n; *&n; ******************************************************************************/
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 op_star
 DECL|function|acpi_hw_get_bit_register_info
 id|acpi_hw_get_bit_register_info
@@ -592,7 +595,7 @@ id|register_value
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 op_star
 id|bit_reg_info
 suffix:semicolon
@@ -750,7 +753,7 @@ id|register_value
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 op_star
 id|bit_reg_info
 suffix:semicolon
@@ -1854,10 +1857,10 @@ id|u32
 id|offset
 )paren
 (brace
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|mem_address
 suffix:semicolon
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|io_address
 suffix:semicolon
 id|acpi_pci_id
@@ -1916,7 +1919,7 @@ op_assign
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren
@@ -1940,13 +1943,13 @@ suffix:colon
 id|io_address
 op_assign
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 )paren
 (paren
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren
@@ -2064,10 +2067,10 @@ id|u32
 id|offset
 )paren
 (brace
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|mem_address
 suffix:semicolon
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|io_address
 suffix:semicolon
 id|acpi_pci_id
@@ -2121,7 +2124,7 @@ op_assign
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren
@@ -2148,13 +2151,13 @@ suffix:colon
 id|io_address
 op_assign
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 )paren
 (paren
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren

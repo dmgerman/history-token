@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *              $Revision: 60 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -981,7 +981,7 @@ id|acpi_ev_terminate
 r_void
 )paren
 (brace
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|acpi_status
@@ -1018,8 +1018,10 @@ op_increment
 id|status
 op_assign
 id|acpi_disable_event
-c_func
 (paren
+(paren
+id|u32
+)paren
 id|i
 comma
 id|ACPI_EVENT_FIXED
@@ -1043,6 +1045,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not disable fixed event %d&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|i
 )paren
 )paren
@@ -1069,8 +1074,10 @@ r_if
 c_cond
 (paren
 id|acpi_ev_get_gpe_number_index
-c_func
 (paren
+(paren
+id|u32
+)paren
 id|i
 )paren
 op_ne
@@ -1082,6 +1089,9 @@ op_assign
 id|acpi_hw_disable_gpe
 c_func
 (paren
+(paren
+id|u32
+)paren
 id|i
 )paren
 suffix:semicolon
@@ -1101,6 +1111,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not disable GPE %d&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|i
 )paren
 )paren
@@ -1112,7 +1125,6 @@ multiline_comment|/*&n;&t;&t; * Remove SCI handler&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ev_remove_sci_handler
-c_func
 (paren
 )paren
 suffix:semicolon

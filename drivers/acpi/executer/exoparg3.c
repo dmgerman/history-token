@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg3 - AML execution - opcodes with 3 arguments&n; *              $Revision: 15 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg3 - AML execution - opcodes with 3 arguments&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -32,7 +32,7 @@ id|walk_state-&gt;operands
 l_int|0
 )braket
 suffix:semicolon
-id|ACPI_SIGNAL_FATAL_INFO
+id|acpi_signal_fatal_info
 op_star
 id|fatal
 suffix:semicolon
@@ -106,7 +106,7 @@ id|ACPI_MEM_ALLOCATE
 (paren
 r_sizeof
 (paren
-id|ACPI_SIGNAL_FATAL_INFO
+id|acpi_signal_fatal_info
 )paren
 )paren
 suffix:semicolon
@@ -234,10 +234,10 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|NATIVE_UINT
+id|acpi_native_uint
 id|index
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
@@ -293,7 +293,7 @@ multiline_comment|/* Get the Integer values from the objects */
 id|index
 op_assign
 (paren
-id|NATIVE_UINT
+id|acpi_native_uint
 )paren
 id|operand
 (braket
@@ -305,7 +305,7 @@ suffix:semicolon
 id|length
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|operand
 (braket
@@ -357,7 +357,7 @@ id|string.length
 id|length
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|operand
 (braket
@@ -375,7 +375,7 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|length
 op_plus

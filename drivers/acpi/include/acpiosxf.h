@@ -40,9 +40,9 @@ DECL|member|argument
 id|u32
 id|argument
 suffix:semicolon
-DECL|typedef|ACPI_SIGNAL_FATAL_INFO
+DECL|typedef|acpi_signal_fatal_info
 )brace
-id|ACPI_SIGNAL_FATAL_INFO
+id|acpi_signal_fatal_info
 suffix:semicolon
 multiline_comment|/*&n; * Types specific to the OS service interfaces&n; */
 r_typedef
@@ -93,7 +93,7 @@ id|acpi_os_get_root_pointer
 id|u32
 id|flags
 comma
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 )paren
@@ -161,7 +161,7 @@ r_void
 op_star
 id|acpi_os_allocate
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 )paren
 suffix:semicolon
@@ -176,10 +176,10 @@ suffix:semicolon
 id|acpi_status
 id|acpi_os_map_memory
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|physical_address
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 r_void
@@ -195,7 +195,7 @@ r_void
 op_star
 id|logical_address
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 )paren
 suffix:semicolon
@@ -206,7 +206,7 @@ r_void
 op_star
 id|logical_address
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 op_star
 id|physical_address
 )paren
@@ -278,7 +278,7 @@ multiline_comment|/*&n; * Platform and hardware-independent I/O interfaces&n; */
 id|acpi_status
 id|acpi_os_read_port
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|address
 comma
 r_void
@@ -292,7 +292,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_os_write_port
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|address
 comma
 id|acpi_integer
@@ -306,7 +306,7 @@ multiline_comment|/*&n; * Platform and hardware-independent physical memory inte
 id|acpi_status
 id|acpi_os_read_memory
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 r_void
@@ -320,7 +320,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_os_write_memory
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|acpi_integer

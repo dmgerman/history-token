@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 81 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -161,7 +161,7 @@ op_star
 DECL|function|acpi_ut_create_buffer_object
 id|acpi_ut_create_buffer_object
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|buffer_size
 )paren
 (brace
@@ -569,12 +569,12 @@ id|acpi_operand_object
 op_star
 id|internal_object
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|obj_length
 )paren
 (brace
-id|ACPI_SIZE
+id|acpi_size
 id|length
 suffix:semicolon
 id|acpi_status
@@ -658,7 +658,7 @@ suffix:colon
 id|length
 op_add_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|internal_object-&gt;string.length
 op_plus
@@ -672,7 +672,7 @@ suffix:colon
 id|length
 op_add_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|internal_object-&gt;buffer.length
 suffix:semicolon
@@ -780,7 +780,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_element_length&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the length of one package element.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_element_length&n; *&n; * PARAMETERS:  acpi_pkg_callback&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the length of one package element.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_get_element_length
 id|acpi_ut_get_element_length
@@ -816,7 +816,7 @@ op_star
 )paren
 id|context
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|object_space
 suffix:semicolon
 r_switch
@@ -897,7 +897,7 @@ id|acpi_operand_object
 op_star
 id|internal_object
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|obj_length
 )paren
@@ -968,7 +968,7 @@ id|acpi_object
 )paren
 op_star
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|info.num_packages
 suffix:semicolon
@@ -994,7 +994,7 @@ id|acpi_operand_object
 op_star
 id|internal_object
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|obj_length
 )paren

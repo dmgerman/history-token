@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 60 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -17,7 +17,7 @@ id|acpi_load_tables
 r_void
 )paren
 (brace
-id|ACPI_POINTER
+id|acpi_pointer
 id|rsdp_address
 suffix:semicolon
 id|acpi_status
@@ -248,7 +248,7 @@ suffix:semicolon
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|ACPI_POINTER
+id|acpi_pointer
 id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
@@ -666,7 +666,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|table_length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
@@ -801,7 +801,7 @@ id|table_length
 op_assign
 r_sizeof
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 )paren
 suffix:semicolon
 )brace
@@ -810,7 +810,7 @@ r_else
 id|table_length
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|tbl_ptr-&gt;length
 suffix:semicolon

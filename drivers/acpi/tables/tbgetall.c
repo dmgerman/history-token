@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbgetall - Get all required ACPI tables&n; *              $Revision: 4 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbgetall - Get all required ACPI tables&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -13,7 +13,7 @@ id|acpi_status
 DECL|function|acpi_tb_get_primary_table
 id|acpi_tb_get_primary_table
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma
@@ -163,7 +163,7 @@ id|acpi_status
 DECL|function|acpi_tb_get_secondary_table
 id|acpi_tb_get_secondary_table
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma
@@ -336,7 +336,7 @@ suffix:semicolon
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|ACPI_POINTER
+id|acpi_pointer
 id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE

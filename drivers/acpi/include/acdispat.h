@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *       $Revision: 55 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACDISPAT_H_
 DECL|macro|_ACDISPAT_H_
@@ -245,7 +245,7 @@ multiline_comment|/* dsfield - Parser/Interpreter interface for AML fields */
 id|acpi_status
 id|acpi_ds_get_field_names
 (paren
-id|ACPI_CREATE_FIELD_INFO
+id|acpi_create_field_info
 op_star
 id|info
 comma
@@ -558,7 +558,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ds_call_control_method
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 comma
@@ -852,7 +852,7 @@ id|acpi_operand_object
 op_star
 id|mth_desc
 comma
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
@@ -924,7 +924,7 @@ id|acpi_walk_state
 op_star
 id|acpi_ds_pop_walk_state
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
@@ -936,7 +936,7 @@ id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
@@ -969,7 +969,7 @@ id|acpi_walk_state
 op_star
 id|acpi_ds_get_current_walk_state
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 91 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
@@ -120,7 +120,7 @@ DECL|macro|ACPI_LV_VERBOSE
 mdefine_line|#define ACPI_LV_VERBOSE             0xF0000000
 multiline_comment|/*&n; * Debug level macros that are used in the DEBUG_PRINT macros&n; */
 DECL|macro|ACPI_DEBUG_LEVEL
-mdefine_line|#define ACPI_DEBUG_LEVEL(dl)       dl,__LINE__,&amp;_dbg
+mdefine_line|#define ACPI_DEBUG_LEVEL(dl)        (u32) dl,__LINE__,&amp;_dbg
 multiline_comment|/* Exception level -- used in the global &quot;Debug_level&quot; */
 DECL|macro|ACPI_DB_ERROR
 mdefine_line|#define ACPI_DB_ERROR               ACPI_DEBUG_LEVEL (ACPI_LV_ERROR)

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 109 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -26,7 +26,7 @@ id|u8
 op_star
 id|data_space
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|buffer_space_used
 )paren
@@ -112,7 +112,7 @@ op_assign
 id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|internal_object-&gt;string.length
 op_plus
@@ -134,7 +134,7 @@ op_star
 id|internal_object-&gt;string.pointer
 comma
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|internal_object-&gt;string.length
 op_plus
@@ -265,7 +265,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_eelement&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_eelement&n; *&n; * PARAMETERS:  acpi_pkg_callback&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_ielement_to_eelement
 id|acpi_ut_copy_ielement_to_eelement
@@ -301,7 +301,7 @@ op_star
 )paren
 id|context
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|object_space
 suffix:semicolon
 id|u32
@@ -414,7 +414,7 @@ op_assign
 id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|target_object-&gt;package.count
 op_star
@@ -462,7 +462,7 @@ id|u8
 op_star
 id|buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|space_used
 )paren
@@ -547,7 +547,7 @@ multiline_comment|/*&n;&t; * Leave room for an array of ACPI_OBJECTS in the buff
 id|info.length
 op_add_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|external_object-&gt;package.count
 op_star
@@ -782,7 +782,7 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|external_object-&gt;string.length
 op_plus
@@ -1253,7 +1253,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_ielement&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_ielement&n; *&n; * PARAMETERS:  acpi_pkg_callback&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_ielement_to_ielement
 id|acpi_ut_copy_ielement_to_ielement
@@ -1432,7 +1432,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|source_object-&gt;package.count
 op_plus
@@ -1541,7 +1541,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|source_obj-&gt;package.count
 op_plus

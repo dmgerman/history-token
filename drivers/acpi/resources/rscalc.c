@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *              $Revision: 45 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -19,17 +19,17 @@ id|acpi_resource
 op_star
 id|linked_list
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|size_needed
 )paren
 (brace
-id|ACPI_SIZE
+id|acpi_size
 id|byte_stream_size_needed
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|segment_size
 suffix:semicolon
 id|acpi_resource_ext_irq
@@ -283,7 +283,7 @@ op_plus
 (paren
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|linked_list-&gt;data.extended_irq.number_of_interrupts
 op_minus
@@ -363,7 +363,7 @@ comma
 id|u32
 id|byte_stream_buffer_length
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|size_needed
 )paren
@@ -1299,7 +1299,7 @@ id|acpi_operand_object
 op_star
 id|package_object
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|buffer_size_needed
 )paren
@@ -1307,7 +1307,7 @@ id|buffer_size_needed
 id|u32
 id|number_of_elements
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|temp_size_needed
 op_assign
 l_int|0

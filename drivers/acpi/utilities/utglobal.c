@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 177 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -787,7 +787,7 @@ comma
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Event and Hardware globals&n; *&n; ******************************************************************************/
 DECL|variable|acpi_gbl_bit_register_info
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 id|acpi_gbl_bit_register_info
 (braket
 id|ACPI_NUM_BITREG
@@ -1577,7 +1577,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 )paren
 op_star
 id|ACPI_NUM_MEM_LISTS
@@ -1756,7 +1756,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
-id|ACPI_PARSE_OBJ_COMMON
+id|acpi_parse_obj_common
 )paren
 suffix:semicolon
 id|acpi_gbl_memory_lists
@@ -1768,7 +1768,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
-id|ACPI_PARSE_OBJ_NAMED
+id|acpi_parse_obj_named
 )paren
 suffix:semicolon
 id|acpi_gbl_memory_lists
