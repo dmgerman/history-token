@@ -682,7 +682,7 @@ l_int|0xFF
 suffix:semicolon
 id|args-&gt;hobRegister
 (braket
-id|IDE_DATA_OFFSET_HOB
+id|IDE_DATA_OFFSET
 )braket
 op_assign
 (paren
@@ -790,12 +790,12 @@ id|drive-&gt;ctl
 op_or
 l_int|0x80
 comma
-id|IDE_CONTROL_REG_HOB
+id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
 id|args-&gt;hobRegister
 (braket
-id|IDE_FEATURE_OFFSET_HOB
+id|IDE_FEATURE_OFFSET
 )braket
 op_assign
 id|hwif
@@ -808,7 +808,7 @@ id|IDE_FEATURE_REG
 suffix:semicolon
 id|args-&gt;hobRegister
 (braket
-id|IDE_NSECTOR_OFFSET_HOB
+id|IDE_NSECTOR_OFFSET
 )braket
 op_assign
 id|hwif
@@ -821,7 +821,7 @@ id|IDE_NSECTOR_REG
 suffix:semicolon
 id|args-&gt;hobRegister
 (braket
-id|IDE_SECTOR_OFFSET_HOB
+id|IDE_SECTOR_OFFSET
 )braket
 op_assign
 id|hwif
@@ -834,7 +834,7 @@ id|IDE_SECTOR_REG
 suffix:semicolon
 id|args-&gt;hobRegister
 (braket
-id|IDE_LCYL_OFFSET_HOB
+id|IDE_LCYL_OFFSET
 )braket
 op_assign
 id|hwif
@@ -847,7 +847,7 @@ id|IDE_LCYL_REG
 suffix:semicolon
 id|args-&gt;hobRegister
 (braket
-id|IDE_HCYL_OFFSET_HOB
+id|IDE_HCYL_OFFSET
 )braket
 op_assign
 id|hwif

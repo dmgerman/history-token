@@ -423,7 +423,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-singleline_comment|//&t;printk(&quot;HTF.0=x%02x &quot;, args-&gt;hobRegister[IDE_DATA_OFFSET_HOB]);
+singleline_comment|//&t;printk(&quot;HTF.0=x%02x &quot;, args-&gt;hobRegister[IDE_DATA_OFFSET]);
 id|printk
 c_func
 (paren
@@ -431,7 +431,7 @@ l_string|&quot;HTF.1=x%02x &quot;
 comma
 id|args-&gt;hobRegister
 (braket
-id|IDE_FEATURE_OFFSET_HOB
+id|IDE_FEATURE_OFFSET
 )braket
 )paren
 suffix:semicolon
@@ -442,7 +442,7 @@ l_string|&quot;HTF.2=x%02x &quot;
 comma
 id|args-&gt;hobRegister
 (braket
-id|IDE_NSECTOR_OFFSET_HOB
+id|IDE_NSECTOR_OFFSET
 )braket
 )paren
 suffix:semicolon
@@ -453,7 +453,7 @@ l_string|&quot;HTF.3=x%02x &quot;
 comma
 id|args-&gt;hobRegister
 (braket
-id|IDE_SECTOR_OFFSET_HOB
+id|IDE_SECTOR_OFFSET
 )braket
 )paren
 suffix:semicolon
@@ -464,7 +464,7 @@ l_string|&quot;HTF.4=x%02x &quot;
 comma
 id|args-&gt;hobRegister
 (braket
-id|IDE_LCYL_OFFSET_HOB
+id|IDE_LCYL_OFFSET
 )braket
 )paren
 suffix:semicolon
@@ -475,7 +475,7 @@ l_string|&quot;HTF.5=x%02x &quot;
 comma
 id|args-&gt;hobRegister
 (braket
-id|IDE_HCYL_OFFSET_HOB
+id|IDE_HCYL_OFFSET
 )braket
 )paren
 suffix:semicolon
@@ -486,7 +486,7 @@ l_string|&quot;HTF.6=x%02x &quot;
 comma
 id|args-&gt;hobRegister
 (braket
-id|IDE_SELECT_OFFSET_HOB
+id|IDE_SELECT_OFFSET
 )braket
 )paren
 suffix:semicolon
@@ -4779,7 +4779,7 @@ op_assign
 (paren
 id|args-&gt;hobRegister
 (braket
-id|IDE_NSECTOR_OFFSET_HOB
+id|IDE_NSECTOR_OFFSET
 )braket
 op_lshift
 l_int|8
