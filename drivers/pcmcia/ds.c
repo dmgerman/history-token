@@ -920,7 +920,7 @@ id|mtd_info-&gt;Attributes
 suffix:semicolon
 id|bind_req.Socket
 op_assign
-id|bus_sock-&gt;socket_no
+id|bus_sock-&gt;parent
 suffix:semicolon
 id|bind_req.CardOffset
 op_assign
@@ -1121,7 +1121,7 @@ id|EINVAL
 suffix:semicolon
 id|bind_req.Socket
 op_assign
-id|s-&gt;socket_no
+id|s-&gt;parent
 suffix:semicolon
 id|bind_req.Function
 op_assign
@@ -3585,7 +3585,7 @@ id|dev_info
 suffix:semicolon
 id|bind.Socket
 op_assign
-id|s-&gt;socket_no
+id|socket
 suffix:semicolon
 id|bind.Function
 op_assign

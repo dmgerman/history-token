@@ -4427,11 +4427,7 @@ id|s
 suffix:semicolon
 id|s
 op_assign
-id|pcmcia_get_socket_by_nr
-c_func
-(paren
 id|req-&gt;Socket
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4575,11 +4571,7 @@ id|region
 suffix:semicolon
 id|s
 op_assign
-id|pcmcia_get_socket_by_nr
-c_func
-(paren
 id|req-&gt;Socket
-)paren
 suffix:semicolon
 r_if
 c_cond
