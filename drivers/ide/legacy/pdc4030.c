@@ -1055,7 +1055,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ide_probe_for_pdc4030
-r_static
 r_int
 id|__init
 id|ide_probe_for_pdc4030
