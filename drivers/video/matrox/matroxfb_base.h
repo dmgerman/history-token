@@ -47,9 +47,6 @@ macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 macro_line|#include &lt;video/fbcon-cfb24.h&gt;
 macro_line|#include &lt;video/fbcon-cfb32.h&gt;
-macro_line|#if defined(CONFIG_FB_COMPAT_XPMAC)
-macro_line|#include &lt;asm/vc_ioctl.h&gt;
-macro_line|#endif
 macro_line|#if defined(CONFIG_PPC)
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
@@ -2139,15 +2136,6 @@ id|palette
 l_int|256
 )braket
 suffix:semicolon
-macro_line|#if defined(CONFIG_FB_COMPAT_XPMAC)
-DECL|member|matrox_name
-r_char
-id|matrox_name
-(braket
-l_int|32
-)braket
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* These ifdefs must be last! They differ for module &amp; non-module compiles */
 macro_line|#if defined(FBCON_HAS_CFB16) || defined(FBCON_HAS_CFB24) || defined(FBCON_HAS_CFB32)
 r_union

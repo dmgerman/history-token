@@ -14,9 +14,6 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-macro_line|#include &lt;asm/vc_ioctl.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#ifdef CONFIG_BOOTX_TEXT
@@ -3426,106 +3423,6 @@ comma
 id|full_name
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-r_if
-c_cond
-(paren
-op_logical_neg
-id|console_fb_info
-)paren
-(brace
-id|display_info.height
-op_assign
-id|var-&gt;yres
-suffix:semicolon
-id|display_info.width
-op_assign
-id|var-&gt;xres
-suffix:semicolon
-id|display_info.depth
-op_assign
-id|depth
-suffix:semicolon
-id|display_info.pitch
-op_assign
-id|fix-&gt;line_length
-suffix:semicolon
-id|display_info.mode
-op_assign
-l_int|0
-suffix:semicolon
-id|strncpy
-c_func
-(paren
-id|display_info.name
-comma
-id|name
-comma
-r_sizeof
-(paren
-id|display_info.name
-)paren
-)paren
-suffix:semicolon
-id|display_info.fb_address
-op_assign
-id|address
-suffix:semicolon
-id|display_info.cmap_adr_address
-op_assign
-l_int|0
-suffix:semicolon
-id|display_info.cmap_data_address
-op_assign
-l_int|0
-suffix:semicolon
-id|display_info.disp_reg_address
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* XXX kludge for ati */
-r_if
-c_cond
-(paren
-id|info-&gt;cmap_type
-op_eq
-id|cmap_m64
-)paren
-(brace
-r_int
-r_int
-id|base
-op_assign
-id|address
-op_amp
-l_int|0xff000000UL
-suffix:semicolon
-id|display_info.disp_reg_address
-op_assign
-id|base
-op_plus
-l_int|0x7ffc00
-suffix:semicolon
-id|display_info.cmap_adr_address
-op_assign
-id|base
-op_plus
-l_int|0x7ffcc0
-suffix:semicolon
-id|display_info.cmap_data_address
-op_assign
-id|base
-op_plus
-l_int|0x7ffcc1
-suffix:semicolon
-)brace
-id|console_fb_info
-op_assign
-op_amp
-id|info-&gt;info
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC) */
 )brace
 DECL|function|offbcon_switch
 r_static

@@ -15,9 +15,6 @@ macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-macro_line|#include &lt;asm/vc_ioctl.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -2547,110 +2544,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* turn display on */
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-r_if
-c_cond
-(paren
-id|console_fb_info
-op_eq
-op_amp
-id|info-&gt;fb_info
-)paren
-(brace
-id|display_info.height
-op_assign
-id|par-&gt;yres
-suffix:semicolon
-id|display_info.width
-op_assign
-id|par-&gt;xres
-suffix:semicolon
-id|display_info.depth
-op_assign
-(paren
-(paren
-id|cmode
-op_eq
-id|CMODE_32
-)paren
-ques
-c_cond
-l_int|32
-suffix:colon
-(paren
-(paren
-id|cmode
-op_eq
-id|CMODE_16
-)paren
-ques
-c_cond
-l_int|16
-suffix:colon
-l_int|8
-)paren
-)paren
-suffix:semicolon
-id|display_info.pitch
-op_assign
-id|vmode_attrs
-(braket
-id|vmode
-op_minus
-l_int|1
-)braket
-dot
-id|hres
-op_star
-(paren
-l_int|1
-op_lshift
-id|cmode
-)paren
-op_plus
-l_int|0x20
-suffix:semicolon
-id|display_info.mode
-op_assign
-id|vmode
-suffix:semicolon
-id|strncpy
-c_func
-(paren
-id|display_info.name
-comma
-l_string|&quot;platinum&quot;
-comma
-r_sizeof
-(paren
-id|display_info.name
-)paren
-)paren
-suffix:semicolon
-id|display_info.fb_address
-op_assign
-id|info-&gt;frame_buffer_phys
-op_plus
-id|init-&gt;fb_offset
-op_plus
-l_int|0x20
-suffix:semicolon
-id|display_info.cmap_adr_address
-op_assign
-id|info-&gt;cmap_regs_phys
-suffix:semicolon
-id|display_info.cmap_data_address
-op_assign
-id|info-&gt;cmap_regs_phys
-op_plus
-l_int|0x30
-suffix:semicolon
-id|display_info.disp_reg_address
-op_assign
-id|info-&gt;platinum_regs_phys
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
 )brace
 DECL|function|init_platinum
 r_static
@@ -3582,19 +3475,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-r_if
-c_cond
-(paren
-op_logical_neg
-id|console_fb_info
-)paren
-id|console_fb_info
-op_assign
-op_amp
-id|info-&gt;fb_info
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Get the monitor sense value.&n; * Note that this can be called before calibrate_delay,&n; * so we can&squot;t use udelay.&n; */
 DECL|function|read_platinum_sense
