@@ -6,6 +6,8 @@ DECL|macro|HOONTECH_DEVICE_DESC
 mdefine_line|#define  HOONTECH_DEVICE_DESC &t;       &quot;{Hoontech SoundTrack DSP 24},&quot;
 DECL|macro|ICE1712_SUBDEVICE_STDSP24
 mdefine_line|#define ICE1712_SUBDEVICE_STDSP24&t;0x12141217&t;/* Hoontech SoundTrack Audio DSP 24 */
+DECL|macro|ICE1712_SUBDEVICE_STDSP24_MEDIA7_1
+mdefine_line|#define ICE1712_SUBDEVICE_STDSP24_MEDIA7_1&t;0x16141217&t;/* Hoontech ST Audio DSP24 Media 7.1 */
 r_extern
 r_struct
 id|snd_ice1712_card_info
