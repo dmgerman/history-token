@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;pwc.h&quot;
 macro_line|#include &quot;pwc-ioctl.h&quot;
-macro_line|#include &quot;pwc-uncompress.h&quot;
 multiline_comment|/* Function prototypes and driver templates */
 multiline_comment|/* hotplug device table support */
 DECL|variable|pwc_device_table
@@ -1271,54 +1270,6 @@ id|kbuf
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;decompressor
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kbuf
-op_assign
-id|kmalloc
-c_func
-(paren
-id|pdev-&gt;decompressor-&gt;table_size
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|kbuf
-op_eq
-l_int|NULL
-)paren
-(brace
-id|Err
-c_func
-(paren
-l_string|&quot;Failed to allocate decompress table.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|Trace
-c_func
-(paren
-id|TRACE_MEMORY
-comma
-l_string|&quot;Allocated decompress table %p.&bslash;n&quot;
-comma
-id|kbuf
-)paren
-suffix:semicolon
-)brace
 id|pdev-&gt;decompress_data
 op_assign
 id|kbuf
@@ -2112,33 +2063,6 @@ id|pdev-&gt;read_frame-&gt;sequence
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Decompression is a lenghty process, so it&squot;s outside of the lock.&n;&t;&t;&t;   This gives the isoc_handler the opportunity to fill more frames&n;&t;&t;&t;   in the mean time.&n;&t;&t;&t;*/
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|pdev-&gt;ptrlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|pwc_decompress
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|pdev-&gt;ptrlock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* We&squot;re done with read_buffer, tack it to the end of the empty buffer list */
 r_if
 c_cond
@@ -4241,27 +4165,10 @@ c_func
 l_string|&quot;Failed to set LED on/off time.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Find our decompressor, if any */
 id|pdev-&gt;decompressor
 op_assign
-id|pwc_find_decompressor
-c_func
-(paren
-id|pdev-&gt;type
-)paren
+l_int|NULL
 suffix:semicolon
-macro_line|#if PWC_DEBUG&t;
-id|Debug
-c_func
-(paren
-l_string|&quot;Found decompressor for %d at 0x%p&bslash;n&quot;
-comma
-id|pdev-&gt;type
-comma
-id|pdev-&gt;decompressor
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pwc_construct
 c_func
 (paren
@@ -4554,21 +4461,6 @@ id|file-&gt;private_data
 op_assign
 id|vdev
 suffix:semicolon
-multiline_comment|/* lock decompressor; this has a small race condition, since we &n;&t;   could in theory unload pwcx.o between pwc_find_decompressor()&n;&t;   above and this call. I doubt it&squot;s ever going to be a problem.&n;&t; */
-r_if
-c_cond
-(paren
-id|pdev-&gt;decompressor
-op_ne
-l_int|NULL
-)paren
-id|pdev-&gt;decompressor
-op_member_access_from_pointer
-id|lock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -4673,32 +4565,6 @@ comma
 id|pdev-&gt;vframes_error
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;decompressor
-op_ne
-l_int|NULL
-)paren
-(brace
-id|pdev-&gt;decompressor
-op_member_access_from_pointer
-m_exit
-(paren
-)paren
-suffix:semicolon
-id|pdev-&gt;decompressor
-op_member_access_from_pointer
-id|unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|pdev-&gt;decompressor
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 id|pwc_isoc_cleanup
 c_func
 (paren

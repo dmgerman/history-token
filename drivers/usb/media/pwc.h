@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-macro_line|#include &quot;pwc-uncompress.h&quot;
 macro_line|#include &quot;pwc-ioctl.h&quot;
 multiline_comment|/* Defines and structures for the Philips webcam */
 multiline_comment|/* Used for checking memory corruption/pointer validation */
@@ -823,19 +822,6 @@ comma
 r_void
 op_star
 id|arg
-)paren
-suffix:semicolon
-multiline_comment|/** pwc-uncompress.c */
-multiline_comment|/* Expand frame to image, possibly including decompression. Uses read_frame and fill_image */
-r_extern
-r_int
-id|pwc_decompress
-c_func
-(paren
-r_struct
-id|pwc_device
-op_star
-id|pdev
 )paren
 suffix:semicolon
 macro_line|#ifdef __cplusplus
