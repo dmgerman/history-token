@@ -1398,4 +1398,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_pci_irq_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_irq_enable
+)paren
+suffix:semicolon
 eof

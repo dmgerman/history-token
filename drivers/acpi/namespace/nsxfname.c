@@ -1,5 +1,6 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 DECL|macro|_COMPONENT
@@ -214,6 +215,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_handle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_handle
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_name&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to a pathname&n; *              name_type       - Full pathname or single segment&n; *              Buffer          - Buffer for returned path&n; *&n; * RETURN:      Pointer to a string containing the fully qualified Name.&n; *&n; * DESCRIPTION: This routine returns the fully qualified name associated with&n; *              the Handle parameter.  This and the acpi_pathname_to_handle are&n; *              complementary functions.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_name
@@ -414,6 +422,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_name
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_name
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_object_info&n; *&n; * PARAMETERS:  Handle          - Object Handle&n; *              Info            - Where the info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns information about an object as gleaned from the&n; *              namespace node and possibly by running several standard&n; *              control methods (Such as in the case of a device.)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_object_info
@@ -859,4 +874,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_object_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_object_info
+)paren
+suffix:semicolon
 eof
