@@ -1,5 +1,6 @@
 multiline_comment|/* $XFree86$ */
-multiline_comment|/*&n; * Global definitions for init.c and init301.c&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) All advertising materials mentioning features or use of this software&n; * *    must display the following acknowledgement: &quot;This product includes&n; * *    software developed by Thomas Winischhofer, Vienna, Austria.&quot;&n; * * 4) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
+multiline_comment|/* $XdotOrg$ */
+multiline_comment|/*&n; * Global definitions for init.c and init301.c&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESSED OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
 macro_line|#ifndef _INITDEF_
 DECL|macro|_INITDEF_
 mdefine_line|#define _INITDEF_
@@ -35,6 +36,8 @@ DECL|macro|IS_SIS650740660
 mdefine_line|#define IS_SIS650740660         (IS_SIS650 || IS_SIS740 || IS_SIS661741660760)
 DECL|macro|IS_SIS550650740660
 mdefine_line|#define IS_SIS550650740660      (IS_SIS550 || IS_SIS650740660)
+DECL|macro|SISGETROMW
+mdefine_line|#define SISGETROMW(x)&t;&t;(ROMAddr[(x)] | (ROMAddr[(x)+1] &lt;&lt; 8))
 multiline_comment|/* SiS_VBType */
 DECL|macro|VB_SIS301
 mdefine_line|#define VB_SIS301&t;      &t;0x0001
@@ -60,6 +63,10 @@ DECL|macro|VB_SIS301LV302LV
 mdefine_line|#define VB_SIS301LV302LV        (VB_SIS301LV|VB_SIS302LV|VB_SIS302ELV)
 DECL|macro|VB_SISVB
 mdefine_line|#define VB_SISVB&t;&t;(VB_SIS301 | VB_SIS301BLV302BLV)
+DECL|macro|VB_SISTMDS
+mdefine_line|#define VB_SISTMDS&t;&t;(VB_SIS301 | VB_SIS301B302B)
+DECL|macro|VB_SISLVDS
+mdefine_line|#define VB_SISLVDS&t;&t;VB_SIS301LV302LV
 multiline_comment|/* VBInfo */
 DECL|macro|SetSimuScanMode
 mdefine_line|#define SetSimuScanMode         0x0001   /* CR 30 */
@@ -148,6 +155,8 @@ DECL|macro|HalfDCLK
 mdefine_line|#define HalfDCLK                0x1000
 DECL|macro|NoSupportSimuTV
 mdefine_line|#define NoSupportSimuTV         0x2000
+DECL|macro|NoSupportLCDScale
+mdefine_line|#define NoSupportLCDScale&t;0x4000 /* TMDS: No scaling possible (no matter what panel) */
 DECL|macro|DoubleScanMode
 mdefine_line|#define DoubleScanMode          0x8000
 multiline_comment|/* Infoflag */
@@ -161,8 +170,8 @@ DECL|macro|Support64048060Hz
 mdefine_line|#define Support64048060Hz       0x0800  /* Special for 640x480 LCD */
 DECL|macro|SupportHiVision
 mdefine_line|#define SupportHiVision         0x0010
-DECL|macro|SupportYPbPr
-mdefine_line|#define SupportYPbPr            0x1000  /* TODO */
+DECL|macro|SupportYPbPr750p
+mdefine_line|#define SupportYPbPr750p        0x1000
 DECL|macro|SupportLCD
 mdefine_line|#define SupportLCD              0x0020
 DECL|macro|SupportRAMDAC2
@@ -212,28 +221,34 @@ mdefine_line|#define TVSetPALN&t;&t;0x0008
 DECL|macro|TVSetCHOverScan
 mdefine_line|#define TVSetCHOverScan&t;&t;0x0010
 DECL|macro|TVSetYPbPr525i
-mdefine_line|#define TVSetYPbPr525i&t;&t;0x0020
+mdefine_line|#define TVSetYPbPr525i&t;&t;0x0020 /* new 0x10 */
 DECL|macro|TVSetYPbPr525p
-mdefine_line|#define TVSetYPbPr525p&t;&t;0x0040
+mdefine_line|#define TVSetYPbPr525p&t;&t;0x0040 /* new 0x20 */
 DECL|macro|TVSetYPbPr750p
-mdefine_line|#define TVSetYPbPr750p&t;&t;0x0080
+mdefine_line|#define TVSetYPbPr750p&t;&t;0x0080 /* new 0x40 */
 DECL|macro|TVSetHiVision
-mdefine_line|#define TVSetHiVision&t;&t;0x0100  /* = 1080i, software-wise identical */
+mdefine_line|#define TVSetHiVision&t;&t;0x0100 /* new 0x80; = 1080i, software-wise identical */
 DECL|macro|TVSetTVSimuMode
-mdefine_line|#define TVSetTVSimuMode&t;&t;0x0800
+mdefine_line|#define TVSetTVSimuMode&t;&t;0x0200 /* new 0x200, prev. 0x800 */
 DECL|macro|TVRPLLDIV2XO
-mdefine_line|#define TVRPLLDIV2XO&t;&t;0x1000
+mdefine_line|#define TVRPLLDIV2XO&t;&t;0x0400 /* prev 0x1000 */
 DECL|macro|TVSetNTSC1024
-mdefine_line|#define TVSetNTSC1024&t;&t;0x2000
-multiline_comment|/* YPbPr flag (&gt;=315, &lt;661) */
+mdefine_line|#define TVSetNTSC1024&t;&t;0x0800 /* new 0x100, prev. 0x2000 */
+DECL|macro|TVAspect43
+mdefine_line|#define TVAspect43&t;&t;0x2000
+DECL|macro|TVAspect169
+mdefine_line|#define TVAspect169&t;&t;0x4000
+DECL|macro|TVAspect43LB
+mdefine_line|#define TVAspect43LB&t;&t;0x8000
+multiline_comment|/* YPbPr flag (&gt;=315, &lt;661; converted to TVMode) */
 DECL|macro|YPbPr525p
-mdefine_line|#define YPbPr525p               0x0001&t;/* 525p */
+mdefine_line|#define YPbPr525p               0x0001
 DECL|macro|YPbPr750p
-mdefine_line|#define YPbPr750p               0x0002&t;/* 750p */
+mdefine_line|#define YPbPr750p               0x0002
 DECL|macro|YPbPr525i
-mdefine_line|#define YPbPr525i               0x0004&t;/* 525p */
+mdefine_line|#define YPbPr525i               0x0004
 DECL|macro|YPbPrHiVision
-mdefine_line|#define YPbPrHiVision           0x0008&t;/* HiVision or 1080i (bridge type dependent) */
+mdefine_line|#define YPbPrHiVision           0x0008
 DECL|macro|YPbPrModeMask
 mdefine_line|#define YPbPrModeMask           (YPbPr750p | YPbPr525p | YPbPr525i | YPbPrHiVision)
 multiline_comment|/* SysFlags (to identify special versions) */
@@ -253,6 +268,8 @@ DECL|macro|SF_IsM741
 mdefine_line|#define SF_IsM741&t;&t;0x0040
 DECL|macro|SF_IsM760
 mdefine_line|#define SF_IsM760&t;&t;0x0080
+DECL|macro|SF_760LFB
+mdefine_line|#define SF_760LFB&t;&t;0x8000  /* 760: We have LFB */
 multiline_comment|/* CR32 (Newer 630, and 315 series)&n;&n;   [0]   VB connected with CVBS&n;   [1]   VB connected with SVHS&n;   [2]   VB connected with SCART&n;   [3]   VB connected with LCD&n;   [4]   VB connected with CRT2 (secondary VGA)&n;   [5]   CRT1 monitor is connected&n;   [6]   VB connected with Hi-Vision TV&n;   [7]   &lt;= 330: VB connected with DVI combo connector&n;         &gt;= 661: VB connected to YPbPr&n;*/
 multiline_comment|/* CR35 (300 series only) */
 DECL|macro|TVOverScan
@@ -269,7 +286,7 @@ mdefine_line|#define LCDNonExpanding       0x0010
 DECL|macro|LCDSync
 mdefine_line|#define LCDSync               0x0020
 DECL|macro|LCDPass11
-mdefine_line|#define LCDPass11             0x0100
+mdefine_line|#define LCDPass11             0x0100   /* 0: center screen, 1: Pass 1:1 data */
 DECL|macro|LCDDualLink
 mdefine_line|#define LCDDualLink&t;      0x0200
 DECL|macro|DontExpandLCD
@@ -312,7 +329,7 @@ DECL|macro|EnablePALMN
 mdefine_line|#define EnablePALMN             0x40   /* Romflag: 1 = Allow PALM/PALN */
 multiline_comment|/* CR39 (650 only) */
 DECL|macro|LCDPass1_1
-mdefine_line|#define LCDPass1_1&t;&t;0x01   /* LVDS only; set by driver to pass 1:1 data to LVDS output  */
+mdefine_line|#define LCDPass1_1&t;&t;0x01   /* 0: center screen, 1: pass 1:1 data output  */
 DECL|macro|Enable302LV_DualLink
 mdefine_line|#define Enable302LV_DualLink    0x04   /* 302LV only; enable dual link */
 multiline_comment|/* CR39 (661 and later)&n;   D[1:0] YPbPr Aspect Ratio&n;          00 4:3 letterbox&n;&t;  01 4:3&n;&t;  10 16:9&n;&t;  11 4:3&n;*/
@@ -336,7 +353,7 @@ mdefine_line|#define Panel300_1152x768       0x07
 DECL|macro|Panel300_1280x768
 mdefine_line|#define Panel300_1280x768       0x0a
 DECL|macro|Panel300_320x480
-mdefine_line|#define Panel300_320x480        0x0e &t;/* fstn - TW: This is fake, can be any */
+mdefine_line|#define Panel300_320x480        0x0e &t;/* fstn - This is fake, can be any */
 DECL|macro|Panel300_Custom
 mdefine_line|#define Panel300_Custom&t;&t;0x0f
 DECL|macro|Panel300_Barco1366
@@ -371,10 +388,40 @@ DECL|macro|Panel310_320x480
 mdefine_line|#define Panel310_320x480        0x0e    /* fstn - TW: This is fake, can be any */
 DECL|macro|Panel310_Custom
 mdefine_line|#define Panel310_Custom&t;&t;0x0f
+DECL|macro|Panel661_800x600
+mdefine_line|#define Panel661_800x600        0x01
+DECL|macro|Panel661_1024x768
+mdefine_line|#define Panel661_1024x768       0x02
+DECL|macro|Panel661_1280x1024
+mdefine_line|#define Panel661_1280x1024      0x03
+DECL|macro|Panel661_640x480
+mdefine_line|#define Panel661_640x480        0x04
+DECL|macro|Panel661_1024x600
+mdefine_line|#define Panel661_1024x600       0x05
+DECL|macro|Panel661_1152x864
+mdefine_line|#define Panel661_1152x864       0x06
+DECL|macro|Panel661_1280x960
+mdefine_line|#define Panel661_1280x960       0x07
+DECL|macro|Panel661_1152x768
+mdefine_line|#define Panel661_1152x768       0x08
+DECL|macro|Panel661_1400x1050
+mdefine_line|#define Panel661_1400x1050      0x09
+DECL|macro|Panel661_1280x768
+mdefine_line|#define Panel661_1280x768       0x0a
+DECL|macro|Panel661_1600x1200
+mdefine_line|#define Panel661_1600x1200      0x0b
+DECL|macro|Panel661_1280x800
+mdefine_line|#define Panel661_1280x800       0x0c
+DECL|macro|Panel661_1680x1050
+mdefine_line|#define Panel661_1680x1050      0x0d
+DECL|macro|Panel661_1280x720
+mdefine_line|#define Panel661_1280x720       0x0e
+DECL|macro|Panel661_Custom
+mdefine_line|#define Panel661_Custom&t;&t;0x0f
 DECL|macro|Panel_800x600
 mdefine_line|#define Panel_800x600           0x01&t;/* Unified values */
 DECL|macro|Panel_1024x768
-mdefine_line|#define Panel_1024x768          0x02
+mdefine_line|#define Panel_1024x768          0x02    /* MUST match BIOS values from 0-e */
 DECL|macro|Panel_1280x1024
 mdefine_line|#define Panel_1280x1024         0x03
 DECL|macro|Panel_640x480
@@ -390,25 +437,31 @@ mdefine_line|#define Panel_1152x768          0x08&t;/* LVDS only */
 DECL|macro|Panel_1400x1050
 mdefine_line|#define Panel_1400x1050         0x09
 DECL|macro|Panel_1280x768
-mdefine_line|#define Panel_1280x768          0x0a    /* LVDS only */
+mdefine_line|#define Panel_1280x768          0x0a    /* 30xB/C and LVDS only (BIOS: all) */
 DECL|macro|Panel_1600x1200
 mdefine_line|#define Panel_1600x1200         0x0b
-DECL|macro|Panel_640x480_2
-mdefine_line|#define Panel_640x480_2&t;&t;0x0c
-DECL|macro|Panel_640x480_3
-mdefine_line|#define Panel_640x480_3&t;&t;0x0d
-DECL|macro|Panel_320x480
-mdefine_line|#define Panel_320x480           0x0e    /* fstn - TW: This is fake, can be any */
-DECL|macro|Panel_Custom
-mdefine_line|#define Panel_Custom&t;&t;0x0f
-DECL|macro|Panel_Barco1366
-mdefine_line|#define Panel_Barco1366         0x10
-DECL|macro|Panel_848x480
-mdefine_line|#define Panel_848x480&t;&t;0x11
 DECL|macro|Panel_1280x800
-mdefine_line|#define Panel_1280x800&t;&t;0x12    /* 661etc: 0x0c */
+mdefine_line|#define Panel_1280x800&t;&t;0x0c    /* 661etc  */
 DECL|macro|Panel_1680x1050
-mdefine_line|#define Panel_1680x1050         0x13    /* 661etc: 0x0d */
+mdefine_line|#define Panel_1680x1050         0x0d    /* 661etc  */
+DECL|macro|Panel_1280x720
+mdefine_line|#define Panel_1280x720&t;&t;0x0e    /* 661etc  */
+DECL|macro|Panel_Custom
+mdefine_line|#define Panel_Custom&t;&t;0x0f&t;/* MUST BE 0x0f (for DVI DDC detection */
+DECL|macro|Panel_320x480
+mdefine_line|#define Panel_320x480           0x10    /* SiS 550 fstn - TW: This is fake, can be any */
+DECL|macro|Panel_Barco1366
+mdefine_line|#define Panel_Barco1366         0x11
+DECL|macro|Panel_848x480
+mdefine_line|#define Panel_848x480&t;&t;0x12
+DECL|macro|Panel_640x480_2
+mdefine_line|#define Panel_640x480_2&t;&t;0x13    /* SiS 550 */
+DECL|macro|Panel_640x480_3
+mdefine_line|#define Panel_640x480_3&t;&t;0x14    /* SiS 550 */
+DECL|macro|Panel_1280x768_2
+mdefine_line|#define Panel_1280x768_2        0x15&t;/* 30xLV */
+DECL|macro|Panel_1280x768_3
+mdefine_line|#define Panel_1280x768_3        0x16    /* 30xLV */
 multiline_comment|/* Index in ModeResInfo table */
 DECL|macro|SIS_RI_320x200
 mdefine_line|#define SIS_RI_320x200    0
@@ -455,7 +508,7 @@ mdefine_line|#define SIS_RI_1280x768  20
 DECL|macro|SIS_RI_1400x1050
 mdefine_line|#define SIS_RI_1400x1050 21
 DECL|macro|SIS_RI_1152x864
-mdefine_line|#define SIS_RI_1152x864  22  /* Up to this SiS conforming */
+mdefine_line|#define SIS_RI_1152x864  22  /* Up to here SiS conforming */
 DECL|macro|SIS_RI_848x480
 mdefine_line|#define SIS_RI_848x480   23
 DECL|macro|SIS_RI_1360x768
@@ -468,6 +521,14 @@ DECL|macro|SIS_RI_768x576
 mdefine_line|#define SIS_RI_768x576   27
 DECL|macro|SIS_RI_1360x1024
 mdefine_line|#define SIS_RI_1360x1024 28
+DECL|macro|SIS_RI_1680x1050
+mdefine_line|#define SIS_RI_1680x1050 29
+DECL|macro|SIS_RI_1280x800
+mdefine_line|#define SIS_RI_1280x800  30
+DECL|macro|SIS_RI_1920x1080
+mdefine_line|#define SIS_RI_1920x1080 31
+DECL|macro|SIS_RI_960x540
+mdefine_line|#define SIS_RI_960x540   32
 multiline_comment|/* CR5F */
 DECL|macro|IsM650
 mdefine_line|#define IsM650                  0x80
@@ -511,6 +572,8 @@ DECL|macro|VCLK100_300
 mdefine_line|#define VCLK100_300             0x43   /* Index in VCLKData table (300) */
 DECL|macro|VCLK34_300
 mdefine_line|#define VCLK34_300              0x3d   /* Index in VCLKData table (300) */
+DECL|macro|VCLK_CUSTOM_300
+mdefine_line|#define VCLK_CUSTOM_300&t;&t;0x46
 DECL|macro|VCLK65_315
 mdefine_line|#define VCLK65_315              0x0b   /* Index in (VB)VCLKData table (315) */
 DECL|macro|VCLK108_2_315
@@ -518,15 +581,49 @@ mdefine_line|#define VCLK108_2_315           0x19   /* Index in (VB)VCLKData tab
 DECL|macro|VCLK81_315
 mdefine_line|#define VCLK81_315&t;&t;0x5b   /* Index in (VB)VCLKData table (315) */
 DECL|macro|VCLK162_315
-mdefine_line|#define VCLK162_315             0x21   /* Index in (VB)VCLKData table (315) */
+mdefine_line|#define VCLK162_315             0x5e   /* Index in (VB)VCLKData table (315) */
 DECL|macro|VCLK108_3_315
 mdefine_line|#define VCLK108_3_315           0x45   /* Index in VBVCLKData table (315) */
 DECL|macro|VCLK100_315
 mdefine_line|#define VCLK100_315             0x46   /* Index in VBVCLKData table (315) */
 DECL|macro|VCLK34_315
-mdefine_line|#define VCLK34_315              0x55   /* Index in VBVCLKData table (315) */
+mdefine_line|#define VCLK34_315              0x55
 DECL|macro|VCLK68_315
 mdefine_line|#define VCLK68_315&t;&t;0x0d
+DECL|macro|VCLK69_315
+mdefine_line|#define VCLK69_315&t;&t;0x5c   /* deprecated ! Index in VBVCLKData table (315) */
+DECL|macro|VCLK83_315
+mdefine_line|#define VCLK83_315&t;&t;0x5c   /* Index in VBVCLKData table (315) */
+DECL|macro|VCLK121_315
+mdefine_line|#define VCLK121_315&t;&t;0x5d   /* Index in VBVCLKData table (315) */
+DECL|macro|VCLK_1280x720
+mdefine_line|#define VCLK_1280x720&t;&t;0x5f
+DECL|macro|VCLK_1280x768_2
+mdefine_line|#define VCLK_1280x768_2&t;&t;0x60
+DECL|macro|VCLK_1280x768_3
+mdefine_line|#define VCLK_1280x768_3&t;&t;0x61
+DECL|macro|VCLK_CUSTOM_315
+mdefine_line|#define VCLK_CUSTOM_315&t;&t;0x62
+DECL|macro|VCLK_1280x720_2
+mdefine_line|#define VCLK_1280x720_2&t;&t;0x63
+DECL|macro|VCLK_720x480
+mdefine_line|#define VCLK_720x480&t;&t;0x67
+DECL|macro|VCLK_720x576
+mdefine_line|#define VCLK_720x576&t;&t;0x68
+DECL|macro|VCLK_768x576
+mdefine_line|#define VCLK_768x576&t;&t;0x68
+DECL|macro|VCLK_848x480
+mdefine_line|#define VCLK_848x480&t;&t;0x65
+DECL|macro|VCLK_856x480
+mdefine_line|#define VCLK_856x480&t;&t;0x66
+DECL|macro|VCLK_800x480
+mdefine_line|#define VCLK_800x480&t;&t;0x65
+DECL|macro|VCLK_1024x576
+mdefine_line|#define VCLK_1024x576&t;&t;0x51
+DECL|macro|VCLK_1152x864
+mdefine_line|#define VCLK_1152x864&t;&t;0x64
+DECL|macro|VCLK_1360x768
+mdefine_line|#define VCLK_1360x768&t;&t;0x58
 DECL|macro|TVCLKBASE_300
 mdefine_line|#define TVCLKBASE_300&t;&t;0x21   /* Indices on TV clocks in VCLKData table (300) */
 DECL|macro|TVCLKBASE_315
@@ -544,7 +641,7 @@ mdefine_line|#define HiTVSimuVCLK            0x04   /* Index relative to TVCLKBA
 DECL|macro|HiTVTextVCLK
 mdefine_line|#define HiTVTextVCLK            0x05   /* Index relative to TVCLKBASE */
 DECL|macro|YPbPr750pVCLK
-mdefine_line|#define YPbPr750pVCLK&t;&t;0x0f   /* NOT relative to TVCLKBASE ! */
+mdefine_line|#define YPbPr750pVCLK&t;&t;0x25   /* Index relative to TVCLKBASE; was 0x0f NOT relative */
 multiline_comment|/* ------------------------------ */
 DECL|macro|SetSCARTOutput
 mdefine_line|#define SetSCARTOutput          0x01
@@ -708,7 +805,7 @@ DECL|macro|OEMTVFilterEnable
 mdefine_line|#define OEMTVFilterEnable       0x1000
 DECL|macro|OEMLCDPanelIDSupport
 mdefine_line|#define OEMLCDPanelIDSupport    0x0080
-multiline_comment|/*&n;  =============================================================&n;   &t;&t;&t;  for 315 series&n;  =============================================================&n;*/
+multiline_comment|/*&n;  =============================================================&n;   &t;&t;  for 315 series (old data layout)&n;  =============================================================&n;*/
 DECL|macro|SoftDRAMType
 mdefine_line|#define SoftDRAMType        0x80
 DECL|macro|SoftSetting_OFFSET

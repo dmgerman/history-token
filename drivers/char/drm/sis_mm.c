@@ -364,7 +364,7 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;alloc fb, size = %d, offset = %ld&bslash;n&quot;
+l_string|&quot;alloc fb, size = %d, offset = %d&bslash;n&quot;
 comma
 id|fb.size
 comma
@@ -446,6 +446,9 @@ suffix:semicolon
 id|sis_free
 c_func
 (paren
+(paren
+id|u32
+)paren
 id|fb.free
 )paren
 suffix:semicolon
