@@ -2934,15 +2934,9 @@ c_func
 id|md
 )paren
 suffix:semicolon
-id|yield
+id|schedule
 c_func
 (paren
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|out
