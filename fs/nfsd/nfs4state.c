@@ -7419,6 +7419,13 @@ c_func
 op_amp
 id|fp-&gt;fi_perfile
 )paren
+op_logical_and
+id|list_empty
+c_func
+(paren
+op_amp
+id|fp-&gt;fi_del_perfile
+)paren
 )paren
 id|release_file
 c_func
