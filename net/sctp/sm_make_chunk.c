@@ -3356,7 +3356,7 @@ c_cond
 (paren
 id|asoc-&gt;state
 OL
-id|SCTP_STATE_ESTABLISHED
+id|SCTP_STATE_COOKIE_ECHOED
 )paren
 (brace
 id|whole

@@ -5637,10 +5637,6 @@ r_struct
 id|sctp_status
 id|status
 suffix:semicolon
-id|sctp_endpoint_t
-op_star
-id|ep
-suffix:semicolon
 id|sctp_association_t
 op_star
 id|assoc
