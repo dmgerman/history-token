@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -2589,10 +2590,17 @@ op_star
 id|fs_info
 )paren
 (brace
+r_struct
+id|task_struct
+op_star
+id|p
+op_assign
+id|current
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|current
+id|p
 op_eq
 id|fs_info-&gt;devfsd_task
 )paren
@@ -2604,13 +2612,61 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;pgrp
+id|p-&gt;pgrp
 op_eq
 id|fs_info-&gt;devfsd_pgrp
 )paren
 r_return
 (paren
 id|TRUE
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|p
+op_ne
+op_amp
+id|init_task
+suffix:semicolon
+id|p
+op_assign
+id|p-&gt;real_parent
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|p
+op_eq
+id|fs_info-&gt;devfsd_task
+)paren
+(brace
+id|read_unlock
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
+)brace
+id|read_unlock
+(paren
+op_amp
+id|tasklist_lock
 )paren
 suffix:semicolon
 r_return
