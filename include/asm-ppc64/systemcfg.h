@@ -155,6 +155,8 @@ DECL|macro|PV_SSTAR
 mdefine_line|#define PV_SSTAR        0x0037
 DECL|macro|PV_POWER4p
 mdefine_line|#define PV_POWER4p      0x0038
+DECL|macro|PV_GPUL
+mdefine_line|#define PV_GPUL&t;&t;0x0039
 DECL|macro|PV_630
 mdefine_line|#define PV_630          0x0040
 DECL|macro|PV_630p
@@ -166,6 +168,13 @@ DECL|macro|PLATFORM_PSERIES_LPAR
 mdefine_line|#define PLATFORM_PSERIES_LPAR 0x0101
 DECL|macro|PLATFORM_ISERIES_LPAR
 mdefine_line|#define PLATFORM_ISERIES_LPAR 0x0201
+DECL|macro|PLATFORM_POWERMAC
+mdefine_line|#define PLATFORM_POWERMAC     0x0400
+multiline_comment|/* Compatibility with drivers coming from PPC32 world */
+DECL|macro|_machine
+mdefine_line|#define _machine&t;(systemcfg-&gt;platform)
+DECL|macro|_MACH_Pmac
+mdefine_line|#define _MACH_Pmac&t;PLATFORM_POWERMAC
 DECL|function|systemcfg_init
 r_static
 r_inline
