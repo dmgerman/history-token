@@ -194,11 +194,7 @@ r_if
 c_cond
 (paren
 (paren
-id|le32_to_cpu
-c_func
-(paren
 id|cifs_pdu-&gt;Flags2
-)paren
 op_amp
 id|SMBFLG2_SECURITY_SIGNATURE
 )paren

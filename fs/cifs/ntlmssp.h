@@ -4,13 +4,13 @@ DECL|macro|NTLMSSP_SIGNATURE
 mdefine_line|#define NTLMSSP_SIGNATURE &quot;NTLMSSP&quot;
 multiline_comment|/* Message Types */
 DECL|macro|NtLmNegotiate
-mdefine_line|#define NtLmNegotiate     1
+mdefine_line|#define NtLmNegotiate     cpu_to_le32(1)
 DECL|macro|NtLmChallenge
-mdefine_line|#define NtLmChallenge     2
+mdefine_line|#define NtLmChallenge     cpu_to_le32(2)
 DECL|macro|NtLmAuthenticate
-mdefine_line|#define NtLmAuthenticate  3
+mdefine_line|#define NtLmAuthenticate  cpu_to_le32(3)
 DECL|macro|UnknownMessage
-mdefine_line|#define UnknownMessage    8
+mdefine_line|#define UnknownMessage    cpu_to_le32(8)
 multiline_comment|/* Negotiate Flags */
 DECL|macro|NTLMSSP_NEGOTIATE_UNICODE
 mdefine_line|#define NTLMSSP_NEGOTIATE_UNICODE       0x01&t;

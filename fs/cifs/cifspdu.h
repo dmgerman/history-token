@@ -151,23 +151,23 @@ DECL|macro|SMBFLG_RESPONSE
 mdefine_line|#define SMBFLG_RESPONSE 0x80&t;/* this PDU is a response from server */
 multiline_comment|/*&n; * SMB flag2 definitions &n; */
 DECL|macro|SMBFLG2_KNOWS_LONG_NAMES
-mdefine_line|#define SMBFLG2_KNOWS_LONG_NAMES 0x0001&t;/* can send long (non-8.3) path names in response */
+mdefine_line|#define SMBFLG2_KNOWS_LONG_NAMES cpu_to_le16(1)&t;/* can send long (non-8.3) path names in response */
 DECL|macro|SMBFLG2_KNOWS_EAS
-mdefine_line|#define SMBFLG2_KNOWS_EAS 0x0002
+mdefine_line|#define SMBFLG2_KNOWS_EAS cpu_to_le16(2)
 DECL|macro|SMBFLG2_SECURITY_SIGNATURE
-mdefine_line|#define SMBFLG2_SECURITY_SIGNATURE 0x0004
+mdefine_line|#define SMBFLG2_SECURITY_SIGNATURE cpu_to_le16(4)
 DECL|macro|SMBFLG2_IS_LONG_NAME
-mdefine_line|#define SMBFLG2_IS_LONG_NAME 0x0040
+mdefine_line|#define SMBFLG2_IS_LONG_NAME cpu_to_le16(0x40)
 DECL|macro|SMBFLG2_EXT_SEC
-mdefine_line|#define SMBFLG2_EXT_SEC 0x0800
+mdefine_line|#define SMBFLG2_EXT_SEC cpu_to_le16(0x80)
 DECL|macro|SMBFLG2_DFS
-mdefine_line|#define SMBFLG2_DFS 0x1000
+mdefine_line|#define SMBFLG2_DFS cpu_to_le16(0x1000)
 DECL|macro|SMBFLG2_PAGING_IO
-mdefine_line|#define SMBFLG2_PAGING_IO 0x2000
+mdefine_line|#define SMBFLG2_PAGING_IO cpu_to_le16(0x2000)
 DECL|macro|SMBFLG2_ERR_STATUS
-mdefine_line|#define SMBFLG2_ERR_STATUS 0x4000
+mdefine_line|#define SMBFLG2_ERR_STATUS cpu_to_le16(0x4000)
 DECL|macro|SMBFLG2_UNICODE
-mdefine_line|#define SMBFLG2_UNICODE 0x8000
+mdefine_line|#define SMBFLG2_UNICODE cpu_to_le16(0x8000)
 multiline_comment|/*&n; * These are the file access permission bits defined in CIFS for the&n; * NTCreateAndX as well as the level 0x107&n; * TRANS2_QUERY_PATH_INFORMATION API.  The level 0x107, SMB_QUERY_FILE_ALL_INFO&n; * responds with the AccessFlags.&n; * The AccessFlags specifies the access permissions a caller has to the&n; * file and can have any suitable combination of the following values:&n; */
 DECL|macro|FILE_READ_DATA
 mdefine_line|#define FILE_READ_DATA        0x00000001&t;/* Data can be read from the file   */
@@ -409,7 +409,7 @@ id|__u8
 id|Flags
 suffix:semicolon
 DECL|member|Flags2
-id|__u16
+id|__le16
 id|Flags2
 suffix:semicolon
 multiline_comment|/* note: le */

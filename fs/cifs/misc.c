@@ -1061,8 +1061,7 @@ c_cond
 (paren
 op_star
 (paren
-r_int
-r_int
+id|__le32
 op_star
 )paren
 id|smb-&gt;Protocol
@@ -1129,8 +1128,7 @@ c_cond
 (paren
 op_star
 (paren
-r_int
-r_int
+id|__le32
 op_star
 )paren
 id|smb-&gt;Protocol

@@ -3767,8 +3767,12 @@ suffix:semicolon
 multiline_comment|/* blocking operation, no timeout */
 id|pSMB-&gt;Timeout
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* blocking - do not time out */
 )brace
@@ -12815,30 +12819,6 @@ id|pSMBr-&gt;hdr.Protocol
 )paren
 op_plus
 id|data_offset
-)paren
-suffix:semicolon
-id|response_data-&gt;MajorVersionNumber
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|response_data-&gt;MajorVersionNumber
-)paren
-suffix:semicolon
-id|response_data-&gt;MinorVersionNumber
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|response_data-&gt;MinorVersionNumber
-)paren
-suffix:semicolon
-id|response_data-&gt;Capability
-op_assign
-id|le64_to_cpu
-c_func
-(paren
-id|response_data-&gt;Capability
 )paren
 suffix:semicolon
 id|memcpy
