@@ -42,7 +42,7 @@ id|unlink
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* ehci_hcd-&gt;lock guards shared data against other CPUs:&n; *   ehci_hcd:&t;async, reclaim, periodic (and shadow), ...&n; *   hcd_dev:&t;ep[]&n; *   ehci_qh:&t;qh_next, qtd_list&n; *   ehci_qtd:&t;qtd_list&n; *&n; * Also, hold this lock when talking to HC registers or&n; * when updating hw_* fields in shared qh/qtd/... structures.&n; */
+multiline_comment|/* ehci_hcd-&gt;lock guards shared data against other CPUs:&n; *   ehci_hcd:&t;async, reclaim, periodic (and shadow), ...&n; *   usb_host_endpoint: hcpriv&n; *   ehci_qh:&t;qh_next, qtd_list&n; *   ehci_qtd:&t;qtd_list&n; *&n; * Also, hold this lock when talking to HC registers or&n; * when updating hw_* fields in shared qh/qtd/... structures.&n; */
 DECL|macro|EHCI_MAX_ROOT_PORTS
 mdefine_line|#define&t;EHCI_MAX_ROOT_PORTS&t;15&t;&t;/* see HCS_N_PORTS */
 DECL|struct|ehci_hcd
@@ -50,32 +50,6 @@ r_struct
 id|ehci_hcd
 (brace
 multiline_comment|/* one per controller */
-multiline_comment|/* glue to PCI and HCD framework */
-DECL|member|hcd
-r_struct
-id|usb_hcd
-id|hcd
-suffix:semicolon
-multiline_comment|/* must come first! */
-DECL|member|caps
-r_struct
-id|ehci_caps
-id|__iomem
-op_star
-id|caps
-suffix:semicolon
-DECL|member|regs
-r_struct
-id|ehci_regs
-id|__iomem
-op_star
-id|regs
-suffix:semicolon
-DECL|member|hcs_params
-id|__u32
-id|hcs_params
-suffix:semicolon
-multiline_comment|/* cached register copy */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -217,6 +191,26 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* ARC roothub with TT */
+multiline_comment|/* glue to PCI and HCD framework */
+DECL|member|caps
+r_struct
+id|ehci_caps
+id|__iomem
+op_star
+id|caps
+suffix:semicolon
+DECL|member|regs
+r_struct
+id|ehci_regs
+id|__iomem
+op_star
+id|regs
+suffix:semicolon
+DECL|member|hcs_params
+id|__u32
+id|hcs_params
+suffix:semicolon
+multiline_comment|/* cached register copy */
 multiline_comment|/* irq statistics */
 macro_line|#ifdef EHCI_STATS
 DECL|member|stats
@@ -232,9 +226,62 @@ macro_line|#&t;define COUNT(x) do {} while (0)
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/* unwrap an HCD pointer to get an EHCI_HCD pointer */
-DECL|macro|hcd_to_ehci
-mdefine_line|#define hcd_to_ehci(hcd_ptr) container_of(hcd_ptr, struct ehci_hcd, hcd)
+multiline_comment|/* convert between an HCD pointer and the corresponding EHCI_HCD */
+DECL|function|hcd_to_ehci
+r_static
+r_inline
+r_struct
+id|ehci_hcd
+op_star
+id|hcd_to_ehci
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|ehci_hcd
+op_star
+)paren
+(paren
+id|hcd-&gt;hcd_priv
+)paren
+suffix:semicolon
+)brace
+DECL|function|ehci_to_hcd
+r_static
+r_inline
+r_struct
+id|usb_hcd
+op_star
+id|ehci_to_hcd
+(paren
+r_struct
+id|ehci_hcd
+op_star
+id|ehci
+)paren
+(brace
+r_return
+id|container_of
+(paren
+(paren
+r_void
+op_star
+)paren
+id|ehci
+comma
+r_struct
+id|usb_hcd
+comma
+id|hcd_priv
+)paren
+suffix:semicolon
+)brace
 DECL|enum|ehci_timer_action
 r_enum
 id|ehci_timer_action
@@ -1052,6 +1099,12 @@ r_struct
 id|usb_device
 op_star
 id|udev
+suffix:semicolon
+DECL|member|ep
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep
 suffix:semicolon
 multiline_comment|/* output of (re)scheduling */
 DECL|member|start

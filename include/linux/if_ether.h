@@ -74,8 +74,8 @@ DECL|macro|ETH_P_ATMMPOA
 mdefine_line|#define ETH_P_ATMMPOA&t;0x884c&t;&t;/* MultiProtocol Over ATM&t;*/
 DECL|macro|ETH_P_ATMFATE
 mdefine_line|#define ETH_P_ATMFATE&t;0x8884&t;&t;/* Frame-based ATM Transport&n;&t;&t;&t;&t;&t; * over Ethernet&n;&t;&t;&t;&t;&t; */
-DECL|macro|ETH_P_EDP2
-mdefine_line|#define ETH_P_EDP2&t;0x88A2&t;&t;/* Coraid EDP2&t;&t;&t;*/
+DECL|macro|ETH_P_AOE
+mdefine_line|#define ETH_P_AOE&t;0x88A2&t;&t;/* ATA over Ethernet&t;&t;*/
 multiline_comment|/*&n; *&t;Non DIX types. Won&squot;t clash for 1500 types.&n; */
 DECL|macro|ETH_P_802_3
 mdefine_line|#define ETH_P_802_3&t;0x0001&t;&t;/* Dummy type for 802.3 frames  */

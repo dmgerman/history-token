@@ -548,6 +548,9 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 (paren
 (paren
 id|usX2Ydev_t
@@ -557,6 +560,7 @@ id|hw-&gt;private_data
 )paren
 op_member_access_from_pointer
 id|chip.dev-&gt;descriptor.idProduct
+)paren
 )paren
 (brace
 r_case
@@ -798,7 +802,11 @@ id|snd_usb_audio_quirk_t
 op_star
 id|quirk
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 op_eq
 id|USB_ID_US428
 ques

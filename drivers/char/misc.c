@@ -644,11 +644,6 @@ id|miscdevice
 op_star
 id|c
 suffix:semicolon
-r_struct
-id|class_device
-op_star
-r_class
-suffix:semicolon
 id|dev_t
 id|dev
 suffix:semicolon
@@ -825,6 +820,8 @@ comma
 id|misc-&gt;minor
 )paren
 suffix:semicolon
+id|misc
+op_member_access_from_pointer
 r_class
 op_assign
 id|class_simple_device_add
@@ -845,6 +842,8 @@ c_cond
 id|IS_ERR
 c_func
 (paren
+id|misc
+op_member_access_from_pointer
 r_class
 )paren
 )paren
@@ -854,6 +853,8 @@ op_assign
 id|PTR_ERR
 c_func
 (paren
+id|misc
+op_member_access_from_pointer
 r_class
 )paren
 suffix:semicolon

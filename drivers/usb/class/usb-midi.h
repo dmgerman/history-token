@@ -67,11 +67,11 @@ op_star
 id|deviceName
 suffix:semicolon
 DECL|member|idVendor
-r_int
+id|u16
 id|idVendor
 suffix:semicolon
 DECL|member|idProduct
-r_int
+id|u16
 id|idProduct
 suffix:semicolon
 DECL|member|interface

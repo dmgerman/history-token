@@ -11823,7 +11823,11 @@ l_int|1
 suffix:semicolon
 id|fsg-&gt;bulk_out_maxpacket
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|d-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 r_if
 c_cond

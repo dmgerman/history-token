@@ -19,19 +19,6 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &quot;usb_atm.h&quot;
-multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
-macro_line|#if !defined (DEBUG) &amp;&amp; defined (CONFIG_USB_DEBUG)
-DECL|macro|DEBUG
-macro_line|#&t;define DEBUG
-macro_line|#endif
-macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef DEBUG
-DECL|macro|UDSL_ASSERT
-mdefine_line|#define UDSL_ASSERT(x)&t;BUG_ON(!(x))
-macro_line|#else
-DECL|macro|UDSL_ASSERT
-mdefine_line|#define UDSL_ASSERT(x)&t;do { if (!(x)) warn(&quot;failed assertion &squot;&quot; #x &quot;&squot; at line %d&quot;, __LINE__); } while(0)
-macro_line|#endif
 macro_line|#ifdef VERBOSE_DEBUG
 r_static
 r_int

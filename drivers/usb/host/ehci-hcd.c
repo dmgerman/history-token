@@ -34,7 +34,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2004-05-10 Root hub and PCI suspend/resume support; remote wakeup. (db)&n; * 2004-02-24 Replace pci_* with generic dma_* API calls (dsaxena@plexity.net)&n; * 2003-12-29 Rewritten high speed iso transfer support (by Michal Sojka,&n; *&t;&lt;sojkam@centrum.cz&gt;, updates by DB).&n; *&n; * 2002-11-29&t;Correct handling for hw async_next register.&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;26 Oct 2004&quot;
+mdefine_line|#define DRIVER_VERSION &quot;10 Dec 2004&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -78,7 +78,7 @@ DECL|macro|EHCI_ASYNC_JIFFIES
 mdefine_line|#define EHCI_ASYNC_JIFFIES&t;(HZ/20)&t;&t;/* async idle timeout */
 DECL|macro|EHCI_SHRINK_JIFFIES
 mdefine_line|#define EHCI_SHRINK_JIFFIES&t;(HZ/200)&t;/* async qh unlink delay */
-multiline_comment|/* Initial IRQ latency:  lower than default */
+multiline_comment|/* Initial IRQ latency:  faster than hw default */
 DECL|variable|log2_irq_thresh
 r_static
 r_int
@@ -101,6 +101,30 @@ id|MODULE_PARM_DESC
 id|log2_irq_thresh
 comma
 l_string|&quot;log2 IRQ latency, 1-64 microframes&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* initial park setting:  slower than hw default */
+DECL|variable|park
+r_static
+r_int
+id|park
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+(paren
+id|park
+comma
+id|uint
+comma
+id|S_IRUGO
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|park
+comma
+l_string|&quot;park setting; 1-3 back-to-back async packets&quot;
 )paren
 suffix:semicolon
 DECL|macro|INTR_MASK
@@ -308,7 +332,13 @@ op_amp
 id|ehci-&gt;regs-&gt;command
 )paren
 suffix:semicolon
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
@@ -354,7 +384,13 @@ c_cond
 op_logical_neg
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 )paren
 id|BUG
@@ -401,7 +437,13 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
@@ -459,7 +501,13 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
@@ -653,7 +701,13 @@ op_assign
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|self.controller
 )paren
 suffix:semicolon
 multiline_comment|/* request handoff to OS */
@@ -900,7 +954,7 @@ op_assign
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|hcd-&gt;self.controller
 )paren
 suffix:semicolon
 multiline_comment|/* AMD8111 EHCI doesn&squot;t work, according to AMD errata */
@@ -966,7 +1020,7 @@ id|pci_read_config_dword
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|hcd-&gt;self.controller
 )paren
 comma
 id|temp
@@ -1503,7 +1557,7 @@ id|pci_set_dma_mask
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|hcd-&gt;self.controller
 )paren
 comma
 l_int|0xffffffffffffffffULL
@@ -1519,16 +1573,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* clear interrupt enables, set irq latency */
-id|temp
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;regs-&gt;command
-)paren
-op_amp
-l_int|0x0fff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1541,7 +1585,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|temp
-op_or_assign
+op_assign
 l_int|1
 op_lshift
 (paren
@@ -1550,7 +1594,56 @@ op_plus
 id|log2_irq_thresh
 )paren
 suffix:semicolon
-singleline_comment|// if hc can park (ehci &gt;= 0.96), default is 3 packets per async QH 
+r_if
+c_cond
+(paren
+id|HCC_CANPARK
+c_func
+(paren
+id|hcc_params
+)paren
+)paren
+(brace
+multiline_comment|/* HW default park == 3, on hardware that supports it (like&n;&t;&t; * NVidia and ALI silicon), maximizes throughput on the async&n;&t;&t; * schedule by avoiding QH fetches between transfers.&n;&t;&t; *&n;&t;&t; * With fast usb storage devices and NForce2, &quot;park&quot; seems to&n;&t;&t; * make problems:  throughput reduction (!), data errors...&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|park
+)paren
+(brace
+id|park
+op_assign
+id|min
+(paren
+id|park
+comma
+(paren
+r_int
+)paren
+l_int|3
+)paren
+suffix:semicolon
+id|temp
+op_or_assign
+id|CMD_PARK
+suffix:semicolon
+id|temp
+op_or_assign
+id|park
+op_lshift
+l_int|8
+suffix:semicolon
+)brace
+id|ehci_info
+(paren
+id|ehci
+comma
+l_string|&quot;park %d&bslash;n&quot;
+comma
+id|park
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1619,17 +1712,6 @@ id|BUG
 suffix:semicolon
 )brace
 )brace
-id|temp
-op_and_assign
-op_complement
-(paren
-id|CMD_IAAD
-op_or
-id|CMD_ASE
-op_or
-id|CMD_PSE
-)paren
-comma
 singleline_comment|// Philips, Intel, and maybe others need CMD_RUN before the
 singleline_comment|// root hub will detect new devices (why?); NEC doesn&squot;t
 id|temp
@@ -1728,7 +1810,7 @@ id|ehci-&gt;reboot_notifier
 )paren
 suffix:semicolon
 )brace
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
@@ -1963,7 +2045,7 @@ c_cond
 (paren
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 id|ehci_quiesce
@@ -2583,7 +2665,13 @@ c_cond
 (paren
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 op_logical_and
 (paren
@@ -2814,7 +2902,7 @@ op_amp
 id|STS_PCD
 )paren
 op_logical_and
-id|ehci-&gt;hcd.remote_wakeup
+id|hcd-&gt;remote_wakeup
 )paren
 (brace
 r_int
@@ -2916,7 +3004,7 @@ suffix:semicolon
 id|mod_timer
 (paren
 op_amp
-id|ehci-&gt;hcd.rh_timer
+id|hcd-&gt;rh_timer
 comma
 id|ehci-&gt;reset_done
 (braket
@@ -3010,6 +3098,11 @@ op_star
 id|hcd
 comma
 r_struct
+id|usb_host_endpoint
+op_star
+id|ep
+comma
+r_struct
 id|urb
 op_star
 id|urb
@@ -3078,6 +3171,8 @@ id|submit_async
 (paren
 id|ehci
 comma
+id|ep
+comma
 id|urb
 comma
 op_amp
@@ -3113,6 +3208,8 @@ r_return
 id|intr_submit
 (paren
 id|ehci
+comma
+id|ep
 comma
 id|urb
 comma
@@ -3183,7 +3280,13 @@ id|ehci-&gt;reclaim
 op_logical_and
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 )paren
 (brace
@@ -3224,7 +3327,13 @@ c_cond
 op_logical_neg
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 op_logical_and
 id|ehci-&gt;reclaim
@@ -3355,26 +3464,26 @@ id|qh
 )paren
 r_break
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|qh-&gt;qh_state
-op_eq
-id|QH_STATE_LINKED
 )paren
 (brace
-multiline_comment|/* messy, can spin or block a microframe ... */
+r_case
+id|QH_STATE_LINKED
+suffix:colon
 id|intr_deschedule
 (paren
 id|ehci
 comma
 id|qh
-comma
-l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* qh_state == IDLE */
-)brace
+multiline_comment|/* FALL THROUGH */
+r_case
+id|QH_STATE_IDLE
+suffix:colon
 id|qh_completions
 (paren
 id|ehci
@@ -3384,6 +3493,25 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;bogus qh %p state %d&bslash;n&quot;
+comma
+id|qh
+comma
+id|qh-&gt;qh_state
+)paren
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 multiline_comment|/* reschedule QH iff another request is queued */
 r_if
 c_cond
@@ -3397,7 +3525,7 @@ id|qh-&gt;qtd_list
 op_logical_and
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 (brace
@@ -3456,6 +3584,8 @@ singleline_comment|// completion irqs can wait up to 1024 msec,
 r_break
 suffix:semicolon
 )brace
+id|done
+suffix:colon
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -3481,11 +3611,8 @@ op_star
 id|hcd
 comma
 r_struct
-id|hcd_dev
+id|usb_host_endpoint
 op_star
-id|dev
-comma
-r_int
 id|ep
 )paren
 (brace
@@ -3498,9 +3625,6 @@ id|hcd_to_ehci
 (paren
 id|hcd
 )paren
-suffix:semicolon
-r_int
-id|epnum
 suffix:semicolon
 r_int
 r_int
@@ -3516,29 +3640,6 @@ id|tmp
 suffix:semicolon
 multiline_comment|/* ASSERT:  any requests/urbs are being unlinked */
 multiline_comment|/* ASSERT:  nobody can be submitting urbs for this any more */
-id|epnum
-op_assign
-id|ep
-op_amp
-id|USB_ENDPOINT_NUMBER_MASK
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|epnum
-op_ne
-l_int|0
-op_logical_and
-(paren
-id|ep
-op_amp
-id|USB_DIR_IN
-)paren
-)paren
-id|epnum
-op_or_assign
-l_int|0x10
-suffix:semicolon
 id|rescan
 suffix:colon
 id|spin_lock_irqsave
@@ -3551,15 +3652,7 @@ id|flags
 suffix:semicolon
 id|qh
 op_assign
-(paren
-r_struct
-id|ehci_qh
-op_star
-)paren
-id|dev-&gt;ep
-(braket
-id|epnum
-)braket
+id|ep-&gt;hcpriv
 suffix:semicolon
 r_if
 c_cond
@@ -3596,7 +3689,7 @@ c_cond
 op_logical_neg
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 id|qh-&gt;qh_state
@@ -3708,11 +3801,11 @@ id|ehci_err
 (paren
 id|ehci
 comma
-l_string|&quot;qh %p (#%d) state %d%s&bslash;n&quot;
+l_string|&quot;qh %p (#%02x) state %d%s&bslash;n&quot;
 comma
 id|qh
 comma
-id|epnum
+id|ep-&gt;desc.bEndpointAddress
 comma
 id|qh-&gt;qh_state
 comma
@@ -3731,10 +3824,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dev-&gt;ep
-(braket
-id|epnum
-)braket
+id|ep-&gt;hcpriv
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3764,6 +3854,20 @@ dot
 id|description
 op_assign
 id|hcd_name
+comma
+dot
+id|product_desc
+op_assign
+l_string|&quot;EHCI Host Controller&quot;
+comma
+dot
+id|hcd_priv_size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|ehci_hcd
+)paren
 comma
 multiline_comment|/*&n;&t; * generic hardware linkage&n;&t; */
 dot
@@ -3805,12 +3909,6 @@ dot
 id|stop
 op_assign
 id|ehci_stop
-comma
-multiline_comment|/*&n;&t; * memory lifecycle (except per-request)&n;&t; */
-dot
-id|hcd_alloc
-op_assign
-id|ehci_hcd_alloc
 comma
 multiline_comment|/*&n;&t; * managing i/o requests and associated device resources&n;&t; */
 dot
