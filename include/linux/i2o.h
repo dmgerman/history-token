@@ -133,6 +133,33 @@ suffix:semicolon
 multiline_comment|/* linux /dev name if available */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * context queue entry, used for 32-bit context on 64-bit systems&n; */
+DECL|struct|i2o_context_list_element
+r_struct
+id|i2o_context_list_element
+(brace
+DECL|member|next
+r_struct
+id|i2o_context_list_element
+op_star
+id|next
+suffix:semicolon
+DECL|member|context
+id|u32
+id|context
+suffix:semicolon
+DECL|member|ptr
+r_void
+op_star
+id|ptr
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Each I2O controller has one of these objects&n; */
 DECL|struct|i2o_controller
 r_struct
@@ -363,6 +390,20 @@ id|dma_addr_t
 id|page_frame_map
 suffix:semicolon
 multiline_comment|/* Cache map */
+macro_line|#if BITS_PER_LONG == 64
+DECL|member|context_list_lock
+id|spinlock_t
+id|context_list_lock
+suffix:semicolon
+multiline_comment|/* lock for context_list */
+DECL|member|context_list
+r_struct
+id|i2o_context_list_element
+op_star
+id|context_list
+suffix:semicolon
+multiline_comment|/* list of context id&squot;s&n;&t;&t;&t;&t;&t;&t;    and pointers */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * OSM resgistration block&n; *&n; * Each OSM creates at least one of these and registers it with the&n; * I2O core through i2o_register_handler.  An OSM may want to&n; * register more than one if it wants a fast path to a reply&n; * handler by having a separate initiator context for each &n; * class function.&n; */
@@ -1263,6 +1304,121 @@ id|i2o_controller
 op_star
 )paren
 suffix:semicolon
+macro_line|#if BITS_PER_LONG == 64
+r_extern
+id|u32
+id|i2o_context_list_add
+c_func
+(paren
+r_void
+op_star
+comma
+r_struct
+id|i2o_controller
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|i2o_context_list_get
+c_func
+(paren
+id|u32
+comma
+r_struct
+id|i2o_controller
+op_star
+)paren
+suffix:semicolon
+r_extern
+id|u32
+id|i2o_context_list_remove
+c_func
+(paren
+r_void
+op_star
+comma
+r_struct
+id|i2o_controller
+op_star
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|i2o_context_list_add
+r_static
+r_inline
+id|u32
+id|i2o_context_list_add
+c_func
+(paren
+r_void
+op_star
+id|ptr
+comma
+r_struct
+id|i2o_controller
+op_star
+id|c
+)paren
+(brace
+r_return
+(paren
+id|u32
+)paren
+id|ptr
+suffix:semicolon
+)brace
+DECL|function|i2o_context_list_get
+r_static
+r_inline
+r_void
+op_star
+id|i2o_context_list_get
+c_func
+(paren
+id|u32
+id|context
+comma
+r_struct
+id|i2o_controller
+op_star
+id|c
+)paren
+(brace
+r_return
+(paren
+r_void
+op_star
+)paren
+id|context
+suffix:semicolon
+)brace
+DECL|function|i2o_context_list_remove
+r_static
+r_inline
+id|u32
+id|i2o_context_list_remove
+c_func
+(paren
+r_void
+op_star
+id|ptr
+comma
+r_struct
+id|i2o_controller
+op_star
+id|c
+)paren
+(brace
+r_return
+(paren
+id|u32
+)paren
+id|ptr
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; *&t;Cache strategies&n; */
 multiline_comment|/*&t;The NULL strategy leaves everything up to the controller. This tends to be a&n; *&t;pessimal but functional choice.&n; */
 DECL|macro|CACHE_NULL
@@ -1727,6 +1883,12 @@ DECL|macro|I2O_POST_WAIT_OK
 mdefine_line|#define I2O_POST_WAIT_OK&t;0
 DECL|macro|I2O_POST_WAIT_TIMEOUT
 mdefine_line|#define I2O_POST_WAIT_TIMEOUT&t;-ETIMEDOUT
+DECL|macro|I2O_CONTEXT_LIST_MIN_LENGTH
+mdefine_line|#define I2O_CONTEXT_LIST_MIN_LENGTH&t;15
+DECL|macro|I2O_CONTEXT_LIST_USED
+mdefine_line|#define I2O_CONTEXT_LIST_USED&t;&t;0x01
+DECL|macro|I2O_CONTEXT_LIST_DELETED
+mdefine_line|#define I2O_CONTEXT_LIST_DELETED&t;0x02
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _I2O_H */
 eof
