@@ -31,6 +31,7 @@ macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
+macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|function|init_new_thread

@@ -172,7 +172,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;os_accept_connection returned %d&bslash;n&quot;
+l_string|&quot;os_rcv_fd returned %d&bslash;n&quot;
 comma
 op_minus
 id|fd
