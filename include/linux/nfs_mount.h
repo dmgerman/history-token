@@ -4,6 +4,8 @@ mdefine_line|#define _LINUX_NFS_MOUNT_H
 multiline_comment|/*&n; *  linux/include/linux/nfs_mount.h&n; *&n; *  Copyright (C) 1992  Rick Sladkey&n; *&n; *  structure passed from user-space to kernel-space during an nfs mount&n; */
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
+macro_line|#include &lt;linux/nfs2.h&gt;
+macro_line|#include &lt;linux/nfs3.h&gt;
 multiline_comment|/*&n; * WARNING!  Do not delete or change the order of these fields.  If&n; * a new field is required then add it to the end.  The version field&n; * tracks which fields are present.  This will ensure some measure of&n; * mount-to-kernel version compatibility.  Some of these aren&squot;t used yet&n; * but here they are anyway.&n; */
 DECL|macro|NFS_MOUNT_VERSION
 mdefine_line|#define NFS_MOUNT_VERSION&t;4
@@ -99,7 +101,7 @@ suffix:semicolon
 multiline_comment|/* 3 */
 DECL|member|root
 r_struct
-id|nfs_fh
+id|nfs3_fh
 id|root
 suffix:semicolon
 multiline_comment|/* 4 */
@@ -128,6 +130,10 @@ DECL|macro|NFS_MOUNT_NONLM
 mdefine_line|#define NFS_MOUNT_NONLM&t;&t;0x0200&t;/* 3 */
 DECL|macro|NFS_MOUNT_BROKEN_SUID
 mdefine_line|#define NFS_MOUNT_BROKEN_SUID&t;0x0400&t;/* 4 */
+macro_line|#if 0
+mdefine_line|#define NFS_MOUNT_STRICTLOCK&t;0x1000&t;/* reserved for NFSv4 */
+mdefine_line|#define NFS_MOUNT_SECFLAVOUR&t;0x2000&t;/* reserved */
+macro_line|#endif
 DECL|macro|NFS_MOUNT_FLAGMASK
 mdefine_line|#define NFS_MOUNT_FLAGMASK&t;0xFFFF
 macro_line|#endif
