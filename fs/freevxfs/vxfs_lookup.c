@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;vxfs.h&quot;
 macro_line|#include &quot;vxfs_dir.h&quot;
 macro_line|#include &quot;vxfs_inode.h&quot;
@@ -629,6 +630,11 @@ op_minus
 id|ENAMETOOLONG
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ino
 op_assign
 id|vxfs_inode_by_name
@@ -643,12 +649,8 @@ r_if
 c_cond
 (paren
 id|ino
-op_eq
-l_int|0
 )paren
-r_return
-l_int|NULL
-suffix:semicolon
+(brace
 id|ip
 op_assign
 id|iget
@@ -665,12 +667,25 @@ c_cond
 op_logical_neg
 id|ip
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
 (paren
 op_minus
 id|EACCES
+)paren
+suffix:semicolon
+)brace
+)brace
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|d_add

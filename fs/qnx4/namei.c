@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * check if the filename is correct. For some obscure reason, qnx writes a&n; * new file twice in the directory entry, first with all possible options at 0&n; * and for a second time the way it is, they want us not to access the qnx&n; * filesystem when whe are using linux.&n; */
 DECL|function|qnx4_match
 r_static
@@ -490,6 +491,11 @@ id|foundinode
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -580,6 +586,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|QNX4DEBUG
 c_func
 (paren
@@ -599,6 +610,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * namei.c&n; *&n; * Copyright (c) 1999 Al Smith&n; *&n; * Portions derived from work (c) 1995,1996 Christian Vogelgsang.&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/efs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|function|efs_find_entry
 r_static
 id|efs_ino_t
@@ -284,31 +285,13 @@ r_struct
 id|inode
 op_star
 id|inode
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dir
-op_logical_or
-op_logical_neg
-id|S_ISDIR
-c_func
-(paren
-id|dir-&gt;i_mode
-)paren
-)paren
-r_return
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENOENT
-)paren
-suffix:semicolon
-id|inode
 op_assign
 l_int|NULL
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|inodenum
 op_assign
@@ -344,6 +327,12 @@ id|inodenum
 )paren
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -353,6 +342,12 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_int
@@ -300,6 +301,11 @@ l_string|&quot;jffs2_lookup()&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dir_f
 op_assign
 id|JFFS2_INODE_INFO
@@ -423,6 +429,11 @@ op_logical_neg
 id|inode
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -444,6 +455,11 @@ id|EIO
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

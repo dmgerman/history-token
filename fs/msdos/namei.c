@@ -4,6 +4,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|MSDOS_DEBUG
 mdefine_line|#define MSDOS_DEBUG 0
 DECL|macro|PRINTK
@@ -1154,6 +1155,11 @@ op_assign
 op_amp
 id|msdos_dentry_operations
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|msdos_find
@@ -1246,6 +1252,11 @@ c_func
 id|sb
 comma
 id|bh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

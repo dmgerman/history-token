@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 DECL|typedef|toupper_t
@@ -1051,6 +1052,11 @@ comma
 id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|affs_lock_dir
 c_func
 (paren
@@ -1082,6 +1088,12 @@ c_func
 id|bh
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1093,6 +1105,7 @@ id|bh
 )paren
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1178,6 +1191,12 @@ c_cond
 op_logical_neg
 id|inode
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1186,6 +1205,7 @@ op_minus
 id|EACCES
 )paren
 suffix:semicolon
+)brace
 )brace
 id|dentry-&gt;d_op
 op_assign
@@ -1199,6 +1219,11 @@ id|affs_intl_dentry_operations
 suffix:colon
 op_amp
 id|affs_dentry_operations
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|d_add
 c_func

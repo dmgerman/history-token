@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bfs_fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;bfs_defs.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -638,6 +639,11 @@ op_minus
 id|ENAMETOOLONG
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bh
 op_assign
 id|bfs_find_entry
@@ -691,6 +697,12 @@ c_cond
 op_logical_neg
 id|inode
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -700,6 +712,12 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

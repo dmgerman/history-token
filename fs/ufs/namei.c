@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/fs/ufs/namei.c&n; *&n; * Copyright (C) 1998&n; *
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ufs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|UFS_NAMEI_DEBUG
 macro_line|#undef UFS_NAMEI_DEBUG
 macro_line|#ifdef UFS_NAMEI_DEBUG
@@ -165,6 +166,11 @@ op_minus
 id|ENAMETOOLONG
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ino
 op_assign
 id|ufs_inode_by_name
@@ -197,6 +203,12 @@ c_cond
 op_logical_neg
 id|inode
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -206,6 +218,12 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

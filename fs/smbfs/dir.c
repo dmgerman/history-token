@@ -1622,6 +1622,11 @@ id|SMB_MAXNAMELEN
 r_goto
 id|out
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|smb_proc_getattr
@@ -1761,6 +1766,11 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return

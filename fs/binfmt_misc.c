@@ -3077,6 +3077,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* / */
+multiline_comment|/* SMP-safe */
 DECL|function|bm_lookup
 r_static
 r_struct

@@ -1284,6 +1284,11 @@ op_minus
 id|ENAMETOOLONG
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|de.de_gen_number_bit_string
 op_assign
 l_int|0
@@ -1349,6 +1354,11 @@ id|inode
 )paren
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1359,6 +1369,11 @@ id|EACCES
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

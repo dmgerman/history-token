@@ -948,6 +948,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Lookups in non-root dirs never find anything - if it&squot;s there, it&squot;s&n;   already in the dcache */
+multiline_comment|/* SMP-safe */
 DECL|function|autofs4_dir_lookup
 r_static
 r_struct
@@ -1065,6 +1066,11 @@ c_func
 id|dir-&gt;i_sb
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|oz_mode
 op_assign
 id|autofs4_oz_mode
@@ -1167,6 +1173,12 @@ c_func
 id|current
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1176,6 +1188,12 @@ id|ERESTARTNOINTR
 )paren
 suffix:semicolon
 )brace
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If this dentry is unhashed, then we shouldn&squot;t honour this&n;&t; * lookup even if the dentry is positive.  Returning ENOENT here&n;&t; * doesn&squot;t do the right thing for all system calls, but it should&n;&t; * be OK for the operations we permit from an autofs.&n;&t; */
 r_if
 c_cond

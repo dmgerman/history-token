@@ -3725,6 +3725,11 @@ id|len
 op_assign
 id|dentry-&gt;d_name.len
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4136,6 +4141,12 @@ op_assign
 id|OPFSL_DIR
 suffix:semicolon
 r_else
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -4145,6 +4156,7 @@ id|ENOENT
 )paren
 suffix:semicolon
 )brace
+)brace
 id|inode
 op_assign
 id|iget
@@ -4152,6 +4164,11 @@ id|iget
 id|dir-&gt;i_sb
 comma
 id|ino
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if

@@ -2627,6 +2627,11 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Convert to wide string. */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|ntfs_decodeuni
@@ -2746,6 +2751,11 @@ c_func
 id|walk.name
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Always return success, the dcache will handle negative entries. */
 r_return
 l_int|NULL
@@ -2756,6 +2766,11 @@ id|ntfs_free
 c_func
 (paren
 id|walk.name
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -1221,6 +1221,11 @@ id|dir-&gt;i_ino
 op_amp
 id|ROMFH_MASK
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1522,6 +1527,11 @@ id|inode
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func

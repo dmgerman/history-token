@@ -178,6 +178,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* SMP-safe */
 DECL|function|pcihpfs_lookup
 r_static
 r_struct

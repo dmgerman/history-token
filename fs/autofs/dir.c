@@ -1,6 +1,7 @@
 multiline_comment|/* -*- linux-c -*- --------------------------------------------------------- *&n; *&n; * linux/fs/autofs/dir.c&n; *&n; *  Copyright 1997-1998 Transmeta Corporation -- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#include &quot;autofs_i.h&quot;
 multiline_comment|/*&n; * No entries except for &quot;.&quot; and &quot;..&quot;, both of which are handled by the VFS&n; * layer. So all children are negative and dcache-based versions of operations&n; * are OK.&n; */
+multiline_comment|/* SMP-safe */
 DECL|function|autofs_dir_lookup
 r_static
 r_struct

@@ -1382,6 +1382,11 @@ op_minus
 id|ENAMETOOLONG
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef UDF_RECOVERY
 multiline_comment|/* temporary shorthand for specifying files by inode number */
 r_if
@@ -1434,6 +1439,12 @@ c_cond
 op_logical_neg
 id|inode
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1442,6 +1453,7 @@ op_minus
 id|EACCES
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 macro_line|#endif /* UDF_RECOVERY */
@@ -1506,6 +1518,12 @@ c_cond
 op_logical_neg
 id|inode
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1515,6 +1533,12 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

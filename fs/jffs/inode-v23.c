@@ -2583,6 +2583,11 @@ id|name
 op_assign
 id|dentry-&gt;d_name.name
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|D3
 c_func
 (paren
@@ -3030,6 +3035,11 @@ op_amp
 id|c-&gt;fmc-&gt;biglock
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -3054,6 +3064,11 @@ id|c-&gt;fmc-&gt;biglock
 suffix:semicolon
 id|jffs_lookup_end_no_biglock
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
