@@ -212,7 +212,7 @@ id|ntfs_inode
 op_star
 id|base_ntfs_ino
 suffix:semicolon
-multiline_comment|/* For nr_extents == -1, the&n;&t;&t;&t;&t;&t;&t;   vfs inode of the base mft&n;&t;&t;&t;&t;&t;&t;   record. */
+multiline_comment|/* For nr_extents == -1, the&n;&t;&t;&t;&t;&t;&t;   ntfs inode of the base mft&n;&t;&t;&t;&t;&t;&t;   record. */
 )brace
 id|SN
 c_func
