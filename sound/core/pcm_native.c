@@ -13077,11 +13077,6 @@ id|snd_pcm_playback_ioctl
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -13098,9 +13093,6 @@ id|arg
 id|snd_pcm_file_t
 op_star
 id|pcm_file
-suffix:semicolon
-r_int
-id|err
 suffix:semicolon
 id|pcm_file
 op_assign
@@ -13125,14 +13117,7 @@ r_return
 op_minus
 id|ENOTTY
 suffix:semicolon
-multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|err
-op_assign
+r_return
 id|snd_pcm_playback_ioctl1
 c_func
 (paren
@@ -13148,14 +13133,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
 )brace
 DECL|function|snd_pcm_capture_ioctl
 r_static
@@ -13163,11 +13140,6 @@ r_int
 id|snd_pcm_capture_ioctl
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
 r_struct
 id|file
 op_star
@@ -13185,9 +13157,6 @@ id|arg
 id|snd_pcm_file_t
 op_star
 id|pcm_file
-suffix:semicolon
-r_int
-id|err
 suffix:semicolon
 id|pcm_file
 op_assign
@@ -13212,14 +13181,7 @@ r_return
 op_minus
 id|ENOTTY
 suffix:semicolon
-multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|err
-op_assign
+r_return
 id|snd_pcm_capture_ioctl1
 c_func
 (paren
@@ -13234,14 +13196,6 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|err
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_kernel_playback_ioctl
@@ -15726,6 +15680,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * ioctl32 compat&n; */
+macro_line|#ifdef CONFIG_COMPAT
+macro_line|#include &quot;pcm_compat.c&quot;
+macro_line|#else
+DECL|macro|snd_pcm_ioctl_compat
+mdefine_line|#define snd_pcm_ioctl_compat&t;NULL
+macro_line|#endif
 multiline_comment|/*&n; *  To be removed helpers to keep binary compatibility&n; */
 DECL|macro|__OLD_TO_NEW_MASK
 mdefine_line|#define __OLD_TO_NEW_MASK(x) ((x&amp;7)|((x&amp;0x07fffff8)&lt;&lt;5))
@@ -16396,9 +16357,14 @@ op_assign
 id|snd_pcm_playback_poll
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|snd_pcm_playback_ioctl
+comma
+dot
+id|compat_ioctl
+op_assign
+id|snd_pcm_ioctl_compat
 comma
 dot
 id|mmap
@@ -16450,9 +16416,14 @@ op_assign
 id|snd_pcm_capture_poll
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|snd_pcm_capture_ioctl
+comma
+dot
+id|compat_ioctl
+op_assign
+id|snd_pcm_ioctl_compat
 comma
 dot
 id|mmap
