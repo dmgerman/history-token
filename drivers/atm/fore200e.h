@@ -1877,7 +1877,7 @@ DECL|member|version
 id|u32
 id|version
 suffix:semicolon
-multiline_comment|/* firware version id                         */
+multiline_comment|/* firmware version id                        */
 DECL|member|load_offset
 id|u32
 id|load_offset

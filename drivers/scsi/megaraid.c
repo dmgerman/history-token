@@ -13487,7 +13487,7 @@ id|u32
 )paren
 id|adapter-&gt;buf_dma_handle
 suffix:semicolon
-multiline_comment|/*&n;&t; * Non-ROMB firware fail this command, so all channels&n;&t; * must be shown RAID&n;&t; */
+multiline_comment|/*&n;&t; * Non-ROMB firmware fail this command, so all channels&n;&t; * must be shown RAID&n;&t; */
 id|adapter-&gt;mega_ch_class
 op_assign
 l_int|0xFF
