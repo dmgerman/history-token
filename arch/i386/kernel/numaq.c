@@ -169,9 +169,9 @@ DECL|macro|MB_TO_ELEMENT
 mdefine_line|#define MB_TO_ELEMENT(x) (x &gt;&gt; ELEMENT_REPRESENTS)
 DECL|macro|PA_TO_MB
 mdefine_line|#define PA_TO_MB(pa) (pa &gt;&gt; 20) &t;/* assumption: a physical address is in bytes */
-DECL|function|numaqpa_to_nid
+DECL|function|pa_to_nid
 r_int
-id|numaqpa_to_nid
+id|pa_to_nid
 c_func
 (paren
 id|u64
@@ -214,9 +214,9 @@ r_return
 id|nid
 suffix:semicolon
 )brace
-DECL|function|numaqpfn_to_nid
+DECL|function|pfn_to_nid
 r_int
-id|numaqpfn_to_nid
+id|pfn_to_nid
 c_func
 (paren
 r_int
@@ -225,7 +225,7 @@ id|pfn
 )paren
 (brace
 r_return
-id|numaqpa_to_nid
+id|pa_to_nid
 c_func
 (paren
 (paren
