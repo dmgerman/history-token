@@ -1,3 +1,4 @@
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; */
 macro_line|#ifndef __FILTER_H_
 DECL|macro|__FILTER_H_
 mdefine_line|#define __FILTER_H_ 1
@@ -152,7 +153,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|FILTER_FS_TYPES
-mdefine_line|#define FILTER_FS_TYPES 5
+mdefine_line|#define FILTER_FS_TYPES 6
 DECL|macro|FILTER_FS_EXT2
 mdefine_line|#define FILTER_FS_EXT2 0
 DECL|macro|FILTER_FS_EXT3
@@ -163,6 +164,8 @@ DECL|macro|FILTER_FS_XFS
 mdefine_line|#define FILTER_FS_XFS 3
 DECL|macro|FILTER_FS_OBDFS
 mdefine_line|#define FILTER_FS_OBDFS 4
+DECL|macro|FILTER_FS_TMPFS
+mdefine_line|#define FILTER_FS_TMPFS 5
 r_extern
 r_struct
 id|filter_fs
@@ -525,7 +528,7 @@ mdefine_line|#define PRESTO_DEBUG
 macro_line|#ifdef PRESTO_DEBUG
 multiline_comment|/* debugging masks */
 DECL|macro|D_SUPER
-mdefine_line|#define D_SUPER     1   /* print results returned by Venus */
+mdefine_line|#define D_SUPER     1  
 DECL|macro|D_INODE
 mdefine_line|#define D_INODE     2   /* print entry and exit into procedure */
 DECL|macro|D_FILE

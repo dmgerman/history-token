@@ -1,13 +1,15 @@
-multiline_comment|/*&n; * Intermezzo. (C) 1998 Peter J. Braam&n; * Intermezzo. (C) 2000 Red Hat, Inc.&n; * Intermezzo. (C) 2000 Los Alamos National Laboratory&n; * Intermezzo. (C) 2000 TurboLinux, Inc.&n; * Intermezzo. (C) 2001 Mountain View Data, Inc.&n; */
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Copyright (C) 1998 Peter J. Braam &lt;braam@clusterfs.com&gt;&n; *  Copyright (C) 2000 Red Hat, Inc.&n; *  Copyright (C) 2000 Los Alamos National Laboratory&n; *  Copyright (C) 2000 TurboLinux, Inc.&n; *  Copyright (C) 2001 Mountain View Data, Inc.&n; *  Copyright (C) 2001 Tacit Networks, Inc. &lt;phil@off.net&gt;&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -17,9 +19,7 @@ macro_line|#include &lt;linux/ext3_fs.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_kml.h&gt;
 macro_line|#if defined(CONFIG_EXT3_FS) || defined (CONFIG_EXT3_FS_MODULE)
 DECL|macro|MAX_PATH_BLOCKS
 mdefine_line|#define MAX_PATH_BLOCKS(inode) (PATH_MAX &gt;&gt; EXT3_BLOCK_SIZE_BITS((inode)-&gt;i_sb))
@@ -49,7 +49,13 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|sb-&gt;u.ext3_sb.s_es-&gt;s_free_blocks_count
+id|EXT3_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_es-&gt;s_free_blocks_count
 )paren
 suffix:semicolon
 id|loff_t
@@ -60,7 +66,13 @@ op_minus
 id|le32_to_cpu
 c_func
 (paren
-id|sb-&gt;u.ext3_sb.s_es-&gt;s_r_blocks_count
+id|EXT3_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_es-&gt;s_r_blocks_count
 )paren
 suffix:semicolon
 r_return
@@ -152,7 +164,13 @@ suffix:semicolon
 )brace
 id|avail_kmlblocks
 op_assign
-id|inode-&gt;i_sb-&gt;u.ext3_sb.s_es-&gt;s_free_blocks_count
+id|EXT3_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_es-&gt;s_free_blocks_count
 suffix:semicolon
 r_if
 c_cond
@@ -177,11 +195,11 @@ c_cond
 (paren
 id|op
 op_ne
-id|PRESTO_OP_UNLINK
+id|KML_OPCODE_UNLINK
 op_logical_and
 id|op
 op_ne
-id|PRESTO_OP_RMDIR
+id|KML_OPCODE_RMDIR
 )paren
 op_logical_and
 id|avail_kmlblocks
@@ -261,7 +279,7 @@ id|op
 )paren
 (brace
 r_case
-id|PRESTO_OP_TRUNC
+id|KML_OPCODE_TRUNC
 suffix:colon
 id|jblocks
 op_assign
@@ -276,7 +294,69 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_RELEASE
+id|KML_OPCODE_KML_TRUNC
+suffix:colon
+multiline_comment|/* Hopefully this is a little better, but I&squot;m still mostly&n;                 * guessing here. */
+multiline_comment|/* unlink 1 */
+id|jblocks
+op_assign
+id|extra_name_blks
+op_plus
+id|trunc_blks
+op_plus
+id|EXT3_DELETE_TRANS_BLOCKS
+op_plus
+l_int|2
+suffix:semicolon
+multiline_comment|/* unlink 2 */
+id|jblocks
+op_add_assign
+id|extra_name_blks
+op_plus
+id|trunc_blks
+op_plus
+id|EXT3_DELETE_TRANS_BLOCKS
+op_plus
+l_int|2
+suffix:semicolon
+multiline_comment|/* rename 1 */
+id|jblocks
+op_add_assign
+l_int|2
+op_star
+id|extra_path_blks
+op_plus
+id|trunc_blks
+op_plus
+l_int|2
+op_star
+id|EXT3_DATA_TRANS_BLOCKS
+op_plus
+l_int|2
+op_plus
+l_int|3
+suffix:semicolon
+multiline_comment|/* rename 2 */
+id|jblocks
+op_add_assign
+l_int|2
+op_star
+id|extra_path_blks
+op_plus
+id|trunc_blks
+op_plus
+l_int|2
+op_star
+id|EXT3_DATA_TRANS_BLOCKS
+op_plus
+l_int|2
+op_plus
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|KML_OPCODE_RELEASE
 suffix:colon
 multiline_comment|/* &n;                jblocks = one_path_blks + lml_blks + 2*trunc_blks; &n;                */
 id|jblocks
@@ -286,7 +366,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_SETATTR
+id|KML_OPCODE_SETATTR
 suffix:colon
 id|jblocks
 op_assign
@@ -299,7 +379,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_CREATE
+id|KML_OPCODE_CREATE
 suffix:colon
 id|jblocks
 op_assign
@@ -316,7 +396,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_LINK
+id|KML_OPCODE_LINK
 suffix:colon
 id|jblocks
 op_assign
@@ -331,7 +411,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_UNLINK
+id|KML_OPCODE_UNLINK
 suffix:colon
 id|jblocks
 op_assign
@@ -348,7 +428,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_SYMLINK
+id|KML_OPCODE_SYMLINK
 suffix:colon
 id|jblocks
 op_assign
@@ -365,7 +445,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_MKDIR
+id|KML_OPCODE_MKDIR
 suffix:colon
 id|jblocks
 op_assign
@@ -382,7 +462,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_RMDIR
+id|KML_OPCODE_RMDIR
 suffix:colon
 id|jblocks
 op_assign
@@ -399,7 +479,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_MKNOD
+id|KML_OPCODE_MKNOD
 suffix:colon
 id|jblocks
 op_assign
@@ -416,7 +496,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_RENAME
+id|KML_OPCODE_RENAME
 suffix:colon
 id|jblocks
 op_assign
@@ -437,7 +517,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PRESTO_OP_WRITE
+id|KML_OPCODE_WRITE
 suffix:colon
 id|jblocks
 op_assign
@@ -467,9 +547,11 @@ c_func
 (paren
 id|D_JOURNAL
 comma
-l_string|&quot;creating journal handle (%d blocks)&bslash;n&quot;
+l_string|&quot;creating journal handle (%d blocks) for op %d&bslash;n&quot;
 comma
 id|jblocks
+comma
+id|op
 )paren
 suffix:semicolon
 multiline_comment|/* journal_start/stop does not do its own locking while updating&n;         * the handle/transaction information. Hence we create our own&n;         * critical section to protect these calls. -SHP&n;         */
@@ -502,6 +584,7 @@ id|handle
 suffix:semicolon
 )brace
 DECL|function|presto_e3_trans_commit
+r_static
 r_void
 id|presto_e3_trans_commit
 c_func
@@ -549,6 +632,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|presto_e3_journal_file_data
+r_static
 r_void
 id|presto_e3_journal_file_data
 c_func
@@ -574,27 +658,236 @@ macro_line|#else
 macro_line|#warning You must have a facility to enable journaled writes for recovery!
 macro_line|#endif
 )brace
+multiline_comment|/* The logic here is a slightly modified version of ext3/inode.c:block_to_path&n; */
+DECL|function|presto_e3_has_all_data
+r_static
+r_int
+id|presto_e3_has_all_data
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_int
+id|ptrs
+op_assign
+id|EXT3_ADDR_PER_BLOCK
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+r_int
+id|ptrs_bits
+op_assign
+id|EXT3_ADDR_PER_BLOCK_BITS
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+r_const
+r_int
+id|direct_blocks
+op_assign
+id|EXT3_NDIR_BLOCKS
+comma
+id|indirect_blocks
+op_assign
+id|ptrs
+comma
+id|double_blocks
+op_assign
+(paren
+l_int|1
+op_lshift
+(paren
+id|ptrs_bits
+op_star
+l_int|2
+)paren
+)paren
+suffix:semicolon
+r_int
+id|block
+op_assign
+(paren
+id|inode-&gt;i_size
+op_plus
+id|inode-&gt;i_sb-&gt;s_blocksize
+op_minus
+l_int|1
+)paren
+op_rshift
+id|inode-&gt;i_sb-&gt;s_blocksize_bits
+suffix:semicolon
+id|ENTRY
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_size
+op_eq
+l_int|0
+)paren
+(brace
+id|EXIT
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|block
+OL
+id|direct_blocks
+)paren
+(brace
+multiline_comment|/* No indirect blocks, no problem. */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|block
+OL
+id|indirect_blocks
+op_plus
+id|direct_blocks
+)paren
+(brace
+id|block
+op_increment
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|block
+OL
+id|double_blocks
+op_plus
+id|indirect_blocks
+op_plus
+id|direct_blocks
+)paren
+(brace
+id|block
+op_add_assign
+l_int|2
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|block
+op_minus
+id|double_blocks
+op_minus
+id|indirect_blocks
+op_minus
+id|direct_blocks
+)paren
+op_rshift
+(paren
+id|ptrs_bits
+op_star
+l_int|2
+)paren
+)paren
+OL
+id|ptrs
+)paren
+(brace
+id|block
+op_add_assign
+l_int|3
+suffix:semicolon
+)brace
+id|block
+op_mul_assign
+(paren
+id|inode-&gt;i_sb-&gt;s_blocksize
+op_div
+l_int|512
+)paren
+suffix:semicolon
+id|CDEBUG
+c_func
+(paren
+id|D_CACHE
+comma
+l_string|&quot;Need %ld blocks, have %ld.&bslash;n&quot;
+comma
+id|block
+comma
+id|inode-&gt;i_blocks
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|block
+OG
+id|inode-&gt;i_blocks
+)paren
+(brace
+id|EXIT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|EXIT
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 DECL|variable|presto_ext3_journal_ops
 r_struct
 id|journal_ops
 id|presto_ext3_journal_ops
 op_assign
 (brace
+dot
+id|tr_all_data
+op_assign
+id|presto_e3_has_all_data
+comma
+dot
 id|tr_avail
-suffix:colon
+op_assign
 id|presto_e3_freespace
 comma
+dot
 id|tr_start
-suffix:colon
+op_assign
 id|presto_e3_trans_start
 comma
+dot
 id|tr_commit
-suffix:colon
+op_assign
 id|presto_e3_trans_commit
 comma
+dot
 id|tr_journal_data
-suffix:colon
+op_assign
 id|presto_e3_journal_file_data
+comma
+dot
+id|tr_ilookup
+op_assign
+id|presto_iget_ilookup
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_EXT3_FS */

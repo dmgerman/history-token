@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&n; *  Copyright (C) 2000 Stelias Computing, Inc.&n; *  Copyright (C) 2000 Red Hat, Inc.&n; *  Copyright (C) 2000 Mountain View Data, Inc.&n; *&n; *  Extended Attribute Support&n; *  Copyright (C) 2001 Shirish H. Phatak, Tacit Networks, Inc.&n; */
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Copyright (C) 2000 Stelias Computing, Inc.&n; *  Copyright (C) 2000 Red Hat, Inc.&n; *  Copyright (C) 2000 Mountain View Data, Inc.&n; *&n; *  Extended Attribute Support&n; *  Copyright (C) 2001 Shirish H. Phatak, Tacit Networks, Inc.&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -8,9 +8,10 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|__NO_VERSION__
@@ -475,6 +476,61 @@ op_eq
 id|strlen
 c_func
 (paren
+l_string|&quot;tmpfs&quot;
+)paren
+op_logical_and
+id|memcmp
+c_func
+(paren
+id|cache_type
+comma
+l_string|&quot;tmpfs&quot;
+comma
+id|strlen
+c_func
+(paren
+l_string|&quot;tmpfs&quot;
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+macro_line|#if defined(CONFIG_TMPFS)
+id|ops-&gt;o_trops
+op_assign
+op_amp
+id|presto_tmpfs_journal_ops
+suffix:semicolon
+macro_line|#else
+id|ops-&gt;o_trops
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
+id|FDEBUG
+c_func
+(paren
+id|D_SUPER
+comma
+l_string|&quot;ops at %p&bslash;n&quot;
+comma
+id|ops
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|strlen
+c_func
+(paren
+id|cache_type
+)paren
+op_eq
+id|strlen
+c_func
+(paren
 l_string|&quot;reiserfs&quot;
 )paren
 op_logical_and
@@ -552,7 +608,7 @@ l_int|0
 )paren
 (brace
 macro_line|#if 0
-singleline_comment|//#if defined(CONFIG_XFS_FS) || defined (CONFIG_XFS_FS_MODULE)
+multiline_comment|/*#if defined(CONFIG_XFS_FS) || defined (CONFIG_XFS_FS_MODULE) */
 id|ops-&gt;o_trops
 op_assign
 op_amp
@@ -818,6 +874,57 @@ op_eq
 id|strlen
 c_func
 (paren
+l_string|&quot;tmpfs&quot;
+)paren
+op_logical_and
+id|memcmp
+c_func
+(paren
+id|cache_type
+comma
+l_string|&quot;tmpfs&quot;
+comma
+id|strlen
+c_func
+(paren
+l_string|&quot;tmpfs&quot;
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|ops
+op_assign
+op_amp
+id|filter_oppar
+(braket
+id|FILTER_FS_TMPFS
+)braket
+suffix:semicolon
+id|FDEBUG
+c_func
+(paren
+id|D_SUPER
+comma
+l_string|&quot;ops at %p&bslash;n&quot;
+comma
+id|ops
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|strlen
+c_func
+(paren
+id|cache_type
+)paren
+op_eq
+id|strlen
+c_func
+(paren
 l_string|&quot;reiserfs&quot;
 )paren
 op_logical_and
@@ -916,7 +1023,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;prepare to die: unrecognized cache type for Filter&bslash;n&quot;
@@ -1343,9 +1450,9 @@ c_func
 id|cache
 )paren
 op_member_access_from_pointer
-id|open
+id|ioctl
 op_assign
-id|filter_fops-&gt;open
+id|filter_fops-&gt;ioctl
 suffix:semicolon
 id|FEXIT
 suffix:semicolon
@@ -1449,7 +1556,7 @@ id|cache_iops
 )paren
 suffix:semicolon
 multiline_comment|/* copy dir fops */
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;*** cache file ops at %p&bslash;n&quot;
@@ -1490,6 +1597,11 @@ id|cache_iops-&gt;getattr
 id|pr_iops-&gt;getattr
 op_assign
 id|filter_iops-&gt;getattr
+suffix:semicolon
+multiline_comment|/* XXX Should this be conditional rmr ? */
+id|pr_iops-&gt;permission
+op_assign
+id|filter_iops-&gt;permission
 suffix:semicolon
 macro_line|#ifdef CONFIG_FS_EXT_ATTR
 multiline_comment|/* For now we assume that posix acls are handled through extended&n;&t;* attributes. If this is not the case, we must explicitly trap and &n;&t;* posix_set_acl&n;&t;*/
@@ -1535,6 +1647,16 @@ op_member_access_from_pointer
 id|write
 op_assign
 id|filter_fops-&gt;write
+suffix:semicolon
+id|filter_c2uffops
+c_func
+(paren
+id|cache
+)paren
+op_member_access_from_pointer
+id|ioctl
+op_assign
+id|filter_fops-&gt;ioctl
 suffix:semicolon
 id|FEXIT
 suffix:semicolon
@@ -1751,7 +1873,7 @@ op_logical_and
 id|cache_dop-&gt;d_revalidate
 )paren
 (brace
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;WARNING: filter overriding revalidation!&bslash;n&quot;

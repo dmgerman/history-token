@@ -6325,7 +6325,6 @@ op_assign
 id|esp_dev
 suffix:semicolon
 )brace
-)brace
 id|esp-&gt;snip
 op_assign
 l_int|0
@@ -14282,7 +14281,7 @@ c_cond
 (paren
 id|esp_dev-&gt;sync
 op_logical_or
-id|SCptr-&gt;SDptr-&gt;borken
+id|SCptr-&gt;device-&gt;borken
 )paren
 (brace
 multiline_comment|/* sorry, no can do */
@@ -15437,7 +15436,7 @@ comma
 l_int|15
 )paren
 suffix:semicolon
-id|espo_dev-&gt;sync
+id|esp_dev-&gt;sync
 op_assign
 l_int|1
 suffix:semicolon

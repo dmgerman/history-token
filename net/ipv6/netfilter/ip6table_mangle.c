@@ -1138,8 +1138,11 @@ suffix:semicolon
 multiline_comment|/* flowlabel and prio (includes version, which shouldn&squot;t change either */
 id|flowlabel
 op_assign
+op_star
+(paren
 (paren
 id|u_int32_t
+op_star
 )paren
 (paren
 op_star
@@ -1147,6 +1150,7 @@ id|pskb
 )paren
 op_member_access_from_pointer
 id|nh.ipv6h
+)paren
 suffix:semicolon
 id|ret
 op_assign

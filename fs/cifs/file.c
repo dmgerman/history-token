@@ -2356,18 +2356,6 @@ comma
 id|tmp_inode-&gt;i_blksize
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nFinddata alloc size (from smb) %lld&quot;
-comma
-id|pfindData-&gt;AllocationSize
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2803,56 +2791,6 @@ comma
 id|tmp_inode-&gt;i_blksize
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;&bslash;nFinddata alloc size (from smb) %lld&quot;
-comma
-id|pfindData-&gt;NumOfBytes
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
-r_if
-c_cond
-(paren
-id|pfindData-&gt;NumOfBytes
-OL
-id|pfindData-&gt;EndOfFile
-)paren
-id|cFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;&bslash;nServer inconsistency Error: it says allocation size less than end of file &quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nCIFS FFIRST: Size %ld and blocks %ld &quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|tmp_inode-&gt;i_size
-comma
-id|tmp_inode-&gt;i_blocks
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
 r_if
 c_cond
 (paren

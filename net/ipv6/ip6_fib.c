@@ -1215,12 +1215,6 @@ id|rt-&gt;rt6i_dev
 )paren
 op_logical_and
 (paren
-id|iter-&gt;rt6i_flowr
-op_eq
-id|rt-&gt;rt6i_flowr
-)paren
-op_logical_and
-(paren
 id|ipv6_addr_cmp
 c_func
 (paren

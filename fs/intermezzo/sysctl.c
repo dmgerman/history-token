@@ -1,9 +1,9 @@
-multiline_comment|/*&n; *  Sysctrl entries for Intermezzo!&n; */
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Copyright (C) 1999 Peter J. Braam &lt;braam@clusterfs.com&gt;&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Sysctrl entries for Intermezzo!&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_PROC_FS */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -13,12 +13,12 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 multiline_comment|/* /proc entries */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|proc_fs_intermezzo
@@ -54,19 +54,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* this works as long as we are below 1024 characters! */
-id|len
-op_add_assign
-id|presto_sprint_mounts
-c_func
-(paren
-id|buffer
-comma
-id|length
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
 op_star
 id|start
 op_assign
@@ -125,13 +112,11 @@ DECL|macro|PSDEV_ERRORVAL
 mdefine_line|#define PSDEV_ERRORVAL     8      /* controls presto_debug_fail_blkdev */
 DECL|macro|PSDEV_EXCL_GID
 mdefine_line|#define PSDEV_EXCL_GID     9      /* which GID is ignored by presto */
-DECL|macro|PSDEV_ILOOKUP_UID
-mdefine_line|#define PSDEV_ILOOKUP_UID 10      /* which UID bypasses file access perms */
 DECL|macro|PSDEV_BYTES_TO_CLOSE
 mdefine_line|#define PSDEV_BYTES_TO_CLOSE 11   /* bytes to write before close */
 multiline_comment|/* These are global presto control options */
 DECL|macro|PRESTO_PRIMARY_CTLCNT
-mdefine_line|#define PRESTO_PRIMARY_CTLCNT 4
+mdefine_line|#define PRESTO_PRIMARY_CTLCNT 2
 DECL|variable|presto_table
 r_static
 r_struct
@@ -140,7 +125,7 @@ id|presto_table
 (braket
 id|PRESTO_PRIMARY_CTLCNT
 op_plus
-id|MAX_PRESTODEV
+id|MAX_CHANNEL
 op_plus
 l_int|1
 )braket
@@ -188,51 +173,9 @@ op_amp
 id|proc_dointvec
 )brace
 comma
-(brace
-id|PSDEV_EXCL_GID
-comma
-l_string|&quot;presto_excluded_gid&quot;
-comma
-op_amp
-id|presto_excluded_gid
-comma
-r_sizeof
-(paren
-r_int
-)paren
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|proc_dointvec
-)brace
-comma
-(brace
-id|PSDEV_ILOOKUP_UID
-comma
-l_string|&quot;presto_ilookup_uid&quot;
-comma
-op_amp
-id|presto_ilookup_uid
-comma
-r_sizeof
-(paren
-r_int
-)paren
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|proc_dointvec
-)brace
-comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Intalling the sysctl entries: strategy&n; * - have templates for each /proc/sys/intermezzo/ entry&n; *   such an entry exists for each /dev/presto&n; *    (proto_prestodev_entry)&n; * - have a template for the contents of such directories&n; *    (proto_psdev_table)&n; * - have the master table (presto_table)&n; *&n; * When installing, malloc, memcpy and fix up the pointers to point to&n; * the appropriate constants in upc_comms[your_minor]&n; */
+multiline_comment|/*&n; * Intalling the sysctl entries: strategy&n; * - have templates for each /proc/sys/intermezzo/ entry&n; *   such an entry exists for each /dev/presto&n; *    (proto_channel_entry)&n; * - have a template for the contents of such directories&n; *    (proto_psdev_table)&n; * - have the master table (presto_table)&n; *&n; * When installing, malloc, memcpy and fix up the pointers to point to&n; * the appropriate constants in izo_channels[your_minor]&n; */
 DECL|variable|proto_psdev_table
 r_static
 id|ctl_table
@@ -341,46 +284,6 @@ op_amp
 id|proc_dointvec
 )brace
 comma
-(brace
-id|PSDEV_TRACE
-comma
-l_string|&quot;trace&quot;
-comma
-l_int|NULL
-comma
-r_sizeof
-(paren
-r_int
-)paren
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|proc_dointvec
-)brace
-comma
-(brace
-id|PSDEV_DEBUG
-comma
-l_string|&quot;debug&quot;
-comma
-l_int|NULL
-comma
-r_sizeof
-(paren
-r_int
-)paren
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|proc_dointvec
-)brace
-comma
 macro_line|#ifdef PRESTO_DEBUG
 (brace
 id|PSDEV_ERRORVAL
@@ -408,10 +311,10 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|variable|proto_prestodev_entry
+DECL|variable|proto_channel_entry
 r_static
 id|ctl_table
-id|proto_prestodev_entry
+id|proto_channel_entry
 op_assign
 (brace
 id|PSDEV_INTERMEZZO
@@ -459,6 +362,7 @@ suffix:semicolon
 multiline_comment|/* support for external setting and getting of opts. */
 multiline_comment|/* particularly via ioctl. The Right way to do this is via sysctl,&n; * but that will have to wait until intermezzo gets its own nice set of&n; * sysctl IDs&n; */
 multiline_comment|/* we made these separate as setting may in future be more restricted&n; * than getting&n; */
+macro_line|#ifdef RON_MINNICH
 DECL|function|dosetopt
 r_int
 id|dosetopt
@@ -494,7 +398,7 @@ id|opt-&gt;optname
 r_case
 id|PSDEV_TIMEOUT
 suffix:colon
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -508,7 +412,7 @@ suffix:semicolon
 r_case
 id|PSDEV_HARD
 suffix:colon
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -522,7 +426,7 @@ suffix:semicolon
 r_case
 id|PSDEV_NO_FILTER
 suffix:colon
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -536,7 +440,7 @@ suffix:semicolon
 r_case
 id|PSDEV_NO_JOURNAL
 suffix:colon
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -550,7 +454,7 @@ suffix:semicolon
 r_case
 id|PSDEV_NO_UPCALL
 suffix:colon
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -570,33 +474,12 @@ multiline_comment|/* If we have a positive arg, set a breakpoint for that&n;&t;&
 r_int
 id|errorval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
 dot
 id|uc_errorval
-suffix:semicolon
-id|kdev_t
-id|kdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|MAJOR
-c_func
-(paren
-op_minus
-id|errorval
-)paren
-comma
-id|MINOR
-c_func
-(paren
-op_minus
-id|errorval
-)paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -616,13 +499,14 @@ l_int|0
 id|set_device_ro
 c_func
 (paren
-id|kdev
+op_minus
+id|errorval
 comma
 l_int|0
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;device %s already read only&bslash;n&quot;
@@ -630,33 +514,14 @@ comma
 id|kdevname
 c_func
 (paren
-id|kdev
+op_minus
+id|errorval
 )paren
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|kdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|MAJOR
-c_func
-(paren
-op_minus
-id|newval
-)paren
-comma
-id|MINOR
-c_func
-(paren
-op_minus
-id|newval
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -667,12 +532,13 @@ l_int|0
 id|set_device_ro
 c_func
 (paren
-id|kdev
+op_minus
+id|newval
 comma
 l_int|1
 )paren
 suffix:semicolon
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -763,7 +629,7 @@ id|PSDEV_TIMEOUT
 suffix:colon
 id|opt-&gt;optval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -777,7 +643,7 @@ id|PSDEV_HARD
 suffix:colon
 id|opt-&gt;optval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -791,7 +657,7 @@ id|PSDEV_NO_FILTER
 suffix:colon
 id|opt-&gt;optval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -805,7 +671,7 @@ id|PSDEV_NO_JOURNAL
 suffix:colon
 id|opt-&gt;optval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -819,7 +685,7 @@ id|PSDEV_NO_UPCALL
 suffix:colon
 id|opt-&gt;optval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -836,33 +702,12 @@ suffix:colon
 r_int
 id|errorval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
 dot
 id|uc_errorval
-suffix:semicolon
-id|kdev_t
-id|kdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|MAJOR
-c_func
-(paren
-op_minus
-id|errorval
-)paren
-comma
-id|MINOR
-c_func
-(paren
-op_minus
-id|errorval
-)paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -874,25 +719,26 @@ op_logical_and
 id|is_read_only
 c_func
 (paren
-id|kdev
+op_minus
+id|errorval
 )paren
 )paren
-id|printk
+id|CERROR
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;device %s has been set read-only&bslash;n&quot;
 comma
 id|kdevname
 c_func
 (paren
-id|kdev
+op_minus
+id|errorval
 )paren
 )paren
 suffix:semicolon
 id|opt-&gt;optval
 op_assign
-id|upc_comms
+id|izo_channels
 (braket
 id|minor
 )braket
@@ -938,6 +784,8 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif
+multiline_comment|/* allocate the tables for the presto devices. We need&n; * sizeof(proto_channel_table)/sizeof(proto_channel_table[0])&n; * entries for each dev&n; */
 DECL|function|init_intermezzo_sysctl
 r_int
 multiline_comment|/* __init */
@@ -950,19 +798,10 @@ r_void
 r_int
 id|i
 suffix:semicolon
-r_extern
-r_struct
-id|upc_comm
-id|upc_comms
-(braket
-id|MAX_PRESTODEV
-)braket
-suffix:semicolon
-multiline_comment|/* allocate the tables for the presto devices. We need&n;&t; * sizeof(proto_prestodev_table)/sizeof(proto_prestodev_table[0])&n;&t; * entries for each dev&n;&t; */
 r_int
 id|total_dev
 op_assign
-id|MAX_PRESTODEV
+id|MAX_CHANNEL
 suffix:semicolon
 r_int
 id|entries_per_dev
@@ -996,9 +835,6 @@ c_func
 (paren
 id|dev_ctl_table
 comma
-id|ctl_table
-op_star
-comma
 r_sizeof
 (paren
 id|ctl_table
@@ -1014,7 +850,7 @@ op_logical_neg
 id|dev_ctl_table
 )paren
 (brace
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;WARNING: presto couldn&squot;t allocate dev_ctl_table&bslash;n&quot;
@@ -1073,7 +909,7 @@ multiline_comment|/* init the psdev and psdev_entries with the prototypes */
 op_star
 id|psdev
 op_assign
-id|proto_prestodev_entry
+id|proto_channel_entry
 suffix:semicolon
 id|memcpy
 c_func
@@ -1099,14 +935,16 @@ op_plus
 l_int|1
 suffix:semicolon
 multiline_comment|/* sorry */
-id|psdev-&gt;procname
-op_assign
-id|kmalloc
+id|PRESTO_ALLOC
 c_func
 (paren
-l_int|32
+(paren
+r_void
+op_star
+)paren
+id|psdev-&gt;procname
 comma
-id|GFP_KERNEL
+id|PROCNAME_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1163,7 +1001,7 @@ id|data
 op_assign
 op_amp
 (paren
-id|upc_comms
+id|izo_channels
 (braket
 id|i
 )braket
@@ -1180,7 +1018,7 @@ id|data
 op_assign
 op_amp
 (paren
-id|upc_comms
+id|izo_channels
 (braket
 id|i
 )braket
@@ -1197,7 +1035,7 @@ id|data
 op_assign
 op_amp
 (paren
-id|upc_comms
+id|izo_channels
 (braket
 id|i
 )braket
@@ -1214,7 +1052,7 @@ id|data
 op_assign
 op_amp
 (paren
-id|upc_comms
+id|izo_channels
 (braket
 id|i
 )braket
@@ -1231,7 +1069,7 @@ id|data
 op_assign
 op_amp
 (paren
-id|upc_comms
+id|izo_channels
 (braket
 id|i
 )braket
@@ -1239,6 +1077,7 @@ dot
 id|uc_timeout
 )paren
 suffix:semicolon
+macro_line|#ifdef PRESTO_DEBUG
 id|psdev_entries
 (braket
 l_int|5
@@ -1247,29 +1086,8 @@ dot
 id|data
 op_assign
 op_amp
-id|presto_print_entry
-suffix:semicolon
-id|psdev_entries
-(braket
-l_int|6
-)braket
-dot
-id|data
-op_assign
-op_amp
-id|presto_debug
-suffix:semicolon
-macro_line|#ifdef PRESTO_DEBUG
-id|psdev_entries
-(braket
-l_int|7
-)braket
-dot
-id|data
-op_assign
-op_amp
 (paren
-id|upc_comms
+id|izo_channels
 (braket
 id|i
 )braket
@@ -1334,12 +1152,13 @@ r_void
 id|cleanup_intermezzo_sysctl
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
 id|total_dev
 op_assign
-id|MAX_PRESTODEV
+id|MAX_CHANNEL
 suffix:semicolon
 r_int
 id|entries_per_dev
@@ -1412,10 +1231,12 @@ op_plus
 id|PRESTO_PRIMARY_CTLCNT
 )braket
 suffix:semicolon
-id|kfree
+id|PRESTO_FREE
 c_func
 (paren
 id|psdev-&gt;procname
+comma
+id|PROCNAME_SIZE
 )paren
 suffix:semicolon
 )brace

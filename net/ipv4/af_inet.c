@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -23,6 +22,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
@@ -63,108 +63,6 @@ id|atomic_t
 id|inet_sock_nr
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-id|raw_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|snmp_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|netstat_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|afinet_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|tcp_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|udp_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|ip_mc_drop_socket
@@ -2496,6 +2394,11 @@ id|inet_recvmsg
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -2531,12 +2434,16 @@ l_int|0
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|err
 op_assign
 id|sk-&gt;prot
 op_member_access_from_pointer
 id|recvmsg
 c_func
 (paren
+id|iocb
+comma
 id|sk
 comma
 id|msg
@@ -2576,6 +2483,11 @@ r_int
 id|inet_sendmsg
 c_func
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|socket
 op_star
@@ -2631,6 +2543,8 @@ op_member_access_from_pointer
 id|sendmsg
 c_func
 (paren
+id|iocb
+comma
 id|sk
 comma
 id|msg
@@ -4251,63 +4165,11 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *&t;Create all the /proc entries.&n;&t; */
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_net_create
+id|ipv4_proc_init
+c_func
 (paren
-l_string|&quot;raw&quot;
-comma
-l_int|0
-comma
-id|raw_get_info
 )paren
 suffix:semicolon
-id|proc_net_create
-(paren
-l_string|&quot;netstat&quot;
-comma
-l_int|0
-comma
-id|netstat_get_info
-)paren
-suffix:semicolon
-id|proc_net_create
-(paren
-l_string|&quot;snmp&quot;
-comma
-l_int|0
-comma
-id|snmp_get_info
-)paren
-suffix:semicolon
-id|proc_net_create
-(paren
-l_string|&quot;sockstat&quot;
-comma
-l_int|0
-comma
-id|afinet_get_info
-)paren
-suffix:semicolon
-id|proc_net_create
-(paren
-l_string|&quot;tcp&quot;
-comma
-l_int|0
-comma
-id|tcp_get_info
-)paren
-suffix:semicolon
-id|proc_net_create
-(paren
-l_string|&quot;udp&quot;
-comma
-l_int|0
-comma
-id|udp_get_info
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;/* CONFIG_PROC_FS */
 r_return
 l_int|0
 suffix:semicolon

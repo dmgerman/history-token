@@ -9,13 +9,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 r_extern
 r_struct
-id|tty_driver
-op_star
-id|tty_drivers
-suffix:semicolon
-multiline_comment|/* linked list of tty drivers */
-r_extern
-r_struct
 id|tty_ldisc
 id|ldiscs
 (braket
@@ -152,18 +145,15 @@ r_char
 op_star
 id|type
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|p
-op_assign
+comma
+op_amp
 id|tty_drivers
-suffix:semicolon
-id|p
-suffix:semicolon
-id|p
-op_assign
-id|p-&gt;next
+comma
+id|tty_drivers
 )paren
 (brace
 r_if
