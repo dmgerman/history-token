@@ -271,7 +271,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;LM75 sensor chip driver&quot;
+l_string|&quot;LM75 sensor&quot;
 comma
 dot
 id|id

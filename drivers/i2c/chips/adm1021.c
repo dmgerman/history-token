@@ -472,7 +472,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;ADM1021, MAX1617 sensor driver&quot;
+l_string|&quot;ADM1021-MAX1617&quot;
 comma
 dot
 id|id
