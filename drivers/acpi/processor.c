@@ -5206,7 +5206,7 @@ id|object
 suffix:semicolon
 r_static
 r_int
-id|cpu_count
+id|cpu_index
 op_assign
 l_int|0
 suffix:semicolon
@@ -5242,6 +5242,28 @@ l_int|1
 id|errata.smp
 op_assign
 id|TRUE
+suffix:semicolon
+multiline_comment|/*&n;&t; *  Extra Processor objects may be enumerated on MP systems with&n;&t; *  less than the max # of CPUs. They should be ignored.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|cpu_index
+op_plus
+l_int|1
+)paren
+OG
+id|num_online_cpus
+c_func
+(paren
+)paren
+)paren
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
 suffix:semicolon
 id|acpi_processor_errata
 c_func
@@ -5331,7 +5353,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * TBD: Synch processor ID (via LAPIC/LSAPIC structures) on SMP.&n;&t; *&t;&gt;&gt;&gt; &squot;acpi_get_processor_id(acpi_id, &amp;id)&squot; in arch/xxx/acpi.c&n;&t; */
 id|pr-&gt;id
 op_assign
-id|cpu_count
+id|cpu_index
 op_increment
 suffix:semicolon
 id|pr-&gt;acpi_id
