@@ -4546,17 +4546,27 @@ suffix:semicolon
 r_int
 id|proto
 suffix:semicolon
+multiline_comment|/*&n;&t; * If encapsulation is syncppp, don&squot;t reset&n;&t; * huptimer on LCP packets.&n;&t; */
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local.master
-)paren
-id|BUG
+id|PPP_PROTOCOL
 c_func
 (paren
+id|skb-&gt;data
+)paren
+op_ne
+id|PPP_LCP
+)paren
+id|isdn_net_reset_huptimer
+c_func
+(paren
+op_amp
+id|net_dev-&gt;local
+comma
+id|lp
 )paren
 suffix:semicolon
-singleline_comment|// we&squot;re called with the master device always
 id|slot
 op_assign
 id|lp-&gt;ppp_slot
