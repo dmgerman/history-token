@@ -570,7 +570,7 @@ comma
 (paren
 id|temp
 op_amp
-l_int|0x10
+l_int|0x0100
 )paren
 ques
 c_cond

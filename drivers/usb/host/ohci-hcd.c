@@ -103,17 +103,17 @@ macro_line|#include &quot;ohci-hub.c&quot;
 macro_line|#include &quot;ohci-dbg.c&quot;
 macro_line|#include &quot;ohci-mem.c&quot;
 macro_line|#include &quot;ohci-q.c&quot;
-multiline_comment|/* Some boards don&squot;t support per-port power switching */
-DECL|variable|power_switching
+multiline_comment|/* Some boards misreport power switching/overcurrent */
+DECL|variable|distrust_firmware
 r_static
 r_int
-id|power_switching
+id|distrust_firmware
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|module_param
 (paren
-id|power_switching
+id|distrust_firmware
 comma
 r_bool
 comma
@@ -122,9 +122,9 @@ l_int|0
 suffix:semicolon
 id|MODULE_PARM_DESC
 (paren
-id|power_switching
+id|distrust_firmware
 comma
-l_string|&quot;true (not default) to switch port power&quot;
+l_string|&quot;true to distrust firmware power/overcurrent setup&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Some boards leave IR set wrongly, since they fail BIOS/SMM handshakes */
@@ -1569,19 +1569,28 @@ c_func
 id|temp
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|power_switching
-)paren
-(brace
-r_int
-id|ports
+id|temp
 op_assign
 id|roothub_a
 (paren
 id|ohci
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|temp
+op_amp
+id|RH_A_NPS
+)paren
+)paren
+(brace
+r_int
+id|ports
+op_assign
+id|temp
 op_amp
 id|RH_A_NDP
 suffix:semicolon
@@ -1991,39 +2000,6 @@ op_or
 id|RH_A_NPS
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|power_switching
-)paren
-(brace
-multiline_comment|/* act like most external hubs:  use per-port power&n;&t;&t; * switching and overcurrent reporting.&n;&t;&t; */
-id|temp
-op_and_assign
-op_complement
-(paren
-id|RH_A_NPS
-op_or
-id|RH_A_NOCP
-)paren
-suffix:semicolon
-id|temp
-op_or_assign
-id|RH_A_PSM
-op_or
-id|RH_A_OCPM
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* hub power always on; required for AMD-756 and some&n;&t;&t; * Mac platforms.  ganged overcurrent reporting, if any.&n;&t;&t; */
-id|temp
-op_or_assign
-id|RH_A_NPS
-suffix:semicolon
-)brace
 id|ohci_writel
 (paren
 id|ohci
@@ -2034,6 +2010,36 @@ op_amp
 id|ohci-&gt;regs-&gt;roothub.a
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_AMD756
+)paren
+op_logical_or
+id|distrust_firmware
+)paren
+(brace
+multiline_comment|/* hub power always on; required for AMD-756 and some&n;&t;&t; * Mac platforms.  ganged overcurrent reporting, if any.&n;&t;&t; */
+id|temp
+op_or_assign
+id|RH_A_NPS
+suffix:semicolon
+id|ohci_writel
+(paren
+id|ohci
+comma
+id|temp
+comma
+op_amp
+id|ohci-&gt;regs-&gt;roothub.a
+)paren
+suffix:semicolon
+)brace
 id|ohci_writel
 (paren
 id|ohci
@@ -2048,12 +2054,16 @@ id|ohci_writel
 (paren
 id|ohci
 comma
-id|power_switching
+(paren
+id|temp
+op_amp
+id|RH_A_NPS
+)paren
 ques
 c_cond
-id|RH_B_PPCM
-suffix:colon
 l_int|0
+suffix:colon
+id|RH_B_PPCM
 comma
 op_amp
 id|ohci-&gt;regs-&gt;roothub.b
@@ -2081,10 +2091,7 @@ singleline_comment|// POTPGT delay is bits 24-31, in 2 ms units.
 id|mdelay
 (paren
 (paren
-id|roothub_a
-(paren
-id|ohci
-)paren
+id|temp
 op_rshift
 l_int|23
 )paren
