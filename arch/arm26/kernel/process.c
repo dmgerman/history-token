@@ -785,6 +785,8 @@ DECL|macro|ll_alloc_task_struct
 mdefine_line|#define ll_alloc_task_struct()&t;((struct thread_info *)get_page_8k(GFP_KERNEL))
 DECL|macro|ll_free_task_struct
 mdefine_line|#define ll_free_task_struct(p)  free_page_8k((unsigned long)(p))
+singleline_comment|//FIXME - do we use *task param below looks like we dont, which is ok?
+singleline_comment|//FIXME - if EXTRA_TASK_STRUCT is zero we can optimise the below away permanently. *IF* its supposed to be zero.
 DECL|function|alloc_thread_info
 r_struct
 id|thread_info
@@ -792,7 +794,10 @@ op_star
 id|alloc_thread_info
 c_func
 (paren
-r_void
+r_struct
+id|task_struct
+op_star
+id|task
 )paren
 (brace
 r_struct

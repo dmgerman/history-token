@@ -5348,11 +5348,9 @@ dot
 id|time_squeeze
 op_increment
 suffix:semicolon
-id|__cpu_raise_softirq
+id|__raise_softirq_irqoff
 c_func
 (paren
-id|this_cpu
-comma
 id|NET_RX_SOFTIRQ
 )paren
 suffix:semicolon

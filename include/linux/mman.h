@@ -10,12 +10,11 @@ DECL|macro|MREMAP_FIXED
 mdefine_line|#define MREMAP_FIXED&t;2
 r_extern
 r_int
-id|vm_enough_memory
-c_func
-(paren
+id|sysctl_overcommit_memory
+suffix:semicolon
+r_extern
 r_int
-id|pages
-)paren
+id|sysctl_overcommit_ratio
 suffix:semicolon
 r_extern
 id|atomic_t

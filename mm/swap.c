@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for try_to_release_page() */
 macro_line|#include &lt;linux/percpu.h&gt;
@@ -1495,6 +1496,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vm_acct_memory
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vm_acct_memory
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Perform any setup for the swap system&n; */
 DECL|function|swap_setup

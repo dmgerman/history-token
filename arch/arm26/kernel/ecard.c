@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm26/kernel/ecard.c&n; *&n; *  Copyright 1995-2001 Russell King&n; *  Copyright 2003 Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Find all installed expansion cards, and handle interrupts from them.&n; *&n; *  Created from information from Acorns RiscOS3 PRMs&n; *&n; *  08-Dec-1996&t;RMK&t;Added code for the 9&squot;th expansion card - the ether&n; *&t;&t;&t;podule slot.&n; *  06-May-1997&t;RMK&t;Added blacklist for cards whose loader doesn&squot;t work.&n; *  12-Sep-1997&t;RMK&t;Created new handling of interrupt enables/disables&n; *&t;&t;&t;- cards can now register their own routine to control&n; *&t;&t;&t;interrupts (recommended).&n; *  29-Sep-1997&t;RMK&t;Expansion card interrupt hardware not being re-enabled&n; *&t;&t;&t;on reset from Linux. (Caused cards not to respond&n; *&t;&t;&t;under RiscOS without hard reset).&n; *  15-Feb-1998&t;RMK&t;Added DMA support&n; *  12-Sep-1998&t;RMK&t;Added EASI support&n; *  10-Jan-1999&t;RMK&t;Run loaders in a simulated RISC OS environment.&n; *  17-Apr-1999&t;RMK&t;Support for EASI Type C cycles.&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/kernel/ecard.c&n; *&n; *  Copyright 1995-2001 Russell King&n; *  Copyright 2003 Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Find all installed expansion cards, and handle interrupts from them.&n; *&n; *  Created from information from Acorns RiscOS3 PRMs&n; *  15-Jun-2003 IM      Modified from ARM32 (RiscPC capable) version&n; *  10-Jan-1999&t;RMK&t;Run loaders in a simulated RISC OS environment.&n; *  06-May-1997&t;RMK&t;Added blacklist for cards whose loader doesn&squot;t work.&n; *  12-Sep-1997&t;RMK&t;Created new handling of interrupt enables/disables&n; *&t;&t;&t;- cards can now register their own routine to control&n; *&t;&t;&t;interrupts (recommended).&n; *  29-Sep-1997&t;RMK&t;Expansion card interrupt hardware not being re-enabled&n; *&t;&t;&t;on reset from Linux. (Caused cards not to respond&n; *&t;&t;&t;under RiscOS without hard reset).&n; *&n; */
 DECL|macro|ECARD_C
 mdefine_line|#define ECARD_C
 macro_line|#include &lt;linux/config.h&gt;
@@ -1929,18 +1929,9 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  %d: %s &quot;
+l_string|&quot;  %d: &quot;
 comma
 id|ec-&gt;slot_no
-comma
-id|ec-&gt;type
-op_eq
-id|ECARD_EASI
-ques
-c_cond
-l_string|&quot;EASI&quot;
-suffix:colon
-l_string|&quot;    &quot;
 )paren
 suffix:semicolon
 r_if
@@ -3157,26 +3148,12 @@ l_int|0
 suffix:semicolon
 id|slot
 OL
-l_int|8
+l_int|4
 suffix:semicolon
 id|slot
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ecard_probe
-c_func
-(paren
-id|slot
-comma
-id|ECARD_EASI
-)paren
-op_eq
-op_minus
-id|ENODEV
-)paren
 id|ecard_probe
 c_func
 (paren

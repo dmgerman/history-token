@@ -803,6 +803,27 @@ id|attr
 r_goto
 id|Einval
 suffix:semicolon
+multiline_comment|/* Grab the module reference for this attribute if we have one */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|attr-&gt;owner
+)paren
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|Done
+suffix:semicolon
+)brace
 multiline_comment|/* if the kobject has no ktype, then we assume that it is a subsystem&n;&t; * itself, and use ops for it.&n;&t; */
 r_if
 c_cond
@@ -963,6 +984,12 @@ op_assign
 op_minus
 id|EACCES
 suffix:semicolon
+id|module_put
+c_func
+(paren
+id|attr-&gt;owner
+)paren
+suffix:semicolon
 id|Done
 suffix:colon
 r_if
@@ -1034,6 +1061,13 @@ op_assign
 id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_fsdata
 suffix:semicolon
 r_struct
+id|attribute
+op_star
+id|attr
+op_assign
+id|filp-&gt;f_dentry-&gt;d_fsdata
+suffix:semicolon
+r_struct
 id|sysfs_buffer
 op_star
 id|buffer
@@ -1049,6 +1083,12 @@ id|kobject_put
 c_func
 (paren
 id|kobj
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|attr-&gt;owner
 )paren
 suffix:semicolon
 r_if

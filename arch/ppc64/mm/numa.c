@@ -726,7 +726,7 @@ id|node_data
 id|numa_domain
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 )paren
 (brace
 r_int
@@ -745,7 +745,7 @@ id|node_data
 id|numa_domain
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 suffix:semicolon
 r_if
 c_cond
@@ -779,7 +779,7 @@ id|node_data
 id|numa_domain
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 op_add_assign
 id|size
 op_div
@@ -804,7 +804,7 @@ id|node_data
 id|numa_domain
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 op_assign
 id|size
 op_div
@@ -923,7 +923,7 @@ id|node_data
 l_int|0
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 op_assign
 id|lmb_end_of_DRAM
 c_func
@@ -1038,7 +1038,7 @@ id|node_data
 id|nid
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 op_eq
 l_int|0
 )paren
@@ -1065,7 +1065,7 @@ id|node_data
 id|nid
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 op_star
 id|PAGE_SIZE
 )paren
@@ -1483,7 +1483,7 @@ id|node_data
 id|nid
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 op_eq
 l_int|0
 )paren

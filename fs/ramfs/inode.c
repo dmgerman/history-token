@@ -358,6 +358,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_return
@@ -540,6 +545,11 @@ dot
 id|sendfile
 op_assign
 id|generic_file_sendfile
+comma
+dot
+id|llseek
+op_assign
+id|generic_file_llseek
 comma
 )brace
 suffix:semicolon

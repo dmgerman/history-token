@@ -21,11 +21,9 @@ macro_line|#include &lt;platforms/prpmc750_serial.h&gt;
 macro_line|#elif defined(CONFIG_PRPMC800)
 macro_line|#include &lt;platforms/prpmc800_serial.h&gt;
 macro_line|#elif defined(CONFIG_SANDPOINT)
-macro_line|#include &lt;platforms/sandpoint_serial.h&gt;
+macro_line|#include &lt;platforms/sandpoint.h&gt;
 macro_line|#elif defined(CONFIG_SPRUCE)
 macro_line|#include &lt;platforms/spruce_serial.h&gt;
-macro_line|#elif defined(CONFIG_ZX4500)
-macro_line|#include &lt;platforms/zx4500_serial.h&gt;
 macro_line|#elif defined(CONFIG_40x)
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#else

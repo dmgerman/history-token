@@ -160,7 +160,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BOOTPARAM)
+macro_line|#ifdef CONFIG_BOOTPARAM
 id|strncpy
 c_func
 (paren

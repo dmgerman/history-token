@@ -513,7 +513,7 @@ c_func
 (paren
 id|RESTART_ARRAY_RW
 )paren
-macro_line|#ifdef CONFIG_DM
+macro_line|#ifdef CONFIG_BLK_DEV_DM
 multiline_comment|/* DM */
 id|COMPATIBLE_IOCTL
 c_func

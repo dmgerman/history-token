@@ -1208,6 +1208,18 @@ r_int
 id|ra_pages
 suffix:semicolon
 multiline_comment|/* Maximum readahead window */
+DECL|member|mmap_hit
+r_int
+r_int
+id|mmap_hit
+suffix:semicolon
+multiline_comment|/* Cache hit stat for mmap accesses */
+DECL|member|mmap_miss
+r_int
+r_int
+id|mmap_miss
+suffix:semicolon
+multiline_comment|/* Cache miss stat for mmap accesses */
 )brace
 suffix:semicolon
 DECL|struct|file
@@ -2152,6 +2164,10 @@ id|dentry
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -2891,6 +2907,10 @@ id|dentry
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 DECL|member|lookup
@@ -2908,6 +2928,10 @@ op_star
 comma
 r_struct
 id|dentry
+op_star
+comma
+r_struct
+id|nameidata
 op_star
 )paren
 suffix:semicolon
@@ -3103,6 +3127,10 @@ id|inode
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 DECL|member|setattr
@@ -5261,6 +5289,10 @@ id|inode
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -7000,6 +7032,10 @@ op_star
 comma
 r_struct
 id|dentry
+op_star
+comma
+r_struct
+id|nameidata
 op_star
 )paren
 suffix:semicolon

@@ -134,6 +134,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 suffix:semicolon
 DECL|variable|izo_authorized_uid
@@ -884,6 +889,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -1095,6 +1105,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+id|nd
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -1626,6 +1638,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -3504,6 +3521,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -3616,6 +3638,8 @@ c_func
 id|inode
 comma
 id|mask
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -3644,6 +3668,8 @@ c_func
 id|inode
 comma
 id|mask
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -3661,6 +3687,8 @@ c_func
 id|inode
 comma
 id|mask
+comma
+id|nd
 )paren
 suffix:semicolon
 id|inode-&gt;i_op-&gt;permission

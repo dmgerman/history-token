@@ -24,7 +24,7 @@ r_int
 id|loops
 )paren
 (brace
-id|timer
+id|cur_timer
 op_member_access_from_pointer
 id|delay
 c_func

@@ -14,7 +14,9 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|swaplock
@@ -36,6 +38,13 @@ DECL|variable|swap_overflow
 r_static
 r_int
 id|swap_overflow
+suffix:semicolon
+DECL|variable|total_swap_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|total_swap_pages
+)paren
 suffix:semicolon
 DECL|variable|Bad_file
 r_static
@@ -4020,7 +4029,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vm_enough_memory
+op_logical_neg
+id|security_vm_enough_memory
 c_func
 (paren
 id|p-&gt;pages

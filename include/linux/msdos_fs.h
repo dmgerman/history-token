@@ -1456,6 +1456,10 @@ comma
 r_struct
 id|dentry
 op_star
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1475,6 +1479,10 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1588,6 +1596,10 @@ comma
 r_struct
 id|dentry
 op_star
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1607,6 +1619,10 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern

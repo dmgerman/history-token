@@ -1110,8 +1110,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 id|len
@@ -3552,6 +3551,10 @@ c_func
 )paren
 suffix:semicolon
 id|p-&gt;security
+op_assign
+l_int|NULL
+suffix:semicolon
+id|p-&gt;io_context
 op_assign
 l_int|NULL
 suffix:semicolon

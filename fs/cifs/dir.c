@@ -441,6 +441,11 @@ id|direntry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -693,6 +698,11 @@ r_struct
 id|dentry
 op_star
 id|direntry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -1065,8 +1075,10 @@ id|dentry
 op_star
 id|direntry
 comma
-r_int
-id|flags
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int

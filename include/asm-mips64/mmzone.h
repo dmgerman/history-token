@@ -45,7 +45,7 @@ mdefine_line|#define PHYSADDR_TO_NID(pa)&t;&t;NASID_TO_COMPACT_NODEID(NASID_GET(
 DECL|macro|PLAT_NODE_DATA
 mdefine_line|#define PLAT_NODE_DATA(n)&t;&t;(plat_node_data[n])
 DECL|macro|PLAT_NODE_DATA_SIZE
-mdefine_line|#define PLAT_NODE_DATA_SIZE(n)&t;     (PLAT_NODE_DATA(n)-&gt;gendata.node_size)
+mdefine_line|#define PLAT_NODE_DATA_SIZE(n)&t;     (PLAT_NODE_DATA(n)-&gt;gendata.node_spanned_pages)
 DECL|macro|PLAT_NODE_DATA_LOCALNR
 mdefine_line|#define PLAT_NODE_DATA_LOCALNR(p, n) &bslash;&n;&t;&t;(((p) &gt;&gt; PAGE_SHIFT) - PLAT_NODE_DATA(n)-&gt;gendata.node_start_pfn)
 macro_line|#ifdef CONFIG_DISCONTIGMEM

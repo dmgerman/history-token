@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * bin.c - binary file operations for sysfs.&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
@@ -173,17 +175,12 @@ id|ret
 OL
 l_int|0
 )paren
-r_goto
-id|Done
+r_return
+id|ret
 suffix:semicolon
 id|count
 op_assign
 id|ret
-suffix:semicolon
-id|ret
-op_assign
-op_minus
-id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -194,14 +191,30 @@ c_func
 id|userbuf
 comma
 id|buffer
+op_plus
+id|offs
 comma
 id|count
 )paren
 op_ne
 l_int|0
 )paren
-r_goto
-id|Done
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;offs = %lld, *off = %lld, count = %zd&bslash;n&quot;
+comma
+id|offs
+comma
+op_star
+id|off
+comma
+id|count
+)paren
 suffix:semicolon
 op_star
 id|off
@@ -210,14 +223,8 @@ id|offs
 op_plus
 id|count
 suffix:semicolon
-id|ret
-op_assign
-id|count
-suffix:semicolon
-id|Done
-suffix:colon
 r_return
-id|ret
+id|count
 suffix:semicolon
 )brace
 r_static
@@ -321,9 +328,6 @@ op_assign
 op_star
 id|off
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -367,11 +371,6 @@ op_minus
 id|offs
 suffix:semicolon
 )brace
-id|ret
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -379,14 +378,17 @@ id|copy_from_user
 c_func
 (paren
 id|buffer
+op_plus
+id|offs
 comma
 id|userbuf
 comma
 id|count
 )paren
 )paren
-r_goto
-id|Done
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|count
 op_assign
@@ -416,14 +418,8 @@ id|offs
 op_plus
 id|count
 suffix:semicolon
-id|ret
-op_assign
-id|count
-suffix:semicolon
-id|Done
-suffix:colon
 r_return
-id|ret
+id|count
 suffix:semicolon
 )brace
 DECL|function|open

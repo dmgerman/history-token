@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -2138,14 +2139,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_int
-id|vm_enough_memory
-c_func
-(paren
-r_int
-id|pages
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * IRIX is completely broken... it returns 0 on success, otherwise&n; * ENOMEM.&n; */
 DECL|function|irix_brk
 id|asmlinkage
@@ -2342,8 +2335,7 @@ multiline_comment|/*&n;&t; * Check if we have enough memory..&n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 (paren

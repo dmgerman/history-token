@@ -5,6 +5,20 @@ macro_line|#include &lt;linux/linkage.h&gt;
 r_struct
 id|vfsmount
 suffix:semicolon
+DECL|struct|open_intent
+r_struct
+id|open_intent
+(brace
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+DECL|member|create_mode
+r_int
+id|create_mode
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|nameidata
 r_struct
 id|nameidata
@@ -34,6 +48,18 @@ suffix:semicolon
 DECL|member|last_type
 r_int
 id|last_type
+suffix:semicolon
+multiline_comment|/* Intent data */
+r_union
+(brace
+DECL|member|open
+r_struct
+id|open_intent
+id|open
+suffix:semicolon
+DECL|member|intent
+)brace
+id|intent
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -67,6 +93,13 @@ DECL|macro|LOOKUP_PARENT
 mdefine_line|#define LOOKUP_PARENT&t;&t;16
 DECL|macro|LOOKUP_NOALT
 mdefine_line|#define LOOKUP_NOALT&t;&t;32
+multiline_comment|/*&n; * Intent data&n; */
+DECL|macro|LOOKUP_OPEN
+mdefine_line|#define LOOKUP_OPEN&t;&t;(0x0100)
+DECL|macro|LOOKUP_CREATE
+mdefine_line|#define LOOKUP_CREATE&t;&t;(0x0200)
+DECL|macro|LOOKUP_ACCESS
+mdefine_line|#define LOOKUP_ACCESS&t;&t;(0x0400)
 r_extern
 r_int
 id|FASTCALL

@@ -22,7 +22,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-macro_line|#include &lt;asm/arch.h&gt;
+singleline_comment|//#include &lt;asm/arch.h&gt;
 macro_line|#include &lt;asm/map.h&gt;
 DECL|macro|TABLE_SIZE
 mdefine_line|#define TABLE_SIZE&t;PTRS_PER_PTE * sizeof(pte_t))
@@ -170,7 +170,7 @@ c_func
 l_int|0
 )paren
 op_member_access_from_pointer
-id|node_size
+id|node_spanned_pages
 suffix:semicolon
 r_do
 (brace
@@ -1138,7 +1138,7 @@ multiline_comment|/* this will put all unused low memory onto the freelists */
 r_if
 c_cond
 (paren
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 op_ne
 l_int|0
 )paren

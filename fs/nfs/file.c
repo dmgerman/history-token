@@ -298,28 +298,6 @@ comma
 id|filp
 )paren
 suffix:semicolon
-multiline_comment|/* Do cto revalidation */
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|server-&gt;flags
-op_amp
-id|NFS_MOUNT_NOCTO
-)paren
-)paren
-id|res
-op_assign
-id|__nfs_revalidate_inode
-c_func
-(paren
-id|server
-comma
-id|inode
-)paren
-suffix:semicolon
 multiline_comment|/* Call generic open code in order to cache credentials */
 r_if
 c_cond
@@ -381,6 +359,11 @@ comma
 id|inode-&gt;i_ino
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|nfs_wb_file
@@ -407,6 +390,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|status
 suffix:semicolon

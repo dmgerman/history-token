@@ -764,6 +764,15 @@ op_amp
 id|ei-&gt;i_meta_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT2_FS_XATTR
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|ei-&gt;xattr_sem
+)paren
+suffix:semicolon
+macro_line|#endif
 id|inode_init_once
 c_func
 (paren

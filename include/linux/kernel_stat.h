@@ -70,8 +70,9 @@ id|kstat
 suffix:semicolon
 DECL|macro|kstat_cpu
 mdefine_line|#define kstat_cpu(cpu)&t;per_cpu(kstat, cpu)
+multiline_comment|/* Must have preemption disabled for this to be meaningful. */
 DECL|macro|kstat_this_cpu
-mdefine_line|#define kstat_this_cpu&t;kstat_cpu(smp_processor_id())
+mdefine_line|#define kstat_this_cpu&t;__get_cpu_var(kstat)
 r_extern
 r_int
 r_int

@@ -6,8 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-multiline_comment|/* entry.S is sensitive to the offsets of these fields */
-multiline_comment|/* rtrap.S is sensitive to the size of this structure */
+multiline_comment|/* rtrap.S is sensitive to the offsets of these fields */
 r_typedef
 r_struct
 (brace
@@ -15,32 +14,6 @@ DECL|member|__softirq_pending
 r_int
 r_int
 id|__softirq_pending
-suffix:semicolon
-DECL|member|__unused_1
-r_int
-r_int
-id|__unused_1
-suffix:semicolon
-DECL|member|__unused_2
-r_int
-r_int
-id|__unused_2
-suffix:semicolon
-DECL|member|__unused_3
-r_int
-r_int
-id|__unused_3
-suffix:semicolon
-DECL|member|__syscall_count
-r_int
-r_int
-id|__syscall_count
-suffix:semicolon
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
 suffix:semicolon
 DECL|typedef|irq_cpustat_t
 )brace

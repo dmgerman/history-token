@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * &t;PCI searching functions.&n; *&n; *&t;Copyright 1993 -- 1997 Drew Eckhardt, Frederic Potter,&n; *&t;&t;&t;&t;David Mosberger-Tang&n; *&t;Copyright 1997 -- 2000 Martin Mares &lt;mj@ucw.cz&gt;&n; *&t;Copyright 2003 -- Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|variable|pci_bus_lock
 id|spinlock_t
 id|pci_bus_lock
@@ -11,6 +13,7 @@ r_static
 r_struct
 id|pci_bus
 op_star
+id|__devinit
 DECL|function|pci_do_find_bus
 id|pci_do_find_bus
 c_func
@@ -85,16 +88,19 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_find_bus - locate PCI bus from a given bus number&n; * @busnr: number of desired PCI bus&n; *&n; * Given a PCI bus number, the desired PCI bus is located in system&n; * global list of PCI buses.  If the bus is found, a pointer to its&n; * data structure is returned.  If no bus is found, %NULL is returned.&n; */
+multiline_comment|/**&n; * pci_find_bus - locate PCI bus from a given domain and bus number&n; * @domain: number of PCI domain to search&n; * @busnr: number of desired PCI bus&n; *&n; * Given a PCI bus number and domain number, the desired PCI bus is located&n; * in the global list of PCI buses.  If the bus is found, a pointer to its&n; * data structure is returned.  If no bus is found, %NULL is returned.&n; */
+DECL|function|pci_find_bus
 r_struct
 id|pci_bus
 op_star
-DECL|function|pci_find_bus
+id|__devinit
 id|pci_find_bus
 c_func
 (paren
 r_int
-r_char
+id|domain
+comma
+r_int
 id|busnr
 )paren
 (brace
@@ -126,6 +132,19 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
+op_ne
+id|domain
+)paren
+r_continue
+suffix:semicolon
 id|tmp_bus
 op_assign
 id|pci_do_find_bus
@@ -141,11 +160,9 @@ c_cond
 (paren
 id|tmp_bus
 )paren
-(brace
 r_return
 id|tmp_bus
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|NULL
@@ -181,7 +198,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren
@@ -337,7 +354,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren
@@ -530,7 +547,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren
@@ -729,7 +746,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|irqs_disabled
+id|in_interrupt
 c_func
 (paren
 )paren

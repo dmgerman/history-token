@@ -6,6 +6,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mman.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
@@ -855,6 +858,151 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Check that a process has enough memory to allocate a new virtual&n; * mapping. 0 means there is enough memory for the allocation to&n; * succeed and -ENOMEM implies there is not.&n; *&n; * We currently support three overcommit policies, which are set via the&n; * vm.overcommit_memory sysctl.  See Documentation/vm/overcommit-acounting&n; *&n; * Strict overcommit modes added 2002 Feb 26 by Alan Cox.&n; * Additional code 2002 Jul 20 by Robert Love.&n; */
+DECL|function|cap_vm_enough_memory
+r_int
+id|cap_vm_enough_memory
+c_func
+(paren
+r_int
+id|pages
+)paren
+(brace
+r_int
+r_int
+id|free
+comma
+id|allowed
+suffix:semicolon
+id|vm_acct_memory
+c_func
+(paren
+id|pages
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Sometimes we want to use more memory than we have&n;&t; */
+r_if
+c_cond
+(paren
+id|sysctl_overcommit_memory
+op_eq
+l_int|1
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sysctl_overcommit_memory
+op_eq
+l_int|0
+)paren
+(brace
+id|free
+op_assign
+id|get_page_cache_size
+c_func
+(paren
+)paren
+suffix:semicolon
+id|free
+op_add_assign
+id|nr_free_pages
+c_func
+(paren
+)paren
+suffix:semicolon
+id|free
+op_add_assign
+id|nr_swap_pages
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Any slabs which are created with the&n;&t;&t; * SLAB_RECLAIM_ACCOUNT flag claim to have contents&n;&t;&t; * which are reclaimable, under pressure.  The dentry&n;&t;&t; * cache and most inode caches should fall into this&n;&t;&t; */
+id|free
+op_add_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|slab_reclaim_pages
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Leave the last 3% for root&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+id|free
+op_sub_assign
+id|free
+op_div
+l_int|32
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|free
+OG
+id|pages
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|vm_unacct_memory
+c_func
+(paren
+id|pages
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|allowed
+op_assign
+id|totalram_pages
+op_star
+id|sysctl_overcommit_ratio
+op_div
+l_int|100
+suffix:semicolon
+id|allowed
+op_add_assign
+id|total_swap_pages
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|vm_committed_space
+)paren
+OL
+id|allowed
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|vm_unacct_memory
+c_func
+(paren
+id|pages
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 DECL|variable|cap_capable
 id|EXPORT_SYMBOL
 c_func
@@ -932,6 +1080,13 @@ c_func
 id|cap_syslog
 )paren
 suffix:semicolon
+DECL|variable|cap_vm_enough_memory
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cap_vm_enough_memory
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SECURITY
 DECL|variable|capability_ops
 r_static
@@ -1004,6 +1159,11 @@ dot
 id|syslog
 op_assign
 id|cap_syslog
+comma
+dot
+id|vm_enough_memory
+op_assign
+id|cap_vm_enough_memory
 comma
 )brace
 suffix:semicolon

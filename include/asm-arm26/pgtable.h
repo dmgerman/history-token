@@ -210,7 +210,7 @@ DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END       0x01c00000
 multiline_comment|/* Is pmd_page supposed to return a pointer to a page in some arches? ours seems to&n; * return a pointer to memory (no special alignment)&n; */
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)  ((unsigned long)(pmd_val((pmd)) &amp; ~_PMD_PRESENT))
+mdefine_line|#define pmd_page(pmd)  ((struct page *)(pmd_val((pmd)) &amp; ~_PMD_PRESENT))
 DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) ((pte_t *)(pmd_val((pmd)) &amp; ~_PMD_PRESENT))
 DECL|macro|pte_offset_kernel

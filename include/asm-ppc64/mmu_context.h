@@ -146,9 +146,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -446,9 +443,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 id|flush_stab
@@ -462,7 +456,10 @@ suffix:semicolon
 id|set_bit
 c_func
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 op_amp
 id|next-&gt;cpu_vm_mask
@@ -473,7 +470,7 @@ DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
 DECL|macro|activate_mm
-mdefine_line|#define activate_mm(active_mm, mm) &bslash;&n;&t;switch_mm(active_mm, mm, current, smp_processor_id());
+mdefine_line|#define activate_mm(active_mm, mm) &bslash;&n;&t;switch_mm(active_mm, mm, current);
 DECL|macro|VSID_RANDOMIZER
 mdefine_line|#define VSID_RANDOMIZER 42470972311
 DECL|macro|VSID_MASK

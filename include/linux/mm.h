@@ -672,6 +672,15 @@ op_lshift
 id|ZONE_SHIFT
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+multiline_comment|/* The array of struct pages - for discontigmem use pgdat-&gt;lmem_map */
+r_extern
+r_struct
+id|page
+op_star
+id|mem_map
+suffix:semicolon
+macro_line|#endif
 DECL|function|lowmem_page_address
 r_static
 r_inline
@@ -690,26 +699,10 @@ r_return
 id|__va
 c_func
 (paren
-(paren
-(paren
-id|page
-op_minus
-id|page_zone
+id|page_to_pfn
 c_func
 (paren
 id|page
-)paren
-op_member_access_from_pointer
-id|zone_mem_map
-)paren
-op_plus
-id|page_zone
-c_func
-(paren
-id|page
-)paren
-op_member_access_from_pointer
-id|zone_start_pfn
 )paren
 op_lshift
 id|PAGE_SHIFT
@@ -804,15 +797,6 @@ DECL|macro|VM_FAULT_MINOR
 mdefine_line|#define VM_FAULT_MINOR&t;1
 DECL|macro|VM_FAULT_MAJOR
 mdefine_line|#define VM_FAULT_MAJOR&t;2
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-multiline_comment|/* The array of struct pages - for discontigmem use pgdat-&gt;lmem_map */
-r_extern
-r_struct
-id|page
-op_star
-id|mem_map
-suffix:semicolon
-macro_line|#endif 
 r_extern
 r_void
 id|show_free_areas
@@ -1978,30 +1962,6 @@ id|offset
 )paren
 suffix:semicolon
 r_void
-id|page_cache_readaround
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_struct
-id|file_ra_state
-op_star
-id|ra
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|offset
-)paren
-suffix:semicolon
-r_void
 id|handle_ra_miss
 c_func
 (paren
@@ -2247,6 +2207,28 @@ id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DEBUG_PAGEALLOC
+r_static
+r_inline
+r_void
+DECL|function|kernel_map_pages
+id|kernel_map_pages
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|numpages
+comma
+r_int
+id|enable
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MM_H */
 eof

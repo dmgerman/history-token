@@ -31,8 +31,10 @@ id|dentry
 op_star
 id|de
 comma
-r_int
-id|flag
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct

@@ -318,8 +318,14 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
+multiline_comment|/*&n;&t; * nr_threads is actually protected by the tasklist_lock;&n;&t; * however, it&squot;s conventional to do reads, especially for&n;&t; * reporting, without any locking whatsoever.&n;&t; */
 r_if
 c_cond
 (paren
@@ -327,25 +333,13 @@ id|dir-&gt;i_ino
 op_eq
 id|PROC_ROOT_INO
 )paren
-(brace
 multiline_comment|/* check for safety... */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dir-&gt;i_nlink
 op_assign
 id|proc_root.nlink
 op_plus
 id|nr_threads
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -356,6 +350,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+id|nd
 )paren
 )paren
 (brace
@@ -370,6 +366,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace

@@ -401,6 +401,10 @@ id|inode
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 DECL|variable|proc_sys_file_operations
@@ -4844,6 +4848,11 @@ id|inode
 comma
 r_int
 id|op
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_return

@@ -328,8 +328,6 @@ id|link-&gt;priv
 suffix:semicolon
 r_int
 id|i
-comma
-id|ret
 suffix:semicolon
 id|link-&gt;state
 op_and_assign

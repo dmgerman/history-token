@@ -9086,7 +9086,7 @@ op_eq
 l_int|NULL
 )paren
 r_goto
-id|startio
+id|full
 suffix:semicolon
 id|blkdev_dequeue_request
 c_func
@@ -9503,7 +9503,7 @@ suffix:semicolon
 r_goto
 id|queue
 suffix:semicolon
-id|startio
+id|full
 suffix:colon
 id|blk_stop_queue
 c_func
@@ -9511,6 +9511,8 @@ c_func
 id|q
 )paren
 suffix:semicolon
+id|startio
+suffix:colon
 id|start_io
 c_func
 (paren

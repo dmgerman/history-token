@@ -78,6 +78,13 @@ mdefine_line|#define NUM_CHANNELS&t;(NUM_SERIAL * 2)&t;/* 2 channels per chip */
 multiline_comment|/* On PowerMacs, the hardware takes care of the SCC recovery time,&n;   but we need the eieio to make sure that the accesses occur&n;   in the order we want. */
 DECL|macro|RECOVERY_DELAY
 mdefine_line|#define RECOVERY_DELAY&t;eieio()
+DECL|variable|serial_driver
+r_static
+r_struct
+id|tty_driver
+op_star
+id|serial_driver
+suffix:semicolon
 DECL|variable|zs_channels
 r_struct
 id|mac_zschannel
@@ -9796,29 +9803,10 @@ op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef SERIAL_DO_RESTART
-r_return
-(paren
-(paren
-id|info-&gt;flags
-op_amp
-id|ZILOG_HUP_NOTIFY
-)paren
-ques
-c_cond
-op_minus
-id|EAGAIN
-suffix:colon
-op_minus
-id|ERESTARTSYS
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n;&t; * If non-blocking mode is set, or the port is not enabled,&n;&t; * then make the check up front and then exit.&n;&t; */
 r_if
@@ -9978,32 +9966,11 @@ id|ZILOG_INITIALIZED
 )paren
 )paren
 (brace
-macro_line|#ifdef SERIAL_DO_RESTART
-r_if
-c_cond
-(paren
-id|info-&gt;flags
-op_amp
-id|ZILOG_HUP_NOTIFY
-)paren
 id|retval
 op_assign
 op_minus
 id|EAGAIN
 suffix:semicolon
-r_else
-id|retval
-op_assign
-op_minus
-id|ERESTARTSYS
-suffix:semicolon
-macro_line|#else
-id|retval
-op_assign
-op_minus
-id|EAGAIN
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -10319,29 +10286,10 @@ op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef SERIAL_DO_RESTART
-r_return
-(paren
-(paren
-id|info-&gt;flags
-op_amp
-id|ZILOG_HUP_NOTIFY
-)paren
-ques
-c_cond
-op_minus
-id|EAGAIN
-suffix:colon
-op_minus
-id|ERESTARTSYS
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n;&t; * Start up serial port&n;&t; */
 id|retval

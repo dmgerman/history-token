@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* processor.h for distable_tsc flag */
@@ -21,11 +22,6 @@ suffix:semicolon
 r_extern
 id|spinlock_t
 id|i8253_lock
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|jiffies
 suffix:semicolon
 DECL|variable|use_tsc
 r_static
@@ -316,6 +312,12 @@ id|this_offset
 comma
 id|last_offset
 suffix:semicolon
+r_static
+r_int
+id|lost_count
+op_assign
+l_int|0
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -570,11 +572,56 @@ id|lost
 op_ge
 l_int|2
 )paren
+(brace
 id|jiffies
 op_add_assign
 id|lost
 op_minus
 l_int|1
+suffix:semicolon
+multiline_comment|/* sanity check to ensure we&squot;re not always loosing ticks */
+r_if
+c_cond
+(paren
+id|lost_count
+op_increment
+OG
+l_int|100
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Loosing too many ticks!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;TSC cannot be used as a timesource.&quot;
+l_string|&quot; (Are you running with SpeedStep?)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Falling back to a sane timesource.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|clock_fallback
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+id|lost_count
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* update the monotonic base value */
 id|this_offset
@@ -640,6 +687,8 @@ multiline_comment|/* catch corner case where tick rollover occured &n;&t; * betw
 r_if
 c_cond
 (paren
+id|lost
+op_logical_and
 id|abs
 c_func
 (paren

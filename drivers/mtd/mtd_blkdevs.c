@@ -790,6 +790,9 @@ r_struct
 id|hd_geometry
 id|g
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -804,7 +807,6 @@ id|g
 )paren
 )paren
 suffix:semicolon
-r_int
 id|ret
 op_assign
 id|tr

@@ -775,6 +775,17 @@ suffix:semicolon
 multiline_comment|/* signal queue entry. */
 )brace
 suffix:semicolon
+r_struct
+id|io_context
+suffix:semicolon
+multiline_comment|/* See blkdev.h */
+r_void
+id|exit_io_context
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -1327,6 +1338,12 @@ id|backing_dev_info
 op_star
 id|backing_dev_info
 suffix:semicolon
+DECL|member|io_context
+r_struct
+id|io_context
+op_star
+id|io_context
+suffix:semicolon
 DECL|member|ptrace_message
 r_int
 r_int
@@ -1391,6 +1408,8 @@ DECL|macro|PF_SWAPOFF
 mdefine_line|#define PF_SWAPOFF&t;0x00080000&t;/* I am in swapoff */
 DECL|macro|PF_LESS_THROTTLE
 mdefine_line|#define PF_LESS_THROTTLE 0x01000000&t;/* Throttle me less: I clena memory */
+DECL|macro|PF_SYNCWRITE
+mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int

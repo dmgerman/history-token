@@ -325,7 +325,7 @@ id|arc_unmask_irq_b
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* FIXME - JMA none of these functions are used in arm26&n;static void arc_mask_irq_fiq(unsigned int irq)&n;{&n;&t;unsigned int val, mask;&n;&n;&t;mask = 1 &lt;&lt; (irq &amp; 7);&n;&t;val = ioc_readb(IOC_FIQMASK);&n;&t;ioc_writeb(val &amp; ~mask, IOC_FIQMASK);&n;}&n;&n;static void arc_unmask_irq_fiq(unsigned int irq)&n;{&n;&t;unsigned int val, mask;&n;&n;&t;mask = 1 &lt;&lt; (irq &amp; 7);&n;&t;val = ioc_readb(IOC_FIQMASK);&n;&t;ioc_writeb(val | mask, IOC_FIQMASK);&n;}&n;&n;static struct irqchip arc_fiq_chip = {&n;        .ack    = arc_mask_irq_fiq,&n;        .mask   = arc_mask_irq_fiq,&n;        .unmask = arc_unmask_irq_fiq,&n;};&n;*/
+multiline_comment|/* FIXME - JMA none of these functions are used in arm26 currently&n;static void arc_mask_irq_fiq(unsigned int irq)&n;{&n;&t;unsigned int val, mask;&n;&n;&t;mask = 1 &lt;&lt; (irq &amp; 7);&n;&t;val = ioc_readb(IOC_FIQMASK);&n;&t;ioc_writeb(val &amp; ~mask, IOC_FIQMASK);&n;}&n;&n;static void arc_unmask_irq_fiq(unsigned int irq)&n;{&n;&t;unsigned int val, mask;&n;&n;&t;mask = 1 &lt;&lt; (irq &amp; 7);&n;&t;val = ioc_readb(IOC_FIQMASK);&n;&t;ioc_writeb(val | mask, IOC_FIQMASK);&n;}&n;&n;static struct irqchip arc_fiq_chip = {&n;        .ack    = arc_mask_irq_fiq,&n;        .mask   = arc_mask_irq_fiq,&n;        .unmask = arc_unmask_irq_fiq,&n;};&n;*/
 DECL|function|arc_init_irq
 r_void
 id|__init
@@ -341,6 +341,7 @@ id|irq
 comma
 id|flags
 suffix:semicolon
+multiline_comment|/* Disable all IOC interrupt sources */
 id|ioc_writeb
 c_func
 (paren

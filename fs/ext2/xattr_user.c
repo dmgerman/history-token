@@ -4,9 +4,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &quot;xattr.h&quot;
-macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
-macro_line|# include &quot;acl.h&quot;
-macro_line|#endif
 DECL|macro|XATTR_USER_PREFIX
 mdefine_line|#define XATTR_USER_PREFIX &quot;user.&quot;
 r_static
@@ -165,18 +162,6 @@ r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
-macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
-id|error
-op_assign
-id|ext2_permission_locked
-c_func
-(paren
-id|inode
-comma
-id|MAY_READ
-)paren
-suffix:semicolon
-macro_line|#else
 id|error
 op_assign
 id|permission
@@ -185,9 +170,10 @@ c_func
 id|inode
 comma
 id|MAY_READ
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -303,18 +289,6 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
-id|error
-op_assign
-id|ext2_permission_locked
-c_func
-(paren
-id|inode
-comma
-id|MAY_WRITE
-)paren
-suffix:semicolon
-macro_line|#else
 id|error
 op_assign
 id|permission
@@ -323,9 +297,10 @@ c_func
 id|inode
 comma
 id|MAY_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

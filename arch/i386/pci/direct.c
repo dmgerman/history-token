@@ -800,7 +800,7 @@ multiline_comment|/*&n; * Before we decide to use direct hardware access mechani
 DECL|function|pci_sanity_check
 r_static
 r_int
-id|__devinit
+id|__init
 id|pci_sanity_check
 c_func
 (paren

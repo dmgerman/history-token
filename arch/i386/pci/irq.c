@@ -468,15 +468,29 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-multiline_comment|/*&n;&t;&t; *  It might be a secondary bus, but in this case its parent is already&n;&t;&t; *  known (ascending bus order) and therefore pci_scan_bus returns immediately.&n;&t;&t; */
+(brace
 r_if
 c_cond
 (paren
+op_logical_neg
 id|busmap
 (braket
 id|i
 )braket
-op_logical_and
+op_logical_or
+id|pci_find_bus
+c_func
+(paren
+l_int|0
+comma
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|pci_scan_bus
 c_func
 (paren
@@ -497,6 +511,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 id|pcibios_last_bus
 op_assign
 op_minus
@@ -1001,7 +1016,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The VIA pirq rules are nibble-based, like ALI,&n; * but without the ugly irq number munging.&n; */
+multiline_comment|/*&n; * The VIA pirq rules are nibble-based, like ALI,&n; * but without the ugly irq number munging.&n; * However, PIRQD is in the upper instead of lower 4 bits.&n; */
 DECL|function|pirq_via_get
 r_static
 r_int
@@ -1030,6 +1045,13 @@ id|router
 comma
 l_int|0x55
 comma
+id|pirq
+op_eq
+l_int|4
+ques
+c_cond
+l_int|5
+suffix:colon
 id|pirq
 )paren
 suffix:semicolon
@@ -1064,6 +1086,13 @@ id|router
 comma
 l_int|0x55
 comma
+id|pirq
+op_eq
+l_int|4
+ques
+c_cond
+l_int|5
+suffix:colon
 id|pirq
 comma
 id|irq

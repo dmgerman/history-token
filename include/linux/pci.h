@@ -1272,18 +1272,18 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* Generic PCI functions used internally */
-r_int
-id|pci_bus_exists
+r_extern
+r_struct
+id|pci_bus
+op_star
+id|pci_find_bus
 c_func
 (paren
-r_const
-r_struct
-id|list_head
-op_star
-id|list
+r_int
+id|domain
 comma
 r_int
-id|nr
+id|busnr
 )paren
 suffix:semicolon
 r_struct

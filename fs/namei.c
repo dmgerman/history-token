@@ -457,6 +457,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -490,6 +495,8 @@ c_func
 id|inode
 comma
 id|submask
+comma
+id|nd
 )paren
 suffix:semicolon
 r_else
@@ -694,8 +701,10 @@ id|qstr
 op_star
 id|name
 comma
-r_int
-id|flags
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct
@@ -749,7 +758,7 @@ c_func
 (paren
 id|dentry
 comma
-id|flags
+id|nd
 )paren
 op_logical_and
 op_logical_neg
@@ -914,8 +923,10 @@ id|qstr
 op_star
 id|name
 comma
-r_int
-id|flags
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct
@@ -993,6 +1004,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -1050,7 +1063,7 @@ c_func
 (paren
 id|result
 comma
-id|flags
+id|nd
 )paren
 op_logical_and
 op_logical_neg
@@ -1814,9 +1827,6 @@ r_struct
 id|path
 op_star
 id|path
-comma
-r_int
-id|flags
 )paren
 (brace
 r_struct
@@ -1882,7 +1892,7 @@ id|nd-&gt;dentry
 comma
 id|name
 comma
-id|LOOKUP_CONTINUE
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -1912,7 +1922,7 @@ c_func
 (paren
 id|dentry
 comma
-id|flags
+id|nd
 )paren
 )paren
 r_goto
@@ -2063,6 +2073,8 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -2272,6 +2284,10 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
+id|nd-&gt;flags
+op_or_assign
+id|LOOKUP_CONTINUE
+suffix:semicolon
 multiline_comment|/* This does the actual lookups.. */
 id|err
 op_assign
@@ -2285,8 +2301,6 @@ id|this
 comma
 op_amp
 id|next
-comma
-id|LOOKUP_CONTINUE
 )paren
 suffix:semicolon
 r_if
@@ -2455,6 +2469,11 @@ id|LOOKUP_DIRECTORY
 suffix:semicolon
 id|last_component
 suffix:colon
+id|nd-&gt;flags
+op_and_assign
+op_complement
+id|LOOKUP_CONTINUE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2565,8 +2584,6 @@ id|this
 comma
 op_amp
 id|next
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2875,6 +2892,21 @@ suffix:semicolon
 id|nd_root.flags
 op_assign
 id|nd-&gt;flags
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|nd_root.intent
+comma
+op_amp
+id|nd-&gt;intent
+comma
+r_sizeof
+(paren
+id|nd_root.intent
+)paren
+)paren
 suffix:semicolon
 id|read_lock
 c_func
@@ -3371,11 +3403,12 @@ id|nd
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Restricted form of lookup. Doesn&squot;t follow links, single-component only,&n; * needs parent already locked. Doesn&squot;t follow mounts.&n; * SMP-safe.&n; */
-DECL|function|lookup_hash
+DECL|function|__lookup_hash
+r_static
 r_struct
 id|dentry
 op_star
-id|lookup_hash
+id|__lookup_hash
 c_func
 (paren
 r_struct
@@ -3387,6 +3420,11 @@ r_struct
 id|dentry
 op_star
 id|base
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct
@@ -3414,6 +3452,8 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+id|nd
 )paren
 suffix:semicolon
 id|dentry
@@ -3481,7 +3521,7 @@ id|base
 comma
 id|name
 comma
-l_int|0
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -3532,6 +3572,8 @@ c_func
 id|inode
 comma
 r_new
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -3556,6 +3598,36 @@ id|out
 suffix:colon
 r_return
 id|dentry
+suffix:semicolon
+)brace
+DECL|function|lookup_hash
+r_struct
+id|dentry
+op_star
+id|lookup_hash
+c_func
+(paren
+r_struct
+id|qstr
+op_star
+id|name
+comma
+r_struct
+id|dentry
+op_star
+id|base
+)paren
+(brace
+r_return
+id|__lookup_hash
+c_func
+(paren
+id|name
+comma
+id|base
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SMP-safe */
@@ -3873,6 +3945,8 @@ comma
 id|MAY_WRITE
 op_or
 id|MAY_EXEC
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4016,6 +4090,11 @@ r_struct
 id|dentry
 op_star
 id|child
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_if
@@ -4049,6 +4128,8 @@ comma
 id|MAY_WRITE
 op_or
 id|MAY_EXEC
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -4340,6 +4421,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -4351,6 +4437,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -4421,6 +4509,8 @@ comma
 id|dentry
 comma
 id|mode
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -4537,6 +4627,8 @@ c_func
 id|inode
 comma
 id|acc_mode
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -4841,6 +4933,15 @@ id|acc_mode
 op_or_assign
 id|MAY_APPEND
 suffix:semicolon
+multiline_comment|/* Fill in the open() intent data */
+id|nd-&gt;intent.open.flags
+op_assign
+id|flag
+suffix:semicolon
+id|nd-&gt;intent.open.create_mode
+op_assign
+id|mode
+suffix:semicolon
 multiline_comment|/*&n;&t; * The simplest case - just a plain lookup.&n;&t; */
 r_if
 c_cond
@@ -4865,6 +4966,8 @@ c_func
 (paren
 id|flag
 )paren
+op_or
+id|LOOKUP_OPEN
 comma
 id|nd
 )paren
@@ -4894,6 +4997,10 @@ c_func
 id|pathname
 comma
 id|LOOKUP_PARENT
+op_or
+id|LOOKUP_OPEN
+op_or
+id|LOOKUP_CREATE
 comma
 id|nd
 )paren
@@ -4931,6 +5038,11 @@ id|dir
 op_assign
 id|nd-&gt;dentry
 suffix:semicolon
+id|nd-&gt;flags
+op_and_assign
+op_complement
+id|LOOKUP_PARENT
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -4940,13 +5052,15 @@ id|dir-&gt;d_inode-&gt;i_sem
 suffix:semicolon
 id|dentry
 op_assign
-id|lookup_hash
+id|__lookup_hash
 c_func
 (paren
 op_amp
 id|nd-&gt;last
 comma
 id|nd-&gt;dentry
+comma
+id|nd
 )paren
 suffix:semicolon
 id|do_last
@@ -5013,6 +5127,8 @@ comma
 id|dentry
 comma
 id|mode
+comma
+id|nd
 )paren
 suffix:semicolon
 id|up
@@ -5238,6 +5354,10 @@ r_goto
 id|exit_dput
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is subtle. Instead of calling do_follow_link() we do the&n;&t; * thing by hands. The reason is that this way we have zero link_count&n;&t; * and path_walk() (called from -&gt;follow_link) honoring LOOKUP_PARENT.&n;&t; * After that we have the parent and last component, i.e.&n;&t; * we are in the same situation as after the first path_walk().&n;&t; * Well, almost - if the last component is normal we get its copy&n;&t; * stored in nd-&gt;last.name and we will have to putname() it when we&n;&t; * are done. Procfs-like symlinks just set LAST_BIND.&n;&t; */
+id|nd-&gt;flags
+op_or_assign
+id|LOOKUP_PARENT
+suffix:semicolon
 id|error
 op_assign
 id|security_inode_follow_link
@@ -5287,6 +5407,11 @@ id|error
 )paren
 r_return
 id|error
+suffix:semicolon
+id|nd-&gt;flags
+op_and_assign
+op_complement
+id|LOOKUP_PARENT
 suffix:semicolon
 r_if
 c_cond
@@ -5375,13 +5500,15 @@ id|dir-&gt;d_inode-&gt;i_sem
 suffix:semicolon
 id|dentry
 op_assign
-id|lookup_hash
+id|__lookup_hash
 c_func
 (paren
 op_amp
 id|nd-&gt;last
 comma
 id|nd-&gt;dentry
+comma
+id|nd
 )paren
 suffix:semicolon
 id|putname
@@ -5442,6 +5569,11 @@ id|LAST_NORM
 )paren
 r_goto
 id|fail
+suffix:semicolon
+id|nd-&gt;flags
+op_and_assign
+op_complement
+id|LOOKUP_PARENT
 suffix:semicolon
 id|dentry
 op_assign
@@ -5540,6 +5672,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -5831,6 +5965,9 @@ comma
 id|dentry
 comma
 id|mode
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_break
@@ -5942,6 +6079,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7103,6 +7242,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7442,6 +7583,8 @@ c_func
 id|dir
 comma
 id|new_dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7852,6 +7995,8 @@ c_func
 id|old_dentry-&gt;d_inode
 comma
 id|MAY_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -8281,6 +8426,8 @@ c_func
 id|new_dir
 comma
 id|new_dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_else

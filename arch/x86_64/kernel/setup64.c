@@ -1252,8 +1252,6 @@ op_amp
 id|init_mm
 comma
 id|me
-comma
-id|cpu
 )paren
 suffix:semicolon
 id|set_tss_desc
