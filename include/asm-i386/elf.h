@@ -5,6 +5,7 @@ multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/system.h&gt;&t;&t;/* for savesegment */
 macro_line|#include &lt;linux/utsname.h&gt;
 DECL|typedef|elf_greg_t
 r_typedef
@@ -54,9 +55,6 @@ mdefine_line|#define ELF_EXEC_PAGESIZE&t;4096
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
-multiline_comment|/* Wow, the &quot;main&quot; arch needs arch dependent functions too.. :) */
-DECL|macro|savesegment
-mdefine_line|#define savesegment(seg,value) &bslash;&n;&t;asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot;:&quot;=m&quot; (*(int *)&amp;(value)))
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)&t;&t;&bslash;&n;&t;pr_reg[0] = regs-&gt;ebx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[1] = regs-&gt;ecx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[2] = regs-&gt;edx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[3] = regs-&gt;esi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[4] = regs-&gt;edi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[5] = regs-&gt;ebp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[6] = regs-&gt;eax;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[7] = regs-&gt;xds;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[8] = regs-&gt;xes;&t;&t;&t;&t;&bslash;&n;&t;savesegment(fs,pr_reg[9]);&t;&t;&t;&bslash;&n;&t;savesegment(gs,pr_reg[10]);&t;&t;&t;&bslash;&n;&t;pr_reg[11] = regs-&gt;orig_eax;&t;&t;&t;&bslash;&n;&t;pr_reg[12] = regs-&gt;eip;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[13] = regs-&gt;xcs;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[14] = regs-&gt;eflags;&t;&t;&t;&bslash;&n;&t;pr_reg[15] = regs-&gt;esp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[16] = regs-&gt;xss;
