@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART driver frontend&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART driver frontend&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM,&n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR&n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE&n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -467,7 +467,7 @@ op_assign
 id|seg
 suffix:semicolon
 )brace
-multiline_comment|/* Originally taken from linux/mm/mmap.c from the array&n; * protection_map.&n; * The original really should be exported to modules, or &n; * some routine which does the conversion for you &n; */
+multiline_comment|/* Originally taken from linux/mm/mmap.c from the array&n; * protection_map.&n; * The original really should be exported to modules, or&n; * some routine which does the conversion for you&n; */
 DECL|variable|my_protect_map
 r_static
 r_const
@@ -1008,7 +1008,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* End - File flag list routines */
-multiline_comment|/* &n; * Wrappers for agp_free_memory &amp; agp_allocate_memory &n; * These make sure that internal lists are kept updated.&n; */
+multiline_comment|/*&n; * Wrappers for agp_free_memory &amp; agp_allocate_memory&n; * These make sure that internal lists are kept updated.&n; */
 DECL|function|agp_free_memory_wrap
 r_static
 r_void
@@ -1668,7 +1668,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Routines for managing client lists -&n; * These routines are for managing the list of auth&squot;ed clients.&n; */
+multiline_comment|/*&n; * Routines for managing client lists -&n; * These routines are for managing the list of auth&squot;ed clients.&n; */
 r_static
 r_struct
 id|agp_client
