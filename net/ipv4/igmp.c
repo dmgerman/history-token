@@ -5258,10 +5258,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
-id|in_dev-&gt;mc_lock
-op_assign
-id|RW_LOCK_UNLOCKED
-suffix:semicolon
 id|in_dev-&gt;mr_gq_running
 op_assign
 l_int|0
@@ -5319,6 +5315,10 @@ op_assign
 id|IGMP_Unsolicited_Report_Count
 suffix:semicolon
 macro_line|#endif
+id|in_dev-&gt;mc_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
 id|ip_mc_inc_group
 c_func
 (paren
