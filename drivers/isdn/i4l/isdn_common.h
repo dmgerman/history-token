@@ -523,4 +523,12 @@ r_int
 id|sl
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|isdn_hard_header_len
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 eof
