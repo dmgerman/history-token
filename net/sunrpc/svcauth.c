@@ -178,6 +178,27 @@ id|authp
 )paren
 suffix:semicolon
 )brace
+DECL|function|svc_set_client
+r_int
+id|svc_set_client
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+)paren
+(brace
+r_return
+id|rqstp-&gt;rq_authop
+op_member_access_from_pointer
+id|set_client
+c_func
+(paren
+id|rqstp
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* A request, which was authenticated, has now executed.&n; * Time to finalise the the credentials and verifier&n; * and release and resources&n; */
 DECL|function|svc_authorise
 r_int

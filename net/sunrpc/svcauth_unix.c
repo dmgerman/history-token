@@ -2070,6 +2070,11 @@ id|release
 op_assign
 id|svcauth_null_release
 comma
+dot
+id|set_client
+op_assign
+id|svcauth_unix_set_client
+comma
 )brace
 suffix:semicolon
 r_static
@@ -2508,6 +2513,11 @@ dot
 id|domain_release
 op_assign
 id|svcauth_unix_domain_release
+comma
+dot
+id|set_client
+op_assign
+id|svcauth_unix_set_client
 comma
 )brace
 suffix:semicolon
