@@ -1635,15 +1635,6 @@ suffix:semicolon
 )brace
 DECL|macro|EEH_CHECK_ALIGN
 macro_line|#undef EEH_CHECK_ALIGN
-DECL|macro|MAX_ISA_PORT
-mdefine_line|#define MAX_ISA_PORT 0x10000
-r_extern
-r_int
-r_int
-id|io_page_mask
-suffix:semicolon
-DECL|macro|_IO_IS_VALID
-mdefine_line|#define _IO_IS_VALID(port) ((port) &gt;= MAX_ISA_PORT || (1 &lt;&lt; (port&gt;&gt;PAGE_SHIFT)) &amp; io_page_mask)
 DECL|function|eeh_inb
 r_static
 r_inline

@@ -18,17 +18,21 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;scsi/scsicam.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 r_static
 r_int
 id|u14_34f_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 )paren
 suffix:semicolon
@@ -47,7 +51,8 @@ r_int
 id|u14_34f_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_void
@@ -56,7 +61,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -66,7 +72,8 @@ r_int
 id|u14_34f_eh_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -75,7 +82,8 @@ r_int
 id|u14_34f_eh_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -103,13 +111,15 @@ r_int
 id|u14_34f_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
@@ -517,7 +527,8 @@ id|PACKED
 suffix:semicolon
 multiline_comment|/* Additional fields begin here. */
 DECL|member|SCpnt
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -786,7 +797,8 @@ r_void
 id|flush_dev
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 comma
 r_int
@@ -957,7 +969,8 @@ r_int
 id|u14_34f_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 )paren
@@ -1658,7 +1671,8 @@ r_int
 r_int
 id|j
 comma
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -3659,7 +3673,8 @@ r_int
 id|u14_34f_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -3841,7 +3856,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -3865,11 +3881,7 @@ id|cpp-&gt;SCpnt
 suffix:semicolon
 id|pci_dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4131,7 +4143,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -4155,11 +4168,7 @@ id|cpp-&gt;SCpnt
 suffix:semicolon
 id|pci_dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4293,7 +4302,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -4317,11 +4327,7 @@ id|cpp-&gt;SCpnt
 suffix:semicolon
 id|pci_dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4593,7 +4599,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -4620,7 +4627,7 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 (brace
 id|cpp-&gt;xdir
@@ -4636,7 +4643,7 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_FROM_DEVICE
 )paren
 (brace
 id|cpp-&gt;xdir
@@ -4652,7 +4659,7 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_NONE
+id|DMA_NONE
 )paren
 (brace
 id|cpp-&gt;xdir
@@ -4667,7 +4674,7 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_ne
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 )paren
 id|panic
 c_func
@@ -4777,7 +4784,8 @@ r_int
 id|u14_34f_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -4787,7 +4795,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -5237,7 +5246,8 @@ r_int
 id|u14_34f_eh_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCarg
 )paren
@@ -5764,7 +5774,8 @@ r_int
 id|u14_34f_eh_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCarg
 )paren
@@ -5790,7 +5801,8 @@ id|arg_done
 op_assign
 id|FALSE
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -7053,7 +7065,8 @@ r_int
 id|n_ready
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -7957,7 +7970,8 @@ r_void
 id|flush_dev
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 comma
@@ -7974,7 +7988,8 @@ r_int
 id|ihdlr
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -8293,7 +8308,8 @@ r_int
 id|j
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon

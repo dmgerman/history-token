@@ -555,6 +555,23 @@ r_struct
 id|scsi_cmnd
 op_star
 id|cmd
+suffix:semicolon
+multiline_comment|/* Bail if we can&squot;t get a reference to the device */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|get_device
+c_func
+(paren
+op_amp
+id|dev-&gt;sdev_gendev
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|cmd
 op_assign
 id|__scsi_get_command
 c_func
@@ -649,6 +666,14 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_else
+id|put_device
+c_func
+(paren
+op_amp
+id|dev-&gt;sdev_gendev
+)paren
+suffix:semicolon
 r_return
 id|cmd
 suffix:semicolon
@@ -666,11 +691,18 @@ id|cmd
 )paren
 (brace
 r_struct
+id|scsi_device
+op_star
+id|sdev
+op_assign
+id|cmd-&gt;device
+suffix:semicolon
+r_struct
 id|Scsi_Host
 op_star
 id|shost
 op_assign
-id|cmd-&gt;device-&gt;host
+id|sdev-&gt;host
 suffix:semicolon
 r_int
 r_int
@@ -775,6 +807,13 @@ c_func
 id|shost-&gt;cmd_pool-&gt;slab
 comma
 id|cmd
+)paren
+suffix:semicolon
+id|put_device
+c_func
+(paren
+op_amp
+id|sdev-&gt;sdev_gendev
 )paren
 suffix:semicolon
 )brace
@@ -1464,6 +1503,45 @@ id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/* return 0 (because the command has been processed) */
+r_goto
+id|out
+suffix:semicolon
+)brace
+multiline_comment|/* Check to see if the scsi lld put this device into state SDEV_BLOCK. */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|cmd-&gt;device-&gt;sdev_state
+op_eq
+id|SDEV_BLOCK
+)paren
+)paren
+(brace
+multiline_comment|/* &n;&t;&t; * in SDEV_BLOCK, the command is just put back on the device&n;&t;&t; * queue.  The suspend state has already blocked the queue so&n;&t;&t; * future requests should not occur until the device &n;&t;&t; * transitions out of the suspend state.&n;&t;&t; */
+id|scsi_queue_insert
+c_func
+(paren
+id|cmd
+comma
+id|SCSI_MLQUEUE_DEVICE_BUSY
+)paren
+suffix:semicolon
+id|SCSI_LOG_MLQUEUE
+c_func
+(paren
+l_int|3
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;queuecommand : device blocked &bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * NOTE: rtn is still zero here because we don&squot;t need the&n;&t;&t; * queue to be plugged on return (it&squot;s already stopped)&n;&t;&t; */
 r_goto
 id|out
 suffix:semicolon
@@ -3110,7 +3188,7 @@ c_func
 id|scsi_device_lookup
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * scsi_device_cancel - cancel outstanding IO to this device&n; * @sdev:&t;pointer to struct scsi_device&n; * @data:&t;pointer to cancel value.&n; *&n; **/
+multiline_comment|/**&n; * scsi_device_cancel - cancel outstanding IO to this device&n; * @sdev:&t;Pointer to struct scsi_device&n; * @recovery:&t;Boolean instructing function to recover device or not.&n; *&n; **/
 DECL|function|scsi_device_cancel
 r_int
 id|scsi_device_cancel

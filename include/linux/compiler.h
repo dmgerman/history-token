@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_COMPILER_H
 DECL|macro|__LINUX_COMPILER_H
 mdefine_line|#define __LINUX_COMPILER_H
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef __CHECKER__
 DECL|macro|__user
 macro_line|# define __user&t;&t;__attribute__((noderef, address_space(1)))
@@ -47,9 +48,10 @@ DECL|macro|__chk_user_ptr
 macro_line|# define __chk_user_ptr(x) (void)0
 DECL|macro|__chk_io_ptr
 macro_line|# define __chk_io_ptr(x) (void)0
+DECL|macro|__builtin_warning
+macro_line|# define __builtin_warning(x, y...) (1)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef __ASSEMBLY__
 macro_line|#if __GNUC__ &gt; 3
 macro_line|# include &lt;linux/compiler-gcc+.h&gt;&t;/* catch-all for GCC 4, 5, etc. */
 macro_line|#elif __GNUC__ == 3
@@ -58,7 +60,6 @@ macro_line|#elif __GNUC__ == 2
 macro_line|# include &lt;linux/compiler-gcc2.h&gt;
 macro_line|#else
 macro_line|# error Sorry, your compiler is too old/not recognized.
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Intel compiler defines __GNUC__. So we will overwrite implementations&n; * coming from above header files here&n; */
 macro_line|#ifdef __INTEL_COMPILER
@@ -78,6 +79,7 @@ macro_line|#ifndef RELOC_HIDE
 DECL|macro|RELOC_HIDE
 macro_line|# define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;     __ptr = (unsigned long) (ptr);&t;&t;&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })
 macro_line|#endif
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Allow us to mark functions as &squot;deprecated&squot; and have gcc emit a nice&n; * warning for each use, in hopes of speeding the functions removal.&n; * Usage is:&n; * &t;&t;int __deprecated foo(void)&n; */
 macro_line|#ifndef __deprecated

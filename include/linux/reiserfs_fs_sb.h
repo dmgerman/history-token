@@ -477,36 +477,36 @@ r_int
 id|j_cnode_free
 suffix:semicolon
 multiline_comment|/* number of cnodes on the free list */
-DECL|member|s_journal_trans_max
+DECL|member|j_trans_max
 r_int
 r_int
-id|s_journal_trans_max
+id|j_trans_max
 suffix:semicolon
 multiline_comment|/* max number of blocks in a transaction.  */
-DECL|member|s_journal_max_batch
+DECL|member|j_max_batch
 r_int
 r_int
-id|s_journal_max_batch
+id|j_max_batch
 suffix:semicolon
 multiline_comment|/* max number of blocks to batch into a trans */
-DECL|member|s_journal_max_commit_age
+DECL|member|j_max_commit_age
 r_int
 r_int
-id|s_journal_max_commit_age
+id|j_max_commit_age
 suffix:semicolon
 multiline_comment|/* in seconds, how old can an async commit be */
-DECL|member|s_journal_default_max_commit_age
+DECL|member|j_max_trans_age
 r_int
 r_int
-id|s_journal_default_max_commit_age
-suffix:semicolon
-multiline_comment|/* the default for the max commit age */
-DECL|member|s_journal_max_trans_age
-r_int
-r_int
-id|s_journal_max_trans_age
+id|j_max_trans_age
 suffix:semicolon
 multiline_comment|/* in seconds, how old can a transaction be */
+DECL|member|j_default_max_commit_age
+r_int
+r_int
+id|j_default_max_commit_age
+suffix:semicolon
+multiline_comment|/* the default for the max commit age */
 DECL|member|j_cnode_free_list
 r_struct
 id|reiserfs_journal_cnode
@@ -616,6 +616,10 @@ id|list_head
 id|j_prealloc_list
 suffix:semicolon
 multiline_comment|/* list of inodes which have preallocated blocks */
+DECL|member|j_persistent_trans
+r_int
+id|j_persistent_trans
+suffix:semicolon
 DECL|member|j_max_trans_size
 r_int
 r_int
@@ -625,6 +629,10 @@ DECL|member|j_max_batch_size
 r_int
 r_int
 id|j_max_batch_size
+suffix:semicolon
+DECL|member|j_errno
+r_int
+id|j_errno
 suffix:semicolon
 multiline_comment|/* when flushing ordered buffers, throttle new ordered writers */
 DECL|member|j_work
@@ -636,6 +644,26 @@ DECL|member|j_async_throttle
 id|atomic_t
 id|j_async_throttle
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|enum|journal_state_bits
+r_enum
+id|journal_state_bits
+(brace
+DECL|enumerator|J_WRITERS_BLOCKED
+id|J_WRITERS_BLOCKED
+op_assign
+l_int|1
+comma
+multiline_comment|/* set when new writers not allowed */
+DECL|enumerator|J_WRITERS_QUEUED
+id|J_WRITERS_QUEUED
+comma
+multiline_comment|/* set when log is full due to too many writers */
+DECL|enumerator|J_ABORTED
+id|J_ABORTED
+comma
+multiline_comment|/* set when log is aborted */
 )brace
 suffix:semicolon
 DECL|macro|JOURNAL_DESC_MAGIC
@@ -1199,6 +1227,10 @@ r_struct
 id|rw_semaphore
 id|xattr_dir_sem
 suffix:semicolon
+DECL|member|j_errno
+r_int
+id|j_errno
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Definitions of reiserfs on-disk properties: */
@@ -1281,6 +1313,16 @@ comma
 DECL|enumerator|REISERFS_BARRIER_FLUSH
 id|REISERFS_BARRIER_FLUSH
 comma
+multiline_comment|/* Actions on error */
+DECL|enumerator|REISERFS_ERROR_PANIC
+id|REISERFS_ERROR_PANIC
+comma
+DECL|enumerator|REISERFS_ERROR_RO
+id|REISERFS_ERROR_RO
+comma
+DECL|enumerator|REISERFS_ERROR_CONTINUE
+id|REISERFS_ERROR_CONTINUE
+comma
 DECL|enumerator|REISERFS_TEST1
 id|REISERFS_TEST1
 comma
@@ -1341,6 +1383,12 @@ DECL|macro|reiserfs_barrier_none
 mdefine_line|#define reiserfs_barrier_none(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_BARRIER_NONE))
 DECL|macro|reiserfs_barrier_flush
 mdefine_line|#define reiserfs_barrier_flush(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_BARRIER_FLUSH))
+DECL|macro|reiserfs_error_panic
+mdefine_line|#define reiserfs_error_panic(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ERROR_PANIC))
+DECL|macro|reiserfs_error_ro
+mdefine_line|#define reiserfs_error_ro(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ERROR_RO))
+DECL|macro|reiserfs_error_continue
+mdefine_line|#define reiserfs_error_continue(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ERROR_CONTINUE))
 r_void
 id|reiserfs_file_buffer
 (paren
@@ -1386,16 +1434,6 @@ DECL|macro|SB_AP_BITMAP
 mdefine_line|#define SB_AP_BITMAP(s) (REISERFS_SB(s)-&gt;s_ap_bitmap)
 DECL|macro|SB_DISK_JOURNAL_HEAD
 mdefine_line|#define SB_DISK_JOURNAL_HEAD(s) (SB_JOURNAL(s)-&gt;j_header_bh-&gt;)
-DECL|macro|SB_JOURNAL_TRANS_MAX
-mdefine_line|#define SB_JOURNAL_TRANS_MAX(s)      (SB_JOURNAL(s)-&gt;s_journal_trans_max)
-DECL|macro|SB_JOURNAL_MAX_BATCH
-mdefine_line|#define SB_JOURNAL_MAX_BATCH(s)      (SB_JOURNAL(s)-&gt;s_journal_max_batch)
-DECL|macro|SB_JOURNAL_MAX_COMMIT_AGE
-mdefine_line|#define SB_JOURNAL_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_max_commit_age)
-DECL|macro|SB_JOURNAL_DEFAULT_MAX_COMMIT_AGE
-mdefine_line|#define SB_JOURNAL_DEFAULT_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_default_max_commit_age)
-DECL|macro|SB_JOURNAL_MAX_TRANS_AGE
-mdefine_line|#define SB_JOURNAL_MAX_TRANS_AGE(s)  (SB_JOURNAL(s)-&gt;s_journal_max_trans_age)
 multiline_comment|/* A safe version of the &quot;bdevname&quot;, which returns the &quot;s_id&quot; field of&n; * a superblock or else &quot;Null superblock&quot; if the super block is NULL.&n; */
 DECL|function|reiserfs_bdevname
 r_static
@@ -1424,6 +1462,30 @@ suffix:colon
 id|s
 op_member_access_from_pointer
 id|s_id
+suffix:semicolon
+)brace
+DECL|macro|reiserfs_is_journal_aborted
+mdefine_line|#define reiserfs_is_journal_aborted(journal) (unlikely (__reiserfs_is_journal_aborted (journal)))
+DECL|function|__reiserfs_is_journal_aborted
+r_static
+r_inline
+r_int
+id|__reiserfs_is_journal_aborted
+(paren
+r_struct
+id|reiserfs_journal
+op_star
+id|journal
+)paren
+(brace
+r_return
+id|test_bit
+(paren
+id|J_ABORTED
+comma
+op_amp
+id|journal-&gt;j_state
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* _LINUX_REISER_FS_SB */

@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
@@ -17,16 +19,16 @@ id|gapspci_dma_used
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|__pci_alloc_consistent
+DECL|function|dreamcast_consistent_alloc
 r_void
 op_star
-id|__pci_alloc_consistent
+id|dreamcast_consistent_alloc
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size
@@ -34,11 +36,27 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_int
 r_int
 id|buf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+op_logical_and
+id|dev-&gt;bus
+op_ne
+op_amp
+id|pci_bus_type
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -50,7 +68,12 @@ OG
 id|GAPSPCI_DMA_SIZE
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 id|buf
 op_assign
@@ -105,15 +128,15 @@ op_star
 id|buf
 suffix:semicolon
 )brace
-DECL|function|__pci_free_consistent
-r_void
-id|__pci_free_consistent
+DECL|function|dreamcast_consistent_free
+r_int
+id|dreamcast_consistent_free
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size
@@ -126,9 +149,26 @@ id|dma_addr_t
 id|dma_handle
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|dev
+op_logical_and
+id|dev-&gt;bus
+op_ne
+op_amp
+id|pci_bus_type
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 multiline_comment|/* XXX */
 id|gapspci_dma_used
 op_assign
+l_int|0
+suffix:semicolon
+r_return
 l_int|0
 suffix:semicolon
 )brace

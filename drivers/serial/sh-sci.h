@@ -36,6 +36,8 @@ DECL|macro|SH7760_SCIF2_IRQS
 mdefine_line|#define SH7760_SCIF2_IRQS { 76, 77, 79, 78 }
 DECL|macro|SH7300_SCIF0_IRQS
 mdefine_line|#define SH7300_SCIF0_IRQS {80,  80,  80,  80 }
+DECL|macro|SH73180_SCIF_IRQS
+mdefine_line|#define SH73180_SCIF_IRQS {80,  81,  83,  82 }
 DECL|macro|H8300H_SCI_IRQS0
 mdefine_line|#define H8300H_SCI_IRQS0 {52, 53, 54,   0 }
 DECL|macro|H8300H_SCI_IRQS1
@@ -70,6 +72,26 @@ DECL|macro|SCSCR_INIT
 macro_line|# define SCSCR_INIT(port)          0x30 /* TIE=0,RIE=0,TE=1,RE=1 */
 DECL|macro|SCI_AND_SCIF
 macro_line|# define SCI_AND_SCIF
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7705)
+DECL|macro|SCIF0
+macro_line|# define SCIF0&t;&t;0xA4400000
+DECL|macro|SCIF2
+macro_line|# define SCIF2&t;&t;0xA4410000
+DECL|macro|SCSMR_Ir
+macro_line|# define SCSMR_Ir &t;0xA44A0000
+DECL|macro|IRDA_SCIF
+macro_line|# define IRDA_SCIF &t;SCIF0
+DECL|macro|SCI_NPORTS
+macro_line|# define SCI_NPORTS 2
+DECL|macro|SCPCR
+macro_line|# define SCPCR 0xA4000116
+DECL|macro|SCPDR
+macro_line|# define SCPDR 0xA4000136
+multiline_comment|/* Set the clock source,&n; * SCIF2 (0xA4410000) -&gt; External clock, SCK pin used as clock input&n; * SCIF0 (0xA4400000) -&gt; Internal clock, SCK pin as serial clock output&n; */
+DECL|macro|SCSCR_INIT
+macro_line|# define SCSCR_INIT(port) (port-&gt;mapbase == SCIF2) ? 0xF3 : 0xF0
+DECL|macro|SCIF_ONLY
+macro_line|# define SCIF_ONLY
 macro_line|#elif defined(CONFIG_SH_RTS7751R2D)
 DECL|macro|SCI_NPORTS
 macro_line|# define SCI_NPORTS 1
@@ -120,6 +142,30 @@ DECL|macro|SCPDR
 macro_line|# define SCPDR  0xA4050136        /* 16 bit SCIF */
 DECL|macro|SCSCR_INIT
 macro_line|# define SCSCR_INIT(port)  0x0030 /* TIE=0,RIE=0,TE=1,RE=1 */
+DECL|macro|SCIF_ONLY
+macro_line|# define SCIF_ONLY
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH73180)
+DECL|macro|SCI_NPORTS
+macro_line|# define SCI_NPORTS 1
+DECL|macro|SCPDR
+macro_line|# define SCPDR  0xA4050138        /* 16 bit SCIF */
+DECL|macro|SCSPTR2
+macro_line|# define SCSPTR2 SCPDR
+DECL|macro|SCIF_ORER
+macro_line|# define SCIF_ORER 0x0001   /* overrun error bit */
+DECL|macro|SCSCR_INIT
+macro_line|# define SCSCR_INIT(port)  0x0038 /* TIE=0,RIE=0,TE=1,RE=1 */
+DECL|macro|SCIF_ONLY
+macro_line|# define SCIF_ONLY
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH4_202)
+DECL|macro|SCI_NPORTS
+macro_line|# define SCI_NPORTS 1
+DECL|macro|SCSPTR2
+macro_line|# define SCSPTR2 0xffe80020 /* 16 bit SCIF */
+DECL|macro|SCIF_ORER
+macro_line|# define SCIF_ORER 0x0001   /* overrun error bit */
+DECL|macro|SCSCR_INIT
+macro_line|# define SCSCR_INIT(port) 0x38 /* TIE=0,RIE=0,TE=1,RE=1,REIE=1 */
 DECL|macro|SCIF_ONLY
 macro_line|# define SCIF_ONLY
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
@@ -217,22 +263,22 @@ DECL|macro|SCI_ERRORS
 mdefine_line|#define SCI_ERRORS ( SCI_PER | SCI_FER | SCI_ORER)
 multiline_comment|/* SCxSR SCIF */
 DECL|macro|SCIF_ER
-mdefine_line|#define SCIF_ER    0x0080 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
+mdefine_line|#define SCIF_ER    0x0080 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
 DECL|macro|SCIF_TEND
-mdefine_line|#define SCIF_TEND  0x0040 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
+mdefine_line|#define SCIF_TEND  0x0040 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
 DECL|macro|SCIF_TDFE
-mdefine_line|#define SCIF_TDFE  0x0020 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
+mdefine_line|#define SCIF_TDFE  0x0020 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
 DECL|macro|SCIF_BRK
-mdefine_line|#define SCIF_BRK   0x0010 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
+mdefine_line|#define SCIF_BRK   0x0010 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
 DECL|macro|SCIF_FER
-mdefine_line|#define SCIF_FER   0x0008 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
+mdefine_line|#define SCIF_FER   0x0008 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
 DECL|macro|SCIF_PER
-mdefine_line|#define SCIF_PER   0x0004 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
+mdefine_line|#define SCIF_PER   0x0004 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
 DECL|macro|SCIF_RDF
-mdefine_line|#define SCIF_RDF   0x0002 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
+mdefine_line|#define SCIF_RDF   0x0002 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
 DECL|macro|SCIF_DR
-mdefine_line|#define SCIF_DR    0x0001 /* 7707 SCIF, 7709 SCIF, 7750 SCIF */
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
+mdefine_line|#define SCIF_DR    0x0001 /* 7705 SCIF, 7707 SCIF, 7709 SCIF, 7750 SCIF */
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 DECL|macro|SCIF_ORER
 mdefine_line|#define SCIF_ORER    0x0200
 DECL|macro|SCIF_ERRORS
@@ -283,7 +329,7 @@ DECL|macro|SCxSR_RDxF
 macro_line|# define SCxSR_RDxF(port)               SCIF_RDF
 DECL|macro|SCxSR_TDxE
 macro_line|# define SCxSR_TDxE(port)               SCIF_TDFE
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 DECL|macro|SCxSR_ORER
 macro_line|# define SCxSR_ORER(port)&t;&t;SCIF_ORER
 macro_line|#else
@@ -296,7 +342,7 @@ DECL|macro|SCxSR_PER
 macro_line|# define SCxSR_PER(port)&t;&t;SCIF_PER
 DECL|macro|SCxSR_BRK
 macro_line|# define SCxSR_BRK(port)&t;&t;SCIF_BRK
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 DECL|macro|SCxSR_RDxF_CLEAR
 macro_line|# define SCxSR_RDxF_CLEAR(port)         (sci_in(port,SCxSR)&amp;0xfffc)
 DECL|macro|SCxSR_ERROR_CLEAR
@@ -306,6 +352,7 @@ macro_line|# define SCxSR_TDxE_CLEAR(port)         (sci_in(port,SCxSR)&amp;0xffd
 DECL|macro|SCxSR_BREAK_CLEAR
 macro_line|# define SCxSR_BREAK_CLEAR(port)        (sci_in(port,SCxSR)&amp;0xffe3)
 macro_line|#else
+multiline_comment|/* SH7705 can also use this, clearing is same between 7705 and 7709 and 7300 */
 DECL|macro|SCxSR_RDxF_CLEAR
 macro_line|# define SCxSR_RDxF_CLEAR(port)&t;&t;0x00fc
 DECL|macro|SCxSR_ERROR_CLEAR
@@ -423,7 +470,7 @@ mdefine_line|#define CPU_SCIF_FNS(name, scif_offset, scif_size)&t;&t;&t;&t;&bsla
 DECL|macro|CPU_SCI_FNS
 mdefine_line|#define CPU_SCI_FNS(name, sci_offset, sci_size)&t;&t;&t;&t;&bslash;&n;  static inline unsigned int sci_##name##_in(struct uart_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_IN(sci_size, sci_offset);&t;&t; &t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct uart_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_OUT(sci_size, sci_offset, value);&t;&t;&t;&t;&bslash;&n;  }
 macro_line|#ifdef CONFIG_CPU_SH3
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 DECL|macro|SCIF_FNS
 mdefine_line|#define SCIF_FNS(name, scif_offset, scif_size) &bslash;&n;  CPU_SCIF_FNS(name, scif_offset, scif_size)
 macro_line|#else
@@ -443,7 +490,7 @@ mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset
 DECL|macro|SCIF_FNS
 mdefine_line|#define SCIF_FNS(name, sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size) &bslash;&n;  CPU_SCIF_FNS(name, sh4_scif_offset, sh4_scif_size)
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 id|SCIF_FNS
 c_func
 (paren
@@ -1029,7 +1076,69 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751)
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7705)
+DECL|function|sci_rxd_in
+r_static
+r_inline
+r_int
+id|sci_rxd_in
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|port-&gt;mapbase
+op_eq
+id|SCIF0
+)paren
+r_return
+id|ctrl_inb
+c_func
+(paren
+id|SCPDR
+)paren
+op_amp
+l_int|0x04
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* IRDA */
+r_if
+c_cond
+(paren
+id|port-&gt;mapbase
+op_eq
+id|SCIF2
+)paren
+r_return
+id|ctrl_inb
+c_func
+(paren
+id|SCPDR
+)paren
+op_amp
+l_int|0x10
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* SCIF */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || &bslash;&n;      defined(CONFIG_CPU_SUBTYPE_SH7751) || &bslash;&n;      defined(CONFIG_CPU_SUBTYPE_SH4_202)
 DECL|function|sci_rxd_in
 r_static
 r_inline
@@ -1216,6 +1325,36 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH73180)
+DECL|function|sci_rxd_in
+r_static
+r_inline
+r_int
+id|sci_rxd_in
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+)paren
+(brace
+r_return
+id|ctrl_inb
+c_func
+(paren
+id|SCPDR
+)paren
+op_amp
+l_int|0x01
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* SCIF0 */
+)brace
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 DECL|function|sci_rxd_in
 r_static
@@ -1355,6 +1494,9 @@ mdefine_line|#define PCLK           (current_cpu_data.module_clock)
 macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
 DECL|macro|SCBRR_VALUE
 mdefine_line|#define SCBRR_VALUE(bps) ((PCLK+16*bps)/(16*bps)-1)
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7705)
+DECL|macro|SCBRR_VALUE
+mdefine_line|#define SCBRR_VALUE(bps) (((PCLK*2)+16*bps)/(32*bps)-1)
 macro_line|#elif !defined(__H8300H__) &amp;&amp; !defined(__H8300S__)
 DECL|macro|SCBRR_VALUE
 mdefine_line|#define SCBRR_VALUE(bps) ((PCLK+16*bps)/(32*bps)-1)

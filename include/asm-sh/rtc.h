@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_RTC_H
 DECL|macro|_ASM_RTC_H
 mdefine_line|#define _ASM_RTC_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/cpu/rtc.h&gt;
 r_extern
@@ -79,5 +80,6 @@ DECL|macro|RCR2_RESET
 mdefine_line|#define RCR2_RESET&t;0x02&t;/* Reset bit               */
 DECL|macro|RCR2_START
 mdefine_line|#define RCR2_START&t;0x01&t;/* Start bit               */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_RTC_H */
 eof

@@ -56,7 +56,7 @@ id|address
 op_minus
 id|vma-&gt;vm_start
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -74,7 +74,7 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket

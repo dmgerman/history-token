@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/fcntl.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -291,7 +292,7 @@ c_cond
 (paren
 id|orig_start
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket
@@ -354,7 +355,7 @@ c_cond
 (paren
 id|newfd
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket
@@ -605,7 +606,7 @@ c_cond
 (paren
 id|newfd
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket
@@ -1496,6 +1497,7 @@ r_int
 id|sys_fcntl
 c_func
 (paren
+r_int
 r_int
 id|fd
 comma

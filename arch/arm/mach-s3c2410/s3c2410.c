@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2410.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to kernel v2.6&n; *     18-Jan-2004 BJD  Added serial port configuration&n; *     21-Aug-2004 BJD  Added new struct s3c2410_board handler&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2410.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to kernel v2.6&n; *     18-Jan-2004 BJD  Added serial port configuration&n; *     21-Aug-2004 BJD  Added new struct s3c2410_board handler&n; *     28-Sep-2004 BJD  Updates for new serial port bits&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;cpu.h&quot;
+macro_line|#include &quot;clock.h&quot;
 DECL|variable|s3c2410_clock_tick_rate
 r_int
 id|s3c2410_clock_tick_rate
@@ -34,22 +35,7 @@ id|s3c2410_uartcfg
 op_star
 id|s3c2410_uartcfgs
 suffix:semicolon
-multiline_comment|/* clock info */
-DECL|variable|s3c2410_fclk
-r_int
-r_int
-id|s3c2410_fclk
-suffix:semicolon
-DECL|variable|s3c2410_hclk
-r_int
-r_int
-id|s3c2410_hclk
-suffix:semicolon
-DECL|variable|s3c2410_pclk
-r_int
-r_int
-id|s3c2410_pclk
-suffix:semicolon
+multiline_comment|/* Initial IO mappings */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -392,6 +378,95 @@ op_amp
 id|s3c_uart2
 )brace
 suffix:semicolon
+multiline_comment|/* store our uart devices for the serial driver console */
+DECL|variable|s3c2410_uart_devices
+r_struct
+id|platform_device
+op_star
+id|s3c2410_uart_devices
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|variable|s3c2410_uart_count
+r_static
+r_int
+id|s3c2410_uart_count
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* uart registration process */
+DECL|function|s3c2410_init_uarts
+r_void
+id|__init
+id|s3c2410_init_uarts
+c_func
+(paren
+r_struct
+id|s3c2410_uartcfg
+op_star
+id|cfg
+comma
+r_int
+id|no
+)paren
+(brace
+r_struct
+id|platform_device
+op_star
+id|platdev
+suffix:semicolon
+r_int
+id|uart
+suffix:semicolon
+id|s3c2410_uartcfgs
+op_assign
+id|cfg
+suffix:semicolon
+multiline_comment|/* compatibility */
+r_for
+c_loop
+(paren
+id|uart
+op_assign
+l_int|0
+suffix:semicolon
+id|uart
+OL
+id|no
+suffix:semicolon
+id|uart
+op_increment
+comma
+id|cfg
+op_increment
+)paren
+(brace
+id|platdev
+op_assign
+id|uart_devices
+(braket
+id|cfg-&gt;hwport
+)braket
+suffix:semicolon
+id|s3c2410_uart_devices
+(braket
+id|uart
+)braket
+op_assign
+id|platdev
+suffix:semicolon
+id|platdev-&gt;dev.platform_data
+op_assign
+id|cfg
+suffix:semicolon
+)brace
+id|s3c2410_uart_count
+op_assign
+id|uart
+suffix:semicolon
+)brace
+multiline_comment|/* s3c2410_map_io&n; *&n; * register the standard cpu IO areas, and any passed in from the&n; * machine specific initialisation.&n; *&n; * this function also sets the initial clock frequencies from the&n; * settings passed in&n;*/
 DECL|function|s3c2410_map_io
 r_void
 id|__init
@@ -432,18 +507,8 @@ comma
 id|mach_size
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;machine_initted %p,%d&bslash;n&quot;
-comma
-id|mach_desc
-comma
-id|mach_size
-)paren
-suffix:semicolon
 multiline_comment|/* now we&squot;ve got our machine bits initialised, work out what&n;&t; * clocks we&squot;ve got */
-id|s3c2410_fclk
+id|s3c24xx_fclk
 op_assign
 id|s3c2410_get_pll
 c_func
@@ -454,9 +519,7 @@ c_func
 id|S3C2410_MPLLCON
 )paren
 comma
-l_int|12
-op_star
-id|MHZ
+id|s3c24xx_xtal
 )paren
 suffix:semicolon
 id|tmp
@@ -467,11 +530,10 @@ c_func
 id|S3C2410_CLKDIVN
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;tmp=%08x, fclk=%d&bslash;n&quot;, tmp, s3c2410_fclk);
 multiline_comment|/* work out clock scalings */
-id|s3c2410_hclk
+id|s3c24xx_hclk
 op_assign
-id|s3c2410_fclk
+id|s3c24xx_fclk
 op_div
 (paren
 (paren
@@ -486,9 +548,9 @@ suffix:colon
 l_int|1
 )paren
 suffix:semicolon
-id|s3c2410_pclk
+id|s3c24xx_pclk
 op_assign
-id|s3c2410_hclk
+id|s3c24xx_hclk
 op_div
 (paren
 (paren
@@ -512,19 +574,19 @@ comma
 id|print_mhz
 c_func
 (paren
-id|s3c2410_fclk
+id|s3c24xx_fclk
 )paren
 comma
 id|print_mhz
 c_func
 (paren
-id|s3c2410_hclk
+id|s3c24xx_hclk
 )paren
 comma
 id|print_mhz
 c_func
 (paren
-id|s3c2410_pclk
+id|s3c24xx_pclk
 )paren
 )paren
 suffix:semicolon
@@ -550,25 +612,6 @@ id|b
 id|board
 op_assign
 id|b
-suffix:semicolon
-)brace
-DECL|function|s3c2410_init_uarts
-r_void
-id|s3c2410_init_uarts
-c_func
-(paren
-r_struct
-id|s3c2410_uartcfg
-op_star
-id|cfg
-comma
-r_int
-id|no
-)paren
-(brace
-id|s3c2410_uartcfgs
-op_assign
-id|cfg
 suffix:semicolon
 )brace
 DECL|function|s3c2410_init

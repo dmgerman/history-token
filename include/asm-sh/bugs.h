@@ -80,7 +80,7 @@ id|CPU_SH7750
 dot
 dot
 dot
-id|CPU_ST40GX1
+id|CPU_SH4_501
 suffix:colon
 op_star
 id|p

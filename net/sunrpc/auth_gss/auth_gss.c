@@ -996,6 +996,7 @@ id|uid
 comma
 r_sizeof
 (paren
+op_star
 id|uid
 )paren
 )paren

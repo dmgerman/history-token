@@ -506,14 +506,14 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
-id|ppc_irq_dispatch_handler
+id|__do_IRQ
 c_func
 (paren
-id|regs
-comma
 id|NR_SIU_INTS
 op_plus
 id|irq
+comma
+id|regs
 )paren
 suffix:semicolon
 r_return

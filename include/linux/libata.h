@@ -609,6 +609,11 @@ r_int
 r_int
 id|n_ports
 suffix:semicolon
+DECL|member|hard_port_no
+r_int
+r_int
+id|hard_port_no
+suffix:semicolon
 DECL|member|pio_mask
 r_int
 r_int
@@ -955,6 +960,12 @@ r_int
 id|port_no
 suffix:semicolon
 multiline_comment|/* unique port #; from zero */
+DECL|member|hard_port_no
+r_int
+r_int
+id|hard_port_no
+suffix:semicolon
+multiline_comment|/* hardware port #; from zero */
 DECL|member|prd
 r_struct
 id|ata_prd

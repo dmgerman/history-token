@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;linux/mm/mlock.c&n; *&n; *  (C) Copyright 1995 Linus Torvalds&n; *  (C) Copyright 2002 Christoph Hellwig&n; */
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 DECL|function|mlock_fixup
 r_static
 r_int
@@ -460,7 +461,7 @@ id|current-&gt;mm-&gt;locked_vm
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -747,7 +748,7 @@ id|current-&gt;mm-&gt;mmap_sem
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -892,7 +893,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket

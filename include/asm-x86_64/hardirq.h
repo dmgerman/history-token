@@ -5,36 +5,44 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
+macro_line|#include &lt;asm/apic.h&gt;
 DECL|macro|__ARCH_IRQ_STAT
 mdefine_line|#define __ARCH_IRQ_STAT 1
 multiline_comment|/* Generate a lvalue for a pda member. Should fix softirq.c instead to use&n;   special access macros. This would generate better code. */
 DECL|macro|__IRQ_STAT
 mdefine_line|#define __IRQ_STAT(cpu,member) (read_pda(me)-&gt;member)
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
-multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-23 are the hardirq count (max # of hardirqs: 256)&n; *&n; * - ( bit 26 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * HARDIRQ_MASK: 0x0000ff00&n; * SOFTIRQ_MASK: 0x00ff0000&n; */
-DECL|macro|PREEMPT_BITS
-mdefine_line|#define PREEMPT_BITS&t;8
-DECL|macro|SOFTIRQ_BITS
-mdefine_line|#define SOFTIRQ_BITS&t;8
-DECL|macro|HARDIRQ_BITS
-mdefine_line|#define HARDIRQ_BITS&t;8
-DECL|macro|PREEMPT_SHIFT
-mdefine_line|#define PREEMPT_SHIFT&t;0
-DECL|macro|SOFTIRQ_SHIFT
-mdefine_line|#define SOFTIRQ_SHIFT&t;(PREEMPT_SHIFT + PREEMPT_BITS)
-DECL|macro|HARDIRQ_SHIFT
-mdefine_line|#define HARDIRQ_SHIFT&t;(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * space for potentially all IRQ sources in the system&n; * nesting on a single CPU:&n; */
-macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
-macro_line|# error HARDIRQ_BITS is too low!
+multiline_comment|/*&n; * &squot;what should we do if we get a hw irq event on an illegal vector&squot;.&n; * each architecture has to answer this themselves.&n; */
+DECL|function|ack_bad_irq
+r_static
+r_inline
+r_void
+id|ack_bad_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86
+id|printk
+c_func
+(paren
+l_string|&quot;unexpected IRQ trap at vector %02x&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+multiline_comment|/*&n;&t; * Currently unexpected vectors happen only on SMP and APIC.&n;&t; * We _must_ ack these because every local APIC has only N&n;&t; * irq slots per priority level, and a &squot;hanging, unacked&squot; IRQ&n;&t; * holds up an irq slot - in excessive cases (when multiple&n;&t; * unexpected vectors occur) that might lock up the APIC&n;&t; * completely.&n;&t; */
+id|ack_APIC_irq
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
-DECL|macro|nmi_enter
-mdefine_line|#define nmi_enter()&t;&t;(irq_enter())
-DECL|macro|nmi_exit
-mdefine_line|#define nmi_exit()&t;&t;(preempt_count() -= HARDIRQ_OFFSET)
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;&t;&t;&t;do_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif
+)brace
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

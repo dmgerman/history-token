@@ -598,6 +598,12 @@ op_star
 )paren
 id|regs
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_int
+r_int
+id|msr
+suffix:semicolon
+macro_line|#endif
 r_int
 id|i
 suffix:semicolon
@@ -740,6 +746,20 @@ op_amp
 id|sc-&gt;v_regs
 )paren
 suffix:semicolon
+id|err
+op_or_assign
+id|__get_user
+c_func
+(paren
+id|msr
+comma
+op_amp
+id|sc-&gt;gp_regs
+(braket
+id|PT_MSR
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -757,7 +777,7 @@ op_ne
 l_int|0
 op_logical_and
 (paren
-id|regs-&gt;msr
+id|msr
 op_amp
 id|MSR_VEC
 )paren
@@ -790,12 +810,16 @@ id|current-&gt;thread.used_vr
 id|memset
 c_func
 (paren
-op_amp
 id|current-&gt;thread.vr
 comma
 l_int|0
 comma
 l_int|33
+op_star
+r_sizeof
+(paren
+id|vector128
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Always get VRSAVE back */
@@ -831,6 +855,16 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifndef CONFIG_SMP
+id|last_task_used_math
+op_assign
+l_int|NULL
+suffix:semicolon
+id|last_task_used_altivec
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Force reload of FP/VEC */
 id|regs-&gt;msr
 op_and_assign
@@ -1832,7 +1866,10 @@ op_or_assign
 id|put_user
 c_func
 (paren
-l_int|0
+id|regs-&gt;gpr
+(braket
+l_int|1
+)braket
 comma
 (paren
 r_int

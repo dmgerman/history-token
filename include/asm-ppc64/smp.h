@@ -60,12 +60,6 @@ mdefine_line|#define PPC_MSG_MIGRATE_TASK    2
 macro_line|#endif
 DECL|macro|PPC_MSG_DEBUGGER_BREAK
 mdefine_line|#define PPC_MSG_DEBUGGER_BREAK  3
-r_extern
-id|cpumask_t
-id|irq_affinity
-(braket
-)braket
-suffix:semicolon
 r_void
 id|smp_init_iSeries
 c_func

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * include/asm-sh/watchdog.h&n; *&n; * Copyright (C) 2002
 macro_line|#ifndef __ASM_SH_WATCHDOG_H
 DECL|macro|__ASM_SH_WATCHDOG_H
 mdefine_line|#define __ASM_SH_WATCHDOG_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/cpu/watchdog.h&gt;
@@ -140,5 +141,6 @@ id|WTCSR
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_WATCHDOG_H */
 eof

@@ -38,6 +38,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2799,20 +2800,16 @@ id|initial_delay
 OG
 l_int|0
 )paren
-(brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|initial_delay
 )paren
+)paren
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -2976,18 +2973,10 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 id|memset
@@ -3311,18 +3300,10 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 id|memset
@@ -4052,15 +4033,10 @@ op_decrement
 suffix:semicolon
 )brace
 macro_line|#endif
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-(paren
-id|HZ
+l_int|1000
 op_div
 id|OSST_POLL_PER_SEC
 )paren
@@ -7501,18 +7477,10 @@ l_int|8
 )paren
 (brace
 multiline_comment|/* in the process of becoming ready */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 r_continue

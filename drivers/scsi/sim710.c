@@ -8,6 +8,9 @@ macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
+macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 macro_line|#include &quot;53c700.h&quot;
 multiline_comment|/* Must be enough for both EISA and MCA */
 DECL|macro|MAX_SLOTS
@@ -464,6 +467,12 @@ op_amp
 id|sim710_driver_template
 comma
 id|hostdata
+comma
+id|dev
+comma
+id|irq
+comma
+id|scsi_id
 )paren
 )paren
 op_eq
@@ -481,74 +490,14 @@ r_goto
 id|out_release
 suffix:semicolon
 )brace
-id|host-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
-id|host-&gt;this_id
-op_assign
-id|scsi_id
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|irq
-comma
-id|NCR_700_intr
-comma
-id|SA_SHIRQ
-comma
-l_string|&quot;sim710&quot;
-comma
-id|host
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;sim710: irq problem with %d, detaching&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-r_goto
-id|out_unregister
-suffix:semicolon
-)brace
-id|scsi_add_host
-c_func
-(paren
-id|host
-comma
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* XXX handle failure */
 id|scsi_scan_host
 c_func
 (paren
 id|host
 )paren
 suffix:semicolon
-id|hostdata-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|out_unregister
-suffix:colon
-id|scsi_host_put
-c_func
-(paren
-id|host
-)paren
 suffix:semicolon
 id|out_release
 suffix:colon

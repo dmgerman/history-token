@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/arch/map.h&gt;
 macro_line|#include &lt;asm/arch/regs-timer.h&gt;
 macro_line|#include &lt;asm/arch/regs-irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &quot;clock.h&quot;
 DECL|variable|timer_startval
 r_static
 r_int
@@ -279,7 +280,7 @@ c_func
 (brace
 id|timer_ticks_usec
 op_assign
-id|s3c2410_pclk
+id|s3c24xx_pclk
 op_div
 (paren
 l_int|1000
@@ -322,7 +323,7 @@ suffix:semicolon
 id|tcnt
 op_assign
 (paren
-id|s3c2410_pclk
+id|s3c24xx_pclk
 op_div
 l_int|6
 )paren

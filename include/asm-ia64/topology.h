@@ -18,9 +18,6 @@ mdefine_line|#define parent_node(nid) (nid)
 multiline_comment|/*&n; * Returns the number of the first CPU on Node &squot;node&squot;.&n; */
 DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node) (__ffs(node_to_cpumask(node)))
-multiline_comment|/* Cross-node load balancing interval. */
-DECL|macro|NODE_BALANCE_RATE
-mdefine_line|#define NODE_BALANCE_RATE 10
 r_void
 id|build_cpu_to_node_map
 c_func
@@ -28,6 +25,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* sched_domains SD_NODE_INIT for IA64 NUMA machines */
+DECL|macro|SD_NODE_INIT
+mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 80,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 320,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 320,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_LOAD_BALANCE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 10,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#include &lt;asm-generic/topology.h&gt;
 macro_line|#endif /* _ASM_IA64_TOPOLOGY_H */

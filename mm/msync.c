@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * Called with mm-&gt;page_table_lock held to protect against other&n; * threads/the swapper from ripping pte&squot;s out from under us.&n; */

@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 multiline_comment|/*&n; * This is needed for the following functions:&n; *  - try_to_release_page&n; *  - block_invalidatepage&n; *  - generic_osync_inode&n; *&n; * FIXME: remove all knowledge of the buffer layer from the core VM&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt; /* for generic_osync_inode */
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -6726,7 +6727,7 @@ r_int
 r_int
 id|limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket

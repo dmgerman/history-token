@@ -7728,7 +7728,7 @@ c_cond
 (paren
 id|size
 OG
-id|task-&gt;rlim
+id|task-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -7737,7 +7737,7 @@ id|rlim_cur
 )paren
 r_return
 op_minus
-id|ENOMEM
+id|EAGAIN
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do the easy to undo allocations first.&n; &t; *&n;&t; * pfm_rvmalloc(), clears the buffer, so there is no leak&n;&t; */
 id|smpl_buf
@@ -8767,9 +8767,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;state
+id|task-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 (brace
 id|DPRINT
