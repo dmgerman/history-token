@@ -175,7 +175,11 @@ mdefine_line|#define IPS_REMOVE_HOST(shost)
 DECL|macro|IPS_SCSI_SET_DEVICE
 mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_pci_device(sh, (ha)-&gt;pcidev)
 DECL|macro|IPS_PRINTK
-mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            printk(level &quot;%s %s:&quot; format , (pcidev)-&gt;driver-&gt;name ,     &bslash;&n;            pci_name(pcidev) , ## arg)
+mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            printk(level &quot;%s %s:&quot; format , &quot;ips&quot; ,     &bslash;&n;            (pcidev)-&gt;slot_name , ## arg)
+DECL|macro|scsi_host_alloc
+mdefine_line|#define scsi_host_alloc(sh,size)         scsi_register(sh,size)
+DECL|macro|scsi_host_put
+mdefine_line|#define scsi_host_put(sh)             scsi_unregister(sh)
 macro_line|#else
 DECL|macro|IPS_REGISTER_HOSTS
 mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
@@ -198,29 +202,16 @@ macro_line|#ifndef min
 DECL|macro|min
 mdefine_line|#define min(x,y) ((x) &lt; (y) ? x : y)
 macro_line|#endif
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)         ((a &gt;&gt; 16) &gt;&gt; 16)
 DECL|macro|pci_dma_lo32
 mdefine_line|#define pci_dma_lo32(a)         (a &amp; 0xffffffff)
 macro_line|#if (BITS_PER_LONG &gt; 32) || (defined CONFIG_HIGHMEM64G &amp;&amp; defined IPS_HIGHIO)
 DECL|macro|IPS_ENABLE_DMA64
 mdefine_line|#define IPS_ENABLE_DMA64        (1)
-DECL|macro|pci_dma_hi32
-mdefine_line|#define pci_dma_hi32(a)         (a &gt;&gt; 32)
 macro_line|#else
 DECL|macro|IPS_ENABLE_DMA64
 mdefine_line|#define IPS_ENABLE_DMA64        (0)
-DECL|macro|pci_dma_hi32
-mdefine_line|#define pci_dma_hi32(a)         (0)
-macro_line|#endif
-macro_line|#if defined(__ia64__)
-DECL|macro|IPS_ATOMIC_GFP
-mdefine_line|#define IPS_ATOMIC_GFP&t;(GFP_DMA | GFP_ATOMIC)
-DECL|macro|IPS_INIT_GFP
-mdefine_line|#define IPS_INIT_GFP&t;GFP_DMA
-macro_line|#else
-DECL|macro|IPS_ATOMIC_GFP
-mdefine_line|#define IPS_ATOMIC_GFP    GFP_ATOMIC
-DECL|macro|IPS_INIT_GFP
-mdefine_line|#define IPS_INIT_GFP&t;GFP_KERNEL
 macro_line|#endif
 multiline_comment|/*&n;    * Adapter address map equates&n;    */
 DECL|macro|IPS_REG_HISR
@@ -688,6 +679,27 @@ mdefine_line|#define IPS_EPOCH_YEAR               1970
 multiline_comment|/*&n;    * Scsi_Host Template&n;    */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 r_static
+r_int
+id|ips_proc24_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_static
 r_void
 id|ips_select_queue_depth
 c_func
@@ -719,6 +731,28 @@ id|geom
 )paren
 suffix:semicolon
 macro_line|#else
+r_int
+id|ips_proc_info
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 r_static
 r_int
 id|ips_biosparam
@@ -3389,11 +3423,16 @@ r_uint16
 id|subdevice_id
 suffix:semicolon
 multiline_comment|/* Subsystem device ID        */
-DECL|member|ioctl_order
-r_uint8
-id|ioctl_order
+DECL|member|ioctl_len
+r_int
+id|ioctl_len
 suffix:semicolon
-multiline_comment|/* Number of pages in ioctl   */
+multiline_comment|/* size of ioctl buffer       */
+DECL|member|ioctl_busaddr
+id|dma_addr_t
+id|ioctl_busaddr
+suffix:semicolon
+multiline_comment|/* dma address of ioctl buffer*/
 DECL|member|bios_version
 r_uint8
 id|bios_version
@@ -3447,16 +3486,26 @@ op_star
 id|flash_data
 suffix:semicolon
 multiline_comment|/* Save Area for flash data   */
-DECL|member|flash_order
-id|u8
-id|flash_order
+DECL|member|flash_len
+r_int
+id|flash_len
 suffix:semicolon
-multiline_comment|/* Save Area for flash size order */
+multiline_comment|/* length of flash buffer     */
 DECL|member|flash_datasize
 id|u32
 id|flash_datasize
 suffix:semicolon
 multiline_comment|/* Save Area for flash data size */
+DECL|member|flash_busaddr
+id|dma_addr_t
+id|flash_busaddr
+suffix:semicolon
+multiline_comment|/* dma address of flash buffer*/
+DECL|member|enq_busaddr
+id|dma_addr_t
+id|enq_busaddr
+suffix:semicolon
+multiline_comment|/* dma address of enq struct  */
 DECL|member|requires_esl
 r_uint8
 id|requires_esl
@@ -3748,21 +3797,29 @@ multiline_comment|/* Do not modify the next line; it&squot;s what SED is looking
 multiline_comment|/* Version Info                                                                */
 multiline_comment|/*************************************************************************&n;*&n;* VERSION.H -- version numbers and copyright notices in various formats&n;*&n;*************************************************************************/
 DECL|macro|IPS_VER_MAJOR
-mdefine_line|#define IPS_VER_MAJOR 5
+mdefine_line|#define IPS_VER_MAJOR 6
 DECL|macro|IPS_VER_MAJOR_STRING
-mdefine_line|#define IPS_VER_MAJOR_STRING &quot;5&quot;
+mdefine_line|#define IPS_VER_MAJOR_STRING &quot;6&quot;
 DECL|macro|IPS_VER_MINOR
-mdefine_line|#define IPS_VER_MINOR 99
+mdefine_line|#define IPS_VER_MINOR 10
 DECL|macro|IPS_VER_MINOR_STRING
-mdefine_line|#define IPS_VER_MINOR_STRING &quot;99&quot;
+mdefine_line|#define IPS_VER_MINOR_STRING &quot;10&quot;
 DECL|macro|IPS_VER_BUILD
-mdefine_line|#define IPS_VER_BUILD 00
+mdefine_line|#define IPS_VER_BUILD 90
 DECL|macro|IPS_VER_BUILD_STRING
-mdefine_line|#define IPS_VER_BUILD_STRING &quot;00&quot;
+mdefine_line|#define IPS_VER_BUILD_STRING &quot;90&quot;
 DECL|macro|IPS_VER_STRING
-mdefine_line|#define IPS_VER_STRING &quot;5.99.00&quot;
+mdefine_line|#define IPS_VER_STRING &quot;6.10.90&quot;
+DECL|macro|IPS_RELEASE_ID
+mdefine_line|#define IPS_RELEASE_ID 0x00010000
 DECL|macro|IPS_BUILD_IDENT
-mdefine_line|#define IPS_BUILD_IDENT 1132
+mdefine_line|#define IPS_BUILD_IDENT 364
+DECL|macro|IPS_LEGALCOPYRIGHT_STRING
+mdefine_line|#define IPS_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2003. All Rights Reserved.&quot;
+DECL|macro|IPS_ADAPTECCOPYRIGHT_STRING
+mdefine_line|#define IPS_ADAPTECCOPYRIGHT_STRING &quot;(c) Copyright Adaptec, Inc. 2002 to present. All Rights Reserved.&quot;
+DECL|macro|IPS_NT_LEGALCOPYRIGHT_STRING
+mdefine_line|#define IPS_NT_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2003.&quot;
 multiline_comment|/* Version numbers for various adapters */
 DECL|macro|IPS_VER_SERVERAID1
 mdefine_line|#define IPS_VER_SERVERAID1 &quot;2.25.01&quot;
@@ -3771,17 +3828,17 @@ mdefine_line|#define IPS_VER_SERVERAID2 &quot;2.88.13&quot;
 DECL|macro|IPS_VER_NAVAJO
 mdefine_line|#define IPS_VER_NAVAJO &quot;2.88.13&quot;
 DECL|macro|IPS_VER_SERVERAID3
-mdefine_line|#define IPS_VER_SERVERAID3 &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SERVERAID3 &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SERVERAID4H
-mdefine_line|#define IPS_VER_SERVERAID4H &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SERVERAID4H &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SERVERAID4MLx
-mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SARASOTA
-mdefine_line|#define IPS_VER_SARASOTA &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SARASOTA &quot;6.10.24&quot;
 DECL|macro|IPS_VER_MARCO
-mdefine_line|#define IPS_VER_MARCO &quot;0.00.00&quot;
+mdefine_line|#define IPS_VER_MARCO &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SEBRING
-mdefine_line|#define IPS_VER_SEBRING &quot;0.00.00&quot;
+mdefine_line|#define IPS_VER_SEBRING &quot;6.10.24&quot;
 multiline_comment|/* Compatability IDs for various adapters */
 DECL|macro|IPS_COMPAT_UNKNOWN
 mdefine_line|#define IPS_COMPAT_UNKNOWN &quot;&quot;
@@ -3796,27 +3853,27 @@ mdefine_line|#define IPS_COMPAT_NAVAJO  &quot;2.88.13&quot;
 DECL|macro|IPS_COMPAT_KIOWA
 mdefine_line|#define IPS_COMPAT_KIOWA &quot;2.88.13&quot;
 DECL|macro|IPS_COMPAT_SERVERAID3H
-mdefine_line|#define IPS_COMPAT_SERVERAID3H  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID3H  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID3L
-mdefine_line|#define IPS_COMPAT_SERVERAID3L  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID3L  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4H
-mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4M
-mdefine_line|#define IPS_COMPAT_SERVERAID4M  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4M  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4L
-mdefine_line|#define IPS_COMPAT_SERVERAID4L  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4L  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4Mx
-mdefine_line|#define IPS_COMPAT_SERVERAID4Mx &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4Mx &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4Lx
-mdefine_line|#define IPS_COMPAT_SERVERAID4Lx &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4Lx &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SARASOTA
-mdefine_line|#define IPS_COMPAT_SARASOTA     &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SARASOTA     &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_MARCO
-mdefine_line|#define IPS_COMPAT_MARCO        &quot;SA000&quot;
+mdefine_line|#define IPS_COMPAT_MARCO        &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SEBRING
-mdefine_line|#define IPS_COMPAT_SEBRING      &quot;SA000&quot;
+mdefine_line|#define IPS_COMPAT_SEBRING      &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_BIOS
-mdefine_line|#define IPS_COMPAT_BIOS &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_BIOS &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_MAX_ADAPTER_TYPE
 mdefine_line|#define IPS_COMPAT_MAX_ADAPTER_TYPE 16
 DECL|macro|IPS_COMPAT_ID_LENGTH

@@ -22446,45 +22446,12 @@ comma
 l_string|&quot;Removing instance&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|host
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;no host allocated&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|scsi_remove_host
 c_func
 (paren
 id|host
 )paren
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;scsi_remove_host failed&bslash;n&quot;
-)paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|host_release
 c_func
 (paren
