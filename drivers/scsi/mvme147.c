@@ -26,7 +26,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|mvme147_intr
 r_static
-r_void
+id|irqreturn_t
 id|mvme147_intr
 (paren
 r_int
@@ -60,6 +60,9 @@ op_assign
 l_int|0x89
 suffix:semicolon
 multiline_comment|/* Ack and enable ints */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|dma_setup
 r_static

@@ -33,7 +33,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|a3000_intr
 r_static
-r_void
+id|irqreturn_t
 id|a3000_intr
 (paren
 r_int
@@ -76,6 +76,7 @@ id|ISTR_INT_P
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -108,8 +109,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
-r_else
 id|printk
 c_func
 (paren
@@ -117,6 +120,9 @@ l_string|&quot;Non-serviced A3000 SCSI-interrupt? ISTR = %02x&bslash;n&quot;
 comma
 id|status
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 DECL|function|dma_setup

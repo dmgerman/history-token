@@ -3754,7 +3754,7 @@ macro_line|#endif /* REAL_DMA */
 multiline_comment|/*&n; * Function : void NCR5380_intr (int irq)&n; * &n; * Purpose : handle interrupts, reestablishing I_T_L or I_T_L_Q nexuses&n; *&t;from the disconnected queue, and restarting NCR5380_main() &n; *&t;as required.&n; *&n; * Inputs : int irq, irq that caused this interrupt.&n; *&n; */
 DECL|function|NCR5380_intr
 r_static
-r_void
+id|irqreturn_t
 id|NCR5380_intr
 (paren
 r_int
@@ -3781,6 +3781,10 @@ r_int
 id|done
 op_assign
 l_int|1
+comma
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_char
@@ -4052,6 +4056,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* if !(SELECTION || PARITY) */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/* BASR &amp; IRQ */
 r_else
@@ -4112,6 +4120,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef NCR5380_STATS
 DECL|function|collect_stats
