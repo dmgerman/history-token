@@ -2949,6 +2949,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* supports nop auto-poll */
+DECL|member|sg_mapped
+r_int
+id|sg_mapped
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* sg_table and sg_nents are ready */
 DECL|member|gendev
 r_struct
 id|device
