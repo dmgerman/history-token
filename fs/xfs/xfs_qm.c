@@ -3430,7 +3430,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;UQUOTA busy vp=0x%x count=%d&bslash;n&quot;
+l_string|&quot;UQUOTA busy vp=0x%x count=%d&quot;
 comma
 id|vp
 comma
@@ -3486,7 +3486,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;GQUOTA busy vp=0x%x count=%d&bslash;n&quot;
+l_string|&quot;GQUOTA busy vp=0x%x count=%d&quot;
 comma
 id|vp
 comma

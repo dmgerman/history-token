@@ -690,11 +690,6 @@ comma
 id|vp
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 id|read_unlock
 c_func

@@ -1739,7 +1739,7 @@ multiline_comment|/* Linux XFS shouldn&squot;t generate totally zeroed logs -&n;
 id|xlog_warn
 c_func
 (paren
-l_string|&quot;XFS: totally zeroed log&bslash;n&quot;
+l_string|&quot;XFS: totally zeroed log&quot;
 )paren
 suffix:semicolon
 )brace
@@ -11775,7 +11775,7 @@ c_func
 (paren
 id|CE_DEBUG
 comma
-l_string|&quot;XFS: LogR this is a LogV2 filesystem&bslash;n&quot;
+l_string|&quot;XFS: LogR this is a LogV2 filesystem&quot;
 )paren
 suffix:semicolon
 )brace
@@ -13837,7 +13837,7 @@ c_func
 (paren
 id|CE_DEBUG
 comma
-l_string|&quot;!Ending clean XFS mount for filesystem: %s&bslash;n&quot;
+l_string|&quot;!Ending clean XFS mount for filesystem: %s&quot;
 comma
 id|log-&gt;l_mp-&gt;m_fsname
 )paren

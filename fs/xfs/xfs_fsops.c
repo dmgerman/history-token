@@ -2002,7 +2002,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;error %d reading secondary superblock for ag %d&bslash;n&quot;
+l_string|&quot;error %d reading secondary superblock for ag %d&quot;
 comma
 id|error
 comma
@@ -2066,7 +2066,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;write error %d updating secondary superblock for ag %d&bslash;n&quot;
+l_string|&quot;write error %d updating secondary superblock for ag %d&quot;
 comma
 id|error
 comma

@@ -1560,7 +1560,7 @@ c_func
 (paren
 id|CE_NOTE
 comma
-l_string|&quot;about to pop assert, bp == 0x%x&bslash;n&quot;
+l_string|&quot;about to pop assert, bp == 0x%x&quot;
 comma
 id|bp
 )paren

@@ -246,7 +246,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;Invalid inode number 0x%Lx&bslash;n&quot;
+l_string|&quot;Invalid inode number 0x%Lx&quot;
 comma
 (paren
 r_int

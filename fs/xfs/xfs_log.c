@@ -7589,7 +7589,7 @@ id|CE_WARN
 comma
 id|log-&gt;l_mp
 comma
-l_string|&quot;xlog_state_do_callback: looping %d&bslash;n&quot;
+l_string|&quot;xlog_state_do_callback: looping %d&quot;
 comma
 id|repeats
 )paren

@@ -277,7 +277,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;Injecting error (%s) at file %s, line %d, on filesystem &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;Injecting error (%s) at file %s, line %d, on filesystem &bslash;&quot;%s&bslash;&quot;&quot;
 comma
 id|expression
 comma

@@ -771,7 +771,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: invalid logbufs value: %d [not %d-%d]&bslash;n&quot;
+l_string|&quot;XFS: invalid logbufs value: %d [not %d-%d]&quot;
 comma
 id|ap-&gt;logbufs
 comma
@@ -836,7 +836,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: invalid logbufsize: %d [not 16k,32k,64k,128k or 256k]&bslash;n&quot;
+l_string|&quot;XFS: invalid logbufsize: %d [not 16k,32k,64k,128k or 256k]&quot;
 comma
 id|ap-&gt;logbufsize
 )paren
