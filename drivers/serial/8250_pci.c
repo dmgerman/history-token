@@ -3079,6 +3079,11 @@ id|i
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;board-&gt;init_fn
+)paren
 id|priv-&gt;board
 op_member_access_from_pointer
 id|init_fn
