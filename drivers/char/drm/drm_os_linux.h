@@ -156,12 +156,6 @@ DECL|macro|DRM_GET_USER_UNCHECKED
 mdefine_line|#define DRM_GET_USER_UNCHECKED(val, uaddr)&t;&t;&bslash;&n;&t;__get_user(val, uaddr)
 DECL|macro|DRM_PUT_USER_UNCHECKED
 mdefine_line|#define DRM_PUT_USER_UNCHECKED(uaddr, val)&t;&t;&bslash;&n;&t;__put_user(val, uaddr)
-multiline_comment|/** &squot;malloc&squot; without the overhead of DRM(alloc)() */
-DECL|macro|DRM_MALLOC
-mdefine_line|#define DRM_MALLOC(x) kmalloc(x, GFP_KERNEL)
-multiline_comment|/** &squot;free&squot; without the overhead of DRM(free)() */
-DECL|macro|DRM_FREE
-mdefine_line|#define DRM_FREE(x,size) kfree(x)
 DECL|macro|DRM_GET_PRIV_WITH_RETURN
 mdefine_line|#define DRM_GET_PRIV_WITH_RETURN(_priv, _filp) _priv = _filp-&gt;private_data
 multiline_comment|/** &n; * Get the pointer to the SAREA.&n; *&n; * Searches the SAREA on the mapping lists and points drm_device::sarea to it.&n; */
