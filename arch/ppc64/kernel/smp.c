@@ -73,6 +73,13 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
+DECL|variable|cpu_possible_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_possible_map
+)paren
+suffix:semicolon
 DECL|variable|smp_ops
 r_static
 r_struct

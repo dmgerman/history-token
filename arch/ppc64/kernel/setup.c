@@ -563,6 +563,7 @@ comma
 id|r7
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Start secondary threads on SMT systems */
 r_for
 c_loop
@@ -656,6 +657,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 )brace
 id|printk
 c_func
@@ -770,6 +772,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -785,6 +788,7 @@ id|boot_cpuid
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Select the correct idle loop for the platform. */
 id|idle_setup
 c_func
@@ -1782,32 +1786,6 @@ id|BI_SYSMAP
 suffix:colon
 id|sysmap
 op_assign
-(paren
-r_char
-op_star
-)paren
-(paren
-(paren
-id|rec-&gt;data
-(braket
-l_int|0
-)braket
-op_ge
-(paren
-id|KERNELBASE
-)paren
-)paren
-ques
-c_cond
-id|rec-&gt;data
-(braket
-l_int|0
-)braket
-suffix:colon
-(paren
-r_int
-r_int
-)paren
 id|__va
 c_func
 (paren
@@ -1815,7 +1793,6 @@ id|rec-&gt;data
 (braket
 l_int|0
 )braket
-)paren
 )paren
 suffix:semicolon
 id|sysmap_size

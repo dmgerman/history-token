@@ -5312,6 +5312,7 @@ l_string|&quot;ok&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Set the number of active processors. */
 id|_systemcfg-&gt;processorCount
 op_increment
@@ -5352,6 +5353,7 @@ id|cpu_present_at_boot
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -5380,6 +5382,7 @@ suffix:semicolon
 multiline_comment|/* prom_panic(RELOC(&quot;cpu failed to start&quot;)); */
 )brace
 )brace
+macro_line|#ifdef CONFIG_SMP
 r_else
 (brace
 id|prom_print_hex
@@ -5568,6 +5571,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|cpuid
 op_increment
 suffix:semicolon

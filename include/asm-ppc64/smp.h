@@ -7,9 +7,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/paca.h&gt;
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
 id|smp_message_pass
@@ -113,8 +113,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* !(CONFIG_SMP) */
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|get_hard_smp_processor_id
 mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].xHwProcNum)
 DECL|macro|set_hard_smp_processor_id
