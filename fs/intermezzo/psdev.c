@@ -1174,8 +1174,6 @@ id|file-&gt;private_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|CDEBUG
 c_func
 (paren
@@ -1255,8 +1253,6 @@ op_minus
 id|EBADF
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|CDEBUG
 c_func
 (paren
@@ -1423,6 +1419,11 @@ id|file_operations
 id|presto_psdev_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|read
 op_assign

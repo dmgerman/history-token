@@ -26,6 +26,10 @@ id|file_operations
 id|tape_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|read
 suffix:colon
 id|tapechar_read
@@ -2270,8 +2274,6 @@ suffix:semicolon
 r_int
 id|lockflags
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|tape_sprintf_event
 (paren
 id|tape_dbf_area
@@ -2430,8 +2432,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2654,8 +2654,6 @@ c_func
 (paren
 id|td
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|rc

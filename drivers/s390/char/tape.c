@@ -486,6 +486,10 @@ id|file_operations
 id|tape_proc_devices_file_ops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|read
 suffix:colon
 id|tape_proc_devices_read
@@ -621,8 +625,6 @@ id|tape_ccw_req_t
 op_star
 id|treq
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|procinfo
 op_assign
 id|kmalloc
@@ -646,8 +648,6 @@ id|rc
 op_assign
 op_minus
 id|ENOMEM
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_goto
 id|out_no_lock
@@ -1242,8 +1242,6 @@ id|kfree
 (paren
 id|p_info
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|rc

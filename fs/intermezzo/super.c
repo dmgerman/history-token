@@ -946,8 +946,6 @@ comma
 id|cache-&gt;cache_flags
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* get the filter for the cache */
 id|fstype
 op_assign
@@ -985,8 +983,6 @@ c_func
 (paren
 l_string|&quot;Presto: unrecognized fs type or cache type&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|EXIT
 suffix:semicolon
@@ -1029,8 +1025,6 @@ c_func
 l_string|&quot;InterMezzo: cache mount failure.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|EXIT
 suffix:semicolon
 r_goto
@@ -1061,8 +1055,6 @@ c_func
 (paren
 l_string|&quot;vintermezzo must not be used with a  block device&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|EXIT
 suffix:semicolon

@@ -163,8 +163,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -204,8 +202,6 @@ c_func
 op_amp
 id|scn_mutex
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|err
 c_func
@@ -348,13 +344,6 @@ id|scn-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/* Wake up any possible contending processes */
-r_if
-c_cond
-(paren
-id|err
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -468,8 +457,6 @@ op_amp
 id|scn-&gt;sem
 )paren
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -1935,6 +1922,11 @@ id|file_operations
 id|usb_scanner_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|read
 op_assign
