@@ -309,6 +309,10 @@ op_star
 id|regs
 )paren
 (brace
+r_static
+r_int
+id|die_counter
+suffix:semicolon
 r_int
 id|count
 op_assign
@@ -327,13 +331,16 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%d): %s&bslash;n&quot;
+l_string|&quot;%s(%d): %s [#%d]&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
 id|str
+comma
+op_increment
+id|die_counter
 )paren
 suffix:semicolon
 id|show_regs
