@@ -2721,13 +2721,6 @@ id|cmd
 l_int|10
 )braket
 suffix:semicolon
-r_struct
-id|scsi_device
-op_star
-id|sdp
-op_assign
-id|sdkp-&gt;device
-suffix:semicolon
 r_int
 r_int
 id|spintime_value
