@@ -2923,6 +2923,13 @@ r_return
 id|b
 suffix:semicolon
 )brace
+DECL|variable|pci_scan_bus_parented
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_scan_bus_parented
+)paren
+suffix:semicolon
 DECL|variable|pci_devices
 id|EXPORT_SYMBOL
 c_func
