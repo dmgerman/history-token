@@ -4526,4 +4526,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
+DECL|variable|PF_INET
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_INET
+)paren
+suffix:semicolon
 eof

@@ -2154,4 +2154,11 @@ c_func
 l_string|&quot;LLC 2.0, NET4.0 IEEE 802.2 extended support&quot;
 )paren
 suffix:semicolon
+DECL|variable|PF_LLC
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_LLC
+)paren
+suffix:semicolon
 eof

@@ -4444,4 +4444,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|PF_ECONET
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_ECONET
+)paren
+suffix:semicolon
 eof

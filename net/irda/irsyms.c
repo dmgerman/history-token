@@ -1228,4 +1228,11 @@ l_string|&quot;1l&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|PF_IRDA
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_IRDA
+)paren
+suffix:semicolon
 eof
