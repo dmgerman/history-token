@@ -514,6 +514,10 @@ OL
 id|snd_ecards_limit
 )paren
 (brace
+r_extern
+r_int
+id|snd_seq_in_init
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -538,8 +542,18 @@ id|card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: may cause blocking when called from&n;&t;&t;&t;&t; * module_init(), so disable this feature&n;&t;&t;&t;&t; */
-multiline_comment|/* snd_seq_device_load_drivers(); */
+multiline_comment|/* Calling request_module during module_init()&n;&t;&t;&t;&t; * may cause blocking.&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|snd_seq_in_init
+)paren
+id|snd_seq_device_load_drivers
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 id|spin_lock_irqsave
@@ -1767,6 +1781,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1780,7 +1797,16 @@ r_sizeof
 id|snd_seq_event_t
 )paren
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|count
 op_sub_assign
 r_sizeof

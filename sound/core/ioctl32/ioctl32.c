@@ -972,13 +972,6 @@ l_int|128
 )braket
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* hmm, it&squot;s so hard to retrieve the value type from the control id.. */
 DECL|function|get_ctl_type

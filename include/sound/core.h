@@ -1227,8 +1227,10 @@ id|__user
 op_star
 id|dst
 comma
-r_int
-r_int
+r_const
+r_void
+id|__iomem
+op_star
 id|src
 comma
 r_int
@@ -1239,8 +1241,9 @@ r_int
 id|copy_from_user_toio
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 comma
 r_const

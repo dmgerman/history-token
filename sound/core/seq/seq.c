@@ -252,6 +252,10 @@ l_string|&quot;The default timer resolution in Hz.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  INIT PART&n; */
+DECL|variable|snd_seq_in_init
+r_int
+id|snd_seq_in_init
+suffix:semicolon
 DECL|function|alsa_seq_init
 r_static
 r_int
@@ -264,6 +268,10 @@ r_void
 (brace
 r_int
 id|err
+suffix:semicolon
+id|snd_seq_in_init
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -371,6 +379,10 @@ l_int|0
 )paren
 r_return
 id|err
+suffix:semicolon
+id|snd_seq_in_init
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0

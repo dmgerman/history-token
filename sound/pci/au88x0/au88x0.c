@@ -993,10 +993,6 @@ singleline_comment|//FIXME: the type of chip-&gt;mmio might need to be changed??
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;mmio
 )paren
 suffix:semicolon
@@ -1464,7 +1460,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;Aureal Vortex&quot;
+id|CARD_NAME_SHORT
 )paren
 suffix:semicolon
 id|strcpy

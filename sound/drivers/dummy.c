@@ -2394,6 +2394,7 @@ id|MIXER_ADDR_MASTER
 )brace
 suffix:semicolon
 DECL|function|snd_card_dummy_new_mixer
+r_static
 r_int
 id|__init
 id|snd_card_dummy_new_mixer

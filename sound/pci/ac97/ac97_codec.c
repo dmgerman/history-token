@@ -11336,6 +11336,54 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_get_short_name - retrieve codec name&n; * @ac97: the codec instance&n; *&n; * Returns the short identifying name of the codec.&n; */
+DECL|function|snd_ac97_get_short_name
+r_const
+r_char
+op_star
+id|snd_ac97_get_short_name
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+r_const
+id|ac97_codec_id_t
+op_star
+id|pid
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|pid
+op_assign
+id|snd_ac97_codec_ids
+suffix:semicolon
+id|pid-&gt;id
+suffix:semicolon
+id|pid
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|pid-&gt;id
+op_eq
+(paren
+id|ac97-&gt;id
+op_amp
+id|pid-&gt;mask
+)paren
+)paren
+r_return
+id|pid-&gt;name
+suffix:semicolon
+r_return
+l_string|&quot;unknown codec&quot;
+suffix:semicolon
+)brace
 multiline_comment|/* wait for a while until registers are accessible after RESET&n; * return 0 if ok, negative not ready&n; */
 DECL|function|ac97_reset_wait
 r_static
@@ -11358,6 +11406,10 @@ r_int
 r_int
 id|end_time
 suffix:semicolon
+r_int
+r_int
+id|val
+suffix:semicolon
 id|end_time
 op_assign
 id|jiffies
@@ -11366,10 +11418,6 @@ id|timeout
 suffix:semicolon
 r_do
 (brace
-r_int
-r_int
-id|ext_mid
-suffix:semicolon
 multiline_comment|/* use preliminary reads to settle the communication */
 id|snd_ac97_read
 c_func
@@ -11402,7 +11450,7 @@ c_cond
 id|with_modem
 )paren
 (brace
-id|ext_mid
+id|val
 op_assign
 id|snd_ac97_read
 c_func
@@ -11415,12 +11463,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ext_mid
+id|val
 op_ne
 l_int|0xffff
 op_logical_and
 (paren
-id|ext_mid
+id|val
 op_amp
 l_int|1
 )paren
@@ -11431,7 +11479,43 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* because the PCM or MASTER volume registers can be modified,&n;&t;&t; * the REC_GAIN register is used for tests&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_DETECT_BY_VENDOR
+)paren
+(brace
+multiline_comment|/* probably only Xbox issue - all registers are read as zero */
+id|val
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_VENDOR_ID1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_ne
+l_int|0
+op_logical_and
+id|val
+op_ne
+l_int|0xffff
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* because the PCM or MASTER volume registers can be modified,&n;&t;&t;&t; * the REC_GAIN register is used for tests&n;&t;&t;&t; */
 multiline_comment|/* test if we can write to the record gain volume register */
 id|snd_ac97_write_cache
 c_func
@@ -11463,6 +11547,7 @@ l_int|0x0a05
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|set_current_state
 c_func
 (paren
@@ -15310,6 +15395,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_ac97_update_bits
+)paren
+suffix:semicolon
+DECL|variable|snd_ac97_get_short_name
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_ac97_get_short_name
 )paren
 suffix:semicolon
 DECL|variable|snd_ac97_bus

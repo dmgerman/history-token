@@ -583,8 +583,9 @@ id|bufsize
 suffix:semicolon
 multiline_comment|/* buffer size in bytes */
 DECL|member|bufptr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|bufptr
 suffix:semicolon
 multiline_comment|/* mapped pointer */
@@ -631,8 +632,9 @@ op_star
 id|card
 suffix:semicolon
 DECL|member|cport
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|cport
 suffix:semicolon
 multiline_comment|/* control port */
@@ -650,8 +652,9 @@ id|cport_addr
 suffix:semicolon
 multiline_comment|/* physical address */
 DECL|member|buffer
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|buffer
 suffix:semicolon
 multiline_comment|/* buffer */
@@ -1100,10 +1103,6 @@ macro_line|#endif
 id|memcpy_toio
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;buffer
 op_plus
 id|offset
@@ -3476,17 +3475,21 @@ id|s-&gt;bufptr
 op_assign
 id|chip-&gt;buffer
 op_plus
+(paren
 id|s-&gt;buf
 op_minus
 id|chip-&gt;buffer_start
+)paren
 suffix:semicolon
 id|s-&gt;bufptr_addr
 op_assign
 id|chip-&gt;buffer_addr
 op_plus
+(paren
 id|s-&gt;buf
 op_minus
 id|chip-&gt;buffer_start
+)paren
 suffix:semicolon
 )brace
 id|err
@@ -4773,8 +4776,9 @@ id|chip
 )paren
 (brace
 multiline_comment|/* The signature is located 1K below the end of video RAM.  */
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|temp
 suffix:semicolon
 multiline_comment|/* Default buffer end is 5120 bytes below the top of RAM.  */
@@ -4791,10 +4795,6 @@ id|sig
 suffix:semicolon
 id|temp
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -4812,7 +4812,7 @@ c_cond
 (paren
 id|temp
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -4881,10 +4881,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|temp
 )paren
 suffix:semicolon
@@ -4913,10 +4909,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|temp
 )paren
 suffix:semicolon
@@ -5097,10 +5089,6 @@ id|chip-&gt;cport
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;cport
 )paren
 suffix:semicolon
@@ -5112,10 +5100,6 @@ id|chip-&gt;buffer
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;buffer
 )paren
 suffix:semicolon
@@ -5415,10 +5399,6 @@ suffix:semicolon
 )brace
 id|chip-&gt;cport
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -5432,7 +5412,7 @@ c_cond
 (paren
 id|chip-&gt;cport
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -5727,10 +5707,6 @@ suffix:semicolon
 )brace
 id|chip-&gt;buffer
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -5744,7 +5720,7 @@ c_cond
 (paren
 id|chip-&gt;buffer
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|err

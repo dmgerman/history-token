@@ -1030,8 +1030,10 @@ id|__user
 op_star
 id|dst
 comma
-r_int
-r_int
+r_const
+r_void
+id|__iomem
+op_star
 id|src
 comma
 r_int
@@ -1101,10 +1103,6 @@ c_func
 (paren
 id|buf
 comma
-(paren
-r_void
-op_star
-)paren
 id|src
 comma
 id|c
@@ -1151,8 +1149,9 @@ r_int
 id|copy_from_user_toio
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 comma
 r_const
@@ -1242,10 +1241,6 @@ suffix:semicolon
 id|memcpy_toio
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dst
 comma
 id|buf

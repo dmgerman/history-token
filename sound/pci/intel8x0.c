@@ -143,6 +143,14 @@ id|buggy_irq
 id|SNDRV_CARDS
 )braket
 suffix:semicolon
+DECL|variable|xbox
+r_static
+r_int
+id|xbox
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
 DECL|variable|boot_devs
 r_static
 r_int
@@ -266,6 +274,26 @@ c_func
 id|buggy_irq
 comma
 l_string|&quot;Enable workaround for buggy interrupts on some motherboards.&quot;
+)paren
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|xbox
+comma
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|xbox
+comma
+l_string|&quot;Set to 1 for Xbox, if you have problems with the AC&squot;97 codec detection.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Direct registers&n; */
@@ -1202,6 +1230,13 @@ id|in_sdin_init
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|in_measurement
+r_int
+id|in_measurement
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* during ac97 clock measurement */
 DECL|member|fix_nocache
 r_int
 id|fix_nocache
@@ -1216,6 +1251,18 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* workaround for buggy mobos */
+DECL|member|xbox
+r_int
+id|xbox
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* workaround for Xbox AC&squot;97 detection */
+DECL|member|spdif_idx
+r_int
+id|spdif_idx
+suffix:semicolon
+multiline_comment|/* SPDIF BAR index; *_SPBAR or -1 if use PCMOUT */
 DECL|member|ac97_bus
 id|ac97_bus_t
 op_star
@@ -3448,6 +3495,12 @@ id|step
 op_star
 id|ichdev-&gt;fragsize1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;in_measurement
+)paren
 id|ichdev-&gt;position
 op_mod_assign
 id|ichdev-&gt;size
@@ -4442,7 +4495,7 @@ id|ichdev-&gt;pcm_open_flag
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* FIXME: hack to enable spdif support */
+multiline_comment|/* Force SPDIF setting */
 r_if
 c_cond
 (paren
@@ -4450,9 +4503,9 @@ id|ichdev-&gt;ichd
 op_eq
 id|ICHD_PCMOUT
 op_logical_and
-id|chip-&gt;device_type
-op_eq
-id|DEVICE_SIS
+id|chip-&gt;spdif_idx
+OL
+l_int|0
 )paren
 id|snd_ac97_set_rate
 c_func
@@ -8643,13 +8696,6 @@ id|glob_sta
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|spdif_idx
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* disabled */
 id|ac97_bus_ops_t
 op_star
 id|ops
@@ -8688,6 +8734,12 @@ id|snd_intel8x0_ali_codec_read
 comma
 )brace
 suffix:semicolon
+id|chip-&gt;spdif_idx
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* use PCMOUT (or disabled) */
 r_switch
 c_cond
 (paren
@@ -8697,7 +8749,7 @@ id|chip-&gt;device_type
 r_case
 id|DEVICE_NFORCE
 suffix:colon
-id|spdif_idx
+id|chip-&gt;spdif_idx
 op_assign
 id|NVD_SPBAR
 suffix:semicolon
@@ -8706,24 +8758,16 @@ suffix:semicolon
 r_case
 id|DEVICE_ALI
 suffix:colon
-id|spdif_idx
+id|chip-&gt;spdif_idx
 op_assign
 id|ALID_AC97SPDIFOUT
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|chip-&gt;device_type
-op_eq
+r_case
 id|DEVICE_INTEL_ICH4
-)paren
-id|spdif_idx
+suffix:colon
+id|chip-&gt;spdif_idx
 op_assign
 id|ICHD_SPBAR
 suffix:semicolon
@@ -8760,6 +8804,15 @@ suffix:semicolon
 id|ac97.scaps
 op_assign
 id|AC97_SCAP_SKIP_MODEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;xbox
+)paren
+id|ac97.scaps
+op_or_assign
+id|AC97_SCAP_DETECT_BY_VENDOR
 suffix:semicolon
 r_if
 c_cond
@@ -9179,7 +9232,7 @@ multiline_comment|/* do not allocate PCM2IN and MIC2 */
 r_if
 c_cond
 (paren
-id|spdif_idx
+id|chip-&gt;spdif_idx
 OL
 l_int|0
 )paren
@@ -9251,13 +9304,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|spdif_idx
+id|chip-&gt;spdif_idx
 op_ge
 l_int|0
 )paren
 id|chip-&gt;ichd
 (braket
-id|spdif_idx
+id|chip-&gt;spdif_idx
 )braket
 dot
 id|pcm
@@ -9566,7 +9619,7 @@ id|DEVICE_NFORCE
 multiline_comment|/* 48kHz only */
 id|chip-&gt;ichd
 (braket
-id|spdif_idx
+id|chip-&gt;spdif_idx
 )braket
 dot
 id|pcm-&gt;rates
@@ -11343,6 +11396,10 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+id|chip-&gt;in_measurement
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* trigger */
 r_if
 c_cond
@@ -11410,7 +11467,6 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
-macro_line|#if 0
 id|set_current_state
 c_func
 (paren
@@ -11425,15 +11481,6 @@ op_div
 l_int|20
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* FIXME: schedule() can take too long time and overlap the boundary.. */
-id|mdelay
-c_func
-(paren
-l_int|50
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock_irq
 c_func
 (paren
@@ -11463,6 +11510,10 @@ suffix:semicolon
 id|pos
 op_add_assign
 id|ichdev-&gt;position
+suffix:semicolon
+id|chip-&gt;in_measurement
+op_assign
+l_int|0
 suffix:semicolon
 id|do_gettimeofday
 c_func
@@ -12414,8 +12465,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|chip-&gt;remap_addr
+op_eq
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -12497,8 +12549,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|chip-&gt;remap_bmaddr
+op_eq
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -13354,6 +13407,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|xbox
+(braket
+id|dev
+)braket
+)paren
+id|chip-&gt;xbox
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
@@ -13419,14 +13484,28 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s at 0x%lx, irq %i&quot;
+r_sizeof
+(paren
+id|card-&gt;longname
+)paren
+comma
+l_string|&quot;%s with %s at %#lx, irq %i&quot;
 comma
 id|card-&gt;shortname
+comma
+id|snd_ac97_get_short_name
+c_func
+(paren
+id|chip-&gt;ac97
+(braket
+l_int|0
+)braket
+)paren
 comma
 id|chip-&gt;addr
 comma

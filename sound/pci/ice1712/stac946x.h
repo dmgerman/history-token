@@ -1,0 +1,45 @@
+macro_line|#ifndef __SOUND_STAC946X_H
+DECL|macro|__SOUND_STAC946X_H
+mdefine_line|#define __SOUND_STAC946X_H
+DECL|macro|STAC946X_RESET
+mdefine_line|#define STAC946X_RESET&t;&t;&t;0x00
+DECL|macro|STAC946X_STATUS
+mdefine_line|#define STAC946X_STATUS&t;&t;&t;0x01
+DECL|macro|STAC946X_MASTER_VOLUME
+mdefine_line|#define STAC946X_MASTER_VOLUME&t;&t;0x02
+DECL|macro|STAC946X_LF_VOLUME
+mdefine_line|#define STAC946X_LF_VOLUME&t;&t;0x03
+DECL|macro|STAC946X_RF_VOLUME
+mdefine_line|#define STAC946X_RF_VOLUME&t;&t;0x04
+DECL|macro|STAC946X_LR_VOLUME
+mdefine_line|#define STAC946X_LR_VOLUME&t;&t;0x05
+DECL|macro|STAC946X_RR_VOLUME
+mdefine_line|#define STAC946X_RR_VOLUME&t;&t;0x06
+DECL|macro|STAC946X_CENTER_VOLUME
+mdefine_line|#define STAC946X_CENTER_VOLUME&t;&t;0x07
+DECL|macro|STAC946X_LFE_VOLUME
+mdefine_line|#define STAC946X_LFE_VOLUME&t;&t;0x08
+DECL|macro|STAC946X_MIC_L_VOLUME
+mdefine_line|#define STAC946X_MIC_L_VOLUME&t;&t;0x09
+DECL|macro|STAC946X_MIC_R_VOLUME
+mdefine_line|#define STAC946X_MIC_R_VOLUME&t;&t;0x0a
+DECL|macro|STAC946X_DEEMPHASIS
+mdefine_line|#define STAC946X_DEEMPHASIS&t;&t;0x0c
+DECL|macro|STAC946X_GENERAL_PURPOSE
+mdefine_line|#define STAC946X_GENERAL_PURPOSE&t;0x0d
+DECL|macro|STAC946X_AUDIO_PORT_CONTROL
+mdefine_line|#define STAC946X_AUDIO_PORT_CONTROL&t;0x0e
+DECL|macro|STAC946X_MASTER_CLOCKING
+mdefine_line|#define STAC946X_MASTER_CLOCKING&t;0x0f
+DECL|macro|STAC946X_POWERDOWN_CTRL1
+mdefine_line|#define STAC946X_POWERDOWN_CTRL1&t;0x10
+DECL|macro|STAC946X_POWERDOWN_CTRL2
+mdefine_line|#define STAC946X_POWERDOWN_CTRL2&t;0x11
+DECL|macro|STAC946X_REVISION_CODE
+mdefine_line|#define STAC946X_REVISION_CODE&t;&t;0x12
+DECL|macro|STAC946X_ADDRESS_CONTROL
+mdefine_line|#define STAC946X_ADDRESS_CONTROL&t;0x13
+DECL|macro|STAC946X_ADDRESS
+mdefine_line|#define STAC946X_ADDRESS&t;&t;0x14
+macro_line|#endif  /*  __SOUND_STAC946X_H */
+eof

@@ -10891,14 +10891,25 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s at 0x%lx, irq %d&quot;
+r_sizeof
+(paren
+id|card-&gt;longname
+)paren
+comma
+l_string|&quot;%s with %s at %#lx, irq %d&quot;
 comma
 id|card-&gt;shortname
+comma
+id|snd_ac97_get_short_name
+c_func
+(paren
+id|chip-&gt;ac97
+)paren
 comma
 id|chip-&gt;port
 comma

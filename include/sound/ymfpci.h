@@ -725,8 +725,9 @@ r_int
 id|reg_area_phys
 suffix:semicolon
 DECL|member|reg_area_virt
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|reg_area_virt
 suffix:semicolon
 DECL|member|res_reg_area
