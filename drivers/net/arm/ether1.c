@@ -1779,6 +1779,10 @@ id|failures
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|timeout
+suffix:semicolon
 id|outb
 (paren
 id|CTRL_RST
@@ -2123,7 +2127,7 @@ id|REG_CONTROL
 )paren
 suffix:semicolon
 multiline_comment|/* 586 should now unset iscp.busy */
-id|i
+id|timeout
 op_assign
 id|jiffies
 op_plus
@@ -2158,7 +2162,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|timeout
 )paren
 )paren
 (brace
@@ -2176,7 +2180,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* check status of commands that we issued */
-id|i
+id|timeout
 op_add_assign
 id|HZ
 op_div
@@ -2217,7 +2221,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|timeout
 )paren
 )paren
 r_break
@@ -2318,7 +2322,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
-id|i
+id|timeout
 op_add_assign
 id|HZ
 op_div
@@ -2359,7 +2363,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|timeout
 )paren
 )paren
 r_break
@@ -2460,7 +2464,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
-id|i
+id|timeout
 op_add_assign
 id|HZ
 op_div
@@ -2501,7 +2505,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|timeout
 )paren
 )paren
 r_break
@@ -2602,7 +2606,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
-id|i
+id|timeout
 op_add_assign
 id|HZ
 suffix:semicolon
@@ -2641,7 +2645,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|timeout
 )paren
 )paren
 r_break
