@@ -917,9 +917,29 @@ id|rq-&gt;rq_dev
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|blk_rq_tagged
+c_func
+(paren
+id|rq
+)paren
+)paren
 id|blkdev_dequeue_request
 c_func
 (paren
+id|rq
+)paren
+suffix:semicolon
+r_else
+id|blk_queue_end_tag
+c_func
+(paren
+op_amp
+id|drive-&gt;queue
+comma
 id|rq
 )paren
 suffix:semicolon
@@ -5135,11 +5155,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Place holders for later expansion of functionality.&n; */
-DECL|macro|ata_pending_commands
-mdefine_line|#define ata_pending_commands(drive)&t;(0)
-DECL|macro|ata_can_queue
-mdefine_line|#define ata_can_queue(drive)&t;&t;(1)
 multiline_comment|/*&n; * Feed commands to a drive until it barfs.  Called with ide_lock/DRIVE_LOCK&n; * held and busy channel.&n; */
 DECL|function|queue_commands
 r_static
@@ -5276,9 +5291,11 @@ id|drive-&gt;queue
 )paren
 )paren
 (brace
-id|BUG
+id|BUG_ON
 c_func
 (paren
+op_logical_neg
+id|drive-&gt;using_tcq
 )paren
 suffix:semicolon
 r_break
@@ -6566,6 +6583,22 @@ id|__FUNCTION__
 suffix:semicolon
 )brace
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|startstop
+op_eq
+id|ide_released
+)paren
+id|queue_commands
+c_func
+(paren
+id|drive
+comma
+id|ch-&gt;irq
+)paren
+suffix:semicolon
 id|out_lock
 suffix:colon
 id|spin_unlock_irqrestore
@@ -13711,6 +13744,20 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT
+id|drive-&gt;channel
+op_member_access_from_pointer
+id|udma
+c_func
+(paren
+id|ide_dma_queued_on
+comma
+id|drive
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Only CD-ROMs and tape drives support DSC overlap.  But only&n;&t;&t; * if they are alone on a channel. */
 r_if
