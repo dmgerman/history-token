@@ -67,6 +67,7 @@ id|dm_create
 c_func
 (paren
 r_int
+r_int
 id|minor
 comma
 r_struct
@@ -276,6 +277,7 @@ id|dm_table
 op_star
 id|t
 comma
+r_int
 r_int
 id|index
 )paren

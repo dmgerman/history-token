@@ -583,6 +583,7 @@ op_star
 id|ti
 comma
 r_int
+r_int
 id|argc
 comma
 r_char

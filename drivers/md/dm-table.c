@@ -26,9 +26,11 @@ suffix:semicolon
 multiline_comment|/* btree table */
 DECL|member|depth
 r_int
+r_int
 id|depth
 suffix:semicolon
 DECL|member|counts
+r_int
 r_int
 id|counts
 (braket
@@ -46,9 +48,11 @@ id|MAX_DEPTH
 suffix:semicolon
 DECL|member|num_targets
 r_int
+r_int
 id|num_targets
 suffix:semicolon
 DECL|member|num_allocated
+r_int
 r_int
 id|num_allocated
 suffix:semicolon
@@ -252,12 +256,15 @@ DECL|function|get_child
 r_static
 r_inline
 r_int
+r_int
 id|get_child
 c_func
 (paren
 r_int
+r_int
 id|n
 comma
+r_int
 r_int
 id|k
 )paren
@@ -287,8 +294,10 @@ op_star
 id|t
 comma
 r_int
+r_int
 id|l
 comma
+r_int
 r_int
 id|n
 )paren
@@ -319,8 +328,10 @@ op_star
 id|t
 comma
 r_int
+r_int
 id|l
 comma
+r_int
 r_int
 id|n
 )paren
@@ -392,6 +403,7 @@ id|setup_btree_index
 c_func
 (paren
 r_int
+r_int
 id|l
 comma
 r_struct
@@ -400,6 +412,7 @@ op_star
 id|t
 )paren
 (brace
+r_int
 r_int
 id|n
 comma
@@ -414,7 +427,7 @@ c_loop
 (paren
 id|n
 op_assign
-l_int|0
+l_int|0U
 suffix:semicolon
 id|n
 OL
@@ -444,7 +457,7 @@ c_loop
 (paren
 id|k
 op_assign
-l_int|0
+l_int|0U
 suffix:semicolon
 id|k
 OL
@@ -565,6 +578,7 @@ id|dm_table
 op_star
 id|t
 comma
+r_int
 r_int
 id|num
 )paren
@@ -909,6 +923,7 @@ op_star
 id|t
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -2584,7 +2599,9 @@ id|t
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|total
 op_assign
 l_int|0
@@ -2731,11 +2748,13 @@ id|t
 )paren
 (brace
 r_int
-id|leaf_nodes
-comma
 id|r
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|leaf_nodes
 suffix:semicolon
 multiline_comment|/* how many indexes will the btree have ? */
 id|leaf_nodes
@@ -2859,6 +2878,7 @@ op_star
 id|t
 comma
 r_int
+r_int
 id|index
 )paren
 (brace
@@ -2895,6 +2915,7 @@ id|sector_t
 id|sector
 )paren
 (brace
+r_int
 r_int
 id|l
 comma
