@@ -2783,6 +2783,7 @@ l_int|1
 )brace
 )brace
 )brace
+)brace
 comma
 (brace
 id|USB_DEVICE
