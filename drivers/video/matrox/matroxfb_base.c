@@ -5847,7 +5847,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|EINVAL
+id|ENOTTY
 suffix:semicolon
 DECL|macro|minfo
 macro_line|#undef minfo

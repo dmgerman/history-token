@@ -3620,7 +3620,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|EINVAL
+id|ENOTTY
 suffix:semicolon
 DECL|macro|m2info
 macro_line|#undef m2info
