@@ -16,6 +16,14 @@ mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;version 1.00.08a&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
+multiline_comment|/* serialize freq changes  */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|fidvid_sem
+)paren
+suffix:semicolon
 DECL|variable|powernow_data
 r_static
 r_struct
@@ -3081,6 +3089,13 @@ comma
 id|CPUFREQ_PRECHANGE
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|fidvid_sem
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|transition_fid_vid
@@ -3091,6 +3106,13 @@ comma
 id|fid
 comma
 id|vid
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|fidvid_sem
 )paren
 suffix:semicolon
 id|freqs
