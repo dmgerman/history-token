@@ -231,6 +231,13 @@ c_func
 id|dump_extended_fpu
 )paren
 suffix:semicolon
+DECL|variable|kernel_fpu_begin
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|kernel_fpu_begin
+)paren
+suffix:semicolon
 DECL|variable|__ioremap
 id|EXPORT_SYMBOL
 c_func
