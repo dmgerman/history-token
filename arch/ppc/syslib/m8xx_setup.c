@@ -653,9 +653,6 @@ r_int
 r_char
 id|dummy
 suffix:semicolon
-id|uint
-id|msr
-suffix:semicolon
 id|cli
 c_func
 (paren
@@ -680,7 +677,6 @@ c_func
 id|mfmsr
 c_func
 (paren
-id|msr
 )paren
 op_amp
 op_complement
@@ -781,8 +777,8 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;clock&bslash;t&bslash;t: %dMHz&bslash;n&quot;
-l_string|&quot;bus clock&bslash;t: %dMHz&bslash;n&quot;
+l_string|&quot;clock&bslash;t&bslash;t: %ldMHz&bslash;n&quot;
+l_string|&quot;bus clock&bslash;t: %ldMHz&bslash;n&quot;
 comma
 id|bp-&gt;bi_intfreq
 op_div
