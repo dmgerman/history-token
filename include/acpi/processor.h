@@ -521,6 +521,16 @@ r_struct
 id|acpi_processor_errata
 id|errata
 suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|pm_idle_save
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* in processor_perflib.c */
 macro_line|#ifdef CONFIG_CPU_FREQ
 r_void
@@ -687,6 +697,40 @@ r_extern
 r_struct
 id|file_operations
 id|acpi_processor_throttling_fops
+suffix:semicolon
+multiline_comment|/* in processor_idle.c */
+r_struct
+id|dmi_system_id
+suffix:semicolon
+r_void
+id|acpi_processor_idle
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|acpi_processor_get_power_info
+(paren
+r_struct
+id|acpi_processor
+op_star
+id|pr
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|acpi_processor_power_fops
+suffix:semicolon
+r_int
+id|no_c2c3
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|id
+)paren
 suffix:semicolon
 macro_line|#endif
 eof
