@@ -6,6 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/mod_devicetable.h&gt;
 DECL|macro|PNP_MAX_PORT
 mdefine_line|#define PNP_MAX_PORT&t;&t;8
 DECL|macro|PNP_MAX_MEM
@@ -14,10 +15,6 @@ DECL|macro|PNP_MAX_IRQ
 mdefine_line|#define PNP_MAX_IRQ&t;&t;2
 DECL|macro|PNP_MAX_DMA
 mdefine_line|#define PNP_MAX_DMA&t;&t;2
-DECL|macro|PNP_MAX_DEVICES
-mdefine_line|#define PNP_MAX_DEVICES&t;&t;8
-DECL|macro|PNP_ID_LEN
-mdefine_line|#define PNP_ID_LEN&t;&t;8
 DECL|macro|PNP_NAME_LEN
 mdefine_line|#define PNP_NAME_LEN&t;&t;50
 r_struct
@@ -767,61 +764,6 @@ id|pnp_id
 op_star
 id|next
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|pnp_device_id
-r_struct
-id|pnp_device_id
-(brace
-DECL|member|id
-r_char
-id|id
-(braket
-id|PNP_ID_LEN
-)braket
-suffix:semicolon
-DECL|member|driver_data
-r_int
-r_int
-id|driver_data
-suffix:semicolon
-multiline_comment|/* data private to the driver */
-)brace
-suffix:semicolon
-DECL|struct|pnp_card_device_id
-r_struct
-id|pnp_card_device_id
-(brace
-DECL|member|id
-r_char
-id|id
-(braket
-id|PNP_ID_LEN
-)braket
-suffix:semicolon
-DECL|member|driver_data
-r_int
-r_int
-id|driver_data
-suffix:semicolon
-multiline_comment|/* data private to the driver */
-r_struct
-(brace
-DECL|member|id
-r_char
-id|id
-(braket
-id|PNP_ID_LEN
-)braket
-suffix:semicolon
-DECL|member|devs
-)brace
-id|devs
-(braket
-id|PNP_MAX_DEVICES
-)braket
-suffix:semicolon
-multiline_comment|/* logical devices */
 )brace
 suffix:semicolon
 DECL|struct|pnp_driver
