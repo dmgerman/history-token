@@ -247,6 +247,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -302,6 +303,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -604,6 +606,7 @@ r_void
 id|coda_sysctl_init
 c_func
 (paren
+r_void
 )paren
 (brace
 id|reset_coda_vfs_stats
@@ -679,6 +682,7 @@ r_void
 id|coda_sysctl_clean
 c_func
 (paren
+r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_SYSCTL
