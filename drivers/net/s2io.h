@@ -1226,27 +1226,66 @@ DECL|member|Control_2
 id|u64
 id|Control_2
 suffix:semicolon
+macro_line|#ifndef CONFIG_2BUFF_MODE
 DECL|macro|MASK_BUFFER0_SIZE
 mdefine_line|#define MASK_BUFFER0_SIZE       vBIT(0xFFFF,0,16)
 DECL|macro|SET_BUFFER0_SIZE
 mdefine_line|#define SET_BUFFER0_SIZE(val)   vBIT(val,0,16)
+macro_line|#else
+DECL|macro|MASK_BUFFER0_SIZE
+mdefine_line|#define MASK_BUFFER0_SIZE       vBIT(0xFF,0,16)
+DECL|macro|MASK_BUFFER1_SIZE
+mdefine_line|#define MASK_BUFFER1_SIZE       vBIT(0xFFFF,16,16)
+DECL|macro|MASK_BUFFER2_SIZE
+mdefine_line|#define MASK_BUFFER2_SIZE       vBIT(0xFFFF,32,16)
+DECL|macro|SET_BUFFER0_SIZE
+mdefine_line|#define SET_BUFFER0_SIZE(val)   vBIT(val,8,8)
+DECL|macro|SET_BUFFER1_SIZE
+mdefine_line|#define SET_BUFFER1_SIZE(val)   vBIT(val,16,16)
+DECL|macro|SET_BUFFER2_SIZE
+mdefine_line|#define SET_BUFFER2_SIZE(val)   vBIT(val,32,16)
+macro_line|#endif
 DECL|macro|MASK_VLAN_TAG
 mdefine_line|#define MASK_VLAN_TAG           vBIT(0xFFFF,48,16)
 DECL|macro|SET_VLAN_TAG
 mdefine_line|#define SET_VLAN_TAG(val)       vBIT(val,48,16)
 DECL|macro|SET_NUM_TAG
 mdefine_line|#define SET_NUM_TAG(val)       vBIT(val,16,32)
+macro_line|#ifndef CONFIG_2BUFF_MODE
 DECL|macro|RXD_GET_BUFFER0_SIZE
 mdefine_line|#define RXD_GET_BUFFER0_SIZE(Control_2) (u64)((Control_2 &amp; vBIT(0xFFFF,0,16)))
+macro_line|#else
+DECL|macro|RXD_GET_BUFFER0_SIZE
+mdefine_line|#define RXD_GET_BUFFER0_SIZE(Control_2) (u8)((Control_2 &amp; MASK_BUFFER0_SIZE) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&gt;&gt; 48)
+DECL|macro|RXD_GET_BUFFER1_SIZE
+mdefine_line|#define RXD_GET_BUFFER1_SIZE(Control_2) (u16)((Control_2 &amp; MASK_BUFFER1_SIZE) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&gt;&gt; 32)
+DECL|macro|RXD_GET_BUFFER2_SIZE
+mdefine_line|#define RXD_GET_BUFFER2_SIZE(Control_2) (u16)((Control_2 &amp; MASK_BUFFER2_SIZE) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&gt;&gt; 16)
+DECL|macro|BUF0_LEN
+mdefine_line|#define BUF0_LEN&t;40
+DECL|macro|BUF1_LEN
+mdefine_line|#define BUF1_LEN&t;1
+macro_line|#endif
 DECL|member|Buffer0_ptr
 id|u64
 id|Buffer0_ptr
 suffix:semicolon
+macro_line|#ifdef CONFIG_2BUFF_MODE
+DECL|member|Buffer1_ptr
+id|u64
+id|Buffer1_ptr
+suffix:semicolon
+DECL|member|Buffer2_ptr
+id|u64
+id|Buffer2_ptr
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|RxD_t
 )brace
 id|RxD_t
 suffix:semicolon
 multiline_comment|/* Structure that represents the Rx descriptor block which contains &n; * 128 Rx descriptors.&n; */
+macro_line|#ifndef CONFIG_2BUFF_MODE
 DECL|struct|_RxD_block
 r_typedef
 r_struct
@@ -1286,6 +1325,70 @@ DECL|typedef|RxD_block_t
 )brace
 id|RxD_block_t
 suffix:semicolon
+macro_line|#else
+DECL|struct|_RxD_block
+r_typedef
+r_struct
+id|_RxD_block
+(brace
+DECL|macro|MAX_RXDS_PER_BLOCK
+mdefine_line|#define MAX_RXDS_PER_BLOCK             85
+DECL|member|rxd
+id|RxD_t
+id|rxd
+(braket
+id|MAX_RXDS_PER_BLOCK
+)braket
+suffix:semicolon
+DECL|macro|END_OF_BLOCK
+mdefine_line|#define END_OF_BLOCK    0xFEFFFFFFFFFFFFFFULL
+DECL|member|reserved_1
+id|u64
+id|reserved_1
+suffix:semicolon
+multiline_comment|/* 0xFEFFFFFFFFFFFFFF to mark last Rxd &n;&t;&t;&t;&t; * in this blk */
+DECL|member|pNext_RxD_Blk_physical
+id|u64
+id|pNext_RxD_Blk_physical
+suffix:semicolon
+multiline_comment|/* Phy ponter to next blk. */
+DECL|typedef|RxD_block_t
+)brace
+id|RxD_block_t
+suffix:semicolon
+DECL|macro|SIZE_OF_BLOCK
+mdefine_line|#define SIZE_OF_BLOCK&t;4096
+multiline_comment|/* Structure to hold virtual addresses of Buf0 and Buf1 in &n; * 2buf mode. */
+DECL|struct|bufAdd
+r_typedef
+r_struct
+id|bufAdd
+(brace
+DECL|member|ba_0_org
+r_void
+op_star
+id|ba_0_org
+suffix:semicolon
+DECL|member|ba_1_org
+r_void
+op_star
+id|ba_1_org
+suffix:semicolon
+DECL|member|ba_0
+r_void
+op_star
+id|ba_0
+suffix:semicolon
+DECL|member|ba_1
+r_void
+op_star
+id|ba_1
+suffix:semicolon
+DECL|typedef|buffAdd_t
+)brace
+id|buffAdd_t
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Structure which stores all the MAC control parameters */
 multiline_comment|/* This structure stores the offset of the RxD in the ring &n; * from which the Rx Interrupt processor can start picking &n; * up the RxDs for processing.&n; */
 DECL|struct|_rx_curr_get_info_t
@@ -1779,6 +1882,18 @@ DECL|macro|LINK_DOWN
 mdefine_line|#define&t;LINK_DOWN&t;1
 DECL|macro|LINK_UP
 mdefine_line|#define&t;LINK_UP&t;&t;2
+macro_line|#ifdef CONFIG_2BUFF_MODE
+multiline_comment|/* Buffer Address store. */
+DECL|member|ba
+id|buffAdd_t
+op_star
+op_star
+id|ba
+(braket
+id|MAX_RX_RINGS
+)braket
+suffix:semicolon
+macro_line|#endif
 DECL|member|task_flag
 r_int
 id|task_flag
@@ -2209,6 +2324,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_2BUFF_MODE
 r_static
 r_int
 id|rx_osm_handler
@@ -2229,6 +2345,29 @@ r_int
 id|ring_no
 )paren
 suffix:semicolon
+macro_line|#else
+r_static
+r_int
+id|rx_osm_handler
+c_func
+(paren
+id|nic_t
+op_star
+id|sp
+comma
+id|RxD_t
+op_star
+id|rxdp
+comma
+r_int
+id|ring_no
+comma
+id|buffAdd_t
+op_star
+id|ba
+)paren
+suffix:semicolon
+macro_line|#endif
 r_void
 id|s2io_link
 c_func
