@@ -405,12 +405,16 @@ suffix:semicolon
 id|filp-&gt;f_mode
 op_assign
 (paren
+(paren
 id|flags
 op_plus
 l_int|1
 )paren
 op_amp
 id|O_ACCMODE
+)paren
+op_or
+id|FMODE_LSEEK
 suffix:semicolon
 id|atomic_set
 c_func

@@ -1227,7 +1227,9 @@ id|socket_file_ops
 suffix:semicolon
 id|file-&gt;f_mode
 op_assign
-l_int|3
+id|FMODE_READ
+op_or
+id|FMODE_WRITE
 suffix:semicolon
 id|file-&gt;f_flags
 op_assign

@@ -155,6 +155,11 @@ id|filp-&gt;f_version
 op_assign
 l_int|0
 suffix:semicolon
+id|filp-&gt;f_mode
+op_and_assign
+op_complement
+id|FMODE_LSEEK
+suffix:semicolon
 r_switch
 c_cond
 (paren

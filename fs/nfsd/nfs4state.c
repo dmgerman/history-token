@@ -4727,6 +4727,8 @@ id|status
 id|filp-&gt;f_mode
 op_assign
 id|FMODE_WRITE
+op_or
+id|FMODE_LSEEK
 suffix:semicolon
 r_else
 r_return
@@ -4775,6 +4777,8 @@ suffix:semicolon
 id|filp-&gt;f_mode
 op_assign
 id|FMODE_READ
+op_or
+id|FMODE_LSEEK
 suffix:semicolon
 )brace
 )brace

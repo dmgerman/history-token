@@ -3237,7 +3237,7 @@ id|read_pipe_fops
 suffix:semicolon
 id|f1-&gt;f_mode
 op_assign
-l_int|1
+id|FMODE_READ
 suffix:semicolon
 id|f1-&gt;f_version
 op_assign
@@ -3255,7 +3255,7 @@ id|write_pipe_fops
 suffix:semicolon
 id|f2-&gt;f_mode
 op_assign
-l_int|2
+id|FMODE_WRITE
 suffix:semicolon
 id|f2-&gt;f_version
 op_assign
