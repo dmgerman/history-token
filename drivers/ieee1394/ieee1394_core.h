@@ -160,6 +160,13 @@ r_int
 r_int
 id|sendtime
 suffix:semicolon
+DECL|member|embedded_header
+id|quadlet_t
+id|embedded_header
+(braket
+l_int|5
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 r_void
@@ -266,6 +273,9 @@ r_struct
 id|hpsb_host
 op_star
 id|host
+comma
+r_int
+id|type
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The following functions are exported for host driver module usage.  All of&n; * them are safe to use in interrupt contexts, although some are quite&n; * complicated so you may want to run them in bottom halves instead of calling&n; * them directly.&n; */

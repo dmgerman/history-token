@@ -3413,7 +3413,7 @@ c_func
 id|req
 )paren
 suffix:semicolon
-id|req-&gt;sem
+id|req-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon

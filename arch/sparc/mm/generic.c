@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: generic.c,v 1.12 2001/04/09 21:40:46 davem Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: generic.c,v 1.13 2001/07/17 16:17:33 anton Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -271,6 +272,8 @@ op_assign
 id|pte_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|pmd
 comma
 id|address
@@ -285,13 +288,6 @@ id|pte
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;page_table_lock
-)paren
 suffix:semicolon
 id|io_remap_pte_range
 c_func
@@ -311,13 +307,6 @@ comma
 id|prot
 comma
 id|space
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 id|address
@@ -393,6 +382,13 @@ id|from
 op_plus
 id|size
 suffix:semicolon
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|current-&gt;mm
+suffix:semicolon
 id|prot
 op_assign
 id|__pgprot
@@ -410,7 +406,7 @@ op_assign
 id|pgd_offset
 c_func
 (paren
-id|current-&gt;mm
+id|mm
 comma
 id|from
 )paren
@@ -418,11 +414,18 @@ suffix:semicolon
 id|flush_cache_range
 c_func
 (paren
-id|current-&gt;mm
+id|mm
 comma
 id|beg
 comma
 id|end
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_while
@@ -440,6 +443,8 @@ op_assign
 id|pmd_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|dir
 comma
 id|from
@@ -501,6 +506,13 @@ id|dir
 op_increment
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren

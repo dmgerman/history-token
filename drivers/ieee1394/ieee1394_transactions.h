@@ -169,6 +169,19 @@ r_int
 id|sync
 )paren
 suffix:semicolon
+r_void
+id|fill_phy_packet
+c_func
+(paren
+r_struct
+id|hpsb_packet
+op_star
+id|packet
+comma
+id|quadlet_t
+id|data
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Get and free transaction labels.&n; */
 r_int
 id|get_tlabel
@@ -304,6 +317,21 @@ r_int
 id|extcode
 )paren
 suffix:semicolon
+r_struct
+id|hpsb_packet
+op_star
+id|hpsb_make_phypacket
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+id|quadlet_t
+id|data
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * hpsb_packet_success - Make sense of the ack and reply codes and&n; * return more convenient error codes:&n; * 0           success&n; * -EBUSY      node is busy, try again&n; * -EAGAIN     error which can probably resolved by retry&n; * -EREMOTEIO  node suffers from an internal error&n; * -EACCES     this transaction is not allowed on requested address&n; * -EINVAL     invalid address at node&n; */
 r_int
 id|hpsb_packet_success
@@ -386,6 +414,31 @@ id|data
 comma
 id|quadlet_t
 id|arg
+)paren
+suffix:semicolon
+multiline_comment|/* Generic packet creation. Used by hpsb_write. Also useful for protocol&n; * drivers that want to implement their own hpsb_write replacement.  */
+r_struct
+id|hpsb_packet
+op_star
+id|hpsb_make_packet
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+id|nodeid_t
+id|node
+comma
+id|u64
+id|addr
+comma
+id|quadlet_t
+op_star
+id|buffer
+comma
+r_int
+id|length
 )paren
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_TRANSACTIONS_H */

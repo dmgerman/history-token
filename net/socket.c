@@ -2986,12 +2986,25 @@ id|family
 op_ge
 id|NPROTO
 )paren
-(brace
 r_return
 op_minus
 id|EAFNOSUPPORT
 suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+id|type
+OL
+l_int|0
+op_logical_or
+id|type
+op_ge
+id|SOCK_MAX
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 multiline_comment|/* Compatibility.&n;&n;&t;   This uglymoron is moved from INET layer to here to avoid&n;&t;   deadlock in module load.&n;&t; */
 r_if
 c_cond

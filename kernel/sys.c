@@ -1237,7 +1237,7 @@ op_ne
 id|old_egid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -1326,7 +1326,7 @@ op_ne
 id|gid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -1372,7 +1372,7 @@ op_ne
 id|gid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -1565,7 +1565,7 @@ c_cond
 id|dumpclear
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -1757,7 +1757,7 @@ op_ne
 id|old_euid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -1937,7 +1937,7 @@ op_ne
 id|uid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -2188,7 +2188,7 @@ op_ne
 id|current-&gt;euid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -2467,7 +2467,7 @@ op_ne
 id|current-&gt;egid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -2637,7 +2637,7 @@ op_ne
 id|old_fsuid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -2772,7 +2772,7 @@ op_ne
 id|old_fsgid
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -4572,7 +4572,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 )paren
 id|error
 op_assign
@@ -4603,7 +4603,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 id|arg2
 suffix:semicolon

@@ -666,7 +666,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|child-&gt;dumpable
+id|child-&gt;mm-&gt;dumpable
 op_logical_and
 op_logical_neg
 id|capable

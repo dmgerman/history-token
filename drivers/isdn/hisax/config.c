@@ -2049,8 +2049,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|jiftime
-r_static
-r_inline
 r_int
 id|jiftime
 c_func

@@ -488,6 +488,12 @@ r_int
 r_int
 id|swap_address
 suffix:semicolon
+DECL|member|dumpable
+r_int
+id|dumpable
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/* Architecture-specific MM context */
 DECL|member|context
 id|mm_context_t
@@ -702,12 +708,6 @@ DECL|member|personality
 r_int
 r_int
 id|personality
-suffix:semicolon
-DECL|member|dumpable
-r_int
-id|dumpable
-suffix:colon
-l_int|1
 suffix:semicolon
 DECL|member|did_exec
 r_int

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
@@ -1984,7 +1985,7 @@ id|next-&gt;nr_sectors
 OG
 id|max_sectors
 op_logical_or
-id|next-&gt;sem
+id|next-&gt;waiting
 )paren
 r_return
 suffix:semicolon
@@ -2732,7 +2733,7 @@ id|req-&gt;buffer
 op_assign
 id|bh-&gt;b_data
 suffix:semicolon
-id|req-&gt;sem
+id|req-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3730,14 +3731,14 @@ id|req
 r_if
 c_cond
 (paren
-id|req-&gt;sem
+id|req-&gt;waiting
 op_ne
 l_int|NULL
 )paren
-id|up
+id|complete
 c_func
 (paren
-id|req-&gt;sem
+id|req-&gt;waiting
 )paren
 suffix:semicolon
 id|blkdev_release_request

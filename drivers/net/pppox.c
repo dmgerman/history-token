@@ -446,22 +446,6 @@ op_amp
 id|pppox_proto_family
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Registered PPPoX v0.5&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 id|err
 suffix:semicolon

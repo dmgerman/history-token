@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.19 06/15/01 13:56:56 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.23 07/19/01 23:02:48 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/process.c&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; *&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and&n; *  Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -158,9 +158,9 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|SHOW_TASK_SWITCHES
-macro_line|#undef SHOW_TASK_SWITCHES 1
+macro_line|#undef SHOW_TASK_SWITCHES
 DECL|macro|CHECK_STACK
-macro_line|#undef CHECK_STACK 1
+macro_line|#undef CHECK_STACK
 macro_line|#if defined(CHECK_STACK)
 r_int
 r_int
@@ -592,12 +592,6 @@ id|last_task_used_altivec
 )paren
 suffix:semicolon
 macro_line|#endif /* __SMP __ */
-id|printk
-c_func
-(paren
-l_string|&quot;MSR_VEC in enable_altivec_kernel&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ALTIVEC */
 r_void
@@ -752,40 +746,6 @@ r_new
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef SHOW_TASK_SWITCHES
-id|printk
-c_func
-(paren
-l_string|&quot;%s/%d -&gt; %s/%d NIP %08lx cpu %d root %x/%x&bslash;n&quot;
-comma
-id|prev-&gt;comm
-comma
-id|prev-&gt;pid
-comma
-r_new
-op_member_access_from_pointer
-id|comm
-comma
-r_new
-op_member_access_from_pointer
-id|pid
-comma
-r_new
-op_member_access_from_pointer
-id|thread.regs-&gt;nip
-comma
-r_new
-op_member_access_from_pointer
-id|processor
-comma
-r_new
-op_member_access_from_pointer
-id|fs-&gt;root
-comma
-id|prev-&gt;fs-&gt;root
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* avoid complexity of lazy save/restore of fpu&n;&t; * by just saving it every time we switch out if&n;&t; * this task used the fpu during the last quantum.&n;&t; * &n;&t; * If it tries to use the fpu again, it&squot;ll trap and&n;&t; * reload its fp regs.  So we don&squot;t have to do a restore&n;&t; * every switch, just a save.&n;&t; *  -- Cort&n;&t; */
 r_if
@@ -842,6 +802,10 @@ multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t;
 r_if
 c_cond
 (paren
+r_new
+op_member_access_from_pointer
+id|thread.regs
+op_logical_and
 id|last_task_used_altivec
 op_eq
 r_new
@@ -1326,16 +1290,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Copy registers */
-id|childregs
+r_int
+r_int
+id|sp
 op_assign
-(paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-(paren
 (paren
 r_int
 r_int
@@ -1347,12 +1305,28 @@ r_sizeof
 r_union
 id|task_union
 )paren
-op_minus
-id|STACK_FRAME_OVERHEAD
+suffix:semicolon
+r_int
+r_int
+id|childframe
+suffix:semicolon
+multiline_comment|/* Copy registers */
+id|sp
+op_sub_assign
+r_sizeof
+(paren
+r_struct
+id|pt_regs
 )paren
+suffix:semicolon
+id|childregs
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
 )paren
-op_minus
-l_int|2
+id|sp
 suffix:semicolon
 op_star
 id|childregs
@@ -1371,6 +1345,21 @@ id|MSR_PR
 op_eq
 l_int|0
 )paren
+(brace
+multiline_comment|/* for kernel thread, set `current&squot; and stackptr in new task */
+id|childregs-&gt;gpr
+(braket
+l_int|1
+)braket
+op_assign
+id|sp
+op_plus
+r_sizeof
+(paren
+r_struct
+id|pt_regs
+)paren
+suffix:semicolon
 id|childregs-&gt;gpr
 (braket
 l_int|2
@@ -1382,7 +1371,7 @@ r_int
 )paren
 id|p
 suffix:semicolon
-multiline_comment|/* `current&squot; in new task */
+)brace
 id|childregs-&gt;gpr
 (braket
 l_int|3
@@ -1395,25 +1384,22 @@ id|p-&gt;thread.regs
 op_assign
 id|childregs
 suffix:semicolon
-id|p-&gt;thread.ksp
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|childregs
-op_minus
+id|sp
+op_sub_assign
 id|STACK_FRAME_OVERHEAD
 suffix:semicolon
-id|p-&gt;thread.ksp
+id|childframe
+op_assign
+id|sp
+suffix:semicolon
+multiline_comment|/*&n;&t; * The way this works is that at some point in the future&n;&t; * some task will call _switch to switch to the new task.&n;&t; * That will pop off the stack frame created below and start&n;&t; * the new task running at ret_from_fork.  The new task will&n;&t; * do some house keeping and then return from the fork or clone&n;&t; * system call, using the stack frame created above.&n;&t; */
+id|sp
 op_sub_assign
 r_sizeof
 (paren
 r_struct
 id|pt_regs
 )paren
-op_plus
-id|STACK_FRAME_OVERHEAD
 suffix:semicolon
 id|kregs
 op_assign
@@ -1422,11 +1408,15 @@ r_struct
 id|pt_regs
 op_star
 )paren
-(paren
-id|p-&gt;thread.ksp
-op_plus
+id|sp
+suffix:semicolon
+id|sp
+op_sub_assign
 id|STACK_FRAME_OVERHEAD
-)paren
+suffix:semicolon
+id|p-&gt;thread.ksp
+op_assign
+id|sp
 suffix:semicolon
 id|kregs-&gt;nip
 op_assign
@@ -1435,91 +1425,6 @@ r_int
 r_int
 )paren
 id|ret_from_fork
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mfmsr %0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|msr
-)paren
-suffix:colon
-)paren
-suffix:semicolon
-id|kregs-&gt;msr
-op_assign
-id|msr
-suffix:semicolon
-id|kregs-&gt;gpr
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|childregs
-op_minus
-id|STACK_FRAME_OVERHEAD
-suffix:semicolon
-id|kregs-&gt;gpr
-(braket
-l_int|2
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|p
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usp
-op_ge
-(paren
-r_int
-r_int
-)paren
-id|regs
-)paren
-(brace
-multiline_comment|/* Stack is in kernel space - must adjust */
-id|childregs-&gt;gpr
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-(paren
-id|childregs
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Provided stack is in user space */
-id|childregs-&gt;gpr
-(braket
-l_int|1
-)braket
-op_assign
-id|usp
-suffix:semicolon
-)brace
-id|p-&gt;thread.last_syscall
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * copy fpu info - assume lazy fpu switch now always&n;&t; *  -- Cort&n;&t; */
 r_if
@@ -1599,6 +1504,11 @@ op_complement
 id|MSR_VEC
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+id|p-&gt;thread.last_syscall
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1627,6 +1537,35 @@ id|set_fs
 c_func
 (paren
 id|USER_DS
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|regs-&gt;gpr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|regs-&gt;gpr
+)paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|regs-&gt;ctr
+comma
+l_int|0
+comma
+l_int|5
+op_star
+r_sizeof
+(paren
+id|regs-&gt;ctr
+)paren
 )paren
 suffix:semicolon
 id|regs-&gt;nip
@@ -1700,26 +1639,11 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|clone_flags
-op_assign
-id|p1
-suffix:semicolon
-r_int
-id|res
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|res
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
-id|clone_flags
+id|p1
 comma
 id|regs-&gt;gpr
 (braket
@@ -1730,37 +1654,6 @@ id|regs
 comma
 l_int|0
 )paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* When we clone the idle task we keep the same pid but&n;&t; * the return value of 0 for both causes problems.&n;&t; * -- Cort&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|current-&gt;pid
-op_eq
-l_int|0
-)paren
-op_logical_and
-(paren
-id|current
-op_eq
-op_amp
-id|init_task
-)paren
-)paren
-id|res
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|res
 suffix:semicolon
 )brace
 DECL|function|sys_fork
@@ -1792,11 +1685,7 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-id|res
-suffix:semicolon
-id|res
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
@@ -1811,32 +1700,6 @@ id|regs
 comma
 l_int|0
 )paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* When we clone the idle task we keep the same pid but&n;&t; * the return value of 0 for both causes problems.&n;&t; * -- Cort&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|current-&gt;pid
-op_eq
-l_int|0
-)paren
-op_logical_and
-(paren
-id|current
-op_eq
-op_amp
-id|init_task
-)paren
-)paren
-id|res
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
-r_return
-id|res
 suffix:semicolon
 )brace
 DECL|function|sys_vfork

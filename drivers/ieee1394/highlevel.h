@@ -216,6 +216,9 @@ comma
 r_int
 id|nodeid
 comma
+r_int
+id|destid
+comma
 id|quadlet_t
 op_star
 id|data
@@ -313,6 +316,16 @@ id|host
 )paren
 suffix:semicolon
 r_void
+id|highlevel_add_one_host
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+)paren
+suffix:semicolon
+r_void
 id|highlevel_remove_host
 c_func
 (paren
@@ -367,6 +380,9 @@ id|host
 comma
 r_int
 id|nodeid
+comma
+r_int
+id|destid
 comma
 id|quadlet_t
 op_star

@@ -183,9 +183,16 @@ suffix:semicolon
 multiline_comment|/* &n; * In order to retrieve the shift_state (for the mouse server), either&n; * the variable must be global, or a new procedure must be created to &n; * return the value. I chose the former way.&n; */
 macro_line|#ifndef CONFIG_PCI
 DECL|variable|shift_state
-multiline_comment|/*static*/
 r_int
 id|shift_state
+suffix:semicolon
+DECL|variable|kbd_table
+r_struct
+id|kbd_struct
+id|kbd_table
+(braket
+id|MAX_NR_CONSOLES
+)braket
 suffix:semicolon
 macro_line|#endif
 DECL|variable|npadch
@@ -209,14 +216,6 @@ r_char
 id|rep
 suffix:semicolon
 multiline_comment|/* flag telling character repeat */
-DECL|variable|kbd_table
-r_struct
-id|kbd_struct
-id|kbd_table
-(braket
-id|MAX_NR_CONSOLES
-)braket
-suffix:semicolon
 DECL|variable|ttytab
 r_static
 r_struct
@@ -3170,6 +3169,14 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
+r_extern
+r_int
+id|spawnpid
+comma
+id|spawnsig
+suffix:semicolon
+macro_line|#else
 DECL|variable|spawnpid
 DECL|variable|spawnsig
 r_int
@@ -3177,6 +3184,7 @@ id|spawnpid
 comma
 id|spawnsig
 suffix:semicolon
+macro_line|#endif
 DECL|function|spawn_console
 r_static
 r_void

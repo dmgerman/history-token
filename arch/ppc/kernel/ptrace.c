@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ptrace.c 1.5 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ptrace.c 1.8 07/07/01 17:00:08 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/ptrace.c&n; *&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/m68k/kernel/ptrace.c&quot;&n; *  Copyright (C) 1994 by Hamish Macdonald&n; *  Taken from linux/kernel/ptrace.c and modified for M680x0.&n; *  linux/kernel/ptrace.c is by Ross Biro 1/23/92, edited by Linus Torvalds&n; *&n; * Modified by Cort Dougan (cort@hq.fsmlabs.com)&n; * and Paul Mackerras (paulus@linuxcare.com.au).&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file README.legal in the main directory of&n; * this archive for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -50,6 +50,10 @@ r_sizeof
 r_int
 r_int
 )paren
+op_logical_and
+id|task-&gt;thread.regs
+op_ne
+l_int|NULL
 )paren
 r_return
 (paren
@@ -97,6 +101,10 @@ c_cond
 id|regno
 op_le
 id|PT_MQ
+op_logical_and
+id|task-&gt;thread.regs
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -164,6 +172,13 @@ id|regs
 op_assign
 id|task-&gt;thread.regs
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs
+op_ne
+l_int|NULL
+)paren
 id|regs-&gt;msr
 op_or_assign
 id|MSR_SE
@@ -189,6 +204,13 @@ id|regs
 op_assign
 id|task-&gt;thread.regs
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs
+op_ne
+l_int|NULL
+)paren
 id|regs-&gt;msr
 op_and_assign
 op_complement
@@ -347,7 +369,7 @@ c_cond
 (paren
 (paren
 op_logical_neg
-id|child-&gt;dumpable
+id|child-&gt;mm-&gt;dumpable
 op_logical_or
 (paren
 id|current-&gt;uid
@@ -673,6 +695,10 @@ r_else
 r_if
 c_cond
 (paren
+id|child-&gt;thread.regs
+op_ne
+l_int|NULL
+op_logical_and
 id|child-&gt;thread.regs-&gt;msr
 op_amp
 id|MSR_FP
@@ -841,6 +867,10 @@ r_else
 r_if
 c_cond
 (paren
+id|child-&gt;thread.regs
+op_ne
+l_int|NULL
+op_logical_and
 id|child-&gt;thread.regs-&gt;msr
 op_amp
 id|MSR_FP

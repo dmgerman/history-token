@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_asm.h 1.10 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_asm.h 1.14 07/02/01 22:08:05 paulus&n; */
 multiline_comment|/*&n; * arch/ppc/kernel/ppc_asm.h&n; *&n; * Definitions used by various bits of low-level assembly code on PowerPC.&n; *&n; * Copyright (C) 1995-1999 Gary Thomas, Paul Mackerras, Cort Dougan.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ppc_asm.tmpl&quot;
@@ -88,6 +88,13 @@ macro_line|#else
 DECL|macro|SYNC
 mdefine_line|#define&t;SYNC
 macro_line|#endif
+macro_line|#ifndef CONFIG_SMP
+DECL|macro|TLBSYNC
+mdefine_line|#define TLBSYNC
+macro_line|#else /* CONFIG_SMP */
+DECL|macro|TLBSYNC
+mdefine_line|#define TLBSYNC&t;&t;&t;&t;&bslash;&n;&t;tlbsync;&t;&t;&t;&bslash;&n;&t;sync
+macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/*&n; * This instruction is not implemented on the PPC 603 or 601; however, on&n; * the 403GCX and 405GP tlbia IS defined and tlbie is not.&n; * All of these instructions exist in the 8xx, they have magical powers,&n; * and they must be used.&n; */
 macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
 DECL|macro|tlbia

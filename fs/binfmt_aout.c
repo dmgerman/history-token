@@ -194,7 +194,7 @@ DECL|macro|DUMP_WRITE
 mdefine_line|#define DUMP_WRITE(addr, nr)&t;&bslash;&n;&t;if (!dump_write(file, (void *)(addr), (nr))) &bslash;&n;&t;&t;goto end_coredump;
 DECL|macro|DUMP_SEEK
 mdefine_line|#define DUMP_SEEK(offset) &bslash;&n;if (file-&gt;f_op-&gt;llseek) { &bslash;&n;&t;if (file-&gt;f_op-&gt;llseek(file,(offset),0) != (offset)) &bslash;&n; &t;&t;goto end_coredump; &bslash;&n;} else file-&gt;f_pos = (offset)
-multiline_comment|/*&n; * Routine writes a core dump image in the current directory.&n; * Currently only a stub-function.&n; *&n; * Note that setuid/setgid files won&squot;t make a core-dump if the uid/gid&n; * changed due to the set[u|g]id. It&squot;s enforced by the &quot;current-&gt;dumpable&quot;&n; * field, which also makes sure the core-dumps won&squot;t be recursive if the&n; * dumping of the process results in another error..&n; */
+multiline_comment|/*&n; * Routine writes a core dump image in the current directory.&n; * Currently only a stub-function.&n; *&n; * Note that setuid/setgid files won&squot;t make a core-dump if the uid/gid&n; * changed due to the set[u|g]id. It&squot;s enforced by the &quot;current-&gt;mm-&gt;dumpable&quot;&n; * field, which also makes sure the core-dumps won&squot;t be recursive if the&n; * dumping of the process results in another error..&n; */
 DECL|function|aout_core_dump
 r_static
 r_int

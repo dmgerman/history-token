@@ -6,12 +6,11 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,0)
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
@@ -154,14 +153,12 @@ op_amp
 id|req-&gt;list
 )paren
 suffix:semicolon
-id|INIT_TQ_LINK
+id|INIT_TQUEUE
 c_func
 (paren
+op_amp
 id|req-&gt;tq
-)paren
-suffix:semicolon
-id|req-&gt;tq.routine
-op_assign
+comma
 (paren
 r_void
 (paren
@@ -173,6 +170,9 @@ op_star
 )paren
 )paren
 id|queue_complete_cb
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -2683,6 +2683,8 @@ id|fi-&gt;host
 comma
 id|node
 comma
+id|node
+comma
 id|req-&gt;data
 comma
 id|addr
@@ -2860,9 +2862,18 @@ id|req-&gt;req.length
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|req-&gt;req.error
+op_ge
+l_int|0
+)paren
 id|req-&gt;req.error
 op_or_assign
-l_int|0x00100000
+id|ACK_PENDING
+op_lshift
+l_int|16
 suffix:semicolon
 id|queue_complete_req
 c_func
@@ -3692,6 +3703,8 @@ id|hpsb_reset_bus
 c_func
 (paren
 id|fi-&gt;host
+comma
+id|LONG_RESET
 )paren
 suffix:semicolon
 r_return
@@ -4065,7 +4078,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|V22_COMPAT_MOD_INC_USE_COUNT
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|fi
 op_assign
@@ -4089,7 +4102,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4406,7 +4419,7 @@ c_func
 id|fi
 )paren
 suffix:semicolon
-id|V22_COMPAT_MOD_DEC_USE_COUNT
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -4453,7 +4466,10 @@ id|file_operations
 id|file_ops
 op_assign
 (brace
-id|OWNER_THIS_MODULE
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|read
 suffix:colon
 id|dev_read
@@ -4477,7 +4493,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|init_raw1394
+r_static
 r_int
+id|__init
 id|init_raw1394
 c_func
 (paren
@@ -4581,7 +4599,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cleanup_raw1394
+r_static
 r_void
+id|__exit
 id|cleanup_raw1394
 c_func
 (paren
@@ -4609,36 +4629,18 @@ id|hl_handle
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|init_raw1394
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|init_raw1394
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|cleanup_raw1394
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|cleanup_raw1394
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 eof

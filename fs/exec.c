@@ -2262,7 +2262,7 @@ id|current-&gt;egid
 op_eq
 id|current-&gt;gid
 )paren
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|1
 suffix:semicolon
@@ -2356,7 +2356,7 @@ comma
 id|MAY_READ
 )paren
 )paren
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -2726,7 +2726,7 @@ id|current-&gt;cap_permitted
 )paren
 )paren
 (brace
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
@@ -3941,12 +3941,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 )paren
 r_goto
 id|fail
 suffix:semicolon
-id|current-&gt;dumpable
+id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon

@@ -1975,6 +1975,7 @@ macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
 macro_line|#include &lt;linux/usbdev_fs_sb.h&gt;
+macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -2208,6 +2209,11 @@ DECL|member|usbdevfs_sb
 r_struct
 id|usbdev_sb_info
 id|usbdevfs_sb
+suffix:semicolon
+DECL|member|cramfs_sb
+r_struct
+id|cramfs_sb_info
+id|cramfs_sb
 suffix:semicolon
 DECL|member|generic_sbp
 r_void

@@ -3,102 +3,49 @@ macro_line|#ifndef _OHCI1394_H
 DECL|macro|_OHCI1394_H
 mdefine_line|#define _OHCI1394_H
 macro_line|#include &quot;ieee1394_types.h&quot;
-DECL|macro|IEEE1394_USE_BOTTOM_HALVES
-mdefine_line|#define IEEE1394_USE_BOTTOM_HALVES 1
 DECL|macro|OHCI1394_DRIVER_NAME
 mdefine_line|#define OHCI1394_DRIVER_NAME      &quot;ohci1394&quot;
-DECL|macro|USE_DEVICE
-mdefine_line|#define USE_DEVICE 0
-macro_line|#if USE_DEVICE
-macro_line|#ifndef PCI_DEVICE_ID_TI_OHCI1394_LV22
-DECL|macro|PCI_DEVICE_ID_TI_OHCI1394_LV22
-mdefine_line|#define PCI_DEVICE_ID_TI_OHCI1394_LV22 0x8009
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_TI_OHCI1394_LV23
-DECL|macro|PCI_DEVICE_ID_TI_OHCI1394_LV23
-mdefine_line|#define PCI_DEVICE_ID_TI_OHCI1394_LV23 0x8019
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_TI_OHCI1394_LV26
-DECL|macro|PCI_DEVICE_ID_TI_OHCI1394_LV26
-mdefine_line|#define PCI_DEVICE_ID_TI_OHCI1394_LV26 0x8020
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_TI_OHCI1394_PCI4450
-DECL|macro|PCI_DEVICE_ID_TI_OHCI1394_PCI4450
-mdefine_line|#define PCI_DEVICE_ID_TI_OHCI1394_PCI4450 0x8011
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_VIA_OHCI1394
-DECL|macro|PCI_DEVICE_ID_VIA_OHCI1394
-mdefine_line|#define PCI_DEVICE_ID_VIA_OHCI1394 0x3044
-macro_line|#endif
-macro_line|#ifndef PCI_VENDOR_ID_SONY
-DECL|macro|PCI_VENDOR_ID_SONY
-mdefine_line|#define PCI_VENDOR_ID_SONY 0x104d
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_SONY_CXD3222
-DECL|macro|PCI_DEVICE_ID_SONY_CXD3222
-mdefine_line|#define PCI_DEVICE_ID_SONY_CXD3222 0x8039
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NEC_1394
-DECL|macro|PCI_DEVICE_ID_NEC_1394
-mdefine_line|#define PCI_DEVICE_ID_NEC_1394 0x00cd
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NEC_UPD72862
-DECL|macro|PCI_DEVICE_ID_NEC_UPD72862
-mdefine_line|#define PCI_DEVICE_ID_NEC_UPD72862      0x0063
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NEC_UPD72870
-DECL|macro|PCI_DEVICE_ID_NEC_UPD72870
-mdefine_line|#define PCI_DEVICE_ID_NEC_UPD72870      0x00cd
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NEC_UPD72871
-DECL|macro|PCI_DEVICE_ID_NEC_UPD72871
-mdefine_line|#define PCI_DEVICE_ID_NEC_UPD72871      0x00ce
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ALI_OHCI1394_M5251
-DECL|macro|PCI_DEVICE_ID_ALI_OHCI1394_M5251
-mdefine_line|#define PCI_DEVICE_ID_ALI_OHCI1394_M5251 0x5251
-macro_line|#endif
-macro_line|#ifndef PCI_VENDOR_ID_LUCENT
-DECL|macro|PCI_VENDOR_ID_LUCENT
-mdefine_line|#define PCI_VENDOR_ID_LUCENT 0x11c1
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_LUCENT_FW323
-DECL|macro|PCI_DEVICE_ID_LUCENT_FW323
-mdefine_line|#define PCI_DEVICE_ID_LUCENT_FW323 0x5811
-macro_line|#endif
-macro_line|#endif /* USE_DEVICE */
-DECL|macro|MAX_OHCI1394_CARDS
-mdefine_line|#define MAX_OHCI1394_CARDS        4
 DECL|macro|OHCI1394_MAX_AT_REQ_RETRIES
-mdefine_line|#define OHCI1394_MAX_AT_REQ_RETRIES       0x2
+mdefine_line|#define OHCI1394_MAX_AT_REQ_RETRIES&t;0x2
 DECL|macro|OHCI1394_MAX_AT_RESP_RETRIES
-mdefine_line|#define OHCI1394_MAX_AT_RESP_RETRIES      0x2
+mdefine_line|#define OHCI1394_MAX_AT_RESP_RETRIES&t;0x2
 DECL|macro|OHCI1394_MAX_PHYS_RESP_RETRIES
-mdefine_line|#define OHCI1394_MAX_PHYS_RESP_RETRIES    0x8
+mdefine_line|#define OHCI1394_MAX_PHYS_RESP_RETRIES&t;0x8
 DECL|macro|OHCI1394_MAX_SELF_ID_ERRORS
-mdefine_line|#define OHCI1394_MAX_SELF_ID_ERRORS       16
+mdefine_line|#define OHCI1394_MAX_SELF_ID_ERRORS&t;16
 DECL|macro|AR_REQ_NUM_DESC
-mdefine_line|#define AR_REQ_NUM_DESC                   4 /* number of AR req descriptors */
+mdefine_line|#define AR_REQ_NUM_DESC&t;&t;4&t;&t;/* number of AR req descriptors */
 DECL|macro|AR_REQ_BUF_SIZE
-mdefine_line|#define AR_REQ_BUF_SIZE           PAGE_SIZE /* size of AR req buffers */
+mdefine_line|#define AR_REQ_BUF_SIZE&t;&t;PAGE_SIZE&t;/* size of AR req buffers */
 DECL|macro|AR_REQ_SPLIT_BUF_SIZE
-mdefine_line|#define AR_REQ_SPLIT_BUF_SIZE     PAGE_SIZE /* split packet buffer */
+mdefine_line|#define AR_REQ_SPLIT_BUF_SIZE&t;PAGE_SIZE&t;/* split packet buffer */
 DECL|macro|AR_RESP_NUM_DESC
-mdefine_line|#define AR_RESP_NUM_DESC                  4 /* number of AR resp descriptors */
+mdefine_line|#define AR_RESP_NUM_DESC&t;4&t;&t;/* number of AR resp descriptors */
 DECL|macro|AR_RESP_BUF_SIZE
-mdefine_line|#define AR_RESP_BUF_SIZE          PAGE_SIZE /* size of AR resp buffers */
+mdefine_line|#define AR_RESP_BUF_SIZE&t;PAGE_SIZE&t;/* size of AR resp buffers */
 DECL|macro|AR_RESP_SPLIT_BUF_SIZE
-mdefine_line|#define AR_RESP_SPLIT_BUF_SIZE    PAGE_SIZE /* split packet buffer */
+mdefine_line|#define AR_RESP_SPLIT_BUF_SIZE&t;PAGE_SIZE&t;/* split packet buffer */
 DECL|macro|IR_NUM_DESC
-mdefine_line|#define IR_NUM_DESC                      16 /* number of IR descriptors */
+mdefine_line|#define IR_NUM_DESC&t;&t;16&t;&t;/* number of IR descriptors */
 DECL|macro|IR_BUF_SIZE
-mdefine_line|#define IR_BUF_SIZE               PAGE_SIZE /* 4096 bytes/buffer */
+mdefine_line|#define IR_BUF_SIZE&t;&t;PAGE_SIZE&t;/* 4096 bytes/buffer */
 DECL|macro|IR_SPLIT_BUF_SIZE
-mdefine_line|#define IR_SPLIT_BUF_SIZE         PAGE_SIZE /* split packet buffer */
+mdefine_line|#define IR_SPLIT_BUF_SIZE&t;PAGE_SIZE&t;/* split packet buffer */
+DECL|macro|IT_NUM_DESC
+mdefine_line|#define IT_NUM_DESC&t;&t;16&t;/* number of IT descriptors */
 DECL|macro|AT_REQ_NUM_DESC
-mdefine_line|#define AT_REQ_NUM_DESC                  32 /* number of AT req descriptors */
+mdefine_line|#define AT_REQ_NUM_DESC&t;&t;32&t;/* number of AT req descriptors */
 DECL|macro|AT_RESP_NUM_DESC
-mdefine_line|#define AT_RESP_NUM_DESC                 32 /* number of AT resp descriptors */
+mdefine_line|#define AT_RESP_NUM_DESC&t;32&t;/* number of AT resp descriptors */
+DECL|macro|OHCI_LOOP_COUNT
+mdefine_line|#define OHCI_LOOP_COUNT&t;&t;100&t;/* Number of loops for reg read waits */
+DECL|macro|OHCI_CONFIG_ROM_LEN
+mdefine_line|#define OHCI_CONFIG_ROM_LEN&t;1024&t;/* Length of the mapped configrom space */
+DECL|macro|OHCI1394_SI_DMA_BUF_SIZE
+mdefine_line|#define OHCI1394_SI_DMA_BUF_SIZE&t;8192 /* length of the selfid buffer */
+multiline_comment|/* PCI configuration space addresses */
+DECL|macro|OHCI1394_PCI_HCI_Control
+mdefine_line|#define OHCI1394_PCI_HCI_Control 0x40
 DECL|struct|dma_cmd
 r_struct
 id|dma_cmd
@@ -228,7 +175,7 @@ id|lock
 suffix:semicolon
 DECL|member|task
 r_struct
-id|tq_struct
+id|tasklet_struct
 id|task
 suffix:semicolon
 DECL|member|ctrlClear
@@ -328,7 +275,7 @@ id|lock
 suffix:semicolon
 DECL|member|task
 r_struct
-id|tq_struct
+id|tasklet_struct
 id|task
 suffix:semicolon
 DECL|member|ctrlClear
@@ -378,6 +325,11 @@ r_int
 id|id
 suffix:semicolon
 multiline_comment|/* sequential card number */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|pci_dev
@@ -461,6 +413,12 @@ r_int
 id|nb_iso_rcv_ctx
 suffix:semicolon
 multiline_comment|/* iso transmit */
+DECL|member|it_context
+r_struct
+id|dma_trm_ctx
+op_star
+id|it_context
+suffix:semicolon
 DECL|member|nb_iso_xmit_ctx
 r_int
 id|nb_iso_xmit_ctx
@@ -487,6 +445,10 @@ DECL|member|phy_reg_lock
 id|spinlock_t
 id|phy_reg_lock
 suffix:semicolon
+DECL|member|event_lock
+id|spinlock_t
+id|event_lock
+suffix:semicolon
 DECL|member|self_id_errors
 r_int
 id|self_id_errors
@@ -501,6 +463,22 @@ r_struct
 id|video_template
 op_star
 id|video_tmpl
+suffix:semicolon
+multiline_comment|/* Swap the selfid buffer? */
+DECL|member|selfid_swap
+r_int
+r_int
+id|selfid_swap
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Swap the payload? */
+DECL|member|payload_swap
+r_int
+r_int
+id|payload_swap
+suffix:colon
+l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon

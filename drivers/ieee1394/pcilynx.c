@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -1605,7 +1606,7 @@ id|KERN_DEBUG
 comma
 id|lynx-&gt;id
 comma
-l_string|&quot;selfid packet 0x%x rcvd&quot;
+l_string|&quot;SelfID packet 0x%x rcvd&quot;
 comma
 id|q
 (braket
@@ -2876,7 +2877,7 @@ id|KERN_ERR
 comma
 id|lynx-&gt;id
 comma
-l_string|&quot;transmit packet data too big (%d)&quot;
+l_string|&quot;transmit packet data too big (%Zd)&quot;
 comma
 id|packet-&gt;data_size
 )paren
@@ -3589,7 +3590,10 @@ id|file_operations
 id|aux_ops
 op_assign
 (brace
-id|OWNER_THIS_MODULE
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|read
 suffix:colon
 id|mem_read
@@ -3699,8 +3703,6 @@ id|memdata
 op_star
 id|md
 suffix:semicolon
-id|V22_COMPAT_MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3710,8 +3712,6 @@ id|PCILYNX_MINOR_AUX_START
 )paren
 (brace
 multiline_comment|/* just for completeness */
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -3746,8 +3746,6 @@ dot
 id|aux_port
 )paren
 (brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -3787,8 +3785,6 @@ dot
 id|local_rom
 )paren
 (brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -3822,8 +3818,6 @@ dot
 id|local_ram
 )paren
 (brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -3860,14 +3854,12 @@ id|md
 op_eq
 l_int|NULL
 )paren
-(brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|md-&gt;lynx
 op_assign
 op_amp
@@ -3976,7 +3968,7 @@ c_func
 id|md
 )paren
 suffix:semicolon
-id|V22_COMPAT_MOD_DEC_USE_COUNT
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -5127,6 +5119,18 @@ id|intmask
 comma
 id|linkint
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|intmask
+op_amp
+id|PCI_INT_INT_PEND
+)paren
+)paren
+r_return
 suffix:semicolon
 id|reg_write
 c_func
@@ -6865,14 +6869,12 @@ id|lynx-&gt;aux_intr_wait
 )paren
 suffix:semicolon
 macro_line|#endif
-id|INIT_TQ_LINK
+id|INIT_TQUEUE
 c_func
 (paren
+op_amp
 id|lynx-&gt;iso_rcv.tq
-)paren
-suffix:semicolon
-id|lynx-&gt;iso_rcv.tq.routine
-op_assign
+comma
 (paren
 r_void
 (paren
@@ -6884,10 +6886,9 @@ op_star
 )paren
 )paren
 id|iso_rcv_bh
-suffix:semicolon
-id|lynx-&gt;iso_rcv.tq.data
-op_assign
+comma
 id|lynx
+)paren
 suffix:semicolon
 id|lynx-&gt;iso_rcv.lock
 op_assign
@@ -7406,8 +7407,6 @@ op_amp
 id|tmpl
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-multiline_comment|/* EXPORT_NO_SYMBOLS; */
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -7426,9 +7425,11 @@ c_func
 l_string|&quot;pcilynx&quot;
 )paren
 suffix:semicolon
-DECL|function|cleanup_module
+DECL|function|pcilynx_cleanup
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|pcilynx_cleanup
 c_func
 (paren
 r_void
@@ -7454,9 +7455,11 @@ l_string|&quot; module&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_module
+DECL|function|pcilynx_init
+r_static
 r_int
-id|init_module
+id|__init
+id|pcilynx_init
 c_func
 (paren
 r_void
@@ -7495,5 +7498,18 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|pcilynx_init
+id|module_init
+c_func
+(paren
+id|pcilynx_init
+)paren
+suffix:semicolon
+DECL|variable|pcilynx_cleanup
+id|module_exit
+c_func
+(paren
+id|pcilynx_cleanup
+)paren
+suffix:semicolon
 eof

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 singleline_comment|// request_region() prototype
 macro_line|#include &lt;linux/vmalloc.h&gt; 
 singleline_comment|// ioremap()
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#ifdef __alpha__
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -1240,15 +1241,15 @@ multiline_comment|/* Busy, but indicate request done */
 r_if
 c_cond
 (paren
-id|req-&gt;sem
+id|req-&gt;waiting
 op_ne
 l_int|NULL
 )paren
 (brace
-id|up
+id|complete
 c_func
 (paren
-id|req-&gt;sem
+id|req-&gt;waiting
 )paren
 suffix:semicolon
 )brace
@@ -1617,16 +1618,16 @@ id|flags
 )paren
 suffix:semicolon
 (brace
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|sem
+id|wait
 )paren
 suffix:semicolon
-id|ScsiPassThruCmnd-&gt;request.sem
+id|ScsiPassThruCmnd-&gt;request.waiting
 op_assign
 op_amp
-id|sem
+id|wait
 suffix:semicolon
 singleline_comment|// eventually gets us to our own _quecommand routine
 id|scsi_do_cmd
@@ -1665,11 +1666,11 @@ id|flags
 suffix:semicolon
 singleline_comment|// Other I/Os can now resume; we wait for our ioctl
 singleline_comment|// command to complete
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|sem
+id|wait
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1681,7 +1682,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|ScsiPassThruCmnd-&gt;request.sem
+id|ScsiPassThruCmnd-&gt;request.waiting
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -385,15 +386,15 @@ multiline_comment|/* Busy, but indicate request done */
 r_if
 c_cond
 (paren
-id|req-&gt;sem
+id|req-&gt;waiting
 op_ne
 l_int|NULL
 )paren
 (brace
-id|up
+id|complete
 c_func
 (paren
-id|req-&gt;sem
+id|req-&gt;waiting
 )paren
 suffix:semicolon
 )brace
@@ -877,7 +878,7 @@ id|SCpnt-&gt;request.rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
-id|SCpnt-&gt;request.sem
+id|SCpnt-&gt;request.waiting
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1729,16 +1730,16 @@ r_int
 id|retries
 )paren
 (brace
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|sem
+id|wait
 )paren
 suffix:semicolon
-id|SRpnt-&gt;sr_request.sem
+id|SRpnt-&gt;sr_request.waiting
 op_assign
 op_amp
-id|sem
+id|wait
 suffix:semicolon
 id|SRpnt-&gt;sr_request.rq_status
 op_assign
@@ -1765,13 +1766,14 @@ comma
 id|retries
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
+c_func
 (paren
 op_amp
-id|sem
+id|wait
 )paren
 suffix:semicolon
-id|SRpnt-&gt;sr_request.sem
+id|SRpnt-&gt;sr_request.waiting
 op_assign
 l_int|NULL
 suffix:semicolon

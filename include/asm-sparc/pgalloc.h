@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.12 2001/04/26 02:36:35 davem Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.13 2001/07/17 16:17:33 anton Exp $ */
 macro_line|#ifndef _SPARC_PGALLOC_H
 DECL|macro|_SPARC_PGALLOC_H
 mdefine_line|#define _SPARC_PGALLOC_H
@@ -523,142 +523,143 @@ r_int
 )paren
 DECL|macro|do_check_pgt_cache
 mdefine_line|#define do_check_pgt_cache(low,high) BTFIXUP_CALL(do_check_pgt_cache)(low,high)
-multiline_comment|/*&n; * Allocate and free page tables. The xxx_kernel() versions are&n; * used to allocate a kernel page table - this turns on ASN bits&n; * if any, and marks the page tables reserved.&n; */
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|pte_free_kernel
-comma
-id|pte_t
-op_star
-)paren
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-id|pte_t
-op_star
-comma
-id|pte_alloc_kernel
-comma
-id|pmd_t
-op_star
-comma
-r_int
-r_int
-)paren
-DECL|macro|pte_free_kernel
-mdefine_line|#define pte_free_kernel(pte) BTFIXUP_CALL(pte_free_kernel)(pte)
-DECL|macro|pte_alloc_kernel
-mdefine_line|#define pte_alloc_kernel(pmd,addr) BTFIXUP_CALL(pte_alloc_kernel)(pmd,addr)
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|pmd_free_kernel
-comma
-id|pmd_t
-op_star
-)paren
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-id|pmd_t
-op_star
-comma
-id|pmd_alloc_kernel
-comma
-id|pgd_t
-op_star
-comma
-r_int
-r_int
-)paren
-DECL|macro|pmd_free_kernel
-mdefine_line|#define pmd_free_kernel(pmd) BTFIXUP_CALL(pmd_free_kernel)(pmd)
-DECL|macro|pmd_alloc_kernel
-mdefine_line|#define pmd_alloc_kernel(pgd,addr) BTFIXUP_CALL(pmd_alloc_kernel)(pgd,addr)
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|pte_free
-comma
-id|pte_t
-op_star
-)paren
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-id|pte_t
-op_star
-comma
-id|pte_alloc
-comma
-id|pmd_t
-op_star
-comma
-r_int
-r_int
-)paren
-DECL|macro|pte_free
-mdefine_line|#define pte_free(pte) BTFIXUP_CALL(pte_free)(pte)
-DECL|macro|pte_alloc
-mdefine_line|#define pte_alloc(pmd,addr) BTFIXUP_CALL(pte_alloc)(pmd,addr)
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|pmd_free
-comma
-id|pmd_t
-op_star
-)paren
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-id|pmd_t
-op_star
-comma
-id|pmd_alloc
-comma
-id|pgd_t
-op_star
-comma
-r_int
-r_int
-)paren
-DECL|macro|pmd_free
-mdefine_line|#define pmd_free(pmd) BTFIXUP_CALL(pmd_free)(pmd)
-DECL|macro|pmd_alloc
-mdefine_line|#define pmd_alloc(pgd,addr) BTFIXUP_CALL(pmd_alloc)(pgd,addr)
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|pgd_free
-comma
-id|pgd_t
-op_star
-)paren
 id|BTFIXUPDEF_CALL
 c_func
 (paren
 id|pgd_t
 op_star
 comma
-id|pgd_alloc
+id|get_pgd_fast
 comma
 r_void
 )paren
+DECL|macro|get_pgd_fast
+mdefine_line|#define get_pgd_fast()&t;&t;BTFIXUP_CALL(get_pgd_fast)()
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_void
+comma
+id|free_pgd_fast
+comma
+id|pgd_t
+op_star
+)paren
+DECL|macro|free_pgd_fast
+mdefine_line|#define free_pgd_fast(pgd)&t;BTFIXUP_CALL(free_pgd_fast)(pgd)
 DECL|macro|pgd_free
-mdefine_line|#define pgd_free(pgd) BTFIXUP_CALL(pgd_free)(pgd)
+mdefine_line|#define pgd_free(pgd)&t;free_pgd_fast(pgd)
 DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc(mm) BTFIXUP_CALL(pgd_alloc)()
-macro_line|#endif /* _SPARC64_PGALLOC_H */
+mdefine_line|#define pgd_alloc(mm)&t;get_pgd_fast()
+DECL|macro|pgd_populate
+mdefine_line|#define pgd_populate(MM, PGD, PMD)      pgd_set(PGD, PMD)
+DECL|function|pmd_alloc_one
+r_static
+id|__inline__
+id|pmd_t
+op_star
+id|pmd_alloc_one
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+id|pmd_t
+op_star
+comma
+id|pmd_alloc_one_fast
+comma
+r_struct
+id|mm_struct
+op_star
+comma
+r_int
+r_int
+)paren
+DECL|macro|pmd_alloc_one_fast
+mdefine_line|#define pmd_alloc_one_fast(mm, address)&t;BTFIXUP_CALL(pmd_alloc_one_fast)(mm, address)
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_void
+comma
+id|free_pmd_fast
+comma
+id|pmd_t
+op_star
+)paren
+DECL|macro|free_pmd_fast
+mdefine_line|#define free_pmd_fast(pmd)&t;BTFIXUP_CALL(free_pmd_fast)(pmd)
+DECL|macro|pmd_free
+mdefine_line|#define pmd_free(pmd)           free_pmd_fast(pmd)
+DECL|macro|pmd_populate
+mdefine_line|#define pmd_populate(MM, PMD, PTE)      pmd_set(PMD, PTE)
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+id|pte_t
+op_star
+comma
+id|pte_alloc_one
+comma
+r_struct
+id|mm_struct
+op_star
+comma
+r_int
+r_int
+)paren
+DECL|macro|pte_alloc_one
+mdefine_line|#define pte_alloc_one(mm, address)&t;BTFIXUP_CALL(pte_alloc_one)(mm, address)
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+id|pte_t
+op_star
+comma
+id|pte_alloc_one_fast
+comma
+r_struct
+id|mm_struct
+op_star
+comma
+r_int
+r_int
+)paren
+DECL|macro|pte_alloc_one_fast
+mdefine_line|#define pte_alloc_one_fast(mm, address)&t;BTFIXUP_CALL(pte_alloc_one_fast)(mm, address)
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_void
+comma
+id|free_pte_fast
+comma
+id|pte_t
+op_star
+)paren
+DECL|macro|free_pte_fast
+mdefine_line|#define free_pte_fast(pte)&t;BTFIXUP_CALL(free_pte_fast)(pte)
+DECL|macro|pte_free
+mdefine_line|#define pte_free(pte)&t;&t;free_pte_fast(pte)
+macro_line|#endif /* _SPARC_PGALLOC_H */
 eof

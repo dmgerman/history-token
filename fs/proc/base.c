@@ -3339,7 +3339,7 @@ id|ino
 op_eq
 id|PROC_PID_INO
 op_logical_or
-id|task-&gt;dumpable
+id|task-&gt;mm-&gt;dumpable
 )paren
 (brace
 id|inode-&gt;i_uid

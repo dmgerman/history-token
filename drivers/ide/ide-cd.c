@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -861,9 +862,9 @@ op_star
 id|drive
 comma
 r_struct
-id|semaphore
+id|completion
 op_star
-id|sem
+id|wait
 comma
 r_struct
 id|request_sense
@@ -979,9 +980,9 @@ op_star
 )paren
 id|pc
 suffix:semicolon
-id|rq-&gt;sem
+id|rq-&gt;waiting
 op_assign
-id|sem
+id|wait
 suffix:semicolon
 (paren
 r_void
@@ -1276,9 +1277,9 @@ id|PACKET_COMMAND
 (brace
 multiline_comment|/* All other functions, except for READ. */
 r_struct
-id|semaphore
+id|completion
 op_star
-id|sem
+id|wait
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1359,11 +1360,11 @@ op_ne
 l_int|0
 )paren
 (brace
-id|sem
+id|wait
 op_assign
-id|rq-&gt;sem
+id|rq-&gt;waiting
 suffix:semicolon
-id|rq-&gt;sem
+id|rq-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1395,7 +1396,7 @@ c_func
 (paren
 id|drive
 comma
-id|sem
+id|wait
 comma
 id|pc-&gt;sense
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ethtool.h,v 1.2 2000/11/12 10:05:57 davem Exp $&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; */
+multiline_comment|/*&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; */
 macro_line|#ifndef _LINUX_ETHTOOL_H
 DECL|macro|_LINUX_ETHTOOL_H
 mdefine_line|#define _LINUX_ETHTOOL_H
@@ -121,9 +121,14 @@ DECL|member|reserved2
 r_char
 id|reserved2
 (braket
-l_int|32
+l_int|28
 )braket
 suffix:semicolon
+DECL|member|regdump_len
+id|u32
+id|regdump_len
+suffix:semicolon
+multiline_comment|/* Amount of data from ETHTOOL_GREGS */
 )brace
 suffix:semicolon
 multiline_comment|/* CMDs currently supported */
@@ -133,6 +138,8 @@ DECL|macro|ETHTOOL_SSET
 mdefine_line|#define ETHTOOL_SSET&t;&t;0x00000002 /* Set settings, privileged. */
 DECL|macro|ETHTOOL_GDRVINFO
 mdefine_line|#define ETHTOOL_GDRVINFO&t;0x00000003 /* Get driver info. */
+DECL|macro|ETHTOOL_GREGS
+mdefine_line|#define ETHTOOL_GREGS&t;&t;0x00000004 /* Get NIC registers, privileged. */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET

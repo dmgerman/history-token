@@ -163,6 +163,7 @@ DECL|struct|pppoe_hdr
 r_struct
 id|pppoe_hdr
 (brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
 DECL|member|ver
 id|__u8
 id|ver
@@ -175,6 +176,20 @@ id|type
 suffix:colon
 l_int|4
 suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+id|__u8
+id|type
+suffix:colon
+l_int|4
+suffix:semicolon
+id|__u8
+id|ver
+suffix:colon
+l_int|4
+suffix:semicolon
+macro_line|#else
+macro_line|#error&t;&quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
 DECL|member|code
 id|__u8
 id|code

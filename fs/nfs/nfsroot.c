@@ -1502,7 +1502,7 @@ c_func
 (paren
 id|NFS_MNT_PROGRAM
 comma
-id|nfsd_ver
+id|mountd_ver
 comma
 id|proto
 )paren

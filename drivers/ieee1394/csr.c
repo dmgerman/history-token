@@ -529,11 +529,9 @@ id|length
 op_amp
 l_int|0x3
 )paren
-(brace
 r_return
 id|RCODE_TYPE_ERROR
 suffix:semicolon
-)brace
 id|length
 op_div_assign
 l_int|4
@@ -986,6 +984,9 @@ comma
 r_int
 id|nodeid
 comma
+r_int
+id|destid
+comma
 id|quadlet_t
 op_star
 id|data
@@ -1016,11 +1017,9 @@ id|length
 op_amp
 l_int|0x3
 )paren
-(brace
 r_return
 id|RCODE_TYPE_ERROR
 suffix:semicolon
-)brace
 id|length
 op_div_assign
 l_int|4
@@ -1554,6 +1553,9 @@ comma
 r_int
 id|nodeid
 comma
+r_int
+id|dest
+comma
 id|quadlet_t
 op_star
 id|data
@@ -1580,11 +1582,9 @@ id|length
 OG
 l_int|512
 )paren
-(brace
 r_return
 id|RCODE_TYPE_ERROR
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren

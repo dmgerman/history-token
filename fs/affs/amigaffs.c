@@ -1406,6 +1406,9 @@ comma
 (paren
 id|u32
 )paren
+(paren
+r_int
+)paren
 id|dentry-&gt;d_fsdata
 )paren
 suffix:semicolon

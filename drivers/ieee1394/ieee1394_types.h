@@ -6,25 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-macro_line|#include &quot;linux22compat.h&quot;
-macro_line|#else
-DECL|macro|V22_COMPAT_MOD_INC_USE_COUNT
-mdefine_line|#define V22_COMPAT_MOD_INC_USE_COUNT do {} while (0)
-DECL|macro|V22_COMPAT_MOD_DEC_USE_COUNT
-mdefine_line|#define V22_COMPAT_MOD_DEC_USE_COUNT do {} while (0)
-DECL|macro|OWNER_THIS_MODULE
-mdefine_line|#define OWNER_THIS_MODULE owner: THIS_MODULE,
-DECL|macro|INIT_TQ_LINK
-mdefine_line|#define INIT_TQ_LINK(tq) INIT_LIST_HEAD(&amp;(tq).list)
-DECL|macro|INIT_TQ_HEAD
-mdefine_line|#define INIT_TQ_HEAD(tq) INIT_LIST_HEAD(&amp;(tq))
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#endif
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
@@ -88,7 +70,7 @@ comma
 r_const
 id|u32
 op_star
-id|src
+id|__src
 comma
 r_int
 id|count
@@ -99,6 +81,16 @@ op_star
 id|tmp
 op_assign
 id|dest
+suffix:semicolon
+id|u32
+op_star
+id|src
+op_assign
+(paren
+id|u32
+op_star
+)paren
+id|__src
 suffix:semicolon
 id|count
 op_div_assign

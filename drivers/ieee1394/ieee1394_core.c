@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * IEEE 1394 for Linux&n; *&n; * Core support: hpsb_packet management, packet handling and forwarding to&n; *               highlevel or lowlevel code&n; *&n; * Copyright (C) 1999, 2000 Andreas E. Bombe&n; *&n; * This code is licensed under the GPL.  See the file COPYING in the root&n; * directory of the kernel sources for details.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -130,11 +131,6 @@ l_int|NULL
 suffix:semicolon
 r_void
 op_star
-id|header
-op_assign
-l_int|NULL
-comma
-op_star
 id|data
 op_assign
 l_int|NULL
@@ -166,46 +162,15 @@ comma
 id|kmflags
 )paren
 suffix:semicolon
-id|header
-op_assign
-id|kmalloc
-c_func
-(paren
-l_int|5
-op_star
-l_int|4
-comma
-id|kmflags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|header
-op_eq
-l_int|NULL
-op_logical_or
-id|packet
-op_eq
-l_int|NULL
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
+op_logical_neg
 id|packet
 )paren
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -222,7 +187,7 @@ id|hpsb_packet
 suffix:semicolon
 id|packet-&gt;header
 op_assign
-id|header
+id|packet-&gt;embedded_header
 suffix:semicolon
 r_if
 c_cond
@@ -245,17 +210,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|data
-op_eq
-l_int|NULL
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -275,9 +233,10 @@ op_assign
 id|data_size
 suffix:semicolon
 )brace
-id|INIT_TQ_HEAD
+id|INIT_LIST_HEAD
 c_func
 (paren
+op_amp
 id|packet-&gt;complete_tq
 )paren
 suffix:semicolon
@@ -331,24 +290,15 @@ id|packet
 r_if
 c_cond
 (paren
+op_logical_neg
 id|packet
-op_eq
-l_int|NULL
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
 id|packet-&gt;data
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|packet-&gt;header
 )paren
 suffix:semicolon
 id|kfree
@@ -367,6 +317,9 @@ r_struct
 id|hpsb_host
 op_star
 id|host
+comma
+r_int
+id|type
 )paren
 (brace
 r_if
@@ -402,7 +355,7 @@ id|host
 comma
 id|RESET_BUS
 comma
-l_int|0
+id|type
 )paren
 suffix:semicolon
 r_return
@@ -1385,7 +1338,7 @@ id|host-&gt;in_bus_reset
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;including selfid 0x%x&quot;
+l_string|&quot;Including SelfID 0x%x&quot;
 comma
 id|sid
 )paren
@@ -1405,9 +1358,15 @@ multiline_comment|/* FIXME - info on which host */
 id|HPSB_NOTICE
 c_func
 (paren
-l_string|&quot;spurious selfid packet (0x%8.8x) received&quot;
+l_string|&quot;Spurious SelfID packet (0x%08x) received from %s&quot;
 comma
 id|sid
+comma
+id|host
+op_member_access_from_pointer
+r_template
+op_member_access_from_pointer
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -1473,13 +1432,15 @@ multiline_comment|/* selfid stage did not complete without error */
 id|HPSB_NOTICE
 c_func
 (paren
-l_string|&quot;error in SelfID stage - resetting&quot;
+l_string|&quot;Error in SelfID stage, resetting&quot;
 )paren
 suffix:semicolon
 id|hpsb_reset_bus
 c_func
 (paren
 id|host
+comma
+id|LONG_RESET
 )paren
 suffix:semicolon
 r_return
@@ -1490,14 +1451,13 @@ r_else
 id|HPSB_NOTICE
 c_func
 (paren
-l_string|&quot;stopping out-of-control reset loop&quot;
+l_string|&quot;Stopping out-of-control reset loop&quot;
 )paren
 suffix:semicolon
 id|HPSB_NOTICE
 c_func
 (paren
-l_string|&quot;warning - topology map and speed map will &quot;
-l_string|&quot;therefore not be valid&quot;
+l_string|&quot;Warning - topology map and speed map will not be valid&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2016,7 +1976,7 @@ op_amp
 id|host-&gt;pending_packets
 )paren
 (brace
-id|HPSB_INFO
+id|HPSB_DEBUG
 c_func
 (paren
 l_string|&quot;unsolicited response packet received - np&quot;
@@ -2477,12 +2437,22 @@ id|rcode
 comma
 id|extcode
 suffix:semicolon
-r_int
+id|nodeid_t
 id|source
 op_assign
 id|data
 (braket
 l_int|1
+)braket
+op_rshift
+l_int|16
+suffix:semicolon
+id|nodeid_t
+id|dest
+op_assign
+id|data
+(braket
+l_int|0
 )braket
 op_rshift
 l_int|16
@@ -2533,6 +2503,8 @@ c_func
 id|host
 comma
 id|source
+comma
+id|dest
 comma
 id|data
 op_plus
@@ -2625,6 +2597,8 @@ c_func
 id|host
 comma
 id|source
+comma
+id|dest
 comma
 id|data
 op_plus
@@ -3675,41 +3649,11 @@ id|packet-&gt;complete_tq
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef MODULE
 DECL|function|ieee1394_init
-r_void
+r_static
+r_int
 id|__init
 id|ieee1394_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|register_builtin_lowlevels
-c_func
-(paren
-)paren
-suffix:semicolon
-id|init_hpsb_highlevel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|init_csr
-c_func
-(paren
-)paren
-suffix:semicolon
-id|init_ieee1394_guid
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|init_module
-r_int
-id|init_module
 c_func
 (paren
 r_void
@@ -3734,9 +3678,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|ieee1394_cleanup
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|ieee1394_cleanup
 c_func
 (paren
 r_void
@@ -3753,5 +3699,18 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|ieee1394_init
+id|module_init
+c_func
+(paren
+id|ieee1394_init
+)paren
+suffix:semicolon
+DECL|variable|ieee1394_cleanup
+id|module_exit
+c_func
+(paren
+id|ieee1394_cleanup
+)paren
+suffix:semicolon
 eof

@@ -203,7 +203,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__rq-&gt;sem
+id|__rq-&gt;waiting
 )paren
 r_continue
 suffix:semicolon
@@ -531,7 +531,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__rq-&gt;sem
+id|__rq-&gt;waiting
 )paren
 r_continue
 suffix:semicolon

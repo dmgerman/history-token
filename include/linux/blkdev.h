@@ -24,7 +24,7 @@ r_struct
 id|elevator_s
 id|elevator_t
 suffix:semicolon
-multiline_comment|/*&n; * Ok, this is an expanded form so that we can use the same&n; * request for paging requests when that is implemented. In&n; * paging, &squot;bh&squot; is NULL, and the semaphore is used to wait&n; * for read/write completion.&n; */
+multiline_comment|/*&n; * Ok, this is an expanded form so that we can use the same&n; * request for paging requests when that is implemented. In&n; * paging, &squot;bh&squot; is NULL, and the completion is used to wait&n; * for the IO to be ready.&n; */
 DECL|struct|request
 r_struct
 id|request
@@ -115,11 +115,11 @@ r_char
 op_star
 id|buffer
 suffix:semicolon
-DECL|member|sem
+DECL|member|waiting
 r_struct
-id|semaphore
+id|completion
 op_star
-id|sem
+id|waiting
 suffix:semicolon
 DECL|member|bh
 r_struct

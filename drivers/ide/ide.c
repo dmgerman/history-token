@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -6970,10 +6971,10 @@ op_assign
 op_amp
 id|drive-&gt;queue.queue_head
 suffix:semicolon
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|sem
+id|wait
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
@@ -7029,10 +7030,10 @@ id|action
 op_eq
 id|ide_wait
 )paren
-id|rq-&gt;sem
+id|rq-&gt;waiting
 op_assign
 op_amp
-id|sem
+id|wait
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -7128,11 +7129,11 @@ op_eq
 id|ide_wait
 )paren
 (brace
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|sem
+id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* wait for it to be serviced */

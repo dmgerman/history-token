@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;$Header: /home/cvsroot/Driver/osst.h,v 1.11 2001/01/26 01:54:49 riede Exp $&n; */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif
@@ -2007,10 +2008,10 @@ id|semaphore
 id|lock
 suffix:semicolon
 multiline_comment|/* for serialization */
-DECL|member|sem
+DECL|member|wait
 r_struct
-id|semaphore
-id|sem
+id|completion
+id|wait
 suffix:semicolon
 multiline_comment|/* for SCSI commands */
 DECL|member|buffer

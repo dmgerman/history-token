@@ -162,6 +162,12 @@ r_void
 op_star
 id|hostdata
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 DECL|member|embedded_hostdata
 r_int
 id|embedded_hostdata
@@ -209,6 +215,19 @@ id|ISO_LISTEN_CHANNEL
 comma
 DECL|enumerator|ISO_UNLISTEN_CHANNEL
 id|ISO_UNLISTEN_CHANNEL
+)brace
+suffix:semicolon
+DECL|enum|reset_types
+r_enum
+id|reset_types
+(brace
+multiline_comment|/* 166 microsecond reset -- only type of reset available on&n;           non-1394a capable IEEE 1394 controllers */
+DECL|enumerator|LONG_RESET
+id|LONG_RESET
+comma
+multiline_comment|/* Short (arbitrated) reset -- only available on 1394a capable&n;           IEEE 1394 capable controllers */
+DECL|enumerator|SHORT_RESET
+id|SHORT_RESET
 )brace
 suffix:semicolon
 DECL|struct|hpsb_host_template

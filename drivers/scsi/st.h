@@ -6,6 +6,7 @@ macro_line|#ifndef _SCSI_H
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#endif
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/* The tape buffer descriptor. */
 r_typedef
 r_struct
@@ -218,10 +219,10 @@ id|semaphore
 id|lock
 suffix:semicolon
 multiline_comment|/* For serialization */
-DECL|member|sem
+DECL|member|wait
 r_struct
-id|semaphore
-id|sem
+id|completion
+id|wait
 suffix:semicolon
 multiline_comment|/* For SCSI commands */
 DECL|member|buffer

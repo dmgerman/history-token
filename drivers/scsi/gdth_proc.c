@@ -1,5 +1,6 @@
 multiline_comment|/* gdth_proc.c &n; * $Id: gdth_proc.c,v 1.27 2001/03/14 10:47:00 achim Exp $&n; */
 macro_line|#include &quot;gdth_ioctl.h&quot;
+macro_line|#include &lt;linux/completion.h&gt;
 DECL|function|gdth_proc_info
 r_int
 id|gdth_proc_info
@@ -7445,21 +7446,12 @@ id|timeout
 r_int
 id|bufflen
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|sem
+id|wait
 )paren
 suffix:semicolon
-macro_line|#else
-r_struct
-id|semaphore
-id|sem
-op_assign
-id|MUTEX_LOCKED
-suffix:semicolon
-macro_line|#endif
 id|TRACE2
 c_func
 (paren
@@ -7503,10 +7495,10 @@ id|scp-&gt;request.rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
-id|scp-&gt;request.sem
+id|scp-&gt;request.waiting
 op_assign
 op_amp
-id|sem
+id|wait
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
 id|scsi_do_cmd
@@ -7561,11 +7553,11 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|sem
+id|wait
 )paren
 suffix:semicolon
 )brace
@@ -7594,14 +7586,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scp-&gt;request.sem
+id|scp-&gt;request.waiting
 op_ne
 l_int|NULL
 )paren
-id|up
+id|complete
 c_func
 (paren
-id|scp-&gt;request.sem
+id|scp-&gt;request.waiting
 )paren
 suffix:semicolon
 )brace

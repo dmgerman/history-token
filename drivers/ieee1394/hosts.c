@@ -382,14 +382,12 @@ op_amp
 id|h-&gt;tlabel_lock
 )paren
 suffix:semicolon
-id|INIT_TQ_LINK
+id|INIT_TQUEUE
 c_func
 (paren
+op_amp
 id|h-&gt;timeout_tq
-)paren
-suffix:semicolon
-id|h-&gt;timeout_tq.routine
-op_assign
+comma
 (paren
 r_void
 (paren
@@ -401,10 +399,9 @@ op_star
 )paren
 )paren
 id|abort_timedouts
-suffix:semicolon
-id|h-&gt;timeout_tq.data
-op_assign
+comma
 id|h
+)paren
 suffix:semicolon
 id|h-&gt;topology_map
 op_assign
@@ -553,6 +550,16 @@ id|hpsb_host
 op_star
 id|host
 suffix:semicolon
+multiline_comment|/* PCI cards should register one host at a time */
+r_if
+c_cond
+(paren
+id|tmpl-&gt;detect_hosts
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
 id|count
 op_assign
 id|tmpl
@@ -605,6 +612,8 @@ id|hpsb_reset_bus
 c_func
 (paren
 id|host
+comma
+id|LONG_RESET
 )paren
 suffix:semicolon
 )brace
@@ -616,7 +625,7 @@ suffix:semicolon
 id|HPSB_INFO
 c_func
 (paren
-l_string|&quot;detected %d %s adapter%c&quot;
+l_string|&quot;detected %d %s adapter%s&quot;
 comma
 id|count
 comma
@@ -628,9 +637,9 @@ op_ne
 l_int|1
 ques
 c_cond
-l_char|&squot;s&squot;
+l_string|&quot;s&quot;
 suffix:colon
-l_char|&squot; &squot;
+l_string|&quot;&quot;
 )paren
 )paren
 suffix:semicolon
@@ -979,10 +988,10 @@ c_func
 id|tmpl
 )paren
 suffix:semicolon
-id|HPSB_INFO
+id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;registered %s driver, initializing now&quot;
+l_string|&quot;Registered %s driver, initializing now&quot;
 comma
 id|tmpl-&gt;name
 )paren
@@ -1034,84 +1043,4 @@ id|tmpl-&gt;name
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef MODULE
-multiline_comment|/*&n; * This is the init function for builtin lowlevel drivers.  To add new drivers&n; * put their setup code (get and register template) here.  Module only&n; * drivers don&squot;t need to touch this.&n; */
-DECL|macro|SETUP_TEMPLATE
-mdefine_line|#define SETUP_TEMPLATE(name, visname) &bslash;&n;do {                                                                       &bslash;&n;        extern struct hpsb_host_template *get_ ## name ## _template(void); &bslash;&n;        t = get_ ## name ## _template();                                   &bslash;&n;                                                                           &bslash;&n;        if (t != NULL) {                                                   &bslash;&n;                if(!hpsb_register_lowlevel(t)) {                           &bslash;&n;                        count++;                                           &bslash;&n;                }                                                          &bslash;&n;        } else {                                                           &bslash;&n;                HPSB_WARN(visname &quot; driver returned no host template&quot;);    &bslash;&n;        }                                                                  &bslash;&n;} while (0)
-DECL|function|register_builtin_lowlevels
-r_void
-id|__init
-id|register_builtin_lowlevels
-c_func
-(paren
-)paren
-(brace
-r_struct
-id|hpsb_host_template
-op_star
-id|t
-suffix:semicolon
-r_int
-id|count
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Touch t to avoid warning if no drivers are configured to&n;         * be built directly into the kernel. */
-id|t
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#ifdef CONFIG_IEEE1394_PCILYNX
-id|SETUP_TEMPLATE
-c_func
-(paren
-id|lynx
-comma
-l_string|&quot;Lynx&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IEEE1394_AIC5800
-id|SETUP_TEMPLATE
-c_func
-(paren
-id|aic
-comma
-l_string|&quot;AIC-5800&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IEEE1394_OHCI1394
-id|SETUP_TEMPLATE
-c_func
-(paren
-id|ohci
-comma
-l_string|&quot;OHCI-1394&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-id|HPSB_INFO
-c_func
-(paren
-l_string|&quot;%d host adapter%s initialized&quot;
-comma
-id|count
-comma
-(paren
-id|count
-op_ne
-l_int|1
-ques
-c_cond
-l_string|&quot;s&quot;
-suffix:colon
-l_string|&quot;&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|macro|SETUP_TEMPLATE
-macro_line|#undef SETUP_TEMPLATE
-macro_line|#endif /* !MODULE */
 eof
