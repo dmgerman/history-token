@@ -1390,12 +1390,12 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/* bast_init_pm&n; *&n; * enable the power management functions for the EB2410ITX&n;*/
-DECL|function|bast_init_pm
+multiline_comment|/* bast_init_machine&n; *&n; * enable the power management functions for the EB2410ITX&n;*/
+DECL|function|bast_init_machine
 r_static
 id|__init
-r_int
-id|bast_init_pm
+r_void
+id|bast_init_machine
 c_func
 (paren
 r_void
@@ -1404,18 +1404,6 @@ r_void
 r_int
 r_int
 id|gstatus4
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|machine_is_bast
-c_func
-(paren
-)paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|printk
 c_func
@@ -1466,15 +1454,6 @@ op_amp
 id|S3C2410_BANKSIZE_MASK
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;setting GSTATUS4 to %08lx&bslash;n&quot;
-comma
-id|gstatus4
-)paren
-suffix:semicolon
 id|__raw_writel
 c_func
 (paren
@@ -1483,20 +1462,15 @@ comma
 id|S3C2410_GSTATUS4
 )paren
 suffix:semicolon
-r_return
 id|s3c2410_pm_init
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-DECL|variable|bast_init_pm
-id|late_initcall
-c_func
-(paren
-id|bast_init_pm
-)paren
-suffix:semicolon
+macro_line|#else
+DECL|macro|bast_init_machine
+mdefine_line|#define bast_init_machine NULL
 macro_line|#endif
 id|MACHINE_START
 c_func
@@ -1536,6 +1510,11 @@ c_func
 (paren
 id|bast_init_irq
 )paren
+dot
+id|init_machine
+op_assign
+id|bast_init_machine
+comma
 dot
 id|timer
 op_assign
