@@ -43,6 +43,9 @@ macro_line|#else
 DECL|macro|NET_CALLER
 mdefine_line|#define NET_CALLER(arg) __builtin_return_address(0)
 macro_line|#endif
+r_struct
+id|net_device
+suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER
 DECL|struct|nf_conntrack
 r_struct
