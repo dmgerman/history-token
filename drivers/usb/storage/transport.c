@@ -2608,6 +2608,9 @@ op_star
 )paren
 id|urb-&gt;context
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -2683,7 +2686,8 @@ c_func
 l_string|&quot;ERROR: Unwanted interrupt received!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|US_DEBUGP
@@ -2700,7 +2704,8 @@ op_amp
 id|us-&gt;ip_waitq
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* is the device removed? */
@@ -2774,7 +2779,8 @@ c_func
 l_string|&quot;-- IRQ too short&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* was this a command-completion interrupt? */
@@ -2799,7 +2805,8 @@ c_func
 l_string|&quot;-- not a command-completion IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* was this a wanted interrupt? */
@@ -2823,7 +2830,8 @@ c_func
 l_string|&quot;ERROR: Unwanted interrupt received!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* copy the valid data */
@@ -2855,6 +2863,32 @@ op_amp
 (paren
 id|us-&gt;ip_waitq
 )paren
+)paren
+suffix:semicolon
+m_exit
+suffix:colon
+multiline_comment|/* resubmit the urb */
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
 )paren
 suffix:semicolon
 )brace
