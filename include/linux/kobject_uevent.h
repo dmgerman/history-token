@@ -63,6 +63,16 @@ id|kobject_action_t
 l_int|0x05
 comma
 multiline_comment|/* umount event for block devices */
+DECL|enumerator|KOBJ_OFFLINE
+id|KOBJ_OFFLINE
+op_assign
+(paren
+id|__force
+id|kobject_action_t
+)paren
+l_int|0x06
+comma
+multiline_comment|/* offline event for hotplug devices */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_KOBJECT_UEVENT

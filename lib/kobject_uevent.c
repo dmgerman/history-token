@@ -55,6 +55,12 @@ suffix:colon
 r_return
 l_string|&quot;umount&quot;
 suffix:semicolon
+r_case
+id|KOBJ_OFFLINE
+suffix:colon
+r_return
+l_string|&quot;offline&quot;
+suffix:semicolon
 r_default
 suffix:colon
 r_return
