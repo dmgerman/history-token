@@ -495,11 +495,11 @@ multiline_comment|/* DAC cycle addressing does not make use of the&n;&t; * PCI c
 )brace
 DECL|macro|PCI_DMA_ERROR_CODE
 mdefine_line|#define PCI_DMA_ERROR_CODE&t;(~(dma_addr_t)0x0)
-DECL|function|pci_dma_error
+DECL|function|pci_dma_mapping_error
 r_static
 r_inline
 r_int
-id|pci_dma_error
+id|pci_dma_mapping_error
 c_func
 (paren
 id|dma_addr_t
