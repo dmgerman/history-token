@@ -164,9 +164,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_16M_PAGE
+)paren
 )paren
 id|ksp_flags
 op_or_assign
@@ -580,9 +582,11 @@ multiline_comment|/* Invalidate the entire SLB (even slot 0) &amp; all the ERATS
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_16M_PAGE
+)paren
 )paren
 id|flags
 op_or_assign

@@ -64,7 +64,7 @@ mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;(touches_hu
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 DECL|macro|in_hugepage_area
-mdefine_line|#define in_hugepage_area(context, addr) &bslash;&n;&t;((cur_cpu_spec-&gt;cpu_features &amp; CPU_FTR_16M_PAGE) &amp;&amp; &bslash;&n;&t; ( (((addr) &gt;= TASK_HPAGE_BASE) &amp;&amp; ((addr) &lt; TASK_HPAGE_END)) || &bslash;&n;&t;   ( ((addr) &lt; 0x100000000L) &amp;&amp; &bslash;&n;&t;     ((1 &lt;&lt; GET_ESID(addr)) &amp; (context).htlb_segs) ) ) )
+mdefine_line|#define in_hugepage_area(context, addr) &bslash;&n;&t;(cpu_has_feature(CPU_FTR_16M_PAGE) &amp;&amp; &bslash;&n;&t; ( (((addr) &gt;= TASK_HPAGE_BASE) &amp;&amp; ((addr) &lt; TASK_HPAGE_END)) || &bslash;&n;&t;   ( ((addr) &lt; 0x100000000L) &amp;&amp; &bslash;&n;&t;     ((1 &lt;&lt; GET_ESID(addr)) &amp; (context).htlb_segs) ) ) )
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|macro|in_hugepage_area
 mdefine_line|#define in_hugepage_area(mm, addr)&t;0

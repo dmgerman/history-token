@@ -1390,9 +1390,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_SLB
+)paren
 )paren
 (brace
 r_int
@@ -1416,9 +1418,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_16M_PAGE
+)paren
 )paren
 id|sp_vsid
 op_or_assign

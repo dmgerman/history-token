@@ -771,14 +771,11 @@ multiline_comment|/* DINK32 12.3 and below do not correctly enable any caches.&n
 r_if
 c_cond
 (paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_SPEC7450
+)paren
 )paren
 multiline_comment|/* 745x is different.  We only want to pass along enable. */
 id|_set_L2CR
@@ -791,14 +788,11 @@ r_else
 r_if
 c_cond
 (paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_L2CR
+)paren
 )paren
 multiline_comment|/* All modules have 1MB of L2.  We also assume that an&n;&t;&t; * L2 divisor of 3 will work.&n;&t;&t; */
 id|_set_L2CR
@@ -822,14 +816,11 @@ multiline_comment|/* Untested right now. */
 r_if
 c_cond
 (paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_L3CR
+)paren
 )paren
 (brace
 multiline_comment|/* Magic value. */

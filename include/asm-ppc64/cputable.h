@@ -114,6 +114,25 @@ id|cpu_spec
 op_star
 id|cur_cpu_spec
 suffix:semicolon
+DECL|function|cpu_has_feature
+r_static
+r_inline
+r_int
+r_int
+id|cpu_has_feature
+c_func
+(paren
+r_int
+r_int
+id|feature
+)paren
+(brace
+r_return
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|feature
+suffix:semicolon
+)brace
 multiline_comment|/* firmware feature bitmask values */
 DECL|macro|FIRMWARE_MAX_FEATURES
 mdefine_line|#define FIRMWARE_MAX_FEATURES 63
