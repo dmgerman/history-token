@@ -37,6 +37,17 @@ id|cpufreq_driver_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/* we keep a copy of all -&gt;add&squot;ed CPU&squot;s struct sys_device here;&n; * as it is only accessed in -&gt;add and -&gt;remove, no lock or reference&n; * count is necessary.&n; */
+DECL|variable|cpu_sys_devices
+r_static
+r_struct
+id|sys_device
+op_star
+id|cpu_sys_devices
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 multiline_comment|/* internal prototypes */
 r_static
 r_int
@@ -1975,6 +1986,13 @@ c_func
 id|cpufreq_driver-&gt;owner
 )paren
 suffix:semicolon
+id|cpu_sys_devices
+(braket
+id|cpu
+)braket
+op_assign
+id|sys_dev
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2065,6 +2083,13 @@ r_struct
 id|cpufreq_policy
 op_star
 id|data
+suffix:semicolon
+id|cpu_sys_devices
+(braket
+id|cpu
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
