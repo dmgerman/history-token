@@ -11,6 +11,8 @@ DECL|macro|NR_STRIPES
 mdefine_line|#define NR_STRIPES&t;&t;256
 DECL|macro|STRIPE_SIZE
 mdefine_line|#define STRIPE_SIZE&t;&t;PAGE_SIZE
+DECL|macro|STRIPE_SHIFT
+mdefine_line|#define STRIPE_SHIFT&t;&t;(PAGE_SHIFT - 9)
 DECL|macro|STRIPE_SECTORS
 mdefine_line|#define STRIPE_SECTORS&t;&t;(STRIPE_SIZE&gt;&gt;9)
 DECL|macro|IO_THRESHOLD
@@ -24,7 +26,7 @@ mdefine_line|#define NR_HASH&t;&t;&t;(HASH_PAGES * PAGE_SIZE / sizeof(struct str
 DECL|macro|HASH_MASK
 mdefine_line|#define HASH_MASK&t;&t;(NR_HASH - 1)
 DECL|macro|stripe_hash
-mdefine_line|#define stripe_hash(conf, sect)&t;((conf)-&gt;stripe_hashtbl[((sect) / STRIPE_SECTORS) &amp; HASH_MASK])
+mdefine_line|#define stripe_hash(conf, sect)&t;((conf)-&gt;stripe_hashtbl[((sect) &gt;&gt; STRIPE_SHIFT) &amp; HASH_MASK])
 multiline_comment|/*&n; * The following can be used to debug the driver&n; */
 DECL|macro|RAID5_DEBUG
 mdefine_line|#define RAID5_DEBUG&t;0
@@ -2359,7 +2361,7 @@ op_star
 id|conf
 )paren
 (brace
-id|sector_t
+r_int
 id|stripe
 suffix:semicolon
 r_int
@@ -2382,17 +2384,27 @@ l_int|9
 suffix:semicolon
 multiline_comment|/* First compute the information on this sector */
 multiline_comment|/*&n;&t; * Compute the chunk number and the sector offset inside the chunk&n;&t; */
+id|chunk_offset
+op_assign
+id|sector_div
+c_func
+(paren
+id|r_sector
+comma
+id|sectors_per_chunk
+)paren
+suffix:semicolon
 id|chunk_number
 op_assign
 id|r_sector
-op_div
-id|sectors_per_chunk
 suffix:semicolon
-id|chunk_offset
-op_assign
+id|BUG_ON
+c_func
+(paren
 id|r_sector
-op_mod
-id|sectors_per_chunk
+op_ne
+id|chunk_number
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Compute the stripe number&n;&t; */
 id|stripe
@@ -2610,19 +2622,11 @@ id|conf-&gt;chunk_size
 op_rshift
 l_int|9
 suffix:semicolon
-id|sector_t
+r_int
 id|stripe
-op_assign
-id|new_sector
-op_div
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|chunk_offset
-op_assign
-id|new_sector
-op_mod
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|chunk_number
@@ -2637,6 +2641,28 @@ id|i
 suffix:semicolon
 id|sector_t
 id|r_sector
+suffix:semicolon
+id|chunk_offset
+op_assign
+id|sector_div
+c_func
+(paren
+id|new_sector
+comma
+id|sectors_per_chunk
+)paren
+suffix:semicolon
+id|stripe
+op_assign
+id|new_sector
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|new_sector
+op_ne
+id|stripe
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -2709,6 +2735,9 @@ id|i
 suffix:semicolon
 id|r_sector
 op_assign
+(paren
+id|sector_t
+)paren
 id|chunk_number
 op_star
 id|sectors_per_chunk
@@ -7073,20 +7102,15 @@ id|conf-&gt;chunk_size
 op_rshift
 l_int|9
 suffix:semicolon
+id|sector_t
+id|x
+suffix:semicolon
 r_int
 r_int
 id|stripe
-op_assign
-id|sector_nr
-op_div
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|chunk_offset
-op_assign
-id|sector_nr
-op_mod
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|dd_idx
@@ -7121,6 +7145,32 @@ l_int|1
 multiline_comment|/* just being told to finish up .. nothing to do */
 r_return
 l_int|0
+suffix:semicolon
+id|x
+op_assign
+id|sector_nr
+suffix:semicolon
+id|chunk_offset
+op_assign
+id|sector_div
+c_func
+(paren
+id|x
+comma
+id|sectors_per_chunk
+)paren
+suffix:semicolon
+id|stripe
+op_assign
+id|x
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|x
+op_ne
+id|stripe
+)paren
 suffix:semicolon
 id|first_sector
 op_assign
