@@ -22,12 +22,9 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
-macro_line|#include &quot;../hcd.h&quot;
-macro_line|#else
 macro_line|#include &quot;../core/hcd.h&quot;
-macro_line|#endif
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -36,7 +33,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-11-29&t;Correct handling for hw async_next register.&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2003-Jan-22&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2003-Jun-13&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -49,7 +46,7 @@ id|hcd_name
 (braket
 )braket
 op_assign
-l_string|&quot;ehci-hcd&quot;
+l_string|&quot;ehci_hcd&quot;
 suffix:semicolon
 singleline_comment|// #define EHCI_VERBOSE_DEBUG
 singleline_comment|// #define have_split_iso
@@ -87,11 +84,13 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// 0 to 6
-id|MODULE_PARM
+id|module_param
 (paren
 id|log2_irq_thresh
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3351,9 +3350,11 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|dbg
+id|pr_debug
 (paren
-l_string|&quot;block sizes: qh %Zd qtd %Zd itd %Zd sitd %Zd&quot;
+l_string|&quot;%s: block sizes: qh %Zd qtd %Zd itd %Zd sitd %Zd&bslash;n&quot;
+comma
+id|hcd_name
 comma
 r_sizeof
 (paren

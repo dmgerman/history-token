@@ -1100,7 +1100,7 @@ id|urb_flags
 op_assign
 id|URB_ASYNC_UNLINK
 op_or
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 op_or
 id|URB_NO_INTERRUPT
 suffix:semicolon

@@ -269,7 +269,7 @@ id|INTERRUPT_RATE
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 r_if
 c_cond

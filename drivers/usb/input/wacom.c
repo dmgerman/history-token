@@ -4013,7 +4013,7 @@ id|wacom-&gt;data_dma
 suffix:semicolon
 id|wacom-&gt;irq-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 id|input_register_device
 c_func
