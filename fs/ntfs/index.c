@@ -107,7 +107,7 @@ c_cond
 (paren
 id|ictx-&gt;actx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ictx-&gt;actx
@@ -242,7 +242,7 @@ id|u8
 op_star
 id|index_end
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|actx
 suffix:semicolon
@@ -403,7 +403,7 @@ suffix:semicolon
 )brace
 id|actx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -875,7 +875,7 @@ op_member_access_from_pointer
 id|i_mapping
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the index root and the mft record.  Release them,&n;&t; * otherwise we deadlock with ntfs_map_page().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|actx
@@ -1670,7 +1670,7 @@ c_cond
 (paren
 id|actx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|actx

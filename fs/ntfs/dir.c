@@ -103,7 +103,7 @@ suffix:semicolon
 id|u64
 id|mref
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -212,7 +212,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|dir_ni
@@ -535,7 +535,7 @@ c_func
 id|ie-&gt;data.dir.indexed_file
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -839,7 +839,7 @@ c_cond
 id|name
 )paren
 (brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -936,7 +936,7 @@ op_member_access_from_pointer
 id|i_mapping
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the index root and the mft record. Release them,&n;&t; * otherwise we deadlock with ntfs_map_page().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2010,7 +2010,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2131,7 +2131,7 @@ suffix:semicolon
 id|u64
 id|mref
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -2210,7 +2210,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|dir_ni
@@ -2452,7 +2452,7 @@ c_func
 id|ie-&gt;data.dir.indexed_file
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2653,7 +2653,7 @@ op_member_access_from_pointer
 id|i_mapping
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the index root and the mft record. Release them,&n;&t; * otherwise we deadlock with ntfs_map_page().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3443,7 +3443,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3992,7 +3992,7 @@ comma
 op_star
 id|index_end
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -4226,7 +4226,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ndir
@@ -4371,7 +4371,7 @@ comma
 id|rc
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5744,7 +5744,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx

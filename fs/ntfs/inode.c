@@ -1284,7 +1284,7 @@ r_int
 id|ntfs_is_extended_system_file
 c_func
 (paren
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 )paren
@@ -1293,7 +1293,7 @@ r_int
 id|nr_links
 suffix:semicolon
 multiline_comment|/* Restart search. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -1590,7 +1590,7 @@ id|STANDARD_INFORMATION
 op_star
 id|si
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -1684,7 +1684,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -1893,7 +1893,7 @@ id|si-&gt;last_access_time
 )paren
 suffix:semicolon
 multiline_comment|/* Find the attribute list attribute if present. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -2260,7 +2260,7 @@ op_star
 id|index_end
 suffix:semicolon
 multiline_comment|/* It is a directory, find index root attribute. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -2708,7 +2708,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* We are done with the mft record, so we release it. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2740,7 +2740,7 @@ id|ni
 )paren
 suffix:semicolon
 multiline_comment|/* Find index allocation attribute. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -2914,7 +2914,7 @@ id|ctx-&gt;attr-&gt;data.non_resident.allocated_size
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We are done with the mft record, so we release it. Otherwise&n;&t;&t; * we would deadlock in ntfs_attr_iget().&n;&t;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3112,7 +3112,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* It is a file. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -3492,7 +3492,7 @@ suffix:semicolon
 id|no_data_attr_special_case
 suffix:colon
 multiline_comment|/* We are done with the mft record, so we release it. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3612,7 +3612,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3694,7 +3694,7 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -3812,7 +3812,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -4389,7 +4389,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -4428,7 +4428,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -4518,7 +4518,7 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -4648,7 +4648,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -5050,7 +5050,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* We are done with the mft record, so we release it. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5082,7 +5082,7 @@ id|ni
 )paren
 suffix:semicolon
 multiline_comment|/* Find index allocation attribute. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -5253,7 +5253,7 @@ id|ctx-&gt;attr-&gt;data.non_resident.allocated_size
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the mft record, so we release it.  Otherwise&n;&t; * we would deadlock in ntfs_attr_iget().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5474,7 +5474,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5577,7 +5577,7 @@ id|ATTR_RECORD
 op_star
 id|attr
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -5868,7 +5868,7 @@ id|ntfs_mft_aops
 suffix:semicolon
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -6431,7 +6431,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -6711,7 +6711,7 @@ l_string|&quot;linux-ntfs-dev@lists.&quot;
 l_string|&quot;sourceforge.net&quot;
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -6880,7 +6880,7 @@ r_goto
 id|put_err_out
 suffix:semicolon
 )brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -6914,7 +6914,7 @@ l_string|&quot;attribute list. $MFT is corrupt. Run chkdsk.&quot;
 suffix:semicolon
 id|put_err_out
 suffix:colon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -7961,7 +7961,7 @@ c_func
 id|vi
 )paren
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -8063,7 +8063,7 @@ suffix:semicolon
 multiline_comment|/* Update the access times in the standard information attribute. */
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -8120,7 +8120,7 @@ id|ctx
 )paren
 )paren
 (brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -8313,7 +8313,7 @@ c_func
 id|ctx-&gt;ntfs_ino-&gt;page
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx

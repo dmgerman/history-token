@@ -408,7 +408,7 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -543,7 +543,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -749,7 +749,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1081,7 +1081,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1163,7 +1163,7 @@ id|MFT_RECORD
 op_star
 id|mrec
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -1226,7 +1226,7 @@ suffix:semicolon
 multiline_comment|/* Find the first file name attribute in the mft record. */
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -1291,7 +1291,7 @@ id|ctx
 )paren
 )paren
 (brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1403,7 +1403,7 @@ id|fn-&gt;parent_directory
 )paren
 suffix:semicolon
 multiline_comment|/* Release the search context and the mft record of the child. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx

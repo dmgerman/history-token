@@ -56,7 +56,7 @@ DECL|typedef|LCN_SPECIAL_VALUES
 )brace
 id|LCN_SPECIAL_VALUES
 suffix:semicolon
-multiline_comment|/**&n; * attr_search_context - used in attribute search functions&n; * @mrec:&t;buffer containing mft record to search&n; * @attr:&t;attribute record in @mrec where to begin/continue search&n; * @is_first:&t;if true ntfs_attr_lookup() begins search with @attr, else after&n; *&n; * Structure must be initialized to zero before the first call to one of the&n; * attribute search functions. Initialize @mrec to point to the mft record to&n; * search, and @attr to point to the first attribute within @mrec (not necessary&n; * if calling the _first() functions), and set @is_first to TRUE (not necessary&n; * if calling the _first() functions).&n; *&n; * If @is_first is TRUE, the search begins with @attr. If @is_first is FALSE,&n; * the search begins after @attr. This is so that, after the first call to one&n; * of the search attribute functions, we can call the function again, without&n; * any modification of the search context, to automagically get the next&n; * matching attribute.&n; */
+multiline_comment|/**&n; * ntfs_attr_search_ctx - used in attribute search functions&n; * @mrec:&t;buffer containing mft record to search&n; * @attr:&t;attribute record in @mrec where to begin/continue search&n; * @is_first:&t;if true ntfs_attr_lookup() begins search with @attr, else after&n; *&n; * Structure must be initialized to zero before the first call to one of the&n; * attribute search functions. Initialize @mrec to point to the mft record to&n; * search, and @attr to point to the first attribute within @mrec (not necessary&n; * if calling the _first() functions), and set @is_first to TRUE (not necessary&n; * if calling the _first() functions).&n; *&n; * If @is_first is TRUE, the search begins with @attr. If @is_first is FALSE,&n; * the search begins after @attr. This is so that, after the first call to one&n; * of the search attribute functions, we can call the function again, without&n; * any modification of the search context, to automagically get the next&n; * matching attribute.&n; */
 r_typedef
 r_struct
 (brace
@@ -99,9 +99,9 @@ id|ATTR_RECORD
 op_star
 id|base_attr
 suffix:semicolon
-DECL|typedef|attr_search_context
+DECL|typedef|ntfs_attr_search_ctx
 )brace
-id|attr_search_context
+id|ntfs_attr_search_ctx
 suffix:semicolon
 r_extern
 id|runlist_element
@@ -202,7 +202,7 @@ r_const
 id|u32
 id|val_len
 comma
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 )paren
@@ -241,7 +241,7 @@ r_const
 id|u32
 id|val_len
 comma
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 )paren
@@ -311,18 +311,18 @@ suffix:semicolon
 )brace
 r_extern
 r_void
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 )paren
 suffix:semicolon
 r_extern
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ntfs_inode
@@ -336,10 +336,10 @@ id|mrec
 suffix:semicolon
 r_extern
 r_void
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 )paren

@@ -1185,7 +1185,7 @@ id|VOLUME_INFORMATION
 op_star
 id|vi
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -1251,7 +1251,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -1347,7 +1347,7 @@ c_func
 id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1377,7 +1377,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5521,7 +5521,7 @@ id|VOLUME_INFORMATION
 op_star
 id|vi
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -5928,7 +5928,7 @@ op_logical_neg
 (paren
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|NTFS_I
@@ -5985,7 +5985,7 @@ id|ctx-&gt;attr-&gt;flags
 (brace
 id|err_put_vol
 suffix:colon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -6065,7 +6065,7 @@ id|vol-&gt;minor_ver
 op_assign
 id|vi-&gt;minor_ver
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -10307,7 +10307,7 @@ id|ntfs_attr_ctx_cache_name
 comma
 r_sizeof
 (paren
-id|attr_search_context
+id|ntfs_attr_search_ctx
 )paren
 comma
 l_int|0

@@ -1367,7 +1367,7 @@ id|u8
 op_star
 id|kaddr
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -1546,7 +1546,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -1744,7 +1744,7 @@ id|page
 suffix:semicolon
 id|put_unm_err_out
 suffix:colon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3931,7 +3931,7 @@ r_char
 op_star
 id|kaddr
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -4299,7 +4299,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -4595,7 +4595,7 @@ c_func
 id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -4676,7 +4676,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -6134,7 +6134,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Because resident attributes are handled by memcpy() to/from the&n;&t; * corresponding MFT record, and because this form of i/o is byte&n;&t; * aligned rather than block aligned, there is no need to bring the&n;&t; * page uptodate here as in the non-resident case where we need to&n;&t; * bring the buffers straddled by the write uptodate before&n;&t; * generic_file_write() does the copying from userspace.&n;&t; *&n;&t; * We thus defer the uptodate bringing of the page region outside the&n;&t; * region written to to ntfs_commit_write(). The reason for doing this&n;&t; * is that we save one round of:&n;&t; *&t;map_mft_record(), get_attr_search_ctx(), ntfs_attr_lookup(),&n;&t; *&t;kmap_atomic(), kunmap_atomic(), put_attr_search_ctx(),&n;&t; *&t;unmap_mft_record().&n;&t; * Which is obviously a very worthwhile save.&n;&t; *&n;&t; * Thus we just return success now...&n;&t; */
+multiline_comment|/*&n;&t; * Because resident attributes are handled by memcpy() to/from the&n;&t; * corresponding MFT record, and because this form of i/o is byte&n;&t; * aligned rather than block aligned, there is no need to bring the&n;&t; * page uptodate here as in the non-resident case where we need to&n;&t; * bring the buffers straddled by the write uptodate before&n;&t; * generic_file_write() does the copying from userspace.&n;&t; *&n;&t; * We thus defer the uptodate bringing of the page region outside the&n;&t; * region written to to ntfs_commit_write(). The reason for doing this&n;&t; * is that we save one round of:&n;&t; *&t;map_mft_record(), ntfs_attr_get_search_ctx(),&n;&t; *&t;ntfs_attr_lookup(), kmap_atomic(), kunmap_atomic(),&n;&t; *&t;ntfs_attr_put_search_ctx(), unmap_mft_record().&n;&t; * Which is obviously a very worthwhile save.&n;&t; *&n;&t; * Thus we just return success now...&n;&t; */
 id|ntfs_debug
 c_func
 (paren
@@ -6420,7 +6420,7 @@ comma
 op_star
 id|kattr
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -6705,7 +6705,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -7038,7 +7038,7 @@ c_func
 id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -7148,7 +7148,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
