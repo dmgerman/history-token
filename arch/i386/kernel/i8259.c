@@ -1478,12 +1478,10 @@ suffix:semicolon
 id|irq_ctx_init
 c_func
 (paren
-id|current_thread_info
+id|smp_processor_id
 c_func
 (paren
 )paren
-op_member_access_from_pointer
-id|cpu
 )paren
 suffix:semicolon
 )brace
