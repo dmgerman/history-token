@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -348,12 +348,12 @@ id|xfs_params.error_level.max
 )brace
 comma
 (brace
-id|XFS_SYNC_INTERVAL
+id|XFS_SYNCD_TIMER
 comma
-l_string|&quot;sync_interval&quot;
+l_string|&quot;xfssyncd_centisecs&quot;
 comma
 op_amp
-id|xfs_params.sync_interval.val
+id|xfs_params.syncd_timer.val
 comma
 r_sizeof
 (paren
@@ -373,10 +373,10 @@ comma
 l_int|NULL
 comma
 op_amp
-id|xfs_params.sync_interval.min
+id|xfs_params.syncd_timer.min
 comma
 op_amp
-id|xfs_params.sync_interval.max
+id|xfs_params.syncd_timer.max
 )brace
 comma
 (brace
@@ -476,12 +476,12 @@ id|xfs_params.inherit_noatim.max
 )brace
 comma
 (brace
-id|XFS_FLUSH_INTERVAL
+id|XFS_BUF_TIMER
 comma
-l_string|&quot;flush_interval&quot;
+l_string|&quot;xfsbufd_centisecs&quot;
 comma
 op_amp
-id|xfs_params.flush_interval.val
+id|xfs_params.xfs_buf_timer.val
 comma
 r_sizeof
 (paren
@@ -501,19 +501,19 @@ comma
 l_int|NULL
 comma
 op_amp
-id|xfs_params.flush_interval.min
+id|xfs_params.xfs_buf_timer.min
 comma
 op_amp
-id|xfs_params.flush_interval.max
+id|xfs_params.xfs_buf_timer.max
 )brace
 comma
 (brace
-id|XFS_AGE_BUFFER
+id|XFS_BUF_AGE
 comma
-l_string|&quot;age_buffer&quot;
+l_string|&quot;age_buffer_centisecs&quot;
 comma
 op_amp
-id|xfs_params.age_buffer.val
+id|xfs_params.xfs_buf_age.val
 comma
 r_sizeof
 (paren
@@ -533,10 +533,10 @@ comma
 l_int|NULL
 comma
 op_amp
-id|xfs_params.age_buffer.min
+id|xfs_params.xfs_buf_age.min
 comma
 op_amp
-id|xfs_params.age_buffer.max
+id|xfs_params.xfs_buf_age.max
 )brace
 comma
 multiline_comment|/* please keep this the last entry */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_SYSCTL_H__
 DECL|macro|__XFS_SYSCTL_H__
 mdefine_line|#define __XFS_SYSCTL_H__
@@ -39,7 +39,7 @@ DECL|member|sgid_inherit
 id|xfs_sysctl_val_t
 id|sgid_inherit
 suffix:semicolon
-multiline_comment|/* Inherit S_ISGID bit if process&squot; GID &n;&t;&t;&t;&t;&t; * is not a member of the parent dir&n;&t;&t;&t;&t;&t; * GID */
+multiline_comment|/* Inherit S_ISGID if process&squot; GID is&n;&t;&t;&t;&t;&t; * not a member of parent dir GID. */
 DECL|member|symlink_mode
 id|xfs_sysctl_val_t
 id|symlink_mode
@@ -55,11 +55,11 @@ id|xfs_sysctl_val_t
 id|error_level
 suffix:semicolon
 multiline_comment|/* Degree of reporting for problems  */
-DECL|member|sync_interval
+DECL|member|syncd_timer
 id|xfs_sysctl_val_t
-id|sync_interval
+id|syncd_timer
 suffix:semicolon
-multiline_comment|/* time between sync calls           */
+multiline_comment|/* Interval between xfssyncd wakeups */
 DECL|member|stats_clear
 id|xfs_sysctl_val_t
 id|stats_clear
@@ -80,16 +80,16 @@ id|xfs_sysctl_val_t
 id|inherit_noatim
 suffix:semicolon
 multiline_comment|/* Inherit the &quot;noatime&quot; inode flag. */
-DECL|member|flush_interval
+DECL|member|xfs_buf_timer
 id|xfs_sysctl_val_t
-id|flush_interval
+id|xfs_buf_timer
 suffix:semicolon
-multiline_comment|/* interval between runs of the&n;&t;&t;&t;&t;&t; * delwri flush daemon.  */
-DECL|member|age_buffer
+multiline_comment|/* Interval between xfsbufd wakeups. */
+DECL|member|xfs_buf_age
 id|xfs_sysctl_val_t
-id|age_buffer
+id|xfs_buf_age
 suffix:semicolon
-multiline_comment|/* time for buffer to age before&n;&t;&t;&t;&t;&t; * we flush it.  */
+multiline_comment|/* Metadata buffer age before flush. */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -97,6 +97,8 @@ suffix:semicolon
 multiline_comment|/*&n; * xfs_error_level:&n; *&n; * How much error reporting will be done when internal problems are&n; * encountered.  These problems normally return an EFSCORRUPTED to their&n; * caller, with no other information reported.&n; *&n; * 0&t;No error reports&n; * 1&t;Report EFSCORRUPTED errors that will cause a filesystem shutdown&n; * 5&t;Report all EFSCORRUPTED errors (all of the above errors, plus any&n; *&t;additional errors that are known to not cause shutdowns)&n; *&n; * xfs_panic_mask bit 0x8 turns the error reports into panics&n; */
 r_enum
 (brace
+multiline_comment|/* XFS_REFCACHE_SIZE = 1 */
+multiline_comment|/* XFS_REFCACHE_PURGE = 2 */
 DECL|enumerator|XFS_RESTRICT_CHOWN
 id|XFS_RESTRICT_CHOWN
 op_assign
@@ -122,11 +124,14 @@ id|XFS_ERRLEVEL
 op_assign
 l_int|7
 comma
-DECL|enumerator|XFS_SYNC_INTERVAL
-id|XFS_SYNC_INTERVAL
+DECL|enumerator|XFS_SYNCD_TIMER
+id|XFS_SYNCD_TIMER
 op_assign
 l_int|8
 comma
+multiline_comment|/* XFS_PROBE_DMAPI = 9 */
+multiline_comment|/* XFS_PROBE_IOOPS = 10 */
+multiline_comment|/* XFS_PROBE_QUOTA = 11 */
 DECL|enumerator|XFS_STATS_CLEAR
 id|XFS_STATS_CLEAR
 op_assign
@@ -147,16 +152,17 @@ id|XFS_INHERIT_NOATIME
 op_assign
 l_int|15
 comma
-DECL|enumerator|XFS_FLUSH_INTERVAL
-id|XFS_FLUSH_INTERVAL
+DECL|enumerator|XFS_BUF_TIMER
+id|XFS_BUF_TIMER
 op_assign
 l_int|16
 comma
-DECL|enumerator|XFS_AGE_BUFFER
-id|XFS_AGE_BUFFER
+DECL|enumerator|XFS_BUF_AGE
+id|XFS_BUF_AGE
 op_assign
 l_int|17
 comma
+multiline_comment|/* XFS_IO_BYPASS = 18 */
 )brace
 suffix:semicolon
 r_extern
