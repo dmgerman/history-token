@@ -4793,7 +4793,7 @@ comma
 (paren
 id|u64
 )paren
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|tr_buffer
