@@ -130,7 +130,7 @@ id|PAGE_CACHE_SIZE
 suffix:semicolon
 )brace
 DECL|macro|list_to_page
-mdefine_line|#define list_to_page(head) (list_entry((head)-&gt;prev, struct page, list))
+mdefine_line|#define list_to_page(head) (list_entry((head)-&gt;prev, struct page, lru))
 multiline_comment|/**&n; * read_cache_pages - populate an address space with some pages, and&n; * &t;&t;&t;start reads against them.&n; * @mapping: the address_space&n; * @pages: The address of a list_head which contains the target pages.  These&n; *   pages have their -&gt;index populated and are otherwise uninitialised.&n; * @filler: callback routine for filling a single page.&n; * @data: private data for the callback routine.&n; *&n; * Hides the details of the LRU cache etc from the filesystems.&n; */
 DECL|function|read_cache_pages
 r_int
@@ -212,7 +212,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 r_if
@@ -304,7 +304,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|victim-&gt;list
+id|victim-&gt;lru
 )paren
 suffix:semicolon
 id|page_cache_release
@@ -438,7 +438,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 r_if
@@ -698,7 +698,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 op_amp
 id|page_pool

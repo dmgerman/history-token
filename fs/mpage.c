@@ -1195,7 +1195,7 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 id|prefetchw
@@ -1209,7 +1209,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 r_if
