@@ -7490,13 +7490,6 @@ id|__user
 op_star
 id|data
 op_assign
-(paren
-r_struct
-id|mii_ioctl_data
-id|__user
-op_star
-)paren
-op_amp
 id|ifr-&gt;ifr_data
 suffix:semicolon
 r_struct
