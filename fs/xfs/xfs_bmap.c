@@ -25624,6 +25624,7 @@ id|bmv
 comma
 multiline_comment|/* user bmap structure */
 r_void
+id|__user
 op_star
 id|ap
 comma
@@ -26581,12 +26582,14 @@ ques
 c_cond
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
 (paren
 r_struct
 id|getbmapx
+id|__user
 op_star
 )paren
 id|ap
@@ -26596,12 +26599,14 @@ l_int|1
 suffix:colon
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
 (paren
 r_struct
 id|getbmap
+id|__user
 op_star
 )paren
 id|ap

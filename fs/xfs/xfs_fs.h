@@ -769,6 +769,7 @@ id|xfs_fsop_bulkreq
 (brace
 DECL|member|lastip
 id|__u64
+id|__user
 op_star
 id|lastip
 suffix:semicolon
@@ -780,12 +781,14 @@ suffix:semicolon
 multiline_comment|/* count of entries in buffer&t;*/
 DECL|member|ubuffer
 r_void
+id|__user
 op_star
 id|ubuffer
 suffix:semicolon
 multiline_comment|/* user buffer for inode desc.&t;*/
 DECL|member|ocount
 id|__s32
+id|__user
 op_star
 id|ocount
 suffix:semicolon
@@ -850,6 +853,7 @@ suffix:semicolon
 multiline_comment|/* fd for FD_TO_HANDLE&t;&t;*/
 DECL|member|path
 r_void
+id|__user
 op_star
 id|path
 suffix:semicolon
@@ -861,6 +865,7 @@ suffix:semicolon
 multiline_comment|/* open flags&t;&t;&t;*/
 DECL|member|ihandle
 r_void
+id|__user
 op_star
 id|ihandle
 suffix:semicolon
@@ -872,12 +877,14 @@ suffix:semicolon
 multiline_comment|/* user supplied length&t;&t;*/
 DECL|member|ohandle
 r_void
+id|__user
 op_star
 id|ohandle
 suffix:semicolon
 multiline_comment|/* user buffer for handle&t;*/
 DECL|member|ohandlen
 id|__u32
+id|__user
 op_star
 id|ohandlen
 suffix:semicolon
@@ -901,6 +908,7 @@ multiline_comment|/* handle interface structure */
 DECL|member|data
 r_struct
 id|fsdmidata
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -1016,6 +1024,7 @@ multiline_comment|/* count of following multiop */
 DECL|member|ops
 r_struct
 id|xfs_attr_multiop
+id|__user
 op_star
 id|ops
 suffix:semicolon
