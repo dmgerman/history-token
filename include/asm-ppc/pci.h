@@ -744,6 +744,38 @@ multiline_comment|/* Nothing to do. */
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 DECL|macro|pci_domain_nr
 mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
+multiline_comment|/* Set the name of the bus as it appears in /proc/bus/pci */
+DECL|function|pci_name_bus
+r_static
+r_inline
+r_int
+id|pci_name_bus
+c_func
+(paren
+r_char
+op_star
+id|name
+comma
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;%02x&quot;
+comma
+id|bus-&gt;number
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Map a range of PCI memory or I/O space for a device into user space */
 r_int
 id|pci_mmap_page_range
