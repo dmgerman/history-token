@@ -1,7 +1,5 @@
 multiline_comment|/* $Id: divert_procfs.c,v 1.11.6.2 2001/09/23 22:24:36 kai Exp $&n; *&n; * Filesystem handling for the diversion supplementary services.&n; *&n; * Copyright 1998       by Werner Cornelius (werner@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;

@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: saphir.c,v 1.8.6.2 2001/09/23 22:24:51 kai Exp $&n; *&n; * low level stuff for HST Saphir 1&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to    HST High Soft Tech GmbH&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;

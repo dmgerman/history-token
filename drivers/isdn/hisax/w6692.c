@@ -1,8 +1,6 @@
 multiline_comment|/* $Id: w6692.c,v 1.12.6.6 2001/09/23 22:24:52 kai Exp $&n; *&n; * Winbond W6692 specific routines&n; *&n; * Author       Petr Novak&n; * Copyright    by Petr Novak        &lt;petr.novak@i.cz&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;w6692.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;
