@@ -59,8 +59,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|macro|SUPPORTED_10000baseT_Full
-mdefine_line|#define SUPPORTED_10000baseT_Full (1 &lt;&lt; 11)
 DECL|macro|SPEED_10000
 mdefine_line|#define SPEED_10000 10000
 r_static
