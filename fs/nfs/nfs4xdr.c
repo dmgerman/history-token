@@ -895,7 +895,7 @@ l_int|4
 (brace
 id|printk
 (paren
-l_string|&quot;encode_attr: Attr length calculation error! %u != %u&bslash;n&quot;
+l_string|&quot;encode_attr: Attr length calculation error! %u != %Zu&bslash;n&quot;
 comma
 id|len
 comma
