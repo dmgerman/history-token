@@ -64,6 +64,17 @@ DECL|macro|PORT_PC9861
 mdefine_line|#define PORT_PC9861&t;45
 DECL|macro|PORT_PC9801_101
 mdefine_line|#define PORT_PC9801_101&t;46
+multiline_comment|/* DZ */
+DECL|macro|PORT_DZ
+mdefine_line|#define PORT_DZ&t;&t;47
+multiline_comment|/* Parisc type numbers. */
+DECL|macro|PORT_MUX
+mdefine_line|#define PORT_MUX&t;48
+multiline_comment|/* Macintosh Zilog type numbers */
+DECL|macro|PORT_MAC_ZILOG
+mdefine_line|#define PORT_MAC_ZILOG&t;50&t;/* m68k : not yet implemented */
+DECL|macro|PORT_PMAC_ZILOG
+mdefine_line|#define PORT_PMAC_ZILOG&t;51
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
