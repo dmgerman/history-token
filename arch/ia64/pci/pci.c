@@ -562,7 +562,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_resource
+id|insert_resource
 c_func
 (paren
 id|root
