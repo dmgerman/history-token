@@ -686,7 +686,7 @@ mdefine_line|#define DEVICE_NAME &quot;ida&quot;
 DECL|macro|TIMEOUT_VALUE
 mdefine_line|#define TIMEOUT_VALUE (25*HZ)
 DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_ida_request0
+mdefine_line|#define DEVICE_REQUEST do_ida_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (MINOR(device) &gt;&gt; 4)
 macro_line|#endif /* MAJOR_NR == whatever */

@@ -770,14 +770,6 @@ op_assign
 op_amp
 id|page-&gt;mapping-&gt;host-&gt;u.shmem_i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|info-&gt;locked
-)paren
-r_return
-l_int|1
-suffix:semicolon
 id|swap
 op_assign
 id|__get_swap_page

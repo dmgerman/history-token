@@ -1913,14 +1913,8 @@ id|length
 suffix:semicolon
 id|length
 op_assign
-(paren
 id|xres_virtual
-op_plus
-id|bpp
-op_minus
-l_int|1
-)paren
-op_div
+op_star
 id|bpp
 suffix:semicolon
 id|length

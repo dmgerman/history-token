@@ -102,6 +102,7 @@ multiline_comment|/* Seperate include files for the i810/mga/r128 specific struc
 macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;i810_drm.h&quot;
 macro_line|#include &quot;r128_drm.h&quot;
+macro_line|#include &quot;radeon_drm.h&quot;
 macro_line|#ifdef CONFIG_DRM_SIS
 macro_line|#include &quot;sis_drm.h&quot;
 macro_line|#endif
@@ -909,170 +910,201 @@ DECL|typedef|drm_agp_info_t
 id|drm_agp_info_t
 suffix:semicolon
 DECL|macro|DRM_IOCTL_BASE
-mdefine_line|#define DRM_IOCTL_BASE&t;     &squot;d&squot;
+mdefine_line|#define DRM_IOCTL_BASE&t;&t;&t;&squot;d&squot;
 DECL|macro|DRM_IO
-mdefine_line|#define DRM_IO(nr)&t;     _IO(DRM_IOCTL_BASE,nr)
+mdefine_line|#define DRM_IO(nr)&t;&t;&t;_IO(DRM_IOCTL_BASE,nr)
 DECL|macro|DRM_IOR
-mdefine_line|#define DRM_IOR(nr,size)     _IOR(DRM_IOCTL_BASE,nr,size)
+mdefine_line|#define DRM_IOR(nr,size)&t;&t;_IOR(DRM_IOCTL_BASE,nr,size)
 DECL|macro|DRM_IOW
-mdefine_line|#define DRM_IOW(nr,size)     _IOW(DRM_IOCTL_BASE,nr,size)
+mdefine_line|#define DRM_IOW(nr,size)&t;&t;_IOW(DRM_IOCTL_BASE,nr,size)
 DECL|macro|DRM_IOWR
-mdefine_line|#define DRM_IOWR(nr,size)    _IOWR(DRM_IOCTL_BASE,nr,size)
+mdefine_line|#define DRM_IOWR(nr,size)&t;&t;_IOWR(DRM_IOCTL_BASE,nr,size)
 DECL|macro|DRM_IOCTL_VERSION
-mdefine_line|#define DRM_IOCTL_VERSION    DRM_IOWR(0x00, drm_version_t)
+mdefine_line|#define DRM_IOCTL_VERSION&t;&t;DRM_IOWR(0x00, drm_version_t)
 DECL|macro|DRM_IOCTL_GET_UNIQUE
-mdefine_line|#define DRM_IOCTL_GET_UNIQUE DRM_IOWR(0x01, drm_unique_t)
+mdefine_line|#define DRM_IOCTL_GET_UNIQUE&t;&t;DRM_IOWR(0x01, drm_unique_t)
 DECL|macro|DRM_IOCTL_GET_MAGIC
-mdefine_line|#define DRM_IOCTL_GET_MAGIC  DRM_IOR( 0x02, drm_auth_t)
+mdefine_line|#define DRM_IOCTL_GET_MAGIC&t;&t;DRM_IOR( 0x02, drm_auth_t)
 DECL|macro|DRM_IOCTL_IRQ_BUSID
-mdefine_line|#define DRM_IOCTL_IRQ_BUSID  DRM_IOWR(0x03, drm_irq_busid_t)
+mdefine_line|#define DRM_IOCTL_IRQ_BUSID&t;&t;DRM_IOWR(0x03, drm_irq_busid_t)
 DECL|macro|DRM_IOCTL_SET_UNIQUE
-mdefine_line|#define DRM_IOCTL_SET_UNIQUE DRM_IOW( 0x10, drm_unique_t)
+mdefine_line|#define DRM_IOCTL_SET_UNIQUE&t;&t;DRM_IOW( 0x10, drm_unique_t)
 DECL|macro|DRM_IOCTL_AUTH_MAGIC
-mdefine_line|#define DRM_IOCTL_AUTH_MAGIC DRM_IOW( 0x11, drm_auth_t)
+mdefine_line|#define DRM_IOCTL_AUTH_MAGIC&t;&t;DRM_IOW( 0x11, drm_auth_t)
 DECL|macro|DRM_IOCTL_BLOCK
-mdefine_line|#define DRM_IOCTL_BLOCK&t;     DRM_IOWR(0x12, drm_block_t)
+mdefine_line|#define DRM_IOCTL_BLOCK&t;&t;&t;DRM_IOWR(0x12, drm_block_t)
 DECL|macro|DRM_IOCTL_UNBLOCK
-mdefine_line|#define DRM_IOCTL_UNBLOCK    DRM_IOWR(0x13, drm_block_t)
+mdefine_line|#define DRM_IOCTL_UNBLOCK&t;&t;DRM_IOWR(0x13, drm_block_t)
 DECL|macro|DRM_IOCTL_CONTROL
-mdefine_line|#define DRM_IOCTL_CONTROL    DRM_IOW( 0x14, drm_control_t)
+mdefine_line|#define DRM_IOCTL_CONTROL&t;&t;DRM_IOW( 0x14, drm_control_t)
 DECL|macro|DRM_IOCTL_ADD_MAP
-mdefine_line|#define DRM_IOCTL_ADD_MAP    DRM_IOWR(0x15, drm_map_t)
+mdefine_line|#define DRM_IOCTL_ADD_MAP&t;&t;DRM_IOWR(0x15, drm_map_t)
 DECL|macro|DRM_IOCTL_ADD_BUFS
-mdefine_line|#define DRM_IOCTL_ADD_BUFS   DRM_IOWR(0x16, drm_buf_desc_t)
+mdefine_line|#define DRM_IOCTL_ADD_BUFS&t;&t;DRM_IOWR(0x16, drm_buf_desc_t)
 DECL|macro|DRM_IOCTL_MARK_BUFS
-mdefine_line|#define DRM_IOCTL_MARK_BUFS  DRM_IOW( 0x17, drm_buf_desc_t)
+mdefine_line|#define DRM_IOCTL_MARK_BUFS&t;&t;DRM_IOW( 0x17, drm_buf_desc_t)
 DECL|macro|DRM_IOCTL_INFO_BUFS
-mdefine_line|#define DRM_IOCTL_INFO_BUFS  DRM_IOWR(0x18, drm_buf_info_t)
+mdefine_line|#define DRM_IOCTL_INFO_BUFS&t;&t;DRM_IOWR(0x18, drm_buf_info_t)
 DECL|macro|DRM_IOCTL_MAP_BUFS
-mdefine_line|#define DRM_IOCTL_MAP_BUFS   DRM_IOWR(0x19, drm_buf_map_t)
+mdefine_line|#define DRM_IOCTL_MAP_BUFS&t;&t;DRM_IOWR(0x19, drm_buf_map_t)
 DECL|macro|DRM_IOCTL_FREE_BUFS
-mdefine_line|#define DRM_IOCTL_FREE_BUFS  DRM_IOW( 0x1a, drm_buf_free_t)
+mdefine_line|#define DRM_IOCTL_FREE_BUFS&t;&t;DRM_IOW( 0x1a, drm_buf_free_t)
 DECL|macro|DRM_IOCTL_ADD_CTX
-mdefine_line|#define DRM_IOCTL_ADD_CTX    DRM_IOWR(0x20, drm_ctx_t)
+mdefine_line|#define DRM_IOCTL_ADD_CTX&t;&t;DRM_IOWR(0x20, drm_ctx_t)
 DECL|macro|DRM_IOCTL_RM_CTX
-mdefine_line|#define DRM_IOCTL_RM_CTX     DRM_IOWR(0x21, drm_ctx_t)
+mdefine_line|#define DRM_IOCTL_RM_CTX&t;&t;DRM_IOWR(0x21, drm_ctx_t)
 DECL|macro|DRM_IOCTL_MOD_CTX
-mdefine_line|#define DRM_IOCTL_MOD_CTX    DRM_IOW( 0x22, drm_ctx_t)
+mdefine_line|#define DRM_IOCTL_MOD_CTX&t;&t;DRM_IOW( 0x22, drm_ctx_t)
 DECL|macro|DRM_IOCTL_GET_CTX
-mdefine_line|#define DRM_IOCTL_GET_CTX    DRM_IOWR(0x23, drm_ctx_t)
+mdefine_line|#define DRM_IOCTL_GET_CTX&t;&t;DRM_IOWR(0x23, drm_ctx_t)
 DECL|macro|DRM_IOCTL_SWITCH_CTX
-mdefine_line|#define DRM_IOCTL_SWITCH_CTX DRM_IOW( 0x24, drm_ctx_t)
+mdefine_line|#define DRM_IOCTL_SWITCH_CTX&t;&t;DRM_IOW( 0x24, drm_ctx_t)
 DECL|macro|DRM_IOCTL_NEW_CTX
-mdefine_line|#define DRM_IOCTL_NEW_CTX    DRM_IOW( 0x25, drm_ctx_t)
+mdefine_line|#define DRM_IOCTL_NEW_CTX&t;&t;DRM_IOW( 0x25, drm_ctx_t)
 DECL|macro|DRM_IOCTL_RES_CTX
-mdefine_line|#define DRM_IOCTL_RES_CTX    DRM_IOWR(0x26, drm_ctx_res_t)
+mdefine_line|#define DRM_IOCTL_RES_CTX&t;&t;DRM_IOWR(0x26, drm_ctx_res_t)
 DECL|macro|DRM_IOCTL_ADD_DRAW
-mdefine_line|#define DRM_IOCTL_ADD_DRAW   DRM_IOWR(0x27, drm_draw_t)
+mdefine_line|#define DRM_IOCTL_ADD_DRAW&t;&t;DRM_IOWR(0x27, drm_draw_t)
 DECL|macro|DRM_IOCTL_RM_DRAW
-mdefine_line|#define DRM_IOCTL_RM_DRAW    DRM_IOWR(0x28, drm_draw_t)
+mdefine_line|#define DRM_IOCTL_RM_DRAW&t;&t;DRM_IOWR(0x28, drm_draw_t)
 DECL|macro|DRM_IOCTL_DMA
-mdefine_line|#define DRM_IOCTL_DMA&t;     DRM_IOWR(0x29, drm_dma_t)
+mdefine_line|#define DRM_IOCTL_DMA&t;&t;&t;DRM_IOWR(0x29, drm_dma_t)
 DECL|macro|DRM_IOCTL_LOCK
-mdefine_line|#define DRM_IOCTL_LOCK&t;     DRM_IOW( 0x2a, drm_lock_t)
+mdefine_line|#define DRM_IOCTL_LOCK&t;&t;&t;DRM_IOW( 0x2a, drm_lock_t)
 DECL|macro|DRM_IOCTL_UNLOCK
-mdefine_line|#define DRM_IOCTL_UNLOCK     DRM_IOW( 0x2b, drm_lock_t)
+mdefine_line|#define DRM_IOCTL_UNLOCK&t;&t;DRM_IOW( 0x2b, drm_lock_t)
 DECL|macro|DRM_IOCTL_FINISH
-mdefine_line|#define DRM_IOCTL_FINISH     DRM_IOW( 0x2c, drm_lock_t)
+mdefine_line|#define DRM_IOCTL_FINISH&t;&t;DRM_IOW( 0x2c, drm_lock_t)
 DECL|macro|DRM_IOCTL_AGP_ACQUIRE
-mdefine_line|#define DRM_IOCTL_AGP_ACQUIRE DRM_IO(  0x30)
+mdefine_line|#define DRM_IOCTL_AGP_ACQUIRE&t;&t;DRM_IO(  0x30)
 DECL|macro|DRM_IOCTL_AGP_RELEASE
-mdefine_line|#define DRM_IOCTL_AGP_RELEASE DRM_IO(  0x31)
+mdefine_line|#define DRM_IOCTL_AGP_RELEASE&t;&t;DRM_IO(  0x31)
 DECL|macro|DRM_IOCTL_AGP_ENABLE
-mdefine_line|#define DRM_IOCTL_AGP_ENABLE  DRM_IOW( 0x32, drm_agp_mode_t)
+mdefine_line|#define DRM_IOCTL_AGP_ENABLE&t;&t;DRM_IOW( 0x32, drm_agp_mode_t)
 DECL|macro|DRM_IOCTL_AGP_INFO
-mdefine_line|#define DRM_IOCTL_AGP_INFO    DRM_IOR( 0x33, drm_agp_info_t)
+mdefine_line|#define DRM_IOCTL_AGP_INFO&t;&t;DRM_IOR( 0x33, drm_agp_info_t)
 DECL|macro|DRM_IOCTL_AGP_ALLOC
-mdefine_line|#define DRM_IOCTL_AGP_ALLOC   DRM_IOWR(0x34, drm_agp_buffer_t)
+mdefine_line|#define DRM_IOCTL_AGP_ALLOC&t;&t;DRM_IOWR(0x34, drm_agp_buffer_t)
 DECL|macro|DRM_IOCTL_AGP_FREE
-mdefine_line|#define DRM_IOCTL_AGP_FREE    DRM_IOW( 0x35, drm_agp_buffer_t)
+mdefine_line|#define DRM_IOCTL_AGP_FREE&t;&t;DRM_IOW( 0x35, drm_agp_buffer_t)
 DECL|macro|DRM_IOCTL_AGP_BIND
-mdefine_line|#define DRM_IOCTL_AGP_BIND    DRM_IOW( 0x36, drm_agp_binding_t)
+mdefine_line|#define DRM_IOCTL_AGP_BIND&t;&t;DRM_IOW( 0x36, drm_agp_binding_t)
 DECL|macro|DRM_IOCTL_AGP_UNBIND
-mdefine_line|#define DRM_IOCTL_AGP_UNBIND  DRM_IOW( 0x37, drm_agp_binding_t)
+mdefine_line|#define DRM_IOCTL_AGP_UNBIND&t;&t;DRM_IOW( 0x37, drm_agp_binding_t)
 multiline_comment|/* Mga specific ioctls */
 DECL|macro|DRM_IOCTL_MGA_INIT
-mdefine_line|#define DRM_IOCTL_MGA_INIT    DRM_IOW( 0x40, drm_mga_init_t)
+mdefine_line|#define DRM_IOCTL_MGA_INIT&t;&t;DRM_IOW( 0x40, drm_mga_init_t)
 DECL|macro|DRM_IOCTL_MGA_SWAP
-mdefine_line|#define DRM_IOCTL_MGA_SWAP    DRM_IOW( 0x41, drm_mga_swap_t)
+mdefine_line|#define DRM_IOCTL_MGA_SWAP&t;&t;DRM_IOW( 0x41, drm_mga_swap_t)
 DECL|macro|DRM_IOCTL_MGA_CLEAR
-mdefine_line|#define DRM_IOCTL_MGA_CLEAR   DRM_IOW( 0x42, drm_mga_clear_t)
+mdefine_line|#define DRM_IOCTL_MGA_CLEAR&t;&t;DRM_IOW( 0x42, drm_mga_clear_t)
 DECL|macro|DRM_IOCTL_MGA_ILOAD
-mdefine_line|#define DRM_IOCTL_MGA_ILOAD   DRM_IOW( 0x43, drm_mga_iload_t)
+mdefine_line|#define DRM_IOCTL_MGA_ILOAD&t;&t;DRM_IOW( 0x43, drm_mga_iload_t)
 DECL|macro|DRM_IOCTL_MGA_VERTEX
-mdefine_line|#define DRM_IOCTL_MGA_VERTEX  DRM_IOW( 0x44, drm_mga_vertex_t)
+mdefine_line|#define DRM_IOCTL_MGA_VERTEX&t;&t;DRM_IOW( 0x44, drm_mga_vertex_t)
 DECL|macro|DRM_IOCTL_MGA_FLUSH
-mdefine_line|#define DRM_IOCTL_MGA_FLUSH   DRM_IOW( 0x45, drm_lock_t )
+mdefine_line|#define DRM_IOCTL_MGA_FLUSH&t;&t;DRM_IOW( 0x45, drm_lock_t )
 DECL|macro|DRM_IOCTL_MGA_INDICES
-mdefine_line|#define DRM_IOCTL_MGA_INDICES DRM_IOW( 0x46, drm_mga_indices_t)
+mdefine_line|#define DRM_IOCTL_MGA_INDICES&t;&t;DRM_IOW( 0x46, drm_mga_indices_t)
 DECL|macro|DRM_IOCTL_MGA_BLIT
-mdefine_line|#define DRM_IOCTL_MGA_BLIT    DRM_IOW( 0x47, drm_mga_blit_t)
+mdefine_line|#define DRM_IOCTL_MGA_BLIT&t;&t;DRM_IOW( 0x47, drm_mga_blit_t)
 multiline_comment|/* I810 specific ioctls */
 DECL|macro|DRM_IOCTL_I810_INIT
-mdefine_line|#define DRM_IOCTL_I810_INIT    DRM_IOW( 0x40, drm_i810_init_t)
+mdefine_line|#define DRM_IOCTL_I810_INIT&t;&t;DRM_IOW( 0x40, drm_i810_init_t)
 DECL|macro|DRM_IOCTL_I810_VERTEX
-mdefine_line|#define DRM_IOCTL_I810_VERTEX  DRM_IOW( 0x41, drm_i810_vertex_t)
+mdefine_line|#define DRM_IOCTL_I810_VERTEX&t;&t;DRM_IOW( 0x41, drm_i810_vertex_t)
 DECL|macro|DRM_IOCTL_I810_CLEAR
-mdefine_line|#define DRM_IOCTL_I810_CLEAR   DRM_IOW( 0x42, drm_i810_clear_t)
+mdefine_line|#define DRM_IOCTL_I810_CLEAR&t;&t;DRM_IOW( 0x42, drm_i810_clear_t)
 DECL|macro|DRM_IOCTL_I810_FLUSH
-mdefine_line|#define DRM_IOCTL_I810_FLUSH   DRM_IO ( 0x43)
+mdefine_line|#define DRM_IOCTL_I810_FLUSH&t;&t;DRM_IO(  0x43)
 DECL|macro|DRM_IOCTL_I810_GETAGE
-mdefine_line|#define DRM_IOCTL_I810_GETAGE  DRM_IO ( 0x44)
+mdefine_line|#define DRM_IOCTL_I810_GETAGE&t;&t;DRM_IO(  0x44)
 DECL|macro|DRM_IOCTL_I810_GETBUF
-mdefine_line|#define DRM_IOCTL_I810_GETBUF  DRM_IOWR(0x45, drm_i810_dma_t)
+mdefine_line|#define DRM_IOCTL_I810_GETBUF&t;&t;DRM_IOWR(0x45, drm_i810_dma_t)
 DECL|macro|DRM_IOCTL_I810_SWAP
-mdefine_line|#define DRM_IOCTL_I810_SWAP    DRM_IO ( 0x46)
+mdefine_line|#define DRM_IOCTL_I810_SWAP&t;&t;DRM_IO(  0x46)
 DECL|macro|DRM_IOCTL_I810_COPY
-mdefine_line|#define DRM_IOCTL_I810_COPY    DRM_IOW( 0x47, drm_i810_copy_t)
+mdefine_line|#define DRM_IOCTL_I810_COPY&t;&t;DRM_IOW( 0x47, drm_i810_copy_t)
 DECL|macro|DRM_IOCTL_I810_DOCOPY
-mdefine_line|#define DRM_IOCTL_I810_DOCOPY  DRM_IO ( 0x48)
+mdefine_line|#define DRM_IOCTL_I810_DOCOPY&t;&t;DRM_IO(  0x48)
 multiline_comment|/* Rage 128 specific ioctls */
 DECL|macro|DRM_IOCTL_R128_INIT
-mdefine_line|#define DRM_IOCTL_R128_INIT&t; DRM_IOW( 0x40, drm_r128_init_t)
+mdefine_line|#define DRM_IOCTL_R128_INIT&t;&t;DRM_IOW( 0x40, drm_r128_init_t)
 DECL|macro|DRM_IOCTL_R128_CCE_START
-mdefine_line|#define DRM_IOCTL_R128_CCE_START DRM_IO(  0x41)
+mdefine_line|#define DRM_IOCTL_R128_CCE_START&t;DRM_IO(  0x41)
 DECL|macro|DRM_IOCTL_R128_CCE_STOP
-mdefine_line|#define DRM_IOCTL_R128_CCE_STOP&t; DRM_IOW( 0x42, drm_r128_cce_stop_t)
+mdefine_line|#define DRM_IOCTL_R128_CCE_STOP&t;&t;DRM_IOW( 0x42, drm_r128_cce_stop_t)
 DECL|macro|DRM_IOCTL_R128_CCE_RESET
-mdefine_line|#define DRM_IOCTL_R128_CCE_RESET DRM_IO(  0x43)
+mdefine_line|#define DRM_IOCTL_R128_CCE_RESET&t;DRM_IO(  0x43)
 DECL|macro|DRM_IOCTL_R128_CCE_IDLE
-mdefine_line|#define DRM_IOCTL_R128_CCE_IDLE&t; DRM_IO(  0x44)
+mdefine_line|#define DRM_IOCTL_R128_CCE_IDLE&t;&t;DRM_IO(  0x44)
 DECL|macro|DRM_IOCTL_R128_RESET
-mdefine_line|#define DRM_IOCTL_R128_RESET&t; DRM_IO(  0x46)
+mdefine_line|#define DRM_IOCTL_R128_RESET&t;&t;DRM_IO(  0x46)
+DECL|macro|DRM_IOCTL_R128_FULLSCREEN
+mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN&t;DRM_IOW( 0x47, drm_r128_fullscreen_t)
 DECL|macro|DRM_IOCTL_R128_SWAP
-mdefine_line|#define DRM_IOCTL_R128_SWAP&t; DRM_IO(  0x47)
+mdefine_line|#define DRM_IOCTL_R128_SWAP&t;&t;DRM_IO(  0x48)
 DECL|macro|DRM_IOCTL_R128_CLEAR
-mdefine_line|#define DRM_IOCTL_R128_CLEAR&t; DRM_IOW( 0x48, drm_r128_clear_t)
+mdefine_line|#define DRM_IOCTL_R128_CLEAR&t;&t;DRM_IOW( 0x49, drm_r128_clear_t)
 DECL|macro|DRM_IOCTL_R128_VERTEX
-mdefine_line|#define DRM_IOCTL_R128_VERTEX&t; DRM_IOW( 0x49, drm_r128_vertex_t)
+mdefine_line|#define DRM_IOCTL_R128_VERTEX&t;&t;DRM_IOW( 0x4a, drm_r128_vertex_t)
 DECL|macro|DRM_IOCTL_R128_INDICES
-mdefine_line|#define DRM_IOCTL_R128_INDICES&t; DRM_IOW( 0x4a, drm_r128_indices_t)
+mdefine_line|#define DRM_IOCTL_R128_INDICES&t;&t;DRM_IOW( 0x4b, drm_r128_indices_t)
 DECL|macro|DRM_IOCTL_R128_BLIT
-mdefine_line|#define DRM_IOCTL_R128_BLIT&t; DRM_IOW( 0x4b, drm_r128_blit_t)
+mdefine_line|#define DRM_IOCTL_R128_BLIT&t;&t;DRM_IOW( 0x4c, drm_r128_blit_t)
 DECL|macro|DRM_IOCTL_R128_DEPTH
-mdefine_line|#define DRM_IOCTL_R128_DEPTH&t; DRM_IOW( 0x4c, drm_r128_depth_t)
+mdefine_line|#define DRM_IOCTL_R128_DEPTH&t;&t;DRM_IOW( 0x4d, drm_r128_depth_t)
 DECL|macro|DRM_IOCTL_R128_STIPPLE
-mdefine_line|#define DRM_IOCTL_R128_STIPPLE&t; DRM_IOW( 0x4d, drm_r128_stipple_t)
-DECL|macro|DRM_IOCTL_R128_PACKET
-mdefine_line|#define DRM_IOCTL_R128_PACKET&t; DRM_IOWR(0x4e, drm_r128_packet_t)
+mdefine_line|#define DRM_IOCTL_R128_STIPPLE&t;&t;DRM_IOW( 0x4e, drm_r128_stipple_t)
+DECL|macro|DRM_IOCTL_R128_INDIRECT
+mdefine_line|#define DRM_IOCTL_R128_INDIRECT&t;&t;DRM_IOWR(0x4f, drm_r128_indirect_t)
+multiline_comment|/* Radeon specific ioctls */
+DECL|macro|DRM_IOCTL_RADEON_CP_INIT
+mdefine_line|#define DRM_IOCTL_RADEON_CP_INIT&t;DRM_IOW( 0x40, drm_radeon_init_t)
+DECL|macro|DRM_IOCTL_RADEON_CP_START
+mdefine_line|#define DRM_IOCTL_RADEON_CP_START&t;DRM_IO(  0x41)
+DECL|macro|DRM_IOCTL_RADEON_CP_STOP
+mdefine_line|#define DRM_IOCTL_RADEON_CP_STOP&t;DRM_IOW( 0x42, drm_radeon_cp_stop_t)
+DECL|macro|DRM_IOCTL_RADEON_CP_RESET
+mdefine_line|#define DRM_IOCTL_RADEON_CP_RESET&t;DRM_IO(  0x43)
+DECL|macro|DRM_IOCTL_RADEON_CP_IDLE
+mdefine_line|#define DRM_IOCTL_RADEON_CP_IDLE&t;DRM_IO(  0x44)
+DECL|macro|DRM_IOCTL_RADEON_RESET
+mdefine_line|#define DRM_IOCTL_RADEON_RESET&t;&t;DRM_IO(  0x45)
+DECL|macro|DRM_IOCTL_RADEON_FULLSCREEN
+mdefine_line|#define DRM_IOCTL_RADEON_FULLSCREEN&t;DRM_IOW( 0x46, drm_radeon_fullscreen_t)
+DECL|macro|DRM_IOCTL_RADEON_SWAP
+mdefine_line|#define DRM_IOCTL_RADEON_SWAP&t;&t;DRM_IO(  0x47)
+DECL|macro|DRM_IOCTL_RADEON_CLEAR
+mdefine_line|#define DRM_IOCTL_RADEON_CLEAR&t;&t;DRM_IOW( 0x48, drm_radeon_clear_t)
+DECL|macro|DRM_IOCTL_RADEON_VERTEX
+mdefine_line|#define DRM_IOCTL_RADEON_VERTEX&t;&t;DRM_IOW( 0x49, drm_radeon_vertex_t)
+DECL|macro|DRM_IOCTL_RADEON_INDICES
+mdefine_line|#define DRM_IOCTL_RADEON_INDICES&t;DRM_IOW( 0x4a, drm_radeon_indices_t)
+DECL|macro|DRM_IOCTL_RADEON_BLIT
+mdefine_line|#define DRM_IOCTL_RADEON_BLIT&t;&t;DRM_IOW( 0x4b, drm_radeon_blit_t)
+DECL|macro|DRM_IOCTL_RADEON_STIPPLE
+mdefine_line|#define DRM_IOCTL_RADEON_STIPPLE&t;DRM_IOW( 0x4c, drm_radeon_stipple_t)
+DECL|macro|DRM_IOCTL_RADEON_INDIRECT
+mdefine_line|#define DRM_IOCTL_RADEON_INDIRECT&t;DRM_IOWR(0x4d, drm_radeon_indirect_t)
 macro_line|#ifdef CONFIG_DRM_SIS
 multiline_comment|/* SiS specific ioctls */
 DECL|macro|SIS_IOCTL_FB_ALLOC
-mdefine_line|#define SIS_IOCTL_FB_ALLOC     DRM_IOWR( 0x44, drm_sis_mem_t)
+mdefine_line|#define SIS_IOCTL_FB_ALLOC&t;&t;DRM_IOWR(0x44, drm_sis_mem_t)
 DECL|macro|SIS_IOCTL_FB_FREE
-mdefine_line|#define SIS_IOCTL_FB_FREE      DRM_IOW( 0x45, drm_sis_mem_t)
+mdefine_line|#define SIS_IOCTL_FB_FREE&t;&t;DRM_IOW( 0x45, drm_sis_mem_t)
 DECL|macro|SIS_IOCTL_AGP_INIT
-mdefine_line|#define SIS_IOCTL_AGP_INIT     DRM_IOWR( 0x53, drm_sis_agp_t)
+mdefine_line|#define SIS_IOCTL_AGP_INIT&t;&t;DRM_IOWR(0x53, drm_sis_agp_t)
 DECL|macro|SIS_IOCTL_AGP_ALLOC
-mdefine_line|#define SIS_IOCTL_AGP_ALLOC    DRM_IOWR( 0x54, drm_sis_mem_t)
+mdefine_line|#define SIS_IOCTL_AGP_ALLOC&t;&t;DRM_IOWR(0x54, drm_sis_mem_t)
 DECL|macro|SIS_IOCTL_AGP_FREE
-mdefine_line|#define SIS_IOCTL_AGP_FREE     DRM_IOW( 0x55, drm_sis_mem_t)
+mdefine_line|#define SIS_IOCTL_AGP_FREE&t;&t;DRM_IOW( 0x55, drm_sis_mem_t)
 DECL|macro|SIS_IOCTL_FLIP
-mdefine_line|#define SIS_IOCTL_FLIP         DRM_IOW( 0x48, drm_sis_flip_t)
+mdefine_line|#define SIS_IOCTL_FLIP&t;&t;&t;DRM_IOW( 0x48, drm_sis_flip_t)
 DECL|macro|SIS_IOCTL_FLIP_INIT
-mdefine_line|#define SIS_IOCTL_FLIP_INIT    DRM_IO( 0x49)
+mdefine_line|#define SIS_IOCTL_FLIP_INIT&t;&t;DRM_IO(  0x49)
 DECL|macro|SIS_IOCTL_FLIP_FINAL
-mdefine_line|#define SIS_IOCTL_FLIP_FINAL   DRM_IO( 0x50)
+mdefine_line|#define SIS_IOCTL_FLIP_FINAL&t;&t;DRM_IO(  0x50)
 macro_line|#endif
 macro_line|#endif
 eof
