@@ -9178,6 +9178,21 @@ id|video.len_usable
 op_and_assign
 id|PAGE_MASK
 suffix:semicolon
+id|fb_alloc_cmap
+c_func
+(paren
+op_amp
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon.cmap
+)paren
+comma
+l_int|256
+comma
+l_int|1
+)paren
+suffix:semicolon
 macro_line|#ifndef MODULE
 multiline_comment|/* mode database is marked __init!!! */
 r_if

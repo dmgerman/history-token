@@ -3164,6 +3164,17 @@ id|m2info-&gt;fbcon.pseudo_palette
 op_assign
 id|m2info-&gt;cmap
 suffix:semicolon
+id|fb_alloc_cmap
+c_func
+(paren
+op_amp
+id|m2info-&gt;fbcon.cmap
+comma
+l_int|256
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
