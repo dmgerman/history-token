@@ -45,7 +45,7 @@ r_extern
 id|spinlock_t
 id|rtc_lock
 suffix:semicolon
-macro_line|#if defined(CONFIG_APM) || defined(CONFIG_APM_MODULE)
+macro_line|#if defined(CONFIG_APM_MODULE)
 r_extern
 r_void
 id|machine_real_restart
@@ -63,6 +63,21 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|machine_real_restart
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|default_idle
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|default_idle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|default_idle
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -355,13 +370,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|strpbrk
-)paren
-suffix:semicolon
-DECL|variable|simple_strtol
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|simple_strtol
 )paren
 suffix:semicolon
 DECL|variable|strstr

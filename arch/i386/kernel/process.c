@@ -101,7 +101,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * We use this if we don&squot;t have any better&n; * idle routine..&n; */
 DECL|function|default_idle
-r_static
 r_void
 id|default_idle
 c_func
