@@ -73,5 +73,58 @@ DECL|macro|for_each_cpu
 mdefine_line|#define for_each_cpu(cpu, map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (cpu = first_cpu_const(mk_cpumask_const(map));&t;&t;&bslash;&n;&t;&t;cpu &lt; NR_CPUS;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu = next_cpu_const(cpu,mk_cpumask_const(map)))
 DECL|macro|for_each_online_cpu
 mdefine_line|#define for_each_online_cpu(cpu, map)&t;&t;&t;&t;&t;&bslash;&n;&t;for (cpu = first_cpu_const(mk_cpumask_const(map));&t;&t;&bslash;&n;&t;&t;cpu &lt; NR_CPUS;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu = next_online_cpu(cpu,map))
+r_extern
+r_int
+id|__mask_snprintf_len
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|buflen
+comma
+r_const
+r_int
+r_int
+op_star
+id|maskp
+comma
+r_int
+r_int
+id|maskbytes
+)paren
+suffix:semicolon
+DECL|macro|cpumask_snprintf
+mdefine_line|#define cpumask_snprintf(buf, buflen, map)&t;&t;&t;&t;&bslash;&n;&t;__mask_snprintf_len(buf, buflen, cpus_addr(map), sizeof(map))
+r_extern
+r_int
+id|__mask_parse_len
+c_func
+(paren
+r_const
+r_char
+id|__user
+op_star
+id|ubuf
+comma
+r_int
+r_int
+id|ubuflen
+comma
+r_int
+r_int
+op_star
+id|maskp
+comma
+r_int
+r_int
+id|maskbytes
+)paren
+suffix:semicolon
+DECL|macro|cpumask_parse
+mdefine_line|#define cpumask_parse(buf, buflen, map)&t;&t;&t;&t;&t;&bslash;&n;&t;__mask_parse_len(buf, buflen, cpus_addr(map), sizeof(map))
 macro_line|#endif /* __LINUX_CPUMASK_H */
 eof
