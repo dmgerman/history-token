@@ -2004,6 +2004,11 @@ id|nopage
 op_assign
 id|filemap_nopage
 comma
+dot
+id|populate
+op_assign
+id|filemap_populate
+comma
 macro_line|#ifdef HAVE_VMOP_MPROTECT
 dot
 id|mprotect

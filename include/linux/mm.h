@@ -2703,6 +2703,7 @@ id|loff_t
 )paren
 suffix:semicolon
 multiline_comment|/* generic vm_area_ops exported for stackable file systems */
+r_extern
 r_struct
 id|page
 op_star
@@ -2718,6 +2719,29 @@ r_int
 comma
 r_int
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|filemap_populate
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+id|pgprot_t
+comma
+r_int
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* mm/page-writeback.c */
