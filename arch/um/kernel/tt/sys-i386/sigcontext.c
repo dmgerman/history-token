@@ -140,6 +140,10 @@ id|to_ptr
 comma
 r_void
 op_star
+id|fp
+comma
+r_void
+op_star
 id|from_ptr
 comma
 r_void
@@ -185,6 +189,16 @@ id|_fpstate
 op_star
 )paren
 (paren
+id|fp
+ques
+c_cond
+(paren
+r_int
+r_int
+)paren
+id|fp
+suffix:colon
+(paren
 (paren
 r_int
 r_int
@@ -195,6 +209,7 @@ r_sizeof
 (paren
 op_star
 id|to
+)paren
 )paren
 )paren
 suffix:semicolon

@@ -40,7 +40,7 @@ r_int
 id|copy_sc_from_user_skas
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -59,7 +59,11 @@ r_void
 op_star
 id|to_ptr
 comma
-r_struct
+r_void
+op_star
+id|fp
+comma
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -80,10 +84,9 @@ c_func
 r_int
 id|sig
 comma
-r_struct
-id|sigcontext
+r_void
 op_star
-id|sc
+id|sc_ptr
 )paren
 suffix:semicolon
 r_extern
