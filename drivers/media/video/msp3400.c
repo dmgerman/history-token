@@ -7840,7 +7840,7 @@ id|VIDEO_AUDIO_MUTE
 suffix:semicolon
 id|va-&gt;volume
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|msp-&gt;left
@@ -7853,7 +7853,7 @@ op_assign
 (paren
 l_int|32768
 op_star
-id|MIN
+id|min
 c_func
 (paren
 id|msp-&gt;left
@@ -7958,7 +7958,7 @@ suffix:semicolon
 id|msp-&gt;left
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 l_int|65536
@@ -7976,11 +7976,14 @@ suffix:semicolon
 id|msp-&gt;right
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 id|va-&gt;balance
 comma
+(paren
+id|__u16
+)paren
 l_int|32768
 )paren
 op_star
