@@ -10627,6 +10627,7 @@ id|probe
 op_assign
 id|de_init_one
 comma
+macro_line|#warning only here to fix build.  should be __exit_p not __devexit_p.
 dot
 id|remove
 op_assign
