@@ -1003,6 +1003,9 @@ r_union
 id|msr_fidvidstatus
 id|fidvidstatus
 suffix:semicolon
+r_int
+id|cfid
+suffix:semicolon
 multiline_comment|/* fid are the lower 8 bits of the index we stored into&n;&t; * the cpufreq frequency table in powernow_decode_bios,&n;&t; * vid are the upper 8 bits.&n;&t; */
 id|fid
 op_assign
@@ -1034,6 +1037,10 @@ id|freqs.cpu
 op_assign
 l_int|0
 suffix:semicolon
+id|cfid
+op_assign
+id|fidvidstatus.bits.CFID
+suffix:semicolon
 id|rdmsrl
 (paren
 id|MSR_K7_FID_VID_STATUS
@@ -1047,7 +1054,7 @@ id|fsb
 op_star
 id|fid_codes
 (braket
-id|fidvidstatus.bits.CFID
+id|cfid
 )braket
 op_star
 l_int|100
