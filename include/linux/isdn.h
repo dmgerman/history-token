@@ -528,7 +528,7 @@ r_struct
 id|timer_list
 id|dial_timer
 suffix:semicolon
-multiline_comment|/* dial timeout                     */
+multiline_comment|/* dial events timer                */
 DECL|member|dial_event
 r_int
 id|dial_event
@@ -540,6 +540,12 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
+DECL|member|hup_timer
+r_struct
+id|timer_list
+id|hup_timer
+suffix:semicolon
+multiline_comment|/* auto hangup timer                */
 DECL|member|isdn_slot
 r_int
 id|isdn_slot
