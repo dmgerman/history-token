@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
@@ -2542,6 +2543,34 @@ op_ge
 id|SOFTIRQ_OFFSET
 )paren
 id|kstat.per_cpu_system
+(braket
+id|cpu
+)braket
+op_add_assign
+id|sys_ticks
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|nr_iowait_tasks
+)paren
+OG
+l_int|0
+)paren
+id|kstat.per_cpu_iowait
+(braket
+id|cpu
+)braket
+op_add_assign
+id|sys_ticks
+suffix:semicolon
+r_else
+id|kstat.per_cpu_idle
 (braket
 id|cpu
 )braket

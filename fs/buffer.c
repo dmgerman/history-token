@@ -1430,7 +1430,7 @@ multiline_comment|/*&n;&t; * FIXME: what about destroy_dirty_buffers?&n;&t; * We
 id|invalidate_inode_pages
 c_func
 (paren
-id|bdev-&gt;bd_inode
+id|bdev-&gt;bd_inode-&gt;i_mapping
 )paren
 suffix:semicolon
 )brace

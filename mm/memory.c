@@ -5394,7 +5394,7 @@ id|ret
 op_assign
 id|VM_FAULT_MAJOR
 suffix:semicolon
-id|KERNEL_STAT_INC
+id|inc_page_state
 c_func
 (paren
 id|pgmajfault
@@ -6405,7 +6405,7 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|KERNEL_STAT_INC
+id|inc_page_state
 c_func
 (paren
 id|pgfault

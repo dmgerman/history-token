@@ -2285,6 +2285,9 @@ id|reset_overflow
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|shmem
+suffix:semicolon
 multiline_comment|/*&n;&t; * When searching mms for an entry, a good strategy is to&n;&t; * start at the first mm we freed the previous entry from&n;&t; * (though actually we don&squot;t notice whether we or coincidence&n;&t; * freed the entry).  Initialize this start_mm with a hold.&n;&t; *&n;&t; * A simpler strategy would be to start at the last mm we&n;&t; * freed the previous entry from; but that would take less&n;&t; * advantage of mmlist ordering (now preserved by swap_out()),&n;&t; * which clusters forked address spaces together, most recent&n;&t; * child immediately after parent.  If we race with dup_mmap(),&n;&t; * we very much want to resolve parent before child, otherwise&n;&t; * we may miss some entries: using last mm would invert that.&n;&t; */
 id|start_mm
 op_assign
@@ -2426,6 +2429,10 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Remove all references to entry, without blocking.&n;&t;&t; * Whenever we reach init_mm, there&squot;s no address space&n;&t;&t; * to search, but use it as a reminder to search shmem.&n;&t;&t; */
+id|shmem
+op_assign
+l_int|0
+suffix:semicolon
 id|swcount
 op_assign
 op_star
@@ -2453,6 +2460,8 @@ op_eq
 op_amp
 id|init_mm
 )paren
+id|shmem
+op_assign
 id|shmem_unuse
 c_func
 (paren
@@ -2568,12 +2577,28 @@ id|set_start_mm
 op_assign
 l_int|1
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mmlist_lock
+)paren
+suffix:semicolon
+id|shmem
+op_assign
 id|shmem_unuse
 c_func
 (paren
 id|entry
 comma
 id|page
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mmlist_lock
 )paren
 suffix:semicolon
 )brace
@@ -2679,7 +2704,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * If a reference remains (rare), we would like to leave&n;&t;&t; * the page in the swap cache; but try_to_swap_out could&n;&t;&t; * then re-duplicate the entry once we drop page lock,&n;&t;&t; * so we might loop indefinitely; also, that page could&n;&t;&t; * not be swapped out to other storage meanwhile.  So:&n;&t;&t; * delete from cache even if there&squot;s another reference,&n;&t;&t; * after ensuring that the data has been saved to disk -&n;&t;&t; * since if the reference remains (rarer), it will be&n;&t;&t; * read from disk into another page.  Splitting into two&n;&t;&t; * pages would be incorrect if swap supported &quot;shared&n;&t;&t; * private&quot; pages, but they are handled by tmpfs files.&n;&t;&t; * Note shmem_unuse already deleted its from swap cache.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If a reference remains (rare), we would like to leave&n;&t;&t; * the page in the swap cache; but try_to_swap_out could&n;&t;&t; * then re-duplicate the entry once we drop page lock,&n;&t;&t; * so we might loop indefinitely; also, that page could&n;&t;&t; * not be swapped out to other storage meanwhile.  So:&n;&t;&t; * delete from cache even if there&squot;s another reference,&n;&t;&t; * after ensuring that the data has been saved to disk -&n;&t;&t; * since if the reference remains (rarer), it will be&n;&t;&t; * read from disk into another page.  Splitting into two&n;&t;&t; * pages would be incorrect if swap supported &quot;shared&n;&t;&t; * private&quot; pages, but they are handled by tmpfs files.&n;&t;&t; *&n;&t;&t; * Note shmem_unuse already deleted a swappage from&n;&t;&t; * the swap cache, unless the move to filepage failed:&n;&t;&t; * in which case it left swappage in cache, lowered its&n;&t;&t; * swap count to pass quickly through the loops above,&n;&t;&t; * and now we must reincrement count to try again later.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2731,12 +2756,26 @@ c_func
 id|page
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|shmem
+)paren
+id|swap_duplicate
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+r_else
 id|delete_from_swap_cache
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * So we could skip searching mms once swap count went&n;&t;&t; * to 1, we did not mark any present ptes as dirty: must&n;&t;&t; * mark page dirty so try_to_swap_out will preserve it.&n;&t;&t; */
 id|SetPageDirty
 c_func
