@@ -861,7 +861,7 @@ dot
 id|r_offset
 )paren
 suffix:semicolon
-multiline_comment|/* This is the symbol it is referring to */
+multiline_comment|/* This is the symbol it is referring to.  Note that all&n;&t;&t;   undefined symbols have been resolved.  */
 id|Elf32_Sym
 op_star
 id|sym
@@ -893,33 +893,7 @@ r_uint32
 id|val
 op_assign
 id|sym-&gt;st_value
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|val
-)paren
-(brace
-id|printk
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: Unknown symbol %s&bslash;n&quot;
-comma
-id|mod-&gt;name
-comma
-id|strtab
 op_plus
-id|sym-&gt;st_name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOENT
-suffix:semicolon
-)brace
-id|val
-op_add_assign
 id|rela
 (braket
 id|i

@@ -109,6 +109,9 @@ r_const
 r_char
 op_star
 id|buf
+comma
+r_int
+id|count
 )paren
 (brace
 r_struct
@@ -153,6 +156,8 @@ c_func
 id|drv
 comma
 id|buf
+comma
+id|count
 )paren
 suffix:semicolon
 r_return
@@ -319,6 +324,9 @@ r_const
 r_char
 op_star
 id|buf
+comma
+r_int
+id|count
 )paren
 (brace
 r_struct
@@ -363,6 +371,8 @@ c_func
 id|bus
 comma
 id|buf
+comma
+id|count
 )paren
 suffix:semicolon
 r_return

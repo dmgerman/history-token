@@ -1621,6 +1621,9 @@ r_const
 r_char
 op_star
 id|buf
+comma
+r_int
+id|count
 )paren
 (brace
 r_struct
@@ -1858,11 +1861,7 @@ ques
 c_cond
 id|error
 suffix:colon
-id|strlen
-c_func
-(paren
-id|buf
-)paren
+id|count
 suffix:semicolon
 )brace
 r_static
