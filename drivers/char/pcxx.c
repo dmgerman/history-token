@@ -362,14 +362,6 @@ id|dummy
 suffix:semicolon
 r_static
 r_void
-id|pcxxdelay
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_static
-r_void
 id|fepcmd
 c_func
 (paren
@@ -5758,7 +5750,7 @@ comma
 id|bd-&gt;port
 )paren
 suffix:semicolon
-id|pcxxdelay
+id|mdelay
 c_func
 (paren
 l_int|1
@@ -5817,7 +5809,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pcxxdelay
+id|mdelay
 c_func
 (paren
 l_int|10
@@ -6253,7 +6245,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pcxxdelay
+id|mdelay
 c_func
 (paren
 l_int|1
@@ -6557,7 +6549,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pcxxdelay
+id|mdelay
 c_func
 (paren
 l_int|50
@@ -6716,7 +6708,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pcxxdelay
+id|mdelay
 c_func
 (paren
 l_int|10
@@ -7016,7 +7008,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pcxxdelay
+id|mdelay
 c_func
 (paren
 l_int|1
@@ -7226,7 +7218,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pcxxdelay
+id|mdelay
 c_func
 (paren
 l_int|1
@@ -8777,24 +8769,6 @@ id|chan0
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n; * pcxxdelay - delays a specified number of milliseconds&n; */
-DECL|function|pcxxdelay
-r_static
-r_void
-id|pcxxdelay
-c_func
-(paren
-r_int
-id|msec
-)paren
-(brace
-id|mdelay
-c_func
-(paren
-id|msec
-)paren
-suffix:semicolon
 )brace
 r_static
 r_void
