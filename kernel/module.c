@@ -17,7 +17,7 @@ macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
 DECL|macro|DEBUGP
-mdefine_line|#define DEBUGP(fmt , ...)
+mdefine_line|#define DEBUGP(fmt , a...)
 macro_line|#endif
 r_extern
 r_const
@@ -1153,6 +1153,9 @@ comma
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
 )paren
 id|i
 comma
