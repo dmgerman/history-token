@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_qdio.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * QDIO related routines&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *      Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *      Wolfgang Taphorn&n; *      Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_QDIO_C_REVISION
-mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.16 $&quot;
+mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.18 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_inline
@@ -1690,34 +1690,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Note: seq is entered later */
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|1
-comma
-l_string|&quot;i:a/seq&quot;
-)paren
-suffix:semicolon
-id|debug_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|1
-comma
-op_amp
-id|sbale_addr
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* invalid (per convention used in this driver) */
 r_if
 c_cond
@@ -1787,34 +1759,6 @@ id|EINVAL
 suffix:semicolon
 r_goto
 id|out
-suffix:semicolon
-)brace
-multiline_comment|/* debug feature stuff (test for QTCB: remember new unsol. status!) */
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|fsf_req-&gt;qtcb
-)paren
-)paren
-(brace
-id|debug_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|1
-comma
-op_amp
-id|fsf_req-&gt;qtcb-&gt;prefix.req_seq_no
-comma
-r_sizeof
-(paren
-id|u32
-)paren
-)paren
 suffix:semicolon
 )brace
 id|ZFCP_LOG_TRACE

@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.49 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.51 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -6346,6 +6346,12 @@ id|port-&gt;erp_counter
 OG
 id|ZFCP_MAX_ERPS
 )paren
+id|zfcp_erp_port_failed
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -6380,12 +6386,6 @@ multiline_comment|/* for ZFCP_ERP_SUCCEEDED */
 id|result
 op_assign
 id|ZFCP_ERP_EXIT
-suffix:semicolon
-id|zfcp_erp_port_failed
-c_func
-(paren
-id|port
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -8165,17 +8165,6 @@ id|retval_cleanup
 )paren
 suffix:semicolon
 )brace
-r_else
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|1
-comma
-l_string|&quot;q_clean&quot;
-)paren
-suffix:semicolon
 id|failed_qdio_establish
 suffix:colon
 id|atomic_clear_mask
@@ -8295,24 +8284,12 @@ id|adapter
 suffix:semicolon
 )brace
 r_else
-(brace
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
 l_string|&quot;queues cleaned up&bslash;n&quot;
 )paren
 suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|1
-comma
-l_string|&quot;q_clean&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * First we had to stop QDIO operation.&n;&t; * Now it is safe to take the following actions.&n;&t; */
 multiline_comment|/* Cleanup only necessary when there are unacknowledged buffers */
 r_if
@@ -9417,6 +9394,9 @@ op_amp
 id|adapter-&gt;nameserver_port-&gt;status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|zfcp_erp_port_reopen
 c_func
 (paren
@@ -9424,7 +9404,10 @@ id|adapter-&gt;nameserver_port
 comma
 l_int|0
 )paren
-suffix:semicolon
+op_ge
+l_int|0
+)paren
+(brace
 id|erp_action-&gt;step
 op_assign
 id|ZFCP_ERP_STEP_NAMESERVER_OPEN
@@ -9432,6 +9415,12 @@ suffix:semicolon
 id|retval
 op_assign
 id|ZFCP_ERP_CONTINUES
+suffix:semicolon
+)brace
+r_else
+id|retval
+op_assign
+id|ZFCP_ERP_FAILED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -9896,6 +9885,24 @@ r_sizeof
 (paren
 id|wwn_t
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_test_mask
+c_func
+(paren
+id|ZFCP_STATUS_COMMON_ERP_FAILED
+comma
+op_amp
+id|adapter-&gt;nameserver_port-&gt;status
+)paren
+)paren
+id|zfcp_erp_port_failed
+c_func
+(paren
+id|erp_action-&gt;port
 )paren
 suffix:semicolon
 id|zfcp_erp_action_ready
@@ -11401,7 +11408,6 @@ id|unit
 r_int
 id|retval
 op_assign
-op_minus
 l_int|1
 suffix:semicolon
 r_struct
@@ -11435,8 +11441,9 @@ op_amp
 id|adapter-&gt;status
 )paren
 )paren
-r_goto
-id|out
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|debug_event
 c_func
