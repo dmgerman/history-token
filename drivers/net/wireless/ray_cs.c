@@ -721,21 +721,6 @@ id|local
 )paren
 suffix:semicolon
 multiline_comment|/* void start_net(ray_dev_t *local); */
-multiline_comment|/* Create symbol table for registering with kernel in init_module */
-DECL|variable|ray_dev_ioctl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ray_dev_ioctl
-)paren
-suffix:semicolon
-DECL|variable|ray_rx
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ray_rx
-)paren
-suffix:semicolon
 multiline_comment|/*===========================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 multiline_comment|/* Bit map of interrupts to choose from */
