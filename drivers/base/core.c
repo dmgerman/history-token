@@ -793,6 +793,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|device_pm_add
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* notify platform of device entry */
 r_if
 c_cond
@@ -926,6 +932,12 @@ op_star
 id|parent
 op_assign
 id|dev-&gt;parent
+suffix:semicolon
+id|device_pm_remove
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|down_write
 c_func

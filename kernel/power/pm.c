@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
 DECL|variable|pm_active
 r_int
 id|pm_active
@@ -771,91 +770,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pm_active
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-multiline_comment|/**&n; * handle_poweroff&t;-&t;sysrq callback for power down&n; * @key: key pressed (unused)&n; * @pt_regs: register state (unused)&n; * @kbd: keyboard state (unused)&n; * @tty: tty involved (unused)&n; *&n; * When the user hits Sys-Rq o to power down the machine this is the&n; * callback we use.&n; */
-DECL|function|handle_poweroff
-r_static
-r_void
-id|handle_poweroff
-(paren
-r_int
-id|key
-comma
-r_struct
-id|pt_regs
-op_star
-id|pt_regs
-comma
-r_struct
-id|tty_struct
-op_star
-id|tty
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pm_power_off
-)paren
-id|pm_power_off
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|variable|sysrq_poweroff_op
-r_static
-r_struct
-id|sysrq_key_op
-id|sysrq_poweroff_op
-op_assign
-(brace
-dot
-id|handler
-op_assign
-id|handle_poweroff
-comma
-dot
-id|help_msg
-op_assign
-l_string|&quot;powerOff&quot;
-comma
-dot
-id|action_msg
-op_assign
-l_string|&quot;Power Off&bslash;n&quot;
-)brace
-suffix:semicolon
-macro_line|#endif  /* CONFIG_MAGIC_SYSRQ */
-DECL|function|pm_init
-r_static
-r_int
-id|pm_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|register_sysrq_key
-c_func
-(paren
-l_char|&squot;o&squot;
-comma
-op_amp
-id|sysrq_poweroff_op
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|pm_init
-id|subsys_initcall
-c_func
-(paren
-id|pm_init
 )paren
 suffix:semicolon
 eof
