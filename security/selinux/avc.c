@@ -1224,7 +1224,6 @@ id|list
 r_if
 c_cond
 (paren
-op_logical_neg
 id|atomic_dec_and_test
 c_func
 (paren
