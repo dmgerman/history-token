@@ -8,15 +8,17 @@ macro_line|#include &quot;gamma_drv.h&quot;
 macro_line|#include &quot;drm_auth.h&quot;
 macro_line|#include &quot;drm_agpsupport.h&quot;
 macro_line|#include &quot;drm_bufs.h&quot;
-macro_line|#include &quot;drm_context.h&quot;
+macro_line|#include &quot;gamma_context.h&quot;&t;/* NOTE! */
 macro_line|#include &quot;drm_dma.h&quot;
+macro_line|#include &quot;gamma_old_dma.h&quot;&t;/* NOTE */
 macro_line|#include &quot;drm_drawable.h&quot;
 macro_line|#include &quot;drm_drv.h&quot;
 macro_line|#include &quot;drm_fops.h&quot;
 macro_line|#include &quot;drm_init.h&quot;
 macro_line|#include &quot;drm_ioctl.h&quot;
-macro_line|#include &quot;drm_lists.h&quot;
+macro_line|#include &quot;gamma_lists.h&quot;        /* NOTE */
 macro_line|#include &quot;drm_lock.h&quot;
+macro_line|#include &quot;gamma_lock.h&quot;&t;&t;/* NOTE */
 macro_line|#include &quot;drm_memory.h&quot;
 macro_line|#include &quot;drm_proc.h&quot;
 macro_line|#include &quot;drm_vm.h&quot;

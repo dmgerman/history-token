@@ -2615,7 +2615,7 @@ suffix:semicolon
 multiline_comment|/* general interrupt entry */
 DECL|function|irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|irq_handler
 c_func
 (paren
@@ -2665,6 +2665,7 @@ id|BCMREG_IPEND
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* loop through the interrupt bits until everything is clear */
 r_while
@@ -2786,6 +2787,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------&n; * driver methods&n; * ------------------------------------------------------------------------ */
 multiline_comment|/* MCA info */

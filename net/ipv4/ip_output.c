@@ -38,8 +38,6 @@ multiline_comment|/*&n; *      Shall we try to damage output packets if routing 
 DECL|variable|sysctl_ip_dynaddr
 r_int
 id|sysctl_ip_dynaddr
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|sysctl_ip_default_ttl
 r_int
@@ -856,7 +854,12 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|dev-&gt;mtu
+id|dst_pmtu
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
 op_logical_or
 id|skb_shinfo
 c_func
@@ -907,7 +910,11 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|skb-&gt;dst-&gt;dev-&gt;mtu
+id|dst_pmtu
+c_func
+(paren
+id|skb-&gt;dst
+)paren
 op_logical_or
 id|skb_shinfo
 c_func

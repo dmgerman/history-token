@@ -6350,10 +6350,6 @@ id|fbi-&gt;fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|fbi-&gt;fb.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fbi-&gt;fb.monspecs
 op_assign
 id|monspecs

@@ -17,6 +17,8 @@ DECL|macro|TLB_V4_D_FULL
 mdefine_line|#define TLB_V4_D_FULL&t;(1 &lt;&lt; 10)
 DECL|macro|TLB_V4_I_FULL
 mdefine_line|#define TLB_V4_I_FULL&t;(1 &lt;&lt; 11)
+DECL|macro|TLB_DCLEAN
+mdefine_line|#define TLB_DCLEAN&t;(1 &lt;&lt; 30)
 DECL|macro|TLB_WB
 mdefine_line|#define TLB_WB&t;&t;(1 &lt;&lt; 31)
 multiline_comment|/*&n; *&t;MMU TLB Model&n; *&t;=============&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3    - ARMv3&n; *&t;  v4    - ARMv4 without write buffer&n; *&t;  v4wb  - ARMv4 with write buffer without I TLB flush entry instruction&n; *&t;  v4wbi - ARMv4 with write buffer with I TLB flush entry instruction&n; */
@@ -65,7 +67,7 @@ DECL|macro|v4_always_flags
 macro_line|# define v4_always_flags&t;(-1UL)
 macro_line|#endif
 DECL|macro|v4wbi_tlb_flags
-mdefine_line|#define v4wbi_tlb_flags&t;(TLB_WB | &bslash;&n;&t;&t;&t; TLB_V4_I_FULL | TLB_V4_D_FULL | &bslash;&n;&t;&t;&t; TLB_V4_I_PAGE | TLB_V4_D_PAGE)
+mdefine_line|#define v4wbi_tlb_flags&t;(TLB_WB | TLB_DCLEAN | &bslash;&n;&t;&t;&t; TLB_V4_I_FULL | TLB_V4_D_FULL | &bslash;&n;&t;&t;&t; TLB_V4_I_PAGE | TLB_V4_D_PAGE)
 macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM926T) || defined(CONFIG_CPU_ARM1020) || &bslash;&n;    defined(CONFIG_CPU_XSCALE)
 DECL|macro|v4wbi_possible_flags
 macro_line|# define v4wbi_possible_flags&t;v4wbi_tlb_flags
@@ -85,7 +87,7 @@ DECL|macro|v4wbi_always_flags
 macro_line|# define v4wbi_always_flags&t;(-1UL)
 macro_line|#endif
 DECL|macro|v4wb_tlb_flags
-mdefine_line|#define v4wb_tlb_flags&t;(TLB_WB | &bslash;&n;&t;&t;&t; TLB_V4_I_FULL | TLB_V4_D_FULL | &bslash;&n;&t;&t;&t; TLB_V4_D_PAGE)
+mdefine_line|#define v4wb_tlb_flags&t;(TLB_WB | TLB_DCLEAN | &bslash;&n;&t;&t;&t; TLB_V4_I_FULL | TLB_V4_D_FULL | &bslash;&n;&t;&t;&t; TLB_V4_D_PAGE)
 macro_line|#if defined(CONFIG_CPU_SA110) || defined(CONFIG_CPU_SA1100)
 DECL|macro|v4wb_possible_flags
 macro_line|# define v4wb_possible_flags&t;v4wb_tlb_flags
@@ -812,6 +814,117 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|zero
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;flush_pmd_entry&n; *&n; *&t;Flush a PMD entry (word aligned, or double-word aligned) to&n; *&t;RAM if the TLB for the CPU we are running on requires this.&n; *&t;This is typically used when we are creating PMD entries.&n; *&n; *&t;clean_pmd_entry&n; *&n; *&t;Clean (but don&squot;t drain the write buffer) if the CPU requires&n; *&t;these operations.  This is typically used when we are removing&n; *&t;PMD entries.&n; */
+DECL|function|flush_pmd_entry
+r_static
+r_inline
+r_void
+id|flush_pmd_entry
+c_func
+(paren
+id|pmd_t
+op_star
+id|pmd
+)paren
+(brace
+r_const
+r_int
+r_int
+id|zero
+op_assign
+l_int|0
+suffix:semicolon
+r_const
+r_int
+r_int
+id|__tlb_flag
+op_assign
+id|__cpu_tlb_flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_DCLEAN
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%?&t;p15, 0, %0, c7, c10, 1&t;@ flush_pmd&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|pmd
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_WB
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%?&t;p15, 0, %0, c7, c10, 4&t;@ flush_pmd&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|zero
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|clean_pmd_entry
+r_static
+r_inline
+r_void
+id|clean_pmd_entry
+c_func
+(paren
+id|pmd_t
+op_star
+id|pmd
+)paren
+(brace
+r_const
+r_int
+r_int
+id|__tlb_flag
+op_assign
+id|__cpu_tlb_flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_DCLEAN
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%?&t;p15, 0, %0, c7, c10, 1&t;@ flush_pmd&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|pmd
 )paren
 )paren
 suffix:semicolon

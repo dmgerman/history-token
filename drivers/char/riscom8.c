@@ -2679,7 +2679,7 @@ suffix:semicolon
 multiline_comment|/* The main interrupt processing routine */
 DECL|function|rc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|rc_interrupt
 c_func
 (paren
@@ -2715,6 +2715,11 @@ id|loop
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|bp
 op_assign
 id|IRQ_to_board
@@ -2737,6 +2742,7 @@ id|RC_BOARD_ACTIVE
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_while
@@ -2777,6 +2783,10 @@ id|RC_BSR_RINT
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2995,6 +3005,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Clear timeout flag    */
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Routines for open &amp; close processing.&n; */
 multiline_comment|/* Called with disabled interrupts */

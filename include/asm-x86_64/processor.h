@@ -768,14 +768,15 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_has_fpu
 mdefine_line|#define cpu_has_fpu 1
-DECL|macro|ARCH_HAS_PREFETCH
+macro_line|#if 0
+multiline_comment|/* disabled for now to work around opteron errata #91. Also gcc 3.2&n;   doesn&squot;t like this in some cases. */
 mdefine_line|#define ARCH_HAS_PREFETCH
+mdefine_line|#define prefetch(x) __builtin_prefetch((x),0,1)
+macro_line|#endif
 DECL|macro|ARCH_HAS_PREFETCHW
 mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
-DECL|macro|prefetch
-mdefine_line|#define prefetch(x) __builtin_prefetch((x),0,1)
 DECL|macro|prefetchw
 mdefine_line|#define prefetchw(x) __builtin_prefetch((x),1,1)
 DECL|macro|spin_lock_prefetch

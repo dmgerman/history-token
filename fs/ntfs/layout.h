@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * layout.h - All NTFS associated on-disk structures. Part of the Linux-NTFS&n; *&t;      project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * layout.h - All NTFS associated on-disk structures. Part of the Linux-NTFS&n; *&t;      project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _LINUX_NTFS_LAYOUT_H
 DECL|macro|_LINUX_NTFS_LAYOUT_H
 mdefine_line|#define _LINUX_NTFS_LAYOUT_H
@@ -513,15 +513,22 @@ r_typedef
 r_struct
 (brace
 multiline_comment|/*Ofs*/
-multiline_comment|/*  0*/
-id|NTFS_RECORD
-id|SN
-c_func
-(paren
-id|mnr
-)paren
+multiline_comment|/*  0&t;NTFS_RECORD; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
+DECL|member|magic
+id|NTFS_RECORD_TYPES
+id|magic
 suffix:semicolon
 multiline_comment|/* Usually the magic is &quot;FILE&quot;. */
+DECL|member|usa_ofs
+id|u16
+id|usa_ofs
+suffix:semicolon
+multiline_comment|/* See NTFS_RECORD definition above. */
+DECL|member|usa_count
+id|u16
+id|usa_count
+suffix:semicolon
+multiline_comment|/* See NTFS_RECORD definition above. */
 DECL|member|lsn
 multiline_comment|/*  8*/
 id|u64
@@ -594,8 +601,6 @@ id|__packed__
 )paren
 id|MFT_RECORD
 suffix:semicolon
-DECL|macro|_MNR
-mdefine_line|#define _MNR(X)  SC(mnr,X)
 multiline_comment|/*&n; * System defined attributes (32-bit). Each attribute type has a corresponding&n; * attribute name (Unicode string of maximum 64 character length) as described&n; * by the attribute definitions present in the data attribute of the $AttrDef&n; * system file. On NTFS 3.0 volumes the names are just as the types are named&n; * in the below enum exchanging AT_ for the dollar sign ($). If that isn&squot;t a&n; * revealing choice of symbol... (-;&n; */
 r_typedef
 r_enum
@@ -1085,30 +1090,27 @@ id|u16
 id|value_offset
 suffix:semicolon
 multiline_comment|/* Byte offset of the attribute&n;&t;&t;&t;&t;&t;     value from the start of the&n;&t;&t;&t;&t;&t;     attribute record. When creating,&n;&t;&t;&t;&t;&t;     align to 8-byte boundary if we &n;&t;&t;&t;&t;&t;     have a name present as this might&n;&t;&t;&t;&t;&t;     not have a length of a multiple&n;&t;&t;&t;&t;&t;     of 8-bytes. */
-DECL|member|resident_flags
+DECL|member|flags
 multiline_comment|/* 22 */
 id|RESIDENT_ATTR_FLAGS
-id|resident_flags
+id|flags
 suffix:semicolon
 multiline_comment|/* See above. */
-DECL|member|reservedR
+DECL|member|reserved
 multiline_comment|/* 23 */
 id|s8
-id|reservedR
+id|reserved
 suffix:semicolon
 multiline_comment|/* Reserved/alignment to 8-byte&n;&t;&t;&t;&t;&t;     boundary. */
+DECL|member|resident
 )brace
-id|SN
-c_func
-(paren
-id|ara
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|resident
 suffix:semicolon
 multiline_comment|/* Non-resident attributes. */
 r_struct
@@ -1137,10 +1139,10 @@ id|u8
 id|compression_unit
 suffix:semicolon
 multiline_comment|/* The compression unit expressed&n;&t;&t;&t;&t;as the log to the base 2 of the number of&n;&t;&t;&t;&t;clusters in a compression unit. 0 means not&n;&t;&t;&t;&t;compressed. (This effectively limits the&n;&t;&t;&t;&t;compression unit size to be a power of two&n;&t;&t;&t;&t;clusters.) WinNT4 only uses a value of 4. */
-DECL|member|reserved1
+DECL|member|reserved
 multiline_comment|/* 35*/
 id|u8
-id|reserved1
+id|reserved
 (braket
 l_int|5
 )braket
@@ -1173,31 +1175,25 @@ id|compressed_size
 suffix:semicolon
 multiline_comment|/* Byte size of the attribute&n;&t;&t;&t;&t;value after compression. Only present when&n;&t;&t;&t;&t;compressed. Always is a multiple of the&n;&t;&t;&t;&t;cluster size. Represents the actual amount of&n;&t;&t;&t;&t;disk space being used on the disk. */
 multiline_comment|/* sizeof(compressed attr) = 72*/
+DECL|member|non_resident
 )brace
-id|SN
-c_func
-(paren
-id|anr
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|non_resident
 suffix:semicolon
+DECL|member|data
 )brace
-id|SN
-c_func
-(paren
-id|aua
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|data
 suffix:semicolon
 DECL|typedef|ATTR_RECORD
 )brace
@@ -1209,10 +1205,6 @@ id|__packed__
 )paren
 id|ATTR_RECORD
 suffix:semicolon
-DECL|macro|_ARA
-mdefine_line|#define _ARA(X)  SC(aua.ara,X)
-DECL|macro|_ANR
-mdefine_line|#define _ANR(X)  SC(aua.anr,X)
 DECL|typedef|ATTR_REC
 r_typedef
 id|ATTR_RECORD
@@ -1435,21 +1427,33 @@ multiline_comment|/* Flags describing the file. */
 multiline_comment|/* 36*/
 r_union
 (brace
-multiline_comment|/* NTFS 1.2 (and previous, presumably) */
+multiline_comment|/* NTFS 1.2 */
+r_struct
+(brace
 DECL|member|reserved12
-multiline_comment|/* 36 */
+multiline_comment|/* 36*/
 id|u8
 id|reserved12
 (braket
 l_int|12
 )braket
 suffix:semicolon
-multiline_comment|/* Reserved/alignment to 8-byte&n;&t;&t;&t;&t;&t;   boundary. */
+multiline_comment|/* Reserved/alignment to 8-byte&n;&t;&t;&t;&t;&t;&t;   boundary. */
+DECL|member|v1
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|v1
+suffix:semicolon
 multiline_comment|/* sizeof() = 48 bytes */
-multiline_comment|/* NTFS 3.0 */
+multiline_comment|/* NTFS 3.x */
 r_struct
 (brace
-multiline_comment|/*&n; * If a volume has been upgraded from a previous NTFS version, then these&n; * fields are present only if the file has been accessed since the upgrade.&n; * Recognize the difference by comparing the length of the resident attribute&n; * value. If it is 48, then the following fields are missing. If it is 72 then&n; * the fields are present. Maybe just check like this:&n; * &t;if (resident.ValueLength &lt; sizeof(STANDARD_INFORMATION)) {&n; * &t;&t;Assume NTFS 1.2- format.&n; * &t;&t;If (volume version is 3.0+)&n; * &t;&t;&t;Upgrade attribute to NTFS 3.0 format.&n; * &t;&t;else&n; * &t;&t;&t;Use NTFS 1.2- format for access.&n; * &t;} else&n; * &t;&t;Use NTFS 3.0 format for access.&n; * Only problem is that it might be legal to set the length of the value to&n; * arbitrarily large values thus spoiling this check. - But chkdsk probably&n; * views that as a corruption, assuming that it behaves like this for all&n; * attributes.&n; */
+multiline_comment|/*&n; * If a volume has been upgraded from a previous NTFS version, then these&n; * fields are present only if the file has been accessed since the upgrade.&n; * Recognize the difference by comparing the length of the resident attribute&n; * value. If it is 48, then the following fields are missing. If it is 72 then&n; * the fields are present. Maybe just check like this:&n; * &t;if (resident.ValueLength &lt; sizeof(STANDARD_INFORMATION)) {&n; * &t;&t;Assume NTFS 1.2- format.&n; * &t;&t;If (volume version is 3.x)&n; * &t;&t;&t;Upgrade attribute to NTFS 3.x format.&n; * &t;&t;else&n; * &t;&t;&t;Use NTFS 1.2- format for access.&n; * &t;} else&n; * &t;&t;Use NTFS 3.x format for access.&n; * Only problem is that it might be legal to set the length of the value to&n; * arbitrarily large values thus spoiling this check. - But chkdsk probably&n; * views that as a corruption, assuming that it behaves like this for all&n; * attributes.&n; */
 DECL|member|maximum_versions
 multiline_comment|/* 36*/
 id|u32
@@ -1492,21 +1496,27 @@ id|u64
 id|usn
 suffix:semicolon
 multiline_comment|/* Last update sequence number&n;&t;&t;&t;&t;of the file. This is a direct index into the&n;&t;&t;&t;&t;change (aka usn) journal file. It is zero if&n;&t;&t;&t;&t;the usn journal is disabled.&n;&t;&t;&t;&t;NOTE: To disable the journal need to delete&n;&t;&t;&t;&t;the journal file itself and to then walk the&n;&t;&t;&t;&t;whole mft and set all Usn entries in all mft&n;&t;&t;&t;&t;records to zero! (This can take a while!)&n;&t;&t;&t;&t;The journal is FILE_Extend/$UsnJrnl. Win2k&n;&t;&t;&t;&t;will recreate the journal and initiate&n;&t;&t;&t;&t;logging if necessary when mounting the&n;&t;&t;&t;&t;partition. This, in contrast to disabling the&n;&t;&t;&t;&t;journal is a very fast process, so the user&n;&t;&t;&t;&t;won&squot;t even notice it. */
+DECL|member|v3
 )brace
-id|SN
-c_func
+id|__attribute__
 (paren
-id|svs
+(paren
+id|__packed__
 )paren
+)paren
+id|v3
 suffix:semicolon
+multiline_comment|/* sizeof() = 72 bytes (NTFS 3.x) */
+DECL|member|ver
 )brace
-id|SN
-c_func
+id|__attribute__
 (paren
-id|sei
+(paren
+id|__packed__
 )paren
+)paren
+id|ver
 suffix:semicolon
-multiline_comment|/* sizeof() = 72 bytes (NTFS 3.0) */
 DECL|typedef|STANDARD_INFORMATION
 )brace
 id|__attribute__
@@ -1517,8 +1527,6 @@ id|__packed__
 )paren
 id|STANDARD_INFORMATION
 suffix:semicolon
-DECL|macro|_SVS
-mdefine_line|#define _SVS(X)  SC(sei.svs,X)
 multiline_comment|/*&n; * Attribute: Attribute list (0x20).&n; *&n; * - Can be either resident or non-resident.&n; * - Value consists of a sequence of variable length, 8-byte aligned,&n; * ATTR_LIST_ENTRY records.&n; * - The list is not terminated by anything at all! The only way to know when&n; * the end is reached is to keep track of the current offset and compare it to&n; * the attribute value size.&n; * - The attribute list attribute contains one entry for each attribute of&n; * the file in which the list is located, except for the list attribute&n; * itself. The list is sorted: first by attribute type, second by attribute&n; * name (if present), third by instance number. The extents of one&n; * non-resident attribute (if present) immediately follow after the initial&n; * extent. They are ordered by lowest_vcn and have their instace set to zero. &n; * It is not allowed to have two attributes with all sorting keys equal.&n; * - Further restrictions: &n; * &t;- If not resident, the vcn to lcn mapping array has to fit inside the&n; * &t;  base mft record.&n; * &t;- The attribute list attribute value has a maximum size of 256kb. This&n; * &t;  is imposed by the Windows cache manager.&n; * - Attribute lists are only used when the attributes of mft record do not&n; * fit inside the mft record despite all attributes (that can be made&n; * non-resident) having been made non-resident. This can happen e.g. when:&n; *  &t;- File has a large number of hard links (lots of file name&n; *  &t;  attributes present).&n; *  &t;- The mapping pairs array of some non-resident attribute becomes so&n; *&t;  large due to fragmentation that it overflows the mft record.&n; *  &t;- The security descriptor is very complex (not applicable to&n; *  &t;  NTFS 3.0 volumes).&n; *  &t;- There are many named streams.&n; */
 r_typedef
 r_struct
@@ -1698,37 +1706,44 @@ id|u16
 id|reserved
 suffix:semicolon
 multiline_comment|/* Reserved for alignment. */
+DECL|member|ea
 )brace
-id|SN
-c_func
-(paren
-id|fea
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|ea
 suffix:semicolon
+multiline_comment|/* 3c*/
+r_struct
+(brace
 DECL|member|reparse_point_tag
 multiline_comment|/* 3c*/
 id|u32
 id|reparse_point_tag
 suffix:semicolon
 multiline_comment|/* Type of reparse point,&n;&t;&t;&t;&t;&t;&t;   present only in reparse&n;&t;&t;&t;&t;&t;&t;   points and only if there are&n;&t;&t;&t;&t;&t;&t;   no EAs. */
+DECL|member|rp
 )brace
-id|SN
-c_func
-(paren
-id|fer
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|rp
+suffix:semicolon
+DECL|member|type
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|type
 suffix:semicolon
 DECL|member|file_name_length
 multiline_comment|/* 40*/
@@ -1761,10 +1776,6 @@ id|__packed__
 )paren
 id|FILE_NAME_ATTR
 suffix:semicolon
-DECL|macro|_FEA
-mdefine_line|#define _FEA(X)  SC(fer.fea,X)
-DECL|macro|_FER
-mdefine_line|#define _FER(X)  SC(fer,X)
 multiline_comment|/*&n; * GUID structures store globally unique identifiers (GUID). A GUID is a &n; * 128-bit value consisting of one group of eight hexadecimal digits, followed&n; * by three groups of four hexadecimal digits each, followed by one group of&n; * twelve hexadecimal digits. GUIDs are Microsoft&squot;s implementation of the&n; * distributed computing environment (DCE) universally unique identifier (UUID).&n; * Example of a GUID:&n; * &t;1F010768-5A73-BC91-0010A52216A7&n; */
 r_typedef
 r_struct
@@ -1827,18 +1838,15 @@ DECL|member|domain_id
 id|GUID
 id|domain_id
 suffix:semicolon
+DECL|member|origin
 )brace
-id|SN
-c_func
-(paren
-id|obv
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|origin
 suffix:semicolon
 DECL|member|extended_info
 id|u8
@@ -1847,18 +1855,15 @@ id|extended_info
 l_int|48
 )braket
 suffix:semicolon
+DECL|member|opt
 )brace
-id|SN
-c_func
-(paren
-id|oei
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|opt
 suffix:semicolon
 DECL|typedef|OBJ_ID_INDEX_DATA
 )brace
@@ -1899,18 +1904,15 @@ id|GUID
 id|domain_id
 suffix:semicolon
 multiline_comment|/* Reserved, zero. */
+DECL|member|origin
 )brace
-id|SN
-c_func
-(paren
-id|obv
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|origin
 suffix:semicolon
 DECL|member|extended_info
 id|u8
@@ -1919,18 +1921,15 @@ id|extended_info
 l_int|48
 )braket
 suffix:semicolon
+DECL|member|opt
 )brace
-id|SN
-c_func
-(paren
-id|oei
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|opt
 suffix:semicolon
 DECL|typedef|OBJECT_ID_ATTR
 )brace
@@ -1942,8 +1941,6 @@ id|__packed__
 )paren
 id|OBJECT_ID_ATTR
 suffix:semicolon
-DECL|macro|_OBV
-mdefine_line|#define _OBV(X)  SC(oei.obv,X)
 multiline_comment|/*&n; * The pre-defined IDENTIFIER_AUTHORITIES used as SID_IDENTIFIER_AUTHORITY in&n; * the SID structure (see below).&n; */
 singleline_comment|//typedef enum {&t;&t;&t;&t;&t;/* SID string prefix. */
 singleline_comment|//&t;SECURITY_NULL_SID_AUTHORITY&t;= {0, 0, 0, 0, 0, 0},&t;/* S-1-0 */
@@ -2220,28 +2217,25 @@ r_union
 (brace
 r_struct
 (brace
-DECL|member|low_part
+DECL|member|low
 id|u32
-id|low_part
+id|low
 suffix:semicolon
 multiline_comment|/* Low 32-bits. */
-DECL|member|high_part
+DECL|member|high
 id|u16
-id|high_part
+id|high
 suffix:semicolon
 multiline_comment|/* High 16-bits. */
+DECL|member|parts
 )brace
-id|SN
-c_func
-(paren
-id|sia
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|parts
 suffix:semicolon
 DECL|member|value
 id|u8
@@ -2261,8 +2255,6 @@ id|__packed__
 )paren
 id|SID_IDENTIFIER_AUTHORITY
 suffix:semicolon
-DECL|macro|_SIA
-mdefine_line|#define _SIA(X)  SC(sia,X)
 multiline_comment|/*&n; * The SID structure is a variable-length structure used to uniquely identify&n; * users or groups. SID stands for security identifier.&n; * &n; * The standard textual representation of the SID is of the form:&n; * &t;S-R-I-S-S...&n; * Where:&n; *    - The first &quot;S&quot; is the literal character &squot;S&squot; identifying the following&n; * &t;digits as a SID.&n; *    - R is the revision level of the SID expressed as a sequence of digits&n; *&t;either in decimal or hexadecimal (if the later, prefixed by &quot;0x&quot;).&n; *    - I is the 48-bit identifier_authority, expressed as digits as R above.&n; *    - S... is one or more sub_authority values, expressed as digits as above.&n; *    &n; * Example SID; the domain-relative SID of the local Administrators group on&n; * Windows NT/2k:&n; * &t;S-1-5-32-544&n; * This translates to a SID with:&n; * &t;revision = 1,&n; * &t;sub_authority_count = 2,&n; * &t;identifier_authority = {0,0,0,0,0,5},&t;// SECURITY_NT_AUTHORITY&n; * &t;sub_authority[0] = 32,&t;&t;&t;// SECURITY_BUILTIN_DOMAIN_RID&n; * &t;sub_authority[1] = 544&t;&t;&t;// DOMAIN_ALIAS_RID_ADMINS&n; */
 r_typedef
 r_struct
@@ -2481,17 +2473,21 @@ multiline_comment|/*&n; * An ACE is an access-control entry in an access-control
 r_typedef
 r_struct
 (brace
+multiline_comment|/*Ofs*/
 DECL|member|type
+multiline_comment|/*  0*/
 id|ACE_TYPES
 id|type
 suffix:semicolon
 multiline_comment|/* Type of the ACE. */
 DECL|member|flags
+multiline_comment|/*  1*/
 id|ACE_FLAGS
 id|flags
 suffix:semicolon
 multiline_comment|/* Flags describing the ACE. */
 DECL|member|size
+multiline_comment|/*  2*/
 id|u16
 id|size
 suffix:semicolon
@@ -2841,20 +2837,30 @@ multiline_comment|/*&n; * ACCESS_ALLOWED_ACE, ACCESS_DENIED_ACE, SYSTEM_AUDIT_AC
 r_typedef
 r_struct
 (brace
-id|ACE_HEADER
-id|SN
-c_func
-(paren
-id|aah
-)paren
+multiline_comment|/*  0&t;ACE_HEADER; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
+DECL|member|type
+id|ACE_TYPES
+id|type
 suffix:semicolon
-multiline_comment|/* The ACE header. */
+multiline_comment|/* Type of the ACE. */
+DECL|member|flags
+id|ACE_FLAGS
+id|flags
+suffix:semicolon
+multiline_comment|/* Flags describing the ACE. */
+DECL|member|size
+id|u16
+id|size
+suffix:semicolon
+multiline_comment|/* Size in bytes of the ACE. */
 DECL|member|mask
+multiline_comment|/*  4*/
 id|ACCESS_MASK
 id|mask
 suffix:semicolon
 multiline_comment|/* Access mask associated with the ACE. */
 DECL|member|sid
+multiline_comment|/*  8*/
 id|SID
 id|sid
 suffix:semicolon
@@ -2878,8 +2884,6 @@ id|SYSTEM_AUDIT_ACE
 comma
 id|SYSTEM_ALARM_ACE
 suffix:semicolon
-DECL|macro|_AAH
-mdefine_line|#define _AAH(X)  SC(aah,X)
 multiline_comment|/*&n; * The object ACE flags (32-bit).&n; */
 r_typedef
 r_enum
@@ -2909,33 +2913,46 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-id|ACE_HEADER
-id|SN
-c_func
-(paren
-id|aah
-)paren
+multiline_comment|/*  0&t;ACE_HEADER; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
+DECL|member|type
+id|ACE_TYPES
+id|type
 suffix:semicolon
-multiline_comment|/* The ACE_HEADER. */
+multiline_comment|/* Type of the ACE. */
+DECL|member|flags
+id|ACE_FLAGS
+id|flags
+suffix:semicolon
+multiline_comment|/* Flags describing the ACE. */
+DECL|member|size
+id|u16
+id|size
+suffix:semicolon
+multiline_comment|/* Size in bytes of the ACE. */
 DECL|member|mask
+multiline_comment|/*  4*/
 id|ACCESS_MASK
 id|mask
 suffix:semicolon
 multiline_comment|/* Access mask associated with the ACE. */
-DECL|member|flags
+DECL|member|object_flags
+multiline_comment|/*  8*/
 id|OBJECT_ACE_FLAGS
-id|flags
+id|object_flags
 suffix:semicolon
 multiline_comment|/* Flags describing the object ACE. */
 DECL|member|object_type
+multiline_comment|/* 12*/
 id|GUID
 id|object_type
 suffix:semicolon
 DECL|member|inherited_object_type
+multiline_comment|/* 28*/
 id|GUID
 id|inherited_object_type
 suffix:semicolon
 DECL|member|sid
+multiline_comment|/* 44*/
 id|SID
 id|sid
 suffix:semicolon
@@ -3361,15 +3378,30 @@ multiline_comment|/*&n; * The $SDS data stream contains the security descriptors
 r_typedef
 r_struct
 (brace
-id|SECURITY_DESCRIPTOR_HEADER
-id|SN
-c_func
-(paren
-id|sdh
-)paren
+multiline_comment|/*Ofs*/
+multiline_comment|/*  0&t;SECURITY_DESCRIPTOR_HEADER; -- Unfolded here as gcc doesn&squot;t like&n;&t;&t;&t;&t;       unnamed structs. */
+DECL|member|hash
+id|u32
+id|hash
 suffix:semicolon
-multiline_comment|/* The security descriptor header. */
+multiline_comment|/* Hash of the security descriptor. */
+DECL|member|security_id
+id|u32
+id|security_id
+suffix:semicolon
+multiline_comment|/* The security_id assigned to the descriptor. */
+DECL|member|offset
+id|u64
+id|offset
+suffix:semicolon
+multiline_comment|/* Byte offset of this entry in the $SDS stream. */
+DECL|member|length
+id|u32
+id|length
+suffix:semicolon
+multiline_comment|/* Size in bytes of this entry in $SDS stream. */
 DECL|member|sid
+multiline_comment|/* 20*/
 id|SECURITY_DESCRIPTOR_RELATIVE
 id|sid
 suffix:semicolon
@@ -3384,8 +3416,6 @@ id|__packed__
 )paren
 id|SDS_ENTRY
 suffix:semicolon
-DECL|macro|_SDH
-mdefine_line|#define _SDH(X)  SC(sdh,X)
 multiline_comment|/*&n; * The index entry key used in the $SII index. The collation type is&n; * COLLATION_NTOFS_ULONG. &n; */
 r_typedef
 r_struct
@@ -3733,15 +3763,22 @@ multiline_comment|/*&n; * Attribute: Index allocation (0xa0).&n; *&n; * NOTE: Al
 r_typedef
 r_struct
 (brace
-multiline_comment|/*  0*/
-id|NTFS_RECORD
-id|SN
-c_func
-(paren
-id|inr
-)paren
+multiline_comment|/*  0&t;NTFS_RECORD; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
+DECL|member|magic
+id|NTFS_RECORD_TYPES
+id|magic
 suffix:semicolon
 multiline_comment|/* Magic is &quot;INDX&quot;. */
+DECL|member|usa_ofs
+id|u16
+id|usa_ofs
+suffix:semicolon
+multiline_comment|/* See NTFS_RECORD definition. */
+DECL|member|usa_count
+id|u16
+id|usa_count
+suffix:semicolon
+multiline_comment|/* See NTFS_RECORD definition. */
 DECL|member|lsn
 multiline_comment|/*  8*/
 id|s64
@@ -3772,8 +3809,6 @@ id|__packed__
 )paren
 id|INDEX_BLOCK
 suffix:semicolon
-DECL|macro|_INR
-mdefine_line|#define _INR(X)  SC(inr,X)
 DECL|typedef|INDEX_ALLOCATION
 r_typedef
 id|INDEX_BLOCK
@@ -4058,12 +4093,24 @@ r_struct
 multiline_comment|/*  0*/
 r_union
 (brace
+r_struct
+(brace
 multiline_comment|/* Only valid when INDEX_ENTRY_END is not set. */
 DECL|member|indexed_file
 id|MFT_REF
 id|indexed_file
 suffix:semicolon
 multiline_comment|/* The mft reference of the file&n;&t;&t;&t;&t;&t;&t;   described by this index&n;&t;&t;&t;&t;&t;&t;   entry. Used for directory&n;&t;&t;&t;&t;&t;&t;   indexes. */
+DECL|member|dir
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|dir
+suffix:semicolon
 r_struct
 (brace
 multiline_comment|/* Used for views/indexes to find the entry&squot;s data. */
@@ -4082,31 +4129,25 @@ id|u32
 id|reservedV
 suffix:semicolon
 multiline_comment|/* Reserved (zero). */
+DECL|member|vi
 )brace
-id|SN
-c_func
-(paren
-id|iev
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|vi
 suffix:semicolon
+DECL|member|data
 )brace
-id|SN
-c_func
-(paren
-id|iif
-)paren
 id|__attribute__
 (paren
 (paren
 id|__packed__
 )paren
 )paren
+id|data
 suffix:semicolon
 DECL|member|length
 multiline_comment|/*  8*/
@@ -4143,23 +4184,90 @@ id|__packed__
 )paren
 id|INDEX_ENTRY_HEADER
 suffix:semicolon
-DECL|macro|_IIF
-mdefine_line|#define _IIF(X)  SC(ieh.iif,X)
-DECL|macro|_IEV
-mdefine_line|#define _IEV(X)  SC(iif.iev,X)
 multiline_comment|/*&n; * This is an index entry. A sequence of such entries follows each INDEX_HEADER&n; * structure. Together they make up a complete index. The index follows either&n; * an index root attribute or an index allocation attribute.&n; *&n; * NOTE: Before NTFS 3.0 only filename attributes were indexed.&n; */
 r_typedef
 r_struct
 (brace
-multiline_comment|/*  0*/
-id|INDEX_ENTRY_HEADER
-id|SN
-c_func
-(paren
-id|ieh
-)paren
+multiline_comment|/*Ofs*/
+multiline_comment|/*  0&t;INDEX_ENTRY_HEADER; -- Unfolded here as gcc dislikes unnamed structs. */
+r_union
+(brace
+r_struct
+(brace
+multiline_comment|/* Only valid when INDEX_ENTRY_END is not set. */
+DECL|member|indexed_file
+id|MFT_REF
+id|indexed_file
 suffix:semicolon
-multiline_comment|/* The index entry header (see above). */
+multiline_comment|/* The mft reference of the file&n;&t;&t;&t;&t;&t;&t;   described by this index&n;&t;&t;&t;&t;&t;&t;   entry. Used for directory&n;&t;&t;&t;&t;&t;&t;   indexes. */
+DECL|member|dir
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|dir
+suffix:semicolon
+r_struct
+(brace
+multiline_comment|/* Used for views/indexes to find the entry&squot;s data. */
+DECL|member|data_offset
+id|u16
+id|data_offset
+suffix:semicolon
+multiline_comment|/* Data byte offset from this&n;&t;&t;&t;&t;&t;&t;   INDEX_ENTRY. Follows the&n;&t;&t;&t;&t;&t;&t;   index key. */
+DECL|member|data_length
+id|u16
+id|data_length
+suffix:semicolon
+multiline_comment|/* Data length in bytes. */
+DECL|member|reservedV
+id|u32
+id|reservedV
+suffix:semicolon
+multiline_comment|/* Reserved (zero). */
+DECL|member|vi
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|vi
+suffix:semicolon
+DECL|member|data
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|data
+suffix:semicolon
+DECL|member|length
+id|u16
+id|length
+suffix:semicolon
+multiline_comment|/* Byte size of this index entry, multiple of&n;&t;&t;&t;&t;    8-bytes. */
+DECL|member|key_length
+id|u16
+id|key_length
+suffix:semicolon
+multiline_comment|/* Byte size of the key value, which is in the&n;&t;&t;&t;&t;    index entry. It follows field reserved. Not&n;&t;&t;&t;&t;    multiple of 8-bytes. */
+DECL|member|flags
+id|INDEX_ENTRY_FLAGS
+id|flags
+suffix:semicolon
+multiline_comment|/* Bit field of INDEX_ENTRY_* flags. */
+DECL|member|reserved
+id|u16
+id|reserved
+suffix:semicolon
+multiline_comment|/* Reserved/align to 8-byte boundary. */
 multiline_comment|/* 16*/
 r_union
 (brace
@@ -4184,14 +4292,11 @@ id|GUID
 id|object_id
 suffix:semicolon
 multiline_comment|/* $O index in FILE_Extend/$ObjId: The&n;&t;&t;&t;&t;&t;   object_id of the mft record found in&n;&t;&t;&t;&t;&t;   the data part of the index. */
+DECL|member|reparse
 id|REPARSE_INDEX_KEY
-id|SN
-c_func
-(paren
-id|iri
-)paren
+id|reparse
 suffix:semicolon
-multiline_comment|/* $R index in FILE_Extend/$Reparse. */
+multiline_comment|/* $R index in&n;&t;&t;&t;&t;&t;&t;   FILE_Extend/$Reparse. */
 DECL|member|sid
 id|SID
 id|sid
@@ -4235,10 +4340,6 @@ id|__packed__
 )paren
 id|INDEX_ENTRY
 suffix:semicolon
-DECL|macro|_IEH
-mdefine_line|#define _IEH(X)  SC(ieh,X)
-DECL|macro|_IRI
-mdefine_line|#define _IRI(X)  SC(key.iri,X)
 multiline_comment|/*&n; * Attribute: Bitmap (0xb0).&n; *&n; * Contains an array of bits (aka a bitfield).&n; *&n; * When used in conjunction with the index allocation attribute, each bit&n; * corresponds to one index block within the index allocation attribute. Thus&n; * the number of bits in the bitmap * index block size / cluster size is the&n; * number of clusters in the index allocation attribute.&n; */
 r_typedef
 r_struct

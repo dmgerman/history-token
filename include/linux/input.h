@@ -2175,8 +2175,8 @@ DECL|macro|input_sync
 mdefine_line|#define input_sync(a)&t;&t;do { input_event(a, EV_SYN, SYN_REPORT, 0); (a)-&gt;regs = NULL; } while (0)
 r_extern
 r_struct
-id|device_class
-id|input_devclass
+r_class
+id|input_class
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif

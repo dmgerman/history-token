@@ -102,10 +102,6 @@ id|ioport_resource.end
 op_assign
 l_int|0xffffffffffffffffUL
 suffix:semicolon
-id|iomem_resource.end
-op_assign
-l_int|0xffffffffffffffffUL
-suffix:semicolon
 id|prom_getstring
 c_func
 (paren

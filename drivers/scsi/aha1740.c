@@ -768,7 +768,7 @@ suffix:semicolon
 multiline_comment|/* A &quot;high&quot; level interrupt handler */
 DECL|function|aha1740_intr_handle
 r_static
-r_void
+id|irqreturn_t
 id|aha1740_intr_handle
 c_func
 (paren
@@ -832,6 +832,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -876,6 +881,10 @@ op_amp
 id|G2STAT_INTPEND
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|DEB
 c_func
 (paren
@@ -1259,6 +1268,13 @@ c_func
 id|host-&gt;host_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

@@ -357,7 +357,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|olympic_interrupt
 c_func
 (paren
@@ -5032,7 +5032,7 @@ suffix:semicolon
 )brace
 DECL|function|olympic_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|olympic_interrupt
 c_func
 (paren
@@ -5109,6 +5109,7 @@ id|SISR_MI
 )paren
 multiline_comment|/* Interrupt isn&squot;t for us */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|sisr
 op_assign
@@ -5172,6 +5173,7 @@ id|olympic_priv-&gt;olympic_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -5285,6 +5287,7 @@ id|olympic_priv-&gt;olympic_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* SISR_ERR */
@@ -5627,6 +5630,7 @@ id|olympic_priv-&gt;olympic_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* SISR_ADAPTER_CHECK */
@@ -5759,6 +5763,9 @@ c_func
 op_amp
 id|olympic_priv-&gt;olympic_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|olympic_xmit

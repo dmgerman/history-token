@@ -1599,7 +1599,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|netdrv_interrupt
 (paren
 r_int
@@ -6574,7 +6574,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|netdrv_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|netdrv_interrupt
 (paren
 r_int
@@ -6630,6 +6630,11 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* avoid bogus &quot;uninit&quot; warning */
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 (paren
 op_amp
@@ -6654,6 +6659,10 @@ op_eq
 l_int|0xFFFF
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP */
 id|NETDRV_W16_F
@@ -6844,6 +6853,13 @@ id|NETDRV_R16
 (paren
 id|IntrStatus
 )paren
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

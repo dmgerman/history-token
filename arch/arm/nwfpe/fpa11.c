@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;    (c) Philip Blundell, 2001&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
@@ -90,13 +90,6 @@ id|FP_EMULATOR
 op_or
 id|BIT_AC
 suffix:semicolon
-multiline_comment|/* FPCR: set SB, AB and DA bits, clear all others */
-macro_line|#if MAINTAIN_FPCR
-id|fpa11-&gt;fpcr
-op_assign
-id|MASK_RESET
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|SetRoundingMode
 r_void
@@ -109,22 +102,6 @@ r_int
 id|opcode
 )paren
 (brace
-macro_line|#if MAINTAIN_FPCR
-id|FPA11
-op_star
-id|fpa11
-op_assign
-id|GET_FPA11
-c_func
-(paren
-)paren
-suffix:semicolon
-id|fpa11-&gt;fpcr
-op_and_assign
-op_complement
-id|MASK_ROUNDING_MODE
-suffix:semicolon
-macro_line|#endif   
 r_switch
 c_cond
 (paren
@@ -142,12 +119,6 @@ id|float_rounding_mode
 op_assign
 id|float_round_nearest_even
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
-id|fpa11-&gt;fpcr
-op_or_assign
-id|ROUND_TO_NEAREST
-suffix:semicolon
-macro_line|#endif         
 r_break
 suffix:semicolon
 r_case
@@ -157,12 +128,6 @@ id|float_rounding_mode
 op_assign
 id|float_round_up
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
-id|fpa11-&gt;fpcr
-op_or_assign
-id|ROUND_TO_PLUS_INFINITY
-suffix:semicolon
-macro_line|#endif         
 r_break
 suffix:semicolon
 r_case
@@ -172,12 +137,6 @@ id|float_rounding_mode
 op_assign
 id|float_round_down
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
-id|fpa11-&gt;fpcr
-op_or_assign
-id|ROUND_TO_MINUS_INFINITY
-suffix:semicolon
-macro_line|#endif         
 r_break
 suffix:semicolon
 r_case
@@ -187,12 +146,6 @@ id|float_rounding_mode
 op_assign
 id|float_round_to_zero
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
-id|fpa11-&gt;fpcr
-op_or_assign
-id|ROUND_TO_ZERO
-suffix:semicolon
-macro_line|#endif         
 r_break
 suffix:semicolon
 )brace
@@ -208,22 +161,7 @@ r_int
 id|opcode
 )paren
 (brace
-macro_line|#if MAINTAIN_FPCR
-id|FPA11
-op_star
-id|fpa11
-op_assign
-id|GET_FPA11
-c_func
-(paren
-)paren
-suffix:semicolon
-id|fpa11-&gt;fpcr
-op_and_assign
-op_complement
-id|MASK_ROUNDING_PRECISION
-suffix:semicolon
-macro_line|#endif   
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 r_switch
 c_cond
 (paren
@@ -239,12 +177,6 @@ id|floatx80_rounding_precision
 op_assign
 l_int|32
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
-id|fpa11-&gt;fpcr
-op_or_assign
-id|ROUND_SINGLE
-suffix:semicolon
-macro_line|#endif         
 r_break
 suffix:semicolon
 r_case
@@ -254,12 +186,6 @@ id|floatx80_rounding_precision
 op_assign
 l_int|64
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
-id|fpa11-&gt;fpcr
-op_or_assign
-id|ROUND_DOUBLE
-suffix:semicolon
-macro_line|#endif         
 r_break
 suffix:semicolon
 r_case
@@ -269,12 +195,6 @@ id|floatx80_rounding_precision
 op_assign
 l_int|80
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
-id|fpa11-&gt;fpcr
-op_or_assign
-id|ROUND_EXTENDED
-suffix:semicolon
-macro_line|#endif         
 r_break
 suffix:semicolon
 r_default
@@ -284,10 +204,11 @@ op_assign
 l_int|80
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
-DECL|function|nwfpe_init
+DECL|function|nwfpe_init_fpa
 r_void
-id|nwfpe_init
+id|nwfpe_init_fpa
 c_func
 (paren
 r_union
@@ -306,6 +227,14 @@ op_star
 )paren
 id|fp
 suffix:semicolon
+macro_line|#ifdef NWFPE_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;NWFPE: setting up state.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|memset
 c_func
 (paren
@@ -355,12 +284,18 @@ id|opcode
 (brace
 r_int
 r_int
-id|nRc
-op_assign
-l_int|1
-comma
 id|code
 suffix:semicolon
+macro_line|#ifdef NWFPE_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;NWFPE: emulating opcode %08x&bslash;n&quot;
+comma
+id|opcode
+)paren
+suffix:semicolon
+macro_line|#endif
 id|code
 op_assign
 id|opcode
@@ -405,8 +340,7 @@ l_int|0x00000010
 multiline_comment|/* Emulate conversion opcodes. */
 multiline_comment|/* Emulate register transfer opcodes. */
 multiline_comment|/* Emulate comparison opcodes. */
-id|nRc
-op_assign
+r_return
 id|EmulateCPRT
 c_func
 (paren
@@ -418,8 +352,7 @@ r_else
 (brace
 multiline_comment|/* Emulate monadic arithmetic opcodes. */
 multiline_comment|/* Emulate dyadic arithmetic opcodes. */
-id|nRc
-op_assign
+r_return
 id|EmulateCPDO
 c_func
 (paren
@@ -439,8 +372,7 @@ l_int|0x0c000000
 (brace
 multiline_comment|/* Emulate load/store opcodes. */
 multiline_comment|/* Emulate load/store multiple opcodes. */
-id|nRc
-op_assign
+r_return
 id|EmulateCPDT
 c_func
 (paren
@@ -448,183 +380,10 @@ id|opcode
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
+)brace
 multiline_comment|/* Invalid instruction detected.  Return FALSE. */
-id|nRc
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_return
-id|nRc
-suffix:semicolon
-)brace
-macro_line|#if 0
-r_int
-r_int
-id|EmulateAll1
-c_func
-(paren
-r_int
-r_int
-id|opcode
-)paren
-(brace
-r_switch
-c_cond
-(paren
-(paren
-id|opcode
-op_rshift
-l_int|24
-)paren
-op_amp
-l_int|0xf
-)paren
-(brace
-r_case
-l_int|0xc
-suffix:colon
-r_case
-l_int|0xd
-suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|opcode
-op_rshift
-l_int|20
-)paren
-op_amp
-l_int|0x1
-)paren
-(brace
-r_switch
-c_cond
-(paren
-(paren
-id|opcode
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xf
-)paren
-(brace
-r_case
-l_int|0x1
-suffix:colon
-r_return
-id|PerformLDF
-c_func
-(paren
-id|opcode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|0x2
-suffix:colon
-r_return
-id|PerformLFM
-c_func
-(paren
-id|opcode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-r_switch
-c_cond
-(paren
-(paren
-id|opcode
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xf
-)paren
-(brace
-r_case
-l_int|0x1
-suffix:colon
-r_return
-id|PerformSTF
-c_func
-(paren
-id|opcode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|0x2
-suffix:colon
-r_return
-id|PerformSFM
-c_func
-(paren
-id|opcode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_break
-suffix:semicolon
-r_case
-l_int|0xe
-suffix:colon
-r_if
-c_cond
-(paren
-id|opcode
-op_amp
-l_int|0x10
-)paren
-r_return
-id|EmulateCPDO
-c_func
-(paren
-id|opcode
-)paren
-suffix:semicolon
-r_else
-r_return
-id|EmulateCPRT
-c_func
-(paren
-id|opcode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 eof

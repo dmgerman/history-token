@@ -1649,7 +1649,7 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Ensure that the instruction cache sees&n;&t;&t; * the return code written onto the stack.&n;&t;&t; */
-id|cpu_icache_invalidate_range
+id|flush_icache_range
 c_func
 (paren
 (paren
@@ -2596,6 +2596,26 @@ id|usp
 (braket
 l_int|2
 )braket
+)paren
+suffix:semicolon
+id|flush_icache_range
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|usp
+comma
+(paren
+r_int
+r_int
+)paren
+(paren
+id|usp
+op_plus
+l_int|3
+)paren
 )paren
 suffix:semicolon
 id|regs-&gt;ARM_pc

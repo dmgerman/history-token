@@ -1,45 +1,6 @@
 macro_line|#ifndef IEEE1394_HIGHLEVEL_H
 DECL|macro|IEEE1394_HIGHLEVEL_H
 mdefine_line|#define IEEE1394_HIGHLEVEL_H
-DECL|struct|hpsb_highlevel
-r_struct
-id|hpsb_highlevel
-(brace
-DECL|member|hl_list
-r_struct
-id|list_head
-id|hl_list
-suffix:semicolon
-multiline_comment|/* List of hpsb_address_serve. */
-DECL|member|addr_list
-r_struct
-id|list_head
-id|addr_list
-suffix:semicolon
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|op
-r_struct
-id|hpsb_highlevel_ops
-op_star
-id|op
-suffix:semicolon
-multiline_comment|/* Used by the highlevel drivers to store data per host */
-DECL|member|host_info_list
-r_struct
-id|list_head
-id|host_info_list
-suffix:semicolon
-DECL|member|host_info_lock
-id|rwlock_t
-id|host_info_lock
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|hpsb_address_serve
 r_struct
 id|hpsb_address_serve
@@ -73,10 +34,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The above structs are internal to highlevel driver handling.  Only the&n; * following structures are of interest to actual highlevel drivers.  &n; */
-DECL|struct|hpsb_highlevel_ops
+DECL|struct|hpsb_highlevel
 r_struct
-id|hpsb_highlevel_ops
+id|hpsb_highlevel
 (brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
 multiline_comment|/* Any of the following pointers can legally be NULL, except for&n;         * iso_receive which can only be NULL when you don&squot;t request&n;         * channels. */
 multiline_comment|/* New host initialized.  Will also be called during&n;         * hpsb_register_highlevel for all hosts already installed. */
 DECL|member|add_host
@@ -90,11 +57,6 @@ r_struct
 id|hpsb_host
 op_star
 id|host
-comma
-r_struct
-id|hpsb_highlevel
-op_star
-id|hl
 )paren
 suffix:semicolon
 multiline_comment|/* Host about to be removed.  Will also be called during&n;         * hpsb_unregister_highlevel once for each host. */
@@ -180,6 +142,25 @@ r_int
 r_int
 id|length
 )paren
+suffix:semicolon
+DECL|member|hl_list
+r_struct
+id|list_head
+id|hl_list
+suffix:semicolon
+DECL|member|addr_list
+r_struct
+id|list_head
+id|addr_list
+suffix:semicolon
+DECL|member|host_info_list
+r_struct
+id|list_head
+id|host_info_list
+suffix:semicolon
+DECL|member|host_info_lock
+id|rwlock_t
+id|host_info_lock
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -528,21 +509,14 @@ id|length
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Register highlevel driver.  The name pointer has to stay valid at all times&n; * because the string is not copied.&n; */
-r_struct
-id|hpsb_highlevel
-op_star
+r_void
 id|hpsb_register_highlevel
 c_func
 (paren
-r_const
-r_char
-op_star
-id|name
-comma
 r_struct
-id|hpsb_highlevel_ops
+id|hpsb_highlevel
 op_star
-id|ops
+id|hl
 )paren
 suffix:semicolon
 r_void
@@ -719,7 +693,7 @@ op_star
 id|host
 )paren
 suffix:semicolon
-multiline_comment|/* Retrive a hostinfo pointer bound to this driver using its alternate key */
+multiline_comment|/* Retrieve a hostinfo pointer bound to this driver using its alternate key */
 r_void
 op_star
 id|hpsb_get_hostinfo_bykey
@@ -753,6 +727,23 @@ comma
 r_void
 op_star
 id|data
+)paren
+suffix:semicolon
+multiline_comment|/* Retrieve hpsb_host using a highlevel handle and a key */
+r_struct
+id|hpsb_host
+op_star
+id|hpsb_get_host_bykey
+c_func
+(paren
+r_struct
+id|hpsb_highlevel
+op_star
+id|hl
+comma
+r_int
+r_int
+id|key
 )paren
 suffix:semicolon
 macro_line|#endif /* IEEE1394_HIGHLEVEL_H */

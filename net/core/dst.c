@@ -951,11 +951,11 @@ id|notifier_block
 id|dst_dev_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|dst_dev_event
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|function|dst_init

@@ -2907,7 +2907,7 @@ comma
 l_int|57
 )brace
 suffix:semicolon
-id|kdev_t
+id|dev_t
 id|__init
 DECL|function|pmac_find_ide_boot
 id|pmac_find_ide_boot
@@ -2999,7 +2999,7 @@ l_int|0
 (brace
 multiline_comment|/* XXX should cope with the 2nd drive as well... */
 r_return
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|ide_majors

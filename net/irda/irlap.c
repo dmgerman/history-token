@@ -3284,7 +3284,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Set the negociated xbofs value */
+multiline_comment|/* Set the negotiated xbofs value */
 id|self-&gt;next_bofs
 op_assign
 id|self-&gt;qos_tx.additional_bofs.value
@@ -3298,7 +3298,7 @@ id|self-&gt;bofs_count
 op_assign
 id|self-&gt;next_bofs
 suffix:semicolon
-multiline_comment|/* Set the negociated link speed (may need the new xbofs value) */
+multiline_comment|/* Set the negotiated link speed (may need the new xbofs value) */
 id|irlap_change_speed
 c_func
 (paren

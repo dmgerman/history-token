@@ -7912,10 +7912,6 @@ r_int
 r_int
 id|cmap_len
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT

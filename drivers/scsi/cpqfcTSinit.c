@@ -5452,7 +5452,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cpqfcTS_intr_handler
-r_void
+id|irqreturn_t
 id|cpqfcTS_intr_handler
 c_func
 (paren
@@ -5503,6 +5503,11 @@ singleline_comment|// assume we have something to do
 id|UCHAR
 id|IntPending
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|ENTER
 c_func
 (paren
@@ -5536,6 +5541,10 @@ c_cond
 id|IntPending
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 singleline_comment|// mask our HBA interrupts until we handle it...
 id|writeb
 c_func
@@ -5847,6 +5856,13 @@ id|LEAVE
 c_func
 (paren
 l_string|&quot;intr_handler&quot;
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

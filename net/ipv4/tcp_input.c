@@ -47,8 +47,6 @@ macro_line|#else
 DECL|variable|sysctl_tcp_ecn
 r_int
 id|sysctl_tcp_ecn
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 DECL|variable|sysctl_tcp_dsack
@@ -72,14 +70,10 @@ suffix:semicolon
 DECL|variable|sysctl_tcp_stdurg
 r_int
 id|sysctl_tcp_stdurg
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|sysctl_tcp_rfc1337
 r_int
 id|sysctl_tcp_rfc1337
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|sysctl_tcp_max_orphans
 r_int
@@ -90,8 +84,6 @@ suffix:semicolon
 DECL|variable|sysctl_tcp_frto
 r_int
 id|sysctl_tcp_frto
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|FLAG_DATA
 mdefine_line|#define FLAG_DATA&t;&t;0x01 /* Incoming frame contained data.&t;&t;*/

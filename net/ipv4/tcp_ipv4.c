@@ -3543,7 +3543,7 @@ id|tp-&gt;mss_clamp
 op_assign
 l_int|536
 suffix:semicolon
-multiline_comment|/* Socket identity is still unknown (sport may be zero).&n;&t; * However we set state to SYN-SENT and not releasing socket&n;&t; * lock select source port, enter ourselves into the hash tables and&n;&t; * complete initalization after this.&n;&t; */
+multiline_comment|/* Socket identity is still unknown (sport may be zero).&n;&t; * However we set state to SYN-SENT and not releasing socket&n;&t; * lock select source port, enter ourselves into the hash tables and&n;&t; * complete initialization after this.&n;&t; */
 id|tcp_set_state
 c_func
 (paren

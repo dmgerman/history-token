@@ -235,6 +235,10 @@ r_int
 r_int
 id|buffers_offset
 suffix:semicolon
+DECL|member|num_rast
+r_int
+id|num_rast
+suffix:semicolon
 DECL|typedef|drm_gamma_init_t
 )brace
 id|drm_gamma_init_t

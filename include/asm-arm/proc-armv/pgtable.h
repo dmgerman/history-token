@@ -37,6 +37,8 @@ DECL|macro|PMD_SECT_TEX
 mdefine_line|#define PMD_SECT_TEX(x)&t;&t;((x) &lt;&lt; 12)&t;/* v5 */
 DECL|macro|PMD_SECT_UNCACHED
 mdefine_line|#define PMD_SECT_UNCACHED&t;(0)
+DECL|macro|PMD_SECT_BUFFERED
+mdefine_line|#define PMD_SECT_BUFFERED&t;(PMD_SECT_BUFFERABLE)
 DECL|macro|PMD_SECT_WT
 mdefine_line|#define PMD_SECT_WT&t;&t;(PMD_SECT_CACHEABLE)
 DECL|macro|PMD_SECT_WB
@@ -113,48 +115,9 @@ mdefine_line|#define _PAGE_KERNEL_TABLE&t;(PMD_TYPE_TABLE | PMD_BIT4 | PMD_DOMAI
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
 DECL|macro|set_pmd
-mdefine_line|#define set_pmd(pmdp,pmd)&t;do { *pmdp = pmd; cpu_flush_pmd(pmdp); } while (0)
-DECL|function|pmd_clear
-r_static
-r_inline
-r_void
-id|pmd_clear
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmdp
-)paren
-(brace
-id|pmdp
-(braket
-l_int|0
-)braket
-op_assign
-id|__pmd
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-id|pmdp
-(braket
-l_int|1
-)braket
-op_assign
-id|__pmd
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-id|cpu_flush_pmd
-c_func
-(paren
-id|pmdp
-)paren
-suffix:semicolon
-)brace
+mdefine_line|#define set_pmd(pmdp,pmd)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;*pmdp = pmd;&t;&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdp);&t;&bslash;&n;&t;} while (0)
+DECL|macro|pmd_clear
+mdefine_line|#define pmd_clear(pmdp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;pmdp[0] = __pmd(0);&t;&bslash;&n;&t;&t;pmdp[1] = __pmd(0);&t;&bslash;&n;&t;&t;clean_pmd_entry(pmdp);&t;&bslash;&n;&t;} while (0)
 DECL|function|pmd_page_kernel
 r_static
 r_inline

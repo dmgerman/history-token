@@ -3227,6 +3227,9 @@ id|i
 op_increment
 )paren
 (brace
+id|MetricomNode
+id|node
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3236,7 +3239,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|MetricomNode
 id|node
 op_assign
 id|table-&gt;node

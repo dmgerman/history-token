@@ -49,16 +49,16 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 896 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
+l_string|&quot;$Rev: 912 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
-multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; *&n; * Valid values:&n; * max_speed = 2 (default: max speed 400mb)&n; * max_speed = 1 (max speed 200mb)&n; * max_speed = 0 (max speed 100mb)&n; */
+multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
 DECL|variable|max_speed
 r_static
 r_int
 id|max_speed
 op_assign
-id|SPEED_400
+id|SPEED_MAX
 suffix:semicolon
 id|module_param
 c_func
@@ -75,7 +75,7 @@ c_func
 (paren
 id|max_speed
 comma
-l_string|&quot;Force max speed (2 = 400mb default, 1 = 200mb, 0 = 100mb)&quot;
+l_string|&quot;Force max speed (3 = 800mb, 2 = 400mb default, 1 = 200mb, 0 = 100mb)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Set serialize_io to 1 if you&squot;d like only one scsi command sent&n; * down to us at a time (debugging). This might be necessary for very&n; * badly behaved sbp2 devices.&n; */
@@ -351,37 +351,18 @@ r_static
 id|Scsi_Host_Template
 id|scsi_driver_template
 suffix:semicolon
-DECL|variable|sbp2_speedto_maxrec
-r_static
-id|u8
-id|sbp2_speedto_maxrec
-(braket
-)braket
-op_assign
-(brace
-l_int|0x7
-comma
-l_int|0x8
-comma
-l_int|0x9
-)brace
-suffix:semicolon
-DECL|variable|sbp2_hl_handle
+DECL|variable|sbp2_highlevel
 r_static
 r_struct
 id|hpsb_highlevel
-op_star
-id|sbp2_hl_handle
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|sbp2_hl_ops
-r_static
-r_struct
-id|hpsb_highlevel_ops
-id|sbp2_hl_ops
+id|sbp2_highlevel
 op_assign
 (brace
+dot
+id|name
+op_assign
+id|SBP2_DEVICE_NAME
+comma
 dot
 id|remove_host
 op_assign
@@ -1707,16 +1688,17 @@ id|command
 )paren
 (brace
 r_struct
-id|sbp2scsi_host_info
+id|hpsb_host
 op_star
-id|hi
+id|host
 suffix:semicolon
-id|hi
+id|host
 op_assign
-id|hpsb_get_hostinfo_bykey
+id|hpsb_get_host_bykey
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 (paren
 r_int
@@ -1729,14 +1711,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hi
+id|host
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: hi == NULL&bslash;n&quot;
+l_string|&quot;%s: host == NULL&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1761,7 +1743,7 @@ id|CMD_DMA_SINGLE
 id|pci_unmap_single
 c_func
 (paren
-id|hi-&gt;host-&gt;pdev
+id|host-&gt;pdev
 comma
 id|command-&gt;cmd_dma
 comma
@@ -1789,7 +1771,7 @@ id|CMD_DMA_PAGE
 id|pci_unmap_page
 c_func
 (paren
-id|hi-&gt;host-&gt;pdev
+id|host-&gt;pdev
 comma
 id|command-&gt;cmd_dma
 comma
@@ -1824,7 +1806,7 @@ id|command-&gt;sge_buffer
 id|pci_unmap_sg
 c_func
 (paren
-id|hi-&gt;host-&gt;pdev
+id|host-&gt;pdev
 comma
 id|command-&gt;sge_buffer
 comma
@@ -2216,7 +2198,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 id|host
 )paren
@@ -2262,7 +2245,8 @@ op_assign
 id|hpsb_create_hostinfo
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 id|host
 comma
@@ -2296,7 +2280,8 @@ suffix:semicolon
 id|hpsb_set_hostinfo_key
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 id|host
 comma
@@ -2351,7 +2336,8 @@ suffix:semicolon
 id|hpsb_destroy_hostinfo
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 id|host
 )paren
@@ -2390,7 +2376,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 id|host
 )paren
@@ -2414,15 +2401,6 @@ id|hi-&gt;scsi_host
 )paren
 suffix:semicolon
 )brace
-r_else
-id|SBP2_ERR
-c_func
-(paren
-l_string|&quot;attempt to remove unknown host %p&quot;
-comma
-id|host
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is where we first pull the node unique ids, and then&n; * allocate memory and register a SBP-2 device.&n; */
 DECL|function|sbp2_start_device
@@ -2895,7 +2873,7 @@ id|SPEED_100
 suffix:semicolon
 id|scsi_id-&gt;max_payload_size
 op_assign
-id|sbp2_speedto_maxrec
+id|hpsb_speedto_maxrec
 (braket
 id|SPEED_100
 )braket
@@ -5539,7 +5517,7 @@ op_assign
 id|min
 c_func
 (paren
-id|sbp2_speedto_maxrec
+id|hpsb_speedto_maxrec
 (braket
 id|scsi_id-&gt;speed_code
 )braket
@@ -8177,7 +8155,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 id|host
 )paren
@@ -8593,7 +8572,8 @@ op_assign
 id|hpsb_get_hostinfo_bykey
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 (paren
 r_int
@@ -9348,7 +9328,8 @@ op_assign
 id|hpsb_get_hostinfo_bykey
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 (paren
 r_int
@@ -9545,7 +9526,8 @@ op_assign
 id|hpsb_get_hostinfo_bykey
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 (paren
 r_int
@@ -9650,12 +9632,12 @@ suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
-id|host
+id|scsi_host
 suffix:semicolon
 r_struct
-id|sbp2scsi_host_info
+id|hpsb_host
 op_star
-id|hi
+id|host
 suffix:semicolon
 r_char
 op_star
@@ -9672,7 +9654,7 @@ id|inout
 r_return
 id|length
 suffix:semicolon
-id|host
+id|scsi_host
 op_assign
 id|scsi_host_hn_get
 c_func
@@ -9684,32 +9666,33 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|host
+id|scsi_host
 )paren
 multiline_comment|/* if we couldn&squot;t find it, we return an error */
 r_return
 op_minus
 id|ESRCH
 suffix:semicolon
-id|hi
+id|host
 op_assign
-id|hpsb_get_hostinfo_bykey
+id|hpsb_get_host_bykey
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 (paren
 r_int
 r_int
 )paren
-id|host
+id|scsi_host
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|hi
+id|host
 )paren
 multiline_comment|/* shouldn&squot;t happen, but... */
 r_return
@@ -9723,7 +9706,7 @@ l_string|&quot;Host scsi%d             : SBP-2 IEEE-1394 (%s)&bslash;n&quot;
 comma
 id|hostno
 comma
-id|hi-&gt;host-&gt;driver-&gt;name
+id|host-&gt;driver-&gt;name
 )paren
 suffix:semicolon
 id|SPRINTF
@@ -9795,7 +9778,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|host-&gt;my_devices
+id|scsi_host-&gt;my_devices
 )paren
 ques
 c_cond
@@ -9809,7 +9792,7 @@ id|list_for_each_entry
 id|scd
 comma
 op_amp
-id|host-&gt;my_devices
+id|scsi_host-&gt;my_devices
 comma
 id|siblings
 )paren
@@ -9947,7 +9930,7 @@ multiline_comment|/* release the reference count on this host */
 id|scsi_host_put
 c_func
 (paren
-id|host
+id|scsi_host
 )paren
 suffix:semicolon
 multiline_comment|/* Calculate start of next buffer, and return value. */
@@ -10139,7 +10122,7 @@ c_func
 l_string|&quot;sbp2_module_init&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Module load debug option to force one command at a time&n;&t; * (serializing I/O) */
+multiline_comment|/* Module load debug option to force one command at a time (serializing I/O) */
 r_if
 c_cond
 (paren
@@ -10161,46 +10144,25 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Set max sectors (module load option). Default is 255 sectors. &n;&t; */
+multiline_comment|/* Set max sectors (module load option). Default is 255 sectors. */
 id|scsi_driver_template.max_sectors
 op_assign
 id|max_sectors
 suffix:semicolon
-multiline_comment|/*&n;&t; * Register our high level driver with 1394 stack&n;&t; */
-id|sbp2_hl_handle
-op_assign
+multiline_comment|/* Register our high level driver with 1394 stack */
 id|hpsb_register_highlevel
 c_func
 (paren
-id|SBP2_DEVICE_NAME
-comma
 op_amp
-id|sbp2_hl_ops
+id|sbp2_highlevel
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sbp2_hl_handle
-)paren
-(brace
-id|SBP2_ERR
-c_func
-(paren
-l_string|&quot;sbp2 failed to register with ieee1394 highlevel&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Register our sbp2 status address space...&n;&t; */
+multiline_comment|/* Register our sbp2 status address space... */
 id|hpsb_register_addrspace
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 op_amp
 id|sbp2_ops
@@ -10218,12 +10180,13 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Handle data movement if physical dma is not enabled/supported&n;&t; * on host controller&n;&t; */
+multiline_comment|/* Handle data movement if physical dma is not enabled/supported&n;&t; * on host controller */
 macro_line|#ifdef CONFIG_IEEE1394_SBP2_PHYS_DMA
 id|hpsb_register_addrspace
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 comma
 op_amp
 id|sbp2_physdma_ops
@@ -10268,15 +10231,11 @@ op_amp
 id|sbp2_driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sbp2_hl_handle
-)paren
 id|hpsb_unregister_highlevel
 c_func
 (paren
-id|sbp2_hl_handle
+op_amp
+id|sbp2_highlevel
 )paren
 suffix:semicolon
 )brace

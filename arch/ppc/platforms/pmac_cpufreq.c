@@ -934,7 +934,7 @@ id|value
 op_div
 l_int|1000
 suffix:semicolon
-multiline_comment|/* Check for tibook 800Mhz or 1Ghz */
+multiline_comment|/* Check for newer machines */
 r_if
 c_cond
 (paren
@@ -948,6 +948,12 @@ id|machine_is_compatible
 c_func
 (paren
 l_string|&quot;PowerBook3,5&quot;
+)paren
+op_logical_or
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;MacRISC3&quot;
 )paren
 )paren
 (brace
@@ -984,6 +990,18 @@ id|value
 )paren
 op_div
 l_int|1000
+suffix:semicolon
+multiline_comment|/* The PowerBook G4 12&quot; (PowerBook6,1) has an error in the device-tree&n;&t;&t; * here */
+r_if
+c_cond
+(paren
+id|low_freq
+OL
+l_int|100000
+)paren
+id|low_freq
+op_mul_assign
+l_int|10
 suffix:semicolon
 id|value
 op_assign

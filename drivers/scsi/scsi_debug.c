@@ -448,12 +448,6 @@ id|remove
 op_assign
 id|sdebug_driver_remove
 comma
-dot
-id|devclass
-op_assign
-op_amp
-id|shost_devclass
-comma
 )brace
 suffix:semicolon
 DECL|variable|check_condition_result

@@ -5,8 +5,8 @@ DECL|macro|_TMSCSIM_H
 mdefine_line|#define _TMSCSIM_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|IRQ_NONE
-mdefine_line|#define IRQ_NONE 255
+DECL|macro|SCSI_IRQ_NONE
+mdefine_line|#define SCSI_IRQ_NONE 255
 DECL|macro|MAX_ADAPTER_NUM
 mdefine_line|#define MAX_ADAPTER_NUM &t;4
 DECL|macro|MAX_SG_LIST_BUF

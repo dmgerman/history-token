@@ -51,10 +51,6 @@ id|u32
 op_star
 id|temp
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 r_int
@@ -357,30 +353,12 @@ op_assign
 id|i810_mmap_buffers
 comma
 dot
-id|read
-op_assign
-id|DRM
-c_func
-(paren
-id|read
-)paren
-comma
-dot
 id|fasync
 op_assign
 id|DRM
 c_func
 (paren
 id|fasync
-)paren
-comma
-dot
-id|poll
-op_assign
-id|DRM
-c_func
-(paren
-id|poll
 )paren
 comma
 )brace
@@ -884,7 +862,6 @@ id|retcode
 suffix:semicolon
 )brace
 DECL|function|i810_dma_cleanup
-r_static
 r_int
 id|i810_dma_cleanup
 c_func
@@ -900,6 +877,23 @@ id|dma
 op_assign
 id|dev-&gt;dma
 suffix:semicolon
+macro_line|#if _HAVE_DMA_IRQ
+multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;irq
+)paren
+id|DRM
+c_func
+(paren
+id|irq_uninstall
+)paren
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -945,8 +939,6 @@ r_if
 c_cond
 (paren
 id|dev_priv-&gt;hw_status_page
-op_ne
-l_int|0UL
 )paren
 (brace
 id|pci_free_consistent
@@ -956,10 +948,6 @@ id|dev-&gt;pdev
 comma
 id|PAGE_SIZE
 comma
-(paren
-r_void
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 comma
 id|dev_priv-&gt;dma_status_page
@@ -1025,6 +1013,13 @@ id|buf_priv
 op_assign
 id|buf-&gt;dev_private
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|buf_priv-&gt;kernel_virtual
+op_logical_and
+id|buf-&gt;total
+)paren
 id|DRM
 c_func
 (paren
@@ -1729,10 +1724,6 @@ suffix:semicolon
 multiline_comment|/* Program Hardware Status Page */
 id|dev_priv-&gt;hw_status_page
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|pci_alloc_consistent
 c_func
 (paren
@@ -1747,9 +1738,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev_priv-&gt;hw_status_page
-op_eq
-l_int|0UL
 )paren
 (brace
 id|dev-&gt;dev_private
@@ -1780,10 +1770,6 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 comma
 l_int|0
@@ -1794,7 +1780,7 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;hw status page @ %lx&bslash;n&quot;
+l_string|&quot;hw status page @ %p&bslash;n&quot;
 comma
 id|dev_priv-&gt;hw_status_page
 )paren
@@ -4157,10 +4143,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t
@@ -4526,10 +4508,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t
@@ -4614,10 +4592,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t
@@ -5162,10 +5136,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t

@@ -1264,7 +1264,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 DECL|variable|ip_irc_lock
 id|EXPORT_SYMBOL
 c_func
@@ -1272,7 +1271,6 @@ c_func
 id|ip_irc_lock
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|init
 id|module_init
 c_func

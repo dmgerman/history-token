@@ -21269,10 +21269,6 @@ id|sis_fb_info
 suffix:semicolon
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)&t;&t;/* ---- 2.5 series init ---- */
-id|sis_fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|sis_fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -21466,11 +21462,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device, Version %d.%d.%02d&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|sis_fb_info.node
-)paren
 comma
 id|myid
 comma

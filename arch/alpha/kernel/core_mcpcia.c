@@ -1773,11 +1773,6 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
-id|iomem_resource.end
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
 multiline_comment|/* Allocate hose 0.  That&squot;s the one that all the ISA junk hangs&n;&t;   off of, from which we&squot;ll be registering stuff here in a bit.&n;&t;   Other hose detection is done in mcpcia_init_hoses, which is&n;&t;   called from init_IRQ.  */
 id|mcpcia_new_hose
 c_func

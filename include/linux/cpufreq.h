@@ -126,12 +126,6 @@ id|cpufreq_cpuinfo
 id|cpuinfo
 suffix:semicolon
 multiline_comment|/* see above */
-DECL|member|dev
-r_struct
-id|device
-op_star
-id|dev
-suffix:semicolon
 DECL|member|kobj
 r_struct
 id|kobject

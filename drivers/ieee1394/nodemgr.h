@@ -120,19 +120,6 @@ suffix:semicolon
 multiline_comment|/* Maximum packet size node can receive */
 )brace
 suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|DEV_CLASS_NODE
-id|DEV_CLASS_NODE
-comma
-DECL|enumerator|DEV_CLASS_UNIT_DIRECTORY
-id|DEV_CLASS_UNIT_DIRECTORY
-comma
-DECL|enumerator|DEV_CLASS_HOST
-id|DEV_CLASS_HOST
-comma
-)brace
-suffix:semicolon
 DECL|macro|UNIT_DIRECTORY_VENDOR_ID
 mdefine_line|#define UNIT_DIRECTORY_VENDOR_ID&t;0x01
 DECL|macro|UNIT_DIRECTORY_MODEL_ID

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -230,7 +231,7 @@ id|esps_running
 op_assign
 l_int|0
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|esp_intr
 c_func
 (paren
@@ -14803,7 +14804,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_SMP
 DECL|function|esp_intr
-r_void
+id|irqreturn_t
 id|esp_intr
 c_func
 (paren
@@ -14957,11 +14958,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/* For SMP we only service one ESP on the list list at our IRQ level! */
 DECL|function|esp_intr
-r_void
+id|irqreturn_t
 id|esp_intr
 c_func
 (paren
@@ -15097,6 +15101,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif

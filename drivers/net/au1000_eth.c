@@ -158,7 +158,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|au1000_interrupt
 c_func
 (paren
@@ -5667,7 +5667,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Au1000 interrupt service routine.&n; */
 DECL|function|au1000_interrupt
-r_void
+id|irqreturn_t
 id|au1000_interrupt
 c_func
 (paren
@@ -5714,6 +5714,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|au1000_tx_ack
@@ -5727,6 +5728,9 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The Tx ring has been full longer than the watchdog timeout&n; * value. The transmitter must be hung?&n; */

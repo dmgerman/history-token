@@ -2710,8 +2710,9 @@ suffix:semicolon
 multiline_comment|/********** interrupt handling **********/
 DECL|function|interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|interrupt_handler
+c_func
 (paren
 r_int
 id|irq
@@ -2767,6 +2768,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|// Did one of our cards generate the interrupt?
@@ -2810,6 +2812,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|// impossible - unless we have memory corruption of dev or kernel
@@ -2833,6 +2836,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 (brace
@@ -2869,6 +2873,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|// definitely for us
@@ -3003,6 +3008,7 @@ id|dev_id
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/********** don&squot;t panic... yeah, right **********/

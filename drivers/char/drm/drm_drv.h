@@ -52,6 +52,14 @@ macro_line|#ifndef __HAVE_KERNEL_CTX_SWITCH
 DECL|macro|__HAVE_KERNEL_CTX_SWITCH
 mdefine_line|#define __HAVE_KERNEL_CTX_SWITCH&t;0
 macro_line|#endif
+macro_line|#ifndef __HAVE_DRIVER_FOPS_READ
+DECL|macro|__HAVE_DRIVER_FOPS_READ
+mdefine_line|#define __HAVE_DRIVER_FOPS_READ&t;&t;0
+macro_line|#endif
+macro_line|#ifndef __HAVE_DRIVER_FOPS_POLL
+DECL|macro|__HAVE_DRIVER_FOPS_POLL
+mdefine_line|#define __HAVE_DRIVER_FOPS_POLL&t;&t;0
+macro_line|#endif
 macro_line|#ifndef DRIVER_PREINIT
 DECL|macro|DRIVER_PREINIT
 mdefine_line|#define DRIVER_PREINIT()
@@ -86,7 +94,7 @@ mdefine_line|#define DRIVER_IOCTLS
 macro_line|#endif
 macro_line|#ifndef DRIVER_FOPS
 DECL|macro|DRIVER_FOPS
-mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;.owner   = THIS_MODULE,&t;&t;&t;&bslash;&n;&t;.open&t; = DRM(open),&t;&t;&t;&bslash;&n;&t;.flush&t; = DRM(flush),&t;&t;&t;&bslash;&n;&t;.release = DRM(release),&t;&t;&bslash;&n;&t;.ioctl&t; = DRM(ioctl),&t;&t;&t;&bslash;&n;&t;.mmap&t; = DRM(mmap),&t;&t;&t;&bslash;&n;&t;.read&t; = DRM(read),&t;&t;&t;&bslash;&n;&t;.fasync  = DRM(fasync),&t;&t;&t;&bslash;&n;&t;.poll&t; = DRM(poll),&t;&t;&t;&bslash;&n;}
+mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;.owner   = THIS_MODULE,&t;&t;&t;&bslash;&n;&t;.open&t; = DRM(open),&t;&t;&t;&bslash;&n;&t;.flush&t; = DRM(flush),&t;&t;&t;&bslash;&n;&t;.release = DRM(release),&t;&t;&bslash;&n;&t;.ioctl&t; = DRM(ioctl),&t;&t;&t;&bslash;&n;&t;.mmap&t; = DRM(mmap),&t;&t;&t;&bslash;&n;&t;.fasync  = DRM(fasync),&t;&t;&t;&bslash;&n;&t;.poll&t; = DRM(poll),&t;&t;&t;&bslash;&n;&t;.read&t; = DRM(read),&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 macro_line|#ifndef MODULE
 multiline_comment|/* DRM(options) is called by the kernel to parse command-line options&n; * passed via the boot-loader (e.g., LILO).  It calls the insmod option&n; * routine, drm_parse_drm.&n; */
@@ -352,7 +360,7 @@ op_assign
 id|DRM
 c_func
 (paren
-id|block
+id|noop
 )paren
 comma
 l_int|1
@@ -372,7 +380,7 @@ op_assign
 id|DRM
 c_func
 (paren
-id|unblock
+id|noop
 )paren
 comma
 l_int|1
@@ -702,6 +710,8 @@ comma
 l_int|0
 )brace
 comma
+macro_line|#if __HAVE_DMA_FLUSH
+multiline_comment|/* Gamma only, really */
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -722,6 +732,28 @@ comma
 l_int|0
 )brace
 comma
+macro_line|#else
+(braket
+id|DRM_IOCTL_NR
+c_func
+(paren
+id|DRM_IOCTL_FINISH
+)paren
+)braket
+op_assign
+(brace
+id|DRM
+c_func
+(paren
+id|noop
+)paren
+comma
+l_int|1
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#if __HAVE_DMA
 (braket
 id|DRM_IOCTL_NR
@@ -1442,10 +1474,6 @@ c_func
 op_amp
 id|dev-&gt;maplist-&gt;head
 )paren
-suffix:semicolon
-id|dev-&gt;map_count
-op_assign
-l_int|0
 suffix:semicolon
 id|dev-&gt;vmalist
 op_assign
@@ -2190,6 +2218,7 @@ id|i
 op_increment
 )paren
 (brace
+macro_line|#if __HAVE_DMA_WAITLIST
 id|DRM
 c_func
 (paren
@@ -2205,6 +2234,7 @@ op_member_access_from_pointer
 id|waitlist
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3605,6 +3635,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|priv-&gt;lock_count
+op_logical_and
 id|dev-&gt;lock.hw_lock
 op_logical_and
 id|_DRM_LOCK_IS_HELD
@@ -3664,6 +3696,8 @@ r_else
 r_if
 c_cond
 (paren
+id|priv-&gt;lock_count
+op_logical_and
 id|dev-&gt;lock.hw_lock
 )paren
 (brace
@@ -3752,15 +3786,6 @@ suffix:semicolon
 multiline_comment|/* Got lock */
 )brace
 multiline_comment|/* Contention */
-macro_line|#if 0
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|dev-&gt;total_sleeps
-)paren
-suffix:semicolon
-macro_line|#endif
 id|schedule
 c_func
 (paren
@@ -4330,20 +4355,9 @@ op_star
 id|q
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __HAVE_DMA_HISTOGRAM
-id|cycles_t
-id|start
+op_increment
+id|priv-&gt;lock_count
 suffix:semicolon
-id|dev-&gt;lck_start
-op_assign
-id|start
-op_assign
-id|get_cycles
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4743,30 +4757,6 @@ suffix:colon
 l_string|&quot;has lock&quot;
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_HISTOGRAM
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|dev-&gt;histo.lacq
-(braket
-id|DRM
-c_func
-(paren
-id|histogram_slot
-)paren
-(paren
-id|get_cycles
-c_func
-(paren
-)paren
-op_minus
-id|start
-)paren
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|ret
 suffix:semicolon

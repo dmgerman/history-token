@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
@@ -48,76 +49,6 @@ r_int
 id|sig
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_extern
-r_void
-id|xmon
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_bpt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_sstep
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_iabr_match
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_dabr_match
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|xmon_fault_handler
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_XMON
 DECL|variable|debugger
 r_void

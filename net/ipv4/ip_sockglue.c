@@ -696,7 +696,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Special input handler for packets catched by router alert option.&n;   They are selected only by protocol field, and then processed likely&n;   local ones; but only if someone wants them! Otherwise, router&n;   not running rsvpd will kill RSVP.&n;&n;   It is user level problem, what it will make with them.&n;   I have no idea, how it will masquearde or NAT them (it is joke, joke :-)),&n;   but receiver should be enough clever f.e. to forward mtrace requests,&n;   sent to multicast group to reach destination designated router.&n; */
+multiline_comment|/* Special input handler for packets caught by router alert option.&n;   They are selected only by protocol field, and then processed likely&n;   local ones; but only if someone wants them! Otherwise, router&n;   not running rsvpd will kill RSVP.&n;&n;   It is user level problem, what it will make with them.&n;   I have no idea, how it will masquearde or NAT them (it is joke, joke :-)),&n;   but receiver should be enough clever f.e. to forward mtrace requests,&n;   sent to multicast group to reach destination designated router.&n; */
 DECL|variable|ip_ra_chain
 r_struct
 id|ip_ra_chain

@@ -781,6 +781,16 @@ op_star
 id|args
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|x-&gt;props.mode
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|x-&gt;props.header_len
 op_assign
 r_sizeof

@@ -7575,10 +7575,6 @@ id|all-&gt;par.tga_chip_rev
 )paren
 suffix:semicolon
 multiline_comment|/* Setup framebuffer.  */
-id|all-&gt;info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|all-&gt;info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -7778,11 +7774,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device at 0x%lx&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|all-&gt;info.node
-)paren
 comma
 id|all-&gt;info.fix.id
 comma

@@ -8590,7 +8590,7 @@ suffix:semicolon
 )brace
 DECL|function|eni_int
 r_static
-r_void
+id|irqreturn_t
 id|eni_int
 c_func
 (paren
@@ -8747,6 +8747,9 @@ c_func
 op_amp
 id|eni_dev-&gt;task
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|eni_tasklet

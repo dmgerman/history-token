@@ -438,7 +438,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_aha1542_intr_handle
 c_func
 (paren
@@ -1344,7 +1344,7 @@ multiline_comment|/* 0 = not ok */
 multiline_comment|/* A quick wrapper for do_aha1542_intr_handle to grab the spin lock */
 DECL|function|do_aha1542_intr_handle
 r_static
-r_void
+id|irqreturn_t
 id|do_aha1542_intr_handle
 c_func
 (paren
@@ -1416,6 +1416,9 @@ id|shost-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* A &quot;high&quot; level interrupt handler */

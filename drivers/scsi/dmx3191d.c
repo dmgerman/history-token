@@ -241,7 +241,7 @@ suffix:semicolon
 multiline_comment|/* Steam powered scsi controllers run without an IRQ&n;&t;&t;&t;   anyway */
 id|instance-&gt;irq
 op_assign
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 suffix:semicolon
 )brace
 id|boards
@@ -303,7 +303,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|free_irq

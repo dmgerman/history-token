@@ -782,12 +782,6 @@ op_amp
 id|sa1111_bus_type
 comma
 dot
-id|devclass
-op_assign
-op_amp
-id|pcmcia_socket_class
-comma
-dot
 id|probe
 op_assign
 id|pcmcia_probe

@@ -676,10 +676,6 @@ l_int|0x1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Let there be consoles..&n;&t; */
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp

@@ -701,10 +701,6 @@ id|info.screen_base
 op_assign
 id|framebuffer_virtual_memory
 suffix:semicolon
-id|info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info.fbops
 op_assign
 op_amp
@@ -812,11 +808,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|info.node
-)paren
 comma
 id|info.fix.id
 )paren

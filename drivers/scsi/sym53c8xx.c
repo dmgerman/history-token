@@ -10,15 +10,14 @@ mdefine_line|#define NAME53C&t;&t;&quot;sym53c&quot;
 DECL|macro|NAME53C8XX
 mdefine_line|#define NAME53C8XX&t;&quot;sym53c8xx&quot;
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,17)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,17)
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#elif LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
@@ -32,9 +31,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,35)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,35)
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#endif
 macro_line|#ifndef&t;__init
@@ -45,7 +43,7 @@ macro_line|#ifndef&t;__initdata
 DECL|macro|__initdata
 mdefine_line|#define&t;__initdata
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= LinuxVersionCode(2,1,92)
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,92)
 macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
@@ -74,7 +72,7 @@ id|u_int64
 suffix:semicolon
 macro_line|#include &quot;sym53c8xx.h&quot;
 multiline_comment|/*&n;**&t;Donnot compile integrity checking code for Linux-2.3.0 &n;**&t;and above since SCSI data structures are not ready yet.&n;*/
-multiline_comment|/* #if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,0) */
+multiline_comment|/* #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
 macro_line|#if 0
 mdefine_line|#define&t;SCSI_NCR_INTEGRITY_CHECKING
 macro_line|#endif
@@ -83,7 +81,7 @@ mdefine_line|#define MIN(a,b)        (((a) &lt; (b)) ? (a) : (b))
 DECL|macro|MAX
 mdefine_line|#define MAX(a,b)        (((a) &gt; (b)) ? (a) : (b))
 multiline_comment|/*&n;**&t;Hmmm... What complex some PCI-HOST bridges actually are, &n;**&t;despite the fact that the PCI specifications are looking &n;**&t;so smart and simple! ;-)&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,47)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,47)
 DECL|macro|SCSI_NCR_DYNAMIC_DMA_MAPPING
 mdefine_line|#define SCSI_NCR_DYNAMIC_DMA_MAPPING
 macro_line|#endif
@@ -469,7 +467,7 @@ DECL|macro|offsetof
 mdefine_line|#define offsetof(t, m)&t;((size_t) (&amp;((t *)0)-&gt;m))
 macro_line|#endif
 multiline_comment|/*&n;**&t;Simple Wrapper to kernel PCI bus interface.&n;**&n;**&t;This wrapper allows to get rid of old kernel PCI interface &n;**&t;and still allows to preserve linux-2.0 compatibilty.&n;**&t;In fact, it is mostly an incomplete emulation of the new &n;**&t;PCI code for pre-2.2 kernels. When kernel-2.0 support &n;**&t;will be dropped, we will just have to remove most of this &n;**&t;code.&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,2,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 DECL|typedef|pcidev_t
 r_typedef
 r_struct
@@ -508,7 +506,7 @@ id|index
 id|u_long
 id|base
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,12)
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,12)
 id|base
 op_assign
 id|pdev-&gt;resource
@@ -1000,13 +998,13 @@ r_return
 id|base
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,2,0) */
+macro_line|#endif&t;/* LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0) */
 multiline_comment|/* Does not make sense in earlier kernels */
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
 DECL|macro|pci_enable_device
 mdefine_line|#define pci_enable_device(pdev)&t;&t;(0)
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,4)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
 DECL|macro|scsi_set_pci_device
 mdefine_line|#define&t;scsi_set_pci_device(inst, pdev)&t;(0)
 macro_line|#endif
@@ -1049,7 +1047,7 @@ DECL|macro|DEBUG_FLAGS
 mdefine_line|#define DEBUG_FLAGS&t;SCSI_NCR_DEBUG_FLAGS
 macro_line|#endif
 multiline_comment|/*&n;**&t;SMP threading.&n;**&n;**&t;Assuming that SMP systems are generally high end systems and may &n;**&t;use several SCSI adapters, we are using one lock per controller &n;**&t;instead of some global one. For the moment (linux-2.1.95), driver&squot;s &n;**&t;entry points are called with the &squot;io_request_lock&squot; lock held, so:&n;**&t;- We are uselessly loosing a couple of micro-seconds to lock the &n;**&t;  controller data structure.&n;**&t;- But the driver is not broken by design for SMP and so can be &n;**&t;  more resistant to bugs or bad changes in the IO sub-system code.&n;**&t;- A small advantage could be that the interrupt code is grained as &n;**&t;  wished (e.g.: threaded by controller).&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|variable|sym53c8xx_lock
 id|spinlock_t
 id|sym53c8xx_lock
@@ -1087,7 +1085,7 @@ DECL|macro|NCR_UNLOCK_SCSI_DONE
 mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(host, flags)  do {;} while (0)
 macro_line|#endif
 multiline_comment|/*&n;**&t;Memory mapped IO&n;**&n;**&t;Since linux-2.1, we must use ioremap() to map the io memory space.&n;**&t;iounmap() to unmap it. That allows portability.&n;**&t;Linux 1.3.X and 2.0.X allow to remap physical pages addresses greater &n;**&t;than the highest physical memory address to kernel virtual pages with &n;**&t;vremap() / vfree(). That was not portable but worked with i386 &n;**&t;architecture.&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0)
 DECL|macro|ioremap
 mdefine_line|#define ioremap vremap
 DECL|macro|iounmap
@@ -1208,7 +1206,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* not def SCSI_NCR_PCI_MEM_NOT_SUPPORTED */
 multiline_comment|/*&n;**&t;Insert a delay in micro-seconds and milli-seconds.&n;**&t;-------------------------------------------------&n;**&t;Under Linux, udelay() is restricted to delay &lt; 1 milli-second.&n;**&t;In fact, it generally works for up to 1 second delay.&n;**&t;Since 2.1.105, the mdelay() function is provided for delays &n;**&t;in milli-seconds.&n;**&t;Under 2.0 kernels, udelay() is an inline function that is very &n;**&t;inaccurate on Pentium processors.&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,105)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,105)
 DECL|macro|UDELAY
 mdefine_line|#define UDELAY udelay
 DECL|macro|MDELAY
@@ -1256,7 +1254,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;**&t;Simple power of two buddy-like allocator&n;**&t;----------------------------------------&n;**&t;This simple code is not intended to be fast, but to provide &n;**&t;power of 2 aligned memory allocations.&n;**&t;Since the SCRIPTS processor only supplies 8 bit arithmetic,&n;**&t;this allocator allows simple and fast address calculations  &n;**&t;from the SCRIPTS code. In addition, cache line alignment &n;**&t;is guaranteed for power of 2 cache line size.&n;**&t;Enhanced in linux-2.3.44 to provide a memory pool per pcidev &n;**&t;to support dynamic dma mapping. (I would have preferred a &n;**&t;real bus astraction, btw).&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,0)
 DECL|macro|__GetFreePages
 mdefine_line|#define __GetFreePages(flags, order) __get_free_pages(flags, order)
 macro_line|#else
@@ -3492,7 +3490,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* SCSI_DATA_UNKNOWN */
 multiline_comment|/*&n;**&t;/proc directory entry and proc_info function&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
 DECL|variable|proc_scsi_sym53c8xx
 r_static
 r_struct
@@ -3573,7 +3571,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
-macro_line|#  if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,30)
+macro_line|#  if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
 id|MODULE_PARM
 c_func
 (paren
@@ -4724,7 +4722,7 @@ id|done_list
 suffix:semicolon
 multiline_comment|/* Commands waiting for done()  */
 multiline_comment|/* callback to be invoked.      */
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|member|smp_lock
 id|spinlock_t
 id|smp_lock
@@ -16849,7 +16847,7 @@ suffix:colon
 id|SA_SHIRQ
 )paren
 op_or
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,2,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,0)
 (paren
 (paren
 id|driver_setup.irqm
@@ -17024,7 +17022,7 @@ op_assign
 id|MAX_LUN
 suffix:semicolon
 macro_line|#ifndef SCSI_NCR_IOMAPPED
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,29)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
 id|instance-&gt;base
 op_assign
 (paren
@@ -21951,7 +21949,7 @@ id|cp-&gt;resid
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,99)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,99)
 multiline_comment|/*&n;&t;**&t;Move residual byte count to user structure.&n;&t;*/
 id|cmd-&gt;resid
 op_assign
@@ -39518,7 +39516,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,13)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
 macro_line|#ifndef MODULE
 id|__setup
 c_func
@@ -39891,7 +39889,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;**    Initialize driver general stuff.&n;&t;*/
 macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
 id|tpnt-&gt;proc_dir
 op_assign
 op_amp
@@ -41245,7 +41243,7 @@ id|command
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,2,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,0)
 r_if
 c_cond
 (paren
@@ -41371,7 +41369,7 @@ op_logical_neg
 id|cache_line_size
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,75)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,75)
 r_extern
 r_char
 id|x86
@@ -47180,10 +47178,10 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_static
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0) || defined(MODULE)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) || defined(MODULE)
 DECL|variable|driver_template
 id|Scsi_Host_Template
 id|driver_template

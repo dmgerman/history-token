@@ -149,15 +149,6 @@ macro_line|#else
 DECL|macro|SCSI_TIMEOUT
 mdefine_line|#define SCSI_TIMEOUT (2*HZ)
 macro_line|#endif
-multiline_comment|/*&n; * Used for debugging the new queueing code.  We want to make sure&n; * that the lock state is consistent with design.  Only do this in&n; * the user space simulator.&n; */
-DECL|macro|ASSERT_LOCK
-mdefine_line|#define ASSERT_LOCK(_LOCK, _COUNT)
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_USER_DEBUG)
-DECL|macro|ASSERT_LOCK
-macro_line|#undef ASSERT_LOCK
-DECL|macro|ASSERT_LOCK
-mdefine_line|#define ASSERT_LOCK(_LOCK,_COUNT)       &bslash;&n;        { if( (_LOCK)-&gt;lock != _COUNT )   &bslash;&n;                panic(&quot;Lock count inconsistent %s %d&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;                                                                                       }
-macro_line|#endif
 multiline_comment|/*&n; *  Use these to separate status msg and our bytes&n; *&n; *  These are set by:&n; *&n; *      status byte = set from target device&n; *      msg_byte    = return status from host adapter itself.&n; *      host_byte   = set by low-level driver to indicate status.&n; *      driver_byte = set by mid-level.&n; */
 DECL|macro|status_byte
 mdefine_line|#define status_byte(result) (((result) &gt;&gt; 1) &amp; 0x1f)
@@ -1021,33 +1012,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_scsi
-suffix:semicolon
-r_extern
-r_void
-id|proc_print_scsidevice
-c_func
-(paren
-id|Scsi_Device
-op_star
-id|sdev
-comma
-r_char
-op_star
-id|buffer
-comma
-r_int
-op_star
-id|size
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
 macro_line|#else
 DECL|function|scsi_init_procfs
 r_static
@@ -1071,31 +1035,6 @@ id|scsi_exit_procfs
 c_func
 (paren
 r_void
-)paren
-(brace
-suffix:semicolon
-)brace
-DECL|function|proc_print_scsidevice
-r_static
-r_inline
-r_void
-id|proc_print_scsidevice
-c_func
-(paren
-id|Scsi_Device
-op_star
-id|sdev
-comma
-r_char
-op_star
-id|buffer
-comma
-r_int
-op_star
-id|size
-comma
-r_int
-id|len
 )paren
 (brace
 suffix:semicolon

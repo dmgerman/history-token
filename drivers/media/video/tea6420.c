@@ -276,10 +276,6 @@ r_int
 id|address
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 (brace

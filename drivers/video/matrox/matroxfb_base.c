@@ -9526,14 +9526,6 @@ suffix:semicolon
 id|ACCESS_FBINFO
 c_func
 (paren
-id|fbcon.node
-)paren
-op_assign
-id|NODEV
-suffix:semicolon
-id|ACCESS_FBINFO
-c_func
-(paren
 id|fbcon.fbops
 )paren
 op_assign
@@ -10154,14 +10146,10 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|ACCESS_FBINFO
 c_func
 (paren
 id|fbcon.node
-)paren
 )paren
 comma
 id|ACCESS_FBINFO
@@ -10190,14 +10178,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: initializing hardware&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|ACCESS_FBINFO
 c_func
 (paren
 id|fbcon.node
-)paren
 )paren
 )paren
 suffix:semicolon

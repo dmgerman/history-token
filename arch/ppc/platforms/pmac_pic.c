@@ -13,7 +13,24 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
+macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#include &quot;pmac_pic.h&quot;
+multiline_comment|/*&n; * XXX this should be in xmon.h, but putting it there means xmon.h&n; * has to include &lt;linux/interrupt.h&gt; (to get irqreturn_t), which&n; * causes all sorts of problems.  -- paulus&n; */
+r_extern
+id|irqreturn_t
+id|xmon_irq
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
 DECL|struct|pmac_irq_hw
 r_struct
 id|pmac_irq_hw
@@ -672,7 +689,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|gatwick_action
 r_static
-r_void
+id|irqreturn_t
 id|gatwick_action
 c_func
 (paren
@@ -783,30 +800,6 @@ c_func
 id|bits
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* The previous version of this code allowed for this case, we&n;&t; * don&squot;t.  Put this here to check for it.&n;&t; * -- Cort&n;&t; */
-r_if
-c_cond
-(paren
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|handler
-op_ne
-op_amp
-id|gatwick_pic
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;gatwick irq not from gatwick pic&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
 id|ppc_irq_dispatch_handler
 c_func
 (paren
@@ -814,6 +807,19 @@ id|regs
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;gatwick irq not from gatwick pic&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_int

@@ -801,7 +801,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ser12_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ser12_interrupt
 c_func
 (paren
@@ -869,6 +869,7 @@ op_ne
 id|HDLCDRV_MAGIC
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* fast way out for shared irq */
 r_if
@@ -891,6 +892,7 @@ op_amp
 l_int|1
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* get current time */
 id|do_gettimeofday
@@ -1288,6 +1290,9 @@ id|local_irq_disable
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

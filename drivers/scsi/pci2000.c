@@ -605,7 +605,7 @@ suffix:semicolon
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Irq_Handler&t;:LOCAL&n; *&n; *&t;Description:&t;Interrupt handler.&n; *&n; *&t;Parameters:&t;&t;irq&t;&t;- Hardware IRQ number.&n; *&t;&t;&t;&t;&t;dev_id&t;-&n; *&t;&t;&t;&t;&t;regs&t;-&n; *&n; *&t;Returns:&t;&t;TRUE if drive is not ready in time.&n; *&n; ****************************************************************/
 DECL|function|Irq_Handler
 r_static
-r_void
+id|irqreturn_t
 id|Irq_Handler
 (paren
 r_int
@@ -663,6 +663,11 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|DEB
 c_func
@@ -762,6 +767,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1234,6 +1243,12 @@ id|flags
 suffix:semicolon
 id|out
 suffix:colon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Pci2000_QueueCommand&n; *&n; *&t;Description:&t;Process a queued command from the SCSI manager.&n; *&n; *&t;Parameters:&t;&t;SCpnt - Pointer to SCSI command structure.&n; *&t;&t;&t;&t;&t;done  - Pointer to done function to call.&n; *&n; *&t;Returns:&t;&t;Status code.&n; *&n; ****************************************************************/

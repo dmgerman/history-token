@@ -2284,7 +2284,7 @@ suffix:semicolon
 multiline_comment|/*&n; * We only seem to get interrupts after an error.&n; * Just take the interrupt and clear out the status reg.&n; */
 DECL|function|mcd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mcd_interrupt
 c_func
 (paren
@@ -2391,6 +2391,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|do_mcd_request
 r_static

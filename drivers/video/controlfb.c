@@ -2081,11 +2081,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: control display adapter&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|p-&gt;info.node
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4592,10 +4588,6 @@ id|info-&gt;par
 op_assign
 op_amp
 id|p-&gt;par
-suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
 suffix:semicolon
 id|info-&gt;fbops
 op_assign

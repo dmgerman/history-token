@@ -46,6 +46,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
+macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef  CONFIG_8xx
 macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#endif
@@ -1427,20 +1428,6 @@ id|console_drivers
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
-r_extern
-r_void
-id|xmon_printf
-c_func
-(paren
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
 DECL|variable|xmon
 id|EXPORT_SYMBOL
 c_func

@@ -82,7 +82,8 @@ id|u8
 id|cmd
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|timeout
 suffix:semicolon
 id|u8

@@ -562,6 +562,7 @@ r_int
 id|bytes_left
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_int
@@ -1043,7 +1044,7 @@ suffix:semicolon
 )brace
 DECL|function|sym53c416_intr_handle
 r_static
-r_void
+id|irqreturn_t
 id|sym53c416_intr_handle
 c_func
 (paren
@@ -1165,6 +1166,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Now we have the base address and we can start handling the interrupt */
@@ -1265,7 +1267,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1326,7 +1329,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1379,7 +1383,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1432,7 +1437,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1488,7 +1494,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1568,7 +1575,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Now we handle SCSI phases         */
@@ -1999,6 +2007,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sym53c416_init
 r_static
@@ -2160,7 +2173,9 @@ r_int
 id|irq
 comma
 id|irqs
-comma
+suffix:semicolon
+r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Clear interrupt register */

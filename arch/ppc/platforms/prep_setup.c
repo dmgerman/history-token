@@ -234,7 +234,7 @@ DECL|macro|cached_A1
 mdefine_line|#define cached_A1&t;(((char *)(ppc_cached_irq_mask))[2])
 multiline_comment|/* for the mac fs */
 DECL|variable|boot_dev
-id|kdev_t
+id|dev_t
 id|boot_dev
 suffix:semicolon
 macro_line|#ifdef CONFIG_SOUND_CS4232 
@@ -3051,7 +3051,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|__init
 DECL|function|prep_calibrate_decr_handler
 id|prep_calibrate_decr_handler
@@ -3145,6 +3145,9 @@ l_int|1000000
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void

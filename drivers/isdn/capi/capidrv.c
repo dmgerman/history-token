@@ -9799,6 +9799,7 @@ op_star
 id|card
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|isdn_ctrl

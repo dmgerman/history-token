@@ -99,7 +99,7 @@ id|event
 r_case
 id|NETDEV_CHANGEADDR
 suffix:colon
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -120,7 +120,7 @@ c_func
 id|br
 )paren
 suffix:semicolon
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -146,7 +146,7 @@ op_amp
 id|IFF_UP
 )paren
 (brace
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -159,7 +159,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -183,7 +183,7 @@ id|IFF_UP
 )paren
 )paren
 (brace
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -196,7 +196,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

@@ -40,7 +40,7 @@ DECL|macro|__HAVE_COUNTER8
 mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
 multiline_comment|/* Driver customization:&n; */
 DECL|macro|DRIVER_PRETAKEDOWN
-mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev-&gt;dev_private ) mga_do_cleanup_dma( dev );&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;mga_do_cleanup_dma( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;1
