@@ -1105,26 +1105,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sl82c105_remove_one&t;-&t;called with an SLC82c105 is unplugged&n; *&t;@dev: the device that was removed&n; *&n; *&t;Disconnect an W82C105 device that has been unplugged either by hotplug&n; *&t;or by a more civilized notification scheme. Not yet supported.&n; */
-DECL|function|sl82c105_remove_one
-r_static
-r_void
-id|sl82c105_remove_one
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;W82C105 removal not yet supported&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -1176,14 +1156,6 @@ comma
 id|probe
 suffix:colon
 id|sl82c105_init_one
-comma
-id|remove
-suffix:colon
-id|__devexit_p
-c_func
-(paren
-id|sl82c105_remove_one
-)paren
 comma
 )brace
 suffix:semicolon
