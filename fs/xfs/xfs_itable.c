@@ -49,10 +49,24 @@ op_star
 id|buffer
 comma
 multiline_comment|/* buffer to place output in */
+r_int
+id|ubsize
+comma
+multiline_comment|/* size of buffer */
+r_void
+op_star
+id|private_data
+comma
+multiline_comment|/* my private data */
 id|xfs_daddr_t
 id|bno
 comma
 multiline_comment|/* starting bno of inode cluster */
+r_int
+op_star
+id|ubused
+comma
+multiline_comment|/* bytes used by me */
 r_void
 op_star
 id|dibuff
@@ -158,6 +172,31 @@ id|XFS_ERROR
 c_func
 (paren
 id|EINVAL
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ubsize
+OL
+r_sizeof
+(paren
+op_star
+id|buf
+)paren
+)paren
+(brace
+op_star
+id|stat
+op_assign
+id|BULKSTAT_RV_NOTHING
+suffix:semicolon
+r_return
+id|XFS_ERROR
+c_func
+(paren
+id|ENOMEM
 )paren
 suffix:semicolon
 )brace
@@ -790,6 +829,20 @@ id|stat
 op_assign
 id|BULKSTAT_RV_DIDONE
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ubused
+)paren
+op_star
+id|ubused
+op_assign
+r_sizeof
+(paren
+op_star
+id|buf
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -825,6 +878,11 @@ id|bulkstat_one_pf
 id|formatter
 comma
 multiline_comment|/* func that&squot;d fill a single buf */
+r_void
+op_star
+id|private_data
+comma
+multiline_comment|/* private data for formatter */
 r_int
 id|statstruct_size
 comma
@@ -972,11 +1030,19 @@ multiline_comment|/* size of user&squot;s buffer */
 r_int
 id|ubleft
 suffix:semicolon
-multiline_comment|/* spaces left in user&squot;s buffer */
+multiline_comment|/* bytes left in user&squot;s buffer */
 id|xfs_caddr_t
 id|ubufp
 suffix:semicolon
 multiline_comment|/* current pointer into user&squot;s buffer */
+r_int
+id|ubelem
+suffix:semicolon
+multiline_comment|/* spaces used in user&squot;s buffer */
+r_int
+id|ubused
+suffix:semicolon
+multiline_comment|/* bytes used by formatter */
 id|xfs_buf_t
 op_star
 id|bp
@@ -1061,13 +1127,21 @@ suffix:semicolon
 )brace
 id|ubcount
 op_assign
-id|ubleft
-op_assign
 op_star
 id|ubcountp
 suffix:semicolon
+multiline_comment|/* statstruct&squot;s */
+id|ubleft
+op_assign
+id|ubcount
+op_star
+id|statstruct_size
+suffix:semicolon
+multiline_comment|/* bytes */
 op_star
 id|ubcountp
+op_assign
+id|ubelem
 op_assign
 l_int|0
 suffix:semicolon
@@ -1186,7 +1260,11 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|ubleft
+op_div
+id|statstruct_size
+)paren
 OG
 l_int|0
 op_logical_and
@@ -1549,7 +1627,11 @@ id|irbufend
 op_logical_and
 id|icount
 OL
-id|ubcount
+(paren
+id|ubleft
+op_div
+id|statstruct_size
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Loop as long as we&squot;re unable to read the&n;&t;&t;&t; * inode btree.&n;&t;&t;&t; */
@@ -2194,7 +2276,11 @@ id|ARCH_CONVERT
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Get the inode and fill in a single buffer.&n;&t;&t;&t;&t; * BULKSTAT_FG_QUICK uses dip to fill it in.&n;&t;&t;&t;&t; * BULKSTAT_FG_IGET uses igets.&n;&t;&t;&t;&t; * See: xfs_bulkstat_one &amp; dm_bulkstat_one.&n;&t;&t;&t;&t; * This is also used to count inodes/blks, etc&n;&t;&t;&t;&t; * in xfs_qm_quotacheck.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Get the inode and fill in a single buffer.&n;&t;&t;&t;&t; * BULKSTAT_FG_QUICK uses dip to fill it in.&n;&t;&t;&t;&t; * BULKSTAT_FG_IGET uses igets.&n;&t;&t;&t;&t; * See: xfs_bulkstat_one &amp; xfs_dm_bulkstat_one.&n;&t;&t;&t;&t; * This is also used to count inodes/blks, etc&n;&t;&t;&t;&t; * in xfs_qm_quotacheck.&n;&t;&t;&t;&t; */
+id|ubused
+op_assign
+id|statstruct_size
+suffix:semicolon
 id|error
 op_assign
 id|formatter
@@ -2208,7 +2294,14 @@ id|ino
 comma
 id|ubufp
 comma
+id|ubleft
+comma
+id|private_data
+comma
 id|bno
+comma
+op_amp
+id|ubused
 comma
 id|dip
 comma
@@ -2223,8 +2316,21 @@ id|fmterror
 op_eq
 id|BULKSTAT_RV_NOTHING
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|error
+op_eq
+id|ENOMEM
+)paren
+id|ubleft
+op_assign
+l_int|0
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2257,10 +2363,14 @@ id|ubufp
 )paren
 id|ubufp
 op_add_assign
-id|statstruct_size
+id|ubused
 suffix:semicolon
 id|ubleft
-op_decrement
+op_sub_assign
+id|ubused
+suffix:semicolon
+id|ubelem
+op_increment
 suffix:semicolon
 id|lastino
 op_assign
@@ -2355,9 +2465,7 @@ macro_line|#endif
 op_star
 id|ubcountp
 op_assign
-id|ubcount
-op_minus
-id|ubleft
+id|ubelem
 suffix:semicolon
 r_if
 c_cond
@@ -2473,9 +2581,18 @@ comma
 op_amp
 id|bstat
 comma
-l_int|0
+r_sizeof
+(paren
+id|bstat
+)paren
+comma
+l_int|NULL
 comma
 l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
 comma
 op_amp
 id|res
@@ -2514,6 +2631,8 @@ op_amp
 id|count
 comma
 id|xfs_bulkstat_one
+comma
+l_int|NULL
 comma
 r_sizeof
 (paren

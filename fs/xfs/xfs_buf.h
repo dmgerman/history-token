@@ -270,7 +270,7 @@ mdefine_line|#define XFS_BUF_SET_VTYPE(bp, type)
 DECL|macro|XFS_BUF_SET_REF
 mdefine_line|#define XFS_BUF_SET_REF(bp, ref)
 DECL|macro|XFS_BUF_ISPINNED
-mdefine_line|#define XFS_BUF_ISPINNED(bp)   pagebuf_ispin(bp)
+mdefine_line|#define XFS_BUF_ISPINNED(bp)&t;pagebuf_ispin(bp)
 DECL|macro|XFS_BUF_VALUSEMA
 mdefine_line|#define XFS_BUF_VALUSEMA(bp)&t;pagebuf_lock_value(bp)
 DECL|macro|XFS_BUF_CPSEMA
@@ -283,11 +283,11 @@ DECL|macro|XFS_BUF_V_IODONESEMA
 mdefine_line|#define XFS_BUF_V_IODONESEMA(bp) up(&amp;bp-&gt;pb_iodonesema);
 multiline_comment|/* setup the buffer target from a buftarg structure */
 DECL|macro|XFS_BUF_SET_TARGET
-mdefine_line|#define XFS_BUF_SET_TARGET(bp, target)&t;&bslash;&n;&t;(bp)-&gt;pb_target = (target)
+mdefine_line|#define XFS_BUF_SET_TARGET(bp, target)&t;&bslash;&n;&t;&t;(bp)-&gt;pb_target = (target)
 DECL|macro|XFS_BUF_TARGET
 mdefine_line|#define XFS_BUF_TARGET(bp)&t;((bp)-&gt;pb_target)
 DECL|macro|XFS_BUFTARG_NAME
-mdefine_line|#define XFS_BUFTARG_NAME(target) &bslash;&n;&t;({ char __b[BDEVNAME_SIZE]; bdevname((target-&gt;pbr_bdev), __b); __b; })
+mdefine_line|#define XFS_BUFTARG_NAME(target)&t;&bslash;&n;&t;&t;pagebuf_target_name(target)
 DECL|macro|XFS_BUF_SET_VTYPE_REF
 mdefine_line|#define XFS_BUF_SET_VTYPE_REF(bp, type, ref)
 DECL|macro|XFS_BUF_SET_VTYPE
@@ -387,16 +387,8 @@ DECL|macro|xfs_bpin
 mdefine_line|#define xfs_bpin(bp)&t;&t;pagebuf_pin(bp)
 DECL|macro|xfs_bunpin
 mdefine_line|#define xfs_bunpin(bp)&t;&t;pagebuf_unpin(bp)
-macro_line|#ifdef PAGEBUF_TRACE
-DECL|macro|PB_DEFINE_TRACES
-macro_line|# define PB_DEFINE_TRACES
-macro_line|# include &lt;pagebuf/page_buf_trace.h&gt;
 DECL|macro|xfs_buftrace
-macro_line|# define xfs_buftrace(id, bp)&t;PB_TRACE(bp, PB_TRACE_REC(external), (void *)id)
-macro_line|#else
-DECL|macro|xfs_buftrace
-macro_line|# define xfs_buftrace(id, bp)&t;do { } while (0)
-macro_line|#endif
+mdefine_line|#define xfs_buftrace(id, bp)&t;&bslash;&n;&t;    pagebuf_trace(bp, id, NULL, (void *)__builtin_return_address(0))
 DECL|macro|xfs_biodone
 mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, (pb-&gt;pb_flags &amp; PBF_FS_DATAIOD), 0)
 DECL|macro|xfs_incore
