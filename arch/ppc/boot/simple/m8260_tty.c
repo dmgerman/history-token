@@ -530,7 +530,7 @@ id|sccp-&gt;scc_dsr
 op_assign
 l_int|0x7e7e
 suffix:semicolon
-id|sccp-&gt;scc_pmsr
+id|sccp-&gt;scc_psmr
 op_assign
 l_int|0x3000
 suffix:semicolon

@@ -504,6 +504,7 @@ id|hpte.dw0.dw0.v
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Hypervisor expects bits as NPPP, which is&n;&t;&t; * different from how they are mapped in our PP.&n;&t;&t; */
 id|HvCallHpt_setPp
 c_func
 (paren

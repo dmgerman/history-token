@@ -474,11 +474,11 @@ id|__u32
 id|frag_size
 suffix:semicolon
 DECL|member|hop_limit
-r_int
+id|__s16
 id|hop_limit
 suffix:semicolon
 DECL|member|mcast_hops
-r_int
+id|__s16
 id|mcast_hops
 suffix:semicolon
 DECL|member|mcast_oif
@@ -560,6 +560,10 @@ id|ipv6only
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|dst_cookie
+id|__u32
+id|dst_cookie
+suffix:semicolon
 DECL|member|ipv6_mc_list
 r_struct
 id|ipv6_mc_socklist
@@ -577,10 +581,6 @@ r_struct
 id|ipv6_fl_socklist
 op_star
 id|ipv6_fl_list
-suffix:semicolon
-DECL|member|dst_cookie
-id|__u32
-id|dst_cookie
 suffix:semicolon
 DECL|member|opt
 r_struct

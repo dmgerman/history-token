@@ -1313,7 +1313,6 @@ suffix:semicolon
 DECL|function|xfrm6_policy_fini
 r_static
 r_void
-id|__exit
 id|xfrm6_policy_fini
 c_func
 (paren
@@ -1350,7 +1349,6 @@ suffix:semicolon
 )brace
 DECL|function|xfrm6_fini
 r_void
-id|__exit
 id|xfrm6_fini
 c_func
 (paren

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * arch/ppc/platforms/mpc5200.c&n; *&n; * OCP Definitions
 macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 DECL|variable|mpc5200_i2c_def
+r_static
 r_struct
 id|ocp_fs_i2c_data
 id|mpc5200_i2c_def

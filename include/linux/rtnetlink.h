@@ -497,6 +497,9 @@ comma
 DECL|enumerator|RTA_SESSION
 id|RTA_SESSION
 comma
+DECL|enumerator|RTA_MP_ALGO
+id|RTA_MP_ALGO
+comma
 DECL|enumerator|__RTA_MAX
 id|__RTA_MAX
 )brace
@@ -797,6 +800,11 @@ id|__IFA_MAX
 suffix:semicolon
 DECL|macro|IFA_MAX
 mdefine_line|#define IFA_MAX (__IFA_MAX - 1)
+multiline_comment|/*&n; * Quirk for IPv4 address deletion to allow exact deletion of equal&n; * addresses varying only in prefix length. A explicit exact comparison&n; * of the prefix length will only be done if IFA_PREFIX_EXACT_DEL is&n; * ORed to ifa_prefixlen.&n; *&n; * Note: This special treatment is only understood while deleting&n; *       addresses and will lead to unexpected behaviour if used&n; *       otherwise.&n; */
+DECL|macro|IFA_PREFIX_EXACT_DEL
+mdefine_line|#define IFA_PREFIX_EXACT_DEL&t;0x40
+DECL|macro|IFA_REAL_DEL_PREFIX
+mdefine_line|#define IFA_REAL_DEL_PREFIX(l)&t;((l) &amp; 0x3f)
 multiline_comment|/* ifa_flags */
 DECL|macro|IFA_F_SECONDARY
 mdefine_line|#define IFA_F_SECONDARY&t;&t;0x01

@@ -294,6 +294,16 @@ DECL|macro|SPRN_DMISS
 mdefine_line|#define&t;SPRN_DMISS&t;0x3D0&t;/* Data TLB Miss Register */
 DECL|macro|SPRN_DSISR
 mdefine_line|#define&t;SPRN_DSISR&t;0x012&t;/* Data Storage Interrupt Status Register */
+DECL|macro|DSISR_NOHPTE
+mdefine_line|#define   DSISR_NOHPTE&t;&t;0x40000000&t;/* no translation found */
+DECL|macro|DSISR_PROTFAULT
+mdefine_line|#define   DSISR_PROTFAULT&t;0x08000000&t;/* protection fault */
+DECL|macro|DSISR_ISSTORE
+mdefine_line|#define   DSISR_ISSTORE&t;&t;0x02000000&t;/* access was a store */
+DECL|macro|DSISR_DABRMATCH
+mdefine_line|#define   DSISR_DABRMATCH&t;0x00400000&t;/* hit data breakpoint */
+DECL|macro|DSISR_NOSEGMENT
+mdefine_line|#define   DSISR_NOSEGMENT&t;0x00200000&t;/* STAB/SLB miss */
 DECL|macro|SPRN_EAR
 mdefine_line|#define&t;SPRN_EAR&t;0x11A&t;/* External Address Register */
 DECL|macro|SPRN_ESR

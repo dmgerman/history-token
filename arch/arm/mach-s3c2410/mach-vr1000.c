@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n; *     04-Nov-2004 BJD  Clock and serial configuration update&n; *&n; *     04-Jan-2005 BJD  Updated uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n; *     14-Jan-2005 BJD  Added clock init&n; *     15-Jan-2005 BJD  Add serial port device definition&n; *     20-Jan-2005 BJD  Use UPF_IOREMAP for ports&n; *     10-Feb-2005 BJD  Added power-off capability&n; *     10-Mar-2005 LCVR Changed S3C2410_VA to S3C24XX_VA&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n; *     04-Nov-2004 BJD  Clock and serial configuration update&n; *&n; *     04-Jan-2005 BJD  Updated uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n; *     14-Jan-2005 BJD  Added clock init&n; *     15-Jan-2005 BJD  Add serial port device definition&n; *     20-Jan-2005 BJD  Use UPF_IOREMAP for ports&n; *     10-Feb-2005 BJD  Added power-off capability&n; *     10-Mar-2005 LCVR Changed S3C2410_VA to S3C24XX_VA&n; *     14-Mar-2006 BJD  void __iomem fixes&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -28,13 +28,13 @@ macro_line|#include &quot;cpu.h&quot;
 macro_line|#include &quot;usb-simtec.h&quot;
 multiline_comment|/* macros for virtual address mods for the io space entries */
 DECL|macro|VA_C5
-mdefine_line|#define VA_C5(item) ((item) + BAST_VAM_CS5)
+mdefine_line|#define VA_C5(item) ((unsigned long)(item) + BAST_VAM_CS5)
 DECL|macro|VA_C4
-mdefine_line|#define VA_C4(item) ((item) + BAST_VAM_CS4)
+mdefine_line|#define VA_C4(item) ((unsigned long)(item) + BAST_VAM_CS4)
 DECL|macro|VA_C3
-mdefine_line|#define VA_C3(item) ((item) + BAST_VAM_CS3)
+mdefine_line|#define VA_C3(item) ((unsigned long)(item) + BAST_VAM_CS3)
 DECL|macro|VA_C2
-mdefine_line|#define VA_C2(item) ((item) + BAST_VAM_CS2)
+mdefine_line|#define VA_C2(item) ((unsigned long)(item) + BAST_VAM_CS2)
 multiline_comment|/* macros to modify the physical addresses for io space */
 DECL|macro|PA_CS2
 mdefine_line|#define PA_CS2(item) ((item) + S3C2410_CS2)
@@ -56,6 +56,9 @@ op_assign
 (brace
 multiline_comment|/* ISA IO areas */
 (brace
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_ISA_BYTE
 comma
 id|PA_CS2
@@ -70,6 +73,9 @@ id|MT_DEVICE
 )brace
 comma
 (brace
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_ISA_WORD
 comma
 id|PA_CS3
@@ -86,6 +92,9 @@ comma
 multiline_comment|/* we could possibly compress the next set down into a set of smaller tables&n;   * pagetables, but that would mean using an L2 section, and it still means&n;   * we cannot actually feed the same register to an LDR due to 16K spacing&n;   */
 multiline_comment|/* bast CPLD control registers, and external interrupt controls */
 (brace
+(paren
+id|u32
+)paren
 id|VR1000_VA_CTRL1
 comma
 id|VR1000_PA_CTRL1
@@ -96,6 +105,9 @@ id|MT_DEVICE
 )brace
 comma
 (brace
+(paren
+id|u32
+)paren
 id|VR1000_VA_CTRL2
 comma
 id|VR1000_PA_CTRL2
@@ -106,6 +118,9 @@ id|MT_DEVICE
 )brace
 comma
 (brace
+(paren
+id|u32
+)paren
 id|VR1000_VA_CTRL3
 comma
 id|VR1000_PA_CTRL3
@@ -116,6 +131,9 @@ id|MT_DEVICE
 )brace
 comma
 (brace
+(paren
+id|u32
+)paren
 id|VR1000_VA_CTRL4
 comma
 id|VR1000_PA_CTRL4
@@ -1267,6 +1285,9 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS

@@ -2008,10 +2008,10 @@ op_star
 id|header
 suffix:semicolon
 r_int
-id|size
+id|total_size
 suffix:semicolon
 r_int
-id|total_size
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -2074,7 +2074,7 @@ OL
 id|total_size
 )paren
 (brace
-id|size
+id|err
 op_assign
 id|ppc_md
 dot
@@ -2092,7 +2092,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|size
+id|err
 op_ne
 id|NVRAM_HEADER_LEN
 )paren
@@ -2105,14 +2105,8 @@ l_string|&quot;nvram_scan_partitions: Error parsing &quot;
 l_string|&quot;nvram partitions&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
-r_return
-id|size
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|cur_index
@@ -2131,6 +2125,10 @@ comma
 id|NVRAM_HEADER_LEN
 )paren
 suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 id|c_sum
 op_assign
 id|nvram_checksum
@@ -2147,18 +2145,49 @@ id|c_sum
 op_ne
 id|phead.checksum
 )paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;WARNING: nvram partition checksum &quot;
-l_string|&quot;was %02x, should be %02x!&bslash;n&quot;
+l_string|&quot;WARNING: nvram partition checksum&quot;
+l_string|&quot; was %02x, should be %02x!&bslash;n&quot;
 comma
 id|phead.checksum
 comma
 id|c_sum
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Terminating nvram partition scan&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|phead.length
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;WARNING: nvram corruption &quot;
+l_string|&quot;detected: 0-length partition&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|tmp_part
 op_assign
 (paren
@@ -2178,6 +2207,11 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2192,15 +2226,8 @@ id|KERN_ERR
 l_string|&quot;nvram_scan_partitions: kmalloc failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|memcpy
@@ -2236,6 +2263,12 @@ op_star
 id|NVRAM_BLOCK_LEN
 suffix:semicolon
 )brace
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -2243,7 +2276,7 @@ id|header
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|function|nvram_init

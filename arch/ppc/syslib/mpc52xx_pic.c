@@ -15,6 +15,7 @@ DECL|variable|intr
 r_static
 r_struct
 id|mpc52xx_intr
+id|__iomem
 op_star
 id|intr
 suffix:semicolon
@@ -22,6 +23,7 @@ DECL|variable|sdma
 r_static
 r_struct
 id|mpc52xx_sdma
+id|__iomem
 op_star
 id|sdma
 suffix:semicolon
@@ -744,28 +746,31 @@ id|hw_interrupt_type
 id|mpc52xx_ic
 op_assign
 (brace
-l_string|&quot;MPC52xx&quot;
+dot
+r_typename
+op_assign
+l_string|&quot; MPC52xx  &quot;
 comma
-l_int|NULL
-comma
-multiline_comment|/* startup(irq) */
-l_int|NULL
-comma
-multiline_comment|/* shutdown(irq) */
+dot
+id|enable
+op_assign
 id|mpc52xx_ic_enable
 comma
-multiline_comment|/* enable(irq) */
+dot
+id|disable
+op_assign
 id|mpc52xx_ic_disable
 comma
-multiline_comment|/* disable(irq) */
+dot
+id|ack
+op_assign
 id|mpc52xx_ic_disable_and_ack
 comma
-multiline_comment|/* disable_and_ack(irq) */
+dot
+id|end
+op_assign
 id|mpc52xx_ic_end
 comma
-multiline_comment|/* end(irq) */
-l_int|0
-multiline_comment|/* set_affinity(irq, cpumask) SMP. */
 )brace
 suffix:semicolon
 r_void
@@ -786,11 +791,6 @@ suffix:semicolon
 multiline_comment|/* Remap the necessary zones */
 id|intr
 op_assign
-(paren
-r_struct
-id|mpc52xx_intr
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -805,11 +805,6 @@ id|mpc52xx_intr
 suffix:semicolon
 id|sdma
 op_assign
-(paren
-r_struct
-id|mpc52xx_sdma
-op_star
-)paren
 id|ioremap
 c_func
 (paren

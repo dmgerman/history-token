@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-smdk2440.c&n; *&n; * Copyright (c) 2004,2005 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.fluff.org/ben/smdk2440/&n; *&n; * Thanks to Dimity Andric and TomTom for the loan of an SMDK2440.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;01-Nov-2004 BJD   Initial version&n; *&t;12-Nov-2004 BJD   Updated for release&n; *&t;04-Jan-2005 BJD   Fixes for pre-release&n; *&t;22-Feb-2005 BJD   Updated for 2.6.11-rc5 relesa&n; *&t;10-Mar-2005 LCVR  Replaced S3C2410_VA by S3C24XX_VA&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-smdk2440.c&n; *&n; * Copyright (c) 2004,2005 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.fluff.org/ben/smdk2440/&n; *&n; * Thanks to Dimity Andric and TomTom for the loan of an SMDK2440.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;01-Nov-2004 BJD   Initial version&n; *&t;12-Nov-2004 BJD   Updated for release&n; *&t;04-Jan-2005 BJD   Fixes for pre-release&n; *&t;22-Feb-2005 BJD   Updated for 2.6.11-rc5 relesa&n; *&t;10-Mar-2005 LCVR  Replaced S3C2410_VA by S3C24XX_VA&n; *&t;14-Mar-2005 BJD&t;  void __iomem fixes&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -35,6 +35,9 @@ op_assign
 (brace
 multiline_comment|/* ISA IO Space map (memory space selected by A24) */
 (brace
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_ISA_WORD
 comma
 id|S3C2410_CS2
@@ -45,6 +48,9 @@ id|MT_DEVICE
 )brace
 comma
 (brace
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_ISA_BYTE
 comma
 id|S3C2410_CS2
@@ -366,6 +372,9 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS

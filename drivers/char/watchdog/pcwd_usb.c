@@ -39,9 +39,9 @@ DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG PFX format &quot;&bslash;n&quot; , ## arg); } while (0)
 multiline_comment|/* Module and Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.00&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.01&quot;
 DECL|macro|DRIVER_DATE
-mdefine_line|#define DRIVER_DATE &quot;12 Jun 2004&quot;
+mdefine_line|#define DRIVER_DATE &quot;15 Mar 2005&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Wim Van Sebroeck &lt;wim@iguana.be&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -751,7 +751,7 @@ r_sizeof
 id|buf
 )paren
 comma
-l_int|1000
+id|USB_COMMAND_TIMEOUT
 )paren
 op_ne
 r_sizeof

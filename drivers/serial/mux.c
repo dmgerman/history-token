@@ -989,11 +989,9 @@ comma
 dot
 id|flags
 op_assign
-id|CON_BOOT
+id|CON_ENABLED
 op_or
 id|CON_PRINTBUFFER
-op_or
-id|CON_ENABLED
 comma
 dot
 id|index

@@ -625,7 +625,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;zImage starting: loaded at 0x%x&bslash;n&bslash;r&quot;
+l_string|&quot;&bslash;n&bslash;rzImage starting: loaded at 0x%x&bslash;n&bslash;r&quot;
 comma
 (paren
 r_int
@@ -810,7 +810,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;initrd head: 0x%lx&bslash;n&quot;
+l_string|&quot;initrd head: 0x%lx&bslash;n&bslash;r&quot;
 comma
 op_star
 (paren

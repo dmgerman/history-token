@@ -3656,8 +3656,7 @@ op_assign
 id|dst_mtu
 c_func
 (paren
-op_amp
-id|rt-&gt;u.dst
+id|rt-&gt;u.dst.path
 )paren
 suffix:semicolon
 r_if
@@ -3666,8 +3665,7 @@ c_cond
 id|dst_allfrag
 c_func
 (paren
-op_amp
-id|rt-&gt;u.dst
+id|rt-&gt;u.dst.path
 )paren
 )paren
 id|inet-&gt;cork.flags
@@ -3688,12 +3686,16 @@ l_int|0
 suffix:semicolon
 id|exthdrlen
 op_assign
+id|rt-&gt;u.dst.header_len
+op_plus
+(paren
 id|opt
 ques
 c_cond
 id|opt-&gt;opt_flen
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 id|length
 op_add_assign

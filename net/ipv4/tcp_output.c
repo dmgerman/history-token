@@ -2461,10 +2461,6 @@ id|skb-&gt;truesize
 op_sub_assign
 id|len
 suffix:semicolon
-id|sk-&gt;sk_queue_shrunk
-op_assign
-l_int|1
-suffix:semicolon
 id|sk-&gt;sk_wmem_queued
 op_sub_assign
 id|len
@@ -2472,6 +2468,14 @@ suffix:semicolon
 id|sk-&gt;sk_forward_alloc
 op_add_assign
 id|len
+suffix:semicolon
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 suffix:semicolon
 multiline_comment|/* Any change of skb-&gt;len requires recalculation of tso&n;&t; * factor and mss.&n;&t; */
 r_if
@@ -3982,9 +3986,13 @@ op_and_assign
 op_complement
 id|NETIF_F_TSO
 suffix:semicolon
-id|sk-&gt;sk_no_largesend
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 suffix:semicolon
 id|tp-&gt;mss_cache
 op_assign
@@ -5865,6 +5873,9 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|__u8
+id|rcv_wscale
+suffix:semicolon
 multiline_comment|/* We&squot;ll fix this up when we get a response from the other end.&n;&t; * See tcp_input.c:tcp_rcv_state_process case TCP_SYN_SENT.&n;&t; */
 id|tp-&gt;tcp_header_len
 op_assign
@@ -5982,8 +5993,12 @@ comma
 id|sysctl_tcp_window_scaling
 comma
 op_amp
-id|tp-&gt;rx_opt.rcv_wscale
+id|rcv_wscale
 )paren
+suffix:semicolon
+id|tp-&gt;rx_opt.rcv_wscale
+op_assign
+id|rcv_wscale
 suffix:semicolon
 id|tp-&gt;rcv_ssthresh
 op_assign
@@ -7001,9 +7016,13 @@ op_amp
 id|NETIF_F_TSO
 )paren
 (brace
-id|sk-&gt;sk_no_largesend
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 suffix:semicolon
 id|sk-&gt;sk_route_caps
 op_and_assign

@@ -1699,13 +1699,11 @@ suffix:semicolon
 )brace
 id|tos
 op_assign
-id|RT_TOS
+id|RT_CONN_FLAGS
 c_func
 (paren
-id|inet-&gt;tos
+id|sk
 )paren
-op_or
-id|sk-&gt;sk_localroute
 suffix:semicolon
 r_if
 c_cond

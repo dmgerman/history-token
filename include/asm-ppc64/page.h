@@ -455,8 +455,16 @@ DECL|macro|pfn_to_kaddr
 mdefine_line|#define pfn_to_kaddr(pfn)&t;__va((pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+multiline_comment|/*&n; * Unfortunately the PLT is in the BSS in the PPC32 ELF ABI,&n; * and needs to be executable.  This means the whole heap ends&n; * up being executable.&n; */
+DECL|macro|VM_DATA_DEFAULT_FLAGS32
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS32&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+DECL|macro|VM_DATA_DEFAULT_FLAGS64
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS64&t;(VM_READ | VM_WRITE | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
-mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t; VM_DATA_DEFAULT_FLAGS32 : VM_DATA_DEFAULT_FLAGS64)
+multiline_comment|/*&n; * This is the default if a program doesn&squot;t have a PT_GNU_STACK&n; * program header entry.&n; */
+DECL|macro|VM_STACK_DEFAULT_FLAGS
+mdefine_line|#define VM_STACK_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _PPC64_PAGE_H */
 eof

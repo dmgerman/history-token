@@ -1299,10 +1299,11 @@ id|device_node
 op_star
 id|cpu_node
 suffix:semicolon
-r_int
+id|u32
 op_star
 id|fp
-comma
+suffix:semicolon
+r_int
 id|s
 suffix:semicolon
 id|cpu_node
@@ -1345,7 +1346,7 @@ suffix:semicolon
 id|fp
 op_assign
 (paren
-r_int
+id|u32
 op_star
 )paren
 id|get_property

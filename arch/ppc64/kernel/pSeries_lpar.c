@@ -1881,7 +1881,7 @@ id|flags
 op_assign
 id|newpp
 op_amp
-l_int|3
+l_int|7
 suffix:semicolon
 id|lpar_rc
 op_assign

@@ -2016,9 +2016,13 @@ c_func
 id|ax25-&gt;sk
 )paren
 suffix:semicolon
-id|ax25-&gt;sk-&gt;sk_zapped
-op_assign
-l_int|0
+id|sock_reset_flag
+c_func
+(paren
+id|ax25-&gt;sk
+comma
+id|SOCK_ZAPPED
+)paren
 suffix:semicolon
 id|bh_unlock_sock
 c_func
