@@ -466,9 +466,14 @@ id|gpe_block-&gt;event_info
 id|gpe_number
 )braket
 comma
-id|j
+id|gpe_number
 op_plus
-id|gpe_register_info-&gt;base_gpe_number
+id|gpe_block-&gt;register_info
+(braket
+id|gpe_number
+)braket
+dot
+id|base_gpe_number
 )paren
 suffix:semicolon
 )brace
