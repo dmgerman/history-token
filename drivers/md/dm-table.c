@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|MAX_DEPTH
 mdefine_line|#define MAX_DEPTH 16
@@ -3040,12 +3041,12 @@ r_return
 id|r
 suffix:semicolon
 )brace
-DECL|variable|_event_lock
 r_static
-id|spinlock_t
+id|DECLARE_MUTEX
+c_func
+(paren
 id|_event_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|dm_table_event_callback
 r_void
@@ -3072,7 +3073,7 @@ op_star
 id|context
 )paren
 (brace
-id|spin_lock_irq
+id|down
 c_func
 (paren
 op_amp
@@ -3087,7 +3088,7 @@ id|t-&gt;event_context
 op_assign
 id|context
 suffix:semicolon
-id|spin_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -3106,7 +3107,17 @@ op_star
 id|t
 )paren
 (brace
-id|spin_lock
+multiline_comment|/*&n;&t; * You can no longer call dm_table_event() from interrupt&n;&t; * context, use a bottom half instead.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|down
 c_func
 (paren
 op_amp
@@ -3126,7 +3137,7 @@ c_func
 id|t-&gt;event_context
 )paren
 suffix:semicolon
-id|spin_unlock
+id|up
 c_func
 (paren
 op_amp
