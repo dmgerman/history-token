@@ -15097,7 +15097,7 @@ comma
 (paren
 r_int
 )paren
-id|simple_strtol
+id|simple_strtoul
 c_func
 (paren
 id|typestr
