@@ -19,8 +19,6 @@ DECL|macro|RTL8169_VERSION
 mdefine_line|#define RTL8169_VERSION &quot;1.6LK&quot;
 DECL|macro|MODULENAME
 mdefine_line|#define MODULENAME &quot;r8169&quot;
-DECL|macro|RTL8169_DRIVER_NAME
-mdefine_line|#define RTL8169_DRIVER_NAME   MODULENAME &quot; Gigabit Ethernet driver &quot; RTL8169_VERSION
 DECL|macro|PFX
 mdefine_line|#define PFX MODULENAME &quot;: &quot;
 macro_line|#ifdef RTL8169_DEBUG
@@ -2354,7 +2352,7 @@ c_func
 (paren
 id|info-&gt;driver
 comma
-id|RTL8169_DRIVER_NAME
+id|MODULENAME
 )paren
 suffix:semicolon
 id|strcpy
@@ -5845,8 +5843,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|RTL8169_DRIVER_NAME
-l_string|&quot; loaded&bslash;n&quot;
+l_string|&quot;%s Gigabit Ethernet driver %s loaded&bslash;n&quot;
+comma
+id|MODULENAME
+comma
+id|RTL8169_VERSION
 )paren
 suffix:semicolon
 id|printed_version
