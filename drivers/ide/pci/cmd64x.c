@@ -4156,6 +4156,7 @@ op_star
 id|id
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -4167,9 +4168,6 @@ id|cmd64x_chipsets
 id|id-&gt;driver_data
 )braket
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|cmd64x_pci_tbl

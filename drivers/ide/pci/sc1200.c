@@ -2232,6 +2232,7 @@ op_star
 id|id
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -2240,9 +2241,6 @@ comma
 op_amp
 id|sc1200_chipset
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sc1200_pci_tbl

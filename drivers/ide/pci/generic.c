@@ -304,8 +304,6 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-l_int|0
-suffix:semicolon
 id|ide_setup_pci_device
 c_func
 (paren

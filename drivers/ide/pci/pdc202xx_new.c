@@ -1557,7 +1557,7 @@ macro_line|#endif /* PDC202_DEBUG_CABLE */
 )brace
 DECL|function|init_setup_pdcnew
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_pdcnew
 c_func
@@ -1572,6 +1572,7 @@ op_star
 id|d
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1583,7 +1584,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_pdc20270
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_pdc20270
 c_func
@@ -1634,10 +1635,10 @@ id|dev-&gt;devfn
 op_amp
 l_int|2
 )paren
-(brace
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
-)brace
 id|d-&gt;extra
 op_assign
 l_int|0
@@ -1701,6 +1702,7 @@ op_assign
 id|dev-&gt;irq
 suffix:semicolon
 )brace
+r_return
 id|ide_setup_pci_devices
 c_func
 (paren
@@ -1711,11 +1713,10 @@ comma
 id|d
 )paren
 suffix:semicolon
+)brace
+)brace
+)brace
 r_return
-suffix:semicolon
-)brace
-)brace
-)brace
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1727,7 +1728,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_pdc20276
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_pdc20276
 c_func
@@ -1779,8 +1780,11 @@ l_string|&quot;attached to I2O RAID controller.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1820,6 +1824,7 @@ id|pdcnew_chipsets
 id|id-&gt;driver_data
 )braket
 suffix:semicolon
+r_return
 id|d
 op_member_access_from_pointer
 id|init_setup
@@ -1829,9 +1834,6 @@ id|dev
 comma
 id|d
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pdc202new_pci_tbl

@@ -4888,7 +4888,7 @@ op_star
 id|name
 suffix:semicolon
 DECL|member|init_setup
-r_void
+r_int
 (paren
 op_star
 id|init_setup

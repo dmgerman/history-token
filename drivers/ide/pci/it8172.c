@@ -1006,6 +1006,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/* IT8172 is more than an IDE controller */
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1017,9 +1018,6 @@ id|it8172_chipsets
 id|id-&gt;driver_data
 )braket
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|it8172_pci_tbl

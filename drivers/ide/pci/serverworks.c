@@ -2685,7 +2685,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_svwks
 r_static
-r_void
+r_int
 id|__init
 id|init_setup_svwks
 (paren
@@ -2699,6 +2699,7 @@ op_star
 id|d
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -2710,7 +2711,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_csb6
 r_static
-r_void
+r_int
 id|__init
 id|init_setup_csb6
 (paren
@@ -2823,6 +2824,7 @@ l_int|1
 suffix:colon
 l_int|2
 suffix:semicolon
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -2862,6 +2864,7 @@ id|serverworks_chipsets
 id|id-&gt;driver_data
 )braket
 suffix:semicolon
+r_return
 id|d
 op_member_access_from_pointer
 id|init_setup
@@ -2871,9 +2874,6 @@ id|dev
 comma
 id|d
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|svwks_pci_tbl
