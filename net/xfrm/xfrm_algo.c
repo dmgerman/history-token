@@ -2570,6 +2570,13 @@ r_return
 id|elt
 suffix:semicolon
 )brace
+DECL|variable|skb_to_sgvec
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|skb_to_sgvec
+)paren
+suffix:semicolon
 multiline_comment|/* Check that skb data bits are writable. If they are not, copy data&n; * to newly created private area. If &quot;tailbits&quot; is given, make sure that&n; * tailbits bytes beyond current end of skb are writable.&n; *&n; * Returns amount of elements of scatterlist to load for subsequent&n; * transformations and pointer to writable trailer skb.&n; */
 DECL|function|skb_cow_data
 r_int
@@ -2946,6 +2953,13 @@ r_return
 id|elt
 suffix:semicolon
 )brace
+DECL|variable|skb_cow_data
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|skb_cow_data
+)paren
+suffix:semicolon
 DECL|function|pskb_put
 r_void
 op_star
@@ -2993,7 +3007,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|pskb_put
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -3001,18 +3014,5 @@ c_func
 id|pskb_put
 )paren
 suffix:semicolon
-DECL|variable|skb_cow_data
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|skb_cow_data
-)paren
-suffix:semicolon
-DECL|variable|skb_to_sgvec
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|skb_to_sgvec
-)paren
-suffix:semicolon
+macro_line|#endif
 eof
