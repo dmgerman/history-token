@@ -3604,6 +3604,16 @@ c_func
 l_int|0x803f
 )paren
 comma
+multiline_comment|/* To make our life easier when checking if we must mount read-only. */
+DECL|enumerator|VOLUME_MUST_MOUNT_RO_MASK
+id|VOLUME_MUST_MOUNT_RO_MASK
+op_assign
+id|const_cpu_to_le16
+c_func
+(paren
+l_int|0x8037
+)paren
+comma
 DECL|typedef|VOLUME_FLAGS
 )brace
 id|__attribute__

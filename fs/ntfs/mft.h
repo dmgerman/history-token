@@ -18,8 +18,6 @@ op_star
 id|m
 )paren
 suffix:semicolon
-singleline_comment|//extern int format_mft_record2(struct super_block *vfs_sb,
-singleline_comment|//&t;&t;const unsigned long inum, MFT_RECORD *m);
 r_extern
 id|MFT_RECORD
 op_star

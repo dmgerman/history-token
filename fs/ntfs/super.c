@@ -1196,7 +1196,7 @@ op_or
 id|MS_NODIRATIME
 suffix:semicolon
 macro_line|#else /* ! NTFS_RW */
-multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there aren&squot;t any volume errors and empty the lofgile.&n;&t; */
+multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there are no volume errors and that no unsupported volume&n;&t; * flags are set.  Also, empty the logfile journal as it would become&n;&t; * stale as soon as something is written to the volume.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1239,6 +1239,30 @@ c_func
 id|sb
 comma
 l_string|&quot;Volume has errors and is read-only%s&quot;
+comma
+id|es
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|vol-&gt;vol_flags
+op_amp
+id|VOLUME_MUST_MOUNT_RO_MASK
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Volume has unsupported flags set and &quot;
+l_string|&quot;is read-only%s&quot;
 comma
 id|es
 )paren
@@ -4806,6 +4830,113 @@ id|vol-&gt;minor_ver
 )paren
 suffix:semicolon
 macro_line|#ifdef NTFS_RW
+multiline_comment|/* Make sure that no unsupported volume flags are set. */
+r_if
+c_cond
+(paren
+id|vol-&gt;vol_flags
+op_amp
+id|VOLUME_MUST_MOUNT_RO_MASK
+)paren
+(brace
+r_static
+r_const
+r_char
+op_star
+id|es1
+op_assign
+l_string|&quot;Volume has unsupported flags set &quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es2
+op_assign
+l_string|&quot;.  Run chkdsk and mount in Windows.&quot;
+suffix:semicolon
+multiline_comment|/* If a read-write mount, convert it to a read-only mount. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|vol-&gt;on_errors
+op_amp
+(paren
+id|ON_ERRORS_REMOUNT_RO
+op_or
+id|ON_ERRORS_CONTINUE
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s and neither on_errors=&quot;
+l_string|&quot;continue nor on_errors=&quot;
+l_string|&quot;remount-ro was specified%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+r_goto
+id|iput_vol_err_out
+suffix:semicolon
+)brace
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Mounting read-only%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+)brace
+r_else
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Will not be able to remount &quot;
+l_string|&quot;read-write%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Do not set NVolErrors() because ntfs_remount() re-checks the&n;&t;&t; * flags which we need to do in case any flags have changed.&n;&t;&t; */
+)brace
 multiline_comment|/*&n;&t; * Get the inode for the logfile, check it and determine if the volume&n;&t; * was shutdown cleanly.&n;&t; */
 r_if
 c_cond
@@ -5337,6 +5468,8 @@ c_func
 id|vol-&gt;logfile_ino
 )paren
 suffix:semicolon
+id|iput_vol_err_out
+suffix:colon
 macro_line|#endif /* NTFS_RW */
 id|iput
 c_func
