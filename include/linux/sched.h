@@ -904,6 +904,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * get_group_info() must be called with the owning task locked (via task_lock())&n; * when task != current.  The reason being that the vast majority of callers are&n; * looking at current-&gt;group_info, which can not be changed except by the&n; * current task.  Changing current-&gt;group_info requires the task lock, too.&n; */
 DECL|macro|get_group_info
 mdefine_line|#define get_group_info(group_info) do { &bslash;&n;&t;atomic_inc(&amp;(group_info)-&gt;usage); &bslash;&n;} while (0)
 DECL|macro|put_group_info
@@ -3234,7 +3235,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace and synchronises with wait4().&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
+multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace, -&gt;group_info and synchronises with&n; * wait4().&n; *&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
 DECL|function|task_lock
 r_static
 r_inline
