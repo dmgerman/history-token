@@ -2135,7 +2135,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_STACKOVERFLOW
-multiline_comment|/* Debugging check for stack overflow: is there less than 8KB free? */
+multiline_comment|/* Debugging check for stack overflow: is there less than 4KB free? */
 (brace
 r_int
 id|sp
@@ -2168,7 +2168,7 @@ r_struct
 id|thread_info
 )paren
 op_plus
-l_int|8192
+l_int|4096
 )paren
 )paren
 )paren
