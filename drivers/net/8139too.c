@@ -2671,28 +2671,6 @@ id|pci_release_regions
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifndef RTL8139_NDEBUG
-multiline_comment|/* poison memory before freeing */
-id|memset
-(paren
-id|dev
-comma
-l_int|0xBC
-comma
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|rtl8139_private
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif /* RTL8139_NDEBUG */
 id|free_netdev
 c_func
 (paren
