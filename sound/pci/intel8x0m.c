@@ -23,7 +23,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Intel 82801AA,82901AB,i810,i820,i830,i840,i845,MX440 modem&quot;
+l_string|&quot;Intel 82801AA,82901AB,i810,i820,i830,i840,i845,MX440; SiS 7013; NVidia MCP/2/2S/3 modems&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
