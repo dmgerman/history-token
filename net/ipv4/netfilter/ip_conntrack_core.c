@@ -3975,6 +3975,10 @@ r_if
 c_cond
 (paren
 id|old
+op_logical_and
+id|old-&gt;expectant
+op_eq
+id|related_to
 )paren
 (brace
 multiline_comment|/* Helper private data may contain offsets but no pointers&n;&t;&t;   pointing into the payload - otherwise we should have to copy &n;&t;&t;   the data filled out by the helper over the old one */
@@ -4033,12 +4037,9 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This expectation is not inserted so no need to lock */
-id|kmem_cache_free
+id|ip_conntrack_expect_put
 c_func
 (paren
-id|ip_conntrack_expect_cachep
-comma
 id|expect
 )paren
 suffix:semicolon
@@ -4120,11 +4121,9 @@ id|tuple.dst.ip
 )paren
 )paren
 suffix:semicolon
-id|kmem_cache_free
+id|ip_conntrack_expect_put
 c_func
 (paren
-id|ip_conntrack_expect_cachep
-comma
 id|expect
 )paren
 suffix:semicolon
@@ -4248,11 +4247,9 @@ c_func
 l_string|&quot;expect_related: busy!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kmem_cache_free
+id|ip_conntrack_expect_put
 c_func
 (paren
-id|ip_conntrack_expect_cachep
-comma
 id|expect
 )paren
 suffix:semicolon
