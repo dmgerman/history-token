@@ -36,6 +36,15 @@ r_int
 r_int
 id|pci_io_base
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|io_page_mask
+suffix:semicolon
+DECL|macro|MAX_ISA_PORT
+mdefine_line|#define MAX_ISA_PORT 0x10000
+DECL|macro|_IO_IS_VALID
+mdefine_line|#define _IO_IS_VALID(port) ((port) &gt;= MAX_ISA_PORT || (1 &lt;&lt; (port&gt;&gt;PAGE_SHIFT)) &bslash;&n;&t;&t;&t;    &amp; io_page_mask)
 macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/* __raw_* accessors aren&squot;t supported on iSeries */
 DECL|macro|__raw_readb
