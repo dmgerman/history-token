@@ -604,7 +604,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* If it&squot;s really a local destination manip, it may need to do a&n;   source manip too. */
 r_static
-r_int
+r_void
 DECL|function|do_extra_mangle
 id|do_extra_mangle
 c_func
@@ -673,7 +673,6 @@ id|var_ip
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 op_star
@@ -686,9 +685,6 @@ c_func
 (paren
 id|rt
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Simple way to iterate through all. */
@@ -867,7 +863,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* For [FUTURE] fragmentation handling, we want the least-used&n;   src-ip/dst-ip/proto triple.  Fairness doesn&squot;t come into it.  Thus&n;   if the range specifies 1.2.3.4 ports 10000-10005 and 1.2.3.5 ports&n;   1-65535, we don&squot;t do pro-rata allocation based on ports; we choose&n;   the ip with the lowest src-ip/dst-ip/proto usage.&n;*/
 r_static
-r_int
+r_void
 DECL|function|find_best_ips_proto
 id|find_best_ips_proto
 c_func
@@ -903,6 +899,9 @@ suffix:semicolon
 r_struct
 id|ip_conntrack_tuple
 id|best_tuple
+op_assign
+op_star
+id|tuple
 suffix:semicolon
 id|u_int32_t
 op_star
@@ -1080,8 +1079,7 @@ op_star
 id|var_ipp
 op_ne
 id|orig_dstip
-op_logical_and
-op_logical_neg
+)paren
 id|do_extra_mangle
 c_func
 (paren
@@ -1090,27 +1088,7 @@ id|var_ipp
 comma
 id|other_ipp
 )paren
-)paren
-(brace
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;Range %u %u.%u.%u.%u rt failed!&bslash;n&quot;
-comma
-id|i
-comma
-id|NIPQUAD
-c_func
-(paren
-op_star
-id|var_ipp
-)paren
-)paren
 suffix:semicolon
-multiline_comment|/* Can&squot;t route?  This whole range part is&n;&t;&t;&t; * probably screwed, but keep trying&n;&t;&t;&t; * anyway. */
-r_continue
-suffix:semicolon
-)brace
 multiline_comment|/* Count how many others map onto this. */
 id|score
 op_assign
@@ -1143,7 +1121,6 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|1
 suffix:semicolon
 id|best_score
 op_assign
@@ -1156,28 +1133,15 @@ id|tuple
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|best_score
-op_eq
-l_int|0xFFFFFFFF
-)paren
-r_return
-l_int|0
-suffix:semicolon
 op_star
 id|tuple
 op_assign
 id|best_tuple
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/* Fast version doesn&squot;t iterate through hash chains, but only handles&n;   common case of single IP address (null NAT, masquerade) */
 r_static
-r_int
+r_void
 DECL|function|find_best_ips_proto_fast
 id|find_best_ips_proto_fast
 c_func
@@ -1216,7 +1180,6 @@ id|IP_NAT_RANGE_MAP_IPS
 )paren
 )paren
 r_return
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1225,7 +1188,7 @@ id|range-&gt;min_ip
 op_ne
 id|range-&gt;max_ip
 )paren
-r_return
+(brace
 id|find_best_ips_proto
 c_func
 (paren
@@ -1238,6 +1201,9 @@ comma
 id|hooknum
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1266,8 +1232,7 @@ op_logical_and
 id|hooknum
 op_eq
 id|NF_IP_LOCAL_OUT
-op_logical_and
-op_logical_neg
+)paren
 id|do_extra_mangle
 c_func
 (paren
@@ -1276,21 +1241,17 @@ comma
 op_amp
 id|tuple-&gt;src.ip
 )paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
+r_else
 id|tuple-&gt;dst.ip
 op_assign
 id|range-&gt;min_ip
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
 )brace
+multiline_comment|/* Manipulate the tuple into the range given.  For NF_IP_POST_ROUTING,&n; * we change the source to map into the range.  For NF_IP_PRE_ROUTING&n; * and NF_IP_LOCAL_OUT, we change the destination to map into the&n; * range.  It might not be possible to get a unique tuple, but we try.&n; * At worst (or if we race), we will end up with a final duplicate in&n; * __ip_conntrack_confirm and drop the packet. */
 r_static
-r_int
+r_void
 DECL|function|get_unique_tuple
 id|get_unique_tuple
 c_func
@@ -1375,7 +1336,6 @@ id|conntrack
 )paren
 )paren
 r_return
-l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -1386,10 +1346,6 @@ op_assign
 op_star
 id|orig_tuple
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|find_best_ips_proto_fast
 c_func
 (paren
@@ -1401,9 +1357,6 @@ id|conntrack
 comma
 id|hooknum
 )paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/* 3) The per-protocol part of the manip is made to map into&n;&t;   the range to make a unique tuple. */
 multiline_comment|/* Only bother mapping if it&squot;s not already in range and unique */
@@ -1449,11 +1402,8 @@ id|conntrack
 )paren
 )paren
 r_return
-l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
+multiline_comment|/* Last change: get protocol to try to obtain unique tuple. */
 id|proto
 op_member_access_from_pointer
 id|unique_tuple
@@ -1471,113 +1421,6 @@ id|hooknum
 comma
 id|conntrack
 )paren
-)paren
-(brace
-multiline_comment|/* Must be unique. */
-id|IP_NF_ASSERT
-c_func
-(paren
-op_logical_neg
-id|ip_nat_used_tuple
-c_func
-(paren
-id|tuple
-comma
-id|conntrack
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|HOOK2MANIP
-c_func
-(paren
-id|hooknum
-)paren
-op_eq
-id|IP_NAT_MANIP_DST
-)paren
-(brace
-multiline_comment|/* Try implicit source NAT; protocol may be able to&n;&t;&t;   play with ports to make it unique. */
-r_struct
-id|ip_nat_range
-id|r
-op_assign
-(brace
-id|IP_NAT_RANGE_MAP_IPS
-comma
-id|tuple-&gt;src.ip
-comma
-id|tuple-&gt;src.ip
-comma
-(brace
-l_int|0
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;Trying implicit mapping&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|proto
-op_member_access_from_pointer
-id|unique_tuple
-c_func
-(paren
-id|tuple
-comma
-op_amp
-id|r
-comma
-id|IP_NAT_MANIP_SRC
-comma
-id|conntrack
-)paren
-)paren
-(brace
-multiline_comment|/* Must be unique. */
-id|IP_NF_ASSERT
-c_func
-(paren
-op_logical_neg
-id|ip_nat_used_tuple
-c_func
-(paren
-id|tuple
-comma
-id|conntrack
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;Protocol can&squot;t get unique tuple %u.&bslash;n&quot;
-comma
-id|hooknum
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Where to manip the reply packets (will be reverse manip). */
@@ -1886,10 +1729,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
 id|get_unique_tuple
 c_func
 (paren
@@ -1905,20 +1744,7 @@ id|conntrack
 comma
 id|hooknum
 )paren
-)paren
-(brace
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ip_nat_setup_info: Can&squot;t get unique for %p.&bslash;n&quot;
-comma
-id|conntrack
-)paren
 suffix:semicolon
-r_return
-id|NF_DROP
-suffix:semicolon
-)brace
 multiline_comment|/* We now have two tuples (SRCIP/SRCPT/DSTIP/DSTPT):&n;&t;   the original (A/B/C/D&squot;) and the mangled one (E/F/G/H&squot;).&n;&n;&t;   We&squot;re only allowed to work with the SRC per-proto&n;&t;   part, so we create inverses of both to start, then&n;&t;   derive the other fields we need.  */
 multiline_comment|/* Reply connection: simply invert the new tuple&n;&t;   (G/H/E/F&squot;) */
 id|invert_tuplepr
