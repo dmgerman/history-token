@@ -101,13 +101,6 @@ id|no_waiter
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Data big endianness flag - may vary from request to request.  The&n;         * header is always in machine byte order.&n;         * Not really used currently.  */
-DECL|member|data_be
-r_int
-id|data_be
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/* Speed to transmit with: 0 = 100Mbps, 1 = 200Mbps, 2 = 400Mbps */
 DECL|member|speed_code
 r_int
@@ -144,12 +137,6 @@ DECL|member|generation
 r_int
 r_int
 id|generation
-suffix:semicolon
-multiline_comment|/* Very core internal, don&squot;t care. */
-DECL|member|state_change
-r_struct
-id|semaphore
-id|state_change
 suffix:semicolon
 multiline_comment|/* Function (and possible data to pass to it) to call when this&n;&t; * packet is completed.  */
 DECL|member|complete_routine
@@ -258,7 +245,7 @@ suffix:semicolon
 r_struct
 id|hpsb_packet
 op_star
-id|alloc_hpsb_packet
+id|hpsb_alloc_packet
 c_func
 (paren
 r_int
@@ -266,7 +253,7 @@ id|data_size
 )paren
 suffix:semicolon
 r_void
-id|free_hpsb_packet
+id|hpsb_free_packet
 c_func
 (paren
 r_struct
@@ -300,7 +287,7 @@ id|host-&gt;generation
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Send a PHY configuration packet.&n; */
+multiline_comment|/*&n; * Send a PHY configuration packet, return 0 on success, negative&n; * errno on failure.&n; */
 r_int
 id|hpsb_send_phy_config
 c_func
@@ -317,9 +304,20 @@ r_int
 id|gapcnt
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Queue packet for transmitting, return 0 for failure.&n; */
+multiline_comment|/*&n; * Queue packet for transmitting, return 0 on success, negative errno&n; * on failure.&n; */
 r_int
 id|hpsb_send_packet
+c_func
+(paren
+r_struct
+id|hpsb_packet
+op_star
+id|packet
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Queue packet for transmitting, and block until the transaction&n; * completes. Return 0 on success, negative errno on failure.&n; */
+r_int
+id|hpsb_send_packet_and_wait
 c_func
 (paren
 r_struct

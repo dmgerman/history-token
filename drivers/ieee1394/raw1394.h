@@ -43,6 +43,10 @@ DECL|macro|RAW1394_REQ_ARM_REGISTER
 mdefine_line|#define RAW1394_REQ_ARM_REGISTER    300
 DECL|macro|RAW1394_REQ_ARM_UNREGISTER
 mdefine_line|#define RAW1394_REQ_ARM_UNREGISTER  301
+DECL|macro|RAW1394_REQ_ARM_SET_BUF
+mdefine_line|#define RAW1394_REQ_ARM_SET_BUF     302
+DECL|macro|RAW1394_REQ_ARM_GET_BUF
+mdefine_line|#define RAW1394_REQ_ARM_GET_BUF     303
 DECL|macro|RAW1394_REQ_RESET_NOTIFY
 mdefine_line|#define RAW1394_REQ_RESET_NOTIFY    400
 DECL|macro|RAW1394_REQ_PHYPACKET
@@ -327,6 +331,11 @@ multiline_comment|/* xmit only - iso transmission speed */
 DECL|member|speed
 id|__u8
 id|speed
+suffix:semicolon
+multiline_comment|/* The mode of the dma when receiving iso data. Must be supported by chip */
+DECL|member|dma_mode
+id|__u8
+id|dma_mode
 suffix:semicolon
 multiline_comment|/* max. latency of buffer, in packets (-1 if you don&squot;t care) */
 DECL|member|irq_interval
