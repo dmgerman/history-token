@@ -8676,6 +8676,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|ip6_dst_ops.kmem_cachep
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif&t;/* MODULE */
 eof

@@ -4272,12 +4272,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fib6_node_kmem
-)paren
 id|fib6_node_kmem
 op_assign
 id|kmem_cache_create
@@ -4315,6 +4309,12 @@ c_func
 (paren
 op_amp
 id|ip6_fib_timer
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|fib6_node_kmem
 )paren
 suffix:semicolon
 )brace
