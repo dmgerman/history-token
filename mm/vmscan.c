@@ -386,6 +386,19 @@ id|mapping
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Be more reluctant to reclaim swapcache than pagecache */
+r_if
+c_cond
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 multiline_comment|/* File is mmap&squot;d by somebody. */
 r_if
 c_cond
@@ -397,7 +410,13 @@ c_func
 op_amp
 id|mapping-&gt;i_mmap
 )paren
-op_logical_or
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|list_empty
 c_func
