@@ -456,13 +456,6 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;smc-ultra.c: No ISAPnP cards found, trying standard ones...&bslash;n&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 r_for
 c_loop

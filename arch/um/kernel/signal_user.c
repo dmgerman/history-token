@@ -169,6 +169,12 @@ id|mask
 )paren
 suffix:semicolon
 )brace
+id|va_end
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
 id|action.sa_flags
 op_assign
 id|flags

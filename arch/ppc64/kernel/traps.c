@@ -438,6 +438,11 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+id|print_modules
+c_func
+(paren
+)paren
+suffix:semicolon
 id|show_regs
 c_func
 (paren
@@ -1291,7 +1296,6 @@ DECL|macro|module_find_bug
 mdefine_line|#define module_find_bug(x)&t;NULL
 macro_line|#endif
 DECL|function|find_bug
-r_static
 r_struct
 id|bug_entry
 op_star
@@ -1340,6 +1344,7 @@ id|bugaddr
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|check_bug_trap
 id|check_bug_trap

@@ -12,6 +12,7 @@ macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
+macro_line|#include &quot;skas_ptrace.h&quot;
 multiline_comment|/*&n; * Called by kernel/ptrace.c when detaching..&n; */
 DECL|function|ptrace_disable
 r_void
@@ -296,6 +297,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -429,6 +431,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -880,6 +883,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -967,6 +971,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1106,6 +1111,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1142,6 +1148,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1177,6 +1184,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1318,6 +1326,88 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|send_sigtrap
+r_void
+id|send_sigtrap
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_union
+id|uml_pt_regs
+op_star
+id|regs
+comma
+r_int
+id|error_code
+)paren
+(brace
+r_struct
+id|siginfo
+id|info
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+suffix:semicolon
+id|info.si_signo
+op_assign
+id|SIGTRAP
+suffix:semicolon
+id|info.si_code
+op_assign
+id|TRAP_BRKPT
+suffix:semicolon
+multiline_comment|/* User-mode eip? */
+id|info.si_addr
+op_assign
+id|UPT_IS_USER
+c_func
+(paren
+id|regs
+)paren
+ques
+c_cond
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|UPT_IP
+c_func
+(paren
+id|regs
+)paren
+suffix:colon
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Send us the fakey SIGTRAP */
+id|force_sig_info
+c_func
+(paren
+id|SIGTRAP
+comma
+op_amp
+id|info
+comma
+id|tsk
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* XXX Check PT_DTRACE vs TIF_SINGLESTEP for singlestepping check and&n; * PT_PTRACED vs TIF_SYSCALL_TRACE for syscall tracing check&n; */
 DECL|function|syscall_trace
 r_void
 id|syscall_trace
@@ -1388,6 +1478,22 @@ id|regs-&gt;eax
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Fake a debug trap */
+r_if
+c_cond
+(paren
+id|is_singlestep
+)paren
+id|send_sigtrap
+c_func
+(paren
+id|current
+comma
+id|regs
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1397,9 +1503,6 @@ c_func
 (paren
 id|TIF_SYSCALL_TRACE
 )paren
-op_logical_and
-op_logical_neg
-id|is_singlestep
 )paren
 r_return
 suffix:semicolon
@@ -1423,9 +1526,6 @@ id|current-&gt;ptrace
 op_amp
 id|PT_TRACESYSGOOD
 )paren
-op_logical_and
-op_logical_neg
-id|is_singlestep
 suffix:semicolon
 id|ptrace_notify
 c_func
