@@ -1736,7 +1736,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* shut down all dma transfers */
+multiline_comment|/* shut down all dma transfers and rps tasks */
 id|saa7146_write
 c_func
 (paren
@@ -1744,7 +1744,7 @@ id|dev
 comma
 id|MC1
 comma
-l_int|0x00ff0000
+l_int|0x30ff0000
 )paren
 suffix:semicolon
 multiline_comment|/* clear out any rps-signals pending */

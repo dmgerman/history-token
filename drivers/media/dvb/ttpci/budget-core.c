@@ -173,14 +173,15 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Signal path on the Activy:&n;&t; *&n;&t; *  tuner -&gt; SAA7146 port A -&gt; SAA7146 BRS -&gt; SAA7146 DMA3 -&gt; memory&n;&t; *&n;&t; *  Since the tuner feeds 204 bytes packets into the SAA7146,&n;&t; *  DMA3 is configured to strip the trailing 16 FEC bytes:&n;&t; *&t;Pitch: 188, NumBytes3: 188, NumLines3: 1024&n;&t; */
-r_if
+r_switch
 c_cond
 (paren
 id|budget-&gt;card-&gt;type
-op_eq
-id|BUDGET_FS_ACTIVY
 )paren
 (brace
+r_case
+id|BUDGET_FS_ACTIVY
+suffix:colon
 id|saa7146_write
 c_func
 (paren
@@ -215,9 +216,51 @@ comma
 l_int|0x00000000
 )paren
 suffix:semicolon
-)brace
-r_else
+r_break
+suffix:semicolon
+r_case
+id|BUDGET_PATCH
+suffix:colon
+id|saa7146_write
+c_func
+(paren
+id|dev
+comma
+id|DD1_INIT
+comma
+l_int|0x00000200
+)paren
+suffix:semicolon
+id|saa7146_write
+c_func
+(paren
+id|dev
+comma
+id|MC2
+comma
+(paren
+id|MASK_10
+op_or
+id|MASK_26
+)paren
+)paren
+suffix:semicolon
+id|saa7146_write
+c_func
+(paren
+id|dev
+comma
+id|BRS_CTRL
+comma
+l_int|0x60000000
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 (brace
+)brace
 r_if
 c_cond
 (paren
@@ -461,6 +504,24 @@ id|MASK_20
 )paren
 )paren
 suffix:semicolon
+id|SAA7146_ISR_CLEAR
+c_func
+(paren
+id|budget-&gt;dev
+comma
+id|MASK_10
+)paren
+suffix:semicolon
+multiline_comment|/* VPE */
+id|SAA7146_IER_ENABLE
+c_func
+(paren
+id|budget-&gt;dev
+comma
+id|MASK_10
+)paren
+suffix:semicolon
+multiline_comment|/* VPE */
 id|saa7146_write
 c_func
 (paren
@@ -475,16 +536,7 @@ id|MASK_20
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// DMA3 on
-id|SAA7146_IER_ENABLE
-c_func
-(paren
-id|budget-&gt;dev
-comma
-id|MASK_10
-)paren
-suffix:semicolon
-singleline_comment|// VPE
+multiline_comment|/* DMA3 on */
 r_return
 op_increment
 id|budget-&gt;feeding
@@ -1180,6 +1232,11 @@ op_amp
 id|budget-&gt;feedlock
 )paren
 suffix:semicolon
+id|feed-&gt;pusi_seen
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* have a clean section start */
 id|status
 op_assign
 id|start_ts_capture

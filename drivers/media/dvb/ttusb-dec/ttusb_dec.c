@@ -3428,7 +3428,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|dec-&gt;iso_urb
@@ -3706,7 +3706,7 @@ c_loop
 id|i
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|dec-&gt;iso_urb
@@ -6288,7 +6288,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|dec-&gt;iso_urb
