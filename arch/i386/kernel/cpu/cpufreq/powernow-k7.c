@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: powernow-k7.c,v 1.34 2003/02/22 10:23:46 db Exp $&n; *&n; *  (C) 2003 Dave Jones &lt;davej@suse.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
+multiline_comment|/*&n; *  AMD K7 Powernow driver.&n; *  (C) 2003 Dave Jones &lt;davej@suse.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -291,52 +291,6 @@ r_static
 r_char
 id|have_a0
 suffix:semicolon
-macro_line|#ifndef rdmsrl
-DECL|macro|rdmsrl
-mdefine_line|#define rdmsrl(msr,val) do {unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);&t;&bslash;&n;&t;val = l__;&t;&bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);&t;&bslash;&n;} while(0)
-macro_line|#endif
-macro_line|#ifndef wrmsrl
-DECL|function|wrmsrl
-r_static
-r_void
-id|wrmsrl
-(paren
-id|u32
-id|msr
-comma
-id|u64
-id|val
-)paren
-(brace
-id|u32
-id|lo
-comma
-id|hi
-suffix:semicolon
-id|lo
-op_assign
-(paren
-id|u32
-)paren
-id|val
-suffix:semicolon
-id|hi
-op_assign
-id|val
-op_rshift
-l_int|32
-suffix:semicolon
-id|wrmsr
-(paren
-id|msr
-comma
-id|lo
-comma
-id|hi
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|check_powernow
 r_static
 r_int
@@ -1003,6 +957,9 @@ r_union
 id|msr_fidvidstatus
 id|fidvidstatus
 suffix:semicolon
+r_int
+id|cfid
+suffix:semicolon
 multiline_comment|/* fid are the lower 8 bits of the index we stored into&n;&t; * the cpufreq frequency table in powernow_decode_bios,&n;&t; * vid are the upper 8 bits.&n;&t; */
 id|fid
 op_assign
@@ -1034,6 +991,10 @@ id|freqs.cpu
 op_assign
 l_int|0
 suffix:semicolon
+id|cfid
+op_assign
+id|fidvidstatus.bits.CFID
+suffix:semicolon
 id|rdmsrl
 (paren
 id|MSR_K7_FID_VID_STATUS
@@ -1047,7 +1008,7 @@ id|fsb
 op_star
 id|fid_codes
 (braket
-id|fidvidstatus.bits.CFID
+id|cfid
 )braket
 op_star
 l_int|100
