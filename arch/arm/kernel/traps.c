@@ -1,22 +1,15 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/traps.c&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *  Fragments that appear the same as linux/arch/i386/kernel/traps.c (C) Linus Torvalds&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  &squot;traps.c&squot; handles hardware exceptions after we have saved some state in&n; *  &squot;linux/arch/arm/lib/traps.S&squot;.  Mostly a debugging aid, but will probably&n; *  kill the offending process.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/elf.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;

@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;

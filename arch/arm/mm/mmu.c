@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|cpu_last_asid
 r_int

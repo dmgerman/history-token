@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;fault.h&quot;
