@@ -832,8 +832,9 @@ id|notifier_block
 id|time_cpufreq_notifier_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|time_cpufreq_notifier
 )brace
 suffix:semicolon
