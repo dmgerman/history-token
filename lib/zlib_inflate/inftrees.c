@@ -579,10 +579,6 @@ multiline_comment|/* null input--all zero length codes */
 op_star
 id|t
 op_assign
-(paren
-id|inflate_huft
-op_star
-)paren
 l_int|NULL
 suffix:semicolon
 op_star
@@ -880,19 +876,11 @@ id|u
 l_int|0
 )braket
 op_assign
-(paren
-id|inflate_huft
-op_star
-)paren
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* just to keep compilers happy */
 id|q
 op_assign
-(paren
-id|inflate_huft
-op_star
-)paren
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* ditto */
@@ -1465,16 +1453,8 @@ l_int|19
 comma
 l_int|19
 comma
-(paren
-id|uInt
-op_star
-)paren
 l_int|NULL
 comma
-(paren
-id|uInt
-op_star
-)paren
 l_int|NULL
 comma
 id|tb

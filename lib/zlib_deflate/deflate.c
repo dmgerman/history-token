@@ -3773,7 +3773,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Flush the current block, with given end-of-file flag.&n; * IN assertion: strstart is set to the end of the current match.&n; */
 DECL|macro|FLUSH_BLOCK_ONLY
-mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (char *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   (char *)NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
+mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (char *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
 multiline_comment|/* Same but force premature exit if necessary. */
 DECL|macro|FLUSH_BLOCK
 mdefine_line|#define FLUSH_BLOCK(s, eof) { &bslash;&n;   FLUSH_BLOCK_ONLY(s, eof); &bslash;&n;   if (s-&gt;strm-&gt;avail_out == 0) return (eof) ? finish_started : need_more; &bslash;&n;}

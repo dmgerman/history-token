@@ -143,11 +143,6 @@ id|s-&gt;checkfn
 (paren
 l_int|0L
 comma
-(paren
-r_const
-id|Byte
-op_star
-)paren
 l_int|NULL
 comma
 l_int|0
