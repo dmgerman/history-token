@@ -2725,7 +2725,8 @@ comma
 id|ioaddr_t
 id|num
 comma
-id|ioaddr_t
+r_int
+r_int
 id|align
 comma
 r_char
