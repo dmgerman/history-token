@@ -1373,9 +1373,6 @@ id|bridge
 comma
 id|u32
 id|mode
-comma
-id|u32
-id|minor
 )paren
 (brace
 r_struct
@@ -1415,8 +1412,6 @@ id|ncapid
 suffix:semicolon
 id|u32
 id|mmajor
-comma
-id|mminor
 suffix:semicolon
 id|u16
 id|mpstat
@@ -1841,16 +1836,6 @@ op_assign
 id|ncapid
 op_rshift
 id|AGP_MAJOR_VERSION_SHIFT
-)paren
-op_amp
-l_int|0xf
-suffix:semicolon
-id|mminor
-op_assign
-(paren
-id|ncapid
-op_rshift
-id|AGP_MINOR_VERSION_SHIFT
 )paren
 op_amp
 l_int|0xf

@@ -497,6 +497,14 @@ DECL|member|capndx
 r_int
 id|capndx
 suffix:semicolon
+DECL|member|major_version
+r_char
+id|major_version
+suffix:semicolon
+DECL|member|minor_version
+r_char
+id|minor_version
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|OUTREG64
@@ -1095,9 +1103,6 @@ id|bridge
 comma
 id|u32
 id|mode
-comma
-id|u32
-id|minor
 )paren
 suffix:semicolon
 r_void
@@ -1105,6 +1110,16 @@ id|global_cache_flush
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_void
+id|get_agp_version
+c_func
+(paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 suffix:semicolon
 multiline_comment|/* Standard agp registers */
