@@ -839,6 +839,18 @@ id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* Mappings, inodes and blockdevs, again. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wait
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Emergency Sync complete&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|function|sys_sync
 id|asmlinkage

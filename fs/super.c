@@ -2002,6 +2002,12 @@ op_amp
 id|sb_lock
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Emergency Remount complete&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|function|emergency_remount
 r_void
