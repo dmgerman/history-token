@@ -6117,6 +6117,12 @@ id|flush_cnt
 op_assign
 l_int|0
 suffix:semicolon
+id|pagebuf_runall_queues
+c_func
+(paren
+id|pagebuf_dataio_workqueue
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -6129,12 +6135,6 @@ c_func
 (paren
 op_amp
 id|tmp
-)paren
-suffix:semicolon
-id|pagebuf_runall_queues
-c_func
-(paren
-id|pagebuf_dataio_workqueue
 )paren
 suffix:semicolon
 id|list_for_each_safe
