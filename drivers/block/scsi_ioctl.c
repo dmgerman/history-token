@@ -432,6 +432,12 @@ comma
 id|safe_for_read
 c_func
 (paren
+id|LOG_SENSE
+)paren
+comma
+id|safe_for_read
+c_func
+(paren
 id|START_STOP
 )paren
 comma
@@ -646,6 +652,12 @@ id|safe_for_write
 c_func
 (paren
 id|MODE_SELECT
+)paren
+comma
+id|safe_for_write
+c_func
+(paren
+id|LOG_SELECT
 )paren
 comma
 id|safe_for_write
