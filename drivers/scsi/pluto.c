@@ -1323,12 +1323,7 @@ id|fc
 op_assign
 id|pluto-&gt;fc
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fc-&gt;module
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|fc-&gt;module

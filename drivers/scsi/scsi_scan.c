@@ -220,6 +220,17 @@ id|BLIST_NOLUN
 )brace
 comma
 multiline_comment|/* locks up */
+(brace
+l_string|&quot;SUN&quot;
+comma
+l_string|&quot;SENA&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_NOLUN
+)brace
+comma
+multiline_comment|/* responds to all luns */
 multiline_comment|/*&n;&t; * The following causes a failed REQUEST SENSE on lun 1 for&n;&t; * aha152x controller, which causes SCSI code to reset bus.&n;&t; */
 (brace
 l_string|&quot;SANYO&quot;
@@ -524,6 +535,16 @@ id|BLIST_NOLUN
 )brace
 comma
 multiline_comment|/* responds to all lun */
+(brace
+l_string|&quot;NEC&quot;
+comma
+l_string|&quot;D3856&quot;
+comma
+l_string|&quot;0009&quot;
+comma
+id|BLIST_NOLUN
+)brace
+comma
 multiline_comment|/*&n;&t; * Other types of devices that have special flags.&n;&t; */
 (brace
 l_string|&quot;SONY&quot;
