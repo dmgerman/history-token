@@ -443,6 +443,13 @@ id|kmap_pte
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|get_user_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_user_pages
+)paren
+suffix:semicolon
 multiline_comment|/* filesystem internal functions */
 DECL|variable|def_blk_fops
 id|EXPORT_SYMBOL
