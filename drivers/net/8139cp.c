@@ -3,7 +3,7 @@ multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@pobox.com&
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;8139cp&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;1.0&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;1.1&quot;
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&t;&quot;Aug 30, 2003&quot;
 macro_line|#include &lt;linux/config.h&gt;
