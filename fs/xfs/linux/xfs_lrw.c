@@ -2971,7 +2971,7 @@ c_func
 id|file
 )paren
 op_or
-id|DM_SEM_FLAG
+id|DM_SEM_FLAG_RD
 c_func
 (paren
 id|ioflags
