@@ -2351,7 +2351,7 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|poll_timeout
+id|polling
 op_assign
 l_int|0
 suffix:semicolon
