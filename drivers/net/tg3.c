@@ -2962,9 +2962,6 @@ r_struct
 id|tg3
 op_star
 id|tp
-comma
-r_int
-id|force
 )paren
 (brace
 id|u32
@@ -3009,27 +3006,6 @@ l_int|0
 r_return
 op_minus
 id|EBUSY
-suffix:semicolon
-multiline_comment|/* If we have link, and not forcing a reset, then nothing&n;&t; * to do.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|phy_status
-op_amp
-id|BMSR_LSTATUS
-)paren
-op_ne
-l_int|0
-op_logical_and
-(paren
-id|force
-op_eq
-l_int|0
-)paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5606,8 +5582,6 @@ id|tg3_phy_reset
 c_func
 (paren
 id|tp
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -5775,8 +5749,6 @@ id|tg3_phy_reset
 c_func
 (paren
 id|tp
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -33619,8 +33591,6 @@ id|tg3_phy_reset
 c_func
 (paren
 id|tp
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
