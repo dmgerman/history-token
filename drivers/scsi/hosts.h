@@ -241,33 +241,6 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Since the mid level driver handles time outs, etc, we want to&n;     * be able to abort the current command.  Abort returns 0 if the&n;     * abortion was successful.&t; The field SCpnt-&gt;abort reason&n;     * can be filled in with the appropriate reason why we wanted&n;     * the abort in the first place, and this will be used&n;     * in the mid-level code instead of the host_byte().&n;     * If non-zero, the code passed to it&n;     * will be used as the return code, otherwise&n;     * DID_ABORT  should be returned.&n;     *&n;     * Note that the scsi driver should &quot;clean up&quot; after itself,&n;     * resetting the bus, etc.&t;if necessary.&n;     *&n;     * NOTE - this interface is depreciated, and will go away.  Use&n;     * the eh_ routines instead.&n;     */
-DECL|member|abort
-r_int
-(paren
-op_star
-m_abort
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n;     * The reset function will reset the SCSI bus.  Any executing&n;     * commands should fail with a DID_RESET in the host byte.&n;     * The Scsi_Cmnd  is passed so that the reset routine can figure&n;     * out which host adapter should be reset, and also which command&n;     * within the command block was responsible for the reset in&n;     * the first place.&t; Some hosts do not implement a reset function,&n;     * and these hosts must call scsi_request_sense(SCpnt) to keep&n;     * the command alive.&n;     *&n;     * NOTE - this interface is depreciated, and will go away.  Use&n;     * the eh_ routines instead.&n;     */
-DECL|member|reset
-r_int
-(paren
-op_star
-id|reset
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     * Once the device has responded to an INQUIRY and we know the device&n;     * is online, call into the low level driver with the Scsi_Device *&n;     * (so that the low level driver may save it off in a safe location&n;     * for later use in calling scsi_adjust_queue_depth() or possibly&n;     * other scsi_* functions) and char * to the INQUIRY return data buffer.&n;     * This way, low level drivers will no longer have to snoop INQUIRY data&n;     * to see if a drive supports PPR message protocol for Ultra160 speed&n;     * negotiations or other similar items.  Instead it can simply wait until&n;     * the scsi mid layer calls them with the data in hand and then it can&n;     * do it&squot;s checking of INQUIRY data.  This will happen once for each new&n;     * device added on this controller (including once for each lun on&n;     * multi-lun devices, so low level drivers should take care to make&n;     * sure that if they do tagged queueing on a per physical unit basis&n;     * instead of a per logical unit basis that they have the mid layer&n;     * allocate tags accordingly).&n;     *&n;     * Things currently recommended to be handled at this time include:&n;     *&n;     * 1.  Checking for tagged queueing capability and if able then calling&n;     *     scsi_adjust_queue_depth() with the device pointer and the&n;     *     suggested new queue depth.&n;     * 2.  Checking for things such as SCSI level or DT bit in order to&n;     *     determine if PPR message protocols are appropriate on this&n;     *     device (or any other scsi INQUIRY data specific things the&n;     *     driver wants to know in order to properly handle this device).&n;     * 3.  Allocating command structs that the device will need.&n;     * 4.  Setting the default timeout on this device (if needed).&n;     * 5.  Saving the Scsi_Device pointer so that the low level driver&n;     *     will be able to easily call back into scsi_adjust_queue_depth&n;     *     again should it be determined that the queue depth for this&n;     *     device should be lower or higher than it is initially set to.&n;     * 6.  Allocate device data structures as needed that can be attached&n;     *     to the Scsi_Device * via SDpnt-&gt;host_device_ptr&n;     * 7.  Anything else the low level driver might want to do on a device&n;     *     specific setup basis...&n;     * 8.  Return 0 on success, non-0 on error.  The device will be marked&n;     *     as offline on error so that no access will occur.&n;     */
 DECL|member|slave_attach
 r_int
