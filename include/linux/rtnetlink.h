@@ -1553,6 +1553,8 @@ r_int
 id|len
 )paren
 suffix:semicolon
+DECL|macro|rtattr_parse_nested
+mdefine_line|#define rtattr_parse_nested(tb, max, rta) &bslash;&n;&t;rtattr_parse((tb), (max), RTA_DATA((rta)), RTA_PAYLOAD((rta)))
 r_extern
 r_struct
 id|sock
