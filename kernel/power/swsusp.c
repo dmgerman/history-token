@@ -2053,7 +2053,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;suspend_save_image - Prepare and write saved image to swap.&n; *&n; *&t;IRQs are re-enabled here so we can resume devices and safely write &n; *&t;to the swap devices. We disable them again before we leave.&n; *&n; *&t;The second lock_swapdevices() will unlock ignored swap devices since&n; *&t;writing is finished.&n; *&t;It is important _NOT_ to umount filesystems at this point. We want&n; *&t;them synced (in case something goes wrong) but we DO not want to mark&n; *&t;filesystem clean: it is not. (And it does not matter, if we resume&n; *&t;correctly, we&squot;ll mark system clean, anyway.)&n; */
+multiline_comment|/**&n; *&t;suspend_save_image - Prepare and write saved image to swap.&n; *&n; *&t;IRQs are re-enabled here so we can resume devices and safely write&n; *&t;to the swap devices. We disable them again before we leave.&n; *&n; *&t;The second lock_swapdevices() will unlock ignored swap devices since&n; *&t;writing is finished.&n; *&t;It is important _NOT_ to umount filesystems at this point. We want&n; *&t;them synced (in case something goes wrong) but we DO not want to mark&n; *&t;filesystem clean: it is not. (And it does not matter, if we resume&n; *&t;correctly, we&squot;ll mark system clean, anyway.)&n; */
 DECL|function|suspend_save_image
 r_static
 r_int
@@ -2135,7 +2135,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* swsusp_arch_suspend() is implemented in arch/?/power/swsusp.S, &n;   and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;swsusp_suspend();&n;&t;&t;return;&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;swsusp_resume();&n;&n; */
+multiline_comment|/* swsusp_arch_suspend() is implemented in arch/?/power/swsusp.S,&n;   and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;swsusp_suspend();&n;&t;&t;return;&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;swsusp_resume();&n;&n; */
 DECL|function|swsusp_suspend
 r_int
 id|swsusp_suspend
@@ -2834,7 +2834,7 @@ id|block_device
 op_star
 id|resume_bdev
 suffix:semicolon
-multiline_comment|/**&n; *&t;Using bio to read from swap. &n; *&t;This code requires a bit more work than just using buffer heads&n; *&t;but, it is the recommended way for 2.5/2.6. &n; *&t;The following are to signal the beginning and end of I/O. Bios &n; *&t;finish asynchronously, while we want them to happen synchronously.&n; *&t;A simple atomic_t, and a wait loop take care of this problem.&n; */
+multiline_comment|/**&n; *&t;Using bio to read from swap.&n; *&t;This code requires a bit more work than just using buffer heads&n; *&t;but, it is the recommended way for 2.5/2.6.&n; *&t;The following are to signal the beginning and end of I/O. Bios&n; *&t;finish asynchronously, while we want them to happen synchronously.&n; *&t;A simple atomic_t, and a wait loop take care of this problem.&n; */
 DECL|variable|io_done
 r_static
 id|atomic_t
@@ -2929,7 +2929,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;submit - submit BIO request.&n; *&t;@rw:&t;READ or WRITE.&n; *&t;@off&t;physical offset of page.&n; *&t;@page:&t;page we&squot;re reading or writing.&n; *&n; *&t;Straight from the textbook - allocate and initialize the bio.&n; *&t;If we&squot;re writing, make sure the page is marked as dirty. &n; *&t;Then submit it and wait. &n; */
+multiline_comment|/**&n; *&t;submit - submit BIO request.&n; *&t;@rw:&t;READ or WRITE.&n; *&t;@off&t;physical offset of page.&n; *&t;@page:&t;page we&squot;re reading or writing.&n; *&n; *&t;Straight from the textbook - allocate and initialize the bio.&n; *&t;If we&squot;re writing, make sure the page is marked as dirty.&n; *&t;Then submit it and wait.&n; */
 DECL|function|submit
 r_static
 r_int
@@ -3218,7 +3218,7 @@ id|cur
 r_goto
 id|Done
 suffix:semicolon
-multiline_comment|/* &n;&t; * We have to read next position before we overwrite it &n;&t; */
+multiline_comment|/*&n;&t; * We have to read next position before we overwrite it&n;&t; */
 id|next
 op_assign
 id|next_entry
@@ -3744,7 +3744,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;swsusp_write - Write saved memory image to swap.&n; *&n; *&t;swsusp_arch_suspend(0) returns after system is resumed.&n; *&n; *&t;swsusp_arch_suspend() copies all &quot;used&quot; memory to &quot;free&quot; memory, &n; *&t;then unsuspends all device drivers, and writes memory to disk&n; *&t;using normal kernel mechanism.&n; */
+multiline_comment|/**&n; *&t;swsusp_write - Write saved memory image to swap.&n; *&n; *&t;swsusp_arch_suspend(0) returns after system is resumed.&n; *&n; *&t;swsusp_arch_suspend() copies all &quot;used&quot; memory to &quot;free&quot; memory,&n; *&t;then unsuspends all device drivers, and writes memory to disk&n; *&t;using normal kernel mechanism.&n; */
 DECL|function|swsusp_write
 r_int
 id|swsusp_write

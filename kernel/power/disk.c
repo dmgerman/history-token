@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * &n; * This file is release under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is release under the GPLv2&n; *&n; */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -65,7 +65,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;power_down - Shut machine down for hibernate.&n; *&t;@mode:&t;&t;Suspend-to-disk mode&n; *&n; *&t;Use the platform driver, if configured so, and return gracefully if it&n; *&t;fails. &n; *&t;Otherwise, try to power off and reboot. If they fail, halt the machine,&n; *&t;there ain&squot;t no turning back.&n; */
+multiline_comment|/**&n; *&t;power_down - Shut machine down for hibernate.&n; *&t;@mode:&t;&t;Suspend-to-disk mode&n; *&n; *&t;Use the platform driver, if configured so, and return gracefully if it&n; *&t;fails.&n; *&t;Otherwise, try to power off and reboot. If they fail, halt the machine,&n; *&t;there ain&squot;t no turning back.&n; */
 DECL|function|power_down
 r_static
 r_int
@@ -174,7 +174,7 @@ id|__nosavedata
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/**&n; *&t;free_some_memory -  Try to free as much memory as possible&n; *&n; *&t;... but do not OOM-kill anyone&n; *&n; *&t;Notice: all userland should be stopped at this point, or &n; *&t;livelock is possible.&n; */
+multiline_comment|/**&n; *&t;free_some_memory -  Try to free as much memory as possible&n; *&n; *&t;... but do not OOM-kill anyone&n; *&n; *&t;Notice: all userland should be stopped at this point, or&n; *&t;livelock is possible.&n; */
 DECL|function|free_some_memory
 r_static
 r_void
@@ -406,7 +406,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pm_suspend_disk - The granpappy of power management.&n; *&t;&n; *&t;If we&squot;re going through the firmware, then get it over with quickly.&n; *&n; *&t;If not, then call swsusp to do it&squot;s thing, then figure out how&n; *&t;to power down the system.&n; */
+multiline_comment|/**&n; *&t;pm_suspend_disk - The granpappy of power management.&n; *&n; *&t;If we&squot;re going through the firmware, then get it over with quickly.&n; *&n; *&t;If not, then call swsusp to do it&squot;s thing, then figure out how&n; *&t;to power down the system.&n; */
 DECL|function|pm_suspend_disk
 r_int
 id|pm_suspend_disk
@@ -491,7 +491,7 @@ c_func
 l_string|&quot;PM: writing image.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * FIXME: Leftover from swsusp. Are they necessary? &n;&t; */
+multiline_comment|/*&n;&t; * FIXME: Leftover from swsusp. Are they necessary?&n;&t; */
 id|mb
 c_func
 (paren
@@ -561,7 +561,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pm_resume - Resume from a saved image.&n; *&n; *&t;Called as a late_initcall (so all devices are discovered and &n; *&t;initialized), we call swsusp to see if we have a saved image or not.&n; *&t;If so, we quiesce devices, the restore the saved image. We will &n; *&t;return above (in pm_suspend_disk() ) if everything goes well. &n; *&t;Otherwise, we fail gracefully and return to the normally &n; *&t;scheduled program.&n; *&n; */
+multiline_comment|/**&n; *&t;pm_resume - Resume from a saved image.&n; *&n; *&t;Called as a late_initcall (so all devices are discovered and&n; *&t;initialized), we call swsusp to see if we have a saved image or not.&n; *&t;If so, we quiesce devices, the restore the saved image. We will&n; *&t;return above (in pm_suspend_disk() ) if everything goes well.&n; *&t;Otherwise, we fail gracefully and return to the normally&n; *&t;scheduled program.&n; *&n; */
 DECL|function|pm_resume
 r_static
 r_int
@@ -631,7 +631,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: The following (comment and mdelay()) are from swsusp. &n;&t; * Are they really necessary? &n;&t; *&n;&t; * We do not want some readahead with DMA to corrupt our memory, right?&n;&t; * Do it with disabled interrupts for best effect. That way, if some&n;&t; * driver scheduled DMA, we have good chance for DMA to finish ;-).&n;&t; */
+multiline_comment|/* FIXME: The following (comment and mdelay()) are from swsusp.&n;&t; * Are they really necessary?&n;&t; *&n;&t; * We do not want some readahead with DMA to corrupt our memory, right?&n;&t; * Do it with disabled interrupts for best effect. That way, if some&n;&t; * driver scheduled DMA, we have good chance for DMA to finish ;-).&n;&t; */
 id|pr_debug
 c_func
 (paren
@@ -732,7 +732,7 @@ l_string|&quot;reboot&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;disk - Control suspend-to-disk mode&n; *&n; *&t;Suspend-to-disk can be handled in several ways. The greatest &n; *&t;distinction is who writes memory to disk - the firmware or the OS.&n; *&t;If the firmware does it, we assume that it also handles suspending &n; *&t;the system.&n; *&t;If the OS does it, then we have three options for putting the system&n; *&t;to sleep - using the platform driver (e.g. ACPI or other PM registers),&n; *&t;powering off the system or rebooting the system (for testing). &n; *&n; *&t;The system will support either &squot;firmware&squot; or &squot;platform&squot;, and that is&n; *&t;known a priori (and encoded in pm_ops). But, the user may choose&n; *&t;&squot;shutdown&squot; or &squot;reboot&squot; as alternatives.&n; *&n; *&t;show() will display what the mode is currently set to. &n; *&t;store() will accept one of&n; *&n; *&t;&squot;firmware&squot;&n; *&t;&squot;platform&squot;&n; *&t;&squot;shutdown&squot;&n; *&t;&squot;reboot&squot;&n; *&n; *&t;It will only change to &squot;firmware&squot; or &squot;platform&squot; if the system&n; *&t;supports it (as determined from pm_ops-&gt;pm_disk_mode).&n; */
+multiline_comment|/**&n; *&t;disk - Control suspend-to-disk mode&n; *&n; *&t;Suspend-to-disk can be handled in several ways. The greatest&n; *&t;distinction is who writes memory to disk - the firmware or the OS.&n; *&t;If the firmware does it, we assume that it also handles suspending&n; *&t;the system.&n; *&t;If the OS does it, then we have three options for putting the system&n; *&t;to sleep - using the platform driver (e.g. ACPI or other PM registers),&n; *&t;powering off the system or rebooting the system (for testing).&n; *&n; *&t;The system will support either &squot;firmware&squot; or &squot;platform&squot;, and that is&n; *&t;known a priori (and encoded in pm_ops). But, the user may choose&n; *&t;&squot;shutdown&squot; or &squot;reboot&squot; as alternatives.&n; *&n; *&t;show() will display what the mode is currently set to.&n; *&t;store() will accept one of&n; *&n; *&t;&squot;firmware&squot;&n; *&t;&squot;platform&squot;&n; *&t;&squot;shutdown&squot;&n; *&t;&squot;reboot&squot;&n; *&n; *&t;It will only change to &squot;firmware&squot; or &squot;platform&squot; if the system&n; *&t;supports it (as determined from pm_ops-&gt;pm_disk_mode).&n; */
 DECL|function|disk_show
 r_static
 id|ssize_t
