@@ -752,7 +752,7 @@ c_func
 id|KERN_WARNING
 id|PFX
 l_string|&quot;Warning: Pentium 4-M detected. &quot;
-l_string|&quot;The speedstep-ich or acpi cpufreq modules offers &quot;
+l_string|&quot;The speedstep-ich or acpi cpufreq modules offer &quot;
 l_string|&quot;voltage scaling in addition of frequency scaling. &quot;
 l_string|&quot;You should use either one instead of p4-clockmod, &quot;
 l_string|&quot;if possible.&bslash;n&quot;
