@@ -687,11 +687,6 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
-r_void
-op_star
-op_star
-id|pslot
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -711,7 +706,7 @@ id|mapping-&gt;page_lock
 suffix:semicolon
 id|err
 op_assign
-id|radix_tree_reserve
+id|radix_tree_insert
 c_func
 (paren
 op_amp
@@ -719,8 +714,7 @@ id|swapper_space.page_tree
 comma
 id|entry.val
 comma
-op_amp
-id|pslot
+id|page
 )paren
 suffix:semicolon
 r_if
@@ -735,11 +729,6 @@ c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-op_star
-id|pslot
-op_assign
-id|page
 suffix:semicolon
 id|___add_to_page_cache
 c_func
@@ -855,11 +844,6 @@ id|mapping
 id|swp_entry_t
 id|entry
 suffix:semicolon
-r_void
-op_star
-op_star
-id|pslot
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -914,7 +898,7 @@ id|mapping-&gt;page_lock
 suffix:semicolon
 id|err
 op_assign
-id|radix_tree_reserve
+id|radix_tree_insert
 c_func
 (paren
 op_amp
@@ -922,8 +906,7 @@ id|mapping-&gt;page_tree
 comma
 id|index
 comma
-op_amp
-id|pslot
+id|page
 )paren
 suffix:semicolon
 r_if
@@ -938,11 +921,6 @@ c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-op_star
-id|pslot
-op_assign
-id|page
 suffix:semicolon
 id|___add_to_page_cache
 c_func

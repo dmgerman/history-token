@@ -928,6 +928,17 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vma
+op_eq
+id|next
+)paren
+id|vma
+op_assign
+id|prev
+suffix:semicolon
 id|mm-&gt;map_count
 op_decrement
 suffix:semicolon
