@@ -3923,7 +3923,6 @@ id|idev
 (brace
 multiline_comment|/* XXX: count this drop? */
 r_return
-l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -3974,7 +3973,6 @@ id|idev
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 r_if
