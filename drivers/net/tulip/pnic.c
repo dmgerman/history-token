@@ -23,15 +23,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 id|u32
 id|phy_reg
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -120,7 +122,7 @@ l_int|0x01860000
 suffix:colon
 l_int|0x00420000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x32
@@ -143,7 +145,7 @@ id|dev-&gt;if_port
 op_amp
 l_int|1
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x1F868
@@ -244,15 +246,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|phy_reg
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -283,7 +287,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -294,11 +298,11 @@ op_amp
 id|TPLnkFail
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -355,7 +359,7 @@ op_amp
 l_int|0x0000fdff
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;csr6
@@ -365,7 +369,7 @@ op_plus
 id|CSR6
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x30
@@ -375,7 +379,7 @@ op_plus
 id|CSR12
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0201F078
@@ -396,7 +400,7 @@ r_else
 r_if
 c_cond
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -448,11 +452,11 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|outl
+id|iowrite32
 c_func
 (paren
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -506,10 +510,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|next_tick
@@ -522,7 +528,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -584,7 +590,7 @@ r_else
 r_int
 id|csr12
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -603,7 +609,7 @@ suffix:semicolon
 r_int
 id|phy_reg
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -614,7 +620,7 @@ suffix:semicolon
 r_int
 id|csr5
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -657,7 +663,7 @@ l_int|0x04000000
 )paren
 (brace
 multiline_comment|/* Remote link fault */
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0201F078
@@ -734,7 +740,7 @@ id|dev-&gt;if_port
 comma
 id|csr12
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -742,7 +748,7 @@ op_plus
 id|CSR5
 )paren
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -797,7 +803,7 @@ id|dev-&gt;if_port
 op_assign
 l_int|3
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x33
@@ -811,7 +817,7 @@ id|new_csr6
 op_assign
 l_int|0x01860000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x1F868
@@ -828,7 +834,7 @@ id|dev-&gt;if_port
 op_assign
 l_int|0
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x32
@@ -842,7 +848,7 @@ id|new_csr6
 op_assign
 l_int|0x00420000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x1F078
@@ -929,7 +935,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -972,7 +978,7 @@ c_func
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tulip_tbl
