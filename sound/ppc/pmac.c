@@ -779,7 +779,7 @@ id|chip-&gt;format
 op_assign
 id|runtime-&gt;format
 suffix:semicolon
-multiline_comment|/* We really want to execute a DMA stop command, after the AWACS&n;&t; * is initialized.&n;&t; * For reasons I don&squot;t understand, it stops the hissing noise&n;&t; * common to many PowerBook G3 systems (like mine :-).&n;&t; */
+multiline_comment|/* We really want to execute a DMA stop command, after the AWACS&n;&t; * is initialized.&n;&t; * For reasons I don&squot;t understand, it stops the hissing noise&n;&t; * common to many PowerBook G3 systems and random noise otherwise&n;&t; * captured on iBook2&squot;s about every third time. -ReneR&n;&t; */
 id|spin_lock_irq
 c_func
 (paren
@@ -793,14 +793,6 @@ c_func
 id|rec
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rec-&gt;stream
-op_eq
-id|SNDRV_PCM_STREAM_PLAYBACK
-)paren
-(brace
 id|st_le16
 c_func
 (paren
@@ -827,7 +819,12 @@ comma
 id|RUN
 )paren
 suffix:semicolon
-)brace
+id|mdelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
 multiline_comment|/* continuous DMA memory type doesn&squot;t provide the physical address,&n;&t; * so we need to resolve the address here...&n;&t; */
 id|offset
 op_assign
