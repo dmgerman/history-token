@@ -2701,7 +2701,9 @@ id|pAT
 op_plus
 l_int|1
 op_plus
-l_int|256
+id|NFS3_MAXPATHLEN
+op_div
+l_int|4
 )paren
 comma
 id|PROC
