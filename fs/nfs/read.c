@@ -1122,7 +1122,7 @@ c_func
 (paren
 id|page
 comma
-id|req-&gt;wb_offset
+id|req-&gt;wb_pgbase
 op_plus
 id|count
 comma

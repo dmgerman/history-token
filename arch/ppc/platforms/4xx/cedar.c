@@ -4,18 +4,16 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_PPC_RTC
 macro_line|#include &lt;asm/todc.h&gt;
-macro_line|#endif
-DECL|variable|ceder_rtc_base
+DECL|variable|cedar_rtc_base
 r_void
 op_star
-id|ceder_rtc_base
+id|cedar_rtc_base
 suffix:semicolon
 r_void
 id|__init
-DECL|function|board_setup_arch
-id|board_setup_arch
+DECL|function|cedar_setup_arch
+id|cedar_setup_arch
 c_func
 (paren
 r_void
@@ -25,39 +23,32 @@ id|bd_t
 op_star
 id|bip
 op_assign
-(paren
-id|bd_t
-op_star
-)paren
+op_amp
 id|__res
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_RTC
 multiline_comment|/* RTC step for the walnut */
-id|ceder_rtc_base
+id|cedar_rtc_base
 op_assign
 (paren
 r_void
 op_star
 )paren
-id|CEDER_RTC_VADDR
+id|CEDAR_RTC_VADDR
 suffix:semicolon
 id|TODC_INIT
 c_func
 (paren
 id|TODC_TYPE_DS1743
 comma
-id|ceder_rtc_base
+id|cedar_rtc_base
 comma
-id|ceder_rtc_base
+id|cedar_rtc_base
 comma
-id|ceder_rtc_base
+id|cedar_rtc_base
 comma
 l_int|8
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_RTC */
-DECL|macro|CONFIG_DEBUG_BRINGUP
-mdefine_line|#define CONFIG_DEBUG_BRINGUP
 macro_line|#ifdef CONFIG_DEBUG_BRINGUP
 id|printk
 c_func
@@ -266,24 +257,35 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Identify the system */
+id|printk
+(paren
+l_string|&quot;IBM Cedar port (C) 2002 MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_io_mapping
-id|board_io_mapping
+DECL|function|cedar_map_io
+id|cedar_map_io
 c_func
 (paren
 r_void
 )paren
 (brace
+id|ppc4xx_map_io
+c_func
+(paren
+)paren
+suffix:semicolon
 id|io_block_mapping
 c_func
 (paren
-id|CEDER_RTC_VADDR
+id|CEDAR_RTC_VADDR
 comma
-id|CEDER_RTC_PADDR
+id|CEDAR_RTC_PADDR
 comma
-id|CEDER_RTC_SIZE
+id|CEDAR_RTC_SIZE
 comma
 id|_PAGE_IO
 )paren
@@ -291,24 +293,53 @@ suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_setup_irq
-id|board_setup_irq
+DECL|function|platform_init
+id|platform_init
 c_func
 (paren
-r_void
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
 )paren
 (brace
-)brace
-r_void
-id|__init
-DECL|function|board_init
-id|board_init
+id|ppc4xx_init
 c_func
 (paren
-r_void
+id|r3
+comma
+id|r4
+comma
+id|r5
+comma
+id|r6
+comma
+id|r7
 )paren
-(brace
-macro_line|#ifdef CONFIG_PPC_RTC
+suffix:semicolon
+id|ppc_md.setup_arch
+op_assign
+id|cedar_setup_arch
+suffix:semicolon
+id|ppc_md.setup_io_mappings
+op_assign
+id|cedar_map_io
+suffix:semicolon
 id|ppc_md.time_init
 op_assign
 id|todc_time_init
@@ -329,6 +360,5 @@ id|ppc_md.nvram_write_val
 op_assign
 id|todc_direct_write_val
 suffix:semicolon
-macro_line|#endif
 )brace
 eof

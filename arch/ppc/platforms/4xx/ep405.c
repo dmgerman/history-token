@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Copyright 2001 MontaVista Software Inc.&n; *        &lt;mlocke@mvista.com&gt;&n; *&n; * &t;Not much is needed for the Embedded Planet 405gp board&n; *&n; */
+multiline_comment|/*&n; *    Copyright 2001 MontaVista Software Inc.&n; *        &lt;mlocke@mvista.com&gt;&n; *&n; * &t;Not much needed for the Embedded Planet 405gp board&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
-macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
+macro_line|#include &lt;asm/ibm_ocp_pci.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
@@ -61,8 +61,6 @@ multiline_comment|/* EP405PC: USB */
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|macro|EP405_DEVTABLE_SIZE
-mdefine_line|#define EP405_DEVTABLE_SIZE (sizeof(ep405_devtable)/sizeof(ep405_devtable[0]))
 r_int
 id|__init
 DECL|function|ppc405_map_irq
@@ -96,7 +94,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|EP405_DEVTABLE_SIZE
+id|ARRAY_SIZE
+c_func
+(paren
+id|ep405_devtable
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -131,27 +133,22 @@ suffix:semicolon
 suffix:semicolon
 r_void
 id|__init
-DECL|function|board_setup_arch
-id|board_setup_arch
+DECL|function|ep405_setup_arch
+id|ep405_setup_arch
 c_func
 (paren
 r_void
 )paren
 (brace
-id|bd_t
-op_star
-id|bip
-op_assign
+id|ppc4xx_setup_arch
+c_func
 (paren
-id|bd_t
-op_star
 )paren
-id|__res
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|bip-&gt;bi_nvramsize
+id|__res.bi_nvramsize
 op_eq
 l_int|512
 op_star
@@ -664,8 +661,8 @@ multiline_comment|/* end work arround */
 )brace
 r_void
 id|__init
-DECL|function|board_io_mapping
-id|board_io_mapping
+DECL|function|ep405_map_io
+id|ep405_map_io
 c_func
 (paren
 r_void
@@ -675,11 +672,13 @@ id|bd_t
 op_star
 id|bip
 op_assign
-(paren
-id|bd_t
-op_star
-)paren
+op_amp
 id|__res
+suffix:semicolon
+id|ppc4xx_map_io
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ep405_bcsr
 op_assign
@@ -713,8 +712,8 @@ suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_setup_irq
-id|board_setup_irq
+DECL|function|ep405_init_IRQ
+id|ep405_init_IRQ
 c_func
 (paren
 r_void
@@ -722,6 +721,11 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+id|ppc4xx_init_IRQ
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Workaround for a bug in the firmware it incorrectly sets&n;&t;   the IRQ polarities for XIRQ0 and XIRQ1 */
 id|mtdcr
@@ -771,7 +775,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|EP405_DEVTABLE_SIZE
+id|ARRAY_SIZE
+c_func
+(paren
+id|ep405_devtable
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -840,25 +848,57 @@ suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_init
-id|board_init
+DECL|function|platform_init
+id|platform_init
 c_func
 (paren
-r_void
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_RTC
-id|bd_t
-op_star
-id|bip
-op_assign
+id|ppc4xx_init
+c_func
 (paren
-id|bd_t
-op_star
+id|r3
+comma
+id|r4
+comma
+id|r5
+comma
+id|r6
+comma
+id|r7
 )paren
-id|__res
 suffix:semicolon
-multiline_comment|/* FIXME: we should be able to access the NVRAM even if PPC_RTC is not configured */
+id|ppc_md.setup_arch
+op_assign
+id|ep405_setup_arch
+suffix:semicolon
+id|ppc_md.setup_io_mappings
+op_assign
+id|ep405_map_io
+suffix:semicolon
+id|ppc_md.init_IRQ
+op_assign
+id|ep405_init_IRQ
+suffix:semicolon
 id|ppc_md.nvram_read_val
 op_assign
 id|todc_direct_read_val
@@ -870,7 +910,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bip-&gt;bi_nvramsize
+id|__res.bi_nvramsize
 op_eq
 l_int|512
 op_star
@@ -899,6 +939,5 @@ l_string|&quot;EP405: NVRTC size is not 512k (not a DS1557).  Not sure what to d
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 eof

@@ -455,6 +455,28 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|bio_set_pages_dirty
+c_func
+(paren
+r_struct
+id|bio
+op_star
+id|bio
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|bio_check_pages_dirty
+c_func
+(paren
+r_struct
+id|bio
+op_star
+id|bio
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
 multiline_comment|/*&n; * remember to add offset! and never ever reenable interrupts between a&n; * bio_kmap_irq and bio_kunmap_irq!!&n; *&n; * This function MUST be inlined - it plays with the CPU interrupt flags.&n; * Hence the `extern inline&squot;.&n; */
 DECL|function|bio_kmap_irq

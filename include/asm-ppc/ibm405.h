@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ibm405.h&n; *&n; *&t;This was derived from the ppc4xx.h and contains&n; *&t;common 405 offsets&n; *&n; *      Armin Kuster akuster@pacbell.net&n; *      Jan, 2002&n; *&n; *&n; * Copyright 2002 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Version 1.0 (02/01/17) - A. Kuster&n; *&t;Initial version&t; - moved 405  specific out of the other core.h&squot;s&n; *&n; *&t;Version 1.0 (02/08/02) - A. Kuster&n; *&t;removed DCRN_UIC1_BASE to NP405L &amp; H&n; */
+multiline_comment|/*&n; * ibm405.h&n; *&n; *&t;This was derived from the ppc4xx.h and contains&n; *&t;common 405 offsets&n; *&n; *      Armin Kuster akuster@pacbell.net&n; *      Jan, 2002&n; *&n; *&n; * Copyright 2002 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_IBM405_H__
 DECL|macro|__ASM_IBM405_H__
@@ -28,6 +28,13 @@ DECL|macro|ET_BUSERR
 mdefine_line|#define ET_BUSERR&t;4
 DECL|macro|ET_BUSTO
 mdefine_line|#define ET_BUSTO&t;6
+multiline_comment|/* Clock and power management shifts for emacs */
+DECL|macro|IBM_CPM_EMMII
+mdefine_line|#define IBM_CPM_EMMII&t;0&t;/* Shift value for MII */
+DECL|macro|IBM_CPM_EMRX
+mdefine_line|#define IBM_CPM_EMRX&t;1&t;/* Shift value for recv */
+DECL|macro|IBM_CPM_EMTX
+mdefine_line|#define IBM_CPM_EMTX&t;2&t;/* Shift value for MAC */
 macro_line|#ifdef DCRN_CHCR_BASE
 DECL|macro|DCRN_CHCR0
 mdefine_line|#define DCRN_CHCR0&t;(DCRN_CHCR_BASE + 0x0)&t;/* Chip Control Register 1 */
@@ -292,23 +299,6 @@ DECL|macro|DCRN_MALRCBS0
 mdefine_line|#define DCRN_MALRCBS0(base)&t;((base) + 0x60)&t;/* Channel Rx 0 Channel Buffer Size */
 DECL|macro|DCRN_MALRCBS1
 mdefine_line|#define DCRN_MALRCBS1(base)&t;((base) + 0x61)&t;/* Channel Rx 1 Channel Buffer Size */
-multiline_comment|/* EMAC DCRN&squot;s */
-DECL|macro|DCRN_MALRXCTP2R
-mdefine_line|#define DCRN_MALRXCTP2R(base)&t;((base) + 0x42)&t;/* Channel Rx 2 Channel Table Pointer */
-DECL|macro|DCRN_MALRXCTP3R
-mdefine_line|#define DCRN_MALRXCTP3R(base)&t;((base) + 0x43)&t;/* Channel Rx 3 Channel Table Pointer */
-DECL|macro|DCRN_MALTXCTP4R
-mdefine_line|#define DCRN_MALTXCTP4R(base)&t;((base) + 0x24)&t;/* Channel Tx 4 Channel Table Pointer */
-DECL|macro|DCRN_MALTXCTP5R
-mdefine_line|#define DCRN_MALTXCTP5R(base)&t;((base) + 0x25)&t;/* Channel Tx 5 Channel Table Pointer */
-DECL|macro|DCRN_MALTXCTP6R
-mdefine_line|#define DCRN_MALTXCTP6R(base)&t;((base) + 0x26)&t;/* Channel Tx 6 Channel Table Pointer */
-DECL|macro|DCRN_MALTXCTP7R
-mdefine_line|#define DCRN_MALTXCTP7R(base)&t;((base) + 0x27)&t;/* Channel Tx 7 Channel Table Pointer */
-DECL|macro|DCRN_MALRCBS2
-mdefine_line|#define DCRN_MALRCBS2(base)&t;((base) + 0x62)&t;/* Channel Rx 2 Channel Buffer Size */
-DECL|macro|DCRN_MALRCBS3
-mdefine_line|#define DCRN_MALRCBS3(base)&t;((base) + 0x63)&t;/* Channel Rx 3 Channel Buffer Size */
 multiline_comment|/* DCRN_MALCR */
 DECL|macro|MALCR_MMSR
 mdefine_line|#define MALCR_MMSR&t;&t;0x80000000&t;/* MAL Software reset */

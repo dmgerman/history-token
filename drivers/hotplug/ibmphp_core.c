@@ -3171,12 +3171,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* This routine is to find the pci_bus from kernel structures.&n; * Parameters: bus number&n; * Returns : pci_bus *  or NULL if not found&n; */
-DECL|function|find_bus
+DECL|function|ibmphp_find_bus
 r_static
 r_struct
 id|pci_bus
 op_star
-id|find_bus
+id|ibmphp_find_bus
 (paren
 id|u8
 id|busno
@@ -3195,7 +3195,9 @@ id|bus
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;inside find_bus, busno = %x &bslash;n&quot;
+l_string|&quot;inside %s, busno = %x &bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|busno
 )paren
@@ -4140,7 +4142,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|find_bus
+id|ibmphp_find_bus
 (paren
 id|busno
 )paren
@@ -4449,7 +4451,7 @@ l_int|NULL
 (brace
 id|dev0.bus
 op_assign
-id|find_bus
+id|ibmphp_find_bus
 (paren
 id|func-&gt;busno
 )paren
@@ -6887,7 +6889,7 @@ suffix:semicolon
 )brace
 id|bus
 op_assign
-id|find_bus
+id|ibmphp_find_bus
 (paren
 l_int|0
 )paren

@@ -345,6 +345,27 @@ op_ne
 (paren
 id|err
 op_assign
+id|saa7134_pgtable_alloc
+c_func
+(paren
+id|dev-&gt;pci
+comma
+op_amp
+id|dev-&gt;oss.pt
+)paren
+)paren
+)paren
+r_goto
+id|fail1
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+(paren
+id|err
+op_assign
 id|saa7134_pgtable_build
 c_func
 (paren
@@ -362,7 +383,7 @@ l_int|0
 )paren
 )paren
 r_goto
-id|fail1
+id|fail2
 suffix:semicolon
 multiline_comment|/* sample format */
 r_switch
