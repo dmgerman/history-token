@@ -1,6 +1,9 @@
 macro_line|#ifndef _LINUX_SISFB
 DECL|macro|_LINUX_SISFB
 mdefine_line|#define _LINUX_SISFB
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/ioctl.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 DECL|macro|DISPTYPE_CRT1
 mdefine_line|#define DISPTYPE_CRT1       0x00000008L
 DECL|macro|DISPTYPE_CRT2
@@ -35,6 +38,7 @@ DECL|macro|HASVB_303
 mdefine_line|#define HASVB_303       &t;0x40
 DECL|macro|HASVB_CHRONTEL
 mdefine_line|#define HASVB_CHRONTEL  &t;0x80
+multiline_comment|/* TW: *Never* change the order of the following enum */
 DECL|enum|_SIS_CHIP_TYPE
 r_typedef
 r_enum
@@ -75,6 +79,9 @@ comma
 DECL|enumerator|SIS_740
 id|SIS_740
 comma
+DECL|enumerator|SIS_650
+id|SIS_650
+comma
 DECL|enumerator|SIS_330
 id|SIS_330
 comma
@@ -83,6 +90,26 @@ id|MAX_SIS_CHIP
 DECL|typedef|SIS_CHIP_TYPE
 )brace
 id|SIS_CHIP_TYPE
+suffix:semicolon
+DECL|enum|_VGA_ENGINE
+r_typedef
+r_enum
+id|_VGA_ENGINE
+(brace
+DECL|enumerator|UNKNOWN_VGA
+id|UNKNOWN_VGA
+op_assign
+l_int|0
+comma
+DECL|enumerator|SIS_300_VGA
+id|SIS_300_VGA
+comma
+DECL|enumerator|SIS_315_VGA
+id|SIS_315_VGA
+comma
+DECL|typedef|VGA_ENGINE
+)brace
+id|VGA_ENGINE
 suffix:semicolon
 DECL|enum|_TVTYPE
 r_typedef
@@ -279,9 +306,23 @@ r_int
 r_int
 id|vga_base
 suffix:semicolon
+DECL|member|mtrr
+r_int
+r_int
+id|mtrr
+suffix:semicolon
+DECL|member|heapstart
+r_int
+r_int
+id|heapstart
+suffix:semicolon
 DECL|member|video_bpp
 r_int
 id|video_bpp
+suffix:semicolon
+DECL|member|video_cmap_len
+r_int
+id|video_cmap_len
 suffix:semicolon
 DECL|member|video_width
 r_int
@@ -306,6 +347,10 @@ suffix:semicolon
 DECL|member|org_y
 r_int
 id|org_y
+suffix:semicolon
+DECL|member|video_linelength
+r_int
+id|video_linelength
 suffix:semicolon
 DECL|member|refresh_rate
 r_int
@@ -341,6 +386,26 @@ r_int
 r_char
 id|revision_id
 suffix:semicolon
+DECL|member|DstColor
+r_int
+r_int
+id|DstColor
+suffix:semicolon
+multiline_comment|/* TW: For 2d acceleration */
+DECL|member|SiS310_AccelDepth
+r_int
+r_int
+id|SiS310_AccelDepth
+suffix:semicolon
+DECL|member|CommandReg
+r_int
+r_int
+id|CommandReg
+suffix:semicolon
+DECL|member|lockaccel
+id|spinlock_t
+id|lockaccel
+suffix:semicolon
 DECL|member|reserved
 r_char
 id|reserved
@@ -348,6 +413,82 @@ id|reserved
 l_int|256
 )braket
 suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* TW: Addtional IOCTL for communication sisfb &lt;&gt; X driver                 */
+multiline_comment|/*     If changing this, vgatypes.h must also be changed (for X driver)    */
+multiline_comment|/* TW: ioctl for identifying and giving some info (esp. memory heap start) */
+DECL|macro|SISFB_GET_INFO
+mdefine_line|#define SISFB_GET_INFO&t;  _IOR(&squot;n&squot;,0xF8,sizeof(__u32))
+multiline_comment|/* TW: Structure argument for SISFB_GET_INFO ioctl  */
+DECL|typedef|sisfb_info
+DECL|typedef|psisfb_info
+r_typedef
+r_struct
+id|_SISFB_INFO
+id|sisfb_info
+comma
+op_star
+id|psisfb_info
+suffix:semicolon
+DECL|struct|_SISFB_INFO
+r_struct
+id|_SISFB_INFO
+(brace
+DECL|member|sisfb_id
+r_int
+r_int
+id|sisfb_id
+suffix:semicolon
+multiline_comment|/* for identifying sisfb */
+macro_line|#ifndef SISFB_ID
+DECL|macro|SISFB_ID
+mdefine_line|#define SISFB_ID&t;  0x53495346    /* Identify myself with &squot;SISF&squot; */
+macro_line|#endif
+DECL|member|chip_id
+r_int
+id|chip_id
+suffix:semicolon
+multiline_comment|/* PCI ID of detected chip */
+DECL|member|memory
+r_int
+id|memory
+suffix:semicolon
+multiline_comment|/* video memory in KB which sisfb manages */
+DECL|member|heapstart
+r_int
+id|heapstart
+suffix:semicolon
+multiline_comment|/* heap start (= sisfb &quot;mem&quot; argument) in KB */
+DECL|member|fbvidmode
+r_int
+r_char
+id|fbvidmode
+suffix:semicolon
+multiline_comment|/* current sisfb mode */
+DECL|member|sisfb_version
+r_int
+r_char
+id|sisfb_version
+suffix:semicolon
+DECL|member|sisfb_revision
+r_int
+r_char
+id|sisfb_revision
+suffix:semicolon
+DECL|member|sisfb_patchlevel
+r_int
+r_char
+id|sisfb_patchlevel
+suffix:semicolon
+DECL|member|reserved
+r_char
+id|reserved
+(braket
+l_int|253
+)braket
+suffix:semicolon
+multiline_comment|/* for future use */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
