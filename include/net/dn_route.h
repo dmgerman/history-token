@@ -282,6 +282,10 @@ comma
 r_char
 op_star
 id|dst
+comma
+r_char
+op_star
+id|src
 )paren
 (brace
 r_struct
@@ -330,7 +334,7 @@ id|ETH_P_DNA_RT
 comma
 id|dst
 comma
-l_int|NULL
+id|src
 comma
 id|skb-&gt;len
 )paren

@@ -713,14 +713,6 @@ id|decnet_address
 suffix:semicolon
 r_extern
 r_int
-r_char
-id|decnet_ether_address
-(braket
-l_int|6
-)braket
-suffix:semicolon
-r_extern
-r_int
 id|decnet_debug_level
 suffix:semicolon
 r_extern
