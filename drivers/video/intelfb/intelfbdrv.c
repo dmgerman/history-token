@@ -6320,7 +6320,11 @@ c_cond
 (paren
 id|cursor-&gt;set
 op_amp
+(paren
 id|FB_CUR_SETSHAPE
+op_amp
+id|FB_CUR_SETIMAGE
+)paren
 )paren
 (brace
 id|u32
