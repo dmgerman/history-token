@@ -1834,7 +1834,7 @@ op_minus
 l_int|1
 )paren
 op_assign
-id|IPPROTO_IP
+id|IPPROTO_IPIP
 suffix:semicolon
 id|top_iph-&gt;ihl
 op_assign
