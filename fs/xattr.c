@@ -597,7 +597,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Extended attribute GET operations&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|getxattr
 id|getxattr
 c_func
@@ -619,7 +619,7 @@ r_int
 id|size
 )paren
 (brace
-r_int
+id|ssize_t
 id|error
 suffix:semicolon
 r_void
@@ -784,7 +784,7 @@ id|error
 suffix:semicolon
 )brace
 id|asmlinkage
-r_int
+id|ssize_t
 DECL|function|sys_getxattr
 id|sys_getxattr
 c_func
@@ -809,7 +809,7 @@ r_struct
 id|nameidata
 id|nd
 suffix:semicolon
-r_int
+id|ssize_t
 id|error
 suffix:semicolon
 id|error
@@ -857,7 +857,7 @@ id|error
 suffix:semicolon
 )brace
 id|asmlinkage
-r_int
+id|ssize_t
 DECL|function|sys_lgetxattr
 id|sys_lgetxattr
 c_func
@@ -882,7 +882,7 @@ r_struct
 id|nameidata
 id|nd
 suffix:semicolon
-r_int
+id|ssize_t
 id|error
 suffix:semicolon
 id|error
@@ -930,7 +930,7 @@ id|error
 suffix:semicolon
 )brace
 id|asmlinkage
-r_int
+id|ssize_t
 DECL|function|sys_fgetxattr
 id|sys_fgetxattr
 c_func
@@ -955,7 +955,7 @@ id|file
 op_star
 id|f
 suffix:semicolon
-r_int
+id|ssize_t
 id|error
 op_assign
 op_minus
@@ -1004,7 +1004,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Extended attribute LIST operations&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|listxattr
 id|listxattr
 c_func
@@ -1022,7 +1022,7 @@ r_int
 id|size
 )paren
 (brace
-r_int
+id|ssize_t
 id|error
 suffix:semicolon
 r_char
@@ -1137,7 +1137,7 @@ id|error
 suffix:semicolon
 )brace
 id|asmlinkage
-r_int
+id|ssize_t
 DECL|function|sys_listxattr
 id|sys_listxattr
 c_func
@@ -1158,7 +1158,7 @@ r_struct
 id|nameidata
 id|nd
 suffix:semicolon
-r_int
+id|ssize_t
 id|error
 suffix:semicolon
 id|error
@@ -1204,7 +1204,7 @@ id|error
 suffix:semicolon
 )brace
 id|asmlinkage
-r_int
+id|ssize_t
 DECL|function|sys_llistxattr
 id|sys_llistxattr
 c_func
@@ -1225,7 +1225,7 @@ r_struct
 id|nameidata
 id|nd
 suffix:semicolon
-r_int
+id|ssize_t
 id|error
 suffix:semicolon
 id|error
@@ -1271,7 +1271,7 @@ id|error
 suffix:semicolon
 )brace
 id|asmlinkage
-r_int
+id|ssize_t
 DECL|function|sys_flistxattr
 id|sys_flistxattr
 c_func
@@ -1292,7 +1292,7 @@ id|file
 op_star
 id|f
 suffix:semicolon
-r_int
+id|ssize_t
 id|error
 op_assign
 op_minus

@@ -3255,6 +3255,7 @@ r_struct
 id|dentry
 op_star
 comma
+r_const
 r_char
 op_star
 comma
@@ -3267,7 +3268,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|getxattr
-r_int
+id|ssize_t
 (paren
 op_star
 id|getxattr
@@ -3277,6 +3278,7 @@ r_struct
 id|dentry
 op_star
 comma
+r_const
 r_char
 op_star
 comma
@@ -3287,7 +3289,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|listxattr
-r_int
+id|ssize_t
 (paren
 op_star
 id|listxattr
@@ -3314,6 +3316,7 @@ r_struct
 id|dentry
 op_star
 comma
+r_const
 r_char
 op_star
 )paren
