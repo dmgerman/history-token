@@ -1564,6 +1564,11 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* bring up the hardware driver */
+r_if
+c_cond
+(paren
+id|lp-&gt;hw.open
+)paren
 id|lp-&gt;hw
 dot
 id|open
