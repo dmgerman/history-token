@@ -667,6 +667,11 @@ r_struct
 id|timer_list
 id|stall_timer
 suffix:semicolon
+DECL|member|waitqh
+id|wait_queue_head_t
+id|waitqh
+suffix:semicolon
+multiline_comment|/* endpoint_disable waiters */
 )brace
 suffix:semicolon
 DECL|struct|urb_priv
