@@ -1,5 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skqueue.h&n; * Project:&t;Gigabit Ethernet Adapters, Event Scheduler Module&n; * Purpose:&t;Defines for the Event queue&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skqueue.h&n; * Project:&t;Gigabit Ethernet Adapters, Event Scheduler Module&n; * Version:&t;$Revision: 1.16 $&n; * Date:&t;$Date: 2003/09/16 12:50:32 $&n; * Purpose:&t;Defines for the Event queue&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; * SKQUEUE.H&t;contains all defines and types for the event queue&n; */
 macro_line|#ifndef _SKQUEUE_H_
 DECL|macro|_SKQUEUE_H_
 mdefine_line|#define _SKQUEUE_H_

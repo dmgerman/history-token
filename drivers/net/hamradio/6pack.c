@@ -566,6 +566,7 @@ id|sixpack_ctrls
 id|i
 )braket
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -624,7 +625,6 @@ id|spp-&gt;dev.init
 op_assign
 id|sixpack_init
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
