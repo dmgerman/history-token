@@ -48,6 +48,14 @@ r_void
 suffix:semicolon
 macro_line|#endif
 r_extern
+r_void
+id|i8254_timer_resume
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|using_apic_timer
 suffix:semicolon
@@ -3641,6 +3649,12 @@ c_cond
 id|vxtime.hpet_address
 )paren
 id|hpet_reenable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|i8254_timer_resume
 c_func
 (paren
 )paren
