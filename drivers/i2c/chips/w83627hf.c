@@ -95,18 +95,6 @@ comma
 id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
-DECL|variable|normal_isa_range
-r_static
-r_int
-r_int
-id|normal_isa_range
-(braket
-)braket
-op_assign
-(brace
-id|I2C_CLIENT_ISA_END
-)brace
-suffix:semicolon
 multiline_comment|/* Insmod parameters */
 id|SENSORS_INSMOD_4
 c_func

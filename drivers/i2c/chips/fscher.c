@@ -45,18 +45,6 @@ op_assign
 id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
-DECL|variable|normal_isa_range
-r_static
-r_int
-r_int
-id|normal_isa_range
-(braket
-)braket
-op_assign
-(brace
-id|I2C_CLIENT_ISA_END
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Insmod parameters&n; */
 DECL|variable|fscher
 id|SENSORS_INSMOD_1
