@@ -1367,7 +1367,7 @@ suffix:semicolon
 r_case
 id|CMD_FILTER_OPERATION
 suffix:colon
-id|handle_filter_request
+id|irlan_filter_request
 c_func
 (paren
 id|self
