@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &quot;shubio.h&quot;
 macro_line|#include &lt;asm/nodedata.h&gt;
+macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -99,6 +100,12 @@ suffix:semicolon
 r_int
 r_int
 id|irq_flags
+suffix:semicolon
+r_int
+r_int
+id|itc_end
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|bteinfo_s
@@ -380,6 +387,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+id|retry_bteop
+suffix:colon
 r_do
 (brace
 id|local_irq_save
@@ -434,11 +443,12 @@ id|bte-&gt;spinlock
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 op_star
 id|bte-&gt;most_rcnt_na
 op_amp
-id|BTE_ACTIVE
+id|BTE_WORD_AVAILABLE
 )paren
 op_logical_or
 (paren
@@ -551,8 +561,7 @@ multiline_comment|/* Initialize the notification to a known value. */
 op_star
 id|bte-&gt;most_rcnt_na
 op_assign
-op_minus
-l_int|1L
+id|BTE_WORD_BUSY
 suffix:semicolon
 multiline_comment|/* Set the status reg busy bit and transfer length */
 id|BTE_PRINTKV
@@ -704,6 +713,19 @@ id|mode
 )paren
 )paren
 suffix:semicolon
+id|itc_end
+op_assign
+id|ia64_get_itc
+c_func
+(paren
+)paren
+op_plus
+(paren
+l_int|40000000
+op_star
+id|local_cpu_data-&gt;cyc_per_usec
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -735,10 +757,75 @@ op_star
 id|bte-&gt;most_rcnt_na
 )paren
 op_eq
-op_minus
-l_int|1UL
+id|BTE_WORD_BUSY
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ia64_get_itc
+c_func
+(paren
+)paren
+OG
+id|itc_end
+)paren
+(brace
+id|BTE_PRINTK
+c_func
+(paren
+(paren
+l_string|&quot;BTE timeout nasid 0x%x bte%d IBLS = 0x%lx na 0x%lx&bslash;n&quot;
+comma
+id|NASID_GET
+c_func
+(paren
+id|bte-&gt;bte_base_addr
+)paren
+comma
+id|bte-&gt;bte_num
+comma
+id|BTE_LNSTAT_LOAD
+c_func
+(paren
+id|bte
+)paren
+comma
+op_star
+id|bte-&gt;most_rcnt_na
+)paren
+)paren
+suffix:semicolon
+id|bte-&gt;bte_error_count
+op_increment
+suffix:semicolon
+id|bte-&gt;bh_error
+op_assign
+id|IBLS_ERROR
+suffix:semicolon
+id|bte_error_handler
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|NODEPDA
+c_func
+(paren
+id|bte-&gt;bte_cnode
+)paren
+)paren
+suffix:semicolon
+op_star
+id|bte-&gt;most_rcnt_na
+op_assign
+id|BTE_WORD_AVAILABLE
+suffix:semicolon
+r_goto
+id|retry_bteop
+suffix:semicolon
+)brace
 )brace
 id|BTE_PRINTKV
 c_func
@@ -772,11 +859,6 @@ op_amp
 op_complement
 id|IBLS_ERROR
 suffix:semicolon
-op_star
-id|bte-&gt;most_rcnt_na
-op_assign
-l_int|0L
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -785,6 +867,11 @@ op_assign
 id|BTE_SUCCESS
 suffix:semicolon
 )brace
+op_star
+id|bte-&gt;most_rcnt_na
+op_assign
+id|BTE_WORD_AVAILABLE
+suffix:semicolon
 id|BTE_PRINTK
 c_func
 (paren
@@ -1469,7 +1556,7 @@ id|i
 dot
 id|notify
 op_assign
-l_int|0L
+id|BTE_WORD_AVAILABLE
 suffix:semicolon
 id|spin_lock_init
 c_func
