@@ -216,10 +216,10 @@ DECL|macro|pmd_present
 mdefine_line|#define&t;pmd_present(pmd)&t;((pmd_val(pmd)) != 0)
 DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;(pmd_val(*(pmdp)) = 0)
-DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)&t;&t;(__bpn_to_ba(pmd_val(pmd)))
 DECL|macro|pmd_page_kernel
-mdefine_line|#define pmd_page_kernel(pmd)&t;pmd_page(pmd)
+mdefine_line|#define pmd_page_kernel(pmd)&t;(__bpn_to_ba(pmd_val(pmd)))
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd)&t;&t;virt_to_page(pmd_page_kernel(pmd))
 DECL|macro|pgd_set
 mdefine_line|#define pgd_set(pgdp, pmdp)&t;(pgd_val(*(pgdp)) = (__ba_to_bpn(pmdp)))
 DECL|macro|pgd_none
@@ -242,7 +242,7 @@ DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;  ((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel(dir,addr) &bslash;&n;  ((pte_t *) pmd_page(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+mdefine_line|#define pte_offset_kernel(dir,addr) &bslash;&n;  ((pte_t *) pmd_page_kernel(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir,addr)&t;pte_offset_kernel((dir), (addr))
 DECL|macro|pte_offset_map_nested
