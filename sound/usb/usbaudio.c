@@ -9172,6 +9172,14 @@ id|stream
 dot
 id|substream
 comma
+id|SNDRV_DMA_TYPE_CONTINUOUS
+comma
+id|snd_pcm_dma_flags
+c_func
+(paren
+id|GFP_ATOMIC
+)paren
+comma
 l_int|64
 op_star
 l_int|1024
@@ -9179,8 +9187,6 @@ comma
 l_int|128
 op_star
 l_int|1024
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|snd_pcm_set_ops

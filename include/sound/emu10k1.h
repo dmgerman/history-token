@@ -1698,22 +1698,12 @@ r_int
 id|itram_size
 suffix:semicolon
 multiline_comment|/* internal TRAM size in samples */
-DECL|member|etram_size
-r_int
-r_int
-id|etram_size
-suffix:semicolon
-multiline_comment|/* external TRAM size in samples */
 DECL|member|etram_pages
-r_void
-op_star
+r_struct
+id|snd_dma_buffer
 id|etram_pages
 suffix:semicolon
-multiline_comment|/* allocated pages for external TRAM */
-DECL|member|etram_pages_dmaaddr
-id|dma_addr_t
-id|etram_pages_dmaaddr
-suffix:semicolon
+multiline_comment|/* external TRAM pages and size */
 DECL|member|dbg
 r_int
 r_int
@@ -1931,32 +1921,29 @@ r_int
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* PCI DMA mask */
+DECL|member|dma_dev
+r_struct
+id|snd_dma_device
+id|dma_dev
+suffix:semicolon
+multiline_comment|/* DMA device description */
 DECL|member|max_cache_pages
 r_int
 id|max_cache_pages
 suffix:semicolon
 multiline_comment|/* max memory size / PAGE_SIZE */
 DECL|member|silent_page
-r_void
-op_star
+r_struct
+id|snd_dma_buffer
 id|silent_page
 suffix:semicolon
 multiline_comment|/* silent page */
-DECL|member|silent_page_dmaaddr
-id|dma_addr_t
-id|silent_page_dmaaddr
-suffix:semicolon
 DECL|member|ptb_pages
-r_volatile
-id|u32
-op_star
+r_struct
+id|snd_dma_buffer
 id|ptb_pages
 suffix:semicolon
 multiline_comment|/* page table pages */
-DECL|member|ptb_pages_dmaaddr
-id|dma_addr_t
-id|ptb_pages_dmaaddr
-suffix:semicolon
 DECL|member|memhdr
 id|snd_util_memhdr_t
 op_star

@@ -9114,10 +9114,18 @@ id|chip
 )paren
 suffix:semicolon
 macro_line|#ifdef LEGACY_SUPPORT
-id|snd_pcm_lib_preallocate_isa_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_ISA
+comma
+id|snd_pcm_isa_flags
+c_func
+(paren
+l_int|0
+)paren
 comma
 l_int|64
 op_star
@@ -9149,12 +9157,14 @@ c_cond
 id|chip-&gt;ebus_flag
 )paren
 (brace
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
-id|chip-&gt;dev_u.pdev
-comma
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_PCI
+comma
+id|chip-&gt;dev_u.pdev
 comma
 l_int|64
 op_star
@@ -9170,12 +9180,14 @@ r_else
 (brace
 macro_line|#  endif
 macro_line|#  ifdef SBUS_SUPPORT
-id|snd_pcm_lib_preallocate_sbus_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
-id|chip-&gt;dev_u.sdev
-comma
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_SBUS
+comma
+id|chip-&gt;dev_u.sdev
 comma
 l_int|64
 op_star

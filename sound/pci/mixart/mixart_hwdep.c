@@ -1988,7 +1988,7 @@ c_func
 (paren
 id|u32
 )paren
-id|mgr-&gt;flowinfo_physaddr
+id|mgr-&gt;flowinfo.addr
 comma
 id|MIXART_MEM
 c_func
