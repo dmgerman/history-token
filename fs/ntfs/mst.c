@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * mst.c - NTFS multi sector transfer protection handling code. Part of the&n; * &t;   Linux-NTFS project.&n; *&n; * Copyright (c) 2001 Anton Altaparmakov.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * mst.c - NTFS multi sector transfer protection handling code. Part of the&n; *&t;   Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;ntfs.h&quot;
-multiline_comment|/**&n; * post_read_mst_fixup - deprotect multi sector transfer protected data&n; * @b:&t;&t;pointer to the data to deprotect&n; * @size:&t;size in bytes of @b&n; * &n; * Perform the necessary post read multi sector transfer fixup and detect the&n; * presence of incomplete multi sector transfers. - In that case, overwrite the&n; * magic of the ntfs record header being processed with &quot;BAAD&quot; (in memory only!)&n; * and abort processing.&n; *&n; * Return 0 on success and -EINVAL on error (&quot;BAAD&quot; magic will be present).&n; *&n; * NOTE: We consider the absence / invalidity of an update sequence array to&n; * mean that the structure is not protected at all and hence doesn&squot;t need to&n; * be fixed up. Thus, we return success and not failure in this case. This is&n; * in contrast to pre_write_mst_fixup(), see below.&n; */
+multiline_comment|/**&n; * post_read_mst_fixup - deprotect multi sector transfer protected data&n; * @b:&t;&t;pointer to the data to deprotect&n; * @size:&t;size in bytes of @b&n; *&n; * Perform the necessary post read multi sector transfer fixup and detect the&n; * presence of incomplete multi sector transfers. - In that case, overwrite the&n; * magic of the ntfs record header being processed with &quot;BAAD&quot; (in memory only!)&n; * and abort processing.&n; *&n; * Return 0 on success and -EINVAL on error (&quot;BAAD&quot; magic will be present).&n; *&n; * NOTE: We consider the absence / invalidity of an update sequence array to&n; * mean that the structure is not protected at all and hence doesn&squot;t need to&n; * be fixed up. Thus, we return success and not failure in this case. This is&n; * in contrast to pre_write_mst_fixup(), see below.&n; */
 DECL|function|post_read_mst_fixup
 r_int
 id|post_read_mst_fixup
@@ -102,7 +102,7 @@ r_sizeof
 id|u16
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * The update sequence number which has to be equal to each of the&n;&t; * u16 values before they are fixed up. Note no need to care for&n;&t; * endianness since we are comparing and moving data for on disk&n;&t; * structures which means the data is consistent. - If it is &n;&t; * consistenty the wrong endianness it doesn&squot;t make any difference.&n;&t; */
+multiline_comment|/*&n;&t; * The update sequence number which has to be equal to each of the&n;&t; * u16 values before they are fixed up. Note no need to care for&n;&t; * endianness since we are comparing and moving data for on disk&n;&t; * structures which means the data is consistent. - If it is&n;&t; * consistenty the wrong endianness it doesn&squot;t make any difference.&n;&t; */
 id|usn
 op_assign
 op_star
@@ -224,7 +224,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pre_write_mst_fixup - apply multi sector transfer protection&n; * @b:&t;&t;pointer to the data to protect&n; * @size:&t;size in bytes of @b&n; * &n; * Perform the necessary pre write multi sector transfer fixup on the data&n; * pointer to by @b of @size.&n; *&n; * Return 0 if fixup applied (success) or -EINVAL if no fixup was performed&n; * (assumed not needed). This is in contrast to post_read_mst_fixup() above.&n; *&n; * NOTE: We consider the absence / invalidity of an update sequence array to&n; * mean that the structure is not subject to protection and hence doesn&squot;t need&n; * to be fixed up. This means that you have to create a valid update sequence&n; * array header in the ntfs record before calling this function, otherwise it&n; * will fail (the header needs to contain the position of the update sequence&n; * array together with the number of elements in the array). You also need to&n; * initialise the update sequence number before calling this function&n; * otherwise a random word will be used (whatever was in the record at that&n; * position at that time).&n; */
+multiline_comment|/**&n; * pre_write_mst_fixup - apply multi sector transfer protection&n; * @b:&t;&t;pointer to the data to protect&n; * @size:&t;size in bytes of @b&n; *&n; * Perform the necessary pre write multi sector transfer fixup on the data&n; * pointer to by @b of @size.&n; *&n; * Return 0 if fixup applied (success) or -EINVAL if no fixup was performed&n; * (assumed not needed). This is in contrast to post_read_mst_fixup() above.&n; *&n; * NOTE: We consider the absence / invalidity of an update sequence array to&n; * mean that the structure is not subject to protection and hence doesn&squot;t need&n; * to be fixed up. This means that you have to create a valid update sequence&n; * array header in the ntfs record before calling this function, otherwise it&n; * will fail (the header needs to contain the position of the update sequence&n; * array together with the number of elements in the array). You also need to&n; * initialise the update sequence number before calling this function&n; * otherwise a random word will be used (whatever was in the record at that&n; * position at that time).&n; */
 DECL|function|pre_write_mst_fixup
 r_int
 id|pre_write_mst_fixup
@@ -260,13 +260,13 @@ c_cond
 op_logical_neg
 id|b
 op_logical_or
-id|is_baad_record
+id|ntfs_is_baad_record
 c_func
 (paren
 id|b-&gt;magic
 )paren
 op_logical_or
-id|is_hole_record
+id|ntfs_is_hole_record
 c_func
 (paren
 id|b-&gt;magic
@@ -351,7 +351,7 @@ op_plus
 id|usa_ofs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Cyclically increment the update sequence number &n;&t; * (skipping 0 and -1, i.e. 0xffff).&n;&t; */
+multiline_comment|/*&n;&t; * Cyclically increment the update sequence number&n;&t; * (skipping 0 and -1, i.e. 0xffff).&n;&t; */
 id|usn
 op_assign
 id|le16_to_cpup
@@ -415,7 +415,7 @@ id|usa_count
 op_decrement
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Increment the position in the usa and save the &n;&t;&t; * original data from the data buffer into the usa.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Increment the position in the usa and save the&n;&t;&t; * original data from the data buffer into the usa.&n;&t;&t; */
 op_star
 (paren
 op_increment
@@ -446,7 +446,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * post_write_mst_fixup - fast deprotect multi sector transfer protected data&n; * @b:&t;&t;pointer to the data to deprotect&n; * &n; * Perform the necessary post write multi sector transfer fixup, not checking&n; * for any errors, because we assume we have just used pre_write_mst_fixup(),&n; * thus the data will be fine or we would never have gotten here.&n; */
+multiline_comment|/**&n; * post_write_mst_fixup - fast deprotect multi sector transfer protected data&n; * @b:&t;&t;pointer to the data to deprotect&n; *&n; * Perform the necessary post write multi sector transfer fixup, not checking&n; * for any errors, because we assume we have just used pre_write_mst_fixup(),&n; * thus the data will be fine or we would never have gotten here.&n; */
 DECL|function|post_write_mst_fixup
 r_void
 id|post_write_mst_fixup

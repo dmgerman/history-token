@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * layout.h - All NTFS associated on-disk structures. Part of the Linux-NTFS&n; *&t;      project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * layout.h - All NTFS associated on-disk structures. Part of the Linux-NTFS&n; *&t;      project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _LINUX_NTFS_LAYOUT_H
 DECL|macro|_LINUX_NTFS_LAYOUT_H
 mdefine_line|#define _LINUX_NTFS_LAYOUT_H
@@ -23,7 +23,7 @@ mdefine_line|#define const_cpu_to_le64(x)&t;__constant_cpu_to_le64(x)
 multiline_comment|/* The NTFS oem_id &quot;NTFS    &quot; */
 DECL|macro|magicNTFS
 mdefine_line|#define magicNTFS&t;const_cpu_to_le64(0x202020205346544eULL)
-multiline_comment|/*&n; * Location of bootsector on partition:&n; * &t;The standard NTFS_BOOT_SECTOR is on sector 0 of the partition.&n; * &t;On NT4 and above there is one backup copy of the boot sector to&n; * &t;be found on the last sector of the partition (not normally accessible&n; * &t;from within Windows as the bootsector contained number of sectors&n; *&t;value is one less than the actual value!).&n; * &t;On versions of NT 3.51 and earlier, the backup copy was located at &n; * &t;number of sectors/2 (integer divide), i.e. in the middle of the volume.&n; */
+multiline_comment|/*&n; * Location of bootsector on partition:&n; *&t;The standard NTFS_BOOT_SECTOR is on sector 0 of the partition.&n; *&t;On NT4 and above there is one backup copy of the boot sector to&n; *&t;be found on the last sector of the partition (not normally accessible&n; *&t;from within Windows as the bootsector contained number of sectors&n; *&t;value is one less than the actual value!).&n; *&t;On versions of NT 3.51 and earlier, the backup copy was located at&n; *&t;number of sectors/2 (integer divide), i.e. in the middle of the volume.&n; */
 multiline_comment|/*&n; * BIOS parameter block (bpb) structure.&n; */
 r_typedef
 r_struct
@@ -209,26 +209,7 @@ multiline_comment|/*&n; * Magic identifiers present at the beginning of all ntfs
 r_typedef
 r_enum
 (brace
-DECL|enumerator|magic_BAAD
-id|magic_BAAD
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x44414142
-)paren
-comma
-multiline_comment|/* BAAD == corrupt record */
-DECL|enumerator|magic_CHKD
-id|magic_CHKD
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x424b4843
-)paren
-comma
-multiline_comment|/* CHKD == chkdsk ??? */
+multiline_comment|/* Found in $MFT/$DATA. */
 DECL|enumerator|magic_FILE
 id|magic_FILE
 op_assign
@@ -238,17 +219,7 @@ c_func
 l_int|0x454c4946
 )paren
 comma
-multiline_comment|/* FILE == mft entry */
-DECL|enumerator|magic_HOLE
-id|magic_HOLE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x454c4f48
-)paren
-comma
-multiline_comment|/* HOLE == ? (NTFS 3.0+?) */
+multiline_comment|/* Mft entry. */
 DECL|enumerator|magic_INDX
 id|magic_INDX
 op_assign
@@ -258,42 +229,118 @@ c_func
 l_int|0x58444e49
 )paren
 comma
-multiline_comment|/* INDX == index buffer */
+multiline_comment|/* Index buffer. */
+DECL|enumerator|magic_HOLE
+id|magic_HOLE
+op_assign
+id|const_cpu_to_le32
+c_func
+(paren
+l_int|0x454c4f48
+)paren
+comma
+multiline_comment|/* ? (NTFS 3.0+?) */
+multiline_comment|/* Found in $LogFile/$DATA. */
+DECL|enumerator|magic_RSTR
+id|magic_RSTR
+op_assign
+id|const_cpu_to_le32
+c_func
+(paren
+l_int|0x52545352
+)paren
+comma
+multiline_comment|/* Restart page. */
+DECL|enumerator|magic_RCRD
+id|magic_RCRD
+op_assign
+id|const_cpu_to_le32
+c_func
+(paren
+l_int|0x44524352
+)paren
+comma
+multiline_comment|/* Log record page. */
+multiline_comment|/* Found in $LogFile/$DATA.  (May be found in $MFT/$DATA, also?) */
+DECL|enumerator|magic_CHKD
+id|magic_CHKD
+op_assign
+id|const_cpu_to_le32
+c_func
+(paren
+l_int|0x424b4843
+)paren
+comma
+multiline_comment|/* Modified by chkdsk. */
+multiline_comment|/* Found in all ntfs record containing records. */
+DECL|enumerator|magic_BAAD
+id|magic_BAAD
+op_assign
+id|const_cpu_to_le32
+c_func
+(paren
+l_int|0x44414142
+)paren
+comma
+multiline_comment|/* Failed multi sector&n;&t;&t;&t;&t;&t;&t;       transfer was detected. */
+multiline_comment|/*&n;&t; * Found in $LogFile/$DATA when a page is full or 0xff bytes and is&n;&t; * thus not initialized.  User has to initialize the page before using&n;&t; * it.&n;&t; */
+DECL|enumerator|magic_empty
+id|magic_empty
+op_assign
+id|const_cpu_to_le32
+c_func
+(paren
+l_int|0xffffffff
+)paren
+comma
+multiline_comment|/* Record is empty and has&n;&t;&t;&t;&t;&t;&t;       to be initialized before&n;&t;&t;&t;&t;&t;&t;       it can be used. */
 DECL|typedef|NTFS_RECORD_TYPES
 )brace
 id|NTFS_RECORD_TYPES
 suffix:semicolon
 multiline_comment|/*&n; * Generic magic comparison macros. Finally found a use for the ## preprocessor&n; * operator! (-8&n; */
-DECL|macro|is_magic
-mdefine_line|#define is_magic(x, m)&t;&t;(   (u32)(x) == magic_##m )
-DECL|macro|is_magicp
-mdefine_line|#define is_magicp(p, m) &t;( *(u32*)(p) == magic_##m )
-multiline_comment|/*&n; * Specialised magic comparison macros.&n; */
-DECL|macro|is_baad_record
-mdefine_line|#define is_baad_record(x)&t;( is_magic (x, BAAD) )
-DECL|macro|is_baad_recordp
-mdefine_line|#define is_baad_recordp(p)&t;( is_magicp(p, BAAD) )
-DECL|macro|is_chkd_record
-mdefine_line|#define is_chkd_record(x)       ( is_magic (x, CHKD) )
-DECL|macro|is_chkd_recordp
-mdefine_line|#define is_chkd_recordp(p)      ( is_magicp(p, CHKD) )
-DECL|macro|is_file_record
-mdefine_line|#define is_file_record(x)&t;( is_magic (x, FILE) )
-DECL|macro|is_file_recordp
-mdefine_line|#define is_file_recordp(p)&t;( is_magicp(p, FILE) )
-DECL|macro|is_hole_record
-mdefine_line|#define is_hole_record(x)       ( is_magic (x, HOLE) )
-DECL|macro|is_hole_recordp
-mdefine_line|#define is_hole_recordp(p)      ( is_magicp(p, HOLE) )
-DECL|macro|is_indx_record
-mdefine_line|#define is_indx_record(x)       ( is_magic (x, INDX) )
-DECL|macro|is_indx_recordp
-mdefine_line|#define is_indx_recordp(p)      ( is_magicp(p, INDX) )
-DECL|macro|is_mft_record
-mdefine_line|#define is_mft_record(x)&t;( is_file_record(x) )
-DECL|macro|is_mft_recordp
-mdefine_line|#define is_mft_recordp(p)&t;( is_file_recordp(p) )
-multiline_comment|/*&n; * The Update Sequence Array (usa) is an array of the u16 values which belong&n; * to the end of each sector protected by the update sequence record in which&n; * this array is contained. Note that the first entry is the Update Sequence&n; * Number (usn), a cyclic counter of how many times the protected record has&n; * been written to disk. The values 0 and -1 (ie. 0xffff) are not used. All&n; * last u16&squot;s of each sector have to be equal to the usn (during reading) or&n; * are set to it (during writing). If they are not, an incomplete multi sector&n; * transfer has occurred when the data was written.&n; * The maximum size for the update sequence array is fixed to:&n; * &t;maximum size = usa_ofs + (usa_count * 2) = 510 bytes&n; * The 510 bytes comes from the fact that the last u16 in the array has to&n; * (obviously) finish before the last u16 of the first 512-byte sector.&n; * This formula can be used as a consistency check in that usa_ofs +&n; * (usa_count * 2) has to be less than or equal to 510.&n; */
+DECL|macro|ntfs_is_magic
+mdefine_line|#define ntfs_is_magic(x, m)&t;(   (u32)(x) == magic_##m )
+DECL|macro|ntfs_is_magicp
+mdefine_line|#define ntfs_is_magicp(p, m)&t;( *(u32*)(p) == magic_##m )
+multiline_comment|/*&n; * Specialised magic comparison macros for the NTFS_RECORD_TYPES defined above.&n; */
+DECL|macro|ntfs_is_file_record
+mdefine_line|#define ntfs_is_file_record(x)&t;( ntfs_is_magic (x, FILE) )
+DECL|macro|ntfs_is_file_recordp
+mdefine_line|#define ntfs_is_file_recordp(p)&t;( ntfs_is_magicp(p, FILE) )
+DECL|macro|ntfs_is_mft_record
+mdefine_line|#define ntfs_is_mft_record(x)&t;( ntfs_is_file_record(x) )
+DECL|macro|ntfs_is_mft_recordp
+mdefine_line|#define ntfs_is_mft_recordp(p)&t;( ntfs_is_file_recordp(p) )
+DECL|macro|ntfs_is_indx_record
+mdefine_line|#define ntfs_is_indx_record(x)&t;( ntfs_is_magic (x, INDX) )
+DECL|macro|ntfs_is_indx_recordp
+mdefine_line|#define ntfs_is_indx_recordp(p)&t;( ntfs_is_magicp(p, INDX) )
+DECL|macro|ntfs_is_hole_record
+mdefine_line|#define ntfs_is_hole_record(x)&t;( ntfs_is_magic (x, HOLE) )
+DECL|macro|ntfs_is_hole_recordp
+mdefine_line|#define ntfs_is_hole_recordp(p)&t;( ntfs_is_magicp(p, HOLE) )
+DECL|macro|ntfs_is_rstr_record
+mdefine_line|#define ntfs_is_rstr_record(x)&t;( ntfs_is_magic (x, RSTR) )
+DECL|macro|ntfs_is_rstr_recordp
+mdefine_line|#define ntfs_is_rstr_recordp(p)&t;( ntfs_is_magicp(p, RSTR) )
+DECL|macro|ntfs_is_rcrd_record
+mdefine_line|#define ntfs_is_rcrd_record(x)&t;( ntfs_is_magic (x, RCRD) )
+DECL|macro|ntfs_is_rcrd_recordp
+mdefine_line|#define ntfs_is_rcrd_recordp(p)&t;( ntfs_is_magicp(p, RCRD) )
+DECL|macro|ntfs_is_chkd_record
+mdefine_line|#define ntfs_is_chkd_record(x)&t;( ntfs_is_magic (x, CHKD) )
+DECL|macro|ntfs_is_chkd_recordp
+mdefine_line|#define ntfs_is_chkd_recordp(p)&t;( ntfs_is_magicp(p, CHKD) )
+DECL|macro|ntfs_is_baad_record
+mdefine_line|#define ntfs_is_baad_record(x)&t;( ntfs_is_magic (x, BAAD) )
+DECL|macro|ntfs_is_baad_recordp
+mdefine_line|#define ntfs_is_baad_recordp(p)&t;( ntfs_is_magicp(p, BAAD) )
+DECL|macro|ntfs_is_empty_record
+mdefine_line|#define ntfs_is_empty_record(x)&t;&t;( ntfs_is_magic (x, empty) )
+DECL|macro|ntfs_is_empty_recordp
+mdefine_line|#define ntfs_is_empty_recordp(p)&t;( ntfs_is_magicp(p, empty) )
+multiline_comment|/*&n; * The Update Sequence Array (usa) is an array of the u16 values which belong&n; * to the end of each sector protected by the update sequence record in which&n; * this array is contained. Note that the first entry is the Update Sequence&n; * Number (usn), a cyclic counter of how many times the protected record has&n; * been written to disk. The values 0 and -1 (ie. 0xffff) are not used. All&n; * last u16&squot;s of each sector have to be equal to the usn (during reading) or&n; * are set to it (during writing). If they are not, an incomplete multi sector&n; * transfer has occurred when the data was written.&n; * The maximum size for the update sequence array is fixed to:&n; *&t;maximum size = usa_ofs + (usa_count * 2) = 510 bytes&n; * The 510 bytes comes from the fact that the last u16 in the array has to&n; * (obviously) finish before the last u16 of the first 512-byte sector.&n; * This formula can be used as a consistency check in that usa_ofs +&n; * (usa_count * 2) has to be less than or equal to 510.&n; */
 r_typedef
 r_struct
 (brace
@@ -429,7 +476,7 @@ DECL|typedef|NTFS_SYSTEM_FILES
 )brace
 id|NTFS_SYSTEM_FILES
 suffix:semicolon
-multiline_comment|/*&n; * These are the so far known MFT_RECORD_* flags (16-bit) which contain &n; * information about the mft record in which they are present.&n; */
+multiline_comment|/*&n; * These are the so far known MFT_RECORD_* flags (16-bit) which contain&n; * information about the mft record in which they are present.&n; */
 r_typedef
 r_enum
 (brace
@@ -466,7 +513,7 @@ id|__packed__
 )paren
 id|MFT_RECORD_FLAGS
 suffix:semicolon
-multiline_comment|/*&n; * mft references (aka file references or file record segment references) are&n; * used whenever a structure needs to refer to a record in the mft.&n; * &n; * A reference consists of a 48-bit index into the mft and a 16-bit sequence&n; * number used to detect stale references.&n; *&n; * For error reporting purposes we treat the 48-bit index as a signed quantity.&n; *&n; * The sequence number is a circular counter (skipping 0) describing how many&n; * times the referenced mft record has been (re)used. This has to match the&n; * sequence number of the mft record being referenced, otherwise the reference&n; * is considered stale and removed (FIXME: only ntfsck or the driver itself?).&n; *&n; * If the sequence number is zero it is assumed that no sequence number&n; * consistency checking should be performed.&n; *&n; * FIXME: Since inodes are 32-bit as of now, the driver needs to always check&n; * for high_part being 0 and if not either BUG(), cause a panic() or handle&n; * the situation in some other way. This shouldn&squot;t be a problem as a volume has&n; * to become HUGE in order to need more than 32-bits worth of mft records.&n; * Assuming the standard mft record size of 1kb only the records (never mind&n; * the non-resident attributes, etc.) would require 4Tb of space on their own&n; * for the first 32 bits worth of records. This is only if some strange person&n; * doesn&squot;t decide to foul play and make the mft sparse which would be a really&n; * horrible thing to do as it would trash our current driver implementation. )-:&n; * Do I hear screams &quot;we want 64-bit inodes!&quot; ?!? (-;&n; *&n; * FIXME: The mft zone is defined as the first 12% of the volume. This space is&n; * reserved so that the mft can grow contiguously and hence doesn&squot;t become &n; * fragmented. Volume free space includes the empty part of the mft zone and&n; * when the volume&squot;s free 88% are used up, the mft zone is shrunk by a factor&n; * of 2, thus making more space available for more files/data. This process is&n; * repeated everytime there is no more free space except for the mft zone until&n; * there really is no more free space.&n; */
+multiline_comment|/*&n; * mft references (aka file references or file record segment references) are&n; * used whenever a structure needs to refer to a record in the mft.&n; *&n; * A reference consists of a 48-bit index into the mft and a 16-bit sequence&n; * number used to detect stale references.&n; *&n; * For error reporting purposes we treat the 48-bit index as a signed quantity.&n; *&n; * The sequence number is a circular counter (skipping 0) describing how many&n; * times the referenced mft record has been (re)used. This has to match the&n; * sequence number of the mft record being referenced, otherwise the reference&n; * is considered stale and removed (FIXME: only ntfsck or the driver itself?).&n; *&n; * If the sequence number is zero it is assumed that no sequence number&n; * consistency checking should be performed.&n; *&n; * FIXME: Since inodes are 32-bit as of now, the driver needs to always check&n; * for high_part being 0 and if not either BUG(), cause a panic() or handle&n; * the situation in some other way. This shouldn&squot;t be a problem as a volume has&n; * to become HUGE in order to need more than 32-bits worth of mft records.&n; * Assuming the standard mft record size of 1kb only the records (never mind&n; * the non-resident attributes, etc.) would require 4Tb of space on their own&n; * for the first 32 bits worth of records. This is only if some strange person&n; * doesn&squot;t decide to foul play and make the mft sparse which would be a really&n; * horrible thing to do as it would trash our current driver implementation. )-:&n; * Do I hear screams &quot;we want 64-bit inodes!&quot; ?!? (-;&n; *&n; * FIXME: The mft zone is defined as the first 12% of the volume. This space is&n; * reserved so that the mft can grow contiguously and hence doesn&squot;t become&n; * fragmented. Volume free space includes the empty part of the mft zone and&n; * when the volume&squot;s free 88% are used up, the mft zone is shrunk by a factor&n; * of 2, thus making more space available for more files/data. This process is&n; * repeated everytime there is no more free space except for the mft zone until&n; * there really is no more free space.&n; */
 multiline_comment|/*&n; * Typedef the MFT_REF as a 64-bit value for easier handling.&n; * Also define two unpacking macros to get to the reference (MREF) and&n; * sequence number (MSEQNO) respectively.&n; * The _LE versions are to be applied on little endian MFT_REFs.&n; * Note: The _LE versions will return a CPU endian formatted value!&n; */
 r_typedef
 r_enum
@@ -540,13 +587,13 @@ multiline_comment|/* 16*/
 id|u16
 id|sequence_number
 suffix:semicolon
-multiline_comment|/* Number of times this mft record has been&n;&t;&t;   &t;&t;   reused. (See description for MFT_REF&n;&t;&t;&t;&t;   above.) NOTE: The increment (skipping zero)&n;&t;&t;&t;&t;   is done when the file is deleted. NOTE: If&n;&t;&t;&t;&t;   this is zero it is left zero. */
+multiline_comment|/* Number of times this mft record has been&n;&t;&t;&t;&t;   reused. (See description for MFT_REF&n;&t;&t;&t;&t;   above.) NOTE: The increment (skipping zero)&n;&t;&t;&t;&t;   is done when the file is deleted. NOTE: If&n;&t;&t;&t;&t;   this is zero it is left zero. */
 DECL|member|link_count
 multiline_comment|/* 18*/
 id|u16
 id|link_count
 suffix:semicolon
-multiline_comment|/* Number of hard links, i.e. the number of &n;&t;&t;&t;&t;   directory entries referencing this record.&n;&t;&t;&t;&t;   NOTE: Only used in mft base records.&n;&t;&t;&t;&t;   NOTE: When deleting a directory entry we&n;&t;&t;&t;&t;   check the link_count and if it is 1 we&n;&t;&t;&t;&t;   delete the file. Otherwise we delete the&n;&t;&t;&t;&t;   FILE_NAME_ATTR being referenced by the&n;&t;&t;&t;&t;   directory entry from the mft record and&n;&t;&t;&t;&t;   decrement the link_count.&n;&t;&t;&t;&t;   FIXME: Careful with Win32 + DOS names! */
+multiline_comment|/* Number of hard links, i.e. the number of&n;&t;&t;&t;&t;   directory entries referencing this record.&n;&t;&t;&t;&t;   NOTE: Only used in mft base records.&n;&t;&t;&t;&t;   NOTE: When deleting a directory entry we&n;&t;&t;&t;&t;   check the link_count and if it is 1 we&n;&t;&t;&t;&t;   delete the file. Otherwise we delete the&n;&t;&t;&t;&t;   FILE_NAME_ATTR being referenced by the&n;&t;&t;&t;&t;   directory entry from the mft record and&n;&t;&t;&t;&t;   decrement the link_count.&n;&t;&t;&t;&t;   FIXME: Careful with Win32 + DOS names! */
 DECL|member|attrs_offset
 multiline_comment|/* 20*/
 id|u16
@@ -780,7 +827,7 @@ DECL|typedef|ATTR_TYPES
 )brace
 id|ATTR_TYPES
 suffix:semicolon
-multiline_comment|/*&n; * The collation rules for sorting views/indexes/etc (32-bit).&n; *&n; * COLLATION_UNICODE_STRING - Collate Unicode strings by comparing their binary&n; *&t;Unicode values, except that when a character can be uppercased, the&n; *&t;upper case value collates before the lower case one.&n; * COLLATION_FILE_NAME - Collate file names as Unicode strings. The collation&n; *&t;is done very much like COLLATION_UNICODE_STRING. In fact I have no idea&n; *&t;what the difference is. Perhaps the difference is that file names&n; *&t;would treat some special characters in an odd way (see&n; *&t;unistr.c::ntfs_collate_names() and unistr.c::legal_ansi_char_array[]&n; *&t;for what I mean but COLLATION_UNICODE_STRING would not give any special&n; *&t;treatment to any characters at all, but this is speculation.&n; * COLLATION_NTOFS_ULONG - Sorting is done according to ascending u32 key&n; * &t;values. E.g. used for $SII index in FILE_Secure, which sorts by&n; * &t;security_id (u32).&n; * COLLATION_NTOFS_SID - Sorting is done according to ascending SID values.&n; * &t;E.g. used for $O index in FILE_Extend/$Quota.&n; * COLLATION_NTOFS_SECURITY_HASH - Sorting is done first by ascending hash&n; * &t;values and second by ascending security_id values. E.g. used for $SDH&n; * &t;index in FILE_Secure.&n; * COLLATION_NTOFS_ULONGS - Sorting is done according to a sequence of ascending&n; *&t;u32 key values. E.g. used for $O index in FILE_Extend/$ObjId, which&n; *&t;sorts by object_id (16-byte), by splitting up the object_id in four&n; *&t;u32 values and using them as individual keys. E.g. take the following&n; *&t;two security_ids, stored as follows on disk:&n; *&t;&t;1st: a1 61 65 b7 65 7b d4 11 9e 3d 00 e0 81 10 42 59&n; *&t;&t;2nd: 38 14 37 d2 d2 f3 d4 11 a5 21 c8 6b 79 b1 97 45&n; *&t;To compare them, they are split into four u32 values each, like so:&n; *&t;&t;1st: 0xb76561a1 0x11d47b65 0xe0003d9e 0x59421081&n; *&t;&t;2nd: 0xd2371438 0x11d4f3d2 0x6bc821a5 0x4597b179&n; *&t;Now, it is apparent why the 2nd object_id collates after the 1st: the&n; *&t;first u32 value of the 1st object_id is less than the first u32 of&n; *&t;the 2nd object_id. If the first u32 values of both object_ids were&n; *&t;equal then the second u32 values would be compared, etc.&n; */
+multiline_comment|/*&n; * The collation rules for sorting views/indexes/etc (32-bit).&n; *&n; * COLLATION_UNICODE_STRING - Collate Unicode strings by comparing their binary&n; *&t;Unicode values, except that when a character can be uppercased, the&n; *&t;upper case value collates before the lower case one.&n; * COLLATION_FILE_NAME - Collate file names as Unicode strings. The collation&n; *&t;is done very much like COLLATION_UNICODE_STRING. In fact I have no idea&n; *&t;what the difference is. Perhaps the difference is that file names&n; *&t;would treat some special characters in an odd way (see&n; *&t;unistr.c::ntfs_collate_names() and unistr.c::legal_ansi_char_array[]&n; *&t;for what I mean but COLLATION_UNICODE_STRING would not give any special&n; *&t;treatment to any characters at all, but this is speculation.&n; * COLLATION_NTOFS_ULONG - Sorting is done according to ascending u32 key&n; *&t;values. E.g. used for $SII index in FILE_Secure, which sorts by&n; *&t;security_id (u32).&n; * COLLATION_NTOFS_SID - Sorting is done according to ascending SID values.&n; *&t;E.g. used for $O index in FILE_Extend/$Quota.&n; * COLLATION_NTOFS_SECURITY_HASH - Sorting is done first by ascending hash&n; *&t;values and second by ascending security_id values. E.g. used for $SDH&n; *&t;index in FILE_Secure.&n; * COLLATION_NTOFS_ULONGS - Sorting is done according to a sequence of ascending&n; *&t;u32 key values. E.g. used for $O index in FILE_Extend/$ObjId, which&n; *&t;sorts by object_id (16-byte), by splitting up the object_id in four&n; *&t;u32 values and using them as individual keys. E.g. take the following&n; *&t;two security_ids, stored as follows on disk:&n; *&t;&t;1st: a1 61 65 b7 65 7b d4 11 9e 3d 00 e0 81 10 42 59&n; *&t;&t;2nd: 38 14 37 d2 d2 f3 d4 11 a5 21 c8 6b 79 b1 97 45&n; *&t;To compare them, they are split into four u32 values each, like so:&n; *&t;&t;1st: 0xb76561a1 0x11d47b65 0xe0003d9e 0x59421081&n; *&t;&t;2nd: 0xd2371438 0x11d4f3d2 0x6bc821a5 0x4597b179&n; *&t;Now, it is apparent why the 2nd object_id collates after the 1st: the&n; *&t;first u32 value of the 1st object_id is less than the first u32 of&n; *&t;the 2nd object_id. If the first u32 values of both object_ids were&n; *&t;equal then the second u32 values would be compared, etc.&n; */
 r_typedef
 r_enum
 (brace
@@ -953,7 +1000,7 @@ id|__packed__
 )paren
 id|ATTR_DEF
 suffix:semicolon
-multiline_comment|/*&n; * Attribute flags (16-bit). &n; */
+multiline_comment|/*&n; * Attribute flags (16-bit).&n; */
 r_typedef
 r_enum
 (brace
@@ -1071,7 +1118,7 @@ multiline_comment|/* 14*/
 id|u16
 id|instance
 suffix:semicolon
-multiline_comment|/* The instance of this attribute record. This&n;&t;&t;&t;&t;   number is unique within this mft record (see &n;&t;&t;&t;&t;   MFT_RECORD/next_attribute_instance notes in&n;&t;&t;&t;&t;   in mft.h for more details). */
+multiline_comment|/* The instance of this attribute record. This&n;&t;&t;&t;&t;   number is unique within this mft record (see&n;&t;&t;&t;&t;   MFT_RECORD/next_attribute_instance notes in&n;&t;&t;&t;&t;   in mft.h for more details). */
 multiline_comment|/* 16*/
 r_union
 (brace
@@ -1089,7 +1136,7 @@ multiline_comment|/* 20 */
 id|u16
 id|value_offset
 suffix:semicolon
-multiline_comment|/* Byte offset of the attribute&n;&t;&t;&t;&t;&t;     value from the start of the&n;&t;&t;&t;&t;&t;     attribute record. When creating,&n;&t;&t;&t;&t;&t;     align to 8-byte boundary if we &n;&t;&t;&t;&t;&t;     have a name present as this might&n;&t;&t;&t;&t;&t;     not have a length of a multiple&n;&t;&t;&t;&t;&t;     of 8-bytes. */
+multiline_comment|/* Byte offset of the attribute&n;&t;&t;&t;&t;&t;     value from the start of the&n;&t;&t;&t;&t;&t;     attribute record. When creating,&n;&t;&t;&t;&t;&t;     align to 8-byte boundary if we&n;&t;&t;&t;&t;&t;     have a name present as this might&n;&t;&t;&t;&t;&t;     not have a length of a multiple&n;&t;&t;&t;&t;&t;     of 8-bytes. */
 DECL|member|flags
 multiline_comment|/* 22 */
 id|RESIDENT_ATTR_FLAGS
@@ -1352,7 +1399,7 @@ c_func
 l_int|0x00007fb7
 )paren
 comma
-multiline_comment|/* FILE_ATTR_VALID_FLAGS masks out the old DOS VolId and the &n;&t;   FILE_ATTR_DEVICE and preserves everything else. This mask&n;&t;   is used to obtain all flags that are valid for reading. */
+multiline_comment|/* FILE_ATTR_VALID_FLAGS masks out the old DOS VolId and the&n;&t;   FILE_ATTR_DEVICE and preserves everything else. This mask&n;&t;   is used to obtain all flags that are valid for reading. */
 DECL|enumerator|FILE_ATTR_VALID_SET_FLAGS
 id|FILE_ATTR_VALID_SET_FLAGS
 op_assign
@@ -1389,7 +1436,7 @@ DECL|typedef|FILE_ATTR_FLAGS
 id|FILE_ATTR_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * NOTE on times in NTFS: All times are in MS standard time format, i.e. they&n; * are the number of 100-nanosecond intervals since 1st January 1601, 00:00:00&n; * universal coordinated time (UTC). (In Linux time starts 1st January 1970,&n; * 00:00:00 UTC and is stored as the number of 1-second intervals since then.)&n; */
-multiline_comment|/*&n; * Attribute: Standard information (0x10).&n; *&n; * NOTE: Always resident.&n; * NOTE: Present in all base file records on a volume.&n; * NOTE: There is conflicting information about the meaning of each of the time&n; * &t; fields but the meaning as defined below has been verified to be&n; * &t; correct by practical experimentation on Windows NT4 SP6a and is hence&n; * &t; assumed to be the one and only correct interpretation.&n; */
+multiline_comment|/*&n; * Attribute: Standard information (0x10).&n; *&n; * NOTE: Always resident.&n; * NOTE: Present in all base file records on a volume.&n; * NOTE: There is conflicting information about the meaning of each of the time&n; *&t; fields but the meaning as defined below has been verified to be&n; *&t; correct by practical experimentation on Windows NT4 SP6a and is hence&n; *&t; assumed to be the one and only correct interpretation.&n; */
 r_typedef
 r_struct
 (brace
@@ -1453,7 +1500,7 @@ multiline_comment|/* sizeof() = 48 bytes */
 multiline_comment|/* NTFS 3.x */
 r_struct
 (brace
-multiline_comment|/*&n; * If a volume has been upgraded from a previous NTFS version, then these&n; * fields are present only if the file has been accessed since the upgrade.&n; * Recognize the difference by comparing the length of the resident attribute&n; * value. If it is 48, then the following fields are missing. If it is 72 then&n; * the fields are present. Maybe just check like this:&n; * &t;if (resident.ValueLength &lt; sizeof(STANDARD_INFORMATION)) {&n; * &t;&t;Assume NTFS 1.2- format.&n; * &t;&t;If (volume version is 3.x)&n; * &t;&t;&t;Upgrade attribute to NTFS 3.x format.&n; * &t;&t;else&n; * &t;&t;&t;Use NTFS 1.2- format for access.&n; * &t;} else&n; * &t;&t;Use NTFS 3.x format for access.&n; * Only problem is that it might be legal to set the length of the value to&n; * arbitrarily large values thus spoiling this check. - But chkdsk probably&n; * views that as a corruption, assuming that it behaves like this for all&n; * attributes.&n; */
+multiline_comment|/*&n; * If a volume has been upgraded from a previous NTFS version, then these&n; * fields are present only if the file has been accessed since the upgrade.&n; * Recognize the difference by comparing the length of the resident attribute&n; * value. If it is 48, then the following fields are missing. If it is 72 then&n; * the fields are present. Maybe just check like this:&n; *&t;if (resident.ValueLength &lt; sizeof(STANDARD_INFORMATION)) {&n; *&t;&t;Assume NTFS 1.2- format.&n; *&t;&t;If (volume version is 3.x)&n; *&t;&t;&t;Upgrade attribute to NTFS 3.x format.&n; *&t;&t;else&n; *&t;&t;&t;Use NTFS 1.2- format for access.&n; *&t;} else&n; *&t;&t;Use NTFS 3.x format for access.&n; * Only problem is that it might be legal to set the length of the value to&n; * arbitrarily large values thus spoiling this check. - But chkdsk probably&n; * views that as a corruption, assuming that it behaves like this for all&n; * attributes.&n; */
 DECL|member|maximum_versions
 multiline_comment|/* 36*/
 id|u32
@@ -1527,7 +1574,7 @@ id|__packed__
 )paren
 id|STANDARD_INFORMATION
 suffix:semicolon
-multiline_comment|/*&n; * Attribute: Attribute list (0x20).&n; *&n; * - Can be either resident or non-resident.&n; * - Value consists of a sequence of variable length, 8-byte aligned,&n; * ATTR_LIST_ENTRY records.&n; * - The list is not terminated by anything at all! The only way to know when&n; * the end is reached is to keep track of the current offset and compare it to&n; * the attribute value size.&n; * - The attribute list attribute contains one entry for each attribute of&n; * the file in which the list is located, except for the list attribute&n; * itself. The list is sorted: first by attribute type, second by attribute&n; * name (if present), third by instance number. The extents of one&n; * non-resident attribute (if present) immediately follow after the initial&n; * extent. They are ordered by lowest_vcn and have their instace set to zero. &n; * It is not allowed to have two attributes with all sorting keys equal.&n; * - Further restrictions: &n; * &t;- If not resident, the vcn to lcn mapping array has to fit inside the&n; * &t;  base mft record.&n; * &t;- The attribute list attribute value has a maximum size of 256kb. This&n; * &t;  is imposed by the Windows cache manager.&n; * - Attribute lists are only used when the attributes of mft record do not&n; * fit inside the mft record despite all attributes (that can be made&n; * non-resident) having been made non-resident. This can happen e.g. when:&n; *  &t;- File has a large number of hard links (lots of file name&n; *  &t;  attributes present).&n; *  &t;- The mapping pairs array of some non-resident attribute becomes so&n; *&t;  large due to fragmentation that it overflows the mft record.&n; *  &t;- The security descriptor is very complex (not applicable to&n; *  &t;  NTFS 3.0 volumes).&n; *  &t;- There are many named streams.&n; */
+multiline_comment|/*&n; * Attribute: Attribute list (0x20).&n; *&n; * - Can be either resident or non-resident.&n; * - Value consists of a sequence of variable length, 8-byte aligned,&n; * ATTR_LIST_ENTRY records.&n; * - The list is not terminated by anything at all! The only way to know when&n; * the end is reached is to keep track of the current offset and compare it to&n; * the attribute value size.&n; * - The attribute list attribute contains one entry for each attribute of&n; * the file in which the list is located, except for the list attribute&n; * itself. The list is sorted: first by attribute type, second by attribute&n; * name (if present), third by instance number. The extents of one&n; * non-resident attribute (if present) immediately follow after the initial&n; * extent. They are ordered by lowest_vcn and have their instace set to zero.&n; * It is not allowed to have two attributes with all sorting keys equal.&n; * - Further restrictions:&n; *&t;- If not resident, the vcn to lcn mapping array has to fit inside the&n; *&t;  base mft record.&n; *&t;- The attribute list attribute value has a maximum size of 256kb. This&n; *&t;  is imposed by the Windows cache manager.&n; * - Attribute lists are only used when the attributes of mft record do not&n; * fit inside the mft record despite all attributes (that can be made&n; * non-resident) having been made non-resident. This can happen e.g. when:&n; *&t;- File has a large number of hard links (lots of file name&n; *&t;  attributes present).&n; *&t;- The mapping pairs array of some non-resident attribute becomes so&n; *&t;  large due to fragmentation that it overflows the mft record.&n; *&t;- The security descriptor is very complex (not applicable to&n; *&t;  NTFS 3.0 volumes).&n; *&t;- There are many named streams.&n; */
 r_typedef
 r_struct
 (brace
@@ -1606,13 +1653,13 @@ id|FILE_NAME_POSIX
 op_assign
 l_int|0x00
 comma
-multiline_comment|/* This is the largest namespace. It is case sensitive and &n;&t;&t;   allows all Unicode characters except for: &squot;&bslash;0&squot; and &squot;/&squot;.&n;&t;&t;   Beware that in WinNT/2k files which eg have the same name&n;&t;&t;   except for their case will not be distinguished by the&n;&t;&t;   standard utilities and thus a &quot;del filename&quot; will delete&n;&t;&t;   both &quot;filename&quot; and &quot;fileName&quot; without warning. */
+multiline_comment|/* This is the largest namespace. It is case sensitive and&n;&t;&t;   allows all Unicode characters except for: &squot;&bslash;0&squot; and &squot;/&squot;.&n;&t;&t;   Beware that in WinNT/2k files which eg have the same name&n;&t;&t;   except for their case will not be distinguished by the&n;&t;&t;   standard utilities and thus a &quot;del filename&quot; will delete&n;&t;&t;   both &quot;filename&quot; and &quot;fileName&quot; without warning. */
 DECL|enumerator|FILE_NAME_WIN32
 id|FILE_NAME_WIN32
 op_assign
 l_int|0x01
 comma
-multiline_comment|/* The standard WinNT/2k NTFS long filenames. Case insensitive.&n;&t;&t;   All Unicode chars except: &squot;&bslash;0&squot;, &squot;&quot;&squot;, &squot;*&squot;, &squot;/&squot;, &squot;:&squot;, &squot;&lt;&squot;, &n;&t;&t;   &squot;&gt;&squot;, &squot;?&squot;, &squot;&bslash;&squot; and &squot;|&squot;. Further, names cannot end with a &squot;.&squot;&n;&t;&t;   or a space. */
+multiline_comment|/* The standard WinNT/2k NTFS long filenames. Case insensitive.&n;&t;&t;   All Unicode chars except: &squot;&bslash;0&squot;, &squot;&quot;&squot;, &squot;*&squot;, &squot;/&squot;, &squot;:&squot;, &squot;&lt;&squot;,&n;&t;&t;   &squot;&gt;&squot;, &squot;?&squot;, &squot;&bslash;&squot; and &squot;|&squot;. Further, names cannot end with a &squot;.&squot;&n;&t;&t;   or a space. */
 DECL|enumerator|FILE_NAME_DOS
 id|FILE_NAME_DOS
 op_assign
@@ -1635,7 +1682,7 @@ id|__packed__
 )paren
 id|FILE_NAME_TYPE_FLAGS
 suffix:semicolon
-multiline_comment|/*&n; * Attribute: Filename (0x30).&n; *&n; * NOTE: Always resident.&n; * NOTE: All fields, except the parent_directory, are only updated when the&n; *&t; filename is changed. Until then, they just become out of sync with&n; *&t; reality and the more up to date values are present in the standard&n; *&t; information attribute.&n; * NOTE: There is conflicting information about the meaning of each of the time&n; * &t; fields but the meaning as defined below has been verified to be&n; * &t; correct by practical experimentation on Windows NT4 SP6a and is hence&n; * &t; assumed to be the one and only correct interpretation.&n; */
+multiline_comment|/*&n; * Attribute: Filename (0x30).&n; *&n; * NOTE: Always resident.&n; * NOTE: All fields, except the parent_directory, are only updated when the&n; *&t; filename is changed. Until then, they just become out of sync with&n; *&t; reality and the more up to date values are present in the standard&n; *&t; information attribute.&n; * NOTE: There is conflicting information about the meaning of each of the time&n; *&t; fields but the meaning as defined below has been verified to be&n; *&t; correct by practical experimentation on Windows NT4 SP6a and is hence&n; *&t; assumed to be the one and only correct interpretation.&n; */
 r_typedef
 r_struct
 (brace
@@ -1776,7 +1823,7 @@ id|__packed__
 )paren
 id|FILE_NAME_ATTR
 suffix:semicolon
-multiline_comment|/*&n; * GUID structures store globally unique identifiers (GUID). A GUID is a &n; * 128-bit value consisting of one group of eight hexadecimal digits, followed&n; * by three groups of four hexadecimal digits each, followed by one group of&n; * twelve hexadecimal digits. GUIDs are Microsoft&squot;s implementation of the&n; * distributed computing environment (DCE) universally unique identifier (UUID).&n; * Example of a GUID:&n; * &t;1F010768-5A73-BC91-0010A52216A7&n; */
+multiline_comment|/*&n; * GUID structures store globally unique identifiers (GUID). A GUID is a&n; * 128-bit value consisting of one group of eight hexadecimal digits, followed&n; * by three groups of four hexadecimal digits each, followed by one group of&n; * twelve hexadecimal digits. GUIDs are Microsoft&squot;s implementation of the&n; * distributed computing environment (DCE) universally unique identifier (UUID).&n; * Example of a GUID:&n; *&t;1F010768-5A73-BC91-0010A52216A7&n; */
 r_typedef
 r_struct
 (brace
@@ -1945,12 +1992,12 @@ multiline_comment|/*&n; * The pre-defined IDENTIFIER_AUTHORITIES used as SID_IDE
 singleline_comment|//typedef enum {&t;&t;&t;&t;&t;/* SID string prefix. */
 singleline_comment|//&t;SECURITY_NULL_SID_AUTHORITY&t;= {0, 0, 0, 0, 0, 0},&t;/* S-1-0 */
 singleline_comment|//&t;SECURITY_WORLD_SID_AUTHORITY&t;= {0, 0, 0, 0, 0, 1},&t;/* S-1-1 */
-singleline_comment|//&t;SECURITY_LOCAL_SID_AUTHORITY &t;= {0, 0, 0, 0, 0, 2},&t;/* S-1-2 */
+singleline_comment|//&t;SECURITY_LOCAL_SID_AUTHORITY&t;= {0, 0, 0, 0, 0, 2},&t;/* S-1-2 */
 singleline_comment|//&t;SECURITY_CREATOR_SID_AUTHORITY&t;= {0, 0, 0, 0, 0, 3},&t;/* S-1-3 */
 singleline_comment|//&t;SECURITY_NON_UNIQUE_AUTHORITY&t;= {0, 0, 0, 0, 0, 4},&t;/* S-1-4 */
 singleline_comment|//&t;SECURITY_NT_SID_AUTHORITY&t;= {0, 0, 0, 0, 0, 5},&t;/* S-1-5 */
 singleline_comment|//} IDENTIFIER_AUTHORITIES;
-multiline_comment|/*&n; * These relative identifiers (RIDs) are used with the above identifier&n; * authorities to make up universal well-known SIDs.&n; * &t;&n; * Note: The relative identifier (RID) refers to the portion of a SID, which&n; * identifies a user or group in relation to the authority that issued the SID.&n; * For example, the universal well-known SID Creator Owner ID (S-1-3-0) is&n; * made up of the identifier authority SECURITY_CREATOR_SID_AUTHORITY (3) and&n; * the relative identifier SECURITY_CREATOR_OWNER_RID (0).&n; */
+multiline_comment|/*&n; * These relative identifiers (RIDs) are used with the above identifier&n; * authorities to make up universal well-known SIDs.&n; *&n; * Note: The relative identifier (RID) refers to the portion of a SID, which&n; * identifies a user or group in relation to the authority that issued the SID.&n; * For example, the universal well-known SID Creator Owner ID (S-1-3-0) is&n; * made up of the identifier authority SECURITY_CREATOR_SID_AUTHORITY (3) and&n; * the relative identifier SECURITY_CREATOR_OWNER_RID (0).&n; */
 r_typedef
 r_enum
 (brace
@@ -2210,7 +2257,7 @@ DECL|typedef|RELATIVE_IDENTIFIERS
 )brace
 id|RELATIVE_IDENTIFIERS
 suffix:semicolon
-multiline_comment|/*&n; * The universal well-known SIDs:&n; *&n; * &t;NULL_SID&t;&t;&t;S-1-0-0&n; * &t;WORLD_SID&t;&t;&t;S-1-1-0&n; * &t;LOCAL_SID&t;&t;&t;S-1-2-0&n; * &t;CREATOR_OWNER_SID&t;&t;S-1-3-0&n; * &t;CREATOR_GROUP_SID&t;&t;S-1-3-1&n; * &t;CREATOR_OWNER_SERVER_SID&t;S-1-3-2&n; * &t;CREATOR_GROUP_SERVER_SID&t;S-1-3-3&n; *&n; * &t;(Non-unique IDs)&t;&t;S-1-4&n; *&n; * NT well-known SIDs:&n; * &n; * &t;NT_AUTHORITY_SID&t;S-1-5&n; * &t;DIALUP_SID&t;&t;S-1-5-1&n; *&n; * &t;NETWORD_SID&t;&t;S-1-5-2&n; * &t;BATCH_SID&t;&t;S-1-5-3&n; * &t;INTERACTIVE_SID&t;&t;S-1-5-4&n; * &t;SERVICE_SID&t;&t;S-1-5-6&n; * &t;ANONYMOUS_LOGON_SID&t;S-1-5-7&t;&t;(aka null logon session)&n; * &t;PROXY_SID&t;&t;S-1-5-8&n; * &t;SERVER_LOGON_SID&t;S-1-5-9&t;&t;(aka domain controller account)&n; * &t;SELF_SID&t;&t;S-1-5-10&t;(self RID)&n; * &t;AUTHENTICATED_USER_SID&t;S-1-5-11&n; * &t;RESTRICTED_CODE_SID&t;S-1-5-12&t;(running restricted code)&n; * &t;TERMINAL_SERVER_SID&t;S-1-5-13&t;(running on terminal server)&n; *&n; * &t;(Logon IDs)&t;&t;S-1-5-5-X-Y&n; *&n; * &t;(NT non-unique IDs)&t;S-1-5-0x15-...&n; *&n; * &t;(Built-in domain)&t;S-1-5-0x20&n; */
+multiline_comment|/*&n; * The universal well-known SIDs:&n; *&n; *&t;NULL_SID&t;&t;&t;S-1-0-0&n; *&t;WORLD_SID&t;&t;&t;S-1-1-0&n; *&t;LOCAL_SID&t;&t;&t;S-1-2-0&n; *&t;CREATOR_OWNER_SID&t;&t;S-1-3-0&n; *&t;CREATOR_GROUP_SID&t;&t;S-1-3-1&n; *&t;CREATOR_OWNER_SERVER_SID&t;S-1-3-2&n; *&t;CREATOR_GROUP_SERVER_SID&t;S-1-3-3&n; *&n; *&t;(Non-unique IDs)&t;&t;S-1-4&n; *&n; * NT well-known SIDs:&n; *&n; *&t;NT_AUTHORITY_SID&t;S-1-5&n; *&t;DIALUP_SID&t;&t;S-1-5-1&n; *&n; *&t;NETWORD_SID&t;&t;S-1-5-2&n; *&t;BATCH_SID&t;&t;S-1-5-3&n; *&t;INTERACTIVE_SID&t;&t;S-1-5-4&n; *&t;SERVICE_SID&t;&t;S-1-5-6&n; *&t;ANONYMOUS_LOGON_SID&t;S-1-5-7&t;&t;(aka null logon session)&n; *&t;PROXY_SID&t;&t;S-1-5-8&n; *&t;SERVER_LOGON_SID&t;S-1-5-9&t;&t;(aka domain controller account)&n; *&t;SELF_SID&t;&t;S-1-5-10&t;(self RID)&n; *&t;AUTHENTICATED_USER_SID&t;S-1-5-11&n; *&t;RESTRICTED_CODE_SID&t;S-1-5-12&t;(running restricted code)&n; *&t;TERMINAL_SERVER_SID&t;S-1-5-13&t;(running on terminal server)&n; *&n; *&t;(Logon IDs)&t;&t;S-1-5-5-X-Y&n; *&n; *&t;(NT non-unique IDs)&t;S-1-5-0x15-...&n; *&n; *&t;(Built-in domain)&t;S-1-5-0x20&n; */
 multiline_comment|/*&n; * The SID_IDENTIFIER_AUTHORITY is a 48-bit value used in the SID structure.&n; */
 r_typedef
 r_union
@@ -2255,7 +2302,7 @@ id|__packed__
 )paren
 id|SID_IDENTIFIER_AUTHORITY
 suffix:semicolon
-multiline_comment|/*&n; * The SID structure is a variable-length structure used to uniquely identify&n; * users or groups. SID stands for security identifier.&n; * &n; * The standard textual representation of the SID is of the form:&n; * &t;S-R-I-S-S...&n; * Where:&n; *    - The first &quot;S&quot; is the literal character &squot;S&squot; identifying the following&n; * &t;digits as a SID.&n; *    - R is the revision level of the SID expressed as a sequence of digits&n; *&t;either in decimal or hexadecimal (if the later, prefixed by &quot;0x&quot;).&n; *    - I is the 48-bit identifier_authority, expressed as digits as R above.&n; *    - S... is one or more sub_authority values, expressed as digits as above.&n; *    &n; * Example SID; the domain-relative SID of the local Administrators group on&n; * Windows NT/2k:&n; * &t;S-1-5-32-544&n; * This translates to a SID with:&n; * &t;revision = 1,&n; * &t;sub_authority_count = 2,&n; * &t;identifier_authority = {0,0,0,0,0,5},&t;// SECURITY_NT_AUTHORITY&n; * &t;sub_authority[0] = 32,&t;&t;&t;// SECURITY_BUILTIN_DOMAIN_RID&n; * &t;sub_authority[1] = 544&t;&t;&t;// DOMAIN_ALIAS_RID_ADMINS&n; */
+multiline_comment|/*&n; * The SID structure is a variable-length structure used to uniquely identify&n; * users or groups. SID stands for security identifier.&n; *&n; * The standard textual representation of the SID is of the form:&n; *&t;S-R-I-S-S...&n; * Where:&n; *    - The first &quot;S&quot; is the literal character &squot;S&squot; identifying the following&n; *&t;digits as a SID.&n; *    - R is the revision level of the SID expressed as a sequence of digits&n; *&t;either in decimal or hexadecimal (if the later, prefixed by &quot;0x&quot;).&n; *    - I is the 48-bit identifier_authority, expressed as digits as R above.&n; *    - S... is one or more sub_authority values, expressed as digits as above.&n; *&n; * Example SID; the domain-relative SID of the local Administrators group on&n; * Windows NT/2k:&n; *&t;S-1-5-32-544&n; * This translates to a SID with:&n; *&t;revision = 1,&n; *&t;sub_authority_count = 2,&n; *&t;identifier_authority = {0,0,0,0,0,5},&t;// SECURITY_NT_AUTHORITY&n; *&t;sub_authority[0] = 32,&t;&t;&t;// SECURITY_BUILTIN_DOMAIN_RID&n; *&t;sub_authority[1] = 544&t;&t;&t;// DOMAIN_ALIAS_RID_ADMINS&n; */
 r_typedef
 r_struct
 (brace
@@ -2802,7 +2849,7 @@ DECL|typedef|ACCESS_MASK
 )brace
 id|ACCESS_MASK
 suffix:semicolon
-multiline_comment|/*&n; * The generic mapping array. Used to denote the mapping of each generic&n; * access right to a specific access mask.&n; * &n; * FIXME: What exactly is this and what is it for? (AIA)&n; */
+multiline_comment|/*&n; * The generic mapping array. Used to denote the mapping of each generic&n; * access right to a specific access mask.&n; *&n; * FIXME: What exactly is this and what is it for? (AIA)&n; */
 r_typedef
 r_struct
 (brace
@@ -3064,7 +3111,7 @@ DECL|typedef|ACL_CONSTANTS
 )brace
 id|ACL_CONSTANTS
 suffix:semicolon
-multiline_comment|/*&n; * The security descriptor control flags (16-bit).&n; *&n; * SE_OWNER_DEFAULTED - This boolean flag, when set, indicates that the&n; *          SID pointed to by the Owner field was provided by a&n; *          defaulting mechanism rather than explicitly provided by the&n; *          original provider of the security descriptor.  This may&n; *          affect the treatment of the SID with respect to inheritence&n; *          of an owner.&n; *&n; * SE_GROUP_DEFAULTED - This boolean flag, when set, indicates that the&n; *          SID in the Group field was provided by a defaulting mechanism&n; *          rather than explicitly provided by the original provider of&n; *          the security descriptor.  This may affect the treatment of&n; *          the SID with respect to inheritence of a primary group.&n; *&n; * SE_DACL_PRESENT - This boolean flag, when set, indicates that the&n; *          security descriptor contains a discretionary ACL.  If this&n; *          flag is set and the Dacl field of the SECURITY_DESCRIPTOR is&n; *          null, then a null ACL is explicitly being specified.&n; *&n; * SE_DACL_DEFAULTED - This boolean flag, when set, indicates that the&n; *          ACL pointed to by the Dacl field was provided by a defaulting&n; *          mechanism rather than explicitly provided by the original&n; *          provider of the security descriptor.  This may affect the&n; *          treatment of the ACL with respect to inheritence of an ACL.&n; *          This flag is ignored if the DaclPresent flag is not set.&n; *&n; * SE_SACL_PRESENT - This boolean flag, when set,  indicates that the&n; *          security descriptor contains a system ACL pointed to by the&n; *          Sacl field.  If this flag is set and the Sacl field of the&n; *          SECURITY_DESCRIPTOR is null, then an empty (but present)&n; *          ACL is being specified.&n; *&n; * SE_SACL_DEFAULTED - This boolean flag, when set, indicates that the&n; *          ACL pointed to by the Sacl field was provided by a defaulting&n; *          mechanism rather than explicitly provided by the original&n; *          provider of the security descriptor.  This may affect the&n; *          treatment of the ACL with respect to inheritence of an ACL.&n; *          This flag is ignored if the SaclPresent flag is not set.&n; *&n; * SE_SELF_RELATIVE - This boolean flag, when set, indicates that the&n; *          security descriptor is in self-relative form.  In this form,&n; *          all fields of the security descriptor are contiguous in memory&n; *          and all pointer fields are expressed as offsets from the&n; *          beginning of the security descriptor.&n; */
+multiline_comment|/*&n; * The security descriptor control flags (16-bit).&n; *&n; * SE_OWNER_DEFAULTED - This boolean flag, when set, indicates that the SID&n; *&t;pointed to by the Owner field was provided by a defaulting mechanism&n; *&t;rather than explicitly provided by the original provider of the&n; *&t;security descriptor.  This may affect the treatment of the SID with&n; *&t;respect to inheritence of an owner.&n; *&n; * SE_GROUP_DEFAULTED - This boolean flag, when set, indicates that the SID in&n; *&t;the Group field was provided by a defaulting mechanism rather than&n; *&t;explicitly provided by the original provider of the security&n; *&t;descriptor.  This may affect the treatment of the SID with respect to&n; *&t;inheritence of a primary group.&n; *&n; * SE_DACL_PRESENT - This boolean flag, when set, indicates that the security&n; *&t;descriptor contains a discretionary ACL.  If this flag is set and the&n; *&t;Dacl field of the SECURITY_DESCRIPTOR is null, then a null ACL is&n; *&t;explicitly being specified.&n; *&n; * SE_DACL_DEFAULTED - This boolean flag, when set, indicates that the ACL&n; *&t;pointed to by the Dacl field was provided by a defaulting mechanism&n; *&t;rather than explicitly provided by the original provider of the&n; *&t;security descriptor.  This may affect the treatment of the ACL with&n; *&t;respect to inheritence of an ACL.  This flag is ignored if the&n; *&t;DaclPresent flag is not set.&n; *&n; * SE_SACL_PRESENT - This boolean flag, when set,  indicates that the security&n; *&t;descriptor contains a system ACL pointed to by the Sacl field.  If this&n; *&t;flag is set and the Sacl field of the SECURITY_DESCRIPTOR is null, then&n; *&t;an empty (but present) ACL is being specified.&n; *&n; * SE_SACL_DEFAULTED - This boolean flag, when set, indicates that the ACL&n; *&t;pointed to by the Sacl field was provided by a defaulting mechanism&n; *&t;rather than explicitly provided by the original provider of the&n; *&t;security descriptor.  This may affect the treatment of the ACL with&n; *&t;respect to inheritence of an ACL.  This flag is ignored if the&n; *&t;SaclPresent flag is not set.&n; *&n; * SE_SELF_RELATIVE - This boolean flag, when set, indicates that the security&n; *&t;descriptor is in self-relative form.  In this form, all fields of the&n; *&t;security descriptor are contiguous in memory and all pointer fields are&n; *&t;expressed as offsets from the beginning of the security descriptor.&n; */
 r_typedef
 r_enum
 (brace
@@ -3241,7 +3288,7 @@ DECL|member|dacl
 id|u32
 id|dacl
 suffix:semicolon
-multiline_comment|/* Byte offset to a discretionary ACL. Only valid, if &n;&t;&t;&t;   SE_DACL_PRESENT is set in the control field. If&n;&t;&t;&t;   SE_DACL_PRESENT is set but dacl is NULL, a NULL ACL&n;&t;&t;&t;   (unconditionally granting access) is specified. */
+multiline_comment|/* Byte offset to a discretionary ACL. Only valid, if&n;&t;&t;&t;   SE_DACL_PRESENT is set in the control field. If&n;&t;&t;&t;   SE_DACL_PRESENT is set but dacl is NULL, a NULL ACL&n;&t;&t;&t;   (unconditionally granting access) is specified. */
 multiline_comment|/* sizeof() = 0x14 bytes */
 DECL|typedef|SECURITY_DESCRIPTOR_RELATIVE
 )brace
@@ -3270,7 +3317,7 @@ DECL|member|control
 id|SECURITY_DESCRIPTOR_CONTROL
 id|control
 suffix:semicolon
-multiline_comment|/* Flags qualifying the type of &n;&t;&t;&t;   the descriptor as well as the following fields. */
+multiline_comment|/* Flags qualifying the type of&n;&t;&t;&t;   the descriptor as well as the following fields. */
 DECL|member|owner
 id|SID
 op_star
@@ -3294,7 +3341,7 @@ id|ACL
 op_star
 id|dacl
 suffix:semicolon
-multiline_comment|/* Points to a discretionary ACL. Only valid, if &n;&t;&t;&t;   SE_DACL_PRESENT is set in the control field. If&n;&t;&t;&t;   SE_DACL_PRESENT is set but dacl is NULL, a NULL ACL&n;&t;&t;&t;   (unconditionally granting access) is specified. */
+multiline_comment|/* Points to a discretionary ACL. Only valid, if&n;&t;&t;&t;   SE_DACL_PRESENT is set in the control field. If&n;&t;&t;&t;   SE_DACL_PRESENT is set but dacl is NULL, a NULL ACL&n;&t;&t;&t;   (unconditionally granting access) is specified. */
 DECL|typedef|SECURITY_DESCRIPTOR
 )brace
 id|__attribute__
@@ -3339,7 +3386,7 @@ r_typedef
 id|SECURITY_DESCRIPTOR_RELATIVE
 id|SECURITY_DESCRIPTOR_ATTR
 suffix:semicolon
-multiline_comment|/*&n; * On NTFS 3.0+, all security descriptors are stored in FILE_Secure. Only one&n; * referenced instance of each unique security descriptor is stored.&n; * &n; * FILE_Secure contains no unnamed data attribute, i.e. it has zero length. It&n; * does, however, contain two indexes ($SDH and $SII) as well as a named data&n; * stream ($SDS).&n; * &n; * Every unique security descriptor is assigned a unique security identifier&n; * (security_id, not to be confused with a SID). The security_id is unique for&n; * the NTFS volume and is used as an index into the $SII index, which maps&n; * security_ids to the security descriptor&squot;s storage location within the $SDS&n; * data attribute. The $SII index is sorted by ascending security_id.&n; *&n; * A simple hash is computed from each security descriptor. This hash is used&n; * as an index into the $SDH index, which maps security descriptor hashes to&n; * the security descriptor&squot;s storage location within the $SDS data attribute.&n; * The $SDH index is sorted by security descriptor hash and is stored in a B+&n; * tree. When searching $SDH (with the intent of determining whether or not a&n; * new security descriptor is already present in the $SDS data stream), if a&n; * matching hash is found, but the security descriptors do not match, the&n; * search in the $SDH index is continued, searching for a next matching hash.&n; * &n; * When a precise match is found, the security_id coresponding to the security&n; * descriptor in the $SDS attribute is read from the found $SDH index entry and&n; * is stored in the $STANDARD_INFORMATION attribute of the file/directory to&n; * which the security descriptor is being applied. The $STANDARD_INFORMATION&n; * attribute is present in all base mft records (i.e. in all files and &n; * directories).&n; *&n; * If a match is not found, the security descriptor is assigned a new unique&n; * security_id and is added to the $SDS data attribute. Then, entries&n; * referencing the this security descriptor in the $SDS data attribute are&n; * added to the $SDH and $SII indexes.&n; *&n; * Note: Entries are never deleted from FILE_Secure, even if nothing&n; * references an entry any more.&n; */
+multiline_comment|/*&n; * On NTFS 3.0+, all security descriptors are stored in FILE_Secure. Only one&n; * referenced instance of each unique security descriptor is stored.&n; *&n; * FILE_Secure contains no unnamed data attribute, i.e. it has zero length. It&n; * does, however, contain two indexes ($SDH and $SII) as well as a named data&n; * stream ($SDS).&n; *&n; * Every unique security descriptor is assigned a unique security identifier&n; * (security_id, not to be confused with a SID). The security_id is unique for&n; * the NTFS volume and is used as an index into the $SII index, which maps&n; * security_ids to the security descriptor&squot;s storage location within the $SDS&n; * data attribute. The $SII index is sorted by ascending security_id.&n; *&n; * A simple hash is computed from each security descriptor. This hash is used&n; * as an index into the $SDH index, which maps security descriptor hashes to&n; * the security descriptor&squot;s storage location within the $SDS data attribute.&n; * The $SDH index is sorted by security descriptor hash and is stored in a B+&n; * tree. When searching $SDH (with the intent of determining whether or not a&n; * new security descriptor is already present in the $SDS data stream), if a&n; * matching hash is found, but the security descriptors do not match, the&n; * search in the $SDH index is continued, searching for a next matching hash.&n; *&n; * When a precise match is found, the security_id coresponding to the security&n; * descriptor in the $SDS attribute is read from the found $SDH index entry and&n; * is stored in the $STANDARD_INFORMATION attribute of the file/directory to&n; * which the security descriptor is being applied. The $STANDARD_INFORMATION&n; * attribute is present in all base mft records (i.e. in all files and&n; * directories).&n; *&n; * If a match is not found, the security descriptor is assigned a new unique&n; * security_id and is added to the $SDS data attribute. Then, entries&n; * referencing the this security descriptor in the $SDS data attribute are&n; * added to the $SDH and $SII indexes.&n; *&n; * Note: Entries are never deleted from FILE_Secure, even if nothing&n; * references an entry any more.&n; */
 multiline_comment|/*&n; * This header precedes each security descriptor in the $SDS data stream.&n; * This is also the index entry data part of both the $SII and $SDH indexes.&n; */
 r_typedef
 r_struct
@@ -3416,7 +3463,7 @@ id|__packed__
 )paren
 id|SDS_ENTRY
 suffix:semicolon
-multiline_comment|/*&n; * The index entry key used in the $SII index. The collation type is&n; * COLLATION_NTOFS_ULONG. &n; */
+multiline_comment|/*&n; * The index entry key used in the $SII index. The collation type is&n; * COLLATION_NTOFS_ULONG.&n; */
 r_typedef
 r_struct
 (brace
@@ -3459,7 +3506,7 @@ id|__packed__
 )paren
 id|SDH_INDEX_KEY
 suffix:semicolon
-multiline_comment|/*&n; * Attribute: Volume name (0x60).&n; * &n; * NOTE: Always resident.&n; * NOTE: Present only in FILE_Volume.&n; */
+multiline_comment|/*&n; * Attribute: Volume name (0x60).&n; *&n; * NOTE: Always resident.&n; * NOTE: Present only in FILE_Volume.&n; */
 r_typedef
 r_struct
 (brace
@@ -3567,7 +3614,7 @@ id|__packed__
 )paren
 id|VOLUME_FLAGS
 suffix:semicolon
-multiline_comment|/*&n; * Attribute: Volume information (0x70).&n; *&n; * NOTE: Always resident.&n; * NOTE: Present only in FILE_Volume.&n; * NOTE: Windows 2000 uses NTFS 3.0 while Windows NT4 service pack 6a uses&n; * &t; NTFS 1.2. I haven&squot;t personally seen other values yet.&n; */
+multiline_comment|/*&n; * Attribute: Volume information (0x70).&n; *&n; * NOTE: Always resident.&n; * NOTE: Present only in FILE_Volume.&n; * NOTE: Windows 2000 uses NTFS 3.0 while Windows NT4 service pack 6a uses&n; *&t; NTFS 1.2. I haven&squot;t personally seen other values yet.&n; */
 r_typedef
 r_struct
 (brace
@@ -3646,7 +3693,7 @@ id|LEAF_NODE
 op_assign
 l_int|0
 comma
-multiline_comment|/* This is a leaf node, i.e. there are no more&n;&t;&t;&t;        nodes branching off it. */
+multiline_comment|/* This is a leaf node, i.e. there are no more&n;&t;&t;&t;&t;nodes branching off it. */
 DECL|enumerator|INDEX_NODE
 id|INDEX_NODE
 op_assign
@@ -3735,7 +3782,7 @@ DECL|member|clusters_per_index_block
 id|u8
 id|clusters_per_index_block
 suffix:semicolon
-multiline_comment|/* Cluster size of each index block (in&n;&t;&t;&t;&t;&t;   the index allocation attribute), when&n;&t;&t;&t;&t;&t;   an index block is &gt;= than a cluster,&n;&t;&t;&t;&t;&t;   otherwise this will be the log of&n;&t;&t;&t;&t;&t;   the size (like how the encoding of &n;&t;&t;&t;&t;&t;   the mft record size and the index&n;&t;&t;&t;&t;&t;   record size found in the boot sector&n;&t;&t;&t;&t;&t;   work). Has to be a power of 2. */
+multiline_comment|/* Cluster size of each index block (in&n;&t;&t;&t;&t;&t;   the index allocation attribute), when&n;&t;&t;&t;&t;&t;   an index block is &gt;= than a cluster,&n;&t;&t;&t;&t;&t;   otherwise this will be the log of&n;&t;&t;&t;&t;&t;   the size (like how the encoding of&n;&t;&t;&t;&t;&t;   the mft record size and the index&n;&t;&t;&t;&t;&t;   record size found in the boot sector&n;&t;&t;&t;&t;&t;   work). Has to be a power of 2. */
 DECL|member|reserved
 id|u8
 id|reserved
@@ -3759,7 +3806,7 @@ id|__packed__
 )paren
 id|INDEX_ROOT
 suffix:semicolon
-multiline_comment|/*&n; * Attribute: Index allocation (0xa0).&n; *&n; * NOTE: Always non-resident (doesn&squot;t make sense to be resident anyway!).&n; * &n; * This is an array of index blocks. Each index block starts with an&n; * INDEX_BLOCK structure containing an index header, followed by a sequence of&n; * index entries (INDEX_ENTRY structures), as described by the INDEX_HEADER.&n; */
+multiline_comment|/*&n; * Attribute: Index allocation (0xa0).&n; *&n; * NOTE: Always non-resident (doesn&squot;t make sense to be resident anyway!).&n; *&n; * This is an array of index blocks. Each index block starts with an&n; * INDEX_BLOCK structure containing an index header, followed by a sequence of&n; * index entries (INDEX_ENTRY structures), as described by the INDEX_HEADER.&n; */
 r_typedef
 r_struct
 (brace
@@ -3957,7 +4004,7 @@ DECL|typedef|QUOTA_FLAGS
 )brace
 id|QUOTA_FLAGS
 suffix:semicolon
-multiline_comment|/*&n; * The system file FILE_Extend/$Quota contains two indexes $O and $Q. Quotas&n; * are on a per volume and per user basis.&n; *&n; * The $Q index contains one entry for each existing user_id on the volume. The&n; * index key is the user_id of the user/group owning this quota control entry,&n; * i.e. the key is the owner_id. The user_id of the owner of a file, i.e. the &n; * owner_id, is found in the standard information attribute. The collation rule&n; * for $Q is COLLATION_NTOFS_ULONG.&n; *&n; * The $O index contains one entry for each user/group who has been assigned&n; * a quota on that volume. The index key holds the SID of the user_id the&n; * entry belongs to, i.e. the owner_id. The collation rule for $O is&n; * COLLATION_NTOFS_SID.&n; *&n; * The $O index entry data is the user_id of the user corresponding to the SID.&n; * This user_id is used as an index into $Q to find the quota control entry&n; * associated with the SID.&n; *&n; * The $Q index entry data is the quota control entry and is defined below.&n; */
+multiline_comment|/*&n; * The system file FILE_Extend/$Quota contains two indexes $O and $Q. Quotas&n; * are on a per volume and per user basis.&n; *&n; * The $Q index contains one entry for each existing user_id on the volume. The&n; * index key is the user_id of the user/group owning this quota control entry,&n; * i.e. the key is the owner_id. The user_id of the owner of a file, i.e. the&n; * owner_id, is found in the standard information attribute. The collation rule&n; * for $Q is COLLATION_NTOFS_ULONG.&n; *&n; * The $O index contains one entry for each user/group who has been assigned&n; * a quota on that volume. The index key holds the SID of the user_id the&n; * entry belongs to, i.e. the owner_id. The collation rule for $O is&n; * COLLATION_NTOFS_SID.&n; *&n; * The $O index entry data is the user_id of the user corresponding to the SID.&n; * This user_id is used as an index into $Q to find the quota control entry&n; * associated with the SID.&n; *&n; * The $Q index entry data is the quota control entry and is defined below.&n; */
 r_typedef
 r_struct
 (brace
@@ -4362,7 +4409,7 @@ id|__packed__
 )paren
 id|BITMAP_ATTR
 suffix:semicolon
-multiline_comment|/*&n; * The reparse point tag defines the type of the reparse point. It also&n; * includes several flags, which further describe the reparse point.&n; *&n; * The reparse point tag is an unsigned 32-bit value divided in three parts:&n; *&n; * 1. The least significant 16 bits (i.e. bits 0 to 15) specifiy the type of&n; *    the reparse point.&n; * 2. The 13 bits after this (i.e. bits 16 to 28) are reserved for future use.&n; * 3. The most significant three bits are flags describing the reparse point.&n; *    They are defined as follows:&n; *&t;bit 29: Name surrogate bit. If set, the filename is an alias for&n; *&t;&t;another object in the system.&n; * &t;bit 30: High-latency bit. If set, accessing the first byte of data will&n; *&t;&t;be slow. (E.g. the data is stored on a tape drive.)&n; * &t;bit 31: Microsoft bit. If set, the tag is owned by Microsoft. User&n; *&t;&t;defined tags have to use zero here.&n; */
+multiline_comment|/*&n; * The reparse point tag defines the type of the reparse point. It also&n; * includes several flags, which further describe the reparse point.&n; *&n; * The reparse point tag is an unsigned 32-bit value divided in three parts:&n; *&n; * 1. The least significant 16 bits (i.e. bits 0 to 15) specifiy the type of&n; *    the reparse point.&n; * 2. The 13 bits after this (i.e. bits 16 to 28) are reserved for future use.&n; * 3. The most significant three bits are flags describing the reparse point.&n; *    They are defined as follows:&n; *&t;bit 29: Name surrogate bit. If set, the filename is an alias for&n; *&t;&t;another object in the system.&n; *&t;bit 30: High-latency bit. If set, accessing the first byte of data will&n; *&t;&t;be slow. (E.g. the data is stored on a tape drive.)&n; *&t;bit 31: Microsoft bit. If set, the tag is owned by Microsoft. User&n; *&t;&t;defined tags have to use zero here.&n; */
 r_typedef
 r_enum
 (brace
@@ -4581,7 +4628,7 @@ id|__packed__
 )paren
 id|EA_FLAGS
 suffix:semicolon
-multiline_comment|/*&n; * Attribute: Extended attribute (EA) (0xe0).&n; *&n; * NOTE: Always non-resident. (Is this true?)&n; * &n; * Like the attribute list and the index buffer list, the EA attribute value is &n; * a sequence of EA_ATTR variable length records.&n; *&n; * FIXME: It appears weird that the EA name is not unicode. Is it true?&n; */
+multiline_comment|/*&n; * Attribute: Extended attribute (EA) (0xe0).&n; *&n; * NOTE: Always non-resident. (Is this true?)&n; *&n; * Like the attribute list and the index buffer list, the EA attribute value is&n; * a sequence of EA_ATTR variable length records.&n; *&n; * FIXME: It appears weird that the EA name is not unicode. Is it true?&n; */
 r_typedef
 r_struct
 (brace

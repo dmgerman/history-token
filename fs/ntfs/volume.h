@@ -279,6 +279,10 @@ DECL|enumerator|NV_CaseSensitive
 id|NV_CaseSensitive
 comma
 multiline_comment|/* 1: Treat file names as case sensitive and&n;&t;&t;&t;&t;      create filenames in the POSIX namespace.&n;&t;&t;&t;&t;      Otherwise be case insensitive and create&n;&t;&t;&t;&t;      file names in WIN32 namespace. */
+DECL|enumerator|NV_LogFileEmpty
+id|NV_LogFileEmpty
+comma
+multiline_comment|/* 1: $LogFile journal is empty. */
 DECL|typedef|ntfs_volume_flags
 )brace
 id|ntfs_volume_flags
@@ -301,6 +305,11 @@ id|NVOL_FNS
 c_func
 (paren
 id|CaseSensitive
+)paren
+id|NVOL_FNS
+c_func
+(paren
+id|LogFileEmpty
 )paren
 macro_line|#endif /* _LINUX_NTFS_VOLUME_H */
 eof

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
+macro_line|#include &quot;logfile.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
 DECL|variable|ntfs_nr_compression_users
 r_static
@@ -1229,7 +1230,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Volume has errors and is read-only.&quot;
+l_string|&quot;Volume has errors and is read-only. &quot;
 l_string|&quot;Cannot remount read-write.&quot;
 )paren
 suffix:semicolon
@@ -2891,14 +2892,7 @@ c_func
 id|tmp_ino
 )paren
 suffix:semicolon
-id|ntfs_error
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Failed to load $MFTMirr.&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* Caller will display error message. */
 r_return
 id|FALSE
 suffix:semicolon
@@ -3020,6 +3014,12 @@ r_int
 id|mrecs_per_page
 comma
 id|i
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering.&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Compare contents of $MFT and $MFTMirr. */
 id|mrecs_per_page
@@ -3186,7 +3186,7 @@ multiline_comment|/* Make sure the record is ok. */
 r_if
 c_cond
 (paren
-id|is_baad_recordp
+id|ntfs_is_baad_recordp
 c_func
 (paren
 id|kmft
@@ -3227,7 +3227,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is_baad_recordp
+id|ntfs_is_baad_recordp
 c_func
 (paren
 id|kmirr
@@ -3329,7 +3329,7 @@ c_func
 id|sb
 comma
 l_string|&quot;$MFT and $MFTMirr (record %i) do not &quot;
-l_string|&quot;match. Run ntfsfix or chkdsk.&quot;
+l_string|&quot;match.  Run ntfsfix or chkdsk.&quot;
 comma
 id|i
 )paren
@@ -3517,7 +3517,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;$MFTMirr location mismatch. &quot;
+l_string|&quot;$MFTMirr location mismatch.  &quot;
 l_string|&quot;Run chkdsk.&quot;
 )paren
 suffix:semicolon
@@ -3550,6 +3550,118 @@ c_func
 (paren
 op_amp
 id|mirr_ni-&gt;run_list.lock
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
+)paren
+suffix:semicolon
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * load_and_check_logfile - load and check the logfile inode for a volume&n; * @vol:&t;ntfs super block describing device whose logfile to load&n; *&n; * Return TRUE on success or FALSE on error.&n; */
+DECL|function|load_and_check_logfile
+r_static
+id|BOOL
+id|load_and_check_logfile
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|tmp_ino
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering.&quot;
+)paren
+suffix:semicolon
+id|tmp_ino
+op_assign
+id|ntfs_iget
+c_func
+(paren
+id|vol-&gt;sb
+comma
+id|FILE_LogFile
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|tmp_ino
+)paren
+op_logical_or
+id|is_bad_inode
+c_func
+(paren
+id|tmp_ino
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|tmp_ino
+)paren
+)paren
+id|iput
+c_func
+(paren
+id|tmp_ino
+)paren
+suffix:semicolon
+multiline_comment|/* Caller will display error message. */
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ntfs_check_logfile
+c_func
+(paren
+id|tmp_ino
+)paren
+)paren
+(brace
+id|iput
+c_func
+(paren
+id|tmp_ino
+)paren
+suffix:semicolon
+multiline_comment|/* ntfs_check_logfile() will have displayed error output. */
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+id|vol-&gt;logfile_ino
+op_assign
+id|tmp_ino
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3820,7 +3932,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Read %lu bytes from $UpCase (expected %u bytes).&quot;
+l_string|&quot;Read %llu bytes from $UpCase (expected %u bytes).&quot;
 comma
 id|ino-&gt;i_size
 comma
@@ -4646,32 +4758,59 @@ comma
 id|vol-&gt;minor_ver
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get the inode for the logfile and empty it if this is a read-write&n;&t; * mount.&n;&t; */
-singleline_comment|// TODO: vol-&gt;logfile_ino = ;
-singleline_comment|// TODO: Cleanup for error case at end of function.
-id|tmp_ino
-op_assign
-id|ntfs_iget
-c_func
-(paren
-id|sb
-comma
-id|FILE_LogFile
-)paren
-suffix:semicolon
+macro_line|#ifdef NTFS_RW
+multiline_comment|/*&n;&t; * Get the inode for the logfile, check it and determine if the volume&n;&t; * was shutdown cleanly.&n;&t; */
 r_if
 c_cond
 (paren
-id|IS_ERR
+op_logical_neg
+id|load_and_check_logfile
 c_func
 (paren
-id|tmp_ino
+id|vol
 )paren
 op_logical_or
-id|is_bad_inode
+op_logical_neg
+id|ntfs_is_logfile_clean
 c_func
 (paren
-id|tmp_ino
+id|vol-&gt;logfile_ino
+)paren
+)paren
+(brace
+r_static
+r_const
+r_char
+op_star
+id|es1
+op_assign
+l_string|&quot;Failed to load $LogFile&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es2
+op_assign
+l_string|&quot;$LogFile is not clean&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es3
+op_assign
+l_string|&quot;.  Mount in Windows.&quot;
+suffix:semicolon
+multiline_comment|/* If a read-write mount, convert it to a read-only mount. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
 )paren
 )paren
 (brace
@@ -4679,41 +4818,100 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|IS_ERR
+(paren
+id|vol-&gt;on_errors
+op_amp
+(paren
+id|ON_ERRORS_REMOUNT_RO
+op_or
+id|ON_ERRORS_CONTINUE
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
 c_func
 (paren
-id|tmp_ino
+id|sb
+comma
+l_string|&quot;%s and neither on_errors=&quot;
+l_string|&quot;continue nor on_errors=&quot;
+l_string|&quot;remount-ro was specified%s&quot;
+comma
+op_logical_neg
+id|vol-&gt;logfile_ino
+ques
+c_cond
+id|es1
+suffix:colon
+id|es2
+comma
+id|es3
 )paren
-)paren
-id|iput
-c_func
-(paren
-id|tmp_ino
-)paren
+suffix:semicolon
+r_goto
+id|iput_logfile_err_out
+suffix:semicolon
+)brace
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
 suffix:semicolon
 id|ntfs_error
 c_func
 (paren
 id|sb
 comma
-l_string|&quot;Failed to load $LogFile.&quot;
+l_string|&quot;%s.  Mounting read-only%s&quot;
+comma
+op_logical_neg
+id|vol-&gt;logfile_ino
+ques
+c_cond
+id|es1
+suffix:colon
+id|es2
+comma
+id|es3
 )paren
 suffix:semicolon
-singleline_comment|// FIMXE: We only want to empty the thing so pointless bailing
-singleline_comment|// out. Can recover/ignore.
-r_goto
-id|iput_vol_err_out
+)brace
+r_else
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Will not be able to remount &quot;
+l_string|&quot;read-write%s&quot;
+comma
+op_logical_neg
+id|vol-&gt;logfile_ino
+ques
+c_cond
+id|es1
+suffix:colon
+id|es2
+comma
+id|es3
+)paren
+suffix:semicolon
+multiline_comment|/* This will prevent a read-write remount. */
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
 suffix:semicolon
 )brace
 singleline_comment|// FIXME: Empty the logfile, but only if not read-only.
 singleline_comment|// FIXME: What happens if someone remounts rw? We need to empty the file
 singleline_comment|// then. We need a flag to tell us whether we have done it already.
-id|iput
-c_func
-(paren
-id|tmp_ino
-)paren
-suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Get the inode for the attribute definitions file and parse the&n;&t; * attribute definitions.&n;&t; */
 id|tmp_ino
 op_assign
@@ -4766,7 +4964,7 @@ l_string|&quot;Failed to load $AttrDef.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|iput_vol_err_out
+id|iput_logfile_err_out
 suffix:semicolon
 )brace
 singleline_comment|// FIXME: Parse the attribute definitions.
@@ -4828,7 +5026,7 @@ l_string|&quot;Failed to load root directory.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|iput_vol_err_out
+id|iput_logfile_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* If on NTFS versions before 3.0, we are done. */
@@ -4984,8 +5182,21 @@ c_func
 id|vol-&gt;root_ino
 )paren
 suffix:semicolon
-id|iput_vol_err_out
+id|iput_logfile_err_out
 suffix:colon
+macro_line|#ifdef NTFS_RW
+r_if
+c_cond
+(paren
+id|vol-&gt;logfile_ino
+)paren
+id|iput
+c_func
+(paren
+id|vol-&gt;logfile_ino
+)paren
+suffix:semicolon
+macro_line|#endif /* NTFS_RW */
 id|iput
 c_func
 (paren

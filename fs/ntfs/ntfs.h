@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ntfs.h - Defines for NTFS Linux kernel driver. Part of the Linux-NTFS&n; *&t;    project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * ntfs.h - Defines for NTFS Linux kernel driver. Part of the Linux-NTFS&n; *&t;    project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _LINUX_NTFS_H
 DECL|macro|_LINUX_NTFS_H
 mdefine_line|#define _LINUX_NTFS_H
@@ -124,11 +124,11 @@ suffix:semicolon
 multiline_comment|/* Generic macros to convert pointers to values and vice versa. */
 macro_line|#ifndef p2n
 DECL|macro|p2n
-mdefine_line|#define p2n(p)          ((ptrdiff_t)((ptrdiff_t*)(p)))
+mdefine_line|#define p2n(p)&t;&t;((ptrdiff_t)((ptrdiff_t*)(p)))
 macro_line|#endif
 macro_line|#ifndef n2p
 DECL|macro|n2p
-mdefine_line|#define n2p(p)          ((ptrdiff_t*)((ptrdiff_t)(p)))
+mdefine_line|#define n2p(p)&t;&t;((ptrdiff_t*)((ptrdiff_t)(p)))
 macro_line|#endif
 multiline_comment|/**&n; * NTFS_SB - return the ntfs volume given a vfs super block&n; * @sb:&t;&t;VFS super block&n; *&n; * NTFS_SB() returns the ntfs volume associated with the VFS super block @sb.&n; */
 DECL|function|NTFS_SB
