@@ -14192,6 +14192,9 @@ c_func
 (paren
 op_logical_neg
 id|ioa_cfg-&gt;allow_cmds
+op_logical_and
+op_logical_neg
+id|ioa_cfg-&gt;ioa_is_dead
 )paren
 )paren
 r_return
