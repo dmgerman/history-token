@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|CPUFREQ_NAME_LEN
 mdefine_line|#define CPUFREQ_NAME_LEN 16
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
@@ -161,6 +162,12 @@ id|semaphore
 id|lock
 suffix:semicolon
 multiline_comment|/* CPU -&gt;setpolicy or -&gt;target may&n;&t;&t;&t;&t;&t;   only be called once a time */
+DECL|member|update
+r_struct
+id|work_struct
+id|update
+suffix:semicolon
+multiline_comment|/* if update_policy() needs to be&n;&t;&t;&t;&t;&t; * called, but you&squot;re in IRQ context */
 DECL|member|user_policy
 r_struct
 id|cpufreq_real_policy
@@ -552,7 +559,11 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* flags */
 DECL|macro|CPUFREQ_STICKY
-mdefine_line|#define CPUFREQ_STICKY&t;0x01&t;/* the driver isn&squot;t removed even if &n;&t;&t;&t;&t;   all -&gt;init() calls failed */
+mdefine_line|#define CPUFREQ_STICKY&t;&t;0x01&t;/* the driver isn&squot;t removed even if &n;&t;&t;&t;&t;&t; * all -&gt;init() calls failed */
+DECL|macro|CPUFREQ_CONST_LOOPS
+mdefine_line|#define CPUFREQ_CONST_LOOPS &t;0x02&t;/* loops_per_jiffy or other kernel&n;&t;&t;&t;&t;&t; * &quot;constants&quot; aren&squot;t affected by&n;&t;&t;&t;&t;&t; * frequency transitions */
+DECL|macro|CPUFREQ_PANIC_OUTOFSYNC
+mdefine_line|#define CPUFREQ_PANIC_OUTOFSYNC&t;0x04&t;/* panic if cpufreq&squot;s opinion of&n;&t;&t;&t;&t;&t; * current frequency differs from&n;&t;&t;&t;&t;&t; * actual frequency */
 r_int
 id|cpufreq_register_driver
 c_func
