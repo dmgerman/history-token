@@ -1127,14 +1127,6 @@ op_assign
 l_int|0x0F
 suffix:semicolon
 )brace
-multiline_comment|/* from C3 we always demote to C2, even if there are multiple&n;&t;&t; * states of type C3 available. */
-r_if
-c_cond
-(paren
-id|cx-&gt;type
-OL
-id|ACPI_STATE_C3
-)paren
 id|lower
 op_assign
 id|cx
