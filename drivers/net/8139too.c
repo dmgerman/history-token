@@ -495,6 +495,22 @@ comma
 id|RTL8139
 )brace
 comma
+(brace
+l_int|0x02ac
+comma
+l_int|0x1012
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|RTL8139
+)brace
+comma
 macro_line|#ifdef CONFIG_SH_SECUREEDGE5410
 multiline_comment|/* Bogus 8139 silicon reports 8129 without external PROM :-( */
 (brace
