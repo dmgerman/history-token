@@ -10,6 +10,14 @@ macro_line|#include &lt;asm/iSeries/iSeries_io.h&gt;
 macro_line|#endif  
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+DECL|macro|__ide_mm_insw
+mdefine_line|#define __ide_mm_insw(p, a, c) _insw_ns((volatile u16 *)(p), (a), (c))
+DECL|macro|__ide_mm_insl
+mdefine_line|#define __ide_mm_insl(p, a, c) _insl_ns((volatile u32 *)(p), (a), (c))
+DECL|macro|__ide_mm_outsw
+mdefine_line|#define __ide_mm_outsw(p, a, c) _outsw_ns((volatile u16 *)(p), (a), (c))
+DECL|macro|__ide_mm_outsl
+mdefine_line|#define __ide_mm_outsl(p, a, c) _outsl_ns((volatile u32 *)(p), (a), (c))
 DECL|macro|SIO_CONFIG_RA
 mdefine_line|#define SIO_CONFIG_RA&t;0x398
 DECL|macro|SIO_CONFIG_RD
@@ -302,7 +310,7 @@ mdefine_line|#define outw_p(val, port)       (udelay(1), outw((val), (port)))
 DECL|macro|inl_p
 mdefine_line|#define inl_p(port)             inl(port)
 DECL|macro|outl_p
-mdefine_line|#define outl_p(val, port)       (udelay(1), outl((val, (port)))
+mdefine_line|#define outl_p(val, port)       (udelay(1), outl((val), (port)))
 multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
 DECL|macro|insw_ns
 mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
