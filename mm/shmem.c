@@ -20,6 +20,12 @@ DECL|macro|TMPFS_MAGIC
 mdefine_line|#define TMPFS_MAGIC&t;0x01021994
 DECL|macro|ENTRIES_PER_PAGE
 mdefine_line|#define ENTRIES_PER_PAGE (PAGE_CACHE_SIZE/sizeof(unsigned long))
+DECL|macro|BLOCKS_PER_PAGE
+mdefine_line|#define BLOCKS_PER_PAGE  (PAGE_CACHE_SIZE/512)
+DECL|macro|SHMEM_MAX_INDEX
+mdefine_line|#define SHMEM_MAX_INDEX  (SHMEM_NR_DIRECT + ENTRIES_PER_PAGE * (ENTRIES_PER_PAGE/2) * (ENTRIES_PER_PAGE+1))
+DECL|macro|SHMEM_MAX_BYTES
+mdefine_line|#define SHMEM_MAX_BYTES  ((unsigned long long)SHMEM_MAX_INDEX &lt;&lt; PAGE_CACHE_SHIFT)
 DECL|macro|VM_ACCT
 mdefine_line|#define VM_ACCT(size)    (((size) + PAGE_CACHE_SIZE - 1) &gt;&gt; PAGE_SHIFT)
 DECL|function|SHMEM_SB
@@ -120,8 +126,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|macro|BLOCKS_PER_PAGE
-mdefine_line|#define BLOCKS_PER_PAGE (PAGE_CACHE_SIZE/512)
 multiline_comment|/*&n; * shmem_recalc_inode - recalculate the size of an inode&n; *&n; * @inode: inode to recalc&n; * @swap:  additional swap pages freed externally&n; *&n; * We have to calculate the free blocks since the mm can drop pages&n; * behind our back&n; *&n; * But we know that normally&n; * inodes-&gt;i_blocks/BLOCKS_PER_PAGE == &n; * &t;&t;&t;inode-&gt;i_mapping-&gt;nrpages + info-&gt;swapped&n; *&n; * So the mm freed &n; * inodes-&gt;i_blocks/BLOCKS_PER_PAGE - &n; * &t;&t;&t;(inode-&gt;i_mapping-&gt;nrpages + info-&gt;swapped)&n; *&n; * It has to be called with the spinlock held.&n; */
 DECL|function|shmem_recalc_inode
 r_static
@@ -201,8 +205,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * shmem_swp_entry - find the swap vector position in the info structure&n; *&n; * @info:  info structure for the inode&n; * @index: index of the page to find&n; * @page:  optional page to add to the structure. Has to be preset to&n; *         all zeros&n; *&n; * If there is no space allocated yet it will return -ENOMEM when&n; * page == 0 else it will use the page for the needed block.&n; *&n; * returns -EFBIG if the index is too big.&n; *&n; *&n; * The swap vector is organized the following way:&n; *&n; * There are SHMEM_NR_DIRECT entries directly stored in the&n; * shmem_inode_info structure. So small files do not need an addional&n; * allocation.&n; *&n; * For pages with index &gt; SHMEM_NR_DIRECT there is the pointer&n; * i_indirect which points to a page which holds in the first half&n; * doubly indirect blocks, in the second half triple indirect blocks:&n; *&n; * For an artificial ENTRIES_PER_PAGE = 4 this would lead to the&n; * following layout (for SHMEM_NR_DIRECT == 16):&n; *&n; * i_indirect -&gt; dir --&gt; 16-19&n; * &t;      |&t;     +-&gt; 20-23&n; * &t;      |&n; * &t;      +--&gt;dir2 --&gt; 24-27&n; * &t;      |&t;       +-&gt; 28-31&n; * &t;      |&t;       +-&gt; 32-35&n; * &t;      |&t;       +-&gt; 36-39&n; * &t;      |&n; * &t;      +--&gt;dir3 --&gt; 40-43&n; * &t;       &t;       +-&gt; 44-47&n; * &t;      &t;       +-&gt; 48-51&n; * &t;      &t;       +-&gt; 52-55&n; */
-DECL|macro|SHMEM_MAX_BLOCKS
-mdefine_line|#define SHMEM_MAX_BLOCKS (SHMEM_NR_DIRECT + ENTRIES_PER_PAGE * ENTRIES_PER_PAGE/2*(ENTRIES_PER_PAGE+1))
 DECL|function|shmem_swp_entry
 r_static
 id|swp_entry_t
@@ -440,7 +442,7 @@ c_cond
 (paren
 id|index
 op_ge
-id|SHMEM_MAX_BLOCKS
+id|SHMEM_MAX_INDEX
 )paren
 r_return
 id|ERR_PTR
@@ -1260,20 +1262,30 @@ op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
 r_int
+id|change
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|error
 suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|attr-&gt;ia_valid
 op_amp
 id|ATTR_SIZE
 )paren
+op_logical_and
+(paren
+id|attr-&gt;ia_size
+op_le
+id|SHMEM_MAX_BYTES
+)paren
+)paren
 (brace
-multiline_comment|/*&n;&t; &t; * Account swap file usage based on new file size&t;&n;&t; &t; */
-r_int
-id|change
-suffix:semicolon
+multiline_comment|/*&n;&t; &t; * Account swap file usage based on new file size,&n;&t;&t; * but just let vmtruncate fail on out-of-range sizes.&n;&t; &t; */
 id|change
 op_assign
 id|VM_ACCT
@@ -1344,6 +1356,17 @@ c_func
 id|inode
 comma
 id|attr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+id|vm_unacct_memory
+c_func
+(paren
+id|change
 )paren
 suffix:semicolon
 r_return
@@ -3635,6 +3658,17 @@ op_assign
 id|pos
 op_plus
 id|count
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|maxpos
+OG
+id|SHMEM_MAX_BYTES
+)paren
+id|maxpos
+op_assign
+id|SHMEM_MAX_BYTES
 suffix:semicolon
 r_if
 c_cond
@@ -6326,14 +6360,7 @@ id|inodes
 suffix:semicolon
 id|sb-&gt;s_maxbytes
 op_assign
-(paren
-r_int
-r_int
-r_int
-)paren
-id|SHMEM_MAX_BLOCKS
-op_lshift
-id|PAGE_CACHE_SHIFT
+id|SHMEM_MAX_BYTES
 suffix:semicolon
 id|sb-&gt;s_blocksize
 op_assign
@@ -7213,14 +7240,7 @@ c_cond
 (paren
 id|size
 OG
-(paren
-r_int
-r_int
-r_int
-)paren
-id|SHMEM_MAX_BLOCKS
-op_lshift
-id|PAGE_CACHE_SHIFT
+id|SHMEM_MAX_BYTES
 )paren
 r_return
 id|ERR_PTR
