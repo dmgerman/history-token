@@ -3087,6 +3087,14 @@ comma
 comma
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|amd74xx_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|driver
 r_static
 r_struct
