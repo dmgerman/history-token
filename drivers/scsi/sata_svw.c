@@ -17,7 +17,7 @@ macro_line|#endif /* CONFIG_ALL_PPC */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ata_k2&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.02&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03&quot;
 DECL|function|k2_sata_scr_read
 r_static
 id|u32
@@ -140,6 +140,14 @@ id|tf-&gt;flags
 op_amp
 id|ATA_TFLAG_ISADDR
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tf-&gt;ctl
+op_ne
+id|ap-&gt;last_ctl
+)paren
+(brace
 id|writeb
 c_func
 (paren
@@ -148,6 +156,17 @@ comma
 id|ioaddr-&gt;ctl_addr
 )paren
 suffix:semicolon
+id|ap-&gt;last_ctl
+op_assign
+id|tf-&gt;ctl
+suffix:semicolon
+id|ata_wait_idle
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1254,6 +1273,47 @@ r_goto
 id|err_out_unmap
 suffix:semicolon
 )brace
+multiline_comment|/* Clear a magic bit in SCR1 according to Darwin, those help&n;&t; * some funky seagate drives (though so far, those were already&n;&t; * set by the firmware on the machines I had access to&n;&t; */
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|mmio_base
+op_plus
+l_int|0x80
+)paren
+op_amp
+op_complement
+l_int|0x00040000
+comma
+id|mmio_base
+op_plus
+l_int|0x80
+)paren
+suffix:semicolon
+multiline_comment|/* Clear SATA error &amp; interrupts we don&squot;t use */
+id|writel
+c_func
+(paren
+l_int|0xffffffff
+comma
+id|mmio_base
+op_plus
+l_int|0x44
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0x0
+comma
+id|mmio_base
+op_plus
+l_int|0x88
+)paren
+suffix:semicolon
 id|probe_ent-&gt;sht
 op_assign
 op_amp
@@ -1263,9 +1323,9 @@ id|probe_ent-&gt;host_flags
 op_assign
 id|ATA_FLAG_SATA
 op_or
-id|ATA_FLAG_NO_LEGACY
+id|ATA_FLAG_SATA_RESET
 op_or
-id|ATA_FLAG_SRST
+id|ATA_FLAG_NO_LEGACY
 op_or
 id|ATA_FLAG_MMIO
 suffix:semicolon

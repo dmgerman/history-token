@@ -1092,6 +1092,10 @@ id|ent-&gt;write_proc
 op_assign
 id|driver-&gt;write_proc
 suffix:semicolon
+id|ent-&gt;owner
+op_assign
+id|driver-&gt;owner
+suffix:semicolon
 id|ent-&gt;data
 op_assign
 id|driver

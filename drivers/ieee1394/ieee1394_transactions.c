@@ -483,7 +483,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_interrupt
+id|irqs_disabled
 c_func
 (paren
 )paren

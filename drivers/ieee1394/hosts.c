@@ -245,10 +245,11 @@ id|host-&gt;refcount
 op_logical_and
 id|host-&gt;is_shutdown
 )paren
-id|kfree
+id|device_unregister
 c_func
 (paren
-id|host
+op_amp
+id|host-&gt;device
 )paren
 suffix:semicolon
 id|up

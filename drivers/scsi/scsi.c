@@ -1010,6 +1010,37 @@ id|rtn
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* check if the device is still usable */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|cmd-&gt;device-&gt;sdev_state
+op_eq
+id|SDEV_DEL
+)paren
+)paren
+(brace
+multiline_comment|/* in SDEV_DEL we error all commands. DID_NO_CONNECT&n;&t;&t; * returns an immediate error upwards, and signals&n;&t;&t; * that the device is no longer present */
+id|cmd-&gt;result
+op_assign
+id|DID_NO_CONNECT
+op_lshift
+l_int|16
+suffix:semicolon
+id|scsi_done
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+multiline_comment|/* return 0 (because the command has been processed) */
+r_goto
+id|out
+suffix:semicolon
+)brace
 multiline_comment|/* Assign a unique nonzero serial_number. */
 multiline_comment|/* XXX(hch): this is racy */
 r_if
@@ -2347,14 +2378,9 @@ id|sdev
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|SDEV_DEL
-comma
-op_amp
 id|sdev-&gt;sdev_state
-)paren
+op_eq
+id|SDEV_DEL
 )paren
 r_return
 op_minus
@@ -2761,14 +2787,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|SDEV_CANCEL
-comma
-op_amp
 id|sdev-&gt;sdev_state
-)paren
+op_assign
+id|SDEV_CANCEL
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
