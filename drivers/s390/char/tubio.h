@@ -15,6 +15,7 @@ macro_line|#endif /* IBM_FS3270_MAJOR */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -99,10 +100,21 @@ DECL|macro|TAT_CHARS
 mdefine_line|#define TAT_CHARS 0x43
 DECL|macro|TAT_TRANS
 mdefine_line|#define TAT_TRANS 0x46
+multiline_comment|/* Extended-Highlighting Bytes */
+DECL|macro|TAX_RESET
+mdefine_line|#define TAX_RESET 0x00
+DECL|macro|TAX_BLINK
+mdefine_line|#define TAX_BLINK 0xf1
+DECL|macro|TAX_REVER
+mdefine_line|#define TAX_REVER 0xf2
+DECL|macro|TAX_UNDER
+mdefine_line|#define TAX_UNDER 0xf4
 multiline_comment|/* Reset value */
 DECL|macro|TAR_RESET
 mdefine_line|#define TAR_RESET 0x00
 multiline_comment|/* Color values */
+DECL|macro|TAC_RESET
+mdefine_line|#define TAC_RESET 0x00
 DECL|macro|TAC_BLUE
 mdefine_line|#define TAC_BLUE 0xf1
 DECL|macro|TAC_RED
@@ -441,7 +453,7 @@ id|ccw1_t
 id|wccw
 suffix:semicolon
 DECL|member|wbuf
-r_void
+id|addr_t
 op_star
 id|wbuf
 suffix:semicolon
@@ -525,10 +537,8 @@ id|tty
 suffix:semicolon
 DECL|member|tty_input
 r_char
+op_star
 id|tty_input
-(braket
-id|GEOM_MAXINPLEN
-)braket
 suffix:semicolon
 multiline_comment|/* tty input area */
 DECL|member|tty_inattr
@@ -553,6 +563,11 @@ r_int
 id|tty_nextlogx
 suffix:semicolon
 multiline_comment|/* next screen-log position */
+DECL|member|tty_savecursor
+r_int
+id|tty_savecursor
+suffix:semicolon
+multiline_comment|/* saved cursor position */
 DECL|member|tty_scrolltime
 r_int
 id|tty_scrolltime
