@@ -1208,7 +1208,7 @@ suffix:semicolon
 multiline_comment|/* Unregister a port. */
 r_extern
 r_void
-id|parport_unregister_port
+id|parport_remove_port
 c_func
 (paren
 r_struct

@@ -1691,6 +1691,12 @@ id|ops
 op_assign
 id|p-&gt;ops
 suffix:semicolon
+id|parport_remove_port
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1747,7 +1753,7 @@ id|kfree
 id|p-&gt;private_data
 )paren
 suffix:semicolon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|p

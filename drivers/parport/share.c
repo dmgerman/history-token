@@ -905,7 +905,7 @@ r_return
 id|portlist
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;parport_register_port - register a parallel port&n; *&t;@base: base I/O address&n; *&t;@irq: IRQ line&n; *&t;@dma: DMA channel&n; *&t;@ops: pointer to the port driver&squot;s port operations structure&n; *&n; *&t;When a parallel port (lowlevel) driver finds a port that&n; *&t;should be made available to parallel port device drivers, it&n; *&t;should call parport_register_port().  The @base, @irq, and&n; *&t;@dma parameters are for the convenience of port drivers, and&n; *&t;for ports where they aren&squot;t meaningful needn&squot;t be set to&n; *&t;anything special.  They can be altered afterwards by adjusting&n; *&t;the relevant members of the parport structure that is returned&n; *&t;and represents the port.  They should not be tampered with&n; *&t;after calling parport_announce_port, however.&n; *&n; *&t;If there are parallel port device drivers in the system that&n; *&t;have registered themselves using parport_register_driver(),&n; *&t;they are not told about the port at this time; that is done by&n; *&t;parport_announce_port().&n; *&n; *&t;The @ops structure is allocated by the caller, and must not be&n; *&t;deallocated before calling parport_unregister_port().&n; *&n; *&t;If there is no memory to allocate a new parport structure,&n; *&t;this function will return %NULL.&n; **/
+multiline_comment|/**&n; *&t;parport_register_port - register a parallel port&n; *&t;@base: base I/O address&n; *&t;@irq: IRQ line&n; *&t;@dma: DMA channel&n; *&t;@ops: pointer to the port driver&squot;s port operations structure&n; *&n; *&t;When a parallel port (lowlevel) driver finds a port that&n; *&t;should be made available to parallel port device drivers, it&n; *&t;should call parport_register_port().  The @base, @irq, and&n; *&t;@dma parameters are for the convenience of port drivers, and&n; *&t;for ports where they aren&squot;t meaningful needn&squot;t be set to&n; *&t;anything special.  They can be altered afterwards by adjusting&n; *&t;the relevant members of the parport structure that is returned&n; *&t;and represents the port.  They should not be tampered with&n; *&t;after calling parport_announce_port, however.&n; *&n; *&t;If there are parallel port device drivers in the system that&n; *&t;have registered themselves using parport_register_driver(),&n; *&t;they are not told about the port at this time; that is done by&n; *&t;parport_announce_port().&n; *&n; *&t;The @ops structure is allocated by the caller, and must not be&n; *&t;deallocated before calling parport_remove_port().&n; *&n; *&t;If there is no memory to allocate a new parport structure,&n; *&t;this function will return %NULL.&n; **/
 DECL|function|parport_register_port
 r_struct
 id|parport
@@ -1554,10 +1554,10 @@ id|parportlist_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;parport_unregister_port - deregister a parallel port&n; *&t;@port: parallel port to deregister&n; *&n; *&t;When a parallel port driver is forcibly unloaded, or a&n; *&t;parallel port becomes inaccessible, the port driver must call&n; *&t;this function in order to deal with device drivers that still&n; *&t;want to use it.&n; *&n; *&t;The parport structure associated with the port has its&n; *&t;operations structure replaced with one containing &squot;null&squot;&n; *&t;operations that return errors or just don&squot;t do anything.&n; *&n; *&t;Any drivers that have registered themselves using&n; *&t;parport_register_driver() are notified that the port is no&n; *&t;longer accessible by having their detach() routines called&n; *&t;with @port as the parameter.&n; **/
-DECL|function|parport_unregister_port
+multiline_comment|/**&n; *&t;parport_remove_port - deregister a parallel port&n; *&t;@port: parallel port to deregister&n; *&n; *&t;When a parallel port driver is forcibly unloaded, or a&n; *&t;parallel port becomes inaccessible, the port driver must call&n; *&t;this function in order to deal with device drivers that still&n; *&t;want to use it.&n; *&n; *&t;The parport structure associated with the port has its&n; *&t;operations structure replaced with one containing &squot;null&squot;&n; *&t;operations that return errors or just don&squot;t do anything.&n; *&n; *&t;Any drivers that have registered themselves using&n; *&t;parport_register_driver() are notified that the port is no&n; *&t;longer accessible by having their detach() routines called&n; *&t;with @port as the parameter.&n; **/
+DECL|function|parport_remove_port
 r_void
-id|parport_unregister_port
+id|parport_remove_port
 c_func
 (paren
 r_struct
@@ -1736,11 +1736,6 @@ id|slave
 )paren
 suffix:semicolon
 )brace
-id|parport_put_port
-(paren
-id|port
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;parport_register_device - register a device on a parallel port&n; *&t;@port: port to which the device is attached&n; *&t;@name: a name to refer to the device&n; *&t;@pf: preemption callback&n; *&t;@kf: kick callback (wake-up)&n; *&t;@irq_func: interrupt handler&n; *&t;@flags: registration flags&n; *&t;@handle: data for callback functions&n; *&n; *&t;This function, called by parallel port device drivers,&n; *&t;declares that a device is connected to a port, and tells the&n; *&t;system all it needs to know.&n; *&n; *&t;The @name is allocated by the caller and must not be&n; *&t;deallocated until the caller calls @parport_unregister_device&n; *&t;for that device.&n; *&n; *&t;The preemption callback function, @pf, is called when this&n; *&t;device driver has claimed access to the port but another&n; *&t;device driver wants to use it.  It is given @handle as its&n; *&t;parameter, and should return zero if it is willing for the&n; *&t;system to release the port to another driver on its behalf.&n; *&t;If it wants to keep control of the port it should return&n; *&t;non-zero, and no action will be taken.  It is good manners for&n; *&t;the driver to try to release the port at the earliest&n; *&t;opportunity after its preemption callback rejects a preemption&n; *&t;attempt.  Note that if a preemption callback is happy for&n; *&t;preemption to go ahead, there is no need to release the port;&n; *&t;it is done automatically.  This function may not block, as it&n; *&t;may be called from interrupt context.  If the device driver&n; *&t;does not support preemption, @pf can be %NULL.&n; *&n; *&t;The wake-up (&quot;kick&quot;) callback function, @kf, is called when&n; *&t;the port is available to be claimed for exclusive access; that&n; *&t;is, parport_claim() is guaranteed to succeed when called from&n; *&t;inside the wake-up callback function.  If the driver wants to&n; *&t;claim the port it should do so; otherwise, it need not take&n; *&t;any action.  This function may not block, as it may be called&n; *&t;from interrupt context.  If the device driver does not want to&n; *&t;be explicitly invited to claim the port in this way, @kf can&n; *&t;be %NULL.&n; *&n; *&t;The interrupt handler, @irq_func, is called when an interrupt&n; *&t;arrives from the parallel port.  Note that if a device driver&n; *&t;wants to use interrupts it should use parport_enable_irq(),&n; *&t;and can also check the irq member of the parport structure&n; *&t;representing the port.&n; *&n; *&t;The parallel port (lowlevel) driver is the one that has called&n; *&t;request_irq() and whose interrupt handler is called first.&n; *&t;This handler does whatever needs to be done to the hardware to&n; *&t;acknowledge the interrupt (for PC-style ports there is nothing&n; *&t;special to be done).  It then tells the IEEE 1284 code about&n; *&t;the interrupt, which may involve reacting to an IEEE 1284&n; *&t;event depending on the current IEEE 1284 phase.  After this,&n; *&t;it calls @irq_func.  Needless to say, @irq_func will be called&n; *&t;from interrupt context, and may not block.&n; *&n; *&t;The %PARPORT_DEV_EXCL flag is for preventing port sharing, and&n; *&t;so should only be used when sharing the port with other device&n; *&t;drivers is impossible and would lead to incorrect behaviour.&n; *&t;Use it sparingly!  Normally, @flags will be zero.&n; *&n; *&t;This function returns a pointer to a structure that represents&n; *&t;the device on the port, or %NULL if there is not enough memory&n; *&t;to allocate space for that structure.&n; **/
 r_struct
@@ -3313,11 +3308,11 @@ c_func
 id|parport_announce_port
 )paren
 suffix:semicolon
-DECL|variable|parport_unregister_port
+DECL|variable|parport_remove_port
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|parport_unregister_port
+id|parport_remove_port
 )paren
 suffix:semicolon
 DECL|variable|parport_register_driver

@@ -780,7 +780,7 @@ id|p
 )paren
 )paren
 (brace
-id|parport_unregister_port
+id|parport_put_port
 (paren
 id|p
 )paren
@@ -833,6 +833,12 @@ c_func
 r_void
 )paren
 (brace
+id|parport_remove_port
+c_func
+(paren
+id|this_port
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -854,7 +860,7 @@ c_func
 id|this_port
 )paren
 suffix:semicolon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|this_port
