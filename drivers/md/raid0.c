@@ -1477,8 +1477,10 @@ suffix:semicolon
 id|bad_map
 suffix:colon
 id|printk
+c_func
 (paren
-l_string|&quot;raid0_make_request bug: can&squot;t convert block across chunks or bigger than %dk %llu %d&bslash;n&quot;
+l_string|&quot;raid0_make_request bug: can&squot;t convert block across chunks&quot;
+l_string|&quot; or bigger than %dk %llu %d&bslash;n&quot;
 comma
 id|chunk_size
 comma
@@ -1518,6 +1520,7 @@ suffix:semicolon
 id|bad_zone0
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid0_make_request bug: hash-&gt;zone0==NULL for block %llu&bslash;n&quot;
 comma
@@ -1535,6 +1538,7 @@ suffix:semicolon
 id|bad_zone1
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid0_make_request bug: hash-&gt;zone1==NULL for block %llu&bslash;n&quot;
 comma

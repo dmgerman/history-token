@@ -902,6 +902,7 @@ id|conf-&gt;device_lock
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;raid1_map(): huh, no more operational devices?&bslash;n&quot;
@@ -2334,16 +2335,6 @@ l_string|&quot;]&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|LAST_DISK
-mdefine_line|#define LAST_DISK KERN_ALERT &bslash;&n;&quot;raid1: only one disk left and IO error.&bslash;n&quot;
-DECL|macro|NO_SPARE_DISK
-mdefine_line|#define NO_SPARE_DISK KERN_ALERT &bslash;&n;&quot;raid1: no spare disk left, degrading mirror level by one.&bslash;n&quot;
-DECL|macro|DISK_FAILED
-mdefine_line|#define DISK_FAILED KERN_ALERT &bslash;&n;&quot;raid1: Disk failure on %s, disabling device. &bslash;n&quot; &bslash;&n;&quot;&t;Operation continuing on %d devices&bslash;n&quot;
-DECL|macro|START_SYNCING
-mdefine_line|#define START_SYNCING KERN_ALERT &bslash;&n;&quot;raid1: start syncing spare disk.&bslash;n&quot;
-DECL|macro|ALREADY_SYNCING
-mdefine_line|#define ALREADY_SYNCING KERN_INFO &bslash;&n;&quot;raid1: syncing already in progress.&bslash;n&quot;
 DECL|function|error
 r_static
 r_void
@@ -2420,7 +2411,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|DISK_FAILED
+id|KERN_ALERT
+l_string|&quot;raid1: Disk failure on %s, disabling device. &bslash;n&quot;
+l_string|&quot;&t;Operation continuing on %d devices&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -2919,10 +2912,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|macro|IO_ERROR
-mdefine_line|#define IO_ERROR KERN_ALERT &bslash;&n;&quot;raid1: %s: unrecoverable I/O read error for block %llu&bslash;n&quot;
-DECL|macro|REDIRECT_SECTOR
-mdefine_line|#define REDIRECT_SECTOR KERN_ERR &bslash;&n;&quot;raid1: %s: redirecting sector %llu to another mirror&bslash;n&quot;
 DECL|function|end_sync_read
 r_static
 r_int
@@ -3304,7 +3293,9 @@ multiline_comment|/*&n;&t;&t; * There is no point trying a read-for-reconstruct 
 id|printk
 c_func
 (paren
-id|IO_ERROR
+id|KERN_ALERT
+l_string|&quot;raid1: %s: unrecoverable I/O read error&quot;
+l_string|&quot; for block %llu&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -3562,7 +3553,8 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;raid1: sync aborting as there is nowhere to write sector %llu&bslash;n&quot;
+l_string|&quot;raid1: sync aborting as there is nowhere&quot;
+l_string|&quot; to write sector %llu&bslash;n&quot;
 comma
 (paren
 r_int
@@ -3819,7 +3811,9 @@ l_int|1
 id|printk
 c_func
 (paren
-id|IO_ERROR
+id|KERN_ALERT
+l_string|&quot;raid1: %s: unrecoverable I/O&quot;
+l_string|&quot; read error for block %llu&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -3849,7 +3843,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|REDIRECT_SECTOR
+id|KERN_ERR
+l_string|&quot;raid1: %s: redirecting sector %llu to&quot;
+l_string|&quot; another mirror&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -4348,32 +4344,6 @@ r_return
 id|nr_sectors
 suffix:semicolon
 )brace
-DECL|macro|INVALID_LEVEL
-mdefine_line|#define INVALID_LEVEL KERN_WARNING &bslash;&n;&quot;raid1: md%d: raid level not set to mirroring (%d)&bslash;n&quot;
-DECL|macro|NO_SB
-mdefine_line|#define NO_SB KERN_ERR &bslash;&n;&quot;raid1: disabled mirror %s (couldn&squot;t access raid superblock)&bslash;n&quot;
-DECL|macro|ERRORS
-mdefine_line|#define ERRORS KERN_ERR &bslash;&n;&quot;raid1: disabled mirror %s (errors detected)&bslash;n&quot;
-DECL|macro|NOT_IN_SYNC
-mdefine_line|#define NOT_IN_SYNC KERN_ERR &bslash;&n;&quot;raid1: disabled mirror %s (not in sync)&bslash;n&quot;
-DECL|macro|INCONSISTENT
-mdefine_line|#define INCONSISTENT KERN_ERR &bslash;&n;&quot;raid1: disabled mirror %s (inconsistent descriptor)&bslash;n&quot;
-DECL|macro|ALREADY_RUNNING
-mdefine_line|#define ALREADY_RUNNING KERN_ERR &bslash;&n;&quot;raid1: disabled mirror %s (mirror %d already operational)&bslash;n&quot;
-DECL|macro|OPERATIONAL
-mdefine_line|#define OPERATIONAL KERN_INFO &bslash;&n;&quot;raid1: device %s operational as mirror %d&bslash;n&quot;
-DECL|macro|MEM_ERROR
-mdefine_line|#define MEM_ERROR KERN_ERR &bslash;&n;&quot;raid1: couldn&squot;t allocate memory for md%d&bslash;n&quot;
-DECL|macro|SPARE
-mdefine_line|#define SPARE KERN_INFO &bslash;&n;&quot;raid1: spare disk %s&bslash;n&quot;
-DECL|macro|NONE_OPERATIONAL
-mdefine_line|#define NONE_OPERATIONAL KERN_ERR &bslash;&n;&quot;raid1: no operational mirrors for md%d&bslash;n&quot;
-DECL|macro|ARRAY_IS_ACTIVE
-mdefine_line|#define ARRAY_IS_ACTIVE KERN_INFO &bslash;&n;&quot;raid1: raid set md%d active with %d out of %d mirrors&bslash;n&quot;
-DECL|macro|THREAD_ERROR
-mdefine_line|#define THREAD_ERROR KERN_ERR &bslash;&n;&quot;raid1: couldn&squot;t allocate thread for md%d&bslash;n&quot;
-DECL|macro|START_RESYNC
-mdefine_line|#define START_RESYNC KERN_WARNING &bslash;&n;&quot;raid1: raid set md%d not clean; reconstructing mirrors&bslash;n&quot;
 DECL|function|run
 r_static
 r_int
@@ -4422,7 +4392,7 @@ l_int|1
 id|printk
 c_func
 (paren
-id|INVALID_LEVEL
+l_string|&quot;raid1: md%d: raid level not set to mirroring (%d)&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -4467,7 +4437,8 @@ id|conf
 id|printk
 c_func
 (paren
-id|MEM_ERROR
+id|KERN_ERR
+l_string|&quot;raid1: couldn&squot;t allocate memory for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -4518,7 +4489,8 @@ id|conf-&gt;r1bio_pool
 id|printk
 c_func
 (paren
-id|MEM_ERROR
+id|KERN_ERR
+l_string|&quot;raid1: couldn&squot;t allocate memory for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -4635,7 +4607,8 @@ id|conf-&gt;working_disks
 id|printk
 c_func
 (paren
-id|NONE_OPERATIONAL
+id|KERN_ERR
+l_string|&quot;raid1: no operational mirrors for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -4751,7 +4724,8 @@ id|mddev-&gt;thread
 id|printk
 c_func
 (paren
-id|THREAD_ERROR
+id|KERN_ERR
+l_string|&quot;raid1: couldn&squot;t allocate thread for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -4768,7 +4742,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|ARRAY_IS_ACTIVE
+id|KERN_INFO
+l_string|&quot;raid1: raid set md%d active with %d out of %d mirrors&bslash;n&quot;
 comma
 id|mdidx
 c_func

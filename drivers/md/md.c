@@ -945,16 +945,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|BAD_MAGIC
-mdefine_line|#define BAD_MAGIC KERN_ERR &bslash;&n;&quot;md: invalid raid superblock magic on %s&bslash;n&quot;
-DECL|macro|BAD_MINOR
-mdefine_line|#define BAD_MINOR KERN_ERR &bslash;&n;&quot;md: %s: invalid raid minor (%x)&bslash;n&quot;
-DECL|macro|OUT_OF_MEM
-mdefine_line|#define OUT_OF_MEM KERN_ALERT &bslash;&n;&quot;md: out of memory.&bslash;n&quot;
-DECL|macro|NO_SB
-mdefine_line|#define NO_SB KERN_ERR &bslash;&n;&quot;md: disabled device %s, could not read superblock.&bslash;n&quot;
-DECL|macro|BAD_CSUM
-mdefine_line|#define BAD_CSUM KERN_WARNING &bslash;&n;&quot;md: invalid superblock checksum on %s&bslash;n&quot;
 DECL|function|alloc_disk_sb
 r_static
 r_int
@@ -994,7 +984,8 @@ id|rdev-&gt;sb_page
 id|printk
 c_func
 (paren
-id|OUT_OF_MEM
+id|KERN_ALERT
+l_string|&quot;md: out of memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1290,7 +1281,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|NO_SB
+id|KERN_ERR
+l_string|&quot;md: disabled device %s, could not read superblock.&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -1709,7 +1701,8 @@ id|MD_SB_MAGIC
 id|printk
 c_func
 (paren
-id|BAD_MAGIC
+id|KERN_ERR
+l_string|&quot;md: invalid raid superblock magic on %s&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -1766,7 +1759,8 @@ id|MAX_MD_DEVS
 id|printk
 c_func
 (paren
-id|BAD_MINOR
+id|KERN_ERR
+l_string|&quot;md: %s: invalid raid minor (%x)&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -1806,7 +1800,8 @@ id|sb-&gt;sb_csum
 id|printk
 c_func
 (paren
-id|BAD_CSUM
+id|KERN_WARNING
+l_string|&quot;md: invalid superblock checksum on %s&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -1929,7 +1924,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: %s has same UUID but different superblock to %s&bslash;n&quot;
+l_string|&quot;md: %s has same UUID&quot;
+l_string|&quot; but different superblock to %s&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -3074,7 +3070,7 @@ id|sb-&gt;sb_csum
 id|printk
 c_func
 (paren
-id|BAD_CSUM
+l_string|&quot;md: invalid superblock checksum on %s&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -3165,7 +3161,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: %s has strangely different superblock to %s&bslash;n&quot;
+l_string|&quot;md: %s has strangely different&quot;
+l_string|&quot; superblock to %s&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -4088,8 +4085,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: WARNING: %s appears to be on the same physical disk as %s. True&bslash;n&quot;
-l_string|&quot;     protection against single-disk failure might be compromised.&bslash;n&quot;
+l_string|&quot;md%d: WARNING: %s appears to be on the same physical&quot;
+l_string|&quot; disk as %s. True&bslash;n     protection against single-disk&quot;
+l_string|&quot; failure might be compromised.&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -4580,14 +4578,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|BAD_CSUM
-macro_line|#undef BAD_CSUM
-DECL|macro|BAD_MAGIC
-macro_line|#undef BAD_MAGIC
-DECL|macro|OUT_OF_MEM
-macro_line|#undef OUT_OF_MEM
-DECL|macro|NO_SB
-macro_line|#undef NO_SB
 DECL|function|print_desc
 r_static
 r_void
@@ -4690,7 +4680,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md:     UT:%08x ST:%d AD:%d WD:%d FD:%d SD:%d CSUM:%08x E:%08lx&bslash;n&quot;
+l_string|&quot;md:     UT:%08x ST:%d AD:%d WD:%d&quot;
+l_string|&quot; FD:%d SD:%d CSUM:%08x E:%08lx&bslash;n&quot;
 comma
 id|sb-&gt;utime
 comma
@@ -5326,7 +5317,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;md: errors occurred during superblock update, repeating&bslash;n&quot;
+l_string|&quot;md: errors occurred during superblock&quot;
+l_string|&quot; update, repeating&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5337,6 +5329,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+"&bslash;"
 l_string|&quot;md: excessive errors occurred during superblock update, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5669,16 +5662,6 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Check a full RAID array for plausibility&n; */
-DECL|macro|INCONSISTENT
-mdefine_line|#define INCONSISTENT KERN_ERR &bslash;&n;&quot;md: fatal superblock inconsistency in %s -- removing from array&bslash;n&quot;
-DECL|macro|OUT_OF_DATE
-mdefine_line|#define OUT_OF_DATE KERN_ERR &bslash;&n;&quot;md: superblock update time inconsistency -- using the most recent one&bslash;n&quot;
-DECL|macro|OLD_VERSION
-mdefine_line|#define OLD_VERSION KERN_ALERT &bslash;&n;&quot;md: md%d: unsupported raid array version %d.%d.%d&bslash;n&quot;
-DECL|macro|NOT_CLEAN_IGNORE
-mdefine_line|#define NOT_CLEAN_IGNORE KERN_ERR &bslash;&n;&quot;md: md%d: raid array is not clean -- starting background reconstruction&bslash;n&quot;
-DECL|macro|UNKNOWN_LEVEL
-mdefine_line|#define UNKNOWN_LEVEL KERN_ERR &bslash;&n;&quot;md: md%d: unsupported raid level %d&bslash;n&quot;
 DECL|function|analyze_sbs
 r_static
 r_int
@@ -5756,7 +5739,10 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|INCONSISTENT
+id|KERN_ERR
+"&bslash;"
+l_string|&quot;md: fatal superblock inconsistency in %s&quot;
+l_string|&quot; -- removing from array&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -5827,7 +5813,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: kicking non-fresh %s from array!&bslash;n&quot;
+l_string|&quot;md: kicking non-fresh %s&quot;
+l_string|&quot; from array!&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -5884,7 +5871,8 @@ id|MD_MINOR_VERSION
 id|printk
 c_func
 (paren
-id|OLD_VERSION
+id|KERN_ALERT
+l_string|&quot;md: md%d: unsupported raid array version %d.%d.%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -5935,7 +5923,9 @@ l_int|5
 id|printk
 c_func
 (paren
-id|NOT_CLEAN_IGNORE
+id|KERN_ERR
+l_string|&quot;md: md%d: raid array is not clean&quot;
+l_string|&quot; -- starting background reconstruction&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -5953,14 +5943,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|macro|INCONSISTENT
-macro_line|#undef INCONSISTENT
-DECL|macro|OUT_OF_DATE
-macro_line|#undef OUT_OF_DATE
-DECL|macro|OLD_VERSION
-macro_line|#undef OLD_VERSION
-DECL|macro|OLD_LEVEL
-macro_line|#undef OLD_LEVEL
 DECL|function|device_size_calculation
 r_static
 r_int
@@ -6022,7 +6004,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: Dev %s smaller than chunk_size: %lluk &lt; %dk&bslash;n&quot;
+l_string|&quot;md: Dev %s smaller than chunk_size:&quot;
+l_string|&quot; %lluk &lt; %dk&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -6141,7 +6124,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|UNKNOWN_LEVEL
+id|KERN_ERR
+l_string|&quot;md: md%d: unsupported raid level %d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -6564,12 +6548,6 @@ id|mddev-&gt;thread
 )paren
 suffix:semicolon
 )brace
-DECL|macro|TOO_BIG_CHUNKSIZE
-mdefine_line|#define TOO_BIG_CHUNKSIZE KERN_ERR &bslash;&n;&quot;too big chunk_size: %d &gt; %d&bslash;n&quot;
-DECL|macro|TOO_SMALL_CHUNKSIZE
-mdefine_line|#define TOO_SMALL_CHUNKSIZE KERN_ERR &bslash;&n;&quot;too small chunk_size: %d &lt; %ld&bslash;n&quot;
-DECL|macro|BAD_CHUNKSIZE
-mdefine_line|#define BAD_CHUNKSIZE KERN_ERR &bslash;&n;&quot;no chunksize specified, see &squot;man raidtab&squot;&bslash;n&quot;
 DECL|function|do_md_run
 r_static
 r_int
@@ -6708,7 +6686,8 @@ multiline_comment|/*&n;&t;&t;&t; * &squot;default chunksize&squot; in the old md
 id|printk
 c_func
 (paren
-id|BAD_CHUNKSIZE
+id|KERN_ERR
+l_string|&quot;no chunksize specified, see &squot;man raidtab&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6727,7 +6706,8 @@ id|MAX_CHUNK_SIZE
 id|printk
 c_func
 (paren
-id|TOO_BIG_CHUNKSIZE
+id|KERN_ERR
+l_string|&quot;too big chunk_size: %d &gt; %d&bslash;n&quot;
 comma
 id|chunk_size
 comma
@@ -6778,7 +6758,8 @@ id|PAGE_SIZE
 id|printk
 c_func
 (paren
-id|TOO_SMALL_CHUNKSIZE
+id|KERN_ERR
+l_string|&quot;too small chunk_size: %d &lt; %ld&bslash;n&quot;
 comma
 id|chunk_size
 comma
@@ -7172,10 +7153,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|macro|TOO_BIG_CHUNKSIZE
-macro_line|#undef TOO_BIG_CHUNKSIZE
-DECL|macro|BAD_CHUNKSIZE
-macro_line|#undef BAD_CHUNKSIZE
 DECL|function|restart_array
 r_static
 r_int
@@ -7320,10 +7297,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|macro|STILL_MOUNTED
-mdefine_line|#define STILL_MOUNTED KERN_WARNING &bslash;&n;&quot;md: md%d still mounted.&bslash;n&quot;
-DECL|macro|STILL_IN_USE
-mdefine_line|#define&t;STILL_IN_USE &bslash;&n;&quot;md: md%d still in use.&bslash;n&quot;
 DECL|function|do_md_stop
 r_static
 r_int
@@ -7373,7 +7346,7 @@ l_int|2
 id|printk
 c_func
 (paren
-id|STILL_IN_USE
+l_string|&quot;md: md%d still in use.&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -8078,24 +8051,6 @@ l_string|&quot;md: ... autorun DONE.&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * import RAID devices based on one partition&n; * if possible, the array gets run as well.&n; */
-DECL|macro|BAD_VERSION
-mdefine_line|#define BAD_VERSION KERN_ERR &bslash;&n;&quot;md: %s has RAID superblock version 0.%d, autodetect needs v0.90 or higher&bslash;n&quot;
-DECL|macro|OUT_OF_MEM
-mdefine_line|#define OUT_OF_MEM KERN_ALERT &bslash;&n;&quot;md: out of memory.&bslash;n&quot;
-DECL|macro|NO_DEVICE
-mdefine_line|#define NO_DEVICE KERN_ERR &bslash;&n;&quot;md: disabled device %s&bslash;n&quot;
-DECL|macro|AUTOADD_FAILED
-mdefine_line|#define AUTOADD_FAILED KERN_ERR &bslash;&n;&quot;md: auto-adding devices to md%d FAILED (error %d).&bslash;n&quot;
-DECL|macro|AUTOADD_FAILED_USED
-mdefine_line|#define AUTOADD_FAILED_USED KERN_ERR &bslash;&n;&quot;md: cannot auto-add device %s to md%d, already used.&bslash;n&quot;
-DECL|macro|AUTORUN_FAILED
-mdefine_line|#define AUTORUN_FAILED KERN_ERR &bslash;&n;&quot;md: auto-running md%d FAILED (error %d).&bslash;n&quot;
-DECL|macro|MDDEV_BUSY
-mdefine_line|#define MDDEV_BUSY KERN_ERR &bslash;&n;&quot;md: cannot auto-add to md%d, already running.&bslash;n&quot;
-DECL|macro|AUTOADDING
-mdefine_line|#define AUTOADDING KERN_INFO &bslash;&n;&quot;md: auto-adding devices to md%d, based on %s&squot;s superblock.&bslash;n&quot;
-DECL|macro|AUTORUNNING
-mdefine_line|#define AUTORUNNING KERN_INFO &bslash;&n;&quot;md: auto-running md%d.&bslash;n&quot;
 DECL|function|autostart_array
 r_static
 r_int
@@ -8330,7 +8285,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: could not import %s, trying to run array nevertheless.&bslash;n&quot;
+l_string|&quot;md: could not import %s,&quot;
+l_string|&quot; trying to run array nevertheless.&bslash;n&quot;
 comma
 id|partition_name
 c_func
@@ -8363,22 +8319,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|BAD_VERSION
-macro_line|#undef BAD_VERSION
-DECL|macro|OUT_OF_MEM
-macro_line|#undef OUT_OF_MEM
-DECL|macro|NO_DEVICE
-macro_line|#undef NO_DEVICE
-DECL|macro|AUTOADD_FAILED_USED
-macro_line|#undef AUTOADD_FAILED_USED
-DECL|macro|AUTOADD_FAILED
-macro_line|#undef AUTOADD_FAILED
-DECL|macro|AUTORUN_FAILED
-macro_line|#undef AUTORUN_FAILED
-DECL|macro|AUTOADDING
-macro_line|#undef AUTOADDING
-DECL|macro|AUTORUNNING
-macro_line|#undef AUTORUNNING
 DECL|function|get_version
 r_static
 r_int
@@ -8631,8 +8571,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|SET_FROM_SB
-macro_line|#undef SET_FROM_SB
 DECL|function|get_disk_info
 r_static
 r_int
@@ -9680,7 +9618,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: HOT_ADD may only be used with version-0 superblocks.&bslash;n&quot;
+l_string|&quot;md%d: HOT_ADD may only be used with&quot;
+l_string|&quot; version-0 superblocks.&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -10578,7 +10517,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: couldn&squot;t set array info. %d&bslash;n&quot;
+l_string|&quot;md: couldn&squot;t set&quot;
+l_string|&quot; array info. %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -11020,8 +10960,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: %s(pid %d) used obsolete MD ioctl, &quot;
-l_string|&quot;upgrade your software to use new ictls.&bslash;n&quot;
+l_string|&quot;md: %s(pid %d) used&quot;
+l_string|&quot; obsolete MD ioctl, upgrade your&quot;
+l_string|&quot; software to use new ictls.&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -13658,8 +13599,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: delaying resync of md%d until md%d &quot;
-l_string|&quot;has finished resync (they share one or more physical units)&bslash;n&quot;
+l_string|&quot;md: delaying resync of md%d&quot;
+l_string|&quot; until md%d has finished resync (they&quot;
+l_string|&quot; share one or more physical units)&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -13776,7 +13718,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: minimum _guaranteed_ reconstruction speed: %d KB/sec/disc.&bslash;n&quot;
+l_string|&quot;md: minimum _guaranteed_ reconstruction speed:&quot;
+l_string|&quot; %d KB/sec/disc.&bslash;n&quot;
 comma
 id|sysctl_speed_limit_min
 )paren
@@ -14737,7 +14680,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;md%d: could not start resync thread...&bslash;n&quot;
+l_string|&quot;md%d: could not start resync&quot;
+l_string|&quot; thread...&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -14987,7 +14931,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: md driver %d.%d.%d MAX_MD_DEVS=%d, MD_SB_DISKS=%d&bslash;n&quot;
+l_string|&quot;md: md driver %d.%d.%d MAX_MD_DEVS=%d,&quot;
+l_string|&quot; MD_SB_DISKS=%d&bslash;n&quot;
 comma
 id|MD_MAJOR_VERSION
 comma

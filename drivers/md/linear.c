@@ -663,8 +663,9 @@ id|tmp_dev
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;linear_make_request : hash-&gt;dev1==NULL for block %llu&bslash;n&quot;
+l_string|&quot;linear_make_request: hash-&gt;dev1==NULL for block %llu&bslash;n&quot;
 comma
 (paren
 r_int
@@ -713,6 +714,7 @@ id|BDEVNAME_SIZE
 )braket
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;linear_make_request: Block %llu out of bounds on &quot;
 l_string|&quot;dev %s size %ld offset %ld&bslash;n&quot;

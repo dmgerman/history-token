@@ -2555,6 +2555,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid5: unsupported algorithm %d&bslash;n&quot;
 comma
@@ -2717,6 +2718,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid5: unsupported algorithm %d&bslash;n&quot;
 comma
@@ -3199,7 +3201,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;compute_block() %d, stripe %llu, %d not present&bslash;n&quot;
+l_string|&quot;compute_block() %d, stripe %llu, %d&quot;
+l_string|&quot; not present&bslash;n&quot;
 comma
 id|dd_idx
 comma
@@ -4587,7 +4590,8 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;locked=%d uptodate=%d to_read=%d to_write=%d failed=%d failed_num=%d&bslash;n&quot;
+l_string|&quot;locked=%d uptodate=%d to_read=%d&quot;
+l_string|&quot; to_write=%d failed=%d failed_num=%d&bslash;n&quot;
 comma
 id|locked
 comma
@@ -7865,7 +7869,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;raid5: device %s operational as raid disk %d&bslash;n&quot;
+l_string|&quot;raid5: device %s operational as raid&quot;
+l_string|&quot; disk %d&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -7983,7 +7988,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid5: not enough operational devices for md%d (%d/%d failed)&bslash;n&quot;
+l_string|&quot;raid5: not enough operational devices for md%d&quot;
+l_string|&quot; (%d/%d failed)&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -8158,7 +8164,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;raid5: raid level %d set md%d active with %d out of %d devices, algorithm %d&bslash;n&quot;
+l_string|&quot;raid5: raid level %d set md%d active with %d out of %d&quot;
+l_string|&quot; devices, algorithm %d&bslash;n&quot;
 comma
 id|conf-&gt;level
 comma
@@ -8182,7 +8189,8 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;raid5: raid level %d set md%d active with %d out of %d devices, algorithm %d&bslash;n&quot;
+l_string|&quot;raid5: raid level %d set md%d active with %d&quot;
+l_string|&quot; out of %d devices, algorithm %d&bslash;n&quot;
 comma
 id|conf-&gt;level
 comma
