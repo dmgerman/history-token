@@ -10,7 +10,10 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;&t;&t;&t;/* for UTS_SYSNAME */
-macro_line|#include &lt;linux/pci.h&gt;&t;&t;&t;/* for hcd-&gt;pdev and dma addressing */
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -4478,9 +4481,9 @@ op_amp
 id|URB_NO_SETUP_DMA_MAP
 )paren
 )paren
-id|pci_unmap_single
+id|dma_unmap_single
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;controller
 comma
 id|urb-&gt;setup_dma
 comma
@@ -4490,7 +4493,7 @@ r_struct
 id|usb_ctrlrequest
 )paren
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 r_if
@@ -4507,9 +4510,9 @@ op_amp
 id|URB_NO_TRANSFER_DMA_MAP
 )paren
 )paren
-id|pci_unmap_single
+id|dma_unmap_single
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;controller
 comma
 id|urb-&gt;transfer_dma
 comma
@@ -4521,9 +4524,9 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 suffix:colon
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
