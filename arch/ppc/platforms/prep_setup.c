@@ -41,6 +41,7 @@ macro_line|#include &lt;asm/raven.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/vga.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 DECL|variable|ucSystemType
@@ -2613,10 +2614,9 @@ suffix:semicolon
 id|i8259_init
 c_func
 (paren
-l_int|0xbffffff0
+id|MPC10X_MAPA_PCI_INTACK_ADDR
 )paren
 suffix:semicolon
-multiline_comment|/* PCI interrupt ack address for MPC105 and 106 */
 )brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
