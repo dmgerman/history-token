@@ -970,6 +970,12 @@ id|fromvec-&gt;bv_page
 op_plus
 id|tovec-&gt;bv_offset
 suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|tovec-&gt;bv_page
+)paren
+suffix:semicolon
 id|bounce_copy_vec
 c_func
 (paren
@@ -1440,6 +1446,12 @@ id|vto
 comma
 op_star
 id|vfrom
+suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|from-&gt;bv_page
+)paren
 suffix:semicolon
 id|vto
 op_assign
