@@ -103,6 +103,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 id|BUG_ON
@@ -112,6 +115,14 @@ id|dev-&gt;bus
 op_ne
 op_amp
 id|pci_bus_type
+op_logical_or
+(paren
+id|flag
+op_amp
+id|GFP_ATOMIC
+)paren
+op_ne
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_return
@@ -615,7 +626,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Now for the API extensions over the pci_ one */
 DECL|macro|dma_alloc_noncoherent
-mdefine_line|#define dma_alloc_noncoherent(d, s, h) dma_alloc_coherent(d, s, h)
+mdefine_line|#define dma_alloc_noncoherent(d, s, h, f) dma_alloc_coherent(d, s, h, f)
 DECL|macro|dma_free_noncoherent
 mdefine_line|#define dma_free_noncoherent(d, s, v, h) dma_free_coherent(d, s, v, h)
 DECL|macro|dma_is_consistent
