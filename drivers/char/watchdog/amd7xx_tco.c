@@ -1092,9 +1092,9 @@ op_assign
 (brace
 multiline_comment|/* AMD 766 PCI_IDs here */
 (brace
-l_int|0x1022
+id|PCI_VENDOR_ID_AMD
 comma
-l_int|0x7443
+id|PCI_DEVICE_ID_AMD_OPUS_7443
 comma
 id|PCI_ANY_ID
 comma
