@@ -238,6 +238,11 @@ r_struct
 id|device
 id|device
 suffix:semicolon
+multiline_comment|/* Means this node is not attached anymore */
+DECL|member|in_limbo
+r_int
+id|in_limbo
+suffix:semicolon
 DECL|member|csr
 r_struct
 id|csr1212_csr
@@ -491,6 +496,12 @@ r_extern
 r_struct
 id|device
 id|nodemgr_dev_template_host
+suffix:semicolon
+multiline_comment|/* Bus attribute to destroy limbo&squot;d nodes */
+r_extern
+r_struct
+id|bus_attribute
+id|bus_attr_destroy
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_NODEMGR_H */
 eof
