@@ -31,7 +31,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -137,16 +136,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ide_bus_type
-)paren
-suffix:semicolon
-DECL|variable|ide_probe
-r_int
-(paren
-op_star
-id|ide_probe
-)paren
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is declared extern in ide.h, for access by other IDE modules:&n; */
@@ -1422,51 +1411,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ide_dump_status
-)paren
-suffix:semicolon
-DECL|function|ide_probe_module
-r_void
-id|ide_probe_module
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ide_probe
-)paren
-(brace
-macro_line|#if defined(CONFIG_KMOD) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_MODULE)
-(paren
-r_void
-)paren
-id|request_module
-c_func
-(paren
-l_string|&quot;ide-probe-mod&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* (CONFIG_KMOD) &amp;&amp; (CONFIG_BLK_DEV_IDE_MODULE) */
-)brace
-r_else
-(brace
-(paren
-r_void
-)paren
-id|ide_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
-DECL|variable|ide_probe_module
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_probe_module
 )paren
 suffix:semicolon
 DECL|function|ide_open
@@ -3729,9 +3673,10 @@ op_logical_neg
 id|initializing
 )paren
 (brace
-id|ide_probe_module
+id|probe_hwif_init
 c_func
 (paren
+id|hwif
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
@@ -9253,78 +9198,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEPNP */
 )brace
-DECL|function|ide_init_builtin_drivers
-r_void
-id|__init
-id|ide_init_builtin_drivers
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/*&n;&t; * Probe for special PCI and other &quot;known&quot; interface chipsets&n;&t; */
-id|probe_for_hwifs
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-r_if
-c_cond
-(paren
-id|ide_hwifs
-(braket
-l_int|0
-)braket
-dot
-id|io_ports
-(braket
-id|IDE_DATA_OFFSET
-)braket
-)paren
-id|ide_get_lock
-c_func
-(paren
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* for atari only */
-(paren
-r_void
-)paren
-id|ideprobe_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ide_hwifs
-(braket
-l_int|0
-)braket
-dot
-id|io_ports
-(braket
-id|IDE_DATA_OFFSET
-)braket
-)paren
-id|ide_release_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* for atari only */
-macro_line|#endif /* CONFIG_BLK_DEV_IDE */
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_ide_create
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/*&n; *&t;Actually unregister the subdriver. Called with the&n; *&t;request lock dropped.&n; */
 DECL|function|default_cleanup
 r_static
@@ -10513,13 +10386,6 @@ c_func
 id|ide_lock
 )paren
 suffix:semicolon
-DECL|variable|ide_probe
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_probe
-)paren
-suffix:semicolon
 DECL|variable|ide_bus_type
 r_struct
 id|bus_type
@@ -10665,7 +10531,8 @@ id|initializing
 op_assign
 l_int|1
 suffix:semicolon
-id|ide_init_builtin_drivers
+multiline_comment|/* Probe for special PCI and other &quot;known&quot; interface chipsets. */
+id|probe_for_hwifs
 c_func
 (paren
 )paren
@@ -10674,6 +10541,13 @@ id|initializing
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|proc_ide_create
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

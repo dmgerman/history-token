@@ -4348,16 +4348,6 @@ id|ide_hwifs
 suffix:semicolon
 multiline_comment|/* master data repository */
 r_extern
-r_int
-(paren
-op_star
-id|ide_probe
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 id|ide_devices_t
 op_star
 id|idedisk
