@@ -1358,7 +1358,7 @@ op_assign
 id|kmem_alloc
 c_func
 (paren
-id|ip-&gt;i_df.if_bytes
+id|ip-&gt;i_afp-&gt;if_bytes
 comma
 id|KM_SLEEP
 )paren
