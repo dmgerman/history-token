@@ -2077,10 +2077,11 @@ id|mount_count
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_driverfs_fs
+DECL|function|driverfs_init
+r_static
 r_int
 id|__init
-id|init_driverfs_fs
+id|driverfs_init
 c_func
 (paren
 r_void
@@ -2095,6 +2096,13 @@ id|driverfs_fs_type
 )paren
 suffix:semicolon
 )brace
+DECL|variable|driverfs_init
+id|core_initcall
+c_func
+(paren
+id|driverfs_init
+)paren
+suffix:semicolon
 DECL|function|get_dentry
 r_static
 r_struct

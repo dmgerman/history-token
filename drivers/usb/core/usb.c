@@ -575,7 +575,7 @@ comma
 id|driver-&gt;name
 )paren
 suffix:semicolon
-id|remove_driver
+id|driver_unregister
 (paren
 op_amp
 id|driver-&gt;driver
@@ -3973,7 +3973,7 @@ id|nousb
 )paren
 r_return
 suffix:semicolon
-id|remove_driver
+id|driver_unregister
 c_func
 (paren
 op_amp
