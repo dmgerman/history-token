@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * kobject.c - library routines for handling generic kernel objects&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
+mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
