@@ -125,7 +125,7 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-multiline_comment|/* don&squot;t submit URBS during abort/disconnect processing */
+multiline_comment|/* don&squot;t submit URBs during abort/disconnect processing */
 r_if
 c_cond
 (paren
@@ -135,7 +135,7 @@ id|DONT_SUBMIT
 )paren
 r_return
 op_minus
-id|ECONNRESET
+id|EIO
 suffix:semicolon
 multiline_comment|/* set up data structures for the wakeup system */
 id|init_completion
@@ -709,7 +709,7 @@ suffix:semicolon
 r_return
 id|USB_STOR_XFER_STALLED
 suffix:semicolon
-multiline_comment|/* NAK - that means we&squot;ve retried this a few times already */
+multiline_comment|/* timeout or excessively long NAK */
 r_case
 op_minus
 id|ETIMEDOUT
@@ -717,7 +717,7 @@ suffix:colon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- device NAKed&bslash;n&quot;
+l_string|&quot;-- timeout or NAK&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -731,13 +731,13 @@ suffix:colon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- Babble&bslash;n&quot;
+l_string|&quot;-- babble&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 id|USB_STOR_XFER_LONG
 suffix:semicolon
-multiline_comment|/* the transfer was cancelled, presumably by an abort */
+multiline_comment|/* the transfer was cancelled by abort, disconnect, or timeout */
 r_case
 op_minus
 id|ECONNRESET
@@ -764,6 +764,20 @@ l_string|&quot;-- short read transfer&bslash;n&quot;
 suffix:semicolon
 r_return
 id|USB_STOR_XFER_SHORT
+suffix:semicolon
+multiline_comment|/* abort or disconnect in progress */
+r_case
+op_minus
+id|EIO
+suffix:colon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- abort or disconnect in progress&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
 suffix:semicolon
 multiline_comment|/* the catch-all error case */
 r_default
@@ -1201,6 +1215,7 @@ op_assign
 id|usb_sg_init
 c_func
 (paren
+op_amp
 id|us-&gt;current_sg
 comma
 id|us-&gt;pusb_dev
@@ -1278,6 +1293,7 @@ suffix:semicolon
 id|usb_sg_cancel
 c_func
 (paren
+op_amp
 id|us-&gt;current_sg
 )paren
 suffix:semicolon
@@ -1287,6 +1303,7 @@ multiline_comment|/* wait for the completion of the transfer */
 id|usb_sg_wait
 c_func
 (paren
+op_amp
 id|us-&gt;current_sg
 )paren
 suffix:semicolon
@@ -1301,7 +1318,7 @@ id|us-&gt;flags
 suffix:semicolon
 id|result
 op_assign
-id|us-&gt;current_sg-&gt;status
+id|us-&gt;current_sg.status
 suffix:semicolon
 r_if
 c_cond
@@ -1311,7 +1328,7 @@ id|act_len
 op_star
 id|act_len
 op_assign
-id|us-&gt;current_sg-&gt;bytes
+id|us-&gt;current_sg.bytes
 suffix:semicolon
 r_return
 id|interpret_urb_result
@@ -1325,7 +1342,7 @@ id|length
 comma
 id|result
 comma
-id|us-&gt;current_sg-&gt;bytes
+id|us-&gt;current_sg.bytes
 )paren
 suffix:semicolon
 )brace
@@ -1488,12 +1505,7 @@ multiline_comment|/* if the command gets aborted by the higher layers, we need t
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-)paren
 op_eq
 id|US_STATE_ABORTING
 )paren
@@ -1930,12 +1942,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-)paren
 op_eq
 id|US_STATE_ABORTING
 )paren
@@ -2243,6 +2250,7 @@ suffix:semicolon
 id|usb_sg_cancel
 c_func
 (paren
+op_amp
 id|us-&gt;current_sg
 )paren
 suffix:semicolon

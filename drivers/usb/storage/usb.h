@@ -300,7 +300,7 @@ id|pid
 suffix:semicolon
 multiline_comment|/* control thread&t; */
 DECL|member|sm_state
-id|atomic_t
+r_int
 id|sm_state
 suffix:semicolon
 multiline_comment|/* what we are doing&t; */
@@ -332,7 +332,6 @@ multiline_comment|/* control requests&t; */
 DECL|member|current_sg
 r_struct
 id|usb_sg_request
-op_star
 id|current_sg
 suffix:semicolon
 multiline_comment|/* scatter-gather USB   */

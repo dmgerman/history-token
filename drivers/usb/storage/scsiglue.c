@@ -323,16 +323,6 @@ id|srb-&gt;device-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-r_int
-id|state
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -352,7 +342,7 @@ multiline_comment|/* enqueue the command */
 r_if
 c_cond
 (paren
-id|state
+id|us-&gt;sm_state
 op_ne
 id|US_STATE_IDLE
 op_logical_or
@@ -371,7 +361,7 @@ l_string|&quot;state = %d, us-&gt;srb = %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|state
+id|us-&gt;sm_state
 comma
 id|us-&gt;srb
 )paren
@@ -438,16 +428,6 @@ id|host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-r_int
-id|state
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -478,11 +458,11 @@ multiline_comment|/* Normally the current state is RUNNING.  If the control thre
 r_if
 c_cond
 (paren
-id|state
+id|us-&gt;sm_state
 op_ne
 id|US_STATE_RUNNING
 op_logical_and
-id|state
+id|us-&gt;sm_state
 op_ne
 id|US_STATE_IDLE
 )paren
@@ -497,7 +477,7 @@ l_string|&quot;invalid state %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|state
+id|us-&gt;sm_state
 )paren
 suffix:semicolon
 r_return
@@ -505,14 +485,9 @@ id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* Set state to ABORTING, set the ABORTING bit, and release the lock */
-id|atomic_set
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-comma
+op_assign
 id|US_STATE_ABORTING
-)paren
 suffix:semicolon
 id|set_bit
 c_func
@@ -529,14 +504,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-multiline_comment|/* If the state was RUNNING, stop an ongoing USB transfer */
-r_if
-c_cond
-(paren
-id|state
-op_eq
-id|US_STATE_RUNNING
-)paren
+multiline_comment|/* Stop an ongoing USB transfer */
 id|usb_stor_stop_transport
 c_func
 (paren
@@ -600,16 +568,6 @@ l_int|0
 )braket
 suffix:semicolon
 r_int
-id|state
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 id|US_DEBUGP
@@ -623,7 +581,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|state
+id|us-&gt;sm_state
 op_ne
 id|US_STATE_IDLE
 )paren
@@ -638,7 +596,7 @@ l_string|&quot;invalid state %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|state
+id|us-&gt;sm_state
 )paren
 suffix:semicolon
 r_return
@@ -646,14 +604,9 @@ id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* set the state and release the lock */
-id|atomic_set
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-comma
+op_assign
 id|US_STATE_RESETTING
-)paren
 suffix:semicolon
 id|scsi_unlock
 c_func
@@ -661,7 +614,7 @@ c_func
 id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
-multiline_comment|/* lock the device pointers */
+multiline_comment|/* lock the device pointers and do the reset */
 id|down
 c_func
 (paren
@@ -671,7 +624,6 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* do the reset */
 id|result
 op_assign
 id|us
@@ -682,7 +634,6 @@ c_func
 id|us
 )paren
 suffix:semicolon
-multiline_comment|/* unlock */
 id|up
 c_func
 (paren
@@ -699,14 +650,9 @@ c_func
 id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-comma
+op_assign
 id|US_STATE_IDLE
-)paren
 suffix:semicolon
 r_return
 id|result
@@ -742,16 +688,6 @@ l_int|0
 )braket
 suffix:semicolon
 r_int
-id|state
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 id|US_DEBUGP
@@ -765,7 +701,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|state
+id|us-&gt;sm_state
 op_ne
 id|US_STATE_IDLE
 )paren
@@ -780,7 +716,7 @@ l_string|&quot;invalid state %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|state
+id|us-&gt;sm_state
 )paren
 suffix:semicolon
 r_return
@@ -788,14 +724,9 @@ id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* set the state and release the lock */
-id|atomic_set
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-comma
+op_assign
 id|US_STATE_RESETTING
-)paren
 suffix:semicolon
 id|scsi_unlock
 c_func
@@ -803,17 +734,7 @@ c_func
 id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
-multiline_comment|/* The USB subsystem doesn&squot;t handle synchronisation between&n;&t;   a device&squot;s several drivers. Therefore we reset only devices&n;&t;   with just one interface, which we of course own.&n;&t;*/
-singleline_comment|//FIXME: needs locking against config changes
-r_if
-c_cond
-(paren
-id|us-&gt;pusb_dev-&gt;actconfig-&gt;desc.bNumInterfaces
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* lock the device and attempt to reset the port */
+multiline_comment|/* The USB subsystem doesn&squot;t handle synchronisation between&n;&t; * a device&squot;s several drivers. Therefore we reset only devices&n;&t; * with just one interface, which we of course own. */
 id|down
 c_func
 (paren
@@ -823,33 +744,39 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
 id|result
 op_assign
-id|usb_reset_device
-c_func
-(paren
-id|us-&gt;pusb_dev
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;dev_semaphore
-)paren
-)paren
+op_minus
+id|EIO
 suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;usb_reset_device returns %d&bslash;n&quot;
-comma
-id|result
+l_string|&quot;Attempt to reset during disconnect&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;actconfig-&gt;desc.bNumInterfaces
+op_ne
+l_int|1
+)paren
 (brace
 id|result
 op_assign
@@ -863,6 +790,34 @@ l_string|&quot;Refusing to reset a multi-interface device&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|result
+op_assign
+id|usb_reset_device
+c_func
+(paren
+id|us-&gt;pusb_dev
+)paren
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_reset_device returns %d&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+)brace
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* lock access to the state and clear it */
 id|scsi_lock
 c_func
@@ -870,14 +825,9 @@ c_func
 id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-comma
+op_assign
 id|US_STATE_IDLE
-)paren
 suffix:semicolon
 r_return
 id|result
@@ -1049,18 +999,6 @@ id|DO_FLAG
 c_func
 (paren
 id|MODE_XLATE
-)paren
-suffix:semicolon
-id|DO_FLAG
-c_func
-(paren
-id|START_STOP
-)paren
-suffix:semicolon
-id|DO_FLAG
-c_func
-(paren
-id|IGNORE_SER
 )paren
 suffix:semicolon
 id|DO_FLAG
