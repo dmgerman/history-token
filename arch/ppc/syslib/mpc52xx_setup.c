@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#include &lt;asm/mpc52xx_psc.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
 r_extern
 id|bd_t
