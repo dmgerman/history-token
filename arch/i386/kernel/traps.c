@@ -13,6 +13,9 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#ifdef CONFIG_EISA
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -3569,6 +3572,28 @@ id|CO_APIC_ID
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|EISA_bus
+r_int
+id|EISA_bus
+suffix:semicolon
+macro_line|#ifdef CONFIG_EISA
+DECL|variable|eisa_id
+r_static
+r_struct
+id|resource
+id|eisa_id
+op_assign
+(brace
+l_string|&quot;EISA ID&quot;
+comma
+l_int|0xc80
+comma
+l_int|0xc83
+comma
+id|IORESOURCE_BUSY
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|function|trap_init
 r_void
 id|__init
@@ -3608,10 +3633,33 @@ op_lshift
 l_int|24
 )paren
 )paren
+(brace
 id|EISA_bus
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|request_resource
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+op_amp
+id|eisa_id
+)paren
+op_eq
+op_minus
+id|EBUSY
+)paren
+id|printk
+(paren
+l_string|&quot;EISA port was EBUSY :-(&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 id|init_apic_mappings
