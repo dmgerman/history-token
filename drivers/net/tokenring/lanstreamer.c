@@ -991,6 +991,15 @@ id|dev-&gt;base_addr
 op_assign
 id|pio_start
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 id|streamer_priv-&gt;streamer_card_name
 op_assign
 (paren

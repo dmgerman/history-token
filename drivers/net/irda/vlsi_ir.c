@@ -7713,6 +7713,15 @@ op_div
 l_int|1000
 suffix:semicolon
 multiline_comment|/* max. allowed turn time for IrLAP */
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|ndev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

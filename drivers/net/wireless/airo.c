@@ -12523,6 +12523,23 @@ id|dev-&gt;base_addr
 op_assign
 id|port
 suffix:semicolon
+multiline_comment|/* what is with PCMCIA ??? */
+r_if
+c_cond
+(paren
+id|pci
+)paren
+(brace
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
