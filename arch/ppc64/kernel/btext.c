@@ -159,11 +159,6 @@ DECL|variable|disp_bi
 id|boot_infos_t
 id|disp_bi
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|klimit
-suffix:semicolon
 multiline_comment|/* This function will enable the early boot text when doing OF booting. This&n; * way, xmon output should work too&n; */
 DECL|function|btext_setup_display
 r_void
