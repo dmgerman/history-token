@@ -49,7 +49,6 @@ r_static
 r_int
 id|ports_c
 suffix:semicolon
-macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func
 (paren
@@ -64,7 +63,6 @@ id|MAX_PORTS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|ip_ftp_lock
 id|DECLARE_LOCK_EXTERN
 c_func

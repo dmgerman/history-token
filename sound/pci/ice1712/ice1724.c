@@ -5406,7 +5406,7 @@ r_void
 op_star
 )paren
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|substream-&gt;number

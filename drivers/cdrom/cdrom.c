@@ -2804,11 +2804,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|CDROM_CAN
+id|cdrom_open_write
 c_func
 (paren
-id|CDC_RAM
+id|cdi
 )paren
 )paren
 r_goto
@@ -2817,10 +2816,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cdrom_open_write
+op_logical_neg
+id|CDROM_CAN
 c_func
 (paren
-id|cdi
+id|CDC_RAM
 )paren
 )paren
 r_goto

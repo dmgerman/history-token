@@ -433,7 +433,7 @@ id|busdn
 comma
 l_string|&quot;ibm,dma-window&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -713,7 +713,7 @@ id|dn
 comma
 l_string|&quot;ibm,dma-window&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

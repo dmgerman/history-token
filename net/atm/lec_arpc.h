@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Lec arp cache&n; * Marko Kiiskila carnil@cs.tut.fi&n; *&n; */
+multiline_comment|/*&n; * Lec arp cache&n; * Marko Kiiskila mkiiskila@yahoo.com&n; *&n; */
 macro_line|#ifndef _LEC_ARP_H
 DECL|macro|_LEC_ARP_H
 mdefine_line|#define _LEC_ARP_H

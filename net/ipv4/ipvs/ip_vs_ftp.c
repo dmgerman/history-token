@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * ip_vs_ftp.c: IPVS ftp application module&n; *&n; * Version:&t;$Id: ip_vs_ftp.c,v 1.13 2002/09/15 08:14:08 wensong Exp $&n; *&n; * Authors:&t;Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; * Changes:&n; *&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; * Most code here is taken from ip_masq_ftp.c in kernel 2.2. The difference&n; * is that ip_vs_ftp module handles the reverse direction to ip_masq_ftp.&n; *&n; *&t;&t;IP_MASQ_FTP ftp masquerading module&n; *&n; * Version:&t;@(#)ip_masq_ftp.c 0.04   02/05/96&n; *&n; * Author:&t;Wouter Gadeyne&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -26,6 +27,23 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+DECL|variable|ports_c
+r_static
+r_int
+id|ports_c
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|ports
+comma
+r_int
+comma
+id|ports_c
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Debug level&n; */
 macro_line|#ifdef CONFIG_IP_VS_DEBUG
 DECL|variable|debug
@@ -35,29 +53,17 @@ id|debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
-c_func
-(paren
-id|ports
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|IP_VS_APP_MAX_PORTS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&t;Dummy variable */
 DECL|variable|ip_vs_ftp_pasv
 r_static

@@ -2249,7 +2249,7 @@ op_amp
 id|req-&gt;rq_rcv_buf
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 op_assign
@@ -3470,7 +3470,7 @@ op_amp
 id|req-&gt;rq_rcv_buf
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 op_assign
@@ -3682,7 +3682,7 @@ id|res
 )paren
 (brace
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 op_assign

@@ -1275,7 +1275,7 @@ DECL|typedef|drm_ctx_list_t
 )brace
 id|drm_ctx_list_t
 suffix:semicolon
-macro_line|#if __HAVE_VBL_IRQ
+macro_line|#ifdef __HAVE_VBL_IRQ
 DECL|struct|drm_vbl_sig
 r_typedef
 r_struct
@@ -1602,7 +1602,7 @@ id|work
 suffix:semicolon
 multiline_comment|/** &bslash;name VBLANK IRQ support */
 multiline_comment|/*@{*/
-macro_line|#if __HAVE_VBL_IRQ
+macro_line|#ifdef __HAVE_VBL_IRQ
 DECL|member|vbl_queue
 id|wait_queue_head_t
 id|vbl_queue
@@ -2119,6 +2119,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3535,7 +3536,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_VBL_IRQ
+macro_line|#ifdef __HAVE_VBL_IRQ
 r_extern
 r_int
 id|DRM
@@ -3595,7 +3596,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __HAVE_IRQ_BH
+macro_line|#ifdef __HAVE_IRQ_BH
 r_extern
 r_void
 id|DRM
@@ -4008,7 +4009,7 @@ op_star
 id|dev_root
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_SG
+macro_line|#ifdef __HAVE_SG
 multiline_comment|/* Scatter Gather Support (drm_scatter.h) */
 r_extern
 r_void

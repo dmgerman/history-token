@@ -513,6 +513,10 @@ op_star
 id|old_fops
 suffix:semicolon
 r_int
+r_int
+r_virtual
+suffix:semicolon
+r_int
 id|retcode
 op_assign
 l_int|0
@@ -550,15 +554,8 @@ id|dev_priv-&gt;mmap_buffer
 op_assign
 id|buf
 suffix:semicolon
-id|buf_priv
-op_member_access_from_pointer
 r_virtual
 op_assign
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|do_mmap
 c_func
 (paren
@@ -591,12 +588,15 @@ c_cond
 id|IS_ERR
 c_func
 (paren
-id|buf_priv
-op_member_access_from_pointer
+(paren
+r_void
+op_star
+)paren
 r_virtual
 )paren
 )paren
 (brace
+multiline_comment|/* ugh */
 multiline_comment|/* Real error */
 id|DRM_ERROR
 c_func
@@ -606,19 +606,27 @@ l_string|&quot;mmap error&bslash;n&quot;
 suffix:semicolon
 id|retcode
 op_assign
-id|PTR_ERR
-c_func
-(paren
-id|buf_priv
-op_member_access_from_pointer
 r_virtual
-)paren
 suffix:semicolon
 id|buf_priv
 op_member_access_from_pointer
 r_virtual
 op_assign
 l_int|NULL
+suffix:semicolon
+)brace
+r_else
+(brace
+id|buf_priv
+op_member_access_from_pointer
+r_virtual
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+r_virtual
 suffix:semicolon
 )brace
 id|up_write
@@ -1945,7 +1953,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -5370,6 +5377,7 @@ id|I830_BUF_MAPPED
 )paren
 (brace
 id|u32
+id|__user
 op_star
 id|vp
 op_assign
@@ -6129,7 +6137,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -6198,7 +6205,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -6378,7 +6384,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -6497,7 +6502,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -6656,7 +6660,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -6751,7 +6754,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -6828,7 +6830,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -7022,7 +7023,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -7080,7 +7080,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -7230,7 +7229,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace

@@ -1107,7 +1107,7 @@ id|__u16
 id|clock_offset
 suffix:semicolon
 DECL|member|rssi
-id|__u8
+id|__s8
 id|rssi
 suffix:semicolon
 )brace

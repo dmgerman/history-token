@@ -3669,10 +3669,17 @@ id|mode
 op_amp
 id|S_ISUID
 )paren
+(brace
+id|current-&gt;personality
+op_and_assign
+op_complement
+id|PER_CLEAR_ON_SETID
+suffix:semicolon
 id|bprm-&gt;e_uid
 op_assign
 id|inode-&gt;i_uid
 suffix:semicolon
+)brace
 multiline_comment|/* Set-gid? */
 multiline_comment|/*&n;&t;&t; * If setgid is set but no group execute bit then this&n;&t;&t; * is a candidate for mandatory locking, not a setgid&n;&t;&t; * executable.&n;&t;&t; */
 r_if
@@ -3694,10 +3701,17 @@ op_or
 id|S_IXGRP
 )paren
 )paren
+(brace
+id|current-&gt;personality
+op_and_assign
+op_complement
+id|PER_CLEAR_ON_SETID
+suffix:semicolon
 id|bprm-&gt;e_gid
 op_assign
 id|inode-&gt;i_gid
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* fill in binprm security blob */
 id|retval

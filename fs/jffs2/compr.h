@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2004 Ferenc Havasi &lt;havasi@inf.u-szeged.hu&gt;,&n; *                    University of Szeged, Hungary&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: compr.h,v 1.5 2004/06/23 16:34:39 havasi Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2004 Ferenc Havasi &lt;havasi@inf.u-szeged.hu&gt;,&n; *                    University of Szeged, Hungary&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: compr.h,v 1.6 2004/07/16 15:17:57 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_COMPR_H__
 DECL|macro|__JFFS2_COMPR_H__
 mdefine_line|#define __JFFS2_COMPR_H__
@@ -454,20 +454,5 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Prototypes from proc.c */
-r_int
-id|jffs2_proc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|jffs2_proc_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* __JFFS2_COMPR_H__ */
 eof

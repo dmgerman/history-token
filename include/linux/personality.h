@@ -70,6 +70,11 @@ id|MMAP_PAGE_ZERO
 op_assign
 l_int|0x0100000
 comma
+DECL|enumerator|READ_IMPLIES_EXEC
+id|READ_IMPLIES_EXEC
+op_assign
+l_int|0x0400000
+comma
 DECL|enumerator|ADDR_LIMIT_32BIT
 id|ADDR_LIMIT_32BIT
 op_assign
@@ -97,6 +102,9 @@ l_int|0x8000000
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Security-relevant compatibility flags that must be&n; * cleared upon setuid or setgid exec:&n; */
+DECL|macro|PER_CLEAR_ON_SETID
+mdefine_line|#define PER_CLEAR_ON_SETID (READ_IMPLIES_EXEC)
 multiline_comment|/*&n; * Personality types.&n; *&n; * These go in the low byte.  Avoid using the top bit, it will&n; * conflict with error returns.&n; */
 r_enum
 (brace

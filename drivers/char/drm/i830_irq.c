@@ -389,7 +389,6 @@ id|cmd
 comma
 r_int
 r_int
-id|__user
 id|arg
 )paren
 (brace
@@ -470,6 +469,7 @@ id|emit
 comma
 (paren
 id|drm_i830_irq_emit_t
+id|__user
 op_star
 )paren
 id|arg
@@ -602,6 +602,7 @@ id|irqwait
 comma
 (paren
 id|drm_i830_irq_wait_t
+id|__user
 op_star
 )paren
 id|arg

@@ -2519,7 +2519,7 @@ id|kctl-&gt;private_data
 suffix:semicolon
 id|kctl-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -6575,7 +6575,7 @@ id|cval
 suffix:semicolon
 id|kctl-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if

@@ -1790,7 +1790,7 @@ c_func
 (paren
 id|rtasd
 comma
-l_int|0
+l_int|NULL
 comma
 id|CLONE_FS
 )paren

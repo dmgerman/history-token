@@ -5938,7 +5938,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|is_highmem
+id|is_highmem_idx
 c_func
 (paren
 id|zone

@@ -3532,6 +3532,20 @@ id|cl-&gt;classid
 comma
 id|diff
 comma
+macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
+id|q-&gt;now.tv_sec
+op_star
+l_int|1000000ULL
+op_plus
+id|q-&gt;now.tv_usec
+comma
+id|cl-&gt;t_c.tv_sec
+op_star
+l_int|1000000ULL
+op_plus
+id|cl-&gt;t_c.tv_usec
+comma
+macro_line|#else
 (paren
 r_int
 r_int
@@ -3546,6 +3560,7 @@ r_int
 )paren
 id|cl-&gt;t_c
 comma
+macro_line|#endif
 id|q-&gt;jiffies
 )paren
 suffix:semicolon
@@ -3925,6 +3940,20 @@ id|cl-&gt;classid
 comma
 id|diff
 comma
+macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
+id|q-&gt;now.tv_sec
+op_star
+l_int|1000000ULL
+op_plus
+id|q-&gt;now.tv_usec
+comma
+id|cl-&gt;t_c.tv_sec
+op_star
+l_int|1000000ULL
+op_plus
+id|cl-&gt;t_c.tv_usec
+comma
+macro_line|#else
 (paren
 r_int
 r_int
@@ -3939,6 +3968,7 @@ r_int
 )paren
 id|cl-&gt;t_c
 comma
+macro_line|#endif
 id|q-&gt;jiffies
 )paren
 suffix:semicolon

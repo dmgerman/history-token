@@ -17,10 +17,10 @@ DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD ( 1843200 / 16 )
 macro_line|#ifdef CONFIG_SERIAL_DETECT_IRQ
 DECL|macro|STD_COM_FLAGS
-mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF|ASYNC_SKIP_TEST|ASYNC_AUTO_IRQ)
+mdefine_line|#define STD_COM_FLAGS (ASYNC_SKIP_TEST|ASYNC_AUTO_IRQ)
 macro_line|#else
 DECL|macro|STD_COM_FLAGS
-mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF|ASYNC_SKIP_TEST)
+mdefine_line|#define STD_COM_FLAGS (ASYNC_SKIP_TEST)
 macro_line|#endif
 DECL|macro|STD_SERIAL_PORT_DFNS
 mdefine_line|#define STD_SERIAL_PORT_DFNS &bslash;&n;        { 0, BASE_BAUD, UARTA_ADDR, MPC85xx_IRQ_EXT9, STD_COM_FLAGS, /* ttyS0 */ &bslash;&n;                iomem_base: (u8 *)UARTA_ADDR,                       &bslash;&n;                io_type: SERIAL_IO_MEM },                                 &bslash;&n;        { 0, BASE_BAUD, UARTB_ADDR, MPC85xx_IRQ_EXT10, STD_COM_FLAGS, /* ttyS1 */ &bslash;&n;                iomem_base: (u8 *)UARTB_ADDR,                       &bslash;&n;                io_type: SERIAL_IO_MEM },

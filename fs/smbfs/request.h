@@ -101,7 +101,7 @@ id|rq_iovlen
 suffix:semicolon
 DECL|member|rq_iov
 r_struct
-id|iovec
+id|kvec
 id|rq_iov
 (braket
 l_int|4

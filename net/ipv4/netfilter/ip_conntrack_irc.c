@@ -65,7 +65,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func
 (paren
@@ -120,7 +119,6 @@ comma
 l_string|&quot;timeout on for unestablished DCC channels&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|dccprotos
 r_static
 r_char

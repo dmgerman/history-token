@@ -1190,7 +1190,8 @@ id|round_down
 c_func
 (paren
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|fp
 op_minus

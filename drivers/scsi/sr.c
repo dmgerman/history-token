@@ -2911,15 +2911,6 @@ comma
 l_string|&quot;&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* Set read only initially */
-id|set_disk_ro
-c_func
-(paren
-id|cd-&gt;disk
-comma
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/* allocate a request for the TEST_UNIT_READY */
 id|SRpnt
 op_assign
@@ -3569,14 +3560,6 @@ id|CDC_RAM
 id|cd-&gt;device-&gt;writeable
 op_assign
 l_int|1
-suffix:semicolon
-id|set_disk_ro
-c_func
-(paren
-id|cd-&gt;disk
-comma
-l_int|0
-)paren
 suffix:semicolon
 )brace
 id|scsi_release_request

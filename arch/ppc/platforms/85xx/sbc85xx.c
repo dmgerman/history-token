@@ -82,161 +82,225 @@ id|__initdata
 op_assign
 (brace
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  0: L2 Cache */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  1: ECM */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  2: DDR DRAM */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  3: LBIU */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  4: DMA 0 */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  5: DMA 1 */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  6: DMA 2 */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  7: DMA 3 */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  8: PCI/PCI-X */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal  9: RIO Inbound Port Write Error */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 10: RIO Doorbell Inbound */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 11: RIO Outbound Message */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 12: RIO Inbound Message */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 13: TSEC 0 Transmit */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 14: TSEC 0 Receive */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 15: Unused */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 16: Unused */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 17: Unused */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 18: TSEC 0 Receive/Transmit Error */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 19: TSEC 1 Transmit */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 20: TSEC 1 Receive */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 21: Unused */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 22: Unused */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 23: Unused */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 24: TSEC 1 Receive/Transmit Error */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 25: Fast Ethernet */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 26: DUART */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 27: I2C */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 28: Performance Monitor */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 29: Unused */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* Internal 30: CPM */
 (paren
+id|IRQ_SENSE_LEVEL
+op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
