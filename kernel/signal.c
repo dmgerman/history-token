@@ -2994,6 +2994,25 @@ id|why
 comma
 id|status
 suffix:semicolon
+multiline_comment|/* is the thread detached? */
+r_if
+c_cond
+(paren
+id|sig
+op_eq
+op_minus
+l_int|1
+op_logical_or
+id|tsk-&gt;exit_signal
+op_eq
+op_minus
+l_int|1
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|info.si_signo
 op_assign
 id|sig
@@ -3142,6 +3161,15 @@ r_int
 id|sig
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|sig
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
 id|read_lock
 c_func
 (paren
@@ -3164,6 +3192,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#ifndef HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 DECL|function|get_signal_to_deliver
