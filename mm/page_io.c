@@ -474,6 +474,17 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|PageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
 id|ClearPageUptodate
 c_func
 (paren
