@@ -5940,12 +5940,10 @@ multiline_comment|/*&n;&t;&t;&t; * If users can be writing to this page using ar
 r_if
 c_cond
 (paren
-op_logical_neg
-id|list_empty
+id|mapping_writably_mapped
 c_func
 (paren
-op_amp
-id|mapping-&gt;i_mmap_shared
+id|mapping
 )paren
 )paren
 id|flush_dcache_page

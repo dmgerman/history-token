@@ -940,6 +940,62 @@ r_int
 id|tag
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Might pages of this file be mapped into userspace?&n; */
+DECL|function|mapping_mapped
+r_static
+r_inline
+r_int
+id|mapping_mapped
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+)paren
+(brace
+r_return
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|mapping-&gt;i_mmap
+)paren
+op_logical_or
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|mapping-&gt;i_mmap_shared
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Might pages of this file have been modified in userspace?&n; * Note that i_mmap_shared holds all the VM_SHARED vmas: do_mmap_pgoff&n; * marks vma as VM_SHARED if it is shared, and the file was opened for&n; * writing i.e. vma may be mprotected writable even if now readonly.&n; */
+DECL|function|mapping_writably_mapped
+r_static
+r_inline
+r_int
+id|mapping_writably_mapped
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+)paren
+(brace
+r_return
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|mapping-&gt;i_mmap_shared
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Use sequence counter to get consistent i_size on 32-bit processors.&n; */
 macro_line|#if BITS_PER_LONG==32 &amp;&amp; defined(CONFIG_SMP)
 macro_line|#include &lt;linux/seqlock.h&gt;

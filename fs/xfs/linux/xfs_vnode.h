@@ -1790,7 +1790,7 @@ DECL|macro|VN_CTIMESET
 mdefine_line|#define VN_CTIMESET(vp, tvp)&t;(LINVFS_GET_IP(vp)-&gt;i_ctime = *(tvp))
 multiline_comment|/*&n; * Some useful predicates.&n; */
 DECL|macro|VN_MAPPED
-mdefine_line|#define VN_MAPPED(vp)&t;&bslash;&n;&t;(!list_empty(&amp;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;i_mmap)) || &bslash;&n;&t;(!list_empty(&amp;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;i_mmap_shared))))
+mdefine_line|#define VN_MAPPED(vp)&t;mapping_mapped(LINVFS_GET_IP(vp)-&gt;i_mapping)
 DECL|macro|VN_CACHED
 mdefine_line|#define VN_CACHED(vp)&t;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;nrpages)
 DECL|macro|VN_DIRTY

@@ -878,7 +878,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -1202,7 +1206,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 r_int
