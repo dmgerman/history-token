@@ -38,8 +38,21 @@ id|islpci_private
 op_star
 )paren
 suffix:semicolon
+r_static
+r_struct
+id|net_device_stats
+op_star
+id|islpci_statistics
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Temporary dummy MAC address to use until firmware is loaded.&n; * The idea there is that some tools (such as nameif) may query&n; * the MAC address before the netdev is &squot;open&squot;. By using a valid&n; * OUI prefix, they can process the netdev properly.&n; * Of course, this is not the final/real MAC address. It doesn&squot;t&n; * matter, as you are suppose to be able to change it anytime via&n; * ndev-&gt;set_mac_address. Jean II */
 DECL|variable|dummy_mac
+r_static
 r_const
 r_int
 r_char
@@ -2057,6 +2070,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+r_static
 r_struct
 id|net_device_stats
 op_star

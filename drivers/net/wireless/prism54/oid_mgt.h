@@ -27,14 +27,7 @@ id|islpci_private
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* I don&squot;t know where to put these 3 */
-r_extern
-r_const
-r_int
-id|frequency_list_bg
-(braket
-)braket
-suffix:semicolon
+multiline_comment|/* I don&squot;t know where to put these 2 */
 r_extern
 r_const
 r_int
@@ -155,14 +148,6 @@ op_star
 suffix:semicolon
 r_int
 id|mgt_commit
-c_func
-(paren
-id|islpci_private
-op_star
-)paren
-suffix:semicolon
-r_void
-id|mgt_unlatch_all
 c_func
 (paren
 id|islpci_private

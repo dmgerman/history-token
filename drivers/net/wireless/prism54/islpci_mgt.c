@@ -30,6 +30,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/******************************************************************************&n;    Driver general functions&n;******************************************************************************/
+macro_line|#if VERBOSE &gt; SHOW_ERROR_MESSAGES
 r_void
 DECL|function|display_buffer
 id|display_buffer
@@ -89,6 +90,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*****************************************************************************&n;    Queue handling for management frames&n;******************************************************************************/
 multiline_comment|/*&n; * Helper function to create a PIMFOR management frame header.&n; */
 r_static

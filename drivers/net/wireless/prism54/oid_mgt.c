@@ -7,6 +7,7 @@ macro_line|#include &quot;oid_mgt.h&quot;
 macro_line|#include &quot;isl_ioctl.h&quot;
 multiline_comment|/* to convert between channel and freq */
 DECL|variable|frequency_list_bg
+r_static
 r_const
 r_int
 id|frequency_list_bg
@@ -3984,8 +3985,8 @@ id|rvalue
 suffix:semicolon
 )brace
 multiline_comment|/* The following OIDs need to be &quot;unlatched&quot;:&n; *&n; * MEDIUMLIMIT,BEACONPERIOD,DTIMPERIOD,ATIMWINDOW,LISTENINTERVAL&n; * FREQUENCY,EXTENDEDRATES.&n; *&n; * The way to do this is to set ESSID. Note though that they may get &n; * unlatch before though by setting another OID. */
+macro_line|#if 0
 r_void
-DECL|function|mgt_unlatch_all
 id|mgt_unlatch_all
 c_func
 (paren
@@ -4101,6 +4102,7 @@ id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* This will tell you if you are allowed to answer a mlme(ex) request .*/
 r_int
 DECL|function|mgt_mlme_answer

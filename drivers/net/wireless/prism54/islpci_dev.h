@@ -556,17 +556,6 @@ id|priv-&gt;device_base
 )paren
 suffix:semicolon
 )brace
-r_struct
-id|net_device_stats
-op_star
-id|islpci_statistics
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
 r_int
 id|islpci_free_memory
 c_func

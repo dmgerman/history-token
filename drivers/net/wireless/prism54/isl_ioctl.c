@@ -11,7 +11,67 @@ macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;&t;&t;/* additional types and defs for isl38xx fw */
 macro_line|#include &quot;oid_mgt.h&quot;
 macro_line|#include &lt;net/iw_handler.h&gt;&t;/* New driver API */
+r_static
+r_void
+id|prism54_wpa_ie_add
+c_func
+(paren
+id|islpci_private
+op_star
+id|priv
+comma
+id|u8
+op_star
+id|bssid
+comma
+id|u8
+op_star
+id|wpa_ie
+comma
+r_int
+id|wpa_ie_len
+)paren
+suffix:semicolon
+r_static
+r_int
+id|prism54_wpa_ie_get
+c_func
+(paren
+id|islpci_private
+op_star
+id|priv
+comma
+id|u8
+op_star
+id|bssid
+comma
+id|u8
+op_star
+id|wpa_ie
+)paren
+suffix:semicolon
+r_static
+r_int
+id|prism54_set_wpa
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+comma
+r_struct
+id|iw_request_info
+op_star
+comma
+id|__u32
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * prism54_mib_mode_helper - MIB change mode helper function&n; * @mib: the &amp;struct islpci_mib object to modify&n; * @iw_mode: new mode (%IW_MODE_*)&n; * &n; *  This is a helper function, hence it does not lock. Make sure&n; *  caller deals with locking *if* necessary. This function sets the &n; *  mode-dependent mib values and does the mapping of the Linux &n; *  Wireless API modes to Device firmware modes. It also checks for &n; *  correct valid Linux wireless modes. &n; */
+r_static
 r_int
 DECL|function|prism54_mib_mode_helper
 id|prism54_mib_mode_helper
@@ -2587,6 +2647,7 @@ r_return
 id|current_ev
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_get_scan
 id|prism54_get_scan
@@ -7124,6 +7185,7 @@ DECL|macro|MAC2STR
 mdefine_line|#define MAC2STR(a) (a)[0], (a)[1], (a)[2], (a)[3], (a)[4], (a)[5]
 DECL|macro|MACSTR
 mdefine_line|#define MACSTR &quot;%02x:%02x:%02x:%02x:%02x:%02x&quot;
+r_static
 r_void
 DECL|function|prism54_wpa_ie_add
 id|prism54_wpa_ie_add
@@ -7458,6 +7520,7 @@ id|priv-&gt;wpa_sem
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_wpa_ie_get
 id|prism54_wpa_ie_get
@@ -7916,6 +7979,7 @@ id|mlme
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 DECL|function|prism54_process_trap_helper
 id|prism54_process_trap_helper
@@ -10360,6 +10424,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_set_wpa
 id|prism54_set_wpa
@@ -10588,6 +10653,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_get_wpa
 id|prism54_get_wpa
@@ -10631,6 +10697,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_set_prismhdr
 id|prism54_set_prismhdr
@@ -10692,6 +10759,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_get_prismhdr
 id|prism54_get_prismhdr
@@ -10739,6 +10807,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_debug_oid
 id|prism54_debug_oid
@@ -10793,6 +10862,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_debug_get_oid
 id|prism54_debug_get_oid
@@ -10977,6 +11047,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_debug_set_oid
 id|prism54_debug_set_oid
