@@ -1546,16 +1546,22 @@ l_int|0x040
 )paren
 suffix:semicolon
 multiline_comment|/* end hor. blanking */
+multiline_comment|/* FIXME: Enable vidrst only on G400, and only if TV-out is used */
 r_if
 c_cond
 (paren
 id|ACCESS_FBINFO
 c_func
 (paren
-id|output.ph
+id|outputs
+(braket
+l_int|1
+)braket
 )paren
-op_amp
-id|MATROXFB_OUTPUT_CONN_SECONDARY
+dot
+id|src
+op_eq
+id|MATROXFB_SRC_CRTC1
 )paren
 id|hw-&gt;CRTCEXT
 (braket

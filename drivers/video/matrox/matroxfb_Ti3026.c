@@ -1,9 +1,10 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200 and G400&n; *&n; * (c) 1998,1999,2000 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.62 2000/11/29&n; *&n; * MTRR stuff: 1998 Tom Rini &lt;trini@kernel.crashing.org&gt;&n; *&n; * Contributors: &quot;menion?&quot; &lt;menion@mindless.com&gt;&n; *                     Betatesting, fixes, ideas&n; *&n; *               &quot;Kurt Garloff&quot; &lt;garloff@suse.de&gt;&n; *                     Betatesting, fixes, ideas, videomodes, videomodes timmings&n; *&n; *               &quot;Tom Rini&quot; &lt;trini@kernel.crashing.org&gt;&n; *                     MTRR stuff, PPC cleanups, betatesting, fixes, ideas&n; *&n; *               &quot;Bibek Sahu&quot; &lt;scorpio@dodds.net&gt;&n; *                     Access device through readb|w|l and write b|w|l&n; *                     Extensive debugging stuff&n; *&n; *               &quot;Daniel Haun&quot; &lt;haund@usa.net&gt;&n; *                     Testing, hardware cursor fixes&n; *&n; *               &quot;Scott Wood&quot; &lt;sawst46+@pitt.edu&gt;&n; *                     Fixes&n; *&n; *               &quot;Gerd Knorr&quot; &lt;kraxel@goldbach.isdn.cs.tu-berlin.de&gt;&n; *                     Betatesting&n; *&n; *               &quot;Kelly French&quot; &lt;targon@hazmat.com&gt;&n; *               &quot;Fernando Herrera&quot; &lt;fherrera@eurielec.etsit.upm.es&gt;&n; *                     Betatesting, bug reporting&n; *&n; *               &quot;Pablo Bianucci&quot; &lt;pbian@pccp.com.ar&gt;&n; *                     Fixes, ideas, betatesting&n; *&n; *               &quot;Inaky Perez Gonzalez&quot; &lt;inaky@peloncho.fis.ucm.es&gt;&n; *                     Fixes, enhandcements, ideas, betatesting&n; *&n; *               &quot;Ryuichi Oikawa&quot; &lt;roikawa@rr.iiij4u.or.jp&gt;&n; *                     PPC betatesting, PPC support, backward compatibility&n; *&n; *               &quot;Paul Womar&quot; &lt;Paul@pwomar.demon.co.uk&gt;&n; *               &quot;Owen Waller&quot; &lt;O.Waller@ee.qub.ac.uk&gt;&n; *                     PPC betatesting&n; *&n; *               &quot;Thomas Pornin&quot; &lt;pornin@bolet.ens.fr&gt;&n; *                     Alpha betatesting&n; *&n; *               &quot;Pieter van Leuven&quot; &lt;pvl@iae.nl&gt;&n; *               &quot;Ulf Jaenicke-Roessler&quot; &lt;ujr@physik.phy.tu-dresden.de&gt;&n; *                     G100 testing&n; *&n; *               &quot;H. Peter Arvin&quot; &lt;hpa@transmeta.com&gt;&n; *                     Ideas&n; *&n; *               &quot;Cort Dougan&quot; &lt;cort@cs.nmt.edu&gt;&n; *                     CHRP fixes and PReP cleanup&n; *&n; *               &quot;Mark Vojkovich&quot; &lt;mvojkovi@ucsd.edu&gt;&n; *                     G400 support&n; *&n; * (following author is not in any relation with this code, but his code&n; *  is included in this driver)&n; *&n; * Based on framebuffer driver for VBE 2.0 compliant graphic boards&n; *     (c) 1998 Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt;&n; *&n; * (following author is not in any relation with this code, but his ideas&n; *  were used when writting this driver)&n; *&n; *&t;&t; FreeVBE/AF (Matrox), &quot;Shawn Hargreaves&quot; &lt;shawn@talula.demon.co.uk&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200 and G400&n; *&n; * (c) 1998-2002 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.64 2002/06/10&n; *&n; * MTRR stuff: 1998 Tom Rini &lt;trini@kernel.crashing.org&gt;&n; *&n; * Contributors: &quot;menion?&quot; &lt;menion@mindless.com&gt;&n; *                     Betatesting, fixes, ideas&n; *&n; *               &quot;Kurt Garloff&quot; &lt;garloff@suse.de&gt;&n; *                     Betatesting, fixes, ideas, videomodes, videomodes timmings&n; *&n; *               &quot;Tom Rini&quot; &lt;trini@kernel.crashing.org&gt;&n; *                     MTRR stuff, PPC cleanups, betatesting, fixes, ideas&n; *&n; *               &quot;Bibek Sahu&quot; &lt;scorpio@dodds.net&gt;&n; *                     Access device through readb|w|l and write b|w|l&n; *                     Extensive debugging stuff&n; *&n; *               &quot;Daniel Haun&quot; &lt;haund@usa.net&gt;&n; *                     Testing, hardware cursor fixes&n; *&n; *               &quot;Scott Wood&quot; &lt;sawst46+@pitt.edu&gt;&n; *                     Fixes&n; *&n; *               &quot;Gerd Knorr&quot; &lt;kraxel@goldbach.isdn.cs.tu-berlin.de&gt;&n; *                     Betatesting&n; *&n; *               &quot;Kelly French&quot; &lt;targon@hazmat.com&gt;&n; *               &quot;Fernando Herrera&quot; &lt;fherrera@eurielec.etsit.upm.es&gt;&n; *                     Betatesting, bug reporting&n; *&n; *               &quot;Pablo Bianucci&quot; &lt;pbian@pccp.com.ar&gt;&n; *                     Fixes, ideas, betatesting&n; *&n; *               &quot;Inaky Perez Gonzalez&quot; &lt;inaky@peloncho.fis.ucm.es&gt;&n; *                     Fixes, enhandcements, ideas, betatesting&n; *&n; *               &quot;Ryuichi Oikawa&quot; &lt;roikawa@rr.iiij4u.or.jp&gt;&n; *                     PPC betatesting, PPC support, backward compatibility&n; *&n; *               &quot;Paul Womar&quot; &lt;Paul@pwomar.demon.co.uk&gt;&n; *               &quot;Owen Waller&quot; &lt;O.Waller@ee.qub.ac.uk&gt;&n; *                     PPC betatesting&n; *&n; *               &quot;Thomas Pornin&quot; &lt;pornin@bolet.ens.fr&gt;&n; *                     Alpha betatesting&n; *&n; *               &quot;Pieter van Leuven&quot; &lt;pvl@iae.nl&gt;&n; *               &quot;Ulf Jaenicke-Roessler&quot; &lt;ujr@physik.phy.tu-dresden.de&gt;&n; *                     G100 testing&n; *&n; *               &quot;H. Peter Arvin&quot; &lt;hpa@transmeta.com&gt;&n; *                     Ideas&n; *&n; *               &quot;Cort Dougan&quot; &lt;cort@cs.nmt.edu&gt;&n; *                     CHRP fixes and PReP cleanup&n; *&n; *               &quot;Mark Vojkovich&quot; &lt;mvojkovi@ucsd.edu&gt;&n; *                     G400 support&n; *&n; * (following author is not in any relation with this code, but his code&n; *  is included in this driver)&n; *&n; * Based on framebuffer driver for VBE 2.0 compliant graphic boards&n; *     (c) 1998 Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt;&n; *&n; * (following author is not in any relation with this code, but his ideas&n; *  were used when writting this driver)&n; *&n; *&t;&t; FreeVBE/AF (Matrox), &quot;Shawn Hargreaves&quot; &lt;shawn@talula.demon.co.uk&gt;&n; *&n; */
 multiline_comment|/* make checkconfig does not verify included files... */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;matroxfb_Ti3026.h&quot;
 macro_line|#include &quot;matroxfb_misc.h&quot;
 macro_line|#include &quot;matroxfb_accel.h&quot;
+macro_line|#include &lt;linux/matroxfb.h&gt;
 macro_line|#ifdef CONFIG_FB_MATROX_MILLENIUM
 DECL|macro|outTi3026
 mdefine_line|#define outTi3026 matroxfb_DAC_out
@@ -3895,6 +3896,20 @@ id|PMINFO2
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ti3026_output
+r_static
+r_struct
+id|matrox_altout
+id|ti3026_output
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Primary output&quot;
+comma
+)brace
+suffix:semicolon
 DECL|function|Ti3026_preinit
 r_static
 r_int
@@ -4056,6 +4071,59 @@ id|cursor.timer.function
 )paren
 op_assign
 id|matroxfb_ti3026_flashcursor
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|outputs
+(braket
+l_int|0
+)braket
+)paren
+dot
+id|data
+op_assign
+id|MINFO
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|outputs
+(braket
+l_int|0
+)braket
+)paren
+dot
+id|output
+op_assign
+op_amp
+id|ti3026_output
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|outputs
+(braket
+l_int|0
+)braket
+)paren
+dot
+id|src
+op_assign
+id|MATROXFB_SRC_CRTC1
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|outputs
+(braket
+l_int|0
+)braket
+)paren
+dot
+id|mode
+op_assign
+id|MATROXFB_OUTPUT_MODE_MONITOR
 suffix:semicolon
 r_if
 c_cond
