@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 DECL|macro|DEBUG_NVRAM
-mdefine_line|#define DEBUG_NVRAM
+macro_line|#undef DEBUG_NVRAM
 r_static
 r_int
 id|nvram_scan_partitions
@@ -780,6 +780,7 @@ op_amp
 id|nvram_fops
 )brace
 suffix:semicolon
+macro_line|#ifdef DEBUG_NVRAM
 DECL|function|nvram_print_partitions
 r_static
 r_void
@@ -858,6 +859,7 @@ id|tmp_part-&gt;header.name
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|nvram_write_header
 r_static
 r_int
