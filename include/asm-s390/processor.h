@@ -133,6 +133,8 @@ macro_line|# define DEFAULT_TASK_SIZE&t;(0x40000000000UL)
 macro_line|#endif /* __s390x__ */
 DECL|macro|MM_VM_SIZE
 mdefine_line|#define MM_VM_SIZE(mm)&t;&t;DEFAULT_TASK_SIZE
+DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
+mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
 r_typedef
 r_struct
 (brace
