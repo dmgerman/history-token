@@ -138,8 +138,10 @@ DECL|macro|UB_URB_TIMEOUT
 mdefine_line|#define UB_URB_TIMEOUT&t;(HZ*2)
 DECL|macro|UB_DATA_TIMEOUT
 mdefine_line|#define UB_DATA_TIMEOUT&t;(HZ*5)&t;/* ZIP does spin-ups in the data phase */
+DECL|macro|UB_STAT_TIMEOUT
+mdefine_line|#define UB_STAT_TIMEOUT&t;(HZ*5)&t;/* Same spinups and eject for a dataless cmd. */
 DECL|macro|UB_CTRL_TIMEOUT
-mdefine_line|#define UB_CTRL_TIMEOUT&t;(HZ/2) /* 500ms ought to be enough to clear a stall */
+mdefine_line|#define UB_CTRL_TIMEOUT&t;(HZ/2)&t;/* 500ms ought to be enough to clear a stall */
 multiline_comment|/*&n; * An instance of a SCSI command in transit.&n; */
 DECL|macro|UB_DIR_NONE
 mdefine_line|#define UB_DIR_NONE&t;0
@@ -870,6 +872,22 @@ id|cmd
 comma
 r_int
 id|rc
+)paren
+suffix:semicolon
+r_static
+r_void
+id|__ub_state_stat
+c_func
+(paren
+r_struct
+id|ub_dev
+op_star
+id|sc
+comma
+r_struct
+id|ub_scsi_cmd
+op_star
+id|cmd
 )paren
 suffix:semicolon
 r_static
@@ -3451,7 +3469,7 @@ op_minus
 id|EPIPE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * STALL while clearning STALL.&n;&t;&t;&t; * A STALL is illegal on a control pipe!&n;&t;&t;&t; * XXX Might try to reset the device here and retry.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * STALL while clearning STALL.&n;&t;&t;&t; * The control pipe clears itself - nothing to do.&n;&t;&t;&t; * XXX Might try to reset the device here and retry.&n;&t;&t;&t; */
 id|printk
 c_func
 (paren
@@ -3517,7 +3535,7 @@ op_minus
 id|EPIPE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * STALL while clearning STALL.&n;&t;&t;&t; * A STALL is illegal on a control pipe!&n;&t;&t;&t; * XXX Might try to reset the device here and retry.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * STALL while clearning STALL.&n;&t;&t;&t; * The control pipe clears itself - nothing to do.&n;&t;&t;&t; * XXX Might try to reset the device here and retry.&n;&t;&t;&t; */
 id|printk
 c_func
 (paren
@@ -3608,7 +3626,8 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;%s: &quot;
-l_string|&quot;unable to submit clear for device %u (%d)&bslash;n&quot;
+l_string|&quot;unable to submit clear for device %u&quot;
+l_string|&quot; (code %d)&bslash;n&quot;
 comma
 id|sc-&gt;name
 comma
@@ -3884,7 +3903,8 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;%s: &quot;
-l_string|&quot;unable to submit clear for device %u (%d)&bslash;n&quot;
+l_string|&quot;unable to submit clear for device %u&quot;
+l_string|&quot; (code %d)&bslash;n&quot;
 comma
 id|sc-&gt;name
 comma
@@ -4007,7 +4027,8 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;%s: &quot;
-l_string|&quot;unable to submit clear for device %u (%d)&bslash;n&quot;
+l_string|&quot;unable to submit clear for device %u&quot;
+l_string|&quot; (code %d)&bslash;n&quot;
 comma
 id|sc-&gt;name
 comma
@@ -4080,117 +4101,12 @@ r_goto
 id|Bad_End
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * ub_state_stat only not dropping the count...&n;&t;&t;&t; */
-id|UB_INIT_COMPLETION
-c_func
-(paren
-id|sc-&gt;work_done
-)paren
-suffix:semicolon
-id|sc-&gt;last_pipe
-op_assign
-id|sc-&gt;recv_bulk_pipe
-suffix:semicolon
-id|usb_fill_bulk_urb
-c_func
-(paren
-op_amp
-id|sc-&gt;work_urb
-comma
-id|sc-&gt;dev
-comma
-id|sc-&gt;recv_bulk_pipe
-comma
-op_amp
-id|sc-&gt;work_bcs
-comma
-id|US_BULK_CS_WRAP_LEN
-comma
-id|ub_urb_complete
-comma
-id|sc
-)paren
-suffix:semicolon
-id|sc-&gt;work_urb.transfer_flags
-op_assign
-id|URB_ASYNC_UNLINK
-suffix:semicolon
-id|sc-&gt;work_urb.actual_length
-op_assign
-l_int|0
-suffix:semicolon
-id|sc-&gt;work_urb.error_count
-op_assign
-l_int|0
-suffix:semicolon
-id|sc-&gt;work_urb.status
-op_assign
-l_int|0
-suffix:semicolon
-id|rc
-op_assign
-id|usb_submit_urb
-c_func
-(paren
-op_amp
-id|sc-&gt;work_urb
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_ne
-l_int|0
-)paren
-(brace
-multiline_comment|/* XXX Clear stalls */
-id|printk
-c_func
-(paren
-l_string|&quot;%s: CSW #%d submit failed (%d)&bslash;n&quot;
-comma
-id|sc-&gt;name
-comma
-id|cmd-&gt;tag
-comma
-id|rc
-)paren
-suffix:semicolon
-multiline_comment|/* P3 */
-id|ub_complete
-c_func
-(paren
-op_amp
-id|sc-&gt;work_done
-)paren
-suffix:semicolon
-id|ub_state_done
+id|__ub_state_stat
 c_func
 (paren
 id|sc
 comma
 id|cmd
-comma
-id|rc
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|sc-&gt;work_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|UB_URB_TIMEOUT
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
 )paren
 suffix:semicolon
 r_return
@@ -4240,6 +4156,7 @@ r_goto
 id|Bad_End
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -4260,18 +4177,9 @@ id|US_BULK_CS_OLYMPUS_SIGN
 )paren
 )paren
 (brace
-multiline_comment|/* XXX Rate-limit, even for P3 tagged */
-multiline_comment|/* P3 */
-id|printk
-c_func
-(paren
-l_string|&quot;ub: signature 0x%x&bslash;n&quot;
-comma
-id|bcs-&gt;Signature
-)paren
-suffix:semicolon
 multiline_comment|/* Windows ignores signatures, so do we. */
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4280,21 +4188,46 @@ op_ne
 id|cmd-&gt;tag
 )paren
 (brace
-multiline_comment|/* P3 */
+multiline_comment|/*&n;&t;&t;&t; * This usually happens when we disagree with the&n;&t;&t;&t; * device&squot;s microcode about something. For instance,&n;&t;&t;&t; * a few of them throw this after timeouts. They buffer&n;&t;&t;&t; * commands and reply at commands we timed out before.&n;&t;&t;&t; * Without flushing these replies we loop forever.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_increment
+id|cmd-&gt;stat_count
+op_ge
+l_int|4
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;%s: tag orig 0x%x reply 0x%x&bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: &quot;
+l_string|&quot;tag mismatch orig 0x%x reply 0x%x &quot;
+l_string|&quot;on device %u&bslash;n&quot;
 comma
 id|sc-&gt;name
 comma
 id|cmd-&gt;tag
 comma
 id|bcs-&gt;Tag
+comma
+id|sc-&gt;dev-&gt;devnum
 )paren
 suffix:semicolon
 r_goto
 id|Bad_End
+suffix:semicolon
+)brace
+id|__ub_state_stat
+c_func
+(paren
+id|sc
+comma
+id|cmd
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 r_switch
@@ -4496,11 +4429,11 @@ id|cmd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Factorization helper for the command state machine:&n; * Submit a CSW read and go to STAT state.&n; */
-DECL|function|ub_state_stat
+multiline_comment|/*&n; * Factorization helper for the command state machine:&n; * Submit a CSW read.&n; */
+DECL|function|__ub_state_stat
 r_static
 r_void
-id|ub_state_stat
+id|__ub_state_stat
 c_func
 (paren
 r_struct
@@ -4586,7 +4519,9 @@ multiline_comment|/* XXX Clear stalls */
 id|printk
 c_func
 (paren
-l_string|&quot;ub: CSW #%d submit failed (%d)&bslash;n&quot;
+l_string|&quot;%s: CSW #%d submit failed (%d)&bslash;n&quot;
+comma
+id|sc-&gt;name
 comma
 id|cmd-&gt;tag
 comma
@@ -4618,13 +4553,40 @@ id|sc-&gt;work_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|UB_URB_TIMEOUT
+id|UB_STAT_TIMEOUT
 suffix:semicolon
 id|add_timer
 c_func
 (paren
 op_amp
 id|sc-&gt;work_timer
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Factorization helper for the command state machine:&n; * Submit a CSW read and go to STAT state.&n; */
+DECL|function|ub_state_stat
+r_static
+r_void
+id|ub_state_stat
+c_func
+(paren
+r_struct
+id|ub_dev
+op_star
+id|sc
+comma
+r_struct
+id|ub_scsi_cmd
+op_star
+id|cmd
+)paren
+(brace
+id|__ub_state_stat
+c_func
+(paren
+id|sc
+comma
+id|cmd
 )paren
 suffix:semicolon
 id|cmd-&gt;stat_count

@@ -97,7 +97,7 @@ c_cond
 (paren
 id|qtd
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|ehci_qtd_init
@@ -324,7 +324,7 @@ c_cond
 (paren
 id|qh-&gt;dummy
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|ehci_dbg
@@ -762,7 +762,7 @@ c_cond
 (paren
 id|ehci-&gt;periodic
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_goto
@@ -811,7 +811,7 @@ c_cond
 (paren
 id|ehci-&gt;pshadow
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_goto

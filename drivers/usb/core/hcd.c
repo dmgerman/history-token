@@ -30,12 +30,6 @@ id|LIST_HEAD
 id|usb_bus_list
 )paren
 suffix:semicolon
-DECL|variable|usb_bus_list
-id|EXPORT_SYMBOL_GPL
-(paren
-id|usb_bus_list
-)paren
-suffix:semicolon
 multiline_comment|/* used when allocating bus numbers */
 DECL|macro|USB_MAXBUS
 mdefine_line|#define USB_MAXBUS&t;&t;64
@@ -77,19 +71,13 @@ id|usb_bus_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* exported only for usbfs */
-DECL|variable|usb_bus_list_lock
-id|EXPORT_SYMBOL_GPL
-(paren
-id|usb_bus_list_lock
-)paren
-suffix:semicolon
 multiline_comment|/* used when updating hcd data */
-DECL|variable|hcd_data_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hcd_data_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* wait queue for synchronous unlinks */
 DECL|variable|usb_kill_urb_queue
@@ -1406,7 +1394,7 @@ op_assign
 id|urb-&gt;dev-&gt;bus-&gt;hcpriv
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|spin_unlock
@@ -4637,12 +4625,6 @@ id|jiffies
 )paren
 suffix:semicolon
 )brace
-DECL|variable|usb_hc_died
-id|EXPORT_SYMBOL
-(paren
-id|usb_hc_died
-)paren
-suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|hcd_release
 r_static
