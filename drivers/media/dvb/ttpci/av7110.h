@@ -410,6 +410,9 @@ id|SetDescr
 comma
 DECL|enumerator|SetIR
 id|SetIR
+comma
+DECL|enumerator|FlushTSQueue
+id|FlushTSQueue
 )brace
 suffix:semicolon
 DECL|enum|av7110_mpeg_command

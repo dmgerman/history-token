@@ -6,7 +6,6 @@ singleline_comment|//#define COM_DEBUG
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -14,7 +13,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/byteorder/swabb.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -25,10 +23,8 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
@@ -266,6 +262,13 @@ id|hw_sections
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|rgb_on
+r_static
+r_int
+id|rgb_on
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|av7110_num
 r_int
 id|av7110_num
@@ -277,148 +280,9 @@ mdefine_line|#define FW_CI_LL_SUPPORT(arm_app) ((arm_app) &amp; 0x80000000)
 DECL|macro|FW_VERSION
 mdefine_line|#define FW_VERSION(arm_app)       ((arm_app) &amp; 0x0000FFFF)
 multiline_comment|/****************************************************************************&n; * DEBI functions&n; ****************************************************************************/
+DECL|macro|wait_for_debi_done
+mdefine_line|#define wait_for_debi_done(x) &bslash;&n;       saa7146_wait_for_debi_done(x-&gt;dev) &bslash;&n;
 multiline_comment|/* This DEBI code is based on the Stradis driver &n;   by Nathan Laredo &lt;laredo@gnu.org&gt; */
-DECL|function|wait_for_debi_done
-r_static
-r_int
-id|wait_for_debi_done
-c_func
-(paren
-r_struct
-id|av7110
-op_star
-id|av7110
-)paren
-(brace
-r_struct
-id|saa7146_dev
-op_star
-id|dev
-op_assign
-id|av7110-&gt;dev
-suffix:semicolon
-r_int
-id|start
-suffix:semicolon
-multiline_comment|/* wait for registers to be programmed */
-id|start
-op_assign
-id|jiffies
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|saa7146_read
-c_func
-(paren
-id|dev
-comma
-id|MC2
-)paren
-op_amp
-l_int|2
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|jiffies
-op_minus
-id|start
-OG
-id|HZ
-op_div
-l_int|20
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;%s: timed out while waiting for registers &quot;
-l_string|&quot;getting programmed&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ETIMEDOUT
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* wait for transfer to complete */
-id|start
-op_assign
-id|jiffies
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|saa7146_read
-c_func
-(paren
-id|dev
-comma
-id|PSR
-)paren
-op_amp
-id|SPCI_DEBI_S
-)paren
-)paren
-r_break
-suffix:semicolon
-id|saa7146_read
-c_func
-(paren
-id|dev
-comma
-id|MC2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|jiffies
-op_minus
-id|start
-OG
-id|HZ
-op_div
-l_int|4
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;%s: timed out while waiting for transfer &quot;
-l_string|&quot;completion&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ETIMEDOUT
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|debiwrite
 r_static
 r_int
@@ -1620,16 +1484,7 @@ op_star
 )paren
 id|p2t-&gt;priv
 suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;struct dvb_filter_pes2ts:%p&bslash;n&quot;
-comma
-id|p2t
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;DEB_EE((&quot;struct dvb_filter_pes2ts:%p&bslash;n&quot;,p2t));
 r_if
 c_cond
 (paren
@@ -1703,6 +1558,8 @@ comma
 id|buf
 comma
 id|len
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1734,16 +1591,7 @@ op_star
 )paren
 id|priv
 suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;dvb_demux_feed:%p&bslash;n&quot;
-comma
-id|dvbdmxfeed
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;DEB_EE((&quot;dvb_demux_feed:%p&bslash;n&quot;,dvbdmxfeed));
 id|dvbdmxfeed-&gt;cb
 dot
 id|ts
@@ -4448,36 +4296,14 @@ op_complement
 l_int|3
 )paren
 suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;GPIO0 irq %d %d&bslash;n&quot;
-comma
-id|av7110-&gt;debitype
-comma
-id|av7110-&gt;debilen
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//        DEB_D((&quot;GPIO0 irq %d %d&bslash;n&quot;, av7110-&gt;debitype, av7110-&gt;debilen));
 id|print_time
 c_func
 (paren
 l_string|&quot;gpio&quot;
 )paren
 suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;GPIO0 irq %02x&bslash;n&quot;
-comma
-id|av7110-&gt;debitype
-op_amp
-l_int|0xff
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//       DEB_D((&quot;GPIO0 irq %02x&bslash;n&quot;, av7110-&gt;debitype&amp;0xff));        
 r_switch
 c_cond
 (paren
@@ -15915,11 +15741,9 @@ OL
 (paren
 id|u32
 )paren
-(paren
 l_int|16
 op_star
 l_float|168.25
-)paren
 )paren
 id|config
 op_assign
@@ -15934,11 +15758,9 @@ OL
 (paren
 id|u32
 )paren
-(paren
 l_int|16
 op_star
 l_float|447.25
-)paren
 )paren
 id|config
 op_assign
@@ -23895,6 +23717,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
+(brace
 id|SetPIDs
 c_func
 (paren
@@ -23911,6 +23734,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|outcom
+c_func
+(paren
+id|av7110
+comma
+id|COMTYPE_PIDFILTER
+comma
+id|FlushTSQueue
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -24971,9 +24807,10 @@ id|dev
 comma
 l_int|NULL
 comma
-id|SAA7146_I2C_BUS_BIT_RATE_3200
+id|SAA7146_I2C_BUS_BIT_RATE_120
 )paren
 suffix:semicolon
+multiline_comment|/* 275 kHz */
 id|av7110-&gt;i2c_bus
 op_assign
 id|dvb_register_i2c_bus
@@ -25054,7 +24891,7 @@ id|dev
 comma
 id|DD1_INIT
 comma
-l_int|0x02000000
+l_int|0x03000000
 )paren
 suffix:semicolon
 id|saa7146_write
@@ -26152,7 +25989,7 @@ id|dev
 comma
 id|DD1_INIT
 comma
-l_int|0x02000700
+l_int|0x03000700
 )paren
 suffix:semicolon
 id|saa7146_write
@@ -26254,7 +26091,22 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|//saa7146_setgpio(dev, 1, SAA7146_GPIO_OUTHI); // RGB on, SCART pin 16
+r_if
+c_cond
+(paren
+id|rgb_on
+)paren
+id|saa7146_setgpio
+c_func
+(paren
+id|dev
+comma
+l_int|1
+comma
+id|SAA7146_GPIO_OUTHI
+)paren
+suffix:semicolon
+singleline_comment|// RGB on, SCART pin 16
 singleline_comment|//saa7146_setgpio(dev, 3, SAA7146_GPIO_OUTLO); // SCARTpin 8
 )brace
 id|SetVolume
@@ -26732,18 +26584,7 @@ op_star
 )paren
 id|dev-&gt;ext_priv
 suffix:semicolon
-id|DEB_INT
-c_func
-(paren
-(paren
-l_string|&quot;dev: %p, av7110: %p&bslash;n&quot;
-comma
-id|dev
-comma
-id|av7110
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;DEB_INT((&quot;dev: %p, av7110: %p&bslash;n&quot;,dev,av7110));
 r_if
 c_cond
 (paren
@@ -26914,6 +26755,7 @@ dot
 id|v_offset
 op_assign
 l_int|0x18
+multiline_comment|/* 0 */
 comma
 dot
 id|v_field
@@ -27492,7 +27334,7 @@ comma
 dot
 id|flags
 op_assign
-id|SAA7146_EXT_SWAP_ODD_EVEN
+l_int|0
 comma
 dot
 id|stds
@@ -27624,6 +27466,11 @@ dot
 id|name
 op_assign
 l_string|&quot;dvb&bslash;0&quot;
+comma
+dot
+id|flags
+op_assign
+id|SAA7146_I2C_SHORT_DELAY
 comma
 dot
 id|module
@@ -27852,6 +27699,23 @@ c_func
 id|hw_sections
 comma
 l_string|&quot;0 use software section filter, 1 use hardware&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|rgb_on
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rgb_on
+comma
+l_string|&quot;For Siemens DVB-C cards only: Enable RGB control&quot;
+l_string|&quot; signal on SCART pin 16 to switch SCART video mode from CVBS to RGB&quot;
 )paren
 suffix:semicolon
 eof
