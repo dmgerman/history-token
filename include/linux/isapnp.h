@@ -359,11 +359,11 @@ mdefine_line|#define ISAPNP_ANY_ID&t;&t;0xffff
 DECL|macro|ISAPNP_CARD_DEVS
 mdefine_line|#define ISAPNP_CARD_DEVS&t;8
 DECL|macro|ISAPNP_CARD_ID
-mdefine_line|#define ISAPNP_CARD_ID(_va, _vb, _vc, _device) &bslash;&n;&t;&t;card_vendor: ISAPNP_VENDOR(_va, _vb, _vc), card_device: ISAPNP_DEVICE(_device)
+mdefine_line|#define ISAPNP_CARD_ID(_va, _vb, _vc, _device) &bslash;&n;&t;&t;.card_vendor = ISAPNP_VENDOR(_va, _vb, _vc), .card_device = ISAPNP_DEVICE(_device)
 DECL|macro|ISAPNP_CARD_END
-mdefine_line|#define ISAPNP_CARD_END &bslash;&n;&t;&t;card_vendor: 0, card_device: 0
+mdefine_line|#define ISAPNP_CARD_END &bslash;&n;&t;&t;.card_vendor = 0, .card_device = 0
 DECL|macro|ISAPNP_DEVICE_ID
-mdefine_line|#define ISAPNP_DEVICE_ID(_va, _vb, _vc, _function) &bslash;&n;&t;&t;{ vendor: ISAPNP_VENDOR(_va, _vb, _vc), function: ISAPNP_FUNCTION(_function) }
+mdefine_line|#define ISAPNP_DEVICE_ID(_va, _vb, _vc, _function) &bslash;&n;&t;&t;{ .vendor = ISAPNP_VENDOR(_va, _vb, _vc), .function = ISAPNP_FUNCTION(_function) }
 multiline_comment|/* export used IDs outside module */
 DECL|macro|ISAPNP_CARD_TABLE
 mdefine_line|#define ISAPNP_CARD_TABLE(name) &bslash;&n;&t;&t;MODULE_GENERIC_TABLE(isapnp_card, name)
@@ -406,9 +406,9 @@ multiline_comment|/* logical devices */
 )brace
 suffix:semicolon
 DECL|macro|ISAPNP_DEVICE_SINGLE
-mdefine_line|#define ISAPNP_DEVICE_SINGLE(_cva, _cvb, _cvc, _cdevice, _dva, _dvb, _dvc, _dfunction) &bslash;&n;&t;&t;card_vendor: ISAPNP_VENDOR(_cva, _cvb, _cvc), card_device: ISAPNP_DEVICE(_cdevice), &bslash;&n;&t;&t;vendor: ISAPNP_VENDOR(_dva, _dvb, _dvc), function: ISAPNP_FUNCTION(_dfunction)
+mdefine_line|#define ISAPNP_DEVICE_SINGLE(_cva, _cvb, _cvc, _cdevice, _dva, _dvb, _dvc, _dfunction) &bslash;&n;&t;&t;.card_vendor = ISAPNP_VENDOR(_cva, _cvb, _cvc), .card_device =  ISAPNP_DEVICE(_cdevice), &bslash;&n;&t;&t;.vendor = ISAPNP_VENDOR(_dva, _dvb, _dvc), .function = ISAPNP_FUNCTION(_dfunction)
 DECL|macro|ISAPNP_DEVICE_SINGLE_END
-mdefine_line|#define ISAPNP_DEVICE_SINGLE_END &bslash;&n;&t;&t;card_vendor: 0, card_device: 0
+mdefine_line|#define ISAPNP_DEVICE_SINGLE_END &bslash;&n;&t;&t;.card_vendor = 0, .card_device = 0
 DECL|struct|isapnp_device_id
 r_struct
 id|isapnp_device_id
