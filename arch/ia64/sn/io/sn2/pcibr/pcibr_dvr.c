@@ -2153,6 +2153,7 @@ id|pcibr_info-&gt;f_att_det_error
 op_assign
 id|error
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_PCI_SGI
 id|pcibr_soft-&gt;bs_slot
 (braket
 id|slot
@@ -2191,6 +2192,7 @@ op_or_assign
 id|SLOT_STARTUP_CMPLT
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* CONFIG_HOTPLUG_PCI_SGI */
 )brace
 multiline_comment|/*&n; * pcibr_driver_unreg_callback&n; *      CDL will call this function for each device found in the PCI&n; *      registry that matches the vendor/device IDs supported by &n; *      the driver being unregistered.  The device&squot;s connection vertex&n; *      and the driver&squot;s detach function return status enable the&n; *      slot&squot;s device status to be set.&n; */
 r_void
@@ -2290,6 +2292,7 @@ id|pcibr_info-&gt;f_att_det_error
 op_assign
 id|error
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_PCI_SGI
 id|pcibr_soft-&gt;bs_slot
 (braket
 id|slot
@@ -2328,6 +2331,7 @@ op_or_assign
 id|SLOT_SHUTDOWN_CMPLT
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* CONFIG_HOTPLUG_PCI_SGI */
 )brace
 multiline_comment|/*&n; * pcibr_detach:&n; *&t;Detach the bridge device from the hwgraph after cleaning out all the &n; *&t;underlying vertices.&n; */
 r_int
