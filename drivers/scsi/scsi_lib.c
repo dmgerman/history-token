@@ -2891,10 +2891,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|scsi_exit_lib
+DECL|function|scsi_exit_queue
 r_void
 id|__exit
-id|scsi_exit_lib
+id|scsi_exit_queue
 c_func
 (paren
 r_void
