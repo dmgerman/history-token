@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -233,7 +234,7 @@ id|rpcmouse_dev
 comma
 id|BTN_LEFT
 comma
-id|buttons
+id|b
 op_amp
 l_int|0x10
 )paren
@@ -246,7 +247,7 @@ id|rpcmouse_dev
 comma
 id|BTN_MIDDLE
 comma
-id|buttons
+id|b
 op_amp
 l_int|0x20
 )paren
@@ -259,7 +260,7 @@ id|rpcmouse_dev
 comma
 id|BTN_RIGHT
 comma
-id|buttons
+id|b
 op_amp
 l_int|0x40
 )paren
