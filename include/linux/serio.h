@@ -507,6 +507,8 @@ DECL|macro|SERIO_MZP
 mdefine_line|#define SERIO_MZP&t;0x06
 DECL|macro|SERIO_MZPP
 mdefine_line|#define SERIO_MZPP&t;0x07
+DECL|macro|SERIO_VSXXXAA
+mdefine_line|#define SERIO_VSXXXAA&t;0x08
 DECL|macro|SERIO_SUNKBD
 mdefine_line|#define SERIO_SUNKBD&t;0x10
 DECL|macro|SERIO_WARRIOR
@@ -541,6 +543,8 @@ DECL|macro|SERIO_SNES232
 mdefine_line|#define SERIO_SNES232&t;0x26
 DECL|macro|SERIO_SEMTECH
 mdefine_line|#define SERIO_SEMTECH&t;0x27
+DECL|macro|SERIO_LKKBD
+mdefine_line|#define SERIO_LKKBD&t;0x28
 DECL|macro|SERIO_ID
 mdefine_line|#define SERIO_ID&t;0xff00UL
 DECL|macro|SERIO_EXTRA
