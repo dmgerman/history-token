@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actbl71.h - IA-64 Extensions to the ACPI Spec Rev. 0.71&n; *                   This file includes tables specific to this&n; *                   specification revision.&n; *       $Revision: 11 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: actbl71.h - IA-64 Extensions to the ACPI Spec Rev. 0.71&n; *                   This file includes tables specific to this&n; *                   specification revision.&n; *       $Revision: 12 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL71_H__
 DECL|macro|__ACTBL71_H__
 mdefine_line|#define __ACTBL71_H__
@@ -256,9 +256,9 @@ id|u64
 id|pm_tmr_blk
 suffix:semicolon
 multiline_comment|/* Port address of Power Mgt Timer Ctrl Reg Blk */
-DECL|member|gpe0blk
+DECL|member|gpe0_blk
 id|u64
-id|gpe0blk
+id|gpe0_blk
 suffix:semicolon
 multiline_comment|/* Port addr of General Purpose Acpi_event 0 Reg Blk */
 DECL|member|gpe1_blk
@@ -286,9 +286,9 @@ id|u8
 id|pm_tm_len
 suffix:semicolon
 multiline_comment|/* Byte Length of ports at pm_tm_blk */
-DECL|member|gpe0blk_len
+DECL|member|gpe0_blk_len
 id|u8
-id|gpe0blk_len
+id|gpe0_blk_len
 suffix:semicolon
 multiline_comment|/* Byte Length of ports at gpe0_blk */
 DECL|member|gpe1_blk_len

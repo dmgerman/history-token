@@ -1,9 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utdebug - Debug print routines&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utdebug - Debug print routines&n; *              $Revision: 96 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utdebug&quot;
 )paren
@@ -41,11 +41,13 @@ id|current_sp
 suffix:semicolon
 id|acpi_gbl_entry_stack_pointer
 op_assign
+id|ACPI_PTR_DIFF
 (paren
-id|u32
-)paren
 op_amp
 id|current_sp
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_track_stack_ptr&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Save the current stack pointer&n; *&n; ****************************************************************************/
@@ -56,16 +58,18 @@ id|acpi_ut_track_stack_ptr
 r_void
 )paren
 (brace
-id|u32
+id|ACPI_SIZE
 id|current_sp
 suffix:semicolon
 id|current_sp
 op_assign
+id|ACPI_PTR_DIFF
 (paren
-id|u32
-)paren
 op_amp
 id|current_sp
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -96,6 +100,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_debug_print&n; *&n; * PARAMETERS:  Debug_level         - Requested debug print level&n; *              Proc_name           - Caller&squot;s procedure name&n; *              Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print error message with prefix consisting of the module name,&n; *              line number, and component ID.&n; *&n; ****************************************************************************/
 r_void
+id|ACPI_INTERNAL_VAR_XFACE
 DECL|function|acpi_ut_debug_print
 id|acpi_ut_debug_print
 (paren
@@ -240,6 +245,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_debug_print_raw&n; *&n; * PARAMETERS:  Requested_debug_level - Requested debug print level&n; *              Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print message with no headers.  Has same interface as&n; *              Debug_print so that the same macros can be used.&n; *&n; ****************************************************************************/
 r_void
+id|ACPI_INTERNAL_VAR_XFACE
 DECL|function|acpi_ut_debug_print_raw
 id|acpi_ut_debug_print_raw
 (paren
@@ -581,14 +587,12 @@ l_string|&quot;%s %8.8X%8.8X&bslash;n&quot;
 comma
 id|acpi_gbl_fn_exit_str
 comma
-id|HIDWORD
-c_func
+id|ACPI_HIDWORD
 (paren
 id|value
 )paren
 comma
-id|LODWORD
-c_func
+id|ACPI_LODWORD
 (paren
 id|value
 )paren
@@ -779,7 +783,7 @@ suffix:semicolon
 r_case
 id|DB_WORD_DISPLAY
 suffix:colon
-id|MOVE_UNALIGNED16_TO_32
+id|ACPI_MOVE_UNALIGNED16_TO_32
 (paren
 op_amp
 id|temp32
@@ -809,7 +813,7 @@ suffix:semicolon
 r_case
 id|DB_DWORD_DISPLAY
 suffix:colon
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|temp32
@@ -839,7 +843,7 @@ suffix:semicolon
 r_case
 id|DB_QWORD_DISPLAY
 suffix:colon
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|temp32
@@ -860,7 +864,7 @@ comma
 id|temp32
 )paren
 suffix:semicolon
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|temp32

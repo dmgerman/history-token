@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 34 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 39 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -13,12 +13,12 @@ macro_line|#include &quot;actables.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbexec&quot;
 )paren
 DECL|variable|acpi_gbl_db_method_info
-id|db_method_info
+id|acpi_db_method_info
 id|acpi_gbl_db_method_info
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_execute_method&n; *&n; * PARAMETERS:  Info            - Valid info segment&n; *              Return_obj      - Where to put return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method.&n; *&n; ******************************************************************************/
@@ -26,7 +26,7 @@ id|acpi_status
 DECL|function|acpi_db_execute_method
 id|acpi_db_execute_method
 (paren
-id|db_method_info
+id|acpi_db_method_info
 op_star
 id|info
 comma
@@ -113,7 +113,7 @@ id|i
 dot
 id|integer.value
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|info-&gt;args
 (braket
@@ -235,7 +235,7 @@ r_void
 DECL|function|acpi_db_execute_setup
 id|acpi_db_execute_setup
 (paren
-id|db_method_info
+id|acpi_db_method_info
 op_star
 id|info
 )paren
@@ -270,7 +270,7 @@ l_char|&squot;/&squot;
 )paren
 )paren
 (brace
-id|STRCAT
+id|ACPI_STRCAT
 (paren
 id|info-&gt;pathname
 comma
@@ -278,7 +278,7 @@ id|acpi_gbl_db_scope_buf
 )paren
 suffix:semicolon
 )brace
-id|STRCAT
+id|ACPI_STRCAT
 (paren
 id|info-&gt;pathname
 comma
@@ -292,7 +292,7 @@ id|info-&gt;pathname
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_DUPLICATE_OUTPUT
+id|ACPI_DB_DUPLICATE_OUTPUT
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -316,7 +316,7 @@ id|TRUE
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 )brace
@@ -325,7 +325,7 @@ r_else
 multiline_comment|/* No single step, allow redirection to a file */
 id|acpi_db_set_output_destination
 (paren
-id|DB_REDIRECTABLE_OUTPUT
+id|ACPI_DB_REDIRECTABLE_OUTPUT
 )paren
 suffix:semicolon
 )brace
@@ -339,14 +339,14 @@ r_void
 )paren
 (brace
 id|u32
-id|i
-suffix:semicolon
-id|u32
 id|outstanding
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
+id|u32
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -483,7 +483,7 @@ id|previous_allocations
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_DUPLICATE_OUTPUT
+id|ACPI_DB_DUPLICATE_OUTPUT
 )paren
 suffix:semicolon
 r_if
@@ -556,12 +556,13 @@ suffix:semicolon
 )brace
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_method_thread&n; *&n; * PARAMETERS:  Context             - Execution info segment&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Debugger execute thread.  Waits for a command line, then&n; *              simply dispatches it.&n; *&n; ******************************************************************************/
 r_void
+id|ACPI_SYSTEM_XFACE
 DECL|function|acpi_db_method_thread
 id|acpi_db_method_thread
 (paren
@@ -573,7 +574,7 @@ id|context
 id|acpi_status
 id|status
 suffix:semicolon
-id|db_method_info
+id|acpi_db_method_info
 op_star
 id|info
 op_assign
@@ -691,7 +692,7 @@ suffix:semicolon
 multiline_comment|/* Get the arguments */
 id|num_threads
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|num_threads_arg
 comma
@@ -702,7 +703,7 @@ l_int|0
 suffix:semicolon
 id|num_loops
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|num_loops_arg
 comma
@@ -868,7 +869,7 @@ id|thread_gate
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_DUPLICATE_OUTPUT
+id|ACPI_DB_DUPLICATE_OUTPUT
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -880,7 +881,7 @@ id|num_threads
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 )brace

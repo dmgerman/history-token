@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 138 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 159 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
 mdefine_line|#define __ACLOCAL_H__
@@ -43,6 +43,8 @@ DECL|macro|ACPI_DESC_TYPE_STATE_RESULT
 mdefine_line|#define ACPI_DESC_TYPE_STATE_RESULT     0x27
 DECL|macro|ACPI_DESC_TYPE_STATE_NOTIFY
 mdefine_line|#define ACPI_DESC_TYPE_STATE_NOTIFY     0x28
+DECL|macro|ACPI_DESC_TYPE_STATE_THREAD
+mdefine_line|#define ACPI_DESC_TYPE_STATE_THREAD     0x29
 DECL|macro|ACPI_DESC_TYPE_WALK
 mdefine_line|#define ACPI_DESC_TYPE_WALK             0x44
 DECL|macro|ACPI_DESC_TYPE_PARSER
@@ -160,14 +162,14 @@ r_typedef
 id|u16
 id|acpi_owner_id
 suffix:semicolon
-DECL|macro|OWNER_TYPE_TABLE
-mdefine_line|#define OWNER_TYPE_TABLE                0x0
-DECL|macro|OWNER_TYPE_METHOD
-mdefine_line|#define OWNER_TYPE_METHOD               0x1
-DECL|macro|FIRST_METHOD_ID
-mdefine_line|#define FIRST_METHOD_ID                 0x0000
-DECL|macro|FIRST_TABLE_ID
-mdefine_line|#define FIRST_TABLE_ID                  0x8000
+DECL|macro|ACPI_OWNER_TYPE_TABLE
+mdefine_line|#define ACPI_OWNER_TYPE_TABLE           0x0
+DECL|macro|ACPI_OWNER_TYPE_METHOD
+mdefine_line|#define ACPI_OWNER_TYPE_METHOD          0x1
+DECL|macro|ACPI_FIRST_METHOD_ID
+mdefine_line|#define ACPI_FIRST_METHOD_ID            0x0000
+DECL|macro|ACPI_FIRST_TABLE_ID
+mdefine_line|#define ACPI_FIRST_TABLE_ID             0x8000
 multiline_comment|/* TBD: [Restructure] get rid of the need for this! */
 DECL|macro|TABLE_ID_DSDT
 mdefine_line|#define TABLE_ID_DSDT                   (acpi_owner_id) 0x8000
@@ -185,23 +187,23 @@ multiline_comment|/* Operational modes of the AML interpreter/scanner */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|IMODE_LOAD_PASS1
-id|IMODE_LOAD_PASS1
+DECL|enumerator|ACPI_IMODE_LOAD_PASS1
+id|ACPI_IMODE_LOAD_PASS1
 op_assign
 l_int|0x01
 comma
-DECL|enumerator|IMODE_LOAD_PASS2
-id|IMODE_LOAD_PASS2
+DECL|enumerator|ACPI_IMODE_LOAD_PASS2
+id|ACPI_IMODE_LOAD_PASS2
 op_assign
 l_int|0x02
 comma
-DECL|enumerator|IMODE_EXECUTE
-id|IMODE_EXECUTE
+DECL|enumerator|ACPI_IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 op_assign
 l_int|0x0E
-DECL|typedef|operating_mode
+DECL|typedef|acpi_interpreter_mode
 )brace
-id|operating_mode
+id|acpi_interpreter_mode
 suffix:semicolon
 multiline_comment|/*&n; * The Node describes a named object that appears in the AML&n; * An Acpi_node is used to store Nodes.&n; *&n; * Data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
 DECL|struct|acpi_node
@@ -209,10 +211,11 @@ r_typedef
 r_struct
 id|acpi_node
 (brace
-DECL|member|data_type
+DECL|member|descriptor
 id|u8
-id|data_type
+id|descriptor
 suffix:semicolon
+multiline_comment|/* Used to differentiate object descriptor types */
 DECL|member|type
 id|u8
 id|type
@@ -261,11 +264,11 @@ DECL|typedef|acpi_namespace_node
 )brace
 id|acpi_namespace_node
 suffix:semicolon
-DECL|macro|ENTRY_NOT_FOUND
-mdefine_line|#define ENTRY_NOT_FOUND             NULL
+DECL|macro|ACPI_ENTRY_NOT_FOUND
+mdefine_line|#define ACPI_ENTRY_NOT_FOUND            NULL
 multiline_comment|/* Node flags */
-DECL|macro|ANOBJ_AML_ATTACHMENT
-mdefine_line|#define ANOBJ_AML_ATTACHMENT            0x01
+DECL|macro|ANOBJ_RESERVED
+mdefine_line|#define ANOBJ_RESERVED                  0x01
 DECL|macro|ANOBJ_END_OF_PEER_LIST
 mdefine_line|#define ANOBJ_END_OF_PEER_LIST          0x02
 DECL|macro|ANOBJ_DATA_WIDTH_32
@@ -373,9 +376,9 @@ id|u32
 op_star
 id|count
 suffix:semicolon
-DECL|typedef|find_context
+DECL|typedef|acpi_find_context
 )brace
-id|find_context
+id|acpi_find_context
 suffix:semicolon
 r_typedef
 r_struct
@@ -385,9 +388,9 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-DECL|typedef|ns_search_data
+DECL|typedef|acpi_ns_search_data
 )brace
-id|ns_search_data
+id|acpi_ns_search_data
 suffix:semicolon
 multiline_comment|/*&n; * Predefined Namespace items&n; */
 r_typedef
@@ -399,7 +402,7 @@ op_star
 id|name
 suffix:semicolon
 DECL|member|type
-id|acpi_object_type8
+id|u8
 id|type
 suffix:semicolon
 DECL|member|val
@@ -407,9 +410,9 @@ id|NATIVE_CHAR
 op_star
 id|val
 suffix:semicolon
-DECL|typedef|predefined_names
+DECL|typedef|acpi_predefined_names
 )brace
-id|predefined_names
+id|acpi_predefined_names
 suffix:semicolon
 multiline_comment|/* Object types used during package copies */
 DECL|macro|ACPI_COPY_TYPE_SIMPLE
@@ -497,6 +500,10 @@ DECL|member|field_flags
 id|u8
 id|field_flags
 suffix:semicolon
+DECL|member|attribute
+id|u8
+id|attribute
+suffix:semicolon
 DECL|member|field_type
 id|u8
 id|field_type
@@ -505,56 +512,28 @@ DECL|typedef|ACPI_CREATE_FIELD_INFO
 )brace
 id|ACPI_CREATE_FIELD_INFO
 suffix:semicolon
-multiline_comment|/*&n; * Field flags: Bits 00 - 03 : Access_type (Any_acc, Byte_acc, etc.)&n; *                   04      : Lock_rule (1 == Lock)&n; *                   05 - 06 : Update_rule&n; */
-DECL|macro|FIELD_ACCESS_TYPE_MASK
-mdefine_line|#define FIELD_ACCESS_TYPE_MASK      0x0F
-DECL|macro|FIELD_LOCK_RULE_MASK
-mdefine_line|#define FIELD_LOCK_RULE_MASK        0x10
-DECL|macro|FIELD_UPDATE_RULE_MASK
-mdefine_line|#define FIELD_UPDATE_RULE_MASK      0x60
 multiline_comment|/*****************************************************************************&n; *&n; * Event typedefs and structs&n; *&n; ****************************************************************************/
-multiline_comment|/* Status bits. */
-DECL|macro|ACPI_STATUS_PMTIMER
-mdefine_line|#define ACPI_STATUS_PMTIMER             0x0001
-DECL|macro|ACPI_STATUS_BUSMASTER
-mdefine_line|#define ACPI_STATUS_BUSMASTER           0x0010
-DECL|macro|ACPI_STATUS_GLOBAL
-mdefine_line|#define ACPI_STATUS_GLOBAL              0x0020
-DECL|macro|ACPI_STATUS_POWER_BUTTON
-mdefine_line|#define ACPI_STATUS_POWER_BUTTON        0x0100
-DECL|macro|ACPI_STATUS_SLEEP_BUTTON
-mdefine_line|#define ACPI_STATUS_SLEEP_BUTTON        0x0200
-DECL|macro|ACPI_STATUS_RTC_ALARM
-mdefine_line|#define ACPI_STATUS_RTC_ALARM           0x0400
-multiline_comment|/* Enable bits. */
-DECL|macro|ACPI_ENABLE_PMTIMER
-mdefine_line|#define ACPI_ENABLE_PMTIMER             0x0001
-DECL|macro|ACPI_ENABLE_GLOBAL
-mdefine_line|#define ACPI_ENABLE_GLOBAL              0x0020
-DECL|macro|ACPI_ENABLE_POWER_BUTTON
-mdefine_line|#define ACPI_ENABLE_POWER_BUTTON        0x0100
-DECL|macro|ACPI_ENABLE_SLEEP_BUTTON
-mdefine_line|#define ACPI_ENABLE_SLEEP_BUTTON        0x0200
-DECL|macro|ACPI_ENABLE_RTC_ALARM
-mdefine_line|#define ACPI_ENABLE_RTC_ALARM           0x0400
-multiline_comment|/*&n; * Entry in the Address_space (AKA Operation Region) table&n; */
+multiline_comment|/* Information about each GPE register block */
 r_typedef
 r_struct
 (brace
-DECL|member|handler
-id|acpi_adr_space_handler
-id|handler
+DECL|member|register_count
+id|u16
+id|register_count
 suffix:semicolon
-DECL|member|context
-r_void
-op_star
-id|context
+DECL|member|block_address
+id|u16
+id|block_address
 suffix:semicolon
-DECL|typedef|acpi_adr_space_info
+DECL|member|block_base_number
+id|u8
+id|block_base_number
+suffix:semicolon
+DECL|typedef|ACPI_GPE_BLOCK_INFO
 )brace
-id|acpi_adr_space_info
+id|ACPI_GPE_BLOCK_INFO
 suffix:semicolon
-multiline_comment|/* Values and addresses of the GPE registers (both banks) */
+multiline_comment|/* Information about a particular GPE register pair */
 r_typedef
 r_struct
 (brace
@@ -583,14 +562,14 @@ id|u8
 id|wake_enable
 suffix:semicolon
 multiline_comment|/* Mask of bits to keep enabled when sleeping */
-DECL|member|gpe_base
+DECL|member|base_gpe_number
 id|u8
-id|gpe_base
+id|base_gpe_number
 suffix:semicolon
-multiline_comment|/* Base GPE number */
-DECL|typedef|acpi_gpe_registers
+multiline_comment|/* Base GPE number for this register */
+DECL|typedef|ACPI_GPE_REGISTER_INFO
 )brace
-id|acpi_gpe_registers
+id|ACPI_GPE_REGISTER_INFO
 suffix:semicolon
 DECL|macro|ACPI_GPE_LEVEL_TRIGGERED
 mdefine_line|#define ACPI_GPE_LEVEL_TRIGGERED        1
@@ -600,11 +579,6 @@ multiline_comment|/* Information about each particular GPE level */
 r_typedef
 r_struct
 (brace
-DECL|member|type
-id|u8
-id|type
-suffix:semicolon
-multiline_comment|/* Level or Edge */
 DECL|member|method_handle
 id|acpi_handle
 id|method_handle
@@ -621,9 +595,29 @@ op_star
 id|context
 suffix:semicolon
 multiline_comment|/* Context to be passed to handler */
-DECL|typedef|acpi_gpe_level_info
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
+multiline_comment|/* Level or Edge */
+DECL|member|bit_mask
+id|u8
+id|bit_mask
+suffix:semicolon
+DECL|typedef|ACPI_GPE_NUMBER_INFO
 )brace
-id|acpi_gpe_level_info
+id|ACPI_GPE_NUMBER_INFO
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|number_index
+id|u8
+id|number_index
+suffix:semicolon
+DECL|typedef|ACPI_GPE_INDEX_INFO
+)brace
+id|ACPI_GPE_INDEX_INFO
 suffix:semicolon
 multiline_comment|/* Information about each particular fixed event */
 r_typedef
@@ -640,6 +634,29 @@ op_star
 id|context
 suffix:semicolon
 multiline_comment|/* Context to be passed to handler */
+DECL|typedef|ACPI_FIXED_EVENT_HANDLER
+)brace
+id|ACPI_FIXED_EVENT_HANDLER
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|status_register_id
+id|u8
+id|status_register_id
+suffix:semicolon
+DECL|member|enable_register_id
+id|u8
+id|enable_register_id
+suffix:semicolon
+DECL|member|status_bit_mask
+id|u16
+id|status_bit_mask
+suffix:semicolon
+DECL|member|enable_bit_mask
+id|u16
+id|enable_bit_mask
+suffix:semicolon
 DECL|typedef|acpi_fixed_event_info
 )brace
 id|acpi_fixed_event_info
@@ -665,22 +682,19 @@ DECL|typedef|acpi_field_info
 id|acpi_field_info
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Generic &quot;state&quot; object for stacks&n; *&n; ****************************************************************************/
-DECL|macro|CONTROL_NORMAL
-mdefine_line|#define CONTROL_NORMAL                  0xC0
-DECL|macro|CONTROL_CONDITIONAL_EXECUTING
-mdefine_line|#define CONTROL_CONDITIONAL_EXECUTING   0xC1
-DECL|macro|CONTROL_PREDICATE_EXECUTING
-mdefine_line|#define CONTROL_PREDICATE_EXECUTING     0xC2
-DECL|macro|CONTROL_PREDICATE_FALSE
-mdefine_line|#define CONTROL_PREDICATE_FALSE         0xC3
-DECL|macro|CONTROL_PREDICATE_TRUE
-mdefine_line|#define CONTROL_PREDICATE_TRUE          0xC4
+DECL|macro|ACPI_CONTROL_NORMAL
+mdefine_line|#define ACPI_CONTROL_NORMAL                  0xC0
+DECL|macro|ACPI_CONTROL_CONDITIONAL_EXECUTING
+mdefine_line|#define ACPI_CONTROL_CONDITIONAL_EXECUTING   0xC1
+DECL|macro|ACPI_CONTROL_PREDICATE_EXECUTING
+mdefine_line|#define ACPI_CONTROL_PREDICATE_EXECUTING     0xC2
+DECL|macro|ACPI_CONTROL_PREDICATE_FALSE
+mdefine_line|#define ACPI_CONTROL_PREDICATE_FALSE         0xC3
+DECL|macro|ACPI_CONTROL_PREDICATE_TRUE
+mdefine_line|#define ACPI_CONTROL_PREDICATE_TRUE          0xC4
 multiline_comment|/* Forward declarations */
 r_struct
 id|acpi_walk_state
-suffix:semicolon
-r_struct
-id|acpi_walk_list
 suffix:semicolon
 r_struct
 id|acpi_parse_obj
@@ -778,6 +792,16 @@ op_star
 id|aml_predicate_start
 suffix:semicolon
 multiline_comment|/* Start of if/while predicate */
+DECL|member|package_end
+id|u8
+op_star
+id|package_end
+suffix:semicolon
+multiline_comment|/* End of if/while block */
+DECL|member|opcode
+id|u16
+id|opcode
+suffix:semicolon
 DECL|typedef|acpi_control_state
 )brace
 id|acpi_control_state
@@ -836,6 +860,41 @@ multiline_comment|/* Number of fixed arguments */
 DECL|typedef|acpi_pscope_state
 )brace
 id|acpi_pscope_state
+suffix:semicolon
+multiline_comment|/*&n; * Thread state - one per thread across multiple walk states.  Multiple walk&n; * states are created when there are nested control methods executing.&n; */
+DECL|struct|acpi_thread_state
+r_typedef
+r_struct
+id|acpi_thread_state
+(brace
+id|ACPI_STATE_COMMON
+DECL|member|walk_state_list
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state_list
+suffix:semicolon
+multiline_comment|/* Head of list of Walk_states for this thread */
+DECL|member|acquired_mutex_list
+r_union
+id|acpi_operand_obj
+op_star
+id|acquired_mutex_list
+suffix:semicolon
+multiline_comment|/* List of all currently acquired mutexes */
+DECL|member|thread_id
+id|u32
+id|thread_id
+suffix:semicolon
+multiline_comment|/* Running thread ID */
+DECL|member|current_sync_level
+id|u16
+id|current_sync_level
+suffix:semicolon
+multiline_comment|/* Mutex Sync (nested acquire) level */
+DECL|typedef|ACPI_THREAD_STATE
+)brace
+id|ACPI_THREAD_STATE
 suffix:semicolon
 multiline_comment|/*&n; * Result values - used to accumulate the results of nested&n; * AML arguments&n; */
 DECL|struct|acpi_result_values
@@ -951,6 +1010,10 @@ DECL|member|pkg
 id|acpi_pkg_state
 id|pkg
 suffix:semicolon
+DECL|member|thread
+id|ACPI_THREAD_STATE
+id|thread
+suffix:semicolon
 DECL|member|results
 id|acpi_result_values
 id|results
@@ -985,6 +1048,14 @@ r_typedef
 r_struct
 id|acpi_opcode_info
 (brace
+macro_line|#ifdef _OPCODE_NAMES
+DECL|member|name
+id|NATIVE_CHAR
+op_star
+id|name
+suffix:semicolon
+multiline_comment|/* Opcode name (debug only) */
+macro_line|#endif
 DECL|member|parse_args
 id|u32
 id|parse_args
@@ -996,10 +1067,15 @@ id|runtime_args
 suffix:semicolon
 multiline_comment|/* Interpret time arguments */
 DECL|member|flags
-id|u16
+id|u32
 id|flags
 suffix:semicolon
 multiline_comment|/* Misc flags */
+DECL|member|object_type
+id|u8
+id|object_type
+suffix:semicolon
+multiline_comment|/* Corresponding internal object type */
 DECL|member|class
 id|u8
 r_class
@@ -1010,14 +1086,6 @@ id|u8
 id|type
 suffix:semicolon
 multiline_comment|/* Opcode type */
-macro_line|#ifdef _OPCODE_NAMES
-DECL|member|name
-id|NATIVE_CHAR
-op_star
-id|name
-suffix:semicolon
-multiline_comment|/* op name (debug only) */
-macro_line|#endif
 DECL|typedef|acpi_opcode_info
 )brace
 id|acpi_opcode_info
@@ -1087,7 +1155,7 @@ DECL|typedef|acpi_parse_value
 id|acpi_parse_value
 suffix:semicolon
 DECL|macro|ACPI_PARSE_COMMON
-mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                      data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;          /* Type of Op */&bslash;&n;&t;u16                     opcode;         /* AML opcode */&bslash;&n;&t;u32                     aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;struct acpi_parse_obj   *parent;        /* parent op */&bslash;&n;&t;struct acpi_parse_obj   *next;          /* next op */&bslash;&n;&t;DEBUG_ONLY_MEMBERS (&bslash;&n;&t;NATIVE_CHAR             op_name[16])    /* op name (debug only) */&bslash;&n;&t;&t;&t;  /* NON-DEBUG members below: */&bslash;&n;&t;acpi_namespace_node     *node;          /* for use by interpreter */&bslash;&n;&t;acpi_parse_value        value;          /* Value or args associated with the opcode */&bslash;&n;
+mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                      data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;          /* Type of Op */&bslash;&n;&t;u16                     opcode;         /* AML opcode */&bslash;&n;&t;u32                     aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;struct acpi_parse_obj   *parent;        /* parent op */&bslash;&n;&t;struct acpi_parse_obj   *next;          /* next op */&bslash;&n;&t;ACPI_DEBUG_ONLY_MEMBERS (&bslash;&n;&t;NATIVE_CHAR             op_name[16])    /* op name (debug only) */&bslash;&n;&t;&t;&t;  /* NON-DEBUG members below: */&bslash;&n;&t;acpi_namespace_node     *node;          /* for use by interpreter */&bslash;&n;&t;acpi_parse_value        value;          /* Value or args associated with the opcode */&bslash;&n;
 multiline_comment|/*&n; * generic operation (eg. If, While, Store)&n; */
 DECL|struct|acpi_parse_obj
 r_typedef
@@ -1196,221 +1264,232 @@ DECL|typedef|acpi_parse_state
 )brace
 id|acpi_parse_state
 suffix:semicolon
-multiline_comment|/*****************************************************************************&n; *&n; * Hardware and PNP&n; *&n; ****************************************************************************/
-multiline_comment|/* PCI */
+multiline_comment|/* Parse object flags */
+DECL|macro|ACPI_PARSEOP_GENERIC
+mdefine_line|#define ACPI_PARSEOP_GENERIC                    0x01
+DECL|macro|ACPI_PARSEOP_NAMED
+mdefine_line|#define ACPI_PARSEOP_NAMED                      0x02
+DECL|macro|ACPI_PARSEOP_DEFERRED
+mdefine_line|#define ACPI_PARSEOP_DEFERRED                   0x04
+DECL|macro|ACPI_PARSEOP_BYTELIST
+mdefine_line|#define ACPI_PARSEOP_BYTELIST                   0x08
+DECL|macro|ACPI_PARSEOP_IN_CACHE
+mdefine_line|#define ACPI_PARSEOP_IN_CACHE                   0x80
+multiline_comment|/*****************************************************************************&n; *&n; * Hardware (ACPI registers) and PNP&n; *&n; ****************************************************************************/
 DECL|macro|PCI_ROOT_HID_STRING
-mdefine_line|#define PCI_ROOT_HID_STRING             &quot;PNP0A03&quot;
-multiline_comment|/*&n; * The #define&squot;s and enum below establish an abstract way of identifying what&n; * register block and register is to be accessed.  Do not change any of the&n; * values as they are used in switch statements and offset calculations.&n; */
-DECL|macro|REGISTER_BLOCK_MASK
-mdefine_line|#define REGISTER_BLOCK_MASK             0xFF00  /* Register Block Id    */
-DECL|macro|BIT_IN_REGISTER_MASK
-mdefine_line|#define BIT_IN_REGISTER_MASK            0x00FF  /* Bit Id in the Register Block Id    */
-DECL|macro|BYTE_IN_REGISTER_MASK
-mdefine_line|#define BYTE_IN_REGISTER_MASK           0x00FF  /* Register Offset in the Register Block    */
-DECL|macro|REGISTER_BLOCK_ID
-mdefine_line|#define REGISTER_BLOCK_ID(reg_id)       (reg_id &amp; REGISTER_BLOCK_MASK)
-DECL|macro|REGISTER_BIT_ID
-mdefine_line|#define REGISTER_BIT_ID(reg_id)         (reg_id &amp; BIT_IN_REGISTER_MASK)
-DECL|macro|REGISTER_OFFSET
-mdefine_line|#define REGISTER_OFFSET(reg_id)         (reg_id &amp; BYTE_IN_REGISTER_MASK)
-multiline_comment|/*&n; * Access Rule&n; *  To access a Register Bit:&n; *  -&gt; Use Bit Name (= Register Block Id | Bit Id) defined in the enum.&n; *&n; *  To access a Register:&n; *  -&gt; Use Register Id (= Register Block Id | Register Offset)&n; */
-multiline_comment|/*&n; * Register Block Id&n; */
-DECL|macro|PM1_STS
-mdefine_line|#define PM1_STS                         0x0100
-DECL|macro|PM1_EN
-mdefine_line|#define PM1_EN                          0x0200
-DECL|macro|PM1_CONTROL
-mdefine_line|#define PM1_CONTROL                     0x0300
-DECL|macro|PM1A_CONTROL
-mdefine_line|#define PM1A_CONTROL                    0x0400
-DECL|macro|PM1B_CONTROL
-mdefine_line|#define PM1B_CONTROL                    0x0500
-DECL|macro|PM2_CONTROL
-mdefine_line|#define PM2_CONTROL                     0x0600
-DECL|macro|PM_TIMER
-mdefine_line|#define PM_TIMER                        0x0700
-DECL|macro|PROCESSOR_BLOCK
-mdefine_line|#define PROCESSOR_BLOCK                 0x0800
-DECL|macro|GPE0_STS_BLOCK
-mdefine_line|#define GPE0_STS_BLOCK                  0x0900
-DECL|macro|GPE0_EN_BLOCK
-mdefine_line|#define GPE0_EN_BLOCK                   0x0A00
-DECL|macro|GPE1_STS_BLOCK
-mdefine_line|#define GPE1_STS_BLOCK                  0x0B00
-DECL|macro|GPE1_EN_BLOCK
-mdefine_line|#define GPE1_EN_BLOCK                   0x0C00
-DECL|macro|SMI_CMD_BLOCK
-mdefine_line|#define SMI_CMD_BLOCK                   0x0D00
-multiline_comment|/*&n; * Address space bitmasks for mmio or io spaces&n; */
-DECL|macro|SMI_CMD_ADDRESS_SPACE
-mdefine_line|#define SMI_CMD_ADDRESS_SPACE           0x01
-DECL|macro|PM1_BLK_ADDRESS_SPACE
-mdefine_line|#define PM1_BLK_ADDRESS_SPACE           0x02
-DECL|macro|PM2_CNT_BLK_ADDRESS_SPACE
-mdefine_line|#define PM2_CNT_BLK_ADDRESS_SPACE       0x04
-DECL|macro|PM_TMR_BLK_ADDRESS_SPACE
-mdefine_line|#define PM_TMR_BLK_ADDRESS_SPACE        0x08
-DECL|macro|GPE0_BLK_ADDRESS_SPACE
-mdefine_line|#define GPE0_BLK_ADDRESS_SPACE          0x10
-DECL|macro|GPE1_BLK_ADDRESS_SPACE
-mdefine_line|#define GPE1_BLK_ADDRESS_SPACE          0x20
-multiline_comment|/*&n; * Control bit definitions&n; */
-DECL|macro|TMR_STS
-mdefine_line|#define TMR_STS                         (PM1_STS | 0x01)
-DECL|macro|BM_STS
-mdefine_line|#define BM_STS                          (PM1_STS | 0x02)
-DECL|macro|GBL_STS
-mdefine_line|#define GBL_STS                         (PM1_STS | 0x03)
-DECL|macro|PWRBTN_STS
-mdefine_line|#define PWRBTN_STS                      (PM1_STS | 0x04)
-DECL|macro|SLPBTN_STS
-mdefine_line|#define SLPBTN_STS                      (PM1_STS | 0x05)
-DECL|macro|RTC_STS
-mdefine_line|#define RTC_STS                         (PM1_STS | 0x06)
-DECL|macro|WAK_STS
-mdefine_line|#define WAK_STS                         (PM1_STS | 0x07)
-DECL|macro|TMR_EN
-mdefine_line|#define TMR_EN                          (PM1_EN | 0x01)
-multiline_comment|/* no BM_EN */
-DECL|macro|GBL_EN
-mdefine_line|#define GBL_EN                          (PM1_EN | 0x03)
-DECL|macro|PWRBTN_EN
-mdefine_line|#define PWRBTN_EN                       (PM1_EN | 0x04)
-DECL|macro|SLPBTN_EN
-mdefine_line|#define SLPBTN_EN                       (PM1_EN | 0x05)
-DECL|macro|RTC_EN
-mdefine_line|#define RTC_EN                          (PM1_EN | 0x06)
-DECL|macro|WAK_EN
-mdefine_line|#define WAK_EN                          (PM1_EN | 0x07)
-DECL|macro|SCI_EN
-mdefine_line|#define SCI_EN                          (PM1_CONTROL | 0x01)
-DECL|macro|BM_RLD
-mdefine_line|#define BM_RLD                          (PM1_CONTROL | 0x02)
-DECL|macro|GBL_RLS
-mdefine_line|#define GBL_RLS                         (PM1_CONTROL | 0x03)
-DECL|macro|SLP_TYPE_A
-mdefine_line|#define SLP_TYPE_A                      (PM1_CONTROL | 0x04)
-DECL|macro|SLP_TYPE_B
-mdefine_line|#define SLP_TYPE_B                      (PM1_CONTROL | 0x05)
-DECL|macro|SLP_EN
-mdefine_line|#define SLP_EN                          (PM1_CONTROL | 0x06)
-DECL|macro|ARB_DIS
-mdefine_line|#define ARB_DIS                         (PM2_CONTROL | 0x01)
-DECL|macro|TMR_VAL
-mdefine_line|#define TMR_VAL                         (PM_TIMER | 0x01)
-DECL|macro|GPE0_STS
-mdefine_line|#define GPE0_STS                        (GPE0_STS_BLOCK | 0x01)
-DECL|macro|GPE0_EN
-mdefine_line|#define GPE0_EN                         (GPE0_EN_BLOCK  | 0x01)
-DECL|macro|GPE1_STS
-mdefine_line|#define GPE1_STS                        (GPE1_STS_BLOCK | 0x01)
-DECL|macro|GPE1_EN
-mdefine_line|#define GPE1_EN                         (GPE1_EN_BLOCK  | 0x01)
-DECL|macro|TMR_STS_MASK
-mdefine_line|#define TMR_STS_MASK                    0x0001
-DECL|macro|BM_STS_MASK
-mdefine_line|#define BM_STS_MASK                     0x0010
-DECL|macro|GBL_STS_MASK
-mdefine_line|#define GBL_STS_MASK                    0x0020
-DECL|macro|PWRBTN_STS_MASK
-mdefine_line|#define PWRBTN_STS_MASK                 0x0100
-DECL|macro|SLPBTN_STS_MASK
-mdefine_line|#define SLPBTN_STS_MASK                 0x0200
-DECL|macro|RTC_STS_MASK
-mdefine_line|#define RTC_STS_MASK                    0x0400
-DECL|macro|WAK_STS_MASK
-mdefine_line|#define WAK_STS_MASK                    0x8000
-DECL|macro|ALL_FIXED_STS_BITS
-mdefine_line|#define ALL_FIXED_STS_BITS              (TMR_STS_MASK   | BM_STS_MASK  | GBL_STS_MASK &bslash;&n;&t;&t;&t;&t;&t;  | PWRBTN_STS_MASK | SLPBTN_STS_MASK &bslash;&n;&t;&t;&t;&t;&t;  | RTC_STS_MASK | WAK_STS_MASK)
-DECL|macro|TMR_EN_MASK
-mdefine_line|#define TMR_EN_MASK                     0x0001
-DECL|macro|GBL_EN_MASK
-mdefine_line|#define GBL_EN_MASK                     0x0020
-DECL|macro|PWRBTN_EN_MASK
-mdefine_line|#define PWRBTN_EN_MASK                  0x0100
-DECL|macro|SLPBTN_EN_MASK
-mdefine_line|#define SLPBTN_EN_MASK                  0x0200
-DECL|macro|RTC_EN_MASK
-mdefine_line|#define RTC_EN_MASK                     0x0400
-DECL|macro|SCI_EN_MASK
-mdefine_line|#define SCI_EN_MASK                     0x0001
-DECL|macro|BM_RLD_MASK
-mdefine_line|#define BM_RLD_MASK                     0x0002
-DECL|macro|GBL_RLS_MASK
-mdefine_line|#define GBL_RLS_MASK                    0x0004
-DECL|macro|SLP_TYPE_X_MASK
-mdefine_line|#define SLP_TYPE_X_MASK                 0x1C00
-DECL|macro|SLP_EN_MASK
-mdefine_line|#define SLP_EN_MASK                     0x2000
-DECL|macro|ARB_DIS_MASK
-mdefine_line|#define ARB_DIS_MASK                    0x0001
-DECL|macro|TMR_VAL_MASK
-mdefine_line|#define TMR_VAL_MASK                    0xFFFFFFFF
-DECL|macro|GPE0_STS_MASK
-mdefine_line|#define GPE0_STS_MASK
-DECL|macro|GPE0_EN_MASK
-mdefine_line|#define GPE0_EN_MASK
-DECL|macro|GPE1_STS_MASK
-mdefine_line|#define GPE1_STS_MASK
-DECL|macro|GPE1_EN_MASK
-mdefine_line|#define GPE1_EN_MASK
-DECL|macro|ACPI_READ
-mdefine_line|#define ACPI_READ                       1
-DECL|macro|ACPI_WRITE
-mdefine_line|#define ACPI_WRITE                      2
+mdefine_line|#define PCI_ROOT_HID_STRING         &quot;PNP0A03&quot;
+r_typedef
+r_struct
+(brace
+DECL|member|parent_register
+id|u8
+id|parent_register
+suffix:semicolon
+DECL|member|bit_position
+id|u8
+id|bit_position
+suffix:semicolon
+DECL|member|access_bit_mask
+id|u16
+id|access_bit_mask
+suffix:semicolon
+DECL|typedef|ACPI_BIT_REGISTER_INFO
+)brace
+id|ACPI_BIT_REGISTER_INFO
+suffix:semicolon
+multiline_comment|/*&n; * Register IDs&n; * These are the full ACPI registers&n; */
+DECL|macro|ACPI_REGISTER_PM1_STATUS
+mdefine_line|#define ACPI_REGISTER_PM1_STATUS                0x01
+DECL|macro|ACPI_REGISTER_PM1_ENABLE
+mdefine_line|#define ACPI_REGISTER_PM1_ENABLE                0x02
+DECL|macro|ACPI_REGISTER_PM1_CONTROL
+mdefine_line|#define ACPI_REGISTER_PM1_CONTROL               0x03
+DECL|macro|ACPI_REGISTER_PM1A_CONTROL
+mdefine_line|#define ACPI_REGISTER_PM1A_CONTROL              0x04
+DECL|macro|ACPI_REGISTER_PM1B_CONTROL
+mdefine_line|#define ACPI_REGISTER_PM1B_CONTROL              0x05
+DECL|macro|ACPI_REGISTER_PM2_CONTROL
+mdefine_line|#define ACPI_REGISTER_PM2_CONTROL               0x06
+DECL|macro|ACPI_REGISTER_PM_TIMER
+mdefine_line|#define ACPI_REGISTER_PM_TIMER                  0x07
+DECL|macro|ACPI_REGISTER_PROCESSOR_BLOCK
+mdefine_line|#define ACPI_REGISTER_PROCESSOR_BLOCK           0x08
+DECL|macro|ACPI_REGISTER_SMI_COMMAND_BLOCK
+mdefine_line|#define ACPI_REGISTER_SMI_COMMAND_BLOCK         0x09
+multiline_comment|/*&n; * Bit_register IDs&n; * These are bitfields defined within the full ACPI registers&n; */
+DECL|macro|ACPI_BITREG_TIMER_STATUS
+mdefine_line|#define ACPI_BITREG_TIMER_STATUS                0x00
+DECL|macro|ACPI_BITREG_BUS_MASTER_STATUS
+mdefine_line|#define ACPI_BITREG_BUS_MASTER_STATUS           0x01
+DECL|macro|ACPI_BITREG_GLOBAL_LOCK_STATUS
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_STATUS          0x02
+DECL|macro|ACPI_BITREG_POWER_BUTTON_STATUS
+mdefine_line|#define ACPI_BITREG_POWER_BUTTON_STATUS         0x03
+DECL|macro|ACPI_BITREG_SLEEP_BUTTON_STATUS
+mdefine_line|#define ACPI_BITREG_SLEEP_BUTTON_STATUS         0x04
+DECL|macro|ACPI_BITREG_RT_CLOCK_STATUS
+mdefine_line|#define ACPI_BITREG_RT_CLOCK_STATUS             0x05
+DECL|macro|ACPI_BITREG_WAKE_STATUS
+mdefine_line|#define ACPI_BITREG_WAKE_STATUS                 0x06
+DECL|macro|ACPI_BITREG_TIMER_ENABLE
+mdefine_line|#define ACPI_BITREG_TIMER_ENABLE                0x07
+DECL|macro|ACPI_BITREG_GLOBAL_LOCK_ENABLE
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_ENABLE          0x08
+DECL|macro|ACPI_BITREG_POWER_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITREG_POWER_BUTTON_ENABLE         0x09
+DECL|macro|ACPI_BITREG_SLEEP_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITREG_SLEEP_BUTTON_ENABLE         0x0A
+DECL|macro|ACPI_BITREG_RT_CLOCK_ENABLE
+mdefine_line|#define ACPI_BITREG_RT_CLOCK_ENABLE             0x0B
+DECL|macro|ACPI_BITREG_WAKE_ENABLE
+mdefine_line|#define ACPI_BITREG_WAKE_ENABLE                 0x0C
+DECL|macro|ACPI_BITREG_SCI_ENABLE
+mdefine_line|#define ACPI_BITREG_SCI_ENABLE                  0x0D
+DECL|macro|ACPI_BITREG_BUS_MASTER_RLD
+mdefine_line|#define ACPI_BITREG_BUS_MASTER_RLD              0x0E
+DECL|macro|ACPI_BITREG_GLOBAL_LOCK_RELEASE
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_RELEASE         0x0F
+DECL|macro|ACPI_BITREG_SLEEP_TYPE_A
+mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_A                0x10
+DECL|macro|ACPI_BITREG_SLEEP_TYPE_B
+mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_B                0x11
+DECL|macro|ACPI_BITREG_SLEEP_ENABLE
+mdefine_line|#define ACPI_BITREG_SLEEP_ENABLE                0x12
+DECL|macro|ACPI_BITREG_ARB_DISABLE
+mdefine_line|#define ACPI_BITREG_ARB_DISABLE                 0x13
+DECL|macro|ACPI_BITREG_MAX
+mdefine_line|#define ACPI_BITREG_MAX                         0x13
+DECL|macro|ACPI_NUM_BITREG
+mdefine_line|#define ACPI_NUM_BITREG                         ACPI_BITREG_MAX + 1
+multiline_comment|/* Masks used to access the Bit_registers */
+DECL|macro|ACPI_BITMASK_TIMER_STATUS
+mdefine_line|#define ACPI_BITMASK_TIMER_STATUS               0x0001
+DECL|macro|ACPI_BITMASK_BUS_MASTER_STATUS
+mdefine_line|#define ACPI_BITMASK_BUS_MASTER_STATUS          0x0010
+DECL|macro|ACPI_BITMASK_GLOBAL_LOCK_STATUS
+mdefine_line|#define ACPI_BITMASK_GLOBAL_LOCK_STATUS         0x0020
+DECL|macro|ACPI_BITMASK_POWER_BUTTON_STATUS
+mdefine_line|#define ACPI_BITMASK_POWER_BUTTON_STATUS        0x0100
+DECL|macro|ACPI_BITMASK_SLEEP_BUTTON_STATUS
+mdefine_line|#define ACPI_BITMASK_SLEEP_BUTTON_STATUS        0x0200
+DECL|macro|ACPI_BITMASK_RT_CLOCK_STATUS
+mdefine_line|#define ACPI_BITMASK_RT_CLOCK_STATUS            0x0400
+DECL|macro|ACPI_BITMASK_WAKE_STATUS
+mdefine_line|#define ACPI_BITMASK_WAKE_STATUS                0x8000
+DECL|macro|ACPI_BITMASK_ALL_FIXED_STATUS
+mdefine_line|#define ACPI_BITMASK_ALL_FIXED_STATUS           (ACPI_BITMASK_TIMER_STATUS          | &bslash;&n;&t;&t;&t; ACPI_BITMASK_BUS_MASTER_STATUS     | &bslash;&n;&t;&t;&t; ACPI_BITMASK_GLOBAL_LOCK_STATUS    | &bslash;&n;&t;&t;&t; ACPI_BITMASK_POWER_BUTTON_STATUS   | &bslash;&n;&t;&t;&t; ACPI_BITMASK_SLEEP_BUTTON_STATUS   | &bslash;&n;&t;&t;&t; ACPI_BITMASK_RT_CLOCK_STATUS       | &bslash;&n;&t;&t;&t; ACPI_BITMASK_WAKE_STATUS)
+DECL|macro|ACPI_BITMASK_TIMER_ENABLE
+mdefine_line|#define ACPI_BITMASK_TIMER_ENABLE               0x0001
+DECL|macro|ACPI_BITMASK_GLOBAL_LOCK_ENABLE
+mdefine_line|#define ACPI_BITMASK_GLOBAL_LOCK_ENABLE         0x0020
+DECL|macro|ACPI_BITMASK_POWER_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITMASK_POWER_BUTTON_ENABLE        0x0100
+DECL|macro|ACPI_BITMASK_SLEEP_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITMASK_SLEEP_BUTTON_ENABLE        0x0200
+DECL|macro|ACPI_BITMASK_RT_CLOCK_ENABLE
+mdefine_line|#define ACPI_BITMASK_RT_CLOCK_ENABLE            0x0400
+DECL|macro|ACPI_BITMASK_SCI_ENABLE
+mdefine_line|#define ACPI_BITMASK_SCI_ENABLE                 0x0001
+DECL|macro|ACPI_BITMASK_BUS_MASTER_RLD
+mdefine_line|#define ACPI_BITMASK_BUS_MASTER_RLD             0x0002
+DECL|macro|ACPI_BITMASK_GLOBAL_LOCK_RELEASE
+mdefine_line|#define ACPI_BITMASK_GLOBAL_LOCK_RELEASE        0x0004
+DECL|macro|ACPI_BITMASK_SLEEP_TYPE_X
+mdefine_line|#define ACPI_BITMASK_SLEEP_TYPE_X               0x1C00
+DECL|macro|ACPI_BITMASK_SLEEP_ENABLE
+mdefine_line|#define ACPI_BITMASK_SLEEP_ENABLE               0x2000
+DECL|macro|ACPI_BITMASK_ARB_DISABLE
+mdefine_line|#define ACPI_BITMASK_ARB_DISABLE                0x0001
+multiline_comment|/* Raw bit position of each Bit_register */
+DECL|macro|ACPI_BITPOSITION_TIMER_STATUS
+mdefine_line|#define ACPI_BITPOSITION_TIMER_STATUS           0x00
+DECL|macro|ACPI_BITPOSITION_BUS_MASTER_STATUS
+mdefine_line|#define ACPI_BITPOSITION_BUS_MASTER_STATUS      0x04
+DECL|macro|ACPI_BITPOSITION_GLOBAL_LOCK_STATUS
+mdefine_line|#define ACPI_BITPOSITION_GLOBAL_LOCK_STATUS     0x05
+DECL|macro|ACPI_BITPOSITION_POWER_BUTTON_STATUS
+mdefine_line|#define ACPI_BITPOSITION_POWER_BUTTON_STATUS    0x08
+DECL|macro|ACPI_BITPOSITION_SLEEP_BUTTON_STATUS
+mdefine_line|#define ACPI_BITPOSITION_SLEEP_BUTTON_STATUS    0x09
+DECL|macro|ACPI_BITPOSITION_RT_CLOCK_STATUS
+mdefine_line|#define ACPI_BITPOSITION_RT_CLOCK_STATUS        0x0A
+DECL|macro|ACPI_BITPOSITION_WAKE_STATUS
+mdefine_line|#define ACPI_BITPOSITION_WAKE_STATUS            0x0F
+DECL|macro|ACPI_BITPOSITION_TIMER_ENABLE
+mdefine_line|#define ACPI_BITPOSITION_TIMER_ENABLE           0x00
+DECL|macro|ACPI_BITPOSITION_GLOBAL_LOCK_ENABLE
+mdefine_line|#define ACPI_BITPOSITION_GLOBAL_LOCK_ENABLE     0x05
+DECL|macro|ACPI_BITPOSITION_POWER_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITPOSITION_POWER_BUTTON_ENABLE    0x08
+DECL|macro|ACPI_BITPOSITION_SLEEP_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITPOSITION_SLEEP_BUTTON_ENABLE    0x09
+DECL|macro|ACPI_BITPOSITION_RT_CLOCK_ENABLE
+mdefine_line|#define ACPI_BITPOSITION_RT_CLOCK_ENABLE        0x0A
+DECL|macro|ACPI_BITPOSITION_SCI_ENABLE
+mdefine_line|#define ACPI_BITPOSITION_SCI_ENABLE             0x00
+DECL|macro|ACPI_BITPOSITION_BUS_MASTER_RLD
+mdefine_line|#define ACPI_BITPOSITION_BUS_MASTER_RLD         0x01
+DECL|macro|ACPI_BITPOSITION_GLOBAL_LOCK_RELEASE
+mdefine_line|#define ACPI_BITPOSITION_GLOBAL_LOCK_RELEASE    0x02
+DECL|macro|ACPI_BITPOSITION_SLEEP_TYPE_X
+mdefine_line|#define ACPI_BITPOSITION_SLEEP_TYPE_X           0x0A
+DECL|macro|ACPI_BITPOSITION_SLEEP_ENABLE
+mdefine_line|#define ACPI_BITPOSITION_SLEEP_ENABLE           0x0D
+DECL|macro|ACPI_BITPOSITION_ARB_DISABLE
+mdefine_line|#define ACPI_BITPOSITION_ARB_DISABLE            0x00
 multiline_comment|/*****************************************************************************&n; *&n; * Resource descriptors&n; *&n; ****************************************************************************/
 multiline_comment|/* Resource_type values */
-DECL|macro|RESOURCE_TYPE_MEMORY_RANGE
-mdefine_line|#define RESOURCE_TYPE_MEMORY_RANGE              0
-DECL|macro|RESOURCE_TYPE_IO_RANGE
-mdefine_line|#define RESOURCE_TYPE_IO_RANGE                  1
-DECL|macro|RESOURCE_TYPE_BUS_NUMBER_RANGE
-mdefine_line|#define RESOURCE_TYPE_BUS_NUMBER_RANGE          2
+DECL|macro|ACPI_RESOURCE_TYPE_MEMORY_RANGE
+mdefine_line|#define ACPI_RESOURCE_TYPE_MEMORY_RANGE         0
+DECL|macro|ACPI_RESOURCE_TYPE_IO_RANGE
+mdefine_line|#define ACPI_RESOURCE_TYPE_IO_RANGE             1
+DECL|macro|ACPI_RESOURCE_TYPE_BUS_NUMBER_RANGE
+mdefine_line|#define ACPI_RESOURCE_TYPE_BUS_NUMBER_RANGE     2
 multiline_comment|/* Resource descriptor types and masks */
-DECL|macro|RESOURCE_DESC_TYPE_LARGE
-mdefine_line|#define RESOURCE_DESC_TYPE_LARGE                0x80
-DECL|macro|RESOURCE_DESC_TYPE_SMALL
-mdefine_line|#define RESOURCE_DESC_TYPE_SMALL                0x00
-DECL|macro|RESOURCE_DESC_TYPE_MASK
-mdefine_line|#define RESOURCE_DESC_TYPE_MASK                 0x80
-DECL|macro|RESOURCE_DESC_SMALL_MASK
-mdefine_line|#define RESOURCE_DESC_SMALL_MASK                0x78        /* Only bits 6:3 contain the type */
+DECL|macro|ACPI_RDESC_TYPE_LARGE
+mdefine_line|#define ACPI_RDESC_TYPE_LARGE                   0x80
+DECL|macro|ACPI_RDESC_TYPE_SMALL
+mdefine_line|#define ACPI_RDESC_TYPE_SMALL                   0x00
+DECL|macro|ACPI_RDESC_TYPE_MASK
+mdefine_line|#define ACPI_RDESC_TYPE_MASK                    0x80
+DECL|macro|ACPI_RDESC_SMALL_MASK
+mdefine_line|#define ACPI_RDESC_SMALL_MASK                   0x78 /* Only bits 6:3 contain the type */
 multiline_comment|/*&n; * Small resource descriptor types&n; * Note: The 3 length bits (2:0) must be zero&n; */
-DECL|macro|RESOURCE_DESC_IRQ_FORMAT
-mdefine_line|#define RESOURCE_DESC_IRQ_FORMAT                0x20
-DECL|macro|RESOURCE_DESC_DMA_FORMAT
-mdefine_line|#define RESOURCE_DESC_DMA_FORMAT                0x28
-DECL|macro|RESOURCE_DESC_START_DEPENDENT
-mdefine_line|#define RESOURCE_DESC_START_DEPENDENT           0x30
-DECL|macro|RESOURCE_DESC_END_DEPENDENT
-mdefine_line|#define RESOURCE_DESC_END_DEPENDENT             0x38
-DECL|macro|RESOURCE_DESC_IO_PORT
-mdefine_line|#define RESOURCE_DESC_IO_PORT                   0x40
-DECL|macro|RESOURCE_DESC_FIXED_IO_PORT
-mdefine_line|#define RESOURCE_DESC_FIXED_IO_PORT             0x48
-DECL|macro|RESOURCE_DESC_SMALL_VENDOR
-mdefine_line|#define RESOURCE_DESC_SMALL_VENDOR              0x70
-DECL|macro|RESOURCE_DESC_END_TAG
-mdefine_line|#define RESOURCE_DESC_END_TAG                   0x78
+DECL|macro|ACPI_RDESC_TYPE_IRQ_FORMAT
+mdefine_line|#define ACPI_RDESC_TYPE_IRQ_FORMAT              0x20
+DECL|macro|ACPI_RDESC_TYPE_DMA_FORMAT
+mdefine_line|#define ACPI_RDESC_TYPE_DMA_FORMAT              0x28
+DECL|macro|ACPI_RDESC_TYPE_START_DEPENDENT
+mdefine_line|#define ACPI_RDESC_TYPE_START_DEPENDENT         0x30
+DECL|macro|ACPI_RDESC_TYPE_END_DEPENDENT
+mdefine_line|#define ACPI_RDESC_TYPE_END_DEPENDENT           0x38
+DECL|macro|ACPI_RDESC_TYPE_IO_PORT
+mdefine_line|#define ACPI_RDESC_TYPE_IO_PORT                 0x40
+DECL|macro|ACPI_RDESC_TYPE_FIXED_IO_PORT
+mdefine_line|#define ACPI_RDESC_TYPE_FIXED_IO_PORT           0x48
+DECL|macro|ACPI_RDESC_TYPE_SMALL_VENDOR
+mdefine_line|#define ACPI_RDESC_TYPE_SMALL_VENDOR            0x70
+DECL|macro|ACPI_RDESC_TYPE_END_TAG
+mdefine_line|#define ACPI_RDESC_TYPE_END_TAG                 0x78
 multiline_comment|/*&n; * Large resource descriptor types&n; */
-DECL|macro|RESOURCE_DESC_MEMORY_24
-mdefine_line|#define RESOURCE_DESC_MEMORY_24                 0x81
-DECL|macro|RESOURCE_DESC_GENERAL_REGISTER
-mdefine_line|#define RESOURCE_DESC_GENERAL_REGISTER          0x82
-DECL|macro|RESOURCE_DESC_LARGE_VENDOR
-mdefine_line|#define RESOURCE_DESC_LARGE_VENDOR              0x84
-DECL|macro|RESOURCE_DESC_MEMORY_32
-mdefine_line|#define RESOURCE_DESC_MEMORY_32                 0x85
-DECL|macro|RESOURCE_DESC_FIXED_MEMORY_32
-mdefine_line|#define RESOURCE_DESC_FIXED_MEMORY_32           0x86
-DECL|macro|RESOURCE_DESC_DWORD_ADDRESS_SPACE
-mdefine_line|#define RESOURCE_DESC_DWORD_ADDRESS_SPACE       0x87
-DECL|macro|RESOURCE_DESC_WORD_ADDRESS_SPACE
-mdefine_line|#define RESOURCE_DESC_WORD_ADDRESS_SPACE        0x88
-DECL|macro|RESOURCE_DESC_EXTENDED_XRUPT
-mdefine_line|#define RESOURCE_DESC_EXTENDED_XRUPT            0x89
-DECL|macro|RESOURCE_DESC_QWORD_ADDRESS_SPACE
-mdefine_line|#define RESOURCE_DESC_QWORD_ADDRESS_SPACE       0x8A
+DECL|macro|ACPI_RDESC_TYPE_MEMORY_24
+mdefine_line|#define ACPI_RDESC_TYPE_MEMORY_24               0x81
+DECL|macro|ACPI_RDESC_TYPE_GENERAL_REGISTER
+mdefine_line|#define ACPI_RDESC_TYPE_GENERAL_REGISTER        0x82
+DECL|macro|ACPI_RDESC_TYPE_LARGE_VENDOR
+mdefine_line|#define ACPI_RDESC_TYPE_LARGE_VENDOR            0x84
+DECL|macro|ACPI_RDESC_TYPE_MEMORY_32
+mdefine_line|#define ACPI_RDESC_TYPE_MEMORY_32               0x85
+DECL|macro|ACPI_RDESC_TYPE_FIXED_MEMORY_32
+mdefine_line|#define ACPI_RDESC_TYPE_FIXED_MEMORY_32         0x86
+DECL|macro|ACPI_RDESC_TYPE_DWORD_ADDRESS_SPACE
+mdefine_line|#define ACPI_RDESC_TYPE_DWORD_ADDRESS_SPACE     0x87
+DECL|macro|ACPI_RDESC_TYPE_WORD_ADDRESS_SPACE
+mdefine_line|#define ACPI_RDESC_TYPE_WORD_ADDRESS_SPACE      0x88
+DECL|macro|ACPI_RDESC_TYPE_EXTENDED_XRUPT
+mdefine_line|#define ACPI_RDESC_TYPE_EXTENDED_XRUPT          0x89
+DECL|macro|ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE
+mdefine_line|#define ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE     0x8A
 multiline_comment|/* String version of device HIDs and UIDs */
 DECL|macro|ACPI_DEVICE_ID_LENGTH
 mdefine_line|#define ACPI_DEVICE_ID_LENGTH                   0x09
@@ -1429,8 +1508,8 @@ DECL|typedef|acpi_device_id
 id|acpi_device_id
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Miscellaneous&n; *&n; ****************************************************************************/
-DECL|macro|ASCII_ZERO
-mdefine_line|#define ASCII_ZERO                      0x30
+DECL|macro|ACPI_ASCII_ZERO
+mdefine_line|#define ACPI_ASCII_ZERO                      0x30
 multiline_comment|/*****************************************************************************&n; *&n; * Debugger&n; *&n; ****************************************************************************/
 DECL|struct|dbmethodinfo
 r_typedef
@@ -1467,10 +1546,16 @@ id|pathname
 l_int|128
 )braket
 suffix:semicolon
-DECL|typedef|db_method_info
+DECL|typedef|acpi_db_method_info
 )brace
-id|db_method_info
+id|acpi_db_method_info
 suffix:semicolon
+DECL|macro|ACPI_DB_REDIRECTABLE_OUTPUT
+mdefine_line|#define ACPI_DB_REDIRECTABLE_OUTPUT  0x01
+DECL|macro|ACPI_DB_CONSOLE_OUTPUT
+mdefine_line|#define ACPI_DB_CONSOLE_OUTPUT       0x02
+DECL|macro|ACPI_DB_DUPLICATE_OUTPUT
+mdefine_line|#define ACPI_DB_DUPLICATE_OUTPUT     0x03
 multiline_comment|/*****************************************************************************&n; *&n; * Debug&n; *&n; ****************************************************************************/
 r_typedef
 r_struct
@@ -1494,14 +1579,14 @@ DECL|typedef|acpi_debug_print_info
 id|acpi_debug_print_info
 suffix:semicolon
 multiline_comment|/* Entry for a memory allocation (debug only) */
-DECL|macro|MEM_MALLOC
-mdefine_line|#define MEM_MALLOC                      0
-DECL|macro|MEM_CALLOC
-mdefine_line|#define MEM_CALLOC                      1
-DECL|macro|MAX_MODULE_NAME
-mdefine_line|#define MAX_MODULE_NAME                 16
+DECL|macro|ACPI_MEM_MALLOC
+mdefine_line|#define ACPI_MEM_MALLOC                      0
+DECL|macro|ACPI_MEM_CALLOC
+mdefine_line|#define ACPI_MEM_CALLOC                      1
+DECL|macro|ACPI_MAX_MODULE_NAME
+mdefine_line|#define ACPI_MAX_MODULE_NAME                 16
 DECL|macro|ACPI_COMMON_DEBUG_MEM_HEADER
-mdefine_line|#define ACPI_COMMON_DEBUG_MEM_HEADER &bslash;&n;&t;struct acpi_debug_mem_block *previous; &bslash;&n;&t;struct acpi_debug_mem_block *next; &bslash;&n;&t;u32                         size; &bslash;&n;&t;u32                         component; &bslash;&n;&t;u32                         line; &bslash;&n;&t;NATIVE_CHAR                 module[MAX_MODULE_NAME]; &bslash;&n;&t;u8                          alloc_type;
+mdefine_line|#define ACPI_COMMON_DEBUG_MEM_HEADER &bslash;&n;&t;struct acpi_debug_mem_block *previous; &bslash;&n;&t;struct acpi_debug_mem_block *next; &bslash;&n;&t;u32                         size; &bslash;&n;&t;u32                         component; &bslash;&n;&t;u32                         line; &bslash;&n;&t;NATIVE_CHAR                 module[ACPI_MAX_MODULE_NAME]; &bslash;&n;&t;u8                          alloc_type;
 r_typedef
 r_struct
 (brace

@@ -1,11 +1,11 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsutils - Utilities for the resource manager&n; *              $Revision: 23 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsutils - Utilities for the resource manager&n; *              $Revision: 29 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_RESOURCES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;rsutils&quot;
 )paren
@@ -29,19 +29,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
-id|buffer_space_needed
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_get_prt_method_data&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* already validated params, so we won&squot;t repeat here */
-id|buffer_space_needed
-op_assign
-id|ret_buffer-&gt;length
-suffix:semicolon
+multiline_comment|/* Parameters guaranteed valid by caller */
 multiline_comment|/*&n;&t; *  Execute the method, no parameters&n;&t; */
 id|status
 op_assign
@@ -95,7 +88,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The return object will be a package, so check the&n;&t; *  parameters.  If the return object is not a package,&n;&t; *  then the underlying AML code is corrupt or improperly&n;&t; *  written.&n;&t; */
+multiline_comment|/*&n;&t; * The return object will be a package, so check the parameters.  If the&n;&t; * return object is not a package, then the underlying AML code is corrupt&n;&t; * or improperly written.&n;&t; */
 r_if
 c_cond
 (paren
@@ -104,6 +97,20 @@ op_ne
 id|ret_obj-&gt;common.type
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;_PRT did not return a Package, returned %s&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|ret_obj-&gt;common.type
+)paren
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_OPERAND_TYPE
@@ -112,25 +119,17 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Make the call to create a resource linked list from the&n;&t; *  byte stream buffer that comes back from the _CRS method&n;&t; *  execution.&n;&t; */
+multiline_comment|/*&n;&t; * Create a resource linked list from the byte stream buffer that comes&n;&t; * back from the _CRS method execution.&n;&t; */
 id|status
 op_assign
 id|acpi_rs_create_pci_routing_table
 (paren
 id|ret_obj
 comma
-id|ret_buffer-&gt;pointer
-comma
-op_amp
-id|buffer_space_needed
+id|ret_buffer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tell the user how much of the buffer we have used or is needed&n;&t; *  and return the final status.&n;&t; */
-id|ret_buffer-&gt;length
-op_assign
-id|buffer_space_needed
-suffix:semicolon
-multiline_comment|/* On exit, we must delete the object returned by evaluate_object */
+multiline_comment|/* On exit, we must delete the object returned by Evaluate_object */
 id|cleanup
 suffix:colon
 id|acpi_ut_remove_reference
@@ -164,18 +163,13 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
-id|buffer_space_needed
-op_assign
-id|ret_buffer-&gt;length
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_get_crs_method_data&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* already validated params, so we won&squot;t repeat here */
-multiline_comment|/*&n;&t; *  Execute the method, no parameters&n;&t; */
+multiline_comment|/* Parameters guaranteed valid by caller */
+multiline_comment|/*&n;&t; * Execute the method, no parameters&n;&t; */
 id|status
 op_assign
 id|acpi_ns_evaluate_relative
@@ -228,7 +222,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The return object will be a buffer, but check the&n;&t; *  parameters.  If the return object is not a buffer,&n;&t; *  then the underlying AML code is corrupt or improperly&n;&t; *  written.&n;&t; */
+multiline_comment|/*&n;&t; * The return object will be a buffer, but check the&n;&t; * parameters.  If the return object is not a buffer,&n;&t; * then the underlying AML code is corrupt or improperly&n;&t; * written.&n;&t; */
 r_if
 c_cond
 (paren
@@ -237,6 +231,20 @@ op_ne
 id|ret_obj-&gt;common.type
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;_CRS did not return a Buffer, returned %s&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|ret_obj-&gt;common.type
+)paren
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_OPERAND_TYPE
@@ -245,23 +253,15 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Make the call to create a resource linked list from the&n;&t; *  byte stream buffer that comes back from the _CRS method&n;&t; *  execution.&n;&t; */
+multiline_comment|/*&n;&t; * Make the call to create a resource linked list from the&n;&t; * byte stream buffer that comes back from the _CRS method&n;&t; * execution.&n;&t; */
 id|status
 op_assign
 id|acpi_rs_create_resource_list
 (paren
 id|ret_obj
 comma
-id|ret_buffer-&gt;pointer
-comma
-op_amp
-id|buffer_space_needed
+id|ret_buffer
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Tell the user how much of the buffer we have used or is needed&n;&t; *  and return the final status.&n;&t; */
-id|ret_buffer-&gt;length
-op_assign
-id|buffer_space_needed
 suffix:semicolon
 multiline_comment|/* On exit, we must delete the object returned by evaluate_object */
 id|cleanup
@@ -297,18 +297,13 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
-id|buffer_space_needed
-op_assign
-id|ret_buffer-&gt;length
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_get_prs_method_data&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* already validated params, so we won&squot;t repeat here */
-multiline_comment|/*&n;&t; *  Execute the method, no parameters&n;&t; */
+multiline_comment|/* Parameters guaranteed valid by caller */
+multiline_comment|/*&n;&t; * Execute the method, no parameters&n;&t; */
 id|status
 op_assign
 id|acpi_ns_evaluate_relative
@@ -361,7 +356,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The return object will be a buffer, but check the&n;&t; *  parameters.  If the return object is not a buffer,&n;&t; *  then the underlying AML code is corrupt or improperly&n;&t; *  written..&n;&t; */
+multiline_comment|/*&n;&t; * The return object will be a buffer, but check the&n;&t; * parameters.  If the return object is not a buffer,&n;&t; * then the underlying AML code is corrupt or improperly&n;&t; * written..&n;&t; */
 r_if
 c_cond
 (paren
@@ -370,6 +365,20 @@ op_ne
 id|ret_obj-&gt;common.type
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;_PRS did not return a Buffer, returned %s&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|ret_obj-&gt;common.type
+)paren
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_OPERAND_TYPE
@@ -378,23 +387,15 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Make the call to create a resource linked list from the&n;&t; *  byte stream buffer that comes back from the _CRS method&n;&t; *  execution.&n;&t; */
+multiline_comment|/*&n;&t; * Make the call to create a resource linked list from the&n;&t; * byte stream buffer that comes back from the _CRS method&n;&t; * execution.&n;&t; */
 id|status
 op_assign
 id|acpi_rs_create_resource_list
 (paren
 id|ret_obj
 comma
-id|ret_buffer-&gt;pointer
-comma
-op_amp
-id|buffer_space_needed
+id|ret_buffer
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Tell the user how much of the buffer we have used or is needed&n;&t; *  and return the final status.&n;&t; */
-id|ret_buffer-&gt;length
-op_assign
-id|buffer_space_needed
 suffix:semicolon
 multiline_comment|/* On exit, we must delete the object returned by evaluate_object */
 id|cleanup
@@ -433,89 +434,28 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u8
-op_star
-id|byte_stream
-op_assign
-l_int|NULL
+id|acpi_buffer
+id|buffer
 suffix:semicolon
-id|u32
-id|buffer_size_needed
-op_assign
-l_int|0
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_set_srs_method_data&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* already validated params, so we won&squot;t repeat here */
-multiline_comment|/*&n;&t; * The In_buffer parameter will point to a linked list of&n;&t; * resource parameters.  It needs to be formatted into a&n;&t; * byte stream to be sent in as an input parameter.&n;&t; */
-id|buffer_size_needed
+multiline_comment|/* Parameters guaranteed valid by caller */
+multiline_comment|/*&n;&t; * The In_buffer parameter will point to a linked list of&n;&t; * resource parameters.  It needs to be formatted into a&n;&t; * byte stream to be sent in as an input parameter to _SRS&n;&t; *&n;&t; * Convert the linked list into a byte stream&n;&t; */
+id|buffer.length
 op_assign
-l_int|0
+id|ACPI_ALLOCATE_LOCAL_BUFFER
 suffix:semicolon
-multiline_comment|/*&n;&t; * First call is to get the buffer size needed&n;&t; */
 id|status
 op_assign
 id|acpi_rs_create_byte_stream
 (paren
 id|in_buffer-&gt;pointer
 comma
-id|byte_stream
-comma
 op_amp
-id|buffer_size_needed
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We expect a return of AE_BUFFER_OVERFLOW&n;&t; * if not, exit with the error&n;&t; */
-r_if
-c_cond
-(paren
-id|AE_BUFFER_OVERFLOW
-op_ne
-id|status
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Allocate the buffer needed&n;&t; */
-id|byte_stream
-op_assign
-id|ACPI_MEM_CALLOCATE
-(paren
-id|buffer_size_needed
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|byte_stream
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Now call to convert the linked list into a byte stream&n;&t; */
-id|status
-op_assign
-id|acpi_rs_create_byte_stream
-(paren
-id|in_buffer-&gt;pointer
-comma
-id|byte_stream
-comma
-op_amp
-id|buffer_size_needed
+id|buffer
 )paren
 suffix:semicolon
 r_if
@@ -527,8 +467,10 @@ id|status
 )paren
 )paren
 (brace
-r_goto
-id|cleanup
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Init the param object&n;&t; */
@@ -552,22 +494,18 @@ l_int|0
 )braket
 )paren
 (brace
-id|status
-op_assign
-id|AE_NO_MEMORY
+id|acpi_os_free
+(paren
+id|buffer.pointer
+)paren
 suffix:semicolon
-r_goto
-id|cleanup
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
-id|params
-(braket
-l_int|1
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/*&n;&t; *  Set up the parameter object&n;&t; */
+multiline_comment|/*&n;&t; * Set up the parameter object&n;&t; */
 id|params
 (braket
 l_int|0
@@ -575,7 +513,7 @@ l_int|0
 op_member_access_from_pointer
 id|buffer.length
 op_assign
-id|buffer_size_needed
+id|buffer.length
 suffix:semicolon
 id|params
 (braket
@@ -584,7 +522,14 @@ l_int|0
 op_member_access_from_pointer
 id|buffer.pointer
 op_assign
-id|byte_stream
+id|buffer.pointer
+suffix:semicolon
+id|params
+(braket
+l_int|1
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Execute the method, no return value&n;&t; */
 id|status
@@ -600,6 +545,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Clean up and return the status from Acpi_ns_evaluate_relative&n;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|params
@@ -608,9 +554,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clean up and return the status from Acpi_ns_evaluate_relative&n;&t; */
-id|cleanup
-suffix:colon
 id|return_ACPI_STATUS
 (paren
 id|status

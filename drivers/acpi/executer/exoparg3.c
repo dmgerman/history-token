@@ -1,12 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg3 - AML execution - opcodes with 3 arguments&n; *              $Revision: 3 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg3 - AML execution - opcodes with 3 arguments&n; *              $Revision: 9 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exoparg3&quot;
 )paren
@@ -41,7 +41,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_3A_0T_0R&quot;
 comma
@@ -171,7 +171,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
@@ -186,8 +186,6 @@ id|AE_AML_BAD_OPCODE
 suffix:semicolon
 r_goto
 id|cleanup
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 id|cleanup
@@ -240,7 +238,7 @@ suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_3A_1T_1R&quot;
 comma
@@ -382,14 +380,16 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-r_return
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Copy the portion requested */
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|buffer
 comma
@@ -419,7 +419,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
@@ -434,8 +434,6 @@ id|AE_AML_BAD_OPCODE
 suffix:semicolon
 r_goto
 id|cleanup
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Store the result in the target */

@@ -1,12 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_PARSER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psargs&quot;
 )paren
@@ -28,7 +28,7 @@ id|length
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_get_next_package_length&quot;
 )paren
@@ -38,7 +38,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
@@ -77,7 +77,7 @@ id|length
 op_assign
 (paren
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
@@ -105,7 +105,7 @@ id|length
 op_assign
 (paren
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 op_plus
@@ -116,7 +116,7 @@ l_int|12
 )paren
 op_or
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
@@ -145,7 +145,7 @@ id|length
 op_assign
 (paren
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 op_plus
@@ -156,7 +156,7 @@ l_int|20
 )paren
 op_or
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 op_plus
@@ -167,7 +167,7 @@ l_int|12
 )paren
 op_or
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
@@ -215,7 +215,7 @@ suffix:semicolon
 id|NATIVE_UINT
 id|length
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_get_next_package_end&quot;
 )paren
@@ -265,7 +265,7 @@ suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_get_next_namestring&quot;
 )paren
@@ -276,7 +276,7 @@ c_loop
 (paren
 id|acpi_ps_is_prefix_char
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|end
 )paren
@@ -292,7 +292,7 @@ multiline_comment|/* Decode the path */
 r_switch
 c_cond
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|end
 )paren
@@ -339,7 +339,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|end
 op_plus
@@ -423,7 +423,7 @@ id|acpi_parse_object
 op_star
 id|count
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_get_next_namepath&quot;
 )paren
@@ -647,7 +647,7 @@ suffix:semicolon
 id|acpi_generic_state
 id|scope_info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_get_next_namepath&quot;
 )paren
@@ -722,11 +722,11 @@ id|path
 comma
 id|ACPI_TYPE_ANY
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_SEARCH_PARENT
+id|ACPI_NS_SEARCH_PARENT
 op_or
-id|NS_DONT_OPEN_SCOPE
+id|ACPI_NS_DONT_OPEN_SCOPE
 comma
 l_int|NULL
 comma
@@ -809,7 +809,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|method_node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|method_node
+)paren
 )paren
 (brace
 id|return_VOID
@@ -819,7 +822,10 @@ op_star
 id|arg_count
 op_assign
 (paren
-id|method_node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|method_node
+)paren
 )paren
 op_member_access_from_pointer
 id|method.param_count
@@ -864,7 +870,7 @@ op_star
 id|arg
 )paren
 (brace
-id|FUNCTION_TRACE_U32
+id|ACPI_FUNCTION_TRACE_U32
 (paren
 l_string|&quot;Ps_get_next_simple_arg&quot;
 comma
@@ -892,7 +898,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
@@ -913,7 +919,7 @@ id|AML_WORD_OP
 )paren
 suffix:semicolon
 multiline_comment|/* Get 2 bytes from the AML stream */
-id|MOVE_UNALIGNED16_TO_32
+id|ACPI_MOVE_UNALIGNED16_TO_32
 (paren
 op_amp
 id|arg-&gt;value.integer
@@ -938,7 +944,7 @@ id|AML_DWORD_OP
 )paren
 suffix:semicolon
 multiline_comment|/* Get 4 bytes from the AML stream */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|arg-&gt;value.integer
@@ -963,7 +969,7 @@ id|AML_QWORD_OP
 )paren
 suffix:semicolon
 multiline_comment|/* Get 8 bytes from the AML stream */
-id|MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_UNALIGNED64_TO_64
 (paren
 op_amp
 id|arg-&gt;value.integer
@@ -998,7 +1004,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
@@ -1069,7 +1075,7 @@ suffix:semicolon
 id|u32
 id|name
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_get_next_field&quot;
 )paren
@@ -1078,7 +1084,7 @@ multiline_comment|/* determine field type */
 r_switch
 c_cond
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
@@ -1146,7 +1152,7 @@ r_case
 id|AML_INT_NAMEDFIELD_OP
 suffix:colon
 multiline_comment|/* Get the 4-character name */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|name
@@ -1191,28 +1197,30 @@ suffix:semicolon
 r_case
 id|AML_INT_ACCESSFIELD_OP
 suffix:colon
-multiline_comment|/* Get Access_type and Access_atrib and merge into the field Op */
-id|field-&gt;value.integer
+multiline_comment|/*&n;&t;&t;&t; * Get Access_type and Access_attrib and merge into the field Op&n;&t;&t;&t; * Access_type is first operand, Access_attribute is second&n;&t;&t;&t; */
+id|field-&gt;value.integer32
 op_assign
 (paren
-(paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
 op_lshift
 l_int|8
 )paren
-op_or
-id|GET8
+suffix:semicolon
+id|parser_state-&gt;aml
+op_increment
+suffix:semicolon
+id|field-&gt;value.integer32
+op_or_assign
+id|ACPI_GET8
 (paren
 id|parser_state-&gt;aml
 )paren
-)paren
 suffix:semicolon
 id|parser_state-&gt;aml
-op_add_assign
-l_int|2
+op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1261,7 +1269,7 @@ suffix:semicolon
 id|u32
 id|subop
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ps_get_next_arg&quot;
 comma
@@ -1459,6 +1467,9 @@ id|ARGP_TARGET
 suffix:colon
 r_case
 id|ARGP_SUPERNAME
+suffix:colon
+r_case
+id|ARGP_SIMPLENAME
 suffix:colon
 (brace
 id|subop

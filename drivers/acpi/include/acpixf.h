@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acpixf.h - External interfaces to the ACPI subsystem&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACXFACE_H__
 DECL|macro|__ACXFACE_H__
 mdefine_line|#define __ACXFACE_H__
@@ -58,6 +58,12 @@ id|acpi_format_exception
 (paren
 id|acpi_status
 id|exception
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_purge_cached_objects
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ACPI Memory manager&n; */
@@ -238,6 +244,45 @@ op_star
 id|ret_handle
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_attach_data
+(paren
+id|acpi_handle
+id|obj_handle
+comma
+id|ACPI_OBJECT_HANDLER
+id|handler
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_detach_data
+(paren
+id|acpi_handle
+id|obj_handle
+comma
+id|ACPI_OBJECT_HANDLER
+id|handler
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_get_data
+(paren
+id|acpi_handle
+id|obj_handle
+comma
+id|ACPI_OBJECT_HANDLER
+id|handler
+comma
+r_void
+op_star
+op_star
+id|data
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Object manipulation and enumeration&n; */
 id|acpi_status
 id|acpi_evaluate_object
@@ -415,13 +460,19 @@ suffix:semicolon
 id|acpi_status
 id|acpi_acquire_global_lock
 (paren
-r_void
+id|u32
+id|timeout
+comma
+id|u32
+op_star
+id|handle
 )paren
 suffix:semicolon
 id|acpi_status
 id|acpi_release_global_lock
 (paren
-r_void
+id|u32
+id|handle
 )paren
 suffix:semicolon
 id|acpi_status
@@ -545,6 +596,13 @@ id|acpi_get_firmware_waking_vector
 id|ACPI_PHYSICAL_ADDRESS
 op_star
 id|physical_address
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_enter_sleep_state_prep
+(paren
+id|u8
+id|sleep_state
 )paren
 suffix:semicolon
 id|acpi_status

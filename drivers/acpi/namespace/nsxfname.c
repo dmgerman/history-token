@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 82 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsxfname&quot;
 )paren
@@ -44,7 +44,7 @@ id|prefix_node
 op_assign
 l_int|NULL
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -72,11 +72,28 @@ c_cond
 id|parent
 )paren
 (brace
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|prefix_node
 op_assign
 id|acpi_ns_map_handle_to_node
@@ -91,6 +108,9 @@ op_logical_neg
 id|prefix_node
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -102,21 +122,38 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Special case for root, since we can&squot;t search for it */
 r_if
 c_cond
 (paren
-id|STRCMP
+id|ACPI_STRCMP
 (paren
 id|pathname
 comma
-id|NS_ROOT_PATH
+id|ACPI_NS_ROOT_PATH
 )paren
 op_eq
 l_int|0
@@ -139,11 +176,13 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  Find the Node and convert to a handle&n;&t; */
 id|status
 op_assign
-id|acpi_ns_get_node
+id|acpi_ns_get_node_by_path
 (paren
 id|pathname
 comma
 id|prefix_node
+comma
+id|ACPI_NS_NO_UPSEARCH
 comma
 op_amp
 id|node
@@ -178,7 +217,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_name&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to a pathname&n; *              Name_type       - Full pathname or single segment&n; *              Ret_path_ptr    - Buffer for returned path&n; *&n; * RETURN:      Pointer to a string containing the fully qualified Name.&n; *&n; * DESCRIPTION: This routine returns the fully qualified name associated with&n; *              the Handle parameter.  This and the Acpi_pathname_to_handle are&n; *              complementary functions.&n; *&n; ******************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_name&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to a pathname&n; *              Name_type       - Full pathname or single segment&n; *              Buffer          - Buffer for returned path&n; *&n; * RETURN:      Pointer to a string containing the fully qualified Name.&n; *&n; * DESCRIPTION: This routine returns the fully qualified name associated with&n; *              the Handle parameter.  This and the Acpi_pathname_to_handle are&n; *              complementary functions.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_name
 id|acpi_get_name
@@ -191,7 +230,7 @@ id|name_type
 comma
 id|acpi_buffer
 op_star
-id|ret_path_ptr
+id|buffer
 )paren
 (brace
 id|acpi_status
@@ -201,18 +240,13 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-multiline_comment|/* Buffer pointer must be valid always */
+multiline_comment|/* Parameter validation */
 r_if
 c_cond
-(paren
-op_logical_neg
-id|ret_path_ptr
-op_logical_or
 (paren
 id|name_type
 OG
 id|ACPI_NAME_TYPE_MAX
-)paren
 )paren
 (brace
 r_return
@@ -221,23 +255,25 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Allow length to be zero and ignore the pointer */
+id|status
+op_assign
+id|acpi_ut_validate_buffer
+(paren
+id|buffer
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|ACPI_FAILURE
 (paren
-id|ret_path_ptr-&gt;length
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|ret_path_ptr-&gt;pointer
+id|status
 )paren
 )paren
 (brace
 r_return
 (paren
-id|AE_BAD_PARAMETER
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -256,10 +292,7 @@ id|acpi_ns_handle_to_pathname
 (paren
 id|handle
 comma
-op_amp
-id|ret_path_ptr-&gt;length
-comma
-id|ret_path_ptr-&gt;pointer
+id|buffer
 )paren
 suffix:semicolon
 r_return
@@ -268,12 +301,29 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Wants the single segment ACPI name.&n;&t; * Validate handle and convert to an Node&n;&t; */
+multiline_comment|/*&n;&t; * Wants the single segment ACPI name.&n;&t; * Validate handle and convert to a namespace Node&n;&t; */
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|node
 op_assign
 id|acpi_ns_map_handle_to_node
@@ -296,31 +346,33 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/* Check if name will fit in buffer */
+multiline_comment|/* Validate/Allocate/Clear caller buffer */
+id|status
+op_assign
+id|acpi_ut_initialize_buffer
+(paren
+id|buffer
+comma
+id|PATH_SEGMENT_LENGTH
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret_path_ptr-&gt;length
-OL
-id|PATH_SEGMENT_LENGTH
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
 )paren
 (brace
-id|ret_path_ptr-&gt;length
-op_assign
-id|PATH_SEGMENT_LENGTH
-suffix:semicolon
-id|status
-op_assign
-id|AE_BUFFER_OVERFLOW
-suffix:semicolon
 r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
 multiline_comment|/* Just copy the ACPI name from the Node and zero terminate it */
-id|STRNCPY
+id|ACPI_STRNCPY
 (paren
-id|ret_path_ptr-&gt;pointer
+id|buffer-&gt;pointer
 comma
 (paren
 id|NATIVE_CHAR
@@ -337,7 +389,7 @@ suffix:semicolon
 id|NATIVE_CHAR
 op_star
 )paren
-id|ret_path_ptr-&gt;pointer
+id|buffer-&gt;pointer
 )paren
 (braket
 id|ACPI_NAME_SIZE
@@ -351,6 +403,9 @@ id|AE_OK
 suffix:semicolon
 id|unlock_and_exit
 suffix:colon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -415,11 +470,28 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|node
 op_assign
 id|acpi_ns_map_handle_to_node
@@ -434,6 +506,9 @@ op_logical_neg
 id|node
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -453,11 +528,28 @@ id|info-&gt;name
 op_assign
 id|node-&gt;name
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If not a device, we are all done.&n;&t; */
 r_if
 c_cond
@@ -498,7 +590,7 @@ id|status
 )paren
 )paren
 (brace
-id|STRNCPY
+id|ACPI_STRNCPY
 (paren
 id|info-&gt;hardware_id
 comma
@@ -535,7 +627,7 @@ id|status
 )paren
 )paren
 (brace
-id|STRCPY
+id|ACPI_STRCPY
 (paren
 id|info-&gt;unique_id
 comma

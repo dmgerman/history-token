@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 50 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -9,7 +9,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswload&quot;
 )paren
@@ -96,8 +96,6 @@ r_return
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 r_return
 (paren
@@ -131,14 +129,14 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|acpi_object_type8
-id|data_type
+id|acpi_object_type
+id|object_type
 suffix:semicolon
 id|NATIVE_CHAR
 op_star
 id|path
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_load1_begin_op&quot;
 )paren
@@ -160,6 +158,32 @@ id|walk_state
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op
+op_logical_and
+(paren
+id|op-&gt;opcode
+op_eq
+id|AML_INT_NAMEDFIELD_OP
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Op=%p State=%p&bslash;n&quot;
+comma
+id|op
+comma
+id|walk_state
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* We are only interested in opcodes that have an associated name */
 r_if
 c_cond
@@ -217,12 +241,9 @@ id|walk_state-&gt;parser_state
 )paren
 suffix:semicolon
 multiline_comment|/* Map the raw opcode into an internal object type */
-id|data_type
+id|object_type
 op_assign
-id|acpi_ds_map_named_opcode_to_data_type
-(paren
-id|walk_state-&gt;opcode
-)paren
+id|walk_state-&gt;op_info-&gt;object_type
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -235,34 +256,10 @@ id|walk_state
 comma
 id|op
 comma
-id|data_type
+id|object_type
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|walk_state-&gt;opcode
-op_eq
-id|AML_SCOPE_OP
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_DISPATCH
-comma
-l_string|&quot;State=%p Op=%p Type=%x&bslash;n&quot;
-comma
-id|walk_state
-comma
-id|op
-comma
-id|data_type
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Enter the named type into the internal namespace.  We enter the name&n;&t; * as we go downward in the parse tree.  Any necessary subobjects that involve&n;&t; * arguments to the opcode must be created as we go back up the parse tree later.&n;&t; */
 id|status
 op_assign
@@ -272,11 +269,11 @@ id|walk_state-&gt;scope_info
 comma
 id|path
 comma
-id|data_type
+id|object_type
 comma
-id|IMODE_LOAD_PASS1
+id|ACPI_IMODE_LOAD_PASS1
 comma
-id|NS_NO_UPSEARCH
+id|ACPI_NS_NO_UPSEARCH
 comma
 id|walk_state
 comma
@@ -384,10 +381,10 @@ id|acpi_parse_object
 op_star
 id|op
 suffix:semicolon
-id|acpi_object_type8
-id|data_type
+id|acpi_object_type
+id|object_type
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_load1_end_op&quot;
 )paren
@@ -417,7 +414,11 @@ op_logical_neg
 (paren
 id|walk_state-&gt;op_info-&gt;flags
 op_amp
+(paren
 id|AML_NAMED
+op_or
+id|AML_FIELD
+)paren
 )paren
 )paren
 (brace
@@ -427,14 +428,95 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the type to determine if we should pop the scope */
-id|data_type
+multiline_comment|/* Get the object type to determine if we should pop the scope */
+id|object_type
 op_assign
-id|acpi_ds_map_named_opcode_to_data_type
+id|walk_state-&gt;op_info-&gt;object_type
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|op-&gt;opcode
+id|walk_state-&gt;op_info-&gt;flags
+op_amp
+id|AML_FIELD
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|walk_state-&gt;opcode
+op_eq
+id|AML_FIELD_OP
+op_logical_or
+id|walk_state-&gt;opcode
+op_eq
+id|AML_BANK_FIELD_OP
+op_logical_or
+id|walk_state-&gt;opcode
+op_eq
+id|AML_INDEX_FIELD_OP
+)paren
+(brace
+id|acpi_ds_init_field_objects
+(paren
+id|op
+comma
+id|walk_state
 )paren
 suffix:semicolon
+)brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|op-&gt;opcode
+op_eq
+id|AML_REGION_OP
+)paren
+(brace
+multiline_comment|/*Status = */
+id|acpi_ex_create_region
+(paren
+(paren
+(paren
+id|acpi_parse2_object
+op_star
+)paren
+id|op
+)paren
+op_member_access_from_pointer
+id|data
+comma
+(paren
+(paren
+id|acpi_parse2_object
+op_star
+)paren
+id|op
+)paren
+op_member_access_from_pointer
+id|length
+comma
+(paren
+id|ACPI_ADR_SPACE_TYPE
+)paren
+(paren
+(paren
+id|op-&gt;value.arg
+)paren
+op_member_access_from_pointer
+id|value.integer
+)paren
+comma
+id|walk_state
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -443,40 +525,34 @@ op_eq
 id|AML_NAME_OP
 )paren
 (brace
-multiline_comment|/* For Name opcode, check the argument */
+multiline_comment|/* For Name opcode, get the object type from the argument */
 r_if
 c_cond
 (paren
 id|op-&gt;value.arg
 )paren
 (brace
-id|data_type
+id|object_type
 op_assign
-id|acpi_ds_map_opcode_to_data_type
+(paren
+id|acpi_ps_get_opcode_info
 (paren
 (paren
 id|op-&gt;value.arg
 )paren
 op_member_access_from_pointer
 id|opcode
-comma
-l_int|NULL
 )paren
-suffix:semicolon
-(paren
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-id|op-&gt;node
 )paren
 op_member_access_from_pointer
-id|type
+id|object_type
+suffix:semicolon
+id|op-&gt;node-&gt;type
 op_assign
 (paren
 id|u8
 )paren
-id|data_type
+id|object_type
 suffix:semicolon
 )brace
 )brace
@@ -486,7 +562,7 @@ c_cond
 (paren
 id|acpi_ns_opens_scope
 (paren
-id|data_type
+id|object_type
 )paren
 )paren
 (brace
@@ -499,7 +575,7 @@ l_string|&quot;(%s): Popping scope for Op %p&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|data_type
+id|object_type
 )paren
 comma
 id|op
@@ -544,8 +620,8 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|acpi_object_type8
-id|data_type
+id|acpi_object_type
+id|object_type
 suffix:semicolon
 id|NATIVE_CHAR
 op_star
@@ -557,7 +633,7 @@ id|original
 op_assign
 l_int|NULL
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_load2_begin_op&quot;
 )paren
@@ -589,6 +665,7 @@ multiline_comment|/* We only care about Namespace opcodes here */
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 (paren
 id|walk_state-&gt;op_info-&gt;flags
@@ -596,26 +673,20 @@ op_amp
 id|AML_NSOPCODE
 )paren
 op_logical_and
+(paren
 id|walk_state-&gt;opcode
 op_ne
 id|AML_INT_NAMEPATH_OP
 )paren
-(brace
-r_return
-(paren
-id|AE_OK
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* TBD: [Restructure] Temp! same code as in psparse */
-r_if
-c_cond
+op_logical_or
 (paren
 op_logical_neg
 (paren
 id|walk_state-&gt;op_info-&gt;flags
 op_amp
 id|AML_NAMED
+)paren
 )paren
 )paren
 (brace
@@ -678,6 +749,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Get the namestring from the raw AML */
 id|buffer_ptr
 op_assign
 id|acpi_ps_get_next_namestring
@@ -687,13 +759,10 @@ id|walk_state-&gt;parser_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Map the raw opcode into an internal object type */
-id|data_type
+multiline_comment|/* Map the opcode into an internal object type */
+id|object_type
 op_assign
-id|acpi_ds_map_named_opcode_to_data_type
-(paren
-id|walk_state-&gt;opcode
-)paren
+id|walk_state-&gt;op_info-&gt;object_type
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -706,7 +775,7 @@ id|walk_state
 comma
 id|op
 comma
-id|data_type
+id|object_type
 )paren
 )paren
 suffix:semicolon
@@ -753,11 +822,11 @@ id|walk_state-&gt;scope_info
 comma
 id|buffer_ptr
 comma
-id|data_type
+id|object_type
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_SEARCH_PARENT
+id|ACPI_NS_SEARCH_PARENT
 comma
 id|walk_state
 comma
@@ -791,7 +860,7 @@ c_cond
 (paren
 id|acpi_ns_opens_scope
 (paren
-id|data_type
+id|object_type
 )paren
 )paren
 (brace
@@ -801,7 +870,7 @@ id|acpi_ds_scope_stack_push
 (paren
 id|node
 comma
-id|data_type
+id|object_type
 comma
 id|walk_state
 )paren
@@ -837,11 +906,11 @@ id|walk_state-&gt;scope_info
 comma
 id|buffer_ptr
 comma
-id|data_type
+id|object_type
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_NO_UPSEARCH
+id|ACPI_NS_NO_UPSEARCH
 comma
 id|walk_state
 comma
@@ -889,7 +958,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize */
+multiline_comment|/* Initialize the new op */
 (paren
 (paren
 id|acpi_parse2_object
@@ -981,8 +1050,8 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|acpi_object_type8
-id|data_type
+id|acpi_object_type
+id|object_type
 suffix:semicolon
 id|acpi_namespace_node
 op_star
@@ -999,7 +1068,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_load2_end_op&quot;
 )paren
@@ -1013,7 +1082,9 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Op=%p State=%p&bslash;n&quot;
+l_string|&quot;Opcode [%s] Op %p State %p&bslash;n&quot;
+comma
+id|walk_state-&gt;op_info-&gt;name
 comma
 id|op
 comma
@@ -1073,8 +1144,7 @@ id|op
 op_member_access_from_pointer
 id|name
 op_eq
-op_minus
-l_int|1
+id|ACPI_UINT16_MAX
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1097,12 +1167,9 @@ id|AE_OK
 suffix:semicolon
 )brace
 )brace
-id|data_type
+id|object_type
 op_assign
-id|acpi_ds_map_named_opcode_to_data_type
-(paren
-id|op-&gt;opcode
-)paren
+id|walk_state-&gt;op_info-&gt;object_type
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the Node/name from the earlier lookup&n;&t; * (It was saved in the *op structure)&n;&t; */
 id|node
@@ -1131,7 +1198,7 @@ c_cond
 (paren
 id|acpi_ns_opens_scope
 (paren
-id|data_type
+id|object_type
 )paren
 )paren
 (brace
@@ -1144,7 +1211,7 @@ l_string|&quot;(%s) Popping scope for Op %p&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|data_type
+id|object_type
 )paren
 comma
 id|op
@@ -1207,10 +1274,6 @@ suffix:semicolon
 r_case
 id|AML_TYPE_NAMED_FIELD
 suffix:colon
-id|arg
-op_assign
-id|op-&gt;value.arg
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1384,8 +1447,6 @@ suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 multiline_comment|/* Delete operands */
 r_for
@@ -1433,7 +1494,7 @@ id|op-&gt;opcode
 r_case
 id|AML_METHOD_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Method_op Pkg_length Names_string Method_flags Term_list&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Method_op Pkg_length Name_string Method_flags Term_list&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1453,7 +1514,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
 )paren
 (brace
 id|status
@@ -1512,38 +1576,43 @@ r_case
 id|AML_REGION_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * The Op_region is not fully parsed at this time. Only valid argument is the Space_id.&n;&t;&t;&t; * (We must save the address of the AML of the address and length operands)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If we have a valid region, initialize it&n;&t;&t;&t; * Namespace is NOT locked at this point.&n;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_ex_create_region
+id|acpi_ev_initialize_region
 (paren
+id|acpi_ns_get_attached_object
 (paren
-(paren
-id|acpi_parse2_object
-op_star
+id|node
 )paren
-id|op
-)paren
-op_member_access_from_pointer
-id|data
 comma
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|length
-comma
-(paren
-id|ACPI_ADR_SPACE_TYPE
-)paren
-id|arg-&gt;value.integer
-comma
-id|walk_state
+id|FALSE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; *  If AE_NOT_EXIST is returned, it is not fatal&n;&t;&t;&t;&t; *  because many regions get created before a handler&n;&t;&t;&t;&t; *  is installed for said region.&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|AE_NOT_EXIST
+op_eq
+id|status
+)paren
+(brace
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1600,11 +1669,11 @@ id|arg-&gt;value.string
 comma
 id|ACPI_TYPE_ANY
 comma
-id|IMODE_LOAD_PASS2
+id|ACPI_IMODE_LOAD_PASS2
 comma
-id|NS_SEARCH_PARENT
+id|ACPI_NS_SEARCH_PARENT
 op_or
-id|NS_DONT_OPEN_SCOPE
+id|ACPI_NS_DONT_OPEN_SCOPE
 comma
 id|walk_state
 comma
@@ -1623,9 +1692,20 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* TBD: has name already been resolved by here ??*/
-multiline_comment|/* TBD: [Restructure] Make sure that what we found is indeed a method! */
-multiline_comment|/* We didn&squot;t search for a method on purpose, to see if the name would resolve! */
+multiline_comment|/*&n;&t;&t;&t; * Make sure that what we found is indeed a method&n;&t;&t;&t; * We didn&squot;t search for a method on purpose, to see if the name would resolve&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|new_node-&gt;type
+op_ne
+id|ACPI_TYPE_METHOD
+)paren
+(brace
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
+)brace
 multiline_comment|/* We could put the returned object (Node) on the object stack for later, but&n;&t;&t;&t; * for now, we will put it in the &quot;op&quot; object that the parser uses, so we&n;&t;&t;&t; * can get it again at the end of this scope&n;&t;&t;&t; */
 id|op-&gt;node
 op_assign

@@ -1,24 +1,18 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *              $Revision: 102 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *              $Revision: 109 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utinit&quot;
 )paren
-DECL|macro|ACPI_OFFSET
-mdefine_line|#define ACPI_OFFSET(d,o)    ((u32) &amp;(((d *)0)-&gt;o))
-DECL|macro|ACPI_FADT_OFFSET
-mdefine_line|#define ACPI_FADT_OFFSET(o) ACPI_OFFSET (FADT_DESCRIPTOR, o)
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_fadt_register_error&n; *&n; * PARAMETERS:  *Register_name          - Pointer to string identifying register&n; *              Value                   - Actual register contents value&n; *              Acpi_test_spec_section  - TDS section containing assertion&n; *              Acpi_assertion          - Assertion number being tested&n; *&n; * RETURN:      AE_BAD_VALUE&n; *&n; * DESCRIPTION: Display failure message and link failure to TDS assertion&n; *&n; ******************************************************************************/
 r_static
-id|acpi_status
+r_void
 DECL|function|acpi_ut_fadt_register_error
 id|acpi_ut_fadt_register_error
 (paren
@@ -29,11 +23,11 @@ comma
 id|u32
 id|value
 comma
-id|u32
+id|ACPI_SIZE
 id|offset
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Invalid FADT value %s=%lX at offset %lX FADT=%p&bslash;n&quot;
@@ -48,11 +42,6 @@ id|acpi_gbl_FADT
 )paren
 )paren
 suffix:semicolon
-r_return
-(paren
-id|AE_BAD_VALUE
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_validate_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate various ACPI registers in the FADT&n; *&n; ******************************************************************************/
 id|acpi_status
@@ -62,11 +51,6 @@ id|acpi_ut_validate_fadt
 r_void
 )paren
 (brace
-id|acpi_status
-id|status
-op_assign
-id|AE_OK
-suffix:semicolon
 multiline_comment|/*&n;&t; * Verify Fixed ACPI Description Table fields,&n;&t; * but don&squot;t abort on any problems, just display error&n;&t; */
 r_if
 c_cond
@@ -76,8 +60,6 @@ OL
 l_int|4
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;PM1_EVT_LEN&quot;
@@ -101,8 +83,6 @@ op_logical_neg
 id|acpi_gbl_FADT-&gt;pm1_cnt_len
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;PM1_CNT_LEN&quot;
@@ -126,8 +106,6 @@ id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk.address
 )paren
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;X_PM1a_EVT_BLK&quot;
@@ -151,8 +129,6 @@ id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk.address
 )paren
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;X_PM1a_CNT_BLK&quot;
@@ -176,8 +152,6 @@ id|acpi_gbl_FADT-&gt;Xpm_tmr_blk.address
 )paren
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;X_PM_TMR_BLK&quot;
@@ -205,8 +179,6 @@ id|acpi_gbl_FADT-&gt;pm2_cnt_len
 )paren
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;PM2_CNT_LEN&quot;
@@ -231,8 +203,6 @@ OL
 l_int|4
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;PM_TM_LEN&quot;
@@ -249,24 +219,22 @@ id|pm_tm_len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* length of GPE blocks must be a multiple of 2 */
+multiline_comment|/* Length of GPE blocks must be a multiple of 2 */
 r_if
 c_cond
 (paren
 id|ACPI_VALID_ADDRESS
 (paren
-id|acpi_gbl_FADT-&gt;Xgpe0blk.address
+id|acpi_gbl_FADT-&gt;Xgpe0_blk.address
 )paren
 op_logical_and
 (paren
-id|acpi_gbl_FADT-&gt;gpe0blk_len
+id|acpi_gbl_FADT-&gt;gpe0_blk_len
 op_amp
 l_int|1
 )paren
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;(x)GPE0_BLK_LEN&quot;
@@ -274,11 +242,11 @@ comma
 (paren
 id|u32
 )paren
-id|acpi_gbl_FADT-&gt;gpe0blk_len
+id|acpi_gbl_FADT-&gt;gpe0_blk_len
 comma
 id|ACPI_FADT_OFFSET
 (paren
-id|gpe0blk_len
+id|gpe0_blk_len
 )paren
 )paren
 suffix:semicolon
@@ -298,8 +266,6 @@ l_int|1
 )paren
 )paren
 (brace
-id|status
-op_assign
 id|acpi_ut_fadt_register_error
 (paren
 l_string|&quot;(x)GPE1_BLK_LEN&quot;
@@ -318,7 +284,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|status
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -330,36 +296,13 @@ id|acpi_ut_terminate
 r_void
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_terminate&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Free global tables, etc. */
-r_if
-c_cond
-(paren
-id|acpi_gbl_gpe0enable_register_save
-)paren
-(brace
-id|ACPI_MEM_FREE
-(paren
-id|acpi_gbl_gpe0enable_register_save
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|acpi_gbl_gpe1_enable_register_save
-)paren
-(brace
-id|ACPI_MEM_FREE
-(paren
-id|acpi_gbl_gpe1_enable_register_save
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* Nothing to do at this time */
 id|return_VOID
 suffix:semicolon
 )brace
@@ -371,7 +314,7 @@ id|acpi_ut_subsystem_shutdown
 r_void
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_subsystem_shutdown&quot;
 )paren
@@ -427,22 +370,8 @@ id|acpi_ut_terminate
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Flush the local cache(s) */
-id|acpi_ut_delete_generic_state_cache
-(paren
-)paren
-suffix:semicolon
-id|acpi_ut_delete_object_cache
-(paren
-)paren
-suffix:semicolon
-id|acpi_ds_delete_walk_state_cache
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Close the Parser */
-multiline_comment|/* TBD: [Restructure] Acpi_ps_terminate () */
-id|acpi_ps_delete_parse_cache
+multiline_comment|/* Purge the local caches */
+id|acpi_purge_cached_objects
 (paren
 )paren
 suffix:semicolon

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 120 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 134 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exoparg1&quot;
 )paren
@@ -39,7 +39,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_1A_0T_0R&quot;
 comma
@@ -49,7 +49,7 @@ id|walk_state-&gt;opcode
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Examine the opcode */
+multiline_comment|/* Examine the AML opcode */
 r_switch
 c_cond
 (paren
@@ -110,6 +110,8 @@ r_case
 id|AML_SLEEP_OP
 suffix:colon
 multiline_comment|/*  Sleep (Msec_time) */
+id|status
+op_assign
 id|acpi_ex_system_do_suspend
 (paren
 (paren
@@ -129,6 +131,8 @@ r_case
 id|AML_STALL_OP
 suffix:colon
 multiline_comment|/*  Stall (Usec_time) */
+id|status
+op_assign
 id|acpi_ex_system_do_stall
 (paren
 (paren
@@ -163,7 +167,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/*  Unknown opcode  */
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_1A_0T_0R: Unknown opcode %X&bslash;n&quot;
@@ -211,7 +215,7 @@ id|walk_state-&gt;operands
 l_int|0
 )braket
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_1A_1T_0R&quot;
 comma
@@ -221,6 +225,7 @@ id|walk_state-&gt;opcode
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Examine the AML opcode */
 r_switch
 c_cond
 (paren
@@ -243,6 +248,8 @@ id|operand
 (braket
 l_int|1
 )braket
+comma
+id|walk_state
 )paren
 suffix:semicolon
 r_break
@@ -250,7 +257,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Unknown opcode */
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_1A_1T_0R: Unknown opcode %X&bslash;n&quot;
@@ -325,7 +332,7 @@ suffix:semicolon
 id|acpi_integer
 id|digit
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_1A_1T_1R&quot;
 comma
@@ -385,6 +392,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Examine the AML opcode */
 r_switch
 c_cond
 (paren
@@ -646,7 +654,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;BCD overflow: %8.8X%8.8X&bslash;n&quot;
 comma
-id|HIDWORD
+id|ACPI_HIDWORD
 c_func
 (paren
 id|operand
@@ -657,7 +665,7 @@ op_member_access_from_pointer
 id|integer.value
 )paren
 comma
-id|LODWORD
+id|ACPI_LODWORD
 c_func
 (paren
 id|operand
@@ -753,6 +761,9 @@ l_int|0
 id|return_desc-&gt;integer.value
 op_add_assign
 (paren
+(paren
+id|acpi_integer
+)paren
 id|temp32
 op_lshift
 (paren
@@ -855,8 +866,6 @@ suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|AML_STORE_OP
 suffix:colon
@@ -915,8 +924,6 @@ id|return_ACPI_STATUS
 id|status
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 multiline_comment|/*&n;&t; * ACPI 2.0 Opcodes&n;&t; */
 r_case
 id|AML_COPY_OP
@@ -924,10 +931,18 @@ suffix:colon
 multiline_comment|/* Copy (Source, Target) */
 id|status
 op_assign
-id|AE_NOT_IMPLEMENTED
-suffix:semicolon
-r_goto
-id|cleanup
+id|acpi_ut_copy_iobject_to_iobject
+(paren
+id|operand
+(braket
+l_int|0
+)braket
+comma
+op_amp
+id|return_desc
+comma
+id|walk_state
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1023,7 +1038,6 @@ id|walk_state
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t; * These are two obsolete opcodes&n;&t; */
 r_case
 id|AML_SHIFT_LEFT_BIT_OP
 suffix:colon
@@ -1032,6 +1046,7 @@ r_case
 id|AML_SHIFT_RIGHT_BIT_OP
 suffix:colon
 multiline_comment|/*  Shift_right_bit (Source, Bit_num) */
+multiline_comment|/*&n;&t;&t; * These are two obsolete opcodes&n;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1053,12 +1068,10 @@ suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Unknown opcode */
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_1A_1T_1R: Unknown opcode %X&bslash;n&quot;
@@ -1160,7 +1173,7 @@ suffix:semicolon
 id|acpi_integer
 id|value
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_1A_0T_0R&quot;
 comma
@@ -1170,7 +1183,7 @@ id|walk_state-&gt;opcode
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Get the operand and decode the opcode */
+multiline_comment|/* Examine the AML opcode */
 r_switch
 c_cond
 (paren
@@ -1223,7 +1236,7 @@ r_case
 id|AML_INCREMENT_OP
 suffix:colon
 multiline_comment|/* Increment (Operand)  */
-multiline_comment|/*&n;&t;&t; * Since we are expecting a Reference operand, it&n;&t;&t; * can be either a Node or an internal object.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Since we are expecting a Reference operand, it&n;&t;&t; * can be either a NS Node or an internal object.&n;&t;&t; */
 id|return_desc
 op_assign
 id|operand
@@ -1234,15 +1247,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|operand
 (braket
 l_int|0
 )braket
-comma
-id|ACPI_DESC_TYPE_INTERNAL
 )paren
+op_eq
+id|ACPI_DESC_TYPE_INTERNAL
 )paren
 (brace
 multiline_comment|/* Internal reference object - prevent deletion */
@@ -1385,7 +1398,7 @@ suffix:semicolon
 r_case
 id|AML_DEBUG_OP
 suffix:colon
-multiline_comment|/* Per 1.0b spec, Debug object is of type &quot;Debug_object&quot; */
+multiline_comment|/* The Debug Object is of type &quot;Debug_object&quot; */
 id|type
 op_assign
 id|ACPI_TYPE_DEBUG_OBJECT
@@ -1464,7 +1477,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_1A_0T_1R/Type_op: Internal error - Unknown Reference subtype %X&bslash;n&quot;
@@ -1569,15 +1582,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|operand
 (braket
 l_int|0
 )braket
-comma
-id|ACPI_DESC_TYPE_NAMED
 )paren
+op_eq
+id|ACPI_DESC_TYPE_NAMED
 )paren
 (brace
 id|temp_desc
@@ -1609,6 +1622,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/*&n;&t;&t;&t; * Type is guaranteed to be a buffer, string, or package at this&n;&t;&t;&t; * point (even if the original operand was an object reference, it&n;&t;&t;&t; * will be resolved and typechecked during operand resolution.)&n;&t;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -1642,16 +1656,6 @@ id|temp_desc-&gt;package.count
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|INTERNAL_TYPE_REFERENCE
-suffix:colon
-multiline_comment|/* TBD: this must be a reference to a buf/str/pkg?? */
-id|value
-op_assign
-l_int|4
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|ACPI_DEBUG_PRINT
@@ -1659,9 +1663,12 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Not Buf/Str/Pkg - found type %X&bslash;n&quot;
+l_string|&quot;Size_of, Not Buf/Str/Pkg - found type %s&bslash;n&quot;
 comma
+id|acpi_ut_get_type_name
+(paren
 id|temp_desc-&gt;common.type
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1740,24 +1747,38 @@ suffix:semicolon
 r_case
 id|AML_DEREF_OF_OP
 suffix:colon
-multiline_comment|/* Deref_of (Obj_reference) */
-multiline_comment|/* Check for a method local or argument */
+multiline_comment|/* Deref_of (Obj_reference | String) */
+multiline_comment|/* Check for a method local or argument, or standalone String */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|operand
 (braket
 l_int|0
 )braket
-comma
+)paren
+op_ne
 id|ACPI_DESC_TYPE_NAMED
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|operand
+(braket
+l_int|0
+)braket
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Must resolve/dereference the local/arg reference first&n;&t;&t;&t; */
+r_case
+id|INTERNAL_TYPE_REFERENCE
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * This is a Deref_of (Local_x | Arg_x)&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Must resolve/dereference the local/arg reference first&n;&t;&t;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -1769,13 +1790,13 @@ op_member_access_from_pointer
 id|reference.opcode
 )paren
 (brace
-multiline_comment|/* Set Operand[0] to the value of the local/arg */
 r_case
 id|AML_LOCAL_OP
 suffix:colon
 r_case
 id|AML_ARG_OP
 suffix:colon
+multiline_comment|/* Set Operand[0] to the value of the local/arg */
 id|acpi_ds_method_data_get_value
 (paren
 id|operand
@@ -1798,7 +1819,7 @@ op_amp
 id|temp_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Delete our reference to the input object and&n;&t;&t;&t;&t; * point to the object just retrieved&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Delete our reference to the input object and&n;&t;&t;&t;&t;&t; * point to the object just retrieved&n;&t;&t;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|operand
@@ -1818,8 +1839,79 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* Index op - handled below */
+multiline_comment|/* Must be an Index op - handled below */
 r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * This is a Deref_of (String). The string is a reference to a named ACPI object.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * 1) Find the owning Node&n;&t;&t;&t;&t; * 2) Dereference the node to an actual object.  Could be a Field, so we nee&n;&t;&t;&t;&t; *    to resolve the node to a value.&n;&t;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_ns_get_node_by_path
+(paren
+id|operand
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|string.pointer
+comma
+id|walk_state-&gt;scope_info-&gt;scope.node
+comma
+id|ACPI_NS_SEARCH_PARENT
+comma
+(paren
+id|acpi_namespace_node
+op_star
+op_star
+)paren
+op_amp
+id|return_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_ex_resolve_node_to_value
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+op_star
+)paren
+op_amp
+id|return_desc
+comma
+id|walk_state
+)paren
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+r_default
+suffix:colon
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 )brace
@@ -1827,20 +1919,21 @@ multiline_comment|/* Operand[0] may have changed from the code above */
 r_if
 c_cond
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|operand
 (braket
 l_int|0
 )braket
-comma
+)paren
+op_eq
 id|ACPI_DESC_TYPE_NAMED
 )paren
-)paren
 (brace
-multiline_comment|/* Get the actual object from the Node (This is the dereference) */
+multiline_comment|/*&n;&t;&t;&t; * This is a Deref_of (Object_reference)&n;&t;&t;&t; * Get the actual object from the Node (This is the dereference).&n;&t;&t;&t; * -- This case may only happen when a Local_x or Arg_x is dereferenced above.&n;&t;&t;&t; */
 id|return_desc
 op_assign
+id|acpi_ns_get_attached_object
 (paren
 (paren
 id|acpi_namespace_node
@@ -1851,74 +1944,11 @@ id|operand
 l_int|0
 )braket
 )paren
-op_member_access_from_pointer
-id|object
-suffix:semicolon
-multiline_comment|/* Returning a pointer to the object, add another reference! */
-id|acpi_ut_add_reference
-(paren
-id|return_desc
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * This must be a reference object produced by the Index&n;&t;&t;&t; * ASL operation -- check internal opcode&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|operand
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|reference.opcode
-op_ne
-id|AML_INDEX_OP
-)paren
-op_logical_and
-(paren
-id|operand
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|reference.opcode
-op_ne
-id|AML_REF_OF_OP
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Unknown opcode in ref(%p) - %X&bslash;n&quot;
-comma
-id|operand
-(braket
-l_int|0
-)braket
-comma
-id|operand
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|reference.opcode
-)paren
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|AE_TYPE
-suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t;&t;&t; * This must be a reference object produced by either the Index() or&n;&t;&t;&t; * Ref_of() operator&n;&t;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -1933,8 +1963,8 @@ id|reference.opcode
 r_case
 id|AML_INDEX_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Supported target types for the Index operator are&n;&t;&t;&t;&t; * 1) A Buffer&n;&t;&t;&t;&t; * 2) A Package&n;&t;&t;&t;&t; */
-r_if
+multiline_comment|/*&n;&t;&t;&t;&t; * The target type for the Index operator must be&n;&t;&t;&t;&t; * either a Buffer or a Package&n;&t;&t;&t;&t; */
+r_switch
 c_cond
 (paren
 id|operand
@@ -1943,10 +1973,11 @@ l_int|0
 )braket
 op_member_access_from_pointer
 id|reference.target_type
-op_eq
-id|ACPI_TYPE_BUFFER_FIELD
 )paren
 (brace
+r_case
+id|ACPI_TYPE_BUFFER_FIELD
+suffix:colon
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * The target is a buffer, we must create a new object that&n;&t;&t;&t;&t;&t; * contains one element of the buffer, the element pointed&n;&t;&t;&t;&t;&t; * to by the index.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * NOTE: index into a buffer is NOT a pointer to a&n;&t;&t;&t;&t;&t; * sub-buffer of the main buffer, it is only a pointer to a&n;&t;&t;&t;&t;&t; * single element (byte) of the buffer!&n;&t;&t;&t;&t;&t; */
 id|return_desc
 op_assign
@@ -1970,6 +2001,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Since we are returning the value of the buffer at the&n;&t;&t;&t;&t;&t; * indexed location, we don&squot;t need to add an additional&n;&t;&t;&t;&t;&t; * reference to the buffer itself.&n;&t;&t;&t;&t;&t; */
 id|temp_desc
 op_assign
 id|operand
@@ -1991,22 +2023,11 @@ op_member_access_from_pointer
 id|reference.offset
 )braket
 suffix:semicolon
-multiline_comment|/* TBD: [Investigate] (see below) Don&squot;t add an additional&n;&t;&t;&t;&t;&t; * ref!&n;&t;&t;&t;&t;&t; */
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|operand
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|reference.target_type
-op_eq
+r_break
+suffix:semicolon
+r_case
 id|ACPI_TYPE_PACKAGE
-)paren
-(brace
+suffix:colon
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * The target is a package, we want to return the referenced&n;&t;&t;&t;&t;&t; * element of the package.  We must add another reference to&n;&t;&t;&t;&t;&t; * this object, however.&n;&t;&t;&t;&t;&t; */
 id|return_desc
 op_assign
@@ -2055,15 +2076,16 @@ id|acpi_ut_add_reference
 id|return_desc
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Target_type %X in obj %p&bslash;n&quot;
+l_string|&quot;Unknown Index Target_type %X in obj %p&bslash;n&quot;
 comma
 id|operand
 (braket
@@ -2109,13 +2131,43 @@ id|return_desc
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown opcode in ref(%p) - %X&bslash;n&quot;
+comma
+id|operand
+(braket
+l_int|0
+)braket
+comma
+id|operand
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|reference.opcode
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_TYPE
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
 )brace
 )brace
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_1A_0T_1R: Unknown opcode %X&bslash;n&quot;

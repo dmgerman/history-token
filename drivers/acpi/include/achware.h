@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: achware.h -- hardware specific interfaces&n; *       $Revision: 56 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: achware.h -- hardware specific interfaces&n; *       $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACHWARE_H__
 DECL|macro|__ACHWARE_H__
 mdefine_line|#define __ACHWARE_H__
@@ -45,22 +45,35 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Register I/O Prototypes */
-id|u32
-id|acpi_hw_register_bit_access
+id|ACPI_BIT_REGISTER_INFO
+op_star
+id|acpi_hw_get_bit_register_info
 (paren
-id|NATIVE_UINT
-id|read_write
-comma
-id|u8
-id|use_lock
-comma
+id|u32
+id|register_id
+)paren
+suffix:semicolon
+id|u32
+id|acpi_hw_bit_register_read
+(paren
 id|u32
 id|register_id
 comma
-dot
-dot
-dot
-multiline_comment|/* DWORD Write Value */
+id|u32
+id|flags
+)paren
+suffix:semicolon
+id|u32
+id|acpi_hw_bit_register_write
+(paren
+id|u32
+id|register_id
+comma
+id|u32
+id|value
+comma
+id|u32
+id|flags
 )paren
 suffix:semicolon
 id|u32
@@ -121,13 +134,6 @@ r_void
 id|acpi_hw_clear_acpi_status
 (paren
 r_void
-)paren
-suffix:semicolon
-id|u32
-id|acpi_hw_get_bit_shift
-(paren
-id|u32
-id|mask
 )paren
 suffix:semicolon
 multiline_comment|/* GPE support */
@@ -191,7 +197,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* Sleep Prototypes */
 id|acpi_status
-id|acpi_hw_obtain_sleep_type_register_data
+id|acpi_hw_get_sleep_type_data
 (paren
 id|u8
 id|sleep_state

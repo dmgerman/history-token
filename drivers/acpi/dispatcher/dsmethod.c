@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -10,7 +10,7 @@ macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsmethod&quot;
 )paren
@@ -45,7 +45,7 @@ id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_parse_method&quot;
 comma
@@ -103,7 +103,10 @@ id|obj_handle
 suffix:semicolon
 id|obj_desc
 op_assign
-id|node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -195,12 +198,24 @@ id|op-&gt;node
 op_assign
 id|node
 suffix:semicolon
+multiline_comment|/*&n;&t; * Get a new Owner_id for objects created by this method. Namespace&n;&t; * objects (such as Operation Regions) can be created during the&n;&t; * first pass parse.&n;&t; */
+id|owner_id
+op_assign
+id|acpi_ut_allocate_owner_id
+(paren
+id|ACPI_OWNER_TYPE_METHOD
+)paren
+suffix:semicolon
+id|obj_desc-&gt;method.owning_id
+op_assign
+id|owner_id
+suffix:semicolon
 multiline_comment|/* Create and initialize a new walk state */
 id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
 (paren
-id|TABLE_ID_DSDT
+id|owner_id
 comma
 l_int|NULL
 comma
@@ -252,7 +267,11 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* TBD: delete walk state */
+id|acpi_ds_delete_walk_state
+(paren
+id|walk_state
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -282,18 +301,6 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get a new Owner_id for objects created by this method */
-id|owner_id
-op_assign
-id|acpi_ut_allocate_owner_id
-(paren
-id|OWNER_TYPE_METHOD
-)paren
-suffix:semicolon
-id|obj_desc-&gt;method.owning_id
-op_assign
-id|owner_id
-suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -356,7 +363,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_begin_method_execution&quot;
 comma
@@ -433,9 +440,9 @@ id|acpi_status
 DECL|function|acpi_ds_call_control_method
 id|acpi_ds_call_control_method
 (paren
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 comma
 id|acpi_walk_state
 op_star
@@ -445,7 +452,6 @@ id|acpi_parse_object
 op_star
 id|op
 )paren
-multiline_comment|/* TBD: This operand is obsolete */
 (brace
 id|acpi_status
 id|status
@@ -465,7 +471,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_call_control_method&quot;
 comma
@@ -576,9 +582,6 @@ id|return_ACPI_STATUS
 id|AE_NO_MEMORY
 )paren
 suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
 )brace
 multiline_comment|/* Create and init a Root Node */
 id|op
@@ -633,7 +636,11 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* TBD: delete walk state */
+id|acpi_ds_delete_walk_state
+(paren
+id|next_walk_state
+)paren
+suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
@@ -662,7 +669,7 @@ l_int|NULL
 comma
 id|obj_desc
 comma
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 r_if
@@ -815,7 +822,7 @@ id|return_desc
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_restart_control_method&quot;
 comma
@@ -918,14 +925,17 @@ id|acpi_namespace_node
 op_star
 id|method_node
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|acpi_status
+id|status
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_terminate_control_method&quot;
 comma
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/* The method object should be stored in the walk state */
+multiline_comment|/* The current method object was saved in the walk state */
 id|obj_desc
 op_assign
 id|walk_state-&gt;method_desc
@@ -950,11 +960,28 @@ id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Lock the parser while we terminate this method.&n;&t; * If this is the last thread executing the method,&n;&t; * we have additional cleanup to perform&n;&t; */
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_PARSER
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Signal completion of the execution of this method if necessary */
 r_if
 c_cond
@@ -987,11 +1014,28 @@ op_assign
 id|walk_state-&gt;method_node
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Delete any namespace entries created immediately underneath&n;&t;&t; * the method&n;&t;&t; */
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1010,12 +1054,31 @@ id|acpi_ns_delete_namespace_by_owner
 id|walk_state-&gt;method_desc-&gt;method.owning_id
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
+)brace
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_PARSER
@@ -1023,7 +1086,7 @@ id|ACPI_MTX_PARSER
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace

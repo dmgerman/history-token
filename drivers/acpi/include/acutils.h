@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 117 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 130 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACUTILS_H
 DECL|macro|_ACUTILS_H
 mdefine_line|#define _ACUTILS_H
@@ -57,7 +57,7 @@ op_star
 id|free_space
 suffix:semicolon
 DECL|member|length
-id|u32
+id|ACPI_SIZE
 id|length
 suffix:semicolon
 DECL|member|object_space
@@ -133,10 +133,11 @@ id|NATIVE_CHAR
 op_star
 id|acpi_ut_get_type_name
 (paren
-id|u32
+id|acpi_object_type
 id|type
 )paren
 suffix:semicolon
+macro_line|#endif
 id|NATIVE_CHAR
 op_star
 id|acpi_ut_get_region_name
@@ -145,7 +146,14 @@ id|u8
 id|space_id
 )paren
 suffix:semicolon
-macro_line|#endif
+id|NATIVE_CHAR
+op_star
+id|acpi_ut_get_event_name
+(paren
+id|u32
+id|event_id
+)paren
+suffix:semicolon
 id|u8
 id|acpi_ut_hex_to_ascii_char
 (paren
@@ -159,7 +167,7 @@ suffix:semicolon
 id|u8
 id|acpi_ut_valid_object_type
 (paren
-id|u32
+id|acpi_object_type
 id|type
 )paren
 suffix:semicolon
@@ -456,6 +464,35 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_ut_copy_simple_object
+(paren
+id|acpi_operand_object
+op_star
+id|source_desc
+comma
+id|acpi_operand_object
+op_star
+id|dest_desc
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_copy_iobject_to_iobject
+(paren
+id|acpi_operand_object
+op_star
+id|source_desc
+comma
+id|acpi_operand_object
+op_star
+op_star
+id|dest_desc
+comma
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Ut_create - Object creation&n; */
 id|acpi_status
 id|acpi_ut_update_object_reference
@@ -650,6 +687,7 @@ id|component_id
 )paren
 suffix:semicolon
 r_void
+id|ACPI_INTERNAL_VAR_XFACE
 id|acpi_ut_debug_print
 (paren
 id|u32
@@ -673,6 +711,7 @@ dot
 id|ACPI_PRINTF_LIKE_FUNC
 suffix:semicolon
 r_void
+id|ACPI_INTERNAL_VAR_XFACE
 id|acpi_ut_debug_print_raw
 (paren
 id|u32
@@ -733,6 +772,8 @@ multiline_comment|/*&n; * Ut_eval - object evaluation&n; */
 multiline_comment|/* Method name strings */
 DECL|macro|METHOD_NAME__HID
 mdefine_line|#define METHOD_NAME__HID        &quot;_HID&quot;
+DECL|macro|METHOD_NAME__CID
+mdefine_line|#define METHOD_NAME__CID        &quot;_CID&quot;
 DECL|macro|METHOD_NAME__UID
 mdefine_line|#define METHOD_NAME__UID        &quot;_UID&quot;
 DECL|macro|METHOD_NAME__ADR
@@ -773,6 +814,18 @@ comma
 id|acpi_device_id
 op_star
 id|hid
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_execute_CID
+(paren
+id|acpi_namespace_node
+op_star
+id|device_node
+comma
+id|acpi_device_id
+op_star
+id|cid
 )paren
 suffix:semicolon
 id|acpi_status
@@ -855,7 +908,7 @@ comma
 id|u32
 id|component_id
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 )paren
 suffix:semicolon
@@ -919,7 +972,7 @@ id|acpi_operand_object
 op_star
 id|obj
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|obj_length
 )paren
@@ -931,7 +984,7 @@ id|acpi_operand_object
 op_star
 id|obj
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|obj_length
 )paren
@@ -944,7 +997,7 @@ id|acpi_operand_object
 op_star
 id|obj
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|obj_length
 )paren
@@ -976,6 +1029,13 @@ suffix:semicolon
 id|acpi_generic_state
 op_star
 id|acpi_ut_create_generic_state
+(paren
+r_void
+)paren
+suffix:semicolon
+id|ACPI_THREAD_STATE
+op_star
+id|acpi_ut_create_thread_state
 (paren
 r_void
 )paren
@@ -1142,6 +1202,26 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
+id|u8
+op_star
+id|acpi_ut_get_resource_end_tag
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
+)paren
+suffix:semicolon
+id|u8
+id|acpi_ut_generate_checksum
+(paren
+id|u8
+op_star
+id|buffer
+comma
+id|u32
+id|length
+)paren
+suffix:semicolon
 macro_line|#ifdef ACPI_DEBUG
 r_void
 id|acpi_ut_display_init_pathname
@@ -1182,12 +1262,31 @@ id|u32
 id|list_id
 )paren
 suffix:semicolon
-multiline_comment|/* Debug Memory allocation functions */
+id|acpi_status
+id|acpi_ut_validate_buffer
+(paren
+id|acpi_buffer
+op_star
+id|buffer
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_initialize_buffer
+(paren
+id|acpi_buffer
+op_star
+id|buffer
+comma
+id|ACPI_SIZE
+id|required_length
+)paren
+suffix:semicolon
+multiline_comment|/* Memory allocation functions */
 r_void
 op_star
 id|acpi_ut_allocate
 (paren
-id|u32
+id|ACPI_SIZE
 id|size
 comma
 id|u32
@@ -1205,7 +1304,26 @@ r_void
 op_star
 id|acpi_ut_callocate
 (paren
+id|ACPI_SIZE
+id|size
+comma
 id|u32
+id|component
+comma
+id|NATIVE_CHAR
+op_star
+id|module
+comma
+id|u32
+id|line
+)paren
+suffix:semicolon
+macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
+r_void
+op_star
+id|acpi_ut_allocate_and_track
+(paren
+id|ACPI_SIZE
 id|size
 comma
 id|u32
@@ -1220,7 +1338,25 @@ id|line
 )paren
 suffix:semicolon
 r_void
-id|acpi_ut_free
+op_star
+id|acpi_ut_callocate_and_track
+(paren
+id|ACPI_SIZE
+id|size
+comma
+id|u32
+id|component
+comma
+id|NATIVE_CHAR
+op_star
+id|module
+comma
+id|u32
+id|line
+)paren
+suffix:semicolon
+r_void
+id|acpi_ut_free_and_track
 (paren
 r_void
 op_star
@@ -1237,7 +1373,54 @@ id|u32
 id|line
 )paren
 suffix:semicolon
-macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
+id|acpi_status
+id|acpi_ut_track_allocation
+(paren
+id|u32
+id|list_id
+comma
+id|acpi_debug_mem_block
+op_star
+id|address
+comma
+id|ACPI_SIZE
+id|size
+comma
+id|u8
+id|alloc_type
+comma
+id|u32
+id|component
+comma
+id|NATIVE_CHAR
+op_star
+id|module
+comma
+id|u32
+id|line
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_remove_allocation
+(paren
+id|u32
+id|list_id
+comma
+id|acpi_debug_mem_block
+op_star
+id|address
+comma
+id|u32
+id|component
+comma
+id|NATIVE_CHAR
+op_star
+id|module
+comma
+id|u32
+id|line
+)paren
+suffix:semicolon
 r_void
 id|acpi_ut_dump_allocation_info
 (paren

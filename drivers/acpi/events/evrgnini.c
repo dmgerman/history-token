@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI Address_space (Op_region) init&n; *              $Revision: 48 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI Address_space (Op_region) init&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evrgnini&quot;
 )paren
@@ -32,7 +32,21 @@ op_star
 id|region_context
 )paren
 (brace
-id|FUNCTION_TRACE
+id|acpi_operand_object
+op_star
+id|region_desc
+op_assign
+(paren
+id|acpi_operand_object
+op_star
+)paren
+id|handle
+suffix:semicolon
+id|acpi_mem_space_context
+op_star
+id|local_region_context
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_system_memory_region_setup&quot;
 )paren
@@ -71,8 +85,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Activate.  Create a new context */
-op_star
-id|region_context
+id|local_region_context
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
@@ -87,8 +100,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-op_star
-id|region_context
+id|local_region_context
 )paren
 )paren
 (brace
@@ -98,6 +110,20 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Save the region length and address for use in the handler */
+id|local_region_context-&gt;length
+op_assign
+id|region_desc-&gt;region.length
+suffix:semicolon
+id|local_region_context-&gt;address
+op_assign
+id|region_desc-&gt;region.address
+suffix:semicolon
+op_star
+id|region_context
+op_assign
+id|local_region_context
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
@@ -125,7 +151,7 @@ op_star
 id|region_context
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_io_space_region_setup&quot;
 )paren
@@ -215,7 +241,7 @@ suffix:semicolon
 id|acpi_device_id
 id|object_hID
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_pci_config_region_setup&quot;
 )paren
@@ -308,7 +334,7 @@ multiline_comment|/*&n;&t; *  For PCI Config space access, we have to pass the s
 multiline_comment|/*&n;&t; *  First get device and function numbers from the _ADR object&n;&t; *  in the parent&squot;s scope.&n;&t; */
 id|node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|region_obj-&gt;region.node
 )paren
@@ -338,14 +364,14 @@ id|status
 (brace
 id|pci_id-&gt;device
 op_assign
-id|HIWORD
+id|ACPI_HIWORD
 (paren
 id|temp
 )paren
 suffix:semicolon
 id|pci_id-&gt;function
 op_assign
-id|LOWORD
+id|ACPI_LOWORD
 (paren
 id|temp
 )paren
@@ -394,7 +420,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 id|object_hID.buffer
 comma
@@ -410,6 +436,9 @@ id|PCI_ROOT_HID_STRING
 (brace
 id|acpi_install_address_space_handler
 (paren
+(paren
+id|acpi_handle
+)paren
 id|node
 comma
 id|ACPI_ADR_SPACE_PCI_CONFIG
@@ -427,7 +456,7 @@ suffix:semicolon
 )brace
 id|node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|node
 )paren
@@ -465,7 +494,7 @@ id|status
 (brace
 id|pci_id-&gt;segment
 op_assign
-id|LOWORD
+id|ACPI_LOWORD
 (paren
 id|temp
 )paren
@@ -495,7 +524,7 @@ id|status
 (brace
 id|pci_id-&gt;bus
 op_assign
-id|LOWORD
+id|ACPI_LOWORD
 (paren
 id|temp
 )paren
@@ -533,7 +562,7 @@ op_star
 id|region_context
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_pci_bar_region_setup&quot;
 )paren
@@ -565,7 +594,7 @@ op_star
 id|region_context
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_cmos_region_setup&quot;
 )paren
@@ -597,7 +626,7 @@ op_star
 id|region_context
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_default_region_setup&quot;
 )paren
@@ -675,7 +704,11 @@ op_star
 )paren
 id|METHOD_NAME__REG
 suffix:semicolon
-id|FUNCTION_TRACE_U32
+id|acpi_operand_object
+op_star
+id|region_obj2
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_U32
 (paren
 l_string|&quot;Ev_initialize_region&quot;
 comma
@@ -695,9 +728,43 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|region_obj-&gt;common.flags
+op_amp
+id|AOPOBJ_OBJECT_INITIALIZED
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+id|region_obj2
+op_assign
+id|acpi_ns_get_secondary_object
+(paren
+id|region_obj
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|region_obj2
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NOT_EXIST
+)paren
+suffix:semicolon
+)brace
 id|node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|region_obj-&gt;region.node
 )paren
@@ -710,16 +777,20 @@ id|region_obj-&gt;region.addr_handler
 op_assign
 l_int|NULL
 suffix:semicolon
-id|region_obj-&gt;region.extra-&gt;extra.method_REG
+id|region_obj2-&gt;extra.method_REG
 op_assign
 l_int|NULL
 suffix:semicolon
-id|region_obj-&gt;region.flags
+id|region_obj-&gt;common.flags
 op_and_assign
 op_complement
 (paren
-id|AOPOBJ_INITIALIZED
+id|AOPOBJ_SETUP_COMPLETE
 )paren
+suffix:semicolon
+id|region_obj-&gt;common.flags
+op_or_assign
+id|AOPOBJ_OBJECT_INITIALIZED
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Find any &quot;_REG&quot; associated with this region definition&n;&t; */
 id|status
@@ -747,7 +818,7 @@ id|status
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *  The _REG method is optional and there can be only one per region&n;&t;&t; *  definition.  This will be executed when the handler is attached&n;&t;&t; *  or removed&n;&t;&t; */
-id|region_obj-&gt;region.extra-&gt;extra.method_REG
+id|region_obj2-&gt;extra.method_REG
 op_assign
 id|method_node
 suffix:semicolon
@@ -868,7 +939,7 @@ multiline_comment|/* while handlerobj */
 multiline_comment|/*&n;&t;&t; *  This one does not have the handler we need&n;&t;&t; *  Pop up one level&n;&t;&t; */
 id|node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|node
 )paren

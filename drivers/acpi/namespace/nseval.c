@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 102 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 109 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nseval&quot;
 )paren
@@ -57,7 +57,7 @@ suffix:semicolon
 id|acpi_generic_state
 id|scope_info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_evaluate_relative&quot;
 )paren
@@ -103,11 +103,28 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Get the prefix handle and Node */
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|prefix_node
 op_assign
 id|acpi_ns_map_handle_to_node
@@ -122,6 +139,9 @@ op_logical_neg
 id|prefix_node
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -151,9 +171,9 @@ id|internal_path
 comma
 id|ACPI_TYPE_ANY
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_NO_UPSEARCH
+id|ACPI_NS_NO_UPSEARCH
 comma
 l_int|NULL
 comma
@@ -161,6 +181,9 @@ op_amp
 id|node
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -207,7 +230,10 @@ id|pathname
 comma
 id|node
 comma
-id|node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -281,7 +307,7 @@ id|internal_path
 op_assign
 l_int|NULL
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_evaluate_by_name&quot;
 )paren
@@ -312,11 +338,28 @@ id|status
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Lookup the name in the namespace */
 id|status
 op_assign
@@ -328,9 +371,9 @@ id|internal_path
 comma
 id|ACPI_TYPE_ANY
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_NO_UPSEARCH
+id|ACPI_NS_NO_UPSEARCH
 comma
 l_int|NULL
 comma
@@ -338,6 +381,9 @@ op_amp
 id|node
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -381,7 +427,10 @@ id|pathname
 comma
 id|node
 comma
-id|node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -459,7 +508,7 @@ id|acpi_operand_object
 op_star
 id|local_return_object
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_evaluate_by_handle&quot;
 )paren
@@ -506,11 +555,28 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Get the prefix handle and Node */
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|node
 op_assign
 id|acpi_ns_map_handle_to_node
@@ -525,6 +591,9 @@ op_logical_neg
 id|node
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -648,7 +717,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_execute_control_method&quot;
 )paren
@@ -677,6 +746,9 @@ l_string|&quot;No attached method object&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -705,7 +777,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|DUMP_PATHNAME
+id|ACPI_DUMP_PATHNAME
 (paren
 id|method_node
 comma
@@ -730,11 +802,28 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unlock the namespace before execution.  This allows namespace access&n;&t; * via the external Acpi* interfaces while a method is being executed.&n;&t; * However, any namespace deletion must acquire both the namespace and&n;&t; * interpreter locks to ensure that no thread is using the portion of the&n;&t; * namespace that is being deleted.&n;&t; */
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Execute the method via the interpreter.  The interpreter is locked&n;&t; * here before calling into the AML parser&n;&t; */
 id|status
 op_assign
@@ -778,7 +867,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_object_value&n; *&n; * PARAMETERS:  Node         - The object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the current value of the object&n; *&n; * MUTEX:       Assumes namespace is locked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_object_value&n; *&n; * PARAMETERS:  Node         - The object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the current value of the object&n; *&n; * MUTEX:       Assumes namespace is locked, leaves namespace unlocked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_get_object_value
 id|acpi_ns_get_object_value
@@ -802,149 +891,43 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|acpi_operand_object
-op_star
-id|source_desc
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_get_object_value&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  We take the value from certain objects directly&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|node-&gt;type
-op_eq
-id|ACPI_TYPE_PROCESSOR
-)paren
-op_logical_or
-(paren
-id|node-&gt;type
-op_eq
-id|ACPI_TYPE_POWER
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; *  Create a Reference object to contain the object&n;&t;&t; */
+multiline_comment|/*&n;&t; * Objects require additional resolution steps (e.g., the&n;&t; * Node may be a field that must be read, etc.) -- we can&squot;t just grab&n;&t; * the object out of the node.&n;&t; */
 id|obj_desc
 op_assign
-id|acpi_ut_create_internal_object
-(paren
-id|node-&gt;type
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|obj_desc
-)paren
-(brace
-id|status
-op_assign
-id|AE_NO_MEMORY
-suffix:semicolon
-r_goto
-id|unlock_and_exit
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; *  Get the attached object&n;&t;&t; */
-id|source_desc
-op_assign
-id|acpi_ns_get_attached_object
-(paren
-id|node
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|source_desc
-)paren
-(brace
-id|status
-op_assign
-id|AE_NULL_OBJECT
-suffix:semicolon
-r_goto
-id|unlock_and_exit
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * Just copy from the original to the return object&n;&t;&t; *&n;&t;&t; * TBD: [Future] - need a low-level object copy that handles&n;&t;&t; * the reference count automatically.  (Don&squot;t want to copy it)&n;&t;&t; */
-id|MEMCPY
-(paren
-id|obj_desc
-comma
-id|source_desc
-comma
-r_sizeof
 (paren
 id|acpi_operand_object
-)paren
-)paren
-suffix:semicolon
-id|obj_desc-&gt;common.reference_count
-op_assign
-l_int|1
-suffix:semicolon
-id|acpi_ut_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Other objects require a reference object wrapper which we&n;&t; * then attempt to resolve.&n;&t; */
-r_else
-(brace
-multiline_comment|/* Create an Reference object to contain the object */
-id|obj_desc
-op_assign
-id|acpi_ut_create_internal_object
-(paren
-id|INTERNAL_TYPE_REFERENCE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|obj_desc
-)paren
-(brace
-id|status
-op_assign
-id|AE_NO_MEMORY
-suffix:semicolon
-r_goto
-id|unlock_and_exit
-suffix:semicolon
-)brace
-multiline_comment|/* Construct a descriptor pointing to the name */
-id|obj_desc-&gt;reference.opcode
-op_assign
-(paren
-id|u8
-)paren
-id|AML_NAME_OP
-suffix:semicolon
-id|obj_desc-&gt;reference.object
-op_assign
-(paren
-r_void
 op_star
 )paren
 id|node
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Use Resolve_to_value() to get the associated value. This call&n;&t;&t; * always deletes Obj_desc (allocated above).&n;&t;&t; *&n;&t;&t; * NOTE: we can get away with passing in NULL for a walk state&n;&t;&t; * because Obj_desc is guaranteed to not be a reference to either&n;&t;&t; * a method local or a method argument&n;&t;&t; *&n;&t;&t; * Even though we do not directly invoke the interpreter&n;&t;&t; * for this, we must enter it because we could access an opregion.&n;&t;&t; * The opregion access code assumes that the interpreter&n;&t;&t; * is locked.&n;&t;&t; *&n;&t;&t; * We must release the namespace lock before entering the&n;&t;&t; * intepreter.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Use Resolve_node_to_value() to get the associated value. This call&n;&t; * always deletes Obj_desc (allocated above).&n;&t; *&n;&t; * NOTE: we can get away with passing in NULL for a walk state&n;&t; * because Obj_desc is guaranteed to not be a reference to either&n;&t; * a method local or a method argument (because this interface can only be&n;&t; * called from the Acpi_evaluate external interface, never called from&n;&t; * a running control method.)&n;&t; *&n;&t; * Even though we do not directly invoke the interpreter&n;&t; * for this, we must enter it because we could access an opregion.&n;&t; * The opregion access code assumes that the interpreter&n;&t; * is locked.&n;&t; *&n;&t; * We must release the namespace lock before entering the&n;&t; * intepreter.&n;&t; */
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_ex_enter_interpreter
@@ -962,21 +945,24 @@ id|status
 (brace
 id|status
 op_assign
-id|acpi_ex_resolve_to_value
+id|acpi_ex_resolve_node_to_value
 (paren
+(paren
+id|acpi_namespace_node
+op_star
+op_star
+)paren
 op_amp
 id|obj_desc
 comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If Acpi_ex_resolve_node_to_value() succeeded, the return value was&n;&t;&t; * placed in Obj_desc.&n;&t;&t; */
 id|acpi_ex_exit_interpreter
 (paren
 )paren
 suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t; * If Acpi_ex_resolve_to_value() succeeded, the return value was&n;&t; * placed in Obj_desc.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1008,20 +994,8 @@ id|return_obj_desc
 )paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/* Namespace is unlocked */
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-id|unlock_and_exit
-suffix:colon
-multiline_comment|/* Unlock the namespace */
-id|acpi_ut_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status

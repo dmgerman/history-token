@@ -1,11 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: uteval - Object evaluation&n; *              $Revision: 31 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: uteval - Object evaluation&n; *              $Revision: 37 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;uteval&quot;
 )paren
@@ -34,7 +34,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_evaluate_numeric_object&quot;
 )paren
@@ -216,7 +216,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_execute_HID&quot;
 )paren
@@ -386,8 +386,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Copy the String HID from the returned object */
-id|STRNCPY
-c_func
+id|ACPI_STRNCPY
 (paren
 id|hid-&gt;buffer
 comma
@@ -400,6 +399,218 @@ id|hid-&gt;buffer
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* On exit, we must delete the return object */
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_execute_CID&n; *&n; * PARAMETERS:  Device_node         - Node for the device&n; *              *Cid                - Where the CID is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes the _CID control method that returns one or more&n; *              compatible hardware IDs for the device.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ut_execute_CID
+id|acpi_ut_execute_CID
+(paren
+id|acpi_namespace_node
+op_star
+id|device_node
+comma
+id|acpi_device_id
+op_star
+id|cid
+)paren
+(brace
+id|acpi_operand_object
+op_star
+id|obj_desc
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Ut_execute_CID&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Execute the method */
+id|status
+op_assign
+id|acpi_ns_evaluate_relative
+(paren
+id|device_node
+comma
+id|METHOD_NAME__CID
+comma
+l_int|NULL
+comma
+op_amp
+id|obj_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_NOT_FOUND
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;_CID on %4.4s was not found&bslash;n&quot;
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|device_node-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;_CID on %4.4s failed %s&bslash;n&quot;
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|device_node-&gt;name
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Did we get a return object? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|obj_desc
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;No object was returned from _CID&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_TYPE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; *  A _CID can return either a single compatible ID or a package of compatible&n;&t; *  IDs.  Each compatible ID can be a Number (32 bit compressed EISA ID) or&n;&t; *  string (PCI ID format, e.g. &quot;PCI&bslash;VEN_vvvv&amp;DEV_dddd&amp;SUBSYS_ssssssss&quot;).&n;&t; */
+r_switch
+c_cond
+(paren
+id|obj_desc-&gt;common.type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+multiline_comment|/* Convert the Numeric CID to string */
+id|acpi_ex_eisa_id_to_string
+(paren
+(paren
+id|u32
+)paren
+id|obj_desc-&gt;integer.value
+comma
+id|cid-&gt;buffer
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+multiline_comment|/* Copy the String CID from the returned object */
+id|ACPI_STRNCPY
+(paren
+id|cid-&gt;buffer
+comma
+id|obj_desc-&gt;string.pointer
+comma
+r_sizeof
+(paren
+id|cid-&gt;buffer
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+multiline_comment|/* TBD: Parse package elements; need different return struct, etc. */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|status
+op_assign
+id|AE_TYPE
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Type returned from _CID not a number, string, or package: %s(%X) &bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|obj_desc-&gt;common.type
+)paren
+comma
+id|obj_desc-&gt;common.type
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* On exit, we must delete the return object */
 id|acpi_ut_remove_reference
@@ -434,7 +645,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ut_execute_UID&quot;
 )paren
@@ -596,8 +807,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Copy the String UID from the returned object */
-id|STRNCPY
-c_func
+id|ACPI_STRNCPY
 (paren
 id|uid-&gt;buffer
 comma
@@ -644,7 +854,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_execute_STA&quot;
 )paren

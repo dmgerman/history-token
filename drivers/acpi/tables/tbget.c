@@ -1,16 +1,13 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 63 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_TABLES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbget&quot;
 )paren
-DECL|macro|RSDP_CHECKSUM_LENGTH
-mdefine_line|#define RSDP_CHECKSUM_LENGTH 20
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_ptr&n; *&n; * PARAMETERS:  Table_type      - one of the defined table types&n; *              Instance        - Which table of this type&n; *              Table_ptr_loc   - pointer to location to place the pointer for&n; *                                return&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the pointer to an ACPI table.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table_ptr
@@ -35,7 +32,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Tb_get_table_ptr&quot;
 )paren
@@ -195,7 +192,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Tb_get_table&quot;
 )paren
@@ -273,7 +270,7 @@ id|size
 op_assign
 id|table_header-&gt;length
 suffix:semicolon
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|full_table
 comma
@@ -376,7 +373,7 @@ suffix:semicolon
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Tb_get_all_tables&quot;
 )paren
@@ -409,7 +406,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Clear the Table_info each time */
-id|MEMSET
+id|ACPI_MEMSET
 (paren
 op_amp
 id|table_info
@@ -670,7 +667,7 @@ l_string|&quot;Hex dump of DSDT Header:&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|DUMP_BUFFER
+id|ACPI_DUMP_BUFFER
 (paren
 (paren
 id|u8
@@ -698,7 +695,7 @@ id|acpi_gbl_DSDT-&gt;length
 )paren
 )paren
 suffix:semicolon
-id|DUMP_BUFFER
+id|ACPI_DUMP_BUFFER
 (paren
 (paren
 id|u8
@@ -711,13 +708,6 @@ l_int|1
 )paren
 comma
 id|acpi_gbl_DSDT-&gt;length
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the capabilities flags.&n;&t; * Assumes that platform supports ACPI_MODE since we have tables!&n;&t; */
-id|acpi_gbl_system_flags
-op_or_assign
-id|acpi_hw_get_mode_capabilities
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Always delete the RSDP mapping, we are done with it */
@@ -747,11 +737,11 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u8
+id|RSDP_DESCRIPTOR
 op_star
-id|table_ptr
+id|rsdp
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Tb_verify_rsdp&quot;
 )paren
@@ -774,7 +764,7 @@ op_star
 op_star
 )paren
 op_amp
-id|table_ptr
+id|rsdp
 )paren
 suffix:semicolon
 r_if
@@ -796,13 +786,13 @@ multiline_comment|/*&n;&t; *  The signature and checksum must both be correct&n;
 r_if
 c_cond
 (paren
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 (paren
 id|NATIVE_CHAR
 op_star
 )paren
-id|table_ptr
+id|rsdp
 comma
 id|RSDP_SIG
 comma
@@ -826,20 +816,20 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/* Check the standard checksum */
 r_if
 c_cond
 (paren
 id|acpi_tb_checksum
 (paren
-id|table_ptr
+id|rsdp
 comma
-id|RSDP_CHECKSUM_LENGTH
+id|ACPI_RSDP_CHECKSUM_LENGTH
 )paren
 op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/* Nope, BAD Checksum */
 id|status
 op_assign
 id|AE_BAD_CHECKSUM
@@ -848,7 +838,37 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* TBD: Check extended checksum if table version &gt;= 2 */
+multiline_comment|/* Check extended checksum if table version &gt;= 2 */
+r_if
+c_cond
+(paren
+id|rsdp-&gt;revision
+op_ge
+l_int|2
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|acpi_tb_checksum
+(paren
+id|rsdp
+comma
+id|ACPI_RSDP_XCHECKSUM_LENGTH
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|status
+op_assign
+id|AE_BAD_CHECKSUM
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* The RSDP supplied is OK */
 id|table_info.pointer
 op_assign
@@ -856,7 +876,7 @@ op_assign
 id|acpi_table_header
 op_star
 )paren
-id|table_ptr
+id|rsdp
 suffix:semicolon
 id|table_info.length
 op_assign
@@ -871,7 +891,7 @@ id|ACPI_MEM_MAPPED
 suffix:semicolon
 id|table_info.base_pointer
 op_assign
-id|table_ptr
+id|rsdp
 suffix:semicolon
 multiline_comment|/* Save the table pointers and allocation info */
 id|status
@@ -916,7 +936,7 @@ id|cleanup
 suffix:colon
 id|acpi_os_unmap_memory
 (paren
-id|table_ptr
+id|rsdp
 comma
 r_sizeof
 (paren
@@ -941,7 +961,7 @@ r_void
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -954,21 +974,6 @@ OL
 l_int|2
 )paren
 (brace
-macro_line|#ifdef _IA64
-multiline_comment|/* 0.71 RSDP has 64bit Rsdt address field */
-id|physical_address
-op_assign
-(paren
-(paren
-id|RSDP_DESCRIPTOR_REV071
-op_star
-)paren
-id|acpi_gbl_RSDP
-)paren
-op_member_access_from_pointer
-id|rsdt_physical_address
-suffix:semicolon
-macro_line|#else
 id|physical_address
 op_assign
 (paren
@@ -976,7 +981,6 @@ id|ACPI_PHYSICAL_ADDRESS
 )paren
 id|acpi_gbl_RSDP-&gt;rsdt_physical_address
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -1010,12 +1014,12 @@ id|table_ptr
 id|u32
 id|no_match
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Tb_validate_rsdt&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * For RSDP revision 0 or 1, we use the RSDT.&n;&t; * For RSDP revision 2 (and above), we use the XSDT&n;&t; */
+multiline_comment|/*&n;&t; * For RSDP revision 0 or 1, we use the RSDT.&n;&t; * For RSDP revision 2 and above, we use the XSDT&n;&t; */
 r_if
 c_cond
 (paren
@@ -1026,7 +1030,7 @@ l_int|2
 (brace
 id|no_match
 op_assign
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 (paren
 r_char
@@ -1049,7 +1053,7 @@ r_else
 (brace
 id|no_match
 op_assign
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 (paren
 r_char
@@ -1075,14 +1079,14 @@ id|no_match
 )paren
 (brace
 multiline_comment|/* Invalid RSDT or XSDT signature */
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Invalid signature where RSDP indicates RSDT/XSDT should be located&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|DUMP_BUFFER
+id|ACPI_DUMP_BUFFER
 (paren
 id|acpi_gbl_RSDP
 comma
@@ -1136,7 +1140,7 @@ id|table_ptr
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -1179,14 +1183,10 @@ suffix:semicolon
 op_star
 id|table_ptr
 op_assign
+id|ACPI_PHYSADDR_TO_PTR
 (paren
-id|acpi_table_header
-op_star
-)paren
-(paren
-id|ACPI_TBLPTR
-)paren
 id|physical_address
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -1218,7 +1218,7 @@ suffix:semicolon
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Tb_get_table_rsdt&quot;
 )paren
@@ -1233,14 +1233,12 @@ l_string|&quot;RSDP located at %p, RSDT physical=%8.8X%8.8X &bslash;n&quot;
 comma
 id|acpi_gbl_RSDP
 comma
-id|HIDWORD
-c_func
+id|ACPI_HIDWORD
 (paren
 id|acpi_gbl_RSDP-&gt;rsdt_physical_address
 )paren
 comma
-id|LODWORD
-c_func
+id|ACPI_LODWORD
 (paren
 id|acpi_gbl_RSDP-&gt;rsdt_physical_address
 )paren
@@ -1434,7 +1432,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Tb_get_table_facs&quot;
 )paren
@@ -1487,7 +1485,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|table_ptr
 comma
