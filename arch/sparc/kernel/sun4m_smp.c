@@ -248,11 +248,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unblock the master CPU _only_ when the scheduler state&n;&t; * of all secondary CPUs will be up-to-date, so after&n;&t; * the SMP initialization the master will be just allowed&n;&t; * to call the scheduler code.&n;&t; */
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Allow master to continue. */
 id|swap
 c_func
