@@ -257,7 +257,6 @@ r_char
 op_star
 id|ptr
 suffix:semicolon
-multiline_comment|/* If possible allocate on the node of the CPU.&n;&t;&t;   In case it doesn&squot;t exist round-robin nodes. */
 r_if
 c_cond
 (paren
@@ -265,9 +264,11 @@ op_logical_neg
 id|NODE_DATA
 c_func
 (paren
+id|cpu_to_node
+c_func
+(paren
 id|i
-op_mod
-id|numnodes
+)paren
 )paren
 )paren
 (brace
@@ -300,9 +301,11 @@ c_func
 id|NODE_DATA
 c_func
 (paren
+id|cpu_to_node
+c_func
+(paren
 id|i
-op_mod
-id|numnodes
+)paren
 )paren
 comma
 id|size
