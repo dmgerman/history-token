@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_SOFTIRQ_H
 DECL|macro|__ASM_SOFTIRQ_H

@@ -30,7 +30,7 @@ macro_line|#if 0
 mdefine_line|#define UIO_MAXIOV&t;16&t;/* Maximum iovec&squot;s in one operation &n;&t;&t;&t;&t;   16 matches BSD */
 multiline_comment|/* Beg pardon: BSD has 1024 --ANK */
 macro_line|#endif
-multiline_comment|/*&n; * Total number of bytes covered by an iovec&n; */
+multiline_comment|/*&n; * Total number of bytes covered by an iovec.&n; *&n; * NOTE that it is not safe to use this function until all the iovec&squot;s&n; * segment lengths have been validated.  Because the individual lengths can&n; * overflow a size_t when added together.&n; */
 DECL|function|iov_length
 r_static
 r_inline

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * SMP support for power macintosh.&n; *&n; * We support both the old &quot;powersurge&quot; SMP architecture&n; * and the current Core99 (G4 PowerMac) machines.&n; *&n; * Support Macintosh G4 SMP by Troy Benjegerdes (hozer@drgw.net)&n; * and Ben Herrenschmidt &lt;benh@kernel.crashing.org&gt;.&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

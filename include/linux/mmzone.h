@@ -9,7 +9,14 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+macro_line|#include &lt;asm/numnodes.h&gt;
+macro_line|#endif
+macro_line|#ifndef MAX_NUMNODES
+DECL|macro|MAX_NUMNODES
+mdefine_line|#define MAX_NUMNODES 1
+macro_line|#endif
+multiline_comment|/* Free memory management - zoned buddy allocator.  */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER 11
@@ -169,11 +176,6 @@ r_int
 r_int
 id|zone_start_pfn
 suffix:semicolon
-DECL|member|zone_start_mapnr
-r_int
-r_int
-id|zone_start_mapnr
-suffix:semicolon
 multiline_comment|/*&n;&t; * rarely used fields:&n;&t; */
 DECL|member|name
 r_char
@@ -208,6 +210,8 @@ id|zone
 op_star
 id|zones
 (braket
+id|MAX_NUMNODES
+op_star
 id|MAX_NR_ZONES
 op_plus
 l_int|1
@@ -271,11 +275,6 @@ DECL|member|node_start_pfn
 r_int
 r_int
 id|node_start_pfn
-suffix:semicolon
-DECL|member|node_start_mapnr
-r_int
-r_int
-id|node_start_mapnr
 suffix:semicolon
 DECL|member|node_size
 r_int
@@ -351,22 +350,13 @@ multiline_comment|/*&n; * The following two are not meant for general usage. The
 r_struct
 id|page
 suffix:semicolon
+r_extern
 r_void
-id|free_area_init_core
-c_func
+id|calculate_totalpages
 (paren
-r_int
-id|nid
-comma
 id|pg_data_t
 op_star
 id|pgdat
-comma
-r_struct
-id|page
-op_star
-op_star
-id|gmap
 comma
 r_int
 r_int
@@ -375,17 +365,28 @@ id|zones_size
 comma
 r_int
 r_int
-id|paddr
+op_star
+id|zholes_size
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|free_area_init_core
+c_func
+(paren
+id|pg_data_t
+op_star
+id|pgdat
+comma
+r_int
+r_int
+op_star
+id|zones_size
 comma
 r_int
 r_int
 op_star
 id|zholes_size
-comma
-r_struct
-id|page
-op_star
-id|pmap
 )paren
 suffix:semicolon
 r_void
@@ -401,6 +402,14 @@ r_int
 r_int
 op_star
 id|inactive
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|build_all_zonelists
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern

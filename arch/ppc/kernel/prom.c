@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Procedures for interfacing to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * In particular, we are interested in the device tree&n; * and in using some of its services (exit, write to stdout).&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * PowerPC memory management structures&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MMU_H_

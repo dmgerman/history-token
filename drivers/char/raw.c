@@ -1028,6 +1028,10 @@ op_assign
 dot
 id|iov_base
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|buf
 comma
 dot

@@ -1603,6 +1603,7 @@ suffix:semicolon
 r_int
 id|bad_ppro
 suffix:semicolon
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_if
 c_cond
 (paren
@@ -1614,6 +1615,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|bad_ppro
 op_assign
 id|ppro_with_ram_bug
@@ -1774,7 +1776,7 @@ op_minus
 l_int|10
 )paren
 comma
-id|max_mapnr
+id|num_physpages
 op_lshift
 (paren
 id|PAGE_SHIFT
@@ -1911,7 +1913,7 @@ op_assign
 id|alloc_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|__GFP_HIGHMEM
 comma
 id|HUGETLB_PAGE_ORDER
 )paren

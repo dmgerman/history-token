@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * arch/ppc/boot/simple/gt64260_tty.c&n; * &n; * Bootloader version of the embedded MPSC/UART driver for the GT64260[A].&n; * Note: Due to 64260A errata, DMA will be used for UART input (via SDMA).&n; *&n; * Author: Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 multiline_comment|/* This code assumes that the data cache has been disabled (L1, L2, L3). */
 macro_line|#include &lt;linux/config.h&gt;

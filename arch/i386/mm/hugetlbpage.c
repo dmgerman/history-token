@@ -1570,7 +1570,7 @@ r_struct
 id|inode
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2593,7 +2593,7 @@ op_assign
 id|alloc_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|__GFP_HIGHMEM
 comma
 id|HUGETLB_PAGE_ORDER
 )paren

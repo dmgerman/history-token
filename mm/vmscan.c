@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
@@ -389,6 +388,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|mapping
+op_assign
+id|page-&gt;mapping
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one or more&n;&t;&t; * processes. Try to unmap it here.&n;&t;&t; */
 r_if
@@ -484,7 +487,8 @@ r_struct
 id|page
 op_star
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
 )paren
 suffix:semicolon
@@ -494,10 +498,17 @@ id|cluster_size
 op_assign
 id|SWAP_CLUSTER_MAX
 suffix:semicolon
-r_int
+r_struct
+id|writeback_control
+id|wbc
+op_assign
+(brace
+dot
 id|nr_to_write
 op_assign
 id|cluster_size
+comma
+)brace
 suffix:semicolon
 id|writeback
 op_assign
@@ -522,7 +533,7 @@ id|writeback
 id|page
 comma
 op_amp
-id|nr_to_write
+id|wbc
 )paren
 suffix:semicolon
 op_star
@@ -531,7 +542,7 @@ op_sub_assign
 (paren
 id|cluster_size
 op_minus
-id|nr_to_write
+id|wbc.nr_to_write
 )paren
 suffix:semicolon
 r_goto

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.commproc.c 1.10 10/16/01 16:21:52 trini&n; */
 multiline_comment|/*&n; * General Purpose functions for the global management of the&n; * 8260 Communication Processor Module.&n; * Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; * Copyright (c) 2000 MontaVista Software, Inc (source@mvista.com)&n; *&t;2.3.99 Updates&n; *&n; * In addition to the individual control of the communication&n; * channels, there are a few functions that globally affect the&n; * communication processor.&n; *&n; * Buffer descriptors must be allocated from the dual ported memory&n; * space.  The allocator for that is here.  When the communication&n; * process is reset, we reclaim the memory available.  There is&n; * currently no deallocator for this memory.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

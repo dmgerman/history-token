@@ -13,7 +13,7 @@ mdefine_line|#define LLC_TYPE_2&t;&t; 2
 DECL|macro|LLC_P_TIME
 mdefine_line|#define LLC_P_TIME&t;&t; 2
 DECL|macro|LLC_ACK_TIME
-mdefine_line|#define LLC_ACK_TIME&t;&t; 3
+mdefine_line|#define LLC_ACK_TIME&t;&t; 1
 DECL|macro|LLC_REJ_TIME
 mdefine_line|#define LLC_REJ_TIME&t;&t; 3
 DECL|macro|LLC_BUSY_TIME

@@ -472,7 +472,7 @@ op_amp
 id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
-id|pagevec_free
+id|__pagevec_free
 c_func
 (paren
 op_amp
@@ -486,13 +486,11 @@ op_amp
 id|pages_to_free
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|zone-&gt;lru_lock
-)paren
+id|zone
+op_assign
+l_int|NULL
 suffix:semicolon
+multiline_comment|/* No lock is held */
 )brace
 )brace
 )brace
@@ -644,7 +642,7 @@ id|pvec
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Move all the inactive pages to the head of the inactive list&n; * and release them.  Reinitialises the caller&squot;s pagevec.&n; */
+multiline_comment|/*&n; * Move all the inactive pages to the head of the inactive list and release&n; * them.  Reinitialises the caller&squot;s pagevec.&n; */
 DECL|function|pagevec_deactivate_inactive
 r_void
 id|pagevec_deactivate_inactive
@@ -727,24 +725,6 @@ op_ne
 id|zone
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|PageActive
-c_func
-(paren
-id|page
-)paren
-op_logical_or
-op_logical_neg
-id|PageLRU
-c_func
-(paren
-id|page
-)paren
-)paren
-r_continue
-suffix:semicolon
 r_if
 c_cond
 (paren

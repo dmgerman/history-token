@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.of1275.c 1.6 05/18/01 15:16:42 cort&n; */
 multiline_comment|/* Open Firmware Client Interface */
 macro_line|#include &quot;of1275.h&quot;
 DECL|variable|of_server

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * include/asm-ppc/serial.h&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_SERIAL_H__

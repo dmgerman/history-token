@@ -462,6 +462,11 @@ id|bvl
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|pf_flags
+op_assign
+id|current-&gt;flags
+suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_NOWARN
@@ -544,9 +549,8 @@ suffix:semicolon
 id|out
 suffix:colon
 id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_NOWARN
+op_assign
+id|pf_flags
 suffix:semicolon
 r_return
 id|bio

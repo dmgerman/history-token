@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.spd8xx.h 1.8 10/27/01 13:39:41 trini&n; */
 multiline_comment|/*&n; * Speech Design SPD8xxTS board specific definitions&n; * &n; * Copyright (c) 2000,2001 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_SPD8XX_H__

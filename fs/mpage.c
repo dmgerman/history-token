@@ -1932,7 +1932,7 @@ r_return
 id|bio
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * mpage_writepages - walk the list of dirty pages of the given&n; * address space and writepage() all of them.&n; * &n; * @mapping: address space structure to write&n; * @nr_to_write: subtract the number of written pages from *@nr_to_write&n; * @get_block: the filesystem&squot;s block mapper function.&n; *             If this is NULL then use a_ops-&gt;writepage.  Otherwise, go&n; *             direct-to-BIO.&n; *&n; * This is a library function, which implements the writepages()&n; * address_space_operation.&n; *&n; * (The next two paragraphs refer to code which isn&squot;t here yet, but they&n; *  explain the presence of address_space.io_pages)&n; *&n; * Pages can be moved from clean_pages or locked_pages onto dirty_pages&n; * at any time - it&squot;s not possible to lock against that.  So pages which&n; * have already been added to a BIO may magically reappear on the dirty_pages&n; * list.  And generic_writepages() will again try to lock those pages.&n; * But I/O has not yet been started against the page.  Thus deadlock.&n; *&n; * To avoid this, the entire contents of the dirty_pages list are moved&n; * onto io_pages up-front.  We then walk io_pages, locking the&n; * pages and submitting them for I/O, moving them to locked_pages.&n; *&n; * This has the added benefit of preventing a livelock which would otherwise&n; * occur if pages are being dirtied faster than we can write them out.&n; *&n; * If a page is already under I/O, generic_writepages() skips it, even&n; * if it&squot;s dirty.  This is desirable behaviour for memory-cleaning writeback,&n; * but it is INCORRECT for data-integrity system calls such as fsync().  fsync()&n; * and msync() need to guarentee that all the data which was dirty at the time&n; * the call was made get new I/O started against them.  The way to do this is&n; * to run filemap_fdatawait() before calling filemap_fdatawrite().&n; *&n; * It&squot;s fairly rare for PageWriteback pages to be on -&gt;dirty_pages.  It&n; * means that someone redirtied the page while it was under I/O.&n; */
+multiline_comment|/**&n; * mpage_writepages - walk the list of dirty pages of the given&n; * address space and writepage() all of them.&n; * &n; * @mapping: address space structure to write&n; * @wbc: subtract the number of written pages from *@wbc-&gt;nr_to_write&n; * @get_block: the filesystem&squot;s block mapper function.&n; *             If this is NULL then use a_ops-&gt;writepage.  Otherwise, go&n; *             direct-to-BIO.&n; *&n; * This is a library function, which implements the writepages()&n; * address_space_operation.&n; *&n; * (The next two paragraphs refer to code which isn&squot;t here yet, but they&n; *  explain the presence of address_space.io_pages)&n; *&n; * Pages can be moved from clean_pages or locked_pages onto dirty_pages&n; * at any time - it&squot;s not possible to lock against that.  So pages which&n; * have already been added to a BIO may magically reappear on the dirty_pages&n; * list.  And generic_writepages() will again try to lock those pages.&n; * But I/O has not yet been started against the page.  Thus deadlock.&n; *&n; * To avoid this, the entire contents of the dirty_pages list are moved&n; * onto io_pages up-front.  We then walk io_pages, locking the&n; * pages and submitting them for I/O, moving them to locked_pages.&n; *&n; * This has the added benefit of preventing a livelock which would otherwise&n; * occur if pages are being dirtied faster than we can write them out.&n; *&n; * If a page is already under I/O, generic_writepages() skips it, even&n; * if it&squot;s dirty.  This is desirable behaviour for memory-cleaning writeback,&n; * but it is INCORRECT for data-integrity system calls such as fsync().  fsync()&n; * and msync() need to guarentee that all the data which was dirty at the time&n; * the call was made get new I/O started against them.  The way to do this is&n; * to run filemap_fdatawait() before calling filemap_fdatawrite().&n; *&n; * It&squot;s fairly rare for PageWriteback pages to be on -&gt;dirty_pages.  It&n; * means that someone redirtied the page while it was under I/O.&n; */
 r_int
 DECL|function|mpage_writepages
 id|mpage_writepages
@@ -1943,9 +1943,10 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
+id|wbc
 comma
 id|get_block_t
 id|get_block
@@ -2319,12 +2320,9 @@ c_cond
 id|ret
 op_logical_or
 (paren
-id|nr_to_write
-op_logical_and
 op_decrement
 (paren
-op_star
-id|nr_to_write
+id|wbc-&gt;nr_to_write
 )paren
 op_le
 l_int|0

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/* Minimal support functions to read configuration from IIC EEPROMS&n; * on MPC8xx boards.  Originally written for RPGC RPX-Lite.&n; * Dan Malek (dmalek@jlc.net).&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
