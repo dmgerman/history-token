@@ -2,6 +2,7 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
+macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -721,6 +722,20 @@ l_string|&quot;-- device NAKed&bslash;n&quot;
 suffix:semicolon
 r_return
 id|USB_STOR_XFER_ERROR
+suffix:semicolon
+multiline_comment|/* babble - the device tried to send more than we wanted to read */
+r_case
+op_minus
+id|EOVERFLOW
+suffix:colon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- Babble&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_LONG
 suffix:semicolon
 multiline_comment|/* the transfer was cancelled, presumably by an abort */
 r_case
@@ -1521,6 +1536,22 @@ op_assign
 id|DID_ERROR
 op_lshift
 l_int|16
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* if the transport provided its own sense data, don&squot;t auto-sense */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_TRANSPORT_NO_SENSE
+)paren
+(brace
+id|srb-&gt;result
+op_assign
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -2355,8 +2386,8 @@ r_if
 c_cond
 (paren
 id|result
-op_eq
-id|USB_STOR_XFER_ERROR
+OG
+id|USB_STOR_XFER_STALLED
 )paren
 r_return
 id|USB_STOR_TRANSPORT_ERROR
@@ -2649,8 +2680,8 @@ r_if
 c_cond
 (paren
 id|result
-op_eq
-id|USB_STOR_XFER_ERROR
+OG
+id|USB_STOR_XFER_STALLED
 )paren
 r_return
 id|USB_STOR_TRANSPORT_ERROR
@@ -2772,6 +2803,11 @@ id|srb-&gt;request_bufflen
 suffix:semicolon
 r_int
 id|result
+suffix:semicolon
+r_int
+id|fake_sense
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* set up the command wrapper */
 id|bcb.Signature
@@ -2982,6 +3018,18 @@ id|USB_STOR_XFER_ERROR
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
+multiline_comment|/* If the device tried to send back more data than the&n;&t;&t; * amount requested, the spec requires us to transfer&n;&t;&t; * the CSW anyway.  Since there&squot;s no point retrying the&n;&t;&t; * the command, we&squot;ll return fake sense data indicating&n;&t;&t; * Illegal Request, Invalid Field in CDB.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_LONG
+)paren
+id|fake_sense
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/* See flow chart on pg 15 of the Bulk Only Transport spec for&n;&t; * an explanation of how this code works.&n;&t; */
 multiline_comment|/* get CSW for device status */
@@ -3130,6 +3178,30 @@ id|bcs.Status
 r_case
 id|US_BULK_STAT_OK
 suffix:colon
+multiline_comment|/* device babbled -- return fake sense data */
+r_if
+c_cond
+(paren
+id|fake_sense
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|srb-&gt;sense_buffer
+comma
+id|usb_stor_sense_invalidCDB
+comma
+r_sizeof
+(paren
+id|usb_stor_sense_invalidCDB
+)paren
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_TRANSPORT_NO_SENSE
+suffix:semicolon
+)brace
 multiline_comment|/* command good -- note that data could be short */
 r_return
 id|USB_STOR_TRANSPORT_GOOD
