@@ -4,6 +4,7 @@ DECL|macro|_PPC64_MMU_H_
 mdefine_line|#define _PPC64_MMU_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Time to allow for more things here */
 DECL|typedef|mm_context_id_t
@@ -739,13 +740,19 @@ DECL|macro|SLB_VSID_KERNEL
 mdefine_line|#define SLB_VSID_KERNEL&t;&t;(SLB_VSID_KP|SLB_VSID_C)
 DECL|macro|SLB_VSID_USER
 mdefine_line|#define SLB_VSID_USER&t;&t;(SLB_VSID_KP|SLB_VSID_KS)
-DECL|macro|VSID_RANDOMIZER
-mdefine_line|#define VSID_RANDOMIZER ASM_CONST(42470972311)
-DECL|macro|VSID_MASK
-mdefine_line|#define VSID_MASK&t;0xfffffffffUL
-multiline_comment|/* Because we never access addresses below KERNELBASE as kernel&n; * addresses, this VSID is never used for anything real, and will&n; * never have pages hashed into it */
-DECL|macro|BAD_VSID
-mdefine_line|#define BAD_VSID&t;ASM_CONST(0)
+DECL|macro|VSID_MULTIPLIER
+mdefine_line|#define VSID_MULTIPLIER&t;ASM_CONST(268435399)&t;/* largest 28-bit prime */
+DECL|macro|VSID_BITS
+mdefine_line|#define VSID_BITS&t;36
+DECL|macro|VSID_MODULUS
+mdefine_line|#define VSID_MODULUS&t;((1UL&lt;&lt;VSID_BITS)-1)
+DECL|macro|CONTEXT_BITS
+mdefine_line|#define CONTEXT_BITS&t;20
+DECL|macro|USER_ESID_BITS
+mdefine_line|#define USER_ESID_BITS&t;15
+multiline_comment|/*&n; * This macro generates asm code to compute the VSID scramble&n; * function.  Used in slb_allocate() and do_stab_bolted.  The function&n; * computed is: (protovsid*VSID_MULTIPLIER) % VSID_MODULUS&n; *&n; *&t;rt = register continaing the proto-VSID and into which the&n; *&t;&t;VSID will be stored&n; *&t;rx = scratch register (clobbered)&n; *&n; * &t;- rt and rx must be different registers&n; * &t;- The answer will end up in the low 36 bits of rt.  The higher&n; * &t;  bits may contain other garbage, so you may need to mask the&n; * &t;  result.&n; */
+DECL|macro|ASM_VSID_SCRAMBLE
+mdefine_line|#define ASM_VSID_SCRAMBLE(rt, rx)&t;&bslash;&n;&t;lis&t;rx,VSID_MULTIPLIER@h;&t;&t;&t;&t;&t;&bslash;&n;&t;ori&t;rx,rx,VSID_MULTIPLIER@l;&t;&t;&t;&t;&bslash;&n;&t;mulld&t;rt,rt,rx;&t;&t;/* rt = rt * MULTIPLIER */&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;srdi&t;rx,rt,VSID_BITS;&t;&t;&t;&t;&t;&bslash;&n;&t;clrldi&t;rt,rt,(64-VSID_BITS);&t;&t;&t;&t;&t;&bslash;&n;&t;add&t;rt,rt,rx;&t;&t;/* add high and low bits */&t;&bslash;&n;&t;/* Now, r3 == VSID (mod 2^36-1), and lies between 0 and&t;&t;&bslash;&n;&t; * 2^36-1+2^28-1.  That in particular means that if r3 &gt;=&t;&bslash;&n;&t; * 2^36-1, then r3+1 has the 2^36 bit set.  So, if r3+1 has&t;&bslash;&n;&t; * the bit clear, r3 already has the answer we want, if it&t;&bslash;&n;&t; * doesn&squot;t, the answer is the low 36 bits of r3+1.  So in all&t;&bslash;&n;&t; * cases the answer is the low 36 bits of (r3 + ((r3+1) &gt;&gt; 36))*/&bslash;&n;&t;addi&t;rx,rt,1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;srdi&t;rx,rx,VSID_BITS;&t;/* extract 2^36 bit */&t;&t;&bslash;&n;&t;add&t;rt,rt,rx
 multiline_comment|/* Block size masks */
 DECL|macro|BL_128K
 mdefine_line|#define BL_128K&t;0x000

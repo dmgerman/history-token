@@ -426,15 +426,6 @@ DECL|macro|USER_REGION_ID
 mdefine_line|#define USER_REGION_ID     (0UL)
 DECL|macro|REGION_ID
 mdefine_line|#define REGION_ID(X)&t;   (((unsigned long)(X))&gt;&gt;REGION_SHIFT)
-multiline_comment|/*&n; * Define valid/invalid EA bits (for all ranges)&n; */
-DECL|macro|VALID_EA_BITS
-mdefine_line|#define VALID_EA_BITS   (0x000001ffffffffffUL)
-DECL|macro|INVALID_EA_BITS
-mdefine_line|#define INVALID_EA_BITS (~(REGION_MASK|VALID_EA_BITS))
-DECL|macro|IS_VALID_REGION_ID
-mdefine_line|#define IS_VALID_REGION_ID(x) &bslash;&n;        (((x) == USER_REGION_ID) || ((x) &gt;= KERNEL_REGION_ID))
-DECL|macro|IS_VALID_EA
-mdefine_line|#define IS_VALID_EA(x) &bslash;&n;        ((!((x) &amp; INVALID_EA_BITS)) &amp;&amp; IS_VALID_REGION_ID(REGION_ID(x)))
 DECL|macro|__bpn_to_ba
 mdefine_line|#define __bpn_to_ba(x) ((((unsigned long)(x))&lt;&lt;PAGE_SHIFT) + KERNELBASE)
 DECL|macro|__ba_to_bpn
