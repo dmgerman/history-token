@@ -48,6 +48,30 @@ macro_line|#include &quot;link.h&quot;
 macro_line|#include &quot;cmdblk.h&quot;
 macro_line|#include &quot;route.h&quot;
 r_static
+r_int
+id|RIOBootComplete
+c_func
+(paren
+r_struct
+id|rio_info
+op_star
+id|p
+comma
+r_struct
+id|Host
+op_star
+id|HostP
+comma
+id|uint
+id|Rup
+comma
+r_struct
+id|PktCmd
+op_star
+id|PktCmdP
+)paren
+suffix:semicolon
+r_static
 id|uchar
 DECL|variable|RIOAtVec2Ctrl
 id|RIOAtVec2Ctrl
@@ -2397,6 +2421,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;** This function is called when an RTA been booted.&n;** If booted by a host, HostP-&gt;HostUniqueNum is the booting host.&n;** If booted by an RTA, HostP-&gt;Mapping[Rup].RtaUniqueNum is the booting RTA.&n;** RtaUniq is the booted RTA.&n;*/
 DECL|function|RIOBootComplete
+r_static
 r_int
 id|RIOBootComplete
 c_func

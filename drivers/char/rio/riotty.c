@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
@@ -114,6 +115,18 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+macro_line|#if 0
+r_static
+r_int
+id|RIOCookMode
+c_func
+(paren
+r_struct
+id|ttystatics
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|conv_vb
@@ -2282,8 +2295,9 @@ id|rv
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** decide if we need to use the line discipline.&n;** This routine can return one of three values:&n;** COOK_RAW if no processing has to be done by the line discipline or the card&n;** COOK_WELL if the line discipline must be used to do the processing&n;** COOK_MEDIUM if the card can do all the processing necessary.&n;*/
+macro_line|#if 0
+r_static
 r_int
-DECL|function|RIOCookMode
 id|RIOCookMode
 c_func
 (paren
@@ -2364,6 +2378,7 @@ r_return
 id|COOK_MEDIUM
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_void
 DECL|function|RIOClearUp
@@ -3435,13 +3450,13 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|PortP-&gt;Xprint.XpLen
 op_assign
-id|RIOStrlen
+id|strlen
 c_func
 (paren
 id|PortP-&gt;Xprint.XpOn
 )paren
 op_plus
-id|RIOStrlen
+id|strlen
 c_func
 (paren
 id|PortP-&gt;Xprint.XpOff
@@ -3533,13 +3548,13 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|PortP-&gt;Xprint.XpLen
 op_assign
-id|RIOStrlen
+id|strlen
 c_func
 (paren
 id|PortP-&gt;Xprint.XpOn
 )paren
 op_plus
-id|RIOStrlen
+id|strlen
 c_func
 (paren
 id|PortP-&gt;Xprint.XpOff

@@ -1,8 +1,4 @@
 multiline_comment|/* rio_linux.c -- Linux driver for the Specialix RIO series cards. &n; *&n; *&n; *   (C) 1999 R.E.Wolff@BitWizard.nl&n; *&n; * Specialix pays for the development and support of this driver.&n; * Please DO contact support@specialix.co.uk if you require&n; * support. But please read the documentation (rio.txt) first.&n; *&n; *&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License as&n; *      published by the Free Software Foundation; either version 2 of&n; *      the License, or (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be&n; *      useful, but WITHOUT ANY WARRANTY; without even the implied&n; *      warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR&n; *      PURPOSE.  See the GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public&n; *      License along with this program; if not, write to the Free&n; *      Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *      USA.&n; *&n; * Revision history:&n; * $Log: rio.c,v $&n; * Revision 1.1  1999/07/11 10:13:54  wolff&n; * Initial revision&n; *&n; * */
-DECL|macro|RCS_ID
-mdefine_line|#define RCS_ID &quot;$Id: rio.c,v 1.1 1999/07/11 10:13:54 wolff Exp wolff $&quot;
-DECL|macro|RCS_REV
-mdefine_line|#define RCS_REV &quot;$Revision: 1.1 $&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;linux/kdev_t.h&gt;
@@ -307,6 +303,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|my_hd
 (paren
@@ -336,27 +333,13 @@ id|rio_info
 op_star
 id|p
 suffix:semicolon
-multiline_comment|/* struct rio_board boards[RIO_HOSTS]; */
-DECL|variable|rio_ports
-r_struct
-id|rio_port
-op_star
-id|rio_ports
-suffix:semicolon
-DECL|variable|rio_initialized
-r_int
-id|rio_initialized
-suffix:semicolon
-DECL|variable|rio_nports
-r_int
-id|rio_nports
-suffix:semicolon
 DECL|variable|rio_debug
 r_int
 id|rio_debug
 suffix:semicolon
 multiline_comment|/* You can have the driver poll your card. &n;    - Set rio_poll to 1 to poll every timer tick (10ms on Intel). &n;      This is used when the card cannot use an interrupt for some reason.&n;*/
 DECL|variable|rio_poll
+r_static
 r_int
 id|rio_poll
 op_assign
@@ -364,6 +347,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* These are the only open spaces in my computer. Yours may have more&n;   or less.... */
 DECL|variable|rio_probe_addrs
+r_static
 r_int
 id|rio_probe_addrs
 (braket
@@ -486,6 +470,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|rio_fw_device
+r_static
 r_struct
 id|miscdevice
 id|rio_fw_device
@@ -593,6 +578,7 @@ mdefine_line|#define rio_paranoia_check(a,b,c) 0
 macro_line|#endif
 macro_line|#ifdef DEBUG
 DECL|function|my_hd
+r_static
 r_void
 id|my_hd
 (paren
@@ -992,6 +978,7 @@ id|rv
 suffix:semicolon
 )brace
 DECL|function|rio_reset_interrupt
+r_static
 r_void
 id|rio_reset_interrupt
 (paren
@@ -2556,6 +2543,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ********************************************************************** *&n; *                    Here are the initialization routines.               *&n; * ********************************************************************** */
 DECL|function|get_VPD_PROM
+r_static
 r_struct
 id|vpd_prom
 op_star
@@ -3421,6 +3409,7 @@ multiline_comment|/* This was written for SX, but applies to RIO too...&n;    (i
 multiline_comment|/******************************************************** &n; * Setting bit 17 in the CNTRL register of the PLX 9050  * &n; * chip forces a retry on writes while a read is pending.*&n; * This is to prevent the card locking up on Intel Xeon  *&n; * multiprocessor systems with the NX chipset.    -- NV  *&n; ********************************************************/
 multiline_comment|/* Newer cards are produced with this bit set from the configuration&n;   EEprom.  As the bit is read/write for the CPU, we can fix it here,&n;   if we detect that it isn&squot;t set correctly. -- REW */
 DECL|function|fix_rio_pci
+r_static
 r_void
 id|fix_rio_pci
 (paren
