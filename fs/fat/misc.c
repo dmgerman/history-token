@@ -708,16 +708,7 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|fat_cache_add
-c_func
-(paren
-id|inode
-comma
-id|new_fclus
-comma
-id|new_dclus
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;fat_cache_add(inode, new_fclus, new_dclus);
 )brace
 r_else
 (brace
