@@ -13,11 +13,12 @@ c_func
 id|hl_drivers
 )paren
 suffix:semicolon
-DECL|variable|hl_drivers_lock
-id|rwlock_t
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
 id|hl_drivers_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|addr_space
 id|LIST_HEAD
@@ -134,7 +135,7 @@ id|hl-&gt;op
 op_assign
 id|ops
 suffix:semicolon
-id|write_lock_irq
+id|down
 c_func
 (paren
 op_amp
@@ -151,7 +152,7 @@ op_amp
 id|hl_drivers
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -258,7 +259,7 @@ op_amp
 id|addr_space_lock
 )paren
 suffix:semicolon
-id|write_lock_irq
+id|down
 c_func
 (paren
 op_amp
@@ -272,7 +273,7 @@ op_amp
 id|hl-&gt;hl_list
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -799,7 +800,7 @@ id|hpsb_highlevel
 op_star
 id|hl
 suffix:semicolon
-id|read_lock
+id|down
 c_func
 (paren
 op_amp
@@ -837,7 +838,7 @@ id|host
 )paren
 suffix:semicolon
 )brace
-id|read_unlock
+id|up
 c_func
 (paren
 op_amp
@@ -866,7 +867,7 @@ id|hpsb_highlevel
 op_star
 id|hl
 suffix:semicolon
-id|write_lock_irq
+id|down
 c_func
 (paren
 op_amp
@@ -909,7 +910,7 @@ id|host
 )paren
 suffix:semicolon
 )brace
-id|write_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -938,7 +939,7 @@ id|hpsb_highlevel
 op_star
 id|hl
 suffix:semicolon
-id|read_lock
+id|down
 c_func
 (paren
 op_amp
@@ -981,7 +982,7 @@ id|host
 )paren
 suffix:semicolon
 )brace
-id|read_unlock
+id|up
 c_func
 (paren
 op_amp
@@ -1032,7 +1033,7 @@ l_int|8
 op_amp
 l_int|0x3f
 suffix:semicolon
-id|read_lock
+id|down
 c_func
 (paren
 op_amp
@@ -1091,7 +1092,7 @@ op_assign
 id|entry-&gt;next
 suffix:semicolon
 )brace
-id|read_unlock
+id|up
 c_func
 (paren
 op_amp
@@ -1144,7 +1145,7 @@ l_int|0
 op_rshift
 l_int|4
 suffix:semicolon
-id|read_lock
+id|down
 c_func
 (paren
 op_amp
@@ -1207,7 +1208,7 @@ op_assign
 id|entry-&gt;next
 suffix:semicolon
 )brace
-id|read_unlock
+id|up
 c_func
 (paren
 op_amp
