@@ -1460,6 +1460,8 @@ suffix:semicolon
 id|dev_size
 op_assign
 id|dd-&gt;bdev-&gt;bd_inode-&gt;i_size
+op_rshift
+id|SECTOR_SHIFT
 suffix:semicolon
 r_return
 (paren
