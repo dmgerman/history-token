@@ -2262,7 +2262,7 @@ id|dentry
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This function makes sure the current process has its own signal table,&n; * so that flush_signal_handlers can later reset the handlers without&n; * disturbing other processes.  (Other processes might share the signal&n; * table via the CLONE_SIGNAL option to clone().)&n; */
+multiline_comment|/*&n; * This function makes sure the current process has its own signal table,&n; * so that flush_signal_handlers can later reset the handlers without&n; * disturbing other processes.  (Other processes might share the signal&n; * table via the CLONE_SIGHAND option to clone().)&n; */
 DECL|function|de_thread
 r_static
 r_inline
