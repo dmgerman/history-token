@@ -229,8 +229,6 @@ id|apicid
 )paren
 suffix:semicolon
 )brace
-DECL|macro|WAKE_SECONDARY_VIA_INIT
-mdefine_line|#define WAKE_SECONDARY_VIA_INIT
 DECL|function|setup_portio_remap
 r_static
 r_inline

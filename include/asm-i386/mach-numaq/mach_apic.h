@@ -285,8 +285,6 @@ r_return
 id|logical_apicid
 suffix:semicolon
 )brace
-DECL|macro|WAKE_SECONDARY_VIA_NMI
-mdefine_line|#define WAKE_SECONDARY_VIA_NMI
 DECL|function|setup_portio_remap
 r_static
 r_inline

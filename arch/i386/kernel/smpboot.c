@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &quot;smpboot_hooks.h&quot;
 macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#include &lt;mach_wakecpu.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static
@@ -1099,22 +1100,11 @@ r_int
 id|timeout
 suffix:semicolon
 multiline_comment|/*&n;&t; * If waken up by an INIT in an 82489DX configuration&n;&t; * we may get here before an INIT-deassert IPI reaches&n;&t; * our local APIC.  We have to wait for the IPI or we&squot;ll&n;&t; * lock up on an APIC access.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|clustered_apic_mode
-)paren
-r_while
-c_loop
-(paren
-op_logical_neg
-id|atomic_read
+id|wait_for_init_deassert
 c_func
 (paren
 op_amp
 id|init_deasserted
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * (This works even if the APIC is not enabled.)&n;&t; */
@@ -1253,13 +1243,7 @@ c_func
 l_string|&quot;CALLIN, before setup_local_APIC().&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Because we use NMIs rather than the INIT-STARTUP sequence to&n;&t; * bootstrap the CPUs, the APIC may be in a weird state. Kick it.&n;&t; */
-r_if
-c_cond
-(paren
-id|clustered_apic_mode
-)paren
-id|clear_local_APIC
+id|smp_callin_clear_local_apic
 c_func
 (paren
 )paren
@@ -1786,11 +1770,11 @@ id|cpu
 suffix:semicolon
 )brace
 macro_line|#if APIC_DEBUG
-DECL|function|inquire_remote_apic
+DECL|function|__inquire_remote_apic
 r_static
 r_inline
 r_void
-id|inquire_remote_apic
+id|__inquire_remote_apic
 c_func
 (paren
 r_int
@@ -2217,6 +2201,41 @@ id|num_starts
 comma
 id|j
 suffix:semicolon
+multiline_comment|/*&n;&t; * Be paranoid about clearing APIC errors.&n;&t; */
+r_if
+c_cond
+(paren
+id|APIC_INTEGRATED
+c_func
+(paren
+id|apic_version
+(braket
+id|phys_apicid
+)braket
+)paren
+)paren
+(brace
+id|apic_read_around
+c_func
+(paren
+id|APIC_SPIV
+)paren
+suffix:semicolon
+id|apic_write
+c_func
+(paren
+id|APIC_ESR
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|apic_read
+c_func
+(paren
+id|APIC_ESR
+)paren
+suffix:semicolon
+)brace
 id|Dprintk
 c_func
 (paren
@@ -2813,40 +2832,16 @@ c_func
 l_string|&quot;Setting warm reset code and vector.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|store_NMI_vector
+c_func
 (paren
-id|clustered_apic_mode
-)paren
-(brace
-multiline_comment|/* stash the current NMI vector, so we can put things back */
+op_amp
 id|nmi_high
-op_assign
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|TRAMPOLINE_HIGH
-)paren
-suffix:semicolon
+comma
+op_amp
 id|nmi_low
-op_assign
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|TRAMPOLINE_LOW
 )paren
 suffix:semicolon
-)brace
 id|CMOS_WRITE
 c_func
 (paren
@@ -2908,44 +2903,6 @@ c_func
 l_string|&quot;3.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Be paranoid about clearing APIC errors.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|clustered_apic_mode
-op_logical_and
-id|APIC_INTEGRATED
-c_func
-(paren
-id|apic_version
-(braket
-id|apicid
-)braket
-)paren
-)paren
-(brace
-id|apic_read_around
-c_func
-(paren
-id|APIC_SPIV
-)paren
-suffix:semicolon
-id|apic_write
-c_func
-(paren
-id|APIC_ESR
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|apic_read
-c_func
-(paren
-id|APIC_ESR
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Starting actual IPI sequence...&n;&t; */
 id|boot_error
 op_assign
@@ -3114,20 +3071,12 @@ c_func
 l_string|&quot;Not responding.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if APIC_DEBUG
-r_if
-c_cond
-(paren
-op_logical_neg
-id|clustered_apic_mode
-)paren
 id|inquire_remote_apic
 c_func
 (paren
 id|apicid
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_if
@@ -3185,45 +3134,6 @@ l_int|8192
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|clustered_apic_mode
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Restoring NMI vector&bslash;n&quot;
-)paren
-suffix:semicolon
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|TRAMPOLINE_HIGH
-)paren
-op_assign
-id|nmi_high
-suffix:semicolon
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|TRAMPOLINE_LOW
-)paren
-op_assign
-id|nmi_low
-suffix:semicolon
-)brace
 r_return
 id|boot_error
 suffix:semicolon
