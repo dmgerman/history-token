@@ -89,11 +89,6 @@ id|drm_map_t
 op_star
 id|sarea_map
 suffix:semicolon
-DECL|member|buffer_map
-id|drm_map_t
-op_star
-id|buffer_map
-suffix:semicolon
 DECL|member|mmio_map
 id|drm_map_t
 op_star
