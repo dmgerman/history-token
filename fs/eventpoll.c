@@ -251,6 +251,11 @@ id|eventpoll
 op_star
 id|ep
 suffix:semicolon
+multiline_comment|/* The file descriptor this item refers to */
+DECL|member|fd
+r_int
+id|fd
+suffix:semicolon
 multiline_comment|/* The file this item refers to */
 DECL|member|file
 r_struct
@@ -423,6 +428,9 @@ r_struct
 id|file
 op_star
 id|file
+comma
+r_int
+id|fd
 )paren
 suffix:semicolon
 r_static
@@ -484,6 +492,9 @@ r_struct
 id|file
 op_star
 id|file
+comma
+r_int
+id|fd
 )paren
 suffix:semicolon
 r_static
@@ -546,6 +557,9 @@ r_struct
 id|file
 op_star
 id|tfile
+comma
+r_int
+id|fd
 )paren
 suffix:semicolon
 r_static
@@ -1644,6 +1658,8 @@ c_func
 id|ep
 comma
 id|tfile
+comma
+id|fd
 )paren
 suffix:semicolon
 id|error
@@ -1684,6 +1700,8 @@ op_amp
 id|epds
 comma
 id|tfile
+comma
+id|fd
 )paren
 suffix:semicolon
 )brace
@@ -2626,8 +2644,27 @@ r_struct
 id|file
 op_star
 id|file
+comma
+r_int
+id|fd
 )paren
 (brace
+r_int
+r_int
+id|ptr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|file
+op_xor
+(paren
+id|fd
+op_lshift
+id|ep-&gt;hashbits
+)paren
+suffix:semicolon
 r_return
 (paren
 r_int
@@ -2636,7 +2673,11 @@ r_int
 id|hash_ptr
 c_func
 (paren
-id|file
+(paren
+r_void
+op_star
+)paren
+id|ptr
 comma
 id|ep-&gt;hashbits
 )paren
@@ -3046,6 +3087,9 @@ r_struct
 id|file
 op_star
 id|file
+comma
+r_int
+id|fd
 )paren
 (brace
 r_int
@@ -3089,6 +3133,8 @@ c_func
 id|ep
 comma
 id|file
+comma
+id|fd
 )paren
 )paren
 suffix:semicolon
@@ -3119,6 +3165,10 @@ c_cond
 id|epi-&gt;file
 op_eq
 id|file
+op_logical_and
+id|epi-&gt;fd
+op_eq
+id|fd
 )paren
 (brace
 id|ep_use_epitem
@@ -3340,6 +3390,9 @@ r_struct
 id|file
 op_star
 id|tfile
+comma
+r_int
+id|fd
 )paren
 (brace
 r_int
@@ -3428,6 +3481,10 @@ suffix:semicolon
 id|epi-&gt;file
 op_assign
 id|tfile
+suffix:semicolon
+id|epi-&gt;fd
+op_assign
+id|fd
 suffix:semicolon
 id|epi-&gt;event
 op_assign
@@ -3539,6 +3596,8 @@ c_func
 id|ep
 comma
 id|tfile
+comma
+id|fd
 )paren
 )paren
 )paren
@@ -3636,13 +3695,15 @@ l_int|3
 comma
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: ep_insert(%p, %p)&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: ep_insert(%p, %p, %d)&bslash;n&quot;
 comma
 id|current
 comma
 id|ep
 comma
 id|tfile
+comma
+id|fd
 )paren
 )paren
 suffix:semicolon
