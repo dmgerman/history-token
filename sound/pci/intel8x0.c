@@ -1392,6 +1392,20 @@ id|u32
 id|int_sta_mask
 suffix:semicolon
 multiline_comment|/* interrupt status mask */
+macro_line|#ifdef CONFIG_PM
+DECL|member|pci_state
+id|u32
+id|pci_state
+(braket
+l_int|64
+op_div
+r_sizeof
+(paren
+id|u32
+)paren
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|snd_intel8x0_ids
@@ -10727,6 +10741,14 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|pci_save_state
+c_func
+(paren
+id|chip-&gt;pci
+comma
+id|chip-&gt;pci_state
+)paren
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -10772,6 +10794,14 @@ id|EINVAL
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|pci_restore_state
+c_func
+(paren
+id|chip-&gt;pci
+comma
+id|chip-&gt;pci_state
+)paren
 suffix:semicolon
 id|pci_enable_device
 c_func
