@@ -6744,11 +6744,6 @@ c_func
 (paren
 id|u16
 id|device
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_struct
@@ -6774,22 +6769,9 @@ c_cond
 op_logical_neg
 id|i810_dev
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;Detected an Intel %s Chipset, &quot;
-l_string|&quot;but could not find the secondary device.&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|intel_i810_private.i810_dev
 op_assign
 id|i810_dev
@@ -6987,6 +6969,10 @@ suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_INTEL_82810_MC1
 suffix:colon
+id|name
+op_assign
+l_string|&quot;i810&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6995,8 +6981,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82810_IG1
-comma
-l_string|&quot;i810&quot;
 )paren
 )paren
 r_goto
@@ -7007,15 +6991,15 @@ op_assign
 op_amp
 id|intel_810_driver
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;i810&quot;
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_INTEL_82810_MC3
 suffix:colon
+id|name
+op_assign
+l_string|&quot;i810 DC100&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7024,8 +7008,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82810_IG3
-comma
-l_string|&quot;i810 DC100&quot;
 )paren
 )paren
 r_goto
@@ -7036,15 +7018,15 @@ op_assign
 op_amp
 id|intel_810_driver
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;i810 DC100&quot;
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_INTEL_82810E_MC
 suffix:colon
+id|name
+op_assign
+l_string|&quot;i810 E&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7053,8 +7035,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82810E_IG
-comma
-l_string|&quot;i810 E&quot;
 )paren
 )paren
 r_goto
@@ -7064,10 +7044,6 @@ id|bridge-&gt;driver
 op_assign
 op_amp
 id|intel_810_driver
-suffix:semicolon
-id|name
-op_assign
-l_string|&quot;i810 E&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7082,8 +7058,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82815_CGC
-comma
-l_string|&quot;i815&quot;
 )paren
 )paren
 id|bridge-&gt;driver
@@ -7595,6 +7569,17 @@ id|bridge
 suffix:semicolon
 id|fail
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Detected an Intel %s chipset, &quot;
+l_string|&quot;but could not find the secondary device.&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
 id|agp_put_bridge
 c_func
 (paren
