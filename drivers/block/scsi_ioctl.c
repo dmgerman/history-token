@@ -487,6 +487,12 @@ multiline_comment|/* CD/DVD data reading */
 id|safe_for_read
 c_func
 (paren
+id|GPCMD_READ_BUFFER_CAPACITY
+)paren
+comma
+id|safe_for_read
+c_func
+(paren
 id|GPCMD_READ_CD
 )paren
 comma
