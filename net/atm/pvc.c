@@ -362,7 +362,7 @@ comma
 dot
 id|ioctl
 op_assign
-id|atm_ioctl
+id|vcc_ioctl
 comma
 dot
 id|listen

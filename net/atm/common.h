@@ -120,7 +120,7 @@ id|wait
 )paren
 suffix:semicolon
 r_int
-id|atm_ioctl
+id|vcc_ioctl
 c_func
 (paren
 r_struct
