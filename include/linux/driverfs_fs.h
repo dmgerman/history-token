@@ -61,11 +61,6 @@ id|dentry
 op_star
 id|dentry
 suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
 DECL|member|show
 id|ssize_t
 (paren

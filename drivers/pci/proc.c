@@ -1691,7 +1691,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%u&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
 id|pci_dev-&gt;irq
 )paren
