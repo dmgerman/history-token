@@ -6457,6 +6457,10 @@ c_func
 id|r10_bio
 )paren
 suffix:semicolon
+id|biolist
+op_assign
+l_int|NULL
+suffix:semicolon
 r_goto
 id|giveup
 suffix:semicolon
@@ -6748,6 +6752,8 @@ suffix:semicolon
 )brace
 )brace
 r_return
+id|sectors_skipped
+op_plus
 id|nr_sectors
 suffix:semicolon
 id|giveup
