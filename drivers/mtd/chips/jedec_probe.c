@@ -21,6 +21,8 @@ DECL|macro|MANUFACTURER_ATMEL
 mdefine_line|#define MANUFACTURER_ATMEL&t;0x001f
 DECL|macro|MANUFACTURER_FUJITSU
 mdefine_line|#define MANUFACTURER_FUJITSU&t;0x0004
+DECL|macro|MANUFACTURER_HYUNDAI
+mdefine_line|#define MANUFACTURER_HYUNDAI&t;0x00AD
 DECL|macro|MANUFACTURER_INTEL
 mdefine_line|#define MANUFACTURER_INTEL&t;0x0089
 DECL|macro|MANUFACTURER_MACRONIX
@@ -68,6 +70,8 @@ DECL|macro|AM29LV040B
 mdefine_line|#define AM29LV040B&t;0x004F
 DECL|macro|AM29F032B
 mdefine_line|#define AM29F032B&t;0x0041
+DECL|macro|AM29F002T
+mdefine_line|#define AM29F002T&t;0x00B0
 multiline_comment|/* Atmel */
 DECL|macro|AT49BV512
 mdefine_line|#define AT49BV512&t;0x0003
@@ -102,6 +106,9 @@ DECL|macro|MBM29LV400TC
 mdefine_line|#define MBM29LV400TC&t;0x22B9
 DECL|macro|MBM29LV400BC
 mdefine_line|#define MBM29LV400BC&t;0x22BA
+multiline_comment|/* Hyundai */
+DECL|macro|HY29F002T
+mdefine_line|#define HY29F002T&t;0x00B0
 multiline_comment|/* Intel */
 DECL|macro|I28F004B3T
 mdefine_line|#define I28F004B3T&t;0x00d4
@@ -154,6 +161,8 @@ DECL|macro|MX29LV160B
 mdefine_line|#define MX29LV160B&t;0x2249
 DECL|macro|MX29F016
 mdefine_line|#define MX29F016&t;0x00AD
+DECL|macro|MX29F002T
+mdefine_line|#define MX29F002T&t;0x00B0
 DECL|macro|MX29F004T
 mdefine_line|#define MX29F004T&t;0x0045
 DECL|macro|MX29F004B
@@ -1744,6 +1753,64 @@ comma
 )brace
 comma
 (brace
+id|mfr_id
+suffix:colon
+id|MANUFACTURER_AMD
+comma
+id|dev_id
+suffix:colon
+id|AM29F002T
+comma
+id|name
+suffix:colon
+l_string|&quot;AMD AM29F002T&quot;
+comma
+id|DevSize
+suffix:colon
+id|SIZE_256KiB
+comma
+id|NumEraseRegions
+suffix:colon
+l_int|4
+comma
+id|regions
+suffix:colon
+(brace
+id|ERASEINFO
+c_func
+(paren
+l_int|0x10000
+comma
+l_int|3
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x08000
+comma
+l_int|1
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x02000
+comma
+l_int|2
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x04000
+comma
+l_int|1
+)paren
+)brace
+)brace
+comma
+(brace
 dot
 id|mfr_id
 op_assign
@@ -2920,6 +2987,64 @@ c_func
 l_int|0x10000
 comma
 l_int|7
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x08000
+comma
+l_int|1
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x02000
+comma
+l_int|2
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x04000
+comma
+l_int|1
+)paren
+)brace
+)brace
+comma
+(brace
+id|mfr_id
+suffix:colon
+id|MANUFACTURER_HYUNDAI
+comma
+id|dev_id
+suffix:colon
+id|HY29F002T
+comma
+id|name
+suffix:colon
+l_string|&quot;Hyundai HY29F002T&quot;
+comma
+id|DevSize
+suffix:colon
+id|SIZE_256KiB
+comma
+id|NumEraseRegions
+suffix:colon
+l_int|4
+comma
+id|regions
+suffix:colon
+(brace
+id|ERASEINFO
+c_func
+(paren
+l_int|0x10000
+comma
+l_int|3
 )paren
 comma
 id|ERASEINFO
@@ -4785,6 +4910,64 @@ comma
 l_int|7
 )paren
 comma
+)brace
+)brace
+comma
+(brace
+id|mfr_id
+suffix:colon
+id|MANUFACTURER_MACRONIX
+comma
+id|dev_id
+suffix:colon
+id|MX29F002T
+comma
+id|name
+suffix:colon
+l_string|&quot;Macronix MX29F002T&quot;
+comma
+id|DevSize
+suffix:colon
+id|SIZE_256KiB
+comma
+id|NumEraseRegions
+suffix:colon
+l_int|4
+comma
+id|regions
+suffix:colon
+(brace
+id|ERASEINFO
+c_func
+(paren
+l_int|0x10000
+comma
+l_int|3
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x08000
+comma
+l_int|1
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x02000
+comma
+l_int|2
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x04000
+comma
+l_int|1
+)paren
 )brace
 )brace
 comma
