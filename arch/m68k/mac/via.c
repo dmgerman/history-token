@@ -360,6 +360,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;VIA1 at %p is a 6522 or clone&bslash;n&quot;
 comma
 id|via1
@@ -368,6 +369,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;VIA2 at %p is &quot;
 comma
 id|via2
@@ -382,6 +384,7 @@ id|rbv_present
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;an RBV&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -396,6 +399,7 @@ id|oss_present
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;an OSS&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -405,6 +409,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;a 6522 or clone&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -940,6 +945,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;VIA1: DDRA = 0x%02X DDRB = 0x%02X ACR = 0x%02X&bslash;n&quot;
 comma
 (paren
@@ -970,6 +976,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;         PCR = 0x%02X  IFR = 0x%02X IER = 0x%02X&bslash;n&quot;
 comma
 (paren
@@ -1006,6 +1013,7 @@ id|oss_present
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;VIA2: &lt;OSS&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1020,6 +1028,7 @@ id|rbv_present
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;VIA2:  IFR = 0x%02X  IER = 0x%02X&bslash;n&quot;
 comma
 (paren
@@ -1042,6 +1051,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;      SIFR = 0x%02X SIER = 0x%02X&bslash;n&quot;
 comma
 (paren
@@ -1067,6 +1077,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;VIA2: DDRA = 0x%02X DDRB = 0x%02X ACR = 0x%02X&bslash;n&quot;
 comma
 (paren
@@ -1097,6 +1108,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;         PCR = 0x%02X  IFR = 0x%02X IER = 0x%02X&bslash;n&quot;
 comma
 (paren
@@ -1293,6 +1305,22 @@ id|rbv_present
 )paren
 (brace
 multiline_comment|/* set the line to be an output on non-RBV machines */
+r_if
+c_cond
+(paren
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB1
+)paren
+op_logical_and
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB2
+)paren
+)paren
+(brace
 id|via2
 (braket
 id|vDirB
@@ -1300,6 +1328,7 @@ id|vDirB
 op_or_assign
 l_int|0x02
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* this seems to be an ADB bit on PMU machines */
 multiline_comment|/* according to MkLinux.  -- jmt               */
@@ -1353,6 +1382,62 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* These are ADB bits on PMU */
+r_if
+c_cond
+(paren
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB1
+)paren
+op_logical_and
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB2
+)paren
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|macintosh_config-&gt;ident
+)paren
+(brace
+r_case
+id|MAC_MODEL_II
+suffix:colon
+r_case
+id|MAC_MODEL_IIX
+suffix:colon
+r_case
+id|MAC_MODEL_IICX
+suffix:colon
+r_case
+id|MAC_MODEL_SE30
+suffix:colon
+id|via2
+(braket
+id|vBufA
+)braket
+op_or_assign
+l_int|0x3F
+suffix:semicolon
+id|via2
+(braket
+id|vDirA
+)braket
+op_assign
+op_complement
+id|nubus_active
+op_or
+l_int|0xc0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|via2
 (braket
 id|vBufA
@@ -1368,6 +1453,8 @@ op_assign
 op_complement
 id|nubus_active
 suffix:semicolon
+)brace
+)brace
 )brace
 )brace
 multiline_comment|/*&n; * The generic VIA interrupt routines (shamelessly stolen from Alan Cox&squot;s&n; * via6522.c :-), disable/pending masks added.&n; *&n; * The new interrupt architecture in macints.c takes care of a lot of the&n; * gruntwork for us, including tallying the interrupts and calling the&n; * handlers on the linked list. All we need to do here is basically generate&n; * the machspec interrupt number after clearing the interrupt.&n; */
@@ -1796,6 +1883,7 @@ macro_line|#ifdef DEBUG_IRQUSE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;via_irq_enable(%d)&bslash;n&quot;
 comma
 id|irq
@@ -1915,6 +2003,57 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Make sure the bit is an input, to enable the irq */
+multiline_comment|/* But not on PowerBooks, that&squot;s ADB... */
+r_if
+c_cond
+(paren
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB1
+)paren
+op_logical_and
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB2
+)paren
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|macintosh_config-&gt;ident
+)paren
+(brace
+r_case
+id|MAC_MODEL_II
+suffix:colon
+r_case
+id|MAC_MODEL_IIX
+suffix:colon
+r_case
+id|MAC_MODEL_IICX
+suffix:colon
+r_case
+id|MAC_MODEL_SE30
+suffix:colon
+id|via2
+(braket
+id|vDirA
+)braket
+op_and_assign
+(paren
+op_complement
+id|irq_bit
+op_or
+l_int|0xc0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|via2
 (braket
 id|vDirA
@@ -1923,6 +2062,8 @@ op_and_assign
 op_complement
 id|irq_bit
 suffix:semicolon
+)brace
+)brace
 )brace
 id|nubus_active
 op_or_assign
@@ -1968,6 +2109,7 @@ macro_line|#ifdef DEBUG_IRQUSE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;via_irq_disable(%d)&bslash;n&quot;
 comma
 id|irq
@@ -2038,6 +2180,23 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* disable the nubus irq by changing dir to output */
+multiline_comment|/* except on PMU */
+r_if
+c_cond
+(paren
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB1
+)paren
+op_logical_and
+(paren
+id|macintosh_config-&gt;adb_type
+op_ne
+id|MAC_ADB_PB2
+)paren
+)paren
+(brace
 id|via2
 (braket
 id|vDirA
@@ -2045,6 +2204,7 @@ id|vDirA
 op_or_assign
 id|irq_bit
 suffix:semicolon
+)brace
 )brace
 id|nubus_active
 op_and_assign
