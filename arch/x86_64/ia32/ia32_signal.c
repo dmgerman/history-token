@@ -23,8 +23,6 @@ macro_line|#include &lt;asm/sigcontext32.h&gt;
 macro_line|#include &lt;asm/fpu32.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/vsyscall32.h&gt;
-DECL|macro|ptr_to_u32
-mdefine_line|#define ptr_to_u32(x) ((u32)(u64)(x))&t;/* avoid gcc warning */ 
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
@@ -173,13 +171,11 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-id|u32
-)paren
-(paren
-id|u64
-)paren
 id|from-&gt;si_ptr
+)paren
 comma
 op_amp
 id|to-&gt;si_ptr
@@ -318,13 +314,11 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-id|u32
-)paren
-(paren
-id|u64
-)paren
 id|from-&gt;si_ptr
+)paren
 comma
 op_amp
 id|to-&gt;si_ptr
@@ -772,13 +766,11 @@ op_logical_or
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-id|u32
-)paren
-(paren
-id|u64
-)paren
 id|uoss.ss_sp
+)paren
 comma
 op_amp
 id|uoss_ptr-&gt;ss_sp
@@ -2072,12 +2064,8 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-(paren
-id|u32
-)paren
-(paren
-id|u64
-)paren
+id|ptr_to_compat
+c_func
 (paren
 id|tmp
 ques
@@ -2436,7 +2424,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|ptr_to_u32
+id|ptr_to_compat
 c_func
 (paren
 id|restorer
@@ -2748,14 +2736,12 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-id|u32
-)paren
-(paren
-id|u64
-)paren
 op_amp
 id|frame-&gt;info
+)paren
 comma
 op_amp
 id|frame-&gt;pinfo
@@ -2766,14 +2752,12 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-id|u32
-)paren
-(paren
-id|u64
-)paren
 op_amp
 id|frame-&gt;uc
+)paren
 comma
 op_amp
 id|frame-&gt;puc
@@ -2926,7 +2910,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|ptr_to_u32
+id|ptr_to_compat
 c_func
 (paren
 id|restorer

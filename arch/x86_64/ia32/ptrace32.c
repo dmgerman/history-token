@@ -1919,10 +1919,11 @@ r_int
 id|__user
 op_star
 )paren
+id|compat_ptr
+c_func
 (paren
-id|u64
-)paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_break
