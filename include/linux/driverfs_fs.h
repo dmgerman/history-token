@@ -202,13 +202,5 @@ op_star
 id|name
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|init_driverfs_fs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* _DDFS_H_ */
 eof
