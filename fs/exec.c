@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -3385,20 +3386,18 @@ id|inode-&gt;i_gid
 suffix:semicolon
 )brace
 multiline_comment|/* fill in binprm security blob */
+r_if
+c_cond
+(paren
+(paren
 id|retval
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|bprm_set_security
+id|security_bprm_set
 c_func
 (paren
 id|bprm
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
+)paren
 )paren
 r_return
 id|retval
@@ -3556,9 +3555,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|security_ops
-op_member_access_from_pointer
-id|bprm_compute_creds
+id|security_bprm_compute_creds
 c_func
 (paren
 id|bprm
@@ -3834,20 +3831,18 @@ multiline_comment|/* should call search_binary_handler recursively here,&n;&t;&t
 )brace
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
 id|retval
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|bprm_check_security
+id|security_bprm_check
 c_func
 (paren
 id|bprm
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
+)paren
 )paren
 r_return
 id|retval
@@ -4366,21 +4361,19 @@ l_int|0
 r_goto
 id|out_mm
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|retval
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|bprm_alloc_security
+id|security_bprm_alloc
 c_func
 (paren
 op_amp
 id|bprm
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
+)paren
 )paren
 r_goto
 id|out
@@ -4498,9 +4491,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* execve success */
-id|security_ops
-op_member_access_from_pointer
-id|bprm_free_security
+id|security_bprm_free
 c_func
 (paren
 op_amp
@@ -4556,9 +4547,7 @@ c_cond
 (paren
 id|bprm.security
 )paren
-id|security_ops
-op_member_access_from_pointer
-id|bprm_free_security
+id|security_bprm_free
 c_func
 (paren
 op_amp

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Extended attribute memory allocation wrappers, originally&n; * based on the Intermezzo PRESTO_ALLOC/PRESTO_FREE macros.&n; * The vmalloc use here is very uncommon - extended attributes&n; * are supposed to be small chunks of metadata, and it is quite&n; * unusual to have very many extended attributes, so lists tend&n; * to be quite short as well.  The 64K upper limit is derived&n; * from the extended attribute size limit used by XFS.&n; * Intentionally allow zero @size for value/list size requests.&n; */
 r_static
@@ -321,11 +322,13 @@ op_logical_and
 id|d-&gt;d_inode-&gt;i_op-&gt;setxattr
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|error
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|inode_setxattr
+id|security_inode_setxattr
 c_func
 (paren
 id|d
@@ -338,11 +341,7 @@ id|size
 comma
 id|flags
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
+)paren
 )paren
 r_goto
 id|out
@@ -750,22 +749,20 @@ op_logical_and
 id|d-&gt;d_inode-&gt;i_op-&gt;getxattr
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|error
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|inode_getxattr
+id|security_inode_getxattr
 c_func
 (paren
 id|d
 comma
 id|kname
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
+)paren
 )paren
 r_goto
 id|out
@@ -1131,20 +1128,18 @@ op_logical_and
 id|d-&gt;d_inode-&gt;i_op-&gt;listxattr
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|error
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|inode_listxattr
+id|security_inode_listxattr
 c_func
 (paren
 id|d
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
+)paren
 )paren
 r_goto
 id|out
@@ -1505,22 +1500,20 @@ op_logical_and
 id|d-&gt;d_inode-&gt;i_op-&gt;removexattr
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|error
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|inode_removexattr
+id|security_inode_removexattr
 c_func
 (paren
 id|d
 comma
 id|kname
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
+)paren
 )paren
 r_goto
 id|out

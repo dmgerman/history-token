@@ -885,9 +885,7 @@ op_minus
 l_int|1
 suffix:semicolon
 r_return
-id|security_ops
-op_member_access_from_pointer
-id|ipc_permission
+id|security_ipc_permission
 c_func
 (paren
 id|ipcp

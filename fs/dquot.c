@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|quotatypes
 r_static
@@ -6022,20 +6023,18 @@ id|f-&gt;f_op-&gt;write
 r_goto
 id|out_f
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|error
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|quota_on
+id|security_quota_on
 c_func
 (paren
 id|f
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
+)paren
 )paren
 r_goto
 id|out_f

@@ -7,8 +7,8 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_super() */
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 r_void
 id|get_filesystem
 c_func
@@ -106,9 +106,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|sb_alloc_security
+id|security_sb_alloc
 c_func
 (paren
 id|s
@@ -260,9 +258,7 @@ op_star
 id|s
 )paren
 (brace
-id|security_ops
-op_member_access_from_pointer
-id|sb_free_security
+id|security_sb_free
 c_func
 (paren
 id|s

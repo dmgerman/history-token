@@ -4,6 +4,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/limits.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;fs.h&quot;
 DECL|variable|class_dir
 r_static
