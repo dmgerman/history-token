@@ -188,6 +188,9 @@ DECL|macro|PROTEGO_SPECIAL_3
 mdefine_line|#define PROTEGO_SPECIAL_3&t;0xFC72&t;/* special/unknown device */
 DECL|macro|PROTEGO_SPECIAL_4
 mdefine_line|#define PROTEGO_SPECIAL_4&t;0xFC73&t;/* special/unknown device */ 
+multiline_comment|/* &n; * Gude Analog- und Digitalsysteme GmbH&n; */
+DECL|macro|FTDI_GUDEADS_889_PID
+mdefine_line|#define FTDI_GUDEADS_889_PID    0xe889  /* USB RS323 OptoBridge */ 
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
