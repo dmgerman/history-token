@@ -3194,12 +3194,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Calculate offset to stack_frame &amp; pt_regs */
 id|child_trap_frame
 op_assign

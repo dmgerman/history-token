@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    bttv - Bt848 frame grabber driver&n;&n;    bttv&squot;s *private* header file  --  nobody other than bttv itself&n;    should ever include this file.&n;&n;    (c) 2000-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttvp.h,v 1.10 2004/10/06 17:30:51 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    bttv&squot;s *private* header file  --  nobody other than bttv itself&n;    should ever include this file.&n;&n;    (c) 2000-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
@@ -305,15 +305,15 @@ op_star
 id|bottom
 suffix:semicolon
 multiline_comment|/* bottom field buffer */
-DECL|member|irqflags
+DECL|member|top_irq
 r_int
 r_int
-id|irqflags
+id|top_irq
 suffix:semicolon
-DECL|member|topirq
+DECL|member|frame_irq
 r_int
 r_int
-id|topirq
+id|frame_irq
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -608,9 +608,6 @@ id|btv
 comma
 r_int
 id|override
-comma
-r_int
-id|irqflags
 )paren
 suffix:semicolon
 r_int
@@ -1068,6 +1065,10 @@ DECL|member|disabled
 r_int
 id|disabled
 suffix:semicolon
+DECL|member|loop_irq
+r_int
+id|loop_irq
+suffix:semicolon
 DECL|member|video
 r_struct
 id|bttv_buffer_set
@@ -1425,6 +1426,10 @@ op_star
 id|cvbi
 suffix:semicolon
 multiline_comment|/* active vbi buffer   */
+DECL|member|loop_irq
+r_int
+id|loop_irq
+suffix:semicolon
 DECL|member|new_input
 r_int
 id|new_input

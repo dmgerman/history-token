@@ -27,11 +27,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|ports_c
-r_static
-r_int
-id|ports_c
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -39,7 +34,7 @@ id|ports
 comma
 r_int
 comma
-id|ports_c
+l_int|NULL
 comma
 l_int|0
 )paren

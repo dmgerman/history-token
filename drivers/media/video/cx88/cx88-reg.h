@@ -1,4 +1,4 @@
-multiline_comment|/* &n;    cx88x-hw.h - CX2388x register offsets&n;&n;    Copyright (C) 1996,97,98 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;                  2001 Michael Eskin&n;                  2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;                  2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/* &n;    $Id: cx88-reg.h,v 1.5 2004/09/15 16:15:24 kraxel Exp $&n;&n;    cx88x-hw.h - CX2388x register offsets&n;&n;    Copyright (C) 1996,97,98 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;                  2001 Michael Eskin&n;                  2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;                  2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef _CX88_REG_H_
 DECL|macro|_CX88_REG_H_
 mdefine_line|#define _CX88_REG_H_
@@ -1020,24 +1020,6 @@ singleline_comment|// {64}RWp Host downstream
 DECL|macro|MO_GPHSTU_DMA
 mdefine_line|#define MO_GPHSTU_DMA       0x350008 
 singleline_comment|// {64}RWp Host upstream
-DECL|macro|MO_GPHSTD_GPCNT
-mdefine_line|#define MO_GPHSTD_GPCNT     0x35C020 
-singleline_comment|// Host down general purpose counter
-DECL|macro|MO_GPHSTU_GPCNT
-mdefine_line|#define MO_GPHSTU_GPCNT     0x35C024 
-singleline_comment|// Host up general purpose counter
-DECL|macro|MO_GPHSTD_GPCNTRL
-mdefine_line|#define MO_GPHSTD_GPCNTRL   0x38C030 
-singleline_comment|// Host down general purpose control
-DECL|macro|MO_GPHSTU_GPCNTRL
-mdefine_line|#define MO_GPHSTU_GPCNTRL   0x38C034 
-singleline_comment|// Host up general purpose control
-DECL|macro|MO_GPHST_DMACNTRL
-mdefine_line|#define MO_GPHST_DMACNTRL   0x38C040 
-singleline_comment|// Host DMA control
-DECL|macro|MO_GPHST_XFR_STAT
-mdefine_line|#define MO_GPHST_XFR_STAT   0x38C044 
-singleline_comment|// Host transfer status
 DECL|macro|MO_GPHSTU_CNTRL
 mdefine_line|#define MO_GPHSTU_CNTRL     0x380048 
 singleline_comment|// Host upstream control #1
@@ -1065,6 +1047,27 @@ singleline_comment|// Host muxed 16-bit transfer parameters
 DECL|macro|MO_GPHST_MODE
 mdefine_line|#define MO_GPHST_MODE       0x380068 
 singleline_comment|// Host mode select
+DECL|macro|MO_GPHSTD_GPCNT
+mdefine_line|#define MO_GPHSTD_GPCNT     0x35C020 
+singleline_comment|// Host down general purpose counter
+DECL|macro|MO_GPHSTU_GPCNT
+mdefine_line|#define MO_GPHSTU_GPCNT     0x35C024 
+singleline_comment|// Host up general purpose counter
+DECL|macro|MO_GPHSTD_GPCNTRL
+mdefine_line|#define MO_GPHSTD_GPCNTRL   0x38C030 
+singleline_comment|// Host down general purpose control
+DECL|macro|MO_GPHSTU_GPCNTRL
+mdefine_line|#define MO_GPHSTU_GPCNTRL   0x38C034 
+singleline_comment|// Host up general purpose control
+DECL|macro|MO_GPHST_DMACNTRL
+mdefine_line|#define MO_GPHST_DMACNTRL   0x38C040 
+singleline_comment|// Host DMA control
+DECL|macro|MO_GPHST_XFR_STAT
+mdefine_line|#define MO_GPHST_XFR_STAT   0x38C044 
+singleline_comment|// Host transfer status
+DECL|macro|MO_GPHST_SOFT_RST
+mdefine_line|#define MO_GPHST_SOFT_RST   0x38C06C 
+singleline_comment|// Host software reset
 multiline_comment|/* ---------------------------------------------------------------------- */
 multiline_comment|/* RISC instructions                                                      */
 DECL|macro|RISC_SYNC

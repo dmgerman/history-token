@@ -5166,7 +5166,7 @@ op_assign
 id|rawbuf
 suffix:semicolon
 singleline_comment|// Now mark the pages as reserved; otherwise the 
-singleline_comment|// remap_page_range() in cs46xx_mmap doesn&squot;t work.
+singleline_comment|// remap_pfn_range() in cs46xx_mmap doesn&squot;t work.
 singleline_comment|// 1. get index to last page in mem_map array for rawbuf.
 id|mapend
 op_assign
@@ -5313,7 +5313,7 @@ op_assign
 id|order
 suffix:semicolon
 singleline_comment|// Now mark the pages as reserved; otherwise the 
-singleline_comment|// remap_page_range() in cs46xx_mmap doesn&squot;t work.
+singleline_comment|// remap_pfn_range() in cs46xx_mmap doesn&squot;t work.
 singleline_comment|// 1. get index to last page in mem_map array for rawbuf.
 id|mapend
 op_assign
@@ -11424,7 +11424,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -11436,6 +11436,8 @@ c_func
 (paren
 id|dmabuf-&gt;rawbuf
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma

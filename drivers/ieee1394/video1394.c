@@ -5903,7 +5903,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;This maps the vmalloced and reserved buffer to user space.&n; *&n; *  FIXME:&n; *  - PAGE_READONLY should suffice!?&n; *  - remap_page_range is kind of inefficient for page by page remapping.&n; *    But e.g. pte_alloc() does not work in modules ... :-(&n; */
+multiline_comment|/*&n; *&t;This maps the vmalloced and reserved buffer to user space.&n; *&n; *  FIXME:&n; *  - PAGE_READONLY should suffice!?&n; *  - remap_pfn_range is kind of inefficient for page by page remapping.&n; *    But e.g. pte_alloc() does not work in modules ... :-(&n; */
 DECL|function|video1394_mmap
 r_int
 id|video1394_mmap

@@ -11509,7 +11509,6 @@ id|tcp_proc_unregister
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SYSCTL
 DECL|variable|sysctl_local_port_range
 id|EXPORT_SYMBOL
 c_func
@@ -11531,5 +11530,4 @@ c_func
 id|sysctl_tcp_low_latency
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

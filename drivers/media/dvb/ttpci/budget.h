@@ -1,8 +1,6 @@
 macro_line|#ifndef __BUDGET_DVB__
 DECL|macro|__BUDGET_DVB__
 mdefine_line|#define __BUDGET_DVB__
-macro_line|#include &lt;media/saa7146.h&gt;
-macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;demux.h&quot;
@@ -10,6 +8,7 @@ macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
+macro_line|#include &lt;media/saa7146.h&gt;
 r_extern
 r_int
 id|budget_debug
@@ -51,11 +50,10 @@ id|saa7146_dev
 op_star
 id|dev
 suffix:semicolon
-DECL|member|i2c_bus
+DECL|member|i2c_adap
 r_struct
-id|dvb_i2c_bus
-op_star
-id|i2c_bus
+id|i2c_adapter
+id|i2c_adap
 suffix:semicolon
 DECL|member|card
 r_struct
@@ -170,6 +168,8 @@ DECL|macro|BUDGET_PATCH
 mdefine_line|#define BUDGET_PATCH&t;&t;   3
 DECL|macro|BUDGET_FS_ACTIVY
 mdefine_line|#define BUDGET_FS_ACTIVY&t;   4
+DECL|macro|BUDGET_CIN1200
+mdefine_line|#define BUDGET_CIN1200&t;&t;   5
 DECL|macro|BUDGET_VIDEO_PORTA
 mdefine_line|#define BUDGET_VIDEO_PORTA         0
 DECL|macro|BUDGET_VIDEO_PORTB

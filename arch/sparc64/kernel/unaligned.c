@@ -11,8 +11,8 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* #define DEBUG_MNA */
 DECL|enum|direction
 r_enum

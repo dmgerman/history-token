@@ -13,12 +13,12 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;         /* hweight64() */
 macro_line|#include &lt;asm/delay.h&gt;&t;&t;/* ia64_get_itc() */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;/* PAGE_OFFSET */
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;&t;&t;/* wmb() */
-macro_line|#include &lt;asm/bitops.h&gt;&t;&t;/* hweight64() */
 macro_line|#include &lt;asm/acpi-ext.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;IOC: &quot;

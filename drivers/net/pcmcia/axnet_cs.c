@@ -4152,7 +4152,7 @@ id|version_8390
 op_assign
 l_string|&quot;8390.c:v1.10cvs 9/23/94 Donald Becker (becker@scyld.com)&bslash;n&quot;
 suffix:semicolon
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/in.h&gt;

@@ -5051,6 +5051,7 @@ r_extern
 id|__u32
 id|sysctl_rmem_max
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET
 r_int
 id|siocdevprivate_ioctl
 c_func
@@ -5068,5 +5069,32 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|siocdevprivate_ioctl
+r_static
+r_inline
+r_int
+id|siocdevprivate_ioctl
+c_func
+(paren
+r_int
+r_int
+id|fd
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif&t;/* _SOCK_H */
 eof

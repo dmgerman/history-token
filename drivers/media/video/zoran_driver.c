@@ -16433,13 +16433,6 @@ id|zoran_vm_close
 comma
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-DECL|macro|zr_remap_page_range
-mdefine_line|#define zr_remap_page_range(a,b,c,d,e) remap_page_range(b,c,d,e)
-macro_line|#else
-DECL|macro|zr_remap_page_range
-mdefine_line|#define zr_remap_page_range(a,b,c,d,e) remap_page_range(a,b,c,d,e)
-macro_line|#endif
 r_static
 r_int
 DECL|function|zoran_mmap
@@ -16924,6 +16917,7 @@ op_star
 id|j
 )braket
 suffix:semicolon
+multiline_comment|/* should just be pos on i386 */
 id|page
 op_assign
 id|virt_to_phys
@@ -16935,12 +16929,14 @@ c_func
 id|pos
 )paren
 )paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
-multiline_comment|/* should just be pos on i386 */
 r_if
 c_cond
 (paren
-id|zr_remap_page_range
+id|remap_pfn_range
+c_func
 (paren
 id|vma
 comma
@@ -16960,7 +16956,7 @@ c_func
 l_int|1
 comma
 id|KERN_ERR
-l_string|&quot;%s: zoran_mmap(V4L) - remap_page_range failed&bslash;n&quot;
+l_string|&quot;%s: zoran_mmap(V4L) - remap_pfn_range failed&bslash;n&quot;
 comma
 id|ZR_DEVNAME
 c_func
@@ -17317,13 +17313,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|zr_remap_page_range
+id|remap_pfn_range
+c_func
 (paren
 id|vma
 comma
 id|start
 comma
 id|page
+op_rshift
+id|PAGE_SHIFT
 comma
 id|todo
 comma
@@ -17337,7 +17336,7 @@ c_func
 l_int|1
 comma
 id|KERN_ERR
-l_string|&quot;%s: zoran_mmap(V4L)i - remap_page_range failed&bslash;n&quot;
+l_string|&quot;%s: zoran_mmap(V4L)i - remap_pfn_range failed&bslash;n&quot;
 comma
 id|ZR_DEVNAME
 c_func

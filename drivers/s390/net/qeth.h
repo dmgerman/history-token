@@ -11,7 +11,7 @@ macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;net/if_inet6.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/qdio.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;

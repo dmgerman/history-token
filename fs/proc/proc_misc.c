@@ -662,8 +662,6 @@ id|i
 suffix:semicolon
 r_int
 id|len
-comma
-id|committed
 suffix:semicolon
 r_struct
 id|page_state
@@ -684,6 +682,14 @@ suffix:semicolon
 r_int
 r_int
 id|vmtot
+suffix:semicolon
+r_int
+r_int
+id|committed
+suffix:semicolon
+r_int
+r_int
+id|allowed
 suffix:semicolon
 r_struct
 id|vmalloc_info
@@ -735,6 +741,25 @@ op_amp
 id|vm_committed_space
 )paren
 suffix:semicolon
+id|allowed
+op_assign
+(paren
+(paren
+id|totalram_pages
+op_minus
+id|hugetlb_total_pages
+c_func
+(paren
+)paren
+)paren
+op_star
+id|sysctl_overcommit_ratio
+op_div
+l_int|100
+)paren
+op_plus
+id|total_swap_pages
+suffix:semicolon
 id|vmtot
 op_assign
 (paren
@@ -785,7 +810,9 @@ l_string|&quot;Dirty:        %8lu kB&bslash;n&quot;
 l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
 l_string|&quot;Mapped:       %8lu kB&bslash;n&quot;
 l_string|&quot;Slab:         %8lu kB&bslash;n&quot;
-l_string|&quot;Committed_AS: %8u kB&bslash;n&quot;
+l_string|&quot;CommitLimit:  %8lu kB&bslash;n&quot;
+l_string|&quot;Committed_AS: %8lu kB&bslash;n&quot;
+l_string|&quot;CommitAvail:  %8ld kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
 l_string|&quot;VmallocTotal: %8lu kB&bslash;n&quot;
 l_string|&quot;VmallocUsed:  %8lu kB&bslash;n&quot;
@@ -907,6 +934,20 @@ comma
 id|K
 c_func
 (paren
+id|allowed
+)paren
+comma
+id|K
+c_func
+(paren
+id|committed
+)paren
+comma
+id|K
+c_func
+(paren
+id|allowed
+op_minus
 id|committed
 )paren
 comma

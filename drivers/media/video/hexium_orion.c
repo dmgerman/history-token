@@ -282,6 +282,7 @@ suffix:semicolon
 DECL|member|video_dev
 r_struct
 id|video_device
+op_star
 id|video_dev
 suffix:semicolon
 DECL|member|i2c_adapter
@@ -1127,6 +1128,25 @@ id|MASK_26
 )paren
 )paren
 suffix:semicolon
+id|hexium-&gt;i2c_adapter
+op_assign
+(paren
+r_struct
+id|i2c_adapter
+)paren
+(brace
+dot
+r_class
+op_assign
+id|I2C_CLASS_TV_ANALOG
+comma
+dot
+id|name
+op_assign
+l_string|&quot;hexium orion&quot;
+comma
+)brace
+suffix:semicolon
 id|saa7146_i2c_adapter_prepare
 c_func
 (paren
@@ -1134,8 +1154,6 @@ id|dev
 comma
 op_amp
 id|hexium-&gt;i2c_adapter
-comma
-id|I2C_CLASS_TV_ANALOG
 comma
 id|SAA7146_I2C_BUS_BIT_RATE_480
 )paren

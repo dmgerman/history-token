@@ -771,12 +771,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|tsk-&gt;set_child_tid
-op_assign
-id|tsk-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Copy registers */
 id|sp
 op_sub_assign

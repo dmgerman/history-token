@@ -1,5 +1,5 @@
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 multiline_comment|/* Find string of zero bits in a bitmap */
 r_int
 r_int

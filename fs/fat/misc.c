@@ -260,13 +260,13 @@ l_string|&quot;FAT: Did not find valid FSINFO signature.&bslash;n&quot;
 l_string|&quot;     Found signature1 0x%08x signature2 0x%08x&quot;
 l_string|&quot; (sector = %lu)&bslash;n&quot;
 comma
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|fsinfo-&gt;signature1
 )paren
 comma
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|fsinfo-&gt;signature2
@@ -708,16 +708,7 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|fat_cache_add
-c_func
-(paren
-id|inode
-comma
-id|new_fclus
-comma
-id|new_dclus
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;fat_cache_add(inode, new_fclus, new_dclus);
 )brace
 r_else
 (brace

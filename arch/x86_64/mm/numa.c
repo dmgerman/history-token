@@ -851,6 +851,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NUMA_EMU
 DECL|variable|__initdata
 r_int
 id|numa_fake
@@ -1178,6 +1179,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|numa_initmem_init
 r_void
 id|__init
@@ -1196,6 +1198,7 @@ id|end_pfn
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA_EMU
 r_if
 c_cond
 (paren
@@ -1212,6 +1215,7 @@ id|end_pfn
 )paren
 r_return
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_K8_NUMA
 r_if
 c_cond

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * net/sched/sch_netem.c&t;Network emulator&n; *&n; * &t;&t;This program is free software; you can redistribute it and/or&n; * &t;&t;modify it under the terms of the GNU General Public License&n; * &t;&t;as published by the Free Software Foundation; either version&n; * &t;&t;2 of the License, or (at your option) any later version.&n; *&n; *  &t;&t;Many of the algorithms and ideas for this came from&n; *&t;&t;NIST Net which is not copyrighted. &n; *&n; * Authors:&t;Stephen Hemminger &lt;shemminger@osdl.org&gt;&n; *&t;&t;Catalin(ux aka Dino) BOIE &lt;catab at umbrella dot ro&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -454,18 +454,18 @@ suffix:semicolon
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
 id|NET_XMIT_SUCCESS
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|kfree_skb
@@ -538,7 +538,7 @@ c_func
 l_string|&quot;netem_enqueue: random loss&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -629,7 +629,7 @@ c_cond
 (paren
 id|ret
 )paren
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -757,7 +757,7 @@ l_int|0
 id|sch-&gt;q.qlen
 op_decrement
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -908,7 +908,7 @@ comma
 id|q-&gt;qdisc
 )paren
 )paren
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace

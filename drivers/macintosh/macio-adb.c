@@ -900,6 +900,8 @@ r_struct
 id|adb_request
 op_star
 id|req
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_char

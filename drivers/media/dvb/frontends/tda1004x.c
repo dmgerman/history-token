@@ -1,176 +1,182 @@
 multiline_comment|/*&n;     Driver for Philips tda1004xh OFDM Frontend&n;&n;     (c) 2003, 2004 Andrew de Quincey &amp; Robert Schlabbach&n;&n;     This program is free software; you can redistribute it and/or modify&n;     it under the terms of the GNU General Public License as published by&n;     the Free Software Foundation; either version 2 of the License, or&n;     (at your option) any later version.&n;&n;     This program is distributed in the hope that it will be useful,&n;     but WITHOUT ANY WARRANTY; without even the implied warranty of&n;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;     GNU General Public License for more details.&n;&n;     You should have received a copy of the GNU General Public License&n;     along with this program; if not, write to the Free Software&n;     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;   */
-multiline_comment|/*&n;    This driver needs a copy of the DLL &quot;ttlcdacc.dll&quot; from the Haupauge or Technotrend&n;    windows driver saved as &squot;/usr/lib/hotplug/firmware/tda1004x.bin&squot;.&n;    You can also pass the complete file name with the module parameter &squot;tda1004x_firmware&squot;.&n;&n;    Currently the DLL from v2.15a of the technotrend driver is supported. Other versions can&n;    be added reasonably painlessly.&n;&n;    Windows driver URL: http://www.technotrend.de/&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
+multiline_comment|/*&n; * This driver needs external firmware. Please use the commands&n; * &quot;&lt;kerneldir&gt;/Documentation/dvb/get_dvb_firmware tda10045&quot;,&n; * &quot;&lt;kerneldir&gt;/Documentation/dvb/get_dvb_firmware tda10046&quot; to&n; * download/extract them, and then copy them to /usr/lib/hotplug/firmware.&n; */
+DECL|macro|TDA10045_DEFAULT_FIRMWARE
+mdefine_line|#define TDA10045_DEFAULT_FIRMWARE &quot;dvb-fe-tda10045.fw&quot;
+DECL|macro|TDA10046_DEFAULT_FIRMWARE
+mdefine_line|#define TDA10046_DEFAULT_FIRMWARE &quot;dvb-fe-tda10046.fw&quot;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
-macro_line|#ifndef DVB_TDA1004X_FIRMWARE_FILE
-DECL|macro|DVB_TDA1004X_FIRMWARE_FILE
-mdefine_line|#define DVB_TDA1004X_FIRMWARE_FILE &quot;/usr/lib/hotplug/firmware/tda1004x.bin&quot;
-macro_line|#endif
-DECL|variable|tda1004x_debug
+DECL|macro|FRONTEND_NAME
+mdefine_line|#define FRONTEND_NAME &quot;dvbfe_tda1004x&quot;
+DECL|macro|dprintk
+mdefine_line|#define dprintk(args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug) printk(KERN_DEBUG FRONTEND_NAME &quot;: &quot; args); &bslash;&n;&t;} while (0)
+DECL|variable|debug
 r_static
 r_int
-id|tda1004x_debug
-op_assign
-l_int|0
+id|debug
 suffix:semicolon
-DECL|variable|tda1004x_firmware
-r_static
-r_char
-op_star
-id|tda1004x_firmware
-op_assign
-id|DVB_TDA1004X_FIRMWARE_FILE
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Turn on/off frontend debugging (default:off).&quot;
+)paren
 suffix:semicolon
 DECL|macro|MC44BC374_ADDRESS
-mdefine_line|#define MC44BC374_ADDRESS        0x65
+mdefine_line|#define MC44BC374_ADDRESS&t; 0x65
 DECL|macro|TDA1004X_CHIPID
-mdefine_line|#define TDA1004X_CHIPID          0x00
+mdefine_line|#define TDA1004X_CHIPID&t;&t; 0x00
 DECL|macro|TDA1004X_AUTO
-mdefine_line|#define TDA1004X_AUTO            0x01
+mdefine_line|#define TDA1004X_AUTO&t;&t; 0x01
 DECL|macro|TDA1004X_IN_CONF1
-mdefine_line|#define TDA1004X_IN_CONF1        0x02
+mdefine_line|#define TDA1004X_IN_CONF1&t; 0x02
 DECL|macro|TDA1004X_IN_CONF2
-mdefine_line|#define TDA1004X_IN_CONF2        0x03
+mdefine_line|#define TDA1004X_IN_CONF2&t; 0x03
 DECL|macro|TDA1004X_OUT_CONF1
-mdefine_line|#define TDA1004X_OUT_CONF1       0x04
+mdefine_line|#define TDA1004X_OUT_CONF1&t; 0x04
 DECL|macro|TDA1004X_OUT_CONF2
-mdefine_line|#define TDA1004X_OUT_CONF2       0x05
+mdefine_line|#define TDA1004X_OUT_CONF2&t; 0x05
 DECL|macro|TDA1004X_STATUS_CD
-mdefine_line|#define TDA1004X_STATUS_CD       0x06
+mdefine_line|#define TDA1004X_STATUS_CD&t; 0x06
 DECL|macro|TDA1004X_CONFC4
-mdefine_line|#define TDA1004X_CONFC4          0x07
+mdefine_line|#define TDA1004X_CONFC4&t;&t; 0x07
 DECL|macro|TDA1004X_DSSPARE2
-mdefine_line|#define TDA1004X_DSSPARE2        0x0C
+mdefine_line|#define TDA1004X_DSSPARE2&t; 0x0C
 DECL|macro|TDA10045H_CODE_IN
-mdefine_line|#define TDA10045H_CODE_IN        0x0D
+mdefine_line|#define TDA10045H_CODE_IN&t; 0x0D
 DECL|macro|TDA10045H_FWPAGE
-mdefine_line|#define TDA10045H_FWPAGE         0x0E
+mdefine_line|#define TDA10045H_FWPAGE&t; 0x0E
 DECL|macro|TDA1004X_SCAN_CPT
-mdefine_line|#define TDA1004X_SCAN_CPT        0x10
+mdefine_line|#define TDA1004X_SCAN_CPT&t; 0x10
 DECL|macro|TDA1004X_DSP_CMD
-mdefine_line|#define TDA1004X_DSP_CMD         0x11
+mdefine_line|#define TDA1004X_DSP_CMD&t; 0x11
 DECL|macro|TDA1004X_DSP_ARG
-mdefine_line|#define TDA1004X_DSP_ARG         0x12
+mdefine_line|#define TDA1004X_DSP_ARG&t; 0x12
 DECL|macro|TDA1004X_DSP_DATA1
-mdefine_line|#define TDA1004X_DSP_DATA1       0x13
+mdefine_line|#define TDA1004X_DSP_DATA1&t; 0x13
 DECL|macro|TDA1004X_DSP_DATA2
-mdefine_line|#define TDA1004X_DSP_DATA2       0x14
+mdefine_line|#define TDA1004X_DSP_DATA2&t; 0x14
 DECL|macro|TDA1004X_CONFADC1
-mdefine_line|#define TDA1004X_CONFADC1        0x15
+mdefine_line|#define TDA1004X_CONFADC1&t; 0x15
 DECL|macro|TDA1004X_CONFC1
-mdefine_line|#define TDA1004X_CONFC1          0x16
+mdefine_line|#define TDA1004X_CONFC1&t;&t; 0x16
 DECL|macro|TDA10045H_S_AGC
-mdefine_line|#define TDA10045H_S_AGC          0x1a
+mdefine_line|#define TDA10045H_S_AGC&t;&t; 0x1a
 DECL|macro|TDA10046H_AGC_TUN_LEVEL
-mdefine_line|#define TDA10046H_AGC_TUN_LEVEL  0x1a
+mdefine_line|#define TDA10046H_AGC_TUN_LEVEL&t; 0x1a
 DECL|macro|TDA1004X_SNR
-mdefine_line|#define TDA1004X_SNR             0x1c
+mdefine_line|#define TDA1004X_SNR&t;&t; 0x1c
 DECL|macro|TDA1004X_CONF_TS1
-mdefine_line|#define TDA1004X_CONF_TS1        0x1e
+mdefine_line|#define TDA1004X_CONF_TS1&t; 0x1e
 DECL|macro|TDA1004X_CONF_TS2
-mdefine_line|#define TDA1004X_CONF_TS2        0x1f
+mdefine_line|#define TDA1004X_CONF_TS2&t; 0x1f
 DECL|macro|TDA1004X_CBER_RESET
-mdefine_line|#define TDA1004X_CBER_RESET      0x20
+mdefine_line|#define TDA1004X_CBER_RESET&t; 0x20
 DECL|macro|TDA1004X_CBER_MSB
-mdefine_line|#define TDA1004X_CBER_MSB        0x21
+mdefine_line|#define TDA1004X_CBER_MSB&t; 0x21
 DECL|macro|TDA1004X_CBER_LSB
-mdefine_line|#define TDA1004X_CBER_LSB        0x22
+mdefine_line|#define TDA1004X_CBER_LSB&t; 0x22
 DECL|macro|TDA1004X_CVBER_LUT
-mdefine_line|#define TDA1004X_CVBER_LUT       0x23
+mdefine_line|#define TDA1004X_CVBER_LUT&t; 0x23
 DECL|macro|TDA1004X_VBER_MSB
-mdefine_line|#define TDA1004X_VBER_MSB        0x24
+mdefine_line|#define TDA1004X_VBER_MSB&t; 0x24
 DECL|macro|TDA1004X_VBER_MID
-mdefine_line|#define TDA1004X_VBER_MID        0x25
+mdefine_line|#define TDA1004X_VBER_MID&t; 0x25
 DECL|macro|TDA1004X_VBER_LSB
-mdefine_line|#define TDA1004X_VBER_LSB        0x26
+mdefine_line|#define TDA1004X_VBER_LSB&t; 0x26
 DECL|macro|TDA1004X_UNCOR
-mdefine_line|#define TDA1004X_UNCOR           0x27
+mdefine_line|#define TDA1004X_UNCOR&t;&t; 0x27
 DECL|macro|TDA10045H_CONFPLL_P
-mdefine_line|#define TDA10045H_CONFPLL_P      0x2D
+mdefine_line|#define TDA10045H_CONFPLL_P&t; 0x2D
 DECL|macro|TDA10045H_CONFPLL_M_MSB
-mdefine_line|#define TDA10045H_CONFPLL_M_MSB  0x2E
+mdefine_line|#define TDA10045H_CONFPLL_M_MSB&t; 0x2E
 DECL|macro|TDA10045H_CONFPLL_M_LSB
-mdefine_line|#define TDA10045H_CONFPLL_M_LSB  0x2F
+mdefine_line|#define TDA10045H_CONFPLL_M_LSB&t; 0x2F
 DECL|macro|TDA10045H_CONFPLL_N
-mdefine_line|#define TDA10045H_CONFPLL_N      0x30
+mdefine_line|#define TDA10045H_CONFPLL_N&t; 0x30
 DECL|macro|TDA10046H_CONFPLL1
-mdefine_line|#define TDA10046H_CONFPLL1       0x2D
+mdefine_line|#define TDA10046H_CONFPLL1&t; 0x2D
 DECL|macro|TDA10046H_CONFPLL2
-mdefine_line|#define TDA10046H_CONFPLL2       0x2F
+mdefine_line|#define TDA10046H_CONFPLL2&t; 0x2F
 DECL|macro|TDA10046H_CONFPLL3
-mdefine_line|#define TDA10046H_CONFPLL3       0x30
+mdefine_line|#define TDA10046H_CONFPLL3&t; 0x30
 DECL|macro|TDA10046H_TIME_WREF1
-mdefine_line|#define TDA10046H_TIME_WREF1     0x31
+mdefine_line|#define TDA10046H_TIME_WREF1&t; 0x31
 DECL|macro|TDA10046H_TIME_WREF2
-mdefine_line|#define TDA10046H_TIME_WREF2     0x32
+mdefine_line|#define TDA10046H_TIME_WREF2&t; 0x32
 DECL|macro|TDA10046H_TIME_WREF3
-mdefine_line|#define TDA10046H_TIME_WREF3     0x33
+mdefine_line|#define TDA10046H_TIME_WREF3&t; 0x33
 DECL|macro|TDA10046H_TIME_WREF4
-mdefine_line|#define TDA10046H_TIME_WREF4     0x34
+mdefine_line|#define TDA10046H_TIME_WREF4&t; 0x34
 DECL|macro|TDA10046H_TIME_WREF5
-mdefine_line|#define TDA10046H_TIME_WREF5     0x35
+mdefine_line|#define TDA10046H_TIME_WREF5&t; 0x35
 DECL|macro|TDA10045H_UNSURW_MSB
-mdefine_line|#define TDA10045H_UNSURW_MSB     0x31
+mdefine_line|#define TDA10045H_UNSURW_MSB&t; 0x31
 DECL|macro|TDA10045H_UNSURW_LSB
-mdefine_line|#define TDA10045H_UNSURW_LSB     0x32
+mdefine_line|#define TDA10045H_UNSURW_LSB&t; 0x32
 DECL|macro|TDA10045H_WREF_MSB
-mdefine_line|#define TDA10045H_WREF_MSB       0x33
+mdefine_line|#define TDA10045H_WREF_MSB&t; 0x33
 DECL|macro|TDA10045H_WREF_MID
-mdefine_line|#define TDA10045H_WREF_MID       0x34
+mdefine_line|#define TDA10045H_WREF_MID&t; 0x34
 DECL|macro|TDA10045H_WREF_LSB
-mdefine_line|#define TDA10045H_WREF_LSB       0x35
+mdefine_line|#define TDA10045H_WREF_LSB&t; 0x35
 DECL|macro|TDA10045H_MUXOUT
-mdefine_line|#define TDA10045H_MUXOUT         0x36
+mdefine_line|#define TDA10045H_MUXOUT&t; 0x36
 DECL|macro|TDA1004X_CONFADC2
-mdefine_line|#define TDA1004X_CONFADC2        0x37
+mdefine_line|#define TDA1004X_CONFADC2&t; 0x37
 DECL|macro|TDA10045H_IOFFSET
-mdefine_line|#define TDA10045H_IOFFSET        0x38
+mdefine_line|#define TDA10045H_IOFFSET&t; 0x38
 DECL|macro|TDA10046H_CONF_TRISTATE1
 mdefine_line|#define TDA10046H_CONF_TRISTATE1 0x3B
 DECL|macro|TDA10046H_CONF_TRISTATE2
 mdefine_line|#define TDA10046H_CONF_TRISTATE2 0x3C
 DECL|macro|TDA10046H_CONF_POLARITY
-mdefine_line|#define TDA10046H_CONF_POLARITY  0x3D
+mdefine_line|#define TDA10046H_CONF_POLARITY&t; 0x3D
 DECL|macro|TDA10046H_FREQ_OFFSET
-mdefine_line|#define TDA10046H_FREQ_OFFSET    0x3E
+mdefine_line|#define TDA10046H_FREQ_OFFSET&t; 0x3E
 DECL|macro|TDA10046H_GPIO_OUT_SEL
-mdefine_line|#define TDA10046H_GPIO_OUT_SEL   0x41
+mdefine_line|#define TDA10046H_GPIO_OUT_SEL&t; 0x41
 DECL|macro|TDA10046H_GPIO_SELECT
-mdefine_line|#define TDA10046H_GPIO_SELECT    0x42
+mdefine_line|#define TDA10046H_GPIO_SELECT&t; 0x42
 DECL|macro|TDA10046H_AGC_CONF
-mdefine_line|#define TDA10046H_AGC_CONF       0x43
+mdefine_line|#define TDA10046H_AGC_CONF&t; 0x43
 DECL|macro|TDA10046H_AGC_GAINS
-mdefine_line|#define TDA10046H_AGC_GAINS      0x46
+mdefine_line|#define TDA10046H_AGC_GAINS&t; 0x46
 DECL|macro|TDA10046H_AGC_TUN_MIN
-mdefine_line|#define TDA10046H_AGC_TUN_MIN    0x47
+mdefine_line|#define TDA10046H_AGC_TUN_MIN&t; 0x47
 DECL|macro|TDA10046H_AGC_TUN_MAX
-mdefine_line|#define TDA10046H_AGC_TUN_MAX    0x48
+mdefine_line|#define TDA10046H_AGC_TUN_MAX&t; 0x48
 DECL|macro|TDA10046H_AGC_IF_MIN
-mdefine_line|#define TDA10046H_AGC_IF_MIN     0x49
+mdefine_line|#define TDA10046H_AGC_IF_MIN&t; 0x49
 DECL|macro|TDA10046H_AGC_IF_MAX
-mdefine_line|#define TDA10046H_AGC_IF_MAX     0x4A
+mdefine_line|#define TDA10046H_AGC_IF_MAX&t; 0x4A
 DECL|macro|TDA10046H_FREQ_PHY2_MSB
-mdefine_line|#define TDA10046H_FREQ_PHY2_MSB  0x4D
+mdefine_line|#define TDA10046H_FREQ_PHY2_MSB&t; 0x4D
 DECL|macro|TDA10046H_FREQ_PHY2_LSB
-mdefine_line|#define TDA10046H_FREQ_PHY2_LSB  0x4E
+mdefine_line|#define TDA10046H_FREQ_PHY2_LSB&t; 0x4E
 DECL|macro|TDA10046H_CVBER_CTRL
-mdefine_line|#define TDA10046H_CVBER_CTRL     0x4F
+mdefine_line|#define TDA10046H_CVBER_CTRL&t; 0x4F
 DECL|macro|TDA10046H_AGC_IF_LEVEL
-mdefine_line|#define TDA10046H_AGC_IF_LEVEL   0x52
+mdefine_line|#define TDA10046H_AGC_IF_LEVEL&t; 0x52
 DECL|macro|TDA10046H_CODE_CPT
-mdefine_line|#define TDA10046H_CODE_CPT       0x57
+mdefine_line|#define TDA10046H_CODE_CPT&t; 0x57
 DECL|macro|TDA10046H_CODE_IN
-mdefine_line|#define TDA10046H_CODE_IN        0x58
+mdefine_line|#define TDA10046H_CODE_IN&t; 0x58
 DECL|macro|FE_TYPE_TDA10045H
 mdefine_line|#define FE_TYPE_TDA10045H     0
 DECL|macro|FE_TYPE_TDA10046H
@@ -179,8 +185,6 @@ DECL|macro|TUNER_TYPE_TD1344
 mdefine_line|#define TUNER_TYPE_TD1344     0
 DECL|macro|TUNER_TYPE_TD1316
 mdefine_line|#define TUNER_TYPE_TD1316     1
-DECL|macro|dprintk
-mdefine_line|#define dprintk if (tda1004x_debug) printk
 DECL|variable|tda10045h_info
 r_static
 r_struct
@@ -316,126 +320,40 @@ suffix:semicolon
 DECL|member|initialised
 id|u8
 id|initialised
-suffix:colon
-l_int|1
 suffix:semicolon
 DECL|member|tuner_type
 id|u8
 id|tuner_type
-suffix:colon
-l_int|2
 suffix:semicolon
 DECL|member|fe_type
 id|u8
 id|fe_type
-suffix:colon
-l_int|2
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|fwinfo
+DECL|member|i2c
 r_struct
-id|fwinfo
-(brace
-DECL|member|file_size
-r_int
-id|file_size
+id|i2c_adapter
+op_star
+id|i2c
 suffix:semicolon
-DECL|member|fw_offset
-r_int
-id|fw_offset
-suffix:semicolon
-DECL|member|fw_size
-r_int
-id|fw_size
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|variable|tda10045h_fwinfo
-r_static
+DECL|member|dvb
 r_struct
-id|fwinfo
-id|tda10045h_fwinfo
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|file_size
-op_assign
-l_int|286720
-comma
-dot
-id|fw_offset
-op_assign
-l_int|0x34cc5
-comma
-dot
-id|fw_size
-op_assign
-l_int|30555
-)brace
-)brace
+id|dvb_adapter
+op_star
+id|dvb
 suffix:semicolon
-DECL|variable|tda10045h_fwinfo_count
-r_static
+DECL|member|dspCodeCounterReg
 r_int
-id|tda10045h_fwinfo_count
-op_assign
-r_sizeof
-(paren
-id|tda10045h_fwinfo
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|fwinfo
-)paren
+id|dspCodeCounterReg
 suffix:semicolon
-DECL|variable|tda10046h_fwinfo
-r_static
-r_struct
-id|fwinfo
-id|tda10046h_fwinfo
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|file_size
-op_assign
-l_int|286720
-comma
-dot
-id|fw_offset
-op_assign
-l_int|0x3c4f9
-comma
-dot
-id|fw_size
-op_assign
-l_int|24479
-)brace
-)brace
-suffix:semicolon
-DECL|variable|tda10046h_fwinfo_count
-r_static
+DECL|member|dspCodeInReg
 r_int
-id|tda10046h_fwinfo_count
-op_assign
-r_sizeof
-(paren
-id|tda10046h_fwinfo
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|fwinfo
-)paren
+id|dspCodeInReg
+suffix:semicolon
+DECL|member|dspVersion
+r_int
+id|dspVersion
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|function|tda1004x_write_byte
 r_static
@@ -444,7 +362,7 @@ id|tda1004x_write_byte
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -518,9 +436,7 @@ id|tda_state-&gt;tda1004x_address
 suffix:semicolon
 id|ret
 op_assign
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -587,7 +503,7 @@ id|tda1004x_read_byte
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -703,9 +619,7 @@ id|tda_state-&gt;tda1004x_address
 suffix:semicolon
 id|ret
 op_assign
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -771,7 +685,7 @@ id|tda1004x_write_mask
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -866,7 +780,7 @@ id|tda1004x_write_buf
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -964,7 +878,7 @@ id|tda1004x_enable_tuner_i2c
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -1001,7 +915,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -1018,7 +932,7 @@ id|tda1004x_disable_tuner_i2c
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -1059,7 +973,7 @@ id|tda10045h_set_bandwidth
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -1277,7 +1191,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// done
 r_return
 l_int|0
 suffix:semicolon
@@ -1289,7 +1202,7 @@ id|tda10046h_set_bandwidth
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -1471,30 +1384,38 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// done
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tda1004x_fwupload
+DECL|function|tda1004x_do_upload
 r_static
 r_int
-id|tda1004x_fwupload
+id|tda1004x_do_upload
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
 r_struct
 id|tda1004x_state
 op_star
-id|tda_state
+id|state
+comma
+r_int
+r_char
+op_star
+id|mem
+comma
+r_int
+r_int
+id|len
 )paren
 (brace
 id|u8
-id|fw_buf
+id|buf
 (braket
 l_int|65
 )braket
@@ -1517,7 +1438,7 @@ comma
 dot
 id|buf
 op_assign
-id|fw_buf
+id|buf
 comma
 dot
 id|len
@@ -1526,618 +1447,51 @@ l_int|0
 )brace
 suffix:semicolon
 r_int
-r_char
-op_star
-id|firmware
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-id|filesize
-suffix:semicolon
-r_int
-id|fd
-suffix:semicolon
-r_int
-id|fwinfo_idx
-suffix:semicolon
-r_int
-id|fw_size
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|fw_pos
-comma
-id|fw_offset
-suffix:semicolon
-r_int
 id|tx_size
 suffix:semicolon
-id|mm_segment_t
-id|fs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
-id|dspCodeCounterReg
-op_assign
-l_int|0
-comma
-id|dspCodeInReg
-op_assign
-l_int|0
-comma
-id|dspVersion
+id|pos
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|fwInfoCount
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|fwinfo
-op_star
-id|fwInfo
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-r_int
-id|timeout
-suffix:semicolon
-singleline_comment|// DSP parameters
-r_switch
-c_cond
-(paren
-id|tda_state-&gt;fe_type
-)paren
-(brace
-r_case
-id|FE_TYPE_TDA10045H
-suffix:colon
-id|dspCodeCounterReg
-op_assign
-id|TDA10045H_FWPAGE
-suffix:semicolon
-id|dspCodeInReg
-op_assign
-id|TDA10045H_CODE_IN
-suffix:semicolon
-id|dspVersion
-op_assign
-l_int|0x2c
-suffix:semicolon
-id|fwInfoCount
-op_assign
-id|tda10045h_fwinfo_count
-suffix:semicolon
-id|fwInfo
-op_assign
-id|tda10045h_fwinfo
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|FE_TYPE_TDA10046H
-suffix:colon
-id|dspCodeCounterReg
-op_assign
-id|TDA10046H_CODE_CPT
-suffix:semicolon
-id|dspCodeInReg
-op_assign
-id|TDA10046H_CODE_IN
-suffix:semicolon
-id|dspVersion
-op_assign
-l_int|0x20
-suffix:semicolon
-id|fwInfoCount
-op_assign
-id|tda10046h_fwinfo_count
-suffix:semicolon
-id|fwInfo
-op_assign
-id|tda10046h_fwinfo
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-singleline_comment|// Load the firmware
-id|set_fs
-c_func
-(paren
-id|get_ds
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-id|fd
-op_assign
-id|sys_open
-c_func
-(paren
-id|tda1004x_firmware
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fd
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Unable to open firmware %s&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|tda1004x_firmware
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-id|filesize
-op_assign
-id|sys_lseek
-c_func
-(paren
-id|fd
-comma
-l_int|0L
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|filesize
-op_le
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Firmware %s is empty&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|tda1004x_firmware
-)paren
-suffix:semicolon
-id|sys_close
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-singleline_comment|// find extraction parameters for firmware
-r_for
-c_loop
-(paren
-id|fwinfo_idx
-op_assign
-l_int|0
-suffix:semicolon
-id|fwinfo_idx
-OL
-id|fwInfoCount
-suffix:semicolon
-id|fwinfo_idx
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fwInfo
-(braket
-id|fwinfo_idx
-)braket
-dot
-id|file_size
-op_eq
-id|filesize
-)paren
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|fwinfo_idx
-op_ge
-id|fwInfoCount
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Unsupported firmware %s&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|tda1004x_firmware
-)paren
-suffix:semicolon
-id|sys_close
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-id|fw_size
-op_assign
-id|fwInfo
-(braket
-id|fwinfo_idx
-)braket
-dot
-id|fw_size
-suffix:semicolon
-id|fw_offset
-op_assign
-id|fwInfo
-(braket
-id|fwinfo_idx
-)braket
-dot
-id|fw_offset
-suffix:semicolon
-singleline_comment|// allocate buffer for it
-id|firmware
-op_assign
-id|vmalloc
-c_func
-(paren
-id|fw_size
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|firmware
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Out of memory loading firmware&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|sys_close
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-singleline_comment|// read it!
-id|sys_lseek
-c_func
-(paren
-id|fd
-comma
-id|fw_offset
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sys_read
-c_func
-(paren
-id|fd
-comma
-id|firmware
-comma
-id|fw_size
-)paren
-op_ne
-id|fw_size
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Failed to read firmware&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|vfree
-c_func
-(paren
-id|firmware
-)paren
-suffix:semicolon
-id|sys_close
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-id|sys_close
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|fs
-)paren
-suffix:semicolon
-singleline_comment|// set some valid bandwith parameters before uploading
-r_switch
-c_cond
-(paren
-id|tda_state-&gt;fe_type
-)paren
-(brace
-r_case
-id|FE_TYPE_TDA10045H
-suffix:colon
-singleline_comment|// reset chip
-id|tda1004x_write_mask
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_CONFC4
-comma
-l_int|0x10
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|tda1004x_write_mask
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_CONFC4
-comma
-l_int|8
-comma
-l_int|8
-)paren
-suffix:semicolon
-id|tda1004x_write_mask
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_CONFC4
-comma
-l_int|8
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|dvb_delay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-singleline_comment|// set parameters
-id|tda10045h_set_bandwidth
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|BANDWIDTH_8_MHZ
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|FE_TYPE_TDA10046H
-suffix:colon
-singleline_comment|// reset chip
-id|tda1004x_write_mask
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_CONFC4
-comma
-l_int|1
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|tda1004x_write_mask
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA10046H_CONF_TRISTATE1
-comma
-l_int|1
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|dvb_delay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-singleline_comment|// set parameters
+multiline_comment|/* clear code counter */
 id|tda1004x_write_byte
 c_func
 (paren
 id|i2c
 comma
-id|tda_state
+id|state
 comma
-id|TDA10046H_CONFPLL2
-comma
-l_int|10
-)paren
-suffix:semicolon
-id|tda1004x_write_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA10046H_CONFPLL3
+id|state-&gt;dspCodeCounterReg
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|tda1004x_write_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA10046H_FREQ_OFFSET
-comma
-l_int|99
-)paren
-suffix:semicolon
-id|tda1004x_write_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA10046H_FREQ_PHY2_MSB
-comma
-l_int|0xd4
-)paren
-suffix:semicolon
-id|tda1004x_write_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA10046H_FREQ_PHY2_LSB
-comma
-l_int|0x2c
-)paren
-suffix:semicolon
-id|tda1004x_write_mask
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_CONFC4
-comma
-l_int|8
-comma
-l_int|8
-)paren
-suffix:semicolon
-singleline_comment|// going to boot from HOST
-r_break
-suffix:semicolon
-)brace
-singleline_comment|// do the firmware upload
-id|tda1004x_write_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|dspCodeCounterReg
-comma
-l_int|0
-)paren
-suffix:semicolon
-singleline_comment|// clear code counter
 id|fw_msg.addr
 op_assign
-id|tda_state-&gt;tda1004x_address
+id|state-&gt;tda1004x_address
 suffix:semicolon
-id|fw_pos
-op_assign
+id|buf
+(braket
 l_int|0
+)braket
+op_assign
+id|state-&gt;dspCodeInReg
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|fw_pos
+id|pos
 op_ne
-id|fw_size
+id|len
 )paren
 (brace
 singleline_comment|// work out how much to send this time
 id|tx_size
 op_assign
-id|fw_size
+id|len
 op_minus
-id|fw_pos
+id|pos
 suffix:semicolon
 r_if
 c_cond
@@ -2153,23 +1507,16 @@ l_int|0x10
 suffix:semicolon
 )brace
 singleline_comment|// send the chunk
-id|fw_buf
-(braket
-l_int|0
-)braket
-op_assign
-id|dspCodeInReg
-suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|fw_buf
+id|buf
 op_plus
 l_int|1
 comma
-id|firmware
+id|mem
 op_plus
-id|fw_pos
+id|pos
 comma
 id|tx_size
 )paren
@@ -2183,9 +1530,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -2205,18 +1550,12 @@ c_func
 l_string|&quot;tda1004x: Error during firmware upload&bslash;n&quot;
 )paren
 suffix:semicolon
-id|vfree
-c_func
-(paren
-id|firmware
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|fw_pos
+id|pos
 op_add_assign
 id|tx_size
 suffix:semicolon
@@ -2227,38 +1566,503 @@ l_string|&quot;%s: fw_pos=0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|fw_pos
+id|pos
 )paren
 suffix:semicolon
 )brace
-id|vfree
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|tda1004x_check_upload_ok
+r_static
+r_int
+id|tda1004x_check_upload_ok
 c_func
 (paren
-id|firmware
-)paren
-suffix:semicolon
-singleline_comment|// wait for DSP to initialise
-r_switch
-c_cond
-(paren
-id|tda_state-&gt;fe_type
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+comma
+r_struct
+id|tda1004x_state
+op_star
+id|state
 )paren
 (brace
-r_case
-id|FE_TYPE_TDA10045H
-suffix:colon
-singleline_comment|// DSPREADY doesn&squot;t seem to work on the TDA10045H
-id|dvb_delay
+id|u8
+id|data1
+comma
+id|data2
+suffix:semicolon
+singleline_comment|// check upload was OK
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|0x10
+comma
+l_int|0
+)paren
+suffix:semicolon
+singleline_comment|// we want to read from the DSP
+id|tda1004x_write_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_DSP_CMD
+comma
+l_int|0x67
+)paren
+suffix:semicolon
+id|data1
+op_assign
+id|tda1004x_read_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_DSP_DATA1
+)paren
+suffix:semicolon
+id|data2
+op_assign
+id|tda1004x_read_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_DSP_DATA2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data1
+op_ne
+l_int|0x67
+op_logical_or
+id|data2
+op_ne
+id|state-&gt;dspVersion
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: firmware upload failed!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|tda10045_fwupload
+r_static
+r_int
+id|tda10045_fwupload
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+comma
+r_struct
+id|tda1004x_state
+op_star
+id|state
+comma
+r_struct
+id|i2c_client
+op_star
+id|client
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_const
+r_struct
+id|firmware
+op_star
+id|fw
+suffix:semicolon
+multiline_comment|/* request the firmware, this will block until someone uploads it */
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: waiting for firmware upload...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|request_firmware
+c_func
+(paren
+op_amp
+id|fw
+comma
+id|TDA10045_DEFAULT_FIRMWARE
+comma
+op_amp
+id|client-&gt;dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: no firmware upload (timeout or file not found?)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+multiline_comment|/* set some valid bandwith parameters before uploading */
+multiline_comment|/* reset chip */
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|0x10
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|8
+comma
+l_int|8
+)paren
+suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|8
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|msleep
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/* set parameters */
+id|tda10045h_set_bandwidth
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|BANDWIDTH_8_MHZ
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|tda1004x_do_upload
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|fw-&gt;data
+comma
+id|fw-&gt;size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+multiline_comment|/* wait for DSP to initialise */
+multiline_comment|/* DSPREADY doesn&squot;t seem to work on the TDA10045H */
+id|msleep
 c_func
 (paren
 l_int|100
 )paren
 suffix:semicolon
-r_break
+id|ret
+op_assign
+id|tda1004x_check_upload_ok
+c_func
+(paren
+id|i2c
+comma
+id|state
+)paren
 suffix:semicolon
-r_case
-id|FE_TYPE_TDA10046H
-suffix:colon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|tda10046_fwupload
+r_static
+r_int
+id|tda10046_fwupload
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+comma
+r_struct
+id|tda1004x_state
+op_star
+id|state
+comma
+r_struct
+id|i2c_client
+op_star
+id|client
+)paren
+(brace
+r_int
+r_int
+id|timeout
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+r_const
+r_struct
+id|firmware
+op_star
+id|fw
+suffix:semicolon
+multiline_comment|/* request the firmware, this will block until someone uploads it */
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: waiting for firmware upload...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|request_firmware
+c_func
+(paren
+op_amp
+id|fw
+comma
+id|TDA10046_DEFAULT_FIRMWARE
+comma
+op_amp
+id|client-&gt;dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: no firmware upload (timeout or file not found?)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+multiline_comment|/* set some valid bandwith parameters before uploading */
+multiline_comment|/* reset chip */
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA10046H_CONF_TRISTATE1
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|msleep
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/* set parameters */
+id|tda1004x_write_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA10046H_CONFPLL2
+comma
+l_int|10
+)paren
+suffix:semicolon
+id|tda1004x_write_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA10046H_CONFPLL3
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|tda1004x_write_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA10046H_FREQ_OFFSET
+comma
+l_int|99
+)paren
+suffix:semicolon
+id|tda1004x_write_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA10046H_FREQ_PHY2_MSB
+comma
+l_int|0xd4
+)paren
+suffix:semicolon
+id|tda1004x_write_byte
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA10046H_FREQ_PHY2_LSB
+comma
+l_int|0x2c
+)paren
+suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|8
+comma
+l_int|8
+)paren
+suffix:semicolon
+singleline_comment|// going to boot from HOST
+id|ret
+op_assign
+id|tda1004x_do_upload
+c_func
+(paren
+id|i2c
+comma
+id|state
+comma
+id|fw-&gt;data
+comma
+id|fw-&gt;size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+multiline_comment|/* wait for DSP to initialise */
 id|timeout
 op_assign
 id|jiffies
@@ -2275,7 +2079,7 @@ c_func
 (paren
 id|i2c
 comma
-id|tda_state
+id|state
 comma
 id|TDA1004X_STATUS_CD
 )paren
@@ -2307,90 +2111,31 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-)brace
-singleline_comment|// check upload was OK
-id|tda1004x_write_mask
+id|ret
+op_assign
+id|tda1004x_check_upload_ok
 c_func
 (paren
 id|i2c
 comma
-id|tda_state
-comma
-id|TDA1004X_CONFC4
-comma
-l_int|0x10
-comma
-l_int|0
-)paren
-suffix:semicolon
-singleline_comment|// we want to read from the DSP
-id|tda1004x_write_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_DSP_CMD
-comma
-l_int|0x67
+id|state
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|tda1004x_read_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_DSP_DATA1
+id|ret
 )paren
-op_ne
-l_int|0x67
-)paren
-op_logical_or
-(paren
-id|tda1004x_read_byte
-c_func
-(paren
-id|i2c
-comma
-id|tda_state
-comma
-id|TDA1004X_DSP_DATA2
-)paren
-op_ne
-id|dspVersion
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: firmware upload failed!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|EIO
+id|ret
 suffix:semicolon
-)brace
-singleline_comment|// success
 r_return
 l_int|0
 suffix:semicolon
@@ -2402,7 +2147,7 @@ id|tda10045h_init
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -2504,9 +2249,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -2520,9 +2263,7 @@ op_ne
 l_int|1
 )paren
 (brace
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -2701,7 +2442,6 @@ comma
 l_int|0x2e
 )paren
 suffix:semicolon
-singleline_comment|// done
 r_return
 l_int|0
 suffix:semicolon
@@ -2713,7 +2453,7 @@ id|tda10046h_init
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -2815,9 +2555,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -2831,9 +2569,7 @@ op_ne
 l_int|1
 )paren
 (brace
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -3197,7 +2933,6 @@ id|BANDWIDTH_8_MHZ
 )paren
 suffix:semicolon
 singleline_comment|// default bandwidth 8 MHz
-singleline_comment|// done
 r_return
 l_int|0
 suffix:semicolon
@@ -3317,7 +3052,7 @@ id|tda1004x_set_frequency
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -3490,9 +3225,7 @@ id|tuner_msg.len
 op_assign
 l_int|4
 suffix:semicolon
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -3532,9 +3265,7 @@ l_int|100
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -4005,9 +3736,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -4026,7 +3755,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -4078,7 +3807,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|// done
 r_return
 l_int|0
 suffix:semicolon
@@ -4090,7 +3818,7 @@ id|tda1004x_set_fe
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -4142,7 +3870,9 @@ l_int|0
 r_return
 id|tmp
 suffix:semicolon
-singleline_comment|// hardcoded to use auto as much as possible
+singleline_comment|// Hardcoded to use auto as much as possible
+singleline_comment|// The TDA10045 is very unreliable if AUTO mode is _not_ used. I have not
+singleline_comment|// yet tested the TDA10046 to see if this issue has been fixed
 id|fe_params-&gt;u.ofdm.code_rate_HP
 op_assign
 id|FEC_AUTO
@@ -4296,14 +4026,6 @@ id|tmp
 )paren
 suffix:semicolon
 singleline_comment|// set LP FEC
-r_if
-c_cond
-(paren
-id|fe_params-&gt;u.ofdm.code_rate_LP
-op_ne
-id|FEC_NONE
-)paren
-(brace
 id|tmp
 op_assign
 id|tda1004x_encode_fec
@@ -4338,7 +4060,6 @@ op_lshift
 l_int|3
 )paren
 suffix:semicolon
-)brace
 singleline_comment|// set constellation
 r_switch
 c_cond
@@ -4966,7 +4687,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|10
@@ -4991,7 +4712,7 @@ comma
 l_int|0x40
 )paren
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|10
@@ -5000,7 +4721,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// done
 r_return
 l_int|0
 suffix:semicolon
@@ -5012,7 +4732,7 @@ id|tda1004x_get_fe
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -5410,7 +5130,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// done
 r_return
 l_int|0
 suffix:semicolon
@@ -5422,7 +5141,7 @@ id|tda1004x_read_status
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -5788,7 +5507,7 @@ id|tda1004x_read_signal_strength
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -5868,7 +5587,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-singleline_comment|// done
 op_star
 id|signal
 op_assign
@@ -5902,7 +5620,7 @@ id|tda1004x_read_snr
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -5964,7 +5682,6 @@ op_minus
 id|tmp
 suffix:semicolon
 )brace
-singleline_comment|// done
 op_star
 id|snr
 op_assign
@@ -6000,7 +5717,7 @@ id|tda1004x_read_ucblocks
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -6159,7 +5876,6 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// done
 r_if
 c_cond
 (paren
@@ -6204,7 +5920,7 @@ id|tda1004x_read_ber
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -6302,7 +6018,6 @@ comma
 id|TDA1004X_CBER_RESET
 )paren
 suffix:semicolon
-singleline_comment|// done
 id|dprintk
 c_func
 (paren
@@ -6325,7 +6040,7 @@ id|tda1004x_sleep
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -6404,18 +6119,6 @@ op_star
 id|arg
 )paren
 (brace
-r_int
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|dvb_i2c_bus
-op_star
-id|i2c
-op_assign
-id|fe-&gt;i2c
-suffix:semicolon
 r_struct
 id|tda1004x_state
 op_star
@@ -6427,6 +6130,18 @@ id|tda1004x_state
 op_star
 )paren
 id|fe-&gt;data
+suffix:semicolon
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+op_assign
+id|tda_state-&gt;i2c
+suffix:semicolon
+r_int
+id|status
+op_assign
+l_int|0
 suffix:semicolon
 id|dprintk
 c_func
@@ -6756,14 +6471,14 @@ id|tda1004x_attach
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
-r_void
+r_struct
+id|tda1004x_state
 op_star
-op_star
-id|data
+id|state
 )paren
 (brace
 r_int
@@ -6789,15 +6504,6 @@ id|tuner_type
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-r_struct
-id|tda1004x_state
-id|tda_state
-suffix:semicolon
-r_struct
-id|tda1004x_state
-op_star
-id|ptda_state
 suffix:semicolon
 r_struct
 id|i2c_msg
@@ -6873,9 +6579,6 @@ comma
 l_int|0xab
 )brace
 suffix:semicolon
-r_int
-id|status
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -6894,7 +6597,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|tda_state.tda1004x_address
+id|state-&gt;tda1004x_address
 op_assign
 l_int|0x08
 suffix:semicolon
@@ -6906,8 +6609,7 @@ c_func
 (paren
 id|i2c
 comma
-op_amp
-id|tda_state
+id|state
 comma
 id|TDA1004X_CHIPID
 )paren
@@ -6941,7 +6643,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|tda_state.tda1004x_address
+id|state-&gt;tda1004x_address
 op_assign
 l_int|0x08
 suffix:semicolon
@@ -6953,8 +6655,7 @@ c_func
 (paren
 id|i2c
 comma
-op_amp
-id|tda_state
+id|state
 comma
 id|TDA1004X_CHIPID
 )paren
@@ -6999,8 +6700,7 @@ c_func
 (paren
 id|i2c
 comma
-op_amp
-id|tda_state
+id|state
 )paren
 suffix:semicolon
 singleline_comment|// check for a TD1344 first
@@ -7031,9 +6731,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -7047,7 +6745,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7097,9 +6795,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -7113,7 +6809,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7163,9 +6859,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -7179,7 +6873,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7206,8 +6900,7 @@ c_func
 (paren
 id|i2c
 comma
-op_amp
-id|tda_state
+id|state
 )paren
 suffix:semicolon
 singleline_comment|// did we find a tuner?
@@ -7232,60 +6925,103 @@ id|ENODEV
 suffix:semicolon
 )brace
 singleline_comment|// create state
-id|tda_state.tda1004x_address
+id|state-&gt;tda1004x_address
 op_assign
 id|tda1004x_address
 suffix:semicolon
-id|tda_state.fe_type
+id|state-&gt;fe_type
 op_assign
 id|fe_type
 suffix:semicolon
-id|tda_state.tuner_address
+id|state-&gt;tuner_address
 op_assign
 id|tuner_address
 suffix:semicolon
-id|tda_state.tuner_type
+id|state-&gt;tuner_type
 op_assign
 id|tuner_type
 suffix:semicolon
-id|tda_state.initialised
+id|state-&gt;initialised
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// upload firmware
-r_if
-c_cond
-(paren
-(paren
-id|status
-op_assign
-id|tda1004x_fwupload
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|client_template
+r_static
+r_struct
+id|i2c_client
+id|client_template
+suffix:semicolon
+DECL|function|attach_adapter
+r_static
+r_int
+id|attach_adapter
 c_func
 (paren
-id|i2c
-comma
-op_amp
-id|tda_state
+r_struct
+id|i2c_adapter
+op_star
+id|adapter
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|status
+(brace
+r_struct
+id|i2c_client
+op_star
+id|client
 suffix:semicolon
-singleline_comment|// create the real state we&squot;ll be passing about
-r_if
-c_cond
-(paren
-(paren
-id|ptda_state
-op_assign
-(paren
 r_struct
 id|tda1004x_state
 op_star
+id|state
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|dprintk
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+(paren
+id|client
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|i2c_client
+)paren
+comma
+id|GFP_KERNEL
+)paren
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+(paren
+id|state
+op_assign
 id|kmalloc
 c_func
 (paren
@@ -7298,124 +7034,534 @@ comma
 id|GFP_KERNEL
 )paren
 )paren
-op_eq
-l_int|NULL
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|state-&gt;i2c
+op_assign
+id|adapter
+suffix:semicolon
+id|ret
+op_assign
+id|tda1004x_attach
+c_func
+(paren
+id|adapter
+comma
+id|state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|state
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
-id|ptda_state
+id|client
 comma
 op_amp
-id|tda_state
+id|client_template
 comma
 r_sizeof
 (paren
 r_struct
-id|tda1004x_state
+id|i2c_client
 )paren
 )paren
 suffix:semicolon
-op_star
-id|data
+id|client-&gt;adapter
 op_assign
-id|ptda_state
+id|adapter
 suffix:semicolon
-singleline_comment|// register
+id|client-&gt;addr
+op_assign
+id|state-&gt;tda1004x_address
+suffix:semicolon
+id|i2c_set_clientdata
+c_func
+(paren
+id|client
+comma
+(paren
+r_void
+op_star
+)paren
+id|state
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|i2c_attach_client
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|state
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+singleline_comment|// upload firmware
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|state-&gt;dvb
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
-id|tda_state.fe_type
+id|state-&gt;fe_type
 )paren
 (brace
 r_case
 id|FE_TYPE_TDA10045H
 suffix:colon
-r_return
+id|state-&gt;dspCodeCounterReg
+op_assign
+id|TDA10045H_FWPAGE
+suffix:semicolon
+id|state-&gt;dspCodeInReg
+op_assign
+id|TDA10045H_CODE_IN
+suffix:semicolon
+id|state-&gt;dspVersion
+op_assign
+l_int|0x2c
+suffix:semicolon
+id|ret
+op_assign
+id|tda10045_fwupload
+c_func
+(paren
+id|adapter
+comma
+id|state
+comma
+id|client
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: firmware upload failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|ret
+op_assign
 id|dvb_register_frontend
 c_func
 (paren
 id|tda1004x_ioctl
 comma
-id|i2c
+id|state-&gt;dvb
 comma
-id|ptda_state
+id|state
 comma
 op_amp
 id|tda10045h_info
+comma
+id|THIS_MODULE
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|FE_TYPE_TDA10046H
 suffix:colon
-r_return
+id|state-&gt;dspCodeCounterReg
+op_assign
+id|TDA10046H_CODE_CPT
+suffix:semicolon
+id|state-&gt;dspCodeInReg
+op_assign
+id|TDA10046H_CODE_IN
+suffix:semicolon
+id|state-&gt;dspVersion
+op_assign
+l_int|0x20
+suffix:semicolon
+id|ret
+op_assign
+id|tda10046_fwupload
+c_func
+(paren
+id|adapter
+comma
+id|state
+comma
+id|client
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: firmware upload failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|ret
+op_assign
 id|dvb_register_frontend
 c_func
 (paren
 id|tda1004x_ioctl
 comma
-id|i2c
+id|state-&gt;dvb
 comma
-id|ptda_state
+id|state
 comma
 op_amp
 id|tda10046h_info
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|BUG_ON
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// should not get here
-r_return
-op_minus
-id|EINVAL
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: registering frontend failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+id|i2c_detach_client
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|state
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|detach_client
 r_static
-DECL|function|tda1004x_detach
-r_void
-id|tda1004x_detach
+r_int
+id|detach_client
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_client
 op_star
-id|i2c
-comma
-r_void
-op_star
-id|data
+id|client
 )paren
 (brace
-id|dprintk
+r_struct
+id|tda1004x_state
+op_star
+id|state
+op_assign
+(paren
+r_struct
+id|tda1004x_state
+op_star
+)paren
+id|i2c_get_clientdata
 c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+id|dprintk
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|data
-)paren
-suffix:semicolon
 id|dvb_unregister_frontend
-c_func
 (paren
 id|tda1004x_ioctl
 comma
-id|i2c
+id|state-&gt;dvb
 )paren
 suffix:semicolon
+id|i2c_detach_client
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|state-&gt;dvb
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|state
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|function|command
 r_static
+r_int
+id|command
+(paren
+r_struct
+id|i2c_client
+op_star
+id|client
+comma
+r_int
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|arg
+)paren
+(brace
+r_struct
+id|tda1004x_state
+op_star
+id|state
+op_assign
+(paren
+r_struct
+id|tda1004x_state
+op_star
+)paren
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+id|dprintk
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|FE_REGISTER
+suffix:colon
+id|state-&gt;dvb
+op_assign
+(paren
+r_struct
+id|dvb_adapter
+op_star
+)paren
+id|arg
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FE_UNREGISTER
+suffix:colon
+id|state-&gt;dvb
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|driver
+r_static
+r_struct
+id|i2c_driver
+id|driver
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|name
+op_assign
+id|FRONTEND_NAME
+comma
+dot
+id|id
+op_assign
+id|I2C_DRIVERID_DVBFE_TDA1004X
+comma
+dot
+id|flags
+op_assign
+id|I2C_DF_NOTIFY
+comma
+dot
+id|attach_adapter
+op_assign
+id|attach_adapter
+comma
+dot
+id|detach_client
+op_assign
+id|detach_client
+comma
+dot
+id|command
+op_assign
+id|command
+comma
+)brace
+suffix:semicolon
+DECL|variable|client_template
+r_static
+r_struct
+id|i2c_client
+id|client_template
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|FRONTEND_NAME
+comma
+dot
+id|flags
+op_assign
+id|I2C_CLIENT_ALLOW_USE
+comma
+dot
+id|driver
+op_assign
+op_amp
+id|driver
+comma
+)brace
+suffix:semicolon
 DECL|function|init_tda1004x
+r_static
 r_int
 id|__init
 id|init_tda1004x
@@ -7425,19 +7571,16 @@ r_void
 )paren
 (brace
 r_return
-id|dvb_register_i2c_device
+id|i2c_add_driver
 c_func
 (paren
-id|THIS_MODULE
-comma
-id|tda1004x_attach
-comma
-id|tda1004x_detach
+op_amp
+id|driver
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_tda1004x
+r_static
 r_void
 id|__exit
 id|exit_tda1004x
@@ -7446,10 +7589,20 @@ c_func
 r_void
 )paren
 (brace
-id|dvb_unregister_i2c_device
+r_if
+c_cond
+(paren
+id|i2c_del_driver
 c_func
 (paren
-id|tda1004x_attach
+op_amp
+id|driver
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: driver deregistration failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7483,38 +7636,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|tda1004x_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|tda1004x_debug
-comma
-l_string|&quot;enable verbose debug messages&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|tda1004x_firmware
-comma
-l_string|&quot;s&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|tda1004x_firmware
-comma
-l_string|&quot;Where to find the firmware file&quot;
 )paren
 suffix:semicolon
 eof

@@ -740,7 +740,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -752,6 +752,8 @@ c_func
 (paren
 id|dp-&gt;data
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|dp-&gt;size
 comma

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * $Id: cx88-vbi.c,v 1.12 2004/10/11 13:45:51 kraxel Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -11,12 +12,14 @@ id|vbibufs
 op_assign
 l_int|4
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vbibufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -35,12 +38,14 @@ id|vbi_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vbi_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -48,11 +53,11 @@ c_func
 (paren
 id|vbi_debug
 comma
-l_string|&quot;enable debug messages [video]&quot;
+l_string|&quot;enable debug messages [vbi]&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(level,fmt, arg...)&t;if (vbi_debug &gt;= level) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt, dev-&gt;name , ## arg)
+mdefine_line|#define dprintk(level,fmt, arg...)&t;if (vbi_debug &gt;= level) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt, dev-&gt;core-&gt;name , ## arg)
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|function|cx8800_vbi_fmt
 r_void
@@ -113,7 +118,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;tvnorm-&gt;id
+id|dev-&gt;core-&gt;tvnorm-&gt;id
 op_amp
 id|V4L2_STD_525_60
 )paren
@@ -146,6 +151,8 @@ r_else
 r_if
 c_cond
 (paren
+id|dev-&gt;core-&gt;tvnorm-&gt;id
+op_amp
 id|V4L2_STD_625_50
 )paren
 (brace
@@ -195,11 +202,18 @@ op_star
 id|buf
 )paren
 (brace
+r_struct
+id|cx88_core
+op_star
+id|core
+op_assign
+id|dev-&gt;core
+suffix:semicolon
 multiline_comment|/* setup fifo + format */
 id|cx88_sram_channel_setup
 c_func
 (paren
-id|dev
+id|dev-&gt;core
 comma
 op_amp
 id|cx88_sram_channels
@@ -246,7 +260,7 @@ c_func
 (paren
 id|MO_VBI_GPCNTRL
 comma
-l_int|0x3
+id|GP_COUNT_CONTROL_RESET
 )paren
 suffix:semicolon
 id|q-&gt;count
@@ -298,6 +312,63 @@ c_func
 id|MO_VID_DMACNTRL
 comma
 l_int|0x88
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|cx8800_stop_vbi_dma
+r_int
+id|cx8800_stop_vbi_dma
+c_func
+(paren
+r_struct
+id|cx8800_dev
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|cx88_core
+op_star
+id|core
+op_assign
+id|dev-&gt;core
+suffix:semicolon
+multiline_comment|/* stop dma */
+id|cx_clear
+c_func
+(paren
+id|MO_VID_DMACNTRL
+comma
+l_int|0x88
+)paren
+suffix:semicolon
+multiline_comment|/* disable capture */
+id|cx_clear
+c_func
+(paren
+id|VID_CAPTURE_CONTROL
+comma
+l_int|0x18
+)paren
+suffix:semicolon
+multiline_comment|/* disable irqs */
+id|cx_clear
+c_func
+(paren
+id|MO_PCI_INTMSK
+comma
+l_int|0x000001
+)paren
+suffix:semicolon
+id|cx_clear
+c_func
+(paren
+id|MO_VID_INTMSK
+comma
+l_int|0x0f0088
 )paren
 suffix:semicolon
 r_return
@@ -444,6 +515,13 @@ op_star
 id|data
 suffix:semicolon
 r_struct
+id|cx88_core
+op_star
+id|core
+op_assign
+id|dev-&gt;core
+suffix:semicolon
+r_struct
 id|cx88_dmaqueue
 op_star
 id|q
@@ -463,7 +541,7 @@ suffix:semicolon
 id|cx88_sram_channel_dump
 c_func
 (paren
-id|dev
+id|dev-&gt;core
 comma
 op_amp
 id|cx88_sram_channels
@@ -543,9 +621,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: [%p/%d] timeout - dma=0x%08lx&bslash;n&quot;
+l_string|&quot;%s/0: [%p/%d] timeout - dma=0x%08lx&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;core-&gt;name
 comma
 id|buf
 comma
@@ -584,10 +662,9 @@ DECL|function|vbi_setup
 id|vbi_setup
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_int
 r_int
@@ -658,10 +735,9 @@ DECL|function|vbi_prepare
 id|vbi_prepare
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -678,7 +754,7 @@ id|cx8800_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|cx8800_dev
@@ -827,10 +903,9 @@ DECL|function|vbi_queue
 id|vbi_queue
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -860,7 +935,7 @@ id|cx8800_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|cx8800_dev
@@ -890,7 +965,7 @@ id|RISC_JUMP
 op_or
 id|RISC_IRQ1
 op_or
-l_int|0x10000
+id|RISC_CNT_INC
 )paren
 suffix:semicolon
 id|buf-&gt;risc.jmp
@@ -1033,10 +1108,9 @@ r_void
 id|vbi_release
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -1061,7 +1135,7 @@ id|cx8800_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 id|cx88_free_buffer
 c_func

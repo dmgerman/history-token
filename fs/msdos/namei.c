@@ -2748,7 +2748,7 @@ id|dotdot_bh
 (brace
 id|dotdot_de-&gt;start
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|MSDOS_I
@@ -2762,7 +2762,7 @@ id|i_logstart
 suffix:semicolon
 id|dotdot_de-&gt;starthi
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 (paren

@@ -132,7 +132,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-multiline_comment|/* Remap IO memory, the same way as remap_page_range(), but use&n; * the obio memory space.&n; *&n; * They use a pgprot that sets PAGE_IO and does not check the&n; * mem_map table as this is independent of normal memory.&n; */
+multiline_comment|/* Remap IO memory, the same way as remap_pfn_range(), but use&n; * the obio memory space.&n; *&n; * They use a pgprot that sets PAGE_IO and does not check the&n; * mem_map table as this is independent of normal memory.&n; */
 DECL|function|io_remap_pte_range
 r_static
 r_inline

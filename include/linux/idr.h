@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * include/linux/idr.h&n; * &n; * 2002-10-18  written by Jim Houston jim.houston@ccur.com&n; *&t;Copyright (C) 2002 by Concurrent Computer Corporation&n; *&t;Distributed under the GNU GPL license version 2.&n; *&n; * Small id to pointer translation service avoiding fixed sized&n; * tables.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#if BITS_PER_LONG == 32
 DECL|macro|IDR_BITS
 macro_line|# define IDR_BITS 5

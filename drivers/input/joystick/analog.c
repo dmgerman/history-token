@@ -64,6 +64,7 @@ id|js
 comma
 id|charp
 comma
+op_amp
 id|js_nargs
 comma
 l_int|0

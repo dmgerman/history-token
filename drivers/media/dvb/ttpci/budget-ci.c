@@ -6,11 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &quot;dvb_functions.h&quot;
 macro_line|#include &quot;dvb_ca_en50221.h&quot;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-macro_line|#include &quot;input_fake.h&quot;
-macro_line|#endif
 DECL|macro|DEBIADDR_IR
 mdefine_line|#define DEBIADDR_IR&t;&t;0x1234
 DECL|macro|DEBIADDR_CICONTROL
@@ -119,6 +115,10 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -133,11 +133,13 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|budget_ci-&gt;debilock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -152,11 +154,13 @@ OL
 l_int|0
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|budget_ci-&gt;debilock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -252,11 +256,13 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|budget_ci-&gt;debilock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -293,6 +299,10 @@ id|saa
 op_assign
 id|budget_ci-&gt;budget.dev
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -307,11 +317,13 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|budget_ci-&gt;debilock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -326,11 +338,13 @@ OL
 l_int|0
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|budget_ci-&gt;debilock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -410,11 +424,13 @@ c_func
 id|saa
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|budget_ci-&gt;debilock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1422,7 +1438,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -1673,6 +1689,7 @@ id|budget_ci-&gt;budget.ci_present
 )paren
 r_return
 suffix:semicolon
+singleline_comment|// read the CAM status
 id|flags
 op_assign
 id|budget_debiread
@@ -1687,8 +1704,15 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// always set the GPIO mode back to &quot;normal&quot;, in case the card is
-singleline_comment|// yanked at an inopportune moment
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|CICONTROL_CAMDETECT
+)paren
+(brace
+singleline_comment|// GPIO should be set to trigger on falling edge if a CAM is present
 id|saa7146_setgpio
 c_func
 (paren
@@ -1699,14 +1723,6 @@ comma
 id|SAA7146_GPIO_IRQLO
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|CICONTROL_CAMDETECT
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -1779,6 +1795,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
+singleline_comment|// trigger on rising edge if a CAM is not present - when a CAM is inserted, we
+singleline_comment|// only want to get the IRQ when it sets READY. If we trigger on the falling edge,
+singleline_comment|// the CAM might not actually be ready yet.
+id|saa7146_setgpio
+c_func
+(paren
+id|saa
+comma
+l_int|0
+comma
+id|SAA7146_GPIO_IRQHI
+)paren
+suffix:semicolon
+singleline_comment|// generate a CAM removal IRQ if we haven&squot;t already
 r_if
 c_cond
 (paren
@@ -1787,6 +1817,7 @@ op_amp
 id|SLOTSTATUS_OCCUPIED
 )paren
 (brace
+singleline_comment|// CAM removal IRQ
 id|budget_ci-&gt;slot_status
 op_assign
 id|SLOTSTATUS_NONE
@@ -2017,6 +2048,14 @@ r_int
 id|budget_ci
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|budget_ci-&gt;slot_status
+op_ne
+id|SLOTSTATUS_NONE
+)paren
+(brace
 id|saa7146_setgpio
 c_func
 (paren
@@ -2027,6 +2066,20 @@ comma
 id|SAA7146_GPIO_IRQLO
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|saa7146_setgpio
+c_func
+(paren
+id|saa
+comma
+l_int|0
+comma
+id|SAA7146_GPIO_IRQHI
+)paren
+suffix:semicolon
+)brace
 id|saa7146_write
 c_func
 (paren
@@ -2198,7 +2251,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -2418,6 +2471,10 @@ id|budget_ci-&gt;budget.ci_present
 op_assign
 l_int|0
 suffix:semicolon
+id|dev-&gt;ext_priv
+op_assign
+id|budget_ci
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2445,10 +2502,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|dev-&gt;ext_priv
-op_assign
-id|budget_ci
-suffix:semicolon
 id|tasklet_init
 (paren
 op_amp
@@ -2468,8 +2521,12 @@ id|msp430_ir_init
 id|budget_ci
 )paren
 suffix:semicolon
-singleline_comment|// UNCOMMENT TO TEST CI INTERFACE
-singleline_comment|//&t;ciintf_init(budget_ci);
+id|ciintf_init
+c_func
+(paren
+id|budget_ci
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

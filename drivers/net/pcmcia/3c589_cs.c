@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -29,7 +30,6 @@ macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* To minimize the size of the driver source I only define operating&n;   constants if they are used several times.  You&squot;ll need the manual&n;   if you want to understand driver details. */
 multiline_comment|/* Offsets from base I/O address. */
 DECL|macro|EL3_DATA

@@ -135,12 +135,6 @@ id|sizes
 id|XPRAM_MAX_DEVS
 )braket
 suffix:semicolon
-DECL|variable|sizes_count
-r_static
-r_int
-r_int
-id|sizes_count
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -158,7 +152,7 @@ id|sizes
 comma
 r_int
 comma
-id|sizes_count
+l_int|NULL
 comma
 l_int|0
 )paren

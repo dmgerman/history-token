@@ -9,8 +9,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
 macro_line|#if defined(CONFIG_MIPS_PB1000) || defined(CONFIG_MIPS_PB1100)

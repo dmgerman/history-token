@@ -15,11 +15,11 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; *&t;IDE library routines. These are plug in code that most &n; *&t;drivers can use but occasionally may be weird enough&n; *&t;to want to do their own thing with&n; *&n; *&t;Add common non I/O op stuff here. Make sure it has proper&n; *&t;kernel-doc function headers or your patch will be rejected&n; */
 multiline_comment|/**&n; *&t;ide_xfer_verbose&t;-&t;return IDE mode names&n; *&t;@xfer_rate: rate to name&n; *&n; *&t;Returns a constant string giving the name of the mode&n; *&t;requested.&n; */
 DECL|function|ide_xfer_verbose

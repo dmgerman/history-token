@@ -7,17 +7,10 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/byteorder/swabb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-DECL|macro|DEBUG_VARIABLE
-mdefine_line|#define DEBUG_VARIABLE av7110_debug
-r_extern
-r_int
-id|av7110_debug
-suffix:semicolon
 macro_line|#include &quot;av7110.h&quot;
 macro_line|#include &quot;av7110_hw.h&quot;
 macro_line|#include &quot;av7110_av.h&quot;
 macro_line|#include &quot;av7110_ipack.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 multiline_comment|/* MPEG-2 (ISO 13818 / H.222.0) stream types */
 DECL|macro|PROG_STREAM_MAP
 mdefine_line|#define PROG_STREAM_MAP  0xBC
@@ -1212,6 +1205,14 @@ comma
 id|av7110
 )paren
 )paren
+suffix:semicolon
+id|av7110-&gt;mixer.volume_left
+op_assign
+id|volleft
+suffix:semicolon
+id|av7110-&gt;mixer.volume_right
+op_assign
+id|volright
 suffix:semicolon
 r_switch
 c_cond

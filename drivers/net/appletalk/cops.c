@@ -31,8 +31,8 @@ macro_line|#include &lt;linux/if_ltalk.h&gt;&t;/* For ltalk_setup() */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* For udelay() */
 macro_line|#include &lt;linux/atalk.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;cops.h&quot;&t;&t;/* Our Stuff */

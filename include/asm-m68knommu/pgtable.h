@@ -94,7 +94,7 @@ multiline_comment|/*&n; * No page table caches to initialise.&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range&t;remap_page_range
+mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
 multiline_comment|/*&n; * All 32bit addresses are effectively valid for vmalloc...&n; * Sort of meaningless for non-VM targets.&n; */
 DECL|macro|VMALLOC_START
 mdefine_line|#define&t;VMALLOC_START&t;0

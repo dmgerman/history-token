@@ -395,9 +395,9 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;oversized read request from %08x:%d (%d bytes)&bslash;n&quot;
+l_string|&quot;oversized read request from %u.%u.%u.%u:%d (%d bytes)&bslash;n&quot;
 comma
-id|ntohl
+id|NIPQUAD
 c_func
 (paren
 id|rqstp-&gt;rq_addr.sin_addr.s_addr

@@ -4,10 +4,10 @@ mdefine_line|#define _AV7110_H_
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif
-macro_line|#include &lt;media/saa7146_vv.h&gt;
 macro_line|#include &lt;linux/dvb/video.h&gt;
 macro_line|#include &lt;linux/dvb/audio.h&gt;
 macro_line|#include &lt;linux/dvb/dmx.h&gt;
@@ -21,6 +21,7 @@ macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
 macro_line|#include &quot;dvb_ringbuffer.h&quot;
+macro_line|#include &lt;media/saa7146_vv.h&gt;
 DECL|macro|MAXFILT
 mdefine_line|#define MAXFILT 32
 DECL|enumerator|AV_PES_STREAM
@@ -127,11 +128,13 @@ suffix:semicolon
 DECL|member|v4l_dev
 r_struct
 id|video_device
+op_star
 id|v4l_dev
 suffix:semicolon
 DECL|member|vbi_dev
 r_struct
 id|video_device
+op_star
 id|vbi_dev
 suffix:semicolon
 DECL|member|dev
@@ -140,11 +143,10 @@ id|saa7146_dev
 op_star
 id|dev
 suffix:semicolon
-DECL|member|i2c_bus
+DECL|member|i2c_adap
 r_struct
-id|dvb_i2c_bus
-op_star
-id|i2c_bus
+id|i2c_adapter
+id|i2c_adap
 suffix:semicolon
 DECL|member|card_name
 r_char
@@ -289,6 +291,11 @@ id|osdbpp
 (braket
 l_int|8
 )braket
+suffix:semicolon
+DECL|member|osd_sema
+r_struct
+id|semaphore
+id|osd_sema
 suffix:semicolon
 multiline_comment|/* CA */
 DECL|member|ci_slot
@@ -486,6 +493,11 @@ DECL|member|ci_wbuffer
 r_struct
 id|dvb_ringbuffer
 id|ci_wbuffer
+suffix:semicolon
+DECL|member|mixer
+r_struct
+id|audio_mixer
+id|mixer
 suffix:semicolon
 DECL|member|dvb_adapter
 r_struct
