@@ -4375,7 +4375,7 @@ op_amp
 id|tcptw_sk
 c_func
 (paren
-id|sk
+id|sk2
 )paren
 op_member_access_from_pointer
 id|tw_v6_rcv_saddr
