@@ -1196,7 +1196,7 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|xfs_reclaim_all
+id|xfs_finish_reclaim_all
 c_func
 (paren
 r_struct
