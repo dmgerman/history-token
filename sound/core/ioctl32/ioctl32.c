@@ -909,7 +909,7 @@ l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* integer and boolean need conversion */
-macro_line|#ifdef CONFIG_PPC64
+macro_line|#ifndef CONFIG_X86_64
 DECL|member|integer64
 id|s64
 id|integer64
