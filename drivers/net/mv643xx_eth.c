@@ -3222,6 +3222,12 @@ id|port_num
 op_assign
 id|mp-&gt;port_num
 suffix:semicolon
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
