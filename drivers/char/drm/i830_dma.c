@@ -8,13 +8,6 @@ macro_line|#include &quot;i830_drm.h&quot;
 macro_line|#include &quot;i830_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#ifdef DO_MUNMAP_4_ARGS
-DECL|macro|DO_MUNMAP
-mdefine_line|#define DO_MUNMAP(m, a, l)&t;do_munmap(m, a, l, 1)
-macro_line|#else
-DECL|macro|DO_MUNMAP
-mdefine_line|#define DO_MUNMAP(m, a, l)&t;do_munmap(m, a, l)
-macro_line|#endif
 DECL|macro|I830_BUF_FREE
 mdefine_line|#define I830_BUF_FREE&t;&t;2
 DECL|macro|I830_BUF_CLIENT
@@ -725,7 +718,7 @@ id|current-&gt;mm-&gt;mmap_sem
 suffix:semicolon
 id|retcode
 op_assign
-id|DO_MUNMAP
+id|do_munmap
 c_func
 (paren
 id|current-&gt;mm
