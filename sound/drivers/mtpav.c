@@ -1405,6 +1405,13 @@ op_star
 id|chip
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|chip-&gt;timer
+)paren
+suffix:semicolon
 id|chip-&gt;timer.function
 op_assign
 id|snd_mtpav_output_timer

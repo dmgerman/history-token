@@ -20039,6 +20039,13 @@ id|card
 )paren
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|card-&gt;timer
+)paren
+suffix:semicolon
 id|card-&gt;iobase
 op_assign
 id|iobase

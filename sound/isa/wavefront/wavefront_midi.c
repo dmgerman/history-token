@@ -1476,6 +1476,13 @@ op_logical_neg
 id|midi-&gt;istimer
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|midi-&gt;timer
+)paren
+suffix:semicolon
 id|midi-&gt;timer.function
 op_assign
 id|snd_wavefront_midi_output_timer
