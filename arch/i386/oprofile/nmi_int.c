@@ -1,17 +1,11 @@
 multiline_comment|/**&n; * @file nmi_int.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &quot;op_counter.h&quot;
 macro_line|#include &quot;op_x86_model.h&quot;
 DECL|variable|model
@@ -39,12 +33,6 @@ id|saved_lvtpc
 (braket
 id|NR_CPUS
 )braket
-suffix:semicolon
-DECL|variable|kernel_only
-r_static
-r_int
-r_int
-id|kernel_only
 suffix:semicolon
 r_static
 r_int
@@ -120,7 +108,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// FIXME: kernel_only
 DECL|function|nmi_callback
 r_static
 r_int
@@ -137,7 +124,6 @@ id|cpu
 )paren
 (brace
 r_return
-(paren
 id|model
 op_member_access_from_pointer
 id|check_ctrs
@@ -152,7 +138,6 @@ id|cpu
 )braket
 comma
 id|regs
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -970,19 +955,6 @@ id|user
 )paren
 suffix:semicolon
 )brace
-id|oprofilefs_create_ulong
-c_func
-(paren
-id|sb
-comma
-id|root
-comma
-l_string|&quot;kernel_only&quot;
-comma
-op_amp
-id|kernel_only
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
