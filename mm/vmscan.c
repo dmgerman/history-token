@@ -3156,6 +3156,11 @@ id|total_scanned
 )paren
 suffix:semicolon
 multiline_comment|/* Take a nap, wait for some writeback to complete */
+r_if
+c_cond
+(paren
+id|total_scanned
+)paren
 id|blk_congestion_wait
 c_func
 (paren
@@ -3316,6 +3321,11 @@ id|all_zones_ok
 op_assign
 l_int|1
 suffix:semicolon
+r_int
+id|pages_scanned
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3410,6 +3420,10 @@ comma
 id|ps
 )paren
 suffix:semicolon
+id|total_scanned
+op_add_assign
+id|pages_scanned
+suffix:semicolon
 id|reclaim_state-&gt;reclaimed_slab
 op_assign
 l_int|0
@@ -3472,6 +3486,11 @@ r_break
 suffix:semicolon
 multiline_comment|/* kswapd: all done */
 multiline_comment|/*&n;&t;&t; * OK, kswapd is getting into trouble.  Take a nap, then take&n;&t;&t; * another pass across the zones.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pages_scanned
+)paren
 id|blk_congestion_wait
 c_func
 (paren
