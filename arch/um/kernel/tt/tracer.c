@@ -1986,6 +1986,12 @@ id|sig
 op_ne
 id|SIGIO
 )paren
+op_logical_and
+(paren
+id|sig
+op_ne
+id|SIGFPE
+)paren
 )paren
 (brace
 id|child_signal
@@ -2008,7 +2014,7 @@ id|tracing
 r_if
 c_cond
 (paren
-id|singlestepping
+id|singlestepping_tt
 c_func
 (paren
 id|task

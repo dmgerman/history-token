@@ -73,10 +73,6 @@ DECL|struct|thread_struct
 r_struct
 id|thread_struct
 (brace
-DECL|member|tracing
-r_int
-id|tracing
-suffix:semicolon
 DECL|member|forking
 r_int
 id|forking

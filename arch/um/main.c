@@ -582,7 +582,7 @@ id|uml_exitcode
 suffix:semicolon
 )brace
 DECL|macro|CAN_KMALLOC
-mdefine_line|#define CAN_KMALLOC() &bslash;&n; &t;(kmalloc_ok &amp;&amp; CHOOSE_MODE((getpid() != tracing_pid), 1))
+mdefine_line|#define CAN_KMALLOC() &bslash;&n;&t;(kmalloc_ok &amp;&amp; CHOOSE_MODE((getpid() != tracing_pid), 1))
 r_extern
 r_void
 op_star

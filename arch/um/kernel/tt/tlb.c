@@ -431,9 +431,10 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-DECL|function|flush_kernel_range
+DECL|function|flush_kernel_vm_range
+r_static
 r_void
-id|flush_kernel_range
+id|flush_kernel_vm_range
 c_func
 (paren
 r_int
@@ -751,7 +752,7 @@ r_int
 id|end
 )paren
 (brace
-id|flush_kernel_range
+id|flush_kernel_vm_range
 c_func
 (paren
 id|start
@@ -1069,7 +1070,7 @@ id|end_vm
 )paren
 )paren
 (brace
-id|flush_kernel_range
+id|flush_kernel_vm_range
 c_func
 (paren
 id|start
@@ -1156,7 +1157,7 @@ id|current-&gt;thread.mode.tt.vm_seq
 op_assign
 id|seq
 suffix:semicolon
-id|flush_kernel_range
+id|flush_kernel_vm_range
 c_func
 (paren
 id|start_vm
@@ -1187,7 +1188,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|flush_kernel_range
+id|flush_kernel_vm_range
 c_func
 (paren
 id|start_vm

@@ -502,15 +502,6 @@ id|altstack
 suffix:semicolon
 r_extern
 r_void
-id|attach_process
-c_func
-(paren
-r_int
-id|pid
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|do_exec
 c_func
 (paren

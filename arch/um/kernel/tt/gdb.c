@@ -471,8 +471,7 @@ id|data
 op_assign
 id|arg
 suffix:semicolon
-r_struct
-id|task_struct
+r_void
 op_star
 id|task
 suffix:semicolon
@@ -1066,7 +1065,7 @@ id|stop
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|UM_KERN_ERR
 l_string|&quot;debug requested when CONFIG_PT_PROXY is off&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1094,7 +1093,7 @@ id|sig
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|UM_KERN_ERR
 l_string|&quot;debug requested when CONFIG_PT_PROXY is off&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1117,7 +1116,7 @@ id|stop
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|UM_KERN_ERR
 l_string|&quot;attach_debugger called when CONFIG_PT_PROXY &quot;
 l_string|&quot;is off&bslash;n&quot;
 )paren
@@ -1183,4 +1182,5 @@ id|pid
 (brace
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof
