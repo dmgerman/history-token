@@ -1,11 +1,11 @@
 multiline_comment|/* 3c509.c: A 3c509 EtherLink3 ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;&t;&t;v1.18a 17Nov2001 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;&t;&t;- ethtool support&n;&t;&t;v1.18b 1Mar2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&t;&t;&t;- Power Management support&n;&t;&t;v1.18c 1Mar2002 David Ruggiero &lt;jdr@farfalle.com&gt;&n;&t;&t;&t;- Full duplex support&n;&t;&t;v1.19  16Oct2002 Zwane Mwaikambo &lt;zwane@linuxpower.ca&gt;&n;&t;&t;&t;- Additional ethtool features&n;*/
+multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;&t;&t;v1.18a 17Nov2001 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;&t;&t;- ethtool support&n;&t;&t;v1.18b 1Mar2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&t;&t;&t;- Power Management support&n;&t;&t;v1.18c 1Mar2002 David Ruggiero &lt;jdr@farfalle.com&gt;&n;&t;&t;&t;- Full duplex support&n;&t;&t;v1.19  16Oct2002 Zwane Mwaikambo &lt;zwane@linuxpower.ca&gt;&n;&t;&t;&t;- Additional ethtool features&n;&t;&t;v1.19a 28Oct2002 Davud Ruggiero &lt;jdr@farfalle.com&gt;&n;&t;&t;&t;- Increase *read_eeprom udelay to workaround oops with 2 cards.&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;3c509&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.19&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.19a&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;16Oct2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;28Oct2002&quot;
 multiline_comment|/* A few values that may be tweaked. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
@@ -2652,10 +2652,11 @@ op_plus
 l_int|10
 )paren
 suffix:semicolon
-multiline_comment|/* Pause for at least 162 us. for the read to take place. */
-id|udelay
+multiline_comment|/* Pause for at least 162 us. for the read to take place. &n;&t;   Some chips seem to require much longer */
+id|mdelay
+c_func
 (paren
-l_int|500
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -2699,9 +2700,11 @@ id|id_port
 )paren
 suffix:semicolon
 multiline_comment|/* Pause for at least 162 us. for the read to take place. */
-id|udelay
+multiline_comment|/* Some chips seem to require much longer */
+id|mdelay
+c_func
 (paren
-l_int|500
+l_int|4
 )paren
 suffix:semicolon
 r_for
