@@ -143,11 +143,12 @@ id|xfrm_algo
 op_star
 id|calg
 suffix:semicolon
-DECL|member|encap_alg
+multiline_comment|/* Data for encapsulator */
+DECL|member|encap
 r_struct
-id|xfrm_algo
+id|xfrm_encap_tmpl
 op_star
-id|encap_alg
+id|encap
 suffix:semicolon
 multiline_comment|/* State for replay detection */
 DECL|member|replay

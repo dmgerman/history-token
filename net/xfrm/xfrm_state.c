@@ -644,12 +644,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|x-&gt;encap_alg
+id|x-&gt;encap
 )paren
 id|kfree
 c_func
 (paren
-id|x-&gt;encap_alg
+id|x-&gt;encap
 )paren
 suffix:semicolon
 r_if
