@@ -143,6 +143,11 @@ op_star
 id|group
 comma
 r_int
+r_int
+op_star
+id|symidx
+comma
+r_int
 id|gplok
 )paren
 (brace
@@ -214,6 +219,16 @@ op_star
 id|group
 op_assign
 id|ks
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|symidx
+)paren
+op_star
+id|symidx
+op_assign
+id|i
 suffix:semicolon
 r_return
 id|ks-&gt;syms
@@ -2071,6 +2086,8 @@ comma
 op_amp
 id|ksg
 comma
+l_int|NULL
+comma
 l_int|1
 )paren
 )paren
@@ -3195,6 +3212,10 @@ r_int
 r_int
 id|ret
 suffix:semicolon
+r_int
+r_int
+id|symidx
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -3211,6 +3232,9 @@ id|name
 comma
 op_amp
 id|ksg
+comma
+op_amp
+id|symidx
 comma
 id|mod-&gt;license_gplok
 )paren
@@ -3379,6 +3403,8 @@ id|symbol
 comma
 op_amp
 id|ksg
+comma
+l_int|NULL
 comma
 l_int|1
 )paren
