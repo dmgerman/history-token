@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;xattr.h&quot;
 macro_line|#ifdef CONFIG_JBD_DEBUG
 DECL|variable|ext3_ro_after
 r_static
@@ -1433,6 +1434,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|ext3_xattr_put_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|journal_destroy
 c_func
 (paren
@@ -2308,6 +2315,46 @@ op_increment
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_XATTR
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+(paren
+id|this_char
+comma
+l_string|&quot;user_xattr&quot;
+)paren
+)paren
+id|set_opt
+(paren
+id|sbi-&gt;s_mount_opt
+comma
+id|XATTR_USER
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+(paren
+id|this_char
+comma
+l_string|&quot;nouser_xattr&quot;
+)paren
+)paren
+id|clear_opt
+(paren
+id|sbi-&gt;s_mount_opt
+comma
+id|XATTR_USER
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4638,6 +4685,21 @@ c_func
 id|sbi-&gt;s_mount_opt
 comma
 id|NO_UID32
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|def_mount_opts
+op_amp
+id|EXT3_DEFM_XATTR_USER
+)paren
+id|set_opt
+c_func
+(paren
+id|sbi-&gt;s_mount_opt
+comma
+id|XATTR_USER
 )paren
 suffix:semicolon
 r_if
@@ -8320,6 +8382,21 @@ r_void
 r_int
 id|err
 op_assign
+id|init_ext3_xattr
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
+id|err
+op_assign
 id|init_inodecache
 c_func
 (paren
@@ -8362,6 +8439,11 @@ c_func
 suffix:semicolon
 id|out1
 suffix:colon
+id|exit_ext3_xattr
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -8384,6 +8466,11 @@ id|ext3_fs_type
 )paren
 suffix:semicolon
 id|destroy_inodecache
+c_func
+(paren
+)paren
+suffix:semicolon
+id|exit_ext3_xattr
 c_func
 (paren
 )paren

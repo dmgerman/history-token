@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &quot;xattr.h&quot;
 multiline_comment|/*&n; * ialloc.c contains the inodes allocation and deallocation routines&n; */
 multiline_comment|/*&n; * The free inodes are managed by bitmaps.  A file system contains several&n; * blocks groups.  Each group contains 1 bitmap block for blocks, 1 bitmap&n; * block for inodes, N blocks for the inode table and data blocks.&n; *&n; * The file system contains group descriptors which are located after the&n; * super block.  Each descriptor contains the number of the bitmap block and&n; * the free blocks count in the block.&n; */
 multiline_comment|/*&n; * Read the inode allocation bitmap for a given block_group, reading&n; * into the specified slot in the superblock&squot;s bitmap cache.&n; *&n; * Return buffer_head of bitmap on success or NULL.&n; */
@@ -250,6 +251,14 @@ multiline_comment|/*&n;&t; * Note: we must free any quota before locking the sup
 id|DQUOT_INIT
 c_func
 (paren
+id|inode
+)paren
+suffix:semicolon
+id|ext3_xattr_delete_inode
+c_func
+(paren
+id|handle
+comma
 id|inode
 )paren
 suffix:semicolon

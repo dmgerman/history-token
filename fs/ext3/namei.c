@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &quot;xattr.h&quot;
 multiline_comment|/*&n; * define how far ahead to read directories while searching them.&n; */
 DECL|macro|NAMEI_RA_CHUNKS
 mdefine_line|#define NAMEI_RA_CHUNKS  2
@@ -8529,6 +8530,8 @@ comma
 id|dir
 comma
 id|S_IFDIR
+op_or
+id|mode
 )paren
 suffix:semicolon
 id|err
@@ -8572,10 +8575,6 @@ op_member_access_from_pointer
 id|i_disksize
 op_assign
 id|inode-&gt;i_sb-&gt;s_blocksize
-suffix:semicolon
-id|inode-&gt;i_blocks
-op_assign
-l_int|0
 suffix:semicolon
 id|dir_block
 op_assign
@@ -8775,23 +8774,6 @@ id|brelse
 (paren
 id|dir_block
 )paren
-suffix:semicolon
-id|inode-&gt;i_mode
-op_assign
-id|S_IFDIR
-op_or
-id|mode
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dir-&gt;i_mode
-op_amp
-id|S_ISGID
-)paren
-id|inode-&gt;i_mode
-op_or_assign
-id|S_ISGID
 suffix:semicolon
 id|ext3_mark_inode_dirty
 c_func
@@ -10638,7 +10620,7 @@ id|i_data
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|page_symlink_inode_operations
+id|ext3_symlink_inode_operations
 suffix:semicolon
 r_if
 c_cond
@@ -11644,6 +11626,54 @@ dot
 id|rename
 op_assign
 id|ext3_rename
+comma
+dot
+id|setxattr
+op_assign
+id|ext3_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|ext3_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|ext3_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|ext3_removexattr
+comma
+)brace
+suffix:semicolon
+DECL|variable|ext3_special_inode_operations
+r_struct
+id|inode_operations
+id|ext3_special_inode_operations
+op_assign
+(brace
+dot
+id|setxattr
+op_assign
+id|ext3_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|ext3_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|ext3_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|ext3_removexattr
 comma
 )brace
 suffix:semicolon
