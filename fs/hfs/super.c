@@ -1215,6 +1215,11 @@ id|sb
 )paren
 )paren
 suffix:semicolon
+id|res
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_goto
 id|bail2
 suffix:semicolon
