@@ -5,7 +5,6 @@ mdefine_line|#define _ASM_VIO_H
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -188,7 +187,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -207,7 +207,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -228,7 +229,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -249,7 +251,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -333,7 +336,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -342,7 +346,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 multiline_comment|/* nothing to do */
@@ -367,7 +371,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -376,7 +381,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 multiline_comment|/* nothing to do */

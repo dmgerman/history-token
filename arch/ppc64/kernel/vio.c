@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * IBM PowerPC Virtual I/O Infrastructure Support.&n; *&n; *    Copyright (c) 2003 IBM Corp.&n; *     Dave Engebretsen engebret@us.ibm.com&n; *     Santiago Leon santil@us.ibm.com&n; *     Hollis Blanchard &lt;hollisb@us.ibm.com&gt;&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
@@ -1576,7 +1575,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -1603,7 +1603,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 id|uaddr
@@ -1655,6 +1655,9 @@ id|vaddr
 comma
 id|npages
 comma
+(paren
+r_int
+)paren
 id|direction
 )paren
 suffix:semicolon
@@ -1695,7 +1698,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -1713,7 +1717,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 id|npages
@@ -1783,7 +1787,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -1797,7 +1802,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 r_if
@@ -1836,6 +1841,9 @@ id|sglist
 comma
 id|nelems
 comma
+(paren
+r_int
+)paren
 id|direction
 )paren
 suffix:semicolon
@@ -1865,7 +1873,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -1879,7 +1888,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 id|tbl
@@ -2048,7 +2057,10 @@ id|ret
 comma
 id|npages
 comma
-id|PCI_DMA_BIDIRECTIONAL
+(paren
+r_int
+)paren
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_if

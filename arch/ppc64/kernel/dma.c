@@ -402,9 +402,6 @@ id|cpu_addr
 comma
 id|size
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -499,9 +496,6 @@ id|dma_addr
 comma
 id|size
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -602,9 +596,6 @@ id|offset
 comma
 id|size
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -699,9 +690,6 @@ id|dma_address
 comma
 id|size
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -794,9 +782,6 @@ id|sg
 comma
 id|nents
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -890,9 +875,6 @@ id|sg
 comma
 id|nhwentries
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -982,9 +964,6 @@ id|dma_handle
 comma
 id|size
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -1076,9 +1055,6 @@ id|sg
 comma
 id|nelems
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
