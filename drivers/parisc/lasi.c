@@ -393,10 +393,6 @@ id|DISPLAY_MODEL_LASI
 comma
 id|LED_CMD_REG_NONE
 comma
-(paren
-r_char
-op_star
-)paren
 id|datareg
 )paren
 suffix:semicolon
