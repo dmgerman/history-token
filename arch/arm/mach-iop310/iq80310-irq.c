@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-iop310/iq80310-irq.c&n; *&n; * IRQ hadling/demuxing for IQ80310 board&n; *&n; * Author:  Nicolas Pitre&n; * Copyright:   (C) 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * 2.4.7-rmk1-iop310.1&n; *     Moved demux from asm to C - DS&n; *     Fixes for various revision boards - DS&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
