@@ -56,11 +56,6 @@ id|ioremap_bot
 op_assign
 id|IMALLOC_BASE
 suffix:semicolon
-DECL|variable|boot_mapsize
-r_static
-r_int
-id|boot_mapsize
-suffix:semicolon
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -1894,6 +1889,9 @@ c_func
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+r_int
+id|boot_mapsize
+suffix:semicolon
 multiline_comment|/*&n;&t; * Find an area to use for the bootmem bitmap.  Calculate the size of&n;&t; * bitmap required as (Total Memory) / PAGE_SIZE / BITS_PER_BYTE.&n;&t; * Add 1 additional page in case the address isn&squot;t page-aligned.&n;&t; */
 id|bootmap_pages
 op_assign
@@ -2234,10 +2232,14 @@ op_increment
 r_if
 c_cond
 (paren
-id|numa_node_exists
+id|node_data
 (braket
 id|nid
 )braket
+dot
+id|node_size
+op_ne
+l_int|0
 )paren
 (brace
 id|printk
