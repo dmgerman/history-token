@@ -975,7 +975,7 @@ c_func
 id|page_buf_t
 op_star
 comma
-id|off_t
+r_int
 )paren
 suffix:semicolon
 r_extern

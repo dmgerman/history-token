@@ -208,7 +208,7 @@ id|page_buf_t
 op_star
 id|bp
 comma
-id|off_t
+r_int
 id|offset
 )paren
 (brace
