@@ -804,6 +804,13 @@ c_func
 id|rwsem_wake
 )paren
 suffix:semicolon
+DECL|variable|rwsem_downgrade_wake
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|rwsem_downgrade_wake
+)paren
+suffix:semicolon
 macro_line|#if RWSEM_DEBUG
 DECL|variable|rwsemtrace
 id|EXPORT_SYMBOL
