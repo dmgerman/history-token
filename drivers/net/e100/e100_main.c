@@ -373,7 +373,7 @@ op_assign
 l_string|&quot;Copyright (c) 2002 Intel Corporation&quot;
 suffix:semicolon
 DECL|macro|E100_VERSION
-mdefine_line|#define E100_VERSION  &quot;2.0.25-pre1&quot;
+mdefine_line|#define E100_VERSION  &quot;2.0.27-pre1&quot;
 DECL|macro|E100_FULL_DRIVER_NAME
 mdefine_line|#define E100_FULL_DRIVER_NAME &t;&quot;Intel(R) PRO/100 Fast Ethernet Adapter - Loadable driver, ver &quot;
 DECL|variable|e100_version
@@ -1763,7 +1763,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|E100_MAX_BUSY_WAIT
+id|E100_MAX_SCB_WAIT
 suffix:semicolon
 id|i
 op_increment
@@ -2017,7 +2017,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|E100_MAX_BUSY_WAIT
+id|E100_MAX_CU_IDLE_WAIT
 suffix:semicolon
 id|i
 op_increment

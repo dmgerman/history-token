@@ -68,8 +68,10 @@ DECL|macro|MIN_NUMBER_OF_TRANSMITS_10
 mdefine_line|#define MIN_NUMBER_OF_TRANSMITS_10  100
 DECL|macro|E100_MAX_NIC
 mdefine_line|#define E100_MAX_NIC 16
-DECL|macro|E100_MAX_BUSY_WAIT
-mdefine_line|#define E100_MAX_BUSY_WAIT 50&t;/*Max udelays in wait_scb and wait_cus_idle */
+DECL|macro|E100_MAX_SCB_WAIT
+mdefine_line|#define E100_MAX_SCB_WAIT&t;100&t;/* Max udelays in wait_scb */
+DECL|macro|E100_MAX_CU_IDLE_WAIT
+mdefine_line|#define E100_MAX_CU_IDLE_WAIT&t;50&t;/* Max udelays in wait_cus_idle */
 multiline_comment|/* CPUSAVER_BUNDLE_MAX: Sets the maximum number of frames that will be bundled.&n; * In some situations, such as the TCP windowing algorithm, it may be&n; * better to limit the growth of the bundle size than let it go as&n; * high as it can, because that could cause too much added latency.&n; * The default is six, because this is the number of packets in the&n; * default TCP window size.  A value of 1 would make CPUSaver indicate&n; * an interrupt for every frame received.  If you do not want to put&n; * a limit on the bundle size, set this value to xFFFF.&n; */
 DECL|macro|E100_DEFAULT_CPUSAVER_BUNDLE_MAX
 mdefine_line|#define E100_DEFAULT_CPUSAVER_BUNDLE_MAX&t;6
