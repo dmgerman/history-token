@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * salinfo.c&n; *&n; * Creates entries in /proc/sal for various system features.&n; *&n; * Copyright (c) 2001 Silicon Graphics, Inc.  All rights reserved.&n; *&n; * 10/30/2001&t;jbarnes@sgi.com&t;&t;copied much of Stephane&squot;s palinfo&n; *&t;&t;&t;&t;&t;code to create this file&n; */
+multiline_comment|/*&n; * salinfo.c&n; *&n; * Creates entries in /proc/sal for various system features.&n; *&n; * Copyright (c) 2001 Silicon Graphics, Inc.  All rights reserved.&n; *&n; * 09/11/2003&t;jbarnes@sgi.com&t;&t;updated for 2.6&n; * 10/30/2001&t;jbarnes@sgi.com&t;&t;copied much of Stephane&squot;s palinfo&n; *&t;&t;&t;&t;&t;code to create this file&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -192,8 +192,12 @@ c_cond
 op_star
 id|sdir
 )paren
+(paren
 op_star
-id|sdir-&gt;owner
+id|sdir
+)paren
+op_member_access_from_pointer
+id|owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
