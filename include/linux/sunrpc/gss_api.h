@@ -33,14 +33,17 @@ multiline_comment|/*XXX  arbitrary length - is this set somewhere? */
 DECL|macro|GSS_OID_MAX_LEN
 mdefine_line|#define GSS_OID_MAX_LEN 32
 multiline_comment|/* gss-api prototypes; note that these are somewhat simplified versions of&n; * the prototypes specified in RFC 2744. */
-id|u32
+r_int
 id|gss_import_sec_context
 c_func
 (paren
-r_struct
-id|xdr_netobj
+r_const
+r_void
 op_star
 id|input_token
+comma
+r_int
+id|bufsize
 comma
 r_struct
 id|gss_api_mech
@@ -238,16 +241,19 @@ r_struct
 id|gss_api_ops
 (brace
 DECL|member|gss_import_sec_context
-id|u32
+r_int
 (paren
 op_star
 id|gss_import_sec_context
 )paren
 (paren
-r_struct
-id|xdr_netobj
+r_const
+r_void
 op_star
 id|input_token
+comma
+r_int
+id|bufsize
 comma
 r_struct
 id|gss_ctx

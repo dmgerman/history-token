@@ -1689,10 +1689,6 @@ id|gss_api_mech
 op_star
 id|gm
 suffix:semicolon
-r_struct
-id|xdr_netobj
-id|tmp_buf
-suffix:semicolon
 multiline_comment|/* gid */
 r_if
 c_cond
@@ -1884,22 +1880,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|tmp_buf.len
-op_assign
-id|len
-suffix:semicolon
-id|tmp_buf.data
-op_assign
-id|buf
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|gss_import_sec_context
 c_func
 (paren
-op_amp
-id|tmp_buf
+id|buf
+comma
+id|len
 comma
 id|gm
 comma

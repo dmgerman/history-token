@@ -1171,8 +1171,9 @@ c_cond
 id|gss_import_sec_context
 c_func
 (paren
-op_amp
-id|tmp_buf
+id|tmp_buf.data
+comma
+id|tmp_buf.len
 comma
 id|gm
 comma
