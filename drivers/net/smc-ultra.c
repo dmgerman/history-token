@@ -511,12 +511,6 @@ comma
 id|ULTRA_IO_EXTENT
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
 )brace
 DECL|function|ultra_probe
 r_struct
@@ -535,10 +529,9 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_int
@@ -574,11 +567,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* until all 8390-based use alloc_etherdev() */
 id|err
 op_assign
 id|do_ultra_probe
@@ -1066,31 +1054,6 @@ suffix:semicolon
 id|eeprom_irq
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Allocate dev-&gt;priv and fill in 8390 specific dev fields. */
-r_if
-c_cond
-(paren
-id|ethdev_init
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;, no memory for dev-&gt;priv.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 )brace
 multiline_comment|/* The 8390 isn&squot;t at the base address, so fake the offset */
@@ -2681,10 +2644,9 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2694,10 +2656,6 @@ op_logical_neg
 id|dev
 )paren
 r_break
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
