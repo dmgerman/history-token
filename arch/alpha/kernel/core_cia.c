@@ -1261,7 +1261,11 @@ DECL|function|cia_prepare_tbia_workaround
 id|cia_prepare_tbia_workaround
 c_func
 (paren
-r_void
+r_int
+id|cia_rev
+comma
+r_int
+id|is_pyxis
 )paren
 (brace
 r_int
@@ -1332,6 +1336,17 @@ id|i
 op_assign
 id|pte
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_pyxis
+op_logical_or
+id|cia_rev
+op_ne
+l_int|1
+)paren
+(brace
+multiline_comment|/* We can use W1 for SG on PYXIS/CIA rev 2. */
 op_star
 (paren
 id|vip
@@ -1372,6 +1387,51 @@ id|ppte
 op_rshift
 l_int|2
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* CIA rev 1 can&squot;t use W1 or W2 for SG, apparently,&n;&t;&t;   so use W3, which we made sure is not used for DAC. */
+op_star
+(paren
+id|vip
+)paren
+id|CIA_IOC_PCI_W3_BASE
+op_assign
+id|CIA_BROKEN_TBIA_BASE
+op_or
+l_int|3
+suffix:semicolon
+op_star
+(paren
+id|vip
+)paren
+id|CIA_IOC_PCI_W3_MASK
+op_assign
+(paren
+id|CIA_BROKEN_TBIA_SIZE
+op_star
+l_int|1024
+op_minus
+l_int|1
+)paren
+op_amp
+l_int|0xfff00000
+suffix:semicolon
+op_star
+(paren
+id|vip
+)paren
+id|CIA_IOC_PCI_T3_BASE
+op_assign
+id|virt_to_phys
+c_func
+(paren
+id|ppte
+)paren
+op_rshift
+l_int|2
+suffix:semicolon
+)brace
 )brace
 r_static
 r_void
@@ -2773,7 +2833,7 @@ op_minus
 id|IDENT_ADDR
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Set up the PCI to main memory translation windows.&n;&t; *&n;&t; * Window 0 is scatter-gather 8MB at 8MB (for isa)&n;&t; * Window 1 is scatter-gather 1MB at 768MB (for tbia)&n;&t; * Window 2 is direct access 2GB at 2GB&n;&t; * Window 3 is DAC access 4GB at 8GB&n;&t; *&n;&t; * ??? NetBSD hints that page tables must be aligned to 32K,&n;&t; * possibly due to a hardware bug.  This is over-aligned&n;&t; * from the 8K alignment one would expect for an 8MB window. &n;&t; * No description of what revisions affected.&n;&t; */
+multiline_comment|/*&n;&t; * Set up the PCI to main memory translation windows.&n;&t; *&n;&t; * Window 0 is S/G 8MB at 8MB (for isa)&n;&t; * Window 1 is S/G 1MB at 768MB (for tbia) (unused for CIA rev 1)&n;&t; * Window 2 is direct access 2GB at 2GB&n;&t; * Window 3 is DAC access 4GB at 8GB (or S/G for tbia if CIA rev 1)&n;&t; *&n;&t; * ??? NetBSD hints that page tables must be aligned to 32K,&n;&t; * possibly due to a hardware bug.  This is over-aligned&n;&t; * from the 8K alignment one would expect for an 8MB window. &n;&t; * No description of what revisions affected.&n;&t; */
 id|hose-&gt;sg_pci
 op_assign
 l_int|NULL
@@ -2872,16 +2932,20 @@ l_int|0
 op_rshift
 l_int|2
 suffix:semicolon
-multiline_comment|/* On PYXIS we have the monster window, selected by bit 40, so&n;&t;   there is no need for window3 to be enabled.&n;&n;&t;   On CIA, we don&squot;t have true arbitrary addressing -- bits &lt;39:32&gt;&n;&t;   are compared against W_DAC.  We can, however, directly map 4GB,&n;&t;   which is better than before.  However, due to assumptions made&n;&t;   elsewhere, we should not claim that we support DAC unless that&n;&t;   4GB covers all of physical memory.  */
+multiline_comment|/* On PYXIS we have the monster window, selected by bit 40, so&n;&t;   there is no need for window3 to be enabled.&n;&n;&t;   On CIA, we don&squot;t have true arbitrary addressing -- bits &lt;39:32&gt;&n;&t;   are compared against W_DAC.  We can, however, directly map 4GB,&n;&t;   which is better than before.  However, due to assumptions made&n;&t;   elsewhere, we should not claim that we support DAC unless that&n;&t;   4GB covers all of physical memory.&n;&n;&t;   Also, don&squot;t do DAC on CIA rev 1, it has other problems and is&n;&t;   unlikely to have more than 2GB of memory anyway, so direct is&n;&t;   fine.&n;&t;*/
 r_if
 c_cond
 (paren
+id|cia_rev
+op_eq
+l_int|1
+op_logical_or
 id|is_pyxis
 op_logical_or
 id|max_low_pfn
 OG
 (paren
-l_int|0x100000000
+l_int|0x100000000UL
 op_rshift
 id|PAGE_SHIFT
 )paren
@@ -2947,6 +3011,9 @@ multiline_comment|/* Prepare workaround for apparently broken tbia. */
 id|cia_prepare_tbia_workaround
 c_func
 (paren
+id|cia_rev
+comma
+id|is_pyxis
 )paren
 suffix:semicolon
 )brace
