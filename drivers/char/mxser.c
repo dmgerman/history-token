@@ -1,6 +1,6 @@
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *          mxser.c  -- MOXA Smartio family multiport serial driver.&n; *&n; *      Copyright (C) 1999-2000  Moxa Technologies (support@moxa.com.tw).&n; *&n; *      This code is loosely based on the Linux serial driver, written by&n; *      Linus Torvalds, Theodore T&squot;so and others.&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; *    MOXA Smartio Family Serial Driver&n; *&n; *      Copyright (C) 1999,2000  Moxa Technologies Co., LTD.&n; *&n; *      for             : LINUX 2.0.X, 2.2.X, 2.4.X&n; *      date            : 2001/05/01&n; *      version         : 1.2 &n; *      &n; *    Fixes for C104H/PCI by Tim Hockin &lt;thockin@sun.com&gt;&n; *    Added support for: C102, CI-132, CI-134, CP-132, CP-114, CT-114 cards&n; *                        by Damian Wrobel &lt;dwrobel@ertel.com.pl&gt;&n; *&n; */
+multiline_comment|/*&n; *    MOXA Smartio Family Serial Driver&n; *&n; *      Copyright (C) 1999,2000  Moxa Technologies Co., LTD.&n; *&n; *      for             : LINUX 2.0.X, 2.2.X, 2.4.X&n; *      date            : 2001/05/01&n; *      version         : 1.2 &n; *      &n; *    Fixes for C104H/PCI by Tim Hockin &lt;thockin@sun.com&gt;&n; *    Added support for: C102, CI-132, CI-134, CP-132, CP-114, CT-114 cards&n; *                        by Damian Wrobel &lt;dwrobel@ertel.com.pl&gt;&n; *&n; *    Added support for serial card CP104&n; *&t;&t;&t;  by James Nelson Provident Solutions &lt;linux-info@provident-solutions.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -85,6 +85,10 @@ macro_line|#ifndef PCI_DEVICE_ID_C104
 DECL|macro|PCI_DEVICE_ID_C104
 mdefine_line|#define PCI_DEVICE_ID_C104&t;0x1040
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_CP104
+DECL|macro|PCI_DEVICE_ID_CP104
+mdefine_line|#define PCI_DEVICE_ID_CP104&t;0x1041
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_CP132
 DECL|macro|PCI_DEVICE_ID_CP132
 mdefine_line|#define PCI_DEVICE_ID_CP132&t;0x1320
@@ -128,6 +132,9 @@ comma
 DECL|enumerator|MXSER_BOARD_C104_PCI
 id|MXSER_BOARD_C104_PCI
 comma
+DECL|enumerator|MXSER_BOARD_CP104_PCI
+id|MXSER_BOARD_CP104_PCI
+comma
 DECL|enumerator|MXSER_BOARD_C102_ISA
 id|MXSER_BOARD_C102_ISA
 comma
@@ -166,6 +173,8 @@ l_string|&quot;C168H/PCI series&quot;
 comma
 l_string|&quot;C104H/PCI series&quot;
 comma
+l_string|&quot;CP104/PCI series&quot;
+comma
 l_string|&quot;C102 series&quot;
 comma
 l_string|&quot;CI-132 series&quot;
@@ -194,6 +203,8 @@ comma
 l_int|4
 comma
 l_int|8
+comma
+l_int|4
 comma
 l_int|4
 comma
@@ -268,6 +279,22 @@ comma
 l_int|0
 comma
 id|MXSER_BOARD_C104_PCI
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_MOXA
+comma
+id|PCI_DEVICE_ID_CP104
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|MXSER_BOARD_CP104_PCI
 )brace
 comma
 (brace

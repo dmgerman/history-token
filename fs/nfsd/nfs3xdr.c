@@ -4584,6 +4584,11 @@ comma
 op_star
 id|dchild
 suffix:semicolon
+r_int
+id|rv
+op_assign
+l_int|0
+suffix:semicolon
 id|dparent
 op_assign
 id|cd-&gt;fh.fh_dentry
@@ -4672,13 +4677,7 @@ c_func
 (paren
 id|dchild
 )paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|fh_compose
 c_func
 (paren
@@ -4697,11 +4696,18 @@ op_logical_or
 op_logical_neg
 id|dchild-&gt;d_inode
 )paren
-r_return
+id|rv
+op_assign
 l_int|1
 suffix:semicolon
+id|dput
+c_func
+(paren
+id|dchild
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|rv
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Encode a directory entry. This one works for both normal readdir&n; * and readdirplus.&n; * The normal readdir reply requires 2 (fileid) + 1 (stringlen)&n; * + string + 2 (cookie) + 1 (next) words, i.e. 6 + strlen.&n; * &n; * The readdirplus baggage is 1+21 words for post_op_attr, plus the&n; * file handle.&n; */

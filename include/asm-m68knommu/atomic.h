@@ -21,84 +21,6 @@ DECL|macro|atomic_read
 mdefine_line|#define atomic_read(v)&t;&t;((v)-&gt;counter)
 DECL|macro|atomic_set
 mdefine_line|#define atomic_set(v, i)&t;(((v)-&gt;counter) = i)
-macro_line|#ifdef CONFIG_COLDFIRE
-DECL|function|atomic_add
-r_static
-id|__inline__
-r_void
-id|atomic_add
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;movel %1,%%d0&bslash;t&bslash;n&quot;
-l_string|&quot;addl %%d0,%0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;m&quot;
-(paren
-op_star
-id|v
-)paren
-comma
-l_string|&quot;id&quot;
-(paren
-id|i
-)paren
-suffix:colon
-l_string|&quot;d0&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|atomic_sub
-r_static
-id|__inline__
-r_void
-id|atomic_sub
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;movel %1,%%d0&bslash;t&bslash;n&quot;
-l_string|&quot;subl %%d0,%0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;m&quot;
-(paren
-op_star
-id|v
-)paren
-comma
-l_string|&quot;id&quot;
-(paren
-id|i
-)paren
-suffix:colon
-l_string|&quot;d0&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
 DECL|function|atomic_add
 r_static
 id|__inline__
@@ -179,7 +101,6 @@ id|v
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* COLDFIRE */
 DECL|function|atomic_inc
 r_static
 id|__inline__

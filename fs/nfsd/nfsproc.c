@@ -775,6 +775,12 @@ id|nfserr
 op_assign
 id|nfserr_noent
 suffix:semicolon
+id|dput
+c_func
+(paren
+id|dchild
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2499,6 +2505,13 @@ id|nfserr_dropit
 comma
 op_minus
 id|ENOMEM
+)brace
+comma
+(brace
+id|nfserr_badname
+comma
+op_minus
+id|ESRCH
 )brace
 comma
 (brace

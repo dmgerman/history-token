@@ -5757,4 +5757,23 @@ c_func
 (paren
 id|swim3_init
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Paul Mackerras&quot;
+)paren
+suffix:semicolon
+DECL|variable|FLOPPY_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|FLOPPY_MAJOR
+)paren
+suffix:semicolon
 eof

@@ -8441,8 +8441,6 @@ c_func
 l_string|&quot;PlanB: device opened&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8543,8 +8541,6 @@ c_func
 (paren
 l_string|&quot;PlanB: device closed&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|planb_read

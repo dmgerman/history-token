@@ -2357,7 +2357,7 @@ r_return
 id|PTR_ERR
 c_func
 (paren
-id|skb
+id|sk
 )paren
 suffix:semicolon
 )brace

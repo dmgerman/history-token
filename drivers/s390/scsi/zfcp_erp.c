@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.52 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.54 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -746,87 +746,6 @@ id|zfcp_erp_action
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * function:&t;zfcp_erp_adapter_shutdown_all&n; *&n; * purpose:&t;recursively calls zfcp_erp_adapter_shutdown to stop all&n; *              IO on each adapter, return all outstanding packets and &n; *              relinquish all IRQs&n; *              Note: This function waits for completion of all shutdowns&n; *&n; * returns:     0 in all cases&n; */
-r_int
-DECL|function|zfcp_erp_adapter_shutdown_all
-id|zfcp_erp_adapter_shutdown_all
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|zfcp_adapter
-op_star
-id|adapter
-suffix:semicolon
-id|read_lock_irqsave
-c_func
-(paren
-op_amp
-id|zfcp_data.config_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|adapter
-comma
-op_amp
-id|zfcp_data.adapter_list_head
-comma
-id|list
-)paren
-id|zfcp_erp_adapter_shutdown
-c_func
-(paren
-id|adapter
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|read_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|zfcp_data.config_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME : need to take config_lock but cannot, since we schedule here.&n;&t; */
-multiline_comment|/* start all shutdowns first before any waiting to allow for concurreny */
-id|list_for_each_entry
-c_func
-(paren
-id|adapter
-comma
-op_amp
-id|zfcp_data.adapter_list_head
-comma
-id|list
-)paren
-id|zfcp_erp_wait
-c_func
-(paren
-id|adapter
-)paren
-suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * function:&t;zfcp_fsf_scsi_er_timeout_handler&n; *&n; * purpose:     This function needs to be called whenever a SCSI error recovery&n; *              action (abort/reset) does not return.&n; *              Re-opening the adapter means that the command can be returned&n; *              by zfcp (it is guarranteed that it does not return via the&n; *              adapter anymore). The buffer can then be used again.&n; *    &n; * returns:     sod all&n; */
 r_void
 DECL|function|zfcp_fsf_scsi_er_timeout_handler
@@ -7906,7 +7825,7 @@ id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;error: establishment of QDIO queues failed &quot;
-l_string|&quot;on adapter %s&bslash;n.&quot;
+l_string|&quot;on adapter %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func

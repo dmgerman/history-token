@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * include/asm-s390/qeth.h&n; *&n; * ioctl definitions for qeth driver&n; *&n; * Copyright (C) 2004 IBM Corporation&n; *&n; * Author(s):&t;Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; */
-macro_line|#ifndef __ASM_S390_IOCTL_H__
-DECL|macro|__ASM_S390_IOCTL_H__
-mdefine_line|#define __ASM_S390_IOCTL_H__
+macro_line|#ifndef __ASM_S390_QETH_IOCTL_H__
+DECL|macro|__ASM_S390_QETH_IOCTL_H__
+mdefine_line|#define __ASM_S390_QETH_IOCTL_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
 DECL|macro|SIOC_QETH_ARP_SET_NO_ENTRIES
 mdefine_line|#define SIOC_QETH_ARP_SET_NO_ENTRIES    (SIOCDEVPRIVATE)
@@ -100,6 +100,41 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|struct|qeth_arp_qi_entry7_short
+r_struct
+id|qeth_arp_qi_entry7_short
+(brace
+DECL|member|macaddr_type
+id|__u8
+id|macaddr_type
+suffix:semicolon
+DECL|member|ipaddr_type
+id|__u8
+id|ipaddr_type
+suffix:semicolon
+DECL|member|macaddr
+id|__u8
+id|macaddr
+(braket
+l_int|6
+)braket
+suffix:semicolon
+DECL|member|ipaddr
+id|__u8
+id|ipaddr
+(braket
+l_int|4
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|qeth_arp_qi_entry5
 r_struct
 id|qeth_arp_qi_entry5
@@ -135,6 +170,39 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|struct|qeth_arp_qi_entry5_short
+r_struct
+id|qeth_arp_qi_entry5_short
+(brace
+DECL|member|macaddr_type
+id|__u8
+id|macaddr_type
+suffix:semicolon
+DECL|member|ipaddr_type
+id|__u8
+id|ipaddr_type
+suffix:semicolon
+DECL|member|ipaddr
+id|__u8
+id|ipaddr
+(braket
+l_int|4
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * can be set by user if no &quot;media specific information&quot; is wanted&n; * -&gt; saves a lot of space in user space buffer&n; */
+DECL|macro|QETH_QARP_STRIP_ENTRIES
+mdefine_line|#define QETH_QARP_STRIP_ENTRIES  0x8000
+DECL|macro|QETH_QARP_REQUEST_MASK
+mdefine_line|#define QETH_QARP_REQUEST_MASK   0x00ff
 multiline_comment|/* data sent to user space as result of query arp ioctl */
 DECL|macro|QETH_QARP_USER_DATA_SIZE
 mdefine_line|#define QETH_QARP_USER_DATA_SIZE 20000
@@ -180,5 +248,5 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* __ASM_S390_IOCTL_H__ */
+macro_line|#endif /* __ASM_S390_QETH_IOCTL_H__ */
 eof

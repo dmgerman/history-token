@@ -1658,7 +1658,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;pci_outw(val=%04x,addr=%x)&quot;
+l_string|&quot;pci_outw(val=%04x,addr=%x)&bslash;n&quot;
 comma
 id|val
 comma
@@ -1952,7 +1952,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;pci_inb(addr=%x)&quot;
+l_string|&quot;pci_inb(addr=%x)&bslash;n&quot;
 comma
 id|addr
 )paren

@@ -924,7 +924,7 @@ dot
 id|theres_more
 op_assign
 op_amp
-id|prom_phys_total
+id|prom_prom_taken
 (braket
 id|iter
 op_plus

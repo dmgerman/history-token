@@ -2133,6 +2133,10 @@ id|EAGAIN
 r_goto
 id|changed
 suffix:semicolon
+id|goal
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

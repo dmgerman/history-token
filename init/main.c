@@ -201,10 +201,17 @@ r_void
 suffix:semicolon
 macro_line|#endif
 DECL|variable|system_state
-r_int
+r_enum
+id|system_states
 id|system_state
 suffix:semicolon
-multiline_comment|/* SYSTEM_BOOTING/RUNNING/SHUTDOWN */
+DECL|variable|system_state
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|system_state
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Boot command-line arguments&n; */
 DECL|macro|MAX_INIT_ARGS
 mdefine_line|#define MAX_INIT_ARGS 8

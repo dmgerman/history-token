@@ -1074,9 +1074,7 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
-id|preoffset
-op_assign
-l_int|0
+id|average
 suffix:semicolon
 multiline_comment|/*&n;&t; * Here we detect the case where the application is performing&n;&t; * sub-page sized reads.  We avoid doing extra work and bogusly&n;&t; * perturbing the readahead window expansion logic.&n;&t; * If next_size is zero, this is the very first read for this&n;&t; * file handle, or the window is maximally shrunk.&n;&t; */
 r_if
@@ -1198,10 +1196,27 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/*&n;&t;&t; * to avoid rounding errors, ensure that &squot;average&squot;&n;&t;&t; * tends towards the value of ra-&gt;serial_cnt.&n;&t;&t; */
+id|average
+op_assign
+id|ra-&gt;average
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|average
+OL
+id|ra-&gt;serial_cnt
+)paren
+(brace
+id|average
+op_increment
+suffix:semicolon
+)brace
 id|ra-&gt;average
 op_assign
 (paren
-id|ra-&gt;average
+id|average
 op_plus
 id|ra-&gt;serial_cnt
 )paren
@@ -1213,10 +1228,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|preoffset
-op_assign
-id|ra-&gt;prev_page
-suffix:semicolon
 id|ra-&gt;prev_page
 op_assign
 id|offset
@@ -1353,28 +1364,22 @@ c_cond
 (paren
 op_logical_neg
 id|first_access
-op_logical_and
-id|preoffset
-op_ge
-id|ra-&gt;start
-op_logical_and
-id|preoffset
-OL
-(paren
-id|ra-&gt;start
-op_plus
-id|ra-&gt;size
-)paren
 )paren
 (brace
-multiline_comment|/* Heuristic:  If &squot;n&squot; pages were&n;&t;&t;&t;  * accessed in the current window, there&n;&t;&t;&t;  * is a high probability that around &squot;n&squot; pages&n;&t;&t;&t;  * shall be used in the next current window.&n;&t;&t;&t;  *&n;&t;&t;&t;  * To minimize lazy-readahead triggered&n;&t;&t;&t;  * in the next current window, read in&n;&t;&t;&t;  * an extra page.&n;&t;&t;&t;  */
+multiline_comment|/* Heuristic: there is a high probability&n;&t;&t;&t;  * that around  ra-&gt;average number of&n;&t;&t;&t;  * pages shall be accessed in the next&n;&t;&t;&t;  * current window.&n;&t;&t;&t;  */
 id|ra-&gt;next_size
 op_assign
-id|preoffset
-op_minus
-id|ra-&gt;start
-op_plus
-l_int|2
+id|min
+c_func
+(paren
+id|ra-&gt;average
+comma
+(paren
+r_int
+r_int
+)paren
+id|max
+)paren
 suffix:semicolon
 )brace
 id|ra-&gt;start
@@ -1441,9 +1446,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * if the average io-size is less than maximum&n;&t;&t;&t; * readahead size of the file the io pattern is&n;&t;&t;&t; * sequential. Hence  bring in the readahead window&n;&t;&t;&t; * immediately.&n;&t;&t;&t; * Else the i/o pattern is random. Bring&n;&t;&t;&t; * in the readahead window only if the last page of&n;&t;&t;&t; * the current window is accessed (lazy readahead).&n;&t;&t;&t; */
-r_int
-r_int
+multiline_comment|/*&n;&t;&t;&t; * If the average io-size is more than maximum&n;&t;&t;&t; * readahead size of the file the io pattern is&n;&t;&t;&t; * sequential. Hence  bring in the readahead window&n;&t;&t;&t; * immediately.&n;&t;&t;&t; * If the average io-size is less than maximum&n;&t;&t;&t; * readahead size of the file the io pattern is&n;&t;&t;&t; * random. Hence don&squot;t bother to readahead.&n;&t;&t;&t; */
 id|average
 op_assign
 id|ra-&gt;average
@@ -1461,6 +1464,8 @@ op_assign
 id|ra-&gt;serial_cnt
 op_plus
 id|ra-&gt;average
+op_plus
+l_int|1
 )paren
 op_div
 l_int|2
@@ -1468,23 +1473,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|average
-op_ge
+OG
 id|max
-)paren
-op_logical_or
-(paren
-id|offset
-op_eq
-(paren
-id|ra-&gt;start
-op_plus
-id|ra-&gt;size
-op_minus
-l_int|1
-)paren
-)paren
 )paren
 (brace
 id|ra-&gt;ahead_start

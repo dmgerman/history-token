@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_fs.c ($Revision: 1.9 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to procfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_fs.c ($Revision: 1.10 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to procfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|VERSION_QETH_PROC_C
 op_assign
-l_string|&quot;$Revision: 1.9 $&quot;
+l_string|&quot;$Revision: 1.10 $&quot;
 suffix:semicolon
 multiline_comment|/***** /proc/qeth *****/
 DECL|macro|QETH_PROCFILE_NAME
@@ -925,12 +925,17 @@ c_func
 id|s
 comma
 l_string|&quot;  Packing state changes no pkg.-&gt;packing : %i/%i&bslash;n&quot;
+l_string|&quot;  Watermarks L/H                         : %i/%i&bslash;n&quot;
 l_string|&quot;  Current buffer usage (outbound q&squot;s)    : &quot;
 l_string|&quot;%i/%i/%i/%i&bslash;n&bslash;n&quot;
 comma
 id|card-&gt;perf_stats.sc_dp_p
 comma
 id|card-&gt;perf_stats.sc_p_dp
+comma
+id|QETH_LOW_WATERMARK_PACK
+comma
+id|QETH_HIGH_WATERMARK_PACK
 comma
 id|atomic_read
 c_func
@@ -1013,29 +1018,36 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;  Inbound time (in us)                   : %i&bslash;n&quot;
-l_string|&quot;  Inbound count                          : %i&bslash;n&quot;
-l_string|&quot;  Inboud do_QDIO count                   : %i&bslash;n&quot;
+l_string|&quot;  Inbound handler time (in us)           : %i&bslash;n&quot;
+l_string|&quot;  Inbound handler count                  : %i&bslash;n&quot;
+l_string|&quot;  Inbound do_QDIO time (in us)           : %i&bslash;n&quot;
+l_string|&quot;  Inbound do_QDIO count                  : %i&bslash;n&bslash;n&quot;
+l_string|&quot;  Outbound handler time (in us)          : %i&bslash;n&quot;
+l_string|&quot;  Outbound handler count                 : %i&bslash;n&bslash;n&quot;
 l_string|&quot;  Outbound time (in us, incl QDIO)       : %i&bslash;n&quot;
 l_string|&quot;  Outbound count                         : %i&bslash;n&quot;
+l_string|&quot;  Outbound do_QDIO time (in us)          : %i&bslash;n&quot;
 l_string|&quot;  Outbound do_QDIO count                 : %i&bslash;n&quot;
-l_string|&quot;  Watermarks L/H                         : %i/%i&bslash;n&bslash;n&quot;
 comma
 id|card-&gt;perf_stats.inbound_time
 comma
 id|card-&gt;perf_stats.inbound_cnt
 comma
-id|card-&gt;perf_stats.inbound_do_qdio
+id|card-&gt;perf_stats.inbound_do_qdio_time
+comma
+id|card-&gt;perf_stats.inbound_do_qdio_cnt
+comma
+id|card-&gt;perf_stats.outbound_handler_time
+comma
+id|card-&gt;perf_stats.outbound_handler_cnt
 comma
 id|card-&gt;perf_stats.outbound_time
 comma
 id|card-&gt;perf_stats.outbound_cnt
 comma
-id|card-&gt;perf_stats.outbound_do_qdio
+id|card-&gt;perf_stats.outbound_do_qdio_time
 comma
-id|QETH_LOW_WATERMARK_PACK
-comma
-id|QETH_HIGH_WATERMARK_PACK
+id|card-&gt;perf_stats.outbound_do_qdio_cnt
 )paren
 suffix:semicolon
 r_return

@@ -1541,7 +1541,7 @@ l_int|NULL
 suffix:semicolon
 id|system_state
 op_assign
-id|SYSTEM_SHUTDOWN
+id|SYSTEM_RESTART
 suffix:semicolon
 id|device_shutdown
 c_func
@@ -1597,7 +1597,7 @@ l_int|NULL
 suffix:semicolon
 id|system_state
 op_assign
-id|SYSTEM_SHUTDOWN
+id|SYSTEM_HALT
 suffix:semicolon
 id|device_shutdown
 c_func
@@ -1645,7 +1645,7 @@ l_int|NULL
 suffix:semicolon
 id|system_state
 op_assign
-id|SYSTEM_SHUTDOWN
+id|SYSTEM_POWER_OFF
 suffix:semicolon
 id|device_shutdown
 c_func
@@ -1740,7 +1740,7 @@ id|buffer
 suffix:semicolon
 id|system_state
 op_assign
-id|SYSTEM_SHUTDOWN
+id|SYSTEM_RESTART
 suffix:semicolon
 id|device_shutdown
 c_func

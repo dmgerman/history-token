@@ -83,7 +83,7 @@ c_func
 (paren
 id|paddr
 comma
-l_string|&quot;0x%16Lx&bslash;n&quot;
+l_string|&quot;0x%016Lx&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
@@ -587,11 +587,6 @@ op_star
 id|drv
 )paren
 (brace
-r_int
-id|count
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* initialize common driver fields */
 id|drv-&gt;driver.name
 op_assign

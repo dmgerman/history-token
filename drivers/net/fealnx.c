@@ -7761,7 +7761,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|lp
 comma
 id|flags

@@ -55,10 +55,10 @@ id|sigstrength
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|readq
+DECL|variable|read_queue
 r_static
 id|wait_queue_head_t
-id|readq
+id|read_queue
 suffix:semicolon
 DECL|variable|tunertimer
 DECL|variable|rdstimer
@@ -1342,7 +1342,7 @@ id|wake_up_interruptible
 c_func
 (paren
 op_amp
-id|readq
+id|read_queue
 )paren
 suffix:semicolon
 )brace
@@ -1514,7 +1514,7 @@ id|interruptible_sleep_on
 c_func
 (paren
 op_amp
-id|readq
+id|read_queue
 )paren
 suffix:semicolon
 )brace
@@ -2154,7 +2154,7 @@ id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|readq
+id|read_queue
 )paren
 suffix:semicolon
 r_return

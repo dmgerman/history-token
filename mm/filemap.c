@@ -2380,18 +2380,6 @@ r_break
 suffix:semicolon
 id|page_not_up_to_date
 suffix:colon
-r_if
-c_cond
-(paren
-id|PageUptodate
-c_func
-(paren
-id|page
-)paren
-)paren
-r_goto
-id|page_ok
-suffix:semicolon
 multiline_comment|/* Get exclusive access to the page ... */
 id|lock_page
 c_func
