@@ -1785,10 +1785,6 @@ op_star
 id|vmalloc_to_page
 c_func
 (paren
-id|pgd_t
-op_star
-id|pgd
-comma
 r_int
 r_int
 id|adr

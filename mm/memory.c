@@ -6405,10 +6405,6 @@ op_star
 id|vmalloc_to_page
 c_func
 (paren
-id|pgd_t
-op_star
-id|pgd
-comma
 r_int
 r_int
 id|addr
@@ -6420,6 +6416,16 @@ op_star
 id|page
 op_assign
 l_int|NULL
+suffix:semicolon
+id|pgd_t
+op_star
+id|pgd
+op_assign
+id|pgd_offset_k
+c_func
+(paren
+id|addr
+)paren
 suffix:semicolon
 id|pmd_t
 op_star
