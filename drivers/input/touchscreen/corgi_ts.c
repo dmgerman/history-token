@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 DECL|macro|PWR_MODE_ACTIVE
 mdefine_line|#define PWR_MODE_ACTIVE&t;&t;0
 DECL|macro|PWR_MODE_SUSPEND
-mdefine_line|#define PWR_MODE_SUSPEND &t;1
+mdefine_line|#define PWR_MODE_SUSPEND&t;1
 DECL|macro|X_AXIS_MAX
 mdefine_line|#define X_AXIS_MAX&t;&t;3830
 DECL|macro|X_AXIS_MIN
@@ -23,9 +23,9 @@ mdefine_line|#define Y_AXIS_MAX&t;&t;3830
 DECL|macro|Y_AXIS_MIN
 mdefine_line|#define Y_AXIS_MIN&t;&t;190
 DECL|macro|PRESSURE_MIN
-mdefine_line|#define PRESSURE_MIN&t;0
+mdefine_line|#define PRESSURE_MIN&t;&t;0
 DECL|macro|PRESSURE_MAX
-mdefine_line|#define PRESSURE_MAX&t;15000
+mdefine_line|#define PRESSURE_MAX&t;&t;15000
 DECL|struct|ts_event
 r_struct
 id|ts_event
@@ -81,7 +81,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|STATUS_HSYNC
-mdefine_line|#define STATUS_HSYNC &t;&t;(GPLR(CORGI_GPIO_HSYNC) &amp; GPIO_bit(CORGI_GPIO_HSYNC))
+mdefine_line|#define STATUS_HSYNC&t;&t;(GPLR(CORGI_GPIO_HSYNC) &amp; GPIO_bit(CORGI_GPIO_HSYNC))
 DECL|macro|SyncHS
 mdefine_line|#define SyncHS()&t;while((STATUS_HSYNC) == 0); while((STATUS_HSYNC) != 0);
 DECL|macro|CCNT
@@ -218,9 +218,7 @@ op_eq
 l_int|640
 )paren
 id|waittime
-op_assign
-id|waittime
-op_star
+op_mul_assign
 l_int|3
 suffix:semicolon
 r_return
@@ -372,11 +370,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|timer2
 op_minus
 id|timer1
-)paren
 OG
 id|wait_time
 )paren
@@ -405,22 +401,18 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
 id|timer2
 op_minus
 id|timer1
-)paren
 OL
 id|wait_time
 )paren
-(brace
 id|CCNT
 c_func
 (paren
 id|timer2
 )paren
 suffix:semicolon
-)brace
 )brace
 id|corgi_ssp_ads7846_put
 c_func
@@ -607,25 +599,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|x
 op_eq
 l_int|0
-)paren
 op_logical_or
-(paren
 id|y
 op_eq
 l_int|0
-)paren
 op_logical_or
-(paren
 id|z1
 op_eq
 l_int|0
-)paren
 op_logical_or
-(paren
 (paren
 id|x
 op_star
@@ -639,7 +624,6 @@ id|z1
 )paren
 op_ge
 l_int|15000
-)paren
 )paren
 (brace
 id|corgi_ts-&gt;tc.pressure
@@ -1055,7 +1039,7 @@ c_cond
 id|corgi_ts-&gt;pendown
 )paren
 (brace
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -1570,6 +1554,13 @@ c_func
 id|CORGI_IRQ_GPIO_TP_INT
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|corgi_ts-&gt;timer
 )paren
 suffix:semicolon
 id|input_unregister_device

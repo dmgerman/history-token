@@ -33,17 +33,17 @@ mdefine_line|#define CORGI_KEY_CALENDER&t;KEY_F1
 DECL|macro|CORGI_KEY_ADDRESS
 mdefine_line|#define CORGI_KEY_ADDRESS&t;KEY_F2
 DECL|macro|CORGI_KEY_FN
-mdefine_line|#define CORGI_KEY_FN&t;&t;KEY_F3 
+mdefine_line|#define CORGI_KEY_FN&t;&t;KEY_F3
 DECL|macro|CORGI_KEY_OFF
 mdefine_line|#define CORGI_KEY_OFF&t;&t;KEY_SUSPEND
 DECL|macro|CORGI_KEY_EXOK
-mdefine_line|#define CORGI_KEY_EXOK&t;&t;KEY_F5 
+mdefine_line|#define CORGI_KEY_EXOK&t;&t;KEY_F5
 DECL|macro|CORGI_KEY_EXCANCEL
 mdefine_line|#define CORGI_KEY_EXCANCEL&t;KEY_F6
 DECL|macro|CORGI_KEY_EXJOGDOWN
-mdefine_line|#define CORGI_KEY_EXJOGDOWN&t;KEY_F7 
+mdefine_line|#define CORGI_KEY_EXJOGDOWN&t;KEY_F7
 DECL|macro|CORGI_KEY_EXJOGUP
-mdefine_line|#define CORGI_KEY_EXJOGUP&t;KEY_F8 
+mdefine_line|#define CORGI_KEY_EXJOGUP&t;KEY_F8
 DECL|macro|CORGI_KEY_JAP1
 mdefine_line|#define CORGI_KEY_JAP1&t;&t;KEY_LEFTCTRL
 DECL|macro|CORGI_KEY_JAP2
@@ -515,7 +515,7 @@ DECL|macro|KB_DISCHARGE_DELAY
 mdefine_line|#define KB_DISCHARGE_DELAY&t;10
 DECL|macro|KB_ACTIVATE_DELAY
 mdefine_line|#define KB_ACTIVATE_DELAY&t;10
-multiline_comment|/* Helper functions for reading the keyboard matrix &n; * Note: We should really be using pxa_gpio_mode to alter GPDR but it &n; *       requires a function call per GPIO bit which is excessive&n; *       when we need to access 12 bits at once multiple times.&n; * These functions must be called within local_irq_save()/local_irq_restore()&n; * or similar. &n; */
+multiline_comment|/* Helper functions for reading the keyboard matrix&n; * Note: We should really be using pxa_gpio_mode to alter GPDR but it&n; *       requires a function call per GPIO bit which is excessive&n; *       when we need to access 12 bits at once multiple times.&n; * These functions must be called within local_irq_save()/local_irq_restore()&n; * or similar.&n; */
 DECL|function|corgikbd_discharge_all
 r_static
 r_inline
@@ -862,7 +862,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * corgi keyboard interrupt handler.&n; */
+multiline_comment|/*&n; * corgi keyboard interrupt handler.&n; */
 DECL|function|corgikbd_interrupt
 r_static
 id|irqreturn_t
@@ -954,22 +954,18 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The hinge switches generate no interrupt so they need to be &n; * monitored by a timer.&n; *&n; * When we detect changes, we debounce it and then pass the three &n; * positions the system can take as keypresses to the input system.&n; */
+multiline_comment|/*&n; * The hinge switches generate no interrupt so they need to be&n; * monitored by a timer.&n; *&n; * When we detect changes, we debounce it and then pass the three&n; * positions the system can take as keypresses to the input system.&n; */
 DECL|macro|HINGE_STABLE_COUNT
 mdefine_line|#define HINGE_STABLE_COUNT 2
 DECL|variable|sharpsl_hinge_state
 r_static
 r_int
 id|sharpsl_hinge_state
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|hinge_count
 r_static
 r_int
 id|hinge_count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|corgikbd_hinge_timer
 r_static
@@ -997,6 +993,10 @@ suffix:semicolon
 r_int
 r_int
 id|gprr
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|gprr
 op_assign
@@ -1049,10 +1049,6 @@ op_ge
 id|HINGE_STABLE_COUNT
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1060,17 +1056,6 @@ op_amp
 id|corgikbd_data-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|corgikbd_data-&gt;input.evbit
-(braket
-l_int|0
-)braket
-op_assign
-id|BIT
-c_func
-(paren
-id|EV_KEY
 )paren
 suffix:semicolon
 id|handle_scancode
@@ -1118,29 +1103,6 @@ id|corgikbd_data
 )paren
 suffix:semicolon
 multiline_comment|/* Keyboard and Screen Closed  */
-id|corgikbd_data-&gt;input.evbit
-(braket
-l_int|0
-)braket
-op_assign
-id|BIT
-c_func
-(paren
-id|EV_KEY
-)paren
-op_or
-id|BIT
-c_func
-(paren
-id|EV_REP
-)paren
-op_or
-id|BIT
-c_func
-(paren
-id|EV_PWR
-)paren
-suffix:semicolon
 id|input_sync
 c_func
 (paren
@@ -1194,9 +1156,11 @@ id|corgikbd
 suffix:semicolon
 id|corgikbd
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -1215,20 +1179,6 @@ id|corgikbd
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|corgikbd
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|corgikbd
-)paren
-)paren
 suffix:semicolon
 id|dev_set_drvdata
 c_func
@@ -1496,7 +1446,8 @@ id|corgikbd
 id|printk
 c_func
 (paren
-l_string|&quot;corgikbd: Can&squot;t get IRQ: %d !&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;corgikbd: Can&squot;t get IRQ: %d!&bslash;n&quot;
 comma
 id|i
 )paren
@@ -1607,14 +1558,14 @@ comma
 id|corgikbd
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
 id|corgikbd-&gt;htimer
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
