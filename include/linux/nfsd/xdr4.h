@@ -99,6 +99,13 @@ id|stateid_t
 id|cl_stateid
 suffix:semicolon
 multiline_comment|/* request+response */
+DECL|member|cl_stateowner
+r_struct
+id|nfs4_stateowner
+op_star
+id|cl_stateowner
+suffix:semicolon
+multiline_comment|/* response */
 )brace
 suffix:semicolon
 DECL|struct|nfsd4_commit
@@ -1317,6 +1324,27 @@ r_struct
 id|nfsd4_open_confirm
 op_star
 id|oc
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfsd4_close
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
+id|svc_fh
+op_star
+id|current_fh
+comma
+r_struct
+id|nfsd4_close
+op_star
+id|close
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -10,33 +10,6 @@ macro_line|#include &lt;linux/nfsd/state.h&gt;
 macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;&t;NFSDDBG_PROC
-r_static
-r_inline
-r_int
-DECL|function|nfsd4_close
-id|nfsd4_close
-c_func
-(paren
-r_struct
-id|svc_rqst
-op_star
-id|rqstp
-comma
-r_struct
-id|svc_fh
-op_star
-id|current_fh
-comma
-r_struct
-id|nfsd4_close
-op_star
-id|close
-)paren
-(brace
-r_return
-id|nfs_ok
-suffix:semicolon
-)brace
 multiline_comment|/* Note: The organization of the OPEN code seems a little strange; it&n; * has been superfluously split into three routines, one of which is named&n; * nfsd4_process_open2() even though there is no nfsd4_process_open1()!&n; * This is because the code has been organized in anticipation of a&n; * subsequent patch which will implement more of the NFSv4 state model.&n; */
 r_static
 r_int
