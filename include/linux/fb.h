@@ -1229,16 +1229,6 @@ l_int|40
 )braket
 suffix:semicolon
 multiline_comment|/* default font name */
-DECL|member|devfs_handle
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
-multiline_comment|/* Devfs handle for new name         */
-DECL|member|devfs_lhandle
-id|devfs_handle_t
-id|devfs_lhandle
-suffix:semicolon
-multiline_comment|/* Devfs handle for compat. symlink  */
 DECL|member|changevar
 r_int
 (paren
