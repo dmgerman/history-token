@@ -451,7 +451,7 @@ id|HCS_N_PORTS
 id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
-id|msleep
+id|mdelay
 (paren
 l_int|20
 )paren
