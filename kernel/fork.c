@@ -2622,6 +2622,13 @@ c_func
 id|p-&gt;binfmt-&gt;module
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n;&t; * schedule_tail drops this_rq()-&gt;lock so we compensate with a count&n;&t; * of 1.  Also, we want to start with kernel preemption disabled.&n;&t; */
+id|p-&gt;thread_info-&gt;preempt_count
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|p-&gt;did_exec
 op_assign
 l_int|0

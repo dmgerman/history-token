@@ -208,8 +208,17 @@ DECL|macro|__STR
 mdefine_line|#define __STR(x) #x
 DECL|macro|STR
 mdefine_line|#define STR(x) __STR(x)
+DECL|macro|GET_THREAD_INFO
+mdefine_line|#define GET_THREAD_INFO &bslash;&n;&t;&quot;movl $-8192, %ebx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;andl %esp, %ebx&bslash;n&bslash;t&quot;
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|macro|BUMP_LOCK_COUNT
+mdefine_line|#define BUMP_LOCK_COUNT &bslash;&n;&t;GET_THREAD_INFO &bslash;&n;&t;&quot;incl 16(%ebx)&bslash;n&bslash;t&quot;
+macro_line|#else
+DECL|macro|BUMP_LOCK_COUNT
+mdefine_line|#define BUMP_LOCK_COUNT
+macro_line|#endif
 DECL|macro|SAVE_ALL
-mdefine_line|#define SAVE_ALL &bslash;&n;&t;&quot;cld&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %es&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ds&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %eax&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ebp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %edi&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %esi&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %edx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ecx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ebx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movl $&quot; STR(__KERNEL_DS) &quot;,%edx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movl %edx,%ds&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movl %edx,%es&bslash;n&bslash;t&quot;
+mdefine_line|#define SAVE_ALL &bslash;&n;&t;&quot;cld&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %es&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ds&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %eax&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ebp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %edi&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %esi&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %edx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ecx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;pushl %ebx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movl $&quot; STR(__KERNEL_DS) &quot;,%edx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movl %edx,%ds&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movl %edx,%es&bslash;n&bslash;t&quot; &bslash;&n;&t;BUMP_LOCK_COUNT
 DECL|macro|IRQ_NAME2
 mdefine_line|#define IRQ_NAME2(nr) nr##_interrupt(void)
 DECL|macro|IRQ_NAME

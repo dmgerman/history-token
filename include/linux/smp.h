@@ -131,8 +131,10 @@ DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id()&t;&t;&t;0
 DECL|macro|smp_threads_ready
 mdefine_line|#define smp_threads_ready&t;&t;&t;1
+macro_line|#ifndef CONFIG_PREEMPT
 DECL|macro|kernel_lock
 mdefine_line|#define kernel_lock()
+macro_line|#endif
 DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(cpu)&t;&t;&t;0
 DECL|macro|cpu_number_map

@@ -2679,7 +2679,7 @@ l_string|&quot;Ignoring P6 Local APIC Spurious Interrupt Bug...&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; *  &squot;math_state_restore()&squot; saves the current math information in the&n; * old math state array, and gets the new ones from the current task&n; *&n; * Careful.. There are problems with IBM-designed IRQ13 behaviour.&n; * Don&squot;t touch unless you *really* know how it works.&n; */
+multiline_comment|/*&n; *  &squot;math_state_restore()&squot; saves the current math information in the&n; * old math state array, and gets the new ones from the current task&n; *&n; * Careful.. There are problems with IBM-designed IRQ13 behaviour.&n; * Don&squot;t touch unless you *really* know how it works.&n; *&n; * Must be called with kernel preemption disabled.&n; */
 DECL|function|math_state_restore
 id|asmlinkage
 r_void

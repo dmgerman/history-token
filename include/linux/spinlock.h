@@ -2,6 +2,10 @@ macro_line|#ifndef __LINUX_SPINLOCK_H
 DECL|macro|__LINUX_SPINLOCK_H
 mdefine_line|#define __LINUX_SPINLOCK_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/*&n; * These are the generic versions of the spinlocks and read-write&n; * locks..&n; */
 DECL|macro|spin_lock_irqsave
 mdefine_line|#define spin_lock_irqsave(lock, flags)&t;&t;do { local_irq_save(flags);       spin_lock(lock); } while (0)
@@ -55,10 +59,12 @@ macro_line|#elif !defined(spin_lock_init) /* !SMP and spin_lock_init not previou
 DECL|macro|DEBUG_SPINLOCKS
 mdefine_line|#define DEBUG_SPINLOCKS&t;0&t;/* 0 == no debugging, 1 == maintain lock state, 2 == full debug */
 macro_line|#if (DEBUG_SPINLOCKS &lt; 1)
+macro_line|#ifndef CONFIG_PREEMPT
 DECL|macro|atomic_dec_and_lock
 mdefine_line|#define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
 DECL|macro|ATOMIC_DEC_AND_LOCK
 mdefine_line|#define ATOMIC_DEC_AND_LOCK
+macro_line|#endif
 multiline_comment|/*&n; * Your basic spinlocks, allowing only a single CPU anywhere&n; *&n; * Most gcc versions have a nasty bug with empty initializers.&n; */
 macro_line|#if (__GNUC__ &gt; 2)
 DECL|typedef|spinlock_t
@@ -87,16 +93,16 @@ mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
 macro_line|#endif
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(lock)&t;do { } while(0)
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(lock)&t;&t;(void)(lock) /* Not &quot;unused variable&quot;. */
+DECL|macro|_raw_spin_lock
+mdefine_line|#define _raw_spin_lock(lock)&t;(void)(lock) /* Not &quot;unused variable&quot;. */
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(lock)&t;(0)
-DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock)&t;({1; })
+DECL|macro|_raw_spin_trylock
+mdefine_line|#define _raw_spin_trylock(lock)&t;({1; })
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;do { } while(0)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(lock)&t;do { } while(0)
+DECL|macro|_raw_spin_unlock
+mdefine_line|#define _raw_spin_unlock(lock)&t;do { } while(0)
 macro_line|#elif (DEBUG_SPINLOCKS &lt; 2)
 r_typedef
 r_struct
@@ -195,15 +201,74 @@ mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
 macro_line|#endif
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lock)&t;do { } while(0)
-DECL|macro|read_lock
-mdefine_line|#define read_lock(lock)&t;&t;(void)(lock) /* Not &quot;unused variable&quot;. */
-DECL|macro|read_unlock
-mdefine_line|#define read_unlock(lock)&t;do { } while(0)
-DECL|macro|write_lock
-mdefine_line|#define write_lock(lock)&t;(void)(lock) /* Not &quot;unused variable&quot;. */
-DECL|macro|write_unlock
-mdefine_line|#define write_unlock(lock)&t;do { } while(0)
+DECL|macro|_raw_read_lock
+mdefine_line|#define _raw_read_lock(lock)&t;(void)(lock) /* Not &quot;unused variable&quot;. */
+DECL|macro|_raw_read_unlock
+mdefine_line|#define _raw_read_unlock(lock)&t;do { } while(0)
+DECL|macro|_raw_write_lock
+mdefine_line|#define _raw_write_lock(lock)&t;(void)(lock) /* Not &quot;unused variable&quot;. */
+DECL|macro|_raw_write_unlock
+mdefine_line|#define _raw_write_unlock(lock)&t;do { } while(0)
 macro_line|#endif /* !SMP */
+macro_line|#ifdef CONFIG_PREEMPT
+id|asmlinkage
+r_void
+id|preempt_schedule
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|preempt_get_count
+mdefine_line|#define preempt_get_count() (current_thread_info()-&gt;preempt_count)
+DECL|macro|preempt_disable
+mdefine_line|#define preempt_disable() &bslash;&n;do { &bslash;&n;&t;++current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
+DECL|macro|preempt_enable_no_resched
+mdefine_line|#define preempt_enable_no_resched() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
+DECL|macro|preempt_enable
+mdefine_line|#define preempt_enable() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;&t;if (unlikely(!(current_thread_info()-&gt;preempt_count) &amp;&amp; &bslash;&n;&t;&t;test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
+DECL|macro|spin_lock
+mdefine_line|#define spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while(0)
+DECL|macro|spin_trylock
+mdefine_line|#define spin_trylock(lock)&t;({preempt_disable(); _raw_spin_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
+DECL|macro|spin_unlock
+mdefine_line|#define spin_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
+DECL|macro|read_lock
+mdefine_line|#define read_lock(lock)&t;&t;({preempt_disable(); _raw_read_lock(lock);})
+DECL|macro|read_unlock
+mdefine_line|#define read_unlock(lock)&t;({_raw_read_unlock(lock); preempt_enable();})
+DECL|macro|write_lock
+mdefine_line|#define write_lock(lock)&t;({preempt_disable(); _raw_write_lock(lock);})
+DECL|macro|write_unlock
+mdefine_line|#define write_unlock(lock)&t;({_raw_write_unlock(lock); preempt_enable();})
+DECL|macro|write_trylock
+mdefine_line|#define write_trylock(lock)&t;({preempt_disable();_raw_write_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
+macro_line|#else
+DECL|macro|preempt_get_count
+mdefine_line|#define preempt_get_count()&t;do { } while (0)
+DECL|macro|preempt_disable
+mdefine_line|#define preempt_disable()&t;do { } while (0)
+DECL|macro|preempt_enable_no_resched
+mdefine_line|#define preempt_enable_no_resched()&t;do {} while(0)
+DECL|macro|preempt_enable
+mdefine_line|#define preempt_enable()&t;do { } while (0)
+DECL|macro|spin_lock
+mdefine_line|#define spin_lock(lock)&t;&t;_raw_spin_lock(lock)
+DECL|macro|spin_trylock
+mdefine_line|#define spin_trylock(lock)&t;_raw_spin_trylock(lock)
+DECL|macro|spin_unlock
+mdefine_line|#define spin_unlock(lock)&t;_raw_spin_unlock(lock)
+DECL|macro|read_lock
+mdefine_line|#define read_lock(lock)&t;&t;_raw_read_lock(lock)
+DECL|macro|read_unlock
+mdefine_line|#define read_unlock(lock)&t;_raw_read_unlock(lock)
+DECL|macro|write_lock
+mdefine_line|#define write_lock(lock)&t;_raw_write_lock(lock)
+DECL|macro|write_unlock
+mdefine_line|#define write_unlock(lock)&t;_raw_write_unlock(lock)
+DECL|macro|write_trylock
+mdefine_line|#define write_trylock(lock)&t;_raw_write_trylock(lock)
+macro_line|#endif
 multiline_comment|/* &quot;lock on reference count zero&quot; */
 macro_line|#ifndef ATOMIC_DEC_AND_LOCK
 macro_line|#include &lt;asm/atomic.h&gt;

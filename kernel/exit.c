@@ -1357,12 +1357,6 @@ id|tsk-&gt;mm
 op_assign
 l_int|NULL
 suffix:semicolon
-id|task_unlock
-c_func
-(paren
-id|tsk
-)paren
-suffix:semicolon
 id|enter_lazy_tlb
 c_func
 (paren
@@ -1374,6 +1368,12 @@ id|smp_processor_id
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 id|mmput

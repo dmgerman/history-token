@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_I386_I387_H
 DECL|macro|__ASM_I386_I387_H
 mdefine_line|#define __ASM_I386_I387_H
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
@@ -46,7 +47,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|kernel_fpu_end
-mdefine_line|#define kernel_fpu_end() stts()
+mdefine_line|#define kernel_fpu_end() do { stts(); preempt_enable(); } while(0)
 DECL|macro|unlazy_fpu
 mdefine_line|#define unlazy_fpu( tsk ) do { &bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) &bslash;&n;&t;&t;save_init_fpu( tsk ); &bslash;&n;} while (0)
 DECL|macro|clear_fpu

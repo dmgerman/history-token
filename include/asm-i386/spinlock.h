@@ -85,11 +85,11 @@ multiline_comment|/*&n; * This works. Despite all the confusion.&n; * (except on
 macro_line|#if !defined(CONFIG_X86_OOSTORE) &amp;&amp; !defined(CONFIG_X86_PPRO_FENCE)
 DECL|macro|spin_unlock_string
 mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;movb $1,%0&quot; &bslash;&n;&t;&t;:&quot;=m&quot; (lock-&gt;lock) : : &quot;memory&quot;
-DECL|function|spin_unlock
+DECL|function|_raw_spin_unlock
 r_static
 r_inline
 r_void
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -137,11 +137,11 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|spin_unlock_string
 mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;xchgb %b0, %1&quot; &bslash;&n;&t;&t;:&quot;=q&quot; (oldval), &quot;=m&quot; (lock-&gt;lock) &bslash;&n;&t;&t;:&quot;0&quot; (oldval) : &quot;memory&quot;
-DECL|function|spin_unlock
+DECL|function|_raw_spin_unlock
 r_static
 r_inline
 r_void
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -192,11 +192,11 @@ id|spin_unlock_string
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|spin_trylock
+DECL|function|_raw_spin_trylock
 r_static
 r_inline
 r_int
-id|spin_trylock
+id|_raw_spin_trylock
 c_func
 (paren
 id|spinlock_t
@@ -237,11 +237,11 @@ OG
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|spin_lock
+DECL|function|_raw_spin_lock
 r_static
 r_inline
 r_void
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 id|spinlock_t
@@ -330,11 +330,11 @@ DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 multiline_comment|/*&n; * On x86, we implement read-write locks as a 32-bit counter&n; * with the high bit (sign) being the &quot;contended&quot; bit.&n; *&n; * The inline assembly is non-obvious. Think about it.&n; *&n; * Changed to use the same technique as rw semaphores.  See&n; * semaphore.h for details.  -ben&n; */
 multiline_comment|/* the spinlock helpers are in arch/i386/kernel/semaphore.c */
-DECL|function|read_lock
+DECL|function|_raw_read_lock
 r_static
 r_inline
 r_void
-id|read_lock
+id|_raw_read_lock
 c_func
 (paren
 id|rwlock_t
@@ -365,11 +365,11 @@ l_string|&quot;__read_lock_failed&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|write_lock
+DECL|function|_raw_write_lock
 r_static
 r_inline
 r_void
-id|write_lock
+id|_raw_write_lock
 c_func
 (paren
 id|rwlock_t
@@ -400,15 +400,15 @@ l_string|&quot;__write_lock_failed&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|read_unlock
-mdefine_line|#define read_unlock(rw)&t;&t;asm volatile(&quot;lock ; incl %0&quot; :&quot;=m&quot; ((rw)-&gt;lock) : : &quot;memory&quot;)
-DECL|macro|write_unlock
-mdefine_line|#define write_unlock(rw)&t;asm volatile(&quot;lock ; addl $&quot; RW_LOCK_BIAS_STR &quot;,%0&quot;:&quot;=m&quot; ((rw)-&gt;lock) : : &quot;memory&quot;)
-DECL|function|write_trylock
+DECL|macro|_raw_read_unlock
+mdefine_line|#define _raw_read_unlock(rw)&t;&t;asm volatile(&quot;lock ; incl %0&quot; :&quot;=m&quot; ((rw)-&gt;lock) : : &quot;memory&quot;)
+DECL|macro|_raw_write_unlock
+mdefine_line|#define _raw_write_unlock(rw)&t;asm volatile(&quot;lock ; addl $&quot; RW_LOCK_BIAS_STR &quot;,%0&quot;:&quot;=m&quot; ((rw)-&gt;lock) : : &quot;memory&quot;)
+DECL|function|_raw_write_trylock
 r_static
 r_inline
 r_int
-id|write_trylock
+id|_raw_write_trylock
 c_func
 (paren
 id|rwlock_t

@@ -2363,6 +2363,15 @@ c_func
 id|schedule
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|variable|preempt_schedule
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|preempt_schedule
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|schedule_timeout
 id|EXPORT_SYMBOL
 c_func
