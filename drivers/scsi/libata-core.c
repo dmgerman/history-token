@@ -8541,6 +8541,24 @@ id|ATA_DMA_CMD
 )paren
 suffix:semicolon
 )brace
+DECL|function|ata_bmdma_irq_clear
+r_void
+id|ata_bmdma_irq_clear
+c_func
+(paren
+r_struct
+id|ata_port
+op_star
+id|ap
+)paren
+(brace
+id|ata_bmdma_ack_irq
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;ata_host_intr - Handle host interrupt for given (port, task)&n; *&t;@ap: Port on which interrupt arrived (possibly...)&n; *&t;@qc: Taskfile currently active in engine&n; *&n; *&t;Handle host interrupt for given queued command.  Currently,&n; *&t;only DMA interrupts are handled.  All other commands are&n; *&t;handled via polling with interrupts disabled (nIEN bit).&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;One if interrupt was handled, zero if not (shared irq).&n; */
 DECL|function|ata_host_intr
 r_inline
@@ -9667,6 +9685,10 @@ id|host_set-&gt;private_data
 op_assign
 id|ent-&gt;private_data
 suffix:semicolon
+id|host_set-&gt;ops
+op_assign
+id|ent-&gt;port_ops
+suffix:semicolon
 multiline_comment|/* register each port bound to this device */
 r_for
 c_loop
@@ -9750,6 +9772,20 @@ comma
 id|ent-&gt;irq
 )paren
 suffix:semicolon
+id|ata_chk_status
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
+id|host_set-&gt;ops
+op_member_access_from_pointer
+id|irq_clear
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
 id|count
 op_increment
 suffix:semicolon
@@ -9771,7 +9807,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* TODO: ack irq here, to ensure it won&squot;t scream&n;&t; * when we enable it?&n;&t; */
 multiline_comment|/* obtain irq, that is shared between channels */
 r_if
 c_cond
@@ -11217,19 +11252,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|host_set-&gt;ports
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|ops-&gt;host_stop
+id|host_set-&gt;ops-&gt;host_stop
 )paren
-id|host_set-&gt;ports
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|ops
+id|host_set-&gt;ops
 op_member_access_from_pointer
 id|host_stop
 c_func
@@ -11757,6 +11782,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ata_bmdma_start_mmio
+)paren
+suffix:semicolon
+DECL|variable|ata_bmdma_irq_clear
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_bmdma_irq_clear
 )paren
 suffix:semicolon
 DECL|variable|ata_port_probe

@@ -578,6 +578,11 @@ op_assign
 id|ata_interrupt
 comma
 dot
+id|irq_clear
+op_assign
+id|ata_bmdma_irq_clear
+comma
+dot
 id|port_start
 op_assign
 id|ata_port_start
@@ -665,6 +670,11 @@ dot
 id|irq_handler
 op_assign
 id|ata_interrupt
+comma
+dot
+id|irq_clear
+op_assign
+id|ata_bmdma_irq_clear
 comma
 dot
 id|port_start

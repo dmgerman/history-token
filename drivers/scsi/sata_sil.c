@@ -562,6 +562,11 @@ op_assign
 id|ata_interrupt
 comma
 dot
+id|irq_clear
+op_assign
+id|ata_bmdma_irq_clear
+comma
+dot
 id|scr_read
 op_assign
 id|sil_scr_read
