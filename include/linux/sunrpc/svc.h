@@ -320,12 +320,6 @@ suffix:semicolon
 multiline_comment|/* IP protocol */
 r_int
 r_int
-DECL|member|rq_userset
-id|rq_userset
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* auth-&gt;setuser OK */
 DECL|member|rq_secure
 id|rq_secure
 suffix:colon

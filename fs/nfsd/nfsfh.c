@@ -579,15 +579,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Set user creds if we haven&squot;t done so already. */
-id|nfsd_setuser
-c_func
-(paren
-id|rqstp
-comma
-id|exp
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Look up the dentry using the NFS file handle.&n;&t;&t; */
 id|error
 op_assign
@@ -828,6 +819,15 @@ suffix:semicolon
 id|inode
 op_assign
 id|dentry-&gt;d_inode
+suffix:semicolon
+multiline_comment|/* Set user creds for this exportpoint */
+id|nfsd_setuser
+c_func
+(paren
+id|rqstp
+comma
+id|exp
+)paren
 suffix:semicolon
 multiline_comment|/* Type check. The correct error return for type mismatches&n;&t; * does not seem to be generally agreed upon. SunOS seems to&n;&t; * use EISDIR if file isn&squot;t S_IFREG; a comment in the NFSv3&n;&t; * spec says this is incorrect (implementation notes for the&n;&t; * write call).&n;&t; */
 multiline_comment|/* Type can be negative when creating hardlinks - not to a dir */

@@ -5001,10 +5001,6 @@ id|rqstp-&gt;rq_addr.sin_port
 OL
 l_int|1024
 suffix:semicolon
-id|rqstp-&gt;rq_userset
-op_assign
-l_int|0
-suffix:semicolon
 id|rqstp-&gt;rq_chandle.defer
 op_assign
 id|svc_defer
