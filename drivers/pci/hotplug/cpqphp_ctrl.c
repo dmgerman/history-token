@@ -412,17 +412,6 @@ r_struct
 id|slot
 op_star
 id|slot
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctrl
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|slot
 op_assign
 id|ctrl-&gt;slot
 suffix:semicolon
