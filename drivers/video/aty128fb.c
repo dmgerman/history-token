@@ -7953,6 +7953,7 @@ suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
+op_amp
 id|info-&gt;fb_info.cmap
 comma
 id|size

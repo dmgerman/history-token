@@ -228,7 +228,13 @@ r_int
 id|pages
 suffix:semicolon
 multiline_comment|/* 0x32 */
-multiline_comment|/* 0x34 -- 0x3f reserved for future expansion */
+DECL|member|vesa_attributes
+r_int
+r_int
+id|vesa_attributes
+suffix:semicolon
+multiline_comment|/* 0x34 */
+multiline_comment|/* 0x36 -- 0x3f reserved for future expansion */
 )brace
 suffix:semicolon
 r_extern
