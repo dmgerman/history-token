@@ -10048,8 +10048,7 @@ l_string|&quot;ISICOM: Unable to register firmware loader driver.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+id|retval
 suffix:semicolon
 )brace
 r_if
