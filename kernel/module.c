@@ -8149,6 +8149,7 @@ l_int|0
 r_goto
 id|cleanup
 suffix:semicolon
+macro_line|#ifdef CONFIG_KALLSYMS
 id|add_kallsyms
 c_func
 (paren
@@ -8163,6 +8164,7 @@ comma
 id|secstrings
 )paren
 suffix:semicolon
+macro_line|#endif
 id|mod-&gt;args
 op_assign
 id|args
