@@ -226,7 +226,7 @@ r_typedef
 r_char
 id|tas_shadow_t
 (braket
-l_int|16
+l_int|0x45
 )braket
 suffix:semicolon
 DECL|struct|tas_data_t

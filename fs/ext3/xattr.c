@@ -3532,30 +3532,31 @@ c_cond
 id|new_bh
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We found an identical block in the cache. The&n;&t;&t;&t; * block returned is locked. The old block will&n;&t;&t;&t; * be released after updating the inode.&n;&t;&t;&t; */
+multiline_comment|/* We found an identical block in the cache. */
+r_if
+c_cond
+(paren
+id|new_bh
+op_eq
+id|old_bh
+)paren
 id|ea_bdebug
 c_func
 (paren
 id|new_bh
 comma
-l_string|&quot;%s block %lu&quot;
-comma
+l_string|&quot;keeping this block&quot;
+)paren
+suffix:semicolon
+r_else
+(brace
+multiline_comment|/* The old block is released after updating&n;&t;&t;&t;&t;   the inode. */
+id|ea_bdebug
+c_func
 (paren
-id|old_bh
-op_eq
 id|new_bh
-)paren
-ques
-c_cond
-l_string|&quot;keeping&quot;
-suffix:colon
-l_string|&quot;reusing&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-id|new_bh-&gt;b_blocknr
+l_string|&quot;reusing block&quot;
 )paren
 suffix:semicolon
 id|error
@@ -3606,6 +3607,8 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
+l_int|1
+op_plus
 id|le32_to_cpu
 c_func
 (paren
@@ -3617,8 +3620,6 @@ id|new_bh
 op_member_access_from_pointer
 id|h_refcount
 )paren
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 id|ea_bdebug
@@ -3641,6 +3642,7 @@ id|h_refcount
 )paren
 )paren
 suffix:semicolon
+)brace
 id|unlock_buffer
 c_func
 (paren

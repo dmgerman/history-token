@@ -476,11 +476,15 @@ op_star
 id|mchip_ptable
 (braket
 id|MCHIP_NB_PAGES
-op_plus
-l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* mchip: ptable + ptable toc */
+multiline_comment|/* mchip: ptable */
+DECL|member|mchip_ptable_toc
+id|dma_addr_t
+op_star
+id|mchip_ptable_toc
+suffix:semicolon
+multiline_comment|/* mchip: ptable toc */
 DECL|member|mchip_dmahandle
 id|dma_addr_t
 id|mchip_dmahandle

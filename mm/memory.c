@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/* use the per-pgdat data instead for discontigmem - mbligh */
 DECL|variable|max_mapnr
@@ -7706,7 +7707,8 @@ c_func
 id|vmalloc_to_page
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_GATE_AREA) &amp;&amp; defined(AT_SYSINFO_EHDR)
+macro_line|#if !defined(CONFIG_ARCH_GATE_AREA)
+macro_line|#if defined(AT_SYSINFO_EHDR)
 DECL|variable|gate_vma
 r_struct
 id|vm_area_struct
@@ -7753,5 +7755,69 @@ c_func
 id|gate_vma_init
 )paren
 suffix:semicolon
+macro_line|#endif
+DECL|function|get_gate_vma
+r_struct
+id|vm_area_struct
+op_star
+id|get_gate_vma
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+macro_line|#ifdef AT_SYSINFO_EHDR
+r_return
+op_amp
+id|gate_vma
+suffix:semicolon
+macro_line|#else
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|in_gate_area
+r_int
+id|in_gate_area
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+macro_line|#ifdef AT_SYSINFO_EHDR
+r_if
+c_cond
+(paren
+(paren
+id|addr
+op_ge
+id|FIXADDR_USER_START
+)paren
+op_logical_and
+(paren
+id|addr
+OL
+id|FIXADDR_USER_END
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

@@ -3523,12 +3523,6 @@ op_star
 id|pcibr_dmaaddr_drain
 comma
 (paren
-id|pciio_dmalist_drain_f
-op_star
-)paren
-id|pcibr_dmalist_drain
-comma
-(paren
 id|pciio_intr_alloc_f
 op_star
 )paren

@@ -17,10 +17,8 @@ macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
-macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#else
 macro_line|#include &lt;dmamap.h&gt;
-macro_line|#include &lt;alenlist.h&gt;
 macro_line|#endif
 DECL|typedef|pciio_vendor_id_t
 r_typedef
@@ -115,13 +113,11 @@ macro_line|#endif
 multiline_comment|/*&n; * PCI_NOWHERE is the error value returned in&n; * place of a PCI address when there is no&n; * corresponding address.&n; */
 DECL|macro|PCI_NOWHERE
 mdefine_line|#define&t;PCI_NOWHERE&t;&t;(0)
-multiline_comment|/*&n; *    Acceptable flag bits for pciio service calls&n; *&n; * PCIIO_FIXED: require that mappings be established&n; *&t;using fixed sharable resources; address&n; *&t;translation results will be permanently&n; *&t;available. (PIOMAP_FIXED and DMAMAP_FIXED are&n; *&t;the same numeric value and are acceptable).&n; * PCIIO_NOSLEEP: if any part of the operation would&n; *&t;sleep waiting for resoruces, return an error&n; *&t;instead. (PIOMAP_NOSLEEP and DMAMAP_NOSLEEP are&n; *&t;the same numeric value and are acceptable).&n; * PCIIO_INPLACE: when operating on alenlist structures,&n; *&t;reuse the source alenlist rather than creating a&n; *&t;new one. (PIOMAP_INPLACE and DMAMAP_INPLACE are&n; *&t;the same numeric value and are acceptable).&n; *&n; * PCIIO_DMA_CMD: configure this stream as a&n; *&t;generic &quot;command&quot; stream. Generally this&n; *&t;means turn off prefetchers and write&n; *&t;gatherers, and whatever else might be&n; *&t;necessary to make command ring DMAs&n; *&t;work as expected.&n; * PCIIO_DMA_DATA: configure this stream as a&n; *&t;generic &quot;data&quot; stream. Generally, this&n; *&t;means turning on prefetchers and write&n; *&t;gatherers, and anything else that might&n; *&t;increase the DMA throughput (short of&n; *&t;using &quot;high priority&quot; or &quot;real time&quot;&n; *&t;resources that may lower overall system&n; *&t;performance).&n; * PCIIO_DMA_A64: this device is capable of&n; *&t;using 64-bit DMA addresses. Unless this&n; *&t;flag is specified, it is assumed that&n; *&t;the DMA address must be in the low 4G&n; *&t;of PCI space.&n; * PCIIO_PREFETCH: if there are prefetchers&n; *&t;available, they can be turned on.&n; * PCIIO_NOPREFETCH: any prefetchers along&n; *&t;the dma path should be turned off.&n; * PCIIO_WRITE_GATHER: if there are write gatherers&n; *&t;available, they can be turned on.&n; * PCIIO_NOWRITE_GATHER: any write gatherers along&n; *&t;the dma path should be turned off.&n; *&n; * PCIIO_BYTE_STREAM: the DMA stream represents a group&n; *&t;of ordered bytes. Arrange all byte swapping&n; *&t;hardware so that the bytes land in the correct&n; *&t;order. This is a common setting for data&n; *&t;channels, but is NOT implied by PCIIO_DMA_DATA.&n; * PCIIO_WORD_VALUES: the DMA stream is used to&n; *&t;communicate quantities stored in multiple bytes,&n; *&t;and the device doing the DMA is little-endian;&n; *&t;arrange any swapping hardware so that&n; *&t;32-bit-wide values are maintained. This is a&n; *&t;common setting for command rings that contain&n; *&t;DMA addresses and counts, but is NOT implied by&n; *&t;PCIIO_DMA_CMD. CPU Accesses to 16-bit fields&n; *&t;must have their address xor-ed with 2, and&n; *&t;accesses to individual bytes must have their&n; *&t;addresses xor-ed with 3 relative to what the&n; *&t;device expects.&n; *&n; * NOTE: any &quot;provider specific&quot; flags that&n; * conflict with the generic flags will&n; * override the generic flags, locally&n; * at that provider.&n; *&n; * Also, note that PCI-generic flags (PCIIO_) are&n; * in bits 0-14. The upper bits, 15-31, are reserved&n; * for PCI implementation-specific flags.&n; */
+multiline_comment|/*&n; *    Acceptable flag bits for pciio service calls&n; *&n; * PCIIO_FIXED: require that mappings be established&n; *&t;using fixed sharable resources; address&n; *&t;translation results will be permanently&n; *&t;available. (PIOMAP_FIXED and DMAMAP_FIXED are&n; *&t;the same numeric value and are acceptable).&n; * PCIIO_NOSLEEP: if any part of the operation would&n; *&t;sleep waiting for resoruces, return an error&n; *&t;instead. (PIOMAP_NOSLEEP and DMAMAP_NOSLEEP are&n; *&t;the same numeric value and are acceptable).&n; *&n; * PCIIO_DMA_CMD: configure this stream as a&n; *&t;generic &quot;command&quot; stream. Generally this&n; *&t;means turn off prefetchers and write&n; *&t;gatherers, and whatever else might be&n; *&t;necessary to make command ring DMAs&n; *&t;work as expected.&n; * PCIIO_DMA_DATA: configure this stream as a&n; *&t;generic &quot;data&quot; stream. Generally, this&n; *&t;means turning on prefetchers and write&n; *&t;gatherers, and anything else that might&n; *&t;increase the DMA throughput (short of&n; *&t;using &quot;high priority&quot; or &quot;real time&quot;&n; *&t;resources that may lower overall system&n; *&t;performance).&n; * PCIIO_DMA_A64: this device is capable of&n; *&t;using 64-bit DMA addresses. Unless this&n; *&t;flag is specified, it is assumed that&n; *&t;the DMA address must be in the low 4G&n; *&t;of PCI space.&n; * PCIIO_PREFETCH: if there are prefetchers&n; *&t;available, they can be turned on.&n; * PCIIO_NOPREFETCH: any prefetchers along&n; *&t;the dma path should be turned off.&n; * PCIIO_WRITE_GATHER: if there are write gatherers&n; *&t;available, they can be turned on.&n; * PCIIO_NOWRITE_GATHER: any write gatherers along&n; *&t;the dma path should be turned off.&n; *&n; * PCIIO_BYTE_STREAM: the DMA stream represents a group&n; *&t;of ordered bytes. Arrange all byte swapping&n; *&t;hardware so that the bytes land in the correct&n; *&t;order. This is a common setting for data&n; *&t;channels, but is NOT implied by PCIIO_DMA_DATA.&n; * PCIIO_WORD_VALUES: the DMA stream is used to&n; *&t;communicate quantities stored in multiple bytes,&n; *&t;and the device doing the DMA is little-endian;&n; *&t;arrange any swapping hardware so that&n; *&t;32-bit-wide values are maintained. This is a&n; *&t;common setting for command rings that contain&n; *&t;DMA addresses and counts, but is NOT implied by&n; *&t;PCIIO_DMA_CMD. CPU Accesses to 16-bit fields&n; *&t;must have their address xor-ed with 2, and&n; *&t;accesses to individual bytes must have their&n; *&t;addresses xor-ed with 3 relative to what the&n; *&t;device expects.&n; *&n; * NOTE: any &quot;provider specific&quot; flags that&n; * conflict with the generic flags will&n; * override the generic flags, locally&n; * at that provider.&n; *&n; * Also, note that PCI-generic flags (PCIIO_) are&n; * in bits 0-14. The upper bits, 15-31, are reserved&n; * for PCI implementation-specific flags.&n; */
 DECL|macro|PCIIO_FIXED
 mdefine_line|#define&t;PCIIO_FIXED&t;&t;DMAMAP_FIXED
 DECL|macro|PCIIO_NOSLEEP
 mdefine_line|#define&t;PCIIO_NOSLEEP&t;&t;DMAMAP_NOSLEEP
-DECL|macro|PCIIO_INPLACE
-mdefine_line|#define&t;PCIIO_INPLACE&t;&t;DMAMAP_INPLACE
 DECL|macro|PCIIO_DMA_CMD
 mdefine_line|#define PCIIO_DMA_CMD&t;&t;0x0010
 DECL|macro|PCIIO_DMA_DATA
@@ -611,18 +607,6 @@ r_int
 id|bytes
 )paren
 suffix:semicolon
-r_typedef
-r_void
-DECL|typedef|pciio_dmalist_drain_f
-id|pciio_dmalist_drain_f
-(paren
-id|vertex_hdl_t
-id|vhdl
-comma
-id|alenlist_t
-id|list
-)paren
-suffix:semicolon
 multiline_comment|/* INTERRUPT MANAGEMENT */
 r_typedef
 id|pciio_intr_t
@@ -928,11 +912,6 @@ id|pciio_dmaaddr_drain_f
 op_star
 id|dmaaddr_drain
 suffix:semicolon
-DECL|member|dmalist_drain
-id|pciio_dmalist_drain_f
-op_star
-id|dmalist_drain
-suffix:semicolon
 multiline_comment|/* INTERRUPT MANAGEMENT */
 DECL|member|intr_alloc
 id|pciio_intr_alloc_f
@@ -1076,10 +1055,6 @@ suffix:semicolon
 r_extern
 id|pciio_dmaaddr_drain_f
 id|pciio_dmaaddr_drain
-suffix:semicolon
-r_extern
-id|pciio_dmalist_drain_f
-id|pciio_dmalist_drain
 suffix:semicolon
 r_extern
 id|pciio_intr_alloc_f

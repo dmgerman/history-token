@@ -3341,7 +3341,7 @@ op_assign
 id|ESDI_TIMEOUT
 suffix:semicolon
 id|i
-op_amp
+op_logical_and
 op_logical_neg
 (paren
 id|inb
@@ -4214,7 +4214,7 @@ op_assign
 id|ESDI_TIMEOUT
 suffix:semicolon
 id|i
-op_amp
+op_logical_and
 op_logical_neg
 (paren
 id|inb

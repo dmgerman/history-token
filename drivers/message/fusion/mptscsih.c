@@ -761,7 +761,6 @@ r_void
 suffix:semicolon
 r_static
 r_void
-id|__exit
 id|mptscsih_exit
 (paren
 r_void
@@ -7072,7 +7071,6 @@ multiline_comment|/**&n; *&t;mptscsih_exit - Unregisters MPT adapter(s)&n; *&n; 
 r_static
 r_void
 DECL|function|mptscsih_exit
-id|__exit
 id|mptscsih_exit
 c_func
 (paren

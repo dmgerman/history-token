@@ -1,10 +1,7 @@
 macro_line|#ifndef _LINUX_FB_H
 DECL|macro|_LINUX_FB_H
 mdefine_line|#define _LINUX_FB_H
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Definitions of frame buffers&t;&t;&t;&t;&t;&t;*/
 DECL|macro|FB_MAJOR
 mdefine_line|#define FB_MAJOR&t;&t;29
@@ -846,6 +843,28 @@ suffix:semicolon
 multiline_comment|/* Cursor image */
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+r_struct
+id|vm_area_struct
+suffix:semicolon
+r_struct
+id|fb_info
+suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
+r_struct
+id|file
+suffix:semicolon
+multiline_comment|/*&n; * Pixmap structure definition&n; *&n; * The purpose of this structure is to translate data&n; * from the hardware independent format of fbdev to what&n; * format the hardware needs.&n; */
 DECL|macro|FB_PIXMAP_DEFAULT
 mdefine_line|#define FB_PIXMAP_DEFAULT 1     /* used internally by fbcon */
 DECL|macro|FB_PIXMAP_SYSTEM
@@ -859,36 +878,41 @@ r_struct
 id|fb_pixmap
 (brace
 DECL|member|addr
-id|__u8
+id|u8
 op_star
 id|addr
 suffix:semicolon
-multiline_comment|/* pointer to memory             */
+multiline_comment|/* pointer to memory                    */
 DECL|member|size
-id|__u32
+id|u32
 id|size
 suffix:semicolon
-multiline_comment|/* size of buffer in bytes       */
+multiline_comment|/* size of buffer in bytes              */
 DECL|member|offset
-id|__u32
+id|u32
 id|offset
 suffix:semicolon
-multiline_comment|/* current offset to buffer      */
+multiline_comment|/* current offset to buffer             */
 DECL|member|buf_align
-id|__u32
+id|u32
 id|buf_align
 suffix:semicolon
-multiline_comment|/* byte alignment of each bitmap */
+multiline_comment|/* byte alignment of each bitmap        */
 DECL|member|scan_align
-id|__u32
+id|u32
 id|scan_align
 suffix:semicolon
-multiline_comment|/* alignment per scanline        */
+multiline_comment|/* alignment per scanline               */
+DECL|member|access_align
+id|u32
+id|access_align
+suffix:semicolon
+multiline_comment|/* alignment per read/write             */
 DECL|member|flags
-id|__u32
+id|u32
 id|flags
 suffix:semicolon
-multiline_comment|/* see FB_PIXMAP_*               */
+multiline_comment|/* see FB_PIXMAP_*                      */
 multiline_comment|/* access methods                */
 DECL|member|outbuf
 r_void
@@ -932,18 +956,6 @@ id|atomic_t
 id|count
 suffix:semicolon
 )brace
-suffix:semicolon
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-r_struct
-id|fb_info
-suffix:semicolon
-r_struct
-id|vm_area_struct
-suffix:semicolon
-r_struct
-id|file
 suffix:semicolon
 multiline_comment|/*&n;     *  Frame buffer operations&n;     */
 DECL|struct|fb_ops
@@ -992,6 +1004,7 @@ suffix:semicolon
 multiline_comment|/* For framebuffers with strange non linear layouts */
 DECL|member|fb_read
 id|ssize_t
+c_func
 (paren
 op_star
 id|fb_read
@@ -1016,6 +1029,7 @@ id|ppos
 suffix:semicolon
 DECL|member|fb_write
 id|ssize_t
+c_func
 (paren
 op_star
 id|fb_write
@@ -1039,7 +1053,7 @@ op_star
 id|ppos
 )paren
 suffix:semicolon
-multiline_comment|/* checks var and creates a par based on it */
+multiline_comment|/* checks var and eventually tweaks it to something supported,&n;&t; * DO NOT MODIFY PAR */
 DECL|member|fb_check_var
 r_int
 (paren
@@ -1058,7 +1072,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* set the video mode according to par */
+multiline_comment|/* set the video mode according to info-&gt;var */
 DECL|member|fb_set_par
 r_int
 (paren
@@ -1359,7 +1373,7 @@ r_struct
 id|fb_pixmap
 id|pixmap
 suffix:semicolon
-multiline_comment|/* Current pixmap */
+multiline_comment|/* Image Hardware Mapper */
 DECL|member|cmap
 r_struct
 id|fb_cmap

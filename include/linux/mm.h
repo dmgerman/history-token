@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#ifndef CONFIG_DISCONTIGMEM          /* Don&squot;t use mapnrs, do it properly */
 r_extern
 r_int
@@ -2426,9 +2425,19 @@ id|enable
 )brace
 macro_line|#endif
 macro_line|#ifndef CONFIG_ARCH_GATE_AREA
-DECL|function|in_gate_area
-r_static
-r_inline
+r_extern
+r_struct
+id|vm_area_struct
+op_star
+id|get_gate_vma
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 r_int
 id|in_gate_area
 c_func
@@ -2442,62 +2451,7 @@ r_int
 r_int
 id|addr
 )paren
-(brace
-macro_line|#ifdef AT_SYSINFO_EHDR
-r_if
-c_cond
-(paren
-(paren
-id|addr
-op_ge
-id|FIXADDR_USER_START
-)paren
-op_logical_and
-(paren
-id|addr
-OL
-id|FIXADDR_USER_END
-)paren
-)paren
-r_return
-l_int|1
 suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_extern
-r_struct
-id|vm_area_struct
-id|gate_vma
-suffix:semicolon
-DECL|function|get_gate_vma
-r_static
-r_inline
-r_struct
-id|vm_area_struct
-op_star
-id|get_gate_vma
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-macro_line|#ifdef AT_SYSINFO_EHDR
-r_return
-op_amp
-id|gate_vma
-suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
-)brace
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MM_H */

@@ -519,6 +519,12 @@ DECL|macro|__NR_utimes
 mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_SYSCALL_BASE+269)
 DECL|macro|__NR_fadvise64_64
 mdefine_line|#define __NR_fadvise64_64&t;&t;(__NR_SYSCALL_BASE+270)
+DECL|macro|__NR_pciconfig_iobase
+mdefine_line|#define __NR_pciconfig_iobase&t;&t;(__NR_SYSCALL_BASE+271)
+DECL|macro|__NR_pciconfig_read
+mdefine_line|#define __NR_pciconfig_read&t;&t;(__NR_SYSCALL_BASE+272)
+DECL|macro|__NR_pciconfig_write
+mdefine_line|#define __NR_pciconfig_write&t;&t;(__NR_SYSCALL_BASE+273)
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)
