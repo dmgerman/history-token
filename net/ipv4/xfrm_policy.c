@@ -4439,6 +4439,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|child
+op_assign
+id|child-&gt;child
+suffix:semicolon
 )brace
 r_return
 id|dst
