@@ -1902,23 +1902,7 @@ c_func
 (paren
 id|b
 comma
-l_string|&quot;const char vermagic[]&bslash;n&quot;
-)paren
-suffix:semicolon
-id|buf_printf
-c_func
-(paren
-id|b
-comma
-l_string|&quot;__attribute__((section(&bslash;&quot;__vermagic&bslash;&quot;))) =&bslash;n&quot;
-)paren
-suffix:semicolon
-id|buf_printf
-c_func
-(paren
-id|b
-comma
-l_string|&quot;VERMAGIC_STRING;&bslash;n&quot;
+l_string|&quot;MODULE_INFO(vermagic, VERMAGIC_STRING);&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

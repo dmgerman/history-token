@@ -30,6 +30,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#if defined CONFIG_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#endif
@@ -107,16 +108,6 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_extern
-r_void
-id|xmon_map_scc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
 r_extern
 r_void

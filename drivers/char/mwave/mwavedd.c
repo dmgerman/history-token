@@ -1720,16 +1720,6 @@ id|dev_attr_uart_io
 comma
 )brace
 suffix:semicolon
-DECL|variable|nr_registered_attrs
-r_static
-r_int
-id|nr_registered_attrs
-suffix:semicolon
-DECL|variable|device_registered
-r_static
-r_int
-id|device_registered
-suffix:semicolon
 multiline_comment|/*&n;* mwave_init is called on module load&n;*&n;* mwave_exit is called on module unload&n;* mwave_exit is also used to clean up after an aborted mwave_init&n;*/
 DECL|function|mwave_exit
 r_static
@@ -1766,7 +1756,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|nr_registered_attrs
+id|pDrvData-&gt;nr_registered_attrs
 suffix:semicolon
 id|i
 op_increment
@@ -1783,14 +1773,14 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|nr_registered_attrs
+id|pDrvData-&gt;nr_registered_attrs
 op_assign
 l_int|0
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|device_registered
+id|pDrvData-&gt;device_registered
 )paren
 (brace
 id|device_unregister
@@ -1800,9 +1790,9 @@ op_amp
 id|mwave_device
 )paren
 suffix:semicolon
-id|device_registered
+id|pDrvData-&gt;device_registered
 op_assign
-l_int|0
+id|FALSE
 suffix:semicolon
 )brace
 r_if
@@ -2296,9 +2286,9 @@ id|mwave_device
 r_goto
 id|cleanup_error
 suffix:semicolon
-id|device_registered
+id|pDrvData-&gt;device_registered
 op_assign
-l_int|1
+id|TRUE
 suffix:semicolon
 r_for
 c_loop
@@ -2354,7 +2344,7 @@ r_goto
 id|cleanup_error
 suffix:semicolon
 )brace
-id|nr_registered_attrs
+id|pDrvData-&gt;nr_registered_attrs
 op_increment
 suffix:semicolon
 )brace

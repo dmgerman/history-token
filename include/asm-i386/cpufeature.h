@@ -96,6 +96,15 @@ DECL|macro|X86_FEATURE_CYRIX_ARR
 mdefine_line|#define X86_FEATURE_CYRIX_ARR&t;(3*32+ 2) /* Cyrix ARRs (= MTRRs) */
 DECL|macro|X86_FEATURE_CENTAUR_MCR
 mdefine_line|#define X86_FEATURE_CENTAUR_MCR&t;(3*32+ 3) /* Centaur MCRs (= MTRRs) */
+multiline_comment|/* cpu types for specific tunings: */
+DECL|macro|X86_FEATURE_K8
+mdefine_line|#define X86_FEATURE_K8&t;&t;(3*32+ 4) /* Opteron, Athlon64 */
+DECL|macro|X86_FEATURE_K7
+mdefine_line|#define X86_FEATURE_K7&t;&t;(3*32+ 5) /* Athlon */
+DECL|macro|X86_FEATURE_P3
+mdefine_line|#define X86_FEATURE_P3&t;&t;(3*32+ 6) /* P3 */
+DECL|macro|X86_FEATURE_P4
+mdefine_line|#define X86_FEATURE_P4&t;&t;(3*32+ 7) /* P4 */
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001 (ecx), word 4 */
 multiline_comment|/* VIA/Cyrix/Centaur-defined CPU features, CPUID level 0xC0000001, word 5 */
 DECL|macro|X86_FEATURE_XSTORE

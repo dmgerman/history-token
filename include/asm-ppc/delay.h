@@ -23,7 +23,7 @@ multiline_comment|/*&n; * Note that 19 * 226 == 4294 ==~ 2^32 / 10^6, so&n; * lo
 DECL|macro|__MAX_UDELAY
 mdefine_line|#define __MAX_UDELAY&t;(226050910/HZ)&t;/* maximum udelay argument */
 DECL|macro|__MAX_NDELAY
-mdefine_line|#define __MAX_NDELAY&t;(4294967295/HZ)&t;/* maximum ndelay argument */
+mdefine_line|#define __MAX_NDELAY&t;(2147483647/HZ)&t;/* maximum ndelay argument */
 DECL|function|__udelay
 r_extern
 id|__inline__

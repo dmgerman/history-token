@@ -1140,10 +1140,14 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SBUS
 DECL|function|iounit_map_dma_area
 r_static
-r_void
+r_int
 id|iounit_map_dma_area
 c_func
 (paren
+id|dma_addr_t
+op_star
+id|pba
+comma
 r_int
 r_int
 id|va
@@ -1172,6 +1176,11 @@ r_struct
 id|sbus_bus
 op_star
 id|sbus
+suffix:semicolon
+op_star
+id|pba
+op_assign
+id|addr
 suffix:semicolon
 id|dvma_prot
 op_assign
@@ -1357,6 +1366,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|iounit_unmap_dma_area
 r_static
@@ -1377,8 +1389,9 @@ multiline_comment|/* XXX Somebody please fill this in */
 multiline_comment|/* XXX We do not pass sbus device here, bad. */
 DECL|function|iounit_translate_dvma
 r_static
-r_int
-r_int
+r_struct
+id|page
+op_star
 id|iounit_translate_dvma
 c_func
 (paren
@@ -1439,6 +1452,8 @@ id|i
 )paren
 suffix:semicolon
 r_return
+id|pfn_to_page
+c_func
 (paren
 id|iopte_val
 c_func
@@ -1446,11 +1461,13 @@ c_func
 op_star
 id|iopte
 )paren
-op_amp
-l_int|0xFFFFFFF0
-)paren
-op_lshift
+op_rshift
+(paren
+id|PAGE_SHIFT
+op_minus
 l_int|4
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* XXX sun4d guru, help */
 )brace

@@ -683,7 +683,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -739,13 +739,16 @@ op_logical_neg
 id|handler
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * free_irq() used to be implemented as a call to&n;&t;&t; * request_irq() with handler being NULL.  Now we have&n;&t;&t; * a real free_irq() but need to allow the old behavior&n;&t;&t; * for old code that hasn&squot;t caught up yet.&n;&t;&t; *  -- Cort &lt;cort@fsmlabs.com&gt;&n;&t;&t; */
-id|free_irq
+id|printk
 c_func
 (paren
-id|irq
-comma
-id|dev_id
+id|KERN_ERR
+l_string|&quot;request_irq called with NULL handler!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2859,7 +2862,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|no_action
-r_void
+id|irqreturn_t
 id|no_action
 c_func
 (paren
@@ -2876,5 +2879,8 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 eof

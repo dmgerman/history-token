@@ -3051,7 +3051,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|__init
 DECL|function|prep_calibrate_decr_handler
 id|prep_calibrate_decr_handler
@@ -3145,6 +3145,9 @@ l_int|1000000
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void

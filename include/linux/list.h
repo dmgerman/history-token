@@ -935,6 +935,8 @@ mdefine_line|#define hlist_entry(ptr, type, member) container_of(ptr,type,member
 multiline_comment|/* Cannot easily do prefetch unfortunately */
 DECL|macro|hlist_for_each
 mdefine_line|#define hlist_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;first; pos; &bslash;&n;&t;     pos = pos-&gt;next) 
+DECL|macro|hlist_for_each_safe
+mdefine_line|#define hlist_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;first; n = pos ? pos-&gt;next : 0, pos; &bslash;&n;&t;     pos = n)
 macro_line|#else
 macro_line|#warning &quot;don&squot;t include kernel headers in userspace&quot;
 macro_line|#endif /* __KERNEL__ */

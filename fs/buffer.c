@@ -7058,8 +7058,6 @@ suffix:semicolon
 r_int
 r_int
 id|blocksize
-comma
-id|blocks
 suffix:semicolon
 r_int
 id|nr
@@ -7134,12 +7132,6 @@ c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-id|blocks
-op_assign
-id|PAGE_CACHE_SIZE
-op_rshift
-id|inode-&gt;i_blkbits
 suffix:semicolon
 id|iblock
 op_assign

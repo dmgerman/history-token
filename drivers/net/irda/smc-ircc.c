@@ -4336,6 +4336,7 @@ op_ne
 l_int|NULL
 comma
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -4356,6 +4357,7 @@ op_ne
 l_int|NULL
 comma
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )paren
 suffix:semicolon

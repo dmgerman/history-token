@@ -241,7 +241,6 @@ id|proc_pccard
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|cs_error
-r_static
 r_void
 id|cs_error
 c_func
@@ -275,6 +274,13 @@ id|err
 )paren
 suffix:semicolon
 )brace
+DECL|variable|cs_error
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cs_error
+)paren
+suffix:semicolon
 multiline_comment|/*======================================================================*/
 r_static
 r_struct

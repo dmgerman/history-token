@@ -391,7 +391,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_int
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 r_int
@@ -1679,11 +1679,11 @@ c_func
 id|sys_ioctl
 )paren
 suffix:semicolon
-DECL|variable|sys32_ioctl
+DECL|variable|compat_sys_ioctl
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sys32_ioctl
+id|compat_sys_ioctl
 )paren
 suffix:semicolon
 DECL|variable|sparc32_open
