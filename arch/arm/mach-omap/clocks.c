@@ -161,7 +161,7 @@ comma
 dot
 id|rate_reg
 op_assign
-id|CK_DPLL1
+id|DPLL_CTL
 comma
 dot
 id|idle_reg
@@ -2586,7 +2586,7 @@ c_func
 (paren
 l_int|0x2290
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#elif defined(CONFIG_OMAP_ARM_60MHZ)
@@ -2603,7 +2603,7 @@ c_func
 (paren
 l_int|0x2290
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#elif defined(CONFIG_OMAP_ARM_96MHZ)
@@ -2620,7 +2620,7 @@ c_func
 (paren
 l_int|0x2410
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#elif defined(CONFIG_OMAP_ARM_120MHZ)
@@ -2637,7 +2637,7 @@ c_func
 (paren
 l_int|0x2510
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#elif defined(CONFIG_OMAP_ARM_168MHZ)
@@ -2654,7 +2654,7 @@ c_func
 (paren
 l_int|0x2710
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#elif defined(CONFIG_OMAP_ARM_182MHZ) &amp;&amp; defined(CONFIG_ARCH_OMAP730)
@@ -2671,7 +2671,7 @@ c_func
 (paren
 l_int|0x2710
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#elif defined(CONFIG_OMAP_ARM_192MHZ) &amp;&amp; (defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912))
@@ -2701,7 +2701,7 @@ c_func
 (paren
 l_int|0x2510
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 )brace
@@ -2711,7 +2711,7 @@ c_func
 (paren
 l_int|0x2810
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#elif defined(CONFIG_OMAP_ARM_195MHZ) &amp;&amp; defined(CONFIG_ARCH_OMAP730)
@@ -2728,7 +2728,7 @@ c_func
 (paren
 l_int|0x2790
 comma
-id|DPLL_CTL_REG
+id|DPLL_CTL
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2742,13 +2742,13 @@ c_func
 id|omap_readw
 c_func
 (paren
-id|OMAP730_PCC_UPLD_CTRL_REG
+id|OMAP730_PCC_UPLD_CTRL
 )paren
 op_amp
 op_complement
 l_int|0x1
 comma
-id|OMAP730_PCC_UPLD_CTRL_REG
+id|OMAP730_PCC_UPLD_CTRL
 )paren
 suffix:semicolon
 macro_line|#endif

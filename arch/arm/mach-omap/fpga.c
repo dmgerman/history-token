@@ -80,7 +80,7 @@ c_func
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_IMR_LO
+id|OMAP1510_FPGA_IMR_LO
 )paren
 op_amp
 op_complement
@@ -91,7 +91,7 @@ id|irq
 )paren
 )paren
 comma
-id|OMAP1510P1_FPGA_IMR_LO
+id|OMAP1510_FPGA_IMR_LO
 )paren
 suffix:semicolon
 r_else
@@ -109,7 +109,7 @@ c_func
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_IMR_HI
+id|OMAP1510_FPGA_IMR_HI
 )paren
 op_amp
 op_complement
@@ -124,7 +124,7 @@ l_int|8
 )paren
 )paren
 comma
-id|OMAP1510P1_FPGA_IMR_HI
+id|OMAP1510_FPGA_IMR_HI
 )paren
 suffix:semicolon
 r_else
@@ -170,13 +170,13 @@ r_return
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_ISR_LO
+id|OMAP1510_FPGA_ISR_LO
 )paren
 op_amp
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_IMR_LO
+id|OMAP1510_FPGA_IMR_LO
 )paren
 )paren
 )paren
@@ -186,13 +186,13 @@ op_or
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_ISR_HI
+id|OMAP1510_FPGA_ISR_HI
 )paren
 op_amp
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_IMR_HI
+id|OMAP1510_FPGA_IMR_HI
 )paren
 )paren
 op_lshift
@@ -260,7 +260,7 @@ c_func
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_IMR_LO
+id|OMAP1510_FPGA_IMR_LO
 )paren
 op_or
 (paren
@@ -270,7 +270,7 @@ id|irq
 )paren
 )paren
 comma
-id|OMAP1510P1_FPGA_IMR_LO
+id|OMAP1510_FPGA_IMR_LO
 )paren
 suffix:semicolon
 r_else
@@ -288,7 +288,7 @@ c_func
 id|__raw_readb
 c_func
 (paren
-id|OMAP1510P1_FPGA_IMR_HI
+id|OMAP1510_FPGA_IMR_HI
 )paren
 op_or
 (paren
@@ -302,7 +302,7 @@ l_int|8
 )paren
 )paren
 comma
-id|OMAP1510P1_FPGA_IMR_HI
+id|OMAP1510_FPGA_IMR_HI
 )paren
 suffix:semicolon
 r_else
@@ -549,7 +549,7 @@ c_func
 (paren
 l_int|0
 comma
-id|OMAP1510P1_FPGA_IMR_LO
+id|OMAP1510_FPGA_IMR_LO
 )paren
 suffix:semicolon
 id|__raw_writeb
@@ -557,7 +557,7 @@ c_func
 (paren
 l_int|0
 comma
-id|OMAP1510P1_FPGA_IMR_HI
+id|OMAP1510_FPGA_IMR_HI
 )paren
 suffix:semicolon
 id|__raw_writeb
