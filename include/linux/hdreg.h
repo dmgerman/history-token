@@ -813,33 +813,6 @@ id|start
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* BIG GEOMETRY - dying, used only by HDIO_GETGEO_BIG_RAW */
-DECL|struct|hd_big_geometry
-r_struct
-id|hd_big_geometry
-(brace
-DECL|member|heads
-r_int
-r_char
-id|heads
-suffix:semicolon
-DECL|member|sectors
-r_int
-r_char
-id|sectors
-suffix:semicolon
-DECL|member|cylinders
-r_int
-r_int
-id|cylinders
-suffix:semicolon
-DECL|member|start
-r_int
-r_int
-id|start
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* hd/ide ctl&squot;s that pass (arg) ptrs to user space are numbered 0x030n/0x031n */
 DECL|macro|HDIO_GETGEO
 mdefine_line|#define HDIO_GETGEO&t;&t;0x0301&t;/* get device geometry */
@@ -933,8 +906,7 @@ id|BUSSTATE_TRISTATE
 suffix:semicolon
 multiline_comment|/* hd/ide ctl&squot;s that pass (arg) ptrs to user space are numbered 0x033n/0x033n */
 multiline_comment|/* 0x330 is reserved - used to be HDIO_GETGEO_BIG */
-DECL|macro|HDIO_GETGEO_BIG_RAW
-mdefine_line|#define HDIO_GETGEO_BIG_RAW&t;0x0331&t;/* */
+multiline_comment|/* 0x331 is reserved - used to be HDIO_GETGEO_BIG_RAW */
 DECL|macro|HDIO_SET_IDE_SCSI
 mdefine_line|#define HDIO_SET_IDE_SCSI      0x0338
 DECL|macro|HDIO_SET_SCSI_IDE
