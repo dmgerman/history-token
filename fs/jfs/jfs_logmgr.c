@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for sync_blockdev() */
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -5036,16 +5037,10 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Too much? */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|4
+l_int|250
 )paren
 suffix:semicolon
 r_if
