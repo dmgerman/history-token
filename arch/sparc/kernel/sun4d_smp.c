@@ -1631,36 +1631,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|std
-op_mod
-l_int|0
-comma
-(braket
-op_mod
-l_int|6
-)braket
-id|std
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|6
-op_plus
-l_int|8
-)braket
-id|std
-op_mod
-l_int|4
-comma
-(braket
-op_mod
-l_int|6
-op_plus
-l_int|16
-)braket
-"&quot;"
+l_string|&quot;std %0, [%6]&bslash;n&bslash;t&quot;
+l_string|&quot;std %2, [%6 + 8]&bslash;n&bslash;t&quot;
+l_string|&quot;std %4, [%6 + 16]&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
