@@ -276,7 +276,7 @@ id|SOCK_STREAM
 )paren
 id|wspace
 op_assign
-id|tcp_wspace
+id|sk_stream_wspace
 c_func
 (paren
 id|svsk-&gt;sk_sk

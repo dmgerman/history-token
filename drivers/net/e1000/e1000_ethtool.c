@@ -5114,7 +5114,7 @@ c_func
 (paren
 id|E1000_RXBUFFER_2048
 op_plus
-l_int|2
+id|NET_IP_ALIGN
 comma
 id|GFP_KERNEL
 )paren
@@ -5134,7 +5134,7 @@ c_func
 (paren
 id|skb
 comma
-l_int|2
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|rxdr-&gt;buffer_info

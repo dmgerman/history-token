@@ -1122,7 +1122,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|tcp_charge_skb
+id|sk_charge_skb
 c_func
 (paren
 id|sk
@@ -1752,7 +1752,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* We&squot;ll just try again later. */
-id|tcp_charge_skb
+id|sk_charge_skb
 c_func
 (paren
 id|sk
@@ -4787,7 +4787,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|tcp_charge_skb
+id|sk_charge_skb
 c_func
 (paren
 id|sk
@@ -5651,7 +5651,7 @@ comma
 id|buff
 )paren
 suffix:semicolon
-id|tcp_charge_skb
+id|sk_charge_skb
 c_func
 (paren
 id|sk
