@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -103,10 +104,6 @@ r_void
 )paren
 op_assign
 id|machine_alt_power_off
-suffix:semicolon
-r_extern
-r_int
-id|serial_console
 suffix:semicolon
 DECL|function|machine_power_off
 r_void

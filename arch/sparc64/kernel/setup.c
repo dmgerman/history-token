@@ -1992,11 +1992,6 @@ op_star
 id|cmdline_p
 )paren
 (brace
-r_extern
-r_int
-id|serial_console
-suffix:semicolon
-multiline_comment|/* in console.c, of course */
 r_int
 r_int
 id|highest_paddr
