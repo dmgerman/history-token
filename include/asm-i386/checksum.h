@@ -141,6 +141,7 @@ c_func
 (paren
 (paren
 id|__force
+r_int
 r_char
 op_star
 )paren
@@ -603,6 +604,7 @@ id|src
 comma
 (paren
 id|__force
+r_int
 r_char
 op_star
 )paren
