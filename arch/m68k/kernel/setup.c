@@ -2505,23 +2505,6 @@ id|ints
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* for &quot;kbd-reset&quot; cmdline param */
-DECL|function|kbd_reset_setup
-r_void
-id|__init
-id|kbd_reset_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-(brace
-)brace
 DECL|function|check_bugs
 r_void
 id|check_bugs
