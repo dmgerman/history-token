@@ -1117,6 +1117,8 @@ id|os_getpid
 c_func
 (paren
 )paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1283,6 +1285,8 @@ id|os_kill_process
 c_func
 (paren
 id|task-&gt;thread.extern_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

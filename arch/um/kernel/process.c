@@ -1673,6 +1673,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_MODE_SKAS
 r_struct
 id|ptrace_faultinfo
 id|fi
