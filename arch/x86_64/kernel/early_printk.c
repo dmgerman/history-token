@@ -864,7 +864,7 @@ id|fmt
 suffix:semicolon
 id|n
 op_assign
-id|vsnprintf
+id|vscnprintf
 c_func
 (paren
 id|buf

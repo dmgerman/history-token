@@ -4571,7 +4571,7 @@ suffix:semicolon
 multiline_comment|/* basic device status */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4617,7 +4617,7 @@ suffix:semicolon
 multiline_comment|/* registers for device and ep0 */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4653,7 +4653,7 @@ id|UDCCR
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4767,7 +4767,7 @@ id|UDCCS0
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4887,7 +4887,7 @@ id|UDCCFR
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4947,7 +4947,7 @@ id|done
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5048,7 +5048,7 @@ id|reg_udccs
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5088,7 +5088,7 @@ r_else
 multiline_comment|/* ep0 should only have one transfer queued */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5135,7 +5135,7 @@ id|ep-&gt;queue
 (brace
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5196,7 +5196,7 @@ id|ep-&gt;queue
 )paren
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5229,7 +5229,7 @@ r_else
 macro_line|#endif
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5347,7 +5347,7 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma

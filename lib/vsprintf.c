@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/lib/vsprintf.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 multiline_comment|/* vsprintf.c -- Lars Wirzenius &amp; Linus Torvalds. */
 multiline_comment|/*&n; * Wirzenius wrote this portably, Torvalds fucked it up :-)&n; */
-multiline_comment|/* &n; * Fri Jul 13 2001 Crutcher Dunnavant &lt;crutcher+kernel@datastacks.com&gt;&n; * - changed to provide snprintf and vsnprintf functions&n; */
+multiline_comment|/* &n; * Fri Jul 13 2001 Crutcher Dunnavant &lt;crutcher+kernel@datastacks.com&gt;&n; * - changed to provide snprintf and vsnprintf functions&n; * So Feb  1 16:51:32 CET 2004 Juergen Quade &lt;quade@hsnr.de&gt;&n; * - scnprintf and vscnprintf&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1083,7 +1083,7 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/**&n;* vsnprintf - Format a string and place it in a buffer&n;* @buf: The buffer to place the result into&n;* @size: The size of the buffer, including the trailing null space&n;* @fmt: The format string to use&n;* @args: Arguments for the format string&n;*&n;* The return value is the number of characters which would be&n;* generated for the given input, excluding the trailing null,&n;* as per ISO C99.  If the return is greater than or equal to&n;* @size, the resulting string is truncated.&n;*&n;* Call this function if you are already dealing with a va_list.&n;* You probably want snprintf instead.&n; */
+multiline_comment|/**&n; * vsnprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @size: The size of the buffer, including the trailing null space&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; *&n; * The return value is the number of characters which would&n; * be generated for the given input, excluding the trailing&n; * &squot;&bslash;0&squot;, as per ISO C99. If you want to have the exact&n; * number of characters written into @buf as return value&n; * (not including the trailing &squot;&bslash;0&squot;), use vscnprintf. If the&n; * return is greater than or equal to @size, the resulting&n; * string is truncated.&n; *&n; * Call this function if you are already dealing with a va_list.&n; * You probably want snprintf instead.&n; */
 DECL|function|vsnprintf
 r_int
 id|vsnprintf
@@ -2268,6 +2268,69 @@ c_func
 id|vsnprintf
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * vscnprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @size: The size of the buffer, including the trailing null space&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; *&n; * The return value is the number of characters which have been written into&n; * the @buf not including the trailing &squot;&bslash;0&squot;. If @size is &lt;= 0 the function&n; * returns 0.&n; *&n; * Call this function if you are already dealing with a va_list.&n; * You probably want scnprintf instead.&n; */
+DECL|function|vscnprintf
+r_int
+id|vscnprintf
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+id|size
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+id|va_list
+id|args
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|i
+op_assign
+id|vsnprintf
+c_func
+(paren
+id|buf
+comma
+id|size
+comma
+id|fmt
+comma
+id|args
+)paren
+suffix:semicolon
+r_return
+(paren
+id|i
+op_ge
+id|size
+)paren
+ques
+c_cond
+(paren
+id|size
+op_minus
+l_int|1
+)paren
+suffix:colon
+id|i
+suffix:semicolon
+)brace
+DECL|variable|vscnprintf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vscnprintf
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * snprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @size: The size of the buffer, including the trailing null space&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; *&n; * The return value is the number of characters which would be&n; * generated for the given input, excluding the trailing null,&n; * as per ISO C99.  If the return is greater than or equal to&n; * @size, the resulting string is truncated.&n; */
 DECL|function|snprintf
 r_int
@@ -2336,7 +2399,88 @@ c_func
 id|snprintf
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * vsprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; *&n; * Call this function if you are already dealing with a va_list.&n; * You probably want sprintf instead.&n; */
+multiline_comment|/**&n; * scnprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @size: The size of the buffer, including the trailing null space&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; *&n; * The return value is the number of characters written into @buf not including&n; * the trailing &squot;&bslash;0&squot;. If @size is &lt;= 0 the function returns 0. If the return is&n; * greater than or equal to @size, the resulting string is truncated.&n; */
+DECL|function|scnprintf
+r_int
+id|scnprintf
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+id|size
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+(brace
+id|va_list
+id|args
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|va_start
+c_func
+(paren
+id|args
+comma
+id|fmt
+)paren
+suffix:semicolon
+id|i
+op_assign
+id|vsnprintf
+c_func
+(paren
+id|buf
+comma
+id|size
+comma
+id|fmt
+comma
+id|args
+)paren
+suffix:semicolon
+id|va_end
+c_func
+(paren
+id|args
+)paren
+suffix:semicolon
+r_return
+(paren
+id|i
+op_ge
+id|size
+)paren
+ques
+c_cond
+(paren
+id|size
+op_minus
+l_int|1
+)paren
+suffix:colon
+id|i
+suffix:semicolon
+)brace
+DECL|variable|scnprintf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scnprintf
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * vsprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; *&n; * The function returns the number of characters written&n; * into @buf. Use vsnprintf or vscnprintf in order to avoid&n; * buffer overflows.&n; *&n; * Call this function if you are already dealing with a va_list.&n; * You probably want sprintf instead.&n; */
 DECL|function|vsprintf
 r_int
 id|vsprintf
@@ -2381,7 +2525,7 @@ c_func
 id|vsprintf
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * sprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; */
+multiline_comment|/**&n; * sprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; *&n; * The function returns the number of characters written&n; * into @buf. Use snprintf or scnprintf in order to avoid&n; * buffer overflows.&n; */
 DECL|function|sprintf
 r_int
 id|sprintf

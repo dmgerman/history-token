@@ -4129,7 +4129,7 @@ id|HZ
 suffix:semicolon
 id|off
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf

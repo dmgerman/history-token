@@ -546,7 +546,7 @@ c_cond
 id|policy-&gt;governor
 )paren
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -695,7 +695,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -796,7 +796,7 @@ id|out
 suffix:semicolon
 id|i
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 op_amp

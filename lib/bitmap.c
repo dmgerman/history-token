@@ -1054,7 +1054,7 @@ id|chunkmask
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf

@@ -851,7 +851,7 @@ id|status
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -1013,7 +1013,7 @@ id|enable
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -1144,7 +1144,7 @@ id|command
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -1353,7 +1353,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -1904,7 +1904,7 @@ l_int|0
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2385,7 +2385,7 @@ l_int|0
 (brace
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2574,7 +2574,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2647,7 +2647,7 @@ id|i
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2679,7 +2679,7 @@ id|Q_TYPE_QH
 suffix:colon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2746,7 +2746,7 @@ id|p.qh-&gt;qh_next.ptr
 )paren
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2848,7 +2848,7 @@ suffix:semicolon
 )brace
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2939,7 +2939,7 @@ id|Q_TYPE_FSTN
 suffix:colon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2970,7 +2970,7 @@ id|Q_TYPE_ITD
 suffix:colon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2999,7 +2999,7 @@ id|Q_TYPE_SITD
 suffix:colon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3041,7 +3041,7 @@ id|p.ptr
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3208,7 +3208,7 @@ id|ehci-&gt;caps-&gt;hc_capbase
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3254,7 +3254,7 @@ id|ehci-&gt;caps-&gt;hcs_params
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3283,7 +3283,7 @@ id|ehci-&gt;caps-&gt;hcc_params
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3323,7 +3323,7 @@ id|ehci-&gt;regs-&gt;status
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3364,7 +3364,7 @@ id|ehci-&gt;regs-&gt;command
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3405,7 +3405,7 @@ id|ehci-&gt;regs-&gt;intr_enable
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3428,7 +3428,7 @@ id|temp
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3494,7 +3494,7 @@ id|i
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3524,7 +3524,7 @@ id|ehci-&gt;reclaim
 (brace
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3554,7 +3554,7 @@ suffix:semicolon
 macro_line|#ifdef EHCI_STATS
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3581,7 +3581,7 @@ id|temp
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma

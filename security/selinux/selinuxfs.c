@@ -184,7 +184,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|length
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -627,7 +627,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|length
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -1976,7 +1976,7 @@ id|out2
 suffix:semicolon
 id|length
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf

@@ -356,7 +356,7 @@ id|lpaca-&gt;xLpPacaPtr-&gt;xSharedProc
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -433,7 +433,7 @@ l_int|5
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -492,7 +492,7 @@ c_func
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -513,7 +513,7 @@ id|lp_index
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -537,7 +537,7 @@ c_func
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -571,7 +571,7 @@ c_func
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -599,7 +599,7 @@ c_func
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -653,7 +653,7 @@ suffix:semicolon
 )brace
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -671,7 +671,7 @@ id|entitled_capacity
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -702,7 +702,7 @@ c_func
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -723,7 +723,7 @@ id|pool_id
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -753,7 +753,7 @@ suffix:semicolon
 )brace
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1153,7 +1153,7 @@ suffix:semicolon
 )brace
 id|n
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1169,7 +1169,7 @@ id|system_id
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1187,7 +1187,7 @@ id|model
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1282,7 +1282,7 @@ suffix:semicolon
 macro_line|#ifdef DEBUG
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1300,7 +1300,7 @@ id|h_entitled
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1318,7 +1318,7 @@ id|h_unallocated
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1336,7 +1336,7 @@ id|h_aggregation
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1371,7 +1371,7 @@ c_func
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1397,7 +1397,7 @@ l_int|0xffff
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1422,7 +1422,7 @@ id|system_active_processors
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1440,7 +1440,7 @@ id|system_active_processors
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1463,7 +1463,7 @@ id|systemcfg-&gt;processorCount
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1481,7 +1481,7 @@ id|processors
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1514,7 +1514,7 @@ id|FW_FEATURE_SPLPAR
 (brace
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1535,7 +1535,7 @@ r_else
 (brace
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1556,7 +1556,7 @@ suffix:semicolon
 )brace
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1578,7 +1578,7 @@ l_int|0
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1604,7 +1604,7 @@ id|FW_FEATURE_SPLPAR
 (brace
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1630,7 +1630,7 @@ l_int|0xffff
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1656,7 +1656,7 @@ l_int|0xffff
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1682,7 +1682,7 @@ l_int|0xffff
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -1708,7 +1708,7 @@ l_int|0x40
 suffix:semicolon
 id|n
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf

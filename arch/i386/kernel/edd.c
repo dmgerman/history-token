@@ -358,7 +358,7 @@ id|i
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -378,7 +378,7 @@ r_else
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -407,7 +407,7 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -449,7 +449,7 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -508,7 +508,7 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -525,7 +525,7 @@ r_else
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -630,7 +630,7 @@ id|i
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -650,7 +650,7 @@ r_else
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -679,7 +679,7 @@ l_int|5
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -712,7 +712,7 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -743,7 +743,7 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -776,7 +776,7 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -807,7 +807,7 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -838,7 +838,7 @@ l_int|5
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -871,7 +871,7 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -902,7 +902,7 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -933,7 +933,7 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -950,7 +950,7 @@ r_else
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1149,7 +1149,7 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1193,7 +1193,7 @@ id|buf
 suffix:semicolon
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1274,7 +1274,7 @@ id|EDD_EXT_FIXED_DISK_ACCESS
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1295,7 +1295,7 @@ id|EDD_EXT_DEVICE_LOCKING_AND_EJECTING
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1316,7 +1316,7 @@ id|EDD_EXT_ENHANCED_DISK_DRIVE_SUPPORT
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1337,7 +1337,7 @@ id|EDD_EXT_64BIT_EXTENSIONS
 (brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1416,7 +1416,7 @@ id|EDD_INFO_DMA_BOUNDARY_ERROR_TRANSPARENT
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1435,7 +1435,7 @@ id|EDD_INFO_GEOMETRY_VALID
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1454,7 +1454,7 @@ id|EDD_INFO_REMOVABLE
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1473,7 +1473,7 @@ id|EDD_INFO_WRITE_VERIFY
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1492,7 +1492,7 @@ id|EDD_INFO_MEDIA_CHANGE_NOTIFICATION
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1511,7 +1511,7 @@ id|EDD_INFO_LOCKABLE
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1530,7 +1530,7 @@ id|EDD_INFO_NO_MEDIA_PRESENT
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1549,7 +1549,7 @@ id|EDD_INFO_USE_INT13_FN50
 )paren
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1620,7 +1620,7 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1693,7 +1693,7 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1766,7 +1766,7 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
@@ -1839,7 +1839,7 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p
