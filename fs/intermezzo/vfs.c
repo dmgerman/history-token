@@ -517,7 +517,11 @@ suffix:semicolon
 id|BLKDEV_FAIL
 c_func
 (paren
+id|kdev_val
+c_func
+(paren
 id|dev
+)paren
 comma
 l_int|1
 )paren
@@ -1864,7 +1868,7 @@ id|D_PIOCTL
 comma
 l_string|&quot;atime %#lx, mtime %#lx, ctime %#lx, attr_flags %#x&bslash;n&quot;
 comma
-id|iattr-&gt;ia_atime
+id|iattr-&gt;ia_atime.tv_sec
 comma
 id|iattr-&gt;ia_mtime.tv_sec
 comma

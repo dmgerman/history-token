@@ -53,6 +53,8 @@ id|de
 (brace
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_char
 op_star

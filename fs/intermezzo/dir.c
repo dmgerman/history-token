@@ -1306,7 +1306,9 @@ op_assign
 (brace
 l_int|0
 comma
+(brace
 l_int|0
+)brace
 comma
 l_int|0
 )brace
@@ -1371,11 +1373,11 @@ id|iattr-&gt;ia_gid
 comma
 id|iattr-&gt;ia_size
 comma
-id|iattr-&gt;ia_atime
+id|iattr-&gt;ia_atime.tv_sec
 comma
-id|iattr-&gt;ia_mtime
+id|iattr-&gt;ia_mtime.tv_sec
 comma
-id|iattr-&gt;ia_ctime
+id|iattr-&gt;ia_ctime.tv_sec
 comma
 id|iattr-&gt;ia_attr_flags
 )paren

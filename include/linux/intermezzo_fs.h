@@ -25,7 +25,8 @@ id|__u64
 id|kml_offset
 suffix:semicolon
 DECL|member|updated_time
-id|__u64
+r_struct
+id|timespec
 id|updated_time
 suffix:semicolon
 DECL|member|remote_ino
