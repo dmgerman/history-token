@@ -4372,15 +4372,11 @@ op_star
 id|p
 comma
 r_struct
-id|nfs_fsinfo
+id|nfs_fsstat
 op_star
 id|res
 )paren
 (brace
-r_struct
-id|nfs_fattr
-id|dummy
-suffix:semicolon
 r_int
 id|status
 suffix:semicolon
@@ -4401,8 +4397,7 @@ c_func
 (paren
 id|p
 comma
-op_amp
-id|dummy
+id|res-&gt;fattr
 )paren
 suffix:semicolon
 r_if
@@ -4513,10 +4508,6 @@ op_star
 id|res
 )paren
 (brace
-r_struct
-id|nfs_fattr
-id|dummy
-suffix:semicolon
 r_int
 id|status
 suffix:semicolon
@@ -4537,8 +4528,7 @@ c_func
 (paren
 id|p
 comma
-op_amp
-id|dummy
+id|res-&gt;fattr
 )paren
 suffix:semicolon
 r_if
@@ -4638,6 +4628,10 @@ id|res-&gt;maxfilesize
 )paren
 suffix:semicolon
 multiline_comment|/* ignore time_delta and properties */
+id|res-&gt;lease_time
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4659,15 +4653,11 @@ op_star
 id|p
 comma
 r_struct
-id|nfs_fsinfo
+id|nfs_pathconf
 op_star
 id|res
 )paren
 (brace
-r_struct
-id|nfs_fattr
-id|dummy
-suffix:semicolon
 r_int
 id|status
 suffix:semicolon
@@ -4688,8 +4678,7 @@ c_func
 (paren
 id|p
 comma
-op_amp
-id|dummy
+id|res-&gt;fattr
 )paren
 suffix:semicolon
 r_if
@@ -4707,7 +4696,7 @@ c_func
 id|status
 )paren
 suffix:semicolon
-id|res-&gt;linkmax
+id|res-&gt;max_link
 op_assign
 id|ntohl
 c_func
@@ -4717,7 +4706,7 @@ id|p
 op_increment
 )paren
 suffix:semicolon
-id|res-&gt;namelen
+id|res-&gt;max_namelen
 op_assign
 id|ntohl
 c_func

@@ -160,6 +160,13 @@ DECL|struct|nfs_fsinfo
 r_struct
 id|nfs_fsinfo
 (brace
+DECL|member|fattr
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+suffix:semicolon
+multiline_comment|/* Post-op attributes */
 DECL|member|rtmax
 id|__u32
 id|rtmax
@@ -199,11 +206,24 @@ DECL|member|maxfilesize
 id|__u64
 id|maxfilesize
 suffix:semicolon
-DECL|member|bsize
-id|__u64
-id|bsize
+DECL|member|lease_time
+id|__u32
+id|lease_time
 suffix:semicolon
-multiline_comment|/* block size */
+multiline_comment|/* in seconds */
+)brace
+suffix:semicolon
+DECL|struct|nfs_fsstat
+r_struct
+id|nfs_fsstat
+(brace
+DECL|member|fattr
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+suffix:semicolon
+multiline_comment|/* Post-op attributes */
 DECL|member|tbytes
 id|__u64
 id|tbytes
@@ -234,21 +254,60 @@ id|__u64
 id|afiles
 suffix:semicolon
 multiline_comment|/* # of files available to user */
-DECL|member|linkmax
+)brace
+suffix:semicolon
+DECL|struct|nfs2_fsstat
+r_struct
+id|nfs2_fsstat
+(brace
+DECL|member|tsize
 id|__u32
-id|linkmax
+id|tsize
+suffix:semicolon
+multiline_comment|/* Server transfer size */
+DECL|member|bsize
+id|__u32
+id|bsize
+suffix:semicolon
+multiline_comment|/* Filesystem block size */
+DECL|member|blocks
+id|__u32
+id|blocks
+suffix:semicolon
+multiline_comment|/* No. of &quot;bsize&quot; blocks on filesystem */
+DECL|member|bfree
+id|__u32
+id|bfree
+suffix:semicolon
+multiline_comment|/* No. of free &quot;bsize&quot; blocks */
+DECL|member|bavail
+id|__u32
+id|bavail
+suffix:semicolon
+multiline_comment|/* No. of available &quot;bsize&quot; blocks */
+)brace
+suffix:semicolon
+DECL|struct|nfs_pathconf
+r_struct
+id|nfs_pathconf
+(brace
+DECL|member|fattr
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+suffix:semicolon
+multiline_comment|/* Post-op attributes */
+DECL|member|max_link
+id|__u32
+id|max_link
 suffix:semicolon
 multiline_comment|/* max # of hard links */
-DECL|member|namelen
+DECL|member|max_namelen
 id|__u32
-id|namelen
+id|max_namelen
 suffix:semicolon
 multiline_comment|/* max name length */
-DECL|member|lease_time
-id|__u32
-id|lease_time
-suffix:semicolon
-multiline_comment|/* in seconds */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Arguments to the read call.&n; */
@@ -1767,7 +1826,47 @@ id|nfs_fh
 op_star
 comma
 r_struct
+id|nfs_fsstat
+op_star
+)paren
+suffix:semicolon
+DECL|member|fsinfo
+r_int
+(paren
+op_star
+id|fsinfo
+)paren
+(paren
+r_struct
+id|nfs_server
+op_star
+comma
+r_struct
+id|nfs_fh
+op_star
+comma
+r_struct
 id|nfs_fsinfo
+op_star
+)paren
+suffix:semicolon
+DECL|member|pathconf
+r_int
+(paren
+op_star
+id|pathconf
+)paren
+(paren
+r_struct
+id|nfs_server
+op_star
+comma
+r_struct
+id|nfs_fh
+op_star
+comma
+r_struct
+id|nfs_pathconf
 op_star
 )paren
 suffix:semicolon
