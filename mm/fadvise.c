@@ -8,9 +8,9 @@ macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/fadvise.h&gt;
 multiline_comment|/*&n; * POSIX_FADV_WILLNEED could set PG_Referenced, and POSIX_FADV_NOREUSE could&n; * deactivate the pages and clear PG_Referenced.&n; */
-DECL|function|sys_fadvise64
+DECL|function|sys_fadvise64_64
 r_int
-id|sys_fadvise64
+id|sys_fadvise64_64
 c_func
 (paren
 r_int
@@ -19,7 +19,7 @@ comma
 id|loff_t
 id|offset
 comma
-r_int
+id|loff_t
 id|len
 comma
 r_int
@@ -261,6 +261,38 @@ id|file
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+)brace
+DECL|function|sys_fadvise64
+r_int
+id|sys_fadvise64
+c_func
+(paren
+r_int
+id|fd
+comma
+id|loff_t
+id|offset
+comma
+r_int
+id|len
+comma
+r_int
+id|advice
+)paren
+(brace
+r_return
+id|sys_fadvise64_64
+c_func
+(paren
+id|fd
+comma
+id|offset
+comma
+id|len
+comma
+id|advice
+)paren
 suffix:semicolon
 )brace
 eof
