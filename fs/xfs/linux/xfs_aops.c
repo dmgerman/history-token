@@ -597,7 +597,7 @@ id|sector_shift
 op_assign
 id|block_bits
 op_minus
-l_int|9
+id|BBSHIFT
 suffix:semicolon
 id|bn
 op_assign
@@ -1102,7 +1102,7 @@ op_ne
 id|head
 )paren
 suffix:semicolon
-multiline_comment|/* if we reached the end of the page, sum forwards in&n;&t; * following pages.&n;&t; */
+multiline_comment|/* If we reached the end of the page, sum forwards in&n;&t; * following pages.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3193,14 +3193,18 @@ c_func
 (paren
 id|bh
 )paren
-)paren
-(brace
-id|lock_buffer
+op_logical_and
+op_logical_neg
+id|test_and_set_bit
 c_func
 (paren
-id|bh
+id|BH_Lock
+comma
+op_amp
+id|bh-&gt;b_state
 )paren
-suffix:semicolon
+)paren
+(brace
 id|bh_arr
 (braket
 id|cnt
@@ -3490,11 +3494,6 @@ id|flags
 suffix:colon
 id|PBF_READ
 comma
-(paren
-r_struct
-id|page_buf_bmap_s
-op_star
-)paren
 op_amp
 id|pbmap
 comma
@@ -3571,7 +3570,7 @@ op_rshift
 (paren
 id|inode-&gt;i_blkbits
 op_minus
-l_int|9
+id|BBSHIFT
 )paren
 suffix:semicolon
 id|bn
