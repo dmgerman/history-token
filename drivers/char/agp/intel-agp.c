@@ -6201,6 +6201,12 @@ comma
 id|pdev-&gt;device
 )paren
 suffix:semicolon
+id|agp_put_bridge
+c_func
+(paren
+id|bridge
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -6290,11 +6296,15 @@ id|PFX
 l_string|&quot;could not assign resource 0&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|agp_put_bridge
+c_func
 (paren
+id|bridge
+)paren
+suffix:semicolon
+r_return
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -6317,11 +6327,15 @@ id|PFX
 l_string|&quot;Unable to Enable PCI device&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|agp_put_bridge
+c_func
 (paren
+id|bridge
+)paren
+suffix:semicolon
+r_return
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the mode register */
