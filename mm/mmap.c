@@ -3394,7 +3394,8 @@ c_cond
 id|ret
 )paren
 r_return
-id|ret
+op_minus
+id|EINVAL
 suffix:semicolon
 r_return
 id|addr
