@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/pdc202xx.c&t;Version 0.36&t;Sept 11, 2002&n; *&n; *  Copyright (C) 1998-2002&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  Promise Ultra33 cards with BIOS v1.20 through 1.28 will need this&n; *  compiled into the kernel if you have more than one card installed.&n; *  Note that BIOS v1.29 is reported to fix the problem.  Since this is&n; *  safe chipset tuning, including this support is harmless&n; *&n; *  Promise Ultra66 cards with BIOS v1.11 this&n; *  compiled into the kernel if you have more than one card installed.&n; *&n; *  Promise Ultra100 cards.&n; *&n; *  The latest chipset code will support the following ::&n; *  Three Ultra33 controllers and 12 drives.&n; *  8 are UDMA supported and 4 are limited to DMA mode 2 multi-word.&n; *  The 8/4 ratio is a BIOS code limit by promise.&n; *&n; *  UNLESS you enable &quot;CONFIG_PDC202XX_BURST&quot;&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/pci/pdc202xx_old.c&t;Version 0.36&t;Sept 11, 2002&n; *&n; *  Copyright (C) 1998-2002&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  Promise Ultra33 cards with BIOS v1.20 through 1.28 will need this&n; *  compiled into the kernel if you have more than one card installed.&n; *  Note that BIOS v1.29 is reported to fix the problem.  Since this is&n; *  safe chipset tuning, including this support is harmless&n; *&n; *  Promise Ultra66 cards with BIOS v1.11 this&n; *  compiled into the kernel if you have more than one card installed.&n; *&n; *  Promise Ultra100 cards.&n; *&n; *  The latest chipset code will support the following ::&n; *  Three Ultra33 controllers and 12 drives.&n; *  8 are UDMA supported and 4 are limited to DMA mode 2 multi-word.&n; *  The 8/4 ratio is a BIOS code limit by promise.&n; *&n; *  UNLESS you enable &quot;CONFIG_PDC202XX_BURST&quot;&n; *&n; */
 multiline_comment|/*&n; *  Portions Copyright (C) 1999 Promise Technology, Inc.&n; *  Author: Frank Tiernan (frankt@promise.com)&n; *  Released under terms of General Public License&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2068,6 +2068,7 @@ macro_line|#if PDC202XX_DEBUG_DRIVE_INFO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %s drive%d 0x%08x &quot;
 comma
 id|drive-&gt;name
@@ -2367,6 +2368,7 @@ macro_line|#if PDC202_DEBUG_CABLE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %s-pin cable, %s-pin cable, %d&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2437,6 +2439,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;ULTRA 66/100/133: %s channel of Ultra 66/100/133 &quot;
 l_string|&quot;requires an 80-pin cable for Ultra66 operation.&bslash;n&quot;
 comma
@@ -2451,6 +2454,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;         Switching to Ultra33 mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2477,6 +2481,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning: %s channel requires an 80-pin cable for operation.&bslash;n&quot;
 comma
 id|hwif-&gt;channel
@@ -2490,6 +2495,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s reduced to Ultra33 mode.&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -3740,6 +3746,7 @@ multiline_comment|/* 2 seconds ?! */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PDC202XX: %s channel reset.&bslash;n&quot;
 comma
 id|hwif-&gt;channel
@@ -4108,6 +4115,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
 id|name
@@ -4447,6 +4455,7 @@ macro_line|#if PDC202_DEBUG_CABLE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %s-pin cable&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -4553,6 +4562,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: (U)DMA Burst Bit %sABLED &quot;
 "&bslash;"
 l_string|&quot;Primary %s Mode &quot;
@@ -4610,6 +4620,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: FORCING BURST BIT 0x%02x-&gt;0x%02x &quot;
 comma
 id|hwif-&gt;cds-&gt;name
@@ -4681,6 +4692,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: FORCING PRIMARY MODE BIT &quot;
 l_string|&quot;0x%02x -&gt; 0x%02x &quot;
 comma
@@ -4753,6 +4765,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: FORCING SECONDARY MODE BIT &quot;
 l_string|&quot;0x%02x -&gt; 0x%02x &quot;
 comma
@@ -4945,6 +4958,7 @@ multiline_comment|/* 0xbc */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: pci-config space interrupt &quot;
 l_string|&quot;mirror fixed.&bslash;n&quot;
 comma

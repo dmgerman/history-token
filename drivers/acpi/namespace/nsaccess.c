@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/amlcode.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
@@ -169,6 +169,53 @@ c_cond
 id|init_val-&gt;val
 )paren
 (brace
+id|acpi_string
+id|val
+suffix:semicolon
+id|status
+op_assign
+id|acpi_os_predefined_override
+c_func
+(paren
+id|init_val
+comma
+op_amp
+id|val
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not override predefined %s&bslash;n&quot;
+comma
+id|init_val-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|val
+)paren
+(brace
+id|val
+op_assign
+id|init_val-&gt;val
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * Entry requests an initial value, allocate a&n;&t;&t;&t; * descriptor for it.&n;&t;&t;&t; */
 id|obj_desc
 op_assign
@@ -209,7 +256,7 @@ id|u8
 )paren
 id|ACPI_STRTOUL
 (paren
-id|init_val-&gt;val
+id|val
 comma
 l_int|NULL
 comma
@@ -239,7 +286,7 @@ id|acpi_integer
 )paren
 id|ACPI_STRTOUL
 (paren
-id|init_val-&gt;val
+id|val
 comma
 l_int|NULL
 comma
@@ -259,12 +306,12 @@ id|u32
 )paren
 id|ACPI_STRLEN
 (paren
-id|init_val-&gt;val
+id|val
 )paren
 suffix:semicolon
 id|obj_desc-&gt;string.pointer
 op_assign
-id|init_val-&gt;val
+id|val
 suffix:semicolon
 id|obj_desc-&gt;common.flags
 op_or_assign
@@ -286,7 +333,7 @@ id|u16
 )paren
 id|ACPI_STRTOUL
 (paren
-id|init_val-&gt;val
+id|val
 comma
 l_int|NULL
 comma

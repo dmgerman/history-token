@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * linux/drivers/ide/sis5513.c&t;&t;Version 0.14ac&t;Sept 11, 2002&n; *&n; * Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Copyright (C) 2002&t;&t;Lionel Bouton &lt;Lionel.Bouton@inet6.fr&gt;, Maintainer&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; *&n; * Thanks :&n; *&n; * SiS Taiwan&t;&t;: for direct support and hardware.&n; * Daniela Engert&t;: for initial ATA100 advices and numerous others.&n; * John Fremlin, Manfred Spraul, Dave Morgan :&n; *&t;&t;&t;  for checking code correctness, providing patches.&n; *&n; *&n; * Original tests and design on the SiS620/5513 chipset.&n; * ATA100 tests and design on the SiS735/5513 chipset.&n; * ATA16/33 support from specs&n; * ATA133 support for SiS961/962 by L.C. Chang &lt;lcchang@sis.com.tw&gt;&n; */
-multiline_comment|/*&n; * TODO:&n; *&t;- Get ridden of SisHostChipInfo[] completness dependency.&n; *&t;- Study drivers/ide/ide-timing.h.&n; *&t;- Are there pre-ATA_16 SiS5513 chips ? -&gt; tune init code for them&n; *&t;  or remove ATA_00 define&n; *&t;- More checks in the config registers (force values instead of&n; *&t;  relying on the BIOS setting them correctly).&n; *&t;- Further optimisations ?&n; *&t;  . for example ATA66+ regs 0x48 &amp; 0x4A&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/sis5513.c&t;&t;Version 0.14ac&t;Sept 11, 2002&n; *&n; * Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Copyright (C) 2002&t;&t;Lionel Bouton &lt;Lionel.Bouton@inet6.fr&gt;, Maintainer&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; *&n; * Thanks :&n; *&n; * SiS Taiwan&t;&t;: for direct support and hardware.&n; * Daniela Engert&t;: for initial ATA100 advices and numerous others.&n; * John Fremlin, Manfred Spraul, Dave Morgan, Peter Kjellerstedt&t;:&n; *&t;&t;&t;  for checking code correctness, providing patches.&n; *&n; *&n; * Original tests and design on the SiS620/5513 chipset.&n; * ATA100 tests and design on the SiS735/5513 chipset.&n; * ATA16/33 support from specs&n; * ATA133 support for SiS961/962 by L.C. Chang &lt;lcchang@sis.com.tw&gt;&n; *&n; * Documentation:&n; *&t;SiS chipset documentation available under NDA to companies not&n; *&t;individuals only.&n; */
+multiline_comment|/*&n; * Notes/Special cases:&n; * - SiS5513 derivatives usually have the same PCI IDE register layout when&n; *  supporting the same UDMA modes.&n; * - There are exceptions :&n; *  . SiS730 and SiS550 use the same layout than ATA_66 chipsets but support&n; *   ATA_100&n; *  . ATA_133 capable chipsets mark a shift in SiS chipset designs : previously&n; *   south and northbridge were integrated, making IDE (a southbridge function)&n; *   capabilities easily deduced from the northbridge PCI id. With ATA_133,&n; *   chipsets started to be split in the usual north/south bridges chips&n; *   -&gt; the driver needs to detect the correct southbridge when faced to newest&n; *   northbridges.&n; *  . On ATA133 capable chipsets when bit 30 of dword at 0x54 is 1 the&n; *   configuration space is moved from 0x40 to 0x70.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -25,7 +25,7 @@ singleline_comment|// #define BROKEN_LEVEL XFER_SW_DMA_0
 multiline_comment|/* Miscellaneaous flags */
 DECL|macro|SIS5513_LATENCY
 mdefine_line|#define SIS5513_LATENCY&t;&t;0x01
-multiline_comment|/* registers layout and init values are chipset family dependent */
+multiline_comment|/* registers layout and init values are chipset family dependant */
 multiline_comment|/* 1/ define families */
 DECL|macro|ATA_00
 mdefine_line|#define ATA_00&t;&t;0x00
@@ -1634,6 +1634,11 @@ comma
 id|reg11
 suffix:semicolon
 multiline_comment|/* timing registers */
+id|u32
+id|regdw0
+comma
+id|regdw1
+suffix:semicolon
 r_char
 op_star
 id|p
@@ -1803,7 +1808,169 @@ id|reg11
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|u32
+id|reg54h
+suffix:semicolon
+id|u8
+id|drive_pci
+op_assign
+l_int|0x40
+suffix:semicolon
+id|pci_read_config_dword
+c_func
+(paren
+id|bmide_dev
+comma
+l_int|0x54
+comma
+op_amp
+id|reg54h
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reg54h
+op_amp
+l_int|0x40000000
+)paren
+(brace
+singleline_comment|// Configuration space remapped to 0x70
+id|drive_pci
+op_assign
+l_int|0x70
+suffix:semicolon
+)brace
+id|pci_read_config_dword
+c_func
+(paren
+id|bmide_dev
+comma
+(paren
+r_int
+r_int
+)paren
+id|drive_pci
+op_plus
+l_int|8
+op_star
+id|pos
+comma
+op_amp
+id|regdw0
+)paren
+suffix:semicolon
+id|pci_read_config_dword
+c_func
+(paren
+id|bmide_dev
+comma
+(paren
+r_int
+r_int
+)paren
+id|drive_pci
+op_plus
+l_int|8
+op_star
+id|pos
+op_plus
+l_int|4
+comma
+op_amp
+id|regdw1
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;Drive %d:&bslash;n&quot;
+comma
+id|pos
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* UDMA */
+r_if
+c_cond
+(paren
+id|chipset_family
+op_ge
+id|ATA_133
+)paren
+(brace
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;                UDMA %s &bslash;t &bslash;t &bslash;t UDMA %s&bslash;n&quot;
+comma
+(paren
+id|regdw0
+op_amp
+l_int|0x04
+)paren
+ques
+c_cond
+l_string|&quot;Enabled&quot;
+suffix:colon
+l_string|&quot;Disabled&quot;
+comma
+(paren
+id|regdw1
+op_amp
+l_int|0x04
+)paren
+ques
+c_cond
+l_string|&quot;Enabled&quot;
+suffix:colon
+l_string|&quot;Disabled&quot;
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;                UDMA Cycle Time    %s &bslash;t UDMA Cycle Time    %s&bslash;n&quot;
+comma
+id|cycle_time
+(braket
+(paren
+id|regdw0
+op_amp
+l_int|0xF0
+)paren
+op_rshift
+l_int|4
+)braket
+comma
+id|cycle_time
+(braket
+(paren
+id|regdw1
+op_amp
+l_int|0xF0
+)paren
+op_rshift
+l_int|4
+)braket
+)paren
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -3965,6 +4132,8 @@ id|u8
 id|drive_pci
 comma
 id|reg
+comma
+id|speed
 suffix:semicolon
 id|u32
 id|regdw
@@ -3976,16 +4145,6 @@ c_func
 id|dev
 comma
 l_string|&quot;sis5513_tune_chipset start&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;SIS5513: sis5513_tune_chipset, drive %d, speed %d&bslash;n&quot;
-comma
-id|drive-&gt;dn
-comma
-id|speed
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4014,7 +4173,6 @@ op_assign
 id|BROKEN_LEVEL
 suffix:semicolon
 macro_line|#endif
-id|u8
 id|speed
 op_assign
 id|ide_rate_filter
@@ -4029,6 +4187,18 @@ comma
 id|xferspeed
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;SIS5513: sis5513_tune_chipset, drive %d, speed %d&bslash;n&quot;
+comma
+id|drive-&gt;dn
+comma
+id|xferspeed
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* See config_art_rwp_pio for drive pci config registers */
 id|drive_pci
 op_assign
@@ -4589,7 +4759,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;SIS5513: config_chipset_for_dma, drive %d, ultra %x, udma_66 %x&bslash;n&quot;
+l_string|&quot;SIS5513: config_chipset_for_dma, drive %d, ultra %x&bslash;n&quot;
 comma
 id|drive-&gt;dn
 comma
@@ -5994,4 +6164,5 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
+multiline_comment|/*&n; * TODO:&n; *&t;- Get ridden of SisHostChipInfo[] completness dependancy.&n; *&t;- Study drivers/ide/ide-timing.h.&n; *&t;- Are there pre-ATA_16 SiS5513 chips ? -&gt; tune init code for them&n; *&t;  or remove ATA_00 define&n; *&t;- More checks in the config registers (force values instead of&n; *&t;  relying on the BIOS setting them correctly).&n; *&t;- Further optimisations ?&n; *&t;  . for example ATA66+ regs 0x48 &amp; 0x4A&n; */
 eof

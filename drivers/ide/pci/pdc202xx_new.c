@@ -1264,6 +1264,7 @@ macro_line|#if PDC202XX_DEBUG_DRIVE_INFO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %s drive%d 0x%08x &quot;
 comma
 id|drive-&gt;name
@@ -1904,6 +1905,7 @@ macro_line|#if PDC202_DEBUG_CABLE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %s-pin cable, %s-pin cable, %d&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -1954,6 +1956,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;ULTRA 66/100/133: %s channel of Ultra 66/100/133 &quot;
 l_string|&quot;requires an 80-pin cable for Ultra66 operation.&bslash;n&quot;
 comma
@@ -1968,6 +1971,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;         Switching to Ultra33 mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1977,6 +1981,7 @@ multiline_comment|/* Secondary : zero out fourth bit */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning: %s channel requires an 80-pin cable for operation.&bslash;n&quot;
 comma
 id|hwif-&gt;channel
@@ -1990,6 +1995,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s reduced to Ultra33 mode.&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2487,6 +2493,7 @@ multiline_comment|/*&n;&t; * Deleted this because it is redundant from the calle
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PDC202XX: %s channel reset.&bslash;n&quot;
 comma
 id|HWIF
@@ -2587,6 +2594,7 @@ multiline_comment|/* 2 seconds ?! */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PDC202XX: %s channel reset.&bslash;n&quot;
 comma
 id|hwif-&gt;channel
@@ -2853,6 +2861,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
 id|name
@@ -3039,6 +3048,7 @@ macro_line|#if PDC202_DEBUG_CABLE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %s-pin cable&bslash;n&quot;
 comma
 id|hwif-&gt;name

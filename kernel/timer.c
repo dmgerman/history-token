@@ -65,12 +65,6 @@ DECL|typedef|tvec_root_t
 )brace
 id|tvec_root_t
 suffix:semicolon
-DECL|typedef|timer_t
-r_typedef
-r_struct
-id|timer_list
-id|timer_t
-suffix:semicolon
 DECL|struct|tvec_t_base_s
 r_struct
 id|tvec_t_base_s
@@ -85,7 +79,8 @@ r_int
 id|timer_jiffies
 suffix:semicolon
 DECL|member|running_timer
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|running_timer
 suffix:semicolon
@@ -139,7 +134,8 @@ r_void
 id|check_timer_failed
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -207,7 +203,8 @@ r_void
 id|check_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -237,7 +234,8 @@ id|tvec_base_t
 op_star
 id|base
 comma
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -480,7 +478,8 @@ r_void
 id|add_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -653,7 +652,8 @@ r_int
 id|mod_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 comma
@@ -905,7 +905,8 @@ r_int
 id|del_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -1000,7 +1001,8 @@ r_int
 id|del_timer_sync
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -1164,7 +1166,8 @@ op_ne
 id|head
 )paren
 (brace
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|tmp
 suffix:semicolon
@@ -1175,7 +1178,8 @@ c_func
 (paren
 id|curr
 comma
-id|timer_t
+r_struct
+id|timer_list
 comma
 id|entry
 )paren
@@ -1357,7 +1361,8 @@ r_int
 r_int
 id|data
 suffix:semicolon
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 suffix:semicolon
@@ -1368,7 +1373,8 @@ c_func
 (paren
 id|curr
 comma
-id|timer_t
+r_struct
+id|timer_list
 comma
 id|entry
 )paren
@@ -1708,6 +1714,11 @@ id|time_state
 op_assign
 id|TIME_OOP
 suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1741,6 +1752,11 @@ suffix:semicolon
 id|time_state
 op_assign
 id|TIME_WAIT
+suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -3110,7 +3126,8 @@ r_int
 id|timeout
 )paren
 (brace
-id|timer_t
+r_struct
+id|timer_list
 id|timer
 suffix:semicolon
 r_int
@@ -3254,6 +3271,7 @@ r_return
 id|current-&gt;pid
 suffix:semicolon
 )brace
+macro_line|#ifndef FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 DECL|function|nanosleep_restart
 r_static
 r_int
@@ -3565,6 +3583,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif 
+singleline_comment|// ! FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 multiline_comment|/*&n; * sys_sysinfo - fill in sysinfo struct&n; */
 DECL|function|sys_sysinfo
 id|asmlinkage

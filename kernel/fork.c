@@ -3348,6 +3348,13 @@ op_amp
 id|p-&gt;sibling
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|p-&gt;posix_timers
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
