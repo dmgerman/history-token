@@ -516,6 +516,8 @@ mdefine_line|#define CLOCK_REALTIME_HR&t; 4
 DECL|macro|CLOCK_MONOTONIC_HR
 mdefine_line|#define CLOCK_MONOTONIC_HR&t;  5
 multiline_comment|/*&n; * The IDs of various hardware clocks&n; */
+DECL|macro|CLOCK_SGI_CYCLE
+mdefine_line|#define CLOCK_SGI_CYCLE 10
 DECL|macro|MAX_CLOCKS
 mdefine_line|#define MAX_CLOCKS 16
 DECL|macro|CLOCKS_MASK
