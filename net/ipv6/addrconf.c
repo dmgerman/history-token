@@ -3953,6 +3953,12 @@ c_func
 id|ifp
 )paren
 suffix:semicolon
+id|addrconf_verify
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 )brace
 )brace
 id|in6_dev_put
