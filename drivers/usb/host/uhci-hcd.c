@@ -9689,6 +9689,8 @@ l_int|NULL
 comma
 op_amp
 id|hcd-&gt;self
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
