@@ -531,7 +531,7 @@ DECL|macro|XFS_SB_GOOD_VERSION
 mdefine_line|#define&t;XFS_SB_GOOD_VERSION(sbp)&t;xfs_sb_good_version(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_GOOD_VERSION_INT
-mdefine_line|#define&t;XFS_SB_GOOD_VERSION_INT(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t;   ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;    !(((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKREALBITS) &amp;&amp; &bslash;&n;&t;      ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_MOREBITSBIT) &amp;&amp; &bslash;&n;&t;      ((sbp)-&gt;sb_features2 &amp; ~XFS_SB_VERSION2_OKREALBITS))
+mdefine_line|#define&t;XFS_SB_GOOD_VERSION_INT(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t;   ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;    !(((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKREALBITS) || &bslash;&n;&t;      (((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_MOREBITSBIT) &amp;&amp; &bslash;&n;&t;       ((sbp)-&gt;sb_features2 &amp; ~XFS_SB_VERSION2_OKREALBITS)))
 macro_line|#ifdef __KERNEL__
 DECL|macro|XFS_SB_GOOD_VERSION
 mdefine_line|#define&t;XFS_SB_GOOD_VERSION(sbp)&t;&bslash;&n;&t;(XFS_SB_GOOD_VERSION_INT(sbp) &amp;&amp; &bslash;&n;&t;  (sbp)-&gt;sb_shared_vn &lt;= XFS_SB_MAX_SHARED_VN) ))
