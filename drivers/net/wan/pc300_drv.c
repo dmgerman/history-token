@@ -21286,9 +21286,13 @@ id|card-&gt;hw.falcbase
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Set PCI drv pointer to the card structure */
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|card
+)paren
 suffix:semicolon
 multiline_comment|/* Set board type */
 r_switch
@@ -21592,11 +21596,11 @@ id|pc300_t
 op_star
 id|card
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-id|pc300_t
-op_star
+id|pdev
 )paren
-id|pdev-&gt;driver_data
 suffix:semicolon
 r_if
 c_cond
