@@ -2043,6 +2043,7 @@ id|intel_i830_private.gtt_entries
 id|printk
 (paren
 id|KERN_DEBUG
+id|PFX
 l_string|&quot;pg_start == 0x%.8lx,intel_i830_private.gtt_entries == 0x%.8x&bslash;n&quot;
 comma
 id|pg_start
