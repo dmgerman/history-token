@@ -553,7 +553,7 @@ op_star
 (paren
 id|buf
 op_plus
-l_int|66
+l_int|64
 )paren
 op_eq
 l_int|0xAA55
