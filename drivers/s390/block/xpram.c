@@ -872,7 +872,7 @@ c_cond
 (paren
 id|bio-&gt;bi_sector
 op_amp
-l_int|3
+l_int|7
 )paren
 op_ne
 l_int|0
