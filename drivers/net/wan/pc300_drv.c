@@ -16103,13 +16103,13 @@ id|PC300_PROTO_MLPPP
 (brace
 id|conf-&gt;proto
 op_assign
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 suffix:semicolon
 )brace
 macro_line|#else
 id|conf-&gt;proto
 op_assign
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 suffix:semicolon
 macro_line|#endif
 id|memcpy
@@ -16310,7 +16310,7 @@ id|pc300chconf_t
 )paren
 )paren
 suffix:semicolon
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_assign
 id|conf-&gt;proto
 suffix:semicolon
@@ -16331,7 +16331,7 @@ id|pc300chconf_t
 )paren
 )paren
 suffix:semicolon
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_assign
 id|conf-&gt;proto
 suffix:semicolon
@@ -19486,7 +19486,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_eq
 id|IF_PROTO_PPP
 )paren
@@ -19508,7 +19508,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_eq
 id|IF_PROTO_PPP
 )paren
@@ -19655,7 +19655,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_eq
 id|IF_PROTO_PPP
 )paren
