@@ -4649,11 +4649,11 @@ r_typedef
 r_struct
 (brace
 DECL|member|DeviceType
-id|__u32
+id|__le32
 id|DeviceType
 suffix:semicolon
 DECL|member|DeviceCharacteristics
-id|__u32
+id|__le32
 id|DeviceCharacteristics
 suffix:semicolon
 DECL|typedef|FILE_SYSTEM_DEVICE_INFO
