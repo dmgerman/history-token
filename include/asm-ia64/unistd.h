@@ -447,28 +447,28 @@ DECL|macro|__NR_restart_syscall
 mdefine_line|#define __NR_restart_syscall&t;&t;1246
 DECL|macro|__NR_semtimedop
 mdefine_line|#define __NR_semtimedop&t;&t;&t;1247
-DECL|macro|__NR_sys_timer_create
-mdefine_line|#define __NR_sys_timer_create&t;&t;1248
-DECL|macro|__NR_sys_timer_settime
-mdefine_line|#define __NR_sys_timer_settime&t;&t;1249
-DECL|macro|__NR_sys_timer_gettime
-mdefine_line|#define __NR_sys_timer_gettime&t;&t;1250
-DECL|macro|__NR_sys_timer_getoverrun
-mdefine_line|#define __NR_sys_timer_getoverrun&t;1251
-DECL|macro|__NR_sys_timer_delete
-mdefine_line|#define __NR_sys_timer_delete&t;&t;1252
-DECL|macro|__NR_sys_clock_settime
-mdefine_line|#define __NR_sys_clock_settime&t;&t;1253
-DECL|macro|__NR_sys_clock_gettime
-mdefine_line|#define __NR_sys_clock_gettime&t;&t;1254
-DECL|macro|__NR_sys_clock_getres
-mdefine_line|#define __NR_sys_clock_getres&t;&t;1255
-DECL|macro|__NR_sys_clock_nanosleep
-mdefine_line|#define __NR_sys_clock_nanosleep&t;1256
-DECL|macro|__NR_sys_fstatfs64
-mdefine_line|#define __NR_sys_fstatfs64&t;&t;1257
-DECL|macro|__NR_sys_statfs64
-mdefine_line|#define __NR_sys_statfs64&t;&t;1258
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;&t;1248
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;&t;1249
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;&t;1250
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;&t;1251
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;&t;1252
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;&t;1253
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;&t;1254
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;&t;1255
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;&t;1256
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;&t;1257
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;&t;1258
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */

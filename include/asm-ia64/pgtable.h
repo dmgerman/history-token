@@ -218,11 +218,9 @@ op_eq
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * kern_addr_valid(ADDR) tests if ADDR is pointing to valid kernel&n; * memory.  For the return value to be meaningful, ADDR must be &gt;=&n; * PAGE_OFFSET.  This operation can be relatively expensive (e.g.,&n; * require a hash-, or multi-level tree-lookup or something of that&n; * sort) but it guarantees to return TRUE only if accessing the page&n; * at that address does not cause an error.  Note that there may be&n; * addresses for which kern_addr_valid() returns FALSE even though an&n; * access would not cause an error (e.g., this is typically true for&n; * memory mapped I/O regions.&n; *&n; * XXX Need to implement this for IA-64.&n; */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
-macro_line|#endif
 multiline_comment|/*&n; * Now come the defines and routines to manage and access the three-level&n; * page table.&n; */
 multiline_comment|/*&n; * On some architectures, special things need to be done when setting&n; * the PTE in a page table.  Nothing special needs to be on IA-64.&n; */
 DECL|macro|set_pte
@@ -272,11 +270,9 @@ DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;&t;(pte_val(pte) &amp; (_PAGE_P | _PAGE_PROTNONE))
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(pte)&t;&t;&t;(pte_val(*(pte)) = 0UL)
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/* pte_page() returns the &quot;struct page *&quot; corresponding to the PTE: */
 DECL|macro|pte_page
 mdefine_line|#define pte_page(pte)&t;&t;&t;virt_to_page(((pte_val(pte) &amp; _PFN_MASK) + PAGE_OFFSET))
-macro_line|#endif
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad

@@ -616,13 +616,8 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-macro_line|#ifdef GAS_HAS_LOCAL_TAGS
 DECL|macro|SEARCH_EXCEPTION_TABLE
 macro_line|# define SEARCH_EXCEPTION_TABLE(regs) search_exception_tables(regs-&gt;cr_iip + ia64_psr(regs)-&gt;ri)
-macro_line|#else
-DECL|macro|SEARCH_EXCEPTION_TABLE
-macro_line|# define SEARCH_EXCEPTION_TABLE(regs) search_exception_tables(regs-&gt;cr_iip)
-macro_line|#endif
 r_static
 r_inline
 r_int

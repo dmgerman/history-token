@@ -1,12 +1,16 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * This file contains NUMA specific prototypes and definitions.&n; * &n; * 2002/08/05 Erich Focht &lt;efocht@ess.nec.de&gt;&n; *&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * This file contains NUMA specific prototypes and definitions.&n; *&n; * 2002/08/05 Erich Focht &lt;efocht@ess.nec.de&gt;&n; *&n; */
 macro_line|#ifndef _ASM_IA64_NUMA_H
 DECL|macro|_ASM_IA64_NUMA_H
 mdefine_line|#define _ASM_IA64_NUMA_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#ifdef CONFIG_NUMA
-macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/numa.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;asm/mmzone.h&gt;
 r_extern
 r_volatile
 r_char
@@ -114,6 +118,9 @@ id|paddr
 suffix:semicolon
 DECL|macro|local_nodeid
 mdefine_line|#define local_nodeid (cpu_to_node_map[smp_processor_id()])
+macro_line|#else /* !CONFIG_NUMA */
+DECL|macro|paddr_to_nid
+mdefine_line|#define paddr_to_nid(addr)&t;0
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* _ASM_IA64_NUMA_H */
 eof
