@@ -2749,10 +2749,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|BT_ERR
+id|BT_DBG
 c_func
 (paren
-l_string|&quot;Timeout, retransmitting %u pkts&quot;
+l_string|&quot;hu %p retransmitting %u pkts&quot;
+comma
+id|hu
 comma
 id|bcsp-&gt;unack.qlen
 )paren
