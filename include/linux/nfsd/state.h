@@ -750,6 +750,17 @@ op_star
 id|dp
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|nfs4_put_delegation
+c_func
+(paren
+r_struct
+id|nfs4_delegation
+op_star
+id|dp
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_void

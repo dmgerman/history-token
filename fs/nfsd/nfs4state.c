@@ -562,11 +562,9 @@ r_return
 id|dp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Free the delegation structure.&n; * Called with the recall_lock held.&n; */
-r_static
 r_void
-DECL|function|nfs4_free_delegation
-id|nfs4_free_delegation
+DECL|function|nfs4_put_delegation
+id|nfs4_put_delegation
 c_func
 (paren
 r_struct
@@ -575,19 +573,23 @@ op_star
 id|dp
 )paren
 (brace
-id|dprintk
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;NFSD: nfs4_free_delegation freeing dp %p&bslash;n&quot;
-comma
-id|dp
-)paren
-suffix:semicolon
-id|list_del
+id|atomic_dec_and_test
 c_func
 (paren
 op_amp
-id|dp-&gt;dl_recall_lru
+id|dp-&gt;dl_count
+)paren
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;NFSD: freeing dp %p&bslash;n&quot;
+comma
+id|dp
 )paren
 suffix:semicolon
 id|kfree
@@ -599,6 +601,7 @@ suffix:semicolon
 id|free_delegation
 op_increment
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* release_delegation:&n; *&n; * Remove the associated file_lock first, then remove the delegation.&n; * lease_modify() is called to remove the FS_LEASE file_lock from&n; * the i_flock list, eventually calling nfsd&squot;s lock_manager&n; * fl_release_callback.&n; *&n; * call either:&n; *   nfsd_close : if last close, locks_remove_flock calls lease_modify.&n; *                otherwise, recalled state set to NFS4_RECALL_COMPLETE&n; *                so that it will be reaped by the laundromat service.&n; * or&n; *   remove_lease (calls time_out_lease which calls lease_modify).&n; *   and nfs4_free_delegation.&n; *&n; * Called with nfs_lock_state() held.&n; * Called with the recall_lock held.&n; */
 r_static
@@ -698,42 +701,14 @@ op_amp
 id|dp-&gt;dl_del_perclnt
 )paren
 suffix:semicolon
-multiline_comment|/* dl_count &gt; 0 =&gt; outstanding recall rpc */
-id|dprintk
-c_func
-(paren
-l_string|&quot;NFSD: release_delegation free deleg dl_count %d&bslash;n&quot;
-comma
-id|atomic_read
+id|list_del_init
 c_func
 (paren
 op_amp
-id|dp-&gt;dl_count
-)paren
+id|dp-&gt;dl_recall_lru
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|dp-&gt;dl_state
-)paren
-op_eq
-id|NFS4_REAP_DELEG
-)paren
-op_logical_or
-id|atomic_dec_and_test
-c_func
-(paren
-op_amp
-id|dp-&gt;dl_count
-)paren
-)paren
-id|nfs4_free_delegation
+id|nfs4_put_delegation
 c_func
 (paren
 id|dp
@@ -6896,7 +6871,7 @@ op_amp
 id|dp-&gt;dl_del_perclnt
 )paren
 suffix:semicolon
-id|kfree
+id|nfs4_put_delegation
 c_func
 (paren
 id|dp
