@@ -21,28 +21,28 @@ l_string|&quot; Richard Proctor (rnp@netlink.co.nz)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/**&n; * DOC: Traps for the unwary&n; *&n; *&t;The diagram (Figure 1-1) and the POS summary disagree with the&n; *&t;&quot;Interrupt Level&quot; section in the manual.&n; *&n; *&t;The manual contradicts itself when describing the minimum number &n; *&t;buffers in the &squot;configure lists&squot; command. &n; *&t;My card accepts a buffer config of 4/4. &n; *&n; *&t;Setting the SAV BP bit does not save bad packets, but&n; *&t;only enables RX on-card stats collection. &n; *&n; *&t;The documentation in places seems to miss things. In actual fact&n; *&t;I&squot;ve always eventually found everything is documented, it just&n; *&t;requires careful study.&n; *&n; * DOC: Theory Of Operation&n; *&n; *&t;The 3com 3c527 is a 32bit MCA bus mastering adapter with a large&n; *&t;amount of on board intelligence that housekeeps a somewhat dumber&n; *&t;Intel NIC. For performance we want to keep the transmit queue deep&n; *&t;as the card can transmit packets while fetching others from main&n; *&t;memory by bus master DMA. Transmission and reception are driven by&n; *&t;circular buffer queues.&n; *&n; *&t;The mailboxes can be used for controlling how the card traverses&n; *&t;its buffer rings, but are used only for inital setup in this&n; *&t;implementation.  The exec mailbox allows a variety of commands to&n; *&t;be executed. Each command must complete before the next is&n; *&t;executed. Primarily we use the exec mailbox for controlling the&n; *&t;multicast lists.  We have to do a certain amount of interesting&n; *&t;hoop jumping as the multicast list changes can occur in interrupt&n; *&t;state when the card has an exec command pending. We defer such&n; *&t;events until the command completion interrupt.&n; *&n; *&t;A copy break scheme (taken from 3c59x.c) is employed whereby&n; *&t;received frames exceeding a configurable length are passed&n; *&t;directly to the higher networking layers without incuring a copy,&n; *&t;in what amounts to a time/space trade-off.&n; *&t; &n; *&t;The card also keeps a large amount of statistical information&n; *&t;on-board. In a perfect world, these could be used safely at no&n; *&t;cost. However, lacking information to the contrary, processing&n; *&t;them without races would involve so much extra complexity as to&n; *&t;make it unworthwhile to do so. In the end, a hybrid SW/HW&n; *&t;implementation was made necessary --- see mc32_update_stats().  &n; *&n; * DOC: Notes&n; *&t;&n; *&t;It should be possible to use two or more cards, but at this stage&n; *&t;only by loading two copies of the same module.&n; *&n; *&t;The on-board 82586 NIC has trouble receiving multiple&n; *&t;back-to-back frames and so is likely to drop packets from fast&n; *&t;senders.&n;**/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/if_ether.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &quot;3c527.h&quot;
 multiline_comment|/*&n; * The name of the card. Is used for messages and in the requests for&n; * io regions, irqs and dma channels&n; */
 DECL|variable|cardname
