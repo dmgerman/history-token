@@ -238,18 +238,6 @@ id|u32
 )paren
 id|slit-&gt;localities
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PREFIX
-l_string|&quot;SLIT localities %ux%u&bslash;n&quot;
-comma
-id|localities
-comma
-id|localities
-)paren
-suffix:semicolon
 id|acpi_numa_slit_init
 c_func
 (paren
@@ -408,16 +396,6 @@ id|__va
 c_func
 (paren
 id|phys_addr
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PREFIX
-l_string|&quot;SRAT revision %d&bslash;n&quot;
-comma
-id|srat-&gt;table_revision
 )paren
 suffix:semicolon
 r_return
