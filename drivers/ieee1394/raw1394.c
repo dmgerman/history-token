@@ -14261,11 +14261,11 @@ id|raw1394_cdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|kobject_set_name
+id|cdev_set_name
 c_func
 (paren
 op_amp
-id|raw1394_cdev.kobj
+id|raw1394_cdev
 comma
 id|RAW1394_DEVICE_NAME
 )paren
@@ -14289,6 +14289,7 @@ c_cond
 id|ret
 )paren
 (brace
+multiline_comment|/* jmc: leaves reference to (static) raw1394_cdev */
 id|HPSB_ERR
 c_func
 (paren

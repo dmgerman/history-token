@@ -9605,10 +9605,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|strcpy
+id|cdev_set_name
 c_func
 (paren
-id|driver-&gt;cdev.kobj.name
+op_amp
+id|driver-&gt;cdev
 comma
 id|driver-&gt;name
 )paren
@@ -9676,11 +9677,11 @@ c_cond
 id|error
 )paren
 (brace
-id|kobject_del
+id|cdev_del
 c_func
 (paren
 op_amp
-id|driver-&gt;cdev.kobj
+id|driver-&gt;cdev
 )paren
 suffix:semicolon
 id|unregister_chrdev_region
@@ -10136,10 +10137,11 @@ c_func
 r_void
 )paren
 (brace
-id|strcpy
+id|cdev_set_name
 c_func
 (paren
-id|tty_cdev.kobj.name
+op_amp
+id|tty_cdev
 comma
 l_string|&quot;dev.tty&quot;
 )paren
@@ -10236,10 +10238,11 @@ comma
 l_string|&quot;tty&quot;
 )paren
 suffix:semicolon
-id|strcpy
+id|cdev_set_name
 c_func
 (paren
-id|console_cdev.kobj.name
+op_amp
+id|console_cdev
 comma
 l_string|&quot;dev.console&quot;
 )paren
@@ -10337,10 +10340,11 @@ l_string|&quot;console&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_UNIX98_PTYS
-id|strcpy
+id|cdev_set_name
 c_func
 (paren
-id|ptmx_cdev.kobj.name
+op_amp
+id|ptmx_cdev
 comma
 l_string|&quot;dev.ptmx&quot;
 )paren
@@ -10439,10 +10443,11 @@ l_string|&quot;ptmx&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
-id|strcpy
+id|cdev_set_name
 c_func
 (paren
-id|vc0_cdev.kobj.name
+op_amp
+id|vc0_cdev
 comma
 l_string|&quot;dev.vc0&quot;
 )paren

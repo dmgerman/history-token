@@ -10032,11 +10032,11 @@ id|dv1394_cdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|kobject_set_name
+id|cdev_set_name
 c_func
 (paren
 op_amp
-id|dv1394_cdev.kobj
+id|dv1394_cdev
 comma
 l_string|&quot;dv1394&quot;
 )paren

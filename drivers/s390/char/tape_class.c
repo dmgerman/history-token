@@ -97,10 +97,10 @@ id|cdev-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|strcpy
+id|cdev_set_name
 c_func
 (paren
-id|cdev-&gt;kobj.name
+id|cdev
 comma
 id|devname
 )paren
@@ -153,11 +153,10 @@ c_cond
 id|rc
 )paren
 (brace
-id|kobject_put
+id|cdev_del
 c_func
 (paren
-op_amp
-id|cdev-&gt;kobj
+id|cdev
 )paren
 suffix:semicolon
 r_return

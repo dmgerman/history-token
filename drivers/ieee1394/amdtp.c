@@ -4810,11 +4810,11 @@ id|amdtp_cdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|kobject_set_name
+id|cdev_set_name
 c_func
 (paren
 op_amp
-id|amdtp_cdev.kobj
+id|amdtp_cdev
 comma
 l_string|&quot;amdtp&quot;
 )paren

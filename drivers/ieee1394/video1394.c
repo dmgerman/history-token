@@ -7238,11 +7238,11 @@ id|video1394_cdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|kobject_set_name
+id|cdev_set_name
 c_func
 (paren
 op_amp
-id|video1394_cdev.kobj
+id|video1394_cdev
 comma
 id|VIDEO1394_DRIVER_NAME
 )paren
