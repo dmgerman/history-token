@@ -217,6 +217,12 @@ op_star
 id|inode
 )paren
 (brace
+id|remove_inode_hash
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|inode-&gt;i_mode
 op_assign
 id|S_IFREG
