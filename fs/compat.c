@@ -2038,6 +2038,12 @@ c_cond
 (paren
 id|t-&gt;handler
 )paren
+(brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|t
@@ -2054,6 +2060,12 @@ comma
 id|filp
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_else
 id|error
 op_assign
