@@ -209,6 +209,18 @@ comma
 id|ALPS_MODEL_DUALPOINT
 )brace
 comma
+(brace
+(brace
+l_int|0x63
+comma
+l_int|0x03
+comma
+l_int|0xc8
+)brace
+comma
+id|ALPS_MODEL_DUALPOINT
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * ALPS abolute Mode&n; * byte 0:  1    1    1    1    1  mid0 rig0 lef0&n; * byte 1:  0   x6   x5   x4   x3   x2   x1   x0&n; * byte 2:  0   x10  x9   x8   x7  up1  fin  ges&n; * byte 3:  0   y9   y8   y7    1  mid1 rig1 lef1&n; * byte 4:  0   y6   y5   y4   y3   y2   y1   y0&n; * byte 5:  0   z6   z5   z4   z3   z2   z1   z0&n; *&n; * On a dualpoint, {mid,rig,lef}0 are the stick, 1 are the pad.&n; * We just &squot;or&squot; them together for now.&n; *&n; * We used to send &squot;ges&squot;tures as BTN_TOUCH but this made it impossible&n; * to disable tap events in the synaptics driver since the driver&n; * was unable to distinguish a gesture tap from an actual button click.&n; * A tap gesture now creates an emulated touch that the synaptics&n; * driver can interpret as a tap event, if MaxTapTime=0 and&n; * MaxTapMove=0 then the driver will ignore taps.&n; *&n; * The touchpad on an &squot;Acer Aspire&squot; has 4 buttons:&n; *   left,right,up,down.&n; * This device always sets {mid,rig,lef}0 to 1 and&n; * reflects left,right,down,up in lef1,rig1,mid1,up1.&n; */
