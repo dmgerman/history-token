@@ -950,8 +950,8 @@ DECL|macro|I2C_CLIENT_TEN
 mdefine_line|#define I2C_CLIENT_TEN&t;0x10&t;&t;&t;/* we have a ten bit chip address&t;*/
 multiline_comment|/* Must equal I2C_M_TEN below */
 multiline_comment|/* i2c adapter classes (bitmask) */
-DECL|macro|I2C_CLASS_SMBUS
-mdefine_line|#define I2C_CLASS_SMBUS&t;&t;(1&lt;&lt;0)&t;/* lm_sensors, ... */
+DECL|macro|I2C_CLASS_HWMON
+mdefine_line|#define I2C_CLASS_HWMON&t;&t;(1&lt;&lt;0)&t;/* lm_sensors, ... */
 DECL|macro|I2C_CLASS_TV_ANALOG
 mdefine_line|#define I2C_CLASS_TV_ANALOG&t;(1&lt;&lt;1)&t;/* bttv + friends */
 DECL|macro|I2C_CLASS_TV_DIGITAL

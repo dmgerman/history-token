@@ -1412,7 +1412,7 @@ comma
 dot
 r_class
 op_assign
-id|I2C_CLASS_SMBUS
+id|I2C_CLASS_HWMON
 comma
 dot
 id|name

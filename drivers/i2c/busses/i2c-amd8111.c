@@ -1569,7 +1569,7 @@ id|smbus-&gt;adapter
 dot
 r_class
 op_assign
-id|I2C_CLASS_SMBUS
+id|I2C_CLASS_HWMON
 suffix:semicolon
 id|smbus-&gt;adapter.algo
 op_assign
