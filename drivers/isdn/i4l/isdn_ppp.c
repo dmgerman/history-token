@@ -8648,6 +8648,10 @@ id|t.p.ppp_ipackets
 op_assign
 id|lp-&gt;stats.rx_packets
 suffix:semicolon
+id|t.p.ppp_ibytes
+op_assign
+id|lp-&gt;stats.rx_bytes
+suffix:semicolon
 id|t.p.ppp_ierrors
 op_assign
 id|lp-&gt;stats.rx_errors
@@ -8655,6 +8659,10 @@ suffix:semicolon
 id|t.p.ppp_opackets
 op_assign
 id|lp-&gt;stats.tx_packets
+suffix:semicolon
+id|t.p.ppp_obytes
+op_assign
+id|lp-&gt;stats.tx_bytes
 suffix:semicolon
 id|t.p.ppp_oerrors
 op_assign
