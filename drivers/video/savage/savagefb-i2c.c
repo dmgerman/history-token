@@ -698,6 +698,12 @@ comma
 id|name
 )paren
 suffix:semicolon
+id|symbol_put
+c_func
+(paren
+id|i2c_bit_add_bus
+)paren
+suffix:semicolon
 )brace
 r_else
 id|chan-&gt;par
@@ -873,6 +879,7 @@ id|del_bus
 op_logical_and
 id|par-&gt;chan.par
 )paren
+(brace
 id|del_bus
 c_func
 (paren
@@ -880,6 +887,13 @@ op_amp
 id|par-&gt;chan.adapter
 )paren
 suffix:semicolon
+id|symbol_put
+c_func
+(paren
+id|i2c_bit_del_bus
+)paren
+suffix:semicolon
+)brace
 id|par-&gt;chan.par
 op_assign
 l_int|NULL
@@ -1056,6 +1070,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+id|symbol_put
+c_func
+(paren
+id|i2c_transfer
+)paren
+suffix:semicolon
 )brace
 r_return
 id|buf
