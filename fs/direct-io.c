@@ -3039,6 +3039,21 @@ id|dio-&gt;waiter
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n;&t; * In case of non-aligned buffers, we may need 2 more&n;&t; * pages since we need to zero out first and last block.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|dio-&gt;blkfactor
+)paren
+)paren
+id|dio-&gt;pages_in_io
+op_assign
+l_int|2
+suffix:semicolon
+r_else
 id|dio-&gt;pages_in_io
 op_assign
 l_int|0
