@@ -1123,8 +1123,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tag stuff&n; */
-DECL|macro|blk_queue_tag_request
-mdefine_line|#define blk_queue_tag_request(q, tag)&t;((q)-&gt;queue_tags-&gt;tag_index[(tag)])
 DECL|macro|blk_queue_tag_depth
 mdefine_line|#define blk_queue_tag_depth(q)&t;&t;((q)-&gt;queue_tags-&gt;busy)
 DECL|macro|blk_queue_tag_queue
@@ -1142,6 +1140,19 @@ comma
 r_struct
 id|request
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|request
+op_star
+id|blk_queue_find_tag
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
