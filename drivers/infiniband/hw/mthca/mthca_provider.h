@@ -194,7 +194,7 @@ r_int
 id|cqn
 suffix:semicolon
 DECL|member|cons_index
-r_int
+id|u32
 id|cons_index
 suffix:semicolon
 DECL|member|is_direct
