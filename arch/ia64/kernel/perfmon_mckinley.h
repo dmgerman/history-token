@@ -1,9 +1,4 @@
 multiline_comment|/*&n; * This file contains the McKinley PMU register description tables&n; * and pmc checker used by perfmon.c.&n; *&n; * Copyright (C) 2002-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
-DECL|macro|RDEP
-mdefine_line|#define RDEP(x)&t;(1UL&lt;&lt;(x))
-macro_line|#ifndef CONFIG_MCKINLEY
-macro_line|#error &quot;This file is only valid when CONFIG_MCKINLEY is defined&quot;
-macro_line|#endif
 r_static
 r_int
 id|pfm_mck_pmc_check
@@ -33,31 +28,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_static
-r_int
-id|pfm_write_ibr_dbr
-c_func
-(paren
-r_int
-id|mode
-comma
-id|pfm_context_t
-op_star
-id|ctx
-comma
-r_void
-op_star
-id|arg
-comma
-r_int
-id|count
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 DECL|variable|pfm_mck_pmc_desc
 r_static
 id|pfm_reg_desc_t
@@ -75,14 +45,6 @@ id|pfm_mck_pmd_desc
 (braket
 id|PMU_MAX_PMDS
 )braket
-op_assign
-initialization_block
-suffix:semicolon
-multiline_comment|/*&n; * impl_pmcs, impl_pmds are computed at runtime to minimize errors!&n; */
-DECL|variable|pmu_conf
-r_static
-id|pmu_config_t
-id|pmu_conf
 op_assign
 initialization_block
 suffix:semicolon
@@ -274,7 +236,7 @@ id|ctx-&gt;ctx_state
 op_eq
 id|PFM_CTX_MASKED
 suffix:semicolon
-multiline_comment|/*&n;&t; * we must clear the debug registers if pmc13 has a value which enable&n;&t; * memory pipeline event constraints. In this case we need to clear the&n;&t; * the debug registers if they have not yet been accessed. This is required&n;&t; * to avoid picking stale state.&n;&t; * PMC13 is &quot;active&quot; if:&n;&t; * &t;one of the pmc13.cfg_dbrpXX field is different from 0x3&n;&t; * AND&n;&t; * &t;at the corresponding pmc13.ena_dbrpXX is set.&n;&t; *&n;&t; * For now, we just check on cfg_dbrXX != 0x3.&n;&t; */
+multiline_comment|/*&n;&t; * we must clear the debug registers if pmc13 has a value which enable&n;&t; * memory pipeline event constraints. In this case we need to clear the&n;&t; * the debug registers if they have not yet been accessed. This is required&n;&t; * to avoid picking stale state.&n;&t; * PMC13 is &quot;active&quot; if:&n;&t; * &t;one of the pmc13.cfg_dbrpXX field is different from 0x3&n;&t; * AND&n;&t; * &t;at the corresponding pmc13.ena_dbrpXX is set.&n;&t; */
 id|DPRINT
 c_func
 (paren
@@ -302,6 +264,12 @@ op_logical_and
 id|is_loaded
 op_logical_and
 (paren
+op_star
+id|val
+op_amp
+l_int|0x1e00000000000UL
+)paren
+op_logical_and
 (paren
 op_star
 id|val
@@ -310,7 +278,6 @@ l_int|0x18181818UL
 )paren
 op_ne
 l_int|0x18181818UL
-)paren
 op_logical_and
 id|ctx-&gt;ctx_fl_using_dbreg
 op_eq
@@ -671,4 +638,12 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * impl_pmcs, impl_pmds are computed at runtime to minimize errors!&n; */
+DECL|variable|pmu_conf_mck
+r_static
+id|pmu_config_t
+id|pmu_conf_mck
+op_assign
+initialization_block
+suffix:semicolon
 eof

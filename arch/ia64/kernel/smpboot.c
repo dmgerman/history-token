@@ -922,19 +922,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set I/O port base per CPU&n;&t; */
-id|ia64_set_kr
-c_func
-(paren
-id|IA64_KR_IO_BASE
-comma
-id|__pa
-c_func
-(paren
-id|ia64_iobase
-)paren
-)paren
-suffix:semicolon
 id|ia64_mca_cmc_vector_setup
 c_func
 (paren
@@ -1031,6 +1018,19 @@ r_int
 id|cpu_idle
 (paren
 r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Early console may use I/O ports */
+id|ia64_set_kr
+c_func
+(paren
+id|IA64_KR_IO_BASE
+comma
+id|__pa
+c_func
+(paren
+id|ia64_iobase
+)paren
 )paren
 suffix:semicolon
 id|Dprintk

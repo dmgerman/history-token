@@ -129,6 +129,17 @@ DECL|macro|ia64_srlz_i
 mdefine_line|#define ia64_srlz_i()&t;asm volatile (&quot;;; srlz.i ;;&quot; ::: &quot;memory&quot;)
 DECL|macro|ia64_srlz_d
 mdefine_line|#define ia64_srlz_d()&t;asm volatile (&quot;;; srlz.d&quot; ::: &quot;memory&quot;);
+macro_line|#ifdef HAVE_SERIALIZE_DIRECTIVE
+DECL|macro|ia64_dv_serialize_data
+macro_line|# define ia64_dv_serialize_data()&t;&t;asm volatile (&quot;.serialize.data&quot;);
+DECL|macro|ia64_dv_serialize_instruction
+macro_line|# define ia64_dv_serialize_instruction()&t;asm volatile (&quot;.serialize.instruction&quot;);
+macro_line|#else
+DECL|macro|ia64_dv_serialize_data
+macro_line|# define ia64_dv_serialize_data()
+DECL|macro|ia64_dv_serialize_instruction
+macro_line|# define ia64_dv_serialize_instruction()
+macro_line|#endif
 DECL|macro|ia64_nop
 mdefine_line|#define ia64_nop(x)&t;asm volatile (&quot;nop %0&quot;::&quot;i&quot;(x));
 DECL|macro|ia64_itci

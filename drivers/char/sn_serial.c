@@ -1811,6 +1811,15 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
+r_extern
+id|cpuid_t
+id|sn_get_node_first_cpu
+c_func
+(paren
+id|cnodeid_t
+id|cnode
+)paren
+suffix:semicolon
 id|console_nasid
 op_assign
 id|ia64_sn_get_console_nasid
@@ -1820,7 +1829,7 @@ c_func
 suffix:semicolon
 id|intr_cpuid
 op_assign
-id|NODEPDA
+id|sn_get_node_first_cpu
 c_func
 (paren
 id|NASID_TO_COMPACT_NODEID
@@ -1829,8 +1838,6 @@ c_func
 id|console_nasid
 )paren
 )paren
-op_member_access_from_pointer
-id|node_first_cpu
 suffix:semicolon
 id|intr_cpuloc
 op_assign
