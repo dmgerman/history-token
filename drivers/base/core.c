@@ -507,6 +507,14 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|dev
+op_assign
+id|get_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -684,6 +692,12 @@ id|put_device
 c_func
 (paren
 id|parent
+)paren
+suffix:semicolon
+id|put_device
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return
