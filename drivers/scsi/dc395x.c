@@ -38,8 +38,6 @@ DECL|macro|DBG_FIFO
 mdefine_line|#define DBG_FIFO&t;0x0040
 DECL|macro|DBG_PIO
 mdefine_line|#define DBG_PIO&t;&t;0x0080
-DECL|macro|DBG_RECURSION
-mdefine_line|#define DBG_RECURSION&t;0x0100&t;&t;/* check for excessive recursion */
 DECL|macro|DBG_MALLOC
 mdefine_line|#define DBG_MALLOC&t;0x0200&t;&t;/* report on memory allocations */
 DECL|macro|DBG_TRACE
@@ -65,16 +63,6 @@ DECL|macro|dprintkdbg
 mdefine_line|#define dprintkdbg(type, format, arg...) &bslash;&n;&t;do {} while (0)
 DECL|macro|debug_enabled
 mdefine_line|#define debug_enabled(type)&t;(0)
-macro_line|#endif
-multiline_comment|/*&n; * The recursion debugging just counts entries into the driver and&n; * prints out a messge if it exceeds a certain limit. This variable&n; * hold the count.&n; */
-macro_line|#if debug_enabled(DBG_RECURSION)
-DECL|variable|dbg_in_driver
-r_static
-r_int
-id|dbg_in_driver
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Memory allocation debugging&n; * Just reports when memory is allocated and/or released.&n; */
 macro_line|#if debug_enabled(DBG_MALLOC)
@@ -176,32 +164,6 @@ id|tracebuf
 l_int|64
 )braket
 suffix:semicolon
-DECL|variable|traceoverflow
-r_static
-r_char
-id|traceoverflow
-(braket
-l_int|8
-)braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-suffix:semicolon
 DECL|macro|TRACEPRINTF
 macro_line|# define TRACEPRINTF(x...) &bslash;&n;&t;do { &bslash;&n;&t;&t;int ln = sprintf(tracebuf, x); &bslash;&n;&t;&t;if (srb-&gt;debugpos + ln &gt;= DEBUGTRACEBUFSZ) { &bslash;&n;&t;&t;&t;srb-&gt;debugtrace[srb-&gt;debugpos] = 0; &bslash;&n;&t;&t;&t;srb-&gt;debugpos = DEBUGTRACEBUFSZ/5; &bslash;&n;&t;&t;&t;srb-&gt;debugtrace[srb-&gt;debugpos++] = &squot;&gt;&squot;; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;sprintf(srb-&gt;debugtrace + srb-&gt;debugpos, &quot;%s&quot;, tracebuf); &bslash;&n;&t;&t;srb-&gt;debugpos += ln - 1; &bslash;&n;&t;} while (0)
 DECL|macro|TRACEOUT
@@ -225,28 +187,14 @@ DECL|macro|DC395x_LOCK_IO
 mdefine_line|#define DC395x_LOCK_IO(dev,flags)&t;&t;spin_lock_irqsave(((struct Scsi_Host *)dev)-&gt;host_lock, flags)
 DECL|macro|DC395x_UNLOCK_IO
 mdefine_line|#define DC395x_UNLOCK_IO(dev,flags)&t;&t;spin_unlock_irqrestore(((struct Scsi_Host *)dev)-&gt;host_lock, flags)
-DECL|macro|DC395x_ACB_INITLOCK
-mdefine_line|#define DC395x_ACB_INITLOCK(acb)&t;&t;spin_lock_init(&amp;acb-&gt;smp_lock)
-DECL|macro|DC395x_ACB_LOCK
-mdefine_line|#define DC395x_ACB_LOCK(acb,acb_flags)&t;&t;if (!acb-&gt;lock_level_count[cpuid]) { spin_lock_irqsave(&amp;acb-&gt;smp_lock,acb_flags); acb-&gt;lock_level_count[cpuid]++; } else { acb-&gt;lock_level_count[cpuid]++; }
-DECL|macro|DC395x_ACB_UNLOCK
-mdefine_line|#define DC395x_ACB_UNLOCK(acb,acb_flags)&t;if (--acb-&gt;lock_level_count[cpuid] == 0) { spin_unlock_irqrestore(&amp;acb-&gt;smp_lock,acb_flags); }
-DECL|macro|DC395x_SMP_IO_LOCK
-mdefine_line|#define DC395x_SMP_IO_LOCK(dev,irq_flags)&t;spin_lock_irqsave(((struct Scsi_Host*)dev)-&gt;host_lock,irq_flags)
-DECL|macro|DC395x_SMP_IO_UNLOCK
-mdefine_line|#define DC395x_SMP_IO_UNLOCK(dev,irq_flags)&t;spin_unlock_irqrestore(((struct Scsi_Host*)dev)-&gt;host_lock,irq_flags)
 DECL|macro|DC395x_read8
 mdefine_line|#define DC395x_read8(acb,address)&t;&t;(u8)(inb(acb-&gt;io_port_base + (address)))
-DECL|macro|DC395x_read8_
-mdefine_line|#define DC395x_read8_(address, base)&t;&t;(u8)(inb((USHORT)(base) + (address)))
 DECL|macro|DC395x_read16
 mdefine_line|#define DC395x_read16(acb,address)&t;&t;(u16)(inw(acb-&gt;io_port_base + (address)))
 DECL|macro|DC395x_read32
 mdefine_line|#define DC395x_read32(acb,address)&t;&t;(u32)(inl(acb-&gt;io_port_base + (address)))
 DECL|macro|DC395x_write8
 mdefine_line|#define DC395x_write8(acb,address,value)&t;outb((value), acb-&gt;io_port_base + (address))
-DECL|macro|DC395x_write8_
-mdefine_line|#define DC395x_write8_(address,value,base)&t;outb((value), (USHORT)(base) + (address))
 DECL|macro|DC395x_write16
 mdefine_line|#define DC395x_write16(acb,address,value)&t;outw((value), acb-&gt;io_port_base + (address))
 DECL|macro|DC395x_write32
@@ -282,7 +230,6 @@ DECL|macro|SET_RES_DID
 mdefine_line|#define SET_RES_DID(who,did) { who &amp;= ~RES_DID; who |= (int)(did) &lt;&lt; 16; }
 DECL|macro|SET_RES_DRV
 mdefine_line|#define SET_RES_DRV(who,drv) { who &amp;= ~RES_DRV; who |= (int)(drv) &lt;&lt; 24; }
-multiline_comment|/*&n;**************************************************************************&n;*/
 DECL|macro|TAG_NONE
 mdefine_line|#define TAG_NONE 255
 DECL|struct|SGentry
@@ -300,7 +247,7 @@ id|length
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The SEEPROM structure for TRM_S1040 &n; */
+multiline_comment|/* The SEEPROM structure for TRM_S1040 */
 DECL|struct|NVRamTarget
 r_struct
 id|NVRamTarget
@@ -437,7 +384,6 @@ suffix:semicolon
 multiline_comment|/* 126,127 */
 )brace
 suffix:semicolon
-multiline_comment|/*-----------------------------------------------------------------------&n;  SCSI Request Block&n;  -----------------------------------------------------------------------*/
 DECL|struct|ScsiReqBlk
 r_struct
 id|ScsiReqBlk
@@ -562,7 +508,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/*-----------------------------------------------------------------------&n;  Device Control Block&n;  -----------------------------------------------------------------------*/
 DECL|struct|DeviceCtlBlk
 r_struct
 id|DeviceCtlBlk
@@ -662,7 +607,6 @@ id|init_tcq_flag
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*-----------------------------------------------------------------------&n;  Adapter Control Block&n;  -----------------------------------------------------------------------*/
 DECL|struct|AdapterCtlBlk
 r_struct
 id|AdapterCtlBlk
@@ -1377,7 +1321,6 @@ id|monitor_next_irq
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n; * dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; */
 DECL|variable|dc395x_scsi_phase0
 r_static
 r_void
@@ -1413,7 +1356,6 @@ comma
 multiline_comment|/* phase:7 */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; */
 DECL|variable|dc395x_scsi_phase1
 r_static
 r_void
@@ -1502,7 +1444,6 @@ comma
 l_int|40
 )brace
 suffix:semicolon
-multiline_comment|/* real period:48ns,72ns,100ns,124ns,148ns,172ns,200ns,248ns */
 multiline_comment|/*---------------------------------------------------------------------------&n;                                Configuration&n;  ---------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Module/boot parameters currently effect *all* instances of the&n; * card in the system.&n; */
 multiline_comment|/*&n; * Command line parameters are stored in a structure below.&n; * These are the index&squot;s into the structure for the various&n; * command line options.&n; */
@@ -1679,7 +1620,7 @@ multiline_comment|/* 10 seconds */
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Safe settings. If set to zero the the BIOS/default values with command line&n; * overrides will be used. If set to 1 then safe and slow settings will be used.&n; */
+multiline_comment|/*&n; * Safe settings. If set to zero the the BIOS/default values with&n; * command line overrides will be used. If set to 1 then safe and&n; * slow settings will be used.&n; */
 DECL|variable|use_safe_settings
 r_static
 r_int
@@ -1858,8 +1799,8 @@ l_string|&quot;Reset delay in seconds. Default 1 (0-180)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * set_safe_settings - if the use_safe_settings option is set then&n; * set all values to the safe and slow values.&n; **/
-r_static
 DECL|function|set_safe_settings
+r_static
 r_void
 id|__init
 id|set_safe_settings
@@ -1918,8 +1859,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * fix_settings - reset any boot parameters which are out of range&n; * back to the default values.&n; **/
-r_static
 DECL|function|fix_settings
+r_static
 r_void
 id|__init
 id|fix_settings
@@ -2013,7 +1954,6 @@ id|i
 dot
 id|max
 )paren
-(brace
 id|cfg_data
 (braket
 id|i
@@ -2030,10 +1970,9 @@ id|def
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/*&n; * Mapping from the eeprom delay index value (index into this array)&n; * to the the number of actual seconds that the delay should be for.&n; */
-r_static
 DECL|variable|eeprom_index_to_delay_map
+r_static
 r_char
 id|__initdata
 id|eeprom_index_to_delay_map
@@ -2059,8 +1998,8 @@ l_int|120
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * eeprom_index_to_delay - Take the eeprom delay setting and convert it&n; * into a number of seconds.&n; *&n; * @eeprom: The eeprom structure in which we find the delay index to map.&n; **/
-r_static
 DECL|function|eeprom_index_to_delay
+r_static
 r_void
 id|__init
 id|eeprom_index_to_delay
@@ -2080,7 +2019,7 @@ id|eeprom-&gt;delay_time
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * delay_to_eeprom_index - Take a delay in seconds and return the closest&n; * eeprom index which will delay for at least that amount of seconds.&n; *&n; * @delay: The delay, in seconds, to find the eeprom index for.&n; **/
+multiline_comment|/**&n; * delay_to_eeprom_index - Take a delay in seconds and return the&n; * closest eeprom index which will delay for at least that amount of&n; * seconds.&n; *&n; * @delay: The delay, in seconds, to find the eeprom index for.&n; **/
 DECL|function|delay_to_eeprom_index
 r_static
 r_int
@@ -2111,18 +2050,16 @@ id|idx
 OL
 id|delay
 )paren
-(brace
 id|idx
 op_increment
 suffix:semicolon
-)brace
 r_return
 id|idx
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * eeprom_override - Override the eeprom settings, in the provided&n; * eeprom structure, with values that have been set on the command&n; * line.&n; *&n; * @eeprom: The eeprom data to override with command line options.&n; **/
-r_static
 DECL|function|eeprom_override
+r_static
 r_void
 id|__init
 id|eeprom_override
@@ -2150,7 +2087,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;scsi_id
 op_assign
 (paren
@@ -2163,7 +2099,6 @@ id|CFG_ADAPTER_ID
 dot
 id|value
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2176,7 +2111,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;channel_cfg
 op_assign
 (paren
@@ -2189,7 +2123,6 @@ id|CFG_ADAPTER_MODE
 dot
 id|value
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2202,7 +2135,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;delay_time
 op_assign
 id|delay_to_eeprom_index
@@ -2216,7 +2148,6 @@ dot
 id|value
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2229,7 +2160,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;max_tag
 op_assign
 (paren
@@ -2242,7 +2172,6 @@ id|CFG_TAGS
 dot
 id|value
 suffix:semicolon
-)brace
 multiline_comment|/* Device Settings */
 r_for
 c_loop
@@ -2271,7 +2200,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;target
 (braket
 id|id
@@ -2289,7 +2217,6 @@ id|CFG_DEV_MODE
 dot
 id|value
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2302,7 +2229,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;target
 (braket
 id|id
@@ -2322,11 +2248,9 @@ id|value
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/*---------------------------------------------------------------------------&n; ---------------------------------------------------------------------------*/
-multiline_comment|/**&n; * list_size - Returns the size (in number of entries) of the&n; * supplied list.&n; *&n; * @head: The pointer to the head of the list to count the items in.&n; **/
-r_static
 DECL|function|list_size
+r_static
 r_int
 r_int
 id|list_size
@@ -2363,9 +2287,8 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * dcb_get_next - Given a dcb return the next dcb in the list of&n; * dcb&squot;s, wrapping back to the start of the dcb list if required.&n; * Returns the supplied dcb if there is only one dcb in the list.&n; *&n; * @head: The pointer to the head of the list to count the items in.&n; * @pos: The pointer the dcb for which we are searching for the&n; *       following dcb.&n; **/
-r_static
 DECL|function|dcb_get_next
+r_static
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -2477,11 +2400,8 @@ r_return
 id|next
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Queueing philosphy:&n; * There are a couple of lists:&n; * - Waiting: Contains a list of SRBs not yet sent (per DCB)&n; * - Free: List of free SRB slots&n; * &n; * If there are no waiting commands for the DCB, the new one is sent to the bus&n; * otherwise the oldest one is taken from the Waiting list and the new one is &n; * queued to the Waiting List&n; * &n; * Lists are managed using two pointers and eventually a counter&n; */
-multiline_comment|/* Nomen est omen ... */
-r_static
-r_inline
 DECL|function|free_tag
+r_static
 r_void
 id|free_tag
 c_func
@@ -2522,9 +2442,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Find cmd in SRB list */
+DECL|function|find_cmd
 r_inline
 r_static
-DECL|function|find_cmd
 r_struct
 id|ScsiReqBlk
 op_star
@@ -2569,9 +2489,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_get_free - Return a free srb from the list of free SRBs that&n; * is stored with the acb.&n; */
-r_static
 DECL|function|srb_get_free
+r_static
 r_struct
 id|ScsiReqBlk
 op_star
@@ -2657,9 +2576,8 @@ r_return
 id|srb
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_free_insert - Insert an srb to the head of the free list&n; * stored in the acb.&n; */
-r_static
 DECL|function|srb_free_insert
+r_static
 r_void
 id|srb_free_insert
 c_func
@@ -2696,9 +2614,8 @@ id|acb-&gt;srb_free_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_waiting_insert - Insert an srb to the head of the wiating list&n; * stored in the dcb.&n; */
-r_static
 DECL|function|srb_waiting_insert
+r_static
 r_void
 id|srb_waiting_insert
 c_func
@@ -2737,10 +2654,8 @@ id|dcb-&gt;srb_waiting_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_waiting_append - Append an srb to the tail of the waiting list&n; * stored in the dcb.&n; */
-r_static
-r_inline
 DECL|function|srb_waiting_append
+r_static
 r_void
 id|srb_waiting_append
 c_func
@@ -2779,10 +2694,8 @@ id|dcb-&gt;srb_waiting_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_going_append - Append an srb to the tail of the going list&n; * stored in the dcb.&n; */
-r_static
-r_inline
 DECL|function|srb_going_append
+r_static
 r_void
 id|srb_going_append
 c_func
@@ -2819,9 +2732,8 @@ id|dcb-&gt;srb_going_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_going_remove - Remove an srb from the going list stored in the&n; * dcb.&n; */
-r_static
 DECL|function|srb_going_remove
+r_static
 r_void
 id|srb_going_remove
 c_func
@@ -2888,9 +2800,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * srb_waiting_remove - Remove an srb from the waiting list stored in the&n; * dcb.&n; */
-r_static
 DECL|function|srb_waiting_remove
+r_static
 r_void
 id|srb_waiting_remove
 c_func
@@ -2957,9 +2868,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * srb_going_to_waiting_move - Remove an srb from the going list in&n; * the dcb and insert it at the head of the waiting list in the dcb.&n; */
-r_static
 DECL|function|srb_going_to_waiting_move
+r_static
 r_void
 id|srb_going_to_waiting_move
 c_func
@@ -2980,7 +2890,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_going_waiting_move: srb %p, pid = %li&bslash;n&quot;
+l_string|&quot;srb_going_to_waiting_move: srb %p, pid = %li&bslash;n&quot;
 comma
 id|srb
 comma
@@ -2998,9 +2908,8 @@ id|dcb-&gt;srb_waiting_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_waiting_to_going_move - Remove an srb from the waiting list in&n; * the dcb and insert it at the head of the going list in the dcb.&n; */
-r_static
 DECL|function|srb_waiting_to_going_move
+r_static
 r_void
 id|srb_waiting_to_going_move
 c_func
@@ -3016,13 +2925,12 @@ op_star
 id|srb
 )paren
 (brace
-multiline_comment|/* Remove from waiting list */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_waiting_to_going: srb %p&bslash;n&quot;
+l_string|&quot;srb_waiting_to_going_move: srb %p&bslash;n&quot;
 comma
 id|srb
 )paren
@@ -3045,8 +2953,8 @@ id|dcb-&gt;srb_going_list
 suffix:semicolon
 )brace
 multiline_comment|/* Sets the timer to wake us up */
-r_static
 DECL|function|waiting_set_timer
+r_static
 r_void
 id|waiting_set_timer
 c_func
@@ -3137,8 +3045,8 @@ id|acb-&gt;waiting_timer
 suffix:semicolon
 )brace
 multiline_comment|/* Send the next command from the waiting list to the bus */
-r_static
 DECL|function|waiting_process_next
+r_static
 r_void
 id|waiting_process_next
 c_func
@@ -3182,9 +3090,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|acb-&gt;active_dcb
-)paren
 op_logical_or
 (paren
 id|acb-&gt;acb_flag
@@ -3462,9 +3368,8 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Get the DCB for a given ID/LUN combination */
-r_static
-r_inline
 DECL|function|find_dcb
+r_static
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -3493,9 +3398,9 @@ id|lun
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * Function: static void send_srb (struct AdapterCtlBlk* acb, struct ScsiReqBlk* srb)&n; *&n; * Purpose: Send SCSI Request Block (srb) to adapter (acb)&n; *&n; *            dc395x_queue_command&n; *            waiting_process_next&n; *&n; ***********************************************************************/
-r_static
+multiline_comment|/* Send SCSI Request Block (srb) to adapter (acb) */
 DECL|function|send_srb
+r_static
 r_void
 id|send_srb
 c_func
@@ -3514,8 +3419,6 @@ id|srb
 r_struct
 id|DeviceCtlBlk
 op_star
-id|dcb
-suffix:semicolon
 id|dcb
 op_assign
 id|srb-&gt;dcb
@@ -3578,7 +3481,6 @@ comma
 id|srb
 )paren
 )paren
-(brace
 id|srb_going_append
 c_func
 (paren
@@ -3587,7 +3489,6 @@ comma
 id|srb
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|srb_waiting_insert
@@ -3610,9 +3511,9 @@ l_int|50
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *********************************************************************&n; *&n; * Function: static void build_srb (Scsi_Cmd *cmd, struct DeviceCtlBlk* dcb, struct ScsiReqBlk* srb)&n; *&n; *  Purpose: Prepare SRB for being sent to Device DCB w/ command *cmd&n; *&n; *********************************************************************&n; */
-r_static
+multiline_comment|/* Prepare SRB for being sent to Device DCB w/ command *cmd */
 DECL|function|build_srb
+r_static
 r_void
 id|build_srb
 c_func
@@ -3658,10 +3559,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;build_srb..............&bslash;n&quot;
+l_string|&quot;build_srb...&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*memset (srb, 0, sizeof (struct ScsiReqBlk)); */
 id|srb-&gt;dcb
 op_assign
 id|dcb
@@ -3670,7 +3570,6 @@ id|srb-&gt;cmd
 op_assign
 id|cmd
 suffix:semicolon
-multiline_comment|/* Find out about direction */
 id|dir
 op_assign
 id|scsi_to_pci_dma_dir
@@ -4234,13 +4133,11 @@ id|srb-&gt;end_message
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_queue_command - queue scsi command passed from the mid&n; * layer, invoke &squot;done&squot; on completion&n; *&n; * @cmd: pointer to scsi command object&n; * @done: function pointer to be invoked on completion&n; *&n; * Returns 1 if the adapter (host) is busy, else returns 0. One&n; * reason for an adapter to be busy is that the number&n; * of outstanding queued commands is already equal to&n; * struct Scsi_Host::can_queue .&n; *&n; * Required: if struct Scsi_Host::can_queue is ever non-zero&n; *           then this function is required.&n; *&n; * Locks: struct Scsi_Host::host_lock held on entry (with &quot;irqsave&quot;)&n; *        and is expected to be held on return.&n; *&n; **/
+DECL|function|dc395x_queue_command
 r_static
 r_int
-DECL|function|dc395x_queue_command
 id|dc395x_queue_command
 c_func
 (paren
@@ -4300,30 +4197,6 @@ comma
 id|cmd-&gt;pid
 )paren
 suffix:semicolon
-macro_line|#if debug_enabled(DBG_RECURSION)
-r_if
-c_cond
-(paren
-id|dbg_in_driver
-op_increment
-OG
-id|NORM_REC_LVL
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;%i queue_command () recursion? (pid=%li)&bslash;n&quot;
-comma
-id|dbg_in_driver
-comma
-id|cmd-&gt;pid
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Assume BAD_TARGET; will be cleared later */
 id|cmd-&gt;result
 op_assign
@@ -4441,7 +4314,6 @@ id|cmd-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* get a free SRB */
 id|srb
 op_assign
 id|srb_get_free
@@ -4470,7 +4342,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* build srb for the command */
 id|build_srb
 c_func
 (paren
@@ -4531,20 +4402,12 @@ comma
 id|cmd-&gt;pid
 )paren
 suffix:semicolon
-macro_line|#if debug_enabled(DBG_RECURSION)
-id|dbg_in_driver
-op_decrement
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 id|complete
 suffix:colon
 multiline_comment|/*&n;&t; * Complete the command immediatey, and then return 0 to&n;&t; * indicate that we have handled the command. This is usually&n;&t; * done when the commad is for things like non existent&n;&t; * devices.&n;&t; */
-macro_line|#if debug_enabled(DBG_RECURSION)
-id|dbg_in_driver
-op_decrement
-macro_line|#endif
 id|done
 c_func
 (paren
@@ -4555,9 +4418,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *********************************************************************&n; *&n; * Function   : dc395x_bios_param&n; * Description: Return the disk geometry for the given SCSI device.&n; *********************************************************************&n; */
-r_static
+multiline_comment|/*&n; * Return the disk geometry for the given SCSI device.&n; */
 DECL|function|dc395x_bios_param
+r_static
 r_int
 id|dc395x_bios_param
 c_func
@@ -4706,9 +4569,8 @@ id|info
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * DC395x register dump&n; */
-r_static
 DECL|function|dump_register_info
+r_static
 r_void
 id|dump_register_info
 c_func
@@ -4782,9 +4644,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|srb-&gt;cmd
-)paren
 )paren
 id|dprintkl
 c_func
@@ -5236,7 +5096,6 @@ id|DO_CLRFIFO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; *&n; *&t;&t;DC395x_reset      scsi_reset_detect&n; *&n; ********************************************************************&n; */
 DECL|function|reset_dev_param
 r_static
 r_void
@@ -5352,7 +5211,7 @@ id|WIDE_NEGO_ENABLE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *********************************************************************&n; * Function : int dc395x_eh_bus_reset(Scsi_Cmnd *cmd)&n; * Purpose  : perform a hard reset on the SCSI bus&n; * Inputs   : cmd - some command for this host (for fetching hooks)&n; * Returns  : SUCCESS (0x2002) on success, else FAILED (0x2003).&n; *********************************************************************&n; */
+multiline_comment|/*&n; * perform a hard reset on the SCSI bus&n; * @cmd - some command for this host (for fetching hooks)&n; * Returns: SUCCESS (0x2002) on success, else FAILED (0x2003).&n; */
 DECL|function|dc395x_eh_bus_reset
 r_static
 r_int
@@ -5369,7 +5228,6 @@ id|AdapterCtlBlk
 op_star
 id|acb
 suffix:semicolon
-multiline_comment|/*u32         acb_flags=0; */
 id|dprintkl
 c_func
 (paren
@@ -5387,8 +5245,6 @@ op_star
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
-multiline_comment|/* mid level guarantees no recursion */
-multiline_comment|/*DC395x_ACB_LOCK(acb,acb_flags); */
 r_if
 c_cond
 (paren
@@ -5542,12 +5398,11 @@ c_func
 id|acb
 )paren
 suffix:semicolon
-multiline_comment|/*DC395x_ACB_LOCK(acb,acb_flags); */
 r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *********************************************************************&n; * Function : int dc395x_eh_abort(Scsi_Cmnd *cmd)&n; * Purpose  : abort an errant SCSI command&n; * Inputs   : cmd - command to be aborted&n; * Returns  : SUCCESS (0x2002) on success, else FAILED (0x2003).&n; *********************************************************************&n; */
+multiline_comment|/*&n; * abort an errant SCSI command&n; * @cmd - command to be aborted&n; * Returns: SUCCESS (0x2002) on success, else FAILED (0x2003).&n; */
 DECL|function|dc395x_eh_abort
 r_static
 r_int
@@ -5747,8 +5602,8 @@ id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* SDTR */
-r_static
 DECL|function|build_sdtr
+r_static
 r_void
 id|build_sdtr
 c_func
@@ -5892,9 +5747,9 @@ l_string|&quot;S *&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SDTR */
-r_static
+multiline_comment|/* WDTR */
 DECL|function|build_wdtr
+r_static
 r_void
 id|build_wdtr
 c_func
@@ -5926,9 +5781,7 @@ id|NTC_DO_WIDE_NEGO
 )paren
 op_amp
 (paren
-id|acb
-op_member_access_from_pointer
-id|config
+id|acb-&gt;config
 op_amp
 id|HCC_WIDE_CARD
 )paren
@@ -6203,9 +6056,8 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * scsiio&n; *&t;&t;DC395x_DoWaitingSRB    srb_done &n; *&t;&t;send_srb         request_sense&n; */
-r_static
 DECL|function|start_scsi
+r_static
 id|u8
 id|start_scsi
 c_func
@@ -6701,7 +6553,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; ** Send identify message   &n;&t; */
+multiline_comment|/* Send identify message */
 id|DC395x_write8
 c_func
 (paren
@@ -6810,7 +6662,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; ** Send Tag id&n;&t;&t; */
+multiline_comment|/* Send Tag id */
 id|DC395x_write8
 c_func
 (paren
@@ -6858,7 +6710,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*polling:*/
-multiline_comment|/*&n;&t; *          Send CDB ..command block .........                     &n;&t; */
+multiline_comment|/* Send CDB ..command block ......... */
 id|dprintkdbg
 c_func
 (paren
@@ -7036,8 +6888,8 @@ comma
 id|dcb-&gt;target_lun
 )paren
 suffix:semicolon
-multiline_comment|/*clear_fifo (acb, &quot;Start2&quot;); */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_HWRESELECT | DO_DATALATCH); */
+multiline_comment|/*clear_fifo(acb, &quot;Start2&quot;); */
+multiline_comment|/*DC395x_write16(TRM_S1040_SCSI_CONTROL, DO_HWRESELECT | DO_DATALATCH); */
 id|srb-&gt;state
 op_assign
 id|SRB_READY
@@ -7093,7 +6945,7 @@ op_or
 id|DO_HWRESELECT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; ** SCSI command&n;&t;&t; */
+multiline_comment|/* SCSI command */
 id|TRACEPRINTF
 c_func
 (paren
@@ -7117,7 +6969,6 @@ r_return
 id|return_code
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;init_adapter&n; ********************************************************************&n; */
 multiline_comment|/**&n; * dc395x_handle_interrupt - Handle an interrupt that has been confirmed to&n; *                           have been triggered for this card.&n; *&n; * @acb:&t; a pointer to the adpter control block&n; * @scsi_status: the status return when we checked the card&n; **/
 DECL|function|dc395x_handle_interrupt
 r_static
@@ -7236,7 +7087,6 @@ op_decrement
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*DC395x_ACB_LOCK(acb,acb_flags); */
 r_if
 c_cond
 (paren
@@ -7428,7 +7278,7 @@ id|srb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; ************************************************************&n;&t;&t; * software sequential machine&n;&t;&t; ************************************************************&n;&t;&t; */
+multiline_comment|/* software sequential machine */
 id|phase
 op_assign
 (paren
@@ -7447,10 +7297,6 @@ multiline_comment|/* msgout_phase0,&t;phase:6 */
 multiline_comment|/* msgin_phase0,&t;phase:7 */
 id|dc395x_statev
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|dc395x_scsi_phase0
 (braket
 id|phase
@@ -7467,7 +7313,7 @@ op_amp
 id|scsi_status
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ &n;&t;&t; *&n;&t;&t; *        if there were any exception occured&n;&t;&t; *        scsi_status will be modify to bus free phase&n;&t;&t; * new scsi_status transfer out from ... previous dc395x_statev&n;&t;&t; *&n;&t;&t; *$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ &n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * if there were any exception occured scsi_status&n;&t;&t; * will be modify to bus free phase new scsi_status&n;&t;&t; * transfer out from ... previous dc395x_statev&n;&t;&t; */
 id|srb-&gt;scsi_phase
 op_assign
 id|scsi_status
@@ -7483,7 +7329,7 @@ id|scsi_status
 op_amp
 id|PHASEMASK
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * call  dc395x_scsi_phase1[]... &quot;phase entry&quot;&n;&t;&t; * handle every phase do transfer&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * call  dc395x_scsi_phase1[]... &quot;phase entry&quot; handle&n;&t;&t; * every phase to do transfer&n;&t;&t; */
 multiline_comment|/* data_out_phase1,&t;phase:0 */
 multiline_comment|/* data_in_phase1,&t;phase:1 */
 multiline_comment|/* command_phase1,&t;phase:2 */
@@ -7494,10 +7340,6 @@ multiline_comment|/* msgout_phase1,&t;phase:6 */
 multiline_comment|/* msgin_phase1,&t;phase:7 */
 id|dc395x_statev
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|dc395x_scsi_phase1
 (braket
 id|phase
@@ -7525,11 +7367,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-r_static
 DECL|function|dc395x_interrupt
+r_static
 id|irqreturn_t
 id|dc395x_interrupt
 c_func
@@ -7575,31 +7415,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;dc395x_interrupt..............&bslash;n&quot;
+l_string|&quot;dc395x_interrupt...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if debug_enabled(DBG_RECURSION)
-r_if
-c_cond
-(paren
-id|dbg_in_driver
-op_increment
-OG
-id|NORM_REC_LVL
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;%i interrupt recursion?&bslash;n&quot;
-comma
-id|dbg_in_driver
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Check for pending interupt&n;&t; */
 id|scsi_status
 op_assign
@@ -7729,17 +7547,12 @@ op_assign
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-macro_line|#if debug_enabled(DBG_RECURSION)
-id|dbg_in_driver
-op_decrement
-macro_line|#endif
 r_return
 id|handled
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgout_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;           if phase =6&n; ********************************************************************&n; */
-r_static
 DECL|function|msgout_phase0
+r_static
 r_void
 id|msgout_phase0
 c_func
@@ -7764,7 +7577,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgout_phase0.....&bslash;n&quot;
+l_string|&quot;msgout_phase0...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7778,14 +7591,12 @@ op_plus
 id|SRB_ABORT_SENT
 )paren
 )paren
-(brace
 op_star
 id|pscsi_status
 op_assign
 id|PH_BUS_FREE
 suffix:semicolon
 multiline_comment|/*.. initial phase */
-)brace
 id|DC395x_write16
 c_func
 (paren
@@ -7809,9 +7620,8 @@ l_string|&quot;MOP0 *&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgout_phase1: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;&t;if phase =6&t;    &n; ********************************************************************&n; */
-r_static
 DECL|function|msgout_phase1
+r_static
 r_void
 id|msgout_phase1
 c_func
@@ -7838,17 +7648,12 @@ id|u8
 op_star
 id|ptr
 suffix:semicolon
-r_struct
-id|DeviceCtlBlk
-op_star
-id|dcb
-suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgout_phase1..............&bslash;n&quot;
+l_string|&quot;msgout_phase1...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -7856,10 +7661,6 @@ c_func
 (paren
 l_string|&quot;MOP1*&quot;
 )paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 id|clear_fifo
 c_func
@@ -7975,8 +7776,6 @@ c_func
 l_string|&quot;(*&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;Send msg: &quot;); print_msg (ptr, srb-&gt;msg_count); */
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;MsgOut: &quot;); */
 r_for
 c_loop
 (paren
@@ -8024,7 +7823,6 @@ id|srb-&gt;msg_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*printk(&quot;&bslash;n&quot;); */
 r_if
 c_cond
 (paren
@@ -8045,7 +7843,7 @@ suffix:semicolon
 multiline_comment|/*1.25 */
 multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; ** SCSI command &n;&t; */
+multiline_comment|/* SCSI command */
 multiline_comment|/*TRACEPRINTF (&quot;.*&quot;); */
 id|DC395x_write8
 c_func
@@ -8058,9 +7856,8 @@ id|SCMD_FIFO_OUT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;command_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =2 &n; ********************************************************************&n; */
-r_static
 DECL|function|command_phase0
+r_static
 r_void
 id|command_phase0
 c_func
@@ -8087,7 +7884,7 @@ l_string|&quot;COP0 *&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*1.25 */
-multiline_comment|/*clear_fifo (acb, COP0); */
+multiline_comment|/*clear_fifo(acb, COP0); */
 id|DC395x_write16
 c_func
 (paren
@@ -8099,9 +7896,8 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;command_phase1: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =2    &t; &n; ********************************************************************&n; */
-r_static
 DECL|function|command_phase1
+r_static
 r_void
 id|command_phase1
 c_func
@@ -8138,7 +7934,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;command_phase1..............&bslash;n&quot;
+l_string|&quot;command_phase1...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -8687,8 +8483,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * cleanup_after_transfer&n; * &n; * Makes sure, DMA and SCSI engine are empty, after the transfer has finished&n; * KG: Currently called from  StatusPhase1 ()&n; * Should probably also be called from other places&n; * Best might be to call it in DataXXPhase0, if new phase will differ &n; */
-r_static
 DECL|function|cleanup_after_transfer
+r_static
 r_void
 id|cleanup_after_transfer
 c_func
@@ -8831,7 +8627,6 @@ l_string|&quot;ClnOut&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*1.25 */
 id|DC395x_write16
 c_func
 (paren
@@ -8846,9 +8641,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Those no of bytes will be transfered w/ PIO through the SCSI FIFO&n; * Seems to be needed for unknown reasons; could be a hardware bug :-(&n; */
 DECL|macro|DC395x_LASTPIO
 mdefine_line|#define DC395x_LASTPIO 4
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_out_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =0 &n; ********************************************************************&n; */
-r_static
 DECL|function|data_out_phase0
+r_static
 r_void
 id|data_out_phase0
 c_func
@@ -8868,14 +8662,6 @@ op_star
 id|pscsi_status
 )paren
 (brace
-id|u16
-id|scsi_status
-suffix:semicolon
-id|u32
-id|d_left_counter
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -8883,12 +8669,23 @@ id|dcb
 op_assign
 id|srb-&gt;dcb
 suffix:semicolon
+id|u16
+id|scsi_status
+op_assign
+op_star
+id|pscsi_status
+suffix:semicolon
+id|u32
+id|d_left_counter
+op_assign
+l_int|0
+suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_out_phase0.....&bslash;n&quot;
+l_string|&quot;data_out_phase0...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -8896,15 +8693,6 @@ c_func
 (paren
 l_string|&quot;DOP0*&quot;
 )paren
-suffix:semicolon
-id|dcb
-op_assign
-id|srb-&gt;dcb
-suffix:semicolon
-id|scsi_status
-op_assign
-op_star
-id|pscsi_status
 suffix:semicolon
 multiline_comment|/*&n;&t; * KG: We need to drain the buffers before we draw any conclusions!&n;&t; * This means telling the DMA to push the rest into SCSI, telling&n;&t; * SCSI to push the rest to the bus.&n;&t; * However, the device might have been the one to stop us (phase&n;&t; * change), and the data in transit just needs to be accounted so&n;&t; * it can be retransmitted.)&n;&t; */
 multiline_comment|/* &n;&t; * KG: Stop DMA engine pushing more data into the SCSI FIFO&n;&t; * If we need more data, the DMA SG list will be freshly set up, anyway&n;&t; */
@@ -9141,7 +8929,7 @@ id|d_left_counter
 )paren
 suffix:semicolon
 multiline_comment|/* Is this a good idea? */
-multiline_comment|/*clear_fifo (acb, &quot;DOP1&quot;); */
+multiline_comment|/*clear_fifo(acb, &quot;DOP1&quot;); */
 multiline_comment|/* KG: What is this supposed to be useful for? WIDE padding stuff? */
 r_if
 c_cond
@@ -9179,12 +8967,10 @@ multiline_comment|/*&n;&t;&t; * KG: This is nonsense: We have been WRITING data 
 r_if
 c_cond
 (paren
-(paren
 id|d_left_counter
 op_eq
 l_int|0
-)paren
-multiline_comment|/*|| (scsi_status &amp; SCSIXFERCNT_2_ZERO) ) */
+multiline_comment|/*|| (scsi_status &amp; SCSIXFERCNT_2_ZERO)*/
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * int ctr = 6000000; u8 TempDMAstatus;&n;&t;&t;&t; * do&n;&t;&t;&t; * {&n;&t;&t;&t; *  TempDMAstatus = DC395x_read8(acb, TRM_S1040_DMA_STATUS);&n;&t;&t;&t; * } while( !(TempDMAstatus &amp; DMAXFERCOMP) &amp;&amp; --ctr);&n;&t;&t;&t; * if (ctr &lt; 6000000-1) dprintkl(KERN_DEBUG, &quot;DMA should be complete ... in DOP1&bslash;n&quot;);&n;&t;&t;&t; * if (!ctr) dprintkl(KERN_ERR, &quot;Deadlock in DataOutPhase0 !!&bslash;n&quot;);&n;&t;&t;&t; */
@@ -9329,8 +9115,8 @@ l_int|0x1f
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*clear_fifo (acb, &quot;DOP0&quot;); */
-multiline_comment|/*DC395x_write8 (TRM_S1040_DMA_CONTROL, CLRXFIFO | ABORTXFER); */
+multiline_comment|/*clear_fifo(acb, &quot;DOP0&quot;); */
+multiline_comment|/*DC395x_write8(TRM_S1040_DMA_CONTROL, CLRXFIFO | ABORTXFER); */
 macro_line|#if 1
 r_if
 c_cond
@@ -9363,9 +9149,8 @@ l_string|&quot;.*&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_out_phase1: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =0    &n; *&t;&t;62037&n; ********************************************************************&n; */
-r_static
 DECL|function|data_out_phase1
+r_static
 r_void
 id|data_out_phase1
 c_func
@@ -9390,7 +9175,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_out_phase1.....&bslash;n&quot;
+l_string|&quot;data_out_phase1...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*1.25 */
@@ -9408,7 +9193,7 @@ comma
 l_string|&quot;DOP1&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; ** do prepare befor transfer when data out phase&n;&t; */
+multiline_comment|/* do prepare befor transfer when data out phase */
 id|data_io_transfer
 c_func
 (paren
@@ -9426,9 +9211,8 @@ l_string|&quot;.*&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_in_phase0: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =1  &n; ********************************************************************&n; */
-r_static
 DECL|function|data_in_phase0
+r_static
 r_void
 id|data_in_phase0
 c_func
@@ -9450,20 +9234,21 @@ id|pscsi_status
 (brace
 id|u16
 id|scsi_status
+op_assign
+op_star
+id|pscsi_status
 suffix:semicolon
 id|u32
 id|d_left_counter
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*struct DeviceCtlBlk*   dcb = srb-&gt;dcb; */
-multiline_comment|/*u8 bval; */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_in_phase0..............&bslash;n&quot;
+l_string|&quot;data_in_phase0...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -9471,11 +9256,6 @@ c_func
 (paren
 l_string|&quot;DIP0*&quot;
 )paren
-suffix:semicolon
-id|scsi_status
-op_assign
-op_star
-id|pscsi_status
 suffix:semicolon
 multiline_comment|/*&n;&t; * KG: DataIn is much more tricky than DataOut. When the device is finished&n;&t; * and switches to another phase, the SCSI engine should be finished too.&n;&t; * But: There might still be bytes left in its FIFO to be fetched by the DMA&n;&t; * engine and transferred to memory.&n;&t; * We should wait for the FIFOs to be emptied by that (is there any way to &n;&t; * enforce this?) and then stop the DMA engine, because it might think, that&n;&t; * there are more bytes to follow. Yes, the device might disconnect prior to&n;&t; * having all bytes transferred! &n;&t; * Also we should make sure that all data from the DMA engine buffer&squot;s really&n;&t; * made its way to the system memory! Some documentation on this would not&n;&t; * seem to be a bad idea, actually.&n;&t; */
 r_if
@@ -10126,11 +9906,9 @@ multiline_comment|/* KG: This should not be needed any more! */
 r_if
 c_cond
 (paren
-(paren
 id|d_left_counter
 op_eq
 l_int|0
-)paren
 op_logical_or
 (paren
 id|scsi_status
@@ -10307,11 +10085,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|d_left_counter
 op_eq
 l_int|0
-)paren
 op_logical_or
 (paren
 id|scsi_status
@@ -10340,8 +10116,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*DC395x_write8 (TRM_S1040_DMA_CONTROL, CLRXFIFO | ABORTXFER); */
-multiline_comment|/*clear_fifo (acb, &quot;DIP0&quot;); */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
+multiline_comment|/*clear_fifo(acb, &quot;DIP0&quot;); */
+multiline_comment|/*DC395x_write16(TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
 id|TRACEPRINTF
 c_func
 (paren
@@ -10349,9 +10125,8 @@ l_string|&quot;.*&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_in_phase1: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =1 &n; ********************************************************************&n; */
-r_static
 DECL|function|data_in_phase1
+r_static
 r_void
 id|data_in_phase1
 c_func
@@ -10376,20 +10151,20 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_in_phase1.....&bslash;n&quot;
+l_string|&quot;data_in_phase1...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIFO should be cleared, if previous phase was not DataPhase */
-multiline_comment|/*clear_fifo (acb, &quot;DIP1&quot;); */
+multiline_comment|/*clear_fifo(acb, &quot;DIP1&quot;); */
 multiline_comment|/* Allow data in! */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
+multiline_comment|/*DC395x_write16(TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
 id|TRACEPRINTF
 c_func
 (paren
 l_string|&quot;DIP1:*&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; ** do prepare before transfer when data in phase&n;&t; */
+multiline_comment|/* do prepare before transfer when data in phase */
 id|data_io_transfer
 c_func
 (paren
@@ -10407,9 +10182,8 @@ l_string|&quot;.*&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;data_out_phase1&n; *&t;&t;data_in_phase1&n; ********************************************************************&n; */
-r_static
 DECL|function|data_io_transfer
+r_static
 r_void
 id|data_io_transfer
 c_func
@@ -10428,13 +10202,15 @@ id|u16
 id|io_dir
 )paren
 (brace
-id|u8
-id|bval
-suffix:semicolon
 r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|srb-&gt;dcb
+suffix:semicolon
+id|u8
+id|bval
 suffix:semicolon
 id|dprintkdbg
 c_func
@@ -10477,10 +10253,6 @@ comma
 id|srb-&gt;sg_count
 )paren
 suffix:semicolon
-id|dcb
-op_assign
-id|srb-&gt;dcb
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10488,7 +10260,6 @@ id|srb
 op_eq
 id|acb-&gt;tmp_srb
 )paren
-(brace
 id|dprintkl
 c_func
 (paren
@@ -10497,7 +10268,6 @@ comma
 l_string|&quot;Using tmp_srb in DataPhase!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -10563,7 +10333,7 @@ id|CLRXFIFO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*clear_fifo (acb, &quot;IO&quot;); */
+multiline_comment|/* clear_fifo(acb, &quot;IO&quot;); */
 multiline_comment|/* &n;&t;&t;&t; * load what physical address of Scatter/Gather list table want to be&n;&t;&t;&t; * transfer &n;&t;&t;&t; */
 id|srb-&gt;state
 op_or_assign
@@ -10757,7 +10527,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* The last four bytes: Do PIO */
-multiline_comment|/*clear_fifo (acb, &quot;IO&quot;); */
+multiline_comment|/* clear_fifo(acb, &quot;IO&quot;); */
 multiline_comment|/* &n;&t;&t;&t; * load what physical address of Scatter/Gather list table want to be&n;&t;&t;&t; * transfer &n;&t;&t;&t; */
 id|srb-&gt;state
 op_or_assign
@@ -11202,7 +10972,7 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t;&t;&t; * SCSI command &n;&t;&t;&t; */
+multiline_comment|/* SCSI command */
 id|bval
 op_assign
 (paren
@@ -11228,12 +10998,9 @@ id|bval
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*monitor_next_irq = 2; */
-multiline_comment|/*printk(&quot; done&bslash;n&quot;); */
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;status_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =3  &n; ********************************************************************&n; */
-r_static
 DECL|function|status_phase0
+r_static
 r_void
 id|status_phase0
 c_func
@@ -11301,7 +11068,7 @@ id|PH_BUS_FREE
 suffix:semicolon
 multiline_comment|/*.. initial phase */
 multiline_comment|/*1.25 */
-multiline_comment|/*clear_fifo (acb, &quot;STP0&quot;); */
+multiline_comment|/*clear_fifo(acb, &quot;STP0&quot;); */
 id|DC395x_write16
 c_func
 (paren
@@ -11313,7 +11080,7 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; ** SCSI command &n;&t; */
+multiline_comment|/* SCSI command */
 id|DC395x_write8
 c_func
 (paren
@@ -11325,9 +11092,8 @@ id|SCMD_MSGACCEPT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;status_phase1: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =3 &n; ********************************************************************&n; */
-r_static
 DECL|function|status_phase1
+r_static
 r_void
 id|status_phase1
 c_func
@@ -11380,7 +11146,7 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; * SCSI command &n;&t; */
+multiline_comment|/* SCSI command */
 id|DC395x_write8
 c_func
 (paren
@@ -11392,7 +11158,6 @@ id|SCMD_COMP
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Message handling */
 macro_line|#if 0
 multiline_comment|/* Print received message */
 r_static
@@ -11538,9 +11303,9 @@ suffix:semicolon
 DECL|macro|DC395x_ENABLE_MSGOUT
 mdefine_line|#define DC395x_ENABLE_MSGOUT &bslash;&n; DC395x_write16 (acb, TRM_S1040_SCSI_CONTROL, DO_SETATN); &bslash;&n; srb-&gt;state |= SRB_MSGOUT
 multiline_comment|/* reject_msg */
+DECL|function|msgin_reject
 r_static
 r_inline
-DECL|function|msgin_reject
 r_void
 id|msgin_reject
 c_func
@@ -11603,9 +11368,9 @@ l_string|&quot;&bslash;&bslash;*&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* abort command */
+DECL|function|enable_msgout_abort
 r_static
 r_inline
-DECL|function|enable_msgout_abort
 r_void
 id|enable_msgout_abort
 c_func
@@ -11651,8 +11416,8 @@ l_string|&quot;#*&quot;
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|msgin_qtag
+r_static
 r_struct
 id|ScsiReqBlk
 op_star
@@ -11931,11 +11696,10 @@ r_return
 id|srb
 suffix:semicolon
 )brace
-multiline_comment|/* Reprogram registers */
+DECL|function|reprogram_regs
 r_static
 r_inline
 r_void
-DECL|function|reprogram_regs
 id|reprogram_regs
 c_func
 (paren
@@ -11990,8 +11754,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/* set async transfer mode */
-r_static
 DECL|function|msgin_set_async
+r_static
 r_void
 id|msgin_set_async
 c_func
@@ -12106,8 +11870,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* set sync transfer mode */
-r_static
 DECL|function|msgin_set_sync
+r_static
 r_void
 id|msgin_set_sync
 c_func
@@ -12123,12 +11887,6 @@ op_star
 id|srb
 )paren
 (brace
-id|u8
-id|bval
-suffix:semicolon
-r_int
-id|fact
-suffix:semicolon
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -12136,8 +11894,12 @@ id|dcb
 op_assign
 id|srb-&gt;dcb
 suffix:semicolon
-multiline_comment|/*u8 oldsyncperiod = dcb-&gt;sync_period; */
-multiline_comment|/*u8 oldsyncoffset = dcb-&gt;sync_offset; */
+id|u8
+id|bval
+suffix:semicolon
+r_int
+id|fact
+suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
@@ -12535,9 +12297,9 @@ id|dcb
 )paren
 suffix:semicolon
 )brace
+DECL|function|msgin_set_nowide
 r_static
 r_inline
-DECL|function|msgin_set_nowide
 r_void
 id|msgin_set_nowide
 c_func
@@ -12644,8 +12406,8 @@ l_string|&quot;WDTR(rej): Try SDTR anyway ...&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|msgin_set_wide
+r_static
 r_void
 id|msgin_set_wide
 c_func
@@ -12863,9 +12625,9 @@ l_string|&quot;WDTR: Also try SDTR ...&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgin_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =7   &n; *&n; * extended message codes:&n; *&n; *&t;code&t;description&n; *&n; *&t;02h&t;Reserved&n; *&t;00h&t;MODIFY DATA  POINTER&n; *&t;01h&t;SYNCHRONOUS DATA TRANSFER REQUEST&n; *&t;03h&t;WIDE DATA TRANSFER REQUEST&n; *   04h - 7Fh&t;Reserved&n; *   80h - FFh&t;Vendor specific&n; *  &n; ********************************************************************&n; */
-r_static
+multiline_comment|/*&n; * extended message codes:&n; *&n; *&t;code&t;description&n; *&n; *&t;02h&t;Reserved&n; *&t;00h&t;MODIFY DATA  POINTER&n; *&t;01h&t;SYNCHRONOUS DATA TRANSFER REQUEST&n; *&t;03h&t;WIDE DATA TRANSFER REQUEST&n; *   04h - 7Fh&t;Reserved&n; *   80h - FFh&t;Vendor specific&n; */
 DECL|function|msgin_phase0
+r_static
 r_void
 id|msgin_phase0
 c_func
@@ -12889,13 +12651,15 @@ r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|acb-&gt;active_dcb
 suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgin_phase0..............&bslash;n&quot;
+l_string|&quot;msgin_phase0...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -12903,10 +12667,6 @@ c_func
 (paren
 l_string|&quot;MIP0*&quot;
 )paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 id|srb-&gt;msgin_buf
 (braket
@@ -12945,8 +12705,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_INFO, &quot;MsgIn:&quot;); */
-multiline_comment|/*print_msg (srb-&gt;msgin_buf, acb-&gt;msg_len); */
 multiline_comment|/* Now eval the msg */
 r_switch
 c_cond
@@ -13383,9 +13141,8 @@ id|SCMD_MSGACCEPT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgin_phase1: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =7&t;   &n; ********************************************************************&n; */
-r_static
 DECL|function|msgin_phase1
+r_static
 r_void
 id|msgin_phase1
 c_func
@@ -13410,7 +13167,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgin_phase1..............&bslash;n&quot;
+l_string|&quot;msgin_phase1...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -13469,7 +13226,7 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; * SCSI command &n;&t; */
+multiline_comment|/* SCSI command */
 id|DC395x_write8
 c_func
 (paren
@@ -13481,9 +13238,8 @@ id|SCMD_FIFO_IN
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;nop0: one of dc395x_scsi_phase1[] ,dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =4 ..PH_BUS_FREE&n; ********************************************************************&n; */
-r_static
 DECL|function|nop0
+r_static
 r_void
 id|nop0
 c_func
@@ -13505,9 +13261,8 @@ id|pscsi_status
 (brace
 multiline_comment|/*TRACEPRINTF(&quot;NOP0 *&quot;); */
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;nop1: one of dc395x_scsi_phase0[] ,dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =5&n; ********************************************************************&n; */
-r_static
 DECL|function|nop1
+r_static
 r_void
 id|nop1
 c_func
@@ -13529,9 +13284,8 @@ id|pscsi_status
 (brace
 multiline_comment|/*TRACEPRINTF(&quot;NOP1 *&quot;); */
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;msgin_phase0&n; ********************************************************************&n; */
-r_static
 DECL|function|set_xfer_rate
+r_static
 r_void
 id|set_xfer_rate
 c_func
@@ -13552,7 +13306,7 @@ id|DeviceCtlBlk
 op_star
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * set all lun device&squot;s  period , offset&n;&t; */
+multiline_comment|/* set all lun device&squot;s  period, offset */
 r_if
 c_cond
 (paren
@@ -13611,7 +13365,6 @@ id|dcb-&gt;min_nego_period
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;dc395x_interrupt&n; ********************************************************************&n; */
 DECL|function|disconnect
 r_static
 r_void
@@ -13628,25 +13381,13 @@ r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|acb-&gt;active_dcb
 suffix:semicolon
 r_struct
 id|ScsiReqBlk
 op_star
 id|srb
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_0
-comma
-l_string|&quot;Disconnect (pid=%li)&bslash;n&quot;
-comma
-id|acb-&gt;active_dcb-&gt;active_srb-&gt;cmd-&gt;pid
-)paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 r_if
 c_cond
@@ -13710,6 +13451,16 @@ suffix:semicolon
 id|acb-&gt;active_dcb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;Disconnect (pid=%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+)paren
 suffix:semicolon
 id|TRACEPRINTF
 c_func
@@ -13780,7 +13531,6 @@ op_amp
 id|SRB_ABORT_SENT
 )paren
 (brace
-multiline_comment|/*Scsi_Cmnd* cmd = srb-&gt;cmd; */
 id|dcb-&gt;flag
 op_and_assign
 op_complement
@@ -14092,10 +13842,7 @@ id|srb
 suffix:semicolon
 )brace
 )brace
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;reselect&n; ********************************************************************&n; */
 DECL|function|reselect
 r_static
 r_void
@@ -14112,6 +13859,8 @@ r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|acb-&gt;active_dcb
 suffix:semicolon
 r_struct
 id|ScsiReqBlk
@@ -14138,7 +13887,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;reselect..............&bslash;n&quot;
+l_string|&quot;reselect...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|clear_fifo
@@ -14160,10 +13909,6 @@ id|acb
 comma
 id|TRM_S1040_SCSI_TARGETID
 )paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 r_if
 c_cond
@@ -14210,9 +13955,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|acb-&gt;scan_devices
-)paren
 )paren
 (brace
 id|dprintkdbg
@@ -14399,11 +14142,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|dcb-&gt;sync_mode
 op_amp
 id|EN_TAG_QUEUEING
-)paren
 multiline_comment|/*&amp;&amp; !arblostflag */
 )paren
 (brace
@@ -14549,7 +14290,7 @@ op_assign
 id|PH_BUS_FREE
 suffix:semicolon
 multiline_comment|/* initial phase */
-multiline_comment|/* &n;&t; ***********************************************&n;&t; ** Program HA ID, target ID, period and offset&n;&t; ***********************************************&n;&t; */
+multiline_comment|/* Program HA ID, target ID, period and offset */
 id|DC395x_write8
 c_func
 (paren
@@ -14679,8 +14420,8 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-r_static
 DECL|function|disc_tagq_set
+r_static
 r_void
 id|disc_tagq_set
 c_func
@@ -14774,8 +14515,8 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|add_dev
+r_static
 r_void
 id|add_dev
 c_func
@@ -14817,9 +14558,9 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; ********************************************************************&n; * unmap mapped pci regions from SRB&n; ********************************************************************&n; */
-r_static
+multiline_comment|/* unmap mapped pci regions from SRB */
 DECL|function|pci_unmap_srb
+r_static
 r_void
 id|pci_unmap_srb
 c_func
@@ -14835,15 +14576,13 @@ op_star
 id|srb
 )paren
 (brace
-r_int
-id|dir
-suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|cmd
 op_assign
 id|srb-&gt;cmd
 suffix:semicolon
+r_int
 id|dir
 op_assign
 id|scsi_to_pci_dma_dir
@@ -14977,9 +14716,9 @@ id|dir
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; ********************************************************************&n; * unmap mapped pci sense buffer from SRB&n; ********************************************************************&n; */
-r_static
+multiline_comment|/* unmap mapped pci sense buffer from SRB */
 DECL|function|pci_unmap_srb_sense
+r_static
 r_void
 id|pci_unmap_srb_sense
 c_func
@@ -15084,9 +14823,9 @@ dot
 id|length
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;disconnect&n; *&t;Complete execution of a SCSI command&n; *&t;Signal completion to the generic SCSI driver  &n; ********************************************************************&n; */
-r_static
+multiline_comment|/*&n; * Complete execution of a SCSI command&n; * Signal completion to the generic SCSI driver  &n; */
 DECL|function|srb_done
+r_static
 r_void
 id|srb_done
 c_func
@@ -15115,19 +14854,16 @@ suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|cmd
+op_assign
+id|srb-&gt;cmd
 suffix:semicolon
 r_struct
 id|ScsiInqData
 op_star
 id|ptr
 suffix:semicolon
-multiline_comment|/*u32              drv_flags=0; */
 r_int
 id|dir
-suffix:semicolon
-id|cmd
-op_assign
-id|srb-&gt;cmd
 suffix:semicolon
 id|TRACEPRINTF
 c_func
@@ -15529,15 +15265,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|srb-&gt;total_xfer_length
-)paren
 op_logical_and
-(paren
 id|srb-&gt;total_xfer_length
 op_ge
 id|cmd-&gt;underflow
-)paren
 )paren
 id|cmd-&gt;result
 op_assign
@@ -16150,12 +15882,10 @@ c_func
 id|acb
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;DC395x_reset&n; * abort all cmds in our queues&n; ********************************************************************&n; */
-r_static
+multiline_comment|/* abort all cmds in our queues */
 DECL|function|doing_srb_done
+r_static
 r_void
 id|doing_srb_done
 c_func
@@ -16567,7 +16297,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;DC395x_shutdown   DC395x_reset&n; ********************************************************************&n; */
 DECL|function|reset_scsi_bus
 r_static
 r_void
@@ -16580,16 +16309,14 @@ op_star
 id|acb
 )paren
 (brace
-multiline_comment|/*u32  drv_flags=0; */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;reset_scsi_bus..............&bslash;n&quot;
+l_string|&quot;reset_scsi_bus...&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*DC395x_DRV_LOCK(drv_flags); */
 id|acb-&gt;acb_flag
 op_or_assign
 id|RESET_DEV
@@ -16621,12 +16348,9 @@ op_amp
 id|INT_SCSIRESET
 )paren
 )paren
-suffix:semicolon
-multiline_comment|/*DC395x_DRV_UNLOCK(drv_flags); */
-r_return
+multiline_comment|/* nothing */
 suffix:semicolon
 )brace
-multiline_comment|/* Set basic config */
 DECL|function|set_basic_config
 r_static
 r_void
@@ -16814,7 +16538,6 @@ multiline_comment|/*| EN_DMAXFERABORT | EN_DMAXFERCOMP | EN_FORCEDMACOMP */
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;dc395x_interrupt&n; ********************************************************************&n; */
 DECL|function|scsi_reset_detect
 r_static
 r_void
@@ -16965,12 +16688,9 @@ id|acb
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;srb_done&n; ********************************************************************&n; */
-r_static
 DECL|function|request_sense
+r_static
 r_void
 id|request_sense
 c_func
@@ -16993,8 +16713,6 @@ id|srb
 (brace
 id|Scsi_Cmnd
 op_star
-id|cmd
-suffix:semicolon
 id|cmd
 op_assign
 id|srb-&gt;cmd
@@ -17217,8 +16935,8 @@ l_string|&quot;.*&quot;
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * device_alloc - Allocate a new device instance. This create the&n; * devices instance and sets up all the data items. The adapter&n; * instance is required to obtain confiuration information for this&n; * device. This does *not* add this device to the adapters device&n; * list.&n; *&n; * @acb: The adapter to obtain configuration information from.&n; * @target: The target for the new device.&n; * @lun: The lun for the new device.&n; *&n; * Return the new device if succesfull or NULL on failure.&n; **/
-r_static
 DECL|function|device_alloc
+r_static
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -17292,11 +17010,9 @@ c_cond
 op_logical_neg
 id|dcb
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|dcb-&gt;acb
 op_assign
 l_int|NULL
@@ -17515,8 +17231,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_add_device - Adds the device instance to the adaptor instance.&n; *&n; * @acb: The adapter device to be updated&n; * @dcb: A newly created and intialised device instance to add.&n; **/
-r_static
 DECL|function|adapter_add_device
+r_static
 r_void
 id|adapter_add_device
 c_func
@@ -17587,8 +17303,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_remove_device - Removes the device instance from the adaptor&n; * instance. The device instance is not check in any way or freed by this. &n; * The caller is expected to take care of that. This will simply remove the&n; * device from the adapters data strcutures.&n; *&n; * @acb: The adapter device to be updated&n; * @dcb: A device that has previously been added to the adapter.&n; **/
-r_static
 DECL|function|adapter_remove_device
+r_static
 r_void
 id|adapter_remove_device
 c_func
@@ -17718,8 +17434,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_remove_and_free_device - Removes a single device from the adapter&n; * and then frees the device information.&n; *&n; * @acb: The adapter device to be updated&n; * @dcb: A device that has previously been added to the adapter.&n; */
-r_static
 DECL|function|adapter_remove_and_free_device
+r_static
 r_void
 id|adapter_remove_and_free_device
 c_func
@@ -17783,8 +17499,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_remove_and_free_all_devices - Removes and frees all of the&n; * devices associated with the specified adapter.&n; *&n; * @acb: The adapter from which all devices should be removed.&n; **/
-r_static
 DECL|function|adapter_remove_and_free_all_devices
+r_static
 r_void
 id|adapter_remove_and_free_all_devices
 c_func
@@ -17842,8 +17558,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_slave_alloc - Called by the scsi mid layer to tell us about a new&n; * scsi device that we need to deal with. We allocate a new device and then&n; * insert that device into the adapters device list.&n; *&n; * @scsi_device: The new scsi device that we need to handle.&n; **/
-r_static
 DECL|function|dc395x_slave_alloc
+r_static
 r_int
 id|dc395x_slave_alloc
 c_func
@@ -17906,8 +17622,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_slave_destroy - Called by the scsi mid layer to tell us about a&n; * device that is going away.&n; *&n; * @scsi_device: The new scsi device that we need to handle.&n; **/
-r_static
 DECL|function|dc395x_slave_destroy
+r_static
 r_void
 id|dc395x_slave_destroy
 c_func
@@ -17960,8 +17676,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_wait_30us: wait for 30 us&n; *&n; * Waits for 30us (using the chip by the looks of it..)&n; *&n; * @io_port: base I/O address&n; **/
-r_static
 DECL|function|trms1040_wait_30us
+r_static
 r_void
 id|__init
 id|trms1040_wait_30us
@@ -18000,12 +17716,10 @@ id|GTIMEOUT
 )paren
 multiline_comment|/* nothing */
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_write_cmd - write the secified command and address to&n; * chip&n; *&n; * @io_port:&t;base I/O address&n; * @cmd:&t;SB + op code (command) to send&n; * @addr:&t;address to send&n; **/
-r_static
 DECL|function|trms1040_write_cmd
+r_static
 r_void
 id|__init
 id|trms1040_write_cmd
@@ -18191,8 +17905,8 @@ id|io_port
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_set_data - store a single byte in the eeprom&n; *&n; * Called from write all to write a single byte into the SSEEPROM&n; * Which is done one bit at a time.&n; *&n; * @io_port:&t;base I/O address&n; * @addr:&t;offset into EEPROM&n; * @byte:&t;bytes to write&n; **/
-r_static
 DECL|function|trms1040_set_data
+r_static
 r_void
 id|__init
 id|trms1040_set_data
@@ -18419,8 +18133,8 @@ id|TRM_S1040_GEN_NVRAM
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_write_all - write 128 bytes to the eeprom&n; *&n; * Write the supplied 128 bytes to the chips SEEPROM&n; *&n; * @eeprom:&t;the data to write&n; * @io_port:&t;the base io port&n; **/
-r_static
 DECL|function|trms1040_write_all
+r_static
 r_void
 id|__init
 id|trms1040_write_all
@@ -18514,7 +18228,6 @@ comma
 id|b_eeprom
 op_increment
 )paren
-(brace
 id|trms1040_set_data
 c_func
 (paren
@@ -18526,7 +18239,6 @@ op_star
 id|b_eeprom
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* write disable */
 id|trms1040_write_cmd
 c_func
@@ -18578,8 +18290,8 @@ id|TRM_S1040_GEN_CONTROL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_get_data - get a single byte from the eeprom&n; *&n; * Called from read all to read a single byte into the SSEEPROM&n; * Which is done one bit at a time.&n; *&n; * @io_port:&t;base I/O address&n; * @addr:&t;offset into SEEPROM&n; *&n; * Returns the the byte read.&n; **/
-r_static
 DECL|function|trms1040_get_data
+r_static
 id|u8
 id|__init
 id|trms1040_get_data
@@ -18709,8 +18421,8 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_read_all - read all bytes from the eeprom&n; *&n; * Read the 128 bytes from the SEEPROM.&n; *&n; * @eeprom:&t;where to store the data&n; * @io_port:&t;the base io port&n; **/
-r_static
 DECL|function|trms1040_read_all
+r_static
 r_void
 id|__init
 id|trms1040_read_all
@@ -18777,7 +18489,6 @@ comma
 id|b_eeprom
 op_increment
 )paren
-(brace
 op_star
 id|b_eeprom
 op_assign
@@ -18789,7 +18500,6 @@ comma
 id|addr
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Disable SEEPROM */
 id|outb
 c_func
@@ -18814,8 +18524,8 @@ id|TRM_S1040_GEN_CONTROL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * check_eeprom - get and check contents of the eeprom&n; *&n; * Read seeprom 128 bytes into the memory provider in eeprom.&n; * Checks the checksum and if it&squot;s not correct it uses a set of default&n; * values.&n; *&n; * @eeprom:&t;caller allocated strcuture to read the eeprom data into&n; * @io_port:&t;io port to read from&n; **/
-r_static
 DECL|function|check_eeprom
+r_static
 r_void
 id|__init
 id|check_eeprom
@@ -19186,8 +18896,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * print_eeprom_settings - output the eeprom settings&n; * to the kernel log so people can see what they were.&n; *&n; * @eeprom: The eeprom data strucutre to show details for.&n; **/
-r_static
 DECL|function|print_eeprom_settings
+r_static
 r_void
 id|__init
 id|print_eeprom_settings
@@ -19268,8 +18978,8 @@ suffix:semicolon
 )brace
 macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
 multiline_comment|/*&n; * Memory for trace buffers&n; */
-r_static
 DECL|function|free_tracebufs
+r_static
 r_void
 id|free_tracebufs
 c_func
@@ -19328,8 +19038,8 @@ id|debugtrace
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|alloc_tracebufs
+r_static
 r_int
 id|alloc_tracebufs
 c_func
@@ -19553,8 +19263,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Free SG tables */
-r_static
 DECL|function|adapter_sg_tables_free
+r_static
 r_void
 id|adapter_sg_tables_free
 c_func
@@ -19622,8 +19332,8 @@ id|segment_x
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate SG tables; as we have to pci_map them, an SG list (struct SGentry*)&n; * should never cross a page boundary */
-r_static
 DECL|function|adapter_sg_tables_alloc
+r_static
 r_int
 id|__init
 id|adapter_sg_tables_alloc
@@ -19849,8 +19559,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_print_config - print adapter connection and termination&n; * config&n; *&n; * The io port in the adapter needs to have been set before calling&n; * this function.&n; *&n; * @acb: The adapter to print the information for.&n; **/
-r_static
 DECL|function|adapter_print_config
+r_static
 r_void
 id|__init
 id|adapter_print_config
@@ -20071,8 +19781,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * adapter_init_params - Initialize the various parameters in the&n; * adapter structure. Note that the pointer to the scsi_host is set&n; * early (when this instance is created) and the io_port and irq&n; * values are set later after they have been reserved. This just gets&n; * everything set to a good starting position.&n; *&n; * The eeprom structure in the adapter needs to have been set before&n; * calling this function.&n; *&n; * @acb: The adapter to initialize.&n; **/
-r_static
 DECL|function|adapter_init_params
+r_static
 r_void
 id|__init
 id|adapter_init_params
@@ -20264,8 +19974,8 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_init_host - Initialize the scsi host instance based on&n; * values that we have already stored in the adapter instance. There&squot;s&n; * some mention that a lot of these are deprecated, so we won&squot;t use&n; * them (we&squot;ll use the ones in the adapter instance) but we&squot;ll fill&n; * them in in case something else needs them.&n; *&n; * The eeprom structure, irq and io ports in the adapter need to have&n; * been set before calling this function.&n; *&n; * @host: The scsi host instance to fill in the values for.&n; **/
-r_static
 DECL|function|adapter_init_scsi_host
+r_static
 r_void
 id|__init
 id|adapter_init_scsi_host
@@ -20536,8 +20246,8 @@ multiline_comment|/*spin_lock_irq (&amp;io_request_lock); */
 )brace
 )brace
 multiline_comment|/**&n; * init_adapter - Grab the resource for the card, setup the adapter&n; * information, set the card into a known state, create the various&n; * tables etc etc. This basically gets all adapter information all up&n; * to date, intialised and gets the chip in sync with it.&n; *&n; * @host:&t;This hosts adapter structure&n; * @io_port:&t;The base I/O port&n; * @irq:&t;IRQ&n; *&n; * Returns 0 if the initialization succeeds, any other value on&n; * failure.&n; **/
-r_static
 DECL|function|adapter_init
+r_static
 r_int
 id|__init
 id|adapter_init
@@ -20810,8 +20520,8 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_uninit_chip - cleanly shut down the scsi controller chip,&n; * stopping all operations and disabling interrupt generation on the&n; * card.&n; *&n; * @acb: The adapter which we are to shutdown.&n; **/
-r_static
 DECL|function|adapter_uninit_chip
+r_static
 r_void
 id|adapter_uninit_chip
 c_func
@@ -20868,8 +20578,8 @@ id|TRM_S1040_SCSI_INTSTATUS
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_uninit - Shut down the chip and release any resources that&n; * we had allocated. Once this returns the adapter should not be used&n; * anymore.&n; *&n; * @acb: The adapter which we are to un-initialize.&n; **/
-r_static
 DECL|function|adapter_uninit
+r_static
 r_void
 id|adapter_uninit
 c_func
@@ -20986,8 +20696,6 @@ id|acb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ******************************************************************&n; * Function: dc395x_proc_info(char* buffer, char **start,&n; *&t;&t;&t; off_t offset, int length, int hostno, int inout)&n; *  Purpose: return SCSI Adapter/Device Info&n; *    Input:&n; *          buffer: Pointer to a buffer where to write info&n; *&t;&t; start :&n; *&t;&t; offset:&n; *&t;&t; hostno: Host adapter index&n; *&t;&t; inout : Read (=0) or set(!=0) info&n; *   Output:&n; *          buffer: contains info length &n; *&t;&t;         &n; *    return value: length of info in buffer&n; *&n; ******************************************************************&n; */
-multiline_comment|/* KG: dc395x_proc_info taken from driver aha152x.c */
 DECL|macro|SPRINTF
 macro_line|#undef SPRINTF
 DECL|macro|SPRINTF
@@ -20996,8 +20704,8 @@ DECL|macro|YESNO
 macro_line|#undef YESNO
 DECL|macro|YESNO
 mdefine_line|#define YESNO(YN) &bslash;&n; if (YN) SPRINTF(&quot; Yes &quot;);&bslash;&n; else SPRINTF(&quot; No  &quot;)
-r_static
 DECL|function|dc395x_proc_info
+r_static
 r_int
 id|dc395x_proc_info
 c_func
@@ -21761,7 +21469,6 @@ r_return
 id|length
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SCSI host template&n; */
 DECL|variable|dc395x_driver_template
 r_static
 id|Scsi_Host_Template
@@ -21853,8 +21560,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * banner_display - Display banner on first instance of driver&n; * initialized.&n; **/
-r_static
 DECL|function|banner_display
+r_static
 r_void
 id|banner_display
 c_func
@@ -21894,8 +21601,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * dc395x_init_one - Initialise a single instance of the adapter.&n; *&n; * The PCI layer will call this once for each instance of the adapter&n; * that it finds in the system. The pci_dev strcuture indicates which&n; * instance we are being called from.&n; * &n; * @dev: The PCI device to intialize.&n; * @id: Looks like a pointer to the entry in our pci device table&n; * that was actually matched by the PCI subsystem.&n; *&n; * Returns 0 on success, or an error code (-ve) on failure.&n; **/
-r_static
 DECL|function|dc395x_init_one
+r_static
 r_int
 id|__devinit
 id|dc395x_init_one
@@ -22236,7 +21943,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Table which identifies the PCI devices which&n; * are handled by this device driver.&n; */
 DECL|variable|dc395x_pci_table
 r_static
 r_struct
@@ -22282,7 +21988,6 @@ comma
 id|dc395x_pci_table
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * PCI driver operations.&n; * Tells the PCI sub system what can be done with the card.&n; */
 DECL|variable|dc395x_driver
 r_static
 r_struct
@@ -22317,8 +22022,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * dc395x_module_init - Module initialization function&n; *&n; * Used by both module and built-in driver to initialise this driver.&n; **/
-r_static
 DECL|function|dc395x_module_init
+r_static
 r_int
 id|__init
 id|dc395x_module_init
@@ -22337,8 +22042,8 @@ id|dc395x_driver
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_module_exit - Module cleanup function.&n; **/
-r_static
 DECL|function|dc395x_module_exit
+r_static
 r_void
 id|__exit
 id|dc395x_module_exit
