@@ -1493,6 +1493,20 @@ c_func
 id|new_len
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t allow the degenerate cases */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|old_len
+op_or
+id|new_len
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 multiline_comment|/* new_addr is only valid if MREMAP_FIXED is specified */
 r_if
 c_cond
