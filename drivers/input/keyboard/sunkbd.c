@@ -369,12 +369,12 @@ id|type
 suffix:semicolon
 DECL|member|reset
 r_volatile
-r_char
+id|s8
 id|reset
 suffix:semicolon
 DECL|member|layout
 r_volatile
-r_char
+id|s8
 id|layout
 suffix:semicolon
 )brace

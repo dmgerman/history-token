@@ -5538,7 +5538,7 @@ id|period
 op_assign
 id|lp-&gt;cisco_keepalive_period
 suffix:semicolon
-r_char
+id|s8
 id|debserint
 op_assign
 id|lp-&gt;cisco_debserint
