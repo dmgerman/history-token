@@ -394,6 +394,19 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* Reserved - must be zero */
 id|LOCAL_APIC_FLAGS
+DECL|member|processor_uID
+id|u32
+id|processor_uID
+suffix:semicolon
+multiline_comment|/* Numeric UID - ACPI 3.0 */
+DECL|member|processor_uIDstring
+r_char
+id|processor_uIDstring
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* String UID  - ACPI 3.0 */
 )brace
 suffix:semicolon
 DECL|struct|madt_interrupt_source
@@ -427,11 +440,11 @@ id|u32
 id|interrupt
 suffix:semicolon
 multiline_comment|/* Global system interrupt */
-DECL|member|reserved
+DECL|member|flags
 id|u32
-id|reserved
+id|flags
 suffix:semicolon
-multiline_comment|/* Reserved - must be zero */
+multiline_comment|/* Interrupt Source Flags */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Smart Battery&n; */
