@@ -217,19 +217,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_AUDIT
 r_struct
 id|audit_buffer
 suffix:semicolon
 r_struct
 id|audit_context
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_AUDITSYSCALL
-multiline_comment|/* forward decl for audit_inode */
 r_struct
 id|inode
 suffix:semicolon
+macro_line|#ifdef CONFIG_AUDITSYSCALL
 multiline_comment|/* These are defined in auditsc.c */
 multiline_comment|/* Public API */
 r_extern
