@@ -441,11 +441,12 @@ DECL|member|pid
 r_int
 id|pid
 suffix:semicolon
-multiline_comment|/* control thread&t;  */
+multiline_comment|/* control thread&t; */
 DECL|member|sm_state
 id|atomic_t
 id|sm_state
 suffix:semicolon
+multiline_comment|/* what we are doing&t; */
 multiline_comment|/* interrupt info for CBI devices -- only good if attached */
 DECL|member|ip_waitq
 r_struct
@@ -491,7 +492,7 @@ r_struct
 id|semaphore
 id|current_urb_sem
 suffix:semicolon
-multiline_comment|/* to protect irq_urb&t; */
+multiline_comment|/* protect current_urb  */
 DECL|member|current_urb
 r_struct
 id|urb

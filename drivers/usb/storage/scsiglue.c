@@ -195,11 +195,24 @@ comma
 id|us-&gt;htmplt.name
 )paren
 suffix:semicolon
-multiline_comment|/* Kill the control threads&n;&t; *&n;&t; * Enqueue the command, wake up the thread, and wait for &n;&t; * notification that it&squot;s exited.&n;&t; */
+multiline_comment|/* Kill the control threads&n;&t; *&n;&t; * Enqueue the command, wake up the thread, and wait for &n;&t; * notification that it has exited.&n;&t; */
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;-- sending exit command to thread&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_ne
+id|US_STATE_IDLE
 )paren
 suffix:semicolon
 id|us-&gt;srb
@@ -266,7 +279,7 @@ op_lshift
 l_int|16
 suffix:semicolon
 )brace
-multiline_comment|/* run command */
+multiline_comment|/* queue a command */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
 DECL|function|queuecommand
 r_static
@@ -320,6 +333,23 @@ op_star
 id|us
 suffix:semicolon
 multiline_comment|/* enqueue the command */
+id|BUG_ON
+c_func
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_ne
+id|US_STATE_IDLE
+op_logical_or
+id|us-&gt;srb
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
 id|srb-&gt;scsi_done
 op_assign
 id|done
@@ -440,6 +470,19 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;device_reset() called&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_ne
+id|US_STATE_IDLE
 )paren
 suffix:semicolon
 multiline_comment|/* set the state and release the lock */

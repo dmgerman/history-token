@@ -2283,6 +2283,20 @@ l_string|&quot;usb_stor_abort_transport called&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Normally the current state is RUNNING.  If the control thread&n;&t; * hasn&squot;t even started processing this command, the state will be&n;&t; * IDLE.  Anything else is a bug. */
+id|BUG_ON
+c_func
+(paren
+(paren
+id|state
+op_ne
+id|US_STATE_RUNNING
+op_logical_and
+id|state
+op_ne
+id|US_STATE_IDLE
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* set state to abort and release the lock */
 id|atomic_set
 c_func

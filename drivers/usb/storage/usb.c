@@ -1642,7 +1642,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Set up the URB, the usb_ctrlrequest, and the IRQ pipe and handler.&n; * ss-&gt;dev_semaphore should already be locked.&n; * Note that this function assumes that all the data in the us_data&n; * strucuture is current.  This includes the ep_int field, which gives us&n; * the endpoint for the interrupt.&n; * Returns non-zero on failure, zero on success&n; */
+multiline_comment|/* Set up the URB, the usb_ctrlrequest, and the IRQ pipe and handler.&n; * ss-&gt;dev_semaphore must already be locked.&n; * Note that this function assumes that all the data in the us_data&n; * strucuture is current.  This includes the ep_int field, which gives us&n; * the endpoint for the interrupt.&n; * Returns non-zero on failure, zero on success&n; */
 DECL|function|usb_stor_allocate_urbs
 r_static
 r_int
