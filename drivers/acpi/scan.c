@@ -485,13 +485,6 @@ op_amp
 id|acpi_device_lock
 )paren
 suffix:semicolon
-id|kobject_init
-c_func
-(paren
-op_amp
-id|device-&gt;kobj
-)paren
-suffix:semicolon
 id|strlcpy
 c_func
 (paren
@@ -522,7 +515,7 @@ op_assign
 op_amp
 id|acpi_namespace_kset
 suffix:semicolon
-id|kobject_add
+id|kobject_register
 c_func
 (paren
 op_amp
