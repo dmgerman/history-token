@@ -12169,9 +12169,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|currTar_Info-&gt;TarEEValue
 op_amp
 id|EE_WIDE_SCSI
+)paren
 )paren
 (brace
 r_return

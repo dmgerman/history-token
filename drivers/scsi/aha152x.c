@@ -11926,7 +11926,7 @@ id|the_time
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|100
 op_star
 id|HZ
 suffix:semicolon
@@ -12017,7 +12017,7 @@ id|the_time
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|100
 op_star
 id|HZ
 suffix:semicolon
@@ -12865,7 +12865,7 @@ id|the_time
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|100
 op_star
 id|HZ
 suffix:semicolon

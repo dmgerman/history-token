@@ -1101,11 +1101,15 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * Prototypes for functions in scsi_scan.c&n; */
 r_extern
-r_int
-id|scsi_add_single_device
+r_struct
+id|scsi_device
+op_star
+id|scsi_add_device
 c_func
 (paren
-id|uint
+r_struct
+id|Scsi_Host
+op_star
 comma
 id|uint
 comma
@@ -1116,16 +1120,12 @@ id|uint
 suffix:semicolon
 r_extern
 r_int
-id|scsi_remove_single_device
+id|scsi_remove_device
 c_func
 (paren
-id|uint
-comma
-id|uint
-comma
-id|uint
-comma
-id|uint
+r_struct
+id|scsi_device
+op_star
 )paren
 suffix:semicolon
 r_extern

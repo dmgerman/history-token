@@ -1701,9 +1701,9 @@ id|write_flag
 r_int
 id|tmo
 op_assign
-l_int|200000
+l_int|20000
 suffix:semicolon
-multiline_comment|/* 2 sec */
+multiline_comment|/* .2 sec */
 r_while
 c_loop
 (paren

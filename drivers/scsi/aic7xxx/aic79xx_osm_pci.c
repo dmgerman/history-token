@@ -642,6 +642,8 @@ c_cond
 (paren
 id|aic79xx_detect_complete
 )paren
+(brace
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 id|ahd_linux_register_host
 c_func
 (paren
@@ -651,6 +653,22 @@ op_amp
 id|aic79xx_driver_template
 )paren
 suffix:semicolon
+macro_line|#else
+id|printf
+c_func
+(paren
+l_string|&quot;aic79xx: ignoring PCI device found after &quot;
+l_string|&quot;initialization&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 macro_line|#endif
 r_return
 (paren
@@ -659,13 +677,11 @@ l_int|0
 suffix:semicolon
 )brace
 r_int
-DECL|function|ahd_linux_pci_probe
-id|ahd_linux_pci_probe
+DECL|function|ahd_linux_pci_init
+id|ahd_linux_pci_init
 c_func
 (paren
-id|Scsi_Host_Template
-op_star
-r_template
+r_void
 )paren
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
@@ -777,6 +793,22 @@ id|found
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
+r_void
+DECL|function|ahd_linux_pci_exit
+id|ahd_linux_pci_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|aic79xx_pci_driver
+)paren
+suffix:semicolon
 )brace
 r_static
 r_int

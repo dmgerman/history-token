@@ -2463,16 +2463,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
-id|ahd_linux_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_static
 r_const
 r_char
 op_star
@@ -2551,6 +2541,16 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#else
+r_static
+r_int
+id|ahd_linux_release
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
 r_static
 r_void
 id|ahd_linux_select_queue_depth
@@ -2735,10 +2735,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
-id|ahd_linux_pci_probe
+id|ahd_linux_pci_init
 c_func
 (paren
-r_template
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2793,6 +2792,7 @@ id|found
 )paren
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n; * Free the passed in Scsi_Host memory structures prior to unloading the&n; * module.&n; */
 r_static
 r_int
@@ -2903,6 +2903,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Return a string describing the driver.&n; */
 r_static
 r_const
@@ -6033,19 +6034,19 @@ id|aic79xx_driver_template
 op_assign
 (brace
 dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|name
+op_assign
+l_string|&quot;aic79xx&quot;
+comma
+dot
 id|proc_info
 op_assign
 id|ahd_linux_proc_info
-comma
-dot
-id|detect
-op_assign
-id|ahd_linux_detect
-comma
-dot
-id|release
-op_assign
-id|ahd_linux_release
 comma
 dot
 id|info
@@ -6136,11 +6137,6 @@ macro_line|#endif
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 dot
-id|name
-op_assign
-l_string|&quot;aic79xx&quot;
-comma
-dot
 id|slave_alloc
 op_assign
 id|ahd_linux_slave_alloc
@@ -6157,6 +6153,16 @@ id|ahd_linux_slave_destroy
 comma
 macro_line|#else
 dot
+id|detect
+op_assign
+id|ahd_linux_detect
+comma
+dot
+id|release
+op_assign
+id|ahd_linux_release
+comma
+dot
 id|select_queue_depths
 op_assign
 id|ahd_linux_select_queue_depth
@@ -6169,9 +6175,6 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|macro|driver_template
-mdefine_line|#define driver_template aic79xx_driver_template
-macro_line|#include &quot;scsi_module.c&quot;
 multiline_comment|/**************************** Tasklet Handler *********************************/
 r_static
 r_void
@@ -9488,17 +9491,7 @@ id|host-&gt;unique_id
 op_assign
 id|ahd-&gt;unit
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
-id|scsi_set_device
-c_func
-(paren
-id|host
-comma
-op_amp
-id|ahd-&gt;dev_softc-&gt;dev
-)paren
-suffix:semicolon
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
 id|scsi_set_pci_device
 c_func
 (paren
@@ -9621,6 +9614,17 @@ op_amp
 id|s
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+id|scsi_add_host
+c_func
+(paren
+id|host
+comma
+op_amp
+id|ahd-&gt;dev_softc-&gt;dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 l_int|0
@@ -10247,12 +10251,22 @@ id|ahd-&gt;platform_data-&gt;host
 op_ne
 l_int|NULL
 )paren
+(brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+id|scsi_remove_host
+c_func
+(paren
+id|ahd-&gt;platform_data-&gt;host
+)paren
+suffix:semicolon
+macro_line|#endif
 id|scsi_unregister
 c_func
 (paren
 id|ahd-&gt;platform_data-&gt;host
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* destroy all of the device and target objects */
 r_for
 c_loop
@@ -10480,8 +10494,8 @@ l_int|0x1000
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-multiline_comment|/* XXX Need an instance detach in the PCI code */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
+multiline_comment|/*&n;&t;&t; * In 2.4 we detach from the scsi midlayer before the PCI&n;&t;&t; * layer invokes our remove callback.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10502,36 +10516,6 @@ comma
 id|M_DEVBUF
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|TAILQ_EMPTY
-c_func
-(paren
-op_amp
-id|ahd_tailq
-)paren
-)paren
-(brace
-id|unregister_reboot_notifier
-c_func
-(paren
-op_amp
-id|ahd_linux_notifier
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|aic79xx_pci_driver
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 )brace
 )brace
 r_void
@@ -21688,4 +21672,112 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|function|ahd_linux_init
+r_static
+r_int
+id|__init
+id|ahd_linux_init
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+r_return
+(paren
+id|ahd_linux_detect
+c_func
+(paren
+op_amp
+id|aic79xx_driver_template
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+macro_line|#else
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|aic79xx_driver_template
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|driver_template.present
+)paren
+(brace
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|aic79xx_driver_template
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|ahd_linux_exit
+r_static
+r_void
+id|__exit
+id|ahd_linux_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|aic79xx_driver_template
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ahd_linux_pci_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|ahd_linux_init
+id|module_init
+c_func
+(paren
+id|ahd_linux_init
+)paren
+suffix:semicolon
+DECL|variable|ahd_linux_exit
+id|module_exit
+c_func
+(paren
+id|ahd_linux_exit
+)paren
+suffix:semicolon
 eof

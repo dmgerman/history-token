@@ -246,7 +246,7 @@ id|ms
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  SMP threading.&n; *&n; *  The whole SCSI sub-system under Linux is basically single-threaded.&n; *  Everything, including low-level driver interrupt routine, happens &n; *  whith the `io_request_lock&squot; held.&n; *  The sym53c8xx-1.x drivers series ran their interrupt code using a &n; *  spin mutex per controller. This added complexity without improving &n; *  scalability significantly. the sym-2 driver still use a spinlock &n; *  per controller for safety, but basically runs with the damned &n; *  io_request_lock held.&n; */
+multiline_comment|/*&n; *  SMP threading.&n; *&n; *  The whole SCSI sub-system under Linux is basically single-threaded.&n; *  Everything, including low-level driver interrupt routine, happens &n; *  with the `io_request_lock&squot; held.&n; *  The sym53c8xx-1.x drivers series ran their interrupt code using a &n; *  spin mutex per controller. This added complexity without improving &n; *  scalability significantly. the sym-2 driver still use a spinlock &n; *  per controller for safety, but basically runs with the damned &n; *  io_request_lock held.&n; */
 DECL|variable|sym53c8xx_lock
 id|spinlock_t
 id|sym53c8xx_lock
