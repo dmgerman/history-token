@@ -897,6 +897,13 @@ op_amp
 id|ctx-&gt;active_reqs
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|ctx-&gt;run_list
+)paren
+suffix:semicolon
 id|INIT_WORK
 c_func
 (paren
