@@ -288,6 +288,9 @@ op_star
 comma
 id|u32
 op_star
+comma
+id|u32
+op_star
 )paren
 suffix:semicolon
 r_int
