@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/pid.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
+macro_line|#include &lt;linux/seccomp.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -1883,6 +1884,10 @@ r_struct
 id|audit_context
 op_star
 id|audit_context
+suffix:semicolon
+DECL|member|seccomp
+id|seccomp_t
+id|seccomp
 suffix:semicolon
 multiline_comment|/* Thread group tracking */
 DECL|member|parent_exec_id

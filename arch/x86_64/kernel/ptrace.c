@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
+macro_line|#include &lt;linux/seccomp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2424,6 +2425,13 @@ op_star
 id|regs
 )paren
 (brace
+multiline_comment|/* do the secure computing check first */
+id|secure_computing
+c_func
+(paren
+id|regs-&gt;orig_rax
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
