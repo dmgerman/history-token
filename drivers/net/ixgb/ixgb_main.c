@@ -22,7 +22,7 @@ id|ixgb_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;1.0.66&quot;
+l_string|&quot;1.0.66-k2&quot;
 suffix:semicolon
 DECL|variable|ixgb_copyright
 r_char
@@ -6756,11 +6756,7 @@ c_loop
 (paren
 id|eop_desc-&gt;status
 op_amp
-id|cpu_to_le32
-c_func
-(paren
 id|IXGB_TX_DESC_STATUS_DD
-)paren
 )paren
 (brace
 r_for
