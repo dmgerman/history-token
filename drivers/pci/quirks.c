@@ -2632,6 +2632,16 @@ id|quirk_transparent_bridge
 )brace
 comma
 (brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_TOSHIBA
+comma
+l_int|0x605
+comma
+id|quirk_transparent_bridge
+)brace
+comma
+(brace
 id|PCI_FIXUP_FINAL
 comma
 id|PCI_VENDOR_ID_CYRIX
