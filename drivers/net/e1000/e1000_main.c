@@ -3379,12 +3379,10 @@ id|txdr-&gt;count
 suffix:semicolon
 id|txdr-&gt;buffer_info
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|size
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3448,7 +3446,7 @@ op_logical_neg
 id|txdr-&gt;desc
 )paren
 (brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|txdr-&gt;buffer_info
@@ -3827,12 +3825,10 @@ id|rxdr-&gt;count
 suffix:semicolon
 id|rxdr-&gt;buffer_info
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|size
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3896,7 +3892,7 @@ op_logical_neg
 id|rxdr-&gt;desc
 )paren
 (brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|rxdr-&gt;buffer_info
@@ -4351,7 +4347,7 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|adapter-&gt;tx_ring.buffer_info
@@ -4568,7 +4564,7 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|rx_ring-&gt;buffer_info
