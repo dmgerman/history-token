@@ -152,6 +152,13 @@ id|kernel_symbol
 op_star
 id|syms
 suffix:semicolon
+DECL|member|crcs
+r_const
+r_int
+r_int
+op_star
+id|crcs
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Given an address, look for it in the exception tables */
