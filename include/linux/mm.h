@@ -263,8 +263,7 @@ r_int
 r_int
 id|len
 comma
-r_int
-r_int
+id|pgprot_t
 id|prot
 comma
 r_int
@@ -1114,8 +1113,7 @@ id|page
 op_star
 id|page
 comma
-r_int
-r_int
+id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
