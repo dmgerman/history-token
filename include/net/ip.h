@@ -605,7 +605,7 @@ id|iph-&gt;check
 suffix:semicolon
 id|check
 op_add_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|0x0100
@@ -728,7 +728,7 @@ c_cond
 (paren
 id|iph-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -810,7 +810,7 @@ c_cond
 (paren
 id|iph-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -1317,6 +1317,14 @@ id|dport
 comma
 id|u32
 id|info
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ipv4_proc_init
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* _IP_H */
