@@ -2309,9 +2309,6 @@ r_struct
 id|list_head
 op_star
 id|pos
-comma
-op_star
-id|temp
 suffix:semicolon
 r_int
 id|msg_flags
@@ -3428,12 +3425,10 @@ id|out_free
 suffix:semicolon
 )brace
 multiline_comment|/* Now send the (possibly) fragmented message. */
-id|list_for_each_safe
+id|list_for_each
 c_func
 (paren
 id|pos
-comma
-id|temp
 comma
 op_amp
 id|datamsg-&gt;chunks
@@ -3450,12 +3445,6 @@ r_struct
 id|sctp_chunk
 comma
 id|frag_list
-)paren
-suffix:semicolon
-id|list_del_init
-c_func
-(paren
-id|pos
 )paren
 suffix:semicolon
 id|sctp_datamsg_track
@@ -3475,7 +3464,7 @@ id|chunk-&gt;transport
 op_assign
 id|chunk_tp
 suffix:semicolon
-multiline_comment|/* Send it to the lower layers.  */
+multiline_comment|/* Send it to the lower layers.  Note:  all chunks&n;&t;&t; * must either fail or succeed.   The lower layer&n;&t;&t; * works that way today.  Keep it that way or this&n;&t;&t; * breaks.&n;&t;&t; */
 id|err
 op_assign
 id|sctp_primitive_SEND

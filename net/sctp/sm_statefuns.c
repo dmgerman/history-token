@@ -6724,6 +6724,9 @@ multiline_comment|/* Spill over rwnd a little bit.  Note: While allowed, this sp
 r_if
 c_cond
 (paren
+op_logical_neg
+id|asoc-&gt;rwnd
+op_logical_or
 id|asoc-&gt;rwnd_over
 op_logical_or
 (paren

@@ -2804,7 +2804,7 @@ l_int|0
 suffix:semicolon
 id|retval-&gt;sent_at
 op_assign
-id|jiffies
+l_int|0
 suffix:semicolon
 id|retval-&gt;singleton
 op_assign

@@ -439,7 +439,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SFR-CACC algorithm:&n; * 3) If the missing report count for TSN t is to be&n; * incremented according to [RFC2960] and &n; * [SCTP_STEWART-2002], and CHANGEOVER_ACTIVE is set,&n; * then the sender MUST futher execute steps 3.1 and&n; * 3.2 to determine if the missing report count for&n; * TSN t SHOULD NOT be incremented.&n; *&n; * 3.3) If 3.1 and 3.2 do not dictate that the missing&n; * report count for t should not be incremented, then&n; * the sender SOULD increment missing report count for&n; * t (according to [RFC2960] and [SCTP_STEWART_2002]).&n; */
+multiline_comment|/*&n; * SFR-CACC algorithm:&n; * 3) If the missing report count for TSN t is to be&n; * incremented according to [RFC2960] and&n; * [SCTP_STEWART-2002], and CHANGEOVER_ACTIVE is set,&n; * then the sender MUST futher execute steps 3.1 and&n; * 3.2 to determine if the missing report count for&n; * TSN t SHOULD NOT be incremented.&n; *&n; * 3.3) If 3.1 and 3.2 do not dictate that the missing&n; * report count for t should not be incremented, then&n; * the sender SOULD increment missing report count for&n; * t (according to [RFC2960] and [SCTP_STEWART_2002]).&n; */
 DECL|function|sctp_cacc_skip
 r_static
 r_inline
@@ -724,11 +724,14 @@ id|transmitted_list
 )paren
 suffix:semicolon
 multiline_comment|/* Mark as part of a failed message. */
-id|chunk-&gt;msg-&gt;send_failed
-op_assign
-l_int|1
+id|sctp_datamsg_fail
+c_func
+(paren
+id|chunk
+comma
+id|q-&gt;error
+)paren
 suffix:semicolon
-multiline_comment|/* Generate a SEND FAILED event. */
 id|sctp_chunk_free
 c_func
 (paren
@@ -766,6 +769,14 @@ r_struct
 id|sctp_chunk
 comma
 id|transmitted_list
+)paren
+suffix:semicolon
+id|sctp_datamsg_fail
+c_func
+(paren
+id|chunk
+comma
+id|q-&gt;error
 )paren
 suffix:semicolon
 id|sctp_chunk_free
@@ -806,6 +817,14 @@ comma
 id|transmitted_list
 )paren
 suffix:semicolon
+id|sctp_datamsg_fail
+c_func
+(paren
+id|chunk
+comma
+id|q-&gt;error
+)paren
+suffix:semicolon
 id|sctp_chunk_free
 c_func
 (paren
@@ -829,9 +848,13 @@ id|q
 )paren
 (brace
 multiline_comment|/* Mark as send failure. */
-id|chunk-&gt;msg-&gt;send_failed
-op_assign
-l_int|1
+id|sctp_datamsg_fail
+c_func
+(paren
+id|chunk
+comma
+id|q-&gt;error
+)paren
 suffix:semicolon
 id|sctp_chunk_free
 c_func
@@ -2453,16 +2476,15 @@ op_ge
 id|asoc-&gt;c.sinit_num_ostreams
 )paren
 (brace
-multiline_comment|/* Mark as failed send. */
-id|chunk-&gt;msg-&gt;send_failed
-op_assign
-l_int|1
-suffix:semicolon
-id|chunk-&gt;msg-&gt;send_error
-op_assign
+multiline_comment|/* Mark as s failed send. */
+id|sctp_datamsg_fail
+c_func
+(paren
+id|chunk
+comma
 id|SCTP_ERROR_INV_STRM
+)paren
 suffix:semicolon
-multiline_comment|/* Free the chunk. */
 id|sctp_chunk_free
 c_func
 (paren
@@ -2472,13 +2494,34 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* Now do delayed assignment of SSN.  This will&n;&t;&t;&t; * probably change again when we start supporting&n;&t;&t;&t; * large (&gt; approximately 2^16) size messages.&n;&t;&t;&t; */
-id|sctp_chunk_assign_ssn
+multiline_comment|/* Has this chunk expired? */
+r_if
+c_cond
+(paren
+id|sctp_datamsg_expires
+c_func
+(paren
+id|chunk
+)paren
+)paren
+(brace
+id|sctp_datamsg_fail
+c_func
+(paren
+id|chunk
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
 )paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* If there is a specified transport, use it.&n;&t;&t;&t; * Otherwise, we want to use the active path.&n;&t;&t;&t; */
 id|new_transport
 op_assign
@@ -2487,9 +2530,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|new_transport
-op_eq
-l_int|NULL
 op_logical_or
 op_logical_neg
 id|new_transport-&gt;active
@@ -3178,7 +3220,7 @@ c_func
 id|sack-&gt;cum_tsn_ack
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * SFR-CACC algorithm:&n;&t; * On receipt of a SACK the sender SHOULD execute the &n;&t; * following statements.&n;&t; *&n;&t; * 1) If the cumulative ack in the SACK passes next tsn_at_change &n;&t; * on the current primary, the CHANGEOVER_ACTIVE flag SHOULD be&n;&t; * cleared. The CYCLING_CHANGEOVER flag SHOULD also be cleared for&n;&t; * all destinations.&n;&t; */
+multiline_comment|/*&n;&t; * SFR-CACC algorithm:&n;&t; * On receipt of a SACK the sender SHOULD execute the&n;&t; * following statements.&n;&t; *&n;&t; * 1) If the cumulative ack in the SACK passes next tsn_at_change&n;&t; * on the current primary, the CHANGEOVER_ACTIVE flag SHOULD be&n;&t; * cleared. The CYCLING_CHANGEOVER flag SHOULD also be cleared for&n;&t; * all destinations.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3222,7 +3264,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n;&t; * SFR-CACC algorithm:&n;&t; * 2) If the SACK contains gap acks and the flag CHANGEOVER_ACTIVE&n;&t; * is set the receiver of the SACK MUST take the following actions:&n;&t; *&n;&t; * A) Initialize the cacc_saw_newack to 0 for all destination&n;&t; * addresses.&n;&t; */
+multiline_comment|/*&n;&t; * SFR-CACC algorithm:&n;&t; * 2) If the SACK contains gap acks and the flag CHANGEOVER_ACTIVE&n;&t; * is set the receiver of the SACK MUST take the following actions:&n;&t; *&n;&t; * A) Initialize the cacc_saw_newack to 0 for all destination&n;&t; * addresses.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3384,7 +3426,7 @@ comma
 id|highest_new_tsn
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * SFR-CACC algorithm:&n;&t;&t; * C) Let count_of_newacks be the number of &n;&t;&t; * destinations for which cacc_saw_newack is set.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * SFR-CACC algorithm:&n;&t;&t; * C) Let count_of_newacks be the number of&n;&t;&t; * destinations for which cacc_saw_newack is set.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4584,7 +4626,7 @@ id|highest_new_tsn_in_sack
 )paren
 )paren
 (brace
-multiline_comment|/* SFR-CACC may require us to skip marking&n;&t;&t;&t; * this chunk as missing. &n;&t;&t;&t; */
+multiline_comment|/* SFR-CACC may require us to skip marking&n;&t;&t;&t; * this chunk as missing.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
