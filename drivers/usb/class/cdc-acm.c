@@ -2558,6 +2558,13 @@ r_break
 suffix:semicolon
 multiline_comment|/* for now we ignore it */
 r_case
+id|CDC_HEADER_TYPE
+suffix:colon
+multiline_comment|/* maybe check version */
+r_break
+suffix:semicolon
+multiline_comment|/* for now we ignore it */
+r_case
 id|CDC_AC_MANAGEMENT_TYPE
 suffix:colon
 id|ac_management_function
@@ -2610,7 +2617,17 @@ suffix:colon
 id|err
 c_func
 (paren
-l_string|&quot;Ignoring extra header&quot;
+l_string|&quot;Ignoring extra header, type %d, length %d&quot;
+comma
+id|buffer
+(braket
+l_int|2
+)braket
+comma
+id|buffer
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_break
