@@ -1354,9 +1354,6 @@ id|ptep
 comma
 id|pte_t
 id|entry
-comma
-r_int
-id|dirty
 )paren
 (brace
 id|ptep_clear_flush
