@@ -571,6 +571,12 @@ DECL|macro|decl_subsys
 mdefine_line|#define decl_subsys(_name,_type,_hotplug_ops) &bslash;&n;struct subsystem _name##_subsys = { &bslash;&n;&t;.kset = { &bslash;&n;&t;&t;.kobj = { .name = __stringify(_name) }, &bslash;&n;&t;&t;.ktype = _type, &bslash;&n;&t;&t;.hotplug_ops =_hotplug_ops, &bslash;&n;&t;} &bslash;&n;}
 DECL|macro|decl_subsys_name
 mdefine_line|#define decl_subsys_name(_varname,_name,_type,_hotplug_ops) &bslash;&n;struct subsystem _varname##_subsys = { &bslash;&n;&t;.kset = { &bslash;&n;&t;&t;.kobj = { .name = __stringify(_name) }, &bslash;&n;&t;&t;.ktype = _type, &bslash;&n;&t;&t;.hotplug_ops =_hotplug_ops, &bslash;&n;&t;} &bslash;&n;}
+multiline_comment|/* The global /sys/kernel/ subsystem for people to chain off of */
+r_extern
+r_struct
+id|subsystem
+id|kernel_subsys
+suffix:semicolon
 multiline_comment|/**&n; * Helpers for setting the kset of registered objects.&n; * Often, a registered object belongs to a kset embedded in a &n; * subsystem. These do no magic, just make the resulting code&n; * easier to follow. &n; */
 multiline_comment|/**&n; *&t;kobj_set_kset_s(obj,subsys) - set kset for embedded kobject.&n; *&t;@obj:&t;&t;ptr to some object type.&n; *&t;@subsys:&t;a subsystem object (not a ptr).&n; *&n; *&t;Can be used for any object type with an embedded -&gt;kobj.&n; */
 DECL|macro|kobj_set_kset_s

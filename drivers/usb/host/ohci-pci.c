@@ -34,6 +34,11 @@ id|hcd_to_ohci
 id|hcd
 )paren
 suffix:semicolon
+id|ohci_hcd_init
+(paren
+id|ohci
+)paren
+suffix:semicolon
 r_return
 id|ohci_init
 (paren
@@ -493,6 +498,20 @@ id|description
 op_assign
 id|hcd_name
 comma
+dot
+id|product_desc
+op_assign
+l_string|&quot;OHCI Host Controller&quot;
+comma
+dot
+id|hcd_priv_size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|ohci_hcd
+)paren
+comma
 multiline_comment|/*&n;&t; * generic hardware linkage&n;&t; */
 dot
 id|irq
@@ -533,12 +552,6 @@ dot
 id|stop
 op_assign
 id|ohci_stop
-comma
-multiline_comment|/*&n;&t; * memory lifecycle (except per-request)&n;&t; */
-dot
-id|hcd_alloc
-op_assign
-id|ohci_hcd_alloc
 comma
 multiline_comment|/*&n;&t; * managing i/o requests and associated device resources&n;&t; */
 dot

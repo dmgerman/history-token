@@ -5486,7 +5486,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;serial-&gt;dev-&gt;descriptor.idVendor
+)paren
 op_ne
 id|USB_VENDOR_ID_ION
 )paren
@@ -5497,7 +5501,11 @@ l_string|&quot;%s - VID = 0x%x&quot;
 comma
 id|__FUNCTION__
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;serial-&gt;dev-&gt;descriptor.idVendor
+)paren
 )paren
 suffix:semicolon
 id|serial-&gt;TI_I2C_Type

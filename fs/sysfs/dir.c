@@ -109,14 +109,10 @@ id|sd
 suffix:semicolon
 id|sd
 op_assign
-id|kmalloc
+id|kmem_cache_alloc
 c_func
 (paren
-r_sizeof
-(paren
-op_star
-id|sd
-)paren
+id|sysfs_dir_cachep
 comma
 id|GFP_KERNEL
 )paren

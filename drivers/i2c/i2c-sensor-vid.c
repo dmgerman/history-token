@@ -52,23 +52,12 @@ id|X86_VENDOR_AMD
 comma
 l_int|0xF
 comma
-l_int|0x4
-comma
-l_int|90
-)brace
-comma
-multiline_comment|/* Athlon 64 */
-(brace
-id|X86_VENDOR_AMD
-comma
-l_int|0xF
-comma
-l_int|0x5
+id|ANY
 comma
 l_int|24
 )brace
 comma
-multiline_comment|/* Opteron */
+multiline_comment|/* Athlon 64, Opteron */
 (brace
 id|X86_VENDOR_INTEL
 comma
@@ -396,7 +385,7 @@ r_return
 id|vrm_ret
 suffix:semicolon
 )brace
-multiline_comment|/* and now something completely different for Non-x86 world*/
+multiline_comment|/* and now for something completely different for Non-x86 world*/
 macro_line|#else
 DECL|function|i2c_which_vrm
 r_int

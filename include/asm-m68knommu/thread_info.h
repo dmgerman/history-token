@@ -4,9 +4,6 @@ DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * Size of kernel stack for each process. This must be a power of 2...&n; */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE&t;&t;8192&t;/* 2 pages */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * low level task data.&n; * If you change this, change the TI_* offsets below to match.&n; */
 DECL|struct|thread_info
@@ -86,7 +83,7 @@ l_string|&quot;=&amp;d&quot;
 id|ti
 )paren
 suffix:colon
-l_string|&quot;d&quot;
+l_string|&quot;di&quot;
 (paren
 op_complement
 (paren

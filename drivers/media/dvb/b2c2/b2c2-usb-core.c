@@ -1264,12 +1264,16 @@ id|b2c2
 id|u16
 id|frame_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|b2c2-&gt;uintf-&gt;cur_altsetting-&gt;endpoint
 (braket
 l_int|0
 )braket
 dot
 id|desc.wMaxPacketSize
+)paren
 suffix:semicolon
 r_int
 id|bufsize

@@ -14,9 +14,6 @@ macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n;&t;HISTORY:&n;&t;2003-05-11&t;1.0.0 &t;Updated from lm_sensors project for kernel 2.5&n;&t;&t;&t;&t;(was i2c-sis645.c from lm_sensors 2.7.0)&n;*/
 DECL|macro|SIS96x_VERSION
 mdefine_line|#define SIS96x_VERSION &quot;1.0.0&quot;
-multiline_comment|/* SiS96x SMBus PCI device ID */
-DECL|macro|PCI_DEVICE_ID_SI_SMBUS
-mdefine_line|#define PCI_DEVICE_ID_SI_SMBUS 0x16
 multiline_comment|/* base address register in PCI config space */
 DECL|macro|SIS96x_BAR
 mdefine_line|#define SIS96x_BAR 0x04
@@ -926,26 +923,13 @@ id|sis96x_ids
 op_assign
 (brace
 (brace
-dot
-id|vendor
-op_assign
+id|PCI_DEVICE
+c_func
+(paren
 id|PCI_VENDOR_ID_SI
 comma
-dot
-id|device
-op_assign
 id|PCI_DEVICE_ID_SI_SMBUS
-comma
-dot
-id|subvendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subdevice
-op_assign
-id|PCI_ANY_ID
-comma
+)paren
 )brace
 comma
 (brace

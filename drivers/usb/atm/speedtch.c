@@ -20,41 +20,9 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &quot;usb_atm.h&quot;
-multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
-macro_line|#if !defined (DEBUG) &amp;&amp; defined (CONFIG_USB_DEBUG)
-DECL|macro|DEBUG
-macro_line|#&t;define DEBUG
-macro_line|#endif
-macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#if defined(CONFIG_FW_LOADER) || defined(CONFIG_FW_LOADER_MODULE)
 DECL|macro|USE_FW_LOADER
 macro_line|#&t;define USE_FW_LOADER
-macro_line|#endif
-macro_line|#ifdef VERBOSE_DEBUG
-r_static
-r_int
-id|udsl_print_packet
-c_func
-(paren
-r_const
-r_int
-r_char
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-DECL|macro|PACKETDEBUG
-mdefine_line|#define PACKETDEBUG(arg...)&t;udsl_print_packet (arg)
-DECL|macro|vdbg
-mdefine_line|#define vdbg(arg...)&t;&t;dbg (arg)
-macro_line|#else
-DECL|macro|PACKETDEBUG
-mdefine_line|#define PACKETDEBUG(arg...)
-DECL|macro|vdbg
-mdefine_line|#define vdbg(arg...)
 macro_line|#endif
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;duncan.sands@free.fr&gt;&quot;
@@ -2723,7 +2691,11 @@ r_const
 id|u16
 id|bcdDevice
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|instance-&gt;u.usb_dev-&gt;descriptor.bcdDevice
+)paren
 suffix:semicolon
 r_const
 id|u8
@@ -3359,9 +3331,17 @@ c_func
 (paren
 l_string|&quot;speedtch_usb_probe: trying device with vendor=0x%x, product=0x%x, ifnum %d&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 comma
 id|ifnum
 )paren
@@ -3373,18 +3353,6 @@ c_cond
 id|dev-&gt;descriptor.bDeviceClass
 op_ne
 id|USB_CLASS_VENDOR_SPEC
-)paren
-op_logical_or
-(paren
-id|dev-&gt;descriptor.idVendor
-op_ne
-id|SPEEDTOUCH_VENDORID
-)paren
-op_logical_or
-(paren
-id|dev-&gt;descriptor.idProduct
-op_ne
-id|SPEEDTOUCH_PRODUCTID
 )paren
 op_logical_or
 (paren

@@ -35,6 +35,17 @@ DECL|macro|MCFINT_UART0
 mdefine_line|#define&t;MCFINT_UART0&t;&t;13&t;&t;/* Interrupt number for UART0 */
 DECL|macro|MCFINT_PIT1
 mdefine_line|#define&t;MCFINT_PIT1&t;&t;55&t;&t;/* Interrupt number for PIT1 */
+multiline_comment|/*&n; *&t;SDRAM configuration registers.&n; */
+DECL|macro|MCFSIM_DCR
+mdefine_line|#define&t;MCFSIM_DCR&t;&t;0x44&t;&t;/* SDRAM control */
+DECL|macro|MCFSIM_DACR0
+mdefine_line|#define&t;MCFSIM_DACR0&t;&t;0x48&t;&t;/* SDRAM base address 0 */
+DECL|macro|MCFSIM_DMR0
+mdefine_line|#define&t;MCFSIM_DMR0&t;&t;0x4c&t;&t;/* SDRAM address mask 0 */
+DECL|macro|MCFSIM_DACR1
+mdefine_line|#define&t;MCFSIM_DACR1&t;&t;0x50&t;&t;/* SDRAM base address 1 */
+DECL|macro|MCFSIM_DMR1
+mdefine_line|#define&t;MCFSIM_DMR1&t;&t;0x54&t;&t;/* SDRAM address mask 1 */
 multiline_comment|/****************************************************************************/
 macro_line|#endif&t;/* m528xsim_h */
 eof

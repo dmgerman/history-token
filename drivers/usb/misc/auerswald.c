@@ -3904,7 +3904,7 @@ r_int
 id|ret
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -3918,14 +3918,10 @@ l_string|&quot;auerswald_int_open&quot;
 suffix:semicolon
 id|ep
 op_assign
-id|usb_epnum_to_ep_desc
-(paren
-id|cp-&gt;usbdev
-comma
-id|USB_DIR_IN
-op_or
+id|cp-&gt;usbdev-&gt;ep_in
+(braket
 id|AU_IRQENDP
-)paren
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -3945,7 +3941,11 @@ suffix:semicolon
 )brace
 id|irqsize
 op_assign
-id|ep-&gt;wMaxPacketSize
+id|le16_to_cpu
+c_func
+(paren
+id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|cp-&gt;irqsize
 op_assign
@@ -4044,7 +4044,7 @@ id|auerswald_int_complete
 comma
 id|cp
 comma
-id|ep-&gt;bInterval
+id|ep-&gt;desc.bInterval
 )paren
 suffix:semicolon
 multiline_comment|/* start the urb */
@@ -7042,22 +7042,18 @@ id|dbg
 (paren
 l_string|&quot;probe: vendor id 0x%x, device id 0x%x&quot;
 comma
-id|usbdev-&gt;descriptor.idVendor
-comma
-id|usbdev-&gt;descriptor.idProduct
-)paren
-suffix:semicolon
-multiline_comment|/* See if the device offered us matches that we can accept */
-r_if
-c_cond
+id|le16_to_cpu
+c_func
 (paren
 id|usbdev-&gt;descriptor.idVendor
-op_ne
-id|ID_AUERSWALD
 )paren
-r_return
-op_minus
-id|ENODEV
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usbdev-&gt;descriptor.idProduct
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* we use only the first -and only- interface */
 r_if
@@ -7186,7 +7182,11 @@ suffix:semicolon
 multiline_comment|/* Get the usb version of the device */
 id|cp-&gt;version
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|cp-&gt;usbdev-&gt;descriptor.bcdDevice
+)paren
 suffix:semicolon
 id|dbg
 (paren

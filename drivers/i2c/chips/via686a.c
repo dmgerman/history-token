@@ -3238,7 +3238,7 @@ id|address
 comma
 id|VIA686A_EXTENT
 comma
-l_string|&quot;via686a-sensor&quot;
+id|via686a_driver.name
 )paren
 )paren
 (brace

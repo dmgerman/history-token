@@ -51,7 +51,6 @@ id|hotplug_seqnum
 )paren
 suffix:semicolon
 macro_line|#endif
-r_static
 id|decl_subsys
 c_func
 (paren
@@ -60,6 +59,13 @@ comma
 l_int|NULL
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+DECL|variable|kernel_subsys
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|kernel_subsys
 )paren
 suffix:semicolon
 DECL|variable|kernel_attrs

@@ -3696,12 +3696,16 @@ id|desc.bmAttributes
 suffix:semicolon
 id|psize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint
 (braket
 id|i
 )braket
 dot
 id|desc.wMaxPacketSize
+)paren
 suffix:semicolon
 multiline_comment|/* Is it a bulk endpoint ??? */
 r_if
@@ -4202,9 +4206,17 @@ l_string|&quot;IRDA-USB found at address %d, Vendor: %x, Product: %x&bslash;n&qu
 comma
 id|dev-&gt;devnum
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 id|net

@@ -1834,6 +1834,8 @@ id|adap
 )paren
 (brace
 r_return
+id|I2C_FUNC_I2C
+op_or
 id|I2C_FUNC_SMBUS_EMUL
 op_or
 id|I2C_FUNC_10BIT_ADDR

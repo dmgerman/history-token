@@ -57,18 +57,18 @@ DECL|macro|MCFSIM_DCRR
 mdefine_line|#define&t;MCFSIM_DCRR&t;&t;0x46&t;&t;/* DRAM Refresh reg (r/w) */
 DECL|macro|MCFSIM_DCTR
 mdefine_line|#define&t;MCFSIM_DCTR&t;&t;0x4a&t;&t;/* DRAM Timing reg (r/w) */
-DECL|macro|MCFSIM_DCAR0
-mdefine_line|#define&t;MCFSIM_DCAR0&t;&t;0x4c&t;&t;/* DRAM 0 Address reg(r/w) */
-DECL|macro|MCFSIM_DCMR0
-mdefine_line|#define&t;MCFSIM_DCMR0&t;&t;0x50&t;&t;/* DRAM 0 Mask reg (r/w) */
-DECL|macro|MCFSIM_DCCR0
-mdefine_line|#define&t;MCFSIM_DCCR0&t;&t;0x57&t;&t;/* DRAM 0 Control reg (r/w) */
-DECL|macro|MCFSIM_DCAR1
-mdefine_line|#define&t;MCFSIM_DCAR1&t;&t;0x58&t;&t;/* DRAM 1 Address reg (r/w) */
-DECL|macro|MCFSIM_DCMR1
-mdefine_line|#define&t;MCFSIM_DCMR1&t;&t;0x5c&t;&t;/* DRAM 1 Mask reg (r/w) */
-DECL|macro|MCFSIM_DCCR1
-mdefine_line|#define&t;MCFSIM_DCCR1&t;&t;0x63&t;&t;/* DRAM 1 Control reg (r/w) */
+DECL|macro|MCFSIM_DAR0
+mdefine_line|#define&t;MCFSIM_DAR0&t;&t;0x4c&t;&t;/* DRAM 0 Address reg(r/w) */
+DECL|macro|MCFSIM_DMR0
+mdefine_line|#define&t;MCFSIM_DMR0&t;&t;0x50&t;&t;/* DRAM 0 Mask reg (r/w) */
+DECL|macro|MCFSIM_DCR0
+mdefine_line|#define&t;MCFSIM_DCR0&t;&t;0x57&t;&t;/* DRAM 0 Control reg (r/w) */
+DECL|macro|MCFSIM_DAR1
+mdefine_line|#define&t;MCFSIM_DAR1&t;&t;0x58&t;&t;/* DRAM 1 Address reg (r/w) */
+DECL|macro|MCFSIM_DMR1
+mdefine_line|#define&t;MCFSIM_DMR1&t;&t;0x5c&t;&t;/* DRAM 1 Mask reg (r/w) */
+DECL|macro|MCFSIM_DCR1
+mdefine_line|#define&t;MCFSIM_DCR1&t;&t;0x63&t;&t;/* DRAM 1 Control reg (r/w) */
 DECL|macro|MCFSIM_CSAR0
 mdefine_line|#define&t;MCFSIM_CSAR0&t;&t;0x64&t;&t;/* CS 0 Address 0 reg (r/w) */
 DECL|macro|MCFSIM_CSMR0

@@ -4290,7 +4290,7 @@ op_assign
 id|svsk-&gt;sk_sk
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign

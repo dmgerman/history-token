@@ -2190,7 +2190,7 @@ id|tcp_schedule_ack
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2208,7 +2208,7 @@ id|tcp_ack_scheduled
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2227,7 +2227,7 @@ id|tcp_dec_quickack_mode
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2256,7 +2256,7 @@ id|tcp_enter_quickack_mode
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2269,7 +2269,7 @@ id|tcp_delack_init
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2297,7 +2297,7 @@ id|tcp_clear_options
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2444,7 +2444,7 @@ id|tcp_clear_retrans
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2638,7 +2638,7 @@ op_star
 id|skb
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -3233,7 +3233,7 @@ id|what
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3333,7 +3333,7 @@ id|when
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3465,7 +3465,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3532,7 +3532,7 @@ id|__tcp_fast_path_on
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -3569,7 +3569,7 @@ id|tcp_fast_path_on
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -3598,7 +3598,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -3646,7 +3646,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4032,7 +4032,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -4087,7 +4087,7 @@ id|tcp_packets_out_dec
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -4119,7 +4119,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4165,7 +4165,7 @@ id|tcp_recalc_ssthresh
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4260,7 +4260,7 @@ id|tcp_vegas_enable
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4294,7 +4294,7 @@ id|tcp_ca_init
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4307,7 +4307,7 @@ id|tcp_set_ca_state
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -4360,7 +4360,7 @@ id|tcp_current_ssthresh
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4414,7 +4414,7 @@ id|tcp_sync_left_out
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4519,7 +4519,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4607,7 +4607,7 @@ id|__tcp_enter_cwr
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4667,7 +4667,7 @@ id|tcp_enter_cwr
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4706,7 +4706,7 @@ id|tcp_init_cwnd
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -4726,7 +4726,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4744,7 +4744,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4776,7 +4776,7 @@ id|tcp_minshall_update
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -4818,7 +4818,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -4905,7 +4905,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5045,7 +5045,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5121,7 +5121,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5216,7 +5216,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5253,7 +5253,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5308,7 +5308,7 @@ id|tcp_init_wl
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5332,7 +5332,7 @@ id|tcp_update_wl
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5473,7 +5473,7 @@ id|tcp_prequeue_init
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5518,7 +5518,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5893,7 +5893,7 @@ id|tcp_sack_reset
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5923,7 +5923,7 @@ op_star
 id|ptr
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -6466,7 +6466,7 @@ id|child
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6735,7 +6735,7 @@ id|tcp_synq_unlink
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -6837,7 +6837,7 @@ op_star
 id|req
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -6991,7 +6991,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -7013,7 +7013,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -7035,7 +7035,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -7093,7 +7093,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -7211,7 +7211,7 @@ id|sk
 (brace
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -7437,7 +7437,7 @@ id|tcp_westwood_update_rtt
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -7468,7 +7468,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -7505,7 +7505,7 @@ c_func
 (paren
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -7535,7 +7535,7 @@ id|tcp_westwood_ssthresh
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -7589,7 +7589,7 @@ id|tcp_westwood_cwnd
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren

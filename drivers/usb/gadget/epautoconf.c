@@ -25,7 +25,7 @@ r_int
 id|in_epnum
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * This should work with endpoints from controller drivers sharing the&n; * same endpoint naming convention.  By example:&n; *&n; *&t;- ep1, ep2, ... address is fixed, not direction or type&n; *&t;- ep1in, ep2out, ... address and direction are fixed, not type&n; *&t;- ep1-bulk, ep2-bulk, ... address and type are fixed, not direction&n; *&t;- ep1in-bulk, ep2out-iso, ... all three are fixed&n; *&t;- ep-* ... no functionality restrictions&n; *&n; * Type suffixes are &quot;-bulk&quot;, &quot;-iso&quot;, or &quot;-int&quot;.  Numbers are decimal.&n; * Less common restrictions are implied by gadget_is_*().&n; */
+multiline_comment|/*&n; * This should work with endpoints from controller drivers sharing the&n; * same endpoint naming convention.  By example:&n; *&n; *&t;- ep1, ep2, ... address is fixed, not direction or type&n; *&t;- ep1in, ep2out, ... address and direction are fixed, not type&n; *&t;- ep1-bulk, ep2-bulk, ... address and type are fixed, not direction&n; *&t;- ep1in-bulk, ep2out-iso, ... all three are fixed&n; *&t;- ep-* ... no functionality restrictions&n; *&n; * Type suffixes are &quot;-bulk&quot;, &quot;-iso&quot;, or &quot;-int&quot;.  Numbers are decimal.&n; * Less common restrictions are implied by gadget_is_*().&n; *&n; * NOTE:  each endpoint is unidirectional, as specified by its USB&n; * descriptor; and isn&squot;t specific to a configuration or altsetting.&n; */
 r_static
 r_int
 id|__init

@@ -636,7 +636,7 @@ id|retp
 suffix:semicolon
 id|stack_offset
 op_assign
-id|KTHREAD_SIZE
+id|THREAD_SIZE
 op_minus
 r_sizeof
 (paren
@@ -1344,7 +1344,7 @@ r_int
 id|current
 )paren
 op_plus
-id|KTHREAD_SIZE
+id|THREAD_SIZE
 )paren
 )paren
 suffix:semicolon

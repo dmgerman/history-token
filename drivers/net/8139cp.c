@@ -7816,7 +7816,7 @@ id|pci_set_power_state
 (paren
 id|cp-&gt;pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 )brace
@@ -8717,7 +8717,7 @@ id|pci_set_power_state
 (paren
 id|pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_release_regions
@@ -8940,7 +8940,7 @@ id|pci_set_power_state
 (paren
 id|cp-&gt;pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state

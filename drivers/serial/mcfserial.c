@@ -36,11 +36,17 @@ id|timer_list
 id|mcfrs_timer_struct
 suffix:semicolon
 multiline_comment|/*&n; *&t;Default console baud rate,  we use this as the default&n; *&t;for all ports so init can just open /dev/console and&n; *&t;keep going.  Perhaps one day the cflag settings for the&n; *&t;console can be used instead.&n; */
-macro_line|#if defined(CONFIG_ARNEWSH) || defined(CONFIG_MOTOROLA) || defined(CONFIG_senTec)
+macro_line|#if defined(CONFIG_ARNEWSH) || defined(CONFIG_MOTOROLA) || defined(CONFIG_senTec) || defined(CONFIG_SNEHA)
 DECL|macro|CONSOLE_BAUD_RATE
 mdefine_line|#define&t;CONSOLE_BAUD_RATE&t;19200
 DECL|macro|DEFAULT_CBAUD
 mdefine_line|#define&t;DEFAULT_CBAUD&t;&t;B19200
+macro_line|#endif
+macro_line|#if defined(CONFIG_HW_FEITH)
+DECL|macro|CONSOLE_BAUD_RATE
+mdefine_line|#define&t;CONSOLE_BAUD_RATE&t;38400
+DECL|macro|DEFAULT_CBAUD
+mdefine_line|#define&t;DEFAULT_CBAUD&t;&t;B38400
 macro_line|#endif
 macro_line|#ifndef CONSOLE_BAUD_RATE
 DECL|macro|CONSOLE_BAUD_RATE
@@ -89,9 +95,9 @@ DECL|macro|SERIAL_DEBUG_OPEN
 macro_line|#undef SERIAL_DEBUG_OPEN
 DECL|macro|SERIAL_DEBUG_FLOW
 macro_line|#undef SERIAL_DEBUG_FLOW
-macro_line|#ifdef CONFIG_M5282
+macro_line|#if defined(CONFIG_M527x) || defined(CONFIG_M528x)
 DECL|macro|IRQBASE
-mdefine_line|#define&t;IRQBASE&t;77
+mdefine_line|#define&t;IRQBASE&t;(MCFINT_VECBASE+MCFINT_UART0)
 macro_line|#else
 DECL|macro|IRQBASE
 mdefine_line|#define&t;IRQBASE&t;73
@@ -988,6 +994,7 @@ id|status
 op_amp
 id|MCFUART_USR_RXERR
 )paren
+(brace
 id|uartp
 (braket
 id|MCFUART_UCR
@@ -1069,6 +1076,17 @@ op_increment
 op_assign
 id|TTY_FRAME
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* This should never happen... */
+op_star
+id|tty-&gt;flip.flag_buf_ptr
+op_increment
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -2495,6 +2513,60 @@ l_string|&quot;mcfrs_flush_chars&quot;
 )paren
 r_return
 suffix:semicolon
+id|uartp
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|info-&gt;addr
+suffix:semicolon
+multiline_comment|/*&n;&t; * re-enable receiver interrupt&n;&t; */
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+(paren
+id|info-&gt;imr
+op_amp
+id|MCFUART_UIR_RXREADY
+)paren
+)paren
+op_logical_and
+(paren
+id|info-&gt;flags
+op_amp
+id|ASYNC_INITIALIZED
+)paren
+)paren
+(brace
+id|info-&gt;imr
+op_or_assign
+id|MCFUART_UIR_RXREADY
+suffix:semicolon
+id|uartp
+(braket
+id|MCFUART_UIMR
+)braket
+op_assign
+id|info-&gt;imr
+suffix:semicolon
+)brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2517,10 +2589,6 @@ c_func
 (paren
 id|flags
 )paren
-suffix:semicolon
-id|uartp
-op_assign
-id|info-&gt;addr
 suffix:semicolon
 id|info-&gt;imr
 op_or_assign
@@ -3607,8 +3675,6 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies
-op_plus
 id|duration
 )paren
 suffix:semicolon
@@ -5795,7 +5861,7 @@ l_int|0x000003fc
 op_or
 l_int|0x000002a8
 suffix:semicolon
-macro_line|#elif defined(CONFIG_M5282)
+macro_line|#elif defined(CONFIG_M527x) || defined(CONFIG_M528x)
 r_volatile
 r_int
 r_char
@@ -5868,7 +5934,7 @@ op_lshift
 (paren
 id|info-&gt;irq
 op_minus
-l_int|64
+id|MCFINT_VECBASE
 )paren
 )paren
 op_or

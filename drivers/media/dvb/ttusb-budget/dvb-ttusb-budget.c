@@ -6616,7 +6616,11 @@ id|ttusb
 r_switch
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|ttusb-&gt;dev-&gt;descriptor.idProduct
+)paren
 )paren
 (brace
 r_case
@@ -6745,9 +6749,17 @@ c_func
 (paren
 l_string|&quot;dvb-ttusb-budget: A frontend driver was not found for device %04x/%04x&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|ttusb-&gt;dev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|ttusb-&gt;dev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 )brace

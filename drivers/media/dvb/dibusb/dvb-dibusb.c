@@ -3170,9 +3170,17 @@ c_func
 (paren
 l_string|&quot;dvb-dibusb: A frontend driver was not found for device %04x/%04x&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dib-&gt;udev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dib-&gt;udev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4783,7 +4791,11 @@ id|i
 dot
 id|cold_product_id
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 op_logical_or
 id|dibusb_devices
 (braket
@@ -4792,7 +4804,11 @@ id|i
 dot
 id|warm_product_id
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 )paren
 (brace
 id|dibdev
@@ -4807,7 +4823,11 @@ id|cold
 op_assign
 id|dibdev-&gt;cold_product_id
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4846,7 +4866,11 @@ c_func
 l_string|&quot;something went very wrong, &quot;
 l_string|&quot;unknown product ID: %.4x&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 r_return

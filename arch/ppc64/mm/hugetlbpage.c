@@ -3456,7 +3456,8 @@ c_cond
 op_logical_neg
 id|pgdir
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|mm-&gt;context.huge_pgdir
 op_assign
@@ -3580,6 +3581,8 @@ comma
 id|pgdir
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|spin_unlock
 c_func
 (paren

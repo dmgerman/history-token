@@ -68,6 +68,8 @@ DECL|macro|USB_DEVICE_A_HNP_SUPPORT
 mdefine_line|#define USB_DEVICE_A_HNP_SUPPORT&t;4&t;/* RH port supports HNP */
 DECL|macro|USB_DEVICE_A_ALT_HNP_SUPPORT
 mdefine_line|#define USB_DEVICE_A_ALT_HNP_SUPPORT&t;5&t;/* other RH port does */
+DECL|macro|USB_DEVICE_DEBUG_MODE
+mdefine_line|#define USB_DEVICE_DEBUG_MODE&t;&t;6&t;/* (special devices only) */
 DECL|macro|USB_ENDPOINT_HALT
 mdefine_line|#define USB_ENDPOINT_HALT&t;&t;0&t;/* IN/OUT will STALL */
 multiline_comment|/**&n; * struct usb_ctrlrequest - SETUP data for a USB device control request&n; * @bRequestType: matches the USB bmRequestType field&n; * @bRequest: matches the USB bRequest field&n; * @wValue: matches the USB wValue field (le16 byte order)&n; * @wIndex: matches the USB wIndex field (le16 byte order)&n; * @wLength: matches the USB wLength field (le16 byte order)&n; *&n; * This structure is used to send control requests to a USB device.  It matches&n; * the different fields of the USB 2.0 Spec section 9.3, table 9-2.  See the&n; * USB spec for a fuller description of the different fields, and what they are&n; * used for.&n; *&n; * Note that the driver for any interface can issue control requests.&n; * For most devices, interfaces don&squot;t coordinate with each other, so&n; * such requests may be made at any time.&n; */
@@ -176,7 +178,7 @@ id|__u8
 id|bDescriptorType
 suffix:semicolon
 DECL|member|bcdUSB
-id|__u16
+id|__le16
 id|bcdUSB
 suffix:semicolon
 DECL|member|bDeviceClass
@@ -196,15 +198,15 @@ id|__u8
 id|bMaxPacketSize0
 suffix:semicolon
 DECL|member|idVendor
-id|__u16
+id|__le16
 id|idVendor
 suffix:semicolon
 DECL|member|idProduct
-id|__u16
+id|__le16
 id|idProduct
 suffix:semicolon
 DECL|member|bcdDevice
-id|__u16
+id|__le16
 id|bcdDevice
 suffix:semicolon
 DECL|member|iManufacturer
@@ -279,7 +281,7 @@ id|__u8
 id|bDescriptorType
 suffix:semicolon
 DECL|member|wTotalLength
-id|__u16
+id|__le16
 id|wTotalLength
 suffix:semicolon
 DECL|member|bNumInterfaces
@@ -425,7 +427,7 @@ id|__u8
 id|bmAttributes
 suffix:semicolon
 DECL|member|wMaxPacketSize
-id|__u16
+id|__le16
 id|wMaxPacketSize
 suffix:semicolon
 DECL|member|bInterval
@@ -484,7 +486,7 @@ id|__u8
 id|bDescriptorType
 suffix:semicolon
 DECL|member|bcdUSB
-id|__u16
+id|__le16
 id|bcdUSB
 suffix:semicolon
 DECL|member|bDeviceClass
@@ -551,6 +553,31 @@ DECL|macro|USB_OTG_SRP
 mdefine_line|#define USB_OTG_SRP&t;&t;(1 &lt;&lt; 0)
 DECL|macro|USB_OTG_HNP
 mdefine_line|#define USB_OTG_HNP&t;&t;(1 &lt;&lt; 1)&t;/* swap host/device roles */
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* USB_DT_DEBUG:  for special highspeed devices, replacing serial console */
+DECL|struct|usb_debug_descriptor
+r_struct
+id|usb_debug_descriptor
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+multiline_comment|/* bulk endpoints with 8 byte maxpacket */
+DECL|member|bDebugInEndpoint
+id|__u8
+id|bDebugInEndpoint
+suffix:semicolon
+DECL|member|bDebugOutEndpoint
+id|__u8
+id|bDebugOutEndpoint
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* USB_DT_INTERFACE_ASSOCIATION: groups interfaces */
 DECL|struct|usb_interface_assoc_descriptor

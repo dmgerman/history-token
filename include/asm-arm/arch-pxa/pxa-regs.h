@@ -444,13 +444,6 @@ DECL|macro|DCMD_WIDTH4
 mdefine_line|#define DCMD_WIDTH4&t;(3 &lt;&lt; 14)&t;/* 4 byte width (Word) */
 DECL|macro|DCMD_LENGTH
 mdefine_line|#define DCMD_LENGTH&t;0x01fff&t;&t;/* length mask (max = 8K - 1) */
-multiline_comment|/* default combinations */
-DECL|macro|DCMD_RXPCDR
-mdefine_line|#define DCMD_RXPCDR&t;(DCMD_INCTRGADDR|DCMD_FLOWSRC|DCMD_BURST32|DCMD_WIDTH4)
-DECL|macro|DCMD_RXMCDR
-mdefine_line|#define DCMD_RXMCDR&t;(DCMD_INCTRGADDR|DCMD_FLOWSRC|DCMD_BURST32|DCMD_WIDTH4)
-DECL|macro|DCMD_TXPCDR
-mdefine_line|#define DCMD_TXPCDR&t;(DCMD_INCSRCADDR|DCMD_FLOWTRG|DCMD_BURST32|DCMD_WIDTH4)
 multiline_comment|/*&n; * UARTs&n; */
 multiline_comment|/* Full Function UART (FFUART) */
 DECL|macro|FFUART

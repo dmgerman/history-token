@@ -409,7 +409,7 @@ c_func
 op_amp
 id|dev-&gt;dev
 comma
-l_string|&quot;bogus endpoint ep%d%s in %s (bad maxpacket %d)&quot;
+l_string|&quot;bogus endpoint ep%d%s in %s (bad maxpacket %d)&bslash;n&quot;
 comma
 id|usb_pipeendpoint
 (paren

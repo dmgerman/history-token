@@ -12,11 +12,11 @@ mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#if !defined(CONFIG_SMALL_TASKS) &amp;&amp; PAGE_SHIFT &lt; 13
-DECL|macro|KTHREAD_SIZE
-mdefine_line|#define KTHREAD_SIZE (8192)
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (8192)
 macro_line|#else
-DECL|macro|KTHREAD_SIZE
-mdefine_line|#define KTHREAD_SIZE PAGE_SIZE
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE PAGE_SIZE
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|get_user_page
@@ -176,8 +176,6 @@ DECL|macro|__pa
 mdefine_line|#define __pa(vaddr)&t;&t;virt_to_phys((void *)vaddr)
 DECL|macro|__va
 mdefine_line|#define __va(paddr)&t;&t;phys_to_virt((unsigned long)paddr)
-DECL|macro|MAP_NR
-mdefine_line|#define MAP_NR(addr)&t;&t;(((unsigned long)(addr)-PAGE_OFFSET) &gt;&gt; PAGE_SHIFT)
 DECL|macro|virt_to_pfn
 mdefine_line|#define virt_to_pfn(kaddr)&t;(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_to_virt
@@ -186,8 +184,6 @@ DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(addr)&t;(mem_map + (((unsigned long)(addr)-PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
 DECL|macro|page_to_virt
 mdefine_line|#define page_to_virt(page)&t;((((page) - mem_map) &lt;&lt; PAGE_SHIFT) + PAGE_OFFSET)
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;virt_to_page(pfn_to_virt(pfn))
 DECL|macro|page_to_pfn

@@ -8392,7 +8392,7 @@ op_assign
 id|alloc_page_vma
 c_func
 (paren
-id|GFP_HIGHZERO
+id|GFP_HIGHUSER
 comma
 id|vma
 comma
@@ -8407,6 +8407,14 @@ id|page
 )paren
 r_goto
 id|no_mem
+suffix:semicolon
+id|clear_user_highpage
+c_func
+(paren
+id|page
+comma
+id|addr
+)paren
 suffix:semicolon
 id|spin_lock
 c_func

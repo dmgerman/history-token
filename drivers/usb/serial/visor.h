@@ -86,7 +86,7 @@ r_struct
 id|visor_connection_info
 (brace
 DECL|member|num_ports
-id|__u16
+id|__le16
 id|num_ports
 suffix:semicolon
 r_struct
@@ -141,7 +141,7 @@ id|__u8
 id|endpoint_numbers_different
 suffix:semicolon
 DECL|member|reserved1
-id|__u16
+id|__le16
 id|reserved1
 suffix:semicolon
 r_struct
@@ -159,7 +159,7 @@ id|__u8
 id|end_point_info
 suffix:semicolon
 DECL|member|reserved
-id|__u16
+id|__le16
 id|reserved
 suffix:semicolon
 DECL|member|connections

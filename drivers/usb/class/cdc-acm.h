@@ -298,4 +298,7 @@ DECL|macro|CDC_COUNTRY_TYPE
 mdefine_line|#define CDC_COUNTRY_TYPE&t;&t;0x07
 DECL|macro|CDC_DATA_INTERFACE_TYPE
 mdefine_line|#define CDC_DATA_INTERFACE_TYPE&t;0x0a
+multiline_comment|/* constants describing various quirks and errors */
+DECL|macro|NO_UNION_NORMAL
+mdefine_line|#define NO_UNION_NORMAL&t;&t;&t;1
 eof

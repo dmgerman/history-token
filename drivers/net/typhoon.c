@@ -8112,7 +8112,13 @@ c_func
 (paren
 id|pdev
 comma
+id|pci_choose_state
+c_func
+(paren
+id|pdev
+comma
 id|state
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -8150,7 +8156,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state
@@ -11337,7 +11343,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state

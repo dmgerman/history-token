@@ -298,6 +298,10 @@ DECL|macro|FTDI_SIO_SET_EVENT_CHAR
 mdefine_line|#define FTDI_SIO_SET_EVENT_CHAR&t;6 /* Set the event character */
 DECL|macro|FTDI_SIO_SET_ERROR_CHAR
 mdefine_line|#define FTDI_SIO_SET_ERROR_CHAR&t;7 /* Set the error character */
+DECL|macro|FTDI_SIO_SET_LATENCY_TIMER
+mdefine_line|#define FTDI_SIO_SET_LATENCY_TIMER&t;9 /* Set the latency timer */
+DECL|macro|FTDI_SIO_GET_LATENCY_TIMER
+mdefine_line|#define FTDI_SIO_GET_LATENCY_TIMER&t;10 /* Get the latency timer */
 multiline_comment|/* Port interface code for FT2232C */
 DECL|macro|INTERFACE_A
 mdefine_line|#define INTERFACE_A&t;&t;1
@@ -473,6 +477,18 @@ mdefine_line|#define FTDI_SIO_DTR_DSR_HS (0x2 &lt;&lt; 8)
 DECL|macro|FTDI_SIO_XON_XOFF_HS
 mdefine_line|#define FTDI_SIO_XON_XOFF_HS (0x4 &lt;&lt; 8)
 multiline_comment|/*&n; *   BmRequestType:  0100 0000b&n; *   bRequest:       FTDI_SIO_SET_FLOW_CTRL&n; *   wValue:         Xoff/Xon&n; *   wIndex:         Protocol/Port - hIndex is protocl / lIndex is port&n; *   wLength:        0 &n; *   Data:           None&n; *&n; * hIndex protocol is:&n; *   B0 Output handshaking using RTS/CTS&n; *       0 = disabled&n; *       1 = enabled&n; *   B1 Output handshaking using DTR/DSR&n; *       0 = disabled&n; *       1 = enabled&n; *   B2 Xon/Xoff handshaking&n; *       0 = disabled&n; *       1 = enabled&n; *&n; * A value of zero in the hIndex field disables handshaking&n; *&n; * If Xon/Xoff handshaking is specified, the hValue field should contain the XOFF character &n; * and the lValue field contains the XON character.&n; */
+multiline_comment|/*&n; * FTDI_SIO_GET_LATENCY_TIMER&n; *&n; * Set the timeout interval. The FTDI collects data from the slave&n; * device, transmitting it to the host when either A) 62 bytes are&n; * received, or B) the timeout interval has elapsed and the buffer&n; * contains at least 1 byte.  Setting this value to a small number&n; * can dramatically improve performance for applications which send&n; * small packets, since the default value is 16ms.&n; */
+DECL|macro|FTDI_SIO_GET_LATENCY_TIMER_REQUEST
+mdefine_line|#define  FTDI_SIO_GET_LATENCY_TIMER_REQUEST FTDI_SIO_GET_LATENCY_TIMER
+DECL|macro|FTDI_SIO_GET_LATENCY_TIMER_REQUEST_TYPE
+mdefine_line|#define  FTDI_SIO_GET_LATENCY_TIMER_REQUEST_TYPE 0xC0
+multiline_comment|/* &n; *  BmRequestType:   1100 0000b&n; *  bRequest:        FTDI_SIO_GET_LATENCY_TIMER&n; *  wValue:          0&n; *  wIndex:          Port&n; *  wLength:         0&n; *  Data:            latency (on return)&n; */
+multiline_comment|/* &n; * FTDI_SIO_SET_LATENCY_TIMER&n; *&n; * Set the timeout interval. The FTDI collects data from the slave&n; * device, transmitting it to the host when either A) 62 bytes are&n; * received, or B) the timeout interval has elapsed and the buffer&n; * contains at least 1 byte.  Setting this value to a small number&n; * can dramatically improve performance for applications which send&n; * small packets, since the default value is 16ms.&n; */
+DECL|macro|FTDI_SIO_SET_LATENCY_TIMER_REQUEST
+mdefine_line|#define  FTDI_SIO_SET_LATENCY_TIMER_REQUEST FTDI_SIO_SET_LATENCY_TIMER
+DECL|macro|FTDI_SIO_SET_LATENCY_TIMER_REQUEST_TYPE
+mdefine_line|#define  FTDI_SIO_SET_LATENCY_TIMER_REQUEST_TYPE 0x40
+multiline_comment|/* &n; *  BmRequestType:   0100 0000b&n; *  bRequest:        FTDI_SIO_SET_LATENCY_TIMER&n; *  wValue:          Latency (milliseconds)&n; *  wIndex:          Port&n; *  wLength:         0&n; *  Data:            None&n; *&n; * wValue:&n; *   B0..7   Latency timer&n; *   B8..15  0&n; *&n; */
 multiline_comment|/*&n; * FTDI_SIO_SET_EVENT_CHAR &n; *&n; * Set the special event character for the specified communications port.&n; * If the device sees this character it will immediately return the&n; * data read so far - rather than wait 40ms or until 62 bytes are read&n; * which is what normally happens.&n; */
 DECL|macro|FTDI_SIO_SET_EVENT_CHAR_REQUEST
 mdefine_line|#define  FTDI_SIO_SET_EVENT_CHAR_REQUEST FTDI_SIO_SET_EVENT_CHAR

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -350,6 +351,15 @@ l_char|&squot;b&squot;
 suffix:semicolon
 DECL|macro|ENDIANNESS
 mdefine_line|#define ENDIANNESS ((char)endian_test.l)
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|cpuinfo_arm
+comma
+id|cpu_data
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Standard memory resources&n; */
 DECL|variable|mem_res
 r_static
@@ -2915,15 +2925,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-DECL|variable|cpu
-r_static
-r_struct
-id|cpu
-id|cpu
-(braket
-l_int|1
-)braket
-suffix:semicolon
 DECL|function|topology_init
 r_static
 r_int
@@ -2934,16 +2935,35 @@ c_func
 r_void
 )paren
 (brace
-r_return
-id|register_cpu
+r_int
+id|cpu
+suffix:semicolon
+id|for_each_cpu
 c_func
 (paren
 id|cpu
+)paren
+id|register_cpu
+c_func
+(paren
+op_amp
+id|per_cpu
+c_func
+(paren
+id|cpu_data
 comma
-l_int|0
+id|cpu
+)paren
+dot
+id|cpu
+comma
+id|cpu
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|topology_init
@@ -3138,6 +3158,69 @@ comma
 id|elf_platform
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_SMP)
+id|for_each_online_cpu
+c_func
+(paren
+id|i
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;Processor&bslash;t: %d&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;BogoMIPS&bslash;t: %lu.%02lu&bslash;n&bslash;n&quot;
+comma
+id|per_cpu
+c_func
+(paren
+id|cpu_data
+comma
+id|i
+)paren
+dot
+id|loops_per_jiffy
+op_div
+(paren
+l_int|500000UL
+op_div
+id|HZ
+)paren
+comma
+(paren
+id|per_cpu
+c_func
+(paren
+id|cpu_data
+comma
+id|i
+)paren
+dot
+id|loops_per_jiffy
+op_div
+(paren
+l_int|5000UL
+op_div
+id|HZ
+)paren
+)paren
+op_mod
+l_int|100
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* CONFIG_SMP */
 id|seq_printf
 c_func
 (paren
@@ -3166,6 +3249,7 @@ op_mod
 l_int|100
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* dump out the processor features */
 id|seq_puts
 c_func

@@ -574,12 +574,13 @@ op_ne
 l_int|0xF8
 )paren
 (brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_ERR
-id|DRIVER
-l_string|&quot;: bus is not idle. status is %#04x&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
+comma
+l_string|&quot;bus is not idle. status is %#04x&bslash;n&quot;
 comma
 id|state
 )paren
@@ -1233,6 +1234,8 @@ id|adap
 )paren
 (brace
 r_return
+id|I2C_FUNC_I2C
+op_or
 id|I2C_FUNC_SMBUS_EMUL
 suffix:semicolon
 )brace

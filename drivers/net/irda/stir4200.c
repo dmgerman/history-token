@@ -4049,9 +4049,17 @@ l_string|&quot;Vendor: %x, Product: %x&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize QoS for this device */

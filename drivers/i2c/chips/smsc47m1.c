@@ -1663,7 +1663,7 @@ id|address
 comma
 id|SMSC_EXTENT
 comma
-l_string|&quot;smsc47m1&quot;
+id|smsc47m1_driver.name
 )paren
 )paren
 (brace

@@ -89,6 +89,20 @@ r_class
 op_rshift
 l_int|8
 suffix:semicolon
+multiline_comment|/* Don&squot;t touch classless devices and host bridges.  */
+r_if
+c_cond
+(paren
+r_class
+op_eq
+id|PCI_CLASS_NOT_DEFINED
+op_logical_or
+r_class
+op_eq
+id|PCI_CLASS_BRIDGE_HOST
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -5,6 +5,11 @@ op_star
 id|sysfs_mount
 suffix:semicolon
 r_extern
+id|kmem_cache_t
+op_star
+id|sysfs_dir_cachep
+suffix:semicolon
+r_extern
 r_struct
 id|inode
 op_star
@@ -459,9 +464,11 @@ id|sl
 )paren
 suffix:semicolon
 )brace
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
+id|sysfs_dir_cachep
+comma
 id|sd
 )paren
 suffix:semicolon

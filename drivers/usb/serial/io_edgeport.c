@@ -1839,7 +1839,11 @@ op_assign
 id|__u16
 )paren
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|edge_serial-&gt;serial-&gt;dev-&gt;descriptor.idProduct
+)paren
 op_amp
 op_complement
 id|ION_DEVICE_ID_80251_NETCHIP
@@ -1898,7 +1902,11 @@ singleline_comment|// check if this is 2nd generation hardware
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|edge_serial-&gt;serial-&gt;dev-&gt;descriptor.idProduct
+)paren
 op_amp
 id|ION_DEVICE_ID_80251_NETCHIP
 )paren

@@ -1,10 +1,23 @@
 multiline_comment|/******************************************************************************&n; *  usb_atm.h - Generic USB xDSL driver core&n; *&n; *  Copyright (C) 2001, Alcatel&n; *  Copyright (C) 2003, Duncan Sands, SolNegro, Josep Comas&n; *  Copyright (C) 2004, David Woodhouse&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the Free&n; *  Software Foundation; either version 2 of the License, or (at your option)&n; *  any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; *  more details.&n; *&n; *  You should have received a copy of the GNU General Public License along with&n; *  this program; if not, write to the Free Software Foundation, Inc., 59&n; *  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; ******************************************************************************/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
+macro_line|#if !defined (DEBUG) &amp;&amp; defined (CONFIG_USB_DEBUG)
+DECL|macro|DEBUG
+macro_line|#&t;define DEBUG
+macro_line|#endif
+macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#ifdef DEBUG
+DECL|macro|UDSL_ASSERT
+mdefine_line|#define UDSL_ASSERT(x)&t;BUG_ON(!(x))
+macro_line|#else
+DECL|macro|UDSL_ASSERT
+mdefine_line|#define UDSL_ASSERT(x)&t;do { if (!(x)) warn(&quot;failed assertion &squot;&quot; #x &quot;&squot; at line %d&quot;, __LINE__); } while(0)
+macro_line|#endif
 DECL|macro|UDSL_MAX_RCV_URBS
 mdefine_line|#define UDSL_MAX_RCV_URBS&t;&t;4
 DECL|macro|UDSL_MAX_SND_URBS

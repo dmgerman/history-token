@@ -1177,6 +1177,11 @@ id|error
 op_ne
 op_minus
 id|ENODEV
+op_logical_and
+id|error
+op_ne
+op_minus
+id|ENXIO
 )paren
 multiline_comment|/* driver matched but the probe failed */
 id|printk

@@ -11,7 +11,7 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Scott Murray &lt;scottm@somanetworks.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;Generic port I/O CompactPCI Hot Plug Driver&quot;
-macro_line|#if !defined(CONFIG_HOTPLUG_CPCI_GENERIC_MODULE)
+macro_line|#if !defined(MODULE)
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;&quot;cpcihp_generic&quot;
 macro_line|#else

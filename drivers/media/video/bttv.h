@@ -527,12 +527,6 @@ id|bttv_tvcards
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_const
-r_int
-r_int
-id|bttv_num_tvcards
-suffix:semicolon
 multiline_comment|/* identification / initialization of the card */
 r_extern
 r_void

@@ -71,14 +71,6 @@ mdefine_line|#define CYCLE_DELAY&t;10
 DECL|macro|TIMEOUT
 mdefine_line|#define TIMEOUT&t;&t;(HZ / 2)
 multiline_comment|/* &n; * S3/VIA 8365/8375 registers&n; */
-macro_line|#ifndef PCI_DEVICE_ID_S3_SAVAGE4
-DECL|macro|PCI_DEVICE_ID_S3_SAVAGE4
-mdefine_line|#define PCI_DEVICE_ID_S3_SAVAGE4&t;0x8a25
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_S3_PROSAVAGE8
-DECL|macro|PCI_DEVICE_ID_S3_PROSAVAGE8
-mdefine_line|#define PCI_DEVICE_ID_S3_PROSAVAGE8&t;0x8d04
-macro_line|#endif
 DECL|macro|VGA_CR_IX
 mdefine_line|#define VGA_CR_IX&t;0x3d4
 DECL|macro|VGA_CR_DATA

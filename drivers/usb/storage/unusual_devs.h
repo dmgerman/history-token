@@ -721,6 +721,31 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* Entry and supporting patch by Theodore Kilgore &lt;kilgota@auburn.edu&gt;.&n; * Device uses standards-violating 32-byte Bulk Command Block Wrappers and&n; * reports itself as &quot;Proprietary SCSI Bulk.&quot; Cf. device entry 0x084d:0x0011.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04fc
+comma
+l_int|0x80c2
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kobian Mercury&quot;
+comma
+l_string|&quot;Binocam DCB-132&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_BULK32
+)paren
+comma
 multiline_comment|/* Reported by Bob Sass &lt;rls@vectordb.com&gt; -- only rev 1.33 tested */
 id|UNUSUAL_DEV
 c_func
@@ -919,8 +944,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
@@ -946,8 +969,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Reported by wim@geeks.nl */
@@ -1048,8 +1069,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Submitted by Rajesh Kumble Nayak &lt;nayak@obs-nice.fr&gt; */
@@ -1075,8 +1094,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1521,8 +1538,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_NEED_OVERRIDE
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 macro_line|#endif
@@ -1574,8 +1589,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1643,6 +1656,56 @@ comma
 l_string|&quot;SigmaTel&quot;
 comma
 l_string|&quot;USBMSC Audio Player&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
+multiline_comment|/* Reported by Alex Butcher &lt;alex.butcher@assursys.co.uk&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x067b
+comma
+l_int|0x3507
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Prolific Technology Inc.&quot;
+comma
+l_string|&quot;ATAPI-6 Bridge Controller&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
+multiline_comment|/* Reported by Alex Butcher &lt;alex.butcher@assursys.co.uk&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x067b
+comma
+l_int|0x3507
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Prolific Technology Inc.&quot;
+comma
+l_string|&quot;ATAPI-6 Bridge Controller&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -1998,10 +2061,10 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
-multiline_comment|/*&n;&t; * The following Datafab-based devices may or may not work&n;&t; * using the current driver...the 0xffff is arbitrary since I&n;&t; * don&squot;t know what device versions exist for these guys.&n;&t; *&n;&t; * The 0xa003 and 0xa004 devices in particular I&squot;m curious about.&n;&t; * I&squot;m told they exist but so far nobody has come forward to say that&n;&t; * they work with this driver.  Given the success we&squot;ve had getting&n;&t; * other Datafab-based cards operational with this driver, I&squot;ve decided&n;&t; * to leave these two devices in the list.&n;&t; */
+multiline_comment|/*&n; * The following Datafab-based devices may or may not work&n; * using the current driver...the 0xffff is arbitrary since I&n; * don&squot;t know what device versions exist for these guys.&n; *&n; * The 0xa003 and 0xa004 devices in particular I&squot;m curious about.&n; * I&squot;m told they exist but so far nobody has come forward to say that&n; * they work with this driver.  Given the success we&squot;ve had getting&n; * other Datafab-based cards operational with this driver, I&squot;ve decided&n; * to leave these two devices in the list.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -2023,7 +2086,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2047,7 +2110,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2071,7 +2134,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2095,7 +2158,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2119,7 +2182,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 macro_line|#endif
@@ -2173,7 +2236,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 macro_line|#endif
@@ -2281,21 +2344,21 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Aiptek PocketCAM 3Mega&n; * Nicolas DUPEUX &lt;nicolas@dupeux.net&gt; &n; */
+multiline_comment|/* Entry and supporting patch by Theodore Kilgore &lt;kilgota@auburn.edu&gt;.&n; * Flag will support Bulk devices which use a standards-violating 32-byte&n; * Command Block Wrapper. Here, the &quot;DC2MEGA&quot; cameras (several brands) with&n; * Grandtech GT892x chip, which request &quot;Proprietary SCSI Bulk&quot; support.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
-l_int|0x08ca
+l_int|0x084d
 comma
-l_int|0x2011
+l_int|0x0011
 comma
-l_int|0x0000
+l_int|0x0110
 comma
-l_int|0x9999
+l_int|0x0110
 comma
-l_string|&quot;AIPTEK&quot;
+l_string|&quot;Grandtech&quot;
 comma
-l_string|&quot;PocketCAM 3Mega&quot;
+l_string|&quot;DC2MEGA&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -2303,7 +2366,7 @@ id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+id|US_FL_BULK32
 )paren
 comma
 multiline_comment|/* Entry needed for flags. Moreover, all devices with this ID use&n; * bulk-only transport, but _some_ falsely report Control/Bulk instead.&n; * One example is &quot;Trumpion Digital Research MYMP3&quot;.&n; * Submitted by Bjoern Brill &lt;brill(at)fs.math.uni-frankfurt.de&gt;&n; */
@@ -2329,8 +2392,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_NEED_OVERRIDE
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Trumpion Microelectronics MP3 player (felipe_alfaro@linuxmail.org) */
@@ -2355,7 +2416,7 @@ id|US_PR_BULK
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 multiline_comment|/* aeb */
@@ -2381,30 +2442,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x097a
-comma
-l_int|0x0001
-comma
-l_int|0x0000
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minds@Work&quot;
-comma
-l_string|&quot;Digital Wallet&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
@@ -2708,31 +2745,6 @@ comma
 id|usb_stor_ucr61s2b_init
 comma
 l_int|0
-)paren
-comma
-multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; * Also reported by Brian Hall &lt;brihall@pcisys.net&gt;, again for flags.&n; * I also suspect this device may have a broken serial number.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x1065
-comma
-l_int|0x2136
-comma
-l_int|0x0000
-comma
-l_int|0x9999
-comma
-l_string|&quot;CCYU TECHNOLOGY&quot;
-comma
-l_string|&quot;EasyDisk Portable Device&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Reported by Kotrla Vitezslav &lt;kotrla@ceb.cz&gt; */

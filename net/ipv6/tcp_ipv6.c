@@ -953,7 +953,7 @@ id|TCP_CLOSE
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -1712,7 +1712,7 @@ id|tcp_v6_search_req
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -2147,7 +2147,7 @@ id|sk-&gt;sk_bound_dev_if
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2581,7 +2581,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3452,7 +3452,7 @@ r_int
 id|err
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 suffix:semicolon
@@ -5668,7 +5668,7 @@ op_assign
 id|skb-&gt;h.th
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5848,7 +5848,7 @@ id|req
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5958,7 +5958,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 id|tmptp
 comma
 op_star
@@ -6365,7 +6365,7 @@ op_star
 id|newinet
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|newtp
 suffix:semicolon
@@ -6425,7 +6425,13 @@ op_star
 )paren
 id|newsk
 suffix:semicolon
-id|newtcp6sk-&gt;inet.pinet6
+id|inet_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|pinet6
 op_assign
 op_amp
 id|newtcp6sk-&gt;inet6
@@ -6875,7 +6881,13 @@ op_star
 )paren
 id|newsk
 suffix:semicolon
-id|newtcp6sk-&gt;inet.pinet6
+id|inet_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|pinet6
 op_assign
 op_amp
 id|newtcp6sk-&gt;inet6
@@ -7336,7 +7348,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 suffix:semicolon
@@ -9299,7 +9311,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -9657,7 +9669,7 @@ id|sp
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign

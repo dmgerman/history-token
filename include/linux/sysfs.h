@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sysfs.h - definitions for the device driver filesystem&n; *&n; * Copyright (c) 2001,2002 Patrick Mochel&n; *&n; * Please see Documentation/filesystems/sysfs.txt for more information.&n; */
+multiline_comment|/*&n; * sysfs.h - definitions for the device driver filesystem&n; *&n; * Copyright (c) 2001,2002 Patrick Mochel&n; * Copyright (c) 2004 Silicon Graphics, Inc.&n; *&n; * Please see Documentation/filesystems/sysfs.txt for more information.&n; */
 macro_line|#ifndef _SYSFS_H_
 DECL|macro|_SYSFS_H_
 mdefine_line|#define _SYSFS_H_
@@ -57,6 +57,9 @@ DECL|macro|__ATTR_NULL
 mdefine_line|#define __ATTR_NULL { .attr = { .name = NULL } }
 DECL|macro|attr_name
 mdefine_line|#define attr_name(_attr) (_attr).attr.name
+r_struct
+id|vm_area_struct
+suffix:semicolon
 DECL|struct|bin_attribute
 r_struct
 id|bin_attribute
@@ -69,6 +72,11 @@ suffix:semicolon
 DECL|member|size
 r_int
 id|size
+suffix:semicolon
+DECL|member|private
+r_void
+op_star
+r_private
 suffix:semicolon
 DECL|member|read
 id|ssize_t
@@ -106,6 +114,28 @@ comma
 id|loff_t
 comma
 r_int
+)paren
+suffix:semicolon
+DECL|member|mmap
+r_int
+(paren
+op_star
+id|mmap
+)paren
+(paren
+r_struct
+id|kobject
+op_star
+comma
+r_struct
+id|bin_attribute
+op_star
+id|attr
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
 )paren
 suffix:semicolon
 )brace

@@ -96,7 +96,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2482,7 +2482,7 @@ id|cb-&gt;nlh
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign

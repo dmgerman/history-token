@@ -141,7 +141,7 @@ comma
 multiline_comment|/*  __u8  bDescriptorType; Device */
 l_int|0x00
 comma
-multiline_comment|/*  __u16 bcdUSB; v1.0 */
+multiline_comment|/*  __le16 bcdUSB; v1.0 */
 l_int|0x01
 comma
 l_int|0x09
@@ -158,17 +158,17 @@ comma
 multiline_comment|/*  __u8  bMaxPacketSize0; 8 Bytes */
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idVendor; */
+multiline_comment|/*  __le16 idVendor; */
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idProduct; */
+multiline_comment|/*  __le16 idProduct; */
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 bcdDevice; */
+multiline_comment|/*  __le16 bcdDevice; */
 l_int|0x00
 comma
 l_int|0x00
@@ -201,7 +201,7 @@ comma
 multiline_comment|/*  __u8  bDescriptorType; Configuration */
 l_int|0x19
 comma
-multiline_comment|/*  __u16 wTotalLength; */
+multiline_comment|/*  __le16 wTotalLength; */
 l_int|0x00
 comma
 l_int|0x01
@@ -262,7 +262,7 @@ comma
 multiline_comment|/*  __u8  ep_bmAttributes; Interrupt */
 l_int|0x08
 comma
-multiline_comment|/*  __u16 ep_wMaxPacketSize; 8 Bytes */
+multiline_comment|/*  __le16 ep_wMaxPacketSize; 8 Bytes */
 l_int|0x00
 comma
 l_int|0xff
@@ -1633,28 +1633,6 @@ id|usb_dev
 )paren
 suffix:semicolon
 r_static
-r_int
-id|etrax_usb_allocate_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|usb_dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|etrax_usb_deallocate_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|usb_dev
-)paren
-suffix:semicolon
-r_static
 id|irqreturn_t
 id|etrax_usb_tx_interrupt
 c_func
@@ -1880,16 +1858,6 @@ id|usb_operations
 id|etrax_usb_device_operations
 op_assign
 (brace
-dot
-id|allocate
-op_assign
-id|etrax_usb_allocate_dev
-comma
-dot
-id|deallocate
-op_assign
-id|etrax_usb_deallocate_dev
-comma
 dot
 id|get_frame_number
 op_assign
@@ -7512,46 +7480,6 @@ id|R_USB_FM_NUMBER
 op_amp
 l_int|0x7ff
 )paren
-suffix:semicolon
-)brace
-DECL|function|etrax_usb_allocate_dev
-r_static
-r_int
-id|etrax_usb_allocate_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|usb_dev
-)paren
-(brace
-id|DBFENTER
-suffix:semicolon
-id|DBFEXIT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|etrax_usb_deallocate_dev
-r_static
-r_int
-id|etrax_usb_deallocate_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|usb_dev
-)paren
-(brace
-id|DBFENTER
-suffix:semicolon
-id|DBFEXIT
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|etrax_usb_tx_interrupt
@@ -20183,17 +20111,13 @@ id|hc-&gt;bus-&gt;devnum_next
 op_assign
 l_int|2
 suffix:semicolon
-id|usb_rh-&gt;epmaxpacketin
-(braket
-l_int|0
-)braket
+id|usb_rh-&gt;ep0.desc.wMaxPacketSize
 op_assign
-id|usb_rh-&gt;epmaxpacketout
-(braket
-l_int|0
-)braket
-op_assign
+id|__const_cpu_to_le16
+c_func
+(paren
 l_int|64
+)paren
 suffix:semicolon
 id|usb_get_device_descriptor
 c_func

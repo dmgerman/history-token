@@ -58,27 +58,15 @@ op_star
 id|product_desc
 suffix:semicolon
 multiline_comment|/* product/vendor string */
-DECL|member|description
-r_const
-r_char
-op_star
-id|description
-suffix:semicolon
-multiline_comment|/* &quot;ehci-hcd&quot; etc */
 DECL|member|rh_timer
 r_struct
 id|timer_list
 id|rh_timer
 suffix:semicolon
 multiline_comment|/* drives root hub */
-DECL|member|dev_list
-r_struct
-id|list_head
-id|dev_list
-suffix:semicolon
-multiline_comment|/* devices on this bus */
 multiline_comment|/*&n;&t; * hardware info/state&n;&t; */
 DECL|member|driver
+r_const
 r_struct
 id|hc_driver
 op_star
@@ -160,6 +148,28 @@ mdefine_line|#define&t;HCD_IS_RUNNING(state) ((state) &amp; __ACTIVE)
 DECL|macro|HCD_IS_SUSPENDED
 mdefine_line|#define&t;HCD_IS_SUSPENDED(state) ((state) &amp; __SUSPEND)
 multiline_comment|/* more shared queuing code would be good; it should support&n;&t; * smarter scheduling, handle transaction translators, etc;&n;&t; * input size of periodic table to an interrupt scheduler. &n;&t; * (ohci 32, uhci 1024, ehci 256/512/1024).&n;&t; */
+multiline_comment|/* The HC driver&squot;s private data is stored at the end of&n;&t; * this structure.&n;&t; */
+DECL|member|hcd_priv
+r_int
+r_int
+id|hcd_priv
+(braket
+l_int|0
+)braket
+id|__attribute__
+(paren
+(paren
+id|aligned
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+)paren
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* 2.4 does this a bit differently ... */
@@ -182,34 +192,6 @@ op_amp
 id|hcd-&gt;self
 suffix:semicolon
 )brace
-DECL|struct|hcd_dev
-r_struct
-id|hcd_dev
-(brace
-multiline_comment|/* usb_device.hcpriv points to this */
-DECL|member|dev_list
-r_struct
-id|list_head
-id|dev_list
-suffix:semicolon
-multiline_comment|/* on this hcd */
-DECL|member|urb_list
-r_struct
-id|list_head
-id|urb_list
-suffix:semicolon
-multiline_comment|/* pending on this dev */
-multiline_comment|/* per-configuration HC/HCD state, such as QH or ED */
-DECL|member|ep
-r_void
-op_star
-id|ep
-(braket
-l_int|32
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 singleline_comment|// urb.hcpriv is really hardware-specific
 DECL|struct|hcd_timeout
 r_struct
@@ -234,30 +216,6 @@ DECL|struct|usb_operations
 r_struct
 id|usb_operations
 (brace
-DECL|member|allocate
-r_int
-(paren
-op_star
-id|allocate
-)paren
-(paren
-r_struct
-id|usb_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|deallocate
-r_int
-(paren
-op_star
-id|deallocate
-)paren
-(paren
-r_struct
-id|usb_device
-op_star
-)paren
-suffix:semicolon
 DECL|member|get_frame_number
 r_int
 (paren
@@ -363,8 +321,10 @@ id|usb_device
 op_star
 id|udev
 comma
-r_int
-id|bEndpointAddress
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep
 )paren
 suffix:semicolon
 multiline_comment|/* global suspend/resume of bus */
@@ -409,6 +369,18 @@ op_star
 id|description
 suffix:semicolon
 multiline_comment|/* &quot;ehci-hcd&quot; etc */
+DECL|member|product_desc
+r_const
+r_char
+op_star
+id|product_desc
+suffix:semicolon
+multiline_comment|/* product/vendor string */
+DECL|member|hcd_priv_size
+r_int
+id|hcd_priv_size
+suffix:semicolon
+multiline_comment|/* size of private data */
 multiline_comment|/* irq handler */
 DECL|member|irq
 id|irqreturn_t
@@ -525,20 +497,6 @@ op_star
 id|hcd
 )paren
 suffix:semicolon
-multiline_comment|/* memory lifecycle */
-multiline_comment|/* Note: The absence of hcd_free reflects a temporary situation;&n;&t; * in the near future hcd_alloc will disappear as well and all&n;&t; * allocations/deallocations will be handled by usbcore.  For the&n;&t; * moment, drivers are required to return a pointer that the core&n;&t; * can pass to kfree, i.e., the struct usb_hcd must be the _first_&n;&t; * member of a larger driver-specific structure. */
-DECL|member|hcd_alloc
-r_struct
-id|usb_hcd
-op_star
-(paren
-op_star
-id|hcd_alloc
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* manage i/o requests, device state */
 DECL|member|urb_enqueue
 r_int
@@ -551,6 +509,11 @@ r_struct
 id|usb_hcd
 op_star
 id|hcd
+comma
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep
 comma
 r_struct
 id|urb
@@ -593,12 +556,9 @@ op_star
 id|hcd
 comma
 r_struct
-id|hcd_dev
+id|usb_host_endpoint
 op_star
-id|dev
-comma
-r_int
-id|bEndpointAddress
+id|ep
 )paren
 suffix:semicolon
 multiline_comment|/* root hub support */
@@ -719,6 +679,29 @@ op_star
 id|bus
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|usb_hcd
+op_star
+id|usb_create_hcd
+(paren
+r_const
+r_struct
+id|hc_driver
+op_star
+id|driver
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_put_hcd
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_struct
 id|pci_dev
@@ -837,11 +820,6 @@ id|dma
 )paren
 suffix:semicolon
 multiline_comment|/* generic bus glue, needed for host controllers that don&squot;t use PCI */
-r_extern
-r_struct
-id|usb_operations
-id|usb_hcd_operations
-suffix:semicolon
 r_extern
 id|irqreturn_t
 id|usb_hcd_irq
@@ -1154,15 +1132,6 @@ id|hcd-&gt;self.controller
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|usb_hcd_release
-(paren
-r_struct
-id|usb_bus
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|usb_set_device_state

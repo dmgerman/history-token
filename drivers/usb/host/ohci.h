@@ -730,13 +730,6 @@ DECL|struct|ohci_hcd
 r_struct
 id|ohci_hcd
 (brace
-multiline_comment|/*&n;&t; * framework state&n;&t; */
-DECL|member|hcd
-r_struct
-id|usb_hcd
-id|hcd
-suffix:semicolon
-multiline_comment|/* must come first! */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -875,21 +868,76 @@ mdefine_line|#define&t;OHCI_BIG_ENDIAN&t;&t;0x08&t;&t;&t;/* big endian HC */
 singleline_comment|// there are also chip quirks/bugs in init logic
 )brace
 suffix:semicolon
-DECL|macro|hcd_to_ohci
-mdefine_line|#define hcd_to_ohci(hcd_ptr) container_of(hcd_ptr, struct ohci_hcd, hcd)
+multiline_comment|/* convert between an hcd pointer and the corresponding ohci_hcd */
+DECL|function|hcd_to_ohci
+r_static
+r_inline
+r_struct
+id|ohci_hcd
+op_star
+id|hcd_to_ohci
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|ohci_hcd
+op_star
+)paren
+(paren
+id|hcd-&gt;hcd_priv
+)paren
+suffix:semicolon
+)brace
+DECL|function|ohci_to_hcd
+r_static
+r_inline
+r_struct
+id|usb_hcd
+op_star
+id|ohci_to_hcd
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+r_return
+id|container_of
+(paren
+(paren
+r_void
+op_star
+)paren
+id|ohci
+comma
+r_struct
+id|usb_hcd
+comma
+id|hcd_priv
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifndef DEBUG
 DECL|macro|STUB_DEBUG_FILES
 mdefine_line|#define STUB_DEBUG_FILES
 macro_line|#endif&t;/* DEBUG */
 DECL|macro|ohci_dbg
-mdefine_line|#define ohci_dbg(ohci, fmt, args...) &bslash;&n;&t;dev_dbg ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+mdefine_line|#define ohci_dbg(ohci, fmt, args...) &bslash;&n;&t;dev_dbg (ohci_to_hcd(ohci)-&gt;self.controller , fmt , ## args )
 DECL|macro|ohci_err
-mdefine_line|#define ohci_err(ohci, fmt, args...) &bslash;&n;&t;dev_err ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+mdefine_line|#define ohci_err(ohci, fmt, args...) &bslash;&n;&t;dev_err (ohci_to_hcd(ohci)-&gt;self.controller , fmt , ## args )
 DECL|macro|ohci_info
-mdefine_line|#define ohci_info(ohci, fmt, args...) &bslash;&n;&t;dev_info ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+mdefine_line|#define ohci_info(ohci, fmt, args...) &bslash;&n;&t;dev_info (ohci_to_hcd(ohci)-&gt;self.controller , fmt , ## args )
 DECL|macro|ohci_warn
-mdefine_line|#define ohci_warn(ohci, fmt, args...) &bslash;&n;&t;dev_warn ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+mdefine_line|#define ohci_warn(ohci, fmt, args...) &bslash;&n;&t;dev_warn (ohci_to_hcd(ohci)-&gt;self.controller , fmt , ## args )
 macro_line|#ifdef OHCI_VERBOSE_DEBUG
 DECL|macro|ohci_vdbg
 macro_line|#&t;define ohci_vdbg ohci_dbg
@@ -1491,7 +1539,13 @@ op_star
 id|ohci
 )paren
 (brace
-id|ohci-&gt;hcd.state
+id|ohci_to_hcd
+c_func
+(paren
+id|ohci
+)paren
+op_member_access_from_pointer
+id|state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
