@@ -1027,23 +1027,6 @@ r_struct
 id|inode_operations
 id|nfs_symlink_inode_operations
 suffix:semicolon
-multiline_comment|/*&n; * linux/fs/nfs/locks.c&n; */
-r_extern
-r_int
-id|nfs_lock
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_int
-comma
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * linux/fs/nfs/unlink.c&n; */
 r_extern
 r_int
