@@ -9535,7 +9535,7 @@ c_func
 (paren
 id|MAC_SERDES_CFG
 comma
-id|serdes_cfg
+id|val
 )paren
 suffix:semicolon
 )brace
