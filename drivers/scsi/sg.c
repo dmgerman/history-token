@@ -15564,15 +15564,7 @@ r_int
 )paren
 id|scsidp-&gt;type
 comma
-(paren
-r_int
-)paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|scsidp-&gt;access_count
-)paren
+l_int|1
 comma
 (paren
 r_int
