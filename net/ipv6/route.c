@@ -1578,6 +1578,7 @@ op_assign
 id|ipv6_addr_type
 c_func
 (paren
+op_amp
 id|fl-&gt;fl6_dst
 )paren
 op_amp
@@ -1604,8 +1605,10 @@ c_func
 op_amp
 id|ip6_routing_table
 comma
+op_amp
 id|fl-&gt;fl6_dst
 comma
+op_amp
 id|fl-&gt;fl6_src
 )paren
 suffix:semicolon
@@ -1727,8 +1730,10 @@ c_func
 (paren
 id|rt
 comma
+op_amp
 id|fl-&gt;fl6_dst
 comma
+op_amp
 id|fl-&gt;fl6_src
 )paren
 suffix:semicolon
@@ -7099,8 +7104,12 @@ op_minus
 l_int|1
 )braket
 )paren
+id|ipv6_addr_copy
+c_func
+(paren
+op_amp
 id|fl.fl6_src
-op_assign
+comma
 (paren
 r_struct
 id|in6_addr
@@ -7116,6 +7125,7 @@ op_minus
 l_int|1
 )braket
 )paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7127,8 +7137,12 @@ op_minus
 l_int|1
 )braket
 )paren
+id|ipv6_addr_copy
+c_func
+(paren
+op_amp
 id|fl.fl6_dst
-op_assign
+comma
 (paren
 r_struct
 id|in6_addr
@@ -7143,6 +7157,7 @@ id|RTA_DST
 op_minus
 l_int|1
 )braket
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -7297,8 +7312,10 @@ id|skb
 comma
 id|rt
 comma
+op_amp
 id|fl.fl6_dst
 comma
+op_amp
 id|fl.fl6_src
 comma
 id|iif

@@ -1124,12 +1124,12 @@ id|fl
 id|u32
 id|hash
 op_assign
-id|fl-&gt;fl6_src-&gt;s6_addr32
+id|fl-&gt;fl6_src.s6_addr32
 (braket
 l_int|2
 )braket
 op_xor
-id|fl-&gt;fl6_src-&gt;s6_addr32
+id|fl-&gt;fl6_src.s6_addr32
 (braket
 l_int|3
 )braket
@@ -1160,12 +1160,12 @@ l_int|4
 suffix:semicolon
 id|hash
 op_xor_assign
-id|fl-&gt;fl6_dst-&gt;s6_addr32
+id|fl-&gt;fl6_dst.s6_addr32
 (braket
 l_int|2
 )braket
 op_xor
-id|fl-&gt;fl6_dst-&gt;s6_addr32
+id|fl-&gt;fl6_dst.s6_addr32
 (braket
 l_int|3
 )braket
@@ -1945,6 +1945,7 @@ r_return
 id|addr_match
 c_func
 (paren
+op_amp
 id|fl-&gt;fl6_dst
 comma
 op_amp
@@ -1956,6 +1957,7 @@ op_logical_and
 id|addr_match
 c_func
 (paren
+op_amp
 id|fl-&gt;fl6_src
 comma
 op_amp
@@ -2847,6 +2849,7 @@ r_return
 id|xfrm_address_t
 op_star
 )paren
+op_amp
 id|fl-&gt;fl6_dst
 suffix:semicolon
 )brace
@@ -2897,6 +2900,7 @@ r_return
 id|xfrm_address_t
 op_star
 )paren
+op_amp
 id|fl-&gt;fl6_src
 suffix:semicolon
 )brace

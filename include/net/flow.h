@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&n; *&t;Generic internet FLOW.&n; *&n; */
 macro_line|#ifndef _NET_FLOW_H
 DECL|macro|_NET_FLOW_H
 mdefine_line|#define _NET_FLOW_H
+macro_line|#include &lt;linux/in6.h&gt;
 DECL|struct|flowi
 r_struct
 id|flowi
@@ -47,13 +48,11 @@ r_struct
 DECL|member|daddr
 r_struct
 id|in6_addr
-op_star
 id|daddr
 suffix:semicolon
 DECL|member|saddr
 r_struct
 id|in6_addr
-op_star
 id|saddr
 suffix:semicolon
 DECL|member|flowlabel

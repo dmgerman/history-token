@@ -50,6 +50,7 @@ op_star
 op_amp
 id|x-&gt;sel.daddr
 comma
+op_amp
 id|fl-&gt;fl6_dst
 )paren
 suffix:semicolon
@@ -64,6 +65,7 @@ op_star
 op_amp
 id|x-&gt;sel.saddr
 comma
+op_amp
 id|fl-&gt;fl6_src
 )paren
 suffix:semicolon
