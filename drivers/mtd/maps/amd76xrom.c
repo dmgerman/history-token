@@ -319,7 +319,7 @@ id|amd76xrom_map_info
 op_star
 id|map
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -964,7 +964,7 @@ id|map-&gt;mtd
 suffix:semicolon
 id|map-&gt;mtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|out
@@ -988,7 +988,7 @@ id|window-&gt;maps
 suffix:semicolon
 id|map
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|out
