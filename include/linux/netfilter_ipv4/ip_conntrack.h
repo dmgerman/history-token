@@ -328,15 +328,6 @@ r_struct
 id|nf_conntrack
 id|ct_general
 suffix:semicolon
-multiline_comment|/* These are my tuples; original and reply */
-DECL|member|tuplehash
-r_struct
-id|ip_conntrack_tuple_hash
-id|tuplehash
-(braket
-id|IP_CT_DIR_MAX
-)braket
-suffix:semicolon
 multiline_comment|/* Have we seen traffic both ways yet? (bitset) */
 DECL|member|status
 r_int
@@ -430,6 +421,16 @@ DECL|member|nat
 id|nat
 suffix:semicolon
 macro_line|#endif /* CONFIG_IP_NF_NAT_NEEDED */
+multiline_comment|/* Traversed often, so hopefully in different cacheline to top */
+multiline_comment|/* These are my tuples; original and reply */
+DECL|member|tuplehash
+r_struct
+id|ip_conntrack_tuple_hash
+id|tuplehash
+(braket
+id|IP_CT_DIR_MAX
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* get master conntrack via master expectation */
