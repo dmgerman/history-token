@@ -1640,8 +1640,7 @@ id|cpu_2_node
 id|cpu
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#else /* !CONFIG_NUMA */
