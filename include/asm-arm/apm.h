@@ -3,6 +3,7 @@ macro_line|#ifndef ARM_ASM_SA1100_APM_H
 DECL|macro|ARM_ASM_SA1100_APM_H
 mdefine_line|#define ARM_ASM_SA1100_APM_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/apm_bios.h&gt;
 multiline_comment|/*&n; * This structure gets filled in by the machine specific &squot;get_power_status&squot;&n; * implementation.  Any fields which are not set default to a safe value.&n; */
 DECL|struct|apm_power_info
 r_struct
@@ -86,6 +87,15 @@ id|apm_get_power_status
 r_struct
 id|apm_power_info
 op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Queue an event (APM_SYS_SUSPEND or APM_CRITICAL_SUSPEND)&n; */
+r_void
+id|apm_queue_event
+c_func
+(paren
+id|apm_event_t
+id|event
 )paren
 suffix:semicolon
 macro_line|#endif
