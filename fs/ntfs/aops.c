@@ -84,6 +84,9 @@ suffix:semicolon
 id|file_ofs
 op_assign
 (paren
+(paren
+id|s64
+)paren
 id|page-&gt;index
 op_lshift
 id|PAGE_CACHE_SHIFT
@@ -708,6 +711,9 @@ suffix:semicolon
 )brace
 id|iblock
 op_assign
+(paren
+id|s64
+)paren
 id|page-&gt;index
 op_lshift
 (paren
@@ -1980,6 +1986,9 @@ multiline_comment|/* NOTE: Different naming scheme to ntfs_read_block()! */
 multiline_comment|/* The first block in the page. */
 id|block
 op_assign
+(paren
+id|s64
+)paren
 id|page-&gt;index
 op_lshift
 (paren
@@ -3836,6 +3845,9 @@ suffix:semicolon
 multiline_comment|/* The first block in the page. */
 id|block
 op_assign
+(paren
+id|s64
+)paren
 id|page-&gt;index
 op_lshift
 (paren
