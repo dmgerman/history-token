@@ -3199,11 +3199,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 comma
 id|p-&gt;old_block_size
 )paren
@@ -3859,7 +3855,7 @@ op_assign
 id|set_blocksize
 c_func
 (paren
-id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_bdev
 comma
 id|PAGE_SIZE
 )paren
@@ -4667,11 +4663,7 @@ id|bdev
 id|set_blocksize
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 comma
 id|p-&gt;old_block_size
 )paren

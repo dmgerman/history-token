@@ -2394,11 +2394,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 comma
 id|sb-&gt;s_old_blocksize
 )paren

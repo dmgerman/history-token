@@ -2575,7 +2575,7 @@ id|hardblocksize
 id|set_blocksize
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|hardblocksize
 )paren
@@ -2603,7 +2603,7 @@ id|hardblocksize
 id|set_blocksize
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|orig_blksize_size
 )paren

@@ -150,8 +150,10 @@ r_int
 id|set_blocksize
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 id|size
@@ -160,10 +162,14 @@ id|size
 r_int
 id|oldsize
 suffix:semicolon
-r_struct
-id|block_device
-op_star
-id|bdev
+id|kdev_t
+id|dev
+op_assign
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 multiline_comment|/* Size must be a power of two, and between 512 and PAGE_SIZE */
 r_if
@@ -299,18 +305,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Ok, we&squot;re actually changing the blocksize.. */
-id|bdev
-op_assign
-id|bdget
-c_func
-(paren
-id|kdev_t_to_nr
-c_func
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
 id|sync_blockdev
 c_func
 (paren
@@ -349,12 +343,6 @@ c_func
 id|bdev
 )paren
 suffix:semicolon
-id|bdput
-c_func
-(paren
-id|bdev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -382,7 +370,7 @@ c_cond
 id|set_blocksize
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb-&gt;s_bdev
 comma
 id|size
 )paren

@@ -1371,7 +1371,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|intval
 )paren
