@@ -10,6 +10,7 @@ macro_line|#include&t;&lt;linux/compiler.h&gt;
 macro_line|#include&t;&lt;linux/seq_file.h&gt;
 macro_line|#include&t;&lt;linux/notifier.h&gt;
 macro_line|#include&t;&lt;linux/kallsyms.h&gt;
+macro_line|#include&t;&lt;linux/cpu.h&gt;
 macro_line|#include&t;&lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * DEBUG&t;- 1 for kmem_cache_create() to honour; SLAB_DEBUG_INITIAL,&n; *&t;&t;  SLAB_RED_ZONE &amp; SLAB_POISON.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * STATS&t;- 1 to collect stats for /proc/slabinfo.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * FORCED_DEBUG&t;- 1 enables SLAB_RED_ZONE and SLAB_POISON (if possible)&n; */
 macro_line|#ifdef CONFIG_DEBUG_SLAB

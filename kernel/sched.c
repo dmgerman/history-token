@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|cpu_to_node_mask
 mdefine_line|#define cpu_to_node_mask(cpu) node_to_cpumask(cpu_to_node(cpu))
