@@ -1119,10 +1119,15 @@ comma
 id|emu-&gt;card_capabilities-&gt;name
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|card-&gt;longname
+comma
+r_sizeof
+(paren
+id|card-&gt;longname
+)paren
 comma
 l_string|&quot;%s (rev.%d, serial:0x%x) at 0x%lx, irq %i&quot;
 comma
