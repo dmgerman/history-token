@@ -1093,14 +1093,6 @@ r_if
 c_cond
 (paren
 id|vram
-op_logical_and
-id|vram
-op_star
-l_int|1024
-op_star
-l_int|1024
-op_ne
-id|vesafb_fix.smem_len
 )paren
 id|vesafb_fix.smem_len
 op_assign
