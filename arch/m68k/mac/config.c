@@ -46,6 +46,11 @@ op_assign
 r_sizeof
 id|mac_bi_data
 suffix:semicolon
+DECL|variable|mac_hw_present
+r_struct
+id|mac_hw_present
+id|mac_hw_present
+suffix:semicolon
 multiline_comment|/* New m68k bootinfo stuff and videobase */
 r_extern
 r_int

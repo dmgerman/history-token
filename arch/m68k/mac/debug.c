@@ -43,6 +43,7 @@ r_void
 id|mac_serial_print
 c_func
 (paren
+r_const
 r_char
 op_star
 )paren
@@ -370,9 +371,9 @@ macro_line|#endif
 )brace
 macro_line|#ifdef DEBUG_SERIAL
 multiline_comment|/*&n; * TODO: serial debug code&n; */
-DECL|struct|SCC
+DECL|struct|mac_SCC
 r_struct
-id|SCC
+id|mac_SCC
 (brace
 DECL|member|cha_b_ctrl
 id|u_char
@@ -405,7 +406,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|scc
-macro_line|# define scc (*((volatile struct SCC*)mac_bi_data.sccbase))
+macro_line|# define scc (*((volatile struct mac_SCC*)mac_bi_data.sccbase))
 multiline_comment|/* Flag that serial port is already initialized and used */
 DECL|variable|mac_SCC_init_done
 r_int
