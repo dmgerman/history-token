@@ -186,6 +186,12 @@ op_star
 id|vm_private_data
 suffix:semicolon
 multiline_comment|/* was vm_pte (shared mem) */
+DECL|member|vm_truncate_count
+r_int
+r_int
+id|vm_truncate_count
+suffix:semicolon
+multiline_comment|/* compare mapping-&gt;truncate_count */
 macro_line|#ifndef CONFIG_MMU
 DECL|member|vm_usage
 id|atomic_t
@@ -1387,11 +1393,42 @@ id|pgoff_t
 id|last_index
 suffix:semicolon
 multiline_comment|/* Highest page-&gt;index to unmap */
-DECL|member|atomic
-r_int
-id|atomic
+DECL|member|i_mmap_lock
+id|spinlock_t
+op_star
+id|i_mmap_lock
 suffix:semicolon
-multiline_comment|/* May not schedule() */
+multiline_comment|/* For unmap_mapping_range: */
+DECL|member|restart_vma
+r_struct
+id|vm_area_struct
+op_star
+id|restart_vma
+suffix:semicolon
+multiline_comment|/* Where lock was dropped */
+DECL|member|restart_pgoff
+id|pgoff_t
+id|restart_pgoff
+suffix:semicolon
+multiline_comment|/* File offset for restart */
+DECL|member|restart_addr
+r_int
+r_int
+id|restart_addr
+suffix:semicolon
+multiline_comment|/* Where we should restart */
+DECL|member|break_addr
+r_int
+r_int
+id|break_addr
+suffix:semicolon
+multiline_comment|/* Where unmap_vmas stopped */
+DECL|member|truncate_count
+r_int
+r_int
+id|truncate_count
+suffix:semicolon
+multiline_comment|/* Compare vm_truncate_count */
 )brace
 suffix:semicolon
 r_void
