@@ -1574,6 +1574,24 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|device
+op_star
+id|device_find
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+r_struct
+id|bus_type
+op_star
+id|bus
+)paren
+suffix:semicolon
 multiline_comment|/* drivers/base/platform.c */
 DECL|struct|platform_device
 r_struct
