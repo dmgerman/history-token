@@ -1324,7 +1324,11 @@ l_int|512
 op_minus
 l_int|1
 op_plus
+id|le64_to_cpu
+c_func
+(paren
 id|pfindData-&gt;AllocationSize
+)paren
 )paren
 op_rshift
 l_int|9
