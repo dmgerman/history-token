@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* some random number */
 DECL|macro|RAMFS_MAGIC
@@ -34,6 +35,27 @@ r_static
 r_struct
 id|inode_operations
 id|ramfs_dir_inode_operations
+suffix:semicolon
+DECL|variable|ramfs_backing_dev_info
+r_static
+r_struct
+id|backing_dev_info
+id|ramfs_backing_dev_info
+op_assign
+(brace
+dot
+id|ra_pages
+op_assign
+l_int|0
+comma
+multiline_comment|/* No readahead */
+dot
+id|memory_backed
+op_assign
+l_int|1
+comma
+multiline_comment|/* Does not contribute to dirty memory */
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Read a page. Again trivial. If it didn&squot;t already exist&n; * in the page cache, it is zero-filled.&n; */
 DECL|function|ramfs_readpage
@@ -194,7 +216,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page
@@ -327,6 +349,11 @@ id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
 id|ramfs_aops
+suffix:semicolon
+id|inode-&gt;i_mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|ramfs_backing_dev_info
 suffix:semicolon
 id|inode-&gt;i_atime
 op_assign

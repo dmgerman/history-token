@@ -2199,6 +2199,12 @@ id|val
 suffix:semicolon
 )brace
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|#endif /* !defined (_LANGUAGE_ASSEMBLY) */
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init

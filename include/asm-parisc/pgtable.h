@@ -709,6 +709,12 @@ mdefine_line|#define module_map&t;vmalloc
 DECL|macro|module_unmap
 mdefine_line|#define module_unmap&t;vfree
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range

@@ -1273,5 +1273,11 @@ mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 multiline_comment|/* We have our own get_unmapped_area to cope with ADDR_LIMIT_32BIT.  */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|#endif /* _ALPHA_PGTABLE_H */
 eof

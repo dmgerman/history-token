@@ -221,6 +221,12 @@ macro_line|#include &lt;asm/motorola_pgtable.h&gt;
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init

@@ -1227,6 +1227,9 @@ c_func
 r_struct
 id|pci_dev
 op_star
+comma
+r_int
+id|mask
 )paren
 suffix:semicolon
 r_char
@@ -2066,6 +2069,19 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_int
+id|pci_enable_device_bars
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|mask
+)paren
+suffix:semicolon
 r_void
 id|pci_disable_device
 c_func
@@ -2279,7 +2295,7 @@ id|u8
 )paren
 suffix:semicolon
 DECL|macro|HAVE_PCI_REQ_REGIONS
-mdefine_line|#define HAVE_PCI_REQ_REGIONS
+mdefine_line|#define HAVE_PCI_REQ_REGIONS&t;2
 r_int
 id|pci_request_regions
 c_func
@@ -2299,6 +2315,31 @@ c_func
 r_struct
 id|pci_dev
 op_star
+)paren
+suffix:semicolon
+r_int
+id|pci_request_region
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_int
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+r_void
+id|pci_release_region
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* New-style probing supporting hot-pluggable devices */

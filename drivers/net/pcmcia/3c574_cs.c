@@ -6150,6 +6150,7 @@ r_int
 id|saved_window
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|save_flags
@@ -6232,6 +6233,7 @@ multiline_comment|/* Write the specified MII register */
 r_int
 id|saved_window
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

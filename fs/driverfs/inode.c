@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/driverfs_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
@@ -66,6 +67,27 @@ r_int
 id|mount_count
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|driverfs_backing_dev_info
+r_static
+r_struct
+id|backing_dev_info
+id|driverfs_backing_dev_info
+op_assign
+(brace
+dot
+id|ra_pages
+op_assign
+l_int|0
+comma
+multiline_comment|/* No readahead */
+dot
+id|memory_backed
+op_assign
+l_int|1
+comma
+multiline_comment|/* Does not contribute to dirty memory */
+)brace
 suffix:semicolon
 DECL|function|driverfs_readpage
 r_static
@@ -366,6 +388,11 @@ id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
 id|driverfs_aops
+suffix:semicolon
+id|inode-&gt;i_mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|driverfs_backing_dev_info
 suffix:semicolon
 r_switch
 c_cond

@@ -5132,6 +5132,7 @@ op_assign
 id|dev-&gt;name
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|byte

@@ -782,6 +782,12 @@ mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|# endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * Identity-mapped regions use a large page size.  We&squot;ll call such large pages&n; * &quot;granules&quot;.  If you can think of a better name that&squot;s unambiguous, let me&n; * know...&n; */
 macro_line|#if defined(CONFIG_IA64_GRANULE_64MB)

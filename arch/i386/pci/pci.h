@@ -55,6 +55,8 @@ c_func
 r_struct
 id|pci_dev
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* pci-pc.c */

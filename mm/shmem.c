@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/shmem_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This magic number is used in glibc for posix shared memory */
@@ -82,6 +83,27 @@ r_static
 r_struct
 id|vm_operations_struct
 id|shmem_vm_ops
+suffix:semicolon
+DECL|variable|shmem_backing_dev_info
+r_static
+r_struct
+id|backing_dev_info
+id|shmem_backing_dev_info
+op_assign
+(brace
+dot
+id|ra_pages
+op_assign
+l_int|0
+comma
+multiline_comment|/* No readahead */
+dot
+id|memory_backed
+op_assign
+l_int|1
+comma
+multiline_comment|/* Does not contribute to dirty memory */
+)brace
 suffix:semicolon
 DECL|variable|shmem_inodes
 id|LIST_HEAD
@@ -3231,6 +3253,11 @@ id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
 id|shmem_aops
+suffix:semicolon
+id|inode-&gt;i_mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|shmem_backing_dev_info
 suffix:semicolon
 id|inode-&gt;i_atime
 op_assign

@@ -80,6 +80,16 @@ op_star
 id|pvec
 )paren
 suffix:semicolon
+r_void
+id|pagevec_strip
+c_func
+(paren
+r_struct
+id|pagevec
+op_star
+id|pvec
+)paren
+suffix:semicolon
 DECL|function|pagevec_init
 r_static
 r_inline

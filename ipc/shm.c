@@ -533,8 +533,9 @@ id|file_operations
 id|shm_file_operations
 op_assign
 (brace
+dot
 id|mmap
-suffix:colon
+op_assign
 id|shm_mmap
 )brace
 suffix:semicolon
@@ -545,18 +546,21 @@ id|vm_operations_struct
 id|shm_vm_ops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|shm_open
 comma
 multiline_comment|/* callback for a new vm-area open */
+dot
 id|close
-suffix:colon
+op_assign
 id|shm_close
 comma
 multiline_comment|/* callback for when the vm-area is released */
+dot
 id|nopage
-suffix:colon
+op_assign
 id|shmem_nopage
 comma
 )brace

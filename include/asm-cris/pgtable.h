@@ -1159,5 +1159,11 @@ macro_line|#include &lt;asm-generic/pgtable.h&gt;
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()   do { } while (0)
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|#endif /* _CRIS_PGTABLE_H */
 eof

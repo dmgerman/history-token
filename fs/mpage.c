@@ -1824,6 +1824,17 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|buffer_heads_over_limit
+)paren
+id|try_to_free_buffers
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 id|bvec
 op_assign
@@ -2211,7 +2222,7 @@ c_func
 id|page
 )paren
 op_logical_and
-id|TestClearPageDirty
+id|test_clear_page_dirty
 c_func
 (paren
 id|page
@@ -2376,16 +2387,7 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Put the rest back, in the correct order.&n;&t; */
-id|list_splice_init
-c_func
-(paren
-op_amp
-id|mapping-&gt;io_pages
-comma
-id|mapping-&gt;dirty_pages.prev
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Leave any remaining dirty pages on -&gt;io_pages&n;&t; */
 id|write_unlock
 c_func
 (paren
