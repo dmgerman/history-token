@@ -460,10 +460,7 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * NOTE: We&squot;re given a &squot;handle&squot; to the _PRT object&squot;s parent device&n;&t; *       (either a PCI root bridge or PCI-PCI bridge).&n;&t; */
 id|buffer.length
 op_assign
-r_sizeof
-(paren
-id|pathname
-)paren
+id|ACPI_PATHNAME_MAX
 suffix:semicolon
 id|buffer.pointer
 op_assign
@@ -497,6 +494,12 @@ suffix:semicolon
 id|buffer.pointer
 op_assign
 l_int|NULL
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pathname
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -533,12 +536,6 @@ id|status
 )paren
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|pathname
-)paren
-suffix:semicolon
 id|return_VALUE
 c_func
 (paren
@@ -564,12 +561,6 @@ op_logical_neg
 id|prt
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|pathname
-)paren
-suffix:semicolon
 id|return_VALUE
 c_func
 (paren
@@ -632,12 +623,6 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|pathname
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|buffer.pointer
 )paren
 suffix:semicolon
@@ -695,12 +680,6 @@ id|entry-&gt;length
 )paren
 suffix:semicolon
 )brace
-id|kfree
-c_func
-(paren
-id|pathname
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
