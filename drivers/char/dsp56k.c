@@ -2421,11 +2421,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/****** Init and module functions ******/
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
@@ -2498,8 +2493,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -2560,10 +2553,10 @@ comma
 l_string|&quot;dsp56k&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+l_string|&quot;dsp56k&quot;
 )paren
 suffix:semicolon
 )brace
