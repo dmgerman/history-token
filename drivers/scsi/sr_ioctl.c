@@ -683,6 +683,11 @@ comma
 id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -700,22 +705,12 @@ l_int|13
 op_eq
 l_int|0x00
 )paren
-(brace
 multiline_comment|/* sense: Invalid command operation code */
 id|err
 op_assign
 op_minus
 id|EDRIVE_CANT_DO_THIS
 suffix:semicolon
-)brace
-r_else
-(brace
-id|err
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG
 id|print_command
 c_func
