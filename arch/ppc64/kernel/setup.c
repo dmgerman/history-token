@@ -416,6 +416,7 @@ op_assign
 id|xmon_dabr_match
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/* pSeries systems are identified in prom.c via OF. */
 r_if
 c_cond
@@ -428,12 +429,14 @@ id|naca-&gt;platform
 op_assign
 id|PLATFORM_ISERIES_LPAR
 suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren
 id|naca-&gt;platform
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 r_case
 id|PLATFORM_ISERIES_LPAR
 suffix:colon
@@ -444,6 +447,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_case
 id|PLATFORM_PSERIES
@@ -686,6 +690,7 @@ c_cond
 id|naca-&gt;platform
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 r_case
 id|PLATFORM_ISERIES_LPAR
 suffix:colon
@@ -696,6 +701,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 multiline_comment|/* The following relies on the device tree being */
