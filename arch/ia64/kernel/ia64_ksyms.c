@@ -791,7 +791,8 @@ c_func
 id|unw_access_pr
 )paren
 suffix:semicolon
-macro_line|#if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+macro_line|#ifdef CONFIG_SMP
+macro_line|# if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
 r_extern
 r_void
 id|ia64_spinlock_contention_pre3_4
@@ -806,7 +807,7 @@ c_func
 id|ia64_spinlock_contention_pre3_4
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|# else
 r_extern
 r_void
 id|ia64_spinlock_contention
@@ -821,5 +822,6 @@ c_func
 id|ia64_spinlock_contention
 )paren
 suffix:semicolon
+macro_line|# endif
 macro_line|#endif
 eof
