@@ -448,6 +448,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|request_buf
 op_eq
 l_int|0
