@@ -21,7 +21,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Braindamage remaining:&n; *&t;The 3c501 board.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

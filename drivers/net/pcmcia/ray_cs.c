@@ -2,23 +2,18 @@ multiline_comment|/*============================================================
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -28,6 +23,10 @@ macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/mem_op.h&gt;
 macro_line|#ifdef CONFIG_NET_PCMCIA_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Warning : these stuff will slow down the driver... */
 DECL|macro|WIRELESS_SPY
 mdefine_line|#define WIRELESS_SPY&t;&t;/* Enable spying addresses */

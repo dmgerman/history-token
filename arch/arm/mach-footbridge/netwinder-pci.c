@@ -76,7 +76,7 @@ l_string|&quot;PCI: unknown device in slot %s: %s&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 r_return

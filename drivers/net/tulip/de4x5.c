@@ -11,7 +11,6 @@ suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -24,6 +23,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -33,13 +39,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PPC
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#endif /* CONFIG_PPC */
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &quot;de4x5.h&quot;
 DECL|macro|c_char
 mdefine_line|#define c_char const char

@@ -1461,8 +1461,9 @@ id|expansion_card
 op_star
 id|ec
 comma
+r_const
 r_struct
-id|ecard_ids
+id|ecard_id
 op_star
 id|id
 )paren
@@ -1481,8 +1482,10 @@ suffix:semicolon
 id|host
 op_assign
 id|scsi_register
+c_func
 (paren
-id|tpnt
+op_amp
+id|cumanascsi_template
 comma
 r_sizeof
 (paren
@@ -1634,9 +1637,9 @@ c_func
 (paren
 l_string|&quot; options CAN_QUEUE=%d CMD_PER_LUN=%d release=%d&quot;
 comma
-id|tpnt-&gt;can_queue
+id|host-&gt;can_queue
 comma
-id|tpnt-&gt;cmd_per_lun
+id|host-&gt;cmd_per_lun
 comma
 id|CUMANASCSI_PUBLIC_RELEASE
 )paren
@@ -1765,7 +1768,7 @@ comma
 id|host-&gt;n_io_port
 )paren
 suffix:semicolon
-id|scsi_remove
+id|scsi_unregister
 c_func
 (paren
 id|host
@@ -1776,7 +1779,7 @@ DECL|variable|cumanascsi1_cids
 r_static
 r_const
 r_struct
-id|ecard_ids
+id|ecard_id
 id|cumanascsi1_cids
 (braket
 )braket

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;internal.h&quot;
-multiline_comment|/*&n; * This code currently implements blazingly fast and&n; * lossless Quadruple ROT13 compression.&n; */
 DECL|function|crypto_compress
 r_static
 r_void
@@ -18,6 +17,13 @@ op_star
 id|tfm
 )paren
 (brace
+id|tfm-&gt;__crt_alg-&gt;cra_compress
+dot
+id|coa_compress
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|crypto_decompress
 r_static
@@ -31,6 +37,13 @@ op_star
 id|tfm
 )paren
 (brace
+id|tfm-&gt;__crt_alg-&gt;cra_compress
+dot
+id|coa_decompress
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|crypto_init_compress_flags
 r_int

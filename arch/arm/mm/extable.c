@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_const
@@ -150,20 +151,20 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */
 r_int
 r_int
 id|flags
 suffix:semicolon
 r_struct
-id|module
+id|list_head
 op_star
-id|mp
+id|l
 suffix:semicolon
 id|ret
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -173,39 +174,37 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each
+c_func
 (paren
-id|mp
-op_assign
-id|module_list
-suffix:semicolon
-id|mp
-op_ne
-l_int|NULL
-suffix:semicolon
-id|mp
-op_assign
-id|mp-&gt;next
+id|l
+comma
+op_amp
+id|extables
 )paren
 (brace
+r_struct
+id|exception_table
+op_star
+id|ex
+op_assign
+id|list_entry
+c_func
+(paren
+id|l
+comma
+r_struct
+id|exception_table
+comma
+id|list
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|mp-&gt;ex_table_start
+id|ex-&gt;num_entries
 op_eq
-l_int|NULL
-op_logical_or
-op_logical_neg
-(paren
-id|mp-&gt;flags
-op_amp
-(paren
-id|MOD_RUNNING
-op_or
-id|MOD_INITIALIZING
-)paren
-)paren
+l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -214,9 +213,11 @@ op_assign
 id|search_one_table
 c_func
 (paren
-id|mp-&gt;ex_table_start
+id|ex-&gt;entry
 comma
-id|mp-&gt;ex_table_end
+id|ex-&gt;entry
+op_plus
+id|ex-&gt;num_entries
 op_minus
 l_int|1
 comma

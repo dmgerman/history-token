@@ -42,13 +42,13 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_ARCH_FOOTBRIDGE)
 multiline_comment|/* Task size and page offset at 3GB */
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;&t;(0xc0000000UL)
+mdefine_line|#define TASK_SIZE&t;&t;(0xbf000000UL)
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;(0xc0000000UL)
 macro_line|#elif defined(CONFIG_ARCH_CO285)
 multiline_comment|/* Task size and page offset at 1.5GB */
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;&t;(0x60000000UL)
+mdefine_line|#define TASK_SIZE&t;&t;(0x5f000000UL)
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;(0x60000000UL)
 macro_line|#else
@@ -60,7 +60,7 @@ DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;&t;(0x00000000UL)
 multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE (TASK_SIZE / 3)
+mdefine_line|#define TASK_UNMAPPED_BASE ((TASK_SIZE + 0x01000000) / 3)
 multiline_comment|/*&n; * The DRAM is always contiguous.&n; */
 DECL|macro|__virt_to_phys__is_a_macro
 mdefine_line|#define __virt_to_phys__is_a_macro

@@ -1,13 +1,17 @@
 multiline_comment|/* at1700.c: A network device driver for  the Allied Telesis AT1700.&n;&n;&t;Written 1993-98 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;This is a device driver for the Allied Telesis AT1700, and&n;        Fujitsu FMV-181/182/181A/182A/183/184/183A/184A, which are&n;&t;straight-forward Fujitsu MB86965 implementations.&n;&n;&t;Modification for Fujitsu FMV-18X cards is done by Yutaka Tamiya&n;&t;(tamy@flab.fujitsu.co.jp). &n;&n;  Sources:&n;    The Fujitsu MB86965 datasheet.&n;&n;&t;After the initial version of this driver was written Gerry Sawkins of&n;&t;ATI provided their EEPROM configuration code header file.&n;    Thanks to NIIBE Yutaka &lt;gniibe@mri.co.jp&gt; for bug fixes.&n;&n;    MCA bus (AT1720) support by Rene Schmit &lt;rene@bss.lu&gt;&n;&n;  Bugs:&n;&t;The MB86965 has a design flaw that makes all probes unreliable.  Not&n;&t;only is it difficult to detect, it also moves around in I/O space in&n;&t;response to inb()s from other device probes!&n;*/
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -16,11 +20,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/mca.h&gt;
 DECL|variable|__initdata
 r_static
 r_char

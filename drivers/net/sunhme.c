@@ -11,7 +11,6 @@ suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -25,11 +24,14 @@ macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __sparc__
 macro_line|#include &lt;asm/idprom.h&gt;
@@ -44,9 +46,6 @@ macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#ifdef __sparc__

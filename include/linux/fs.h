@@ -956,10 +956,6 @@ DECL|member|i_count
 id|atomic_t
 id|i_count
 suffix:semicolon
-DECL|member|i_dev
-id|dev_t
-id|i_dev
-suffix:semicolon
 DECL|member|i_mode
 id|umode_t
 id|i_mode
@@ -4807,6 +4803,16 @@ r_extern
 r_struct
 id|address_space_operations
 id|def_blk_aops
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|def_chr_fops
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|bad_sock_fops
 suffix:semicolon
 r_extern
 r_struct

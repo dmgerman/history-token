@@ -12,15 +12,14 @@ suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &quot;tms380tr.h&quot;
 macro_line|#include &quot;madgemc.h&quot;            /* Madge-specific constants */
 DECL|macro|MADGEMC_IO_EXTENT

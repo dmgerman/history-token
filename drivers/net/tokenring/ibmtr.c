@@ -22,7 +22,6 @@ mdefine_line|#define TR_VERBOSE&t;0
 multiline_comment|/* some 95 OS send many non UI frame; this allow removing the warning */
 DECL|macro|TR_FILTERNONUI
 mdefine_line|#define TR_FILTERNONUI&t;1
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;

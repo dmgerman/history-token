@@ -13,7 +13,6 @@ multiline_comment|/*&n; * insmod/modprobe configurable stuff.&n; *&t;- IO Port, 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -22,10 +21,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -35,6 +30,10 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_ltalk.h&gt;&t;/* For ltalk_setup() */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* For udelay() */
 macro_line|#include &lt;linux/atalk.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;cops.h&quot;&t;&t;/* Our Stuff */
 macro_line|#include &quot;cops_ltdrv.h&quot;&t;&t;/* Firmware code for Tangent type cards. */
 macro_line|#include &quot;cops_ffdrv.h&quot;&t;&t;/* Firmware code for Dayna type cards. */

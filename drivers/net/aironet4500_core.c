@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t; Aironet 4500/4800 driver core&n; *&n; *&t;&t;Elmer Joandi, Januar 1999&n; *&t;&t;Copyright: &t;GPL&n; *&t;&n; *&n; *&t;Revision 0.1 ,started  30.12.1998&n; *&n; *&n; */
 multiline_comment|/* CHANGELOG:&n; &t;march 99, stable version 2.0&n; &t;august 99, stable version 2.2&n; &t;november 99, integration with 2.3&n;&t;17.12.99: finally, got SMP near-correct. &n;&t;&t;timing issues remain- on SMP box its 15% slower on tcp&t;&n;&t;10.03.00 looks like softnet take us back to normal on SMP&n; */
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -10,16 +11,14 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;aironet4500.h&quot;
-macro_line|#include &lt;linux/ip.h&gt;
 DECL|variable|bap_sleep
 r_int
 id|bap_sleep

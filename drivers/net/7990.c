@@ -1,30 +1,29 @@
 multiline_comment|/* &n; * 7990.c -- LANCE ethernet IC generic routines. &n; * This is an attempt to separate out the bits of various ethernet&n; * drivers that are common because they all use the AMD 7990 LANCE &n; * (Local Area Network Controller for Ethernet) chip.&n; *&n; * Copyright (C) 05/1998 Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;&n; *&n; * Most of this stuff was obtained by looking at other LANCE drivers,&n; * in particular a2065.[ch]. The AMD C-LANCE datasheet was also helpful.&n; * NB: this was made easy by the fact that Jes Sorensen had cleaned up&n; * most of a2025 and sunlance with the aim of merging them, so the &n; * common code was pretty obvious.&n; */
+macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/dio.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+multiline_comment|/* Used for the temporal inet entries and routing */
+macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-multiline_comment|/* Used for the temporal inet entries and routing */
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/route.h&gt;
-macro_line|#include &lt;linux/dio.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &quot;7990.h&quot;
 multiline_comment|/* Lossage Factor Nine, Mr Sulu. */
 DECL|macro|WRITERAP

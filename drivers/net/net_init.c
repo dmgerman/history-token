@@ -3,7 +3,6 @@ multiline_comment|/*&n;&t;Written 1993,1994,1995 by Donald Becker.&n;&n;&t;The a
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

@@ -7528,7 +7528,7 @@ op_amp
 id|ip-&gt;i_count
 )paren
 comma
-id|ip-&gt;i_dev
+id|ip-&gt;i_sb-&gt;s_dev
 comma
 id|ip-&gt;i_size
 )paren

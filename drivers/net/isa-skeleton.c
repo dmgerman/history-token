@@ -11,7 +11,6 @@ suffix:semicolon
 multiline_comment|/*&n; *  Sources:&n; *&t;List your sources of programming information to document that&n; *&t;the driver is your own creation, and give due credit to others&n; *&t;that contributed to the work. Remember that GNU project code&n; *&t;cannot use proprietary or trade secret information. Interface&n; *&t;definitions are generally considered non-copyrightable to the&n; *&t;extent that the same names and structures must be used to be&n; *&t;compatible.&n; *&n; *&t;Finally, keep in mind that the Linux kernel is has an API, not&n; *&t;ABI. Proprietary object-code-only distributions are not permitted&n; *&t;under the GPL.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -19,16 +18,16 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 multiline_comment|/*&n; * The name of the card. Is used for messages and in the requests for&n; * io regions, irqs and dma channels&n; */
 DECL|variable|cardname
 r_static

@@ -15,6 +15,22 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
+DECL|macro|NCR5380_implementation_fields
+mdefine_line|#define NCR5380_implementation_fields&t;int port, ctrl
+DECL|macro|NCR5380_local_declare
+mdefine_line|#define NCR5380_local_declare()&t;&t;struct Scsi_Host *_instance
+DECL|macro|NCR5380_setup
+mdefine_line|#define NCR5380_setup(instance)&t;&t;_instance = instance
+DECL|macro|NCR5380_read
+mdefine_line|#define NCR5380_read(reg)&t;&t;ecoscsi_read(_instance, reg)
+DECL|macro|NCR5380_write
+mdefine_line|#define NCR5380_write(reg, value)&t;ecoscsi_write(_instance, reg, value)
+DECL|macro|NCR5380_intr
+mdefine_line|#define NCR5380_intr&t;&t;&t;ecoscsi_intr
+DECL|macro|NCR5380_queue_command
+mdefine_line|#define NCR5380_queue_command&t;&t;ecoscsi_queue_command
+DECL|macro|NCR5380_proc_info
+mdefine_line|#define NCR5380_proc_info&t;&t;ecoscsi_proc_info
 macro_line|#include &quot;../../scsi/NCR5380.h&quot;
 DECL|macro|ECOSCSI_PUBLIC_RELEASE
 mdefine_line|#define ECOSCSI_PUBLIC_RELEASE 1
@@ -132,13 +148,13 @@ id|tpnt
 r_struct
 id|Scsi_Host
 op_star
-id|instance
+id|host
 suffix:semicolon
 id|tpnt-&gt;proc_name
 op_assign
 l_string|&quot;ecoscsi&quot;
 suffix:semicolon
-id|instance
+id|host
 op_assign
 id|scsi_register
 (paren
@@ -155,20 +171,20 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|instance
+id|host
 )paren
 r_return
 l_int|0
 suffix:semicolon
-id|instance-&gt;io_port
+id|host-&gt;io_port
 op_assign
 l_int|0x80ce8000
 suffix:semicolon
-id|instance-&gt;n_io_port
+id|host-&gt;n_io_port
 op_assign
 l_int|144
 suffix:semicolon
-id|instance-&gt;irq
+id|host-&gt;irq
 op_assign
 id|IRQ_NONE
 suffix:semicolon
@@ -180,9 +196,9 @@ op_logical_neg
 id|request_region
 c_func
 (paren
-id|instance-&gt;io_port
+id|host-&gt;io_port
 comma
-id|instance-&gt;n_io_port
+id|host-&gt;n_io_port
 comma
 l_string|&quot;ecoscsi&quot;
 )paren
@@ -193,7 +209,7 @@ id|unregister_scsi
 suffix:semicolon
 id|ecoscsi_write
 (paren
-id|instance
+id|host
 comma
 id|MODE_REG
 comma
@@ -206,7 +222,7 @@ c_cond
 (paren
 id|ecoscsi_read
 (paren
-id|instance
+id|host
 comma
 id|MODE_REG
 )paren
@@ -220,7 +236,7 @@ suffix:semicolon
 id|ecoscsi_write
 c_func
 (paren
-id|instance
+id|host
 comma
 id|MODE_REG
 comma
@@ -233,7 +249,7 @@ c_cond
 (paren
 id|ecoscsi_read
 (paren
-id|instance
+id|host
 comma
 id|MODE_REG
 )paren
@@ -246,106 +262,19 @@ suffix:semicolon
 id|NCR5380_init
 c_func
 (paren
-id|instance
+id|host
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instance-&gt;irq
-op_ne
-id|IRQ_NONE
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|instance-&gt;irq
-comma
-id|do_ecoscsi_intr
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;ecoscsi&quot;
-comma
-l_int|NULL
-)paren
-)paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;scsi%d: IRQ%d not free, interrupts disabled&bslash;n&quot;
+l_string|&quot;scsi%d: at port 0x%08lx irqs disabled&quot;
 comma
-id|instance-&gt;host_no
+id|host-&gt;host_no
 comma
-id|instance-&gt;irq
-)paren
-suffix:semicolon
-id|instance-&gt;irq
-op_assign
-id|IRQ_NONE
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|instance-&gt;irq
-op_ne
-id|IRQ_NONE
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;scsi%d: eek! Interrupts enabled, but I don&squot;t think&bslash;n&quot;
-comma
-id|instance-&gt;host_no
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;scsi%d: that the board had an interrupt!&bslash;n&quot;
-comma
-id|instance-&gt;host_no
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;scsi%d: at port %X irq&quot;
-comma
-id|instance-&gt;host_no
-comma
-id|instance-&gt;io_port
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|instance-&gt;irq
-op_eq
-id|IRQ_NONE
-)paren
-id|printk
-(paren
-l_string|&quot;s disabled&quot;
-)paren
-suffix:semicolon
-r_else
-id|printk
-(paren
-l_string|&quot; %d&quot;
-comma
-id|instance-&gt;irq
+id|host-&gt;io_port
 )paren
 suffix:semicolon
 id|printk
@@ -353,9 +282,9 @@ c_func
 (paren
 l_string|&quot; options CAN_QUEUE=%d CMD_PER_LUN=%d release=%d&quot;
 comma
-id|CAN_QUEUE
+id|host-&gt;can_queue
 comma
-id|CMD_PER_LUN
+id|host-&gt;cmd_per_lun
 comma
 id|ECOSCSI_PUBLIC_RELEASE
 )paren
@@ -365,13 +294,13 @@ c_func
 (paren
 l_string|&quot;&bslash;nscsi%d:&quot;
 comma
-id|instance-&gt;host_no
+id|host-&gt;host_no
 )paren
 suffix:semicolon
 id|NCR5380_print_options
 c_func
 (paren
-id|instance
+id|host
 )paren
 suffix:semicolon
 id|printk
@@ -388,9 +317,9 @@ suffix:colon
 id|release_region
 c_func
 (paren
-id|instance-&gt;io_port
+id|host-&gt;io_port
 comma
-id|instance-&gt;n_io_port
+id|host-&gt;n_io_port
 )paren
 suffix:semicolon
 id|unregister_scsi
@@ -398,11 +327,12 @@ suffix:colon
 id|scsi_unregister
 c_func
 (paren
-id|instance
+id|host
 )paren
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
 )brace
 DECL|function|ecoscsi_release
 r_int
@@ -471,7 +401,7 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|instance
+id|host
 comma
 r_int
 r_char
@@ -485,7 +415,7 @@ id|len
 r_int
 id|iobase
 op_assign
-id|instance-&gt;io_port
+id|host-&gt;io_port
 suffix:semicolon
 id|printk
 c_func
@@ -551,7 +481,7 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|instance
+id|host
 comma
 r_int
 r_char
@@ -565,12 +495,12 @@ id|len
 r_int
 id|iobase
 op_assign
-id|instance-&gt;io_port
+id|host-&gt;io_port
 suffix:semicolon
 r_int
 id|iobase2
 op_assign
-id|instance-&gt;io_port
+id|host-&gt;io_port
 op_plus
 l_int|0x100
 suffix:semicolon
@@ -840,22 +770,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|STAT
 macro_line|#undef STAT
-DECL|macro|NCR5380_implementation_fields
-mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    int port, ctrl
-DECL|macro|NCR5380_local_declare
-mdefine_line|#define NCR5380_local_declare() &bslash;&n;        struct Scsi_Host *_instance
-DECL|macro|NCR5380_setup
-mdefine_line|#define NCR5380_setup(instance) &bslash;&n;        _instance = instance
-DECL|macro|NCR5380_read
-mdefine_line|#define NCR5380_read(reg) ecoscsi_read(_instance, reg)
-DECL|macro|NCR5380_write
-mdefine_line|#define NCR5380_write(reg, value) ecoscsi_write(_instance, reg, value)
-DECL|macro|NCR5380_intr
-mdefine_line|#define NCR5380_intr&t;&t;ecoscsi_intr
-DECL|macro|NCR5380_queue_command
-mdefine_line|#define NCR5380_queue_command&t;ecoscsi_queue_command
-DECL|macro|NCR5380_proc_info
-mdefine_line|#define NCR5380_proc_info&t;ecoscsi_proc_info
 r_int
 id|NCR5380_proc_info
 c_func

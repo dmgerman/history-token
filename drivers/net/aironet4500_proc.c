@@ -1,10 +1,14 @@
 multiline_comment|/*&n; *&t; Aironet 4500 /proc interface&n; *&n; *&t;&t;Elmer Joandi, Januar 1999&n; *&t;Copyright GPL&n; *&t;&n; *&n; *&t;Revision 0.1 ,started  30.12.1998&n; *&n; *&n; */
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -13,11 +17,6 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/if_arp.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;

@@ -12,15 +12,15 @@ l_string|&quot;wd.c:v1.10 9/23/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bs
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;8390.h&quot;
 multiline_comment|/* A zero-terminated list of I/O addresses to be probed. */
 DECL|variable|__initdata

@@ -12,24 +12,24 @@ l_string|&quot;iph5526.c:v1.0 07.08.99 Vineet Abraham (vmabraham@hotmail.com)&bs
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/fcdevice.h&gt; /* had the declarations for init_fcdev among others + includes if_fcdevice.h */
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/fcdevice.h&gt; /* had the declarations for init_fcdev among&n;&t;&t;&t;       others + includes if_fcdevice.h */
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../fc4/fcp.h&quot;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* driver specific header files */
 macro_line|#include &quot;tach.h&quot;
 macro_line|#include &quot;tach_structs.h&quot;

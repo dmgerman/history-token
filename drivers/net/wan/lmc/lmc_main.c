@@ -2,7 +2,7 @@ multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n
 multiline_comment|/* $Id: lmc_main.c,v 1.36 2000/04/11 05:25:25 asj Exp $ */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -18,15 +18,15 @@ macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;             /* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;net/syncppp.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 macro_line|#include &lt;asm/uaccess.h&gt;
 singleline_comment|//#include &lt;asm/spinlock.h&gt;
@@ -34,7 +34,6 @@ macro_line|#else&t;&t;&t;&t;/* 2.0 kernel */
 DECL|macro|ARPHRD_HDLC
 mdefine_line|#define ARPHRD_HDLC 513
 macro_line|#endif
-macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|DRIVER_MAJOR_VERSION
 mdefine_line|#define DRIVER_MAJOR_VERSION     1
 DECL|macro|DRIVER_MINOR_VERSION

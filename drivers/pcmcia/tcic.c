@@ -4,18 +4,17 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -123,16 +122,12 @@ DECL|variable|cs_irq
 r_static
 r_int
 id|cs_irq
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Poll status interval -- 0 means default to interrupt */
 DECL|variable|poll_interval
 r_static
 r_int
 id|poll_interval
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Delay for card status double-checking */
 DECL|variable|poll_quick
@@ -309,8 +304,6 @@ DECL|variable|tcic_timer_pending
 r_static
 r_int
 id|tcic_timer_pending
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|sockets
 r_static
@@ -332,19 +325,25 @@ id|tcic_cap
 op_assign
 (brace
 multiline_comment|/* only 16-bit cards, memory windows must be size-aligned */
+dot
+id|features
+op_assign
 id|SS_CAP_PCCARD
 op_or
 id|SS_CAP_MEM_ALIGN
 comma
+dot
+id|irq_mask
+op_assign
 l_int|0x4cf8
 comma
 multiline_comment|/* irq 14, 11, 10, 7, 6, 5, 4, 3 */
+dot
+id|map_size
+op_assign
 l_int|0x1000
 comma
 multiline_comment|/* 4K minimum window size */
-l_int|0
-comma
-l_int|0
 multiline_comment|/* No PCI or CardBus support */
 )brace
 suffix:semicolon
@@ -804,11 +803,11 @@ r_volatile
 id|u_int
 id|irq_hits
 suffix:semicolon
-DECL|function|irq_count
+DECL|function|tcic_irq_count
 r_static
 r_void
 id|__init
-id|irq_count
+id|tcic_irq_count
 c_func
 (paren
 r_int
@@ -854,13 +853,13 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|tcic_irq_count
 comma
 l_int|0
 comma
 l_string|&quot;irq scan&quot;
 comma
-id|irq_count
+id|tcic_irq_count
 )paren
 op_ne
 l_int|0
@@ -886,7 +885,7 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|tcic_irq_count
 )paren
 suffix:semicolon
 r_return
@@ -946,7 +945,7 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|tcic_irq_count
 )paren
 suffix:semicolon
 multiline_comment|/* Turn off interrupts */
@@ -1196,13 +1195,13 @@ c_func
 (paren
 id|i
 comma
-id|irq_count
+id|tcic_irq_count
 comma
 l_int|0
 comma
 l_string|&quot;x&quot;
 comma
-id|irq_count
+id|tcic_irq_count
 )paren
 op_eq
 l_int|0
@@ -1222,7 +1221,7 @@ c_func
 (paren
 id|i
 comma
-id|irq_count
+id|tcic_irq_count
 )paren
 suffix:semicolon
 )brace
@@ -5404,29 +5403,66 @@ id|pccard_operations
 id|tcic_operations
 op_assign
 (brace
+dot
+id|init
+op_assign
 id|tcic_init
 comma
+dot
+id|suspend
+op_assign
 id|tcic_suspend
 comma
+dot
+id|register_callback
+op_assign
 id|tcic_register_callback
 comma
+dot
+id|inquire_socket
+op_assign
 id|tcic_inquire_socket
 comma
+dot
+id|get_status
+op_assign
 id|tcic_get_status
 comma
+dot
+id|get_socket
+op_assign
 id|tcic_get_socket
 comma
+dot
+id|set_socket
+op_assign
 id|tcic_set_socket
 comma
+dot
+id|get_io_map
+op_assign
 id|tcic_get_io_map
 comma
+dot
+id|set_io_map
+op_assign
 id|tcic_set_io_map
 comma
+dot
+id|get_mem_map
+op_assign
 id|tcic_get_mem_map
 comma
+dot
+id|set_mem_map
+op_assign
 id|tcic_set_mem_map
 comma
+dot
+id|proc_setup
+op_assign
 id|tcic_proc_setup
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*====================================================================*/

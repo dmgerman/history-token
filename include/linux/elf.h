@@ -377,6 +377,12 @@ DECL|macro|ELF64_R_SYM
 mdefine_line|#define ELF64_R_SYM(i)&t;&t;&t;((i) &gt;&gt; 32)
 DECL|macro|ELF64_R_TYPE
 mdefine_line|#define ELF64_R_TYPE(i)&t;&t;&t;((i) &amp; 0xffffffff)
+DECL|macro|R_ARM_NONE
+mdefine_line|#define R_ARM_NONE&t;0
+DECL|macro|R_ARM_PC24
+mdefine_line|#define R_ARM_PC24&t;1
+DECL|macro|R_ARM_ABS32
+mdefine_line|#define R_ARM_ABS32&t;2
 DECL|macro|R_386_NONE
 mdefine_line|#define R_386_NONE&t;0
 DECL|macro|R_386_32

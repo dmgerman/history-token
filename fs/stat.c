@@ -27,7 +27,7 @@ id|stat
 (brace
 id|stat-&gt;dev
 op_assign
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 suffix:semicolon
 id|stat-&gt;ino
 op_assign

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * IR port driver for the Cirrus Logic EP7211 processor.&
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;

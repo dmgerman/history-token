@@ -1,7 +1,6 @@
 multiline_comment|/* $Id: sunbmac.c,v 1.30 2002/01/15 06:48:55 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -12,21 +11,21 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/idprom.h&gt;
-macro_line|#include &lt;asm/sbus.h&gt;
-macro_line|#include &lt;asm/openprom.h&gt;
-macro_line|#include &lt;asm/oplib.h&gt;
-macro_line|#include &lt;asm/auxio.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/auxio.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/idprom.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/openprom.h&gt;
+macro_line|#include &lt;asm/oplib.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/sbus.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;sunbmac.h&quot;
 DECL|variable|__initdata
 r_static

@@ -13,7 +13,6 @@ suffix:semicolon
 multiline_comment|/*&n;  Sources:&n;  &t;SEEQ 8005 databook&n;  &t;&n;  Version history:&n;  &t;1.00&t;Public release. cosmetic changes (no warnings now)&n;  &t;0.68&t;Turning per- packet,interrupt debug messages off - testing for release.&n;  &t;0.67&t;timing problems/bad buffer reads seem to be fixed now&n;  &t;0.63&t;*!@$ protocol=eth_type_trans -- now packets flow&n;  &t;0.56&t;Send working&n;  &t;0.48&t;Receive working&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -23,14 +22,14 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;seeq8005.h&quot;
 multiline_comment|/* First, a few definitions that the brave might change. */
 multiline_comment|/* A zero-terminated list of I/O addresses to be probed. */

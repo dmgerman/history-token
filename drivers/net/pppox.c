@@ -1,19 +1,18 @@
 multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over X/Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:&t;0.5.1&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@styx.uwaterloo.ca&gt;&n; *&n; * 051000 :&t;Initialization cleanup&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/if_pppox.h&gt;
-macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
 macro_line|#include &lt;linux/ppp_channel.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|proto
 r_static
 r_struct
