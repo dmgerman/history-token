@@ -1300,7 +1300,7 @@ id|init_mm
 suffix:semicolon
 multiline_comment|/* PID hashing. (shouldnt this be dynamic?) */
 DECL|macro|PIDHASH_SZ
-mdefine_line|#define PIDHASH_SZ (4096 &gt;&gt; 2)
+mdefine_line|#define PIDHASH_SZ 8192
 r_extern
 r_struct
 id|task_struct
