@@ -1394,6 +1394,7 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -1750,6 +1751,7 @@ c_func
 (paren
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -1858,6 +1860,7 @@ id|dev
 suffix:semicolon
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1931,6 +1934,7 @@ id|dev
 suffix:semicolon
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 op_assign
