@@ -8601,6 +8601,22 @@ id|p
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* PGE CPUID bug: Pentium4 supports PGE, but seems to have SMP bugs.. */
+r_if
+c_cond
+(paren
+id|c-&gt;x86
+op_eq
+l_int|15
+)paren
+id|clear_bit
+c_func
+(paren
+id|X86_FEATURE_PGE
+comma
+id|c-&gt;x86_capability
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
