@@ -1483,6 +1483,15 @@ OG
 id|idle_threshold
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|apm_info.forbid_idle
+)paren
+id|use_apm_idle
+op_assign
+l_int|0
+suffix:semicolon
 id|last_jiffies
 op_assign
 id|jiffies

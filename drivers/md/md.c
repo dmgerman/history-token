@@ -13162,6 +13162,10 @@ id|mddev-&gt;writes_pending
 )paren
 op_logical_or
 id|mddev-&gt;in_sync
+op_logical_or
+id|mddev-&gt;recovery_cp
+op_ne
+id|MaxSector
 )paren
 )paren
 r_return

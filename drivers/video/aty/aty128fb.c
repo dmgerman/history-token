@@ -9236,9 +9236,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|reg
 op_amp
 id|LVDS_ON
+)paren
 )paren
 (brace
 id|reg

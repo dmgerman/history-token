@@ -1206,7 +1206,6 @@ r_if
 c_cond
 (paren
 (paren
-op_logical_neg
 id|pci_probe
 op_amp
 id|PCI_PROBE_CONF2
