@@ -4835,6 +4835,24 @@ id|out_release
 suffix:semicolon
 id|err
 op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|net_family_get
+c_func
+(paren
+id|sock-&gt;ops-&gt;family
+)paren
+)paren
+r_goto
+id|out_release
+suffix:semicolon
+id|err
+op_assign
 id|sock-&gt;ops
 op_member_access_from_pointer
 id|accept
@@ -4855,7 +4873,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_release
+id|out_family_put
 suffix:semicolon
 r_if
 c_cond
@@ -4895,7 +4913,7 @@ op_minus
 id|ECONNABORTED
 suffix:semicolon
 r_goto
-id|out_release
+id|out_family_put
 suffix:semicolon
 )brace
 id|err
@@ -4920,7 +4938,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_release
+id|out_family_put
 suffix:semicolon
 )brace
 multiline_comment|/* File flags are not inherited via accept() unlike another OSes. */
@@ -4940,7 +4958,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_release
+id|out_family_put
 suffix:semicolon
 id|security_socket_post_accept
 c_func
@@ -4962,6 +4980,14 @@ id|out
 suffix:colon
 r_return
 id|err
+suffix:semicolon
+id|out_family_put
+suffix:colon
+id|net_family_put
+c_func
+(paren
+id|sock-&gt;ops-&gt;family
+)paren
 suffix:semicolon
 id|out_release
 suffix:colon
