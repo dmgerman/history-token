@@ -2217,6 +2217,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|balanced_irq
+r_static
 r_int
 id|balanced_irq
 c_func
@@ -2274,8 +2275,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|repeat
-suffix:colon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+(brace
 id|set_current_state
 c_func
 (paren
@@ -2304,14 +2310,6 @@ id|balanced_irq_interval
 )paren
 )paren
 (brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;balanced_irq: calling do_irq_balance() %lu&bslash;n&quot;
-comma
-id|jiffies
-)paren
-suffix:semicolon
 id|do_irq_balance
 c_func
 (paren
@@ -2326,8 +2324,9 @@ op_assign
 id|balanced_irq_interval
 suffix:semicolon
 )brace
-r_goto
-id|repeat
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|balanced_irq_init
