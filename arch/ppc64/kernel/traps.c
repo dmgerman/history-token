@@ -438,6 +438,11 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+id|print_modules
+c_func
+(paren
+)paren
+suffix:semicolon
 id|show_regs
 c_func
 (paren
