@@ -7212,7 +7212,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|ax25_info_struct_depreciated
+id|ax25_info_struct_deprecated
 )paren
 )paren
 )paren

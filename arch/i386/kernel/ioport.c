@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 multiline_comment|/* Set EXTENT bits starting at BASE in BITMAP to value TURN_ON. */
 DECL|function|set_bitmap
 r_static
@@ -472,6 +473,13 @@ op_or
 id|level
 op_lshift
 l_int|12
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure we return the long way (not sysenter) */
+id|set_thread_flag
+c_func
+(paren
+id|TIF_SIGPENDING
 )paren
 suffix:semicolon
 r_return

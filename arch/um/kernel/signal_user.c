@@ -29,19 +29,27 @@ id|size
 (brace
 id|stack_t
 id|stack
-suffix:semicolon
-id|stack.ss_sp
+op_assign
+(paren
+(paren
+id|stack_t
+)paren
+(brace
+dot
+id|ss_flags
+op_assign
+l_int|0
+comma
+dot
+id|ss_sp
 op_assign
 (paren
 id|__ptr_t
 )paren
 id|sig_stack
-suffix:semicolon
-id|stack.ss_flags
-op_assign
-l_int|0
-suffix:semicolon
-id|stack.ss_size
+comma
+dot
+id|ss_size
 op_assign
 id|size
 op_minus
@@ -49,6 +57,8 @@ r_sizeof
 (paren
 r_void
 op_star
+)paren
+)brace
 )paren
 suffix:semicolon
 r_if
@@ -69,7 +79,9 @@ l_int|0
 id|panic
 c_func
 (paren
-l_string|&quot;sigaltstack failed&quot;
+l_string|&quot;enabling signal stack failed, errno = %d&bslash;n&quot;
+comma
+id|errno
 )paren
 suffix:semicolon
 )brace

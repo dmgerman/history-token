@@ -439,7 +439,11 @@ id|low
 id|oprofile_add_sample
 c_func
 (paren
-id|regs-&gt;eip
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
 comma
 id|i
 comma

@@ -4895,47 +4895,27 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* If the open() succeeded, then ieee1394 will be left&n;&t;&t;   with an extra module reference, so we discard it here.&n;&n;&t;&t;   The task-specific driver still has the extra&n;&t;&t;   reference given to it by ieee1394_get_chardev().&n;&t;&t;   This extra reference prevents the module from&n;&t;&t;   unloading while the file is open, and will be&n;&t;&t;   dropped by the VFS when the file is released.&n;&t;&t;*/
-r_if
-c_cond
-(paren
-id|THIS_MODULE
-)paren
-(brace
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
-(paren
-r_struct
-id|module
-op_star
-)paren
 id|THIS_MODULE
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* note that if ieee1394 is compiled into the kernel,&n;&t;&t;   THIS_MODULE will be (void*) NULL, hence the if and&n;&t;&t;   the cast are necessary */
 )brace
 r_else
 (brace
-multiline_comment|/* if the open() failed, then we need to drop the&n;&t;&t;   extra reference we gave to the task-specific&n;&t;&t;   driver */
-r_if
-c_cond
-(paren
-id|module
-)paren
-(brace
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* point the file&squot;s f_ops back to ieee1394. The VFS will then&n;&t;&t;   decrement ieee1394&squot;s reference count immediately after this&n;&t;&t;   function returns. */
 id|file-&gt;f_op
 op_assign
 op_amp
 id|ieee1394_chardev_ops
+suffix:semicolon
+multiline_comment|/* if the open() failed, then we need to drop the&n;&t;&t;   extra reference we gave to the task-specific&n;&t;&t;   driver */
+id|module_put
+c_func
+(paren
+id|module
+)paren
 suffix:semicolon
 )brace
 r_return

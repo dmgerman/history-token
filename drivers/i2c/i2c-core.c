@@ -3,7 +3,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;.&n;   All SMBus-related things are written by Frodo Looijaard &lt;frodol@dds.nl&gt;&n;   SMBus 2.0 support by Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;                */
-multiline_comment|/* $Id: i2c-core.c,v 1.86 2002/09/12 06:47:26 ac9410 Exp $ */
+multiline_comment|/* $Id: i2c-core.c,v 1.89 2002/11/03 16:47:16 mds Exp $ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -36,14 +36,18 @@ mdefine_line|#define DEB2(x) if (i2c_debug&gt;=2) x;
 multiline_comment|/* ----- global variables -------------------------------------------------- */
 multiline_comment|/**** lock for writing to global variables: the adapter &amp; driver list */
 DECL|variable|adap_lock
-r_struct
-id|semaphore
+id|DECLARE_MUTEX
+c_func
+(paren
 id|adap_lock
+)paren
 suffix:semicolon
 DECL|variable|driver_lock
-r_struct
-id|semaphore
+id|DECLARE_MUTEX
+c_func
+(paren
 id|driver_lock
+)paren
 suffix:semicolon
 multiline_comment|/**** adapter list */
 DECL|variable|adapters
@@ -85,22 +89,6 @@ id|i2c_debug
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------&n; * /proc entry declarations&n; *----------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_PROC_FS
-r_static
-r_int
-id|i2cproc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_int
-id|i2cproc_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 id|ssize_t
 id|i2cproc_bus_read
@@ -167,18 +155,6 @@ id|i2cproc_bus_read
 comma
 )brace
 suffix:semicolon
-DECL|variable|i2cproc_initialized
-r_static
-r_int
-id|i2cproc_initialized
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#else /* undef CONFIG_PROC_FS */
-DECL|macro|i2cproc_init
-mdefine_line|#define i2cproc_init() 0
-DECL|macro|i2cproc_cleanup
-mdefine_line|#define i2cproc_cleanup() 0
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* ---------------------------------------------------&n; * registering functions &n; * --------------------------------------------------- &n; */
 multiline_comment|/* -----&n; * i2c_add_adapter is called from within the algorithm layer,&n; * when a new hw adapter registers. A new device is register to be&n; * available for clients.&n; */
@@ -281,11 +257,6 @@ id|adap-&gt;lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|i2cproc_initialized
-)paren
 (brace
 r_char
 id|name
@@ -697,11 +668,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|i2cproc_initialized
-)paren
 (brace
 r_char
 id|name
@@ -2745,6 +2711,7 @@ id|ENOENT
 suffix:semicolon
 )brace
 DECL|function|i2cproc_init
+r_static
 r_int
 id|i2cproc_init
 c_func
@@ -2757,34 +2724,6 @@ id|proc_dir_entry
 op_star
 id|proc_bus_i2c
 suffix:semicolon
-id|i2cproc_initialized
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|proc_bus
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: /proc/bus/ does not exist&quot;
-)paren
-suffix:semicolon
-id|i2cproc_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOENT
-suffix:semicolon
-)brace
 id|proc_bus_i2c
 op_assign
 id|create_proc_entry
@@ -2811,11 +2750,6 @@ id|KERN_ERR
 l_string|&quot;i2c-core.o: Could not create /proc/bus/i2c&quot;
 )paren
 suffix:semicolon
-id|i2cproc_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOENT
@@ -2830,28 +2764,18 @@ id|proc_bus_i2c-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|i2cproc_initialized
-op_add_assign
-l_int|2
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2cproc_cleanup
-r_int
+r_static
+r_void
+id|__exit
 id|i2cproc_cleanup
 c_func
 (paren
 r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i2cproc_initialized
-op_ge
-l_int|1
 )paren
 (brace
 id|remove_proc_entry
@@ -2862,15 +2786,21 @@ comma
 id|proc_bus
 )paren
 suffix:semicolon
-id|i2cproc_initialized
-op_sub_assign
-l_int|2
-suffix:semicolon
 )brace
-r_return
-l_int|0
+DECL|variable|i2cproc_init
+id|module_init
+c_func
+(paren
+id|i2cproc_init
+)paren
 suffix:semicolon
-)brace
+DECL|variable|i2cproc_cleanup
+id|module_exit
+c_func
+(paren
+id|i2cproc_cleanup
+)paren
+suffix:semicolon
 macro_line|#endif /* def CONFIG_PROC_FS */
 multiline_comment|/* ----------------------------------------------------&n; * the functional interface to the i2c busses.&n; * ----------------------------------------------------&n; */
 DECL|function|i2c_transfer
@@ -6178,7 +6108,7 @@ id|data-&gt;block
 l_int|0
 )braket
 op_plus
-l_int|2
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -6192,7 +6122,7 @@ id|len
 OG
 id|I2C_SMBUS_I2C_BLOCK_MAX
 op_plus
-l_int|2
+l_int|1
 )paren
 (brace
 id|printk
@@ -6217,10 +6147,10 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
-OL
+op_le
 id|data-&gt;block
 (braket
 l_int|0
@@ -6237,8 +6167,6 @@ op_assign
 id|data-&gt;block
 (braket
 id|i
-op_plus
-l_int|1
 )braket
 suffix:semicolon
 )brace
@@ -6745,309 +6673,6 @@ op_eq
 id|func
 suffix:semicolon
 )brace
-DECL|function|i2c_init
-r_static
-r_int
-id|__init
-id|i2c_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2c-core.o: i2c core module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|adapters
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|adapters
-)paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|drivers
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|drivers
-)paren
-)paren
-suffix:semicolon
-id|adap_count
-op_assign
-l_int|0
-suffix:semicolon
-id|driver_count
-op_assign
-l_int|0
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|adap_lock
-)paren
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|driver_lock
-)paren
-suffix:semicolon
-id|i2cproc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|i2c_exit
-r_static
-r_void
-id|__exit
-id|i2c_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-id|i2cproc_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifndef MODULE
-macro_line|#ifdef CONFIG_I2C_CHARDEV
-r_extern
-r_int
-id|i2c_dev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ALGOBIT
-r_extern
-r_int
-id|i2c_algo_bit_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_PHILIPSPAR
-r_extern
-r_int
-id|i2c_bitlp_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ELV
-r_extern
-r_int
-id|i2c_bitelv_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_VELLEMAN
-r_extern
-r_int
-id|i2c_bitvelle_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_BITVIA
-r_extern
-r_int
-id|i2c_bitvia_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ALGOPCF
-r_extern
-r_int
-id|i2c_algo_pcf_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ELEKTOR
-r_extern
-r_int
-id|i2c_pcfisa_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ALGO8XX
-r_extern
-r_int
-id|i2c_algo_8xx_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_RPXLITE
-r_extern
-r_int
-id|i2c_rpx_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_PROC
-r_extern
-r_int
-id|sensors_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* This is needed for automatic patch generation: sensors code starts here */
-multiline_comment|/* This is needed for automatic patch generation: sensors code ends here   */
-DECL|function|i2c_init_all
-r_int
-id|__init
-id|i2c_init_all
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* --------------------- global ----- */
-id|i2c_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_I2C_CHARDEV
-id|i2c_dev_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* --------------------- bit -------- */
-macro_line|#ifdef CONFIG_I2C_ALGOBIT
-id|i2c_algo_bit_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_PHILIPSPAR
-id|i2c_bitlp_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ELV
-id|i2c_bitelv_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_VELLEMAN
-id|i2c_bitvelle_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* --------------------- pcf -------- */
-macro_line|#ifdef CONFIG_I2C_ALGOPCF
-id|i2c_algo_pcf_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ELEKTOR
-id|i2c_pcfisa_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* --------------------- 8xx -------- */
-macro_line|#ifdef CONFIG_I2C_ALGO8XX
-id|i2c_algo_8xx_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_RPXLITE
-id|i2c_rpx_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* -------------- proc interface ---- */
-macro_line|#ifdef CONFIG_I2C_PROC
-id|sensors_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* This is needed for automatic patch generation: sensors code starts here */
-multiline_comment|/* This is needed for automatic patch generation: sensors code ends here */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|variable|i2c_add_adapter
 id|EXPORT_SYMBOL
 c_func
@@ -7291,6 +6916,12 @@ c_func
 l_string|&quot;I2C-Bus main module&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -7305,26 +6936,6 @@ c_func
 id|i2c_debug
 comma
 l_string|&quot;debug level&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-DECL|variable|i2c_init
-id|module_init
-c_func
-(paren
-id|i2c_init
-)paren
-suffix:semicolon
-DECL|variable|i2c_exit
-id|module_exit
-c_func
-(paren
-id|i2c_exit
 )paren
 suffix:semicolon
 eof

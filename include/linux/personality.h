@@ -361,11 +361,5 @@ mdefine_line|#define get_personality&t;&t;(current-&gt;personality)
 multiline_comment|/*&n; * Change personality of the currently running process.&n; */
 DECL|macro|set_personality
 mdefine_line|#define set_personality(pers) &bslash;&n;&t;((current-&gt;personality == pers) ? 0 : __set_personality(pers))
-multiline_comment|/*&n; * Load an execution domain.&n; */
-DECL|macro|get_exec_domain
-mdefine_line|#define get_exec_domain(ep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ep != NULL &amp;&amp; ep-&gt;module != NULL)&t;&t;&bslash;&n;&t;&t;__MOD_INC_USE_COUNT(ep-&gt;module);&t;&bslash;&n;} while (0)
-multiline_comment|/*&n; * Unload an execution domain.&n; */
-DECL|macro|put_exec_domain
-mdefine_line|#define put_exec_domain(ep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ep != NULL &amp;&amp; ep-&gt;module != NULL)&t;&t;&bslash;&n;&t;&t;__MOD_DEC_USE_COUNT(ep-&gt;module);&t;&bslash;&n;} while (0)
 macro_line|#endif /* _LINUX_PERSONALITY_H */
 eof

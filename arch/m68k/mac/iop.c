@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt; 
 macro_line|#include &lt;asm/macintosh.h&gt; 
 macro_line|#include &lt;asm/macints.h&gt; 
@@ -371,18 +372,14 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|ulong
-id|cpu_flags
+r_int
+r_int
+id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|flags
 )paren
 suffix:semicolon
 r_for
@@ -422,10 +419,10 @@ id|status
 op_assign
 id|IOP_MSGSTATUS_WAITING
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|cpu_flags
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -437,10 +434,10 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|cpu_flags
+id|flags
 )paren
 suffix:semicolon
 r_return

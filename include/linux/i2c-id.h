@@ -318,6 +318,8 @@ DECL|macro|I2C_HW_SMBUS_SIS630
 mdefine_line|#define I2C_HW_SMBUS_SIS630&t;0x08
 DECL|macro|I2C_HW_SMBUS_SIS645
 mdefine_line|#define I2C_HW_SMBUS_SIS645&t;0x09
+DECL|macro|I2C_HW_SMBUS_AMD8111
+mdefine_line|#define I2C_HW_SMBUS_AMD8111&t;0x0a
 multiline_comment|/* --- ISA pseudo-adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_ISA
 mdefine_line|#define I2C_HW_ISA 0x00

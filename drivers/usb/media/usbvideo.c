@@ -3665,6 +3665,7 @@ id|usbvideo_SayAndWait
 )paren
 suffix:semicolon
 multiline_comment|/* ******************************************************************** */
+multiline_comment|/* XXX: this piece of crap really wants some error handling.. */
 DECL|function|usbvideo_ClientIncModCount
 r_static
 r_void
@@ -3734,12 +3735,28 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|__MOD_INC_USE_COUNT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|uvd-&gt;handle-&gt;md_module
 )paren
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s: try_module_get() == 0&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 )brace
 DECL|function|usbvideo_ClientDecModCount
 r_static
@@ -3810,7 +3827,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|uvd-&gt;handle-&gt;md_module
@@ -4632,10 +4649,9 @@ id|uvd
 op_star
 id|uvd
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_int
@@ -4662,10 +4678,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren

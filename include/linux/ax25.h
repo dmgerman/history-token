@@ -202,9 +202,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* this will go away. Please do not export to user land */
-DECL|struct|ax25_info_struct_depreciated
+DECL|struct|ax25_info_struct_deprecated
 r_struct
-id|ax25_info_struct_depreciated
+id|ax25_info_struct_deprecated
 (brace
 DECL|member|n2
 DECL|member|n2count

@@ -14,10 +14,10 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
-macro_line|#include &quot;mac_esp.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/machw.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
+multiline_comment|/* #define DEBUG_MAC_ESP */
 DECL|macro|mac_turnon_irq
 mdefine_line|#define mac_turnon_irq(x)&t;mac_enable_irq(x)
 DECL|macro|mac_turnoff_irq
@@ -2494,7 +2495,68 @@ r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|SCSI_MAC_ESP
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp&quot;
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Mac 53C9x SCSI&quot;
+comma
+dot
+id|detect
+op_assign
+id|mac_esp_detect
+comma
+dot
+id|info
+op_assign
+id|esp_info
+comma
+multiline_comment|/* .command&t;&t;= esp_command, */
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 id|MODULE_LICENSE

@@ -353,6 +353,10 @@ op_logical_and
 id|boot_cpu_data.x86
 op_eq
 l_int|6
+op_logical_or
+id|boot_cpu_data.x86
+op_eq
+l_int|15
 )paren
 )paren
 id|nmi_watchdog
@@ -1109,6 +1113,10 @@ c_cond
 id|boot_cpu_data.x86
 op_ne
 l_int|6
+op_logical_and
+id|boot_cpu_data.x86
+op_ne
+l_int|15
 )paren
 r_return
 suffix:semicolon

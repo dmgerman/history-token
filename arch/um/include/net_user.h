@@ -1,3 +1,4 @@
+multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __UM_NET_USER_H__
 DECL|macro|__UM_NET_USER_H__
 mdefine_line|#define __UM_NET_USER_H__

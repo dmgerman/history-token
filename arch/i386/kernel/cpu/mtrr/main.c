@@ -1790,8 +1790,8 @@ r_if
 c_cond
 (paren
 id|boot_cpu_data.x86
-op_ge
-l_int|7
+op_eq
+l_int|15
 op_logical_and
 (paren
 id|cpuid_eax

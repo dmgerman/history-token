@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;
@@ -119,17 +120,12 @@ id|data
 (brace
 r_int
 r_int
-id|oldflags
+id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
-id|oldflags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* protect lock */
@@ -160,10 +156,10 @@ id|stdma_isr_data
 op_assign
 id|data
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|oldflags
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -178,17 +174,12 @@ r_void
 (brace
 r_int
 r_int
-id|oldflags
+id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
-id|oldflags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|flags
 )paren
 suffix:semicolon
 id|stdma_locked
@@ -210,10 +201,10 @@ op_amp
 id|stdma_wait
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|oldflags
+id|flags
 )paren
 suffix:semicolon
 )brace

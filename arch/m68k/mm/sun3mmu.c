@@ -301,10 +301,14 @@ id|pg_table
 id|pte_t
 id|pte
 op_assign
-id|__mk_pte
+id|pfn_pte
+c_func
+(paren
+id|virt_to_pfn
 c_func
 (paren
 id|address
+)paren
 comma
 id|PAGE_INIT
 )paren

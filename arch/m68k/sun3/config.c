@@ -106,14 +106,6 @@ op_star
 id|t
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|sun_serial_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|clock_va
 r_volatile
 r_char
@@ -661,13 +653,6 @@ comma
 id|memory_end
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN3X_ZS
-id|sun_serial_setup
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|sun3_sched_init
 r_void

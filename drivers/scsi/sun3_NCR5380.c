@@ -1089,15 +1089,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|data
@@ -1140,7 +1135,7 @@ c_func
 id|BUS_AND_STATUS_REG
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1877,22 +1872,12 @@ l_int|0
 suffix:semicolon
 DECL|macro|check_offset
 mdefine_line|#define check_offset()&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (pos - buffer &lt; offset - begin) {&t;&bslash;&n;&t;    begin += pos - buffer;&t;&t;&bslash;&n;&t;    pos = buffer;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;    } while (0)
-r_for
-c_loop
+id|instance
+op_assign
+id|scsi_host_hn_get
+c_func
 (paren
-id|instance
-op_assign
-id|first_instance
-suffix:semicolon
-id|instance
-op_logical_and
-id|HOSTNO
-op_ne
 id|hostno
-suffix:semicolon
-id|instance
-op_assign
-id|instance-&gt;next
 )paren
 suffix:semicolon
 r_if
@@ -1940,15 +1925,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|SPRINTF
@@ -2109,7 +2089,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2711,15 +2691,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* &n;     * Insert the cmd into the issue queue. Note that REQUEST SENSE &n;     * commands are added to the head of the queue since any command will&n;     * clear the contingent allegiance condition that exists and the &n;     * sense data is only guaranteed to be valid while the condition exists.&n;     */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* ++guenther: now that the issue queue is being set up, we can lock ST-DMA.&n;     * Otherwise a running NCR5380_main may steal the lock.&n;     * Lock before actually inserting due to fairness reasons explained in&n;     * atari_scsi.c. If we insert first, then it&squot;s impossible for this driver&n;     * to release the lock.&n;     * Stop timer for this command while waiting for the lock, or timeouts&n;     * may happen (and they really do), and it&squot;s no good if the command doesn&squot;t&n;     * appear in any of the queues.&n;     * ++roman: Just disabling the NCR interrupt isn&squot;t sufficient here,&n;     * because also a timer int can trigger an abort or reset, which would&n;     * alter queues and touch the lock.&n;     */
@@ -2807,7 +2782,7 @@ op_assign
 id|cmd
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2929,7 +2904,7 @@ id|main_running
 op_assign
 l_int|1
 suffix:semicolon
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -2937,9 +2912,10 @@ id|flags
 suffix:semicolon
 r_do
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Freeze request queues */
@@ -3111,12 +3087,12 @@ id|tmp-&gt;lun
 macro_line|#endif
 )paren
 (brace
-id|cli
+multiline_comment|/* ++guenther: just to be sure, this must be atomic */
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* ++guenther: just to be sure, this must be atomic */
 r_if
 c_cond
 (paren
@@ -3193,7 +3169,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* reenable interrupts after finding one */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3262,7 +3238,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -3295,7 +3271,7 @@ id|tmp
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3335,7 +3311,7 @@ id|hostdata-&gt;dma_len
 macro_line|#endif
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3381,7 +3357,7 @@ id|main_running
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4199,15 +4175,10 @@ id|instance-&gt;this_id
 )paren
 suffix:semicolon
 multiline_comment|/* &n;     * Set the phase bits to 0, otherwise the NCR5380 won&squot;t drive the &n;     * data bus during SELECTION.&n;     */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -4216,7 +4187,7 @@ c_cond
 id|hostdata-&gt;connected
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4252,7 +4223,7 @@ comma
 id|MR_ARBITRATE
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5810,15 +5781,10 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/* netbsd turns off ints here, why not be safe and do it too */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* send start chain */
@@ -5945,7 +5911,7 @@ op_or_assign
 id|CSR_DMA_ENABLE
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6969,15 +6935,10 @@ r_sizeof
 id|cmd-&gt;sense_buffer
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|LIST
@@ -7004,7 +6965,7 @@ op_star
 )paren
 id|cmd
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -7173,15 +7134,10 @@ comma
 id|ICR_BASE
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|cmd-&gt;device-&gt;disconnect
@@ -7212,7 +7168,7 @@ id|hostdata-&gt;disconnected_queue
 op_assign
 id|cmd
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8475,15 +8431,10 @@ id|NCR5380_print_status
 id|instance
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|ABRT_PRINTK
@@ -8575,7 +8526,7 @@ id|cmd-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8595,7 +8546,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&t;  restore_flags(flags); */
+multiline_comment|/*&t;  local_irq_restore(flags); */
 id|printk
 c_func
 (paren
@@ -8702,7 +8653,7 @@ id|DID_ABORT
 op_lshift
 l_int|16
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8736,7 +8687,7 @@ c_cond
 id|hostdata-&gt;connected
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8784,7 +8735,7 @@ op_eq
 id|tmp
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8829,15 +8780,10 @@ id|do_abort
 id|instance
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for
@@ -8951,7 +8897,7 @@ id|cmd-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8971,7 +8917,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Case 5 : If we reached this point, the command was not found in any of &n; *&t;    the queues.&n; *&n; * We probably reached this point because of an unlikely race condition&n; * between the command completing successfully and the abortion code,&n; * so we won&squot;t panic, but we will notify the user in case something really&n; * broke.&n; */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -9115,15 +9061,10 @@ macro_line|#if 1 /* XXX Should now be done by midlevel code, but it&squot;s brok
 multiline_comment|/* XXX see below                                            XXX */
 multiline_comment|/* MSch: old-style reset: actually abort all command processing here */
 multiline_comment|/* After the reset, there are no more connected or disconnected commands&n;     * and no busy units; to avoid problems with re-inserting the commands&n;     * into the issue_queue (via scsi_done()), the aborted commands are&n;     * remembered in local variables first.&n;     */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|connected
@@ -9186,7 +9127,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -9370,15 +9311,10 @@ id|cmd
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|hostdata-&gt;issue_queue
@@ -9429,7 +9365,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

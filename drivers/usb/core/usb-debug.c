@@ -845,10 +845,13 @@ l_int|256
 OG
 l_int|0
 )paren
-id|printk
+id|dev_printk
 c_func
 (paren
 id|KERN_INFO
+comma
+id|dev-&gt;dev
+comma
 l_string|&quot;%s: %s&bslash;n&quot;
 comma
 id|id

@@ -2243,6 +2243,26 @@ id|current
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Pending single-step? */
+r_if
+c_cond
+(paren
+id|thread_info_flags
+op_amp
+id|_TIF_SINGLESTEP
+)paren
+(brace
+id|regs-&gt;eflags
+op_or_assign
+id|TF_MASK
+suffix:semicolon
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* deal with pending signal delivery */
 r_if
 c_cond

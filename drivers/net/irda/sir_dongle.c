@@ -384,12 +384,7 @@ id|dev-&gt;dongle_drv
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner
@@ -452,12 +447,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* unlink the dongle driver */
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner

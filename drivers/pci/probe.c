@@ -1353,10 +1353,6 @@ r_int
 r_int
 id|buses
 suffix:semicolon
-r_int
-r_int
-id|cr
-suffix:semicolon
 r_struct
 id|pci_bus
 op_star
@@ -1515,7 +1511,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * We need to assign a number to this bus which we always&n;&t;&t; * do in the second pass. We also keep all address decoders&n;&t;&t; * on the bridge disabled during scanning.  FIXME: Why?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We need to assign a number to this bus which we always&n;&t;&t; * do in the second pass.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1525,27 +1521,7 @@ id|pass
 r_return
 id|max
 suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|cr
-)paren
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-l_int|0x0000
-)paren
-suffix:semicolon
+multiline_comment|/* Clear errors */
 id|pci_write_config_word
 c_func
 (paren
@@ -1662,16 +1638,6 @@ comma
 id|PCI_SUBORDINATE_BUS
 comma
 id|max
-)paren
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-id|cr
 )paren
 suffix:semicolon
 )brace

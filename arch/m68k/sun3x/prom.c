@@ -105,15 +105,10 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Disable interrupts while we mess with things */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Restore prom vbr */
@@ -179,7 +174,7 @@ id|vectors
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -195,7 +190,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* This never returns, don&squot;t bother saving things */
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

@@ -9654,7 +9654,7 @@ l_int|NULL
 suffix:semicolon
 id|err_alloc_term_td
 suffix:colon
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 id|udev

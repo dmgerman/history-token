@@ -12,31 +12,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 multiline_comment|/*&n; *&n; */
-DECL|function|dec_mod_count
-r_static
-r_inline
-r_void
-id|dec_mod_count
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|module
-)paren
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
 DECL|function|snd_info_check_reserved_words
 r_int
 id|snd_info_check_reserved_words
@@ -1725,7 +1700,7 @@ l_int|0
 suffix:semicolon
 id|__error
 suffix:colon
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|entry-&gt;module
@@ -1919,7 +1894,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|entry-&gt;module

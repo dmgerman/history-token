@@ -597,7 +597,7 @@ DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0x0000007fc0000000)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_32
-mdefine_line|#define TASK_UNMAPPED_32 0x40000000
+mdefine_line|#define TASK_UNMAPPED_32 0xa0000000
 DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE

@@ -550,14 +550,17 @@ id|pl2303_private
 )paren
 )paren
 suffix:semicolon
+id|usb_set_serial_port_data
+c_func
+(paren
+op_amp
 id|serial-&gt;port
 (braket
 id|i
 )braket
-dot
-r_private
-op_assign
+comma
 id|priv
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -765,10 +768,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting write urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -811,6 +816,12 @@ r_struct
 id|pl2303_private
 op_star
 id|priv
+op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
+id|port
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -836,18 +847,7 @@ id|__FUNCTION__
 comma
 id|port-&gt;number
 comma
-(paren
-(paren
-r_struct
-id|pl2303_private
-op_star
-)paren
-id|port
-op_member_access_from_pointer
-r_private
-)paren
-op_member_access_from_pointer
-id|termios_initialized
+id|priv-&gt;termios_initialized
 )paren
 suffix:semicolon
 r_if
@@ -879,20 +879,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-(paren
-(paren
-r_struct
-id|pl2303_private
-op_star
-)paren
-id|port
-op_member_access_from_pointer
-r_private
-)paren
-op_member_access_from_pointer
-id|termios_initialized
-)paren
+id|priv-&gt;termios_initialized
 )paren
 (brace
 op_star
@@ -914,18 +901,7 @@ id|HUPCL
 op_or
 id|CLOCAL
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|pl2303_private
-op_star
-)paren
-id|port
-op_member_access_from_pointer
-r_private
-)paren
-op_member_access_from_pointer
-id|termios_initialized
+id|priv-&gt;termios_initialized
 op_assign
 l_int|1
 suffix:semicolon
@@ -993,10 +969,12 @@ op_logical_neg
 id|buf
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - out of memory.&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1357,9 +1335,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;pl2303 driver does not support the baudrate requested (fix it)&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;pl2303 driver does not support the baudrate requested (fix it)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1592,12 +1573,6 @@ op_logical_and
 id|CBAUD
 )paren
 (brace
-id|priv
-op_assign
-id|port
-op_member_access_from_pointer
-r_private
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2022,10 +1997,12 @@ c_cond
 id|result
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2071,10 +2048,12 @@ c_cond
 id|result
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting interrupt urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting interrupt urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2196,9 +2175,11 @@ id|HUPCL
 multiline_comment|/* drop DTR and RTS */
 id|priv
 op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
 id|port
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 id|priv-&gt;line_control
 op_assign
@@ -2318,9 +2299,11 @@ id|pl2303_private
 op_star
 id|priv
 op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
 id|port
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -2485,9 +2468,11 @@ id|pl2303_private
 op_star
 id|priv
 op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
 id|port
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -2835,16 +2820,33 @@ suffix:semicolon
 op_increment
 id|i
 )paren
+(brace
 id|kfree
 (paren
+id|usb_get_serial_port_data
+c_func
+(paren
+op_amp
 id|serial-&gt;port
 (braket
 id|i
 )braket
-dot
-r_private
+)paren
 )paren
 suffix:semicolon
+id|usb_set_serial_port_data
+c_func
+(paren
+op_amp
+id|serial-&gt;port
+(braket
+id|i
+)braket
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|pl2303_read_int_callback
 r_static
@@ -2981,9 +2983,12 @@ c_cond
 (paren
 id|status
 )paren
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb failed with result %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3164,10 +3169,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3286,10 +3293,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3414,10 +3423,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting write urb, error %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

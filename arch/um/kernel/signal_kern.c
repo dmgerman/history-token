@@ -12,6 +12,7 @@ macro_line|#include &quot;linux/tty.h&quot;
 macro_line|#include &quot;linux/binfmts.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
+macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;signal_kern.h&quot;
@@ -19,6 +20,7 @@ macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;frame_kern.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
+macro_line|#include &quot;mode.h&quot;
 DECL|variable|block_signals
 id|EXPORT_SYMBOL
 c_func
@@ -252,6 +254,19 @@ c_cond
 id|error
 )paren
 (brace
+r_case
+op_minus
+id|ERESTART_RESTARTBLOCK
+suffix:colon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 r_case
 op_minus
 id|ERESTARTNOHAND
@@ -716,6 +731,35 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|PT_REGS_SYSCALL_RET
+c_func
+(paren
+id|regs
+)paren
+op_eq
+op_minus
+id|ERESTART_RESTARTBLOCK
+)paren
+(brace
+id|PT_REGS_SYSCALL_RET
+c_func
+(paren
+id|regs
+)paren
+op_assign
+id|__NR_restart_syscall
+suffix:semicolon
+id|PT_REGS_RESTART_SYSCALL
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* This closes a way to execute a system call on the host.  If&n;&t; * you set a breakpoint on a system call instruction and singlestep&n;&t; * from it, the tracing thread used to PTRACE_SINGLESTEP the process&n;&t; * rather than PTRACE_SYSCALL it, allowing the system call to execute&n;&t; * on the host.  The tracing thread will check this flag and &n;&t; * PTRACE_SYSCALL if necessary.&n;&t; */
 r_if
@@ -739,9 +783,18 @@ id|current-&gt;thread.regs
 )paren
 )paren
 (brace
-id|current-&gt;thread.singlestep_syscall
+(paren
+r_void
+)paren
+id|CHOOSE_MODE
+c_func
+(paren
+id|current-&gt;thread.mode.tt.singlestep_syscall
 op_assign
 l_int|1
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -992,6 +1045,55 @@ id|EINTR
 suffix:semicolon
 )brace
 )brace
+DECL|function|copy_sc_from_user
+r_static
+r_int
+id|copy_sc_from_user
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|CHOOSE_MODE
+c_func
+(paren
+id|copy_sc_from_user_tt
+c_func
+(paren
+id|to-&gt;regs.mode.tt
+comma
+id|from
+comma
+op_amp
+id|signal_frame_sc.arch
+)paren
+comma
+id|copy_sc_from_user_skas
+c_func
+(paren
+op_amp
+id|to-&gt;regs
+comma
+id|from
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|function|sys_sigreturn
 r_int
 id|sys_sigreturn
@@ -1117,12 +1219,10 @@ suffix:semicolon
 id|copy_sc_from_user
 c_func
 (paren
-id|current-&gt;thread.regs.regs.sc
+op_amp
+id|current-&gt;thread.regs
 comma
 id|sc
-comma
-op_amp
-id|signal_frame_sc.arch
 )paren
 suffix:semicolon
 r_return
@@ -1228,12 +1328,10 @@ suffix:semicolon
 id|copy_sc_from_user
 c_func
 (paren
-id|current-&gt;thread.regs.regs.sc
+op_amp
+id|current-&gt;thread.regs
 comma
 id|sc
-comma
-op_amp
-id|signal_frame_sc.arch
 )paren
 suffix:semicolon
 r_return

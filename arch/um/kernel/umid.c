@@ -13,6 +13,8 @@ macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;umid.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;user_util.h&quot;
+macro_line|#include &quot;choose-mode.h&quot;
 DECL|macro|UMID_LEN
 mdefine_line|#define UMID_LEN 64
 DECL|macro|UML_DIR
@@ -383,20 +385,10 @@ id|pid
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-(paren
-id|tracing_pid
-op_eq
-op_minus
-l_int|1
-)paren
-ques
-c_cond
 id|os_getpid
 c_func
 (paren
 )paren
-suffix:colon
-id|tracing_pid
 )paren
 suffix:semicolon
 r_if
@@ -960,7 +952,16 @@ op_logical_or
 (paren
 id|p
 op_eq
+id|CHOOSE_MODE
+c_func
+(paren
 id|tracing_pid
+comma
+id|os_getpid
+c_func
+(paren
+)paren
+)paren
 )paren
 )paren
 (brace
