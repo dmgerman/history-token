@@ -175,11 +175,13 @@ id|__u32
 id|board_id
 suffix:semicolon
 DECL|member|vaddr
-id|ulong
+r_int
+r_int
 id|vaddr
 suffix:semicolon
 DECL|member|paddr
-id|__u32
+r_int
+r_int
 id|paddr
 suffix:semicolon
 DECL|member|io_mem_addr
