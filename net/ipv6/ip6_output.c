@@ -760,11 +760,6 @@ suffix:semicolon
 id|u32
 id|mtu
 suffix:semicolon
-r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -2928,7 +2928,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|dst-&gt;error
+)paren
 )paren
 r_goto
 id|out
