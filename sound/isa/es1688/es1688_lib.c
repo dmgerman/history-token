@@ -2878,6 +2878,7 @@ l_int|0x0f
 suffix:semicolon
 )brace
 DECL|function|snd_es1688_interrupt
+r_static
 id|irqreturn_t
 id|snd_es1688_interrupt
 c_func
@@ -6029,13 +6030,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_es1688_mixer_read
-)paren
-suffix:semicolon
-DECL|variable|snd_es1688_interrupt
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_es1688_interrupt
 )paren
 suffix:semicolon
 DECL|variable|snd_es1688_create

@@ -25,13 +25,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_seq_simple_id
-r_char
-op_star
-id|snd_seq_simple_id
-op_assign
-id|SNDRV_SEQ_INSTR_ID_SIMPLE
-suffix:semicolon
 DECL|function|snd_seq_simple_size
 r_static
 r_int
@@ -995,7 +988,7 @@ id|simple_instrument_t
 suffix:semicolon
 id|ops-&gt;kops.instr_type
 op_assign
-id|snd_seq_simple_id
+id|SNDRV_SEQ_INSTR_ID_SIMPLE
 suffix:semicolon
 id|ops-&gt;kops.put
 op_assign
@@ -1061,13 +1054,6 @@ c_func
 (paren
 id|alsa_ainstr_simple_exit
 )paren
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_seq_simple_id
-)paren
-suffix:semicolon
-DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren
