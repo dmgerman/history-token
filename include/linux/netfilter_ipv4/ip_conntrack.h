@@ -267,73 +267,6 @@ macro_line|#else
 DECL|macro|IP_NF_ASSERT
 mdefine_line|#define IP_NF_ASSERT(x)
 macro_line|#endif
-DECL|struct|ip_conntrack_expect
-r_struct
-id|ip_conntrack_expect
-(brace
-multiline_comment|/* Internal linked list (global expectation list) */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* We expect this tuple, with the following mask */
-DECL|member|tuple
-DECL|member|mask
-r_struct
-id|ip_conntrack_tuple
-id|tuple
-comma
-id|mask
-suffix:semicolon
-multiline_comment|/* Function to call after setup and insertion */
-DECL|member|expectfn
-r_void
-(paren
-op_star
-id|expectfn
-)paren
-(paren
-r_struct
-id|ip_conntrack
-op_star
-r_new
-comma
-r_struct
-id|ip_conntrack_expect
-op_star
-id|this
-)paren
-suffix:semicolon
-multiline_comment|/* The conntrack of the master connection */
-DECL|member|master
-r_struct
-id|ip_conntrack
-op_star
-id|master
-suffix:semicolon
-multiline_comment|/* Timer function; deletes the expectation. */
-DECL|member|timeout
-r_struct
-id|timer_list
-id|timeout
-suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
-multiline_comment|/* This is the original per-proto part, used to map the&n;&t; * expected connection the way the recipient expects. */
-DECL|member|saved_proto
-r_union
-id|ip_conntrack_manip_proto
-id|saved_proto
-suffix:semicolon
-multiline_comment|/* Direction relative to the master connection. */
-DECL|member|dir
-r_enum
-id|ip_conntrack_dir
-id|dir
-suffix:semicolon
-macro_line|#endif
-)brace
-suffix:semicolon
 DECL|struct|ip_conntrack_counter
 r_struct
 id|ip_conntrack_counter
@@ -451,6 +384,73 @@ id|tuplehash
 id|IP_CT_DIR_MAX
 )braket
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|ip_conntrack_expect
+r_struct
+id|ip_conntrack_expect
+(brace
+multiline_comment|/* Internal linked list (global expectation list) */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* We expect this tuple, with the following mask */
+DECL|member|tuple
+DECL|member|mask
+r_struct
+id|ip_conntrack_tuple
+id|tuple
+comma
+id|mask
+suffix:semicolon
+multiline_comment|/* Function to call after setup and insertion */
+DECL|member|expectfn
+r_void
+(paren
+op_star
+id|expectfn
+)paren
+(paren
+r_struct
+id|ip_conntrack
+op_star
+r_new
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|this
+)paren
+suffix:semicolon
+multiline_comment|/* The conntrack of the master connection */
+DECL|member|master
+r_struct
+id|ip_conntrack
+op_star
+id|master
+suffix:semicolon
+multiline_comment|/* Timer function; deletes the expectation. */
+DECL|member|timeout
+r_struct
+id|timer_list
+id|timeout
+suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+multiline_comment|/* This is the original per-proto part, used to map the&n;&t; * expected connection the way the recipient expects. */
+DECL|member|saved_proto
+r_union
+id|ip_conntrack_manip_proto
+id|saved_proto
+suffix:semicolon
+multiline_comment|/* Direction relative to the master connection. */
+DECL|member|dir
+r_enum
+id|ip_conntrack_dir
+id|dir
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 r_static
@@ -825,6 +825,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|CONNTRACK_STAT_INC
 mdefine_line|#define CONNTRACK_STAT_INC(count) (__get_cpu_var(ip_conntrack_stat).count++)
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 DECL|function|ip_nat_initialized
 r_static
 r_inline
@@ -870,6 +871,7 @@ id|conntrack-&gt;status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_IP_NF_NAT_NEEDED */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_H */
 eof
