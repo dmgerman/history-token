@@ -89,7 +89,7 @@ DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;ioremap_bot
 multiline_comment|/*&n; * Bits in a linux-style PTE.  These match the bits in the&n; * (hardware-defined) PowerPC PTE as closely as possible.&n; */
 macro_line|#if defined(CONFIG_4xx)
-multiline_comment|/* There are several potential gotchas here.  The 4xx hardware TLBLO&n;   field looks like this:&n;&n;   0  1  2  3  4  ... 18 19 20 21 22 23 24 25 26 27 28 29 30 31&n;   RPN.....................  0  0 EX WR ZSEL.......  W  I  M  G&n;&n;   Where possible we make the Linux PTE bits match up with this&n;&n;   - bits 20 and 21 must be cleared, because we use 4k pages (4xx can&n;     support down to 1k pages), this is done in the TLBMiss exception&n;     handler.&n;   - We use only zones 0 (for kernel pages) and 1 (for user pages)&n;     of the 16 available.  Bit 24-26 of the TLB are cleared in the TLB&n;     miss handler.  Bit 27 is PAGE_USER, thus selecting the correct&n;     zone.&n;   - PRESENT *must* be in the bottom two bits because swap cache&n;     entries use the top 30 bits.  Because 4xx doesn&squot;t support SMP&n;     anyway, M is irrelevant so we borrow it for PAGE_PRESENT.  Bit 30&n;     is cleared in the TLB miss handler before the TLB entry is loaded.&n;   - All other bits of the PTE are loaded into TLBLO without&n;     modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for&n;     software PTE bits.  We actually use use bits 20, 24, 25, 26, and&n;     30 respectively for the software bits: ACCESSED, DIRTY, RW, EXEC,&n;     PRESENT.&n;*/
+multiline_comment|/* There are several potential gotchas here.  The 4xx hardware TLBLO&n;   field looks like this:&n;&n;   0  1  2  3  4  ... 18 19 20 21 22 23 24 25 26 27 28 29 30 31&n;   RPN.....................  0  0 EX WR ZSEL.......  W  I  M  G&n;&n;   Where possible we make the Linux PTE bits match up with this&n;&n;   - bits 20 and 21 must be cleared, because we use 4k pages (4xx can&n;     support down to 1k pages), this is done in the TLBMiss exception&n;     handler.&n;   - We use only zones 0 (for kernel pages) and 1 (for user pages)&n;     of the 16 available.  Bit 24-26 of the TLB are cleared in the TLB&n;     miss handler.  Bit 27 is PAGE_USER, thus selecting the correct&n;     zone.&n;   - PRESENT *must* be in the bottom two bits because swap cache&n;     entries use the top 30 bits.  Because 4xx doesn&squot;t support SMP&n;     anyway, M is irrelevant so we borrow it for PAGE_PRESENT.  Bit 30&n;     is cleared in the TLB miss handler before the TLB entry is loaded.&n;   - All other bits of the PTE are loaded into TLBLO without&n;     modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for&n;     software PTE bits.  We actually use use bits 21, 24, 25, 26, and&n;     30 respectively for the software bits: ACCESSED, DIRTY, RW, EXEC,&n;     PRESENT.&n;*/
 multiline_comment|/* Definitions for 4xx embedded chips. */
 DECL|macro|_PAGE_GUARDED
 mdefine_line|#define&t;_PAGE_GUARDED&t;0x001&t;/* G: page is guarded from prefetch */
@@ -255,6 +255,15 @@ mdefine_line|#define __S110&t;PAGE_SHARED
 DECL|macro|__S111
 mdefine_line|#define __S111&t;PAGE_SHARED_X
 macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * Conversions between PTE values and page frame numbers.&n; */
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;(pte_val(x) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pte_page
+mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+DECL|macro|mk_pte
+mdefine_line|#define mk_pte(page, prot)&t;pfn_pte(page_to_pfn(page), prot)
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int
@@ -281,8 +290,6 @@ DECL|macro|pmd_present
 mdefine_line|#define&t;pmd_present(pmd)&t;(pmd_val(pmd) != 0)
 DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;do { pmd_val(*(pmdp)) = 0; } while (0)
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;&t;(mem_map+(unsigned long)((pte_val(x)-PPC_MEMSTART) &gt;&gt; PAGE_SHIFT))
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
@@ -726,45 +733,6 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
-DECL|function|mk_pte_phys
-r_static
-r_inline
-id|pte_t
-id|mk_pte_phys
-c_func
-(paren
-r_int
-r_int
-id|physpage
-comma
-id|pgprot_t
-id|pgprot
-)paren
-(brace
-id|pte_t
-id|pte
-suffix:semicolon
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_assign
-id|physpage
-op_or
-id|pgprot_val
-c_func
-(paren
-id|pgprot
-)paren
-suffix:semicolon
-r_return
-id|pte
-suffix:semicolon
-)brace
-DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = (((page - mem_map) &lt;&lt; PAGE_SHIFT) + PPC_MEMSTART) | pgprot_val(pgprot); &bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|function|pte_modify
 r_static
 r_inline
