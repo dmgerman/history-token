@@ -63,13 +63,9 @@ id|cmd
 (brace
 id|uid16_t
 id|uid16
-op_assign
-l_int|0
 suffix:semicolon
 id|uid_t
 id|uid32
-op_assign
-l_int|0
 suffix:semicolon
 r_case
 id|SMB_IOC_GETMOUNTUID
