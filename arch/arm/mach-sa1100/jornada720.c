@@ -100,11 +100,6 @@ id|dev
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111&quot;
-comma
-dot
 id|dma_mask
 op_assign
 op_amp

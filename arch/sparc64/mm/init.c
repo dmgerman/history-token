@@ -8593,6 +8593,18 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|udelay_val
+op_assign
+id|loops_per_jiffy
+suffix:semicolon
+macro_line|#endif
 id|i
 op_assign
 id|last_valid_pfn

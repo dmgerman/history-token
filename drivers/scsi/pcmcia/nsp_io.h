@@ -1,5 +1,5 @@
 multiline_comment|/*&n;  NinjaSCSI I/O funtions &n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n; &n;  This software may be used and distributed according to the terms of&n;  the GNU General Public License.&n;&n;  */
-multiline_comment|/* $Id: nsp_io.h,v 1.2 2002/09/20 04:06:58 gotom Exp $ */
+multiline_comment|/* $Id: nsp_io.h,v 1.3 2003/08/04 21:15:26 elca Exp $ */
 macro_line|#ifndef __NSP_IO_H__
 DECL|macro|__NSP_IO_H__
 mdefine_line|#define __NSP_IO_H__
@@ -272,7 +272,7 @@ r_int
 id|count
 )paren
 (brace
-multiline_comment|/*DEBUG(0, __FUNCTION__ &quot;() buf=0x%p, count=0x%lx&bslash;n&quot;, buf, count);*/
+multiline_comment|/*nsp_dbg(NSP_DEBUG_DATA_IO, &quot;buf=0x%p, count=0x%lx&quot;, buf, count);*/
 id|nsp_multi_read_1
 c_func
 (paren
@@ -345,7 +345,7 @@ r_int
 id|count
 )paren
 (brace
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() buf=0x%p, count=0x%lx*2&bslash;n&quot;, buf, count);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;buf=0x%p, count=0x%lx*2&quot;, buf, count);
 id|nsp_multi_read_2
 c_func
 (paren
@@ -418,7 +418,7 @@ r_int
 id|count
 )paren
 (brace
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() buf=0x%p, count=0x%lx*4&bslash;n&quot;, buf, count);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;buf=0x%p, count=0x%lx*4&quot;, buf, count);
 id|nsp_multi_read_4
 c_func
 (paren
@@ -946,7 +946,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-singleline_comment|//printk(&quot;base 0x%0lx ptr 0x%p&bslash;n&quot;,base,ptr);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;base 0x%0lx ptr 0x%p&quot;,base,ptr);
 r_for
 c_loop
 (paren
@@ -971,7 +971,7 @@ c_func
 id|ptr
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&lt;%d,%p,%p,%lx&gt;&quot;, i, ptr, tmp, *tmp);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;&lt;%d,%p,%p,%lx&gt;&quot;, i, ptr, tmp, *tmp);
 id|tmp
 op_increment
 suffix:semicolon
@@ -997,7 +997,7 @@ r_int
 id|count
 )paren
 (brace
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() buf=0x%p, count=0x%lx*4&bslash;n&quot;, buf, count);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;buf=0x%p, count=0x%lx*4&quot;, buf, count);
 id|nsp_mmio_multi_read_4
 c_func
 (paren
@@ -1066,7 +1066,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-singleline_comment|//printk(&quot;base 0x%0lx ptr 0x%p&bslash;n&quot;,base,ptr);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;base 0x%0lx ptr 0x%p&quot;,base,ptr);
 r_for
 c_loop
 (paren
@@ -1091,7 +1091,7 @@ comma
 id|ptr
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&lt;%d,%p,%p,%lx&gt;&quot;, i, ptr, tmp, *tmp);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;&lt;%d,%p,%p,%lx&gt;&quot;, i, ptr, tmp, *tmp);
 id|tmp
 op_increment
 suffix:semicolon
@@ -1117,7 +1117,7 @@ r_int
 id|count
 )paren
 (brace
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() buf=0x%p, count=0x%lx*4&bslash;n&quot;, buf, count);
+singleline_comment|//nsp_dbg(NSP_DEBUG_DATA_IO, &quot;buf=0x%p, count=0x%lx*4&quot;, buf, count);
 id|nsp_mmio_multi_write_4
 c_func
 (paren

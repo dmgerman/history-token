@@ -5772,92 +5772,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/********** Scatter Gather Send Capability **********/
-DECL|function|amb_sg_send
-r_static
-r_int
-id|amb_sg_send
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|atm_vcc
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-id|PRINTD
-(paren
-id|DBG_FLOW
-op_or
-id|DBG_VCC
-comma
-l_string|&quot;amb_sg_send: never&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|atm_vcc-&gt;qos.aal
-op_eq
-id|ATM_AAL5
-)paren
-(brace
-id|PRINTD
-(paren
-id|DBG_FLOW
-op_or
-id|DBG_VCC
-comma
-l_string|&quot;amb_sg_send: yes&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|PRINTD
-(paren
-id|DBG_FLOW
-op_or
-id|DBG_VCC
-comma
-l_string|&quot;amb_sg_send: no&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|PRINTD
-(paren
-id|DBG_FLOW
-op_or
-id|DBG_VCC
-comma
-l_string|&quot;amb_sg_send: always&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/********** Send OAM **********/
-singleline_comment|// static int amb_send_oam (struct atm_vcc * atm_vcc, void * cell, int flags);
-multiline_comment|/********** Feedback to Driver **********/
-singleline_comment|// void amb_feedback (struct atm_vcc * atm_vcc, struct sk_buff * skb,
-singleline_comment|// unsigned long start, unsigned long dest, int len);
 multiline_comment|/********** Change QoS on a VC **********/
 singleline_comment|// int amb_change_qos (struct atm_vcc * atm_vcc, struct atm_qos * qos, int flags);
 multiline_comment|/********** Free RX Socket Buffer **********/
@@ -6333,11 +6247,6 @@ dot
 id|send
 op_assign
 id|amb_send
-comma
-dot
-id|sg_send
-op_assign
-id|amb_sg_send
 comma
 dot
 id|proc_read

@@ -9582,7 +9582,7 @@ comma
 id|EWRK3_TOTAL_SIZE
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|ewrk3_devs

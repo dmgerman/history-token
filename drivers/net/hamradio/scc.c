@@ -8549,7 +8549,7 @@ dot
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|SCC_Info
@@ -8721,7 +8721,7 @@ c_func
 id|scc-&gt;dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|scc-&gt;dev

@@ -582,6 +582,7 @@ r_struct
 id|net_device
 id|net_dev
 suffix:semicolon
+multiline_comment|/* must be first */
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -8554,10 +8555,11 @@ c_func
 id|dev-&gt;pci_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
-id|dev
+op_amp
+id|dev-&gt;net_dev
 )paren
 suffix:semicolon
 id|pci_set_drvdata

@@ -7374,9 +7374,11 @@ comma
 id|lp-&gt;dma_addr
 )paren
 suffix:semicolon
-id|netdevice-&gt;priv
-op_assign
-l_int|NULL
+id|free_netdev
+c_func
+(paren
+id|netdevice
+)paren
 suffix:semicolon
 )brace
 id|unregister_parisc_driver

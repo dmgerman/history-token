@@ -1123,18 +1123,7 @@ id|vlan_dev_set_multicast_list
 suffix:semicolon
 id|new_dev-&gt;destructor
 op_assign
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-)paren
-id|kfree
+id|free_netdev
 suffix:semicolon
 )brace
 multiline_comment|/*  Attach a VLAN device to a mac address (ie Ethernet Card).&n; *  Returns the device that was created, or NULL if there was&n; *  an error of some kind.&n; */

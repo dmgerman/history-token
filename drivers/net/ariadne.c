@@ -3946,7 +3946,7 @@ comma
 id|ARIADNE_RAM_SIZE
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

@@ -27780,7 +27780,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|p

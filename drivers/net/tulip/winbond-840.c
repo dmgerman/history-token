@@ -7830,7 +7830,7 @@ id|dev-&gt;base_addr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

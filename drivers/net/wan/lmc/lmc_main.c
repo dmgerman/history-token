@@ -6509,13 +6509,8 @@ id|dev-&gt;priv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
-(paren
-r_struct
-id|ppp_device
-op_star
-)paren
 id|dev
 )paren
 suffix:semicolon

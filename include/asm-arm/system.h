@@ -135,6 +135,8 @@ DECL|macro|CPU_ARCH_ARMv5T
 mdefine_line|#define CPU_ARCH_ARMv5T&t;&t;5
 DECL|macro|CPU_ARCH_ARMv5TE
 mdefine_line|#define CPU_ARCH_ARMv5TE&t;6
+DECL|macro|CPU_ARCH_ARMv6
+mdefine_line|#define CPU_ARCH_ARMv6&t;&t;7
 r_extern
 r_int
 id|cpu_architecture

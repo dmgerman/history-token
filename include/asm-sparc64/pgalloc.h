@@ -9,11 +9,12 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 multiline_comment|/* Page table allocation/freeing. */
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Sliiiicck */
 DECL|macro|pgt_quicklists
-mdefine_line|#define pgt_quicklists&t;cpu_data[smp_processor_id()]
+mdefine_line|#define pgt_quicklists&t;cpu_data(smp_processor_id())
 macro_line|#else
 DECL|struct|pgtable_cache_struct
 r_extern

@@ -39,12 +39,13 @@ r_int
 id|irlan_print_filter
 c_func
 (paren
+r_struct
+id|seq_file
+op_star
+id|seq
+comma
 r_int
 id|filter_type
-comma
-r_char
-op_star
-id|buf
 )paren
 suffix:semicolon
 macro_line|#endif /* IRLAN_FILTER_H */

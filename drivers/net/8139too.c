@@ -2521,7 +2521,8 @@ id|rtl8139_private
 )paren
 suffix:semicolon
 macro_line|#endif /* RTL8139_NDEBUG */
-id|kfree
+id|free_netdev
+c_func
 (paren
 id|dev
 )paren

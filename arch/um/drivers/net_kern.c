@@ -2857,7 +2857,7 @@ op_amp
 id|device-&gt;list
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|device

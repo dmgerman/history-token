@@ -4583,7 +4583,7 @@ c_func
 id|kaweth-&gt;net
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|kaweth-&gt;net

@@ -11377,7 +11377,7 @@ c_cond
 (paren
 id|free_dev
 )paren
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

@@ -2379,7 +2379,7 @@ c_func
 id|root_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|root_dev

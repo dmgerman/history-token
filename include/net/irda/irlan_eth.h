@@ -2,8 +2,8 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef IRLAN_ETH_H
 DECL|macro|IRLAN_ETH_H
 mdefine_line|#define IRLAN_ETH_H
-r_int
-id|irlan_eth_init
+r_void
+id|irlan_eth_setup
 c_func
 (paren
 r_struct

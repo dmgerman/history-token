@@ -6221,7 +6221,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-singleline_comment|//mpt_landev[i] = (struct net_device *) 0xdeadbeef; /* Debug */
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|mpt_landev
 (braket
 id|i

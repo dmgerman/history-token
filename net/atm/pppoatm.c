@@ -324,7 +324,11 @@ id|pvcc
 )paren
 suffix:semicolon
 multiline_comment|/* Gee, I hope we have the big kernel lock here... */
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Called when an AAL5 PDU comes in */
@@ -1190,8 +1194,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|pvcc
 op_assign
 id|kmalloc
@@ -1213,14 +1215,10 @@ id|pvcc
 op_eq
 l_int|NULL
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1334,6 +1332,15 @@ suffix:semicolon
 id|atmvcc-&gt;pop
 op_assign
 id|pppoatm_pop
+suffix:semicolon
+(paren
+r_void
+)paren
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 l_int|0

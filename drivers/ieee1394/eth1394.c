@@ -1939,7 +1939,7 @@ id|unregister_netdev
 id|hi-&gt;dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|hi-&gt;dev

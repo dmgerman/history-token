@@ -14,9 +14,9 @@ macro_line|#include &lt;net/irda/irlan_client.h&gt;
 macro_line|#include &lt;net/irda/irlan_event.h&gt;
 macro_line|#include &lt;net/irda/irlan_eth.h&gt;
 multiline_comment|/*&n; * Function irlan_eth_init (dev)&n; *&n; *    The network device initialization function.&n; *&n; */
-DECL|function|irlan_eth_init
-r_int
-id|irlan_eth_init
+DECL|function|irlan_eth_setup
+r_void
+id|irlan_eth_setup
 c_func
 (paren
 r_struct
@@ -38,19 +38,6 @@ comma
 l_string|&quot;%s()&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|dev
-op_ne
-l_int|NULL
-comma
-r_return
-op_minus
-l_int|1
-suffix:semicolon
 )paren
 suffix:semicolon
 id|self
@@ -81,6 +68,21 @@ suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|irlan_eth_set_multicast_list
+suffix:semicolon
+id|dev-&gt;destructor
+op_assign
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+)paren
+id|kfree
 suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
@@ -157,9 +159,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_eth_open (dev)&n; *&n; *    Network device has been opened by user&n; *&n; */
 DECL|function|irlan_eth_open
@@ -606,7 +605,6 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * Adopt this frame! Important to set all these fields since they &n;&t; * might have been previously set by the low level IrDA network&n;&t; * device driver &n;&t; */
 id|skb-&gt;dev
 op_assign
-op_amp
 id|self-&gt;dev
 suffix:semicolon
 id|skb-&gt;protocol
@@ -699,7 +697,6 @@ suffix:semicolon
 suffix:semicolon
 id|dev
 op_assign
-op_amp
 id|self-&gt;dev
 suffix:semicolon
 id|ASSERT

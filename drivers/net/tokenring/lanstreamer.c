@@ -1461,7 +1461,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

@@ -62,17 +62,6 @@ id|usb_dev
 op_assign
 (brace
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111 [USB Controller]&quot;
-comma
-)brace
-comma
-dot
 id|skpcr_mask
 op_assign
 id|SKPCR_UCLKEN
@@ -109,17 +98,6 @@ id|sac_dev
 op_assign
 (brace
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111 [Audio Controller]&quot;
-comma
-)brace
-comma
-dot
 id|skpcr_mask
 op_assign
 id|SKPCR_I2SCLKEN
@@ -154,17 +132,6 @@ id|ssp_dev
 op_assign
 (brace
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111 [SSP Controller]&quot;
-comma
-)brace
-comma
-dot
 id|skpcr_mask
 op_assign
 id|SKPCR_SCLKEN
@@ -183,17 +150,6 @@ id|sa1111_dev
 id|kbd_dev
 op_assign
 (brace
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111 [PS2]&quot;
-comma
-)brace
-comma
 dot
 id|skpcr_mask
 op_assign
@@ -223,17 +179,6 @@ id|mse_dev
 op_assign
 (brace
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111 [PS2]&quot;
-comma
-)brace
-comma
-dot
 id|skpcr_mask
 op_assign
 id|SKPCR_PMCLKEN
@@ -262,17 +207,6 @@ id|int_dev
 op_assign
 (brace
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111 [Interrupt Controller]&quot;
-comma
-)brace
-comma
-dot
 id|skpcr_mask
 op_assign
 l_int|0
@@ -291,17 +225,6 @@ id|sa1111_dev
 id|pcmcia_dev
 op_assign
 (brace
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA1111 [PCMCIA Controller]&quot;
-comma
-)brace
-comma
 dot
 id|skpcr_mask
 op_assign
@@ -2174,7 +2097,7 @@ l_int|511
 suffix:semicolon
 id|sadev-&gt;res.name
 op_assign
-id|sadev-&gt;dev.name
+id|sadev-&gt;dev.bus_id
 suffix:semicolon
 id|sadev-&gt;res.flags
 op_assign

@@ -4422,7 +4422,7 @@ c_func
 id|catc-&gt;irq_urb
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|catc-&gt;netdev

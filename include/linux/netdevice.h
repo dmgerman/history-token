@@ -29,6 +29,8 @@ DECL|macro|SET_ETHTOOL_OPS
 mdefine_line|#define SET_ETHTOOL_OPS(netdev,ops) &bslash;&n;&t;( (netdev)-&gt;ethtool_ops = (ops) )
 DECL|macro|HAVE_ALLOC_NETDEV
 mdefine_line|#define HAVE_ALLOC_NETDEV&t;&t;/* feature macro: alloc_xxxdev&n;&t;&t;&t;&t;&t;   functions are available. */
+DECL|macro|HAVE_FREE_NETDEV
+mdefine_line|#define HAVE_FREE_NETDEV
 DECL|macro|NET_XMIT_SUCCESS
 mdefine_line|#define NET_XMIT_SUCCESS&t;0
 DECL|macro|NET_XMIT_DROP
@@ -848,6 +850,10 @@ DECL|enumerator|NETREG_UNREGISTERED
 id|NETREG_UNREGISTERED
 comma
 multiline_comment|/* completed unregister todo */
+DECL|enumerator|NETREG_RELEASED
+id|NETREG_RELEASED
+comma
+multiline_comment|/* called free_netdev */
 DECL|member|reg_state
 )brace
 id|reg_state
@@ -1616,6 +1622,17 @@ suffix:semicolon
 r_extern
 r_int
 id|unregister_netdevice
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|free_netdev
 c_func
 (paren
 r_struct

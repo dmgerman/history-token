@@ -10218,7 +10218,7 @@ id|ti-&gt;sram_virt
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev_ibmtr

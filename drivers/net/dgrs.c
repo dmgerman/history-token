@@ -4219,7 +4219,7 @@ c_func
 id|d
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|d
@@ -5060,7 +5060,7 @@ comma
 id|dgrs_root_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dgrs_root_dev

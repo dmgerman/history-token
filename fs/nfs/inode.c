@@ -5917,6 +5917,8 @@ dot
 id|fs_flags
 op_assign
 id|FS_ODD_RENAME
+op_or
+id|FS_REVAL_DOT
 comma
 )brace
 suffix:semicolon
@@ -7117,6 +7119,8 @@ dot
 id|fs_flags
 op_assign
 id|FS_ODD_RENAME
+op_or
+id|FS_REVAL_DOT
 comma
 )brace
 suffix:semicolon

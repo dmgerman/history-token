@@ -349,11 +349,13 @@ DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;(test_thread_flag(TIF_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
-multiline_comment|/*&n; * Size of io_bitmap in longwords: 32 is ports 0-0x3ff.&n; */
-DECL|macro|IO_BITMAP_SIZE
-mdefine_line|#define IO_BITMAP_SIZE&t;32
+multiline_comment|/*&n; * Size of io_bitmap, covering ports 0 to 0x3ff.&n; */
+DECL|macro|IO_BITMAP_BITS
+mdefine_line|#define IO_BITMAP_BITS  1024
 DECL|macro|IO_BITMAP_BYTES
-mdefine_line|#define IO_BITMAP_BYTES (IO_BITMAP_SIZE * 4)
+mdefine_line|#define IO_BITMAP_BYTES (IO_BITMAP_BITS/8)
+DECL|macro|IO_BITMAP_LONGS
+mdefine_line|#define IO_BITMAP_LONGS (IO_BITMAP_BYTES/sizeof(long))
 DECL|macro|IO_BITMAP_OFFSET
 mdefine_line|#define IO_BITMAP_OFFSET offsetof(struct tss_struct,io_bitmap)
 DECL|macro|INVALID_IO_BITMAP_OFFSET
@@ -482,17 +484,29 @@ DECL|member|reserved5
 id|u16
 id|reserved5
 suffix:semicolon
-DECL|member|io_map_base
+DECL|member|io_bitmap_base
 id|u16
-id|io_map_base
+id|io_bitmap_base
 suffix:semicolon
+multiline_comment|/*&n;&t; * The extra 1 is there because the CPU will access an&n;&t; * additional byte beyond the end of the IO permission&n;&t; * bitmap. The extra byte must be all 1 bits, and must&n;&t; * be within the limit. Thus we have:&n;&t; *&n;&t; * 128 bytes, the bitmap itself, for ports 0..0x3ff&n;&t; * 8 bytes, for an extra &quot;long&quot; of ~0UL&n;&t; */
 DECL|member|io_bitmap
-id|u32
+r_int
+r_int
 id|io_bitmap
 (braket
-id|IO_BITMAP_SIZE
+id|IO_BITMAP_LONGS
+op_plus
+l_int|1
 )braket
 suffix:semicolon
+DECL|member|__cacheline_filler
+id|u32
+id|__cacheline_filler
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* size is 0x100 */
 DECL|variable|____cacheline_aligned
 )brace
 id|__attribute__
@@ -603,7 +617,8 @@ r_int
 id|ioperm
 suffix:semicolon
 DECL|member|io_bitmap_ptr
-id|u32
+r_int
+r_int
 op_star
 id|io_bitmap_ptr
 suffix:semicolon

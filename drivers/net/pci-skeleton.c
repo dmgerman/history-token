@@ -3074,7 +3074,7 @@ id|netdrv_private
 )paren
 suffix:semicolon
 macro_line|#endif /* NETDRV_NDEBUG */
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

@@ -951,6 +951,35 @@ c_func
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* CPU probing helpers.  */
+r_int
+id|cpu_find_by_instance
+c_func
+(paren
+r_int
+id|instance
+comma
+r_int
+op_star
+id|prom_node
+comma
+r_int
+op_star
+id|mid
+)paren
+suffix:semicolon
+r_int
+id|cpu_find_by_mid
+c_func
+(paren
+r_int
+id|mid
+comma
+r_int
+op_star
+id|prom_node
+)paren
+suffix:semicolon
 multiline_comment|/* Client interface level routines. */
 r_extern
 r_void

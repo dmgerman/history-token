@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &quot;pci_impl.h&quot;
 macro_line|#include &quot;iommu_common.h&quot;
 multiline_comment|/* All SABRE registers are 64-bits.  The following accessor&n; * routines are how they are accessed.  The REG parameter&n; * is a physical address.&n; */
@@ -6702,15 +6703,19 @@ r_else
 (brace
 r_int
 id|cpu_node
-op_assign
-id|linux_cpus
-(braket
-l_int|0
-)braket
-dot
-id|prom_node
 suffix:semicolon
 multiline_comment|/* Of course, Sun has to encode things a thousand&n;&t;&t;&t; * different ways, inconsistently.&n;&t;&t;&t; */
+id|cpu_find_by_instance
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|cpu_node
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

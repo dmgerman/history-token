@@ -37,6 +37,22 @@ DECL|macro|CR_V
 mdefine_line|#define CR_V&t;(1 &lt;&lt; 13)&t;/* Vectors relocated to 0xffff0000&t;*/
 DECL|macro|CR_RR
 mdefine_line|#define CR_RR&t;(1 &lt;&lt; 14)&t;/* Round Robin cache replacement&t;*/
+DECL|macro|CR_L4
+mdefine_line|#define CR_L4&t;(1 &lt;&lt; 15)&t;/* LDR pc can set T bit&t;&t;&t;*/
+DECL|macro|CR_DT
+mdefine_line|#define CR_DT&t;(1 &lt;&lt; 16)
+DECL|macro|CR_IT
+mdefine_line|#define CR_IT&t;(1 &lt;&lt; 18)
+DECL|macro|CR_ST
+mdefine_line|#define CR_ST&t;(1 &lt;&lt; 19)
+DECL|macro|CR_FI
+mdefine_line|#define CR_FI&t;(1 &lt;&lt; 21)
+DECL|macro|CR_U
+mdefine_line|#define CR_U&t;(1 &lt;&lt; 22)&t;/* Unaligned access operation&t;&t;*/
+DECL|macro|CR_XP
+mdefine_line|#define CR_XP&t;(1 &lt;&lt; 23)&t;/* Extended page tables&t;&t;&t;*/
+DECL|macro|CR_VE
+mdefine_line|#define CR_VE&t;(1 &lt;&lt; 24)&t;/* Vectored interrupts&t;&t;&t;*/
 r_extern
 r_int
 r_int

@@ -1975,20 +1975,13 @@ r_case
 id|SOLARIS_CONFIG_PROF_TCK
 suffix:colon
 r_return
-id|prom_getintdefault
+id|sparc64_get_clock_tick
 c_func
 (paren
-id|prom_cpu_nodes
-(braket
 id|smp_processor_id
 c_func
 (paren
 )paren
-)braket
-comma
-l_string|&quot;clock-frequency&quot;
-comma
-l_int|167000000
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP&t;

@@ -1,5 +1,5 @@
 multiline_comment|/*========================================================================&n;    Debug routines for nsp_cs&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;=========================================================================*/
-multiline_comment|/* $Id: nsp_debug.c,v 1.2 2002/09/20 04:06:58 gotom Exp $ */
+multiline_comment|/* $Id: nsp_debug.c,v 1.3 2003/07/26 14:21:09 elca Exp $ */
 multiline_comment|/*&n; * Show the command data of a command&n; */
 DECL|variable|unknown
 r_static
@@ -860,13 +860,13 @@ c_func
 (paren
 id|Scsi_Cmnd
 op_star
-id|ptr
+id|SCpnt
 )paren
 (brace
 id|print_commandk
 c_func
 (paren
-id|ptr-&gt;cmnd
+id|SCpnt-&gt;cmnd
 )paren
 suffix:semicolon
 )brace

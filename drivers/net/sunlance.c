@@ -7204,7 +7204,7 @@ c_func
 id|root_lance_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|root_lance_dev-&gt;dev

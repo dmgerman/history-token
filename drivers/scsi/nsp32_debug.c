@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Workbit NinjaSCSI-32Bi/UDE PCI/Cardbus SCSI Host Bus Adapter driver&n; * Debug routine&n; *&n; * This software may be used and distributed according to the terms of&n; * the GNU General Public License.&n; */
+multiline_comment|/*&n; * Workbit NinjaSCSI-32Bi/UDE PCI/CardBus SCSI Host Bus Adapter driver&n; * Debug routine&n; *&n; * This software may be used and distributed according to the terms of&n; * the GNU General Public License.&n; */
 multiline_comment|/*&n; * Show the command data of a command&n; */
 DECL|variable|unknown
 r_static
@@ -497,7 +497,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*printk(KERN_DEBUG __func__ &quot; &quot;);*/
+multiline_comment|/*printk(KERN_DEBUG &quot;%s &quot;, __FUNCTION__);*/
 r_if
 c_cond
 (paren
@@ -854,13 +854,13 @@ c_func
 (paren
 id|Scsi_Cmnd
 op_star
-id|ptr
+id|SCpnt
 )paren
 (brace
 id|print_commandk
 c_func
 (paren
-id|ptr-&gt;cmnd
+id|SCpnt-&gt;cmnd
 )paren
 suffix:semicolon
 )brace
@@ -1587,4 +1587,5 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* end */
 eof
