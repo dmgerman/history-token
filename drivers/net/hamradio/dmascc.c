@@ -513,14 +513,6 @@ multiline_comment|/* Per device register lock */
 )brace
 suffix:semicolon
 multiline_comment|/* Function declarations */
-r_int
-id|dmascc_init
-c_func
-(paren
-r_void
-)paren
-id|__init
-suffix:semicolon
 r_static
 r_int
 id|setup_adapter
@@ -962,8 +954,6 @@ r_int
 r_int
 id|rand
 suffix:semicolon
-multiline_comment|/* Module functions */
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -996,24 +986,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|dmascc_exit
+r_static
 r_void
-)paren
-(brace
-r_return
-id|dmascc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|dmascc_exit
 c_func
 (paren
 r_void
@@ -1152,7 +1129,7 @@ id|info
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
+macro_line|#ifndef MODULE
 DECL|function|dmascc_setup
 r_void
 id|__init
@@ -1206,8 +1183,8 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Initialization functions */
 DECL|function|dmascc_init
+r_static
 r_int
 id|__init
 id|dmascc_init
@@ -2016,6 +1993,20 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+DECL|variable|dmascc_init
+id|module_init
+c_func
+(paren
+id|dmascc_init
+)paren
+suffix:semicolon
+DECL|variable|dmascc_exit
+id|module_exit
+c_func
+(paren
+id|dmascc_exit
+)paren
+suffix:semicolon
 DECL|function|setup_adapter
 r_int
 id|__init
@@ -2718,6 +2709,12 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|card_base
@@ -3395,8 +3392,6 @@ id|card_base
 op_assign
 id|priv-&gt;card_base
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Request IRQ if not already used by other channel */
 r_if
 c_cond
@@ -3423,8 +3418,6 @@ id|info
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
@@ -3470,8 +3463,6 @@ id|dev-&gt;irq
 comma
 id|info
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4150,8 +4141,6 @@ id|dev-&gt;irq
 comma
 id|info
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
