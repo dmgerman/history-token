@@ -204,7 +204,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nsock-&gt;sk-&gt;state
+id|nsock-&gt;sk-&gt;sk_state
 op_ne
 id|BT_CONNECTED
 )paren
@@ -640,11 +640,11 @@ id|sock-&gt;state
 op_assign
 id|SS_UNCONNECTED
 suffix:semicolon
-id|sk-&gt;destruct
+id|sk-&gt;sk_destruct
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
 id|protocol
 suffix:semicolon

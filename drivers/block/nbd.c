@@ -275,7 +275,7 @@ id|flags
 suffix:semicolon
 r_do
 (brace
-id|sock-&gt;sk-&gt;allocation
+id|sock-&gt;sk-&gt;sk_allocation
 op_assign
 id|GFP_NOIO
 suffix:semicolon

@@ -20,7 +20,7 @@ DECL|macro|RTO_CONN
 mdefine_line|#define RTO_CONN&t;0
 multiline_comment|/* RTO_CONN is not used (being alias for 0), but preserved not to break&n; * some modules referring to it. */
 DECL|macro|RT_CONN_FLAGS
-mdefine_line|#define RT_CONN_FLAGS(sk)   (RT_TOS(inet_sk(sk)-&gt;tos) | sk-&gt;localroute)
+mdefine_line|#define RT_CONN_FLAGS(sk)   (RT_TOS(inet_sk(sk)-&gt;tos) | sk-&gt;sk_localroute)
 r_struct
 id|inet_peer
 suffix:semicolon

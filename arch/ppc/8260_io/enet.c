@@ -1591,6 +1591,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize the CPM Ethernet on SCC.&n; */
 DECL|function|scc_enet_init
+r_static
 r_int
 id|__init
 id|scc_enet_init
@@ -1684,10 +1685,15 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-multiline_comment|/* Create an Ethernet device instance.&n;&t;*/
-id|dev
+multiline_comment|/* Allocate some private information.&n;&t;*/
+id|cep
 op_assign
-id|alloc_etherdev
+(paren
+r_struct
+id|scc_enet_private
+op_star
+)paren
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -1695,27 +1701,49 @@ r_sizeof
 op_star
 id|cep
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|dev
+id|cep
+op_eq
+l_int|NULL
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|__clear_user
+c_func
+(paren
 id|cep
-op_assign
-id|dev-&gt;priv
+comma
+r_sizeof
+(paren
+op_star
+id|cep
+)paren
+)paren
 suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
 op_amp
 id|cep-&gt;lock
+)paren
+suffix:semicolon
+multiline_comment|/* Create an Ethernet device instance.&n;&t;*/
+id|dev
+op_assign
+id|init_etherdev
+c_func
+(paren
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Get pointer to SCC area in parameter RAM.&n;&t;*/
@@ -2161,7 +2189,6 @@ c_func
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-multiline_comment|/* BUG: no check for failure */
 multiline_comment|/* Initialize the BD for every fragment in the page.&n;&t;&t;*/
 r_for
 c_loop
@@ -2271,7 +2298,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* BUG: no check for failure */
 multiline_comment|/* Set GSMR_H to enable all normal operating modes.&n;&t; * Set GSMR_L to enable Ethernet to MC68160.&n;&t; */
 id|sccp-&gt;scc_gsmrh
 op_assign
@@ -2357,6 +2383,10 @@ r_int
 )paren
 id|ep
 suffix:semicolon
+id|dev-&gt;priv
+op_assign
+id|cep
+suffix:semicolon
 multiline_comment|/* The CPM Ethernet specific entries in the device structure. */
 id|dev-&gt;open
 op_assign
@@ -2395,30 +2425,6 @@ op_or
 id|SCC_GSMRL_ENT
 )paren
 suffix:semicolon
-id|err
-op_assign
-id|register_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -2467,4 +2473,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|scc_enet_init
+id|module_init
+c_func
+(paren
+id|scc_enet_init
+)paren
+suffix:semicolon
 eof

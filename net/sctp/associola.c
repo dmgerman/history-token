@@ -424,7 +424,7 @@ multiline_comment|/* Set the local window size for receive.&n;&t; * This is also
 r_if
 c_cond
 (paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 OL
 id|SCTP_DEFAULT_MINWINDOW
 )paren
@@ -435,7 +435,7 @@ suffix:semicolon
 r_else
 id|asoc-&gt;rwnd
 op_assign
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 suffix:semicolon
 id|asoc-&gt;a_rwnd
 op_assign
@@ -747,7 +747,7 @@ comma
 id|LISTENING
 )paren
 )paren
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 multiline_comment|/* Mark as dead, so other users can know this structure is&n;&t; * going away.&n;&t; */
@@ -2376,7 +2376,7 @@ comma
 id|TCP
 )paren
 )paren
-id|oldsk-&gt;ack_backlog
+id|oldsk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 multiline_comment|/* Release references to the old endpoint and the sock.  */
@@ -2888,7 +2888,7 @@ c_func
 id|__u32
 comma
 (paren
-id|asoc-&gt;base.sk-&gt;rcvbuf
+id|asoc-&gt;base.sk-&gt;sk_rcvbuf
 op_rshift
 l_int|1
 )paren
@@ -3203,7 +3203,7 @@ op_assign
 (paren
 id|PF_INET6
 op_eq
-id|asoc-&gt;base.sk-&gt;family
+id|asoc-&gt;base.sk-&gt;sk_family
 )paren
 ques
 c_cond

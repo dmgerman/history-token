@@ -12144,7 +12144,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 )paren
 OG

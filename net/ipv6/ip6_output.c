@@ -521,7 +521,7 @@ op_assign
 id|skb-&gt;sk
 ques
 c_cond
-id|skb-&gt;sk-&gt;bound_dev_if
+id|skb-&gt;sk-&gt;sk_bound_dev_if
 suffix:colon
 l_int|0
 comma
@@ -1868,7 +1868,7 @@ c_func
 (paren
 id|last_skb
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -5332,7 +5332,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 (brace
@@ -5357,7 +5357,7 @@ c_func
 (paren
 id|opt-&gt;tot_len
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 id|memcpy
@@ -5578,7 +5578,7 @@ id|skb_peek_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -5734,12 +5734,12 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_le
 l_int|2
 op_star
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 )paren
 id|skb
 op_assign
@@ -5756,7 +5756,7 @@ l_int|15
 comma
 l_int|1
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -5911,7 +5911,7 @@ id|__skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -6155,7 +6155,7 @@ op_assign
 id|alloc_pages
 c_func
 (paren
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 comma
 l_int|0
 )paren
@@ -6223,7 +6223,7 @@ c_func
 id|PAGE_SIZE
 comma
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -6426,7 +6426,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -6476,7 +6476,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne
@@ -6846,7 +6846,7 @@ id|__skb_dequeue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne

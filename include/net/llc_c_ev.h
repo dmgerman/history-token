@@ -1606,7 +1606,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_plus
 id|skb-&gt;truesize
@@ -1614,7 +1614,7 @@ OL
 (paren
 r_int
 )paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 suffix:semicolon
 )brace
 macro_line|#endif /* LLC_C_EV_H */

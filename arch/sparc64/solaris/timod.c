@@ -590,7 +590,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|sock-&gt;sk-&gt;callback_lock
+id|sock-&gt;sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 r_if
@@ -622,7 +622,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|sock-&gt;sk-&gt;callback_lock
+id|sock-&gt;sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 id|SOLD

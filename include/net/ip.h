@@ -1069,7 +1069,7 @@ macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 r_if
 c_cond
 (paren
-id|sk-&gt;family
+id|sk-&gt;sk_family
 op_eq
 id|PF_INET6
 )paren

@@ -567,7 +567,7 @@ DECL|typedef|ax25_cb
 id|ax25_cb
 suffix:semicolon
 DECL|macro|ax25_sk
-mdefine_line|#define ax25_sk(__sk) ((ax25_cb *)(__sk)-&gt;protinfo)
+mdefine_line|#define ax25_sk(__sk) ((ax25_cb *)(__sk)-&gt;sk_protinfo)
 multiline_comment|/* af_ax25.c */
 r_extern
 id|ax25_cb
@@ -866,7 +866,9 @@ r_extern
 id|spinlock_t
 id|ax25_dev_lock
 suffix:semicolon
-r_extern
+DECL|function|ax25_dev_ax25dev
+r_static
+r_inline
 id|ax25_dev
 op_star
 id|ax25_dev_ax25dev
@@ -875,8 +877,13 @@ c_func
 r_struct
 id|net_device
 op_star
+id|dev
 )paren
+(brace
+r_return
+id|dev-&gt;ax25_ptr
 suffix:semicolon
+)brace
 r_extern
 id|ax25_dev
 op_star

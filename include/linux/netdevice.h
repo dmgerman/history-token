@@ -731,6 +731,12 @@ op_star
 id|ec_ptr
 suffix:semicolon
 multiline_comment|/* Econet specific data&t;*/
+DECL|member|ax25_ptr
+r_void
+op_star
+id|ax25_ptr
+suffix:semicolon
+multiline_comment|/* AX.25 specific data */
 DECL|member|poll_list
 r_struct
 id|list_head

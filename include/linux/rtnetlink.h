@@ -1194,7 +1194,7 @@ mdefine_line|#define rtnl_shlock()&t;&t;down(&amp;rtnl_sem)
 DECL|macro|rtnl_shlock_nowait
 mdefine_line|#define rtnl_shlock_nowait()&t;down_trylock(&amp;rtnl_sem)
 DECL|macro|rtnl_shunlock
-mdefine_line|#define rtnl_shunlock()&t;do { up(&amp;rtnl_sem); &bslash;&n;&t;&t;             if (rtnl &amp;&amp; rtnl-&gt;receive_queue.qlen) &bslash;&n;&t;&t;&t;&t;     rtnl-&gt;data_ready(rtnl, 0); &bslash;&n;&t;&t;        } while(0)
+mdefine_line|#define rtnl_shunlock()&t;do { up(&amp;rtnl_sem); &bslash;&n;&t;&t;             if (rtnl &amp;&amp; rtnl-&gt;sk_receive_queue.qlen) &bslash;&n;&t;&t;&t;&t;     rtnl-&gt;sk_data_ready(rtnl, 0); &bslash;&n;&t;&t;        } while(0)
 r_extern
 r_void
 id|rtnl_lock

@@ -41,7 +41,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -79,7 +79,7 @@ l_string|&quot;APopR (%d) %d -= %d&bslash;n&quot;
 comma
 id|vcc-&gt;vci
 comma
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 comma
 id|skb-&gt;truesize
 )paren
@@ -90,7 +90,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 id|dev_kfree_skb_any

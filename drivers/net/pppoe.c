@@ -873,7 +873,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 (paren
 id|PPPOX_CONNECTED
@@ -894,13 +894,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|PPPOX_ZOMBIE
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -1071,7 +1071,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_BOUND
 )paren
@@ -1102,7 +1102,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_RELAY
 )paren
@@ -1130,7 +1130,7 @@ r_if
 c_cond
 (paren
 (paren
-id|relay_po-&gt;sk-&gt;state
+id|relay_po-&gt;sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -1443,7 +1443,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* We&squot;re no longer connect at the PPPOE layer,&n;&t;&t;&t; * and must wait for ppp channel to disconnect us.&n;&t;&t;&t; */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|PPPOX_ZOMBIE
 suffix:semicolon
@@ -1631,27 +1631,27 @@ op_assign
 op_amp
 id|pppoe_ops
 suffix:semicolon
-id|sk-&gt;backlog_rcv
+id|sk-&gt;sk_backlog_rcv
 op_assign
 id|pppoe_rcv_core
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|PPPOX_NONE
 suffix:semicolon
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_assign
 id|SOCK_STREAM
 suffix:semicolon
-id|sk-&gt;family
+id|sk-&gt;sk_family
 op_assign
 id|PF_PPPOX
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
 id|PX_PROTO_OE
 suffix:semicolon
-id|sk-&gt;destruct
+id|sk-&gt;sk_destruct
 op_assign
 id|pppoe_sk_free
 suffix:semicolon
@@ -1782,7 +1782,7 @@ id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Signal the death of the socket. */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|PPPOX_DEAD
 suffix:semicolon
@@ -1838,7 +1838,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|sock_put
@@ -1944,7 +1944,7 @@ r_if
 c_cond
 (paren
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -1964,7 +1964,7 @@ r_if
 c_cond
 (paren
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_DEAD
 )paren
@@ -1972,11 +1972,9 @@ op_logical_and
 op_logical_neg
 id|sp-&gt;sa_addr.pppoe.sid
 )paren
-(brace
 r_goto
 id|end
 suffix:semicolon
-)brace
 id|error
 op_assign
 l_int|0
@@ -2033,7 +2031,7 @@ id|po-&gt;sk
 op_assign
 id|sk
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|PPPOX_NONE
 suffix:semicolon
@@ -2160,7 +2158,7 @@ id|error
 r_goto
 id|err_put
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|PPPOX_CONNECTED
 suffix:semicolon
@@ -2355,7 +2353,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -2411,7 +2409,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -2517,7 +2515,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 (paren
 id|PPPOX_BOUND
@@ -2539,7 +2537,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -2618,7 +2616,7 @@ c_func
 id|relay_po-&gt;sk
 )paren
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_or_assign
 id|PPPOX_RELAY
 suffix:semicolon
@@ -2642,14 +2640,14 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_RELAY
 )paren
 )paren
 r_break
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_and_assign
 op_complement
 id|PPPOX_RELAY
@@ -2754,7 +2752,7 @@ id|SOCK_DEAD
 op_logical_or
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -2867,7 +2865,7 @@ id|dev
 suffix:semicolon
 id|skb-&gt;priority
 op_assign
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
@@ -3079,7 +3077,7 @@ id|SOCK_DEAD
 op_logical_or
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -3419,7 +3417,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_BOUND
 )paren

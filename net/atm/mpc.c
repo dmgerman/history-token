@@ -2345,7 +2345,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|entry-&gt;shortcut-&gt;sk-&gt;wmem_alloc
+id|entry-&gt;shortcut-&gt;sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 id|ATM_SKB
@@ -3116,16 +3116,16 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* Pass control packets to daemon */
 id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* Pass control packets to daemon */
 id|wake_up
 c_func
 (paren
@@ -3981,7 +3981,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
 )paren
@@ -4072,7 +4072,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 r_if
@@ -4455,7 +4455,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|mpc-&gt;mpoad_vcc-&gt;sk-&gt;receive_queue
+id|mpc-&gt;mpoad_vcc-&gt;sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -5861,7 +5861,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
