@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;minix.h&quot;
 DECL|enumerator|DEPTH
 DECL|enumerator|DIRECT

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|function|fat_bread
 r_struct
 id|buffer_head

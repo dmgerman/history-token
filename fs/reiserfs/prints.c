@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 DECL|variable|error_buf
 r_static

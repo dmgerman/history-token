@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * ialloc.c contains the inodes allocation and deallocation routines&n; */

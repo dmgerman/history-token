@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif

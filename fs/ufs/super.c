@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;swab.h&quot;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|UFS_SUPER_DEBUG

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/dnode.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  handling directory dnode tree - adding, deleteing &amp; searching for dirents&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|function|get_pos
 r_static

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/alloc.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  HPFS bitmap operations&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 multiline_comment|/*&n; * Check if a sector is allocated in bitmap&n; * This is really slow. Turned on only if chk==2&n; */
 DECL|function|chk_if_allocated

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ident &quot;$Id: vxfs_subr.c,v 1.8 2001/12/28 20:50:47 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - shared subroutines.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * define how far ahead to read directories while searching them.&n; */
 DECL|macro|NAMEI_RA_CHUNKS

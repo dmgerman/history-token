@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|macro|BH_ENTRY
 mdefine_line|#define BH_ENTRY(list) list_entry((list), struct buffer_head, b_assoc_buffers)

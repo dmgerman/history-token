@@ -1,7 +1,7 @@
 macro_line|#ifndef _SYSV_H
 DECL|macro|_SYSV_H
 mdefine_line|#define _SYSV_H
-macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/sysv_fs.h&gt;
 multiline_comment|/*&n; * SystemV/V7/Coherent super-block data in memory&n; *&n; * The SystemV/V7/Coherent superblock contains dynamic data (it gets modified&n; * while the system is running). This is in contrast to the Minix and Berkeley&n; * filesystems (where the superblock is never modified). This affects the&n; * sync() operation: we must keep the superblock in a disk buffer and use this&n; * one as our &quot;working copy&quot;.&n; */
 DECL|struct|sysv_sb_info

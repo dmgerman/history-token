@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAX_BUF_PER_PAGE
 mdefine_line|#define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)

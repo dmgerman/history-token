@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/* This is, of course, shamelessly stolen from fs/minix */
 DECL|variable|nibblemap
 r_static
