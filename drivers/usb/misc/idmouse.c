@@ -34,7 +34,7 @@ DECL|macro|USB_IDMOUSE_PRODUCT_ID
 mdefine_line|#define USB_IDMOUSE_PRODUCT_ID 0x0005
 multiline_comment|/* we still need a minor number */
 DECL|macro|USB_IDMOUSE_MINOR_BASE
-mdefine_line|#define USB_IDMOUSE_MINOR_BASE 0xFA
+mdefine_line|#define USB_IDMOUSE_MINOR_BASE 132
 DECL|variable|idmouse_table
 r_static
 r_struct
