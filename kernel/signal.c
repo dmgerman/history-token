@@ -6044,6 +6044,11 @@ op_star
 id|info
 comma
 r_struct
+id|k_sigaction
+op_star
+id|return_ka
+comma
+r_struct
 id|pt_regs
 op_star
 id|regs
@@ -6308,10 +6313,29 @@ id|ka-&gt;sa.sa_handler
 op_ne
 id|SIG_DFL
 )paren
+(brace
 multiline_comment|/* Run the handler.  */
+op_star
+id|return_ka
+op_assign
+op_star
+id|ka
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ka-&gt;sa.sa_flags
+op_amp
+id|SA_ONESHOT
+)paren
+id|ka-&gt;sa.sa_handler
+op_assign
+id|SIG_DFL
+suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* will return non-zero &quot;signr&quot; value */
+)brace
 multiline_comment|/*&n;&t;&t; * Now we are doing the default action for this signal.&n;&t;&t; */
 r_if
 c_cond

@@ -755,6 +755,11 @@ op_star
 id|info
 comma
 r_struct
+id|k_sigaction
+op_star
+id|return_ka
+comma
+r_struct
 id|pt_regs
 op_star
 id|regs
