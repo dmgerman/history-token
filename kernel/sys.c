@@ -4368,6 +4368,15 @@ l_int|1
 op_div
 id|NGROUPS_PER_BLOCK
 suffix:semicolon
+multiline_comment|/* Make sure we always allocate at least one indirect block pointer */
+id|nblocks
+op_assign
+id|nblocks
+ques
+c_cond
+suffix:colon
+l_int|1
+suffix:semicolon
 id|group_info
 op_assign
 id|kmalloc
