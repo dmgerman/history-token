@@ -8497,6 +8497,13 @@ comma
 id|EV_MIC
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|apriv-&gt;flags
+op_amp
+id|FLAG_MIC_CAPABLE
+)paren
 id|airo_read_mic
 c_func
 (paren
