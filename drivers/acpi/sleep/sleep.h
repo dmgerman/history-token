@@ -5,7 +5,7 @@ id|sleep_states
 )braket
 suffix:semicolon
 r_extern
-id|acpi_status
+r_int
 id|acpi_suspend
 (paren
 id|u32
