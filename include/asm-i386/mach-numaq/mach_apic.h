@@ -472,7 +472,7 @@ r_int
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|cpumask_const_t
+id|cpumask_t
 id|cpumask
 )paren
 (brace

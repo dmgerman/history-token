@@ -818,11 +818,7 @@ op_assign
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|mk_cpumask_const
-c_func
-(paren
 id|cpumask
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Prepare to do the io_apic_write */

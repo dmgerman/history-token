@@ -507,7 +507,7 @@ r_int
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|cpumask_const_t
+id|cpumask_t
 id|cpumask
 )paren
 (brace
@@ -527,7 +527,7 @@ id|apicid
 suffix:semicolon
 id|num_bits_set
 op_assign
-id|cpus_weight_const
+id|cpus_weight
 c_func
 (paren
 id|cpumask
@@ -550,7 +550,7 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * The cpus in the mask must all be on the apic cluster.  If are not &n;&t; * on the same apicid cluster return default value of TARGET_CPUS. &n;&t; */
 id|cpu
 op_assign
-id|first_cpu_const
+id|first_cpu
 c_func
 (paren
 id|cpumask
@@ -575,7 +575,7 @@ id|num_bits_set
 r_if
 c_cond
 (paren
-id|cpu_isset_const
+id|cpu_isset
 c_func
 (paren
 id|cpu
