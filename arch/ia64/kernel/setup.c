@@ -438,7 +438,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * reserve_memory - setup reserved memory areas&n; *&n; * Setup the reserved memory areas set aside for the boot parameters, initrd,&n; * etc.&n; */
+multiline_comment|/**&n; * reserve_memory - setup reserved memory areas&n; *&n; * Setup the reserved memory areas set aside for the boot parameters,&n; * initrd, etc.  There are currently %IA64_MAX_RSVD_REGIONS defined,&n; * see include/asm-ia64/meminit.h if you need to define more.&n; */
 r_void
 DECL|function|reserve_memory
 id|reserve_memory
