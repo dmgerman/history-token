@@ -1,7 +1,7 @@
-macro_line|#ifndef LLC_MAIN_H
-DECL|macro|LLC_MAIN_H
-mdefine_line|#define LLC_MAIN_H
-multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+macro_line|#ifndef LLC_STATION_H
+DECL|macro|LLC_STATION_H
+mdefine_line|#define LLC_STATION_H
+multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 DECL|macro|LLC_EVENT
 mdefine_line|#define LLC_EVENT&t;&t; 1
@@ -124,5 +124,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* LLC_MAIN_H */
+macro_line|#endif /* LLC_STATION_H */
 eof

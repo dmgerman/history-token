@@ -1,10 +1,9 @@
 multiline_comment|/*&n; * llc_evnt.c - LLC station component event match functions&n; * Description :&n; *   Functions in this module are implementation of station component events.&n; *   Details of events can be found in IEEE-802.2 standard document.&n; *   All functions have one station and one event as input argument. All of&n; *   them return 0 On success and 1 otherwise.&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
-macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/llc_if.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#include &lt;net/llc_evnt.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
+macro_line|#include &lt;net/llc_station.h&gt;
 DECL|function|llc_stat_ev_enable_with_dup_addr_check
 r_int
 id|llc_stat_ev_enable_with_dup_addr_check

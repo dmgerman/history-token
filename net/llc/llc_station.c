@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * llc_main.c - This module contains main functions to manage station, saps&n; * &t;and connections of the LLC.&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+multiline_comment|/*&n; * llc_station.c - station component of LLC&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
+macro_line|#include &lt;net/llc_station.h&gt;
 macro_line|#include &lt;net/llc_evnt.h&gt;
 macro_line|#include &lt;net/llc_actn.h&gt;
 macro_line|#include &lt;net/llc_stat.h&gt;

@@ -1,9 +1,6 @@
 multiline_comment|/*&n; * llc_pdu.c - access to PDU internals&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; *&t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/if_tr.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
-macro_line|#include &lt;net/llc_if.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
 r_static
 r_void
 id|llc_pdu_decode_pdu_type

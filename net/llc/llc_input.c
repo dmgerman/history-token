@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#if 0
 mdefine_line|#define dprintk(args...) printk(KERN_DEBUG args)
 macro_line|#else

@@ -7,9 +7,9 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
+macro_line|#include &lt;net/llc_station.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#include &lt;net/llc_proc.h&gt;
 multiline_comment|/* remember: uninitialized global data is zeroed because its in .bss */
 DECL|variable|llc_ui_sap_last_autoport
