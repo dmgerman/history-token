@@ -39,6 +39,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
+macro_line|#include &lt;net/irda/crc.h&gt;
 macro_line|#include &lt;net/irda/vlsi_ir.h&gt;
 multiline_comment|/********************************************************/
 DECL|variable|drivername
@@ -3871,9 +3872,10 @@ id|ret
 op_or_assign
 id|VLSI_RX_CRC
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
 )brace
-r_else
-(brace
 id|len
 op_assign
 id|rd_get_count
@@ -3914,9 +3916,11 @@ op_le
 l_int|0
 )paren
 (brace
-id|WARNING
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|0
+comma
 l_string|&quot;%s: strange frame (len=%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3928,8 +3932,65 @@ id|ret
 op_or_assign
 id|VLSI_RX_DROP
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
 )brace
-r_else
+r_if
+c_cond
+(paren
+id|idev-&gt;mode
+op_eq
+id|IFF_SIR
+)paren
+(brace
+multiline_comment|/* hw checks CRC in MIR, FIR mode */
+multiline_comment|/* rd-&gt;buf is a streaming PCI_DMA_FROMDEVICE map. Doing the&n;&t;&t; * endian-adjustment there just in place will dirty a cache line&n;&t;&t; * which belongs to the map and thus we must be sure it will&n;&t;&t; * get flushed before giving the buffer back to hardware.&n;&t;&t; * vlsi_fill_rx() will do this anyway - but here we rely on.&n;&t;&t; */
+id|le16_to_cpus
+c_func
+(paren
+id|rd-&gt;buf
+op_plus
+id|len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irda_calc_crc16
+c_func
+(paren
+id|INIT_FCS
+comma
+id|rd-&gt;buf
+comma
+id|len
+op_plus
+id|crclen
+)paren
+op_ne
+id|GOOD_FCS
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s: crc error&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|VLSI_RX_CRC
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -3940,7 +4001,7 @@ id|rd-&gt;skb
 id|WARNING
 c_func
 (paren
-l_string|&quot;%s: rx packet dropped&bslash;n&quot;
+l_string|&quot;%s: rx packet lost&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3949,9 +4010,10 @@ id|ret
 op_or_assign
 id|VLSI_RX_DROP
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
 )brace
-r_else
-(brace
 id|skb
 op_assign
 id|rd-&gt;skb
@@ -4009,8 +4071,8 @@ id|ndev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
-)brace
-)brace
+id|done
+suffix:colon
 id|rd_set_status
 c_func
 (paren
@@ -7794,10 +7856,7 @@ suffix:semicolon
 r_int
 id|boguscount
 op_assign
-l_int|32
-suffix:semicolon
-r_int
-id|got_act
+l_int|5
 suffix:semicolon
 r_int
 r_int
@@ -7808,16 +7867,10 @@ id|handled
 op_assign
 l_int|0
 suffix:semicolon
-id|got_act
-op_assign
-l_int|0
-suffix:semicolon
 id|iobase
 op_assign
 id|ndev-&gt;base_addr
 suffix:semicolon
-r_do
-(brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -7827,6 +7880,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_do
+(brace
 id|irintr
 op_assign
 id|inb
@@ -7837,7 +7892,7 @@ op_plus
 id|VLSI_PIO_IRINTR
 )paren
 suffix:semicolon
-id|rmb
+id|mb
 c_func
 (paren
 )paren
@@ -7853,15 +7908,6 @@ id|VLSI_PIO_IRINTR
 )paren
 suffix:semicolon
 multiline_comment|/* acknowledge asap */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7879,6 +7925,24 @@ id|handled
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+(paren
+id|irintr
+op_amp
+op_complement
+id|IRINTR_ACTIVITY
+)paren
+)paren
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* nothing todo if only activity */
 r_if
 c_cond
 (paren
@@ -7905,59 +7969,6 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|irintr
-op_amp
-op_complement
-id|IRINTR_ACTIVITY
-)paren
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* done if only activity remaining */
-r_if
-c_cond
-(paren
-id|irintr
-op_amp
-op_complement
-(paren
-id|IRINTR_RPKTINT
-op_or
-id|IRINTR_TPKTINT
-op_or
-id|IRINTR_ACTIVITY
-)paren
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;%s: IRINTR = %02x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-(paren
-r_int
-)paren
-id|irintr
-)paren
-suffix:semicolon
-id|vlsi_reg_debug
-c_func
-(paren
-id|iobase
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-)brace
 )brace
 r_while
 c_loop
@@ -7966,6 +7977,15 @@ op_decrement
 id|boguscount
 OG
 l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
