@@ -1003,7 +1003,7 @@ suffix:semicolon
 )brace
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;Dave Jones &lt;davej@suse.de&gt;, Dominik Brodowski &lt;linux@brodo.de&gt;&quot;
+l_string|&quot;Dave Jones &lt;davej@codemonkey.org.uk&gt;, Dominik Brodowski &lt;linux@brodo.de&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
