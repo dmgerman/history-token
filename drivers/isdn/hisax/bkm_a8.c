@@ -361,14 +361,6 @@ id|bEnable
 r_if
 c_cond
 (paren
-id|cs-&gt;typ
-op_eq
-id|ISDN_CTYPE_SCT_QUADRO
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|bEnable
 )paren
 id|wordout
@@ -413,7 +405,6 @@ l_int|0x41
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 r_static
 r_void
@@ -755,26 +746,6 @@ c_func
 (paren
 id|tmp
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;typ
-op_eq
-id|ISDN_CTYPE_SCT_QUADRO
-)paren
-(brace
-id|cs-&gt;subtyp
-op_assign
-id|SCT_1
-suffix:semicolon
-multiline_comment|/* Preset */
-)brace
-r_else
-r_return
-(paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Identify subtype by para[0] */

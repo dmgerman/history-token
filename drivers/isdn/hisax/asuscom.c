@@ -1351,18 +1351,6 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;typ
-op_ne
-id|ISDN_CTYPE_ASUSCOM
-)paren
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
 macro_line|#ifdef __ISAPNP__
 r_if
 c_cond

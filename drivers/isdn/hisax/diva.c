@@ -2738,16 +2738,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cs-&gt;typ
-op_ne
-id|ISDN_CTYPE_DIEHLDIVA
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|card-&gt;para
 (braket
 l_int|1

@@ -7860,14 +7860,6 @@ id|cs-&gt;hw.hfcpci.fifo
 op_assign
 l_int|255
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;typ
-op_eq
-id|ISDN_CTYPE_HFC_PCI
-)paren
-(brace
 id|i
 op_assign
 l_int|0
@@ -8190,14 +8182,6 @@ id|cs-&gt;hw.hfcpci.int_m2
 suffix:semicolon
 multiline_comment|/* At this point the needed PCI config is done */
 multiline_comment|/* fifos are still not enabled */
-)brace
-r_else
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* no valid card type */
 id|cs-&gt;irq_flags
 op_or_assign
 id|SA_SHIRQ

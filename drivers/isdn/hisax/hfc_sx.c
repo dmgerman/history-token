@@ -6237,22 +6237,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|cs-&gt;typ
-op_eq
-id|ISDN_CTYPE_HFC_SX
-)paren
-op_logical_or
-(paren
-id|cs-&gt;typ
-op_eq
-id|ISDN_CTYPE_HFC_SP_PCMCIA
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 op_logical_neg
 id|request_io
 c_func
@@ -6492,14 +6476,6 @@ comma
 id|cs-&gt;hw.hfcsx.int_m2
 )paren
 suffix:semicolon
-)brace
-r_else
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* no valid card type */
 id|cs-&gt;hw.hfcsx.timer.function
 op_assign
 (paren
@@ -6554,9 +6530,7 @@ op_amp
 id|hfcsx_ops
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 eof

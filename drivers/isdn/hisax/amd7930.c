@@ -3012,16 +3012,6 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;typ
-op_ne
-id|ISDN_CTYPE_AMD7930
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|cs-&gt;irq
 op_assign
 id|amd7930_get_irqnum
