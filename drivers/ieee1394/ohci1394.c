@@ -10727,6 +10727,12 @@ c_func
 l_int|0x00000001
 )paren
 suffix:semicolon
+multiline_comment|/* To avoid a race, ensure 1394 interface hardware sees the inserted&n;&t; * context program descriptors before it sees the wakeup bit set. */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* wake up the dma context if necessary */
 r_if
 c_cond
