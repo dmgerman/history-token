@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-cl7500/ide.h&n; *&n; * Copyright (c) 1997 Russell King&n; *&n; * Modifications:&n; *  29-07-1998&t;RMK&t;Major re-work of IDE architecture specific code&n; */
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/arch/hardware.h&gt;
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
 DECL|function|ide_init_hwif_ports
 r_static
@@ -122,47 +120,16 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This registers the standard ports for this architecture with the IDE&n; * driver.&n; */
-r_static
-id|__inline__
-r_void
 DECL|function|ide_init_default_hwifs
+r_static
+r_inline
+r_void
 id|ide_init_default_hwifs
 c_func
 (paren
 r_void
 )paren
 (brace
-id|hw_regs_t
-id|hw
-suffix:semicolon
-id|ide_init_hwif_ports
-c_func
-(paren
-op_amp
-id|hw
-comma
-id|ISASLOT_IO
-op_plus
-l_int|0x1f0
-comma
-id|ISASLOT_IO
-op_plus
-l_int|0x3f6
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|hw.irq
-op_assign
-id|IRQ_ISA_14
-suffix:semicolon
-id|ide_register_hw
-c_func
-(paren
-op_amp
-id|hw
-)paren
 suffix:semicolon
 )brace
 eof

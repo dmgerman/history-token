@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/ide.h&n; *&n; * by Alexander Schulz&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa285/ide.h&n; * Copyright (c) 1998 Russell King&n; */
-macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
 DECL|function|ide_init_hwif_ports
 r_static
@@ -93,45 +92,16 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This registers the standard ports for this architecture with the IDE&n; * driver.&n; */
-r_static
-id|__inline__
-r_void
 DECL|function|ide_init_default_hwifs
+r_static
+r_inline
+r_void
 id|ide_init_default_hwifs
 c_func
 (paren
 r_void
 )paren
 (brace
-id|hw_regs_t
-id|hw
-suffix:semicolon
-id|ide_init_hwif_ports
-c_func
-(paren
-op_amp
-id|hw
-comma
-l_int|0x1f0
-comma
-l_int|0x3f6
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|hw.irq
-op_assign
-l_int|14
-suffix:semicolon
-id|ide_register_hw
-c_func
-(paren
-op_amp
-id|hw
-comma
-l_int|NULL
-)paren
 suffix:semicolon
 )brace
 eof

@@ -524,6 +524,14 @@ suffix:semicolon
 multiline_comment|/* may be overridden by ide_setup() */
 macro_line|#endif
 )brace
+r_extern
+r_void
+id|ide_arm_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * init_ide_data() sets reasonable default values into all fields&n; * of all instances of the hwifs and drives, but only on the first call.&n; * Subsequent calls have no effect (they don&squot;t wipe out anything).&n; *&n; * This routine is normally called at driver initialization time,&n; * but may also be called MUCH earlier during kernel &quot;command-line&quot;&n; * parameter processing.  As such, we cannot depend on any other parts&n; * of the kernel (such as memory allocation) to be functioning yet.&n; *&n; * This is too bad, as otherwise we could dynamically allocate the&n; * ide_drive_t structs as needed, rather than always consuming memory&n; * for the max possible number (MAX_HWIFS * MAX_DRIVES) of them.&n; *&n; * FIXME: We should stuff the setup data into __init and copy the&n; * relevant hwifs/allocate them properly during boot.&n; */
 DECL|macro|MAGIC_COOKIE
 mdefine_line|#define MAGIC_COOKIE 0x12345678
@@ -643,6 +651,13 @@ suffix:semicolon
 id|initializing
 op_assign
 l_int|0
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IDE_ARM
+id|ide_arm_init
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 )brace
