@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ALi AGPGART routines.&n; */
+multiline_comment|/*&n; * ATi AGPGART routines.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
