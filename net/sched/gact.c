@@ -43,12 +43,12 @@ id|tcf_gact_ht
 id|MY_TAB_SIZE
 )braket
 suffix:semicolon
-DECL|variable|gact_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|gact_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* ovewrride the defaults */
 DECL|macro|tcf_st

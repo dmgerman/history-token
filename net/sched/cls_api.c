@@ -37,12 +37,12 @@ op_star
 id|tcf_proto_base
 suffix:semicolon
 multiline_comment|/* Protects list of registered TC modules. It is pure SMP lock. */
-DECL|variable|cls_mod_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|cls_mod_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Find classifier type by string name */
 DECL|function|tcf_proto_lookup_ops

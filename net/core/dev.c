@@ -47,12 +47,12 @@ multiline_comment|/* Setting this will sample the queue lengths and thus congest
 DECL|macro|OFFLINE_SAMPLE
 macro_line|#undef OFFLINE_SAMPLE
 multiline_comment|/*&n; *&t;The list of packet types we will receive (as opposed to discard)&n; *&t;and the routines to invoke.&n; *&n; *&t;Why 16. Because with 16 the only overlap we get on a hash of the&n; *&t;low nibble of the protocol value is RARP/SNAP/X.25.&n; *&n; *      NOTE:  That is no longer true with the addition of VLAN tags.  Not&n; *             sure which should go first, but I bet it won&squot;t make much&n; *             difference if we are running VLANs.  The good news is that&n; *             this protocol won&squot;t be in the list unless compiled in, so&n; *             the average user (w/out VLANs) will not be adversly affected.&n; *             --BLG&n; *&n; *&t;&t;0800&t;IP&n; *&t;&t;8100    802.1Q VLAN&n; *&t;&t;0001&t;802.3&n; *&t;&t;0002&t;AX.25&n; *&t;&t;0004&t;802.2&n; *&t;&t;8035&t;RARP&n; *&t;&t;0005&t;SNAP&n; *&t;&t;0805&t;X.25&n; *&t;&t;0806&t;ARP&n; *&t;&t;8137&t;IPX&n; *&t;&t;0009&t;Localtalk&n; *&t;&t;86DD&t;IPv6&n; */
-DECL|variable|ptype_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ptype_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ptype_base
 r_static
@@ -118,10 +118,11 @@ op_amp
 id|dev_base
 suffix:semicolon
 DECL|variable|dev_base_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|dev_base_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dev_base
 id|EXPORT_SYMBOL
@@ -8806,12 +8807,12 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Delayed registration/unregisteration */
-DECL|variable|net_todo_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|net_todo_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|net_todo_list
 r_static

@@ -70,12 +70,12 @@ id|est_list
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|est_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|est_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|est_timer
 r_static

@@ -219,12 +219,12 @@ op_star
 id|cb
 )paren
 suffix:semicolon
-DECL|variable|nl_table_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|nl_table_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|nl_table_users
 r_static

@@ -110,12 +110,12 @@ id|file_operations
 id|neigh_stat_seq_fops
 suffix:semicolon
 multiline_comment|/*&n;   Neighbour hash table buckets are protected with rwlock tbl-&gt;lock.&n;&n;   - All the scans/updates to hash buckets MUST be made under this lock.&n;   - NOTHING clever should be made under this lock: no callbacks&n;     to protocol backends, no attempts to send something to network.&n;     It will result in deadlocks, if backend/driver wants to use neighbour&n;     cache.&n;   - If the entry requires some non-trivial actions, increase&n;     its reference count and release table lock.&n;&n;   Neighbour entries are protected:&n;   - with reference count.&n;   - with rwlock neigh-&gt;lock&n;&n;   Reference count prevents destruction.&n;&n;   neigh-&gt;lock mainly serializes ll address data and its validity state.&n;   However, the same lock is used to protect another entry fields:&n;    - timer&n;    - resolution queue&n;&n;   Again, nothing clever shall be made under neigh-&gt;lock,&n;   the most complicated procedure, which we allow is dev-&gt;hard_header.&n;   It is supposed, that dev-&gt;hard_header is simplistic and does&n;   not make callbacks to neighbour tables.&n;&n;   The last lock is neigh_tbl_lock. It is pure SMP lock, protecting&n;   list of neighbour tables. This list is used only in process context,&n; */
-DECL|variable|neigh_tbl_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|neigh_tbl_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|neigh_blackhole
 r_static

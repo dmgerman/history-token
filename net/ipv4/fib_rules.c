@@ -238,12 +238,12 @@ op_assign
 op_amp
 id|local_rule
 suffix:semicolon
-DECL|variable|fib_rules_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|fib_rules_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|inet_rtm_delrule
 r_int

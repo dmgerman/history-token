@@ -48,12 +48,12 @@ id|MY_TAB_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* Policer hash table lock */
-DECL|variable|police_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|police_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Each policer is serialized by its individual spinlock */
 DECL|function|tcf_police_hash

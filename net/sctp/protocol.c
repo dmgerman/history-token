@@ -38,10 +38,11 @@ id|idr
 id|sctp_assocs_id
 suffix:semicolon
 DECL|variable|sctp_assocs_id_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sctp_assocs_id_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* This is the global socket data structure used for responding to&n; * the Out-of-the-blue (OOTB) packets.  A control sock will be created&n; * for this socket at the initialization time.&n; */
 DECL|variable|sctp_ctl_socket

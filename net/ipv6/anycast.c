@@ -26,12 +26,12 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 multiline_comment|/* Big ac list lock for all the sockets */
-DECL|variable|ipv6_sk_ac_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipv6_sk_ac_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* XXX ip6_addr_match() and ip6_onlink() really belong in net/core.c */
 r_static

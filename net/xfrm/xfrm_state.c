@@ -5,12 +5,12 @@ macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Each xfrm_state may be linked to two tables:&n;&n;   1. Hash table by (spi,daddr,ah/esp) to find SA by SPI. (input,ctl)&n;   2. Hash table by daddr to find what SAs exist for given&n;      destination/tunnel endpoint. (output)&n; */
-DECL|variable|xfrm_state_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|xfrm_state_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Hash table to find appropriate SA towards given target (endpoint&n; * of tunnel or destination of transport mode) allowed by selector.&n; *&n; * Main use is finding SA after policy selected tunnel or transport mode.&n; * Also, it can be used by ah/esp icmp error handler to find offending SA.&n; */
 DECL|variable|xfrm_state_bydst
@@ -38,12 +38,12 @@ c_func
 id|km_waitq
 )paren
 suffix:semicolon
-DECL|variable|xfrm_state_afinfo_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|xfrm_state_afinfo_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|xfrm_state_afinfo
 r_static
@@ -73,12 +73,12 @@ c_func
 id|xfrm_state_gc_list
 )paren
 suffix:semicolon
-DECL|variable|xfrm_state_gc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|xfrm_state_gc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void
@@ -2921,10 +2921,11 @@ id|u32
 id|acqseq
 suffix:semicolon
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|acqseq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|spin_lock_bh
 c_func
@@ -3585,12 +3586,12 @@ c_func
 id|xfrm_km_list
 )paren
 suffix:semicolon
-DECL|variable|xfrm_km_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|xfrm_km_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|km_state_expired
 r_static

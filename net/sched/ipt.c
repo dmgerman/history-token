@@ -46,12 +46,12 @@ id|MY_TAB_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* ipt hash table lock */
-DECL|variable|ipt_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipt_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* ovewrride the defaults */
 DECL|macro|tcf_st

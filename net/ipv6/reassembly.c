@@ -173,12 +173,12 @@ id|ip6_frag_hash
 id|IP6Q_HASHSZ
 )braket
 suffix:semicolon
-DECL|variable|ip6_frag_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ip6_frag_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ip6_frag_hash_rnd
 r_static

@@ -48,10 +48,11 @@ id|RAWV4_HTABLE_SIZE
 )braket
 suffix:semicolon
 DECL|variable|raw_v4_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|raw_v4_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|raw_v4_hash
 r_static

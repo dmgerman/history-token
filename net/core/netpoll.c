@@ -17,12 +17,12 @@ DECL|macro|MAX_SKBS
 mdefine_line|#define MAX_SKBS 32
 DECL|macro|MAX_UDP_CHUNK
 mdefine_line|#define MAX_UDP_CHUNK 1460
-DECL|variable|skb_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|skb_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|nr_skbs
 r_static
@@ -36,12 +36,12 @@ id|sk_buff
 op_star
 id|skbs
 suffix:semicolon
-DECL|variable|rx_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rx_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD
@@ -55,12 +55,12 @@ r_static
 id|atomic_t
 id|trapped
 suffix:semicolon
-DECL|variable|netpoll_poll_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|netpoll_poll_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|NETPOLL_RX_ENABLED
 mdefine_line|#define NETPOLL_RX_ENABLED  1

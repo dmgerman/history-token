@@ -1350,12 +1350,12 @@ id|lock
 suffix:semicolon
 )brace
 )brace
-DECL|variable|dn_rt_flush_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dn_rt_flush_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|dn_rt_cache_flush
 r_void

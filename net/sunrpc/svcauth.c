@@ -21,12 +21,12 @@ r_struct
 id|auth_ops
 id|svcauth_unix
 suffix:semicolon
-DECL|variable|authtab_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|authtab_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|authtab
 r_static

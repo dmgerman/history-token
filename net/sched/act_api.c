@@ -43,12 +43,12 @@ id|act_base
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|act_mod_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|act_mod_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|tcf_register_action
 r_int

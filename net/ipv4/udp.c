@@ -47,10 +47,11 @@ id|UDP_HTABLE_SIZE
 )braket
 suffix:semicolon
 DECL|variable|udp_hash_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|udp_hash_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Shared by v4/v6 udp. */
 DECL|variable|udp_port_rover
