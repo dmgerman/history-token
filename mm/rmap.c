@@ -17,7 +17,7 @@ multiline_comment|/* #define DEBUG_RMAP */
 multiline_comment|/*&n; * Shared pages have a chain of pte_chain structures, used to locate&n; * all the mappings to this page. We only need a pointer to the pte&n; * here, the page struct for the page table page contains the process&n; * it belongs to and the offset within that process.&n; *&n; * We use an array of pte pointers in this structure to minimise cache misses&n; * while traversing reverse maps.&n; */
 DECL|macro|NRPTE
 mdefine_line|#define NRPTE ((L1_CACHE_BYTES - sizeof(unsigned long))/sizeof(pte_addr_t))
-multiline_comment|/*&n; * next_and_idx encodes both the address of the next pte_chain and the&n; * offset of the highest-index used pte in ptes[].&n; */
+multiline_comment|/*&n; * next_and_idx encodes both the address of the next pte_chain and the&n; * offset of the lowest-index used pte in ptes[] (which is equal also&n; * to the offset of the highest-index unused pte in ptes[], plus one).&n; */
 DECL|struct|pte_chain
 r_struct
 id|pte_chain
