@@ -87,10 +87,6 @@ mdefine_line|#define PCIX_COMMAND&t;0x62
 DECL|macro|PCIX_STATUS
 mdefine_line|#define PCIX_STATUS&t;0x64
 multiline_comment|/* Serial Config */
-DECL|macro|MPC85XX_0_SERIAL
-mdefine_line|#define MPC85XX_0_SERIAL                (CCSRBAR + 0x4500)
-DECL|macro|MPC85XX_1_SERIAL
-mdefine_line|#define MPC85XX_1_SERIAL                (CCSRBAR + 0x4600)
 macro_line|#ifdef CONFIG_SERIAL_MANY_PORTS
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE  64
@@ -102,8 +98,6 @@ macro_line|#ifndef BASE_BAUD
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD 115200
 macro_line|#endif
-DECL|macro|STD_UART_OP
-mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, num, MPC85xx_IRQ_DUART,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: (u8 *)MPC85XX_##num##_SERIAL,&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
 multiline_comment|/* Offset of CPM register space */
 DECL|macro|CPM_MAP_ADDR
 mdefine_line|#define CPM_MAP_ADDR&t;(CCSRBAR + MPC85xx_CPM_OFFSET)
