@@ -3861,23 +3861,12 @@ op_star
 id|port
 )paren
 suffix:semicolon
-id|queue_task
+id|schedule_task
 c_func
 (paren
 op_amp
 id|port-&gt;tqueue
-comma
-op_amp
-id|tq_immediate
 )paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; * Connect Tech&squot;s White Heat firmware interface&n; *****************************************************************************/

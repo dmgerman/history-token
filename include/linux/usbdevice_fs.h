@@ -244,7 +244,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* ioctls for talking to drivers in the usbcore module: */
+multiline_comment|/* ioctls for talking directly to drivers */
 DECL|struct|usbdevfs_ioctl
 r_struct
 id|usbdevfs_ioctl

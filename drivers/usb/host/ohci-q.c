@@ -3093,6 +3093,25 @@ comma
 id|td_dma
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|td
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;%s bad entry %8x&quot;
+comma
+id|ohci-&gt;hcd.self.bus_name
+comma
+id|td_dma
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|td-&gt;hwINFO
 op_or_assign
 id|cpu_to_le32

@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &quot;generic.h&quot;
-macro_line|#include &quot;sa1111.h&quot;
 DECL|function|graphicsmaster_init
 r_static
 r_int
@@ -53,8 +52,6 @@ op_assign
 id|sa1111_init
 c_func
 (paren
-l_int|NULL
-comma
 l_int|0x18000000
 comma
 id|ADS_EXT_IRQ

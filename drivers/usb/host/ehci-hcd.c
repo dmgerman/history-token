@@ -2446,7 +2446,7 @@ c_cond
 id|ehci-&gt;reclaim
 )paren
 (brace
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;dq %p: reclaim = %p, %s&quot;
 comma

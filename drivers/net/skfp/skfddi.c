@@ -892,6 +892,12 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Mirko Lindner &lt;mlindner@syskonnect.de&gt;&quot;
+)paren
+suffix:semicolon
 singleline_comment|// Define module-wide (static) variables
 DECL|variable|num_boards
 r_static
