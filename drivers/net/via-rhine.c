@@ -53,6 +53,7 @@ mdefine_line|#define TX_TIMEOUT&t;(2*HZ)
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;1536&t;/* Size of each temporary Rx buffer.*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -96,30 +97,6 @@ macro_line|#ifdef CONFIG_VIA_RHINE_MMIO
 DECL|macro|USE_MMIO
 mdefine_line|#define USE_MMIO
 macro_line|#else
-DECL|macro|readb
-macro_line|#undef readb
-DECL|macro|readw
-macro_line|#undef readw
-DECL|macro|readl
-macro_line|#undef readl
-DECL|macro|writeb
-macro_line|#undef writeb
-DECL|macro|writew
-macro_line|#undef writew
-DECL|macro|writel
-macro_line|#undef writel
-DECL|macro|readb
-mdefine_line|#define readb inb
-DECL|macro|readw
-mdefine_line|#define readw inw
-DECL|macro|readl
-mdefine_line|#define readl inl
-DECL|macro|writeb
-mdefine_line|#define writeb outb
-DECL|macro|writew
-mdefine_line|#define writew outw
-DECL|macro|writel
-mdefine_line|#define writel outl
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
@@ -139,28 +116,34 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_interrupt_work
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -308,7 +291,7 @@ suffix:semicolon
 multiline_comment|/*&n; * rqRhineI: VT86C100A (aka Rhine-I) uses different bits to enable&n; * MMIO as well as for the collision counter and the Tx FIFO underflow&n; * indicator. In addition, Tx and Rx buffers need to 4 byte aligned.&n; */
 multiline_comment|/* Beware of PCI posted writes */
 DECL|macro|IOSYNC
-mdefine_line|#define IOSYNC&t;do { readb(dev-&gt;base_addr + StationAddr); } while (0)
+mdefine_line|#define IOSYNC&t;do { ioread8(ioaddr + StationAddr); } while (0)
 DECL|variable|rhine_pci_tbl
 r_static
 r_struct
@@ -1076,6 +1059,12 @@ r_struct
 id|mii_if_info
 id|mii_if
 suffix:semicolon
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
@@ -1292,11 +1281,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|rhine_private
 op_star
@@ -1308,12 +1292,19 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|rp-&gt;base
+suffix:semicolon
 id|u32
 id|intr_status
 suffix:semicolon
 id|intr_status
 op_assign
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -1331,7 +1322,7 @@ id|rqStatusWBRace
 )paren
 id|intr_status
 op_or_assign
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -1358,11 +1349,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|rhine_private
 op_star
@@ -1373,6 +1359,13 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|rp-&gt;base
 suffix:semicolon
 id|u16
 id|wolstat
@@ -1386,10 +1379,10 @@ id|rqWOL
 )paren
 (brace
 multiline_comment|/* Make sure chip is in power state D0 */
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -1405,7 +1398,7 @@ id|StickyHW
 )paren
 suffix:semicolon
 multiline_comment|/* Disable &quot;force PME-enable&quot; */
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x80
@@ -1416,7 +1409,7 @@ id|WOLcgClr
 )paren
 suffix:semicolon
 multiline_comment|/* Clear power-event config bits (WOL) */
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0xFF
@@ -1434,7 +1427,7 @@ id|rp-&gt;quirks
 op_amp
 id|rq6patterns
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x03
@@ -1447,7 +1440,7 @@ suffix:semicolon
 multiline_comment|/* Save power-event status bits */
 id|wolstat
 op_assign
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -1465,7 +1458,7 @@ id|rq6patterns
 id|wolstat
 op_or_assign
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -1479,7 +1472,7 @@ op_lshift
 l_int|8
 suffix:semicolon
 multiline_comment|/* Clear power-event status bits */
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0xFF
@@ -1496,7 +1489,7 @@ id|rp-&gt;quirks
 op_amp
 id|rq6patterns
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x03
@@ -1600,11 +1593,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|rhine_private
 op_star
@@ -1616,7 +1604,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|writeb
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|rp-&gt;base
+suffix:semicolon
+id|iowrite8
 c_func
 (paren
 id|Cmd1Reset
@@ -1631,7 +1626,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -1660,7 +1655,7 @@ id|rp-&gt;quirks
 op_amp
 id|rqForceReset
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x40
@@ -1676,7 +1671,7 @@ c_func
 (paren
 op_logical_neg
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -1705,7 +1700,7 @@ comma
 id|dev-&gt;name
 comma
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -1816,11 +1811,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|rhine_private
 op_star
@@ -1831,6 +1821,13 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|rp-&gt;base
 suffix:semicolon
 id|outb
 c_func
@@ -1878,10 +1875,10 @@ id|rp-&gt;quirks
 op_amp
 id|rqWOL
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -2041,7 +2038,9 @@ suffix:semicolon
 r_int
 id|memaddr
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 suffix:semicolon
 r_int
@@ -2054,6 +2053,19 @@ r_char
 op_star
 id|name
 suffix:semicolon
+macro_line|#ifdef USE_MMIO
+r_int
+id|bar
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+r_int
+id|bar
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* when built into the kernel, we only print version if device is found */
 macro_line|#ifndef MODULE
 r_static
@@ -2391,24 +2403,14 @@ id|rc
 r_goto
 id|err_out_free_netdev
 suffix:semicolon
-macro_line|#ifdef USE_MMIO
-id|enable_mmio
-c_func
-(paren
-id|pioaddr
-comma
-id|quirks
-)paren
-suffix:semicolon
 id|ioaddr
 op_assign
-(paren
-r_int
-)paren
-id|ioremap
+id|pci_iomap
 c_func
 (paren
-id|memaddr
+id|pdev
+comma
+id|bar
 comma
 id|io_size
 )paren
@@ -2447,6 +2449,15 @@ r_goto
 id|err_out_free_res
 suffix:semicolon
 )brace
+macro_line|#ifdef USE_MMIO
+id|enable_mmio
+c_func
+(paren
+id|pioaddr
+comma
+id|quirks
+)paren
+suffix:semicolon
 multiline_comment|/* Check that selected MMIO registers match the PIO ones */
 id|i
 op_assign
@@ -2526,13 +2537,16 @@ id|err_out_unmap
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-id|ioaddr
-op_assign
-id|pioaddr
-suffix:semicolon
 macro_line|#endif /* USE_MMIO */
 id|dev-&gt;base_addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ioaddr
+suffix:semicolon
+id|rp-&gt;base
 op_assign
 id|ioaddr
 suffix:semicolon
@@ -2570,7 +2584,7 @@ id|dev-&gt;dev_addr
 id|i
 )braket
 op_assign
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -2616,7 +2630,7 @@ id|phy_id
 )paren
 id|phy_id
 op_assign
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -2919,20 +2933,16 @@ l_int|0
 suffix:semicolon
 id|err_out_unmap
 suffix:colon
-macro_line|#ifdef USE_MMIO
-id|iounmap
+id|pci_iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
+id|pdev
+comma
 id|ioaddr
 )paren
 suffix:semicolon
 id|err_out_free_res
 suffix:colon
-macro_line|#endif
 id|pci_release_regions
 c_func
 (paren
@@ -3129,6 +3139,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|free_ring
+r_static
 r_void
 id|free_ring
 c_func
@@ -3868,10 +3879,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 id|mii_check_media
 c_func
@@ -3889,10 +3902,10 @@ c_cond
 (paren
 id|rp-&gt;mii_if.full_duplex
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -3908,10 +3921,10 @@ id|ChipCmd1
 )paren
 suffix:semicolon
 r_else
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -3951,10 +3964,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 r_int
 id|i
@@ -3973,7 +3988,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|dev-&gt;dev_addr
@@ -3989,7 +4004,7 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize other registers. */
-id|writew
+id|iowrite16
 c_func
 (paren
 l_int|0x0006
@@ -4001,7 +4016,7 @@ id|PCIBusConfig
 suffix:semicolon
 multiline_comment|/* Tune configuration??? */
 multiline_comment|/* Configure initial FIFO thresholds. */
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x20
@@ -4020,7 +4035,7 @@ op_assign
 l_int|0x60
 suffix:semicolon
 multiline_comment|/* Written in rhine_set_rx_mode(). */
-id|writel
+id|iowrite32
 c_func
 (paren
 id|rp-&gt;rx_ring_dma
@@ -4030,7 +4045,7 @@ op_plus
 id|RxRingPtr
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|rp-&gt;tx_ring_dma
@@ -4047,7 +4062,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Enable interrupts by setting the interrupt mask. */
-id|writew
+id|iowrite16
 c_func
 (paren
 id|IntrRxDone
@@ -4081,7 +4096,7 @@ op_plus
 id|IntrEnable
 )paren
 suffix:semicolon
-id|writew
+id|iowrite16
 c_func
 (paren
 id|CmdStart
@@ -4117,11 +4132,13 @@ r_void
 id|rhine_enable_linkmon
 c_func
 (paren
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 )paren
 (brace
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0
@@ -4131,7 +4148,7 @@ op_plus
 id|MIICmd
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|MII_BMSR
@@ -4141,7 +4158,7 @@ op_plus
 id|MIIRegAddr
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x80
@@ -4155,7 +4172,7 @@ id|RHINE_WAIT_FOR
 c_func
 (paren
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -4167,7 +4184,7 @@ l_int|0x20
 )paren
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|MII_BMSR
@@ -4187,14 +4204,16 @@ r_void
 id|rhine_disable_linkmon
 c_func
 (paren
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 comma
 id|u32
 id|quirks
 )paren
 (brace
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0
@@ -4212,7 +4231,7 @@ op_amp
 id|rqRhineI
 )paren
 (brace
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x01
@@ -4231,7 +4250,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* 0x80 must be set immediately before turning it off */
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x80
@@ -4244,7 +4263,7 @@ suffix:semicolon
 id|RHINE_WAIT_FOR
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -4256,7 +4275,7 @@ l_int|0x20
 )paren
 suffix:semicolon
 multiline_comment|/* Heh. Now clear 0x80 again. */
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0
@@ -4271,7 +4290,7 @@ r_else
 id|RHINE_WAIT_FOR
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -4302,11 +4321,6 @@ r_int
 id|regnum
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|rhine_private
 op_star
@@ -4317,6 +4331,13 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|rp-&gt;base
 suffix:semicolon
 r_int
 id|result
@@ -4330,7 +4351,7 @@ id|rp-&gt;quirks
 )paren
 suffix:semicolon
 multiline_comment|/* rhine_disable_linkmon already cleared MIICmd */
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|phy_id
@@ -4340,7 +4361,7 @@ op_plus
 id|MIIPhyAddr
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|regnum
@@ -4350,7 +4371,7 @@ op_plus
 id|MIIRegAddr
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x40
@@ -4366,7 +4387,7 @@ c_func
 (paren
 op_logical_neg
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -4380,7 +4401,7 @@ l_int|0x40
 suffix:semicolon
 id|result
 op_assign
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -4430,10 +4451,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 id|rhine_disable_linkmon
 c_func
@@ -4444,7 +4467,7 @@ id|rp-&gt;quirks
 )paren
 suffix:semicolon
 multiline_comment|/* rhine_disable_linkmon already cleared MIICmd */
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|phy_id
@@ -4454,7 +4477,7 @@ op_plus
 id|MIIPhyAddr
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|regnum
@@ -4464,7 +4487,7 @@ op_plus
 id|MIIRegAddr
 )paren
 suffix:semicolon
-id|writew
+id|iowrite16
 c_func
 (paren
 id|value
@@ -4474,7 +4497,7 @@ op_plus
 id|MIIData
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x20
@@ -4490,7 +4513,7 @@ c_func
 (paren
 op_logical_neg
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -4532,10 +4555,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 r_int
 id|rc
@@ -4639,7 +4664,7 @@ l_string|&quot;MII status: %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -4691,10 +4716,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 id|printk
 c_func
@@ -4705,7 +4732,7 @@ l_string|&quot;%4.4x, resetting...&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -4831,10 +4858,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 r_int
 id|entry
@@ -4895,6 +4924,7 @@ op_logical_and
 (paren
 (paren
 (paren
+r_int
 r_int
 )paren
 id|skb-&gt;data
@@ -5085,10 +5115,10 @@ op_increment
 suffix:semicolon
 multiline_comment|/* Non-x86 Todo: explicitly flush cache lines here. */
 multiline_comment|/* Wake the potentially-idle transmit channel */
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -5186,8 +5216,23 @@ id|dev
 op_assign
 id|dev_instance
 suffix:semicolon
-r_int
+r_struct
+id|rhine_private
+op_star
+id|rp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|ioaddr
+op_assign
+id|rp-&gt;base
 suffix:semicolon
 id|u32
 id|intr_status
@@ -5201,10 +5246,6 @@ r_int
 id|handled
 op_assign
 l_int|0
-suffix:semicolon
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
 suffix:semicolon
 r_while
 c_loop
@@ -5232,7 +5273,7 @@ id|intr_status
 op_amp
 id|IntrTxDescRace
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x08
@@ -5242,7 +5283,7 @@ op_plus
 id|IntrStatus2
 )paren
 suffix:semicolon
-id|writew
+id|iowrite16
 c_func
 (paren
 id|intr_status
@@ -5325,7 +5366,7 @@ c_func
 (paren
 op_logical_neg
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -5344,7 +5385,7 @@ id|debug
 OG
 l_int|2
 op_logical_and
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -5443,7 +5484,7 @@ l_string|&quot;%s: exiting interrupt, status=%8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6445,12 +6486,13 @@ r_void
 id|clear_tally_counters
 c_func
 (paren
-r_const
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 )paren
 (brace
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -6460,7 +6502,7 @@ op_plus
 id|RxMissed
 )paren
 suffix:semicolon
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6468,7 +6510,7 @@ op_plus
 id|RxCRCErrs
 )paren
 suffix:semicolon
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6500,10 +6542,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 r_int
 id|entry
@@ -6537,7 +6581,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* We know better than the chip where it should continue. */
-id|writel
+id|iowrite32
 c_func
 (paren
 id|rp-&gt;tx_ring_dma
@@ -6555,10 +6599,10 @@ op_plus
 id|TxRingPtr
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -6573,10 +6617,10 @@ op_plus
 id|ChipCmd
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -6644,10 +6688,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 id|spin_lock
 c_func
@@ -6681,7 +6727,7 @@ id|IntrStatsMax
 (brace
 id|rp-&gt;stats.rx_crc_errors
 op_add_assign
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6691,7 +6737,7 @@ id|RxCRCErrs
 suffix:semicolon
 id|rp-&gt;stats.rx_missed_errors
 op_add_assign
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6748,7 +6794,7 @@ id|rp-&gt;tx_thresh
 OL
 l_int|0xE0
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|rp-&gt;tx_thresh
@@ -6837,7 +6883,7 @@ OL
 l_int|0xE0
 )paren
 (brace
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|rp-&gt;tx_thresh
@@ -6967,10 +7013,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 r_int
 r_int
@@ -6987,7 +7035,7 @@ id|flags
 suffix:semicolon
 id|rp-&gt;stats.rx_crc_errors
 op_add_assign
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6997,7 +7045,7 @@ id|RxCRCErrs
 suffix:semicolon
 id|rp-&gt;stats.rx_missed_errors
 op_add_assign
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -7048,10 +7096,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 id|u32
 id|mc_filter
@@ -7087,7 +7137,7 @@ id|rx_mode
 op_assign
 l_int|0x1C
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0xffffffff
@@ -7097,7 +7147,7 @@ op_plus
 id|MulticastFilter0
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0xffffffff
@@ -7126,7 +7176,7 @@ id|IFF_ALLMULTI
 )paren
 (brace
 multiline_comment|/* Too many to match, or accept all multicasts. */
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0xffffffff
@@ -7136,7 +7186,7 @@ op_plus
 id|MulticastFilter0
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0xffffffff
@@ -7228,7 +7278,7 @@ l_int|31
 )paren
 suffix:semicolon
 )brace
-id|writel
+id|iowrite32
 c_func
 (paren
 id|mc_filter
@@ -7241,7 +7291,7 @@ op_plus
 id|MulticastFilter0
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|mc_filter
@@ -7259,7 +7309,7 @@ op_assign
 l_int|0x0C
 suffix:semicolon
 )brace
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|rp-&gt;rx_thresh
@@ -7872,11 +7922,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|rhine_private
 op_star
@@ -7887,6 +7932,13 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|rp-&gt;base
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -7917,7 +7969,7 @@ l_string|&quot;status was %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|readw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -7927,7 +7979,7 @@ id|ChipCmd
 )paren
 suffix:semicolon
 multiline_comment|/* Switch to loopback mode to avoid hardware races. */
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|rp-&gt;tx_thresh
@@ -7940,7 +7992,7 @@ id|TxConfig
 )paren
 suffix:semicolon
 multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
-id|writew
+id|iowrite16
 c_func
 (paren
 l_int|0x0000
@@ -7951,7 +8003,7 @@ id|IntrEnable
 )paren
 suffix:semicolon
 multiline_comment|/* Stop the chip&squot;s Tx and Rx processes. */
-id|writew
+id|iowrite16
 c_func
 (paren
 id|CmdStop
@@ -8022,10 +8074,29 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+r_struct
+id|rhine_private
+op_star
+id|rp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|pci_iounmap
+c_func
+(paren
+id|pdev
+comma
+id|rp-&gt;base
 )paren
 suffix:semicolon
 id|pci_release_regions
@@ -8034,20 +8105,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_MMIO
-id|iounmap
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-(paren
-id|dev-&gt;base_addr
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|free_netdev
 c_func
 (paren
@@ -8113,10 +8170,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|rp-&gt;base
 suffix:semicolon
 id|rhine_power_init
 c_func
@@ -8132,7 +8191,7 @@ id|rp-&gt;quirks
 op_amp
 id|rq6patterns
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x04
@@ -8149,7 +8208,7 @@ id|rp-&gt;wolopts
 op_amp
 id|WAKE_MAGIC
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|WOLmagic
@@ -8170,7 +8229,7 @@ op_or
 id|WAKE_MCAST
 )paren
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|WOLbmcast
@@ -8187,7 +8246,7 @@ id|rp-&gt;wolopts
 op_amp
 id|WAKE_PHY
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|WOLlnkon
@@ -8206,7 +8265,7 @@ id|rp-&gt;wolopts
 op_amp
 id|WAKE_UCAST
 )paren
-id|writeb
+id|iowrite8
 c_func
 (paren
 id|WOLucast
@@ -8217,7 +8276,7 @@ id|WOLcrSet
 )paren
 suffix:semicolon
 multiline_comment|/* Enable legacy WOL (for old motherboards) */
-id|writeb
+id|iowrite8
 c_func
 (paren
 l_int|0x01
@@ -8227,10 +8286,10 @@ op_plus
 id|PwcfgSet
 )paren
 suffix:semicolon
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
@@ -8246,10 +8305,10 @@ id|StickyHW
 )paren
 suffix:semicolon
 multiline_comment|/* Hit power state D3 (sleep) */
-id|writeb
+id|iowrite8
 c_func
 (paren
-id|readb
+id|ioread8
 c_func
 (paren
 id|ioaddr
