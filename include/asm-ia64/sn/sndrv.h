@@ -55,6 +55,16 @@ DECL|macro|SNDRV_SHUB_GETSTATS
 mdefine_line|#define SNDRV_SHUB_GETSTATS&t;&t;43
 DECL|macro|SNDRV_SHUB_GETNASID
 mdefine_line|#define SNDRV_SHUB_GETNASID&t;&t;44
+DECL|macro|SNDRV_SHUB_GETMMR32
+mdefine_line|#define SNDRV_SHUB_GETMMR32            45
+DECL|macro|SNDRV_SHUB_GETMMR64
+mdefine_line|#define SNDRV_SHUB_GETMMR64            46
+DECL|macro|SNDRV_SHUB_GETMMR64_IO
+mdefine_line|#define SNDRV_SHUB_GETMMR64_IO         47
+DECL|macro|SNDRV_SHUB_PUTMMR64
+mdefine_line|#define SNDRV_SHUB_PUTMMR64            48
+DECL|macro|SNDRV_SHUB_PUTMMR64_IO
+mdefine_line|#define SNDRV_SHUB_PUTMMR64_IO         49
 multiline_comment|/* Devices */
 DECL|macro|SNDRV_UKNOWN_DEVICE
 mdefine_line|#define SNDRV_UKNOWN_DEVICE&t;&t;-1
