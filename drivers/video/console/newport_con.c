@@ -25,7 +25,7 @@ DECL|macro|LOGO_H
 mdefine_line|#define LOGO_H&t;&t;80
 r_extern
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_vga_8x16
 suffix:semicolon
 DECL|macro|FONT_DATA

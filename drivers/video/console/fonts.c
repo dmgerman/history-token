@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/video/fonts.c -- `Soft&squot; font definitions&n; *&n; *    Created 1995 by Geert Uytterhoeven&n; *    Rewritten 1998 by Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
@@ -8,12 +9,12 @@ macro_line|#endif
 macro_line|#include &quot;font.h&quot;
 DECL|macro|NO_FONTS
 mdefine_line|#define NO_FONTS
-DECL|variable|fbcon_fonts
+DECL|variable|fonts
 r_static
 r_struct
-id|fbcon_font_desc
+id|font_desc
 op_star
-id|fbcon_fonts
+id|fonts
 (braket
 )braket
 op_assign
@@ -77,16 +78,16 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|num_fonts
-mdefine_line|#define num_fonts (sizeof(fbcon_fonts)/sizeof(*fbcon_fonts))
+mdefine_line|#define num_fonts (sizeof(fonts)/sizeof(*fonts))
 macro_line|#ifdef NO_FONTS
 macro_line|#error No fonts configured.
 macro_line|#endif
-multiline_comment|/**&n; *&t;fbcon_find_font - find a font&n; *&t;@name: string name of a font&n; *&n; *&t;Find a specified font with string name @name.&n; *&n; *&t;Returns %NULL if no font found, or a pointer to the&n; *&t;specified font.&n; *&n; */
-DECL|function|fbcon_find_font
+multiline_comment|/**&n; *&t;find_font - find a font&n; *&t;@name: string name of a font&n; *&n; *&t;Find a specified font with string name @name.&n; *&n; *&t;Returns %NULL if no font found, or a pointer to the&n; *&t;specified font.&n; *&n; */
+DECL|function|find_font
 r_struct
-id|fbcon_font_desc
+id|font_desc
 op_star
-id|fbcon_find_font
+id|find_font
 c_func
 (paren
 r_char
@@ -119,7 +120,7 @@ op_logical_neg
 id|strcmp
 c_func
 (paren
-id|fbcon_fonts
+id|fonts
 (braket
 id|i
 )braket
@@ -130,7 +131,7 @@ id|name
 )paren
 )paren
 r_return
-id|fbcon_fonts
+id|fonts
 (braket
 id|i
 )braket
@@ -139,12 +140,12 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;fbcon_get_default_font - get default font&n; *&t;@xres: screen size of X&n; *&t;@yres: screen size of Y&n; *&n; *&t;Get the default font for a specified screen size.&n; *&t;Dimensions are in pixels.&n; *&n; *&t;Returns %NULL if no font is found, or a pointer to the&n; *&t;chosen font.&n; *&n; */
-DECL|function|fbcon_get_default_font
+multiline_comment|/**&n; *&t;get_default_font - get default font&n; *&t;@xres: screen size of X&n; *&t;@yres: screen size of Y&n; *&n; *&t;Get the default font for a specified screen size.&n; *&t;Dimensions are in pixels.&n; *&n; *&t;Returns %NULL if no font is found, or a pointer to the&n; *&t;chosen font.&n; *&n; */
+DECL|function|get_default_font
 r_struct
-id|fbcon_font_desc
+id|font_desc
 op_star
-id|fbcon_get_default_font
+id|get_default_font
 c_func
 (paren
 r_int
@@ -162,7 +163,7 @@ comma
 id|cc
 suffix:semicolon
 r_struct
-id|fbcon_font_desc
+id|font_desc
 op_star
 id|f
 comma
@@ -195,7 +196,7 @@ op_increment
 (brace
 id|f
 op_assign
-id|fbcon_fonts
+id|fonts
 (braket
 id|i
 )braket
@@ -281,4 +282,66 @@ r_return
 id|g
 suffix:semicolon
 )brace
+DECL|function|init_module
+r_int
+id|init_module
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|function|cleanup_module
+r_void
+id|cleanup_module
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+suffix:semicolon
+DECL|variable|fonts
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fonts
+)paren
+suffix:semicolon
+DECL|variable|find_font
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_font
+)paren
+suffix:semicolon
+DECL|variable|get_default_font
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_default_font
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;James Simmons &lt;jsimmons@users.sf.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Console Fonts&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

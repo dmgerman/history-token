@@ -28486,7 +28486,7 @@ multiline_comment|/* 000000000000 */
 suffix:semicolon
 DECL|variable|font_sun_12x22
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_sun_12x22
 op_assign
 (brace

@@ -8724,7 +8724,7 @@ multiline_comment|/* 00000000 */
 suffix:semicolon
 DECL|variable|font_vga_6x11
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_vga_6x11
 op_assign
 (brace

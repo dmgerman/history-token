@@ -8463,7 +8463,7 @@ comma
 suffix:semicolon
 DECL|variable|font_sun_8x16
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_sun_8x16
 op_assign
 (brace

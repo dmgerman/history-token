@@ -5394,7 +5394,7 @@ multiline_comment|/*}*/
 suffix:semicolon
 DECL|variable|font_mini_4x6
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_mini_4x6
 op_assign
 (brace

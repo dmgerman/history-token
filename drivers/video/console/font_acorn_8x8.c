@@ -4471,7 +4471,7 @@ l_int|0x00
 suffix:semicolon
 DECL|variable|font_acorn_8x8
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_acorn_8x8
 op_assign
 (brace

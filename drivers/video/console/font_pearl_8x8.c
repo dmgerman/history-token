@@ -6425,7 +6425,7 @@ multiline_comment|/* 00000000 */
 suffix:semicolon
 DECL|variable|font_pearl_8x8
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_pearl_8x8
 op_assign
 (brace

@@ -3,9 +3,9 @@ macro_line|#ifndef _VIDEO_FONT_H
 DECL|macro|_VIDEO_FONT_H
 mdefine_line|#define _VIDEO_FONT_H
 macro_line|#include &lt;linux/types.h&gt;
-DECL|struct|fbcon_font_desc
+DECL|struct|font_desc
 r_struct
-id|fbcon_font_desc
+id|font_desc
 (brace
 DECL|member|idx
 r_int
@@ -52,7 +52,7 @@ DECL|macro|MINI4x6_IDX
 mdefine_line|#define&t;MINI4x6_IDX&t;7
 r_extern
 r_struct
-id|fbcon_font_desc
+id|font_desc
 id|font_vga_8x8
 comma
 id|font_vga_8x16
@@ -72,9 +72,9 @@ suffix:semicolon
 multiline_comment|/* Find a font with a specific name */
 r_extern
 r_struct
-id|fbcon_font_desc
+id|font_desc
 op_star
-id|fbcon_find_font
+id|find_font
 c_func
 (paren
 r_char
@@ -85,9 +85,9 @@ suffix:semicolon
 multiline_comment|/* Get the default font for a specific screen size */
 r_extern
 r_struct
-id|fbcon_font_desc
+id|font_desc
 op_star
-id|fbcon_get_default_font
+id|get_default_font
 c_func
 (paren
 r_int
