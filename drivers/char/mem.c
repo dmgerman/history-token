@@ -19,16 +19,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_IA64
 macro_line|# include &lt;linux/efi.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_FB
-r_extern
-r_void
-id|fbmem_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_S390_TAPE) &amp;&amp; defined(CONFIG_S390_TAPE_CHAR)
 r_extern
 r_void
@@ -3200,13 +3190,6 @@ id|name
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined (CONFIG_FB)
-id|fbmem_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

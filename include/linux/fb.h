@@ -2310,6 +2310,17 @@ id|info
 )paren
 suffix:semicolon
 r_extern
+r_char
+op_star
+id|fb_get_options
+c_func
+(paren
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|fb_info
 op_star

@@ -15119,6 +15119,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|fb_console_init
+id|module_init
+c_func
+(paren
+id|fb_console_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|fb_console_exit
 r_void
@@ -15154,13 +15161,6 @@ id|fb_con
 )paren
 suffix:semicolon
 )brace
-DECL|variable|fb_console_init
-id|module_init
-c_func
-(paren
-id|fb_console_init
-)paren
-suffix:semicolon
 DECL|variable|fb_console_exit
 id|module_exit
 c_func

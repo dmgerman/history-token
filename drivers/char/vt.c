@@ -99,16 +99,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
-r_extern
-r_int
-id|fb_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|vc_cons
 r_struct
 id|vc
@@ -12455,13 +12445,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
-id|fb_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 r_return
 l_int|0
 suffix:semicolon
