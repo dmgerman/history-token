@@ -114,7 +114,7 @@ mdefine_line|#define SYN_CAP_PALMDETECT(c)&t;&t;((c) &amp; (1 &lt;&lt; 0))
 DECL|macro|SYN_CAP_VALID
 mdefine_line|#define SYN_CAP_VALID(c)&t;&t;((((c) &amp; 0x00ff00) &gt;&gt; 8) == 0x47)
 DECL|macro|SYN_EXT_CAP_REQUESTS
-mdefine_line|#define SYN_EXT_CAP_REQUESTS(c)&t;&t;((((c) &amp; 0x700000) &gt;&gt; 20) == 1)
+mdefine_line|#define SYN_EXT_CAP_REQUESTS(c)&t;&t;(((c) &amp; 0x700000) &gt;&gt; 20)
 DECL|macro|SYN_CAP_MULTI_BUTTON_NO
 mdefine_line|#define SYN_CAP_MULTI_BUTTON_NO(ec)&t;(((ec) &amp; 0x00f000) &gt;&gt; 12)
 multiline_comment|/* synaptics modes query bits */
@@ -176,51 +176,36 @@ id|w
 suffix:semicolon
 DECL|member|left
 r_int
+r_int
 id|left
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|right
 r_int
+r_int
 id|right
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|up
 r_int
+r_int
 id|up
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|down
 r_int
+r_int
 id|down
+suffix:colon
+l_int|1
 suffix:semicolon
-DECL|member|b0
+DECL|member|ext_buttons
 r_int
-id|b0
-suffix:semicolon
-DECL|member|b1
-r_int
-id|b1
-suffix:semicolon
-DECL|member|b2
-r_int
-id|b2
-suffix:semicolon
-DECL|member|b3
-r_int
-id|b3
-suffix:semicolon
-DECL|member|b4
-r_int
-id|b4
-suffix:semicolon
-DECL|member|b5
-r_int
-id|b5
-suffix:semicolon
-DECL|member|b6
-r_int
-id|b6
-suffix:semicolon
-DECL|member|b7
-r_int
-id|b7
+r_char
+id|ext_buttons
 suffix:semicolon
 )brace
 suffix:semicolon
