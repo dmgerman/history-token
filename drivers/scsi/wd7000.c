@@ -15,7 +15,9 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|ANY2SCSI_INLINE
@@ -37,7 +39,7 @@ mdefine_line|#define ICMB_CNT&t;32
 multiline_comment|/*&n; *  Scb&squot;s are shared by all active adapters.  So, if they all become busy,&n; *  callers may be made to wait in alloc_scbs for them to free.  That can&n; *  be avoided by setting MAX_SCBS to NUM_CONFIG * WD7000_Q.  If you&squot;d&n; *  rather conserve memory, use a smaller number (&gt; 0, of course) - things&n; *  will should still work OK.&n; */
 DECL|macro|MAX_SCBS
 mdefine_line|#define MAX_SCBS        32
-multiline_comment|/*&n; *  In this version, sg_tablesize now defaults to WD7000_SG, and will&n; *  be set to SG_NONE for older boards.  This is the reverse of the&n; *  previous default, and was changed so that the driver-level&n; *  Scsi_Host_Template would reflect the driver&squot;s support for scatter/&n; *  gather.&n; *&n; *  Also, it has been reported that boards at Revision 6 support scatter/&n; *  gather, so the new definition of an &quot;older&quot; board has been changed&n; *  accordingly.&n; */
+multiline_comment|/*&n; *  In this version, sg_tablesize now defaults to WD7000_SG, and will&n; *  be set to SG_NONE for older boards.  This is the reverse of the&n; *  previous default, and was changed so that the driver-level&n; *  scsi_host_template would reflect the driver&squot;s support for scatter/&n; *  gather.&n; *&n; *  Also, it has been reported that boards at Revision 6 support scatter/&n; *  gather, so the new definition of an &quot;older&quot; board has been changed&n; *  accordingly.&n; */
 DECL|macro|WD7000_Q
 mdefine_line|#define WD7000_Q&t;16
 DECL|macro|WD7000_SG
@@ -604,7 +606,7 @@ DECL|macro|SCSI_RES
 mdefine_line|#define SCSI_RES   0x02&t;&t;/* SCSI Reset       */
 DECL|macro|ASC_RES
 mdefine_line|#define ASC_RES    0x01&t;&t;/* ASC Reset        */
-multiline_comment|/*&n; * Driver data structures:&n; *   - mb and scbs are required for interfacing with the host adapter.&n; *     An SCB has extra fields not visible to the adapter; mb&squot;s&n; *     _cannot_ do this, since the adapter assumes they are contiguous in&n; *     memory, 4 bytes each, with ICMBs following OGMBs, and uses this fact&n; *     to access them.&n; *   - An icb is for host-only (non-SCSI) commands.  ICBs are 16 bytes each;&n; *     the additional bytes are used only by the driver.&n; *   - For now, a pool of SCBs are kept in global storage by this driver,&n; *     and are allocated and freed as needed.&n; *&n; *  The 7000-FASST2 marks OGMBs empty as soon as it has _started_ a command,&n; *  not when it has finished.  Since the SCB must be around for completion,&n; *  problems arise when SCBs correspond to OGMBs, which may be reallocated&n; *  earlier (or delayed unnecessarily until a command completes).&n; *  Mailboxes are used as transient data structures, simply for&n; *  carrying SCB addresses to/from the 7000-FASST2.&n; *&n; *  Note also since SCBs are not &quot;permanently&quot; associated with mailboxes,&n; *  there is no need to keep a global list of Scsi_Cmnd pointers indexed&n; *  by OGMB.   Again, SCBs reference their Scsi_Cmnds directly, so mailbox&n; *  indices need not be involved.&n; */
+multiline_comment|/*&n; * Driver data structures:&n; *   - mb and scbs are required for interfacing with the host adapter.&n; *     An SCB has extra fields not visible to the adapter; mb&squot;s&n; *     _cannot_ do this, since the adapter assumes they are contiguous in&n; *     memory, 4 bytes each, with ICMBs following OGMBs, and uses this fact&n; *     to access them.&n; *   - An icb is for host-only (non-SCSI) commands.  ICBs are 16 bytes each;&n; *     the additional bytes are used only by the driver.&n; *   - For now, a pool of SCBs are kept in global storage by this driver,&n; *     and are allocated and freed as needed.&n; *&n; *  The 7000-FASST2 marks OGMBs empty as soon as it has _started_ a command,&n; *  not when it has finished.  Since the SCB must be around for completion,&n; *  problems arise when SCBs correspond to OGMBs, which may be reallocated&n; *  earlier (or delayed unnecessarily until a command completes).&n; *  Mailboxes are used as transient data structures, simply for&n; *  carrying SCB addresses to/from the 7000-FASST2.&n; *&n; *  Note also since SCBs are not &quot;permanently&quot; associated with mailboxes,&n; *  there is no need to keep a global list of scsi_cmnd pointers indexed&n; *  by OGMB.   Again, SCBs reference their scsi_cmnds directly, so mailbox&n; *  indices need not be involved.&n; */
 multiline_comment|/*&n; *  WD7000-specific scatter/gather element structure&n; */
 DECL|struct|sgb
 r_typedef
@@ -708,11 +710,12 @@ suffix:semicolon
 multiline_comment|/* SCSI Command Descriptor Block             */
 multiline_comment|/* end of hardware SCB                       */
 DECL|member|SCpnt
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
-multiline_comment|/* Scsi_Cmnd using this SCB                  */
+multiline_comment|/* scsi_cmnd using this SCB                  */
 DECL|member|sgb
 id|Sgb
 id|sgb
@@ -2283,11 +2286,9 @@ r_int
 id|noneof
 )paren
 (brace
-r_register
 r_int
 id|WAITbits
 suffix:semicolon
-r_register
 r_int
 r_int
 id|WAITtimeout
@@ -2485,7 +2486,6 @@ r_int
 id|needed
 )paren
 (brace
-r_register
 id|Scb
 op_star
 id|scb
@@ -2499,7 +2499,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_register
 r_int
 r_int
 id|timeout
@@ -2508,7 +2507,6 @@ id|jiffies
 op_plus
 id|WAITnexttimeout
 suffix:semicolon
-r_register
 r_int
 r_int
 id|now
@@ -2886,7 +2884,6 @@ id|scbptr
 )paren
 multiline_comment|/*&n; *  Note: this can also be used for ICBs; just cast to the parm type.&n; */
 (brace
-r_register
 r_int
 id|i
 comma
@@ -3278,10 +3275,10 @@ suffix:semicolon
 )brace
 DECL|macro|wd7000_intr_ack
 mdefine_line|#define wd7000_intr_ack(host)   outb (0, host-&gt;iobase + ASC_INTR_ACK)
-DECL|function|wd7000_intr_handle
+DECL|function|wd7000_intr
 r_static
-r_void
-id|wd7000_intr_handle
+id|irqreturn_t
+id|wd7000_intr
 c_func
 (paren
 r_int
@@ -3297,39 +3294,6 @@ op_star
 id|regs
 )paren
 (brace
-r_register
-r_int
-id|flag
-comma
-id|icmb
-comma
-id|errstatus
-comma
-id|icmb_status
-suffix:semicolon
-r_register
-r_int
-id|host_error
-comma
-id|scsi_error
-suffix:semicolon
-r_register
-id|Scb
-op_star
-id|scb
-suffix:semicolon
-multiline_comment|/* for SCSI commands */
-r_register
-id|IcbAny
-op_star
-id|icb
-suffix:semicolon
-multiline_comment|/* for host commands */
-r_register
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-suffix:semicolon
 id|Adapter
 op_star
 id|host
@@ -3340,11 +3304,52 @@ op_star
 )paren
 id|dev_id
 suffix:semicolon
+r_int
+id|flag
+comma
+id|icmb
+comma
+id|errstatus
+comma
+id|icmb_status
+suffix:semicolon
+r_int
+id|host_error
+comma
+id|scsi_error
+suffix:semicolon
+id|Scb
+op_star
+id|scb
+suffix:semicolon
+multiline_comment|/* for SCSI commands */
+id|IcbAny
+op_star
+id|icb
+suffix:semicolon
+multiline_comment|/* for host commands */
+r_struct
+id|scsi_cmnd
+op_star
+id|SCpnt
+suffix:semicolon
 id|Mailbox
 op_star
 id|icmbs
 op_assign
 id|host-&gt;mb.icmb
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|host-&gt;sh-&gt;host_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|host-&gt;int_counter
 op_increment
@@ -3352,7 +3357,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;wd7000_intr_handle: irq = %d, host = 0x%06lx&bslash;n&quot;
+l_string|&quot;wd7000_intr: irq = %d, host = 0x%06lx&bslash;n&quot;
 comma
 id|irq
 comma
@@ -3375,7 +3380,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;wd7000_intr_handle: intr stat = 0x%02x&bslash;n&quot;
+l_string|&quot;wd7000_intr: intr stat = 0x%02x&bslash;n&quot;
 comma
 id|flag
 )paren
@@ -3401,26 +3406,26 @@ multiline_comment|/* NB: these are _very_ possible if IRQ 15 is being used, sinc
 id|dprintk
 c_func
 (paren
-l_string|&quot;wd7000_intr_handle: phantom interrupt...&bslash;n&quot;
+l_string|&quot;wd7000_intr: phantom interrupt...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|wd7000_intr_ack
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|ack
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|flag
 op_amp
 id|MB_INTR
 )paren
-(brace
+)paren
+r_goto
+id|ack
+suffix:semicolon
 multiline_comment|/* The interrupt is for a mailbox */
 r_if
 c_cond
@@ -3436,21 +3441,14 @@ id|IMB_INTR
 id|dprintk
 c_func
 (paren
-l_string|&quot;wd7000_intr_handle: free outgoing mailbox&bslash;n&quot;
+l_string|&quot;wd7000_intr: free outgoing mailbox&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * If sleep_on() and the &quot;interrupt on free OGMB&quot; command are&n;&t;&t;&t; * used in mail_out(), wake_up() should correspondingly be called&n;&t;&t;&t; * here.  For now, we don&squot;t need to do anything special.&n;&t;&t;&t; */
-id|wd7000_intr_ack
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
+multiline_comment|/*&n;&t;&t; * If sleep_on() and the &quot;interrupt on free OGMB&quot; command are&n;&t;&t; * used in mail_out(), wake_up() should correspondingly be called&n;&t;&t; * here.  For now, we don&squot;t need to do anything special.&n;&t;&t; */
+r_goto
+id|ack
 suffix:semicolon
 )brace
-r_else
-(brace
 multiline_comment|/* The interrupt is for an incoming mailbox */
 id|icmb
 op_assign
@@ -3479,18 +3477,13 @@ multiline_comment|/* unsolicited - result in ICMB */
 id|dprintk
 c_func
 (paren
-l_string|&quot;wd7000_intr_handle: unsolicited interrupt 0x%02x&bslash;n&quot;
+l_string|&quot;wd7000_intr: unsolicited interrupt 0x%02x&bslash;n&quot;
 comma
 id|icmb_status
 )paren
 suffix:semicolon
-id|wd7000_intr_ack
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|ack
 suffix:semicolon
 )brace
 multiline_comment|/* Aaaargh! (Zaga) */
@@ -3527,15 +3520,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|scb-&gt;op
 op_amp
 id|ICB_OP_MASK
 )paren
-)paren
 (brace
 multiline_comment|/* an SCB is done */
+id|icb
+op_assign
+(paren
+id|IcbAny
+op_star
+)paren
+id|scb
+suffix:semicolon
+id|icb-&gt;status
+op_assign
+id|icmb_status
+suffix:semicolon
+id|icb-&gt;phase
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|ack
+suffix:semicolon
+)brace
 id|SCpnt
 op_assign
 id|scb-&gt;SCpnt
@@ -3595,95 +3605,24 @@ id|SCpnt
 )paren
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-multiline_comment|/* an ICB is done */
-id|icb
-op_assign
+id|ack
+suffix:colon
+id|dprintk
+c_func
 (paren
-id|IcbAny
-op_star
+l_string|&quot;wd7000_intr: return from interrupt handler&bslash;n&quot;
 )paren
-id|scb
 suffix:semicolon
-id|icb-&gt;status
-op_assign
-id|icmb_status
-suffix:semicolon
-id|icb-&gt;phase
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* incoming mailbox */
-)brace
 id|wd7000_intr_ack
 c_func
 (paren
 id|host
 )paren
 suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;wd7000_intr_handle: return from interrupt handler&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|do_wd7000_intr_handle
-r_static
-id|irqreturn_t
-id|do_wd7000_intr_handle
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|host
-op_assign
-id|dev_id
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|wd7000_intr_handle
-c_func
-(paren
-id|irq
-comma
-id|dev_id
-comma
-id|regs
-)paren
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|host-&gt;host_lock
+id|host-&gt;sh-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3698,7 +3637,8 @@ r_int
 id|wd7000_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -3708,22 +3648,20 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
 (brace
-r_register
 id|Scb
 op_star
 id|scb
 suffix:semicolon
-r_register
 id|Sgb
 op_star
 id|sgb
 suffix:semicolon
-r_register
 id|unchar
 op_star
 id|cdb
@@ -3734,11 +3672,9 @@ op_star
 )paren
 id|SCpnt-&gt;cmnd
 suffix:semicolon
-r_register
 id|unchar
 id|idlun
 suffix:semicolon
-r_register
 r_int
 id|cdblen
 suffix:semicolon
@@ -4553,7 +4489,7 @@ c_func
 (paren
 id|host-&gt;irq
 comma
-id|do_wd7000_intr_handle
+id|wd7000_intr
 comma
 id|SA_INTERRUPT
 comma
@@ -5163,7 +5099,8 @@ r_int
 id|wd7000_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -6001,37 +5938,6 @@ id|FAILED
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; *  I also have no idea how to do a reset...&n; */
-DECL|function|wd7000_bus_reset
-r_static
-r_int
-id|wd7000_bus_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-DECL|function|wd7000_device_reset
-r_static
-r_int
-id|wd7000_device_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *  Last resort. Reinitialize the board.&n; */
 DECL|function|wd7000_host_reset
 r_static
@@ -6039,7 +5945,8 @@ r_int
 id|wd7000_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -6381,7 +6288,8 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
@@ -6414,16 +6322,6 @@ dot
 id|queuecommand
 op_assign
 id|wd7000_queuecommand
-comma
-dot
-id|eh_bus_reset_handler
-op_assign
-id|wd7000_bus_reset
-comma
-dot
-id|eh_device_reset_handler
-op_assign
-id|wd7000_device_reset
 comma
 dot
 id|eh_host_reset_handler
