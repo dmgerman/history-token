@@ -36,6 +36,9 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_WALNUT)
 macro_line|#include &lt;platforms/4xx/walnut.h&gt;
 macro_line|#endif
+macro_line|#if defined(CONFIG_XILINX_ML300)
+macro_line|#include &lt;platforms/4xx/xilinx_ml300.h&gt;
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_40x
 multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */

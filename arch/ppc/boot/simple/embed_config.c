@@ -2539,18 +2539,34 @@ r_int
 r_int
 id|addr
 suffix:semicolon
-id|u_char
-op_star
-id|cp
-suffix:semicolon
 r_int
-id|i
+r_int
+id|dccr
 suffix:semicolon
 id|bd_t
 op_star
 id|bd
 suffix:semicolon
-multiline_comment|/*&n;&t; * At one point, we were getting machine checks.  Linux was not&n;&t; * invalidating the data cache before it was enabled.  The&n;&t; * following code was added to do that.  Soon after we had done&n;&t; * that, we found the real reasons for the machine checks.  I&squot;ve&n;&t; * run the kernel a few times with the following code&n;&t; * temporarily removed without any apparent problems.  However,&n;&t; * I objdump&squot;ed the kernel and boot code and found out that&n;&t; * there were no other dccci&squot;s anywhere, so I put the code back&n;&t; * in and have been reluctant to remove it.  It seems safer to&n;&t; * just leave it here.&n;&t; */
+multiline_comment|/*&n;&t; * Invalidate the data cache if the data cache is turned off.&n;&t; * - The 405 core does not invalidate the data cache on power-up&n;&t; *   or reset but does turn off the data cache. We cannot assume&n;&t; *   that the cache contents are valid.&n;&t; * - If the data cache is turned on this must have been done by&n;&t; *   a bootloader and we assume that the cache contents are&n;&t; *   valid.&n;&t; */
+id|__asm__
+c_func
+(paren
+l_string|&quot;mfdccr %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|dccr
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dccr
+op_eq
+l_int|0
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -2584,6 +2600,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+)brace
 id|bd
 op_assign
 op_amp
@@ -2606,6 +2623,17 @@ id|bd-&gt;bi_busfreq
 op_assign
 id|XPAR_PLB_CLOCK_FREQ_HZ
 suffix:semicolon
+id|bd-&gt;bi_pci_busfreq
+op_assign
+id|XPAR_PCI_0_CLOCK_FREQ_HZ
+suffix:semicolon
+id|timebase_period_ns
+op_assign
+l_int|1000000000
+op_div
+id|bd-&gt;bi_tbfreq
+suffix:semicolon
+multiline_comment|/* see bi_tbfreq definition in arch/ppc/platforms/4xx/xilinx_ml300.h */
 )brace
 macro_line|#endif /* CONFIG_XILINX_ML300 */
 macro_line|#ifdef CONFIG_IBM_OPENBIOS
