@@ -1164,7 +1164,7 @@ l_string|&quot;and unable to estimate a proper value!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* From John Bowman &lt;bowman@math.ualberta.ca&gt;: allow the values&n;&t;   to settle, as the Update-In-Progress bit going low isn&squot;t good&n;&t;   enough on some hardware.  2ms is our guess; we havn&squot;t found &n;&t;   bogomips yet, but this is close on a 500Mhz box.  */
+multiline_comment|/* From John Bowman &lt;bowman@math.ualberta.ca&gt;: allow the values&n;&t;   to settle, as the Update-In-Progress bit going low isn&squot;t good&n;&t;   enough on some hardware.  2ms is our guess; we haven&squot;t found &n;&t;   bogomips yet, but this is close on a 500Mhz box.  */
 id|__delay
 c_func
 (paren
