@@ -4900,14 +4900,19 @@ l_int|16
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef FIXME
 r_case
 id|ETH_P_IPX
 suffix:colon
 r_if
 c_cond
 (paren
-id|skb-&gt;nh.ipxh-&gt;ipx_checksum
+id|ipx_hdr
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|ipx_checksum
 op_ne
 id|__constant_htons
 c_func
@@ -4927,7 +4932,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|skb-&gt;nh.ipxh-&gt;ipx_type
+id|ipx_hdr
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|ipx_type
 op_ne
 id|__constant_htons
 c_func
@@ -4958,7 +4969,6 @@ id|ETH_ALEN
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|ETH_P_ARP
 suffix:colon
