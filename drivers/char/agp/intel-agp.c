@@ -5,6 +5,41 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+multiline_comment|/* Intel 815 register */
+DECL|macro|INTEL_815_APCONT
+mdefine_line|#define INTEL_815_APCONT&t;0x51
+DECL|macro|INTEL_815_ATTBASE_MASK
+mdefine_line|#define INTEL_815_ATTBASE_MASK&t;~0x1FFFFFFF
+multiline_comment|/* Intel i820 registers */
+DECL|macro|INTEL_I820_RDCR
+mdefine_line|#define INTEL_I820_RDCR&t;&t;0x51
+DECL|macro|INTEL_I820_ERRSTS
+mdefine_line|#define INTEL_I820_ERRSTS&t;0xc8
+multiline_comment|/* Intel i840 registers */
+DECL|macro|INTEL_I840_MCHCFG
+mdefine_line|#define INTEL_I840_MCHCFG&t;0x50
+DECL|macro|INTEL_I840_ERRSTS
+mdefine_line|#define INTEL_I840_ERRSTS&t;0xc8
+multiline_comment|/* Intel i850 registers */
+DECL|macro|INTEL_I850_MCHCFG
+mdefine_line|#define INTEL_I850_MCHCFG&t;0x50
+DECL|macro|INTEL_I850_ERRSTS
+mdefine_line|#define INTEL_I850_ERRSTS&t;0xc8
+multiline_comment|/* Intel 7505 registers */
+DECL|macro|INTEL_I7505_APSIZE
+mdefine_line|#define INTEL_I7505_APSIZE&t;0x74
+DECL|macro|INTEL_I7505_NCAPID
+mdefine_line|#define INTEL_I7505_NCAPID&t;0x60
+DECL|macro|INTEL_I7505_NISTAT
+mdefine_line|#define INTEL_I7505_NISTAT&t;0x6c
+DECL|macro|INTEL_I7505_ATTBASE
+mdefine_line|#define INTEL_I7505_ATTBASE&t;0x78
+DECL|macro|INTEL_I7505_ERRSTS
+mdefine_line|#define INTEL_I7505_ERRSTS&t;0x42
+DECL|macro|INTEL_I7505_AGPCTRL
+mdefine_line|#define INTEL_I7505_AGPCTRL&t;0x70
+DECL|macro|INTEL_I7505_MCHCFG
+mdefine_line|#define INTEL_I7505_MCHCFG&t;0x50
 DECL|variable|intel_i810_sizes
 r_static
 r_struct
@@ -4314,6 +4349,7 @@ l_int|56
 )brace
 suffix:semicolon
 DECL|variable|intel_generic_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_generic_driver
@@ -4422,6 +4458,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_810_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_810_driver
@@ -4535,6 +4572,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_815_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_815_driver
@@ -4643,6 +4681,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_830_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_830_driver
@@ -4756,6 +4795,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_820_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_820_driver
@@ -4864,6 +4904,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_830mp_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_830mp_driver
@@ -4972,6 +5013,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_840_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_840_driver
@@ -5080,6 +5122,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_845_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_845_driver
@@ -5188,6 +5231,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_850_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_850_driver
@@ -5296,6 +5340,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_860_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_860_driver
@@ -5404,6 +5449,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_7505_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_7505_driver
