@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 multiline_comment|/*&n; * Priority of a process goes from 0 to 139. The 0-99&n; * priority range is allocated to RT tasks, the 100-139&n; * range is for SCHED_OTHER tasks. Priority values are&n; * inverted: lower p-&gt;prio value means higher priority.&n; */
 DECL|macro|MAX_RT_PRIO
 mdefine_line|#define MAX_RT_PRIO&t;&t;100
@@ -2408,6 +2409,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#if CONFIG_DEBUG_HIGHMEM
+id|check_highmem_ptes
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|need_resched
 suffix:colon
 id|preempt_disable

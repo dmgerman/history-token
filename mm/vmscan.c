@@ -441,7 +441,7 @@ suffix:semicolon
 )brace
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|dir
@@ -541,6 +541,9 @@ id|address
 op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
+id|pte
+op_increment
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -564,6 +567,14 @@ id|address
 OL
 id|end
 )paren
+)paren
+suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|pte
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|mm-&gt;swap_address

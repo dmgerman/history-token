@@ -4,7 +4,6 @@ mdefine_line|#define _LINUX_HIGHMEM_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#ifdef CONFIG_HIGHMEM
 r_extern
 r_struct
@@ -39,6 +38,14 @@ id|bio
 op_star
 op_star
 id|bio_orig
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|check_highmem_ptes
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 DECL|function|bh_kmap
@@ -355,20 +362,30 @@ op_star
 id|page
 )paren
 (brace
+r_void
+op_star
+id|kaddr
+op_assign
+id|kmap_atomic
+c_func
+(paren
+id|page
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
 id|clear_page
 c_func
 (paren
-id|kmap
-c_func
-(paren
-id|page
-)paren
+id|kaddr
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace
@@ -394,7 +411,7 @@ r_int
 id|size
 )paren
 (brace
-r_char
+r_void
 op_star
 id|kaddr
 suffix:semicolon
@@ -414,15 +431,21 @@ c_func
 suffix:semicolon
 id|kaddr
 op_assign
-id|kmap
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|memset
 c_func
 (paren
+(paren
+r_char
+op_star
+)paren
 id|kaddr
 op_plus
 id|offset
@@ -444,10 +467,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace
