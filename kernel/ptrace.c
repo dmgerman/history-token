@@ -609,7 +609,7 @@ op_assign
 id|get_user_pages
 c_func
 (paren
-id|current
+id|tsk
 comma
 id|mm
 comma
