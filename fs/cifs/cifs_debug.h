@@ -72,21 +72,5 @@ mdefine_line|#define cFYI(button, prspec)
 DECL|macro|cifserror
 mdefine_line|#define cifserror(format,arg...)
 macro_line|#endif&t;&t;/* _CIFS_DEBUG */
-multiline_comment|/*&n; *&t;statistics&n; *&t;----------&n; */
-macro_line|#ifdef&t;_CIFS_STATISTICS
-DECL|macro|INCREMENT
-mdefine_line|#define&t;INCREMENT(x)&t;((x)++)
-DECL|macro|DECREMENT
-mdefine_line|#define&t;DECREMENT(x)&t;((x)--)
-DECL|macro|HIGHWATERMARK
-mdefine_line|#define&t;HIGHWATERMARK(x,y)&t;x = MAX((x), (y))
-macro_line|#else
-DECL|macro|INCREMENT
-mdefine_line|#define&t;INCREMENT(x)
-DECL|macro|DECREMENT
-mdefine_line|#define&t;DECREMENT(x)
-DECL|macro|HIGHWATERMARK
-mdefine_line|#define&t;HIGHWATERMARK(x,y)
-macro_line|#endif&t;&t;&t;&t;/* _CIFS_STATISTICS */
 macro_line|#endif&t;&t;&t;&t;/* _H_CIFS_DEBUG */
 eof
