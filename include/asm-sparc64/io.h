@@ -1817,6 +1817,8 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* On sparc64 we have the whole physical IO address space accessible&n; * using physically addressed loads and stores, so this does nothing.&n; */
 DECL|function|ioremap

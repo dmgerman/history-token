@@ -363,6 +363,9 @@ DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew(w,addr)&t;((*(volatile unsigned short *)(addr)) = (w))
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel(l,addr)&t;((*(volatile unsigned int *)(addr)) = (l))
+multiline_comment|/* Depends on MIPS III instruction set */
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb() asm volatile (&quot;sync&quot; ::: &quot;memory&quot;)
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|____raw_writeq
 mdefine_line|#define ____raw_writeq(val,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips3&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%L0, %L0, 0&t;# ____raw_writeq&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsrl32&t;%L0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%M0, %M0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;or&t;%L0, %L0, %M0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;sd&t;%L0, (%2)&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__tmp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; ((unsigned long long)val), &quot;r&quot; (addr));&t;&t;&bslash;&n;})

@@ -251,6 +251,12 @@ DECL|macro|readw
 mdefine_line|#define readw(addr)&t;&t;sh64_in16(addr)
 DECL|macro|readl
 mdefine_line|#define readl(addr)&t;&t;sh64_in32(addr)
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr)&t;&t;sh64_in8(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr)&t;&t;sh64_in16(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr)&t;&t;sh64_in32(addr)
 DECL|macro|writeb
 mdefine_line|#define writeb(b, addr)&t;&t;sh64_out8(b, addr)
 DECL|macro|writew
@@ -338,6 +344,8 @@ r_int
 id|port
 )paren
 suffix:semicolon
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 macro_line|#ifdef __KERNEL__
 macro_line|#ifdef CONFIG_SH_CAYMAN
 r_extern

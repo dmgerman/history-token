@@ -101,6 +101,8 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; * Memory mapped I/O to PCI&n; *&n; * Observe that ioremap returns void* cookie, but accessors, such&n; * as readb, take unsigned long as address, by API. This mismatch&n; * happened historically. The ioremap is much older than accessors,&n; * so at one time ioremap&squot;s cookie was used as address (*a = val).&n; * When accessors came about, they were designed to be compatible across&n; * buses, so that drivers can select proper ones like sunhme.c did.&n; * To make that easier, they use same aruments (ulong) for sbus, pci, isa.&n; * The offshot is, we must cast readb et. al. arguments with a #define.&n; */
 DECL|function|__raw_readb
 r_static

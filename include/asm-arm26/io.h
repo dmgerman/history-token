@@ -501,6 +501,8 @@ DECL|macro|writesw
 mdefine_line|#define writesw(p,d,l)                        __readwrite_bug(&quot;writesw&quot;)
 DECL|macro|writesl
 mdefine_line|#define writesl(p,d,l)                        __readwrite_bug(&quot;writesl&quot;)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/* the following macro is depreciated */
 DECL|macro|ioaddr
 mdefine_line|#define ioaddr(port)                    __ioaddr((port))

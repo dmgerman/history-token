@@ -566,6 +566,8 @@ DECL|macro|readl_relaxed
 mdefine_line|#define readl_relaxed(addr) readl(addr)
 DECL|macro|readq_relaxed
 mdefine_line|#define readq_relaxed(addr) readq(addr)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 r_extern
 r_void
 id|__memcpy_fromio

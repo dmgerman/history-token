@@ -44,6 +44,10 @@ id|ia64_mv_outl_t
 id|__ia64_outl
 suffix:semicolon
 r_extern
+id|ia64_mv_mmiowb_t
+id|__ia64_mmiowb
+suffix:semicolon
+r_extern
 id|ia64_mv_readb_t
 id|__ia64_readb
 suffix:semicolon

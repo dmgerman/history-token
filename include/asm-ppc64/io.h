@@ -580,6 +580,8 @@ r_int
 id|nl
 )paren
 suffix:semicolon
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; * output pause versions need a delay at least for the&n; * w83c105 ide controller in a p610.&n; */
 DECL|macro|inb_p
 mdefine_line|#define inb_p(port)             inb(port)
