@@ -263,6 +263,17 @@ id|block_device_operations
 op_star
 id|fops
 suffix:semicolon
+DECL|member|queue
+r_struct
+id|request_queue
+op_star
+id|queue
+suffix:semicolon
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
 DECL|member|capacity
 id|sector_t
 id|capacity
