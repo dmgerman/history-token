@@ -17,18 +17,6 @@ DECL|macro|ORB_DIRECTION_READ_FROM_MEDIA
 mdefine_line|#define ORB_DIRECTION_READ_FROM_MEDIA   0x1
 DECL|macro|ORB_DIRECTION_NO_DATA_TRANSFER
 mdefine_line|#define ORB_DIRECTION_NO_DATA_TRANSFER  0x2
-DECL|macro|SPEED_S100
-mdefine_line|#define SPEED_S100&t;&t;&t;0x0
-DECL|macro|SPEED_S200
-mdefine_line|#define SPEED_S200&t;&t;&t;0x1
-DECL|macro|SPEED_S400
-mdefine_line|#define SPEED_S400&t;&t;&t;0x2
-DECL|macro|SPEED_S800
-mdefine_line|#define SPEED_S800&t;&t;&t;0x3
-DECL|macro|SPEED_S1600
-mdefine_line|#define SPEED_S1600&t;&t;&t;0x4
-DECL|macro|SPEED_S3200
-mdefine_line|#define SPEED_S3200&t;&t;&t;0x5
 multiline_comment|/* 2^(MAX_PAYLOAD+1) = Maximum data transfer length */
 DECL|macro|MAX_PAYLOAD_S100
 mdefine_line|#define MAX_PAYLOAD_S100&t;&t;0x7
@@ -455,9 +443,9 @@ DECL|macro|SBP2_AGENT_RESET_DATA
 mdefine_line|#define SBP2_AGENT_RESET_DATA&t;&t;&t;&t;&t;0xf
 multiline_comment|/*&n; * Unit spec id and sw version entry for SBP-2 devices&n; */
 DECL|macro|SBP2_UNIT_SPEC_ID_ENTRY
-mdefine_line|#define SBP2_UNIT_SPEC_ID_ENTRY&t;&t;&t;&t;&t;0x1200609e
+mdefine_line|#define SBP2_UNIT_SPEC_ID_ENTRY&t;&t;&t;&t;&t;0x0000609e
 DECL|macro|SBP2_SW_VERSION_ENTRY
-mdefine_line|#define SBP2_SW_VERSION_ENTRY&t;&t;&t;&t;&t;0x13010483
+mdefine_line|#define SBP2_SW_VERSION_ENTRY&t;&t;&t;&t;&t;0x00010483
 multiline_comment|/*&n; * Miscellaneous general config rom related defines&n; */
 DECL|macro|CONFIG_ROM_INITIAL_MEMORY_SPACE
 mdefine_line|#define CONFIG_ROM_INITIAL_MEMORY_SPACE &t;&t;&t;0xfffff0000000ULL
@@ -465,12 +453,8 @@ DECL|macro|CONFIG_ROM_BASE_ADDRESS
 mdefine_line|#define CONFIG_ROM_BASE_ADDRESS&t;&t;&t;&t;&t;0xfffff0000400ULL
 DECL|macro|CONFIG_ROM_ROOT_DIR_BASE
 mdefine_line|#define CONFIG_ROM_ROOT_DIR_BASE&t;&t;&t;&t;0xfffff0000414ULL
-DECL|macro|CONFIG_ROM_SIGNATURE_ADDRESS
-mdefine_line|#define CONFIG_ROM_SIGNATURE_ADDRESS&t;&t;&t;&t;0xfffff0000404ULL
 DECL|macro|CONFIG_ROM_UNIT_DIRECTORY_OFFSET
 mdefine_line|#define CONFIG_ROM_UNIT_DIRECTORY_OFFSET&t;&t;&t;0xfffff0000424ULL
-DECL|macro|IEEE1394_CONFIG_ROM_SIGNATURE
-mdefine_line|#define IEEE1394_CONFIG_ROM_SIGNATURE&t;&t;&t;&t;0x31333934
 DECL|macro|SBP2_128KB_BROKEN_FIRMWARE
 mdefine_line|#define SBP2_128KB_BROKEN_FIRMWARE&t;&t;&t;&t;0xa0b800
 DECL|macro|SBP2_BROKEN_FIRMWARE_MAX_TRANSFER
@@ -1141,6 +1125,11 @@ DECL|struct|scsi_id_instance_data
 r_struct
 id|scsi_id_instance_data
 (brace
+multiline_comment|/* SCSI ID */
+DECL|member|id
+r_int
+id|id
+suffix:semicolon
 multiline_comment|/*&n;&t; * Various sbp2 specific structures&n;&t; */
 DECL|member|last_orb
 r_struct
@@ -1194,10 +1183,6 @@ id|sbp2_status_block
 id|status_block
 suffix:semicolon
 multiline_comment|/*&n;&t; * Stuff we need to know about the sbp2 device itself&n;&t; */
-DECL|member|node_unique_id
-id|u64
-id|node_unique_id
-suffix:semicolon
 DECL|member|sbp2_management_agent_addr
 id|u64
 id|sbp2_management_agent_addr
@@ -1205,10 +1190,6 @@ suffix:semicolon
 DECL|member|sbp2_command_block_agent_addr
 id|u64
 id|sbp2_command_block_agent_addr
-suffix:semicolon
-DECL|member|node_id
-id|u32
-id|node_id
 suffix:semicolon
 DECL|member|speed_code
 id|u32
@@ -1219,13 +1200,11 @@ id|u32
 id|max_payload_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Values pulled from the device&squot;s unit directory&n;&t; */
-DECL|member|sbp2_unit_spec_id
-id|u32
-id|sbp2_unit_spec_id
-suffix:semicolon
-DECL|member|sbp2_unit_sw_version
-id|u32
-id|sbp2_unit_sw_version
+DECL|member|ud
+r_struct
+id|unit_directory
+op_star
+id|ud
 suffix:semicolon
 DECL|member|sbp2_command_set_spec_id
 id|u32
@@ -1252,11 +1231,6 @@ DECL|member|sbp2_login_wait
 id|wait_queue_head_t
 id|sbp2_login_wait
 suffix:semicolon
-multiline_comment|/*&n;&t; * Flag noting whether the sbp2 device is currently validated (for use during&n;&t; * bus resets).&n;&t; */
-DECL|member|validated
-id|u32
-id|validated
-suffix:semicolon
 multiline_comment|/* &n;&t; * Pool of command orbs, so we can have more than overlapped command per id&n;&t; */
 DECL|member|sbp2_command_orb_lock
 id|spinlock_t
@@ -1275,6 +1249,13 @@ suffix:semicolon
 DECL|member|sbp2_total_command_orbs
 id|u32
 id|sbp2_total_command_orbs
+suffix:semicolon
+multiline_comment|/* Node entry, as retrieved from NodeMgr entries */
+DECL|member|ne
+r_struct
+id|node_entry
+op_star
+id|ne
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1304,21 +1285,6 @@ DECL|member|sbp2_request_packet_lock
 id|spinlock_t
 id|sbp2_request_packet_lock
 suffix:semicolon
-multiline_comment|/*&n;&t; * Flag indicating if a bus reset (or device detection) is in progress&n;&t; */
-DECL|member|bus_reset_in_progress
-id|u32
-id|bus_reset_in_progress
-suffix:semicolon
-multiline_comment|/*&n;&t; * We currently use a kernel thread for dealing with bus resets and sbp2&n;&t; * device detection. We use this to wake up the thread when needed.&n;&t; */
-DECL|member|sbp2_detection_wait
-id|wait_queue_head_t
-id|sbp2_detection_wait
-suffix:semicolon
-multiline_comment|/* &n;&t; * PID of sbp2 detection kernel thread &n;&t; */
-DECL|member|sbp2_detection_pid
-r_int
-id|sbp2_detection_pid
-suffix:semicolon
 multiline_comment|/*&n;&t; * Lists keeping track of inuse/free sbp2_request_packets. These structures are&n;&t; * used for sending out sbp2 command and agent reset packets. We initially create&n;&t; * a pool of request packets so that we don&squot;t have to do any kmallocs while in critical&n;&t; * I/O paths.&n;&t; */
 DECL|member|sbp2_req_inuse
 r_struct
@@ -1329,27 +1295,6 @@ DECL|member|sbp2_req_free
 r_struct
 id|list_head
 id|sbp2_req_free
-suffix:semicolon
-multiline_comment|/*&n;&t; * Stuff to keep track of the initial scsi bus scan (so that we don&squot;t miss it)&n;&t; */
-DECL|member|initial_scsi_bus_scan_complete
-id|u32
-id|initial_scsi_bus_scan_complete
-suffix:semicolon
-DECL|member|bus_scan_SCpnt
-id|Scsi_Cmnd
-op_star
-id|bus_scan_SCpnt
-suffix:semicolon
-DECL|member|bus_scan_done
-r_void
-(paren
-op_star
-id|bus_scan_done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Here is the pool of request packets. All the hpsb packets (for 1394 bus transactions)&n;&t; * are allocated at init and simply re-initialized when needed.&n;&t; */
 DECL|member|request_packet
@@ -1374,45 +1319,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes&n; */
 multiline_comment|/*&n; * Various utility prototypes&n; */
-r_static
-r_int
-id|sbp2util_read_quadlet
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-id|nodeid_t
-id|node
-comma
-id|u64
-id|addr
-comma
-id|quadlet_t
-op_star
-id|buffer
-)paren
-suffix:semicolon
-r_static
-r_int
-id|sbp2util_unit_directory
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-id|nodeid_t
-id|node
-comma
-id|u64
-op_star
-id|addr
-)paren
-suffix:semicolon
 r_static
 r_int
 id|sbp2util_create_request_packet_pool
@@ -1587,55 +1493,6 @@ suffix:semicolon
 multiline_comment|/*&n; * IEEE-1394 core driver related prototypes&n; */
 r_static
 r_void
-id|sbp2_remove_unvalidated_devices
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-)paren
-suffix:semicolon
-r_static
-r_int
-id|sbp2_start_device
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_int
-id|node_id
-)paren
-suffix:semicolon
-r_static
-r_int
-id|sbp2_check_device
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_int
-id|node_id
-)paren
-suffix:semicolon
-r_static
-r_void
-id|sbp2_bus_reset_handler
-c_func
-(paren
-r_void
-op_star
-id|context
-)paren
-suffix:semicolon
-r_static
-r_void
 id|sbp2_add_host
 c_func
 (paren
@@ -1669,27 +1526,6 @@ op_star
 id|host
 )paren
 suffix:semicolon
-r_static
-r_void
-id|sbp2_host_reset
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_static
-r_int
-id|sbp2_detection_thread
-c_func
-(paren
-r_void
-op_star
-id|__sbp2
-)paren
-suffix:semicolon
 r_int
 id|sbp2_init
 c_func
@@ -1704,58 +1540,71 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_static
 r_int
-id|sbp2_handle_physdma_write
+id|sbp2_probe
 c_func
 (paren
 r_struct
-id|hpsb_host
+id|unit_directory
 op_star
-id|host
-comma
-r_int
-id|nodeid
-comma
-id|quadlet_t
+id|ud
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sbp2_disconnect
+c_func
+(paren
+r_struct
+id|unit_directory
 op_star
-id|data
-comma
-id|u64
-id|addr
-comma
-r_int
-r_int
-id|length
+id|ud
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sbp2_update
+c_func
+(paren
+r_struct
+id|unit_directory
+op_star
+id|ud
 )paren
 suffix:semicolon
 r_static
 r_int
-id|sbp2_handle_physdma_read
+id|sbp2_start_device
 c_func
 (paren
 r_struct
-id|hpsb_host
+id|sbp2scsi_host_info
 op_star
-id|host
+id|hi
 comma
-r_int
-id|nodeid
-comma
-id|quadlet_t
+r_struct
+id|unit_directory
 op_star
-id|data
-comma
-id|u64
-id|addr
-comma
-r_int
-r_int
-id|length
+id|ud
 )paren
 suffix:semicolon
-macro_line|#endif
+r_static
+r_void
+id|sbp2_remove_device
+c_func
+(paren
+r_struct
+id|sbp2scsi_host_info
+op_star
+id|hi
+comma
+r_struct
+id|scsi_id_instance_data
+op_star
+id|scsi_id
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * SBP-2 protocol related prototypes&n; */
 r_static
 r_int
@@ -2019,15 +1868,10 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|sbp2_parse_unit_directory
 c_func
 (paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
 r_struct
 id|scsi_id_instance_data
 op_star

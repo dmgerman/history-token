@@ -27,6 +27,14 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#include &lt;asm/feature.h&gt;
+macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#endif
+multiline_comment|/* Revert to old bus reset algorithm that works on my Pismo until&n; * the new one is fixed&n; */
+DECL|macro|BUSRESET_WORKAROUND
+macro_line|#undef BUSRESET_WORKAROUND
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -43,16 +51,16 @@ macro_line|#undef DBGMSG
 macro_line|#endif
 macro_line|#ifdef OHCI1394_DEBUG
 DECL|macro|DBGMSG
-mdefine_line|#define DBGMSG(card, fmt, args...) &bslash;&n;printk(KERN_INFO &quot;ohci1394_%d: &quot; fmt &quot;&bslash;n&quot; , card , ## args)
+mdefine_line|#define DBGMSG(card, fmt, args...) &bslash;&n;printk(KERN_INFO &quot;%s_%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
 macro_line|#else
 DECL|macro|DBGMSG
 mdefine_line|#define DBGMSG(card, fmt, args...)
 macro_line|#endif
 macro_line|#ifdef CONFIG_IEEE1394_OHCI_DMA_DEBUG
 DECL|macro|OHCI_DMA_ALLOC
-mdefine_line|#define OHCI_DMA_ALLOC(fmt, args...) &bslash;&n;&t;HPSB_ERR(&quot;ohci1394(&quot;__FUNCTION__&quot;)alloc(%d): &quot;fmt, &bslash;&n;&t;&t;++global_outstanding_dmas, ## args)
+mdefine_line|#define OHCI_DMA_ALLOC(fmt, args...) &bslash;&n;&t;HPSB_ERR(&quot;%s(&quot;__FUNCTION__&quot;)alloc(%d): &quot;fmt, OHCI1394_DRIVER_NAME, &bslash;&n;&t;&t;++global_outstanding_dmas, ## args)
 DECL|macro|OHCI_DMA_FREE
-mdefine_line|#define OHCI_DMA_FREE(fmt, args...) &bslash;&n;&t;HPSB_ERR(&quot;ohci1394(&quot;__FUNCTION__&quot;)free(%d): &quot;fmt, &bslash;&n;&t;&t;--global_outstanding_dmas, ## args)
+mdefine_line|#define OHCI_DMA_FREE(fmt, args...) &bslash;&n;&t;HPSB_ERR(&quot;%s(&quot;__FUNCTION__&quot;)free(%d): &quot;fmt, OHCI1394_DRIVER_NAME, &bslash;&n;&t;&t;--global_outstanding_dmas, ## args)
 DECL|variable|global_outstanding_dmas
 id|u32
 id|global_outstanding_dmas
@@ -67,12 +75,10 @@ mdefine_line|#define OHCI_DMA_FREE(fmt, args...)
 macro_line|#endif
 multiline_comment|/* print general (card independent) information */
 DECL|macro|PRINT_G
-mdefine_line|#define PRINT_G(level, fmt, args...) &bslash;&n;printk(level &quot;ohci1394: &quot; fmt &quot;&bslash;n&quot; , ## args)
+mdefine_line|#define PRINT_G(level, fmt, args...) &bslash;&n;printk(level &quot;%s: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME , ## args)
 multiline_comment|/* print card specific information */
 DECL|macro|PRINT
-mdefine_line|#define PRINT(level, card, fmt, args...) &bslash;&n;printk(level &quot;ohci1394_%d: &quot; fmt &quot;&bslash;n&quot; , card , ## args)
-DECL|macro|FAIL
-mdefine_line|#define FAIL(fmt, args...)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PRINT_G(KERN_ERR, fmt , ## args);&t;&t;&bslash;&n;&t;remove_card(ohci);&t;&t;&t;&t;&bslash;&n;&t;return 1;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define PRINT(level, card, fmt, args...) &bslash;&n;printk(level &quot;%s_%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
 DECL|macro|PCI_CLASS_FIREWIRE_OHCI
 mdefine_line|#define PCI_CLASS_FIREWIRE_OHCI     ((PCI_CLASS_SERIAL_FIREWIRE &lt;&lt; 8) | 0x10)
 DECL|variable|__devinitdata
@@ -161,47 +167,6 @@ id|attempt_root
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef __LITTLE_ENDIAN
-multiline_comment|/* Don&squot;t waste cycles on same sex byte swaps */
-DECL|macro|packet_swab
-mdefine_line|#define packet_swab(w,x,y,z)
-DECL|macro|block_swab32
-mdefine_line|#define block_swab32(x,y)
-macro_line|#else
-r_static
-r_void
-id|packet_swab
-c_func
-(paren
-id|quadlet_t
-op_star
-id|data
-comma
-r_char
-id|tcode
-comma
-r_int
-id|len
-comma
-r_int
-id|payload_swap
-)paren
-suffix:semicolon
-r_static
-id|__inline__
-r_void
-id|block_swab32
-c_func
-(paren
-id|quadlet_t
-op_star
-id|data
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|card_id_counter
 r_static
 r_int
@@ -242,6 +207,144 @@ op_star
 id|d
 )paren
 suffix:semicolon
+macro_line|#ifndef __LITTLE_ENDIAN
+multiline_comment|/* Swap a series of quads inplace. */
+DECL|function|block_swab32
+r_static
+id|__inline__
+r_void
+id|block_swab32
+c_func
+(paren
+id|quadlet_t
+op_star
+id|data
+comma
+r_int
+id|size
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|size
+op_decrement
+)paren
+id|data
+(braket
+id|size
+)braket
+op_assign
+id|swab32
+c_func
+(paren
+id|data
+(braket
+id|size
+)braket
+)paren
+suffix:semicolon
+)brace
+DECL|variable|hdr_sizes
+r_static
+r_int
+id|hdr_sizes
+(braket
+)braket
+op_assign
+(brace
+l_int|3
+comma
+multiline_comment|/* TCODE_WRITEQ */
+l_int|4
+comma
+multiline_comment|/* TCODE_WRITEB */
+l_int|3
+comma
+multiline_comment|/* TCODE_WRITE_RESPONSE */
+l_int|0
+comma
+multiline_comment|/* ??? */
+l_int|3
+comma
+multiline_comment|/* TCODE_READQ */
+l_int|4
+comma
+multiline_comment|/* TCODE_READB */
+l_int|3
+comma
+multiline_comment|/* TCODE_READQ_RESPONSE */
+l_int|4
+comma
+multiline_comment|/* TCODE_READB_RESPONSE */
+l_int|1
+comma
+multiline_comment|/* TCODE_CYCLE_START (???) */
+l_int|4
+comma
+multiline_comment|/* TCODE_LOCK_REQUEST */
+l_int|2
+comma
+multiline_comment|/* TCODE_ISO_DATA */
+l_int|4
+comma
+multiline_comment|/* TCODE_LOCK_RESPONSE */
+)brace
+suffix:semicolon
+multiline_comment|/* Swap headers */
+DECL|function|packet_swab
+r_static
+r_inline
+r_void
+id|packet_swab
+c_func
+(paren
+id|quadlet_t
+op_star
+id|data
+comma
+r_int
+id|tcode
+comma
+r_int
+id|len
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tcode
+OG
+id|TCODE_LOCK_RESPONSE
+op_logical_or
+id|hdr_sizes
+(braket
+id|tcode
+)braket
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+id|block_swab32
+c_func
+(paren
+id|data
+comma
+id|hdr_sizes
+(braket
+id|tcode
+)braket
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+multiline_comment|/* Don&squot;t waste cycles on same sex byte swaps */
+DECL|macro|packet_swab
+mdefine_line|#define packet_swab(w,x,y)
+DECL|macro|block_swab32
+mdefine_line|#define block_swab32(x,y)
+macro_line|#endif /* !LITTLE_ENDIAN */
 multiline_comment|/***********************************&n; * IEEE-1394 functionality section *&n; ***********************************/
 DECL|function|get_phy_reg
 r_static
@@ -415,6 +518,8 @@ id|flags
 suffix:semicolon
 id|u32
 id|r
+op_assign
+l_int|0
 suffix:semicolon
 id|spin_lock_irqsave
 (paren
@@ -1106,6 +1211,9 @@ r_struct
 id|dma_rcv_ctx
 op_star
 id|d
+comma
+r_int
+id|generate_irq
 )paren
 (brace
 r_struct
@@ -1150,6 +1258,26 @@ id|i
 op_increment
 )paren
 (brace
+id|u32
+id|c
+suffix:semicolon
+id|c
+op_assign
+id|DMA_CTL_INPUT_MORE
+op_or
+id|DMA_CTL_UPDATE
+op_or
+id|DMA_CTL_BRANCH
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|generate_irq
+)paren
+id|c
+op_or_assign
+id|DMA_CTL_IRQ
+suffix:semicolon
 id|d-&gt;prg_cpu
 (braket
 id|i
@@ -1160,11 +1288,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-(paren
-l_int|0x280C
-op_lshift
-l_int|16
-)paren
+id|c
 op_or
 id|d-&gt;buf_size
 )paren
@@ -1173,11 +1297,9 @@ multiline_comment|/* End of descriptor list? */
 r_if
 c_cond
 (paren
-(paren
 id|i
 op_plus
 l_int|1
-)paren
 OL
 id|d-&gt;num_desc
 )paren
@@ -2008,12 +2130,16 @@ id|initialize_dma_rcv_ctx
 c_func
 (paren
 id|ohci-&gt;ar_req_context
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|initialize_dma_rcv_ctx
 c_func
 (paren
 id|ohci-&gt;ar_resp_context
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize AT dma */
@@ -2034,6 +2160,8 @@ id|initialize_dma_rcv_ctx
 c_func
 (paren
 id|ohci-&gt;ir_context
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize IT dma */
@@ -2119,8 +2247,6 @@ comma
 id|OHCI1394_IntMaskSet
 comma
 id|OHCI1394_masterIntEnable
-op_or
-id|OHCI1394_phyRegRcvd
 op_or
 id|OHCI1394_busReset
 op_or
@@ -2455,13 +2581,13 @@ c_cond
 (paren
 id|packet-&gt;type
 op_eq
-id|async
+id|hpsb_async
 )paren
 op_logical_or
 (paren
 id|packet-&gt;type
 op_eq
-id|raw
+id|hpsb_raw
 )paren
 )paren
 (brace
@@ -2470,7 +2596,7 @@ c_cond
 (paren
 id|packet-&gt;type
 op_eq
-id|raw
+id|hpsb_raw
 )paren
 (brace
 id|d-&gt;prg_cpu
@@ -2620,8 +2746,6 @@ comma
 id|packet-&gt;header_size
 op_rshift
 l_int|2
-comma
-id|ohci-&gt;payload_swap
 )paren
 suffix:semicolon
 )brace
@@ -2642,7 +2766,9 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|OUTPUT_MORE_IMMEDIATE
+id|DMA_CTL_OUTPUT_MORE
+op_or
+id|DMA_CTL_IMMEDIATE
 op_or
 l_int|0x10
 )paren
@@ -2657,7 +2783,11 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|OUTPUT_LAST
+id|DMA_CTL_OUTPUT_LAST
+op_or
+id|DMA_CTL_IRQ
+op_or
+id|DMA_CTL_BRANCH
 op_or
 id|packet-&gt;data_size
 )paren
@@ -2728,21 +2858,6 @@ c_func
 l_string|&quot;single, block transmit packet&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ohci-&gt;payload_swap
-)paren
-id|block_swab32
-c_func
-(paren
-id|packet-&gt;data
-comma
-id|packet-&gt;data_size
-op_rshift
-l_int|2
-)paren
-suffix:semicolon
 id|d-&gt;prg_cpu
 (braket
 id|idx
@@ -2803,7 +2918,7 @@ c_cond
 (paren
 id|packet-&gt;type
 op_eq
-id|raw
+id|hpsb_raw
 )paren
 id|d-&gt;prg_cpu
 (braket
@@ -2815,7 +2930,13 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|OUTPUT_LAST_IMMEDIATE
+id|DMA_CTL_OUTPUT_LAST
+op_or
+id|DMA_CTL_IMMEDIATE
+op_or
+id|DMA_CTL_IRQ
+op_or
+id|DMA_CTL_BRANCH
 op_or
 (paren
 id|packet-&gt;header_size
@@ -2835,7 +2956,13 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|OUTPUT_LAST_IMMEDIATE
+id|DMA_CTL_OUTPUT_LAST
+op_or
+id|DMA_CTL_IMMEDIATE
+op_or
+id|DMA_CTL_IRQ
+op_or
+id|DMA_CTL_BRANCH
 op_or
 id|packet-&gt;header_size
 )paren
@@ -2933,8 +3060,6 @@ comma
 id|packet-&gt;header_size
 op_rshift
 l_int|2
-comma
-id|ohci-&gt;payload_swap
 )paren
 suffix:semicolon
 id|d-&gt;prg_cpu
@@ -2947,7 +3072,9 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|OUTPUT_MORE_IMMEDIATE
+id|DMA_CTL_OUTPUT_MORE
+op_or
+id|DMA_CTL_IMMEDIATE
 op_or
 l_int|0x8
 )paren
@@ -2962,9 +3089,13 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|OUTPUT_LAST
+id|DMA_CTL_OUTPUT_LAST
 op_or
-l_int|0x08000000
+id|DMA_CTL_UPDATE
+op_or
+id|DMA_CTL_IRQ
+op_or
+id|DMA_CTL_BRANCH
 op_or
 id|packet-&gt;data_size
 )paren
@@ -2996,21 +3127,6 @@ id|OHCI_DMA_ALLOC
 c_func
 (paren
 l_string|&quot;single, iso transmit packet&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ohci-&gt;payload_swap
-)paren
-id|block_swab32
-c_func
-(paren
-id|packet-&gt;data
-comma
-id|packet-&gt;data_size
-op_rshift
-l_int|2
 )paren
 suffix:semicolon
 id|d-&gt;prg_cpu
@@ -3878,7 +3994,7 @@ comma
 id|ohci-&gt;id
 comma
 id|__FUNCTION__
-l_string|&quot;IS0 listne channel %d is out of range&quot;
+l_string|&quot;IS0 listen channel %d is out of range&quot;
 comma
 id|arg
 )paren
@@ -4417,7 +4533,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* Read the interrupt event register. We don&squot;t clear the bus reset&n;&t; * here. We wait till we get a selfid complete interrupt and clear&n;&t; * it then, and _only_ then.  */
+multiline_comment|/* Read and clear the interrupt event register.  Don&squot;t clear&n;&t; * the busReset event, though, this is done when we get the&n;&t; * selfIDComplete interrupt. */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4437,6 +4553,18 @@ comma
 id|OHCI1394_IntEventClear
 )paren
 suffix:semicolon
+macro_line|#ifdef BUSRESET_WORKAROUND
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_IntEventClear
+comma
+id|event
+)paren
+suffix:semicolon
+macro_line|#else
 id|reg_write
 c_func
 (paren
@@ -4447,13 +4575,10 @@ comma
 id|event
 op_amp
 op_complement
-(paren
-id|OHCI1394_selfIDComplete
-op_or
 id|OHCI1394_busReset
 )paren
-)paren
 suffix:semicolon
+macro_line|#endif
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4509,7 +4634,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Someone wants a bus reset. Better watch what you wish for... */
 r_if
 c_cond
 (paren
@@ -4518,6 +4642,48 @@ op_amp
 id|OHCI1394_busReset
 )paren
 (brace
+multiline_comment|/* The busReset event bit can&squot;t be cleared during the&n;&t;&t; * selfID phase, so we disable busReset interrupts, to&n;&t;&t; * avoid burying the cpu in interrupt requests. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ohci-&gt;event_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+macro_line|#ifdef BUSRESET_WORKAROUND
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_IntEventClear
+comma
+id|OHCI1394_busReset
+)paren
+suffix:semicolon
+macro_line|#else
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_IntMaskClear
+comma
+id|OHCI1394_busReset
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ohci-&gt;event_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4546,19 +4712,6 @@ l_string|&quot;&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for the AT fifo to be flushed */
-id|dma_trm_reset
-c_func
-(paren
-id|ohci-&gt;at_req_context
-)paren
-suffix:semicolon
-id|dma_trm_reset
-c_func
-(paren
-id|ohci-&gt;at_resp_context
-)paren
-suffix:semicolon
 multiline_comment|/* Subsystem call */
 id|hpsb_bus_reset
 c_func
@@ -4566,14 +4719,11 @@ c_func
 id|ohci-&gt;host
 )paren
 suffix:semicolon
-id|ohci-&gt;NumBusResets
-op_increment
-suffix:semicolon
 )brace
-multiline_comment|/* Mask out everything except selfid */
 id|event
 op_and_assign
-id|OHCI1394_selfIDComplete
+op_complement
+id|OHCI1394_busReset
 suffix:semicolon
 )brace
 multiline_comment|/* XXX: We need a way to also queue the OHCI1394_reqTxComplete,&n;&t; * but for right now we simply run it upon reception, to make sure&n;&t; * we get sent acks before response packets. This sucks mainly&n;&t; * because it halts the interrupt handler.  */
@@ -5205,6 +5355,7 @@ id|isroot
 suffix:semicolon
 )brace
 r_else
+(brace
 id|PRINT
 c_func
 (paren
@@ -5218,6 +5369,7 @@ comma
 id|node_id
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Accept Physical requests from all nodes. */
 id|reg_write
 c_func
@@ -5282,7 +5434,8 @@ comma
 l_string|&quot;SelfID received outside of bus reset sequence&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Clear everything, it&squot;s a new day */
+multiline_comment|/* Finally, we clear the busReset event and reenable&n;&t;&t; * the busReset interrupt. */
+macro_line|#ifndef BUSRESET_WORKAROUND
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5297,9 +5450,19 @@ c_func
 (paren
 id|ohci
 comma
+id|OHCI1394_IntMaskSet
+comma
+id|OHCI1394_busReset
+)paren
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
 id|OHCI1394_IntEventClear
 comma
-l_int|0xffffffff
+id|OHCI1394_busReset
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -5311,57 +5474,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 id|event
 op_and_assign
 op_complement
 id|OHCI1394_selfIDComplete
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|event
-op_amp
-id|OHCI1394_phyRegRcvd
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|host-&gt;in_bus_reset
-)paren
-(brace
-id|DBGMSG
-(paren
-id|ohci-&gt;id
-comma
-l_string|&quot;PhyControl: %08X&quot;
-comma
-id|reg_read
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_PhyControl
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-id|PRINT
-c_func
-(paren
-id|KERN_ERR
-comma
-id|ohci-&gt;id
-comma
-l_string|&quot;Physical register received outside of bus reset sequence&quot;
-)paren
-suffix:semicolon
-id|event
-op_and_assign
-op_complement
-id|OHCI1394_phyRegRcvd
 suffix:semicolon
 )brace
 multiline_comment|/* Make sure we handle everything, just in case we accidentally&n;&t; * enabled an interrupt that we didn&squot;t write a handler for.  */
@@ -5937,7 +6054,7 @@ id|buf_ptr
 l_int|0
 )braket
 comma
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 op_rshift
 l_int|4
@@ -5961,7 +6078,7 @@ id|offset
 comma
 id|tcode
 comma
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 suffix:semicolon
 r_if
@@ -5990,7 +6107,7 @@ id|buf_ptr
 l_int|0
 )braket
 comma
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 comma
 id|d-&gt;ctx
@@ -6378,7 +6495,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 id|packet_swab
 c_func
@@ -6394,8 +6511,6 @@ l_int|4
 )paren
 op_rshift
 l_int|2
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|DBGMSG
@@ -6431,7 +6546,7 @@ op_minus
 l_int|1
 )braket
 comma
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 op_rshift
 l_int|16
@@ -6452,7 +6567,7 @@ op_minus
 l_int|1
 )braket
 comma
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 op_rshift
 l_int|21
@@ -6479,7 +6594,7 @@ op_minus
 l_int|1
 )braket
 comma
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 op_rshift
 l_int|10
@@ -6505,7 +6620,7 @@ op_minus
 l_int|1
 )braket
 comma
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 )paren
 op_rshift
 l_int|16
@@ -6734,7 +6849,7 @@ id|datasize
 op_logical_and
 id|packet-&gt;type
 op_ne
-id|raw
+id|hpsb_raw
 )paren
 id|ack
 op_assign
@@ -9922,6 +10037,8 @@ id|ohci_hw_csr_reg
 comma
 )brace
 suffix:semicolon
+DECL|macro|FAIL
+mdefine_line|#define FAIL(fmt, args...)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PRINT_G(KERN_ERR, fmt , ## args);&t;&bslash;&n;&t;remove_card(ohci);&t;&t;&t;&bslash;&n;&t;return 1;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|function|ohci1394_add_one
 r_static
 r_int
@@ -10110,22 +10227,19 @@ c_cond
 id|dev-&gt;vendor
 op_eq
 id|PCI_VENDOR_ID_APPLE
+op_logical_and
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_APPLE_UNI_N_FW
 )paren
 (brace
-id|ohci-&gt;payload_swap
+id|ohci-&gt;no_swap_incoming
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;device
-op_ne
-id|PCI_DEVICE_ID_APPLE_UNI_N_FW
-)paren
 id|ohci-&gt;selfid_swap
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -10760,6 +10874,47 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALL_PPC
+multiline_comment|/* On UniNorth, power down the cable and turn off the&n;&t; * chip clock when the module is removed to save power&n;&t; * on laptops. Turning it back ON is done by the arch&n;&t; * code when pci_enable_device() is called&n;&t; */
+(brace
+r_struct
+id|device_node
+op_star
+id|of_node
+suffix:semicolon
+id|of_node
+op_assign
+id|pci_device_to_OF_node
+c_func
+(paren
+id|ohci-&gt;dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|of_node
+)paren
+(brace
+id|feature_set_firewire_power
+c_func
+(paren
+id|of_node
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|feature_set_firewire_cable_power
+c_func
+(paren
+id|of_node
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_ALL_PPC */
 id|pci_set_drvdata
 c_func
 (paren
@@ -10941,211 +11096,6 @@ id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef __LITTLE_ENDIAN
-multiline_comment|/* Swap a series of quads inplace. */
-DECL|function|block_swab32
-r_static
-id|__inline__
-r_void
-id|block_swab32
-c_func
-(paren
-id|quadlet_t
-op_star
-id|data
-comma
-r_int
-id|size
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|size
-op_decrement
-)paren
-id|data
-(braket
-id|size
-)braket
-op_assign
-id|swab32
-c_func
-(paren
-id|data
-(braket
-id|size
-)braket
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Swap headers and sometimes data too */
-DECL|function|packet_swab
-r_static
-r_void
-id|packet_swab
-c_func
-(paren
-id|quadlet_t
-op_star
-id|data
-comma
-r_char
-id|tcode
-comma
-r_int
-id|len
-comma
-r_int
-id|payload_swap
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|payload_swap
-)paren
-(brace
-id|block_swab32
-c_func
-(paren
-id|data
-comma
-id|len
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_switch
-c_cond
-(paren
-id|tcode
-)paren
-(brace
-multiline_comment|/* 4 quad header */
-r_case
-id|TCODE_READB_RESPONSE
-suffix:colon
-r_case
-id|TCODE_LOCK_RESPONSE
-suffix:colon
-r_case
-id|TCODE_LOCK_REQUEST
-suffix:colon
-r_case
-id|TCODE_WRITEB
-suffix:colon
-r_case
-id|TCODE_READB
-suffix:colon
-id|block_swab32
-c_func
-(paren
-id|data
-comma
-l_int|4
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* 3 quad header, 1 quad payload */
-r_case
-id|TCODE_WRITEQ
-suffix:colon
-r_case
-id|TCODE_READQ_RESPONSE
-suffix:colon
-id|block_swab32
-c_func
-(paren
-id|data
-comma
-l_int|3
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* 3 quad header */
-r_case
-id|TCODE_WRITE_RESPONSE
-suffix:colon
-r_case
-id|TCODE_READQ
-suffix:colon
-id|block_swab32
-c_func
-(paren
-id|data
-comma
-l_int|3
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* 2 quad header */
-r_case
-id|TCODE_ISO_DATA
-suffix:colon
-id|block_swab32
-c_func
-(paren
-id|data
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OHCI1394_TCODE_PHY
-suffix:colon
-r_break
-suffix:semicolon
-multiline_comment|/* should never happen anyway */
-r_case
-id|TCODE_CYCLE_START
-suffix:colon
-id|PRINT_G
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;Unhandled tcode in packet_swab (0x%x)&quot;
-comma
-id|tcode
-)paren
-suffix:semicolon
-multiline_comment|/* Atleast swap one quad */
-id|block_swab32
-c_func
-(paren
-id|data
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|PRINT_G
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;Invalid tcode in packet_swab (0x%x)&quot;
-comma
-id|tcode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif /* !LITTLE_ENDIAN */
 macro_line|#if 0
 r_int
 id|ohci1394_request_channel

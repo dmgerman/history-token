@@ -5,29 +5,109 @@ multiline_comment|/*&n; * &t;genhd.h Copyright (C) 1992 Drew Eckhardt&n; *&t;Gen
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+r_enum
+(brace
 multiline_comment|/* These three have identical behaviour; use the second one if DOS fdisk gets&n;   confused about extended/logical partitions starting past cylinder 1023. */
-DECL|macro|DOS_EXTENDED_PARTITION
-mdefine_line|#define DOS_EXTENDED_PARTITION 5
-DECL|macro|LINUX_EXTENDED_PARTITION
-mdefine_line|#define LINUX_EXTENDED_PARTITION 0x85
-DECL|macro|WIN98_EXTENDED_PARTITION
-mdefine_line|#define WIN98_EXTENDED_PARTITION 0x0f
-DECL|macro|LINUX_SWAP_PARTITION
-mdefine_line|#define LINUX_SWAP_PARTITION&t;0x82
-DECL|macro|LINUX_RAID_PARTITION
-mdefine_line|#define LINUX_RAID_PARTITION&t;0xfd&t;/* autodetect RAID partition */
-macro_line|#ifdef CONFIG_SOLARIS_X86_PARTITION
-DECL|macro|SOLARIS_X86_PARTITION
-mdefine_line|#define SOLARIS_X86_PARTITION&t;LINUX_SWAP_PARTITION
-macro_line|#endif
-DECL|macro|DM6_PARTITION
-mdefine_line|#define DM6_PARTITION&t;&t;0x54&t;/* has DDO: use xlated geom &amp; offset */
-DECL|macro|EZD_PARTITION
-mdefine_line|#define EZD_PARTITION&t;&t;0x55&t;/* EZ-DRIVE */
-DECL|macro|DM6_AUX1PARTITION
-mdefine_line|#define DM6_AUX1PARTITION&t;0x51&t;/* no DDO:  use xlated geom */
-DECL|macro|DM6_AUX3PARTITION
-mdefine_line|#define DM6_AUX3PARTITION&t;0x53&t;/* no DDO:  use xlated geom */
+DECL|enumerator|DOS_EXTENDED_PARTITION
+id|DOS_EXTENDED_PARTITION
+op_assign
+l_int|5
+comma
+DECL|enumerator|LINUX_EXTENDED_PARTITION
+id|LINUX_EXTENDED_PARTITION
+op_assign
+l_int|0x85
+comma
+DECL|enumerator|WIN98_EXTENDED_PARTITION
+id|WIN98_EXTENDED_PARTITION
+op_assign
+l_int|0x0f
+comma
+DECL|enumerator|LINUX_SWAP_PARTITION
+id|LINUX_SWAP_PARTITION
+op_assign
+l_int|0x82
+comma
+DECL|enumerator|LINUX_RAID_PARTITION
+id|LINUX_RAID_PARTITION
+op_assign
+l_int|0xfd
+comma
+multiline_comment|/* autodetect RAID partition */
+DECL|enumerator|SOLARIS_X86_PARTITION
+id|SOLARIS_X86_PARTITION
+op_assign
+id|LINUX_SWAP_PARTITION
+comma
+DECL|enumerator|DM6_PARTITION
+id|DM6_PARTITION
+op_assign
+l_int|0x54
+comma
+multiline_comment|/* has DDO: use xlated geom &amp; offset */
+DECL|enumerator|EZD_PARTITION
+id|EZD_PARTITION
+op_assign
+l_int|0x55
+comma
+multiline_comment|/* EZ-DRIVE */
+DECL|enumerator|DM6_AUX1PARTITION
+id|DM6_AUX1PARTITION
+op_assign
+l_int|0x51
+comma
+multiline_comment|/* no DDO:  use xlated geom */
+DECL|enumerator|DM6_AUX3PARTITION
+id|DM6_AUX3PARTITION
+op_assign
+l_int|0x53
+comma
+multiline_comment|/* no DDO:  use xlated geom */
+DECL|enumerator|FREEBSD_PARTITION
+id|FREEBSD_PARTITION
+op_assign
+l_int|0xa5
+comma
+multiline_comment|/* FreeBSD Partition ID */
+DECL|enumerator|OPENBSD_PARTITION
+id|OPENBSD_PARTITION
+op_assign
+l_int|0xa6
+comma
+multiline_comment|/* OpenBSD Partition ID */
+DECL|enumerator|NETBSD_PARTITION
+id|NETBSD_PARTITION
+op_assign
+l_int|0xa9
+comma
+multiline_comment|/* NetBSD Partition ID */
+DECL|enumerator|BSDI_PARTITION
+id|BSDI_PARTITION
+op_assign
+l_int|0xb7
+comma
+multiline_comment|/* BSDI Partition ID */
+multiline_comment|/* Ours is not to wonder why.. */
+DECL|enumerator|BSD_PARTITION
+id|BSD_PARTITION
+op_assign
+id|FREEBSD_PARTITION
+comma
+DECL|enumerator|MINIX_PARTITION
+id|MINIX_PARTITION
+op_assign
+l_int|0x81
+comma
+multiline_comment|/* Minix Partition ID */
+DECL|enumerator|UNIXWARE_PARTITION
+id|UNIXWARE_PARTITION
+op_assign
+l_int|0x63
+comma
+multiline_comment|/* Partition ID, same as */
+multiline_comment|/* GNU_HURD and SCO Unix */
+)brace
+suffix:semicolon
 DECL|struct|partition
 r_struct
 id|partition
@@ -362,17 +442,6 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_SOLARIS_X86_PARTITION */
 macro_line|#ifdef CONFIG_BSD_DISKLABEL
 multiline_comment|/*&n; * BSD disklabel support by Yossi Gottlieb &lt;yogo@math.tau.ac.il&gt;&n; * updated by Marc Espie &lt;Marc.Espie@openbsd.org&gt;&n; */
-DECL|macro|FREEBSD_PARTITION
-mdefine_line|#define FREEBSD_PARTITION&t;0xa5    /* FreeBSD Partition ID */
-DECL|macro|OPENBSD_PARTITION
-mdefine_line|#define OPENBSD_PARTITION&t;0xa6    /* OpenBSD Partition ID */
-DECL|macro|NETBSD_PARTITION
-mdefine_line|#define NETBSD_PARTITION&t;0xa9    /* NetBSD Partition ID */
-DECL|macro|BSDI_PARTITION
-mdefine_line|#define BSDI_PARTITION&t;&t;0xb7    /* BSDI Partition ID */
-multiline_comment|/* Ours is not to wonder why.. */
-DECL|macro|BSD_PARTITION
-mdefine_line|#define BSD_PARTITION&t;&t;FREEBSD_PARTITION
 multiline_comment|/* check against BSD src/sys/sys/disklabel.h for consistency */
 DECL|macro|BSD_DISKMAGIC
 mdefine_line|#define BSD_DISKMAGIC&t;(0x82564557UL)&t;/* The disk magic number */
@@ -591,9 +660,6 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_BSD_DISKLABEL */
 macro_line|#ifdef CONFIG_UNIXWARE_DISKLABEL
 multiline_comment|/*&n; * Unixware slices support by Andrzej Krzysztofowicz &lt;ankry@mif.pg.gda.pl&gt;&n; * and Krzysztof G. Baranowski &lt;kgb@knm.org.pl&gt;&n; */
-DECL|macro|UNIXWARE_PARTITION
-mdefine_line|#define UNIXWARE_PARTITION     0x63&t;&t;/* Partition ID, same as */
-multiline_comment|/* GNU_HURD and SCO Unix */
 DECL|macro|UNIXWARE_DISKMAGIC
 mdefine_line|#define UNIXWARE_DISKMAGIC     (0xCA5E600DUL)&t;/* The disk magic number */
 DECL|macro|UNIXWARE_DISKMAGIC2
@@ -794,8 +860,6 @@ suffix:semicolon
 multiline_comment|/* 408 */
 macro_line|#endif /* CONFIG_UNIXWARE_DISKLABEL */
 macro_line|#ifdef CONFIG_MINIX_SUBPARTITION
-DECL|macro|MINIX_PARTITION
-macro_line|#   define MINIX_PARTITION         0x81  /* Minix Partition ID */
 DECL|macro|MINIX_NR_SUBPARTITIONS
 macro_line|#   define MINIX_NR_SUBPARTITIONS  4
 macro_line|#endif /* CONFIG_MINIX_SUBPARTITION */

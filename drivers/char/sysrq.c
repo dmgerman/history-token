@@ -901,7 +901,6 @@ suffix:semicolon
 id|wakeup_bdflush
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -922,7 +921,7 @@ l_string|&quot;Unmount&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Emergency Remount R/0&quot;
+l_string|&quot;Emergency Remount R/O&quot;
 comma
 )brace
 suffix:semicolon

@@ -169,14 +169,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|net_notifier_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|free_initmem
 c_func
 (paren

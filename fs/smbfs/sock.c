@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/smb.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;smb_debug.h&quot;
+macro_line|#include &quot;proto.h&quot;
 r_static
 r_int
 DECL|function|_recvfrom
@@ -2723,6 +2724,7 @@ c_cond
 (paren
 id|error
 op_eq
+op_minus
 id|EBADSLT
 )paren
 (brace
@@ -3704,6 +3706,7 @@ c_cond
 (paren
 id|error
 op_eq
+op_minus
 id|EBADSLT
 )paren
 (brace

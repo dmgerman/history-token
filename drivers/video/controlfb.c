@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
@@ -3800,6 +3801,40 @@ id|p-&gt;info
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+id|btext_update_display
+c_func
+(paren
+id|p-&gt;frame_buffer_phys
+op_plus
+id|CTRLFB_OFF
+comma
+id|p-&gt;par.xres
+comma
+id|p-&gt;par.yres
+comma
+(paren
+id|cmode
+op_eq
+id|CMODE_32
+ques
+c_cond
+l_int|32
+suffix:colon
+id|cmode
+op_eq
+id|CMODE_16
+ques
+c_cond
+l_int|16
+suffix:colon
+l_int|8
+)paren
+comma
+id|p-&gt;par.pitch
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
 multiline_comment|/*&n; * Called from fbmem.c for probing &amp; intializing&n; */
 DECL|function|control_init

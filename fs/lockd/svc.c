@@ -3,6 +3,7 @@ DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -89,6 +90,14 @@ r_int
 id|nlm_timeout
 op_assign
 id|LOCKD_DFLT_TIMEO
+suffix:semicolon
+DECL|variable|nlm_udpport
+DECL|variable|nlm_tcpport
+r_int
+r_int
+id|nlm_udpport
+comma
+id|nlm_tcpport
 suffix:semicolon
 DECL|function|set_grace_period
 r_static
@@ -701,7 +710,7 @@ id|serv
 comma
 id|IPPROTO_UDP
 comma
-l_int|0
+id|nlm_udpport
 )paren
 )paren
 OL
@@ -718,7 +727,7 @@ id|serv
 comma
 id|IPPROTO_TCP
 comma
-l_int|0
+id|nlm_tcpport
 )paren
 )paren
 OL
@@ -992,6 +1001,22 @@ comma
 l_string|&quot;3-20l&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|nlm_udpport
+comma
+l_string|&quot;0-65535l&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|nlm_tcpport
+comma
+l_string|&quot;0-65535l&quot;
+)paren
+suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module
@@ -1035,6 +1060,80 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+multiline_comment|/* not a module, so process bootargs&n; * lockd.udpport and lockd.tcpport&n; */
+DECL|function|udpport_set
+r_static
+r_int
+id|__init
+id|udpport_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|nlm_udpport
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|str
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|tcpport_set
+r_static
+r_int
+id|__init
+id|tcpport_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|nlm_tcpport
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|str
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;lockd.udpport=&quot;
+comma
+id|udpport_set
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;lockd.tcpport=&quot;
+comma
+id|tcpport_set
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Define NLM program and procedures&n; */
 DECL|variable|nlmsvc_version1

@@ -750,7 +750,7 @@ id|BOTH_TIME_SET
 op_logical_and
 id|iap-&gt;ia_mtime
 op_eq
-id|iap-&gt;ia_ctime
+id|iap-&gt;ia_atime
 )paren
 (brace
 multiline_comment|/* looks good.  now just make sure time is in the right ballpark.&n;&t;     * solaris, at least, doesn&squot;t seem to care what the time request is&n;&t;     */

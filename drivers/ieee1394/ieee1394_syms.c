@@ -7,6 +7,7 @@ macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
+macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
 DECL|variable|hpsb_register_lowlevel
@@ -392,6 +393,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hpsb_guid_fill_packet
+)paren
+suffix:semicolon
+DECL|variable|hpsb_register_protocol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_register_protocol
+)paren
+suffix:semicolon
+DECL|variable|hpsb_unregister_protocol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_unregister_protocol
+)paren
+suffix:semicolon
+DECL|variable|hpsb_release_unit_directory
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_release_unit_directory
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

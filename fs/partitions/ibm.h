@@ -6,7 +6,9 @@ r_struct
 id|gendisk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 r_int

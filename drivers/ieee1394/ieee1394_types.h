@@ -25,6 +25,10 @@ macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#else
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#endif
+macro_line|#ifndef list_for_each_safe
+DECL|macro|list_for_each_safe
+mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)
+macro_line|#endif
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))

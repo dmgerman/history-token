@@ -517,7 +517,7 @@ id|length
 suffix:semicolon
 id|packet-&gt;type
 op_assign
-id|iso
+id|hpsb_iso
 suffix:semicolon
 id|packet-&gt;tcode
 op_assign
@@ -567,7 +567,7 @@ l_int|0
 suffix:semicolon
 id|packet-&gt;type
 op_assign
-id|raw
+id|hpsb_raw
 suffix:semicolon
 multiline_comment|/* No CRC added */
 id|packet-&gt;speed_code
@@ -1963,12 +1963,15 @@ id|packet
 r_return
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Sometimes this may be called without data, just to allocate the&n;&t; * packet. */
 r_if
 c_cond
 (paren
 id|length
 op_ne
 l_int|4
+op_logical_and
+id|buffer
 )paren
 id|memcpy
 c_func

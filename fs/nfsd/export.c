@@ -2229,7 +2229,7 @@ comma
 (brace
 l_string|&quot;async&quot;
 comma
-l_string|&quot;&quot;
+l_string|&quot;sync&quot;
 )brace
 )brace
 comma
@@ -2239,7 +2239,7 @@ comma
 (brace
 l_string|&quot;wdelay&quot;
 comma
-l_string|&quot;&quot;
+l_string|&quot;no_wdelay&quot;
 )brace
 )brace
 comma
@@ -2303,7 +2303,7 @@ l_string|&quot;&quot;
 )brace
 )brace
 comma
-macro_line|#ifdef NSMFS
+macro_line|#ifdef MSNFS
 (brace
 id|NFSEXP_MSNFS
 comma

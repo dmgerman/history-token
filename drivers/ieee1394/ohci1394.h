@@ -457,10 +457,6 @@ DECL|member|self_id_errors
 r_int
 id|self_id_errors
 suffix:semicolon
-DECL|member|NumBusResets
-r_int
-id|NumBusResets
-suffix:semicolon
 multiline_comment|/* video device */
 DECL|member|video_tmpl
 r_struct
@@ -476,11 +472,11 @@ id|selfid_swap
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Swap the payload? */
-DECL|member|payload_swap
+multiline_comment|/* Some Apple chipset seem to swap incoming headers for us */
+DECL|member|no_swap_incoming
 r_int
 r_int
-id|payload_swap
+id|no_swap_incoming
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -796,20 +792,25 @@ DECL|macro|OHCI1394_phyRegRcvd
 mdefine_line|#define OHCI1394_phyRegRcvd              0x04000000
 DECL|macro|OHCI1394_masterIntEnable
 mdefine_line|#define OHCI1394_masterIntEnable         0x80000000
-DECL|macro|OUTPUT_MORE
-mdefine_line|#define OUTPUT_MORE                      0x00000000
-DECL|macro|OUTPUT_MORE_IMMEDIATE
-mdefine_line|#define OUTPUT_MORE_IMMEDIATE            0x02000000
-DECL|macro|OUTPUT_LAST
-mdefine_line|#define OUTPUT_LAST                      0x103c0000
-DECL|macro|OUTPUT_LAST_IMMEDIATE
-mdefine_line|#define OUTPUT_LAST_IMMEDIATE            0x123c0000
-DECL|macro|DMA_SPEED_100
-mdefine_line|#define DMA_SPEED_100                    0x0
-DECL|macro|DMA_SPEED_200
-mdefine_line|#define DMA_SPEED_200                    0x1
-DECL|macro|DMA_SPEED_400
-mdefine_line|#define DMA_SPEED_400                    0x2
+multiline_comment|/* DMA Control flags */
+DECL|macro|DMA_CTL_OUTPUT_MORE
+mdefine_line|#define DMA_CTL_OUTPUT_MORE              0x00000000
+DECL|macro|DMA_CTL_OUTPUT_LAST
+mdefine_line|#define DMA_CTL_OUTPUT_LAST              0x10000000
+DECL|macro|DMA_CTL_INPUT_MORE
+mdefine_line|#define DMA_CTL_INPUT_MORE               0x20000000
+DECL|macro|DMA_CTL_INPUT_LAST
+mdefine_line|#define DMA_CTL_INPUT_LAST               0x30000000
+DECL|macro|DMA_CTL_UPDATE
+mdefine_line|#define DMA_CTL_UPDATE                   0x08000000
+DECL|macro|DMA_CTL_IMMEDIATE
+mdefine_line|#define DMA_CTL_IMMEDIATE                0x02000000
+DECL|macro|DMA_CTL_IRQ
+mdefine_line|#define DMA_CTL_IRQ                      0x00300000
+DECL|macro|DMA_CTL_BRANCH
+mdefine_line|#define DMA_CTL_BRANCH                   0x000c0000
+DECL|macro|DMA_CTL_WAIT
+mdefine_line|#define DMA_CTL_WAIT                     0x00030000
 DECL|macro|OHCI1394_TCODE_PHY
 mdefine_line|#define OHCI1394_TCODE_PHY               0xE
 r_void

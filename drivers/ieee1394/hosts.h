@@ -3,6 +3,7 @@ DECL|macro|_IEEE1394_HOSTS_H
 mdefine_line|#define _IEEE1394_HOSTS_H
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;csr.h&quot;
@@ -14,11 +15,10 @@ r_struct
 id|hpsb_host
 (brace
 multiline_comment|/* private fields (hosts, do not use them) */
-DECL|member|next
+DECL|member|list
 r_struct
-id|hpsb_host
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|generation
 id|atomic_t
@@ -238,16 +238,14 @@ DECL|struct|hpsb_host_template
 r_struct
 id|hpsb_host_template
 (brace
-DECL|member|next
+DECL|member|list
 r_struct
-id|hpsb_host_template
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|hosts
 r_struct
-id|hpsb_host
-op_star
+id|list_head
 id|hosts
 suffix:semicolon
 DECL|member|number_of_hosts

@@ -68,8 +68,18 @@ DECL|macro|ERRlock
 mdefine_line|#define ERRlock 33              /* Lock request conflicts with existing lock */
 DECL|macro|ERRfilexists
 mdefine_line|#define ERRfilexists 80         /* File in operation already exists */
-DECL|macro|ERRundocumented1
-mdefine_line|#define ERRundocumented1 123    /* Invalid name?? e.g. .tmp* */
+DECL|macro|ERRinvalidparam
+mdefine_line|#define ERRinvalidparam 87      /* ERROR_INVALID_PARAMETER */
+DECL|macro|ERRdiskfull
+mdefine_line|#define ERRdiskfull 112         /* ERROR_DISK_FULL */
+DECL|macro|ERRinvalidname
+mdefine_line|#define ERRinvalidname 123      /* ERROR_INVALID_NAME */
+DECL|macro|ERRdirnotempty
+mdefine_line|#define ERRdirnotempty 145      /* ERROR_DIR_NOT_EMPTY */
+DECL|macro|ERRnotlocked
+mdefine_line|#define ERRnotlocked 158        /* ERROR_NOT_LOCKED */
+DECL|macro|ERRexists
+mdefine_line|#define ERRexists 183           /* ERROR_ALREADY_EXISTS, see also 80 */
 DECL|macro|ERRbadpipe
 mdefine_line|#define ERRbadpipe 230          /* Named pipe invalid */
 DECL|macro|ERRpipebusy

@@ -705,14 +705,14 @@ id|_PAGE_RW
 op_or
 id|_PAGE_DIRTY
 suffix:semicolon
-macro_line|#ifndef CONFIG_8xx
+macro_line|#ifdef CONFIG_PPC_STD_MMU
 r_else
-multiline_comment|/* On the powerpc (not 8xx), no user access&n;&t;&t;&t;   forces R/W kernel access */
+multiline_comment|/* On the powerpc (not all), no user access&n;&t;&t;&t;   forces R/W kernel access */
 id|f
 op_or_assign
 id|_PAGE_USER
 suffix:semicolon
-macro_line|#endif /* CONFIG_8xx */
+macro_line|#endif /* CONFIG_PPC_STD_MMU */
 macro_line|#endif /* CONFIG_KGDB */
 id|map_page
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mmu_context.h 1.15 08/16/01 23:00:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.mmu_context.h 1.18 09/26/01 16:02:49 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_MMU_CONTEXT_H
 DECL|macro|__PPC_MMU_CONTEXT_H
@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 multiline_comment|/*&n; * On 32-bit PowerPC 6xx/7xx/7xxx CPUs, we use a set of 16 VSIDs&n; * (virtual segment identifiers) for each context.  Although the&n; * hardware supports 24-bit VSIDs, and thus &gt;1 million contexts,&n; * we only use 32,768 of them.  That is ample, since there can be&n; * at most around 30,000 tasks in the system anyway, and it means&n; * that we can use a bitmap to indicate which contexts are in use.&n; * Using a bitmap means that we entirely avoid all of the problems&n; * that we used to have when the context number overflowed,&n; * particularly on SMP systems.&n; *  -- paulus.&n; */
-multiline_comment|/*&n; * This function defines the mapping from contexts to VSIDs (virtual&n; * segment IDs).  We use a skew on both the context and the high 4 bits&n; * of the 32-bit virtual address (the &quot;effective segment ID&quot;) in order&n; * to spread out the entries in the MMU hash table.  Note, if this&n; * function is changed then arch/ppc/mm/hashtable.S will have to be&n; * changed correspondly.&n; */
+multiline_comment|/*&n; * This function defines the mapping from contexts to VSIDs (virtual&n; * segment IDs).  We use a skew on both the context and the high 4 bits&n; * of the 32-bit virtual address (the &quot;effective segment ID&quot;) in order&n; * to spread out the entries in the MMU hash table.  Note, if this&n; * function is changed then arch/ppc/mm/hashtable.S will have to be&n; * changed to correspond.&n; */
 DECL|macro|CTX_TO_VSID
 mdefine_line|#define CTX_TO_VSID(ctx, va)&t;(((ctx) * (897 * 16) + ((va) &gt;&gt; 28) * 0x111) &bslash;&n;&t;&t;&t;&t; &amp; 0xffffff)
 multiline_comment|/*&n;   The MPC8xx has only 16 contexts.  We rotate through them on each&n;   task switch.  A better way would be to keep track of tasks that&n;   own contexts, and implement an LRU usage.  That way very active&n;   tasks don&squot;t always have to pay the TLB reload overhead.  The&n;   kernel pages are mapped shared, so the kernel can run on behalf&n;   of any task that makes a kernel entry.  Shared does not mean they&n;   are not protected, just that the ASID comparison is not performed.&n;        -- Dan&n;&n;   The IBM4xx has 256 contexts, so we can just rotate through these&n;   as a way of &quot;switching&quot; contexts.  If the TID of the TLB is zero,&n;   the PID/TID comparison is disabled, so we can use a TID of zero&n;   to represent all kernel pages as shared among all contexts.&n;   &t;-- Dan&n; */
@@ -77,21 +77,6 @@ r_int
 r_int
 id|context_map
 (braket
-(paren
-id|LAST_CONTEXT
-op_plus
-l_int|1
-)paren
-op_div
-(paren
-l_int|8
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * This caches the next context number that we expect to be free.&n; * Its use is an optimization only, we can&squot;t rely on this context&n; * number to be free, but it usually will be.&n; */

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;proto.h&quot;
 r_int
 DECL|function|smb_ioctl
 id|smb_ioctl
@@ -104,15 +105,25 @@ suffix:semicolon
 r_case
 id|SMB_IOC_NEWCONN
 suffix:colon
-multiline_comment|/* require an argument == smb_conn_opt, else it is EINVAL */
+multiline_comment|/* arg is smb_conn_opt, or NULL if no connection was made */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|arg
 )paren
+(brace
+id|result
+op_assign
+id|smb_wakeup
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 id|result
 op_assign
 op_minus

@@ -47,6 +47,8 @@ mdefine_line|#define DEBUG_SPINLOCKS&t;0&t;/* 0 == no debugging, 1 == maintain l
 macro_line|#if (DEBUG_SPINLOCKS &lt; 1)
 DECL|macro|atomic_dec_and_lock
 mdefine_line|#define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
+DECL|macro|ATOMIC_DEC_AND_LOCK
+mdefine_line|#define ATOMIC_DEC_AND_LOCK
 multiline_comment|/*&n; * Your basic spinlocks, allowing only a single CPU anywhere&n; *&n; * Most gcc versions have a nasty bug with empty initializers.&n; */
 macro_line|#if (__GNUC__ &gt; 2)
 DECL|typedef|spinlock_t
@@ -193,7 +195,7 @@ DECL|macro|write_unlock
 mdefine_line|#define write_unlock(lock)&t;do { } while(0)
 macro_line|#endif /* !SMP */
 multiline_comment|/* &quot;lock on reference count zero&quot; */
-macro_line|#ifndef atomic_dec_and_lock
+macro_line|#ifndef ATOMIC_DEC_AND_LOCK
 macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
 r_int

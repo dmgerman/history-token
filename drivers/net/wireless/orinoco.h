@@ -27,7 +27,7 @@ mdefine_line|#define IRQ_LOOP_MAX&t;&t;10
 DECL|macro|TX_NICBUF_SIZE
 mdefine_line|#define TX_NICBUF_SIZE&t;&t;2048
 DECL|macro|TX_NICBUF_SIZE_BUG
-mdefine_line|#define TX_NICBUF_SIZE_BUG&t;1585&t;&t;/* Bug in Intel firmware */
+mdefine_line|#define TX_NICBUF_SIZE_BUG&t;1585&t;&t;/* Bug in Symbol firmware */
 DECL|macro|MAX_KEYS
 mdefine_line|#define MAX_KEYS&t;&t;4
 DECL|macro|MAX_KEY_SIZE
@@ -351,7 +351,7 @@ r_int
 id|dldwd_debug
 suffix:semicolon
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (dldwd_debug&gt;(n)) printk(KERN_DEBUG args)
+mdefine_line|#define DEBUG(n, args...) do { if (dldwd_debug&gt;(n)) printk(KERN_DEBUG args); } while(0)
 DECL|macro|DEBUGMORE
 mdefine_line|#define DEBUGMORE(n, args...) do { if (dldwd_debug&gt;(n)) printk(args); } while (0)
 macro_line|#else
@@ -364,10 +364,6 @@ DECL|macro|TRACE_ENTER
 mdefine_line|#define TRACE_ENTER(devname) DEBUG(2, &quot;%s: -&gt; &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
 DECL|macro|TRACE_EXIT
 mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
-DECL|macro|MAX
-mdefine_line|#define MAX(a, b) ( (a) &gt; (b) ? (a) : (b) )
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b) ( (a) &lt; (b) ? (a) : (b) )
 DECL|macro|RUP_EVEN
 mdefine_line|#define RUP_EVEN(a) ( (a) % 2 ? (a) + 1 : (a) )
 multiline_comment|/* struct net_device methods */

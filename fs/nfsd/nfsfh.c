@@ -2960,9 +2960,16 @@ id|dentry
 op_eq
 id|exp-&gt;ex_dentry
 )paren
+(brace
+op_star
+id|maxsize
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -36,6 +36,8 @@ DECL|macro|HERMES_MAX_MULTICAST
 mdefine_line|#define&t;&t;HERMES_MAX_MULTICAST&t;&t;(16)
 DECL|macro|HERMES_MAGIC
 mdefine_line|#define&t;&t;HERMES_MAGIC&t;&t;&t;(0x7d1f)
+DECL|macro|HERMES_SYMBOL_MAX_VER
+mdefine_line|#define&t;&t;HERMES_SYMBOL_MAX_VER&t;&t;(14)
 multiline_comment|/*&n; * Hermes register offsets&n; */
 DECL|macro|HERMES_CMD
 mdefine_line|#define&t;&t;HERMES_CMD&t;&t;&t;(0x00)
@@ -267,54 +269,51 @@ DECL|macro|HERMES_RID_CURRENT_CHANNEL
 mdefine_line|#define&t;&t;HERMES_RID_CURRENT_CHANNEL&t;(0xfdc1)
 DECL|macro|HERMES_RID_DATARATES
 mdefine_line|#define&t;&t;HERMES_RID_DATARATES&t;&t;(0xfdc6)
-DECL|macro|HERMES_RID_SYMBOL_PRIMARY_VER
-mdefine_line|#define&t;&t;HERMES_RID_SYMBOL_PRIMARY_VER&t;(0xfd03)
 DECL|macro|HERMES_RID_SYMBOL_SECONDARY_VER
-mdefine_line|#define&t;&t;HERMES_RID_SYMBOL_SECONDARY_VER&t;(0xfd21)
+mdefine_line|#define&t;&t;HERMES_RID_SYMBOL_SECONDARY_VER&t;(0xfd24)
 DECL|macro|HERMES_RID_SYMBOL_KEY_LENGTH
 mdefine_line|#define&t;&t;HERMES_RID_SYMBOL_KEY_LENGTH&t;(0xfc2B)
 multiline_comment|/*&n; * Frame structures and constants&n; */
-DECL|macro|__PACKED__
-mdefine_line|#define __PACKED__ __attribute__ ((packed))
 DECL|struct|hermes_frame_desc
 r_typedef
 r_struct
 id|hermes_frame_desc
 (brace
 multiline_comment|/* Hermes - i.e. little-endian byte-order */
-DECL|member|__PACKED__
+DECL|member|status
 r_uint16
 id|status
-id|__PACKED__
 suffix:semicolon
 DECL|member|res1
-DECL|member|__PACKED__
+DECL|member|res2
 r_uint16
 id|res1
 comma
 id|res2
-id|__PACKED__
 suffix:semicolon
-DECL|member|__PACKED__
+DECL|member|q_info
 r_uint16
 id|q_info
-id|__PACKED__
 suffix:semicolon
 DECL|member|res3
-DECL|member|__PACKED__
+DECL|member|res4
 r_uint16
 id|res3
 comma
 id|res4
-id|__PACKED__
 suffix:semicolon
-DECL|member|__PACKED__
+DECL|member|tx_ctl
 r_uint16
 id|tx_ctl
-id|__PACKED__
 suffix:semicolon
 DECL|typedef|hermes_frame_desc_t
 )brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|hermes_frame_desc_t
 suffix:semicolon
 DECL|macro|HERMES_RXSTAT_ERR
@@ -439,11 +438,6 @@ DECL|macro|hermes_read_regn
 mdefine_line|#define hermes_read_regn(hw, name) (hermes_read_reg((hw), HERMES_##name))
 DECL|macro|hermes_write_regn
 mdefine_line|#define hermes_write_regn(hw, name, val) (hermes_write_reg((hw), HERMES_##name, (val)))
-multiline_comment|/* Note that for the next two, the count is in 16-bit words, not bytes */
-DECL|macro|hermes_read_data
-mdefine_line|#define hermes_read_data(hw, off, buf, count) (insw((hw)-&gt;iobase + (off), (buf), (count)))
-DECL|macro|hermes_write_data
-mdefine_line|#define hermes_write_data(hw, off, buf, count) (outsw((hw)-&gt;iobase + (off), (buf), (count)))
 multiline_comment|/* Function prototypes */
 r_void
 id|hermes_struct_init
@@ -502,6 +496,24 @@ id|fid
 )paren
 suffix:semicolon
 r_int
+id|hermes_bap_seek
+c_func
+(paren
+id|hermes_t
+op_star
+id|hw
+comma
+r_int
+id|bap
+comma
+r_uint16
+id|id
+comma
+r_uint16
+id|offset
+)paren
+suffix:semicolon
+r_int
 id|hermes_bap_pread
 c_func
 (paren
@@ -516,7 +528,7 @@ r_void
 op_star
 id|buf
 comma
-r_uint16
+r_int
 id|len
 comma
 r_uint16
@@ -542,7 +554,7 @@ r_void
 op_star
 id|buf
 comma
-r_uint16
+r_int
 id|len
 comma
 r_uint16
@@ -768,6 +780,11 @@ DECL|macro|HERMES_BYTES_TO_RECLEN
 mdefine_line|#define HERMES_BYTES_TO_RECLEN(n) ( ((n) % 2) ? (((n)+1)/2)+1 : ((n)/2)+1 )
 DECL|macro|HERMES_RECLEN_TO_BYTES
 mdefine_line|#define HERMES_RECLEN_TO_BYTES(n) ( ((n)-1) * 2 )
+multiline_comment|/* Note that for the next two, the count is in 16-bit words, not bytes */
+DECL|macro|hermes_read_words
+mdefine_line|#define hermes_read_words(hw, off, buf, count) (insw((hw)-&gt;iobase + (off), (buf), (count)))
+DECL|macro|hermes_write_words
+mdefine_line|#define hermes_write_words(hw, off, buf, count) (outsw((hw)-&gt;iobase + (off), (buf), (count)))
 DECL|macro|HERMES_READ_RECORD
 mdefine_line|#define HERMES_READ_RECORD(hw, bap, rid, buf) &bslash;&n;&t;(hermes_read_ltv((hw),(bap),(rid), sizeof(*buf), NULL, (buf)))
 DECL|macro|HERMES_WRITE_RECORD

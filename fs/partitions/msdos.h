@@ -10,8 +10,10 @@ id|gendisk
 op_star
 id|hd
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 r_int

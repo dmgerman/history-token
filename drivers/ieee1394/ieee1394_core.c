@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -17,6 +18,30 @@ macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
 macro_line|#include &quot;csr.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
+multiline_comment|/*&n; * Disable the nodemgr detection and config rom reading functionality.&n; */
+id|MODULE_PARM
+c_func
+(paren
+id|disable_nodemgr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|disable_nodemgr
+comma
+l_string|&quot;Disable nodemgr functionality.&quot;
+)paren
+suffix:semicolon
+DECL|variable|disable_nodemgr
+r_static
+r_int
+id|disable_nodemgr
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|hpsb_packet_cache
 r_static
 id|kmem_cache_t
@@ -252,7 +277,7 @@ l_int|0
 suffix:semicolon
 id|packet-&gt;state
 op_assign
-id|unused
+id|hpsb_unused
 suffix:semicolon
 id|packet-&gt;generation
 op_assign
@@ -1585,7 +1610,7 @@ id|packet-&gt;expect_response
 (brace
 id|packet-&gt;state
 op_assign
-id|completed
+id|hpsb_complete
 suffix:semicolon
 id|up
 c_func
@@ -1613,7 +1638,7 @@ suffix:semicolon
 )brace
 id|packet-&gt;state
 op_assign
-id|pending
+id|hpsb_pending
 suffix:semicolon
 id|packet-&gt;sendtime
 op_assign
@@ -1709,14 +1734,14 @@ suffix:semicolon
 )brace
 id|packet-&gt;state
 op_assign
-id|queued
+id|hpsb_queued
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|packet-&gt;type
 op_eq
-id|async
+id|hpsb_async
 op_logical_and
 id|packet-&gt;node_id
 op_ne
@@ -2245,7 +2270,7 @@ suffix:semicolon
 )brace
 id|packet-&gt;state
 op_assign
-id|completed
+id|hpsb_complete
 suffix:semicolon
 id|up
 c_func
@@ -2263,6 +2288,7 @@ id|packet-&gt;complete_tq
 suffix:semicolon
 )brace
 DECL|function|create_reply_packet
+r_static
 r_struct
 id|hpsb_packet
 op_star
@@ -2329,11 +2355,11 @@ suffix:semicolon
 )brace
 id|p-&gt;type
 op_assign
-id|async
+id|hpsb_async
 suffix:semicolon
 id|p-&gt;state
 op_assign
-id|unused
+id|hpsb_unused
 suffix:semicolon
 id|p-&gt;host
 op_assign
@@ -2365,6 +2391,14 @@ id|p-&gt;no_waiter
 op_assign
 l_int|1
 suffix:semicolon
+id|p-&gt;generation
+op_assign
+id|get_hpsb_generation
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2390,6 +2424,7 @@ suffix:semicolon
 DECL|macro|PREP_REPLY_PACKET
 mdefine_line|#define PREP_REPLY_PACKET(length) &bslash;&n;                packet = create_reply_packet(host, data, length); &bslash;&n;                if (packet == NULL) break
 DECL|function|handle_incoming_packet
+r_static
 r_void
 id|handle_incoming_packet
 c_func
@@ -3374,7 +3409,7 @@ id|list
 suffix:semicolon
 id|packet-&gt;state
 op_assign
-id|completed
+id|hpsb_complete
 suffix:semicolon
 id|packet-&gt;ack_code
 op_assign
@@ -3424,6 +3459,9 @@ r_struct
 id|list_head
 op_star
 id|lh
+comma
+op_star
+id|next
 suffix:semicolon
 id|LIST_HEAD
 c_func
@@ -3480,13 +3518,21 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_for_each
-c_func
+r_for
+c_loop
 (paren
 id|lh
-comma
+op_assign
+id|host-&gt;pending_packets.next
+suffix:semicolon
+id|lh
+op_ne
 op_amp
 id|host-&gt;pending_packets
+suffix:semicolon
+id|lh
+op_assign
+id|next
 )paren
 (brace
 id|packet
@@ -3501,6 +3547,10 @@ id|hpsb_packet
 comma
 id|list
 )paren
+suffix:semicolon
+id|next
+op_assign
+id|lh-&gt;next
 suffix:semicolon
 r_if
 c_cond
@@ -3591,7 +3641,7 @@ id|list
 suffix:semicolon
 id|packet-&gt;state
 op_assign
-id|completed
+id|hpsb_complete
 suffix:semicolon
 id|packet-&gt;ack_code
 op_assign
@@ -3655,9 +3705,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disable_nodemgr
+)paren
 id|init_ieee1394_nodemgr
 c_func
 (paren
+)paren
+suffix:semicolon
+r_else
+id|HPSB_INFO
+c_func
+(paren
+l_string|&quot;nodemgr functionality disabled&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3674,6 +3737,12 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disable_nodemgr
+)paren
 id|cleanup_ieee1394_nodemgr
 c_func
 (paren

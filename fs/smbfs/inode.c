@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;smb_debug.h&quot;
 macro_line|#include &quot;getopt.h&quot;
+macro_line|#include &quot;proto.h&quot;
 multiline_comment|/* Always pick a default string */
 macro_line|#ifdef CONFIG_SMB_NLS_REMOTE
 DECL|macro|SMB_NLS_REMOTE
@@ -808,6 +809,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: flags and has_arg could probably be merged. */
 DECL|variable|opts
+r_static
 r_struct
 id|option
 id|opts
@@ -1225,12 +1227,6 @@ c_cond
 id|server-&gt;sock_file
 )paren
 (brace
-id|smb_proc_disconnect
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
 id|smb_dont_catch_keepalive
 c_func
 (paren
@@ -1268,7 +1264,7 @@ suffix:semicolon
 id|smb_kfree
 c_func
 (paren
-id|sb-&gt;u.smbfs_sb.temp_buf
+id|server-&gt;temp_buf
 )paren
 suffix:semicolon
 r_if
@@ -1285,16 +1281,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;u.smbfs_sb.remote_nls
+id|server-&gt;remote_nls
 )paren
 (brace
 id|unload_nls
 c_func
 (paren
-id|sb-&gt;u.smbfs_sb.remote_nls
+id|server-&gt;remote_nls
 )paren
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.remote_nls
+id|server-&gt;remote_nls
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1302,16 +1298,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;u.smbfs_sb.local_nls
+id|server-&gt;local_nls
 )paren
 (brace
 id|unload_nls
 c_func
 (paren
-id|sb-&gt;u.smbfs_sb.local_nls
+id|server-&gt;local_nls
 )paren
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.local_nls
+id|server-&gt;local_nls
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1337,6 +1333,14 @@ r_int
 id|silent
 )paren
 (brace
+r_struct
+id|smb_sb_info
+op_star
+id|server
+op_assign
+op_amp
+id|sb-&gt;u.smbfs_sb
+suffix:semicolon
 r_struct
 id|smb_mount_data_kernel
 op_star
@@ -1417,11 +1421,11 @@ op_assign
 op_amp
 id|smb_sops
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.mnt
+id|server-&gt;mnt
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.sock_file
+id|server-&gt;sock_file
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1429,30 +1433,30 @@ id|init_MUTEX
 c_func
 (paren
 op_amp
-id|sb-&gt;u.smbfs_sb.sem
+id|server-&gt;sem
 )paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|sb-&gt;u.smbfs_sb.wait
+id|server-&gt;wait
 )paren
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.conn_pid
+id|server-&gt;conn_pid
 op_assign
 l_int|0
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.state
+id|server-&gt;state
 op_assign
 id|CONN_INVALID
 suffix:semicolon
 multiline_comment|/* no connection yet */
-id|sb-&gt;u.smbfs_sb.generation
+id|server-&gt;generation
 op_assign
 l_int|0
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.packet_size
+id|server-&gt;packet_size
 op_assign
 id|smb_round_length
 c_func
@@ -1460,25 +1464,25 @@ c_func
 id|SMB_INITIAL_PACKET_SIZE
 )paren
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.packet
+id|server-&gt;packet
 op_assign
 id|smb_vmalloc
 c_func
 (paren
-id|sb-&gt;u.smbfs_sb.packet_size
+id|server-&gt;packet_size
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|sb-&gt;u.smbfs_sb.packet
+id|server-&gt;packet
 )paren
 r_goto
 id|out_no_mem
 suffix:semicolon
 multiline_comment|/* Allocate the global temp buffer */
-id|sb-&gt;u.smbfs_sb.temp_buf
+id|server-&gt;temp_buf
 op_assign
 id|smb_kmalloc
 c_func
@@ -1496,23 +1500,23 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sb-&gt;u.smbfs_sb.temp_buf
+id|server-&gt;temp_buf
 )paren
 r_goto
 id|out_no_temp
 suffix:semicolon
 multiline_comment|/* Setup NLS stuff */
-id|sb-&gt;u.smbfs_sb.remote_nls
+id|server-&gt;remote_nls
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.local_nls
+id|server-&gt;local_nls
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.name_buf
+id|server-&gt;name_buf
 op_assign
-id|sb-&gt;u.smbfs_sb.temp_buf
+id|server-&gt;temp_buf
 op_plus
 id|SMB_MAXPATHLEN
 op_plus
@@ -1543,7 +1547,7 @@ id|mnt
 r_goto
 id|out_no_mount
 suffix:semicolon
-id|sb-&gt;u.smbfs_sb.mnt
+id|server-&gt;mnt
 op_assign
 id|mnt
 suffix:semicolon
@@ -1675,23 +1679,10 @@ suffix:semicolon
 id|smb_setcodepage
 c_func
 (paren
-op_amp
-id|sb-&gt;u.smbfs_sb
+id|server
 comma
 op_amp
 id|mnt-&gt;codepage
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sb-&gt;u.smbfs_sb.convert
-)paren
-id|PARANOIA
-c_func
-(paren
-l_string|&quot;convert funcptr was NULL!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Display the enabled options&n;&t; * Note: smb_proc_getattr uses these in 2.4 (but was changed in 2.2)&n;&t; */
@@ -1726,10 +1717,7 @@ multiline_comment|/*&n;&t; * Keep the super block locked while we get the root i
 id|smb_init_root_dirent
 c_func
 (paren
-op_amp
-(paren
-id|sb-&gt;u.smbfs_sb
-)paren
+id|server
 comma
 op_amp
 id|root
@@ -1794,7 +1782,7 @@ suffix:colon
 id|smb_kfree
 c_func
 (paren
-id|sb-&gt;u.smbfs_sb.mnt
+id|server-&gt;mnt
 )paren
 suffix:semicolon
 id|out_no_mount
@@ -1802,7 +1790,7 @@ suffix:colon
 id|smb_kfree
 c_func
 (paren
-id|sb-&gt;u.smbfs_sb.temp_buf
+id|server-&gt;temp_buf
 )paren
 suffix:semicolon
 id|out_no_temp
@@ -1810,7 +1798,7 @@ suffix:colon
 id|smb_vfree
 c_func
 (paren
-id|sb-&gt;u.smbfs_sb.packet
+id|server-&gt;packet
 )paren
 suffix:semicolon
 id|out_no_mem
@@ -1819,7 +1807,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sb-&gt;u.smbfs_sb.mnt
+id|server-&gt;mnt
 )paren
 id|printk
 c_func
@@ -1877,6 +1865,9 @@ op_star
 id|buf
 )paren
 (brace
+r_int
+id|result
+op_assign
 id|smb_proc_dskattr
 c_func
 (paren
@@ -1894,7 +1885,7 @@ op_assign
 id|SMB_MAXPATHLEN
 suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 r_int

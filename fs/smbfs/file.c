@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &quot;smb_debug.h&quot;
+macro_line|#include &quot;proto.h&quot;
 r_static
 r_int
 DECL|function|smb_fsync

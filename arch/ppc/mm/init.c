@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.init.c 1.34 08/20/01 22:12:43 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.init.c 1.36 09/22/01 14:03:09 paulus&n; */
 multiline_comment|/*&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -23,10 +23,18 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &quot;mem_pieces.h&quot;
 macro_line|#include &quot;mmu_decl.h&quot;
 DECL|macro|MAX_LOW_MEM
 mdefine_line|#define MAX_LOW_MEM&t;(0xF0000000UL - KERNELBASE)
+DECL|variable|mmu_gathers
+id|mmu_gather_t
+id|mmu_gathers
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|variable|end_of_DRAM
 r_void
 op_star

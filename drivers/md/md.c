@@ -302,6 +302,7 @@ suffix:semicolon
 DECL|function|add_mddev_mapping
 r_void
 id|add_mddev_mapping
+c_func
 (paren
 id|mddev_t
 op_star
@@ -354,8 +355,6 @@ id|minor
 )braket
 dot
 id|mddev
-op_ne
-l_int|NULL
 )paren
 (brace
 id|MD_BUG
@@ -388,6 +387,7 @@ suffix:semicolon
 DECL|function|del_mddev_mapping
 r_void
 id|del_mddev_mapping
+c_func
 (paren
 id|mddev_t
 op_star
@@ -471,6 +471,7 @@ DECL|function|md_make_request
 r_static
 r_int
 id|md_make_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -533,6 +534,7 @@ r_static
 id|mddev_t
 op_star
 id|alloc_mddev
+c_func
 (paren
 id|kdev_t
 id|dev
@@ -790,6 +792,7 @@ DECL|function|partition_name
 r_char
 op_star
 id|partition_name
+c_func
 (paren
 id|kdev_t
 id|dev
@@ -969,6 +972,7 @@ r_static
 r_int
 r_int
 id|calc_dev_sboffset
+c_func
 (paren
 id|kdev_t
 id|dev
@@ -1039,6 +1043,7 @@ r_static
 r_int
 r_int
 id|calc_dev_size
+c_func
 (paren
 id|kdev_t
 id|dev
@@ -1108,6 +1113,7 @@ r_static
 r_int
 r_int
 id|zoned_raid_size
+c_func
 (paren
 id|mddev_t
 op_star
@@ -1190,6 +1196,7 @@ multiline_comment|/*&n; * We check wether all devices are numbered from 0 to nb_
 DECL|function|md_check_ordering
 r_int
 id|md_check_ordering
+c_func
 (paren
 id|mddev_t
 op_star
@@ -1230,6 +1237,7 @@ id|rdev-&gt;faulty
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: md%d&squot;s device %s faulty, aborting.&bslash;n&quot;
 comma
 id|mdidx
@@ -1296,6 +1304,7 @@ id|mddev-&gt;sb-&gt;raid_disks
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: md%d, array needs %d disks, has %d, aborting.&bslash;n&quot;
 comma
 id|mdidx
@@ -1364,6 +1373,7 @@ id|c
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: md%d, missing disk #%d, aborting.&bslash;n&quot;
 comma
 id|mdidx
@@ -1390,6 +1400,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: md%d, too many disks #%d, aborting.&bslash;n&quot;
 comma
 id|mdidx
@@ -1419,6 +1430,7 @@ DECL|function|remove_descriptor
 r_static
 r_void
 id|remove_descriptor
+c_func
 (paren
 id|mdp_disk_t
 op_star
@@ -1501,6 +1513,7 @@ DECL|function|alloc_array_sb
 r_static
 r_int
 id|alloc_array_sb
+c_func
 (paren
 id|mddev_t
 op_star
@@ -1557,6 +1570,7 @@ DECL|function|alloc_disk_sb
 r_static
 r_int
 id|alloc_disk_sb
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -1593,6 +1607,7 @@ id|rdev-&gt;sb
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|OUT_OF_MEM
 )paren
@@ -1616,6 +1631,7 @@ DECL|function|free_disk_sb
 r_static
 r_void
 id|free_disk_sb
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -1670,6 +1686,7 @@ DECL|function|read_disk_sb
 r_static
 r_int
 id|read_disk_sb
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -1735,20 +1752,6 @@ id|rdev-&gt;sb_offset
 op_assign
 id|sb_offset
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;(read) %s&squot;s sb offset: %ld&quot;
-comma
-id|partition_name
-c_func
-(paren
-id|dev
-)paren
-comma
-id|sb_offset
-)paren
-suffix:semicolon
 id|fsync_dev
 c_func
 (paren
@@ -1802,6 +1805,7 @@ suffix:semicolon
 r_else
 (brace
 id|printk
+c_func
 (paren
 id|NO_SB
 comma
@@ -1819,6 +1823,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot; [events: %08lx]&bslash;n&quot;
 comma
 (paren
@@ -1853,6 +1858,7 @@ r_static
 r_int
 r_int
 id|calc_sb_csum
+c_func
 (paren
 id|mdp_super_t
 op_star
@@ -1902,6 +1908,7 @@ DECL|function|check_disk_sb
 r_static
 r_int
 id|check_disk_sb
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -1947,6 +1954,7 @@ id|MD_SB_MAGIC
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|BAD_MAGIC
 comma
@@ -1970,6 +1978,7 @@ id|MAX_MD_DEVS
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|BAD_MINOR
 comma
@@ -2210,6 +2219,7 @@ DECL|function|bind_rdev_to_array
 r_static
 r_void
 id|bind_rdev_to_array
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -2299,6 +2309,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: bind&lt;%s,%d&gt;&bslash;n&quot;
 comma
 id|partition_name
@@ -2315,6 +2326,7 @@ DECL|function|unbind_rdev_from_array
 r_static
 r_void
 id|unbind_rdev_from_array
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -2356,6 +2368,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: unbind&lt;%s,%d&gt;&bslash;n&quot;
 comma
 id|partition_name
@@ -2377,6 +2390,7 @@ DECL|function|lock_rdev
 r_static
 r_int
 id|lock_rdev
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -2404,9 +2418,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|bdev
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -2446,6 +2459,7 @@ DECL|function|unlock_rdev
 r_static
 r_void
 id|unlock_rdev
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -2485,6 +2499,7 @@ suffix:semicolon
 )brace
 r_void
 id|md_autodetect_dev
+c_func
 (paren
 id|kdev_t
 id|dev
@@ -2494,6 +2509,7 @@ DECL|function|export_rdev
 r_static
 r_void
 id|export_rdev
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -2503,6 +2519,7 @@ id|rdev
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: export_rdev(%s)&bslash;n&quot;
 comma
 id|partition_name
@@ -2560,6 +2577,7 @@ id|rdev-&gt;pending
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: (%s was pending)&bslash;n&quot;
 comma
 id|partition_name
@@ -2611,6 +2629,7 @@ DECL|function|kick_rdev_from_array
 r_static
 r_void
 id|kick_rdev_from_array
+c_func
 (paren
 id|mdk_rdev_t
 op_star
@@ -2634,6 +2653,7 @@ DECL|function|export_array
 r_static
 r_void
 id|export_array
+c_func
 (paren
 id|mddev_t
 op_star
@@ -2723,6 +2743,7 @@ DECL|function|free_mddev
 r_static
 r_void
 id|free_mddev
+c_func
 (paren
 id|mddev_t
 op_star
@@ -2915,6 +2936,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md:  SB: (V:%d.%d.%d) ID:&lt;%08x.%08x.%08x.%08x&gt; CT:%08x&bslash;n&quot;
 comma
 id|sb-&gt;major_version
@@ -2937,6 +2959,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md:     L%d S%08d ND:%d RD:%d md%d LO:%d CS:%d&bslash;n&quot;
 comma
 id|sb-&gt;level
@@ -2957,6 +2980,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md:     UT:%08x ST:%d AD:%d WD:%d FD:%d SD:%d CSUM:%08x E:%08lx&bslash;n&quot;
 comma
 id|sb-&gt;utime
@@ -2978,6 +3002,12 @@ r_int
 r_int
 )paren
 id|sb-&gt;events_lo
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
 )paren
 suffix:semicolon
 r_for
@@ -3046,6 +3076,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md:     THIS: &quot;
 )paren
 suffix:semicolon
@@ -3071,6 +3102,7 @@ id|rdev
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: rdev %s: O:%s, SZ:%08ld F:%d DN:%d &quot;
 comma
 id|partition_name
@@ -3101,6 +3133,7 @@ id|rdev-&gt;sb
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: rdev superblock:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3115,6 +3148,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: no rdev superblock!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3122,6 +3156,7 @@ suffix:semicolon
 DECL|function|md_print_devices
 r_void
 id|md_print_devices
+c_func
 (paren
 r_void
 )paren
@@ -3266,6 +3301,7 @@ DECL|function|sb_equal
 r_static
 r_int
 id|sb_equal
+c_func
 (paren
 id|mdp_super_t
 op_star
@@ -3466,6 +3502,7 @@ r_static
 id|mdk_rdev_t
 op_star
 id|find_rdev_all
+c_func
 (paren
 id|kdev_t
 id|dev
@@ -3630,6 +3667,7 @@ id|sb_offset
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s&squot;s sb offset has changed from %ld to %ld, skipping&bslash;n&quot;
 comma
 id|partition_name
@@ -3671,6 +3709,7 @@ id|rdev-&gt;size
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s&squot;s size has changed from %ld to %ld since import, skipping&bslash;n&quot;
 comma
 id|partition_name
@@ -3691,6 +3730,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;(write) %s&squot;s sb offset: %ld&bslash;n&quot;
 comma
 id|partition_name
@@ -3831,7 +3871,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|GETBLK_FAILED
-macro_line|#undef GETBLK_FAILED 
+macro_line|#undef GETBLK_FAILED
 DECL|function|set_this_disk
 r_static
 r_void
@@ -4145,6 +4185,7 @@ id|tmp
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: &quot;
 )paren
 suffix:semicolon
@@ -4237,6 +4278,7 @@ id|count
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: errors occurred during superblock update, repeating&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4247,6 +4289,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: excessive errors occurred during superblock update, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4260,6 +4303,7 @@ DECL|function|md_import_device
 r_static
 r_int
 id|md_import_device
+c_func
 (paren
 id|kdev_t
 id|newdev
@@ -4320,6 +4364,7 @@ id|rdev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: could not alloc mem for %s!&bslash;n&quot;
 comma
 id|partition_name
@@ -4361,6 +4406,7 @@ id|newdev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: can not import %s, has active inodes!&bslash;n&quot;
 comma
 id|partition_name
@@ -4412,6 +4458,7 @@ id|rdev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: could not lock %s, zero-size? Marking faulty.&bslash;n&quot;
 comma
 id|partition_name
@@ -4483,6 +4530,7 @@ id|size
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: %s has zero size, marking faulty!&bslash;n&quot;
 comma
 id|partition_name
@@ -4524,6 +4572,7 @@ id|rdev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: could not read %s&squot;s sb, not importing!&bslash;n&quot;
 comma
 id|partition_name
@@ -4554,6 +4603,7 @@ id|rdev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: %s has invalid sb, not importing!&bslash;n&quot;
 comma
 id|partition_name
@@ -4694,6 +4744,7 @@ DECL|function|analyze_sbs
 r_static
 r_int
 id|analyze_sbs
+c_func
 (paren
 id|mddev_t
 op_star
@@ -4829,6 +4880,7 @@ id|rdev-&gt;sb
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|INCONSISTENT
 comma
@@ -4928,6 +4980,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: %s&squot;s event counter: %08lx&bslash;n&quot;
 comma
 id|partition_name
@@ -5014,6 +5067,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: freshest: %s&bslash;n&quot;
 comma
 id|partition_name
@@ -5084,6 +5138,7 @@ id|ev2
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: kicking non-fresh %s from array!&bslash;n&quot;
 comma
 id|partition_name
@@ -5200,6 +5255,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: device name has changed from %s to %s since last import!&bslash;n&quot;
 comma
 id|partition_name
@@ -5387,6 +5443,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md%d: kicking faulty %s!&bslash;n&quot;
 comma
 id|mdidx
@@ -5440,6 +5497,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md%d: removing former faulty %s!&bslash;n&quot;
 comma
 id|mdidx
@@ -5599,6 +5657,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md%d: former device %s is unavailable, removing from array!&bslash;n&quot;
 comma
 id|mdidx
@@ -5937,6 +5996,7 @@ id|MD_MINOR_VERSION
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|OLD_VERSION
 comma
@@ -5991,6 +6051,7 @@ l_int|5
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|NOT_CLEAN_IGNORE
 comma
@@ -6022,6 +6083,7 @@ DECL|function|device_size_calculation
 r_static
 r_int
 id|device_size_calculation
+c_func
 (paren
 id|mddev_t
 op_star
@@ -6114,6 +6176,7 @@ l_int|1024
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;md: Dev %s smaller than chunk_size: %ldk &lt; %dk&bslash;n&quot;
@@ -6230,6 +6293,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 id|UNKNOWN_LEVEL
 comma
@@ -6438,6 +6502,7 @@ DECL|function|do_md_run
 r_static
 r_int
 id|do_md_run
+c_func
 (paren
 id|mddev_t
 op_star
@@ -6900,6 +6965,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: pers-&gt;run() failed ...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6999,6 +7065,7 @@ DECL|function|restart_array
 r_static
 r_int
 id|restart_array
+c_func
 (paren
 id|mddev_t
 op_star
@@ -7060,6 +7127,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;md: md%d switched to read-write mode.&bslash;n&quot;
@@ -7094,6 +7162,7 @@ suffix:semicolon
 r_else
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;md: md%d has no personality assigned.&bslash;n&quot;
@@ -7125,6 +7194,7 @@ DECL|function|do_md_stop
 r_static
 r_int
 id|do_md_stop
+c_func
 (paren
 id|mddev_t
 op_star
@@ -7347,6 +7417,7 @@ id|resync_interrupted
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: marking sb clean...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7387,6 +7458,7 @@ id|ro
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;md: md%d stopped.&bslash;n&quot;
@@ -7407,6 +7479,7 @@ suffix:semicolon
 )brace
 r_else
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;md: md%d switched to read-only mode.&bslash;n&quot;
@@ -7430,6 +7503,7 @@ multiline_comment|/*&n; * We have to safely support old arrays too.&n; */
 DECL|function|detect_old_array
 r_int
 id|detect_old_array
+c_func
 (paren
 id|mdp_super_t
 op_star
@@ -7465,6 +7539,7 @@ DECL|function|autorun_array
 r_static
 r_void
 id|autorun_array
+c_func
 (paren
 id|mddev_t
 op_star
@@ -7503,6 +7578,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: running: &quot;
 )paren
 suffix:semicolon
@@ -7551,6 +7627,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md :do_md_run() returned %d&bslash;n&quot;
 comma
 id|err
@@ -7575,6 +7652,7 @@ DECL|function|autorun_devices
 r_static
 r_void
 id|autorun_devices
+c_func
 (paren
 id|kdev_t
 id|countdev
@@ -7606,6 +7684,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: autorun ...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7633,6 +7712,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: considering %s ...&bslash;n&quot;
 comma
 id|partition_name
@@ -7685,6 +7765,7 @@ id|rdev-&gt;sb
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: %s has same UUID as %s, but superblocks differ ...&bslash;n&quot;
 comma
 id|partition_name
@@ -7706,6 +7787,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md:  adding %s ...&bslash;n&quot;
 comma
 id|partition_name
@@ -7762,6 +7844,7 @@ id|mddev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: md%d already running, cannot run %s&bslash;n&quot;
 comma
 id|mdidx
@@ -7808,14 +7891,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mddev
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: cannot allocate memory for md drive.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7839,6 +7922,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: created md%d&bslash;n&quot;
 comma
 id|mdidx
@@ -7893,6 +7977,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: ... autorun DONE.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7920,6 +8005,7 @@ DECL|function|autostart_array
 r_static
 r_int
 id|autostart_array
+c_func
 (paren
 id|kdev_t
 id|startdev
@@ -7966,6 +8052,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: could not import %s!&bslash;n&quot;
 comma
 id|partition_name
@@ -8012,6 +8099,7 @@ id|start_rdev-&gt;faulty
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: can not autostart based on faulty %s!&bslash;n&quot;
 comma
 id|partition_name
@@ -8056,7 +8144,10 @@ id|err
 id|printk
 c_func
 (paren
-l_string|&quot;md: array version is too old to be autostarted, use raidtools 0.90 mkraid --upgrade&bslash;nto upgrade the array without data loss!&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;md: array version is too old to be autostarted ,&quot;
+l_string|&quot;use raidtools 0.90 mkraid --upgrade to upgrade the array &quot;
+l_string|&quot;without data loss!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -8140,6 +8231,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: could not import %s, trying to run array nevertheless.&bslash;n&quot;
 comma
 id|partition_name
@@ -8234,6 +8326,7 @@ DECL|function|get_version
 r_static
 r_int
 id|get_version
+c_func
 (paren
 r_void
 op_star
@@ -8286,6 +8379,7 @@ DECL|function|get_array_info
 r_static
 r_int
 id|get_array_info
+c_func
 (paren
 id|mddev_t
 op_star
@@ -8457,6 +8551,7 @@ DECL|function|get_disk_info
 r_static
 r_int
 id|get_disk_info
+c_func
 (paren
 id|mddev_t
 op_star
@@ -8577,6 +8672,7 @@ DECL|function|add_new_disk
 r_static
 r_int
 id|add_new_disk
+c_func
 (paren
 id|mddev_t
 op_star
@@ -8628,6 +8724,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: device %s already used in a RAID array!&bslash;n&quot;
 comma
 id|partition_name
@@ -8669,6 +8766,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: md_import_device returned %d&bslash;n&quot;
 comma
 id|err
@@ -8740,6 +8838,7 @@ id|rdev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: %s has different UUID to %s&bslash;n&quot;
 comma
 id|partition_name
@@ -8782,6 +8881,7 @@ id|rdev-&gt;sb
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: %s has same UUID but different superblock to %s&bslash;n&quot;
 comma
 id|partition_name
@@ -8907,6 +9007,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: error, md_import_device() returned %d&bslash;n&quot;
 comma
 id|err
@@ -8972,6 +9073,7 @@ id|persistent
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: nonpersistent superblock ...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9033,6 +9135,7 @@ DECL|function|hot_generate_error
 r_static
 r_int
 id|hot_generate_error
+c_func
 (paren
 id|mddev_t
 op_star
@@ -9068,6 +9171,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: trying to generate %s error in md%d ... &bslash;n&quot;
 comma
 id|partition_name
@@ -9179,6 +9283,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: okay, generating error!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9191,6 +9296,7 @@ DECL|function|hot_remove_disk
 r_static
 r_int
 id|hot_remove_disk
+c_func
 (paren
 id|mddev_t
 op_star
@@ -9224,6 +9330,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: trying to remove %s from md%d ... &bslash;n&quot;
 comma
 id|partition_name
@@ -9249,6 +9356,7 @@ id|mddev-&gt;pers-&gt;diskop
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md%d: personality does not support diskops!&bslash;n&quot;
 comma
 id|mdidx
@@ -9430,6 +9538,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: cannot remove active disk %s from md%d ... &bslash;n&quot;
 comma
 id|partition_name
@@ -9454,6 +9563,7 @@ DECL|function|hot_add_disk
 r_static
 r_int
 id|hot_add_disk
+c_func
 (paren
 id|mddev_t
 op_star
@@ -9495,6 +9605,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: trying to hot-add %s to md%d ... &bslash;n&quot;
 comma
 id|partition_name
@@ -9520,6 +9631,7 @@ id|mddev-&gt;pers-&gt;diskop
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md%d: personality does not support diskops!&bslash;n&quot;
 comma
 id|mdidx
@@ -9562,6 +9674,7 @@ id|mddev-&gt;sb-&gt;size
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md%d: disk size %d blocks &lt; array size %d&bslash;n&quot;
 comma
 id|mdidx
@@ -9617,6 +9730,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: error, md_import_device() returned %d&bslash;n&quot;
 comma
 id|err
@@ -9661,6 +9775,7 @@ id|rdev-&gt;faulty
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: can not hot-add faulty %s disk to md%d!&bslash;n&quot;
 comma
 id|partition_name
@@ -9775,6 +9890,7 @@ id|MD_SB_DISKS
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md%d: can not hot-add to full array!&bslash;n&quot;
 comma
 id|mdidx
@@ -9945,6 +10061,7 @@ DECL|function|set_array_info
 r_static
 r_int
 id|set_array_info
+c_func
 (paren
 id|mddev_t
 op_star
@@ -10113,6 +10230,7 @@ DECL|function|set_disk_info
 r_static
 r_int
 id|set_disk_info
+c_func
 (paren
 id|mddev_t
 op_star
@@ -10126,6 +10244,7 @@ id|arg
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: not yet&quot;
 )paren
 suffix:semicolon
@@ -10138,6 +10257,7 @@ DECL|function|clear_array
 r_static
 r_int
 id|clear_array
+c_func
 (paren
 id|mddev_t
 op_star
@@ -10147,6 +10267,7 @@ id|mddev
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: not yet&quot;
 )paren
 suffix:semicolon
@@ -10159,6 +10280,7 @@ DECL|function|write_raid_info
 r_static
 r_int
 id|write_raid_info
+c_func
 (paren
 id|mddev_t
 op_star
@@ -10168,6 +10290,7 @@ id|mddev
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: not yet&quot;
 )paren
 suffix:semicolon
@@ -10180,6 +10303,7 @@ DECL|function|protect_array
 r_static
 r_int
 id|protect_array
+c_func
 (paren
 id|mddev_t
 op_star
@@ -10189,6 +10313,7 @@ id|mddev
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: not yet&quot;
 )paren
 suffix:semicolon
@@ -10201,6 +10326,7 @@ DECL|function|unprotect_array
 r_static
 r_int
 id|unprotect_array
+c_func
 (paren
 id|mddev_t
 op_star
@@ -10210,6 +10336,7 @@ id|mddev
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: not yet&quot;
 )paren
 suffix:semicolon
@@ -10222,6 +10349,7 @@ DECL|function|set_disk_faulty
 r_static
 r_int
 id|set_disk_faulty
+c_func
 (paren
 id|mddev_t
 op_star
@@ -10252,6 +10380,7 @@ DECL|function|md_ioctl
 r_static
 r_int
 id|md_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -10543,6 +10672,7 @@ id|mddev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: array md%d already exists!&bslash;n&quot;
 comma
 id|mdidx
@@ -10623,6 +10753,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: ioctl, reason %d, cmd %d&bslash;n&quot;
 comma
 id|err
@@ -10643,6 +10774,7 @@ id|mddev-&gt;sb
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: array md%d already has a superblock!&bslash;n&quot;
 comma
 id|mdidx
@@ -10721,6 +10853,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: couldnt set array info. %d&bslash;n&quot;
 comma
 id|err
@@ -10760,6 +10893,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: autostart %s failed!&bslash;n&quot;
 comma
 id|partition_name
@@ -10817,6 +10951,7 @@ id|err
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: ioctl lock interrupted, reason %d, cmd %d&bslash;n&quot;
 comma
 id|err
@@ -11350,7 +11485,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: %s(pid %d) used obsolete MD ioctl, upgrade your software to use new ictls.&bslash;n&quot;
+l_string|&quot;md: %s(pid %d) used obsolete MD ioctl, &quot;
+l_string|&quot;upgrade your software to use new ictls.&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -11391,10 +11527,9 @@ c_cond
 (paren
 id|err
 )paren
-id|printk
+id|MD_BUG
 c_func
 (paren
-l_string|&quot;md: huh12?&bslash;n&quot;
 )paren
 suffix:semicolon
 m_abort
@@ -11407,6 +11542,7 @@ DECL|function|md_open
 r_static
 r_int
 id|md_open
+c_func
 (paren
 r_struct
 id|inode
@@ -11452,6 +11588,7 @@ DECL|function|md_release
 r_static
 r_int
 id|md_release
+c_func
 (paren
 r_struct
 id|inode
@@ -11716,23 +11853,11 @@ c_func
 id|current
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;md: %8s(%d) flushing signals.&bslash;n&quot;
-comma
-id|current-&gt;comm
-comma
-id|current-&gt;pid
-)paren
-suffix:semicolon
 id|md_flush_signals
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 id|complete
 c_func
@@ -11783,6 +11908,7 @@ DECL|function|md_register_thread
 id|mdk_thread_t
 op_star
 id|md_register_thread
+c_func
 (paren
 r_void
 (paren
@@ -11928,6 +12054,7 @@ suffix:semicolon
 DECL|function|md_interrupt_thread
 r_void
 id|md_interrupt_thread
+c_func
 (paren
 id|mdk_thread_t
 op_star
@@ -11949,10 +12076,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;md: interrupting MD-thread pid %d&bslash;n&quot;
+l_string|&quot;interrupting MD-thread pid %d&bslash;n&quot;
 comma
 id|thread-&gt;tsk-&gt;pid
 )paren
@@ -11971,6 +12098,7 @@ suffix:semicolon
 DECL|function|md_unregister_thread
 r_void
 id|md_unregister_thread
+c_func
 (paren
 id|mdk_thread_t
 op_star
@@ -12024,6 +12152,7 @@ suffix:semicolon
 DECL|function|md_recover_arrays
 r_void
 id|md_recover_arrays
+c_func
 (paren
 r_void
 )paren
@@ -12053,6 +12182,7 @@ suffix:semicolon
 DECL|function|md_error
 r_int
 id|md_error
+c_func
 (paren
 id|mddev_t
 op_star
@@ -12066,7 +12196,60 @@ id|mdk_rdev_t
 op_star
 id|rrdev
 suffix:semicolon
-multiline_comment|/*&t;printk(&quot;md_error dev:(%d:%d), rdev:(%d:%d), (caller: %p,%p,%p,%p).&bslash;n&quot;,MAJOR(dev),MINOR(dev),MAJOR(rdev),MINOR(rdev), __builtin_return_address(0),__builtin_return_address(1),__builtin_return_address(2),__builtin_return_address(3));&n; */
+id|dprintk
+c_func
+(paren
+l_string|&quot;md_error dev:(%d:%d), rdev:(%d:%d), (caller: %p,%p,%p,%p).&bslash;n&quot;
+comma
+id|MAJOR
+c_func
+(paren
+id|dev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|dev
+)paren
+comma
+id|MAJOR
+c_func
+(paren
+id|rdev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|rdev
+)paren
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|1
+)paren
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|2
+)paren
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|3
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12107,9 +12290,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mddev-&gt;pers-&gt;error_handler
-op_eq
-l_int|NULL
 op_logical_or
 id|mddev-&gt;pers
 op_member_access_from_pointer
@@ -12177,6 +12359,7 @@ DECL|function|status_unused
 r_static
 r_int
 id|status_unused
+c_func
 (paren
 r_char
 op_star
@@ -12293,6 +12476,7 @@ DECL|function|status_resync
 r_static
 r_int
 id|status_resync
+c_func
 (paren
 r_char
 op_star
@@ -13095,6 +13279,7 @@ suffix:semicolon
 id|sz
 op_add_assign
 id|status_unused
+c_func
 (paren
 id|page
 op_plus
@@ -13108,6 +13293,7 @@ suffix:semicolon
 DECL|function|register_md_personality
 r_int
 id|register_md_personality
+c_func
 (paren
 r_int
 id|pnum
@@ -13179,6 +13365,7 @@ suffix:semicolon
 DECL|function|unregister_md_personality
 r_int
 id|unregister_md_personality
+c_func
 (paren
 r_int
 id|pnum
@@ -13413,6 +13600,7 @@ DECL|function|is_mddev_idle
 r_static
 r_int
 id|is_mddev_idle
+c_func
 (paren
 id|mddev_t
 op_star
@@ -13512,7 +13700,6 @@ id|major
 id|idx
 )braket
 suffix:semicolon
-singleline_comment|//&t;&t;printk(&quot;md: events(major: %d, idx: %d): %ld&bslash;n&quot;, major, idx, curr_events);
 r_if
 c_cond
 (paren
@@ -13525,7 +13712,6 @@ OG
 l_int|32
 )paren
 (brace
-singleline_comment|//&t;&t;&t;printk(&quot;!I(%ld)%x&quot;, curr_events - rdev-&gt;last_events, rdev-&gt;dev);
 id|rdev-&gt;last_events
 op_assign
 id|curr_events
@@ -13712,7 +13898,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: delaying resync of md%d until md%d has finished resync (they share one or more physical units)&bslash;n&quot;
+l_string|&quot;md: delaying resync of md%d until md%d &quot;
+l_string|&quot;has finished resync (they share one or more physical units)&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -13812,7 +13999,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: using maximum available idle IO bandwith (but not more than %d KB/sec) for reconstruction.&bslash;n&quot;
+l_string|&quot;md: using maximum available idle IO bandwith &quot;
+l_string|&quot;(but not more than %d KB/sec) for reconstruction.&bslash;n&quot;
 comma
 id|sysctl_speed_limit_max
 )paren
@@ -14091,6 +14279,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: md_do_sync() got signal ... exiting&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -14263,6 +14452,7 @@ multiline_comment|/*&n; * This is a kernel thread which syncs a spare disk with 
 DECL|function|md_do_recovery
 r_void
 id|md_do_recovery
+c_func
 (paren
 r_void
 op_star
@@ -14345,7 +14535,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;md%d: no spare disk to reconstruct array! -- continuing in degraded mode&bslash;n&quot;
+l_string|&quot;md%d: no spare disk to reconstruct array! &quot;
+l_string|&quot;-- continuing in degraded mode&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -14358,10 +14549,6 @@ r_continue
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * now here we get the spare and resync it.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
 id|spare
 op_assign
 id|get_spare
@@ -14369,9 +14556,12 @@ c_func
 (paren
 id|mddev
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spare
 )paren
 r_continue
 suffix:semicolon
@@ -14789,6 +14979,7 @@ DECL|function|md_geninit
 r_static
 r_void
 id|md_geninit
+c_func
 (paren
 r_void
 )paren
@@ -14903,6 +15094,7 @@ DECL|function|md_init
 r_int
 id|md__init
 id|md_init
+c_func
 (paren
 r_void
 )paren
@@ -14918,6 +15110,7 @@ r_int
 id|minor
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;md: md driver %d.%d.%d MAX_MD_DEVS=%d, MD_SB_DISKS=%d&bslash;n&quot;
@@ -14948,6 +15141,7 @@ id|md_fops
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ALERT
 l_string|&quot;md: Unable to get major %d for md&bslash;n&quot;
@@ -15150,6 +15344,7 @@ suffix:semicolon
 DECL|function|md_autodetect_dev
 r_void
 id|md_autodetect_dev
+c_func
 (paren
 id|kdev_t
 id|dev
@@ -15179,6 +15374,7 @@ DECL|function|autostart_arrays
 r_static
 r_void
 id|autostart_arrays
+c_func
 (paren
 r_void
 )paren
@@ -15400,6 +15596,7 @@ multiline_comment|/* MD Number */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: Too few arguments supplied to md=.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -15416,7 +15613,9 @@ id|MAX_MD_DEVS
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: md=%d, Minor device number too high.&bslash;n&quot;
 comma
 id|minor
@@ -15437,8 +15636,11 @@ id|minor
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;md: md=%d, Specified more then once. Replacing previous definition.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;md: md=%d, Specified more then once. &quot;
+l_string|&quot;Replacing previous definition.&bslash;n&quot;
 comma
 id|minor
 )paren
@@ -15508,6 +15710,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: Too few arguments supplied to md=.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -15571,9 +15774,10 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
-l_string|&quot;md: The kernel has not been configured for raid%d&quot;
-l_string|&quot; support!&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;md: The kernel has not been configured for raid%d support!&bslash;n&quot;
 comma
 id|level
 )paren
@@ -15618,7 +15822,9 @@ l_string|&quot;super-block&quot;
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: Will configure md%d (%s) from %s, below.&bslash;n&quot;
 comma
 id|minor
@@ -15749,10 +15955,6 @@ r_void
 op_star
 id|handle
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|p
 op_assign
 id|strchr
@@ -15762,9 +15964,11 @@ id|devname
 comma
 l_char|&squot;,&squot;
 )paren
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
 )paren
 op_star
 id|p
@@ -15849,7 +16053,9 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: Unknown device name: %s&bslash;n&quot;
 comma
 id|devname
@@ -15910,6 +16116,7 @@ id|mddev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: Ignoring md=%d, already autodetected. (Use raid=noautodetect)&bslash;n&quot;
 comma
 id|minor
@@ -15921,6 +16128,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;md: Loading md%d: %s&bslash;n&quot;
 comma
 id|minor
@@ -15948,14 +16156,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mddev
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;md: kmalloc failed - cannot start array %d&bslash;n&quot;
 comma
 id|minor
@@ -16223,6 +16431,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;md: starting md%d failed&bslash;n&quot;
 comma
 id|minor
@@ -16417,6 +16626,7 @@ macro_line|#else /* It is a MODULE */
 DECL|function|init_module
 r_int
 id|init_module
+c_func
 (paren
 r_void
 )paren
@@ -16470,6 +16680,7 @@ suffix:semicolon
 DECL|function|cleanup_module
 r_void
 id|cleanup_module
+c_func
 (paren
 r_void
 )paren

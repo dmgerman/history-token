@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &quot;smb_debug.h&quot;
+macro_line|#include &quot;proto.h&quot;
 multiline_comment|/*&n; * Force the next attempt to use the cache to be a timeout.&n; * If we can&squot;t find the page that&squot;s fine, it will cause a refresh.&n; */
 r_void
 DECL|function|smb_invalid_dir_cache

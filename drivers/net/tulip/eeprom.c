@@ -756,7 +756,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|media_code
+id|media_block
 op_amp
 l_int|0x40
 )paren
@@ -773,14 +773,10 @@ comma
 id|dev-&gt;name
 comma
 id|media_code
-op_amp
-l_int|15
 comma
 id|medianame
 (braket
 id|media_code
-op_amp
-l_int|15
 )braket
 )paren
 suffix:semicolon

@@ -58,22 +58,25 @@ multiline_comment|/* Maximum packet size node can receive */
 )brace
 suffix:semicolon
 DECL|macro|UNIT_DIRECTORY_VENDOR_ID
-mdefine_line|#define UNIT_DIRECTORY_VENDOR_ID    0x01
+mdefine_line|#define UNIT_DIRECTORY_VENDOR_ID&t;0x01
 DECL|macro|UNIT_DIRECTORY_MODEL_ID
-mdefine_line|#define UNIT_DIRECTORY_MODEL_ID     0x02
+mdefine_line|#define UNIT_DIRECTORY_MODEL_ID&t;&t;0x02
 DECL|macro|UNIT_DIRECTORY_SPECIFIER_ID
-mdefine_line|#define UNIT_DIRECTORY_SPECIFIER_ID 0x04
+mdefine_line|#define UNIT_DIRECTORY_SPECIFIER_ID&t;0x04
 DECL|macro|UNIT_DIRECTORY_VERSION
-mdefine_line|#define UNIT_DIRECTORY_VERSION      0x08
+mdefine_line|#define UNIT_DIRECTORY_VERSION&t;&t;0x08
+multiline_comment|/*&n; * A unit directory corresponds to a protocol supported by the&n; * node. If a node supports eg. IP/1394 and AV/C, its config rom has a&n; * unit directory for each of these protocols.&n; * &n; * Unit directories appear on two types of lists: for each node we&n; * maintain a list of the unit directories found in its config rom and&n; * for each driver we maintain a list of the unit directories&n; * (ie. devices) the driver manages.&n; */
 DECL|struct|unit_directory
 r_struct
 id|unit_directory
 (brace
-DECL|member|list
+DECL|member|ne
 r_struct
-id|list_head
-id|list
+id|node_entry
+op_star
+id|ne
 suffix:semicolon
+multiline_comment|/* The node which this directory belongs to */
 DECL|member|address
 id|octlet_t
 id|address
@@ -109,6 +112,51 @@ suffix:semicolon
 DECL|member|version
 id|quadlet_t
 id|version
+suffix:semicolon
+multiline_comment|/* Groupings for arbitrary key/value pairs */
+DECL|member|arb_count
+r_int
+id|arb_count
+suffix:semicolon
+multiline_comment|/* Number of arbitrary key/values */
+DECL|member|arb_keys
+r_char
+id|arb_keys
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* Up to 16 keys */
+DECL|member|arb_values
+id|quadlet_t
+id|arb_values
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* Same for values */
+DECL|member|driver
+r_struct
+id|hpsb_protocol_driver
+op_star
+id|driver
+suffix:semicolon
+DECL|member|driver_data
+r_void
+op_star
+id|driver_data
+suffix:semicolon
+multiline_comment|/* For linking the nodes managed by the driver, or unmanaged nodes */
+DECL|member|driver_list
+r_struct
+id|list_head
+id|driver_list
+suffix:semicolon
+multiline_comment|/* For linking directories belonging to a node */
+DECL|member|node_list
+r_struct
+id|list_head
+id|node_list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -165,6 +213,34 @@ id|unit_directories
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|hpsb_node_entry_valid
+r_static
+r_inline
+r_int
+id|hpsb_node_entry_valid
+c_func
+(paren
+r_struct
+id|node_entry
+op_star
+id|ne
+)paren
+(brace
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ne-&gt;generation
+)paren
+op_eq
+id|get_hpsb_generation
+c_func
+(paren
+id|ne-&gt;host
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Returns a node entry (which has its reference count incremented) or NULL if&n; * the GUID in question is not known.  Getting a valid entry does not mean that&n; * the node with this GUID is currently accessible (might be powered down).&n; */
 r_struct
 id|node_entry

@@ -19,7 +19,9 @@ macro_line|#include &lt;asm/vc_ioctl.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#ifdef CONFIG_BOOTX_TEXT
 macro_line|#include &lt;asm/bootx.h&gt;
+macro_line|#endif
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
@@ -265,11 +267,13 @@ op_star
 id|info
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BOOTX_TEXT
 r_extern
 id|boot_infos_t
 op_star
 id|boot_infos
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|offb_init_nodriver
@@ -1059,6 +1063,7 @@ r_int
 r_int
 id|dpy
 suffix:semicolon
+macro_line|#ifdef CONFIG_BOOTX_TEXT
 r_struct
 id|device_node
 op_star
@@ -1390,6 +1395,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -2129,6 +2135,7 @@ c_cond
 (paren
 id|dp
 op_logical_and
+(paren
 op_logical_neg
 id|strncmp
 c_func
@@ -2138,6 +2145,18 @@ comma
 l_string|&quot;ATY,RageM3pA&quot;
 comma
 l_int|12
+)paren
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|name
+comma
+l_string|&quot;ATY,RageM3p12A&quot;
+comma
+l_int|14
+)paren
 )paren
 )paren
 (brace

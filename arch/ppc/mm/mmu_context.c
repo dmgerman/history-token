@@ -13,21 +13,11 @@ r_int
 r_int
 id|context_map
 (braket
-(paren
 id|LAST_CONTEXT
+op_div
+id|BITS_PER_LONG
 op_plus
 l_int|1
-)paren
-op_div
-(paren
-l_int|8
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
 )braket
 suffix:semicolon
 macro_line|#ifdef FEW_CONTEXTS
@@ -90,6 +80,10 @@ op_amp
 id|nr_free_contexts
 comma
 id|LAST_CONTEXT
+op_minus
+id|FIRST_CONTEXT
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif /* FEW_CONTEXTS */

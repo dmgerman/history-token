@@ -1,4 +1,5 @@
-multiline_comment|/* hermes.c&n; *&n; * Driver core for the &quot;Hermes&quot; wireless MAC controller, as used in&n; * the Lucent Orinoco and Cabletron RoamAbout cards. It should also&n; * work on the hfa3841 and hfa3842 MAC controller chips used in the&n; * Prism II chipsets.&n; *&n; * This is not a complete driver, just low-level access routines for&n; * the MAC controller itself.&n; *&n; * Based on the prism2 driver from Absolute Value Systems&squot; linux-wlan&n; * project, the Linux wvlan_cs driver, Lucent&squot;s HCF-Light&n; * (wvlan_hcf.c) library, and the NetBSD wireless driver (in no&n; * particular order).&n; *&n; * Copyright (C) 2000, David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; * &n; * This file distributed under the GPL, version 2.  */
+multiline_comment|/* hermes.c&n; *&n; * Driver core for the &quot;Hermes&quot; wireless MAC controller, as used in&n; * the Lucent Orinoco and Cabletron RoamAbout cards. It should also&n; * work on the hfa3841 and hfa3842 MAC controller chips used in the&n; * Prism II chipsets.&n; *&n; * This is not a complete driver, just low-level access routines for&n; * the MAC controller itself.&n; *&n; * Based on the prism2 driver from Absolute Value Systems&squot; linux-wlan&n; * project, the Linux wvlan_cs driver, Lucent&squot;s HCF-Light&n; * (wvlan_hcf.c) library, and the NetBSD wireless driver (in no&n; * particular order).&n; *&n; * Copyright (C) 2000, David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; * Copyright (C) 2001, David Gibson, IBM &lt;hermes@gibson.dropbear.id.au&gt;&n; * &n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -18,7 +19,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;hermes.c: 1 Aug 2001 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+l_string|&quot;hermes.c: 3 Oct 2001 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -35,7 +36,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* These are maximum timeouts. Most often, card wil react much faster */
@@ -49,10 +50,6 @@ DECL|macro|ALLOC_COMPL_TIMEOUT
 mdefine_line|#define ALLOC_COMPL_TIMEOUT (1000) /* in iterations of ~10us */
 DECL|macro|BAP_BUSY_TIMEOUT
 mdefine_line|#define BAP_BUSY_TIMEOUT (500) /* In iterations of ~1us */
-DECL|macro|MAX
-mdefine_line|#define MAX(a, b) ( (a) &gt; (b) ? (a) : (b) )
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b) ( (a) &lt; (b) ? (a) : (b) )
 multiline_comment|/*&n; * Debugging helpers&n; */
 DECL|macro|HERMES_DEBUG
 macro_line|#undef HERMES_DEBUG
@@ -962,7 +959,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set up a BAP to read a particular chunk of data from card&squot;s internal buffer.&n; *&n; * Returns: &lt; 0 on internal failure (errno), 0 on success, &gt;0 on error&n; * from firmware&n; *&n; * Callable from any context */
 DECL|function|hermes_bap_seek
-r_static
 r_int
 id|hermes_bap_seek
 c_func
@@ -1041,6 +1037,38 @@ comma
 id|oreg
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|reg
+op_amp
+id|HERMES_OFFSET_BUSY
+)paren
+op_amp
+id|k
+)paren
+(brace
+id|k
+op_decrement
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|hermes_read_reg
+c_func
+(paren
+id|hw
+comma
+id|oreg
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1050,7 +1078,7 @@ id|HERMES_OFFSET_BUSY
 )paren
 r_return
 op_minus
-id|EBUSY
+id|ETIMEDOUT
 suffix:semicolon
 multiline_comment|/* Now we actually set up the transfer */
 id|hermes_write_reg
@@ -1187,7 +1215,7 @@ r_void
 op_star
 id|buf
 comma
-r_uint16
+r_int
 id|len
 comma
 r_uint16
@@ -1246,7 +1274,7 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* Actually do the transfer */
-id|hermes_read_data
+id|hermes_read_words
 c_func
 (paren
 id|hw
@@ -1284,7 +1312,7 @@ r_void
 op_star
 id|buf
 comma
-r_uint16
+r_int
 id|len
 comma
 r_uint16
@@ -1343,7 +1371,7 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* Actually do the transfer */
-id|hermes_write_data
+id|hermes_write_words
 c_func
 (paren
 id|hw
@@ -1562,59 +1590,7 @@ id|buflen
 op_div
 l_int|2
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|length
-)paren
-id|count
-op_assign
-(paren
-id|MIN
-c_func
-(paren
-id|buflen
-comma
-id|rlength
-)paren
-op_plus
-l_int|1
-)paren
-op_div
-l_int|2
-suffix:semicolon
-r_else
-(brace
-id|count
-op_assign
-id|buflen
-op_div
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rlength
-op_ne
-id|buflen
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;hermes_read_ltv(): Incorrect &bslash;&n;record length %d instead of %d on RID 0x%04x&bslash;n&quot;
-comma
-id|rlength
-comma
-id|buflen
-comma
-id|rid
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-id|hermes_read_data
+id|hermes_read_words
 c_func
 (paren
 id|hw
@@ -1748,7 +1724,7 @@ id|length
 op_minus
 l_int|1
 suffix:semicolon
-id|hermes_write_data
+id|hermes_write_words
 c_func
 (paren
 id|hw

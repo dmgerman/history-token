@@ -1,11 +1,11 @@
-multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2001 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Sun Aug 12 12:34:28 2001 by makisara@kai.makisara.local&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n;&n;   Reminder: write_lock_irqsave() can be replaced by write_lock() when the old SCSI&n;   error handling will be discarded.&n; */
+multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2001 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Wed Oct  3 22:17:59 2001 by makisara@kai.makisara.local&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n;&n;   Reminder: write_lock_irqsave() can be replaced by write_lock() when the old SCSI&n;   error handling will be discarded.&n; */
 DECL|variable|verstr
 r_static
 r_char
 op_star
 id|verstr
 op_assign
-l_string|&quot;20010812&quot;
+l_string|&quot;20011003&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -157,6 +157,8 @@ id|max_sg_segs
 comma
 l_string|&quot;Maximum number of scatter/gather segments to use (32)&quot;
 )paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 macro_line|#ifndef MODULE
 DECL|struct|st_dev_parm
@@ -2979,6 +2981,9 @@ c_func
 id|STp-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 suffix:semicolon
+id|STp-&gt;device-&gt;access_count
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4515,6 +4520,9 @@ id|STp-&gt;in_use
 op_assign
 l_int|0
 suffix:semicolon
+id|STp-&gt;device-&gt;access_count
+op_decrement
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5349,6 +5357,9 @@ id|st_dev_arr_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|STp-&gt;device-&gt;access_count
+op_decrement
 suffix:semicolon
 r_if
 c_cond

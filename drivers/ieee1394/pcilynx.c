@@ -18,6 +18,7 @@ macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
+macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;pcilynx.h&quot;
 macro_line|#if MAX_PCILYNX_CARDS &gt; PCILYNX_MINOR_ROM_START
 macro_line|#error Max number of cards is bigger than PCILYNX_MINOR_ROM_START - this does not work.
@@ -1768,7 +1769,7 @@ op_assign
 (paren
 id|what
 op_eq
-id|iso
+id|hpsb_iso
 ques
 c_cond
 op_amp
@@ -1899,7 +1900,7 @@ id|packet-&gt;type
 )paren
 (brace
 r_case
-id|async
+id|hpsb_async
 suffix:colon
 id|pcl.buffer
 (braket
@@ -1913,7 +1914,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|iso
+id|hpsb_iso
 suffix:colon
 id|pcl.buffer
 (braket
@@ -1929,7 +1930,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|raw
+id|hpsb_raw
 suffix:colon
 id|pcl.buffer
 (braket
@@ -2898,10 +2899,10 @@ id|packet-&gt;type
 )paren
 (brace
 r_case
-id|async
+id|hpsb_async
 suffix:colon
 r_case
-id|raw
+id|hpsb_raw
 suffix:colon
 id|d
 op_assign
@@ -2911,7 +2912,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|iso
+id|hpsb_iso
 suffix:colon
 id|d
 op_assign
@@ -5745,7 +5746,7 @@ c_func
 (paren
 id|lynx
 comma
-id|async
+id|hpsb_async
 )paren
 suffix:semicolon
 )brace
@@ -5900,7 +5901,7 @@ c_func
 (paren
 id|lynx
 comma
-id|iso
+id|hpsb_iso
 )paren
 suffix:semicolon
 )brace
@@ -6403,6 +6404,10 @@ suffix:semicolon
 id|lynx-&gt;state
 op_assign
 id|have_host_struct
+suffix:semicolon
+id|lynx-&gt;host-&gt;hostdata
+op_assign
+id|lynx
 suffix:semicolon
 id|lynx-&gt;id
 op_assign
@@ -7040,6 +7045,12 @@ l_string|&quot;found old 1394 PHY&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Tell the highlevel this host is ready */
+id|highlevel_add_one_host
+(paren
+id|lynx-&gt;host
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -7565,18 +7576,18 @@ c_func
 r_void
 )paren
 (brace
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|lynx_pcidriver
-)paren
-suffix:semicolon
 id|hpsb_unregister_lowlevel
 c_func
 (paren
 op_amp
 id|lynx_template
+)paren
+suffix:semicolon
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|lynx_pcidriver
 )paren
 suffix:semicolon
 id|PRINT_G

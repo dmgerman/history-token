@@ -2030,6 +2030,8 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Umount options&n; */
 DECL|macro|MNT_FORCE
 mdefine_line|#define MNT_FORCE&t;0x00000001&t;/* Attempt to forcibily umount */
+DECL|macro|MNT_DETACH
+mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
 macro_line|#include &lt;linux/minix_fs_sb.h&gt;
 macro_line|#include &lt;linux/ext2_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
