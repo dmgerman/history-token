@@ -1520,7 +1520,7 @@ id|MS_NOATIME
 op_or
 id|MS_NODIRATIME
 suffix:semicolon
-macro_line|#else /* ! NTFS_RW */
+macro_line|#else /* NTFS_RW */
 multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there are no volume errors and that no unsupported volume&n;&t; * flags are set.  Also, empty the logfile journal as it would become&n;&t; * stale as soon as something is written to the volume and mark the&n;&t; * volume dirty so that chkdsk is run if the volume is not umounted&n;&t; * cleanly.  Finally, mark the quotas out of date so Windows rescans&n;&t; * the volume on boot and updates them.&n;&t; *&n;&t; * When remounting read-only, mark the volume clean if no volume errors&n;&t; * have occured.&n;&t; */
 r_if
 c_cond
@@ -1818,80 +1818,7 @@ l_string|&quot;flags.  Run chkdsk.&quot;
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// TODO:  For now we enforce no atime and dir atime updates as they are
-singleline_comment|// not implemented.
-r_if
-c_cond
-(paren
-(paren
-id|sb-&gt;s_flags
-op_amp
-id|MS_NOATIME
-)paren
-op_logical_and
-op_logical_neg
-(paren
-op_star
-id|flags
-op_amp
-id|MS_NOATIME
-)paren
-)paren
-id|ntfs_warning
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Atime updates are not implemented yet.  &quot;
-l_string|&quot;Leaving them disabled.&quot;
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|sb-&gt;s_flags
-op_amp
-id|MS_NODIRATIME
-)paren
-op_logical_and
-op_logical_neg
-(paren
-op_star
-id|flags
-op_amp
-id|MS_NODIRATIME
-)paren
-)paren
-id|ntfs_warning
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Directory atime updates are not implemented &quot;
-l_string|&quot;yet.  Leaving them disabled.&quot;
-)paren
-suffix:semicolon
-op_star
-id|flags
-op_or_assign
-id|MS_NOATIME
-op_or
-id|MS_NODIRATIME
-suffix:semicolon
-macro_line|#endif /* ! NTFS_RW */
-singleline_comment|// FIXME/TODO: If left like this we will have problems with rw-&gt;ro and
-singleline_comment|// ro-&gt;rw, as well as with sync-&gt;async and vice versa remounts.
-singleline_comment|// Note: The VFS already checks that there are no pending deletes and
-singleline_comment|// no open files for writing. So we only need to worry about dirty
-singleline_comment|// inode pages and dirty system files (which include dirty inodes).
-singleline_comment|// Either handle by flushing the whole volume NOW or by having the
-singleline_comment|// write routines work on MS_RDONLY fs and guarantee we don&squot;t mark
-singleline_comment|// anything as dirty if MS_RDONLY is set. That way the dirty data
-singleline_comment|// would get flushed but no new dirty data would appear. This is
-singleline_comment|// probably best but we need to be careful not to mark anything dirty
-singleline_comment|// or the MS_RDONLY will be leaking writes.
+macro_line|#endif /* NTFS_RW */
 singleline_comment|// TODO: Deal with *flags.
 r_if
 c_cond
@@ -8558,53 +8485,7 @@ id|MS_NOATIME
 op_or
 id|MS_NODIRATIME
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|sb-&gt;s_flags
-op_amp
-id|MS_NOATIME
-)paren
-)paren
-id|ntfs_warning
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Atime updates are not implemented yet.  &quot;
-l_string|&quot;Disabling them.&quot;
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|sb-&gt;s_flags
-op_amp
-id|MS_NODIRATIME
-)paren
-)paren
-id|ntfs_warning
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Directory atime updates are not implemented &quot;
-l_string|&quot;yet.  Disabling them.&quot;
-)paren
-suffix:semicolon
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_NOATIME
-op_or
-id|MS_NODIRATIME
-suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* ! NTFS_RW */
 multiline_comment|/* Allocate a new ntfs_volume and place it in sb-&gt;s_fs_info. */
 id|sb-&gt;s_fs_info
 op_assign
