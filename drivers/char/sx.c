@@ -881,8 +881,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-template_param
-l_int|0
+OL
+id|TIMEOUT_1
 suffix:semicolon
 id|i
 op_increment
@@ -920,8 +920,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-template_param
-l_int|0
+OL
+id|TIMEOUT_2
 suffix:semicolon
 id|i
 op_increment
@@ -1001,8 +1001,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-template_param
-l_int|0
+OL
+id|TIMEOUT_1
 suffix:semicolon
 id|i
 op_increment
@@ -1040,8 +1040,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-template_param
-l_int|0
+OL
+id|TIMEOUT_2
 suffix:semicolon
 id|i
 op_increment
