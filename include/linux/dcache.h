@@ -191,6 +191,9 @@ suffix:semicolon
 )brace
 DECL|macro|DNAME_INLINE_LEN
 mdefine_line|#define DNAME_INLINE_LEN 16
+r_struct
+id|dcookie_struct
+suffix:semicolon
 DECL|struct|dentry
 r_struct
 id|dentry
@@ -296,6 +299,13 @@ id|DNAME_INLINE_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* small names */
+DECL|member|d_cookie
+r_struct
+id|dcookie_struct
+op_star
+id|d_cookie
+suffix:semicolon
+multiline_comment|/* cookie, if any */
 )brace
 suffix:semicolon
 DECL|struct|dentry_operations
