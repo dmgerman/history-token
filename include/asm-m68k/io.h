@@ -574,7 +574,7 @@ mdefine_line|#define outw(val,port) ((port)&lt;1024 ? isa_outw((val),(port)) : o
 macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
 DECL|function|ioremap
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -603,7 +603,7 @@ id|IOMAP_NOCACHE_SER
 suffix:semicolon
 )brace
 DECL|function|ioremap_nocache
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -632,7 +632,7 @@ id|IOMAP_NOCACHE_SER
 suffix:semicolon
 )brace
 DECL|function|ioremap_writethrough
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -661,7 +661,7 @@ id|IOMAP_WRITETHROUGH
 suffix:semicolon
 )brace
 DECL|function|ioremap_fullcache
-r_extern
+r_static
 r_inline
 r_void
 op_star

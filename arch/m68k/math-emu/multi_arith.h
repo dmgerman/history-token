@@ -29,7 +29,7 @@ multiline_comment|/* big-endian */
 mdefine_line|#define LO_WORD(ll) (((unsigned int *) &amp;ll)[1])
 mdefine_line|#define HI_WORD(ll) (((unsigned int *) &amp;ll)[0])
 multiline_comment|/* Convenience functions to stuff various integer values into int128s */
-r_extern
+r_static
 r_inline
 r_void
 id|zero128
@@ -63,7 +63,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Human-readable word order in the arguments */
-r_extern
+r_static
 r_inline
 r_void
 id|set128
@@ -119,7 +119,7 @@ id|i3
 suffix:semicolon
 )brace
 multiline_comment|/* Convenience functions (for testing as well) */
-r_extern
+r_static
 r_inline
 r_void
 id|int64_to_128
@@ -167,7 +167,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|int128_to_64
@@ -204,7 +204,7 @@ op_lshift
 l_int|32
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|put_i128
@@ -243,7 +243,7 @@ id|LSW128
 suffix:semicolon
 )brace
 multiline_comment|/* Internal shifters:&n;&n;   Note that these are only good for 0 &lt; count &lt; 32.&n; */
-r_extern
+r_static
 r_inline
 r_void
 id|_lsl128
@@ -346,7 +346,7 @@ op_lshift_assign
 id|count
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|_lsr128
@@ -450,7 +450,7 @@ id|count
 suffix:semicolon
 )brace
 multiline_comment|/* Should be faster, one would hope */
-r_extern
+r_static
 r_inline
 r_void
 id|lslone128
@@ -534,7 +534,7 @@ id|MSW128
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|lsrone128
@@ -619,7 +619,7 @@ id|LSW128
 suffix:semicolon
 )brace
 multiline_comment|/* Generalized 128-bit shifters:&n;&n;   These bit-shift to a multiple of 32, then move whole longwords.  */
-r_extern
+r_static
 r_inline
 r_void
 id|lsl128
@@ -727,7 +727,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|lsr128
@@ -830,7 +830,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-r_extern
+r_static
 r_inline
 r_int
 id|orl128
@@ -851,7 +851,7 @@ op_or_assign
 id|a
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 id|btsthi128
@@ -872,7 +872,7 @@ l_int|0x80000000
 suffix:semicolon
 )brace
 multiline_comment|/* test bits (numbered from 0 = LSB) up to and including &quot;top&quot; */
-r_extern
+r_static
 r_inline
 r_int
 id|bftestlo128
@@ -972,7 +972,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Aargh.  We need these because GCC is broken */
 multiline_comment|/* FIXME: do them in assembly, for goodness&squot; sake! */
-r_extern
+r_static
 r_inline
 r_void
 id|mask64
@@ -1049,7 +1049,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|bset64
@@ -1119,7 +1119,7 @@ l_int|32
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 id|btst64
@@ -1185,7 +1185,7 @@ l_int|32
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|lsl64
@@ -1280,7 +1280,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|lsr64
@@ -1381,7 +1381,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|fp_denormalize
-r_extern
+r_static
 r_inline
 r_void
 id|fp_denormalize
@@ -1726,7 +1726,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|fp_overnormalize
-r_extern
+r_static
 r_inline
 r_int
 id|fp_overnormalize
@@ -1861,7 +1861,7 @@ id|shift
 suffix:semicolon
 )brace
 DECL|function|fp_addmant
-r_extern
+r_static
 r_inline
 r_int
 id|fp_addmant
@@ -1984,7 +1984,7 @@ id|carry
 suffix:semicolon
 )brace
 DECL|function|fp_addcarry
-r_extern
+r_static
 r_inline
 r_int
 id|fp_addcarry
@@ -2094,7 +2094,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|fp_submant
-r_extern
+r_static
 r_inline
 r_void
 id|fp_submant
@@ -2212,7 +2212,7 @@ mdefine_line|#define fp_sub64(dest, src) ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (
 DECL|macro|fp_sub96c
 mdefine_line|#define fp_sub96c(dest, srch, srcm, srcl) ({&t;&t;&t;&t;&bslash;&n;&t;char carry;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;sub.l %1,%0&quot; : &quot;=d,dm&quot; (dest.m32[2])&t;&t;&t;&bslash;&n;&t;&t;: &quot;dm,d&quot; (srcl), &quot;0,0&quot; (dest.m32[2]));&t;&t;&t;&bslash;&n;&t;asm (&quot;subx.l %1,%0&quot; : &quot;=d&quot; (dest.m32[1])&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (srcm), &quot;0&quot; (dest.m32[1]));&t;&t;&t;&bslash;&n;&t;asm (&quot;subx.l %2,%1; scs %0&quot; : &quot;=d&quot; (carry), &quot;=d&quot; (dest.m32[0])&t;&bslash;&n;&t;&t;: &quot;d&quot; (srch), &quot;1&quot; (dest.m32[0]));&t;&t;&t;&bslash;&n;&t;carry;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|function|fp_multiplymant
-r_extern
+r_static
 r_inline
 r_void
 id|fp_multiplymant
@@ -2352,7 +2352,7 @@ id|temp
 suffix:semicolon
 )brace
 DECL|function|fp_dividemant
-r_extern
+r_static
 r_inline
 r_void
 id|fp_dividemant
@@ -2752,7 +2752,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if 0
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -2867,7 +2867,7 @@ op_plus
 id|off
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 id|fp_shiftmant128
@@ -3817,7 +3817,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|fp_putmant128
-r_extern
+r_static
 r_inline
 r_void
 id|fp_putmant128
@@ -4128,7 +4128,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if 0 /* old code... */
-r_extern
+r_static
 r_inline
 r_int
 id|fls
@@ -4163,7 +4163,7 @@ id|r
 suffix:semicolon
 )brace
 multiline_comment|/* fls = &quot;find last set&quot; (cf. ffs(3)) */
-r_extern
+r_static
 r_inline
 r_int
 id|fls128
@@ -4259,7 +4259,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 id|zerop128
@@ -4295,7 +4295,7 @@ id|MSW128
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 id|nonzerop128
@@ -4332,7 +4332,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Addition and subtraction */
 multiline_comment|/* Do these in &quot;pure&quot; assembly, because &quot;extended&quot; asm is unmanageable&n;   here */
-r_extern
+r_static
 r_inline
 r_void
 id|add128
@@ -4493,7 +4493,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Note: assembler semantics: &quot;b -= a&quot; */
-r_extern
+r_static
 r_inline
 r_void
 id|sub128
@@ -4642,7 +4642,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Poor man&squot;s 64-bit expanding multiply */
-r_extern
+r_static
 r_inline
 r_void
 id|mul64
@@ -4932,7 +4932,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Note: unsigned */
-r_extern
+r_static
 r_inline
 r_int
 id|cmp128

@@ -110,10 +110,11 @@ multiline_comment|/*&n; * Check if the addr/len goes up to the end of a physical
 macro_line|#ifdef CONFIG_SINGLE_MEMORY_CHUNK
 multiline_comment|/*&n; * It makes no sense to consider whether we cross a memory boundary if&n; * we support just one physical chunk of memory.&n; */
 DECL|function|mm_end_of_chunk
-r_extern
+r_static
 r_inline
 r_int
 id|mm_end_of_chunk
+c_func
 (paren
 r_int
 r_int
@@ -159,7 +160,7 @@ id|cmode
 suffix:semicolon
 multiline_comment|/*&n; * The m68k doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.  The Sun3 does, but&n; * they are updated on demand.&n; */
 DECL|function|update_mmu_cache
-r_extern
+r_static
 r_inline
 r_void
 id|update_mmu_cache

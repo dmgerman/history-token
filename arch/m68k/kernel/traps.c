@@ -1966,7 +1966,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* sun3 version of bus_error030 */
 DECL|function|bus_error030
-r_extern
+r_static
 r_inline
 r_void
 id|bus_error030

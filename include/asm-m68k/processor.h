@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|function|rdusp
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -41,7 +41,7 @@ id|usp
 suffix:semicolon
 )brace
 DECL|function|wrusp
-r_extern
+r_static
 r_inline
 r_void
 id|wrusp
