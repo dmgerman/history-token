@@ -1453,6 +1453,7 @@ id|SR_REQ
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;scsi%d: REQ not asserted, phase unknown.&bslash;n&quot;
 comma
 id|HOSTNO
@@ -1500,6 +1501,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;scsi%d: phase %s&bslash;n&quot;
 comma
 id|HOSTNO
