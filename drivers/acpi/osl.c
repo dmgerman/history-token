@@ -765,10 +765,6 @@ id|AE_OK
 suffix:semicolon
 )brace
 macro_line|#endif
-id|acpi_irq_irq
-op_assign
-id|irq
-suffix:semicolon
 id|acpi_irq_handler
 op_assign
 id|handler
@@ -809,6 +805,10 @@ r_return
 id|AE_NOT_ACQUIRED
 suffix:semicolon
 )brace
+id|acpi_irq_irq
+op_assign
+id|irq
+suffix:semicolon
 r_return
 id|AE_OK
 suffix:semicolon
@@ -828,7 +828,7 @@ id|handler
 r_if
 c_cond
 (paren
-id|acpi_irq_handler
+id|irq
 )paren
 (brace
 macro_line|#ifdef CONFIG_IA64
@@ -852,6 +852,10 @@ suffix:semicolon
 id|acpi_irq_handler
 op_assign
 l_int|NULL
+suffix:semicolon
+id|acpi_irq_irq
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_return
