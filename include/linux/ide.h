@@ -1817,13 +1817,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=doing PIO over DMA 0=doing normal DMA */
-DECL|member|stroke
-r_int
-id|stroke
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* from:  hdx=stroke */
 DECL|member|addressing
 r_int
 id|addressing
