@@ -2,13 +2,14 @@ multiline_comment|/* inftrees.c -- generate Huffman trees for efficient decoding
 macro_line|#include &lt;linux/zutil.h&gt;
 macro_line|#include &quot;inftrees.h&quot;
 macro_line|#include &quot;infutil.h&quot;
-DECL|variable|inflate_copyright
+DECL|variable|__attribute_used__
 r_static
 r_const
 r_char
 id|inflate_copyright
 (braket
 )braket
+id|__attribute_used__
 op_assign
 l_string|&quot; inflate 1.1.3 Copyright 1995-1998 Mark Adler &quot;
 suffix:semicolon
