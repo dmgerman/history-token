@@ -510,7 +510,7 @@ id|hcd
 suffix:semicolon
 id|hcd-&gt;self.bus_name
 op_assign
-l_string|&quot;SA-1111&quot;
+l_string|&quot;sa1111&quot;
 suffix:semicolon
 id|hcd-&gt;product_desc
 op_assign

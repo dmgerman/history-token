@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (C) 2001,2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (c) 2001,2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1576,7 +1576,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * read_boot_sector - read the NTFS boot sector of a device&n; * @sb:&t;&t;super block of device to read the boot sector from&n; * @silent:&t;if true, suppress all output&n; *&n; * Reads the boot sector from the device and validates it. If that fails, tries&n; * to read the backup boot sector, first from the end of the device a-la NT4 and&n; * later and then from the middle of the device a-la NT3.51 and before.&n; *&n; * If a valid boot sector is found but it is not the primary boot sector, we&n; * repair the primary boot sector silently (unless the device is read-only or&n; * the primary boot sector is not accessible).&n; *&n; * NOTE: To call this function, @sb must have the fields s_dev, the ntfs super&n; * block (u.ntfs_sb), nr_blocks and the device flags (s_flags) initialized&n; * to their respective values.&n; *&n; * Return the unlocked buffer head containing the boot sector or NULL on error.&n; */
+multiline_comment|/**&n; * read_ntfs_boot_sector - read the NTFS boot sector of a device&n; * @sb:&t;&t;super block of device to read the boot sector from&n; * @silent:&t;if true, suppress all output&n; *&n; * Reads the boot sector from the device and validates it. If that fails, tries&n; * to read the backup boot sector, first from the end of the device a-la NT4 and&n; * later and then from the middle of the device a-la NT3.51 and before.&n; *&n; * If a valid boot sector is found but it is not the primary boot sector, we&n; * repair the primary boot sector silently (unless the device is read-only or&n; * the primary boot sector is not accessible).&n; *&n; * NOTE: To call this function, @sb must have the fields s_dev, the ntfs super&n; * block (u.ntfs_sb), nr_blocks and the device flags (s_flags) initialized&n; * to their respective values.&n; *&n; * Return the unlocked buffer head containing the boot sector or NULL on error.&n; */
 DECL|function|read_ntfs_boot_sector
 r_static
 r_struct
@@ -2479,6 +2479,58 @@ r_int
 id|vol-&gt;nr_clusters
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * On an architecture where unsigned long is 32-bits, we restrict the&n;&t; * volume size to 2TiB (2^41). On a 64-bit architecture, the compiler&n;&t; * will hopefully optimize the whole check away.&n;&t; */
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+OL
+l_int|8
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|ll
+op_lshift
+id|vol-&gt;cluster_size_bits
+)paren
+op_ge
+(paren
+l_int|1ULL
+op_lshift
+l_int|41
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Volume size (%LuTiB) is too large &quot;
+l_string|&quot;for this architecture. Maximim &quot;
+l_string|&quot;supported is 2TiB. Sorry.&quot;
+comma
+id|ll
+op_rshift
+(paren
+l_int|40
+op_minus
+id|vol-&gt;cluster_size_bits
+)paren
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+)brace
 id|ll
 op_assign
 id|sle64_to_cpu

@@ -3274,7 +3274,7 @@ id|sp-&gt;obytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-multiline_comment|/* Control is high priority so it doesnt get queued behind data */
+multiline_comment|/* Control is high priority so it doesn&squot;t get queued behind data */
 id|skb-&gt;priority
 op_assign
 id|TC_PRIO_CONTROL

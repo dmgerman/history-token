@@ -175,7 +175,7 @@ id|mdk_rdev_s
 id|mdk_rdev_t
 suffix:semicolon
 macro_line|#if (MINORBITS != 8)
-macro_line|#error MD doesnt handle bigger kdev yet
+macro_line|#error MD does not handle bigger kdev yet
 macro_line|#endif
 DECL|macro|MAX_MD_DEVS
 mdefine_line|#define MAX_MD_DEVS  (1&lt;&lt;MINORBITS)&t;/* Max number of md dev */

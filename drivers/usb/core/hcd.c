@@ -3615,7 +3615,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_hcd_operations - adapts usb_bus framework to HCD framework (bus glue)&n; *&n; * When registering a USB bus through the HCD framework code, use this&n; * usb_operations vector.  The PCI glue layer does so automatically; only&n; * bus glue for non-PCI system busses will need to use this.&n; */
+multiline_comment|/*&n; * usb_hcd_operations - adapts usb_bus framework to HCD framework (bus glue)&n; *&n; * When registering a USB bus through the HCD framework code, use this&n; * usb_operations vector.  The PCI glue layer does so automatically; only&n; * bus glue for non-PCI system busses will need to use this.&n; */
 DECL|variable|usb_hcd_operations
 r_struct
 id|usb_operations

@@ -1906,7 +1906,7 @@ r_return
 l_int|1
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * The i386 partition handling programs very often&n;&t; * make partitions end on cylinder boundaries.&n;&t; * There is no need to do so, and Linux fdisk doesnt always&n;&t; * do this, and Windows NT on Alpha doesnt do this either,&n;&t; * but still, this helps to guess #heads.&n;&t; */
+multiline_comment|/*&n;&t; * The i386 partition handling programs very often&n;&t; * make partitions end on cylinder boundaries.&n;&t; * There is no need to do so, and Linux fdisk doesn&squot;t always&n;&t; * do this, and Windows NT on Alpha doesn&squot;t do this either,&n;&t; * but still, this helps to guess #heads.&n;&t; */
 id|data
 op_assign
 id|read_dev_sector
