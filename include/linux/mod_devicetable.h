@@ -266,5 +266,29 @@ id|PNP_MAX_DEVICES
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|SERIO_ANY
+mdefine_line|#define SERIO_ANY&t;0xff
+DECL|struct|serio_device_id
+r_struct
+id|serio_device_id
+(brace
+DECL|member|type
+id|__u8
+id|type
+suffix:semicolon
+DECL|member|extra
+id|__u8
+id|extra
+suffix:semicolon
+DECL|member|id
+id|__u8
+id|id
+suffix:semicolon
+DECL|member|proto
+id|__u8
+id|proto
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* LINUX_MOD_DEVICETABLE_H */
 eof

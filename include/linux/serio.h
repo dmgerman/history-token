@@ -10,32 +10,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
-DECL|struct|serio_device_id
-r_struct
-id|serio_device_id
-(brace
-DECL|member|type
-r_int
-r_char
-id|type
-suffix:semicolon
-DECL|member|extra
-r_int
-r_char
-id|extra
-suffix:semicolon
-DECL|member|id
-r_int
-r_char
-id|id
-suffix:semicolon
-DECL|member|proto
-r_int
-r_char
-id|proto
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#include &lt;linux/mod_devicetable.h&gt;
 DECL|struct|serio
 r_struct
 id|serio
@@ -743,8 +718,6 @@ DECL|macro|SERIO_PARITY
 mdefine_line|#define SERIO_PARITY&t;2
 DECL|macro|SERIO_FRAME
 mdefine_line|#define SERIO_FRAME&t;4
-DECL|macro|SERIO_ANY
-mdefine_line|#define SERIO_ANY&t;0xff
 multiline_comment|/*&n; * Serio types&n; */
 DECL|macro|SERIO_XT
 mdefine_line|#define SERIO_XT&t;0x00
