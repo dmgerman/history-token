@@ -1165,9 +1165,9 @@ op_assign
 id|__kernel_cmpbge
 c_func
 (paren
-id|word
-comma
 l_int|0
+comma
+id|word
 )paren
 suffix:semicolon
 id|qofs
