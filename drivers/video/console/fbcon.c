@@ -2987,15 +2987,7 @@ id|i
 dot
 id|d
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vc-&gt;vc_font.width
-OG
-l_int|32
-)paren
-(brace
-multiline_comment|/* If we are not the first console on this&n;&t;&t;&t;   fb, copy the font from that console */
+multiline_comment|/* If we are not the first console on this&n;&t;&t;   fb, copy the font from that console */
 id|vc-&gt;vc_font.width
 op_assign
 id|tmp-&gt;vc_font.width
@@ -3044,7 +3036,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
