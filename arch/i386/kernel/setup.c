@@ -4673,8 +4673,6 @@ id|setup_early_printk
 c_func
 (paren
 id|s
-op_plus
-l_int|12
 )paren
 suffix:semicolon
 id|printk

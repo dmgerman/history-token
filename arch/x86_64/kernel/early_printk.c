@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* Simple VGA output */
 macro_line|#ifdef __i386__
 DECL|macro|VGABASE
-mdefine_line|#define VGABASE&t;&t;(__PAGE_OFFSET + 0xb8000UL)
+mdefine_line|#define VGABASE&t;&t;__pa(__PAGE_OFFSET + 0xb8000UL)
 macro_line|#else
 DECL|macro|VGABASE
 mdefine_line|#define VGABASE&t;&t;0xffffffff800b8000UL
@@ -171,7 +171,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|writew
 c_func
 (paren
@@ -190,7 +189,6 @@ id|i
 )paren
 )paren
 suffix:semicolon
-)brace
 id|current_ypos
 op_assign
 id|MAX_YPOS
@@ -373,7 +371,7 @@ op_logical_and
 op_decrement
 id|timeout
 )paren
-id|rep_nop
+id|cpu_relax
 c_func
 (paren
 )paren
@@ -456,6 +454,8 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+DECL|macro|DEFAULT_BAUD
+mdefine_line|#define DEFAULT_BAUD 9600
 DECL|function|early_serial_init
 r_static
 id|__init
@@ -474,10 +474,11 @@ id|c
 suffix:semicolon
 r_int
 id|divisor
-comma
+suffix:semicolon
+r_int
 id|baud
 op_assign
-l_int|38400
+id|DEFAULT_BAUD
 suffix:semicolon
 r_char
 op_star
@@ -706,7 +707,7 @@ id|e
 )paren
 id|baud
 op_assign
-l_int|38400
+id|DEFAULT_BAUD
 suffix:semicolon
 )brace
 id|divisor
@@ -929,6 +930,18 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+id|opt
+op_assign
+id|strchr
+c_func
+(paren
+id|opt
+comma
+l_char|&squot;=&squot;
+)paren
+op_plus
+l_int|1
+suffix:semicolon
 id|strlcpy
 c_func
 (paren
@@ -1111,7 +1124,7 @@ id|keep_early
 id|printk
 c_func
 (paren
-l_string|&quot;disabling early console...&bslash;n&quot;
+l_string|&quot;disabling early console&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unregister_console
@@ -1130,12 +1143,11 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;keeping early console.&bslash;n&quot;
+l_string|&quot;keeping early console&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* syntax: earlyprintk=vga&n;           earlyprintk=serial[,ttySn[,baudrate]] &n;   Append ,keep to not disable it when the real console takes over.&n;   Only vga or serial at a time, not both.&n;   Currently only ttyS0 and ttyS1 are supported. &n;   Interaction with the standard serial driver is not very good. &n;   The VGA output is eventually overwritten by the real console. */
 id|__setup
 c_func
 (paren
