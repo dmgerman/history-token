@@ -6309,6 +6309,18 @@ DECL|macro|USB_VENDOR_ID_CHIC
 mdefine_line|#define USB_VENDOR_ID_CHIC&t;&t;0x05fe
 DECL|macro|USB_DEVICE_ID_CHIC_GAMEPAD
 mdefine_line|#define USB_DEVICE_ID_CHIC_GAMEPAD&t;0x0014
+DECL|macro|USB_VENDOR_ID_GLAB
+mdefine_line|#define USB_VENDOR_ID_GLAB&t;&t;0x06c2
+DECL|macro|USB_DEVICE_ID_4_PHIDGETSERVO_30
+mdefine_line|#define USB_DEVICE_ID_4_PHIDGETSERVO_30&t;0x0038
+DECL|macro|USB_DEVICE_ID_1_PHIDGETSERVO_30
+mdefine_line|#define USB_DEVICE_ID_1_PHIDGETSERVO_30&t;0x0039
+DECL|macro|USB_VENDOR_ID_WISEGROUP
+mdefine_line|#define USB_VENDOR_ID_WISEGROUP&t;&t;0x0925
+DECL|macro|USB_DEVICE_ID_1_PHIDGETSERVO_20
+mdefine_line|#define USB_DEVICE_ID_1_PHIDGETSERVO_20&t;0x8101
+DECL|macro|USB_DEVICE_ID_4_PHIDGETSERVO_20
+mdefine_line|#define USB_DEVICE_ID_4_PHIDGETSERVO_20&t;0x8104
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6688,6 +6700,38 @@ comma
 id|USB_VENDOR_ID_WACOM
 comma
 id|USB_DEVICE_ID_WACOM_PTU
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_GLAB
+comma
+id|USB_DEVICE_ID_4_PHIDGETSERVO_30
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_GLAB
+comma
+id|USB_DEVICE_ID_1_PHIDGETSERVO_30
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WISEGROUP
+comma
+id|USB_DEVICE_ID_4_PHIDGETSERVO_20
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WISEGROUP
+comma
+id|USB_DEVICE_ID_1_PHIDGETSERVO_20
 comma
 id|HID_QUIRK_IGNORE
 )brace
