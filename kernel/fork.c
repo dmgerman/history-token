@@ -1383,6 +1383,20 @@ id|vfork_done
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|tsk-&gt;user_vm_lock
+)paren
+multiline_comment|/*&n;&t;&t; * We dont check the error code - if userspace has&n;&t;&t; * not set up a proper pointer then tough luck.&n;&t;&t; */
+id|put_user
+c_func
+(paren
+l_int|0UL
+comma
+id|tsk-&gt;user_vm_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|copy_mm
 r_static
