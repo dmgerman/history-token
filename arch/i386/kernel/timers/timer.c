@@ -2,24 +2,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
-multiline_comment|/* list of externed timers */
-r_extern
-r_struct
-id|timer_opts
-id|timer_pit
-suffix:semicolon
-r_extern
-r_struct
-id|timer_opts
-id|timer_tsc
-suffix:semicolon
-macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
-r_extern
-r_struct
-id|timer_opts
-id|timer_cyclone
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* list of timers, ordered by preference, NULL terminated */
 DECL|variable|timers
 r_static
