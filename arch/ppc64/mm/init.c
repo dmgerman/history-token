@@ -38,6 +38,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
+macro_line|#include &lt;asm/abs_addr.h&gt;
 DECL|variable|mmu_context_queue
 r_struct
 id|mmu_context_queue_t
@@ -466,7 +467,7 @@ id|ea
 suffix:semicolon
 id|pa
 op_assign
-id|absolute_to_phys
+id|abs_to_phys
 c_func
 (paren
 id|pa
@@ -2085,11 +2086,7 @@ id|total_pages
 suffix:semicolon
 id|start
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|__a2p
+id|abs_to_phys
 c_func
 (paren
 id|lmb_alloc

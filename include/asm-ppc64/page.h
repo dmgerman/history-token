@@ -427,19 +427,6 @@ DECL|macro|__ba_to_bpn
 mdefine_line|#define __ba_to_bpn(x) ((((unsigned long)(x)) &amp; ~REGION_MASK) &gt;&gt; PAGE_SHIFT)
 DECL|macro|__va
 mdefine_line|#define __va(x) ((void *)((unsigned long)(x) + KERNELBASE))
-multiline_comment|/* Given that physical addresses do not map 1-1 to absolute addresses, we&n; * use these macros to better specify exactly what we want to do.&n; * The only restriction on their use is that the absolute address&n; * macros cannot be used until after the LMB structure has been&n; * initialized in prom.c.  -Peter&n; */
-DECL|macro|__v2p
-mdefine_line|#define __v2p(x) ((void *) __pa(x))
-DECL|macro|__v2a
-mdefine_line|#define __v2a(x) ((void *) phys_to_absolute(__pa(x)))
-DECL|macro|__p2a
-mdefine_line|#define __p2a(x) ((void *) phys_to_absolute(x))
-DECL|macro|__p2v
-mdefine_line|#define __p2v(x) ((void *) __va(x))
-DECL|macro|__a2p
-mdefine_line|#define __a2p(x) ((void *) absolute_to_phys(x))
-DECL|macro|__a2v
-mdefine_line|#define __a2v(x) ((void *) __va(absolute_to_phys(x)))
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;discontigmem_page_to_pfn(page)

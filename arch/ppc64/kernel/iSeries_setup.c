@@ -2646,14 +2646,10 @@ c_func
 (paren
 id|va
 comma
-(paren
-r_int
-r_int
-)paren
-id|__v2a
+id|phys_to_abs
 c_func
 (paren
-id|ea
+id|pa
 )paren
 comma
 id|mode_rw
