@@ -14,14 +14,8 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 multiline_comment|/* Not Yet Implemented */
-DECL|macro|MODULE_AUTHOR
-mdefine_line|#define MODULE_AUTHOR(name)
-DECL|macro|MODULE_DESCRIPTION
-mdefine_line|#define MODULE_DESCRIPTION(desc)
 DECL|macro|MODULE_SUPPORTED_DEVICE
 mdefine_line|#define MODULE_SUPPORTED_DEVICE(name)
-DECL|macro|MODULE_PARM_DESC
-mdefine_line|#define MODULE_PARM_DESC(var,desc)
 DECL|macro|print_modules
 mdefine_line|#define print_modules()
 multiline_comment|/* v850 toolchain uses a `_&squot; prefix for all user symbols */
@@ -113,29 +107,41 @@ id|value
 suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|macro|___module_cat
-mdefine_line|#define ___module_cat(a,b) a ## b
+mdefine_line|#define ___module_cat(a,b) __mod_ ## a ## b
 DECL|macro|__module_cat
 mdefine_line|#define __module_cat(a,b) ___module_cat(a,b)
-multiline_comment|/* For userspace: you can also call me... */
-DECL|macro|MODULE_ALIAS
-mdefine_line|#define MODULE_ALIAS(alias)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_cat(__alias_,__LINE__)[]&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.modinfo&quot;),unused)) = &quot;alias=&quot; alias
+DECL|macro|__MODULE_INFO
+mdefine_line|#define __MODULE_INFO(tag, name, info)&t;&t;&t;&t;&t;  &bslash;&n;static const char __module_cat(name,__LINE__)[]&t;&t;&t;&t;  &bslash;&n;  __attribute__((section(&quot;.modinfo&quot;),unused)) = __stringify(tag) &quot;=&quot; info
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
-multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL v2&quot;&t;&t;&t;[GNU Public License v2]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(license)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_license[]&t;&t;&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.init.license&quot;), unused)) = license
 macro_line|#else  /* !MODULE */
-DECL|macro|MODULE_ALIAS
-mdefine_line|#define MODULE_ALIAS(alias)
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
+DECL|macro|__MODULE_INFO
+mdefine_line|#define __MODULE_INFO(tag, name, info)
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
+multiline_comment|/* Generic info of form tag = &quot;info&quot; */
+DECL|macro|MODULE_INFO
+mdefine_line|#define MODULE_INFO(tag, info) __MODULE_INFO(tag, tag, info)
+multiline_comment|/* For userspace: you can also call me... */
+DECL|macro|MODULE_ALIAS
+mdefine_line|#define MODULE_ALIAS(_alias) MODULE_INFO(alias, _alias)
+multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL v2&quot;&t;&t;&t;[GNU Public License v2]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(_license) MODULE_INFO(license, _license)
+multiline_comment|/* Author, ideally of form NAME &lt;EMAIL&gt;[, NAME &lt;EMAIL&gt;]*[ and NAME &lt;EMAIL&gt;] */
+DECL|macro|MODULE_AUTHOR
+mdefine_line|#define MODULE_AUTHOR(_author) MODULE_INFO(author, _author)
+multiline_comment|/* What your module does. */
+DECL|macro|MODULE_DESCRIPTION
+mdefine_line|#define MODULE_DESCRIPTION(_description) MODULE_INFO(description, _description)
+multiline_comment|/* One for each parameter, describing how to use it.  Some files do&n;   multiple of these per line, so can&squot;t just use MODULE_INFO. */
+DECL|macro|MODULE_PARM_DESC
+mdefine_line|#define MODULE_PARM_DESC(_parm, desc) &bslash;&n;&t;__MODULE_INFO(parm, _parm, #_parm &quot;:&quot; desc)
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
 multiline_comment|/* Given an address, look for it in the exception tables */
