@@ -176,8 +176,38 @@ DECL|macro|S3C2410_BANKCON_Tacs4
 mdefine_line|#define S3C2410_BANKCON_Tacs4&t;&t;(0x3 &lt;&lt; 13)
 DECL|macro|S3C2410_BANKCON_SRAM
 mdefine_line|#define S3C2410_BANKCON_SRAM&t;&t;(0x0 &lt;&lt; 15)
+DECL|macro|S3C2400_BANKCON_EDODRAM
+mdefine_line|#define S3C2400_BANKCON_EDODRAM&t;&t;(0x2 &lt;&lt; 15)
 DECL|macro|S3C2410_BANKCON_SDRAM
 mdefine_line|#define S3C2410_BANKCON_SDRAM&t;&t;(0x3 &lt;&lt; 15)
+multiline_comment|/* next bits only for EDO DRAM in 6,7 */
+DECL|macro|S3C2400_BANKCON_EDO_Trdc1
+mdefine_line|#define S3C2400_BANKCON_EDO_Trdc1      (0x00 &lt;&lt; 4)
+DECL|macro|S3C2400_BANKCON_EDO_Trdc2
+mdefine_line|#define S3C2400_BANKCON_EDO_Trdc2      (0x01 &lt;&lt; 4)
+DECL|macro|S3C2400_BANKCON_EDO_Trdc3
+mdefine_line|#define S3C2400_BANKCON_EDO_Trdc3      (0x02 &lt;&lt; 4)
+DECL|macro|S3C2400_BANKCON_EDO_Trdc4
+mdefine_line|#define S3C2400_BANKCON_EDO_Trdc4      (0x03 &lt;&lt; 4)
+multiline_comment|/* CAS pulse width */
+DECL|macro|S3C2400_BANKCON_EDO_PULSE1
+mdefine_line|#define S3C2400_BANKCON_EDO_PULSE1     (0x00 &lt;&lt; 3)
+DECL|macro|S3C2400_BANKCON_EDO_PULSE2
+mdefine_line|#define S3C2400_BANKCON_EDO_PULSE2     (0x01 &lt;&lt; 3)
+multiline_comment|/* CAS pre-charge */
+DECL|macro|S3C2400_BANKCON_EDO_TCP1
+mdefine_line|#define S3C2400_BANKCON_EDO_TCP1       (0x00 &lt;&lt; 2)
+DECL|macro|S3C2400_BANKCON_EDO_TCP2
+mdefine_line|#define S3C2400_BANKCON_EDO_TCP2       (0x01 &lt;&lt; 2)
+multiline_comment|/* control column address select */
+DECL|macro|S3C2400_BANKCON_EDO_SCANb8
+mdefine_line|#define S3C2400_BANKCON_EDO_SCANb8     (0x00 &lt;&lt; 0)
+DECL|macro|S3C2400_BANKCON_EDO_SCANb9
+mdefine_line|#define S3C2400_BANKCON_EDO_SCANb9     (0x01 &lt;&lt; 0)
+DECL|macro|S3C2400_BANKCON_EDO_SCANb10
+mdefine_line|#define S3C2400_BANKCON_EDO_SCANb10    (0x02 &lt;&lt; 0)
+DECL|macro|S3C2400_BANKCON_EDO_SCANb11
+mdefine_line|#define S3C2400_BANKCON_EDO_SCANb11    (0x03 &lt;&lt; 0)
 multiline_comment|/* next bits only for SDRAM in 6,7 */
 DECL|macro|S3C2410_BANKCON_Trdc2
 mdefine_line|#define S3C2410_BANKCON_Trdc2&t;&t;(0x00 &lt;&lt; 2)
