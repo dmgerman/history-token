@@ -5122,7 +5122,11 @@ id|pdev-&gt;dev
 suffix:semicolon
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 singleline_comment|// enable device (incl. PCI PM wakeup and hotplug setup)
 id|rc
@@ -5786,7 +5790,11 @@ id|rc
 suffix:semicolon
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 m_assert
 (paren
