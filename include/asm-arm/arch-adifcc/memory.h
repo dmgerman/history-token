@@ -17,19 +17,11 @@ multiline_comment|/*&n; * Physical DRAM offset.&n; */
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0xC0000000UL)
 multiline_comment|/*&n; * physical vs virtual ram conversion&n; */
-DECL|macro|__virt_to_phys__is_a_macro
-mdefine_line|#define __virt_to_phys__is_a_macro
-DECL|macro|__phys_to_virt__is_a_macro
-mdefine_line|#define __phys_to_virt__is_a_macro
 DECL|macro|__virt_to_phys
 mdefine_line|#define __virt_to_phys(x)&t;((x) - PAGE_OFFSET + PHYS_OFFSET)
 DECL|macro|__phys_to_virt
 mdefine_line|#define __phys_to_virt(x)&t;((x) - PHYS_OFFSET + PAGE_OFFSET)
 multiline_comment|/*&n; * Virtual view &lt;-&gt; DMA view memory address translations&n; * virt_to_bus: Used to translate the virtual address to an&n; *&t;&t;address suitable to be passed to set_dma_addr&n; * bus_to_virt: Used to convert an address for DMA operations&n; *&t;&t;to an address that the kernel can use.&n; *&n; * These are dummies for now.&n; */
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t; __virt_to_phys(x)
 DECL|macro|__bus_to_virt

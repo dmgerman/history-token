@@ -28,12 +28,8 @@ r_int
 suffix:semicolon
 macro_line|#endif
 macro_line|#elif defined(CONFIG_FOOTBRIDGE_HOST)
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;((x) - 0xe0000000)
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t;((x) + 0xe0000000)
 macro_line|#else
@@ -62,12 +58,8 @@ multiline_comment|/*&n; * This decides where the kernel will search for a free c
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE ((TASK_SIZE + 0x01000000) / 3)
 multiline_comment|/*&n; * The DRAM is always contiguous.&n; */
-DECL|macro|__virt_to_phys__is_a_macro
-mdefine_line|#define __virt_to_phys__is_a_macro
 DECL|macro|__virt_to_phys
 mdefine_line|#define __virt_to_phys(vpage) ((unsigned long)(vpage) - PAGE_OFFSET)
-DECL|macro|__phys_to_virt__is_a_macro
-mdefine_line|#define __phys_to_virt__is_a_macro
 DECL|macro|__phys_to_virt
 mdefine_line|#define __phys_to_virt(ppage) ((unsigned long)(ppage) + PAGE_OFFSET)
 macro_line|#endif

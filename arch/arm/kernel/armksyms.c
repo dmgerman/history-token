@@ -1,108 +1,13 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/armksyms.c&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/mman.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/vt_kern.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/proc-fns.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/checksum.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
-r_extern
-r_void
-id|dump_thread
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_struct
-id|user
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|dump_fpu
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_struct
-id|user_fp_struct
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|inswb
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|to
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outswb
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|to
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__bad_xchg
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|ptr
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * libgcc functions - functions that are used internally by the&n; * compiler...  (prototypes are not correct though, but that&n; * doesn&squot;t really matter since they&squot;re not versioned).&n; */
 r_extern
 r_void
@@ -210,21 +115,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-m_abort
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ret_from_exception
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|fpundefinstr
 c_func
 (paren
@@ -237,16 +127,6 @@ id|fp_enter
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fp_init
-c_func
-(paren
-r_union
-id|fp_state
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This has a special calling convention; it doesn&squot;t&n; * modify any of the usual registers, except for LR.&n; */
@@ -285,161 +165,11 @@ id|__backtrace
 )paren
 suffix:semicolon
 multiline_comment|/* platform dependent support */
-DECL|variable|dump_thread
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dump_thread
-)paren
-suffix:semicolon
-DECL|variable|dump_fpu
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dump_fpu
-)paren
-suffix:semicolon
 DECL|variable|udelay
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|udelay
-)paren
-suffix:semicolon
-DECL|variable|__ioremap
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__ioremap
-)paren
-suffix:semicolon
-DECL|variable|__iounmap
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__iounmap
-)paren
-suffix:semicolon
-DECL|variable|kernel_thread
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_thread
-)paren
-suffix:semicolon
-DECL|variable|system_rev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|system_rev
-)paren
-suffix:semicolon
-DECL|variable|system_serial_low
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|system_serial_low
-)paren
-suffix:semicolon
-DECL|variable|system_serial_high
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|system_serial_high
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
-DECL|variable|__bug
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__bug
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|__bad_xchg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__bad_xchg
-)paren
-suffix:semicolon
-DECL|variable|__readwrite_bug
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__readwrite_bug
-)paren
-suffix:semicolon
-DECL|variable|enable_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|enable_irq
-)paren
-suffix:semicolon
-DECL|variable|disable_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|disable_irq
-)paren
-suffix:semicolon
-DECL|variable|probe_irq_mask
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|probe_irq_mask
-)paren
-suffix:semicolon
-DECL|variable|set_irq_type
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_irq_type
-)paren
-suffix:semicolon
-DECL|variable|enable_irq_wake
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|enable_irq_wake
-)paren
-suffix:semicolon
-DECL|variable|disable_irq_wake
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|disable_irq_wake
-)paren
-suffix:semicolon
-DECL|variable|pm_idle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pm_idle
-)paren
-suffix:semicolon
-DECL|variable|pm_power_off
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pm_power_off
-)paren
-suffix:semicolon
-DECL|variable|fp_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fp_init
-)paren
-suffix:semicolon
-multiline_comment|/* processor dependencies */
-DECL|variable|__machine_arch_type
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__machine_arch_type
 )paren
 suffix:semicolon
 multiline_comment|/* networking */
@@ -516,43 +246,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__raw_writesl
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* address translation */
-macro_line|#ifndef __virt_to_phys__is_a_macro
-DECL|variable|__virt_to_phys
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__virt_to_phys
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef __phys_to_virt__is_a_macro
-DECL|variable|__phys_to_virt
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__phys_to_virt
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef __virt_to_bus__is_a_macro
-DECL|variable|__virt_to_bus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__virt_to_bus
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef __bus_to_virt__is_a_macro
-DECL|variable|__bus_to_virt
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__bus_to_virt
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -982,21 +675,6 @@ id|_find_next_zero_bit_be
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* elf */
-DECL|variable|elf_platform
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|elf_platform
-)paren
-suffix:semicolon
-DECL|variable|elf_hwcap
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|elf_hwcap
-)paren
-suffix:semicolon
 multiline_comment|/* syscalls */
 DECL|variable|sys_write
 id|EXPORT_SYMBOL
@@ -1038,42 +716,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sys_wait4
-)paren
-suffix:semicolon
-multiline_comment|/* semaphores */
-DECL|variable|__down_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_failed
-)paren
-suffix:semicolon
-DECL|variable|__down_interruptible_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_interruptible_failed
-)paren
-suffix:semicolon
-DECL|variable|__down_trylock_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_trylock_failed
-)paren
-suffix:semicolon
-DECL|variable|__up_wakeup
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__up_wakeup
-)paren
-suffix:semicolon
-DECL|variable|get_wchan
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_wchan
 )paren
 suffix:semicolon
 eof

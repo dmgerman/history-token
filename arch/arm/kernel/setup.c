@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/setup.c&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -158,25 +159,60 @@ r_int
 r_int
 id|__machine_arch_type
 suffix:semicolon
+DECL|variable|__machine_arch_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__machine_arch_type
+)paren
+suffix:semicolon
 DECL|variable|system_rev
 r_int
 r_int
 id|system_rev
+suffix:semicolon
+DECL|variable|system_rev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|system_rev
+)paren
 suffix:semicolon
 DECL|variable|system_serial_low
 r_int
 r_int
 id|system_serial_low
 suffix:semicolon
+DECL|variable|system_serial_low
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|system_serial_low
+)paren
+suffix:semicolon
 DECL|variable|system_serial_high
 r_int
 r_int
 id|system_serial_high
 suffix:semicolon
+DECL|variable|system_serial_high
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|system_serial_high
+)paren
+suffix:semicolon
 DECL|variable|elf_hwcap
 r_int
 r_int
 id|elf_hwcap
+suffix:semicolon
+DECL|variable|elf_hwcap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|elf_hwcap
+)paren
 suffix:semicolon
 macro_line|#ifdef MULTI_CPU
 DECL|variable|processor
@@ -217,6 +253,13 @@ id|elf_platform
 (braket
 id|ELF_PLATFORM_SIZE
 )braket
+suffix:semicolon
+DECL|variable|elf_platform
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|elf_platform
+)paren
 suffix:semicolon
 DECL|variable|saved_command_line
 r_char
