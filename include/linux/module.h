@@ -68,39 +68,6 @@ macro_line|#else
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
 macro_line|#endif
-macro_line|#ifdef CONFIG_MODULES
-multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
-r_void
-op_star
-id|__symbol_get
-c_func
-(paren
-r_const
-r_char
-op_star
-id|symbol
-)paren
-suffix:semicolon
-r_void
-op_star
-id|__symbol_get_gpl
-c_func
-(paren
-r_const
-r_char
-op_star
-id|symbol
-)paren
-suffix:semicolon
-DECL|macro|symbol_get
-mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
-multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(sym) EXPORT_SYMBOL(sym)
 DECL|struct|kernel_symbol_group
 r_struct
 id|kernel_symbol_group
@@ -155,6 +122,39 @@ id|entry
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODULES
+multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
+r_void
+op_star
+id|__symbol_get
+c_func
+(paren
+r_const
+r_char
+op_star
+id|symbol
+)paren
+suffix:semicolon
+r_void
+op_star
+id|__symbol_get_gpl
+c_func
+(paren
+r_const
+r_char
+op_star
+id|symbol
+)paren
+suffix:semicolon
+DECL|macro|symbol_get
+mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
+multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
+DECL|macro|EXPORT_SYMBOL
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
+DECL|macro|EXPORT_SYMBOL_NOVERS
+mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym) EXPORT_SYMBOL(sym)
 DECL|struct|module_ref
 r_struct
 id|module_ref
@@ -654,6 +654,21 @@ mdefine_line|#define init_module(voidarg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__initf
 DECL|macro|cleanup_module
 mdefine_line|#define cleanup_module(voidarg) __exitfn(void)
 macro_line|#endif
+multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
+r_extern
+id|spinlock_t
+id|modlist_lock
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|extables
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|symbols
+suffix:semicolon
 multiline_comment|/* Use symbol_get and symbol_put instead.  You&squot;ll thank me. */
 DECL|macro|HAVE_INTER_MODULE
 mdefine_line|#define HAVE_INTER_MODULE
