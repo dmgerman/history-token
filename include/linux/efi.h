@@ -545,6 +545,8 @@ DECL|macro|HCDP_TABLE_GUID
 mdefine_line|#define HCDP_TABLE_GUID&t;&bslash;&n;    EFI_GUID(  0xf951938d, 0x620b, 0x42ef, 0x82, 0x79, 0xa8, 0x4b, 0x79, 0x61, 0x78, 0x98 )
 DECL|macro|UGA_IO_PROTOCOL_GUID
 mdefine_line|#define UGA_IO_PROTOCOL_GUID &bslash;&n;    EFI_GUID(  0x61a4d49e, 0x6f68, 0x4f1b, 0xb9, 0x22, 0xa8, 0x6e, 0xed, 0xb, 0x7, 0xa2 )
+DECL|macro|EFI_GLOBAL_VARIABLE_GUID
+mdefine_line|#define EFI_GLOBAL_VARIABLE_GUID &bslash;&n;    EFI_GUID(  0x8be4df61, 0x93ca, 0x11d2, 0xaa, 0x0d, 0x00, 0xe0, 0x98, 0x03, 0x2b, 0x8c )
 r_typedef
 r_struct
 (brace
@@ -991,6 +993,14 @@ id|phys_addr
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|__init
+id|efi_uart_console_only
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|efi_initialize_iomem_resources
 c_func
@@ -1068,6 +1078,99 @@ DECL|macro|EFI_VARIABLE_BOOTSERVICE_ACCESS
 mdefine_line|#define EFI_VARIABLE_BOOTSERVICE_ACCESS 0x0000000000000002
 DECL|macro|EFI_VARIABLE_RUNTIME_ACCESS
 mdefine_line|#define EFI_VARIABLE_RUNTIME_ACCESS     0x0000000000000004
+multiline_comment|/*&n; * EFI Device Path information&n; */
+DECL|macro|EFI_DEV_HW
+mdefine_line|#define EFI_DEV_HW&t;&t;&t;0x01
+DECL|macro|EFI_DEV_PCI
+mdefine_line|#define  EFI_DEV_PCI&t;&t;&t;&t; 1
+DECL|macro|EFI_DEV_PCCARD
+mdefine_line|#define  EFI_DEV_PCCARD&t;&t;&t;&t; 2
+DECL|macro|EFI_DEV_MEM_MAPPED
+mdefine_line|#define  EFI_DEV_MEM_MAPPED&t;&t;&t; 3
+DECL|macro|EFI_DEV_VENDOR
+mdefine_line|#define  EFI_DEV_VENDOR&t;&t;&t;&t; 4
+DECL|macro|EFI_DEV_CONTROLLER
+mdefine_line|#define  EFI_DEV_CONTROLLER&t;&t;&t; 5
+DECL|macro|EFI_DEV_ACPI
+mdefine_line|#define EFI_DEV_ACPI&t;&t;&t;0x02
+DECL|macro|EFI_DEV_BASIC_ACPI
+mdefine_line|#define   EFI_DEV_BASIC_ACPI&t;&t;&t; 1
+DECL|macro|EFI_DEV_EXPANDED_ACPI
+mdefine_line|#define   EFI_DEV_EXPANDED_ACPI&t;&t;&t; 2
+DECL|macro|EFI_DEV_MSG
+mdefine_line|#define EFI_DEV_MSG&t;&t;&t;0x03
+DECL|macro|EFI_DEV_MSG_ATAPI
+mdefine_line|#define   EFI_DEV_MSG_ATAPI&t;&t;&t; 1
+DECL|macro|EFI_DEV_MSG_SCSI
+mdefine_line|#define   EFI_DEV_MSG_SCSI&t;&t;&t; 2
+DECL|macro|EFI_DEV_MSG_FC
+mdefine_line|#define   EFI_DEV_MSG_FC&t;&t;&t; 3
+DECL|macro|EFI_DEV_MSG_1394
+mdefine_line|#define   EFI_DEV_MSG_1394&t;&t;&t; 4
+DECL|macro|EFI_DEV_MSG_USB
+mdefine_line|#define   EFI_DEV_MSG_USB&t;&t;&t; 5
+DECL|macro|EFI_DEV_MSG_USB_CLASS
+mdefine_line|#define   EFI_DEV_MSG_USB_CLASS&t;&t;&t;15
+DECL|macro|EFI_DEV_MSG_I20
+mdefine_line|#define   EFI_DEV_MSG_I20&t;&t;&t; 6
+DECL|macro|EFI_DEV_MSG_MAC
+mdefine_line|#define   EFI_DEV_MSG_MAC&t;&t;&t;11
+DECL|macro|EFI_DEV_MSG_IPV4
+mdefine_line|#define   EFI_DEV_MSG_IPV4&t;&t;&t;12
+DECL|macro|EFI_DEV_MSG_IPV6
+mdefine_line|#define   EFI_DEV_MSG_IPV6&t;&t;&t;13
+DECL|macro|EFI_DEV_MSG_INFINIBAND
+mdefine_line|#define   EFI_DEV_MSG_INFINIBAND&t;&t; 9
+DECL|macro|EFI_DEV_MSG_UART
+mdefine_line|#define   EFI_DEV_MSG_UART&t;&t;&t;14
+DECL|macro|EFI_DEV_MSG_VENDOR
+mdefine_line|#define   EFI_DEV_MSG_VENDOR&t;&t;&t;10
+DECL|macro|EFI_DEV_MEDIA
+mdefine_line|#define EFI_DEV_MEDIA&t;&t;&t;0x04
+DECL|macro|EFI_DEV_MEDIA_HARD_DRIVE
+mdefine_line|#define   EFI_DEV_MEDIA_HARD_DRIVE&t;&t; 1
+DECL|macro|EFI_DEV_MEDIA_CDROM
+mdefine_line|#define   EFI_DEV_MEDIA_CDROM&t;&t;&t; 2
+DECL|macro|EFI_DEV_MEDIA_VENDOR
+mdefine_line|#define   EFI_DEV_MEDIA_VENDOR&t;&t;&t; 3
+DECL|macro|EFI_DEV_MEDIA_FILE
+mdefine_line|#define   EFI_DEV_MEDIA_FILE&t;&t;&t; 4
+DECL|macro|EFI_DEV_MEDIA_PROTOCOL
+mdefine_line|#define   EFI_DEV_MEDIA_PROTOCOL&t;&t; 5
+DECL|macro|EFI_DEV_BIOS_BOOT
+mdefine_line|#define EFI_DEV_BIOS_BOOT&t;&t;0x05
+DECL|macro|EFI_DEV_END_PATH
+mdefine_line|#define EFI_DEV_END_PATH&t;&t;0x7F
+DECL|macro|EFI_DEV_END_PATH2
+mdefine_line|#define EFI_DEV_END_PATH2&t;&t;0xFF
+DECL|macro|EFI_DEV_END_INSTANCE
+mdefine_line|#define   EFI_DEV_END_INSTANCE&t;&t;&t;0x01
+DECL|macro|EFI_DEV_END_ENTIRE
+mdefine_line|#define   EFI_DEV_END_ENTIRE&t;&t;&t;0xFF
+DECL|struct|efi_generic_dev_path
+r_struct
+id|efi_generic_dev_path
+(brace
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
+DECL|member|sub_type
+id|u8
+id|sub_type
+suffix:semicolon
+DECL|member|length
+id|u16
+id|length
+suffix:semicolon
+)brace
+id|__attribute
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * efi_dir is allocated in arch/ia64/kernel/efi.c.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
