@@ -267,28 +267,10 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|capi_ncciinfo
-r_struct
-id|capi_ncciinfo
-(brace
-DECL|member|applid
-id|__u16
-id|applid
-suffix:semicolon
-DECL|member|ncci
-id|__u32
-id|ncci
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|KCI_CONTRUP
 mdefine_line|#define&t;KCI_CONTRUP&t;0&t;/* struct capi_profile */
 DECL|macro|KCI_CONTRDOWN
 mdefine_line|#define&t;KCI_CONTRDOWN&t;1&t;/* NULL */
-DECL|macro|KCI_NCCIUP
-mdefine_line|#define&t;KCI_NCCIUP&t;2&t;/* struct capi_ncciinfo */
-DECL|macro|KCI_NCCIDOWN
-mdefine_line|#define&t;KCI_NCCIDOWN&t;3&t;/* struct capi_ncciinfo */
 DECL|struct|capi_interface_user
 r_struct
 id|capi_interface_user
