@@ -544,6 +544,11 @@ r_struct
 id|urb
 op_star
 id|purb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pbuff_t

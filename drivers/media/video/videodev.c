@@ -1173,8 +1173,6 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 DECL|function|videodev_proc_destroy
 r_static
 r_void
@@ -1216,8 +1214,6 @@ id|proc_root
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#endif
 DECL|function|videodev_proc_create_dev
 r_static
 r_void

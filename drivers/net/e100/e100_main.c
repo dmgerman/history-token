@@ -39,9 +39,9 @@ op_star
 suffix:semicolon
 macro_line|#else
 DECL|macro|e100_create_proc_subdir
-mdefine_line|#define e100_create_proc_subdir(X) 0
+mdefine_line|#define e100_create_proc_subdir(X, Y) 0
 DECL|macro|e100_remove_proc_subdir
-mdefine_line|#define e100_remove_proc_subdir(X) do {} while(0)
+mdefine_line|#define e100_remove_proc_subdir(X, Y) do {} while(0)
 macro_line|#endif
 r_static
 r_int

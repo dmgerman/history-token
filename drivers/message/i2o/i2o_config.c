@@ -4502,9 +4502,8 @@ c_func
 op_amp
 id|i2o_miscdev
 )paren
-op_eq
-op_minus
-l_int|1
+OL
+l_int|0
 )paren
 (brace
 id|printk

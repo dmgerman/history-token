@@ -48,6 +48,11 @@ r_int
 r_int
 id|console_device
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|console_irq
+suffix:semicolon
 DECL|macro|CONSOLE_IS_UNDEFINED
 mdefine_line|#define CONSOLE_IS_UNDEFINED&t;(console_mode == 0)
 DECL|macro|CONSOLE_IS_SCLP

@@ -3424,14 +3424,9 @@ id|nd
 r_return
 l_int|0
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|current-&gt;fs-&gt;lock
-)paren
-suffix:semicolon
 )brace
+r_else
+(brace
 id|read_unlock
 c_func
 (paren
@@ -3439,6 +3434,7 @@ op_amp
 id|current-&gt;fs-&gt;lock
 )paren
 suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren

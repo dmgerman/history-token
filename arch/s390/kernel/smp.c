@@ -88,7 +88,7 @@ id|vmpoff_cmd
 suffix:semicolon
 r_extern
 r_void
-id|reipl
+id|do_reipl
 c_func
 (paren
 r_int
@@ -656,9 +656,25 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Finally call reipl. Because we waited for all other&n;&t;&t; * cpus to enter this function we know that they do&n;&t;&t; * not hold any s390irq-locks (the cpus have been&n;&t;&t; * interrupted by an external interrupt and s390irq&n;&t;&t; * locks are always held disabled).&n;&t;&t; */
-id|reipl
-c_func
+r_if
+c_cond
 (paren
+id|MACHINE_IS_VM
+)paren
+id|cpcmd
+(paren
+l_string|&quot;IPL&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_else
+id|do_reipl
+(paren
+l_int|0x10000
+op_or
 id|S390_lowcore.ipl_device
 )paren
 suffix:semicolon
@@ -1735,6 +1751,8 @@ op_amp
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren

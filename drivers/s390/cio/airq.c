@@ -1,11 +1,9 @@
-multiline_comment|/*&n; *  drivers/s390/cio/airq.c&n; *   S/390 common I/O routines -- special interrupt registration&n; *   currently used only by qdio&n; *&n; *   $Revision: 1.3 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/airq.c&n; *   S/390 common I/O routines -- support for adapter interruptions&n; *&n; *   $Revision: 1.10 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/idals.h&gt;
-macro_line|#include &lt;asm/debug.h&gt;
-macro_line|#include &quot;airq.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
+macro_line|#include &quot;airq.h&quot;
 DECL|variable|adapter_lock
 r_static
 id|spinlock_t
@@ -29,8 +27,6 @@ id|handler
 (brace
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 id|dbf_txt
@@ -75,10 +71,16 @@ op_minus
 id|EBUSY
 suffix:semicolon
 r_else
+(brace
 id|adapter_handler
 op_assign
 id|handler
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|spin_unlock
 (paren
 op_amp
@@ -102,7 +104,9 @@ id|dbf_txt
 )paren
 suffix:semicolon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 r_int
@@ -115,8 +119,6 @@ id|handler
 (brace
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 id|dbf_txt
@@ -163,10 +165,16 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_else
+(brace
 id|adapter_handler
 op_assign
 l_int|NULL
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|spin_unlock
 (paren
 op_amp
@@ -190,7 +198,9 @@ id|dbf_txt
 )paren
 suffix:semicolon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 r_void

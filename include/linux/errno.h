@@ -12,6 +12,8 @@ DECL|macro|ERESTARTNOHAND
 mdefine_line|#define ERESTARTNOHAND&t;514&t;/* restart if no handler.. */
 DECL|macro|ENOIOCTLCMD
 mdefine_line|#define ENOIOCTLCMD&t;515&t;/* No ioctl command */
+DECL|macro|ERESTART_RESTARTBLOCK
+mdefine_line|#define ERESTART_RESTARTBLOCK 516 /* restart by calling sys_restart_syscall */
 multiline_comment|/* Defined for the NFSv3 protocol */
 DECL|macro|EBADHANDLE
 mdefine_line|#define EBADHANDLE&t;521&t;/* Illegal NFS file handle */

@@ -100,7 +100,7 @@ r_void
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/* FIXME: what if rc != 0x0020 */
+multiline_comment|/* Ignore return code - because console-writes aren&squot;t critical,&n;&t;   we do without a sophisticated error recovery mechanism.  */
 id|page
 op_assign
 id|sclp_unmake_buffer
@@ -118,6 +118,17 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Remove buffer from outqueue */
+id|list_del
+c_func
+(paren
+op_amp
+id|buffer-&gt;list
+)paren
+suffix:semicolon
+id|sclp_con_buffer_count
+op_decrement
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -130,17 +141,6 @@ id|page
 comma
 op_amp
 id|sclp_con_pages
-)paren
-suffix:semicolon
-id|sclp_con_buffer_count
-op_decrement
-suffix:semicolon
-multiline_comment|/* Remove buffer from outqueue */
-id|list_del
-c_func
-(paren
-op_amp
-id|buffer-&gt;list
 )paren
 suffix:semicolon
 multiline_comment|/* Check if there is a pending buffer on the out queue. */
@@ -327,7 +327,7 @@ r_if
 c_cond
 (paren
 id|count
-op_le
+op_eq
 l_int|0
 )paren
 r_return
@@ -424,6 +424,12 @@ c_func
 (paren
 id|sclp_conbuf
 comma
+(paren
+r_const
+r_int
+r_char
+op_star
+)paren
 id|message
 comma
 id|count
@@ -827,7 +833,7 @@ id|sclp_con_width_htab
 op_assign
 l_int|8
 suffix:semicolon
-multiline_comment|/* enable printk&#xfffd;s access to this driver */
+multiline_comment|/* enable printk-access to this driver */
 id|register_console
 c_func
 (paren

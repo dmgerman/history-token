@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  drivers/s390/char/sclp_rw.h&n; *    interface to the 
 macro_line|#ifndef __SCLP_RW_H__
 DECL|macro|__SCLP_RW_H__
 mdefine_line|#define __SCLP_RW_H__
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 DECL|struct|mto
 r_struct
 id|mto
@@ -249,6 +251,15 @@ DECL|member|current_length
 r_int
 id|current_length
 suffix:semicolon
+DECL|member|retry_count
+r_int
+id|retry_count
+suffix:semicolon
+DECL|member|retry_timer
+r_struct
+id|timer_list
+id|retry_timer
+suffix:semicolon
 multiline_comment|/* output format settings */
 DECL|member|columns
 r_int
@@ -342,25 +353,13 @@ op_star
 id|buffer
 comma
 r_const
+r_int
 r_char
 op_star
 comma
 r_int
 comma
 r_int
-)paren
-suffix:semicolon
-r_void
-id|sclp_move_current_line
-c_func
-(paren
-r_struct
-id|sclp_buffer
-op_star
-comma
-r_struct
-id|sclp_buffer
-op_star
 )paren
 suffix:semicolon
 r_void

@@ -2596,6 +2596,7 @@ id|id-&gt;level
 op_assign
 id|new_level
 suffix:semicolon
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -2607,6 +2608,7 @@ comma
 id|id-&gt;level
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|spin_unlock_irqrestore
 c_func

@@ -529,15 +529,13 @@ comma
 id|NVRAM_VERSION
 )paren
 suffix:semicolon
+r_return
 id|misc_register
 c_func
 (paren
 op_amp
 id|nvram_dev
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|nvram_cleanup

@@ -2470,7 +2470,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|shapers
+id|shapers_registered
 suffix:semicolon
 id|i
 op_increment

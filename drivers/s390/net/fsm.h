@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fsm.h,v 1.4 2001/09/24 10:38:02 mschwide Exp $&n; */
+multiline_comment|/* $Id: fsm.h,v 1.1.1.1 2002/03/13 19:33:09 mschwide Exp $&n; */
 macro_line|#ifndef _FSM_H_
 DECL|macro|_FSM_H_
 mdefine_line|#define _FSM_H_

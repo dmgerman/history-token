@@ -9374,7 +9374,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_TN3215
+macro_line|#ifdef CONFIG_TN3215_CONSOLE
 id|con3215_init
 c_func
 (paren
@@ -9790,14 +9790,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_TN3215
-id|tty3215_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SCLP
+macro_line|#ifdef CONFIG_SCLP_TTY
 id|sclp_tty_init
 c_func
 (paren

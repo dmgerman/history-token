@@ -2434,12 +2434,6 @@ id|KERN_ERR
 l_string|&quot; Duh! illegal interrupt vector stored in EEPROM.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus

@@ -493,21 +493,4 @@ l_int|7
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
-multiline_comment|/* Local variables for do_magic */
-DECL|variable|__nosavedata
-r_int
-id|loop
-id|__nosavedata
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|__nosavedata
-r_int
-id|loop2
-id|__nosavedata
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 eof

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;

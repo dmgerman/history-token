@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 66 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 67 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -39,7 +39,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MTH_NUM_ARGS
+id|ACPI_METHOD_NUM_ARGS
 suffix:semicolon
 id|i
 op_increment
@@ -111,7 +111,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MTH_NUM_LOCALS
+id|ACPI_METHOD_NUM_LOCALS
 suffix:semicolon
 id|i
 op_increment
@@ -204,7 +204,7 @@ l_int|0
 suffix:semicolon
 id|index
 OL
-id|MTH_NUM_LOCALS
+id|ACPI_METHOD_NUM_LOCALS
 suffix:semicolon
 id|index
 op_increment
@@ -261,7 +261,7 @@ l_int|0
 suffix:semicolon
 id|index
 OL
-id|MTH_NUM_ARGS
+id|ACPI_METHOD_NUM_ARGS
 suffix:semicolon
 id|index
 op_increment
@@ -373,7 +373,7 @@ c_loop
 (paren
 id|index
 OL
-id|MTH_NUM_ARGS
+id|ACPI_METHOD_NUM_ARGS
 )paren
 op_logical_and
 (paren
@@ -482,7 +482,7 @@ c_cond
 (paren
 id|index
 OG
-id|MTH_MAX_LOCAL
+id|ACPI_METHOD_MAX_LOCAL
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -494,7 +494,7 @@ l_string|&quot;Local index %d is invalid (max %d)&bslash;n&quot;
 comma
 id|index
 comma
-id|MTH_MAX_LOCAL
+id|ACPI_METHOD_MAX_LOCAL
 )paren
 )paren
 suffix:semicolon
@@ -524,7 +524,7 @@ c_cond
 (paren
 id|index
 OG
-id|MTH_MAX_ARG
+id|ACPI_METHOD_MAX_ARG
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -536,7 +536,7 @@ l_string|&quot;Arg index %d is invalid (max %d)&bslash;n&quot;
 comma
 id|index
 comma
-id|MTH_MAX_ARG
+id|ACPI_METHOD_MAX_ARG
 )paren
 )paren
 suffix:semicolon

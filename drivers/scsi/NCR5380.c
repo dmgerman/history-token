@@ -4542,14 +4542,14 @@ r_int
 r_char
 id|value
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|NCR5380_setup
 c_func
 (paren
 id|instance
 )paren
-suffix:semicolon
-r_int
-id|err
 suffix:semicolon
 r_if
 c_cond

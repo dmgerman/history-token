@@ -11,8 +11,9 @@ r_char
 id|debug
 suffix:semicolon
 DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION &quot;0.4 (&quot; __DATE__ &quot; &quot; __TIME__ &quot;)&quot;
+mdefine_line|#define MODULE_VERSION &quot;0.6&quot;
 id|MODULE_PARM
+c_func
 (paren
 id|debug
 comma
@@ -20,6 +21,7 @@ l_string|&quot;0-1b&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
+c_func
 (paren
 id|debug
 comma
@@ -27,23 +29,26 @@ l_string|&quot;debug=1 is turn on debug messages&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
+c_func
 (paren
 l_string|&quot;Nick Fedchik &lt;nick@fedchik.org.ua&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
+c_func
 (paren
 l_string|&quot;802.1Q match module (ebtables extension), v&quot;
 id|MODULE_VERSION
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
+c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|DEBUG_MSG
-mdefine_line|#define DEBUG_MSG(...) if (debug) printk (KERN_DEBUG __FILE__ &quot;:&quot; __VA_ARGS__)
+mdefine_line|#define DEBUG_MSG(...) if (debug) printk (KERN_DEBUG &quot;ebt_vlan: &quot; __VA_ARGS__)
 DECL|macro|INV_FLAG
 mdefine_line|#define INV_FLAG(_inv_flag_) (info-&gt;invflags &amp; _inv_flag_) ? &quot;!&quot; : &quot;&quot;
 DECL|macro|GET_BITMASK
@@ -57,6 +62,7 @@ r_static
 r_int
 DECL|function|ebt_filter_vlan
 id|ebt_filter_vlan
+c_func
 (paren
 r_const
 r_struct
@@ -132,10 +138,11 @@ r_int
 id|encap
 suffix:semicolon
 multiline_comment|/* VLAN encapsulated Type/Length field, given from orig frame */
-multiline_comment|/*&n;&t; * Tag Control Information (TCI) consists of the following elements:&n;&t; * - User_priority. This field allows the tagged frame to carry user_priority&n;&t; * information across Bridged LANs in which individual LAN segments may be unable to signal&n;&t; * priority information (e.g., 802.3/Ethernet segments). &n;&t; * The user_priority field is three bits in length, &n;&t; * interpreted as a binary number. The user_priority is therefore&n;&t; * capable of representing eight priority levels, 0 through 7. &n;&t; * The use and interpretation of this field is defined in ISO/IEC 15802-3.&n;&t; * - Canonical Format Indicator (CFI). This field is used,&n;&t; * in 802.3/Ethernet, to signal the presence or absence&n;&t; * of a RIF field, and, in combination with the Non-canonical Format Indicator (NCFI) carried&n;&t; * in the RIF, to signal the bit order of address information carried in the encapsulated&n;&t; * frame. The Canonical Format Indicator (CFI) is a single bit flag value.&n;&t; * - VLAN Identifier (VID). This field uniquely identifies the VLAN to&n;&t; * which the frame belongs. The twelve-bit VLAN Identifier (VID) field &n;&t; * uniquely identify the VLAN to which the frame belongs. &n;&t; * The VID is encoded as an unsigned binary number. &n;&t; */
+multiline_comment|/*&n;&t; * Tag Control Information (TCI) consists of the following elements:&n;&t; * - User_priority. The user_priority field is three bits in length, &n;&t; * interpreted as a binary number. &n;&t; * - Canonical Format Indicator (CFI). The Canonical Format Indicator &n;&t; * (CFI) is a single bit flag value. Currently ignored.&n;&t; * - VLAN Identifier (VID). The VID is encoded as &n;&t; * an unsigned binary number. &n;&t; */
 id|TCI
 op_assign
 id|ntohs
+c_func
 (paren
 id|frame-&gt;h_vlan_TCI
 )paren
@@ -144,33 +151,28 @@ id|id
 op_assign
 id|TCI
 op_amp
-l_int|0xFFF
+id|VLAN_VID_MASK
 suffix:semicolon
 id|prio
 op_assign
+(paren
 id|TCI
 op_rshift
 l_int|13
+)paren
+op_amp
+l_int|0x7
 suffix:semicolon
 id|encap
 op_assign
 id|frame-&gt;h_vlan_encapsulated_proto
 suffix:semicolon
-multiline_comment|/*&n;&t; * First step is to check is null VLAN ID present&n;&t; * in the parsed frame&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|id
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Checking VLAN Identifier (VID)&n;&t;&t; */
+multiline_comment|/*&n;&t; * Checking VLAN Identifier (VID)&n;&t; */
 r_if
 c_cond
 (paren
 id|GET_BITMASK
+c_func
 (paren
 id|EBT_VLAN_ID
 )paren
@@ -178,35 +180,20 @@ id|EBT_VLAN_ID
 (brace
 multiline_comment|/* Is VLAN ID parsed? */
 id|EXIT_ON_MISMATCH
+c_func
 (paren
 id|id
 comma
 id|EBT_VLAN_ID
 )paren
 suffix:semicolon
-id|DEBUG_MSG
-(paren
-l_string|&quot;matched rule id=%s%d for frame id=%d&bslash;n&quot;
-comma
-id|INV_FLAG
-(paren
-id|EBT_VLAN_ID
-)paren
-comma
-id|info-&gt;id
-comma
-id|id
-)paren
-suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * Checking user_priority&n;&t;&t; */
+multiline_comment|/*&n;&t; * Checking user_priority&n;&t; */
 r_if
 c_cond
 (paren
 id|GET_BITMASK
+c_func
 (paren
 id|EBT_VLAN_PRIO
 )paren
@@ -214,33 +201,20 @@ id|EBT_VLAN_PRIO
 (brace
 multiline_comment|/* Is VLAN user_priority parsed? */
 id|EXIT_ON_MISMATCH
+c_func
 (paren
 id|prio
 comma
 id|EBT_VLAN_PRIO
 )paren
 suffix:semicolon
-id|DEBUG_MSG
-(paren
-l_string|&quot;matched rule prio=%s%d for frame prio=%d&bslash;n&quot;
-comma
-id|INV_FLAG
-(paren
-id|EBT_VLAN_PRIO
-)paren
-comma
-id|info-&gt;prio
-comma
-id|prio
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * Checking Encapsulated Proto (Length/Type) field&n;&t; */
 r_if
 c_cond
 (paren
 id|GET_BITMASK
+c_func
 (paren
 id|EBT_VLAN_ENCAP
 )paren
@@ -248,30 +222,11 @@ id|EBT_VLAN_ENCAP
 (brace
 multiline_comment|/* Is VLAN Encap parsed? */
 id|EXIT_ON_MISMATCH
+c_func
 (paren
 id|encap
 comma
 id|EBT_VLAN_ENCAP
-)paren
-suffix:semicolon
-id|DEBUG_MSG
-(paren
-l_string|&quot;matched encap=%s%2.4X for frame encap=%2.4X&bslash;n&quot;
-comma
-id|INV_FLAG
-(paren
-id|EBT_VLAN_ENCAP
-)paren
-comma
-id|ntohs
-(paren
-id|info-&gt;encap
-)paren
-comma
-id|ntohs
-(paren
-id|encap
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -280,11 +235,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function description: ebt_vlan_check() is called when userspace &n; * delivers the table to the kernel, &n; * and to check that userspace doesn&squot;t give a bad table.&n; * Parameters:&n; * const char *tablename - table name string&n; * unsigned int hooknr - hook number&n; * const struct ebt_entry *e - ebtables entry basic set&n; * const void *data - pointer to passed extension parameters&n; * unsigned int datalen - length of passed *data buffer&n; * Returned values:&n; * 0 - ok (all delivered rule params are correct)&n; * 1 - miss (rule params is out of range, invalid, incompatible, etc.)&n; */
+multiline_comment|/*&n; * Function description: ebt_vlan_check() is called when userspace &n; * delivers the table entry to the kernel, &n; * and to check that userspace doesn&squot;t give a bad table.&n; * Parameters:&n; * const char *tablename - table name string&n; * unsigned int hooknr - hook number&n; * const struct ebt_entry *e - ebtables entry basic set&n; * const void *data - pointer to passed extension parameters&n; * unsigned int datalen - length of passed *data buffer&n; * Returned values:&n; * 0 - ok (all delivered rule params are correct)&n; * 1 - miss (rule params is out of range, invalid, incompatible, etc.)&n; */
 r_static
 r_int
 DECL|function|ebt_check_vlan
 id|ebt_check_vlan
+c_func
 (paren
 r_const
 r_char
@@ -337,7 +293,7 @@ id|ebt_vlan_info
 (brace
 id|DEBUG_MSG
 (paren
-l_string|&quot;params size %d is not eq to ebt_vlan_info (%d)&bslash;n&quot;
+l_string|&quot;passed size %d is not eq to ebt_vlan_info (%d)&bslash;n&quot;
 comma
 id|datalen
 comma
@@ -360,6 +316,7 @@ c_cond
 id|e-&gt;ethproto
 op_ne
 id|__constant_htons
+c_func
 (paren
 id|ETH_P_8021Q
 )paren
@@ -374,6 +331,7 @@ r_int
 r_int
 )paren
 id|ntohs
+c_func
 (paren
 id|e-&gt;ethproto
 )paren
@@ -395,6 +353,7 @@ id|EBT_VLAN_MASK
 )paren
 (brace
 id|DEBUG_MSG
+c_func
 (paren
 l_string|&quot;bitmask %2X is out of mask (%2X)&bslash;n&quot;
 comma
@@ -419,6 +378,7 @@ id|EBT_VLAN_MASK
 )paren
 (brace
 id|DEBUG_MSG
+c_func
 (paren
 l_string|&quot;inversion flags %2X is out of mask (%2X)&bslash;n&quot;
 comma
@@ -432,11 +392,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Reserved VLAN ID (VID) values&n;&t; * -----------------------------&n;&t; * 0 - The null VLAN ID. Indicates that the tag header contains only user_priority information;&n;&t; * no VLAN identifier is present in the frame. This VID value shall not be&n;&t; * configured as a PVID, configured in any Filtering Database entry, or used in any&n;&t; * Management operation.&n;&t; * &n;&t; * 1 - The default Port VID (PVID) value used for classifying frames on ingress through a Bridge&n;&t; * Port. The PVID value can be changed by management on a per-Port basis.&n;&t; * &n;&t; * 0x0FFF - Reserved for implementation use. This VID value shall not be configured as a&n;&t; * PVID or transmitted in a tag header.&n;&t; * &n;&t; * The remaining values of VID are available for general use as VLAN identifiers.&n;&t; * A Bridge may implement the ability to support less than the full range of VID values; &n;&t; * i.e., for a given implementation,&n;&t; * an upper limit, N, is defined for the VID values supported, where N is less than or equal to 4094.&n;&t; * All implementations shall support the use of all VID values in the range 0 through their defined maximum&n;&t; * VID, N.&n;&t; * &n;&t; * For Linux, N = 4094.&n;&t; */
+multiline_comment|/*&n;&t; * Reserved VLAN ID (VID) values&n;&t; * -----------------------------&n;&t; * 0 - The null VLAN ID. &n;&t; * 1 - The default Port VID (PVID)&n;&t; * 0x0FFF - Reserved for implementation use. &n;&t; * if_vlan.h: VLAN_GROUP_ARRAY_LEN 4096.&n;&t; */
 r_if
 c_cond
 (paren
 id|GET_BITMASK
+c_func
 (paren
 id|EBT_VLAN_ID
 )paren
@@ -457,13 +418,12 @@ c_cond
 (paren
 id|info-&gt;id
 OG
-l_int|4094
+id|VLAN_GROUP_ARRAY_LEN
 )paren
 (brace
-multiline_comment|/* check if id &gt; than (0x0FFE) */
 id|DEBUG_MSG
 (paren
-l_string|&quot;vlan id %d is out of range (1-4094)&bslash;n&quot;
+l_string|&quot;id %d is out of range (1-4096)&bslash;n&quot;
 comma
 id|info-&gt;id
 )paren
@@ -473,15 +433,20 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Note: This is valid VLAN-tagged frame point.&n;&t;&t;&t; * Any value of user_priority are acceptable, but could be ignored&n;&t;&t;&t; * according to 802.1Q Std.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Note: This is valid VLAN-tagged frame point.&n;&t;&t;&t; * Any value of user_priority are acceptable, &n;&t;&t;&t; * but should be ignored according to 802.1Q Std.&n;&t;&t;&t; * So we just drop the prio flag. &n;&t;&t;&t; */
+id|info-&gt;bitmask
+op_and_assign
+op_complement
+id|EBT_VLAN_PRIO
+suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t; * if id=0 (null VLAN ID)  =&gt; Check for user_priority range &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Else, id=0 (null VLAN ID)  =&gt; user_priority range (any?)&n;&t;&t; */
+)brace
 r_if
 c_cond
 (paren
 id|GET_BITMASK
+c_func
 (paren
 id|EBT_VLAN_PRIO
 )paren
@@ -512,40 +477,12 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Note2: This is valid priority-tagged frame point&n;&t;&t;&t; * with null VID field.&n;&t;&t;&t; */
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* VLAN Id not set */
+multiline_comment|/*&n;&t; * Check for encapsulated proto range - it is possible to be &n;&t; * any value for u_short range.&n;&t; * if_ether.h:  ETH_ZLEN        60   -  Min. octets in frame sans FCS&n;&t; */
 r_if
 c_cond
 (paren
 id|GET_BITMASK
-(paren
-id|EBT_VLAN_PRIO
-)paren
-)paren
-(brace
-multiline_comment|/* But user_priority is set - abnormal! */
-id|info-&gt;id
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Set null VID (case for Priority-tagged frames) */
-id|SET_BITMASK
-(paren
-id|EBT_VLAN_ID
-)paren
-suffix:semicolon
-multiline_comment|/* and set id flag */
-)brace
-)brace
-multiline_comment|/*&n;&t; * Check for encapsulated proto range - it is possible to be any value for u_short range.&n;&t; * When relaying a tagged frame between 802.3/Ethernet MACs, &n;&t; * a Bridge may adjust the padding field such that&n;&t; * the minimum size of a transmitted tagged frame is 68 octets (7.2).&n;&t; * if_ether.h:  ETH_ZLEN        60   -  Min. octets in frame sans FCS&n;&t; */
-r_if
-c_cond
-(paren
-id|GET_BITMASK
+c_func
 (paren
 id|EBT_VLAN_ENCAP
 )paren
@@ -559,6 +496,7 @@ r_int
 r_int
 )paren
 id|ntohs
+c_func
 (paren
 id|info-&gt;encap
 )paren
@@ -568,14 +506,13 @@ id|ETH_ZLEN
 (brace
 id|DEBUG_MSG
 (paren
-l_string|&quot;encap packet length %d is less than minimal %d&bslash;n&quot;
+l_string|&quot;encap frame length %d is less than minimal&bslash;n&quot;
 comma
 id|ntohs
+c_func
 (paren
 id|info-&gt;encap
 )paren
-comma
-id|ETH_ZLEN
 )paren
 suffix:semicolon
 r_return
@@ -584,16 +521,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Otherwise is all correct &n;&t; */
-id|DEBUG_MSG
-(paren
-l_string|&quot;802.1Q tagged frame checked (%s table, %d hook)&bslash;n&quot;
-comma
-id|tablename
-comma
-id|hooknr
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -622,17 +549,19 @@ comma
 id|THIS_MODULE
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Module initialization function.&n; * Called when module is loaded to kernelspace&n; */
+multiline_comment|/*&n; * Module initialization function.&n; */
 DECL|function|init
 r_static
 r_int
 id|__init
 id|init
+c_func
 (paren
 r_void
 )paren
 (brace
 id|DEBUG_MSG
+c_func
 (paren
 l_string|&quot;ebtables 802.1Q extension module v&quot;
 id|MODULE_VERSION
@@ -640,6 +569,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DEBUG_MSG
+c_func
 (paren
 l_string|&quot;module debug=%d&bslash;n&quot;
 comma
@@ -650,23 +580,26 @@ id|debug
 suffix:semicolon
 r_return
 id|ebt_register_match
+c_func
 (paren
 op_amp
 id|filter_vlan
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Module &quot;finalization&quot; function&n; * Called when download module from kernelspace&n; */
+multiline_comment|/*&n; * Module &quot;finalization&quot; function&n; */
 DECL|function|fini
 r_static
 r_void
 id|__exit
 id|fini
+c_func
 (paren
 r_void
 )paren
 (brace
 id|ebt_unregister_match
+c_func
 (paren
 op_amp
 id|filter_vlan
@@ -675,12 +608,14 @@ suffix:semicolon
 )brace
 DECL|variable|init
 id|module_init
+c_func
 (paren
 id|init
 )paren
 suffix:semicolon
 DECL|variable|fini
 id|module_exit
+c_func
 (paren
 id|fini
 )paren

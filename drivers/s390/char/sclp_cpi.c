@@ -454,7 +454,7 @@ r_struct
 id|cpi_sccb
 op_star
 )paren
-id|get_free_page
+id|__get_free_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -913,6 +913,13 @@ id|cpi_free_req
 c_func
 (paren
 id|req
+)paren
+suffix:semicolon
+id|sclp_unregister
+c_func
+(paren
+op_amp
+id|sclp_cpi_event
 )paren
 suffix:semicolon
 r_return

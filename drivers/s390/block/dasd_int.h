@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * History of changes (starts July 2000)&n; * 02/01/01 added dynamic registration of ioctls&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.36 $&n; *&n; * History of changes (starts July 2000)&n; * 02/01/01 added dynamic registration of ioctls&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -28,12 +28,11 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/s390dyn.h&gt;
 multiline_comment|/*&n; * SECTION: Type definitions&n; */
 r_struct
 id|dasd_device_t
@@ -152,7 +151,7 @@ DECL|macro|DBF_DEBUG
 mdefine_line|#define&t;DBF_DEBUG&t;6&t;/* debug-level messages&t;&t;&t;*/
 multiline_comment|/* messages to be written via klogd and dbf */
 DECL|macro|DEV_MESSAGE
-mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s,%04x@%02x: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, d_device-&gt;gdp-&gt;disk_name, &bslash;&n;&t;       d_device-&gt;devinfo.devno, d_device-&gt;devinfo.irq, &bslash;&n;&t;       d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
+mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s,%s: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, d_device-&gt;gdp-&gt;disk_name, &bslash;&n;&t;       d_device-&gt;cdev-&gt;dev.bus_id, d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
 DECL|macro|MESSAGE
 mdefine_line|#define MESSAGE(d_loglevel,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; &quot; d_string &quot;&bslash;n&quot;, d_args); &bslash;&n;&t;DBF_EVENT(DBF_ALERT, d_string, d_args); &bslash;&n;} while(0)
 DECL|struct|dasd_ccw_req_t
@@ -181,7 +180,8 @@ id|device
 suffix:semicolon
 multiline_comment|/* device the request is for */
 DECL|member|cpaddr
-id|ccw1_t
+r_struct
+id|ccw1
 op_star
 id|cpaddr
 suffix:semicolon
@@ -197,11 +197,6 @@ id|retries
 suffix:semicolon
 multiline_comment|/* A retry counter */
 multiline_comment|/* ... and how */
-DECL|member|options
-r_int
-id|options
-suffix:semicolon
-multiline_comment|/* options for execution */
 DECL|member|expires
 r_int
 id|expires
@@ -220,7 +215,8 @@ suffix:semicolon
 multiline_comment|/* pointer to data area */
 multiline_comment|/* these are important for recovering erroneous requests          */
 DECL|member|dstat
-id|devstat_t
+r_struct
+id|irb
 op_star
 id|dstat
 suffix:semicolon
@@ -455,7 +451,8 @@ id|examine_error
 id|dasd_ccw_req_t
 op_star
 comma
-id|devstat_t
+r_struct
+id|irb
 op_star
 )paren
 suffix:semicolon
@@ -496,6 +493,10 @@ op_star
 comma
 id|dasd_ccw_req_t
 op_star
+comma
+r_struct
+id|irb
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* i/o control functions. */
@@ -534,6 +535,17 @@ DECL|typedef|dasd_discipline_t
 )brace
 id|dasd_discipline_t
 suffix:semicolon
+r_extern
+id|dasd_discipline_t
+id|dasd_diag_discipline
+suffix:semicolon
+macro_line|#ifdef CONFIG_DASD_DIAG
+DECL|macro|dasd_diag_discipline_pointer
+mdefine_line|#define dasd_diag_discipline_pointer (&amp;dasd_diag_discipline)
+macro_line|#else
+DECL|macro|dasd_diag_discipline_pointer
+mdefine_line|#define dasd_diag_discipline_pointer (0)
+macro_line|#endif
 DECL|struct|dasd_device_t
 r_typedef
 r_struct
@@ -582,6 +594,11 @@ r_int
 id|ro_flag
 suffix:semicolon
 multiline_comment|/* read-only flag */
+DECL|member|use_diag_flag
+r_int
+id|use_diag_flag
+suffix:semicolon
+multiline_comment|/* diag allowed flag */
 multiline_comment|/* Device discipline stuff. */
 DECL|member|discipline
 id|dasd_discipline_t
@@ -641,13 +658,10 @@ id|list_head
 id|erp_chunks
 suffix:semicolon
 multiline_comment|/* Common i/o stuff. */
-DECL|member|devinfo
-id|s390_dev_info_t
-id|devinfo
-suffix:semicolon
-DECL|member|dev_status
-id|devstat_t
-id|dev_status
+multiline_comment|/* FIXME: remove the next */
+DECL|member|devno
+r_int
+id|devno
 suffix:semicolon
 DECL|member|tasklet_scheduled
 id|atomic_t
@@ -672,6 +686,12 @@ DECL|member|debug_area
 id|debug_info_t
 op_star
 id|debug_area
+suffix:semicolon
+DECL|member|cdev
+r_struct
+id|ccw_device
+op_star
+id|cdev
 suffix:semicolon
 macro_line|#ifdef CONFIG_DASD_PROFILE
 DECL|member|profile
@@ -711,11 +731,6 @@ DECL|member|features
 r_int
 r_int
 id|features
-suffix:semicolon
-DECL|member|devreg
-id|devreg_t
-op_star
-id|devreg
 suffix:semicolon
 DECL|member|device
 id|dasd_device_t
@@ -1309,7 +1324,8 @@ DECL|function|dasd_kmalloc_set_cda
 id|dasd_kmalloc_set_cda
 c_func
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 op_star
 id|ccw
 comma
@@ -1350,36 +1366,10 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|dasd_enable_devices
+id|dasd_enable_device
 c_func
 (paren
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_void
-id|dasd_disable_devices
-c_func
-(paren
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_void
-id|dasd_discipline_add
-c_func
-(paren
-id|dasd_discipline_t
-op_star
-)paren
-suffix:semicolon
-r_void
-id|dasd_discipline_del
-c_func
-(paren
-id|dasd_discipline_t
+id|dasd_device_t
 op_star
 )paren
 suffix:semicolon
@@ -1431,16 +1421,6 @@ id|dasd_term_IO
 c_func
 (paren
 id|dasd_ccw_req_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|dasd_oper_handler
-c_func
-(paren
-r_int
-comma
-id|devreg_t
 op_star
 )paren
 suffix:semicolon
@@ -1503,6 +1483,51 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* unused */
+r_int
+id|dasd_generic_probe
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+comma
+id|dasd_discipline_t
+op_star
+id|discipline
+)paren
+suffix:semicolon
+r_int
+id|dasd_generic_remove
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+)paren
+suffix:semicolon
+r_int
+id|dasd_generic_set_online
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+comma
+id|dasd_discipline_t
+op_star
+id|discipline
+)paren
+suffix:semicolon
+r_int
+id|dasd_generic_set_offline
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+)paren
+suffix:semicolon
 multiline_comment|/* externals in dasd_devmap.c */
 r_extern
 r_int
@@ -1546,25 +1571,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-id|dasd_devmap_t
-op_star
-id|dasd_devmap_from_irq
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-id|dasd_devmap_t
-op_star
-id|dasd_devmap_from_bdev
-c_func
-(paren
-r_struct
-id|block_device
-op_star
-id|bdev
-)paren
-suffix:semicolon
 id|dasd_device_t
 op_star
 id|dasd_get_device
@@ -1579,30 +1585,6 @@ id|dasd_put_device
 c_func
 (paren
 id|dasd_devmap_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|dasd_devno
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-)paren
-suffix:semicolon
-r_int
-id|dasd_feature_list
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
 op_star
 )paren
 suffix:semicolon
@@ -1637,13 +1619,6 @@ id|dasd_gendisk_exit
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_int
-id|dasd_gendisk_major_index
-c_func
-(paren
-r_int
 )paren
 suffix:semicolon
 r_int
@@ -1800,6 +1775,18 @@ op_star
 )paren
 suffix:semicolon
 r_void
+id|dasd_log_sense
+c_func
+(paren
+id|dasd_ccw_req_t
+op_star
+comma
+r_struct
+id|irb
+op_star
+)paren
+suffix:semicolon
+r_void
 id|dasd_log_ccw
 c_func
 (paren
@@ -1819,7 +1806,8 @@ c_func
 id|dasd_ccw_req_t
 op_star
 comma
-id|devstat_t
+r_struct
+id|irb
 op_star
 )paren
 suffix:semicolon
@@ -1831,7 +1819,8 @@ c_func
 id|dasd_ccw_req_t
 op_star
 comma
-id|devstat_t
+r_struct
+id|irb
 op_star
 )paren
 suffix:semicolon
@@ -1844,23 +1833,6 @@ id|dasd_ccw_req_t
 op_star
 )paren
 suffix:semicolon
-id|dasd_ccw_req_t
-op_star
-id|dasd_2105_erp_action
-c_func
-(paren
-id|dasd_ccw_req_t
-op_star
-)paren
-suffix:semicolon
-r_void
-id|dasd_3990_erp_restart_queue
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* externals in dasd_9336_erp.c */
 id|dasd_era_t
 id|dasd_9336_erp_examine
@@ -1869,7 +1841,8 @@ c_func
 id|dasd_ccw_req_t
 op_star
 comma
-id|devstat_t
+r_struct
+id|irb
 op_star
 )paren
 suffix:semicolon
@@ -1881,7 +1854,8 @@ c_func
 id|dasd_ccw_req_t
 op_star
 comma
-id|devstat_t
+r_struct
+id|irb
 op_star
 )paren
 suffix:semicolon

@@ -14154,7 +14154,7 @@ DECL|variable|pnp_dev_table
 r_static
 r_const
 r_struct
-id|pnp_id
+id|pnp_device_id
 id|pnp_dev_table
 (braket
 )braket
@@ -14206,11 +14206,6 @@ dot
 id|name
 op_assign
 l_string|&quot;parport_pc&quot;
-comma
-dot
-id|card_id_table
-op_assign
-l_int|NULL
 comma
 dot
 id|id_table

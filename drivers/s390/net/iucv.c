@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * $Id: iucv.c,v 1.32 2002/02/12 21:52:20 felfert Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.32 $&n; *&n; */
+multiline_comment|/* &n; * $Id: iucv.c,v 1.9 2002/11/06 13:37:25 cohuck Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.9 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;iucv.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 DECL|macro|DEBUG
@@ -571,14 +570,12 @@ c_func
 l_string|&quot;Linux for S/390 IUCV lowlevel driver&quot;
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,12))
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Debugging stuff&n; *******************************************************************************/
 "&f;"
 macro_line|#ifdef DEBUG
@@ -766,7 +763,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.32 $&quot;
+l_string|&quot;$Revision: 1.9 $&quot;
 suffix:semicolon
 r_char
 op_star

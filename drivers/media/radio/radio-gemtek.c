@@ -1067,25 +1067,6 @@ op_amp
 id|lock
 )paren
 suffix:semicolon
-multiline_comment|/* mute card - prevents noisy bootups */
-id|outb
-c_func
-(paren
-l_int|0x10
-comma
-id|io
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|5
-)paren
-suffix:semicolon
-id|gemtek_unit.muted
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* this is _maybe_ unnecessary */
 id|outb
 c_func
@@ -1093,6 +1074,18 @@ c_func
 l_int|0x01
 comma
 id|io
+)paren
+suffix:semicolon
+multiline_comment|/* mute card - prevents noisy bootups */
+id|gemtek_unit.muted
+op_assign
+l_int|0
+suffix:semicolon
+id|gemtek_mute
+c_func
+(paren
+op_amp
+id|gemtek_unit
 )paren
 suffix:semicolon
 r_return

@@ -7,22 +7,11 @@ multiline_comment|/*&n; * asm-sparc/vaddrs.h:  Here we define the virtual addres
 DECL|macro|SRMMU_MAXMEM
 mdefine_line|#define SRMMU_MAXMEM&t;&t;0x0c000000
 DECL|macro|SRMMU_NOCACHE_VADDR
-mdefine_line|#define SRMMU_NOCACHE_VADDR&t;0xfc000000&t;/* KERNBASE + SRMMU_MAXMEM */
-multiline_comment|/* XXX Make this dynamic based on ram size - Anton */
-DECL|macro|SRMMU_NOCACHE_NPAGES
-mdefine_line|#define SRMMU_NOCACHE_NPAGES&t;256
-DECL|macro|SRMMU_NOCACHE_SIZE
-mdefine_line|#define SRMMU_NOCACHE_SIZE&t;(SRMMU_NOCACHE_NPAGES * PAGE_SIZE)
-DECL|macro|SRMMU_NOCACHE_END
-mdefine_line|#define SRMMU_NOCACHE_END&t;(SRMMU_NOCACHE_VADDR + SRMMU_NOCACHE_SIZE)
-DECL|macro|FIX_KMAP_BEGIN
-mdefine_line|#define FIX_KMAP_BEGIN&t;&t;0xfc100000
-DECL|macro|FIX_KMAP_END
-mdefine_line|#define FIX_KMAP_END (FIX_KMAP_BEGIN + ((KM_TYPE_NR*NR_CPUS)-1)*PAGE_SIZE)
-DECL|macro|PKMAP_BASE
-mdefine_line|#define PKMAP_BASE&t;&t;0xfc140000
-DECL|macro|PKMAP_BASE_END
-mdefine_line|#define PKMAP_BASE_END&t;&t;(PKMAP_BASE+LAST_PKMAP*PAGE_SIZE)
+mdefine_line|#define SRMMU_NOCACHE_VADDR&t;(KERNBASE + SRMMU_MAXMEM)
+multiline_comment|/* = 0x0fc000000 */
+multiline_comment|/* The following constant is used in mm/srmmu.c::srmmu_nocache_calcsize()&n; * to determine the amount of memory that will be reserved as nocache:&n; *&n; * 256 pages will be taken as nocache per each&n; * SRMMU_NOCACHE_ALCRATIO MB of system memory.&n; *&n; * limits enforced:&t;nocache minimum = 256 pages&n; *&t;&t;&t;nocache maximum = 1280 pages&n; */
+DECL|macro|SRMMU_NOCACHE_ALCRATIO
+mdefine_line|#define SRMMU_NOCACHE_ALCRATIO&t;64&t;/* 256 pages per 64MB of system RAM */
 DECL|macro|SUN4M_IOBASE_VADDR
 mdefine_line|#define SUN4M_IOBASE_VADDR&t;0xfd000000 /* Base for mapping pages */
 DECL|macro|IOBASE_VADDR

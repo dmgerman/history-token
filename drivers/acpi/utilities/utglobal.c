@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 172 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 176 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -229,14 +229,14 @@ DECL|variable|acpi_dbg_level
 id|u32
 id|acpi_dbg_level
 op_assign
-id|DEBUG_DEFAULT
+id|ACPI_DEBUG_DEFAULT
 suffix:semicolon
 macro_line|#else
 DECL|variable|acpi_dbg_level
 id|u32
 id|acpi_dbg_level
 op_assign
-id|NORMAL_DEFAULT
+id|ACPI_NORMAL_DEFAULT
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Debug switch - layer (component) mask */
@@ -256,6 +256,12 @@ multiline_comment|/* Debugger globals */
 DECL|variable|acpi_gbl_db_terminate_threads
 id|u8
 id|acpi_gbl_db_terminate_threads
+op_assign
+id|FALSE
+suffix:semicolon
+DECL|variable|acpi_gbl_abort_method
+id|u8
+id|acpi_gbl_abort_method
 op_assign
 id|FALSE
 suffix:semicolon
@@ -311,7 +317,7 @@ id|NATIVE_CHAR
 op_star
 id|acpi_gbl_db_sleep_states
 (braket
-id|ACPI_NUM_SLEEP_STATES
+id|ACPI_S_STATE_COUNT
 )braket
 op_assign
 (brace
@@ -326,8 +332,6 @@ comma
 l_string|&quot;&bslash;&bslash;_S4_&quot;
 comma
 l_string|&quot;&bslash;&bslash;_S5_&quot;
-comma
-l_string|&quot;&bslash;&bslash;_S4B&quot;
 )brace
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Namespace globals&n; *&n; ******************************************************************************/
@@ -1798,7 +1802,7 @@ id|ACPI_MEM_LIST_STATE
 dot
 id|max_cache_depth
 op_assign
-id|MAX_STATE_CACHE_DEPTH
+id|ACPI_MAX_STATE_CACHE_DEPTH
 suffix:semicolon
 id|acpi_gbl_memory_lists
 (braket
@@ -1807,7 +1811,7 @@ id|ACPI_MEM_LIST_PSNODE
 dot
 id|max_cache_depth
 op_assign
-id|MAX_PARSE_CACHE_DEPTH
+id|ACPI_MAX_PARSE_CACHE_DEPTH
 suffix:semicolon
 id|acpi_gbl_memory_lists
 (braket
@@ -1816,7 +1820,7 @@ id|ACPI_MEM_LIST_PSNODE_EXT
 dot
 id|max_cache_depth
 op_assign
-id|MAX_EXTPARSE_CACHE_DEPTH
+id|ACPI_MAX_EXTPARSE_CACHE_DEPTH
 suffix:semicolon
 id|acpi_gbl_memory_lists
 (braket
@@ -1825,7 +1829,7 @@ id|ACPI_MEM_LIST_OPERAND
 dot
 id|max_cache_depth
 op_assign
-id|MAX_OBJECT_CACHE_DEPTH
+id|ACPI_MAX_OBJECT_CACHE_DEPTH
 suffix:semicolon
 id|acpi_gbl_memory_lists
 (braket
@@ -1834,7 +1838,7 @@ id|ACPI_MEM_LIST_WALK
 dot
 id|max_cache_depth
 op_assign
-id|MAX_WALK_CACHE_DEPTH
+id|ACPI_MAX_WALK_CACHE_DEPTH
 suffix:semicolon
 id|ACPI_MEM_TRACKING
 (paren

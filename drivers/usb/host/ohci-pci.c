@@ -981,6 +981,8 @@ id|dl_reverse_done_list
 (paren
 id|ohci
 )paren
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|writel

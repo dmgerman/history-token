@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  drivers/s390/char/sclp.c&n; *     core function to access sclp interface&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;&t; Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
@@ -8,13 +9,14 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &quot;sclp.h&quot;
 DECL|macro|SCLP_CORE_PRINT_HEADER
 mdefine_line|#define SCLP_CORE_PRINT_HEADER &quot;sclp low level driver: &quot;
 multiline_comment|/*&n; * decides wether we make use of the macro MACHINE_IS_VM to&n; * configure the driver for VM at run time (a little bit&n; * different behaviour); otherwise we use the default&n; * settings in sclp_data.init_ioctls&n; */
 DECL|macro|USE_VM_DETECTION
-mdefine_line|#define&t; USE_VM_DETECTION
+mdefine_line|#define USE_VM_DETECTION
 multiline_comment|/* Structure for register_early_external_interrupt. */
 DECL|variable|ext_int_info_hwc
 r_static
@@ -97,6 +99,13 @@ id|PAGE_SIZE
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Timer for init mask retries. */
+DECL|variable|retry_timer
+r_static
+r_struct
+id|timer_list
+id|retry_timer
+suffix:semicolon
 DECL|variable|sclp_status
 r_static
 r_int
@@ -112,6 +121,14 @@ DECL|macro|SCLP_RUNNING
 mdefine_line|#define SCLP_RUNNING&t;&t;1
 DECL|macro|SCLP_READING
 mdefine_line|#define SCLP_READING&t;&t;2
+DECL|macro|SCLP_INIT_POLL_INTERVAL
+mdefine_line|#define SCLP_INIT_POLL_INTERVAL&t;1
+DECL|macro|SCLP_COMMAND_INITIATED
+mdefine_line|#define SCLP_COMMAND_INITIATED&t;0
+DECL|macro|SCLP_BUSY
+mdefine_line|#define SCLP_BUSY&t;&t;2
+DECL|macro|SCLP_NOT_OPERATIONAL
+mdefine_line|#define SCLP_NOT_OPERATIONAL&t;3
 multiline_comment|/*&n; * assembler instruction for Service Call&n; */
 r_static
 r_int
@@ -170,7 +187,7 @@ c_cond
 (paren
 id|cc
 op_eq
-l_int|3
+id|SCLP_NOT_OPERATIONAL
 )paren
 r_return
 op_minus
@@ -191,7 +208,7 @@ c_cond
 (paren
 id|cc
 op_eq
-l_int|2
+id|SCLP_BUSY
 )paren
 r_return
 op_minus
@@ -334,6 +351,9 @@ id|sccb
 )paren
 (brace
 r_int
+id|result
+suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -374,18 +394,20 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+id|result
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
 (paren
-r_void
-op_star
+id|addr_t
 )paren
 id|evbuf
 OL
 (paren
-r_void
-op_star
+id|addr_t
 )paren
 id|sccb
 op_plus
@@ -393,6 +415,10 @@ id|sccb-&gt;length
 )paren
 (brace
 multiline_comment|/* check registered event */
+id|t
+op_assign
+l_int|NULL
+suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -449,7 +475,41 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_else
+id|t
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
+multiline_comment|/* Check for unrequested event buffer */
+r_if
+c_cond
+(paren
+id|t
+op_eq
+l_int|NULL
+)paren
+id|result
+op_assign
+op_minus
+id|ENOSYS
+suffix:semicolon
+id|evbuf
+op_assign
+(paren
+r_struct
+id|evbuf_header
+op_star
+)paren
+(paren
+(paren
+id|addr_t
+)paren
+id|evbuf
+op_plus
+id|evbuf-&gt;length
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -461,8 +521,182 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOSYS
+id|result
+suffix:semicolon
+)brace
+r_char
+op_star
+DECL|function|sclp_error_message
+id|sclp_error_message
+c_func
+(paren
+id|u16
+id|rc
+)paren
+(brace
+r_static
+r_struct
+(brace
+id|u16
+id|code
+suffix:semicolon
+r_char
+op_star
+id|msg
+suffix:semicolon
+)brace
+id|sclp_errors
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x0000
+comma
+l_string|&quot;No response code stored (machine malfunction)&quot;
+)brace
+comma
+(brace
+l_int|0x0020
+comma
+l_string|&quot;Normal Completion&quot;
+)brace
+comma
+(brace
+l_int|0x0040
+comma
+l_string|&quot;SCLP equipment check&quot;
+)brace
+comma
+(brace
+l_int|0x0100
+comma
+l_string|&quot;SCCB boundary violation&quot;
+)brace
+comma
+(brace
+l_int|0x01f0
+comma
+l_string|&quot;Invalid command&quot;
+)brace
+comma
+(brace
+l_int|0x0220
+comma
+l_string|&quot;Normal Completion; suppressed buffers pending&quot;
+)brace
+comma
+(brace
+l_int|0x0300
+comma
+l_string|&quot;Insufficient SCCB length&quot;
+)brace
+comma
+(brace
+l_int|0x0340
+comma
+l_string|&quot;Contained SCLP equipment check&quot;
+)brace
+comma
+(brace
+l_int|0x05f0
+comma
+l_string|&quot;Target resource in improper state&quot;
+)brace
+comma
+(brace
+l_int|0x40f0
+comma
+l_string|&quot;Invalid function code/not installed&quot;
+)brace
+comma
+(brace
+l_int|0x60f0
+comma
+l_string|&quot;No buffers stored&quot;
+)brace
+comma
+(brace
+l_int|0x62f0
+comma
+l_string|&quot;No buffers stored; suppressed buffers pending&quot;
+)brace
+comma
+(brace
+l_int|0x70f0
+comma
+l_string|&quot;Invalid selection mask&quot;
+)brace
+comma
+(brace
+l_int|0x71f0
+comma
+l_string|&quot;Event buffer exceeds available space&quot;
+)brace
+comma
+(brace
+l_int|0x72f0
+comma
+l_string|&quot;Inconsistent lengths&quot;
+)brace
+comma
+(brace
+l_int|0x73f0
+comma
+l_string|&quot;Event buffer syntax error&quot;
+)brace
+)brace
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+r_sizeof
+(paren
+id|sclp_errors
+)paren
+op_div
+r_sizeof
+(paren
+id|sclp_errors
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+id|sclp_errors
+(braket
+id|i
+)braket
+dot
+id|code
+)paren
+r_return
+id|sclp_errors
+(braket
+id|i
+)braket
+dot
+id|msg
+suffix:semicolon
+r_return
+l_string|&quot;Invalid response code&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * postprocessing of unconditional read service call&n; */
@@ -482,82 +716,10 @@ op_star
 id|data
 )paren
 (brace
-r_static
-r_struct
-(brace
-id|u16
-id|code
-suffix:semicolon
-r_char
-op_star
-id|msg
-suffix:semicolon
-)brace
-id|errors
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0x0040
-comma
-l_string|&quot;SCLP equipment check&quot;
-)brace
-comma
-(brace
-l_int|0x0100
-comma
-l_string|&quot;SCCB boundary violation&quot;
-)brace
-comma
-(brace
-l_int|0x01f0
-comma
-l_string|&quot;invalid command&quot;
-)brace
-comma
-(brace
-l_int|0x0300
-comma
-l_string|&quot;insufficient SCCB length&quot;
-)brace
-comma
-(brace
-l_int|0x40f0
-comma
-l_string|&quot;invalid function code&quot;
-)brace
-comma
-(brace
-l_int|0x60f0
-comma
-l_string|&quot;got interrupt but no data found&quot;
-)brace
-comma
-(brace
-l_int|0x62f0
-comma
-l_string|&quot;got interrupt but no data found&quot;
-)brace
-comma
-(brace
-l_int|0x70f0
-comma
-l_string|&quot;invalid selection mask&quot;
-)brace
-)brace
-suffix:semicolon
 r_struct
 id|sccb_header
 op_star
 id|sccb
-suffix:semicolon
-r_char
-op_star
-id|errmsg
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|sccb
 op_assign
@@ -575,7 +737,6 @@ op_eq
 l_int|0x0220
 )paren
 (brace
-multiline_comment|/* normal read completion, event buffers stored in sccb */
 r_if
 c_cond
 (paren
@@ -584,103 +745,38 @@ c_func
 (paren
 id|sccb
 )paren
-op_eq
+op_ne
 l_int|0
 )paren
-(brace
-id|clear_bit
-c_func
-(paren
-id|SCLP_READING
-comma
-op_amp
-id|sclp_status
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|errmsg
-op_assign
-l_string|&quot;invalid response code&quot;
-suffix:semicolon
-)brace
-r_else
-(brace
-id|errmsg
-op_assign
-l_int|NULL
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-r_sizeof
-(paren
-id|errors
-)paren
-op_div
-r_sizeof
-(paren
-id|errors
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|sccb-&gt;response_code
-op_eq
-id|errors
-(braket
-id|i
-)braket
-dot
-id|code
-)paren
-(brace
-id|errmsg
-op_assign
-id|errors
-(braket
-id|i
-)braket
-dot
-id|msg
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|errmsg
-op_eq
-l_int|NULL
-)paren
-id|errmsg
-op_assign
-l_string|&quot;invalid response code&quot;
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 id|SCLP_CORE_PRINT_HEADER
-l_string|&quot;unconditional read: %s (response code =0x%x).&bslash;n&quot;
+l_string|&quot;unconditional read: &quot;
+l_string|&quot;unrequested event buffer received.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sccb-&gt;response_code
+op_ne
+l_int|0x0020
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|SCLP_CORE_PRINT_HEADER
+l_string|&quot;unconditional read: %s (response code=0x%x).&bslash;n&quot;
 comma
-id|errmsg
+id|sclp_error_message
+c_func
+(paren
+id|sccb-&gt;response_code
+)paren
 comma
 id|sccb-&gt;response_code
 )paren
@@ -715,7 +811,7 @@ id|sclp_req
 op_star
 id|read_req
 suffix:semicolon
-multiline_comment|/*&n;&t; * Don&#xfffd;t try to initiate Unconditional Read if we are not able to&n;&t; * receive anything&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t try to initiate Unconditional Read if we are not able to&n;&t; * receive anything&n;&t; */
 r_if
 c_cond
 (paren
@@ -740,7 +836,7 @@ id|sclp_status
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Initialise read sccb */
+multiline_comment|/* Initialize read sccb */
 id|sccb
 op_assign
 (paren
@@ -773,7 +869,7 @@ op_assign
 l_int|0x80
 suffix:semicolon
 multiline_comment|/* variable length response */
-multiline_comment|/* stick the request structure to the end of the page */
+multiline_comment|/* Initialize request structure */
 id|read_req
 op_assign
 op_amp
@@ -807,6 +903,13 @@ id|sclp_req_queue
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Bit masks to interpret external interruption parameter contents. */
+DECL|macro|EXT_INT_SCCB_MASK
+mdefine_line|#define EXT_INT_SCCB_MASK&t;&t;0xfffffff8
+DECL|macro|EXT_INT_STATECHANGE_PENDING
+mdefine_line|#define EXT_INT_STATECHANGE_PENDING&t;0x00000002
+DECL|macro|EXT_INT_EVBUF_PENDING
+mdefine_line|#define EXT_INT_EVBUF_PENDING&t;&t;0x00000001
 multiline_comment|/*&n; * Handler for service-signal external interruptions&n; */
 r_static
 r_void
@@ -843,16 +946,6 @@ comma
 op_star
 id|tmp
 suffix:semicolon
-r_int
-id|cpu
-suffix:semicolon
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ext_int_param
 op_assign
 id|S390_lowcore.ext_params
@@ -861,21 +954,24 @@ id|finished_sccb
 op_assign
 id|ext_int_param
 op_amp
-op_minus
-l_int|8U
+id|EXT_INT_SCCB_MASK
 suffix:semicolon
 id|evbuf_pending
 op_assign
 id|ext_int_param
 op_amp
-l_int|1
+(paren
+id|EXT_INT_EVBUF_PENDING
+op_or
+id|EXT_INT_STATECHANGE_PENDING
+)paren
 suffix:semicolon
 id|irq_enter
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Only do request callsbacks if sclp is initialised.&n;&t; * This avoids strange effects for a pending request&n;&t; * from before the last re-ipl.&n;&t; */
+multiline_comment|/*&n;&t; * Only do request callbacks if sclp is initialized.&n;&t; * This avoids strange effects for a pending request&n;&t; * from before the last re-ipl.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1163,7 +1259,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Queue a request to the tail of the ccw_queue. Start the I/O if&n; * possible.&n; */
+multiline_comment|/*&n; * Queue an SCLP request. Request will immediately be processed if queue is&n; * empty.&n; */
 r_void
 DECL|function|sclp_add_request
 id|sclp_add_request
@@ -1450,7 +1546,10 @@ c_cond
 (paren
 id|scbuf-&gt;mask_length
 op_ne
-l_int|4
+r_sizeof
+(paren
+id|sccb_mask_t
+)paren
 )paren
 id|printk
 c_func
@@ -1463,7 +1562,7 @@ id|scbuf-&gt;mask_length
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* set new send mask */
+multiline_comment|/* set new receive mask */
 id|sclp_receive_mask
 op_assign
 id|scbuf-&gt;sclp_receive_mask
@@ -1480,7 +1579,10 @@ c_cond
 (paren
 id|scbuf-&gt;mask_length
 op_ne
-l_int|4
+r_sizeof
+(paren
+id|sccb_mask_t
+)paren
 )paren
 id|printk
 c_func
@@ -1778,6 +1880,15 @@ c_func
 (paren
 id|packed
 )paren
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sclp_init_mask_retry
+c_func
+(paren
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -2080,6 +2191,68 @@ id|EBUSY
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sccb-&gt;header.response_code
+op_ne
+l_int|0x0020
+)paren
+(brace
+multiline_comment|/* WRITEMASK failed - we cannot rely on receiving a state&n;&t;&t;   change event, so initially, polling is the only alternative&n;&t;&t;   for us to ever become operational. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timer_pending
+c_func
+(paren
+op_amp
+id|retry_timer
+)paren
+op_logical_or
+op_logical_neg
+id|mod_timer
+c_func
+(paren
+op_amp
+id|retry_timer
+comma
+id|jiffies
+op_plus
+id|SCLP_INIT_POLL_INTERVAL
+op_star
+id|HZ
+)paren
+)paren
+(brace
+id|retry_timer.function
+op_assign
+id|sclp_init_mask_retry
+suffix:semicolon
+id|retry_timer.data
+op_assign
+l_int|0
+suffix:semicolon
+id|retry_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|SCLP_INIT_POLL_INTERVAL
+op_star
+id|HZ
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|retry_timer
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
 id|sclp_receive_mask
 op_assign
 id|sccb-&gt;sclp_receive_mask
@@ -2093,6 +2266,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2104,6 +2278,23 @@ id|flags
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|sclp_init_mask_retry
+id|sclp_init_mask_retry
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+(brace
+id|sclp_init_mask
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sclp setup function. Called early (no kmalloc!) from sclp_console_init().&n; */
@@ -2131,7 +2322,7 @@ op_amp
 id|sclp_status
 )paren
 )paren
-multiline_comment|/* Already initialised. */
+multiline_comment|/* Already initialized. */
 r_return
 l_int|0
 suffix:semicolon
@@ -2207,6 +2398,13 @@ comma
 l_int|9
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|retry_timer
+)paren
+suffix:semicolon
 multiline_comment|/* do the initial write event mask */
 id|rc
 op_assign
@@ -2261,6 +2459,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Register the SCLP event listener identified by REG. Return 0 on success.&n; * Some error codes and their meaning:&n; *&n; *  -ENODEV = SCLP interface is not supported on this machine&n; *   -EBUSY = there is already a listener registered for the requested&n; *            event type&n; *     -EIO = SCLP interface is currently not operational&n; */
 r_int
 DECL|function|sclp_register
 id|sclp_register
@@ -2410,6 +2609,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Unregister the SCLP event listener identified by REG.&n; */
 r_void
 DECL|function|sclp_unregister
 id|sclp_unregister
@@ -2456,4 +2656,32 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sclp_add_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sclp_add_request
+)paren
+suffix:semicolon
+DECL|variable|sclp_sync_wait
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sclp_sync_wait
+)paren
+suffix:semicolon
+DECL|variable|sclp_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sclp_register
+)paren
+suffix:semicolon
+DECL|variable|sclp_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sclp_unregister
+)paren
+suffix:semicolon
 eof

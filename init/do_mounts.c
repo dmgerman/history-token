@@ -4834,7 +4834,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;RAMDISK: incomplete write (%d != %d) %d&bslash;n&quot;
+l_string|&quot;RAMDISK: incomplete write (%d != %d) %ld&bslash;n&quot;
 comma
 id|written
 comma

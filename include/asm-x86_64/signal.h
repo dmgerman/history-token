@@ -442,7 +442,6 @@ id|ret
 suffix:semicolon
 )brace
 mdefine_line|#define sigismember(set,sig)&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(sig) ?&t;&t;&bslash;&n;&t; __const_sigismember((set),(sig)) :&t;&bslash;&n;&t; __gen_sigismember((set),(sig)))
-mdefine_line|#define sigmask(sig)&t;(1UL &lt;&lt; ((sig) - 1))
 r_extern
 id|__inline__
 r_int

@@ -318,6 +318,13 @@ id|KERN_ERR
 l_string|&quot;microcode: failed to devfs_register()&bslash;n&quot;
 )paren
 suffix:semicolon
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|microcode_dev
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
