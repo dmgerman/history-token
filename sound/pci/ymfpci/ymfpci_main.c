@@ -8870,6 +8870,11 @@ id|chip-&gt;ac97_bus-&gt;private_free
 op_assign
 id|snd_ymfpci_mixer_free_ac97_bus
 suffix:semicolon
+id|chip-&gt;ac97_bus-&gt;no_vra
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* YMFPCI doesn&squot;t need VRA */
 id|memset
 c_func
 (paren
@@ -8915,6 +8920,21 @@ l_int|0
 )paren
 r_return
 id|err
+suffix:semicolon
+multiline_comment|/* to be sure */
+id|snd_ac97_update_bits
+c_func
+(paren
+id|chip-&gt;ac97
+comma
+id|AC97_EXTENDED_STATUS
+comma
+id|AC97_EA_VRA
+op_or
+id|AC97_EA_VRM
+comma
+l_int|0
+)paren
 suffix:semicolon
 r_for
 c_loop
