@@ -1202,6 +1202,8 @@ op_amp
 l_int|0x1fff
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
