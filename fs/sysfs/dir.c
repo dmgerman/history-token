@@ -347,12 +347,6 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-id|d_delete
-c_func
-(paren
-id|d
-)paren
-suffix:semicolon
 id|simple_unlink
 c_func
 (paren
@@ -400,7 +394,7 @@ op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
-id|d_invalidate
+id|d_delete
 c_func
 (paren
 id|dentry
@@ -411,12 +405,6 @@ c_func
 (paren
 id|parent-&gt;d_inode
 comma
-id|dentry
-)paren
-suffix:semicolon
-id|d_delete
-c_func
-(paren
 id|dentry
 )paren
 suffix:semicolon
@@ -433,13 +421,6 @@ c_func
 op_amp
 id|dentry-&gt;d_count
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/**&n;&t; * Drop reference from initial sysfs_get_dentry().&n;&t; */
-id|dput
-c_func
-(paren
-id|dentry
 )paren
 suffix:semicolon
 multiline_comment|/**&n;&t; * Drop reference from dget() on entrance.&n;&t; */
