@@ -2888,6 +2888,37 @@ r_int
 r_int
 id|cswlen
 suffix:semicolon
+r_int
+r_int
+id|cbwlen
+op_assign
+id|US_BULK_CB_WRAP_LEN
+suffix:semicolon
+multiline_comment|/* Take care of BULK32 devices; set extra byte to 0 */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_BULK32
+)paren
+)paren
+(brace
+id|cbwlen
+op_assign
+l_int|32
+suffix:semicolon
+id|us-&gt;iobuf
+(braket
+l_int|31
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* set up the command wrapper */
 id|bcb-&gt;Signature
 op_assign
@@ -3015,7 +3046,7 @@ id|us-&gt;send_bulk_pipe
 comma
 id|bcb
 comma
-id|US_BULK_CB_WRAP_LEN
+id|cbwlen
 comma
 l_int|NULL
 )paren
@@ -3040,7 +3071,7 @@ id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 multiline_comment|/* DATA STAGE */
 multiline_comment|/* send/receive data payload, if there is any */
-multiline_comment|/* Genesys Logic interface chips need a 100us delay between the&n;&t; * command phase and the data phase */
+multiline_comment|/* Genesys Logic interface chips need a 100us delay between the&n;&t; * command phase and the data phase.  Some devices need a little&n;&t; * more than that, probably because of clock rate inaccuracies. */
 r_if
 c_cond
 (paren
@@ -3051,7 +3082,7 @@ id|USB_VENDOR_ID_GENESYS
 id|udelay
 c_func
 (paren
-l_int|100
+l_int|110
 )paren
 suffix:semicolon
 r_if
