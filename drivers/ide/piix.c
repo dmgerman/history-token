@@ -2608,9 +2608,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_BLK_DEV_PIIX_TRY133
 r_case
 id|PIIX_UDMA_100
 suffix:colon
+macro_line|#endif
 r_case
 id|PIIX_UDMA_133
 suffix:colon

@@ -3161,7 +3161,7 @@ comma
 id|ch-&gt;irq
 )paren
 suffix:semicolon
-macro_line|#endif /* __mc68000__ &amp;&amp; CONFIG_APUS */
+macro_line|#endif
 r_if
 c_cond
 (paren

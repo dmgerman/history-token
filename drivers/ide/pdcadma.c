@@ -141,7 +141,7 @@ id|buffer
 suffix:semicolon
 multiline_comment|/* =&gt; must be less than 4k! */
 )brace
-macro_line|#endif  /* defined(DISPLAY_PDCADMA_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
+macro_line|#endif
 DECL|variable|pdcadma_proc
 id|byte
 id|pdcadma_proc
@@ -158,17 +158,24 @@ id|xfer_rate
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-multiline_comment|/*&n; * pdcadma_dmaproc() initiates/aborts (U)DMA read/write operations on a drive.&n; */
+multiline_comment|/*&n; * This initiates/aborts (U)DMA read/write operations on a drive.&n; */
 DECL|function|pdcadma_dmaproc
 r_int
 id|pdcadma_dmaproc
+c_func
 (paren
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_switch
@@ -196,11 +203,13 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/* use standard DMA stuff */
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 DECL|function|pci_init_pdcadma
 r_int
 r_int
@@ -232,11 +241,10 @@ id|dev
 suffix:semicolon
 id|pdcadma_display_info
 op_assign
-op_amp
 id|pdcadma_get_info
 suffix:semicolon
 )brace
-macro_line|#endif /* DISPLAY_PDCADMA_TIMINGS &amp;&amp; CONFIG_PROC_FS */
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

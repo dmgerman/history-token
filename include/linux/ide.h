@@ -395,11 +395,10 @@ id|request_queue_t
 id|queue
 suffix:semicolon
 multiline_comment|/* per device request queue */
-multiline_comment|/* Those are directly injected jiffie values. They should go away and&n;&t; * we should use generic timers instead!!!&n;&t; */
-DECL|member|PADAM_sleep
+DECL|member|sleep
 r_int
 r_int
-id|PADAM_sleep
+id|sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
 multiline_comment|/* Flags requesting/indicating one of the following special commands&n;&t; * executed on the request queue.&n;&t; */

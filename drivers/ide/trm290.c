@@ -192,9 +192,15 @@ id|trm290_dmaproc
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_struct
@@ -399,6 +405,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -415,7 +423,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 multiline_comment|/*&n; * Invoked from ide-dma.c at boot time.&n; */
 DECL|function|ide_init_trm290
 r_void
@@ -662,12 +670,11 @@ l_int|3
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-id|hwif-&gt;dmaproc
+id|hwif-&gt;udma
 op_assign
-op_amp
 id|trm290_dmaproc
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 id|hwif-&gt;selectproc
 op_assign
 op_amp

@@ -826,12 +826,14 @@ id|ch-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ide_build_dmatable() prepares a dma request.&n; * Returns 0 if all went okay, returns 1 otherwise.&n; * May also be invoked from trm290.c&n; */
+multiline_comment|/*&n; * This prepares a dma request.  Returns 0 if all went okay, returns 1&n; * otherwise.  May also be invoked from trm290.c&n; */
 DECL|function|ide_build_dmatable
 r_int
 id|ide_build_dmatable
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -842,7 +844,7 @@ id|func
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
@@ -851,7 +853,7 @@ r_int
 op_star
 id|table
 op_assign
-id|hwif-&gt;dmatable_cpu
+id|ch-&gt;dmatable_cpu
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_TRM290
 r_int
@@ -859,7 +861,7 @@ r_int
 id|is_trm290_chipset
 op_assign
 (paren
-id|hwif-&gt;chipset
+id|ch-&gt;chipset
 op_eq
 id|ide_trm290
 )paren
@@ -886,14 +888,14 @@ id|scatterlist
 op_star
 id|sg
 suffix:semicolon
-id|hwif-&gt;sg_nents
+id|ch-&gt;sg_nents
 op_assign
 id|i
 op_assign
 id|build_sglist
 c_func
 (paren
-id|hwif
+id|ch
 comma
 id|HWGROUP
 c_func
@@ -915,7 +917,7 @@ l_int|0
 suffix:semicolon
 id|sg
 op_assign
-id|hwif-&gt;sg_table
+id|ch-&gt;sg_table
 suffix:semicolon
 r_while
 c_loop
@@ -977,25 +979,11 @@ id|PRD_ENTRIES
 id|printk
 c_func
 (paren
-l_string|&quot;ide-dma: req %p&bslash;n&quot;
-comma
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;count %d, sg_nents %d, cur_len %d, cur_addr %u&bslash;n&quot;
+l_string|&quot;ide-dma: count %d, sg_nents %d, cur_len %d, cur_addr %u&bslash;n&quot;
 comma
 id|count
 comma
-id|hwif-&gt;sg_nents
+id|ch-&gt;sg_nents
 comma
 id|cur_len
 comma
@@ -1075,13 +1063,13 @@ id|PRD_ENTRIES
 id|pci_unmap_sg
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 id|sg
 comma
-id|hwif-&gt;sg_nents
+id|ch-&gt;sg_nents
 comma
-id|hwif-&gt;sg_dma_direction
+id|ch-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 r_return
