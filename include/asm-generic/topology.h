@@ -27,6 +27,10 @@ macro_line|#ifndef node_to_memblk
 DECL|macro|node_to_memblk
 mdefine_line|#define node_to_memblk(node)&t;(0)
 macro_line|#endif
+macro_line|#ifndef pcibus_to_cpumask
+DECL|macro|pcibus_to_cpumask
+mdefine_line|#define pcibus_to_cpumask(bus)&t;(cpu_online_map)
+macro_line|#endif
 multiline_comment|/* Cross-node load balancing interval. */
 macro_line|#ifndef NODE_BALANCE_RATE
 DECL|macro|NODE_BALANCE_RATE
