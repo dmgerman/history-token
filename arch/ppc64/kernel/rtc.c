@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;Real Time Clock interface for PPC64.&n; *&n; *&t;Based on rtc.c by Paul Gortmaker&n; *&n; *&t;This driver allows use of the real time clock&n; *&t;from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the&n; *&t;/proc/driver/rtc pseudo-file for status information.&n; *&n; * &t;Interface does not support RTC interrupts nor an alarm.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *      1.0&t;Mike Corrigan:    IBM iSeries rtc support&n; *      1.1&t;Dave Engebretsen: IBM pSeries rtc support&n; */
 DECL|macro|RTC_VERSION
 mdefine_line|#define RTC_VERSION&t;&t;&quot;1.1&quot;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

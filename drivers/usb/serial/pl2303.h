@@ -37,4 +37,8 @@ DECL|macro|RADIOSHACK_VENDOR_ID
 mdefine_line|#define RADIOSHACK_VENDOR_ID&t;0x1453
 DECL|macro|RADIOSHACK_PRODUCT_ID
 mdefine_line|#define RADIOSHACK_PRODUCT_ID&t;0x4026
+DECL|macro|DCU10_VENDOR_ID
+mdefine_line|#define DCU10_VENDOR_ID&t;&t;0x0731
+DECL|macro|DCU10_PRODUCT_ID
+mdefine_line|#define DCU10_PRODUCT_ID&t;0x0528
 eof

@@ -518,6 +518,17 @@ id|iattr
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ext2_set_inode_flags
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 multiline_comment|/* ioctl.c */
 r_extern
 r_int

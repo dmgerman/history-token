@@ -3045,7 +3045,7 @@ id|hid
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Register the input device; print a message.&n; * Configure the input layer interface&n; * Read all reports and initalize the absoulte field values.&n; */
+multiline_comment|/*&n; * Register the input device; print a message.&n; * Configure the input layer interface&n; * Read all reports and initialize the absolute field values.&n; */
 DECL|function|hidinput_connect
 r_int
 id|hidinput_connect

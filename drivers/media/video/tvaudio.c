@@ -13,9 +13,9 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;audiochip.h&quot;
+macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/id.h&gt;
 macro_line|#include &quot;tvaudio.h&quot;
-macro_line|#include &quot;id.h&quot;
 multiline_comment|/* ---------------------------------------------------------------------- */
 multiline_comment|/* insmod args                                                            */
 id|MODULE_PARM
@@ -5903,7 +5903,7 @@ id|VIDEO_AUDIO_VOLUME
 suffix:semicolon
 id|va-&gt;volume
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|chip-&gt;left
@@ -5916,7 +5916,7 @@ op_assign
 (paren
 l_int|32768
 op_star
-id|MIN
+id|min
 c_func
 (paren
 id|chip-&gt;left
@@ -6012,7 +6012,7 @@ id|CHIP_HAS_VOLUME
 id|chip-&gt;left
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 l_int|65536
@@ -6030,11 +6030,14 @@ suffix:semicolon
 id|chip-&gt;right
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 id|va-&gt;balance
 comma
+(paren
+id|__u16
+)paren
 l_int|32768
 )paren
 op_star

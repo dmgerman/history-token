@@ -4262,7 +4262,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set a field value. The report this field belongs to has to be&n; * created and transfered to the device, to set this value in the&n; * device.&n; */
+multiline_comment|/*&n; * Set a field value. The report this field belongs to has to be&n; * created and transferred to the device, to set this value in the&n; * device.&n; */
 DECL|function|hid_set_field
 r_int
 id|hid_set_field

@@ -375,6 +375,7 @@ dot
 id|name
 op_assign
 l_string|&quot;radiotext&quot;
+comma
 dot
 id|fops
 op_assign
@@ -442,6 +443,7 @@ c_func
 op_amp
 id|rds_miscdev
 )paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -468,6 +470,7 @@ c_func
 op_amp
 id|rds_miscdev
 )paren
+suffix:semicolon
 )brace
 DECL|variable|miropcm20_rds_init
 id|module_init

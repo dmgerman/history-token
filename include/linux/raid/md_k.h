@@ -506,6 +506,11 @@ DECL|member|sb_loaded
 r_int
 id|sb_loaded
 suffix:semicolon
+DECL|member|data_offset
+id|sector_t
+id|data_offset
+suffix:semicolon
+multiline_comment|/* start of data in array */
 DECL|member|sb_offset
 id|sector_t
 id|sb_offset
@@ -637,6 +642,13 @@ id|uuid
 l_int|16
 )braket
 suffix:semicolon
+DECL|member|thread
+r_struct
+id|mdk_thread_s
+op_star
+id|thread
+suffix:semicolon
+multiline_comment|/* management thread */
 DECL|member|sync_thread
 r_struct
 id|mdk_thread_s
@@ -662,16 +674,24 @@ r_int
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
-multiline_comment|/* recovery_running is 0 for no recovery/resync,&n;&t; * 1 for active recovery&n;&t; * 2 for active resync&n;&t; * -error for an error (e.g. -EINTR)&n;&t; * it can only be set &gt; 0 under reconfig_sem&n;&t; */
-DECL|member|recovery_running
+multiline_comment|/* recovery/resync flags &n;&t; * NEEDED:   we might need to start a resync/recover&n;&t; * RUNNING:  a thread is running, or about to be started&n;&t; * SYNC:     actually doing a resync, not a recovery&n;&t; * ERR:      and IO error was detected - abort the resync/recovery&n;&t; * INTR:     someone requested a (clean) early abort.&n;&t; * DONE:     thread is done and is waiting to be reaped&n;&t; */
+DECL|macro|MD_RECOVERY_RUNNING
+mdefine_line|#define&t;MD_RECOVERY_RUNNING&t;0
+DECL|macro|MD_RECOVERY_SYNC
+mdefine_line|#define&t;MD_RECOVERY_SYNC&t;1
+DECL|macro|MD_RECOVERY_ERR
+mdefine_line|#define&t;MD_RECOVERY_ERR&t;&t;2
+DECL|macro|MD_RECOVERY_INTR
+mdefine_line|#define&t;MD_RECOVERY_INTR&t;3
+DECL|macro|MD_RECOVERY_DONE
+mdefine_line|#define&t;MD_RECOVERY_DONE&t;4
+DECL|macro|MD_RECOVERY_NEEDED
+mdefine_line|#define&t;MD_RECOVERY_NEEDED&t;5
+DECL|member|recovery
 r_int
-id|recovery_running
-suffix:semicolon
-DECL|member|recovery_error
 r_int
-id|recovery_error
+id|recovery
 suffix:semicolon
-multiline_comment|/* error from recovery write */
 DECL|member|in_sync
 r_int
 id|in_sync
@@ -685,10 +705,6 @@ suffix:semicolon
 DECL|member|active
 id|atomic_t
 id|active
-suffix:semicolon
-DECL|member|spares
-r_int
-id|spares
 suffix:semicolon
 DECL|member|degraded
 r_int
@@ -710,9 +726,20 @@ id|recovery_cp
 suffix:semicolon
 DECL|member|safemode
 r_int
+r_int
 id|safemode
 suffix:semicolon
 multiline_comment|/* if set, update &quot;clean&quot; superblock&n;&t;&t;&t;&t;&t;&t;&t; * when no writes pending.&n;&t;&t;&t;&t;&t;&t;&t; */
+DECL|member|safemode_delay
+r_int
+r_int
+id|safemode_delay
+suffix:semicolon
+DECL|member|safemode_timer
+r_struct
+id|timer_list
+id|safemode_timer
+suffix:semicolon
 DECL|member|writes_pending
 id|atomic_t
 id|writes_pending
@@ -780,15 +807,16 @@ id|mddev
 )paren
 suffix:semicolon
 DECL|member|status
-r_int
+r_void
 (paren
 op_star
 id|status
 )paren
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|page
+id|seq
 comma
 id|mddev_t
 op_star
@@ -926,15 +954,15 @@ op_star
 id|run
 )paren
 (paren
-r_void
+id|mddev_t
 op_star
-id|data
+id|mddev
 )paren
 suffix:semicolon
-DECL|member|data
-r_void
+DECL|member|mddev
+id|mddev_t
 op_star
-id|data
+id|mddev
 suffix:semicolon
 DECL|member|wqueue
 id|wait_queue_head_t

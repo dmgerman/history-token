@@ -2,6 +2,16 @@ macro_line|#ifndef _SCSI_DEBUG_H
 macro_line|#include &lt;linux/types.h&gt;
 r_static
 r_int
+id|scsi_debug_slave_alloc
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
 id|scsi_debug_slave_configure
 c_func
 (paren
@@ -174,6 +184,11 @@ dot
 id|info
 op_assign
 id|scsi_debug_info
+comma
+dot
+id|slave_alloc
+op_assign
+id|scsi_debug_slave_alloc
 comma
 dot
 id|slave_configure

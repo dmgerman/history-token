@@ -3,7 +3,10 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &quot;video-buf.h&quot;
+macro_line|#include &lt;media/video-buf.h&gt;
+macro_line|#include &lt;media/tuner.h&gt;
+macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/id.h&gt;
 DECL|macro|SAA7134_VERSION_CODE
 mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,2)
 macro_line|#ifndef TRUE

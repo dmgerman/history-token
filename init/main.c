@@ -25,8 +25,15 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
+multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
+macro_line|#if __GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ == 96
+macro_line|#ifdef CONFIG_FRAME_POINTER
+macro_line|#error This compiler cannot compile correctly with frame pointers enabled
+macro_line|#endif
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif
@@ -1505,6 +1512,12 @@ c_func
 )paren
 suffix:semicolon
 id|signals_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* rootfs populating might need page-writeback */
+id|page_writeback_init
 c_func
 (paren
 )paren

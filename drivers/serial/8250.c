@@ -61,11 +61,13 @@ macro_line|#ifdef CONFIG_SERIAL_8250_MULTIPORT
 DECL|macro|CONFIG_SERIAL_MULTIPORT
 mdefine_line|#define CONFIG_SERIAL_MULTIPORT 1
 macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_8250_MANY_PORTS
+DECL|macro|CONFIG_SERIAL_MANY_PORTS
+mdefine_line|#define CONFIG_SERIAL_MANY_PORTS 1
+macro_line|#endif
 multiline_comment|/*&n; * HUB6 is always on.  This will be removed once the header&n; * files have been cleaned.&n; */
 DECL|macro|CONFIG_HUB6
 mdefine_line|#define CONFIG_HUB6 1
-DECL|macro|CONFIG_SERIAL_MANY_PORTS
-mdefine_line|#define CONFIG_SERIAL_MANY_PORTS 1
 macro_line|#include &lt;asm/serial.h&gt;
 DECL|variable|old_serial_port
 r_static
@@ -8661,6 +8663,68 @@ id|port.irq
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; *&t;serial8250_suspend_port - suspend one serial port&n; *&t;@line: serial line number&n; *&n; *&t;Suspend one serial port.&n; */
+DECL|function|serial8250_suspend_port
+r_void
+id|serial8250_suspend_port
+c_func
+(paren
+r_int
+id|line
+comma
+id|u32
+id|level
+)paren
+(brace
+id|uart_suspend_port
+c_func
+(paren
+op_amp
+id|serial8250_reg
+comma
+op_amp
+id|serial8250_ports
+(braket
+id|line
+)braket
+dot
+id|port
+comma
+id|level
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;serial8250_resume_port - resume one serial port&n; *&t;@line: serial line number&n; *&n; *&t;Resume one serial port.&n; */
+DECL|function|serial8250_resume_port
+r_void
+id|serial8250_resume_port
+c_func
+(paren
+r_int
+id|line
+comma
+id|u32
+id|level
+)paren
+(brace
+id|uart_resume_port
+c_func
+(paren
+op_amp
+id|serial8250_reg
+comma
+op_amp
+id|serial8250_ports
+(braket
+id|line
+)braket
+dot
+id|port
+comma
+id|level
+)paren
+suffix:semicolon
+)brace
 DECL|function|serial8250_init
 r_static
 r_int
@@ -8827,6 +8891,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|serial8250_get_irq_map
+)paren
+suffix:semicolon
+DECL|variable|serial8250_suspend_port
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|serial8250_suspend_port
+)paren
+suffix:semicolon
+DECL|variable|serial8250_resume_port
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|serial8250_resume_port
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -17,6 +17,7 @@ mdefine_line|#define I2C_VERSION &quot;2.7.0&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/i2c-id.h&gt;
+macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* --- General options ------------------------------------------------&t;*/
 DECL|macro|I2C_ALGO_MAX
@@ -442,6 +443,11 @@ id|arg
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|i2c_bus_type
+suffix:semicolon
 multiline_comment|/*&n; * i2c_client identifies a single device (i.e. chip) that is connected to an &n; * i2c bus. The behaviour is defined by the routines of the driver. This&n; * function is mainly used for lookup &amp; other admin. functions.&n; */
 DECL|struct|i2c_client
 r_struct
@@ -751,6 +757,12 @@ DECL|member|retries
 r_int
 id|retries
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* the adapter device */
 macro_line|#ifdef CONFIG_PROC_FS 
 multiline_comment|/* No need to set this when you initialize the adapter          */
 DECL|member|inode
@@ -760,6 +772,8 @@ suffix:semicolon
 macro_line|#endif /* def CONFIG_PROC_FS */
 )brace
 suffix:semicolon
+DECL|macro|to_i2c_adapter
+mdefine_line|#define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
 multiline_comment|/*flags for the driver struct: */
 DECL|macro|I2C_DF_NOTIFY
 mdefine_line|#define I2C_DF_NOTIFY&t;0x01&t;&t;/* notify on bus (de/a)ttaches &t;*/

@@ -39,11 +39,11 @@ mdefine_line|#define kiocbSetKicked(iocb)&t;set_bit(KIF_KICKED, &amp;(iocb)-&gt;
 DECL|macro|kiocbSetCancelled
 mdefine_line|#define kiocbSetCancelled(iocb)&t;set_bit(KIF_CANCELLED, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbClearLocked
-mdefine_line|#define kiocbClearLocked(iocb)&t;set_bit(KIF_LOCKED, &amp;(iocb)-&gt;ki_flags)
+mdefine_line|#define kiocbClearLocked(iocb)&t;clear_bit(KIF_LOCKED, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbClearKicked
-mdefine_line|#define kiocbClearKicked(iocb)&t;set_bit(KIF_KICKED, &amp;(iocb)-&gt;ki_flags)
+mdefine_line|#define kiocbClearKicked(iocb)&t;clear_bit(KIF_KICKED, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbClearCancelled
-mdefine_line|#define kiocbClearCancelled(iocb)&t;set_bit(KIF_CANCELLED, &amp;(iocb)-&gt;ki_flags)
+mdefine_line|#define kiocbClearCancelled(iocb)&t;clear_bit(KIF_CANCELLED, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbIsLocked
 mdefine_line|#define kiocbIsLocked(iocb)&t;test_bit(0, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbIsKicked

@@ -1655,7 +1655,7 @@ r_return
 id|next_urb
 suffix:semicolon
 )brace
-multiline_comment|/***************************************************************************&n; * Function Name : sh_scan_iso_urb_list&n; *&n; * This function goes throught the isochronous urb list and schedule the &n; * the transfer.   &n; *&n; * Note: This function has not tested yet&n; * &n; * Input: hci = data structure for the host controller &n; *        list_lh = pointer to the isochronous list &n; *        frame_number = the frame number &n; *&n; * Return: 0 = unsuccessful; 1 = successful  &n; **************************************************************************/
+multiline_comment|/***************************************************************************&n; * Function Name : sh_scan_iso_urb_list&n; *&n; * This function goes through the isochronous urb list and schedule the &n; * the transfer.   &n; *&n; * Note: This function has not tested yet&n; * &n; * Input: hci = data structure for the host controller &n; *        list_lh = pointer to the isochronous list &n; *        frame_number = the frame number &n; *&n; * Return: 0 = unsuccessful; 1 = successful  &n; **************************************************************************/
 DECL|function|sh_scan_iso_urb_list
 r_static
 r_int
