@@ -12,6 +12,7 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
+macro_line|#include &quot;os.h&quot;
 DECL|function|do_exec
 r_void
 id|do_exec
@@ -133,12 +134,12 @@ id|errno
 )paren
 suffix:semicolon
 )brace
-id|kill
+id|os_kill_ptraced_process
 c_func
 (paren
 id|old_pid
 comma
-id|SIGKILL
+l_int|0
 )paren
 suffix:semicolon
 r_if
