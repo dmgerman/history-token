@@ -5309,8 +5309,8 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|skb_split_inside_header
 r_static
-r_void
 r_inline
+r_void
 id|skb_split_inside_header
 c_func
 (paren
@@ -5452,8 +5452,8 @@ suffix:semicolon
 )brace
 DECL|function|skb_split_no_header
 r_static
-r_void
 r_inline
+r_void
 id|skb_split_no_header
 c_func
 (paren
