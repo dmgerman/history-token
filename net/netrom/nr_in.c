@@ -52,7 +52,8 @@ id|skbn
 op_assign
 id|skb
 suffix:semicolon
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -236,7 +237,8 @@ r_case
 id|NR_CONNACK
 suffix:colon
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -450,7 +452,8 @@ r_int
 id|frametype
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nrom
 op_assign
@@ -1088,7 +1091,8 @@ op_star
 id|skb
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
