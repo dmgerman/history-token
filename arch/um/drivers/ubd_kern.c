@@ -187,10 +187,10 @@ id|MAX_DEV
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_UBD_SYNC
 DECL|macro|OPEN_FLAGS
-mdefine_line|#define OPEN_FLAGS ((struct openflags) { .r = 1, .w = 1, .s = 1, .c = 0 })
+mdefine_line|#define OPEN_FLAGS ((struct openflags) { .r = 1, .w = 1, .s = 1, .c = 0, &bslash;&n;&t;&t;&t;&t;&t; .cl = 1 })
 macro_line|#else
 DECL|macro|OPEN_FLAGS
-mdefine_line|#define OPEN_FLAGS ((struct openflags) { .r = 1, .w = 1, .s = 0, .c = 0 })
+mdefine_line|#define OPEN_FLAGS ((struct openflags) { .r = 1, .w = 1, .s = 0, .c = 0, &bslash;&n;&t;&t;&t;&t;&t; .cl = 1 })
 macro_line|#endif
 multiline_comment|/* Not protected - changed only in ubd_setup_common and then only to&n; * to enable O_SYNC.&n; */
 DECL|variable|global_openflags
@@ -552,6 +552,16 @@ comma
 id|proc_ide
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dir
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|ent
 op_assign
 id|create_proc_entry
@@ -1588,12 +1598,12 @@ op_minus
 l_int|1
 )paren
 (brace
-id|kill
+id|os_kill_process
 c_func
 (paren
 id|io_pid
 comma
-id|SIGKILL
+l_int|1
 )paren
 suffix:semicolon
 )brace

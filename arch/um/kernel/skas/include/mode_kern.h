@@ -127,6 +127,20 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|flush_tlb_kernel_range_skas
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|flush_tlb_kernel_vm_skas
 c_func
 (paren
@@ -230,25 +244,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|page
-op_star
-id|arch_validate_skas
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-id|mask
-comma
-r_int
-id|order
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|external_pid_skas
 c_func
@@ -271,7 +266,7 @@ id|task
 )paren
 suffix:semicolon
 DECL|macro|kmem_end_skas
-mdefine_line|#define kmem_end_skas (host_task_size)
+mdefine_line|#define kmem_end_skas (host_task_size - 1024 * 1024)
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof
