@@ -1213,6 +1213,7 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
+r_return
 id|take_over_console
 c_func
 (paren
@@ -1225,9 +1226,6 @@ id|unit
 comma
 id|fbcon_is_default
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Accelerated handlers.&n; */
@@ -12178,6 +12176,11 @@ id|fb_con
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|con_startup
 op_assign
 id|fbcon_startup
@@ -12302,6 +12305,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12312,6 +12318,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|err
+op_assign
 id|take_over_console
 c_func
 (paren
@@ -12324,6 +12332,14 @@ id|last_fb_vc
 comma
 id|fbcon_is_default
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|acquire_console_sem
 c_func

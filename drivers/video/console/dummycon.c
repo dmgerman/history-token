@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; *  Dummy console driver&n; */
 macro_line|#if defined(__arm__)
 DECL|macro|DUMMY_COLUMNS
@@ -108,6 +109,11 @@ id|consw
 id|dummy_con
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|con_startup
 op_assign

@@ -5022,6 +5022,11 @@ id|vga_con
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|con_startup
 op_assign
 id|vgacon_startup

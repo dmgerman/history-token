@@ -1381,8 +1381,6 @@ id|mda_display_fg
 op_assign
 id|c
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|mdacon_deinit
 r_static
@@ -1407,8 +1405,6 @@ id|c
 id|mda_display_fg
 op_assign
 l_int|NULL
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|mda_convert_attr
@@ -2552,6 +2548,11 @@ id|mda_con
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|con_startup
 op_assign
 id|mdacon_startup
@@ -2652,6 +2653,7 @@ id|mda_last_vc
 r_return
 l_int|1
 suffix:semicolon
+r_return
 id|take_over_console
 c_func
 (paren
@@ -2668,9 +2670,6 @@ l_int|1
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|mda_console_exit
