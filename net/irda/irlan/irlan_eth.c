@@ -217,16 +217,16 @@ comma
 id|self-&gt;daddr
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure we have a hardware address before we return, so DHCP clients gets happy */
-id|interruptible_sleep_on
+multiline_comment|/* Make sure we have a hardware address before we return, &n;&t;   so DHCP clients gets happy */
+r_return
+id|wait_event_interruptible
 c_func
 (paren
-op_amp
 id|self-&gt;open_wait
+comma
+op_logical_neg
+id|self-&gt;tsap_data-&gt;connected
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_eth_close (dev)&n; *&n; *    Stop the ether network device, his function will usually be called by&n; *    ifconfig down. We should now disconnect the link, We start the &n; *    close timer, so that the instance will be removed if we are unable&n; *    to discover the remote device after the disconnect.&n; */
