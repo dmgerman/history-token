@@ -29,7 +29,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 r_extern

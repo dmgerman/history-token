@@ -162,7 +162,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 r_extern
 r_int

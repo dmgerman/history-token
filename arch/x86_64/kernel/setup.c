@@ -40,7 +40,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach_apic.h&gt;
