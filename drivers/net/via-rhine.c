@@ -858,7 +858,7 @@ l_int|0x0008
 comma
 id|IntrTxUnderrun
 op_assign
-l_int|0x0010
+l_int|0x0210
 comma
 DECL|enumerator|IntrPCIErr
 id|IntrPCIErr
@@ -867,7 +867,6 @@ l_int|0x0040
 comma
 DECL|enumerator|IntrStatsMax
 DECL|enumerator|IntrRxEarly
-DECL|enumerator|IntrMIIChange
 id|IntrStatsMax
 op_assign
 l_int|0x0080
@@ -875,10 +874,6 @@ comma
 id|IntrRxEarly
 op_assign
 l_int|0x0100
-comma
-id|IntrMIIChange
-op_assign
-l_int|0x0200
 comma
 DECL|enumerator|IntrRxOverflow
 DECL|enumerator|IntrRxDropped
@@ -3917,8 +3912,6 @@ op_or
 id|IntrStatsMax
 op_or
 id|IntrLinkChange
-op_or
-id|IntrMIIChange
 comma
 id|ioaddr
 op_plus
@@ -5445,8 +5438,6 @@ id|IntrPCIErr
 op_or
 id|IntrLinkChange
 op_or
-id|IntrMIIChange
-op_or
 id|IntrStatsMax
 op_or
 id|IntrTxError
@@ -6634,8 +6625,6 @@ c_cond
 id|intr_status
 op_amp
 (paren
-id|IntrMIIChange
-op_or
 id|IntrLinkChange
 )paren
 )paren
@@ -6767,7 +6756,7 @@ c_cond
 (paren
 id|intr_status
 op_amp
-id|IntrTxError
+id|IntrTxAborted
 )paren
 (brace
 r_if
@@ -6858,6 +6847,8 @@ op_complement
 id|IntrLinkChange
 op_or
 id|IntrStatsMax
+op_or
+id|IntrTxUnderrun
 op_or
 id|IntrTxError
 op_or
