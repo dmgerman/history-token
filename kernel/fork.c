@@ -2503,13 +2503,6 @@ id|sig-&gt;group_exit_code
 op_assign
 l_int|0
 suffix:semicolon
-id|init_completion
-c_func
-(paren
-op_amp
-id|sig-&gt;group_exit_done
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -2668,6 +2661,18 @@ id|CLONE_THREAD
 id|clone_flags
 op_or_assign
 id|CLONE_SIGHAND
+suffix:semicolon
+multiline_comment|/*&n;&t; * Detached threads can only be started up within the thread&n;&t; * group.&n;&t; */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_DETACHED
+)paren
+id|clone_flags
+op_or_assign
+id|CLONE_THREAD
 suffix:semicolon
 id|retval
 op_assign
@@ -3304,6 +3309,10 @@ id|p-&gt;tgid
 op_assign
 id|p-&gt;pid
 suffix:semicolon
+id|p-&gt;group_leader
+op_assign
+id|p
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -3397,6 +3406,10 @@ suffix:semicolon
 id|p-&gt;tgid
 op_assign
 id|current-&gt;tgid
+suffix:semicolon
+id|p-&gt;group_leader
+op_assign
+id|current-&gt;group_leader
 suffix:semicolon
 id|list_add
 c_func

@@ -527,11 +527,6 @@ DECL|member|group_exit_code
 r_int
 id|group_exit_code
 suffix:semicolon
-DECL|member|group_exit_done
-r_struct
-id|completion
-id|group_exit_done
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_RT_USER_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
@@ -790,6 +785,12 @@ id|list_head
 id|sibling
 suffix:semicolon
 multiline_comment|/* linkage in my parent&squot;s children list */
+DECL|member|group_leader
+r_struct
+id|task_struct
+op_star
+id|group_leader
+suffix:semicolon
 DECL|member|thread_group
 r_struct
 id|list_head
@@ -3203,6 +3204,8 @@ suffix:semicolon
 )brace
 DECL|macro|thread_group_leader
 mdefine_line|#define thread_group_leader(p)&t;(p-&gt;pid == p-&gt;tgid)
+DECL|macro|delay_group_leader
+mdefine_line|#define delay_group_leader(p) &bslash;&n;&t;(p-&gt;tgid == p-&gt;pid &amp;&amp; !list_empty(&amp;p-&gt;thread_group))
 r_extern
 r_void
 id|unhash_process
