@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/fs/ext2/xattr.c&n; *&n; * Copyright (C) 2001 by Andreas Gruenbacher, &lt;a.gruenbacher@computer.org&gt;&n; *&n; * Fix by Harrison Xing &lt;harrison@mountainviewdata.com&gt;.&n; * Extended attributes for symlinks and special files added per&n; *  suggestion of Luka Renko &lt;luka.renko@hermes.si&gt;.&n; */
+multiline_comment|/*&n; * linux/fs/ext2/xattr.c&n; *&n; * Copyright (C) 2001-2003 Andreas Gruenbacher &lt;agruen@suse.de&gt;&n; *&n; * Fix by Harrison Xing &lt;harrison@mountainviewdata.com&gt;.&n; * Extended attributes for symlinks and special files added per&n; *  suggestion of Luka Renko &lt;luka.renko@hermes.si&gt;.&n; */
 multiline_comment|/*&n; * Extended attributes are stored on disk blocks allocated outside of&n; * any inode. The i_file_acl field is then made to point to this allocated&n; * block. If all extended attributes of an inode are identical, these&n; * inodes may share the same extended attribute block. Such situations&n; * are automatically detected by keeping a cache of recent attribute block&n; * numbers and hashes over the block&squot;s contents in memory.&n; *&n; *&n; * Extended attribute block layout:&n; *&n; *   +------------------+&n; *   | header           |&n; *   &#xfffd; entry 1          | |&n; *   | entry 2          | | growing downwards&n; *   | entry 3          | v&n; *   | four null bytes  |&n; *   | . . .            |&n; *   | value 1          | ^&n; *   | value 3          | | growing upwards&n; *   | value 2          | |&n; *   +------------------+&n; *&n; * The block header is followed by multiple entry descriptors. These entry&n; * descriptors are variable in size, and alligned to EXT2_XATTR_PAD&n; * byte boundaries. The entry descriptors are sorted by attribute name,&n; * so that two extended attribute blocks can be compared efficiently.&n; *&n; * Attribute values are aligned to the end of the block, stored in&n; * no specific order. They are also padded to EXT2_XATTR_PAD byte&n; * boundaries. No additional gaps are left between them.&n; *&n; * Locking strategy&n; * ----------------&n; * The VFS already holds the BKL and the inode-&gt;i_sem semaphore when any of&n; * the xattr inode operations are called, so we are guaranteed that only one&n; * processes accesses extended attributes of an inode at any time.&n; *&n; * For writing we also grab the ext2_xattr_sem semaphore. This ensures that&n; * only a single process is modifying an extended attribute block, even&n; * if the block is shared among inodes.&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -58,7 +58,7 @@ macro_line|#ifdef EXT2_XATTR_DEBUG
 DECL|macro|ea_idebug
 macro_line|# define ea_idebug(inode, f...) do { &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;inode %s:%ld: &quot;, &bslash;&n;&t;&t;&t;inode-&gt;i_sb-&gt;s_id, inode-&gt;i_ino); &bslash;&n;&t;&t;printk(f); &bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)
 DECL|macro|ea_bdebug
-macro_line|# define ea_bdebug(bh, f...) do { &bslash;&n;&t;&t;char b[BDEVNAME_SIZE]; &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;block %s:%ld: &quot;, &bslash;&n;&t;&t;&t;bdevname(bh-&gt;b_bdev, b), bh-&gt;b_blocknr); &bslash;&n;&t;&t;printk(f); &bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)
+macro_line|# define ea_bdebug(bh, f...) do { &bslash;&n;&t;&t;char b[BDEVNAME_SIZE]; &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;block %s:%lu: &quot;, &bslash;&n;&t;&t;&t;bdevname(bh-&gt;b_bdev, b), &bslash;&n;&t;&t;&t;(unsigned long) bh-&gt;b_blocknr); &bslash;&n;&t;&t;printk(f); &bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|ea_idebug
 macro_line|# define ea_idebug(f...)
@@ -523,7 +523,7 @@ r_return
 id|handler
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation getxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; * BKL held [before 2.5.x]&n; */
+multiline_comment|/*&n; * Inode operation getxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
 id|ssize_t
 DECL|function|ext2_getxattr
 id|ext2_getxattr
@@ -594,7 +594,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation listxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; * BKL held [before 2.5.x]&n; */
+multiline_comment|/*&n; * Inode operation listxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
 id|ssize_t
 DECL|function|ext2_listxattr
 id|ext2_listxattr
@@ -625,7 +625,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation setxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; * BKL held [before 2.5.x]&n; */
+multiline_comment|/*&n; * Inode operation setxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
 r_int
 DECL|function|ext2_setxattr
 id|ext2_setxattr
@@ -714,7 +714,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation removexattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; * BKL held [before 2.5.x]&n; */
+multiline_comment|/*&n; * Inode operation removexattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
 r_int
 DECL|function|ext2_removexattr
 id|ext2_removexattr
@@ -820,7 +820,8 @@ op_star
 id|entry
 suffix:semicolon
 r_int
-r_int
+id|name_len
+comma
 id|size
 suffix:semicolon
 r_char
@@ -828,8 +829,6 @@ op_star
 id|end
 suffix:semicolon
 r_int
-id|name_len
-comma
 id|error
 suffix:semicolon
 id|ea_idebug
@@ -1328,7 +1327,6 @@ id|ext2_xattr_entry
 op_star
 id|entry
 suffix:semicolon
-r_int
 r_int
 id|size
 op_assign
@@ -1865,19 +1863,18 @@ op_star
 id|last
 suffix:semicolon
 r_int
-r_int
 id|name_len
-suffix:semicolon
-r_int
+comma
+id|free
+comma
 id|min_offs
 op_assign
 id|sb-&gt;s_blocksize
-comma
+suffix:semicolon
+r_int
 id|not_found
 op_assign
 l_int|1
-comma
-id|free
 comma
 id|error
 suffix:semicolon
@@ -2414,15 +2411,6 @@ l_int|NULL
 r_goto
 id|cleanup
 suffix:semicolon
-r_else
-id|free
-op_sub_assign
-id|EXT2_XATTR_LEN
-c_func
-(paren
-id|name_len
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -2451,7 +2439,6 @@ op_logical_and
 id|here-&gt;e_value_size
 )paren
 (brace
-r_int
 r_int
 id|size
 op_assign
@@ -2490,15 +2477,15 @@ id|size
 )paren
 suffix:semicolon
 )brace
-)brace
 id|free
-op_sub_assign
-id|EXT2_XATTR_SIZE
+op_add_assign
+id|EXT2_XATTR_LEN
 c_func
 (paren
-id|value_len
+id|name_len
 )paren
 suffix:semicolon
+)brace
 id|error
 op_assign
 op_minus
@@ -2509,7 +2496,17 @@ c_cond
 (paren
 id|free
 OL
-l_int|0
+id|EXT2_XATTR_LEN
+c_func
+(paren
+id|name_len
+)paren
+op_plus
+id|EXT2_XATTR_SIZE
+c_func
+(paren
+id|value_len
+)paren
 )paren
 r_goto
 id|cleanup
@@ -3283,7 +3280,7 @@ c_func
 (paren
 id|new_bh
 comma
-l_string|&quot;%s block %ld&quot;
+l_string|&quot;%s block %lu&quot;
 comma
 (paren
 id|old_bh
@@ -3296,6 +3293,10 @@ l_string|&quot;keeping&quot;
 suffix:colon
 l_string|&quot;reusing&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|new_bh-&gt;b_blocknr
 )paren
 suffix:semicolon
@@ -3413,7 +3414,9 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|s_es-&gt;s_first_data_block
+id|s_es
+op_member_access_from_pointer
+id|s_first_data_block
 )paren
 op_plus
 id|EXT2_I
@@ -3994,15 +3997,17 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|bforget
+id|get_bh
 c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
+id|bforget
+c_func
+(paren
 id|bh
-op_assign
-l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_else
