@@ -1271,11 +1271,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * init_slots - initialize &squot;struct slot&squot; structures for each slot&n; *&n; */
-DECL|function|init_slots
+DECL|function|init_rpa
 r_static
-r_void
-id|init_slots
+r_int
+id|__init
+id|init_rpa
 c_func
 (paren
 r_void
@@ -1286,6 +1286,14 @@ id|device_node
 op_star
 id|dn
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|rpaphp_sem
+)paren
+suffix:semicolon
+multiline_comment|/* initialize internal data structure etc. */
 r_for
 c_loop
 (paren
@@ -1308,29 +1316,6 @@ c_func
 id|dn
 )paren
 suffix:semicolon
-)brace
-DECL|function|init_rpa
-r_static
-r_int
-id|init_rpa
-c_func
-(paren
-r_void
-)paren
-(brace
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|rpaphp_sem
-)paren
-suffix:semicolon
-multiline_comment|/* initialize internal data structure etc. */
-id|init_slots
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1348,6 +1333,7 @@ suffix:semicolon
 DECL|function|cleanup_slots
 r_static
 r_void
+id|__exit
 id|cleanup_slots
 c_func
 (paren
