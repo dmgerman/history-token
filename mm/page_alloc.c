@@ -8143,10 +8143,11 @@ id|_hash_mask
 (brace
 r_int
 r_int
-id|mem
-comma
+r_int
 id|max
-comma
+suffix:semicolon
+r_int
+r_int
 id|log2qty
 comma
 id|size
@@ -8155,8 +8156,16 @@ r_void
 op_star
 id|table
 suffix:semicolon
+multiline_comment|/* allow the kernel cmdline to have a say */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|numentries
+)paren
+(brace
 multiline_comment|/* round applicable memory size up to nearest megabyte */
-id|mem
+id|numentries
 op_assign
 id|consider_highmem
 ques
@@ -8165,7 +8174,7 @@ id|nr_all_pages
 suffix:colon
 id|nr_kernel_pages
 suffix:semicolon
-id|mem
+id|numentries
 op_add_assign
 (paren
 l_int|1UL
@@ -8179,19 +8188,19 @@ id|PAGE_SHIFT
 op_minus
 l_int|1
 suffix:semicolon
-id|mem
+id|numentries
 op_rshift_assign
 l_int|20
 op_minus
 id|PAGE_SHIFT
 suffix:semicolon
-id|mem
+id|numentries
 op_lshift_assign
 l_int|20
 op_minus
 id|PAGE_SHIFT
 suffix:semicolon
-multiline_comment|/* limit to 1 bucket per 2^scale bytes of low memory (rounded up to&n;&t; * nearest power of 2 in size) */
+multiline_comment|/* limit to 1 bucket per 2^scale bytes of low memory */
 r_if
 c_cond
 (paren
@@ -8199,7 +8208,7 @@ id|scale
 OG
 id|PAGE_SHIFT
 )paren
-id|mem
+id|numentries
 op_rshift_assign
 (paren
 id|scale
@@ -8208,7 +8217,7 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 r_else
-id|mem
+id|numentries
 op_lshift_assign
 (paren
 id|PAGE_SHIFT
@@ -8216,7 +8225,9 @@ op_minus
 id|scale
 )paren
 suffix:semicolon
-id|mem
+)brace
+multiline_comment|/* rounded up to nearest power of 2 in size */
+id|numentries
 op_assign
 l_int|1UL
 op_lshift
@@ -8224,45 +8235,39 @@ op_lshift
 id|long_log2
 c_func
 (paren
-id|mem
+id|numentries
 )paren
 op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* limit allocation size */
+multiline_comment|/* limit allocation size to 1/16 total memory */
 id|max
 op_assign
 (paren
-l_int|1UL
+(paren
+r_int
+r_int
+r_int
+)paren
+id|nr_all_pages
 op_lshift
-(paren
 id|PAGE_SHIFT
-op_plus
-id|MAX_SYS_HASH_TABLE_ORDER
 )paren
-)paren
-op_div
+op_rshift
+l_int|4
+suffix:semicolon
+id|do_div
+c_func
+(paren
+id|max
+comma
 id|bucketsize
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|max
-OG
-id|mem
 )paren
-id|max
-op_assign
-id|mem
 suffix:semicolon
-multiline_comment|/* allow the kernel cmdline to have a say */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|numentries
-op_logical_or
 id|numentries
 OG
 id|max
@@ -8289,10 +8294,6 @@ id|log2qty
 suffix:semicolon
 id|table
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|alloc_bootmem
 c_func
 (paren
@@ -8309,6 +8310,9 @@ op_logical_and
 id|size
 OG
 id|PAGE_SIZE
+op_logical_and
+op_decrement
+id|log2qty
 )paren
 suffix:semicolon
 r_if
