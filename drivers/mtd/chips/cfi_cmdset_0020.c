@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Common Flash Interface support:&n; *   ST Advanced Architecture Command Set (ID 0x0020)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 06/21/2002&t;Joern Engel &lt;joern@wh.fh-wedel.de&gt; and others&n; *&t;- modified Intel Command Set 0x0001 to support ST Advanced Architecture&n; *&t;  (command set 0x0020)&n; *&t;- added a writev function&n; */
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7,7 +8,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
-macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/gen_probe.h&gt;
 r_static
 r_struct
