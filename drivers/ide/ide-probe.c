@@ -2275,6 +2275,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|hwif-&gt;gendev.parent
+op_eq
+l_int|NULL
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|hwif-&gt;pci_dev
 )paren
 id|hwif-&gt;gendev.parent
@@ -2283,11 +2291,12 @@ op_amp
 id|hwif-&gt;pci_dev-&gt;dev
 suffix:semicolon
 r_else
+multiline_comment|/* Would like to do = &amp;device_legacy */
 id|hwif-&gt;gendev.parent
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Would like to do = &amp;device_legacy */
+)brace
 id|device_register
 c_func
 (paren
