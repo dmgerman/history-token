@@ -8495,6 +8495,7 @@ id|sc-&gt;signal
 r_goto
 id|badframe
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8558,7 +8559,6 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 suffix:semicolon
