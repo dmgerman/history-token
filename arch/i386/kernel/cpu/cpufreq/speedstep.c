@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: speedstep.c,v 1.53 2002/09/29 23:43:11 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: speedstep.c,v 1.57 2002/11/05 12:01:12 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 multiline_comment|/*********************************************************************&n; *                        SPEEDSTEP - DEFINITIONS                    *&n; *********************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
@@ -38,6 +38,15 @@ r_static
 r_int
 r_int
 id|speedstep_processor
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|speedstep_coppermine
+r_static
+r_int
+id|speedstep_coppermine
+op_assign
+l_int|0
 suffix:semicolon
 DECL|macro|SPEEDSTEP_PROCESSOR_PIII_C
 mdefine_line|#define SPEEDSTEP_PROCESSOR_PIII_C      0x00000001  /* Coppermine core */
@@ -69,7 +78,7 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(msg)
 macro_line|#else
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0);
+mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
 multiline_comment|/*********************************************************************&n; *                    LOW LEVEL CHIPSET INTERFACE                    *&n; *********************************************************************/
 multiline_comment|/**&n; * speedstep_get_state - read the current SpeedStep state&n; * @state: Speedstep state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; *&n; *   Tries to read the SpeedStep state. Returns -EIO when there has been&n; * trouble to read the status or write to the control register, -EINVAL&n; * on an unsupported chipset, and zero on success.&n; */
@@ -1260,7 +1269,7 @@ l_int|100000
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * speedstep_detect_processor - detect Intel SpeedStep-capable processors.&n; *&n; *   Returns the SPEEDSTEP_PROCESSOR_-number for the detected chipset, &n; * or zero on failure.&n; */
+multiline_comment|/** &n; * speedstep_detect_processor - detect Intel SpeedStep-capable processors.&n; *&n; *   Returns the SPEEDSTEP_PROCESSOR_-number for the detected processor, &n; * or zero on failure.&n; */
 DECL|function|speedstep_detect_processor
 r_static
 r_int
@@ -1410,7 +1419,6 @@ r_case
 l_int|0x08
 suffix:colon
 multiline_comment|/* Intel PIII [Coppermine] */
-multiline_comment|/* based on reverse-engineering information and&n;&t;&t; * some guessing. HANDLE WITH CARE! */
 (brace
 id|u32
 id|msr_lo
@@ -1453,62 +1461,37 @@ l_int|0x0080000
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* platform ID seems to be 0x00140000 */
-id|rdmsr
-c_func
-(paren
-id|MSR_IA32_PLATFORM_ID
-comma
-id|msr_lo
-comma
-id|msr_hi
-)paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;cpufreq: Coppermine: MSR_IA32_PLATFORM ID is 0x%x, 0x%x&bslash;n&quot;
-comma
-id|msr_lo
-comma
-id|msr_hi
-)paren
-suffix:semicolon
-id|msr_hi
-op_assign
-id|msr_lo
-op_amp
-l_int|0x001c0000
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|msr_hi
-op_ne
-l_int|0x00140000
+id|speedstep_coppermine
 )paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* and these bits seem to be either 00_b, 01_b or&n;&t;&t;&t; * 10_b but never 11_b */
-id|msr_lo
-op_and_assign
-l_int|0x00030000
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|msr_lo
-op_eq
-l_int|0x0030000
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* let&squot;s hope this is correct... */
 r_return
 id|SPEEDSTEP_PROCESSOR_PIII_C
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cpufreq: in case this is a SpeedStep-capable Intel Pentium III Coppermine&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cpufreq: processor, please pass the boot option or module parameter&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cpufreq: `speedstep_coppermine=1` to the kernel. Thanks!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_default
@@ -1855,6 +1838,46 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
+multiline_comment|/**&n; * speedstep_setup  speedstep command line parameter parsing&n; *&n; * speedstep command line parameter.  Use:&n; *  speedstep_coppermine=1&n; * if the CPU in your notebook is a SpeedStep-capable Intel&n; * Pentium III Coppermine. These processors cannot be detected&n; * automatically, as Intel continues to consider the detection &n; * alogrithm as proprietary material.&n; */
+DECL|function|speedstep_setup
+r_static
+r_int
+id|__init
+id|speedstep_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|speedstep_coppermine
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|str
+comma
+op_amp
+id|str
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;speedstep_coppermine=&quot;
+comma
+id|speedstep_setup
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**&n; * speedstep_init - initializes the SpeedStep CPUFreq driver&n; *&n; *   Initializes the SpeedStep support. Returns -ENODEV on unsupported&n; * devices, -EINVAL on problems during initiatization, and zero on&n; * success.&n; */
 DECL|function|speedstep_init
 r_static
@@ -1913,18 +1936,29 @@ id|speedstep_processor
 )paren
 )paren
 (brace
-id|dprintk
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;a 0x%x b 0x%x&bslash;n&quot;
+comma
+id|speedstep_processor
+comma
+id|speedstep_chipset
+)paren
+suffix:semicolon
+id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) for this %s not (yet) available.&bslash;n&quot;
 comma
-id|speedstep_processor
+id|speedstep_chipset
 ques
 c_cond
-l_string|&quot;chipset&quot;
-suffix:colon
 l_string|&quot;processor&quot;
+suffix:colon
+l_string|&quot;chipset&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1936,7 +1970,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.53 $&bslash;n&quot;
+l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.57 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
@@ -2249,6 +2283,13 @@ id|module_exit
 c_func
 (paren
 id|speedstep_exit
+)paren
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|speedstep_coppermine
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 eof
