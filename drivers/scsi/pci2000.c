@@ -2707,12 +2707,13 @@ r_goto
 id|unregister
 suffix:semicolon
 )brace
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|pshost
 comma
-id|pdev
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 id|pshost-&gt;irq
