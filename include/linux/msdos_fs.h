@@ -443,25 +443,37 @@ suffix:semicolon
 multiline_comment|/* last 2 characters in name */
 )brace
 suffix:semicolon
-DECL|struct|vfat_slot_info
+DECL|struct|fat_slot_info
 r_struct
-id|vfat_slot_info
+id|fat_slot_info
 (brace
-DECL|member|long_slots
-r_int
-id|long_slots
-suffix:semicolon
-multiline_comment|/* number of long slots in filename */
-DECL|member|longname_offset
-id|loff_t
-id|longname_offset
-suffix:semicolon
-multiline_comment|/* dir offset for longname start */
 DECL|member|i_pos
 id|loff_t
 id|i_pos
 suffix:semicolon
 multiline_comment|/* on-disk position of directory entry */
+DECL|member|slot_off
+id|loff_t
+id|slot_off
+suffix:semicolon
+multiline_comment|/* offset for slot or de start */
+DECL|member|nr_slots
+r_int
+id|nr_slots
+suffix:semicolon
+multiline_comment|/* number of slots + 1(de) in filename */
+DECL|member|de
+r_struct
+id|msdos_dir_entry
+op_star
+id|de
+suffix:semicolon
+DECL|member|bh
+r_struct
+id|buffer_head
+op_star
+id|bh
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
