@@ -22,7 +22,7 @@ DECL|macro|BN_ALIGN_MASK
 mdefine_line|#define BN_ALIGN_MASK&t;((1 &lt;&lt; (PAGE_CACHE_SHIFT - BBSHIFT)) - 1)
 macro_line|#ifndef GFP_READAHEAD
 DECL|macro|GFP_READAHEAD
-mdefine_line|#define GFP_READAHEAD&t;__GFP_NOWARN
+mdefine_line|#define GFP_READAHEAD&t;(__GFP_NOWARN|__GFP_NORETRY)
 macro_line|#endif
 multiline_comment|/*&n; * Debug code&n; */
 macro_line|#ifdef PAGEBUF_TRACE
