@@ -59,7 +59,15 @@ id|orinoco_debug
 comma
 r_int
 comma
-l_int|0
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|orinoco_debug
+comma
+l_string|&quot;Debug level&quot;
 )paren
 suffix:semicolon
 DECL|variable|orinoco_debug
@@ -83,7 +91,15 @@ id|suppress_linkstatus
 comma
 r_bool
 comma
-l_int|0
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|suppress_linkstatus
+comma
+l_string|&quot;Don&squot;t log link status changes&quot;
 )paren
 suffix:semicolon
 multiline_comment|/********************************************************************/
