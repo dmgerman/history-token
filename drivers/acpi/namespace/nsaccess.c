@@ -359,7 +359,7 @@ suffix:semicolon
 id|obj_desc-&gt;mutex.sync_level
 op_assign
 (paren
-id|u16
+id|u8
 )paren
 id|ACPI_STRTOUL
 (paren
