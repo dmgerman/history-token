@@ -437,7 +437,7 @@ id|region.end
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Initialize bridges with base/limit values we have collected.&n;   PCI-to-PCI Bridge Architecture Specification rev. 1.1 (1998)&n;   requires that if there is no I/O ports or memory behind the&n;   bridge, corresponding range must be turned off by writing base&n;   value greater than limit to the bridge&squot;s base/limit registers.  */
+multiline_comment|/* Initialize bridges with base/limit values we have collected.&n;   PCI-to-PCI Bridge Architecture Specification rev. 1.1 (1998)&n;   requires that if there is no I/O ports or memory behind the&n;   bridge, corresponding range must be turned off by writing base&n;   value greater than limit to the bridge&squot;s base/limit registers.&n;&n;   Note: care must be taken when updating I/O base/limit registers&n;   of bridges which support 32-bit I/O. This update requires two&n;   config space writes, so it&squot;s quite possible that an I/O window of&n;   the bridge will have some undesirable address (e.g. 0) after the&n;   first write. Ditto 64-bit prefetchable MMIO.  */
 r_static
 r_void
 id|__devinit
@@ -464,6 +464,8 @@ id|region
 suffix:semicolon
 id|u32
 id|l
+comma
+id|io_upper16
 suffix:semicolon
 id|DBGC
 c_func
@@ -542,26 +544,16 @@ op_amp
 l_int|0xf000
 suffix:semicolon
 multiline_comment|/* Set up upper 16 bits of I/O base/limit. */
-id|pci_write_config_word
-c_func
+id|io_upper16
+op_assign
 (paren
-id|bridge
-comma
-id|PCI_IO_BASE_UPPER16
-comma
-id|region.start
-op_rshift
-l_int|16
-)paren
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|bridge
-comma
-id|PCI_IO_LIMIT_UPPER16
-comma
 id|region.end
+op_amp
+l_int|0xffff0000
+)paren
+op_or
+(paren
+id|region.start
 op_rshift
 l_int|16
 )paren
@@ -583,15 +575,9 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Clear upper 16 bits of I/O base/limit. */
-id|pci_write_config_dword
-c_func
-(paren
-id|bridge
-comma
-id|PCI_IO_BASE_UPPER16
-comma
+id|io_upper16
+op_assign
 l_int|0
-)paren
 suffix:semicolon
 id|l
 op_assign
@@ -607,6 +593,18 @@ l_string|&quot;  IO window: disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Temporarily disable the I/O range before updating PCI_IO_BASE. */
+id|pci_write_config_dword
+c_func
+(paren
+id|bridge
+comma
+id|PCI_IO_BASE_UPPER16
+comma
+l_int|0x0000ffff
+)paren
+suffix:semicolon
+multiline_comment|/* Update lower 16 bits of I/O base/limit. */
 id|pci_write_config_dword
 c_func
 (paren
@@ -615,6 +613,17 @@ comma
 id|PCI_IO_BASE
 comma
 id|l
+)paren
+suffix:semicolon
+multiline_comment|/* Update upper 16 bits of I/O base/limit. */
+id|pci_write_config_dword
+c_func
+(paren
+id|bridge
+comma
+id|PCI_IO_BASE_UPPER16
+comma
+id|io_upper16
 )paren
 suffix:semicolon
 multiline_comment|/* Set up the top and bottom of the PCI Memory segment&n;&t;   for this bus. */
@@ -701,17 +710,7 @@ comma
 id|l
 )paren
 suffix:semicolon
-multiline_comment|/* Clear out the upper 32 bits of PREF base/limit. */
-id|pci_write_config_dword
-c_func
-(paren
-id|bridge
-comma
-id|PCI_PREF_BASE_UPPER32
-comma
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/* Clear out the upper 32 bits of PREF limit.&n;&t;   If PCI_PREF_BASE_UPPER32 was non-zero, this temporarily&n;&t;   disables PREF range, which is ok. */
 id|pci_write_config_dword
 c_func
 (paren
@@ -804,6 +803,17 @@ comma
 id|PCI_PREF_MEMORY_BASE
 comma
 id|l
+)paren
+suffix:semicolon
+multiline_comment|/* Clear out the upper 32 bits of PREF base. */
+id|pci_write_config_dword
+c_func
+(paren
+id|bridge
+comma
+id|PCI_PREF_BASE_UPPER32
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Check if we have VGA behind the bridge.&n;&t;   Enable ISA in either case (FIXME!). */

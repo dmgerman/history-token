@@ -8413,7 +8413,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|cleanup
+id|arch_cleanup
 suffix:semicolon
 multiline_comment|/* Get rid of temporary copy */
 id|vfree
@@ -8425,6 +8425,14 @@ suffix:semicolon
 multiline_comment|/* Done! */
 r_return
 id|mod
+suffix:semicolon
+id|arch_cleanup
+suffix:colon
+id|module_arch_cleanup
+c_func
+(paren
+id|mod
+)paren
 suffix:semicolon
 id|cleanup
 suffix:colon
