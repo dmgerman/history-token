@@ -429,6 +429,7 @@ id|serial_req.regshift
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_SERIAL_TEXT_DEBUG)
 id|gen550_init
 c_func
 (paren
@@ -438,6 +439,7 @@ op_amp
 id|serial_req
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_8250
 r_if
 c_cond
@@ -475,6 +477,7 @@ op_star
 )paren
 id|UART1_IO_BASE
 suffix:semicolon
+macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_SERIAL_TEXT_DEBUG)
 id|gen550_init
 c_func
 (paren
@@ -484,6 +487,7 @@ op_amp
 id|serial_req
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_8250
 r_if
 c_cond
