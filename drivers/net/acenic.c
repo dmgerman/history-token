@@ -7419,6 +7419,19 @@ suffix:semicolon
 id|u16
 id|csum
 suffix:semicolon
+multiline_comment|/* make sure the rx descriptor isn&squot;t read before rxretprd */
+r_if
+c_cond
+(paren
+id|idx
+op_eq
+id|rxretcsm
+)paren
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|retdesc
 op_assign
 op_amp
