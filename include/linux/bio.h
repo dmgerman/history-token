@@ -60,6 +60,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
+id|bio_set
+suffix:semicolon
+r_struct
 id|bio
 suffix:semicolon
 DECL|typedef|bio_end_io_t
@@ -200,6 +203,13 @@ op_star
 id|bi_destructor
 suffix:semicolon
 multiline_comment|/* destructor */
+DECL|member|bi_set
+r_struct
+id|bio_set
+op_star
+id|bi_set
+suffix:semicolon
+multiline_comment|/* memory pools set */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * bio flags&n; */
@@ -373,6 +383,30 @@ id|dbio
 suffix:semicolon
 r_extern
 r_struct
+id|bio_set
+op_star
+id|bioset_create
+c_func
+(paren
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|bioset_free
+c_func
+(paren
+r_struct
+id|bio_set
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
 id|bio
 op_star
 id|bio_alloc
@@ -381,6 +415,22 @@ c_func
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|bio
+op_star
+id|bio_alloc_bioset
+c_func
+(paren
+r_int
+comma
+r_int
+comma
+r_struct
+id|bio_set
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -591,6 +641,16 @@ c_func
 r_struct
 id|bio
 op_star
+)paren
+suffix:semicolon
+r_void
+id|zero_fill_bio
+c_func
+(paren
+r_struct
+id|bio
+op_star
+id|bio
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
