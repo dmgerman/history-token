@@ -1127,12 +1127,6 @@ id|mm_segment_t
 id|fs
 suffix:semicolon
 multiline_comment|/* for get_fs() validation */
-DECL|member|pgdir
-r_void
-op_star
-id|pgdir
-suffix:semicolon
-multiline_comment|/* root of page-table tree */
 DECL|member|last_syscall
 r_int
 r_int
@@ -1163,7 +1157,7 @@ suffix:semicolon
 DECL|macro|INIT_SP
 mdefine_line|#define INIT_SP&t;&t;(sizeof(init_stack) + (unsigned long) &amp;init_stack)
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;INIT_SP, /* ksp */ &bslash;&n;&t;(struct pt_regs *)INIT_SP - 1, /* regs */ &bslash;&n;&t;KERNEL_DS, /*fs*/ &bslash;&n;&t;swapper_pg_dir, /* pgdir */ &bslash;&n;&t;0, /* last_syscall */ &bslash;&n;&t;{0}, 0, 0 &bslash;&n;}
+mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;INIT_SP, /* ksp */ &bslash;&n;&t;(struct pt_regs *)INIT_SP - 1, /* regs */ &bslash;&n;&t;KERNEL_DS, /*fs*/ &bslash;&n;&t;0, /* last_syscall */ &bslash;&n;&t;{0}, 0, 0 &bslash;&n;}
 multiline_comment|/*&n; * Note: the vm_start and vm_end fields here should *not*&n; * be in kernel space.  (Could vm_end == vm_start perhaps?)&n; */
 DECL|macro|IOREMAP_MMAP
 mdefine_line|#define IOREMAP_MMAP { &amp;ioremap_mm, 0, 0x1000, NULL, &bslash;&n;&t;&t;    PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, &bslash;&n;&t;&t;    1, NULL, NULL }
