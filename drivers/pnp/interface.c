@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|struct|pnp_info_buffer
 r_struct
