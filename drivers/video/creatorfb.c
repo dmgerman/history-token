@@ -3527,7 +3527,7 @@ multiline_comment|/* Not used if hw cursor */
 )brace
 macro_line|#if 0
 r_static
-r_void
+r_int
 id|ffb_blank
 c_func
 (paren
@@ -3610,11 +3610,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|ffb_unblank
 r_static
-r_void
+r_int
 id|ffb_unblank
 c_func
 (paren
@@ -3695,6 +3698,9 @@ id|fb-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ffb_loadcmap

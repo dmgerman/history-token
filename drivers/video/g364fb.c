@@ -274,6 +274,20 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
+r_int
+id|g364fb_blank
+c_func
+(paren
+r_int
+id|blank
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  Interface to the low level console driver&n; */
 r_int
 id|g364fb_init
@@ -303,20 +317,6 @@ c_func
 (paren
 r_int
 id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_static
-r_void
-id|g364fbcon_blank
-c_func
-(paren
-r_int
-id|blank
 comma
 r_struct
 id|fb_info
@@ -429,6 +429,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|g364fb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|g364fb_blank
 comma
 )brace
 suffix:semicolon
@@ -1739,11 +1743,6 @@ op_assign
 op_amp
 id|g364fbcon_updatevar
 suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|g364fbcon_blank
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -1920,10 +1919,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Blank the display.&n; */
-DECL|function|g364fbcon_blank
+DECL|function|g364fb_blank
 r_static
-r_void
-id|g364fbcon_blank
+r_int
+id|g364fb_blank
 c_func
 (paren
 r_int
@@ -1961,6 +1960,9 @@ id|CTLA_REG
 op_and_assign
 op_complement
 id|FORCE_BLANK
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Read a single color register and split it into&n; *  colors/transparent. Return != 0 for invalid regno.&n; */

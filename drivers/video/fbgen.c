@@ -1614,7 +1614,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;fbgen_blank - blank the screen&n; *&t;@blank: boolean, 0 unblank, 1 blank&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Blank the screen on device @info.&n; *&n; */
 DECL|function|fbgen_blank
-r_void
+r_int
 id|fbgen_blank
 c_func
 (paren
@@ -1673,6 +1673,7 @@ id|info2
 )paren
 )paren
 r_return
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1741,6 +1742,9 @@ id|info-&gt;currcon
 comma
 id|info2
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|fbgen_get_fix

@@ -312,6 +312,20 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
+r_int
+id|platinum_blank
+c_func
+(paren
+r_int
+id|blank
+comma
+r_struct
+id|fb_info
+op_star
+id|fb
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Interface to the low level console driver&n; */
 r_static
 r_int
@@ -334,20 +348,6 @@ c_func
 (paren
 r_int
 id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|fb
-)paren
-suffix:semicolon
-r_static
-r_void
-id|platinum_blank
-c_func
-(paren
-r_int
-id|blank
 comma
 r_struct
 id|fb_info
@@ -626,6 +626,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|platinum_set_cmap
+comma
+id|fb_blank
+suffix:colon
+id|platinum_blank
 comma
 )brace
 suffix:semicolon
@@ -1624,7 +1628,7 @@ suffix:semicolon
 )brace
 DECL|function|platinum_blank
 r_static
-r_void
+r_int
 id|platinum_blank
 c_func
 (paren
@@ -1642,6 +1646,7 @@ multiline_comment|/* [danj] I think there&squot;s something fishy about those co
 multiline_comment|/*&n;&t;struct fb_info_platinum *info = (struct fb_info_platinum *) fb;&n;&t;int&t;ctrl;&n;&n;&t;ctrl = ld_le32(&amp;info-&gt;platinum_regs-&gt;ctrl.r) | 0x33;&n;&t;if (blank)&n;&t;&t;--blank_mode;&n;&t;if (blank &amp; VESA_VSYNC_SUSPEND)&n;&t;&t;ctrl &amp;= ~3;&n;&t;if (blank &amp; VESA_HSYNC_SUSPEND)&n;&t;&t;ctrl &amp;= ~0x30;&n;&t;out_le32(&amp;info-&gt;platinum_regs-&gt;ctrl.r, ctrl);&n;*/
 multiline_comment|/* TODO: Figure out how the heck to powerdown this thing! */
 r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|platinum_getcolreg
@@ -3016,11 +3021,6 @@ id|info-&gt;fb_info.updatevar
 op_assign
 op_amp
 id|platinum_updatevar
-suffix:semicolon
-id|info-&gt;fb_info.blank
-op_assign
-op_amp
-id|platinum_blank
 suffix:semicolon
 id|info-&gt;fb_info.flags
 op_assign

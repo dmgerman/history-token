@@ -65,7 +65,7 @@ DECL|macro|MAX_CURS
 mdefine_line|#define MAX_CURS&t;&t;32
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * prototypes&n; *&n; * ------------------------------------------------------------------------- */
 r_static
-r_void
+r_int
 id|rivafb_blank
 c_func
 (paren
@@ -6724,7 +6724,7 @@ suffix:semicolon
 )brace
 DECL|function|rivafb_blank
 r_static
-r_void
+r_int
 id|rivafb_blank
 c_func
 (paren
@@ -6874,6 +6874,9 @@ c_func
 l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * initialization helper functions&n; *&n; * ------------------------------------------------------------------------- */
 multiline_comment|/* kernel interface */
@@ -6911,6 +6914,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|rivafb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|rivafb_blank
 comma
 id|fb_ioctl
 suffix:colon
@@ -7180,10 +7187,6 @@ suffix:semicolon
 id|info-&gt;updatevar
 op_assign
 id|rivafb_updatevar
-suffix:semicolon
-id|info-&gt;blank
-op_assign
-id|rivafb_blank
 suffix:semicolon
 r_if
 c_cond

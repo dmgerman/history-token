@@ -222,6 +222,20 @@ id|fb
 suffix:semicolon
 r_static
 r_int
+id|atyfb_blank
+c_func
+(paren
+r_int
+id|blank
+comma
+r_struct
+id|fb_info
+op_star
+id|fb
+)paren
+suffix:semicolon
+r_static
+r_int
 id|atyfb_get_cmap
 c_func
 (paren
@@ -353,20 +367,6 @@ c_func
 (paren
 r_int
 id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|fb
-)paren
-suffix:semicolon
-r_static
-r_void
-id|atyfbcon_blank
-c_func
-(paren
-r_int
-id|blank
 comma
 r_struct
 id|fb_info
@@ -734,6 +734,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|atyfb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|atyfb_blank
 comma
 id|fb_ioctl
 suffix:colon
@@ -8792,7 +8796,7 @@ id|nb
 )paren
 suffix:semicolon
 multiline_comment|/* Blank display and LCD */
-id|atyfbcon_blank
+id|atyfb_blank
 c_func
 (paren
 id|VESA_POWERDOWN
@@ -8876,7 +8880,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|atyfbcon_blank
+id|atyfb_blank
 c_func
 (paren
 l_int|0
@@ -10458,11 +10462,6 @@ id|info-&gt;fb_info.updatevar
 op_assign
 op_amp
 id|atyfbcon_updatevar
-suffix:semicolon
-id|info-&gt;fb_info.blank
-op_assign
-op_amp
-id|atyfbcon_blank
 suffix:semicolon
 id|info-&gt;fb_info.flags
 op_assign
@@ -13822,10 +13821,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Blank the display.&n;     */
-DECL|function|atyfbcon_blank
+DECL|function|atyfb_blank
 r_static
-r_void
-id|atyfbcon_blank
+r_int
+id|atyfb_blank
 c_func
 (paren
 r_int
@@ -13971,6 +13970,9 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Read a single color register and split it into&n;     *  colors/transparent. Return != 0 for invalid regno.&n;     */
 DECL|function|atyfb_getcolreg

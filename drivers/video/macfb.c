@@ -3698,23 +3698,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|macfb_blank
-r_static
-r_void
-id|macfb_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-multiline_comment|/* Not supported */
-)brace
 DECL|function|macfb_init
 r_void
 id|__init
@@ -4817,11 +4800,6 @@ id|fb_info.updatevar
 op_assign
 op_amp
 id|macfb_update_var
-suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|macfb_blank
 suffix:semicolon
 id|fb_info.flags
 op_assign

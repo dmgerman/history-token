@@ -456,20 +456,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-r_static
-r_void
-id|sgivwfbcon_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *  Internal routines&n; */
 r_static
 id|u_long
@@ -4348,11 +4334,6 @@ op_assign
 op_amp
 id|sgivwfbcon_updatevar
 suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|sgivwfbcon_blank
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -4555,24 +4536,6 @@ multiline_comment|/* Nothing */
 r_return
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/*&n; *  Blank the display.&n; */
-DECL|function|sgivwfbcon_blank
-r_static
-r_void
-id|sgivwfbcon_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-multiline_comment|/* Nothing */
 )brace
 macro_line|#ifdef MODULE
 id|MODULE_LICENSE

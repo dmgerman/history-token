@@ -410,20 +410,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-r_static
-r_void
-id|sstfbcon_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/* Internal routines */
 r_static
 r_void
@@ -8087,11 +8073,6 @@ op_assign
 op_amp
 id|sstfbcon_updatevar
 suffix:semicolon
-id|fb_info.info.blank
-op_assign
-op_amp
-id|sstfbcon_blank
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8462,30 +8443,6 @@ suffix:semicolon
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-)brace
-DECL|function|sstfbcon_blank
-r_static
-r_void
-id|sstfbcon_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-id|f_dprintk
-c_func
-(paren
-l_string|&quot;sstfbcon_blank(level %d)&bslash;n&quot;
-comma
-id|blank
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* print some squares on the fb (presuming 16bpp)  */

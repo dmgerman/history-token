@@ -9436,6 +9436,10 @@ id|fb_set_cmap
 suffix:colon
 id|sisfb_set_cmap
 comma
+id|fb_blank
+suffix:colon
+id|sisfb_blank
+comma
 id|fb_ioctl
 suffix:colon
 id|sisfb_ioctl
@@ -9643,8 +9647,9 @@ suffix:semicolon
 )brace
 DECL|function|sisfb_blank
 r_static
-r_void
+r_int
 id|sisfb_blank
+c_func
 (paren
 r_int
 id|blank
@@ -9701,6 +9706,9 @@ id|CRTC_DATA
 comma
 id|reg
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sisfb_setup
@@ -11936,11 +11944,6 @@ id|fb_info.updatevar
 op_assign
 op_amp
 id|sisfb_update_var
-suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|sisfb_blank
 suffix:semicolon
 id|fb_info.flags
 op_assign

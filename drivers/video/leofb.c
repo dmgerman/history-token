@@ -3689,7 +3689,7 @@ suffix:semicolon
 )brace
 DECL|function|leo_blank
 r_static
-r_void
+r_int
 id|leo_blank
 (paren
 r_struct
@@ -3755,10 +3755,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|leo_unblank
 r_static
-r_void
+r_int
 id|leo_unblank
 (paren
 r_struct
@@ -3834,6 +3837,9 @@ id|fb-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static

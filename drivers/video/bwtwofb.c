@@ -185,7 +185,7 @@ l_int|0
 suffix:semicolon
 DECL|function|bw2_blank
 r_static
-r_void
+r_int
 id|bw2_blank
 (paren
 r_struct
@@ -242,10 +242,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|bw2_unblank
 r_static
-r_void
+r_int
 id|bw2_unblank
 (paren
 r_struct
@@ -300,6 +303,9 @@ id|fb-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|bw2_margins

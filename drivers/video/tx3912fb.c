@@ -221,20 +221,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-r_static
-r_void
-id|tx3912fbcon_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Macros&n; */
 DECL|macro|get_line_length
 mdefine_line|#define get_line_length(xres_virtual, bpp) &bslash;&n;&t;&t;(u_long) (((int) xres_virtual * (int) bpp + 7) &gt;&gt; 3)
@@ -1530,11 +1516,6 @@ op_assign
 op_amp
 id|tx3912fbcon_updatevar
 suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|tx3912fbcon_blank
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -1675,30 +1656,6 @@ id|info
 multiline_comment|/* Nothing */
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Blank the display&n; */
-DECL|function|tx3912fbcon_blank
-r_static
-r_void
-id|tx3912fbcon_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-multiline_comment|/* FIXME */
-id|printk
-c_func
-(paren
-l_string|&quot;tx3912fbcon_blank&bslash;n&quot;
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read a single color register&n; */

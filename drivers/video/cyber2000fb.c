@@ -4752,7 +4752,7 @@ suffix:semicolon
 multiline_comment|/*&n; *    (Un)Blank the display.&n; */
 DECL|function|cyber2000fb_blank
 r_static
-r_void
+r_int
 id|cyber2000fb_blank
 c_func
 (paren
@@ -5007,6 +5007,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|cyber2000fb_ops
 r_static
@@ -5030,6 +5033,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|cyber2000fb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|cyber2000fb_blank
 comma
 id|fb_get_fix
 suffix:colon
@@ -5872,10 +5879,6 @@ suffix:semicolon
 id|cfb-&gt;fb.updatevar
 op_assign
 id|cyber2000fb_updatevar
-suffix:semicolon
-id|cfb-&gt;fb.blank
-op_assign
-id|cyber2000fb_blank
 suffix:semicolon
 id|cfb-&gt;fb.flags
 op_assign

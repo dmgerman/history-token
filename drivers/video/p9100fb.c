@@ -261,7 +261,7 @@ suffix:semicolon
 )brace
 DECL|function|p9100_blank
 r_static
-r_void
+r_int
 id|p9100_blank
 (paren
 r_struct
@@ -316,10 +316,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|p9100_unblank
 r_static
-r_void
+r_int
 id|p9100_unblank
 (paren
 r_struct
@@ -372,6 +375,9 @@ id|fb-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|p9100_margins

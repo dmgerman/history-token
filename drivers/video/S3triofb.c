@@ -239,6 +239,20 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
+r_void
+id|s3triofb_blank
+c_func
+(paren
+r_int
+id|blank
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
 multiline_comment|/*&n;     *  Interface to the low level console driver&n;     */
 r_int
 id|s3triofb_init
@@ -268,20 +282,6 @@ c_func
 (paren
 r_int
 id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_static
-r_void
-id|s3triofbcon_blank
-c_func
-(paren
-r_int
-id|blank
 comma
 r_struct
 id|fb_info
@@ -500,6 +500,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|s3trio_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|s3triofb_blank
 comma
 )brace
 suffix:semicolon
@@ -2960,11 +2964,6 @@ op_assign
 op_amp
 id|s3triofbcon_updatevar
 suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|s3triofbcon_blank
-suffix:semicolon
 macro_line|#if 0
 id|fb_info.setcmap
 op_assign
@@ -3166,10 +3165,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Blank the display.&n;     */
-DECL|function|s3triofbcon_blank
+DECL|function|s3triofb_blank
 r_static
-r_void
-id|s3triofbcon_blank
+r_int
+id|s3triofb_blank
 c_func
 (paren
 r_int
@@ -3233,6 +3232,9 @@ l_int|0x1008000
 op_plus
 l_int|0x03c5
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Set the colormap&n;     */

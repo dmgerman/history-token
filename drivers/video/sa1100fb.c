@@ -4624,6 +4624,10 @@ id|fb_set_cmap
 suffix:colon
 id|sa1100fb_set_cmap
 comma
+id|fb_blank
+suffix:colon
+id|sa1100fb_blank
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  sa1100fb_switch():       &n; *&t;Change to the specified console.  Palette and video mode&n; *      are changed to the console&squot;s stored parameters.&n; *&n; *&t;Uh oh, this can be called from a tasklet (IRQ)&n; */
@@ -4802,7 +4806,7 @@ multiline_comment|/*&n; * Formal definition of the VESA spec:&n; *  On&n; *  &t;
 multiline_comment|/*&n; * sa1100fb_blank():&n; *&t;Blank the display by setting all palette values to zero.  Note, the &n; * &t;12 and 16 bpp modes don&squot;t really use the palette, so this will not&n; *      blank the display in all modes.  &n; */
 DECL|function|sa1100fb_blank
 r_static
-r_void
+r_int
 id|sa1100fb_blank
 c_func
 (paren
@@ -4964,6 +4968,9 @@ id|C_ENABLE
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|sa1100fb_updatevar
 r_static
@@ -7185,10 +7192,6 @@ suffix:semicolon
 id|fbi-&gt;fb.updatevar
 op_assign
 id|sa1100fb_updatevar
-suffix:semicolon
-id|fbi-&gt;fb.blank
-op_assign
-id|sa1100fb_blank
 suffix:semicolon
 id|fbi-&gt;fb.flags
 op_assign

@@ -4643,6 +4643,10 @@ id|fb_pan_display
 suffix:colon
 id|acornfb_pan_display
 comma
+id|fb_blank
+suffix:colon
+id|acornfb_blank
+comma
 id|fb_mmap
 suffix:colon
 id|acornfb_mmap
@@ -4777,7 +4781,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|acornfb_blank
 id|acornfb_blank
 c_func
@@ -4970,6 +4974,9 @@ id|p
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Everything after here is initialisation!!!&n; */
 DECL|variable|__initdata
@@ -5461,10 +5468,6 @@ suffix:semicolon
 id|fb_info.updatevar
 op_assign
 id|acornfb_updatevar
-suffix:semicolon
-id|fb_info.blank
-op_assign
-id|acornfb_blank
 suffix:semicolon
 id|fb_info.flags
 op_assign

@@ -1319,6 +1319,10 @@ id|fb_pan_display
 suffix:colon
 id|fbgen_pan_display
 comma
+id|fb_blank
+suffix:colon
+id|fbgen_blank
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*--- Hardware Specific Routines -------------------------------------------*/
@@ -11912,11 +11916,6 @@ id|fb_info-&gt;gen.info.updatevar
 op_assign
 op_amp
 id|fbgen_update_var
-suffix:semicolon
-id|fb_info-&gt;gen.info.blank
-op_assign
-op_amp
-id|fbgen_blank
 suffix:semicolon
 id|fb_info-&gt;gen.info.flags
 op_assign

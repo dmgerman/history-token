@@ -414,6 +414,20 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
+r_int
+id|fm2fb_blank
+c_func
+(paren
+r_int
+id|blank
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
 multiline_comment|/*&n;     *  Interface to the low level console driver&n;     */
 r_int
 id|fm2fb_init
@@ -443,20 +457,6 @@ c_func
 (paren
 r_int
 id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_static
-r_void
-id|fm2fbcon_blank
-c_func
-(paren
-r_int
-id|blank
 comma
 r_struct
 id|fb_info
@@ -565,6 +565,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|fm2fb_set_cmap
+comma
+id|fb_blank
+suffix:colon
+id|fm2fb_blank
 comma
 )brace
 suffix:semicolon
@@ -1355,7 +1359,7 @@ l_int|0x000000
 suffix:semicolon
 multiline_comment|/* black */
 )brace
-id|fm2fbcon_blank
+id|fm2fb_blank
 c_func
 (paren
 l_int|0
@@ -1564,11 +1568,6 @@ id|fb_info.updatevar
 op_assign
 op_amp
 id|fm2fbcon_updatevar
-suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|fm2fbcon_blank
 suffix:semicolon
 id|fb_info.flags
 op_assign
@@ -1798,10 +1797,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Blank the display.&n;     */
-DECL|function|fm2fbcon_blank
+DECL|function|fm2fb_blank
 r_static
-r_void
-id|fm2fbcon_blank
+r_int
+id|fm2fb_blank
 c_func
 (paren
 r_int
@@ -1837,6 +1836,9 @@ l_int|0
 )braket
 op_assign
 id|t
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Read a single color register and split it into&n;     *  colors/transparent. Return != 0 for invalid regno.&n;     */

@@ -813,11 +813,6 @@ op_assign
 op_amp
 id|xxxfb_update_var
 suffix:semicolon
-id|fb_info.gen.info.blank
-op_assign
-op_amp
-id|xxxfb_blank
-suffix:semicolon
 id|fb_info.gen.info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -1028,6 +1023,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|fbgen_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|fbgen_blank
 comma
 id|fb_ioctl
 suffix:colon

@@ -1474,10 +1474,6 @@ op_assign
 op_amp
 id|maxinefb_fb_update_var
 suffix:semicolon
-id|fb_info.blank
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT

@@ -8008,9 +8008,14 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|info-&gt;fbops-&gt;fb_blank
+)paren
 (paren
 op_star
-id|info-&gt;blank
+id|info-&gt;fbops-&gt;fb_blank
 )paren
 (paren
 id|blank

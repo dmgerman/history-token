@@ -905,7 +905,7 @@ id|fb
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|tdfxfb_blank
 c_func
 (paren
@@ -1391,6 +1391,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|tdfxfb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|tdfxfb_blank
 comma
 )brace
 suffix:semicolon
@@ -10105,11 +10109,6 @@ op_assign
 op_amp
 id|tdfxfb_updatevar
 suffix:semicolon
-id|fb_info.fb_info.blank
-op_assign
-op_amp
-id|tdfxfb_blank
-suffix:semicolon
 id|fb_info.fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -11014,7 +11013,7 @@ suffix:semicolon
 multiline_comment|/* 0 unblank, 1 blank, 2 no vsync, 3 no hsync, 4 off */
 DECL|function|tdfxfb_blank
 r_static
-r_void
+r_int
 id|tdfxfb_blank
 c_func
 (paren
@@ -11195,6 +11194,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|tdfxfb_updatevar

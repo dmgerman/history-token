@@ -13203,11 +13203,6 @@ op_assign
 op_amp
 id|fbgen_update_var
 suffix:semicolon
-id|fb_info.gen.info.blank
-op_assign
-op_amp
-id|fbgen_blank
-suffix:semicolon
 id|fbgen_get_var
 c_func
 (paren

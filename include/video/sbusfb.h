@@ -601,7 +601,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|blank
-r_void
+r_int
 (paren
 op_star
 id|blank
@@ -613,7 +613,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|unblank
-r_void
+r_int
 (paren
 op_star
 id|unblank

@@ -2363,24 +2363,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* 0 unblank, 1 blank, 2 no vsync, 3 no hsync, 4 off */
-DECL|function|igafb_blank
-r_static
-r_void
-id|igafb_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-multiline_comment|/* Not supported */
-)brace
 DECL|function|iga_init
 r_static
 r_int
@@ -2580,11 +2562,6 @@ id|info-&gt;fb_info.updatevar
 op_assign
 op_amp
 id|igafb_update_var
-suffix:semicolon
-id|info-&gt;fb_info.blank
-op_assign
-op_amp
-id|igafb_blank
 suffix:semicolon
 id|info-&gt;fb_info.flags
 op_assign

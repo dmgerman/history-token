@@ -1319,23 +1319,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* tell fb to update the vars */
-DECL|member|blank
-r_void
-(paren
-op_star
-id|blank
-)paren
-(paren
-r_int
-comma
-r_struct
-id|fb_info
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* tell fb to (un)blank the screen */
-multiline_comment|/* arg = 0: unblank */
-multiline_comment|/* arg &gt; 0: VESA level (arg-1) */
 DECL|member|pseudo_palette
 r_void
 op_star
@@ -1981,7 +1964,7 @@ id|info
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|fbgen_blank
 c_func
 (paren

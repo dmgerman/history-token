@@ -3570,8 +3570,9 @@ id|info
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|sisfb_blank
+c_func
 (paren
 r_int
 id|blank

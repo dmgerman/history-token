@@ -12052,6 +12052,10 @@ id|fb_pan_display
 suffix:colon
 id|atafb_pan_display
 comma
+id|fb_blank
+suffix:colon
+id|atafb_blank
+comma
 id|fb_ioctl
 suffix:colon
 id|atafb_ioctl
@@ -12347,7 +12351,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* (un)blank/poweroff&n; * 0 = unblank&n; * 1 = blank&n; * 2 = suspend vsync&n; * 3 = suspend hsync&n; * 4 = off&n; */
 r_static
-r_void
+r_int
 DECL|function|atafb_blank
 id|atafb_blank
 c_func
@@ -12387,6 +12391,7 @@ id|blank
 )paren
 )paren
 r_return
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -12456,6 +12461,9 @@ id|info-&gt;currcon
 comma
 id|info
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|atafb_init
@@ -12886,11 +12894,6 @@ id|fb_info.updatevar
 op_assign
 op_amp
 id|fb_update_var
-suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|atafb_blank
 suffix:semicolon
 id|fb_info.flags
 op_assign

@@ -1248,6 +1248,20 @@ id|fb
 suffix:semicolon
 r_static
 r_int
+id|aty128fb_blank
+c_func
+(paren
+r_int
+id|blank
+comma
+r_struct
+id|fb_info
+op_star
+id|fb
+)paren
+suffix:semicolon
+r_static
+r_int
 id|aty128fb_rasterimg
 c_func
 (paren
@@ -1275,20 +1289,6 @@ c_func
 (paren
 r_int
 id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|fb
-)paren
-suffix:semicolon
-r_static
-r_void
-id|aty128fbcon_blank
-c_func
-(paren
-r_int
-id|blank
 comma
 r_struct
 id|fb_info
@@ -7658,11 +7658,6 @@ id|info-&gt;fb_info.updatevar
 op_assign
 l_int|NULL
 suffix:semicolon
-id|info-&gt;fb_info.blank
-op_assign
-op_amp
-id|aty128fbcon_blank
-suffix:semicolon
 id|info-&gt;fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -9542,9 +9537,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Blank the display.&n;     */
 r_static
-r_void
-DECL|function|aty128fbcon_blank
-id|aty128fbcon_blank
+r_int
+DECL|function|aty128fb_blank
+id|aty128fb_blank
 c_func
 (paren
 r_int
@@ -9655,6 +9650,9 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Read a single color register and split it into&n;     *  colors/transparent. Return != 0 for invalid regno.&n;     */
 r_static

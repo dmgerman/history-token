@@ -3115,6 +3115,52 @@ suffix:semicolon
 DECL|macro|m2info
 macro_line|#undef m2info
 )brace
+DECL|function|matroxfb_dh_blank
+r_static
+r_int
+id|matroxfb_dh_blank
+c_func
+(paren
+r_int
+id|blank
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+(brace
+DECL|macro|m2info
+mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+r_switch
+c_cond
+(paren
+id|blank
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+r_case
+l_int|2
+suffix:colon
+r_case
+l_int|3
+suffix:colon
+r_case
+l_int|4
+suffix:colon
+r_default
+suffix:colon
+suffix:semicolon
+)brace
+multiline_comment|/* do something... */
+r_return
+l_int|0
+suffix:semicolon
+DECL|macro|m2info
+macro_line|#undef m2info
+)brace
 DECL|variable|matroxfb_dh_ops
 r_static
 r_struct
@@ -3157,6 +3203,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|matroxfb_dh_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|matroxfb_dh_blank
 comma
 id|fb_ioctl
 suffix:colon
@@ -3305,49 +3355,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-DECL|macro|m2info
-macro_line|#undef m2info
-)brace
-DECL|function|matroxfb_dh_blank
-r_static
-r_void
-id|matroxfb_dh_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
-r_switch
-c_cond
-(paren
-id|blank
-)paren
-(brace
-r_case
-l_int|1
-suffix:colon
-r_case
-l_int|2
-suffix:colon
-r_case
-l_int|3
-suffix:colon
-r_case
-l_int|4
-suffix:colon
-r_default
-suffix:colon
-suffix:semicolon
-)brace
-multiline_comment|/* do something... */
 DECL|macro|m2info
 macro_line|#undef m2info
 )brace
@@ -3561,11 +3568,6 @@ id|m2info-&gt;fbcon.updatevar
 op_assign
 op_amp
 id|matroxfb_dh_updatevar
-suffix:semicolon
-id|m2info-&gt;fbcon.blank
-op_assign
-op_amp
-id|matroxfb_dh_blank
 suffix:semicolon
 id|m2info-&gt;fbcon.flags
 op_assign

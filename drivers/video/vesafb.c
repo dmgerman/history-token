@@ -2203,24 +2203,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* 0 unblank, 1 blank, 2 no vsync, 3 no hsync, 4 off */
-DECL|function|vesafb_blank
-r_static
-r_void
-id|vesafb_blank
-c_func
-(paren
-r_int
-id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-multiline_comment|/* Not supported */
-)brace
 DECL|function|vesafb_init
 r_int
 id|__init
@@ -2969,11 +2951,6 @@ id|fb_info.updatevar
 op_assign
 op_amp
 id|vesafb_update_var
-suffix:semicolon
-id|fb_info.blank
-op_assign
-op_amp
-id|vesafb_blank
 suffix:semicolon
 id|fb_info.flags
 op_assign

@@ -1020,7 +1020,7 @@ suffix:semicolon
 )brace
 DECL|function|tcx_blank
 r_static
-r_void
+r_int
 id|tcx_blank
 (paren
 r_struct
@@ -1086,10 +1086,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|tcx_unblank
 r_static
-r_void
+r_int
 id|tcx_unblank
 (paren
 r_struct
@@ -1154,6 +1157,9 @@ id|fb-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|tcx_reset
