@@ -71,6 +71,16 @@ id|pvec
 )paren
 suffix:semicolon
 r_void
+id|__pagevec_lru_add_active
+c_func
+(paren
+r_struct
+id|pagevec
+op_star
+id|pvec
+)paren
+suffix:semicolon
+r_void
 id|lru_add_drain
 c_func
 (paren
