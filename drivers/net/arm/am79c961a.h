@@ -84,6 +84,28 @@ DECL|macro|CSR3_BABLM
 mdefine_line|#define CSR3_BABLM&t;0x4000
 DECL|macro|CSR3_MASKALL
 mdefine_line|#define CSR3_MASKALL&t;0x5F00
+DECL|macro|CSR4
+mdefine_line|#define CSR4&t;&t;4
+DECL|macro|CSR4_JABM
+mdefine_line|#define CSR4_JABM&t;0x0001
+DECL|macro|CSR4_JAB
+mdefine_line|#define CSR4_JAB&t;0x0002
+DECL|macro|CSR4_TXSTRTM
+mdefine_line|#define CSR4_TXSTRTM&t;0x0004
+DECL|macro|CSR4_TXSTRT
+mdefine_line|#define CSR4_TXSTRT&t;0x0008
+DECL|macro|CSR4_RCVCCOM
+mdefine_line|#define CSR4_RCVCCOM&t;0x0010
+DECL|macro|CSR4_RCVCCO
+mdefine_line|#define CSR4_RCVCCO&t;0x0020
+DECL|macro|CSR4_MFCOM
+mdefine_line|#define CSR4_MFCOM&t;0x0100
+DECL|macro|CSR4_MFCO
+mdefine_line|#define CSR4_MFCO&t;0x0200
+DECL|macro|CSR4_ASTRP_RCV
+mdefine_line|#define CSR4_ASTRP_RCV&t;0x0400
+DECL|macro|CSR4_APAD_XMIT
+mdefine_line|#define CSR4_APAD_XMIT&t;0x0800
 DECL|macro|CTRL1
 mdefine_line|#define CTRL1&t;&t;5
 DECL|macro|CTRL1_SPND
@@ -142,6 +164,8 @@ DECL|macro|SIZERXR
 mdefine_line|#define SIZERXR&t;&t;76
 DECL|macro|SIZETXR
 mdefine_line|#define SIZETXR&t;&t;78
+DECL|macro|CSR_MFC
+mdefine_line|#define CSR_MFC&t;&t;112
 DECL|macro|RMD_ENP
 mdefine_line|#define RMD_ENP&t;&t;0x0100
 DECL|macro|RMD_STP
@@ -174,6 +198,10 @@ DECL|macro|TST_UFLO
 mdefine_line|#define TST_UFLO&t;0x4000
 DECL|macro|TST_BUFF
 mdefine_line|#define TST_BUFF&t;0x8000
+DECL|macro|ISALED0
+mdefine_line|#define ISALED0&t;&t;0x0004
+DECL|macro|ISALED0_LNKST
+mdefine_line|#define ISALED0_LNKST&t;0x8000
 DECL|struct|dev_priv
 r_struct
 id|dev_priv
@@ -232,6 +260,11 @@ suffix:semicolon
 DECL|member|chip_lock
 id|spinlock_t
 id|chip_lock
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
 suffix:semicolon
 )brace
 suffix:semicolon
