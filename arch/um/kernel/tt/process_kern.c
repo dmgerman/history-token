@@ -399,6 +399,15 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_void
+id|schedule_tail
+c_func
+(paren
+id|task_t
+op_star
+id|prev
+)paren
+suffix:semicolon
 DECL|function|new_thread_handler
 r_static
 r_void
@@ -473,7 +482,7 @@ macro_line|#ifdef CONFIG_SMP
 id|schedule_tail
 c_func
 (paren
-l_int|NULL
+id|current-&gt;thread.prev_sched
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -646,7 +655,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -740,7 +749,7 @@ id|sig
 op_assign
 id|sigusr1
 suffix:semicolon
-id|cli
+id|local_irq_enable
 c_func
 (paren
 )paren
