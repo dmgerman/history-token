@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 148 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 149 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACUTILS_H
 DECL|macro|_ACUTILS_H
@@ -879,6 +879,26 @@ mdefine_line|#define METHOD_NAME__BBN        &quot;_BBN&quot;
 DECL|macro|METHOD_NAME__PRT
 mdefine_line|#define METHOD_NAME__PRT        &quot;_PRT&quot;
 id|acpi_status
+id|acpi_ut_evaluate_object
+(paren
+id|acpi_namespace_node
+op_star
+id|prefix_node
+comma
+id|NATIVE_CHAR
+op_star
+id|path
+comma
+id|u32
+id|expected_return_btypes
+comma
+id|acpi_operand_object
+op_star
+op_star
+id|return_desc
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_ut_evaluate_numeric_object
 (paren
 id|NATIVE_CHAR
@@ -1375,7 +1395,11 @@ macro_line|#ifdef ACPI_DEBUG_OUTPUT
 r_void
 id|acpi_ut_display_init_pathname
 (paren
-id|acpi_handle
+id|u8
+id|type
+comma
+id|acpi_namespace_node
+op_star
 id|obj_handle
 comma
 r_char

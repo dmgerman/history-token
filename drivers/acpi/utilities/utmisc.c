@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *              $Revision: 87 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *              $Revision: 90 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -388,12 +388,16 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_display_init_pathname&n; *&n; * PARAMETERS:  Obj_handle          - Handle whose pathname will be displayed&n; *              Path                - Additional path string to be appended&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: Display full pathnbame of an object, DEBUG ONLY&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_display_init_pathname&n; *&n; * PARAMETERS:  Obj_handle          - Handle whose pathname will be displayed&n; *              Path                - Additional path string to be appended.&n; *                                      (NULL if no extra path)&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: Display full pathname of an object, DEBUG ONLY&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_display_init_pathname
 id|acpi_ut_display_init_pathname
 (paren
-id|acpi_handle
+id|u8
+id|type
+comma
+id|acpi_namespace_node
+op_star
 id|obj_handle
 comma
 r_char
@@ -407,11 +411,26 @@ suffix:semicolon
 id|acpi_buffer
 id|buffer
 suffix:semicolon
-id|ACPI_FUNCTION_NAME
+id|ACPI_FUNCTION_ENTRY
 (paren
-l_string|&quot;Ut_display_init_pathname&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Only print the path if the appropriate debug level is enabled */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|acpi_dbg_level
+op_amp
+id|ACPI_LV_INIT_NAMES
+)paren
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Get the full pathname to the node */
 id|buffer.length
 op_assign
 id|ACPI_ALLOCATE_LOCAL_BUFFER
@@ -429,60 +448,84 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_SUCCESS
+id|ACPI_FAILURE
 (paren
 id|status
 )paren
 )paren
 (brace
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Print what we&squot;re doing */
+r_switch
+c_cond
+(paren
+id|type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_METHOD
+suffix:colon
+id|acpi_os_printf
+(paren
+l_string|&quot;Executing  &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|acpi_os_printf
+(paren
+l_string|&quot;Initializing &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Print the object type and pathname */
+id|acpi_os_printf
+(paren
+l_string|&quot;%-12s %s&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|type
+)paren
+comma
+(paren
+r_char
+op_star
+)paren
+id|buffer.pointer
+)paren
+suffix:semicolon
+multiline_comment|/* Extra path is used to append names like _STA, _INI, etc. */
 r_if
 c_cond
 (paren
 id|path
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|acpi_os_printf
 (paren
-(paren
-id|ACPI_DB_INIT
-comma
-l_string|&quot;%s.%s&bslash;n&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-id|buffer.pointer
+l_string|&quot;.%s&quot;
 comma
 id|path
 )paren
-)paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|ACPI_DEBUG_PRINT
+id|acpi_os_printf
 (paren
-(paren
-id|ACPI_DB_INIT
-comma
-l_string|&quot;%s&bslash;n&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-id|buffer.pointer
-)paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|ACPI_MEM_FREE
 (paren
 id|buffer.pointer
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_acpi_name&n; *&n; * PARAMETERS:  Character           - The character to be examined&n; *&n; * RETURN:      1 if Character may appear in a name, else 0&n; *&n; * DESCRIPTION: Check for a valid ACPI name.  Each character must be one of:&n; *              1) Upper case alpha&n; *              2) numeric&n; *              3) underscore&n; *&n; ******************************************************************************/
