@@ -1608,6 +1608,11 @@ id|KERN_WARNING
 l_string|&quot;xics:  no ISA Interrupt Controller&bslash;n&quot;
 )paren
 suffix:semicolon
+id|xics_irq_8259_cascade_real
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|xics_irq_8259_cascade
 op_assign
 op_minus
