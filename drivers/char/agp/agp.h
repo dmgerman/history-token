@@ -933,17 +933,17 @@ multiline_comment|/* Chipset independant registers (from AGP Spec) */
 DECL|macro|AGP_APBASE
 mdefine_line|#define AGP_APBASE&t;0x10
 DECL|macro|AGPSTAT
-mdefine_line|#define AGPSTAT&t;&t;&t;0x4
+mdefine_line|#define AGPSTAT&t;&t;0x4
 DECL|macro|AGPCMD
-mdefine_line|#define AGPCMD&t;&t;&t;0x8
+mdefine_line|#define AGPCMD&t;&t;0x8
 DECL|macro|AGPNISTAT
-mdefine_line|#define AGPNISTAT&t;&t;0xc
+mdefine_line|#define AGPNISTAT&t;0xc
 DECL|macro|AGPCTRL
 mdefine_line|#define AGPCTRL                 0x10
 DECL|macro|AGPNEPG
-mdefine_line|#define AGPNEPG&t;&t;&t;0x16
+mdefine_line|#define AGPNEPG&t;&t;0x16
 DECL|macro|AGPNICMD
-mdefine_line|#define AGPNICMD&t;&t;0x20
+mdefine_line|#define AGPNICMD&t;0x20
 DECL|macro|AGP_MAJOR_VERSION_SHIFT
 mdefine_line|#define AGP_MAJOR_VERSION_SHIFT&t;(20)
 DECL|macro|AGP_MINOR_VERSION_SHIFT
@@ -976,5 +976,5 @@ DECL|macro|AGPSTAT3_8X
 mdefine_line|#define AGPSTAT3_8X&t;&t;(1&lt;&lt;1)
 DECL|macro|AGPSTAT3_4X
 mdefine_line|#define AGPSTAT3_4X&t;&t;(1)
-macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
+macro_line|#endif&t;/* _AGP_BACKEND_PRIV_H */
 eof
