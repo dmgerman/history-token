@@ -8762,16 +8762,6 @@ c_func
 id|gd-&gt;part
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|gd-&gt;de_arr
-)paren
-id|kfree
-(paren
-id|gd-&gt;de_arr
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren

@@ -215,6 +215,8 @@ DECL|macro|GENHD_FL_REMOVABLE
 mdefine_line|#define GENHD_FL_REMOVABLE  1
 DECL|macro|GENHD_FL_DRIVERFS
 mdefine_line|#define GENHD_FL_DRIVERFS  2
+DECL|macro|GENHD_FL_DEVFS
+mdefine_line|#define GENHD_FL_DEVFS&t;4
 DECL|struct|gendisk
 r_struct
 id|gendisk
@@ -259,12 +261,10 @@ id|block_device_operations
 op_star
 id|fops
 suffix:semicolon
-DECL|member|de_arr
+DECL|member|de
 id|devfs_handle_t
-op_star
-id|de_arr
+id|de
 suffix:semicolon
-multiline_comment|/* one per physical disc */
 DECL|member|driverfs_dev
 r_struct
 id|device

@@ -9523,10 +9523,7 @@ id|g-&gt;minor_shift
 op_assign
 id|PARTN_BITS
 suffix:semicolon
-id|g-&gt;de_arr
-(braket
-l_int|0
-)braket
+id|g-&gt;de
 op_assign
 id|drive-&gt;de
 suffix:semicolon
@@ -9538,6 +9535,10 @@ c_cond
 id|GENHD_FL_REMOVABLE
 suffix:colon
 l_int|0
+suffix:semicolon
+id|g-&gt;flags
+op_or_assign
+id|GENHD_FL_DEVFS
 suffix:semicolon
 id|add_gendisk
 c_func

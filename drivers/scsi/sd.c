@@ -4803,9 +4803,6 @@ r_struct
 id|gendisk
 id|disk
 suffix:semicolon
-id|devfs_handle_t
-id|de
-suffix:semicolon
 r_char
 id|name
 (braket
@@ -4874,11 +4871,6 @@ id|gd
 op_assign
 op_amp
 id|p-&gt;disk
-suffix:semicolon
-id|gd-&gt;de_arr
-op_assign
-op_amp
-id|p-&gt;de
 suffix:semicolon
 id|SCSI_LOG_HLQUEUE
 c_func
@@ -5027,10 +5019,7 @@ suffix:semicolon
 id|sd_template.nr_dev
 op_increment
 suffix:semicolon
-id|gd-&gt;de_arr
-(braket
-l_int|0
-)braket
+id|gd-&gt;de
 op_assign
 id|sdp-&gt;de
 suffix:semicolon
@@ -5138,6 +5127,8 @@ suffix:semicolon
 id|gd-&gt;flags
 op_or_assign
 id|GENHD_FL_DRIVERFS
+op_or
+id|GENHD_FL_DEVFS
 suffix:semicolon
 id|sd_disks
 (braket

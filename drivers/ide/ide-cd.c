@@ -12710,16 +12710,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* probably bogus, but that&squot;s the old behaviour */
-id|g-&gt;de_arr
-(braket
-l_int|0
-)braket
+id|g-&gt;de
 op_assign
 l_int|NULL
 suffix:semicolon
 id|g-&gt;flags
 op_assign
-l_int|0
+id|GENHD_FL_DEVFS
 suffix:semicolon
 id|add_gendisk
 c_func

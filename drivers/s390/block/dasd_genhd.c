@@ -51,13 +51,6 @@ id|disks
 id|DASD_PER_MAJOR
 )braket
 suffix:semicolon
-DECL|member|de_arr
-id|devfs_handle_t
-id|de_arr
-(braket
-id|DASD_PER_MAJOR
-)braket
-suffix:semicolon
 DECL|member|names
 r_char
 id|names
@@ -354,11 +347,9 @@ op_assign
 op_amp
 id|dasd_device_operations
 suffix:semicolon
-id|disk-&gt;de_arr
+id|disk-&gt;flags
 op_assign
-id|mi-&gt;de_arr
-op_plus
-id|i
+id|GENHD_FL_DEVFS
 suffix:semicolon
 id|disk-&gt;part
 op_assign
