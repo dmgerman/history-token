@@ -87,7 +87,7 @@ comma
 l_string|&quot;Transmit Interrupt Delay&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64&n; */
+multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64/128&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -142,12 +142,14 @@ DECL|macro|MAX_TIDV
 mdefine_line|#define MAX_TIDV                  0xFFFF
 DECL|macro|MIN_TIDV
 mdefine_line|#define MIN_TIDV                       0
-DECL|macro|DEFAULT_RIDV
-mdefine_line|#define DEFAULT_RIDV                  64
-DECL|macro|MAX_RIDV
-mdefine_line|#define MAX_RIDV                  0xFFFF
-DECL|macro|MIN_RIDV
-mdefine_line|#define MIN_RIDV                       0
+DECL|macro|DEFAULT_RDTR
+mdefine_line|#define DEFAULT_RDTR                  64
+DECL|macro|DEFAULT_RADV
+mdefine_line|#define DEFAULT_RADV                 128
+DECL|macro|MAX_RXDELAY
+mdefine_line|#define MAX_RXDELAY               0xFFFF
+DECL|macro|MIN_RXDELAY
+mdefine_line|#define MIN_RXDELAY                    0
 DECL|macro|DEFAULT_MDIX
 mdefine_line|#define DEFAULT_MDIX                   0
 DECL|macro|MAX_MDIX
@@ -934,6 +936,28 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Receive Interrupt Delay */
+r_char
+op_star
+id|rdtr
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RDTR
+)paren
+suffix:semicolon
+r_char
+op_star
+id|radv
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RADV
+)paren
+suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -947,19 +971,6 @@ id|name
 suffix:colon
 l_string|&quot;Receive Interrupt Delay&quot;
 comma
-id|err
-suffix:colon
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_RIDV
-)paren
-comma
-id|def
-suffix:colon
-id|DEFAULT_RIDV
-comma
 id|arg
 suffix:colon
 (brace
@@ -968,14 +979,41 @@ suffix:colon
 (brace
 id|min
 suffix:colon
-id|MIN_RIDV
+id|MIN_RXDELAY
 comma
 id|max
 suffix:colon
-id|MAX_RIDV
+id|MAX_RXDELAY
 )brace
 )brace
 )brace
+suffix:semicolon
+id|e1000_mac_type
+id|mac_type
+op_assign
+id|adapter-&gt;shared.mac_type
+suffix:semicolon
+id|opt.def
+op_assign
+id|mac_type
+OL
+id|e1000_82540
+ques
+c_cond
+id|DEFAULT_RDTR
+suffix:colon
+id|DEFAULT_RADV
+suffix:semicolon
+id|opt.err
+op_assign
+id|mac_type
+OL
+id|e1000_82540
+ques
+c_cond
+id|rdtr
+suffix:colon
+id|radv
 suffix:semicolon
 id|adapter-&gt;rx_int_delay
 op_assign
@@ -2148,7 +2186,6 @@ multiline_comment|/* Speed, AutoNeg and MDI/MDI-X must all play nice */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|e1000_validate_mdi_setting
 c_func
 (paren
@@ -2157,6 +2194,8 @@ op_amp
 id|adapter-&gt;shared
 )paren
 )paren
+OL
+l_int|0
 )paren
 (brace
 id|printk

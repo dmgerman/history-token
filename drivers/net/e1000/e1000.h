@@ -37,8 +37,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 r_struct
 id|e1000_adapter
 suffix:semicolon
-macro_line|#include &quot;e1000_mac.h&quot;
-macro_line|#include &quot;e1000_phy.h&quot;
+macro_line|#include &quot;e1000_hw.h&quot;
 DECL|macro|BAR_0
 mdefine_line|#define BAR_0 0
 macro_line|#if DBG
@@ -281,15 +280,15 @@ r_struct
 id|net_device_stats
 id|net_stats
 suffix:semicolon
-multiline_comment|/* structs defined in e1000_mac.h or e1000_phy.h */
+multiline_comment|/* structs defined in e1000_hw.h */
 DECL|member|shared
 r_struct
-id|e1000_shared_adapter
+id|e1000_hw
 id|shared
 suffix:semicolon
 DECL|member|stats
 r_struct
-id|e1000_shared_stats
+id|e1000_hw_stats
 id|stats
 suffix:semicolon
 DECL|member|phy_info
