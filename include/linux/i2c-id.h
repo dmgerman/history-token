@@ -443,5 +443,8 @@ mdefine_line|#define I2C_HW_IPMB 0x00
 multiline_comment|/* --- MCP107 adapter */
 DECL|macro|I2C_HW_MPC107
 mdefine_line|#define I2C_HW_MPC107 0x00
+multiline_comment|/* --- Marvell mv64xxx i2c adapter */
+DECL|macro|I2C_HW_MV64XXX
+mdefine_line|#define I2C_HW_MV64XXX 0x00
 macro_line|#endif /* LINUX_I2C_ID_H */
 eof
