@@ -1273,6 +1273,8 @@ DECL|macro|PCI_DEVICE_ID_TI_1420
 mdefine_line|#define PCI_DEVICE_ID_TI_1420&t;&t;0xac51
 DECL|macro|PCI_DEVICE_ID_TI_1520
 mdefine_line|#define PCI_DEVICE_ID_TI_1520&t;&t;0xac55
+DECL|macro|PCI_DEVICE_ID_TI_1510
+mdefine_line|#define PCI_DEVICE_ID_TI_1510&t;&t;0xac56
 DECL|macro|PCI_VENDOR_ID_SONY
 mdefine_line|#define PCI_VENDOR_ID_SONY&t;&t;0x104d
 DECL|macro|PCI_DEVICE_ID_SONY_CXD3222
