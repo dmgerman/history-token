@@ -698,6 +698,31 @@ op_or
 id|US_FL_START_STOP
 )paren
 comma
+multiline_comment|/* Submitted by Lars Gemeinhardt &lt;linux-usb@gemeinhardt.info&gt;&n; * Needed for START_STOP flag */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0547
+comma
+l_int|0x2810
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Mello&quot;
+comma
+l_string|&quot;MP3 Player&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
