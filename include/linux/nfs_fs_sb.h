@@ -69,6 +69,12 @@ r_int
 id|wpages
 suffix:semicolon
 multiline_comment|/* write size (in pages) */
+DECL|member|wtmult
+r_int
+r_int
+id|wtmult
+suffix:semicolon
+multiline_comment|/* server disk block size */
 DECL|member|dtsize
 r_int
 r_int
