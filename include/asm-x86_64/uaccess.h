@@ -171,7 +171,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|__put_user_x
-mdefine_line|#define __put_user_x(size,ret,x,ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&quot;call __put_user_&quot; #size&t;&t;&t;&bslash;&n;&t;&t;:&quot;=a&quot; (ret)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;:&quot;0&quot; (ptr),&quot;d&quot; (x)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;:&quot;rbx&quot;)
+mdefine_line|#define __put_user_x(size,ret,x,ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&quot;call __put_user_&quot; #size&t;&t;&t;&bslash;&n;&t;&t;:&quot;=a&quot; (ret)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;:&quot;c&quot; (ptr),&quot;d&quot; (x)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;:&quot;r8&quot;)
 DECL|macro|put_user
 mdefine_line|#define put_user(x,ptr)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __put_user_check((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
 DECL|macro|__get_user
@@ -185,7 +185,7 @@ mdefine_line|#define __put_user_unaligned __put_user
 DECL|macro|__put_user_nocheck
 mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_size((x),(ptr),(size),__pu_err);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_check
-mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err = -EFAULT;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __user *__pu_addr = (ptr);&t;&bslash;&n;&t;if (likely(access_ok(VERIFY_WRITE,__pu_addr,size)))&t;&bslash;&n;&t;&t;__put_user_size((x),__pu_addr,(size),__pu_err);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __user *__pu_addr = (ptr);&t;&bslash;&n;&t;switch (size) { &t;&t;&t;&t;&bslash;&n;&t;case 1: __put_user_x(1,__pu_err,x,__pu_addr); break;&t;&bslash;&n;&t;case 2: __put_user_x(2,__pu_err,x,__pu_addr); break;&t;&bslash;&n;&t;case 4: __put_user_x(4,__pu_err,x,__pu_addr); break;&t;&bslash;&n;&t;case 8: __put_user_x(8,__pu_err,x,__pu_addr); break;&t;&bslash;&n;&t;default: __put_user_bad();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_size
 mdefine_line|#define __put_user_size(x,ptr,size,retval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;retval = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  case 1: __put_user_asm(x,ptr,retval,&quot;b&quot;,&quot;b&quot;,&quot;iq&quot;,-EFAULT); break;&bslash;&n;&t;  case 2: __put_user_asm(x,ptr,retval,&quot;w&quot;,&quot;w&quot;,&quot;ir&quot;,-EFAULT); break;&bslash;&n;&t;  case 4: __put_user_asm(x,ptr,retval,&quot;l&quot;,&quot;k&quot;,&quot;ir&quot;,-EFAULT); break;&bslash;&n;&t;  case 8: __put_user_asm(x,ptr,retval,&quot;q&quot;,&quot;&quot;,&quot;ir&quot;,-EFAULT); break;&bslash;&n;&t;  default: __put_user_bad();&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* FIXME: this hack is definitely wrong -AK */
