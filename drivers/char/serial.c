@@ -48,12 +48,6 @@ macro_line|#ifdef CONFIG_SERIAL_ACPI
 DECL|macro|ENABLE_SERIAL_ACPI
 mdefine_line|#define ENABLE_SERIAL_ACPI
 macro_line|#endif
-macro_line|#ifdef __ISAPNP__
-macro_line|#ifndef ENABLE_SERIAL_PNP
-DECL|macro|ENABLE_SERIAL_PNP
-mdefine_line|#define ENABLE_SERIAL_PNP
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/* Set of debugging defines */
 DECL|macro|SERIAL_DEBUG_INTR
 macro_line|#undef SERIAL_DEBUG_INTR
@@ -138,8 +132,12 @@ macro_line|#endif
 macro_line|#ifdef ENABLE_SERIAL_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#endif
-macro_line|#ifdef ENABLE_SERIAL_PNP
 macro_line|#include &lt;linux/isapnp.h&gt;
+macro_line|#ifdef __ISAPNP__
+macro_line|#ifndef ENABLE_SERIAL_PNP
+DECL|macro|ENABLE_SERIAL_PNP
+mdefine_line|#define ENABLE_SERIAL_PNP
+macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 macro_line|#include &lt;linux/sysrq.h&gt;
