@@ -177,12 +177,12 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(%s) - path(s) %02x are &quot;
+l_string|&quot;%s(%04x) - path(s) %02x are &quot;
 l_string|&quot;not operational &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 comma
 id|sch-&gt;schib.pmcw.pnom
 )paren
@@ -702,9 +702,9 @@ id|cdev_irb-&gt;scsw.sctl
 op_assign
 id|irb-&gt;scsw.sctl
 suffix:semicolon
-multiline_comment|/* Copy deferred condition code. */
+multiline_comment|/* Accumulate deferred condition code. */
 id|cdev_irb-&gt;scsw.cc
-op_assign
+op_or_assign
 id|irb-&gt;scsw.cc
 suffix:semicolon
 multiline_comment|/* Copy ccw format bit. */
