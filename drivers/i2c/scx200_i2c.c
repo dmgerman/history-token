@@ -209,15 +209,9 @@ op_amp
 id|scx200_i2c_data
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;NatSemi SCx200 I2C&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon
@@ -346,7 +340,7 @@ id|KERN_ERR
 id|NAME
 l_string|&quot;: adapter %s registration failed&bslash;n&quot;
 comma
-id|scx200_i2c_ops.dev.name
+id|scx200_i2c_ops.name
 )paren
 suffix:semicolon
 r_return
