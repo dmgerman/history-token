@@ -6773,7 +6773,8 @@ c_func
 (paren
 l_string|&quot;cyber2000fb&quot;
 comma
-l_int|NULL
+op_amp
+id|option
 )paren
 )paren
 r_return
