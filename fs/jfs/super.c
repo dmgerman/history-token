@@ -1342,6 +1342,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|jfs_remount
+r_static
 r_int
 id|jfs_remount
 c_func

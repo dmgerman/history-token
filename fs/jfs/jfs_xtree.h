@@ -311,6 +311,7 @@ r_int
 id|flag
 )paren
 suffix:semicolon
+macro_line|#ifdef _NOTYET
 r_extern
 r_int
 id|xtTailgate
@@ -337,6 +338,7 @@ r_int
 id|flag
 )paren
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|xtUpdate

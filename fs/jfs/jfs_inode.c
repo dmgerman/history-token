@@ -219,14 +219,6 @@ id|jfs_inode-&gt;cflag
 op_assign
 l_int|0
 suffix:semicolon
-id|set_cflag
-c_func
-(paren
-id|COMMIT_New
-comma
-id|inode
-)paren
-suffix:semicolon
 multiline_comment|/* Zero remaining fields */
 id|memset
 c_func

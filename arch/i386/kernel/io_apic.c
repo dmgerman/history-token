@@ -2968,6 +2968,7 @@ macro_line|#endif /* CONFIG_IRQBALANCE */
 macro_line|#ifndef CONFIG_SMP
 DECL|function|send_IPI_self
 r_void
+id|fastcall
 id|send_IPI_self
 c_func
 (paren
