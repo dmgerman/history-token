@@ -78,10 +78,6 @@ id|uhci-&gt;io_addr
 suffix:semicolon
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|1
 suffix:semicolon
 op_star
 id|buf
@@ -103,9 +99,8 @@ id|i
 op_increment
 )paren
 (brace
-op_star
-id|buf
-op_or_assign
+r_if
+c_cond
 (paren
 id|inw
 c_func
@@ -121,10 +116,9 @@ l_int|2
 op_amp
 id|RWC_BITS
 )paren
-op_ne
-l_int|0
-ques
-c_cond
+op_star
+id|buf
+op_or_assign
 (paren
 l_int|1
 op_lshift
@@ -134,20 +128,6 @@ op_plus
 l_int|1
 )paren
 )paren
-suffix:colon
-l_int|0
-suffix:semicolon
-id|len
-op_assign
-(paren
-id|i
-op_plus
-l_int|1
-)paren
-op_div
-l_int|8
-op_plus
-l_int|1
 suffix:semicolon
 )brace
 r_return
@@ -160,9 +140,9 @@ suffix:semicolon
 DECL|macro|OK
 mdefine_line|#define OK(x)&t;&t;&t;len = (x); break
 DECL|macro|CLR_RH_PORTSTAT
-mdefine_line|#define CLR_RH_PORTSTAT(x) &bslash;&n;&t;status = inw(io_addr + USBPORTSC1 + 2 * (wIndex-1)); &bslash;&n;&t;status &amp;= ~(RWC_BITS|WZ_BITS); &bslash;&n;&t;status &amp;= ~(x); &bslash;&n;&t;status |= RWC_BITS &amp; (x); &bslash;&n;&t;outw(status, io_addr + USBPORTSC1 + 2 * (wIndex-1))
+mdefine_line|#define CLR_RH_PORTSTAT(x) &bslash;&n;&t;status = inw(port_addr); &bslash;&n;&t;status &amp;= ~(RWC_BITS|WZ_BITS); &bslash;&n;&t;status &amp;= ~(x); &bslash;&n;&t;status |= RWC_BITS &amp; (x); &bslash;&n;&t;outw(status, port_addr)
 DECL|macro|SET_RH_PORTSTAT
-mdefine_line|#define SET_RH_PORTSTAT(x) &bslash;&n;&t;status = inw(io_addr + USBPORTSC1 + 2 * (wIndex-1)); &bslash;&n;&t;status |= (x); &bslash;&n;&t;status &amp;= ~(RWC_BITS|WZ_BITS); &bslash;&n;&t;outw(status, io_addr + USBPORTSC1 + 2 * (wIndex-1))
+mdefine_line|#define SET_RH_PORTSTAT(x) &bslash;&n;&t;status = inw(port_addr); &bslash;&n;&t;status |= (x); &bslash;&n;&t;status &amp;= ~(RWC_BITS|WZ_BITS); &bslash;&n;&t;outw(status, port_addr)
 multiline_comment|/* size of returned buffer is part of USB spec */
 DECL|function|uhci_hub_control
 r_static
@@ -216,11 +196,21 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
-id|io_addr
+id|port_addr
 op_assign
 id|uhci-&gt;io_addr
+op_plus
+id|USBPORTSC1
+op_plus
+l_int|2
+op_star
+(paren
+id|wIndex
+op_minus
+l_int|1
+)paren
 suffix:semicolon
-id|u16
+id|__u16
 id|wPortChange
 comma
 id|wPortStatus
@@ -258,25 +248,46 @@ multiline_comment|/* hub power */
 r_case
 id|GetPortStatus
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wIndex
+op_logical_or
+id|wIndex
+OG
+id|uhci-&gt;rh_numports
+)paren
+r_goto
+id|err
+suffix:semicolon
 id|status
 op_assign
 id|inw
 c_func
 (paren
-id|io_addr
-op_plus
-id|USBPORTSC1
-op_plus
-l_int|2
-op_star
-(paren
-id|wIndex
-op_minus
-l_int|1
-)paren
+id|port_addr
 )paren
 suffix:semicolon
-multiline_comment|/* C_SUSPEND and C_RESET are always false */
+multiline_comment|/* Intel controllers report the OverCurrent bit active on.&n;&t;&t; * VIA controllers report it active off, so we&squot;ll adjust the&n;&t;&t; * bit value.  (It&squot;s not standardized in the UHCI spec.)&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|hcd-&gt;self.controller
+)paren
+op_member_access_from_pointer
+id|vendor
+op_eq
+id|PCI_VENDOR_ID_VIA
+)paren
+id|status
+op_xor_assign
+id|USBPORTSC_OC
+suffix:semicolon
+multiline_comment|/* UHCI doesn&squot;t support C_SUSPEND and C_RESET (always false) */
 id|wPortChange
 op_assign
 l_int|0
@@ -478,28 +489,7 @@ suffix:semicolon
 r_case
 id|SetHubFeature
 suffix:colon
-r_switch
-c_cond
-(paren
-id|wValue
-)paren
-(brace
-r_case
-id|C_HUB_OVER_CURRENT
-suffix:colon
-r_case
-id|C_HUB_LOCAL_POWER
-suffix:colon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_goto
-id|err
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
+multiline_comment|/* We don&squot;t implement these */
 r_case
 id|ClearHubFeature
 suffix:colon
@@ -521,7 +511,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* hub power over current */
 r_default
 suffix:colon
 r_goto
@@ -631,7 +620,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* port power ** */
 r_default
 suffix:colon
 r_goto
@@ -754,7 +742,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* port power over current */
 r_case
 id|USB_PORT_FEAT_C_RESET
 suffix:colon
@@ -784,21 +771,12 @@ c_func
 r_int
 r_int
 comma
-id|wLength
-comma
-id|min_t
-c_func
-(paren
-r_int
-r_int
-comma
 r_sizeof
 (paren
 id|root_hub_hub_des
 )paren
 comma
 id|wLength
-)paren
 )paren
 suffix:semicolon
 id|memcpy
