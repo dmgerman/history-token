@@ -5,7 +5,7 @@ DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS (cpu_callout_map)
+mdefine_line|#define TARGET_CPUS (cpu_online_map)
 macro_line|#else
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS 0x01
