@@ -7928,17 +7928,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|discard_and_relse
-suffix:colon
-id|sock_put
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-r_goto
-id|discard_it
-suffix:semicolon
 id|do_time_wait
 suffix:colon
 r_if
