@@ -11,10 +11,7 @@ macro_line|#ifndef __EXTERN_INLINE
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#endif
 multiline_comment|/* ??? This does not belong here.  */
-multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 168-bit bitmap where the first 128 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 168&n; * bits is set.&n; */
-macro_line|#if MAX_RT_PRIO != 128 || MAX_PRIO &gt; 192
-macro_line|# error update this function.
-macro_line|#endif
+multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 140-bit bitmap where the first 100 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 140&n; * bits is cleared.&n; */
 r_static
 r_inline
 r_int
