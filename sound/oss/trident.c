@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt; 
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -33,18 +33,18 @@ DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.14.10h-2.5&quot;
 multiline_comment|/* magic numbers to protect our data structures */
 DECL|macro|TRIDENT_CARD_MAGIC
-mdefine_line|#define TRIDENT_CARD_MAGIC&t;0x5072696E /* &quot;Prin&quot; */
+mdefine_line|#define TRIDENT_CARD_MAGIC&t;0x5072696E&t;/* &quot;Prin&quot; */
 DECL|macro|TRIDENT_STATE_MAGIC
-mdefine_line|#define TRIDENT_STATE_MAGIC&t;0x63657373 /* &quot;cess&quot; */
+mdefine_line|#define TRIDENT_STATE_MAGIC&t;0x63657373&t;/* &quot;cess&quot; */
 DECL|macro|TRIDENT_DMA_MASK
-mdefine_line|#define TRIDENT_DMA_MASK&t;0x3fffffff /* DMA buffer mask for pci_alloc_consist */
+mdefine_line|#define TRIDENT_DMA_MASK&t;0x3fffffff&t;/* DMA buffer mask for pci_alloc_consist */
 DECL|macro|ALI_DMA_MASK
-mdefine_line|#define ALI_DMA_MASK&t;&t;0x7fffffff /* ALI Tridents have 31-bit DMA. Wow. */
+mdefine_line|#define ALI_DMA_MASK&t;&t;0x7fffffff&t;/* ALI Tridents have 31-bit DMA. Wow. */
 DECL|macro|NR_HW_CH
 mdefine_line|#define NR_HW_CH&t;&t;32
 multiline_comment|/* maximum number of AC97 codecs connected, AC97 2.0 defined 4, but 7018 and 4D-NX only&n;   have 2 SDATA_IN lines (currently) */
 DECL|macro|NR_AC97
-mdefine_line|#define NR_AC97&t;&t;2&t;
+mdefine_line|#define NR_AC97&t;&t;2
 multiline_comment|/* minor number of /dev/swmodem (temporary, experimental) */
 DECL|macro|SND_DEV_SWMODEM
 mdefine_line|#define SND_DEV_SWMODEM&t;7
@@ -57,7 +57,7 @@ id|ali_multi_channels_5_1
 )braket
 op_assign
 (brace
-multiline_comment|/*ALI_SURR_LEFT_CHANNEL, ALI_SURR_RIGHT_CHANNEL,*/
+multiline_comment|/*ALI_SURR_LEFT_CHANNEL, ALI_SURR_RIGHT_CHANNEL, */
 id|ALI_CENTER_CHANNEL
 comma
 id|ALI_LEF_CHANNEL
@@ -250,6 +250,7 @@ comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
+c_func
 (paren
 id|pci
 comma
@@ -356,11 +357,11 @@ r_int
 id|error
 suffix:semicolon
 multiline_comment|/* number of over/underruns */
+multiline_comment|/* put process on wait queue when no more space in buffer */
 DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
-multiline_comment|/* put process on wait queue when no more space in buffer */
 multiline_comment|/* redundant, but makes calculations easier */
 DECL|member|fragsize
 r_int
@@ -464,12 +465,14 @@ DECL|member|eso
 id|u32
 id|eso
 suffix:semicolon
-multiline_comment|/* End Sample Offset, wehre dma buffer ends (in the unit of samples) */
+multiline_comment|/* End Sample Offset, wehre dma buffer ends */
+multiline_comment|/* (in the unit of samples) */
 DECL|member|delta
 id|u32
 id|delta
 suffix:semicolon
-multiline_comment|/* delta value, sample rate / 48k for playback, 48k/sample rate for recording */
+multiline_comment|/* delta value, sample rate / 48k for playback, */
+multiline_comment|/* 48k/sample rate for recording */
 DECL|member|attribute
 id|u16
 id|attribute
@@ -614,7 +617,8 @@ DECL|member|dev_audio
 r_int
 id|dev_audio
 suffix:semicolon
-multiline_comment|/* structures for abstraction of hardware facilities, codecs, banks and channels*/
+multiline_comment|/* structures for abstraction of hardware facilities, codecs, */
+multiline_comment|/* banks and channels */
 DECL|member|ac97_codec
 r_struct
 id|ac97_codec
@@ -1272,9 +1276,9 @@ DECL|macro|lock_set_fmt
 mdefine_line|#define lock_set_fmt(state) do { &bslash;&n;        spin_lock_irqsave(&amp;state-&gt;card-&gt;lock, flags);&t;&t;&t;&bslash;&n;&t;if (state-&gt;fmt_flag) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;       spin_unlock_irqrestore(&amp;state-&gt;card-&gt;lock, flags);&t;&bslash;&n;               return -EFAULT;&t;&t;&t;&t;&t;        &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;state-&gt;fmt_flag = 1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;state-&gt;card-&gt;lock, flags);              &bslash;&n;} while (0)
 DECL|macro|unlock_set_fmt
 mdefine_line|#define unlock_set_fmt(state)  do {                             &bslash;&n;        spin_lock_irqsave(&amp;state-&gt;card-&gt;lock, flags);&t;&t;&bslash;&n;&t;state-&gt;fmt_flag = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;state-&gt;card-&gt;lock, flags);      &bslash;&n;} while (0)
-DECL|function|trident_enable_loop_interrupts
 r_static
 r_int
+DECL|function|trident_enable_loop_interrupts
 id|trident_enable_loop_interrupts
 c_func
 (paren
@@ -1388,9 +1392,9 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
-DECL|function|trident_disable_loop_interrupts
 r_static
 r_int
+DECL|function|trident_disable_loop_interrupts
 id|trident_disable_loop_interrupts
 c_func
 (paren
@@ -1454,9 +1458,9 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
-DECL|function|trident_enable_voice_irq
 r_static
 r_void
+DECL|function|trident_enable_voice_irq
 id|trident_enable_voice_irq
 c_func
 (paren
@@ -1570,11 +1574,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 )brace
-DECL|function|trident_disable_voice_irq
 r_static
 r_void
+DECL|function|trident_disable_voice_irq
 id|trident_disable_voice_irq
 c_func
 (paren
@@ -1704,11 +1708,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 )brace
-DECL|function|trident_start_voice
 r_static
 r_void
+DECL|function|trident_start_voice
 id|trident_start_voice
 c_func
 (paren
@@ -1756,7 +1760,7 @@ macro_line|#ifdef DEBUG
 id|u32
 id|reg
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 id|outl
 c_func
 (paren
@@ -1771,7 +1775,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG 
+macro_line|#ifdef DEBUG
 id|reg
 op_assign
 id|inl
@@ -1807,11 +1811,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 )brace
-DECL|function|trident_stop_voice
 r_static
 r_void
+DECL|function|trident_stop_voice
 id|trident_stop_voice
 c_func
 (paren
@@ -1859,7 +1863,7 @@ macro_line|#ifdef DEBUG
 id|u32
 id|reg
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 id|outl
 c_func
 (paren
@@ -1910,12 +1914,13 @@ comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 )brace
-DECL|function|trident_get_interrupt_mask
 r_static
 id|u32
+DECL|function|trident_get_interrupt_mask
 id|trident_get_interrupt_mask
+c_func
 (paren
 r_struct
 id|trident_card
@@ -1957,9 +1962,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|function|trident_check_channel_interrupt
 r_static
 r_int
+DECL|function|trident_check_channel_interrupt
 id|trident_check_channel_interrupt
 c_func
 (paren
@@ -1989,6 +1994,7 @@ id|u32
 id|reg
 op_assign
 id|trident_get_interrupt_mask
+c_func
 (paren
 id|card
 comma
@@ -2024,7 +2030,7 @@ comma
 id|reg
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 r_return
 (paren
 id|reg
@@ -2038,9 +2044,9 @@ suffix:colon
 id|FALSE
 suffix:semicolon
 )brace
-DECL|function|trident_ack_channel_interrupt
 r_static
 r_void
+DECL|function|trident_ack_channel_interrupt
 id|trident_ack_channel_interrupt
 c_func
 (paren
@@ -2143,13 +2149,13 @@ comma
 id|reg
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 )brace
-DECL|function|trident_alloc_pcm_channel
 r_static
 r_struct
 id|trident_channel
 op_star
+DECL|function|trident_alloc_pcm_channel
 id|trident_alloc_pcm_channel
 c_func
 (paren
@@ -2245,9 +2251,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|trident_free_pcm_channel
 r_static
 r_void
+DECL|function|trident_free_pcm_channel
 id|trident_free_pcm_channel
 c_func
 (paren
@@ -2292,6 +2298,7 @@ id|PCI_DEVICE_ID_TRIDENT_4DWAVE_NX
 id|b
 op_assign
 id|inb
+c_func
 (paren
 id|TRID_REG
 c_func
@@ -2358,11 +2365,11 @@ id|channel
 )paren
 suffix:semicolon
 )brace
-DECL|function|cyber_alloc_pcm_channel
 r_static
 r_struct
 id|trident_channel
 op_star
+DECL|function|cyber_alloc_pcm_channel
 id|cyber_alloc_pcm_channel
 c_func
 (paren
@@ -2458,9 +2465,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|cyber_free_pcm_channel
 r_static
 r_void
+DECL|function|cyber_free_pcm_channel
 id|cyber_free_pcm_channel
 c_func
 (paren
@@ -2500,10 +2507,10 @@ id|channel
 )paren
 suffix:semicolon
 )brace
-DECL|function|cyber_outidx
 r_static
 r_inline
 r_void
+DECL|function|cyber_outidx
 id|cyber_outidx
 c_func
 (paren
@@ -2536,10 +2543,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|cyber_inidx
 r_static
 r_inline
 r_int
+DECL|function|cyber_inidx
 id|cyber_inidx
 c_func
 (paren
@@ -2568,9 +2575,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|cyber_init_ritual
 r_static
 r_int
+DECL|function|cyber_init_ritual
 id|cyber_init_ritual
 c_func
 (paren
@@ -2594,7 +2601,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/*&n; &t; *&t;Keep interrupts off for the configure - we don&squot;t want to&n; &t; *&t;clash with another cyberpro config event&n; &t; */
+multiline_comment|/*&n;&t; *      Keep interrupts off for the configure - we don&squot;t want to&n;&t; *      clash with another cyberpro config event&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2770,9 +2777,9 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*  called with spin lock held */
-DECL|function|trident_load_channel_registers
 r_static
 r_int
+DECL|function|trident_load_channel_registers
 id|trident_load_channel_registers
 c_func
 (paren
@@ -2915,9 +2922,9 @@ id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/* called with spin lock held */
-DECL|function|trident_write_voice_regs
 r_static
 r_int
+DECL|function|trident_write_voice_regs
 id|trident_write_voice_regs
 c_func
 (paren
@@ -3155,9 +3162,9 @@ id|channel-&gt;num
 )paren
 suffix:semicolon
 )brace
-DECL|function|compute_rate_play
 r_static
 r_int
+DECL|function|compute_rate_play
 id|compute_rate_play
 c_func
 (paren
@@ -3227,9 +3234,9 @@ r_return
 id|delta
 suffix:semicolon
 )brace
-DECL|function|compute_rate_rec
 r_static
 r_int
+DECL|function|compute_rate_rec
 id|compute_rate_rec
 c_func
 (paren
@@ -3295,10 +3302,10 @@ id|delta
 suffix:semicolon
 )brace
 multiline_comment|/* set playback sample rate */
-DECL|function|trident_set_dac_rate
 r_static
 r_int
 r_int
+DECL|function|trident_set_dac_rate
 id|trident_set_dac_rate
 c_func
 (paren
@@ -3373,10 +3380,10 @@ id|rate
 suffix:semicolon
 )brace
 multiline_comment|/* set recording sample rate */
-DECL|function|trident_set_adc_rate
 r_static
 r_int
 r_int
+DECL|function|trident_set_adc_rate
 id|trident_set_adc_rate
 c_func
 (paren
@@ -3451,9 +3458,9 @@ id|rate
 suffix:semicolon
 )brace
 multiline_comment|/* prepare channel attributes for playback */
-DECL|function|trident_play_setup
 r_static
 r_void
+DECL|function|trident_play_setup
 id|trident_play_setup
 c_func
 (paren
@@ -3630,8 +3637,8 @@ suffix:semicolon
 id|TRDBG
 c_func
 (paren
-l_string|&quot;trident: trident_play_setup, LBA = 0x%08x, &quot;
-l_string|&quot;Delta = 0x%08x, ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
+l_string|&quot;trident: trident_play_setup, LBA = 0x%08x, Delta = 0x%08x, &quot;
+l_string|&quot;ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
 comma
 id|channel-&gt;lba
 comma
@@ -3650,9 +3657,9 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/* prepare channel attributes for recording */
-DECL|function|trident_rec_setup
 r_static
 r_void
+DECL|function|trident_rec_setup
 id|trident_rec_setup
 c_func
 (paren
@@ -3881,7 +3888,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;trident: ALi 5451 S/PDIF input setup error!&bslash;n&quot;
+l_string|&quot;trident: ALi 5451 &quot;
+l_string|&quot;S/PDIF input setup error!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rate
@@ -3929,7 +3937,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;trident: cleared ALi 5451 S/PDIF parity error flag.&bslash;n&quot;
+l_string|&quot;trident: cleared ALi &quot;
+l_string|&quot;5451 S/PDIF parity error flag.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4023,8 +4032,8 @@ suffix:semicolon
 id|TRDBG
 c_func
 (paren
-l_string|&quot;trident: trident_rec_setup, LBA = 0x%08x, &quot;
-l_string|&quot;Delat = 0x%08x, ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
+l_string|&quot;trident: trident_rec_setup, LBA = 0x%08x, Delat = 0x%08x, &quot;
+l_string|&quot;ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
 comma
 id|channel-&gt;lba
 comma
@@ -4043,10 +4052,10 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/* get current playback/recording dma buffer pointer (byte offset from LBA),&n;   called with spinlock held! */
-DECL|function|trident_get_dma_addr
 r_static
 r_inline
 r_int
+DECL|function|trident_get_dma_addr
 id|trident_get_dma_addr
 c_func
 (paren
@@ -4183,10 +4192,10 @@ id|dmabuf-&gt;dmasize
 suffix:semicolon
 )brace
 multiline_comment|/* Stop recording (lock held) */
-DECL|function|__stop_adc
 r_static
 r_inline
 r_void
+DECL|function|__stop_adc
 id|__stop_adc
 c_func
 (paren
@@ -4239,9 +4248,9 @@ id|chan_num
 )paren
 suffix:semicolon
 )brace
-DECL|function|stop_adc
 r_static
 r_void
+DECL|function|stop_adc
 id|stop_adc
 c_func
 (paren
@@ -4287,9 +4296,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|start_adc
 r_static
 r_void
+DECL|function|start_adc
 id|start_adc
 c_func
 (paren
@@ -4382,10 +4391,10 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* stop playback (lock held) */
-DECL|function|__stop_dac
 r_static
 r_inline
 r_void
+DECL|function|__stop_dac
 id|__stop_dac
 c_func
 (paren
@@ -4499,9 +4508,9 @@ id|chan_num
 )paren
 suffix:semicolon
 )brace
-DECL|function|stop_dac
 r_static
 r_void
+DECL|function|stop_dac
 id|stop_dac
 c_func
 (paren
@@ -4547,9 +4556,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|start_dac
 r_static
 r_void
+DECL|function|start_dac
 id|start_dac
 c_func
 (paren
@@ -4704,9 +4713,9 @@ mdefine_line|#define DMABUF_DEFAULTORDER (15-PAGE_SHIFT)
 DECL|macro|DMABUF_MINORDER
 mdefine_line|#define DMABUF_MINORDER 1
 multiline_comment|/* alloc a DMA buffer of with a buffer of this order */
-DECL|function|alloc_dmabuf
 r_static
 r_int
+DECL|function|alloc_dmabuf
 id|alloc_dmabuf
 c_func
 (paren
@@ -4791,7 +4800,8 @@ id|dmabuf-&gt;buforder
 op_assign
 id|order
 suffix:semicolon
-multiline_comment|/* now mark the pages as reserved; otherwise remap_page_range doesn&squot;t do what we want */
+multiline_comment|/* now mark the pages as reserved; otherwise */
+multiline_comment|/* remap_page_range doesn&squot;t do what we want */
 id|pend
 op_assign
 id|virt_to_page
@@ -4838,9 +4848,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* allocate the main DMA buffer, playback and recording buffer should be */
 multiline_comment|/* allocated separately */
-DECL|function|alloc_main_dmabuf
 r_static
 r_int
+DECL|function|alloc_main_dmabuf
 id|alloc_main_dmabuf
 c_func
 (paren
@@ -4911,9 +4921,9 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* deallocate a DMA buffer */
-DECL|function|dealloc_dmabuf
 r_static
 r_void
+DECL|function|dealloc_dmabuf
 id|dealloc_dmabuf
 c_func
 (paren
@@ -5009,9 +5019,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|prog_dmabuf
 r_static
 r_int
+DECL|function|prog_dmabuf
 id|prog_dmabuf
 c_func
 (paren
@@ -5476,8 +5486,9 @@ suffix:semicolon
 id|TRDBG
 c_func
 (paren
-l_string|&quot;trident: prog_dmabuf(%d), sample rate = %d, format = %d, numfrag = %d, &quot;
-l_string|&quot;fragsize = %d dmasize = %d&bslash;n&quot;
+l_string|&quot;trident: prog_dmabuf(%d), sample rate = %d, &quot;
+l_string|&quot;format = %d, numfrag = %d, fragsize = %d &quot;
+l_string|&quot;dmasize = %d&bslash;n&quot;
 comma
 id|dmabuf-&gt;channel-&gt;num
 comma
@@ -5504,9 +5515,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* we are doing quantum mechanics here, the buffer can only be empty, half or full filled i.e.&n;   |------------|------------|   or   |xxxxxxxxxxxx|------------|   or   |xxxxxxxxxxxx|xxxxxxxxxxxx|&n;   but we almost always get this&n;   |xxxxxx------|------------|   or   |xxxxxxxxxxxx|xxxxx-------|&n;   so we have to clear the tail space to &quot;silence&quot;&n;   |xxxxxx000000|------------|   or   |xxxxxxxxxxxx|xxxxxx000000|&n;*/
-DECL|function|trident_clear_tail
 r_static
 r_void
+DECL|function|trident_clear_tail
 id|trident_clear_tail
 c_func
 (paren
@@ -5670,9 +5681,9 @@ id|state
 )paren
 suffix:semicolon
 )brace
-DECL|function|drain_dac
 r_static
 r_int
+DECL|function|drain_dac
 id|drain_dac
 c_func
 (paren
@@ -5941,10 +5952,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* update buffer manangement pointers, especially, dmabuf-&gt;count and dmabuf-&gt;hwptr */
-DECL|function|trident_update_ptr
+multiline_comment|/* update buffer manangement pointers, especially, */
+multiline_comment|/* dmabuf-&gt;count and dmabuf-&gt;hwptr */
 r_static
 r_void
+DECL|function|trident_update_ptr
 id|trident_update_ptr
 c_func
 (paren
@@ -6062,7 +6074,10 @@ template_param
 id|dmabuf-&gt;dmasize
 )paren
 (brace
-multiline_comment|/* buffer underrun or buffer overrun, we have no way to recover&n;&t;&t;&t;&t;   it here, just stop the machine and let the process force hwptr&n;&t;&t;&t;&t;   and swptr to sync */
+multiline_comment|/* buffer underrun or buffer overrun, */
+multiline_comment|/* we have no way to recover it here, just */
+multiline_comment|/* stop the machine and let the process */
+multiline_comment|/* force hwptr and swptr to sync */
 id|__stop_adc
 c_func
 (paren
@@ -6245,6 +6260,7 @@ id|half_dmasize
 suffix:semicolon
 singleline_comment|//clear the invalid data
 id|memset
+c_func
 (paren
 id|dmabuf-&gt;rawbuf
 op_plus
@@ -6276,6 +6292,7 @@ op_div
 l_int|2
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6292,6 +6309,7 @@ id|clear_cnt
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6308,6 +6326,7 @@ id|clear_cnt
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6324,6 +6343,7 @@ id|clear_cnt
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6380,6 +6400,7 @@ op_minus
 id|swptr
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|dmabuf-&gt;rawbuf
 op_plus
@@ -6411,6 +6432,7 @@ op_div
 l_int|2
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6427,6 +6449,7 @@ id|clear_cnt
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6443,6 +6466,7 @@ id|clear_cnt
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6459,6 +6483,7 @@ id|clear_cnt
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|state-&gt;other_states
 (braket
@@ -6509,9 +6534,9 @@ op_complement
 id|ALI_ADDRESS_INT_UPDATE
 suffix:semicolon
 )brace
-DECL|function|trident_address_interrupt
 r_static
 r_void
+DECL|function|trident_address_interrupt
 id|trident_address_interrupt
 c_func
 (paren
@@ -6630,9 +6655,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|ali_hwvol_control
 r_static
 r_void
+DECL|function|ali_hwvol_control
 id|ali_hwvol_control
 c_func
 (paren
@@ -7095,9 +7120,9 @@ multiline_comment|/* Nothing needs doing */
 )brace
 )brace
 multiline_comment|/*&n; *&t;Re-enable reporting of vol change after 0.1 seconds&n; */
-DECL|function|ali_timeout
 r_static
 r_void
+DECL|function|ali_timeout
 id|ali_timeout
 c_func
 (paren
@@ -7123,7 +7148,7 @@ id|temp
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Enable GPIO IRQ (MISCINT bit 18h)*/
+multiline_comment|/* Enable GPIO IRQ (MISCINT bit 18h) */
 id|temp
 op_assign
 id|inw
@@ -7162,9 +7187,9 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Set up the timer to clear the vol change notification&n; */
-DECL|function|ali_set_timer
 r_static
 r_void
+DECL|function|ali_set_timer
 id|ali_set_timer
 c_func
 (paren
@@ -7212,9 +7237,9 @@ id|card-&gt;timer
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Process a GPIO event&n; */
-DECL|function|ali_queue_task
 r_static
 r_void
+DECL|function|ali_queue_task
 id|ali_queue_task
 c_func
 (paren
@@ -7230,7 +7255,7 @@ id|opt
 id|u16
 id|temp
 suffix:semicolon
-multiline_comment|/* Disable GPIO IRQ (MISCINT bit 18h)*/
+multiline_comment|/* Disable GPIO IRQ (MISCINT bit 18h) */
 id|temp
 op_assign
 id|inw
@@ -7290,9 +7315,9 @@ id|card
 )paren
 suffix:semicolon
 )brace
-DECL|function|cyber_address_interrupt
 r_static
 r_void
+DECL|function|cyber_address_interrupt
 id|cyber_address_interrupt
 c_func
 (paren
@@ -7454,9 +7479,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|trident_interrupt
 r_static
 id|irqreturn_t
+DECL|function|trident_interrupt
 id|trident_interrupt
 c_func
 (paren
@@ -7687,10 +7712,12 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/* in this loop, dmabuf.count signifies the amount of data that is waiting to be copied to&n;   the user&squot;s buffer.  it is filled by the dma machine and drained by this loop. */
-DECL|function|trident_read
+multiline_comment|/* in this loop, dmabuf.count signifies the amount of data that is waiting */
+multiline_comment|/* to be copied to the user&squot;s buffer.  it is filled by the dma machine and */
+multiline_comment|/* drained by this loop. */
 r_static
 id|ssize_t
+DECL|function|trident_read
 id|trident_read
 c_func
 (paren
@@ -7855,7 +7882,9 @@ r_int
 id|dmabuf-&gt;dmasize
 )paren
 (brace
-multiline_comment|/* buffer overrun, we are recovering from sleep_on_timeout,&n;&t;&t;&t;   resync hwptr and swptr, make process flush the buffer */
+multiline_comment|/* buffer overrun, we are recovering from */
+multiline_comment|/* sleep_on_timeout, resync hwptr and swptr, */
+multiline_comment|/* make process flush the buffer */
 id|dmabuf-&gt;count
 op_assign
 id|dmabuf-&gt;dmasize
@@ -7918,7 +7947,8 @@ r_int
 r_int
 id|tmo
 suffix:semicolon
-multiline_comment|/* buffer is empty, start the dma machine and wait for data to be&n;&t;&t;&t;   recorded */
+multiline_comment|/* buffer is empty, start the dma machine and */
+multiline_comment|/* wait for data to be recorded */
 id|start_adc
 c_func
 (paren
@@ -7955,7 +7985,9 @@ op_amp
 id|state-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* No matter how much space left in the buffer, we have to wait until&n;&t;&t;&t;   CSO == ESO/2 or CSO == ESO when address engine interrupts */
+multiline_comment|/* No matter how much space left in the buffer, */
+multiline_comment|/* we have to wait until CSO == ESO/2 or CSO == ESO */
+multiline_comment|/* when address engine interrupts */
 id|tmo
 op_assign
 (paren
@@ -8028,13 +8060,11 @@ c_cond
 op_logical_neg
 id|ret
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 r_goto
 id|out
 suffix:semicolon
@@ -8058,13 +8088,11 @@ c_cond
 op_logical_neg
 id|ret
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 r_goto
 id|out
 suffix:semicolon
@@ -8172,9 +8200,9 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* in this loop, dmabuf.count signifies the amount of data that is waiting to be dma to&n;   the soundcard.  it is drained by the dma machine and filled by this loop. */
-DECL|function|trident_write
 r_static
 id|ssize_t
+DECL|function|trident_write
 id|trident_write
 c_func
 (paren
@@ -8263,7 +8291,7 @@ r_return
 op_minus
 id|ESPIPE
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Guard against an mmap or ioctl while writing&n;&t; */
+multiline_comment|/*&n;&t; *      Guard against an mmap or ioctl while writing&n;&t; */
 id|down
 c_func
 (paren
@@ -8360,7 +8388,8 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* buffer underrun, we are recovering from sleep_on_timeout,&n;&t;&t;&t;   resync hwptr and swptr */
+multiline_comment|/* buffer underrun, we are recovering from */
+multiline_comment|/* sleep_on_timeout, resync hwptr and swptr */
 id|dmabuf-&gt;count
 op_assign
 l_int|0
@@ -8427,7 +8456,8 @@ r_int
 r_int
 id|tmo
 suffix:semicolon
-multiline_comment|/* buffer is full, start the dma machine and wait for data to be&n;&t;&t;&t;   played */
+multiline_comment|/* buffer is full, start the dma machine and */
+multiline_comment|/* wait for data to be played */
 id|start_dac
 c_func
 (paren
@@ -8457,7 +8487,9 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* No matter how much data left in the buffer, we have to wait until&n;&t;&t;&t;   CSO == ESO/2 or CSO == ESO when address engine interrupts */
+multiline_comment|/* No matter how much data left in the buffer, */
+multiline_comment|/* we have to wait until CSO == ESO/2 or CSO == ESO */
+multiline_comment|/* when address engine interrupts */
 id|lock_set_fmt
 c_func
 (paren
@@ -8498,7 +8530,16 @@ op_amp
 id|state-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* There are two situations when sleep_on_timeout returns, one is when&n;&t;&t;&t;   the interrupt is serviced correctly and the process is waked up by&n;&t;&t;&t;   ISR ON TIME. Another is when timeout is expired, which means that&n;&t;&t;&t;   either interrupt is NOT serviced correctly (pending interrupt) or it&n;&t;&t;&t;   is TOO LATE for the process to be scheduled to run (scheduler latency)&n;&t;&t;&t;   which results in a (potential) buffer underrun. And worse, there is&n;&t;&t;&t;   NOTHING we can do to prevent it. */
+multiline_comment|/* There are two situations when sleep_on_timeout */
+multiline_comment|/* returns, one is when the interrupt is serviced */
+multiline_comment|/* correctly and the process is waked up by ISR */
+multiline_comment|/* ON TIME. Another is when timeout is expired, which */
+multiline_comment|/* means that either interrupt is NOT serviced */
+multiline_comment|/* correctly (pending interrupt) or it is TOO LATE */
+multiline_comment|/* for the process to be scheduled to run */
+multiline_comment|/* (scheduler latency) which results in a (potential) */
+multiline_comment|/* buffer underrun. And worse, there is NOTHING we */
+multiline_comment|/* can do to prevent it. */
 r_if
 c_cond
 (paren
@@ -8517,8 +8558,9 @@ id|TRDBG
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;trident: playback schedule timeout, &quot;
-l_string|&quot;dmasz %u fragsz %u count %i hwptr %u swptr %u&bslash;n&quot;
+l_string|&quot;trident: playback schedule &quot;
+l_string|&quot;timeout, dmasz %u fragsz %u count %i &quot;
+l_string|&quot;hwptr %u swptr %u&bslash;n&quot;
 comma
 id|dmabuf-&gt;dmasize
 comma
@@ -8531,7 +8573,9 @@ comma
 id|dmabuf-&gt;swptr
 )paren
 suffix:semicolon
-multiline_comment|/* a buffer underrun, we delay the recovery until next time the&n;&t;&t;&t;&t;   while loop begin and we REALLY have data to play */
+multiline_comment|/* a buffer underrun, we delay the recovery */
+multiline_comment|/* until next time the while loop begin and */
+multiline_comment|/* we REALLY have data to play */
 )brace
 r_if
 c_cond
@@ -8577,13 +8621,11 @@ c_cond
 op_logical_neg
 id|ret
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 r_goto
 id|out
 suffix:semicolon
@@ -8832,10 +8874,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* No kernel lock - we have our own spinlock */
-DECL|function|trident_poll
 r_static
 r_int
 r_int
+DECL|function|trident_poll
 id|trident_poll
 c_func
 (paren
@@ -8886,7 +8928,7 @@ c_func
 id|state
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Guard against a parallel poll and write causing multiple&n;&t; *&t;prog_dmabuf events&n;&t; */
+multiline_comment|/*&n;&t; *      Guard against a parallel poll and write causing multiple&n;&t; *      prog_dmabuf events&n;&t; */
 id|down
 c_func
 (paren
@@ -9102,9 +9144,9 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-DECL|function|trident_mmap
 r_static
 r_int
+DECL|function|trident_mmap
 id|trident_mmap
 c_func
 (paren
@@ -9160,7 +9202,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Lock against poll read write or mmap creating buffers. Also lock&n;&t; *&t;a read or write against an mmap.&n;&t; */
+multiline_comment|/*&n;&t; *      Lock against poll read write or mmap creating buffers. Also lock&n;&t; *      a read or write against an mmap.&n;&t; */
 id|down
 c_func
 (paren
@@ -9321,9 +9363,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|trident_ioctl
 r_static
 r_int
+DECL|function|trident_ioctl
 id|trident_ioctl
 c_func
 (paren
@@ -9922,7 +9964,7 @@ suffix:semicolon
 r_case
 id|SNDCTL_DSP_GETFMTS
 suffix:colon
-multiline_comment|/* Returns a mask of supported sample format*/
+multiline_comment|/* Returns a mask of supported sample format */
 id|ret
 op_assign
 id|put_user
@@ -10218,7 +10260,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;trident: Record is working on the card!&bslash;n&quot;
+l_string|&quot;trident: Record is &quot;
+l_string|&quot;working on the card!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -10319,7 +10362,7 @@ id|val
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*yield to 2-channels*/
+multiline_comment|/*yield to 2-channels */
 )brace
 r_else
 id|dmabuf-&gt;fmt
@@ -11153,6 +11196,7 @@ id|cinfo
 )paren
 )paren
 ques
+c_cond
 op_minus
 id|EFAULT
 suffix:colon
@@ -11279,6 +11323,7 @@ id|cinfo
 )paren
 )paren
 ques
+c_cond
 op_minus
 id|EFAULT
 suffix:colon
@@ -11648,9 +11693,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|trident_open
 r_static
 r_int
+DECL|function|trident_open
 id|trident_open
 c_func
 (paren
@@ -11907,7 +11952,6 @@ id|file-&gt;f_mode
 op_amp
 id|FMODE_READ
 )paren
-(brace
 id|dmabuf-&gt;channel
 op_assign
 id|card
@@ -11918,7 +11962,6 @@ c_func
 id|card
 )paren
 suffix:semicolon
-)brace
 r_else
 id|dmabuf-&gt;channel
 op_assign
@@ -11939,6 +11982,7 @@ l_int|NULL
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|card-&gt;states
 (braket
@@ -11982,7 +12026,9 @@ id|file-&gt;private_data
 op_assign
 id|state
 suffix:semicolon
-multiline_comment|/* set default sample format. According to OSS Programmer&squot;s Guide  /dev/dsp&n;&t;   should be default to unsigned 8-bits, mono, with sample rate 8kHz and&n;&t;   /dev/dspW will accept 16-bits sample */
+multiline_comment|/* set default sample format. According to OSS Programmer&squot;s */
+multiline_comment|/* Guide  /dev/dsp should be default to unsigned 8-bits, mono, */
+multiline_comment|/* with sample rate 8kHz and /dev/dspW will accept 16-bits sample */
 r_if
 c_cond
 (paren
@@ -12054,7 +12100,8 @@ op_amp
 id|FMODE_READ
 )paren
 (brace
-multiline_comment|/* FIXME: Trident 4d can only record in signed 16-bits stereo, 48kHz sample,&n;&t;&t;   to be dealed with in trident_set_adc_rate() ?? */
+multiline_comment|/* FIXME: Trident 4d can only record in signed 16-bits stereo, */
+multiline_comment|/* 48kHz sample, to be dealed with in trident_set_adc_rate() ?? */
 id|dmabuf-&gt;fmt
 op_and_assign
 op_complement
@@ -12095,7 +12142,7 @@ op_eq
 id|PCI_DEVICE_ID_SI_7018
 )paren
 (brace
-multiline_comment|/* set default channel attribute to 0x8a80, record from&n;&t;&t;&t;   PCM L/R FIFO and mono = (left + right + 1)/2*/
+multiline_comment|/* set default channel attribute to 0x8a80, record from&n;&t;&t;&t;   PCM L/R FIFO and mono = (left + right + 1)/2 */
 id|dmabuf-&gt;channel-&gt;attribute
 op_assign
 (paren
@@ -12123,11 +12170,9 @@ id|card-&gt;pci_id
 op_eq
 id|PCI_DEVICE_ID_ALI_5451
 )paren
-(brace
 id|card-&gt;rec_channel_use_count
 op_increment
 suffix:semicolon
-)brace
 )brace
 id|state-&gt;open_mode
 op_or_assign
@@ -12160,9 +12205,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|trident_release
 r_static
 r_int
+DECL|function|trident_release
 id|trident_release
 c_func
 (paren
@@ -12395,12 +12440,10 @@ op_decrement
 OL
 l_int|0
 )paren
-(brace
 id|card-&gt;rec_channel_use_count
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 )brace
 id|card-&gt;states
@@ -12435,7 +12478,7 @@ suffix:semicolon
 )brace
 DECL|variable|trident_audio_fops
 r_static
-multiline_comment|/*const*/
+multiline_comment|/*const */
 r_struct
 id|file_operations
 id|trident_audio_fops
@@ -12490,9 +12533,9 @@ comma
 suffix:semicolon
 multiline_comment|/* trident specific AC97 functions */
 multiline_comment|/* Write AC97 codec registers */
-DECL|function|trident_ac97_set
 r_static
 r_void
+DECL|function|trident_ac97_set
 id|trident_ac97_set
 c_func
 (paren
@@ -12760,9 +12803,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Read AC97 codec registers */
-DECL|function|trident_ac97_get
 r_static
 id|u16
+DECL|function|trident_ac97_get
 id|trident_ac97_get
 c_func
 (paren
@@ -13028,9 +13071,9 @@ l_int|16
 suffix:semicolon
 )brace
 multiline_comment|/* rewrite ac97 read and write mixer register by hulei for ALI*/
-DECL|function|acquirecodecaccess
 r_static
 r_int
+DECL|function|acquirecodecaccess
 id|acquirecodecaccess
 c_func
 (paren
@@ -13179,9 +13222,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|releasecodecaccess
 r_static
 r_void
+DECL|function|releasecodecaccess
 id|releasecodecaccess
 c_func
 (paren
@@ -13228,9 +13271,9 @@ id|ALI_AC97_WRITE
 )paren
 suffix:semicolon
 )brace
-DECL|function|waitforstimertick
 r_static
 r_int
+DECL|function|waitforstimertick
 id|waitforstimertick
 c_func
 (paren
@@ -13299,11 +13342,9 @@ id|chk1
 op_ne
 id|chk2
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -13311,10 +13352,8 @@ id|wcount
 op_le
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|udelay
 c_func
 (paren
@@ -13327,9 +13366,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Read AC97 codec registers for ALi*/
-DECL|function|ali_ac97_get
 r_static
 id|u16
+DECL|function|ali_ac97_get
 id|ali_ac97_get
 c_func
 (paren
@@ -13375,13 +13414,11 @@ c_cond
 op_logical_neg
 id|card
 )paren
-(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|address
 op_assign
 id|ALI_AC97_READ
@@ -13560,10 +13597,8 @@ id|ncount
 op_le
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -13683,9 +13718,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Write AC97 codec registers for hulei*/
-DECL|function|ali_ac97_set
 r_static
 r_void
+DECL|function|ali_ac97_set
 id|ali_ac97_set
 c_func
 (paren
@@ -13741,13 +13776,11 @@ c_cond
 op_logical_neg
 id|card
 )paren
-(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|address
 op_assign
 id|ALI_AC97_WRITE
@@ -13830,7 +13863,8 @@ op_or
 id|reg
 )paren
 suffix:semicolon
-multiline_comment|/* bit 8=1: (ali1535 )reserved /ali1535+ write */
+multiline_comment|/* bit 8=1: (ali1535 )reserved/ */
+multiline_comment|/* ali1535+ write */
 id|outl
 c_func
 (paren
@@ -13905,10 +13939,8 @@ op_amp
 l_int|0x8000
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -13916,10 +13948,8 @@ id|ncount
 op_le
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -13979,9 +14009,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|ali_enable_special_channel
 r_static
 r_void
+DECL|function|ali_enable_special_channel
 id|ali_enable_special_channel
 c_func
 (paren
@@ -14039,9 +14069,9 @@ id|ALI_GLOBAL_CONTROL
 )paren
 suffix:semicolon
 )brace
-DECL|function|ali_ac97_read
 r_static
 id|u16
+DECL|function|ali_ac97_read
 id|ali_ac97_read
 c_func
 (paren
@@ -14094,7 +14124,6 @@ c_cond
 op_logical_neg
 id|card-&gt;mixer_regs_ready
 )paren
-(brace
 r_return
 id|ali_ac97_get
 c_func
@@ -14106,19 +14135,16 @@ comma
 id|reg
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; *&t;FIXME: need to stop this caching some registers&n;&t; */
+multiline_comment|/*&n;&t; *      FIXME: need to stop this caching some registers&n;&t; */
 r_if
 c_cond
 (paren
 id|codec-&gt;id
 )paren
-(brace
 id|id
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_else
 id|id
 op_assign
@@ -14140,9 +14166,9 @@ r_return
 id|data
 suffix:semicolon
 )brace
-DECL|function|ali_ac97_write
 r_static
 r_void
+DECL|function|ali_ac97_write
 id|ali_ac97_write
 c_func
 (paren
@@ -14214,12 +14240,10 @@ c_cond
 (paren
 id|codec-&gt;id
 )paren
-(brace
 id|id
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_else
 id|id
 op_assign
@@ -14251,9 +14275,9 @@ id|val
 suffix:semicolon
 )brace
 multiline_comment|/*&n;flag:&t;ALI_SPDIF_OUT_TO_SPDIF_OUT&n;&t;ALI_PCM_TO_SPDIF_OUT&n;*/
-DECL|function|ali_setup_spdif_out
 r_static
 r_void
+DECL|function|ali_setup_spdif_out
 id|ali_setup_spdif_out
 c_func
 (paren
@@ -14575,9 +14599,9 @@ id|ALI_GLOBAL_CONTROL
 suffix:semicolon
 )brace
 )brace
-DECL|function|ali_disable_special_channel
 r_static
 r_void
+DECL|function|ali_disable_special_channel
 id|ali_disable_special_channel
 c_func
 (paren
@@ -14632,9 +14656,9 @@ id|ALI_GLOBAL_CONTROL
 )paren
 suffix:semicolon
 )brace
-DECL|function|ali_disable_spdif_in
 r_static
 r_void
+DECL|function|ali_disable_spdif_in
 id|ali_disable_spdif_in
 c_func
 (paren
@@ -14692,9 +14716,9 @@ id|ALI_SPDIF_IN_CHANNEL
 )paren
 suffix:semicolon
 )brace
-DECL|function|ali_setup_spdif_in
 r_static
 r_void
+DECL|function|ali_setup_spdif_in
 id|ali_setup_spdif_in
 c_func
 (paren
@@ -14808,9 +14832,9 @@ id|ALI_SPDIF_CTRL
 suffix:semicolon
 multiline_comment|/*&n;&t;spdif = inb(TRID_REG(card, ALI_SPDIF_CTRL));&n;&t;spdif |= ALI_SPDIF_IN_FUNC_ENABLE;&n;&t;outb(spdif, TRID_REG(card, ALI_SPDIF_CTRL));&n;*/
 )brace
-DECL|function|ali_delay
 r_static
 r_void
+DECL|function|ali_delay
 id|ali_delay
 c_func
 (paren
@@ -14881,9 +14905,9 @@ id|ALI_STIMER
 )paren
 suffix:semicolon
 )brace
-DECL|function|ali_detect_spdif_rate
 r_static
 r_void
+DECL|function|ali_detect_spdif_rate
 id|ali_detect_spdif_rate
 c_func
 (paren
@@ -15058,7 +15082,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;trident: Error in ali_detect_spdif_rate!&bslash;n&quot;
+l_string|&quot;trident: Error in &quot;
+l_string|&quot;ali_detect_spdif_rate!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -15116,12 +15141,10 @@ id|R2
 op_ne
 id|R1
 )paren
-(brace
 id|R1
 op_assign
 id|R2
 suffix:semicolon
-)brace
 r_else
 r_break
 suffix:semicolon
@@ -15138,7 +15161,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;trident: Error in ali_detect_spdif_rate!&bslash;n&quot;
+l_string|&quot;trident: Error in &quot;
+l_string|&quot;ali_detect_spdif_rate!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -15347,10 +15371,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|ali_get_spdif_in_rate
 r_static
 r_int
 r_int
+DECL|function|ali_get_spdif_in_rate
 id|ali_get_spdif_in_rate
 c_func
 (paren
@@ -15475,9 +15499,9 @@ r_return
 id|dwRate
 suffix:semicolon
 )brace
-DECL|function|ali_close_multi_channels
 r_static
 r_int
+DECL|function|ali_close_multi_channels
 id|ali_close_multi_channels
 c_func
 (paren
@@ -15598,9 +15622,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ali_setup_multi_channels
 r_static
 r_int
+DECL|function|ali_setup_multi_channels
 id|ali_setup_multi_channels
 c_func
 (paren
@@ -15839,7 +15863,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *&t;On a board with a single codec you won&squot;t get the&n;&t;&t;&t; *&t;surround. On other boards configure it.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *      On a board with a single codec you won&squot;t get the&n;&t;&t;&t; *      surround. On other boards configure it.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -15927,9 +15951,9 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|function|ali_free_pcm_channel
 r_static
 r_void
+DECL|function|ali_free_pcm_channel
 id|ali_free_pcm_channel
 c_func
 (paren
@@ -15984,9 +16008,9 @@ id|channel
 )paren
 suffix:semicolon
 )brace
-DECL|function|ali_allocate_other_states_resources
 r_static
 r_int
+DECL|function|ali_allocate_other_states_resources
 id|ali_allocate_other_states_resources
 c_func
 (paren
@@ -16366,9 +16390,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ali_save_regs
 r_static
 r_void
+DECL|function|ali_save_regs
 id|ali_save_regs
 c_func
 (paren
@@ -16413,7 +16437,7 @@ id|T4D_MISCINT
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//ali_registers.global_regs[0x20] = inl(TRID_REG(card,T4D_START_A));&t;
+singleline_comment|//ali_registers.global_regs[0x20] = inl(TRID_REG(card,T4D_START_A));    
 id|ali_registers.global_regs
 (braket
 l_int|0x21
@@ -16466,6 +16490,7 @@ id|i
 )braket
 op_assign
 id|ali_ac97_read
+c_func
 (paren
 id|card-&gt;ac97_codec
 (braket
@@ -16626,9 +16651,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|ali_restore_regs
 r_static
 r_void
+DECL|function|ali_restore_regs
 id|ali_restore_regs
 c_func
 (paren
@@ -16866,9 +16891,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|trident_suspend
 r_static
 r_int
+DECL|function|trident_suspend
 id|trident_suspend
 c_func
 (paren
@@ -16911,9 +16936,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|trident_resume
 r_static
 r_int
+DECL|function|trident_resume
 id|trident_resume
 c_func
 (paren
@@ -16953,11 +16978,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ali_alloc_pcm_channel
 r_static
 r_struct
 id|trident_channel
 op_star
+DECL|function|ali_alloc_pcm_channel
 id|ali_alloc_pcm_channel
 c_func
 (paren
@@ -17105,16 +17130,24 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* no more free channels avaliable */
-singleline_comment|//&t;printk(KERN_ERR &quot;ali: no more channels available on Bank A.&bslash;n&quot;);
+macro_line|#if 0 
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ali: no more channels available on Bank A.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* 0 */ 
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|ali_alloc_rec_pcm_channel
 r_static
 r_struct
 id|trident_channel
 op_star
+DECL|function|ali_alloc_rec_pcm_channel
 id|ali_alloc_rec_pcm_channel
 c_func
 (paren
@@ -17207,14 +17240,22 @@ id|channel
 suffix:semicolon
 )brace
 multiline_comment|/* no free recordable channels avaliable */
-singleline_comment|//&t;printk(KERN_ERR &quot;ali: no recordable channels available on Bank A.&bslash;n&quot;);
+macro_line|#if 0 
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ali: no recordable channels available on Bank A.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* 0 */ 
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|ali_set_spdif_out_rate
 r_static
 r_void
+DECL|function|ali_set_spdif_out_rate
 id|ali_set_spdif_out_rate
 c_func
 (paren
@@ -17272,6 +17313,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* select spdif_out */
 id|ch_st_sel
 op_assign
 id|inb
@@ -17288,12 +17330,11 @@ id|ALI_SPDIF_CTRL
 op_amp
 id|ALI_SPDIF_OUT_CH_STATUS
 suffix:semicolon
-singleline_comment|//select spdif_out
 id|ch_st_sel
 op_or_assign
 l_int|0x80
 suffix:semicolon
-singleline_comment|//select right
+multiline_comment|/* select right */
 id|outb
 c_func
 (paren
@@ -17333,7 +17374,7 @@ op_complement
 l_int|0x80
 )paren
 suffix:semicolon
-singleline_comment|//select left
+multiline_comment|/* select left */
 id|outb
 c_func
 (paren
@@ -17367,9 +17408,9 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-DECL|function|ali_address_interrupt
 r_static
 r_void
+DECL|function|ali_address_interrupt
 id|ali_address_interrupt
 c_func
 (paren
@@ -17397,6 +17438,7 @@ suffix:semicolon
 id|mask
 op_assign
 id|trident_get_interrupt_mask
+c_func
 (paren
 id|card
 comma
@@ -17553,9 +17595,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Updating the values of counters of other_states&squot; DMAs without lock &n;protection is no harm because all DMAs of multi-channels and interrupt&n;depend on a master state&squot;s DMA, and changing the counters of the master&n;state DMA is protected by a spinlock.&n;*/
-DECL|function|ali_write_5_1
 r_static
 r_int
+DECL|function|ali_write_5_1
 id|ali_write_5_1
 c_func
 (paren
@@ -18276,9 +18318,9 @@ op_star
 id|state_cnt
 suffix:semicolon
 )brace
-DECL|function|ali_free_other_states_resources
 r_static
 r_void
+DECL|function|ali_free_other_states_resources
 id|ali_free_other_states_resources
 c_func
 (paren
@@ -18312,7 +18354,7 @@ id|state-&gt;chans_num
 op_minus
 l_int|2
 suffix:semicolon
-multiline_comment|/* except PCM L/R channels*/
+multiline_comment|/* except PCM L/R channels */
 r_for
 c_loop
 (paren
@@ -18383,9 +18425,9 @@ id|proc_dir_entry
 op_star
 id|res
 suffix:semicolon
-DECL|function|ali_write_proc
 r_static
 r_int
+DECL|function|ali_write_proc
 id|ali_write_proc
 c_func
 (paren
@@ -18567,9 +18609,9 @@ id|count
 suffix:semicolon
 )brace
 multiline_comment|/* OSS /dev/mixer file operation methods */
-DECL|function|trident_open_mixdev
 r_static
 r_int
+DECL|function|trident_open_mixdev
 id|trident_open_mixdev
 c_func
 (paren
@@ -18681,9 +18723,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|trident_ioctl_mixdev
 r_static
 r_int
+DECL|function|trident_ioctl_mixdev
 id|trident_ioctl_mixdev
 c_func
 (paren
@@ -18734,7 +18776,7 @@ suffix:semicolon
 )brace
 DECL|variable|trident_mixer_fops
 r_static
-multiline_comment|/*const*/
+multiline_comment|/*const */
 r_struct
 id|file_operations
 id|trident_mixer_fops
@@ -18762,9 +18804,9 @@ id|trident_open_mixdev
 comma
 )brace
 suffix:semicolon
-DECL|function|ali_reset_5451
 r_static
 r_int
+DECL|function|ali_reset_5451
 id|ali_reset_5451
 c_func
 (paren
@@ -18979,11 +19021,9 @@ l_int|0x000f
 op_eq
 l_int|0x000f
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|udelay
 c_func
 (paren
@@ -18997,10 +19037,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* AC97 codec initialisation. */
-DECL|function|trident_ac97_init
 r_static
 r_int
 id|__devinit
+DECL|function|trident_ac97_init
 id|trident_ac97_init
 c_func
 (paren
@@ -19055,7 +19095,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;trident_ac97_init: error resetting 5451.&bslash;n&quot;
+l_string|&quot;trident_ac97_init: error &quot;
+l_string|&quot;resetting 5451.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -19241,7 +19282,8 @@ id|SI_SERIAL_INTF_CTRL
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* it take a long time to recover from a cold reset (especially when you have&n;&t;&t;   more than one codec) */
+multiline_comment|/* it take a long time to recover from a cold reset */
+multiline_comment|/* (especially when you have more than one codec) */
 id|udelay
 c_func
 (paren
@@ -19365,7 +19407,8 @@ id|SI_SERIAL_INTF_CTRL
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* it take a long time to recover from a cold reset (especially when you have&n;&t;&t;   more than one codec) */
+multiline_comment|/* it take a long time to recover from a cold reset (especially */
+multiline_comment|/* when you have more than one codec) */
 id|udelay
 c_func
 (paren
@@ -19426,7 +19469,8 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* initialize some basic codec information, other fields will be filled&n;&t;&t;   in ac97_probe_codec */
+multiline_comment|/* initialize some basic codec information, other fields */
+multiline_comment|/* will be filled in ac97_probe_codec */
 id|codec-&gt;private_data
 op_assign
 id|card
@@ -19607,10 +19651,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Gameport functions for the cards ADC gameport */
-DECL|function|trident_game_read
 r_static
 r_int
 r_char
+DECL|function|trident_game_read
 id|trident_game_read
 c_func
 (paren
@@ -19641,9 +19685,9 @@ id|T4D_GAME_LEG
 )paren
 suffix:semicolon
 )brace
-DECL|function|trident_game_trigger
 r_static
 r_void
+DECL|function|trident_game_trigger
 id|trident_game_trigger
 c_func
 (paren
@@ -19675,9 +19719,9 @@ id|T4D_GAME_LEG
 )paren
 suffix:semicolon
 )brace
-DECL|function|trident_game_cooked_read
 r_static
 r_int
+DECL|function|trident_game_cooked_read
 id|trident_game_cooked_read
 c_func
 (paren
@@ -19789,9 +19833,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|trident_game_open
 r_static
 r_int
+DECL|function|trident_game_open
 id|trident_game_open
 c_func
 (paren
@@ -19874,11 +19918,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* install the driver, we do not allocate hardware channel nor DMA buffer now, they are defered &n;   until &quot;ACCESS&quot; time (in prog_dmabuf called by open/read/write/ioctl/mmap) */
-DECL|function|trident_probe
+multiline_comment|/* install the driver, we do not allocate hardware channel nor DMA buffer */
+multiline_comment|/* now, they are defered until &quot;ACCESS&quot; time (in prog_dmabuf called by */
+multiline_comment|/* open/read/write/ioctl/mmap) */
 r_static
 r_int
 id|__devinit
+DECL|function|trident_probe
 id|trident_probe
 c_func
 (paren
@@ -20055,7 +20101,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;trident: can&squot;t allocate I/O space at 0x%4.4lx&bslash;n&quot;
+l_string|&quot;trident: can&squot;t allocate I/O space at &quot;
+l_string|&quot;0x%4.4lx&bslash;n&quot;
 comma
 id|iobase
 )paren
@@ -20659,7 +20706,7 @@ c_cond
 id|card-&gt;hwvolctl
 )paren
 (brace
-multiline_comment|/* Enable GPIO IRQ (MISCINT bit 18h)*/
+multiline_comment|/* Enable GPIO IRQ (MISCINT bit 18h) */
 id|temp
 op_assign
 id|inw
@@ -20696,7 +20743,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Enable H/W Volume Control GLOVAL CONTROL bit 0*/
+multiline_comment|/* Enable H/W Volume Control GLOVAL CONTROL bit 0 */
 id|temp
 op_assign
 id|inw
@@ -20737,13 +20784,11 @@ id|card-&gt;revision
 op_eq
 id|ALI_5451_V02
 )paren
-(brace
 id|ali_close_multi_channels
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* edited by HMSEO for GT sound */
 macro_line|#if defined(CONFIG_ALPHA_NAUTILUS) || defined(CONFIG_ALPHA_GENERIC)
 (brace
@@ -20770,7 +20815,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;trident: Running on Alpha system type Nautilus&bslash;n&quot;
+l_string|&quot;trident: Running on Alpha system &quot;
+l_string|&quot;type Nautilus&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ac97_data
@@ -20801,8 +20847,8 @@ id|ALI_EAPD_POWER_DOWN
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALPHA_NAUTILUS || CONFIG_ALPHA_GENERIC */ 
-multiline_comment|/* edited by HMSEO for GT sound*/
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_ALPHA_NAUTILUS || CONFIG_ALPHA_GENERIC */
+multiline_comment|/* edited by HMSEO for GT sound */
 )brace
 id|rc
 op_assign
@@ -20895,14 +20941,14 @@ comma
 l_int|256
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_return
+id|rc
 suffix:semicolon
 )brace
-DECL|function|trident_remove
 r_static
 r_void
 id|__devexit
+DECL|function|trident_remove
 id|trident_remove
 c_func
 (paren
@@ -20926,13 +20972,12 @@ c_func
 id|pci_dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; &t; *&t;Kill running timers before unload. We can&squot;t have them&n; &t; *&t;going off after rmmod!&n; &t; */
+multiline_comment|/*&n;&t; *      Kill running timers before unload. We can&squot;t have them&n;&t; *      going off after rmmod!&n;&t; */
 r_if
 c_cond
 (paren
 id|card-&gt;hwvolctl
 )paren
-(brace
 id|del_timer_sync
 c_func
 (paren
@@ -20940,7 +20985,6 @@ op_amp
 id|card-&gt;timer
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* ALi S/PDIF and Power Management */
 r_if
 c_cond
@@ -21090,7 +21134,8 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Trident 4DWave/SiS 7018/ALi 5451 and Tvia/IGST CyberPro5050 PCI Audio Driver&quot;
+l_string|&quot;Trident 4DWave/SiS 7018/ALi 5451 and Tvia/IGST &quot;
+l_string|&quot;CyberPro5050 PCI Audio Driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -21143,11 +21188,12 @@ op_assign
 id|trident_resume
 )brace
 suffix:semicolon
-DECL|function|trident_init_module
 r_static
 r_int
 id|__init
+DECL|function|trident_init_module
 id|trident_init_module
+c_func
 (paren
 r_void
 )paren
@@ -21194,11 +21240,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|trident_cleanup_module
 r_static
 r_void
 id|__exit
+DECL|function|trident_cleanup_module
 id|trident_cleanup_module
+c_func
 (paren
 r_void
 )paren
