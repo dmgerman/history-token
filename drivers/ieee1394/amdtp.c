@@ -4096,6 +4096,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -4319,6 +4320,7 @@ comma
 (paren
 r_struct
 id|amdtp_ioctl
+id|__user
 op_star
 )paren
 id|arg

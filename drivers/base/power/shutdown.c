@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * shutdown.c - power management functions for the device tree.&n; * &n; * Copyright (c) 2002-3 Patrick Mochel&n; *&t;&t; 2002-3 Open Source Development Lab&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * shutdown.c - power management functions for the device tree.&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; *&t;&t; 2002-3 Open Source Development Lab&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;power.h&quot;
 DECL|macro|to_dev
-mdefine_line|#define to_dev(node) container_of(node,struct device,kobj.entry)
+mdefine_line|#define to_dev(node) container_of(node, struct device, kobj.entry)
 r_extern
 r_struct
 id|subsystem
@@ -67,7 +67,7 @@ id|dev-&gt;detach_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * We handle system devices differently - we suspend and shut them&n; * down last and resume them first. That way, we don&squot;t do anything stupid like&n; * shutting down the interrupt controller before any devices..&n; *&n; * Note that there are not different stages for power management calls - &n; * they only get one called once when interrupts are disabled. &n; */
+multiline_comment|/**&n; * We handle system devices differently - we suspend and shut them&n; * down last and resume them first. That way, we don&squot;t do anything stupid like&n; * shutting down the interrupt controller before any devices..&n; *&n; * Note that there are not different stages for power management calls -&n; * they only get one called once when interrupts are disabled.&n; */
 r_extern
 r_int
 id|sysdev_shutdown
