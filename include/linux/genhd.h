@@ -218,6 +218,8 @@ multiline_comment|/* support driverfs hiearchy     */
 suffix:semicolon
 DECL|macro|GENHD_FL_REMOVABLE
 mdefine_line|#define GENHD_FL_REMOVABLE  1
+DECL|macro|GENHD_FL_DRIVERFS
+mdefine_line|#define GENHD_FL_DRIVERFS  2
 DECL|struct|gendisk
 r_struct
 id|gendisk
@@ -268,14 +270,12 @@ op_star
 id|de_arr
 suffix:semicolon
 multiline_comment|/* one per physical disc */
-DECL|member|driverfs_dev_arr
+DECL|member|driverfs_dev
 r_struct
 id|device
 op_star
-op_star
-id|driverfs_dev_arr
+id|driverfs_dev
 suffix:semicolon
-multiline_comment|/* support driverfs hierarchy */
 DECL|member|flags
 r_int
 id|flags

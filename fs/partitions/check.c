@@ -405,22 +405,22 @@ suffix:semicolon
 r_int
 id|part
 suffix:semicolon
-multiline_comment|/* get parent driverfs device structure */
+multiline_comment|/* if driverfs not supported by subsystem, skip partitions */
 r_if
 c_cond
 (paren
-id|hd-&gt;driverfs_dev_arr
+op_logical_neg
+(paren
+id|hd-&gt;flags
+op_amp
+id|GENHD_FL_DRIVERFS
 )paren
+)paren
+r_return
+suffix:semicolon
 id|parent
 op_assign
-id|hd-&gt;driverfs_dev_arr
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_else
-multiline_comment|/* if driverfs not supported by subsystem, skip partitions */
-r_return
+id|hd-&gt;driverfs_dev
 suffix:semicolon
 r_if
 c_cond
