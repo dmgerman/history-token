@@ -1100,8 +1100,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
-multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
+multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand.&n; *&n; * Note that we do *not* provide a parameter list to avoid &n; * conflicting with one of the syscall declarations in some&n; * of the relevant header files (including this one).&n; */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asmlinkage long x(void) __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
+mdefine_line|#define cond_syscall(x) asmlinkage long x() __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
 macro_line|#endif /* _ALPHA_UNISTD_H */
 eof
