@@ -1089,6 +1089,8 @@ id|vma
 op_assign
 id|first
 suffix:semicolon
+id|vma
+op_logical_and
 id|vma-&gt;vm_start
 OL
 id|end
@@ -1331,6 +1333,8 @@ r_for
 c_loop
 (paren
 suffix:semicolon
+id|vma
+op_logical_and
 id|vma-&gt;vm_start
 OL
 id|end
