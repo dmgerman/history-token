@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -264,7 +265,12 @@ op_amp
 id|linkwatch_flags
 )paren
 suffix:semicolon
-id|rtnl_lock
+id|rtnl_shlock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rtnl_exlock
 c_func
 (paren
 )paren
@@ -274,7 +280,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|rtnl_unlock
+id|rtnl_exunlock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rtnl_shunlock
 c_func
 (paren
 )paren
