@@ -478,7 +478,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dm_vcalloc
-r_static
 r_void
 op_star
 id|dm_vcalloc
@@ -3509,6 +3508,13 @@ id|ti
 suffix:semicolon
 )brace
 )brace
+DECL|variable|dm_vcalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dm_vcalloc
+)paren
+suffix:semicolon
 DECL|variable|dm_get_device
 id|EXPORT_SYMBOL
 c_func
