@@ -211,6 +211,7 @@ suffix:semicolon
 multiline_comment|/* Flag indicating when thread should exit */
 DECL|member|exit
 r_int
+r_int
 m_exit
 suffix:colon
 l_int|1
@@ -218,12 +219,14 @@ suffix:semicolon
 multiline_comment|/* Flag indicating if the CA device is open */
 DECL|member|open
 r_int
+r_int
 id|open
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Flag indicating the thread should wake up now */
 DECL|member|wakeup
+r_int
 r_int
 id|wakeup
 suffix:colon
