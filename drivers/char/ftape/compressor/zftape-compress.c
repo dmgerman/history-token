@@ -41,13 +41,6 @@ macro_line|#include &quot;../compressor/lzrw3.h&quot;
 multiline_comment|/*&n; *   global variables&n; */
 multiline_comment|/* I handle the allocation of this buffer as a special case, because&n; * it&squot;s size varies depending on the tape length inserted.&n; */
 multiline_comment|/* local variables &n; */
-DECL|variable|keep_module_locked
-r_static
-r_int
-id|keep_module_locked
-op_assign
-l_int|1
-suffix:semicolon
 DECL|variable|zftc_wrk_mem
 r_static
 r_void
@@ -753,13 +746,6 @@ c_func
 r_void
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
-id|keep_module_locked
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*  this function is needed for zftape_reset_position in zftape-io.c &n; */
 DECL|function|zftc_reset
@@ -799,10 +785,6 @@ id|zftc_stats
 c_func
 (paren
 )paren
-suffix:semicolon
-id|keep_module_locked
-op_assign
-l_int|0
 suffix:semicolon
 id|TRACE_EXIT
 suffix:semicolon
@@ -1782,13 +1764,6 @@ c_func
 id|ft_t_flow
 )paren
 suffix:semicolon
-id|keep_module_locked
-op_assign
-l_int|1
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
 multiline_comment|/* Note: we do not unlock the module because&n;&t; * there are some values cached in that `cseg&squot; variable.  We&n;&t; * don&squot;t don&squot;t want to use this information when being&n;&t; * unloaded by kerneld even when the tape is full or when we&n;&t; * cannot allocate enough memory.&n;&t; */
 r_if
 c_cond
@@ -2188,13 +2163,6 @@ c_func
 id|ft_t_flow
 )paren
 suffix:semicolon
-id|keep_module_locked
-op_assign
-l_int|1
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
 id|TRACE_CATCH
 c_func
 (paren
@@ -2789,13 +2757,6 @@ c_func
 id|ft_t_flow
 )paren
 suffix:semicolon
-id|keep_module_locked
-op_assign
-l_int|1
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
 r_if
 c_cond
 (paren
@@ -4651,107 +4612,11 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|result
-suffix:semicolon
-macro_line|#if 0 /* FIXME --RR */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mod_member_present
-c_func
-(paren
-op_amp
-id|__this_module
-comma
-id|can_unload
-)paren
-)paren
 r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-id|__this_module.can_unload
-op_assign
-id|can_unload
-suffix:semicolon
-macro_line|#endif
-id|result
-op_assign
 id|zft_compressor_init
 c_func
 (paren
 )paren
-suffix:semicolon
-id|keep_module_locked
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-multiline_comment|/* Called by modules package when removing the driver &n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-id|TRACE_FUN
-c_func
-(paren
-id|ft_t_flow
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|zft_cmpr_unregister
-c_func
-(paren
-)paren
-op_ne
-op_amp
-id|cmpr_ops
-)paren
-(brace
-id|TRACE
-c_func
-(paren
-id|ft_t_info
-comma
-l_string|&quot;failed&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|TRACE
-c_func
-(paren
-id|ft_t_info
-comma
-l_string|&quot;successful&quot;
-)paren
-suffix:semicolon
-)brace
-id|zftc_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;zft-compressor successfully unloaded.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|TRACE_EXIT
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
