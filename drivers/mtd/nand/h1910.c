@@ -1,118 +1,26 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/edb7312.c&n; *&n; *  Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *&n; *  Derived from drivers/mtd/nand/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: edb7312.c,v 1.10 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   CLEP7312 board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/h1910.c&n; *&n; *  Copyright (C) 2003 Joshua Wise (joshua@joshuawise.com)&n; *&n; *  Derived from drivers/mtd/nand/edb7312.c&n; *       Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: h1910.c,v 1.4 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   iPAQ h1910 board which utilizes the Samsung K9F2808 part. This is&n; *   a 128Mibit (16MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch/hardware.h&gt; /* for CLPS7111_VIRT_BASE */
 macro_line|#include &lt;asm/sizes.h&gt;
-macro_line|#include &lt;asm/hardware/clps7111.h&gt;
+macro_line|#include &lt;asm/arch/h1900-gpio.h&gt;
+macro_line|#include &lt;asm/arch/ipaq.h&gt;
 multiline_comment|/*&n; * MTD structure for EDB7312 board&n; */
-DECL|variable|ep7312_mtd
+DECL|variable|h1910_nand_mtd
 r_static
 r_struct
 id|mtd_info
 op_star
-id|ep7312_mtd
+id|h1910_nand_mtd
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n; * Values specific to the EDB7312 board (used with EP7312 processor)&n; */
-DECL|macro|EP7312_FIO_PBASE
-mdefine_line|#define EP7312_FIO_PBASE 0x10000000&t;/* Phys address of flash */
-DECL|macro|EP7312_PXDR
-mdefine_line|#define EP7312_PXDR&t;0x0001&t;/*&n;&t;&t;&t;&t; * IO offset to Port B data register&n;&t;&t;&t;&t; * where the CLE, ALE and NCE pins&n;&t;&t;&t;&t; * are wired to.&n;&t;&t;&t;&t; */
-DECL|macro|EP7312_PXDDR
-mdefine_line|#define EP7312_PXDDR&t;0x0041&t;/*&n;&t;&t;&t;&t; * IO offset to Port B data direction&n;&t;&t;&t;&t; * register so we can control the IO&n;&t;&t;&t;&t; * lines.&n;&t;&t;&t;&t; */
 multiline_comment|/*&n; * Module stuff&n; */
-DECL|variable|ep7312_fio_pbase
-r_static
-r_int
-r_int
-id|ep7312_fio_pbase
-op_assign
-id|EP7312_FIO_PBASE
-suffix:semicolon
-DECL|variable|ep7312_pxdr
-r_static
-r_void
-id|__iomem
-op_star
-id|ep7312_pxdr
-op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
-id|EP7312_PXDR
-suffix:semicolon
-DECL|variable|ep7312_pxddr
-r_static
-r_void
-id|__iomem
-op_star
-id|ep7312_pxddr
-op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
-id|EP7312_PXDDR
-suffix:semicolon
-macro_line|#ifdef MODULE
-id|MODULE_PARM
-c_func
-(paren
-id|ep7312_fio_pbase
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|ep7312_pxdr
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|ep7312_pxddr
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ep7312_fio_pbase=&quot;
-comma
-id|ep7312_fio_pbase
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ep7312_pxdr=&quot;
-comma
-id|ep7312_pxdr
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ep7312_pxddr=&quot;
-comma
-id|ep7312_pxddr
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_MTD_PARTITIONS
 multiline_comment|/*&n; * Define static partitions for flash device&n; */
 DECL|variable|partition_info
@@ -125,20 +33,17 @@ id|partition_info
 op_assign
 (brace
 (brace
-dot
 id|name
-op_assign
-l_string|&quot;EP7312 Nand Flash&quot;
+suffix:colon
+l_string|&quot;h1910 NAND Flash&quot;
 comma
-dot
 id|offset
-op_assign
+suffix:colon
 l_int|0
 comma
-dot
 id|size
-op_assign
-l_int|8
+suffix:colon
+l_int|16
 op_star
 l_int|1024
 op_star
@@ -150,10 +55,10 @@ DECL|macro|NUM_PARTITIONS
 mdefine_line|#define NUM_PARTITIONS 1
 macro_line|#endif
 multiline_comment|/* &n; *&t;hardware specific access to control-lines&n; */
-DECL|function|ep7312_hwcontrol
+DECL|function|h1910_hwcontrol
 r_static
 r_void
-id|ep7312_hwcontrol
+id|h1910_hwcontrol
 c_func
 (paren
 r_struct
@@ -165,6 +70,20 @@ r_int
 id|cmd
 )paren
 (brace
+r_struct
+id|nand_chip
+op_star
+id|this
+op_assign
+(paren
+r_struct
+id|nand_chip
+op_star
+)paren
+(paren
+id|mtd-&gt;priv
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -174,18 +93,20 @@ id|cmd
 r_case
 id|NAND_CTL_SETCLE
 suffix:colon
-id|clps_writeb
-c_func
+id|this-&gt;IO_ADDR_R
+op_or_assign
 (paren
-id|clps_readb
-c_func
-(paren
-id|ep7312_pxdr
+l_int|1
+op_lshift
+l_int|2
 )paren
-op_or
-l_int|0x10
-comma
-id|ep7312_pxdr
+suffix:semicolon
+id|this-&gt;IO_ADDR_W
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
 )paren
 suffix:semicolon
 r_break
@@ -193,19 +114,22 @@ suffix:semicolon
 r_case
 id|NAND_CTL_CLRCLE
 suffix:colon
-id|clps_writeb
-c_func
-(paren
-id|clps_readb
-c_func
-(paren
-id|ep7312_pxdr
-)paren
-op_amp
+id|this-&gt;IO_ADDR_R
+op_and_assign
 op_complement
-l_int|0x10
-comma
-id|ep7312_pxdr
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+id|this-&gt;IO_ADDR_W
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|2
 )paren
 suffix:semicolon
 r_break
@@ -213,18 +137,20 @@ suffix:semicolon
 r_case
 id|NAND_CTL_SETALE
 suffix:colon
-id|clps_writeb
-c_func
+id|this-&gt;IO_ADDR_R
+op_or_assign
 (paren
-id|clps_readb
-c_func
-(paren
-id|ep7312_pxdr
+l_int|1
+op_lshift
+l_int|3
 )paren
-op_or
-l_int|0x20
-comma
-id|ep7312_pxdr
+suffix:semicolon
+id|this-&gt;IO_ADDR_W
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|3
 )paren
 suffix:semicolon
 r_break
@@ -232,19 +158,22 @@ suffix:semicolon
 r_case
 id|NAND_CTL_CLRALE
 suffix:colon
-id|clps_writeb
-c_func
-(paren
-id|clps_readb
-c_func
-(paren
-id|ep7312_pxdr
-)paren
-op_amp
+id|this-&gt;IO_ADDR_R
+op_and_assign
 op_complement
-l_int|0x20
-comma
-id|ep7312_pxdr
+(paren
+l_int|1
+op_lshift
+l_int|3
+)paren
+suffix:semicolon
+id|this-&gt;IO_ADDR_W
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|3
 )paren
 suffix:semicolon
 r_break
@@ -252,57 +181,20 @@ suffix:semicolon
 r_case
 id|NAND_CTL_SETNCE
 suffix:colon
-id|clps_writeb
-c_func
-(paren
-(paren
-id|clps_readb
-c_func
-(paren
-id|ep7312_pxdr
-)paren
-op_or
-l_int|0x80
-)paren
-op_amp
-op_complement
-l_int|0x40
-comma
-id|ep7312_pxdr
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|NAND_CTL_CLRNCE
 suffix:colon
-id|clps_writeb
-c_func
-(paren
-(paren
-id|clps_readb
-c_func
-(paren
-id|ep7312_pxdr
-)paren
-op_or
-l_int|0x80
-)paren
-op_or
-l_int|0x40
-comma
-id|ep7312_pxdr
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; *&t;read device ready pin&n; */
-DECL|function|ep7312_device_ready
+macro_line|#if 0
 r_static
 r_int
-id|ep7312_device_ready
+id|h1910_device_ready
 c_func
 (paren
 r_struct
@@ -312,31 +204,28 @@ id|mtd
 )paren
 (brace
 r_return
-l_int|1
+(paren
+id|GPLR
+c_func
+(paren
+l_int|55
+)paren
+op_amp
+id|GPIO_bit
+c_func
+(paren
+l_int|55
+)paren
+)paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MTD_PARTITIONS
-DECL|variable|part_probes
-r_const
-r_char
-op_star
-id|part_probes
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;cmdlinepart&quot;
-comma
-l_int|NULL
-)brace
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Main initialization routine&n; */
-DECL|function|ep7312_init
+DECL|function|h1910_init
 r_static
 r_int
 id|__init
-id|ep7312_init
+id|h1910_init
 (paren
 r_void
 )paren
@@ -368,10 +257,60 @@ suffix:semicolon
 r_void
 id|__iomem
 op_star
-id|ep7312_fio_base
+id|nandaddr
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|machine_is_h1900
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|nandaddr
+op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+id|__ioremap
+c_func
+(paren
+l_int|0x08000000
+comma
+l_int|0x1000
+comma
+l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nandaddr
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Failed to ioremap nand flash.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 multiline_comment|/* Allocate memory for MTD device structure and private data */
-id|ep7312_mtd
+id|h1910_nand_mtd
 op_assign
 id|kmalloc
 c_func
@@ -395,58 +334,27 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ep7312_mtd
+id|h1910_nand_mtd
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;Unable to allocate EDB7312 NAND MTD device structure.&bslash;n&quot;
+l_string|&quot;Unable to allocate h1910 NAND MTD device structure.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|iounmap
+(paren
+(paren
+r_void
+op_star
+)paren
+id|nandaddr
 )paren
 suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-)brace
-multiline_comment|/* map physical adress */
-id|ep7312_fio_base
-op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
-id|ioremap
-c_func
-(paren
-id|ep7312_fio_pbase
-comma
-id|SZ_1K
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ep7312_fio_base
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ioremap EDB7312 NAND flash failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ep7312_mtd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Get pointer to private data */
@@ -459,7 +367,7 @@ op_star
 )paren
 (paren
 op_amp
-id|ep7312_mtd
+id|h1910_nand_mtd
 (braket
 l_int|1
 )braket
@@ -473,7 +381,7 @@ c_func
 r_char
 op_star
 )paren
-id|ep7312_mtd
+id|h1910_nand_mtd
 comma
 l_int|0
 comma
@@ -503,40 +411,53 @@ id|nand_chip
 )paren
 suffix:semicolon
 multiline_comment|/* Link the private data with the MTD structure */
-id|ep7312_mtd-&gt;priv
+id|h1910_nand_mtd-&gt;priv
 op_assign
 id|this
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set GPIO Port B control register so that the pins are configured&n;&t; * to be outputs for controlling the NAND flash.&n;&t; */
-id|clps_writeb
+multiline_comment|/*&n;&t; * Enable VPEN&n;&t; */
+id|GPSR
 c_func
 (paren
-l_int|0xf0
-comma
-id|ep7312_pxddr
+l_int|37
+)paren
+op_assign
+id|GPIO_bit
+c_func
+(paren
+l_int|37
 )paren
 suffix:semicolon
 multiline_comment|/* insert callbacks */
 id|this-&gt;IO_ADDR_R
 op_assign
-id|ep7312_fio_base
+id|nandaddr
 suffix:semicolon
 id|this-&gt;IO_ADDR_W
 op_assign
-id|ep7312_fio_base
+id|nandaddr
 suffix:semicolon
 id|this-&gt;hwcontrol
 op_assign
-id|ep7312_hwcontrol
+id|h1910_hwcontrol
 suffix:semicolon
 id|this-&gt;dev_ready
 op_assign
-id|ep7312_device_ready
+l_int|NULL
 suffix:semicolon
+multiline_comment|/* unknown whether that was correct or not so we will just do it like this */
 multiline_comment|/* 15 us command delay time */
 id|this-&gt;chip_delay
 op_assign
-l_int|15
+l_int|50
+suffix:semicolon
+id|this-&gt;eccmode
+op_assign
+id|NAND_ECC_SOFT
+suffix:semicolon
+id|this-&gt;options
+op_assign
+id|NAND_NO_AUTOINCR
 suffix:semicolon
 multiline_comment|/* Scan to find existence of the device */
 r_if
@@ -544,25 +465,31 @@ c_cond
 (paren
 id|nand_scan
 (paren
-id|ep7312_mtd
+id|h1910_nand_mtd
 comma
 l_int|1
 )paren
 )paren
 (brace
-id|iounmap
+id|printk
 c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;No NAND device - returning -ENXIO&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|h1910_nand_mtd
+)paren
+suffix:semicolon
+id|iounmap
 (paren
 (paren
 r_void
 op_star
 )paren
-id|ep7312_fio_base
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|ep7312_mtd
+id|nandaddr
 )paren
 suffix:semicolon
 r_return
@@ -570,24 +497,18 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MTD_PARTITIONS
-id|ep7312_mtd-&gt;name
-op_assign
-l_string|&quot;edb7312-nand&quot;
-suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_CMDLINE_PARTS
 id|mtd_parts_nb
 op_assign
-id|parse_mtd_partitions
+id|parse_cmdline_partitions
 c_func
 (paren
-id|ep7312_mtd
-comma
-id|part_probes
+id|h1910_nand_mtd
 comma
 op_amp
 id|mtd_parts
 comma
-l_int|0
+l_string|&quot;h1910-nand&quot;
 )paren
 suffix:semicolon
 r_if
@@ -641,7 +562,7 @@ suffix:semicolon
 id|add_mtd_partitions
 c_func
 (paren
-id|ep7312_mtd
+id|h1910_nand_mtd
 comma
 id|mtd_parts
 comma
@@ -653,19 +574,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|ep7312_init
+DECL|variable|h1910_init
 id|module_init
 c_func
 (paren
-id|ep7312_init
+id|h1910_init
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Clean up routine&n; */
-DECL|function|ep7312_cleanup
+DECL|function|h1910_cleanup
 r_static
 r_void
 id|__exit
-id|ep7312_cleanup
+id|h1910_cleanup
 (paren
 r_void
 )paren
@@ -681,7 +602,7 @@ id|nand_chip
 op_star
 )paren
 op_amp
-id|ep7312_mtd
+id|h1910_nand_mtd
 (braket
 l_int|1
 )braket
@@ -689,27 +610,31 @@ suffix:semicolon
 multiline_comment|/* Release resources, unregister device */
 id|nand_release
 (paren
-id|ap7312_mtd
+id|h1910_nand_mtd
 )paren
 suffix:semicolon
-multiline_comment|/* Free internal data buffer */
-id|kfree
+multiline_comment|/* Release io resource */
+id|iounmap
 (paren
-id|this-&gt;data_buf
+(paren
+r_void
+op_star
+)paren
+id|this-&gt;IO_ADDR_W
 )paren
 suffix:semicolon
 multiline_comment|/* Free the MTD device structure */
 id|kfree
 (paren
-id|ep7312_mtd
+id|h1910_nand_mtd
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ep7312_cleanup
+DECL|variable|h1910_cleanup
 id|module_exit
 c_func
 (paren
-id|ep7312_cleanup
+id|h1910_cleanup
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -721,13 +646,13 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Marius Groeger &lt;mag@sysgo.de&gt;&quot;
+l_string|&quot;Joshua Wise &lt;joshua at joshuawise dot com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;MTD map driver for Cogent EDB7312 board&quot;
+l_string|&quot;NAND flash driver for iPAQ h1910&quot;
 )paren
 suffix:semicolon
 eof
