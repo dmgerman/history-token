@@ -1848,7 +1848,7 @@ id|socket-&gt;dev.class_id
 comma
 id|BUS_ID_SIZE
 comma
-l_string|&quot;pcmcia_socket%u&bslash;n&quot;
+l_string|&quot;pcmcia_socket%u&quot;
 comma
 id|socket-&gt;sock
 )paren
