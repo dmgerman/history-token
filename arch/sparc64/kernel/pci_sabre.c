@@ -4875,8 +4875,6 @@ id|p
 r_static
 r_int
 id|once
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|pci_bus

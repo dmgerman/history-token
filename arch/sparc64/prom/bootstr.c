@@ -14,8 +14,6 @@ DECL|variable|bootstr_valid
 r_static
 r_int
 id|bootstr_valid
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|bootstr_buf
 r_static
@@ -24,10 +22,6 @@ id|bootstr_buf
 (braket
 id|BARG_LEN
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 r_char
 op_star

@@ -8783,8 +8783,6 @@ suffix:semicolon
 r_static
 r_int
 id|smp_catch
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

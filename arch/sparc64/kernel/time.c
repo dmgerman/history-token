@@ -110,8 +110,6 @@ multiline_comment|/* last time the cmos clock got updated */
 r_static
 r_int
 id|last_rtc_update
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Determine when to update the Mostek clock. */
 r_if
@@ -1740,8 +1738,6 @@ macro_line|#endif
 r_static
 r_int
 id|invoked
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -71,8 +71,6 @@ DECL|variable|smp_highest_cpu
 r_static
 r_int
 id|smp_highest_cpu
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_int
