@@ -2521,8 +2521,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: bad index number %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: bad index number %d&bslash;n&quot;
 comma
 id|idx
 )paren
@@ -2680,8 +2681,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: bad port number %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: bad port number %d&bslash;n&quot;
 comma
 id|port
 )paren
