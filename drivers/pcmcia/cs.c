@@ -3456,6 +3456,12 @@ id|u_int
 id|events
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|s-&gt;thread
+)paren
+(brace
 id|spin_lock
 c_func
 (paren
@@ -3481,6 +3487,7 @@ op_amp
 id|s-&gt;thread_wait
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* pcmcia_parse_events */
 multiline_comment|/*======================================================================&n;&n;    Special stuff for managing IO windows, because they are scarce.&n;    &n;======================================================================*/
