@@ -15,8 +15,6 @@ macro_line|#include &quot;xfs_trans_priv.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
-DECL|macro|ROUNDUPNBWORD
-mdefine_line|#define&t;ROUNDUPNBWORD(x)&t;(((x) + (NBWORD - 1)) &amp; ~(NBWORD - 1))
 DECL|variable|xfs_buf_item_zone
 id|kmem_zone_t
 op_star

@@ -6567,8 +6567,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|macro|XFS_CREATE_NEW_MAXTRIES
-mdefine_line|#define&t;XFS_CREATE_NEW_MAXTRIES&t;10000
 multiline_comment|/*&n; * xfs_create (create a new file).&n; */
 id|STATIC
 r_int
