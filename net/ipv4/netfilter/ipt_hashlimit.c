@@ -195,6 +195,14 @@ id|hashlimit_lock
 suffix:semicolon
 multiline_comment|/* protects htables list */
 r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|hlimit_mutex
+)paren
+suffix:semicolon
+multiline_comment|/* additional checkentry protection */
+r_static
 id|LIST_HEAD
 c_func
 (paren
@@ -2068,6 +2076,14 @@ id|r-&gt;cfg.expire
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* This is the best we&squot;ve got: We cannot release and re-grab lock,&n;&t; * since checkentry() is called before ip_tables.c grabs ipt_mutex.  &n;&t; * We also cannot grab the hashtable spinlock, since htable_create will &n;&t; * call vmalloc, and that can sleep.  And we cannot just re-search&n;&t; * the list of htable&squot;s in htable_create(), since then we would&n;&t; * create duplicate proc files. -HW */
+id|down
+c_func
+(paren
+op_amp
+id|hlimit_mutex
+)paren
+suffix:semicolon
 id|r-&gt;hinfo
 op_assign
 id|htable_find_get
@@ -2093,10 +2109,24 @@ l_int|0
 )paren
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|hlimit_mutex
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|hlimit_mutex
+)paren
+suffix:semicolon
 multiline_comment|/* Ugly hack: For SMP, we only want to use one set */
 id|r-&gt;u.master
 op_assign

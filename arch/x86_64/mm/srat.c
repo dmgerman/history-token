@@ -36,14 +36,13 @@ id|MAX_NUMNODES
 )braket
 id|__initdata
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|pxm2node
 r_static
 id|__u8
 id|pxm2node
 (braket
 l_int|256
 )braket
-id|__initdata
 op_assign
 (brace
 (braket

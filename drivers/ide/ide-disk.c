@@ -185,10 +185,12 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* lba_capacity value may be bad */
 )brace
-multiline_comment|/*&n; * __ide_do_rw_disk() issues READ and WRITE commands to a disk,&n; * using LBA if supported, or CHS otherwise, to address sectors.&n; * It also takes care of issuing special DRIVE_CMDs.&n; */
+multiline_comment|/*&n; * __ide_do_rw_disk() issues READ and WRITE commands to a disk,&n; * using LBA if supported, or CHS otherwise, to address sectors.&n; */
 DECL|function|__ide_do_rw_disk
+r_static
 id|ide_startstop_t
 id|__ide_do_rw_disk
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1125,13 +1127,6 @@ id|rq
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__ide_do_rw_disk
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|__ide_do_rw_disk
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * 268435455  == 137439 MB or 28bit limit&n; * 320173056  == 163929 MB or 48bit addressing&n; * 1073741822 == 549756 MB or 48bit addressing fake drive&n; */
 DECL|function|ide_do_rw_disk
 r_static
@@ -1236,7 +1231,6 @@ c_cond
 (paren
 id|hwif-&gt;rw_disk
 )paren
-r_return
 id|hwif
 op_member_access_from_pointer
 id|rw_disk
@@ -1245,11 +1239,8 @@ c_func
 id|drive
 comma
 id|rq
-comma
-id|block
 )paren
 suffix:semicolon
-r_else
 r_return
 id|__ide_do_rw_disk
 c_func

@@ -1628,6 +1628,7 @@ op_star
 )paren
 )paren
 (brace
+macro_line|#if !defined(CONFIG_IP_NF_NAT) &amp;&amp; !defined(CONFIG_IP_NF_NAT_MODULE)
 multiline_comment|/* Previously seen (loopback)?  Ignore.  Do this before&n;           fragment check. */
 r_if
 c_cond
@@ -1642,6 +1643,7 @@ id|nfct
 r_return
 id|NF_ACCEPT
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Gather fragments. */
 r_if
 c_cond
