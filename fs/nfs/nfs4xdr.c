@@ -12684,7 +12684,7 @@ id|iovec
 op_star
 id|iov
 op_assign
-id|req-&gt;rq_rvec
+id|req-&gt;rq_rcv_buf.head
 suffix:semicolon
 r_uint32
 op_star
@@ -12754,7 +12754,7 @@ id|iov-&gt;iov_base
 suffix:semicolon
 id|recvd
 op_assign
-id|req-&gt;rq_received
+id|req-&gt;rq_rcv_buf.len
 op_minus
 id|hdrlen
 suffix:semicolon
@@ -12937,7 +12937,7 @@ id|iov-&gt;iov_base
 suffix:semicolon
 id|recvd
 op_assign
-id|req-&gt;rq_received
+id|rcvbuf-&gt;len
 op_minus
 id|hdrlen
 suffix:semicolon

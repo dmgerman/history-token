@@ -190,10 +190,6 @@ DECL|macro|rq_svec
 mdefine_line|#define rq_svec&t;&t;&t;rq_snd_buf.head
 DECL|macro|rq_slen
 mdefine_line|#define rq_slen&t;&t;&t;rq_snd_buf.len
-DECL|macro|rq_rvec
-mdefine_line|#define rq_rvec&t;&t;&t;rq_rcv_buf.head
-DECL|macro|rq_rlen
-mdefine_line|#define rq_rlen&t;&t;&t;rq_rcv_buf.len
 DECL|macro|XPRT_LAST_FRAG
 mdefine_line|#define XPRT_LAST_FRAG&t;&t;(1 &lt;&lt; 0)
 DECL|macro|XPRT_COPY_RECM

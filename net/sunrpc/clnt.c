@@ -2368,6 +2368,10 @@ id|sndbuf-&gt;len
 op_assign
 l_int|0
 suffix:semicolon
+id|sndbuf-&gt;buflen
+op_assign
+id|bufsiz
+suffix:semicolon
 id|rcvbuf-&gt;head
 (braket
 l_int|0
@@ -2412,6 +2416,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|rcvbuf-&gt;len
+op_assign
+l_int|0
+suffix:semicolon
+id|rcvbuf-&gt;buflen
 op_assign
 id|bufsiz
 suffix:semicolon
@@ -3328,6 +3336,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|req-&gt;rq_rcv_buf.len
+op_assign
+id|req-&gt;rq_private_buf.len
+suffix:semicolon
 multiline_comment|/* Check that the softirq receive buffer is valid */
 id|WARN_ON
 c_func
@@ -3482,6 +3494,8 @@ suffix:semicolon
 id|out_retry
 suffix:colon
 id|req-&gt;rq_received
+op_assign
+id|req-&gt;rq_private_buf.len
 op_assign
 l_int|0
 suffix:semicolon
@@ -3783,7 +3797,7 @@ id|u32
 op_star
 id|p
 op_assign
-id|task-&gt;tk_rqstp-&gt;rq_rvec
+id|task-&gt;tk_rqstp-&gt;rq_rcv_buf.head
 (braket
 l_int|0
 )braket

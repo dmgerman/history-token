@@ -2441,16 +2441,18 @@ comma
 id|copied
 )paren
 suffix:semicolon
-id|req-&gt;rq_received
-op_assign
-id|copied
-suffix:semicolon
 id|list_del_init
 c_func
 (paren
 op_amp
 id|req-&gt;rq_list
 )paren
+suffix:semicolon
+id|req-&gt;rq_received
+op_assign
+id|req-&gt;rq_private_buf.len
+op_assign
+id|copied
 suffix:semicolon
 multiline_comment|/* ... and wake up the process. */
 id|rpc_wake_up_task
@@ -3000,7 +3002,7 @@ c_cond
 (paren
 id|copied
 op_assign
-id|rovr-&gt;rq_private_buf.len
+id|rovr-&gt;rq_private_buf.buflen
 )paren
 OG
 id|repsize
@@ -3611,7 +3613,7 @@ c_cond
 (paren
 id|xprt-&gt;tcp_copied
 op_eq
-id|req-&gt;rq_private_buf.len
+id|req-&gt;rq_private_buf.buflen
 )paren
 id|xprt-&gt;tcp_flags
 op_and_assign
