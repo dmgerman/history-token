@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_fsf.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
+multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_fsf.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
 macro_line|#ifndef FSF_H
 DECL|macro|FSF_H
 mdefine_line|#define FSF_H
@@ -135,6 +135,10 @@ DECL|macro|FSF_REQUEST_SIZE_TOO_LARGE
 mdefine_line|#define FSF_REQUEST_SIZE_TOO_LARGE&t;&t;0x00000061
 DECL|macro|FSF_RESPONSE_SIZE_TOO_LARGE
 mdefine_line|#define FSF_RESPONSE_SIZE_TOO_LARGE&t;&t;0x00000062
+DECL|macro|FSF_SBAL_MISMATCH
+mdefine_line|#define FSF_SBAL_MISMATCH&t;&t;&t;0x00000063
+DECL|macro|FSF_OPEN_PORT_WITHOUT_PRLI
+mdefine_line|#define FSF_OPEN_PORT_WITHOUT_PRLI&t;&t;0x00000064
 DECL|macro|FSF_ADAPTER_STATUS_AVAILABLE
 mdefine_line|#define FSF_ADAPTER_STATUS_AVAILABLE&t;&t;0x000000AD
 DECL|macro|FSF_FCP_RSP_AVAILABLE
