@@ -1393,6 +1393,9 @@ mdefine_line|#define nfs_wait_event(clnt, wq, condition)&t;&t;&t;&t;&bslash;&n;(
 DECL|macro|NFS_JUKEBOX_RETRY_TIME
 mdefine_line|#define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
 macro_line|#ifdef CONFIG_NFS_V4
+r_struct
+id|idmap
+suffix:semicolon
 multiline_comment|/*&n; * In a seqid-mutating op, this macro controls which error return&n; * values trigger incrementation of the seqid.&n; *&n; * from rfc 3010:&n; * The client MUST monotonically increment the sequence number for the&n; * CLOSE, LOCK, LOCKU, OPEN, OPEN_CONFIRM, and OPEN_DOWNGRADE&n; * operations.  This is true even in the event that the previous&n; * operation that used the sequence number received an error.  The only&n; * exception to this rule is if the previous operation received one of&n; * the following errors: NFSERR_STALE_CLIENTID, NFSERR_STALE_STATEID,&n; * NFSERR_BAD_STATEID, NFSERR_BAD_SEQID, NFSERR_BADXDR,&n; * NFSERR_RESOURCE, NFSERR_NOFILEHANDLE.&n; *&n; */
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)       &bslash;&n;(((err) != NFSERR_STALE_CLIENTID) &amp;&amp;  &bslash;&n; ((err) != NFSERR_STALE_STATEID)  &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_STATEID)    &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_SEQID)      &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_XDR)        &amp;&amp;  &bslash;&n; ((err) != NFSERR_RESOURCE)       &amp;&amp;  &bslash;&n; ((err) != NFSERR_NOFILEHANDLE))
@@ -1526,6 +1529,13 @@ DECL|member|cl_rpcwaitq
 r_struct
 id|rpc_wait_queue
 id|cl_rpcwaitq
+suffix:semicolon
+multiline_comment|/* idmapper */
+DECL|member|cl_idmap
+r_struct
+id|idmap
+op_star
+id|cl_idmap
 suffix:semicolon
 multiline_comment|/* Our own IP address, as a null-terminated string.&n;&t; * This is used to generate the clientid, and the callback address.&n;&t; */
 DECL|member|cl_ipaddr

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  fs/nfs/nfs4state.c&n; *&n; *  Client-side XDR for NFS
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
+macro_line|#include &lt;linux/nfs_idmap.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|OPENOWNER_POOL_SIZE
 mdefine_line|#define OPENOWNER_POOL_SIZE&t;8
@@ -387,6 +388,12 @@ id|put_rpccred
 c_func
 (paren
 id|clp-&gt;cl_cred
+)paren
+suffix:semicolon
+id|nfs_idmap_delete
+c_func
+(paren
+id|clp
 )paren
 suffix:semicolon
 r_if

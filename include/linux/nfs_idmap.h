@@ -52,12 +52,11 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 r_void
-op_star
 id|nfs_idmap_new
 c_func
 (paren
 r_struct
-id|nfs_server
+id|nfs4_client
 op_star
 )paren
 suffix:semicolon
@@ -66,7 +65,7 @@ id|nfs_idmap_delete
 c_func
 (paren
 r_struct
-id|nfs_server
+id|nfs4_client
 op_star
 )paren
 suffix:semicolon
@@ -75,7 +74,7 @@ id|nfs_map_name_to_uid
 c_func
 (paren
 r_struct
-id|nfs_server
+id|nfs4_client
 op_star
 comma
 r_const
@@ -93,7 +92,7 @@ id|nfs_map_group_to_gid
 c_func
 (paren
 r_struct
-id|nfs_server
+id|nfs4_client
 op_star
 comma
 r_const
@@ -111,7 +110,7 @@ id|nfs_map_uid_to_name
 c_func
 (paren
 r_struct
-id|nfs_server
+id|nfs4_client
 op_star
 comma
 id|__u32
@@ -125,7 +124,7 @@ id|nfs_map_gid_to_group
 c_func
 (paren
 r_struct
-id|nfs_server
+id|nfs4_client
 op_star
 comma
 id|__u32

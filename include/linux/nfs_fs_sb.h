@@ -150,11 +150,6 @@ id|list_head
 id|nfs4_siblings
 suffix:semicolon
 multiline_comment|/* List of other nfs_server structs&n;&t;&t;&t;&t;&t;&t; * that share the same clientid&n;&t;&t;&t;&t;&t;&t; */
-DECL|member|idmap
-r_void
-op_star
-id|idmap
-suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon

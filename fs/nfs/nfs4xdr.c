@@ -525,7 +525,7 @@ op_assign
 id|nfs_map_uid_to_name
 c_func
 (paren
-id|server
+id|server-&gt;nfs4_state
 comma
 id|iap-&gt;ia_uid
 comma
@@ -597,7 +597,7 @@ op_assign
 id|nfs_map_gid_to_group
 c_func
 (paren
-id|server
+id|server-&gt;nfs4_state
 comma
 id|iap-&gt;ia_gid
 comma
@@ -6543,7 +6543,7 @@ op_assign
 id|nfs_map_name_to_uid
 c_func
 (paren
-id|server
+id|server-&gt;nfs4_state
 comma
 (paren
 r_char
@@ -6654,7 +6654,7 @@ op_assign
 id|nfs_map_group_to_gid
 c_func
 (paren
-id|server
+id|server-&gt;nfs4_state
 comma
 (paren
 r_char
