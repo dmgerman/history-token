@@ -1048,6 +1048,13 @@ r_int
 r_int
 id|end_iomem
 suffix:semicolon
+DECL|variable|end_iomem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|end_iomem
+)paren
+suffix:semicolon
 DECL|macro|MIN_VMALLOC
 mdefine_line|#define MIN_VMALLOC (32 * 1024 * 1024)
 DECL|function|linux_main
