@@ -3854,11 +3854,13 @@ id|abs_struct
 id|abs_struct
 op_assign
 (brace
+dot
 id|list
-suffix:colon
+op_assign
 (brace
+dot
 id|next
-suffix:colon
+op_assign
 l_int|0
 )brace
 )brace

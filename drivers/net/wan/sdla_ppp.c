@@ -7212,7 +7212,7 @@ op_star
 id|card-&gt;u.p.rxbuf_next
 )paren
 suffix:semicolon
-multiline_comment|/* Tell timer interrupt that PPP event occured */
+multiline_comment|/* Tell timer interrupt that PPP event occurred */
 id|ppp_priv_area-&gt;timer_int_enabled
 op_or_assign
 id|TMR_INT_ENABLED_PPP_EVENT
@@ -8141,7 +8141,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//If we get here&squot;s its an IPX-data packet, so it&squot;ll get passed up the stack.
+singleline_comment|//If we get here it&squot;s an IPX-data packet, so it&squot;ll get passed up the stack.
 singleline_comment|//switch the network numbers
 id|switch_net_numbers
 c_func
@@ -12245,7 +12245,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* IP addresses are the same and the link is up, &n;                         * we dont have to do anything here. Therefore, exit */
+multiline_comment|/* IP addresses are the same and the link is up, &n;                         * we don&squot;t have to do anything here. Therefore, exit */
 r_return
 l_int|0
 suffix:semicolon

@@ -55,7 +55,7 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/* .text section in head.S is aligned at 2 page boundry and this gets linked&n; * right after that so that the init_thread_union is aligned properly as well.&n; * We really don&squot;t need this special alignment like the Intel does, but&n; * I do it anyways for completeness.&n; */
+multiline_comment|/* .text section in head.S is aligned at 2 page boundary and this gets linked&n; * right after that so that the init_thread_union is aligned properly as well.&n; * We really don&squot;t need this special alignment like the Intel does, but&n; * I do it anyways for completeness.&n; */
 id|__asm__
 (paren
 l_string|&quot;.text&quot;

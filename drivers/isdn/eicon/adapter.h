@@ -779,7 +779,7 @@ id|DivasIdiRequest
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * intialisation entry point&n; */
+multiline_comment|/*&n; * initialisation entry point&n; */
 r_int
 id|DivasInit
 c_func

@@ -1255,7 +1255,7 @@ id|end
 suffix:semicolon
 )brace
 multiline_comment|/* TBD: Resources must be ordered. */
-multiline_comment|/*&n;&t; * First we reference all power resources required in the target list&n;&t; * (e.g. so the device doesn&squot;t loose power while transitioning).&n;&t; */
+multiline_comment|/*&n;&t; * First we reference all power resources required in the target list&n;&t; * (e.g. so the device doesn&squot;t lose power while transitioning).&n;&t; */
 r_for
 c_loop
 (paren

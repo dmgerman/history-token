@@ -192,7 +192,7 @@ DECL|typedef|buffer_rw_t
 )brace
 id|buffer_rw_t
 suffix:semicolon
-multiline_comment|/*&n; * ether3 read/write.  Slow things down a bit...&n; * The SEEQ8005 doesn&squot;t like us writing to it&squot;s registers&n; * too quickly.&n; */
+multiline_comment|/*&n; * ether3 read/write.  Slow things down a bit...&n; * The SEEQ8005 doesn&squot;t like us writing to its registers&n; * too quickly.&n; */
 DECL|function|ether3_outb
 r_static
 r_inline
@@ -1094,7 +1094,7 @@ id|priv-&gt;regs.config1
 op_or_assign
 id|CFG1_RECVSPECBROAD
 suffix:semicolon
-multiline_comment|/*&n;&t; * There is a problem with the NQ8005 in that it occasionally loses the&n;&t; * last two bytes.  To get round this problem, we receive the CRC as&n;&t; * well.  That way, if we do loose the last two, then it doesn&squot;t matter.&n;&t; */
+multiline_comment|/*&n;&t; * There is a problem with the NQ8005 in that it occasionally loses the&n;&t; * last two bytes.  To get round this problem, we receive the CRC as&n;&t; * well.  That way, if we do lose the last two, then it doesn&squot;t matter.&n;&t; */
 id|ether3_outw
 c_func
 (paren

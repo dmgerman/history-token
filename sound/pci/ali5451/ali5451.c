@@ -4781,7 +4781,7 @@ op_amp
 id|codec-&gt;chregs
 )paren
 suffix:semicolon
-singleline_comment|// check if interrupt occured for channel
+singleline_comment|// check if interrupt occurred for channel
 id|old
 op_assign
 id|pchregs-&gt;data.aint

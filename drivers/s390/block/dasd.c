@@ -6414,7 +6414,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Cancels a request that was started with dasd_sleep_on_req.&n; * This is usefull to timeout requests. The request will be&n; * terminated if it is currently in i/o.&n; * Returns 1 if the request has been terminated.&n; */
+multiline_comment|/*&n; * Cancels a request that was started with dasd_sleep_on_req.&n; * This is useful to timeout requests. The request will be&n; * terminated if it is currently in i/o.&n; * Returns 1 if the request has been terminated.&n; */
 DECL|function|dasd_cancel_req
 r_int
 id|dasd_cancel_req

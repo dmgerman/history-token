@@ -481,7 +481,7 @@ DECL|member|iec958_rate_code
 r_int
 id|iec958_rate_code
 suffix:semicolon
-multiline_comment|/* The cycle_count and cycle_offset fields are used for the&n;&t; * synchronization timestamps (syt) in the cip header.  They&n;&t; * are incremented by at least a cycle every time we put a&n;&t; * time stamp in a packet.  As we dont time stamp all&n;&t; * packages, cycle_count isn&squot;t updated in every cycle, and&n;&t; * sometimes it&squot;s incremented by 2.  Thus, we have&n;&t; * cycle_count2, which is simply incremented by one with each&n;&t; * packet, so we can compare it to the transmission time&n;&t; * written back in the dma programs.&n;&t; */
+multiline_comment|/* The cycle_count and cycle_offset fields are used for the&n;&t; * synchronization timestamps (syt) in the cip header.  They&n;&t; * are incremented by at least a cycle every time we put a&n;&t; * time stamp in a packet.  As we don&squot;t time stamp all&n;&t; * packages, cycle_count isn&squot;t updated in every cycle, and&n;&t; * sometimes it&squot;s incremented by 2.  Thus, we have&n;&t; * cycle_count2, which is simply incremented by one with each&n;&t; * packet, so we can compare it to the transmission time&n;&t; * written back in the dma programs.&n;&t; */
 DECL|member|cycle_count
 DECL|member|cycle_count2
 id|atomic_t
@@ -2730,7 +2730,7 @@ op_amp
 id|s-&gt;ticks_per_syt_offset
 )paren
 suffix:semicolon
-multiline_comment|/* This next addition should be modulo 8000 (0x1f40),&n;&t;&t; * but we only use the lower 4 bits of cycle_count, so&n;&t;&t; * we dont need the modulo. */
+multiline_comment|/* This next addition should be modulo 8000 (0x1f40),&n;&t;&t; * but we only use the lower 4 bits of cycle_count, so&n;&t;&t; * we don&squot;t need the modulo. */
 id|atomic_add
 c_func
 (paren

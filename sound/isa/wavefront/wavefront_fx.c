@@ -783,7 +783,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* YSS225 initialization.&n;&n;   This code was developed using DOSEMU. The Turtle Beach SETUPSND&n;   utility was run with I/O tracing in DOSEMU enabled, and a reconstruction&n;   of the port I/O done, using the Yamaha faxback document as a guide&n;   to add more logic to the code. Its really pretty wierd.&n;&n;   There was an alternative approach of just dumping the whole I/O&n;   sequence as a series of port/value pairs and a simple loop&n;   that output it. However, I hope that eventually I&squot;ll get more&n;   control over what this code does, and so I tried to stick with&n;   a somewhat &quot;algorithmic&quot; approach.&n;*/
+multiline_comment|/* YSS225 initialization.&n;&n;   This code was developed using DOSEMU. The Turtle Beach SETUPSND&n;   utility was run with I/O tracing in DOSEMU enabled, and a reconstruction&n;   of the port I/O done, using the Yamaha faxback document as a guide&n;   to add more logic to the code. Its really pretty weird.&n;&n;   There was an alternative approach of just dumping the whole I/O&n;   sequence as a series of port/value pairs and a simple loop&n;   that output it. However, I hope that eventually I&squot;ll get more&n;   control over what this code does, and so I tried to stick with&n;   a somewhat &quot;algorithmic&quot; approach.&n;*/
 r_int
 id|__init
 DECL|function|snd_wavefront_fx_start
@@ -4057,7 +4057,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* wierd stuff, derived from port I/O tracing with dosemu */
+multiline_comment|/* weird stuff, derived from port I/O tracing with dosemu */
 DECL|variable|__initdata
 r_static
 r_int

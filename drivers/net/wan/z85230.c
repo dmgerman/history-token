@@ -4860,7 +4860,7 @@ id|RES_Rx_CRC
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* Can&squot;t occur as we dont reenable the DMA irq until&n;&t;&t;&t;   after the flip is done */
+multiline_comment|/* Can&squot;t occur as we don&squot;t reenable the DMA irq until&n;&t;&t;&t;   after the flip is done */
 id|printk
 c_func
 (paren

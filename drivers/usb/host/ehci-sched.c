@@ -1371,7 +1371,7 @@ l_int|0
 )paren
 (brace
 singleline_comment|// FIXME -- just link toward the end, before any qh with a shorter period,
-singleline_comment|// AND accomodate it already having been linked here (after some other qh)
+singleline_comment|// AND accommodate it already having been linked here (after some other qh)
 singleline_comment|// AS WELL AS updating the schedule checking logic
 id|BUG
 (paren

@@ -3736,7 +3736,7 @@ id|Pad
 l_int|3
 )braket
 suffix:semicolon
-multiline_comment|/* Win2K has sent 0x0F01 (max resp length perhaps?) followed by one byte pad - doesnt seem to matter though */
+multiline_comment|/* Win2K has sent 0x0F01 (max resp length perhaps?) followed by one byte pad - doesn&squot;t seem to matter though */
 DECL|member|MaxReferralLevel
 id|__u16
 id|MaxReferralLevel

@@ -122,11 +122,6 @@ comma
 id|ctl_table
 op_star
 id|ctl_template
-comma
-r_struct
-id|module
-op_star
-id|controlling_mod
 )paren
 suffix:semicolon
 r_extern

@@ -5469,7 +5469,7 @@ id|retval
 id|err
 c_func
 (paren
-l_string|&quot;Error occured in enabling&bslash;n&quot;
+l_string|&quot;Error occurred in enabling&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -5516,7 +5516,7 @@ id|retval
 id|err
 c_func
 (paren
-l_string|&quot;Error occured in enabling&bslash;n&quot;
+l_string|&quot;Error occurred in enabling&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up

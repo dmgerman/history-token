@@ -1997,7 +1997,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;A2232: 65EC02 software broken, unknown event type %d occured.&bslash;n&quot;
+l_string|&quot;A2232: 65EC02 software broken, unknown event type %d occurred.&bslash;n&quot;
 comma
 id|ibuf
 (braket
@@ -2038,7 +2038,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;A2232: 65EC02 software broken, unknown data type %d occured.&bslash;n&quot;
+l_string|&quot;A2232: 65EC02 software broken, unknown data type %d occurred.&bslash;n&quot;
 comma
 id|cbuf
 (braket

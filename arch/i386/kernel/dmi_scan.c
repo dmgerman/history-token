@@ -1407,7 +1407,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; *** If you see IRQ problems, in paticular SCSI resets and hangs at boot&bslash;n&quot;
+l_string|&quot; *** If you see IRQ problems, in particular SCSI resets and hangs at boot&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

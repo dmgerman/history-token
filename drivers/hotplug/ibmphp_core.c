@@ -4496,7 +4496,7 @@ id|slot_cur-&gt;status
 )paren
 id|err
 (paren
-l_string|&quot;power fault occured trying to power up &bslash;n&quot;
+l_string|&quot;power fault occurred trying to power up &bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -4511,7 +4511,7 @@ id|slot_cur-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;bus speed mismatch occured.  please check current bus speed and card capability &bslash;n&quot;
+l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability &bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
@@ -4532,7 +4532,7 @@ id|slot_cur-&gt;ext_status
 (brace
 id|err
 (paren
-l_string|&quot;bus mode mismatch occured.  please check current bus mode and card capability &bslash;n&quot;
+l_string|&quot;bus mode mismatch occurred.  please check current bus mode and card capability &bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
@@ -4610,7 +4610,7 @@ id|slot_cur-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;power fault occured trying to power up... &bslash;n&quot;
+l_string|&quot;power fault occurred trying to power up... &bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4635,7 +4635,7 @@ id|slot_cur-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;bus speed mismatch occured.  please check current bus speed and card capability &bslash;n&quot;
+l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability &bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability

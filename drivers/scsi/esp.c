@@ -14147,7 +14147,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 )brace
-multiline_comment|/* Target negotiates for synchronous transfers before we do, this&n; * is legal although very strange.  What is even funnier is that&n; * the SCSI2 standard specifically recommends against targets doing&n; * this because so many initiators cannot cope with this occuring.&n; */
+multiline_comment|/* Target negotiates for synchronous transfers before we do, this&n; * is legal although very strange.  What is even funnier is that&n; * the SCSI2 standard specifically recommends against targets doing&n; * this because so many initiators cannot cope with this occurring.&n; */
 DECL|function|target_with_ants_in_pants
 r_static
 r_int

@@ -208,7 +208,7 @@ DECL|member|last_nr
 id|u8
 id|last_nr
 suffix:semicolon
-multiline_comment|/* NR of last pdu recieved */
+multiline_comment|/* NR of last pdu received */
 DECL|member|rx_pdu_hdr
 id|u32
 id|rx_pdu_hdr

@@ -83,7 +83,7 @@ op_star
 id|skb
 )paren
 (brace
-multiline_comment|/* Drop the CRC - its not a good idea to try and negotiate it ;) */
+multiline_comment|/* Drop the CRC - it&squot;s not a good idea to try and negotiate it ;) */
 id|skb_trim
 c_func
 (paren
@@ -110,7 +110,7 @@ id|skb-&gt;dev
 op_assign
 id|c-&gt;netdevice
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Send it to the PPP layer. We dont have time to process&n;&t; *&t;it right now.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Send it to the PPP layer. We don&squot;t have time to process&n;&t; *&t;it right now.&n;&t; */
 id|netif_rx
 c_func
 (paren

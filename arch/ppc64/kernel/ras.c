@@ -269,7 +269,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * Handle power subsystem events (EPOW).&n; *&n; * Presently we just log the event has occured.  This should be fixed&n; * to examine the type of power failure and take appropriate action where&n; * the time horizon permits something useful to be done.&n; */
+multiline_comment|/*&n; * Handle power subsystem events (EPOW).&n; *&n; * Presently we just log the event has occurred.  This should be fixed&n; * to examine the type of power failure and take appropriate action where&n; * the time horizon permits something useful to be done.&n; */
 r_static
 r_void
 DECL|function|ras_epow_interrupt

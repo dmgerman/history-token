@@ -1998,7 +1998,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Copy the generic exception handler code to it&squot;s final destination. */
+multiline_comment|/* Copy the generic exception handler code to its final destination. */
 id|memcpy
 c_func
 (paren

@@ -315,7 +315,7 @@ id|ip_conntrack_info
 id|ctinfo
 )paren
 (brace
-multiline_comment|/* tcplen not negative guarenteed by ip_conntrack_tcp.c */
+multiline_comment|/* tcplen not negative guaranteed by ip_conntrack_tcp.c */
 r_struct
 id|tcphdr
 op_star
@@ -828,7 +828,7 @@ op_amp
 id|ip_irc_lock
 )paren
 suffix:semicolon
-multiline_comment|/* save position of address in dcc string,&n;&t;&t;&t; * neccessary for NAT */
+multiline_comment|/* save position of address in dcc string,&n;&t;&t;&t; * necessary for NAT */
 id|DEBUGP
 c_func
 (paren

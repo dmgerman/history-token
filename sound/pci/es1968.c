@@ -10197,7 +10197,7 @@ op_plus
 l_int|0x1f
 )paren
 suffix:semicolon
-multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;   regardless of wether we use the assp or not. */
+multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;   regardless of whether we use the assp or not. */
 id|outb
 c_func
 (paren

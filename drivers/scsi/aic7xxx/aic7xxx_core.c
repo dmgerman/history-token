@@ -1742,7 +1742,7 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
-multiline_comment|/* Tell everyone that this HBA is no longer availible */
+multiline_comment|/* Tell everyone that this HBA is no longer available */
 id|ahc_abort_scbs
 c_func
 (paren
@@ -12503,7 +12503,7 @@ id|targ_scsirate
 op_assign
 id|tinfo-&gt;scsirate
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parse as much of the message as is availible,&n;&t; * rejecting it if we don&squot;t support it.  When&n;&t; * the entire message is availible and has been&n;&t; * handled, return MSGLOOP_MSGCOMPLETE, indicating&n;&t; * that we have parsed an entire message.&n;&t; *&n;&t; * In the case of extended messages, we accept the length&n;&t; * byte outright and perform more checking once we know the&n;&t; * extended message type.&n;&t; */
+multiline_comment|/*&n;&t; * Parse as much of the message as is available,&n;&t; * rejecting it if we don&squot;t support it.  When&n;&t; * the entire message is available and has been&n;&t; * handled, return MSGLOOP_MSGCOMPLETE, indicating&n;&t; * that we have parsed an entire message.&n;&t; *&n;&t; * In the case of extended messages, we accept the length&n;&t; * byte outright and perform more checking once we know the&n;&t; * extended message type.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -21241,7 +21241,7 @@ l_int|0
 r_int
 id|wait
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Wait for up to 500ms for our transceivers&n;&t;&t; * to settle.  If the adapter does not have&n;&t;&t; * a cable attached, the tranceivers may&n;&t;&t; * never settle, so don&squot;t complain if we&n;&t;&t; * fail here.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Wait for up to 500ms for our transceivers&n;&t;&t; * to settle.  If the adapter does not have&n;&t;&t; * a cable attached, the transceivers may&n;&t;&t; * never settle, so don&squot;t complain if we&n;&t;&t; * fail here.&n;&t;&t; */
 id|ahc_pause
 c_func
 (paren

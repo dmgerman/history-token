@@ -789,7 +789,7 @@ id|ctx
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Check if a conversion error occured. */
+multiline_comment|/* Check if a conversion error occurred. */
 r_if
 c_cond
 (paren

@@ -91,7 +91,7 @@ l_int|31
 id|printk
 (paren
 id|KERN_EMERG
-l_string|&quot;MCE: The hardware reports a non fatal, correctable incident occured on CPU %d.&bslash;n&quot;
+l_string|&quot;MCE: The hardware reports a non fatal, correctable incident occurred on CPU %d.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func

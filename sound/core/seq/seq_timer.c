@@ -1634,7 +1634,7 @@ r_return
 id|cur_time
 suffix:semicolon
 )brace
-multiline_comment|/* TODO: use interpolation on tick queue (will only be usefull for very&n; high PPQ values) */
+multiline_comment|/* TODO: use interpolation on tick queue (will only be useful for very&n; high PPQ values) */
 DECL|function|snd_seq_timer_get_cur_tick
 id|snd_seq_tick_time_t
 id|snd_seq_timer_get_cur_tick

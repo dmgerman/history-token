@@ -1514,7 +1514,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-multiline_comment|/* allocate memory for our device state and intialize it */
+multiline_comment|/* allocate memory for our device state and initialize it */
 id|dev
 op_assign
 id|kmalloc

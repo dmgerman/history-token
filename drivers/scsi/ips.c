@@ -7427,7 +7427,7 @@ multiline_comment|/* Routine Name: ips_fill_scb_sg_single                       
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*   Fill in a single scb sg_list element from an address                   */
-multiline_comment|/*   return a -1 if a breakup occured                                       */
+multiline_comment|/*   return a -1 if a breakup occurred                                      */
 multiline_comment|/****************************************************************************/
 DECL|function|ips_fill_scb_sg_single
 r_static
@@ -11423,9 +11423,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|scb-&gt;dcdb.cmd_attribute
 op_amp
 l_int|0x3
+)paren
 )paren
 id|scb-&gt;dcdb.transfer_length
 op_assign
@@ -13104,9 +13106,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|scb-&gt;dcdb.cmd_attribute
 op_amp
 l_int|0x3
+)paren
 )paren
 id|scb-&gt;dcdb.transfer_length
 op_assign

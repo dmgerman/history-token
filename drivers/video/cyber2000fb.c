@@ -6885,7 +6885,7 @@ r_char
 id|val
 suffix:semicolon
 macro_line|#if defined(__sparc_v9__)
-macro_line|#error &quot;You loose, consult DaveM.&quot;
+macro_line|#error &quot;You lose, consult DaveM.&quot;
 macro_line|#elif defined(__sparc__)
 multiline_comment|/*&n;&t; * SPARC does not have an &quot;outb&quot; instruction, so we generate&n;&t; * I/O cycles storing into a reserved memory space at&n;&t; * physical address 0x3000000&n;&t; */
 r_int

@@ -460,7 +460,7 @@ DECL|macro|readl
 mdefine_line|#define readl(addr)      in_le32(addr)
 DECL|macro|writel
 mdefine_line|#define writel(val,addr) out_le32((addr),(val))
-multiline_comment|/* those can be defined for both ISA and PCI - it wont work though */
+multiline_comment|/* those can be defined for both ISA and PCI - it won&squot;t work though */
 DECL|macro|readb
 mdefine_line|#define readb(addr)       in_8(addr)
 DECL|macro|readw

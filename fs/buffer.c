@@ -9588,7 +9588,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invokation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
+multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invocation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
 id|kaddr
 op_assign
 id|kmap_atomic
@@ -9957,7 +9957,7 @@ id|bio
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ll_rw_block: low-level access to block devices (DEPRECATED)&n; * @rw: whether to %READ or %WRITE or maybe %READA (readahead)&n; * @nr: number of &amp;struct buffer_heads in the array&n; * @bhs: array of pointers to &amp;struct buffer_head&n; *&n; * ll_rw_block() takes an array of pointers to &amp;struct buffer_heads,&n; * and requests an I/O operation on them, either a %READ or a %WRITE.&n; * The third %READA option is described in the documentation for&n; * generic_make_request() which ll_rw_block() calls.&n; *&n; * This function drops any buffer that it cannot get a lock on (with the&n; * BH_Lock state bit), any buffer that appears to be clean when doing a&n; * write request, and any buffer that appears to be up-to-date when doing&n; * read request.  Further it marks as clean buffers that are processed for&n; * writing (the buffer cache wont assume that they are actually clean until&n; * the buffer gets unlocked).&n; *&n; * ll_rw_block sets b_end_io to simple completion handler that marks&n; * the buffer up-to-date (if approriate), unlocks the buffer and wakes&n; * any waiters. &n; *&n; * All of the buffers must be for the same device, and must also be a&n; * multiple of the current approved size for the device.&n; */
+multiline_comment|/**&n; * ll_rw_block: low-level access to block devices (DEPRECATED)&n; * @rw: whether to %READ or %WRITE or maybe %READA (readahead)&n; * @nr: number of &amp;struct buffer_heads in the array&n; * @bhs: array of pointers to &amp;struct buffer_head&n; *&n; * ll_rw_block() takes an array of pointers to &amp;struct buffer_heads,&n; * and requests an I/O operation on them, either a %READ or a %WRITE.&n; * The third %READA option is described in the documentation for&n; * generic_make_request() which ll_rw_block() calls.&n; *&n; * This function drops any buffer that it cannot get a lock on (with the&n; * BH_Lock state bit), any buffer that appears to be clean when doing a&n; * write request, and any buffer that appears to be up-to-date when doing&n; * read request.  Further it marks as clean buffers that are processed for&n; * writing (the buffer cache won&squot;t assume that they are actually clean until&n; * the buffer gets unlocked).&n; *&n; * ll_rw_block sets b_end_io to simple completion handler that marks&n; * the buffer up-to-date (if approriate), unlocks the buffer and wakes&n; * any waiters. &n; *&n; * All of the buffers must be for the same device, and must also be a&n; * multiple of the current approved size for the device.&n; */
 DECL|function|ll_rw_block
 r_void
 id|ll_rw_block

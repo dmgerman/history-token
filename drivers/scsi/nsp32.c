@@ -3742,7 +3742,7 @@ id|newid
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If reselected New ID:LUN is not existed&n;&t; * or current nexus is not existed, unexpected&n;&t; * reselection is occured. Send reject message.&n;&t; */
+multiline_comment|/*&n;&t; * If reselected New ID:LUN is not existed&n;&t; * or current nexus is not existed, unexpected&n;&t; * reselection is occurred. Send reject message.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5469,7 +5469,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * AutoSCSI Interrupt.&n;&t; * Note: This interrupt is occured when AutoSCSI is finished.  Then&n;&t; * check SCSIEXECUTEPHASE, and do appropriate action.  Each phases are&n;&t; * recorded when AutoSCSI sequencer has been processed.&n;&t; */
+multiline_comment|/*&n;&t; * AutoSCSI Interrupt.&n;&t; * Note: This interrupt is occurred when AutoSCSI is finished.  Then&n;&t; * check SCSIEXECUTEPHASE, and do appropriate action.  Each phases are&n;&t; * recorded when AutoSCSI sequencer has been processed.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5513,7 +5513,7 @@ c_func
 (paren
 id|NSP32_DEBUG_INTR
 comma
-l_string|&quot;selection timeout occured&quot;
+l_string|&quot;selection timeout occurred&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -5542,7 +5542,7 @@ op_amp
 id|MSGOUT_PHASE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * MsgOut phase was processed.&n;&t;&t;&t; * If MSG_IN_OCCUER is not set, then MsgOut phase is&n;&t;&t;&t; * completed. Thus, msgoutlen must reset.  Otherwise,&n;&t;&t;&t; * nothing to do here. If MSG_OUT_OCCUER is occured,&n;&t;&t;&t; * then we will encounter the condition and check.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * MsgOut phase was processed.&n;&t;&t;&t; * If MSG_IN_OCCUER is not set, then MsgOut phase is&n;&t;&t;&t; * completed. Thus, msgoutlen must reset.  Otherwise,&n;&t;&t;&t; * nothing to do here. If MSG_OUT_OCCUER is occurred,&n;&t;&t;&t; * then we will encounter the condition and check.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6058,7 +6058,7 @@ c_func
 (paren
 id|NSP32_DEBUG_INTR
 comma
-l_string|&quot;PCI IRQ occured&quot;
+l_string|&quot;PCI IRQ occurred&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Do nothing */
@@ -6080,7 +6080,7 @@ comma
 l_string|&quot;Received unexpected BMCNTERR IRQ! &quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * TODO: To be implemented improving bus master&n;&t;&t; * transfer reliablity when BMCNTERR is occured in&n;&t;&t; * AutoSCSI phase described in specification.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * TODO: To be implemented improving bus master&n;&t;&t; * transfer reliablity when BMCNTERR is occurred in&n;&t;&t; * AutoSCSI phase described in specification.&n;&t;&t; */
 )brace
 macro_line|#if 0
 id|printk
@@ -8819,7 +8819,7 @@ multiline_comment|/* &n;&t;&t;&t; * If valid message is received, then&n;&t;&t;&
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * On the contrary, if unexpected bus free is&n;&t;&t;&t; * occured, then negotiation is failed. Fall&n;&t;&t;&t; * back to ASYNC mode.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * On the contrary, if unexpected bus free is&n;&t;&t;&t; * occurred, then negotiation is failed. Fall&n;&t;&t;&t; * back to ASYNC mode.&n;&t;&t;&t; */
 id|nsp32_set_async
 c_func
 (paren
@@ -8964,7 +8964,7 @@ c_func
 (paren
 id|KERN_WARNING
 comma
-l_string|&quot;unexpected bus free occured&quot;
+l_string|&quot;unexpected bus free occurred&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* DID_ERROR? */
@@ -9205,7 +9205,7 @@ comma
 id|data-&gt;msgoutlen
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If MsgOut phase is occured without having any&n;&t; * message, then No_Operation is sent (SCSI-2).&n;&t; */
+multiline_comment|/*&n;&t; * If MsgOut phase is occurred without having any&n;&t; * message, then No_Operation is sent (SCSI-2).&n;&t; */
 r_if
 c_cond
 (paren
@@ -9743,7 +9743,7 @@ suffix:colon
 r_case
 id|DISCONNECT
 suffix:colon
-multiline_comment|/*&n;&t;&t; * These messages should not be occured.&n;&t;&t; * They should be processed on AutoSCSI sequencer.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * These messages should not be occurred.&n;&t;&t; * They should be processed on AutoSCSI sequencer.&n;&t;&t; */
 id|nsp32_msg
 c_func
 (paren
@@ -9864,7 +9864,7 @@ suffix:semicolon
 r_case
 id|SAVE_POINTERS
 suffix:colon
-multiline_comment|/*&n;&t;&t; * These messages should not be occured.&n;&t;&t; * They should be processed on AutoSCSI sequencer.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * These messages should not be occurred.&n;&t;&t; * They should be processed on AutoSCSI sequencer.&n;&t;&t; */
 id|nsp32_msg
 (paren
 id|KERN_WARNING

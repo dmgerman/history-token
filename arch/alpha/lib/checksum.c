@@ -240,7 +240,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Fold down to 32-bits so we don&squot;t loose in the typedef-less &n;&t;   network stack.  */
+multiline_comment|/* Fold down to 32-bits so we don&squot;t lose in the typedef-less &n;&t;   network stack.  */
 multiline_comment|/* 64 to 33 */
 id|result
 op_assign

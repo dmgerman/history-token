@@ -652,7 +652,7 @@ id|cciss_scsi_cmd_stack_elem_t
 op_star
 id|CMD_STACK_SIZE
 suffix:semicolon
-singleline_comment|// pci_alloc_consistent guarentees 32-bit DMA address will
+singleline_comment|// pci_alloc_consistent guarantees 32-bit DMA address will
 singleline_comment|// be used
 id|stk-&gt;pool
 op_assign

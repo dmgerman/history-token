@@ -38,6 +38,8 @@ suffix:semicolon
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 multiline_comment|/* keep track of when we need to update the rtc */
 DECL|variable|last_rtc_update

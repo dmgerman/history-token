@@ -43,6 +43,16 @@ id|vm_area_struct
 op_star
 )paren
 suffix:semicolon
+r_void
+id|free_huge_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 DECL|macro|MAX_ID
 mdefine_line|#define MAX_ID &t;32
 DECL|struct|htlbpagekey
@@ -216,6 +226,14 @@ id|page
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|page-&gt;lru.prev
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|free_huge_page
 suffix:semicolon
 id|memset
 c_func

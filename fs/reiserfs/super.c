@@ -6494,7 +6494,7 @@ id|buf-&gt;f_bsize
 op_assign
 id|s-&gt;s_blocksize
 suffix:semicolon
-multiline_comment|/* changed to accomodate gcc folks.*/
+multiline_comment|/* changed to accommodate gcc folks.*/
 id|buf-&gt;f_type
 op_assign
 id|REISERFS_SUPER_MAGIC

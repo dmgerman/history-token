@@ -2786,7 +2786,7 @@ comma
 id|res
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  We dont&squot;t know which RAM region contains kernel data,&n;&t;&t; *  so we try it repeatedly and let the resource manager&n;&t;&t; *  test it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  We don&squot;t know which RAM region contains kernel data,&n;&t;&t; *  so we try it repeatedly and let the resource manager&n;&t;&t; *  test it.&n;&t;&t; */
 id|request_resource
 c_func
 (paren

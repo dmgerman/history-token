@@ -2824,7 +2824,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* intialize AWE32 hardware */
+multiline_comment|/* initialize AWE32 hardware */
 id|awe_initialize
 c_func
 (paren

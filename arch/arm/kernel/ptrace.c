@@ -1772,7 +1772,7 @@ comma
 id|alt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Note that we ignore the result of setting the above&n;&t;&t; * breakpoint since it may fail.  When it does, this is&n;&t;&t; * not so much an error, but a forewarning that we may&n;&t;&t; * be receiving a prefetch abort shortly.&n;&t;&t; *&n;&t;&t; * If we don&squot;t set this breakpoint here, then we can&n;&t;&t; * loose control of the thread during single stepping.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Note that we ignore the result of setting the above&n;&t;&t; * breakpoint since it may fail.  When it does, this is&n;&t;&t; * not so much an error, but a forewarning that we may&n;&t;&t; * be receiving a prefetch abort shortly.&n;&t;&t; *&n;&t;&t; * If we don&squot;t set this breakpoint here, then we can&n;&t;&t; * lose control of the thread during single stepping.&n;&t;&t; */
 r_if
 c_cond
 (paren

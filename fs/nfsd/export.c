@@ -3018,7 +3018,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* must make sure there wont be an ex_fsid clash */
+multiline_comment|/* must make sure there won&squot;t be an ex_fsid clash */
 r_if
 c_cond
 (paren

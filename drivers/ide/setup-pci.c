@@ -1535,7 +1535,7 @@ r_return
 id|hwif
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ide_hwif_setup_dma&t;-&t;configure DMA interface&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci data&n; *&t;@hwif: Hardware interface we are configuring&n; *&n; *&t;Set up the DMA base for the interface. Enable the master bits as&n; *&t;neccessary and attempt to bring the device DMA into a ready to use&n; *&t;state&n; */
+multiline_comment|/**&n; *&t;ide_hwif_setup_dma&t;-&t;configure DMA interface&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci data&n; *&t;@hwif: Hardware interface we are configuring&n; *&n; *&t;Set up the DMA base for the interface. Enable the master bits as&n; *&t;necessary and attempt to bring the device DMA into a ready to use&n; *&t;state&n; */
 DECL|function|ide_hwif_setup_dma
 r_static
 r_void
@@ -1940,7 +1940,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ide_pci_setup_ports&t;-&t;configure ports/devices on PCI IDE&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci device info&n; *&t;@autodma: Should we enable DMA&n; *&t;@pciirq: IRQ line&n; *&t;@index: ata index to update&n; *&n; *&t;Scan the interfaces attached to this device and do any&n; *&t;neccessary per port setup. Attach the devices and ask the&n; *&t;generic DMA layer to do its work for us.&n; *&n; *&t;Normally called automaticall from do_ide_pci_setup_device,&n; *&t;but is also used directly as a helper function by some controllers&n; *&t;where the chipset setup is not the default PCI IDE one.&n; */
+multiline_comment|/**&n; *&t;ide_pci_setup_ports&t;-&t;configure ports/devices on PCI IDE&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci device info&n; *&t;@autodma: Should we enable DMA&n; *&t;@pciirq: IRQ line&n; *&t;@index: ata index to update&n; *&n; *&t;Scan the interfaces attached to this device and do any&n; *&t;necessary per port setup. Attach the devices and ask the&n; *&t;generic DMA layer to do its work for us.&n; *&n; *&t;Normally called automaticall from do_ide_pci_setup_device,&n; *&t;but is also used directly as a helper function by some controllers&n; *&t;where the chipset setup is not the default PCI IDE one.&n; */
 DECL|function|ide_pci_setup_ports
 r_void
 id|ide_pci_setup_ports

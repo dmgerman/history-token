@@ -2666,7 +2666,7 @@ comma
 id|iic-&gt;extsts
 )paren
 suffix:semicolon
-singleline_comment|// Mask off the irrelevent bits
+singleline_comment|// Mask off the irrelevant bits
 id|ret
 op_assign
 id|ret

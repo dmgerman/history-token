@@ -116,7 +116,7 @@ r_case
 l_int|0xFA
 suffix:colon
 r_return
-l_string|&quot;ERROR tranceiver not found &quot;
+l_string|&quot;ERROR transceiver not found &quot;
 suffix:semicolon
 r_case
 l_int|0xF9

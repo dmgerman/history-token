@@ -7107,7 +7107,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* allocate memory for our device and intialize it */
+multiline_comment|/* allocate memory for our device and initialize it */
 id|cp
 op_assign
 id|kmalloc

@@ -4,7 +4,7 @@ macro_line|#ifndef _WAVELAN_CS_H
 DECL|macro|_WAVELAN_CS_H
 mdefine_line|#define&t;_WAVELAN_CS_H
 multiline_comment|/************************** MAGIC NUMBERS ***************************/
-multiline_comment|/* The detection of the wavelan card is made by reading the MAC address&n; * from the card and checking it. If you have a non AT&amp;T product (OEM,&n; * like DEC RoamAbout, or Digital Ocean, Epson, ...), you must modify this&n; * part to accomodate your hardware...&n; */
+multiline_comment|/* The detection of the wavelan card is made by reading the MAC address&n; * from the card and checking it. If you have a non AT&amp;T product (OEM,&n; * like DEC RoamAbout, or Digital Ocean, Epson, ...), you must modify this&n; * part to accommodate your hardware...&n; */
 DECL|variable|MAC_ADDRESSES
 r_const
 r_int

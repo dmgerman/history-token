@@ -8268,7 +8268,7 @@ id|MASK_16
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if any error is still present, a fatal error has occured ... */
+multiline_comment|/* if any error is still present, a fatal error has occurred ... */
 r_if
 c_cond
 (paren
@@ -8445,7 +8445,7 @@ l_int|0xff
 id|hprintk
 c_func
 (paren
-l_string|&quot;saa7146: i2c_write_out: some error has occured&bslash;n&quot;
+l_string|&quot;saa7146: i2c_write_out: some error has occurred&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -9246,7 +9246,7 @@ id|SPCI_DEBI_S
 )paren
 )paren
 (brace
-multiline_comment|/* check, if error occured */
+multiline_comment|/* check, if error occurred */
 multiline_comment|/*&t;&t;&t;if ( 0 != (saa7146_read(saa-&gt;mem, SSR) &amp; (MASK_23|MASK_22))) { */
 r_if
 c_cond

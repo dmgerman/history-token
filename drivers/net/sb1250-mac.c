@@ -1384,7 +1384,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**********************************************************************&n; *  SBMAC_MII_READ(s,phyaddr,regidx)&n; *  &n; *  Read a PHY register.&n; *  &n; *  Input parameters: &n; *  &t;   s - sbmac structure&n; *  &t;   phyaddr - PHY&squot;s address&n; *  &t;   regidx = index of register to read&n; *  &t;   &n; *  Return value:&n; *  &t;   value read, or 0 if an error occured.&n; ********************************************************************* */
+multiline_comment|/**********************************************************************&n; *  SBMAC_MII_READ(s,phyaddr,regidx)&n; *  &n; *  Read a PHY register.&n; *  &n; *  Input parameters: &n; *  &t;   s - sbmac structure&n; *  &t;   phyaddr - PHY&squot;s address&n; *  &t;   regidx = index of register to read&n; *  &t;   &n; *  Return value:&n; *  &t;   value read, or 0 if an error occurred.&n; ********************************************************************* */
 DECL|function|sbmac_mii_read
 r_static
 r_int
@@ -1489,7 +1489,7 @@ comma
 id|M_MAC_MDIO_DIR_INPUT
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * If an error occured, the PHY will signal &squot;1&squot; back&n;&t; */
+multiline_comment|/* &n;&t; * If an error occurred, the PHY will signal &squot;1&squot; back&n;&t; */
 id|error
 op_assign
 id|SBMAC_READCSR

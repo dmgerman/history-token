@@ -193,7 +193,7 @@ suffix:semicolon
 macro_line|#ifndef DP_WINDOW_SIZE
 multiline_comment|/* #include &quot;cyclomz.h&quot; */
 multiline_comment|/****************** ****************** *******************/
-multiline_comment|/*&n; *&t;The data types defined below are used in all ZFIRM interface&n; *&t;data structures. They accomodate differences between HW&n; *&t;architectures and compilers.&n; */
+multiline_comment|/*&n; *&t;The data types defined below are used in all ZFIRM interface&n; *&t;data structures. They accommodate differences between HW&n; *&t;architectures and compilers.&n; */
 macro_line|#if defined(__alpha__)
 DECL|typedef|ucdouble
 r_typedef

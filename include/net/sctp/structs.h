@@ -3121,7 +3121,7 @@ id|sctp_transport
 op_star
 id|last_sent_to
 suffix:semicolon
-multiline_comment|/* This is the last transport I have recieved DATA on.  */
+multiline_comment|/* This is the last transport I have received DATA on.  */
 DECL|member|last_data_from
 r_struct
 id|sctp_transport

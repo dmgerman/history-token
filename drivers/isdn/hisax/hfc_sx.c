@@ -297,7 +297,7 @@ multiline_comment|/* wait for busy */
 )brace
 multiline_comment|/******************************************/
 multiline_comment|/* reset the specified fifo to defaults.  */
-multiline_comment|/* If its a send fifo init needed markers */
+multiline_comment|/* If it&squot;s a send fifo init needed markers */
 multiline_comment|/******************************************/
 r_static
 r_void
@@ -6101,8 +6101,6 @@ id|pnp_activate_dev
 c_func
 (paren
 id|pd
-comma
-l_int|NULL
 )paren
 OL
 l_int|0

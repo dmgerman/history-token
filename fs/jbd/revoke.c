@@ -1872,7 +1872,7 @@ c_cond
 id|record
 )paren
 (brace
-multiline_comment|/* If we have multiple occurences, only record the&n;&t;&t; * latest sequence number in the hashed record */
+multiline_comment|/* If we have multiple occurrences, only record the&n;&t;&t; * latest sequence number in the hashed record */
 r_if
 c_cond
 (paren

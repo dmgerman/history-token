@@ -1008,7 +1008,7 @@ id|NOTIFY_MAX_NAME
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_init (void)&n; *&n; *  Protocol stack intialisation entry point.&n; *  Initialise the various components of the IrDA stack&n; */
+multiline_comment|/*&n; * Function irda_init (void)&n; *&n; *  Protocol stack initialisation entry point.&n; *  Initialise the various components of the IrDA stack&n; */
 DECL|function|irda_init
 r_int
 id|__init

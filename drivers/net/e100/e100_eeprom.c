@@ -367,7 +367,7 @@ singleline_comment|//              checked for validity - ie. is it too big or t
 singleline_comment|//              is then passed to the read/write functions.
 singleline_comment|//
 singleline_comment|// Returns:
-singleline_comment|//      Size of the eeprom, or zero if an error occured
+singleline_comment|//      Size of the eeprom, or zero if an error occurred
 singleline_comment|//----------------------------------------------------------------------------------------
 id|u16
 DECL|function|e100_eeprom_size

@@ -336,7 +336,7 @@ r_struct
 id|device_driver
 id|driver
 suffix:semicolon
-multiline_comment|/* higher level structure, dont init&n;&t;&t;&t;&t;&t;   this from your driver&t;     */
+multiline_comment|/* higher level structure, don&squot;t init&n;&t;&t;&t;&t;&t;   this from your driver&t;     */
 DECL|member|name
 r_char
 op_star

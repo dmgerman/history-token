@@ -657,7 +657,7 @@ r_return
 )paren
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* cant remove a SCB with childs before &n;&t;   removing childs first  */
+multiline_comment|/* can&squot;t remove a SCB with childs before &n;&t;   removing childs first  */
 id|snd_assert
 (paren
 (paren
@@ -5360,7 +5360,7 @@ id|chip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* dont touch anything if SPDIF is open */
+multiline_comment|/* don&squot;t touch anything if SPDIF is open */
 r_if
 c_cond
 (paren
@@ -5506,7 +5506,7 @@ id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
 suffix:semicolon
-multiline_comment|/* dont touch anything if SPDIF is open */
+multiline_comment|/* don&squot;t touch anything if SPDIF is open */
 r_if
 c_cond
 (paren

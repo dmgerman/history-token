@@ -140,7 +140,7 @@ id|ipmi_user
 op_star
 id|ipmi_user_t
 suffix:semicolon
-multiline_comment|/*&n; * Stuff coming from the recieve interface comes as one of these.&n; * They are allocated, the receiver must free them with&n; * ipmi_free_recv_msg() when done with the message.  The link is not&n; * used after the message is delivered, so the upper layer may use the&n; * link to build a linked list, if it likes.&n; */
+multiline_comment|/*&n; * Stuff coming from the receive interface comes as one of these.&n; * They are allocated, the receiver must free them with&n; * ipmi_free_recv_msg() when done with the message.  The link is not&n; * used after the message is delivered, so the upper layer may use the&n; * link to build a linked list, if it likes.&n; */
 DECL|struct|ipmi_recv_msg
 r_struct
 id|ipmi_recv_msg

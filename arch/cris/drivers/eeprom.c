@@ -2562,9 +2562,6 @@ c_func
 )paren
 )paren
 (brace
-suffix:semicolon
-)brace
-(brace
 r_break
 suffix:semicolon
 )brace

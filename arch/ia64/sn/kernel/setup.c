@@ -216,7 +216,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * early_sn_setup - early setup routine for SN platforms&n; *&n; * Sets up an intial console to aid debugging.  Intended primarily&n; * for bringup, it&squot;s only called if %BRINGUP and %CONFIG_IA64_EARLY_PRINTK&n; * are turned on.  See start_kernel() in init/main.c.&n; */
+multiline_comment|/**&n; * early_sn_setup - early setup routine for SN platforms&n; *&n; * Sets up an initial console to aid debugging.  Intended primarily&n; * for bringup, it&squot;s only called if %BRINGUP and %CONFIG_IA64_EARLY_PRINTK&n; * are turned on.  See start_kernel() in init/main.c.&n; */
 macro_line|#if defined(CONFIG_IA64_EARLY_PRINTK)
 r_void
 id|__init
@@ -264,7 +264,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parse enough of the SAL tables to locate the SAL entry point. Since, console&n;&t; * IO on SN2 is done via SAL calls, early_printk wont work without this.&n;&t; *&n;&t; * This code duplicates some of the ACPI table parsing that is in efi.c &amp; sal.c.&n;&t; * Any changes to those file may have to be made hereas well.&n;&t; */
+multiline_comment|/*&n;&t; * Parse enough of the SAL tables to locate the SAL entry point. Since, console&n;&t; * IO on SN2 is done via SAL calls, early_printk won&squot;t work without this.&n;&t; *&n;&t; * This code duplicates some of the ACPI table parsing that is in efi.c &amp; sal.c.&n;&t; * Any changes to those file may have to be made hereas well.&n;&t; */
 id|efi_systab
 op_assign
 (paren

@@ -59,7 +59,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Is it neccessary to do the memset? */
+multiline_comment|/* Is it necessary to do the memset? */
 id|memset
 c_func
 (paren

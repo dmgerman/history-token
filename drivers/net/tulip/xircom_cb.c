@@ -344,7 +344,7 @@ id|card
 suffix:semicolon
 r_static
 r_void
-id|tranceiver_voodoo
+id|transceiver_voodoo
 c_func
 (paren
 r_struct
@@ -1298,7 +1298,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/* start the transmitter to get a heartbeat */
 multiline_comment|/* TODO: send 2 dummy packets here */
-id|tranceiver_voodoo
+id|transceiver_voodoo
 c_func
 (paren
 r_private
@@ -4628,11 +4628,11 @@ l_string|&quot;read_mac_address&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; tranceiver_voodoo() enables the external UTP plug thingy.&n; it&squot;s called voodoo as I stole this code and cannot cross-reference&n; it with the specification.&n; */
-DECL|function|tranceiver_voodoo
+multiline_comment|/*&n; transceiver_voodoo() enables the external UTP plug thingy.&n; it&squot;s called voodoo as I stole this code and cannot cross-reference&n; it with the specification.&n; */
+DECL|function|transceiver_voodoo
 r_static
 r_void
-id|tranceiver_voodoo
+id|transceiver_voodoo
 c_func
 (paren
 r_struct
@@ -4648,7 +4648,7 @@ suffix:semicolon
 id|enter
 c_func
 (paren
-l_string|&quot;tranceiver_voodoo&quot;
+l_string|&quot;transceiver_voodoo&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* disable all powermanagement */
@@ -4743,7 +4743,7 @@ suffix:semicolon
 id|leave
 c_func
 (paren
-l_string|&quot;tranceiver_voodoo&quot;
+l_string|&quot;transceiver_voodoo&quot;
 )paren
 suffix:semicolon
 )brace

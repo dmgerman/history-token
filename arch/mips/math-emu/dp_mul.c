@@ -275,7 +275,7 @@ suffix:colon
 r_return
 id|x
 suffix:semicolon
-multiline_comment|/* Infinity handeling */
+multiline_comment|/* Infinity handling */
 r_case
 id|CLPAIR
 c_func

@@ -37,7 +37,7 @@ DECL|member|csum
 id|u_int16_t
 id|csum
 suffix:semicolon
-multiline_comment|/* checksum, I dont know how to calulate this */
+multiline_comment|/* checksum, I don&squot;t know how to calulate this */
 DECL|member|pad
 id|u_int8_t
 id|pad

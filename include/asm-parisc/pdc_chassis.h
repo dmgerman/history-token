@@ -84,7 +84,7 @@ mdefine_line|#define PDC_CHASSIS_LSTATE_NONOS&t;(PDC_CHASSIS_LED_RUN_FLASH&t;| &
 multiline_comment|/* Boot failed - Executing non-OS code */
 DECL|macro|PDC_CHASSIS_LSTATE_NONOS_BFAIL
 mdefine_line|#define PDC_CHASSIS_LSTATE_NONOS_BFAIL&t;(PDC_CHASSIS_LED_RUN_FLASH&t;| &bslash;&n;&t;&t;&t;&t;&t; PDC_CHASSIS_LED_ATTN_OFF&t;| &bslash;&n;&t;&t;&t;&t;&t; PDC_CHASSIS_LED_FAULT_ON&t;| &bslash;&n;&t;&t;&t;&t;&t; PDC_CHASSIS_LED_VALID&t;&t;)
-multiline_comment|/* Unexpected reboot occured - Executing non-OS code */
+multiline_comment|/* Unexpected reboot occurred - Executing non-OS code */
 DECL|macro|PDC_CHASSIS_LSTATE_NONOS_UNEXP
 mdefine_line|#define PDC_CHASSIS_LSTATE_NONOS_UNEXP&t;(PDC_CHASSIS_LED_RUN_FLASH&t;| &bslash;&n;&t;&t;&t;&t;&t; PDC_CHASSIS_LED_ATTN_OFF&t;| &bslash;&n;&t;&t;&t;&t;&t; PDC_CHASSIS_LED_FAULT_FLASH&t;| &bslash;&n;&t;&t;&t;&t;&t; PDC_CHASSIS_LED_VALID&t;&t;)
 multiline_comment|/* Executing non-OS code - Non-critical error detected */

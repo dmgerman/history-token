@@ -1804,7 +1804,7 @@ op_logical_and
 id|table-&gt;grio
 )paren
 (brace
-multiline_comment|/* this looks ugly but its not in the fast path */
+multiline_comment|/* this looks ugly but it&squot;s not in the fast path */
 r_for
 c_loop
 (paren

@@ -3284,7 +3284,7 @@ c_func
 id|ST0_BEV
 )paren
 suffix:semicolon
-multiline_comment|/* Copy the generic exception handler code to it&squot;s final destination. */
+multiline_comment|/* Copy the generic exception handler code to its final destination. */
 id|memcpy
 c_func
 (paren
@@ -3377,7 +3377,7 @@ comma
 id|handle_reserved
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Copy the EJTAG debug exception vector handler code to it&squot;s final &n;&t; * destination.&n;&t; */
+multiline_comment|/* &n;&t; * Copy the EJTAG debug exception vector handler code to its final &n;&t; * destination.&n;&t; */
 id|memcpy
 c_func
 (paren

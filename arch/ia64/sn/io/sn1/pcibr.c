@@ -9838,7 +9838,7 @@ id|pci_cfg_cmd_reg_add
 op_or_assign
 id|PCI_CMD_IO_SPACE
 suffix:semicolon
-multiline_comment|/*&n;&t; * The Adaptec 1160 FC Controller WAR #767995:&n;&t; * The part incorrectly ignores the upper 32 bits of a 64 bit&n;&t; * address when decoding references to it&squot;s registers so to&n;&t; * keep it from responding to a bus cycle that it shouldn&squot;t&n;&t; * we only use I/O space to get at it&squot;s registers.  Don&squot;t&n;&t; * enable memory space accesses on that PCI device.&n;&t; */
+multiline_comment|/*&n;&t; * The Adaptec 1160 FC Controller WAR #767995:&n;&t; * The part incorrectly ignores the upper 32 bits of a 64 bit&n;&t; * address when decoding references to its registers so to&n;&t; * keep it from responding to a bus cycle that it shouldn&squot;t&n;&t; * we only use I/O space to get at it&squot;s registers.  Don&squot;t&n;&t; * enable memory space accesses on that PCI device.&n;&t; */
 DECL|macro|FCADP_VENDID
 mdefine_line|#define FCADP_VENDID 0x9004 /* Adaptec Vendor ID from fcadp.h */
 DECL|macro|FCADP_DEVID
@@ -17999,7 +17999,7 @@ id|ext_ates
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Bridge Hardware Bug WAR #484930:&n;     * Bridge can&squot;t handle updating External ATEs&n;     * while DMA is occuring that uses External ATEs,&n;     * even if the particular ATEs involved are disjoint.&n;     */
+multiline_comment|/* Bridge Hardware Bug WAR #484930:&n;     * Bridge can&squot;t handle updating External ATEs&n;     * while DMA is occurring that uses External ATEs,&n;     * even if the particular ATEs involved are disjoint.&n;     */
 multiline_comment|/* need to prevent anyone else from&n;     * unfreezing the grant while we&n;     * are working; also need to prevent&n;     * this thread from being interrupted&n;     * to keep PCI grant freeze time&n;     * at an absolute minimum.&n;     */
 id|s
 op_assign
@@ -23682,7 +23682,7 @@ id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
 )brace
-multiline_comment|/*&n; * pcibr_intr_func()&n; *&n; * This is the pcibr interrupt &quot;wrapper&quot; function that is called,&n; * in interrupt context, to initiate the interrupt handler(s) registered&n; * (via pcibr_intr_alloc/connect) for the occuring interrupt. Non-threaded &n; * handlers will be called directly, and threaded handlers will have their &n; * thread woken up.&n; */
+multiline_comment|/*&n; * pcibr_intr_func()&n; *&n; * This is the pcibr interrupt &quot;wrapper&quot; function that is called,&n; * in interrupt context, to initiate the interrupt handler(s) registered&n; * (via pcibr_intr_alloc/connect) for the occurring interrupt. Non-threaded &n; * handlers will be called directly, and threaded handlers will have their &n; * thread woken up.&n; */
 r_void
 DECL|function|pcibr_intr_func
 id|pcibr_intr_func

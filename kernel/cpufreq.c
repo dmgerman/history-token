@@ -3761,7 +3761,7 @@ op_amp
 id|cpufreq_notifier_sem
 )paren
 suffix:semicolon
-multiline_comment|/* adjust if neccessary - all reasons */
+multiline_comment|/* adjust if necessary - all reasons */
 id|notifier_call_chain
 c_func
 (paren
@@ -3773,7 +3773,7 @@ comma
 id|policy
 )paren
 suffix:semicolon
-multiline_comment|/* adjust if neccessary - hardware incompatibility*/
+multiline_comment|/* adjust if necessary - hardware incompatibility*/
 id|notifier_call_chain
 c_func
 (paren

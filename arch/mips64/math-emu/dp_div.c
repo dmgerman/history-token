@@ -275,7 +275,7 @@ suffix:colon
 r_return
 id|x
 suffix:semicolon
-multiline_comment|/* Infinity handeling &n;&t;&t; */
+multiline_comment|/* Infinity handling&n;&t;&t; */
 r_case
 id|CLPAIR
 c_func
@@ -379,7 +379,7 @@ op_xor
 id|ys
 )paren
 suffix:semicolon
-multiline_comment|/* Zero handeling &n;&t;&t; */
+multiline_comment|/* Zero handling&n;&t;&t; */
 r_case
 id|CLPAIR
 c_func

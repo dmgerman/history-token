@@ -58,6 +58,9 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
+multiline_comment|/*&n; * Have the 32 bit jiffies value wrap 5 minutes after boot&n; * so jiffies wrap bugs show up earlier.&n; */
+DECL|macro|INITIAL_JIFFIES
+mdefine_line|#define INITIAL_JIFFIES ((unsigned int) (-300*HZ))
 multiline_comment|/*&n; * Change timeval to jiffies, trying to avoid the&n; * most obvious overflows..&n; *&n; * And some not so obvious.&n; *&n; * Note that we don&squot;t want to return MAX_LONG, because&n; * for various timeout reasons we often end up having&n; * to wait &quot;jiffies+1&quot; in order to guarantee that we wait&n; * at _least_ &quot;jiffies&quot; - so &quot;jiffies+1&quot; had better still&n; * be positive.&n; */
 DECL|macro|MAX_JIFFY_OFFSET
 mdefine_line|#define MAX_JIFFY_OFFSET ((~0UL &gt;&gt; 1)-1)

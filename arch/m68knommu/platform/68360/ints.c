@@ -1321,7 +1321,7 @@ op_assign
 id|vec
 suffix:semicolon
 multiline_comment|/* unsigned long pend = *(volatile unsigned long *)pquicc-&gt;intr_cipr; */
-multiline_comment|/* Bugger all that wierdness. For the moment, I seem to know where I came from;&n;&t; * vec is passed from a specific ISR, so I&squot;ll use it. */
+multiline_comment|/* Bugger all that weirdness. For the moment, I seem to know where I came from;&n;&t; * vec is passed from a specific ISR, so I&squot;ll use it. */
 r_if
 c_cond
 (paren

@@ -358,7 +358,7 @@ l_int|7
 op_or_assign
 id|CB_CFIG_EXTENDED_RFD
 suffix:semicolon
-multiline_comment|/* put the chip into D102 receive mode.  This is neccessary&n;&t; * for any parsing and offloading features. */
+multiline_comment|/* put the chip into D102 receive mode.  This is necessary&n;&t; * for any parsing and offloading features. */
 id|bdp-&gt;config
 (braket
 l_int|22

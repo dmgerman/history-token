@@ -1,5 +1,5 @@
 multiline_comment|/* Low-level parallel-port routines for 8255-based PC-style hardware.&n; * &n; * Authors: Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          David Campbell &lt;campbell@torque.net&gt;&n; *          Andrea Arcangeli&n; *&n; * based on work by Grant Guenther &lt;grant@torque.net&gt; and Phil Blundell.&n; *&n; * Cleaned up include files - Russell King &lt;linux@arm.uk.linux.org&gt;&n; * DMA support - Bert De Jonghe &lt;bert@sophis.be&gt;&n; * Many ECP bugs fixed.  Fred Barnes &amp; Jamie Lokier, 1999&n; * More PCI support now conditional on CONFIG_PCI, 03/2001, Paul G. &n; * Various hacks, Fred Barnes, 04/2001&n; */
-multiline_comment|/* This driver should work with any hardware that is broadly compatible&n; * with that in the IBM PC.  This applies to the majority of integrated&n; * I/O chipsets that are commonly available.  The expected register&n; * layout is:&n; *&n; *&t;base+0&t;&t;data&n; *&t;base+1&t;&t;status&n; *&t;base+2&t;&t;control&n; *&n; * In addition, there are some optional registers:&n; *&n; *&t;base+3&t;&t;EPP address&n; *&t;base+4&t;&t;EPP data&n; *&t;base+0x400&t;ECP config A&n; *&t;base+0x401&t;ECP config B&n; *&t;base+0x402&t;ECP control&n; *&n; * All registers are 8 bits wide and read/write.  If your hardware differs&n; * only in register addresses (eg because your registers are on 32-bit&n; * word boundaries) then you can alter the constants in parport_pc.h to&n; * accomodate this.&n; *&n; * Note that the ECP registers may not start at offset 0x400 for PCI cards,&n; * but rather will start at port-&gt;base_hi.&n; */
+multiline_comment|/* This driver should work with any hardware that is broadly compatible&n; * with that in the IBM PC.  This applies to the majority of integrated&n; * I/O chipsets that are commonly available.  The expected register&n; * layout is:&n; *&n; *&t;base+0&t;&t;data&n; *&t;base+1&t;&t;status&n; *&t;base+2&t;&t;control&n; *&n; * In addition, there are some optional registers:&n; *&n; *&t;base+3&t;&t;EPP address&n; *&t;base+4&t;&t;EPP data&n; *&t;base+0x400&t;ECP config A&n; *&t;base+0x401&t;ECP config B&n; *&t;base+0x402&t;ECP control&n; *&n; * All registers are 8 bits wide and read/write.  If your hardware differs&n; * only in register addresses (eg because your registers are on 32-bit&n; * word boundaries) then you can alter the constants in parport_pc.h to&n; * accommodate this.&n; *&n; * Note that the ECP registers may not start at offset 0x400 for PCI cards,&n; * but rather will start at port-&gt;base_hi.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1529,7 +1529,7 @@ multiline_comment|/* EPP timeout should never occur... */
 id|printk
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: EPP timeout occured while talking to &quot;
+l_string|&quot;%s: EPP timeout occurred while talking to &quot;
 l_string|&quot;w91284pic (should not have done)&bslash;n&quot;
 comma
 id|port-&gt;name

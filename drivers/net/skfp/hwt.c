@@ -632,7 +632,7 @@ id|time
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/************************&n; *&n; *&t;hwt_wait_time(smc,start,duration)&n; *&n; *&t;This function returnes after the amount of time is elapsed&n; *&t;since the start time.&n; * &n; * para&t;start&t;&t;start time&n; *&t;duration&t;time to wait&n; *&n; * NOTE: The fuction will return immediatly, if the timer is not &n; *&t; started&n; ************************/
+multiline_comment|/************************&n; *&n; *&t;hwt_wait_time(smc,start,duration)&n; *&n; *&t;This function returnes after the amount of time is elapsed&n; *&t;since the start time.&n; * &n; * para&t;start&t;&t;start time&n; *&t;duration&t;time to wait&n; *&n; * NOTE: The fuction will return immediately, if the timer is not &n; *&t; started&n; ************************/
 DECL|function|hwt_wait_time
 r_void
 id|hwt_wait_time

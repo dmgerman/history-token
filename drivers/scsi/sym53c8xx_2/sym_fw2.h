@@ -1050,7 +1050,7 @@ id|PADDR_A
 id|ungetjob
 )paren
 comma
-multiline_comment|/*&n;&t; *  Now there are 4 possibilities:&n;&t; *&n;&t; *  (1) The chip looses arbitration.&n;&t; *  This is ok, because it will try again,&n;&t; *  when the bus becomes idle.&n;&t; *  (But beware of the timeout function!)&n;&t; *&n;&t; *  (2) The chip is reselected.&n;&t; *  Then the script processor takes the jump&n;&t; *  to the RESELECT label.&n;&t; *&n;&t; *  (3) The chip wins arbitration.&n;&t; *  Then it will execute SCRIPTS instruction until &n;&t; *  the next instruction that checks SCSI phase.&n;&t; *  Then will stop and wait for selection to be &n;&t; *  complete or selection time-out to occur.&n;&t; *&n;&t; *  After having won arbitration, the SCRIPTS  &n;&t; *  processor is able to execute instructions while &n;&t; *  the SCSI core is performing SCSI selection.&n;&t; */
+multiline_comment|/*&n;&t; *  Now there are 4 possibilities:&n;&t; *&n;&t; *  (1) The chip loses arbitration.&n;&t; *  This is ok, because it will try again,&n;&t; *  when the bus becomes idle.&n;&t; *  (But beware of the timeout function!)&n;&t; *&n;&t; *  (2) The chip is reselected.&n;&t; *  Then the script processor takes the jump&n;&t; *  to the RESELECT label.&n;&t; *&n;&t; *  (3) The chip wins arbitration.&n;&t; *  Then it will execute SCRIPTS instruction until &n;&t; *  the next instruction that checks SCSI phase.&n;&t; *  Then will stop and wait for selection to be &n;&t; *  complete or selection time-out to occur.&n;&t; *&n;&t; *  After having won arbitration, the SCRIPTS  &n;&t; *  processor is able to execute instructions while &n;&t; *  the SCSI core is performing SCSI selection.&n;&t; */
 multiline_comment|/*&n;&t; *      Initialize the status registers&n;&t; */
 id|SCR_LOAD_REL
 (paren
@@ -3511,7 +3511,7 @@ comma
 multiline_comment|/*-------------------------&lt; SEL_FOR_ABORT &gt;--------------------*/
 comma
 (brace
-multiline_comment|/*&n;&t; *  We are jumped here by the C code, if we have &n;&t; *  some target to reset or some disconnected &n;&t; *  job to abort. Since error recovery is a serious &n;&t; *  busyness, we will really reset the SCSI BUS, if &n;&t; *  case of a SCSI interrupt occuring in this path.&n;&t; */
+multiline_comment|/*&n;&t; *  We are jumped here by the C code, if we have &n;&t; *  some target to reset or some disconnected &n;&t; *  job to abort. Since error recovery is a serious &n;&t; *  busyness, we will really reset the SCSI BUS, if &n;&t; *  case of a SCSI interrupt occurring in this path.&n;&t; */
 macro_line|#ifdef SYM_CONF_TARGET_ROLE_SUPPORT
 multiline_comment|/*&n;&t; *  Set initiator mode.&n;&t; */
 id|SCR_CLR

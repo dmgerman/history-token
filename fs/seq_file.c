@@ -1055,7 +1055,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;seq_escape -&t;print string into buffer, escaping some characters&n; *&t;@m:&t;target buffer&n; *&t;@s:&t;string&n; *&t;@esc:&t;set of characters that need escaping&n; *&n; *&t;Puts string into buffer, replacing each occurence of character from&n; *&t;@esc with usual octal escape.  Returns 0 in case of success, -1 - in&n; *&t;case of overflow.&n; */
+multiline_comment|/**&n; *&t;seq_escape -&t;print string into buffer, escaping some characters&n; *&t;@m:&t;target buffer&n; *&t;@s:&t;string&n; *&t;@esc:&t;set of characters that need escaping&n; *&n; *&t;Puts string into buffer, replacing each occurrence of character from&n; *&t;@esc with usual octal escape.  Returns 0 in case of success, -1 - in&n; *&t;case of overflow.&n; */
 DECL|function|seq_escape
 r_int
 id|seq_escape

@@ -291,7 +291,7 @@ c_cond
 id|miss
 )paren
 (brace
-multiline_comment|/* see if the pte exists at all&n;&t;&t; * refer through current_pgd, dont use mm-&gt;pgd&n;&t;&t; */
+multiline_comment|/* see if the pte exists at all&n;&t;&t; * refer through current_pgd, don&squot;t use mm-&gt;pgd&n;&t;&t; */
 id|pmd
 op_assign
 (paren

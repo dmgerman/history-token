@@ -38,6 +38,74 @@ DECL|macro|MCFTIMER_TCN
 mdefine_line|#define&t;MCFTIMER_TCN&t;&t;0x06&t;&t;/* Timer Counter reg (r/w) */
 DECL|macro|MCFTIMER_TER
 mdefine_line|#define&t;MCFTIMER_TER&t;&t;0x11&t;&t;/* Timer Event reg (r/w) */
+DECL|struct|mcftimer
+r_struct
+id|mcftimer
+(brace
+DECL|member|tmr
+r_int
+r_int
+id|tmr
+suffix:semicolon
+multiline_comment|/* Timer Mode reg (r/w) */
+DECL|member|reserved1
+r_int
+r_int
+id|reserved1
+suffix:semicolon
+DECL|member|trr
+r_int
+r_int
+id|trr
+suffix:semicolon
+multiline_comment|/* Timer Reference (r/w) */
+DECL|member|reserved2
+r_int
+r_int
+id|reserved2
+suffix:semicolon
+DECL|member|tcr
+r_int
+r_int
+id|tcr
+suffix:semicolon
+multiline_comment|/* Timer Capture reg (r/w) */
+DECL|member|reserved3
+r_int
+r_int
+id|reserved3
+suffix:semicolon
+DECL|member|tcn
+r_int
+r_int
+id|tcn
+suffix:semicolon
+multiline_comment|/* Timer Counter reg (r/w) */
+DECL|member|reserved4
+r_int
+r_int
+id|reserved4
+suffix:semicolon
+DECL|member|reserved5
+r_int
+r_char
+id|reserved5
+suffix:semicolon
+DECL|member|ter
+r_int
+r_char
+id|ter
+suffix:semicolon
+multiline_comment|/* Timer Event reg (r/w) */
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Bit definitions for the Timer Mode Register (TMR).&n; *&t;Register bit flags are common accross ColdFires.&n; */
 DECL|macro|MCFTIMER_TMR_PREMASK
 mdefine_line|#define&t;MCFTIMER_TMR_PREMASK&t;0xff00&t;&t;/* Prescalar mask */

@@ -113,7 +113,7 @@ DECL|macro|IOMMU_TOTAL_ENTRIES
 mdefine_line|#define IOMMU_TOTAL_ENTRIES 128
 DECL|macro|IOMMU_ENTRIES
 mdefine_line|#define IOMMU_ENTRIES 120
-multiline_comment|/* empirical kludge -- dvma regions only seem to work right on 0x10000 &n;   byte boundries */
+multiline_comment|/* empirical kludge -- dvma regions only seem to work right on 0x10000 &n;   byte boundaries */
 DECL|macro|DVMA_REGION_SIZE
 mdefine_line|#define DVMA_REGION_SIZE 0x10000
 DECL|macro|DVMA_ALIGN

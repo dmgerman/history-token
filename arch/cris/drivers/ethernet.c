@@ -286,7 +286,7 @@ r_static
 r_int
 id|current_speed
 suffix:semicolon
-multiline_comment|/* Speed read from tranceiver */
+multiline_comment|/* Speed read from transceiver */
 DECL|variable|current_speed_selection
 r_static
 r_int
@@ -630,7 +630,7 @@ r_void
 suffix:semicolon
 r_static
 r_void
-id|e100_reset_tranceiver
+id|e100_reset_transceiver
 c_func
 (paren
 r_void
@@ -2779,8 +2779,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|e100_reset_tranceiver
-id|e100_reset_tranceiver
+DECL|function|e100_reset_transceiver
+id|e100_reset_transceiver
 c_func
 (paren
 r_void
@@ -2934,8 +2934,8 @@ c_func
 id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
-multiline_comment|/* Reset the tranceiver. */
-id|e100_reset_tranceiver
+multiline_comment|/* Reset the transceiver. */
+id|e100_reset_transceiver
 c_func
 (paren
 )paren

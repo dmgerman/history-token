@@ -142,7 +142,7 @@ DECL|macro|_LSR_TX_ALL
 mdefine_line|#define _LSR_TX_ALL    0x06           /* all physical transmit is done */
 DECL|macro|_LSR_RX_ERR
 mdefine_line|#define _LSR_RX_ERR    (_LSR_LB_BREAK | _LSR_FE_MASK | _LSR_OE_MASK | &bslash;&n;&t;&t;&t; _LSR_PE_MASK )
-multiline_comment|/* serial port reciever command register */
+multiline_comment|/* serial port receiver command register */
 DECL|macro|_RCR_ER_MASK
 mdefine_line|#define _RCR_ER_MASK   0x80           /* enable receiver mask */
 DECL|macro|_RCR_DME_MASK

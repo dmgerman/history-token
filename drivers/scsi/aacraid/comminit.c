@@ -699,7 +699,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_comm_init&t;-&t;Initialise FSA data structures&n; *&t;@dev:&t;Adapter to intialise&n; *&n; *&t;Initializes the data structures that are required for the FSA commuication&n; *&t;interface to operate. &n; *&t;Returns&n; *&t;&t;1 - if we were able to init the commuication interface.&n; *&t;&t;0 - If there were errors initing. This is a fatal error.&n; */
+multiline_comment|/**&n; *&t;aac_comm_init&t;-&t;Initialise FSA data structures&n; *&t;@dev:&t;Adapter to initialise&n; *&n; *&t;Initializes the data structures that are required for the FSA commuication&n; *&t;interface to operate. &n; *&t;Returns&n; *&t;&t;1 - if we were able to init the commuication interface.&n; *&t;&t;0 - If there were errors initing. This is a fatal error.&n; */
 DECL|function|aac_comm_init
 r_int
 id|aac_comm_init

@@ -905,7 +905,7 @@ c_func
 l_int|500
 )paren
 suffix:semicolon
-multiline_comment|/* Settle time. Maybe unneccessary. */
+multiline_comment|/* Settle time. Maybe unnecessary. */
 )brace
 r_return
 id|NOTIFY_DONE

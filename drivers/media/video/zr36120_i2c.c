@@ -328,7 +328,7 @@ id|printk
 c_func
 (paren
 id|CARD_INFO
-l_string|&quot;attach_inform; tuner wont be set to type %d&bslash;n&quot;
+l_string|&quot;attach_inform; tuner won&squot;t be set to type %d&bslash;n&quot;
 comma
 id|CARD
 comma

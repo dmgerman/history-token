@@ -1523,7 +1523,7 @@ c_func
 id|ide_cmd
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;drive_cmd_intr&t;&t;- &t;drive command completion interrupt&n; *&t;@drive: drive the completion interrupt occurred on&n; *&n; *&t;drive_cmd_intr() is invoked on completion of a special DRIVE_CMD.&n; *&t;We do any neccessary daya reading and then wait for the drive to&n; *&t;go non busy. At that point we may read the error data and complete&n; *&t;the request&n; */
+multiline_comment|/**&n; *&t;drive_cmd_intr&t;&t;- &t;drive command completion interrupt&n; *&t;@drive: drive the completion interrupt occurred on&n; *&n; *&t;drive_cmd_intr() is invoked on completion of a special DRIVE_CMD.&n; *&t;We do any necessary daya reading and then wait for the drive to&n; *&t;go non busy. At that point we may read the error data and complete&n; *&t;the request&n; */
 DECL|function|drive_cmd_intr
 id|ide_startstop_t
 id|drive_cmd_intr
@@ -2793,7 +2793,7 @@ id|ide_stall_queue
 suffix:semicolon
 DECL|macro|WAKEUP
 mdefine_line|#define WAKEUP(drive)&t;((drive)-&gt;service_start + 2 * (drive)-&gt;service_time)
-multiline_comment|/**&n; *&t;choose_drive&t;&t;-&t;select a drive to service&n; *&t;@hwgroup: hardware group to select on&n; *&n; *&t;choose_drive() selects the next drive which will be serviced.&n; *&t;This is neccessary because the IDE layer can&squot;t issue commands&n; *&t;to both drives on the same cable, unlike SCSI.&n; */
+multiline_comment|/**&n; *&t;choose_drive&t;&t;-&t;select a drive to service&n; *&t;@hwgroup: hardware group to select on&n; *&n; *&t;choose_drive() selects the next drive which will be serviced.&n; *&t;This is necessary because the IDE layer can&squot;t issue commands&n; *&t;to both drives on the same cable, unlike SCSI.&n; */
 DECL|function|choose_drive
 r_static
 r_inline

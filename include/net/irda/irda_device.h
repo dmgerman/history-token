@@ -567,7 +567,7 @@ mdefine_line|#define IRDA_SKB_MAX_MTU&t;2064
 multiline_comment|/* Maximum SIR frame that we expect to send, wrapped (i.e. with XBOFS&n; * and escaped characters on top of above). */
 DECL|macro|IRDA_SIR_MAX_FRAME
 mdefine_line|#define IRDA_SIR_MAX_FRAME&t;4269
-multiline_comment|/* The SIR unwrapper async_unwrap_char() will use a Rx-copy-break mechanism&n; * when using the optional ZeroCopy Rx, where only small frames are memcpy&n; * to a smaller skb to save memory. This is the thresold under which copy&n; * will happen (and over which it won&squot;t happen).&n; * Some FIR drivers may use this #define as well...&n; * This is the same value as various Ethernet drivers. - Jean II */
+multiline_comment|/* The SIR unwrapper async_unwrap_char() will use a Rx-copy-break mechanism&n; * when using the optional ZeroCopy Rx, where only small frames are memcpy&n; * to a smaller skb to save memory. This is the threshold under which copy&n; * will happen (and over which it won&squot;t happen).&n; * Some FIR drivers may use this #define as well...&n; * This is the same value as various Ethernet drivers. - Jean II */
 DECL|macro|IRDA_RX_COPY_THRESHOLD
 mdefine_line|#define IRDA_RX_COPY_THRESHOLD  256
 multiline_comment|/* Function prototypes */

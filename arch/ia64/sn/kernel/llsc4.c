@@ -1376,7 +1376,7 @@ l_int|2
 op_mod
 id|linecount
 suffix:semicolon
-multiline_comment|/* I dont like this - fix later */
+multiline_comment|/* I don&squot;t like this - fix later */
 id|linep
 op_assign
 (paren

@@ -118,7 +118,7 @@ mdefine_line|#define AHD_SCB_MAX&t;512
 multiline_comment|/*&n; * The maximum number of concurrent transactions supported per driver instance.&n; * Sequencer Control Blocks (SCBs) store per-transaction information.&n; */
 DECL|macro|AHD_MAX_QUEUE
 mdefine_line|#define AHD_MAX_QUEUE&t;AHD_SCB_MAX
-multiline_comment|/*&n; * Define the size of our QIN and QOUT FIFOs.  They must be a power of 2&n; * in size and accomodate as many transactions as can be queued concurrently.&n; */
+multiline_comment|/*&n; * Define the size of our QIN and QOUT FIFOs.  They must be a power of 2&n; * in size and accommodate as many transactions as can be queued concurrently.&n; */
 DECL|macro|AHD_QIN_SIZE
 mdefine_line|#define&t;AHD_QIN_SIZE&t;AHD_MAX_QUEUE
 DECL|macro|AHD_QOUT_SIZE
@@ -537,7 +537,7 @@ DECL|typedef|ahd_flag
 id|ahd_flag
 suffix:semicolon
 multiline_comment|/************************* Hardware  SCB Definition ***************************/
-multiline_comment|/*&n; * The driver keeps up to MAX_SCB scb structures per card in memory.  The SCB&n; * consists of a &quot;hardware SCB&quot; mirroring the fields availible on the card&n; * and additional information the kernel stores for each transaction.&n; *&n; * To minimize space utilization, a portion of the hardware scb stores&n; * different data during different portions of a SCSI transaction.&n; * As initialized by the host driver for the initiator role, this area&n; * contains the SCSI cdb (or a pointer to the  cdb) to be executed.  After&n; * the cdb has been presented to the target, this area serves to store&n; * residual transfer information and the SCSI status byte.&n; * For the target role, the contents of this area do not change, but&n; * still serve a different purpose than for the initiator role.  See&n; * struct target_data for details.&n; */
+multiline_comment|/*&n; * The driver keeps up to MAX_SCB scb structures per card in memory.  The SCB&n; * consists of a &quot;hardware SCB&quot; mirroring the fields available on the card&n; * and additional information the kernel stores for each transaction.&n; *&n; * To minimize space utilization, a portion of the hardware scb stores&n; * different data during different portions of a SCSI transaction.&n; * As initialized by the host driver for the initiator role, this area&n; * contains the SCSI cdb (or a pointer to the  cdb) to be executed.  After&n; * the cdb has been presented to the target, this area serves to store&n; * residual transfer information and the SCSI status byte.&n; * For the target role, the contents of this area do not change, but&n; * still serve a different purpose than for the initiator role.  See&n; * struct target_data for details.&n; */
 multiline_comment|/*&n; * Status information embedded in the shared poriton of&n; * an SCB after passing the cdb to the target.  The kernel&n; * driver will only read this data for transactions that&n; * complete abnormally.&n; */
 DECL|struct|initiator_status
 r_struct

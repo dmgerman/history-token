@@ -220,7 +220,7 @@ id|MSG_UNORDERED
 op_assign
 l_int|1
 comma
-multiline_comment|/* Send/recieve message unordered. */
+multiline_comment|/* Send/receive message unordered. */
 DECL|enumerator|MSG_ADDR_OVER
 id|MSG_ADDR_OVER
 op_assign

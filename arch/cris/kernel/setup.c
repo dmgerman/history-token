@@ -321,7 +321,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* We dont use a command line yet, so just re-initialize it without&n;&t;   saving anything that might be there.  */
+multiline_comment|/* We don&squot;t use a command line yet, so just re-initialize it without&n;&t;   saving anything that might be there.  */
 op_star
 id|cmdline_p
 op_assign
