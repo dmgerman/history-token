@@ -159,5 +159,9 @@ r_int
 id|command
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|psmouse_smartscroll
+suffix:semicolon
 macro_line|#endif /* _PSMOUSE_H */
 eof
