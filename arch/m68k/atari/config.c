@@ -982,10 +982,12 @@ id|mach_kbd_translate
 op_assign
 id|atari_kbd_translate
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 id|SYSRQ_KEY
 op_assign
 l_int|0xff
 suffix:semicolon
+macro_line|#endif
 id|mach_kbd_leds
 op_assign
 id|atari_kbd_leds
