@@ -365,6 +365,16 @@ op_lshift
 id|maniptype
 )paren
 )paren
+macro_line|#ifndef CONFIG_IP_NF_NAT_LOCAL
+multiline_comment|/* If this session has already been confirmed we must not&n;&t;&t;     * touch it again even if there is no mapping set up.&n;&t;&t;     * Can only happen on local-&gt;local traffic with&n;&t;&t;     * CONFIG_IP_NF_NAT_LOCAL disabled.&n;&t;&t;     */
+op_logical_and
+op_logical_neg
+(paren
+id|ct-&gt;status
+op_amp
+id|IPS_CONFIRMED
+)paren
+macro_line|#endif
 )paren
 (brace
 r_int
