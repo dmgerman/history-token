@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -4249,15 +4248,55 @@ op_amp
 id|vga_lock
 )paren
 suffix:semicolon
-id|vc_resize_all
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_NR_CONSOLES
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|vc_data
+op_star
+id|c
+op_assign
+id|vc_cons
+(braket
+id|i
+)braket
+dot
+id|d
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c
+op_logical_and
+id|c-&gt;vc_sw
+op_eq
+op_amp
+id|vga_con
+)paren
+id|vc_resize
 c_func
 (paren
-id|rows
+id|c-&gt;vc_num
 comma
 l_int|0
+comma
+id|rows
 )paren
 suffix:semicolon
 multiline_comment|/* Adjust console size */
+)brace
 r_return
 l_int|0
 suffix:semicolon

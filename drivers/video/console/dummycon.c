@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; *  Dummy console driver&n; */
@@ -47,13 +46,13 @@ c_func
 r_struct
 id|vc_data
 op_star
-id|conp
+id|vc
 comma
 r_int
 id|init
 )paren
 (brace
-id|conp-&gt;vc_can_do_color
+id|vc-&gt;vc_can_do_color
 op_assign
 l_int|1
 suffix:semicolon
@@ -63,24 +62,24 @@ c_cond
 id|init
 )paren
 (brace
-id|conp-&gt;vc_cols
+id|vc-&gt;vc_cols
 op_assign
 id|DUMMY_COLUMNS
 suffix:semicolon
-id|conp-&gt;vc_rows
+id|vc-&gt;vc_rows
 op_assign
 id|DUMMY_ROWS
 suffix:semicolon
 )brace
 r_else
-id|vc_resize_con
+id|vc_resize
 c_func
 (paren
-id|DUMMY_ROWS
+id|vc-&gt;vc_num
 comma
 id|DUMMY_COLUMNS
 comma
-id|conp-&gt;vc_num
+id|DUMMY_ROWS
 )paren
 suffix:semicolon
 )brace

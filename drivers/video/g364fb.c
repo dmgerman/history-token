@@ -947,20 +947,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
-comma
-id|GET_FB_IDX
-c_func
-(paren
-id|fb_info.node
-)paren
-comma
-id|fb_info.fix.id
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -866,20 +866,6 @@ multiline_comment|/* Pointer to image data */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#if 1 /* to go away in 2.5.0 */
-r_extern
-r_int
-id|GET_FB_IDX
-c_func
-(paren
-id|kdev_t
-id|rdev
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|GET_FB_IDX
-mdefine_line|#define GET_FB_IDX(node)&t;(minor(node))
-macro_line|#endif
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1249,23 +1235,6 @@ op_star
 id|vma
 )paren
 suffix:semicolon
-multiline_comment|/* switch to/from raster image mode */
-DECL|member|fb_rasterimg
-r_int
-(paren
-op_star
-id|fb_rasterimg
-)paren
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_int
-id|start
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|fb_info
@@ -1620,6 +1589,17 @@ id|transp
 suffix:semicolon
 r_extern
 r_void
+id|fb_dealloc_cmap
+c_func
+(paren
+r_struct
+id|fb_cmap
+op_star
+id|cmap
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|fb_copy_cmap
 c_func
 (paren
@@ -1923,113 +1903,5 @@ id|default_bpp
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
-macro_line|#if 1
-DECL|macro|FBCMD_GET_CURRENTPAR
-mdefine_line|#define FBCMD_GET_CURRENTPAR&t;0xDEAD0005
-DECL|macro|FBCMD_SET_CURRENTPAR
-mdefine_line|#define FBCMD_SET_CURRENTPAR&t;0xDEAD8005
-macro_line|#endif
-macro_line|#if 1 /* Preliminary */
-multiline_comment|/*&n;    *    Hardware Cursor&n;    */
-DECL|macro|FBIOGET_FCURSORINFO
-mdefine_line|#define FBIOGET_FCURSORINFO     0x4607
-DECL|macro|FBIOGET_VCURSORINFO
-mdefine_line|#define FBIOGET_VCURSORINFO     0x4608
-DECL|macro|FBIOPUT_VCURSORINFO
-mdefine_line|#define FBIOPUT_VCURSORINFO     0x4609
-DECL|macro|FBIOGET_CURSORSTATE
-mdefine_line|#define FBIOGET_CURSORSTATE     0x460A
-DECL|macro|FBIOPUT_CURSORSTATE
-mdefine_line|#define FBIOPUT_CURSORSTATE     0x460B
-DECL|struct|fb_fix_cursorinfo
-r_struct
-id|fb_fix_cursorinfo
-(brace
-DECL|member|crsr_width
-id|__u16
-id|crsr_width
-suffix:semicolon
-multiline_comment|/* width and height of the cursor in */
-DECL|member|crsr_height
-id|__u16
-id|crsr_height
-suffix:semicolon
-multiline_comment|/* pixels (zero if no cursor)&t;*/
-DECL|member|crsr_xsize
-id|__u16
-id|crsr_xsize
-suffix:semicolon
-multiline_comment|/* cursor size in display pixels */
-DECL|member|crsr_ysize
-id|__u16
-id|crsr_ysize
-suffix:semicolon
-DECL|member|crsr_color1
-id|__u16
-id|crsr_color1
-suffix:semicolon
-multiline_comment|/* colormap entry for cursor color1 */
-DECL|member|crsr_color2
-id|__u16
-id|crsr_color2
-suffix:semicolon
-multiline_comment|/* colormap entry for cursor color2 */
-)brace
-suffix:semicolon
-DECL|struct|fb_var_cursorinfo
-r_struct
-id|fb_var_cursorinfo
-(brace
-DECL|member|width
-id|__u16
-id|width
-suffix:semicolon
-DECL|member|height
-id|__u16
-id|height
-suffix:semicolon
-DECL|member|xspot
-id|__u16
-id|xspot
-suffix:semicolon
-DECL|member|yspot
-id|__u16
-id|yspot
-suffix:semicolon
-DECL|member|data
-id|__u8
-id|data
-(braket
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* field with [height][width]        */
-)brace
-suffix:semicolon
-DECL|struct|fb_cursorstate
-r_struct
-id|fb_cursorstate
-(brace
-DECL|member|xoffset
-id|__s16
-id|xoffset
-suffix:semicolon
-DECL|member|yoffset
-id|__s16
-id|yoffset
-suffix:semicolon
-DECL|member|mode
-id|__u16
-id|mode
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|FB_CURSOR_OFF
-mdefine_line|#define FB_CURSOR_OFF&t;&t;0
-DECL|macro|FB_CURSOR_ON
-mdefine_line|#define FB_CURSOR_ON&t;&t;1
-DECL|macro|FB_CURSOR_FLASH
-mdefine_line|#define FB_CURSOR_FLASH&t;&t;2
-macro_line|#endif /* Preliminary */
 macro_line|#endif /* _LINUX_FB_H */
 eof

@@ -466,7 +466,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  Internal routines&n; */
 r_static
 r_void
-id|fbcon_setup
+id|fbcon_set_display
 c_func
 (paren
 r_int
@@ -974,7 +974,7 @@ id|display-&gt;dispsw_data
 op_assign
 id|info-&gt;pseudo_palette
 suffix:semicolon
-multiline_comment|/*&n;         * If we are setting all the virtual consoles, also set&n;         * the defaults used to create new consoles.&n;         *&n;        if (con &lt; 0 || info-&gt;var.activate &amp; FB_ACTIVATE_ALL) {&n;                int unit;&n;&n;                for (unit = 0; unit &lt; MAX_NR_CONSOLES; unit++)&n;        &t;&t;if (fb_display[unit].conp &amp;&amp; con2fb_map[unit] == GET_FB_IDX(info-&gt;node))&n;                                fb_display[unit].var = info-&gt;var;&n;        }&n;        */
+multiline_comment|/*&n;         * If we are setting all the virtual consoles, also set&n;         * the defaults used to create new consoles.&n;         *&n;        if (con &lt; 0 || info-&gt;var.activate &amp; FB_ACTIVATE_ALL) {&n;                int unit;&n;&n;                for (unit = 0; unit &lt; MAX_NR_CONSOLES; unit++)&n;        &t;&t;if (fb_display[unit].conp &amp;&amp; con2fb_map[unit] == minor(info-&gt;node))&n;                                fb_display[unit].var = info-&gt;var;&n;        }&n;        */
 id|display-&gt;can_soft_blank
 op_assign
 id|info-&gt;fbops-&gt;fb_blank
@@ -1866,7 +1866,7 @@ op_assign
 id|info
 suffix:semicolon
 multiline_comment|/* clear out the cmap so we don&squot;t have dangling pointers */
-id|fbcon_setup
+id|fbcon_set_display
 c_func
 (paren
 id|unit
@@ -1877,7 +1877,7 @@ op_logical_neg
 id|init
 )paren
 suffix:semicolon
-multiline_comment|/* Must be done after fbcon_setup to prevent excess updates */
+multiline_comment|/* Must be done after fbcon_set_display to prevent excess updates */
 id|conp-&gt;vc_display_fg
 op_assign
 op_amp
@@ -1958,7 +1958,7 @@ id|con
 dot
 id|conp
 )paren
-id|fbcon_setup
+id|fbcon_set_display
 c_func
 (paren
 id|con
@@ -2186,10 +2186,10 @@ suffix:semicolon
 )brace
 DECL|macro|fontwidthvalid
 mdefine_line|#define fontwidthvalid(p,w) ((p)-&gt;dispsw-&gt;fontwidthmask &amp; FONTWIDTH(w))
-DECL|function|fbcon_setup
+DECL|function|fbcon_set_display
 r_static
 r_void
-id|fbcon_setup
+id|fbcon_set_display
 c_func
 (paren
 r_int
@@ -2617,7 +2617,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;fbcon_setup: No support for fontwidth %d&bslash;n&quot;
+l_string|&quot;fbcon_set_display: No support for fontwidth %d&bslash;n&quot;
 comma
 id|fontwidth
 c_func
@@ -3110,7 +3110,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;fbcon_setup: type %d (aux %d, depth %d) not &quot;
+l_string|&quot;fbcon_set_display: type %d (aux %d, depth %d) not &quot;
 l_string|&quot;supported&bslash;n&quot;
 comma
 id|info-&gt;fix.type
@@ -3167,14 +3167,14 @@ id|conp-&gt;vc_rows
 op_ne
 id|nr_rows
 )paren
-id|vc_resize_con
+id|vc_resize
 c_func
 (paren
-id|nr_rows
+id|con
 comma
 id|nr_cols
 comma
-id|con
+id|nr_rows
 )paren
 suffix:semicolon
 r_else
@@ -9268,18 +9268,18 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|vc_resize_con
+id|vc_resize
 c_func
 (paren
-id|info-&gt;var.yres
-op_div
-id|h
+id|unit
 comma
 id|info-&gt;var.xres
 op_div
 id|w
 comma
-id|unit
+id|info-&gt;var.yres
+op_div
+id|h
 )paren
 suffix:semicolon
 r_if
@@ -12112,21 +12112,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|info-&gt;fbops-&gt;fb_rasterimg
-)paren
-id|info-&gt;fbops
-op_member_access_from_pointer
-id|fb_rasterimg
-c_func
-(paren
-id|info
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -12859,21 +12844,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-r_if
-c_cond
-(paren
-id|info-&gt;fbops-&gt;fb_rasterimg
-)paren
-id|info-&gt;fbops
-op_member_access_from_pointer
-id|fb_rasterimg
-c_func
-(paren
-id|info
-comma
-l_int|0
-)paren
-suffix:semicolon
 macro_line|#if defined (CONFIG_FBCON_ACCEL)
 r_if
 c_cond

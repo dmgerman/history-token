@@ -3301,7 +3301,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: Virtual frame buffer device, using %ldK of video memory&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.node

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
@@ -973,18 +972,18 @@ id|ph
 op_plus
 l_int|1
 )paren
-id|vc_resize_con
+id|vc_resize
 c_func
 (paren
-id|ph
-op_plus
-l_int|1
+id|conp-&gt;unit
 comma
 id|pw
 op_plus
 l_int|1
 comma
-id|conp-&gt;vc_num
+id|ph
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace

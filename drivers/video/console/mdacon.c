@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1359,14 +1358,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|vc_resize_con
+id|vc_resize
 c_func
 (paren
-id|mda_num_lines
+id|c-&gt;vc_num
 comma
 id|mda_num_columns
 comma
-id|c-&gt;vc_num
+id|mda_num_lines
 )paren
 suffix:semicolon
 )brace

@@ -1164,7 +1164,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: TX3912 frame buffer using %uKB.&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.node

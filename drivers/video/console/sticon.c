@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
@@ -464,14 +463,14 @@ c_func
 id|sti
 )paren
 suffix:semicolon
-id|vc_resize_con
+id|vc_resize
 c_func
 (paren
-id|vc_rows
+id|c-&gt;vc_num
 comma
 id|vc_cols
 comma
-id|c-&gt;vc_num
+id|vc_rows
 )paren
 suffix:semicolon
 )brace

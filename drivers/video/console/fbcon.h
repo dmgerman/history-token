@@ -4,8 +4,8 @@ DECL|macro|_VIDEO_FBCON_H
 mdefine_line|#define _VIDEO_FBCON_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/vt_buffer.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_struct
 id|display
