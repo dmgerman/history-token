@@ -10549,13 +10549,6 @@ id|tp-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-multiline_comment|/* need to be able to restore PCI state after a suspend */
-id|pci_save_state
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 multiline_comment|/* Init sequence:&n;&t; * 1) Reset the adapter to clear any bad juju&n;&t; * 2) Reload the sleep image&n;&t; * 3) Boot the sleep image&n;&t; * 4) Get the hardware address.&n;&t; * 5) Put the card to sleep.&n;&t; */
 r_if
 c_cond
@@ -10593,8 +10586,14 @@ r_goto
 id|error_out_dma
 suffix:semicolon
 )brace
-multiline_comment|/* Now that we&squot;ve reset the 3XP and are sure it&squot;s not going to&n;&t; * write all over memory, enable bus mastering.&n;&t; */
+multiline_comment|/* Now that we&squot;ve reset the 3XP and are sure it&squot;s not going to&n;&t; * write all over memory, enable bus mastering, and save our&n;&t; * state for resuming after a suspend.&n;&t; */
 id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|pci_save_state
 c_func
 (paren
 id|pdev
