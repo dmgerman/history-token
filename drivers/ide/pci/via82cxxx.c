@@ -2104,36 +2104,13 @@ c_cond
 id|speed
 op_ne
 id|XFER_PIO_SLOW
-op_logical_and
-id|speed
-op_ne
-id|drive-&gt;current_speed
 )paren
-r_if
-c_cond
-(paren
 id|ide_config_drive_speed
 c_func
 (paren
 id|drive
 comma
 id|speed
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ide%d: Drive %d didn&squot;t &quot;
-l_string|&quot;accept speed setting. Oh, well.&bslash;n&quot;
-comma
-id|drive-&gt;dn
-op_rshift
-l_int|1
-comma
-id|drive-&gt;dn
-op_amp
-l_int|1
 )paren
 suffix:semicolon
 id|T
