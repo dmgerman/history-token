@@ -373,6 +373,12 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|sock_put
 c_func
 (paren
