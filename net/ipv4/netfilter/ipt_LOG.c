@@ -1513,6 +1513,52 @@ id|ih-&gt;protocol
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Max length: 15 &quot;UID=4294967295 &quot; */
+r_if
+c_cond
+(paren
+(paren
+id|info-&gt;logflags
+op_amp
+id|IPT_LOG_UID
+)paren
+op_logical_and
+op_logical_neg
+id|iphoff
+op_logical_and
+id|skb-&gt;sk
+)paren
+(brace
+id|read_lock_bh
+c_func
+(paren
+op_amp
+id|skb-&gt;sk-&gt;sk_callback_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;sk-&gt;sk_socket
+op_logical_and
+id|skb-&gt;sk-&gt;sk_socket-&gt;file
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;UID=%u &quot;
+comma
+id|skb-&gt;sk-&gt;sk_socket-&gt;file-&gt;f_uid
+)paren
+suffix:semicolon
+id|read_unlock_bh
+c_func
+(paren
+op_amp
+id|skb-&gt;sk-&gt;sk_callback_lock
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Proto    Max log string length */
 multiline_comment|/* IP:      40+46+6+11+127 = 230 */
 multiline_comment|/* TCP:     10+max(25,20+30+13+9+32+11+127) = 252 */

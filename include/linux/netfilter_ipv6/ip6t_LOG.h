@@ -7,8 +7,10 @@ DECL|macro|IP6T_LOG_TCPOPT
 mdefine_line|#define IP6T_LOG_TCPOPT&t;&t;0x02&t;/* Log TCP options */
 DECL|macro|IP6T_LOG_IPOPT
 mdefine_line|#define IP6T_LOG_IPOPT&t;&t;0x04&t;/* Log IP options */
+DECL|macro|IP6T_LOG_UID
+mdefine_line|#define IP6T_LOG_UID&t;&t;0x08&t;/* Log UID owning local socket */
 DECL|macro|IP6T_LOG_MASK
-mdefine_line|#define IP6T_LOG_MASK&t;&t;0x07
+mdefine_line|#define IP6T_LOG_MASK&t;&t;0x0f
 DECL|struct|ip6t_log_info
 r_struct
 id|ip6t_log_info
