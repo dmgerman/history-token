@@ -44,6 +44,7 @@ id|mach_early_init
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_ROM_KERNEL
 r_const
 id|u32
 op_star
@@ -58,6 +59,7 @@ id|asm
 l_string|&quot;ep&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|AS85EP1_CSC
 c_func
 (paren
@@ -93,38 +95,6 @@ suffix:semicolon
 id|AS85EP1_LBS
 op_assign
 l_int|0x00A9
-suffix:semicolon
-id|AS85EP1_RFS
-c_func
-(paren
-l_int|1
-)paren
-op_assign
-l_int|0x8205
-suffix:semicolon
-id|AS85EP1_RFS
-c_func
-(paren
-l_int|3
-)paren
-op_assign
-l_int|0x8205
-suffix:semicolon
-id|AS85EP1_SCR
-c_func
-(paren
-l_int|1
-)paren
-op_assign
-l_int|0x20A9
-suffix:semicolon
-id|AS85EP1_SCR
-c_func
-(paren
-l_int|3
-)paren
-op_assign
-l_int|0x20A9
 suffix:semicolon
 id|AS85EP1_PORT_PMC
 c_func
@@ -162,12 +132,45 @@ op_assign
 l_int|0xFF
 suffix:semicolon
 multiline_comment|/* D24-31        &#x1b;$BM-8z&#x1b;(B */
+id|AS85EP1_RFS
+c_func
+(paren
+l_int|1
+)paren
+op_assign
+l_int|0x800c
+suffix:semicolon
+id|AS85EP1_RFS
+c_func
+(paren
+l_int|3
+)paren
+op_assign
+l_int|0x800c
+suffix:semicolon
+id|AS85EP1_SCR
+c_func
+(paren
+l_int|1
+)paren
+op_assign
+l_int|0x20A9
+suffix:semicolon
+id|AS85EP1_SCR
+c_func
+(paren
+l_int|3
+)paren
+op_assign
+l_int|0x20A9
+suffix:semicolon
+macro_line|#ifndef CONFIG_ROM_KERNEL
+multiline_comment|/* The early chip we have is buggy, and writing the interrupt&n;&t;   vectors into low RAM may screw up, so for non-ROM kernels, we&n;&t;   only rely on the reset vector being downloaded, and copy the&n;&t;   rest of the interrupt vectors into place here.  The specific bug&n;&t;   is that writing address N, where (N &amp; 0x10) == 0x10, will _also_&n;&t;   write to address (N - 0x10).  We avoid this (effectively) by&n;&t;   writing in 16-byte chunks backwards from the end.  */
 id|AS85EP1_IRAMM
 op_assign
 l_int|0x3
 suffix:semicolon
 multiline_comment|/* &#x1b;$BFbB&quot;L?Na&#x1b;(BRAM&#x1b;$B$O!V&#x1b;(Bwrite-mode&#x1b;$B!W$K$J$j$^$9&#x1b;(B */
-multiline_comment|/* The early chip we have is buggy, so that writing the interrupt&n;&t;   vectors into low RAM may screw up, so for non-ROM kernels, we&n;&t;   only rely on the reset vector being downloaded, and copy the&n;&t;   rest of the interrupt vectors into place here.  The specific bug&n;&t;   is that writing address N, where (N &amp; 0x10) == 0x10, will _also_&n;&t;   write to address (N - 0x10).  We avoid this (effectively) by&n;&t;   writing in 16-byte chunks backwards from the end.  */
 id|src
 op_assign
 (paren
@@ -295,6 +298,7 @@ op_assign
 l_int|0x0
 suffix:semicolon
 multiline_comment|/* &#x1b;$BFbB&quot;L?Na&#x1b;(BRAM&#x1b;$B$O!V&#x1b;(Bread-mode&#x1b;$B!W$K$J$j$^$9&#x1b;(B */
+macro_line|#endif /* !CONFIG_ROM_KERNEL */
 id|nb85e_intc_disable_irqs
 (paren
 )paren
@@ -377,6 +381,11 @@ op_minus
 id|RAM_START
 suffix:semicolon
 )brace
+multiline_comment|/* Convenience macros.  */
+DECL|macro|SRAM_END
+mdefine_line|#define SRAM_END&t;(SRAM_ADDR + SRAM_SIZE)
+DECL|macro|SDRAM_END
+mdefine_line|#define SDRAM_END&t;(SDRAM_ADDR + SDRAM_SIZE)
 DECL|function|mach_reserve_bootmem
 r_void
 id|__init
@@ -408,20 +417,21 @@ id|u32
 op_amp
 id|_root_fs_image_end
 suffix:semicolon
-multiline_comment|/* We can&squot;t use the space between SRAM and SDRAM, so prevent the&n;&t;   kernel from trying.  */
+r_if
+c_cond
+(paren
+id|SDRAM_ADDR
+template_param
+id|RAM_START
+)paren
+multiline_comment|/* We can&squot;t use the space between SRAM and SDRAM, so&n;&t;&t;   prevent the kernel from trying.  */
 id|reserve_bootmem
 (paren
-id|SRAM_ADDR
-op_plus
-id|SRAM_SIZE
+id|SRAM_END
 comma
 id|SDRAM_ADDR
 op_minus
-(paren
-id|SRAM_ADDR
-op_plus
-id|SRAM_SIZE
-)paren
+id|SRAM_END
 )paren
 suffix:semicolon
 multiline_comment|/* Reserve the memory used by the root filesystem image if it&squot;s&n;&t;   in RAM.  */
