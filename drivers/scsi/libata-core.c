@@ -9929,15 +9929,6 @@ id|ap-&gt;cbl
 op_assign
 id|ATA_CBL_NONE
 suffix:semicolon
-id|ap-&gt;device
-(braket
-l_int|0
-)braket
-dot
-id|flags
-op_assign
-id|ATA_DFLAG_MASTER
-suffix:semicolon
 id|ap-&gt;active_tag
 op_assign
 id|ATA_TAG_POISON

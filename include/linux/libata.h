@@ -143,33 +143,13 @@ l_int|1
 )paren
 comma
 multiline_comment|/* device currently in PIO mode */
-DECL|enumerator|ATA_DFLAG_MASTER
-id|ATA_DFLAG_MASTER
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* is device 0? */
-DECL|enumerator|ATA_DFLAG_WCACHE
-id|ATA_DFLAG_WCACHE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|3
-)paren
-comma
-multiline_comment|/* has write cache we can&n;&t;&t;&t;&t;&t;     * (hopefully) flush? */
 DECL|enumerator|ATA_DFLAG_LOCK_SECTORS
 id|ATA_DFLAG_LOCK_SECTORS
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|4
+l_int|2
 )paren
 comma
 multiline_comment|/* don&squot;t adjust max_sectors */
