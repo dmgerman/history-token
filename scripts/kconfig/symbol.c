@@ -666,6 +666,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|sym
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|sym-&gt;flags
 op_amp
 id|SYMBOL_VALID
