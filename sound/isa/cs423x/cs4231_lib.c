@@ -33,6 +33,7 @@ suffix:semicolon
 DECL|macro|chip_t
 mdefine_line|#define chip_t cs4231_t
 macro_line|#if 0
+DECL|macro|SNDRV_DEBUG_MCE
 mdefine_line|#define SNDRV_DEBUG_MCE
 macro_line|#endif
 multiline_comment|/*&n; *  Some variables&n; */
@@ -5735,18 +5736,31 @@ id|chip-&gt;mode
 op_amp
 id|CS4231_MODE_PLAY
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|chip-&gt;playback_substream
+)paren
 id|snd_pcm_period_elapsed
 c_func
 (paren
 id|chip-&gt;playback_substream
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|chip-&gt;mode
 op_amp
 id|CS4231_MODE_RECORD
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|chip-&gt;capture_substream
 )paren
 (brace
 id|snd_cs4231_overrange
@@ -5764,6 +5778,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+)brace
 r_else
 (brace
 r_if
@@ -5772,6 +5787,12 @@ c_cond
 id|status
 op_amp
 id|CS4231_PLAYBACK_IRQ
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|chip-&gt;playback_substream
 )paren
 id|snd_pcm_period_elapsed
 c_func
@@ -5787,6 +5808,12 @@ op_amp
 id|CS4231_RECORD_IRQ
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|chip-&gt;capture_substream
+)paren
+(brace
 id|snd_cs4231_overrange
 c_func
 (paren
@@ -5799,6 +5826,7 @@ c_func
 id|chip-&gt;capture_substream
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|spin_lock
@@ -5836,7 +5864,6 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef LEGACY_SUPPORT
-DECL|function|snd_cs4231_playback_pointer
 r_static
 id|snd_pcm_uframes_t
 id|snd_cs4231_playback_pointer
