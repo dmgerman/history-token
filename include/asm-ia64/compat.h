@@ -3,6 +3,8 @@ DECL|macro|_ASM_IA64_COMPAT_H
 mdefine_line|#define _ASM_IA64_COMPAT_H
 multiline_comment|/*&n; * Architecture specific compatibility types&n; */
 macro_line|#include &lt;linux/types.h&gt;
+DECL|macro|COMPAT_USER_HZ
+mdefine_line|#define COMPAT_USER_HZ&t;100
 DECL|typedef|compat_size_t
 r_typedef
 id|u32
@@ -17,6 +19,11 @@ DECL|typedef|compat_time_t
 r_typedef
 id|s32
 id|compat_time_t
+suffix:semicolon
+DECL|typedef|compat_clock_t
+r_typedef
+id|s32
+id|compat_clock_t
 suffix:semicolon
 DECL|struct|compat_timespec
 r_struct

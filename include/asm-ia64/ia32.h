@@ -4,18 +4,9 @@ mdefine_line|#define _ASM_IA64_IA32_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
 multiline_comment|/* 32bit compatibility types */
-DECL|typedef|__kernel_ptrdiff_t32
-r_typedef
-r_int
-id|__kernel_ptrdiff_t32
-suffix:semicolon
-DECL|typedef|__kernel_clock_t32
-r_typedef
-r_int
-id|__kernel_clock_t32
-suffix:semicolon
 DECL|typedef|__kernel_pid_t32
 r_typedef
 r_int
@@ -116,8 +107,6 @@ DECL|macro|IA32_PAGE_ALIGN
 mdefine_line|#define IA32_PAGE_ALIGN(addr)&t;(((addr) + IA32_PAGE_SIZE - 1) &amp; IA32_PAGE_MASK)
 DECL|macro|IA32_CLOCKS_PER_SEC
 mdefine_line|#define IA32_CLOCKS_PER_SEC&t;100&t;/* Cast in stone for IA32 Linux */
-DECL|macro|IA32_TICK
-mdefine_line|#define IA32_TICK(tick)&t;&t;((unsigned long long)(tick) * IA32_CLOCKS_PER_SEC / CLOCKS_PER_SEC)
 multiline_comment|/* fcntl.h */
 DECL|struct|flock32
 r_struct
@@ -1117,11 +1106,11 @@ id|_status
 suffix:semicolon
 multiline_comment|/* exit code */
 DECL|member|_utime
-id|__kernel_clock_t32
+id|compat_clock_t
 id|_utime
 suffix:semicolon
 DECL|member|_stime
-id|__kernel_clock_t32
+id|compat_clock_t
 id|_stime
 suffix:semicolon
 DECL|member|_sigchld
