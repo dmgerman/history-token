@@ -12614,6 +12614,10 @@ id|deficiency
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -12623,6 +12627,9 @@ l_int|4
 comma
 l_string|&quot;cdu31a&quot;
 )paren
+)paren
+r_goto
+id|errout3
 suffix:semicolon
 r_if
 c_cond
