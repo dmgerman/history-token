@@ -2171,19 +2171,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* FIXME: does it work on via823x? */
-r_if
-c_cond
-(paren
-id|chip-&gt;chip_type
-op_ne
-id|TYPE_VIA686
-)paren
-r_goto
-id|_skip_sgd
-suffix:semicolon
-macro_line|#endif
 id|status
 op_assign
 id|inl
@@ -2230,7 +2217,6 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-singleline_comment|// _skip_sgd:
 multiline_comment|/* check status for each stream */
 id|spin_lock
 c_func
@@ -9983,10 +9969,10 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_NO_VRA
+id|VIA_DXS_ENABLE
 )brace
 comma
-multiline_comment|/* Gigabyte GA-7VAXP (FIXME: or DXS_ENABLE?) */
+multiline_comment|/* Gigabyte GA-7VAXP */
 (brace
 dot
 id|vendor
