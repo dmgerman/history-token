@@ -10,9 +10,9 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/8250.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &quot;8250.h&quot;
 DECL|macro|UNKNOWN_DEV
 mdefine_line|#define UNKNOWN_DEV 0x3000
 DECL|variable|pnp_dev_table
