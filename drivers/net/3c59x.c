@@ -11732,9 +11732,6 @@ id|work_done
 op_assign
 id|max_interrupt_work
 suffix:semicolon
-r_int
-id|handled
-suffix:semicolon
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -11784,16 +11781,10 @@ id|IntLatch
 op_eq
 l_int|0
 )paren
-(brace
-id|handled
-op_assign
-l_int|0
-suffix:semicolon
 r_goto
 id|handler_exit
 suffix:semicolon
 multiline_comment|/* No interrupt: shared IRQs can cause this */
-)brace
 r_if
 c_cond
 (paren
@@ -11817,18 +11808,10 @@ id|KERN_DEBUG
 l_string|&quot;boomerang_interrupt(1): status = 0xffff&bslash;n&quot;
 )paren
 suffix:semicolon
-id|handled
-op_assign
-l_int|0
-suffix:semicolon
 r_goto
 id|handler_exit
 suffix:semicolon
 )brace
-id|handled
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12405,11 +12388,7 @@ id|vp-&gt;lock
 )paren
 suffix:semicolon
 r_return
-id|IRQ_RETVAL
-c_func
-(paren
-id|handled
-)paren
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|vortex_rx
