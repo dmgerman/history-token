@@ -1679,6 +1679,12 @@ r_int
 id|end
 )paren
 (brace
+r_int
+r_int
+id|start
+op_assign
+id|address
+suffix:semicolon
 id|pgd_t
 op_star
 id|dir
@@ -1711,6 +1717,10 @@ c_func
 id|tlb
 comma
 id|vma
+comma
+id|start
+comma
+id|end
 )paren
 suffix:semicolon
 r_do
@@ -1761,6 +1771,10 @@ c_func
 id|tlb
 comma
 id|vma
+comma
+id|start
+comma
+id|end
 )paren
 suffix:semicolon
 )brace
