@@ -6551,12 +6551,6 @@ c_func
 id|dir
 )paren
 suffix:semicolon
-id|dget
-c_func
-(paren
-id|dentry
-)paren
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -6610,12 +6604,6 @@ c_func
 (paren
 op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
-id|dput
-c_func
-(paren
-id|dentry
 )paren
 suffix:semicolon
 r_if
