@@ -1090,6 +1090,7 @@ DECL|macro|SECDAY
 mdefine_line|#define SECDAY&t;&t;&t;86400L
 DECL|macro|SECYR
 mdefine_line|#define SECYR&t;&t;&t;(SECDAY * 365)
+multiline_comment|/*&n; * Note: this is wrong for 2100, but our signed 32-bit time_t will&n; * have overflowed long before that, so who cares.  -- paulus&n; */
 DECL|macro|leapyear
 mdefine_line|#define&t;leapyear(year)&t;&t;((year) % 4 == 0)
 DECL|macro|days_in_year
