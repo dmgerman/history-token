@@ -5199,7 +5199,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|old_valid_dev
+id|new_valid_dev
 c_func
 (paren
 id|rdev
@@ -5396,7 +5396,7 @@ id|jfs_file_inode_operations
 suffix:semicolon
 id|jfs_ip-&gt;dev
 op_assign
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|rdev

@@ -1569,7 +1569,7 @@ id|hc-&gt;md
 suffix:semicolon
 id|nl-&gt;dev
 op_assign
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|MKDEV
@@ -1759,7 +1759,7 @@ id|ENXIO
 suffix:semicolon
 id|param-&gt;dev
 op_assign
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|MKDEV
@@ -1895,7 +1895,7 @@ c_func
 id|MINOR
 c_func
 (paren
-id|old_decode_dev
+id|huge_decode_dev
 c_func
 (paren
 id|param-&gt;dev
@@ -3963,7 +3963,7 @@ id|count
 op_increment
 )braket
 op_assign
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|dd-&gt;bdev-&gt;bd_dev

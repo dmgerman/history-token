@@ -1597,7 +1597,7 @@ id|mode
 suffix:semicolon
 id|inp-&gt;coda_create.attr.va_rdev
 op_assign
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|rdev

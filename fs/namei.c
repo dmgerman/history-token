@@ -5980,7 +5980,7 @@ id|dentry
 comma
 id|mode
 comma
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|dev

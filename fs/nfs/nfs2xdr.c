@@ -444,7 +444,7 @@ id|NFS_ATTR_FATTR
 suffix:semicolon
 id|fattr-&gt;rdev
 op_assign
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|rdev

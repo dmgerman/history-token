@@ -1238,7 +1238,7 @@ id|ATTR_SIZE
 suffix:semicolon
 id|sattr-&gt;ia_size
 op_assign
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|rdev

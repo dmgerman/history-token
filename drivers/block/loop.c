@@ -3870,7 +3870,7 @@ id|lo-&gt;lo_number
 suffix:semicolon
 id|info-&gt;lo_device
 op_assign
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|stat.dev
@@ -3882,7 +3882,7 @@ id|stat.ino
 suffix:semicolon
 id|info-&gt;lo_rdevice
 op_assign
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|lo-&gt;lo_device

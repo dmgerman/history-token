@@ -720,7 +720,7 @@ l_int|8
 suffix:semicolon
 id|rdev
 op_assign
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|MKDEV

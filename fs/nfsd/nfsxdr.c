@@ -835,10 +835,7 @@ op_assign
 id|htonl
 c_func
 (paren
-(paren
-id|u32
-)paren
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|stat.rdev
@@ -901,10 +898,7 @@ op_assign
 id|htonl
 c_func
 (paren
-(paren
-id|u32
-)paren
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|stat.dev

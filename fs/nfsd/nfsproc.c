@@ -618,7 +618,7 @@ l_int|0
 comma
 id|wanted
 op_assign
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|attr-&gt;ia_size
@@ -1014,32 +1014,6 @@ multiline_comment|/* If you think you&squot;ve seen the worst, grok this. */
 id|type
 op_assign
 id|S_IFIFO
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rdev
-op_logical_and
-id|attr-&gt;ia_size
-op_ne
-id|old_encode_dev
-c_func
-(paren
-id|wanted
-)paren
-)paren
-(brace
-multiline_comment|/* dev got truncated because of 16bit Linux dev_t */
-multiline_comment|/* may need to change when we widen dev_t */
-id|nfserr
-op_assign
-id|nfserr_inval
-suffix:semicolon
-r_goto
-id|out_unlock
 suffix:semicolon
 )brace
 r_else

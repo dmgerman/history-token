@@ -169,7 +169,7 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
-id|old_decode_dev
+id|huge_decode_dev
 c_func
 (paren
 id|attr-&gt;va_rdev

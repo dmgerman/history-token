@@ -1018,7 +1018,7 @@ comma
 (paren
 id|u64
 )paren
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|stat.dev
@@ -1318,7 +1318,7 @@ comma
 (paren
 id|u64
 )paren
-id|old_encode_dev
+id|huge_encode_dev
 c_func
 (paren
 id|inode-&gt;i_sb-&gt;s_dev
