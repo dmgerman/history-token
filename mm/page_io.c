@@ -220,10 +220,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * A simple wrapper so the base function doesn&squot;t need to enforce&n; * that all swap pages go through the swap cache! We verify that:&n; *  - the page is locked&n; *  - it&squot;s marked as being swap-cache&n; *  - it&squot;s associated with the swap inode&n; */
-r_extern
-r_int
-id|suspend_device
-suffix:semicolon
 DECL|function|rw_swap_page
 r_void
 id|rw_swap_page
@@ -244,17 +240,6 @@ suffix:semicolon
 id|entry.val
 op_assign
 id|page-&gt;index
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|suspend_device
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;I refuse to corrupt memory/swap.&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
