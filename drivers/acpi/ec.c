@@ -3094,10 +3094,11 @@ c_func
 id|acpi_ec_init
 )paren
 suffix:semicolon
+multiline_comment|/* EC driver currently not unloadable */
+macro_line|#if 0
 r_static
 r_void
 id|__exit
-DECL|function|acpi_ec_ecdt_exit
 id|acpi_ec_ecdt_exit
 (paren
 r_void
@@ -3141,7 +3142,6 @@ suffix:semicolon
 r_static
 r_void
 id|__exit
-DECL|function|acpi_ec_exit
 id|acpi_ec_exit
 (paren
 r_void
@@ -3176,4 +3176,5 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif /* 0 */
 eof
