@@ -299,7 +299,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_thread_flag
+id|clear_thread_flag
 c_func
 (paren
 id|TIF_NEED_RESCHED
