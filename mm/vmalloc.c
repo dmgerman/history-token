@@ -42,6 +42,8 @@ id|size
 (brace
 r_int
 r_int
+id|base
+comma
 id|end
 suffix:semicolon
 id|pte_t
@@ -97,6 +99,12 @@ comma
 id|address
 )paren
 suffix:semicolon
+id|base
+op_assign
+id|address
+op_amp
+id|PMD_MASK
+suffix:semicolon
 id|address
 op_and_assign
 op_complement
@@ -132,6 +140,8 @@ c_func
 op_amp
 id|init_mm
 comma
+id|base
+op_plus
 id|address
 comma
 id|pte
@@ -204,6 +214,8 @@ id|size
 (brace
 r_int
 r_int
+id|base
+comma
 id|end
 suffix:semicolon
 id|pmd_t
@@ -259,6 +271,12 @@ comma
 id|address
 )paren
 suffix:semicolon
+id|base
+op_assign
+id|address
+op_amp
+id|PUD_MASK
+suffix:semicolon
 id|address
 op_and_assign
 op_complement
@@ -288,6 +306,8 @@ c_func
 (paren
 id|pmd
 comma
+id|base
+op_plus
 id|address
 comma
 id|end
@@ -343,6 +363,8 @@ id|pud
 suffix:semicolon
 r_int
 r_int
+id|base
+comma
 id|end
 suffix:semicolon
 r_if
@@ -394,6 +416,12 @@ comma
 id|address
 )paren
 suffix:semicolon
+id|base
+op_assign
+id|address
+op_amp
+id|PGDIR_MASK
+suffix:semicolon
 id|address
 op_and_assign
 op_complement
@@ -423,6 +451,8 @@ c_func
 (paren
 id|pud
 comma
+id|base
+op_plus
 id|address
 comma
 id|end
@@ -488,7 +518,15 @@ id|pages
 (brace
 r_int
 r_int
+id|base
+comma
 id|end
+suffix:semicolon
+id|base
+op_assign
+id|address
+op_amp
+id|PMD_MASK
 suffix:semicolon
 id|address
 op_and_assign
@@ -551,6 +589,8 @@ c_func
 op_amp
 id|init_mm
 comma
+id|base
+op_plus
 id|address
 comma
 id|pte
@@ -690,6 +730,8 @@ c_func
 (paren
 id|pte
 comma
+id|base
+op_plus
 id|address
 comma
 id|end
