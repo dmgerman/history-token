@@ -2973,10 +2973,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
 id|np-&gt;dev-&gt;netpoll_rx
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3059,10 +3061,12 @@ op_amp
 id|np-&gt;rx_list
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
 id|np-&gt;dev-&gt;netpoll_rx
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 id|spin_unlock_irqrestore
 c_func
 (paren
