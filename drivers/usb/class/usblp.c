@@ -661,6 +661,14 @@ r_struct
 id|usb_driver
 id|usblp_driver
 suffix:semicolon
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|usblp_sem
+)paren
+suffix:semicolon
+multiline_comment|/* locks the existence of usblp&squot;s */
 multiline_comment|/*&n; * Functions for usblp control messages.&n; */
 DECL|function|usblp_ctrl_msg
 r_static
@@ -1168,9 +1176,10 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|lock_kernel
-c_func
+id|down
 (paren
+op_amp
+id|usblp_sem
 )paren
 suffix:semicolon
 id|retval
@@ -1342,9 +1351,10 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|unlock_kernel
-c_func
+id|up
 (paren
+op_amp
+id|usblp_sem
 )paren
 suffix:semicolon
 r_return
@@ -1455,7 +1465,7 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|usblp-&gt;sem
+id|usblp_sem
 )paren
 suffix:semicolon
 id|usblp-&gt;used
@@ -1474,19 +1484,18 @@ c_func
 id|usblp
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|usblp-&gt;sem
-)paren
-suffix:semicolon
 )brace
 r_else
 multiline_comment|/* finish cleanup from disconnect */
 id|usblp_cleanup
 (paren
 id|usblp
+)paren
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|usblp_sem
 )paren
 suffix:semicolon
 r_return
@@ -4656,12 +4665,13 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|usblp-&gt;sem
+id|usblp_sem
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
+id|down
 (paren
+op_amp
+id|usblp-&gt;sem
 )paren
 suffix:semicolon
 id|usblp-&gt;present
@@ -4703,6 +4713,12 @@ comma
 id|usblp-&gt;readurb-&gt;transfer_dma
 )paren
 suffix:semicolon
+id|up
+(paren
+op_amp
+id|usblp-&gt;sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4714,17 +4730,10 @@ id|usblp_cleanup
 id|usblp
 )paren
 suffix:semicolon
-r_else
-multiline_comment|/* cleanup later, on release */
 id|up
 (paren
 op_amp
-id|usblp-&gt;sem
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
+id|usblp_sem
 )paren
 suffix:semicolon
 )brace

@@ -2657,9 +2657,8 @@ suffix:semicolon
 multiline_comment|/* td-&gt;dmadesc = previously set by caller */
 id|td-&gt;dmaaddr
 op_assign
-id|cpu_to_le32p
+id|cpu_to_le32
 (paren
-op_amp
 id|req-&gt;req.dma
 )paren
 suffix:semicolon
@@ -7125,13 +7124,25 @@ comma
 l_string|&quot;&bslash;t    td %08x &quot;
 l_string|&quot; count %08x buf %08x desc %08x&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|req-&gt;td_dma
 comma
+id|le32_to_cpu
+(paren
 id|td-&gt;dmacount
+)paren
 comma
+id|le32_to_cpu
+(paren
 id|td-&gt;dmaaddr
+)paren
 comma
+id|le32_to_cpu
+(paren
 id|td-&gt;dmadesc
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -11831,6 +11842,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* DMA setup */
+multiline_comment|/* NOTE:  we know only the 32 LSBs of dma addresses may be nonzero */
 id|dev-&gt;requests
 op_assign
 id|pci_pool_create

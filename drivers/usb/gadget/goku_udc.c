@@ -118,6 +118,7 @@ c_func
 (paren
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -463,6 +464,7 @@ l_int|3
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -621,6 +623,7 @@ c_func
 (paren
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -729,8 +732,9 @@ l_int|3
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
-id|regs
+id|r
 op_assign
 id|ep-&gt;dev-&gt;regs
 suffix:semicolon
@@ -743,7 +747,7 @@ id|readl
 c_func
 (paren
 op_amp
-id|regs-&gt;EPxSingle
+id|r-&gt;EPxSingle
 )paren
 suffix:semicolon
 id|tmp
@@ -761,7 +765,7 @@ c_func
 id|tmp
 comma
 op_amp
-id|regs-&gt;EPxSingle
+id|r-&gt;EPxSingle
 )paren
 suffix:semicolon
 id|tmp
@@ -770,7 +774,7 @@ id|readl
 c_func
 (paren
 op_amp
-id|regs-&gt;EPxBCS
+id|r-&gt;EPxBCS
 )paren
 suffix:semicolon
 id|tmp
@@ -788,7 +792,7 @@ c_func
 id|tmp
 comma
 op_amp
-id|regs-&gt;EPxBCS
+id|r-&gt;EPxBCS
 )paren
 suffix:semicolon
 )brace
@@ -860,7 +864,7 @@ id|MAX_FIFO_SIZE
 suffix:semicolon
 id|ep-&gt;desc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ep-&gt;stopped
 op_assign
@@ -1021,7 +1025,7 @@ op_logical_neg
 id|_ep
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|req
 op_assign
@@ -1042,7 +1046,7 @@ op_logical_neg
 id|req
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -1204,7 +1208,7 @@ op_logical_neg
 id|_ep
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_star
 id|dma
@@ -1528,6 +1532,7 @@ id|write_packet
 c_func
 (paren
 id|u32
+id|__iomem
 op_star
 id|fifo
 comma
@@ -1885,6 +1890,7 @@ id|req
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -2347,6 +2353,7 @@ id|dev
 comma
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -2386,6 +2393,7 @@ id|dev
 comma
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -2494,6 +2502,7 @@ id|req
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -2741,6 +2750,7 @@ id|req
 suffix:semicolon
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -2977,6 +2987,7 @@ id|status
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -3610,7 +3621,7 @@ l_int|0
 suffix:semicolon
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4031,7 +4042,7 @@ suffix:semicolon
 r_else
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -4309,7 +4320,12 @@ id|value
 multiline_comment|/* data in (either) packet buffer? */
 op_logical_and
 (paren
+id|readl
+c_func
+(paren
+op_amp
 id|ep-&gt;dev-&gt;regs-&gt;DataSet
+)paren
 op_amp
 id|DATASET_AB
 c_func
@@ -4401,6 +4417,7 @@ id|ep
 suffix:semicolon
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -4510,6 +4527,7 @@ id|ep
 suffix:semicolon
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -5091,6 +5109,7 @@ id|_dev
 suffix:semicolon
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -6148,7 +6167,7 @@ suffix:semicolon
 id|ep_reset
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|ep
 )paren
@@ -6161,7 +6180,7 @@ l_int|0
 dot
 id|reg_mode
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;ep
 (braket
@@ -6198,6 +6217,7 @@ id|dev
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -6270,6 +6290,7 @@ id|dev
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -6559,7 +6580,7 @@ suffix:semicolon
 multiline_comment|/* hook up the driver */
 id|driver-&gt;driver.bus
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;driver
 op_assign
@@ -6601,11 +6622,11 @@ id|retval
 suffix:semicolon
 id|dev-&gt;driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;gadget.dev.driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|retval
@@ -6677,7 +6698,7 @@ id|USB_SPEED_UNKNOWN
 )paren
 id|driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* disconnect gadget driver after quiesceing hw and the driver */
 id|udc_reset
@@ -6811,7 +6832,7 @@ id|flags
 suffix:semicolon
 id|dev-&gt;driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|stop_activity
 c_func
@@ -6875,6 +6896,7 @@ id|dev
 (brace
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -7401,6 +7423,7 @@ id|_dev
 suffix:semicolon
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -7505,7 +7528,7 @@ suffix:semicolon
 singleline_comment|// FIXME have a neater way to prevent re-enumeration
 id|dev-&gt;driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|done
@@ -8375,16 +8398,16 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|dev-&gt;regs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|the_controller
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|INFO
 c_func
@@ -8419,7 +8442,7 @@ id|goku_udc
 op_star
 id|dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -8428,10 +8451,11 @@ comma
 id|len
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|retval
@@ -8726,6 +8750,7 @@ op_assign
 (paren
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 )paren
 id|base

@@ -35,5 +35,9 @@ DECL|macro|IOCTL_TIUSB_RESET_DEVICE
 mdefine_line|#define IOCTL_TIUSB_RESET_DEVICE   _IOW(&squot;N&squot;, 0x21, int) /* reset device */
 DECL|macro|IOCTL_TIUSB_RESET_PIPES
 mdefine_line|#define IOCTL_TIUSB_RESET_PIPES    _IOW(&squot;N&squot;, 0x22, int) /* reset both pipes*/
+DECL|macro|IOCTL_TIUSB_GET_MAXPS
+mdefine_line|#define IOCTL_TIUSB_GET_MAXPS      _IOR(&squot;N&squot;, 0x23, int) /* max packet size */
+DECL|macro|IOCTL_TIUSB_GET_DEVID
+mdefine_line|#define IOCTL_TIUSB_GET_DEVID      _IOR(&squot;N&squot;, 0x24, int) /* get device type */
 macro_line|#endif /* TICABLE_H */
 eof

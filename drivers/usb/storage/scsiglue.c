@@ -232,7 +232,7 @@ op_star
 )paren
 id|us
 suffix:semicolon
-multiline_comment|/* enqueue the command */
+multiline_comment|/* check for state-transition errors */
 r_if
 c_cond
 (paren
@@ -264,6 +264,43 @@ r_return
 id|SCSI_MLQUEUE_HOST_BUSY
 suffix:semicolon
 )brace
+multiline_comment|/* fail the command if we are disconnecting */
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Fail command during disconnect&bslash;n&quot;
+)paren
+suffix:semicolon
+id|srb-&gt;result
+op_assign
+id|DID_NO_CONNECT
+op_lshift
+l_int|16
+suffix:semicolon
+id|done
+c_func
+(paren
+id|srb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* enqueue the command and wake up the control thread */
 id|srb-&gt;scsi_done
 op_assign
 id|done
@@ -272,7 +309,6 @@ id|us-&gt;srb
 op_assign
 id|srb
 suffix:semicolon
-multiline_comment|/* wake up the process task */
 id|up
 c_func
 (paren
