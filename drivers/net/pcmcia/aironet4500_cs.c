@@ -1209,6 +1209,7 @@ op_star
 id|linkp
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_int
