@@ -5706,32 +5706,7 @@ comma
 id|val
 )paren
 suffix:semicolon
-id|val
-op_assign
-id|snd_ac97_read
-c_func
-(paren
-id|ac97
-comma
-id|AC97_ALC650_MULTICH
-)paren
-suffix:semicolon
-id|val
-op_and_assign
-op_complement
-l_int|0xc000
-suffix:semicolon
-multiline_comment|/* slot: 3,4,7,8,6,9 */
-id|val
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-l_int|10
-)paren
-suffix:semicolon
-multiline_comment|/* center-on-mic off */
+multiline_comment|/* set default: slot 3,4,7,8,6,9&n;&t;   spdif-in monitor off, analog-spdif off, spdif-in off&n;&t;   center on mic off, surround on line-in off&n;&t;   downmix off, duplicate front off&n;&t;*/
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -5739,7 +5714,7 @@ id|ac97
 comma
 id|AC97_ALC650_MULTICH
 comma
-id|val
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* set GPIO0 for mic bias */
@@ -6467,35 +6442,7 @@ comma
 id|val
 )paren
 suffix:semicolon
-id|val
-op_assign
-id|snd_ac97_read
-c_func
-(paren
-id|ac97
-comma
-id|AC97_ALC650_MULTICH
-)paren
-suffix:semicolon
-id|val
-op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|15
-)paren
-suffix:semicolon
-multiline_comment|/* enable spdif in */
-id|val
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-l_int|10
-)paren
-suffix:semicolon
-multiline_comment|/* disable center on mic */
+multiline_comment|/* set default: spdif-in enabled,&n;&t;   spdif-in monitor off, spdif-in PCM off&n;&t;   center on mic off, surround on line-in off&n;&t;   duplicate front off&n;&t;*/
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -6503,7 +6450,9 @@ id|ac97
 comma
 id|AC97_ALC650_MULTICH
 comma
-id|val
+l_int|1
+op_lshift
+l_int|15
 )paren
 suffix:semicolon
 multiline_comment|/* full DAC volume */
