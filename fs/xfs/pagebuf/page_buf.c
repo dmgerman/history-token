@@ -1006,7 +1006,7 @@ comma
 r_int
 id|page_count
 comma
-r_int
+id|page_buf_flags_t
 id|flags
 )paren
 (brace
@@ -1192,14 +1192,14 @@ id|pb_hash_t
 op_star
 id|hash
 comma
-multiline_comment|/* hash bucket for buffer&t;*/
+multiline_comment|/* hash bucket for buffer */
 id|page_buf_t
 op_star
 id|pb
 )paren
-multiline_comment|/* buffer to deallocate&t;&t;*/
+multiline_comment|/* buffer to deallocate&t;*/
 (brace
-r_int
+id|page_buf_flags_t
 id|pb_flags
 op_assign
 id|pb-&gt;pb_flags
@@ -2841,7 +2841,7 @@ comma
 r_int
 id|isize
 comma
-r_int
+id|page_buf_flags_t
 id|flags
 )paren
 (brace
@@ -2904,7 +2904,7 @@ comma
 r_int
 id|isize
 comma
-r_int
+id|page_buf_flags_t
 id|flags
 )paren
 (brace
@@ -3292,7 +3292,7 @@ id|rmem
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
+id|page_buf_flags_t
 id|flags
 op_assign
 id|_PBF_LOCKABLE
@@ -4301,10 +4301,8 @@ id|page_buf_flags_t
 id|flags
 )paren
 multiline_comment|/* PBF_LOCK, PBF_ASYNC, PBF_READ, */
-multiline_comment|/* PBF_WRITE, PBF_ALLOCATE,&t;  */
-multiline_comment|/* PBF_DELWRI, &t;&t;&t;  */
+multiline_comment|/* PBF_WRITE, PBF_DELWRI,&t;  */
 multiline_comment|/* PBF_SYNC, PBF_DONT_BLOCK&t;  */
-multiline_comment|/* PBF_RELEASE&t;&t;&t;  */
 (brace
 r_int
 id|status
