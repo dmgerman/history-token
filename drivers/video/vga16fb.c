@@ -344,6 +344,7 @@ c_func
 (paren
 r_volatile
 r_char
+id|__iomem
 op_star
 id|p
 )paren
@@ -4140,6 +4141,7 @@ comma
 id|oldsr
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|where
 suffix:semicolon
@@ -4388,6 +4390,7 @@ comma
 id|line_ofs
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|dst
 suffix:semicolon
@@ -4767,9 +4770,12 @@ comma
 id|width
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|dest
-comma
+suffix:semicolon
+r_char
+id|__iomem
 op_star
 id|src
 suffix:semicolon
@@ -5071,11 +5077,14 @@ comma
 id|line_ofs
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|dst
 op_assign
 l_int|NULL
-comma
+suffix:semicolon
+r_char
+id|__iomem
 op_star
 id|src
 op_assign
@@ -5741,6 +5750,7 @@ op_assign
 id|image-&gt;dx
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|where
 suffix:semicolon
@@ -5899,6 +5909,7 @@ id|image
 )paren
 (brace
 r_char
+id|__iomem
 op_star
 id|where
 op_assign
@@ -5935,7 +5946,9 @@ r_char
 op_star
 )paren
 id|image-&gt;data
-comma
+suffix:semicolon
+r_char
+id|__iomem
 op_star
 id|dst
 suffix:semicolon
@@ -6264,6 +6277,7 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|where
 op_assign
@@ -6283,7 +6297,9 @@ op_star
 id|cdat
 op_assign
 id|image-&gt;data
-comma
+suffix:semicolon
+r_char
+id|__iomem
 op_star
 id|dst
 suffix:semicolon
@@ -6668,6 +6684,7 @@ id|vga16fb.screen_base
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|VGA_MAP_MEM
