@@ -76,8 +76,9 @@ DECL|macro|_PAGE_FILE
 mdefine_line|#define _PAGE_FILE&t;&t;(1 &lt;&lt; 1)&t;&t;/* see swap &amp; file pte remarks below */
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;&t;_PAGE_PPN_MASK
+multiline_comment|/* Mask of bits which may be changed by pte_modify(): */
 DECL|macro|_PAGE_CHG_MASK
-mdefine_line|#define _PAGE_CHG_MASK&t;&t;(_PFN_MASK | _PAGE_A | _PAGE_D)
+mdefine_line|#define _PAGE_CHG_MASK&t;&t;_PAGE_AR_MASK
 DECL|macro|_PAGE_SIZE_4K
 mdefine_line|#define _PAGE_SIZE_4K&t;12
 DECL|macro|_PAGE_SIZE_8K
@@ -259,7 +260,7 @@ mdefine_line|#define pte_pfn(_pte)&t;&t;((pte_val(_pte) &amp; _PFN_MASK) &gt;&gt
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
 DECL|macro|pte_modify
-mdefine_line|#define pte_modify(_pte, newprot) &bslash;&n;&t;(__pte((pte_val(_pte) &amp; _PAGE_CHG_MASK) | pgprot_val(newprot)))
+mdefine_line|#define pte_modify(_pte, newprot) &bslash;&n;&t;(__pte((pte_val(_pte) &amp; ~_PAGE_CHG_MASK) | (pgprot_val(newprot) &amp; _PAGE_CHG_MASK)))
 DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page,prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
