@@ -3312,6 +3312,13 @@ id|dev-&gt;ib_dev.process_mad
 op_assign
 id|mthca_process_mad
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|dev-&gt;cap_mask_mutex
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|ib_register_device
@@ -3380,13 +3387,6 @@ id|ret
 suffix:semicolon
 )brace
 )brace
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|dev-&gt;cap_mask_mutex
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
