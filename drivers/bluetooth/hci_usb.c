@@ -73,18 +73,28 @@ l_int|0x3800
 )paren
 )brace
 comma
-multiline_comment|/* Ericsson with non-standard id */
+multiline_comment|/* Bluetooth Ultraport Module from IBM */
 (brace
 id|USB_DEVICE
 c_func
 (paren
-l_int|0x0bdb
+l_int|0x04bf
 comma
-l_int|0x1002
+l_int|0x030a
 )paren
 )brace
 comma
-multiline_comment|/* ALPS Module with non-standard id */
+multiline_comment|/* ALPS Modules with non-standard id */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x044e
+comma
+l_int|0x3001
+)paren
+)brace
+comma
 (brace
 id|USB_DEVICE
 c_func
@@ -95,14 +105,14 @@ l_int|0x3002
 )paren
 )brace
 comma
-multiline_comment|/* Bluetooth Ultraport Module from IBM */
+multiline_comment|/* Ericsson with non-standard id */
 (brace
 id|USB_DEVICE
 c_func
 (paren
-l_int|0x04bf
+l_int|0x0bdb
 comma
-l_int|0x030a
+l_int|0x1002
 )paren
 )brace
 comma
