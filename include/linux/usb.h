@@ -135,6 +135,7 @@ DECL|macro|USB_MAJOR
 mdefine_line|#define USB_MAJOR&t;&t;&t;180
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for mdelay() */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* for in_interrupt() */
 macro_line|#include &lt;linux/list.h&gt;&t;&t;/* for struct list_head */
