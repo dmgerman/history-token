@@ -2229,22 +2229,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We set ar.k3 so that assembly code in MCA handler can compute&n;&t; * physical addresses of per cpu variables with a simple:&n;&t; *   phys = ar.k3 + &amp;per_cpu_var&n;&t; */
 id|ia64_set_kr
 c_func
 (paren
 id|IA64_KR_PER_CPU_DATA
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|cpu_data
+)paren
 op_minus
 (paren
-r_void
-op_star
+r_int
 )paren
 id|__per_cpu_start
-)paren
 )paren
 suffix:semicolon
 id|get_max_cacheline_size
