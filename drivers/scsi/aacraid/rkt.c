@@ -1330,11 +1330,6 @@ c_cond
 (paren
 id|dev-&gt;regs.rkt
 op_assign
-(paren
-r_struct
-id|rkt_registers
-op_star
-)paren
 id|ioremap
 c_func
 (paren
