@@ -476,7 +476,7 @@ op_star
 id|hub_v
 )paren
 suffix:semicolon
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|bit

@@ -151,11 +151,13 @@ DECL|struct|pciio_win_alloc_s
 r_struct
 id|pciio_win_alloc_s
 (brace
-DECL|member|wa_map
-id|pciio_win_map_t
-id|wa_map
+DECL|member|wa_resource
+r_struct
+id|resource
+op_star
+id|wa_resource
 suffix:semicolon
-multiline_comment|/* window map allocation is from */
+multiline_comment|/* window map allocation resource */
 DECL|member|wa_base
 r_int
 r_int

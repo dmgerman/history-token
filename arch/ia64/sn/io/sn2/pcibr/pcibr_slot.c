@@ -22,17 +22,6 @@ macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/ioc3.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#include &lt;asm/sn/ate_utils.h&gt;
-macro_line|#ifdef __ia64
-DECL|macro|rmallocmap
-mdefine_line|#define rmallocmap atemapalloc
-DECL|macro|rmfreemap
-mdefine_line|#define rmfreemap atemapfree
-DECL|macro|rmfree
-mdefine_line|#define rmfree atefree
-DECL|macro|rmalloc
-mdefine_line|#define rmalloc atealloc
-macro_line|#endif
 r_extern
 id|pcibr_info_t
 id|pcibr_info_get
@@ -520,7 +509,7 @@ op_amp
 id|tmp_up_resp.resp_sub_errno
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|tmp_up_resp.resp_l1_msg
@@ -827,18 +816,22 @@ op_amp
 id|tmp_down_resp.resp_sub_errno
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|tmp_down_resp.resp_l1_msg
 comma
 id|l1_msg
 comma
-r_sizeof
-(paren
+id|L1_QSIZE
+)paren
+suffix:semicolon
 id|tmp_down_resp.resp_l1_msg
-)paren
-)paren
+(braket
+id|L1_QSIZE
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|shutdown_copyout
 suffix:colon
@@ -6665,6 +6658,18 @@ id|align
 id|pciio_win_map_t
 id|win_map_p
 suffix:semicolon
+r_struct
+id|resource
+op_star
+id|root_resource
+op_assign
+l_int|NULL
+suffix:semicolon
+id|iopaddr_t
+id|iopaddr
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6679,6 +6684,11 @@ op_assign
 op_amp
 id|pcibr_soft-&gt;bs_io_win_map
 suffix:semicolon
+id|root_resource
+op_assign
+op_amp
+id|pcibr_soft-&gt;bs_io_win_root_resource
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -6688,6 +6698,11 @@ id|win_map_p
 op_assign
 op_amp
 id|pcibr_soft-&gt;bs_swin_map
+suffix:semicolon
+id|root_resource
+op_assign
+op_amp
+id|pcibr_soft-&gt;bs_swin_root_resource
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6699,6 +6714,11 @@ op_assign
 op_amp
 id|pcibr_soft-&gt;bs_mem_win_map
 suffix:semicolon
+id|root_resource
+op_assign
+op_amp
+id|pcibr_soft-&gt;bs_mem_win_root_resource
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -6707,11 +6727,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_return
+id|iopaddr
+op_assign
 id|pciio_device_win_alloc
 c_func
 (paren
-id|win_map_p
+id|root_resource
 comma
 id|win_info_p
 ques
@@ -6727,6 +6748,9 @@ id|size
 comma
 id|align
 )paren
+suffix:semicolon
+r_return
+id|iopaddr
 suffix:semicolon
 )brace
 r_void

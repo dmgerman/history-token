@@ -8,7 +8,6 @@ l_string|&quot;C&quot;
 (brace
 macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/sn/systeminfo.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/ksys/elsc.h&gt;
 DECL|macro|MODULE_MAX
@@ -296,19 +295,6 @@ c_func
 (paren
 id|moduleid_t
 id|id
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|get_kmod_info
-c_func
-(paren
-id|cmoduleid_t
-id|cmod
-comma
-id|module_info_t
-op_star
-id|mod_info
 )paren
 suffix:semicolon
 r_extern

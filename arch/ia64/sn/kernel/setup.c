@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -75,6 +76,11 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|last_time_offset
 suffix:semicolon
 r_extern
 r_void
@@ -216,7 +222,7 @@ l_int|16
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/**&n; * early_sn_setup - early setup routine for SN platforms&n; *&n; * Sets up an initial console to aid debugging.  Intended primarily&n; * for bringup.  See start_kernel() in init/main.c.&n; */
-macro_line|#if defined(CONFIG_IA64_EARLY_PRINTK) || defined(CONFIG_IA64_SGI_SN_SIM)
+macro_line|#if defined(CONFIG_IA64_EARLY_PRINTK_SGI_SN) || defined(CONFIG_IA64_SGI_SN_SIM)
 r_void
 id|__init
 DECL|function|early_sn_setup
@@ -443,7 +449,7 @@ id|master_node_bedrock_address
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_IA64_EARLY_PRINTK */
+macro_line|#endif /* CONFIG_IA64_EARLY_PRINTK_SGI_SN */
 macro_line|#ifdef CONFIG_IA64_MCA
 r_extern
 r_int
@@ -848,6 +854,11 @@ id|master_node_bedrock_address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * we set the default root device to /dev/hda&n;&t; * to make simulation easy&n;&t; */
+id|ROOT_DEV
+op_assign
+id|Root_HDA1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Create the PDAs and NODEPDAs for all the cpus.&n;&t; */
 id|sn_init_pdas
 c_func

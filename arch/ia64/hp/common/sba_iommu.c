@@ -21,9 +21,9 @@ macro_line|#include &lt;asm/system.h&gt;&t;&t;/* wmb() */
 macro_line|#include &lt;asm/acpi-ext.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;IOC: &quot;
-multiline_comment|/*&n;** This option allows cards capable of 64bit DMA to bypass the IOMMU.  If&n;** not defined, all DMA will be 32bit and go through the TLB.&n;*/
+multiline_comment|/*&n;** This option allows cards capable of 64bit DMA to bypass the IOMMU.  If&n;** not defined, all DMA will be 32bit and go through the TLB.&n;** There&squot;s potentially a conflict in the bio merge code with us&n;** advertising an iommu, but then bypassing it.  Disabled for now.&n;*/
 DECL|macro|ALLOW_IOV_BYPASS
-mdefine_line|#define ALLOW_IOV_BYPASS
+macro_line|#undef ALLOW_IOV_BYPASS
 multiline_comment|/*&n;** If a device prefetches beyond the end of a valid pdir entry, it will cause&n;** a hard failure, ie. MCA.  Version 3.0 and later of the zx1 LBA should&n;** disconnect on 4k boundaries and prevent such issues.  If the device is&n;** particularly agressive, this option will keep the entire pdir valid such&n;** that prefetching will hit a valid address.  This could severely impact&n;** error containment, and is therefore off by default.  The page that is&n;** used for spill-over is poisoned, so that should help debugging somewhat.&n;*/
 DECL|macro|FULL_VALID_PDIR
 macro_line|#undef FULL_VALID_PDIR
