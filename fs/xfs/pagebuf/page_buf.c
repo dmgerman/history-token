@@ -6457,13 +6457,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|pbd_delwrite_lock
-)paren
-suffix:semicolon
 )brace
 id|spin_unlock
 c_func
