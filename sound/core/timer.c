@@ -7106,7 +7106,7 @@ id|err
 op_ge
 l_int|0
 op_logical_and
-id|copy_from_user
+id|copy_to_user
 c_func
 (paren
 id|_gstatus
