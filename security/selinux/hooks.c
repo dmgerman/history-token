@@ -2244,6 +2244,15 @@ c_cond
 id|inode
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_PRIVATE
+(paren
+id|inode
+)paren
+)paren
 id|inode_doinit
 c_func
 (paren
