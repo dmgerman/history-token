@@ -1562,7 +1562,7 @@ comma
 id|ixp2000_GPIO_irq_handler
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enable PCI irq&n;&t; */
+multiline_comment|/*&n;&t; * Enable PCI irqs.  The actual PCI[AB] decoding is done in&n;&t; * entry-macro.S, so we don&squot;t need a chained handler for the&n;&t; * PCI interrupt source.&n;&t; */
 id|ixp2000_reg_write
 c_func
 (paren

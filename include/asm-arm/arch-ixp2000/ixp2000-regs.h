@@ -2,7 +2,7 @@ multiline_comment|/*&n; * include/asm-arm/arch-ixp2000/ixp2000-regs.h&n; *&n; * 
 macro_line|#ifndef _IXP2000_REGS_H_
 DECL|macro|_IXP2000_REGS_H_
 mdefine_line|#define _IXP2000_REGS_H_
-multiline_comment|/* &n; * Static I/O regions.&n; *&n; * Most of the registers are clumped in 4K regions spread throughout&n; * the 0xc000000 -&gt; 0xc0100000 address range, but we just map in&n; * the whole range using a single 1 MB section instead of small&n; * 4K pages.  This has two advantages for us:&n; *&n; * 1) We use only one TLB entry for large number of on-chip I/O devices.&n; *&n; * 2) We can easily set the Section attributes to XCB=101 on the IXP2400&n; *    as required per erratum #66.  We accomplish this by using a&n; *    new MT_IXP2000_DEVICE memory type with the bits set as required.&n; *&n; * CAP stands for CSR Access Proxy&n; */
+multiline_comment|/* &n; * Static I/O regions.&n; *&n; * Most of the registers are clumped in 4K regions spread throughout&n; * the 0xc0000000 -&gt; 0xc0100000 address range, but we just map in&n; * the whole range using a single 1 MB section instead of small&n; * 4K pages.  This has two advantages for us:&n; *&n; * 1) We use only one TLB entry for large number of on-chip I/O devices.&n; *&n; * 2) We can easily set the Section attributes to XCB=101 on the IXP2400&n; *    as required per erratum #66.  We accomplish this by using a&n; *    new MT_IXP2000_DEVICE memory type with the bits set as required.&n; *&n; * CAP stands for CSR Access Proxy.&n; *&n; * If you change the virtual address of this mapping, please propagate&n; * the change to arch/arm/kernel/debug.S, which hardcodes the virtual&n; * address of the UART located in this region.&n; */
 DECL|macro|IXP2000_CAP_PHYS_BASE
 mdefine_line|#define&t;IXP2000_CAP_PHYS_BASE&t;&t;0xc0000000
 DECL|macro|IXP2000_CAP_VIRT_BASE
@@ -22,7 +22,7 @@ DECL|macro|IXP2000_TIMER_VIRT_BASE
 mdefine_line|#define&t;IXP2000_TIMER_VIRT_BASE&t;&t;0xfef20000
 DECL|macro|IXP2000_GPIO_VIRT_BASE
 mdefine_line|#define&t;IXP2000_GPIO_VIRT_BASE&t;&t;0Xfef10000
-multiline_comment|/*&n; * Devices outside of the 0xc0000000 -&gt; 0xc0100000 range&n; */
+multiline_comment|/*&n; * Devices outside of the 0xc0000000 -&gt; 0xc0100000 range.  The virtual&n; * addresses of the INTCTL and PCI_CSR mappings are hardcoded in&n; * entry-macro.S, so if you ever change these please propagate&n; * the change.&n; */
 DECL|macro|IXP2000_INTCTL_PHYS_BASE
 mdefine_line|#define IXP2000_INTCTL_PHYS_BASE&t;0xd6000000
 DECL|macro|IXP2000_INTCTL_VIRT_BASE
@@ -236,7 +236,7 @@ mdefine_line|#define IXP2000_PCICNTL_PNR&t;&t;(1&lt;&lt;17)&t;/* PCI not Reset b
 DECL|macro|IXP2000_PCICNTL_PCF
 mdefine_line|#define IXP2000_PCICNTL_PCF&t;&t;(1&lt;&lt;28)&t;/* PCI Centrolfunction bit */
 DECL|macro|IXP2000_XSCALE_INT
-mdefine_line|#define IXP2000_XSCALE_INT&t;&t;(1&lt;&lt;1)&t;/* Interrupt from  XScale to PCI */
+mdefine_line|#define IXP2000_XSCALE_INT&t;&t;(1&lt;&lt;1)&t;/* Interrupt from XScale to PCI */
 multiline_comment|/* These are from the IRQ register in the PCI ISR register */
 DECL|macro|PCI_CONTROL_BE_DEO
 mdefine_line|#define PCI_CONTROL_BE_DEO&t;&t;(1 &lt;&lt; 22)&t;/* Big Endian Data Enable Out */
