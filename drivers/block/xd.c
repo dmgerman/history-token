@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -611,12 +610,6 @@ id|xd_queue
 r_goto
 id|out1a
 suffix:semicolon
-id|devfs_mk_dir
-c_func
-(paren
-l_string|&quot;xd&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -811,6 +804,16 @@ op_plus
 l_char|&squot;a&squot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|disk-&gt;devfs_name
+comma
+l_string|&quot;xd/target%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|disk-&gt;fops
 op_assign
 op_amp
@@ -999,12 +1002,6 @@ l_int|4
 suffix:semicolon
 id|out2
 suffix:colon
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;xd&quot;
-)paren
-suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
@@ -6723,12 +6720,6 @@ c_func
 id|xd_iobase
 comma
 l_int|4
-)paren
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;xd&quot;
 )paren
 suffix:semicolon
 r_if

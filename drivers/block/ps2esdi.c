@@ -1813,6 +1813,16 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|disk-&gt;devfs_name
+comma
+l_string|&quot;ed/target%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|disk-&gt;fops
 op_assign
 op_amp

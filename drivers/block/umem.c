@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;        /* O_ACCMODE */
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/umem.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -5086,12 +5085,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|devfs_mk_dir
-c_func
-(paren
-l_string|&quot;umem&quot;
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5126,6 +5119,16 @@ l_string|&quot;umem%c&quot;
 comma
 l_char|&squot;a&squot;
 op_plus
+id|i
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|disk-&gt;devfs_name
+comma
+l_string|&quot;umem/card%d&quot;
+comma
 id|i
 )paren
 suffix:semicolon
@@ -5294,12 +5297,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;umem&quot;
-)paren
-suffix:semicolon
 id|pci_unregister_driver
 c_func
 (paren

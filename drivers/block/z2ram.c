@@ -1227,6 +1227,14 @@ comma
 l_string|&quot;z2ram&quot;
 )paren
 suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|z2ram_gendisk-&gt;devfs_name
+comma
+id|z2ram_gendisk-&gt;disk_name
+)paren
+suffix:semicolon
 id|z2ram_gendisk-&gt;queue
 op_assign
 id|z2_queue
