@@ -684,15 +684,13 @@ comma
 id|RTC_VERSION
 )paren
 suffix:semicolon
+r_return
 id|misc_register
 c_func
 (paren
 op_amp
 id|rtc_dev
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof
