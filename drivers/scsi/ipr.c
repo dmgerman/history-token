@@ -1206,6 +1206,16 @@ l_string|&quot;9041: Array protection temporarily suspended&quot;
 )brace
 comma
 (brace
+l_int|0x06698200
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_string|&quot;9042: Corrupt array parity detected on specified device&quot;
+)brace
+comma
+(brace
 l_int|0x066B0200
 comma
 l_int|0
@@ -1222,7 +1232,7 @@ l_int|0
 comma
 l_int|1
 comma
-l_string|&quot;9042: Corrupt array parity detected on specified device&quot;
+l_string|&quot;9032: Array exposed but still protected&quot;
 )brace
 comma
 (brace
