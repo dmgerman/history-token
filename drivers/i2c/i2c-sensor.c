@@ -1,16 +1,14 @@
-multiline_comment|/*&n;    i2c-proc.c - Part of lm_sensors, Linux kernel modules for hardware&n;                monitoring&n;    Copyright (c) 1998 - 2001 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/*&n;    This driver puts entries in /proc/sys/dev/sensors for each I2C device&n;*/
+multiline_comment|/*&n;    i2c-sensor.c - Part of lm_sensors, Linux kernel modules for hardware&n;                monitoring&n;    Copyright (c) 1998 - 2001 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/i2c-proc.h&gt;
+macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Very inefficient for ISA detects, and won&squot;t work for 10-bit addresses! */
 DECL|function|i2c_detect
@@ -987,11 +985,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|i2c_proc_init
+DECL|function|i2c_sensor_init
 r_static
 r_int
 id|__init
-id|i2c_proc_init
+id|i2c_sensor_init
 c_func
 (paren
 r_void
@@ -1001,11 +999,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|i2c_proc_exit
+DECL|function|i2c_sensor_exit
 r_static
 r_void
 id|__exit
-id|i2c_proc_exit
+id|i2c_sensor_exit
 c_func
 (paren
 r_void
@@ -1028,7 +1026,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;i2c-proc driver&quot;
+l_string|&quot;i2c-sensor driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1037,18 +1035,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|i2c_proc_init
+DECL|variable|i2c_sensor_init
 id|module_init
 c_func
 (paren
-id|i2c_proc_init
+id|i2c_sensor_init
 )paren
 suffix:semicolon
-DECL|variable|i2c_proc_exit
+DECL|variable|i2c_sensor_exit
 id|module_exit
 c_func
 (paren
-id|i2c_proc_exit
+id|i2c_sensor_exit
 )paren
 suffix:semicolon
 eof

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/i2c-proc.h&gt;
+macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* If force_addr is set to anything different from 0, we forcibly enable&n;   the device at the given address. */

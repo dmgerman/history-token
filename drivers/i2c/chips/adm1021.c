@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/i2c-proc.h&gt;
+macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Registers */
 DECL|macro|ADM1021_SYSCTL_TEMP
 mdefine_line|#define ADM1021_SYSCTL_TEMP&t;&t;1200
