@@ -1751,7 +1751,6 @@ c_func
 id|task_mulin_intr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * VERIFY ME before 2.4 ... unexpected race is possible based on details&n; * RMK with 74LS245/373/374 TTL buffer logic because of passthrough.&n; */
 DECL|function|pre_task_out_intr
 id|ide_startstop_t
 id|pre_task_out_intr
