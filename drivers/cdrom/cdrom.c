@@ -2734,14 +2734,11 @@ id|cgc
 )paren
 )paren
 )paren
-(brace
 id|mmc3_profile
 op_assign
 l_int|0xffff
 suffix:semicolon
-)brace
 r_else
-(brace
 id|mmc3_profile
 op_assign
 (paren
@@ -2758,18 +2755,6 @@ id|buffer
 l_int|7
 )braket
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;cdrom: %s: mmc-3 profile capable, current profile: %Xh&bslash;n&quot;
-comma
-id|cdi-&gt;name
-comma
-id|mmc3_profile
-)paren
-suffix:semicolon
-)brace
 id|cdi-&gt;mmc3_profile
 op_assign
 id|mmc3_profile
