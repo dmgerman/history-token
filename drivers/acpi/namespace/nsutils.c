@@ -272,6 +272,21 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;[NULL NAME]&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Convert handle to a full pathname and print it (with supplied message) */
 id|buffer.length
 op_assign
@@ -997,7 +1012,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;returning [%p] (abs) &bslash;&quot;&bslash;&bslash;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;Returning [%p] (abs) &bslash;&quot;&bslash;&bslash;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|internal_name
 comma
@@ -1013,7 +1028,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;returning [%p] (rel) &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;Returning [%p] (rel) &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|internal_name
 comma

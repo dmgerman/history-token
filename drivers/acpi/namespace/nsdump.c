@@ -453,7 +453,7 @@ id|ACPI_TYPE_DEVICE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Notify object: %p&quot;
+l_string|&quot;Notify Object: %p&bslash;n&quot;
 comma
 id|obj_desc
 )paren
@@ -814,7 +814,7 @@ id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Off %.2X Len %.2X Acc %.2hd&bslash;n&quot;
+l_string|&quot;Off %.2X Len %.2X Acc %.2hd&bslash;n&quot;
 comma
 (paren
 id|obj_desc-&gt;common_field.base_byte_offset
