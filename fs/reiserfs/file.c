@@ -4950,7 +4950,7 @@ id|loff_t
 id|pos
 suffix:semicolon
 singleline_comment|// Current position in the file.
-r_int
+id|ssize_t
 id|res
 suffix:semicolon
 singleline_comment|// return value of various functions that we call.
@@ -4988,7 +4988,7 @@ id|O_DIRECT
 )paren
 (brace
 singleline_comment|// Direct IO needs treatment
-r_int
+id|ssize_t
 id|result
 comma
 id|after_file_end
