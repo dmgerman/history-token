@@ -1596,9 +1596,7 @@ op_amp
 id|cinfo-&gt;ncci_head
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|reseted
+id|capi_ctr_reseted
 c_func
 (paren
 id|ctrl
@@ -2884,9 +2882,7 @@ comma
 id|DataB3Len
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|handle_capimsg
+id|capi_ctr_handle_message
 c_func
 (paren
 id|ctrl
@@ -3000,9 +2996,7 @@ id|skb-&gt;data
 )paren
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|handle_capimsg
+id|capi_ctr_handle_message
 c_func
 (paren
 id|ctrl
@@ -3100,9 +3094,7 @@ r_case
 id|RECEIVE_START
 suffix:colon
 multiline_comment|/* b1_put_byte(card-&gt;port, SEND_POLLACK); */
-id|ctrl
-op_member_access_from_pointer
-id|resume_output
+id|capi_ctr_resume_output
 c_func
 (paren
 id|ctrl
@@ -3113,9 +3105,7 @@ suffix:semicolon
 r_case
 id|RECEIVE_STOP
 suffix:colon
-id|ctrl
-op_member_access_from_pointer
-id|suspend_output
+id|capi_ctr_suspend_output
 c_func
 (paren
 id|ctrl
@@ -3161,9 +3151,7 @@ id|VER_DRIVER
 )braket
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|ready
+id|capi_ctr_ready
 c_func
 (paren
 id|ctrl
