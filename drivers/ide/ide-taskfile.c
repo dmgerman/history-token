@@ -5153,7 +5153,6 @@ r_return
 op_amp
 id|task_no_data_intr
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|WIN_READDMA
 suffix:colon
@@ -5183,7 +5182,6 @@ suffix:colon
 r_case
 id|WIN_WRITEDMA_QUEUED_EXT
 suffix:colon
-macro_line|#endif
 r_case
 id|WIN_FORMAT
 suffix:colon
@@ -5467,7 +5465,6 @@ r_return
 id|IDE_DRIVE_TASK_NO_DATA
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|WIN_READDMA
 suffix:colon
@@ -5503,7 +5500,6 @@ suffix:colon
 r_return
 id|IDE_DRIVE_TASK_RAW_WRITE
 suffix:semicolon
-macro_line|#endif
 r_case
 id|WIN_SETFEATURES
 suffix:colon
@@ -7756,28 +7752,7 @@ id|xfer_rate
 )paren
 (brace
 multiline_comment|/* active-retuning-calls future */
-r_if
-c_cond
-(paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|speedproc
-)paren
-op_ne
-l_int|NULL
-)paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|speedproc
+id|ide_set_xfer_rate
 c_func
 (paren
 id|drive
@@ -8106,31 +8081,10 @@ id|xfer_rate
 )paren
 (brace
 multiline_comment|/* active-retuning-calls future */
-r_if
-c_cond
-(paren
-(paren
-id|HWIF
+id|ide_set_xfer_rate
 c_func
 (paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|speedproc
-)paren
-op_ne
-l_int|NULL
-)paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|speedproc
-c_func
-(paren
-id|drive
+id|driver
 comma
 id|xfer_rate
 )paren
