@@ -324,7 +324,7 @@ l_string|&quot;/sbin/critical_overtemp&quot;
 suffix:semicolon
 multiline_comment|/*&n; * This option is &quot;weird&quot; :) Basically, if you define this to 1&n; * the control loop for the RPMs fans (not PWMs) will apply the&n; * correction factor obtained from the PID to the _actual_ RPM&n; * speed read from the FCU.&n; * If you define the below constant to 0, then it will be&n; * applied to the setpoint RPM speed, that is basically the&n; * speed we proviously &quot;asked&quot; for.&n; *&n; * I&squot;m not sure which of these Apple&squot;s algorithm is supposed&n; * to use&n; */
 DECL|macro|RPM_PID_USE_ACTUAL_SPEED
-mdefine_line|#define RPM_PID_USE_ACTUAL_SPEED&t;&t;1
+mdefine_line|#define RPM_PID_USE_ACTUAL_SPEED&t;&t;0
 multiline_comment|/*&n; * i2c IDs. Currently, we hard code those and assume that&n; * the FCU is on U3 bus 1 while all sensors are on U3 bus&n; * 0. This appear to be safe enough for this first version&n; * of the driver, though I would accept any clean patch&n; * doing a better use of the device-tree without turning the&n; * while i2c registration mecanism into a racy mess&n; */
 DECL|macro|FAN_CTRLER_ID
 mdefine_line|#define FAN_CTRLER_ID&t;&t;0x15e
@@ -582,6 +582,10 @@ suffix:semicolon
 DECL|member|first
 r_int
 id|first
+suffix:semicolon
+DECL|member|adc_config
+id|u8
+id|adc_config
 suffix:semicolon
 )brace
 suffix:semicolon
