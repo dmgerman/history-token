@@ -693,6 +693,13 @@ id|__write_trylock
 )paren
 suffix:semicolon
 multiline_comment|/* Out of line spin-locking implementation. */
+DECL|variable|_raw_spin_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_spin_lock
+)paren
+suffix:semicolon
 DECL|variable|_raw_spin_lock_flags
 id|EXPORT_SYMBOL
 c_func
