@@ -572,7 +572,7 @@ id|mm-&gt;context
 suffix:semicolon
 )brace
 DECL|macro|deactivate_mm
-mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
+mdefine_line|#define deactivate_mm(tsk,mm)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;MMU_TRACE(&squot;d&squot;, smp_processor_id(), mm, mm-&gt;context);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Switch from address space PREV to address space NEXT.&n; */
 r_static
 r_inline

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sys_ia32.c: Conversion between 32bit and 64bit native syscalls. Derived from sys_sparc32.c.&n; *&n; * Copyright (C) 2000&t;&t;VA Linux Co&n; * Copyright (C) 2000&t;&t;Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 1999&t;&t;Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 1997,1998&t;Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997&t;&t;David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
+multiline_comment|/*&n; * sys_ia32.c: Conversion between 32bit and 64bit native syscalls. Derived from sys_sparc32.c.&n; *&n; * Copyright (C) 2000&t;&t;VA Linux Co&n; * Copyright (C) 2000&t;&t;Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 1999&t;&t;Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 1997,1998&t;Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997&t;&t;David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -12548,7 +12548,7 @@ id|nsems
 comma
 r_const
 r_struct
-id|timespec32
+id|compat_timespec
 op_star
 id|timeout32
 )paren
@@ -12690,7 +12690,7 @@ comma
 (paren
 r_const
 r_struct
-id|timespec32
+id|compat_timespec
 op_star
 )paren
 id|AA

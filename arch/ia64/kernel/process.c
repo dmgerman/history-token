@@ -674,6 +674,7 @@ r_int
 id|in_syscall
 )paren
 (brace
+macro_line|#ifdef CONFIG_FSYS
 r_if
 c_cond
 (paren
@@ -715,6 +716,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 r_if
 c_cond

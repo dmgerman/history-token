@@ -593,7 +593,7 @@ macro_line|# define user_mode(regs)&t;&t;(((struct ia64_psr *) &amp;(regs)-&gt;c
 DECL|macro|user_stack
 macro_line|# define user_stack(task,regs)&t;((long) regs - (long) task == IA64_STK_OFFSET - sizeof(*regs))
 DECL|macro|fsys_mode
-macro_line|# define fsys_mode(task,regs)&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  struct task_struct *_task = (task);&t;&t;&bslash;&n;&t;  struct pt_regs *_regs = (regs);&t;&t;&bslash;&n;&t;  !user_mode(regs) &amp;&amp; user_stack(task, regs);&t;&bslash;&n;  })
+macro_line|# define fsys_mode(task,regs)&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  struct task_struct *_task = (task);&t;&t;&t;&bslash;&n;&t;  struct pt_regs *_regs = (regs);&t;&t;&t;&bslash;&n;&t;  !user_mode(_regs) &amp;&amp; user_stack(_task, _regs);&t;&bslash;&n;  })
 r_struct
 id|task_struct
 suffix:semicolon

@@ -2418,6 +2418,7 @@ r_case
 l_int|36
 suffix:colon
 multiline_comment|/* Single Step Trap */
+macro_line|#ifdef CONFIG_FSYS
 r_if
 c_cond
 (paren
@@ -2500,6 +2501,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#endif
 r_switch
 c_cond
 (paren

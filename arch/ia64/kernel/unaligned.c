@@ -5693,14 +5693,6 @@ id|regs
 )paren
 (brace
 r_struct
-id|exception_fixup
-id|fix
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
-r_struct
 id|ia64_psr
 op_star
 id|ipsr
@@ -5733,6 +5725,14 @@ suffix:semicolon
 r_struct
 id|siginfo
 id|si
+suffix:semicolon
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|eh
+op_assign
+l_int|NULL
 suffix:semicolon
 r_union
 (brace
@@ -5790,8 +5790,7 @@ c_func
 id|regs
 )paren
 )paren
-(brace
-id|fix
+id|eh
 op_assign
 id|SEARCH_EXCEPTION_TABLE
 c_func
@@ -5799,7 +5798,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5809,7 +5807,7 @@ c_func
 id|regs
 )paren
 op_logical_or
-id|fix.cont
+id|eh
 )paren
 (brace
 r_if
@@ -6363,7 +6361,7 @@ id|regs
 r_if
 c_cond
 (paren
-id|fix.cont
+id|eh
 )paren
 (brace
 id|handle_exception
@@ -6371,7 +6369,7 @@ c_func
 (paren
 id|regs
 comma
-id|fix
+id|eh
 )paren
 suffix:semicolon
 r_goto

@@ -276,6 +276,7 @@ id|acpi_get_crs
 id|acpi_handle
 id|obj
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|buf
@@ -342,11 +343,13 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+r_struct
 id|acpi_resource
 op_star
 DECL|function|acpi_get_crs_next
 id|acpi_get_crs_next
 (paren
+r_struct
 id|acpi_buffer
 op_star
 id|buf
@@ -356,6 +359,7 @@ op_star
 id|offset
 )paren
 (brace
+r_struct
 id|acpi_resource
 op_star
 id|res
@@ -387,11 +391,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+r_union
 id|acpi_resource_data
 op_star
 DECL|function|acpi_get_crs_type
 id|acpi_get_crs_type
 (paren
+r_struct
 id|acpi_buffer
 op_star
 id|buf
@@ -411,6 +417,7 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_struct
 id|acpi_resource
 op_star
 id|res
@@ -449,6 +456,7 @@ r_void
 DECL|function|acpi_dispose_crs
 id|acpi_dispose_crs
 (paren
+r_struct
 id|acpi_buffer
 op_star
 id|buf
@@ -2363,6 +2371,7 @@ id|acpi_table_header
 op_star
 id|fadt_header
 suffix:semicolon
+r_struct
 id|fadt_descriptor_rev2
 op_star
 id|fadt
@@ -2417,6 +2426,7 @@ multiline_comment|/* Only deal with ACPI 2.0 FADT */
 id|fadt
 op_assign
 (paren
+r_struct
 id|fadt_descriptor_rev2
 op_star
 )paren
