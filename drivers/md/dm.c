@@ -2440,7 +2440,7 @@ r_if
 c_cond
 (paren
 id|minor
-OG
+op_ge
 (paren
 l_int|1
 op_lshift
@@ -2653,7 +2653,7 @@ r_if
 c_cond
 (paren
 id|m
-OG
+op_ge
 (paren
 l_int|1
 op_lshift
