@@ -160,6 +160,8 @@ op_member_access_from_pointer
 id|readpages
 c_func
 (paren
+id|filp
+comma
 id|mapping
 comma
 id|pages
