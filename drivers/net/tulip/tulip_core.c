@@ -7639,10 +7639,6 @@ id|dev-&gt;base_addr
 op_assign
 id|ioaddr
 suffix:semicolon
-id|dev-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
 macro_line|#ifdef CONFIG_TULIP_MWI
 r_if
 c_cond
@@ -8470,6 +8466,10 @@ id|i
 )braket
 suffix:semicolon
 id|last_irq
+op_assign
+id|irq
+suffix:semicolon
+id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
