@@ -755,35 +755,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize queue depth settings */
-id|drive-&gt;queue_depth
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-id|drive-&gt;queue_depth
-op_assign
-id|CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-suffix:semicolon
-macro_line|#else
-id|drive-&gt;queue_depth
-op_assign
-id|drive-&gt;id-&gt;queue_depth
-op_plus
-l_int|1
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|drive-&gt;queue_depth
-template_param
-id|IDE_MAX_TAG
-)paren
-id|drive-&gt;queue_depth
-op_assign
-id|IDE_MAX_TAG
-suffix:semicolon
 r_return
 suffix:semicolon
 id|err_misc

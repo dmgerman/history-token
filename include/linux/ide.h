@@ -1528,10 +1528,6 @@ DECL|enumerator|ide_started
 id|ide_started
 comma
 multiline_comment|/* a drive operation was started, handler was set */
-DECL|enumerator|ide_released
-id|ide_released
-comma
-multiline_comment|/* as ide_started, but bus also released */
 DECL|typedef|ide_startstop_t
 )brace
 id|ide_startstop_t
@@ -1681,11 +1677,6 @@ id|u8
 id|using_dma
 suffix:semicolon
 multiline_comment|/* disk is using dma for read/write */
-DECL|member|using_tcq
-id|u8
-id|using_tcq
-suffix:semicolon
-multiline_comment|/* disk is using queueing */
 DECL|member|retry_pio
 id|u8
 id|retry_pio
@@ -1974,11 +1965,6 @@ id|u8
 id|bios_sect
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO sectors per track */
-DECL|member|queue_depth
-id|u8
-id|queue_depth
-suffix:semicolon
-multiline_comment|/* max queue depth */
 DECL|member|bios_cyl
 r_int
 r_int
@@ -5898,58 +5884,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-r_extern
-r_int
-id|__ide_dma_queued_on
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|__ide_dma_queued_off
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|__ide_dma_queued_read
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|__ide_dma_queued_write
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|__ide_dma_queued_start
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#else
 DECL|function|__ide_dma_off
 r_static
@@ -6241,71 +6175,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Structure locking:&n; *&n; * ide_cfg_sem and ide_lock together protect changes to&n; * ide_hwif_t-&gt;{next,hwgroup}&n; * ide_drive_t-&gt;next&n; *&n; * ide_hwgroup_t-&gt;busy: ide_lock&n; * ide_hwgroup_t-&gt;hwif: ide_lock&n; * ide_hwif_t-&gt;mate: constant, no locking&n; * ide_drive_t-&gt;hwif: constant, no locking&n; */
 DECL|macro|local_irq_set
 mdefine_line|#define local_irq_set(flags)&t;do { local_save_flags((flags)); local_irq_enable(); } while (0)
-DECL|macro|IDE_MAX_TAG
-mdefine_line|#define IDE_MAX_TAG&t;32
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-DECL|function|ata_pending_commands
-r_static
-r_inline
-r_int
-id|ata_pending_commands
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|drive-&gt;using_tcq
-)paren
-r_return
-id|blk_queue_tag_depth
-c_func
-(paren
-id|drive-&gt;queue
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|ata_can_queue
-r_static
-r_inline
-r_int
-id|ata_can_queue
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|drive-&gt;using_tcq
-)paren
-r_return
-id|blk_queue_tag_queue
-c_func
-(paren
-id|drive-&gt;queue
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|ata_pending_commands
-mdefine_line|#define ata_pending_commands(drive)&t;(0)
-DECL|macro|ata_can_queue
-mdefine_line|#define ata_can_queue(drive)&t;&t;(1)
-macro_line|#endif
 r_extern
 r_struct
 id|bus_type
