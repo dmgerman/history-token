@@ -172,9 +172,9 @@ r_return
 id|fd
 suffix:semicolon
 )brace
-DECL|function|setup_one_range
+DECL|function|init_range
 r_void
-id|setup_one_range
+id|init_range
 c_func
 (paren
 r_int

@@ -95,6 +95,9 @@ r_int
 r_int
 id|total
 comma
+r_int
+id|need_vm
+comma
 r_struct
 id|mem_region
 op_star
@@ -218,7 +221,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|setup_one_range
+id|init_range
 c_func
 (paren
 r_int

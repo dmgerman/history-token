@@ -64,19 +64,19 @@ r_int
 r_int
 id|high_physmem
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|end_vm
-suffix:semicolon
 DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET&t;(__va_space)
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;(((unsigned long) high_physmem + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1))
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
+macro_line|#if CONFIG_HIGHMEM
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;(end_vm)
+macro_line|# define VMALLOC_END&t;(PKMAP_BASE-2*PAGE_SIZE)
+macro_line|#else
+DECL|macro|VMALLOC_END
+macro_line|# define VMALLOC_END&t;(FIXADDR_START-2*PAGE_SIZE)
+macro_line|#endif
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001
 DECL|macro|_PAGE_NEWPAGE
@@ -962,12 +962,16 @@ mdefine_line|#define pmd_page(pmd) (phys_mem_map(pmd_val(pmd) &amp; PAGE_MASK) +
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+DECL|macro|__pgd_offset
+mdefine_line|#define __pgd_offset(address) pgd_index(address)
 multiline_comment|/* to find an entry in a page-table-directory */
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) &bslash;&n;((mm)-&gt;pgd + ((address) &gt;&gt; PGDIR_SHIFT))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
+DECL|macro|__pmd_offset
+mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|function|pmd_offset
 r_static
