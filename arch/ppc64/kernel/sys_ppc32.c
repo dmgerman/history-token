@@ -4263,7 +4263,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Due to some executables calling the wrong select we sometimes&n; * get wrong args.  This determines how the args are being passed&n; * (a single ptr to them all args passed) then calls&n; * sys_select() with the appropriate args. -- Cort&n; */
 multiline_comment|/* Note: it is necessary to treat n as an unsigned int, &n; * with the corresponding cast to a signed int to insure that the &n; * proper conversion (sign extension) between the register representation of a signed int (msr in 32-bit mode)&n; * and the register representation of a signed int (msr in 64-bit mode) is performed.&n; */
 DECL|function|ppc32_select
 id|asmlinkage
@@ -4290,23 +4289,6 @@ id|u32
 id|tvp_x
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|n
-op_ge
-l_int|4096
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;ppc32_select - wrong arguments were passed in &bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|sys32_select
 c_func
