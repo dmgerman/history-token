@@ -1609,23 +1609,16 @@ id|PwrcsrClr1
 suffix:semicolon
 )brace
 )brace
-DECL|function|wait_for_reset
+DECL|function|rhine_chip_reset
 r_static
 r_void
-id|wait_for_reset
+id|rhine_chip_reset
 c_func
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
-comma
-id|u32
-id|quirks
-comma
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
@@ -1633,10 +1626,31 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_struct
+id|rhine_private
+op_star
+id|rp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 id|boguscnt
 op_assign
 l_int|20
+suffix:semicolon
+id|writew
+c_func
+(paren
+id|CmdReset
+comma
+id|ioaddr
+op_plus
+id|ChipCmd
+)paren
 suffix:semicolon
 id|IOSYNC
 suffix:semicolon
@@ -1661,14 +1675,14 @@ id|KERN_INFO
 l_string|&quot;%s: Reset not complete yet. &quot;
 l_string|&quot;Trying harder.&bslash;n&quot;
 comma
-id|name
+id|DRV_NAME
 )paren
 suffix:semicolon
-multiline_comment|/* Rhine-II needs to be forced sometimes */
+multiline_comment|/* Force reset */
 r_if
 c_cond
 (paren
-id|quirks
+id|rp-&gt;quirks
 op_amp
 id|rqForceReset
 )paren
@@ -1682,8 +1696,7 @@ op_plus
 id|MiscCmd
 )paren
 suffix:semicolon
-multiline_comment|/* VT86C100A may need long delay after reset (dlink) */
-multiline_comment|/* Seen on Rhine-II as well (rl) */
+multiline_comment|/* Reset can take somewhat longer (rare) */
 r_while
 c_loop
 (paren
@@ -1722,7 +1735,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Reset %s.&bslash;n&quot;
 comma
-id|name
+id|pci_name
+c_func
+(paren
+id|rp-&gt;pdev
+)paren
 comma
 id|boguscnt
 ques
@@ -1742,7 +1759,7 @@ id|enable_mmio
 c_func
 (paren
 r_int
-id|ioaddr
+id|pioaddr
 comma
 id|u32
 id|quirks
@@ -1765,7 +1782,7 @@ op_assign
 id|inb
 c_func
 (paren
-id|ioaddr
+id|pioaddr
 op_plus
 id|ConfigA
 )paren
@@ -1777,7 +1794,7 @@ c_func
 (paren
 id|n
 comma
-id|ioaddr
+id|pioaddr
 op_plus
 id|ConfigA
 )paren
@@ -1790,7 +1807,7 @@ op_assign
 id|inb
 c_func
 (paren
-id|ioaddr
+id|pioaddr
 op_plus
 id|ConfigD
 )paren
@@ -1802,7 +1819,7 @@ c_func
 (paren
 id|n
 comma
-id|ioaddr
+id|pioaddr
 op_plus
 id|ConfigD
 )paren
@@ -1810,17 +1827,39 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|function|reload_eeprom
+multiline_comment|/*&n; * Loads bytes 0x00-0x05, 0x6E-0x6F, 0x78-0x7B from EEPROM&n; */
+DECL|function|rhine_reload_eeprom
 r_static
 r_void
 id|__devinit
-id|reload_eeprom
+id|rhine_reload_eeprom
 c_func
 (paren
 r_int
-id|ioaddr
+id|pioaddr
+comma
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 (brace
+r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_struct
+id|rhine_private
+op_star
+id|rp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1829,7 +1868,7 @@ c_func
 (paren
 l_int|0x20
 comma
-id|ioaddr
+id|pioaddr
 op_plus
 id|MACRegEEcsr
 )paren
@@ -1857,7 +1896,7 @@ op_logical_neg
 id|inb
 c_func
 (paren
-id|ioaddr
+id|pioaddr
 op_plus
 id|MACRegEEcsr
 )paren
@@ -1866,6 +1905,43 @@ l_int|0x20
 )paren
 )paren
 r_break
+suffix:semicolon
+macro_line|#ifdef USE_MMIO
+multiline_comment|/*&n;&t; * Reloading from EEPROM overwrites ConfigA-D, so we must re-enable&n;&t; * MMIO. If reloading EEPROM was done first this could be avoided, but&n;&t; * it is not known if that still works with the &quot;win98-reboot&quot; problem.&n;&t; */
+id|enable_mmio
+c_func
+(paren
+id|pioaddr
+comma
+id|rp-&gt;quirks
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Turn off EEPROM-controlled wake-up (magic packet) */
+r_if
+c_cond
+(paren
+id|rp-&gt;quirks
+op_amp
+id|rqWOL
+)paren
+id|writeb
+c_func
+(paren
+id|readb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ConfigA
+)paren
+op_amp
+l_int|0xFE
+comma
+id|ioaddr
+op_plus
+id|ConfigA
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
@@ -1909,6 +1985,38 @@ id|dev-&gt;irq
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|rhine_hw_init
+r_static
+r_void
+id|rhine_hw_init
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|pioaddr
+)paren
+(brace
+multiline_comment|/* Reset the chip to erase previous misconfiguration. */
+id|rhine_chip_reset
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Reload EEPROM controlled bytes cleared by soft reset */
+id|rhine_reload_eeprom
+c_func
+(paren
+id|pioaddr
+comma
+id|dev
+)paren
+suffix:semicolon
+)brace
 DECL|function|rhine_init_one
 r_static
 r_int
@@ -1959,10 +2067,13 @@ op_minus
 l_int|1
 suffix:semicolon
 r_int
-id|ioaddr
+id|pioaddr
 suffix:semicolon
 r_int
 id|memaddr
+suffix:semicolon
+r_int
+id|ioaddr
 suffix:semicolon
 r_int
 id|io_size
@@ -1974,11 +2085,6 @@ id|phy_idx
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef USE_MMIO
-r_int
-id|ioaddr0
-suffix:semicolon
-macro_line|#endif
 r_const
 r_char
 op_star
@@ -2194,7 +2300,7 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
-id|ioaddr
+id|pioaddr
 op_assign
 id|pci_resource_start
 c_func
@@ -2292,14 +2398,10 @@ r_goto
 id|err_out_free_netdev
 suffix:semicolon
 macro_line|#ifdef USE_MMIO
-id|ioaddr0
-op_assign
-id|ioaddr
-suffix:semicolon
 id|enable_mmio
 c_func
 (paren
-id|ioaddr0
+id|pioaddr
 comma
 id|quirks
 )paren
@@ -2381,7 +2483,7 @@ op_assign
 id|inb
 c_func
 (paren
-id|ioaddr0
+id|pioaddr
 op_plus
 id|reg
 )paren
@@ -2430,10 +2532,27 @@ id|err_out_unmap
 suffix:semicolon
 )brace
 )brace
+macro_line|#else
+id|ioaddr
+op_assign
+id|pioaddr
+suffix:semicolon
 macro_line|#endif /* USE_MMIO */
 id|dev-&gt;base_addr
 op_assign
 id|ioaddr
+suffix:semicolon
+id|rp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|rp-&gt;quirks
+op_assign
+id|quirks
 suffix:semicolon
 id|rhine_power_init
 c_func
@@ -2442,51 +2561,14 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the chip to erase previous misconfiguration. */
-id|writew
-c_func
-(paren
-id|CmdReset
-comma
-id|ioaddr
-op_plus
-id|ChipCmd
-)paren
-suffix:semicolon
-id|wait_for_reset
+id|rhine_hw_init
 c_func
 (paren
 id|dev
 comma
-id|quirks
-comma
-id|shortname
+id|pioaddr
 )paren
 suffix:semicolon
-multiline_comment|/* Reload the station address from the EEPROM. */
-macro_line|#ifdef USE_MMIO
-id|reload_eeprom
-c_func
-(paren
-id|ioaddr0
-)paren
-suffix:semicolon
-multiline_comment|/* Reloading from eeprom overwrites cfgA-D, so we must re-enable MMIO.&n;&t;   If reload_eeprom() was done first this could be avoided, but it is&n;&t;   not known if that still works with the &quot;win98-reboot&quot; problem. */
-id|enable_mmio
-c_func
-(paren
-id|ioaddr0
-comma
-id|quirks
-)paren
-suffix:semicolon
-macro_line|#else
-id|reload_eeprom
-c_func
-(paren
-id|ioaddr
-)paren
-suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -2545,34 +2627,6 @@ r_goto
 id|err_out_unmap
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|quirks
-op_amp
-id|rqWOL
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * for 3065D, EEPROM reloaded will cause bit 0 in MAC_REG_CFGA&n;&t;&t; * turned on. it makes MAC receive magic packet&n;&t;&t; * automatically. So, we turn it off. (D-Link)&n;&t;&t; */
-id|writeb
-c_func
-(paren
-id|readb
-c_func
-(paren
-id|ioaddr
-op_plus
-id|ConfigA
-)paren
-op_amp
-l_int|0xFE
-comma
-id|ioaddr
-op_plus
-id|ConfigA
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Select backoff algorithm */
 r_if
 c_cond
@@ -2605,14 +2659,6 @@ id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-id|rp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -2623,10 +2669,6 @@ suffix:semicolon
 id|rp-&gt;pdev
 op_assign
 id|pdev
-suffix:semicolon
-id|rp-&gt;quirks
-op_assign
-id|quirks
 suffix:semicolon
 id|rp-&gt;mii_if.dev
 op_assign
@@ -4572,17 +4614,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Reset the chip. */
-id|writew
-c_func
-(paren
-id|CmdReset
-comma
-id|ioaddr
-op_plus
-id|ChipCmd
-)paren
-suffix:semicolon
 id|i
 op_assign
 id|request_irq
@@ -4654,14 +4685,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|wait_for_reset
+id|rhine_chip_reset
 c_func
 (paren
 id|dev
-comma
-id|rp-&gt;quirks
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 id|init_registers
@@ -5144,17 +5171,6 @@ op_amp
 id|rp-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* Reset the chip. */
-id|writew
-c_func
-(paren
-id|CmdReset
-comma
-id|ioaddr
-op_plus
-id|ChipCmd
-)paren
-suffix:semicolon
 multiline_comment|/* clear all descriptors */
 id|free_tbufs
 c_func
@@ -5181,14 +5197,10 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Reinitialize the hardware. */
-id|wait_for_reset
+id|rhine_chip_reset
 c_func
 (paren
 id|dev
-comma
-id|rp-&gt;quirks
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 id|init_registers
