@@ -22,8 +22,8 @@ macro_line|#elif LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -21343,7 +21343,6 @@ id|SCSI_ABORT_PENDING
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&t;Linux release module stuff.&n;**&n;**&t;Called before unloading the module&n;**&t;Detach the host.&n;**&t;We have to free resources and halt the NCR chip&n;**&n;**==========================================================&n;*/
-macro_line|#ifdef MODULE
 DECL|function|ncr_detach
 r_static
 r_int
@@ -21514,7 +21513,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Complete execution of a SCSI command.&n;**&t;Signal completion to the generic SCSI driver.&n;**&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_complete
 r_void
@@ -40056,6 +40054,12 @@ id|count
 multiline_comment|/* Ignore this device if we already have it */
 r_continue
 suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pcidev
+)paren
+suffix:semicolon
 id|devp
 op_assign
 op_amp
@@ -43136,7 +43140,6 @@ r_return
 id|sts
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|sym53c8xx_release
 r_int
 id|sym53c8xx_release
@@ -43175,7 +43178,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;**&t;Scsi command waiting list management.&n;**&n;**&t;It may happen that we cannot insert a scsi command into the start queue,&n;**&t;in the following circumstances.&n;** &t;&t;Too few preallocated ccb(s), &n;**&t;&t;maxtags &lt; cmd_per_lun of the Linux host control block,&n;**&t;&t;etc...&n;**&t;Such scsi commands are inserted into a waiting list.&n;**&t;When a scsi command complete, we try to requeue the commands of the&n;**&t;waiting list.&n;*/
 DECL|macro|next_wcmd
 mdefine_line|#define next_wcmd host_scribble
