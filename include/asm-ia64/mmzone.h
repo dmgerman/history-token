@@ -2,28 +2,24 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_MMZONE_H
 DECL|macro|_ASM_IA64_MMZONE_H
 mdefine_line|#define _ASM_IA64_MMZONE_H
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/meminit.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#ifdef CONFIG_IA64_DIG /* DIG systems are small */
 DECL|macro|MAX_PHYSNODE_ID
 macro_line|# define MAX_PHYSNODE_ID&t;8
-DECL|macro|NR_NODES
-macro_line|# define NR_NODES&t;&t;8
 DECL|macro|NR_NODE_MEMBLKS
-macro_line|# define NR_NODE_MEMBLKS&t;(NR_NODES * 8)
+macro_line|# define NR_NODE_MEMBLKS&t;(MAX_NUMNODES * 8)
 macro_line|#else /* sn2 is the biggest case, so we use that if !DIG */
 DECL|macro|MAX_PHYSNODE_ID
 macro_line|# define MAX_PHYSNODE_ID&t;2048
-DECL|macro|NR_NODES
-macro_line|# define NR_NODES&t;&t;256
 DECL|macro|NR_NODE_MEMBLKS
-macro_line|# define NR_NODE_MEMBLKS&t;(NR_NODES * 4)
+macro_line|# define NR_NODE_MEMBLKS&t;(MAX_NUMNODES * 4)
 macro_line|#endif
 macro_line|#else /* CONFIG_DISCONTIGMEM */
 DECL|macro|NR_NODE_MEMBLKS
-macro_line|# define NR_NODE_MEMBLKS&t;4
+macro_line|# define NR_NODE_MEMBLKS&t;(MAX_NUMNODES * 4)
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_IA64_MMZONE_H */
 eof
