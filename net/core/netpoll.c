@@ -3420,4 +3420,11 @@ c_func
 id|netpoll_poll
 )paren
 suffix:semicolon
+DECL|variable|netpoll_queue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|netpoll_queue
+)paren
+suffix:semicolon
 eof
