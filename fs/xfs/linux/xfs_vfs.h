@@ -113,28 +113,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* mount file system */
-DECL|member|vfs_dounmount
-r_int
-(paren
-op_star
-id|vfs_dounmount
-)paren
-(paren
-id|bhv_desc_t
-op_star
-comma
-r_int
-comma
-r_struct
-id|vnode
-op_star
-comma
-r_struct
-id|cred
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* preparation and unmount */
 DECL|member|vfs_unmount
 r_int
 (paren
@@ -305,8 +283,6 @@ DECL|typedef|vfsops_t
 )brace
 id|vfsops_t
 suffix:semicolon
-DECL|macro|VFS_DOUNMOUNT
-mdefine_line|#define VFS_DOUNMOUNT(vfsp,f,vp,cr, rv) &bslash;&n;{&t;&bslash;&n;&t;BHV_READ_LOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;&t;rv = (*(VFS_FOPS(vfsp)-&gt;vfs_dounmount))((vfsp)-&gt;vfs_fbhv, f, vp, cr);&t;&bslash;&n;&t;BHV_READ_UNLOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;}
 DECL|macro|VFS_UNMOUNT
 mdefine_line|#define VFS_UNMOUNT(vfsp,f,cr, rv)&t;&bslash;&n;{&t;&bslash;&n;&t;BHV_READ_LOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;&t;rv = (*(VFS_FOPS(vfsp)-&gt;vfs_unmount))((vfsp)-&gt;vfs_fbhv, f, cr);&t;&t;&bslash;&n;&t;BHV_READ_UNLOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;}
 DECL|macro|VFS_ROOT
