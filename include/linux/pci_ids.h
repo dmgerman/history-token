@@ -600,6 +600,8 @@ mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_200&t;0x5833
 multiline_comment|/* ATI IXP Chipset */
 DECL|macro|PCI_DEVICE_ID_ATI_IXP_IDE
 mdefine_line|#define PCI_DEVICE_ID_ATI_IXP_IDE&t;0x4349
+DECL|macro|PCI_DEVICE_ID_ATI_IXP2_IDE
+mdefine_line|#define PCI_DEVICE_ID_ATI_IXP2_IDE&t;0x4369&t;/* True name not yet sure */
 DECL|macro|PCI_VENDOR_ID_VLSI
 mdefine_line|#define PCI_VENDOR_ID_VLSI&t;&t;0x1004
 DECL|macro|PCI_DEVICE_ID_VLSI_82C592
