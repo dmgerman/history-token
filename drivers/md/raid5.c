@@ -7757,6 +7757,14 @@ r_sizeof
 (paren
 id|raid5_conf_t
 )paren
+op_plus
+id|mddev-&gt;raid_disks
+op_star
+r_sizeof
+(paren
+r_struct
+id|disk_info
+)paren
 comma
 id|GFP_KERNEL
 )paren
