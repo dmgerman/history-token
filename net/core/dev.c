@@ -5412,7 +5412,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|dev_seq_start
-r_static
 r_void
 op_star
 id|dev_seq_start
@@ -5457,7 +5456,6 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|dev_seq_next
-r_static
 r_void
 op_star
 id|dev_seq_next
@@ -5502,7 +5500,6 @@ id|next
 suffix:semicolon
 )brace
 DECL|function|dev_seq_stop
-r_static
 r_void
 id|dev_seq_stop
 c_func
@@ -5966,6 +5963,29 @@ id|seq_release
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef WIRELESS_EXT
+r_extern
+r_int
+id|wireless_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|wireless_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|wireless_proc_init
+mdefine_line|#define wireless_proc_init() 0
+DECL|macro|wireless_proc_exit
+mdefine_line|#define wireless_proc_exit()
+macro_line|#endif
 DECL|function|dev_proc_init
 r_static
 r_int
@@ -6013,6 +6033,17 @@ op_assign
 op_amp
 id|dev_seq_fops
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|wireless_proc_init
+c_func
+(paren
+)paren
+)paren
+r_goto
+id|out_dev
+suffix:semicolon
 id|create_proc_read_entry
 c_func
 (paren
@@ -6027,18 +6058,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef WIRELESS_EXT
-id|proc_net_create
-c_func
-(paren
-l_string|&quot;wireless&quot;
-comma
-l_int|0
-comma
-id|dev_get_wireless_info
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 l_int|0
@@ -6047,6 +6066,19 @@ id|out
 suffix:colon
 r_return
 id|rc
+suffix:semicolon
+id|out_dev
+suffix:colon
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;dev&quot;
+comma
+id|proc_net
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 macro_line|#else
