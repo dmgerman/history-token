@@ -3126,6 +3126,7 @@ id|width
 suffix:semicolon
 DECL|member|vbase
 r_void
+id|__iomem
 op_star
 id|vbase
 suffix:semicolon
@@ -3408,10 +3409,6 @@ id|i
 dot
 id|map-&gt;virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|sa
 (braket
 id|i

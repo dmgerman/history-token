@@ -202,10 +202,6 @@ id|mapp-&gt;size
 suffix:semicolon
 id|mapp-&gt;virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -217,9 +213,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mapp-&gt;virt
-op_eq
-l_int|0
 )paren
 (brace
 id|printk
@@ -265,10 +260,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mapp-&gt;virt
 )paren
 suffix:semicolon

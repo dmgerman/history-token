@@ -33,8 +33,9 @@ op_star
 id|mtd
 suffix:semicolon
 DECL|member|window_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|window_addr
 suffix:semicolon
 DECL|member|window_start
@@ -163,7 +164,7 @@ l_int|NULL
 suffix:semicolon
 id|info-&gt;map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -199,18 +200,12 @@ id|info-&gt;window_addr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-(paren
 id|info-&gt;window_addr
-)paren
 )paren
 suffix:semicolon
 id|info-&gt;window_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -540,10 +535,6 @@ suffix:semicolon
 multiline_comment|/* For write accesses caches are useless */
 id|info-&gt;window_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -679,18 +670,12 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-(paren
 id|info-&gt;window_addr
-)paren
 )paren
 suffix:semicolon
 id|info-&gt;window_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Disable writes through the rom window */
 id|pci_read_config_byte

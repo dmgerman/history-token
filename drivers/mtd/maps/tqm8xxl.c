@@ -76,8 +76,9 @@ id|num_banks
 suffix:semicolon
 DECL|variable|start_scan_addr
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|start_scan_addr
 suffix:semicolon
 multiline_comment|/*&n; * Here are partition information for all known TQM8xxL series devices.&n; * See include/linux/mtd/partitions.h for definition of the mtd_partition&n; * structure.&n; * &n; * The *_max_flash_size is the maximum possible mapped flash size which&n; * is not necessarily the actual flash size.  It must correspond to the &n; * value specified in the mapping definition defined by the&n; * &quot;struct map_desc *_io_desc&quot; for the corresponding machine.&n; */
@@ -287,10 +288,6 @@ suffix:semicolon
 singleline_comment|//request maximum flash size address space
 id|start_scan_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -947,10 +944,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|start_scan_addr
 )paren
 suffix:semicolon
@@ -1049,10 +1042,6 @@ id|start_scan_addr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|start_scan_addr
 )paren
 suffix:semicolon

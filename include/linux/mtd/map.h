@@ -271,8 +271,9 @@ suffix:semicolon
 DECL|macro|NO_XIP
 mdefine_line|#define NO_XIP (-1UL)
 DECL|member|virt
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|virt
 suffix:semicolon
 DECL|member|cached
