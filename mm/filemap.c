@@ -2427,7 +2427,7 @@ c_func
 (paren
 id|page
 comma
-id|PG_locked_dontuse
+id|PG_locked
 )paren
 suffix:semicolon
 )brace

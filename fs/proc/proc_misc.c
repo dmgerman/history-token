@@ -580,7 +580,7 @@ l_string|&quot;LowFree:      %8lu kB&bslash;n&quot;
 l_string|&quot;SwapTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;SwapFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;Dirty:        %8lu kB&bslash;n&quot;
-l_string|&quot;Locked:       %8lu kB&bslash;n&quot;
+l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
 comma
 id|K
 c_func
@@ -681,7 +681,7 @@ comma
 id|K
 c_func
 (paren
-id|ps.nr_locked
+id|ps.nr_writeback
 )paren
 )paren
 suffix:semicolon

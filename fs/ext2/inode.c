@@ -2266,6 +2266,14 @@ id|direct_IO
 suffix:colon
 id|ext2_direct_IO
 comma
+id|writeback_mapping
+suffix:colon
+id|generic_writeback_mapping
+comma
+id|vm_writeback
+suffix:colon
+id|generic_vm_writeback
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Probably it should be a library function... search for first non-zero word&n; * or memcmp with zero_page, whatever is better for particular architecture.&n; * Linus?&n; */

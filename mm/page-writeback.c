@@ -16,7 +16,7 @@ r_static
 r_int
 id|dirty_background_ratio
 op_assign
-l_int|20
+l_int|40
 suffix:semicolon
 multiline_comment|/*&n; * The generator of dirty data starts async writeback at this level&n; */
 DECL|variable|dirty_async_ratio
@@ -24,7 +24,7 @@ r_static
 r_int
 id|dirty_async_ratio
 op_assign
-l_int|60
+l_int|50
 suffix:semicolon
 multiline_comment|/*&n; * The generator of dirty data performs sync writeout at this level&n; */
 DECL|variable|dirty_sync_ratio
@@ -75,7 +75,7 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
-id|dirty_and_locked
+id|dirty_and_writeback
 suffix:semicolon
 id|get_page_state
 c_func
@@ -84,11 +84,11 @@ op_amp
 id|ps
 )paren
 suffix:semicolon
-id|dirty_and_locked
+id|dirty_and_writeback
 op_assign
 id|ps.nr_dirty
 op_plus
-id|ps.nr_locked
+id|ps.nr_writeback
 suffix:semicolon
 id|background_thresh
 op_assign
@@ -123,7 +123,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dirty_and_locked
+id|dirty_and_writeback
 OG
 id|sync_thresh
 )paren
@@ -131,9 +131,7 @@ id|sync_thresh
 r_int
 id|nr_to_write
 op_assign
-id|dirty_and_locked
-op_minus
-id|async_thresh
+l_int|1500
 suffix:semicolon
 id|writeback_unlocked_inodes
 c_func
@@ -146,6 +144,19 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|get_page_state
+c_func
+(paren
+op_amp
+id|ps
+)paren
+suffix:semicolon
+id|dirty_and_writeback
+op_assign
+id|ps.nr_dirty
+op_plus
+id|ps.nr_writeback
+suffix:semicolon
 id|wake_pdflush
 op_assign
 l_int|1
@@ -155,7 +166,7 @@ r_else
 r_if
 c_cond
 (paren
-id|dirty_and_locked
+id|dirty_and_writeback
 OG
 id|async_thresh
 )paren
@@ -163,9 +174,7 @@ id|async_thresh
 r_int
 id|nr_to_write
 op_assign
-id|dirty_and_locked
-op_minus
-id|async_thresh
+l_int|1500
 suffix:semicolon
 id|writeback_unlocked_inodes
 c_func
@@ -183,7 +192,7 @@ r_else
 r_if
 c_cond
 (paren
-id|dirty_and_locked
+id|dirty_and_writeback
 OG
 id|background_thresh
 )paren
@@ -207,25 +216,20 @@ id|mapping-&gt;host
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * There is no flush thread against this device. Start one now.&n;&t;&t; */
-id|get_page_state
-c_func
-(paren
-op_amp
-id|ps
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|ps.nr_dirty
+id|dirty_and_writeback
 OG
-l_int|0
+id|async_thresh
 )paren
 (brace
 id|pdflush_flush
 c_func
 (paren
-id|ps.nr_dirty
+id|dirty_and_writeback
+op_minus
+id|async_thresh
 )paren
 suffix:semicolon
 id|yield
@@ -288,7 +292,7 @@ dot
 id|count
 op_increment
 op_ge
-l_int|32
+l_int|1000
 )paren
 (brace
 id|ratelimits
