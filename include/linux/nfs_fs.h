@@ -1926,6 +1926,9 @@ r_enum
 DECL|enumerator|LK_STATE_IN_USE
 id|LK_STATE_IN_USE
 comma
+DECL|enumerator|NFS_DELEGATED_STATE
+id|NFS_DELEGATED_STATE
+comma
 )brace
 suffix:semicolon
 DECL|struct|nfs4_state

@@ -145,10 +145,10 @@ DECL|macro|NFS4_enc_open_confirm_sz
 mdefine_line|#define NFS4_enc_open_confirm_sz      &bslash;&n;                                (compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 5)
 DECL|macro|NFS4_dec_open_confirm_sz
 mdefine_line|#define NFS4_dec_open_confirm_sz        (compound_decode_hdr_maxsz + &bslash;&n;                                        decode_putfh_maxsz + &bslash;&n;                                        op_decode_hdr_maxsz + 4)
-DECL|macro|NFS4_enc_open_reclaim_sz
-mdefine_line|#define NFS4_enc_open_reclaim_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;11 + &bslash;&n;&t;&t;&t;&t;&t;encode_getattr_maxsz)
-DECL|macro|NFS4_dec_open_reclaim_sz
-mdefine_line|#define NFS4_dec_open_reclaim_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;4 + 5 + 2 + 3 + &bslash;&n;&t;&t;&t;&t;&t;decode_getattr_maxsz)
+DECL|macro|NFS4_enc_open_noattr_sz
+mdefine_line|#define NFS4_enc_open_noattr_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;11)
+DECL|macro|NFS4_dec_open_noattr_sz
+mdefine_line|#define NFS4_dec_open_noattr_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;4 + 5 + 2 + 3)
 DECL|macro|NFS4_enc_open_downgrade_sz
 mdefine_line|#define NFS4_enc_open_downgrade_sz &bslash;&n;&t;&t;&t;&t;(compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 7)
 DECL|macro|NFS4_dec_open_downgrade_sz
@@ -5311,11 +5311,11 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Encode an OPEN request&n; */
-DECL|function|nfs4_xdr_enc_open_reclaim
+multiline_comment|/*&n; * Encode an OPEN request with no attributes.&n; */
+DECL|function|nfs4_xdr_enc_open_noattr
 r_static
 r_int
-id|nfs4_xdr_enc_open_reclaim
+id|nfs4_xdr_enc_open_noattr
 c_func
 (paren
 r_struct
@@ -5345,7 +5345,7 @@ op_assign
 dot
 id|nops
 op_assign
-l_int|3
+l_int|2
 comma
 )brace
 suffix:semicolon
@@ -5402,25 +5402,6 @@ op_amp
 id|xdr
 comma
 id|args
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|status
-op_assign
-id|encode_getfattr
-c_func
-(paren
-op_amp
-id|xdr
-comma
-id|args-&gt;bitmask
 )paren
 suffix:semicolon
 id|out
@@ -17015,11 +16996,11 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Decode OPEN_RECLAIM response&n; */
-DECL|function|nfs4_xdr_dec_open_reclaim
+multiline_comment|/*&n; * Decode OPEN response&n; */
+DECL|function|nfs4_xdr_dec_open_noattr
 r_static
 r_int
-id|nfs4_xdr_dec_open_reclaim
+id|nfs4_xdr_dec_open_noattr
 c_func
 (paren
 r_struct
@@ -17107,38 +17088,6 @@ id|xdr
 comma
 id|res
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|status
-op_assign
-id|decode_getfattr
-c_func
-(paren
-op_amp
-id|xdr
-comma
-id|res-&gt;f_attr
-comma
-id|res-&gt;server
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-op_eq
-id|NFS4ERR_DELAY
-)paren
-id|status
-op_assign
-l_int|0
 suffix:semicolon
 id|out
 suffix:colon
@@ -19449,11 +19398,11 @@ comma
 id|PROC
 c_func
 (paren
-id|OPEN_RECLAIM
+id|OPEN_NOATTR
 comma
-id|enc_open_reclaim
+id|enc_open_noattr
 comma
-id|dec_open_reclaim
+id|dec_open_noattr
 )paren
 comma
 id|PROC
