@@ -2332,6 +2332,15 @@ id|skb-&gt;end
 op_minus
 id|skb-&gt;tail
 suffix:semicolon
+multiline_comment|/* If the packet is charged to a socket, the modification&n;&t; * of truesize below is illegal and will corrupt socket&n;&t; * buffer accounting state.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|skb-&gt;list
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
