@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &quot;mach.h&quot;
 multiline_comment|/* These symbols are all defined in the linker map to delineate various&n;   statically allocated regions of memory.  */
 r_extern
@@ -169,14 +170,12 @@ id|saved_command_line
 comma
 id|command_line
 comma
-r_sizeof
-id|saved_command_line
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
 id|saved_command_line
 (braket
-r_sizeof
-id|saved_command_line
+id|COMMAND_LINE_SIZE
 op_minus
 l_int|1
 )braket

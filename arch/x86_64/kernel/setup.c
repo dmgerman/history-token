@@ -42,6 +42,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|boot_cpu_data
 r_struct

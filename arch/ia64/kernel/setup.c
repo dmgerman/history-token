@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -997,10 +998,7 @@ comma
 op_star
 id|cmdline_p
 comma
-r_sizeof
-(paren
-id|saved_command_line
-)paren
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
 id|efi_init

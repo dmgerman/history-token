@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/io_generic.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#ifdef CONFIG_SH_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
 r_static

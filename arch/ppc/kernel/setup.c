@@ -2777,10 +2777,7 @@ id|saved_command_line
 comma
 id|cmd_line
 comma
-r_sizeof
-(paren
-id|saved_command_line
-)paren
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
 op_star
