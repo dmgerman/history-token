@@ -3803,6 +3803,15 @@ id|sctp_max_outstreams
 op_assign
 id|SCTP_DEFAULT_OUTSTREAMS
 suffix:semicolon
+multiline_comment|/* Initialize default send &amp; receive buffer sizes. */
+id|sctp_rmem
+op_assign
+id|SCTP_DEFAULT_MAXWINDOW
+suffix:semicolon
+id|sctp_wmem
+op_assign
+id|SCTP_DEFAULT_MAXWINDOW
+suffix:semicolon
 multiline_comment|/* Size and allocate the association hash table.&n;&t; * The methodology is similar to that of the tcp hash tables.&n;&t; */
 r_if
 c_cond
