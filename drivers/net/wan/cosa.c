@@ -2792,6 +2792,12 @@ c_func
 id|chan-&gt;pppdev.dev
 )paren
 suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|chan-&gt;ppp.dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|cosa_sppp_open
 r_static

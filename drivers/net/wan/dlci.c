@@ -1996,7 +1996,7 @@ c_func
 id|master-&gt;priv
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|master

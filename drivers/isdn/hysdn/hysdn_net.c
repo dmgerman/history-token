@@ -1170,7 +1170,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* release the device */
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

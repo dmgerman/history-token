@@ -11309,7 +11309,7 @@ op_star
 id|dev-&gt;base_addr
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren
