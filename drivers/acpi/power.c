@@ -1211,6 +1211,28 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|device-&gt;power.state
+OL
+id|ACPI_STATE_D0
+)paren
+op_logical_or
+(paren
+id|device-&gt;power.state
+OG
+id|ACPI_STATE_D3
+)paren
+)paren
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
 id|cl
 op_assign
 op_amp
@@ -1291,10 +1313,6 @@ r_goto
 id|end
 suffix:semicolon
 )brace
-id|device-&gt;power.state
-op_assign
-id|state
-suffix:semicolon
 multiline_comment|/*&n;&t; * Then we dereference all power resources used in the current list.&n;&t; */
 r_for
 c_loop
@@ -1331,6 +1349,11 @@ r_goto
 id|end
 suffix:semicolon
 )brace
+multiline_comment|/* We shouldn&squot;t change the state till all above operations succeed */
+id|device-&gt;power.state
+op_assign
+id|state
+suffix:semicolon
 id|end
 suffix:colon
 r_if
