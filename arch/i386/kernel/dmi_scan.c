@@ -793,35 +793,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Toshiba fails to preserve interrupts over S1&n; */
-DECL|function|init_ints_after_s1
-r_static
-id|__init
-r_int
-id|init_ints_after_s1
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Toshiba with broken S1 detected.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dmi_broken
-op_or_assign
-id|BROKEN_INIT_AFTER_S1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 DECL|function|reset_videomode_after_s3
 r_static
