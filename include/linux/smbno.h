@@ -502,5 +502,51 @@ DECL|macro|TRANSACT2_FINDNOTIFYNEXT
 mdefine_line|#define TRANSACT2_FINDNOTIFYNEXT  12
 DECL|macro|TRANSACT2_MKDIR
 mdefine_line|#define TRANSACT2_MKDIR           13
+multiline_comment|/* Information Levels -  Shared? */
+DECL|macro|SMB_INFO_STANDARD
+mdefine_line|#define SMB_INFO_STANDARD&t;&t;1
+DECL|macro|SMB_INFO_QUERY_EA_SIZE
+mdefine_line|#define SMB_INFO_QUERY_EA_SIZE&t;&t;2
+DECL|macro|SMB_INFO_QUERY_EAS_FROM_LIST
+mdefine_line|#define SMB_INFO_QUERY_EAS_FROM_LIST&t;3
+DECL|macro|SMB_INFO_QUERY_ALL_EAS
+mdefine_line|#define SMB_INFO_QUERY_ALL_EAS&t;&t;4
+DECL|macro|SMB_INFO_IS_NAME_VALID
+mdefine_line|#define SMB_INFO_IS_NAME_VALID&t;&t;6
+multiline_comment|/* Information Levels -  TRANSACT2_FINDFIRST */
+DECL|macro|SMB_FIND_FILE_DIRECTORY_INFO
+mdefine_line|#define SMB_FIND_FILE_DIRECTORY_INFO&t;&t;0x101
+DECL|macro|SMB_FIND_FILE_FULL_DIRECTORY_INFO
+mdefine_line|#define SMB_FIND_FILE_FULL_DIRECTORY_INFO&t;0x102
+DECL|macro|SMB_FIND_FILE_NAMES_INFO
+mdefine_line|#define SMB_FIND_FILE_NAMES_INFO&t;&t;0x103
+DECL|macro|SMB_FIND_FILE_BOTH_DIRECTORY_INFO
+mdefine_line|#define SMB_FIND_FILE_BOTH_DIRECTORY_INFO&t;0x104
+multiline_comment|/* Information Levels -  TRANSACT2_QPATHINFO */
+DECL|macro|SMB_QUERY_FILE_BASIC_INFO
+mdefine_line|#define SMB_QUERY_FILE_BASIC_INFO&t;0x101
+DECL|macro|SMB_QUERY_FILE_STANDARD_INFO
+mdefine_line|#define SMB_QUERY_FILE_STANDARD_INFO&t;0x102
+DECL|macro|SMB_QUERY_FILE_EA_INFO
+mdefine_line|#define SMB_QUERY_FILE_EA_INFO&t;&t;0x103
+DECL|macro|SMB_QUERY_FILE_NAME_INFO
+mdefine_line|#define SMB_QUERY_FILE_NAME_INFO&t;0x104
+DECL|macro|SMB_QUERY_FILE_ALL_INFO
+mdefine_line|#define SMB_QUERY_FILE_ALL_INFO&t;&t;0x107
+DECL|macro|SMB_QUERY_FILE_ALT_NAME_INFO
+mdefine_line|#define SMB_QUERY_FILE_ALT_NAME_INFO&t;0x108
+DECL|macro|SMB_QUERY_FILE_STREAM_INFO
+mdefine_line|#define SMB_QUERY_FILE_STREAM_INFO&t;0x109
+DECL|macro|SMB_QUERY_FILE_COMPRESSION_INFO
+mdefine_line|#define SMB_QUERY_FILE_COMPRESSION_INFO&t;0x10b
+multiline_comment|/* Information Levels - TRANSACT2_SETFILEINFO */
+DECL|macro|SMB_SET_FILE_BASIC_INFO
+mdefine_line|#define SMB_SET_FILE_BASIC_INFO&t;&t;0x101
+DECL|macro|SMB_SET_FILE_DISPOSITION_INFO
+mdefine_line|#define SMB_SET_FILE_DISPOSITION_INFO&t;0x102
+DECL|macro|SMB_SET_FILE_ALLOCATION_INFO
+mdefine_line|#define SMB_SET_FILE_ALLOCATION_INFO&t;0x103
+DECL|macro|SMB_SET_FILE_END_OF_FILE_INFO
+mdefine_line|#define SMB_SET_FILE_END_OF_FILE_INFO&t;0x104
 macro_line|#endif /* _SMBNO_H_ */
 eof
