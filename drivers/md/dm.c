@@ -776,6 +776,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -785,11 +791,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
 id|io-&gt;error
 op_assign
 id|error
@@ -803,6 +804,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
