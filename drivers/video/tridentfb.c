@@ -2249,6 +2249,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Accel functions called by the upper layers&n; */
+macro_line|#ifdef CONFIG_FB_TRIDENT_ACCEL
 DECL|function|tridentfb_fillrect
 r_static
 r_void
@@ -2403,6 +2404,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* !CONFIG_FB_TRIDENT_ACCEL */
+DECL|macro|tridentfb_fillrect
+mdefine_line|#define tridentfb_fillrect cfb_fillrect
+DECL|macro|tridentfb_copyarea
+mdefine_line|#define tridentfb_copyarea cfb_copyarea
+macro_line|#endif /* CONFIG_FB_TRIDENT_ACCEL */
 multiline_comment|/*&n; * Hardware access functions&n; */
 DECL|function|read3X4
 r_static
@@ -6910,17 +6917,15 @@ id|fb_set_par
 op_assign
 id|tridentfb_set_par
 comma
-singleline_comment|//&t;.fb_fillrect = tridentfb_fillrect,
-singleline_comment|//&t;.fb_copyarea= tridentfb_copyarea,
 dot
 id|fb_fillrect
 op_assign
-id|cfb_fillrect
+id|tridentfb_fillrect
 comma
 dot
 id|fb_copyarea
 op_assign
-id|cfb_copyarea
+id|tridentfb_copyarea
 comma
 dot
 id|fb_imageblit
