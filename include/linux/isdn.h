@@ -995,12 +995,6 @@ id|ulong
 id|sqfull_stamp
 suffix:semicolon
 multiline_comment|/* Start-Time of overload           */
-DECL|member|hup_timer
-r_struct
-id|timer_list
-id|hup_timer
-suffix:semicolon
-multiline_comment|/* auto hangup timer                */
 DECL|member|huptimer
 r_int
 id|huptimer
