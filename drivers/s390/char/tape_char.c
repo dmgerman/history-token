@@ -23,6 +23,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -42,6 +43,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -436,6 +438,7 @@ multiline_comment|/*&n; * Tape device read function&n; */
 id|ssize_t
 DECL|function|tapechar_read
 id|tapechar_read
+c_func
 (paren
 r_struct
 id|file
@@ -443,6 +446,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -717,6 +721,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -1446,6 +1451,7 @@ id|op
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|data
@@ -1626,6 +1632,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|data
@@ -1765,6 +1772,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|data

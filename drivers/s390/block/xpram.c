@@ -436,8 +436,7 @@ r_int
 id|cc
 suffix:semicolon
 id|__asm__
-id|__volatile
-c_func
+id|__volatile__
 (paren
 l_string|&quot;   lhi   %0,2&bslash;n&quot;
 multiline_comment|/* return unused cc 2 if pgin traps */
@@ -554,8 +553,7 @@ r_int
 id|cc
 suffix:semicolon
 id|__asm__
-id|__volatile
-c_func
+id|__volatile__
 (paren
 l_string|&quot;   lhi   %0,2&bslash;n&quot;
 multiline_comment|/* return unused cc 2 if pgout traps */
@@ -1122,6 +1120,7 @@ id|arg
 (brace
 r_struct
 id|hd_geometry
+id|__user
 op_star
 id|geo
 suffix:semicolon
@@ -1146,6 +1145,7 @@ op_assign
 (paren
 r_struct
 id|hd_geometry
+id|__user
 op_star
 )paren
 id|arg

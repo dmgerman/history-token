@@ -1288,6 +1288,7 @@ DECL|function|cio_ignore_write
 r_static
 r_int
 id|cio_ignore_write
+c_func
 (paren
 r_struct
 id|file
@@ -1296,6 +1297,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma

@@ -3154,6 +3154,7 @@ id|disp
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
