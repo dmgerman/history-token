@@ -1511,19 +1511,10 @@ r_goto
 id|wait_for_iobuf
 suffix:semicolon
 )brace
-id|clear_bit
+id|clear_buffer_jwrite
 c_func
 (paren
-id|BH_JWrite
-comma
-op_amp
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
-op_member_access_from_pointer
-id|b_state
+id|bh
 )paren
 suffix:semicolon
 id|JBUFFER_TRACE
@@ -1556,14 +1547,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * -&gt;t_iobuf_list should contain only dummy buffer_heads&n;&t;&t; * which were created by journal_write_metadata_buffer().&n;&t;&t; */
-id|bh
-op_assign
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
-suffix:semicolon
 id|BUFFER_TRACE
 c_func
 (paren
@@ -2198,6 +2181,20 @@ id|jh
 op_assign
 id|commit_transaction-&gt;t_forget
 suffix:semicolon
+id|bh
+op_assign
+id|jh2bh
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
+id|jbd_lock_bh_state
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|J_ASSERT_JH
 c_func
 (paren
@@ -2213,16 +2210,6 @@ id|journal-&gt;j_running_transaction
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If there is undo-protected committed data against&n;&t;&t; * this buffer, then we can remove it now.  If it is a&n;&t;&t; * buffer needing such protection, the old frozen_data&n;&t;&t; * field now points to a committed version of the&n;&t;&t; * buffer, so rotate that field to the new committed&n;&t;&t; * data.&n;&t;&t; *&n;&t;&t; * Otherwise, we can just throw away the frozen data now.&n;&t;&t; */
-id|jbd_lock_bh_state
-c_func
-(paren
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2316,14 +2303,6 @@ id|jh
 suffix:semicolon
 )brace
 multiline_comment|/* Only re-checkpoint the buffer_head if it is marked&n;&t;&t; * dirty.  If the buffer was added to the BJ_Forget list&n;&t;&t; * by journal_forget, it may no longer be dirty and&n;&t;&t; * there&squot;s no point in keeping a checkpoint record for&n;&t;&t; * it. */
-id|bh
-op_assign
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
-suffix:semicolon
 multiline_comment|/* A buffer which has been freed while still being&n;&t;&t; * journaled by a previous transaction may end up still&n;&t;&t; * being dirty here, but we want to avoid writing back&n;&t;&t; * that buffer in the future now that the last use has&n;&t;&t; * been committed.  That&squot;s not only a performance gain,&n;&t;&t; * it also stops aliasing problems if the buffer is left&n;&t;&t; * behind for writeback and gets reallocated for another&n;&t;&t; * use in a different page. */
 r_if
 c_cond
