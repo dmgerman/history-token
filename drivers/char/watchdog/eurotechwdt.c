@@ -1,39 +1,35 @@
-multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995 Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&t;  Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;  Added timeout module option to override default&n; */
+multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&t;(c) Copyright 2002 Rob Radez &lt;rob@osinvestor.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *      (c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *                              http://www.redhat.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *      warranty for any of this software. This material is provided&n; *      &quot;AS-IS&quot; and at no charge.&n; *&n; *      (c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;*&n; */
+multiline_comment|/* Changelog:&n; *&n; * 2002/04/25 - Rob Radez&n; *&t;clean up #includes&n; *&t;clean up locking&n; *&t;make __setup param unique&n; *&t;proper options in watchdog_info&n; *&t;add WDIOC_GETSTATUS and WDIOC_SETOPTIONS ioctls&n; *&t;add expect_close support&n; *&n; * 2001 - Rodolfo Giometti&n; *&t;Initial release&n; *&n; * 2002.05.30 - Joel Becker &lt;joel.becker@oracle.com&gt;&n; * &t;Added Matt Domsch&squot;s nowayout module option.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|eurwdt_is_open
 r_static
 r_int
+r_int
 id|eurwdt_is_open
 suffix:semicolon
-DECL|variable|eurwdt_lock
+DECL|variable|eurwdt_timeout
 r_static
-id|spinlock_t
-id|eurwdt_lock
+r_int
+id|eurwdt_timeout
 suffix:semicolon
 DECL|variable|eur_expect_close
 r_static
 r_char
 id|eur_expect_close
 suffix:semicolon
-multiline_comment|/*&n; * You must set these - there is no sane way to probe for this board.&n; * You can use wdt=x,y to set these now.&n; */
+multiline_comment|/*&n; * You must set these - there is no sane way to probe for this board.&n; * You can use eurwdt=x,y to set these now.&n; */
 DECL|variable|io
 r_static
 r_int
@@ -57,30 +53,7 @@ op_assign
 l_string|&quot;int&quot;
 suffix:semicolon
 DECL|macro|WDT_TIMEOUT
-mdefine_line|#define WDT_TIMEOUT&t;&t;60&t;/* 1 minute */
-DECL|variable|timeout
-r_static
-r_int
-id|timeout
-op_assign
-id|WDT_TIMEOUT
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|timeout
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|timeout
-comma
-l_string|&quot;Eurotech WDT timeout in seconds (default=60)&quot;
-)paren
-suffix:semicolon
+mdefine_line|#define WDT_TIMEOUT&t;&t;60                /* 1 minute */
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
 r_static
@@ -209,7 +182,7 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;wdt=&quot;
+l_string|&quot;eurwdt=&quot;
 comma
 id|eurwdt_setup
 )paren
@@ -260,43 +233,10 @@ c_func
 (paren
 id|ev
 comma
-l_string|&quot;Eurotech WDT event type (default is `reboot&squot;)&quot;
+l_string|&quot;Eurotech WDT event type (default is `int&squot;)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Programming support&n; */
-DECL|function|eurwdt_validate_timeout
-r_static
-r_void
-id|__init
-id|eurwdt_validate_timeout
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|timeout
-template_param
-l_int|255
-)paren
-(brace
-id|timeout
-op_assign
-id|WDT_TIMEOUT
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;eurwdt: timeout must be 0 &lt; x &lt; 255, using %d&bslash;n&quot;
-comma
-id|timeout
-)paren
-suffix:semicolon
-)brace
-)brace
 DECL|function|eurwdt_write_reg
 r_static
 r_inline
@@ -595,7 +535,7 @@ multiline_comment|/* Write the watchdog default value */
 id|eurwdt_set_timeout
 c_func
 (paren
-id|timeout
+id|eurwdt_timeout
 )paren
 suffix:semicolon
 )brace
@@ -713,12 +653,9 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* the default timeout */
-r_return
-l_int|1
-suffix:semicolon
 )brace
 r_return
-l_int|0
+id|count
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * eurwdt_ioctl:&n; * @inode: inode of the device&n; * @file: file handle to the device&n; * @cmd: watchdog command&n; * @arg: argument pointer&n; *&n; * The watchdog API defines a common set of functions for all watchdogs&n; * according to their available features.&n; */
@@ -756,7 +693,11 @@ op_assign
 dot
 id|options
 op_assign
-id|WDIOF_CARDRESET
+id|WDIOF_KEEPALIVEPING
+op_or
+id|WDIOF_SETTIMEOUT
+op_or
+id|WDIOF_MAGICCLOSE
 comma
 dot
 id|firmware_version
@@ -772,6 +713,14 @@ comma
 suffix:semicolon
 r_int
 id|time
+suffix:semicolon
+r_int
+id|options
+comma
+id|retval
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_switch
 c_cond
@@ -814,6 +763,9 @@ id|EFAULT
 suffix:colon
 l_int|0
 suffix:semicolon
+r_case
+id|WDIOC_GETSTATUS
+suffix:colon
 r_case
 id|WDIOC_GETBOOTSTATUS
 suffix:colon
@@ -881,7 +833,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|timeout
+id|eurwdt_timeout
 op_assign
 id|time
 suffix:semicolon
@@ -891,8 +843,88 @@ c_func
 id|time
 )paren
 suffix:semicolon
+multiline_comment|/* Fall */
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
 r_return
+id|put_user
+c_func
+(paren
+id|eurwdt_timeout
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
+r_case
+id|WDIOC_SETOPTIONS
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|options
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|options
+op_amp
+id|WDIOS_DISABLECARD
+)paren
+(brace
+id|eurwdt_disable_timer
+c_func
+(paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
 l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|options
+op_amp
+id|WDIOS_ENABLECARD
+)paren
+(brace
+id|eurwdt_activate_timer
+c_func
+(paren
+)paren
+suffix:semicolon
+id|eurwdt_ping
+c_func
+(paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|retval
 suffix:semicolon
 )brace
 )brace
@@ -914,86 +946,36 @@ op_star
 id|file
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)paren
-(brace
-r_case
-id|WATCHDOG_MINOR
-suffix:colon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|eurwdt_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|eurwdt_is_open
-)paren
-(brace
-id|spin_unlock
+id|test_and_set_bit
 c_func
 (paren
+l_int|0
+comma
 op_amp
-id|eurwdt_lock
+id|eurwdt_is_open
 )paren
-suffix:semicolon
+)paren
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|nowayout
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-id|eurwdt_is_open
+id|eurwdt_timeout
 op_assign
-l_int|1
+id|WDT_TIMEOUT
 suffix:semicolon
+multiline_comment|/* initial timeout */
 multiline_comment|/* Activate the WDT */
 id|eurwdt_activate_timer
 c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|eurwdt_lock
-)paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_case
-id|TEMP_MINOR
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; * eurwdt_release:&n; * @inode: inode to board&n; * @file: file handle to board&n; *&n; * The watchdog has a configurable API. There is a religious dispute&n; * between people who want their watchdog to be able to shut down and&n; * those who want to be sure if the watchdog manager dies the machine&n; * reboots. In the former case we disable the counters, in the latter&n; * case you have to open it again very soon.&n; */
 DECL|function|eurwdt_release
@@ -1016,33 +998,45 @@ id|file
 r_if
 c_cond
 (paren
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
+id|eur_expect_close
 op_eq
-id|WATCHDOG_MINOR
+l_int|42
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nowayout
-)paren
 id|eurwdt_disable_timer
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;eurwdt: Unexpected close, not stopping watchdog!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|eurwdt_ping
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|eurwdt_is_open
+)paren
+suffix:semicolon
+id|eur_expect_close
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1231,11 +1225,6 @@ r_void
 r_int
 id|ret
 suffix:semicolon
-id|eurwdt_validate_timeout
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|misc_register
@@ -1395,13 +1384,6 @@ l_string|&quot;int&quot;
 suffix:colon
 l_string|&quot;reboot&quot;
 )paren
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|eurwdt_lock
 )paren
 suffix:semicolon
 id|out
