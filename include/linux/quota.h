@@ -4,6 +4,10 @@ DECL|macro|_LINUX_QUOTA_
 mdefine_line|#define _LINUX_QUOTA_
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+DECL|macro|__DQUOT_VERSION__
+mdefine_line|#define __DQUOT_VERSION__&t;&quot;dquot_6.5.1&quot;
+DECL|macro|__DQUOT_NUM_VERSION__
+mdefine_line|#define __DQUOT_NUM_VERSION__&t;6*10000+5*100+1
 DECL|typedef|qid_t
 r_typedef
 id|__kernel_uid32_t
