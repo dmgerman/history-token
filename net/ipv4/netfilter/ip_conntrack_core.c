@@ -1443,8 +1443,14 @@ l_int|4
 op_plus
 r_sizeof
 (paren
-r_struct
-id|icmphdr
+op_star
+id|hdr
+)paren
+op_plus
+r_sizeof
+(paren
+op_star
+id|iph
 )paren
 )paren
 (brace

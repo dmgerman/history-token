@@ -1289,7 +1289,7 @@ suffix:semicolon
 r_int
 id|h
 op_assign
-id|f-&gt;handle
+l_int|0
 suffix:semicolon
 r_struct
 id|route4_bucket
@@ -1311,6 +1311,10 @@ id|f
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|h
+op_assign
+id|f-&gt;handle
 suffix:semicolon
 id|b
 op_assign

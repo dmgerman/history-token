@@ -728,7 +728,7 @@ id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_UNNECESSARY
 suffix:semicolon
-id|netif_rx
+id|netif_rx_ni
 c_func
 (paren
 id|skb

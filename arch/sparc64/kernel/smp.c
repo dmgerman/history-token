@@ -2788,7 +2788,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We know that the window frames of the user have been flushed&n; * to the stack before we get here because all callers of us&n; * are flush_tlb_*() routines, and these run after flush_cache_*()&n; * which performs the flushw.&n; *&n; * XXX I diked out the fancy flush avoidance code for the&n; * XXX swapping cases for now until the new MM code stabilizes. -DaveM&n; *&n; * The SMP TLB coherency scheme we use works as follows:&n; *&n; * 1) mm-&gt;cpu_vm_mask is a bit mask of which cpus an address&n; *    space has (potentially) executed on, this is the heuristic&n; *    we use to avoid doing cross calls.&n; *&n; * 2) TLB context numbers are shared globally across all processors&n; *    in the system, this allows us to play several games to avoid&n; *    cross calls.&n; *&n; *    One invariant is that when a cpu switches to a process, and&n; *    that processes tsk-&gt;active_mm-&gt;cpu_vm_mask does not have the&n; *    current cpu&squot;s bit set, that tlb context is flushed locally.&n; *&n; *    If the address space is non-shared (ie. mm-&gt;count == 1) we avoid&n; *    cross calls when we want to flush the currently running process&squot;s&n; *    tlb state.  This is done by clearing all cpu bits except the current&n; *    processor&squot;s in current-&gt;active_mm-&gt;cpu_vm_mask and performing the&n; *    flush locally only.  This will force any subsequent cpus which run&n; *    this task to flush the context from the local tlb if the process&n; *    migrates to another cpu (again).&n; *&n; * 3) For shared address spaces (threads) and swapping we bite the&n; *    bullet for most cases and perform the cross call.&n; *&n; *    The performance gain from &quot;optimizing&quot; away the cross call for threads is&n; *    questionable (in theory the big win for threads is the massive sharing of&n; *    address space state across processors).&n; *&n; *    For the swapping case the locking is difficult to get right, we&squot;d have to&n; *    enforce strict ordered access to mm-&gt;cpu_vm_mask via a spinlock for example.&n; *    Then again one could argue that when you are swapping, the cost of a cross&n; *    call won&squot;t even show up on the performance radar.  But in any case we do get&n; *    rid of the cross-call when the task has a dead context or the task has only&n; *    ever run on the local cpu.&n; */
+multiline_comment|/* We know that the window frames of the user have been flushed&n; * to the stack before we get here because all callers of us&n; * are flush_tlb_*() routines, and these run after flush_cache_*()&n; * which performs the flushw.&n; *&n; * The SMP TLB coherency scheme we use works as follows:&n; *&n; * 1) mm-&gt;cpu_vm_mask is a bit mask of which cpus an address&n; *    space has (potentially) executed on, this is the heuristic&n; *    we use to avoid doing cross calls.&n; *&n; * 2) TLB context numbers are shared globally across all processors&n; *    in the system, this allows us to play several games to avoid&n; *    cross calls.&n; *&n; *    One invariant is that when a cpu switches to a process, and&n; *    that processes tsk-&gt;active_mm-&gt;cpu_vm_mask does not have the&n; *    current cpu&squot;s bit set, that tlb context is flushed locally.&n; *&n; *    If the address space is non-shared (ie. mm-&gt;count == 1) we avoid&n; *    cross calls when we want to flush the currently running process&squot;s&n; *    tlb state.  This is done by clearing all cpu bits except the current&n; *    processor&squot;s in current-&gt;active_mm-&gt;cpu_vm_mask and performing the&n; *    flush locally only.  This will force any subsequent cpus which run&n; *    this task to flush the context from the local tlb if the process&n; *    migrates to another cpu (again).&n; *&n; * 3) For shared address spaces (threads) and swapping we bite the&n; *    bullet for most cases and perform the cross call.&n; *&n; *    The performance gain from &quot;optimizing&quot; away the cross call for threads is&n; *    questionable (in theory the big win for threads is the massive sharing of&n; *    address space state across processors).&n; *&n; *    For the swapping case the locking is difficult to get right, we&squot;d have to&n; *    enforce strict ordered access to mm-&gt;cpu_vm_mask via a spinlock for example.&n; *    Then again one could argue that when you are swapping, the cost of a cross&n; *    call won&squot;t even show up on the performance radar.  But in any case we do get&n; *    rid of the cross-call when the task has a dead context or the task has only&n; *    ever run on the local cpu.&n; *&n; * 4) If the mm never had a valid context yet, there is nothing to&n; *    flush.  CTX_NEVER_WAS_VALID checks this.&n; *&n; *    This check used to be done with CTX_VALID(), but Kanoj Sarcar has&n; *    pointed out that this is an invalid optimization.  It can cause&n; *    stale translations to be left in the TLB.&n; */
 DECL|function|smp_flush_tlb_mm
 r_void
 id|smp_flush_tlb_mm
@@ -2803,12 +2803,14 @@ id|mm
 r_if
 c_cond
 (paren
-id|CTX_VALID
+id|CTX_NEVER_WAS_VALID
 c_func
 (paren
 id|mm-&gt;context
 )paren
 )paren
+r_return
+suffix:semicolon
 (brace
 id|u32
 id|ctx
@@ -2904,12 +2906,14 @@ id|end
 r_if
 c_cond
 (paren
-id|CTX_VALID
+id|CTX_NEVER_WAS_VALID
 c_func
 (paren
 id|mm-&gt;context
 )paren
 )paren
+r_return
+suffix:semicolon
 (brace
 id|u32
 id|ctx
@@ -3020,12 +3024,14 @@ id|page
 r_if
 c_cond
 (paren
-id|CTX_VALID
+id|CTX_NEVER_WAS_VALID
 c_func
 (paren
 id|mm-&gt;context
 )paren
 )paren
+r_return
+suffix:semicolon
 (brace
 id|u32
 id|ctx

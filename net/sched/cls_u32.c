@@ -525,7 +525,7 @@ c_cond
 id|n-&gt;sel.flags
 op_amp
 (paren
-id|TC_U32_EAT
+id|TC_U32_OFFSET
 op_or
 id|TC_U32_VAROFFSET
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mmu_context.h,v 1.47 2001/03/22 07:26:04 davem Exp $ */
+multiline_comment|/* $Id: mmu_context.h,v 1.48 2001/08/03 06:18:52 davem Exp $ */
 macro_line|#ifndef __SPARC64_MMU_CONTEXT_H
 DECL|macro|__SPARC64_MMU_CONTEXT_H
 mdefine_line|#define __SPARC64_MMU_CONTEXT_H
@@ -53,6 +53,8 @@ DECL|macro|CTX_FIRST_VERSION
 mdefine_line|#define CTX_FIRST_VERSION&t;((1UL &lt;&lt; CTX_VERSION_SHIFT) + 1UL)
 DECL|macro|CTX_VALID
 mdefine_line|#define CTX_VALID(__ctx)&t;&bslash;&n;&t; (!(((__ctx) ^ tlb_context_cache) &amp; CTX_VERSION_MASK))
+DECL|macro|CTX_NEVER_WAS_VALID
+mdefine_line|#define CTX_NEVER_WAS_VALID(__ctx) ((__ctx) == 0UL)
 DECL|macro|CTX_HWBITS
 mdefine_line|#define CTX_HWBITS(__ctx)&t;((__ctx) &amp; ~CTX_VERSION_MASK)
 r_extern

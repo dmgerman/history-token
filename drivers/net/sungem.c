@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.c,v 1.17 2001/06/17 09:22:46 jgarzik Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.c,v 1.18 2001/08/06 13:34:47 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8135,6 +8135,7 @@ op_star
 id|gp
 )paren
 (brace
+macro_line|#if defined(__sparc__) || defined(__powerpc__)
 r_struct
 id|net_device
 op_star
@@ -8149,6 +8150,7 @@ id|pdev
 op_assign
 id|gp-&gt;pdev
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef __sparc__
 r_struct
 id|pcidev_cookie

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.66 2001/06/11 00:39:29 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.67 2001/08/03 09:32:17 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill doube kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -17,6 +17,7 @@ macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
@@ -190,6 +191,13 @@ id|inet6_ifaddr
 op_star
 id|ifa
 )paren
+suffix:semicolon
+DECL|variable|inet6addr_chain
+r_static
+r_struct
+id|notifier_block
+op_star
+id|inet6addr_chain
 suffix:semicolon
 DECL|variable|ipv6_devconf
 r_struct
@@ -1473,6 +1481,17 @@ op_amp
 id|addrconf_lock
 )paren
 suffix:semicolon
+id|notifier_call_chain
+c_func
+(paren
+op_amp
+id|inet6addr_chain
+comma
+id|NETDEV_UP
+comma
+id|ifa
+)paren
+suffix:semicolon
 r_return
 id|ifa
 suffix:semicolon
@@ -1657,6 +1676,17 @@ id|ipv6_ifa_notify
 c_func
 (paren
 id|RTM_DELADDR
+comma
+id|ifp
+)paren
+suffix:semicolon
+id|notifier_call_chain
+c_func
+(paren
+op_amp
+id|inet6addr_chain
+comma
+id|NETDEV_DOWN
 comma
 id|ifp
 )paren
@@ -8827,6 +8857,51 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+multiline_comment|/*&n; *      Device notifier&n; */
+DECL|function|register_inet6addr_notifier
+r_int
+id|register_inet6addr_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+id|notifier_chain_register
+c_func
+(paren
+op_amp
+id|inet6addr_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+)brace
+DECL|function|unregister_inet6addr_notifier
+r_int
+id|unregister_inet6addr_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+id|notifier_chain_unregister
+c_func
+(paren
+op_amp
+id|inet6addr_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Init / cleanup code&n; */
 DECL|function|addrconf_init
 r_void

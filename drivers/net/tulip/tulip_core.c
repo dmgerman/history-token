@@ -7948,6 +7948,23 @@ op_complement
 l_int|0xfff10000
 suffix:semicolon
 multiline_comment|/* zero reserved bits 31:20, 16 */
+multiline_comment|/* DM9102A has troubles with MRM, clear bit 24 too. */
+r_if
+c_cond
+(paren
+id|pdev-&gt;vendor
+op_eq
+l_int|0x1282
+op_logical_and
+id|pdev-&gt;device
+op_eq
+l_int|0x9102
+)paren
+id|csr0
+op_and_assign
+op_complement
+l_int|0x01200000
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;And back to business&n;&t; */
 id|i
 op_assign
@@ -9875,9 +9892,9 @@ op_star
 id|ioaddr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|err_out_free_res
 suffix:colon
+macro_line|#endif
 id|pci_release_regions
 (paren
 id|pdev

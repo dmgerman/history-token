@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.c,v 1.16 2001/02/13 01:16:43 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Adopted for sparc by V. Roganov and G. Raiko.&n; * Fixes for different platforms by Pete Zaitcev.&n; */
+multiline_comment|/* $Id: ebus.c,v 1.17 2001/08/06 13:12:57 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Adopted for sparc by V. Roganov and G. Raiko.&n; * Fixes for different platforms by Pete Zaitcev.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -30,6 +30,14 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_void
+id|rs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* We are together with pcic.c under CONFIG_PCI. */
 r_extern
 r_int
@@ -1724,6 +1732,11 @@ op_increment
 id|num_ebus
 suffix:semicolon
 )brace
+id|rs_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SUN_AUXIO
 id|auxio_probe
 c_func

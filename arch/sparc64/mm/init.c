@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.176 2001/05/16 15:07:11 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.178 2001/08/06 13:09:00 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -4076,7 +4076,7 @@ id|pstate
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Caller does TLB context flushing on local CPU if necessary.&n; *&n; * We must be careful about boundary cases so that we never&n; * let the user have CTX 0 (nucleus) or we ever use a CTX&n; * version of zero (and thus NO_CONTEXT would not be caught&n; * by version mis-match tests in mmu_context.h).&n; */
+multiline_comment|/* Caller does TLB context flushing on local CPU if necessary.&n; * The caller also ensures that CTX_VALID(mm-&gt;context) is false.&n; *&n; * We must be careful about boundary cases so that we never&n; * let the user have CTX 0 (nucleus) or we ever use a CTX&n; * version of zero (and thus NO_CONTEXT would not be caught&n; * by version mis-match tests in mmu_context.h).&n; */
 DECL|function|get_new_mmu_context
 r_void
 id|get_new_mmu_context
@@ -4111,56 +4111,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctx
-op_eq
-l_int|0
-)paren
-id|ctx
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|CTX_VALID
-c_func
-(paren
-id|mm-&gt;context
-)paren
-)paren
-(brace
-r_int
-r_int
-id|nr
-op_assign
-id|CTX_HWBITS
-c_func
-(paren
-id|mm-&gt;context
-)paren
-suffix:semicolon
-id|mmu_context_bmap
-(braket
-id|nr
-op_rshift
-l_int|6
-)braket
-op_and_assign
-op_complement
-(paren
-l_int|1UL
-op_lshift
-(paren
-id|nr
-op_amp
-l_int|63
-)paren
-)paren
-suffix:semicolon
-)brace
 id|new_ctx
 op_assign
 id|find_next_zero_bit

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.94 2001/07/10 00:40:13 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.96 2001/08/03 22:20:39 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -629,19 +629,20 @@ c_cond
 id|rt-&gt;rt_flags
 op_amp
 id|RTCF_MULTICAST
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 op_logical_neg
 id|sk
 op_logical_or
 id|sk-&gt;protinfo.af_inet.mc_loop
 )paren
-)paren
-(brace
 macro_line|#ifdef CONFIG_IP_MROUTE
 multiline_comment|/* Small optimization: do not loopback not local frames,&n;&t;&t;   which returned after forwarding; they will be  dropped&n;&t;&t;   by ip_mr_input in any case.&n;&t;&t;   Note, that local frames are looped back to be delivered&n;&t;&t;   to local recipients.&n;&n;&t;&t;   This check is duplicated in ip_mr_input at the moment.&n;&t;&t; */
-r_if
-c_cond
+op_logical_and
 (paren
 (paren
 id|rt-&gt;rt_flags
@@ -663,6 +664,7 @@ id|IPSKB_FORWARDED
 )paren
 )paren
 macro_line|#endif
+)paren
 (brace
 r_struct
 id|sk_buff
@@ -1151,6 +1153,26 @@ id|iphdr
 op_star
 id|iph
 suffix:semicolon
+multiline_comment|/* Skip all of this if the packet is already routed,&n;&t; * f.e. by something like SCTP.&n;&t; */
+id|rt
+op_assign
+(paren
+r_struct
+id|rtable
+op_star
+)paren
+id|skb-&gt;dst
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rt
+op_ne
+l_int|NULL
+)paren
+r_goto
+id|packet_routed
+suffix:semicolon
 multiline_comment|/* Make sure we can route this packet. */
 id|rt
 op_assign
@@ -1249,6 +1271,8 @@ op_amp
 id|rt-&gt;u.dst
 )paren
 suffix:semicolon
+id|packet_routed
+suffix:colon
 r_if
 c_cond
 (paren

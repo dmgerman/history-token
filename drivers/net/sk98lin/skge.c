@@ -540,12 +540,11 @@ id|BootString
 op_assign
 id|BOOT_STRING
 suffix:semicolon
-DECL|variable|root_dev
-r_static
+DECL|variable|sk98lin_root_dev
 r_struct
 id|net_device
 op_star
-id|root_dev
+id|sk98lin_root_dev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1770,7 +1769,7 @@ r_void
 r_int
 id|cards
 suffix:semicolon
-id|root_dev
+id|sk98lin_root_dev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1853,7 +1852,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|root_dev
+id|sk98lin_root_dev
 )paren
 (brace
 id|pNet
@@ -1862,7 +1861,7 @@ op_assign
 id|DEV_NET
 op_star
 )paren
-id|root_dev-&gt;priv
+id|sk98lin_root_dev-&gt;priv
 suffix:semicolon
 id|pAC
 op_assign
@@ -1875,7 +1874,7 @@ suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
-id|root_dev
+id|sk98lin_root_dev
 )paren
 suffix:semicolon
 id|SkGeYellowLED
@@ -2060,10 +2059,10 @@ suffix:semicolon
 id|FreeResources
 c_func
 (paren
-id|root_dev
+id|sk98lin_root_dev
 )paren
 suffix:semicolon
-id|root_dev-&gt;get_stats
+id|sk98lin_root_dev-&gt;get_stats
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2071,13 +2070,13 @@ multiline_comment|/* &n;&t;&t; * otherwise unregister_netdev calls get_stats wit
 id|unregister_netdev
 c_func
 (paren
-id|root_dev
+id|sk98lin_root_dev
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|root_dev
+id|sk98lin_root_dev
 )paren
 suffix:semicolon
 id|kfree
@@ -2086,7 +2085,7 @@ c_func
 id|pAC
 )paren
 suffix:semicolon
-id|root_dev
+id|sk98lin_root_dev
 op_assign
 id|next
 suffix:semicolon
@@ -2849,9 +2848,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Register the device here&n;&t; */
 id|pAC-&gt;Next
 op_assign
-id|root_dev
+id|sk98lin_root_dev
 suffix:semicolon
-id|root_dev
+id|sk98lin_root_dev
 op_assign
 id|dev
 suffix:semicolon

@@ -100,7 +100,7 @@ r_extern
 r_struct
 id|net_device
 op_star
-id|root_dev
+id|sk98lin_root_dev
 suffix:semicolon
 DECL|variable|pSkRootDir
 r_struct
@@ -214,7 +214,7 @@ id|net_device
 op_star
 id|SkgeProcDev
 op_assign
-id|root_dev
+id|sk98lin_root_dev
 suffix:semicolon
 id|SK_PNMI_STRUCT_DATA
 op_star

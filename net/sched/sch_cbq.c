@@ -4649,9 +4649,14 @@ c_func
 id|cl-&gt;q
 )paren
 )paren
+(brace
+id|sch-&gt;q.qlen
+op_decrement
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop

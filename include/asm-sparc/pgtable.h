@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.106 2000/11/08 04:49:24 davem Exp $ */
+multiline_comment|/* $Id: pgtable.h,v 1.107 2001/08/06 13:16:37 davem Exp $ */
 macro_line|#ifndef _SPARC_PGTABLE_H
 DECL|macro|_SPARC_PGTABLE_H
 mdefine_line|#define _SPARC_PGTABLE_H
@@ -21,6 +21,15 @@ macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
 id|load_mmu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|calc_highpages
 c_func
 (paren
 r_void

@@ -60,6 +60,7 @@ macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/transp_v6.h&gt;
+macro_line|#include &lt;net/addrconf.h&gt;
 r_extern
 r_int
 id|sysctl_local_port_range
@@ -1175,6 +1176,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|icmpv6_send
+)paren
+suffix:semicolon
+DECL|variable|ndisc_mc_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ndisc_mc_map
+)paren
+suffix:semicolon
+DECL|variable|register_inet6addr_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_inet6addr_notifier
+)paren
+suffix:semicolon
+DECL|variable|unregister_inet6addr_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_inet6addr_notifier
 )paren
 suffix:semicolon
 macro_line|#endif
