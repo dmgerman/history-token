@@ -12,6 +12,48 @@ mdefine_line|#define __IA64_UNCACHED_OFFSET&t;0xc000000000000000&t;/* region 6 *
 multiline_comment|/*&n; * The legacy I/O space defined by the ia64 architecture supports only 65536 ports, but&n; * large machines may have multiple other I/O spaces so we can&squot;t place any a priori limit&n; * on IO_SPACE_LIMIT.  These additional spaces are described in ACPI.&n; */
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffffffffffffUL
+DECL|macro|MAX_IO_SPACES
+mdefine_line|#define MAX_IO_SPACES&t;&t;&t;16
+DECL|macro|IO_SPACE_BITS
+mdefine_line|#define IO_SPACE_BITS&t;&t;&t;24
+DECL|macro|IO_SPACE_SIZE
+mdefine_line|#define IO_SPACE_SIZE&t;&t;&t;(1UL &lt;&lt; IO_SPACE_BITS)
+DECL|macro|IO_SPACE_NR
+mdefine_line|#define IO_SPACE_NR(port)&t;&t;((port) &gt;&gt; IO_SPACE_BITS)
+DECL|macro|IO_SPACE_BASE
+mdefine_line|#define IO_SPACE_BASE(space)&t;&t;((space) &lt;&lt; IO_SPACE_BITS)
+DECL|macro|IO_SPACE_PORT
+mdefine_line|#define IO_SPACE_PORT(port)&t;&t;((port) &amp; (IO_SPACE_SIZE - 1))
+DECL|macro|IO_SPACE_SPARSE_ENCODING
+mdefine_line|#define IO_SPACE_SPARSE_ENCODING(p)&t;((((p) &gt;&gt; 2) &lt;&lt; 12) | (p &amp; 0xfff))
+DECL|struct|io_space
+r_struct
+id|io_space
+(brace
+DECL|member|mmio_base
+r_int
+r_int
+id|mmio_base
+suffix:semicolon
+multiline_comment|/* base in MMIO space */
+DECL|member|sparse
+r_int
+id|sparse
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|io_space
+id|io_space
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|num_io_spaces
+suffix:semicolon
 macro_line|# ifdef __KERNEL__
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -107,46 +149,63 @@ r_int
 id|port
 )paren
 (brace
-r_const
+r_struct
+id|io_space
+op_star
+id|space
+suffix:semicolon
 r_int
 r_int
-id|io_base
+id|offset
+suffix:semicolon
+id|space
 op_assign
-id|__ia64_get_io_port_base
+op_amp
+id|io_space
+(braket
+id|IO_SPACE_NR
 c_func
 (paren
+id|port
 )paren
+)braket
 suffix:semicolon
-r_int
-r_int
-id|addr
-suffix:semicolon
-id|addr
+id|port
 op_assign
-id|io_base
-op_or
-(paren
-(paren
-id|port
-op_rshift
-l_int|2
-)paren
-op_lshift
-l_int|12
-)paren
-op_or
+id|IO_SPACE_PORT
+c_func
 (paren
 id|port
-op_amp
-l_int|0xfff
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|space-&gt;sparse
+)paren
+id|offset
+op_assign
+id|IO_SPACE_SPARSE_ENCODING
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+r_else
+id|offset
+op_assign
+id|port
 suffix:semicolon
 r_return
 (paren
 r_void
 op_star
 )paren
-id|addr
+(paren
+id|space-&gt;mmio_base
+op_or
+id|offset
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * For the in/out routines, we need to do &quot;mf.a&quot; _after_ doing the I/O access to ensure&n; * that the access has completed before executing other I/O accesses.  Since we&squot;re doing&n; * the accesses through an uncachable (UC) translation, the CPU will execute them in&n; * program order.  However, we still need to tell the compiler not to shuffle them around&n; * during optimization, which is why we use &quot;volatile&quot; pointers.&n; */
