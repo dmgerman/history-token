@@ -125,7 +125,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|iop331_timer
+id|iop321_timer
 comma
 id|BOOT_PARAMS
 c_func
@@ -169,7 +169,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|iop331_timer
+id|iop321_timer
 comma
 id|BOOT_PARAMS
 c_func
