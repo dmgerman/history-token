@@ -1474,11 +1474,11 @@ id|ps
 r_return
 suffix:semicolon
 multiline_comment|/* NOTE:  this relies on usbcore having canceled and completed&n;&t; * all pending I/O requests; 2.6 does that.&n;&t; */
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 id|ifnum
-OL
+op_ge
 l_int|8
 op_star
 r_sizeof
@@ -1486,6 +1486,7 @@ r_sizeof
 id|ps-&gt;ifclaimed
 )paren
 )paren
+suffix:semicolon
 id|clear_bit
 c_func
 (paren
