@@ -48,6 +48,11 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 suffix:semicolon
 DECL|function|drive_ctl_nien
@@ -130,6 +135,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 id|GET_STAT
 c_func
 (paren
@@ -164,15 +171,18 @@ op_star
 id|drive
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|ide_hwgroup_t
 op_star
 id|hwgroup
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|ch-&gt;hwgroup
 suffix:semicolon
 id|request_queue_t
 op_star
@@ -223,7 +233,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|hwgroup-&gt;timer
+id|ch-&gt;timer
 )paren
 suffix:semicolon
 r_if
@@ -561,6 +571,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|hwgroup-&gt;rq
 )paren
 op_eq
 id|ide_started
@@ -595,6 +607,13 @@ op_star
 id|handler
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|ide_hwgroup_t
 op_star
 id|hwgroup
@@ -618,24 +637,24 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * always just bump the timer for now, the timeout handling will&n;&t; * have to be changed to be per-command&n;&t; */
-id|hwgroup-&gt;timer.function
+multiline_comment|/*&n;&t; * always just bump the timer for now, the timeout handling will&n;&t; * have to be changed to be per-command&n;&t; *&n;&t; * FIXME: Jens - this is broken it will interfere with&n;&t; * the normal timer function on serialized drives!&n;&t; */
+id|ch-&gt;timer.function
 op_assign
 id|ata_tcq_irq_timeout
 suffix:semicolon
-id|hwgroup-&gt;timer.data
+id|ch-&gt;timer.data
 op_assign
 (paren
 r_int
 r_int
 )paren
-id|hwgroup-&gt;XXX_drive
+id|ch-&gt;drive
 suffix:semicolon
 id|mod_timer
 c_func
 (paren
 op_amp
-id|hwgroup-&gt;timer
+id|ch-&gt;timer
 comma
 id|jiffies
 op_plus
@@ -760,13 +779,13 @@ r_struct
 id|ata_device
 op_star
 id|drive
-)paren
-(brace
+comma
 r_struct
 id|request
 op_star
 id|rq
-suffix:semicolon
+)paren
+(brace
 id|u8
 id|feat
 suffix:semicolon
@@ -812,13 +831,7 @@ c_cond
 (paren
 id|drive
 op_ne
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|XXX_drive
+id|drive-&gt;channel-&gt;drive
 )paren
 (brace
 id|SELECT_DRIVE
@@ -882,6 +895,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 id|__FUNCTION__
 comma
 id|stat
@@ -918,6 +933,8 @@ id|ide_dump_status
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 id|__FUNCTION__
 comma
@@ -1064,6 +1081,11 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 id|u8
@@ -1111,6 +1133,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we have pending commands, wait for interrupt&n;&t; */
@@ -1197,6 +1221,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 id|__FUNCTION__
 comma
 id|stat
@@ -1258,6 +1284,8 @@ id|check_service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -1338,6 +1366,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -1356,6 +1386,8 @@ id|check_service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -2017,6 +2049,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 l_string|&quot;queued start&quot;
 comma
 id|stat
@@ -2052,6 +2086,8 @@ id|ide_dump_status
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;tcq_start&quot;
 comma
@@ -2124,6 +2160,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 r_return

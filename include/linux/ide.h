@@ -354,9 +354,6 @@ DECL|macro|ATA_SCSI
 mdefine_line|#define ATA_SCSI&t;0x21
 DECL|macro|ATA_NO_LUN
 mdefine_line|#define ATA_NO_LUN      0x7f
-r_struct
-id|ide_settings_s
-suffix:semicolon
 r_typedef
 r_union
 (brace
@@ -578,11 +575,6 @@ r_int
 id|sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
-DECL|member|XXX_tune_req
-id|u8
-id|XXX_tune_req
-suffix:semicolon
-multiline_comment|/* requested drive tuning setting */
 DECL|member|using_dma
 id|byte
 id|using_dma
@@ -830,13 +822,6 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* directory for device */
-DECL|member|settings
-r_struct
-id|ide_settings_s
-op_star
-id|settings
-suffix:semicolon
-multiline_comment|/* ioctl entires */
 DECL|member|driver_req
 r_char
 id|driver_req
@@ -981,6 +966,36 @@ op_star
 id|hwgroup
 suffix:semicolon
 multiline_comment|/* actually (ide_hwgroup_t *) */
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+multiline_comment|/* failsafe timer */
+DECL|member|expiry
+r_int
+(paren
+op_star
+id|expiry
+)paren
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* irq handler, if active */
+DECL|member|drive
+r_struct
+id|ata_device
+op_star
+id|drive
+suffix:semicolon
+multiline_comment|/* last serviced drive */
 DECL|member|io_ports
 id|ide_ioreg_t
 id|io_ports
@@ -1726,13 +1741,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* BUSY, SLEEPING */
-DECL|member|XXX_drive
-r_struct
-id|ata_device
-op_star
-id|XXX_drive
-suffix:semicolon
-multiline_comment|/* current drive */
 DECL|member|rq
 r_struct
 id|request
@@ -1740,216 +1748,11 @@ op_star
 id|rq
 suffix:semicolon
 multiline_comment|/* current request */
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-multiline_comment|/* failsafe timer */
-DECL|member|expiry
-r_int
-(paren
-op_star
-id|expiry
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* irq handler, if active */
 DECL|typedef|ide_hwgroup_t
 )brace
 id|ide_hwgroup_t
 suffix:semicolon
-multiline_comment|/* structure attached to the request for IDE_TASK_CMDS */
-multiline_comment|/*&n; * configurable drive settings&n; */
-DECL|macro|TYPE_INT
-mdefine_line|#define TYPE_INT&t;0
-DECL|macro|TYPE_INTA
-mdefine_line|#define TYPE_INTA&t;1
-DECL|macro|TYPE_BYTE
-mdefine_line|#define TYPE_BYTE&t;2
-DECL|macro|TYPE_SHORT
-mdefine_line|#define TYPE_SHORT&t;3
-DECL|macro|SETTING_READ
-mdefine_line|#define SETTING_READ&t;(1 &lt;&lt; 0)
-DECL|macro|SETTING_WRITE
-mdefine_line|#define SETTING_WRITE&t;(1 &lt;&lt; 1)
-DECL|macro|SETTING_RW
-mdefine_line|#define SETTING_RW&t;(SETTING_READ | SETTING_WRITE)
-DECL|typedef|ide_procset_t
-r_typedef
-r_int
-(paren
-id|ide_procset_t
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|struct|ide_settings_s
-r_typedef
-r_struct
-id|ide_settings_s
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|rw
-r_int
-id|rw
-suffix:semicolon
-DECL|member|read_ioctl
-r_int
-id|read_ioctl
-suffix:semicolon
-DECL|member|write_ioctl
-r_int
-id|write_ioctl
-suffix:semicolon
-DECL|member|data_type
-r_int
-id|data_type
-suffix:semicolon
-DECL|member|min
-r_int
-id|min
-suffix:semicolon
-DECL|member|max
-r_int
-id|max
-suffix:semicolon
-DECL|member|mul_factor
-r_int
-id|mul_factor
-suffix:semicolon
-DECL|member|div_factor
-r_int
-id|div_factor
-suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-DECL|member|set
-id|ide_procset_t
-op_star
-id|set
-suffix:semicolon
-DECL|member|auto_remove
-r_int
-id|auto_remove
-suffix:semicolon
-DECL|member|next
-r_struct
-id|ide_settings_s
-op_star
-id|next
-suffix:semicolon
-DECL|typedef|ide_settings_t
-)brace
-id|ide_settings_t
-suffix:semicolon
-r_extern
-r_void
-id|ide_add_setting
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_void
-op_star
-comma
-id|ide_procset_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ide_remove_setting
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_read_setting
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-id|ide_settings_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_write_setting
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-id|ide_settings_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ide_add_generic_settings
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: kill this as soon as possible */
 DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 multiline_comment|/*&n; * This structure describes the operations possible on a particular device type&n; * (CD-ROM, tape, DISK and so on).&n; *&n; * This is the main hook for device type support submodules.&n; */
@@ -2253,7 +2056,7 @@ id|expiry
 suffix:semicolon
 multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
 r_extern
-id|byte
+id|u8
 id|ide_dump_status
 c_func
 (paren
@@ -2261,14 +2064,18 @@ r_struct
 id|ata_device
 op_star
 comma
+r_struct
+id|request
+op_star
+id|rq
+comma
 r_const
 r_char
 op_star
 comma
-id|byte
+id|u8
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_error() takes action based on the error returned by the controller.&n; * The caller should return immediately after invoking this.&n; */
 r_extern
 id|ide_startstop_t
 id|ide_error
@@ -2277,6 +2084,11 @@ c_func
 r_struct
 id|ata_device
 op_star
+comma
+r_struct
+id|request
+op_star
+id|rq
 comma
 r_const
 r_char
@@ -2331,6 +2143,11 @@ comma
 r_struct
 id|ata_device
 op_star
+comma
+r_struct
+id|request
+op_star
+id|rq
 comma
 id|byte
 comma
@@ -2458,9 +2275,13 @@ r_struct
 id|ata_device
 op_star
 comma
-id|byte
+r_struct
+id|request
+op_star
 comma
-id|byte
+id|u8
+comma
+id|u8
 )paren
 suffix:semicolon
 DECL|struct|ata_taskfile

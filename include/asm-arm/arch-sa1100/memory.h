@@ -41,25 +41,22 @@ DECL|macro|NR_NODES
 mdefine_line|#define NR_NODES&t;4
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|KVADDR_TO_NID
-mdefine_line|#define KVADDR_TO_NID(addr) &bslash;&n;&t;&t;(((unsigned long)(addr) - 0xc0000000) &gt;&gt; 27)
-multiline_comment|/*&n; * Given a physical address, convert it to a node id.&n; */
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(addr) KVADDR_TO_NID(__phys_to_virt(addr))
-multiline_comment|/*&n; * Given a kaddr, ADDR_TO_MAPBASE finds the owning node of the memory&n; * and returns the mem_map of that node.&n; */
+mdefine_line|#define KVADDR_TO_NID(addr) (((unsigned long)(addr) - PAGE_OFFSET) &gt;&gt; 27)
+multiline_comment|/*&n; * Given a page frame number, convert it to a node id.&n; */
+DECL|macro|PFN_TO_NID
+mdefine_line|#define PFN_TO_NID(pfn)&t;&t;(((pfn) - PHYS_PFN_OFFSET) &gt;&gt; (27 - PAGE_SHIFT))
+multiline_comment|/*&n; * Given a kaddr, ADDR_TO_MAPBASE finds the owning node of the memory&n; * and return the mem_map of that node.&n; */
 DECL|macro|ADDR_TO_MAPBASE
-mdefine_line|#define ADDR_TO_MAPBASE(kaddr) &bslash;&n;&t;&t;&t;NODE_MEM_MAP(KVADDR_TO_NID((unsigned long)(kaddr)))
+mdefine_line|#define ADDR_TO_MAPBASE(kaddr)&t;NODE_MEM_MAP(KVADDR_TO_NID(kaddr))
+multiline_comment|/*&n; * Given a page frame number, find the owning node of the memory&n; * and return the mem_map of that node.&n; */
+DECL|macro|PFN_TO_MAPBASE
+mdefine_line|#define PFN_TO_MAPBASE(pfn)&t;NODE_MEM_MAP(PFN_TO_NID(pfn))
 multiline_comment|/*&n; * Given a kaddr, LOCAL_MEM_MAP finds the owning node of the memory&n; * and returns the index corresponding to the appropriate page in the&n; * node&squot;s mem_map.&n; */
 DECL|macro|LOCAL_MAP_NR
-mdefine_line|#define LOCAL_MAP_NR(kvaddr) &bslash;&n;&t;(((unsigned long)(kvaddr) &amp; 0x07ffffff) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/*&n; * Given a kaddr, virt_to_page returns a pointer to the corresponding &n; * mem_map entry.&n; */
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr) &bslash;&n;&t;(ADDR_TO_MAPBASE(kaddr) + LOCAL_MAP_NR(kaddr))
-multiline_comment|/*&n; * VALID_PAGE returns a non-zero value if given page pointer is valid.&n; * This assumes all node&squot;s mem_maps are stored within the node they refer to.&n; */
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page) &bslash;&n;({ unsigned int node = KVADDR_TO_NID(page); &bslash;&n;   ( (node &lt; NR_NODES) &amp;&amp; &bslash;&n;     ((unsigned)((page) - NODE_MEM_MAP(node)) &lt; NODE_DATA(node)-&gt;node_size) ); &bslash;&n;})
+mdefine_line|#define LOCAL_MAP_NR(addr) &bslash;&n;&t;(((unsigned long)(addr) &amp; 0x07ffffff) &gt;&gt; PAGE_SHIFT)
 macro_line|#else
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
+DECL|macro|PFN_TO_NID
+mdefine_line|#define PFN_TO_NID(addr)&t;(0)
 macro_line|#endif
 macro_line|#endif
 eof

@@ -3,7 +3,7 @@ macro_line|#ifndef _ASMARM_PGTABLE_H
 DECL|macro|_ASMARM_PGTABLE_H
 mdefine_line|#define _ASMARM_PGTABLE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/arch/memory.h&gt;
+macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/arch/vmalloc.h&gt;
 multiline_comment|/*&n; * PMD_SHIFT determines the size of the area a second-level page table can map&n; * PGDIR_SHIFT determines what a third-level page table entry can map&n; */
 DECL|macro|PMD_SHIFT
@@ -134,18 +134,16 @@ id|empty_zero_page
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(empty_zero_page)
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(pte)&t;&t;(pte_val(pte) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn,prot)&t;(__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot)))
 DECL|macro|pte_none
 mdefine_line|#define pte_none(pte)&t;&t;(!pte_val(pte))
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(ptep)&t;&t;set_pte((ptep), __pte(0))
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;&t;(mem_map + (pte_val((x)) &gt;&gt; PAGE_SHIFT) - &bslash;&n;&t;&t;&t;&t; (PHYS_OFFSET &gt;&gt; PAGE_SHIFT))
-macro_line|#else
-multiline_comment|/*&n; * I&squot;m not happy with this - we needlessly convert a physical address&n; * to a virtual one, and then immediately back to a physical address,&n; * which, if __va and __pa are expensive causes twice the expense for&n; * zero gain. --rmk&n; */
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;&t;(virt_to_page(__va(pte_val((x)))))
-macro_line|#endif
+mdefine_line|#define pte_page(pte)&t;&t;(pfn_to_page(pte_pfn(pte)))
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_present
@@ -154,37 +152,8 @@ multiline_comment|/*&n; * Permanent address of a page. We never have highmem, so
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20 - PAGE_SHIFT))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
-DECL|function|mk_pte_phys
-r_static
-r_inline
-id|pte_t
-id|mk_pte_phys
-c_func
-(paren
-r_int
-r_int
-id|physpage
-comma
-id|pgprot_t
-id|pgprot
-)paren
-(brace
-r_return
-id|__pte
-c_func
-(paren
-id|physpage
-op_or
-id|pgprot_val
-c_func
-(paren
-id|pgprot
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot)&t;mk_pte_phys(__pa(page_address(page)), pgprot)
+mdefine_line|#define mk_pte(page,prot)&t;pfn_pte(page_to_pfn(page),prot)
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(pgd)&t;&t;(0)

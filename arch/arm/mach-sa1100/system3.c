@@ -43,9 +43,9 @@ op_star
 id|desc
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
-id|params
+id|tags
 comma
 r_char
 op_star
@@ -162,20 +162,6 @@ c_func
 (paren
 r_int
 id|on
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|convert_to_tag_list
-c_func
-(paren
-r_struct
-id|param_struct
-op_star
-id|params
-comma
-r_int
-id|mem_init
 )paren
 suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  global data&n; */
@@ -634,9 +620,9 @@ op_star
 id|desc
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
-id|params
+id|tags
 comma
 r_char
 op_star

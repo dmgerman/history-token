@@ -1,4 +1,4 @@
-multiline_comment|/* airport.c 0.11a&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
+multiline_comment|/* airport.c 0.11b&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -34,7 +34,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;airport.c 0.11a (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
+l_string|&quot;airport.c 0.11b (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -951,11 +951,6 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|orinoco_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_struct
@@ -963,11 +958,6 @@ id|airport
 op_star
 id|card
 op_assign
-(paren
-r_struct
-id|airport
-op_star
-)paren
 id|priv-&gt;card
 suffix:semicolon
 multiline_comment|/* Unregister proc entry */
@@ -1070,7 +1060,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|card
+id|dev
 )paren
 suffix:semicolon
 )brace
