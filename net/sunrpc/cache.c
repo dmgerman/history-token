@@ -54,7 +54,7 @@ c_func
 op_amp
 id|h-&gt;refcnt
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|h-&gt;expiry_time
