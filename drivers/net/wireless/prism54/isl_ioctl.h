@@ -15,14 +15,6 @@ id|islpci_private
 op_star
 )paren
 suffix:semicolon
-r_void
-id|prism54_mib_init_work
-c_func
-(paren
-id|islpci_private
-op_star
-)paren
-suffix:semicolon
 r_struct
 id|iw_statistics
 op_star

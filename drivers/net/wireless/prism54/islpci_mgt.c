@@ -1080,7 +1080,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Bogus packet size of %d (%#x).&bslash;&n;n&quot;
+l_string|&quot;%s: Bogus packet size of %d (%#x).&bslash;n&quot;
 comma
 id|ndev-&gt;name
 comma
@@ -1762,7 +1762,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: timeout waiting for mgmt response %lu, trigging device&bslash;n&quot;
+l_string|&quot;%s: timeout waiting for mgmt response %lu, &quot;
+l_string|&quot;triggering device&bslash;n&quot;
 comma
 id|ndev-&gt;name
 comma

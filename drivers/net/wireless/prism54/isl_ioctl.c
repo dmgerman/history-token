@@ -532,37 +532,6 @@ id|init_mode
 )paren
 suffix:semicolon
 )brace
-r_void
-DECL|function|prism54_mib_init_work
-id|prism54_mib_init_work
-c_func
-(paren
-id|islpci_private
-op_star
-id|priv
-)paren
-(brace
-id|down_write
-c_func
-(paren
-op_amp
-id|priv-&gt;mib_sem
-)paren
-suffix:semicolon
-id|mgt_commit
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|priv-&gt;mib_sem
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* this will be executed outside of atomic context thanks to&n; * schedule_work(), thus we can as well use sleeping semaphore&n; * locking */
 r_void
 DECL|function|prism54_update_stats
@@ -604,7 +573,6 @@ id|priv-&gt;stats_sem
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* missing stats are :&n; *  iwstatistics.qual.updated&n; *  iwstatistics.discard.nwid&t;    &n; *  iwstatistics.discard.fragment&t;    &n; *  iwstatistics.discard.misc&n; *  iwstatistics.miss.beacon */
 multiline_comment|/* Noise floor.&n; * I&squot;m not sure if the unit is dBm.&n; * Note : If we are not connected, this value seems to be irrelevant. */
 id|mgt_get_request
 c_func
@@ -1539,7 +1507,6 @@ l_int|20
 suffix:colon
 id|vwrq-&gt;value
 suffix:semicolon
-multiline_comment|/* set the ed threshold. */
 r_return
 id|mgt_set_request
 c_func
@@ -2801,7 +2768,7 @@ id|noise
 op_assign
 id|r.u
 suffix:semicolon
-multiline_comment|/* Ask the device for a list of known bss. We can report at most&n;&t; * IW_MAX_AP=64 to the range struct. But the device won&squot;t repport anything&n;&t; * if you change the value of MAXBSS=24. Anyway 24 AP It is probably enough.&n;&t; */
+multiline_comment|/* Ask the device for a list of known bss. We can report at most&n;&t; * IW_MAX_AP=64 to the range struct. But the device won&squot;t repport anything&n;&t; * if you change the value of IWMAX_BSS=24.&n;&t; */
 id|rvalue
 op_or_assign
 id|mgt_get_request
@@ -4001,7 +3968,7 @@ r_return
 id|rvalue
 suffix:semicolon
 )brace
-multiline_comment|/* Here we have (min,max) = max retries for (small frames, big frames). Where&n; * big frame &lt;=&gt;  bigger than the rts threshold&n; * small frame &lt;=&gt;  smaller than the rts threshold&n; * This is not really the behavior expected by the wireless tool but it seems&n; * to be a common behavior in other drivers.&n; * &n; * It seems that playing with this tends to hang the card -&gt; DISABLED&n; */
+multiline_comment|/* Here we have (min,max) = max retries for (small frames, big frames). Where&n; * big frame &lt;=&gt;  bigger than the rts threshold&n; * small frame &lt;=&gt;  smaller than the rts threshold&n; * This is not really the behavior expected by the wireless tool but it seems&n; * to be a common behavior in other drivers.&n; */
 r_static
 r_int
 DECL|function|prism54_set_retry
@@ -4131,8 +4098,6 @@ r_if
 c_cond
 (paren
 id|slimit
-op_ne
-l_int|0
 )paren
 id|rvalue
 op_assign
@@ -4153,8 +4118,6 @@ r_if
 c_cond
 (paren
 id|llimit
-op_ne
-l_int|0
 )paren
 id|rvalue
 op_or_assign
@@ -4175,8 +4138,6 @@ r_if
 c_cond
 (paren
 id|lifetime
-op_ne
-l_int|0
 )paren
 id|rvalue
 op_or_assign
@@ -5411,7 +5372,6 @@ op_star
 id|extra
 )paren
 (brace
-multiline_comment|/*&n;&t;   u32 *i = (int *) extra;&n;&t;   int param = *i;&n;&t;   int u = *(i + 1);&n;&t; */
 id|u32
 id|oid
 op_assign
@@ -8268,7 +8228,7 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* Note : the following should never happen since we don&squot;t run the card in&n;&t;&t; * extended mode.&n;&t;&t; * Note : &quot;mlme&quot; is actually a &quot;struct obj_mlmeex *&quot; here, but this&n;&t;&t; * is backward compatible layout-wise with &quot;struct obj_mlme&quot;.&n;&t;&t; */
+multiline_comment|/* Note : &quot;mlme&quot; is actually a &quot;struct obj_mlmeex *&quot; here, but this&n;&t;&t; * is backward compatible layout-wise with &quot;struct obj_mlme&quot;.&n;&t;&t; */
 r_case
 id|DOT11_OID_DEAUTHENTICATEEX
 suffix:colon
