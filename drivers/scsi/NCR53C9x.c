@@ -5656,6 +5656,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|esp-&gt;irq
 )paren
 suffix:semicolon
 )brace

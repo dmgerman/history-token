@@ -6490,7 +6490,7 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_additional_erp */
-multiline_comment|/*&n; * DASD_3990_ERP_ERROR_MATCH&n; *&n; * DESCRIPTION&n; *   check if the the device status of the given cqr is the same.&n; *   This means that the failed CCW and the relevant sense data&n; *   must match.&n; *   I don&squot;t distinguish between 24 and 32 byte sense becaus in case of&n; *   24 byte sense byte 25 and 27 is set as well.&n; *&n; * PARAMETER&n; *   cqr1&t;&t;first cqr, which will be compared with the &n; *   cqr2&t;&t;second cqr.&n; *&n; * RETURN VALUES&n; *   match&t;&t;&squot;boolean&squot; for match found&n; *&t;&t;&t;returns 1 if match found, otherwise 0.&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_ERROR_MATCH&n; *&n; * DESCRIPTION&n; *   Check if the device status of the given cqr is the same.&n; *   This means that the failed CCW and the relevant sense data&n; *   must match.&n; *   I don&squot;t distinguish between 24 and 32 byte sense because in case of&n; *   24 byte sense byte 25 and 27 is set as well.&n; *&n; * PARAMETER&n; *   cqr1&t;&t;first cqr, which will be compared with the &n; *   cqr2&t;&t;second cqr.&n; *&n; * RETURN VALUES&n; *   match&t;&t;&squot;boolean&squot; for match found&n; *&t;&t;&t;returns 1 if match found, otherwise 0.&n; */
 r_static
 r_int
 DECL|function|dasd_3990_erp_error_match

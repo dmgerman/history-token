@@ -25997,7 +25997,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef LITTLE_ENDIAN
-multiline_comment|/*&n; * on sn-ia we need to twiddle the the addresses going out&n; * the pci bus because we use the unswizzled synergy space&n; * (the alternative is to use the swizzled synergy space&n; * and byte swap the data)&n; */
+multiline_comment|/*&n; * on sn-ia we need to twiddle the addresses going out&n; * the pci bus because we use the unswizzled synergy space&n; * (the alternative is to use the swizzled synergy space&n; * and byte swap the data)&n; */
 DECL|macro|CB
 mdefine_line|#define&t;CB(b,r)&t;(((volatile uint8_t *) b)[((r)^4)])
 DECL|macro|CS

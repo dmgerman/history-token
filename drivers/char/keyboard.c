@@ -5532,6 +5532,13 @@ id|i
 op_assign
 id|kbd0
 suffix:semicolon
+id|input_register_handler
+c_func
+(paren
+op_amp
+id|kbd_handler
+)paren
+suffix:semicolon
 id|tasklet_enable
 c_func
 (paren
@@ -5544,13 +5551,6 @@ c_func
 (paren
 op_amp
 id|keyboard_tasklet
-)paren
-suffix:semicolon
-id|input_register_handler
-c_func
-(paren
-op_amp
-id|kbd_handler
 )paren
 suffix:semicolon
 r_return
