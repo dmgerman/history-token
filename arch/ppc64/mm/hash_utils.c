@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -758,22 +759,7 @@ r_return
 id|pp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called by asm hashtable.S in case of critical insert failure&n; */
-DECL|function|htab_insert_failure
-r_void
-id|htab_insert_failure
-c_func
-(paren
-r_void
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;hash_page: pte_insert failed&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* Result code is:&n; *  0 - handled&n; *  1 - normal page fault&n; * -1 - critical hash insertion error&n; */
 DECL|function|hash_page
 r_int
 id|hash_page
@@ -1398,6 +1384,80 @@ r_int
 r_int
 )paren
 id|insn_addr
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * low_hash_fault is called when we the low level hash code failed&n; * to instert a PTE due to an hypervisor error&n; */
+DECL|function|low_hash_fault
+r_void
+id|low_hash_fault
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
+id|siginfo_t
+id|info
+suffix:semicolon
+id|info.si_signo
+op_assign
+id|SIGBUS
+suffix:semicolon
+id|info.si_errno
+op_assign
+l_int|0
+suffix:semicolon
+id|info.si_code
+op_assign
+id|BUS_ADRERR
+suffix:semicolon
+id|info.si_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|address
+suffix:semicolon
+id|force_sig_info
+c_func
+(paren
+id|SIGBUS
+comma
+op_amp
+id|info
+comma
+id|current
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|bad_page_fault
+c_func
+(paren
+id|regs
+comma
+id|address
+comma
+id|SIGBUS
 )paren
 suffix:semicolon
 )brace
