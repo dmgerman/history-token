@@ -433,7 +433,6 @@ id|attrpath
 suffix:semicolon
 )brace
 r_else
-(brace
 id|rc
 op_assign
 id|send_uevent
@@ -448,7 +447,6 @@ comma
 id|gfp_mask
 )paren
 suffix:semicolon
-)brace
 m_exit
 suffix:colon
 id|kfree
@@ -588,7 +586,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|kobject_uevent_init
-id|core_initcall
+id|postcore_initcall
 c_func
 (paren
 id|kobject_uevent_init
@@ -612,13 +610,10 @@ r_char
 op_star
 id|obj
 comma
-r_const
-r_void
+r_char
 op_star
-id|buf
-comma
-r_int
-id|buflen
+op_star
+id|envp
 comma
 r_int
 id|gfp_mask

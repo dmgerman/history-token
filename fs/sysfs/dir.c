@@ -231,8 +231,7 @@ op_logical_neg
 id|sd
 )paren
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 id|sd-&gt;s_mode
 op_assign
@@ -876,6 +875,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|sysfs_lookup
+r_static
 r_struct
 id|dentry
 op_star
@@ -1209,6 +1209,13 @@ c_cond
 (paren
 op_logical_neg
 id|sd-&gt;s_element
+op_logical_or
+op_logical_neg
+(paren
+id|sd-&gt;s_type
+op_amp
+id|SYSFS_NOT_PINNED
+)paren
 )paren
 r_continue
 suffix:semicolon
