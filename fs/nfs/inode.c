@@ -6385,6 +6385,8 @@ id|nfs_sb_init
 c_func
 (paren
 id|sb
+comma
+id|authflavour
 )paren
 suffix:semicolon
 r_if
