@@ -898,6 +898,17 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Used by new queueing code. &n;                                           Selects command for blkdevs */
+DECL|member|rescan
+r_void
+(paren
+op_star
+id|rescan
+)paren
+(paren
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
 DECL|member|scsi_driverfs_driver
 r_struct
 id|device_driver
