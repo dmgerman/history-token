@@ -96,6 +96,15 @@ DECL|macro|DRWTIM23
 mdefine_line|#define DRWTIM23&t;0x58
 DECL|macro|BRST
 mdefine_line|#define BRST&t;&t;0x59
+multiline_comment|/*&n; * Protects register file access from overlapping on primary and secondary&n; * channel, since those share hardware resources.&n; */
+DECL|variable|__cacheline_aligned
+r_static
+id|spinlock_t
+id|cmd640_lock
+id|__cacheline_aligned
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/*&n; * Registers and masks for easy access by drive index:&n; */
 DECL|variable|prefetch_regs
 r_static
@@ -134,15 +143,6 @@ id|ARTTIM23_DIS_RA3
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
-multiline_comment|/*&n; * Protects register file access from overlapping on primary and secondary&n; * channel, since those share hardware resources.&n; */
-DECL|variable|__cacheline_aligned
-r_static
-id|spinlock_t
-id|cmd640_lock
-id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|arttim_regs
 r_static
 id|u8
