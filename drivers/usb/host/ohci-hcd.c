@@ -8,6 +8,7 @@ DECL|macro|DEBUG
 macro_line|#&t;undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -28,7 +29,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2003 Oct 13&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2004 Feb 02&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -37,7 +38,7 @@ multiline_comment|/*------------------------------------------------------------
 singleline_comment|// #define OHCI_VERBOSE_DEBUG&t;/* not always helpful */
 multiline_comment|/* For initializing controller (mask in an HCFS mode too) */
 DECL|macro|OHCI_CONTROL_INIT
-mdefine_line|#define&t;OHCI_CONTROL_INIT &bslash;&n;&t; (OHCI_CTRL_CBSR &amp; 0x3) | OHCI_CTRL_IE | OHCI_CTRL_PLE
+mdefine_line|#define&t;OHCI_CONTROL_INIT &t;OHCI_CTRL_CBSR
 DECL|macro|OHCI_UNLINK_TIMEOUT
 mdefine_line|#define OHCI_UNLINK_TIMEOUT&t; (HZ / 10)
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -73,6 +74,30 @@ macro_line|#include &quot;ohci-hub.c&quot;
 macro_line|#include &quot;ohci-dbg.c&quot;
 macro_line|#include &quot;ohci-mem.c&quot;
 macro_line|#include &quot;ohci-q.c&quot;
+multiline_comment|/* Some boards don&squot;t support per-port power switching */
+DECL|variable|power_switching
+r_static
+r_int
+id|power_switching
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+(paren
+id|power_switching
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|power_switching
+comma
+l_string|&quot;true (not default) to switch port power&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * queue up an urb for anything except the root hub&n; */
 DECL|function|ohci_urb_enqueue
@@ -658,13 +683,6 @@ c_cond
 (paren
 id|urb-&gt;hcpriv
 )paren
-(brace
-id|spin_unlock
-(paren
-op_amp
-id|ohci-&gt;lock
-)paren
-suffix:semicolon
 id|finish_urb
 (paren
 id|ohci
@@ -674,13 +692,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_lock
-(paren
-op_amp
-id|ohci-&gt;lock
-)paren
-suffix:semicolon
-)brace
 )brace
 id|spin_unlock_irqrestore
 (paren
@@ -1111,6 +1122,49 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|power_switching
+)paren
+(brace
+r_int
+id|ports
+op_assign
+id|roothub_a
+(paren
+id|ohci
+)paren
+op_amp
+id|RH_A_NDP
+suffix:semicolon
+multiline_comment|/* power down each port */
+r_for
+c_loop
+(paren
+id|temp
+op_assign
+l_int|0
+suffix:semicolon
+id|temp
+OL
+id|ports
+suffix:semicolon
+id|temp
+op_increment
+)paren
+id|writel
+(paren
+id|RH_PS_LSDA
+comma
+op_amp
+id|ohci-&gt;regs-&gt;roothub.portstatus
+(braket
+id|temp
+)braket
+)paren
+suffix:semicolon
+)brace
 singleline_comment|// flush those pci writes
 (paren
 r_void
@@ -1456,8 +1510,32 @@ id|RH_A_NPS
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|power_switching
+)paren
 (brace
-multiline_comment|/* hub power always on; required for AMD-756 and some&n;&t;&t; * Mac platforms, use this mode everywhere by default&n;&t;&t; */
+multiline_comment|/* act like most external hubs:  use per-port power&n;&t;&t; * switching and overcurrent reporting.&n;&t;&t; */
+id|tmp
+op_and_assign
+op_complement
+(paren
+id|RH_A_NPS
+op_or
+id|RH_A_NOCP
+)paren
+suffix:semicolon
+id|tmp
+op_or_assign
+id|RH_A_PSM
+op_or
+id|RH_A_OCPM
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* hub power always on; required for AMD-756 and some&n;&t;&t; * Mac platforms.  ganged overcurrent reporting, if any.&n;&t;&t; */
 id|tmp
 op_or_assign
 id|RH_A_NPS
@@ -1481,6 +1559,11 @@ id|ohci-&gt;regs-&gt;roothub.status
 suffix:semicolon
 id|writel
 (paren
+id|power_switching
+ques
+c_cond
+id|RH_B_PPCM
+suffix:colon
 l_int|0
 comma
 op_amp
