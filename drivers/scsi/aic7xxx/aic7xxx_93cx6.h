@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Interface to the 93C46/56 serial EEPROM that is used to store BIOS&n; * settings for the aic7xxx based adaptec SCSI controllers.  It can&n; * also be used for 93C26 and 93C06 serial EEPROMS.&n; *&n; * Copyright (c) 1994, 1995, 2000 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_93cx6.h#7 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx_93cx6.h,v 1.8 2000/11/10 20:13:41 gibbs Exp $&n; */
+multiline_comment|/*&n; * Interface to the 93C46/56 serial EEPROM that is used to store BIOS&n; * settings for the aic7xxx based adaptec SCSI controllers.  It can&n; * also be used for 93C26 and 93C06 serial EEPROMS.&n; *&n; * Copyright (c) 1994, 1995, 2000 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_93cx6.h#12 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC7XXX_93CX6_H_
 DECL|macro|_AIC7XXX_93CX6_H_
 mdefine_line|#define _AIC7XXX_93CX6_H_
@@ -80,7 +80,7 @@ mdefine_line|#define&t;SEEPROM_STATUS_INB(sd) &bslash;&n;&t;ahc_inb(sd-&gt;sd_ah
 DECL|macro|SEEPROM_DATA_INB
 mdefine_line|#define&t;SEEPROM_DATA_INB(sd) &bslash;&n;&t;ahc_inb(sd-&gt;sd_ahc, sd-&gt;sd_dataout_offset)
 r_int
-id|read_seeprom
+id|ahc_read_seeprom
 c_func
 (paren
 r_struct
@@ -100,7 +100,27 @@ id|count
 )paren
 suffix:semicolon
 r_int
-id|verify_cksum
+id|ahc_write_seeprom
+c_func
+(paren
+r_struct
+id|seeprom_descriptor
+op_star
+id|sd
+comma
+r_uint16
+op_star
+id|buf
+comma
+id|u_int
+id|start_addr
+comma
+id|u_int
+id|count
+)paren
+suffix:semicolon
+r_int
+id|ahc_verify_cksum
 c_func
 (paren
 r_struct
