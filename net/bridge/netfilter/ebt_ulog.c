@@ -489,7 +489,7 @@ id|nlbufsiz
 id|PRINTR
 c_func
 (paren
-l_string|&quot;ebt_ulog: Size %d needed, but nlbufsiz=%d&bslash;n&quot;
+l_string|&quot;ebt_ulog: Size %Zd needed, but nlbufsiz=%d&bslash;n&quot;
 comma
 id|size
 comma
