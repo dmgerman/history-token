@@ -8260,6 +8260,12 @@ id|nsock-&gt;ops
 op_assign
 id|sock-&gt;ops
 suffix:semicolon
+id|__module_get
+c_func
+(paren
+id|nsock-&gt;ops-&gt;owner
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|sock-&gt;ops
