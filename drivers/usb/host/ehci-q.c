@@ -674,11 +674,17 @@ comma
 id|qh
 )paren
 suffix:semicolon
+)brace
+id|spin_lock
+(paren
+op_amp
+id|urb-&gt;lock
+)paren
+suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -747,6 +753,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|spin_unlock
+(paren
+op_amp
+id|urb-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* complete() can reenter this HCD */
 id|spin_unlock
 (paren
@@ -2612,7 +2624,6 @@ op_amp
 id|ehci-&gt;watchdog
 )paren
 suffix:semicolon
-r_else
 r_if
 c_cond
 (paren
