@@ -1,8 +1,8 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/uncompress.h&n; *&n; * (c) 2003 Simtec Electronics&n; *    Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - uncompress code&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  22-May-2003 BJD  Created&n; *  08-Sep-2003 BJD  Moved to linux v2.6&n; *  12-Mar-2004 BJD  Updated header protection&n; *  12-Oct-2004 BJD  Take account of debug uart configuration&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/uncompress.h&n; *&n; * (c) 2003 Simtec Electronics&n; *    Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - uncompress code&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  22-May-2003 BJD  Created&n; *  08-Sep-2003 BJD  Moved to linux v2.6&n; *  12-Mar-2004 BJD  Updated header protection&n; *  12-Oct-2004 BJD  Take account of debug uart configuration&n; *  15-Nov-2004 BJD  Fixed uart configuration&n;*/
 macro_line|#ifndef __ASM_ARCH_UNCOMPRESS_H
 DECL|macro|__ASM_ARCH_UNCOMPRESS_H
 mdefine_line|#define __ASM_ARCH_UNCOMPRESS_H
-macro_line|#include &lt;config/debug/s3c2410/port.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* defines for UART registers */
 macro_line|#include &quot;asm/arch/regs-serial.h&quot;
 macro_line|#include &quot;asm/arch/regs-gpio.h&quot;
@@ -15,19 +15,8 @@ mdefine_line|#define S3C2410_GPIOREG(x) ((S3C2410_PA_GPIO + (x)))
 multiline_comment|/* how many bytes we allow into the FIFO at a time in FIFO mode */
 DECL|macro|FIFO_MAX
 mdefine_line|#define FIFO_MAX&t; (14)
-macro_line|#if 1
 DECL|macro|uart_base
-mdefine_line|#define uart_base S3C2410_PA_UART + (0x4000 * CONFIG_DEBUG_S3C2410_UART)
-macro_line|#else
-DECL|variable|uart_base
-r_static
-r_int
-r_int
-id|uart_base
-op_assign
-id|S3C2410_PA_UART
-suffix:semicolon
-macro_line|#endif
+mdefine_line|#define uart_base S3C2410_PA_UART + (0x4000*CONFIG_S3C2410_LOWLEVEL_UART_PORT)
 r_static
 id|__inline__
 r_void
