@@ -230,8 +230,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|puts
-id|puts
+DECL|function|putstr
+id|putstr
 c_func
 (paren
 r_const

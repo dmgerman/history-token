@@ -10145,19 +10145,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Restore default settings&n;&t; */
 id|strip_info-&gt;dev-&gt;type
 op_assign

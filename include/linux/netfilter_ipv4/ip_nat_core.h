@@ -52,11 +52,6 @@ id|pskb
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|list_head
-id|protos
-suffix:semicolon
-r_extern
 r_int
 id|icmp_reply_translation
 c_func
@@ -111,22 +106,6 @@ id|ip_nat_info
 op_star
 id|info
 )paren
-suffix:semicolon
-multiline_comment|/* Built-in protocols. */
-r_extern
-r_struct
-id|ip_nat_protocol
-id|ip_nat_protocol_tcp
-suffix:semicolon
-r_extern
-r_struct
-id|ip_nat_protocol
-id|ip_nat_protocol_udp
-suffix:semicolon
-r_extern
-r_struct
-id|ip_nat_protocol
-id|ip_nat_protocol_icmp
 suffix:semicolon
 macro_line|#endif /* _IP_NAT_CORE_H */
 eof

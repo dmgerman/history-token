@@ -11,7 +11,7 @@ multiline_comment|/**&n; * utc2ntfs - convert Linux UTC time to NTFS time&n; * @
 DECL|function|utc2ntfs
 r_static
 r_inline
-id|s64
+id|sle64
 id|utc2ntfs
 c_func
 (paren
@@ -45,7 +45,7 @@ multiline_comment|/**&n; * get_current_ntfs_time - get the current time in littl
 DECL|function|get_current_ntfs_time
 r_static
 r_inline
-id|s64
+id|sle64
 id|get_current_ntfs_time
 c_func
 (paren
@@ -73,7 +73,7 @@ id|ntfs2utc
 c_func
 (paren
 r_const
-id|s64
+id|sle64
 id|time
 )paren
 (brace

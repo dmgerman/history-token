@@ -73,269 +73,510 @@ mdefine_line|#define ADB_KEY_POWER_OLD&t;0x7e
 DECL|macro|ADB_KEY_POWER
 mdefine_line|#define ADB_KEY_POWER&t;&t;0x7f
 DECL|variable|adb_to_linux_keycodes
-r_int
-r_char
+id|u8
 id|adb_to_linux_keycodes
 (braket
 l_int|128
 )braket
 op_assign
 (brace
-l_int|30
+multiline_comment|/* 0x00 */
+id|KEY_A
 comma
-l_int|31
+multiline_comment|/*  30 */
+multiline_comment|/* 0x01 */
+id|KEY_S
 comma
-l_int|32
+multiline_comment|/*  31 */
+multiline_comment|/* 0x02 */
+id|KEY_D
 comma
-l_int|33
+multiline_comment|/*  32 */
+multiline_comment|/* 0x03 */
+id|KEY_F
 comma
-l_int|35
+multiline_comment|/*  33 */
+multiline_comment|/* 0x04 */
+id|KEY_H
 comma
-l_int|34
+multiline_comment|/*  35 */
+multiline_comment|/* 0x05 */
+id|KEY_G
 comma
-l_int|44
+multiline_comment|/*  34 */
+multiline_comment|/* 0x06 */
+id|KEY_Z
 comma
-l_int|45
+multiline_comment|/*  44 */
+multiline_comment|/* 0x07 */
+id|KEY_X
 comma
-l_int|46
+multiline_comment|/*  45 */
+multiline_comment|/* 0x08 */
+id|KEY_C
 comma
-l_int|47
+multiline_comment|/*  46 */
+multiline_comment|/* 0x09 */
+id|KEY_V
 comma
-l_int|86
+multiline_comment|/*  47 */
+multiline_comment|/* 0x0a */
+id|KEY_102ND
 comma
-l_int|48
+multiline_comment|/*  86 */
+multiline_comment|/* 0x0b */
+id|KEY_B
 comma
-l_int|16
+multiline_comment|/*  48 */
+multiline_comment|/* 0x0c */
+id|KEY_Q
 comma
-l_int|17
+multiline_comment|/*  16 */
+multiline_comment|/* 0x0d */
+id|KEY_W
 comma
-l_int|18
+multiline_comment|/*  17 */
+multiline_comment|/* 0x0e */
+id|KEY_E
 comma
-l_int|19
+multiline_comment|/*  18 */
+multiline_comment|/* 0x0f */
+id|KEY_R
 comma
-l_int|21
+multiline_comment|/*  19 */
+multiline_comment|/* 0x10 */
+id|KEY_Y
 comma
-l_int|20
+multiline_comment|/*  21 */
+multiline_comment|/* 0x11 */
+id|KEY_T
 comma
-l_int|2
+multiline_comment|/*  20 */
+multiline_comment|/* 0x12 */
+id|KEY_1
 comma
-l_int|3
+multiline_comment|/*   2 */
+multiline_comment|/* 0x13 */
+id|KEY_2
 comma
-l_int|4
+multiline_comment|/*   3 */
+multiline_comment|/* 0x14 */
+id|KEY_3
 comma
-l_int|5
+multiline_comment|/*   4 */
+multiline_comment|/* 0x15 */
+id|KEY_4
 comma
-l_int|7
+multiline_comment|/*   5 */
+multiline_comment|/* 0x16 */
+id|KEY_6
 comma
-l_int|6
+multiline_comment|/*   7 */
+multiline_comment|/* 0x17 */
+id|KEY_5
 comma
-l_int|13
+multiline_comment|/*   6 */
+multiline_comment|/* 0x18 */
+id|KEY_EQUAL
 comma
-l_int|10
+multiline_comment|/*  13 */
+multiline_comment|/* 0x19 */
+id|KEY_9
 comma
-l_int|8
+multiline_comment|/*  10 */
+multiline_comment|/* 0x1a */
+id|KEY_7
 comma
-l_int|12
+multiline_comment|/*   8 */
+multiline_comment|/* 0x1b */
+id|KEY_MINUS
 comma
-l_int|9
+multiline_comment|/*  12 */
+multiline_comment|/* 0x1c */
+id|KEY_8
 comma
-l_int|11
+multiline_comment|/*   9 */
+multiline_comment|/* 0x1d */
+id|KEY_0
 comma
-l_int|27
+multiline_comment|/*  11 */
+multiline_comment|/* 0x1e */
+id|KEY_RIGHTBRACE
 comma
-l_int|24
+multiline_comment|/*  27 */
+multiline_comment|/* 0x1f */
+id|KEY_O
 comma
-l_int|22
+multiline_comment|/*  24 */
+multiline_comment|/* 0x20 */
+id|KEY_U
 comma
-l_int|26
+multiline_comment|/*  22 */
+multiline_comment|/* 0x21 */
+id|KEY_LEFTBRACE
 comma
-l_int|23
+multiline_comment|/*  26 */
+multiline_comment|/* 0x22 */
+id|KEY_I
 comma
-l_int|25
+multiline_comment|/*  23 */
+multiline_comment|/* 0x23 */
+id|KEY_P
 comma
-l_int|28
+multiline_comment|/*  25 */
+multiline_comment|/* 0x24 */
+id|KEY_ENTER
 comma
-l_int|38
+multiline_comment|/*  28 */
+multiline_comment|/* 0x25 */
+id|KEY_L
 comma
-l_int|36
+multiline_comment|/*  38 */
+multiline_comment|/* 0x26 */
+id|KEY_J
 comma
-l_int|40
+multiline_comment|/*  36 */
+multiline_comment|/* 0x27 */
+id|KEY_APOSTROPHE
 comma
-l_int|37
+multiline_comment|/*  40 */
+multiline_comment|/* 0x28 */
+id|KEY_K
 comma
-l_int|39
+multiline_comment|/*  37 */
+multiline_comment|/* 0x29 */
+id|KEY_SEMICOLON
 comma
-l_int|43
+multiline_comment|/*  39 */
+multiline_comment|/* 0x2a */
+id|KEY_BACKSLASH
 comma
-l_int|51
+multiline_comment|/*  43 */
+multiline_comment|/* 0x2b */
+id|KEY_COMMA
 comma
-l_int|53
+multiline_comment|/*  51 */
+multiline_comment|/* 0x2c */
+id|KEY_SLASH
 comma
-l_int|49
+multiline_comment|/*  53 */
+multiline_comment|/* 0x2d */
+id|KEY_N
 comma
-l_int|50
+multiline_comment|/*  49 */
+multiline_comment|/* 0x2e */
+id|KEY_M
 comma
-l_int|52
+multiline_comment|/*  50 */
+multiline_comment|/* 0x2f */
+id|KEY_DOT
 comma
-l_int|15
+multiline_comment|/*  52 */
+multiline_comment|/* 0x30 */
+id|KEY_TAB
 comma
-l_int|57
+multiline_comment|/*  15 */
+multiline_comment|/* 0x31 */
+id|KEY_SPACE
 comma
-l_int|41
+multiline_comment|/*  57 */
+multiline_comment|/* 0x32 */
+id|KEY_GRAVE
 comma
-l_int|14
+multiline_comment|/*  41 */
+multiline_comment|/* 0x33 */
+id|KEY_BACKSPACE
 comma
-l_int|96
+multiline_comment|/*  14 */
+multiline_comment|/* 0x34 */
+id|KEY_KPENTER
 comma
-l_int|1
+multiline_comment|/*  96 */
+multiline_comment|/* 0x35 */
+id|KEY_ESC
 comma
-l_int|29
+multiline_comment|/*   1 */
+multiline_comment|/* 0x36 */
+id|KEY_LEFTCTRL
 comma
-l_int|125
+multiline_comment|/*  29 */
+multiline_comment|/* 0x37 */
+id|KEY_LEFTMETA
 comma
-l_int|42
+multiline_comment|/* 125 */
+multiline_comment|/* 0x38 */
+id|KEY_LEFTSHIFT
 comma
-l_int|58
+multiline_comment|/*  42 */
+multiline_comment|/* 0x39 */
+id|KEY_CAPSLOCK
 comma
-l_int|56
+multiline_comment|/*  58 */
+multiline_comment|/* 0x3a */
+id|KEY_LEFTALT
 comma
-l_int|105
+multiline_comment|/*  56 */
+multiline_comment|/* 0x3b */
+id|KEY_LEFT
 comma
-l_int|106
+multiline_comment|/* 105 */
+multiline_comment|/* 0x3c */
+id|KEY_RIGHT
 comma
-l_int|108
+multiline_comment|/* 106 */
+multiline_comment|/* 0x3d */
+id|KEY_DOWN
 comma
-l_int|103
+multiline_comment|/* 108 */
+multiline_comment|/* 0x3e */
+id|KEY_UP
 comma
+multiline_comment|/* 103 */
+multiline_comment|/* 0x3f */
 l_int|0
 comma
+multiline_comment|/* 0x40 */
 l_int|0
 comma
-l_int|83
+multiline_comment|/* 0x41 */
+id|KEY_KPDOT
 comma
+multiline_comment|/*  83 */
+multiline_comment|/* 0x42 */
 l_int|0
 comma
-l_int|55
+multiline_comment|/* 0x43 */
+id|KEY_KPASTERISK
 comma
+multiline_comment|/*  55 */
+multiline_comment|/* 0x44 */
 l_int|0
 comma
-l_int|78
+multiline_comment|/* 0x45 */
+id|KEY_KPPLUS
 comma
+multiline_comment|/*  78 */
+multiline_comment|/* 0x46 */
 l_int|0
 comma
-l_int|69
+multiline_comment|/* 0x47 */
+id|KEY_NUMLOCK
 comma
+multiline_comment|/*  69 */
+multiline_comment|/* 0x48 */
 l_int|0
 comma
+multiline_comment|/* 0x49 */
 l_int|0
 comma
+multiline_comment|/* 0x4a */
 l_int|0
 comma
-l_int|98
+multiline_comment|/* 0x4b */
+id|KEY_KPSLASH
 comma
-l_int|96
+multiline_comment|/*  98 */
+multiline_comment|/* 0x4c */
+id|KEY_KPENTER
 comma
+multiline_comment|/*  96 */
+multiline_comment|/* 0x4d */
 l_int|0
 comma
-l_int|74
+multiline_comment|/* 0x4e */
+id|KEY_KPMINUS
 comma
+multiline_comment|/*  74 */
+multiline_comment|/* 0x4f */
 l_int|0
 comma
+multiline_comment|/* 0x50 */
 l_int|0
 comma
-l_int|117
+multiline_comment|/* 0x51 */
+id|KEY_KPEQUAL
 comma
-l_int|82
+multiline_comment|/* 117 */
+multiline_comment|/* 0x52 */
+id|KEY_KP0
 comma
-l_int|79
+multiline_comment|/*  82 */
+multiline_comment|/* 0x53 */
+id|KEY_KP1
 comma
-l_int|80
+multiline_comment|/*  79 */
+multiline_comment|/* 0x54 */
+id|KEY_KP2
 comma
-l_int|81
+multiline_comment|/*  80 */
+multiline_comment|/* 0x55 */
+id|KEY_KP3
 comma
-l_int|75
+multiline_comment|/*  81 */
+multiline_comment|/* 0x56 */
+id|KEY_KP4
 comma
-l_int|76
+multiline_comment|/*  75 */
+multiline_comment|/* 0x57 */
+id|KEY_KP5
 comma
-l_int|77
+multiline_comment|/*  76 */
+multiline_comment|/* 0x58 */
+id|KEY_KP6
 comma
-l_int|71
+multiline_comment|/*  77 */
+multiline_comment|/* 0x59 */
+id|KEY_KP7
 comma
+multiline_comment|/*  71 */
+multiline_comment|/* 0x5a */
 l_int|0
 comma
-l_int|72
+multiline_comment|/* 0x5b */
+id|KEY_KP8
 comma
-l_int|73
+multiline_comment|/*  72 */
+multiline_comment|/* 0x5c */
+id|KEY_KP9
 comma
-l_int|124
+multiline_comment|/*  73 */
+multiline_comment|/* 0x5d */
+id|KEY_YEN
 comma
-l_int|89
+multiline_comment|/* 124 */
+multiline_comment|/* 0x5e */
+id|KEY_RO
 comma
-l_int|121
+multiline_comment|/*  89 */
+multiline_comment|/* 0x5f */
+id|KEY_KPCOMMA
 comma
-l_int|63
+multiline_comment|/* 121 */
+multiline_comment|/* 0x60 */
+id|KEY_F5
 comma
-l_int|64
+multiline_comment|/*  63 */
+multiline_comment|/* 0x61 */
+id|KEY_F6
 comma
-l_int|65
+multiline_comment|/*  64 */
+multiline_comment|/* 0x62 */
+id|KEY_F7
 comma
-l_int|61
+multiline_comment|/*  65 */
+multiline_comment|/* 0x63 */
+id|KEY_F3
 comma
-l_int|66
+multiline_comment|/*  61 */
+multiline_comment|/* 0x64 */
+id|KEY_F8
 comma
-l_int|67
+multiline_comment|/*  66 */
+multiline_comment|/* 0x65 */
+id|KEY_F9
 comma
-l_int|123
+multiline_comment|/*  67 */
+multiline_comment|/* 0x66 */
+id|KEY_HANJA
 comma
-l_int|87
+multiline_comment|/* 123 */
+multiline_comment|/* 0x67 */
+id|KEY_F11
 comma
-l_int|122
+multiline_comment|/*  87 */
+multiline_comment|/* 0x68 */
+id|KEY_HANGUEL
 comma
-l_int|99
+multiline_comment|/* 122 */
+multiline_comment|/* 0x69 */
+id|KEY_SYSRQ
 comma
+multiline_comment|/*  99 */
+multiline_comment|/* 0x6a */
 l_int|0
 comma
-l_int|70
+multiline_comment|/* 0x6b */
+id|KEY_SCROLLLOCK
 comma
+multiline_comment|/*  70 */
+multiline_comment|/* 0x6c */
 l_int|0
 comma
-l_int|68
+multiline_comment|/* 0x6d */
+id|KEY_F10
 comma
-l_int|101
+multiline_comment|/*  68 */
+multiline_comment|/* 0x6e */
+id|KEY_COMPOSE
 comma
-l_int|88
+multiline_comment|/* 127 */
+multiline_comment|/* 0x6f */
+id|KEY_F12
 comma
+multiline_comment|/*  88 */
+multiline_comment|/* 0x70 */
 l_int|0
 comma
-l_int|119
+multiline_comment|/* 0x71 */
+id|KEY_PAUSE
 comma
-l_int|110
+multiline_comment|/* 119 */
+multiline_comment|/* 0x72 */
+id|KEY_INSERT
 comma
-l_int|102
+multiline_comment|/* 110 */
+multiline_comment|/* 0x73 */
+id|KEY_HOME
 comma
-l_int|104
+multiline_comment|/* 102 */
+multiline_comment|/* 0x74 */
+id|KEY_PAGEUP
 comma
-l_int|111
+multiline_comment|/* 104 */
+multiline_comment|/* 0x75 */
+id|KEY_DELETE
 comma
-l_int|62
+multiline_comment|/* 111 */
+multiline_comment|/* 0x76 */
+id|KEY_F4
 comma
-l_int|107
+multiline_comment|/*  62 */
+multiline_comment|/* 0x77 */
+id|KEY_END
 comma
-l_int|60
+multiline_comment|/* 107 */
+multiline_comment|/* 0x78 */
+id|KEY_F2
 comma
-l_int|109
+multiline_comment|/*  60 */
+multiline_comment|/* 0x79 */
+id|KEY_PAGEDOWN
 comma
-l_int|59
+multiline_comment|/* 109 */
+multiline_comment|/* 0x7a */
+id|KEY_F1
 comma
-l_int|54
+multiline_comment|/*  59 */
+multiline_comment|/* 0x7b */
+id|KEY_RIGHTSHIFT
 comma
-l_int|100
+multiline_comment|/*  54 */
+multiline_comment|/* 0x7c */
+id|KEY_RIGHTALT
 comma
-l_int|97
+multiline_comment|/* 100 */
+multiline_comment|/* 0x7d */
+id|KEY_RIGHTCTRL
 comma
-l_int|126
+multiline_comment|/*  97 */
+multiline_comment|/* 0x7e */
+id|KEY_RIGHTMETA
 comma
-l_int|116
+multiline_comment|/* 126 */
+multiline_comment|/* 0x7f */
+id|KEY_POWER
+comma
+multiline_comment|/* 116 */
 )brace
 suffix:semicolon
 DECL|struct|adbhid
@@ -2289,8 +2530,16 @@ id|req
 (brace
 r_int
 id|leds
+op_assign
+l_int|0
 comma
 id|device
+op_assign
+l_int|0
+comma
+id|pending
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -2352,6 +2601,10 @@ id|pending_led_start
 suffix:colon
 l_int|0
 suffix:semicolon
+id|pending
+op_assign
+id|leds_req_pending
+suffix:semicolon
 )brace
 r_else
 id|leds_req_pending
@@ -2370,7 +2623,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|leds_req_pending
+id|pending
 )paren
 id|adb_request
 c_func

@@ -911,16 +911,7 @@ r_int
 )paren
 id|ptr
 suffix:semicolon
-multiline_comment|/* We need to know how the allocation happened, so it can be correctly&n;&t; * freed.  This is done by seeing what region of memory the pointer is&n;&t; * in -&n;&t; * &t;physical memory - kmalloc/kfree&n;&t; *&t;kernel virtual memory - vmalloc/vfree&n;&t; * &t;anywhere else - malloc/free&n;&t; * If kmalloc is not yet possible, then the kernel memory regions&n;&t; * may not be set up yet, and the variables not initialized.  So,&n;&t; * free is called.&n;&t; */
-r_if
-c_cond
-(paren
-id|CAN_KMALLOC
-c_func
-(paren
-)paren
-)paren
-(brace
+multiline_comment|/* We need to know how the allocation happened, so it can be correctly&n;&t; * freed.  This is done by seeing what region of memory the pointer is&n;&t; * in -&n;&t; * &t;physical memory - kmalloc/kfree&n;&t; *&t;kernel virtual memory - vmalloc/vfree&n;&t; * &t;anywhere else - malloc/free&n;&t; * If kmalloc is not yet possible, then the kernel memory regions&n;&t; * may not be set up yet, and the variables not initialized.  So,&n;&t; * free is called.&n;&t; *&n;&t; * CAN_KMALLOC is checked because it would be bad to free a buffer&n;&t; * with kmalloc/vmalloc after they have been turned off during&n;&t; * shutdown.&n;&t; */
 r_if
 c_cond
 (paren
@@ -932,8 +923,17 @@ id|uml_physmem
 op_logical_and
 (paren
 id|addr
-op_le
+OL
 id|high_physmem
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|CAN_KMALLOC
+c_func
+(paren
 )paren
 )paren
 (brace
@@ -943,6 +943,7 @@ c_func
 id|ptr
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -956,8 +957,17 @@ id|start_vm
 op_logical_and
 (paren
 id|addr
-op_le
+OL
 id|end_vm
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|CAN_KMALLOC
+c_func
+(paren
 )paren
 )paren
 (brace
@@ -968,13 +978,6 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-r_else
-id|__real_free
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
 )brace
 r_else
 id|__real_free

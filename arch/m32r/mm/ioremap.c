@@ -494,6 +494,7 @@ DECL|macro|IS_LOW512
 mdefine_line|#define IS_LOW512(addr) (!((unsigned long)(addr) &amp; ~0x1fffffffUL))
 DECL|function|__ioremap
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -512,6 +513,7 @@ id|flags
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -710,6 +712,11 @@ id|phys_addr
 suffix:semicolon
 id|addr
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|area-&gt;addr
 suffix:semicolon
 r_if
@@ -735,6 +742,11 @@ id|flags
 id|vunmap
 c_func
 (paren
+(paren
+r_void
+id|__force
+op_star
+)paren
 id|addr
 )paren
 suffix:semicolon
@@ -745,6 +757,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -752,6 +765,7 @@ id|offset
 op_plus
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|addr

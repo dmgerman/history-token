@@ -56,7 +56,7 @@ suffix:semicolon
 multiline_comment|/* Pointer to the ntfs volume of this inode. */
 multiline_comment|/*&n;&t; * If NInoAttr() is true, the below fields describe the attribute which&n;&t; * this fake inode belongs to. The actual inode of this attribute is&n;&t; * pointed to by base_ntfs_ino and nr_extents is always set to -1 (see&n;&t; * below). For real inodes, we also set the type (AT_DATA for files and&n;&t; * AT_INDEX_ALLOCATION for directories), with the name = NULL and&n;&t; * name_len = 0 for files and name = I30 (global constant) and&n;&t; * name_len = 4 for directories.&n;&t; */
 DECL|member|type
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 multiline_comment|/* Attribute type of this fake inode. */
@@ -135,7 +135,7 @@ id|vcn_size
 suffix:semicolon
 multiline_comment|/* Size of a vcn in this&n;&t;&t;&t;&t;&t;&t;   index. */
 DECL|member|collation_rule
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|collation_rule
 suffix:semicolon
 multiline_comment|/* The collation rule&n;&t;&t;&t;&t;&t;&t;   for the index. */
@@ -425,7 +425,7 @@ id|u32
 id|name_len
 suffix:semicolon
 DECL|member|type
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 DECL|typedef|ntfs_attr
@@ -492,7 +492,7 @@ id|inode
 op_star
 id|base_vi
 comma
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 id|ntfschar

@@ -575,6 +575,15 @@ op_star
 id|vsg
 suffix:semicolon
 r_int
+id|topfield
+op_assign
+(paren
+l_int|0
+op_eq
+id|yoffset
+)paren
+suffix:semicolon
+r_int
 id|rc
 suffix:semicolon
 multiline_comment|/* estimate risc mem: worst case is one write per page border +&n;&t;   one write per scan line (5 dwords)&n;&t;   plus sync + jump (2 dwords) */
@@ -721,8 +730,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|yoffset
+id|topfield
 )paren
 id|chroma
 op_assign
@@ -753,8 +761,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|yoffset
+id|topfield
 )paren
 id|chroma
 op_assign

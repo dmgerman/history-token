@@ -4898,25 +4898,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* ------------------------------------------------------------------------ */
-DECL|variable|udp_sock_offset
-r_struct
-id|ipv6_sk_offset
-id|udp_sock_offset
-op_assign
-(brace
-dot
-id|offset
-op_assign
-m_offsetof
-(paren
-r_struct
-id|udp6_sock
-comma
-id|inet6
-)paren
-comma
-)brace
-suffix:semicolon
 DECL|variable|udpv6_prot
 r_struct
 id|proto
@@ -5001,12 +4982,6 @@ r_sizeof
 r_struct
 id|udp6_sock
 )paren
-comma
-dot
-id|af_specific
-op_assign
-op_amp
-id|udp_sock_offset
 comma
 )brace
 suffix:semicolon

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/pxa27x.c&n; *&n; *  Author:&t
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;

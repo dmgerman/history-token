@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/bitfield.h&gt;
 macro_line|#include &lt;asm/arch/pxafb.h&gt;
 multiline_comment|/*&n; * Complain if VAR is out of range.&n; */

@@ -304,6 +304,12 @@ r_struct
 id|semaphore
 id|readsem
 suffix:semicolon
+DECL|member|peer
+r_struct
+id|sock
+op_star
+id|peer
+suffix:semicolon
 DECL|member|other
 r_struct
 id|sock

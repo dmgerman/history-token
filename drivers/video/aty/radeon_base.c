@@ -8216,6 +8216,8 @@ id|u32
 id|save_crtc_gen_cntl
 comma
 id|save_crtc2_gen_cntl
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|save_crtc_ext_cntl

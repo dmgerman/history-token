@@ -15691,7 +15691,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|SCHED_DOMAIN_DEBUG
-mdefine_line|#define SCHED_DOMAIN_DEBUG
+macro_line|#undef SCHED_DOMAIN_DEBUG
 macro_line|#ifdef SCHED_DOMAIN_DEBUG
 DECL|function|sched_domain_debug
 r_void

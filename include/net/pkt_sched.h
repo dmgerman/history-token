@@ -506,6 +506,10 @@ DECL|member|handle
 id|u32
 id|handle
 suffix:semicolon
+DECL|member|parent
+id|u32
+id|parent
+suffix:semicolon
 DECL|member|refcnt
 id|atomic_t
 id|refcnt

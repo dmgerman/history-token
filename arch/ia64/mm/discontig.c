@@ -2478,8 +2478,6 @@ id|MAX_NR_ZONES
 suffix:semicolon
 r_int
 r_int
-id|max_gap
-comma
 id|pfn_offset
 op_assign
 l_int|0
@@ -2500,19 +2498,6 @@ id|MAX_DMA_ADDRESS
 )paren
 op_rshift
 id|PAGE_SHIFT
-suffix:semicolon
-id|max_gap
-op_assign
-l_int|0
-suffix:semicolon
-id|efi_memmap_walk
-c_func
-(paren
-id|find_largest_hole
-comma
-op_amp
-id|max_gap
-)paren
 suffix:semicolon
 multiline_comment|/* so min() will work in count_node_pages */
 r_for

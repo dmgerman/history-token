@@ -296,7 +296,7 @@ id|ntfs_volume
 op_star
 id|vol
 comma
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|cr
 comma
 r_const
@@ -318,6 +318,9 @@ r_int
 id|data2_len
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -337,7 +340,7 @@ op_ne
 id|COLLATION_NTOFS_ULONG
 )paren
 suffix:semicolon
-id|cr
+id|i
 op_assign
 id|le32_to_cpu
 c_func
@@ -348,7 +351,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|cr
+id|i
 OL
 l_int|0
 )paren
@@ -356,14 +359,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cr
+id|i
 op_le
 l_int|0x02
 )paren
 r_return
 id|ntfs_do_collate0x0
 (braket
-id|cr
+id|i
 )braket
 (paren
 id|vol
@@ -380,12 +383,12 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|cr
+id|i
 OL
 l_int|0x10
 )paren
 suffix:semicolon
-id|cr
+id|i
 op_sub_assign
 l_int|0x10
 suffix:semicolon
@@ -395,7 +398,7 @@ c_cond
 id|likely
 c_func
 (paren
-id|cr
+id|i
 op_le
 l_int|3
 )paren
@@ -403,7 +406,7 @@ l_int|3
 r_return
 id|ntfs_do_collate0x1
 (braket
-id|cr
+id|i
 )braket
 (paren
 id|vol

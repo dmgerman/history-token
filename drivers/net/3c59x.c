@@ -3750,6 +3750,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_static
 r_int
 id|vortex_ioctl
@@ -3769,6 +3770,7 @@ r_int
 id|cmd
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|vortex_tx_timeout
@@ -6743,10 +6745,12 @@ id|dev-&gt;get_stats
 op_assign
 id|vortex_get_stats
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 id|dev-&gt;do_ioctl
 op_assign
 id|vortex_ioctl
 suffix:semicolon
+macro_line|#endif
 id|dev-&gt;ethtool_ops
 op_assign
 op_amp
@@ -15067,6 +15071,7 @@ id|vortex_get_drvinfo
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 DECL|function|vortex_do_ioctl
 r_static
 r_int
@@ -15359,6 +15364,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Pre-Cyclone chips have no documented multicast filter, so the only&n;   multicast setting is to receive all multicast frames.  At least&n;   the chip has a very clean way to set the mode, unlike many others. */
 DECL|function|set_rx_mode
 r_static

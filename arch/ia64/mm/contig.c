@@ -975,10 +975,6 @@ comma
 id|zholes_size
 )paren
 suffix:semicolon
-id|mem_map
-op_assign
-id|contig_page_data.node_mem_map
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1022,6 +1018,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|mem_map
+op_assign
 id|contig_page_data.node_mem_map
 op_assign
 id|vmem_map
@@ -1040,10 +1038,6 @@ l_int|0
 comma
 id|zholes_size
 )paren
-suffix:semicolon
-id|mem_map
-op_assign
-id|contig_page_data.node_mem_map
 suffix:semicolon
 id|printk
 c_func

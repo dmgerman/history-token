@@ -14,8 +14,6 @@ macro_line|#include &quot;choose-mode.h&quot;
 r_struct
 id|mm_struct
 suffix:semicolon
-DECL|macro|current_text_addr
-mdefine_line|#define current_text_addr() ((void *) 0)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()   barrier()
 DECL|struct|thread_struct

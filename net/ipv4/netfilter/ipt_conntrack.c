@@ -101,13 +101,10 @@ mdefine_line|#define FWINV(bool,invflg) ((bool) ^ !!(sinfo-&gt;invflags &amp; in
 r_if
 c_cond
 (paren
-id|skb-&gt;nfct
+id|ct
 op_eq
 op_amp
-id|ip_conntrack_untracked.infos
-(braket
-id|IP_CT_NEW
-)braket
+id|ip_conntrack_untracked
 )paren
 id|statebit
 op_assign

@@ -1,8 +1,6 @@
 macro_line|#ifndef _ASM_M32R_SOCKET_H
 DECL|macro|_ASM_M32R_SOCKET_H
 mdefine_line|#define _ASM_M32R_SOCKET_H
-multiline_comment|/* $Id$ */
-multiline_comment|/* orig : i386 2.4.18 */
 macro_line|#include &lt;asm/sockios.h&gt;
 multiline_comment|/* For setsockoptions(2) */
 DECL|macro|SOL_SOCKET
@@ -72,27 +70,5 @@ DECL|macro|SO_ACCEPTCONN
 mdefine_line|#define SO_ACCEPTCONN&t;&t;30
 DECL|macro|SO_PEERSEC
 mdefine_line|#define SO_PEERSEC&t;&t;31
-multiline_comment|/* Nasty libc5 fixup - bletch */
-macro_line|#if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ &lt; 2)
-multiline_comment|/* Socket types. */
-DECL|macro|SOCK_STREAM
-mdefine_line|#define SOCK_STREAM&t;1&t;&t;/* stream (connection) socket&t;*/
-DECL|macro|SOCK_DGRAM
-mdefine_line|#define SOCK_DGRAM&t;2&t;&t;/* datagram (conn.less) socket&t;*/
-DECL|macro|SOCK_RAW
-mdefine_line|#define SOCK_RAW&t;3&t;&t;/* raw socket&t;&t;&t;*/
-DECL|macro|SOCK_RDM
-mdefine_line|#define SOCK_RDM&t;4&t;&t;/* reliably-delivered message&t;*/
-DECL|macro|SOCK_SEQPACKET
-mdefine_line|#define SOCK_SEQPACKET&t;5&t;&t;/* sequential packet socket&t;*/
-DECL|macro|SOCK_PACKET
-mdefine_line|#define SOCK_PACKET&t;10&t;&t;/* linux specific way of&t;*/
-multiline_comment|/* getting packets at the dev&t;*/
-multiline_comment|/* level.  For writing rarp and&t;*/
-multiline_comment|/* other similar things on the&t;*/
-multiline_comment|/* user level.&t;&t;&t;*/
-DECL|macro|SOCK_MAX
-mdefine_line|#define&t;SOCK_MAX&t;(SOCK_PACKET+1)
-macro_line|#endif
 macro_line|#endif /* _ASM_M32R_SOCKET_H */
 eof

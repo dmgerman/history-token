@@ -52,7 +52,6 @@ macro_line|# define __REG(x)&t;io_p2v(x)
 DECL|macro|__PREG
 macro_line|# define __PREG(x)&t;io_v2p(x)
 macro_line|#endif
-macro_line|#include &quot;pxa-regs.h&quot;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Handy routine to set GPIO alternate functions&n; */
 r_extern

@@ -23,7 +23,7 @@ op_star
 id|qce
 suffix:semicolon
 r_const
-id|u32
+id|le32
 id|qid
 op_assign
 id|QUOTA_DEFAULTS_ID

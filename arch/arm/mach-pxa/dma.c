@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 DECL|struct|dma_channel
 r_static
 r_struct

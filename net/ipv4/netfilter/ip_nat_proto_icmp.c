@@ -417,12 +417,6 @@ id|ip_nat_protocol
 id|ip_nat_protocol_icmp
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
 l_string|&quot;ICMP&quot;
 comma
 id|IPPROTO_ICMP

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * kernel/power/main.c - PM subsystem core functionality.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * &n; * This file is release under the GPLv2&n; *&n; */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -52,19 +50,6 @@ suffix:semicolon
 id|pm_ops
 op_assign
 id|ops
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ops-&gt;pm_disk_mode
-op_logical_and
-id|ops-&gt;pm_disk_mode
-OL
-id|PM_DISK_MAX
-)paren
-id|pm_disk_mode
-op_assign
-id|ops-&gt;pm_disk_mode
 suffix:semicolon
 id|up
 c_func
@@ -470,6 +455,23 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is main interface to the outside world. It needs to be&n; * called from process context.&n; */
+DECL|function|software_suspend
+r_int
+id|software_suspend
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|enter_state
+c_func
+(paren
+id|PM_SUSPEND_DISK
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;pm_suspend - Externally visible function for suspending system.&n; *&t;@state:&t;&t;Enumarted value of state to enter.&n; *&n; *&t;Determine whether or not value is within range, get state &n; *&t;structure, and enter (above).&n; */
 DECL|function|pm_suspend
 r_int
@@ -670,8 +672,9 @@ id|pm_states
 id|state
 )braket
 suffix:semicolon
-op_star
-id|s
+id|state
+OL
+id|PM_SUSPEND_MAX
 suffix:semicolon
 id|s
 op_increment
@@ -683,6 +686,9 @@ op_increment
 r_if
 c_cond
 (paren
+op_star
+id|s
+op_logical_and
 op_logical_neg
 id|strncmp
 c_func

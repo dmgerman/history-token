@@ -1715,6 +1715,10 @@ op_logical_neg
 id|ntfs_is_empty_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren
@@ -1738,6 +1742,10 @@ c_cond
 id|ntfs_is_rcrd_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren
@@ -1750,6 +1758,10 @@ c_cond
 id|ntfs_is_chkd_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren
@@ -1776,6 +1788,10 @@ op_logical_neg
 id|ntfs_is_rstr_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren

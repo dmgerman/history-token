@@ -1,9 +1,9 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-ebsa110/uncompress.h&n; *&n; *  Copyright (C) 1996,1997,1998 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 multiline_comment|/*&n; * This does not append a newline&n; */
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const
