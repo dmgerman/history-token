@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) 2002 Ralf Baechle DO1GRB (ralf@gnu.org)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -480,6 +480,12 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|bh_lock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -583,6 +589,12 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|bh_unlock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 )brace
 DECL|function|rose_timer_expiry
 r_static
@@ -612,6 +624,12 @@ op_star
 id|rose
 op_assign
 id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|bh_lock_sock
 c_func
 (paren
 id|sk
@@ -701,6 +719,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|bh_unlock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 )brace
 DECL|function|rose_idletimer_expiry
 r_static
@@ -724,6 +748,12 @@ id|sock
 op_star
 )paren
 id|param
+suffix:semicolon
+id|bh_lock_sock
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|rose_clear_queues
 c_func
@@ -784,6 +814,12 @@ suffix:semicolon
 id|sk-&gt;dead
 op_assign
 l_int|1
+suffix:semicolon
+id|bh_unlock_sock
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 )brace
 eof
