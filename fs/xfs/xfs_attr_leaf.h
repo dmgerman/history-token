@@ -510,16 +510,6 @@ id|context
 )paren
 suffix:semicolon
 r_int
-id|xfs_attr_shortform_replace
-c_func
-(paren
-r_struct
-id|xfs_da_args
-op_star
-id|args
-)paren
-suffix:semicolon
-r_int
 id|xfs_attr_shortform_allfit
 c_func
 (paren

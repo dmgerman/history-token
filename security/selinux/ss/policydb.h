@@ -650,17 +650,6 @@ id|p
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|constraint_expr_destroy
-c_func
-(paren
-r_struct
-id|constraint_expr
-op_star
-id|expr
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|policydb_destroy
 c_func

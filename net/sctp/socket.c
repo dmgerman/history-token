@@ -281,22 +281,6 @@ id|kmem_cache_t
 op_star
 id|sctp_bucket_cachep
 suffix:semicolon
-r_extern
-r_int
-id|sctp_assoc_valid
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_struct
-id|sctp_association
-op_star
-id|asoc
-)paren
-suffix:semicolon
 multiline_comment|/* Get the sndbuf space available at the time on the association.  */
 DECL|function|sctp_wspace
 r_static

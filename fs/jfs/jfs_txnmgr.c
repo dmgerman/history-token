@@ -354,16 +354,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|lmSync
-c_func
-(paren
-r_struct
-id|jfs_log
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|jfs_commit_inode
 c_func
