@@ -431,15 +431,16 @@ id|mp-&gt;tlb_frozen
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Nobody should call us with start below VM hole and end above.&n;&t; * See if it is really true.&n;&t; */
+multiline_comment|/* If start is greater than end, that is a real problem.  */
 id|BUG_ON
 c_func
 (paren
-id|s
+id|start
 OG
-id|e
+id|end
 )paren
 suffix:semicolon
+multiline_comment|/* However, straddling the VA space hole is quite normal. */
 id|s
 op_and_assign
 id|PMD_MASK
@@ -534,6 +535,30 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* If the request straddles the VA space hole, we&n;&t; * need to swap start and end.  The reason this&n;&t; * occurs is that &quot;vpte_base&quot; is the center of&n;&t; * the linear page table mapping area.  Thus,&n;&t; * high addresses with the sign bit set map to&n;&t; * addresses below vpte_base and non-sign bit&n;&t; * addresses map to addresses above vpte_base.&n;&t; */
+r_if
+c_cond
+(paren
+id|end
+OL
+id|start
+)paren
+(brace
+r_int
+r_int
+id|tmp
+op_assign
+id|start
+suffix:semicolon
+id|start
+op_assign
+id|end
+suffix:semicolon
+id|end
+op_assign
+id|tmp
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
