@@ -1022,19 +1022,11 @@ comma
 id|asoc
 )paren
 suffix:semicolon
-multiline_comment|/* Cache a route for the transport. */
-id|sctp_transport_route
+multiline_comment|/* Initialize the pmtu of the transport. */
+id|sctp_transport_pmtu
 c_func
 (paren
 id|peer
-comma
-l_int|NULL
-comma
-id|sctp_sk
-c_func
-(paren
-id|asoc-&gt;base.sk
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* If this is the first transport addr on this association,&n;&t; * initialize the association PMTU to the peer&squot;s PMTU.&n;&t; * If not and the current association PMTU is higher than the new&n;&t; * peer&squot;s PMTU, reset the association PMTU to the new peer&squot;s PMTU.&n;&t; */

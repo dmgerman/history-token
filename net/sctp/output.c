@@ -986,34 +986,6 @@ c_func
 id|crc32
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME:  Delete the rest of this switch statement once phase 2&n;&t; * of address selection (ipv6 support) drops in.&n;&t; */
-r_switch
-c_cond
-(paren
-id|transport-&gt;ipaddr.sa.sa_family
-)paren
-(brace
-r_case
-id|AF_INET6
-suffix:colon
-id|SCTP_V6
-c_func
-(paren
-id|inet6_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|daddr
-op_assign
-id|transport-&gt;ipaddr.v6.sin6_addr
-suffix:semicolon
-)paren
-r_break
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* IP layer ECN support&n;&t; * From RFC 2481&n;&t; *  &quot;The ECN-Capable Transport (ECT) bit would be set by the&n;&t; *   data sender to indicate that the end-points of the&n;&t; *   transport protocol are ECN-capable.&quot;&n;&t; *&n;&t; * If ECN capable &amp;&amp; negotiated &amp;&amp; it makes sense for&n;&t; * this packet to support it (e.g. post ECN negotiation)&n;&t; * then lets set the ECT bit&n;&t; *&n;&t; * FIXME:  Need to do something else for IPv6&n;&t; */
 r_if
 c_cond
@@ -1131,13 +1103,18 @@ id|dst
 op_assign
 id|transport-&gt;dst
 suffix:semicolon
+multiline_comment|/* The &squot;obsolete&squot; field of dst is set to 2 when a dst is freed. */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|dst
 op_logical_or
+(paren
 id|dst-&gt;obsolete
+OG
+l_int|1
+)paren
 )paren
 (brace
 id|sctp_transport_route
@@ -1188,10 +1165,12 @@ id|nskb-&gt;len
 suffix:semicolon
 (paren
 op_star
-id|transport-&gt;af_specific-&gt;queue_xmit
+id|transport-&gt;af_specific-&gt;sctp_xmit
 )paren
 (paren
 id|nskb
+comma
+id|transport
 comma
 id|packet-&gt;ipfragok
 )paren
@@ -1219,11 +1198,8 @@ c_func
 id|IpOutNoRoutes
 )paren
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EHOSTUNREACH
-suffix:semicolon
+multiline_comment|/* FIXME: Returning the &squot;err&squot; will effect all the associations&n;&t; * associated with a socket, although only one of the paths of the&n;&t; * association is unreachable.&n;&t; * The real failure of a transport or association can be passed on&n;&t; * to the user via notifications. So setting this error may not be&n;&t; * required.&n;&t; */
+multiline_comment|/* err = -EHOSTUNREACH; */
 r_goto
 id|out
 suffix:semicolon
