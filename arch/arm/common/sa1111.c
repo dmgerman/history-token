@@ -2325,7 +2325,6 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;sa1111_probe - probe for a single SA1111 chip.&n; *&t;@phys_addr: physical address of device.&n; *&n; *&t;Probe for a SA1111 chip.  This must be called&n; *&t;before any other SA1111-specific code.&n; *&n; *&t;Returns:&n; *&t;%-ENODEV&t;device not found.&n; *&t;%-EBUSY&t;&t;physical address already marked in-use.&n; *&t;%0&t;&t;successful.&n; */
 r_static
 r_int
-id|__init
 DECL|function|__sa1111_probe
 id|__sa1111_probe
 c_func
