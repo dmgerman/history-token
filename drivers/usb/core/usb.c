@@ -259,6 +259,9 @@ c_cond
 (paren
 op_logical_neg
 id|driver
+op_logical_or
+op_logical_neg
+id|driver-&gt;disconnect
 )paren
 r_return
 suffix:semicolon
