@@ -2476,12 +2476,9 @@ suffix:colon
 r_case
 id|NF4DIR
 suffix:colon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
-r_goto
-id|xdr_error
+r_break
 suffix:semicolon
 )brace
 id|READ_BUF
