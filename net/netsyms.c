@@ -3370,7 +3370,7 @@ id|register_gifconf
 )paren
 suffix:semicolon
 DECL|variable|softnet_data
-id|EXPORT_SYMBOL
+id|EXPORT_PER_CPU_SYMBOL
 c_func
 (paren
 id|softnet_data
