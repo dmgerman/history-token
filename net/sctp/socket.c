@@ -1900,7 +1900,7 @@ op_star
 id|msg
 comma
 r_int
-id|size
+id|msg_len
 )paren
 (brace
 id|sctp_opt_t
@@ -1976,9 +1976,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_int
-id|msg_len
-suffix:semicolon
 id|sctp_scope_t
 id|scope
 suffix:semicolon
@@ -1993,14 +1990,13 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_sendmsg(sk: %p, msg: %p, &quot;
-l_string|&quot;size: %d)&bslash;n&quot;
+l_string|&quot;sctp_sendmsg(sk: %p, msg: %p, msg_len: %d)&bslash;n&quot;
 comma
 id|sk
 comma
 id|msg
 comma
-id|size
+id|msg_len
 )paren
 suffix:semicolon
 id|err
@@ -2070,6 +2066,11 @@ op_logical_and
 id|msg-&gt;msg_name
 )paren
 (brace
+r_int
+id|msg_namelen
+op_assign
+id|msg-&gt;msg_namelen
+suffix:semicolon
 id|err
 op_assign
 id|sctp_verify_addr
@@ -2084,7 +2085,7 @@ op_star
 )paren
 id|msg-&gt;msg_name
 comma
-id|msg-&gt;msg_namelen
+id|msg_namelen
 )paren
 suffix:semicolon
 r_if
@@ -2095,6 +2096,23 @@ id|err
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|msg_namelen
+OG
+r_sizeof
+(paren
+id|to
+)paren
+)paren
+id|msg_namelen
+op_assign
+r_sizeof
+(paren
+id|to
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -2103,7 +2121,7 @@ id|to
 comma
 id|msg-&gt;msg_name
 comma
-id|msg-&gt;msg_namelen
+id|msg_namelen
 )paren
 suffix:semicolon
 id|SCTP_DEBUG_PRINTK
@@ -2130,16 +2148,6 @@ op_assign
 id|msg-&gt;msg_name
 suffix:semicolon
 )brace
-id|msg_len
-op_assign
-id|get_user_iov_size
-c_func
-(paren
-id|msg-&gt;msg_iov
-comma
-id|msg-&gt;msg_iovlen
-)paren
-suffix:semicolon
 id|sinfo
 op_assign
 id|cmsgs.info
