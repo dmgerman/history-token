@@ -1102,6 +1102,7 @@ op_member_access_from_pointer
 id|nh.iph-&gt;daddr
 op_ne
 id|daddr
+macro_line|#ifdef CONFIG_IP_ROUTE_FWMARK
 op_logical_or
 (paren
 op_star
@@ -1111,6 +1112,7 @@ op_member_access_from_pointer
 id|nfmark
 op_ne
 id|nfmark
+macro_line|#endif
 op_logical_or
 (paren
 op_star
