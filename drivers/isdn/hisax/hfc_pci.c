@@ -8294,14 +8294,6 @@ id|cs-&gt;writeisacfifo
 op_assign
 l_int|NULL
 suffix:semicolon
-id|cs-&gt;BC_Read_Reg
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;BC_Write_Reg
-op_assign
-l_int|NULL
-suffix:semicolon
 id|cs-&gt;irq_func
 op_assign
 op_amp
