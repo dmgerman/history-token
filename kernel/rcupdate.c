@@ -166,7 +166,7 @@ id|maxbatch
 op_assign
 l_int|10
 suffix:semicolon
-multiline_comment|/**&n; * call_rcu - Queue an RCU update request.&n; * @head: structure to be used for queueing the RCU updates.&n; * @func: actual update function to be invoked after the grace period&n; *&n; * The update function will be invoked as soon as all CPUs have performed &n; * a context switch or been seen in the idle loop or in a user process. &n; * The read-side of critical section that use call_rcu() for updation must &n; * be protected by rcu_read_lock()/rcu_read_unlock().&n; */
+multiline_comment|/**&n; * call_rcu - Queue an RCU callback for invocation after a grace period.&n; * @head: structure to be used for queueing the RCU updates.&n; * @func: actual update function to be invoked after the grace period&n; *&n; * The update function will be invoked some time after a full grace&n; * period elapses, in other words after all currently executing RCU&n; * read-side critical sections have completed.  RCU read-side critical&n; * sections are delimited by rcu_read_lock() and rcu_read_unlock(),&n; * and may be nested.&n; */
 DECL|function|call_rcu
 r_void
 id|fastcall
@@ -240,7 +240,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * call_rcu_bh - Queue an RCU update request for which softirq handler&n; * completion is a quiescent state.&n; * @head: structure to be used for queueing the RCU updates.&n; * @func: actual update function to be invoked after the grace period&n; *&n; * The update function will be invoked as soon as all CPUs have performed&n; * a context switch or been seen in the idle loop or in a user process&n; * or has exited a softirq handler that it may have been executing.&n; * The read-side of critical section that use call_rcu_bh() for updation must&n; * be protected by rcu_read_lock_bh()/rcu_read_unlock_bh() if it is&n; * in process context.&n; */
+multiline_comment|/**&n; * call_rcu_bh - Queue an RCU for invocation after a quicker grace period.&n; * @head: structure to be used for queueing the RCU updates.&n; * @func: actual update function to be invoked after the grace period&n; *&n; * The update function will be invoked some time after a full grace&n; * period elapses, in other words after all currently executing RCU&n; * read-side critical sections have completed. call_rcu_bh() assumes&n; * that the read-side critical sections end on completion of a softirq&n; * handler. This means that read-side critical sections in process&n; * context must not be interrupted by softirqs. This interface is to be&n; * used when most of the read-side critical sections are in softirq context.&n; * RCU read-side critical sections are delimited by rcu_read_lock() and&n; * rcu_read_unlock(), * if in interrupt context or rcu_read_lock_bh()&n; * and rcu_read_unlock_bh(), if in process context. These may be nested.&n; */
 DECL|function|call_rcu_bh
 r_void
 id|fastcall
@@ -1538,7 +1538,7 @@ id|rcu-&gt;completion
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * synchronize-kernel - wait until all the CPUs have gone&n; * through a &quot;quiescent&quot; state. It may sleep.&n; */
+multiline_comment|/**&n; * synchronize_kernel - wait until a grace period has elapsed.&n; *&n; * Control will return to the caller some time after a full grace&n; * period has elapsed, in other words after all currently executing RCU&n; * read-side critical sections have completed.  RCU read-side critical&n; * sections are delimited by rcu_read_lock() and rcu_read_unlock(),&n; * and may be nested.&n; */
 DECL|function|synchronize_kernel
 r_void
 id|synchronize_kernel

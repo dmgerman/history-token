@@ -405,12 +405,17 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * rcu_read_lock - mark the beginning of an RCU read-side critical section.&n; *&n; * When synchronize_kernel() is invoked on one CPU while other CPUs&n; * are within RCU read-side critical sections, then the&n; * synchronize_kernel() is guaranteed to block until after all the other&n; * CPUs exit their critical sections.  Similarly, if call_rcu() is invoked&n; * on one CPU while other CPUs are within RCU read-side critical&n; * sections, invocation of the corresponding RCU callback is deferred&n; * until after the all the other CPUs exit their critical sections.&n; *&n; * Note, however, that RCU callbacks are permitted to run concurrently&n; * with RCU read-side critical sections.  One way that this can happen&n; * is via the following sequence of events: (1) CPU 0 enters an RCU&n; * read-side critical section, (2) CPU 1 invokes call_rcu() to register&n; * an RCU callback, (3) CPU 0 exits the RCU read-side critical section,&n; * (4) CPU 2 enters a RCU read-side critical section, (5) the RCU&n; * callback is invoked.  This is legal, because the RCU read-side critical&n; * section that was running concurrently with the call_rcu() (and which&n; * therefore might be referencing something that the corresponding RCU&n; * callback would free up) has completed before the corresponding&n; * RCU callback is invoked.&n; *&n; * RCU read-side critical sections may be nested.  Any deferred actions&n; * will be deferred until the outermost RCU read-side critical section&n; * completes.&n; *&n; * It is illegal to block while in an RCU read-side critical section.&n; */
 DECL|macro|rcu_read_lock
 mdefine_line|#define rcu_read_lock()&t;&t;preempt_disable()
+multiline_comment|/**&n; * rcu_read_unlock - marks the end of an RCU read-side critical section.&n; *&n; * See rcu_read_lock() for more information.&n; */
 DECL|macro|rcu_read_unlock
 mdefine_line|#define rcu_read_unlock()&t;preempt_enable()
+multiline_comment|/*&n; * So where is rcu_write_lock()?  It does not exist, as there is no&n; * way for writers to lock out RCU readers.  This is a feature, not&n; * a bug -- this property is what provides RCU&squot;s performance benefits.&n; * Of course, writers must coordinate with each other.  The normal&n; * spinlock primitives work well for this, but any other technique may be&n; * used as well.  RCU does not care how the writers keep out of each&n; * others&squot; way, as long as they do so.&n; */
+multiline_comment|/**&n; * rcu_read_lock_bh - mark the beginning of a softirq-only RCU critical section&n; *&n; * This is equivalent of rcu_read_lock(), but to be used when updates&n; * are being done using call_rcu_bh(). Since call_rcu_bh() callbacks&n; * consider completion of a softirq handler to be a quiescent state,&n; * a process in RCU read-side critical section must be protected by&n; * disabling softirqs. Read-side critical sections in interrupt context&n; * can use just rcu_read_lock().&n; *&n; */
 DECL|macro|rcu_read_lock_bh
 mdefine_line|#define rcu_read_lock_bh()&t;local_bh_disable()
+multiline_comment|/*&n; * rcu_read_unlock_bh - marks the end of a softirq-only RCU critical section&n; *&n; * See rcu_read_lock_bh() for more information.&n; */
 DECL|macro|rcu_read_unlock_bh
 mdefine_line|#define rcu_read_unlock_bh()&t;local_bh_enable()
 r_extern
