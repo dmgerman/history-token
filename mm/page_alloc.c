@@ -2271,6 +2271,9 @@ r_return
 id|page
 suffix:semicolon
 )brace
+r_goto
+id|nopage
+suffix:semicolon
 )brace
 multiline_comment|/* Atomic allocations - we can&squot;t balance anything */
 r_if
