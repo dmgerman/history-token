@@ -2145,6 +2145,13 @@ op_amp
 id|regs-&gt;CFGB
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *&t;Init CAM filter&n;&t;&t; */
+id|velocity_init_cam_filter
+c_func
+(paren
+id|vptr
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Set packet filter: Receive directed and broadcast address&n;&t;&t; */
 id|velocity_set_multi
 c_func
@@ -2255,12 +2262,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|velocity_init_cam_filter
-c_func
-(paren
-id|vptr
-)paren
-suffix:semicolon
 id|init_flow_control_register
 c_func
 (paren
@@ -2305,12 +2306,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|vptr-&gt;dev
-)paren
-suffix:semicolon
-id|mac_clear_isr
-c_func
-(paren
-id|regs
 )paren
 suffix:semicolon
 id|mii_init
@@ -2673,10 +2668,6 @@ suffix:semicolon
 id|vptr-&gt;dev
 op_assign
 id|dev
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|vptr
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
