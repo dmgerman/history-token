@@ -135,7 +135,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|init_huw_cs3
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|init_huw_cs3

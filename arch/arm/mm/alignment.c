@@ -1912,7 +1912,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|alignment_init
-id|__initcall
+id|fs_initcall
 c_func
 (paren
 id|alignment_init

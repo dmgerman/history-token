@@ -255,7 +255,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|assabet_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|assabet_init
