@@ -40,12 +40,9 @@ op_eq
 l_int|NULL
 op_logical_or
 (paren
-(paren
-id|u32
-)paren
 op_star
 id|dev-&gt;dma_mask
-op_ne
+OL
 l_int|0xffffffff
 )paren
 )paren
