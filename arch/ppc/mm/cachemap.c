@@ -439,14 +439,10 @@ id|start
 suffix:semicolon
 id|start
 op_assign
-(paren
-r_int
-r_int
-)paren
+id|page_address
+c_func
 (paren
 id|page
-op_member_access_from_pointer
-r_virtual
 )paren
 op_plus
 id|offset
