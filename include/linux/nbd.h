@@ -49,10 +49,6 @@ DECL|struct|nbd_device
 r_struct
 id|nbd_device
 (brace
-DECL|member|refcnt
-r_int
-id|refcnt
-suffix:semicolon
 DECL|member|flags
 r_int
 id|flags
