@@ -3000,11 +3000,11 @@ suffix:semicolon
 multiline_comment|/* FIXME: find out whether or not this is supposed to be c*time. */
 id|info.si_utime
 op_assign
-id|tsk-&gt;times.tms_utime
+id|tsk-&gt;utime
 suffix:semicolon
 id|info.si_stime
 op_assign
-id|tsk-&gt;times.tms_stime
+id|tsk-&gt;stime
 suffix:semicolon
 id|status
 op_assign
