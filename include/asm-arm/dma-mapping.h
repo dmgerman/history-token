@@ -145,7 +145,7 @@ macro_line|#else
 DECL|macro|dmadev_is_sa1111
 mdefine_line|#define dmadev_is_sa1111(dev)&t;(0)
 macro_line|#endif
-multiline_comment|/*&n; * Return whether the given device DMA address mask can be supported&n; * properly.  For example, if your device can only drive the low 24-bits&n; * during PCI bus mastering, then you would pass 0x00ffffff as the mask&n; * to this function.&n; */
+multiline_comment|/*&n; * Return whether the given device DMA address mask can be supported&n; * properly.  For example, if your device can only drive the low 24-bits&n; * during bus mastering, then you would pass 0x00ffffff as the mask&n; * to this function.&n; */
 DECL|function|dma_supported
 r_static
 r_inline
@@ -163,7 +163,12 @@ id|mask
 )paren
 (brace
 r_return
-l_int|1
+id|dev-&gt;dma_mask
+op_logical_and
+op_star
+id|dev-&gt;dma_mask
+op_ne
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|dma_set_mask
@@ -240,11 +245,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dma_alloc_coherent - allocate consistent memory for DMA&n; * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices&n; * @size: required memory size&n; * @handle: bus-specific DMA address&n; *&n; * Allocate some uncached, unbuffered memory for a device for&n; * performing DMA.  This function allocates pages, and will&n; * return the CPU-viewed address, and sets @handle to be the&n; * device-viewed address.&n; */
-r_static
-r_inline
+r_extern
 r_void
 op_star
-DECL|function|dma_alloc_coherent
 id|dma_alloc_coherent
 c_func
 (paren
@@ -263,43 +266,7 @@ comma
 r_int
 id|gfp
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-op_logical_or
-id|dmadev_is_sa1111
-c_func
-(paren
-id|dev
-)paren
-op_logical_or
-op_star
-id|dev-&gt;dma_mask
-op_ne
-l_int|0xffffffff
-)paren
-id|gfp
-op_or_assign
-id|GFP_DMA
 suffix:semicolon
-r_return
-id|consistent_alloc
-c_func
-(paren
-id|gfp
-comma
-id|size
-comma
-id|handle
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * dma_free_coherent - free memory allocated by dma_alloc_coherent&n; * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices&n; * @size: size of memory originally requested in dma_alloc_coherent&n; * @cpu_addr: CPU-view address returned from dma_alloc_coherent&n; * @handle: device-view address returned from dma_alloc_coherent&n; *&n; * Free (and unmap) a DMA buffer previously allocated by&n; * dma_alloc_coherent().&n; *&n; * References to memory and mappings associated with cpu_addr/handle&n; * during and after this call executing are illegal.&n; */
 r_static
 r_inline
