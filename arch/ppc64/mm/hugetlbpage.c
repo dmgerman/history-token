@@ -264,6 +264,8 @@ c_func
 id|nid
 comma
 id|GFP_HIGHUSER
+op_or
+id|__GFP_COMP
 comma
 id|HUGETLB_PAGE_ORDER
 )paren
