@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OmniVision OV511 Camera-to-USB Bridge Driver&n; *&n; * Copyright (c) 1999-2002 Mark W. McClelland&n; * Original decompression code Copyright 1998-2000 OmniVision Technologies&n; * Many improvements by Bret Wallach &lt;bwallac1@san.rr.com&gt;&n; * Color fixes by by Orion Sky Lawlor &lt;olawlor@acm.org&gt; (2/26/2000)&n; * Snapshot code by Kevin Moore&n; * OV7620 fixes by Charl P. Botha &lt;cpbotha@ieee.org&gt;&n; * Changes by Claudio Matsuoka &lt;claudio@conectiva.com&gt;&n; * Original SAA7111A code by Dave Perks &lt;dperks@ibm.net&gt;&n; * Kernel I2C interface adapted from nt1003 driver&n; * URB error messages from pwc driver by Nemosoft&n; * generic_ioctl() code from videodev.c by Gerd Knorr and Alan Cox&n; * Memory management (rvmalloc) code from bttv driver, by Gerd Knorr and others&n; *&n; * Based on the Linux CPiA driver written by Peter Pregler,&n; * Scott J. Bertin and Johannes Erdfelt.&n; * &n; * Please see the file: linux/Documentation/usb/ov511.txt &n; * and the website at:  http://alpha.dyndns.org/ov511&n; * for more info.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * OmniVision OV511 Camera-to-USB Bridge Driver&n; *&n; * Copyright (c) 1999-2002 Mark W. McClelland&n; * Original decompression code Copyright 1998-2000 OmniVision Technologies&n; * Many improvements by Bret Wallach &lt;bwallac1@san.rr.com&gt;&n; * Color fixes by by Orion Sky Lawlor &lt;olawlor@acm.org&gt; (2/26/2000)&n; * Snapshot code by Kevin Moore&n; * OV7620 fixes by Charl P. Botha &lt;cpbotha@ieee.org&gt;&n; * Changes by Claudio Matsuoka &lt;claudio@conectiva.com&gt;&n; * Original SAA7111A code by Dave Perks &lt;dperks@ibm.net&gt;&n; * URB error messages from pwc driver by Nemosoft&n; * generic_ioctl() code from videodev.c by Gerd Knorr and Alan Cox&n; * Memory management (rvmalloc) code from bttv driver, by Gerd Knorr and others&n; *&n; * Based on the Linux CPiA driver written by Peter Pregler,&n; * Scott J. Bertin and Johannes Erdfelt.&n; * &n; * Please see the file: linux/Documentation/usb/ov511.txt &n; * and the website at:  http://alpha.dyndns.org/ov511&n; * for more info.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -20,7 +20,7 @@ macro_line|#endif
 macro_line|#include &quot;ov511.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.60a for Linux 2.5&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.61 for Linux 2.5&quot;
 DECL|macro|EMAIL
 mdefine_line|#define EMAIL &quot;mmcclell@bigfoot.com&quot;
 DECL|macro|DRIVER_AUTHOR
@@ -33,7 +33,6 @@ DECL|macro|ENABLE_Y_QUANTABLE
 mdefine_line|#define ENABLE_Y_QUANTABLE 1
 DECL|macro|ENABLE_UV_QUANTABLE
 mdefine_line|#define ENABLE_UV_QUANTABLE 1
-multiline_comment|/* If you change this, you must also change the MODULE_PARM definition */
 DECL|macro|OV511_MAX_UNIT_VIDEO
 mdefine_line|#define OV511_MAX_UNIT_VIDEO 16
 multiline_comment|/* Pixel count * bytes per YUV420 pixel (1.5) */
@@ -230,14 +229,6 @@ DECL|variable|force_palette
 r_static
 r_int
 id|force_palette
-suffix:semicolon
-DECL|variable|tuner
-r_static
-r_int
-id|tuner
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 DECL|variable|backlight
 r_static
@@ -713,22 +704,6 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|tuner
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|tuner
-comma
-l_string|&quot;Set tuner type, if not autodetected&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|backlight
 comma
 l_string|&quot;i&quot;
@@ -747,7 +722,13 @@ c_func
 (paren
 id|unit_video
 comma
-l_string|&quot;0-16i&quot;
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|OV511_MAX_UNIT_VIDEO
+)paren
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1416,16 +1397,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
-id|ov51x_check_snapshot
-c_func
-(paren
-r_struct
-id|usb_ov511
-op_star
-)paren
-suffix:semicolon
-r_static
 r_inline
 r_int
 id|sensor_get_picture
@@ -1440,6 +1411,7 @@ id|video_picture
 op_star
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 r_static
 r_int
 id|sensor_get_exposure
@@ -1474,6 +1446,17 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_static
+r_int
+id|ov51x_check_snapshot
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**********************************************************************&n; * Memory management&n; **********************************************************************/
 multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the area.&n; */
 r_static
@@ -2267,7 +2250,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/* /proc/video/ov511/&lt;minor#&gt;/button&n; *&n; * When the camera&squot;s button is pressed, the output of this will change from a&n; * 0 to a 1 (ASCII). It will retain this value until it is read, after which&n; * it will reset to zero.&n; * &n; * SECURITY NOTE: Since reading this file can change the state of the snapshot&n; * status, it is important for applications that open it to keep it locked&n; * against access by other processes, using flock() or a similar mechanism. No&n; * locking is provided by this driver.&n; */
+multiline_comment|/* /proc/video/ov511/&lt;minor#&gt;/button&n; *&n; * When the camera&squot;s button is pressed, the output of this will change from a&n; * 0 to a 1 (ASCII). It will retain this value until it is read, after which&n; * it will reset to zero.&n; *&n; * SECURITY NOTE: Since reading this file can change the state of the snapshot&n; * status, it is important for applications that open it to keep it locked&n; * against access by other processes, using flock() or a similar mechanism. No&n; * locking is provided by this driver.&n; */
 r_static
 r_int
 DECL|function|ov511_read_proc_button
@@ -3109,21 +3092,6 @@ comma
 id|HZ
 )paren
 suffix:semicolon
-id|PDEBUG
-c_func
-(paren
-l_int|5
-comma
-l_string|&quot;0x%02X:0x%02X&quot;
-comma
-id|reg
-comma
-id|ov-&gt;cbuf
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3131,6 +3099,7 @@ id|rc
 OL
 l_int|0
 )paren
+(brace
 id|err
 c_func
 (paren
@@ -3147,7 +3116,9 @@ id|rc
 )paren
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|rc
 op_assign
 id|ov-&gt;cbuf
@@ -3155,6 +3126,22 @@ id|ov-&gt;cbuf
 l_int|0
 )braket
 suffix:semicolon
+id|PDEBUG
+c_func
+(paren
+l_int|5
+comma
+l_string|&quot;0x%02X:0x%02X&quot;
+comma
+id|reg
+comma
+id|ov-&gt;cbuf
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -3166,7 +3153,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Writes bits at positions specified by mask to an OV51x reg. Bits that are in&n; * the same position as 1&squot;s in &quot;mask&quot; are cleared and set to &quot;value&quot;. Bits&n; * that are in the same position as 0&squot;s in &quot;mask&quot; are preserved, regardless &n; * of their respective state in &quot;value&quot;.&n; */
+multiline_comment|/*&n; * Writes bits at positions specified by mask to an OV51x reg. Bits that are in&n; * the same position as 1&squot;s in &quot;mask&quot; are cleared and set to &quot;value&quot;. Bits&n; * that are in the same position as 0&squot;s in &quot;mask&quot; are preserved, regardless&n; * of their respective state in &quot;value&quot;.&n; */
 r_static
 r_int
 DECL|function|reg_w_mask
@@ -3807,7 +3794,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Reset: type=0x%X&quot;
+l_string|&quot;Reset: type=0x%02X&quot;
 comma
 id|reset_type
 )paren
@@ -4928,7 +4915,7 @@ id|newval
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Writes bits at positions specified by mask to an I2C reg. Bits that are in&n; * the same position as 1&squot;s in &quot;mask&quot; are cleared and set to &quot;value&quot;. Bits&n; * that are in the same position as 0&squot;s in &quot;mask&quot; are preserved, regardless &n; * of their respective state in &quot;value&quot;.&n; */
+multiline_comment|/* Writes bits at positions specified by mask to an I2C reg. Bits that are in&n; * the same position as 1&squot;s in &quot;mask&quot; are cleared and set to &quot;value&quot;. Bits&n; * that are in the same position as 0&squot;s in &quot;mask&quot; are preserved, regardless&n; * of their respective state in &quot;value&quot;.&n; */
 r_static
 r_int
 DECL|function|i2c_w_mask
@@ -5059,6 +5046,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 multiline_comment|/* Write to a specific I2C slave ID and register, using the specified mask */
 r_static
 r_int
@@ -5281,6 +5269,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif /* defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS) */
 multiline_comment|/* Sets I2C read and write slave IDs. Returns &lt;0 for error */
 r_static
 r_int
@@ -5474,7 +5463,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef OV511_DEBUG 
+macro_line|#ifdef OV511_DEBUG
 r_static
 r_void
 DECL|function|dump_i2c_range
@@ -5527,7 +5516,7 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;Sensor[0x%X] = 0x%X&quot;
+l_string|&quot;Sensor[0x%02X] = 0x%02X&quot;
 comma
 id|i
 comma
@@ -5617,7 +5606,7 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;OV511[0x%X] = 0x%X&quot;
+l_string|&quot;OV511[0x%02X] = 0x%02X&quot;
 comma
 id|i
 comma
@@ -5794,30 +5783,6 @@ l_int|0xbf
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**********************************************************************&n; *&n; * Kernel I2C Interface (not supported with OV518/OV518+)&n; *&n; **********************************************************************/
-multiline_comment|/* For as-yet unimplemented I2C interface */
-r_static
-r_void
-DECL|function|call_i2c_clients
-id|call_i2c_clients
-c_func
-(paren
-r_struct
-id|usb_ov511
-op_star
-id|ov
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-op_star
-id|arg
-)paren
-(brace
-multiline_comment|/* Do nothing */
-)brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/* Temporarily stops OV511 from functioning. Must do this before changing&n; * registers while the camera is streaming */
 r_static
@@ -6028,6 +5993,7 @@ l_string|&quot;clear snap: invalid bridge type&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 multiline_comment|/* Checks the status of the snapshot button. Returns 1 if it was pressed since&n; * it was last cleared, and zero in all other cases (including errors) */
 r_static
 r_int
@@ -6127,6 +6093,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* This does an initial reset of an OmniVision sensor and ensures that I2C&n; * is synchronized. Returns &lt;0 for failure.&n; */
 r_static
 r_int
@@ -13280,14 +13247,14 @@ suffix:semicolon
 r_case
 id|SEN_SAA7111A
 suffix:colon
-singleline_comment|//&t;&t;rc = mode_init_saa_sensor_regs(ov, width, height, mode, 
+singleline_comment|//&t;&t;rc = mode_init_saa_sensor_regs(ov, width, height, mode,
 singleline_comment|//&t;&t;&t;&t;&t;       sub_flag);
 id|PDEBUG
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;SAA status = 0X%x&quot;
+l_string|&quot;SAA status = 0x%02X&quot;
 comma
 id|i2c_r
 c_func
@@ -14877,6 +14844,7 @@ l_string|&quot;Decompressor does not support this format&quot;
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**********************************************************************&n; *&n; * Format conversion&n; *&n; **********************************************************************/
 multiline_comment|/* Fuses even and odd fields together, and doubles width.&n; * INPUT: an odd field followed by an even field at pIn0, in YUV planar format&n; * OUTPUT: a normal YUV planar image, with correct aspect ratio&n; */
 r_static
 r_void
@@ -18442,7 +18410,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Buffer management&n; *&n; ***************************************************************************/
-multiline_comment|/* &n; * - You must acquire buf_lock before entering this function.&n; * - Because this code will free any non-null pointer, you must be sure to null&n; *   them if you explicitly free them somewhere else!&n; */
+multiline_comment|/*&n; * - You must acquire buf_lock before entering this function.&n; * - Because this code will free any non-null pointer, you must be sure to null&n; *   them if you explicitly free them somewhere else!&n; */
 r_static
 r_void
 DECL|function|ov51x_do_dealloc
@@ -19207,17 +19175,18 @@ id|out
 suffix:semicolon
 id|err
 op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|ov51x_alloc
 c_func
 (paren
 id|ov
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
 )paren
 r_goto
 id|out
@@ -19227,14 +19196,18 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* In case app doesn&squot;t set them... */
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|ov51x_set_default_params
 c_func
 (paren
 id|ov
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
@@ -19276,7 +19249,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* If compression is on, make sure now that a &n;&t; * decompressor can be loaded */
+multiline_comment|/* If compression is on, make sure now that a&n;&t; * decompressor can be loaded */
 r_if
 c_cond
 (paren
@@ -19643,26 +19616,12 @@ id|VID_TYPE_CAPTURE
 op_or
 id|VID_TYPE_SUBCAPTURE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ov-&gt;has_tuner
-)paren
-id|b-&gt;type
-op_or_assign
-id|VID_TYPE_TUNER
-suffix:semicolon
 id|b-&gt;channels
 op_assign
 id|ov-&gt;num_inputs
 suffix:semicolon
 id|b-&gt;audios
 op_assign
-id|ov-&gt;has_audio_proc
-ques
-c_cond
-l_int|1
-suffix:colon
 l_int|0
 suffix:semicolon
 id|b-&gt;maxwidth
@@ -19736,47 +19695,15 @@ id|ov-&gt;norm
 suffix:semicolon
 id|v-&gt;type
 op_assign
-(paren
-id|ov-&gt;has_tuner
-)paren
-ques
-c_cond
-id|VIDEO_TYPE_TV
-suffix:colon
 id|VIDEO_TYPE_CAMERA
 suffix:semicolon
 id|v-&gt;flags
 op_assign
-(paren
-id|ov-&gt;has_tuner
-)paren
-ques
-c_cond
-id|VIDEO_VC_TUNER
-suffix:colon
-l_int|0
-suffix:semicolon
-id|v-&gt;flags
-op_or_assign
-(paren
-id|ov-&gt;has_audio_proc
-)paren
-ques
-c_cond
-id|VIDEO_VC_AUDIO
-suffix:colon
 l_int|0
 suffix:semicolon
 singleline_comment|//&t;&t;v-&gt;flags |= (ov-&gt;has_decoder) ? VIDEO_VC_NORM : 0;
 id|v-&gt;tuners
 op_assign
-(paren
-id|ov-&gt;has_tuner
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
 l_int|0
 suffix:semicolon
 id|decoder_get_input_name
@@ -21379,298 +21306,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_case
-id|VIDIOCGTUNER
-suffix:colon
-(brace
-r_struct
-id|video_tuner
-op_star
-id|v
-op_assign
-id|arg
-suffix:semicolon
-id|PDEBUG
-c_func
-(paren
-l_int|4
-comma
-l_string|&quot;VIDIOCGTUNER&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ov-&gt;has_tuner
-op_logical_or
-id|v-&gt;tuner
-)paren
-singleline_comment|// Only tuner 0
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|v-&gt;name
-comma
-l_string|&quot;Television&quot;
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: Need a way to get the real values
-id|v-&gt;rangelow
-op_assign
-l_int|0
-suffix:semicolon
-id|v-&gt;rangehigh
-op_assign
-op_complement
-l_int|0
-suffix:semicolon
-id|v-&gt;flags
-op_assign
-id|VIDEO_TUNER_PAL
-op_or
-id|VIDEO_TUNER_NTSC
-op_or
-id|VIDEO_TUNER_SECAM
-suffix:semicolon
-id|v-&gt;mode
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* FIXME:  Not sure what this is yet */
-id|v-&gt;signal
-op_assign
-l_int|0xFFFF
-suffix:semicolon
-multiline_comment|/* unknown */
-id|call_i2c_clients
-c_func
-(paren
-id|ov
-comma
-id|cmd
-comma
-id|v
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
-id|VIDIOCSTUNER
-suffix:colon
-(brace
-r_struct
-id|video_tuner
-op_star
-id|v
-op_assign
-id|arg
-suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-id|PDEBUG
-c_func
-(paren
-l_int|4
-comma
-l_string|&quot;VIDIOCSTUNER&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Only no or one tuner for now */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ov-&gt;has_tuner
-op_logical_or
-id|v-&gt;tuner
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/* and it only has certain valid modes */
-r_if
-c_cond
-(paren
-id|v-&gt;mode
-op_ne
-id|VIDEO_MODE_PAL
-op_logical_and
-id|v-&gt;mode
-op_ne
-id|VIDEO_MODE_NTSC
-op_logical_and
-id|v-&gt;mode
-op_ne
-id|VIDEO_MODE_SECAM
-)paren
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-multiline_comment|/* Is this right/necessary? */
-id|err
-op_assign
-id|decoder_set_norm
-c_func
-(paren
-id|ov
-comma
-id|v-&gt;mode
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_return
-id|err
-suffix:semicolon
-id|call_i2c_clients
-c_func
-(paren
-id|ov
-comma
-id|cmd
-comma
-id|v
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
-id|VIDIOCGFREQ
-suffix:colon
-(brace
-r_int
-r_int
-id|v
-op_assign
-op_star
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
-)paren
-suffix:semicolon
-id|PDEBUG
-c_func
-(paren
-l_int|4
-comma
-l_string|&quot;VIDIOCGFREQ&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ov-&gt;has_tuner
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|v
-op_assign
-id|ov-&gt;freq
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* FIXME: this is necessary for testing */
-id|v
-op_assign
-l_int|46
-op_star
-l_int|16
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
-id|VIDIOCSFREQ
-suffix:colon
-(brace
-r_int
-r_int
-id|v
-op_assign
-op_star
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
-)paren
-suffix:semicolon
-id|PDEBUG
-c_func
-(paren
-l_int|4
-comma
-l_string|&quot;VIDIOCSFREQ: %lx&quot;
-comma
-id|v
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ov-&gt;has_tuner
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|ov-&gt;freq
-op_assign
-id|v
-suffix:semicolon
-id|call_i2c_clients
-c_func
-(paren
-id|ov
-comma
-id|cmd
-comma
-op_amp
-id|v
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
-id|VIDIOCGAUDIO
-suffix:colon
-r_case
-id|VIDIOCSAUDIO
-suffix:colon
-(brace
-multiline_comment|/* FIXME: Implement this... */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_default
 suffix:colon
 id|PDEBUG
@@ -22283,7 +21918,7 @@ id|frame
 )paren
 suffix:semicolon
 multiline_comment|/* copy bytes to user space; we allow for partials reads */
-singleline_comment|//&t;if ((count + frame-&gt;bytes_read) 
+singleline_comment|//&t;if ((count + frame-&gt;bytes_read)
 singleline_comment|//&t;    &gt; get_frame_length((struct ov511_frame *)frame))
 singleline_comment|//&t;&t;count = frame-&gt;scanlength - frame-&gt;bytes_read;
 multiline_comment|/* FIXME - count hardwired to be one frame... */
@@ -24639,7 +24274,7 @@ c_func
 l_string|&quot;your camera anyway&quot;
 )paren
 suffix:semicolon
-singleline_comment|// Only issue a warning for now  
+singleline_comment|// Only issue a warning for now
 singleline_comment|//&t;&t;&t;return -1;
 )brace
 r_else
@@ -24744,18 +24379,6 @@ id|info
 c_func
 (paren
 l_string|&quot;Sensor is an OV7620AE&quot;
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
-l_string|&quot;PLEASE REPORT THE EXISTENCE OF THIS SENSOR TO&quot;
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
-l_string|&quot;THE DRIVER AUTHOR&quot;
 )paren
 suffix:semicolon
 )brace
@@ -25403,7 +25026,7 @@ singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x49, 0x00 },
 multiline_comment|/* These next two registers (0x4a, 0x4b) are undocumented. They&n;&t;&t; * control the color balance */
 singleline_comment|//&t;/*OK?*/&t;{ OV511_I2C_BUS, 0x4a, 0x80 }, // Check these
 singleline_comment|//&t;/*OK?*/&t;{ OV511_I2C_BUS, 0x4b, 0x80 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x4c, 0xd0 }, 
+singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x4c, 0xd0 },
 multiline_comment|/*d2?*/
 (brace
 id|OV511_I2C_BUS
@@ -26787,36 +26410,13 @@ c_cond
 (paren
 id|ov-&gt;customid
 op_eq
-l_int|6
-)paren
-(brace
-multiline_comment|/* USB Life TV (NTSC) */
-id|ov-&gt;tuner_type
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* Temic 4036FY5 3X 1981 */
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|ov-&gt;customid
-op_eq
 l_int|70
 )paren
-(brace
 multiline_comment|/* USB Life TV (PAL/SECAM) */
-id|ov-&gt;tuner_type
-op_assign
-l_int|3
-suffix:semicolon
-multiline_comment|/* Philips FI1216MF */
 id|ov-&gt;pal
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -28247,10 +27847,6 @@ op_assign
 op_logical_neg
 id|fastset
 suffix:semicolon
-id|ov-&gt;tuner_type
-op_assign
-id|tuner
-suffix:semicolon
 id|ov-&gt;backlight
 op_assign
 id|backlight
@@ -28357,7 +27953,7 @@ suffix:colon
 id|err
 c_func
 (paren
-l_string|&quot;Unknown product ID 0x%x&quot;
+l_string|&quot;Unknown product ID 0x%04x&quot;
 comma
 id|dev-&gt;descriptor.idProduct
 )paren
