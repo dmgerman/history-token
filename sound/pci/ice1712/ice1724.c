@@ -99,11 +99,6 @@ id|model
 id|SNDRV_CARDS
 )braket
 suffix:semicolon
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -111,8 +106,7 @@ id|index
 comma
 r_int
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -132,8 +126,7 @@ id|id
 comma
 id|charp
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -153,8 +146,7 @@ id|enable
 comma
 r_bool
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -174,8 +166,7 @@ id|model
 comma
 id|charp
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
