@@ -66,6 +66,12 @@ comma
 l_string|&quot;offline&quot;
 )brace
 comma
+(brace
+id|SDEV_BLOCK
+comma
+l_string|&quot;blocked&quot;
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|function|scsi_device_state_name

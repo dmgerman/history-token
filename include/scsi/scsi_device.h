@@ -45,6 +45,10 @@ DECL|enumerator|SDEV_OFFLINE
 id|SDEV_OFFLINE
 comma
 multiline_comment|/* Device offlined (by error handling or&n;&t;&t;&t;&t; * user request */
+DECL|enumerator|SDEV_BLOCK
+id|SDEV_BLOCK
+comma
+multiline_comment|/* Device blocked by scsi lld.  No scsi &n;&t;&t;&t;&t; * commands from user or midlayer should be issued&n;&t;&t;&t;&t; * to the scsi lld. */
 )brace
 suffix:semicolon
 DECL|struct|scsi_device

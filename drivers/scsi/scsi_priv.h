@@ -667,5 +667,30 @@ r_struct
 id|bus_type
 id|scsi_bus_type
 suffix:semicolon
+multiline_comment|/* &n; * internal scsi timeout functions: for use by mid-layer and transport&n; * classes.&n; */
+DECL|macro|SCSI_DEVICE_BLOCK_MAX_TIMEOUT
+mdefine_line|#define SCSI_DEVICE_BLOCK_MAX_TIMEOUT&t;(HZ*60)
+r_extern
+r_int
+id|scsi_internal_device_block
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_internal_device_unblock
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+suffix:semicolon
 macro_line|#endif /* _SCSI_PRIV_H */
 eof
