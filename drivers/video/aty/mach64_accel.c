@@ -7,7 +7,7 @@ macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 macro_line|#include &lt;video/fbcon-cfb24.h&gt;
 macro_line|#include &lt;video/fbcon-cfb32.h&gt;
-macro_line|#include &quot;mach64.h&quot;
+macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
 multiline_comment|/*&n;     *  Text console acceleration&n;     */
 r_static

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &quot;mach64.h&quot;
+macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
 multiline_comment|/* Definitions for the ICS 2595 == ATI 18818_1 Clockchip */
 DECL|macro|REF_FREQ_2595

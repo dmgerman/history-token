@@ -10,7 +10,7 @@ macro_line|#ifdef __sparc__
 macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/fbio.h&gt;
 macro_line|#endif
-macro_line|#include &quot;mach64.h&quot;
+macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
 DECL|macro|DEFAULT_CURSOR_BLINK_RATE
 mdefine_line|#define DEFAULT_CURSOR_BLINK_RATE&t;(20)
@@ -1168,18 +1168,18 @@ id|cursor-&gt;blink_rate
 op_assign
 id|DEFAULT_CURSOR_BLINK_RATE
 suffix:semicolon
-id|fb-&gt;total_vram
+id|fb-&gt;fb_info.fix.smem_len
 op_sub_assign
 id|PAGE_SIZE
 suffix:semicolon
 id|cursor-&gt;offset
 op_assign
-id|fb-&gt;total_vram
+id|fb-&gt;fb_info.fix.smem_len
 suffix:semicolon
 macro_line|#ifdef __sparc__
 id|addr
 op_assign
-id|fb-&gt;frame_buffer
+id|fb-&gt;fb_info.screen_base
 op_minus
 l_int|0x800000
 op_plus
@@ -1197,7 +1197,7 @@ macro_line|#else
 macro_line|#ifdef __BIG_ENDIAN
 id|addr
 op_assign
-id|fb-&gt;frame_buffer_phys
+id|fb-&gt;fb_info.fix.smem_start
 op_minus
 l_int|0x800000
 op_plus
@@ -1220,7 +1220,11 @@ suffix:semicolon
 macro_line|#else
 id|addr
 op_assign
-id|fb-&gt;frame_buffer
+(paren
+r_int
+r_int
+)paren
+id|fb-&gt;fb_info.screen_base
 op_plus
 id|cursor-&gt;offset
 suffix:semicolon

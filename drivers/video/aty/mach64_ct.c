@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  ATI Mach64 CT/VT/GT/LT Support&n; */
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &quot;mach64.h&quot;
+macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
 multiline_comment|/* FIXME: remove the FAIL definition */
 DECL|macro|FAIL
@@ -350,7 +350,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;total_vram
+id|info-&gt;fb_info.fix.smem_len
 OG
 l_int|1
 op_star

@@ -736,7 +736,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|tx3912fb_setup
 c_func
 (paren

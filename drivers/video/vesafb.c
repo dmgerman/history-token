@@ -20,11 +20,12 @@ mdefine_line|#define dac_reg&t;(0x3c8)
 DECL|macro|dac_val
 mdefine_line|#define dac_val&t;(0x3c9)
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|variable|vesafb_defined
+DECL|variable|__initdata
 r_static
 r_struct
 id|fb_var_screeninfo
 id|vesafb_defined
+id|__initdata
 op_assign
 (brace
 id|activate
@@ -63,11 +64,12 @@ id|FB_VMODE_NONINTERLACED
 comma
 )brace
 suffix:semicolon
-DECL|variable|vesafb_fix
+DECL|variable|__initdata
 r_static
 r_struct
 id|fb_fix_screeninfo
 id|vesafb_fix
+id|__initdata
 op_assign
 (brace
 id|id
