@@ -1776,6 +1776,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Eero Volotinen &lt;eero@ping-viini.org&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07ab
+comma
+l_int|0xfccd
+comma
+l_int|0x0406
+comma
+l_int|0x0406
+comma
+l_string|&quot;Freecom Technologies&quot;
+comma
+l_string|&quot;FHD-Classic&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
