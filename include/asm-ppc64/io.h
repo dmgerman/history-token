@@ -38,6 +38,23 @@ r_int
 id|pci_io_base
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
+multiline_comment|/* __raw_* accessors aren&squot;t supported on iSeries */
+DECL|macro|__raw_readb
+mdefine_line|#define __raw_readb(addr)&t;{ BUG(); 0; }
+DECL|macro|__raw_readw
+mdefine_line|#define __raw_readw(addr)       { BUG(); 0; }
+DECL|macro|__raw_readl
+mdefine_line|#define __raw_readl(addr)       { BUG(); 0; }
+DECL|macro|__raw_readq
+mdefine_line|#define __raw_readq(addr)       { BUG(); 0; }
+DECL|macro|__raw_writeb
+mdefine_line|#define __raw_writeb(v, addr)   { BUG(); 0; }
+DECL|macro|__raw_writew
+mdefine_line|#define __raw_writew(v, addr)   { BUG(); 0; }
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel(v, addr)   { BUG(); 0; }
+DECL|macro|__raw_writeq
+mdefine_line|#define __raw_writeq(v, addr)   { BUG(); 0; }
 DECL|macro|readb
 mdefine_line|#define readb(addr)&t;&t;iSeries_Read_Byte((void*)(addr))  
 DECL|macro|readw
@@ -69,18 +86,38 @@ mdefine_line|#define outw(data,addr)&t;&t;writew(data,((unsigned long)(addr)))
 DECL|macro|outl
 mdefine_line|#define outl(data,addr)&t;&t;writel(data,((unsigned long)(addr)))
 macro_line|#else
+DECL|macro|__raw_readb
+mdefine_line|#define __raw_readb(addr)       (*(volatile unsigned char *)(addr))
+DECL|macro|__raw_readw
+mdefine_line|#define __raw_readw(addr)       (*(volatile unsigned short *)(addr))
+DECL|macro|__raw_readl
+mdefine_line|#define __raw_readl(addr)       (*(volatile unsigned int *)(addr))
+DECL|macro|__raw_readq
+mdefine_line|#define __raw_readq(addr)       (*(volatile unsigned long *)(addr))
+DECL|macro|__raw_writeb
+mdefine_line|#define __raw_writeb(v, addr)   (*(volatile unsigned char *)(addr) = (v))
+DECL|macro|__raw_writew
+mdefine_line|#define __raw_writew(v, addr)   (*(volatile unsigned short *)(addr) = (v))
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel(v, addr)   (*(volatile unsigned int *)(addr) = (v))
+DECL|macro|__raw_writeq
+mdefine_line|#define __raw_writeq(v, addr)   (*(volatile unsigned long *)(addr) = (v))
 DECL|macro|readb
 mdefine_line|#define readb(addr)&t;&t;eeh_readb((void*)(addr))  
 DECL|macro|readw
 mdefine_line|#define readw(addr)&t;&t;eeh_readw((void*)(addr))  
 DECL|macro|readl
 mdefine_line|#define readl(addr)&t;&t;eeh_readl((void*)(addr))
+DECL|macro|readq
+mdefine_line|#define readq(addr)&t;&t;eeh_readq((void*)(addr))
 DECL|macro|writeb
 mdefine_line|#define writeb(data, addr)&t;eeh_writeb((data), ((void*)(addr)))
 DECL|macro|writew
 mdefine_line|#define writew(data, addr)&t;eeh_writew((data), ((void*)(addr)))
 DECL|macro|writel
 mdefine_line|#define writel(data, addr)&t;eeh_writel((data), ((void*)(addr)))
+DECL|macro|writeq
+mdefine_line|#define writeq(data, addr)&t;eeh_writeq((data), ((void*)(addr)))
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;eeh_memset_io((void *)(a),(b),(c))
 DECL|macro|memcpy_fromio
@@ -119,6 +156,8 @@ DECL|macro|readw_relaxed
 mdefine_line|#define readw_relaxed(addr) readw(addr)
 DECL|macro|readl_relaxed
 mdefine_line|#define readl_relaxed(addr) readl(addr)
+DECL|macro|readq_relaxed
+mdefine_line|#define readq_relaxed(addr) readq(addr)
 r_extern
 r_void
 id|_insb
@@ -572,7 +611,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio; lbz%U1%X1 %0,%1&quot;
+l_string|&quot;lbz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -611,7 +650,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stb%U0%X0 %1,%0&quot;
+l_string|&quot;stb%U0%X0 %1,%0; eieio&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -647,7 +686,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio; lhbrx %0,0,%1&quot;
+l_string|&quot;lhbrx %0,0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -691,7 +730,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio; lhz%U1%X1 %0,%1&quot;
+l_string|&quot;lhz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -730,7 +769,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;sthbrx %1,0,%2&quot;
+l_string|&quot;sthbrx %1,0,%2; eieio&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -771,7 +810,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;sth%U0%X0 %1,%0&quot;
+l_string|&quot;sth%U0%X0 %1,%0; eieio&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -806,7 +845,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio; lwbrx %0,0,%1&quot;
+l_string|&quot;lwbrx %0,0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -849,7 +888,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio; lwz%U1%X1 %0,%1&quot;
+l_string|&quot;lwz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -887,7 +926,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stwbrx %1,0,%2&quot;
+l_string|&quot;stwbrx %1,0,%2; eieio&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -927,7 +966,204 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stw%U0%X0 %1,%0&quot;
+l_string|&quot;stw%U0%X0 %1,%0; eieio&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|addr
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|in_le64
+r_static
+r_inline
+r_int
+r_int
+id|in_le64
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|addr
+)paren
+(brace
+r_int
+r_int
+id|tmp
+comma
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;ld %1,0(%2)&bslash;n&quot;
+l_string|&quot;twi 0,%1,0&bslash;n&quot;
+l_string|&quot;isync&bslash;n&quot;
+l_string|&quot;rldimi %0,%1,5*8,1*8&bslash;n&quot;
+l_string|&quot;rldimi %0,%1,3*8,2*8&bslash;n&quot;
+l_string|&quot;rldimi %0,%1,1*8,3*8&bslash;n&quot;
+l_string|&quot;rldimi %0,%1,7*8,4*8&bslash;n&quot;
+l_string|&quot;rldicl %1,%1,32,0&bslash;n&quot;
+l_string|&quot;rlwimi %0,%1,8,8,31&bslash;n&quot;
+l_string|&quot;rlwimi %0,%1,24,16,23&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;b&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|addr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|in_be64
+r_static
+r_inline
+r_int
+r_int
+id|in_be64
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|addr
+)paren
+(brace
+r_int
+r_int
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;ld %0,0(%1); twi 0,%0,0; isync&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
+id|addr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|out_le64
+r_static
+r_inline
+r_void
+id|out_le64
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|addr
+comma
+r_int
+id|val
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rldimi %0,%1,5*8,1*8&bslash;n&quot;
+l_string|&quot;rldimi %0,%1,3*8,2*8&bslash;n&quot;
+l_string|&quot;rldimi %0,%1,1*8,3*8&bslash;n&quot;
+l_string|&quot;rldimi %0,%1,7*8,4*8&bslash;n&quot;
+l_string|&quot;rldicl %1,%1,32,0&bslash;n&quot;
+l_string|&quot;rlwimi %0,%1,8,8,31&bslash;n&quot;
+l_string|&quot;rlwimi %0,%1,24,16,23&bslash;n&quot;
+l_string|&quot;std %0,0(%2)&bslash;n&quot;
+l_string|&quot;eieio&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
+comma
+l_string|&quot;b&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|addr
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|out_be64
+r_static
+r_inline
+r_void
+id|out_be64
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|addr
+comma
+r_int
+id|val
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;std %1,0(%0); eieio&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
