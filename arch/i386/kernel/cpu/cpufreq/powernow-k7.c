@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  AMD K7 Powernow driver.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.org.uk&gt; on behalf of SuSE Labs.&n; *  (C) 2003-2004 Dave Jones &lt;davej@redhat.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
+multiline_comment|/*&n; *  AMD K7 Powernow driver.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.org.uk&gt; on behalf of SuSE Labs.&n; *  (C) 2003-2004 Dave Jones &lt;davej@redhat.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -12,20 +12,11 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
+macro_line|#ifdef CONFIG_X86_POWERNOW_K7_ACPI
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#endif
 macro_line|#include &quot;powernow-k7.h&quot;
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;powernow: &quot;
 DECL|struct|psb_s
@@ -87,7 +78,7 @@ id|numpstates
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
+macro_line|#ifdef CONFIG_X86_POWERNOW_K7_ACPI
 DECL|union|powernow_acpi_control_t
 r_union
 id|powernow_acpi_control_t
@@ -288,6 +279,11 @@ r_static
 r_int
 id|acpi_force
 suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 DECL|variable|powernow_table
 r_static
 r_struct
@@ -345,6 +341,71 @@ r_static
 r_char
 id|have_a0
 suffix:semicolon
+DECL|function|dprintk
+r_static
+r_void
+id|dprintk
+c_func
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+(brace
+r_char
+id|s
+(braket
+l_int|256
+)braket
+suffix:semicolon
+id|va_list
+id|args
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+id|va_start
+c_func
+(paren
+id|args
+comma
+id|fmt
+)paren
+suffix:semicolon
+id|vsprintf
+c_func
+(paren
+id|s
+comma
+id|fmt
+comma
+id|args
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
+id|va_end
+c_func
+(paren
+id|args
+)paren
+suffix:semicolon
+)brace
 DECL|function|check_fsb
 r_static
 r_int
@@ -778,7 +839,7 @@ op_eq
 l_int|5
 )paren
 (brace
-macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
+macro_line|#ifdef CONFIG_X86_POWERNOW_K7_ACPI
 r_if
 c_cond
 (paren
@@ -801,7 +862,7 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])&bslash;t&quot;
+l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])  &quot;
 comma
 id|fid
 comma
@@ -1193,7 +1254,7 @@ id|CPUFREQ_POSTCHANGE
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
+macro_line|#ifdef CONFIG_X86_POWERNOW_K7_ACPI
 DECL|variable|acpi_processor_perf
 r_struct
 id|acpi_processor_performance
@@ -1616,7 +1677,7 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])&bslash;t&quot;
+l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])  &quot;
 comma
 id|fid
 comma
@@ -2085,21 +2146,21 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot; cpuid: 0x%x&bslash;t&quot;
+l_string|&quot; cpuid: 0x%x  &quot;
 comma
 id|pst-&gt;cpuid
 )paren
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;fsb: %d&bslash;t&quot;
+l_string|&quot;fsb: %d  &quot;
 comma
 id|pst-&gt;fsbspeed
 )paren
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;maxFID: 0x%x&bslash;t&quot;
+l_string|&quot;maxFID: 0x%x  &quot;
 comma
 id|pst-&gt;maxfid
 )paren
@@ -2549,7 +2610,7 @@ id|cpu_khz
 op_div
 id|fid_codes
 (braket
-id|fidvidstatus.bits.CFID
+id|fidvidstatus.bits.MFID
 )braket
 suffix:semicolon
 r_if
@@ -2893,7 +2954,7 @@ id|powernow_exit
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
+macro_line|#ifdef CONFIG_X86_POWERNOW_K7_ACPI
 r_if
 c_cond
 (paren
@@ -2938,6 +2999,24 @@ suffix:semicolon
 id|module_param
 c_func
 (paren
+id|debug
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;enable debug output.&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
 id|acpi_force
 comma
 r_int
@@ -2950,7 +3029,7 @@ c_func
 (paren
 id|acpi_force
 comma
-l_string|&quot;Force ACPI to be used&quot;
+l_string|&quot;Force ACPI to be used.&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

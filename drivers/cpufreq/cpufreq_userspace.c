@@ -104,6 +104,24 @@ id|freq
 op_assign
 id|data
 suffix:semicolon
+multiline_comment|/* Don&squot;t update cur_freq if CPU is managed and we&squot;re&n;&t; * waking up: else we won&squot;t remember what frequency &n;&t; * we need to set the CPU to.&n;&t; */
+r_if
+c_cond
+(paren
+id|cpu_is_managed
+(braket
+id|freq-&gt;cpu
+)braket
+op_logical_and
+(paren
+id|val
+op_eq
+id|CPUFREQ_RESUMECHANGE
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|cpu_cur_freq
 (braket
 id|freq-&gt;cpu
@@ -293,6 +311,15 @@ id|cpufreq_setmax
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
+macro_line|#warning The /proc/sys/cpu/ and sysctl interface to cpufreq will be removed from the 2.6. kernel series soon after 2005-01-01
+DECL|variable|warning_print
+r_static
+r_int
+r_int
+id|warning_print
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*********************** cpufreq_sysctl interface ********************/
 r_static
 r_int
@@ -381,6 +408,26 @@ l_int|0
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|warning_print
+)paren
+(brace
+id|warning_print
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Access to /proc/sys/cpu/ is deprecated and &quot;
+l_string|&quot;will be removed from (new) 2.6. kernels soon &quot;
+l_string|&quot;after 2005-01-01&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -590,6 +637,26 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|warning_print
+)paren
+(brace
+id|warning_print
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Access to /proc/sys/cpu/ is deprecated and &quot;
+l_string|&quot;will be removed from (new) 2.6. kernels soon &quot;
+l_string|&quot;after 2005-01-01&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1743,6 +1810,24 @@ id|cpu
 )braket
 comma
 id|policy-&gt;min
+comma
+id|CPUFREQ_RELATION_L
+)paren
+suffix:semicolon
+r_else
+id|__cpufreq_driver_target
+c_func
+(paren
+op_amp
+id|current_policy
+(braket
+id|cpu
+)braket
+comma
+id|cpu_cur_freq
+(braket
+id|cpu
+)braket
 comma
 id|CPUFREQ_RELATION_L
 )paren
