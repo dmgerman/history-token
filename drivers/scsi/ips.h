@@ -1768,7 +1768,11 @@ id|usAddrDeadDisk
 (braket
 id|IPS_MAX_CHANNELS
 op_star
+(paren
 id|IPS_MAX_TARGETS
+op_plus
+l_int|1
+)paren
 )braket
 suffix:semicolon
 DECL|typedef|IPS_ENQ
