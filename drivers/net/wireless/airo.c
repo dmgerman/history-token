@@ -9374,6 +9374,143 @@ c_cond
 id|len
 )paren
 (brace
+macro_line|#if WIRELESS_EXT &gt; 15
+macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
+r_if
+c_cond
+(paren
+id|apriv-&gt;spy_data.spy_number
+OG
+l_int|0
+)paren
+(brace
+r_char
+op_star
+id|sa
+suffix:semicolon
+r_struct
+id|iw_quality
+id|wstats
+suffix:semicolon
+multiline_comment|/* Prepare spy data : addr + qual */
+id|sa
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|buffer
+op_plus
+(paren
+(paren
+id|apriv-&gt;flags
+op_amp
+id|FLAG_802_11
+)paren
+ques
+c_cond
+l_int|10
+suffix:colon
+l_int|6
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|apriv-&gt;flags
+op_amp
+id|FLAG_802_11
+)paren
+)paren
+(brace
+id|bap_setup
+(paren
+id|apriv
+comma
+id|fid
+comma
+l_int|8
+comma
+id|BAP0
+)paren
+suffix:semicolon
+id|bap_read
+(paren
+id|apriv
+comma
+(paren
+id|u16
+op_star
+)paren
+id|hdr.rssi
+comma
+l_int|2
+comma
+id|BAP0
+)paren
+suffix:semicolon
+)brace
+id|wstats.qual
+op_assign
+id|hdr.rssi
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apriv-&gt;rssi
+)paren
+id|wstats.level
+op_assign
+l_int|0x100
+op_minus
+id|apriv-&gt;rssi
+(braket
+id|hdr.rssi
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|rssidBm
+suffix:semicolon
+r_else
+id|wstats.level
+op_assign
+(paren
+id|hdr.rssi
+(braket
+l_int|1
+)braket
+op_plus
+l_int|321
+)paren
+op_div
+l_int|2
+suffix:semicolon
+id|wstats.updated
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* Update spy records */
+id|wireless_spy_update
+c_func
+(paren
+id|dev
+comma
+id|sa
+comma
+op_amp
+id|wstats
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* IW_WIRELESS_SPY */
+macro_line|#else /* WIRELESS_EXT &gt; 15 */
 macro_line|#ifdef WIRELESS_SPY
 r_if
 c_cond
@@ -9559,6 +9696,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* WIRELESS_SPY  */
+macro_line|#endif /* WIRELESS_EXT &gt; 15 */
 id|OUT4500
 c_func
 (paren
@@ -9722,14 +9860,6 @@ id|index
 op_assign
 id|i
 suffix:semicolon
-multiline_comment|/* Set up to be used again */
-id|apriv-&gt;fids
-(braket
-id|i
-)braket
-op_and_assign
-l_int|0xffff
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -9741,12 +9871,6 @@ op_minus
 l_int|1
 )paren
 (brace
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9762,7 +9886,6 @@ comma
 id|index
 )paren
 suffix:semicolon
-)brace
 id|OUT4500
 c_func
 (paren
@@ -9779,15 +9902,39 @@ id|EV_TXEXC
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+multiline_comment|/* Set up to be used again */
+id|apriv-&gt;fids
+(braket
 id|index
-op_eq
-op_minus
-l_int|1
+)braket
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|dev
 )paren
+suffix:semicolon
+)brace
+r_else
 (brace
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|status
+op_amp
+(paren
+id|EV_TX
+op_or
+id|EV_TXEXC
+)paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -26277,6 +26424,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* WIRELESS_EXT &gt; 13 */
+macro_line|#if WIRELESS_EXT &lt;= 15
 macro_line|#ifdef WIRELESS_SPY
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Wireless Handler : set Spy List&n; */
@@ -26564,6 +26712,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;/* WIRELESS_SPY */
+macro_line|#endif /* WIRELESS_EXT &lt;= 15 */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Commit handler : called after a bunch of SET operations&n; */
 DECL|function|airo_config_commit
@@ -26884,6 +27033,20 @@ id|iw_handler
 l_int|NULL
 comma
 multiline_comment|/* SIOCGIWSTATS */
+macro_line|#if WIRELESS_EXT &gt; 15
+id|iw_handler_set_spy
+comma
+multiline_comment|/* SIOCSIWSPY */
+id|iw_handler_get_spy
+comma
+multiline_comment|/* SIOCGIWSPY */
+id|iw_handler_set_thrspy
+comma
+multiline_comment|/* SIOCSIWTHRSPY */
+id|iw_handler_get_thrspy
+comma
+multiline_comment|/* SIOCGIWTHRSPY */
+macro_line|#else /* WIRELESS_EXT &gt; 15 */
 macro_line|#ifdef WIRELESS_SPY
 (paren
 id|iw_handler
@@ -26923,6 +27086,7 @@ id|iw_handler
 l_int|NULL
 comma
 multiline_comment|/* -- hole -- */
+macro_line|#endif /* WIRELESS_EXT &gt; 15 */
 (paren
 id|iw_handler
 )paren
@@ -27187,6 +27351,37 @@ op_star
 )paren
 id|airo_private_args
 comma
+macro_line|#if WIRELESS_EXT &gt; 15
+dot
+id|spy_offset
+op_assign
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+op_amp
+(paren
+(paren
+r_struct
+id|airo_info
+op_star
+)paren
+l_int|NULL
+)paren
+op_member_access_from_pointer
+id|spy_data
+)paren
+op_minus
+(paren
+r_void
+op_star
+)paren
+l_int|NULL
+)paren
+comma
+macro_line|#endif /* WIRELESS_EXT &gt; 15 */
 )brace
 suffix:semicolon
 macro_line|#endif /* WIRELESS_EXT &gt; 12 */
