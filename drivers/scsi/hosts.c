@@ -675,6 +675,13 @@ op_amp
 id|shost-&gt;host_wait
 )paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|shost-&gt;scan_mutex
+)paren
+suffix:semicolon
 id|shost-&gt;host_no
 op_assign
 id|scsi_host_next_hn

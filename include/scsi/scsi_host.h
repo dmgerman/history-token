@@ -721,6 +721,12 @@ r_struct
 id|list_head
 id|sht_legacy_list
 suffix:semicolon
+multiline_comment|/*&n;&t; * This mutex serializes all scsi scanning activity from kernel- and&n;&t; * userspace.&n;&t; */
+DECL|member|scan_mutex
+r_struct
+id|semaphore
+id|scan_mutex
+suffix:semicolon
 multiline_comment|/*&n;&t; * We should ensure that this is aligned, both for better performance&n;&t; * and also because some compilers (m68k) don&squot;t automatically force&n;&t; * alignment to a long boundary.&n;&t; */
 DECL|member|hostdata
 r_int
