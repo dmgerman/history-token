@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * This program is used to generate definitions needed by&n; * assembly language modules.&n; *&n; * We use the technique used in the OSF Mach kernel code:&n; * generate asm statements containing #defines,&n; * compile this file to assembler, and then extract the&n; * #defines from the assembly-language output.&n; */
-macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -23,7 +22,9 @@ macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|macro|DEFINE
-mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n#define&bslash;t&quot; #sym &quot;&bslash;t%0&quot; : : &quot;i&quot; (val))
+mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
+DECL|macro|BLANK
+mdefine_line|#define BLANK() asm volatile(&quot;&bslash;n-&gt;&quot; : : )
 r_int
 DECL|function|main
 id|main

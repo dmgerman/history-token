@@ -414,9 +414,9 @@ DECL|macro|check_arg_pri
 mdefine_line|#define check_arg_pri(pri) &bslash;&n;    if (pri &lt; 0 || pri &gt;= OPENPIC_NUM_PRI) &bslash;&n;&t;printk(&quot;open_pic.c:%d: illegal priority %d&bslash;n&quot;, __LINE__, pri);
 multiline_comment|/*&n; * Print out a backtrace if it&squot;s out of range, since if it&squot;s larger than NR_IRQ&squot;s&n; * data has probably been corrupted and we&squot;re going to panic or deadlock later&n; * anyway --Troy&n; */
 DECL|macro|check_arg_irq
-mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= NumSources+open_pic_irq_offset &bslash;&n;&t;|| ISR[irq - open_pic_irq_offset] == 0) { &bslash;&n;      printk(&quot;open_pic.c:%d: illegal irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      show_stack(NULL); }
+mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= NumSources+open_pic_irq_offset &bslash;&n;&t;|| ISR[irq - open_pic_irq_offset] == 0) { &bslash;&n;      printk(&quot;open_pic.c:%d: illegal irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      dump_stack(); }
 DECL|macro|check_arg_cpu
-mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= NumProcessors){ &bslash;&n;&t;printk(&quot;open_pic.c:%d: illegal cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;show_stack(NULL); }
+mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= NumProcessors){ &bslash;&n;&t;printk(&quot;open_pic.c:%d: illegal cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;dump_stack(); }
 macro_line|#else
 DECL|macro|check_arg_ipi
 mdefine_line|#define check_arg_ipi(ipi)&t;do {} while (0)
@@ -1136,7 +1136,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;openpic enter&quot;
+l_string|&quot;openpic: enter&quot;
 comma
 l_int|0x122
 )paren
@@ -1292,7 +1292,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;openpic timer&quot;
+l_string|&quot;openpic: timer&quot;
 comma
 l_int|0x3ba
 )paren
@@ -1349,7 +1349,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;openpic ipi&quot;
+l_string|&quot;openpic: ipi&quot;
 comma
 l_int|0x3bb
 )paren
@@ -1427,7 +1427,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;openpic ext&quot;
+l_string|&quot;openpic: external&quot;
 comma
 l_int|0x3bc
 )paren
@@ -1478,7 +1478,7 @@ op_plus
 id|linux_irq_offset
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We find the vale from either the InitSenses table&n;&t;&t; * or assume a negative polarity level interrupt.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We find the value from either the InitSenses table&n;&t;&t; * or assume a negative polarity level interrupt.&n;&t;&t; */
 id|sense
 op_assign
 (paren
@@ -1594,7 +1594,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;openpic spurious&quot;
+l_string|&quot;openpic: spurious&quot;
 comma
 l_int|0x3bd
 )paren
@@ -1673,7 +1673,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;openpic exit&quot;
+l_string|&quot;openpic: exit&quot;
 comma
 l_int|0x222
 )paren
