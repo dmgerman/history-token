@@ -4550,7 +4550,6 @@ id|request_queue_t
 op_star
 id|queue
 op_assign
-op_amp
 id|sdp-&gt;request_queue
 suffix:semicolon
 id|sector_t
@@ -5508,7 +5507,6 @@ id|sdkp-&gt;driver
 suffix:semicolon
 id|gd-&gt;queue
 op_assign
-op_amp
 id|sdkp-&gt;device-&gt;request_queue
 suffix:semicolon
 id|sd_devlist_insert

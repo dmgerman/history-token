@@ -2175,7 +2175,6 @@ id|cd-&gt;driver
 suffix:semicolon
 id|disk-&gt;queue
 op_assign
-op_amp
 id|sdev-&gt;request_queue
 suffix:semicolon
 id|add_disk
@@ -2604,7 +2603,6 @@ suffix:semicolon
 )brace
 id|queue
 op_assign
-op_amp
 id|cd-&gt;device-&gt;request_queue
 suffix:semicolon
 id|blk_queue_hardsect_size
