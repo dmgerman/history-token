@@ -1961,7 +1961,7 @@ id|PCI_DEVICE_ID_INTEL_82915G_HB
 op_logical_or
 id|agp_bridge-&gt;dev-&gt;device
 op_eq
-id|PCI_DEVICE_ID_INTEL_82915G_HB
+id|PCI_DEVICE_ID_INTEL_82915GM_HB
 )paren
 id|gtt_entries
 op_assign
@@ -1997,7 +1997,7 @@ id|PCI_DEVICE_ID_INTEL_82915G_HB
 op_logical_or
 id|agp_bridge-&gt;dev-&gt;device
 op_eq
-id|PCI_DEVICE_ID_INTEL_82915G_HB
+id|PCI_DEVICE_ID_INTEL_82915GM_HB
 )paren
 id|gtt_entries
 op_assign
