@@ -1685,40 +1685,22 @@ id|atm_dev
 id|atmtcp_control_dev
 op_assign
 (brace
+dot
+id|ops
+op_assign
 op_amp
 id|atmtcp_c_dev_ops
 comma
-l_int|NULL
-comma
-multiline_comment|/* no PHY */
+dot
+id|type
+op_assign
 l_string|&quot;atmtcp&quot;
 comma
-multiline_comment|/* type */
+dot
+id|number
+op_assign
 l_int|999
 comma
-multiline_comment|/* dummy device number */
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* pretend not to have any VCCs */
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* no data */
-(brace
-l_int|0
-)brace
-comma
-multiline_comment|/* no flags */
-l_int|NULL
-comma
-multiline_comment|/* no local address */
-(brace
-l_int|0
-)brace
-multiline_comment|/* no ESI, no statistics */
 )brace
 suffix:semicolon
 DECL|function|atmtcp_create
