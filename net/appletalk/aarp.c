@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AARP:&t;&t;An implementation of the AppleTalk AARP protocol for&n; *&t;&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;This doesn&squot;t fit cleanly with the IP arp. Potentially we can use&n; *&t;the generic neighbour discovery code to clean this up.&n; *&n; *&t;FIXME:&n; *&t;&t;We ought to handle the retransmits with a single list and a &n; *&t;separate fast timer for when it is needed.&n; *&t;&t;Use neighbour discovery code.&n; *&t;&t;Token Ring Support.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&n; *&t;References:&n; *&t;&t;Inside AppleTalk (2nd Ed).&n; *&t;Fixes:&n; *&t;&t;Jaume Grau&t;-&t;flush caches on AARP_PROBE&n; *&t;&t;Rob Newberry&t;-&t;Added proxy AARP and AARP proc fs, &n; *&t;&t;&t;&t;&t;moved probing from DDP module.&n; *&t;&t;Arnaldo C. Melo -&t;don&squot;t mangle rx packets&n; *&n; */
+multiline_comment|/*&n; *&t;AARP:&t;&t;An implementation of the AppleTalk AARP protocol for&n; *&t;&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;This doesn&squot;t fit cleanly with the IP arp. Potentially we can use&n; *&t;the generic neighbour discovery code to clean this up.&n; *&n; *&t;FIXME:&n; *&t;&t;We ought to handle the retransmits with a single list and a&n; *&t;separate fast timer for when it is needed.&n; *&t;&t;Use neighbour discovery code.&n; *&t;&t;Token Ring Support.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&n; *&t;References:&n; *&t;&t;Inside AppleTalk (2nd Ed).&n; *&t;Fixes:&n; *&t;&t;Jaume Grau&t;-&t;flush caches on AARP_PROBE&n; *&t;&t;Rob Newberry&t;-&t;Added proxy AARP and AARP proc fs,&n; *&t;&t;&t;&t;&t;moved probing from DDP module.&n; *&t;&t;Arnaldo C. Melo -&t;don&squot;t mangle rx packets&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -32,7 +32,7 @@ op_assign
 id|AARP_RESOLVE_TIME
 suffix:semicolon
 multiline_comment|/* Lists of aarp entries */
-multiline_comment|/**&n; *&t;struct aarp_entry - AARP entry&n; *&t;@last_sent - Last time we xmitted the aarp request &n; *&t;@packet_queue - Queue of frames wait for resolution&n; *&t;@status - Used for proxy AARP&n; *&t;expires_at - Entry expiry time&n; *&t;target_addr - DDP Address&n; *&t;dev - Device to use&n; *&t;hwaddr - Physical i/f address of target/router&n; *&t;xmit_count - When this hits 10 we give up&n; *&t;next - Next entry in chain&n; */
+multiline_comment|/**&n; *&t;struct aarp_entry - AARP entry&n; *&t;@last_sent - Last time we xmitted the aarp request&n; *&t;@packet_queue - Queue of frames wait for resolution&n; *&t;@status - Used for proxy AARP&n; *&t;expires_at - Entry expiry time&n; *&t;target_addr - DDP Address&n; *&t;dev - Device to use&n; *&t;hwaddr - Physical i/f address of target/router&n; *&t;xmit_count - When this hits 10 we give up&n; *&t;next - Next entry in chain&n; */
 DECL|struct|aarp_entry
 r_struct
 id|aarp_entry
@@ -127,10 +127,10 @@ suffix:semicolon
 multiline_comment|/* One lock protects it all. */
 DECL|variable|aarp_lock
 r_static
-id|spinlock_t
+id|rwlock_t
 id|aarp_lock
 op_assign
-id|SPIN_LOCK_UNLOCKED
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Used to walk the list and purge/kick entries.  */
 DECL|variable|aarp_timer
@@ -1111,7 +1111,7 @@ id|unused
 r_int
 id|ct
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -1174,7 +1174,7 @@ id|ct
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1232,7 +1232,7 @@ op_eq
 id|NETDEV_DOWN
 )paren
 (brace
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -1291,7 +1291,7 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1438,7 +1438,7 @@ id|aarp_entry
 op_star
 id|a
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -1471,7 +1471,7 @@ id|jiffies
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1779,7 +1779,7 @@ id|ARPHRD_PPP
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* &n;&t; * create a new AARP entry with the flags set to be published -- &n;&t; * we need this one to hang around even if it&squot;s in use&n;&t; */
+multiline_comment|/*&n;&t; * create a new AARP entry with the flags set to be published --&n;&t; * we need this one to hang around even if it&squot;s in use&n;&t; */
 id|entry
 op_assign
 id|aarp_alloc
@@ -1822,7 +1822,7 @@ id|entry-&gt;dev
 op_assign
 id|atif-&gt;dev
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -1881,7 +1881,7 @@ id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
 suffix:semicolon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1896,7 +1896,7 @@ op_div
 l_int|10
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -1948,7 +1948,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -2057,7 +2057,7 @@ id|ft
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Compressible ?&n;&t;&t; * &n;&t;&t; * IFF: src_net == dest_net == device_net&n;&t;&t; * (zero matches anything)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Compressible ?&n;&t;&t; *&n;&t;&t; * IFF: src_net == dest_net == device_net&n;&t;&t; * (zero matches anything)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2087,14 +2087,14 @@ id|skb
 comma
 r_sizeof
 (paren
-r_struct
-id|ddpehdr
+op_star
+id|ddp
 )paren
 op_minus
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *&t;The upper two remaining bytes are the port &n;&t;&t;&t; *&t;numbers&t;we just happen to need. Now put the &n;&t;&t;&t; *&t;length in the lower two.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *&t;The upper two remaining bytes are the port&n;&t;&t;&t; *&t;numbers&t;we just happen to need. Now put the&n;&t;&t;&t; *&t;length in the lower two.&n;&t;&t;&t; */
 op_star
 (paren
 (paren
@@ -2238,7 +2238,7 @@ r_goto
 id|sent
 suffix:semicolon
 )brace
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -2289,7 +2289,7 @@ comma
 id|a-&gt;hwaddr
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -2352,7 +2352,7 @@ id|a
 )paren
 (brace
 multiline_comment|/* Whoops slipped... good job it&squot;s an unreliable protocol 8) */
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -2439,7 +2439,7 @@ suffix:semicolon
 multiline_comment|/* Now finally, it is safe to drop the lock. */
 id|out_unlock
 suffix:colon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -2789,7 +2789,7 @@ id|da.s_net
 op_assign
 id|ea-&gt;pa_dst_net
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -2928,7 +2928,7 @@ suffix:colon
 r_case
 id|AARP_PROBE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * If it is my address set ma to my address and reply.&n;&t;&t;&t; * We can treat probe and request the same.  Probe&n;&t;&t;&t; * simply means we shouldn&squot;t cache the querying host,&n;&t;&t;&t; * as in a probe they are proposing an address not&n;&t;&t;&t; * using one.&n;&t;&t;&t; *&t;&n;&t;&t;&t; * Support for proxy-AARP added. We check if the&n;&t;&t;&t; * address is one of our proxies before we toss the&n;&t;&t;&t; * packet out.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If it is my address set ma to my address and reply.&n;&t;&t;&t; * We can treat probe and request the same.  Probe&n;&t;&t;&t; * simply means we shouldn&squot;t cache the querying host,&n;&t;&t;&t; * as in a probe they are proposing an address not&n;&t;&t;&t; * using one.&n;&t;&t;&t; *&n;&t;&t;&t; * Support for proxy-AARP added. We check if the&n;&t;&t;&t; * address is one of our proxies before we toss the&n;&t;&t;&t; * packet out.&n;&t;&t;&t; */
 id|sa.s_node
 op_assign
 id|ea-&gt;pa_dst_node
@@ -2989,6 +2989,8 @@ multiline_comment|/*&n;&t;&t;&t;&t; * A probe implies someone trying to get an&n
 r_struct
 id|aarp_entry
 op_star
+id|a
+suffix:semicolon
 id|a
 op_assign
 id|__aarp_find_entry
@@ -3086,7 +3088,7 @@ suffix:semicolon
 )brace
 id|unlock
 suffix:colon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -3228,7 +3230,7 @@ id|dev
 r_int
 id|ct
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -3287,7 +3289,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -3348,7 +3350,7 @@ comma
 l_string|&quot;expires&quot;
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -4003,7 +4005,7 @@ l_string|&quot;      proxy&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -4014,7 +4016,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/* General module cleanup. Called from cleanup_module() in ddp.c. */
 DECL|function|aarp_cleanup_module
 r_void
@@ -4045,7 +4046,6 @@ id|aarp_dl
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif  /* MODULE */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|aarp_register_proc_fs
 r_void
