@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ALi AGPGART routines.&n; */
+multiline_comment|/*&n; * ATi AGPGART routines.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1949,7 +1949,7 @@ suffix:semicolon
 DECL|variable|__initdata
 r_struct
 id|agp_device_ids
-id|ali_agp_device_ids
+id|ati_agp_device_ids
 (braket
 )braket
 id|__initdata
@@ -2076,7 +2076,7 @@ id|agp_device_ids
 op_star
 id|devs
 op_assign
-id|ali_agp_device_ids
+id|ati_agp_device_ids
 suffix:semicolon
 r_struct
 id|agp_bridge_data
