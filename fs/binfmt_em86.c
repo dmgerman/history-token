@@ -319,12 +319,14 @@ id|linux_binfmt
 id|em86_format
 op_assign
 (brace
+dot
 id|module
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|load_binary
-suffix:colon
+op_assign
 id|load_em86
 comma
 )brace

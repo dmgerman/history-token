@@ -2,6 +2,7 @@ multiline_comment|/* $Id: page.h,v 1.39 2002/02/09 19:49:31 davem Exp $ */
 macro_line|#ifndef _SPARC64_PAGE_H
 DECL|macro|_SPARC64_PAGE_H
 mdefine_line|#define _SPARC64_PAGE_H
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT   13
 macro_line|#ifndef __ASSEMBLY__
@@ -288,6 +289,16 @@ mdefine_line|#define __pgprot(x)&t;(x)
 DECL|macro|__iopgprot
 mdefine_line|#define __iopgprot(x)&t;(x)
 macro_line|#endif /* (STRICT_MM_TYPECHECKS) */
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;&t;22
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|HPAGE_SIZE
+mdefine_line|#define HPAGE_SIZE&t;&t;((1UL) &lt;&lt; HPAGE_SHIFT)
+DECL|macro|HPAGE_MASK
+mdefine_line|#define HPAGE_MASK&t;&t;(~(HPAGE_SIZE - 1UL))
+DECL|macro|HUGETLB_PAGE_ORDER
+mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
+macro_line|#endif
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (0x0000000070000000UL) : (PAGE_OFFSET))
 macro_line|#endif /* !(__ASSEMBLY__) */

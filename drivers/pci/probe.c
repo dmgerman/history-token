@@ -2193,6 +2193,12 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|pci_name_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* now put in global tree */
 id|strcpy
 c_func
@@ -2333,12 +2339,6 @@ op_logical_neg
 id|dev
 )paren
 r_continue
-suffix:semicolon
-id|pci_name_device
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -2564,7 +2564,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p

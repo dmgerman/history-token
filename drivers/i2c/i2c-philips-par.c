@@ -666,6 +666,12 @@ id|KERN_ERR
 l_string|&quot;i2c-philips-par: Unable to register with parport.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -708,6 +714,12 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;i2c-philips-par: Could not claim parallel port.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|adapter
 )paren
 suffix:semicolon
 r_return

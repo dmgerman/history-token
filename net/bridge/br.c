@@ -12,6 +12,22 @@ macro_line|#include &quot;br_private.h&quot;
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 macro_line|#include &quot;../atm/lec.h&quot;
 macro_line|#endif
+DECL|variable|br_should_route_hook
+r_int
+(paren
+op_star
+id|br_should_route_hook
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
 DECL|function|br_dec_use_count
 r_void
 id|br_dec_use_count
@@ -146,6 +162,13 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|br_should_route_hook
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|br_should_route_hook
+)paren
+suffix:semicolon
 id|module_init
 c_func
 (paren
