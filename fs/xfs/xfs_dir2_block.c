@@ -2162,11 +2162,6 @@ op_star
 )paren
 id|ptr
 suffix:semicolon
-id|savptr
-op_assign
-id|ptr
-suffix:semicolon
-multiline_comment|/* In case we need it.. */
 multiline_comment|/*&n;&t;&t; * Bump pointer for the next iteration.&n;&t;&t; */
 id|ptr
 op_add_assign
@@ -2201,7 +2196,6 @@ id|p.namelen
 op_assign
 id|dep-&gt;namelen
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * NOTE! Linux &quot;filldir&quot; semantics require that the&n;&t;&t; *&t; offset &quot;cookie&quot; be for this entry, not the&n;&t;&t; *&t; next; all the actual shuffling to make it&n;&t;&t; *&t; &quot;look right&quot; to the user is done in filldir.&n;&t;&t; */
 id|p.cook
 op_assign
 id|XFS_DIR2_DB_OFF_TO_DATAPTR
@@ -2211,7 +2205,7 @@ id|mp
 comma
 id|mp-&gt;m_dirdatablk
 comma
-id|savptr
+id|ptr
 op_minus
 (paren
 r_char

@@ -732,11 +732,11 @@ r_int
 id|rlen
 op_assign
 id|PAGE_CACHE_SIZE
-op_lshift
-l_int|2
 suffix:semicolon
 id|xfs_off_t
 id|start_offset
+comma
+id|curr_offset
 suffix:semicolon
 id|xfs_dirent_t
 op_star
@@ -818,6 +818,8 @@ id|uio.uio_segflg
 op_assign
 id|UIO_SYSSPACE
 suffix:semicolon
+id|curr_offset
+op_assign
 id|uio.uio_offset
 op_assign
 id|filp-&gt;f_pos
@@ -927,7 +929,7 @@ comma
 (paren
 id|loff_t
 )paren
-id|dbp-&gt;d_off
+id|curr_offset
 comma
 (paren
 id|ino_t
@@ -945,6 +947,13 @@ suffix:semicolon
 id|size
 op_sub_assign
 id|dbp-&gt;d_reclen
+suffix:semicolon
+id|curr_offset
+op_assign
+(paren
+id|loff_t
+)paren
+id|dbp-&gt;d_off
 suffix:semicolon
 id|dbp
 op_assign
@@ -984,7 +993,7 @@ id|dbp
 )paren
 id|filp-&gt;f_pos
 op_assign
-id|dbp-&gt;d_off
+id|curr_offset
 suffix:semicolon
 )brace
 id|kfree
