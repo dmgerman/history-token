@@ -1126,7 +1126,7 @@ op_increment
 )braket
 suffix:semicolon
 id|window-&gt;resource.flags
-op_or_assign
+op_assign
 id|flags
 suffix:semicolon
 id|window-&gt;resource.start
