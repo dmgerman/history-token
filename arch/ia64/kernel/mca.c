@@ -2267,6 +2267,7 @@ id|_IA64_REG_CR_CMCV
 comma
 id|cmcv.cmcv_regval
 )paren
+suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
@@ -2321,6 +2322,7 @@ id|_IA64_REG_CR_CMCV
 comma
 id|cmcv.cmcv_regval
 )paren
+suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
