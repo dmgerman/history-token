@@ -3410,20 +3410,10 @@ id|cmd-&gt;scsi_done
 op_assign
 id|fn
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cmd-&gt;flags
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* new command */
 id|sp-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|qla1280_print_scsi_cmd
 c_func
 (paren
