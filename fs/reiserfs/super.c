@@ -3756,7 +3756,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;dev %s: Unfinished reiserfsck --rebuild-tree run detected. Please run&bslash;n&quot;
-l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fais&bslash;n&quot;
+l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fails&bslash;n&quot;
 l_string|&quot;get newer reiserfsprogs package&bslash;n&quot;
 comma
 id|s-&gt;s_id
