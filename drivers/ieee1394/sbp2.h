@@ -399,12 +399,17 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Miscellaneous SBP2 related config rom defines&n; */
+multiline_comment|/* &n; * The status fifo address definition below is used as a status base, with a chunk&n; * separately assigned for each sbp2 device detected. For example, 0xfffe00000000ULL &n; * is used for the first sbp2 device detected, 0xfffe00000020ULL for the next sbp2 &n; * device, and so on.&n; *&n; * Note: We could use a single status fifo address for all sbp2 devices, and figure &n; * out which sbp2 device the status belongs to by looking at the source node id of&n; * the status write... but, using separate addresses for each sbp2 device allows for&n; * better code and the ability to support multiple luns within a single 1394 node.&n; *&n; * Also note that we choose the address range below as it is a region specified for&n; * write posting, where the ohci controller will automatically send an ack_complete&n; * when the status is written by the sbp2 device... saving a split transaction.   =)&n; */
 DECL|macro|SBP2_STATUS_FIFO_ADDRESS
-mdefine_line|#define SBP2_STATUS_FIFO_ADDRESS&t;&t;&t;&t;0xfffe00000000ULL     /* for write posting! */
+mdefine_line|#define SBP2_STATUS_FIFO_ADDRESS&t;&t;&t;&t;0xfffe00000000ULL
 DECL|macro|SBP2_STATUS_FIFO_ADDRESS_HI
 mdefine_line|#define SBP2_STATUS_FIFO_ADDRESS_HI                             0xfffe
 DECL|macro|SBP2_STATUS_FIFO_ADDRESS_LO
 mdefine_line|#define SBP2_STATUS_FIFO_ADDRESS_LO                             0x0
+DECL|macro|SBP2_STATUS_FIFO_ENTRY_TO_OFFSET
+mdefine_line|#define SBP2_STATUS_FIFO_ENTRY_TO_OFFSET(entry)&t;&t;&t;((entry) &lt;&lt; 5)
+DECL|macro|SBP2_STATUS_FIFO_OFFSET_TO_ENTRY
+mdefine_line|#define SBP2_STATUS_FIFO_OFFSET_TO_ENTRY(offset)&t;&t;((offset) &gt;&gt; 5)
 DECL|macro|SBP2_UNIT_DIRECTORY_OFFSET_KEY
 mdefine_line|#define SBP2_UNIT_DIRECTORY_OFFSET_KEY&t;&t;&t;&t;0xd1
 DECL|macro|SBP2_CSR_OFFSET_KEY
@@ -424,9 +429,9 @@ mdefine_line|#define SBP2_DEVICE_TYPE_AND_LUN_KEY&t;&t;&t;&t;0x14
 DECL|macro|SBP2_FIRMWARE_REVISION_KEY
 mdefine_line|#define SBP2_FIRMWARE_REVISION_KEY&t;&t;&t;&t;0x3c
 DECL|macro|SBP2_DEVICE_TYPE
-mdefine_line|#define SBP2_DEVICE_TYPE(q)&t;&t;&t;(((q) &gt;&gt; 16) &amp; 0x1f)
+mdefine_line|#define SBP2_DEVICE_TYPE(q)&t;&t;&t;&t;&t;(((q) &gt;&gt; 16) &amp; 0x1f)
 DECL|macro|SBP2_DEVICE_LUN
-mdefine_line|#define SBP2_DEVICE_LUN(q)&t;&t;&t;((q) &amp; 0xffff)
+mdefine_line|#define SBP2_DEVICE_LUN(q)&t;&t;&t;&t;&t;((q) &amp; 0xffff)
 DECL|macro|SBP2_AGENT_STATE_OFFSET
 mdefine_line|#define SBP2_AGENT_STATE_OFFSET&t;&t;&t;&t;&t;0x00ULL
 DECL|macro|SBP2_AGENT_RESET_OFFSET
@@ -450,10 +455,13 @@ DECL|macro|SBP2_UNIT_SPEC_ID_ENTRY
 mdefine_line|#define SBP2_UNIT_SPEC_ID_ENTRY&t;&t;&t;&t;&t;0x0000609e
 DECL|macro|SBP2_SW_VERSION_ENTRY
 mdefine_line|#define SBP2_SW_VERSION_ENTRY&t;&t;&t;&t;&t;0x00010483
+multiline_comment|/*&n; * Other misc defines&n; */
 DECL|macro|SBP2_128KB_BROKEN_FIRMWARE
 mdefine_line|#define SBP2_128KB_BROKEN_FIRMWARE&t;&t;&t;&t;0xa0b800
 DECL|macro|SBP2_BROKEN_FIRMWARE_MAX_TRANSFER
 mdefine_line|#define SBP2_BROKEN_FIRMWARE_MAX_TRANSFER&t;&t;&t;0x20000
+DECL|macro|SBP2_DEVICE_TYPE_LUN_UNINITIALIZED
+mdefine_line|#define SBP2_DEVICE_TYPE_LUN_UNINITIALIZED&t;&t;&t;0xffffffff
 multiline_comment|/*&n; * Flags for SBP-2 functions&n; */
 DECL|macro|SBP2_SEND_NO_WAIT
 mdefine_line|#define SBP2_SEND_NO_WAIT&t;&t;&t;&t;&t;0x00000001
@@ -465,11 +473,13 @@ mdefine_line|#define SBP2_CLUSTERING&t;&t;&t;ENABLE_CLUSTERING
 DECL|macro|SBP2_MAX_SG_ELEMENT_LENGTH
 mdefine_line|#define SBP2_MAX_SG_ELEMENT_LENGTH&t;0xf000
 DECL|macro|SBP2SCSI_MAX_SCSI_IDS
-mdefine_line|#define SBP2SCSI_MAX_SCSI_IDS&t;&t;8
+mdefine_line|#define SBP2SCSI_MAX_SCSI_IDS&t;&t;16&t;/* Max sbp2 device instances supported */
 DECL|macro|SBP2SCSI_MAX_OUTSTANDING_CMDS
 mdefine_line|#define SBP2SCSI_MAX_OUTSTANDING_CMDS&t;8&t;/* Max total outstanding sbp2 commands allowed at a time! */
 DECL|macro|SBP2SCSI_MAX_CMDS_PER_LUN
-mdefine_line|#define SBP2SCSI_MAX_CMDS_PER_LUN&t;4 &t;/* Max outstanding sbp2 commands per device - tune as needed */
+mdefine_line|#define SBP2SCSI_MAX_CMDS_PER_LUN&t;1 &t;/* Max outstanding sbp2 commands per device - tune as needed */
+DECL|macro|SBP2_MAX_SECTORS
+mdefine_line|#define SBP2_MAX_SECTORS&t;&t;255&t;/* Max sectors supported */
 macro_line|#ifndef TYPE_SDAD
 DECL|macro|TYPE_SDAD
 mdefine_line|#define TYPE_SDAD&t;&t;&t;0x0e&t;/* simplified direct access device */
@@ -1005,11 +1015,10 @@ comma
 id|DUN
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Number of request packets available for actual sbp2 I/O requests (these are used&n; * for sending command and agent reset packets).&n; */
 DECL|macro|SBP2_MAX_REQUEST_PACKETS
-mdefine_line|#define SBP2_MAX_REQUEST_PACKETS&t;SBP2SCSI_MAX_OUTSTANDING_CMDS&t;/* Per host adapter instance */
+mdefine_line|#define SBP2_MAX_REQUEST_PACKETS&t;(sbp2_max_outstanding_cmds * 2)
 DECL|macro|SBP2_MAX_COMMAND_ORBS
-mdefine_line|#define SBP2_MAX_COMMAND_ORBS&t;&t;SBP2SCSI_MAX_CMDS_PER_LUN * 2&t;/* Per sbp2 device instance */
+mdefine_line|#define SBP2_MAX_COMMAND_ORBS&t;&t;(sbp2_max_cmds_per_lun * 2)
 multiline_comment|/*&n; * Request packets structure (used for sending command and agent reset packets)&n; */
 DECL|struct|sbp2_request_packet
 r_struct
@@ -1081,11 +1090,6 @@ id|Current_done
 id|Scsi_Cmnd
 op_star
 )paren
-suffix:semicolon
-DECL|member|linked
-r_int
-r_int
-id|linked
 suffix:semicolon
 multiline_comment|/* Also need s/g structure for each sbp2 command */
 DECL|member|____cacheline_aligned
@@ -1317,10 +1321,8 @@ multiline_comment|/*&n;&t; * Here is the pool of request packets. All the hpsb p
 DECL|member|request_packet
 r_struct
 id|sbp2_request_packet
+op_star
 id|request_packet
-(braket
-id|SBP2_MAX_REQUEST_PACKETS
-)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * SCSI ID instance data (one for each sbp2 device instance possible)&n;&t; */
 DECL|member|scsi_id
@@ -1370,8 +1372,10 @@ id|sbp2scsi_host_info
 op_star
 id|hi
 comma
-id|nodeid_t
-id|node
+r_struct
+id|node_entry
+op_star
+id|ne
 comma
 id|u64
 id|addr
@@ -1783,36 +1787,6 @@ suffix:semicolon
 r_static
 r_int
 id|sbp2_send_command
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_struct
-id|scsi_id_instance_data
-op_star
-id|scsi_id
-comma
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_static
-r_int
-id|sbp2_send_split_command
 c_func
 (paren
 r_struct

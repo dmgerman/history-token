@@ -1163,6 +1163,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* struct video_card contains all data associated with one instance&n;   of the dv1394 driver &n;*/
+DECL|enum|modes
+r_enum
+id|modes
+(brace
+DECL|enumerator|MODE_RECEIVE
+id|MODE_RECEIVE
+comma
+DECL|enumerator|MODE_TRANSMIT
+id|MODE_TRANSMIT
+)brace
+suffix:semicolon
 DECL|struct|video_card
 r_struct
 id|video_card
@@ -1393,6 +1404,11 @@ r_int
 id|first_frame
 suffix:semicolon
 multiline_comment|/* received first start frame marker? */
+DECL|member|mode
+r_enum
+id|modes
+id|mode
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* &n;   if the video_card is not initialized, then the ONLY fields that are valid are:&n;   ohci&n;   open&n;   n_frames&n;*/
