@@ -548,6 +548,17 @@ c_func
 (paren
 l_int|0x03f0
 comma
+l_int|0x0705
+)paren
+)brace
+comma
+multiline_comment|/* 4400C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
 l_int|0x0102
 )paren
 )brace
@@ -1128,6 +1139,17 @@ multiline_comment|/* Expression 1680 */
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x04a9
+comma
+l_int|0x2204
+)paren
+)brace
+comma
+multiline_comment|/* FB630U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x04b8
 comma
 l_int|0x0110
@@ -1146,6 +1168,39 @@ l_int|0x0112
 )brace
 comma
 multiline_comment|/* Perfection 2450 - GT-9700 for the Japanese mkt */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x0114
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 660 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x011b
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 2400 Photo */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x011e
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 1660 Photo */
 multiline_comment|/* Umax */
 (brace
 id|USB_DEVICE
