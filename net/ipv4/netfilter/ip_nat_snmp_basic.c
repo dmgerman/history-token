@@ -5473,6 +5473,11 @@ op_star
 id|ct
 comma
 r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
+comma
+r_struct
 id|ip_nat_info
 op_star
 id|info
@@ -5818,6 +5823,12 @@ comma
 l_int|NULL
 )brace
 comma
+l_string|&quot;snmp&quot;
+comma
+id|IP_NAT_HELPER_F_STANDALONE
+comma
+id|THIS_MODULE
+comma
 (brace
 (brace
 l_int|0
@@ -5864,7 +5875,7 @@ l_int|0xFFFF
 comma
 id|nat_help
 comma
-l_string|&quot;snmp&quot;
+l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|snmp_trap
@@ -5879,6 +5890,12 @@ l_int|NULL
 comma
 l_int|NULL
 )brace
+comma
+l_string|&quot;snmp_trap&quot;
+comma
+id|IP_NAT_HELPER_F_STANDALONE
+comma
+id|THIS_MODULE
 comma
 (brace
 (brace
@@ -5926,7 +5943,7 @@ l_int|0xFFFF
 comma
 id|nat_help
 comma
-l_string|&quot;snmp_trap&quot;
+l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Module stuff.&n; *&n; *****************************************************************************/

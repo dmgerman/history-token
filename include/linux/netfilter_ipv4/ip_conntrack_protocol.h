@@ -167,6 +167,26 @@ op_star
 id|conntrack
 )paren
 suffix:semicolon
+multiline_comment|/* Has to decide if a expectation matches one packet or not */
+DECL|member|exp_matches_pkt
+r_int
+(paren
+op_star
+id|exp_matches_pkt
+)paren
+(paren
+r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
+comma
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+)paren
+suffix:semicolon
 multiline_comment|/* Module (if any) which this is connected to. */
 DECL|member|me
 r_struct
