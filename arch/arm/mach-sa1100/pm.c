@@ -56,9 +56,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
 multiline_comment|/* set up pointer to sleep parameters */
 id|sleep_save
 op_assign
@@ -254,6 +251,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;*** made it back from resume&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -412,7 +410,7 @@ DECL|macro|CTL_ACPI
 mdefine_line|#define CTL_ACPI 9999
 DECL|macro|ACPI_S1_SLP_TYP
 mdefine_line|#define ACPI_S1_SLP_TYP 19
-multiline_comment|/*&n; * Send us to sleep.  We must not be called from IRQ context.&n; */
+multiline_comment|/*&n; * Send us to sleep.&n; */
 DECL|function|sysctl_pm_do_suspend
 r_static
 r_int
@@ -425,27 +423,6 @@ r_void
 r_int
 id|retval
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;pm_do_suspend() called from IRQ&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|retval
 op_assign
 id|pm_send_all
@@ -470,7 +447,7 @@ l_int|0
 (brace
 id|retval
 op_assign
-id|__pm_do_suspend
+id|pm_do_suspend
 c_func
 (paren
 )paren

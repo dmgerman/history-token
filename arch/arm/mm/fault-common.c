@@ -427,18 +427,27 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: unhandled page fault at pc=0x%08lx, &quot;
-l_string|&quot;lr=0x%08lx (bad address=0x%08lx, code %d)&bslash;n&quot;
+l_string|&quot;%s: unhandled page fault at 0x%08lx, code 0x%03x&bslash;n&quot;
 comma
 id|tsk-&gt;comm
-comma
-id|regs-&gt;ARM_pc
-comma
-id|regs-&gt;ARM_lr
 comma
 id|addr
 comma
 id|error_code
+)paren
+suffix:semicolon
+id|show_pte
+c_func
+(paren
+id|tsk-&gt;mm
+comma
+id|addr
+)paren
+suffix:semicolon
+id|show_regs
+c_func
+(paren
+id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -733,11 +742,7 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we are out of memory for pid1,&n;&t; * sleep for a while and retry&n;&t; */
-id|tsk-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

@@ -27,9 +27,9 @@ id|from
 )paren
 suffix:semicolon
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;cpu_clear_user_page(page,vaddr)
+mdefine_line|#define clear_user_page(addr,vaddr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&bslash;&n;&t;&t;cpu_clear_user_page(addr, vaddr);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;cpu_copy_user_page(to,from,vaddr)
+mdefine_line|#define copy_user_page(to,from,vaddr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&bslash;&n;&t;&t;cpu_copy_user_page(to, from, vaddr);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#ifdef STRICT_MM_TYPECHECKS
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 DECL|member|pte

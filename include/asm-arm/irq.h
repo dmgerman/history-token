@@ -35,5 +35,38 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|macro|__IRQT_FALEDGE
+mdefine_line|#define __IRQT_FALEDGE&t;(1 &lt;&lt; 0)
+DECL|macro|__IRQT_RISEDGE
+mdefine_line|#define __IRQT_RISEDGE&t;(1 &lt;&lt; 1)
+DECL|macro|__IRQT_LOWLVL
+mdefine_line|#define __IRQT_LOWLVL&t;(1 &lt;&lt; 2)
+DECL|macro|__IRQT_HIGHLVL
+mdefine_line|#define __IRQT_HIGHLVL&t;(1 &lt;&lt; 3)
+DECL|macro|IRQT_NOEDGE
+mdefine_line|#define IRQT_NOEDGE&t;(0)
+DECL|macro|IRQT_RISING
+mdefine_line|#define IRQT_RISING&t;(__IRQT_RISEDGE)
+DECL|macro|IRQT_FALLING
+mdefine_line|#define IRQT_FALLING&t;(__IRQT_FALEDGE)
+DECL|macro|IRQT_BOTHEDGE
+mdefine_line|#define IRQT_BOTHEDGE&t;(__IRQT_RISEDGE|__IRQT_FALEDGE)
+DECL|macro|IRQT_LOW
+mdefine_line|#define IRQT_LOW&t;(__IRQT_LOWLVL)
+DECL|macro|IRQT_HIGH
+mdefine_line|#define IRQT_HIGH&t;(__IRQT_HIGHLVL)
+r_int
+id|set_irq_type
+c_func
+(paren
+r_int
+r_int
+id|irq
+comma
+r_int
+r_int
+id|type
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

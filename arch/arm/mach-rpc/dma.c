@@ -709,7 +709,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|dma-&gt;buf.address
+id|dma-&gt;buf.__address
 comma
 id|dma-&gt;buf.length
 comma
@@ -1068,6 +1068,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dma-&gt;using_sg
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|dma-&gt;dma_mode
 op_eq
 id|DMA_MODE_READ
@@ -1127,7 +1137,7 @@ op_assign
 r_int
 r_int
 )paren
-id|dma-&gt;buf.address
+id|dma-&gt;buf.__address
 suffix:semicolon
 id|regs.ARM_fp
 op_assign

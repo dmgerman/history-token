@@ -306,7 +306,7 @@ l_int|0x40
 suffix:semicolon
 multiline_comment|/* periodic */
 multiline_comment|/* &n;&t; * Make irqs happen for the system timer&n;&t; */
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|IRQ_TIMERINT1

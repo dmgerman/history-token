@@ -1,18 +1,18 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-iop310/time-iq80310.c&n; *&n; * Timer functions for IQ80310 onboard timer&n; *&n; * Author:  Nicolas Pitre&n; * Copyright:   (C) 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/mach/irq.h&gt;
 DECL|function|iq80310_write_timer
 r_static
 r_void
@@ -413,18 +413,6 @@ id|iq80310_timer_interrupt
 comma
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|setup_arm_irq
-c_func
-(paren
-r_int
-comma
-r_struct
-id|irqaction
-op_star
-)paren
-suffix:semicolon
 DECL|function|time_init
 r_void
 id|__init
@@ -450,7 +438,7 @@ id|gettimeoffset
 op_assign
 id|iq80310_gettimeoffset
 suffix:semicolon
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|IRQ_IQ80310_TIMER

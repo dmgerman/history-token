@@ -95,7 +95,7 @@ id|set
 suffix:semicolon
 macro_line|#else
 DECL|macro|ASSABET_BCR_frob
-mdefine_line|#define ASSABET_BCR_frob(x)&t;do { } while (0)
+mdefine_line|#define ASSABET_BCR_frob(x,y)&t;do { } while (0)
 macro_line|#endif
 DECL|macro|ASSABET_BCR_set
 mdefine_line|#define ASSABET_BCR_set(x)&t;ASSABET_BCR_frob((x), (x))

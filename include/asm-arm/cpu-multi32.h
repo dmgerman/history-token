@@ -242,57 +242,6 @@ id|icache
 suffix:semicolon
 r_struct
 (brace
-multiline_comment|/* TLB */
-multiline_comment|/*&n;&t;&t; * flush all TLBs&n;&t;&t; */
-DECL|member|invalidate_all
-r_void
-(paren
-op_star
-id|invalidate_all
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * flush a specific TLB&n;&t;&t; */
-DECL|member|invalidate_range
-r_void
-(paren
-op_star
-id|invalidate_range
-)paren
-(paren
-r_int
-r_int
-id|address
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * flush a specific TLB&n;&t;&t; */
-DECL|member|invalidate_page
-r_void
-(paren
-op_star
-id|invalidate_page
-)paren
-(paren
-r_int
-r_int
-id|address
-comma
-r_int
-id|flags
-)paren
-suffix:semicolon
-DECL|member|tlb
-)brace
-id|tlb
-suffix:semicolon
-r_struct
-(brace
 multiline_comment|/* PageTable */
 multiline_comment|/*&n;&t;&t; * Set the page table&n;&t;&t; */
 DECL|member|set_pgd
@@ -437,12 +386,6 @@ DECL|macro|cpu_icache_invalidate_range
 mdefine_line|#define cpu_icache_invalidate_range(s,e)&t;processor.icache.invalidate_range(s,e)
 DECL|macro|cpu_icache_invalidate_page
 mdefine_line|#define cpu_icache_invalidate_page(vp)&t;&t;processor.icache.invalidate_page(vp)
-DECL|macro|cpu_tlb_invalidate_all
-mdefine_line|#define cpu_tlb_invalidate_all()&t;&t;processor.tlb.invalidate_all()
-DECL|macro|cpu_tlb_invalidate_range
-mdefine_line|#define cpu_tlb_invalidate_range(s,e)&t;&t;processor.tlb.invalidate_range(s,e)
-DECL|macro|cpu_tlb_invalidate_page
-mdefine_line|#define cpu_tlb_invalidate_page(vp,f)&t;&t;processor.tlb.invalidate_page(vp,f)
 DECL|macro|cpu_set_pgd
 mdefine_line|#define cpu_set_pgd(pgd)&t;&t;&t;processor.pgtable.set_pgd(pgd)
 DECL|macro|cpu_set_pmd
