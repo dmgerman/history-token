@@ -651,32 +651,34 @@ c_cond
 id|emu-&gt;audigy
 )paren
 (brace
+multiline_comment|/* set SPDIF bypass mode */
 id|snd_emu10k1_ptr_write
 c_func
 (paren
 id|emu
 comma
-l_int|0x5e
+id|SPBYPASS
 comma
 l_int|0
 comma
-l_int|0xf00
+id|SPBYPASS_FORMAT
 )paren
 suffix:semicolon
-multiline_comment|/* ?? */
+multiline_comment|/* enable rear left + rear right AC97 slots */
 id|snd_emu10k1_ptr_write
 c_func
 (paren
 id|emu
 comma
-l_int|0x5f
+id|AC97SLOT
 comma
 l_int|0
 comma
-l_int|0x3
+id|AC97SLOT_REAR_RIGHT
+op_or
+id|AC97SLOT_REAR_LEFT
 )paren
 suffix:semicolon
-multiline_comment|/* ?? */
 )brace
 multiline_comment|/* init envelope engine */
 r_for
@@ -1812,7 +1814,7 @@ id|DBG
 comma
 l_int|0
 comma
-l_int|0x8000
+id|EMU10K1_DBG_SINGLE_STEP
 )paren
 suffix:semicolon
 multiline_comment|/* disable channel interrupt */
@@ -3229,7 +3231,7 @@ id|snd_printdd
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Audigy2 EX is detected. skpping ac97.&bslash;n&quot;
+l_string|&quot;Audigy2 EX is detected. skipping ac97.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|emu-&gt;no_ac97
@@ -3243,9 +3245,20 @@ c_cond
 id|emu-&gt;revision
 op_eq
 l_int|4
+op_logical_and
+id|emu-&gt;model
+op_eq
+l_int|0x2002
 )paren
 (brace
-multiline_comment|/*  FIXME - Audigy 2 ZS detection */
+multiline_comment|/* Audigy 2 ZS */
+id|snd_printdd
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Audigy2 ZS is detected. setting 7.1 mode.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|emu-&gt;spk71
 op_assign
 l_int|1
