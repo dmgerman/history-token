@@ -1259,12 +1259,28 @@ comma
 id|asoc-&gt;peer.port
 )paren
 suffix:semicolon
-multiline_comment|/* 7.2.1 Slow-Start&n;&t; *&n;&t; * o The initial cwnd before data transmission or after a&n;&t; *   sufficiently long idle period MUST be &lt;= 2*MTU.&n;&t; *&n;&t; * o The initial value of ssthresh MAY be arbitrarily high&n;&t; *   (for example, implementations MAY use the size of the&n;&t; *   receiver advertised window).&n;&t; */
+multiline_comment|/* 7.2.1 Slow-Start&n;&t; *&n;&t; * o The initial cwnd before DATA transmission or after a sufficiently&n;&t; *   long idle period MUST be set to&n;&t; *      min(4*MTU, max(2*MTU, 4380 bytes))&n;&t; *&n;&t; * o The initial value of ssthresh MAY be arbitrarily high&n;&t; *   (for example, implementations MAY use the size of the&n;&t; *   receiver advertised window).&n;&t; */
 id|peer-&gt;cwnd
 op_assign
-id|asoc-&gt;pmtu
+id|min
+c_func
+(paren
+l_int|4
 op_star
+id|asoc-&gt;pmtu
+comma
+id|max_t
+c_func
+(paren
+id|__u32
+comma
 l_int|2
+op_star
+id|asoc-&gt;pmtu
+comma
+l_int|4380
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* At this point, we may not have the receiver&squot;s advertised window,&n;&t; * so initialize ssthresh to the default value and it will be set&n;&t; * later when we process the INIT.&n;&t; */
 id|peer-&gt;ssthresh
