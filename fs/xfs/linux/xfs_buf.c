@@ -429,10 +429,12 @@ macro_line|#endif
 multiline_comment|/*&n; * Pagebuf allocation / freeing.&n; */
 DECL|macro|pb_to_gfp
 mdefine_line|#define pb_to_gfp(flags) &bslash;&n;&t;(((flags) &amp; PBF_READ_AHEAD) ? GFP_READAHEAD : &bslash;&n;&t; ((flags) &amp; PBF_DONT_BLOCK) ? GFP_NOFS : GFP_KERNEL)
+DECL|macro|pb_to_km
+mdefine_line|#define pb_to_km(flags) &bslash;&n;&t; (((flags) &amp; PBF_DONT_BLOCK) ? KM_NOFS : KM_SLEEP)
 DECL|macro|pagebuf_allocate
-mdefine_line|#define pagebuf_allocate(flags) &bslash;&n;&t;kmem_cache_alloc(pagebuf_cache, pb_to_gfp(flags))
+mdefine_line|#define pagebuf_allocate(flags) &bslash;&n;&t;kmem_zone_alloc(pagebuf_cache, pb_to_km(flags))
 DECL|macro|pagebuf_deallocate
-mdefine_line|#define pagebuf_deallocate(pb) &bslash;&n;&t;kmem_cache_free(pagebuf_cache, (pb));
+mdefine_line|#define pagebuf_deallocate(pb) &bslash;&n;&t;kmem_zone_free(pagebuf_cache, (pb));
 multiline_comment|/*&n; * Pagebuf hashing&n; */
 DECL|macro|NBITS
 mdefine_line|#define NBITS&t;8
