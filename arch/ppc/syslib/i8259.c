@@ -613,6 +613,44 @@ comma
 id|IORESOURCE_BUSY
 )brace
 suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|i8259_hook_cascade
+id|i8259_hook_cascade
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* reserve our resources */
+id|request_irq
+c_func
+(paren
+id|i8259_pic_irq_offset
+op_plus
+l_int|2
+comma
+id|no_action
+comma
+id|SA_INTERRUPT
+comma
+l_string|&quot;82c59 secondary cascade&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|i8259_hook_cascade
+id|arch_initcall
+c_func
+(paren
+id|i8259_hook_cascade
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * i8259_init()&n; * intack_addr - PCI interrupt acknowledge (real) address which will return&n; *               the active irq from the 8259&n; */
 r_void
 id|__init
@@ -752,23 +790,6 @@ op_amp
 id|i8259_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* reserve our resources */
-id|request_irq
-c_func
-(paren
-id|i8259_pic_irq_offset
-op_plus
-l_int|2
-comma
-id|no_action
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;82c59 secondary cascade&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|request_resource
