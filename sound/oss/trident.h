@@ -68,6 +68,21 @@ DECL|enum|trident_op_registers
 r_enum
 id|trident_op_registers
 (brace
+DECL|enumerator|T4D_GAME_CR
+DECL|enumerator|T4D_GAME_LEG
+id|T4D_GAME_CR
+op_assign
+l_int|0x30
+comma
+id|T4D_GAME_LEG
+op_assign
+l_int|0x31
+comma
+DECL|enumerator|T4D_GAME_AXD
+id|T4D_GAME_AXD
+op_assign
+l_int|0x34
+comma
 DECL|enumerator|T4D_REC_CH
 id|T4D_REC_CH
 op_assign
@@ -1235,8 +1250,8 @@ mdefine_line|#define VALIDATE_STATE(a) VALIDATE_MAGIC(a,TRIDENT_STATE_MAGIC)
 DECL|macro|VALIDATE_CARD
 mdefine_line|#define VALIDATE_CARD(a) VALIDATE_MAGIC(a,TRIDENT_CARD_MAGIC)
 DECL|function|ld2
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|ld2
 c_func

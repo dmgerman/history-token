@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: iforce-packets.c,v 1.15 2002/06/09 11:08:04 jdeneux Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&n; *  Copyright (c) 2001-2002 Johann Deneux &lt;deneux@ifrance.com&gt;&n; *&n; *  USB/RS232 I-Force joysticks and wheels.&n; */
+multiline_comment|/*&n; * $Id: iforce-packets.c,v 1.16 2002/07/07 10:22:50 jdeneux Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&n; *  Copyright (c) 2001-2002 Johann Deneux &lt;deneux@ifrance.com&gt;&n; *&n; *  USB/RS232 I-Force joysticks and wheels.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &quot;iforce.h&quot;
 r_static
@@ -388,7 +388,7 @@ c_cond
 id|iforce-&gt;bus
 )paren
 (brace
-macro_line|#ifdef IFORCE_232
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_232
 r_case
 id|IFORCE_232
 suffix:colon
@@ -406,7 +406,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef IFORCE_USB
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_USB
 r_case
 id|IFORCE_USB
 suffix:colon
@@ -697,7 +697,7 @@ suffix:semicolon
 id|being_used
 op_increment
 suffix:semicolon
-macro_line|#ifdef IFORCE_232
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_232
 r_if
 c_cond
 (paren
@@ -1402,7 +1402,7 @@ id|iforce-&gt;bus
 r_case
 id|IFORCE_USB
 suffix:colon
-macro_line|#ifdef IFORCE_USB
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_USB
 id|iforce-&gt;cr.bRequest
 op_assign
 id|packet
@@ -1529,7 +1529,7 @@ suffix:semicolon
 r_case
 id|IFORCE_232
 suffix:colon
-macro_line|#ifdef IFORCE_232
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_232
 id|iforce-&gt;expect_packet
 op_assign
 id|FF_CMD_QUERY

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: iforce.h,v 1.12 2002/06/09 11:08:04 jdeneux Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&n; *  Copyright (c) 2001-2002 Johann Deneux &lt;deneux@ifrance.com&gt;&n; *&n; *  USB/RS232 I-Force joysticks and wheels.&n; */
+multiline_comment|/*&n; * $Id: iforce.h,v 1.13 2002/07/07 10:22:50 jdeneux Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&n; *  Copyright (c) 2001-2002 Johann Deneux &lt;deneux@ifrance.com&gt;&n; *&n; *  USB/RS232 I-Force joysticks and wheels.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,18 +11,15 @@ macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-multiline_comment|/* FF: This module provides arbitrary resource management routines.&n; * I use it to manage the device&squot;s memory.&n; * Despite the name of this module, I am *not* going to access the ioports.&n; */
+multiline_comment|/* This module provides arbitrary resource management routines.&n; * I use it to manage the device&squot;s memory.&n; * Despite the name of this module, I am *not* going to access the ioports.&n; */
 macro_line|#include &lt;linux/ioport.h&gt;
 DECL|macro|IFORCE_MAX_LENGTH
 mdefine_line|#define IFORCE_MAX_LENGTH&t;16
-macro_line|#if defined(CONFIG_JOYSTICK_IFORCE_232)
+multiline_comment|/* iforce::bus */
 DECL|macro|IFORCE_232
 mdefine_line|#define IFORCE_232&t;1
-macro_line|#endif
-macro_line|#if defined(CONFIG_JOYSTICK_IFORCE_USB)
 DECL|macro|IFORCE_USB
 mdefine_line|#define IFORCE_USB&t;2
-macro_line|#endif
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 DECL|macro|TRUE
@@ -196,7 +193,7 @@ DECL|member|expect_packet
 id|u16
 id|expect_packet
 suffix:semicolon
-macro_line|#ifdef IFORCE_232
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_232
 DECL|member|serio
 r_struct
 id|serio
@@ -223,7 +220,7 @@ r_char
 id|csum
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef IFORCE_USB
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_USB
 DECL|member|usbdev
 r_struct
 id|usb_device

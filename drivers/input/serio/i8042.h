@@ -1,30 +1,22 @@
 macro_line|#ifndef _I8042_H
 DECL|macro|_I8042_H
 mdefine_line|#define _I8042_H
-multiline_comment|/*&n; * $Id: i8042.h,v 1.6 2001/10/05 22:48:09 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
-multiline_comment|/*&n; * If you want to reset your i8042 upon boot, define this.&n; */
-DECL|macro|I8042_RESET
-macro_line|#undef I8042_RESET
+multiline_comment|/*&n; *  Copyright (c) 1999-2002 Vojtech Pavlik&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
+multiline_comment|/*&n; * Arch-dependent inline functions and defines.&n; */
+macro_line|#if defined(CONFIG_PPC)
+macro_line|#include &quot;i8042-ppcio.h&quot;
+macro_line|#else
+macro_line|#include &quot;i8042-io.h&quot;
+macro_line|#endif
 multiline_comment|/*&n; * If you want to trace all the i/o the i8042 module does for&n; * debugging purposes, define this.&n; */
 DECL|macro|I8042_DEBUG_IO
 macro_line|#undef I8042_DEBUG_IO
-multiline_comment|/*&n; * On most PC based systems the keyboard IRQ is 1.&n; */
-DECL|macro|I8042_KBD_IRQ
-mdefine_line|#define I8042_KBD_IRQ CONFIG_I8042_KBD_IRQ 
-multiline_comment|/*&n; * On most PC based systems the aux port IRQ is 12. There are exceptions,&n; * though. Unfortunately IRQ probing is not possible without touching&n; * the device attached to the port.&n; */
-DECL|macro|I8042_AUX_IRQ
-mdefine_line|#define I8042_AUX_IRQ CONFIG_I8042_AUX_IRQ
 multiline_comment|/*&n; * This is in 50us units, the time we wait for the i8042 to react. This&n; * has to be long enough for the i8042 itself to timeout on sending a byte&n; * to a non-existent mouse.&n; */
 DECL|macro|I8042_CTL_TIMEOUT
 mdefine_line|#define I8042_CTL_TIMEOUT&t;10000
-multiline_comment|/*&n; * Register numbers.&n; */
-DECL|macro|I8042_COMMAND_REG
-mdefine_line|#define I8042_COMMAND_REG&t;CONFIG_I8042_REG_BASE + 4&t;
-DECL|macro|I8042_STATUS_REG
-mdefine_line|#define I8042_STATUS_REG&t;CONFIG_I8042_REG_BASE + 4&t;
-DECL|macro|I8042_DATA_REG
-mdefine_line|#define I8042_DATA_REG&t;&t;CONFIG_I8042_REG_BASE&t;
+multiline_comment|/*&n; * When the device isn&squot;t opened and it&squot;s interrupts aren&squot;t used, we poll it at&n; * regular intervals to see if any characters arrived. If yes, we can start&n; * probing for any mouse / keyboard connected. This is the period of the&n; * polling.&n; */
+DECL|macro|I8042_POLL_PERIOD
+mdefine_line|#define I8042_POLL_PERIOD&t;HZ/20
 multiline_comment|/*&n; * Status register bits.&n; */
 DECL|macro|I8042_STR_PARITY
 mdefine_line|#define I8042_STR_PARITY&t;0x80
