@@ -17,7 +17,6 @@ macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
-macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1720,77 +1719,6 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/* sa1100_pcmcia_set_socket() */
-multiline_comment|/* sa1100_pcmcia_get_io_map()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the get_io_map() operation for the in-kernel PCMCIA&n; * service (formerly SS_GetIOMap in Card Services). Just returns an&n; * I/O map descriptor which was assigned earlier by a set_io_map().&n; *&n; * Returns: 0 on success, -1 if the map index was out of range&n; */
-r_static
-r_int
-DECL|function|sa1100_pcmcia_get_io_map
-id|sa1100_pcmcia_get_io_map
-c_func
-(paren
-r_int
-r_int
-id|sock
-comma
-r_struct
-id|pccard_io_map
-op_star
-id|map
-)paren
-(brace
-r_struct
-id|sa1100_pcmcia_socket
-op_star
-id|skt
-op_assign
-id|PCMCIA_SOCKET
-c_func
-(paren
-id|sock
-)paren
-suffix:semicolon
-r_int
-id|ret
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s() for sock %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|sock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|map-&gt;map
-OL
-id|MAX_IO_WIN
-)paren
-(brace
-op_star
-id|map
-op_assign
-id|skt-&gt;io_map
-(braket
-id|map-&gt;map
-)braket
-suffix:semicolon
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
 multiline_comment|/* sa1100_pcmcia_set_io_map()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the set_io_map() operation for the in-kernel PCMCIA&n; * service (formerly SS_SetIOMap in Card Services). We configure&n; * the map speed as requested, but override the address ranges&n; * supplied by Card Services.&n; *&n; * Returns: 0 on success, -1 on error&n; */
 r_static
 r_int
@@ -2045,77 +1973,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* sa1100_pcmcia_set_io_map() */
-multiline_comment|/* sa1100_pcmcia_get_mem_map()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the get_mem_map() operation for the in-kernel PCMCIA&n; * service (formerly SS_GetMemMap in Card Services). Just returns a&n; *  memory map descriptor which was assigned earlier by a&n; *  set_mem_map() request.&n; *&n; * Returns: 0 on success, -1 if the map index was out of range&n; */
-r_static
-r_int
-DECL|function|sa1100_pcmcia_get_mem_map
-id|sa1100_pcmcia_get_mem_map
-c_func
-(paren
-r_int
-r_int
-id|sock
-comma
-r_struct
-id|pccard_mem_map
-op_star
-id|map
-)paren
-(brace
-r_struct
-id|sa1100_pcmcia_socket
-op_star
-id|skt
-op_assign
-id|PCMCIA_SOCKET
-c_func
-(paren
-id|sock
-)paren
-suffix:semicolon
-r_int
-id|ret
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s() for sock %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|sock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|map-&gt;map
-OL
-id|MAX_WIN
-)paren
-(brace
-op_star
-id|map
-op_assign
-id|skt-&gt;pc_mem_map
-(braket
-id|map-&gt;map
-)braket
-suffix:semicolon
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
 multiline_comment|/* sa1100_pcmcia_set_mem_map()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the set_mem_map() operation for the in-kernel PCMCIA&n; * service (formerly SS_SetMemMap in Card Services). We configure&n; * the map speed as requested, but override the address ranges&n; * supplied by Card Services.&n; *&n; * Returns: 0 on success, -1 on error&n; */
 r_static
 r_int
@@ -2985,19 +2842,9 @@ op_assign
 id|sa1100_pcmcia_set_socket
 comma
 dot
-id|get_io_map
-op_assign
-id|sa1100_pcmcia_get_io_map
-comma
-dot
 id|set_io_map
 op_assign
 id|sa1100_pcmcia_set_io_map
-comma
-dot
-id|get_mem_map
-op_assign
-id|sa1100_pcmcia_get_mem_map
 comma
 dot
 id|set_mem_map
