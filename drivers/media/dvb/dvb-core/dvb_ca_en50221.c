@@ -3837,7 +3837,7 @@ id|delay
 op_assign
 id|HZ
 op_div
-l_int|100
+l_int|10
 suffix:semicolon
 )brace
 )brace
