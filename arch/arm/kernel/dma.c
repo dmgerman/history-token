@@ -1012,4 +1012,11 @@ c_func
 id|set_dma_speed
 )paren
 suffix:semicolon
+DECL|variable|dma_spin_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dma_spin_lock
+)paren
+suffix:semicolon
 eof
