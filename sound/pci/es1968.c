@@ -11204,13 +11204,6 @@ op_amp
 id|chip-&gt;substream_lock
 )paren
 suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|chip-&gt;bob_lock
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
