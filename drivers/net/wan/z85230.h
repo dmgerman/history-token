@@ -3,6 +3,7 @@ macro_line|#ifndef _Z8530_H
 DECL|macro|_Z8530_H
 mdefine_line|#define _Z8530_H
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* Conversion routines to/from brg time constants from/to bits&n; * per second.&n; */
 DECL|macro|BRG_TO_BPS
 mdefine_line|#define BRG_TO_BPS(brg, freq) ((freq) / 2 / ((brg) + 2))
@@ -853,7 +854,7 @@ id|z8530_hdlc_kilostream
 )braket
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|z8530_interrupt
 c_func
 (paren
