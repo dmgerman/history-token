@@ -181,14 +181,6 @@ r_int
 r_int
 id|lock
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-DECL|member|owner_pc
-r_volatile
-r_int
-r_int
-id|owner_pc
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PREEMPT
 DECL|member|break_lock
 r_int
@@ -200,18 +192,68 @@ DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-DECL|macro|RWLOCK_DEBUG_INIT
-mdefine_line|#define RWLOCK_DEBUG_INIT     , 0
-macro_line|#else
-DECL|macro|RWLOCK_DEBUG_INIT
-mdefine_line|#define RWLOCK_DEBUG_INIT     /* */
-macro_line|#endif
 DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 RWLOCK_DEBUG_INIT }
+mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp) do { *(lp) = RW_LOCK_UNLOCKED; } while(0)
+DECL|macro|read_can_lock
+mdefine_line|#define read_can_lock(rw)&t;((rw)-&gt;lock &gt;= 0)
+DECL|macro|write_can_lock
+mdefine_line|#define write_can_lock(rw)&t;(!(rw)-&gt;lock)
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
+DECL|function|_raw_read_trylock
+r_static
+id|__inline__
+r_int
+id|_raw_read_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;2:&t;lwarx&t;%0,0,%1&t;&t;# read_trylock&bslash;n&bslash;&n;&t;addic.&t;%0,%0,1&bslash;n&bslash;&n;&t;ble-&t;1f&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+op_amp
+id|rw-&gt;lock
+)paren
+suffix:colon
+l_string|&quot;cr0&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|tmp
+OG
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|_raw_read_lock
 r_static
 id|__inline__
@@ -492,6 +534,16 @@ id|rw
 suffix:semicolon
 r_extern
 r_int
+id|_raw_read_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|_raw_write_trylock
 c_func
 (paren
@@ -501,8 +553,6 @@ id|rw
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|_raw_read_trylock
-mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 macro_line|#endif /* __ASM_SPINLOCK_H */
 macro_line|#endif /* __KERNEL__ */
 eof
