@@ -1062,7 +1062,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_clear_page_dirty
+id|clear_page_dirty_for_io
 c_func
 (paren
 id|page
