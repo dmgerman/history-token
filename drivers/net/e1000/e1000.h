@@ -101,6 +101,11 @@ r_int
 r_int
 id|length
 suffix:semicolon
+DECL|member|time_stamp
+r_int
+r_int
+id|time_stamp
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|e1000_desc_ring
@@ -245,15 +250,6 @@ DECL|member|tx_ring
 r_struct
 id|e1000_desc_ring
 id|tx_ring
-suffix:semicolon
-DECL|member|trans_finish
-r_int
-r_int
-id|trans_finish
-suffix:semicolon
-DECL|member|tx_lock
-id|spinlock_t
-id|tx_lock
 suffix:semicolon
 DECL|member|txd_cmd
 r_uint32
