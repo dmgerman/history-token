@@ -9205,6 +9205,55 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Ensure  RTS and DTR are raised */
+r_else
+r_if
+c_cond
+(paren
+id|set_dtr
+c_func
+(paren
+id|port
+comma
+id|HIGH
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s Error from DTR HIGH urb&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|set_rts
+c_func
+(paren
+id|port
+comma
+id|HIGH
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s Error from RTS HIGH urb&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Set flow control */
 multiline_comment|/* Note device also supports DTR/CD (ugh) and Xon/Xoff in hardware */
