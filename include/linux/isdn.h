@@ -487,11 +487,10 @@ DECL|struct|isdn_net_phone
 r_struct
 id|isdn_net_phone
 (brace
-DECL|member|next
+DECL|member|list
 r_struct
-id|isdn_net_phone
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|num
 r_char
@@ -720,8 +719,7 @@ suffix:semicolon
 multiline_comment|/* BogoCPS needed for trigger slave */
 DECL|member|phone
 r_struct
-id|isdn_net_phone
-op_star
+id|list_head
 id|phone
 (braket
 l_int|2
@@ -731,12 +729,10 @@ multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
 DECL|member|dial
-r_struct
-id|isdn_net_phone
-op_star
+r_int
 id|dial
 suffix:semicolon
-multiline_comment|/* Pointer to dialed number         */
+multiline_comment|/* # of phone number just dialed    */
 DECL|member|master
 r_struct
 id|net_device
