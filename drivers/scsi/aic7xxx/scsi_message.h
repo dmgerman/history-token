@@ -81,7 +81,7 @@ mdefine_line|#define MSG_IDENTIFY(lun, disc)&t;(((disc) ? 0xc0 : MSG_IDENTIFYFLA
 DECL|macro|MSG_ISIDENTIFY
 mdefine_line|#define MSG_ISIDENTIFY(m)&t;((m) &amp; MSG_IDENTIFYFLAG)
 DECL|macro|MSG_IDENTIFY_LUNMASK
-mdefine_line|#define MSG_IDENTIFY_LUNMASK&t;0x03F 
+mdefine_line|#define MSG_IDENTIFY_LUNMASK&t;0x3F 
 multiline_comment|/* Extended messages (opcode and length) */
 DECL|macro|MSG_EXT_SDTR
 mdefine_line|#define MSG_EXT_SDTR&t;&t;0x01
@@ -101,10 +101,20 @@ DECL|macro|MSG_EXT_PPR
 mdefine_line|#define MSG_EXT_PPR&t;&t;0x04 /* SPI3 */
 DECL|macro|MSG_EXT_PPR_LEN
 mdefine_line|#define MSG_EXT_PPR_LEN&t;&t;0x06
+DECL|macro|MSG_EXT_PPR_PCOMP_EN
+mdefine_line|#define&t;MSG_EXT_PPR_PCOMP_EN&t;0x80
+DECL|macro|MSG_EXT_PPR_RTI
+mdefine_line|#define&t;MSG_EXT_PPR_RTI&t;&t;0x40
+DECL|macro|MSG_EXT_PPR_RD_STRM
+mdefine_line|#define&t;MSG_EXT_PPR_RD_STRM&t;0x20
+DECL|macro|MSG_EXT_PPR_WR_FLOW
+mdefine_line|#define&t;MSG_EXT_PPR_WR_FLOW&t;0x10
+DECL|macro|MSG_EXT_PPR_HOLD_MCS
+mdefine_line|#define&t;MSG_EXT_PPR_HOLD_MCS&t;0x08
 DECL|macro|MSG_EXT_PPR_QAS_REQ
-mdefine_line|#define MSG_EXT_PPR_QAS_REQ&t;0x04
+mdefine_line|#define&t;MSG_EXT_PPR_QAS_REQ&t;0x04
 DECL|macro|MSG_EXT_PPR_DT_REQ
-mdefine_line|#define MSG_EXT_PPR_DT_REQ&t;0x02
+mdefine_line|#define&t;MSG_EXT_PPR_DT_REQ&t;0x02
 DECL|macro|MSG_EXT_PPR_IU_REQ
 mdefine_line|#define MSG_EXT_PPR_IU_REQ&t;0x01
 eof

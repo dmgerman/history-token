@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * Aic7xxx SCSI host adapter firmware asssembler&n; *&n; * Copyright (c) 1997, 1998, 2000, 2001 Justin T. Gibbs.&n; * Copyright (c) 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aicasm/aicasm.c#11 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aicasm/aicasm.c,v 1.29 2000/10/05 04:25:42 gibbs Exp $&n; */
+multiline_comment|/*&n; * Aic7xxx SCSI host adapter firmware asssembler&n; *&n; * Copyright (c) 1997, 1998, 2000, 2001 Justin T. Gibbs.&n; * Copyright (c) 2001, 2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aicasm/aicasm.c#22 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;ctype.h&gt;
 macro_line|#include &lt;inttypes.h&gt;
+macro_line|#include &lt;regex.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
@@ -150,6 +151,11 @@ r_char
 op_star
 id|appname
 suffix:semicolon
+DECL|variable|stock_include_file
+r_char
+op_star
+id|stock_include_file
+suffix:semicolon
 DECL|variable|ofile
 id|FILE
 op_star
@@ -179,6 +185,24 @@ DECL|variable|listfile
 id|FILE
 op_star
 id|listfile
+suffix:semicolon
+DECL|variable|regdiagfilename
+r_char
+op_star
+id|regdiagfilename
+suffix:semicolon
+DECL|variable|regdiagfile
+id|FILE
+op_star
+id|regdiagfile
+suffix:semicolon
+DECL|variable|src_mode
+r_int
+id|src_mode
+suffix:semicolon
+DECL|variable|dst_mode
+r_int
+id|dst_mode
 suffix:semicolon
 r_static
 id|STAILQ_HEAD
@@ -210,7 +234,15 @@ id|yy_flex_debug
 suffix:semicolon
 r_extern
 r_int
+id|mm_flex_debug
+suffix:semicolon
+r_extern
+r_int
 id|yydebug
+suffix:semicolon
+r_extern
+r_int
+id|mmdebug
 suffix:semicolon
 macro_line|#endif
 r_extern
@@ -347,7 +379,15 @@ id|yy_flex_debug
 op_assign
 l_int|0
 suffix:semicolon
+id|mm_flex_debug
+op_assign
+l_int|0
+suffix:semicolon
 id|yydebug
+op_assign
+l_int|0
+suffix:semicolon
+id|mmdebug
 op_assign
 l_int|0
 suffix:semicolon
@@ -365,7 +405,7 @@ id|argc
 comma
 id|argv
 comma
-l_string|&quot;d:l:n:o:r:I:O:&quot;
+l_string|&quot;d:i:l:n:o:p:r:I:&quot;
 )paren
 )paren
 op_ne
@@ -401,6 +441,10 @@ id|yy_flex_debug
 op_assign
 l_int|1
 suffix:semicolon
+id|mm_flex_debug
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -418,6 +462,10 @@ l_int|0
 )paren
 (brace
 id|yydebug
+op_assign
+l_int|1
+suffix:semicolon
+id|mmdebug
 op_assign
 l_int|1
 suffix:semicolon
@@ -452,6 +500,15 @@ id|EX_SOFTWARE
 )paren
 suffix:semicolon
 macro_line|#endif
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;i&squot;
+suffix:colon
+id|stock_include_file
+op_assign
+id|optarg
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -573,6 +630,49 @@ id|EX_CANTCREAT
 suffix:semicolon
 )brace
 id|ofilename
+op_assign
+id|optarg
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;p&squot;
+suffix:colon
+multiline_comment|/* Create Register Diagnostic &quot;printing&quot; Functions */
+r_if
+c_cond
+(paren
+(paren
+id|regdiagfile
+op_assign
+id|fopen
+c_func
+(paren
+id|optarg
+comma
+l_string|&quot;w&quot;
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+id|perror
+c_func
+(paren
+id|optarg
+)paren
+suffix:semicolon
+id|stop
+c_func
+(paren
+l_int|NULL
+comma
+id|EX_CANTCREAT
+)paren
+suffix:semicolon
+)brace
+id|regdiagfilename
 op_assign
 id|optarg
 suffix:semicolon
@@ -834,6 +934,41 @@ c_func
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
+r_if
+c_cond
+(paren
+id|regdiagfile
+op_ne
+l_int|NULL
+op_logical_and
+(paren
+id|regfile
+op_eq
+l_int|NULL
+op_logical_or
+id|stock_include_file
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+id|fprintf
+c_func
+(paren
+id|stderr
+comma
+l_string|&quot;%s: The -p option requires the -r and -i options.&bslash;n&quot;
+comma
+id|appname
+)paren
+suffix:semicolon
+id|usage
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* NOTREACHED */
+)brace
 id|symtable_open
 c_func
 (paren
@@ -952,14 +1087,14 @@ id|regfile
 op_ne
 l_int|NULL
 )paren
-(brace
 id|symtable_dump
 c_func
 (paren
 id|regfile
+comma
+id|regdiagfile
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1005,46 +1140,10 @@ c_func
 (paren
 id|stderr
 comma
-"&quot;"
-id|usage
-suffix:colon
-op_mod
-op_minus
-l_int|16
-id|s
-(braket
-op_minus
-id|nostdinc
-)braket
-(braket
-op_minus
-id|I
-op_minus
-)braket
-(braket
-op_minus
-id|I
-id|directory
-)braket
-(braket
-op_minus
-id|o
-id|output_file
-)braket
-(braket
-op_minus
-id|r
-id|register_output_file
-)braket
-(braket
-op_minus
-id|l
-id|program_list_file
-)braket
-id|input_file
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;usage: %-16s [-nostdinc] [-I-] [-I directory] [-o output_file]&bslash;n&quot;
+l_string|&quot;&t;[-r register_output_file [-p register_diag_file -i includefile]]&bslash;n&quot;
+l_string|&quot;&t;[-l program_list_file]&bslash;n&quot;
+l_string|&quot;&t;input_file&bslash;n&quot;
 comma
 id|appname
 )paren
@@ -1207,11 +1306,11 @@ c_func
 (paren
 id|ofile
 comma
-"&quot;"
-multiline_comment|/*&n; * DO NOT EDIT - This file is automatically generated&n; *&t;&t; from the following source files:&n; *&n;%s */
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;/*&bslash;n&quot;
+l_string|&quot; * DO NOT EDIT - This file is automatically generated&bslash;n&quot;
+l_string|&quot; *&t;&t; from the following source files:&bslash;n&quot;
+l_string|&quot; *&bslash;n&quot;
+l_string|&quot;%s */&bslash;n&quot;
 comma
 id|versions
 )paren
@@ -1329,7 +1428,34 @@ comma
 l_string|&quot;&bslash;n};&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|patch_arg_list
+op_eq
+l_int|NULL
+)paren
+id|stop
+c_func
+(paren
+l_string|&quot;Patch argument list not defined&quot;
+comma
+id|EX_DATAERR
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Output patch information.  Patch functions first.&n;&t; */
+id|fprintf
+c_func
+(paren
+id|ofile
+comma
+l_string|&quot;typedef int %spatch_func_t (%s);&bslash;n&quot;
+comma
+id|prefix
+comma
+id|patch_arg_list
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1362,97 +1488,43 @@ c_func
 (paren
 id|ofile
 comma
-"&quot;"
-r_static
-r_int
-id|ahc_patch
-op_mod
-id|d_func
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-)paren
-suffix:semicolon
-r_static
-r_int
-id|ahc_patch
-op_mod
-id|d_func
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-)paren
-(brace
-r_return
-(paren
-op_mod
-id|s
-)paren
-suffix:semicolon
-)brace
-"&bslash;"
-id|n
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;static %spatch_func_t %spatch%d_func;&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;static int&bslash;n&quot;
+l_string|&quot;%spatch%d_func(%s)&bslash;n&quot;
+l_string|&quot;{&bslash;n&quot;
+l_string|&quot;&t;return (%s);&bslash;n&quot;
+l_string|&quot;}&bslash;n&bslash;n&quot;
+comma
+id|prefix
+comma
+id|prefix
 comma
 id|cur_node-&gt;symbol-&gt;info.condinfo-&gt;func_num
 comma
+id|prefix
+comma
 id|cur_node-&gt;symbol-&gt;info.condinfo-&gt;func_num
+comma
+id|patch_arg_list
 comma
 id|cur_node-&gt;symbol-&gt;name
 )paren
 suffix:semicolon
 )brace
 id|fprintf
+c_func
 (paren
 id|ofile
 comma
-"&quot;"
-r_typedef
-r_int
-id|patch_func_t
-(paren
-r_struct
-id|ahc_softc
-op_star
-)paren
-suffix:semicolon
-r_struct
-id|patch
-(brace
-id|patch_func_t
-op_star
-id|patch_func
-suffix:semicolon
-r_uint32
-id|begin
-suffix:colon
-l_int|10
+l_string|&quot;static struct patch {&bslash;n&quot;
+l_string|&quot;&t;%spatch_func_t&t;&t;*patch_func;&bslash;n&quot;
+l_string|&quot;&t;uint32_t&t;&t; begin&t;&t;:10,&bslash;n&quot;
+l_string|&quot;&t;&t;&t;&t; skip_instr&t;:10,&bslash;n&quot;
+l_string|&quot;&t;&t;&t;&t; skip_patch&t;:12;&bslash;n&quot;
+l_string|&quot;} patches[] = {&bslash;n&quot;
 comma
-id|skip_instr
-suffix:colon
-l_int|10
-comma
-id|skip_patch
-suffix:colon
-l_int|12
-suffix:semicolon
-)brace
-id|patches
-(braket
-)braket
-op_assign
-(brace
-"&bslash;"
-id|n
-"&quot;"
+id|prefix
 )paren
 suffix:semicolon
 r_for
@@ -1487,7 +1559,7 @@ c_func
 (paren
 id|ofile
 comma
-l_string|&quot;%s&bslash;t{ ahc_patch%d_func, %d, %d, %d }&quot;
+l_string|&quot;%s&bslash;t{ %spatch%d_func, %d, %d, %d }&quot;
 comma
 id|cur_patch
 op_eq
@@ -1502,6 +1574,8 @@ c_cond
 l_string|&quot;&quot;
 suffix:colon
 l_string|&quot;,&bslash;n&quot;
+comma
+id|prefix
 comma
 id|cur_patch-&gt;patch_func
 comma
@@ -1518,32 +1592,18 @@ c_func
 (paren
 id|ofile
 comma
-l_string|&quot;&bslash;n};&bslash;n&quot;
+l_string|&quot;&bslash;n};&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|fprintf
+c_func
 (paren
 id|ofile
 comma
-"&quot;"
-r_struct
-id|cs
-(brace
-id|u_int16_t
-id|begin
-suffix:semicolon
-id|u_int16_t
-id|end
-suffix:semicolon
-)brace
-id|critical_sections
-(braket
-)braket
-op_assign
-(brace
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;static struct cs {&bslash;n&quot;
+l_string|&quot;&t;uint16_t&t;begin;&bslash;n&quot;
+l_string|&quot;&t;uint16_t&t;end;&bslash;n&quot;
+l_string|&quot;} critical_sections[] = {&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1605,7 +1665,7 @@ c_func
 (paren
 id|ofile
 comma
-l_string|&quot;&bslash;n};&bslash;n&quot;
+l_string|&quot;&bslash;n};&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|fprintf
@@ -1613,25 +1673,8 @@ c_func
 (paren
 id|ofile
 comma
-"&quot;"
-r_const
-r_int
-id|num_critical_sections
-op_assign
-r_sizeof
-(paren
-id|critical_sections
-)paren
-op_div
-r_sizeof
-(paren
-op_star
-id|critical_sections
-)paren
-suffix:semicolon
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;static const int num_critical_sections = sizeof(critical_sections)&bslash;n&quot;
+l_string|&quot;&t;&t;&t;&t;       / sizeof(*critical_sections);&bslash;n&quot;
 )paren
 suffix:semicolon
 id|fprintf
