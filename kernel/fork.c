@@ -4099,6 +4099,11 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
 r_goto
 id|bad_fork_cleanup_namespace
 suffix:semicolon
