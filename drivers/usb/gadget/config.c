@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
+macro_line|#include &lt;linux/usb_gadget.h&gt;
 multiline_comment|/**&n; * usb_descriptor_fillbuf - fill buffer with descriptors&n; * @buf: Buffer to be filled&n; * @buflen: Size of buf&n; * @src: Array of descriptor pointers, terminated by null pointer.&n; *&n; * Copies descriptors into the buffer, returning the length or a&n; * negative error code if they can&squot;t all be copied.  Useful when&n; * assembling descriptors for an associated set of interfaces used&n; * as part of configuring a composite device; or in other cases where&n; * sets of descriptors need to be marshaled.&n; */
 r_int
 DECL|function|usb_descriptor_fillbuf
