@@ -816,7 +816,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%d sessions and %d shares reconnected after failure&bslash;n&quot;
+l_string|&quot;%d session %d share reconnects&bslash;n&quot;
 comma
 id|tcpSesReconnectCount.counter
 comma
