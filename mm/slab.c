@@ -1813,7 +1813,6 @@ suffix:semicolon
 macro_line|#if DEBUG
 DECL|function|poison_obj
 r_static
-r_inline
 r_void
 id|poison_obj
 (paren
@@ -1879,7 +1878,6 @@ suffix:semicolon
 )brace
 DECL|function|check_poison_obj
 r_static
-r_inline
 r_int
 id|check_poison_obj
 (paren
