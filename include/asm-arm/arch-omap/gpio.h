@@ -9,18 +9,18 @@ DECL|macro|OMAP_MPUIO_BASE
 mdefine_line|#define OMAP_MPUIO_BASE&t;&t;&t;0xfffb5000
 DECL|macro|OMAP_MPUIO_INPUT_LATCH
 mdefine_line|#define OMAP_MPUIO_INPUT_LATCH&t;&t;0x00
-DECL|macro|OMAP_MPUIO_OUTPUT_REG
-mdefine_line|#define OMAP_MPUIO_OUTPUT_REG&t;&t;0x04
+DECL|macro|OMAP_MPUIO_OUTPUT
+mdefine_line|#define OMAP_MPUIO_OUTPUT&t;&t;0x04
 DECL|macro|OMAP_MPUIO_IO_CNTL
 mdefine_line|#define OMAP_MPUIO_IO_CNTL&t;&t;0x08
 DECL|macro|OMAP_MPUIO_KBR_LATCH
 mdefine_line|#define OMAP_MPUIO_KBR_LATCH&t;&t;0x10
-DECL|macro|OMAP_MPUIO_KBC_REG
-mdefine_line|#define OMAP_MPUIO_KBC_REG&t;&t;0x14
-DECL|macro|OMAP_MPUIO_GPIO_EVENT_MODE_REG
-mdefine_line|#define OMAP_MPUIO_GPIO_EVENT_MODE_REG&t;0x18
-DECL|macro|OMAP_MPUIO_GPIO_INT_EDGE_REG
-mdefine_line|#define OMAP_MPUIO_GPIO_INT_EDGE_REG&t;0x1c
+DECL|macro|OMAP_MPUIO_KBC
+mdefine_line|#define OMAP_MPUIO_KBC&t;&t;&t;0x14
+DECL|macro|OMAP_MPUIO_GPIO_EVENT_MODE
+mdefine_line|#define OMAP_MPUIO_GPIO_EVENT_MODE&t;0x18
+DECL|macro|OMAP_MPUIO_GPIO_INT_EDGE
+mdefine_line|#define OMAP_MPUIO_GPIO_INT_EDGE&t;0x1c
 DECL|macro|OMAP_MPUIO_KBD_INT
 mdefine_line|#define OMAP_MPUIO_KBD_INT&t;&t;0x20
 DECL|macro|OMAP_MPUIO_GPIO_INT
@@ -29,10 +29,10 @@ DECL|macro|OMAP_MPUIO_KBD_MASKIT
 mdefine_line|#define OMAP_MPUIO_KBD_MASKIT&t;&t;0x28
 DECL|macro|OMAP_MPUIO_GPIO_MASKIT
 mdefine_line|#define OMAP_MPUIO_GPIO_MASKIT&t;&t;0x2c
-DECL|macro|OMAP_MPUIO_GPIO_DEBOUNCING_REG
-mdefine_line|#define OMAP_MPUIO_GPIO_DEBOUNCING_REG&t;0x30
-DECL|macro|OMAP_MPUIO_LATCH_REG
-mdefine_line|#define OMAP_MPUIO_LATCH_REG&t;&t;0x34
+DECL|macro|OMAP_MPUIO_GPIO_DEBOUNCING
+mdefine_line|#define OMAP_MPUIO_GPIO_DEBOUNCING&t;0x30
+DECL|macro|OMAP_MPUIO_LATCH
+mdefine_line|#define OMAP_MPUIO_LATCH&t;&t;0x34
 DECL|macro|OMAP_MPUIO
 mdefine_line|#define OMAP_MPUIO(nr)&t;&t;(OMAP_MAX_GPIO_LINES + (nr))
 DECL|macro|OMAP_GPIO_IS_MPUIO

@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-omap/board-perseus2.c&n; *&n; * Modified from board-generic.c&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-omap/board-perseus2.c&n; *&n; * Modified from board-generic.c&n; *&n; * Original OMAP730 support by Jean Pihet &lt;j-pihet@ti.com&gt;&n; * Updated for 2.6 by Kevin Hilman &lt;kjh@hilman.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
@@ -285,7 +286,7 @@ l_string|&quot;OMAP730 Perseus2&quot;
 id|MAINTAINER
 c_func
 (paren
-l_string|&quot;Kevin Hilman &lt;k-hilman@ti.com&gt;&quot;
+l_string|&quot;Kevin Hilman &lt;kjh@hilman.org&gt;&quot;
 )paren
 id|BOOT_MEM
 c_func
