@@ -315,6 +315,7 @@ id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
+r_struct
 id|ncr_device
 id|device
 suffix:semicolon
@@ -436,6 +437,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|ncr_device
 )paren
 )paren

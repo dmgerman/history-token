@@ -798,7 +798,7 @@ id|v_minor
 suffix:semicolon
 multiline_comment|/* 0x30 */
 DECL|member|boot_crc
-id|u_int32
+id|u32
 id|boot_crc
 suffix:semicolon
 DECL|member|flags
@@ -1442,7 +1442,7 @@ mdefine_line|#define   WRIE    0x01  /* mod: write and invalidate enable */
 multiline_comment|/* bits 4-7 rsvd for C1010          */
 DECL|member|nc_temp
 multiline_comment|/*1c*/
-id|u_int32
+id|u32
 id|nc_temp
 suffix:semicolon
 multiline_comment|/* ### Temporary stack              */
@@ -1477,25 +1477,25 @@ id|nc_ctest6
 suffix:semicolon
 DECL|member|nc_dbc
 multiline_comment|/*24*/
-id|u_int32
+id|u32
 id|nc_dbc
 suffix:semicolon
 multiline_comment|/* ### Byte count and command       */
 DECL|member|nc_dnad
 multiline_comment|/*28*/
-id|u_int32
+id|u32
 id|nc_dnad
 suffix:semicolon
 multiline_comment|/* ### Next command register        */
 DECL|member|nc_dsp
 multiline_comment|/*2c*/
-id|u_int32
+id|u32
 id|nc_dsp
 suffix:semicolon
 multiline_comment|/* --&gt; Script Pointer               */
 DECL|member|nc_dsps
 multiline_comment|/*30*/
-id|u_int32
+id|u32
 id|nc_dsps
 suffix:semicolon
 multiline_comment|/* --&gt; Script pointer save/opcode#2 */
@@ -1572,7 +1572,7 @@ mdefine_line|#define&t;  NOCOM   0x01&t;/* cmd: protect sfbr while reselect */
 multiline_comment|/* bits 0-1 rsvd for C1010          */
 DECL|member|nc_adder
 multiline_comment|/*3c*/
-id|u_int32
+id|u32
 id|nc_adder
 suffix:semicolon
 DECL|member|nc_sien
@@ -1802,43 +1802,43 @@ suffix:semicolon
 multiline_comment|/* Working register C-R             */
 DECL|member|nc_mmrs
 multiline_comment|/*a0*/
-id|u_int32
+id|u32
 id|nc_mmrs
 suffix:semicolon
 multiline_comment|/* Memory Move Read Selector        */
 DECL|member|nc_mmws
 multiline_comment|/*a4*/
-id|u_int32
+id|u32
 id|nc_mmws
 suffix:semicolon
 multiline_comment|/* Memory Move Write Selector       */
 DECL|member|nc_sfs
 multiline_comment|/*a8*/
-id|u_int32
+id|u32
 id|nc_sfs
 suffix:semicolon
 multiline_comment|/* Script Fetch Selector            */
 DECL|member|nc_drs
 multiline_comment|/*ac*/
-id|u_int32
+id|u32
 id|nc_drs
 suffix:semicolon
 multiline_comment|/* DSA Relative Selector            */
 DECL|member|nc_sbms
 multiline_comment|/*b0*/
-id|u_int32
+id|u32
 id|nc_sbms
 suffix:semicolon
 multiline_comment|/* Static Block Move Selector       */
 DECL|member|nc_dbms
 multiline_comment|/*b4*/
-id|u_int32
+id|u32
 id|nc_dbms
 suffix:semicolon
 multiline_comment|/* Dynamic Block Move Selector      */
 DECL|member|nc_dnad64
 multiline_comment|/*b8*/
-id|u_int32
+id|u32
 id|nc_dnad64
 suffix:semicolon
 multiline_comment|/* DMA Next Address 64              */
@@ -1870,13 +1870,13 @@ suffix:semicolon
 multiline_comment|/* AIP Control C1010_66 Only        */
 DECL|member|nc_pmjad1
 multiline_comment|/*c0*/
-id|u_int32
+id|u32
 id|nc_pmjad1
 suffix:semicolon
 multiline_comment|/* Phase Mismatch Jump Address 1    */
 DECL|member|nc_pmjad2
 multiline_comment|/*c4*/
-id|u_int32
+id|u32
 id|nc_pmjad2
 suffix:semicolon
 multiline_comment|/* Phase Mismatch Jump Address 2    */
@@ -1930,7 +1930,7 @@ suffix:semicolon
 multiline_comment|/*                                  */
 DECL|member|nc_esa
 multiline_comment|/*d0*/
-id|u_int32
+id|u32
 id|nc_esa
 suffix:semicolon
 multiline_comment|/* Entry Storage Address            */
@@ -1957,13 +1957,13 @@ id|nc_ia3
 suffix:semicolon
 DECL|member|nc_sbc
 multiline_comment|/*d8*/
-id|u_int32
+id|u32
 id|nc_sbc
 suffix:semicolon
 multiline_comment|/* SCSI Byte Count (3 bytes only)   */
 DECL|member|nc_csbc
 multiline_comment|/*dc*/
-id|u_int32
+id|u32
 id|nc_csbc
 suffix:semicolon
 multiline_comment|/* Cumulative SCSI Byte Count       */
@@ -1990,19 +1990,19 @@ suffix:semicolon
 multiline_comment|/* CRC control register             */
 DECL|member|nc_crcdata
 multiline_comment|/*e4*/
-id|u_int32
+id|u32
 id|nc_crcdata
 suffix:semicolon
 multiline_comment|/* CRC data register                */
 DECL|member|nc_e8_
 multiline_comment|/*e8*/
-id|u_int32
+id|u32
 id|nc_e8_
 suffix:semicolon
 multiline_comment|/* rsvd &t;&t;&t;    */
 DECL|member|nc_ec_
 multiline_comment|/*ec*/
-id|u_int32
+id|u32
 id|nc_ec_
 suffix:semicolon
 multiline_comment|/* rsvd &t;&t;&t;    */
@@ -2021,7 +2021,7 @@ DECL|macro|REG
 mdefine_line|#define REG(r) REGJ (nc_, r)
 DECL|typedef|ncrcmd
 r_typedef
-id|u_int32
+id|u32
 id|ncrcmd
 suffix:semicolon
 multiline_comment|/*-----------------------------------------------------------&n;**&n;**&t;SCSI phases&n;**&n;**&t;DT phases illegal for ncr driver.&n;**&n;**-----------------------------------------------------------&n;*/
@@ -2065,11 +2065,11 @@ r_struct
 id|scr_tblmove
 (brace
 DECL|member|size
-id|u_int32
+id|u32
 id|size
 suffix:semicolon
 DECL|member|addr
-id|u_int32
+id|u32
 id|addr
 suffix:semicolon
 )brace
@@ -2133,7 +2133,7 @@ macro_line|#endif
 DECL|macro|SCR_JMP_REL
 mdefine_line|#define SCR_JMP_REL     0x04000000
 DECL|macro|SCR_ID
-mdefine_line|#define SCR_ID(id)&t;(((u_int32)(id)) &lt;&lt; 16)
+mdefine_line|#define SCR_ID(id)&t;(((u32)(id)) &lt;&lt; 16)
 multiline_comment|/*-----------------------------------------------------------&n;**&n;**&t;Waiting for Disconnect or Reselect&n;**&n;**-----------------------------------------------------------&n;**&n;**&t;WAIT_DISC&n;**&t;dummy: &lt;&lt;alternate_address&gt;&gt;&n;**&n;**&t;WAIT_RESEL&n;**&t;&lt;&lt;alternate_address&gt;&gt;&n;**&n;**-----------------------------------------------------------&n;*/
 DECL|macro|SCR_WAIT_DISC
 mdefine_line|#define&t;SCR_WAIT_DISC&t;0x48000000
