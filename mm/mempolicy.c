@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -86,7 +87,11 @@ c_func
 (paren
 id|online2
 comma
+id|nodes_addr
+c_func
+(paren
 id|node_online_map
+)paren
 comma
 id|MAX_NUMNODES
 )paren
@@ -1958,7 +1963,11 @@ c_func
 (paren
 id|nodes
 comma
+id|nodes_addr
+c_func
+(paren
 id|node_online_map
+)paren
 comma
 id|MAX_NUMNODES
 )paren
@@ -3372,12 +3381,10 @@ id|BUG_ON
 c_func
 (paren
 op_logical_neg
-id|test_bit
+id|node_online
 c_func
 (paren
 id|nid
-comma
-id|node_online_map
 )paren
 )paren
 suffix:semicolon
@@ -5236,7 +5243,11 @@ c_func
 (paren
 id|MPOL_INTERLEAVE
 comma
+id|nodes_addr
+c_func
+(paren
 id|node_online_map
+)paren
 comma
 id|MAX_NUMNODES
 )paren

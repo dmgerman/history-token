@@ -16,14 +16,19 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-id|DECLARE_BITMAP
-c_func
-(paren
+DECL|variable|node_online_map
+id|nodemask_t
 id|node_online_map
-comma
-id|MAX_NUMNODES
-)paren
+op_assign
+id|NODE_MASK_NONE
+suffix:semicolon
+DECL|variable|node_possible_map
+id|nodemask_t
+id|node_possible_map
+op_assign
+id|NODE_MASK_ALL
 suffix:semicolon
 DECL|variable|pgdat_list
 r_struct

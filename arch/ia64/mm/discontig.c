@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/meminit.h&gt;

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -789,14 +790,12 @@ r_continue
 suffix:semicolon
 id|rr
 op_assign
-id|find_next_bit
+id|next_node
 c_func
 (paren
-id|node_online_map
-comma
-id|MAX_NUMNODES
-comma
 id|rr
+comma
+id|node_online_map
 )paren
 suffix:semicolon
 r_if
@@ -808,12 +807,10 @@ id|MAX_NUMNODES
 )paren
 id|rr
 op_assign
-id|find_first_bit
+id|first_node
 c_func
 (paren
 id|node_online_map
-comma
-id|MAX_NUMNODES
 )paren
 suffix:semicolon
 id|node_data
