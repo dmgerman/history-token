@@ -650,14 +650,6 @@ id|usb_device
 op_star
 id|dev
 suffix:semicolon
-DECL|member|setup_packet_dma_handle
-id|dma_addr_t
-id|setup_packet_dma_handle
-suffix:semicolon
-DECL|member|transfer_buffer_dma_handle
-id|dma_addr_t
-id|transfer_buffer_dma_handle
-suffix:semicolon
 DECL|member|qh
 r_struct
 id|uhci_qh

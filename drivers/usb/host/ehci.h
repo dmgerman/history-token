@@ -456,11 +456,6 @@ op_star
 id|urb
 suffix:semicolon
 multiline_comment|/* qtd&squot;s urb */
-DECL|member|buf_dma
-id|dma_addr_t
-id|buf_dma
-suffix:semicolon
-multiline_comment|/* buffer address */
 DECL|member|length
 r_int
 id|length
