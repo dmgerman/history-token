@@ -1316,6 +1316,8 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|macro|EXTRA_STACK_VM_PAGES
+mdefine_line|#define EXTRA_STACK_VM_PAGES&t;20&t;/* random */
 DECL|function|setup_arg_pages
 r_int
 id|setup_arg_pages
@@ -1528,15 +1530,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Adjust bprm-&gt;p to point to the end of the strings. */
-id|bprm-&gt;p
-op_assign
-id|PAGE_SIZE
-op_star
-id|i
-op_minus
-id|offset
-suffix:semicolon
 multiline_comment|/* Limit stack size to 1GB */
 id|stack_base
 op_assign
@@ -1574,6 +1567,17 @@ op_minus
 id|stack_base
 )paren
 suffix:semicolon
+multiline_comment|/* Adjust bprm-&gt;p to point to the end of the strings. */
+id|bprm-&gt;p
+op_assign
+id|stack_base
+op_plus
+id|PAGE_SIZE
+op_star
+id|i
+op_minus
+id|offset
+suffix:semicolon
 id|mm-&gt;arg_start
 op_assign
 id|stack_base
@@ -1609,11 +1613,13 @@ id|MAX_ARG_PAGES
 op_star
 id|PAGE_SIZE
 suffix:semicolon
+id|bprm-&gt;p
+op_add_assign
+id|stack_base
+suffix:semicolon
 id|mm-&gt;arg_start
 op_assign
 id|bprm-&gt;p
-op_plus
-id|stack_base
 suffix:semicolon
 id|arg_size
 op_assign
@@ -1630,9 +1636,11 @@ id|mm-&gt;arg_start
 )paren
 suffix:semicolon
 macro_line|#endif
-id|bprm-&gt;p
+id|arg_size
 op_add_assign
-id|stack_base
+id|EXTRA_STACK_VM_PAGES
+op_star
+id|PAGE_SIZE
 suffix:semicolon
 r_if
 c_cond
@@ -1725,34 +1733,20 @@ id|stack_base
 suffix:semicolon
 id|mpnt-&gt;vm_end
 op_assign
-id|PAGE_MASK
-op_amp
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
+id|stack_base
 op_plus
-(paren
-r_int
-r_int
-)paren
-id|bprm-&gt;p
-)paren
+id|arg_size
 suffix:semicolon
 macro_line|#else
-id|mpnt-&gt;vm_start
-op_assign
-id|PAGE_MASK
-op_amp
-(paren
-r_int
-r_int
-)paren
-id|bprm-&gt;p
-suffix:semicolon
 id|mpnt-&gt;vm_end
 op_assign
 id|STACK_TOP
+suffix:semicolon
+id|mpnt-&gt;vm_start
+op_assign
+id|mpnt-&gt;vm_end
+op_minus
+id|arg_size
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Adjust stack execute permissions; explicitly enable&n;&t;&t; * for EXSTACK_ENABLE_X, disable for EXSTACK_DISABLE_X&n;&t;&t; * and leave alone (arch default) otherwise. */
