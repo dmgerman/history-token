@@ -374,6 +374,17 @@ id|wait_queue_head_t
 id|dev_reset_wait
 suffix:semicolon
 multiline_comment|/* wait during reset    */
+DECL|member|scsi_scan_wait
+id|wait_queue_head_t
+id|scsi_scan_wait
+suffix:semicolon
+multiline_comment|/* wait before scanning */
+DECL|member|scsi_scan_done
+r_struct
+id|completion
+id|scsi_scan_done
+suffix:semicolon
+multiline_comment|/* scan thread end&t; */
 multiline_comment|/* subdriver information */
 DECL|member|extra
 r_void
