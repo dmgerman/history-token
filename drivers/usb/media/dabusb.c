@@ -2620,6 +2620,13 @@ OL
 l_int|0
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|s-&gt;mutex
+)paren
+suffix:semicolon
 id|err
 c_func
 (paren
