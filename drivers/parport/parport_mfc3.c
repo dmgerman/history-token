@@ -1338,6 +1338,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ----------- Initialisation code --------------------------------- */
 DECL|function|parport_mfc3_init
+r_static
 r_int
 id|__init
 id|parport_mfc3_init
@@ -1569,12 +1570,6 @@ id|p-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* XXX: set operating mode */
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|p-&gt;private_data
 op_assign
 (paren
@@ -1601,7 +1596,7 @@ r_continue
 suffix:semicolon
 id|out_irq
 suffix:colon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|p
@@ -1633,6 +1628,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|parport_mfc3_exit
+r_static
 r_void
 id|__exit
 id|parport_mfc3_exit
@@ -1670,6 +1666,15 @@ id|i
 )paren
 r_continue
 suffix:semicolon
+id|parport_remove_port
+c_func
+(paren
+id|this_port
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1702,24 +1707,6 @@ id|pp_mfc3_ops
 )paren
 suffix:semicolon
 )brace
-id|parport_proc_unregister
-c_func
-(paren
-id|this_port
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|parport_unregister_port
-c_func
-(paren
-id|this_port
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
 id|release_mem_region
 c_func
 (paren
@@ -1739,6 +1726,15 @@ r_sizeof
 r_struct
 id|pia
 )paren
+)paren
+suffix:semicolon
+id|parport_put_port
+c_func
+(paren
+id|this_port
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 )brace

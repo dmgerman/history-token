@@ -275,6 +275,7 @@ comma
 suffix:semicolon
 multiline_comment|/* --- Initialisation code -------------------------------- */
 DECL|function|parport_arc_init
+r_static
 r_int
 id|parport_arc_init
 c_func
@@ -379,12 +380,6 @@ comma
 id|p-&gt;irq
 )paren
 suffix:semicolon
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 multiline_comment|/* Tell the high-level drivers about the port. */
 id|parport_announce_port
 (paren
@@ -395,4 +390,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|module_init
+c_func
+(paren
+id|parport_arc_init
+)paren
 eof

@@ -872,6 +872,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ----------- Initialisation code --------------------------------- */
 DECL|function|parport_amiga_init
+r_static
 r_int
 id|__init
 id|parport_amiga_init
@@ -1011,12 +1012,6 @@ id|p-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* XXX: set operating mode */
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|parport_announce_port
 c_func
 (paren
@@ -1028,7 +1023,7 @@ l_int|0
 suffix:semicolon
 id|out_irq
 suffix:colon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|p
@@ -1055,6 +1050,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|parport_amiga_exit
+r_static
 r_void
 id|__exit
 id|parport_amiga_exit
@@ -1063,6 +1059,12 @@ c_func
 r_void
 )paren
 (brace
+id|parport_remove_port
+c_func
+(paren
+id|this_port
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1078,13 +1080,7 @@ comma
 id|this_port
 )paren
 suffix:semicolon
-id|parport_proc_unregister
-c_func
-(paren
-id|this_port
-)paren
-suffix:semicolon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|this_port
