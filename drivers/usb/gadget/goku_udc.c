@@ -9032,7 +9032,7 @@ r_void
 )paren
 (brace
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|goku_pci_driver

@@ -3598,7 +3598,7 @@ id|ehci_sitd
 )paren
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|ehci_pci_driver
