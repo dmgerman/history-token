@@ -6658,14 +6658,14 @@ r_while
 c_loop
 (paren
 (paren
-(paren
 r_char
 op_star
 )paren
+(paren
 id|de2
 op_assign
 (paren
-r_char
+r_void
 op_star
 )paren
 id|de

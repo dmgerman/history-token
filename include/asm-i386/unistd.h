@@ -727,7 +727,7 @@ r_inline
 id|_syscall1
 c_func
 (paren
-r_int
+r_void
 comma
 id|_exit
 comma

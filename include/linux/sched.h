@@ -2496,7 +2496,6 @@ r_void
 suffix:semicolon
 multiline_comment|/* mmdrop drops the mm and the page tables */
 r_extern
-r_inline
 r_void
 id|FASTCALL
 c_func
