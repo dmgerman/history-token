@@ -2538,7 +2538,7 @@ r_if
 c_cond
 (paren
 id|start
-OG
+op_ge
 id|end
 )paren
 r_return
