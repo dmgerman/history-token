@@ -5928,6 +5928,8 @@ id|flag
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Compute drive-&gt;capacity, the full capacity of the drive&n; * Called with drive-&gt;id != NULL.&n; *&n; * To compute capacity, this uses either of&n; *&n; *    1. CHS value set by user       (whatever user sets will be trusted)&n; *    2. LBA value from target drive (require new ATA feature)&n; *    3. LBA value from system BIOS  (new one is OK, old one may break)&n; *    4. CHS value from system BIOS  (traditional style)&n; *&n; * in above order (i.e., if value of higher priority is available,&n; * reset will be ignored).&n; */
+DECL|macro|IDE_STROKE_LIMIT
+mdefine_line|#define IDE_STROKE_LIMIT&t;(32000*1024*2)
 DECL|function|init_idedisk_capacity
 r_static
 r_void
@@ -6050,6 +6052,10 @@ c_cond
 id|set_max_ext
 OG
 id|capacity_2
+op_logical_and
+id|capacity_2
+OG
+id|IDE_STROKE_LIMIT
 )paren
 (brace
 macro_line|#ifdef CONFIG_IDEDISK_STROKE
@@ -6198,6 +6204,10 @@ c_cond
 id|set_max
 OG
 id|capacity
+op_logical_and
+id|capacity
+OG
+id|IDE_STROKE_LIMIT
 )paren
 (brace
 macro_line|#ifdef CONFIG_IDEDISK_STROKE
