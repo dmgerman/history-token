@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Copyright (C) 2000 Takashi Iwai &lt;tiwai@suse.de&gt;
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/util_mem.h&gt;
 id|MODULE_AUTHOR
