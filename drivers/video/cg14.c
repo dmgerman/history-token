@@ -2519,6 +2519,21 @@ id|sbus_dev
 op_star
 id|sdev
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;cg14fb&quot;
+comma
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 macro_line|#ifdef CONFIG_SPARC32
 (brace
 r_int

@@ -10974,6 +10974,36 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+r_char
+op_star
+id|option
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;aty128fb&quot;
+comma
+op_amp
+id|option
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|aty128fb_setup
+c_func
+(paren
+id|option
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -11001,7 +11031,6 @@ id|aty128fb_driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|aty128fb_init
 id|module_init
 c_func
@@ -11009,6 +11038,7 @@ c_func
 id|aty128fb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|aty128fb_exit
 id|module_exit
 c_func
