@@ -867,6 +867,7 @@ c_func
 id|dev_change_flags
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|vlan_ioctl_hook
 id|EXPORT_SYMBOL
 c_func
@@ -874,7 +875,6 @@ c_func
 id|vlan_ioctl_hook
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|scm_detach_fds
 id|EXPORT_SYMBOL
 c_func
@@ -890,7 +890,7 @@ c_func
 id|br_handle_frame_hook
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_INET
+macro_line|#endif
 DECL|variable|br_ioctl_hook
 id|EXPORT_SYMBOL
 c_func
@@ -898,8 +898,6 @@ c_func
 id|br_ioctl_hook
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 macro_line|#ifdef CONFIG_NET_DIVERT
 DECL|variable|alloc_divert_blk
 id|EXPORT_SYMBOL
@@ -913,13 +911,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|free_divert_blk
-)paren
-suffix:semicolon
-DECL|variable|divert_ioctl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|divert_ioctl
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
