@@ -301,7 +301,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max
+id|temp_max1
 comma
 id|S_IWUSR
 op_or
@@ -316,7 +316,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_hyst
+id|temp_hyst1
 comma
 id|S_IWUSR
 op_or
@@ -331,7 +331,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input
+id|temp_input1
 comma
 id|S_IRUGO
 comma
@@ -787,7 +787,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max
+id|dev_attr_temp_max1
 )paren
 suffix:semicolon
 id|device_create_file
@@ -797,7 +797,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_hyst
+id|dev_attr_temp_hyst1
 )paren
 suffix:semicolon
 id|device_create_file
@@ -807,7 +807,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input
+id|dev_attr_temp_input1
 )paren
 suffix:semicolon
 r_return
