@@ -668,9 +668,9 @@ mdefine_line|#define _write_unlock_irq(lock)&t;&bslash;&n;do { &bslash;&n;&t;_ra
 macro_line|#endif /* !SMP */
 multiline_comment|/*&n; * Define the various spin_lock and rw_lock methods.  Note we define these&n; * regardless of whether CONFIG_SMP or CONFIG_PREEMPT are set. The various&n; * methods are defined as nops in the case they are not required.&n; */
 DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock)&t;_spin_trylock(lock)
+mdefine_line|#define spin_trylock(lock)&t;__cond_lock(_spin_trylock(lock))
 DECL|macro|write_trylock
-mdefine_line|#define write_trylock(lock)&t;_write_trylock(lock)
+mdefine_line|#define write_trylock(lock)&t;__cond_lock(_write_trylock(lock))
 multiline_comment|/* Where&squot;s read_trylock? */
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&t;_spin_lock(lock)
@@ -730,7 +730,7 @@ mdefine_line|#define write_unlock_irq(lock)&t;&t;&t;_write_unlock_irq(lock)
 DECL|macro|write_unlock_bh
 mdefine_line|#define write_unlock_bh(lock)&t;&t;&t;_write_unlock_bh(lock)
 DECL|macro|spin_trylock_bh
-mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;_spin_trylock_bh(lock)
+mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;__cond_lock(_spin_trylock_bh(lock))
 macro_line|#ifdef CONFIG_LOCKMETER
 r_extern
 r_void
@@ -826,7 +826,7 @@ id|lock
 suffix:semicolon
 macro_line|#endif
 DECL|macro|atomic_dec_and_lock
-mdefine_line|#define atomic_dec_and_lock(atomic,lock) _atomic_dec_and_lock(atomic,lock)
+mdefine_line|#define atomic_dec_and_lock(atomic,lock) __cond_lock(_atomic_dec_and_lock(atomic,lock))
 multiline_comment|/*&n; *  bit-based spin_lock()&n; *&n; * Don&squot;t use this unless you really need to: spin_lock() and spin_unlock()&n; * are significantly faster.&n; */
 DECL|function|bit_spin_lock
 r_static
@@ -881,6 +881,12 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
+id|__acquire
+c_func
+(paren
+id|bitlock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return true if it was acquired&n; */
 DECL|function|bit_spin_trylock
@@ -899,18 +905,15 @@ op_star
 id|addr
 )paren
 (brace
-macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_DEBUG_SPINLOCK)
-r_int
-id|ret
-suffix:semicolon
 id|preempt_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-id|ret
-op_assign
-op_logical_neg
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_DEBUG_SPINLOCK)
+r_if
+c_cond
+(paren
 id|test_and_set_bit
 c_func
 (paren
@@ -918,31 +921,27 @@ id|bitnum
 comma
 id|addr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
 )paren
+(brace
 id|preempt_enable
 c_func
 (paren
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
-macro_line|#else
-id|preempt_disable
+)brace
+macro_line|#endif
+id|__acquire
 c_func
 (paren
+id|bitlock
 )paren
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  bit-based spin_unlock()&n; */
 DECL|function|bit_spin_unlock
@@ -992,6 +991,12 @@ macro_line|#endif
 id|preempt_enable
 c_func
 (paren
+)paren
+suffix:semicolon
+id|__release
+c_func
+(paren
+id|bitlock
 )paren
 suffix:semicolon
 )brace
