@@ -2259,11 +2259,11 @@ id|iforce_usb_driver
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_232
-id|serio_register_device
+id|serio_register_driver
 c_func
 (paren
 op_amp
-id|iforce_serio_dev
+id|iforce_serio_drv
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2291,11 +2291,11 @@ id|iforce_usb_driver
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_232
-id|serio_unregister_device
+id|serio_unregister_driver
 c_func
 (paren
 op_amp
-id|iforce_serio_dev
+id|iforce_serio_drv
 )paren
 suffix:semicolon
 macro_line|#endif
