@@ -1107,7 +1107,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We do not actually write the inode here, just mark the&n; * super block dirty so that sync_supers calls us and&n; * forces the flush.&n; */
+multiline_comment|/*&n; * Attempt to flush the inode, this will actually fail&n; * if the inode is pinned, but we dirty the inode again&n; * at the point when it is unpinned after a log write,&n; * since this is when the inode itself becomes flushable. &n; */
 id|STATIC
 r_void
 DECL|function|linvfs_write_inode
@@ -1178,17 +1178,6 @@ id|flags
 comma
 id|error
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_eq
-id|EAGAIN
-)paren
-id|inode-&gt;i_sb-&gt;s_dirt
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -1274,6 +1263,12 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|linvfs_stop_syncd
+c_func
+(paren
+id|vfsp
+)paren
+suffix:semicolon
 id|VFS_SYNC
 c_func
 (paren
@@ -1295,6 +1290,7 @@ id|error
 op_eq
 l_int|0
 )paren
+(brace
 id|VFS_UNMOUNT
 c_func
 (paren
@@ -1307,6 +1303,7 @@ comma
 id|error
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1366,10 +1363,6 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|sb-&gt;s_dirt
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1377,23 +1370,31 @@ id|sb-&gt;s_flags
 op_amp
 id|MS_RDONLY
 )paren
+(brace
+id|sb-&gt;s_dirt
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* paranoia */
 r_return
 suffix:semicolon
+)brace
+multiline_comment|/* Push the log and superblock a little */
 id|VFS_SYNC
 c_func
 (paren
 id|vfsp
 comma
 id|SYNC_FSDATA
-op_or
-id|SYNC_BDFLUSH
-op_or
-id|SYNC_ATTR
 comma
 l_int|NULL
 comma
 id|error
 )paren
+suffix:semicolon
+id|sb-&gt;s_dirt
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|STATIC
@@ -2599,6 +2600,18 @@ id|is_bad_inode
 c_func
 (paren
 id|sb-&gt;s_root-&gt;d_inode
+)paren
+)paren
+r_goto
+id|fail_vnrele
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|linvfs_start_syncd
+c_func
+(paren
+id|vfsp
 )paren
 )paren
 r_goto

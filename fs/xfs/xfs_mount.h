@@ -1123,6 +1123,12 @@ op_star
 id|m_inodes
 suffix:semicolon
 multiline_comment|/* active inode list */
+DECL|member|m_del_inodes
+r_struct
+id|list_head
+id|m_del_inodes
+suffix:semicolon
+multiline_comment|/* inodes to reclaim */
 DECL|member|m_ilock
 id|mutex_t
 id|m_ilock

@@ -2340,6 +2340,13 @@ id|mp-&gt;m_blockwsize
 op_minus
 l_int|1
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|mp-&gt;m_del_inodes
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -57,6 +57,20 @@ op_star
 id|vfs_super
 suffix:semicolon
 multiline_comment|/* Linux superblock structure */
+DECL|member|vfs_sync_task
+r_struct
+id|task_struct
+op_star
+id|vfs_sync_task
+suffix:semicolon
+DECL|member|vfs_sync
+id|wait_queue_head_t
+id|vfs_sync
+suffix:semicolon
+DECL|member|vfs_wait_sync_task
+id|wait_queue_head_t
+id|vfs_wait_sync_task
+suffix:semicolon
 DECL|typedef|vfs_t
 )brace
 id|vfs_t
@@ -121,8 +135,10 @@ DECL|macro|VFS_GRPID
 mdefine_line|#define VFS_GRPID&t;&t;0x0002&t;/* group-ID assigned from directory */
 DECL|macro|VFS_DMI
 mdefine_line|#define VFS_DMI&t;&t;&t;0x0004&t;/* filesystem has the DMI enabled */
+DECL|macro|VFS_UMOUNT
+mdefine_line|#define VFS_UMOUNT&t;&t;0x0008&t;/* unmount in progress */
 DECL|macro|VFS_END
-mdefine_line|#define VFS_END&t;&t;&t;0x0004&t;/* max flag */
+mdefine_line|#define VFS_END&t;&t;&t;0x0008&t;/* max flag */
 DECL|macro|SYNC_ATTR
 mdefine_line|#define SYNC_ATTR&t;&t;0x0001&t;/* sync attributes */
 DECL|macro|SYNC_CLOSE
