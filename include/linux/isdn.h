@@ -1764,14 +1764,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Misc.-function Timer       */
-DECL|member|usage
-r_int
-id|usage
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Used by tty/ip/voice       */
 DECL|member|num
 r_char
 id|num

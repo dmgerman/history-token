@@ -239,10 +239,11 @@ op_logical_and
 (paren
 op_logical_neg
 (paren
-id|dev-&gt;usage
-(braket
+id|isdn_slot_usage
+c_func
+(paren
 id|info-&gt;isdn_slot
-)braket
+)paren
 op_amp
 id|ISDN_USAGE_OUTGOING
 )paren
