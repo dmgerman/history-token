@@ -8185,6 +8185,29 @@ id|AC97_TUNE_HP_ONLY
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x006d
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP zv5000&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_MUTE_LED
+multiline_comment|/*AD1981B*/
+)brace
+comma
+(brace
 multiline_comment|/* FIXME: which codec? */
 dot
 id|vendor
