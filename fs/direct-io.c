@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mm/direct-io.c&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * O_DIRECT&n; *&n; * 04Jul2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; */
+multiline_comment|/*&n; * fs/direct-io.c&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * O_DIRECT&n; *&n; * 04Jul2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -130,9 +130,11 @@ op_star
 id|bio_list
 suffix:semicolon
 multiline_comment|/* singly linked via bi_private */
-DECL|member|wait_q
-id|wait_queue_head_t
-id|wait_q
+DECL|member|waiter
+r_struct
+id|task_struct
+op_star
+id|waiter
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -187,6 +189,13 @@ comma
 id|DIO_PAGES
 )paren
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|get_user_pages
@@ -222,6 +231,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* vmas */
+id|up_read
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -390,11 +406,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|wake_up
+id|wake_up_process
 c_func
 (paren
-op_amp
-id|dio-&gt;wait_q
+id|dio-&gt;waiter
 )paren
 suffix:semicolon
 )brace
@@ -596,14 +611,6 @@ op_star
 id|dio
 )paren
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -630,16 +637,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|add_wait_queue
-c_func
-(paren
-op_amp
-id|dio-&gt;wait_q
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -687,16 +684,6 @@ id|set_current_state
 c_func
 (paren
 id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|dio-&gt;wait_q
-comma
-op_amp
-id|wait
 )paren
 suffix:semicolon
 )brace
@@ -762,11 +749,6 @@ suffix:semicolon
 r_int
 id|page_no
 suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -794,26 +776,6 @@ id|page_no
 dot
 id|bv_page
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|uptodate
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-l_int|0
-)paren
-id|ret
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -848,7 +810,13 @@ id|bio
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|uptodate
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait on and process all in-flight BIOs.&n; */
@@ -920,7 +888,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * A really large O_DIRECT read or write can generate a lot of BIOs.  So&n; * to keep the memory consumption sane we periodically reap any completed BIOs&n; * during the BIO generation phase.&n; *&n; * This also helps to limis the peak amount of pinned userspace memory.&n; */
+multiline_comment|/*&n; * A really large O_DIRECT read or write can generate a lot of BIOs.  So&n; * to keep the memory consumption sane we periodically reap any completed BIOs&n; * during the BIO generation phase.&n; *&n; * This also helps to limit the peak amount of pinned userspace memory.&n; */
 DECL|function|dio_bio_reap
 r_static
 r_int
@@ -1440,12 +1408,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|g_dio
-r_struct
-id|dio
-op_star
-id|g_dio
-suffix:semicolon
 r_int
 DECL|function|generic_direct_IO
 id|generic_direct_IO
@@ -1498,8 +1460,6 @@ id|buf
 suffix:semicolon
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|ret2
@@ -1537,11 +1497,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|g_dio
-op_assign
-op_amp
-id|dio
-suffix:semicolon
 multiline_comment|/* BIO submission state */
 id|dio.bio
 op_assign
@@ -1693,19 +1648,9 @@ id|dio.bio_list
 op_assign
 l_int|NULL
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|dio.wait_q
-)paren
-suffix:semicolon
-id|down_read
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
+id|dio.waiter
+op_assign
+id|current
 suffix:semicolon
 id|ret
 op_assign
@@ -1714,13 +1659,6 @@ c_func
 (paren
 op_amp
 id|dio
-)paren
-suffix:semicolon
-id|up_read
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 r_if
