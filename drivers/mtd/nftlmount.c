@@ -1163,7 +1163,8 @@ id|check_oob
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|retlen
 suffix:semicolon
 id|u8
@@ -1588,7 +1589,8 @@ id|bci
 suffix:semicolon
 r_int
 id|sectors_per_block
-comma
+suffix:semicolon
+r_int
 id|retlen
 suffix:semicolon
 id|sectors_per_block
