@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * saa7185 - Philips SAA7185B video encoder driver version 0.0.3&n; *&n; * Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n; *&n; * Slight changes for video timing and attachment output by&n; * Wolfgang Scherr &lt;scherr@net4you.net&gt;&n; *&n; * Changes by Ronald Bultje &lt;rbultje@ronald.bitfreak.net&gt;&n; *    - moved over to linux&gt;=2.4.x i2c protocol (1/1/2003)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* &n; * adv7170 - adv7170, adv7171 video encoder driver version 0.0.1&n; *&n; * Copyright (C) 2002 Maxim Yevtyushkin &lt;max@linuxmedialabs.com&gt;&n; *&n; * Based on adv7176 driver by:    &n; *&n; * Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n; * Copyright (C) 1999 Wolfgang Scherr &lt;scherr@net4you.net&gt;&n; * Copyright (C) 2000 Serguei Miridonov &lt;mirsev@cicese.mx&gt;&n; *    - some corrections for Pinnacle Systems Inc. DC10plus card.&n; *&n; * Changes by Ronald Bultje &lt;rbultje@ronald.bitfreak.net&gt;&n; *    - moved over to linux&gt;=2.4.x i2c protocol (1/1/2003)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,13 +23,13 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Philips SAA7185 video encoder driver&quot;
+l_string|&quot;Analog Devices ADV7170 video encoder driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Dave Perks&quot;
+l_string|&quot;Maxim Yevtyushkin&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -41,7 +41,7 @@ suffix:semicolon
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
 DECL|macro|I2C_NAME
-mdefine_line|#define I2C_NAME(s) (s)-&gt;dev.name
+mdefine_line|#define I2C_NAME(x) (x)-&gt;dev.name
 macro_line|#include &lt;linux/video_encoder.h&gt;
 DECL|variable|debug
 r_static
@@ -69,9 +69,9 @@ suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
 multiline_comment|/* ----------------------------------------------------------------------- */
-DECL|struct|saa7185
+DECL|struct|adv7170
 r_struct
-id|saa7185
+id|adv7170
 (brace
 DECL|member|reg
 r_int
@@ -84,6 +84,10 @@ suffix:semicolon
 DECL|member|norm
 r_int
 id|norm
+suffix:semicolon
+DECL|member|input
+r_int
+id|input
 suffix:semicolon
 DECL|member|enable
 r_int
@@ -107,33 +111,62 @@ id|sat
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|I2C_SAA7185
-mdefine_line|#define   I2C_SAA7185        0x88
+DECL|macro|I2C_ADV7170
+mdefine_line|#define   I2C_ADV7170        0xd4
+DECL|macro|I2C_ADV7171
+mdefine_line|#define   I2C_ADV7171        0x54
+DECL|variable|adv7170_name
+r_static
+r_char
+id|adv7170_name
+(braket
+)braket
+op_assign
+l_string|&quot;adv7170&quot;
+suffix:semicolon
+DECL|variable|adv7171_name
+r_static
+r_char
+id|adv7171_name
+(braket
+)braket
+op_assign
+l_string|&quot;adv7171&quot;
+suffix:semicolon
+DECL|variable|inputs
+r_static
+r_char
+op_star
+id|inputs
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;pass_through&quot;
+comma
+l_string|&quot;play_back&quot;
+)brace
+suffix:semicolon
+DECL|variable|norms
+r_static
+r_char
+op_star
+id|norms
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;PAL&quot;
+comma
+l_string|&quot;NTSC&quot;
+)brace
+suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
 r_static
 r_inline
 r_int
-DECL|function|saa7185_read
-id|saa7185_read
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-r_return
-id|i2c_smbus_read_byte
-c_func
-(paren
-id|client
-)paren
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|saa7185_write
-id|saa7185_write
+DECL|function|adv7170_write
+id|adv7170_write
 (paren
 r_struct
 id|i2c_client
@@ -148,7 +181,7 @@ id|value
 )paren
 (brace
 r_struct
-id|saa7185
+id|adv7170
 op_star
 id|encoder
 op_assign
@@ -156,19 +189,6 @@ id|i2c_get_clientdata
 c_func
 (paren
 id|client
-)paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_int|1
-comma
-id|KERN_DEBUG
-l_string|&quot;SAA7185: %02x set to %02x&bslash;n&quot;
-comma
-id|reg
-comma
-id|value
 )paren
 suffix:semicolon
 id|encoder-&gt;reg
@@ -191,9 +211,34 @@ id|value
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_int
-DECL|function|saa7185_write_block
-id|saa7185_write_block
+DECL|function|adv7170_read
+id|adv7170_read
+(paren
+r_struct
+id|i2c_client
+op_star
+id|client
+comma
+id|u8
+id|reg
+)paren
+(brace
+r_return
+id|i2c_smbus_read_byte_data
+c_func
+(paren
+id|client
+comma
+id|reg
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|adv7170_write_block
+id|adv7170_write_block
 (paren
 r_struct
 id|i2c_client
@@ -219,7 +264,7 @@ suffix:semicolon
 id|u8
 id|reg
 suffix:semicolon
-multiline_comment|/* the adv7175 has an autoincrement function, use it if&n;&t; * the adapter understands raw I2C */
+multiline_comment|/* the adv7170 has an autoincrement function, use it if&n;&t; * the adapter understands raw I2C */
 r_if
 c_cond
 (paren
@@ -234,7 +279,7 @@ id|I2C_FUNC_I2C
 (brace
 multiline_comment|/* do raw I2C, not smbus compatible */
 r_struct
-id|saa7185
+id|adv7170
 op_star
 id|encoder
 op_assign
@@ -389,7 +434,7 @@ c_cond
 (paren
 id|ret
 op_assign
-id|saa7185_write
+id|adv7170_write
 c_func
 (paren
 id|client
@@ -417,385 +462,310 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
-DECL|variable|init_common
+singleline_comment|// Output filter:  S-Video  Composite
+DECL|macro|MR050
+mdefine_line|#define MR050       0x11&t;
+singleline_comment|//0x09
+DECL|macro|MR060
+mdefine_line|#define MR060       0x14&t;
+singleline_comment|//0x0c
+singleline_comment|//---------------------------------------------------------------------------
+DECL|macro|TR0MODE
+mdefine_line|#define TR0MODE     0x4c
+DECL|macro|TR0RST
+mdefine_line|#define TR0RST&t;    0x80
+DECL|macro|TR1CAPT
+mdefine_line|#define TR1CAPT&t;    0x00
+DECL|macro|TR1PLAY
+mdefine_line|#define TR1PLAY&t;    0x00
+DECL|variable|init_NTSC
 r_static
 r_const
 r_int
 r_char
-id|init_common
+id|init_NTSC
 (braket
 )braket
 op_assign
 (brace
-l_int|0x3a
-comma
-l_int|0x0f
-comma
-multiline_comment|/* CBENB=0, V656=0, VY2C=1,&n;&t;&t;&t;&t; * YUV2C=1, MY2C=1, MUV2C=1 */
-l_int|0x42
-comma
-l_int|0x6b
-comma
-multiline_comment|/* OVLY0=107 */
-l_int|0x43
-comma
 l_int|0x00
 comma
-multiline_comment|/* OVLU0=0     white */
-l_int|0x44
+l_int|0x10
 comma
-l_int|0x00
+singleline_comment|// MR0
+l_int|0x01
 comma
-multiline_comment|/* OVLV0=0   */
-l_int|0x45
+l_int|0x20
 comma
-l_int|0x22
-comma
-multiline_comment|/* OVLY1=34  */
-l_int|0x46
-comma
-l_int|0xac
-comma
-multiline_comment|/* OVLU1=172   yellow */
-l_int|0x47
+singleline_comment|// MR1
+l_int|0x02
 comma
 l_int|0x0e
 comma
-multiline_comment|/* OVLV1=14  */
-l_int|0x48
-comma
+singleline_comment|// MR2 RTC control: bits 2 and 1 
 l_int|0x03
 comma
-multiline_comment|/* OVLY2=3   */
-l_int|0x49
+l_int|0x80
 comma
-l_int|0x1d
+singleline_comment|// MR3
+l_int|0x04
 comma
-multiline_comment|/* OVLU2=29    cyan */
-l_int|0x4a
+l_int|0x30
 comma
-l_int|0xac
-comma
-multiline_comment|/* OVLV2=172 */
-l_int|0x4b
-comma
-l_int|0xf0
-comma
-multiline_comment|/* OVLY3=240 */
-l_int|0x4c
-comma
-l_int|0xc8
-comma
-multiline_comment|/* OVLU3=200   green */
-l_int|0x4d
-comma
-l_int|0xb9
-comma
-multiline_comment|/* OVLV3=185 */
-l_int|0x4e
-comma
-l_int|0xd4
-comma
-multiline_comment|/* OVLY4=212 */
-l_int|0x4f
-comma
-l_int|0x38
-comma
-multiline_comment|/* OVLU4=56    magenta */
-l_int|0x50
-comma
-l_int|0x47
-comma
-multiline_comment|/* OVLV4=71  */
-l_int|0x51
-comma
-l_int|0xc1
-comma
-multiline_comment|/* OVLY5=193 */
-l_int|0x52
-comma
-l_int|0xe3
-comma
-multiline_comment|/* OVLU5=227   red */
-l_int|0x53
-comma
-l_int|0x54
-comma
-multiline_comment|/* OVLV5=84  */
-l_int|0x54
-comma
-l_int|0xa3
-comma
-multiline_comment|/* OVLY6=163 */
-l_int|0x55
-comma
-l_int|0x54
-comma
-multiline_comment|/* OVLU6=84    blue */
-l_int|0x56
-comma
-l_int|0xf2
-comma
-multiline_comment|/* OVLV6=242 */
-l_int|0x57
-comma
-l_int|0x90
-comma
-multiline_comment|/* OVLY7=144 */
-l_int|0x58
+singleline_comment|// MR4
+l_int|0x05
 comma
 l_int|0x00
 comma
-multiline_comment|/* OVLU7=0     black */
-l_int|0x59
+singleline_comment|// Reserved
+l_int|0x06
 comma
 l_int|0x00
 comma
-multiline_comment|/* OVLV7=0   */
-l_int|0x5a
+singleline_comment|// Reserved
+l_int|0x07
 comma
-l_int|0x00
+id|TR0MODE
 comma
-multiline_comment|/* CHPS=0    */
-l_int|0x5b
+singleline_comment|// TM0
+l_int|0x08
 comma
-l_int|0x76
+id|TR1CAPT
 comma
-multiline_comment|/* GAINU=118 */
-l_int|0x5c
-comma
-l_int|0xa5
-comma
-multiline_comment|/* GAINV=165 */
-l_int|0x5d
-comma
-l_int|0x3c
-comma
-multiline_comment|/* BLCKL=60  */
-l_int|0x5e
-comma
-l_int|0x3a
-comma
-multiline_comment|/* BLNNL=58  */
-l_int|0x5f
-comma
-l_int|0x3a
-comma
-multiline_comment|/* CCRS=0, BLNVB=58 */
-l_int|0x60
-comma
-l_int|0x00
-comma
-multiline_comment|/* NULL      */
-multiline_comment|/* 0x61 - 0x66 set according to norm */
-l_int|0x67
-comma
-l_int|0x00
-comma
-multiline_comment|/* 0 : caption 1st byte odd  field */
-l_int|0x68
-comma
-l_int|0x00
-comma
-multiline_comment|/* 0 : caption 2nd byte odd  field */
-l_int|0x69
-comma
-l_int|0x00
-comma
-multiline_comment|/* 0 : caption 1st byte even field */
-l_int|0x6a
-comma
-l_int|0x00
-comma
-multiline_comment|/* 0 : caption 2nd byte even field */
-l_int|0x6b
-comma
-l_int|0x91
-comma
-multiline_comment|/* MODIN=2, PCREF=0, SCCLN=17 */
-l_int|0x6c
-comma
-l_int|0x20
-comma
-multiline_comment|/* SRCV1=0, TRCV2=1, ORCV1=0, PRCV1=0,&n;&t;&t;&t;&t; * CBLF=0, ORCV2=0, PRCV2=0 */
-l_int|0x6d
-comma
-l_int|0x00
-comma
-multiline_comment|/* SRCM1=0, CCEN=0 */
-l_int|0x6e
-comma
-l_int|0x0e
-comma
-multiline_comment|/* HTRIG=0x005, approx. centered, at&n;&t;&t;&t;&t; * least for PAL */
-l_int|0x6f
-comma
-l_int|0x00
-comma
-multiline_comment|/* HTRIG upper bits */
-l_int|0x70
-comma
-l_int|0x20
-comma
-multiline_comment|/* PHRES=0, SBLN=1, VTRIG=0 */
-multiline_comment|/* The following should not be needed */
-l_int|0x71
-comma
-l_int|0x15
-comma
-multiline_comment|/* BMRQ=0x115 */
-l_int|0x72
-comma
-l_int|0x90
-comma
-multiline_comment|/* EMRQ=0x690 */
-l_int|0x73
-comma
-l_int|0x61
-comma
-multiline_comment|/* EMRQ=0x690, BMRQ=0x115 */
-l_int|0x74
-comma
-l_int|0x00
-comma
-multiline_comment|/* NULL       */
-l_int|0x75
-comma
-l_int|0x00
-comma
-multiline_comment|/* NULL       */
-l_int|0x76
-comma
-l_int|0x00
-comma
-multiline_comment|/* NULL       */
-l_int|0x77
-comma
-l_int|0x15
-comma
-multiline_comment|/* BRCV=0x115 */
-l_int|0x78
-comma
-l_int|0x90
-comma
-multiline_comment|/* ERCV=0x690 */
-l_int|0x79
-comma
-l_int|0x61
-comma
-multiline_comment|/* ERCV=0x690, BRCV=0x115 */
-multiline_comment|/* Field length controls */
-l_int|0x7a
-comma
-l_int|0x70
-comma
-multiline_comment|/* FLC=0 */
-multiline_comment|/* The following should not be needed if SBLN = 1 */
-l_int|0x7b
+singleline_comment|// TM1
+l_int|0x09
 comma
 l_int|0x16
 comma
-multiline_comment|/* FAL=22 */
-l_int|0x7c
-comma
-l_int|0x35
-comma
-multiline_comment|/* LAL=244 */
-l_int|0x7d
-comma
-l_int|0x20
-comma
-multiline_comment|/* LAL=244, FAL=22 */
-)brace
-suffix:semicolon
-DECL|variable|init_pal
-r_static
-r_const
-r_int
-r_char
-id|init_pal
-(braket
-)braket
-op_assign
-(brace
-l_int|0x61
-comma
-l_int|0x1e
-comma
-multiline_comment|/* FISE=0, PAL=1, SCBW=1, RTCE=1,&n;&t;&t;&t;&t; * YGS=1, INPI=0, DOWN=0 */
-l_int|0x62
-comma
-l_int|0xc8
-comma
-multiline_comment|/* DECTYP=1, BSTA=72 */
-l_int|0x63
-comma
-l_int|0xcb
-comma
-multiline_comment|/* FSC0 */
-l_int|0x64
-comma
-l_int|0x8a
-comma
-multiline_comment|/* FSC1 */
-l_int|0x65
-comma
-l_int|0x09
-comma
-multiline_comment|/* FSC2 */
-l_int|0x66
-comma
-l_int|0x2a
-comma
-multiline_comment|/* FSC3 */
-)brace
-suffix:semicolon
-DECL|variable|init_ntsc
-r_static
-r_const
-r_int
-r_char
-id|init_ntsc
-(braket
-)braket
-op_assign
-(brace
-l_int|0x61
-comma
-l_int|0x1d
-comma
-multiline_comment|/* FISE=1, PAL=0, SCBW=1, RTCE=1,&n;&t;&t;&t;&t; * YGS=1, INPI=0, DOWN=0 */
-l_int|0x62
-comma
-l_int|0xe6
-comma
-multiline_comment|/* DECTYP=1, BSTA=102 */
-l_int|0x63
-comma
-l_int|0x1f
-comma
-multiline_comment|/* FSC0 */
-l_int|0x64
+singleline_comment|// Fsc0
+l_int|0x0a
 comma
 l_int|0x7c
 comma
-multiline_comment|/* FSC1 */
-l_int|0x65
+singleline_comment|// Fsc1
+l_int|0x0b
 comma
 l_int|0xf0
 comma
-multiline_comment|/* FSC2 */
-l_int|0x66
+singleline_comment|// Fsc2
+l_int|0x0c
 comma
 l_int|0x21
 comma
-multiline_comment|/* FSC3 */
+singleline_comment|// Fsc3
+l_int|0x0d
+comma
+l_int|0x00
+comma
+singleline_comment|// Subcarrier Phase
+l_int|0x0e
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. Ext 0
+l_int|0x0f
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. Ext 1
+l_int|0x10
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. 0
+l_int|0x11
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. 1
+l_int|0x12
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 0
+l_int|0x13
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 1
+l_int|0x14
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 2
+l_int|0x15
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 3
+l_int|0x16
+comma
+l_int|0x00
+comma
+singleline_comment|// CGMS_WSS_0
+l_int|0x17
+comma
+l_int|0x00
+comma
+singleline_comment|// CGMS_WSS_1
+l_int|0x18
+comma
+l_int|0x00
+comma
+singleline_comment|// CGMS_WSS_2
+l_int|0x19
+comma
+l_int|0x00
+comma
+singleline_comment|// Teletext Ctl 
+)brace
+suffix:semicolon
+DECL|variable|init_PAL
+r_static
+r_const
+r_int
+r_char
+id|init_PAL
+(braket
+)braket
+op_assign
+(brace
+l_int|0x00
+comma
+l_int|0x71
+comma
+singleline_comment|// MR0
+l_int|0x01
+comma
+l_int|0x20
+comma
+singleline_comment|// MR1
+l_int|0x02
+comma
+l_int|0x0e
+comma
+singleline_comment|// MR2 RTC control: bits 2 and 1
+l_int|0x03
+comma
+l_int|0x80
+comma
+singleline_comment|// MR3
+l_int|0x04
+comma
+l_int|0x30
+comma
+singleline_comment|// MR4
+l_int|0x05
+comma
+l_int|0x00
+comma
+singleline_comment|// Reserved
+l_int|0x06
+comma
+l_int|0x00
+comma
+singleline_comment|// Reserved
+l_int|0x07
+comma
+id|TR0MODE
+comma
+singleline_comment|// TM0
+l_int|0x08
+comma
+id|TR1CAPT
+comma
+singleline_comment|// TM1
+l_int|0x09
+comma
+l_int|0xcb
+comma
+singleline_comment|// Fsc0
+l_int|0x0a
+comma
+l_int|0x8a
+comma
+singleline_comment|// Fsc1
+l_int|0x0b
+comma
+l_int|0x09
+comma
+singleline_comment|// Fsc2
+l_int|0x0c
+comma
+l_int|0x2a
+comma
+singleline_comment|// Fsc3
+l_int|0x0d
+comma
+l_int|0x00
+comma
+singleline_comment|// Subcarrier Phase
+l_int|0x0e
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. Ext 0
+l_int|0x0f
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. Ext 1
+l_int|0x10
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. 0
+l_int|0x11
+comma
+l_int|0x00
+comma
+singleline_comment|// Closed Capt. 1
+l_int|0x12
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 0
+l_int|0x13
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 1
+l_int|0x14
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 2
+l_int|0x15
+comma
+l_int|0x00
+comma
+singleline_comment|// Pedestal Ctl 3
+l_int|0x16
+comma
+l_int|0x00
+comma
+singleline_comment|// CGMS_WSS_0
+l_int|0x17
+comma
+l_int|0x00
+comma
+singleline_comment|// CGMS_WSS_1
+l_int|0x18
+comma
+l_int|0x00
+comma
+singleline_comment|// CGMS_WSS_2
+l_int|0x19
+comma
+l_int|0x00
+comma
+singleline_comment|// Teletext Ctl
 )brace
 suffix:semicolon
 r_static
 r_int
-DECL|function|saa7185_command
-id|saa7185_command
+DECL|function|adv7170_command
+id|adv7170_command
 (paren
 r_struct
 id|i2c_client
@@ -812,7 +782,7 @@ id|arg
 )paren
 (brace
 r_struct
-id|saa7185
+id|adv7170
 op_star
 id|encoder
 op_assign
@@ -831,7 +801,9 @@ id|cmd
 r_case
 l_int|0
 suffix:colon
-id|saa7185_write_block
+macro_line|#if 0
+multiline_comment|/* This is just for testing!!! */
+id|adv7170_write_block
 c_func
 (paren
 id|client
@@ -844,49 +816,29 @@ id|init_common
 )paren
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|encoder-&gt;norm
-)paren
-(brace
-r_case
-id|VIDEO_MODE_NTSC
-suffix:colon
-id|saa7185_write_block
+id|adv7170_write
 c_func
 (paren
 id|client
 comma
-id|init_ntsc
+l_int|0x07
 comma
-r_sizeof
-(paren
-id|init_ntsc
-)paren
+id|TR0MODE
+op_or
+id|TR0RST
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|VIDEO_MODE_PAL
-suffix:colon
-id|saa7185_write_block
+id|adv7170_write
 c_func
 (paren
 id|client
 comma
-id|init_pal
+l_int|0x07
 comma
-r_sizeof
-(paren
-id|init_pal
-)paren
+id|TR0MODE
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -905,14 +857,10 @@ op_assign
 id|VIDEO_ENCODER_PAL
 op_or
 id|VIDEO_ENCODER_NTSC
-op_or
-id|VIDEO_ENCODER_SECAM
-op_or
-id|VIDEO_ENCODER_CCIR
 suffix:semicolon
 id|cap-&gt;inputs
 op_assign
-l_int|1
+l_int|2
 suffix:semicolon
 id|cap-&gt;outputs
 op_assign
@@ -926,33 +874,92 @@ id|ENCODER_SET_NORM
 suffix:colon
 (brace
 r_int
-op_star
 id|iarg
 op_assign
+op_star
+(paren
+r_int
+op_star
+)paren
 id|arg
 suffix:semicolon
-singleline_comment|//saa7185_write_block(client, init_common, sizeof(init_common));
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+id|KERN_DEBUG
+l_string|&quot;%s_command: set norm %d&quot;
+comma
+id|I2C_NAME
+c_func
+(paren
+id|client
+)paren
+comma
+id|iarg
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
-op_star
 id|iarg
 )paren
 (brace
 r_case
 id|VIDEO_MODE_NTSC
 suffix:colon
-id|saa7185_write_block
+id|adv7170_write_block
 c_func
 (paren
 id|client
 comma
-id|init_ntsc
+id|init_NTSC
 comma
 r_sizeof
 (paren
-id|init_ntsc
+id|init_NTSC
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|encoder-&gt;input
+op_eq
+l_int|0
+)paren
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x02
+comma
+l_int|0x0e
+)paren
+suffix:semicolon
+singleline_comment|// Enable genlock
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
+op_or
+id|TR0RST
+)paren
+suffix:semicolon
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
 )paren
 suffix:semicolon
 r_break
@@ -960,34 +967,107 @@ suffix:semicolon
 r_case
 id|VIDEO_MODE_PAL
 suffix:colon
-id|saa7185_write_block
+id|adv7170_write_block
 c_func
 (paren
 id|client
 comma
-id|init_pal
+id|init_PAL
 comma
 r_sizeof
 (paren
-id|init_pal
+id|init_PAL
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|encoder-&gt;input
+op_eq
+l_int|0
+)paren
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x02
+comma
+l_int|0x0e
+)paren
+suffix:semicolon
+singleline_comment|// Enable genlock
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
+op_or
+id|TR0RST
+)paren
+suffix:semicolon
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|VIDEO_MODE_SECAM
-suffix:colon
 r_default
 suffix:colon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+id|KERN_ERR
+l_string|&quot;%s: illegal norm: %d&bslash;n&quot;
+comma
+id|I2C_NAME
+c_func
+(paren
+id|client
+)paren
+comma
+id|iarg
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+id|KERN_DEBUG
+l_string|&quot;%s: switched to %s&bslash;n&quot;
+comma
+id|I2C_NAME
+c_func
+(paren
+id|client
+)paren
+comma
+id|norms
+(braket
+id|iarg
+)braket
+)paren
+suffix:semicolon
 id|encoder-&gt;norm
 op_assign
-op_star
 id|iarg
 suffix:semicolon
 )brace
@@ -998,97 +1078,213 @@ id|ENCODER_SET_INPUT
 suffix:colon
 (brace
 r_int
-op_star
 id|iarg
 op_assign
+op_star
+(paren
+r_int
+op_star
+)paren
 id|arg
 suffix:semicolon
-multiline_comment|/* RJ: *iarg = 0: input is from SA7111&n;&t;&t; *iarg = 1: input is from ZR36060 */
+multiline_comment|/* RJ: *iarg = 0: input is from decoder&n;&t;&t; *iarg = 1: input is from ZR36060&n;&t;&t; *iarg = 2: color bar */
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+id|KERN_DEBUG
+l_string|&quot;%s_command: set input from %s&bslash;n&quot;
+comma
+id|I2C_NAME
+c_func
+(paren
+id|client
+)paren
+comma
+id|iarg
+op_eq
+l_int|0
+ques
+c_cond
+l_string|&quot;decoder&quot;
+suffix:colon
+l_string|&quot;ZR36060&quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
-op_star
 id|iarg
 )paren
 (brace
 r_case
 l_int|0
 suffix:colon
-multiline_comment|/* Switch RTCE to 1 */
-id|saa7185_write
+id|adv7170_write
 c_func
 (paren
 id|client
-comma
-l_int|0x61
-comma
-(paren
-id|encoder-&gt;reg
-(braket
-l_int|0x61
-)braket
-op_amp
-l_int|0xf7
-)paren
-op_or
-l_int|0x08
-)paren
-suffix:semicolon
-id|saa7185_write
-c_func
-(paren
-id|client
-comma
-l_int|0x6e
 comma
 l_int|0x01
+comma
+l_int|0x20
 )paren
 suffix:semicolon
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x08
+comma
+id|TR1CAPT
+)paren
+suffix:semicolon
+multiline_comment|/* TR1 */
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x02
+comma
+l_int|0x0e
+)paren
+suffix:semicolon
+singleline_comment|// Enable genlock
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
+op_or
+id|TR0RST
+)paren
+suffix:semicolon
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
+)paren
+suffix:semicolon
+singleline_comment|//udelay(10);
 r_break
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-multiline_comment|/* Switch RTCE to 0 */
-id|saa7185_write
+id|adv7170_write
 c_func
 (paren
 id|client
 comma
-l_int|0x61
+l_int|0x01
 comma
-(paren
-id|encoder-&gt;reg
-(braket
-l_int|0x61
-)braket
-op_amp
-l_int|0xf7
+l_int|0x00
 )paren
+suffix:semicolon
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x08
+comma
+id|TR1PLAY
+)paren
+suffix:semicolon
+multiline_comment|/* TR1 */
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x02
+comma
+l_int|0x08
+)paren
+suffix:semicolon
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
 op_or
-l_int|0x00
+id|TR0RST
 )paren
 suffix:semicolon
-multiline_comment|/* SW: a slight sync problem... */
-id|saa7185_write
+id|adv7170_write
 c_func
 (paren
 id|client
 comma
-l_int|0x6e
+l_int|0x07
 comma
-l_int|0x00
+id|TR0MODE
 )paren
 suffix:semicolon
+singleline_comment|//udelay(10);
 r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+id|KERN_ERR
+l_string|&quot;%s: illegal input: %d&bslash;n&quot;
+comma
+id|I2C_NAME
+c_func
+(paren
+id|client
+)paren
+comma
+id|iarg
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+id|KERN_DEBUG
+l_string|&quot;%s: switched to %s&bslash;n&quot;
+comma
+id|I2C_NAME
+c_func
+(paren
+id|client
+)paren
+comma
+id|inputs
+(braket
+id|iarg
+)braket
+)paren
+suffix:semicolon
+id|encoder-&gt;input
+op_assign
+id|iarg
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -1137,32 +1333,6 @@ op_logical_neg
 op_star
 id|iarg
 suffix:semicolon
-id|saa7185_write
-c_func
-(paren
-id|client
-comma
-l_int|0x61
-comma
-(paren
-id|encoder-&gt;reg
-(braket
-l_int|0x61
-)braket
-op_amp
-l_int|0xbf
-)paren
-op_or
-(paren
-id|encoder-&gt;enable
-ques
-c_cond
-l_int|0x00
-suffix:colon
-l_int|0x40
-)paren
-)paren
-suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -1188,8 +1358,28 @@ id|normal_i2c
 )braket
 op_assign
 (brace
-id|I2C_SAA7185
+id|I2C_ADV7170
 op_rshift
+l_int|1
+comma
+(paren
+id|I2C_ADV7170
+op_rshift
+l_int|1
+)paren
+op_plus
+l_int|1
+comma
+id|I2C_ADV7171
+op_rshift
+l_int|1
+comma
+(paren
+id|I2C_ADV7171
+op_rshift
+l_int|1
+)paren
+op_plus
 l_int|1
 comma
 id|I2C_CLIENT_END
@@ -1325,23 +1515,23 @@ op_assign
 id|force
 )brace
 suffix:semicolon
-DECL|variable|saa7185_i2c_id
+DECL|variable|adv7170_i2c_id
 r_static
 r_int
-id|saa7185_i2c_id
+id|adv7170_i2c_id
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|i2c_driver_saa7185
+DECL|variable|i2c_driver_adv7170
 r_static
 r_struct
 id|i2c_driver
-id|i2c_driver_saa7185
+id|i2c_driver_adv7170
 suffix:semicolon
 r_static
 r_int
-DECL|function|saa7185_detect_client
-id|saa7185_detect_client
+DECL|function|adv7170_detect_client
+id|adv7170_detect_client
 (paren
 r_struct
 id|i2c_adapter
@@ -1364,9 +1554,13 @@ op_star
 id|client
 suffix:semicolon
 r_struct
-id|saa7185
+id|adv7170
 op_star
 id|encoder
+suffix:semicolon
+r_char
+op_star
+id|dname
 suffix:semicolon
 id|dprintk
 c_func
@@ -1374,7 +1568,7 @@ c_func
 l_int|1
 comma
 id|KERN_INFO
-l_string|&quot;saa7185.c: detecting saa7185 client on address 0x%x&bslash;n&quot;
+l_string|&quot;adv7170.c: detecting adv7170 client on address 0x%x&bslash;n&quot;
 comma
 id|address
 op_lshift
@@ -1447,7 +1641,7 @@ suffix:semicolon
 id|client-&gt;driver
 op_assign
 op_amp
-id|i2c_driver_saa7185
+id|i2c_driver_adv7170
 suffix:semicolon
 id|client-&gt;flags
 op_assign
@@ -1455,9 +1649,75 @@ id|I2C_CLIENT_ALLOW_USE
 suffix:semicolon
 id|client-&gt;id
 op_assign
-id|saa7185_i2c_id
+id|adv7170_i2c_id
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|client-&gt;addr
+op_eq
+id|I2C_ADV7170
+op_rshift
+l_int|1
+)paren
+op_logical_or
+(paren
+id|client-&gt;addr
+op_eq
+(paren
+id|I2C_ADV7170
+op_rshift
+l_int|1
+)paren
+op_plus
+l_int|1
+)paren
+)paren
+(brace
+id|dname
+op_assign
+id|adv7170_name
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|client-&gt;addr
+op_eq
+id|I2C_ADV7171
+op_rshift
+l_int|1
+)paren
+op_logical_or
+(paren
+id|client-&gt;addr
+op_eq
+(paren
+id|I2C_ADV7171
+op_rshift
+l_int|1
+)paren
+op_plus
+l_int|1
+)paren
+)paren
+(brace
+id|dname
+op_assign
+id|adv7171_name
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* We should never get here!!! */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|snprintf
 c_func
 (paren
@@ -1478,7 +1738,9 @@ id|client
 op_minus
 l_int|1
 comma
-l_string|&quot;saa7185[%d]&quot;
+l_string|&quot;%s[%d]&quot;
+comma
+id|dname
 comma
 id|client-&gt;id
 )paren
@@ -1491,7 +1753,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|saa7185
+id|adv7170
 )paren
 comma
 id|GFP_KERNEL
@@ -1520,13 +1782,17 @@ comma
 r_sizeof
 (paren
 r_struct
-id|saa7185
+id|adv7170
 )paren
 )paren
 suffix:semicolon
 id|encoder-&gt;norm
 op_assign
 id|VIDEO_MODE_NTSC
+suffix:semicolon
+id|encoder-&gt;input
+op_assign
+l_int|0
 suffix:semicolon
 id|encoder-&gt;enable
 op_assign
@@ -1572,16 +1838,16 @@ suffix:semicolon
 )brace
 id|i
 op_assign
-id|saa7185_write_block
+id|adv7170_write_block
 c_func
 (paren
 id|client
 comma
-id|init_common
+id|init_NTSC
 comma
 r_sizeof
 (paren
-id|init_common
+id|init_NTSC
 )paren
 )paren
 suffix:semicolon
@@ -1595,17 +1861,61 @@ l_int|0
 (brace
 id|i
 op_assign
-id|saa7185_write_block
+id|adv7170_write
 c_func
 (paren
 id|client
 comma
-id|init_ntsc
+l_int|0x07
 comma
-r_sizeof
-(paren
-id|init_ntsc
+id|TR0MODE
+op_or
+id|TR0RST
 )paren
+suffix:semicolon
+id|i
+op_assign
+id|adv7170_write
+c_func
+(paren
+id|client
+comma
+l_int|0x07
+comma
+id|TR0MODE
+)paren
+suffix:semicolon
+id|i
+op_assign
+id|adv7170_read
+c_func
+(paren
+id|client
+comma
+l_int|0x12
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+id|KERN_INFO
+l_string|&quot;%s_attach: rev. %d at 0x%02x&bslash;n&quot;
+comma
+id|I2C_NAME
+c_func
+(paren
+id|client
+)paren
+comma
+id|i
+op_amp
+l_int|1
+comma
+id|client-&gt;addr
+op_lshift
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1623,7 +1933,7 @@ c_func
 l_int|1
 comma
 id|KERN_ERR
-l_string|&quot;%s_attach: init error %d&bslash;n&quot;
+l_string|&quot;%s_attach: init error 0x%x&bslash;n&quot;
 comma
 id|I2C_NAME
 c_func
@@ -1635,44 +1945,14 @@ id|i
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|dprintk
-c_func
-(paren
-l_int|1
-comma
-id|KERN_INFO
-l_string|&quot;%s_attach: chip version %d at address 0x%x&bslash;n&quot;
-comma
-id|I2C_NAME
-c_func
-(paren
-id|client
-)paren
-comma
-id|saa7185_read
-c_func
-(paren
-id|client
-)paren
-op_rshift
-l_int|5
-comma
-id|client-&gt;addr
-op_lshift
-l_int|1
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|saa7185_attach_adapter
-id|saa7185_attach_adapter
+DECL|function|adv7170_attach_adapter
+id|adv7170_attach_adapter
 (paren
 r_struct
 id|i2c_adapter
@@ -1686,7 +1966,7 @@ c_func
 l_int|1
 comma
 id|KERN_INFO
-l_string|&quot;saa7185.c: starting probe for adapter %s (0x%x)&bslash;n&quot;
+l_string|&quot;adv7170.c: starting probe for adapter %s (0x%x)&bslash;n&quot;
 comma
 id|I2C_NAME
 c_func
@@ -1707,14 +1987,14 @@ op_amp
 id|addr_data
 comma
 op_amp
-id|saa7185_detect_client
+id|adv7170_detect_client
 )paren
 suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|saa7185_detach_client
-id|saa7185_detach_client
+DECL|function|adv7170_detach_client
+id|adv7170_detach_client
 (paren
 r_struct
 id|i2c_client
@@ -1723,7 +2003,7 @@ id|client
 )paren
 (brace
 r_struct
-id|saa7185
+id|adv7170
 op_star
 id|encoder
 op_assign
@@ -1754,25 +2034,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|saa7185_write
-c_func
-(paren
-id|client
-comma
-l_int|0x61
-comma
-(paren
-id|encoder-&gt;reg
-(braket
-l_int|0x61
-)braket
-)paren
-op_or
-l_int|0x40
-)paren
-suffix:semicolon
-multiline_comment|/* SW: output off is active */
-singleline_comment|//saa7185_write(client, 0x3a, (encoder-&gt;reg[0x3a]) | 0x80); /* SW: color bar */
 id|kfree
 c_func
 (paren
@@ -1790,11 +2051,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
-DECL|variable|i2c_driver_saa7185
+DECL|variable|i2c_driver_adv7170
 r_static
 r_struct
 id|i2c_driver
-id|i2c_driver_saa7185
+id|i2c_driver_adv7170
 op_assign
 (brace
 dot
@@ -1805,13 +2066,13 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;saa7185&quot;
+l_string|&quot;adv7170&quot;
 comma
 multiline_comment|/* name */
 dot
 id|id
 op_assign
-id|I2C_DRIVERID_SAA7185B
+id|I2C_DRIVERID_ADV7170
 comma
 dot
 id|flags
@@ -1821,25 +2082,25 @@ comma
 dot
 id|attach_adapter
 op_assign
-id|saa7185_attach_adapter
+id|adv7170_attach_adapter
 comma
 dot
 id|detach_client
 op_assign
-id|saa7185_detach_client
+id|adv7170_detach_client
 comma
 dot
 id|command
 op_assign
-id|saa7185_command
+id|adv7170_command
 comma
 )brace
 suffix:semicolon
 r_static
 r_int
 id|__init
-DECL|function|saa7185_init
-id|saa7185_init
+DECL|function|adv7170_init
+id|adv7170_init
 (paren
 r_void
 )paren
@@ -1849,15 +2110,15 @@ id|i2c_add_driver
 c_func
 (paren
 op_amp
-id|i2c_driver_saa7185
+id|i2c_driver_adv7170
 )paren
 suffix:semicolon
 )brace
 r_static
 r_void
 id|__exit
-DECL|function|saa7185_exit
-id|saa7185_exit
+DECL|function|adv7170_exit
+id|adv7170_exit
 (paren
 r_void
 )paren
@@ -1866,22 +2127,22 @@ id|i2c_del_driver
 c_func
 (paren
 op_amp
-id|i2c_driver_saa7185
+id|i2c_driver_adv7170
 )paren
 suffix:semicolon
 )brace
-DECL|variable|saa7185_init
+DECL|variable|adv7170_init
 id|module_init
 c_func
 (paren
-id|saa7185_init
+id|adv7170_init
 )paren
 suffix:semicolon
-DECL|variable|saa7185_exit
+DECL|variable|adv7170_exit
 id|module_exit
 c_func
 (paren
-id|saa7185_exit
+id|adv7170_exit
 )paren
 suffix:semicolon
 eof
