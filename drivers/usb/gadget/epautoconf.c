@@ -142,7 +142,7 @@ r_if
 c_cond
 (paren
 l_char|&squot;s&squot;
-op_ne
+op_eq
 id|tmp
 (braket
 l_int|2
