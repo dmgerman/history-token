@@ -833,7 +833,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_get_module
+id|try_module_get
 c_func
 (paren
 id|THIS_MODULE
