@@ -1839,33 +1839,6 @@ l_int|0
 r_if
 c_cond
 (paren
-id|suggestion
-c_func
-(paren
-id|result
-)paren
-op_eq
-id|SUGGEST_REMAP
-)paren
-(brace
-macro_line|#ifdef REMAP
-multiline_comment|/*&n;&t;&t;&t; * Not yet implemented.  A read will fail after being remapped,&n;&t;&t;&t; * a write will call the strategy routine again.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|cmd-&gt;device-&gt;remap
-)paren
-(brace
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
-r_if
-c_cond
-(paren
 (paren
 id|cmd-&gt;sense_buffer
 (braket

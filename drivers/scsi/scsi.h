@@ -917,8 +917,6 @@ r_char
 id|current_tag
 suffix:semicolon
 multiline_comment|/* current tag */
-singleline_comment|//&t;unsigned char sync_min_period;&t;/* Not less than this period */
-singleline_comment|//&t;unsigned char sync_max_offset;&t;/* Not greater than this offset */
 DECL|member|sdev_target
 r_struct
 id|scsi_target
@@ -941,12 +939,6 @@ suffix:semicolon
 DECL|member|removable
 r_int
 id|removable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|random
-r_int
-id|random
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -1083,15 +1075,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* first try 10-byte mode sense/select */
-DECL|member|remap
-r_int
-id|remap
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* support remapping  */
-singleline_comment|//&t;unsigned sync:1;&t;/* Sync transfer state, managed by host */
-singleline_comment|//&t;unsigned wide:1;&t;/* WIDE transfer state, managed by host */
 DECL|member|no_start_on_add
 r_int
 id|no_start_on_add
