@@ -11004,17 +11004,19 @@ op_star
 id|bdp
 )paren
 (brace
+multiline_comment|/* Check if interface is up                              */
+multiline_comment|/* NOTE: Can&squot;t use netif_running(bdp-&gt;device) because    */
+multiline_comment|/* dev_close clears __LINK_STATE_START before calling    */
+multiline_comment|/* e100_close (aka dev-&gt;stop)                            */
 r_if
 c_cond
 (paren
-id|netif_running
-c_func
-(paren
-id|bdp-&gt;device
-)paren
+id|bdp-&gt;device-&gt;flags
+op_amp
+id|IFF_UP
 )paren
 (brace
-id|e100_dis_intr
+id|e100_disable_clear_intr
 c_func
 (paren
 id|bdp
