@@ -33326,7 +33326,7 @@ id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0009
 comma
-id|PHY_ID_BCM5701
+id|PHY_ID_BCM5703
 )brace
 comma
 multiline_comment|/* BCM95703Ax1 */
@@ -33335,7 +33335,7 @@ id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x8009
 comma
-id|PHY_ID_BCM5701
+id|PHY_ID_BCM5703
 )brace
 comma
 multiline_comment|/* BCM95703Ax2 */
@@ -33824,9 +33824,29 @@ op_or_assign
 id|TG3_FLAG_SERDES_WOL_CAP
 suffix:semicolon
 )brace
-multiline_comment|/* Now read the physical PHY_ID from the chip and verify&n;&t; * that it is sane.  If it doesn&squot;t look good, we fall back&n;&t; * to either the hard-coded table based PHY_ID and failing&n;&t; * that the value found in the eeprom area.&n;&t; */
+multiline_comment|/* Reading the PHY ID register can conflict with ASF&n;&t; * firwmare access to the PHY hardware.&n;&t; */
 id|err
 op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tp-&gt;tg3_flags
+op_amp
+id|TG3_FLAG_ENABLE_ASF
+)paren
+(brace
+id|hw_phy_id_masked
+op_assign
+id|PHY_ID_INVALID
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Now read the physical PHY_ID from the chip and verify&n;&t;&t; * that it is sane.  If it doesn&squot;t look good, we fall back&n;&t;&t; * to either the hard-coded table based PHY_ID and failing&n;&t;&t; * that the value found in the eeprom area.&n;&t;&t; */
+id|err
+op_or_assign
 id|tg3_readphy
 c_func
 (paren
@@ -33887,6 +33907,7 @@ id|hw_phy_id
 op_amp
 id|PHY_ID_MASK
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
