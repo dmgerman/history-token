@@ -769,6 +769,31 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* We might close a LSAP before it has completed the&n;&t;&t; * connection setup. In those case, higher layers won&squot;t&n;&t;&t; * send a proper disconnect request. Harmless, except&n;&t;&t; * that we will forget to close LAP... - Jean II */
+r_if
+c_cond
+(paren
+id|self-&gt;lsap_state
+op_ne
+id|LSAP_DISCONNECTED
+)paren
+(brace
+id|self-&gt;lsap_state
+op_assign
+id|LSAP_DISCONNECTED
+suffix:semicolon
+id|irlmp_do_lap_event
+c_func
+(paren
+id|self-&gt;lap
+comma
+id|LM_LAP_DISCONNECT_REQUEST
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Now, remove from the link */
 id|lsap
 op_assign
 id|hashbin_remove

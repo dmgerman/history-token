@@ -1021,6 +1021,14 @@ id|self-&gt;lsap_state
 op_assign
 id|LSAP_DISCONNECTED
 suffix:semicolon
+multiline_comment|/* Started when we received the LM_CONNECT_INDICATION */
+id|del_timer
+c_func
+(paren
+op_amp
+id|self-&gt;watchdog_timer
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 eof
