@@ -150,11 +150,30 @@ id|list_head
 id|nfs4_siblings
 suffix:semicolon
 multiline_comment|/* List of other nfs_server structs&n;&t;&t;&t;&t;&t;&t; * that share the same clientid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|attr_bitmask
+id|u32
+id|attr_bitmask
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* V4 bitmask representing the set&n;&t;&t;&t;&t;&t;&t;   of attributes supported on this&n;&t;&t;&t;&t;&t;&t;   filesystem */
+DECL|member|acl_bitmask
+id|u32
+id|acl_bitmask
+suffix:semicolon
+multiline_comment|/* V4 bitmask representing the ACEs&n;&t;&t;&t;&t;&t;&t;   that are supported on this&n;&t;&t;&t;&t;&t;&t;   filesystem */
 macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Server capabilities */
 DECL|macro|NFS_CAP_READDIRPLUS
-mdefine_line|#define NFS_CAP_READDIRPLUS&t;(1)
+mdefine_line|#define NFS_CAP_READDIRPLUS&t;(1U &lt;&lt; 0)
+DECL|macro|NFS_CAP_HARDLINKS
+mdefine_line|#define NFS_CAP_HARDLINKS&t;(1U &lt;&lt; 1)
+DECL|macro|NFS_CAP_SYMLINKS
+mdefine_line|#define NFS_CAP_SYMLINKS&t;(1U &lt;&lt; 2)
+DECL|macro|NFS_CAP_ACLS
+mdefine_line|#define NFS_CAP_ACLS&t;&t;(1U &lt;&lt; 3)
 macro_line|#endif
 eof
