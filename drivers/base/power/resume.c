@@ -19,7 +19,6 @@ r_void
 suffix:semicolon
 multiline_comment|/**&n; *&t;resume_device - Restore state for one device.&n; *&t;@dev:&t;Device.&n; *&n; */
 DECL|function|resume_device
-r_static
 r_int
 id|resume_device
 c_func
@@ -153,7 +152,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;power_up_device - Power one device on.&n; *&t;@dev:&t;Device.&n; */
 DECL|function|power_up_device
-r_static
 r_void
 id|power_up_device
 c_func
