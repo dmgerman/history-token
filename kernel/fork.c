@@ -2919,6 +2919,10 @@ id|sig-&gt;cmaj_flt
 op_assign
 l_int|0
 suffix:semicolon
+id|sig-&gt;sched_time
+op_assign
+l_int|0
+suffix:semicolon
 id|task_lock
 c_func
 (paren
@@ -3428,6 +3432,10 @@ suffix:semicolon
 id|p-&gt;stime
 op_assign
 id|cputime_zero
+suffix:semicolon
+id|p-&gt;sched_time
+op_assign
+l_int|0
 suffix:semicolon
 id|p-&gt;rchar
 op_assign

@@ -1139,6 +1139,10 @@ id|sig-&gt;nivcsw
 op_add_assign
 id|tsk-&gt;nivcsw
 suffix:semicolon
+id|sig-&gt;sched_time
+op_add_assign
+id|tsk-&gt;sched_time
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren

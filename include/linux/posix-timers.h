@@ -3,6 +3,30 @@ DECL|macro|_linux_POSIX_TIMERS_H
 mdefine_line|#define _linux_POSIX_TIMERS_H
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+DECL|macro|CPUCLOCK_PID
+mdefine_line|#define CPUCLOCK_PID(clock)&t;((pid_t) ~((clock) &gt;&gt; 3))
+DECL|macro|CPUCLOCK_PERTHREAD
+mdefine_line|#define CPUCLOCK_PERTHREAD(clock) &bslash;&n;&t;(((clock) &amp; (clockid_t) CPUCLOCK_PERTHREAD_MASK) != 0)
+DECL|macro|CPUCLOCK_PID_MASK
+mdefine_line|#define CPUCLOCK_PID_MASK&t;7
+DECL|macro|CPUCLOCK_PERTHREAD_MASK
+mdefine_line|#define CPUCLOCK_PERTHREAD_MASK&t;4
+DECL|macro|CPUCLOCK_WHICH
+mdefine_line|#define CPUCLOCK_WHICH(clock)&t;((clock) &amp; (clockid_t) CPUCLOCK_CLOCK_MASK)
+DECL|macro|CPUCLOCK_CLOCK_MASK
+mdefine_line|#define CPUCLOCK_CLOCK_MASK&t;3
+DECL|macro|CPUCLOCK_PROF
+mdefine_line|#define CPUCLOCK_PROF&t;&t;0
+DECL|macro|CPUCLOCK_VIRT
+mdefine_line|#define CPUCLOCK_VIRT&t;&t;1
+DECL|macro|CPUCLOCK_SCHED
+mdefine_line|#define CPUCLOCK_SCHED&t;&t;2
+DECL|macro|CPUCLOCK_MAX
+mdefine_line|#define CPUCLOCK_MAX&t;&t;3
+DECL|macro|MAKE_PROCESS_CPUCLOCK
+mdefine_line|#define MAKE_PROCESS_CPUCLOCK(pid, clock) &bslash;&n;&t;((~(clockid_t) (pid) &lt;&lt; 3) | (clockid_t) (clock))
+DECL|macro|MAKE_THREAD_CPUCLOCK
+mdefine_line|#define MAKE_THREAD_CPUCLOCK(tid, clock) &bslash;&n;&t;MAKE_PROCESS_CPUCLOCK((tid), (clock) | CPUCLOCK_PERTHREAD_MASK)
 multiline_comment|/* POSIX.1b interval timer structure. */
 DECL|struct|k_itimer
 r_struct
@@ -346,5 +370,110 @@ DECL|macro|posix_time_before
 mdefine_line|#define posix_time_before(timer, now) &bslash;&n;                      time_before((timer)-&gt;expires, (now)-&gt;jiffies)
 DECL|macro|posix_bump_timer
 mdefine_line|#define posix_bump_timer(timr, now)&t;&t;&t;&t;&t;&bslash;&n;         do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;              long delta, orun;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      delta = now.jiffies - (timr)-&gt;it_timer.expires;&t;&t;&bslash;&n;              if (delta &gt;= 0) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;           orun = 1 + (delta / (timr)-&gt;it_incr);&t;&t;&bslash;&n;&t;          (timr)-&gt;it_timer.expires += orun * (timr)-&gt;it_incr;&t;&bslash;&n;                  (timr)-&gt;it_overrun += orun;&t;&t;&t;&t;&bslash;&n;              }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;            }while (0)
+r_int
+id|posix_cpu_clock_getres
+c_func
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_struct
+id|timespec
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_clock_get
+c_func
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_struct
+id|timespec
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_clock_set
+c_func
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_const
+r_struct
+id|timespec
+op_star
+id|tp
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_timer_create
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_nsleep
+c_func
+(paren
+id|clockid_t
+comma
+r_int
+comma
+r_struct
+id|timespec
+op_star
+)paren
+suffix:semicolon
+DECL|macro|posix_cpu_timer_create
+mdefine_line|#define posix_cpu_timer_create do_posix_clock_notimer_create
+DECL|macro|posix_cpu_nsleep
+mdefine_line|#define posix_cpu_nsleep do_posix_clock_nonanosleep
+r_int
+id|posix_cpu_timer_set
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+comma
+r_int
+comma
+r_struct
+id|itimerspec
+op_star
+comma
+r_struct
+id|itimerspec
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_timer_del
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+)paren
+suffix:semicolon
+r_void
+id|posix_cpu_timer_get
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+comma
+r_struct
+id|itimerspec
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

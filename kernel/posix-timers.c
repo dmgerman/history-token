@@ -219,14 +219,14 @@ suffix:semicolon
 multiline_comment|/*&n; * Define this to initialize every k_clock function table so all its&n; * function pointers are non-null, and always do indirect calls through the&n; * table.  Leave it undefined to instead leave null function pointers and&n; * decide at the call sites between a direct call (maybe inlined) to the&n; * default function and an indirect call through the table when it&squot;s filled&n; * in.  Which style is preferable is whichever performs better in the&n; * common case of using the default functions.&n; *&n;#define CLOCK_DISPATCH_DIRECT&n; */
 macro_line|#ifdef CLOCK_DISPATCH_DIRECT
 DECL|macro|CLOCK_DISPATCH
-mdefine_line|#define CLOCK_DISPATCH(clock, call, arglist) &bslash;&n;&t;((*posix_clocks[clock].call) arglist)
+mdefine_line|#define CLOCK_DISPATCH(clock, call, arglist) &bslash;&n;&t;((clock) &lt; 0 ? posix_cpu_##call arglist : &bslash;&n;&t; (*posix_clocks[clock].call) arglist)
 DECL|macro|DEFHOOK
 mdefine_line|#define DEFHOOK(name)&t;if (clock-&gt;name == NULL) clock-&gt;name = common_##name
 DECL|macro|COMMONDEFN
 mdefine_line|#define COMMONDEFN&t;static
 macro_line|#else
 DECL|macro|CLOCK_DISPATCH
-mdefine_line|#define CLOCK_DISPATCH(clock, call, arglist) &bslash;&n;&t;(posix_clocks[clock].call != NULL &bslash;&n;&t; ? (*posix_clocks[clock].call) arglist : common_##call arglist)
+mdefine_line|#define CLOCK_DISPATCH(clock, call, arglist) &bslash;&n;&t;((clock) &lt; 0 ? posix_cpu_##call arglist : &bslash;&n;&t; (posix_clocks[clock].call != NULL &bslash;&n;&t;  ? (*posix_clocks[clock].call) arglist : common_##call arglist))
 DECL|macro|DEFHOOK
 mdefine_line|#define DEFHOOK(name)&t;&t;(void) 0 /* Nothing here.  */
 DECL|macro|COMMONDEFN
@@ -499,6 +499,17 @@ id|clockid_t
 id|which_clock
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|which_clock
+OL
+l_int|0
+)paren
+multiline_comment|/* CPU clock, posix_cpu_* will check it */
+r_return
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

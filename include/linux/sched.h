@@ -877,6 +877,13 @@ id|cmin_flt
 comma
 id|cmaj_flt
 suffix:semicolon
+multiline_comment|/*&n;&t; * Cumulative ns of scheduled CPU time for dead threads in the&n;&t; * group, not including a zombie group leader.  (This only differs&n;&t; * from jiffies_to_ns(utime + stime) if sched_clock uses something&n;&t; * other than jiffies.)&n;&t; */
+DECL|member|sched_time
+r_int
+r_int
+r_int
+id|sched_time
+suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t bother to synchronize most readers of this at all,&n;&t; * because there is no reader checking a limit that actually needs&n;&t; * to get both rlim_cur and rlim_max atomically, and either one&n;&t; * alone is a single word that can safely be read normally.&n;&t; * getrlimit/setrlimit use task_lock(current-&gt;group_leader) to&n;&t; * protect this instead of the siglock, because they really&n;&t; * have no need to disable irqs.&n;&t; */
 DECL|member|rlim
 r_struct
@@ -1463,6 +1470,13 @@ id|timestamp
 comma
 id|last_ran
 suffix:semicolon
+DECL|member|sched_time
+r_int
+r_int
+r_int
+id|sched_time
+suffix:semicolon
+multiline_comment|/* sched_clock time spent running */
 DECL|member|activated
 r_int
 id|activated
@@ -2197,6 +2211,19 @@ id|sched_clock
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+r_int
+id|current_sched_time
+c_func
+(paren
+r_const
+id|task_t
+op_star
+id|current_task
 )paren
 suffix:semicolon
 multiline_comment|/* sched_exec is called by processes performing an exec */
