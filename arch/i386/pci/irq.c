@@ -2496,6 +2496,15 @@ id|device
 r_case
 id|PCI_DEVICE_ID_AL_M1533
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_AL_M1563
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;PCI: Using ALI IRQ Router&bslash;n&quot;
+)paren
+suffix:semicolon
 id|r-&gt;name
 op_assign
 l_string|&quot;ALI&quot;
@@ -2511,7 +2520,6 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* Should add 156x some day */
 )brace
 r_return
 l_int|0
