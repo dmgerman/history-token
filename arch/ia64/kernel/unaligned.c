@@ -3853,7 +3853,7 @@ suffix:semicolon
 id|die_if_kernel
 c_func
 (paren
-l_string|&quot;unaligned reference on specualtive load with register update&bslash;n&quot;
+l_string|&quot;unaligned reference on speculative load with register update&bslash;n&quot;
 comma
 id|regs
 comma
