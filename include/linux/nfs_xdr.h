@@ -2091,17 +2091,6 @@ r_struct
 id|nfs4_setattr
 id|setattr
 suffix:semicolon
-DECL|member|setclientid
-r_struct
-id|nfs4_setclientid
-id|setclientid
-suffix:semicolon
-DECL|member|setclientid_confirm
-r_struct
-id|nfs4_client
-op_star
-id|setclientid_confirm
-suffix:semicolon
 DECL|member|u
 )brace
 id|u
