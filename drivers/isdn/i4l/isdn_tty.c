@@ -2639,10 +2639,6 @@ id|info-&gt;isdn_slot
 op_assign
 id|i
 suffix:semicolon
-id|info-&gt;drv_index
-op_assign
-id|i
-suffix:semicolon
 id|dev-&gt;m_idx
 (braket
 id|i
@@ -2899,11 +2895,6 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-id|info-&gt;isdn_slot
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 macro_line|#ifdef ISDN_DEBUG_MODEM_HUP
 id|printk
 c_func
@@ -3122,28 +3113,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|info-&gt;drv_index
-op_ge
-l_int|0
-)paren
-(brace
 id|dev-&gt;m_idx
 (braket
-id|info-&gt;drv_index
+id|slot
 )braket
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|info-&gt;drv_index
+id|info-&gt;isdn_slot
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Begin of a CAPI like interface, currently used only for &n; * supplementary service (CAPI 2.0 part III)&n; */
 macro_line|#include &lt;linux/isdn/capicmd.h&gt;
@@ -3996,10 +3978,6 @@ suffix:semicolon
 r_else
 (brace
 id|info-&gt;isdn_slot
-op_assign
-id|i
-suffix:semicolon
-id|info-&gt;drv_index
 op_assign
 id|i
 suffix:semicolon
@@ -8955,11 +8933,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|info-&gt;drv_index
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;xmit_size
 op_assign
 id|ISDN_SERIAL_XMIT_SIZE
@@ -9720,10 +9693,6 @@ id|matchret
 (brace
 multiline_comment|/* EAZ is matching */
 id|info-&gt;isdn_slot
-op_assign
-id|idx
-suffix:semicolon
-id|info-&gt;drv_index
 op_assign
 id|idx
 suffix:semicolon
@@ -11888,7 +11857,7 @@ c_func
 (paren
 id|dev-&gt;num
 (braket
-id|info-&gt;drv_index
+id|info-&gt;isdn_slot
 )braket
 comma
 id|info
@@ -12065,7 +12034,7 @@ c_func
 (paren
 id|dev-&gt;num
 (braket
-id|info-&gt;drv_index
+id|info-&gt;isdn_slot
 )braket
 comma
 id|info
@@ -14526,7 +14495,7 @@ id|info-&gt;last_num
 comma
 id|dev-&gt;num
 (braket
-id|info-&gt;drv_index
+id|info-&gt;isdn_slot
 )braket
 )paren
 suffix:semicolon

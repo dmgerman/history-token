@@ -1226,11 +1226,6 @@ r_int
 id|isdn_slot
 suffix:semicolon
 multiline_comment|/* Index to isdn-driver/channel   */
-DECL|member|drv_index
-r_int
-id|drv_index
-suffix:semicolon
-multiline_comment|/* Index to dev-&gt;usage            */
 DECL|member|ncarrier
 r_int
 id|ncarrier
