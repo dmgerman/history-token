@@ -1031,9 +1031,15 @@ c_cond
 (paren
 id|result
 )paren
+(brace
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
+)brace
 id|result
 op_assign
 id|acpi_blacklisted
