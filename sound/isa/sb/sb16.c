@@ -1138,6 +1138,23 @@ l_char|&squot;T&squot;
 comma
 l_char|&squot;L&squot;
 comma
+l_int|0x0046
+comma
+l_int|0x0031
+comma
+l_int|0x0021
+)paren
+comma
+multiline_comment|/* Sound Blaster AWE 32 PnP */
+id|ISAPNP_SBAWE
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;T&squot;
+comma
+l_char|&squot;L&squot;
+comma
 l_int|0x0047
 comma
 l_int|0x0031

@@ -105,7 +105,7 @@ c_func
 (paren
 id|snd_seq_client_load
 comma
-l_string|&quot;i&quot;
+l_string|&quot;1-64i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    card-dt0197h.c - driver for Diamond Technologies DT-0197H based soundcards.&n;    Copyright (C) 1999 by Massimo Piccioni &lt;dafastidio@libero.it&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;*/
+multiline_comment|/*&n;    dt019x.c - driver for Diamond Technologies DT-0197H based soundcards.&n;    Copyright (C) 1999, 2002 by Massimo Piccioni &lt;dafastidio@libero.it&gt;&n;&n;    Generalised for soundcards based on DT-0196 and ALS-007 chips &n;    by Jonathan Woithe &lt;jwoithe@physics.adelaide.edu.au&gt;: June 2002.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;*/
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -20,7 +20,7 @@ macro_line|#include &lt;sound/sb.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t sb_t
 DECL|macro|PFX
-mdefine_line|#define PFX &quot;dt0197h: &quot;
+mdefine_line|#define PFX &quot;dt019x: &quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -30,7 +30,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Diamond Technologies DT-0197H&quot;
+l_string|&quot;Diamond Technologies DT-019X / Avance Logic ALS-007&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -48,7 +48,8 @@ suffix:semicolon
 id|MODULE_DEVICES
 c_func
 (paren
-l_string|&quot;{{Diamond Technologies,DT-0197H}}&quot;
+l_string|&quot;{{Diamond Technologies DT-019X},&quot;
+l_string|&quot;{Avance Logic ALS-007}}&quot;
 )paren
 suffix:semicolon
 DECL|variable|snd_index
@@ -170,7 +171,7 @@ c_func
 (paren
 id|snd_index
 comma
-l_string|&quot;Index value for dt0197h based soundcard.&quot;
+l_string|&quot;Index value for DT-019X based soundcard.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -200,7 +201,7 @@ c_func
 (paren
 id|snd_id
 comma
-l_string|&quot;ID string for dt0197h based soundcard.&quot;
+l_string|&quot;ID string for DT-019X based soundcard.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -230,7 +231,7 @@ c_func
 (paren
 id|snd_enable
 comma
-l_string|&quot;Enable dt0197h based soundcard.&quot;
+l_string|&quot;Enable DT-019X based soundcard.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -260,7 +261,7 @@ c_func
 (paren
 id|snd_port
 comma
-l_string|&quot;Port # for dt0197h driver.&quot;
+l_string|&quot;Port # for dt019x driver.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -290,7 +291,7 @@ c_func
 (paren
 id|snd_mpu_port
 comma
-l_string|&quot;MPU-401 port # for dt0197h driver.&quot;
+l_string|&quot;MPU-401 port # for dt019x driver.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -320,7 +321,7 @@ c_func
 (paren
 id|snd_fm_port
 comma
-l_string|&quot;FM port # for dt0197h driver.&quot;
+l_string|&quot;FM port # for dt019x driver.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -350,7 +351,7 @@ c_func
 (paren
 id|snd_irq
 comma
-l_string|&quot;IRQ # for dt0197h driver.&quot;
+l_string|&quot;IRQ # for dt019x driver.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -380,7 +381,7 @@ c_func
 (paren
 id|snd_mpu_irq
 comma
-l_string|&quot;MPU-401 IRQ # for dt0197h driver.&quot;
+l_string|&quot;MPU-401 IRQ # for dt019x driver.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -410,7 +411,7 @@ c_func
 (paren
 id|snd_dma8
 comma
-l_string|&quot;8-bit DMA # for dt0197h driver.&quot;
+l_string|&quot;8-bit DMA # for dt019x driver.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -421,9 +422,9 @@ comma
 id|SNDRV_DMA8_DESC
 )paren
 suffix:semicolon
-DECL|struct|snd_card_dt0197h
+DECL|struct|snd_card_dt019x
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 (brace
 macro_line|#ifdef __ISAPNP__
 DECL|member|dev
@@ -447,11 +448,11 @@ suffix:semicolon
 macro_line|#endif&t;/* __ISAPNP__ */
 )brace
 suffix:semicolon
-DECL|variable|snd_dt0197h_cards
+DECL|variable|snd_dt019x_cards
 r_static
 id|snd_card_t
 op_star
-id|snd_dt0197h_cards
+id|snd_dt019x_cards
 (braket
 id|SNDRV_CARDS
 )braket
@@ -464,7 +465,7 @@ r_static
 r_struct
 id|isapnp_card
 op_star
-id|snd_dt0197h_isapnp_cards
+id|snd_dt019x_isapnp_cards
 (braket
 id|SNDRV_CARDS
 )braket
@@ -478,7 +479,7 @@ r_const
 r_struct
 id|isapnp_card_id
 op_star
-id|snd_dt0197h_isapnp_id
+id|snd_dt019x_isapnp_id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -490,7 +491,7 @@ DECL|variable|__devinitdata
 r_static
 r_struct
 id|isapnp_card_id
-id|snd_dt0197h_pnpids
+id|snd_dt019x_pnpids
 (braket
 )braket
 id|__devinitdata
@@ -551,35 +552,90 @@ l_int|0x0001
 )brace
 )brace
 comma
+multiline_comment|/* DT0196 / ALS-007 */
+(brace
+id|ISAPNP_CARD_ID
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_char|&squot;L&squot;
+comma
+l_char|&squot;S&squot;
+comma
+l_int|0x0007
+)paren
+comma
+id|devs
+suffix:colon
+(brace
+id|ISAPNP_DEVICE_ID
+c_func
+(paren
+l_char|&squot;@&squot;
+comma
+l_char|&squot;@&squot;
+comma
+l_char|&squot;@&squot;
+comma
+l_int|0x0001
+)paren
+comma
+id|ISAPNP_DEVICE_ID
+c_func
+(paren
+l_char|&squot;@&squot;
+comma
+l_char|&squot;X&squot;
+comma
+l_char|&squot;@&squot;
+comma
+l_int|0x0001
+)paren
+comma
+id|ISAPNP_DEVICE_ID
+c_func
+(paren
+l_char|&squot;@&squot;
+comma
+l_char|&squot;H&squot;
+comma
+l_char|&squot;@&squot;
+comma
+l_int|0x0001
+)paren
+)brace
+)brace
+comma
 (brace
 id|ISAPNP_CARD_END
 comma
 )brace
 )brace
 suffix:semicolon
-DECL|variable|snd_dt0197h_pnpids
+DECL|variable|snd_dt019x_pnpids
 id|ISAPNP_CARD_TABLE
 c_func
 (paren
-id|snd_dt0197h_pnpids
+id|snd_dt019x_pnpids
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __ISAPNP__ */
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME&t;&quot;snd-card-dt0197h&quot;
+mdefine_line|#define DRIVER_NAME&t;&quot;snd-card-dt019x&quot;
 macro_line|#ifdef __ISAPNP__
-DECL|function|snd_card_dt0197h_isapnp
+DECL|function|snd_card_dt019x_isapnp
 r_static
 r_int
 id|__init
-id|snd_card_dt0197h_isapnp
+id|snd_card_dt019x_isapnp
 c_func
 (paren
 r_int
 id|dev
 comma
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 op_star
 id|acard
 )paren
@@ -590,7 +646,7 @@ id|isapnp_card_id
 op_star
 id|id
 op_assign
-id|snd_dt0197h_isapnp_id
+id|snd_dt019x_isapnp_id
 (braket
 id|dev
 )braket
@@ -600,7 +656,7 @@ id|isapnp_card
 op_star
 id|card
 op_assign
-id|snd_dt0197h_isapnp_cards
+id|snd_dt019x_isapnp_cards
 (braket
 id|dev
 )braket
@@ -740,6 +796,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|pdev
+op_logical_or
 id|pdev
 op_member_access_from_pointer
 id|prepare
@@ -854,7 +913,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;AUDIO isapnp configure failure&bslash;n&quot;
+l_string|&quot;DT-019X AUDIO isapnp configure failure&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -898,6 +957,27 @@ l_int|0
 dot
 id|start
 suffix:semicolon
+id|snd_printdd
+c_func
+(paren
+l_string|&quot;dt019x: found audio interface: port=0x%lx, irq=0x%lx, dma=0x%lx&bslash;n&quot;
+comma
+id|snd_port
+(braket
+id|dev
+)braket
+comma
+id|snd_irq
+(braket
+id|dev
+)braket
+comma
+id|smd_dma8
+(braket
+id|dev
+)braket
+)paren
+suffix:semicolon
 id|pdev
 op_assign
 id|acard-&gt;devmpu
@@ -905,6 +985,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pdev
 op_logical_or
 id|pdev
@@ -993,7 +1074,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;MPU-401 isapnp configure failure&bslash;n&quot;
+l_string|&quot;DT-019X MPU-401 isapnp configure failure&bslash;n&quot;
 )paren
 suffix:semicolon
 id|snd_mpu_port
@@ -1035,6 +1116,22 @@ l_int|0
 dot
 id|start
 suffix:semicolon
+id|snd_printdd
+c_func
+(paren
+l_string|&quot;dt019x: found MPU-401: port=0x%lx, irq=0x%lx&bslash;n&quot;
+comma
+id|snd_mpu_port
+(braket
+id|dev
+)braket
+comma
+id|snd_mpu_irq
+(braket
+id|dev
+)braket
+)paren
+suffix:semicolon
 )brace
 id|pdev
 op_assign
@@ -1043,9 +1140,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pdev
-op_eq
-l_int|NULL
 op_logical_or
 id|pdev
 op_member_access_from_pointer
@@ -1106,7 +1202,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;OPL isapnp configure failure&bslash;n&quot;
+l_string|&quot;DT-019X OPL3 isapnp configure failure&bslash;n&quot;
 )paren
 suffix:semicolon
 id|snd_fm_port
@@ -1136,19 +1232,30 @@ l_int|0
 dot
 id|start
 suffix:semicolon
+id|snd_printdd
+c_func
+(paren
+l_string|&quot;dt019x: found OPL3 synth: port=0x%lx&bslash;n&quot;
+comma
+id|snd_fm_port
+(braket
+id|dev
+)braket
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_card_dt0197h_deactivate
+DECL|function|snd_card_dt019x_deactivate
 r_static
 r_void
-id|snd_card_dt0197h_deactivate
+id|snd_card_dt019x_deactivate
 c_func
 (paren
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 op_star
 id|acard
 )paren
@@ -1212,10 +1319,10 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;/* __ISAPNP__ */
-DECL|function|snd_card_dt0197h_free
+DECL|function|snd_card_dt019x_free
 r_static
 r_void
-id|snd_card_dt0197h_free
+id|snd_card_dt019x_free
 c_func
 (paren
 id|snd_card_t
@@ -1224,13 +1331,13 @@ id|card
 )paren
 (brace
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 op_star
 id|acard
 op_assign
 (paren
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 op_star
 )paren
 id|card-&gt;private_data
@@ -1244,7 +1351,7 @@ l_int|NULL
 )paren
 (brace
 macro_line|#ifdef __ISAPNP__
-id|snd_card_dt0197h_deactivate
+id|snd_card_dt019x_deactivate
 c_func
 (paren
 id|acard
@@ -1253,11 +1360,11 @@ suffix:semicolon
 macro_line|#endif&t;/* __ISAPNP__ */
 )brace
 )brace
-DECL|function|snd_card_dt0197h_probe
+DECL|function|snd_card_dt019x_probe
 r_static
 r_int
 id|__init
-id|snd_card_dt0197h_probe
+id|snd_card_dt019x_probe
 c_func
 (paren
 r_int
@@ -1276,7 +1383,7 @@ op_star
 id|card
 suffix:semicolon
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 op_star
 id|acard
 suffix:semicolon
@@ -1308,7 +1415,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 )paren
 )paren
 )paren
@@ -1323,14 +1430,14 @@ id|acard
 op_assign
 (paren
 r_struct
-id|snd_card_dt0197h
+id|snd_card_dt019x
 op_star
 )paren
 id|card-&gt;private_data
 suffix:semicolon
 id|card-&gt;private_free
 op_assign
-id|snd_card_dt0197h_free
+id|snd_card_dt019x_free
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
 r_if
@@ -1339,7 +1446,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|snd_card_dt0197h_isapnp
+id|snd_card_dt019x_isapnp
 c_func
 (paren
 id|dev
@@ -1410,7 +1517,7 @@ comma
 op_minus
 l_int|1
 comma
-id|SB_HW_AUTO
+id|SB_HW_DT019X
 comma
 op_amp
 id|chip
@@ -1507,6 +1614,7 @@ id|card
 comma
 l_int|0
 comma
+multiline_comment|/*&t;&t;&t;&t;&t;MPU401_HW_SB,*/
 id|MPU401_HW_MPU401
 comma
 id|snd_mpu_port
@@ -1676,7 +1784,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;DT-0197H&quot;
+l_string|&quot;DT-019X&quot;
 )paren
 suffix:semicolon
 id|strcpy
@@ -1684,7 +1792,7 @@ c_func
 (paren
 id|card-&gt;shortname
 comma
-l_string|&quot;Diamond Tech. DT-0197H&quot;
+l_string|&quot;Diamond Tech. DT-019X&quot;
 )paren
 suffix:semicolon
 id|sprintf
@@ -1737,7 +1845,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-id|snd_dt0197h_cards
+id|snd_dt019x_cards
 (braket
 id|dev
 )braket
@@ -1749,11 +1857,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef __ISAPNP__
-DECL|function|snd_dt0197h_isapnp_detect
+DECL|function|snd_dt019x_isapnp_detect
 r_static
 r_int
 id|__init
-id|snd_dt0197h_isapnp_detect
+id|snd_dt019x_isapnp_detect
 c_func
 (paren
 r_struct
@@ -1798,14 +1906,14 @@ id|dev
 )paren
 r_continue
 suffix:semicolon
-id|snd_dt0197h_isapnp_cards
+id|snd_dt019x_isapnp_cards
 (braket
 id|dev
 )braket
 op_assign
 id|card
 suffix:semicolon
-id|snd_dt0197h_isapnp_id
+id|snd_dt019x_isapnp_id
 (braket
 id|dev
 )braket
@@ -1814,7 +1922,7 @@ id|id
 suffix:semicolon
 id|res
 op_assign
-id|snd_card_dt0197h_probe
+id|snd_card_dt019x_probe
 c_func
 (paren
 id|dev
@@ -1843,11 +1951,11 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif /* __ISAPNP__ */
-DECL|function|alsa_card_dt0197h_init
+DECL|function|alsa_card_dt019x_init
 r_static
 r_int
 id|__init
-id|alsa_card_dt0197h_init
+id|alsa_card_dt019x_init
 c_func
 (paren
 r_void
@@ -1864,9 +1972,9 @@ op_add_assign
 id|isapnp_probe_cards
 c_func
 (paren
-id|snd_dt0197h_pnpids
+id|snd_dt019x_pnpids
 comma
-id|snd_dt0197h_isapnp_detect
+id|snd_dt019x_isapnp_detect
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1890,7 +1998,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;no DT-0197H based soundcards found&bslash;n&quot;
+l_string|&quot;no DT-019X / ALS-007 based soundcards found&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1904,11 +2012,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-DECL|function|alsa_card_dt0197h_exit
+DECL|function|alsa_card_dt019x_exit
 r_static
 r_void
 id|__exit
-id|alsa_card_dt0197h_exit
+id|alsa_card_dt019x_exit
 c_func
 (paren
 r_void
@@ -1934,7 +2042,7 @@ op_increment
 id|snd_card_free
 c_func
 (paren
-id|snd_dt0197h_cards
+id|snd_dt019x_cards
 (braket
 id|dev
 )braket
@@ -1944,20 +2052,20 @@ suffix:semicolon
 id|module_init
 c_func
 (paren
-id|alsa_card_dt0197h_init
+id|alsa_card_dt019x_init
 )paren
 id|module_exit
 c_func
 (paren
-id|alsa_card_dt0197h_exit
+id|alsa_card_dt019x_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-dt0197h=snd_enable,snd_index,snd_id,snd_isapnp,&n;&t;&t;&t;  snd_port,snd_mpu_port,snd_fm_port,&n;&t;&t;&t;  snd_irq,snd_mpu_irq,snd_dma8,snd_dma8_size */
-DECL|function|alsa_card_dt0197h_setup
+multiline_comment|/* format is: snd-dt019x=snd_enable,snd_index,snd_id,snd_isapnp,&n;&t;&t;&t;  snd_port,snd_mpu_port,snd_fm_port,&n;&t;&t;&t;  snd_irq,snd_mpu_irq,snd_dma8,snd_dma8_size */
+DECL|function|alsa_card_dt019x_setup
 r_static
 r_int
 id|__init
-id|alsa_card_dt0197h_setup
+id|alsa_card_dt019x_setup
 c_func
 (paren
 r_char
@@ -2144,9 +2252,9 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;snd-dt0197h=&quot;
+l_string|&quot;snd-dt019x=&quot;
 comma
-id|alsa_card_dt0197h_setup
+id|alsa_card_dt019x_setup
 )paren
 suffix:semicolon
 macro_line|#endif /* ifndef MODULE */
