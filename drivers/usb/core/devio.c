@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;hcd.h&quot;&t;/* for usbcore internals */
 macro_line|#include &quot;usb.h&quot;
 DECL|struct|async
