@@ -233,6 +233,7 @@ id|value
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* FIELD_INDEX_NONE is returned in read() data from the kernel when flags&n; * is set to (HIDDEV_FLAG_UREF | HIDDEV_FLAG_REPORT) and a new report has&n; * been sent by the device &n; */
 DECL|macro|HID_FIELD_INDEX_NONE
 mdefine_line|#define HID_FIELD_INDEX_NONE 0xffffffff
 multiline_comment|/*&n; * Protocol version.&n; */
@@ -256,26 +257,26 @@ mdefine_line|#define HIDIOCGREPORT&t;&t;_IOW(&squot;H&squot;, 0x07, struct hidde
 DECL|macro|HIDIOCSREPORT
 mdefine_line|#define HIDIOCSREPORT&t;&t;_IOW(&squot;H&squot;, 0x08, struct hiddev_report_info)
 DECL|macro|HIDIOCGREPORTINFO
-mdefine_line|#define HIDIOCGREPORTINFO       _IOWR(&squot;H&squot;, 0x09, struct hiddev_report_info)
+mdefine_line|#define HIDIOCGREPORTINFO&t;_IOWR(&squot;H&squot;, 0x09, struct hiddev_report_info)
 DECL|macro|HIDIOCGFIELDINFO
-mdefine_line|#define HIDIOCGFIELDINFO        _IOWR(&squot;H&squot;, 0x0A, struct hiddev_field_info)
+mdefine_line|#define HIDIOCGFIELDINFO&t;_IOWR(&squot;H&squot;, 0x0A, struct hiddev_field_info)
 DECL|macro|HIDIOCGUSAGE
-mdefine_line|#define HIDIOCGUSAGE            _IOWR(&squot;H&squot;, 0x0B, struct hiddev_usage_ref)
+mdefine_line|#define HIDIOCGUSAGE&t;&t;_IOWR(&squot;H&squot;, 0x0B, struct hiddev_usage_ref)
 DECL|macro|HIDIOCSUSAGE
-mdefine_line|#define HIDIOCSUSAGE            _IOW(&squot;H&squot;, 0x0C, struct hiddev_usage_ref)
+mdefine_line|#define HIDIOCSUSAGE&t;&t;_IOW(&squot;H&squot;, 0x0C, struct hiddev_usage_ref)
 DECL|macro|HIDIOCGUCODE
-mdefine_line|#define HIDIOCGUCODE            _IOWR(&squot;H&squot;, 0x0D, struct hiddev_usage_ref)
+mdefine_line|#define HIDIOCGUCODE&t;&t;_IOWR(&squot;H&squot;, 0x0D, struct hiddev_usage_ref)
 DECL|macro|HIDIOCGFLAG
-mdefine_line|#define HIDIOCGFLAG             _IOR(&squot;H&squot;, 0x0E, int)
+mdefine_line|#define HIDIOCGFLAG&t;&t;_IOR(&squot;H&squot;, 0x0E, int)
 DECL|macro|HIDIOCSFLAG
-mdefine_line|#define HIDIOCSFLAG             _IOW(&squot;H&squot;, 0x0F, int)
+mdefine_line|#define HIDIOCSFLAG&t;&t;_IOW(&squot;H&squot;, 0x0F, int)
 multiline_comment|/* &n; * Flags to be used in HIDIOCSFLAG&n; */
 DECL|macro|HIDDEV_FLAG_UREF
-mdefine_line|#define HIDDEV_FLAG_UREF     0x1
+mdefine_line|#define HIDDEV_FLAG_UREF&t;0x1
 DECL|macro|HIDDEV_FLAG_REPORT
-mdefine_line|#define HIDDEV_FLAG_REPORT   0x2
+mdefine_line|#define HIDDEV_FLAG_REPORT&t;0x2
 DECL|macro|HIDDEV_FLAGS
-mdefine_line|#define HIDDEV_FLAGS         0x3
+mdefine_line|#define HIDDEV_FLAGS&t;&t;0x3
 multiline_comment|/* To traverse the input report descriptor info for a HID device, perform the &n; * following:&n; *&n; *  rinfo.report_type = HID_REPORT_TYPE_INPUT;&n; *  rinfo.report_id = HID_REPORT_ID_FIRST;&n; *  ret = ioctl(fd, HIDIOCGREPORTINFO, &amp;rinfo);&n; *&n; *  while (ret &gt;= 0) {&n; *      for (i = 0; i &lt; rinfo.num_fields; i++) { &n; *&t;    finfo.report_type = rinfo.report_type;&n; *          finfo.report_id = rinfo.report_id;&n; *          finfo.field_index = i;&n; *          ioctl(fd, HIDIOCGFIELDINFO, &amp;finfo);&n; *          for (j = 0; j &lt; finfo.maxusage; j++) {&n; *              uref.field_index = i;&n; *&t;&t;uref.usage_index = j;&n; *&t;&t;ioctl(fd, HIDIOCGUCODE, &amp;uref);&n; *&t;&t;ioctl(fd, HIDIOCGUSAGE, &amp;uref);&n; *          }&n; *&t;}&n; *&t;uref.report_id |= HID_REPORT_ID_NEXT;&n; *&t;ret = ioctl(fd, HIDIOCGREPORTINFO, &amp;uref);&n; *  }&n; */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * In-kernel definitions.&n; */
