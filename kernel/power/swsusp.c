@@ -2462,12 +2462,10 @@ c_cond
 op_logical_neg
 id|pagedir_save
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -2828,6 +2826,9 @@ id|nr_needed_pages
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|error
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -2881,10 +2882,20 @@ id|nr_copy_pages
 op_plus
 id|PAGES_FOR_IO
 suffix:semicolon
+id|error
+op_assign
 id|swsusp_alloc
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 multiline_comment|/* During allocating of suspend pagedir, new cold pages may appear. &n;&t; * Kill them.&n;&t; */
 id|drain_local_pages
