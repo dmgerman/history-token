@@ -478,6 +478,27 @@ op_star
 id|res
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pcibios_bus_to_resource
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|resource
+op_star
+id|res
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __SPARC64_PCI_H */
 eof
