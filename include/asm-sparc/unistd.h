@@ -279,7 +279,8 @@ DECL|macro|__NR_utimes
 mdefine_line|#define __NR_utimes             138 /* SunOS Specific                              */
 DECL|macro|__NR_stat64
 mdefine_line|#define __NR_stat64&t;&t;139 /* Linux sparc32 Specific&t;&t;&t;   */
-multiline_comment|/* #define __NR_adjtime         140    SunOS Specific                              */
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64         140 /* adjtime under SunOS                         */
 DECL|macro|__NR_getpeername
 mdefine_line|#define __NR_getpeername        141 /* Common                                      */
 multiline_comment|/* #define __NR_gethostid       142    SunOS Specific                              */
