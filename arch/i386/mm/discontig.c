@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/mmzone.h&gt;
 DECL|variable|node_data
 r_struct
 id|pglist_data
@@ -176,7 +177,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/*&n; * FLAT - support for basic PC memory model with discontig enabled, essentially&n; *        a single node with all available processors in it with a flat&n; *        memory map.&n; */
 DECL|function|get_memcfg_numa_flat
-r_void
+r_int
 id|__init
 id|get_memcfg_numa_flat
 c_func
@@ -255,6 +256,9 @@ l_int|0
 suffix:semicolon
 id|numnodes
 op_assign
+l_int|1
+suffix:semicolon
+r_return
 l_int|1
 suffix:semicolon
 )brace
@@ -1419,6 +1423,14 @@ id|low
 )paren
 (brace
 macro_line|#ifdef CONFIG_HIGHMEM
+id|BUG_ON
+c_func
+(paren
+id|start
+OG
+id|high
+)paren
+suffix:semicolon
 id|zones_size
 (braket
 id|ZONE_HIGHMEM
@@ -1448,6 +1460,22 @@ id|low
 suffix:semicolon
 r_else
 (brace
+id|BUG_ON
+c_func
+(paren
+id|max_dma
+OG
+id|low
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|low
+OG
+id|high
+)paren
+suffix:semicolon
 id|zones_size
 (braket
 id|ZONE_DMA

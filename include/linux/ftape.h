@@ -251,14 +251,6 @@ DECL|macro|ABS
 mdefine_line|#define ABS(a)          ((a) &lt; 0 ? -(a) : (a))
 DECL|macro|NR_ITEMS
 mdefine_line|#define NR_ITEMS(x)     (int)(sizeof(x)/ sizeof(*x))
-r_extern
-r_int
-id|ftape_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif  /* __KERNEL__ */
 macro_line|#endif
 eof

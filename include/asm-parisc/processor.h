@@ -234,15 +234,6 @@ DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
 DECL|macro|CPU_HVERSION
 mdefine_line|#define CPU_HVERSION ((boot_cpu_data.hversion &gt;&gt; 4) &amp; 0x0FFF)
-macro_line|#ifdef CONFIG_EISA
-r_extern
-r_int
-id|EISA_bus
-suffix:semicolon
-macro_line|#else
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 0
-macro_line|#endif
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

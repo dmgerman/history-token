@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/drivers/pcmcia/sa1111_generic.c&n; *&n; * We implement the generic parts of a SA1111 PCMCIA driver.  This&n; * basically means we handle everything except controlling the&n; * power.  Power is machine specific...&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

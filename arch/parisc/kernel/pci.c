@@ -1,5 +1,6 @@
 multiline_comment|/* $Id: pci.c,v 1.6 2000/01/29 00:12:05 grundler Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998 Ralf Baechle&n; * Copyright (C) 1999 SuSE GmbH&n; * Copyright (C) 1999-2001 Hewlett-Packard Company&n; * Copyright (C) 1999-2001 Grant Grundler&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -102,7 +102,11 @@ id|current-&gt;pid
 suffix:semicolon
 id|inp-&gt;ih.pgid
 op_assign
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 macro_line|#ifdef CODA_FS_OLD_API
 id|memset

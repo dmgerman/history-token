@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#ifdef CONFIG_EISA
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;linux/mca.h&gt;
@@ -3152,12 +3153,6 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-r_int
-id|EISA_bus
-suffix:semicolon
-macro_line|#endif
 DECL|function|trap_init
 r_void
 id|__init

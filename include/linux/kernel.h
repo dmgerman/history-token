@@ -10,10 +10,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
-multiline_comment|/* Optimization barrier */
-multiline_comment|/* The &quot;volatile&quot; is due to gcc bugs */
-DECL|macro|barrier
-mdefine_line|#define barrier() __asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
 DECL|macro|INT_MAX
 mdefine_line|#define INT_MAX&t;&t;((int)(~0U&gt;&gt;1))
 DECL|macro|INT_MIN

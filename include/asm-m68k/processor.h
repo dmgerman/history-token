@@ -90,8 +90,6 @@ macro_line|#endif
 DECL|macro|TASK_UNMAPPED_ALIGN
 mdefine_line|#define TASK_UNMAPPED_ALIGN(addr, off)&t;PAGE_ALIGN(addr)
 multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 0
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|struct|task_work

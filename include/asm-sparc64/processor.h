@@ -13,8 +13,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* Bus types */
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 0
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

@@ -6,15 +6,13 @@ macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;16
 r_extern
-r_void
+r_int
 id|get_memcfg_numaq
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|macro|get_memcfg_numa
-mdefine_line|#define get_memcfg_numa() get_memcfg_numaq()
 multiline_comment|/*&n; * SYS_CFG_DATA_PRIV_ADDR, struct eachquadmem, and struct sys_cfg_data are the&n; */
 DECL|macro|SYS_CFG_DATA_PRIV_ADDR
 mdefine_line|#define SYS_CFG_DATA_PRIV_ADDR&t;&t;0x0009d000 /* place for scd in private quad space */

@@ -3597,8 +3597,7 @@ id|USB_PORT_FEAT_C_CONNECTION
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* XXX Replace this with dbg() when 2.6 is about to ship. */
-id|dev_info
+id|dev_dbg
 (paren
 id|hubdev
 (paren

@@ -1,7 +1,7 @@
 multiline_comment|/* &n; * Code to handle x86 style IRQs plus some generic interrupt stuff.&n; *&n; * Copyright (C) 1992 Linus Torvalds&n; * Copyright (C) 1994, 1995, 1996, 1997, 1998 Ralf Baechle&n; * Copyright (C) 1999 SuSE GmbH (Philipp Rumpf, prumpf@tux.org)&n; * Copyright (C) 1999-2000 Grant Grundler&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/pdc.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/pdc.h&gt;
 DECL|macro|DEBUG_IRQ
 macro_line|#undef DEBUG_IRQ
 DECL|macro|PARISC_IRQ_CR16_COUNTS

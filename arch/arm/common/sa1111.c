@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/sa1111.c&n; *&n; * SA1111 support&n; *&n; * Original code by John Dorsey&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This file contains all generic SA1111 support.&n; *&n; * All initialization functions provided here are intended to be called&n; * from machine specific code with proper arguments when required.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
