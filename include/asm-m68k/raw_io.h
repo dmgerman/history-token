@@ -3,6 +3,7 @@ macro_line|#ifndef _RAW_IO_H
 DECL|macro|_RAW_IO_H
 mdefine_line|#define _RAW_IO_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/* Values for nocacheflag and cmode */
 DECL|macro|IOMAP_FULL_CACHING
 mdefine_line|#define IOMAP_FULL_CACHING&t;&t;0
@@ -56,25 +57,25 @@ id|size
 suffix:semicolon
 multiline_comment|/* ++roman: The assignments to temp. vars avoid that gcc sometimes generates&n; * two accesses to memory, which may be undesirable for some devices.&n; */
 DECL|macro|in_8
-mdefine_line|#define in_8(addr) &bslash;&n;    ({ unsigned char __v = (*(volatile unsigned char *) (addr)); __v; })
+mdefine_line|#define in_8(addr) &bslash;&n;    ({ u8 __v = (*(volatile u8 *) (addr)); __v; })
 DECL|macro|in_be16
-mdefine_line|#define in_be16(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) (addr)); __v; })
+mdefine_line|#define in_be16(addr) &bslash;&n;    ({ u16 __v = (*(volatile u16 *) (addr)); __v; })
 DECL|macro|in_be32
-mdefine_line|#define in_be32(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) (addr)); __v; })
+mdefine_line|#define in_be32(addr) &bslash;&n;    ({ u32 __v = (*(volatile u32 *) (addr)); __v; })
 DECL|macro|in_le16
-mdefine_line|#define in_le16(addr) &bslash;&n;    ({ unsigned short __v = le16_to_cpu(*(volatile unsigned short *) (addr)); __v; })
+mdefine_line|#define in_le16(addr) &bslash;&n;    ({ u16 __v = le16_to_cpu(*(volatile u16 *) (addr)); __v; })
 DECL|macro|in_le32
-mdefine_line|#define in_le32(addr) &bslash;&n;    ({ unsigned int __v = le32_to_cpu(*(volatile unsigned int *) (addr)); __v; })
+mdefine_line|#define in_le32(addr) &bslash;&n;    ({ u32 __v = le32_to_cpu(*(volatile u32 *) (addr)); __v; })
 DECL|macro|out_8
-mdefine_line|#define out_8(addr,b) (void)((*(volatile unsigned char *) (addr)) = (b))
+mdefine_line|#define out_8(addr,b) (void)((*(volatile u8 *) (addr)) = (b))
 DECL|macro|out_be16
-mdefine_line|#define out_be16(addr,w) (void)((*(volatile unsigned short *) (addr)) = (w))
+mdefine_line|#define out_be16(addr,w) (void)((*(volatile u16 *) (addr)) = (w))
 DECL|macro|out_be32
-mdefine_line|#define out_be32(addr,l) (void)((*(volatile unsigned int *) (addr)) = (l))
+mdefine_line|#define out_be32(addr,l) (void)((*(volatile u32 *) (addr)) = (l))
 DECL|macro|out_le16
-mdefine_line|#define out_le16(addr,w) (void)((*(volatile unsigned short *) (addr)) = cpu_to_le16(w))
+mdefine_line|#define out_le16(addr,w) (void)((*(volatile u16 *) (addr)) = cpu_to_le16(w))
 DECL|macro|out_le32
-mdefine_line|#define out_le32(addr,l) (void)((*(volatile unsigned int *) (addr)) = cpu_to_le32(l))
+mdefine_line|#define out_le32(addr,l) (void)((*(volatile u32 *) (addr)) = cpu_to_le32(l))
 DECL|macro|raw_inb
 mdefine_line|#define raw_inb in_8
 DECL|macro|raw_inw
@@ -95,13 +96,11 @@ id|raw_insb
 c_func
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 id|port
 comma
-r_int
-r_char
+id|u8
 op_star
 id|buf
 comma
@@ -147,14 +146,12 @@ id|raw_outsb
 c_func
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 id|port
 comma
 r_const
-r_int
-r_char
+id|u8
 op_star
 id|buf
 comma
@@ -200,13 +197,11 @@ id|raw_insw
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 id|port
 comma
-r_int
-r_int
+id|u16
 op_star
 id|buf
 comma
@@ -345,14 +340,12 @@ id|raw_outsw
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 id|port
 comma
 r_const
-r_int
-r_int
+id|u16
 op_star
 id|buf
 comma
@@ -491,13 +484,11 @@ id|raw_insl
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 id|port
 comma
-r_int
-r_int
+id|u32
 op_star
 id|buf
 comma
@@ -636,14 +627,12 @@ id|raw_outsl
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 id|port
 comma
 r_const
-r_int
-r_int
+id|u32
 op_star
 id|buf
 comma
@@ -782,13 +771,11 @@ id|raw_insw_swapw
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 id|port
 comma
-r_int
-r_int
+id|u16
 op_star
 id|buf
 comma
@@ -912,14 +899,12 @@ id|raw_outsw_swapw
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 id|port
 comma
 r_const
-r_int
-r_int
+id|u16
 op_star
 id|buf
 comma
