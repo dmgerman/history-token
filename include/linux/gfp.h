@@ -286,5 +286,12 @@ DECL|macro|__free_page
 mdefine_line|#define __free_page(page) __free_pages((page), 0)
 DECL|macro|free_page
 mdefine_line|#define free_page(addr) free_pages((addr),0)
+r_void
+id|page_alloc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __LINUX_GFP_H */
 eof

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
@@ -1305,6 +1306,11 @@ c_func
 )paren
 suffix:semicolon
 id|build_all_zonelists
+c_func
+(paren
+)paren
+suffix:semicolon
+id|page_alloc_init
 c_func
 (paren
 )paren
