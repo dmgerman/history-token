@@ -1833,6 +1833,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|synaptics_detect
 c_func
 (paren
@@ -1998,12 +1999,6 @@ l_int|1
 )braket
 op_eq
 l_int|0x47
-ques
-c_cond
-l_int|0
-suffix:colon
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|synaptics_init
