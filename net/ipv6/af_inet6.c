@@ -585,10 +585,6 @@ id|sk-&gt;sk_destruct
 op_assign
 id|inet6_sock_destruct
 suffix:semicolon
-id|sk-&gt;sk_zapped
-op_assign
-l_int|0
-suffix:semicolon
 id|sk-&gt;sk_family
 op_assign
 id|PF_INET6

@@ -3838,11 +3838,11 @@ id|tso_segs
 suffix:semicolon
 )brace
 multiline_comment|/* This is valid iff tcp_skb_pcount() &gt; 1. */
-DECL|function|tcp_skb_psize
+DECL|function|tcp_skb_mss
 r_static
 r_inline
 r_int
-id|tcp_skb_psize
+id|tcp_skb_mss
 c_func
 (paren
 r_struct
