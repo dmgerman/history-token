@@ -9250,11 +9250,6 @@ op_assign
 id|idedisk_cleanup
 comma
 dot
-id|flushcache
-op_assign
-id|do_idedisk_flushcache
-comma
-dot
 id|do_request
 op_assign
 id|ide_do_rw_disk
