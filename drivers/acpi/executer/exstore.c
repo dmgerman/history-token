@@ -314,7 +314,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;%X, Invalid Internal Object!&bslash;n&quot;
+l_string|&quot;%p, Invalid Internal Object!&bslash;n&quot;
 comma
 id|source_desc
 )paren
