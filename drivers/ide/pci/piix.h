@@ -4,10 +4,6 @@ mdefine_line|#define PIIX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-DECL|macro|PIIX_DEBUG_DRIVE_INFO
-mdefine_line|#define PIIX_DEBUG_DRIVE_INFO&t;&t;0
-DECL|macro|DISPLAY_PIIX_TIMINGS
-mdefine_line|#define DISPLAY_PIIX_TIMINGS
 r_static
 r_void
 id|init_setup_piix
