@@ -2853,7 +2853,7 @@ id|usb_get_dev
 id|urb-&gt;dev
 )paren
 suffix:semicolon
-id|list_add
+id|list_add_tail
 (paren
 op_amp
 id|urb-&gt;urb_list

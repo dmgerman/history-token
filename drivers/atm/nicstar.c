@@ -1002,17 +1002,6 @@ c_func
 l_string|&quot;nicstar: cleanup_module() called.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;nicstar: module in use, remove delayed.&bslash;n&quot;
-)paren
-suffix:semicolon
 id|del_timer
 c_func
 (paren

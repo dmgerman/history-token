@@ -6778,21 +6778,6 @@ id|lec_priv
 op_star
 id|priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mpc.c: module in use&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PROC_FS
 id|mpc_proc_clean
 c_func

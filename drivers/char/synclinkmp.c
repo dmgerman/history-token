@@ -3392,15 +3392,8 @@ c_cond
 id|retval
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3747,15 +3740,8 @@ comma
 id|info-&gt;count
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Called by tty_hangup() when a hangup is signaled.&n; * This is the same as closing all open descriptors for the port.&n; */
 DECL|function|hangup
@@ -5937,21 +5923,6 @@ r_return
 l_int|0
 suffix:semicolon
 singleline_comment|// TODO: Not supported, need to document
-r_case
-id|MGSL_IOCCLRMODCOUNT
-suffix:colon
-r_while
-c_loop
-(paren
-id|MOD_IN_USE
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/* Wait for modem input (DCD,RI,DSR,CTS) change&n;&t;&t; * as specified by mask in arg (TIOCM_RNG/DSR/CD/CTS)&n;&t;&t; */
 r_case
 id|TIOCMIWAIT

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/mcpn765_setup.c&n; *&n; * Board setup routines for the Motorola MCG MCPN765 cPCI Board.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * Copyright 2001-2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/mcpn765_setup.c&n; *&n; * Board setup routines for the Motorola MCG MCPN765 cPCI Board.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 multiline_comment|/*&n; * This file adds support for the Motorola MCG MCPN765.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;

@@ -6149,7 +6149,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef MODULE
-multiline_comment|/* No need to check MOD_IN_USE, as sys_delete_module() checks. */
 r_while
 c_loop
 (paren

@@ -1510,6 +1510,12 @@ id|q
 op_assign
 id|disk-&gt;queue
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|q
+)paren
+(brace
 id|elevator_t
 op_star
 id|e
@@ -1531,6 +1537,7 @@ op_amp
 id|disk-&gt;kobj
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|variable|elevator_noop
 id|elevator_t

@@ -827,7 +827,7 @@ op_amp
 id|devpts_fs_type
 )paren
 suffix:semicolon
-id|kern_umount
+id|mntput
 c_func
 (paren
 id|devpts_mnt

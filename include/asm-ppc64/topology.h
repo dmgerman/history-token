@@ -168,6 +168,9 @@ r_return
 id|mask
 suffix:semicolon
 )brace
+multiline_comment|/* Cross-node load balancing interval. */
+DECL|macro|NODE_BALANCE_RATE
+mdefine_line|#define NODE_BALANCE_RATE 10
 macro_line|#else /* !CONFIG_NUMA */
 DECL|macro|__cpu_to_node
 mdefine_line|#define __cpu_to_node(cpu)&t;&t;(0)

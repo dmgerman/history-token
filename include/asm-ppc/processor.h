@@ -70,8 +70,13 @@ macro_line|#else
 DECL|macro|MSR_
 mdefine_line|#define MSR_&t;&t;(MSR_ME|MSR_RI)
 macro_line|#endif
+macro_line|#ifdef CONFIG_4xx
+DECL|macro|MSR_KERNEL
+mdefine_line|#define MSR_KERNEL&t;(MSR_|MSR_IR|MSR_DR|MSR_CE|MSR_DE)
+macro_line|#else
 DECL|macro|MSR_KERNEL
 mdefine_line|#define MSR_KERNEL      (MSR_|MSR_IR|MSR_DR)
+macro_line|#endif
 DECL|macro|MSR_USER
 mdefine_line|#define MSR_USER&t;(MSR_KERNEL|MSR_PR|MSR_EE)
 multiline_comment|/* Floating Point Status and Control Register (FPSCR) Fields */
@@ -278,6 +283,8 @@ DECL|macro|SPRN_DBSR
 mdefine_line|#define&t;SPRN_DBSR&t;0x3F0&t;/* Debug Status Register */&t;&t;  
 DECL|macro|DBSR_IC
 mdefine_line|#define   DBSR_IC&t;    0x80000000&t;/* Instruction Completion          */
+DECL|macro|DBSR_BT
+mdefine_line|#define   DBSR_BT&t;    0x40000000&t;/* Branch taken */
 DECL|macro|DBSR_TIE
 mdefine_line|#define   DBSR_TIE&t;    0x10000000&t;/* Trap Instruction debug Event    */
 DECL|macro|SPRN_DCCR
@@ -1204,6 +1211,19 @@ r_int
 r_int
 id|last_syscall
 suffix:semicolon
+macro_line|#ifdef CONFIG_4xx
+DECL|member|dbcr0
+r_int
+r_int
+id|dbcr0
+suffix:semicolon
+multiline_comment|/* debug control register values */
+DECL|member|dbcr1
+r_int
+r_int
+id|dbcr1
+suffix:semicolon
+macro_line|#endif
 DECL|member|fpr
 r_float
 id|fpr

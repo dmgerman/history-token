@@ -9646,8 +9646,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_void
-DECL|function|hisax_resources_release
-id|hisax_resources_release
+DECL|function|hisax_release_resources
+id|hisax_release_resources
 c_func
 (paren
 r_struct

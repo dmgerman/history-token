@@ -351,9 +351,12 @@ suffix:semicolon
 multiline_comment|/* switch CIA serial port to input mode */
 id|down
 op_assign
+op_logical_neg
+(paren
 id|scancode
 op_amp
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* lowest bit is release bit */
 id|scancode

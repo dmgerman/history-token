@@ -190,6 +190,10 @@ DECL|macro|PTRACE_GETFPXREGS
 mdefine_line|#define PTRACE_GETFPXREGS         18
 DECL|macro|PTRACE_SETFPXREGS
 mdefine_line|#define PTRACE_SETFPXREGS         19
+DECL|macro|PTRACE_GET_THREAD_AREA
+mdefine_line|#define PTRACE_GET_THREAD_AREA    25
+DECL|macro|PTRACE_SET_THREAD_AREA
+mdefine_line|#define PTRACE_SET_THREAD_AREA    26
 macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__) 
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!!((regs)-&gt;cs &amp; 3))

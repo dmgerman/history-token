@@ -1550,6 +1550,16 @@ op_assign
 op_amp
 id|cpufreq_gx_setpolicy
 suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|driver-&gt;name
+comma
+l_string|&quot;gx-suspmod&quot;
+comma
+id|CPUFREQ_NAME_LEN
+)paren
+suffix:semicolon
 id|gx_driver
 op_assign
 id|driver

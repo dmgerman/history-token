@@ -35,5 +35,8 @@ mdefine_line|#define __node_to_first_cpu(node) (__ffs(__node_to_cpu_mask(node)))
 multiline_comment|/*&n; * Returns the number of the first MemBlk on Node &squot;node&squot;&n; * Should be fixed when IA64 discontigmem goes in.&n; */
 DECL|macro|__node_to_memblk
 mdefine_line|#define __node_to_memblk(node) (node)
+multiline_comment|/* Cross-node load balancing interval. */
+DECL|macro|NODE_BALANCE_RATE
+mdefine_line|#define NODE_BALANCE_RATE 10
 macro_line|#endif /* _ASM_IA64_TOPOLOGY_H */
 eof

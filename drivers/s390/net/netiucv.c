@@ -5507,12 +5507,10 @@ op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
 r_return
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|buf
-comma
-id|count
 comma
 l_string|&quot;%ld&bslash;n&quot;
 comma
@@ -5534,6 +5532,9 @@ r_const
 r_char
 op_star
 id|buf
+comma
+r_int
+id|count
 )paren
 (brace
 id|netiucv_priv

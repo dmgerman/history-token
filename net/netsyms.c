@@ -2485,6 +2485,13 @@ c_func
 id|unregister_netdevice_notifier
 )paren
 suffix:semicolon
+DECL|variable|call_netdevice_notifiers
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|call_netdevice_notifiers
+)paren
+suffix:semicolon
 multiline_comment|/* support for loadable net drivers */
 macro_line|#ifdef CONFIG_NET
 DECL|variable|loopback_dev

@@ -911,9 +911,11 @@ c_func
 (paren
 id|irq
 comma
-l_int|1
-op_lshift
+id|cpu_to_logical_apicid
+c_func
+(paren
 id|new_cpu
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2668,11 +2670,11 @@ id|entry
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.mask
 op_assign
@@ -3061,7 +3063,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We use logical delivery to get the timer IRQ&n;&t; * to the first CPU.&n;&t; */
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.mask
 op_assign
@@ -3074,7 +3076,7 @@ id|TARGET_CPUS
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.polarity
 op_assign
@@ -7121,7 +7123,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                          ACPI-based IOAPIC Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|macro|IO_APIC_MAX_ID
-mdefine_line|#define IO_APIC_MAX_ID&t;&t;15
+mdefine_line|#define IO_APIC_MAX_ID APIC_BROADCAST_ID
 DECL|function|io_apic_get_unique_id
 r_int
 id|__init
@@ -7579,11 +7581,11 @@ id|entry
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.dest.logical.logical_dest
 op_assign

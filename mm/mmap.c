@@ -119,10 +119,6 @@ id|free
 comma
 id|allowed
 suffix:semicolon
-r_struct
-id|sysinfo
-id|i
-suffix:semicolon
 id|atomic_add
 c_func
 (paren
@@ -223,17 +219,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * FIXME: need to add arch hooks to get the bits we need&n;&t; * without this higher overhead crap&n;&t; */
-id|si_meminfo
-c_func
-(paren
-op_amp
-id|i
-)paren
-suffix:semicolon
 id|allowed
 op_assign
-id|i.totalram
+id|totalram_pages
 op_star
 id|sysctl_overcommit_ratio
 op_div

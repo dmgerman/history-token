@@ -4,22 +4,9 @@ macro_line|#ifndef _ASM_RTC_H
 DECL|macro|_ASM_RTC_H
 mdefine_line|#define _ASM_RTC_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/* a few implementation details for the emulation : */
-r_extern
-r_int
-id|gen_rtc_irq_flags
-suffix:semicolon
-multiline_comment|/* which sort(s) of interrupts caused int */
-r_extern
-r_int
-id|gen_rtc_irq_ctrl
-suffix:semicolon
-multiline_comment|/*                             are enabled */
-r_extern
-r_int
-id|q40rtc_oldsecs
-suffix:semicolon
 DECL|macro|RTC_PIE
 mdefine_line|#define RTC_PIE 0x40&t;&t;/* periodic interrupt enable */
 DECL|macro|RTC_AIE
@@ -89,6 +76,46 @@ comma
 id|time
 )paren
 suffix:semicolon
+)brace
+DECL|function|get_rtc_ss
+r_static
+r_inline
+r_int
+r_int
+id|get_rtc_ss
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mach_get_ss
+)paren
+r_return
+id|mach_get_ss
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+(brace
+r_struct
+id|rtc_time
+id|h
+suffix:semicolon
+id|get_rtc_time
+c_func
+(paren
+op_amp
+id|h
+)paren
+suffix:semicolon
+r_return
+id|h.tm_sec
+suffix:semicolon
+)brace
 )brace
 DECL|function|get_rtc_pll
 r_static

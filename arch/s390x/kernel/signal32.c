@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  arch/s390/kernel/signal32.c&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *               Gerhard Tonn (ton@de.ibm.com)                  &n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -492,7 +493,7 @@ id|pt_regs
 op_star
 id|regs
 comma
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|unewset
 comma
@@ -505,7 +506,7 @@ id|saveset
 comma
 id|newset
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|set32
 suffix:semicolon
 multiline_comment|/* XXX: Don&squot;t preclude handling different sized sigset_t&squot;s.  */
@@ -775,7 +776,7 @@ c_cond
 id|act
 )paren
 (brace
-id|old_sigset_t32
+id|compat_old_sigset_t
 id|mask
 suffix:semicolon
 r_if
@@ -1011,7 +1012,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|set32
 suffix:semicolon
 multiline_comment|/* XXX: Don&squot;t preclude handling different sized sigset_t&squot;s.  */
@@ -1022,7 +1023,7 @@ id|sigsetsize
 op_ne
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 r_return
@@ -1063,7 +1064,7 @@ id|act-&gt;sa_mask
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 suffix:semicolon
@@ -1379,7 +1380,7 @@ id|set32
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 suffix:semicolon

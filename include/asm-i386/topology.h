@@ -91,6 +91,9 @@ suffix:semicolon
 multiline_comment|/* Returns the number of the first MemBlk on Node &squot;node&squot; */
 DECL|macro|__node_to_memblk
 mdefine_line|#define __node_to_memblk(node) (node)
+multiline_comment|/* Cross-node load balancing interval. */
+DECL|macro|NODE_BALANCE_RATE
+mdefine_line|#define NODE_BALANCE_RATE 100
 macro_line|#else /* !CONFIG_NUMA */
 multiline_comment|/*&n; * Other i386 platforms should define their own version of the &n; * above macros here.&n; */
 macro_line|#include &lt;asm-generic/topology.h&gt;
