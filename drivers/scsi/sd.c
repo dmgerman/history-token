@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *      sd.c Copyright (C) 1992 Drew Eckhardt&n; *           Copyright (C) 1993, 1994, 1995, 1999 Eric Youngdale&n; *&n; *      Linux scsi disk driver&n; *              Initial versions: Drew Eckhardt&n; *              Subsequent revisions: Eric Youngdale&n; *&t;Modification history:&n; *       - Drew Eckhardt &lt;drew@colorado.edu&gt; original&n; *       - Eric Youngdale &lt;eric@andante.org&gt; add scatter-gather, multiple &n; *         outstanding request, and other enhancements.&n; *         Support loadable low-level scsi drivers.&n; *       - Jirka Hanika &lt;geo@ff.cuni.cz&gt; support more scsi disks using &n; *         eight major numbers.&n; *       - Richard Gooch &lt;rgooch@atnf.csiro.au&gt; support devfs.&n; *&t; - Torben Mathiasen &lt;tmm@image.dk&gt; Resource allocation fixes in &n; *&t;   sd_init and cleanups.&n; *&t; - Alex Davis &lt;letmein@erols.com&gt; Fix problem where partition info&n; *&t;   not being read in sd_open. Fix problem where removable media &n; *&t;   could be ejected after sd_open.&n; *&t; - Douglas Gilbert &lt;dgilbert@interlog.com&gt; cleanup for lk 2.5.x&n; *&n; *&t;Logging policy (needs CONFIG_SCSI_LOGGING defined):&n; *&t; - setting up transfer: SCSI_LOG_HLQUEUE levels 1 and 2&n; *&t; - end of transfer (bh + scsi_lib): SCSI_LOG_HLCOMPLETE level 1&n; *&t; - entering sd_ioctl: SCSI_LOG_IOCTL level 1&n; *&t; - entering other commands: SCSI_LOG_HLQUEUE level 3&n; *&t;Note: when the logging level is set by the user, it must be greater&n; *&t;than the level indicated above to trigger output.&t;&n; */
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -24,9 +22,9 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * Remaining dev_t-handling stuff&n; */
 DECL|macro|SD_MAJORS
-mdefine_line|#define SD_MAJORS&t;8
-DECL|macro|SD_MAJOR
-mdefine_line|#define SD_MAJOR(i)&t;((i) ? SCSI_DISK1_MAJOR-1+(i) : SCSI_DISK0_MAJOR)
+mdefine_line|#define SD_MAJORS&t;16
+DECL|macro|SD_DISKS
+mdefine_line|#define SD_DISKS&t;(SD_MAJORS &lt;&lt; 4)
 multiline_comment|/*&n; * Time out in seconds for disks and Magneto-opticals (which are slower).&n; */
 DECL|macro|SD_TIMEOUT
 mdefine_line|#define SD_TIMEOUT&t;&t;(30 * HZ)
@@ -69,6 +67,10 @@ id|sector_t
 id|capacity
 suffix:semicolon
 multiline_comment|/* size in 512-byte sectors */
+DECL|member|index
+id|u32
+id|index
+suffix:semicolon
 DECL|member|media_present
 id|u8
 id|media_present
@@ -93,12 +95,6 @@ suffix:semicolon
 multiline_comment|/* state of disk RCD bit */
 )brace
 suffix:semicolon
-DECL|variable|sd_nr_dev
-r_static
-r_int
-id|sd_nr_dev
-suffix:semicolon
-multiline_comment|/* XXX(hch) bad hack, we want a bitmap instead */
 r_static
 id|LIST_HEAD
 c_func
@@ -110,6 +106,24 @@ DECL|variable|sd_devlist_lock
 r_static
 id|spinlock_t
 id|sd_devlist_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|sd_index_bits
+r_static
+r_int
+r_int
+id|sd_index_bits
+(braket
+id|SD_DISKS
+op_div
+id|BITS_PER_LONG
+)braket
+suffix:semicolon
+DECL|variable|sd_index_lock
+r_static
+id|spinlock_t
+id|sd_index_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -271,6 +285,67 @@ comma
 comma
 )brace
 suffix:semicolon
+DECL|function|sd_major
+r_static
+r_int
+id|sd_major
+c_func
+(paren
+r_int
+id|major_idx
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|major_idx
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+r_return
+id|SCSI_DISK0_MAJOR
+suffix:semicolon
+r_case
+l_int|1
+dot
+dot
+dot
+l_int|7
+suffix:colon
+r_return
+id|SCSI_DISK1_MAJOR
+op_plus
+id|major_idx
+op_minus
+l_int|1
+suffix:semicolon
+r_case
+l_int|8
+dot
+dot
+dot
+l_int|15
+suffix:colon
+r_return
+id|SCSI_DISK8_MAJOR
+op_plus
+id|major_idx
+suffix:semicolon
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* shut up gcc */
+)brace
+)brace
 DECL|function|sd_find_by_sdev
 r_static
 r_struct
@@ -4502,18 +4577,16 @@ r_struct
 id|scsi_disk
 op_star
 id|sdkp
-op_assign
-l_int|NULL
 suffix:semicolon
-multiline_comment|/* shut up lame gcc warning */
 r_struct
 id|gendisk
 op_star
 id|gd
 suffix:semicolon
+id|u32
+id|index
+suffix:semicolon
 r_int
-id|dsk_nr
-comma
 id|error
 suffix:semicolon
 r_if
@@ -4615,11 +4688,61 @@ id|gd
 r_goto
 id|out_free
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX  This doesn&squot;t make us better than the previous code in the&n;&t; * XXX  end (not worse either, though..).&n;&t; * XXX  To properly support hotplugging we should have a bitmap and&n;&t; * XXX  use find_first_zero_bit on it.  This will happen at the&n;&t; * XXX  same time template-&gt;nr_* goes away.&t;&t;--hch&n;&t; */
-id|dsk_nr
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sd_index_lock
+)paren
+suffix:semicolon
+id|index
 op_assign
-id|sd_nr_dev
-op_increment
+id|find_first_zero_bit
+c_func
+(paren
+id|sd_index_bits
+comma
+id|SD_DISKS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+op_eq
+id|SD_DISKS
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sd_index_lock
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_goto
+id|out_put
+suffix:semicolon
+)brace
+id|__set_bit
+c_func
+(paren
+id|index
+comma
+id|sd_index_bits
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sd_index_lock
+)paren
 suffix:semicolon
 id|sdkp-&gt;device
 op_assign
@@ -4634,16 +4757,20 @@ id|sdkp-&gt;disk
 op_assign
 id|gd
 suffix:semicolon
+id|sdkp-&gt;index
+op_assign
+id|index
+suffix:semicolon
 id|gd-&gt;de
 op_assign
 id|sdp-&gt;de
 suffix:semicolon
 id|gd-&gt;major
 op_assign
-id|SD_MAJOR
+id|sd_major
 c_func
 (paren
-id|dsk_nr
+id|index
 op_rshift
 l_int|4
 )paren
@@ -4651,7 +4778,7 @@ suffix:semicolon
 id|gd-&gt;first_minor
 op_assign
 (paren
-id|dsk_nr
+id|index
 op_amp
 l_int|15
 )paren
@@ -4670,10 +4797,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dsk_nr
+id|index
 OG
 l_int|26
 )paren
+(brace
 id|sprintf
 c_func
 (paren
@@ -4683,7 +4811,7 @@ l_string|&quot;sd%c%c&quot;
 comma
 l_char|&squot;a&squot;
 op_plus
-id|dsk_nr
+id|index
 op_div
 l_int|26
 op_minus
@@ -4691,12 +4819,14 @@ l_int|1
 comma
 l_char|&squot;a&squot;
 op_plus
-id|dsk_nr
+id|index
 op_mod
 l_int|26
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|sprintf
 c_func
 (paren
@@ -4706,11 +4836,12 @@ l_string|&quot;sd%c&quot;
 comma
 l_char|&squot;a&squot;
 op_plus
-id|dsk_nr
+id|index
 op_mod
 l_int|26
 )paren
 suffix:semicolon
+)brace
 id|sd_init_onedisk
 c_func
 (paren
@@ -4796,6 +4927,14 @@ id|sdp-&gt;lun
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|out_put
+suffix:colon
+id|put_disk
+c_func
+(paren
+id|gd
+)paren
 suffix:semicolon
 id|out_free
 suffix:colon
@@ -4920,8 +5059,27 @@ c_func
 id|sdp
 )paren
 suffix:semicolon
-id|sd_nr_dev
-op_decrement
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sd_index_lock
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|sdkp-&gt;index
+comma
+id|sd_index_bits
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sd_index_lock
+)paren
 suffix:semicolon
 id|put_disk
 c_func
@@ -4992,7 +5150,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|SD_MAJOR
+id|sd_major
 c_func
 (paren
 id|i
@@ -5010,7 +5168,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;Unable to get major %d for SCSI disk&bslash;n&quot;
 comma
-id|SD_MAJOR
+id|sd_major
 c_func
 (paren
 id|i
@@ -5117,7 +5275,7 @@ op_increment
 id|unregister_blkdev
 c_func
 (paren
-id|SD_MAJOR
+id|sd_major
 c_func
 (paren
 id|i
