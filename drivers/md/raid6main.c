@@ -9593,7 +9593,7 @@ c_func
 id|conf
 )paren
 suffix:semicolon
-multiline_comment|/* read-ahead size must cover a whole stripe, which is&n;&t; * (n-2) * chunksize where &squot;n&squot; is the number of raid devices&n;&t; */
+multiline_comment|/* read-ahead size must cover two whole stripes, which is&n;&t; * 2 * (n-2) * chunksize where &squot;n&squot; is the number of raid devices&n;&t; */
 (brace
 r_int
 id|stripe
@@ -9613,10 +9613,14 @@ c_cond
 (paren
 id|mddev-&gt;queue-&gt;backing_dev_info.ra_pages
 OL
+l_int|2
+op_star
 id|stripe
 )paren
 id|mddev-&gt;queue-&gt;backing_dev_info.ra_pages
 op_assign
+l_int|2
+op_star
 id|stripe
 suffix:semicolon
 )brace
