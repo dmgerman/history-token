@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  FBcon low-level driver for 32 bpp packed pixel (cfb32)&n; */
+multiline_comment|/*&n; *  FBcon low-level driver that is a wrapper for the accel engine. &n; */
 macro_line|#ifndef _VIDEO_FBCON_ACCEL_H
 DECL|macro|_VIDEO_FBCON_ACCEL_H
 mdefine_line|#define _VIDEO_FBCON_ACCEL_H

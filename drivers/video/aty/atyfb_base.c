@@ -13707,6 +13707,12 @@ r_if
 c_cond
 (paren
 id|info-&gt;cursor
+op_logical_and
+(paren
+id|fb-&gt;currcon
+op_ge
+l_int|0
+)paren
 )paren
 id|atyfb_cursor
 c_func
