@@ -1,4 +1,6 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Reset an IP22.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2001 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998, 2001, 2003 by Ralf Baechle&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -6,10 +8,13 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/reboot.h&gt;
+macro_line|#include &lt;asm/ds1286.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
-macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
-macro_line|#include &lt;asm/sgi/sgint23.h&gt;
-multiline_comment|/*&n; * Just powerdown if init hasn&squot;t done after POWERDOWN_TIMEOUT seconds.&n; * I&squot;m not shure if this feature is a good idea, for now it&squot;s here just to&n; * make the power button make behave just like under IRIX.&n; */
+macro_line|#include &lt;asm/sgi/ioc.h&gt;
+macro_line|#include &lt;asm/sgi/hpc3.h&gt;
+macro_line|#include &lt;asm/sgi/ip22.h&gt;
+multiline_comment|/*&n; * Just powerdown if init hasn&squot;t done after POWERDOWN_TIMEOUT seconds.&n; * I&squot;m not sure if this feature is a good idea, for now it&squot;s here just to&n; * make the power button make behave just like under IRIX.&n; */
 DECL|macro|POWERDOWN_TIMEOUT
 mdefine_line|#define POWERDOWN_TIMEOUT&t;120
 multiline_comment|/*&n; * Blink frequency during reboot grace period and when paniced.&n; */
@@ -17,12 +22,6 @@ DECL|macro|POWERDOWN_FREQ
 mdefine_line|#define POWERDOWN_FREQ&t;&t;(HZ / 4)
 DECL|macro|PANIC_FREQ
 mdefine_line|#define PANIC_FREQ&t;&t;(HZ / 8)
-DECL|variable|sgi_volume
-r_static
-r_int
-r_char
-id|sgi_volume
-suffix:semicolon
 DECL|variable|power_timer
 DECL|variable|blink_timer
 DECL|variable|debounce_timer
@@ -38,16 +37,20 @@ id|debounce_timer
 comma
 id|volume_timer
 suffix:semicolon
-DECL|variable|shuting_down
-DECL|variable|has_paniced
+DECL|macro|MACHINE_PANICED
+mdefine_line|#define MACHINE_PANICED&t;&t;1
+DECL|macro|MACHINE_SHUTTING_DOWN
+mdefine_line|#define MACHINE_SHUTTING_DOWN&t;2
+DECL|variable|machine_state
 r_static
 r_int
-id|shuting_down
-comma
-id|has_paniced
+id|machine_state
+op_assign
+l_int|0
 suffix:semicolon
+r_static
 r_void
-id|machine_restart
+id|sgi_machine_restart
 c_func
 (paren
 r_char
@@ -62,8 +65,9 @@ id|noreturn
 )paren
 )paren
 suffix:semicolon
+r_static
 r_void
-id|machine_halt
+id|sgi_machine_halt
 c_func
 (paren
 r_void
@@ -76,8 +80,9 @@ id|noreturn
 )paren
 )paren
 suffix:semicolon
+r_static
 r_void
-id|machine_power_off
+id|sgi_machine_power_off
 c_func
 (paren
 r_void
@@ -91,9 +96,10 @@ id|noreturn
 )paren
 suffix:semicolon
 multiline_comment|/* XXX How to pass the reboot command to the firmware??? */
-DECL|function|machine_restart
+DECL|function|sgi_machine_restart
+r_static
 r_void
-id|machine_restart
+id|sgi_machine_restart
 c_func
 (paren
 r_char
@@ -104,9 +110,11 @@ id|command
 r_if
 c_cond
 (paren
-id|shuting_down
+id|machine_state
+op_amp
+id|MACHINE_SHUTTING_DOWN
 )paren
-id|machine_power_off
+id|sgi_machine_power_off
 c_func
 (paren
 )paren
@@ -117,9 +125,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|machine_halt
+DECL|function|sgi_machine_halt
+r_static
 r_void
-id|machine_halt
+id|sgi_machine_halt
 c_func
 (paren
 r_void
@@ -128,9 +137,11 @@ r_void
 r_if
 c_cond
 (paren
-id|shuting_down
+id|machine_state
+op_amp
+id|MACHINE_SHUTTING_DOWN
 )paren
-id|machine_power_off
+id|sgi_machine_power_off
 c_func
 (paren
 )paren
@@ -141,43 +152,58 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|machine_power_off
+DECL|function|sgi_machine_power_off
+r_static
 r_void
-id|machine_power_off
+id|sgi_machine_power_off
 c_func
 (paren
 r_void
 )paren
 (brace
-r_struct
-id|indy_clock
-op_star
-id|clock
-op_assign
-(paren
-r_struct
-id|indy_clock
-op_star
-)paren
-id|INDY_CLOCK_REGS
+r_int
+r_char
+id|val
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-id|clock-&gt;cmd
-op_or_assign
-l_int|0x08
-suffix:semicolon
 multiline_comment|/* Disable watchdog */
-id|clock-&gt;whsec
+id|val
 op_assign
-l_int|0
+id|CMOS_READ
+c_func
+(paren
+id|RTC_CMD
+)paren
 suffix:semicolon
-id|clock-&gt;wsec
-op_assign
+id|CMOS_WRITE
+c_func
+(paren
+id|val
+op_or
+id|RTC_WAM
+comma
+id|RTC_CMD
+)paren
+suffix:semicolon
+id|CMOS_WRITE
+c_func
+(paren
 l_int|0
+comma
+id|RTC_WSEC
+)paren
+suffix:semicolon
+id|CMOS_WRITE
+c_func
+(paren
+l_int|0
+comma
+id|RTC_WHSEC
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -185,13 +211,20 @@ c_loop
 l_int|1
 )paren
 (brace
-id|hpc3mregs-&gt;panel
+id|sgioc-&gt;panel
 op_assign
-l_int|0xfe
+op_complement
+id|SGIOC_PANEL_POWERON
 suffix:semicolon
 multiline_comment|/* Good bye cruel world ...  */
 multiline_comment|/* If we&squot;re still running, we probably got sent an alarm&n;&t;&t;   interrupt.  Read the flag to clear it.  */
-id|clock-&gt;halarm
+id|val
+op_assign
+id|CMOS_READ
+c_func
+(paren
+id|RTC_HOURS_ALARM
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -206,7 +239,7 @@ r_int
 id|data
 )paren
 (brace
-id|machine_power_off
+id|sgi_machine_power_off
 c_func
 (paren
 )paren
@@ -223,18 +256,18 @@ r_int
 id|data
 )paren
 (brace
-multiline_comment|/* XXX Fix this for Fullhouse  */
-id|sgi_hpc_write1
+multiline_comment|/* XXX fix this for fullhouse  */
+id|sgi_ioc_reset
 op_xor_assign
 (paren
-id|HPC3_WRITE1_LC0OFF
+id|SGIOC_RESET_LC0OFF
 op_or
-id|HPC3_WRITE1_LC1OFF
+id|SGIOC_RESET_LC1OFF
 )paren
 suffix:semicolon
-id|hpc3mregs-&gt;write1
+id|sgioc-&gt;reset
 op_assign
-id|sgi_hpc_write1
+id|sgi_ioc_reset
 suffix:semicolon
 id|mod_timer
 c_func
@@ -269,12 +302,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc_icontrol-&gt;istat1
+id|sgint-&gt;istat1
 op_amp
-l_int|2
+id|SGINT_ISTAT1_PWR
 )paren
 (brace
-multiline_comment|/* Interrupt still being sent.  */
+multiline_comment|/* Interrupt still being sent. */
 id|debounce_timer.expires
 op_assign
 id|jiffies
@@ -289,9 +322,19 @@ op_amp
 id|debounce_timer
 )paren
 suffix:semicolon
-id|hpc3mregs-&gt;panel
+id|sgioc-&gt;panel
 op_assign
-l_int|0xf3
+id|SGIOC_PANEL_POWERON
+op_or
+id|SGIOC_PANEL_POWERINTR
+op_or
+id|SGIOC_PANEL_VOLDNINTR
+op_or
+id|SGIOC_PANEL_VOLDNHOLD
+op_or
+id|SGIOC_PANEL_VOLUPINTR
+op_or
+id|SGIOC_PANEL_VOLUPHOLD
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -299,7 +342,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|has_paniced
+id|machine_state
+op_amp
+id|MACHINE_PANICED
 )paren
 id|ArcReboot
 c_func
@@ -309,7 +354,7 @@ suffix:semicolon
 id|enable_irq
 c_func
 (paren
-l_int|9
+id|SGI_PANEL_IRQ
 )paren
 suffix:semicolon
 )brace
@@ -326,14 +371,20 @@ r_void
 r_if
 c_cond
 (paren
-id|has_paniced
+id|machine_state
+op_amp
+id|MACHINE_PANICED
 )paren
 r_return
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|shuting_down
+(paren
+id|machine_state
+op_amp
+id|MACHINE_SHUTTING_DOWN
+)paren
 op_logical_or
 id|kill_proc
 c_func
@@ -347,15 +398,15 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* No init process or button pressed twice.  */
-id|machine_power_off
+id|sgi_machine_power_off
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-id|shuting_down
-op_assign
-l_int|1
+id|machine_state
+op_or_assign
+id|MACHINE_SHUTTING_DOWN
 suffix:semicolon
 id|blink_timer.data
 op_assign
@@ -394,60 +445,18 @@ id|power_timer
 )paren
 suffix:semicolon
 )brace
-DECL|function|ip22_volume_set
+DECL|variable|indy_volume_button
 r_void
-r_inline
-id|ip22_volume_set
-c_func
+(paren
+op_star
+id|indy_volume_button
+)paren
 (paren
 r_int
-r_char
-id|volume
 )paren
-(brace
-id|sgi_volume
 op_assign
-id|volume
+l_int|NULL
 suffix:semicolon
-id|hpc3c0-&gt;pbus_extregs
-(braket
-l_int|2
-)braket
-(braket
-l_int|0
-)braket
-op_assign
-id|sgi_volume
-suffix:semicolon
-id|hpc3c0-&gt;pbus_extregs
-(braket
-l_int|2
-)braket
-(braket
-l_int|1
-)braket
-op_assign
-id|sgi_volume
-suffix:semicolon
-)brace
-DECL|function|ip22_volume_get
-r_void
-r_inline
-id|ip22_volume_get
-c_func
-(paren
-r_int
-r_char
-op_star
-id|volume
-)paren
-(brace
-op_star
-id|volume
-op_assign
-id|sgi_volume
-suffix:semicolon
-)brace
 DECL|function|volume_up_button
 r_static
 r_inline
@@ -470,39 +479,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sgi_volume
-OL
-l_int|0xff
+id|indy_volume_button
 )paren
-id|sgi_volume
-op_increment
-suffix:semicolon
-id|hpc3c0-&gt;pbus_extregs
-(braket
-l_int|2
-)braket
-(braket
-l_int|0
-)braket
-op_assign
-id|sgi_volume
-suffix:semicolon
-id|hpc3c0-&gt;pbus_extregs
-(braket
-l_int|2
-)braket
-(braket
+id|indy_volume_button
+c_func
+(paren
 l_int|1
-)braket
-op_assign
-id|sgi_volume
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc_icontrol-&gt;istat1
+id|sgint-&gt;istat1
 op_amp
-l_int|2
+id|SGINT_ISTAT1_PWR
 )paren
 (brace
 id|volume_timer.expires
@@ -542,39 +532,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sgi_volume
-OG
-l_int|0
+id|indy_volume_button
 )paren
-id|sgi_volume
-op_decrement
-suffix:semicolon
-id|hpc3c0-&gt;pbus_extregs
-(braket
-l_int|2
-)braket
-(braket
-l_int|0
-)braket
-op_assign
-id|sgi_volume
-suffix:semicolon
-id|hpc3c0-&gt;pbus_extregs
-(braket
-l_int|2
-)braket
-(braket
+id|indy_volume_button
+c_func
+(paren
+op_minus
 l_int|1
-)braket
-op_assign
-id|sgi_volume
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc_icontrol-&gt;istat1
+id|sgint-&gt;istat1
 op_amp
-l_int|2
+id|SGINT_ISTAT1_PWR
 )paren
 (brace
 id|volume_timer.expires
@@ -594,7 +566,7 @@ suffix:semicolon
 )brace
 DECL|function|panel_int
 r_static
-r_void
+id|irqreturn_t
 id|panel_int
 c_func
 (paren
@@ -617,26 +589,27 @@ id|buttons
 suffix:semicolon
 id|buttons
 op_assign
-id|hpc3mregs-&gt;panel
+id|sgioc-&gt;panel
 suffix:semicolon
-id|hpc3mregs-&gt;panel
+id|sgioc-&gt;panel
 op_assign
-l_int|3
+id|SGIOC_PANEL_POWERON
+op_or
+id|SGIOC_PANEL_POWERINTR
 suffix:semicolon
-multiline_comment|/* power_interrupt | power_supply_on */
 r_if
 c_cond
 (paren
-id|ioc_icontrol-&gt;istat1
+id|sgint-&gt;istat1
 op_amp
-l_int|2
+id|SGINT_ISTAT1_PWR
 )paren
 (brace
 multiline_comment|/* Wait until interrupt goes away */
 id|disable_irq
 c_func
 (paren
-l_int|9
+id|SGI_PANEL_IRQ
 )paren
 suffix:semicolon
 id|init_timer
@@ -664,22 +637,34 @@ id|debounce_timer
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Power button was pressed &n;&t; *&n;&t; * ioc.ps page 22: &quot;The Panel Register is called Power Control by Full&n;&t; * House. Only lowest 2 bits are used. Guiness uses upper four bits&n;&t; * for volume control&quot;. This is not true, all bits are pulled high&n;&t; * on fullhouse&n;&t; */
 r_if
 c_cond
 (paren
+id|ip22_is_fullhouse
+c_func
+(paren
+)paren
+op_logical_or
 op_logical_neg
 (paren
 id|buttons
 op_amp
-l_int|2
+id|SGIOC_PANEL_POWERINTR
 )paren
 )paren
-multiline_comment|/* Power button was pressed */
+(brace
 id|power_button
 c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+multiline_comment|/* TODO: mute/unmute */
+multiline_comment|/* Volume up button was pressed */
 r_if
 c_cond
 (paren
@@ -687,11 +672,10 @@ op_logical_neg
 (paren
 id|buttons
 op_amp
-l_int|0x40
+id|SGIOC_PANEL_VOLUPINTR
 )paren
 )paren
 (brace
-multiline_comment|/* Volume up button was pressed */
 id|init_timer
 c_func
 (paren
@@ -717,6 +701,7 @@ id|volume_timer
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Volume down button was pressed */
 r_if
 c_cond
 (paren
@@ -724,11 +709,10 @@ op_logical_neg
 (paren
 id|buttons
 op_amp
-l_int|0x10
+id|SGIOC_PANEL_VOLDNINTR
 )paren
 )paren
 (brace
-multiline_comment|/* Volume down button was pressed */
 id|init_timer
 c_func
 (paren
@@ -754,6 +738,9 @@ id|volume_timer
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|panic_event
 r_static
@@ -778,14 +765,16 @@ id|ptr
 r_if
 c_cond
 (paren
-id|has_paniced
+id|machine_state
+op_amp
+id|MACHINE_PANICED
 )paren
 r_return
 id|NOTIFY_DONE
 suffix:semicolon
-id|has_paniced
-op_assign
-l_int|1
+id|machine_state
+op_or_assign
+id|MACHINE_PANICED
 suffix:semicolon
 id|blink_timer.data
 op_assign
@@ -808,40 +797,39 @@ id|notifier_block
 id|panic_block
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|panic_event
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
-DECL|function|ip22_reboot_setup
-r_void
-id|ip22_reboot_setup
+DECL|function|reboot_setup
+r_static
+r_int
+id|__init
+id|reboot_setup
 c_func
 (paren
 r_void
 )paren
 (brace
-r_static
-r_int
-id|setup_done
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|setup_done
-)paren
-r_return
-suffix:semicolon
-id|setup_done
+id|_machine_restart
 op_assign
-l_int|1
+id|sgi_machine_restart
+suffix:semicolon
+id|_machine_halt
+op_assign
+id|sgi_machine_halt
+suffix:semicolon
+id|_machine_power_off
+op_assign
+id|sgi_machine_power_off
 suffix:semicolon
 id|request_irq
 c_func
 (paren
-l_int|9
+id|SGI_PANEL_IRQ
 comma
 id|panel_int
 comma
@@ -873,5 +861,15 @@ op_amp
 id|panic_block
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|reboot_setup
+id|subsys_initcall
+c_func
+(paren
+id|reboot_setup
+)paren
+suffix:semicolon
 eof
