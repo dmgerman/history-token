@@ -5953,6 +5953,11 @@ id|dirty_tx
 op_mod
 id|NUM_TX_DESC
 suffix:semicolon
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6253,6 +6258,13 @@ op_mod
 id|NUM_RX_DESC
 suffix:semicolon
 id|u32
+id|status
+suffix:semicolon
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|le32_to_cpu
