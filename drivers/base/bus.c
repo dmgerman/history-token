@@ -1049,7 +1049,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the error from bus_match(), since it&squot;s perfectly&n; *&t;valid for a driver not to bind to any devices.&n; */
 DECL|function|driver_attach
-r_static
 r_void
 id|driver_attach
 c_func

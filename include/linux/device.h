@@ -1343,6 +1343,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|driver_attach
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
 multiline_comment|/* driverfs interface for exporting device attributes */
 DECL|struct|device_attribute
 r_struct
