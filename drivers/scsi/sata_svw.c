@@ -911,6 +911,16 @@ id|scr_write
 op_assign
 id|k2_sata_scr_write
 comma
+dot
+id|port_start
+op_assign
+id|ata_port_start
+comma
+dot
+id|port_stop
+op_assign
+id|ata_port_stop
+comma
 )brace
 suffix:semicolon
 DECL|function|k2_sata_setup_port
