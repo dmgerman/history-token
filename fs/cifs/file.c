@@ -4253,6 +4253,7 @@ op_star
 id|smb_read_data
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|current_offset
 suffix:semicolon
@@ -4465,7 +4466,7 @@ comma
 id|smb_read_data
 op_plus
 l_int|4
-multiline_comment|/* RFC1001 hdr */
+multiline_comment|/* RFC1001 hdr*/
 op_plus
 id|le16_to_cpu
 c_func
