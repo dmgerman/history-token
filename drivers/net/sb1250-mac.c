@@ -8101,9 +8101,6 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-id|sbmac_port_t
-id|port
-suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
@@ -8122,6 +8119,11 @@ id|idx
 op_increment
 )paren
 (brace
+r_struct
+id|sbmac_softc
+op_star
+id|sc
+suffix:semicolon
 id|dev
 op_assign
 id|dev_sbmac
@@ -8137,9 +8139,6 @@ id|dev
 )paren
 r_continue
 suffix:semicolon
-r_struct
-id|sbmac_softc
-op_star
 id|sc
 op_assign
 id|netdev_priv

@@ -302,6 +302,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* Used to be a macro which just called the function, now just a function */
@@ -316,6 +317,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|__init
 id|inode_init
 c_func
 (paren
@@ -325,6 +327,16 @@ r_int
 suffix:semicolon
 r_extern
 r_void
+id|__init
+id|inode_init_early
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__init
 id|mnt_init
 c_func
 (paren
@@ -334,6 +346,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
+id|__init
 id|files_init
 c_func
 (paren
@@ -4175,6 +4188,16 @@ op_star
 id|file
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_NOATIME
+)paren
+)paren
 id|touch_atime
 c_func
 (paren
@@ -5105,6 +5128,16 @@ suffix:semicolon
 multiline_comment|/* fs/dcache.c */
 r_extern
 r_void
+id|__init
+id|vfs_caches_init_early
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__init
 id|vfs_caches_init
 c_func
 (paren

@@ -64,6 +64,19 @@ r_int
 id|gpio_mode
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Routine to enable or disable CKEN&n; */
+r_extern
+r_void
+id|pxa_set_cken
+c_func
+(paren
+r_int
+id|clock
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * return current memory and LCD clock frequency in units of 10kHz&n; */
 r_extern
 r_int

@@ -21,7 +21,6 @@ l_int|0
 suffix:semicolon
 DECL|function|machine_specific_memory_setup
 r_static
-r_inline
 r_char
 op_star
 id|__init

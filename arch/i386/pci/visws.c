@@ -6,10 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;cobalt.h&quot;
 macro_line|#include &quot;lithium.h&quot;
 macro_line|#include &quot;pci.h&quot;
-DECL|variable|broken_hp_bios_irq9
-r_int
-id|broken_hp_bios_irq9
-suffix:semicolon
 r_extern
 r_struct
 id|pci_raw_ops

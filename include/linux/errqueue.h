@@ -47,6 +47,10 @@ DECL|macro|SO_EE_OFFENDER
 mdefine_line|#define SO_EE_OFFENDER(ee)&t;((struct sockaddr*)((ee)+1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;net/ip.h&gt;
+macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
+macro_line|#include &lt;linux/ipv6.h&gt;
+macro_line|#endif
 DECL|macro|SKB_EXT_ERR
 mdefine_line|#define SKB_EXT_ERR(skb) ((struct sock_exterr_skb *) ((skb)-&gt;cb))
 DECL|struct|sock_exterr_skb

@@ -805,7 +805,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|macro|SETFL_MASK
-mdefine_line|#define SETFL_MASK (O_APPEND | O_NONBLOCK | O_NDELAY | FASYNC | O_DIRECT)
+mdefine_line|#define SETFL_MASK (O_APPEND | O_NONBLOCK | O_NDELAY | FASYNC | O_DIRECT | O_NOATIME)
 DECL|function|setfl
 r_static
 r_int
@@ -852,6 +852,41 @@ id|IS_APPEND
 c_func
 (paren
 id|inode
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+multiline_comment|/* O_NOATIME can only be set by the owner or superuser */
+r_if
+c_cond
+(paren
+(paren
+id|arg
+op_amp
+id|O_NOATIME
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|filp-&gt;f_flags
+op_amp
+id|O_NOATIME
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|current-&gt;fsuid
+op_ne
+id|inode-&gt;i_uid
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_FOWNER
 )paren
 )paren
 r_return

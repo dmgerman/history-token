@@ -11,7 +11,7 @@ macro_line|#include &quot;btcx-risc.h&quot;
 macro_line|#include &quot;cx88-reg.h&quot;
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|CX88_VERSION_CODE
-mdefine_line|#define CX88_VERSION_CODE KERNEL_VERSION(0,0,3)
+mdefine_line|#define CX88_VERSION_CODE KERNEL_VERSION(0,0,4)
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 macro_line|# define TRUE (1==1)
@@ -199,25 +199,33 @@ multiline_comment|/* card configuration                                         
 DECL|macro|CX88_BOARD_NOAUTO
 mdefine_line|#define CX88_BOARD_NOAUTO        UNSET
 DECL|macro|CX88_BOARD_UNKNOWN
-mdefine_line|#define CX88_BOARD_UNKNOWN           0
+mdefine_line|#define CX88_BOARD_UNKNOWN               0
 DECL|macro|CX88_BOARD_HAUPPAUGE
-mdefine_line|#define CX88_BOARD_HAUPPAUGE         1
+mdefine_line|#define CX88_BOARD_HAUPPAUGE             1
 DECL|macro|CX88_BOARD_GDI
-mdefine_line|#define CX88_BOARD_GDI               2
+mdefine_line|#define CX88_BOARD_GDI                   2
 DECL|macro|CX88_BOARD_PIXELVIEW
-mdefine_line|#define CX88_BOARD_PIXELVIEW         3
+mdefine_line|#define CX88_BOARD_PIXELVIEW             3
 DECL|macro|CX88_BOARD_ATI_WONDER_PRO
-mdefine_line|#define CX88_BOARD_ATI_WONDER_PRO    4
+mdefine_line|#define CX88_BOARD_ATI_WONDER_PRO        4
 DECL|macro|CX88_BOARD_WINFAST2000XP
-mdefine_line|#define CX88_BOARD_WINFAST2000XP     5
+mdefine_line|#define CX88_BOARD_WINFAST2000XP         5
 DECL|macro|CX88_BOARD_AVERTV_303
-mdefine_line|#define CX88_BOARD_AVERTV_303        6
-DECL|macro|CX88_BOARD_MSI_TVANYWHERE
-mdefine_line|#define CX88_BOARD_MSI_TVANYWHERE    7
+mdefine_line|#define CX88_BOARD_AVERTV_303            6
+DECL|macro|CX88_BOARD_MSI_TVANYWHERE_MASTER
+mdefine_line|#define CX88_BOARD_MSI_TVANYWHERE_MASTER 7
 DECL|macro|CX88_BOARD_WINFAST_DV2000
-mdefine_line|#define CX88_BOARD_WINFAST_DV2000    8
+mdefine_line|#define CX88_BOARD_WINFAST_DV2000        8
 DECL|macro|CX88_BOARD_LEADTEK_PVR2000
-mdefine_line|#define CX88_BOARD_LEADTEK_PVR2000   9
+mdefine_line|#define CX88_BOARD_LEADTEK_PVR2000       9
+DECL|macro|CX88_BOARD_IODATA_GVVCP3PCI
+mdefine_line|#define CX88_BOARD_IODATA_GVVCP3PCI      10
+DECL|macro|CX88_BOARD_PROLINK_PLAYTVPVR
+mdefine_line|#define CX88_BOARD_PROLINK_PLAYTVPVR     11
+DECL|macro|CX88_BOARD_ASUS_PVR_416
+mdefine_line|#define CX88_BOARD_ASUS_PVR_416          12
+DECL|macro|CX88_BOARD_MSI_TVANYWHERE
+mdefine_line|#define CX88_BOARD_MSI_TVANYWHERE        13
 DECL|enum|cx88_itype
 r_enum
 id|cx88_itype
@@ -682,6 +690,19 @@ id|shadow
 id|SHADOW_MAX
 )braket
 suffix:semicolon
+DECL|member|shutdown
+r_int
+id|shutdown
+suffix:semicolon
+DECL|member|tpid
+id|pid_t
+id|tpid
+suffix:semicolon
+DECL|member|texit
+r_struct
+id|completion
+id|texit
+suffix:semicolon
 DECL|member|state
 r_struct
 id|cx8800_suspend_state
@@ -1053,7 +1074,17 @@ id|cx88_idcount
 suffix:semicolon
 r_extern
 r_void
-id|__devinit
+id|cx88_card_list
+c_func
+(paren
+r_struct
+id|cx8800_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|cx88_card_setup
 c_func
 (paren
@@ -1125,6 +1156,15 @@ id|dev
 comma
 id|u32
 id|mode
+)paren
+suffix:semicolon
+r_int
+id|cx88_audio_thread
+c_func
+(paren
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */

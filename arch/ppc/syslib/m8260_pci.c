@@ -403,7 +403,7 @@ id|hose-&gt;last_busno
 op_assign
 l_int|0xff
 suffix:semicolon
-id|setup_indirect_pci
+id|setup_m8260_indirect_pci
 c_func
 (paren
 id|hose

@@ -1709,13 +1709,6 @@ c_func
 id|svr4_setcontext
 )paren
 suffix:semicolon
-DECL|variable|sys_ioctl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sys_ioctl
-)paren
-suffix:semicolon
 DECL|variable|compat_sys_ioctl
 id|EXPORT_SYMBOL
 c_func

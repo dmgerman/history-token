@@ -269,6 +269,10 @@ DECL|member|smartspeed
 r_uint32
 id|smartspeed
 suffix:semicolon
+DECL|member|en_mng_pt
+r_uint32
+id|en_mng_pt
+suffix:semicolon
 DECL|member|link_speed
 r_uint16
 id|link_speed

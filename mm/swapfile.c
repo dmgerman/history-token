@@ -1892,6 +1892,13 @@ c_func
 id|pte
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Move the page to the active list so it is not&n;&t;&t;&t; * immediately swapped out again after swapon.&n;&t;&t;&t; */
+id|activate_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/* add 1 since address may be 0 */
 r_return
 l_int|1

@@ -1,4 +1,4 @@
-multiline_comment|/* -- ISP16 cdrom detection and configuration&n; *&n; *    Copyright (c) 1995,1996 Eric van der Maarel &lt;H.T.M.v.d.Maarel@marin.nl&gt;&n; *&n; *    Version 0.6&n; *&n; *    History:&n; *    0.5 First release.&n; *        Was included in the sjcd and optcd cdrom drivers.&n; *    0.6 First &quot;stand-alone&quot; version.&n; *        Removed sound configuration.&n; *        Added &quot;module&quot; support.&n; *&n; *      9 November 1999 -- Make kernel-parameter implementation work with 2.3.x &n; *&t;                   Removed init_module &amp; cleanup_module in favor of &n; *&t;&t;&t;   module_init &amp; module_exit.&n; *&t;&t;&t;   Torben Mathiasen &lt;tmm@image.dk&gt;&n; *&n; *    Detect cdrom interface on ISP16 sound card.&n; *    Configure cdrom interface.&n; *&n; *    Algorithm for the card with OPTi 82C928 taken&n; *    from the CDSETUP.SYS driver for MSDOS,&n; *    by OPTi Computers, version 2.03.&n; *    Algorithm for the card with OPTi 82C929 as communicated&n; *    to me by Vadim Model and Leo Spiekman.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* -- ISP16 cdrom detection and configuration&n; *&n; *    Copyright (c) 1995,1996 Eric van der Maarel &lt;H.T.M.v.d.Maarel@marin.nl&gt;&n; *&n; *    Version 0.6&n; *&n; *    History:&n; *    0.5 First release.&n; *        Was included in the sjcd and optcd cdrom drivers.&n; *    0.6 First &quot;stand-alone&quot; version.&n; *        Removed sound configuration.&n; *        Added &quot;module&quot; support.&n; *&n; *      9 November 1999 -- Make kernel-parameter implementation work with 2.3.x &n; *&t;                   Removed init_module &amp; cleanup_module in favor of &n; *&t;&t;&t;   module_init &amp; module_exit.&n; *&t;&t;&t;   Torben Mathiasen &lt;tmm@image.dk&gt;&n; *&n; *     19 June 2004     -- check_region() converted to request_region()&n; *                         and return statement cleanups.&n; *                         Jesper Juhl &lt;juhl-lkml@dif.dk&gt;&n; *&n; *    Detect cdrom interface on ISP16 sound card.&n; *    Configure cdrom interface.&n; *&n; *    Algorithm for the card with OPTi 82C928 taken&n; *    from the CDSETUP.SYS driver for MSDOS,&n; *    by OPTi Computers, version 2.03.&n; *    Algorithm for the card with OPTi 82C929 as communicated&n; *    to me by Vadim Model and Leo Spiekman.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|ISP16_VERSION_MAJOR
 mdefine_line|#define ISP16_VERSION_MAJOR 0
 DECL|macro|ISP16_VERSION_MINOR
@@ -296,20 +296,21 @@ l_string|&quot;ISP16: no cdrom interface configured.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|ISP16_IO_BASE
 comma
 id|ISP16_IO_SIZE
+comma
+l_string|&quot;isp16&quot;
 )paren
 )paren
 (brace
@@ -319,11 +320,8 @@ c_func
 l_string|&quot;ISP16: i/o ports already in use.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-(paren
-op_minus
-id|EIO
-)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -347,11 +345,8 @@ c_func
 l_string|&quot;ISP16: no cdrom interface found.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-(paren
-op_minus
-id|EIO
-)paren
+r_goto
+id|cleanup_out
 suffix:semicolon
 )brace
 id|printk
@@ -463,11 +458,8 @@ comma
 id|isp16_cdrom_type
 )paren
 suffix:semicolon
-r_return
-(paren
-op_minus
-id|EIO
-)paren
+r_goto
+id|cleanup_out
 suffix:semicolon
 )brace
 r_if
@@ -493,11 +485,8 @@ id|printk
 l_string|&quot;ISP16: cdrom interface has not been properly configured.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-(paren
-op_minus
-id|EIO
-)paren
+r_goto
+id|cleanup_out
 suffix:semicolon
 )brace
 id|printk
@@ -517,9 +506,23 @@ id|isp16_cdrom_type
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
+suffix:semicolon
+id|cleanup_out
+suffix:colon
+id|release_region
+c_func
+(paren
+id|ISP16_IO_BASE
+comma
+id|ISP16_IO_SIZE
 )paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 DECL|function|isp16_detect
@@ -543,9 +546,7 @@ op_ge
 l_int|0
 )paren
 r_return
-(paren
 l_int|2
-)paren
 suffix:semicolon
 r_else
 r_return
@@ -717,9 +718,7 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
-(paren
 id|i
-)paren
 suffix:semicolon
 multiline_comment|/* -&gt; not detected: possibly incorrect conclusion */
 )brace
@@ -758,9 +757,7 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
-(paren
 id|i
-)paren
 suffix:semicolon
 )brace
 DECL|function|isp16_c929__detect
@@ -823,10 +820,8 @@ l_int|2
 )paren
 multiline_comment|/* isp16 with 82C929 not detected */
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 multiline_comment|/* restore ctrl port value */
 id|ISP16_OUT
@@ -838,9 +833,7 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|2
-)paren
 suffix:semicolon
 )brace
 r_static
@@ -948,10 +941,8 @@ id|base
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_switch
@@ -1049,10 +1040,8 @@ id|irq
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_switch
@@ -1082,10 +1071,8 @@ l_string|&quot; due to conflict with the sound card.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1136,10 +1123,8 @@ id|dma
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1183,10 +1168,8 @@ id|drive_type
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* set type of interface */
@@ -1254,9 +1237,7 @@ id|dma_code
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|isp16_exit

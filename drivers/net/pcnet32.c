@@ -4,9 +4,9 @@ multiline_comment|/*************************************************************
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;pcnet32&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.30c&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.30f&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;05.25.2004&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;06.16.2004&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;DRV_NAME &quot;: &quot;
 DECL|variable|version
@@ -317,7 +317,7 @@ id|MAX_UNITS
 )braket
 suffix:semicolon
 multiline_comment|/*&n; *&t;&t;&t;&t;Theory of Operation&n; *&n; * This driver uses the same software structure as the normal lance&n; * driver. So look for a verbose description in lance.c. The differences&n; * to the normal lance driver is the use of the 32bit mode of PCnet32&n; * and PCnetPCI chips. Because these chips are 32bit chips, there is no&n; * 16MB limitation and we don&squot;t need bounce buffers.&n; */
-multiline_comment|/*&n; * History:&n; * v0.01:  Initial version&n; *&t;   only tested on Alpha Noname Board&n; * v0.02:  changed IRQ handling for new interrupt scheme (dev_id)&n; *&t;   tested on a ASUS SP3G&n; * v0.10:  fixed an odd problem with the 79C974 in a Compaq Deskpro XL&n; *&t;   looks like the 974 doesn&squot;t like stopping and restarting in a&n; *&t;   short period of time; now we do a reinit of the lance; the&n; *&t;   bug was triggered by doing ifconfig eth0 &lt;ip&gt; broadcast &lt;addr&gt;&n; *&t;   and hangs the machine (thanks to Klaus Liedl for debugging)&n; * v0.12:  by suggestion from Donald Becker: Renamed driver to pcnet32,&n; *&t;   made it standalone (no need for lance.c)&n; * v0.13:  added additional PCI detecting for special PCI devices (Compaq)&n; * v0.14:  stripped down additional PCI probe (thanks to David C Niemi&n; *&t;   and sveneric@xs4all.nl for testing this on their Compaq boxes)&n; * v0.15:  added 79C965 (VLB) probe&n; *&t;   added interrupt sharing for PCI chips&n; * v0.16:  fixed set_multicast_list on Alpha machines&n; * v0.17:  removed hack from dev.c; now pcnet32 uses ethif_probe in Space.c&n; * v0.19:  changed setting of autoselect bit&n; * v0.20:  removed additional Compaq PCI probe; there is now a working one&n; *&t;   in arch/i386/bios32.c&n; * v0.21:  added endian conversion for ppc, from work by cort@cs.nmt.edu&n; * v0.22:  added printing of status to ring dump&n; * v0.23:  changed enet_statistics to net_devive_stats&n; * v0.90:  added multicast filter&n; *&t;   added module support&n; *&t;   changed irq probe to new style&n; *&t;   added PCnetFast chip id&n; *&t;   added fix for receive stalls with Intel saturn chipsets&n; *&t;   added in-place rx skbs like in the tulip driver&n; *&t;   minor cleanups&n; * v0.91:  added PCnetFast+ chip id&n; *&t;   back port to 2.0.x&n; * v1.00:  added some stuff from Donald Becker&squot;s 2.0.34 version&n; *&t;   added support for byte counters in net_dev_stats&n; * v1.01:  do ring dumps, only when debugging the driver&n; *&t;   increased the transmit timeout&n; * v1.02:  fixed memory leak in pcnet32_init_ring()&n; * v1.10:  workaround for stopped transmitter&n; *&t;   added port selection for modules&n; *&t;   detect special T1/E1 WAN card and setup port selection&n; * v1.11:  fixed wrong checking of Tx errors&n; * v1.20:  added check of return value kmalloc (cpeterso@cs.washington.edu)&n; *&t;   added save original kmalloc addr for freeing (mcr@solidum.com)&n; *&t;   added support for PCnetHome chip (joe@MIT.EDU)&n; *&t;   rewritten PCI card detection&n; *&t;   added dwio mode to get driver working on some PPC machines&n; * v1.21:  added mii selection and mii ioctl&n; * v1.22:  changed pci scanning code to make PPC people happy&n; *&t;   fixed switching to 32bit mode in pcnet32_open() (thanks&n; *&t;   to Michael Richard &lt;mcr@solidum.com&gt; for noticing this one)&n; *&t;   added sub vendor/device id matching (thanks again to&n; *&t;   Michael Richard &lt;mcr@solidum.com&gt;)&n; *&t;   added chip id for 79c973/975 (thanks to Zach Brown &lt;zab@zabbo.net&gt;)&n; * v1.23   fixed small bug, when manual selecting MII speed/duplex&n; * v1.24   Applied Thomas&squot; patch to use TxStartPoint and thus decrease TxFIFO&n; *&t;   underflows.&t;Added tx_start_pt module parameter. Increased&n; *&t;   TX_RING_SIZE from 16 to 32.&t;Added #ifdef&squot;d code to use DXSUFLO&n; *&t;   for FAST[+] chipsets. &lt;kaf@fc.hp.com&gt;&n; * v1.24ac Added SMP spinlocking - Alan Cox &lt;alan@redhat.com&gt;&n; * v1.25kf Added No Interrupt on successful Tx for some Tx&squot;s &lt;kaf@fc.hp.com&gt;&n; * v1.26   Converted to pci_alloc_consistent, Jamey Hicks / George France&n; *                                           &lt;jamey@crl.dec.com&gt;&n; * -&t;   Fixed a few bugs, related to running the controller in 32bit mode.&n; *&t;   23 Oct, 2000.  Carsten Langgaard, carstenl@mips.com&n; *&t;   Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; * v1.26p  Fix oops on rmmod+insmod; plug i/o resource leak - Paul Gortmaker&n; * v1.27   improved CSR/PROM address detection, lots of cleanups,&n; * &t;   new pcnet32vlb module option, HP-PARISC support,&n; * &t;   added module parameter descriptions,&n; * &t;   initial ethtool support - Helge Deller &lt;deller@gmx.de&gt;&n; * v1.27a  Sun Feb 10 2002 Go Taniguchi &lt;go@turbolinux.co.jp&gt;&n; *&t;   use alloc_etherdev and register_netdev&n; *&t;   fix pci probe not increment cards_found&n; *&t;   FD auto negotiate error workaround for xSeries250&n; *&t;   clean up and using new mii module&n; * v1.27b  Sep 30 2002 Kent Yoder &lt;yoder1@us.ibm.com&gt;&n; * &t;   Added timer for cable connection state changes.&n; * v1.28   20 Feb 2004 Don Fry &lt;brazilnut@us.ibm.com&gt;&n; *&t;   Jon Mason &lt;jonmason@us.ibm.com&gt;, Chinmay Albal &lt;albal@in.ibm.com&gt;&n; *&t;   Now uses ethtool_ops, netif_msg_* and generic_mii_ioctl.&n; *&t;   Fixes bogus &squot;Bus master arbitration failure&squot;, pci_[un]map_single&n; *&t;   length errors, and transmit hangs.  Cleans up after errors in open.&n; *&t;   Jim Lewis &lt;jklewis@us.ibm.com&gt; added ethernet loopback test.&n; *&t;   Thomas Munck Steenholdt &lt;tmus@tmus.dk&gt; non-mii ioctl corrections.&n; * v1.29   6 Apr 2004 Jim Lewis &lt;jklewis@us.ibm.com&gt; added physical&n; *&t;   identification code (blink led&squot;s) and register dump.&n; *&t;   Don Fry added timer for 971/972 so skbufs don&squot;t remain on tx ring&n; *&t;   forever.&n; * v1.30   18 May 2004 Don Fry removed timer and Last Transmit Interrupt&n; *&t;   (ltint) as they added complexity and didn&squot;t give good throughput.&n; * v1.30a  22 May 2004 Don Fry limit frames received during interrupt.&n; * v1.30b  24 May 2004 Don Fry fix bogus tx carrier errors with 79c973,&n; *&t;   assisted by Bruce Penrod &lt;bmpenrod@endruntechnologies.com&gt;.&n; * v1.30c  25 May 2004 Don Fry added netif_wake_queue after pcnet32_restart.&n; */
+multiline_comment|/*&n; * History:&n; * v0.01:  Initial version&n; *&t;   only tested on Alpha Noname Board&n; * v0.02:  changed IRQ handling for new interrupt scheme (dev_id)&n; *&t;   tested on a ASUS SP3G&n; * v0.10:  fixed an odd problem with the 79C974 in a Compaq Deskpro XL&n; *&t;   looks like the 974 doesn&squot;t like stopping and restarting in a&n; *&t;   short period of time; now we do a reinit of the lance; the&n; *&t;   bug was triggered by doing ifconfig eth0 &lt;ip&gt; broadcast &lt;addr&gt;&n; *&t;   and hangs the machine (thanks to Klaus Liedl for debugging)&n; * v0.12:  by suggestion from Donald Becker: Renamed driver to pcnet32,&n; *&t;   made it standalone (no need for lance.c)&n; * v0.13:  added additional PCI detecting for special PCI devices (Compaq)&n; * v0.14:  stripped down additional PCI probe (thanks to David C Niemi&n; *&t;   and sveneric@xs4all.nl for testing this on their Compaq boxes)&n; * v0.15:  added 79C965 (VLB) probe&n; *&t;   added interrupt sharing for PCI chips&n; * v0.16:  fixed set_multicast_list on Alpha machines&n; * v0.17:  removed hack from dev.c; now pcnet32 uses ethif_probe in Space.c&n; * v0.19:  changed setting of autoselect bit&n; * v0.20:  removed additional Compaq PCI probe; there is now a working one&n; *&t;   in arch/i386/bios32.c&n; * v0.21:  added endian conversion for ppc, from work by cort@cs.nmt.edu&n; * v0.22:  added printing of status to ring dump&n; * v0.23:  changed enet_statistics to net_devive_stats&n; * v0.90:  added multicast filter&n; *&t;   added module support&n; *&t;   changed irq probe to new style&n; *&t;   added PCnetFast chip id&n; *&t;   added fix for receive stalls with Intel saturn chipsets&n; *&t;   added in-place rx skbs like in the tulip driver&n; *&t;   minor cleanups&n; * v0.91:  added PCnetFast+ chip id&n; *&t;   back port to 2.0.x&n; * v1.00:  added some stuff from Donald Becker&squot;s 2.0.34 version&n; *&t;   added support for byte counters in net_dev_stats&n; * v1.01:  do ring dumps, only when debugging the driver&n; *&t;   increased the transmit timeout&n; * v1.02:  fixed memory leak in pcnet32_init_ring()&n; * v1.10:  workaround for stopped transmitter&n; *&t;   added port selection for modules&n; *&t;   detect special T1/E1 WAN card and setup port selection&n; * v1.11:  fixed wrong checking of Tx errors&n; * v1.20:  added check of return value kmalloc (cpeterso@cs.washington.edu)&n; *&t;   added save original kmalloc addr for freeing (mcr@solidum.com)&n; *&t;   added support for PCnetHome chip (joe@MIT.EDU)&n; *&t;   rewritten PCI card detection&n; *&t;   added dwio mode to get driver working on some PPC machines&n; * v1.21:  added mii selection and mii ioctl&n; * v1.22:  changed pci scanning code to make PPC people happy&n; *&t;   fixed switching to 32bit mode in pcnet32_open() (thanks&n; *&t;   to Michael Richard &lt;mcr@solidum.com&gt; for noticing this one)&n; *&t;   added sub vendor/device id matching (thanks again to&n; *&t;   Michael Richard &lt;mcr@solidum.com&gt;)&n; *&t;   added chip id for 79c973/975 (thanks to Zach Brown &lt;zab@zabbo.net&gt;)&n; * v1.23   fixed small bug, when manual selecting MII speed/duplex&n; * v1.24   Applied Thomas&squot; patch to use TxStartPoint and thus decrease TxFIFO&n; *&t;   underflows.&t;Added tx_start_pt module parameter. Increased&n; *&t;   TX_RING_SIZE from 16 to 32.&t;Added #ifdef&squot;d code to use DXSUFLO&n; *&t;   for FAST[+] chipsets. &lt;kaf@fc.hp.com&gt;&n; * v1.24ac Added SMP spinlocking - Alan Cox &lt;alan@redhat.com&gt;&n; * v1.25kf Added No Interrupt on successful Tx for some Tx&squot;s &lt;kaf@fc.hp.com&gt;&n; * v1.26   Converted to pci_alloc_consistent, Jamey Hicks / George France&n; *                                           &lt;jamey@crl.dec.com&gt;&n; * -&t;   Fixed a few bugs, related to running the controller in 32bit mode.&n; *&t;   23 Oct, 2000.  Carsten Langgaard, carstenl@mips.com&n; *&t;   Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; * v1.26p  Fix oops on rmmod+insmod; plug i/o resource leak - Paul Gortmaker&n; * v1.27   improved CSR/PROM address detection, lots of cleanups,&n; * &t;   new pcnet32vlb module option, HP-PARISC support,&n; * &t;   added module parameter descriptions,&n; * &t;   initial ethtool support - Helge Deller &lt;deller@gmx.de&gt;&n; * v1.27a  Sun Feb 10 2002 Go Taniguchi &lt;go@turbolinux.co.jp&gt;&n; *&t;   use alloc_etherdev and register_netdev&n; *&t;   fix pci probe not increment cards_found&n; *&t;   FD auto negotiate error workaround for xSeries250&n; *&t;   clean up and using new mii module&n; * v1.27b  Sep 30 2002 Kent Yoder &lt;yoder1@us.ibm.com&gt;&n; * &t;   Added timer for cable connection state changes.&n; * v1.28   20 Feb 2004 Don Fry &lt;brazilnut@us.ibm.com&gt;&n; *&t;   Jon Mason &lt;jonmason@us.ibm.com&gt;, Chinmay Albal &lt;albal@in.ibm.com&gt;&n; *&t;   Now uses ethtool_ops, netif_msg_* and generic_mii_ioctl.&n; *&t;   Fixes bogus &squot;Bus master arbitration failure&squot;, pci_[un]map_single&n; *&t;   length errors, and transmit hangs.  Cleans up after errors in open.&n; *&t;   Jim Lewis &lt;jklewis@us.ibm.com&gt; added ethernet loopback test.&n; *&t;   Thomas Munck Steenholdt &lt;tmus@tmus.dk&gt; non-mii ioctl corrections.&n; * v1.29   6 Apr 2004 Jim Lewis &lt;jklewis@us.ibm.com&gt; added physical&n; *&t;   identification code (blink led&squot;s) and register dump.&n; *&t;   Don Fry added timer for 971/972 so skbufs don&squot;t remain on tx ring&n; *&t;   forever.&n; * v1.30   18 May 2004 Don Fry removed timer and Last Transmit Interrupt&n; *&t;   (ltint) as they added complexity and didn&squot;t give good throughput.&n; * v1.30a  22 May 2004 Don Fry limit frames received during interrupt.&n; * v1.30b  24 May 2004 Don Fry fix bogus tx carrier errors with 79c973,&n; *&t;   assisted by Bruce Penrod &lt;bmpenrod@endruntechnologies.com&gt;.&n; * v1.30c  25 May 2004 Don Fry added netif_wake_queue after pcnet32_restart.&n; * v1.30d  01 Jun 2004 Don Fry discard oversize rx packets.&n; * v1.30e  11 Jun 2004 Don Fry recover after fifo error and rx hang.&n; * v1.30f  16 Jun 2004 Don Fry cleanup IRQ to allow 0 and 1 for PCI,&n; * &t;   expanding on suggestions from Ralf Baechle &lt;ralf@linux-mips.org&gt;,&n; * &t;   and Brian Murphy &lt;brian@murphy.dk&gt;.&n; */
 multiline_comment|/*&n; * Set the number of Tx and Rx buffers, using Log_2(# buffers).&n; * Reasonable default values are 4 Tx buffers, and 16 Rx buffers.&n; * That translates to 2 (4 == 2^^2) and 4 (16 == 2^^4).&n; */
 macro_line|#ifndef PCNET32_LOG_TX_BUFFERS
 DECL|macro|PCNET32_LOG_TX_BUFFERS
@@ -745,9 +745,6 @@ r_int
 id|pcnet32_probe1
 c_func
 (paren
-r_int
-r_int
-comma
 r_int
 r_int
 comma
@@ -4260,8 +4257,6 @@ id|ioaddr
 comma
 l_int|0
 comma
-l_int|0
-comma
 l_int|NULL
 )paren
 suffix:semicolon
@@ -4459,8 +4454,6 @@ c_func
 (paren
 id|ioaddr
 comma
-id|pdev-&gt;irq
-comma
 l_int|1
 comma
 id|pdev
@@ -4478,10 +4471,6 @@ c_func
 r_int
 r_int
 id|ioaddr
-comma
-r_int
-r_int
-id|irq_line
 comma
 r_int
 id|shared
@@ -6015,22 +6004,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq_line
+id|pdev
 )paren
 (brace
+multiline_comment|/* use the IRQ provided by PCI */
 id|dev-&gt;irq
 op_assign
-id|irq_line
+id|pdev-&gt;irq
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dev-&gt;irq
-op_ge
-l_int|2
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -6383,10 +6364,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;irq
-op_eq
-l_int|0
-op_logical_or
 id|request_irq
 c_func
 (paren
@@ -7226,6 +7203,22 @@ id|i
 op_increment
 )paren
 (brace
+id|lp-&gt;tx_ring
+(braket
+id|i
+)braket
+dot
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* CPU owns buffer */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure adapter sees owner change */
 r_if
 c_cond
 (paren
@@ -7264,6 +7257,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 id|lp-&gt;tx_skbuff
 (braket
 id|i
@@ -7278,7 +7272,6 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* Initialize the PCNET32 Rx and Tx rings. */
@@ -7402,6 +7395,11 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7465,6 +7463,12 @@ op_minus
 id|PKT_BUF_SZ
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure owner changes after all others are visible */
 id|lp-&gt;rx_ring
 (braket
 id|i
@@ -7500,16 +7504,23 @@ id|lp-&gt;tx_ring
 id|i
 )braket
 dot
-id|base
+id|status
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* CPU owns buffer */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure adapter sees owner change */
 id|lp-&gt;tx_ring
 (braket
 id|i
 )braket
 dot
-id|status
+id|base
 op_assign
 l_int|0
 suffix:semicolon
@@ -7521,12 +7532,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Make sure all changes are visible */
 id|lp-&gt;init_block.tlen_rlen
 op_assign
 id|le16_to_cpu
@@ -7599,10 +7604,17 @@ id|tx_ring
 )paren
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure all changes are visible */
 r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* the pcnet32 has been issued a stop or reset.  Wait for the stop bit&n; * then flush the pending transmit operations, re-initialize the ring,&n; * and tell the chip to initialize.&n; */
 r_static
 r_void
 DECL|function|pcnet32_restart
@@ -7634,6 +7646,60 @@ id|dev-&gt;base_addr
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+multiline_comment|/* wait for stop */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|100
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|lp-&gt;a
+dot
+id|read_csr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|0
+)paren
+op_amp
+l_int|0x0004
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_ge
+l_int|100
+op_logical_and
+id|netif_msg_drv
+c_func
+(paren
+id|lp
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: pcnet32_restart timed out waiting for stop.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
 suffix:semicolon
 id|pcnet32_purge_tx_ring
 c_func
@@ -8899,14 +8965,25 @@ c_cond
 id|must_restart
 )paren
 (brace
-multiline_comment|/* stop the chip to clear the error condition, then restart */
-id|lp-&gt;a.write_csr
+multiline_comment|/* reset the chip to clear the error condition, then restart */
+id|lp-&gt;a
+dot
+id|reset
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
+id|lp-&gt;a
+dot
+id|write_csr
+c_func
 (paren
 id|ioaddr
 comma
-l_int|0
+l_int|4
 comma
-l_int|0x0004
+l_int|0x0915
 )paren
 suffix:semicolon
 id|pcnet32_restart
@@ -8925,14 +9002,14 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Clear any other interrupt, and set interrupt enable. */
+multiline_comment|/* Set interrupt enable. */
 id|lp-&gt;a.write_csr
 (paren
 id|ioaddr
 comma
 l_int|0
 comma
-l_int|0x7940
+l_int|0x0040
 )paren
 suffix:semicolon
 id|lp-&gt;a.write_rap
@@ -9155,6 +9232,46 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+multiline_comment|/* Discard oversize frames. */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|pkt_len
+OG
+id|PKT_BUF_SZ
+op_minus
+l_int|2
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|netif_msg_drv
+c_func
+(paren
+id|lp
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Impossible packet size %d!&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|pkt_len
+)paren
+suffix:semicolon
+id|lp-&gt;stats.rx_errors
+op_increment
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren

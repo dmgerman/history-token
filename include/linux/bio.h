@@ -6,6 +6,17 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 multiline_comment|/* Platforms may set this to teach the BIO layer about IOMMU hardware. */
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#if defined(BIO_VMERGE_MAX_SIZE) &amp;&amp; defined(BIO_VMERGE_BOUNDARY)
+DECL|macro|BIOVEC_VIRT_START_SIZE
+mdefine_line|#define BIOVEC_VIRT_START_SIZE(x) (bvec_to_phys(x) &amp; (BIO_VMERGE_BOUNDARY - 1))
+DECL|macro|BIOVEC_VIRT_OVERSIZE
+mdefine_line|#define BIOVEC_VIRT_OVERSIZE(x)&t;((x) &gt; BIO_VMERGE_MAX_SIZE)
+macro_line|#else
+DECL|macro|BIOVEC_VIRT_START_SIZE
+mdefine_line|#define BIOVEC_VIRT_START_SIZE(x)&t;0
+DECL|macro|BIOVEC_VIRT_OVERSIZE
+mdefine_line|#define BIOVEC_VIRT_OVERSIZE(x)&t;&t;0
+macro_line|#endif
 macro_line|#ifndef BIO_VMERGE_BOUNDARY
 DECL|macro|BIO_VMERGE_BOUNDARY
 mdefine_line|#define BIO_VMERGE_BOUNDARY&t;0
@@ -144,6 +155,17 @@ r_int
 id|bi_size
 suffix:semicolon
 multiline_comment|/* residual I/O count */
+multiline_comment|/*&n;&t; * To keep track of the max hw size, we account for the&n;&t; * sizes of the first and last virtually mergeable segments&n;&t; * in this bio&n;&t; */
+DECL|member|bi_hw_front_size
+r_int
+r_int
+id|bi_hw_front_size
+suffix:semicolon
+DECL|member|bi_hw_back_size
+r_int
+r_int
+id|bi_hw_back_size
+suffix:semicolon
 DECL|member|bi_max_vecs
 r_int
 r_int

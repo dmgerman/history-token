@@ -830,17 +830,17 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* Ensure that we do not send more than 50 overlapping requests &n;&t;&t;to the same server. We may make this configurable later or&n;&t;&t;use ses-&gt;maxReq */
-multiline_comment|/* can not count locking commands against the total since&n;&t;&t;they are allowed to block on server */
+multiline_comment|/* Ensure that we do not send more than 50 overlapping requests &n;&t;   to the same server. We may make this configurable later or&n;&t;   use ses-&gt;maxReq */
 r_if
 c_cond
 (paren
 id|long_op
-OL
-l_int|3
+op_eq
+op_minus
+l_int|1
 )paren
 (brace
-multiline_comment|/* update # of requests on the wire to this server */
+multiline_comment|/* oplock breaks must not be held up */
 id|atomic_inc
 c_func
 (paren
@@ -849,6 +849,21 @@ id|ses-&gt;server-&gt;inFlight
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -858,10 +873,17 @@ c_func
 op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
-OG
+op_ge
 id|CIFS_MAX_REQ
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 id|wait_event
 c_func
 (paren
@@ -873,12 +895,51 @@ c_func
 op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
-op_le
+OL
 id|CIFS_MAX_REQ
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* make sure that we sign in the same order that we send on this socket &n;&t;&t;and avoid races inside tcp sendmsg code that could cause corruption&n;&t;&t;of smb data */
+r_else
+(brace
+multiline_comment|/* can not count locking commands against total since&n;&t;&t;&t;   they are allowed to block on server */
+r_if
+c_cond
+(paren
+id|long_op
+OL
+l_int|3
+)paren
+(brace
+multiline_comment|/* update # of requests on the wire to server */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;inFlight
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/* make sure that we sign in the same order that we send on this socket &n;&t;   and avoid races inside tcp sendmsg code that could cause corruption&n;&t;   of smb data */
 id|down
 c_func
 (paren

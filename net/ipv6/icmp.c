@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
-macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/ip6_checksum.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/rawv6.h&gt;

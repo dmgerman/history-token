@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
+macro_line|#include &lt;net/ip.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#endif

@@ -85,6 +85,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|idma_pci9_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 r_void
 id|__init
@@ -101,6 +109,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_8260_PCI9
+multiline_comment|/* Initialise IDMA for PCI erratum workaround */
+id|idma_pci9_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI_8260
 id|m8260_find_bridges
 c_func

@@ -179,15 +179,13 @@ id|x-&gt;lock
 suffix:semicolon
 id|err
 op_assign
-id|xfrm_check_output
+id|xfrm_state_check
 c_func
 (paren
 id|x
 comma
 op_star
 id|pskb
-comma
-id|AF_INET
 )paren
 suffix:semicolon
 r_if
@@ -198,19 +196,33 @@ id|err
 r_goto
 id|error
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-multiline_comment|/* Strip IP header in transport mode. Save it. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|x-&gt;props.mode
 )paren
 (brace
+id|err
+op_assign
+id|xfrm4_tunnel_check_size
+c_func
+(paren
+op_star
+id|pskb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|error
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Strip IP header in transport mode. Save it. */
 id|iph
 op_assign
 (paren
@@ -246,6 +258,11 @@ l_int|4
 suffix:semicolon
 )brace
 multiline_comment|/* Now skb is pure payload to encrypt */
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 multiline_comment|/* Round to block size */
 id|clen
 op_assign

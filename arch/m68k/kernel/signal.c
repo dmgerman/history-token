@@ -1014,8 +1014,8 @@ id|__asm__
 r_volatile
 (paren
 l_string|&quot;.chip 68k/68881&bslash;n&bslash;t&quot;
-l_string|&quot;fmovemx %0,%/fp0-%/fp1&bslash;n&bslash;t&quot;
-l_string|&quot;fmoveml %1,%/fpcr/%/fpsr/%/fpiar&bslash;n&bslash;t&quot;
+l_string|&quot;fmovemx %0,%%fp0-%%fp1&bslash;n&bslash;t&quot;
+l_string|&quot;fmoveml %1,%%fpcr/%%fpsr/%%fpiar&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 multiline_comment|/* no outputs */
@@ -1120,8 +1120,7 @@ c_func
 (paren
 id|current-&gt;thread.fpcntl
 comma
-op_amp
-id|uc-&gt;uc_mcontext.fpregs.f_pcr
+id|uc-&gt;uc_mcontext.fpregs.f_fpcntl
 comma
 l_int|12
 )paren
@@ -1368,8 +1367,8 @@ id|__asm__
 r_volatile
 (paren
 l_string|&quot;.chip 68k/68881&bslash;n&bslash;t&quot;
-l_string|&quot;fmovemx %0,%/fp0-%/fp7&bslash;n&bslash;t&quot;
-l_string|&quot;fmoveml %1,%/fpcr/%/fpsr/%/fpiar&bslash;n&bslash;t&quot;
+l_string|&quot;fmovemx %0,%%fp0-%%fp7&bslash;n&bslash;t&quot;
+l_string|&quot;fmoveml %1,%%fpcr/%%fpsr/%%fpiar&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 multiline_comment|/* no outputs */
@@ -1382,7 +1381,8 @@ id|fpregs.f_fpregs
 comma
 l_string|&quot;m&quot;
 (paren
-id|fpregs.f_pcr
+op_star
+id|fpregs.f_fpcntl
 )paren
 )paren
 suffix:semicolon
@@ -2716,23 +2716,23 @@ id|__asm__
 r_volatile
 (paren
 l_string|&quot;.chip 68k/68881&bslash;n&bslash;t&quot;
-l_string|&quot;fmovemx %/fp0-%/fp1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmoveml %/fpcr/%/fpsr/%/fpiar,%1&bslash;n&bslash;t&quot;
+l_string|&quot;fmovemx %%fp0-%%fp1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmoveml %%fpcr/%%fpsr/%%fpiar,%1&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|sc-&gt;sc_fpregs
 )paren
 comma
-l_string|&quot;m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|sc-&gt;sc_fpcntl
 )paren
+suffix:colon
+multiline_comment|/* no inputs */
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -2791,8 +2791,7 @@ op_or_assign
 id|copy_to_user
 c_func
 (paren
-op_amp
-id|uc-&gt;uc_mcontext.fpregs.f_pcr
+id|uc-&gt;uc_mcontext.fpregs.f_fpcntl
 comma
 id|current-&gt;thread.fpcntl
 comma
@@ -2943,22 +2942,23 @@ id|__asm__
 r_volatile
 (paren
 l_string|&quot;.chip 68k/68881&bslash;n&bslash;t&quot;
-l_string|&quot;fmovemx %/fp0-%/fp7,%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmoveml %/fpcr/%/fpsr/%/fpiar,%1&bslash;n&bslash;t&quot;
+l_string|&quot;fmovemx %%fp0-%%fp7,%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmoveml %%fpcr/%%fpsr/%%fpiar,%1&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|fpregs.f_fpregs
 )paren
 comma
-l_string|&quot;m&quot;
+l_string|&quot;=m&quot;
 (paren
-id|fpregs.f_pcr
+op_star
+id|fpregs.f_fpcntl
 )paren
+suffix:colon
+multiline_comment|/* no inputs */
 suffix:colon
 l_string|&quot;memory&quot;
 )paren

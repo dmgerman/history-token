@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB as&n; * data often must be uncompressed by the drivers).&n; * &n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;linux/videodev.h&gt;
+DECL|macro|UNSET
+mdefine_line|#define UNSET (-1U)
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * Return a scatterlist for some page-aligned vmalloc()&squot;ed memory&n; * block (NULL on errors).  Memory for the scatterlist is allocated&n; * using kmalloc.  The caller must free the memory.&n; */
 r_struct
@@ -37,40 +39,16 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-r_int
-id|videobuf_lock
-c_func
-(paren
-r_struct
-id|page
-op_star
-op_star
-id|pages
-comma
-r_int
-id|nr_pages
-)paren
-suffix:semicolon
-r_int
-id|videobuf_unlock
-c_func
-(paren
-r_struct
-id|page
-op_star
-op_star
-id|pages
-comma
-r_int
-id|nr_pages
-)paren
-suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * A small set of helper functions to manage buffers (both userland&n; * and kernel) for DMA.&n; *&n; * videobuf_dma_init_*()&n; *&t;creates a buffer.  The userland version takes a userspace&n; *&t;pointer + length.  The kernel version just wants the size and&n; *&t;does memory allocation too using vmalloc_32().&n; *&n; * videobuf_dma_pci_*()&n; *&t;see Documentation/DMA-mapping.txt, these functions to&n; *&t;basically the same.  The map function does also build a&n; *&t;scatterlist for the buffer (and unmap frees it ...)&n; *&n; * videobuf_dma_free()&n; *&t;no comment ...&n; *&n; */
 DECL|struct|videobuf_dmabuf
 r_struct
 id|videobuf_dmabuf
 (brace
+DECL|member|magic
+id|u32
+id|magic
+suffix:semicolon
 multiline_comment|/* for userland buffer */
 DECL|member|offset
 r_int
@@ -114,6 +92,16 @@ r_int
 id|direction
 suffix:semicolon
 )brace
+suffix:semicolon
+r_void
+id|videobuf_dma_init
+c_func
+(paren
+r_struct
+id|videobuf_dmabuf
+op_star
+id|dma
+)paren
 suffix:semicolon
 r_int
 id|videobuf_dma_init_user
@@ -315,6 +303,10 @@ r_int
 r_int
 id|i
 suffix:semicolon
+DECL|member|magic
+id|u32
+id|magic
+suffix:semicolon
 multiline_comment|/* info about the buffer */
 DECL|member|width
 r_int
@@ -336,6 +328,11 @@ DECL|member|size
 r_int
 r_int
 id|size
+suffix:semicolon
+DECL|member|input
+r_int
+r_int
+id|input
 suffix:semicolon
 DECL|member|field
 r_enum
@@ -520,6 +517,12 @@ r_enum
 id|v4l2_buf_type
 id|type
 suffix:semicolon
+DECL|member|inputs
+r_int
+r_int
+id|inputs
+suffix:semicolon
+multiline_comment|/* for V4L2_BUF_FLAG_INPUT */
 DECL|member|msize
 r_int
 r_int

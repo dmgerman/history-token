@@ -102,7 +102,7 @@ l_int|0x10000
 )paren
 id|blksize
 op_assign
-l_int|0x100
+l_int|0x10000
 suffix:semicolon
 r_if
 c_cond
@@ -209,6 +209,13 @@ id|dev-&gt;oss.bufsize
 id|BUG
 c_func
 (paren
+)paren
+suffix:semicolon
+id|videobuf_dma_init
+c_func
+(paren
+op_amp
+id|dev-&gt;oss.dma
 )paren
 suffix:semicolon
 id|err
@@ -709,6 +716,8 @@ op_rshift
 l_int|2
 comma
 id|dev-&gt;oss.blksize
+op_minus
+l_int|4
 )paren
 suffix:semicolon
 id|saa_writel

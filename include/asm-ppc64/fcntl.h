@@ -37,6 +37,8 @@ DECL|macro|O_LARGEFILE
 mdefine_line|#define O_LARGEFILE     0200000
 DECL|macro|O_DIRECT
 mdefine_line|#define O_DIRECT&t;0400000&t;/* direct disk access hint */
+DECL|macro|O_NOATIME
+mdefine_line|#define O_NOATIME&t;01000000
 DECL|macro|F_DUPFD
 mdefine_line|#define F_DUPFD&t;&t;0&t;/* dup */
 DECL|macro|F_GETFD

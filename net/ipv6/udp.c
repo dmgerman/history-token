@@ -24,7 +24,7 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
-macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/ip6_checksum.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;

@@ -1872,7 +1872,7 @@ suffix:semicolon
 r_return
 id|regs-&gt;ARM_r0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Flush a region from virtual address &squot;r0&squot; to virtual address &squot;r1&squot;&n;&t; * _inclusive_.  There is no alignment requirement on either address;&n;&t; * user space does not need to know the hardware cache layout.&n;&t; *&n;&t; * r2 contains flags.  It should ALWAYS be passed as ZERO until it&n;&t; * is defined to be something else.  For now we ignore it, but may&n;&t; * the fires of hell burn in your belly if you break this rule. ;)&n;&t; *&n;&t; * (at a later date, we may want to allow this call to not flush&n;&t; * various aspects of the cache.  Passing &squot;0&squot; will guarantee that&n;&t; * everything necessary gets flushed to maintain consistency in&n;&t; * the specified region).&n;&t; */
+multiline_comment|/*&n;&t; * Flush a region from virtual address &squot;r0&squot; to virtual address &squot;r1&squot;&n;&t; * _exclusive_.  There is no alignment requirement on either address;&n;&t; * user space does not need to know the hardware cache layout.&n;&t; *&n;&t; * r2 contains flags.  It should ALWAYS be passed as ZERO until it&n;&t; * is defined to be something else.  For now we ignore it, but may&n;&t; * the fires of hell burn in your belly if you break this rule. ;)&n;&t; *&n;&t; * (at a later date, we may want to allow this call to not flush&n;&t; * various aspects of the cache.  Passing &squot;0&squot; will guarantee that&n;&t; * everything necessary gets flushed to maintain consistency in&n;&t; * the specified region).&n;&t; */
 r_case
 id|NR
 c_func

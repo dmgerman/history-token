@@ -30,7 +30,6 @@ macro_line|#include &quot;i82365.h&quot;
 macro_line|#include &quot;cirrus.h&quot;
 macro_line|#include &quot;vg468.h&quot;
 macro_line|#include &quot;ricoh.h&quot;
-macro_line|#include &quot;o2micro.h&quot;
 macro_line|#ifdef DEBUG
 DECL|variable|version
 r_static

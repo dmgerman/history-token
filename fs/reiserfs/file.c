@@ -386,12 +386,10 @@ id|path
 suffix:semicolon
 singleline_comment|// path to item, that we are going to deal with.
 id|b_blocknr_t
+op_star
 id|allocated_blocks
-(braket
-id|blocks_to_allocate
-)braket
 suffix:semicolon
-singleline_comment|// Pointer to a place where allocated blocknumbers would be stored. Right now statically allocated, later that will change.
+singleline_comment|// Pointer to a place where allocated blocknumbers would be stored.
 id|reiserfs_blocknr_hint_t
 id|hint
 suffix:semicolon
@@ -463,6 +461,11 @@ suffix:semicolon
 singleline_comment|// Flag for items traversal code to keep track
 singleline_comment|// of the fact that we already prepared
 singleline_comment|// current block for journal
+r_int
+id|will_prealloc
+op_assign
+l_int|0
+suffix:semicolon
 id|RFALSE
 c_func
 (paren
@@ -470,6 +473,70 @@ op_logical_neg
 id|blocks_to_allocate
 comma
 l_string|&quot;green-9004: tried to allocate zero blocks?&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* only preallocate if this is a small write */
+r_if
+c_cond
+(paren
+id|REISERFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_prealloc_count
+op_logical_or
+(paren
+op_logical_neg
+(paren
+id|write_bytes
+op_amp
+(paren
+id|inode-&gt;i_sb-&gt;s_blocksize
+op_minus
+l_int|1
+)paren
+)paren
+op_logical_and
+id|blocks_to_allocate
+OL
+id|REISERFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_alloc_options.preallocsize
+)paren
+)paren
+id|will_prealloc
+op_assign
+id|REISERFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_alloc_options.preallocsize
+suffix:semicolon
+id|allocated_blocks
+op_assign
+id|kmalloc
+c_func
+(paren
+(paren
+id|blocks_to_allocate
+op_plus
+id|will_prealloc
+)paren
+op_star
+r_sizeof
+(paren
+id|b_blocknr_t
+)paren
+comma
+id|GFP_NOFS
 )paren
 suffix:semicolon
 multiline_comment|/* First we compose a key to point at the writing position, we want to do&n;       that outside of any locking region. */
@@ -595,49 +662,9 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// We are allocating blocks for unformatted node.
-multiline_comment|/* only preallocate if this is a small write */
-r_if
-c_cond
-(paren
-id|REISERFS_I
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|i_prealloc_count
-op_logical_or
-(paren
-op_logical_neg
-(paren
-id|write_bytes
-op_amp
-(paren
-id|inode-&gt;i_sb-&gt;s_blocksize
-op_minus
-l_int|1
-)paren
-)paren
-op_logical_and
-id|blocks_to_allocate
-OL
-id|REISERFS_SB
-c_func
-(paren
-id|inode-&gt;i_sb
-)paren
-op_member_access_from_pointer
-id|s_alloc_options.preallocsize
-)paren
-)paren
 id|hint.preallocate
 op_assign
-l_int|1
-suffix:semicolon
-r_else
-id|hint.preallocate
-op_assign
-l_int|0
+id|will_prealloc
 suffix:semicolon
 multiline_comment|/* Call block allocator to allocate blocks */
 id|res
@@ -2303,6 +2330,12 @@ comma
 l_string|&quot;green-9007: Used too many blocks? weird&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|allocated_blocks
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2381,6 +2414,12 @@ id|reiserfs_write_unlock
 c_func
 (paren
 id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|allocated_blocks
 )paren
 suffix:semicolon
 r_return

@@ -1192,14 +1192,25 @@ DECL|macro|EN_I2SIN_STR2DAC
 mdefine_line|#define EN_I2SIN_STR2DAC        0x00004000
 DECL|macro|EN_I2SIN_ENABLE
 mdefine_line|#define EN_I2SIN_ENABLE         0x00008000
-DECL|macro|EN_DMTRX_SUMDIFF
+macro_line|#if 0
+multiline_comment|/* old */
 mdefine_line|#define EN_DMTRX_SUMDIFF        0x00000800
-DECL|macro|EN_DMTRX_SUMR
 mdefine_line|#define EN_DMTRX_SUMR           0x00000880
-DECL|macro|EN_DMTRX_LR
 mdefine_line|#define EN_DMTRX_LR             0x00000900
-DECL|macro|EN_DMTRX_MONO
 mdefine_line|#define EN_DMTRX_MONO           0x00000980
+macro_line|#else
+multiline_comment|/* dscaler cvs */
+DECL|macro|EN_DMTRX_SUMDIFF
+mdefine_line|#define EN_DMTRX_SUMDIFF        (0 &lt;&lt; 7)
+DECL|macro|EN_DMTRX_SUMR
+mdefine_line|#define EN_DMTRX_SUMR           (1 &lt;&lt; 7)
+DECL|macro|EN_DMTRX_LR
+mdefine_line|#define EN_DMTRX_LR             (2 &lt;&lt; 7)
+DECL|macro|EN_DMTRX_MONO
+mdefine_line|#define EN_DMTRX_MONO           (3 &lt;&lt; 7)
+DECL|macro|EN_DMTRX_BYPASS
+mdefine_line|#define EN_DMTRX_BYPASS         (1 &lt;&lt; 11)
+macro_line|#endif
 singleline_comment|// Video 
 DECL|macro|VID_CAPTURE_CONTROL
 mdefine_line|#define VID_CAPTURE_CONTROL&t;&t;0x310180

@@ -59,7 +59,7 @@ macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
-macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/ip6_checksum.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6.h&gt;

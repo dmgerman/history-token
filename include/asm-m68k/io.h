@@ -120,6 +120,7 @@ id|isa_itb
 c_func
 (paren
 r_int
+r_int
 id|addr
 )paren
 (brace
@@ -193,6 +194,7 @@ op_star
 id|isa_itw
 c_func
 (paren
+r_int
 r_int
 id|addr
 )paren
@@ -268,6 +270,7 @@ id|isa_mtb
 c_func
 (paren
 r_int
+r_int
 id|addr
 )paren
 (brace
@@ -337,6 +340,7 @@ op_star
 id|isa_mtw
 c_func
 (paren
+r_int
 r_int
 id|addr
 )paren
@@ -408,13 +412,13 @@ mdefine_line|#define isa_outb(val,port) out_8(isa_itb(port),(val))
 DECL|macro|isa_outw
 mdefine_line|#define isa_outw(val,port) (ISA_SEX ? out_be16(isa_itw(port),(val)) : out_le16(isa_itw(port),(val)))
 DECL|macro|isa_readb
-mdefine_line|#define isa_readb(p)       in_8(isa_mtb(p))
+mdefine_line|#define isa_readb(p)       in_8(isa_mtb((unsigned long)(p)))
 DECL|macro|isa_readw
-mdefine_line|#define isa_readw(p)       (ISA_SEX ? in_be16(isa_mtw(p)) : in_le16(isa_mtw(p)))
+mdefine_line|#define isa_readw(p)       &bslash;&n;&t;(ISA_SEX ? in_be16(isa_mtw((unsigned long)(p)))&t;&bslash;&n;&t;&t; : in_le16(isa_mtw((unsigned long)(p))))
 DECL|macro|isa_writeb
-mdefine_line|#define isa_writeb(val,p)  out_8(isa_mtb(p),(val))
+mdefine_line|#define isa_writeb(val,p)  out_8(isa_mtb((unsigned long)(p)),(val))
 DECL|macro|isa_writew
-mdefine_line|#define isa_writew(val,p)  (ISA_SEX ? out_be16(isa_mtw(p),(val)) : out_le16(isa_mtw(p),(val)))
+mdefine_line|#define isa_writew(val,p)  &bslash;&n;&t;(ISA_SEX ? out_be16(isa_mtw((unsigned long)(p)),(val))&t;&bslash;&n;&t;&t; : out_le16(isa_mtw((unsigned long)(p)),(val)))
 DECL|function|isa_delay
 r_static
 r_inline
@@ -471,14 +475,22 @@ DECL|macro|isa_inb_p
 mdefine_line|#define isa_inb_p(p)      ({u8 v=isa_inb(p);isa_delay();v;})
 DECL|macro|isa_outb_p
 mdefine_line|#define isa_outb_p(v,p)   ({isa_outb((v),(p));isa_delay();})
+DECL|macro|isa_inw_p
+mdefine_line|#define isa_inw_p(p)      ({u16 v=isa_inw(p);isa_delay();v;})
+DECL|macro|isa_outw_p
+mdefine_line|#define isa_outw_p(v,p)   ({isa_outw((v),(p));isa_delay();})
+DECL|macro|isa_inl_p
+mdefine_line|#define isa_inl_p(p)      ({u32 v=isa_inl(p);isa_delay();v;})
+DECL|macro|isa_outl_p
+mdefine_line|#define isa_outl_p(v,p)   ({isa_outl((v),(p));isa_delay();})
 DECL|macro|isa_insb
-mdefine_line|#define isa_insb(port, buf, nr) raw_insb(isa_itb(port), (buf), (nr))
+mdefine_line|#define isa_insb(port, buf, nr) raw_insb(isa_itb(port), (u8 *)(buf), (nr))
 DECL|macro|isa_outsb
-mdefine_line|#define isa_outsb(port, buf, nr) raw_outsb(isa_itb(port), (buf), (nr))
+mdefine_line|#define isa_outsb(port, buf, nr) raw_outsb(isa_itb(port), (u8 *)(buf), (nr))
 DECL|macro|isa_insw
-mdefine_line|#define isa_insw(port, buf, nr)     &bslash;&n;       (ISA_SEX ? raw_insw(isa_itw(port), (buf), (nr)) :    &bslash;&n;                  raw_insw_swapw(isa_itw(port), (buf), (nr)))
+mdefine_line|#define isa_insw(port, buf, nr)     &bslash;&n;       (ISA_SEX ? raw_insw(isa_itw(port), (u16 *)(buf), (nr)) :    &bslash;&n;                  raw_insw_swapw(isa_itw(port), (u16 *)(buf), (nr)))
 DECL|macro|isa_outsw
-mdefine_line|#define isa_outsw(port, buf, nr)    &bslash;&n;       (ISA_SEX ? raw_outsw(isa_itw(port), (buf), (nr)) :  &bslash;&n;                  raw_outsw_swapw(isa_itw(port), (buf), (nr)))
+mdefine_line|#define isa_outsw(port, buf, nr)    &bslash;&n;       (ISA_SEX ? raw_outsw(isa_itw(port), (u16 *)(buf), (nr)) :  &bslash;&n;                  raw_outsw_swapw(isa_itw(port), (u16 *)(buf), (nr)))
 macro_line|#endif  /* CONFIG_ISA */
 macro_line|#if defined(CONFIG_ISA) &amp;&amp; !defined(CONFIG_PCI)
 DECL|macro|inb
@@ -491,12 +503,20 @@ DECL|macro|outb_p
 mdefine_line|#define outb_p  isa_outb_p
 DECL|macro|inw
 mdefine_line|#define inw     isa_inw
+DECL|macro|inw_p
+mdefine_line|#define inw_p   isa_inw_p
 DECL|macro|outw
 mdefine_line|#define outw    isa_outw
+DECL|macro|outw_p
+mdefine_line|#define outw_p  isa_outw_p
 DECL|macro|inl
 mdefine_line|#define inl     isa_inw
+DECL|macro|inl_p
+mdefine_line|#define inl_p   isa_inw_p
 DECL|macro|outl
 mdefine_line|#define outl    isa_outw
+DECL|macro|outl_p
+mdefine_line|#define outl_p  isa_outw_p
 DECL|macro|insb
 mdefine_line|#define insb    isa_insb
 DECL|macro|insw
@@ -555,12 +575,24 @@ DECL|macro|inb_p
 mdefine_line|#define inb_p(port) ((port)&lt;1024 ? isa_inb_p(port) : in_8(port))
 DECL|macro|inw
 mdefine_line|#define inw(port) ((port)&lt;1024 ? isa_inw(port) : in_le16(port))
+DECL|macro|inw_p
+mdefine_line|#define inw_p(port) ((port)&lt;1024 ? isa_inw_p(port) : in_le16(port))
+DECL|macro|inl
+mdefine_line|#define inl(port) ((port)&lt;1024 ? isa_inl(port) : in_le32(port))
+DECL|macro|inl_p
+mdefine_line|#define inl_p(port) ((port)&lt;1024 ? isa_inl_p(port) : in_le32(port))
 DECL|macro|outb
 mdefine_line|#define outb(val,port) ((port)&lt;1024 ? isa_outb((val),(port)) : out_8((port),(val)))
 DECL|macro|outb_p
 mdefine_line|#define outb_p(val,port) ((port)&lt;1024 ? isa_outb_p((val),(port)) : out_8((port),(val)))
 DECL|macro|outw
 mdefine_line|#define outw(val,port) ((port)&lt;1024 ? isa_outw((val),(port)) : out_le16((port),(val)))
+DECL|macro|outw_p
+mdefine_line|#define outw_p(val,port) ((port)&lt;1024 ? isa_outw_p((val),(port)) : out_le16((port),(val)))
+DECL|macro|outl
+mdefine_line|#define outl(val,port) ((port)&lt;1024 ? isa_outl((val),(port)) : out_le32((port),(val)))
+DECL|macro|outl_p
+mdefine_line|#define outl_p(val,port) ((port)&lt;1024 ? isa_outl_p((val),(port)) : out_le32((port),(val)))
 macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
 DECL|function|ioremap

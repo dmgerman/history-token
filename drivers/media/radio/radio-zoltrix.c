@@ -1143,7 +1143,6 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-op_amp
 id|v
 comma
 l_int|0

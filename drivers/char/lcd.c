@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * LCD, LED and Button interface for Cobalt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997 by Andrew Bose&n; *&n; * Linux kernel version history:&n; *       March 2001: Ported from 2.0.34  by Liam Davies&n; *&n; */
 DECL|macro|RTC_IO_EXTENT
-mdefine_line|#define RTC_IO_EXTENT&t;0x10    /*Only really two ports, but...&t;*/
+mdefine_line|#define RTC_IO_EXTENT&t;0x10&t;/*Only really two ports, but... */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -468,7 +468,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -487,12 +486,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -508,7 +505,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|display
@@ -527,12 +523,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|a
 op_assign
 (paren
@@ -588,7 +582,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -607,12 +600,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|udelay
 c_func
 (paren
@@ -645,7 +636,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|display
@@ -664,12 +654,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|udelay
 c_func
 (paren
@@ -785,7 +773,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|display
@@ -804,12 +791,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|udelay
 c_func
 (paren
@@ -1101,7 +1086,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -1120,16 +1104,14 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
-singleline_comment|//  set all GPIO leds to led_display.leds 
+singleline_comment|//  set all GPIO leds to led_display.leds
 r_case
 id|LED_Set
 suffix:colon
@@ -1142,7 +1124,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|led_display
@@ -1161,12 +1142,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|led_state
 op_assign
 id|led_display.leds
@@ -1201,7 +1180,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|led_display
@@ -1220,12 +1198,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -1287,7 +1263,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|led_display
@@ -1306,12 +1281,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -1365,7 +1338,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -1384,12 +1356,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -1416,7 +1386,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -1435,12 +1404,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -1451,12 +1418,11 @@ suffix:colon
 r_int
 id|iface_num
 suffix:semicolon
-multiline_comment|/* panel-utils should pass in the desired interface status is wanted for&n;&t;&t; * in &quot;buttons&quot; of the structure.  We will set this to non-zero if the&n;&t;&t; * link is in fact up for the requested interface.  --DaveM&n;&t;&t; */
+multiline_comment|/* panel-utils should pass in the desired interface status is wanted for&n;&t;&t;&t; * in &quot;buttons&quot; of the structure.  We will set this to non-zero if the&n;&t;&t;&t; * link is in fact up for the requested interface.  --DaveM&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|button_display
@@ -1474,12 +1440,10 @@ id|button_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|iface_num
 op_assign
 id|button_display.buttons
@@ -1528,7 +1492,6 @@ r_if
 c_cond
 (paren
 id|__copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -1547,12 +1510,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -1703,7 +1664,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// burn the flash 
+singleline_comment|// burn the flash
 r_case
 id|FLASH_Burn
 suffix:colon
@@ -1733,7 +1694,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|display
@@ -1752,12 +1712,10 @@ id|lcd_display
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|rom
 op_assign
 (paren
@@ -1784,6 +1742,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;broken&bslash;n&quot;
 )paren
@@ -1826,7 +1785,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 id|rom
 comma
@@ -1837,12 +1795,10 @@ comma
 l_int|128
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|burn_addr
 op_assign
 id|kFlashBase
@@ -1922,7 +1878,6 @@ c_loop
 (paren
 op_logical_neg
 id|dqpoll
-c_func
 (paren
 id|burn_addr
 comma
@@ -2015,7 +1970,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|//  read the flash all at once 
+singleline_comment|//  read the flash all at once
 r_case
 id|FLASH_Read
 suffix:colon
@@ -2057,7 +2012,6 @@ c_cond
 (paren
 op_logical_neg
 id|access_ok
-c_func
 (paren
 id|VERIFY_WRITE
 comma
@@ -2066,12 +2020,10 @@ comma
 id|FLASH_SIZE
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -2120,6 +2072,7 @@ r_if
 c_cond
 (paren
 id|__put_user
+c_func
 (paren
 id|tmp_byte
 comma
@@ -2130,12 +2083,10 @@ id|i
 )braket
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -2272,12 +2223,10 @@ id|lcd_waiters
 OG
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|lcd_waiters
 op_increment
 suffix:semicolon
@@ -2335,12 +2284,10 @@ c_func
 id|current
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 r_return
 id|buttons_now
 suffix:semicolon
@@ -2377,7 +2324,7 @@ id|miscdevice
 id|lcd_dev
 op_assign
 (brace
-id|LCD_MINOR
+id|MISC_DYNAMIC_MINOR
 comma
 l_string|&quot;lcd&quot;
 comma
@@ -2386,6 +2333,7 @@ id|lcd_fops
 )brace
 suffix:semicolon
 DECL|function|lcd_init
+r_static
 r_int
 id|lcd_init
 c_func
@@ -2476,6 +2424,24 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|lcd_exit
+r_static
+r_void
+id|__exit
+id|lcd_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|lcd_dev
+)paren
+suffix:semicolon
+)brace
 singleline_comment|//
 singleline_comment|// Function: dqpoll
 singleline_comment|//
@@ -2487,6 +2453,7 @@ singleline_comment|// Out: 0 = busy, 1 = write or erase complete
 singleline_comment|//
 singleline_comment|//
 DECL|function|dqpoll
+r_static
 r_int
 id|dqpoll
 c_func
@@ -2540,6 +2507,7 @@ singleline_comment|//
 singleline_comment|//
 singleline_comment|// Out: 0 = not timed out, 1 = timed out
 DECL|function|timeout
+r_static
 r_int
 id|timeout
 c_func
@@ -2552,7 +2520,6 @@ id|address
 (brace
 r_return
 (paren
-(paren
 id|READ_FLASH
 c_func
 (paren
@@ -2563,7 +2530,32 @@ l_int|0x20
 )paren
 op_eq
 l_int|0x20
-)paren
 suffix:semicolon
 )brace
+DECL|variable|lcd_init
+id|module_init
+c_func
+(paren
+id|lcd_init
+)paren
+suffix:semicolon
+DECL|variable|lcd_exit
+id|module_exit
+c_func
+(paren
+id|lcd_exit
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Andrew Bose&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
@@ -17,6 +18,7 @@ mdefine_line|#define PIRQ_SIGNATURE&t;((&squot;$&squot; &lt;&lt; 0) + (&squot;P&
 DECL|macro|PIRQ_VERSION
 mdefine_line|#define PIRQ_VERSION 0x0100
 DECL|variable|broken_hp_bios_irq9
+r_static
 r_int
 id|broken_hp_bios_irq9
 suffix:semicolon
@@ -4019,6 +4021,110 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Work around broken HP Pavilion Notebooks which assign USB to&n; * IRQ 9 even though it is actually wired to IRQ 11&n; */
+DECL|function|fix_broken_hp_bios_irq9
+r_static
+r_int
+id|__init
+id|fix_broken_hp_bios_irq9
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|d
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|broken_hp_bios_irq9
+)paren
+(brace
+id|broken_hp_bios_irq9
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s detected - fixing broken IRQ routing&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|pciirq_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|__initdata
+id|pciirq_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|callback
+op_assign
+id|fix_broken_hp_bios_irq9
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;HP Pavilion N5400 Series Laptop&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;Hewlett-Packard&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VERSION
+comma
+l_string|&quot;GE.M1.03&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_PRODUCT_VERSION
+comma
+l_string|&quot;HP Pavilion Notebook Model GE&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BOARD_VERSION
+comma
+l_string|&quot;OmniBook N32N-736&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
 DECL|function|pcibios_irq_init
 r_static
 r_int
@@ -4046,6 +4152,12 @@ l_int|NULL
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|dmi_check_system
+c_func
+(paren
+id|pciirq_dmi_table
+)paren
 suffix:semicolon
 id|pirq_table
 op_assign

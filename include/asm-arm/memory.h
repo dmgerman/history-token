@@ -143,9 +143,22 @@ macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 multiline_comment|/*&n; * For BIO.  &quot;will die&quot;.  Kill me when bio_to_phys() and bvec_to_phys() die.&n; */
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
-multiline_comment|/*&n; * We should really eliminate virt_to_bus() here - it&squot;s deprecated.&n; */
-DECL|macro|page_to_bus
-mdefine_line|#define page_to_bus(page)&t;(virt_to_bus(page_address(page)))
+multiline_comment|/*&n; * Optional device DMA address remapping. Do _not_ use directly!&n; * We should really eliminate virt_to_bus() here - it&squot;s deprecated.&n; */
+macro_line|#ifndef __arch_page_to_dma
+DECL|macro|page_to_dma
+mdefine_line|#define page_to_dma(dev, page)&t;&t;((dma_addr_t)__virt_to_bus(page_address(page)))
+DECL|macro|dma_to_virt
+mdefine_line|#define dma_to_virt(dev, addr)&t;&t;(__bus_to_virt(addr))
+DECL|macro|virt_to_dma
+mdefine_line|#define virt_to_dma(dev, addr)&t;&t;(__virt_to_bus(addr))
+macro_line|#else
+DECL|macro|page_to_dma
+mdefine_line|#define page_to_dma(dev, page)&t;&t;(__arch_page_to_dma(dev, page))
+DECL|macro|dma_to_virt
+mdefine_line|#define dma_to_virt(dev, addr)&t;&t;(__arch_dma_to_virt(dev, addr))
+DECL|macro|virt_to_dma
+mdefine_line|#define virt_to_dma(dev, addr)&t;&t;(__arch_virt_to_dma(dev, addr))
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

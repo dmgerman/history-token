@@ -28,7 +28,7 @@ macro_line|#include &lt;net/if_inet6.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
-macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/ip6_checksum.h&gt;
 multiline_comment|/* Set to 3 to get tracing... */
 DECL|macro|MCAST_DEBUG
 mdefine_line|#define MCAST_DEBUG 2

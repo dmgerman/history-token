@@ -5963,6 +5963,7 @@ id|port
 )paren
 op_member_access_from_pointer
 id|tx_fifo_errors
+op_increment
 suffix:semicolon
 id|dbg
 c_func

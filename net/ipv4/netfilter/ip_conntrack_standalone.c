@@ -12,6 +12,7 @@ macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/ip.h&gt;
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_conntrack_lock)
 DECL|macro|ASSERT_WRITE_LOCK

@@ -35,6 +35,8 @@ DECL|macro|O_DIRECTORY
 mdefine_line|#define O_DIRECTORY&t;0x10000&t;/* must be a directory */
 DECL|macro|O_NOFOLLOW
 mdefine_line|#define O_NOFOLLOW&t;0x20000&t;/* don&squot;t follow links */
+DECL|macro|O_NOATIME
+mdefine_line|#define O_NOATIME&t;0x40000
 DECL|macro|O_NDELAY
 mdefine_line|#define O_NDELAY&t;O_NONBLOCK
 DECL|macro|F_DUPFD

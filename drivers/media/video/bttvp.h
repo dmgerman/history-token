@@ -4,7 +4,7 @@ DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,14)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,15)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -305,13 +305,6 @@ op_star
 id|bottom
 suffix:semicolon
 multiline_comment|/* bottom field buffer */
-DECL|member|vbi
-r_struct
-id|bttv_buffer
-op_star
-id|vbi
-suffix:semicolon
-multiline_comment|/* vbi buffer */
 DECL|member|irqflags
 r_int
 r_int
@@ -668,7 +661,7 @@ id|buf
 )paren
 suffix:semicolon
 r_int
-id|bttv_buffer_set_activate
+id|bttv_buffer_activate_video
 c_func
 (paren
 r_struct
@@ -680,6 +673,21 @@ r_struct
 id|bttv_buffer_set
 op_star
 id|set
+)paren
+suffix:semicolon
+r_int
+id|bttv_buffer_activate_vbi
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+comma
+r_struct
+id|bttv_buffer
+op_star
+id|vbi
 )paren
 suffix:semicolon
 r_void
@@ -1054,10 +1062,16 @@ DECL|member|disabled
 r_int
 id|disabled
 suffix:semicolon
-DECL|member|set
+DECL|member|video
 r_struct
 id|bttv_buffer_set
-id|set
+id|video
+suffix:semicolon
+DECL|member|vbi
+r_struct
+id|bttv_buffer
+op_star
+id|vbi
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1398,6 +1412,13 @@ id|bttv_buffer_set
 id|curr
 suffix:semicolon
 multiline_comment|/* active buffers      */
+DECL|member|cvbi
+r_struct
+id|bttv_buffer
+op_star
+id|cvbi
+suffix:semicolon
+multiline_comment|/* active vbi buffer   */
 DECL|member|new_input
 r_int
 id|new_input

@@ -15,11 +15,18 @@ op_assign
 l_string|&quot;@(#)smtinit.c&t;1.15 97/05/06 (C) SK &quot;
 suffix:semicolon
 macro_line|#endif
-r_extern
 r_void
 id|init_fddi_driver
 c_func
 (paren
+r_struct
+id|s_smc
+op_star
+id|smc
+comma
+id|u_char
+op_star
+id|mac_addr
 )paren
 suffix:semicolon
 multiline_comment|/* define global debug variable */
@@ -57,13 +64,11 @@ r_void
 id|set_oem_spec_val
 c_func
 (paren
-id|smc
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+)paren
 (brace
 r_struct
 id|fddi_mib
@@ -102,20 +107,16 @@ r_int
 id|init_smt
 c_func
 (paren
-id|smc
-comma
-id|mac_addr
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+comma
 id|u_char
 op_star
 id|mac_addr
-suffix:semicolon
-multiline_comment|/* canonical address or NULL */
+)paren
+multiline_comment|/* u_char *mac_addr;&t;canonical address or NULL */
 (brace
 r_int
 id|p

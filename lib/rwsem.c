@@ -83,13 +83,13 @@ id|sem-&gt;count
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * handle the lock being released whilst there are processes blocked on it that can now run&n; * - if we come here from up_xxxx(), then:&n; *   - the &squot;active part&squot; of the count (&amp;0x0000ffff) had reached zero (but may have changed)&n; *   - the &squot;waiting part&squot; of the count (&amp;0xffff0000) is negative (and will still be so)&n; *   - there must be someone on the queue&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having task zeroed&n; * - writers are only woken if downgrading is false&n; */
-DECL|function|__rwsem_do_wake
+multiline_comment|/*&n; * handle the lock release when processes blocked on it that can now run&n; * - if we come here from up_xxxx(), then:&n; *   - the &squot;active part&squot; of count (&amp;0x0000ffff) reached 0 (but may have changed)&n; *   - the &squot;waiting part&squot; of count (&amp;0xffff0000) is -ve (and will still be so)&n; *   - there must be someone on the queue&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having task zeroed&n; * - writers are only woken if downgrading is false&n; */
 r_static
 r_inline
 r_struct
 id|rw_semaphore
 op_star
+DECL|function|__rwsem_do_wake
 id|__rwsem_do_wake
 c_func
 (paren
@@ -179,7 +179,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/* try to grant a single write lock if there&squot;s a writer at the front of the queue&n;&t; * - note we leave the &squot;active part&squot; of the count incremented by 1 and the waiting part&n;&t; *   incremented by 0x00010000&n;&t; */
+multiline_comment|/* try to grant a single write lock if there&squot;s a writer at the front&n;&t; * of the queue - note we leave the &squot;active part&squot; of the count&n;&t; * incremented by 1 and the waiting part incremented by 0x00010000&n;&t; */
 r_if
 c_cond
 (paren
@@ -193,6 +193,7 @@ id|RWSEM_WAITING_FOR_WRITE
 r_goto
 id|readers_only
 suffix:semicolon
+multiline_comment|/* We must be careful not to touch &squot;waiter&squot; after we set -&gt;task = NULL.&n;&t; * It is an allocated on the waiter&squot;s stack and may become invalid at&n;&t; * any time after that point (due to a wakeup from another source).&n;&t; */
 id|list_del
 c_func
 (paren
@@ -314,11 +315,11 @@ c_cond
 op_logical_neg
 id|downgrading
 )paren
+multiline_comment|/* we&squot;d already done one increment earlier */
 id|woken
 op_sub_assign
 id|RWSEM_ACTIVE_BIAS
 suffix:semicolon
-multiline_comment|/* we&squot;d already done one increment&n;&t;&t;&t;&t;&t;     * earlier */
 id|rwsem_atomic_add
 c_func
 (paren
@@ -433,12 +434,12 @@ id|try_again
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * wait for a lock to be granted&n; */
-DECL|function|rwsem_down_failed_common
 r_static
 r_inline
 r_struct
 id|rw_semaphore
 op_star
+DECL|function|rwsem_down_failed_common
 id|rwsem_down_failed_common
 c_func
 (paren
@@ -504,7 +505,7 @@ op_amp
 id|sem-&gt;wait_list
 )paren
 suffix:semicolon
-multiline_comment|/* note that we&squot;re now waiting on the lock, but no longer actively read-locking */
+multiline_comment|/* we&squot;re now waiting on the lock, but no longer actively read-locking */
 id|count
 op_assign
 id|rwsem_atomic_update
@@ -515,7 +516,7 @@ comma
 id|sem
 )paren
 suffix:semicolon
-multiline_comment|/* if there are no longer active locks, wake the front queued process(es) up&n;&t; * - it might even be this process, since the waker takes a more active part&n;&t; */
+multiline_comment|/* if there are no active locks, wake the front queued process(es) up */
 r_if
 c_cond
 (paren
@@ -582,12 +583,12 @@ id|sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * wait for the read lock to be granted&n; */
-DECL|function|rwsem_down_read_failed
 r_struct
 id|rw_semaphore
 id|fastcall
 id|__sched
 op_star
+DECL|function|rwsem_down_read_failed
 id|rwsem_down_read_failed
 c_func
 (paren
@@ -639,12 +640,12 @@ id|sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * wait for the write lock to be granted&n; */
-DECL|function|rwsem_down_write_failed
 r_struct
 id|rw_semaphore
 id|fastcall
 id|__sched
 op_star
+DECL|function|rwsem_down_write_failed
 id|rwsem_down_write_failed
 c_func
 (paren
@@ -694,7 +695,7 @@ r_return
 id|sem
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * handle waking up a waiter on the semaphore&n; * - up_read/up_write has decremented the active part of the count if we come here&n; */
+multiline_comment|/*&n; * handle waking up a waiter on the semaphore&n; * - up_read/up_write has decremented the active part of count if we come here&n; */
 DECL|function|rwsem_wake
 r_struct
 id|rw_semaphore
@@ -765,7 +766,7 @@ r_return
 id|sem
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * downgrade a write lock into a read lock&n; * - caller incremented waiting part of count, and discovered it to be still negative&n; * - just wake up any readers at the front of the queue&n; */
+multiline_comment|/*&n; * downgrade a write lock into a read lock&n; * - caller incremented waiting part of count and discovered it still negative&n; * - just wake up any readers at the front of the queue&n; */
 DECL|function|rwsem_downgrade_wake
 r_struct
 id|rw_semaphore

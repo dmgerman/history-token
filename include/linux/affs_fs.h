@@ -265,6 +265,21 @@ r_struct
 id|super_block
 op_star
 id|sb
+comma
+r_int
+op_star
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|affs_free_bitmap
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 multiline_comment|/* namei.c */

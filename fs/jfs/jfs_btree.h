@@ -151,6 +151,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;bn = %Lx, index = %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|btstack-&gt;stack
 (braket
 id|i

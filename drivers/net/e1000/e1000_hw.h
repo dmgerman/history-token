@@ -1195,6 +1195,16 @@ id|hw
 suffix:semicolon
 multiline_comment|/* Adaptive IFS Functions */
 multiline_comment|/* Everything else */
+r_uint32
+id|e1000_enable_mng_pass_thru
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
 r_void
 id|e1000_clear_hw_cntrs
 c_func
@@ -2857,6 +2867,10 @@ suffix:semicolon
 DECL|member|ffe_config_state
 id|e1000_ffe_config
 id|ffe_config_state
+suffix:semicolon
+DECL|member|asf_firmware_present
+r_uint32
+id|asf_firmware_present
 suffix:semicolon
 DECL|member|io_base
 r_int

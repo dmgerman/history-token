@@ -257,5 +257,42 @@ mdefine_line|#define alloc_bootmem_pages_node(pgdat, x) &bslash;&n;&t;__alloc_bo
 DECL|macro|alloc_bootmem_low_pages_node
 mdefine_line|#define alloc_bootmem_low_pages_node(pgdat, x) &bslash;&n;&t;__alloc_bootmem_node((pgdat), (x), PAGE_SIZE, 0)
 macro_line|#endif /* !CONFIG_HAVE_ARCH_BOOTMEM_NODE */
+r_extern
+r_void
+op_star
+id|__init
+id|alloc_large_system_hash
+c_func
+(paren
+r_const
+r_char
+op_star
+id|tablename
+comma
+r_int
+r_int
+id|bucketsize
+comma
+r_int
+r_int
+id|numentries
+comma
+r_int
+id|scale
+comma
+r_int
+id|consider_highmem
+comma
+r_int
+r_int
+op_star
+id|_hash_shift
+comma
+r_int
+r_int
+op_star
+id|_hash_mask
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_BOOTMEM_H */
 eof

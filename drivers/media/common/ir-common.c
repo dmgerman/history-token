@@ -283,6 +283,20 @@ op_assign
 id|KEY_RECORD
 comma
 singleline_comment|// recording
+(braket
+l_int|0x3c
+)braket
+op_assign
+id|KEY_TEXT
+comma
+singleline_comment|// teletext submode (Japan: 12)
+(braket
+l_int|0x3d
+)braket
+op_assign
+id|KEY_SUSPEND
+comma
+singleline_comment|// system standby
 macro_line|#if 0 /* FIXME */
 (braket
 l_int|0x0a
@@ -487,20 +501,6 @@ op_assign
 id|KEY_RESERVED
 comma
 singleline_comment|// view data mode / advance
-(braket
-l_int|0x3c
-)braket
-op_assign
-id|KEY_RESERVED
-comma
-singleline_comment|// teletext submode (Japan: 12)
-(braket
-l_int|0x3d
-)braket
-op_assign
-id|KEY_RESERVED
-comma
-singleline_comment|// system standby
 (braket
 l_int|0x3e
 )braket
