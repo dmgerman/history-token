@@ -17,6 +17,7 @@ DECL|macro|MAX_SCCB_ROOM
 mdefine_line|#define MAX_SCCB_ROOM (PAGE_SIZE - sizeof(struct sclp_buffer))
 multiline_comment|/* Event type structure for write message and write priority message */
 DECL|variable|sclp_rw_event
+r_static
 r_struct
 id|sclp_register
 id|sclp_rw_event

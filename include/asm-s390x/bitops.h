@@ -1,9 +1,9 @@
-multiline_comment|/*&n; *  include/asm-s390/bitops.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  Derived from &quot;include/asm-i386/bitops.h&quot;&n; *    Copyright (C) 1992, Linus Torvalds&n; *&n; */
 macro_line|#ifndef _S390_BITOPS_H
 DECL|macro|_S390_BITOPS_H
 mdefine_line|#define _S390_BITOPS_H
-multiline_comment|/*&n; * bit 0 is the LSB of *addr; bit 63 is the MSB of *addr;&n; * bit 64 is the LSB of *(addr+8). That combined with the&n; * big endian byte order on S390 give the following bit&n; * order in memory:&n; *    3f 3e 3d 3c 3b 3a 39 38 37 36 35 34 33 32 31 30&n; *    2f 2e 2d 2c 2b 2a 29 28 27 26 25 24 23 22 21 20&n; *    1f 1e 1d 1c 1b 1a 19 18 17 16 15 14 13 12 11 10&n; *    0f 0e 0d 0c 0b 0a 09 08 07 06 05 04 03 02 01 00&n; * after that follows the next long with bit numbers&n; *    7f 7e 7d 7c 7b 7a 79 78 77 76 75 74 73 72 71 70&n; *    6f 6e 6d 6c 6b 6a 69 68 67 66 65 64 63 62 61 60&n; *    5f 5e 5d 5c 5b 5a 59 58 57 56 55 54 53 52 51 50&n; *    4f 4e 4d 4c 4b 4a 49 48 47 46 45 44 43 42 41 40&n; * The reason for this bit ordering is the fact that&n; * in the architecture independent code bits operations&n; * of the form &quot;flags |= (1 &lt;&lt; bitnr)&quot; are used INTERMIXED&n; * with operation of the form &quot;set_bit(bitnr, flags)&quot;.&n; */
+multiline_comment|/*&n; *  include/asm-s390/bitops.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  Derived from &quot;include/asm-i386/bitops.h&quot;&n; *    Copyright (C) 1992, Linus Torvalds&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * bit 0 is the LSB of *addr; bit 63 is the MSB of *addr;&n; * bit 64 is the LSB of *(addr+8). That combined with the&n; * big endian byte order on S390 give the following bit&n; * order in memory:&n; *    3f 3e 3d 3c 3b 3a 39 38 37 36 35 34 33 32 31 30&n; *    2f 2e 2d 2c 2b 2a 29 28 27 26 25 24 23 22 21 20&n; *    1f 1e 1d 1c 1b 1a 19 18 17 16 15 14 13 12 11 10&n; *    0f 0e 0d 0c 0b 0a 09 08 07 06 05 04 03 02 01 00&n; * after that follows the next long with bit numbers&n; *    7f 7e 7d 7c 7b 7a 79 78 77 76 75 74 73 72 71 70&n; *    6f 6e 6d 6c 6b 6a 69 68 67 66 65 64 63 62 61 60&n; *    5f 5e 5d 5c 5b 5a 59 58 57 56 55 54 53 52 51 50&n; *    4f 4e 4d 4c 4b 4a 49 48 47 46 45 44 43 42 41 40&n; * The reason for this bit ordering is the fact that&n; * in the architecture independent code bits operations&n; * of the form &quot;flags |= (1 &lt;&lt; bitnr)&quot; are used INTERMIXED&n; * with operation of the form &quot;set_bit(bitnr, flags)&quot;.&n; */
 multiline_comment|/* set ALIGN_CS to 1 if the SMP safe bit operations should&n; * align the address to 4 byte boundary. It seems to work&n; * without the alignment. &n; */
 macro_line|#ifdef __KERNEL__
 DECL|macro|ALIGN_CS
@@ -58,7 +58,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -184,7 +185,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -313,7 +315,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -439,7 +442,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -574,7 +578,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -712,7 +717,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -848,7 +854,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -923,7 +930,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1201,7 +1209,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1276,7 +1285,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1554,7 +1564,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1629,7 +1640,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1907,7 +1919,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -2011,7 +2024,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -2115,7 +2129,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -2246,7 +2261,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -2313,7 +2329,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -2363,7 +2380,8 @@ DECL|function|find_first_zero_bit
 id|find_first_zero_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -2478,7 +2496,8 @@ DECL|function|find_first_bit
 id|find_first_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -2592,7 +2611,8 @@ r_int
 DECL|function|find_next_zero_bit
 id|find_next_zero_bit
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -2769,7 +2789,8 @@ r_int
 DECL|function|find_next_bit
 id|find_next_bit
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -3103,8 +3124,8 @@ suffix:semicolon
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|ffs
 r_extern
-r_int
 r_inline
+r_int
 id|ffs
 (paren
 r_int
@@ -3249,11 +3270,11 @@ mdefine_line|#define hweight8(x) generic_hweight8(x)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * ATTENTION: intel byte ordering convention for ext2 and minix !!&n; * bit 0 is the LSB of addr; bit 31 is the MSB of addr;&n; * bit 32 is the LSB of (addr+4).&n; * That combined with the little endian byte order of Intel gives the&n; * following bit order in memory:&n; *    07 06 05 04 03 02 01 00 15 14 13 12 11 10 09 08 &bslash;&n; *    23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 24&n; */
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr, addr)       test_and_set_bit((nr)^56, addr)
+mdefine_line|#define ext2_set_bit(nr, addr)       &bslash;&n;&t;test_and_set_bit((nr)^56, (unsigned long *)addr)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr, addr)     test_and_clear_bit((nr)^56, addr)
+mdefine_line|#define ext2_clear_bit(nr, addr)     &bslash;&n;&t;test_and_clear_bit((nr)^56, (unsigned long *)addr)
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit(nr, addr)      test_bit((nr)^56, addr)
+mdefine_line|#define ext2_test_bit(nr, addr)      &bslash;&n;&t;test_bit((nr)^56, (unsigned long *)addr)
 r_static
 r_inline
 r_int
