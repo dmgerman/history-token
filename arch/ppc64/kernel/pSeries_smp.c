@@ -132,9 +132,9 @@ id|cpu_status
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
-DECL|function|__cpu_disable
+DECL|function|pSeries_cpu_disable
 r_int
-id|__cpu_disable
+id|pSeries_cpu_disable
 c_func
 (paren
 r_void
@@ -181,9 +181,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|__cpu_die
+DECL|function|pSeries_cpu_die
 r_void
-id|__cpu_die
+id|pSeries_cpu_die
 c_func
 (paren
 r_int
@@ -1185,6 +1185,16 @@ op_assign
 op_amp
 id|pSeries_xics_smp_ops
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+id|smp_ops-&gt;cpu_disable
+op_assign
+id|pSeries_cpu_disable
+suffix:semicolon
+id|smp_ops-&gt;cpu_die
+op_assign
+id|pSeries_cpu_die
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Start secondary threads on SMT systems; primary threads&n;&t; * are already in the running state.&n;&t; */
 id|for_each_present_cpu
 c_func
