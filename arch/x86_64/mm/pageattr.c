@@ -967,12 +967,9 @@ id|err
 r_break
 suffix:semicolon
 multiline_comment|/* Handle kernel mapping too which aliases part of the&n;&t;&t; * lowmem */
-multiline_comment|/* Disabled right now. Fixme */
 r_if
 c_cond
 (paren
-l_int|0
-op_logical_and
 id|__pa
 c_func
 (paren
@@ -986,6 +983,11 @@ r_int
 r_int
 id|addr2
 suffix:semicolon
+id|pgprot_t
+id|prot2
+op_assign
+id|prot
+suffix:semicolon
 id|addr2
 op_assign
 id|__START_KERNEL_map
@@ -996,6 +998,15 @@ c_func
 id|address
 )paren
 suffix:semicolon
+id|pgprot_val
+c_func
+(paren
+id|prot2
+)paren
+op_and_assign
+op_complement
+id|_PAGE_NX
+suffix:semicolon
 id|err
 op_assign
 id|__change_page_attr
@@ -1005,7 +1016,7 @@ id|addr2
 comma
 id|pfn
 comma
-id|prot
+id|prot2
 comma
 id|PAGE_KERNEL_EXEC
 )paren
