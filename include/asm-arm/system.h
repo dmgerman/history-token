@@ -177,7 +177,7 @@ id|thread_info
 suffix:semicolon
 r_extern
 r_struct
-id|task_struct
+id|thread_info
 op_star
 id|__switch_to
 c_func
