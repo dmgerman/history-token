@@ -293,6 +293,25 @@ r_void
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|pi_schedule_claimed
+c_func
+(paren
+id|PIA
+op_star
+id|pi
+comma
+r_void
+(paren
+op_star
+id|cont
+)paren
+(paren
+r_void
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* macros and functions exported to the protocol modules */
 DECL|macro|delay_p
 mdefine_line|#define delay_p&t;&t;&t;(pi-&gt;delay?udelay(pi-&gt;delay):0)
