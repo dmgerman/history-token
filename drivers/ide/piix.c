@@ -1202,6 +1202,7 @@ id|slave_data
 op_or
 (paren
 (paren
+(paren
 id|timings
 (braket
 id|pio
@@ -1213,7 +1214,6 @@ op_lshift
 l_int|2
 )paren
 op_or
-(paren
 id|timings
 (braket
 id|pio
@@ -1221,6 +1221,7 @@ id|pio
 (braket
 l_int|1
 )braket
+)paren
 op_lshift
 (paren
 id|HWIF
@@ -1235,7 +1236,6 @@ c_cond
 l_int|4
 suffix:colon
 l_int|0
-)paren
 )paren
 )paren
 suffix:semicolon
