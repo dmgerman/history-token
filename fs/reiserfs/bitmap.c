@@ -2182,19 +2182,6 @@ id|s
 )paren
 )paren
 suffix:semicolon
-id|reiserfs_warning
-(paren
-id|s
-comma
-l_string|&quot;allocator defaults = [%08x]&bslash;n&quot;
-comma
-id|SB_ALLOC_OPTS
-c_func
-(paren
-id|s
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* block allocator related options are parsed here */
 DECL|function|reiserfs_parse_alloc_options
