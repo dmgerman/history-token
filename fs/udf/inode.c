@@ -324,6 +324,16 @@ op_star
 id|inode
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_bad_inode
+c_func
+(paren
+id|inode
+)paren
+)paren
 id|kfree
 c_func
 (paren
