@@ -1649,7 +1649,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;PM400&quot;
+l_string|&quot;P4M400&quot;
 comma
 )brace
 comma
