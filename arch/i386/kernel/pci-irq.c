@@ -1284,8 +1284,12 @@ id|router
 comma
 l_int|0x5C
 comma
+(paren
 id|pirq
 op_minus
+l_int|1
+)paren
+op_xor
 l_int|1
 )paren
 suffix:semicolon
@@ -1320,8 +1324,12 @@ id|router
 comma
 l_int|0x5C
 comma
+(paren
 id|pirq
 op_minus
+l_int|1
+)paren
+op_xor
 l_int|1
 comma
 id|irq
