@@ -2920,7 +2920,6 @@ id|i
 op_ge
 id|psl-&gt;sl_count
 )paren
-suffix:semicolon
 id|rv
 op_assign
 l_int|0
@@ -2936,7 +2935,6 @@ id|i
 OL
 id|psl-&gt;sl_count
 )paren
-suffix:semicolon
 id|rv
 op_assign
 l_int|0
