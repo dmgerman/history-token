@@ -6448,9 +6448,9 @@ op_star
 id|dir
 comma
 r_struct
-id|qstr
+id|dentry
 op_star
-id|name
+id|dentry
 comma
 r_struct
 id|iattr
@@ -6501,7 +6501,8 @@ c_func
 (paren
 id|dir
 comma
-id|name
+op_amp
+id|dentry-&gt;d_name
 comma
 id|flags
 comma

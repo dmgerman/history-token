@@ -4367,7 +4367,6 @@ id|open_flags
 op_assign
 id|nd-&gt;intent.open.flags
 suffix:semicolon
-multiline_comment|/*&n;&t; * The 0 argument passed into the create function should one day&n;&t; * contain the O_EXCL flag if requested. This allows NFSv3 to&n;&t; * select the appropriate create strategy. Currently open_namei&n;&t; * does not pass the create flags.&n;&t; */
 id|lock_kernel
 c_func
 (paren
@@ -4392,8 +4391,7 @@ c_func
 (paren
 id|dir
 comma
-op_amp
-id|dentry-&gt;d_name
+id|dentry
 comma
 op_amp
 id|attr
