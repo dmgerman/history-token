@@ -13,6 +13,8 @@ DECL|macro|ATMSAR_USE_53BYTE_CELL
 mdefine_line|#define ATMSAR_USE_53BYTE_CELL  0x1L
 DECL|macro|ATMSAR_SET_PTI
 mdefine_line|#define ATMSAR_SET_PTI          0x2L
+DECL|macro|ATM_CELL_HEADER
+mdefine_line|#define ATM_CELL_HEADER&t;&t;(ATM_CELL_SIZE - ATM_CELL_PAYLOAD)
 multiline_comment|/* types */
 DECL|macro|ATMSAR_TYPE_AAL0
 mdefine_line|#define ATMSAR_TYPE_AAL0        ATM_AAL0
@@ -269,6 +271,28 @@ comma
 r_int
 r_int
 id|size
+)paren
+suffix:semicolon
+r_int
+r_int
+id|atmsar_encode
+(paren
+r_struct
+id|atmsar_vcc_data
+op_star
+id|ctx
+comma
+r_char
+op_star
+id|source
+comma
+r_char
+op_star
+id|target
+comma
+r_int
+r_int
+id|pdu_length
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _ATMSAR_H_ */

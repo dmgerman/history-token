@@ -3594,7 +3594,7 @@ id|dma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_map - create DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer will be mapped&n; *&n; * Return value is either null (indicating no buffer could be mapped), or&n; * the parameter.  URB_NO_DMA_MAP is added to urb-&gt;transfer_flags if the&n; * operation succeeds.&n; *&n; * This call would normally be used for an urb which is reused, perhaps&n; * as the target of a large periodic transfer, with usb_buffer_dmasync()&n; * calls to synchronize memory and dma state.  It may not be used for&n; * control requests.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap().&n; */
+multiline_comment|/**&n; * usb_buffer_map - create DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer will be mapped&n; *&n; * Return value is either null (indicating no buffer could be mapped), or&n; * the parameter.  URB_NO_DMA_MAP is added to urb-&gt;transfer_flags if the&n; * operation succeeds.  If the device is connected to this system through&n; * a non-DMA controller, this operation always succeeds.&n; *&n; * This call would normally be used for an urb which is reused, perhaps&n; * as the target of a large periodic transfer, with usb_buffer_dmasync()&n; * calls to synchronize memory and dma state.  It may not be used for&n; * control requests.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap().&n; */
 DECL|function|usb_buffer_map
 r_struct
 id|urb
@@ -3648,6 +3648,12 @@ id|bus-&gt;controller
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|controller-&gt;dma_mask
+)paren
+(brace
 id|urb-&gt;transfer_dma
 op_assign
 id|dma_map_single
@@ -3671,6 +3677,13 @@ id|DMA_TO_DEVICE
 suffix:semicolon
 singleline_comment|// FIXME generic api broken like pci, can&squot;t report errors
 singleline_comment|// if (urb-&gt;transfer_dma == DMA_ADDR_INVALID) return 0;
+)brace
+r_else
+id|urb-&gt;transfer_dma
+op_assign
+op_complement
+l_int|0
+suffix:semicolon
 id|urb-&gt;transfer_flags
 op_or_assign
 id|URB_NO_DMA_MAP
@@ -3732,6 +3745,11 @@ id|bus-&gt;controller
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|controller-&gt;dma_mask
+)paren
 id|dma_sync_single
 (paren
 id|controller
@@ -3805,6 +3823,11 @@ id|bus-&gt;controller
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|controller-&gt;dma_mask
+)paren
 id|dma_unmap_single
 (paren
 id|controller
@@ -3823,6 +3846,11 @@ id|DMA_FROM_DEVICE
 suffix:colon
 id|DMA_TO_DEVICE
 )paren
+suffix:semicolon
+id|urb-&gt;transfer_flags
+op_and_assign
+op_complement
+id|URB_NO_DMA_MAP
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; * Better yet, use the usb_sg_*() calls, which do that (and more) for you.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
@@ -3881,6 +3909,9 @@ id|controller
 op_assign
 id|bus-&gt;controller
 )paren
+op_logical_or
+op_logical_neg
+id|controller-&gt;dma_mask
 )paren
 r_return
 op_minus
@@ -3959,6 +3990,9 @@ id|controller
 op_assign
 id|bus-&gt;controller
 )paren
+op_logical_or
+op_logical_neg
+id|controller-&gt;dma_mask
 )paren
 r_return
 suffix:semicolon
@@ -4033,6 +4067,9 @@ id|controller
 op_assign
 id|bus-&gt;controller
 )paren
+op_logical_or
+op_logical_neg
+id|controller-&gt;dma_mask
 )paren
 r_return
 suffix:semicolon

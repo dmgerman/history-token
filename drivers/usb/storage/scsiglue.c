@@ -4,13 +4,14 @@ macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/***********************************************************************&n; * Host functions &n; ***********************************************************************/
-DECL|function|host_info
+DECL|function|usb_storage_info
 r_static
 r_const
 r_char
 op_star
-id|host_info
+id|usb_storage_info
 c_func
 (paren
 r_struct
@@ -23,11 +24,11 @@ r_return
 l_string|&quot;SCSI emulation for USB Mass Storage devices&quot;
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/* detect a virtual adapter (always works)&n; * Synchronization: 2.4: with the io_request_lock&n; * &t;&t;&t;2.5: no locks.&n; * fortunately we don&squot;t care.&n; * */
-DECL|function|detect
 r_static
 r_int
-id|detect
+id|usb_storage_detect
 c_func
 (paren
 r_struct
@@ -189,10 +190,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Release all resources used by the virtual host&n; *&n; * NOTE: There is no contention here, because we&squot;re already deregistered&n; * the driver and we&squot;re doing each virtual host in turn, not in parallel&n; * Synchronization: BKL, no spinlock.&n; */
-DECL|function|release
 r_static
 r_int
-id|release
+id|usb_storage_release
 c_func
 (paren
 r_struct
@@ -284,36 +284,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* run command */
-DECL|function|command
-r_static
-r_int
-id|command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|srb
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Bad use of us_command&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|DID_BAD_TARGET
-op_lshift
-l_int|16
-suffix:semicolon
-)brace
+macro_line|#endif
 multiline_comment|/* queue a command */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|queuecommand
+DECL|function|usb_storage_queuecommand
 r_static
 r_int
-id|queuecommand
+id|usb_storage_queuecommand
 c_func
 (paren
 id|Scsi_Cmnd
@@ -408,10 +385,10 @@ suffix:semicolon
 multiline_comment|/***********************************************************************&n; * Error handling functions&n; ***********************************************************************/
 multiline_comment|/* Command abort */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|command_abort
+DECL|function|usb_storage_command_abort
 r_static
 r_int
-id|command_abort
+id|usb_storage_command_abort
 c_func
 (paren
 id|Scsi_Cmnd
@@ -470,10 +447,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* This invokes the transport reset mechanism to reset the state of the&n; * device */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|device_reset
+DECL|function|usb_storage_device_reset
 r_static
 r_int
-id|device_reset
+id|usb_storage_device_reset
 c_func
 (paren
 id|Scsi_Cmnd
@@ -544,22 +521,7 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* if the device was removed, then we&squot;re already reset */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|us-&gt;flags
-op_amp
-id|US_FL_DEV_ATTACHED
-)paren
-)paren
-id|result
-op_assign
-id|SUCCESS
-suffix:semicolon
-r_else
+multiline_comment|/* do the reset */
 id|result
 op_assign
 id|us
@@ -570,6 +532,7 @@ c_func
 id|us
 )paren
 suffix:semicolon
+multiline_comment|/* unlock */
 id|up
 c_func
 (paren
@@ -601,10 +564,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* This resets the device port, and simulates the device&n; * disconnect/reconnect for all drivers which have claimed&n; * interfaces, including ourself. */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|bus_reset
+multiline_comment|/* FIXME: This needs to be re-examined in the face of the new&n; * hotplug system -- this will implicitly cause a detach/reattach of&n; * usb-storage, which is not what we want now.&n; *&n; * Can we just skip over usb-storage in the while loop?&n; */
+DECL|function|usb_storage_bus_reset
 r_static
 r_int
-id|bus_reset
+id|usb_storage_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
@@ -615,6 +579,21 @@ id|srb
 r_struct
 id|us_data
 op_star
+id|us
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|result
+suffix:semicolon
+multiline_comment|/* we use the usb_reset_device() function to handle this for us */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;bus_reset() called&bslash;n&quot;
+)paren
+suffix:semicolon
 id|us
 op_assign
 (paren
@@ -627,90 +606,13 @@ id|srb-&gt;device-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_int
-id|result
-suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|pusb_dev_save
-suffix:semicolon
-multiline_comment|/* we use the usb_reset_device() function to handle this for us */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;bus_reset() called&bslash;n&quot;
-)paren
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|srb-&gt;device-&gt;host
-)paren
-suffix:semicolon
-multiline_comment|/* if the device has been removed, this worked */
-id|down
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|us-&gt;flags
-op_amp
-id|US_FL_DEV_ATTACHED
-)paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- device removed already&bslash;n&quot;
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|srb-&gt;device-&gt;host
-)paren
-suffix:semicolon
-r_return
-id|SUCCESS
-suffix:semicolon
-)brace
-id|pusb_dev_save
-op_assign
-id|us-&gt;pusb_dev
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
 multiline_comment|/* attempt to reset the port */
 id|result
 op_assign
 id|usb_reset_device
 c_func
 (paren
-id|pusb_dev_save
+id|us-&gt;pusb_dev
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -750,7 +652,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pusb_dev_save-&gt;actconfig-&gt;desc.bNumInterfaces
+id|us-&gt;pusb_dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -762,7 +664,7 @@ op_star
 id|intf
 op_assign
 op_amp
-id|pusb_dev_save-&gt;actconfig-&gt;interface
+id|us-&gt;pusb_dev-&gt;actconfig-&gt;interface
 (braket
 id|i
 )braket
@@ -822,45 +724,16 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: This doesn&squot;t do anything right now */
-DECL|function|host_reset
-r_static
-r_int
-id|host_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|srb
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;usb-storage: host_reset() requested but not implemented&bslash;n&quot;
-)paren
-suffix:semicolon
-id|bus_reset
-c_func
-(paren
-id|srb
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
 multiline_comment|/***********************************************************************&n; * /proc/scsi/ functions&n; ***********************************************************************/
 multiline_comment|/* we use this macro to help us write into the buffer */
 DECL|macro|SPRINTF
 macro_line|#undef SPRINTF
 DECL|macro|SPRINTF
 mdefine_line|#define SPRINTF(args...) &bslash;&n;&t;do { if (pos &lt; buffer+length) pos += sprintf(pos, ## args); } while (0)
-DECL|function|proc_info
+DECL|function|usb_storage_proc_info
 r_static
 r_int
-id|proc_info
+id|usb_storage_proc_info
 (paren
 r_char
 op_star
@@ -895,6 +768,11 @@ id|pos
 op_assign
 id|buffer
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|hostptr
+suffix:semicolon
 multiline_comment|/* if someone is sending us data, just throw it away */
 r_if
 c_cond
@@ -904,46 +782,39 @@ id|inout
 r_return
 id|length
 suffix:semicolon
-multiline_comment|/* lock the data structures */
-id|down
+multiline_comment|/* find our data from the given hostno */
+id|hostptr
+op_assign
+id|scsi_host_hn_get
 c_func
 (paren
-op_amp
-id|us_list_semaphore
+id|hostno
 )paren
 suffix:semicolon
-multiline_comment|/* find our data from hostno */
-id|us
-op_assign
-id|us_list
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|us
-)paren
-(brace
 r_if
 c_cond
 (paren
-id|us-&gt;host_no
-op_eq
-id|hostno
+op_logical_neg
+id|hostptr
 )paren
-r_break
-suffix:semicolon
-id|us
-op_assign
-id|us-&gt;next
+(brace
+multiline_comment|/* if we couldn&squot;t find it, we return an error */
+r_return
+op_minus
+id|ESRCH
 suffix:semicolon
 )brace
-multiline_comment|/* release our lock on the data structures */
-id|up
-c_func
+id|us
+op_assign
 (paren
-op_amp
-id|us_list_semaphore
+r_struct
+id|us_data
+op_star
 )paren
+id|hostptr-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 multiline_comment|/* if we couldn&squot;t find it, we return an error */
 r_if
@@ -1009,36 +880,11 @@ comma
 id|us-&gt;transport_name
 )paren
 suffix:semicolon
-multiline_comment|/* show the GUID of the device */
-id|SPRINTF
+multiline_comment|/* release the reference count on this host */
+id|scsi_host_put
 c_func
 (paren
-l_string|&quot;         GUID: &quot;
-id|GUID_FORMAT
-l_string|&quot;&bslash;n&quot;
-comma
-id|GUID_ARGS
-c_func
-(paren
-id|us-&gt;guid
-)paren
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;     Attached: %s&bslash;n&quot;
-comma
-(paren
-id|us-&gt;flags
-op_amp
-id|US_FL_DEV_ATTACHED
-ques
-c_cond
-l_string|&quot;Yes&quot;
-suffix:colon
-l_string|&quot;No&quot;
-)paren
+id|hostptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate start of next buffer, and return value.&n;&t; */
@@ -1095,107 +941,172 @@ id|length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * this defines our &squot;host&squot;&n; */
+multiline_comment|/*&n; * this defines our host template, with which we&squot;ll allocate hosts&n; */
 DECL|variable|usb_stor_host_template
-id|Scsi_Host_Template
+r_struct
+id|SHT
 id|usb_stor_host_template
 op_assign
 (brace
+multiline_comment|/* basic userland interface stuff */
 dot
 id|name
 op_assign
 l_string|&quot;usb-storage&quot;
 comma
 dot
+id|proc_name
+op_assign
+l_string|&quot;usb-storage&quot;
+comma
+dot
 id|proc_info
 op_assign
-id|proc_info
+id|usb_storage_proc_info
+comma
+dot
+id|proc_dir
+op_assign
+l_int|NULL
 comma
 dot
 id|info
 op_assign
-id|host_info
+id|usb_storage_info
 comma
+dot
+id|ioctl
+op_assign
+l_int|NULL
+comma
+multiline_comment|/* old-style detect and release */
 dot
 id|detect
 op_assign
-id|detect
+l_int|NULL
 comma
 dot
 id|release
 op_assign
-id|release
+l_int|NULL
 comma
+multiline_comment|/* command interface -- queued only */
 dot
 id|command
 op_assign
-id|command
+l_int|NULL
 comma
 dot
 id|queuecommand
 op_assign
-id|queuecommand
+id|usb_storage_queuecommand
 comma
+multiline_comment|/* error and abort handlers */
 dot
 id|eh_abort_handler
 op_assign
-id|command_abort
+id|usb_storage_command_abort
 comma
 dot
 id|eh_device_reset_handler
 op_assign
-id|device_reset
+id|usb_storage_device_reset
 comma
 dot
 id|eh_bus_reset_handler
 op_assign
-id|bus_reset
+id|usb_storage_bus_reset
 comma
 dot
 id|eh_host_reset_handler
 op_assign
-id|host_reset
+l_int|NULL
 comma
+dot
+id|eh_strategy_handler
+op_assign
+l_int|NULL
+comma
+multiline_comment|/* queue commands only, only one command per LUN */
 dot
 id|can_queue
 op_assign
 l_int|1
 comma
 dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+multiline_comment|/* unknown initiator id */
+dot
 id|this_id
 op_assign
 op_minus
 l_int|1
 comma
+multiline_comment|/* no limit on commands */
+dot
+id|max_sectors
+op_assign
+l_int|0
+comma
+multiline_comment|/* pre- and post- device scan functions */
+dot
+id|slave_alloc
+op_assign
+l_int|NULL
+comma
+dot
+id|slave_configure
+op_assign
+l_int|NULL
+comma
+dot
+id|slave_destroy
+op_assign
+l_int|NULL
+comma
+multiline_comment|/* lots of sg segments can be handled */
 dot
 id|sg_tablesize
 op_assign
 id|SG_ALL
 comma
-dot
-id|cmd_per_lun
-op_assign
-l_int|1
-comma
-dot
-id|present
-op_assign
-l_int|0
-comma
+multiline_comment|/* use 32-bit address space for DMA */
 dot
 id|unchecked_isa_dma
 op_assign
 id|FALSE
 comma
 dot
+id|highmem_io
+op_assign
+id|FALSE
+comma
+multiline_comment|/* merge commands... this seems to help performance, but&n;&t; * periodically someone should test to see which setting is more&n;&t; * optimal.&n;&t; */
+dot
 id|use_clustering
 op_assign
 id|TRUE
 comma
+multiline_comment|/* emulated HBA */
 dot
 id|emulated
 op_assign
 id|TRUE
+comma
+multiline_comment|/* sorry, no BIOS to help us */
+dot
+id|bios_param
+op_assign
+l_int|NULL
+comma
+multiline_comment|/* module management */
+dot
+id|module
+op_assign
+id|THIS_MODULE
 )brace
 suffix:semicolon
 multiline_comment|/* For a device that is &quot;Not Ready&quot; */
