@@ -303,6 +303,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|intr_enable
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -339,17 +342,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|temp
+multiline_comment|/* at least some APM implementations will try to deliver&n;&t;&t; * IRQs right away, so delay them until we&squot;re ready.&n; &t;&t; */
+id|intr_enable
 op_assign
 l_int|1
-suffix:semicolon
-id|writel
-(paren
-id|INTR_MASK
-comma
-op_amp
-id|ehci-&gt;regs-&gt;intr_enable
-)paren
 suffix:semicolon
 id|writel
 (paren
@@ -378,10 +374,9 @@ op_amp
 id|ehci-&gt;regs-&gt;async_next
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME will this work even if (pci) vAUX was lost? */
 )brace
 r_else
-id|temp
+id|intr_enable
 op_assign
 l_int|0
 suffix:semicolon
@@ -392,7 +387,7 @@ id|ehci
 comma
 l_string|&quot;resume root hub%s&bslash;n&quot;
 comma
-id|temp
+id|intr_enable
 ques
 c_cond
 l_string|&quot; after power loss&quot;
@@ -622,6 +617,20 @@ suffix:semicolon
 id|ehci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
+suffix:semicolon
+multiline_comment|/* Now we can safely re-enable irqs */
+r_if
+c_cond
+(paren
+id|intr_enable
+)paren
+id|writel
+(paren
+id|INTR_MASK
+comma
+op_amp
+id|ehci-&gt;regs-&gt;intr_enable
+)paren
 suffix:semicolon
 r_return
 l_int|0
