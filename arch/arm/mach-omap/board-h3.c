@@ -15,15 +15,6 @@ macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &quot;common.h&quot;
-r_extern
-r_void
-id|__init
-id|omap_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|h3_init_irq
 r_void
 id|h3_init_irq
@@ -272,10 +263,11 @@ c_func
 (paren
 id|h3_init
 )paren
-id|INITTIME
-c_func
-(paren
-id|omap_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|omap_timer
+comma
 id|MACHINE_END
 eof

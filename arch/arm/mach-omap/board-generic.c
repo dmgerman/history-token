@@ -12,15 +12,6 @@ macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
 macro_line|#include &lt;asm/arch/board.h&gt;
 macro_line|#include &quot;common.h&quot;
-r_extern
-r_void
-id|__init
-id|omap_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|omap_generic_init_irq
 r_static
 r_void
@@ -312,10 +303,11 @@ c_func
 (paren
 id|omap_generic_init
 )paren
-id|INITTIME
-c_func
-(paren
-id|omap_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|omap_timer
+comma
 id|MACHINE_END
 eof

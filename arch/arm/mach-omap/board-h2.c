@@ -11,15 +11,6 @@ macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
 macro_line|#include &quot;common.h&quot;
-r_extern
-r_void
-id|__init
-id|omap_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -337,10 +328,11 @@ c_func
 (paren
 id|h2_init
 )paren
-id|INITTIME
-c_func
-(paren
-id|omap_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|omap_timer
+comma
 id|MACHINE_END
 eof

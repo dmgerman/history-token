@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/mmc.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#include &quot;common.h&quot;
 macro_line|#include &quot;clock.h&quot;
 DECL|macro|INTCP_PA_MMC_BASE
 mdefine_line|#define INTCP_PA_MMC_BASE&t;&t;0x1c000000
@@ -2002,11 +2003,11 @@ suffix:semicolon
 )brace
 DECL|macro|TIMER_CTRL_IE
 mdefine_line|#define TIMER_CTRL_IE&t;(1 &lt;&lt; 5)&t;&t;&t;/* Interrupt Enable */
-DECL|function|intcp_init_time
+DECL|function|intcp_timer_init
 r_static
 r_void
 id|__init
-id|intcp_init_time
+id|intcp_timer_init
 c_func
 (paren
 r_void
@@ -2023,6 +2024,25 @@ id|TIMER_CTRL_IE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|cp_timer
+r_static
+r_struct
+id|sys_timer
+id|cp_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|intcp_timer_init
+comma
+dot
+id|offset
+op_assign
+id|integrator_gettimeoffset
+comma
+)brace
+suffix:semicolon
 id|MACHINE_START
 c_func
 (paren
@@ -2059,11 +2079,12 @@ c_func
 (paren
 id|intcp_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|intcp_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|cp_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

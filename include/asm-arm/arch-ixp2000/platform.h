@@ -294,6 +294,14 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_int
+r_int
+id|ixp2000_gettimeoffset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_struct
 id|pci_sys_data
 suffix:semicolon

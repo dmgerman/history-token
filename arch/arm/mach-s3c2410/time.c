@@ -169,10 +169,11 @@ id|s3c2410_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; *&n; * Currently we only use timer4, as it is the only timer which has no&n; * other function that can be exploited externally&n; */
-DECL|function|s3c2410_init_time
+DECL|function|s3c2410_timer_init
+r_static
 r_void
 id|__init
-id|s3c2410_init_time
+id|s3c2410_timer_init
 (paren
 r_void
 )paren
@@ -192,10 +193,6 @@ suffix:semicolon
 r_int
 r_int
 id|tcfg0
-suffix:semicolon
-id|gettimeoffset
-op_assign
-id|s3c2410_gettimeoffset
 suffix:semicolon
 id|tcnt
 op_assign
@@ -472,4 +469,22 @@ id|S3C2410_TCON
 )paren
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_timer
+r_struct
+id|sys_timer
+id|s3c2410_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|s3c2410_timer_init
+comma
+dot
+id|offset
+op_assign
+id|s3c2410_gettimeoffset
+comma
+)brace
+suffix:semicolon
 eof

@@ -14,30 +14,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/syspld.h&gt;
-r_extern
-r_void
-id|clps711x_init_irq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|clps711x_map_io
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|clps711x_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 multiline_comment|/*&n; * Map the P720T system PLD.  It occupies two address spaces:&n; *  SYSPLD_PHYS_BASE and SYSPLD_PHYS_BASE + 0x00400000&n; * We map both here.&n; */
 DECL|variable|__initdata
 r_static
@@ -246,11 +223,12 @@ c_func
 (paren
 id|clps711x_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|clps711x_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|clps711x_timer
+comma
 id|MACHINE_END
 DECL|function|p720t_hw_init
 r_static

@@ -20,13 +20,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_struct
+id|sys_timer
+suffix:semicolon
 r_extern
-r_void
-id|s3c2410_init_time
-c_func
-(paren
-r_void
-)paren
+r_struct
+id|sys_timer
+id|s3c2410_timer
 suffix:semicolon
 multiline_comment|/* the board structure is used at first initialsation time&n; * to get info such as the devices to register for this&n; * board. This is done because platfrom_add_devices() cannot&n; * be called from the map_io entry.&n; *&n;*/
 DECL|struct|s3c2410_board
