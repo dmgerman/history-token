@@ -1507,8 +1507,6 @@ id|arg
 )paren
 (brace
 r_int
-id|err
-comma
 id|len
 op_assign
 l_int|0
