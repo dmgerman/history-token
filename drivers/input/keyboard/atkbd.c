@@ -1804,7 +1804,6 @@ id|atkbd-&gt;keycode
 id|code
 )braket
 comma
-op_amp
 id|atkbd-&gt;dev.key
 )paren
 ques
