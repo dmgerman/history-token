@@ -200,10 +200,10 @@ id|dn_wild_sk
 )paren
 ques
 c_cond
-l_int|NULL
-suffix:colon
 op_amp
 id|dn_wild_sk
+suffix:colon
+l_int|NULL
 suffix:semicolon
 r_return
 op_amp
