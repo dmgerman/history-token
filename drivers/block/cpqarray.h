@@ -230,6 +230,7 @@ id|product_name
 suffix:semicolon
 DECL|member|vaddr
 r_void
+id|__iomem
 op_star
 id|vaddr
 suffix:semicolon
