@@ -672,19 +672,6 @@ op_assign
 id|IXP4XX_OSST_TIMER_1_PEND
 suffix:semicolon
 multiline_comment|/*&n;&t; * Catch up with the real idea of time&n;&t; */
-r_do
-(brace
-id|timer_tick
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-id|last_jiffy_time
-op_add_assign
-id|LATCH
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -698,6 +685,15 @@ OG
 id|LATCH
 )paren
 (brace
+id|timer_tick
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|last_jiffy_time
+op_add_assign
+id|LATCH
 suffix:semicolon
 )brace
 id|write_sequnlock

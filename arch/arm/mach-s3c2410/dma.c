@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  10-Nov-2004 BJD  Ensure all external symbols exported for modules&n; *  10-Nov-2004 BJD  Use sys_device and sysdev_class for power management&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
+multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  18-Nov-2004 BJD  Removed error for loading onto stopped channel&n; *  10-Nov-2004 BJD  Ensure all external symbols exported for modules&n; *  10-Nov-2004 BJD  Use sys_device and sysdev_class for power management&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_S3C2410_DMA_DEBUG
 DECL|macro|DEBUG
@@ -1431,28 +1431,6 @@ id|S3C2410_DMAOP_START
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;dma%d: cannot load onto stopped channel&squot;n&quot;
-comma
-id|chan-&gt;number
-)paren
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 )brace
 id|local_irq_restore
 c_func
@@ -1855,6 +1833,12 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|S3C2410_DMALOAD_1LOADED_1RUNNING
+suffix:colon
+r_goto
+id|no_load
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
@@ -1930,6 +1914,8 @@ id|S3C2410_DMAOP_STOP
 suffix:semicolon
 )brace
 )brace
+id|no_load
+suffix:colon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
