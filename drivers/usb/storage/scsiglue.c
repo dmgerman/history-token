@@ -642,6 +642,8 @@ DECL|macro|SPRINTF
 macro_line|#undef SPRINTF
 DECL|macro|SPRINTF
 mdefine_line|#define SPRINTF(args...) &bslash;&n;&t;do { if (pos &lt; buffer+length) pos += sprintf(pos, ## args); } while (0)
+DECL|macro|DO_FLAG
+mdefine_line|#define DO_FLAG(a) &bslash;&n;&t;do { if (us-&gt;flags &amp; US_FL_##a) pos += sprintf(pos, &quot; &quot; #a); } while(0)
 DECL|function|proc_info
 r_static
 r_int
@@ -681,10 +683,6 @@ op_star
 id|pos
 op_assign
 id|buffer
-suffix:semicolon
-r_int
-r_int
-id|f
 suffix:semicolon
 multiline_comment|/* if someone is sending us data, just throw it away */
 r_if
@@ -779,12 +777,6 @@ comma
 l_string|&quot;       Quirks:&quot;
 )paren
 suffix:semicolon
-id|f
-op_assign
-id|us-&gt;flags
-suffix:semicolon
-DECL|macro|DO_FLAG
-mdefine_line|#define DO_FLAG(a)  &t;if (f &amp; US_FL_##a)  pos += sprintf(pos, &quot; &quot; #a)
 id|DO_FLAG
 c_func
 (paren
@@ -809,8 +801,6 @@ c_func
 id|FIX_CAPACITY
 )paren
 suffix:semicolon
-DECL|macro|DO_FLAG
-macro_line|#undef DO_FLAG
 op_star
 (paren
 id|pos
@@ -874,6 +864,205 @@ id|length
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/***********************************************************************&n; * Sysfs interface&n; ***********************************************************************/
+multiline_comment|/* Output routine for the sysfs info file */
+DECL|function|show_info
+r_static
+id|ssize_t
+id|show_info
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buffer
+)paren
+(brace
+r_char
+op_star
+id|pos
+op_assign
+id|buffer
+suffix:semicolon
+r_const
+r_int
+id|length
+op_assign
+id|PAGE_SIZE
+suffix:semicolon
+r_struct
+id|scsi_device
+op_star
+id|sdev
+op_assign
+id|to_scsi_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_struct
+id|us_data
+op_star
+id|us
+op_assign
+(paren
+r_struct
+id|us_data
+op_star
+)paren
+id|sdev-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* print the controller name */
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;   Host scsi%d: usb-storage&bslash;n&quot;
+comma
+id|sdev-&gt;host-&gt;host_no
+)paren
+suffix:semicolon
+multiline_comment|/* print product, vendor, and serial number strings */
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;       Vendor: %s&bslash;n&quot;
+comma
+id|us-&gt;vendor
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;      Product: %s&bslash;n&quot;
+comma
+id|us-&gt;product
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;Serial Number: %s&bslash;n&quot;
+comma
+id|us-&gt;serial
+)paren
+suffix:semicolon
+multiline_comment|/* show the protocol and transport */
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;     Protocol: %s&bslash;n&quot;
+comma
+id|us-&gt;protocol_name
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;    Transport: %s&bslash;n&quot;
+comma
+id|us-&gt;transport_name
+)paren
+suffix:semicolon
+multiline_comment|/* show the device flags */
+r_if
+c_cond
+(paren
+id|pos
+OL
+id|buffer
+op_plus
+id|length
+)paren
+(brace
+id|pos
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|pos
+comma
+l_string|&quot;       Quirks:&quot;
+)paren
+suffix:semicolon
+id|DO_FLAG
+c_func
+(paren
+id|SINGLE_LUN
+)paren
+suffix:semicolon
+id|DO_FLAG
+c_func
+(paren
+id|SCM_MULT_TARG
+)paren
+suffix:semicolon
+id|DO_FLAG
+c_func
+(paren
+id|FIX_INQUIRY
+)paren
+suffix:semicolon
+id|DO_FLAG
+c_func
+(paren
+id|FIX_CAPACITY
+)paren
+suffix:semicolon
+op_star
+(paren
+id|pos
+op_increment
+)paren
+op_assign
+l_char|&squot;&bslash;n&squot;
+suffix:semicolon
+)brace
+r_return
+(paren
+id|pos
+op_minus
+id|buffer
+)paren
+suffix:semicolon
+)brace
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|info
+comma
+id|S_IRUGO
+comma
+id|show_info
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+DECL|variable|sysfs_device_attr_list
+r_static
+r_struct
+id|device_attribute
+op_star
+id|sysfs_device_attr_list
+(braket
+)braket
+op_assign
+(brace
+op_amp
+id|dev_attr_info
+comma
+l_int|NULL
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * this defines our host template, with which we&squot;ll allocate hosts&n; */
 DECL|variable|usb_stor_host_template
 r_struct
@@ -970,6 +1159,12 @@ dot
 id|emulated
 op_assign
 id|TRUE
+comma
+multiline_comment|/* sysfs device attributes */
+dot
+id|sdev_attrs
+op_assign
+id|sysfs_device_attr_list
 comma
 multiline_comment|/* modify scsi_device bits on probe */
 dot
