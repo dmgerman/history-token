@@ -32,7 +32,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 multiline_comment|/*&n;     *  Frame buffer device initialization and setup routines&n;     */
 DECL|macro|FBPIXMAPSIZE
-mdefine_line|#define FBPIXMAPSIZE&t;16384
+mdefine_line|#define FBPIXMAPSIZE&t;(1024 * 8)
 DECL|variable|fb_notifier_list
 r_static
 r_struct
@@ -6265,15 +6265,13 @@ c_func
 id|fbmem_init
 )paren
 suffix:semicolon
-DECL|macro|NR_FB_DRIVERS
-mdefine_line|#define NR_FB_DRIVERS 64
 DECL|variable|video_options
 r_static
 r_char
 op_star
 id|video_options
 (braket
-id|NR_FB_DRIVERS
+id|FB_MAX
 )braket
 suffix:semicolon
 DECL|variable|ofonly
@@ -6363,7 +6361,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NR_FB_DRIVERS
+id|FB_MAX
 suffix:semicolon
 id|i
 op_increment
@@ -6509,7 +6507,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NR_FB_DRIVERS
+id|FB_MAX
 suffix:semicolon
 id|i
 op_increment

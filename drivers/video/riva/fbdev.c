@@ -8279,7 +8279,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;pixmap.size
 op_assign
-l_int|64
+l_int|8
 op_star
 l_int|1024
 suffix:semicolon
@@ -9145,7 +9145,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-l_int|64
+l_int|8
 op_star
 l_int|1024
 comma
@@ -9169,7 +9169,7 @@ id|info-&gt;pixmap.addr
 comma
 l_int|0
 comma
-l_int|64
+l_int|8
 op_star
 l_int|1024
 )paren
