@@ -2897,6 +2897,7 @@ r_int
 id|ipv6_skip_exthdr
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
