@@ -155,13 +155,14 @@ id|kobject
 op_star
 id|kobj
 comma
-r_char
+r_struct
+id|kobject
 op_star
-id|name
+id|target
 comma
 r_char
 op_star
-id|target
+id|name
 )paren
 suffix:semicolon
 r_extern
