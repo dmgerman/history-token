@@ -2,7 +2,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 DECL|macro|DBG
-mdefine_line|#define DBG(format, arg...) do { &bslash;&n;printk(KERN_DEBUG __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); &bslash;&n;} while (0)
+mdefine_line|#define DBG(format, arg...) do { &bslash;&n;printk(KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg); &bslash;&n;} while (0)
 DECL|struct|capilib_msgidqueue
 r_struct
 id|capilib_msgidqueue
