@@ -523,81 +523,6 @@ id|RAWFMT_GBR422
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Unsigned short option numbers */
-r_enum
-(brace
-DECL|enumerator|OV511_USOPT_INVALID
-id|OV511_USOPT_INVALID
-comma
-DECL|enumerator|OV511_USOPT_BRIGHT
-id|OV511_USOPT_BRIGHT
-comma
-DECL|enumerator|OV511_USOPT_SAT
-id|OV511_USOPT_SAT
-comma
-DECL|enumerator|OV511_USOPT_HUE
-id|OV511_USOPT_HUE
-comma
-DECL|enumerator|OV511_USOPT_CONTRAST
-id|OV511_USOPT_CONTRAST
-comma
-)brace
-suffix:semicolon
-multiline_comment|/* Unsigned int option numbers */
-r_enum
-(brace
-DECL|enumerator|OV511_UIOPT_INVALID
-id|OV511_UIOPT_INVALID
-comma
-DECL|enumerator|OV511_UIOPT_POWER_FREQ
-id|OV511_UIOPT_POWER_FREQ
-comma
-DECL|enumerator|OV511_UIOPT_BFILTER
-id|OV511_UIOPT_BFILTER
-comma
-DECL|enumerator|OV511_UIOPT_LED
-id|OV511_UIOPT_LED
-comma
-DECL|enumerator|OV511_UIOPT_DEBUG
-id|OV511_UIOPT_DEBUG
-comma
-DECL|enumerator|OV511_UIOPT_COMPRESS
-id|OV511_UIOPT_COMPRESS
-comma
-)brace
-suffix:semicolon
-DECL|struct|ov511_ushort_opt
-r_struct
-id|ov511_ushort_opt
-(brace
-DECL|member|optnum
-r_int
-id|optnum
-suffix:semicolon
-multiline_comment|/* Specific option number */
-DECL|member|val
-r_int
-r_int
-id|val
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ov511_uint_opt
-r_struct
-id|ov511_uint_opt
-(brace
-DECL|member|optnum
-r_int
-id|optnum
-suffix:semicolon
-multiline_comment|/* Specific option number */
-DECL|member|val
-r_int
-r_int
-id|val
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|ov511_i2c_struct
 r_struct
 id|ov511_i2c_struct
@@ -629,16 +554,6 @@ multiline_comment|/* Bits to be changed. Not used with read ops */
 )brace
 suffix:semicolon
 multiline_comment|/* ioctls */
-DECL|macro|OV511IOC_GINTVER
-mdefine_line|#define OV511IOC_GINTVER  _IOR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 0, int)
-DECL|macro|OV511IOC_GUSHORT
-mdefine_line|#define OV511IOC_GUSHORT _IOWR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 1, &bslash;&n;&t;&t;&t;       struct ov511_ushort_opt)
-DECL|macro|OV511IOC_SUSHORT
-mdefine_line|#define OV511IOC_SUSHORT  _IOW(&squot;v&squot;, BASE_VIDIOCPRIVATE + 2, &bslash;&n;&t;&t;&t;       struct ov511_ushort_opt)
-DECL|macro|OV511IOC_GUINT
-mdefine_line|#define OV511IOC_GUINT   _IOWR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 3, &bslash;&n;&t;&t;&t;       struct ov511_uint_opt)
-DECL|macro|OV511IOC_SUINT
-mdefine_line|#define OV511IOC_SUINT    _IOW(&squot;v&squot;, BASE_VIDIOCPRIVATE + 4, &bslash;&n;&t;&t;&t;       struct ov511_uint_opt)
 DECL|macro|OV511IOC_WI2C
 mdefine_line|#define OV511IOC_WI2C     _IOW(&squot;v&squot;, BASE_VIDIOCPRIVATE + 5, &bslash;&n;&t;&t;&t;       struct ov511_i2c_struct)
 DECL|macro|OV511IOC_RI2C
@@ -1196,35 +1111,6 @@ id|semaphore
 id|param_lock
 suffix:semicolon
 multiline_comment|/* params lock for this camera */
-multiline_comment|/* /proc entries, relative to /proc/video/ov511/ */
-DECL|member|proc_devdir
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_devdir
-suffix:semicolon
-multiline_comment|/* Per-device proc directory */
-DECL|member|proc_info
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_info
-suffix:semicolon
-multiline_comment|/* &lt;minor#&gt;/info entry */
-DECL|member|proc_button
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_button
-suffix:semicolon
-multiline_comment|/* &lt;minor#&gt;/button entry */
-DECL|member|proc_control
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_control
-suffix:semicolon
-multiline_comment|/* &lt;minor#&gt;/control entry */
 multiline_comment|/* Framebuffer/sbuf management */
 DECL|member|buf_state
 r_int
