@@ -132,7 +132,7 @@ c_func
 (paren
 id|CIFSMaxBufSize
 comma
-l_string|&quot;Network buffer size (not including header). Default: 16384 Range: 4096 to 130048&quot;
+l_string|&quot;Network buffer size (not including header). Default: 16384 Range: 8192 to 130048&quot;
 )paren
 suffix:semicolon
 DECL|variable|cifs_min_rcv
@@ -2567,12 +2567,13 @@ c_cond
 (paren
 id|CIFSMaxBufSize
 OL
-l_int|4096
+l_int|8192
 )paren
 (brace
+multiline_comment|/* Buffer size can not be smaller than 2 * PATH_MAX since maximum&n;&t;Unicode path name has to fit in any SMB/CIFS path based frames */
 id|CIFSMaxBufSize
 op_assign
-l_int|4096
+l_int|8192
 suffix:semicolon
 )brace
 r_else
