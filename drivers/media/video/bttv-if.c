@@ -895,6 +895,7 @@ id|u32
 id|stat
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 id|timeout
