@@ -505,6 +505,10 @@ DECL|macro|IA32_SA_HANDLER
 mdefine_line|#define IA32_SA_HANDLER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &amp; 0xffffffff)
 DECL|macro|IA32_SA_RESTORER
 mdefine_line|#define IA32_SA_RESTORER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &gt;&gt; 32)
+DECL|macro|__IA32_NR_sigreturn
+mdefine_line|#define __IA32_NR_sigreturn 119
+DECL|macro|__IA32_NR_rt_sigreturn
+mdefine_line|#define __IA32_NR_rt_sigreturn 173
 DECL|struct|sigaction32
 r_struct
 id|sigaction32
@@ -1044,13 +1048,17 @@ DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET&t;0xc0000000
 DECL|macro|IA32_STACK_TOP
 mdefine_line|#define IA32_STACK_TOP&t;&t;IA32_PAGE_OFFSET
+DECL|macro|IA32_GATE_OFFSET
+mdefine_line|#define IA32_GATE_OFFSET&t;IA32_PAGE_OFFSET
+DECL|macro|IA32_GATE_END
+mdefine_line|#define IA32_GATE_END&t;&t;IA32_PAGE_OFFSET + PAGE_SIZE
 multiline_comment|/*&n; * The system segments (GDT, TSS, LDT) have to be mapped below 4GB so the IA-32 engine can&n; * access them.&n; */
 DECL|macro|IA32_GDT_OFFSET
-mdefine_line|#define IA32_GDT_OFFSET&t;&t;(IA32_PAGE_OFFSET)
+mdefine_line|#define IA32_GDT_OFFSET&t;&t;(IA32_PAGE_OFFSET + PAGE_SIZE)
 DECL|macro|IA32_TSS_OFFSET
-mdefine_line|#define IA32_TSS_OFFSET&t;&t;(IA32_PAGE_OFFSET + PAGE_SIZE)
+mdefine_line|#define IA32_TSS_OFFSET&t;&t;(IA32_PAGE_OFFSET + 2*PAGE_SIZE)
 DECL|macro|IA32_LDT_OFFSET
-mdefine_line|#define IA32_LDT_OFFSET&t;&t;(IA32_PAGE_OFFSET + 2*PAGE_SIZE)
+mdefine_line|#define IA32_LDT_OFFSET&t;&t;(IA32_PAGE_OFFSET + 3*PAGE_SIZE)
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;IA32_PAGE_SIZE
 multiline_comment|/*&n; * This is the location that an ET_DYN program is loaded if exec&squot;ed.&n; * Typical use of this is to invoke &quot;./ld.so someprog&quot; to test out a&n; * new version of the loader.  We need to make sure that it is out of&n; * the way of the program that it will &quot;exec&quot;, and that there is&n; * sufficient room for the brk.&n; */

@@ -1004,7 +1004,6 @@ id|pid_t
 id|pid
 comma
 r_int
-r_int
 id|__user
 op_star
 id|stat_addr
@@ -1038,6 +1037,12 @@ id|infop
 comma
 r_int
 id|options
+comma
+r_struct
+id|rusage
+id|__user
+op_star
+id|ru
 )paren
 suffix:semicolon
 id|asmlinkage
@@ -1048,7 +1053,6 @@ c_func
 id|pid_t
 id|pid
 comma
-r_int
 r_int
 id|__user
 op_star

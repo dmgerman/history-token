@@ -574,6 +574,9 @@ op_amp
 id|GlobalTreeConnectionList
 )paren
 (brace
+id|__u32
+id|dev_type
+suffix:semicolon
 id|i
 op_increment
 suffix:semicolon
@@ -588,6 +591,14 @@ r_struct
 id|cifsTconInfo
 comma
 id|cifsConnectionList
+)paren
+suffix:semicolon
+id|dev_type
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|tcon-&gt;fsDevInfo.DeviceType
 )paren
 suffix:semicolon
 id|length
@@ -612,11 +623,23 @@ id|tcon-&gt;useCount
 comma
 id|tcon-&gt;nativeFileSystem
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|tcon-&gt;fsDevInfo.DeviceCharacteristics
+)paren
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|tcon-&gt;fsAttrInfo.Attributes
+)paren
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|tcon-&gt;fsAttrInfo.MaxPathNameComponentLength
+)paren
 comma
 id|tcon-&gt;tidStatus
 )paren
@@ -628,7 +651,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcon-&gt;fsDevInfo.DeviceType
+id|dev_type
 op_eq
 id|FILE_DEVICE_DISK
 )paren
@@ -646,7 +669,7 @@ r_else
 r_if
 c_cond
 (paren
-id|tcon-&gt;fsDevInfo.DeviceType
+id|dev_type
 op_eq
 id|FILE_DEVICE_CD_ROM
 )paren
@@ -670,7 +693,7 @@ id|buf
 comma
 l_string|&quot; type: %d &quot;
 comma
-id|tcon-&gt;fsDevInfo.DeviceType
+id|dev_type
 )paren
 suffix:semicolon
 id|buf

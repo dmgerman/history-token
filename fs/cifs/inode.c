@@ -232,6 +232,33 @@ id|cifsInodeInfo
 op_star
 id|cifsInfo
 suffix:semicolon
+id|__u32
+id|type
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|findData.Type
+)paren
+suffix:semicolon
+id|__u64
+id|num_of_bytes
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|findData.NumOfBytes
+)paren
+suffix:semicolon
+id|__u64
+id|end_of_file
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|findData.EndOfFile
+)paren
+suffix:semicolon
 multiline_comment|/* get new inode */
 r_if
 c_cond
@@ -367,18 +394,10 @@ c_func
 id|findData.Permissions
 )paren
 suffix:semicolon
-id|findData.Type
-op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|findData.Type
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|findData.Type
+id|type
 op_eq
 id|UNIX_FILE
 )paren
@@ -392,7 +411,7 @@ r_else
 r_if
 c_cond
 (paren
-id|findData.Type
+id|type
 op_eq
 id|UNIX_SYMLINK
 )paren
@@ -406,7 +425,7 @@ r_else
 r_if
 c_cond
 (paren
-id|findData.Type
+id|type
 op_eq
 id|UNIX_DIR
 )paren
@@ -420,7 +439,7 @@ r_else
 r_if
 c_cond
 (paren
-id|findData.Type
+id|type
 op_eq
 id|UNIX_CHARDEV
 )paren
@@ -454,7 +473,7 @@ r_else
 r_if
 c_cond
 (paren
-id|findData.Type
+id|type
 op_eq
 id|UNIX_BLOCKDEV
 )paren
@@ -488,7 +507,7 @@ r_else
 r_if
 c_cond
 (paren
-id|findData.Type
+id|type
 op_eq
 id|UNIX_FIFO
 )paren
@@ -502,7 +521,7 @@ r_else
 r_if
 c_cond
 (paren
-id|findData.Type
+id|type
 op_eq
 id|UNIX_SOCKET
 )paren
@@ -536,22 +555,6 @@ c_func
 id|findData.Nlinks
 )paren
 suffix:semicolon
-id|findData.NumOfBytes
-op_assign
-id|le64_to_cpu
-c_func
-(paren
-id|findData.NumOfBytes
-)paren
-suffix:semicolon
-id|findData.EndOfFile
-op_assign
-id|le64_to_cpu
-c_func
-(paren
-id|findData.EndOfFile
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -568,13 +571,13 @@ c_func
 (paren
 id|inode
 comma
-id|findData.EndOfFile
+id|end_of_file
 )paren
 suffix:semicolon
 multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;&t;and blkbits set in superblock so 2**blkbits and blksize will match */
 multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
 multiline_comment|/* This seems incredibly stupid but it turns out that&n;&t;&t;i_blocks is not related to (i_size / i_blksize), instead a&n;&t;&t;size of 512 is required to be used for calculating num blocks */
-multiline_comment|/*&t;&t;inode-&gt;i_blocks = &n;&t;                (inode-&gt;i_blksize - 1 + findData.NumOfBytes) &gt;&gt; inode-&gt;i_blkbits;*/
+multiline_comment|/*&t;&t;inode-&gt;i_blocks = &n;&t;                (inode-&gt;i_blksize - 1 + num_of_bytes) &gt;&gt; inode-&gt;i_blkbits;*/
 multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
 multiline_comment|/* for this calculation */
 id|inode-&gt;i_blocks
@@ -584,7 +587,7 @@ l_int|512
 op_minus
 l_int|1
 op_plus
-id|findData.NumOfBytes
+id|num_of_bytes
 )paren
 op_rshift
 l_int|9
@@ -593,9 +596,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|findData.NumOfBytes
+id|num_of_bytes
 OL
-id|findData.EndOfFile
+id|end_of_file
 )paren
 id|cFYI
 c_func
@@ -1082,6 +1085,15 @@ id|cifsInodeInfo
 op_star
 id|cifsInfo
 suffix:semicolon
+id|__u32
+id|attr
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|pfindData-&gt;Attributes
+)paren
+suffix:semicolon
 multiline_comment|/* get new inode */
 r_if
 c_cond
@@ -1136,17 +1148,9 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|pfindData-&gt;Attributes
-op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|pfindData-&gt;Attributes
-)paren
-suffix:semicolon
 id|cifsInfo-&gt;cifsAttrs
 op_assign
-id|pfindData-&gt;Attributes
+id|attr
 suffix:semicolon
 id|cFYI
 c_func
@@ -1223,7 +1227,7 @@ comma
 (paren
 l_string|&quot; Attributes came in as 0x%x &quot;
 comma
-id|pfindData-&gt;Attributes
+id|attr
 )paren
 )paren
 suffix:semicolon
@@ -1250,7 +1254,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pfindData-&gt;Attributes
+id|attr
 op_amp
 id|ATTR_REPARSE
 )paren
@@ -1265,7 +1269,7 @@ r_else
 r_if
 c_cond
 (paren
-id|pfindData-&gt;Attributes
+id|attr
 op_amp
 id|ATTR_DIRECTORY
 )paren
@@ -1347,14 +1351,6 @@ op_rshift
 l_int|9
 suffix:semicolon
 )brace
-id|pfindData-&gt;AllocationSize
-op_assign
-id|le64_to_cpu
-c_func
-(paren
-id|pfindData-&gt;AllocationSize
-)paren
-suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
 id|le32_to_cpu
@@ -4406,7 +4402,7 @@ r_if
 c_cond
 (paren
 id|set_time
-op_or
+op_logical_or
 id|time_buf.Attributes
 )paren
 (brace

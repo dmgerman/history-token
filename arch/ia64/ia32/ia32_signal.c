@@ -5005,21 +5005,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Pointing to restorer in ia32 gate page */
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-(paren
-r_int
-)paren
-id|frame-&gt;retcode
+id|IA32_GATE_OFFSET
 comma
 op_amp
 id|frame-&gt;pretcode
 )paren
 suffix:semicolon
-multiline_comment|/* This is popl %eax ; movl $,%eax ; int $0x80 */
+)brace
+multiline_comment|/* This is popl %eax ; movl $,%eax ; int $0x80&n;&t; * and there for historical reasons only.&n;&t; * See arch/i386/kernel/signal.c&n;&t; */
 id|err
 op_or_assign
 id|__put_user
@@ -5044,8 +5043,6 @@ id|__put_user
 c_func
 (paren
 id|__IA32_NR_sigreturn
-op_amp
-l_int|0xffff
 comma
 (paren
 r_int
@@ -5055,26 +5052,6 @@ op_star
 id|frame-&gt;retcode
 op_plus
 l_int|2
-)paren
-)paren
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-id|__IA32_NR_sigreturn
-op_rshift
-l_int|16
-comma
-(paren
-r_int
-op_star
-)paren
-(paren
-id|frame-&gt;retcode
-op_plus
-l_int|4
 )paren
 )paren
 suffix:semicolon
@@ -5096,7 +5073,6 @@ l_int|6
 )paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5467,21 +5443,22 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Pointing to rt_restorer in ia32 gate page */
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-(paren
-r_int
-)paren
-id|frame-&gt;retcode
+id|IA32_GATE_OFFSET
+op_plus
+l_int|8
 comma
 op_amp
 id|frame-&gt;pretcode
 )paren
 suffix:semicolon
-multiline_comment|/* This is movl $,%eax ; int $0x80 */
+)brace
+multiline_comment|/* This is movl $,%eax ; int $0x80&n;&t; * and there for historical reasons only.&n;&t; * See arch/i386/kernel/signal.c&n;&t; */
 id|err
 op_or_assign
 id|__put_user
@@ -5536,7 +5513,6 @@ l_int|5
 )paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

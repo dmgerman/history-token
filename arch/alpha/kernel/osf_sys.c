@@ -161,9 +161,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * OSF/1 directory handling functions...&n; *&n; * The &quot;getdents()&quot; interface is much more sane: the &quot;basep&quot; stuff is&n; * braindamage (it can&squot;t really handle filesystems where the directory&n; * offset differences aren&squot;t the same as &quot;d_reclen&quot;).&n; */
 DECL|macro|NAME_OFFSET
-mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char __user *) (de)))
+mdefine_line|#define NAME_OFFSET&t;offsetof (struct osf_dirent, d_name)
 DECL|macro|ROUND_UP
-mdefine_line|#define ROUND_UP(x) (((x)+3) &amp; ~3)
+mdefine_line|#define ROUND_UP(x)&t;(((x)+3) &amp; ~3)
 DECL|struct|osf_dirent
 r_struct
 id|osf_dirent
@@ -275,10 +275,6 @@ id|ROUND_UP
 c_func
 (paren
 id|NAME_OFFSET
-c_func
-(paren
-id|dirent
-)paren
 op_plus
 id|namlen
 op_plus
@@ -4319,7 +4315,6 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-r_int
 r_int
 id|timeout
 suffix:semicolon

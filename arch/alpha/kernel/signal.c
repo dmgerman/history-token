@@ -886,6 +886,28 @@ l_int|3
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* If this changes, userland unwinders that Know Things about our signal&n;   frame will break.  Do not undertake lightly.  It also implies an ABI&n;   change wrt the size of siginfo_t, which may cause some pain.  */
+r_extern
+r_char
+id|compile_time_assert
+(braket
+m_offsetof
+(paren
+r_struct
+id|rt_sigframe
+comma
+id|uc.uc_mcontext
+)paren
+op_eq
+l_int|176
+ques
+c_cond
+l_int|1
+suffix:colon
+op_minus
+l_int|1
+)braket
+suffix:semicolon
 DECL|macro|INSN_MOV_R30_R16
 mdefine_line|#define INSN_MOV_R30_R16&t;0x47fe0410
 DECL|macro|INSN_LDI_R0

@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/udc.h&gt;
 macro_line|#include &lt;asm/arch/pxafb.h&gt;
+macro_line|#include &lt;asm/arch/mmc.h&gt;
 macro_line|#include &quot;generic.h&quot;
 multiline_comment|/*&n; * Handy function to set GPIO alternate functions&n; */
 DECL|function|pxa_gpio_mode
@@ -433,6 +434,30 @@ op_assign
 id|pxamci_resources
 comma
 )brace
+suffix:semicolon
+DECL|function|pxa_set_mci_info
+r_void
+id|__init
+id|pxa_set_mci_info
+c_func
+(paren
+r_struct
+id|pxamci_platform_data
+op_star
+id|info
+)paren
+(brace
+id|pxamci_device.dev.platform_data
+op_assign
+id|info
+suffix:semicolon
+)brace
+DECL|variable|pxa_set_mci_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pxa_set_mci_info
+)paren
 suffix:semicolon
 DECL|variable|pxa_udc_info
 r_static

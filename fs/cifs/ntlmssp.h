@@ -4,13 +4,13 @@ DECL|macro|NTLMSSP_SIGNATURE
 mdefine_line|#define NTLMSSP_SIGNATURE &quot;NTLMSSP&quot;
 multiline_comment|/* Message Types */
 DECL|macro|NtLmNegotiate
-mdefine_line|#define NtLmNegotiate     1
+mdefine_line|#define NtLmNegotiate     cpu_to_le32(1)
 DECL|macro|NtLmChallenge
-mdefine_line|#define NtLmChallenge     2
+mdefine_line|#define NtLmChallenge     cpu_to_le32(2)
 DECL|macro|NtLmAuthenticate
-mdefine_line|#define NtLmAuthenticate  3
+mdefine_line|#define NtLmAuthenticate  cpu_to_le32(3)
 DECL|macro|UnknownMessage
-mdefine_line|#define UnknownMessage    8
+mdefine_line|#define UnknownMessage    cpu_to_le32(8)
 multiline_comment|/* Negotiate Flags */
 DECL|macro|NTLMSSP_NEGOTIATE_UNICODE
 mdefine_line|#define NTLMSSP_NEGOTIATE_UNICODE       0x01&t;
@@ -78,15 +78,15 @@ r_struct
 id|_SECURITY_BUFFER
 (brace
 DECL|member|Length
-id|__u16
+id|__le16
 id|Length
 suffix:semicolon
 DECL|member|MaximumLength
-id|__u16
+id|__le16
 id|MaximumLength
 suffix:semicolon
 DECL|member|Buffer
-id|__u32
+id|__le32
 id|Buffer
 suffix:semicolon
 multiline_comment|/* offset to buffer */
@@ -110,12 +110,12 @@ id|NTLMSSP_SIGNATURE
 )braket
 suffix:semicolon
 DECL|member|MessageType
-id|__u32
+id|__le32
 id|MessageType
 suffix:semicolon
 multiline_comment|/* 1 */
 DECL|member|NegotiateFlags
-id|__u32
+id|__le32
 id|NegotiateFlags
 suffix:semicolon
 DECL|member|DomainName
@@ -160,7 +160,7 @@ id|NTLMSSP_SIGNATURE
 )braket
 suffix:semicolon
 DECL|member|MessageType
-id|__u32
+id|__le32
 id|MessageType
 suffix:semicolon
 multiline_comment|/* 2 */
@@ -169,7 +169,7 @@ id|SECURITY_BUFFER
 id|TargetName
 suffix:semicolon
 DECL|member|NegotiateFlags
-id|__u32
+id|__le32
 id|NegotiateFlags
 suffix:semicolon
 DECL|member|Challenge
@@ -214,7 +214,7 @@ id|NTLMSSP_SIGNATURE
 )braket
 suffix:semicolon
 DECL|member|MessageType
-id|__u32
+id|__le32
 id|MessageType
 suffix:semicolon
 multiline_comment|/* 3 */
@@ -243,7 +243,7 @@ id|SECURITY_BUFFER
 id|SessionKey
 suffix:semicolon
 DECL|member|NegotiateFlags
-id|__u32
+id|__le32
 id|NegotiateFlags
 suffix:semicolon
 DECL|member|UserString
