@@ -98,6 +98,8 @@ DECL|macro|LOOKUP_OPEN
 mdefine_line|#define LOOKUP_OPEN&t;&t;(0x0100)
 DECL|macro|LOOKUP_CREATE
 mdefine_line|#define LOOKUP_CREATE&t;&t;(0x0200)
+DECL|macro|LOOKUP_ACCESS
+mdefine_line|#define LOOKUP_ACCESS&t;&t;(0x0400)
 r_extern
 r_int
 id|FASTCALL

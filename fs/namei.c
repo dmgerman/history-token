@@ -457,6 +457,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -490,6 +495,8 @@ c_func
 id|inode
 comma
 id|submask
+comma
+id|nd
 )paren
 suffix:semicolon
 r_else
@@ -2066,6 +2073,8 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -3443,6 +3452,8 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+id|nd
 )paren
 suffix:semicolon
 id|dentry
@@ -3934,6 +3945,8 @@ comma
 id|MAY_WRITE
 op_or
 id|MAY_EXEC
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4077,6 +4090,11 @@ r_struct
 id|dentry
 op_star
 id|child
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_if
@@ -4110,6 +4128,8 @@ comma
 id|MAY_WRITE
 op_or
 id|MAY_EXEC
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -4417,6 +4437,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -4605,6 +4627,8 @@ c_func
 id|inode
 comma
 id|acc_mode
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -5639,6 +5663,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -6044,6 +6070,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7205,6 +7233,8 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7544,6 +7574,8 @@ c_func
 id|dir
 comma
 id|new_dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7954,6 +7986,8 @@ c_func
 id|old_dentry-&gt;d_inode
 comma
 id|MAY_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -8383,6 +8417,8 @@ c_func
 id|new_dir
 comma
 id|new_dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_else

@@ -345,6 +345,9 @@ comma
 id|MAY_READ
 op_or
 id|MAY_EXEC
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -1967,6 +1970,9 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -3380,6 +3386,8 @@ c_func
 id|bprm-&gt;file-&gt;f_dentry-&gt;d_inode
 comma
 id|MAY_READ
+comma
+l_int|NULL
 )paren
 )paren
 id|current-&gt;mm-&gt;dumpable

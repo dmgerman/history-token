@@ -185,6 +185,8 @@ c_func
 id|inode
 comma
 id|MAY_READ
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -323,6 +325,8 @@ c_func
 id|inode
 comma
 id|MAY_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -6444,6 +6444,8 @@ id|MAY_WRITE
 op_or
 id|MAY_EXEC
 )paren
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Allow read access to binaries even when mode 111 */
@@ -6477,6 +6479,8 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

@@ -2599,6 +2599,8 @@ c_func
 id|inode
 comma
 id|MAY_WRITE
+comma
+l_int|NULL
 )paren
 op_logical_or
 id|get_write_access

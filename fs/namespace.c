@@ -1941,6 +1941,8 @@ c_func
 id|nd-&gt;dentry-&gt;d_inode
 comma
 id|MAY_WRITE
+comma
+id|nd
 )paren
 )paren
 r_return

@@ -5193,6 +5193,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct

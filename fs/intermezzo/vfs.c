@@ -271,6 +271,8 @@ comma
 id|MAY_WRITE
 op_or
 id|MAY_EXEC
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -423,6 +425,8 @@ comma
 id|MAY_WRITE
 op_or
 id|MAY_EXEC
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -8293,6 +8297,8 @@ c_func
 id|old_dentry-&gt;d_inode
 comma
 id|MAY_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

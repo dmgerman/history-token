@@ -134,6 +134,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 suffix:semicolon
 DECL|variable|izo_authorized_uid
@@ -3516,6 +3521,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -3628,6 +3638,8 @@ c_func
 id|inode
 comma
 id|mask
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -3656,6 +3668,8 @@ c_func
 id|inode
 comma
 id|mask
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -3673,6 +3687,8 @@ c_func
 id|inode
 comma
 id|mask
+comma
+id|nd
 )paren
 suffix:semicolon
 id|inode-&gt;i_op-&gt;permission
