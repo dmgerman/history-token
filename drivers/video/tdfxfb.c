@@ -495,6 +495,7 @@ op_star
 id|image
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_3DFX_ACCEL
 r_static
 r_int
 id|tdfxfb_cursor
@@ -511,6 +512,10 @@ op_star
 id|cursor
 )paren
 suffix:semicolon
+macro_line|#else /* !CONFIG_FB_3DFX_ACCEL */
+DECL|macro|tdfxfb_cursor
+mdefine_line|#define tdfxfb_cursor soft_cursor
+macro_line|#endif /* CONFIG_FB_3DFX_ACCEL */
 r_static
 r_int
 id|banshee_wait_idle
@@ -582,7 +587,7 @@ comma
 dot
 id|fb_cursor
 op_assign
-id|soft_cursor
+id|tdfxfb_cursor
 comma
 )brace
 suffix:semicolon
@@ -5803,6 +5808,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_FB_3DFX_ACCEL
 DECL|function|tdfxfb_cursor
 r_static
 r_int
@@ -6471,6 +6477,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_FB_3DFX_ACCEL */
 multiline_comment|/**&n; *      tdfxfb_probe - Device Initializiation&n; *&n; *      @pdev:  PCI Device to initialize&n; *      @id:    PCI Device ID&n; *&n; *      Initializes and allocates resources for PCI device @pdev.&n; *&n; */
 DECL|function|tdfxfb_probe
 r_static
