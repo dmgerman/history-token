@@ -1186,12 +1186,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -1369,12 +1363,6 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1403,12 +1391,6 @@ id|__FUNCTION__
 l_string|&quot; port %d&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
@@ -1450,12 +1432,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* mct_u232_close */
 macro_line|#ifdef FIX_WRITE_RETURN_CODE_PROBLEM
@@ -1572,12 +1548,6 @@ OG
 l_int|0
 )paren
 (brace
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 id|size
 op_assign
 (paren
@@ -1622,12 +1592,6 @@ id|size
 )paren
 )paren
 (brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
@@ -1706,22 +1670,10 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 id|bytes_sent
 op_add_assign
 id|size
