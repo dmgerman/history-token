@@ -10706,7 +10706,7 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 id|ssize_t
-id|sys_pread
+id|sys_pread64
 c_func
 (paren
 r_int
@@ -10727,7 +10727,7 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 id|ssize_t
-id|sys_pwrite
+id|sys_pwrite64
 c_func
 (paren
 r_int
@@ -10777,7 +10777,7 @@ id|poshi
 )paren
 (brace
 r_return
-id|sys_pread
+id|sys_pread64
 c_func
 (paren
 id|fd
@@ -10832,7 +10832,7 @@ id|poshi
 )paren
 (brace
 r_return
-id|sys_pwrite
+id|sys_pwrite64
 c_func
 (paren
 id|fd
