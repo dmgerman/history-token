@@ -15,14 +15,8 @@ r_extern
 r_int
 id|pc_debug
 suffix:semicolon
-DECL|variable|init_wds
-r_const
-r_int
-id|init_wds
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* help compiler optimize away dead code */
+DECL|macro|init_wds
+mdefine_line|#define init_wds 0&t;/* help compiler optimize away dead code */
 multiline_comment|/* General driver definitions */
 DECL|macro|PCIVENDOR_INTERSIL
 mdefine_line|#define PCIVENDOR_INTERSIL                      0x1260UL
