@@ -56,6 +56,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|TIMER_MAGIC
 mdefine_line|#define TIMER_MAGIC&t;0x4b87ad6e
+DECL|macro|TIMER_INITIALIZER
+mdefine_line|#define TIMER_INITIALIZER(_function, _expires, _data) {&t;&t;&bslash;&n;&t;&t;.function = (_function),&t;&t;&t;&bslash;&n;&t;&t;.expires = (_expires),&t;&t;&t;&t;&bslash;&n;&t;&t;.data = (_data),&t;&t;&t;&t;&bslash;&n;&t;&t;.base = NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.magic = TIMER_MAGIC,&t;&t;&t;&t;&bslash;&n;&t;&t;.lock = SPIN_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;&t;}
 multiline_comment|/***&n; * init_timer - initialize a timer.&n; * @timer: the timer to be initialized&n; *&n; * init_timer() must be done to a timer prior calling *any* of the&n; * other timer functions.&n; */
 DECL|function|init_timer
 r_static
