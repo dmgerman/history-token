@@ -338,6 +338,9 @@ mdefine_line|#define DEV_OK(l) &bslash;&n;    ((l) &amp;&amp; ((l-&gt;state &amp
 r_struct
 id|pcmcia_socket
 suffix:semicolon
+r_struct
+id|client_t
+suffix:semicolon
 r_extern
 r_struct
 id|bus_type
@@ -433,6 +436,12 @@ DECL|member|instance
 id|dev_link_t
 op_star
 id|instance
+suffix:semicolon
+DECL|member|client
+r_struct
+id|client_t
+op_star
+id|client
 suffix:semicolon
 DECL|member|dev
 r_struct

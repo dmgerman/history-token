@@ -2849,6 +2849,10 @@ id|p_dev-&gt;func
 op_assign
 id|bind_info-&gt;function
 suffix:semicolon
+id|p_dev-&gt;client
+op_assign
+id|client
+suffix:semicolon
 id|p_dev-&gt;dev.bus
 op_assign
 op_amp
