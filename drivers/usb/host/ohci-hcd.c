@@ -1537,6 +1537,7 @@ id|ints
 op_assign
 id|OHCI_INTR_WDH
 suffix:semicolon
+multiline_comment|/* cardbus/... hardware gone before remove() */
 )brace
 r_else
 r_if
@@ -1545,18 +1546,45 @@ c_cond
 (paren
 id|ints
 op_assign
-(paren
 id|readl
 (paren
 op_amp
 id|regs-&gt;intrstatus
 )paren
-op_amp
+)paren
+op_eq
+op_complement
+(paren
+id|u32
+)paren
+l_int|0
+)paren
+(brace
+id|ohci-&gt;disabled
+op_increment
+suffix:semicolon
+id|err
+(paren
+l_string|&quot;%s device removed!&quot;
+comma
+id|hcd-&gt;self.bus_name
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+multiline_comment|/* interrupt for some other device? */
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|ints
+op_and_assign
 id|readl
 (paren
 op_amp
 id|regs-&gt;intrenable
-)paren
 )paren
 )paren
 op_eq
