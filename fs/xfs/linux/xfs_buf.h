@@ -197,16 +197,6 @@ l_int|16
 )paren
 comma
 multiline_comment|/* backed by pagecache&t;&t;   */
-DECL|enumerator|_PBF_ALL_PAGES_MAPPED
-id|_PBF_ALL_PAGES_MAPPED
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|18
-)paren
-comma
-multiline_comment|/* all pages in range mapped&t;   */
 DECL|enumerator|_PBF_ADDR_ALLOCATED
 id|_PBF_ADDR_ALLOCATED
 op_assign
