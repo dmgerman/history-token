@@ -2450,7 +2450,7 @@ l_int|0xf0
 op_ne
 l_int|0xf0
 )paren
-id|probe_hwif_init
+id|probe_hwif_init_with_fixup
 c_func
 (paren
 op_amp
@@ -2458,6 +2458,8 @@ id|ide_hwifs
 (braket
 id|index_list.b.low
 )braket
+comma
+id|d-&gt;fixup
 )paren
 suffix:semicolon
 r_if
@@ -2471,7 +2473,7 @@ l_int|0xf0
 op_ne
 l_int|0xf0
 )paren
-id|probe_hwif_init
+id|probe_hwif_init_with_fixup
 c_func
 (paren
 op_amp
@@ -2479,6 +2481,8 @@ id|ide_hwifs
 (braket
 id|index_list.b.high
 )braket
+comma
+id|d-&gt;fixup
 )paren
 suffix:semicolon
 id|create_proc_ide_interfaces

@@ -1742,8 +1742,7 @@ id|dd
 comma
 l_int|0
 comma
-op_minus
-l_int|1
+id|VFP_REG_ZERO
 comma
 id|fpscr
 )paren
@@ -1776,8 +1775,7 @@ id|dd
 comma
 l_int|1
 comma
-op_minus
-l_int|1
+id|VFP_REG_ZERO
 comma
 id|fpscr
 )paren

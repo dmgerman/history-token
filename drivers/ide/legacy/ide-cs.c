@@ -637,13 +637,15 @@ op_assign
 id|ide_pci
 suffix:semicolon
 r_return
-id|ide_register_hw
+id|ide_register_hw_with_fixup
 c_func
 (paren
 op_amp
 id|hw
 comma
 l_int|NULL
+comma
+id|ide_undecoded_slave
 )paren
 suffix:semicolon
 )brace
