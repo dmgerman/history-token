@@ -1785,7 +1785,7 @@ c_cond
 (paren
 id|rth-&gt;u.dst.expires
 op_logical_and
-id|time_after
+id|time_after_eq
 c_func
 (paren
 id|jiffies
@@ -1967,7 +1967,7 @@ multiline_comment|/* Entry is expired even if it is in use */
 r_if
 c_cond
 (paren
-id|time_after
+id|time_after_eq
 c_func
 (paren
 id|now
