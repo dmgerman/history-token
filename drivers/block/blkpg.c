@@ -728,9 +728,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|intval
-comma
-op_star
-id|iptr
 suffix:semicolon
 r_int
 r_int
