@@ -1144,7 +1144,7 @@ id|fb_console_setup
 suffix:semicolon
 multiline_comment|/**&n; *&t;set_con2fb_map - map console to frame buffer device&n; *&t;@unit: virtual console number to map&n; *&t;@newidx: frame buffer index to map virtual console to&n; *&n; *&t;Maps a virtual console @unit to a frame buffer device&n; *&t;@newidx.&n; */
 DECL|function|set_con2fb_map
-r_void
+r_int
 id|set_con2fb_map
 c_func
 (paren
@@ -1166,6 +1166,16 @@ id|unit
 )braket
 dot
 id|d
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vc
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|con2fb_map
 (braket
@@ -1200,6 +1210,9 @@ id|unit
 comma
 id|fbcon_is_default
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * drawing helpers&n; */
@@ -5034,6 +5047,25 @@ suffix:semicolon
 id|cursor.set
 op_or_assign
 id|FB_CUR_SETSIZE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|info-&gt;cursor.hot.x
+op_logical_or
+id|info-&gt;cursor.hot.y
+)paren
+(brace
+id|cursor.hot.x
+op_assign
+id|cursor.hot.y
+op_assign
+l_int|0
+suffix:semicolon
+id|cursor.set
+op_or_assign
+id|FB_CUR_SETHOT
 suffix:semicolon
 )brace
 r_if
