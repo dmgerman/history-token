@@ -19,7 +19,7 @@ mdefine_line|#define cpus_or(dst,src1,src2)&t;bitmap_or((dst).mask, (src1).mask,
 DECL|macro|cpus_clear
 mdefine_line|#define cpus_clear(map)&t;&t;bitmap_zero((map).mask, NR_CPUS)
 DECL|macro|cpus_complement
-mdefine_line|#define cpus_complement(map)&t;bitmap_complement((map).mask, NR_CPUS)
+mdefine_line|#define cpus_complement(map)&t;bitmap_complement((map).mask, (map).mask, NR_CPUS)
 DECL|macro|cpus_equal
 mdefine_line|#define cpus_equal(map1, map2)&t;bitmap_equal((map1).mask, (map2).mask, NR_CPUS)
 DECL|macro|cpus_empty
