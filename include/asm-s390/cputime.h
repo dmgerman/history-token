@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-s390/cputime.h&n; *&n; *  (C) Copyright I
 macro_line|#ifndef _S390_CPUTIME_H
 DECL|macro|_S390_CPUTIME_H
 mdefine_line|#define _S390_CPUTIME_H
+macro_line|#include &lt;asm/div64.h&gt;
 multiline_comment|/* We want to use micro-second resolution. */
 DECL|typedef|cputime_t
 r_typedef
@@ -100,6 +101,10 @@ DECL|macro|cputime_add
 mdefine_line|#define cputime_add(__a, __b)&t;&t;((__a) +  (__b))
 DECL|macro|cputime_sub
 mdefine_line|#define cputime_sub(__a, __b)&t;&t;((__a) -  (__b))
+DECL|macro|cputime_div
+mdefine_line|#define cputime_div(__a, __n) ({&t;&t;&bslash;&n;&t;unsigned long long __div = (__a);&t;&bslash;&n;&t;do_div(__div,__n);&t;&t;&t;&bslash;&n;&t;__div;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|cputime_halve
+mdefine_line|#define cputime_halve(__a)&t;&t;((__a) &gt;&gt; 1)
 DECL|macro|cputime_eq
 mdefine_line|#define cputime_eq(__a, __b)&t;&t;((__a) == (__b))
 DECL|macro|cputime_gt
