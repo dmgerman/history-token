@@ -1,4 +1,4 @@
-multiline_comment|/* sun.h&n; *&n; * Generic SUN serial/kbd/ms layer.  Based entirely&n; * upon drivers/sbus/char/sunserial.h which is:&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Port to new UART layer is:&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* suncore.h&n; *&n; * Generic SUN serial/kbd/ms layer.  Based entirely&n; * upon drivers/sbus/char/sunserial.h which is:&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Port to new UART layer is:&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SERIAL_SUN_H
 DECL|macro|_SERIAL_SUN_H
 mdefine_line|#define _SERIAL_SUN_H

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * sunzilog.c&n; *&n; * Driver for Zilog serial chips found on Sun workstations and&n; * servers.  This driver could actually be made more generic&n; * and anyone wanting to work on doing that should contact&n; * me. -DaveM&n; *&n; * This is based on the old drivers/sbus/char/zs.c code, a lot&n; * of code has been simply moved over directly from there but&n; * much has been rewritten.  Credits therefore go out to Eddie&n; * C. Dost, Peter Zaitcev, Ted Ts&squot;o and Alex Buell for their&n; * work there.&n; *&n; *  Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; */
-macro_line|#include &quot;sun.h&quot;
+macro_line|#include &quot;suncore.h&quot;
 macro_line|#include &quot;sunzilog.h&quot;
 multiline_comment|/* On 32-bit sparcs we need to delay after register accesses&n; * to accomodate sun4 systems, but we do not need to flush writes.&n; * On 64-bit sparc we only need to flush single writes to ensure&n; * completion.&n; */
 macro_line|#ifndef __sparc_v9__
