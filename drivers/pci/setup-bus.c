@@ -2373,6 +2373,16 @@ id|ln
 )paren
 )paren
 suffix:semicolon
+id|pci_enable_bridges
+c_func
+(paren
+id|pci_bus_b
+c_func
+(paren
+id|ln
+)paren
+)paren
+suffix:semicolon
 )brace
 )brace
 eof
