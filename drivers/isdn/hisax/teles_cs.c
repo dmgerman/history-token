@@ -575,33 +575,6 @@ c_func
 id|link
 )paren
 suffix:semicolon
-multiline_comment|/*&n;       If the device is currently configured and active, we won&squot;t&n;       actually delete it yet.  Instead, it is marked so that when&n;       the release() function is called, that will trigger a proper&n;       detach().&n;    */
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;teles_cs: detach postponed, &squot;%s&squot; &quot;
-l_string|&quot;still locked&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_LINK
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Break the link with Card Services */
 r_if
 c_cond
@@ -1520,19 +1493,6 @@ id|link-&gt;state
 op_and_assign
 op_complement
 id|DEV_CONFIG
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_LINK
-)paren
-id|teles_detach
-c_func
-(paren
-id|link
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* teles_cs_release */

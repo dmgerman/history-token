@@ -480,7 +480,7 @@ r_int
 id|retlen
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|vecs
 (braket
 l_int|2
@@ -1308,7 +1308,7 @@ r_int
 id|retlen
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|vecs
 (braket
 l_int|2

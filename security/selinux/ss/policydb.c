@@ -263,7 +263,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|rc
@@ -1546,7 +1546,7 @@ id|comdatum-&gt;permissions.table
 comma
 id|perm_destroy
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|hashtab_destroy
@@ -1622,7 +1622,7 @@ id|cladatum-&gt;permissions.table
 comma
 id|perm_destroy
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|hashtab_destroy
@@ -2020,7 +2020,7 @@ id|destroy_f
 id|i
 )braket
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|hashtab_destroy
@@ -2729,7 +2729,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|perm_datum
@@ -2997,7 +2997,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|common_datum
@@ -3328,7 +3328,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|class_datum
@@ -4240,7 +4240,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|role_datum
@@ -4578,7 +4578,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|type_datum
@@ -4839,7 +4839,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|user_datum

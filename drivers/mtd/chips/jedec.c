@@ -623,7 +623,7 @@ id|MTD
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_for
@@ -691,7 +691,7 @@ id|MTD
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -845,7 +845,7 @@ id|MTD
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -981,7 +981,7 @@ id|MTD
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -1107,7 +1107,7 @@ id|MTD
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -1214,7 +1214,7 @@ id|MTD
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -1964,7 +1964,7 @@ op_plus
 id|I
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 singleline_comment|// Look for flash using an 8 bit bus interface

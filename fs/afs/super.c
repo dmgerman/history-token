@@ -218,7 +218,6 @@ c_func
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 id|afs_timer_init
 c_func
 (paren
@@ -229,7 +228,6 @@ op_amp
 id|afs_mntpt_expiry_timer_ops
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* create ourselves an inode cache */
 id|atomic_set
 c_func

@@ -6459,7 +6459,7 @@ suffix:semicolon
 )brace
 id|p_cfi-&gt;cmdset_priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* This may be redundant for some cases, but it doesn&squot;t hurt */
 id|p_cfi-&gt;mfr

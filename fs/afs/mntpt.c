@@ -53,7 +53,6 @@ op_star
 id|file
 )paren
 suffix:semicolon
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 r_static
 r_int
 id|afs_mntpt_follow_link
@@ -70,7 +69,6 @@ op_star
 id|nd
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|afs_mntpt_file_operations
 r_struct
 id|file_operations
@@ -95,13 +93,11 @@ id|lookup
 op_assign
 id|afs_mntpt_lookup
 comma
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 dot
 id|follow_link
 op_assign
 id|afs_mntpt_follow_link
 comma
-macro_line|#endif
 dot
 id|readlink
 op_assign
@@ -114,7 +110,6 @@ id|afs_inode_getattr
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 r_static
 id|LIST_HEAD
 c_func
@@ -158,7 +153,6 @@ id|afs_mntpt_expiry_timeout
 op_assign
 l_int|20
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * check a symbolic link to see whether it actually encodes a mountpoint&n; * - sets the AFS_VNODE_MOUNTPOINT flag on the vnode appropriately&n; */
 DECL|function|afs_mntpt_check_symlink
@@ -528,7 +522,6 @@ id|EREMOTE
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_mntpt_open() */
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * create a vfsmount to be automounted&n; */
 DECL|function|afs_mntpt_do_automount
@@ -578,6 +571,10 @@ op_star
 id|options
 op_assign
 l_int|NULL
+suffix:semicolon
+id|filler_t
+op_star
+id|filler
 suffix:semicolon
 r_int
 id|ret
@@ -666,8 +663,6 @@ r_goto
 id|error
 suffix:semicolon
 multiline_comment|/* read the contents of the AFS special symlink */
-id|filler_t
-op_star
 id|filler
 op_assign
 id|mntpt-&gt;d_inode-&gt;i_mapping-&gt;a_ops-&gt;readpage
@@ -1133,5 +1128,4 @@ l_string|&quot;&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_mntpt_expiry_timed_out() */
-macro_line|#endif
 eof

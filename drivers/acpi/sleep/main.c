@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; *&n; * Copyright (c) 2000-2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2.&n; *&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
@@ -68,6 +69,11 @@ op_assign
 id|ACPI_STATE_S4
 comma
 )brace
+suffix:semicolon
+DECL|variable|init_8259A_after_S1
+r_static
+r_int
+id|init_8259A_after_S1
 suffix:semicolon
 multiline_comment|/**&n; *&t;acpi_pm_prepare - Do preliminary suspend work.&n; *&t;@pm_state:&t;&t;suspend state we&squot;re entering.&n; *&n; *&t;Make sure we support the state. If we do, and we need it, set the&n; *&t;firmware waking vector and do arch-specific nastiness to get the &n; *&t;wakeup code to the waking vector. &n; */
 DECL|function|acpi_pm_prepare
@@ -363,9 +369,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dmi_broken
-op_amp
-id|BROKEN_INIT_AFTER_S1
+id|init_8259A_after_S1
 )paren
 (brace
 id|printk
@@ -471,6 +475,79 @@ id|acpi_pm_finish
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Toshiba fails to preserve interrupts over S1, reinitialization&n; * of 8259 is needed after S1 resume.&n; */
+DECL|function|init_ints_after_s1
+r_static
+r_int
+id|__init
+id|init_ints_after_s1
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s with broken S1 detected.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+id|init_8259A_after_S1
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|acpisleep_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|__initdata
+id|acpisleep_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|callback
+op_assign
+id|init_ints_after_s1
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;Toshiba Satellite 4030cdt&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_PRODUCT_NAME
+comma
+l_string|&quot;S4030CDT/4.3&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|acpi_sleep_init
 r_static
 r_int
@@ -485,6 +562,12 @@ r_int
 id|i
 op_assign
 l_int|0
+suffix:semicolon
+id|dmi_check_system
+c_func
+(paren
+id|acpisleep_dmi_table
+)paren
 suffix:semicolon
 r_if
 c_cond

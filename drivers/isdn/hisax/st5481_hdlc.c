@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Driver for ST5481 USB ISDN modem&n; *&n; * Author       Frode Isaksen&n; * Copyright    2001 by Frode Isaksen      &lt;fisaksen@bewan.com&gt;&n; *              2001 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 macro_line|#include &quot;st5481_hdlc.h&quot;
 r_enum
 (brace
@@ -864,7 +864,7 @@ l_int|1
 suffix:semicolon
 id|hdlc-&gt;crc
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|hdlc-&gt;crc
@@ -1519,7 +1519,7 @@ l_int|8
 (brace
 id|hdlc-&gt;crc
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|hdlc-&gt;crc

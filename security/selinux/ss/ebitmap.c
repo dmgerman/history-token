@@ -55,7 +55,7 @@ id|e2-&gt;node
 suffix:semicolon
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -202,7 +202,7 @@ r_new
 op_member_access_from_pointer
 id|next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -364,7 +364,7 @@ id|src-&gt;node
 suffix:semicolon
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -434,7 +434,7 @@ r_new
 op_member_access_from_pointer
 id|next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -694,7 +694,7 @@ r_new
 suffix:semicolon
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|n
 op_assign
@@ -1007,7 +1007,7 @@ l_int|0
 suffix:semicolon
 id|e-&gt;node
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 suffix:semicolon

@@ -5073,7 +5073,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; *&t;Find MicroChannel cards (AHA1640)&n;&t; */
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 r_if
 c_cond
 (paren

@@ -2484,7 +2484,7 @@ id|c
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|invecs
 comma
@@ -2504,7 +2504,7 @@ id|ino
 )paren
 (brace
 r_struct
-id|iovec
+id|kvec
 id|outvecs
 (braket
 l_int|3
@@ -3425,7 +3425,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;This is the entry for flash write.&n; *&t;Check, if we work on NAND FLASH, if so build an iovec and write it via vritev&n;*/
+multiline_comment|/*&n; *&t;This is the entry for flash write.&n; *&t;Check, if we work on NAND FLASH, if so build an kvec and write it via vritev&n;*/
 DECL|function|jffs2_flash_write
 r_int
 id|jffs2_flash_write
@@ -3453,7 +3453,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|iovec
+id|kvec
 id|vecs
 (braket
 l_int|1

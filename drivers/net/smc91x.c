@@ -33,9 +33,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_ARM
-macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;smc91x.h&quot;
 macro_line|#ifdef CONFIG_ISA
@@ -1824,11 +1821,6 @@ id|TS_LOSTCAR
 id|lp-&gt;stats.tx_carrier_errors
 op_increment
 suffix:semicolon
-id|SMC_WAIT_MMU_BUSY
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1848,24 +1840,47 @@ suffix:semicolon
 id|lp-&gt;stats.tx_window_errors
 op_increment
 suffix:semicolon
-multiline_comment|/* It&squot;s really cheap to requeue the pkt here */
-id|SMC_SET_MMU_CMD
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|lp-&gt;stats.tx_window_errors
+op_amp
+l_int|63
+)paren
+op_logical_and
+id|net_ratelimit
 c_func
 (paren
-id|MC_ENQUEUE
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: unexpectedly large numbers of &quot;
+l_string|&quot;late collisions. Please check duplex &quot;
+l_string|&quot;setting.&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
+)brace
 multiline_comment|/* kill the packet */
+id|SMC_WAIT_MMU_BUSY
+c_func
+(paren
+)paren
+suffix:semicolon
 id|SMC_SET_MMU_CMD
 c_func
 (paren
 id|MC_FREEPKT
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Don&squot;t restore Packet Number Reg until busy bit is cleared */
 id|SMC_WAIT_MMU_BUSY
 c_func

@@ -3896,7 +3896,7 @@ c_cond
 (paren
 id|eid
 op_eq
-l_int|0xffffff
+l_int|0xffff
 )paren
 (brace
 id|printk
