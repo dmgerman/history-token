@@ -4896,7 +4896,11 @@ op_assign
 id|cifs_kcalloc
 c_func
 (paren
-l_int|36
+r_sizeof
+(paren
+r_struct
+id|rfc1002_session_packet
+)paren
 comma
 id|GFP_KERNEL
 )paren
