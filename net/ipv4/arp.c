@@ -4445,11 +4445,6 @@ id|func
 op_assign
 id|arp_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 r_static

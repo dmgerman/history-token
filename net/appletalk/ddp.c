@@ -7378,11 +7378,6 @@ id|func
 op_assign
 id|ltalk_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|variable|ppptalk_packet_type
@@ -7404,11 +7399,6 @@ dot
 id|func
 op_assign
 id|atalk_rcv
-comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
 comma
 )brace
 suffix:semicolon

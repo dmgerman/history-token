@@ -3346,10 +3346,6 @@ id|pk_type-&gt;func
 op_assign
 id|rlb_arp_recv
 suffix:semicolon
-id|pk_type-&gt;data
-op_assign
-id|PKT_CAN_SHARE_SKB
-suffix:semicolon
 id|dev_add_pack
 c_func
 (paren

@@ -4221,11 +4221,6 @@ id|func
 op_assign
 id|econet_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|function|econet_hw_initialise

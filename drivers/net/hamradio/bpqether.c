@@ -204,11 +204,6 @@ id|func
 op_assign
 id|bpq_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|variable|bpq_dev_notifier

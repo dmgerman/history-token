@@ -5634,11 +5634,6 @@ id|func
 op_assign
 id|x25_lapb_receive_frame
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|variable|x25_dev_notifier

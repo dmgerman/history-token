@@ -1415,11 +1415,6 @@ id|func
 op_assign
 id|ic_rarp_recv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|function|ic_rarp_init
@@ -2044,11 +2039,6 @@ dot
 id|func
 op_assign
 id|ic_bootp_recv
-comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
 comma
 )brace
 suffix:semicolon

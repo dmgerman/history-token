@@ -8247,11 +8247,6 @@ id|func
 op_assign
 id|ipx_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|variable|ipx_dix_packet_type
@@ -8274,11 +8269,6 @@ dot
 id|func
 op_assign
 id|ipx_rcv
-comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
 comma
 )brace
 suffix:semicolon
