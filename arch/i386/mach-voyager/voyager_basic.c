@@ -28,10 +28,6 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
-DECL|variable|reboot_thru_bios
-r_int
-id|reboot_thru_bios
-suffix:semicolon
 DECL|variable|voyager_level
 r_int
 id|voyager_level

@@ -14,14 +14,6 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
-DECL|variable|reboot_thru_bios
-r_int
-id|reboot_thru_bios
-suffix:semicolon
-DECL|variable|reboot_smp
-r_int
-id|reboot_smp
-suffix:semicolon
 DECL|function|machine_restart
 r_void
 id|machine_restart
