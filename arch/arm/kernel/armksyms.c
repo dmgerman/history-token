@@ -257,6 +257,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|do_div64
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ret_from_exception
 c_func
 (paren
@@ -965,6 +973,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__umodsi3
+)paren
+suffix:semicolon
+DECL|variable|do_div64
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|do_div64
 )paren
 suffix:semicolon
 multiline_comment|/* bitops */

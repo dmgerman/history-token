@@ -132,5 +132,23 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef CONFIG_SMP
+r_extern
+r_int
+r_int
+id|up_clock_tick
+suffix:semicolon
+macro_line|#endif
+r_extern
+r_int
+r_int
+id|sparc64_get_clock_tick
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 macro_line|#endif /* _SPARC64_TIMER_H */
 eof

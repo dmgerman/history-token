@@ -165,13 +165,20 @@ multiline_comment|/*&n; * switch_to(prev, next) should switch from task `prev&sq
 r_struct
 id|thread_info
 suffix:semicolon
+r_struct
+id|task_struct
+suffix:semicolon
 r_extern
 r_struct
-id|thread_info
+id|task_struct
 op_star
 id|__switch_to
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+comma
 r_struct
 id|thread_info
 op_star
@@ -182,7 +189,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t; &t;&t;&t;&t;&t;&bslash;&n;&t;&t;__switch_to(prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;last = __switch_to(prev,prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#ifdef CONFIG_SMP
 macro_line|#error SMP not supported
 DECL|macro|smp_mb
