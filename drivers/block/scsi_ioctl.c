@@ -1637,10 +1637,6 @@ id|cgc.buffer
 suffix:semicolon
 id|hdr.sbp
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|cgc.sense
 suffix:semicolon
 r_if
