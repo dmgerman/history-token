@@ -1612,6 +1612,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_HIGHMEM */
 DECL|function|save_highmem
 r_static
 r_int
@@ -1621,6 +1622,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_HIGHMEM
 r_struct
 id|zone
 op_star
@@ -1630,6 +1632,12 @@ r_int
 id|res
 op_assign
 l_int|0
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;swsusp: Saving Highmem&bslash;n&quot;
+)paren
 suffix:semicolon
 id|for_each_zone
 c_func
@@ -1663,6 +1671,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1676,6 +1685,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_HIGHMEM
+id|printk
+c_func
+(paren
+l_string|&quot;swsusp: Restoring Highmem&bslash;n&quot;
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1741,11 +1757,11 @@ id|save
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|pfn_is_nosave
 r_static
 r_int
@@ -2810,17 +2826,10 @@ id|nr_needed_pages
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot;/critical section: &quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_HIGHMEM
-id|printk
-c_func
-(paren
-l_string|&quot;handling highmem&quot;
+l_string|&quot;swsusp: critical section: &bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2846,13 +2855,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;, &quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|drain_local_pages
 c_func
 (paren
@@ -2897,7 +2899,7 @@ multiline_comment|/*&n;&t; * End of critical section. From now on, we can write 
 id|printk
 c_func
 (paren
-l_string|&quot;critical section/: done (%d pages copied)&bslash;n&quot;
+l_string|&quot;swsusp: critical section/: done (%d pages copied)&bslash;n&quot;
 comma
 id|nr_copy_pages
 )paren
@@ -3118,6 +3120,11 @@ c_func
 )paren
 suffix:semicolon
 id|restore_processor_state
+c_func
+(paren
+)paren
+suffix:semicolon
+id|restore_highmem
 c_func
 (paren
 )paren
