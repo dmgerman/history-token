@@ -518,14 +518,6 @@ op_star
 id|id
 )paren
 (brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - called&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_struct
 id|mtouch_usb
 op_star
@@ -571,6 +563,14 @@ r_char
 id|valid_device
 op_assign
 l_int|0
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - called&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 r_if
 c_cond
