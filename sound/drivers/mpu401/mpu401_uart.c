@@ -1351,7 +1351,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* read data in advance */
-id|spin_trylock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
