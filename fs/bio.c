@@ -1725,10 +1725,16 @@ op_logical_neg
 id|write_to_vm
 )paren
 (brace
-r_int
-r_int
+r_char
+id|__user
+op_star
 id|p
 op_assign
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|uaddr
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * for a write, copy in data to kernel pages&n;&t;&t; */
@@ -1765,10 +1771,6 @@ c_func
 (paren
 id|addr
 comma
-(paren
-r_char
-op_star
-)paren
 id|p
 comma
 id|bvec-&gt;bv_len
