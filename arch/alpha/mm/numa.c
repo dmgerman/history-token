@@ -1667,11 +1667,6 @@ id|__init_begin
 comma
 id|__init_end
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|totalram_pages
-suffix:semicolon
 r_int
 r_int
 id|nid

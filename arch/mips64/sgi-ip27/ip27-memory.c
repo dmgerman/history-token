@@ -1170,11 +1170,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|totalram_pages
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|setup_zero_pages
 c_func
 (paren

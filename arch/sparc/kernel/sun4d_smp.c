@@ -166,11 +166,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|totalram_pages
-suffix:semicolon
 multiline_comment|/* #define SMP_DEBUG */
 macro_line|#ifdef SMP_DEBUG
 DECL|macro|SMP_PRINTK
