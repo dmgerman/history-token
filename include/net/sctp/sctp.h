@@ -754,8 +754,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Size of Supported Address Parameter for &squot;x&squot; address types. */
 DECL|macro|SCTP_SAT_LEN
-mdefine_line|#define SCTP_SAT_LEN (sizeof(sctp_paramhdr_t) + 2 * sizeof(__u16))
+mdefine_line|#define SCTP_SAT_LEN(x) (sizeof(struct sctp_paramhdr) + (x) * sizeof(__u16))
 multiline_comment|/* Note: These V6 macros are obsolescent.  */
 multiline_comment|/* Use this macro to enclose code fragments which are V6-dependent. */
 DECL|macro|SCTP_V6

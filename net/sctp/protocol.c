@@ -2225,6 +2225,35 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Fill in Supported Address Type information for INIT and INIT-ACK&n; * chunks.  Returns number of addresses supported.&n; */
+DECL|function|sctp_inet_supported_addrs
+r_static
+r_int
+id|sctp_inet_supported_addrs
+c_func
+(paren
+r_const
+r_struct
+id|sctp_opt
+op_star
+id|opt
+comma
+id|__u16
+op_star
+id|types
+)paren
+(brace
+id|types
+(braket
+l_int|0
+)braket
+op_assign
+id|SCTP_PARAM_IPV4_ADDRESS
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Wrapper routine that calls the ip transmit routine. */
 DECL|function|sctp_v4_xmit
 r_static
@@ -2342,6 +2371,11 @@ dot
 id|bind_verify
 op_assign
 id|sctp_inet_bind_verify
+comma
+dot
+id|supported_addrs
+op_assign
+id|sctp_inet_supported_addrs
 comma
 dot
 id|af
