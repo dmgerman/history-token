@@ -480,36 +480,8 @@ DECL|typedef|ippp_bundle
 )brace
 id|ippp_bundle
 suffix:semicolon
-DECL|macro|NUM_RCV_BUFFS
-mdefine_line|#define NUM_RCV_BUFFS     64
-DECL|struct|ippp_buf_queue
-r_struct
-id|ippp_buf_queue
-(brace
-DECL|member|next
-r_struct
-id|ippp_buf_queue
-op_star
-id|next
-suffix:semicolon
-DECL|member|last
-r_struct
-id|ippp_buf_queue
-op_star
-id|last
-suffix:semicolon
-DECL|member|buf
-r_char
-op_star
-id|buf
-suffix:semicolon
-multiline_comment|/* NULL here indicates end of queue */
-DECL|member|len
-r_int
-id|len
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|IPPP_MAX_RQ_LEN
+mdefine_line|#define IPPP_MAX_RQ_LEN     8
 multiline_comment|/* The data structure for one CCP reset transaction */
 DECL|enum|ippp_ccp_reset_states
 r_enum
@@ -631,27 +603,9 @@ id|state
 suffix:semicolon
 DECL|member|rq
 r_struct
-id|ippp_buf_queue
+id|sk_buff_head
 id|rq
-(braket
-id|NUM_RCV_BUFFS
-)braket
 suffix:semicolon
-multiline_comment|/* packet queue for isdn_ppp_read() */
-DECL|member|first
-r_struct
-id|ippp_buf_queue
-op_star
-id|first
-suffix:semicolon
-multiline_comment|/* pointer to (current) first packet */
-DECL|member|last
-r_struct
-id|ippp_buf_queue
-op_star
-id|last
-suffix:semicolon
-multiline_comment|/* pointer to (current) last used packet in queue */
 DECL|member|wq
 id|wait_queue_head_t
 id|wq
