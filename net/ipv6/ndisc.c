@@ -5735,6 +5735,16 @@ op_amp
 id|rt-&gt;u.dst
 )paren
 suffix:semicolon
+id|inet6_ifra_notify
+c_func
+(paren
+id|RTM_NEWRA
+comma
+id|in6_dev
+comma
+id|ra_msg
+)paren
+suffix:semicolon
 id|in6_dev_put
 c_func
 (paren

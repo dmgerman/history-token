@@ -56,6 +56,8 @@ DECL|macro|RTM_DELTFILTER
 mdefine_line|#define&t;RTM_DELTFILTER&t;(RTM_BASE+29)
 DECL|macro|RTM_GETTFILTER
 mdefine_line|#define&t;RTM_GETTFILTER&t;(RTM_BASE+30)
+DECL|macro|RTM_NEWRA
+mdefine_line|#define RTM_NEWRA&t;(RTM_BASE+32)
 DECL|macro|RTM_NEWPREFIX
 mdefine_line|#define RTM_NEWPREFIX&t;(RTM_BASE+36)
 DECL|macro|RTM_GETPREFIX
@@ -795,6 +797,64 @@ id|rtgen_family
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*****************************************************************&n; *&t;&t;Route Advertisement specific messages.&n; * ******/
+multiline_comment|/* struct iframsg&n; * passes router advertisement specific information&n; */
+DECL|struct|iframsg
+r_struct
+id|iframsg
+(brace
+DECL|member|ifra_family
+r_int
+r_char
+id|ifra_family
+suffix:semicolon
+DECL|member|ifra_flags
+r_int
+id|ifra_flags
+suffix:semicolon
+DECL|member|ifra_index
+r_int
+id|ifra_index
+suffix:semicolon
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|IFRA_UNSPEC
+id|IFRA_UNSPEC
+comma
+DECL|enumerator|IFRA_LMTU
+id|IFRA_LMTU
+comma
+DECL|enumerator|IFRA_CACHEINFO
+id|IFRA_CACHEINFO
+)brace
+suffix:semicolon
+multiline_comment|/* max_adver_interval, min_adver_interval should be gotten from user level */
+DECL|struct|ifra_cacheinfo
+r_struct
+id|ifra_cacheinfo
+(brace
+DECL|member|hop_limit
+id|__u32
+id|hop_limit
+suffix:semicolon
+DECL|member|lifetime
+id|__u32
+id|lifetime
+suffix:semicolon
+DECL|member|reachable_time
+id|__u32
+id|reachable_time
+suffix:semicolon
+DECL|member|retrans_time
+id|__u32
+id|retrans_time
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|IFRA_MAX
+mdefine_line|#define IFRA_MAX IFRA_CACHEINFO
 multiline_comment|/*****************************************************************&n; *&t;&t;Link layer specific messages.&n; ****/
 multiline_comment|/* struct ifinfomsg&n; * passes link level specific information, not dependent&n; * on network protocol.&n; */
 DECL|struct|ifinfomsg
@@ -1224,6 +1284,8 @@ DECL|macro|RTMGRP_DECnet_ROUTE
 mdefine_line|#define RTMGRP_DECnet_ROUTE     0x4000
 DECL|macro|RTMGRP_IPV6_PREFIX
 mdefine_line|#define RTMGRP_IPV6_PREFIX&t;0x20000
+DECL|macro|RTMGRP_IPV6_IFRA
+mdefine_line|#define RTMGRP_IPV6_IFRA&t;0x10000
 multiline_comment|/* End of information exported to user level */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
