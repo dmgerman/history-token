@@ -1053,6 +1053,13 @@ id|spinlock_t
 op_star
 id|lock
 suffix:semicolon
+DECL|member|active
+r_int
+r_int
+op_star
+id|active
+suffix:semicolon
+multiline_comment|/* active processing request */
 DECL|member|handler
 id|ide_startstop_t
 (paren
@@ -1106,12 +1113,6 @@ op_star
 id|drive
 suffix:semicolon
 multiline_comment|/* last serviced drive */
-DECL|member|active
-r_int
-r_int
-id|active
-suffix:semicolon
-multiline_comment|/* active processing request */
 DECL|member|io_ports
 id|ide_ioreg_t
 id|io_ports
@@ -2034,6 +2035,7 @@ comma
 r_int
 comma
 r_int
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -2623,16 +2625,15 @@ id|ide_fops
 (braket
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
 multiline_comment|/* Probe for devices attached to the systems host controllers.&n; */
 r_extern
 r_int
 id|ideprobe_init
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
 r_extern
 r_int

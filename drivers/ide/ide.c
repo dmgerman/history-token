@@ -790,6 +790,7 @@ r_int
 id|uptodate
 comma
 r_int
+r_int
 id|nr_secs
 )paren
 (brace
@@ -4867,7 +4868,6 @@ c_func
 (paren
 id|IDE_SLEEP
 comma
-op_amp
 id|channel-&gt;active
 )paren
 suffix:semicolon
@@ -4898,7 +4898,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|channel-&gt;active
 )paren
 suffix:semicolon
@@ -4956,7 +4955,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 )paren
@@ -4996,7 +4994,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 suffix:semicolon
@@ -5015,7 +5012,6 @@ c_func
 (paren
 id|IDE_DMA
 comma
-op_amp
 id|ch-&gt;active
 )paren
 )paren
@@ -5085,7 +5081,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 suffix:semicolon
@@ -5213,7 +5208,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|channel-&gt;active
 )paren
 )paren
@@ -5489,7 +5483,6 @@ c_func
 (paren
 id|IDE_SLEEP
 comma
-op_amp
 id|ch-&gt;active
 )paren
 )paren
@@ -5498,7 +5491,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 suffix:semicolon
@@ -5546,7 +5538,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 )paren
@@ -5792,7 +5783,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 suffix:semicolon
@@ -6105,7 +6095,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 )paren
@@ -6193,7 +6182,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|ch-&gt;active
 )paren
 suffix:semicolon
@@ -7575,7 +7563,17 @@ c_func
 id|ch-&gt;lock
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ch-&gt;active
+)paren
+suffix:semicolon
 id|ch-&gt;lock
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ch-&gt;active
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -8341,7 +8339,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|drive-&gt;channel-&gt;active
 )paren
 )paren

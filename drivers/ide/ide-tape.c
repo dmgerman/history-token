@@ -1069,7 +1069,8 @@ r_typedef
 r_struct
 (brace
 DECL|member|drive
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -2077,12 +2078,13 @@ DECL|typedef|idetape_control_reg_t
 )brace
 id|idetape_control_reg_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;idetape_chrdev_t provides the link between out character device&n; *&t;interface and our block device interface and the corresponding&n; *&t;ide_drive_t structure.&n; */
+multiline_comment|/*&n; *&t;idetape_chrdev_t provides the link between out character device&n; *&t;interface and our block device interface and the corresponding&n; *&t;ata_device structure.&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|drive
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -2715,7 +2717,7 @@ DECL|typedef|idetape_config_t
 )brace
 id|idetape_config_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;The variables below are used for the character device interface.&n; *&t;Additional state variables are defined in our ide_drive_t structure.&n; */
+multiline_comment|/*&n; *&t;The variables below are used for the character device interface.&n; *&t;Additional state variables are defined in our ata_device structure.&n; */
 DECL|variable|idetape_chrdevs
 r_static
 id|idetape_chrdev_t
@@ -2928,7 +2930,8 @@ r_void
 id|idetape_onstream_mode_sense_tape_parameter_page
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2966,8 +2969,10 @@ DECL|function|idetape_discard_data
 r_static
 r_void
 id|idetape_discard_data
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2992,8 +2997,10 @@ DECL|function|idetape_input_buffers
 r_static
 r_void
 id|idetape_input_buffers
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3116,8 +3123,10 @@ DECL|function|idetape_output_buffers
 r_static
 r_void
 id|idetape_output_buffers
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3341,8 +3350,10 @@ r_static
 id|idetape_pc_t
 op_star
 id|idetape_next_pc_storage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -3400,8 +3411,10 @@ r_struct
 id|request
 op_star
 id|idetape_next_rq_storage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -3505,8 +3518,10 @@ DECL|function|idetape_analyze_error
 r_static
 r_void
 id|idetape_analyze_error
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3820,8 +3835,10 @@ DECL|function|idetape_abort_pipeline
 r_static
 r_void
 id|idetape_abort_pipeline
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -3896,8 +3913,10 @@ DECL|function|idetape_active_next_stage
 r_static
 r_void
 id|idetape_active_next_stage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -3982,8 +4001,10 @@ DECL|function|idetape_increase_max_pipeline_stages
 r_static
 r_void
 id|idetape_increase_max_pipeline_stages
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -4019,7 +4040,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_increase_max_pipeline_stages&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif
 id|tape-&gt;max_stages
 op_add_assign
 id|increase
@@ -4172,8 +4193,10 @@ DECL|function|idetape_remove_stage_head
 r_static
 r_void
 id|idetape_remove_stage_head
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -4202,7 +4225,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_remove_stage_head&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif
 macro_line|#if IDETAPE_DEBUG_BUGS
 r_if
 c_cond
@@ -4936,8 +4959,10 @@ DECL|function|idetape_queue_pc_head
 r_static
 r_void
 id|idetape_queue_pc_head
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -4984,8 +5009,10 @@ DECL|function|idetape_retry_pc
 r_static
 id|ide_startstop_t
 id|idetape_retry_pc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -6826,8 +6853,10 @@ DECL|function|idetape_queue_onstream_buffer_fill
 r_static
 r_void
 id|idetape_queue_onstream_buffer_fill
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -6882,7 +6911,8 @@ r_void
 id|calculate_speeds
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -9801,8 +9831,10 @@ DECL|function|idetape_add_stage_tail
 r_static
 r_void
 id|idetape_add_stage_tail
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -9835,7 +9867,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_add_stage_tail&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -9903,8 +9935,10 @@ DECL|function|idetape_init_stage
 r_static
 r_void
 id|idetape_init_stage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -10277,8 +10311,10 @@ DECL|function|idetape_wait_for_request
 r_static
 r_void
 id|idetape_wait_for_request
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -10584,8 +10620,10 @@ DECL|function|idetape_create_write_filemark_cmd
 r_static
 r_void
 id|idetape_create_write_filemark_cmd
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -10683,8 +10721,10 @@ DECL|function|__idetape_queue_pc_tail
 r_static
 r_int
 id|__idetape_queue_pc_tail
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -10732,8 +10772,10 @@ DECL|function|idetape_create_load_unload_cmd
 r_static
 r_void
 id|idetape_create_load_unload_cmd
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -10816,8 +10858,10 @@ DECL|function|idetape_wait_ready
 r_static
 r_int
 id|idetape_wait_ready
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -10979,8 +11023,10 @@ DECL|function|idetape_queue_pc_tail
 r_static
 r_int
 id|idetape_queue_pc_tail
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -11053,8 +11099,10 @@ DECL|function|idetape_flush_tape_buffers
 r_static
 r_int
 id|idetape_flush_tape_buffers
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -11145,8 +11193,10 @@ DECL|function|idetape_read_position
 r_static
 r_int
 id|idetape_read_position
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -11281,8 +11331,10 @@ DECL|function|idetape_create_locate_cmd
 r_static
 r_void
 id|idetape_create_locate_cmd
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -11398,8 +11450,10 @@ DECL|function|idetape_create_prevent_cmd
 r_static
 r_int
 id|idetape_create_prevent_cmd
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -11458,8 +11512,10 @@ DECL|function|__idetape_discard_read_pipeline
 r_static
 r_int
 id|__idetape_discard_read_pipeline
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -11591,13 +11647,15 @@ r_return
 id|cnt
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_position_tape positions the tape to the requested block&n; *&t;using the LOCATE packet command. A READ POSITION command is then&n; *&t;issued to check where we are positioned.&n; *&n; *&t;Like all higher level operations, we queue the commands at the tail&n; *&t;of the request queue and wait for their completion.&n; *&t;&n; */
+multiline_comment|/*&n; *&t;idetape_position_tape positions the tape to the requested block&n; *&t;using the LOCATE packet command. A READ POSITION command is then&n; *&t;issued to check where we are positioned.&n; *&n; *&t;Like all higher level operations, we queue the commands at the tail&n; *&t;of the request queue and wait for their completion.&n; *&n; */
 DECL|function|idetape_position_tape
 r_static
 r_int
 id|idetape_position_tape
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -11705,8 +11763,10 @@ DECL|function|idetape_discard_read_pipeline
 r_static
 r_void
 id|idetape_discard_read_pipeline
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -11817,8 +11877,10 @@ DECL|function|idetape_update_stats
 r_static
 r_void
 id|idetape_update_stats
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -11856,8 +11918,10 @@ DECL|function|idetape_queue_rw_tail
 r_static
 r_int
 id|idetape_queue_rw_tail
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -12021,8 +12085,10 @@ DECL|function|idetape_onstream_read_back_buffer
 r_static
 r_void
 id|idetape_onstream_read_back_buffer
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -12330,8 +12396,10 @@ DECL|function|idetape_onstream_write_error_recovery
 r_static
 r_void
 id|idetape_onstream_write_error_recovery
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -12596,8 +12664,10 @@ DECL|function|idetape_insert_pipeline_into_queue
 r_static
 r_void
 id|idetape_insert_pipeline_into_queue
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -12707,8 +12777,10 @@ DECL|function|idetape_create_rewind_cmd
 r_static
 r_void
 id|idetape_create_rewind_cmd
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -12944,8 +13016,10 @@ DECL|function|idetape_verify_stage
 r_static
 r_int
 id|idetape_verify_stage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -13399,8 +13473,10 @@ DECL|function|idetape_wait_first_stage
 r_static
 r_void
 id|idetape_wait_first_stage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -13463,8 +13539,10 @@ DECL|function|idetape_add_chrdev_write_request
 r_static
 r_int
 id|idetape_add_chrdev_write_request
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -13788,8 +13866,10 @@ DECL|function|idetape_wait_for_pipeline
 r_static
 r_void
 id|idetape_wait_for_pipeline
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -13862,8 +13942,10 @@ DECL|function|idetape_empty_write_pipeline
 r_static
 r_void
 id|idetape_empty_write_pipeline
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -14157,8 +14239,10 @@ DECL|function|idetape_restart_speed_control
 r_static
 r_void
 id|idetape_restart_speed_control
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -14222,8 +14306,10 @@ DECL|function|idetape_initiate_read
 r_static
 r_int
 id|idetape_initiate_read
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -14547,8 +14633,10 @@ DECL|function|idetape_get_logical_blk
 r_static
 r_int
 id|idetape_get_logical_blk
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -14931,8 +15019,10 @@ DECL|function|idetape_add_chrdev_read_request
 r_static
 r_int
 id|idetape_add_chrdev_read_request
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -15283,8 +15373,10 @@ DECL|function|idetape_pad_zeros
 r_static
 r_void
 id|idetape_pad_zeros
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -15403,8 +15495,10 @@ DECL|function|idetape_pipeline_size
 r_static
 r_int
 id|idetape_pipeline_size
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -15490,8 +15584,10 @@ DECL|function|idetape_rewind_tape
 r_static
 r_int
 id|idetape_rewind_tape
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -15522,7 +15618,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_rewind_tape&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */&t;
+macro_line|#endif
 id|idetape_create_rewind_cmd
 (paren
 id|drive
@@ -15586,8 +15682,10 @@ DECL|function|idetape_blkdev_ioctl
 r_static
 r_int
 id|idetape_blkdev_ioctl
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -15619,7 +15717,7 @@ suffix:semicolon
 id|idetape_config_t
 id|config
 suffix:semicolon
-macro_line|#if IDETAPE_DEBUG_LOG&t;
+macro_line|#if IDETAPE_DEBUG_LOG
 r_if
 c_cond
 (paren
@@ -15633,7 +15731,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_blkdev_ioctl&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -15741,6 +15839,7 @@ DECL|function|idetape_blkdev_open
 r_static
 r_int
 id|idetape_blkdev_open
+c_func
 (paren
 r_struct
 id|inode
@@ -15752,7 +15851,8 @@ id|file
 op_star
 id|filp
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -15776,6 +15876,7 @@ DECL|function|idetape_blkdev_release
 r_static
 r_void
 id|idetape_blkdev_release
+c_func
 (paren
 r_struct
 id|inode
@@ -15787,7 +15888,8 @@ id|file
 op_star
 id|filp
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -15807,7 +15909,8 @@ macro_line|#endif
 multiline_comment|/*&n; *&t;Character device interface functions&n; */
 DECL|function|get_drive_ptr
 r_static
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|get_drive_ptr
 (paren
@@ -15855,8 +15958,10 @@ DECL|function|idetape_onstream_space_over_filemarks_backward
 r_static
 r_int
 id|idetape_onstream_space_over_filemarks_backward
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -16079,8 +16184,10 @@ DECL|function|idetape_onstream_space_over_filemarks_forward_slow
 r_static
 r_int
 id|idetape_onstream_space_over_filemarks_forward_slow
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -16294,8 +16401,10 @@ DECL|function|idetape_onstream_space_over_filemarks_forward_fast
 r_static
 r_int
 id|idetape_onstream_space_over_filemarks_forward_fast
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -16729,8 +16838,10 @@ DECL|function|idetape_space_over_filemarks
 r_static
 r_int
 id|idetape_space_over_filemarks
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -17208,7 +17319,8 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -17610,8 +17722,10 @@ DECL|function|idetape_update_last_marker
 r_static
 r_void
 id|idetape_update_last_marker
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -17942,8 +18056,10 @@ DECL|function|idetape_write_filler
 r_static
 r_void
 id|idetape_write_filler
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -18120,8 +18236,10 @@ DECL|function|__idetape_write_header
 r_static
 r_void
 id|__idetape_write_header
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -18350,8 +18468,10 @@ DECL|function|idetape_write_header
 r_static
 r_void
 id|idetape_write_header
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -18487,7 +18607,8 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -19118,8 +19239,10 @@ DECL|function|idetape_write_filemark
 r_static
 r_int
 id|idetape_write_filemark
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -19286,8 +19409,10 @@ DECL|function|idetape_write_eod
 r_static
 r_void
 id|idetape_write_eod
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -19370,8 +19495,10 @@ suffix:semicolon
 DECL|function|idetape_seek_logical_blk
 r_int
 id|idetape_seek_logical_blk
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -19564,13 +19691,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_mtioctop is called from idetape_chrdev_ioctl when&n; *&t;the general mtio MTIOCTOP ioctl is requested.&n; *&n; *&t;We currently support the following mtio.h operations:&n; *&n; *&t;MTFSF&t;-&t;Space over mt_count filemarks in the positive direction.&n; *&t;&t;&t;The tape is positioned after the last spaced filemark.&n; *&n; *&t;MTFSFM&t;-&t;Same as MTFSF, but the tape is positioned before the&n; *&t;&t;&t;last filemark.&n; *&n; *&t;MTBSF&t;-&t;Steps background over mt_count filemarks, tape is&n; *&t;&t;&t;positioned before the last filemark.&n; *&n; *&t;MTBSFM&t;-&t;Like MTBSF, only tape is positioned after the last filemark.&n; *&n; *&t;Note:&n; *&n; *&t;&t;MTBSF and MTBSFM are not supported when the tape doesn&squot;t&n; *&t;&t;supports spacing over filemarks in the reverse direction.&n; *&t;&t;In this case, MTFSFM is also usually not supported (it is&n; *&t;&t;supported in the rare case in which we crossed the filemark&n; *&t;&t;during our read-ahead pipelined operation mode).&n; *&t;&t;&n; *&t;MTWEOF&t;-&t;Writes mt_count filemarks. Tape is positioned after&n; *&t;&t;&t;the last written filemark.&n; *&n; *&t;MTREW&t;-&t;Rewinds tape.&n; *&n; *&t;MTLOAD&t;-&t;Loads the tape.&n; *&n; *&t;MTOFFL&t;-&t;Puts the tape drive &quot;Offline&quot;: Rewinds the tape and&n; *&t;MTUNLOAD&t;prevents further access until the media is replaced.&n; *&n; *&t;MTNOP&t;-&t;Flushes tape buffers.&n; *&n; *&t;MTRETEN&t;-&t;Retension media. This typically consists of one end&n; *&t;&t;&t;to end pass on the media.&n; *&n; *&t;MTEOM&t;-&t;Moves to the end of recorded data.&n; *&n; *&t;MTERASE&t;-&t;Erases tape.&n; *&n; *&t;MTSETBLK - &t;Sets the user block size to mt_count bytes. If&n; *&t;&t;&t;mt_count is 0, we will attempt to autodetect&n; *&t;&t;&t;the block size.&n; *&n; *&t;MTSEEK&t;-&t;Positions the tape in a specific block number, where&n; *&t;&t;&t;each block is assumed to contain which user_block_size&n; *&t;&t;&t;bytes.&n; *&n; *&t;MTSETPART - &t;Switches to another tape partition.&n; *&n; *&t;MTLOCK - &t;Locks the tape door.&n; *&n; *&t;MTUNLOCK - &t;Unlocks the tape door.&n; *&n; *&t;The following commands are currently not supported:&n; *&n; *&t;MTFSS, MTBSS, MTWSM, MTSETDENSITY,&n; *&t;MTSETDRVBUFFER, MT_ST_BOOLEANS, MT_ST_WRITE_THRESHOLD.&n; */
+multiline_comment|/*&n; *&t;idetape_mtioctop is called from idetape_chrdev_ioctl when&n; *&t;the general mtio MTIOCTOP ioctl is requested.&n; *&n; *&t;We currently support the following mtio.h operations:&n; *&n; *&t;MTFSF&t;-&t;Space over mt_count filemarks in the positive direction.&n; *&t;&t;&t;The tape is positioned after the last spaced filemark.&n; *&n; *&t;MTFSFM&t;-&t;Same as MTFSF, but the tape is positioned before the&n; *&t;&t;&t;last filemark.&n; *&n; *&t;MTBSF&t;-&t;Steps background over mt_count filemarks, tape is&n; *&t;&t;&t;positioned before the last filemark.&n; *&n; *&t;MTBSFM&t;-&t;Like MTBSF, only tape is positioned after the last filemark.&n; *&n; *&t;Note:&n; *&n; *&t;&t;MTBSF and MTBSFM are not supported when the tape doesn&squot;t&n; *&t;&t;supports spacing over filemarks in the reverse direction.&n; *&t;&t;In this case, MTFSFM is also usually not supported (it is&n; *&t;&t;supported in the rare case in which we crossed the filemark&n; *&t;&t;during our read-ahead pipelined operation mode).&n; *&n; *&t;MTWEOF&t;-&t;Writes mt_count filemarks. Tape is positioned after&n; *&t;&t;&t;the last written filemark.&n; *&n; *&t;MTREW&t;-&t;Rewinds tape.&n; *&n; *&t;MTLOAD&t;-&t;Loads the tape.&n; *&n; *&t;MTOFFL&t;-&t;Puts the tape drive &quot;Offline&quot;: Rewinds the tape and&n; *&t;MTUNLOAD&t;prevents further access until the media is replaced.&n; *&n; *&t;MTNOP&t;-&t;Flushes tape buffers.&n; *&n; *&t;MTRETEN&t;-&t;Retension media. This typically consists of one end&n; *&t;&t;&t;to end pass on the media.&n; *&n; *&t;MTEOM&t;-&t;Moves to the end of recorded data.&n; *&n; *&t;MTERASE&t;-&t;Erases tape.&n; *&n; *&t;MTSETBLK -&t;Sets the user block size to mt_count bytes. If&n; *&t;&t;&t;mt_count is 0, we will attempt to autodetect&n; *&t;&t;&t;the block size.&n; *&n; *&t;MTSEEK&t;-&t;Positions the tape in a specific block number, where&n; *&t;&t;&t;each block is assumed to contain which user_block_size&n; *&t;&t;&t;bytes.&n; *&n; *&t;MTSETPART -&t;Switches to another tape partition.&n; *&n; *&t;MTLOCK -&t;Locks the tape door.&n; *&n; *&t;MTUNLOCK -&t;Unlocks the tape door.&n; *&n; *&t;The following commands are currently not supported:&n; *&n; *&t;MTFSS, MTBSS, MTWSM, MTSETDENSITY,&n; *&t;MTSETDRVBUFFER, MT_ST_BOOLEANS, MT_ST_WRITE_THRESHOLD.&n; */
 DECL|function|idetape_mtioctop
 r_static
 r_int
 id|idetape_mtioctop
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -20467,7 +20596,8 @@ r_int
 id|arg
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -20917,8 +21047,10 @@ DECL|function|__idetape_analyze_headers
 r_static
 r_int
 id|__idetape_analyze_headers
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -21331,8 +21463,10 @@ DECL|function|idetape_analyze_headers
 r_static
 r_int
 id|idetape_analyze_headers
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -21500,7 +21634,8 @@ op_star
 id|filp
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -21528,7 +21663,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_chrdev_open&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -21793,7 +21928,8 @@ op_star
 id|inode
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -21917,7 +22053,8 @@ op_star
 id|filp
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -22101,13 +22238,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_identify_device is called to check the contents of the&n; *&t;ATAPI IDENTIFY command results. We return:&n; *&n; *&t;1&t;If the tape can be supported by us, based on the information&n; *&t;&t;we have so far.&n; *&n; *&t;0 &t;If this tape driver is not currently supported by us.&n; */
+multiline_comment|/*&n; *&t;idetape_identify_device is called to check the contents of the&n; *&t;ATAPI IDENTIFY command results. We return:&n; *&n; *&t;1&t;If the tape can be supported by us, based on the information&n; *&t;&t;we have so far.&n; *&n; *&t;0&t;If this tape driver is not currently supported by us.&n; */
 DECL|function|idetape_identify_device
 r_static
 r_int
 id|idetape_identify_device
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -22918,8 +23057,10 @@ DECL|function|idetape_onstream_set_vendor
 r_static
 r_void
 id|idetape_onstream_set_vendor
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -23100,8 +23241,10 @@ DECL|function|idetape_onstream_set_retries
 r_static
 r_void
 id|idetape_onstream_set_retries
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -23227,8 +23370,10 @@ DECL|function|idetape_onstream_configure_block_size
 r_static
 r_void
 id|idetape_onstream_configure_block_size
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -23427,8 +23572,10 @@ DECL|function|idetape_get_inquiry_results
 r_static
 r_void
 id|idetape_get_inquiry_results
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -23659,8 +23806,10 @@ DECL|function|idetape_configure_onstream
 r_static
 r_void
 id|idetape_configure_onstream
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -23724,7 +23873,8 @@ r_void
 id|idetape_onstream_mode_sense_tape_parameter_page
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -23862,8 +24012,10 @@ DECL|function|idetape_get_mode_sense_results
 r_static
 r_void
 id|idetape_get_mode_sense_results
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -24343,7 +24495,8 @@ r_void
 id|idetape_get_blocksize_from_block_descriptor
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -24478,8 +24631,10 @@ DECL|function|idetape_setup
 r_static
 r_void
 id|idetape_setup
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -24995,8 +25150,10 @@ DECL|function|idetape_cleanup
 r_static
 r_int
 id|idetape_cleanup
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -25152,7 +25309,8 @@ r_void
 id|idetape_revalidate
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|_dummy
 )paren
@@ -25260,11 +25418,13 @@ r_static
 r_void
 id|__exit
 id|idetape_exit
+c_func
 (paren
 r_void
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -25323,11 +25483,13 @@ multiline_comment|/*&n; *&t;idetape_init will register the driver for each tape.
 DECL|function|idetape_init
 r_int
 id|idetape_init
+c_func
 (paren
 r_void
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon

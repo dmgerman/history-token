@@ -1897,7 +1897,8 @@ r_int
 id|piix_set_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1906,7 +1907,8 @@ r_char
 id|speed
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|peer
 op_assign
@@ -2122,7 +2124,8 @@ r_void
 id|piix_tune_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

@@ -2030,7 +2030,8 @@ r_int
 id|via_set_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2039,7 +2040,8 @@ r_char
 id|speed
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|peer
 op_assign
@@ -2252,7 +2254,8 @@ r_void
 id|via82cxxx_tune_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3106,7 +3109,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;VP_IDE: VIA %s (rev %02x) IDE %s controller on pci%s&bslash;n&quot;
+l_string|&quot;VP_IDE: VIA %s (rev %02x) ATA %s controller on PCI %s&bslash;n&quot;
 comma
 id|via_config-&gt;name
 comma
@@ -3122,44 +3125,6 @@ comma
 id|dev-&gt;slot_name
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Setup /proc/ide/via entry.&n; */
-macro_line|#if 0 &amp;&amp; defined(CONFIG_PROC_FS)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|via_proc
-)paren
-(brace
-id|via_base
-op_assign
-id|pci_resource_start
-c_func
-(paren
-id|dev
-comma
-l_int|4
-)paren
-suffix:semicolon
-id|bmide_dev
-op_assign
-id|dev
-suffix:semicolon
-id|isa_dev
-op_assign
-id|isa
-suffix:semicolon
-id|via_display_info
-op_assign
-op_amp
-id|via_get_info
-suffix:semicolon
-id|via_proc
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

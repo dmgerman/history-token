@@ -379,12 +379,14 @@ DECL|function|ali14xx_tune_drive
 r_static
 r_void
 id|ali14xx_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -396,7 +398,7 @@ id|time1
 comma
 id|time2
 suffix:semicolon
-id|byte
+id|u8
 id|param1
 comma
 id|param2
