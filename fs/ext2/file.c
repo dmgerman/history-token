@@ -57,6 +57,16 @@ op_assign
 id|generic_file_write
 comma
 dot
+id|aio_read
+op_assign
+id|generic_file_aio_read
+comma
+dot
+id|aio_write
+op_assign
+id|generic_file_aio_write
+comma
+dot
 id|ioctl
 op_assign
 id|ext2_ioctl

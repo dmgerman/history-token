@@ -686,6 +686,16 @@ multiline_comment|/* Padding: libc5 uses this.. */
 suffix:semicolon
 DECL|macro|BUG_ON
 mdefine_line|#define BUG_ON(condition) do { if (unlikely((condition)!=0)) BUG(); } while(0)
+r_extern
+r_void
+id|BUILD_BUG
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|BUILD_BUG_ON
+mdefine_line|#define BUILD_BUG_ON(condition) do { if (condition) BUILD_BUG(); } while(0)
 multiline_comment|/* Trap pasters of __FUNCTION__ at compile-time */
 macro_line|#if __GNUC__ &gt; 2 || __GNUC_MINOR__ &gt;= 95
 DECL|macro|__FUNCTION__

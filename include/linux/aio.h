@@ -2,8 +2,9 @@ macro_line|#ifndef __LINUX__AIO_H
 DECL|macro|__LINUX__AIO_H
 mdefine_line|#define __LINUX__AIO_H
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/aio_abi.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|AIO_MAXSEGS
 mdefine_line|#define AIO_MAXSEGS&t;&t;4
 DECL|macro|AIO_KIOGRP_NR_ATOMIC
@@ -19,11 +20,49 @@ mdefine_line|#define KIOCB_C_COMPLETE&t;0x02
 DECL|macro|KIOCB_SYNC_KEY
 mdefine_line|#define KIOCB_SYNC_KEY&t;&t;(~0U)
 DECL|macro|KIOCB_PRIVATE_SIZE
-mdefine_line|#define KIOCB_PRIVATE_SIZE&t;(16 * sizeof(long))
+mdefine_line|#define KIOCB_PRIVATE_SIZE&t;(24 * sizeof(long))
+multiline_comment|/* ki_flags bits */
+DECL|macro|KIF_LOCKED
+mdefine_line|#define KIF_LOCKED&t;&t;0
+DECL|macro|KIF_KICKED
+mdefine_line|#define KIF_KICKED&t;&t;1
+DECL|macro|KIF_CANCELLED
+mdefine_line|#define KIF_CANCELLED&t;&t;2
+DECL|macro|kiocbTryLock
+mdefine_line|#define kiocbTryLock(iocb)&t;test_and_set_bit(KIF_LOCKED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbTryKick
+mdefine_line|#define kiocbTryKick(iocb)&t;test_and_set_bit(KIF_KICKED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbSetLocked
+mdefine_line|#define kiocbSetLocked(iocb)&t;set_bit(KIF_LOCKED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbSetKicked
+mdefine_line|#define kiocbSetKicked(iocb)&t;set_bit(KIF_KICKED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbSetCancelled
+mdefine_line|#define kiocbSetCancelled(iocb)&t;set_bit(KIF_CANCELLED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbClearLocked
+mdefine_line|#define kiocbClearLocked(iocb)&t;set_bit(KIF_LOCKED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbClearKicked
+mdefine_line|#define kiocbClearKicked(iocb)&t;set_bit(KIF_KICKED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbClearCancelled
+mdefine_line|#define kiocbClearCancelled(iocb)&t;set_bit(KIF_CANCELLED, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbIsLocked
+mdefine_line|#define kiocbIsLocked(iocb)&t;test_bit(0, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbIsKicked
+mdefine_line|#define kiocbIsKicked(iocb)&t;test_bit(1, &amp;(iocb)-&gt;ki_flags)
+DECL|macro|kiocbIsCancelled
+mdefine_line|#define kiocbIsCancelled(iocb)&t;test_bit(2, &amp;(iocb)-&gt;ki_flags)
 DECL|struct|kiocb
 r_struct
 id|kiocb
 (brace
+DECL|member|ki_run_list
+r_struct
+id|list_head
+id|ki_run_list
+suffix:semicolon
+DECL|member|ki_flags
+r_int
+id|ki_flags
+suffix:semicolon
 DECL|member|ki_users
 r_int
 id|ki_users
@@ -62,17 +101,24 @@ id|io_event
 op_star
 )paren
 suffix:semicolon
+DECL|member|ki_retry
+r_int
+(paren
+op_star
+id|ki_retry
+)paren
+(paren
+r_struct
+id|kiocb
+op_star
+)paren
+suffix:semicolon
 DECL|member|ki_list
 r_struct
 id|list_head
 id|ki_list
 suffix:semicolon
-DECL|member|ki_data
-r_void
-op_star
-id|ki_data
-suffix:semicolon
-multiline_comment|/* for use by the the file */
+multiline_comment|/* the aio core uses this&n;&t;&t;&t;&t;&t;&t; * for cancellation */
 DECL|member|ki_user_obj
 r_void
 op_star
@@ -84,22 +130,23 @@ id|__u64
 id|ki_user_data
 suffix:semicolon
 multiline_comment|/* user&squot;s data for completion */
+DECL|member|ki_pos
+id|loff_t
+id|ki_pos
+suffix:semicolon
 DECL|member|private
-r_int
+r_char
 r_private
 (braket
 id|KIOCB_PRIVATE_SIZE
-op_div
-r_sizeof
-(paren
-r_int
-)paren
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|is_sync_kiocb
+mdefine_line|#define is_sync_kiocb(iocb)&t;((iocb)-&gt;ki_key == KIOCB_SYNC_KEY)
 DECL|macro|init_sync_kiocb
-mdefine_line|#define init_sync_kiocb(x, filp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct task_struct *tsk = current;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_key = KIOCB_SYNC_KEY;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = &amp;tsk-&gt;active_mm-&gt;default_kioctx;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_user_obj = tsk;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define init_sync_kiocb(x, filp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct task_struct *tsk = current;&t;&bslash;&n;&t;&t;(x)-&gt;ki_flags = 0;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_key = KIOCB_SYNC_KEY;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = &amp;tsk-&gt;active_mm-&gt;default_kioctx;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_user_obj = tsk;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|AIO_RING_MAGIC
 mdefine_line|#define AIO_RING_MAGIC&t;&t;&t;0xa10a10a1
 DECL|macro|AIO_RING_COMPAT_FEATURES
@@ -255,6 +302,12 @@ id|list_head
 id|active_reqs
 suffix:semicolon
 multiline_comment|/* used for cancellation */
+DECL|member|run_list
+r_struct
+id|list_head
+id|run_list
+suffix:semicolon
+multiline_comment|/* used for kicked reqs */
 DECL|member|max_reqs
 r_int
 id|max_reqs
@@ -263,6 +316,11 @@ DECL|member|ring_info
 r_struct
 id|aio_ring_info
 id|ring_info
+suffix:semicolon
+DECL|member|wq
+r_struct
+id|work_struct
+id|wq
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -292,6 +350,21 @@ id|FASTCALL
 c_func
 (paren
 id|aio_put_req
+c_func
+(paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|kick_iocb
 c_func
 (paren
 r_struct
