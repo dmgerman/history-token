@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/mostek.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
@@ -1568,9 +1569,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_after_eq
+c_func
+(paren
 id|ticks
-op_ge
+comma
 id|timer_tick_compare
+)paren
 )paren
 suffix:semicolon
 id|timer_check_rtc

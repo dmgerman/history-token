@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -4514,9 +4515,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_after_eq
+c_func
+(paren
 id|tick
-op_ge
+comma
 id|compare
+)paren
 )paren
 suffix:semicolon
 )brace
