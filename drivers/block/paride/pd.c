@@ -904,14 +904,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* i/o error retry count */
-DECL|variable|pd_busy
-r_static
-r_int
-id|pd_busy
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* request being processed ? */
 DECL|variable|pd_req
 r_static
 r_struct
@@ -3588,10 +3580,6 @@ id|pd_retries
 op_assign
 l_int|0
 suffix:semicolon
-id|pd_busy
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3625,10 +3613,6 @@ id|do_pd_write
 suffix:semicolon
 r_else
 (brace
-id|pd_busy
-op_assign
-l_int|0
-suffix:semicolon
 id|end_request
 c_func
 (paren
@@ -3656,7 +3640,7 @@ id|q
 r_if
 c_cond
 (paren
-id|pd_busy
+id|pd_req
 )paren
 r_return
 suffix:semicolon
@@ -3779,10 +3763,6 @@ id|pd_req
 comma
 id|success
 )paren
-suffix:semicolon
-id|pd_busy
-op_assign
-l_int|0
 suffix:semicolon
 id|do_pd_request1
 c_func
