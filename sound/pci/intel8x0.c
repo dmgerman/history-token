@@ -13440,6 +13440,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#ifdef SUPPORT_MIDI
 r_if
 c_cond
 (paren
@@ -13522,6 +13523,7 @@ id|dev
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 id|snd_intel8x0_proc_init
 c_func
 (paren
