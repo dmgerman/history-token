@@ -31,7 +31,7 @@ DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.3&quot;
+mdefine_line|#define VERSION &quot;2.4&quot;
 DECL|variable|l2cap_sock_ops
 r_static
 r_struct
@@ -6987,8 +6987,7 @@ id|scid
 )paren
 )paren
 r_return
-op_minus
-id|ENOENT
+l_int|0
 suffix:semicolon
 r_switch
 c_cond
@@ -7391,11 +7390,6 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
 id|scid
 op_assign
 id|__le16_to_cpu
@@ -7450,8 +7444,7 @@ id|scid
 )paren
 )paren
 r_return
-op_minus
-id|ENOENT
+l_int|0
 suffix:semicolon
 r_switch
 c_cond
@@ -7640,7 +7633,7 @@ id|sk
 )paren
 suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|l2cap_disconnect_req
@@ -7925,11 +7918,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|l2cap_info_req
+DECL|function|l2cap_information_req
 r_static
 r_inline
 r_int
-id|l2cap_info_req
+id|l2cap_information_req
 c_func
 (paren
 r_struct
@@ -8020,11 +8013,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|l2cap_info_rsp
+DECL|function|l2cap_information_rsp
 r_static
 r_inline
 r_int
-id|l2cap_info_rsp
+id|l2cap_information_rsp
 c_func
 (paren
 r_struct
@@ -8351,7 +8344,7 @@ id|L2CAP_INFO_REQ
 suffix:colon
 id|err
 op_assign
-id|l2cap_info_req
+id|l2cap_information_req
 c_func
 (paren
 id|conn
@@ -8369,7 +8362,7 @@ id|L2CAP_INFO_RSP
 suffix:colon
 id|err
 op_assign
-id|l2cap_info_rsp
+id|l2cap_information_rsp
 c_func
 (paren
 id|conn

@@ -167,6 +167,8 @@ dot
 id|driver_info
 op_assign
 id|HCI_RESET
+op_or
+id|HCI_BROKEN_ISOC
 )brace
 comma
 multiline_comment|/* ISSC Bluetooth Adapter v3.1 */
