@@ -956,7 +956,7 @@ id|flags
 suffix:semicolon
 r_extern
 r_int
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 r_struct

@@ -3753,9 +3753,9 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-DECL|function|ip6_found_nexthdr
+DECL|function|ip6_find_1stfragopt
 r_int
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 r_struct
@@ -4002,7 +4002,7 @@ id|rt-&gt;u.dst.dev
 suffix:semicolon
 id|hlen
 op_assign
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 id|skb
