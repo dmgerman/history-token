@@ -3074,13 +3074,18 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n;&t; * Make sure that there are no blocks in front of the head&n;&t; * with the same cycle number as the head.  This can happen&n;&t; * because we allow multiple outstanding log writes concurrently,&n;&t; * and the later writes might make it out before earlier ones.&n;&t; *&n;&t; * We use the lsn from before modifying it so that we&squot;ll never&n;&t; * overwrite the unmount record after a clean unmount.&n;&t; *&n;&t; * Do this only if we are going to recover the filesystem&n;&t; */
+multiline_comment|/*&n;&t; * Make sure that there are no blocks in front of the head&n;&t; * with the same cycle number as the head.  This can happen&n;&t; * because we allow multiple outstanding log writes concurrently,&n;&t; * and the later writes might make it out before earlier ones.&n;&t; *&n;&t; * We use the lsn from before modifying it so that we&squot;ll never&n;&t; * overwrite the unmount record after a clean unmount.&n;&t; *&n;&t; * Do this only if we are going to recover the filesystem&n;&t; *&n;&t; * NOTE: This used to say &quot;if (!readonly)&quot;&n;&t; * However on Linux, we can &amp; do recover a read-only filesystem.&n;&t; * We only skip recovery if NORECOVERY is specified on mount,&n;&t; * in which case we would not be here.&n;&t; *&n;&t; * But... if the -device- itself is readonly, just skip this.&n;&t; * We can&squot;t recover this device anyway, so it won&squot;t matter.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|readonly
+id|bdev_read_only
+c_func
+(paren
+id|log-&gt;l_mp-&gt;m_logdev_targp-&gt;pbr_bdev
 )paren
+)paren
+(brace
 id|error
 op_assign
 id|xlog_clear_stale_blocks
@@ -3091,6 +3096,7 @@ comma
 id|tail_lsn
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|bread_err
 suffix:colon
@@ -13592,13 +13598,7 @@ op_assign
 id|TAIL_BLK
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* There used to be a comment here:&n;&t;&t; *&n;&t;&t; * disallow recovery on read-only mounts.  note -- mount&n;&t;&t; * checks for ENOSPC and turns it into an intelligent&n;&t;&t; * error message.&n;&t;&t; * ...but this is no longer true.  Now, unless you specify&n;&t;&t; * NORECOVERY (in which case this function would never be&n;&t;&t; * called), it enables read-write access long enough to do&n;&t;&t; * recovery.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|readonly
-)paren
-(brace
+multiline_comment|/* There used to be a comment here:&n;&t;&t; *&n;&t;&t; * disallow recovery on read-only mounts.  note -- mount&n;&t;&t; * checks for ENOSPC and turns it into an intelligent&n;&t;&t; * error message.&n;&t;&t; * ...but this is no longer true.  Now, unless you specify&n;&t;&t; * NORECOVERY (in which case this function would never be&n;&t;&t; * called), we just go ahead and recover.  We do this all&n;&t;&t; * under the vfs layer, so we can get away with it unless&n;&t;&t; * the device itself is read-only, in which case we fail.&n;&t;&t; */
 macro_line|#ifdef __KERNEL__
 r_if
 c_cond
@@ -13606,22 +13606,32 @@ c_cond
 (paren
 id|error
 op_assign
-id|xfs_recover_read_only
+id|xfs_dev_is_read_only
 c_func
 (paren
-id|log
+id|log-&gt;l_mp
+comma
+l_string|&quot;recovery required&quot;
 )paren
 )paren
 )paren
+(brace
 r_return
 id|error
 suffix:semicolon
+)brace
 macro_line|#else
+r_if
+c_cond
+(paren
+id|readonly
+)paren
+(brace
 r_return
 id|ENOSPC
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#if defined(DEBUG) &amp;&amp; defined(XFS_LOUD_RECOVERY)
 id|cmn_err
@@ -13686,21 +13696,6 @@ suffix:semicolon
 id|log-&gt;l_flags
 op_or_assign
 id|XLOG_RECOVERY_NEEDED
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|readonly
-)paren
-id|XFS_MTOVFS
-c_func
-(paren
-id|log-&gt;l_mp
-)paren
-op_member_access_from_pointer
-id|vfs_flag
-op_or_assign
-id|VFS_RDONLY
 suffix:semicolon
 )brace
 r_return
