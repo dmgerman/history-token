@@ -2366,6 +2366,9 @@ r_struct
 id|pm2fb_par
 op_star
 id|p
+comma
+id|u32
+id|depth
 )paren
 (brace
 id|WAIT_FIFO
@@ -2401,7 +2404,7 @@ macro_line|#else
 r_switch
 c_cond
 (paren
-id|p-&gt;depth
+id|depth
 )paren
 (brace
 r_case
@@ -3888,6 +3891,8 @@ id|set_aperture
 c_func
 (paren
 id|par
+comma
+id|depth
 )paren
 suffix:semicolon
 id|DEFRW
