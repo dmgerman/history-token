@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1223,6 +1224,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_sigpause_common
+)paren
+suffix:semicolon
+DECL|variable|verify_compat_iovec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|verify_compat_iovec
 )paren
 suffix:semicolon
 multiline_comment|/* Should really be in linux/kernel/ksyms.c */
