@@ -2253,7 +2253,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pcibios_name_device
+macro_line|#if 0
 r_void
 id|pcibios_name_device
 c_func
@@ -2264,7 +2264,6 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#if 0
 r_struct
 id|device_node
 op_star
@@ -2378,8 +2377,18 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 )brace
+id|DECLARE_PCI_FIXUP_HEADER
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|pcibios_name_device
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|pcibios_fixup_device_resources
 r_void
 id|__devinit
