@@ -1058,7 +1058,7 @@ op_plus
 id|DMA_DESCRIPTOR_ADDR
 )paren
 suffix:semicolon
-multiline_comment|/* if sizeof(dma_addr_t) == 32, this will generate a warning, sorry */
+multiline_comment|/* Force the value to u64 before shifting otherwise &gt;&gt; 32 is undefined C&n;&t; * and on some ports will do nothing ! */
 id|writel
 c_func
 (paren
@@ -1066,6 +1066,9 @@ id|cpu_to_le32
 c_func
 (paren
 (paren
+(paren
+id|u64
+)paren
 id|page-&gt;page_dma
 )paren
 op_rshift
