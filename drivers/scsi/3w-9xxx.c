@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   3w-9xxx.c -- 3ware 9000 Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linuxraid@amcc.com&gt;&n;&n;   Copyright (C) 2004 Applied Micro Circuits Corporation.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   NO WARRANTY&n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;   solely responsible for determining the appropriateness of using and&n;   distributing the Program and assumes all risks associated with its&n;   exercise of rights under this Agreement, including but not limited to&n;   the risks and costs of program errors, damage to or loss of data,&n;   programs or equipment, and unavailability or interruption of operations.&n;&n;   DISCLAIMER OF LIABILITY&n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;   Bugs/Comments/Suggestions should be mailed to:&n;   linuxraid@amcc.com&n;&n;   For more information, goto:&n;   http://www.amcc.com&n;&n;   Note: This version of the driver does not contain a bundled firmware&n;         image.&n;&n;   History&n;   -------&n;   2.26.02.000 - Driver cleanup for kernel submission.&n;*/
+multiline_comment|/*&n;   3w-9xxx.c -- 3ware 9000 Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linuxraid@amcc.com&gt;&n;&n;   Copyright (C) 2004 Applied Micro Circuits Corporation.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   NO WARRANTY&n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;   solely responsible for determining the appropriateness of using and&n;   distributing the Program and assumes all risks associated with its&n;   exercise of rights under this Agreement, including but not limited to&n;   the risks and costs of program errors, damage to or loss of data,&n;   programs or equipment, and unavailability or interruption of operations.&n;&n;   DISCLAIMER OF LIABILITY&n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;   Bugs/Comments/Suggestions should be mailed to:&n;   linuxraid@amcc.com&n;&n;   For more information, goto:&n;   http://www.amcc.com&n;&n;   Note: This version of the driver does not contain a bundled firmware&n;         image.&n;&n;   History&n;   -------&n;   2.26.02.000 - Driver cleanup for kernel submission.&n;   2.26.02.001 - Replace schedule_timeout() calls with msleep().&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -25,7 +25,7 @@ r_char
 op_star
 id|twa_driver_version
 op_assign
-l_string|&quot;2.26.02.000&quot;
+l_string|&quot;2.26.02.001&quot;
 suffix:semicolon
 DECL|variable|twa_device_extension_list
 r_static
@@ -6727,10 +6727,10 @@ id|seconds
 r_goto
 id|out
 suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-l_int|1
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -6867,10 +6867,10 @@ id|seconds
 r_goto
 id|out
 suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-l_int|1
+l_int|50
 )paren
 suffix:semicolon
 )brace
