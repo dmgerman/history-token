@@ -510,6 +510,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|file-&gt;private_data
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|file-&gt;private_data
+)paren
+suffix:semicolon
+)brace
 id|file-&gt;private_data
 op_assign
 id|kmalloc
@@ -697,6 +710,9 @@ op_logical_and
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_size
 op_eq
+(paren
+id|loff_t
+)paren
 id|le64_to_cpu
 c_func
 (paren
@@ -1195,7 +1211,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 multiline_comment|/* BB pass O_SYNC flag through on file attributes .. BB */
-multiline_comment|/* Also refresh inode by passing in file_info buf returned by SMBOpen&n;           and calling get_inode_info with returned buf (at least&n;           helps non-Unix server case */
+multiline_comment|/* Also refresh inode by passing in file_info buf returned by SMBOpen&n;&t;&t;   and calling get_inode_info with returned buf (at least&n;&t;&t;   helps non-Unix server case */
 id|buf
 op_assign
 id|kmalloc

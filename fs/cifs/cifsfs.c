@@ -420,6 +420,12 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|cifs_sb
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|cifs_sb-&gt;local_nls
 )paren
 (brace
@@ -430,12 +436,6 @@ id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|cifs_sb
-)paren
-(brace
 id|kfree
 c_func
 (paren
