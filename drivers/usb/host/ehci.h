@@ -916,10 +916,10 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* description of one iso highspeed transaction (up to 3 KB data) */
-DECL|struct|ehci_iso_uframe
+multiline_comment|/* description of one iso transaction (up to 3 KB data if highspeed) */
+DECL|struct|ehci_iso_packet
 r_struct
-id|ehci_iso_uframe
+id|ehci_iso_packet
 (brace
 multiline_comment|/* These will be copied to iTD when scheduling */
 DECL|member|bufp
@@ -937,17 +937,22 @@ id|u8
 id|cross
 suffix:semicolon
 multiline_comment|/* buf crosses pages */
+multiline_comment|/* for full speed OUT splits */
+DECL|member|buf1
+id|u16
+id|buf1
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* temporary schedule data for highspeed packets from iso urbs&n; * each packet is one uframe&squot;s usb transactions, in some itd,&n; * beginning at stream-&gt;next_uframe&n; */
-DECL|struct|ehci_itd_sched
+multiline_comment|/* temporary schedule data for packets from iso urbs (both speeds)&n; * each packet is one logical usb transaction to the device (not TT),&n; * beginning at stream-&gt;next_uframe&n; */
+DECL|struct|ehci_iso_sched
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 (brace
-DECL|member|itd_list
+DECL|member|td_list
 r_struct
 id|list_head
-id|itd_list
+id|td_list
 suffix:semicolon
 DECL|member|span
 r_int
@@ -955,7 +960,7 @@ id|span
 suffix:semicolon
 DECL|member|packet
 r_struct
-id|ehci_iso_uframe
+id|ehci_iso_packet
 id|packet
 (braket
 l_int|0
@@ -985,23 +990,27 @@ DECL|member|bEndpointAddress
 id|u8
 id|bEndpointAddress
 suffix:semicolon
-DECL|member|itd_list
+DECL|member|highspeed
+id|u8
+id|highspeed
+suffix:semicolon
+DECL|member|td_list
 r_struct
 id|list_head
-id|itd_list
+id|td_list
 suffix:semicolon
-multiline_comment|/* queued itds */
-DECL|member|free_itd_list
+multiline_comment|/* queued itds/sitds */
+DECL|member|free_list
 r_struct
 id|list_head
-id|free_itd_list
+id|free_list
 suffix:semicolon
-multiline_comment|/* list of unused itds */
-DECL|member|dev
+multiline_comment|/* list of unused itds/sitds */
+DECL|member|udev
 r_struct
-id|hcd_dev
+id|usb_device
 op_star
-id|dev
+id|udev
 suffix:semicolon
 multiline_comment|/* output of (re)scheduling */
 DECL|member|start
@@ -1087,8 +1096,8 @@ DECL|macro|EHCI_ITD_LENGTH
 mdefine_line|#define&t;EHCI_ITD_LENGTH(tok)&t;(((tok)&gt;&gt;16) &amp; 0x0fff)
 DECL|macro|EHCI_ITD_IOC
 mdefine_line|#define&t;EHCI_ITD_IOC&t;&t;(1 &lt;&lt; 15)&t;/* interrupt on complete */
-DECL|macro|ISO_ACTIVE
-mdefine_line|#define ISO_ACTIVE&t;__constant_cpu_to_le32(EHCI_ISOC_ACTIVE)
+DECL|macro|ITD_ACTIVE
+mdefine_line|#define ITD_ACTIVE&t;__constant_cpu_to_le32(EHCI_ISOC_ACTIVE)
 DECL|member|hw_bufp
 id|u32
 id|hw_bufp

@@ -1682,8 +1682,8 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* ehci_iso_stream ops work with both ITD and SITD */
 r_static
-r_inline
 r_struct
 id|ehci_iso_stream
 op_star
@@ -1739,14 +1739,14 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|stream-&gt;free_itd_list
+id|stream-&gt;free_list
 )paren
 suffix:semicolon
 id|stream-&gt;next_uframe
@@ -1764,7 +1764,6 @@ id|stream
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|iso_stream_init
 id|iso_stream_init
@@ -1858,6 +1857,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|stream-&gt;highspeed
+op_assign
+l_int|1
+suffix:semicolon
 id|multi
 op_assign
 id|hb_mult
@@ -1882,14 +1885,9 @@ id|maxp
 op_mul_assign
 id|multi
 suffix:semicolon
-id|stream-&gt;dev
+id|stream-&gt;udev
 op_assign
-(paren
-r_struct
-id|hcd_dev
-op_star
-)paren
-id|dev-&gt;hcpriv
+id|dev
 suffix:semicolon
 id|stream-&gt;bEndpointAddress
 op_assign
@@ -1993,7 +1991,14 @@ l_int|1
 r_int
 id|is_in
 suffix:semicolon
-singleline_comment|// BUG_ON (!list_empty(&amp;stream-&gt;itd_list));
+r_struct
+id|hcd_dev
+op_star
+id|dev
+op_assign
+id|stream-&gt;udev-&gt;hcpriv
+suffix:semicolon
+singleline_comment|// BUG_ON (!list_empty(&amp;stream-&gt;td_list));
 r_while
 c_loop
 (paren
@@ -2001,7 +2006,7 @@ op_logical_neg
 id|list_empty
 (paren
 op_amp
-id|stream-&gt;free_itd_list
+id|stream-&gt;free_list
 )paren
 )paren
 (brace
@@ -2014,7 +2019,7 @@ id|itd
 op_assign
 id|list_entry
 (paren
-id|stream-&gt;free_itd_list.next
+id|stream-&gt;free_list.next
 comma
 r_struct
 id|ehci_itd
@@ -2055,7 +2060,7 @@ id|stream-&gt;bEndpointAddress
 op_and_assign
 l_int|0x0f
 suffix:semicolon
-id|stream-&gt;dev-&gt;ep
+id|dev-&gt;ep
 (braket
 id|is_in
 op_plus
@@ -2333,13 +2338,13 @@ id|stream
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* ehci_iso_sched ops can be shared, ITD-only, or SITD-only */
 r_static
-r_inline
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-DECL|function|itd_sched_alloc
-id|itd_sched_alloc
+DECL|function|iso_sched_alloc
+id|iso_sched_alloc
 (paren
 r_int
 id|packets
@@ -2349,16 +2354,16 @@ id|mem_flags
 )paren
 (brace
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-id|itd_sched
+id|iso_sched
 suffix:semicolon
 r_int
 id|size
 op_assign
 r_sizeof
 op_star
-id|itd_sched
+id|iso_sched
 suffix:semicolon
 id|size
 op_add_assign
@@ -2367,10 +2372,10 @@ op_star
 r_sizeof
 (paren
 r_struct
-id|ehci_iso_uframe
+id|ehci_iso_packet
 )paren
 suffix:semicolon
-id|itd_sched
+id|iso_sched
 op_assign
 id|kmalloc
 (paren
@@ -2384,7 +2389,7 @@ c_cond
 (paren
 id|likely
 (paren
-id|itd_sched
+id|iso_sched
 op_ne
 l_int|0
 )paren
@@ -2393,7 +2398,7 @@ l_int|0
 id|memset
 c_func
 (paren
-id|itd_sched
+id|iso_sched
 comma
 l_int|0
 comma
@@ -2403,23 +2408,24 @@ suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
 op_amp
-id|itd_sched-&gt;itd_list
+id|iso_sched-&gt;td_list
 )paren
 suffix:semicolon
 )brace
 r_return
-id|itd_sched
+id|iso_sched
 suffix:semicolon
 )brace
 r_static
-r_int
+r_inline
+r_void
 DECL|function|itd_sched_init
 id|itd_sched_init
 (paren
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-id|itd_sched
+id|iso_sched
 comma
 r_struct
 id|ehci_iso_stream
@@ -2441,7 +2447,7 @@ op_assign
 id|urb-&gt;transfer_dma
 suffix:semicolon
 multiline_comment|/* how many uframes are needed for these transfers */
-id|itd_sched-&gt;span
+id|iso_sched-&gt;span
 op_assign
 id|urb-&gt;number_of_packets
 op_star
@@ -2464,12 +2470,12 @@ op_increment
 )paren
 (brace
 r_struct
-id|ehci_iso_uframe
+id|ehci_iso_packet
 op_star
 id|uframe
 op_assign
 op_amp
-id|itd_sched-&gt;packet
+id|iso_sched-&gt;packet
 (braket
 id|i
 )braket
@@ -2595,14 +2601,11 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|itd_sched_free
-id|itd_sched_free
+DECL|function|iso_sched_free
+id|iso_sched_free
 (paren
 r_struct
 id|ehci_iso_stream
@@ -2610,23 +2613,32 @@ op_star
 id|stream
 comma
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-id|itd_sched
+id|iso_sched
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iso_sched
+)paren
+r_return
+suffix:semicolon
+singleline_comment|// caller must hold ehci-&gt;lock!
 id|list_splice
 (paren
 op_amp
-id|itd_sched-&gt;itd_list
+id|iso_sched-&gt;td_list
 comma
 op_amp
-id|stream-&gt;free_itd_list
+id|stream-&gt;free_list
 )paren
 suffix:semicolon
 id|kfree
 (paren
-id|itd_sched
+id|iso_sched
 )paren
 suffix:semicolon
 )brace
@@ -2659,9 +2671,6 @@ id|ehci_itd
 op_star
 id|itd
 suffix:semicolon
-r_int
-id|status
-suffix:semicolon
 id|dma_addr_t
 id|itd_dma
 suffix:semicolon
@@ -2672,13 +2681,13 @@ r_int
 id|num_itds
 suffix:semicolon
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-id|itd_sched
+id|sched
 suffix:semicolon
-id|itd_sched
+id|sched
 op_assign
-id|itd_sched_alloc
+id|iso_sched_alloc
 (paren
 id|urb-&gt;number_of_packets
 comma
@@ -2690,7 +2699,7 @@ c_cond
 (paren
 id|unlikely
 (paren
-id|itd_sched
+id|sched
 op_eq
 l_int|0
 )paren
@@ -2699,39 +2708,15 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|status
-op_assign
 id|itd_sched_init
 (paren
-id|itd_sched
+id|sched
 comma
 id|stream
 comma
 id|urb
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-(paren
-id|status
-op_ne
-l_int|0
-)paren
-)paren
-(brace
-id|itd_sched_free
-(paren
-id|stream
-comma
-id|itd_sched
-)paren
-suffix:semicolon
-r_return
-id|status
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2744,7 +2729,7 @@ op_assign
 l_int|1
 op_plus
 (paren
-id|itd_sched-&gt;span
+id|sched-&gt;span
 op_plus
 l_int|7
 )paren
@@ -2772,7 +2757,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* free_itd_list.next might be cache-hot ... but maybe&n;&t;&t; * the HC caches it too. avoid that issue for now.&n;&t;&t; */
+multiline_comment|/* free_list.next might be cache-hot ... but maybe&n;&t;&t; * the HC caches it too. avoid that issue for now.&n;&t;&t; */
 multiline_comment|/* prefer previously-allocated itds */
 r_if
 c_cond
@@ -2784,7 +2769,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|stream-&gt;free_itd_list
+id|stream-&gt;free_list
 )paren
 )paren
 )paren
@@ -2793,7 +2778,7 @@ id|itd
 op_assign
 id|list_entry
 (paren
-id|stream-&gt;free_itd_list.prev
+id|stream-&gt;free_list.prev
 comma
 r_struct
 id|ehci_itd
@@ -2836,11 +2821,11 @@ id|itd
 )paren
 )paren
 (brace
-id|itd_sched_free
+id|iso_sched_free
 (paren
 id|stream
 comma
-id|itd_sched
+id|sched
 )paren
 suffix:semicolon
 r_return
@@ -2869,14 +2854,14 @@ op_amp
 id|itd-&gt;itd_list
 comma
 op_amp
-id|itd_sched-&gt;itd_list
+id|sched-&gt;td_list
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* temporarily store schedule info in hcpriv */
 id|urb-&gt;hcpriv
 op_assign
-id|itd_sched
+id|sched
 suffix:semicolon
 id|urb-&gt;error_count
 op_assign
@@ -2930,9 +2915,9 @@ op_lshift
 l_int|3
 suffix:semicolon
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-id|itd_sched
+id|sched
 op_assign
 id|urb-&gt;hcpriv
 suffix:semicolon
@@ -2941,7 +2926,7 @@ c_cond
 (paren
 id|unlikely
 (paren
-id|itd_sched-&gt;span
+id|sched-&gt;span
 OG
 (paren
 id|mod
@@ -2990,7 +2975,7 @@ id|mod
 suffix:semicolon
 id|max
 op_sub_assign
-id|itd_sched-&gt;span
+id|sched-&gt;span
 suffix:semicolon
 id|max
 op_sub_assign
@@ -3008,7 +2993,7 @@ op_logical_neg
 id|list_empty
 (paren
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 )paren
 )paren
@@ -3108,7 +3093,7 @@ id|unlikely
 id|list_empty
 (paren
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 )paren
 )paren
@@ -3207,7 +3192,7 @@ op_logical_neg
 id|list_empty
 (paren
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 )paren
 )paren
@@ -3284,7 +3269,7 @@ comma
 id|list_empty
 (paren
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 ques
 c_cond
@@ -3308,11 +3293,11 @@ id|ENOSPC
 suffix:semicolon
 id|fail
 suffix:colon
-id|itd_sched_free
+id|iso_sched_free
 (paren
 id|stream
 comma
-id|itd_sched
+id|sched
 )paren
 suffix:semicolon
 id|urb-&gt;hcpriv
@@ -3414,9 +3399,9 @@ op_star
 id|itd
 comma
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-id|itd_sched
+id|iso_sched
 comma
 r_int
 id|index
@@ -3429,12 +3414,12 @@ id|first
 )paren
 (brace
 r_struct
-id|ehci_iso_uframe
+id|ehci_iso_packet
 op_star
 id|uf
 op_assign
 op_amp
-id|itd_sched-&gt;packet
+id|iso_sched-&gt;packet
 (braket
 id|index
 )braket
@@ -3673,9 +3658,9 @@ comma
 id|frame
 suffix:semicolon
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 op_star
-id|itd_sched
+id|iso_sched
 op_assign
 id|urb-&gt;hcpriv
 suffix:semicolon
@@ -3699,7 +3684,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 )paren
 )paren
@@ -3789,13 +3774,13 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* ASSERT:  we have all necessary itds */
-singleline_comment|// BUG_ON (list_empty (&amp;itd_sched-&gt;itd_list));
+singleline_comment|// BUG_ON (list_empty (&amp;iso_sched-&gt;td_list));
 multiline_comment|/* ASSERT:  no itds for this endpoint in this uframe */
 id|itd
 op_assign
 id|list_entry
 (paren
-id|itd_sched-&gt;itd_list.next
+id|iso_sched-&gt;td_list.next
 comma
 r_struct
 id|ehci_itd
@@ -3809,7 +3794,7 @@ op_amp
 id|itd-&gt;itd_list
 comma
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 suffix:semicolon
 id|itd-&gt;stream
@@ -3861,7 +3846,7 @@ id|itd_patch
 (paren
 id|itd
 comma
-id|itd_sched
+id|iso_sched
 comma
 id|packet
 comma
@@ -3926,11 +3911,11 @@ op_assign
 id|next_uframe
 suffix:semicolon
 multiline_comment|/* don&squot;t need that schedule data any more */
-id|itd_sched_free
+id|iso_sched_free
 (paren
 id|stream
 comma
-id|itd_sched
+id|iso_sched
 )paren
 suffix:semicolon
 id|urb-&gt;hcpriv
@@ -4206,7 +4191,7 @@ op_amp
 id|itd-&gt;itd_list
 comma
 op_amp
-id|stream-&gt;free_itd_list
+id|stream-&gt;free_list
 )paren
 suffix:semicolon
 id|iso_stream_put
@@ -4234,7 +4219,7 @@ id|urb-&gt;number_of_packets
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* ASSERT: it&squot;s really the last itd for this urb&n;&t;list_for_each_entry (itd, &amp;stream-&gt;itd_list, itd_list)&n;&t;&t;BUG_ON (itd-&gt;urb == urb);&n;&t; */
+multiline_comment|/* ASSERT: it&squot;s really the last itd for this urb&n;&t;list_for_each_entry (itd, &amp;stream-&gt;td_list, itd_list)&n;&t;&t;BUG_ON (itd-&gt;urb == urb);&n;&t; */
 multiline_comment|/* give urb back to the driver ... can be out-of-order */
 id|dev
 op_assign
@@ -4294,7 +4279,7 @@ id|unlikely
 id|list_empty
 (paren
 op_amp
-id|stream-&gt;itd_list
+id|stream-&gt;td_list
 )paren
 )paren
 )paren
@@ -4908,7 +4893,7 @@ id|q.itd-&gt;hw_transaction
 id|uf
 )braket
 op_amp
-id|ISO_ACTIVE
+id|ITD_ACTIVE
 )paren
 )paren
 r_continue
