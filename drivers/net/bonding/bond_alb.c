@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/06/25 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed signed/unsigned calculation errors that caused load sharing&n; *&t;  to collapse to one slave under very heavy UDP Tx stress.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Add support for setting bond&squot;s MAC address with special&n; *&t;  handling required for ALB/TLB.&n; *&n; * 2003/09/24 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
+multiline_comment|/*&n; * Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/06/25 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed signed/unsigned calculation errors that caused load sharing&n; *&t;  to collapse to one slave under very heavy UDP Tx stress.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Add support for setting bond&squot;s MAC address with special&n; *&t;  handling required for ALB/TLB.&n; *&n; * 2003/12/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; *&n; * 2003/12/30 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fixed: Cannot remove and re-enslave the original active slave.&n; */
 singleline_comment|//#define BONDING_DEBUG 1
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -3648,6 +3648,13 @@ comma
 op_star
 id|free_mac_slave
 suffix:semicolon
+r_struct
+id|slave
+op_star
+id|has_bond_addr
+op_assign
+id|bond-&gt;curr_active_slave
+suffix:semicolon
 r_int
 id|i
 comma
@@ -3812,6 +3819,34 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|has_bond_addr
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|tmp_slave1-&gt;dev-&gt;dev_addr
+comma
+id|bond-&gt;dev-&gt;dev_addr
+comma
+id|ETH_ALEN
+)paren
+)paren
+(brace
+id|has_bond_addr
+op_assign
+id|tmp_slave1
+suffix:semicolon
+)brace
+)brace
 )brace
 r_if
 c_cond
@@ -3844,6 +3879,11 @@ id|free_mac_slave-&gt;dev-&gt;name
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|has_bond_addr
+)paren
 (brace
 id|printk
 c_func
@@ -4449,11 +4489,7 @@ id|skb
 op_member_access_from_pointer
 id|ipx_type
 op_ne
-id|__constant_htons
-c_func
-(paren
 id|IPX_TYPE_NCP
-)paren
 )paren
 (brace
 multiline_comment|/* The only protocol worth balancing in&n;&t;&t;&t; * this family since it has an &quot;ARP&quot; like&n;&t;&t;&t; * mechanism&n;&t;&t;&t; */
