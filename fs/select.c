@@ -369,20 +369,14 @@ id|entry-&gt;wait
 suffix:semicolon
 )brace
 )brace
-DECL|macro|__IN
-mdefine_line|#define __IN(fds, n)&t;&t;(fds-&gt;in + n)
-DECL|macro|__OUT
-mdefine_line|#define __OUT(fds, n)&t;&t;(fds-&gt;out + n)
-DECL|macro|__EX
-mdefine_line|#define __EX(fds, n)&t;&t;(fds-&gt;ex + n)
-DECL|macro|__RES_IN
-mdefine_line|#define __RES_IN(fds, n)&t;(fds-&gt;res_in + n)
-DECL|macro|__RES_OUT
-mdefine_line|#define __RES_OUT(fds, n)&t;(fds-&gt;res_out + n)
-DECL|macro|__RES_EX
-mdefine_line|#define __RES_EX(fds, n)&t;(fds-&gt;res_ex + n)
+DECL|macro|FDS_IN
+mdefine_line|#define FDS_IN(fds, n)&t;&t;(fds-&gt;in + n)
+DECL|macro|FDS_OUT
+mdefine_line|#define FDS_OUT(fds, n)&t;&t;(fds-&gt;out + n)
+DECL|macro|FDS_EX
+mdefine_line|#define FDS_EX(fds, n)&t;&t;(fds-&gt;ex + n)
 DECL|macro|BITS
-mdefine_line|#define BITS(fds, n)&t;&t;(*__IN(fds, n)|*__OUT(fds, n)|*__EX(fds, n))
+mdefine_line|#define BITS(fds, n)&t;(*FDS_IN(fds, n)|*FDS_OUT(fds, n)|*FDS_EX(fds, n))
 DECL|function|max_select_fd
 r_static
 r_int
