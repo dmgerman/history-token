@@ -2022,8 +2022,11 @@ r_sizeof
 id|serio-&gt;dev.bus_id
 )paren
 comma
-l_string|&quot;serio%d&quot;
+l_string|&quot;serio%ld&quot;
 comma
+(paren
+r_int
+)paren
 id|atomic_inc_return
 c_func
 (paren
