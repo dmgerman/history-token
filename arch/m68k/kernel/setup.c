@@ -497,7 +497,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ISA)
+macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(MULTI_ISA)
 DECL|variable|isa_type
 r_int
 id|isa_type
@@ -1897,7 +1897,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* set ISA defs early as possible */
-macro_line|#if defined(CONFIG_ISA)
+macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(MULTI_ISA)
 macro_line|#if defined(CONFIG_Q40) 
 r_if
 c_cond
