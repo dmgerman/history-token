@@ -7148,16 +7148,12 @@ r_int
 r_int
 id|__init
 id|pci_init_pdc202xx
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
@@ -7243,7 +7239,7 @@ c_func
 (paren
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|dev-&gt;resource
 (braket
@@ -7448,7 +7444,7 @@ c_func
 (paren
 l_string|&quot;%s: pci-config space interrupt mirror fixed.&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7473,7 +7469,7 @@ l_string|&quot;Primary %s Mode &quot;
 "&bslash;"
 l_string|&quot;Secondary %s Mode.&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 (paren
 id|udma_speed_flag
@@ -7526,7 +7522,7 @@ c_func
 (paren
 l_string|&quot;%s: FORCING BURST BIT 0x%02x -&gt; 0x%02x &quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|udma_speed_flag
 comma
@@ -7591,7 +7587,7 @@ c_func
 (paren
 l_string|&quot;%s: FORCING PRIMARY MODE BIT 0x%02x -&gt; 0x%02x &quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|primary_mode
 comma
@@ -7654,7 +7650,7 @@ c_func
 (paren
 l_string|&quot;%s: FORCING SECONDARY MODE BIT 0x%02x -&gt; 0x%02x &quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|secondary_mode
 comma

@@ -1090,11 +1090,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 macro_line|#ifdef CY82C693_SETDMA_CLOCK
@@ -1134,7 +1129,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s: Peripheral Configuration Register: 0x%X&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|data
 )paren
@@ -1167,7 +1162,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s: New Peripheral Configuration Register: 0x%X&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|data
 )paren
@@ -1196,7 +1191,6 @@ id|ide_cy82c693
 suffix:semicolon
 id|hwif-&gt;tuneproc
 op_assign
-op_amp
 id|cy82c693_tune_drive
 suffix:semicolon
 id|hwif-&gt;drives
@@ -1234,7 +1228,6 @@ l_int|1
 suffix:semicolon
 id|hwif-&gt;dmaproc
 op_assign
-op_amp
 id|cy82c693_dmaproc
 suffix:semicolon
 r_if

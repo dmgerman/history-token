@@ -1235,31 +1235,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-DECL|struct|ide_pci_devid_s
-r_typedef
-r_struct
-id|ide_pci_devid_s
-(brace
-DECL|member|vid
-r_int
-r_int
-id|vid
-suffix:semicolon
-DECL|member|did
-r_int
-r_int
-id|did
-suffix:semicolon
-DECL|typedef|ide_pci_devid_t
-)brace
-id|ide_pci_devid_t
-suffix:semicolon
-DECL|macro|IDE_PCI_DEVID_NULL
-mdefine_line|#define IDE_PCI_DEVID_NULL&t;((ide_pci_devid_t){0,0})
-DECL|macro|IDE_PCI_DEVID_EQ
-mdefine_line|#define IDE_PCI_DEVID_EQ(a,b)&t;(a.vid == b.vid &amp;&amp; a.did == b.did)
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 DECL|struct|hwif_s
 r_typedef
 r_struct
@@ -1530,12 +1505,7 @@ op_star
 id|pci_dev
 suffix:semicolon
 multiline_comment|/* for pci chipsets */
-DECL|member|pci_devid
-id|ide_pci_devid_t
-id|pci_devid
-suffix:semicolon
-multiline_comment|/* for pci chipsets: {VID,DID} */
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 DECL|member|last_time
 r_int
@@ -2547,148 +2517,6 @@ DECL|macro|ide_rq_offset
 mdefine_line|#define ide_rq_offset(rq) (((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
 DECL|macro|task_rq_offset
 mdefine_line|#define task_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;nr_sectors - (rq)-&gt;current_nr_sectors) * SECTOR_SIZE)
-DECL|function|ide_map_buffer
-r_extern
-r_inline
-r_void
-op_star
-id|ide_map_buffer
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|rq
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-r_return
-id|bio_kmap_irq
-c_func
-(paren
-id|rq-&gt;bio
-comma
-id|flags
-)paren
-op_plus
-id|ide_rq_offset
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-)brace
-DECL|function|ide_unmap_buffer
-r_extern
-r_inline
-r_void
-id|ide_unmap_buffer
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|bio_kunmap_irq
-c_func
-(paren
-id|buffer
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * for now, taskfile requests are special :/&n; */
-DECL|function|ide_map_rq
-r_extern
-r_inline
-r_char
-op_star
-id|ide_map_rq
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|rq
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|rq-&gt;bio
-)paren
-r_return
-id|ide_map_buffer
-c_func
-(paren
-id|rq
-comma
-id|flags
-)paren
-suffix:semicolon
-r_else
-r_return
-id|rq-&gt;buffer
-op_plus
-id|task_rq_offset
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-)brace
-DECL|function|ide_unmap_rq
-r_extern
-r_inline
-r_void
-id|ide_unmap_rq
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|rq
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|rq-&gt;bio
-)paren
-id|ide_unmap_buffer
-c_func
-(paren
-id|buf
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * This function issues a special IDE device request&n; * onto the request queue.&n; *&n; * If action is ide_wait, then the rq is queued at the end of the&n; * request queue, and the function sleeps until it has been processed.&n; * This is for use when invoked from an ioctl handler.&n; *&n; * If action is ide_preempt, then the rq is queued at the head of&n; * the request queue, displacing the currently-being-processed&n; * request and this function returns immediately without waiting&n; * for the new rq to be completed.  This is VERY DANGEROUS, and is&n; * intended for careful use by the ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_next, then the rq is queued immediately after&n; * the currently-being-processed-request (if any), and the function&n; * returns without waiting for the new rq to be completed.  As above,&n; * This is VERY DANGEROUS, and is intended for careful use by the&n; * ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_end, then the rq is queued at the end of the&n; * request queue, and the function returns immediately without waiting&n; * for the new rq to be completed. This is again intended for careful&n; * use by the ATAPI tape/cdrom driver code.&n; */
 r_int
 id|ide_do_drive_cmd
@@ -3410,15 +3238,6 @@ id|generic_subdriver_entries
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_int
-id|ide_reinit_drive
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
 multiline_comment|/* Probe for devices attached to the systems host controllers.&n; */
 r_extern
@@ -3591,12 +3410,13 @@ DECL|macro|OFF_BOARD
 macro_line|#  define OFF_BOARD&t;&t;NEVER_BOARD
 macro_line|#endif /* CONFIG_BLK_DEV_OFFBOARD */
 r_void
+id|__init
 id|ide_scan_pcibus
+c_func
 (paren
 r_int
 id|scan_direction
 )paren
-id|__init
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA

@@ -3733,11 +3733,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_if
@@ -3773,7 +3768,7 @@ c_func
 (paren
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|dev-&gt;resource
 (braket

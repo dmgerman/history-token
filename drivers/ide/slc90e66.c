@@ -2020,16 +2020,12 @@ r_int
 r_int
 id|__init
 id|pci_init_slc90e66
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 macro_line|#if defined(DISPLAY_SLC90E66_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)

@@ -7624,15 +7624,12 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_if
 c_cond
 (paren
-id|IDE_PCI_DEVID_EQ
-c_func
-(paren
-id|hwif-&gt;pci_devid
-comma
-id|IDE_PCI_DEVID_NULL
+id|hwif-&gt;pci_dev
+op_logical_and
+op_logical_neg
+id|hwif-&gt;pci_dev-&gt;vendor
 )paren
-)paren
-macro_line|#endif&t;/* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Probably not a shared PCI interrupt,&n;&t;&t;&t; * so we can safely try to do something about it:&n;&t;&t;&t; */
 id|unexpected_intr
@@ -7648,9 +7645,6 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Whack the status register, just in case we have a leftover pending IRQ.&n;&t;&t;&t; */
-(paren
-r_void
-)paren
 id|IN_BYTE
 c_func
 (paren
@@ -9969,10 +9963,6 @@ id|hwif-&gt;pci_dev
 op_assign
 id|old_hwif.pci_dev
 suffix:semicolon
-id|hwif-&gt;pci_devid
-op_assign
-id|old_hwif.pci_devid
-suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 id|hwif-&gt;straight8
 op_assign
@@ -12025,158 +12015,6 @@ l_int|20
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDECS */
-)brace
-DECL|function|ide_reinit_drive
-r_int
-id|ide_reinit_drive
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|drive-&gt;media
-)paren
-(brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDECD
-r_case
-id|ide_cdrom
-suffix:colon
-(brace
-r_extern
-r_int
-id|ide_cdrom_reinit
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ide_cdrom_reinit
-c_func
-(paren
-id|drive
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
-r_case
-id|ide_disk
-suffix:colon
-(brace
-r_extern
-r_int
-id|idedisk_reinit
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|idedisk_reinit
-c_func
-(paren
-id|drive
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
-r_case
-id|ide_floppy
-suffix:colon
-(brace
-r_extern
-r_int
-id|idefloppy_reinit
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|idefloppy_reinit
-c_func
-(paren
-id|drive
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
-macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
-r_case
-id|ide_tape
-suffix:colon
-(brace
-r_extern
-r_int
-id|idetape_reinit
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|idetape_reinit
-c_func
-(paren
-id|drive
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
-macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
-multiline_comment|/*&n; *              {&n; *                      extern int idescsi_reinit(ide_drive_t *drive);&n; *                      if (idescsi_reinit(drive))&n; *                              return 1;&n; *                      break;&n; * }&n; */
-macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
-r_default
-suffix:colon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|ide_ioctl
 r_static
@@ -16085,9 +15923,6 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Attempt to match drivers for the available drives&n;&t; */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
-(paren
-r_void
-)paren
 id|idedisk_init
 c_func
 (paren
@@ -16095,9 +15930,6 @@ c_func
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
 macro_line|#ifdef CONFIG_BLK_DEV_IDECD
-(paren
-r_void
-)paren
 id|ide_cdrom_init
 c_func
 (paren
@@ -16105,9 +15937,6 @@ c_func
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
 macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
-(paren
-r_void
-)paren
 id|idetape_init
 c_func
 (paren
@@ -16115,9 +15944,6 @@ c_func
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
-(paren
-r_void
-)paren
 id|idefloppy_init
 c_func
 (paren
@@ -16126,9 +15952,6 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
 macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
 macro_line|#ifdef CONFIG_SCSI
-(paren
-r_void
-)paren
 id|idescsi_init
 c_func
 (paren
@@ -16558,6 +16381,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is in fact registering a drive not a driver.&n; */
 DECL|function|ide_register_subdriver
 r_int
 id|ide_register_subdriver
@@ -17376,13 +17200,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|current_capacity
-)paren
-suffix:semicolon
-DECL|variable|ide_reinit_drive
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_reinit_drive
 )paren
 suffix:semicolon
 DECL|function|ide_notify_reboot

@@ -2996,16 +2996,12 @@ r_int
 r_int
 id|__init
 id|pci_init_ali15x3
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
@@ -3091,7 +3087,7 @@ c_func
 (paren
 l_string|&quot;%s: simplex device: DMA will fail!!&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace

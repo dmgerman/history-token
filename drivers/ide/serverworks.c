@@ -3111,16 +3111,12 @@ r_int
 r_int
 id|__init
 id|pci_init_svwks
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
