@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
@@ -3561,7 +3562,7 @@ op_star
 id|uinfo
 comma
 r_struct
-id|timespec32
+id|compat_timespec
 op_star
 id|uts
 comma

@@ -6,26 +6,10 @@ macro_line|#ifdef CONFIG_IA32_SUPPORT
 macro_line|#include &lt;linux/binfmts.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
 multiline_comment|/* 32bit compatibility types */
-DECL|typedef|__kernel_size_t32
-r_typedef
-r_int
-r_int
-id|__kernel_size_t32
-suffix:semicolon
-DECL|typedef|__kernel_ssize_t32
-r_typedef
-r_int
-id|__kernel_ssize_t32
-suffix:semicolon
 DECL|typedef|__kernel_ptrdiff_t32
 r_typedef
 r_int
 id|__kernel_ptrdiff_t32
-suffix:semicolon
-DECL|typedef|__kernel_time_t32
-r_typedef
-r_int
-id|__kernel_time_t32
 suffix:semicolon
 DECL|typedef|__kernel_clock_t32
 r_typedef
@@ -134,20 +118,6 @@ DECL|macro|IA32_CLOCKS_PER_SEC
 mdefine_line|#define IA32_CLOCKS_PER_SEC&t;100&t;/* Cast in stone for IA32 Linux */
 DECL|macro|IA32_TICK
 mdefine_line|#define IA32_TICK(tick)&t;&t;((unsigned long long)(tick) * IA32_CLOCKS_PER_SEC / CLOCKS_PER_SEC)
-DECL|struct|timespec32
-r_struct
-id|timespec32
-(brace
-DECL|member|tv_sec
-r_int
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_nsec
-r_int
-id|tv_nsec
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* fcntl.h */
 DECL|struct|flock32
 r_struct
