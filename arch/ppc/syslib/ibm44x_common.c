@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ibm44x.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -95,6 +96,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|fixup_bigphys_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fixup_bigphys_addr
+)paren
 suffix:semicolon
 DECL|function|ibm44x_calibrate_decr
 r_void
