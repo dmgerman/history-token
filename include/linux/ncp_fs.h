@@ -372,6 +372,11 @@ DECL|member|access
 r_int
 id|access
 suffix:semicolon
+DECL|member|volume
+r_int
+r_int
+id|volume
+suffix:semicolon
 DECL|member|file_handle
 id|__u8
 id|file_handle

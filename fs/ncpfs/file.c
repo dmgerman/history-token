@@ -158,26 +158,6 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-id|finfo.i.dirEntNum
-op_assign
-id|NCP_FINFO
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|dirEntNum
-suffix:semicolon
-id|finfo.i.volNumber
-op_assign
-id|NCP_FINFO
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|volNumber
-suffix:semicolon
 multiline_comment|/* tries max. rights */
 id|finfo.access
 op_assign
@@ -194,7 +174,7 @@ c_func
 id|inode
 )paren
 comma
-l_int|NULL
+id|inode
 comma
 l_int|NULL
 comma
@@ -244,7 +224,7 @@ c_func
 id|inode
 )paren
 comma
-l_int|NULL
+id|inode
 comma
 l_int|NULL
 comma
@@ -278,7 +258,7 @@ c_func
 id|inode
 )paren
 comma
-l_int|NULL
+id|inode
 comma
 l_int|NULL
 comma

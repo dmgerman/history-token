@@ -1370,6 +1370,10 @@ id|finfo.i
 )paren
 suffix:semicolon
 )brace
+id|finfo.volume
+op_assign
+id|finfo.i.volNumber
+suffix:semicolon
 id|DDPRINTK
 c_func
 (paren
@@ -3200,6 +3204,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|entry.volume
+op_assign
+id|entry.i.volNumber
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3391,6 +3399,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|entry.volume
+op_assign
+id|entry.i.volNumber
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3846,6 +3858,10 @@ id|dir-&gt;i_sb
 comma
 l_int|2
 )paren
+suffix:semicolon
+id|finfo.volume
+op_assign
+id|finfo.i.volNumber
 suffix:semicolon
 id|error
 op_assign

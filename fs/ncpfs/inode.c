@@ -374,9 +374,8 @@ id|inode
 op_member_access_from_pointer
 id|volNumber
 op_assign
-id|nwinfo-&gt;i.volNumber
+id|nwinfo-&gt;volume
 suffix:semicolon
-macro_line|#ifdef CONFIG_NCPFS_STRONG
 id|NCP_FINFO
 c_func
 (paren
@@ -387,18 +386,6 @@ id|nwattr
 op_assign
 id|nwinfo-&gt;i.attributes
 suffix:semicolon
-macro_line|#else
-id|NCP_FINFO
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|nwattr
-op_assign
-id|nwinfo-&gt;i.attributes
-suffix:semicolon
-macro_line|#endif
 id|NCP_FINFO
 c_func
 (paren
@@ -2064,13 +2051,10 @@ op_assign
 id|NW_NS_DOS
 suffix:semicolon
 macro_line|#endif
-id|finfo.i.volNumber
+id|finfo.volume
 op_assign
 id|NCP_NUMBER_OF_VOLUMES
-op_plus
-l_int|1
 suffix:semicolon
-multiline_comment|/* illegal volnum */
 multiline_comment|/* set dates of mountpoint to Jan 1, 1986; 00:00 */
 id|finfo.i.creationTime
 op_assign
@@ -2116,7 +2100,7 @@ suffix:semicolon
 multiline_comment|/* tradition */
 id|server-&gt;name_space
 (braket
-id|finfo.i.volNumber
+id|finfo.volume
 )braket
 op_assign
 id|NW_NS_DOS

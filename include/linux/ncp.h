@@ -203,7 +203,7 @@ suffix:semicolon
 DECL|macro|NCP_VOLNAME_LEN
 mdefine_line|#define NCP_VOLNAME_LEN (16)
 DECL|macro|NCP_NUMBER_OF_VOLUMES
-mdefine_line|#define NCP_NUMBER_OF_VOLUMES (64)
+mdefine_line|#define NCP_NUMBER_OF_VOLUMES (256)
 DECL|struct|ncp_volume_info
 r_struct
 id|ncp_volume_info
