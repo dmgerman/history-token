@@ -1200,6 +1200,13 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|ha-&gt;iobase-&gt;ctrl_status
+)paren
+suffix:semicolon
 multiline_comment|/* Get the fb rev level */
 id|ha-&gt;fb_rev
 op_assign
@@ -1231,6 +1238,13 @@ op_amp
 id|ha-&gt;iobase-&gt;ctrl_status
 comma
 l_int|0x0
+)paren
+suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|ha-&gt;iobase-&gt;ctrl_status
 )paren
 suffix:semicolon
 multiline_comment|/* Release RISC module. */
@@ -1583,6 +1597,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|udelay
 c_func
 (paren
@@ -1600,6 +1622,14 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;ctrl_status
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* FPM Soft Reset. */
 id|WRT_REG_WORD
 c_func
@@ -1610,6 +1640,14 @@ comma
 l_int|0x100
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;fpm_diag_config
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Toggle Fpm Reset. */
 r_if
 c_cond
@@ -1621,6 +1659,7 @@ c_func
 id|ha
 )paren
 )paren
+(brace
 id|WRT_REG_WORD
 c_func
 (paren
@@ -1630,6 +1669,15 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;fpm_diag_config
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 multiline_comment|/* Select frame buffer registers. */
 id|WRT_REG_WORD
 c_func
@@ -1640,6 +1688,14 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;ctrl_status
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Reset frame buffer FIFOs. */
 r_if
 c_cond
@@ -1661,6 +1717,15 @@ comma
 l_int|0xa000
 )paren
 suffix:semicolon
+id|RD_FB_CMD_REG
+c_func
+(paren
+id|ha
+comma
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 r_else
 (brace
@@ -1727,6 +1792,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;ctrl_status
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Reset RISC processor. */
 id|WRT_REG_WORD
 c_func
@@ -1737,6 +1810,14 @@ comma
 id|HCCR_RESET_RISC
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Release RISC processor. */
 id|WRT_REG_WORD
 c_func
@@ -1747,6 +1828,14 @@ comma
 id|HCCR_RELEASE_RISC
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 id|WRT_REG_WORD
 c_func
@@ -1757,6 +1846,14 @@ comma
 id|HCCR_CLR_RISC_INT
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -1766,6 +1863,14 @@ comma
 id|HCCR_CLR_HOST_INT
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Reset ISP chip. */
 id|WRT_REG_WORD
 c_func
@@ -1776,6 +1881,14 @@ comma
 id|CSR_ISP_SOFT_RESET
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;ctrl_status
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Wait for RISC to recover from reset. */
 r_if
 c_cond
@@ -1862,6 +1975,14 @@ comma
 id|HCCR_RESET_RISC
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -2058,6 +2179,7 @@ c_func
 id|ha
 )paren
 )paren
+(brace
 id|WRT_REG_WORD
 c_func
 (paren
@@ -2067,6 +2189,15 @@ comma
 id|HCCR_DISABLE_PARITY_PAUSE
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2158,6 +2289,14 @@ comma
 id|CSR_ISP_SOFT_RESET
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;ctrl_status
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/*&n;&t; * We need to have a delay here since the card will not respond while&n;&t; * in reset causing an MCA on some architectures.&n;&t; */
 id|udelay
 c_func
@@ -2245,6 +2384,14 @@ comma
 id|HCCR_RESET_RISC
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -2254,6 +2401,14 @@ comma
 id|HCCR_RELEASE_RISC
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Workaround for QLA2312 PCI parity error */
 r_if
 c_cond
@@ -3589,6 +3744,7 @@ id|reg
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -16329,6 +16485,14 @@ l_int|0x0
 )paren
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -16394,6 +16558,14 @@ l_int|0x7
 )paren
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -16620,6 +16792,14 @@ comma
 id|HCCR_RESET_RISC
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -16629,6 +16809,14 @@ comma
 id|HCCR_RELEASE_RISC
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;hccr
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 id|spin_unlock_irqrestore
 c_func
 (paren
