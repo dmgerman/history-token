@@ -1,30 +1,7 @@
-multiline_comment|/* &n; * Copyright (C) 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __SIGNAL_KERN_H__
 DECL|macro|__SIGNAL_KERN_H__
 mdefine_line|#define __SIGNAL_KERN_H__
-macro_line|#include &quot;sysdep/ptrace.h&quot;
-r_extern
-r_void
-id|signal_deliverer
-c_func
-(paren
-r_int
-id|sig
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|probe_stack
-c_func
-(paren
-r_int
-r_int
-id|sp
-comma
-r_int
-id|delta
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|have_signals
