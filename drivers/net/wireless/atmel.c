@@ -6739,7 +6739,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Generic_irq recieved.&bslash;n&quot;
+l_string|&quot;%s: Generic_irq received.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -13085,7 +13085,7 @@ suffix:semicolon
 id|u8
 id|BSS_type
 suffix:semicolon
-multiline_comment|/* this is a short in a scan command - wierd */
+multiline_comment|/* this is a short in a scan command - weird */
 id|u8
 id|channel
 suffix:semicolon
