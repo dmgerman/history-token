@@ -368,6 +368,29 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
+DECL|member|cmb
+r_void
+op_star
+id|cmb
+suffix:semicolon
+multiline_comment|/* measurement information */
+DECL|member|cmb_list
+r_struct
+id|list_head
+id|cmb_list
+suffix:semicolon
+multiline_comment|/* list of measured devices */
+DECL|member|cmb_start_time
+id|u64
+id|cmb_start_time
+suffix:semicolon
+multiline_comment|/* clock value of cmb reset */
+DECL|member|cmb_wait
+r_void
+op_star
+id|cmb_wait
+suffix:semicolon
+multiline_comment|/* deferred cmb enable/disable */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * A css driver handles all subchannels of one type.&n; * Currently, we only care about I/O subchannels (type 0), these&n; * have a ccw_device connected to them.&n; */
