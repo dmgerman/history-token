@@ -1436,14 +1436,6 @@ id|vm_flags
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vma-&gt;vm_private_data
-)paren
-r_return
-l_int|0
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

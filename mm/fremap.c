@@ -704,7 +704,7 @@ comma
 id|start
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure the vma is shared, that it supports prefaulting,&n;&t; * and that the remapped range is valid and fully within&n;&t; * the single existing vma:&n;&t; */
+multiline_comment|/*&n;&t; * Make sure the vma is shared, that it supports prefaulting,&n;&t; * and that the remapped range is valid and fully within&n;&t; * the single existing vma.  vm_private_data is used as a&n;&t; * swapout cursor in a VM_NONLINEAR vma (unless VM_RESERVED&n;&t; * or VM_LOCKED, but VM_LOCKED could be revoked later on).&n;&t; */
 r_if
 c_cond
 (paren
@@ -714,6 +714,17 @@ op_logical_and
 id|vma-&gt;vm_flags
 op_amp
 id|VM_SHARED
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|vma-&gt;vm_private_data
+op_logical_or
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_RESERVED
+)paren
 )paren
 op_logical_and
 id|vma-&gt;vm_ops
@@ -739,17 +750,13 @@ c_cond
 (paren
 id|pgoff
 op_ne
+id|linear_page_index
+c_func
 (paren
-(paren
+id|vma
+comma
 id|start
-op_minus
-id|vma-&gt;vm_start
 )paren
-op_rshift
-id|PAGE_SHIFT
-)paren
-op_plus
-id|vma-&gt;vm_pgoff
 )paren
 id|vma-&gt;vm_flags
 op_or_assign
