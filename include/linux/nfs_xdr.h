@@ -352,6 +352,7 @@ r_struct
 id|nfs_openargs
 (brace
 DECL|member|fh
+r_const
 r_struct
 id|nfs_fh
 op_star
@@ -361,9 +362,9 @@ DECL|member|seqid
 id|__u32
 id|seqid
 suffix:semicolon
-DECL|member|share_access
-id|__u32
-id|share_access
+DECL|member|open_flags
+r_int
+id|open_flags
 suffix:semicolon
 DECL|member|clientid
 id|__u64
@@ -372,14 +373,6 @@ suffix:semicolon
 DECL|member|id
 id|__u32
 id|id
-suffix:semicolon
-DECL|member|opentype
-id|__u32
-id|opentype
-suffix:semicolon
-DECL|member|createmode
-id|__u32
-id|createmode
 suffix:semicolon
 r_union
 (brace
@@ -395,6 +388,16 @@ id|nfs4_verifier
 id|verifier
 suffix:semicolon
 multiline_comment|/* EXCLUSIVE */
+DECL|member|delegation
+id|nfs4_stateid
+id|delegation
+suffix:semicolon
+multiline_comment|/* CLAIM_DELEGATE_CUR */
+DECL|member|delegation_type
+r_int
+id|delegation_type
+suffix:semicolon
+multiline_comment|/* CLAIM_PREVIOUS */
 DECL|member|u
 )brace
 id|u
@@ -419,6 +422,10 @@ r_const
 id|u32
 op_star
 id|bitmask
+suffix:semicolon
+DECL|member|claim
+id|__u32
+id|claim
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -481,6 +488,7 @@ r_struct
 id|nfs_open_confirmargs
 (brace
 DECL|member|fh
+r_const
 r_struct
 id|nfs_fh
 op_star
@@ -506,45 +514,6 @@ id|stateid
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Arguments to the open_reclaim call.&n; */
-DECL|struct|nfs_open_reclaimargs
-r_struct
-id|nfs_open_reclaimargs
-(brace
-DECL|member|fh
-r_struct
-id|nfs_fh
-op_star
-id|fh
-suffix:semicolon
-DECL|member|clientid
-id|__u64
-id|clientid
-suffix:semicolon
-DECL|member|seqid
-id|__u32
-id|seqid
-suffix:semicolon
-DECL|member|id
-id|__u32
-id|id
-suffix:semicolon
-DECL|member|share_access
-id|__u32
-id|share_access
-suffix:semicolon
-DECL|member|claim
-id|__u32
-id|claim
-suffix:semicolon
-DECL|member|bitmask
-r_const
-id|__u32
-op_star
-id|bitmask
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Arguments to the close call.&n; */
 DECL|struct|nfs_closeargs
 r_struct
@@ -564,9 +533,9 @@ DECL|member|seqid
 id|__u32
 id|seqid
 suffix:semicolon
-DECL|member|share_access
-id|__u32
-id|share_access
+DECL|member|open_flags
+r_int
+id|open_flags
 suffix:semicolon
 )brace
 suffix:semicolon
