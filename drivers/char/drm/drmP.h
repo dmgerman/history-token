@@ -370,6 +370,8 @@ DECL|macro|DRM_BUFCOUNT
 mdefine_line|#define DRM_BUFCOUNT(x) ((x)-&gt;count - DRM_LEFTCOUNT(x))
 DECL|macro|DRM_WAITCOUNT
 mdefine_line|#define DRM_WAITCOUNT(dev,idx) DRM_BUFCOUNT(&amp;dev-&gt;queuelist[idx]-&gt;waitlist)
+DECL|macro|DRM_IF_VERSION
+mdefine_line|#define DRM_IF_VERSION(maj, min) (maj &lt;&lt; 16 | min)
 multiline_comment|/**&n; * Get the private SAREA mapping.&n; *&n; * &bslash;param _dev DRM device.&n; * &bslash;param _ctx context number.&n; * &bslash;param _map output mapping.&n; */
 DECL|macro|DRM_GET_PRIV_SAREA
 mdefine_line|#define DRM_GET_PRIV_SAREA(_dev, _ctx, _map) do {&t;&bslash;&n;&t;(_map) = (_dev)-&gt;context_sareas[_ctx];&t;&t;&bslash;&n;} while(0)
@@ -1362,6 +1364,11 @@ r_int
 id|minor
 suffix:semicolon
 multiline_comment|/**&lt; Minor device number */
+DECL|member|if_version
+r_int
+id|if_version
+suffix:semicolon
+multiline_comment|/**&lt; Highest interface version set */
 DECL|member|blocked
 r_int
 id|blocked
@@ -1535,6 +1542,11 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/**&lt; Interrupt used by board */
+DECL|member|irq_enabled
+r_int
+id|irq_enabled
+suffix:semicolon
+multiline_comment|/**&lt; True if irq handler is enabled */
 DECL|member|context_flag
 id|__volatile__
 r_int
@@ -1680,6 +1692,26 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/**&lt; PCI device structure */
+DECL|member|pci_domain
+r_int
+id|pci_domain
+suffix:semicolon
+multiline_comment|/**&lt; PCI bus domain number */
+DECL|member|pci_bus
+r_int
+id|pci_bus
+suffix:semicolon
+multiline_comment|/**&lt; PCI bus number */
+DECL|member|pci_slot
+r_int
+id|pci_slot
+suffix:semicolon
+multiline_comment|/**&lt; PCI slot number */
+DECL|member|pci_func
+r_int
+id|pci_func
+suffix:semicolon
+multiline_comment|/**&lt; PCI function number */
 macro_line|#ifdef __alpha__
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,3)
 DECL|member|hose
@@ -2483,7 +2515,7 @@ r_int
 id|DRM
 c_func
 (paren
-id|irq_busid
+id|irq_by_busid
 )paren
 (paren
 r_struct
@@ -3532,9 +3564,6 @@ id|irq_install
 id|drm_device_t
 op_star
 id|dev
-comma
-r_int
-id|irq
 )paren
 suffix:semicolon
 r_extern

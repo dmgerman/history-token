@@ -868,7 +868,7 @@ multiline_comment|/* Make sure interrupts are disabled here because the uninstal
 r_if
 c_cond
 (paren
-id|dev-&gt;irq
+id|dev-&gt;irq_enabled
 )paren
 id|DRM
 c_func
@@ -7132,12 +7132,7 @@ id|I830_PARAM_IRQ_ACTIVE
 suffix:colon
 id|value
 op_assign
-id|dev-&gt;irq
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
+id|dev-&gt;irq_enabled
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -244,6 +244,7 @@ comma
 l_int|0
 )brace
 comma
+macro_line|#if __HAVE_IRQ
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -256,7 +257,7 @@ op_assign
 id|DRM
 c_func
 (paren
-id|irq_busid
+id|irq_by_busid
 )paren
 comma
 l_int|0
@@ -264,6 +265,7 @@ comma
 l_int|1
 )brace
 comma
+macro_line|#endif
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -1526,7 +1528,7 @@ id|dev-&gt;queuelist
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dev-&gt;irq
+id|dev-&gt;irq_enabled
 op_assign
 l_int|0
 suffix:semicolon
@@ -1560,6 +1562,10 @@ c_func
 op_amp
 id|dev-&gt;context_wait
 )paren
+suffix:semicolon
+id|dev-&gt;if_version
+op_assign
+l_int|0
 suffix:semicolon
 id|dev-&gt;ctx_start
 op_assign
@@ -1680,7 +1686,7 @@ macro_line|#if __HAVE_IRQ
 r_if
 c_cond
 (paren
-id|dev-&gt;irq
+id|dev-&gt;irq_enabled
 )paren
 id|DRM
 c_func
@@ -2611,7 +2617,40 @@ id|dev-&gt;hose
 op_assign
 id|pdev-&gt;sysdata
 suffix:semicolon
+id|dev-&gt;pci_domain
+op_assign
+id|dev-&gt;hose-&gt;bus-&gt;number
+suffix:semicolon
+macro_line|#else
+id|dev-&gt;pci_domain
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
+id|dev-&gt;pci_bus
+op_assign
+id|pdev-&gt;bus-&gt;number
+suffix:semicolon
+id|dev-&gt;pci_slot
+op_assign
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+suffix:semicolon
+id|dev-&gt;pci_func
+op_assign
+id|PCI_FUNC
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+suffix:semicolon
+id|dev-&gt;irq
+op_assign
+id|pdev-&gt;irq
+suffix:semicolon
 id|DRIVER_PREINIT
 c_func
 (paren
@@ -2775,7 +2814,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Module initialization. Called via init_module at module load time, or via&n; * linux/init/main.c (this is not currently supported).&n; *&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Allocates and initialize an array of drm_device structures, and attempts to&n; * initialize all available devices, using consecutive minors, registering the&n; * stubs and initializing the AGP device.&n; * &n; * Expands the &bslash;c DRIVER_PREINIT and &bslash;c DRIVER_POST_INIT macros before and&n; * after the initialization for driver customization.&n; */
+multiline_comment|/**&n; * Module initialization. Called via init_module at module load time, or via&n; * linux/init/main.c (this is not currently supported).&n; *&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Initializes an array of drm_device structures, and attempts to&n; * initialize all available devices, using consecutive minors, registering the&n; * stubs and initializing the AGP device.&n; * &n; * Expands the &bslash;c DRIVER_PREINIT and &bslash;c DRIVER_POST_INIT macros before and&n; * after the initialization for driver customization.&n; */
 DECL|function|drm_init
 r_static
 r_int

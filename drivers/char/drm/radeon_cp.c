@@ -5946,7 +5946,7 @@ multiline_comment|/* Make sure interrupts are disabled here because the uninstal
 r_if
 c_cond
 (paren
-id|dev-&gt;irq
+id|dev-&gt;irq_enabled
 )paren
 id|DRM
 c_func
