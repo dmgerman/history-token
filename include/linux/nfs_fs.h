@@ -2237,6 +2237,11 @@ r_struct
 id|nfs4_state_recovery_ops
 id|nfs4_reboot_recovery_ops
 suffix:semicolon
+r_extern
+r_struct
+id|nfs4_state_recovery_ops
+id|nfs4_network_partition_recovery_ops
+suffix:semicolon
 multiline_comment|/* nfs4renewd.c */
 r_extern
 r_void
@@ -2364,6 +2369,16 @@ suffix:semicolon
 r_extern
 r_void
 id|nfs4_put_state_owner
+c_func
+(paren
+r_struct
+id|nfs4_state_owner
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs4_drop_state_owner
 c_func
 (paren
 r_struct
