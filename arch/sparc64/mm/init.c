@@ -66,10 +66,27 @@ r_int
 r_int
 id|phys_base
 suffix:semicolon
+DECL|variable|kern_base
+r_int
+r_int
+id|kern_base
+suffix:semicolon
+DECL|variable|kern_size
+r_int
+r_int
+id|kern_size
+suffix:semicolon
 DECL|variable|pfn_base
 r_int
 r_int
 id|pfn_base
+suffix:semicolon
+multiline_comment|/* This is even uglier. We have a problem where the kernel may not be&n; * located at phys_base. However, initial __alloc_bootmem() calls need to&n; * be adjusted to be within the 4-8Megs that the kernel is mapped to, else&n; * those page mappings wont work. Things are ok after inherit_prom_mappings&n; * is called though. Dave says he&squot;ll clean this up some other time.&n; * -- BenC&n; */
+DECL|variable|bootmap_base
+r_static
+r_int
+r_int
+id|bootmap_base
 suffix:semicolon
 multiline_comment|/* get_new_mmu_context() uses &quot;cache + 1&quot;.  */
 DECL|variable|ctx_alloc_lock
@@ -2019,7 +2036,7 @@ id|tsz
 comma
 id|SMP_CACHE_BYTES
 comma
-l_int|0UL
+id|bootmap_base
 )paren
 suffix:semicolon
 r_if
@@ -2113,7 +2130,7 @@ id|OBP_PMD_SIZE
 comma
 id|OBP_PMD_SIZE
 comma
-l_int|0UL
+id|bootmap_base
 )paren
 suffix:semicolon
 r_if
@@ -2261,7 +2278,7 @@ id|BASE_PAGE_SIZE
 comma
 id|BASE_PAGE_SIZE
 comma
-l_int|0UL
+id|bootmap_base
 )paren
 suffix:semicolon
 r_if
@@ -6733,29 +6750,11 @@ op_assign
 id|PAGE_ALIGN
 c_func
 (paren
-(paren
-r_int
-r_int
+id|kern_base
+op_plus
+id|kern_size
 )paren
-id|_end
-)paren
-op_minus
-(paren
-(paren
-r_int
-r_int
-)paren
-id|KERNBASE
-)paren
-suffix:semicolon
-multiline_comment|/* Adjust up to the physical address where the kernel begins. */
-id|start_pfn
-op_add_assign
-id|phys_base
-suffix:semicolon
-multiline_comment|/* Now shift down to get the real physical page frame number. */
-id|start_pfn
-op_rshift_assign
+op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
 id|bootmap_pfn
@@ -6888,9 +6887,9 @@ macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
 id|prom_printf
 c_func
 (paren
-l_string|&quot;init_bootmem(spfn[%lx], bpfn[%lx], mlpfn[%lx])&bslash;n&quot;
+l_string|&quot;init_bootmem(min[%lx], bootmap[%lx], max[%lx])&bslash;n&quot;
 comma
-id|start_pfn
+id|min_low_pfn
 comma
 id|bootmap_pfn
 comma
@@ -6915,6 +6914,12 @@ id|pfn_base
 comma
 id|end_pfn
 )paren
+suffix:semicolon
+id|bootmap_base
+op_assign
+id|bootmap_pfn
+op_lshift
+id|PAGE_SHIFT
 suffix:semicolon
 multiline_comment|/* Now register the available physical memory with the&n;&t; * allocator.&n;&t; */
 r_for
@@ -7024,34 +7029,24 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Reserve the kernel text/data/bss. */
-id|size
-op_assign
-(paren
-id|start_pfn
-op_lshift
-id|PAGE_SHIFT
-)paren
-op_minus
-id|phys_base
-suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
 id|prom_printf
 c_func
 (paren
 l_string|&quot;reserve_bootmem(kernel): base[%lx] size[%lx]&bslash;n&quot;
 comma
-id|phys_base
+id|kern_base
 comma
-id|size
+id|kern_size
 )paren
 suffix:semicolon
 macro_line|#endif
 id|reserve_bootmem
 c_func
 (paren
-id|phys_base
+id|kern_base
 comma
-id|size
+id|kern_size
 )paren
 suffix:semicolon
 op_star
@@ -7060,7 +7055,7 @@ op_sub_assign
 id|PAGE_ALIGN
 c_func
 (paren
-id|size
+id|kern_size
 )paren
 op_rshift
 id|PAGE_SHIFT
@@ -7172,7 +7167,7 @@ r_int
 r_int
 id|alias_base
 op_assign
-id|phys_base
+id|kern_base
 op_plus
 id|PAGE_OFFSET
 suffix:semicolon
@@ -7273,7 +7268,7 @@ macro_line|#endif
 multiline_comment|/* We assume physical memory starts at some 4mb multiple,&n;&t; * if this were not true we wouldn&squot;t boot up to this point&n;&t; * anyways.&n;&t; */
 id|pt
 op_assign
-id|phys_base
+id|kern_base
 op_or
 id|_PAGE_VALID
 op_or
@@ -7721,6 +7716,14 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SUN_SERIAL
+multiline_comment|/* This does not logically belong here, but we need to call it at&n;&t; * the moment we are able to use the bootmem allocator. This _has_&n;&t; * to be done after the prom_mappings above so since&n;&t; * __alloc_bootmem() doesn&squot;t work correctly until then.&n;&t; */
+id|sun_serial_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* We only created DTLB mapping of this stuff. */
 id|spitfire_flush_dtlb_nucleus_page
 c_func
@@ -8642,7 +8645,7 @@ l_int|3
 comma
 id|SMP_CACHE_BYTES
 comma
-l_int|0UL
+id|bootmap_base
 )paren
 suffix:semicolon
 r_if
@@ -8681,33 +8684,17 @@ id|addr
 op_assign
 id|PAGE_OFFSET
 op_plus
-id|phys_base
+id|kern_base
 suffix:semicolon
 id|last
 op_assign
 id|PAGE_ALIGN
 c_func
 (paren
-(paren
-r_int
-r_int
+id|kern_size
 )paren
-id|_end
-)paren
-op_minus
-(paren
-(paren
-r_int
-r_int
-)paren
-id|KERNBASE
-)paren
-suffix:semicolon
-id|last
-op_add_assign
-id|PAGE_OFFSET
 op_plus
-id|phys_base
+id|addr
 suffix:semicolon
 r_while
 c_loop
@@ -8937,7 +8924,7 @@ r_int
 r_int
 id|alias_base
 op_assign
-id|phys_base
+id|kern_base
 op_plus
 id|PAGE_OFFSET
 op_minus
@@ -9124,7 +9111,7 @@ r_int
 id|__va
 c_func
 (paren
-id|phys_base
+id|kern_base
 )paren
 )paren
 op_minus
