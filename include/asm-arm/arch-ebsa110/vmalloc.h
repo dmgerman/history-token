@@ -8,4 +8,8 @@ DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END       (PAGE_OFFSET + 0x1f000000)
+DECL|macro|MODULE_START
+mdefine_line|#define MODULE_START&t;(PAGE_OFFSET - 16*1048576)
+DECL|macro|MODULE_END
+mdefine_line|#define MODULE_END&t;(PAGE_OFFSET)
 eof
