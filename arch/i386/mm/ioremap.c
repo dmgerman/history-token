@@ -924,15 +924,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|BUG_ON
-c_func
-(paren
-id|p-&gt;phys_addr
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* not allocated with ioremap */
 id|vmfree_area_pages
 c_func
 (paren
