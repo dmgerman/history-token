@@ -5705,7 +5705,7 @@ multiline_comment|/*  Set up the thread  */
 id|daemonize
 c_func
 (paren
-l_string|&quot;pagebufd&quot;
+l_string|&quot;xfsbufd&quot;
 )paren
 suffix:semicolon
 id|current-&gt;flags
