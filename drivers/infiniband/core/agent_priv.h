@@ -55,20 +55,13 @@ DECL|member|port_num
 r_int
 id|port_num
 suffix:semicolon
-DECL|member|dr_smp_agent
+DECL|member|smp_agent
 r_struct
 id|ib_mad_agent
 op_star
-id|dr_smp_agent
+id|smp_agent
 suffix:semicolon
-multiline_comment|/* DR SM class */
-DECL|member|lr_smp_agent
-r_struct
-id|ib_mad_agent
-op_star
-id|lr_smp_agent
-suffix:semicolon
-multiline_comment|/* LR SM class */
+multiline_comment|/* SM class */
 DECL|member|perf_mgmt_agent
 r_struct
 id|ib_mad_agent
