@@ -1041,7 +1041,11 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;sending pkt_too_big to self&bslash;n&quot;
+l_string|&quot;sending pkt_too_big (len[%u] pmtu[%u]) to self&bslash;n&quot;
+comma
+id|skb-&gt;len
+comma
+id|rt-&gt;u.dst.pmtu
 )paren
 )paren
 suffix:semicolon
