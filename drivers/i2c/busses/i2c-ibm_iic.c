@@ -1949,6 +1949,35 @@ l_int|0
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|num
+op_eq
+l_int|1
+op_logical_and
+op_logical_neg
+id|msgs
+(braket
+l_int|0
+)braket
+dot
+id|len
+)paren
+(brace
+multiline_comment|/* Special case for I2C_SMBUS_QUICK emulation.&n;&t;&t;&t;&t; * Although this logic is FAR FROM PERFECT, this &n;&t;&t;&t;&t; * is what previous driver version did.&n;&t;&t;&t;&t; * IBM IIC doesn&squot;t support 0-length transactions&n;&t;&t;&t;&t; * (except bit-banging through IICx_DIRECTCNTL).&n;&t;&t;&t;&t; */
+id|DBG
+c_func
+(paren
+l_string|&quot;%d: zero-length msg kludge&bslash;n&quot;
+comma
+id|dev-&gt;idx
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|DBG
 c_func
 (paren
