@@ -1557,13 +1557,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|PCI_DMA_ERROR_CODE
 suffix:semicolon
 )brace
 multiline_comment|/* Unmap a single streaming mode DMA translation. */
@@ -2615,13 +2610,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|PCI_DMA_ERROR_CODE
 suffix:semicolon
 )brace
 multiline_comment|/* Unmap a set of streaming mode DMA translations. */

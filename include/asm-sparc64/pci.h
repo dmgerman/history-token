@@ -493,6 +493,27 @@ id|direction
 (brace
 multiline_comment|/* DAC cycle addressing does not make use of the&n;&t; * PCI controller&squot;s streaming cache, so nothing to do.&n;&t; */
 )brace
+DECL|macro|PCI_DMA_ERROR_CODE
+mdefine_line|#define PCI_DMA_ERROR_CODE&t;(~(dma_addr_t)0x0)
+DECL|function|pci_dma_error
+r_static
+r_inline
+r_int
+id|pci_dma_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+(paren
+id|dma_addr
+op_eq
+id|PCI_DMA_ERROR_CODE
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 r_extern
 r_int
