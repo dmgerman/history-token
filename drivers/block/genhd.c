@@ -573,14 +573,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|i2o_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|cpqarray_init
 c_func
 (paren
@@ -608,13 +600,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_I2O
-id|i2o_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_FC4_SOC
 multiline_comment|/* This has to be done before scsi_dev_init */
 id|soc_probe
