@@ -22107,6 +22107,12 @@ c_func
 id|TIOCSTART
 )paren
 comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSTOP
+)paren
+comma
 multiline_comment|/* Little t */
 id|COMPATIBLE_IOCTL
 c_func
@@ -25477,18 +25483,6 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|HCIDEVRESET
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|HCIRESETSTAT
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|HCIGETINFO
 )paren
 comma
 id|COMPATIBLE_IOCTL

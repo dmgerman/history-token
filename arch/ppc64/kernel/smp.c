@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* #include &lt;linux/openpic.h&gt; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -65,10 +66,6 @@ id|kernel_flag
 id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|cacheflush_time
-id|cycles_t
-id|cacheflush_time
 suffix:semicolon
 DECL|variable|cache_decay_ticks
 r_int
@@ -2235,17 +2232,28 @@ id|decr_overclock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * XXX very rough, assumes 20 bus cycles to read a cache line,&n;&t; * timebase increments every 4 bus cycles, 32kB L1 data cache.&n;&t; */
-id|cacheflush_time
-op_assign
-l_int|5
-op_star
-l_int|1024
-suffix:semicolon
-multiline_comment|/* XXX - Fix - Anton */
+multiline_comment|/*&n;&t; * XXX very rough. On POWER4 we optimise tlb flushes for&n;&t; * tasks that only run on one cpu so we increase decay ticks.&n;&t; */
+r_if
+c_cond
+(paren
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4
+)paren
+)paren
 id|cache_decay_ticks
 op_assign
-l_int|0
+id|HZ
+op_div
+l_int|50
+suffix:semicolon
+r_else
+id|cache_decay_ticks
+op_assign
+id|HZ
+op_div
+l_int|100
 suffix:semicolon
 multiline_comment|/* Probe arch for CPUs */
 id|cpu_nr
