@@ -831,12 +831,23 @@ r_struct
 id|list_head
 id|online
 suffix:semicolon
-multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           */
+multiline_comment|/* list of all bundled channels, &n;&t;&t;&t;&t;&t;  which are currently online       */
 DECL|member|online_lock
 id|spinlock_t
 id|online_lock
 suffix:semicolon
-multiline_comment|/* lock to protect queue            */
+multiline_comment|/* lock to protect online list      */
+DECL|member|running_devs
+r_struct
+id|list_head
+id|running_devs
+suffix:semicolon
+multiline_comment|/* member of global running_devs    */
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+multiline_comment|/* references held by ISDN code     */
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|dops
 r_struct
@@ -1058,13 +1069,13 @@ r_struct
 id|list_head
 id|slaves
 suffix:semicolon
-multiline_comment|/* Members of local-&gt;slaves         */
+multiline_comment|/* member of local-&gt;slaves          */
 DECL|member|online
 r_struct
 id|list_head
 id|online
 suffix:semicolon
-multiline_comment|/* Members of local-&gt;online         */
+multiline_comment|/* member of local-&gt;online          */
 DECL|member|name
 r_char
 id|name
