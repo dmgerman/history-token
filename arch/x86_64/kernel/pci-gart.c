@@ -98,6 +98,14 @@ mdefine_line|#define EMERGENCY_PAGES 32 /* = 128KB */
 macro_line|#ifdef CONFIG_AGP
 r_extern
 r_int
+id|agp_amdk8_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|agp_init
 c_func
 (paren
@@ -1999,18 +2007,28 @@ r_int
 r_int
 id|iommu_start
 suffix:semicolon
-macro_line|#ifndef CONFIG_AGP
+macro_line|#ifndef CONFIG_AGP_AMD_8151
 id|no_agp
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#else
+multiline_comment|/* Add other K8 AGP bridge drivers here */
 id|no_agp
 op_assign
 id|no_agp
 op_logical_or
 (paren
 id|agp_init
+c_func
+(paren
+)paren
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
+id|agp_amdk8_init
 c_func
 (paren
 )paren
