@@ -665,9 +665,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* init global data */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|iosapic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|iosapic_list
 op_assign

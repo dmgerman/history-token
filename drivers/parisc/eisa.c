@@ -25,12 +25,12 @@ DECL|macro|SNAKES_EEPROM_BASE_ADDR
 mdefine_line|#define SNAKES_EEPROM_BASE_ADDR 0xF0810400
 DECL|macro|MIRAGE_EEPROM_BASE_ADDR
 mdefine_line|#define MIRAGE_EEPROM_BASE_ADDR 0xF00C0400
-DECL|variable|eisa_irq_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|eisa_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* We can only have one EISA adapter in the system because neither&n; * implementation can be flexed.&n; */
 DECL|struct|eisa_ba
