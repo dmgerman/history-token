@@ -606,6 +606,17 @@ op_star
 id|kref
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|nfsd4_probe_callback
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+id|clp
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_void
