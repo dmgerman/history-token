@@ -104,6 +104,7 @@ op_amp
 id|pci_bus_type
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * I wonder what the deal is with these.  Nobody uses them.  Why do they&n; * exist? Why do we export them to modules? Why is this comment here, and&n; * why didn&squot;t I just delete them?&n; */
 DECL|variable|iSeries_veth_dev
 r_struct
 id|pci_dev
@@ -121,6 +122,20 @@ id|iSeries_vio_dev
 op_assign
 op_amp
 id|_vio_dev.dev
+suffix:semicolon
+DECL|variable|iSeries_veth_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_veth_dev
+)paren
+suffix:semicolon
+DECL|variable|iSeries_vio_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_vio_dev
+)paren
 suffix:semicolon
 r_extern
 r_struct
