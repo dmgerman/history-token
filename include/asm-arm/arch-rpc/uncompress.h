@@ -170,20 +170,14 @@ DECL|macro|palette_setpixel
 mdefine_line|#define palette_setpixel(p)&t;*(unsigned long *)(IO_START+0x00400000) = 0x10000000|((p) &amp; 255)
 DECL|macro|palette_write
 mdefine_line|#define palette_write(v)&t;*(unsigned long *)(IO_START+0x00400000) = 0x00000000|((v) &amp; 0x00ffffff)
-DECL|variable|params
-r_static
+multiline_comment|/*&n; * params_phys is a linker defined symbol - see&n; * arch/arm/boot/compressed/Makefile&n; */
+r_extern
 r_struct
 id|param_struct
-op_star
-id|params
-op_assign
-(paren
-r_struct
-id|param_struct
-op_star
-)paren
-id|PARAMS_PHYS
+id|params_phys
 suffix:semicolon
+DECL|macro|params
+mdefine_line|#define params (&amp;params_phys)
 macro_line|#ifndef STANDALONE_DEBUG 
 multiline_comment|/*&n; * This does not append a newline&n; */
 DECL|function|puts

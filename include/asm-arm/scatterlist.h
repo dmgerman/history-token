@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASMARM_SCATTERLIST_H
 DECL|macro|_ASMARM_SCATTERLIST_H
 mdefine_line|#define _ASMARM_SCATTERLIST_H
+macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 DECL|struct|scatterlist
 r_struct
@@ -43,7 +44,5 @@ DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)      ((sg)-&gt;dma_address)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)          ((sg)-&gt;length)
-DECL|macro|ISA_DMA_THRESHOLD
-mdefine_line|#define ISA_DMA_THRESHOLD (0xffffffff)
 macro_line|#endif /* _ASMARM_SCATTERLIST_H */
 eof

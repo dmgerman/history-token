@@ -359,7 +359,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|clk_set_rate
