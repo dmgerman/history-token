@@ -78,10 +78,9 @@ l_int|45
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* no dcache_lock, please */
+multiline_comment|/*&n; * no dcache_lock, please.  The caller must decrement dentry_stat.nr_dentry&n; * inside dcache_lock.&n; */
 DECL|function|d_free
 r_static
-r_inline
 r_void
 id|d_free
 c_func
@@ -129,9 +128,6 @@ id|dentry_cache
 comma
 id|dentry
 )paren
-suffix:semicolon
-id|dentry_stat.nr_dentry
-op_decrement
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Release the dentry&squot;s inode, using the filesystem&n; * d_iput() operation if defined.&n; * Called with dcache_lock held, drops it.&n; */
@@ -357,6 +353,10 @@ op_amp
 id|dentry-&gt;d_child
 )paren
 suffix:semicolon
+id|dentry_stat.nr_dentry
+op_decrement
+suffix:semicolon
+multiline_comment|/* For d_free, below */
 multiline_comment|/* drops the lock, at that point nobody can reach this dentry */
 id|dentry_iput
 c_func
@@ -890,6 +890,10 @@ op_amp
 id|dentry-&gt;d_child
 )paren
 suffix:semicolon
+id|dentry_stat.nr_dentry
+op_decrement
+suffix:semicolon
+multiline_comment|/* For d_free, below */
 id|dentry_iput
 c_func
 (paren
@@ -1748,7 +1752,7 @@ id|found
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory. &n; */
+multiline_comment|/*&n; * This is called from kswapd when we think we need some more memory.&n; *&n; * We don&squot;t want the VM to steal _all_ unused dcache.  Because that leads to&n; * the VM stealing all unused inodes, which shoots down recently-used&n; * pagecache.  So what we do is to tell fibs to the VM about how many reapable&n; * objects there are in this cache.   If the number of unused dentries is&n; * less than half of the total dentry count then return zero.  The net effect&n; * is that the number of unused dentries will be, at a minimum, equal to the&n; * number of used ones.&n; *&n; * If unused_ratio is set to 5, the number of unused dentries will not fall&n; * below 5* the number of used ones.&n; */
 DECL|function|shrink_dcache_memory
 r_static
 r_int
@@ -1763,6 +1767,18 @@ r_int
 id|gfp_mask
 )paren
 (brace
+r_int
+id|nr_used
+suffix:semicolon
+r_int
+id|nr_unused
+suffix:semicolon
+r_const
+r_int
+id|unused_ratio
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1784,8 +1800,34 @@ id|nr
 )paren
 suffix:semicolon
 )brace
-r_return
+id|nr_unused
+op_assign
+id|dentry_stat.nr_unused
+suffix:semicolon
+id|nr_used
+op_assign
 id|dentry_stat.nr_dentry
+op_minus
+id|nr_unused
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr_unused
+OL
+id|nr_used
+op_star
+id|unused_ratio
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+id|nr_unused
+op_minus
+id|nr_used
+op_star
+id|unused_ratio
 suffix:semicolon
 )brace
 DECL|macro|NAME_ALLOC_LEN
@@ -2007,6 +2049,17 @@ id|dentry-&gt;d_sb
 op_assign
 id|parent-&gt;d_sb
 suffix:semicolon
+)brace
+r_else
+(brace
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_child
+)paren
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
@@ -2014,6 +2067,11 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|parent
+)paren
 id|list_add
 c_func
 (paren
@@ -2024,24 +2082,15 @@ op_amp
 id|parent-&gt;d_subdirs
 )paren
 suffix:semicolon
+id|dentry_stat.nr_dentry
+op_increment
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
 op_amp
 id|dcache_lock
 )paren
-suffix:semicolon
-)brace
-r_else
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_child
-)paren
-suffix:semicolon
-id|dentry_stat.nr_dentry
-op_increment
 suffix:semicolon
 r_return
 id|dentry
