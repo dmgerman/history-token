@@ -970,7 +970,7 @@ c_cond
 (paren
 id|rdwr_arg.nmsgs
 OG
-l_int|42
+id|I2C_RDRW_IOCTL_MAX_MSGS
 )paren
 r_return
 op_minus
