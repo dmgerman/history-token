@@ -457,6 +457,8 @@ DECL|macro|SNDRV_PCM_DMA_TYPE_ISA
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_ISA&t;&t;1&t;/* ISA continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_PCI
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;2&t;/* PCI continuous */
+DECL|macro|SNDRV_PCM_DMA_TYPE_SBUS
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;3&t;/* SBUS continuous */
 multiline_comment|/* If you change this don&squot;t forget to changed snd_pcm_rates table in pcm_lib.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -3966,6 +3968,48 @@ r_struct
 id|pci_dev
 op_star
 id|pci
+comma
+id|snd_pcm_t
+op_star
+id|pcm
+comma
+r_int
+id|size
+comma
+r_int
+id|max
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SBUS
+r_int
+id|snd_pcm_lib_preallocate_sbus_pages
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+id|sdev
+comma
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+r_int
+id|size
+comma
+r_int
+id|max
+)paren
+suffix:semicolon
+r_int
+id|snd_pcm_lib_preallocate_sbus_pages_for_all
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+id|sdev
 comma
 id|snd_pcm_t
 op_star

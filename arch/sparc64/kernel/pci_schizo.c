@@ -4135,7 +4135,7 @@ op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm_a
+id|pbm_b
 comma
 l_int|NULL
 comma
@@ -4223,7 +4223,7 @@ op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm_a
+id|pbm_b
 comma
 l_int|NULL
 comma
@@ -4382,7 +4382,7 @@ comma
 (paren
 id|base
 op_plus
-id|SCHIZO_PBM_B_REGS_OFF
+id|SCHIZO_PBM_A_REGS_OFF
 op_plus
 id|schizo_imap_offset
 c_func
@@ -4399,7 +4399,7 @@ op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm_a
+id|pbm_b
 comma
 l_int|NULL
 comma
@@ -4487,7 +4487,7 @@ op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm_a
+id|pbm_b
 comma
 l_int|NULL
 comma

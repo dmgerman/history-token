@@ -12795,4 +12795,20 @@ id|snd_pcm_lib_preallocate_pci_pages_for_all
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SBUS
+DECL|variable|snd_pcm_lib_preallocate_sbus_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_lib_preallocate_sbus_pages
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_lib_preallocate_sbus_pages_for_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_lib_preallocate_sbus_pages_for_all
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

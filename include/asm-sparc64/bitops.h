@@ -685,6 +685,8 @@ r_int
 )paren
 id|x
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
