@@ -6787,16 +6787,12 @@ r_int
 id|flags
 )paren
 (brace
-r_if
-c_cond
+id|might_sleep_if
+c_func
 (paren
 id|flags
 op_amp
 id|__GFP_WAIT
-)paren
-id|might_sleep
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if DEBUG

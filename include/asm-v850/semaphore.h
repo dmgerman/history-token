@@ -189,6 +189,11 @@ op_star
 id|sem
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -222,6 +227,11 @@ r_int
 id|ret
 op_assign
 l_int|0
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -2288,14 +2288,10 @@ r_struct
 id|reclaim_state
 id|reclaim_state
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|wait
-)paren
-id|might_sleep
+id|might_sleep_if
 c_func
 (paren
+id|wait
 )paren
 suffix:semicolon
 id|cold
