@@ -60,6 +60,12 @@ r_int
 r_int
 id|stock_freq
 suffix:semicolon
+DECL|variable|p4clockmod_driver
+r_static
+r_struct
+id|cpufreq_driver
+id|p4clockmod_driver
+suffix:semicolon
 DECL|function|cpufreq_p4_setdc
 r_static
 r_int
@@ -735,6 +741,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* on P-4s, the TSC runs with constant frequency independent wether&n;&t; * throttling is active or not. */
+id|p4clockmod_driver.flags
+op_or_assign
+id|CPUFREQ_CONST_LOOPS
+suffix:semicolon
 r_if
 c_cond
 (paren

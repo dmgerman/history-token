@@ -1180,7 +1180,7 @@ id|cpufreq_delayed_get_work
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* If the CPU frequency is scaled, TSC-based delays will need a different&n; * loops_per_jiffy value to function properly. An exception to this&n; * are modern Intel Pentium 4 processors, where the TSC runs at a constant&n; * speed independent of frequency scaling. &n; */
+multiline_comment|/* If the CPU frequency is scaled, TSC-based delays will need a different&n; * loops_per_jiffy value to function properly.&n; */
 DECL|variable|ref_freq
 r_static
 r_int
@@ -1196,14 +1196,6 @@ r_int
 id|loops_per_jiffy_ref
 op_assign
 l_int|0
-suffix:semicolon
-DECL|variable|variable_tsc
-r_static
-r_int
-r_int
-id|variable_tsc
-op_assign
-l_int|1
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 DECL|variable|fast_gettimeoffset_ref
@@ -1325,7 +1317,10 @@ id|CPUFREQ_RESUMECHANGE
 r_if
 c_cond
 (paren
-id|variable_tsc
+op_logical_neg
+id|freq-&gt;flags
+op_amp
+id|CPUFREQ_CONST_LOOPS
 )paren
 id|cpu_data
 (braket
@@ -1375,7 +1370,10 @@ id|use_tsc
 r_if
 c_cond
 (paren
-id|variable_tsc
+op_logical_neg
+id|freq-&gt;flags
+op_amp
+id|CPUFREQ_CONST_LOOPS
 )paren
 (brace
 id|fast_gettimeoffset_quotient
@@ -1438,6 +1436,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|INIT_WORK
 c_func
 (paren
@@ -1449,31 +1450,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|cpufreq_init
+id|ret
 op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* P4 and above CPU TSC freq doesn&squot;t change when CPU frequency changes*/
-r_if
-c_cond
-(paren
-(paren
-id|boot_cpu_data.x86
-op_ge
-l_int|15
-)paren
-op_logical_and
-(paren
-id|boot_cpu_data.x86_vendor
-op_eq
-id|X86_VENDOR_INTEL
-)paren
-)paren
-id|variable_tsc
-op_assign
-l_int|0
-suffix:semicolon
-r_return
 id|cpufreq_register_notifier
 c_func
 (paren
@@ -1482,6 +1460,19 @@ id|time_cpufreq_notifier_block
 comma
 id|CPUFREQ_TRANSITION_NOTIFIER
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+id|cpufreq_init
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|cpufreq_tsc

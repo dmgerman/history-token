@@ -3561,7 +3561,7 @@ id|ci
 r_if
 c_cond
 (paren
-id|cpufreq_driver-&gt;flags
+id|ci-&gt;flags
 op_amp
 id|CPUFREQ_CONST_LOOPS
 )paren
@@ -3677,6 +3677,10 @@ c_func
 (paren
 )paren
 )paren
+suffix:semicolon
+id|freqs-&gt;flags
+op_assign
+id|cpufreq_driver-&gt;flags
 suffix:semicolon
 id|down_read
 c_func

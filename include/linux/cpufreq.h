@@ -218,6 +218,11 @@ r_int
 r_int
 r_new
 suffix:semicolon
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
+multiline_comment|/* flags of cpufreq_driver, see below. */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * cpufreq_scale - &quot;old * mult / div&quot; calculation for large values (32-bit-arch safe)&n; * @old:   old value&n; * @div:   divisor&n; * @mult:  multiplier&n; *&n; *&n; *    new = old * mult / div&n; */
