@@ -15,48 +15,17 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
-DECL|macro|DISPLAY_CS5530_TIMINGS
-mdefine_line|#define DISPLAY_CS5530_TIMINGS
+macro_line|#include &quot;cs5530.h&quot;
 macro_line|#if defined(DISPLAY_CS5530_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+DECL|variable|cs5530_proc
 r_static
-r_int
-id|cs5530_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
+id|u8
+id|cs5530_proc
+op_assign
+l_int|0
 suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|cs5530_display_info
-)paren
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* ide-proc.c */
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -118,8 +87,7 @@ id|inb_p
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 )paren
 id|bibma
 op_plus
@@ -132,8 +100,7 @@ id|inb_p
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 )paren
 id|bibma
 op_plus
@@ -299,14 +266,9 @@ id|buffer
 suffix:semicolon
 )brace
 macro_line|#endif /* DISPLAY_CS5530_TIMINGS &amp;&amp; CONFIG_PROC_FS */
-DECL|variable|cs5530_proc
-id|byte
-id|cs5530_proc
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n; * Set a new transfer mode at the drive&n; */
+multiline_comment|/**&n; *&t;cs5530_xfer_set_mode&t;-&t;set a new transfer mode at the drive&n; *&t;@drive: drive to tune&n; *&t;@mode: new mode&n; *&n; *&t;Logging wrapper to the IDE driver speed configuration. This can&n; *&t;probably go away now.&n; */
 DECL|function|cs5530_set_xfer_mode
+r_static
 r_int
 id|cs5530_set_xfer_mode
 (paren
@@ -314,13 +276,14 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|mode
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: cs5530_set_xfer_mode(%s)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -388,7 +351,7 @@ DECL|macro|CS5530_BAD_PIO
 mdefine_line|#define CS5530_BAD_PIO(timings) (((timings)&amp;~0x80000000)==0x0000e132)
 DECL|macro|CS5530_BASEREG
 mdefine_line|#define CS5530_BASEREG(hwif)&t;(((hwif)-&gt;dma_base &amp; ~0xf) + ((hwif)-&gt;channel ? 0x30 : 0x20))
-multiline_comment|/*&n; * cs5530_tuneproc() handles selection/setting of PIO modes&n; * for both the chipset and drive.&n; *&n; * The ide_init_cs5530() routine guarantees that all drives&n; * will have valid default PIO timings set up before we get here.&n; */
+multiline_comment|/**&n; *&t;cs5530_tuneproc&t;&t;-&t;select/set PIO modes&n; *&n; *&t;cs5530_tuneproc() handles selection/setting of PIO modes&n; *&t;for both the chipset and drive.&n; *&n; *&t;The ide_init_cs5530() routine guarantees that all drives&n; *&t;will have valid default PIO timings set up before we get here.&n; */
 DECL|function|cs5530_tuneproc
 r_static
 r_void
@@ -398,7 +361,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 multiline_comment|/* pio=255 means &quot;autotune&quot; */
@@ -426,7 +389,7 @@ id|hwif
 )paren
 suffix:semicolon
 r_static
-id|byte
+id|u8
 id|modes
 (braket
 l_int|5
@@ -477,7 +440,9 @@ id|pio
 id|format
 op_assign
 (paren
-id|inl
+id|hwif
+op_member_access_from_pointer
+id|INL
 c_func
 (paren
 id|basereg
@@ -490,7 +455,9 @@ l_int|31
 op_amp
 l_int|1
 suffix:semicolon
-id|outl
+id|hwif
+op_member_access_from_pointer
+id|OUTL
 c_func
 (paren
 id|cs5530_pio_timings
@@ -513,7 +480,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-multiline_comment|/*&n; * cs5530_config_dma() handles selection/setting of DMA/UDMA modes&n; * for both the chipset and drive.&n; */
+multiline_comment|/**&n; *&t;cs5530_config_dma&t;-&t;select/set DMA and UDMA modes&n; *&t;@drive: drive to tune&n; *&n; *&t;cs5530_config_dma() handles selection/setting of DMA/UDMA modes&n; *&t;for both the chipset and drive. The CS5530 has limitations about&n; *&t;mixing DMA/UDMA on the same cable.&n; */
 DECL|function|cs5530_config_dma
 r_static
 r_int
@@ -576,35 +543,25 @@ comma
 id|timings
 suffix:semicolon
 multiline_comment|/*&n;&t; * Default to DMA-off in case we run into trouble here.&n;&t; */
-(paren
-r_void
-)paren
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_off_quietly
 c_func
 (paren
-id|ide_dma_off_quietly
-comma
 id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* turn off DMA while we fiddle */
-(paren
-r_void
-)paren
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_host_off
 c_func
 (paren
-id|ide_dma_host_off
-comma
 id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* clear DMA_capable bit */
-multiline_comment|/*&n;&t; * The CS5530 specifies that two drives sharing a cable cannot&n;&t; * mix UDMA/MDMA.  It has to be one or the other, for the pair,&n;&t; * though different timings can still be chosen for each drive.&n;&t; * We could set the appropriate timing bits on the fly,&n;&t; * but that might be a bit confusing.  So, for now we statically&n;&t; * handle this requirement by looking at our mate drive to see&n;&t; * what it is capable of, before choosing a mode for our own drive.&n;&t; */
+multiline_comment|/*&n;&t; * The CS5530 specifies that two drives sharing a cable cannot&n;&t; * mix UDMA/MDMA.  It has to be one or the other, for the pair,&n;&t; * though different timings can still be chosen for each drive.&n;&t; * We could set the appropriate timing bits on the fly,&n;&t; * but that might be a bit confusing.  So, for now we statically&n;&t; * handle this requirement by looking at our mate drive to see&n;&t; * what it is capable of, before choosing a mode for our own drive.&n;&t; *&n;&t; * Note: This relies on the fact we never fail from UDMA to MWDMA_2&n;&t; * but instead drop to PIO&n;&t; */
 r_if
 c_cond
 (paren
@@ -632,11 +589,9 @@ op_logical_and
 op_logical_neg
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_bad_drive
 c_func
 (paren
-id|ide_dma_bad_drive
-comma
 id|mate
 )paren
 )paren
@@ -699,16 +654,14 @@ op_amp
 l_int|1
 )paren
 op_logical_and
-id|hwif-&gt;autodma
+id|drive-&gt;autodma
 op_logical_and
 op_logical_neg
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_bad_drive
 c_func
 (paren
-id|ide_dma_bad_drive
-comma
 id|drive
 )paren
 )paren
@@ -908,6 +861,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: cs5530_config_dma: huh? mode=%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -930,7 +884,9 @@ id|hwif
 suffix:semicolon
 id|reg
 op_assign
-id|inl
+id|hwif
+op_member_access_from_pointer
+id|INL
 c_func
 (paren
 id|basereg
@@ -955,7 +911,9 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* are we configuring drive0? */
-id|outl
+id|hwif
+op_member_access_from_pointer
+id|OUTL
 c_func
 (paren
 id|timings
@@ -988,7 +946,9 @@ op_complement
 l_int|0x00100000
 suffix:semicolon
 multiline_comment|/* disable UDMA timings for both drives */
-id|outl
+id|hwif
+op_member_access_from_pointer
+id|OUTL
 c_func
 (paren
 id|reg
@@ -999,7 +959,9 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* write drive0 config register */
-id|outl
+id|hwif
+op_member_access_from_pointer
+id|OUTL
 c_func
 (paren
 id|timings
@@ -1016,11 +978,9 @@ r_void
 )paren
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_host_on
 c_func
 (paren
-id|ide_dma_host_on
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -1029,68 +989,22 @@ multiline_comment|/*&n;&t; * Finally, turn DMA on in software, and exit.&n;&t; *
 r_return
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_on
 c_func
 (paren
-id|ide_dma_on
-comma
 id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* success */
 )brace
-multiline_comment|/*&n; * This is a CS5530-specific wrapper for the standard ide_dmaproc().&n; * We need it for our custom &quot;ide_dma_check&quot; function.&n; * All other requests are forwarded to the standard ide_dmaproc().&n; */
-DECL|function|cs5530_dmaproc
-r_int
-id|cs5530_dmaproc
-(paren
-id|ide_dma_action_t
-id|func
-comma
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|func
-)paren
-(brace
-r_case
-id|ide_dma_check
-suffix:colon
-r_return
-id|cs5530_config_dma
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* Other cases are done by generic IDE-DMA code. */
-r_return
-id|ide_dmaproc
-c_func
-(paren
-id|func
-comma
-id|drive
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
-multiline_comment|/*&n; * Initialize the cs5530 bridge for reliable IDE DMA operation.&n; */
-DECL|function|pci_init_cs5530
+multiline_comment|/**&n; *&t;init_chipset_5530&t;-&t;set up 5530 bridge&n; *&t;@dev: PCI device&n; *&t;@name: device name&n; *&n; *&t;Initialize the cs5530 bridge for reliable IDE DMA operation.&n; */
+DECL|function|init_chipset_cs5530
+r_static
 r_int
 r_int
 id|__init
-id|pci_init_cs5530
+id|init_chipset_cs5530
 (paren
 r_struct
 id|pci_dev
@@ -1117,12 +1031,6 @@ l_int|NULL
 suffix:semicolon
 r_int
 r_int
-id|pcicmd
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_int
 id|flags
 suffix:semicolon
 macro_line|#if defined(DISPLAY_CS5530_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
@@ -1141,10 +1049,15 @@ id|bmide_dev
 op_assign
 id|dev
 suffix:semicolon
-id|cs5530_display_info
-op_assign
+id|ide_pci_register_host_proc
+c_func
+(paren
 op_amp
-id|cs5530_get_info
+id|cs5530_procs
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* DISPLAY_CS5530_TIMINGS &amp;&amp; CONFIG_PROC_FS */
@@ -1198,6 +1111,7 @@ id|master_0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: unable to locate PCI MASTER function&bslash;n&quot;
 comma
 id|name
@@ -1217,6 +1131,7 @@ id|cs5530_0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: unable to locate CS5530 LEGACY function&bslash;n&quot;
 comma
 id|name
@@ -1237,28 +1152,16 @@ id|flags
 suffix:semicolon
 multiline_comment|/* all CPUs (there should only be one CPU with this chipset) */
 multiline_comment|/*&n;&t; * Enable BusMaster and MemoryWriteAndInvalidate for the cs5530:&n;&t; * --&gt;  OR 0x14 into 16-bit PCI COMMAND reg of function 0 of the cs5530&n;&t; */
-id|pci_read_config_word
-(paren
-id|cs5530_0
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|pcicmd
-)paren
-suffix:semicolon
-id|pci_write_config_word
+id|pci_set_master
 c_func
 (paren
 id|cs5530_0
-comma
-id|PCI_COMMAND
-comma
-id|pcicmd
-op_or
-id|PCI_COMMAND_MASTER
-op_or
-id|PCI_COMMAND_INVALIDATE
+)paren
+suffix:semicolon
+id|pci_set_mwi
+c_func
+(paren
+id|cs5530_0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set PCI CacheLineSize to 16-bytes:&n;&t; * --&gt; Write 0x04 into 8-bit PCI CACHELINESIZE reg of function 0 of the cs5530&n;&t; */
@@ -1339,11 +1242,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This gets invoked by the IDE driver once for each channel,&n; * and performs channel-specific pre-initialization before drive probing.&n; */
-DECL|function|ide_init_cs5530
+multiline_comment|/**&n; *&t;init_hwif_cs5530&t;-&t;initialise an IDE channel&n; *&t;@hwif: IDE to initialize&n; *&n; *&t;This gets invoked by the IDE driver once for each channel. It&n; *&t;performs channel-specific pre-initialization before drive probing.&n; */
+DECL|function|init_hwif_cs5530
+r_static
 r_void
 id|__init
-id|ide_init_cs5530
+id|init_hwif_cs5530
 (paren
 id|ide_hwif_t
 op_star
@@ -1386,7 +1290,9 @@ id|hwif
 suffix:semicolon
 id|d0_timings
 op_assign
-id|inl
+id|hwif
+op_member_access_from_pointer
+id|INL
 c_func
 (paren
 id|basereg
@@ -1405,7 +1311,9 @@ id|d0_timings
 )paren
 (brace
 multiline_comment|/* PIO timings not initialized? */
-id|outl
+id|hwif
+op_member_access_from_pointer
+id|OUTL
 c_func
 (paren
 id|cs5530_pio_timings
@@ -1455,7 +1363,9 @@ c_cond
 id|CS5530_BAD_PIO
 c_func
 (paren
-id|inl
+id|hwif
+op_member_access_from_pointer
+id|INL
 c_func
 (paren
 id|basereg
@@ -1466,7 +1376,9 @@ l_int|8
 )paren
 (brace
 multiline_comment|/* PIO timings not initialized? */
-id|outl
+id|hwif
+op_member_access_from_pointer
+id|OUTL
 c_func
 (paren
 id|cs5530_pio_timings
@@ -1510,13 +1422,24 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* needs autotuning later */
 )brace
+id|hwif-&gt;atapi_dma
+op_assign
+l_int|1
+suffix:semicolon
+id|hwif-&gt;ultra_mask
+op_assign
+l_int|0x07
+suffix:semicolon
+id|hwif-&gt;mwdma_mask
+op_assign
+l_int|0x07
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-id|hwif-&gt;dmaproc
+id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
-id|cs5530_dmaproc
+id|cs5530_config_dma
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDEDMA_AUTO
 r_if
 c_cond
 (paren
@@ -1527,7 +1450,174 @@ id|hwif-&gt;autodma
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDEDMA_AUTO */
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|autodma
+op_assign
+id|hwif-&gt;autodma
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+dot
+id|autodma
+op_assign
+id|hwif-&gt;autodma
+suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+)brace
+multiline_comment|/**&n; *&t;init_dma_cs5530&t;&t;-&t;set up for DMA&n; *&t;@hwif: interface&n; *&t;@dmabase: DMA base address&n; *&n; *&t;FIXME: this can go away&n; */
+DECL|function|init_dma_cs5530
+r_static
+r_void
+id|__init
+id|init_dma_cs5530
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+comma
+r_int
+r_int
+id|dmabase
+)paren
+(brace
+id|ide_setup_dma
+c_func
+(paren
+id|hwif
+comma
+id|dmabase
+comma
+l_int|8
+)paren
+suffix:semicolon
+)brace
+r_extern
+r_void
+id|ide_setup_pci_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|ide_pci_device_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/**&n; *&t;init_setup_cs5530&t;-&t;set up a CS5530 IDE&n; *&t;@dev: PCI device&n; *&t;@d: PCI ide device info&n; *&n; *&t;FIXME: this function can go away too&n; */
+DECL|function|init_setup_cs5530
+r_static
+r_void
+id|__init
+id|init_setup_cs5530
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|ide_pci_device_t
+op_star
+id|d
+)paren
+(brace
+id|ide_setup_pci_device
+c_func
+(paren
+id|dev
+comma
+id|d
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;cs5530_scan_pcidev&t;-&t;set up any CS5530 device&n; *&t;@dev:&t;pci device to check&n; *&n; *&t;Check if the device is a 5530 IDE controller. If it is then &n; *&t;claim and set up the interface.  Return 1 if we claimed the&n; *&t;interface or zero if it is not ours&n; */
+DECL|function|cs5530_scan_pcidev
+r_int
+id|__init
+id|cs5530_scan_pcidev
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|ide_pci_device_t
+op_star
+id|d
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_ne
+id|PCI_VENDOR_ID_CYRIX
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|d
+op_assign
+id|cs5530_chipsets
+suffix:semicolon
+id|d
+op_logical_and
+id|d-&gt;vendor
+op_logical_and
+id|d-&gt;device
+suffix:semicolon
+op_increment
+id|d
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|d-&gt;vendor
+op_eq
+id|dev-&gt;vendor
+)paren
+op_logical_and
+(paren
+id|d-&gt;device
+op_eq
+id|dev-&gt;device
+)paren
+)paren
+op_logical_and
+(paren
+id|d-&gt;init_setup
+)paren
+)paren
+(brace
+id|d
+op_member_access_from_pointer
+id|init_setup
+c_func
+(paren
+id|dev
+comma
+id|d
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof
