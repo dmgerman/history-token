@@ -474,6 +474,12 @@ op_assign
 l_int|65
 comma
 multiline_comment|/* int: hz timer on or off */
+DECL|enumerator|KERN_UNKNOWN_NMI_PANIC
+id|KERN_UNKNOWN_NMI_PANIC
+op_assign
+l_int|66
+comma
+multiline_comment|/* int: unknown nmi panic flag */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
