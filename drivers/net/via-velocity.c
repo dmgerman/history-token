@@ -94,7 +94,7 @@ l_string|&quot;VIA Networking Velocity Family Gigabit Ethernet Adapter Driver&qu
 )paren
 suffix:semicolon
 DECL|macro|VELOCITY_PARAM
-mdefine_line|#define VELOCITY_PARAM(N,D) &bslash;&n;        static const int N[MAX_UNITS]=OPTION_DEFAULT;&bslash;&n;        MODULE_PARM(N, &quot;1-&quot; __MODULE_STRING(MAX_UNITS) &quot;i&quot;);&bslash;&n;        MODULE_PARM_DESC(N, D);
+mdefine_line|#define VELOCITY_PARAM(N,D) &bslash;&n;        static int N[MAX_UNITS]=OPTION_DEFAULT;&bslash;&n;&t;module_param_array(N, int, NULL, 0); &bslash;&n;        MODULE_PARM_DESC(N, D);
 DECL|macro|RX_DESC_MIN
 mdefine_line|#define RX_DESC_MIN     64
 DECL|macro|RX_DESC_MAX
@@ -278,12 +278,14 @@ id|rx_copybreak
 op_assign
 l_int|200
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
