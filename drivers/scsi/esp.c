@@ -1247,7 +1247,7 @@ mdefine_line|#define esp_advance_phase(__s, __newphase) &bslash;&n;&t;(__s)-&gt;
 macro_line|#endif
 macro_line|#ifdef DEBUG_ESP_CMDS
 DECL|function|esp_cmd
-r_extern
+r_static
 r_inline
 r_void
 id|esp_cmd

@@ -109,7 +109,7 @@ id|location_record
 suffix:semicolon
 multiline_comment|/*      Count nr of 1&squot;s in pattern.&n; */
 DECL|function|count_ones
-r_extern
+r_static
 r_inline
 r_int
 id|count_ones

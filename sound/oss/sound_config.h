@@ -208,8 +208,8 @@ DECL|macro|OPEN_READWRITE
 mdefine_line|#define OPEN_READWRITE&t;(OPEN_READ|OPEN_WRITE)
 macro_line|#if OPEN_READ == FMODE_READ &amp;&amp; OPEN_WRITE == FMODE_WRITE
 DECL|function|translate_mode
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|translate_mode
 c_func
@@ -226,8 +226,8 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|translate_mode
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|translate_mode
 c_func
