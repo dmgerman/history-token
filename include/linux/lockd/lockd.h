@@ -58,18 +58,17 @@ id|u32
 id|h_version
 suffix:semicolon
 multiline_comment|/* interface version */
+DECL|member|h_authflavor
+id|rpc_authflavor_t
+id|h_authflavor
+suffix:semicolon
+multiline_comment|/* RPC authentication type */
 DECL|member|h_proto
 r_int
 r_int
 id|h_proto
 suffix:semicolon
 multiline_comment|/* transport proto */
-DECL|member|h_authflavor
-r_int
-r_int
-id|h_authflavor
-suffix:semicolon
-multiline_comment|/* RPC authentication type */
 DECL|member|h_reclaiming
 r_int
 r_int

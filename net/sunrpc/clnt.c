@@ -234,7 +234,7 @@ comma
 id|u32
 id|vers
 comma
-r_int
+id|rpc_authflavor_t
 id|flavor
 )paren
 (brace
@@ -478,7 +478,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;RPC: Couldn&squot;t create auth handle (flavor %d)&bslash;n&quot;
+l_string|&quot;RPC: Couldn&squot;t create auth handle (flavor %u)&bslash;n&quot;
 comma
 id|flavor
 )paren

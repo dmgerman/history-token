@@ -70,16 +70,13 @@ op_star
 id|authp
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Max number of authentication flavors we support&n; */
-DECL|macro|RPC_SVCAUTH_MAX
-mdefine_line|#define RPC_SVCAUTH_MAX&t;8
 multiline_comment|/*&n; * Table of authenticators&n; */
 DECL|variable|authtab
 r_static
 id|auth_fn_t
 id|authtab
 (braket
-id|RPC_SVCAUTH_MAX
+id|RPC_AUTH_MAXFLAVOR
 )braket
 op_assign
 (brace
@@ -110,7 +107,7 @@ op_star
 id|authp
 )paren
 (brace
-id|u32
+id|rpc_authflavor_t
 id|flavor
 suffix:semicolon
 id|auth_fn_t
@@ -156,7 +153,7 @@ c_cond
 (paren
 id|flavor
 op_ge
-id|RPC_SVCAUTH_MAX
+id|RPC_AUTH_MAXFLAVOR
 op_logical_or
 op_logical_neg
 (paren
@@ -197,7 +194,7 @@ DECL|function|svc_auth_register
 id|svc_auth_register
 c_func
 (paren
-id|u32
+id|rpc_authflavor_t
 id|flavor
 comma
 id|auth_fn_t
@@ -209,7 +206,7 @@ c_cond
 (paren
 id|flavor
 op_ge
-id|RPC_SVCAUTH_MAX
+id|RPC_AUTH_MAXFLAVOR
 op_logical_or
 id|authtab
 (braket
@@ -236,7 +233,7 @@ DECL|function|svc_auth_unregister
 id|svc_auth_unregister
 c_func
 (paren
-id|u32
+id|rpc_authflavor_t
 id|flavor
 )paren
 (brace
@@ -245,7 +242,7 @@ c_cond
 (paren
 id|flavor
 OL
-id|RPC_SVCAUTH_MAX
+id|RPC_AUTH_MAXFLAVOR
 )paren
 id|authtab
 (braket
