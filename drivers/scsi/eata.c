@@ -86,6 +86,7 @@ l_string|&quot;Dario Ballabio&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -96,18 +97,18 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;eata.h&quot;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &quot;eata.h&quot;
 macro_line|#if !defined(__BIG_ENDIAN_BITFIELD) &amp;&amp; !defined(__LITTLE_ENDIAN_BITFIELD)
 macro_line|#error &quot;Adjust your &lt;asm/byteorder.h&gt; defines&quot;
 macro_line|#endif

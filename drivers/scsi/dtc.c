@@ -27,6 +27,10 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -34,9 +38,6 @@ macro_line|#include &quot;dtc.h&quot;
 DECL|macro|AUTOPROBE_IRQ
 mdefine_line|#define AUTOPROBE_IRQ
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|DTC_PUBLIC_RELEASE
 mdefine_line|#define DTC_PUBLIC_RELEASE 2
 multiline_comment|/*#define DTCDEBUG 0x1*/
