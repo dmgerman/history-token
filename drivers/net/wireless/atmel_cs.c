@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -190,8 +189,9 @@ r_void
 id|atmel_release
 c_func
 (paren
-id|u_long
-id|arg
+id|dev_link_t
+op_star
+id|link
 )paren
 suffix:semicolon
 r_static
@@ -403,25 +403,6 @@ r_struct
 id|dev_link_t
 )paren
 )paren
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-op_amp
-id|atmel_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
 suffix:semicolon
 multiline_comment|/* Interrupt setup */
 id|link-&gt;irq.Attributes
@@ -707,13 +688,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -725,9 +699,6 @@ id|DEV_CONFIG
 id|atmel_release
 c_func
 (paren
-(paren
-r_int
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -2225,14 +2196,10 @@ suffix:semicolon
 id|atmel_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* atmel_config */
 multiline_comment|/*======================================================================&n;  &n;  After a card is removed, atmel_release() will unregister the&n;  device, and release the PCMCIA configuration.  If the device is&n;  still open, this will be postponed until it is closed.&n;  &n;  ======================================================================*/
 DECL|function|atmel_release
 r_static
@@ -2240,20 +2207,11 @@ r_void
 id|atmel_release
 c_func
 (paren
-id|u_long
-id|arg
-)paren
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 r_struct
 id|net_device
 op_star
@@ -2356,7 +2314,6 @@ op_complement
 id|DEV_CONFIG
 suffix:semicolon
 )brace
-multiline_comment|/* atmel_release */
 multiline_comment|/*======================================================================&n;  &n;  The card status event handler.  Mostly, this schedules other&n;  stuff to run after an event is received.&n;&n;  When a CARD_REMOVAL event is received, we immediately set a&n;  private flag to block future accesses to this device.  All the&n;  functions that actually access the device should check this flag&n;  to make sure the card is still present.&n;  &n;  ======================================================================*/
 DECL|function|atmel_event
 r_static
@@ -2425,17 +2382,10 @@ c_func
 id|local-&gt;eth_dev
 )paren
 suffix:semicolon
-id|mod_timer
+id|atmel_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
-comma
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
+id|link
 )paren
 suffix:semicolon
 )brace
@@ -2635,9 +2585,6 @@ id|DEV_CONFIG
 id|atmel_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|dev_list
 )paren
 suffix:semicolon
