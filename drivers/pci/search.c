@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &t;PCI searching functions.&n; *&n; *&t;Copyright 1993 -- 1997 Drew Eckhardt, Frederic Potter,&n; *&t;&t;&t;&t;David Mosberger-Tang&n; *&t;Copyright 1997 -- 2000 Martin Mares &lt;mj@ucw.cz&gt;&n; *&t;Copyright 2003 -- Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; */
+multiline_comment|/*&n; * &t;PCI searching functions.&n; *&n; *&t;Copyright (C) 1993 -- 1997 Drew Eckhardt, Frederic Potter,&n; *&t;&t;&t;&t;&t;David Mosberger-Tang&n; *&t;Copyright (C) 1997 -- 2000 Martin Mares &lt;mj@ucw.cz&gt;&n; *&t;Copyright (C) 2003 -- 2004 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -768,7 +768,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_get_device - begin or continue searching for a PCI device by vendor/device id&n; * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @device: PCI device id to match, or %PCI_ANY_ID to match all device ids&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor and @device, a pointer to its device structure is&n; * returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device on the global list.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor and @device, the reference count to the&n; * device is incremented and a pointer to its device structure is returned.&n; * Otherwise, %NULL is returned.  A new search is initiated by passing %NULL&n; * to the @from argument.  Otherwise if @from is not %NULL, searches continue&n; * from next device on the global list.  The reference count for @from is&n; * always decremented if it is not %NULL.&n; */
+multiline_comment|/**&n; * pci_get_device - begin or continue searching for a PCI device by vendor/device id&n; * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @device: PCI device id to match, or %PCI_ANY_ID to match all device ids&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor and @device, the reference count to the&n; * device is incremented and a pointer to its device structure is returned.&n; * Otherwise, %NULL is returned.  A new search is initiated by passing %NULL&n; * to the @from argument.  Otherwise if @from is not %NULL, searches continue&n; * from next device on the global list.  The reference count for @from is&n; * always decremented if it is not %NULL.&n; */
 r_struct
 id|pci_dev
 op_star
@@ -933,7 +933,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_find_class - begin or continue searching for a PCI device by class&n; * @class: search for a PCI device with this class designation&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @class, a pointer to its device structure is&n; * returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device&n; * on the global list.&n; */
+multiline_comment|/**&n; * pci_find_class - begin or continue searching for a PCI device by class&n; * @class: search for a PCI device with this class designation&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @class, a pointer to its device structure is&n; * returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device&n; * on the global list.&n; *&n; * NOTE: Do not use this function anymore, use pci_get_class() instead, as&n; * the pci device returned by this function can disappear at any moment in&n; * time.&n; */
 r_struct
 id|pci_dev
 op_star
