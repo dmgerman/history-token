@@ -1201,7 +1201,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Should update do_gtod.stamp_xsec.&n;&t; * For now we leave it which means the time can be some&n;&t; * number of msecs off until someone does a settimeofday()&n;&t; */
-id|do_gtod.tb_orig_stamp
+id|do_gtod.varp-&gt;tb_orig_stamp
 op_assign
 id|tb_last_stamp
 suffix:semicolon

@@ -41,6 +41,7 @@ macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
+macro_line|#include &lt;asm/vdso.h&gt;
 DECL|variable|mem_init_done
 r_int
 id|mem_init_done
@@ -3086,6 +3087,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Initialize the vDSO */
+id|vdso_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called when a page has been modified by the kernel.&n; * It just marks the page as not i-cache clean.  We do the i-cache&n; * flush later when the page is given to a user process, if necessary.&n; */
 DECL|function|flush_dcache_page

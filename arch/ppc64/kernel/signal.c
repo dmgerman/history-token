@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/vdso.h&gt;
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
@@ -1851,6 +1852,23 @@ r_goto
 id|badframe
 suffix:semicolon
 multiline_comment|/* Set up to return from userspace. */
+r_if
+c_cond
+(paren
+id|vdso64_rt_sigtramp
+op_logical_and
+id|current-&gt;thread.vdso_base
+)paren
+(brace
+id|regs-&gt;link
+op_assign
+id|current-&gt;thread.vdso_base
+op_plus
+id|vdso64_rt_sigtramp
+suffix:semicolon
+)brace
+r_else
+(brace
 id|err
 op_or_assign
 id|setup_trampoline
@@ -1873,6 +1891,19 @@ id|err
 r_goto
 id|badframe
 suffix:semicolon
+id|regs-&gt;link
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|frame-&gt;tramp
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
 id|funct_desc_ptr
 op_assign
 (paren
@@ -1923,18 +1954,6 @@ comma
 op_amp
 id|funct_desc_ptr-&gt;entry
 )paren
-suffix:semicolon
-id|regs-&gt;link
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|frame-&gt;tramp
-(braket
-l_int|0
-)braket
 suffix:semicolon
 id|regs-&gt;gpr
 (braket

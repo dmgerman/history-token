@@ -394,6 +394,9 @@ id|u64
 id|ppc64_pft_size
 suffix:semicolon
 multiline_comment|/* Log 2 of page table size */
+multiline_comment|/* We do define AT_SYSINFO_EHDR but don&squot;t use the gate mecanism */
+DECL|macro|__HAVE_ARCH_GATE_AREA
+mdefine_line|#define __HAVE_ARCH_GATE_AREA&t;&t;1
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef MODULE
 DECL|macro|__page_aligned

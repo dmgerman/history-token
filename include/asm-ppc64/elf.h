@@ -423,6 +423,9 @@ mdefine_line|#define AT_UCACHEBSIZE&t;&t;21
 multiline_comment|/* A special ignored type value for PPC, for glibc compatibility.  */
 DECL|macro|AT_IGNOREPPC
 mdefine_line|#define AT_IGNOREPPC&t;&t;22
+multiline_comment|/* The vDSO location. We have to use the same value as x86 for glibc&squot;s&n; * sake :-)&n; */
+DECL|macro|AT_SYSINFO_EHDR
+mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
 r_extern
 r_int
 id|dcache_bsize
@@ -435,9 +438,29 @@ r_extern
 r_int
 id|ucache_bsize
 suffix:semicolon
+multiline_comment|/* We do have an arch_setup_additional_pages for vDSO matters */
+DECL|macro|ARCH_HAS_SETUP_ADDITIONAL_PAGES
+mdefine_line|#define ARCH_HAS_SETUP_ADDITIONAL_PAGES
+r_struct
+id|linux_binprm
+suffix:semicolon
+r_extern
+r_int
+id|arch_setup_additional_pages
+c_func
+(paren
+r_struct
+id|linux_binprm
+op_star
+id|bprm
+comma
+r_int
+id|executable_stack
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The requirements here are:&n; * - keep the final alignment of sp (sp &amp; 0xf)&n; * - make sure the 32-bit value at the first 16 byte aligned position of&n; *   AUXV is greater than 16 for glibc compatibility.&n; *   AT_IGNOREPPC is used for that.&n; * - for compatibility with glibc ARCH_DLINFO must always be defined on PPC,&n; *   even if DLINFO_ARCH_ITEMS goes to zero or is undefined.&n; */
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Handle glibc compatibility. */&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;/* Cache size items */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_DCACHEBSIZE, dcache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_ICACHEBSIZE, icache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_UCACHEBSIZE, ucache_bsize);&t;&t;&t;&bslash;&n; } while (0)
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Handle glibc compatibility. */&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;/* Cache size items */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_DCACHEBSIZE, dcache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_ICACHEBSIZE, icache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_UCACHEBSIZE, ucache_bsize);&t;&t;&t;&bslash;&n;&t;/* vDSO base */&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, current-&gt;thread.vdso_base);       &t;&bslash;&n; } while (0)
 multiline_comment|/* PowerPC64 relocations defined by the ABIs */
 DECL|macro|R_PPC64_NONE
 mdefine_line|#define R_PPC64_NONE    R_PPC_NONE
