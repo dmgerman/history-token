@@ -359,9 +359,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func
