@@ -14,22 +14,6 @@ r_int
 id|__softirq_pending
 suffix:semicolon
 multiline_comment|/* set_bit is used on this */
-DECL|member|__syscall_count
-r_int
-r_int
-id|__syscall_count
-suffix:semicolon
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
-suffix:semicolon
-DECL|member|idle_timestamp
-r_int
-r_int
-id|idle_timestamp
-suffix:semicolon
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned
