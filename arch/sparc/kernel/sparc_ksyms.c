@@ -317,7 +317,8 @@ c_func
 id|kernel_thread
 )paren
 suffix:semicolon
-macro_line|#ifdef SPIN_LOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|_do_spin_lock
 id|EXPORT_SYMBOL
 c_func
@@ -367,28 +368,12 @@ c_func
 id|_do_write_unlock
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#else
-DECL|variable|_rw_read_enter
-id|EXPORT_SYMBOL_PRIVATE
-c_func
-(paren
-id|_rw_read_enter
-)paren
-suffix:semicolon
-DECL|variable|_rw_read_exit
-id|EXPORT_SYMBOL_PRIVATE
-c_func
-(paren
-id|_rw_read_exit
-)paren
-suffix:semicolon
-DECL|variable|_rw_write_enter
-id|EXPORT_SYMBOL_PRIVATE
-c_func
-(paren
-id|_rw_write_enter
-)paren
-suffix:semicolon
+singleline_comment|// XXX find what uses (or used) these.
+singleline_comment|// EXPORT_SYMBOL_PRIVATE(_rw_read_enter);
+singleline_comment|// EXPORT_SYMBOL_PRIVATE(_rw_read_exit);
+singleline_comment|// EXPORT_SYMBOL_PRIVATE(_rw_write_enter);
 macro_line|#endif
 multiline_comment|/* semaphores */
 DECL|variable|__up

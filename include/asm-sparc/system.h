@@ -6,6 +6,7 @@ mdefine_line|#define __SPARC_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;&t;/* NR_CPUS */
+macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;&t;/* romvec. XXX will be dealt later. Promise. */
