@@ -486,6 +486,11 @@ c_func
 id|shost
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|parent
+)paren
 id|put_device
 c_func
 (paren
