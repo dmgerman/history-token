@@ -513,6 +513,12 @@ id|dumpable
 suffix:colon
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|member|used_hugetlb
+r_int
+id|used_hugetlb
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Architecture-specific MM context */
 DECL|member|context
 id|mm_context_t

@@ -1356,6 +1356,14 @@ op_amp
 id|mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
+id|mark_mm_hugetlb
+c_func
+(paren
+id|mm
+comma
+id|vma
+)paren
+suffix:semicolon
 id|mm-&gt;map_count
 op_increment
 suffix:semicolon
