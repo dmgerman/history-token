@@ -1499,13 +1499,13 @@ id|ptr
 op_logical_and
 (paren
 (paren
-id|ptr-&gt;target
+id|ptr-&gt;device-&gt;id
 op_ne
 id|target
 )paren
 op_logical_or
 (paren
-id|ptr-&gt;lun
+id|ptr-&gt;device-&gt;lun
 op_ne
 id|lun
 )paren
@@ -5878,7 +5878,7 @@ op_assign
 op_amp
 id|esp-&gt;data_pointers
 (braket
-id|sp-&gt;target
+id|sp-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|sp-&gt;SCp.ptr
@@ -5922,7 +5922,7 @@ op_assign
 op_amp
 id|esp-&gt;data_pointers
 (braket
-id|sp-&gt;target
+id|sp-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|ep-&gt;saved_ptr
@@ -6245,11 +6245,11 @@ id|SDptr-&gt;hostdata
 suffix:semicolon
 id|lun
 op_assign
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 suffix:semicolon
 id|target
 op_assign
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 suffix:semicolon
 id|esp-&gt;snip
 op_assign
@@ -6384,7 +6384,7 @@ l_string|&quot;lun=%d&bslash;n&quot;
 comma
 id|target
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -6730,9 +6730,9 @@ l_string|&quot;lun %d&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -7221,9 +7221,9 @@ c_func
 (paren
 l_string|&quot;esp_queue: target=%d lun=%d &quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -7233,9 +7233,9 @@ c_func
 (paren
 l_string|&quot;N&lt;%02x,%02x&gt;&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -7246,7 +7246,7 @@ r_struct
 id|esp
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|esp_get_dmabufs
 c_func
@@ -7369,7 +7369,7 @@ r_struct
 id|esp
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|ESPLOG
 c_func
@@ -7405,9 +7405,9 @@ c_func
 l_string|&quot;[tgt&lt;%02x&gt; lun&lt;%02x&gt; &quot;
 l_string|&quot;pphase&lt;%s&gt; cphase&lt;%s&gt;]&quot;
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 comma
 id|phase_string
 c_func
@@ -7770,7 +7770,7 @@ r_struct
 id|esp
 op_star
 )paren
-id|SCptr-&gt;host-&gt;hostdata
+id|SCptr-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 id|don
@@ -8201,7 +8201,7 @@ r_struct
 id|esp
 op_star
 )paren
-id|SCptr-&gt;host-&gt;hostdata
+id|SCptr-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 (paren
 r_void
@@ -10031,7 +10031,7 @@ id|esp-&gt;prev_cfg3
 op_ne
 id|esp-&gt;config3
 (braket
-id|sp-&gt;target
+id|sp-&gt;device-&gt;id
 )braket
 )paren
 )paren
@@ -10076,7 +10076,7 @@ id|esp-&gt;prev_cfg3
 op_assign
 id|esp-&gt;config3
 (braket
-id|sp-&gt;target
+id|sp-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|sbus_writeb
@@ -11136,7 +11136,7 @@ l_string|&quot;esp%d: Forcing async for target %d&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -11492,7 +11492,7 @@ op_logical_and
 (paren
 l_int|1
 op_lshift
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 op_amp
 id|esp-&gt;targets_present
@@ -11512,9 +11512,9 @@ l_string|&quot;esp: Status &lt;%d&gt; for target %d lun %d&bslash;n&quot;
 comma
 id|SCptr-&gt;SCp.Status
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -11541,9 +11541,9 @@ c_func
 (paren
 l_string|&quot;F&lt;%02x,%02x&gt;&quot;
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -11602,9 +11602,9 @@ c_func
 (paren
 l_string|&quot;D&lt;%02x,%02x&gt;&quot;
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -11715,9 +11715,9 @@ c_func
 (paren
 l_string|&quot;&lt;%02x,%02x&gt;&quot;
 comma
-id|sp-&gt;target
+id|sp-&gt;device-&gt;id
 comma
-id|sp-&gt;lun
+id|sp-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -11763,9 +11763,9 @@ c_func
 (paren
 l_string|&quot;&lt;%02x,%02x&gt;&quot;
 comma
-id|sp-&gt;target
+id|sp-&gt;device-&gt;id
 comma
-id|sp-&gt;lun
+id|sp-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -11812,9 +11812,9 @@ c_func
 (paren
 l_string|&quot;&lt;%02x,%02x&gt;&quot;
 comma
-id|sp-&gt;target
+id|sp-&gt;device-&gt;id
 comma
-id|sp-&gt;lun
+id|sp-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -12031,7 +12031,7 @@ c_func
 (paren
 (paren
 (paren
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 op_amp
 l_int|0xf
 )paren
@@ -13224,7 +13224,7 @@ op_or_assign
 (paren
 l_int|1
 op_lshift
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 suffix:semicolon
 multiline_comment|/* What if the target ignores the sdtr? */
@@ -13258,7 +13258,7 @@ l_string|&quot;esp%d: STEP_ASEL for tgt %d&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -13462,7 +13462,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 op_amp
 id|esp-&gt;targets_present
@@ -13506,9 +13506,9 @@ l_string|&quot;lun %d&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -13565,7 +13565,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 op_amp
 id|esp-&gt;targets_present
@@ -13581,7 +13581,7 @@ l_string|&quot;selection.&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -13616,9 +13616,9 @@ c_func
 (paren
 l_string|&quot;esp: target %d lun %d&bslash;n&quot;
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -14006,7 +14006,7 @@ l_string|&quot;esp%d: target %d sends a nop&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|esp-&gt;current_SC-&gt;target
+id|esp-&gt;current_SC-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -14317,7 +14317,7 @@ op_logical_and
 (paren
 id|esp-&gt;config3
 (braket
-id|esp-&gt;current_SC-&gt;target
+id|esp-&gt;current_SC-&gt;device-&gt;id
 )braket
 op_amp
 id|ESP_CONFIG3_EWIDE
@@ -14372,7 +14372,7 @@ l_string|&quot;esp%d: target %d &quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|esp-&gt;current_SC-&gt;target
+id|esp-&gt;current_SC-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -14439,7 +14439,7 @@ l_string|&quot;esp%d: target %d asynchronous&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|esp-&gt;current_SC-&gt;target
+id|esp-&gt;current_SC-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -14878,7 +14878,7 @@ id|esp-&gt;radelay
 suffix:semicolon
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 op_or_assign
 id|bit
@@ -14888,7 +14888,7 @@ r_else
 (brace
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
@@ -14899,7 +14899,7 @@ id|esp-&gt;prev_cfg3
 op_assign
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|sbus_writeb
@@ -14953,7 +14953,7 @@ id|esp_dev-&gt;sync_min_period
 comma
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 )paren
 )paren
@@ -15060,7 +15060,7 @@ id|ESP_CONFIG3_FSCSI
 suffix:semicolon
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
@@ -15070,7 +15070,7 @@ id|esp-&gt;prev_cfg3
 op_assign
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|sbus_writeb
@@ -15252,7 +15252,7 @@ l_int|16
 multiline_comment|/* Set config 3 register for this target. */
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 op_or_assign
 id|ESP_CONFIG3_EWIDE
@@ -15292,7 +15292,7 @@ suffix:semicolon
 multiline_comment|/* Pure paranoia. */
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
@@ -15305,7 +15305,7 @@ id|esp-&gt;prev_cfg3
 op_assign
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|sbus_writeb
@@ -17480,7 +17480,7 @@ l_string|&quot;target %d&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
