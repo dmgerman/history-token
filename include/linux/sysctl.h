@@ -486,6 +486,12 @@ op_assign
 l_int|67
 comma
 multiline_comment|/* int: boot loader type */
+DECL|enumerator|KERN_RANDOMIZE
+id|KERN_RANDOMIZE
+op_assign
+l_int|68
+comma
+multiline_comment|/* int: randomize virtual address space */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
