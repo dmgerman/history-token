@@ -87,20 +87,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; inode = 0x%p file flags are %x&quot;
-comma
-id|inode
-comma
-id|file-&gt;f_flags
-)paren
-)paren
-suffix:semicolon
 id|cifs_sb
 op_assign
 id|CIFS_SB
@@ -119,6 +105,22 @@ id|build_path_from_dentry
 c_func
 (paren
 id|file-&gt;f_dentry
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot; inode = 0x%p file flags are %x for %s&quot;
+comma
+id|inode
+comma
+id|file-&gt;f_flags
+comma
+id|full_path
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -414,6 +416,9 @@ id|__u64
 )paren
 op_minus
 l_int|1
+comma
+l_int|0
+multiline_comment|/* dev */
 comma
 id|cifs_sb-&gt;local_nls
 )paren

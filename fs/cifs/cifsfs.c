@@ -1161,6 +1161,11 @@ id|symlink
 op_assign
 id|cifs_symlink
 comma
+dot
+id|mknod
+op_assign
+id|cifs_mknod
+comma
 )brace
 suffix:semicolon
 DECL|variable|cifs_file_inode_ops
