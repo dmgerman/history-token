@@ -1668,29 +1668,6 @@ id|id-&gt;index
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|kctl-&gt;id.index
-op_ne
-id|id-&gt;index
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;BOOOR: %i, %i, %i&bslash;n&quot;
-comma
-id|kctl-&gt;id.index
-comma
-id|kctl-&gt;count
-comma
-id|id-&gt;index
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 r_return
 id|kctl
 suffix:semicolon
@@ -4643,13 +4620,11 @@ id|file_operations
 id|snd_ctl_f_ops
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|read
 op_assign

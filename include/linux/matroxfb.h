@@ -3,6 +3,7 @@ DECL|macro|__LINUX_MATROXFB_H__
 mdefine_line|#define __LINUX_MATROXFB_H__
 macro_line|#include &lt;asm/ioctl.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/videodev2.h&gt;
 DECL|struct|matroxioc_output_mode
 r_struct
 id|matroxioc_output_mode
@@ -54,5 +55,23 @@ mdefine_line|#define MATROXFB_GET_AVAILABLE_OUTPUTS&t;_IOR(&squot;n&squot;,0xF9,
 multiline_comment|/* which outputs exist on this framebuffer */
 DECL|macro|MATROXFB_GET_ALL_OUTPUTS
 mdefine_line|#define MATROXFB_GET_ALL_OUTPUTS&t;_IOR(&squot;n&squot;,0xFB,sizeof(__u32))
+DECL|enum|matroxfb_ctrl_id
+r_enum
+id|matroxfb_ctrl_id
+(brace
+DECL|enumerator|MATROXFB_CID_TESTOUT
+id|MATROXFB_CID_TESTOUT
+op_assign
+id|V4L2_CID_PRIVATE_BASE
+comma
+DECL|enumerator|MATROXFB_CID_DEFLICKER
+id|MATROXFB_CID_DEFLICKER
+comma
+DECL|enumerator|MATROXFB_CID_LAST
+id|MATROXFB_CID_LAST
+)brace
+suffix:semicolon
+DECL|macro|FBIO_WAITFORVSYNC
+mdefine_line|#define FBIO_WAITFORVSYNC&t;_IOW(&squot;F&squot;, 0x20, u_int32_t)
 macro_line|#endif
 eof

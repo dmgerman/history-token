@@ -6,18 +6,12 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;awacs.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-macro_line|#include &lt;asm/adb.h&gt;
-macro_line|#include &lt;asm/cuda.h&gt;
-macro_line|#include &lt;asm/pmu.h&gt;
-macro_line|#else /* 2.4.0 kernel */
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#ifdef CONFIG_ADB_CUDA
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_ADB_PMU
 macro_line|#include &lt;linux/pmu.h&gt;
-macro_line|#endif
 macro_line|#endif
 macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;

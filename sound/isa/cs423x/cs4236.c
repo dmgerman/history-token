@@ -2654,12 +2654,6 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|cfg
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2774,7 +2768,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|snd_card_cs4236_free
 r_static
 r_void
@@ -3922,6 +3916,15 @@ op_logical_neg
 id|cards
 )paren
 (brace
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|cs423x_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MODULE
 id|printk
 c_func

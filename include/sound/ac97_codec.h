@@ -664,6 +664,12 @@ DECL|member|ad18xx
 )brace
 id|ad18xx
 suffix:semicolon
+DECL|member|dev_flags
+r_int
+r_int
+id|dev_flags
+suffix:semicolon
+multiline_comment|/* device specific */
 DECL|member|spec
 )brace
 id|spec
@@ -918,11 +924,14 @@ suffix:semicolon
 macro_line|#endif
 DECL|enumerator|AC97_TUNE_HP_ONLY
 DECL|enumerator|AC97_TUNE_SWAP_HP
+DECL|enumerator|AC97_TUNE_SWAP_SURROUND
 r_enum
 (brace
 id|AC97_TUNE_HP_ONLY
 comma
 id|AC97_TUNE_SWAP_HP
+comma
+id|AC97_TUNE_SWAP_SURROUND
 )brace
 suffix:semicolon
 DECL|struct|ac97_quirk

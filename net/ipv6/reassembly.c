@@ -24,7 +24,6 @@ macro_line|#include &lt;net/rawv6.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 DECL|variable|sysctl_ip6frag_high_thresh
-r_static
 r_int
 id|sysctl_ip6frag_high_thresh
 op_assign
@@ -33,7 +32,6 @@ op_star
 l_int|1024
 suffix:semicolon
 DECL|variable|sysctl_ip6frag_low_thresh
-r_static
 r_int
 id|sysctl_ip6frag_low_thresh
 op_assign
@@ -42,7 +40,6 @@ op_star
 l_int|1024
 suffix:semicolon
 DECL|variable|sysctl_ip6frag_time
-r_static
 r_int
 id|sysctl_ip6frag_time
 op_assign
@@ -421,10 +418,9 @@ r_struct
 id|timer_list
 id|ip6_frag_secret_timer
 suffix:semicolon
-DECL|variable|ip6_frag_secret_interval
-r_static
+DECL|variable|sysctl_ip6frag_secret_interval
 r_int
-id|ip6_frag_secret_interval
+id|sysctl_ip6frag_secret_interval
 op_assign
 l_int|10
 op_star
@@ -607,7 +603,7 @@ id|ip6_frag_secret_timer
 comma
 id|now
 op_plus
-id|ip6_frag_secret_interval
+id|sysctl_ip6frag_secret_interval
 )paren
 suffix:semicolon
 )brace
@@ -3288,7 +3284,7 @@ id|ip6_frag_secret_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|ip6_frag_secret_interval
+id|sysctl_ip6frag_secret_interval
 suffix:semicolon
 id|add_timer
 c_func

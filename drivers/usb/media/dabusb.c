@@ -3310,8 +3310,6 @@ op_amp
 id|s-&gt;mutex
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|usb_set_intfdata
 (paren
 id|intf
@@ -3416,8 +3414,6 @@ id|s-&gt;overruns
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 )brace
 DECL|variable|dabusb_ids
@@ -3468,6 +3464,11 @@ id|usb_driver
 id|dabusb_driver
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign

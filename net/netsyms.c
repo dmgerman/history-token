@@ -3027,13 +3027,6 @@ c_func
 id|__kill_fasync
 )paren
 suffix:semicolon
-DECL|variable|if_port_text
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|if_port_text
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_HIPPI
 DECL|variable|hippi_type_trans
 id|EXPORT_SYMBOL

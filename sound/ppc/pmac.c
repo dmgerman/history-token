@@ -14,18 +14,6 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#else
 macro_line|#include &lt;asm/feature.h&gt;
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-DECL|macro|pmu_suspend
-mdefine_line|#define pmu_suspend()&t;/**/
-DECL|macro|pmu_resume
-mdefine_line|#define pmu_resume()&t;/**/
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,18)
-DECL|macro|request_OF_resource
-mdefine_line|#define request_OF_resource(io,num,str)  1
-DECL|macro|release_OF_resource
-mdefine_line|#define release_OF_resource(io,num) /**/
-macro_line|#endif
 DECL|macro|chip_t
 mdefine_line|#define chip_t pmac_t
 macro_line|#if defined(CONFIG_PM) &amp;&amp; defined(CONFIG_PMAC_PBOOK)

@@ -2,7 +2,6 @@ macro_line|#ifndef __SOUND_MPU401_H
 DECL|macro|__SOUND_MPU401_H
 mdefine_line|#define __SOUND_MPU401_H
 multiline_comment|/*&n; *  Header file for MPU-401 and compatible cards&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;rawmidi.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|MPU401_HW_MPU401
@@ -51,10 +50,6 @@ DECL|macro|MPU401_MODE_BIT_INPUT_TRIGGER
 mdefine_line|#define MPU401_MODE_BIT_INPUT_TRIGGER&t;2
 DECL|macro|MPU401_MODE_BIT_OUTPUT_TRIGGER
 mdefine_line|#define MPU401_MODE_BIT_OUTPUT_TRIGGER&t;3
-DECL|macro|MPU401_MODE_BIT_RX_LOOP
-mdefine_line|#define MPU401_MODE_BIT_RX_LOOP&t;&t;4
-DECL|macro|MPU401_MODE_BIT_TX_LOOP
-mdefine_line|#define MPU401_MODE_BIT_TX_LOOP&t;&t;5
 DECL|macro|MPU401_MODE_INPUT
 mdefine_line|#define MPU401_MODE_INPUT&t;&t;(1&lt;&lt;MPU401_MODE_BIT_INPUT)
 DECL|macro|MPU401_MODE_OUTPUT
@@ -200,6 +195,14 @@ suffix:semicolon
 DECL|member|timer_lock
 id|spinlock_t
 id|timer_lock
+suffix:semicolon
+DECL|member|rx_loop
+id|atomic_t
+id|rx_loop
+suffix:semicolon
+DECL|member|tx_loop
+id|atomic_t
+id|tx_loop
 suffix:semicolon
 DECL|member|timer
 r_struct

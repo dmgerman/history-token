@@ -1275,6 +1275,11 @@ id|sync_mode
 op_assign
 id|WB_SYNC_ALL
 comma
+dot
+id|nr_to_write
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 id|BUG_ON
@@ -1292,12 +1297,6 @@ r_if
 c_cond
 (paren
 id|wait
-op_logical_and
-id|PageWriteback
-c_func
-(paren
-id|page
-)paren
 )paren
 id|wait_on_page_writeback
 c_func

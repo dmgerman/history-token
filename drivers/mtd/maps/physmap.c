@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * $Id: physmap.c,v 1.27 2003/05/21 12:45:19 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; */
+multiline_comment|/*&n; * $Id: physmap.c,v 1.29 2003/05/29 09:24:10 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
@@ -172,6 +173,8 @@ r_const
 r_char
 op_star
 id|part_probes
+(braket
+)braket
 op_assign
 (brace
 l_string|&quot;cmdlinepart&quot;

@@ -9,7 +9,7 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 DECL|macro|chip_t
 mdefine_line|#define chip_t pmac_t
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) || defined(CONFIG_ADB_CUDA)
+macro_line|#ifdef CONFIG_ADB_CUDA
 DECL|macro|PMAC_AMP_AVAIL
 mdefine_line|#define PMAC_AMP_AVAIL
 macro_line|#endif
@@ -47,13 +47,8 @@ DECL|typedef|awacs_amp_t
 )brace
 id|awacs_amp_t
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-DECL|macro|CHECK_CUDA_AMP
-mdefine_line|#define CHECK_CUDA_AMP() (adb_hardware == ADB_VIACUDA)
-macro_line|#else
 DECL|macro|CHECK_CUDA_AMP
 mdefine_line|#define CHECK_CUDA_AMP() (sys_ctrler == SYS_CTRLER_CUDA)
-macro_line|#endif
 macro_line|#endif /* PMAC_AMP_AVAIL */
 DECL|function|snd_pmac_screamer_wait
 r_static
@@ -3335,6 +3330,37 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
+DECL|function|snd_pmac_awacs_suspend
+r_static
+r_void
+id|snd_pmac_awacs_suspend
+c_func
+(paren
+id|pmac_t
+op_star
+id|chip
+)paren
+(brace
+id|snd_pmac_awacs_write_noreg
+c_func
+(paren
+id|chip
+comma
+l_int|1
+comma
+(paren
+id|chip-&gt;awacs_reg
+(braket
+l_int|1
+)braket
+op_or
+id|MASK_AMUTE
+op_or
+id|MASK_CMUTE
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|snd_pmac_awacs_resume
 r_static
 r_void
@@ -3346,6 +3372,55 @@ op_star
 id|chip
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook3,1&quot;
+)paren
+op_logical_or
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook3,2&quot;
+)paren
+)paren
+(brace
+id|do_mdelay
+c_func
+(paren
+l_int|100
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|snd_pmac_awacs_write_reg
+c_func
+(paren
+id|chip
+comma
+l_int|1
+comma
+id|chip-&gt;awacs_reg
+(braket
+l_int|1
+)braket
+op_amp
+op_complement
+id|MASK_PAROUT
+)paren
+suffix:semicolon
+id|do_mdelay
+c_func
+(paren
+l_int|300
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|awacs_restore_all_regs
 c_func
 (paren
@@ -4485,6 +4560,10 @@ op_assign
 id|snd_pmac_awacs_set_format
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
+id|chip-&gt;suspend
+op_assign
+id|snd_pmac_awacs_suspend
+suffix:semicolon
 id|chip-&gt;resume
 op_assign
 id|snd_pmac_awacs_resume

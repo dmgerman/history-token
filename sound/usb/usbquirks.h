@@ -3275,52 +3275,6 @@ l_int|0x0003
 )brace
 )brace
 comma
-multiline_comment|/*&n; * Boot-up quirks&n; */
-multiline_comment|/* Extigy needs to send a vendor-specific control to boot up the&n; * correct interface&n; */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x041e
-comma
-l_int|0x3000
-)paren
-comma
-dot
-id|driver_info
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-(paren
-r_const
-id|snd_usb_audio_quirk_t
-)paren
-(brace
-dot
-id|vendor_name
-op_assign
-l_string|&quot;CreativeLabs&quot;
-comma
-dot
-id|product_name
-op_assign
-l_string|&quot;Sound Blaster Extigy&quot;
-comma
-dot
-id|ifnum
-op_assign
-id|QUIRK_ANY_INTERFACE
-comma
-dot
-id|type
-op_assign
-id|QUIRK_BOOT_EXTIGY
-)brace
-)brace
-comma
 DECL|macro|USB_DEVICE_VENDOR_SPEC
 macro_line|#undef USB_DEVICE_VENDOR_SPEC
 eof
