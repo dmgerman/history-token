@@ -41,7 +41,6 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB FTDI RS232 Converters Driver&quot;
 DECL|variable|id_table_sio
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_sio
@@ -67,7 +66,6 @@ suffix:semicolon
 multiline_comment|/* THe 8U232AM has the same API as the sio except for:&n;   - it can support MUCH higher baudrates (921600 at 48MHz/230400 &n;     at 12MHz so .. it&squot;s baudrate setting codes are different &n;   - it has a two byte status code.&n;   - it returns characters very 16ms (the FTDI does it every 40ms)&n;  */
 DECL|variable|id_table_8U232AM
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_8U232AM

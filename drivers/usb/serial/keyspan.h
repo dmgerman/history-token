@@ -1625,7 +1625,6 @@ suffix:semicolon
 multiline_comment|/* usb_device_id table for the pre-firmware download keyspan devices */
 DECL|variable|keyspan_pre_ids
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|keyspan_pre_ids
@@ -1740,7 +1739,6 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 DECL|variable|keyspan_1port_ids
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|keyspan_1port_ids
@@ -1805,7 +1803,6 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 DECL|variable|keyspan_2port_ids
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|keyspan_2port_ids
@@ -1850,7 +1847,6 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 DECL|variable|keyspan_4port_ids
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|keyspan_4port_ids

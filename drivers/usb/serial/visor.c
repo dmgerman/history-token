@@ -216,12 +216,11 @@ op_star
 id|serial
 )paren
 suffix:semicolon
-DECL|variable|combined_id_table
+DECL|variable|id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
-id|combined_id_table
+id|id_table
 (braket
 )braket
 op_assign
@@ -333,7 +332,6 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 DECL|variable|clie_id_3_5_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|clie_id_3_5_table
@@ -356,12 +354,12 @@ comma
 multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
-DECL|variable|id_table
+DECL|variable|id_table_combined
 r_static
 id|__devinitdata
 r_struct
 id|usb_device_id
-id|id_table
+id|id_table_combined
 (braket
 )braket
 op_assign
@@ -485,7 +483,7 @@ id|MODULE_DEVICE_TABLE
 (paren
 id|usb
 comma
-id|id_table
+id|id_table_combined
 )paren
 suffix:semicolon
 multiline_comment|/* All of the device info needed for the Handspring Visor, and Palm 4.0 devices */
@@ -506,7 +504,7 @@ l_string|&quot;Handspring Visor / Palm 4.0 / Cli&#xfffd; 4.x&quot;
 comma
 id|id_table
 suffix:colon
-id|combined_id_table
+id|id_table
 comma
 id|num_interrupt_in
 suffix:colon

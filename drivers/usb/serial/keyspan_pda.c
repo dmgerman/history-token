@@ -184,7 +184,6 @@ id|id_table_combined
 suffix:semicolon
 DECL|variable|id_table_std
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_std
@@ -210,7 +209,6 @@ suffix:semicolon
 macro_line|#ifdef KEYSPAN
 DECL|variable|id_table_fake
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_fake
@@ -237,7 +235,6 @@ macro_line|#endif
 macro_line|#ifdef XIRCOM
 DECL|variable|id_table_fake_xircom
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_fake_xircom

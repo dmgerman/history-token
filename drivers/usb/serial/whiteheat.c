@@ -45,7 +45,6 @@ mdefine_line|#define CONNECT_TECH_WHITE_HEAT_ID&t;0x8001
 multiline_comment|/*&n;   ID tables for whiteheat are unusual, because we want to different&n;   things for different versions of the device.  Eventually, this&n;   will be doable from a single table.  But, for now, we define two&n;   separate ID tables, and then a third table that combines them&n;   just for the purpose of exporting the autoloading information.&n;*/
 DECL|variable|id_table_std
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_std
@@ -70,7 +69,6 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 DECL|variable|id_table_prerenumeration
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_prerenumeration

@@ -248,7 +248,6 @@ l_int|0
 suffix:semicolon
 DECL|variable|id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table

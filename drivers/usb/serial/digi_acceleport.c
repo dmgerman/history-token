@@ -744,7 +744,6 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 DECL|variable|id_table_2
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_2
@@ -769,7 +768,6 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 DECL|variable|id_table_4
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_4

@@ -149,7 +149,6 @@ id|break_state
 suffix:semicolon
 DECL|variable|id_table_combined
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_combined

@@ -11,7 +11,6 @@ l_string|&quot;0.23&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -23,12 +22,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(arg)&t;MAP_NR(arg)
-DECL|macro|vmalloc_32
-mdefine_line|#define vmalloc_32&t;&t;vmalloc
-macro_line|#endif
 macro_line|#include &quot;se401.h&quot;
 DECL|variable|flickerless
 r_static
@@ -45,10 +38,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2, 3, 0)
 DECL|variable|device_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|device_table
@@ -123,7 +114,6 @@ comma
 id|device_table
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -6854,28 +6844,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
 DECL|function|se401_probe
 r_static
 r_void
 op_star
-id|se401_probe
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
-)paren
-macro_line|#else
-r_static
-r_void
-op_star
-id|__devinit
 id|se401_probe
 c_func
 (paren
@@ -6894,7 +6866,6 @@ id|usb_device_id
 op_star
 id|id
 )paren
-macro_line|#endif
 (brace
 r_struct
 id|usb_interface_descriptor
@@ -7518,12 +7489,10 @@ id|name
 suffix:colon
 l_string|&quot;se401&quot;
 comma
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2, 3, 0)
 id|id_table
 suffix:colon
 id|device_table
 comma
-macro_line|#endif
 id|probe
 suffix:colon
 id|se401_probe
