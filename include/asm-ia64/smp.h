@@ -387,6 +387,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|cpu_logical_id
+mdefine_line|#define cpu_logical_id(cpuid)&t;&t;0
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* _ASM_IA64_SMP_H */
 eof
