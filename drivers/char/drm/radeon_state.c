@@ -4833,6 +4833,9 @@ r_int
 id|radeon_cp_dispatch_texture
 c_func
 (paren
+id|DRMFILE
+id|filp
+comma
 id|drm_device_t
 op_star
 id|dev
@@ -4878,8 +4881,6 @@ comma
 id|blit_width
 suffix:semicolon
 id|u32
-id|y
-comma
 id|height
 suffix:semicolon
 r_int
@@ -5080,11 +5081,7 @@ comma
 id|image-&gt;height
 )paren
 suffix:semicolon
-multiline_comment|/* Make a copy of the parameters in case we have to&n;&t;&t; * update them for a multi-pass texture blit.&n;&t;&t; */
-id|y
-op_assign
-id|image-&gt;y
-suffix:semicolon
+multiline_comment|/* Make a copy of some parameters in case we have to&n;&t;&t; * update them for a multi-pass texture blit.&n;&t;&t; */
 id|height
 op_assign
 id|image-&gt;height
@@ -5152,19 +5149,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Update the input parameters for next time */
-id|image-&gt;y
-op_add_assign
-id|height
-suffix:semicolon
-id|image-&gt;height
-op_sub_assign
-id|height
-suffix:semicolon
-id|image-&gt;data
-op_add_assign
-id|size
-suffix:semicolon
 id|buf
 op_assign
 id|radeon_freelist_get
@@ -5334,7 +5318,7 @@ l_int|5
 )braket
 op_assign
 (paren
-id|y
+id|image-&gt;y
 op_lshift
 l_int|16
 )paren
@@ -5468,9 +5452,9 @@ id|tex_width
 suffix:semicolon
 )brace
 )brace
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_assign
-id|DRM_CURRENTPID
+id|filp
 suffix:semicolon
 id|buf-&gt;used
 op_assign
@@ -5504,6 +5488,24 @@ id|dev
 comma
 id|buf
 )paren
+suffix:semicolon
+multiline_comment|/* Update the input parameters for next time */
+id|image-&gt;y
+op_add_assign
+id|height
+suffix:semicolon
+id|image-&gt;height
+op_sub_assign
+id|height
+suffix:semicolon
+(paren
+r_const
+id|u8
+op_star
+)paren
+id|image-&gt;data
+op_add_assign
+id|size
 suffix:semicolon
 )brace
 r_while
@@ -5681,6 +5683,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -5943,6 +5947,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|RING_SPACE_TEST_WITH_RETURN
@@ -6010,6 +6016,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|RING_SPACE_TEST_WITH_RETURN
@@ -6090,6 +6098,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -6224,19 +6234,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_ne
-id|DRM_CURRENTPID
+id|filp
 )paren
 (brace
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;process %d using buffer owned by %d&bslash;n&quot;
+l_string|&quot;process %d using buffer owned by %p&bslash;n&quot;
 comma
 id|DRM_CURRENTPID
 comma
-id|buf-&gt;pid
+id|buf-&gt;filp
 )paren
 suffix:semicolon
 r_return
@@ -6423,6 +6433,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -6559,19 +6571,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_ne
-id|DRM_CURRENTPID
+id|filp
 )paren
 (brace
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;process %d using buffer owned by %d&bslash;n&quot;
+l_string|&quot;process %d using buffer owned by %p&bslash;n&quot;
 comma
 id|DRM_CURRENTPID
 comma
-id|buf-&gt;pid
+id|buf-&gt;filp
 )paren
 suffix:semicolon
 r_return
@@ -6806,6 +6818,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -6892,6 +6906,8 @@ op_assign
 id|radeon_cp_dispatch_texture
 c_func
 (paren
+id|filp
+comma
 id|dev
 comma
 op_amp
@@ -6939,6 +6955,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -7042,6 +7060,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -7140,19 +7160,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_ne
-id|DRM_CURRENTPID
+id|filp
 )paren
 (brace
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;process %d using buffer owned by %d&bslash;n&quot;
+l_string|&quot;process %d using buffer owned by %p&bslash;n&quot;
 comma
 id|DRM_CURRENTPID
 comma
-id|buf-&gt;pid
+id|buf-&gt;filp
 )paren
 suffix:semicolon
 r_return
@@ -7327,6 +7347,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -7435,19 +7457,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_ne
-id|DRM_CURRENTPID
+id|filp
 )paren
 (brace
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;process %d using buffer owned by %d&bslash;n&quot;
+l_string|&quot;process %d using buffer owned by %p&bslash;n&quot;
 comma
 id|DRM_CURRENTPID
 comma
-id|buf-&gt;pid
+id|buf-&gt;filp
 )paren
 suffix:semicolon
 r_return
@@ -8819,6 +8841,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -9158,9 +9182,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_ne
-id|DRM_CURRENTPID
+id|filp
 op_logical_or
 id|buf-&gt;pending
 )paren
@@ -9168,7 +9192,13 @@ id|buf-&gt;pending
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;bad buffer&bslash;n&quot;
+l_string|&quot;bad buffer %p %p %d&bslash;n&quot;
+comma
+id|buf-&gt;filp
+comma
+id|filp
+comma
+id|buf-&gt;pending
 )paren
 suffix:semicolon
 r_return

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * Linux Socket Filter - Kernel level socket filtering&n; *&n; * Author:&n; *     Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; * Based on the design of:&n; *     - The Berkeley Packet Filter&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Andi Kleen - Fix a few bad bugs and races.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_FILTER)
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1777,5 +1775,4 @@ id|err
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_FILTER */
 eof

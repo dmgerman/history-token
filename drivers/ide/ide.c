@@ -8249,7 +8249,7 @@ id|done
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_HT6560B */
-macro_line|#if CONFIG_BLK_DEV_QD65XX
+macro_line|#ifdef CONFIG_BLK_DEV_QD65XX
 r_case
 op_minus
 l_int|12

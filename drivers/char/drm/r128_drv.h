@@ -3,9 +3,9 @@ macro_line|#ifndef __R128_DRV_H__
 DECL|macro|__R128_DRV_H__
 mdefine_line|#define __R128_DRV_H__
 DECL|macro|GET_RING_HEAD
-mdefine_line|#define GET_RING_HEAD(ring)&t;&t;DRM_READ32(  (volatile u32 *) (ring)-&gt;head )
+mdefine_line|#define GET_RING_HEAD(ring)&t;&t;DRM_READ32(  (ring)-&gt;ring_rptr, 0 ) /* (ring)-&gt;head */
 DECL|macro|SET_RING_HEAD
-mdefine_line|#define SET_RING_HEAD(ring,val)&t;&t;DRM_WRITE32( (volatile u32 *) (ring)-&gt;head, (val) )
+mdefine_line|#define SET_RING_HEAD(ring,val)&t;&t;DRM_WRITE32( (ring)-&gt;ring_rptr, 0, (val) ) /* (ring)-&gt;head */
 DECL|struct|drm_r128_freelist
 r_typedef
 r_struct
@@ -81,6 +81,11 @@ suffix:semicolon
 DECL|member|high_mark
 r_int
 id|high_mark
+suffix:semicolon
+DECL|member|ring_rptr
+id|drm_local_map_t
+op_star
+id|ring_rptr
 suffix:semicolon
 DECL|typedef|drm_r128_ring_buffer_t
 )brace
@@ -224,37 +229,37 @@ id|u32
 id|span_pitch_offset_c
 suffix:semicolon
 DECL|member|sarea
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|sarea
 suffix:semicolon
 DECL|member|fb
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|fb
 suffix:semicolon
 DECL|member|mmio
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|mmio
 suffix:semicolon
 DECL|member|cce_ring
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|cce_ring
 suffix:semicolon
 DECL|member|ring_rptr
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|ring_rptr
 suffix:semicolon
 DECL|member|buffers
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|buffers
 suffix:semicolon
 DECL|member|agp_textures
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|agp_textures
 suffix:semicolon
@@ -885,18 +890,14 @@ DECL|macro|R128_RING_HIGH_MARK
 mdefine_line|#define R128_RING_HIGH_MARK&t;&t;128
 DECL|macro|R128_PERFORMANCE_BOXES
 mdefine_line|#define R128_PERFORMANCE_BOXES&t;&t;0
-DECL|macro|R128_BASE
-mdefine_line|#define R128_BASE(reg)&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
-DECL|macro|R128_ADDR
-mdefine_line|#define R128_ADDR(reg)&t;&t;(R128_BASE( reg ) + reg)
 DECL|macro|R128_READ
-mdefine_line|#define R128_READ(reg)&t;&t;DRM_READ32(  (volatile u32 *) R128_ADDR(reg) )
+mdefine_line|#define R128_READ(reg)&t;&t;DRM_READ32(  dev_priv-&gt;mmio, (reg) )
 DECL|macro|R128_WRITE
-mdefine_line|#define R128_WRITE(reg,val)&t;DRM_WRITE32( (volatile u32 *) R128_ADDR(reg), (val) )
+mdefine_line|#define R128_WRITE(reg,val)&t;DRM_WRITE32( dev_priv-&gt;mmio, (reg), (val) )
 DECL|macro|R128_READ8
-mdefine_line|#define R128_READ8(reg)&t;&t;DRM_READ8(  (volatile u8 *) R128_ADDR(reg) )
+mdefine_line|#define R128_READ8(reg)&t;&t;DRM_READ8(   dev_priv-&gt;mmio, (reg) )
 DECL|macro|R128_WRITE8
-mdefine_line|#define R128_WRITE8(reg,val)&t;DRM_WRITE8( (volatile u8 *) R128_ADDR(reg), (val) )
+mdefine_line|#define R128_WRITE8(reg,val)&t;DRM_WRITE8(  dev_priv-&gt;mmio, (reg), (val) )
 DECL|macro|R128_WRITE_PLL
 mdefine_line|#define R128_WRITE_PLL(addr,val)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_WRITE8(R128_CLOCK_CNTL_INDEX,&t;&t;&t;&t;&bslash;&n;&t;&t;    ((addr) &amp; 0x1f) | R128_PLL_WR_EN);&t;&t;&t;&bslash;&n;&t;R128_WRITE(R128_CLOCK_CNTL_DATA, (val));&t;&t;&t;&bslash;&n;} while (0)
 r_extern
@@ -921,8 +922,6 @@ mdefine_line|#define CCE_PACKET2()&t;&t;&t;(R128_CCE_PACKET2)
 DECL|macro|CCE_PACKET3
 mdefine_line|#define CCE_PACKET3( pkt, n )&t;&t;(R128_CCE_PACKET3 |&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (pkt) | ((n) &lt;&lt; 16))
 multiline_comment|/* ================================================================&n; * Misc helper macros&n; */
-DECL|macro|LOCK_TEST_WITH_RETURN
-mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != DRM_CURRENTPID ) {&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;, __FUNCTION__ );&t;&bslash;&n;&t;&t;return DRM_ERR(EINVAL);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RING_SPACE_TEST_WITH_RETURN
 mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_r128_ring_buffer_t *ring = &amp;dev_priv-&gt;ring; int i;&t;&t;&bslash;&n;&t;if ( ring-&gt;space &lt; ring-&gt;high_mark ) {&t;&t;&t;&t;&bslash;&n;&t;&t;for ( i = 0 ; i &lt; dev_priv-&gt;usec_timeout ; i++ ) {&t;&bslash;&n;&t;&t;&t;r128_update_ring_snapshot( ring );&t;&t;&bslash;&n;&t;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&bslash;&n;&t;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&bslash;&n;&t;&t;&t;DRM_UDELAY(1);&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check failed!&bslash;n&quot; );&t;&t;&bslash;&n;&t;&t;return DRM_ERR(EBUSY);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; __ring_space_done:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|VB_AGE_TEST_WITH_RETURN
@@ -935,7 +934,7 @@ DECL|macro|r128_flush_write_combine
 mdefine_line|#define r128_flush_write_combine()&t;(void) GET_RING_HEAD( &amp;dev_priv-&gt;ring )
 macro_line|#else
 DECL|macro|r128_flush_write_combine
-mdefine_line|#define r128_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER()
+mdefine_line|#define r128_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER(dev_priv-&gt;ring_rptr)
 macro_line|#endif
 DECL|macro|R128_VERBOSE
 mdefine_line|#define R128_VERBOSE&t;0

@@ -3497,6 +3497,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -3577,6 +3579,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -3648,6 +3652,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -3808,6 +3814,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -3974,6 +3982,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -4147,6 +4157,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL

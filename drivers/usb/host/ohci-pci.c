@@ -1306,7 +1306,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: block sizes: ed %d td %d&bslash;n&quot;
+l_string|&quot;%s: block sizes: ed %Zd td %Zd&bslash;n&quot;
 comma
 id|hcd_name
 comma

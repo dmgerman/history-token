@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;

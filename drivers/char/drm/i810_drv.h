@@ -269,12 +269,10 @@ r_void
 id|i810_reclaim_buffers
 c_func
 (paren
-id|drm_device_t
+r_struct
+id|file
 op_star
-id|dev
-comma
-id|pid_t
-id|pid
+id|filp
 )paren
 suffix:semicolon
 r_extern
@@ -582,6 +580,16 @@ DECL|macro|I810_READ16
 mdefine_line|#define I810_READ16(reg)&t;I810_DEREF16(reg)
 DECL|macro|I810_WRITE16
 mdefine_line|#define I810_WRITE16(reg,val)&t;do { I810_DEREF16(reg) = val; } while (0)
+DECL|macro|I810_VERBOSE
+mdefine_line|#define I810_VERBOSE 0
+DECL|macro|RING_LOCALS
+mdefine_line|#define RING_LOCALS&t;unsigned int outring, ringmask; &bslash;&n;                        volatile char *virt;
+DECL|macro|BEGIN_LP_RING
+mdefine_line|#define BEGIN_LP_RING(n) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (I810_VERBOSE)                                               &bslash;&n;           DRM_DEBUG(&quot;BEGIN_LP_RING(%d) in %s&bslash;n&quot;, n, __FUNCTION__);&t;&bslash;&n;&t;if (dev_priv-&gt;ring.space &lt; n*4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i810_wait_ring(dev, n*4);&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.space -= n*4;&t;&t;&t;&t;&t;&bslash;&n;&t;outring = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;ringmask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;&t;virt = dev_priv-&gt;ring.virtual_start;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|ADVANCE_LP_RING
+mdefine_line|#define ADVANCE_LP_RING() do {&t;&t;&t;&t;        &bslash;&n;&t;if (I810_VERBOSE) DRM_DEBUG(&quot;ADVANCE_LP_RING&bslash;n&quot;);    &t;&bslash;&n;&t;dev_priv-&gt;ring.tail = outring;&t;&t;        &t;&bslash;&n;&t;I810_WRITE(LP_RING + RING_TAIL, outring);&t;        &bslash;&n;} while(0)
+DECL|macro|OUT_RING
+mdefine_line|#define OUT_RING(n) do {  &t;&t;&t;&t;                &bslash;&n;&t;if (I810_VERBOSE) DRM_DEBUG(&quot;   OUT_RING %x&bslash;n&quot;, (int)(n));&t;&bslash;&n;&t;*(volatile unsigned int *)(virt + outring) = n;&t;                &bslash;&n;&t;outring += 4;&t;&t;&t;&t;&t;                &bslash;&n;&t;outring &amp;= ringmask;&t;&t;&t;                        &bslash;&n;} while (0)
 DECL|macro|GFX_OP_USER_INTERRUPT
 mdefine_line|#define GFX_OP_USER_INTERRUPT &t;&t;((0&lt;&lt;29)|(2&lt;&lt;23))
 DECL|macro|GFX_OP_BREAKPOINT_INTERRUPT
@@ -686,6 +694,8 @@ DECL|macro|CMD_OP_Z_BUFFER_INFO
 mdefine_line|#define CMD_OP_Z_BUFFER_INFO     ((0x0&lt;&lt;29)|(0x16&lt;&lt;23))
 DECL|macro|CMD_OP_DESTBUFFER_INFO
 mdefine_line|#define CMD_OP_DESTBUFFER_INFO   ((0x0&lt;&lt;29)|(0x15&lt;&lt;23))
+DECL|macro|CMD_OP_FRONTBUFFER_INFO
+mdefine_line|#define CMD_OP_FRONTBUFFER_INFO  ((0x0&lt;&lt;29)|(0x14&lt;&lt;23))
 DECL|macro|BR00_BITBLT_CLIENT
 mdefine_line|#define BR00_BITBLT_CLIENT   0x40000000
 DECL|macro|BR00_OP_COLOR_BLT

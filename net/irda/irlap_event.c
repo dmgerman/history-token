@@ -1395,7 +1395,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|discovery_rsp-&gt;daddr
+id|discovery_rsp-&gt;data.daddr
 op_assign
 id|info-&gt;daddr
 suffix:semicolon
@@ -1857,7 +1857,7 @@ l_string|&quot;%s(), daddr=%08x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|info-&gt;discovery-&gt;daddr
+id|info-&gt;discovery-&gt;data.daddr
 )paren
 suffix:semicolon
 r_if
@@ -1891,7 +1891,7 @@ op_star
 )paren
 id|info-&gt;discovery
 comma
-id|info-&gt;discovery-&gt;daddr
+id|info-&gt;discovery-&gt;data.daddr
 comma
 l_int|NULL
 )paren
@@ -2290,7 +2290,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|discovery_rsp-&gt;daddr
+id|discovery_rsp-&gt;data.daddr
 op_assign
 id|info-&gt;daddr
 suffix:semicolon
@@ -3206,20 +3206,67 @@ id|self-&gt;remote_busy
 )paren
 )paren
 (brace
+r_int
+id|nextfit
+suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
-multiline_comment|/*&n;&t;&t;&t; *  Test if we have transmitted more bytes over the&n;&t;&t;&t; *  link than its possible to do with the current&n;&t;&t;&t; *  speed and turn-around-time.&n;&t;&t;&t; */
+r_struct
+id|sk_buff
+op_star
+id|skb_next
+suffix:semicolon
+multiline_comment|/* With DYNAMIC_WINDOW, we keep the window size&n;&t;&t;&t; * maximum, and adapt on the packets we are sending.&n;&t;&t;&t; * At 115k, we can send only 2 packets of 2048 bytes&n;&t;&t;&t; * in a 500 ms turnaround. Without this option, we&n;&t;&t;&t; * would always limit the window to 2. With this&n;&t;&t;&t; * option, if we send smaller packets, we can send&n;&t;&t;&t; * up to 7 of them (always depending on QoS).&n;&t;&t;&t; * Jean II */
+multiline_comment|/* Look at the next skb. This is safe, as we are&n;&t;&t;&t; * the only consumer of the Tx queue (if we are not,&n;&t;&t;&t; * we have other problems) - Jean II */
+id|skb_next
+op_assign
+id|skb_peek
+c_func
+(paren
+op_amp
+id|self-&gt;txq
+)paren
+suffix:semicolon
+multiline_comment|/* Check if a subsequent skb exist and would fit in&n;&t;&t;&t; * the current window (with respect to turnaround&n;&t;&t;&t; * time).&n;&t;&t;&t; * This allow us to properly mark the current packet&n;&t;&t;&t; * with the pf bit, to avoid falling back on the&n;&t;&t;&t; * second test below, and avoid waiting the&n;&t;&t;&t; * end of the window and sending a extra RR.&n;&t;&t;&t; * Note : (skb_next != NULL) &lt;=&gt; (skb_queue_len() &gt; 0)&n;&t;&t;&t; * Jean II */
+id|nextfit
+op_assign
+(paren
+(paren
+id|skb_next
+op_ne
+l_int|NULL
+)paren
+op_logical_and
+(paren
+(paren
+id|skb_next-&gt;len
+op_plus
+id|skb-&gt;len
+)paren
+op_le
+id|self-&gt;bytes_left
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * The current packet may not fit ! Because of test&n;&t;&t;&t; * above, this should not happen any more !!!&n;&t;&t;&t; *  Test if we have transmitted more bytes over the&n;&t;&t;&t; *  link than its possible to do with the current&n;&t;&t;&t; *  speed and turn-around-time.&n;&t;&t;&t; */
 r_if
 c_cond
+(paren
+(paren
+op_logical_neg
+id|nextfit
+)paren
+op_logical_and
 (paren
 id|skb-&gt;len
 OG
 id|self-&gt;bytes_left
 )paren
+)paren
 (brace
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|4
+l_int|0
 comma
 l_string|&quot;%s(), Not allowed to transmit&quot;
 l_string|&quot; more bytes!&bslash;n&quot;
@@ -3227,6 +3274,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Requeue the skb */
 id|skb_queue_head
 c_func
 (paren
@@ -3241,16 +3289,33 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; *  We should switch state to LAP_NRM_P, but&n;&t;&t;&t;&t; *  that is not possible since we must be sure&n;&t;&t;&t;&t; *  that we poll the other side. Since we have&n;&t;&t;&t;&t; *  used up our time, the poll timer should&n;&t;&t;&t;&t; *  trigger anyway now, so we just wait for it&n;&t;&t;&t;&t; *  DB&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Sorry, but that&squot;s not totally true. If&n;&t;&t;&t;&t; * we send 2000B packets, we may wait another&n;&t;&t;&t;&t; * 1000B until our turnaround expire. That&squot;s&n;&t;&t;&t;&t; * why we need to be proactive in avoiding&n;&t;&t;&t;&t; * comming here. - Jean II&n;&t;&t;&t;&t; */
 r_return
 op_minus
 id|EPROTO
 suffix:semicolon
 )brace
+multiline_comment|/* Substract space used by this skb */
 id|self-&gt;bytes_left
 op_sub_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
+macro_line|#else&t;/* CONFIG_IRDA_DYNAMIC_WINDOW */
+multiline_comment|/* Window has been adjusted for the max packet&n;&t;&t;&t; * size, so much simpler... - Jean II */
+id|nextfit
+op_assign
+(paren
+id|skb_queue_len
+c_func
+(paren
+op_amp
+id|self-&gt;txq
+)paren
+OG
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IRDA_DYNAMIC_WINDOW */
 multiline_comment|/*&n;&t;&t;&t; *  Send data with poll bit cleared only if window &gt; 1&n;&t;&t;&t; *  and there is more frames after this one to be sent&n;&t;&t;&t; */
 r_if
 c_cond
@@ -3261,16 +3326,12 @@ OG
 l_int|1
 )paren
 op_logical_and
-id|skb_queue_len
-c_func
 (paren
-op_amp
-id|self-&gt;txq
+id|nextfit
 )paren
-OG
-l_int|0
 )paren
 (brace
+multiline_comment|/* More packet to send in current window */
 id|irlap_send_data_primary
 c_func
 (paren
@@ -3290,6 +3351,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Final packet of window */
 id|irlap_send_data_primary_poll
 c_func
 (paren
@@ -5705,7 +5767,7 @@ id|event
 r_case
 id|SEND_I_CMD
 suffix:colon
-multiline_comment|/*&n;&t;&t; *  Send frame only if send window &gt; 1&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Send frame only if send window &gt; 0&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5721,16 +5783,74 @@ id|self-&gt;remote_busy
 )paren
 )paren
 (brace
+r_int
+id|nextfit
+suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
+r_struct
+id|sk_buff
+op_star
+id|skb_next
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Same deal as in irlap_state_xmit_p(), so see&n;&t;&t;&t; * the comments at that point.&n;&t;&t;&t; * We are the secondary, so there are only subtle&n;&t;&t;&t; * differences. - Jean II&n;&t;&t;&t; */
+multiline_comment|/* Check if a subsequent skb exist and would fit in&n;&t;&t;&t; * the current window (with respect to turnaround&n;&t;&t;&t; * time). - Jean II */
+id|skb_next
+op_assign
+id|skb_peek
+c_func
+(paren
+op_amp
+id|self-&gt;txq
+)paren
+suffix:semicolon
+id|nextfit
+op_assign
+(paren
+(paren
+id|skb_next
+op_ne
+l_int|NULL
+)paren
+op_logical_and
+(paren
+(paren
+id|skb_next-&gt;len
+op_plus
+id|skb-&gt;len
+)paren
+op_le
+id|self-&gt;bytes_left
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *  Test if we have transmitted more bytes over the&n;&t;&t;&t; *  link than its possible to do with the current&n;&t;&t;&t; *  speed and turn-around-time.&n;&t;&t;&t; */
 r_if
 c_cond
+(paren
+(paren
+op_logical_neg
+id|nextfit
+)paren
+op_logical_and
 (paren
 id|skb-&gt;len
 OG
 id|self-&gt;bytes_left
 )paren
+)paren
 (brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s(), Not allowed to transmit&quot;
+l_string|&quot; more bytes!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* Requeue the skb */
 id|skb_queue_head
 c_func
 (paren
@@ -5769,15 +5889,32 @@ comma
 id|LAP_NRM_S
 )paren
 suffix:semicolon
+multiline_comment|/* Slight difference with primary :&n;&t;&t;&t;&t; * here we would wait for the other side to&n;&t;&t;&t;&t; * expire the turnaround. - Jean II */
 r_return
 op_minus
 id|EPROTO
 suffix:semicolon
 multiline_comment|/* Try again later */
 )brace
+multiline_comment|/* Substract space used by this skb */
 id|self-&gt;bytes_left
 op_sub_assign
 id|skb-&gt;len
+suffix:semicolon
+macro_line|#else&t;/* CONFIG_IRDA_DYNAMIC_WINDOW */
+multiline_comment|/* Window has been adjusted for the max packet&n;&t;&t;&t; * size, so much simpler... - Jean II */
+id|nextfit
+op_assign
+(paren
+id|skb_queue_len
+c_func
+(paren
+op_amp
+id|self-&gt;txq
+)paren
+OG
+l_int|0
+)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
 multiline_comment|/*&n;&t;&t;&t; *  Send data with final bit cleared only if window &gt; 1&n;&t;&t;&t; *  and there is more frames to be sent&n;&t;&t;&t; */
@@ -5790,14 +5927,9 @@ OG
 l_int|1
 )paren
 op_logical_and
-id|skb_queue_len
-c_func
 (paren
-op_amp
-id|self-&gt;txq
+id|nextfit
 )paren
-OG
-l_int|0
 )paren
 (brace
 id|irlap_send_data_secondary

@@ -673,7 +673,7 @@ c_func
 (paren
 id|event
 comma
-l_string|&quot;Found %08x (%s) behind %08x&bslash;n&quot;
+l_string|&quot;Found %08x (%s) behind %08x {hints %02X-%02X}&bslash;n&quot;
 comma
 id|ap-&gt;discoveries
 (braket
@@ -695,6 +695,26 @@ id|ap-&gt;disco_index
 )braket
 dot
 id|saddr
+comma
+id|ap-&gt;discoveries
+(braket
+id|ap-&gt;disco_index
+)braket
+dot
+id|hints
+(braket
+l_int|0
+)braket
+comma
+id|ap-&gt;discoveries
+(braket
+id|ap-&gt;disco_index
+)braket
+dot
+id|hints
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
 id|DEBUG
@@ -1060,7 +1080,7 @@ c_func
 (paren
 id|event
 comma
-l_string|&quot;Discovered %08x (%s) behind %08x&bslash;n&quot;
+l_string|&quot;Discovered %08x (%s) behind %08x {hints %02X-%02X}&bslash;n&quot;
 comma
 id|irnet_events.log
 (braket
@@ -1082,6 +1102,26 @@ id|ap-&gt;event_index
 )braket
 dot
 id|saddr
+comma
+id|irnet_events.log
+(braket
+id|ap-&gt;event_index
+)braket
+dot
+id|hints.byte
+(braket
+l_int|0
+)braket
+comma
+id|irnet_events.log
+(braket
+id|ap-&gt;event_index
+)braket
+dot
+id|hints.byte
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
 r_break
@@ -1094,7 +1134,7 @@ c_func
 (paren
 id|event
 comma
-l_string|&quot;Expired %08x (%s) behind %08x&bslash;n&quot;
+l_string|&quot;Expired %08x (%s) behind %08x {hints %02X-%02X}&bslash;n&quot;
 comma
 id|irnet_events.log
 (braket
@@ -1116,6 +1156,26 @@ id|ap-&gt;event_index
 )braket
 dot
 id|saddr
+comma
+id|irnet_events.log
+(braket
+id|ap-&gt;event_index
+)braket
+dot
+id|hints.byte
+(braket
+l_int|0
+)braket
+comma
+id|irnet_events.log
+(braket
+id|ap-&gt;event_index
+)braket
+dot
+id|hints.byte
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
 r_break
@@ -1630,8 +1690,6 @@ comma
 l_string|&quot;Can&squot;t allocate struct irnet...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* initialize the irnet structure */
 id|memset
 c_func
@@ -1747,8 +1805,6 @@ c_func
 (paren
 id|ap
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|err
@@ -1891,8 +1947,6 @@ c_func
 (paren
 id|ap
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|DEXIT
 c_func

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -213,10 +214,13 @@ suffix:semicolon
 DECL|function|init_cyclone
 r_static
 r_int
+id|__init
 id|init_cyclone
 c_func
 (paren
-r_void
+r_char
+op_star
+id|override
 )paren
 (brace
 id|u32
@@ -238,8 +242,30 @@ multiline_comment|/* offset from pageaddr to cyclone_timer register */
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* check clock override */
+r_if
+c_cond
+(paren
+id|override
+(braket
+l_int|0
+)braket
+op_logical_and
+id|strncmp
+c_func
+(paren
+id|override
+comma
+l_string|&quot;cyclone&quot;
+comma
+l_int|7
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/*make sure we&squot;re on a summit box*/
-multiline_comment|/*XXX need to use proper summit hooks! such as xapic -john*/
 r_if
 c_cond
 (paren

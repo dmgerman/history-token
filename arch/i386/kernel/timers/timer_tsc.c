@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* processor.h for distable_tsc flag */
@@ -815,12 +816,38 @@ macro_line|#endif
 DECL|function|init_tsc
 r_static
 r_int
+id|__init
 id|init_tsc
 c_func
 (paren
-r_void
+r_char
+op_star
+id|override
 )paren
 (brace
+multiline_comment|/* check clock override */
+r_if
+c_cond
+(paren
+id|override
+(braket
+l_int|0
+)braket
+op_logical_and
+id|strncmp
+c_func
+(paren
+id|override
+comma
+l_string|&quot;tsc&quot;
+comma
+l_int|3
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we have APM enabled or the CPU clock speed is variable&n;&t; * (CPU stops clock on HLT or slows clock to save power)&n;&t; * then the TSC timestamps may diverge by up to 1 jiffy from&n;&t; * &squot;real time&squot; but nothing will break.&n;&t; * The most frequent case is that the CPU is &quot;woken&quot; from a halt&n;&t; * state by the timer interrupt itself, so we get 0 error. In the&n;&t; * rare cases where a driver would &quot;wake&quot; the CPU and request a&n;&t; * timestamp, the maximum error is &lt; 1 jiffy. But timestamps are&n;&t; * still perfectly ordered.&n;&t; * Note that the TSC counter will be reset if APM suspends&n;&t; * to disk; this won&squot;t break the kernel, though, &squot;cuz we&squot;re&n;&t; * smart.  See arch/i386/kernel/apm.c.&n;&t; */
 multiline_comment|/*&n; &t; *&t;Firstly we have to do a CPU check for chips with&n; &t; * &t;a potentially buggy TSC. At this point we haven&squot;t run&n; &t; *&t;the ident/bugs checks so we must run this hook as it&n; &t; *&t;may turn off the TSC flag.&n; &t; *&n; &t; *&t;NOTE: this doesn&squot;t yet handle SMP 486 machines where only&n; &t; *&t;some CPU&squot;s have a TSC. Thats never worked and nobody has&n; &t; *&t;moaned if you have the only one in the world - you fix it!&n; &t; */
 macro_line|#ifdef CONFIG_CPU_FREQ
