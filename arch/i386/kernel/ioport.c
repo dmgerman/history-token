@@ -479,7 +479,7 @@ multiline_comment|/* Make sure we return the long way (not sysenter) */
 id|set_thread_flag
 c_func
 (paren
-id|TIF_SIGPENDING
+id|TIF_IRET
 )paren
 suffix:semicolon
 r_return

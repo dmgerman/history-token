@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1229,7 +1230,8 @@ op_logical_and
 (paren
 id|fixup
 op_assign
-id|search_exception_table
+id|search_extables_range
+c_func
 (paren
 id|regs-&gt;tpc
 comma

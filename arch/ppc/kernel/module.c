@@ -369,7 +369,6 @@ id|Elf32_Shdr
 op_star
 id|sechdrs
 comma
-r_const
 r_char
 op_star
 id|secstrings

@@ -242,6 +242,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Adds a tcp/udp (source or dest) port to an array&n; */
 DECL|function|add_port
+r_static
 r_int
 id|add_port
 c_func
@@ -353,6 +354,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Removes a port from an array tcp/udp (source or dest)&n; */
 DECL|function|remove_port
+r_static
 r_int
 id|remove_port
 c_func
@@ -434,6 +436,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Some basic sanity checks on the arguments passed to divert_ioctl() */
 DECL|function|check_args
+r_static
 r_int
 id|check_args
 c_func

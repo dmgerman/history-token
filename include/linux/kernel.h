@@ -442,6 +442,16 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+id|kernel_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|session_of_pgrp
 c_func
 (paren
@@ -540,8 +550,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|macro|TAINT_PROPRIETORY_MODULE
-mdefine_line|#define TAINT_PROPRIETORY_MODULE&t;(1&lt;&lt;0)
+DECL|macro|TAINT_PROPRIETARY_MODULE
+mdefine_line|#define TAINT_PROPRIETARY_MODULE&t;(1&lt;&lt;0)
 DECL|macro|TAINT_FORCED_MODULE
 mdefine_line|#define TAINT_FORCED_MODULE&t;&t;(1&lt;&lt;1)
 DECL|macro|TAINT_UNSAFE_SMP

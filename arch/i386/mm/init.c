@@ -1563,6 +1563,51 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
+multiline_comment|/* check that fixmap and pkmap do not overlap */
+r_if
+c_cond
+(paren
+id|PKMAP_BASE
+op_plus
+id|LAST_PKMAP
+op_star
+id|PAGE_SIZE
+op_ge
+id|FIXADDR_START
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;fixmap and kmap areas overlap - this will crash&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;pkstart: %lxh pkend: %lxh fixstart %lxh&bslash;n&quot;
+comma
+id|PKMAP_BASE
+comma
+id|PKMAP_BASE
+op_plus
+id|LAST_PKMAP
+op_star
+id|PAGE_SIZE
+comma
+id|FIXADDR_START
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|set_max_mapnr_init
 c_func
 (paren

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|swaplock
@@ -1490,10 +1491,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The swap entry has been read in advance, and we return 1 to indicate&n; * that the page has been used or is no longer needed.&n; *&n; * Always set the resulting pte to be nowrite (the same as COW pages&n; * after one process has exited).  We don&squot;t know just how many PTEs will&n; * share this swap entry, so be cautious and let do_wp_page work out&n; * what to do if a write is requested later.&n; */
 multiline_comment|/* mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
-DECL|function|unuse_pte
 r_static
-r_inline
 r_void
+DECL|function|unuse_pte
 id|unuse_pte
 c_func
 (paren
@@ -1517,6 +1517,12 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|pte_chain
+op_star
+op_star
+id|pte_chainp
 )paren
 (brace
 id|pte_t
@@ -1589,12 +1595,18 @@ id|vma-&gt;vm_page_prot
 )paren
 )paren
 suffix:semicolon
+op_star
+id|pte_chainp
+op_assign
 id|page_add_rmap
 c_func
 (paren
 id|page
 comma
 id|dir
+comma
+op_star
+id|pte_chainp
 )paren
 suffix:semicolon
 id|swap_free
@@ -1651,6 +1663,13 @@ suffix:semicolon
 r_int
 r_int
 id|end
+suffix:semicolon
+r_struct
+id|pte_chain
+op_star
+id|pte_chain
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1731,6 +1750,22 @@ id|PMD_SIZE
 suffix:semicolon
 r_do
 (brace
+multiline_comment|/*&n;&t;&t; * FIXME: handle pte_chain_alloc() failures&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pte_chain
+op_eq
+l_int|NULL
+)paren
+id|pte_chain
+op_assign
+id|pte_chain_alloc
+c_func
+(paren
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
 id|unuse_pte
 c_func
 (paren
@@ -1747,6 +1782,9 @@ comma
 id|entry
 comma
 id|page
+comma
+op_amp
+id|pte_chain
 )paren
 suffix:semicolon
 id|address
@@ -1775,6 +1813,12 @@ c_func
 id|pte
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+id|pte_chain_free
+c_func
+(paren
+id|pte_chain
 )paren
 suffix:semicolon
 )brace

@@ -39,7 +39,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */
 DECL|macro|PKMAP_BASE
-mdefine_line|#define PKMAP_BASE (0xfe000000UL)
+mdefine_line|#define PKMAP_BASE (0xff800000UL)
 macro_line|#ifdef CONFIG_X86_PAE
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 512

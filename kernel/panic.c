@@ -281,7 +281,7 @@ suffix:semicolon
 id|CHECK_EMERGENCY_SYNC
 )brace
 )brace
-multiline_comment|/**&n; *&t;print_tainted - return a string to represent the kernel taint state.&n; *&n; *  &squot;P&squot; - Proprietory module has been loaded.&n; *  &squot;F&squot; - Module has been forcibly loaded.&n; *  &squot;S&squot; - SMP with CPUs not designed for SMP.&n; *&n; *&t;The string is overwritten by the next call to print_taint().&n; */
+multiline_comment|/**&n; *&t;print_tainted - return a string to represent the kernel taint state.&n; *&n; *  &squot;P&squot; - Proprietary module has been loaded.&n; *  &squot;F&squot; - Module has been forcibly loaded.&n; *  &squot;S&squot; - SMP with CPUs not designed for SMP.&n; *&n; *&t;The string is overwritten by the next call to print_taint().&n; */
 DECL|function|print_tainted
 r_const
 r_char
@@ -318,7 +318,7 @@ l_string|&quot;Tainted: %c%c%c&quot;
 comma
 id|tainted
 op_amp
-id|TAINT_PROPRIETORY_MODULE
+id|TAINT_PROPRIETARY_MODULE
 ques
 c_cond
 l_char|&squot;P&squot;

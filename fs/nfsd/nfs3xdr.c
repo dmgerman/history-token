@@ -168,6 +168,7 @@ id|fhp
 )paren
 (brace
 r_int
+r_int
 id|size
 suffix:semicolon
 id|fh_init

@@ -474,15 +474,10 @@ suffix:semicolon
 r_case
 l_int|4000000
 suffix:colon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|si-&gt;hscr0
@@ -559,7 +554,7 @@ c_func
 id|si
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

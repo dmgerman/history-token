@@ -192,10 +192,10 @@ id|result
 suffix:semicolon
 id|memory
 op_assign
-id|virt_to_phys
-c_func
 (paren
-id|high_memory
+id|num_physpages
+op_lshift
+id|PAGE_SHIFT
 )paren
 op_rshift
 l_int|20
@@ -411,7 +411,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|agp_bridge.scratch_page
+id|agp_bridge.scratch_page_real
 op_assign
 id|virt_to_phys
 c_func
@@ -426,7 +426,7 @@ dot
 id|mask_memory
 c_func
 (paren
-id|agp_bridge.scratch_page
+id|agp_bridge.scratch_page_real
 comma
 l_int|0
 )paren
@@ -603,13 +603,6 @@ op_eq
 id|TRUE
 )paren
 (brace
-id|agp_bridge.scratch_page
-op_and_assign
-op_complement
-(paren
-l_int|0x00000fff
-)paren
-suffix:semicolon
 id|agp_bridge
 dot
 id|agp_destroy_page
@@ -618,7 +611,7 @@ c_func
 id|phys_to_virt
 c_func
 (paren
-id|agp_bridge.scratch_page
+id|agp_bridge.scratch_page_real
 )paren
 )paren
 suffix:semicolon
@@ -688,13 +681,6 @@ op_eq
 id|TRUE
 )paren
 (brace
-id|agp_bridge.scratch_page
-op_and_assign
-op_complement
-(paren
-l_int|0x00000fff
-)paren
-suffix:semicolon
 id|agp_bridge
 dot
 id|agp_destroy_page
@@ -703,7 +689,7 @@ c_func
 id|phys_to_virt
 c_func
 (paren
-id|agp_bridge.scratch_page
+id|agp_bridge.scratch_page_real
 )paren
 )paren
 suffix:semicolon

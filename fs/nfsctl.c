@@ -224,7 +224,7 @@ id|NFSCTL_SVC
 )braket
 op_assign
 (brace
-l_string|&quot;svc&quot;
+l_string|&quot;.svc&quot;
 comma
 r_sizeof
 (paren
@@ -238,7 +238,7 @@ id|NFSCTL_ADDCLIENT
 )braket
 op_assign
 (brace
-l_string|&quot;add&quot;
+l_string|&quot;.add&quot;
 comma
 r_sizeof
 (paren
@@ -252,7 +252,7 @@ id|NFSCTL_DELCLIENT
 )braket
 op_assign
 (brace
-l_string|&quot;del&quot;
+l_string|&quot;.del&quot;
 comma
 r_sizeof
 (paren
@@ -266,7 +266,7 @@ id|NFSCTL_EXPORT
 )braket
 op_assign
 (brace
-l_string|&quot;export&quot;
+l_string|&quot;.export&quot;
 comma
 r_sizeof
 (paren
@@ -280,7 +280,7 @@ id|NFSCTL_UNEXPORT
 )braket
 op_assign
 (brace
-l_string|&quot;unexport&quot;
+l_string|&quot;.unexport&quot;
 comma
 r_sizeof
 (paren
@@ -289,28 +289,12 @@ id|nfsctl_export
 )paren
 )brace
 comma
-macro_line|#ifdef notyet
-(braket
-id|NFSCTL_UGIDUPDATE
-)braket
-op_assign
-(brace
-l_string|&quot;ugid&quot;
-comma
-r_sizeof
-(paren
-r_struct
-id|nfsctl_uidmap
-)paren
-)brace
-comma
-macro_line|#endif
 (braket
 id|NFSCTL_GETFD
 )braket
 op_assign
 (brace
-l_string|&quot;getfd&quot;
+l_string|&quot;.getfd&quot;
 comma
 r_sizeof
 (paren
@@ -326,7 +310,7 @@ id|NFSCTL_GETFS
 )braket
 op_assign
 (brace
-l_string|&quot;getfs&quot;
+l_string|&quot;.getfs&quot;
 comma
 r_sizeof
 (paren

@@ -547,9 +547,9 @@ multiline_comment|/* Test if this comes from uaccess places. */
 r_int
 r_int
 id|fixup
-comma
-id|g2
 suffix:semicolon
+r_int
+r_int
 id|g2
 op_assign
 id|regs-&gt;u_regs
@@ -563,7 +563,8 @@ c_cond
 (paren
 id|fixup
 op_assign
-id|search_exception_table
+id|search_extables_range
+c_func
 (paren
 id|regs-&gt;tpc
 comma
@@ -6999,7 +7000,7 @@ r_int
 r_int
 id|fixup
 op_assign
-id|search_exception_table
+id|search_extables_range
 c_func
 (paren
 id|regs-&gt;tpc
@@ -7068,10 +7069,6 @@ multiline_comment|/* Only perform fixup if we still have a&n;&t;&t;&t;&t; * reco
 r_if
 c_cond
 (paren
-id|fixup
-op_ne
-l_int|0UL
-op_logical_and
 id|recoverable
 )paren
 (brace

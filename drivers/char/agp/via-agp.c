@@ -412,10 +412,6 @@ id|agp_bridge.masks
 op_assign
 id|via_generic_masks
 suffix:semicolon
-id|agp_bridge.num_of_masks
-op_assign
-l_int|1
-suffix:semicolon
 id|agp_bridge.aperture_sizes
 op_assign
 (paren
@@ -793,17 +789,17 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_8235_0
+id|PCI_DEVICE_ID_VIA_8754
 comma
 dot
 id|chipset
 op_assign
-id|VIA_P4X400
+id|VIA_P4X
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;P4X400&quot;
+l_string|&quot;Apollo P4X333/P4X400&quot;
 )brace
 comma
 (brace

@@ -521,6 +521,9 @@ r_void
 r_int
 id|a
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 r_struct
 id|device_node
 op_star
@@ -578,6 +581,8 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
+id|retval
+op_assign
 id|misc_register
 c_func
 (paren
@@ -585,6 +590,31 @@ op_amp
 id|anslcd_dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;LCD: misc_register failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|anslcd_ptr
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
 macro_line|#ifdef DEBUG
 id|printk
 c_func

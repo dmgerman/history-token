@@ -154,6 +154,8 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
 DECL|macro|TIF_SINGLESTEP
 mdefine_line|#define TIF_SINGLESTEP&t;&t;4&t;/* restore singlestep on return to user mode */
+DECL|macro|TIF_IRET
+mdefine_line|#define TIF_IRET&t;&t;5&t;/* return with iret */
 DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG
@@ -168,6 +170,8 @@ DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
 DECL|macro|_TIF_SINGLESTEP
 mdefine_line|#define _TIF_SINGLESTEP&t;&t;(1&lt;&lt;TIF_SINGLESTEP)
+DECL|macro|_TIF_IRET
+mdefine_line|#define _TIF_IRET&t;&t;(1&lt;&lt;TIF_IRET)
 DECL|macro|_TIF_USEDFPU
 mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG

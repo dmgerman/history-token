@@ -4,6 +4,7 @@ DECL|macro|_SPARC64_STATFS_H
 mdefine_line|#define _SPARC64_STATFS_H
 macro_line|#ifndef __KERNEL_STRICT_NAMES
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;&t;/* for compat_fsid_t */
 DECL|typedef|fsid_t
 r_typedef
 id|__kernel_fsid_t
@@ -43,7 +44,7 @@ r_int
 id|f_ffree
 suffix:semicolon
 DECL|member|f_fsid
-id|__kernel_fsid_t32
+id|compat_fsid_t
 id|f_fsid
 suffix:semicolon
 DECL|member|f_namelen

@@ -914,12 +914,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cs-&gt;hw.njet.base
 comma
 id|bytecnt
+comma
+l_string|&quot;netspider-u isdn&quot;
 )paren
 )paren
 (brace
@@ -944,19 +947,6 @@ suffix:semicolon
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.njet.base
-comma
-id|bytecnt
-comma
-l_string|&quot;netspider-u isdn&quot;
 )paren
 suffix:semicolon
 )brace
