@@ -1362,7 +1362,7 @@ id|sdladrv_init
 )paren
 suffix:semicolon
 DECL|variable|sdladrv_cleanup
-id|module_cleanup
+id|module_exit
 c_func
 (paren
 id|sdladrv_cleanup
