@@ -3241,7 +3241,7 @@ c_func
 id|var
 comma
 op_amp
-id|info-&gt;monspecs.modelist
+id|info-&gt;modelist
 )paren
 suffix:semicolon
 r_if
@@ -10444,7 +10444,7 @@ op_amp
 id|var
 comma
 op_amp
-id|info-&gt;monspecs.modelist
+id|info-&gt;modelist
 )paren
 suffix:semicolon
 r_if

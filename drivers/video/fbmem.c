@@ -3944,7 +3944,7 @@ op_amp
 id|mode1
 comma
 op_amp
-id|info-&gt;monspecs.modelist
+id|info-&gt;modelist
 )paren
 suffix:semicolon
 r_return
@@ -4081,7 +4081,7 @@ op_amp
 id|mode
 comma
 op_amp
-id|info-&gt;monspecs.modelist
+id|info-&gt;modelist
 )paren
 suffix:semicolon
 r_if
@@ -5806,16 +5806,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fb_info-&gt;monspecs.modelist.prev
+id|fb_info-&gt;modelist.prev
 op_logical_or
 op_logical_neg
-id|fb_info-&gt;monspecs.modelist.next
+id|fb_info-&gt;modelist.next
 op_logical_or
 id|list_empty
 c_func
 (paren
 op_amp
-id|fb_info-&gt;monspecs.modelist
+id|fb_info-&gt;modelist
 )paren
 )paren
 (brace
@@ -5827,7 +5827,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|fb_info-&gt;monspecs.modelist
+id|fb_info-&gt;modelist
 )paren
 suffix:semicolon
 id|fb_var_to_videomode
@@ -5847,7 +5847,7 @@ op_amp
 id|mode
 comma
 op_amp
-id|fb_info-&gt;monspecs.modelist
+id|fb_info-&gt;modelist
 )paren
 suffix:semicolon
 )brace
@@ -5978,7 +5978,7 @@ id|fb_destroy_modelist
 c_func
 (paren
 op_amp
-id|fb_info-&gt;monspecs.modelist
+id|fb_info-&gt;modelist
 )paren
 suffix:semicolon
 id|registered_fb

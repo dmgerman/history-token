@@ -5719,7 +5719,7 @@ c_func
 id|var
 comma
 op_amp
-id|info-&gt;monspecs.modelist
+id|info-&gt;modelist
 )paren
 suffix:semicolon
 r_if
@@ -5753,7 +5753,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|info-&gt;monspecs.modelist
+id|info-&gt;modelist
 )paren
 )paren
 r_return
@@ -8903,7 +8903,7 @@ comma
 id|info-&gt;monspecs.modedb_len
 comma
 op_amp
-id|info-&gt;monspecs.modelist
+id|info-&gt;modelist
 )paren
 suffix:semicolon
 id|riva_update_default_var
