@@ -575,6 +575,9 @@ multiline_comment|/* FIXME: this is not correct */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+multiline_comment|/*&n; * We provide our own arch_get_unmapped_area to cope with VIPT caches.&n; */
+DECL|macro|HAVE_ARCH_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 multiline_comment|/*&n; * remap a physical address `phys&squot; of size `size&squot; with page protection `prot&squot;&n; * into virtual address `from&squot;&n; */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma,from,phys,size,prot) &bslash;&n;&t;&t;remap_page_range(vma,from,phys,size,prot)
