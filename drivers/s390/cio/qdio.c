@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.86 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.88 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -3008,7 +3008,7 @@ id|SLSB_P_INPUT_NOT_INIT
 )paren
 suffix:semicolon
 macro_line|#endif /* QDIO_USE_PROCESSING_STATE */
-multiline_comment|/* &n;&t;&t; * not needed, as the inbound queue will be synced on the next&n;&t;&t; * siga-r&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * not needed, as the inbound queue will be synced on the next&n;&t;&t; * siga-r, resp. tiqdio_is_inbound_q_done will do the siga-s&n;&t;&t; */
 multiline_comment|/*SYNC_MEMORY;*/
 id|f
 op_increment
@@ -3374,8 +3374,8 @@ multiline_comment|/* means, no more buffers to be filled */
 r_inline
 r_static
 r_int
-DECL|function|iqdio_is_inbound_q_done
-id|iqdio_is_inbound_q_done
+DECL|function|tiqdio_is_inbound_q_done
+id|tiqdio_is_inbound_q_done
 c_func
 (paren
 r_struct
@@ -4295,7 +4295,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|iqdio_is_inbound_q_done
+id|tiqdio_is_inbound_q_done
 c_func
 (paren
 id|q
@@ -5352,6 +5352,8 @@ id|qdio_q
 )paren
 comma
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -5393,6 +5395,8 @@ c_func
 id|PAGE_SIZE
 comma
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -5447,6 +5451,8 @@ id|qdio_q
 )paren
 comma
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -5482,6 +5488,8 @@ c_func
 id|PAGE_SIZE
 comma
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
