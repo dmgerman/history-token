@@ -5543,6 +5543,7 @@ r_void
 id|cpuset_update_current_mems_allowed
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
