@@ -106,12 +106,13 @@ id|pci_busclk
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
-c_func
+id|module_param
 (paren
 id|pci_busclk
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 multiline_comment|/* maximum duration for which the cpu may be suspended&n; * (32us * MAX_DURATION). If no parameter is given, this defaults&n; * to 255. &n; * Note that this leads to a maximum of 8 ms(!) where the CPU clock&n; * is suspended -- processing power is just 0.39% of what it used to be,&n; * though. 781.25 kHz(!) for a 200 MHz processor -- wow. */
@@ -122,12 +123,13 @@ id|max_duration
 op_assign
 l_int|255
 suffix:semicolon
-id|MODULE_PARM
-c_func
+id|module_param
 (paren
 id|max_duration
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 multiline_comment|/* For the default policy, we want at least some processing power&n; * - let&squot;s say 5%. (min = maxfreq / POLICY_MIN_DIV)&n; */
