@@ -1845,7 +1845,9 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: log mount/recovery failed&quot;
+l_string|&quot;XFS: log mount/recovery failed: error %d&quot;
+comma
+id|error
 )paren
 suffix:semicolon
 id|xlog_unalloc_log
