@@ -164,7 +164,7 @@ id|FB_ACCEL_NONE
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Default video mode. In case the modedb doesn&squot;t work, or we&squot;re&n; * a module (in which case modedb doesn&squot;t really work).&n; */
+multiline_comment|/*&n; * Default video mode. In case the modedb doesn&squot;t work.&n; */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -5641,7 +5641,6 @@ id|FBINFO_DEFAULT
 op_or
 id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
-macro_line|#ifndef MODULE
 r_if
 c_cond
 (paren
@@ -5683,7 +5682,6 @@ id|err
 op_eq
 l_int|4
 )paren
-macro_line|#endif
 id|info-&gt;var
 op_assign
 id|pm2fb_var
