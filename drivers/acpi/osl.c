@@ -38,6 +38,9 @@ id|context
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_CUSTOM_DSDT
+macro_line|#include CONFIG_ACPI_CUSTOM_DSDT_FILE
+macro_line|#endif
 macro_line|#ifdef ENABLE_DEBUGGER
 macro_line|#include &lt;linux/kdb.h&gt;
 multiline_comment|/* stuff for debugger support */
@@ -716,11 +719,45 @@ id|new_table
 r_return
 id|AE_BAD_PARAMETER
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_CUSTOM_DSDT
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|existing_table-&gt;signature
+comma
+l_string|&quot;DSDT&quot;
+comma
+l_int|4
+)paren
+op_eq
+l_int|0
+)paren
+op_star
+id|new_table
+op_assign
+(paren
+r_struct
+id|acpi_table_header
+op_star
+)paren
+id|AmlCode
+suffix:semicolon
+r_else
 op_star
 id|new_table
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#else
+op_star
+id|new_table
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 r_return
 id|AE_OK
 suffix:semicolon

@@ -1614,6 +1614,7 @@ id|driver
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_PCI*/
 macro_line|#ifdef CONFIG_ACPI_EC
+r_extern
 r_int
 id|ec_read
 c_func
@@ -1626,6 +1627,7 @@ op_star
 id|val
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ec_write
 c_func
@@ -1639,11 +1641,22 @@ id|val
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_EC*/
 macro_line|#ifdef CONFIG_ACPI_INTERPRETER
+r_extern
 r_int
 id|acpi_blacklisted
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|acpi_bios_year
+c_func
+(paren
+r_char
+op_star
+id|s
 )paren
 suffix:semicolon
 macro_line|#else /*!CONFIG_ACPI_INTERPRETER*/
