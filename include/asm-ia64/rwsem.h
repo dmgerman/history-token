@@ -1,8 +1,7 @@
 multiline_comment|/*&n; * asm-ia64/rwsem.h: R/W semaphores for ia64&n; *&n; * Copyright (C) 2003 Ken Chen &lt;kenneth.w.chen@intel.com&gt;&n; * Copyright (C) 2003 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; *&n; * Based on asm-i386/rwsem.h and other architecture implementation.&n; *&n; * The MSW of the count is the negated number of active writers and&n; * waiting lockers, and the LSW is the total number of active locks.&n; *&n; * The lock count is initialized to 0 (no active and no waiting lockers).&n; *&n; * When a writer subtracts WRITE_BIAS, it&squot;ll get 0xffff0001 for the case&n; * of an uncontended lock. Readers increment by 1 and see a positive value&n; * when uncontended, negative if there are writers (and maybe) readers&n; * waiting (in which case it goes to sleep).&n; */
-macro_line|#ifndef _IA64_RWSEM_H
-DECL|macro|_IA64_RWSEM_H
-mdefine_line|#define _IA64_RWSEM_H
-macro_line|#ifdef __KERNEL__
+macro_line|#ifndef _ASM_IA64_RWSEM_H
+DECL|macro|_ASM_IA64_RWSEM_H
+mdefine_line|#define _ASM_IA64_RWSEM_H
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/*&n; * the semaphore definition&n; */
@@ -108,12 +107,11 @@ op_star
 id|sem
 )paren
 suffix:semicolon
-DECL|function|init_rwsem
 r_static
 r_inline
 r_void
+DECL|function|init_rwsem
 id|init_rwsem
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -147,12 +145,11 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * lock for reading&n; */
-DECL|function|__down_read
 r_static
 r_inline
 r_void
+DECL|function|__down_read
 id|__down_read
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -197,12 +194,11 @@ id|sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * lock for writing&n; */
-DECL|function|__down_write
 r_static
 r_inline
 r_void
+DECL|function|__down_write
 id|__down_write
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -260,12 +256,11 @@ id|sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * unlock after reading&n; */
-DECL|function|__up_read
 r_static
 r_inline
 r_void
+DECL|function|__up_read
 id|__up_read
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -319,12 +314,11 @@ id|sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * unlock after writing&n; */
-DECL|function|__up_write
 r_static
 r_inline
 r_void
+DECL|function|__up_write
 id|__up_write
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -390,12 +384,11 @@ id|sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * trylock for reading -- returns 1 if successful, 0 if contention&n; */
-DECL|function|__down_read_trylock
 r_static
 r_inline
 r_int
+DECL|function|__down_read_trylock
 id|__down_read_trylock
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -447,12 +440,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * trylock for writing -- returns 1 if successful, 0 if contention&n; */
-DECL|function|__down_write_trylock
 r_static
 r_inline
 r_int
+DECL|function|__down_write_trylock
 id|__down_write_trylock
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -481,12 +473,11 @@ id|RWSEM_UNLOCKED_VALUE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * downgrade write lock to read lock&n; */
-DECL|function|__downgrade_write
 r_static
 r_inline
 r_void
+DECL|function|__downgrade_write
 id|__downgrade_write
-c_func
 (paren
 r_struct
 id|rw_semaphore
@@ -543,72 +534,10 @@ id|sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * implement atomic add functionality&n; */
-DECL|function|rwsem_atomic_add
-r_static
-r_inline
-r_void
-id|rwsem_atomic_add
-c_func
-(paren
-r_int
-id|delta
-comma
-r_struct
-id|rw_semaphore
-op_star
-id|sem
-)paren
-(brace
-id|atomic_add
-c_func
-(paren
-id|delta
-comma
-(paren
-id|atomic_t
-op_star
-)paren
-(paren
-op_amp
-id|sem-&gt;count
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|rwsem_atomic_update
-r_static
-r_inline
-r_int
-id|rwsem_atomic_update
-c_func
-(paren
-r_int
-id|delta
-comma
-r_struct
-id|rw_semaphore
-op_star
-id|sem
-)paren
-(brace
-r_return
-id|atomic_add_return
-c_func
-(paren
-id|delta
-comma
-(paren
-id|atomic_t
-op_star
-)paren
-(paren
-op_amp
-id|sem-&gt;count
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _IA64_RWSEM_H */
+multiline_comment|/*&n; * Implement atomic add functionality.  These used to be &quot;inline&quot; functions, but GCC v3.1&n; * doesn&squot;t quite optimize this stuff right and ends up with bad calls to fetchandadd.&n; */
+DECL|macro|rwsem_atomic_add
+mdefine_line|#define rwsem_atomic_add(delta, sem)&t;atomic_add(delta, (atomic_t *)(&amp;(sem)-&gt;count))
+DECL|macro|rwsem_atomic_update
+mdefine_line|#define rwsem_atomic_update(delta, sem)&t;atomic_add_return(delta, (atomic_t *)(&amp;(sem)-&gt;count))
+macro_line|#endif /* _ASM_IA64_RWSEM_H */
 eof
