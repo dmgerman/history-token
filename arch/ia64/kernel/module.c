@@ -4609,10 +4609,9 @@ id|mod-&gt;arch.unw_table
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-DECL|function|percpu_modcopy
 r_void
+DECL|function|percpu_modcopy
 id|percpu_modcopy
-c_func
 (paren
 r_void
 op_star

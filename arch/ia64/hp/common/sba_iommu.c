@@ -6505,7 +6505,12 @@ comma
 id|length
 suffix:semicolon
 r_struct
+id|acpi_buffer
+id|buffer
+suffix:semicolon
+r_struct
 id|acpi_device_info
+op_star
 id|dev_info
 suffix:semicolon
 id|status
@@ -6534,6 +6539,10 @@ id|status
 r_return
 l_int|1
 suffix:semicolon
+id|buffer.length
+op_assign
+id|ACPI_ALLOCATE_LOCAL_BUFFER
+suffix:semicolon
 id|status
 op_assign
 id|acpi_get_object_info
@@ -6542,7 +6551,7 @@ c_func
 id|device-&gt;handle
 comma
 op_amp
-id|dev_info
+id|buffer
 )paren
 suffix:semicolon
 r_if
@@ -6557,6 +6566,10 @@ id|status
 r_return
 l_int|1
 suffix:semicolon
+id|dev_info
+op_assign
+id|buffer.pointer
+suffix:semicolon
 multiline_comment|/*&n;&t; * For HWP0001, only SBA appears in ACPI namespace.  It encloses the PCI&n;&t; * root bridges, and its CSR space includes the IOC function.&n;&t; */
 r_if
 c_cond
@@ -6566,7 +6579,7 @@ c_func
 (paren
 l_string|&quot;HWP0001&quot;
 comma
-id|dev_info.hardware_id
+id|dev_info-&gt;hardware_id.value
 comma
 l_int|7
 )paren
@@ -6576,6 +6589,12 @@ l_int|0
 id|hpa
 op_add_assign
 id|ZX1_IOC_OFFSET
+suffix:semicolon
+id|ACPI_MEM_FREE
+c_func
+(paren
+id|dev_info
+)paren
 suffix:semicolon
 id|ioc
 op_assign

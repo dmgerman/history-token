@@ -4000,7 +4000,7 @@ c_cond
 (paren
 id|abi
 op_eq
-l_int|0
+l_int|3
 op_logical_and
 id|context
 op_eq

@@ -827,6 +827,24 @@ id|pte_t
 op_star
 id|pte_addr_t
 suffix:semicolon
+multiline_comment|/*&n; * IA-64 doesn&squot;t have any external MMU info: the page tables contain all the necessary&n; * information.  However, we use this routine to take care of any (delayed) i-cache&n; * flushing that may be necessary.&n; */
+r_extern
+r_void
+id|update_mmu_cache
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|vaddr
+comma
+id|pte_t
+id|pte
+)paren
+suffix:semicolon
 macro_line|#  ifdef CONFIG_VIRTUAL_MEM_MAP
 multiline_comment|/* arch mem_map init routine is needed due to holes in a virtual mem_map */
 DECL|macro|__HAVE_ARCH_MEMMAP_INIT

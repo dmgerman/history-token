@@ -15,7 +15,7 @@ mdefine_line|#define PT(f)&t;&t;(IA64_PT_REGS_##f##_OFFSET)
 DECL|macro|SW
 mdefine_line|#define SW(f)&t;&t;(IA64_SWITCH_STACK_##f##_OFFSET)
 DECL|macro|PT_REGS_SAVES
-mdefine_line|#define PT_REGS_SAVES(off)&t;&t;&t;&bslash;&n;&t;.unwabi @svr4, &squot;i&squot;;&t;&t;&t;&bslash;&n;&t;.fframe IA64_PT_REGS_SIZE+16+(off);&t;&bslash;&n;&t;.spillsp rp, PT(CR_IIP)+16+(off);&t;&bslash;&n;&t;.spillsp ar.pfs, PT(CR_IFS)+16+(off);&t;&bslash;&n;&t;.spillsp ar.unat, PT(AR_UNAT)+16+(off);&t;&bslash;&n;&t;.spillsp ar.fpsr, PT(AR_FPSR)+16+(off);&t;&bslash;&n;&t;.spillsp pr, PT(PR)+16+(off);
+mdefine_line|#define PT_REGS_SAVES(off)&t;&t;&t;&bslash;&n;&t;.unwabi 3, &squot;i&squot;;&t;&t;&t;&t;&bslash;&n;&t;.unwabi @svr4, &squot;i&squot;;&t;&t;&t;&bslash;&n;&t;.fframe IA64_PT_REGS_SIZE+16+(off);&t;&bslash;&n;&t;.spillsp rp, PT(CR_IIP)+16+(off);&t;&bslash;&n;&t;.spillsp ar.pfs, PT(CR_IFS)+16+(off);&t;&bslash;&n;&t;.spillsp ar.unat, PT(AR_UNAT)+16+(off);&t;&bslash;&n;&t;.spillsp ar.fpsr, PT(AR_FPSR)+16+(off);&t;&bslash;&n;&t;.spillsp pr, PT(PR)+16+(off);
 DECL|macro|PT_REGS_UNWIND_INFO
 mdefine_line|#define PT_REGS_UNWIND_INFO(off)&t;&t;&bslash;&n;&t;.prologue;&t;&t;&t;&t;&bslash;&n;&t;PT_REGS_SAVES(off);&t;&t;&t;&bslash;&n;&t;.body
 DECL|macro|SWITCH_STACK_SAVES

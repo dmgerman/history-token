@@ -77,6 +77,12 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#include &quot;../kernel/fw-emu.c&quot;
+multiline_comment|/* This needs to be defined because lib/string.c:strlcat() calls it in case of error... */
+id|asm
+(paren
+l_string|&quot;.global printk; printk = 0&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Set a break point on this function so that symbols are available to set breakpoints in&n; * the kernel being debugged.&n; */
 r_static
 r_void
