@@ -2134,6 +2134,17 @@ comma
 id|BAD_STAT
 )paren
 )paren
+(brace
+multiline_comment|/* Keep quite for NOP becouse they are expected to fail. */
+r_if
+c_cond
+(paren
+id|args
+op_logical_and
+id|args-&gt;taskfile.command
+op_ne
+id|WIN_NOP
+)paren
 r_return
 id|ide_error
 c_func
@@ -2145,7 +2156,7 @@ comma
 id|stat
 )paren
 suffix:semicolon
-multiline_comment|/* calls ide_end_drive_cmd */
+)brace
 r_if
 c_cond
 (paren
@@ -3418,6 +3429,10 @@ suffix:semicolon
 r_case
 id|WIN_NOP
 suffix:colon
+id|args-&gt;handler
+op_assign
+id|task_no_data_intr
+suffix:semicolon
 id|args-&gt;command_type
 op_assign
 id|IDE_DRIVE_TASK_NO_DATA
