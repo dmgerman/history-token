@@ -3586,15 +3586,6 @@ id|mdp_super_t
 op_star
 id|this_sb
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rdev-&gt;faulty
-op_logical_or
-id|rdev-&gt;alias_device
-)paren
-r_continue
-suffix:semicolon
 id|this_sb
 op_assign
 id|rdev-&gt;sb
@@ -3746,17 +3737,6 @@ c_func
 l_string|&quot;(skipping faulty &quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rdev-&gt;alias_device
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;(skipping alias &quot;
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3774,9 +3754,6 @@ c_cond
 (paren
 op_logical_neg
 id|rdev-&gt;faulty
-op_logical_and
-op_logical_neg
-id|rdev-&gt;alias_device
 )paren
 (brace
 id|printk
@@ -3806,6 +3783,19 @@ c_func
 (paren
 l_string|&quot;)&bslash;n&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+op_logical_and
+id|mddev-&gt;level
+op_eq
+id|LEVEL_MULTIPATH
+)paren
+multiline_comment|/* only need to write one superblock... */
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -4668,12 +4658,6 @@ op_eq
 id|LEVEL_MULTIPATH
 )paren
 (brace
-id|rdev-&gt;alias_device
-op_assign
-op_logical_neg
-op_logical_neg
-id|i
-suffix:semicolon
 id|rdev-&gt;desc_nr
 op_assign
 id|i

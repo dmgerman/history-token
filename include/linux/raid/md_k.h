@@ -509,11 +509,6 @@ r_int
 r_int
 id|sb_offset
 suffix:semicolon
-DECL|member|alias_device
-r_int
-id|alias_device
-suffix:semicolon
-multiline_comment|/* device alias to the same disk */
 DECL|member|faulty
 r_int
 id|faulty
