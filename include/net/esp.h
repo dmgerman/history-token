@@ -2,10 +2,21 @@ macro_line|#ifndef _NET_ESP_H
 DECL|macro|_NET_ESP_H
 mdefine_line|#define _NET_ESP_H
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+DECL|macro|ESP_NUM_FAST_SG
+mdefine_line|#define ESP_NUM_FAST_SG&t;&t;4
 DECL|struct|esp_data
 r_struct
 id|esp_data
 (brace
+DECL|member|sgbuf
+r_struct
+id|scatterlist
+id|sgbuf
+(braket
+id|ESP_NUM_FAST_SG
+)braket
+suffix:semicolon
 multiline_comment|/* Confidentiality */
 r_struct
 (brace
