@@ -3003,6 +3003,19 @@ c_cond
 (paren
 id|allocated_block_nr
 )paren
+(brace
+multiline_comment|/* the bitmap, the super, and the stat data == 3 */
+id|journal_begin
+c_func
+(paren
+op_amp
+id|th
+comma
+id|inode-&gt;i_sb
+comma
+l_int|3
+)paren
+suffix:semicolon
 id|reiserfs_free_block
 (paren
 op_amp
@@ -3011,6 +3024,11 @@ comma
 id|allocated_block_nr
 )paren
 suffix:semicolon
+id|transaction_started
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_goto
 id|failure
 suffix:semicolon
