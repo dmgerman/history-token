@@ -2,6 +2,7 @@ multiline_comment|/*&n;    piix4.c - Part of lm_sensors, Linux kernel modules fo
 multiline_comment|/*&n;   Supports:&n;&t;Intel PIIX4, 440MX&n;&t;Serverworks OSB4, CSB5, CSB6&n;&t;SMSC Victory66&n;&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -105,12 +106,13 @@ id|force
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
-c_func
+id|module_param
 (paren
 id|force
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -129,12 +131,13 @@ id|force_addr
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
-c_func
+id|module_param
 (paren
 id|force_addr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -154,12 +157,13 @@ id|fix_hstcfg
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
-c_func
+id|module_param
 (paren
 id|fix_hstcfg
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
