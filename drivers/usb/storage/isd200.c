@@ -2625,6 +2625,8 @@ id|ISD200_TRANSPORT_FAILED
 id|srb-&gt;result
 op_assign
 id|CHECK_CONDITION
+op_lshift
+l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG

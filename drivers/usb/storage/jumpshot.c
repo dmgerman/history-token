@@ -4071,6 +4071,8 @@ suffix:semicolon
 id|srb-&gt;result
 op_assign
 id|CHECK_CONDITION
+op_lshift
+l_int|1
 suffix:semicolon
 )brace
 r_return

@@ -529,8 +529,7 @@ id|notify
 suffix:semicolon
 multiline_comment|/* thread begin/end&t;    */
 DECL|member|queue_exclusion
-r_struct
-id|semaphore
+id|spinlock_t
 id|queue_exclusion
 suffix:semicolon
 multiline_comment|/* to protect data structs */
@@ -593,5 +592,20 @@ r_int
 id|data_len
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,3)
+DECL|macro|scsi_unlock
+mdefine_line|#define scsi_unlock(host)&t;spin_unlock_irq(host-&gt;host_lock)
+DECL|macro|scsi_lock
+mdefine_line|#define scsi_lock(host)&t;&t;spin_lock_irq(host-&gt;host_lock)
+DECL|macro|sg_address
+mdefine_line|#define sg_address(psg)&t;&t;(page_address((psg)-&gt;page) + (psg)-&gt;offset)
+macro_line|#else
+DECL|macro|scsi_unlock
+mdefine_line|#define scsi_unlock(host)&t;spin_unlock_irq(&amp;io_request_lock)
+DECL|macro|scsi_lock
+mdefine_line|#define scsi_lock(host)&t;&t;spin_lock_irq(&amp;io_request_lock)
+DECL|macro|sg_address
+mdefine_line|#define sg_address(psg)&t;&t;((psg)-&gt;address)
+macro_line|#endif
 macro_line|#endif
 eof

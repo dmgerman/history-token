@@ -1077,12 +1077,6 @@ id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1090,6 +1084,11 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -1117,13 +1116,11 @@ l_string|&quot;*** thread awakened.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* lock access to the queue element */
-id|down
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-(paren
 id|us-&gt;queue_exclusion
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* take the command off the queue */
@@ -1139,14 +1136,16 @@ id|us-&gt;srb
 op_assign
 id|us-&gt;queue_srb
 suffix:semicolon
+id|host
+op_assign
+id|us-&gt;srb-&gt;host
+suffix:semicolon
 multiline_comment|/* release the queue lock as fast as possible */
-id|up
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-(paren
 id|us-&gt;queue_exclusion
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -1179,10 +1178,10 @@ id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
-id|set_current_state
+id|scsi_lock
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|host
 )paren
 suffix:semicolon
 id|us-&gt;srb
@@ -1196,6 +1195,12 @@ suffix:semicolon
 id|us-&gt;srb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1230,10 +1235,10 @@ id|DID_BAD_TARGET
 op_lshift
 l_int|16
 suffix:semicolon
-id|set_current_state
+id|scsi_lock
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|host
 )paren
 suffix:semicolon
 id|us-&gt;srb
@@ -1247,6 +1252,12 @@ suffix:semicolon
 id|us-&gt;srb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1275,10 +1286,10 @@ id|DID_BAD_TARGET
 op_lshift
 l_int|16
 suffix:semicolon
-id|set_current_state
+id|scsi_lock
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|host
 )paren
 suffix:semicolon
 id|us-&gt;srb
@@ -1292,6 +1303,12 @@ suffix:semicolon
 id|us-&gt;srb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1328,10 +1345,10 @@ id|GOOD
 op_lshift
 l_int|1
 suffix:semicolon
-id|set_current_state
+id|scsi_lock
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|host
 )paren
 suffix:semicolon
 id|us-&gt;srb
@@ -1345,6 +1362,12 @@ suffix:semicolon
 id|us-&gt;srb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1637,10 +1660,10 @@ comma
 id|us-&gt;srb-&gt;result
 )paren
 suffix:semicolon
-id|set_current_state
+id|scsi_lock
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|host
 )paren
 suffix:semicolon
 id|us-&gt;srb
@@ -1649,6 +1672,16 @@ id|scsi_done
 c_func
 (paren
 id|us-&gt;srb
+)paren
+suffix:semicolon
+id|us-&gt;srb
+op_assign
+l_int|NULL
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
 )paren
 suffix:semicolon
 )brace
@@ -1660,11 +1693,9 @@ c_func
 l_string|&quot;scsi command aborted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
+id|us-&gt;srb
+op_assign
+l_int|NULL
 suffix:semicolon
 id|complete
 c_func
@@ -1676,10 +1707,6 @@ id|us-&gt;notify
 )paren
 suffix:semicolon
 )brace
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1719,13 +1746,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* for (;;) */
-multiline_comment|/* clean up after ourselves */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 multiline_comment|/* notify the exit routine that we&squot;re actually exiting now */
 id|complete
 c_func
@@ -2914,13 +2934,11 @@ id|ss-&gt;ip_waitq
 )paren
 )paren
 suffix:semicolon
-id|init_MUTEX
+id|spin_lock_init
 c_func
 (paren
 op_amp
-(paren
 id|ss-&gt;queue_exclusion
-)paren
 )paren
 suffix:semicolon
 id|init_MUTEX

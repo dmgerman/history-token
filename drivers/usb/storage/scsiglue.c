@@ -34,7 +34,7 @@ r_return
 l_string|&quot;SCSI emulation for USB Mass Storage devices&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* detect a virtual adapter (always works) */
+multiline_comment|/* detect a virtual adapter (always works)&n; * Synchronization: 2.4: with the io_request_lock&n; * &t;&t;&t;2.5: no locks.&n; * fortunately we don&squot;t care.&n; * */
 DECL|function|detect
 r_static
 r_int
@@ -91,7 +91,7 @@ id|local_name
 op_plus
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -170,7 +170,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Release all resources used by the virtual host&n; *&n; * NOTE: There is no contention here, because we&squot;re already deregistered&n; * the driver and we&squot;re doing each virtual host in turn, not in parallel&n; */
+multiline_comment|/* Release all resources used by the virtual host&n; *&n; * NOTE: There is no contention here, because we&squot;re already deregistered&n; * the driver and we&squot;re doing each virtual host in turn, not in parallel&n; * Synchronization: BLK, no spinlock.&n; */
 DECL|function|release
 r_static
 r_int
@@ -314,6 +314,10 @@ id|srb-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -330,13 +334,13 @@ op_star
 id|us
 suffix:semicolon
 multiline_comment|/* get exclusive access to the structures we want */
-id|down
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-(paren
 id|us-&gt;queue_exclusion
-)paren
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* enqueue the command */
@@ -353,13 +357,13 @@ op_assign
 id|US_ACT_COMMAND
 suffix:semicolon
 multiline_comment|/* release the lock on the structure */
-id|up
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-(paren
 id|us-&gt;queue_exclusion
-)paren
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* wake up the process task */
@@ -423,6 +427,12 @@ op_eq
 id|US_STATE_RUNNING
 )paren
 (brace
+id|scsi_unlock
+c_func
+(paren
+id|srb-&gt;host
+)paren
+suffix:semicolon
 id|usb_stor_abort_transport
 c_func
 (paren
@@ -437,6 +447,12 @@ op_amp
 (paren
 id|us-&gt;notify
 )paren
+)paren
+suffix:semicolon
+id|scsi_lock
+c_func
+(paren
+id|srb-&gt;host
 )paren
 suffix:semicolon
 r_return
@@ -504,6 +520,12 @@ id|US_STATE_DETACHED
 r_return
 id|SUCCESS
 suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|srb-&gt;host
+)paren
+suffix:semicolon
 multiline_comment|/* lock the device pointers */
 id|down
 c_func
@@ -554,6 +576,12 @@ op_amp
 (paren
 id|us-&gt;dev_semaphore
 )paren
+)paren
+suffix:semicolon
+id|scsi_lock
+c_func
+(paren
+id|srb-&gt;host
 )paren
 suffix:semicolon
 r_return
@@ -632,6 +660,12 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* attempt to reset the port */
+id|scsi_unlock
+c_func
+(paren
+id|srb-&gt;host
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|usb_reset_device
@@ -655,9 +689,17 @@ id|result
 OL
 l_int|0
 )paren
+(brace
+id|scsi_lock
+c_func
+(paren
+id|srb-&gt;host
+)paren
+suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
+)brace
 multiline_comment|/* FIXME: This needs to lock out driver probing while it&squot;s working&n;&t; * or we can have race conditions */
 multiline_comment|/* Is that still true?  I don&squot;t see how...  AS */
 r_for
@@ -773,6 +815,12 @@ c_func
 l_string|&quot;bus_reset() complete&bslash;n&quot;
 )paren
 suffix:semicolon
+id|scsi_lock
+c_func
+(paren
+id|srb-&gt;host
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -794,6 +842,12 @@ c_func
 (paren
 id|KERN_CRIT
 l_string|&quot;usb-storage: host_reset() requested but not implemented&bslash;n&quot;
+)paren
+suffix:semicolon
+id|bus_reset
+c_func
+(paren
+id|srb
 )paren
 suffix:semicolon
 r_return
