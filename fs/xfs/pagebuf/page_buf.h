@@ -272,9 +272,9 @@ op_lshift
 l_int|20
 )paren
 comma
-multiline_comment|/* pb_mem+underlying pages alloc&squot;d */
-DECL|enumerator|PBF_FORCEIO
-id|PBF_FORCEIO
+multiline_comment|/* underlying pages are allocated  */
+DECL|enumerator|_PBF_MEM_SLAB
+id|_PBF_MEM_SLAB
 op_assign
 (paren
 l_int|1
@@ -282,13 +282,24 @@ op_lshift
 l_int|21
 )paren
 comma
+multiline_comment|/* underlying pages are slab allocated  */
+DECL|enumerator|PBF_FORCEIO
+id|PBF_FORCEIO
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|22
+)paren
+comma
+multiline_comment|/* ignore any cache state&t;&t;   */
 DECL|enumerator|PBF_FLUSH
 id|PBF_FLUSH
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|22
+l_int|23
 )paren
 comma
 multiline_comment|/* flush disk write cache&t;&t;   */
@@ -298,16 +309,17 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|23
+l_int|24
 )paren
 comma
+multiline_comment|/* asynchronous read-ahead&t;&t;   */
 DECL|enumerator|PBF_RUN_QUEUES
 id|PBF_RUN_QUEUES
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|24
+l_int|25
 )paren
 comma
 multiline_comment|/* run block device task queue&t;   */
