@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_USB_H
 DECL|macro|__LINUX_USB_H
 mdefine_line|#define __LINUX_USB_H
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/* USB constants */
 multiline_comment|/*&n; * Device and/or Interface Class codes&n; */
 DECL|macro|USB_CLASS_PER_INTERFACE
@@ -658,6 +659,12 @@ op_star
 id|driver
 suffix:semicolon
 multiline_comment|/* driver */
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* interface specific device info */
 DECL|member|private_data
 r_void
 op_star
@@ -2085,6 +2092,22 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|usb_register_root_hub
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|usb_dev
+comma
+r_struct
+id|device
+op_star
+id|parent_dev
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|usb_check_bandwidth
 (paren
 r_struct
@@ -2423,6 +2446,12 @@ op_star
 id|bus
 suffix:semicolon
 multiline_comment|/* Bus we&squot;re part of */
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* Generic device interface */
 DECL|member|descriptor
 r_struct
 id|usb_device_descriptor
