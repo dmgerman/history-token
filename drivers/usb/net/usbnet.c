@@ -8774,6 +8774,7 @@ id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
 macro_line|#ifdef NEED_MII
+(brace
 r_struct
 id|usbnet
 op_star
@@ -8817,6 +8818,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 op_minus
