@@ -406,7 +406,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;EIP: %04x:[&lt;%08lx&gt;] CPU: %d&quot;
+l_string|&quot;EIP: %04x:[&lt;%08lx&gt;] CPU: %d&bslash;n&quot;
 comma
 l_int|0xffff
 op_amp
