@@ -825,6 +825,15 @@ id|current-&gt;rlim
 )paren
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+(paren
+id|INIT_USER-&gt;__count
+)paren
+)paren
+suffix:semicolon
 id|switch_uid
 c_func
 (paren
@@ -2571,6 +2580,16 @@ id|panic
 c_func
 (paren
 l_string|&quot;Attempted to kill init!&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;io_context
+)paren
+id|exit_io_context
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tsk-&gt;flags

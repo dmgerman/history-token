@@ -1191,10 +1191,10 @@ id|file-&gt;f_ep_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called from inside fs/file_table.c:__fput() to unlink files&n; * from the eventpoll interface. We need to have this facility to cleanup&n; * correctly files that are closed without being removed from the eventpoll&n; * interface.&n; */
-DECL|function|eventpoll_release
+multiline_comment|/*&n; * This is called from eventpoll_release() to unlink files from the eventpoll&n; * interface. We need to have this facility to cleanup correctly files that are&n; * closed without being removed from the eventpoll interface.&n; */
+DECL|function|eventpoll_release_file
 r_void
-id|eventpoll_release
+id|eventpoll_release_file
 c_func
 (paren
 r_struct
@@ -1220,18 +1220,6 @@ r_struct
 id|epitem
 op_star
 id|epi
-suffix:semicolon
-multiline_comment|/*&n;&t; * Fast check to avoid the get/release of the semaphore. Since&n;&t; * we&squot;re doing this outside the semaphore lock, it might return&n;&t; * false negatives, but we don&squot;t care. It&squot;ll help in 99.99% of cases&n;&t; * to avoid the semaphore lock. False positives simply cannot happen&n;&t; * because the file in on the way to be removed and nobody ( but&n;&t; * eventpoll ) has still a reference to this file.&n;&t; */
-r_if
-c_cond
-(paren
-id|list_empty
-c_func
-(paren
-id|lsthead
-)paren
-)paren
-r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t want to get &quot;file-&gt;f_ep_lock&quot; because it is not&n;&t; * necessary. It is not necessary because we&squot;re in the &quot;struct file&quot;&n;&t; * cleanup path, and this means that noone is using this file anymore.&n;&t; * The only hit might come from ep_free() but by holding the semaphore&n;&t; * will correctly serialize the operation. We do need to acquire&n;&t; * &quot;ep-&gt;sem&quot; after &quot;epsem&quot; because ep_remove() requires it when called&n;&t; * from anywhere but ep_free().&n;&t; */
 id|down
@@ -1459,7 +1447,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The following function implement the controller interface for the eventpoll&n; * file that enable the insertion/removal/change of file descriptors inside&n; * the interest set. It rapresents the kernel part of the user spcae epoll_ctl(2).&n; */
+multiline_comment|/*&n; * The following function implement the controller interface for the eventpoll&n; * file that enable the insertion/removal/change of file descriptors inside&n; * the interest set. It rapresents the kernel part of the user space epoll_ctl(2).&n; */
 DECL|function|sys_epoll_ctl
 id|asmlinkage
 r_int
@@ -1513,7 +1501,7 @@ l_int|3
 comma
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: sys_epoll_ctl(%d, %d, %d, %u)&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: sys_epoll_ctl(%d, %d, %d, %p)&bslash;n&quot;
 comma
 id|current
 comma
@@ -1523,7 +1511,7 @@ id|op
 comma
 id|fd
 comma
-id|event-&gt;events
+id|event
 )paren
 )paren
 suffix:semicolon
@@ -1815,7 +1803,7 @@ l_int|3
 comma
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: sys_epoll_ctl(%d, %d, %d, %u) = %d&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: sys_epoll_ctl(%d, %d, %d, %p) = %d&bslash;n&quot;
 comma
 id|current
 comma
@@ -1825,7 +1813,7 @@ id|op
 comma
 id|fd
 comma
-id|event-&gt;events
+id|event
 comma
 id|error
 )paren
