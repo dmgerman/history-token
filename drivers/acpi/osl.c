@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#ifdef CONFIG_ACPI_EFI
 macro_line|#include &lt;linux/efi.h&gt;
 id|u64
