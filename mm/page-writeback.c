@@ -1055,8 +1055,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * If the machine has a large highmem:lowmem ratio then scale back the default&n; * dirty memory thresholds: allowing too much dirty highmem pins an excessive&n; * number of buffer_heads.&n; */
 DECL|function|page_writeback_init
-r_static
-r_int
+r_void
 id|__init
 id|page_writeback_init
 c_func
@@ -1165,17 +1164,7 @@ op_amp
 id|ratelimit_nb
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-DECL|variable|page_writeback_init
-id|module_init
-c_func
-(paren
-id|page_writeback_init
-)paren
-suffix:semicolon
 DECL|function|do_writepages
 r_int
 id|do_writepages

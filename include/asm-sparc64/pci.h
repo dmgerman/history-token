@@ -458,5 +458,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
+multiline_comment|/* generic pci stuff */
+macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* __SPARC64_PCI_H */
 eof

@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -1511,6 +1512,12 @@ c_func
 )paren
 suffix:semicolon
 id|signals_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* rootfs populating might need page-writeback */
+id|page_writeback_init
 c_func
 (paren
 )paren

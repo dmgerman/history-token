@@ -47,7 +47,7 @@ id|pci_iobase
 op_assign
 id|PCIBIOS_MIN_IO
 suffix:semicolon
-multiline_comment|/* Arbitary start address */
+multiline_comment|/* Arbitrary start address */
 DECL|variable|pci_membase
 r_int
 r_int
@@ -55,7 +55,7 @@ id|pci_membase
 op_assign
 id|PCIBIOS_MIN_MEM
 suffix:semicolon
-multiline_comment|/* Arbitary start address */
+multiline_comment|/* Arbitrary start address */
 DECL|macro|PCI_MINIO
 mdefine_line|#define&t;PCI_MINIO&t;0x100&t;&t;&t;/* 256 byte minimum I/O */
 DECL|macro|PCI_MINMEM

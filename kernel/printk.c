@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;&t;/* For in_interrupt() */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|LOG_BUF_LEN
 mdefine_line|#define LOG_BUF_LEN&t;(1 &lt;&lt; CONFIG_LOG_BUF_SHIFT)
@@ -519,6 +520,22 @@ r_int
 id|error
 op_assign
 l_int|0
+suffix:semicolon
+id|error
+op_assign
+id|security_syslog
+c_func
+(paren
+id|type
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 r_switch
 c_cond
@@ -1064,26 +1081,6 @@ r_int
 id|len
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|type
-op_ne
-l_int|3
-)paren
-op_logical_and
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
 r_return
 id|do_syslog
 c_func

@@ -202,10 +202,6 @@ id|cmd-&gt;owner
 op_assign
 id|SCSI_OWNER_MIDLEVEL
 suffix:semicolon
-id|cmd-&gt;bh_next
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; * Decrement the counters, since these commands are no longer&n;&t; * active on the host/device.&n;&t; */
 id|scsi_host_busy_dec_and_test
 c_func

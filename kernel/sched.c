@@ -788,12 +788,13 @@ id|rq
 )paren
 (brace
 r_int
-r_int
 id|sleep_time
 op_assign
 id|jiffies
 op_minus
 id|p-&gt;last_run
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|requeue_waker
@@ -804,6 +805,8 @@ r_if
 c_cond
 (paren
 id|sleep_time
+OG
+l_int|0
 )paren
 (brace
 r_int
@@ -2622,7 +2625,7 @@ id|new_cpu
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a &n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; */
+multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a&n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; */
 DECL|function|find_busiest_node
 r_static
 r_int
@@ -8905,10 +8908,6 @@ c_func
 (paren
 id|current
 )paren
-suffix:semicolon
-id|current-&gt;prio
-op_assign
-id|MAX_PRIO
 suffix:semicolon
 id|init_timers
 c_func
