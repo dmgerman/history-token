@@ -1564,14 +1564,16 @@ DECL|macro|SD_BALANCE_NEWIDLE
 mdefine_line|#define SD_BALANCE_NEWIDLE&t;1&t;/* Balance when about to become idle */
 DECL|macro|SD_BALANCE_EXEC
 mdefine_line|#define SD_BALANCE_EXEC&t;&t;2&t;/* Balance on exec */
+DECL|macro|SD_BALANCE_CLONE
+mdefine_line|#define SD_BALANCE_CLONE&t;4&t;/* Balance on clone */
 DECL|macro|SD_WAKE_IDLE
-mdefine_line|#define SD_WAKE_IDLE&t;&t;4&t;/* Wake to idle CPU on task wakeup */
+mdefine_line|#define SD_WAKE_IDLE&t;&t;8&t;/* Wake to idle CPU on task wakeup */
 DECL|macro|SD_WAKE_AFFINE
-mdefine_line|#define SD_WAKE_AFFINE&t;&t;8&t;/* Wake task to waking CPU */
+mdefine_line|#define SD_WAKE_AFFINE&t;&t;16&t;/* Wake task to waking CPU */
 DECL|macro|SD_WAKE_BALANCE
-mdefine_line|#define SD_WAKE_BALANCE&t;&t;16&t;/* Perform balancing at task wakeup */
+mdefine_line|#define SD_WAKE_BALANCE&t;&t;32&t;/* Perform balancing at task wakeup */
 DECL|macro|SD_SHARE_CPUPOWER
-mdefine_line|#define SD_SHARE_CPUPOWER&t;32&t;/* Domain members share cpu power */
+mdefine_line|#define SD_SHARE_CPUPOWER&t;64&t;/* Domain members share cpu power */
 DECL|struct|sched_group
 r_struct
 id|sched_group
@@ -1690,14 +1692,14 @@ multiline_comment|/* initialise to 0 */
 suffix:semicolon
 multiline_comment|/* Common values for SMT siblings */
 DECL|macro|SD_SIBLING_INIT
-mdefine_line|#define SD_SIBLING_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 2,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 110,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 0,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 15,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_SHARE_CPUPOWER,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SD_SIBLING_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 2,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 110,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 0,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 15,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_CLONE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_SHARE_CPUPOWER,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
 multiline_comment|/* Common values for CPUs */
 DECL|macro|SD_CPU_INIT
-mdefine_line|#define SD_CPU_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 4,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 64,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (5*1000000/2),&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SD_CPU_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 4,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 64,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (5*1000000/2),&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_CLONE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* Common values for NUMA nodes */
 DECL|macro|SD_NODE_INIT
-mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 256*fls(num_online_cpus()),&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 256*fls(num_online_cpus()),&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_CLONE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 r_extern
 r_void
@@ -1757,7 +1759,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
 id|sched_balance_exec
@@ -2050,6 +2052,21 @@ id|tsk
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|wake_up_forked_process
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -2060,6 +2077,21 @@ r_struct
 id|task_struct
 op_star
 id|tsk
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|wake_up_forked_thread
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2077,13 +2109,11 @@ id|tsk
 )paren
 (brace
 )brace
-macro_line|#endif
-r_extern
+DECL|function|wake_up_forked_thread
+r_static
+r_inline
 r_void
-id|FASTCALL
-c_func
-(paren
-id|wake_up_forked_process
+id|wake_up_forked_thread
 c_func
 (paren
 r_struct
@@ -2091,8 +2121,16 @@ id|task_struct
 op_star
 id|tsk
 )paren
+(brace
+r_return
+id|wake_up_forked_process
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 r_extern
 r_void
 id|FASTCALL

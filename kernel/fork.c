@@ -4704,13 +4704,29 @@ op_amp
 id|CLONE_STOPPED
 )paren
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Do the wakeup last. On SMP we treat fork() and&n;&t;&t;&t; * CLONE_VM separately, because fork() has already&n;&t;&t;&t; * created cache footprint on this CPU (due to&n;&t;&t;&t; * copying the pagetables), hence migration would&n;&t;&t;&t; * probably be costy. Threads on the other hand&n;&t;&t;&t; * have less traction to the current CPU, and if&n;&t;&t;&t; * there&squot;s an imbalance then the scheduler can&n;&t;&t;&t; * migrate this fresh thread now, before it&n;&t;&t;&t; * accumulates a larger cache footprint:&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_VM
+)paren
+id|wake_up_forked_thread
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+r_else
 id|wake_up_forked_process
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/* do this last */
+)brace
 r_else
 id|p-&gt;state
 op_assign
