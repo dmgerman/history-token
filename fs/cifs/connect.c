@@ -1458,18 +1458,7 @@ r_else
 r_if
 c_cond
 (paren
-(paren
-id|length
-op_ne
-r_sizeof
-(paren
-r_struct
-id|smb_hdr
-)paren
-op_minus
-l_int|1
-)paren
-op_logical_or
+multiline_comment|/*(length != sizeof (struct smb_hdr) - 1)&n;&t;&t;&t;&t;    ||*/
 (paren
 id|pdu_length
 OG
@@ -1526,6 +1515,8 @@ r_sizeof
 r_struct
 id|smb_hdr
 )paren
+op_plus
+l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* could we fix this network corruption by finding next &n;&t;&t;&t;&t;&t;&t;smb header (instead of killing the session) and&n;&t;&t;&t;&t;&t;&t;restart reading from next valid SMB found? */
