@@ -7069,20 +7069,10 @@ comma
 l_string|&quot;capi20&quot;
 )paren
 suffix:semicolon
-id|devfs_find_and_unregister
+id|devfs_remove
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;isdn/capi20&quot;
-comma
-id|capi_major
-comma
-l_int|0
-comma
-id|DEVFS_SPECIAL_CHR
-comma
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
