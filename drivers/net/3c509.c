@@ -1,9 +1,9 @@
 multiline_comment|/* 3c509.c: A 3c509 EtherLink3 ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;&t;&t;v1.18a 17Nov2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;&t;- ethtool support&n;&t;&t;v1.18b 1Mar2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&t;&t;&t;- Power Management support&n;*/
+multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;&t;&t;v1.18a 17Nov2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;&t;- ethtool support&n;&t;&t;v1.18b 1Mar2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&t;&t;&t;- Power Management support&n;                v1.18c 1Mar2002 David Ruggiero &lt;jdr@farfalle.com&gt;&n;                        - Full duplex support&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;3c509&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.18b&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.18c&quot;
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;1Mar2002&quot;
 multiline_comment|/* A few values that may be tweaked. */
@@ -365,6 +365,10 @@ DECL|macro|WN4_MEDIA
 mdefine_line|#define WN4_MEDIA&t;0x0A&t;&t;/* Window 4: Various transcvr/media bits. */
 DECL|macro|MEDIA_TP
 mdefine_line|#define  MEDIA_TP&t;0x00C0&t;&t;/* Enable link beat and jabber for 10baseT. */
+DECL|macro|WN4_NETDIAG
+mdefine_line|#define WN4_NETDIAG&t;0x06&t;&t;/* Window 4: Net diagnostic */
+DECL|macro|FD_ENABLE
+mdefine_line|#define FD_ENABLE&t;0x8000&t;&t;/* Enable full-duplex (&quot;external loopback&quot;) */  
 multiline_comment|/*&n; * Must be a power of two (we use a binary and in the&n; * circular queue)&n; */
 DECL|macro|SKB_QUEUE_SIZE
 mdefine_line|#define SKB_QUEUE_SIZE&t;64
@@ -2346,21 +2350,41 @@ id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;mem_start
+op_amp
+l_int|0x05
+)paren
+(brace
+multiline_comment|/* xcvr codes 1/3/4/12 */
 id|dev-&gt;if_port
 op_assign
 (paren
 id|dev-&gt;mem_start
 op_amp
-l_int|0x1f
+l_int|0x0f
 )paren
-ques
-c_cond
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* xcvr codes 0/8 */
+multiline_comment|/* use eeprom value, but save user&squot;s full-duplex selection */
+id|dev-&gt;if_port
+op_assign
+(paren
+id|if_port
+op_or
+(paren
 id|dev-&gt;mem_start
 op_amp
-l_int|3
-suffix:colon
-id|if_port
+l_int|0x08
+)paren
+)paren
 suffix:semicolon
+)brace
 (brace
 r_const
 r_char
@@ -2390,7 +2414,11 @@ id|dev-&gt;base_addr
 comma
 id|if_names
 (braket
+(paren
 id|dev-&gt;if_port
+op_amp
+l_int|0x03
+)paren
 )braket
 )paren
 suffix:semicolon
@@ -5173,6 +5201,10 @@ id|dev
 (brace
 r_int
 id|i
+comma
+id|sw_info
+comma
+id|net_diag
 suffix:semicolon
 r_int
 id|ioaddr
@@ -5244,10 +5276,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|dev-&gt;if_port
+op_amp
+l_int|0x03
+)paren
 op_eq
 l_int|3
 )paren
+multiline_comment|/* BNC interface */
 multiline_comment|/* Start the thinnet transceiver. We should really wait 50ms...*/
 id|outw
 c_func
@@ -5263,18 +5300,198 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|dev-&gt;if_port
+op_amp
+l_int|0x03
+)paren
 op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* 10baseT interface, enabled link beat and jabber check. */
+multiline_comment|/* 10baseT interface */
+multiline_comment|/* Combine secondary sw_info word (the adapter level) and primary&n;&t;&t;&t;sw_info word (duplex setting plus other useless bits) */
+id|EL3WINDOW
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|sw_info
+op_assign
+(paren
+id|read_eeprom
+c_func
+(paren
+id|ioaddr
+comma
+l_int|0x14
+)paren
+op_amp
+l_int|0x400f
+)paren
+op_or
+(paren
+id|read_eeprom
+c_func
+(paren
+id|ioaddr
+comma
+l_int|0x0d
+)paren
+op_amp
+l_int|0xBff0
+)paren
+suffix:semicolon
 id|EL3WINDOW
 c_func
 (paren
 l_int|4
 )paren
 suffix:semicolon
+id|net_diag
+op_assign
+id|inw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|WN4_NETDIAG
+)paren
+suffix:semicolon
+id|net_diag
+op_assign
+(paren
+id|net_diag
+op_or
+id|FD_ENABLE
+)paren
+suffix:semicolon
+multiline_comment|/* temporarily assume full-duplex will be set */
+id|printk
+c_func
+(paren
+l_string|&quot;%s: &quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|dev-&gt;if_port
+op_amp
+l_int|0x0c
+)paren
+(brace
+r_case
+l_int|12
+suffix:colon
+multiline_comment|/* force full-duplex mode if 3c5x9b */
+r_if
+c_cond
+(paren
+id|sw_info
+op_amp
+l_int|0x000f
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Forcing 3c5x9b full-duplex mode&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+l_int|8
+suffix:colon
+multiline_comment|/* set full-duplex mode based on eeprom config setting */
+r_if
+c_cond
+(paren
+(paren
+id|sw_info
+op_amp
+l_int|0x000f
+)paren
+op_logical_and
+(paren
+id|sw_info
+op_amp
+l_int|0x8000
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Setting 3c5x9b full-duplex mode (from EEPROM configuration bit)&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+multiline_comment|/* xcvr=(0 || 4) OR user has an old 3c5x9 non &quot;B&quot; model */
+id|printk
+c_func
+(paren
+l_string|&quot;Setting 3c5x9/3c5x9B half-duplex mode&quot;
+)paren
+suffix:semicolon
+id|net_diag
+op_assign
+(paren
+id|net_diag
+op_amp
+op_complement
+id|FD_ENABLE
+)paren
+suffix:semicolon
+multiline_comment|/* disable full duplex */
+)brace
+id|outw
+c_func
+(paren
+id|net_diag
+comma
+id|ioaddr
+op_plus
+id|WN4_NETDIAG
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; if_port: %d, sw_info: %4.4x&bslash;n&quot;
+comma
+id|dev-&gt;if_port
+comma
+id|sw_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|el3_debug
+OG
+l_int|3
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: 3c5x9 net diag word is now: %4.4x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|net_diag
+)paren
+suffix:semicolon
+multiline_comment|/* Enable link beat and jabber check. */
 id|outw
 c_func
 (paren
@@ -5824,6 +6041,18 @@ l_int|1
 comma
 op_minus
 l_int|1
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
 )brace
 suffix:semicolon
 id|MODULE_PARM
@@ -5847,7 +6076,7 @@ c_func
 (paren
 id|xcvr
 comma
-l_string|&quot;1-8i&quot;
+l_string|&quot;1-12i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
