@@ -1390,10 +1390,10 @@ c_cond
 id|error
 )paren
 (brace
-id|make_bad_inode
+id|vn_mark_bad
 c_func
 (paren
-id|inode
+id|vp
 )paren
 suffix:semicolon
 r_if
@@ -1835,7 +1835,6 @@ op_star
 id|__return_address
 )paren
 suffix:semicolon
-multiline_comment|/* We shouldn&squot;t get here without this being true, but just in case */
 r_if
 c_cond
 (paren
@@ -1843,20 +1842,12 @@ id|inode-&gt;i_state
 op_amp
 id|I_NEW
 )paren
-(brace
-id|make_bad_inode
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 id|unlock_new_inode
 c_func
 (paren
 id|inode
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

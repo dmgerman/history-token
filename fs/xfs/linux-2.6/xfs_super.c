@@ -245,10 +245,10 @@ op_eq
 id|VNON
 )paren
 (brace
-id|make_bad_inode
+id|vn_mark_bad
 c_func
 (paren
-id|inode
+id|vp
 )paren
 suffix:semicolon
 )brace
@@ -674,6 +674,23 @@ id|inode_bhv
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * We need to set the ops vectors, and unlock the inode, but if&n;&t; * we have been called during the new inode create process, it is&n;&t; * too early to fill in the Linux inode.  We will get called a&n;&t; * second time once the inode is properly set up, and then we can&n;&t; * finish our work.&n;&t; */
+r_if
+c_cond
+(paren
+id|ip-&gt;i_d.di_mode
+op_ne
+l_int|0
+op_logical_and
+id|unlock
+op_logical_and
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_NEW
+)paren
+)paren
+(brace
 id|vp-&gt;v_type
 op_assign
 id|IFTOVT
@@ -681,16 +698,6 @@ c_func
 (paren
 id|ip-&gt;i_d.di_mode
 )paren
-suffix:semicolon
-multiline_comment|/* Have we been called during the new inode create process,&n;&t; * in which case we are too early to fill in the Linux inode.&n;&t; */
-r_if
-c_cond
-(paren
-id|vp-&gt;v_type
-op_eq
-id|VNON
-)paren
-r_return
 suffix:semicolon
 id|xfs_revalidate_inode
 c_func
@@ -706,19 +713,6 @@ comma
 id|ip
 )paren
 suffix:semicolon
-multiline_comment|/* For new inodes we need to set the ops vectors,&n;&t; * and unlock the inode.&n;&t; */
-r_if
-c_cond
-(paren
-id|unlock
-op_logical_and
-(paren
-id|inode-&gt;i_state
-op_amp
-id|I_NEW
-)paren
-)paren
-(brace
 id|xfs_set_inodeops
 c_func
 (paren
