@@ -6991,16 +6991,16 @@ id|xdev
 suffix:semicolon
 id|dev
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren
@@ -7452,10 +7452,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 singleline_comment|// ok, it&squot;s ready to go.
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|udev-&gt;dev
+id|udev
 comma
 id|dev
 )paren
