@@ -2282,9 +2282,6 @@ multiline_comment|/*&n; * mapping stuff, prepare for highmem...&n; * &n; * tempo
 macro_line|#ifndef CONFIG_IDE_TASKFILE_IO
 DECL|macro|ide_rq_offset
 mdefine_line|#define ide_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
-multiline_comment|/*&n; * taskfiles really should use hard_cur_sectors as well!&n; */
-DECL|macro|task_rq_offset
-mdefine_line|#define task_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;nr_sectors - (rq)-&gt;current_nr_sectors) * SECTOR_SIZE)
 DECL|function|ide_map_buffer
 r_static
 r_inline
@@ -2304,12 +2301,6 @@ op_star
 id|flags
 )paren
 (brace
-multiline_comment|/*&n;&t; * fs request&n;&t; */
-r_if
-c_cond
-(paren
-id|rq-&gt;bio
-)paren
 r_return
 id|bio_kmap_irq
 c_func
@@ -2320,16 +2311,6 @@ id|flags
 )paren
 op_plus
 id|ide_rq_offset
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * task request&n;&t; */
-r_return
-id|rq-&gt;buffer
-op_plus
-id|task_rq_offset
 c_func
 (paren
 id|rq
@@ -2358,11 +2339,6 @@ op_star
 id|flags
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|rq-&gt;bio
-)paren
 id|bio_kunmap_irq
 c_func
 (paren
