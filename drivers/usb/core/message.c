@@ -3817,6 +3817,8 @@ c_func
 (paren
 op_amp
 id|intfc-&gt;ref
+comma
+id|usb_release_interface_cache
 )paren
 suffix:semicolon
 id|kfree

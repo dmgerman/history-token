@@ -405,6 +405,8 @@ c_func
 (paren
 op_amp
 id|cd-&gt;kref
+comma
+id|sr_kref_release
 )paren
 suffix:semicolon
 id|out_null
@@ -457,6 +459,8 @@ c_func
 (paren
 op_amp
 id|cd-&gt;kref
+comma
+id|sr_kref_release
 )paren
 suffix:semicolon
 id|up
@@ -2117,8 +2121,6 @@ c_func
 (paren
 op_amp
 id|cd-&gt;kref
-comma
-id|sr_kref_release
 )paren
 suffix:semicolon
 id|disk
@@ -3739,6 +3741,8 @@ c_func
 (paren
 op_amp
 id|cd-&gt;kref
+comma
+id|sr_kref_release
 )paren
 suffix:semicolon
 id|up
