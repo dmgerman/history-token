@@ -382,6 +382,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;mov %0, %%g5&bslash;n&bslash;t&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|__per_cpu_offset
+(braket
+id|cpuid
+)braket
+)paren
+)paren
+suffix:semicolon
 id|smp_setup_percpu_timer
 c_func
 (paren
@@ -4526,6 +4543,26 @@ op_assign
 id|hard_smp_processor_id
 c_func
 (paren
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;mov %0, %%g5&bslash;n&bslash;t&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|__per_cpu_offset
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+)paren
 )paren
 suffix:semicolon
 id|cpu_set

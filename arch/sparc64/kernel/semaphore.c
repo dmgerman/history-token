@@ -160,8 +160,6 @@ l_string|&quot;g2&quot;
 comma
 l_string|&quot;g3&quot;
 comma
-l_string|&quot;g5&quot;
-comma
 l_string|&quot;g7&quot;
 comma
 l_string|&quot;memory&quot;
@@ -317,8 +315,6 @@ comma
 l_string|&quot;g2&quot;
 comma
 l_string|&quot;g3&quot;
-comma
-l_string|&quot;g5&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -579,8 +575,6 @@ comma
 l_string|&quot;g2&quot;
 comma
 l_string|&quot;g3&quot;
-comma
-l_string|&quot;g5&quot;
 comma
 l_string|&quot;g7&quot;
 comma

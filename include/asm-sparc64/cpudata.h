@@ -78,6 +78,8 @@ id|__cpu_data
 )paren
 suffix:semicolon
 DECL|macro|cpu_data
-mdefine_line|#define cpu_data(__cpu)&t;per_cpu(__cpu_data, (__cpu))
+mdefine_line|#define cpu_data(__cpu)&t;&t;per_cpu(__cpu_data, (__cpu))
+DECL|macro|local_cpu_data
+mdefine_line|#define local_cpu_data()&t;__get_cpu_var(__cpu_data)
 macro_line|#endif /* _SPARC64_CPUDATA_H */
 eof

@@ -13,7 +13,7 @@ multiline_comment|/* Page table allocation/freeing. */
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Sliiiicck */
 DECL|macro|pgt_quicklists
-mdefine_line|#define pgt_quicklists&t;cpu_data(smp_processor_id())
+mdefine_line|#define pgt_quicklists&t;local_cpu_data()
 macro_line|#else
 DECL|struct|pgtable_cache_struct
 r_extern

@@ -1322,8 +1322,6 @@ l_string|&quot;g3&quot;
 comma
 l_string|&quot;g4&quot;
 comma
-l_string|&quot;g5&quot;
-comma
 l_string|&quot;g7&quot;
 comma
 l_string|&quot;cc&quot;
