@@ -2050,9 +2050,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|update_process_times
@@ -2064,9 +2061,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|prof_counter

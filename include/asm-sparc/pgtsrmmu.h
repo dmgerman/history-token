@@ -4,15 +4,14 @@ DECL|macro|_SPARC_PGTSRMMU_H
 mdefine_line|#define _SPARC_PGTSRMMU_H
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;&t;/* TI_UWINMASK for WINDOW_FLUSH */
-multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
+multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table entry can map */
 DECL|macro|SRMMU_PMD_SHIFT
 mdefine_line|#define SRMMU_PMD_SHIFT         18
 DECL|macro|SRMMU_PMD_SIZE
 mdefine_line|#define SRMMU_PMD_SIZE          (1UL &lt;&lt; SRMMU_PMD_SHIFT)
 DECL|macro|SRMMU_PMD_MASK
 mdefine_line|#define SRMMU_PMD_MASK          (~(SRMMU_PMD_SIZE-1))
-DECL|macro|SRMMU_PMD_ALIGN
-mdefine_line|#define SRMMU_PMD_ALIGN(addr)   (((addr)+SRMMU_PMD_SIZE-1)&amp;SRMMU_PMD_MASK)
+multiline_comment|/* #define SRMMU_PMD_ALIGN(addr)   (((addr)+SRMMU_PMD_SIZE-1)&amp;SRMMU_PMD_MASK) */
 multiline_comment|/* PGDIR_SHIFT determines what a third-level page table entry can map */
 DECL|macro|SRMMU_PGDIR_SHIFT
 mdefine_line|#define SRMMU_PGDIR_SHIFT       24
