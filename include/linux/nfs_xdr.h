@@ -374,11 +374,13 @@ suffix:semicolon
 DECL|member|fh
 r_struct
 id|nfs_fh
+op_star
 id|fh
 suffix:semicolon
 DECL|member|fattr
 r_struct
 id|nfs_fattr
+op_star
 id|fattr
 suffix:semicolon
 )brace
