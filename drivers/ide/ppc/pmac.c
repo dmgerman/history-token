@@ -8469,11 +8469,6 @@ op_assign
 op_amp
 id|pmac_ide_dma_host_on
 suffix:semicolon
-id|hwif-&gt;ide_dma_verbose
-op_assign
-op_amp
-id|__ide_dma_verbose
-suffix:semicolon
 id|hwif-&gt;ide_dma_timeout
 op_assign
 op_amp
