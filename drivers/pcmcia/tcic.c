@@ -254,10 +254,9 @@ r_struct
 id|pccard_operations
 id|tcic_operations
 suffix:semicolon
-DECL|struct|socket_info_t
-r_typedef
+DECL|struct|tcic_socket
 r_struct
-id|socket_info_t
+id|tcic_socket
 (brace
 DECL|member|psock
 id|u_short
@@ -296,9 +295,7 @@ r_struct
 id|pcmcia_socket
 id|socket
 suffix:semicolon
-DECL|typedef|socket_info_t
 )brace
-id|socket_info_t
 suffix:semicolon
 DECL|variable|poll_timer
 r_static
@@ -318,7 +315,8 @@ id|sockets
 suffix:semicolon
 DECL|variable|socket_table
 r_static
-id|socket_info_t
+r_struct
+id|tcic_socket
 id|socket_table
 (braket
 l_int|2
@@ -3160,7 +3158,8 @@ c_func
 (paren
 id|sock
 comma
-id|socket_info_t
+r_struct
+id|tcic_socket
 comma
 id|socket
 )paren
@@ -3215,7 +3214,8 @@ c_func
 (paren
 id|sock
 comma
-id|socket_info_t
+r_struct
+id|tcic_socket
 comma
 id|socket
 )paren
@@ -3455,7 +3455,8 @@ c_func
 (paren
 id|sock
 comma
-id|socket_info_t
+r_struct
+id|tcic_socket
 comma
 id|socket
 )paren
@@ -3812,7 +3813,8 @@ c_func
 (paren
 id|sock
 comma
-id|socket_info_t
+r_struct
+id|tcic_socket
 comma
 id|socket
 )paren
@@ -4287,7 +4289,8 @@ c_func
 (paren
 id|sock
 comma
-id|socket_info_t
+r_struct
+id|tcic_socket
 comma
 id|socket
 )paren
@@ -4566,7 +4569,8 @@ c_func
 (paren
 id|sock
 comma
-id|socket_info_t
+r_struct
+id|tcic_socket
 comma
 id|socket
 )paren
