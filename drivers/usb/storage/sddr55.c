@@ -2893,23 +2893,31 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
+singleline_comment|// write-protected for now, no block descriptor support
 r_static
 r_int
 r_char
 id|mode_page_01
 (braket
-l_int|16
+l_int|20
 )braket
 op_assign
 (brace
-singleline_comment|// write-protected for now
-l_int|0x03
+l_int|0x0
+comma
+l_int|0x12
 comma
 l_int|0x00
 comma
 l_int|0x80
 comma
-l_int|0x00
+l_int|0x0
+comma
+l_int|0x0
+comma
+l_int|0x0
+comma
+l_int|0x0
 comma
 l_int|0x01
 comma
@@ -3302,7 +3310,7 @@ l_int|256
 op_star
 l_int|250
 suffix:semicolon
-multiline_comment|/* Last page in the card, adjust as we only use 250 out of every 256 pages */
+multiline_comment|/* Last page in the card, adjust as we only use 250 out of&n;&t;&t; * every 256 pages */
 id|capacity
 op_assign
 (paren
@@ -3382,7 +3390,7 @@ id|srb-&gt;cmnd
 l_int|0
 )braket
 op_eq
-id|MODE_SENSE
+id|MODE_SENSE_10
 )paren
 (brace
 id|memcpy
@@ -3398,7 +3406,7 @@ id|mode_page_01
 suffix:semicolon
 id|ptr
 (braket
-l_int|2
+l_int|3
 )braket
 op_assign
 (paren
@@ -3411,6 +3419,19 @@ c_cond
 l_int|0x80
 suffix:colon
 l_int|0
+suffix:semicolon
+id|usb_stor_set_xfer_buf
+c_func
+(paren
+id|ptr
+comma
+r_sizeof
+(paren
+id|mode_page_01
+)paren
+comma
+id|srb
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -6255,20 +6255,27 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
+multiline_comment|/* note: no block descriptor support */
 r_static
 r_int
 r_char
 id|mode_page_01
 (braket
-l_int|16
+l_int|19
 )braket
 op_assign
 (brace
+l_int|0x00
+comma
 l_int|0x0F
 comma
 l_int|0x00
 comma
-l_int|0
+l_int|0x0
+comma
+l_int|0x0
+comma
+l_int|0x0
 comma
 l_int|0x00
 comma
@@ -6638,7 +6645,7 @@ id|srb-&gt;cmnd
 l_int|0
 )braket
 op_eq
-id|MODE_SENSE
+id|MODE_SENSE_10
 )paren
 (brace
 r_int
@@ -6689,7 +6696,13 @@ id|mode_page_01
 )paren
 )paren
 suffix:semicolon
+(paren
+(paren
+id|u16
+op_star
+)paren
 id|ptr
+)paren
 (braket
 l_int|0
 )braket
@@ -6699,11 +6712,11 @@ r_sizeof
 id|mode_page_01
 )paren
 op_minus
-l_int|1
+l_int|2
 suffix:semicolon
 id|ptr
 (braket
-l_int|2
+l_int|3
 )braket
 op_assign
 (paren
@@ -6935,7 +6948,7 @@ id|pages
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Pass TEST_UNIT_READY and REQUEST_SENSE through
+multiline_comment|/* catch-all for all other commands, except&n;&t; * pass TEST_UNIT_READY and REQUEST_SENSE through&n;&t; */
 r_if
 c_cond
 (paren
