@@ -64,6 +64,7 @@ DECL|macro|nth_page
 mdefine_line|#define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
 multiline_comment|/*&n; * Linux kernel virtual memory manager primitives.&n; * The idea being to have a &quot;virtual&quot; mm in the same way&n; * we have a virtual fs - giving a cleaner interface to the&n; * mm details, and allowing different kinds of memory mappings&n; * (from shared memory to executable loading to arbitrary&n; * mmap() functions).&n; */
 multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; */
+macro_line|#ifdef CONFIG_MMU
 DECL|struct|vm_area_struct
 r_struct
 id|vm_area_struct
@@ -197,6 +198,97 @@ multiline_comment|/* NUMA policy for the VMA */
 macro_line|#endif
 )brace
 suffix:semicolon
+macro_line|#else
+DECL|struct|vm_area_struct
+r_struct
+id|vm_area_struct
+(brace
+DECL|member|vm_link
+r_struct
+id|list_head
+id|vm_link
+suffix:semicolon
+multiline_comment|/* system object list */
+DECL|member|vm_usage
+id|atomic_t
+id|vm_usage
+suffix:semicolon
+multiline_comment|/* count of refs */
+DECL|member|vm_start
+r_int
+r_int
+id|vm_start
+suffix:semicolon
+DECL|member|vm_end
+r_int
+r_int
+id|vm_end
+suffix:semicolon
+DECL|member|vm_page_prot
+id|pgprot_t
+id|vm_page_prot
+suffix:semicolon
+multiline_comment|/* access permissions of this VMA */
+DECL|member|vm_flags
+r_int
+r_int
+id|vm_flags
+suffix:semicolon
+DECL|member|vm_pgoff
+r_int
+r_int
+id|vm_pgoff
+suffix:semicolon
+DECL|member|vm_file
+r_struct
+id|file
+op_star
+id|vm_file
+suffix:semicolon
+multiline_comment|/* file or device mapped */
+)brace
+suffix:semicolon
+DECL|struct|mm_tblock_struct
+r_struct
+id|mm_tblock_struct
+(brace
+DECL|member|next
+r_struct
+id|mm_tblock_struct
+op_star
+id|next
+suffix:semicolon
+DECL|member|vma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|nommu_vma_list
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+id|nommu_vma_sem
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|kobjsize
+c_func
+(paren
+r_const
+r_void
+op_star
+id|objp
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * vm_flags..&n; */
 DECL|macro|VM_READ
 mdefine_line|#define VM_READ&t;&t;0x00000001&t;/* currently active flags */
@@ -1868,6 +1960,33 @@ r_struct
 id|page
 op_star
 id|page
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|do_mremap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|old_len
+comma
+r_int
+r_int
+id|new_len
+comma
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|new_addr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Prototype to add a shrinker callback for ageable caches.&n; * &n; * These functions are passed a count `nr_to_scan&squot; and a gfpmask.  They should&n; * scan `nr_to_scan&squot; objects, attempting to free them.&n; *&n; * The callback must the number of objects which remain in the cache.&n; *&n; * The callback will be passes nr_to_scan == 0 when the VM is querying the&n; * cache size, so a fastpath for that case is appropriate.&n; */
