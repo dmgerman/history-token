@@ -289,6 +289,12 @@ c_func
 id|client
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
