@@ -1049,6 +1049,13 @@ c_func
 id|generic_commit_write
 )paren
 suffix:semicolon
+DECL|variable|block_commit_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|block_commit_write
+)paren
+suffix:semicolon
 DECL|variable|block_truncate_page
 id|EXPORT_SYMBOL
 c_func
@@ -2977,6 +2984,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__inode_dir_notify
+)paren
+suffix:semicolon
+DECL|variable|generic_osync_inode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_osync_inode
+)paren
+suffix:semicolon
+DECL|variable|remove_suid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remove_suid
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_UID16

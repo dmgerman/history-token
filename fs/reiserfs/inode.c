@@ -10,6 +10,11 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+r_extern
+r_int
+id|reiserfs_default_io_size
+suffix:semicolon
+multiline_comment|/* default io size devuned in super.c */
 multiline_comment|/* args for the create parameter of reiserfs_get_block */
 DECL|macro|GET_BLOCK_NO_CREATE
 mdefine_line|#define GET_BLOCK_NO_CREATE 0 /* don&squot;t create new blocks or convert tails */
@@ -3678,7 +3683,7 @@ id|ih-&gt;ih_key
 suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign
-id|PAGE_SIZE
+id|reiserfs_default_io_size
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -6961,7 +6966,7 @@ id|ih.ih_key.k_objectid
 suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign
-id|PAGE_SIZE
+id|reiserfs_default_io_size
 suffix:semicolon
 singleline_comment|// store in in-core inode the key of stat data and version all
 singleline_comment|// object items will have (directory items will have old offset

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 DECL|macro|PREALLOCATION_SIZE
@@ -3633,6 +3634,10 @@ c_loop
 id|rest
 OG
 l_int|0
+op_logical_and
+id|start
+op_le
+id|finish
 )paren
 (brace
 id|nr_allocated
@@ -4187,6 +4192,19 @@ id|blocks
 )paren
 r_return
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|bitmap_lock
+)paren
+suffix:semicolon
 id|REISERFS_SB
 c_func
 (paren
@@ -4196,6 +4214,19 @@ op_member_access_from_pointer
 id|reserved_blocks
 op_add_assign
 id|blocks
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|bitmap_lock
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Unreserve @blocks amount of blocks in fs pointed by @sb */
@@ -4224,6 +4255,19 @@ id|blocks
 )paren
 r_return
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|bitmap_lock
+)paren
+suffix:semicolon
 id|REISERFS_SB
 c_func
 (paren
@@ -4233,6 +4277,19 @@ op_member_access_from_pointer
 id|reserved_blocks
 op_sub_assign
 id|blocks
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|bitmap_lock
+)paren
 suffix:semicolon
 id|RFALSE
 c_func
@@ -4249,6 +4306,76 @@ l_int|0
 comma
 l_string|&quot;amount of blocks reserved became zero?&quot;
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* This function estimates how much pages we will be able to write to FS&n;   used for reiserfs_file_write() purposes for now. */
+DECL|function|reiserfs_can_fit_pages
+r_int
+id|reiserfs_can_fit_pages
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+multiline_comment|/* superblock of filesystem&n;&t;&t;&t;&t;&t;&t;       to estimate space */
+)paren
+(brace
+r_int
+r_int
+id|space
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|bitmap_lock
+)paren
+suffix:semicolon
+id|space
+op_assign
+(paren
+id|SB_FREE_BLOCKS
+c_func
+(paren
+id|sb
+)paren
+op_minus
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|reserved_blocks
+)paren
+op_rshift
+(paren
+id|PAGE_CACHE_SHIFT
+op_minus
+id|sb-&gt;s_blocksize_bits
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|bitmap_lock
+)paren
+suffix:semicolon
+r_return
+id|space
 suffix:semicolon
 )brace
 eof

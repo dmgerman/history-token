@@ -2292,6 +2292,15 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+DECL|variable|reiserfs_default_io_size
+r_int
+id|reiserfs_default_io_size
+op_assign
+l_int|128
+op_star
+l_int|1024
+suffix:semicolon
+multiline_comment|/* Default recommended I/O size is 128k.&n;&t;&t;&t;&t;&t;      There might be broken applications that are&n;&t;&t;&t;&t;&t;      confused by this. Use nolargeio mount option&n;&t;&t;&t;&t;&t;      to get usual i/o size = PAGE_SIZE.&n;&t;&t;&t;&t;&t;    */
 multiline_comment|/* proceed only one option from a list *cur - string containing of mount options&n;   opts - array of options which are accepted&n;   opt_arg - if option is found and requires an argument and if it is specifed&n;   in the input - pointer to the argument is stored here&n;   bit_flags - if option requires to set a certain bit - it is set here&n;   return -1 if unknown option is found, opt-&gt;arg_required otherwise */
 DECL|function|reiserfs_getopt
 r_static
@@ -2810,6 +2819,17 @@ l_int|1
 )brace
 comma
 (brace
+l_string|&quot;nolargeio&quot;
+comma
+l_char|&squot;w&squot;
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+)brace
+comma
+(brace
 l_int|NULL
 comma
 l_int|0
@@ -2938,6 +2958,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot;w&squot;
+)paren
+(brace
+id|reiserfs_default_io_size
+op_assign
+id|PAGE_SIZE
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -6287,6 +6320,10 @@ op_amp
 id|sbi-&gt;s_wait
 )paren
 )paren
+suffix:semicolon
+id|sbi-&gt;bitmap_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_return
 (paren
