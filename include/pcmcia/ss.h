@@ -174,6 +174,12 @@ DECL|member|card_start
 id|u_int
 id|card_start
 suffix:semicolon
+DECL|member|res
+r_struct
+id|resource
+op_star
+id|res
+suffix:semicolon
 DECL|typedef|pccard_mem_map
 )brace
 id|pccard_mem_map

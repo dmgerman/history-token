@@ -801,12 +801,13 @@ op_star
 id|s
 )paren
 suffix:semicolon
-r_int
+r_struct
+id|resource
+op_star
 id|find_mem_region
 c_func
 (paren
 id|u_long
-op_star
 id|base
 comma
 id|u_long
