@@ -1,4 +1,4 @@
-multiline_comment|/*&n;**  System Bus Adapter (SBA) I/O MMU manager&n;**&n;**&t;(c) Copyright 2000 Grant Grundler&n;**&t;(c) Copyright 2000 Hewlett-Packard Company&n;**&n;**&t;Portions (c) 1999 Dave S. Miller (from sparc64 I/O MMU code)&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;**&n;**&n;** This module initializes the IOC (I/O Controller) found on B1000/C3000/&n;** J5000/J7000/N-class/L-class machines and their successors.&n;**&n;** FIXME: Multi-IOC support missing - depends on hp_device data&n;** FIXME: add DMA hint support programming in both sba and lba modules.&n;*/
+multiline_comment|/*&n;**  System Bus Adapter (SBA) I/O MMU manager&n;**&n;**&t;(c) Copyright 2000 Grant Grundler&n;**&t;(c) Copyright 2000 Hewlett-Packard Company&n;**&n;**&t;Portions (c) 1999 Dave S. Miller (from sparc64 I/O MMU code)&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;**&n;**&n;** This module initializes the IOC (I/O Controller) found on B1000/C3000/&n;** J5000/J7000/N-class/L-class machines and their successors.&n;**&n;** FIXME: add DMA hint support programming in both sba and lba modules.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,20 +8,20 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 DECL|macro|PCI_DEBUG
-mdefine_line|#define PCI_DEBUG&t;&t;/* for ASSERT */
+macro_line|#undef PCI_DEBUG&t;&t;/* for ASSERT */
 macro_line|#include &lt;linux/pci.h&gt;
 DECL|macro|PCI_DEBUG
 macro_line|#undef PCI_DEBUG
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;&t;&t;/* for DMA_CHUNK_SIZE */
-macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_driver() stuff */
-macro_line|#include &lt;asm/gsc.h&gt;&t;&t;/* FIXME: for gsc_read/gsc_write */
+macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stuff */
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/runway.h&gt;&t;&t;/* for proc_runway_root */
+macro_line|#include &lt;asm/pdc.h&gt;&t;&t;/* for PDC_MODEL_* */
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;SBA&quot;
-multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;** Don&squot;t even think about messing with it unless you have&n;** plenty of 710&squot;s to sacrafice to the computer gods. :^)&n;*/
+multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;** Don&squot;t even think about messing with it unless you have&n;** plenty of 710&squot;s to sacrifice to the computer gods. :^)&n;*/
 DECL|macro|DEBUG_SBA_INIT
 macro_line|#undef DEBUG_SBA_INIT
 DECL|macro|DEBUG_SBA_RUN
@@ -34,13 +34,10 @@ DECL|macro|ASSERT_PDIR_SANITY
 macro_line|#undef ASSERT_PDIR_SANITY
 DECL|macro|DEBUG_LARGE_SG_ENTRIES
 macro_line|#undef DEBUG_LARGE_SG_ENTRIES
-macro_line|#if 1
-DECL|macro|SBA_INLINE
-mdefine_line|#define SBA_INLINE
-macro_line|#else
+DECL|macro|DEBUG_DMB_TRAP
+macro_line|#undef DEBUG_DMB_TRAP
 DECL|macro|SBA_INLINE
 mdefine_line|#define SBA_INLINE&t;__inline__
-macro_line|#endif
 macro_line|#ifdef DEBUG_SBA_INIT
 DECL|macro|DBG_INIT
 mdefine_line|#define DBG_INIT(x...)&t;printk(x)
@@ -70,224 +67,53 @@ DECL|macro|DBG_RES
 mdefine_line|#define DBG_RES(x...)
 macro_line|#endif
 multiline_comment|/*&n;** The number of pdir entries to &quot;free&quot; before issueing&n;** a read to PCOM register to flush out PCOM writes.&n;** Interacts with allocation granularity (ie 4 or 8 entries&n;** allocated and free&squot;d/purged at a time might make this&n;** less interesting).&n;*/
-macro_line|#if 0
-mdefine_line|#define DELAYED_RESOURCE_CNT&t;16
-macro_line|#else
 DECL|macro|DELAYED_RESOURCE_CNT
-macro_line|#undef DELAYED_RESOURCE_CNT
-macro_line|#endif
+mdefine_line|#define DELAYED_RESOURCE_CNT&t;16
 DECL|macro|DEFAULT_DMA_HINT_REG
 mdefine_line|#define DEFAULT_DMA_HINT_REG&t;0
 DECL|macro|ASTRO_RUNWAY_PORT
-mdefine_line|#define ASTRO_RUNWAY_PORT    0x582
+mdefine_line|#define ASTRO_RUNWAY_PORT&t;0x582
 DECL|macro|ASTRO_ROPES_PORT
-mdefine_line|#define ASTRO_ROPES_PORT     0x780
+mdefine_line|#define ASTRO_ROPES_PORT&t;0x780
 DECL|macro|IKE_MERCED_PORT
-mdefine_line|#define IKE_MERCED_PORT      0x803
+mdefine_line|#define IKE_MERCED_PORT&t;&t;0x803
 DECL|macro|IKE_ROPES_PORT
-mdefine_line|#define IKE_ROPES_PORT       0x781
-r_int
-id|sba_driver_callback
-c_func
-(paren
-r_struct
-id|hp_device
-op_star
-comma
-r_struct
-id|pa_iodc_driver
-op_star
-)paren
-suffix:semicolon
-DECL|variable|sba_drivers_for
-r_static
-r_struct
-id|pa_iodc_driver
-id|sba_drivers_for
-(braket
-)braket
-op_assign
-(brace
-multiline_comment|/* FIXME: why is SVERSION checked? */
-(brace
-id|HPHW_IOA
-comma
-id|ASTRO_RUNWAY_PORT
-comma
-l_int|0x0
-comma
-l_int|0xb
-comma
-l_int|0
-comma
-l_int|0x10
-comma
-id|DRIVER_CHECK_HVERSION
-op_plus
-id|DRIVER_CHECK_SVERSION
-op_plus
-id|DRIVER_CHECK_HWTYPE
-comma
-id|MODULE_NAME
-comma
-l_string|&quot;I/O MMU&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|sba_driver_callback
-)brace
-comma
-(brace
-id|HPHW_BCPORT
-comma
-id|ASTRO_ROPES_PORT
-comma
-l_int|0x0
-comma
-l_int|0xb
-comma
-l_int|0
-comma
-l_int|0x10
-comma
-id|DRIVER_CHECK_HVERSION
-op_plus
-id|DRIVER_CHECK_SVERSION
-op_plus
-id|DRIVER_CHECK_HWTYPE
-comma
-id|MODULE_NAME
-comma
-l_string|&quot;I/O MMU&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|sba_driver_callback
-)brace
-comma
-macro_line|#if 0
-multiline_comment|/* FIXME : N-class! Use a different &quot;callback&quot;? */
-(brace
-id|HPHW_BCPORT
-comma
-id|IKE_MERCED_PORT
-comma
-l_int|0x0
-comma
-l_int|0xb
-comma
-l_int|0
-comma
-l_int|0x10
-comma
-id|DRIVER_CHECK_HVERSION
-op_plus
-id|DRIVER_CHECK_SVERSION
-op_plus
-id|DRIVER_CHECK_HWTYPE
-comma
-id|MODULE_NAME
-comma
-l_string|&quot;I/O MMU&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|sba_driver_callback
-)brace
-comma
-(brace
-id|HPHW_BCPORT
-comma
-id|IKE_ROPES_PORT
-comma
-l_int|0x0
-comma
-l_int|0xb
-comma
-l_int|0
-comma
-l_int|0x10
-comma
-id|DRIVER_CHECK_HVERSION
-op_plus
-id|DRIVER_CHECK_SVERSION
-op_plus
-id|DRIVER_CHECK_HWTYPE
-comma
-id|MODULE_NAME
-comma
-l_string|&quot;I/O MMU&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|sba_driver_callback
-)brace
-comma
-macro_line|#endif
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|NULL
-)brace
-)brace
-suffix:semicolon
+mdefine_line|#define IKE_ROPES_PORT&t;&t;0x781
+DECL|macro|REO_MERCED_PORT
+mdefine_line|#define REO_MERCED_PORT&t;&t;0x804
+DECL|macro|REO_ROPES_PORT
+mdefine_line|#define REO_ROPES_PORT&t;&t;0x782
+DECL|macro|REOG_MERCED_PORT
+mdefine_line|#define REOG_MERCED_PORT&t;0x805
+DECL|macro|REOG_ROPES_PORT
+mdefine_line|#define REOG_ROPES_PORT&t;&t;0x783
 DECL|macro|SBA_FUNC_ID
 mdefine_line|#define SBA_FUNC_ID&t;0x0000&t;/* function id */
 DECL|macro|SBA_FCLASS
 mdefine_line|#define SBA_FCLASS&t;0x0008&t;/* function class, bist, header, rev... */
 DECL|macro|IS_ASTRO
-mdefine_line|#define IS_ASTRO(id) ( &bslash;&n;    (((id)-&gt;hw_type == HPHW_IOA) &amp;&amp; ((id)-&gt;hversion == ASTRO_RUNWAY_PORT)) || &bslash;&n;    (((id)-&gt;hw_type == HPHW_BCPORT) &amp;&amp; ((id)-&gt;hversion == ASTRO_ROPES_PORT))  &bslash;&n;)
-DECL|macro|CONFIG_FUNC_SIZE
-mdefine_line|#define CONFIG_FUNC_SIZE 4096   /* SBA configuration function reg set */
+mdefine_line|#define IS_ASTRO(id) &bslash;&n;(((id)-&gt;hversion == ASTRO_RUNWAY_PORT) || ((id)-&gt;hversion == ASTRO_ROPES_PORT))
+DECL|macro|IS_IKE
+mdefine_line|#define IS_IKE(id) &bslash;&n;(((id)-&gt;hversion == IKE_MERCED_PORT) || ((id)-&gt;hversion == IKE_ROPES_PORT))
+DECL|macro|SBA_FUNC_SIZE
+mdefine_line|#define SBA_FUNC_SIZE 4096   /* SBA configuration function reg set */
 DECL|macro|ASTRO_IOC_OFFSET
 mdefine_line|#define ASTRO_IOC_OFFSET 0x20000
 multiline_comment|/* Ike&squot;s IOC&squot;s occupy functions 2 and 3 (not 0 and 1) */
 DECL|macro|IKE_IOC_OFFSET
-mdefine_line|#define IKE_IOC_OFFSET(p) ((p+2)*CONFIG_FUNC_SIZE)
+mdefine_line|#define IKE_IOC_OFFSET(p) ((p+2)*SBA_FUNC_SIZE)
 DECL|macro|IOC_CTRL
 mdefine_line|#define IOC_CTRL          0x8&t;/* IOC_CTRL offset */
-DECL|macro|IOC_CTRL_TE
-mdefine_line|#define IOC_CTRL_TE       (0x1 &lt;&lt; 0) /* TOC Enable */
+DECL|macro|IOC_CTRL_TC
+mdefine_line|#define IOC_CTRL_TC       (1 &lt;&lt; 0) /* TOC Enable */
+DECL|macro|IOC_CTRL_CE
+mdefine_line|#define IOC_CTRL_CE       (1 &lt;&lt; 1) /* Coalesce Enable */
+DECL|macro|IOC_CTRL_DE
+mdefine_line|#define IOC_CTRL_DE       (1 &lt;&lt; 2) /* Dillon Enable */
 DECL|macro|IOC_CTRL_RM
-mdefine_line|#define IOC_CTRL_RM       (0x1 &lt;&lt; 8) /* Real Mode */
+mdefine_line|#define IOC_CTRL_RM       (1 &lt;&lt; 8) /* Real Mode */
 DECL|macro|IOC_CTRL_NC
-mdefine_line|#define IOC_CTRL_NC       (0x1 &lt;&lt; 9) /* Non Coherent Mode */
+mdefine_line|#define IOC_CTRL_NC       (1 &lt;&lt; 9) /* Non Coherent Mode */
 DECL|macro|MAX_IOC
 mdefine_line|#define MAX_IOC&t;&t;2&t;/* per Ike. Astro only has 1 */
 multiline_comment|/*&n;** Offsets into MBIB (Function 0 on Ike and hopefully Astro)&n;** Firmware programs this stuff. Don&squot;t touch it.&n;*/
@@ -359,8 +185,8 @@ r_struct
 id|ioc
 (brace
 DECL|member|ioc_hpa
-r_char
-op_star
+r_int
+r_int
 id|ioc_hpa
 suffix:semicolon
 multiline_comment|/* I/O MMU base address */
@@ -382,7 +208,17 @@ r_int
 op_star
 id|res_hint
 suffix:semicolon
-multiline_comment|/* next available IOVP - circular search */
+multiline_comment|/* next avail IOVP - circular search */
+DECL|member|res_lock
+id|spinlock_t
+id|res_lock
+suffix:semicolon
+DECL|member|hint_mask_pdir
+r_int
+r_int
+id|hint_mask_pdir
+suffix:semicolon
+multiline_comment|/* bits used for DMA hints */
 DECL|member|res_bitshift
 r_int
 r_int
@@ -400,20 +236,26 @@ r_int
 r_int
 id|hint_shift_pdir
 suffix:semicolon
-DECL|member|res_lock
-id|spinlock_t
-id|res_lock
-suffix:semicolon
-DECL|member|hint_mask_pdir
+macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
+DECL|member|saved_cnt
 r_int
-r_int
-id|hint_mask_pdir
+id|saved_cnt
 suffix:semicolon
-multiline_comment|/* bits used for DMA hints */
-macro_line|#ifdef DELAYED_RESOURCE_CNT
-DECL|member|res_delay
+DECL|struct|sba_dma_pair
+r_struct
+id|sba_dma_pair
+(brace
+DECL|member|iova
 id|dma_addr_t
-id|res_delay
+id|iova
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|saved
+)brace
+id|saved
 (braket
 id|DELAYED_RESOURCE_CNT
 )braket
@@ -513,17 +355,30 @@ id|sba_device
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* list of LBA&squot;s in system */
+multiline_comment|/* list of SBA&squot;s in system */
+DECL|member|dev
+r_struct
+id|parisc_device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* dev found in bus walk */
 DECL|member|iodc
 r_struct
-id|hp_device
+id|parisc_device_id
 op_star
 id|iodc
 suffix:semicolon
 multiline_comment|/* data about dev from firmware */
-DECL|member|sba_hpa
+DECL|member|name
+r_const
 r_char
 op_star
+id|name
+suffix:semicolon
+DECL|member|sba_hpa
+r_int
+r_int
 id|sba_hpa
 suffix:semicolon
 multiline_comment|/* base address */
@@ -566,10 +421,13 @@ id|sba_device
 op_star
 id|sba_list
 suffix:semicolon
-DECL|variable|sba_count
+DECL|variable|ioc_needs_fdc
 r_static
 r_int
-id|sba_count
+r_int
+id|ioc_needs_fdc
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Ratio of Host MEM to IOV Space size */
 DECL|variable|sba_mem_ratio
@@ -578,78 +436,79 @@ r_int
 r_int
 id|sba_mem_ratio
 op_assign
-l_int|4
+l_int|8
+suffix:semicolon
+multiline_comment|/* global count of IOMMUs in the system */
+DECL|variable|global_ioc_cnt
+r_static
+r_int
+r_int
+id|global_ioc_cnt
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* PA8700 (Piranha 2.2) bug workaround */
+DECL|variable|piranha_bad_128k
+r_static
+r_int
+r_int
+id|piranha_bad_128k
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Looks nice and keeps the compiler happy */
 DECL|macro|SBA_DEV
 mdefine_line|#define SBA_DEV(d) ((struct sba_device *) (d))
 DECL|macro|ROUNDUP
 mdefine_line|#define ROUNDUP(x,y) ((x + ((y)-1)) &amp; ~((y)-1))
-multiline_comment|/************************************&n;** SBA register read and write support&n;**&n;** BE WARNED: register writes are posted.&n;**  (ie follow writes which must reach HW with a read)&n;*/
-DECL|macro|READ_U8
-mdefine_line|#define READ_U8(addr)  gsc_readb(addr)
-DECL|macro|READ_U16
-mdefine_line|#define READ_U16(addr) gsc_readw((u16 *) (addr))
-DECL|macro|READ_U32
-mdefine_line|#define READ_U32(addr) gsc_readl((u32 *) (addr))
-DECL|macro|WRITE_U8
-mdefine_line|#define WRITE_U8(value, addr) gsc_writeb(value, addr)
-DECL|macro|WRITE_U16
-mdefine_line|#define WRITE_U16(value, addr) gsc_writew(value, (u16 *) (addr))
-DECL|macro|WRITE_U32
-mdefine_line|#define WRITE_U32(value, addr) gsc_writel(value, (u32 *) (addr))
-DECL|macro|READ_REG8
-mdefine_line|#define READ_REG8(addr)  gsc_readb(addr)
-DECL|macro|READ_REG16
-mdefine_line|#define READ_REG16(addr) le16_to_cpu(gsc_readw((u16 *) (addr)))
+multiline_comment|/************************************&n;** SBA register read and write support&n;**&n;** BE WARNED: register writes are posted.&n;**  (ie follow writes which must reach HW with a read)&n;**&n;** Superdome (in particular, REO) allows only 64-bit CSR accesses.&n;*/
 DECL|macro|READ_REG32
-mdefine_line|#define READ_REG32(addr) le32_to_cpu(gsc_readl((u32 *) (addr)))
+mdefine_line|#define READ_REG32(addr)&t; le32_to_cpu(__raw_readl(addr))
 DECL|macro|READ_REG64
-mdefine_line|#define READ_REG64(addr) le64_to_cpu(gsc_readq((u64 *) (addr)))
-DECL|macro|WRITE_REG8
-mdefine_line|#define WRITE_REG8(value, addr) gsc_writeb(value, addr)
-DECL|macro|WRITE_REG16
-mdefine_line|#define WRITE_REG16(value, addr) gsc_writew(cpu_to_le16(value), (u16 *) (addr))
+mdefine_line|#define READ_REG64(addr)&t; le64_to_cpu(__raw_readq(addr))
 DECL|macro|WRITE_REG32
-mdefine_line|#define WRITE_REG32(value, addr) gsc_writel(cpu_to_le32(value), (u32 *) (addr))
+mdefine_line|#define WRITE_REG32(val, addr) __raw_writel(cpu_to_le32(val), addr)
 DECL|macro|WRITE_REG64
-mdefine_line|#define WRITE_REG64(value, addr) gsc_writeq(cpu_to_le64(value), (u64 *) (addr))
+mdefine_line|#define WRITE_REG64(val, addr) __raw_writeq(cpu_to_le64(val), addr)
+macro_line|#ifdef __LP64__
+DECL|macro|READ_REG
+mdefine_line|#define READ_REG(addr)&t;&t;READ_REG64(addr)
+DECL|macro|WRITE_REG
+mdefine_line|#define WRITE_REG(value, addr)&t;WRITE_REG64(value, addr)
+macro_line|#else
+DECL|macro|READ_REG
+mdefine_line|#define READ_REG(addr)&t;&t;READ_REG32(addr)
+DECL|macro|WRITE_REG
+mdefine_line|#define WRITE_REG(value, addr)&t;WRITE_REG32(value, addr)
+macro_line|#endif
 macro_line|#ifdef DEBUG_SBA_INIT
+multiline_comment|/* NOTE: When __LP64__ isn&squot;t defined, READ_REG64() is two 32-bit reads */
+multiline_comment|/**&n; * sba_dump_ranges - debugging only - print ranges assigned to this IOA&n; * @hpa: base address of the sba&n; *&n; * Print the MMIO and IO Port address ranges forwarded by an Astro/Ike/RIO&n; * IO Adapter (aka Bus Converter).&n; */
 r_static
 r_void
 DECL|function|sba_dump_ranges
 id|sba_dump_ranges
 c_func
 (paren
-r_char
-op_star
+r_int
+r_int
 id|hpa
 )paren
 (brace
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;SBA at 0x%p&bslash;n&quot;
+l_string|&quot;SBA at 0x%lx&bslash;n&quot;
 comma
 id|hpa
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOS_DIST_BASE   : %08x %08x&bslash;n&quot;
+l_string|&quot;IOS_DIST_BASE   : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOS_DIST_BASE
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -658,22 +517,12 @@ id|IOS_DIST_BASE
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOS_DIST_MASK   : %08x %08x&bslash;n&quot;
+l_string|&quot;IOS_DIST_MASK   : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOS_DIST_MASK
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -682,22 +531,12 @@ id|IOS_DIST_MASK
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOS_DIST_ROUTE  : %08x %08x&bslash;n&quot;
+l_string|&quot;IOS_DIST_ROUTE  : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOS_DIST_ROUTE
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -706,28 +545,18 @@ id|IOS_DIST_ROUTE
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOS_DIRECT_BASE : %08x %08x&bslash;n&quot;
+l_string|&quot;IOS_DIRECT_BASE : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOS_DIRECT_BASE
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -736,22 +565,12 @@ id|IOS_DIRECT_BASE
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOS_DIRECT_MASK : %08x %08x&bslash;n&quot;
+l_string|&quot;IOS_DIRECT_MASK : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOS_DIRECT_MASK
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -760,22 +579,12 @@ id|IOS_DIRECT_MASK
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOS_DIRECT_ROUTE: %08x %08x&bslash;n&quot;
+l_string|&quot;IOS_DIRECT_ROUTE: %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOS_DIRECT_ROUTE
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -785,41 +594,32 @@ id|IOS_DIRECT_ROUTE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sba_dump_tlb - debugging only - print IOMMU operating parameters&n; * @hpa: base address of the IOMMU&n; *&n; * Print the size/location of the IO MMU PDIR.&n; */
 r_static
 r_void
 DECL|function|sba_dump_tlb
 id|sba_dump_tlb
 c_func
 (paren
-r_char
-op_star
+r_int
+r_int
 id|hpa
 )paren
 (brace
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IO TLB at 0x%p&bslash;n&quot;
+l_string|&quot;IO TLB at 0x%lx&bslash;n&quot;
 comma
 id|hpa
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_IBASE   : %08x %08x&bslash;n&quot;
+l_string|&quot;IOC_IBASE    : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOC_IBASE
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -828,22 +628,12 @@ id|IOC_IBASE
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_IMASK   : %08x %08x&bslash;n&quot;
+l_string|&quot;IOC_IMASK    : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOC_IMASK
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -852,22 +642,12 @@ id|IOC_IMASK
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_TCNFG   : %08x %08x&bslash;n&quot;
+l_string|&quot;IOC_TCNFG    : %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOC_TCNFG
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -876,22 +656,12 @@ id|IOC_TCNFG
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_PDIR_BASE: %08x %08x&bslash;n&quot;
+l_string|&quot;IOC_PDIR_BASE: %Lx&bslash;n&quot;
 comma
-id|READ_REG32
-c_func
-(paren
-id|hpa
-op_plus
-id|IOC_PDIR_BASE
-op_plus
-l_int|4
-)paren
-comma
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|hpa
@@ -900,7 +670,7 @@ id|IOC_PDIR_BASE
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG_INIT
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
@@ -909,6 +679,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef ASSERT_PDIR_SANITY
+multiline_comment|/**&n; * sba_dump_pdir_entry - debugging only - print one IOMMU PDIR entry&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @msg: text to print ont the output line.&n; * @pide: pdir index.&n; *&n; * Print one entry of the IO MMU PDIR in human readable form.&n; */
 r_static
 r_void
 DECL|function|sba_dump_pdir_entry
@@ -987,6 +758,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;SBA: %s rp %p bit %d rval 0x%lx&bslash;n&quot;
 comma
 id|msg
@@ -1020,6 +792,7 @@ id|BITS_PER_LONG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s %2d %p %016Lx&bslash;n&quot;
 comma
 (paren
@@ -1059,11 +832,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
+l_string|&quot;%s&quot;
+comma
 id|msg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Verify the resource map and pdir state is consistent */
+multiline_comment|/**&n; * sba_check_pdir - debugging only - consistency checker&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @msg: text to print ont the output line.&n; *&n; * Verify the resource map and pdir state is consistent&n; */
 r_static
 r_int
 DECL|function|sba_check_pdir
@@ -1221,6 +997,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sba_dump_sg - debugging only - print Scatter-Gather list&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg: head of the SG list&n; * @nents: number of entries in SG list&n; *&n; * print the SG list so we can verify it&squot;s correct by hand.&n; */
 r_static
 r_void
 DECL|function|sba_dump_sg
@@ -1253,6 +1030,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; %d : %08lx/%05x %p/%05x&bslash;n&quot;
 comma
 id|nents
@@ -1273,7 +1051,11 @@ c_func
 id|startsg
 )paren
 comma
-id|startsg-&gt;address
+id|sg_virt_addr
+c_func
+(paren
+id|startsg
+)paren
 comma
 id|startsg-&gt;length
 )paren
@@ -1284,48 +1066,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* ASSERT_PDIR_SANITY */
-multiline_comment|/*&n;** One time initialization to let the world know the LBA was found.&n;** This is the only routine which is NOT static.&n;** Must be called exactly once before pci_init().&n;*/
-r_void
-id|__init
-DECL|function|sba_init
-id|sba_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|sba_list
-op_assign
-(paren
-r_struct
-id|sba_device
-op_star
-)paren
-l_int|NULL
-suffix:semicolon
-id|sba_count
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef DEBUG_SBA_INIT
-id|sba_dump_ranges
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-l_int|0xFED00000L
-)paren
-suffix:semicolon
-macro_line|#endif
-id|register_driver
-c_func
-(paren
-id|sba_drivers_for
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**************************************************************&n;*&n;*   I/O Pdir Resource Management&n;*&n;*   Bits set in the resource map are in use.&n;*   Each bit can represent a number of pages.&n;*   LSbs represent lower addresses (IOVA&squot;s).&n;*&n;***************************************************************/
 DECL|macro|PAGES_PER_RANGE
 mdefine_line|#define PAGES_PER_RANGE 1&t;/* could increase this to 4 or 8 if needed */
@@ -1345,7 +1085,7 @@ DECL|macro|RESMAP_MASK
 mdefine_line|#define RESMAP_MASK(n)    (~0UL &lt;&lt; (BITS_PER_LONG - (n)))
 DECL|macro|RESMAP_IDX_MASK
 mdefine_line|#define RESMAP_IDX_MASK   (sizeof(unsigned long) - 1)
-multiline_comment|/*&n;** Perf optimizations:&n;** o search for log2(size) bits at a time.&n;**&n;** Search should use register width as &quot;stride&quot; to search the res_map. &n;*/
+multiline_comment|/**&n; * sba_search_bitmap - find free space in IO PDIR resource bitmap&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @bits_wanted: number of entries we need.&n; *&n; * Find consecutive free bits in resource bitmap.&n; * Each bit represents one entry in the IO Pdir.&n; * Cool perf optimization: search for log2(size) bits at a time.&n; */
 r_static
 id|SBA_INLINE
 r_int
@@ -1492,14 +1232,6 @@ op_lshift_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* convert to bit address */
-id|ASSERT
-c_func
-(paren
-l_int|0
-op_ne
-id|pide
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1574,7 +1306,9 @@ suffix:semicolon
 id|DBG_RES
 c_func
 (paren
-l_string|&quot;sba_search_bitmap() o %ld %p&quot;
+l_string|&quot;%s() o %ld %p&quot;
+comma
+id|__FUNCTION__
 comma
 id|o
 comma
@@ -1656,14 +1390,6 @@ id|pide
 op_add_assign
 id|bitshiftcnt
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-l_int|0
-op_ne
-id|pide
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1709,30 +1435,42 @@ id|bits_wanted
 suffix:semicolon
 )brace
 multiline_comment|/* wrapped ? */
-id|ioc-&gt;res_hint
-op_assign
+r_if
+c_cond
 (paren
 id|res_end
-op_eq
+op_le
 id|res_ptr
 )paren
-ques
-c_cond
+(brace
+id|ioc-&gt;res_hint
+op_assign
 (paren
 r_int
 r_int
 op_star
 )paren
 id|ioc-&gt;res_map
-suffix:colon
+suffix:semicolon
+id|ioc-&gt;res_bitshift
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ioc-&gt;res_hint
+op_assign
 id|res_ptr
 suffix:semicolon
+)brace
 r_return
 (paren
 id|pide
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sba_alloc_range - find free bits and mark them in IO PDIR resource bitmap&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @size: number of bytes to create a mapping for&n; *&n; * Given a size, find consecutive unmarked and then mark those bits in the&n; * resource bit map.&n; */
 r_static
 r_int
 DECL|function|sba_alloc_range
@@ -1786,7 +1524,7 @@ id|pages_needed
 op_star
 id|IOVP_SIZE
 )paren
-OL
+op_le
 id|DMA_CHUNK_SIZE
 )paren
 suffix:semicolon
@@ -1794,7 +1532,7 @@ id|ASSERT
 c_func
 (paren
 id|pages_needed
-OL
+op_le
 id|BITS_PER_LONG
 )paren
 suffix:semicolon
@@ -1859,7 +1597,7 @@ id|panic
 c_func
 (paren
 id|__FILE__
-l_string|&quot;: I/O MMU @ %p is out of mapping resources&bslash;n&quot;
+l_string|&quot;: I/O MMU @ %lx is out of mapping resources&bslash;n&quot;
 comma
 id|ioc-&gt;ioc_hpa
 )paren
@@ -1906,7 +1644,9 @@ macro_line|#endif
 id|DBG_RES
 c_func
 (paren
-l_string|&quot;sba_alloc_range(%x) %d -&gt; %lx hint %x/%x&bslash;n&quot;
+l_string|&quot;%s(%x) %d -&gt; %lx hint %x/%x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|size
 comma
@@ -1999,7 +1739,7 @@ id|pide
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** clear bits in the ioc&squot;s resource map&n;*/
+multiline_comment|/**&n; * sba_free_range - unmark bits in IO PDIR resource bitmap&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @iova: IO virtual address which was previously allocated.&n; * @size: number of bytes to create a mapping for&n; *&n; * clear bits in the ioc&squot;s resource map&n; */
 r_static
 id|SBA_INLINE
 r_void
@@ -2106,7 +1846,9 @@ suffix:semicolon
 id|DBG_RES
 c_func
 (paren
-l_string|&quot;sba_free_range( ,%x,%x) %x/%lx %x %p %lx&bslash;n&quot;
+l_string|&quot;%s( ,%x,%x) %x/%lx %x %p %lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 (paren
 id|uint
@@ -2155,7 +1897,7 @@ id|bits_not_wanted
 op_star
 id|IOVP_SIZE
 )paren
-OL
+op_le
 id|DMA_CHUNK_SIZE
 )paren
 suffix:semicolon
@@ -2163,7 +1905,7 @@ id|ASSERT
 c_func
 (paren
 id|bits_not_wanted
-OL
+op_le
 id|BITS_PER_LONG
 )paren
 suffix:semicolon
@@ -2199,7 +1941,7 @@ id|space_t
 suffix:semicolon
 DECL|macro|KERNEL_SPACE
 mdefine_line|#define KERNEL_SPACE 0
-multiline_comment|/*&n;* SBA Mapping Routine&n;*&n;* Given a virtual address (vba, arg2) and space id, (sid, arg1)&n;* sba_io_pdir_entry() loads the I/O PDIR entry pointed to by&n;* pdir_ptr (arg0). Each IO Pdir entry consists of 8 bytes as&n;* shown below (MSB == bit 0):&n;*&n;*  0                    19                                 51   55       63&n;* +-+---------------------+----------------------------------+----+--------+&n;* |V|        U            |            PPN[43:12]            | U  |   VI   |&n;* +-+---------------------+----------------------------------+----+--------+&n;*&n;*  V  == Valid Bit&n;*  U  == Unused&n;* PPN == Physical Page Number&n;* VI  == Virtual Index (aka Coherent Index)&n;*&n;* The physical address fields are filled with the results of the LPA&n;* instruction.  The virtual index field is filled with the results of&n;* of the LCI (Load Coherence Index) instruction.  The 8 bits used for&n;* the virtual index are bits 12:19 of the value returned by LCI.&n;*&n;* We need to pre-swap the bytes since PCX-W is Big Endian.&n;*/
+multiline_comment|/**&n; * sba_io_pdir_entry - fill in one IO PDIR entry&n; * @pdir_ptr:  pointer to IO PDIR entry&n; * @sid: process Space ID&n; * @vba: Virtual CPU address of buffer to map&n; *&n; * SBA Mapping Routine&n; *&n; * Given a virtual address (vba, arg2) and space id, (sid, arg1)&n; * sba_io_pdir_entry() loads the I/O PDIR entry pointed to by&n; * pdir_ptr (arg0). Each IO Pdir entry consists of 8 bytes as&n; * shown below (MSB == bit 0):&n; *&n; *  0                    19                                 51   55       63&n; * +-+---------------------+----------------------------------+----+--------+&n; * |V|        U            |            PPN[43:12]            | U  |   VI   |&n; * +-+---------------------+----------------------------------+----+--------+&n; *&n; *  V  == Valid Bit&n; *  U  == Unused&n; * PPN == Physical Page Number&n; * VI  == Virtual Index (aka Coherent Index)&n; *&n; * The physical address fields are filled with the results of the LPA&n; * instruction.  The virtual index field is filled with the results of&n; * of the LCI (Load Coherence Index) instruction.  The 8 bits used for&n; * the virtual index are bits 12:19 of the value returned by LCI.&n; *&n; * We need to pre-swap the bytes since PCX-W is Big Endian.&n; */
 r_void
 id|SBA_INLINE
 DECL|function|sba_io_pdir_entry
@@ -2227,29 +1969,13 @@ r_int
 id|ci
 suffix:semicolon
 multiline_comment|/* coherent index */
-multiline_comment|/* We currently only support kernel addresses */
+multiline_comment|/* We currently only support kernel addresses.&n;&t; * fdc instr below will need to reload sr1 with KERNEL_SPACE&n;&t; * once we try to support direct DMA to user space.&n;&t; */
 id|ASSERT
 c_func
 (paren
 id|sid
 op_eq
-l_int|0
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|vba
-op_amp
-l_int|0xc0000000UL
-)paren
-op_eq
-l_int|0xc0000000UL
+id|KERNEL_SPACE
 )paren
 suffix:semicolon
 id|pa
@@ -2316,8 +2042,28 @@ id|pa
 )paren
 suffix:semicolon
 multiline_comment|/* swap and store into I/O Pdir */
+multiline_comment|/*&n;&t; * If the PDC_MODEL capabilities has Non-coherent IO-PDIR bit set&n;&t; * (bit #61, big endian), we have to flush and sync every time&n;&t; * IO-PDIR is changed in Ike/Astro.&n;&t; */
+r_if
+c_cond
+(paren
+id|ioc_needs_fdc
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;fdc 0(%%sr1,%0)&bslash;n&bslash;tsync&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|pdir_ptr
+)paren
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/***********************************************************&n; * The Ike PCOM (Purge Command Register) is to purge&n; * stale entries in the IO TLB when unmapping entries.&n; *&n; * The PCOM register supports purging of multiple pages, with a minium&n; * of 1 page and a maximum of 2GB. Hardware requires the address be&n; * aligned to the size of the range being purged. The size of the range&n; * must be a power of 2.&n; ***********************************************************/
+)brace
+multiline_comment|/**&n; * sba_mark_invalid - invalidate one or more IO PDIR entries&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @iova:  IO Virtual Address mapped earlier&n; * @byte_cnt:  number of bytes this mapping covers.&n; *&n; * Marking the IO PDIR entry(ies) as Invalid and invalidate&n; * corresponding IO TLB entry. The Ike PCOM (Purge Command Register)&n; * is to purge stale entries in the IO TLB when unmapping entries.&n; *&n; * The PCOM register supports purging of multiple pages, with a minium&n; * of 1 page and a maximum of 2GB. Hardware requires the address be&n; * aligned to the size of the range being purged. The size of the range&n; * must be a power of 2. The &quot;Cool perf optimization&quot; in the&n; * allocation routine helps keep that true.&n; */
 r_static
 id|SBA_INLINE
 r_void
@@ -2351,7 +2097,7 @@ comma
 id|iova
 )paren
 suffix:semicolon
-multiline_comment|/* Even though this is a big-endian machine, the entries&n;&t;** in the iopdir are swapped. That&squot;s why we clear the byte&n;&t;** at +7 instead of at +0.&n;&t;*/
+multiline_comment|/* Even though this is a big-endian machine, the entries&n;&t;** in the iopdir are little endian. That&squot;s why we clear the byte&n;&t;** at +7 instead of at +0.&n;&t;*/
 r_int
 id|off
 op_assign
@@ -2552,7 +2298,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|iovp
@@ -2563,6 +2309,7 @@ id|IOC_PCOM
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sba_dma_supported - PCI driver can query DMA support&n; * @dev: instance of PCI owned by the driver that&squot;s asking&n; * @mask:  number of address bits this PCI device can handle&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_static
 r_int
 DECL|function|sba_dma_supported
@@ -2589,6 +2336,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 id|MODULE_NAME
 l_string|&quot;: EISA/ISA/et al not supported&bslash;n&quot;
 )paren
@@ -2607,19 +2355,19 @@ op_assign
 id|mask
 suffix:semicolon
 multiline_comment|/* save it */
-multiline_comment|/* only support PCI devices */
+multiline_comment|/* only support 32-bit PCI devices - no DAC support (yet) */
 r_return
 (paren
 r_int
 )paren
 (paren
 id|mask
-op_ge
+op_eq
 l_int|0xffffffff
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** map_single returns a fully formed IOVA&n;*/
+multiline_comment|/**&n; * sba_map_single - map one buffer and return IOVA for DMA&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @addr:  driver buffer to map.&n; * @size:  number of bytes to map in driver buffer.&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_static
 id|dma_addr_t
 DECL|function|sba_map_single
@@ -2646,14 +2394,7 @@ r_struct
 id|ioc
 op_star
 id|ioc
-op_assign
-op_amp
-id|sba_list-&gt;ioc
-(braket
-l_int|0
-)braket
 suffix:semicolon
-multiline_comment|/* FIXME : see Multi-IOC below */
 r_int
 r_int
 id|flags
@@ -2679,12 +2420,43 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|size
+op_le
+id|DMA_CHUNK_SIZE
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|dev-&gt;sysdata
+)paren
+suffix:semicolon
+id|ioc
+op_assign
+id|GET_IOC
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ioc
+)paren
+suffix:semicolon
 multiline_comment|/* save offset bits */
 id|offset
 op_assign
 (paren
 (paren
 id|dma_addr_t
+)paren
+(paren
+r_int
 )paren
 id|addr
 )paren
@@ -2758,7 +2530,9 @@ suffix:semicolon
 id|DBG_RUN
 c_func
 (paren
-l_string|&quot;sba_map_single() 0x%p -&gt; 0x%lx&quot;
+l_string|&quot;%s() 0x%p -&gt; 0x%lx&quot;
+comma
+id|__FUNCTION__
 comma
 id|addr
 comma
@@ -3002,6 +2776,7 @@ id|DEFAULT_DMA_HINT_REG
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sba_unmap_single - unmap one IOVA and free resources&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @iova:  IOVA of driver buffer previously mapped.&n; * @size:  number of bytes mapped in driver buffer.&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_static
 r_void
 DECL|function|sba_unmap_single
@@ -3023,42 +2798,16 @@ r_int
 id|direction
 )paren
 (brace
-macro_line|#ifdef FIXME
-multiline_comment|/* Multi-IOC (ie N-class) :  need to lookup IOC from dev&n;** o If we can&squot;t know about lba PCI data structs, that eliminates -&gt;sysdata.&n;** o walking up pcidev-&gt;parent dead ends at elroy too&n;** o leaves hashing dev-&gt;bus-&gt;number into some lookup.&n;**   (may only work for N-class)&n;** o use (struct pci_hba) and put fields in there for DMA.&n;**   (ioc and per device dma_hint.)&n;**&n;** Last one seems the clearest and most promising.&n;** sba_dma_supported() fill in those fields when the driver queries&n;** the system for support.&n;*/
 r_struct
 id|ioc
 op_star
 id|ioc
-op_assign
-(paren
-r_struct
-id|ioc
-op_star
-)paren
-(paren
-(paren
-r_struct
-id|pci_hba
-op_star
-)paren
-(paren
-id|dev-&gt;sysdata
-)paren
-)paren
-op_member_access_from_pointer
-id|dma_data
 suffix:semicolon
-macro_line|#else
+macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
 r_struct
-id|ioc
+id|sba_dma_pair
 op_star
-id|ioc
-op_assign
-op_amp
-id|sba_list-&gt;ioc
-(braket
-l_int|0
-)braket
+id|d
 suffix:semicolon
 macro_line|#endif
 r_int
@@ -3067,6 +2816,26 @@ id|flags
 suffix:semicolon
 id|dma_addr_t
 id|offset
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|dev-&gt;sysdata
+)paren
+suffix:semicolon
+id|ioc
+op_assign
+id|GET_IOC
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ioc
+)paren
 suffix:semicolon
 id|offset
 op_assign
@@ -3109,14 +2878,6 @@ comma
 id|IOVP_SIZE
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-l_int|0
-op_ne
-id|iova
-)paren
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3137,38 +2898,87 @@ op_rshift
 id|IOVP_SHIFT
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef DELAYED_RESOURCE_CNT
-r_if
-c_cond
+macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
+id|d
+op_assign
+op_amp
 (paren
-id|ioc-&gt;saved_cnt
-OL
-id|DELAYED_RESOURCE_CNT
-)paren
-(brace
-id|ioc-&gt;saved_iova
+id|ioc-&gt;saved
 (braket
 id|ioc-&gt;saved_cnt
 )braket
+)paren
+suffix:semicolon
+id|d-&gt;iova
 op_assign
 id|iova
 suffix:semicolon
-id|ioc-&gt;saved_size
-(braket
-id|ioc-&gt;saved_cnt
-)braket
+id|d-&gt;size
 op_assign
 id|size
 suffix:semicolon
-id|ioc_saved_cnt
+r_if
+c_cond
+(paren
 op_increment
+(paren
+id|ioc-&gt;saved_cnt
+)paren
+op_ge
+id|DELAYED_RESOURCE_CNT
+)paren
+(brace
+r_int
+id|cnt
+op_assign
+id|ioc-&gt;saved_cnt
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|cnt
+op_decrement
+)paren
+(brace
+id|sba_mark_invalid
+c_func
+(paren
+id|ioc
+comma
+id|d-&gt;iova
+comma
+id|d-&gt;size
+)paren
+suffix:semicolon
+id|sba_free_range
+c_func
+(paren
+id|ioc
+comma
+id|d-&gt;iova
+comma
+id|d-&gt;size
+)paren
+suffix:semicolon
+id|d
+op_decrement
 suffix:semicolon
 )brace
-r_else
-(brace
-r_do
-(brace
-macro_line|#endif
+id|ioc-&gt;saved_cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|READ_REG
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_PCOM
+)paren
+suffix:semicolon
+multiline_comment|/* flush purges */
+)brace
+macro_line|#else /* DELAYED_RESOURCE_CNT == 0 */
 id|sba_mark_invalid
 c_func
 (paren
@@ -3189,38 +2999,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#ifdef DELAYED_RESOURCE_CNT
-id|ioc-&gt;saved_cnt
-op_decrement
-suffix:semicolon
-id|iova
-op_assign
-id|ioc-&gt;saved_iova
-(braket
-id|ioc-&gt;saved_cnt
-)braket
-suffix:semicolon
-id|size
-op_assign
-id|ioc-&gt;saved_size
-(braket
-id|ioc-&gt;saved_cnt
-)braket
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ioc-&gt;saved_cnt
-)paren
-multiline_comment|/* flush purges */
-(paren
-r_void
-)paren
-(paren
-r_volatile
-)paren
-id|READ_REG32
+id|READ_REG
 c_func
 (paren
 id|ioc-&gt;ioc_hpa
@@ -3228,18 +3007,8 @@ op_plus
 id|IOC_PCOM
 )paren
 suffix:semicolon
-)brace
-macro_line|#else
 multiline_comment|/* flush purges */
-id|READ_REG32
-c_func
-(paren
-id|ioc-&gt;ioc_hpa
-op_plus
-id|IOC_PCOM
-)paren
-suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* DELAYED_RESOURCE_CNT == 0 */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3249,7 +3018,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* XXX REVISIT for 2.5 Linux - need syncdma for zero-copy support.&n;&t;** For Astro based systems this isn&squot;t a big deal WRT performance.&n;&t;** As long as 2.4 kernels copyin/copyout data from/to userspace,&n;&t;** we don&squot;t need the syncdma. The issue here is I/O MMU cachelines&n;&t;** are *not* coherent in all cases.  May be hwrev dependent.&n;&t;** Need to investigate more.&n;&t;asm volatile(&quot;syncdma&quot;);&t;&n;&t;*/
 )brace
+multiline_comment|/**&n; * sba_alloc_consistent - allocate/map shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dma_handle:  IOVA of new buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_static
 r_void
 op_star
@@ -3345,6 +3116,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sba_free_consistent - free/unmap shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @vaddr:  virtual address IOVA of &quot;consistent&quot; buffer.&n; * @dma_handler:  IO virtual address of &quot;consistent&quot; buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_static
 r_void
 DECL|function|sba_free_consistent
@@ -3396,12 +3168,6 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** Two address ranges are &quot;virtually contiguous&quot; iff:&n;** 1) end of prev == start of next, or...&t; append case&n;** 3) end of next == start of prev&t;&t; prepend case&n;**&n;** and they are DMA contiguous *iff*:&n;** 2) end of prev and start of next are both on a page boundry&n;**&n;** (shift left is a quick trick to mask off upper bits)&n;*/
-DECL|macro|DMA_CONTIG
-mdefine_line|#define DMA_CONTIG(__X, __Y) &bslash;&n;&t;(((((unsigned long) __X) | ((unsigned long) __Y)) &lt;&lt; (BITS_PER_LONG - PAGE_SHIFT)) == 0UL)
-multiline_comment|/*&n;** Assumption is two transactions are mutually exclusive.&n;** ie both go to different parts of memory.&n;** If both are true, then both transaction are on the same page.&n;*/
-DECL|macro|DMA_SAME_PAGE
-mdefine_line|#define DMA_SAME_PAGE(s1,e1,s2,e2) &bslash;&n;&t;( ((((s1) ^ (s2)) &gt;&gt; PAGE_SHIFT) == 0) &bslash;&n;&t;&t;&amp;&amp; ((((e1) ^ (e2)) &gt;&gt; PAGE_SHIFT) == 0) )
 multiline_comment|/*&n;** Since 0 is a valid pdir_base index value, can&squot;t use that&n;** to determine if a value is valid or not. Use a flag to indicate&n;** the SG list entry contains a valid pdir index.&n;*/
 DECL|macro|PIDE_FLAG
 mdefine_line|#define PIDE_FLAG 0x80000000UL
@@ -3413,6 +3179,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/**&n; * sba_fill_pdir - write allocated SG entries into IO PDIR&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg:  list of IOVA/size pairs&n; * @nents: number of entries in startsg list&n; *&n; * Take preprocessed SG list and write corresponding entries&n; * in the IO PDIR.&n; */
 r_static
 id|SBA_INLINE
 r_int
@@ -3497,7 +3264,8 @@ id|dump_run_sg
 id|printk
 c_func
 (paren
-l_string|&quot; %d : %08lx/%05x %p/%05x&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot; %2d : %08lx/%05x %p/%05x&bslash;n&quot;
 comma
 id|nents
 comma
@@ -3513,7 +3281,11 @@ id|startsg
 comma
 id|cnt
 comma
-id|startsg-&gt;address
+id|sg_virt_address
+c_func
+(paren
+id|startsg
+)paren
 comma
 id|startsg-&gt;length
 )paren
@@ -3538,7 +3310,11 @@ id|startsg
 comma
 id|cnt
 comma
-id|startsg-&gt;address
+id|sg_virt_addr
+c_func
+(paren
+id|startsg
+)paren
 comma
 id|startsg-&gt;length
 )paren
@@ -3580,20 +3356,6 @@ op_amp
 op_complement
 id|IOVP_MASK
 suffix:semicolon
-id|pide
-op_rshift_assign
-id|IOVP_SHIFT
-suffix:semicolon
-id|pdirp
-op_assign
-op_amp
-(paren
-id|ioc-&gt;pdir_base
-(braket
-id|pide
-)braket
-)paren
-suffix:semicolon
 id|sg_dma_address
 c_func
 (paren
@@ -3602,8 +3364,8 @@ id|startsg
 op_assign
 l_int|0
 suffix:semicolon
-op_increment
 id|dma_sg
+op_increment
 suffix:semicolon
 id|sg_dma_address
 c_func
@@ -3611,13 +3373,19 @@ c_func
 id|dma_sg
 )paren
 op_assign
-(paren
 id|pide
-op_lshift
+suffix:semicolon
+id|pdirp
+op_assign
+op_amp
+(paren
+id|ioc-&gt;pdir_base
+(braket
+id|pide
+op_rshift
 id|IOVP_SHIFT
+)braket
 )paren
-op_plus
-id|dma_offset
 suffix:semicolon
 id|n_mappings
 op_increment
@@ -3638,7 +3406,11 @@ op_assign
 r_int
 r_int
 )paren
-id|startsg-&gt;address
+id|sg_virt_addr
+c_func
+(paren
+id|startsg
+)paren
 suffix:semicolon
 id|ASSERT
 c_func
@@ -3646,6 +3418,7 @@ c_func
 id|pdirp
 )paren
 suffix:semicolon
+multiline_comment|/* Since multiple Vcontig blocks could make up&n;&t;&t;&t;** one DMA stream, *add* cnt to dma_len.&n;&t;&t;&t;*/
 id|sg_dma_len
 c_func
 (paren
@@ -3728,7 +3501,10 @@ r_return
 id|n_mappings
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** First pass is to walk the SG list and determine where the breaks are&n;** in the DMA stream. Allocates PDIR entries but does not fill them.&n;** Returns the number of DMA chunks.&n;**&n;** Doing the fill seperate from the coalescing/allocation keeps the&n;** code simpler. Future enhancement could make one pass through&n;** the sglist do both.&n;*/
+multiline_comment|/*&n;** Two address ranges are DMA contiguous *iff* &quot;end of prev&quot; and&n;** &quot;start of next&quot; are both on a page boundry.&n;**&n;** (shift left is a quick trick to mask off upper bits)&n;*/
+DECL|macro|DMA_CONTIG
+mdefine_line|#define DMA_CONTIG(__X, __Y) &bslash;&n;&t;(((((unsigned long) __X) | ((unsigned long) __Y)) &lt;&lt; (BITS_PER_LONG - PAGE_SHIFT)) == 0UL)
+multiline_comment|/**&n; * sba_coalesce_chunks - preprocess the SG list&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg:  list of IOVA/size pairs&n; * @nents: number of entries in startsg list&n; *&n; * First pass is to walk the SG list and determine where the breaks are&n; * in the DMA stream. Allocates PDIR entries but does not fill them.&n; * Returns the number of DMA chunks.&n; *&n; * Doing the fill seperate from the coalescing/allocation keeps the&n; * code simpler. Future enhancement could make one pass through&n; * the sglist do both.&n; */
 r_static
 id|SBA_INLINE
 r_int
@@ -3750,19 +3526,21 @@ r_int
 id|nents
 )paren
 (brace
-r_int
-id|n_mappings
-op_assign
-l_int|0
+r_struct
+id|scatterlist
+op_star
+id|vcontig_sg
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|nents
-OG
-l_int|0
-)paren
-(brace
+multiline_comment|/* VCONTIG chunk head */
+r_int
+r_int
+id|vcontig_len
+suffix:semicolon
+multiline_comment|/* len of VCONTIG chunk */
+r_int
+r_int
+id|vcontig_end
+suffix:semicolon
 r_struct
 id|scatterlist
 op_star
@@ -3776,77 +3554,58 @@ comma
 id|dma_len
 suffix:semicolon
 multiline_comment|/* start/len of DMA stream */
-r_struct
-id|scatterlist
-op_star
-id|chunksg
-suffix:semicolon
-multiline_comment|/* virtually contig chunk head */
 r_int
-r_int
-id|chunk_addr
-comma
-id|chunk_len
+id|n_mappings
+op_assign
+l_int|0
 suffix:semicolon
-multiline_comment|/* start/len of VCONTIG chunk */
-multiline_comment|/*&n;&t;&t;** Prepare for first/next DMA stream&n;&t;&t;*/
-id|dma_sg
-op_assign
-id|chunksg
-op_assign
-id|startsg
-suffix:semicolon
-id|dma_len
-op_assign
-id|chunk_len
-op_assign
-id|startsg-&gt;length
-suffix:semicolon
-id|chunk_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|startsg-&gt;address
-suffix:semicolon
-id|dma_offset
-op_assign
-l_int|0UL
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;** This loop terminates one iteration &quot;early&quot; since&n;&t;&t;** it&squot;s always looking one &quot;ahead&quot;.&n;&t;&t;*/
 r_while
 c_loop
 (paren
-op_decrement
 id|nents
 OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* ptr to coalesce prev and next */
-r_struct
-id|scatterlist
-op_star
-id|prev_sg
-op_assign
-id|startsg
-suffix:semicolon
 r_int
 r_int
-id|prev_end
+id|vaddr
 op_assign
 (paren
 r_int
 r_int
 )paren
-id|prev_sg-&gt;address
-op_plus
-id|prev_sg-&gt;length
+id|sg_virt_addr
+c_func
+(paren
+id|startsg
+)paren
 suffix:semicolon
-r_int
-r_int
-id|current_end
+multiline_comment|/*&n;&t;&t;** Prepare for first/next DMA stream&n;&t;&t;*/
+id|dma_sg
+op_assign
+id|vcontig_sg
+op_assign
+id|startsg
+suffix:semicolon
+id|dma_len
+op_assign
+id|vcontig_len
+op_assign
+id|vcontig_end
+op_assign
+id|startsg-&gt;length
+suffix:semicolon
+id|vcontig_end
+op_add_assign
+id|vaddr
+suffix:semicolon
+id|dma_offset
+op_assign
+id|vaddr
+op_amp
+op_complement
+id|IOVP_MASK
 suffix:semicolon
 multiline_comment|/* PARANOID: clear entries */
 id|sg_dma_address
@@ -3865,71 +3624,99 @@ id|startsg
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Now start looking ahead */
+multiline_comment|/*&n;&t;&t;** This loop terminates one iteration &quot;early&quot; since&n;&t;&t;** it&squot;s always looking one &quot;ahead&quot;.&n;&t;&t;*/
+r_while
+c_loop
+(paren
+op_decrement
+id|nents
+OG
+l_int|0
+)paren
+(brace
+r_int
+r_int
+id|vaddr
+suffix:semicolon
+multiline_comment|/* tmp */
 id|startsg
 op_increment
 suffix:semicolon
-id|current_end
-op_assign
+multiline_comment|/* PARANOID: clear entries */
+id|sg_dma_address
+c_func
 (paren
-r_int
-r_int
+id|startsg
 )paren
-id|startsg-&gt;address
+op_assign
+l_int|0
+suffix:semicolon
+id|sg_dma_len
+c_func
+(paren
+id|startsg
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* catch brokenness in SCSI layer */
+id|ASSERT
+c_func
+(paren
+id|startsg-&gt;length
+op_le
+id|DMA_CHUNK_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;** First make sure current dma stream won&squot;t&n;&t;&t;&t;** exceed DMA_CHUNK_SIZE if we coalesce the&n;&t;&t;&t;** next entry.&n;&t;&t;&t;*/
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|dma_len
+op_plus
+id|dma_offset
 op_plus
 id|startsg-&gt;length
+op_plus
+op_complement
+id|IOVP_MASK
+)paren
+op_amp
+id|IOVP_MASK
+)paren
+OG
+id|DMA_CHUNK_SIZE
+)paren
+r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;** First look for virtually contiguous blocks.&n;&t;&t;&t;** PARISC needs this since it&squot;s cache is virtually&n;&t;&t;&t;** indexed and we need the associated virtual&n;&t;&t;&t;** address for each I/O address we map.&n;&t;&t;&t;**&n;&t;&t;&t;** 1) can we *prepend* the next transaction?&n;&t;&t;&t;*/
-r_if
-c_cond
-(paren
-id|current_end
-op_eq
-(paren
-r_int
-r_int
-)paren
-id|prev_sg-&gt;address
-)paren
-(brace
-multiline_comment|/* prepend : get new offset */
-id|chunksg
+multiline_comment|/*&n;&t;&t;&t;** Then look for virtually contiguous blocks.&n;&t;&t;&t;** PARISC needs to associate a virtual address&n;&t;&t;&t;** with each IO address mapped. The CPU cache is&n;&t;&t;&t;** virtually tagged and the IOMMU uses part&n;&t;&t;&t;** of the virtual address to participate in&n;&t;&t;&t;** CPU cache coherency.&n;&t;&t;&t;**&n;&t;&t;&t;** append the next transaction?&n;&t;&t;&t;*/
+id|vaddr
 op_assign
+(paren
+r_int
+r_int
+)paren
+id|sg_virt_addr
+c_func
+(paren
 id|startsg
-suffix:semicolon
-id|chunk_addr
-op_assign
-(paren
-r_int
-r_int
 )paren
-id|prev_sg-&gt;address
 suffix:semicolon
-id|chunk_len
-op_add_assign
-id|startsg-&gt;length
-suffix:semicolon
-id|dma_len
-op_add_assign
-id|startsg-&gt;length
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t;** 2) or append the next transaction?&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
-id|prev_end
+id|vcontig_end
 op_eq
-(paren
-r_int
-r_int
-)paren
-id|startsg-&gt;address
+id|vaddr
 )paren
 (brace
-id|chunk_len
+id|vcontig_len
+op_add_assign
+id|startsg-&gt;length
+suffix:semicolon
+id|vcontig_end
 op_add_assign
 id|startsg-&gt;length
 suffix:semicolon
@@ -3944,105 +3731,69 @@ macro_line|#ifdef DEBUG_LARGE_SG_ENTRIES
 id|dump_run_sg
 op_assign
 (paren
-id|chunk_len
+id|vcontig_len
 OG
 id|IOVP_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;&t;&t;** Not virtually contigous.&n;&t;&t;&t;** Terminate prev chunk.&n;&t;&t;&t;** Start a new chunk.&n;&t;&t;&t;**&n;&t;&t;&t;** Once we start a new VCONTIG chunk, the offset&n;&t;&t;&t;** can&squot;t change. And we need the offset from the first&n;&t;&t;&t;** chunk - not the last one. Ergo Successive chunks&n;&t;&t;&t;** must start on page boundaries and dove tail&n;&t;&t;&t;** with it&squot;s predecessor.&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;** Not virtually contigous.&n;&t;&t;&t;** Terminate prev chunk.&n;&t;&t;&t;** Start a new chunk.&n;&t;&t;&t;**&n;&t;&t;&t;** Once we start a new VCONTIG chunk, dma_offset&n;&t;&t;&t;** can&squot;t change. And we need the offset from the first&n;&t;&t;&t;** chunk - not the last one. Ergo Successive chunks&n;&t;&t;&t;** must start on page boundaries and dove tail&n;&t;&t;&t;** with it&squot;s predecessor.&n;&t;&t;&t;*/
 id|sg_dma_len
 c_func
 (paren
-id|prev_sg
+id|vcontig_sg
 )paren
 op_assign
-id|chunk_len
+id|vcontig_len
 suffix:semicolon
-id|chunk_len
+id|vcontig_sg
+op_assign
+id|startsg
+suffix:semicolon
+id|vcontig_len
 op_assign
 id|startsg-&gt;length
 suffix:semicolon
-id|dma_offset
-op_or_assign
-(paren
-id|chunk_addr
-op_amp
-op_complement
-id|IOVP_MASK
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-(paren
-l_int|0
-op_eq
-(paren
-id|chunk_addr
-op_amp
-op_complement
-id|IOVP_MASK
-)paren
-)paren
-op_logical_or
-(paren
-id|dma_offset
-op_eq
-(paren
-id|chunk_addr
-op_amp
-op_complement
-id|IOVP_MASK
-)paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n;&t;&t;&t;** 4) do the chunks end/start on page boundaries?&n;&t;&t;&t;**  Easier than 3 since no offsets are involved.&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;** 3) do the entries end/start on page boundaries?&n;&t;&t;&t;**    Don&squot;t update vcontig_end until we&squot;ve checked.&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
 id|DMA_CONTIG
 c_func
 (paren
-id|prev_end
+id|vcontig_end
 comma
-id|startsg-&gt;address
+id|vaddr
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;** Yes.&n;&t;&t;&t;&t;** Reset chunk ptr.&n;&t;&t;&t;&t;*/
-id|chunksg
+id|vcontig_end
 op_assign
-id|startsg
+id|vcontig_len
+op_plus
+id|vaddr
 suffix:semicolon
-id|chunk_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|startsg-&gt;address
+id|dma_len
+op_add_assign
+id|vcontig_len
 suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 (brace
 r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;** End of DMA Stream&n;&t;&t;** Terminate chunk.&n;&t;&t;** Allocate space for DMA stream.&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;** End of DMA Stream&n;&t;&t;** Terminate last VCONTIG block.&n;&t;&t;** Allocate space for DMA stream.&n;&t;&t;*/
 id|sg_dma_len
 c_func
 (paren
-id|startsg
+id|vcontig_sg
 )paren
 op_assign
-id|chunk_len
+id|vcontig_len
 suffix:semicolon
 id|dma_len
 op_assign
@@ -4056,6 +3807,14 @@ id|IOVP_MASK
 )paren
 op_amp
 id|IOVP_MASK
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|dma_len
+op_le
+id|DMA_CHUNK_SIZE
+)paren
 suffix:semicolon
 id|sg_dma_address
 c_func
@@ -4087,7 +3846,7 @@ r_return
 id|n_mappings
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** And this algorithm still generally only ends up coalescing entries&n;** that happens to be on the same page due to how sglists are assembled.&n;*/
+multiline_comment|/**&n; * sba_map_sg - map Scatter/Gather list&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @sglist:  array of buffer/length pairs&n; * @nents:  number of entries in list&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_static
 r_int
 DECL|function|sba_map_sg
@@ -4115,14 +3874,7 @@ r_struct
 id|ioc
 op_star
 id|ioc
-op_assign
-op_amp
-id|sba_list-&gt;ioc
-(braket
-l_int|0
-)braket
 suffix:semicolon
-multiline_comment|/* FIXME : see Multi-IOC below */
 r_int
 id|coalesced
 comma
@@ -4142,6 +3894,26 @@ comma
 id|__FUNCTION__
 comma
 id|nents
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|dev-&gt;sysdata
+)paren
+suffix:semicolon
+id|ioc
+op_assign
+id|GET_IOC
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ioc
 )paren
 suffix:semicolon
 multiline_comment|/* Fast path single entry scatterlists. */
@@ -4164,7 +3936,15 @@ c_func
 (paren
 id|dev
 comma
-id|sglist-&gt;address
+(paren
+r_void
+op_star
+)paren
+id|sg_virt_addr
+c_func
+(paren
+id|sglist
+)paren
 comma
 id|sglist-&gt;length
 comma
@@ -4316,6 +4096,7 @@ r_return
 id|filled
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sba_unmap_sg - unmap Scatter/Gather list&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @sglist:  array of buffer/length pairs&n; * @nents:  number of entries in list&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_static
 r_void
 DECL|function|sba_unmap_sg
@@ -4343,14 +4124,7 @@ r_struct
 id|ioc
 op_star
 id|ioc
-op_assign
-op_amp
-id|sba_list-&gt;ioc
-(braket
-l_int|0
-)braket
 suffix:semicolon
-multiline_comment|/* FIXME : see Multi-IOC below */
 macro_line|#ifdef ASSERT_PDIR_SANITY
 r_int
 r_int
@@ -4366,9 +4140,33 @@ id|__FUNCTION__
 comma
 id|nents
 comma
-id|sglist-&gt;address
+id|sg_virt_addr
+c_func
+(paren
+id|sglist
+)paren
 comma
 id|sglist-&gt;length
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|dev-&gt;sysdata
+)paren
+suffix:semicolon
+id|ioc
+op_assign
+id|GET_IOC
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ioc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
@@ -4417,18 +4215,6 @@ id|nents
 op_decrement
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|ioc-&gt;usg_pages
-op_add_assign
-id|sg_dma_len
-c_func
-(paren
-id|sglist
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-macro_line|#endif
 id|sba_unmap_single
 c_func
 (paren
@@ -4449,6 +4235,39 @@ comma
 id|direction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|ioc-&gt;usg_pages
+op_add_assign
+(paren
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sglist
+)paren
+op_amp
+op_complement
+id|IOVP_MASK
+)paren
+op_plus
+id|sg_dma_len
+c_func
+(paren
+id|sglist
+)paren
+op_plus
+id|IOVP_SIZE
+op_minus
+l_int|1
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|ioc-&gt;usingle_calls
+op_decrement
+suffix:semicolon
+multiline_comment|/* kluge since call is unmap_sg() */
+macro_line|#endif
 op_increment
 id|sglist
 suffix:semicolon
@@ -4609,6 +4428,326 @@ c_cond
 macro_line|#endif
 )brace
 multiline_comment|/**************************************************************&n;*&n;*   Initialization and claim&n;*&n;***************************************************************/
+DECL|macro|PIRANHA_ADDR_MASK
+mdefine_line|#define PIRANHA_ADDR_MASK&t;0x00160000UL /* bit 17,18,20 */
+DECL|macro|PIRANHA_ADDR_VAL
+mdefine_line|#define PIRANHA_ADDR_VAL&t;0x00060000UL /* bit 17,18 on */
+r_static
+r_void
+op_star
+DECL|function|sba_alloc_pdir
+id|sba_alloc_pdir
+c_func
+(paren
+r_int
+r_int
+id|pdir_size
+)paren
+(brace
+r_int
+r_int
+id|pdir_base
+suffix:semicolon
+r_int
+r_int
+id|pdir_order
+op_assign
+id|get_order
+c_func
+(paren
+id|pdir_size
+)paren
+suffix:semicolon
+id|pdir_base
+op_assign
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+id|pdir_order
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+(paren
+r_void
+op_star
+)paren
+id|pdir_base
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;sba_ioc_init() could not allocate I/O Page Table&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* If this is not PA8700 (PCX-W2)&n;&t;**&t;OR newer than ver 2.2&n;&t;**&t;OR in a system that doesn&squot;t need VINDEX bits from SBA,&n;&t;**&n;&t;** then we aren&squot;t exposed to the HW bug.&n;&t;*/
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|boot_cpu_data.pdc.cpuid
+op_rshift
+l_int|5
+)paren
+op_amp
+l_int|0x7f
+)paren
+op_ne
+l_int|0x13
+op_logical_or
+(paren
+id|boot_cpu_data.pdc.versions
+OG
+l_int|0x202
+)paren
+op_logical_or
+(paren
+id|boot_cpu_data.pdc.capabilities
+op_amp
+l_int|0x08L
+)paren
+)paren
+r_return
+(paren
+r_void
+op_star
+)paren
+id|pdir_base
+suffix:semicolon
+multiline_comment|/*&n;&t; * PA8700 (PCX-W2, aka piranha) silent data corruption fix&n;&t; *&n;&t; * An interaction between PA8700 CPU (Ver 2.2 or older) and&n;&t; * Ike/Astro can cause silent data corruption. This is only&n;&t; * a problem if the I/O PDIR is located in memory such that&n;&t; * (little-endian)  bits 17 and 18 are on and bit 20 is off.&n;&t; *&n;&t; * Since the max IO Pdir size is 2MB, by cleverly allocating the&n;&t; * right physical address, we can either avoid (IOPDIR &lt;= 1MB)&n;&t; * or minimize (2MB IO Pdir) the problem if we restrict the&n;&t; * IO Pdir to a maximum size of 2MB-128K (1902K).&n;&t; *&n;&t; * Because we always allocate 2^N sized IO pdirs, either of the&n;&t; * &quot;bad&quot; regions will be the last 128K if at all. That&squot;s easy&n;&t; * to test for.&n;&t; * &n;&t; */
+r_if
+c_cond
+(paren
+id|pdir_order
+op_le
+(paren
+l_int|19
+op_minus
+l_int|12
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|virt_to_phys
+c_func
+(paren
+id|pdir_base
+)paren
+op_plus
+id|pdir_size
+op_minus
+l_int|1
+)paren
+op_amp
+id|PIRANHA_ADDR_MASK
+)paren
+op_eq
+id|PIRANHA_ADDR_VAL
+)paren
+(brace
+multiline_comment|/* allocate a new one on 512k alignment */
+r_int
+r_int
+id|new_pdir
+op_assign
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+(paren
+l_int|19
+op_minus
+l_int|12
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* release original */
+id|free_pages
+c_func
+(paren
+id|pdir_base
+comma
+id|pdir_order
+)paren
+suffix:semicolon
+id|pdir_base
+op_assign
+id|new_pdir
+suffix:semicolon
+multiline_comment|/* release excess */
+r_while
+c_loop
+(paren
+id|pdir_order
+OL
+(paren
+l_int|19
+op_minus
+l_int|12
+)paren
+)paren
+(brace
+id|new_pdir
+op_add_assign
+id|pdir_size
+suffix:semicolon
+id|free_pages
+c_func
+(paren
+id|new_pdir
+comma
+id|pdir_order
+)paren
+suffix:semicolon
+id|pdir_order
+op_add_assign
+l_int|1
+suffix:semicolon
+id|pdir_size
+op_lshift_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;** 1MB or 2MB Pdir&n;&t;&t;** Needs to be aligned on an &quot;odd&quot; 1MB boundary.&n;&t;&t;*/
+r_int
+r_int
+id|new_pdir
+op_assign
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+id|pdir_order
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* 2 or 4MB */
+multiline_comment|/* release original */
+id|free_pages
+c_func
+(paren
+id|pdir_base
+comma
+id|pdir_order
+)paren
+suffix:semicolon
+multiline_comment|/* release first 1MB */
+id|free_pages
+c_func
+(paren
+id|new_pdir
+comma
+l_int|20
+op_minus
+l_int|12
+)paren
+suffix:semicolon
+id|pdir_base
+op_assign
+id|new_pdir
+op_plus
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdir_order
+OG
+(paren
+l_int|20
+op_minus
+l_int|12
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;** 2MB Pdir.&n;&t;&t;&t;**&n;&t;&t;&t;** Flag tells init_bitmap() to mark bad 128k as used&n;&t;&t;&t;** and to reduce the size by 128k.&n;&t;&t;&t;*/
+id|piranha_bad_128k
+op_assign
+l_int|1
+suffix:semicolon
+id|new_pdir
+op_add_assign
+l_int|3
+op_star
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+multiline_comment|/* release last 1MB */
+id|free_pages
+c_func
+(paren
+id|new_pdir
+comma
+l_int|20
+op_minus
+l_int|12
+)paren
+suffix:semicolon
+multiline_comment|/* release unusable 128KB */
+id|free_pages
+c_func
+(paren
+id|new_pdir
+op_minus
+l_int|128
+op_star
+l_int|1024
+comma
+l_int|17
+op_minus
+l_int|12
+)paren
+suffix:semicolon
+id|pdir_size
+op_sub_assign
+l_int|128
+op_star
+l_int|1024
+suffix:semicolon
+)brace
+)brace
+id|memset
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|pdir_base
+comma
+l_int|0
+comma
+id|pdir_size
+)paren
+suffix:semicolon
+r_return
+(paren
+r_void
+op_star
+)paren
+id|pdir_base
+suffix:semicolon
+)brace
 r_static
 r_void
 DECL|function|sba_ioc_init
@@ -4616,23 +4755,27 @@ id|sba_ioc_init
 c_func
 (paren
 r_struct
+id|parisc_device
+op_star
+id|sba
+comma
+r_struct
 id|ioc
 op_star
 id|ioc
+comma
+r_int
+id|ioc_num
 )paren
 (brace
-r_extern
-r_int
-r_int
-id|mem_max
-suffix:semicolon
-multiline_comment|/* arch.../setup.c */
+multiline_comment|/* lba_set_iregs() is in arch/parisc/kernel/lba_pci.c */
 r_extern
 r_void
-id|lba_init_iregs
+id|lba_set_iregs
 c_func
 (paren
-r_void
+r_struct
+id|parisc_device
 op_star
 comma
 id|u32
@@ -4640,87 +4783,90 @@ comma
 id|u32
 )paren
 suffix:semicolon
-multiline_comment|/* arch.../lba_pci.c */
 id|u32
 id|iova_space_size
 comma
 id|iova_space_mask
-suffix:semicolon
-r_void
-op_star
-id|pdir_base
 suffix:semicolon
 r_int
 id|pdir_size
 comma
 id|iov_order
 suffix:semicolon
-multiline_comment|/*&n;&t;** Determine IOVA Space size from memory size.&n;&t;** Using &quot;mem_max&quot; is a kluge.&n;&t;**&n;&t;** Ideally, PCI drivers would register the maximum number&n;&t;** of DMA they can have outstanding for each device they&n;&t;** own.  Next best thing would be to guess how much DMA&n;&t;** can be outstanding based on PCI Class/sub-class. Both&n;&t;** methods still require some &quot;extra&quot; to support PCI&n;&t;** Hot-Plug/Removal of PCI cards. (aka PCI OLARD).&n;&t;**&n;&t;** While we have 32-bits &quot;IOVA&quot; space, top two 2 bits are used&n;&t;** for DMA hints - ergo only 30 bits max.&n;&t;*/
-multiline_comment|/* limit IOVA space size to 1MB-1GB */
-r_if
-c_cond
-(paren
-id|mem_max
-OL
-(paren
-id|sba_mem_ratio
-op_star
-l_int|1024
-op_star
-l_int|1024
-)paren
-)paren
-(brace
-id|iova_space_size
-op_assign
-l_int|1024
-op_star
-l_int|1024
+r_int
+r_int
+id|physmem
 suffix:semicolon
-macro_line|#ifdef __LP64__
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|mem_max
-OG
-(paren
-id|sba_mem_ratio
+r_struct
+id|parisc_device
 op_star
-l_int|512
-op_star
-l_int|1024
-op_star
-l_int|1024
-)paren
-)paren
-(brace
-id|iova_space_size
-op_assign
-l_int|512
-op_star
-l_int|1024
-op_star
-l_int|1024
+id|lba
 suffix:semicolon
-macro_line|#endif
-)brace
-r_else
-(brace
+multiline_comment|/*&n;&t;** Determine IOVA Space size from memory size.&n;&t;**&n;&t;** Ideally, PCI drivers would register the maximum number&n;&t;** of DMA they can have outstanding for each device they&n;&t;** own.  Next best thing would be to guess how much DMA&n;&t;** can be outstanding based on PCI Class/sub-class. Both&n;&t;** methods still require some &quot;extra&quot; to support PCI&n;&t;** Hot-Plug/Removal of PCI cards. (aka PCI OLARD).&n;&t;**&n;&t;** While we have 32-bits &quot;IOVA&quot; space, top two 2 bits are used&n;&t;** for DMA hints - ergo only 30 bits max.&n;&t;*/
+id|physmem
+op_assign
+id|num_physpages
+op_lshift
+id|PAGE_SHIFT
+suffix:semicolon
 id|iova_space_size
 op_assign
 (paren
 id|u32
 )paren
 (paren
-id|mem_max
+id|physmem
 op_div
+(paren
 id|sba_mem_ratio
+op_star
+id|global_ioc_cnt
+)paren
 )paren
 suffix:semicolon
+multiline_comment|/* limit IOVA space size to 1MB-1GB */
+r_if
+c_cond
+(paren
+id|iova_space_size
+OL
+l_int|1024
+op_star
+l_int|1024
+)paren
+(brace
+id|iova_space_size
+op_assign
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;** iova space must be log2() in size.&n;&t;** thus, pdir/res_map will also be log2().&n;&t;*/
+macro_line|#ifdef __LP64__
+r_else
+r_if
+c_cond
+(paren
+id|iova_space_size
+OG
+l_int|512
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+(brace
+id|iova_space_size
+op_assign
+l_int|512
+op_star
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/*&n;&t;** iova space must be log2() in size.&n;&t;** thus, pdir/res_map will also be log2().&n;&t;** PIRANHA BUG: Exception is when IO Pdir is 2MB (gets reduced)&n;&t;*/
 id|iov_order
 op_assign
 id|get_order
@@ -4798,7 +4944,7 @@ op_star
 l_int|1024
 )paren
 suffix:semicolon
-multiline_comment|/* max pdir size &lt; 4MB */
+multiline_comment|/* max pdir size == 2MB */
 multiline_comment|/* Verify it&squot;s a power of two */
 id|ASSERT
 c_func
@@ -4823,7 +4969,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;%s() hpa 0x%p mem %dMBIOV %dMB (%d bits) PDIR size 0x%0x&quot;
+l_string|&quot;%s() hpa 0x%lx mem %dMB IOV %dMB (%d bits) PDIR size 0x%0x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4833,7 +4979,7 @@ comma
 r_int
 )paren
 (paren
-id|mem_max
+id|physmem
 op_rshift
 l_int|20
 )paren
@@ -4871,58 +5017,20 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|ioc-&gt;pdir_base
 op_assign
-id|pdir_base
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|__get_free_pages
+id|sba_alloc_pdir
 c_func
 (paren
-id|GFP_KERNEL
-comma
-id|get_order
-c_func
-(paren
-id|pdir_size
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|pdir_base
-)paren
-(brace
-id|panic
-c_func
-(paren
-id|__FILE__
-l_string|&quot;:%s() could not allocate I/O Page Table&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|pdir_base
-comma
-l_int|0
-comma
 id|pdir_size
 )paren
 suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;sba_ioc_init() pdir %p size %x hint_shift_pdir %x hint_mask_pdir %lx&bslash;n&quot;
+l_string|&quot;%s() pdir %p size %x hint_shift_pdir %x hint_mask_pdir %lx&bslash;n&quot;
 comma
-id|pdir_base
+id|__FUNCTION__
+comma
+id|ioc-&gt;pdir_base
 comma
 id|pdir_size
 comma
@@ -4940,7 +5048,7 @@ c_func
 r_int
 r_int
 )paren
-id|pdir_base
+id|ioc-&gt;pdir_base
 )paren
 op_amp
 id|PAGE_MASK
@@ -4950,7 +5058,7 @@ op_eq
 r_int
 r_int
 )paren
-id|pdir_base
+id|ioc-&gt;pdir_base
 )paren
 suffix:semicolon
 id|WRITE_REG64
@@ -4959,26 +5067,12 @@ c_func
 id|virt_to_phys
 c_func
 (paren
-id|pdir_base
+id|ioc-&gt;pdir_base
 )paren
 comma
-(paren
-id|u64
-op_star
-)paren
-(paren
 id|ioc-&gt;ioc_hpa
 op_plus
 id|IOC_PDIR_BASE
-)paren
-)paren
-suffix:semicolon
-id|DBG_INIT
-c_func
-(paren
-l_string|&quot; base %p&bslash;n&quot;
-comma
-id|pdir_base
 )paren
 suffix:semicolon
 multiline_comment|/* build IMASK for IOC and Elroy */
@@ -5021,18 +5115,53 @@ id|ioc-&gt;imask
 suffix:semicolon
 multiline_comment|/*&n;&t;** FIXME: Hint registers are programmed with default hint&n;&t;** values during boot, so hints should be sane even if we&n;&t;** can&squot;t reprogram them the way drivers want.&n;&t;*/
 multiline_comment|/*&n;&t;** setup Elroy IBASE/IMASK registers as well.&n;&t;*/
-id|lba_init_iregs
+r_for
+c_loop
+(paren
+id|lba
+op_assign
+id|sba-&gt;child
+suffix:semicolon
+id|lba
+suffix:semicolon
+id|lba
+op_assign
+id|lba-&gt;sibling
+)paren
+(brace
+r_int
+id|rope_num
+op_assign
+(paren
+id|lba-&gt;hpa
+op_rshift
+l_int|13
+)paren
+op_amp
+l_int|0xf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rope_num
+op_rshift
+l_int|3
+op_eq
+id|ioc_num
+)paren
+id|lba_set_iregs
 c_func
 (paren
-id|ioc-&gt;ioc_hpa
+id|lba
 comma
 id|ioc-&gt;ibase
 comma
 id|ioc-&gt;imask
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;** Program the IOC&squot;s ibase and enable IOVA translation&n;&t;*/
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|ioc-&gt;ibase
@@ -5042,7 +5171,7 @@ op_plus
 id|IOC_IBASE
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|ioc-&gt;imask
@@ -5053,7 +5182,7 @@ id|IOC_IMASK
 )paren
 suffix:semicolon
 multiline_comment|/* Set I/O PDIR Page size to 4K */
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 l_int|0
@@ -5063,8 +5192,8 @@ op_plus
 id|IOC_TCNFG
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;** Clear I/O TLB of any possible entries.&n;&t;** (Yes. This is a it paranoid...but so what)&n;&t;*/
-id|WRITE_REG32
+multiline_comment|/*&n;&t;** Clear I/O TLB of any possible entries.&n;&t;** (Yes. This is a bit paranoid...but so what)&n;&t;*/
+id|WRITE_REG
 c_func
 (paren
 l_int|0
@@ -5104,12 +5233,12 @@ suffix:semicolon
 r_int
 id|num_ioc
 suffix:semicolon
-id|u32
+id|u64
 id|ioc_ctl
 suffix:semicolon
 id|ioc_ctl
 op_assign
-id|READ_REG32
+id|READ_REG
 c_func
 (paren
 id|sba_dev-&gt;sba_hpa
@@ -5120,7 +5249,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;%s() hpa 0x%p ioc_ctl 0x%x -&gt;&quot;
+l_string|&quot;%s() hpa 0x%lx ioc_ctl 0x%Lx -&gt;&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5136,18 +5265,16 @@ op_complement
 id|IOC_CTRL_RM
 op_or
 id|IOC_CTRL_NC
+op_or
+id|IOC_CTRL_CE
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
 id|ioc_ctl
-op_amp
-id|IOC_CTRL_TE
-)paren
+op_or_assign
+id|IOC_CTRL_TC
 suffix:semicolon
-multiline_comment|/* astro: firmware enables this */
-id|WRITE_REG32
+multiline_comment|/* Astro: firmware enables this */
+id|WRITE_REG
 c_func
 (paren
 id|ioc_ctl
@@ -5157,10 +5284,10 @@ op_plus
 id|IOC_CTRL
 )paren
 suffix:semicolon
-macro_line|#ifdef SBA_DEBUG_INIT
+macro_line|#ifdef DEBUG_SBA_INIT
 id|ioc_ctl
 op_assign
-id|READ_REG32
+id|READ_REG64
 c_func
 (paren
 id|sba_dev-&gt;sba_hpa
@@ -5171,7 +5298,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot; 0x%x&bslash;n&quot;
+l_string|&quot; 0x%Lx&bslash;n&quot;
 comma
 id|ioc_ctl
 )paren
@@ -5195,10 +5322,6 @@ l_int|0
 dot
 id|ioc_hpa
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|ASTRO_IOC_OFFSET
 suffix:semicolon
 id|num_ioc
@@ -5248,10 +5371,6 @@ id|i
 op_increment
 )paren
 (brace
-(paren
-r_int
-r_int
-)paren
 id|sba_dev-&gt;ioc
 (braket
 id|i
@@ -5259,10 +5378,6 @@ id|i
 dot
 id|ioc_hpa
 op_add_assign
-(paren
-r_int
-r_int
-)paren
 id|sba_dev-&gt;sba_hpa
 op_plus
 id|IKE_IOC_OFFSET
@@ -5272,7 +5387,7 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;** Make sure the box crashes if we get any errors on a rope.&n;&t;&t;*/
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5287,7 +5402,7 @@ op_plus
 id|ROPE0_CTL
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5302,7 +5417,7 @@ op_plus
 id|ROPE1_CTL
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5317,7 +5432,7 @@ op_plus
 id|ROPE2_CTL
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5332,7 +5447,7 @@ op_plus
 id|ROPE3_CTL
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5347,7 +5462,7 @@ op_plus
 id|ROPE4_CTL
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5362,7 +5477,7 @@ op_plus
 id|ROPE5_CTL
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5377,7 +5492,7 @@ op_plus
 id|ROPE6_CTL
 )paren
 suffix:semicolon
-id|WRITE_REG32
+id|WRITE_REG
 c_func
 (paren
 id|HF_ENABLE
@@ -5393,7 +5508,7 @@ id|ROPE7_CTL
 )paren
 suffix:semicolon
 multiline_comment|/* flush out the writes */
-id|READ_REG32
+id|READ_REG
 c_func
 (paren
 id|sba_dev-&gt;ioc
@@ -5409,6 +5524,8 @@ suffix:semicolon
 id|sba_ioc_init
 c_func
 (paren
+id|sba_dev-&gt;dev
+comma
 op_amp
 (paren
 id|sba_dev-&gt;ioc
@@ -5416,6 +5533,8 @@ id|sba_dev-&gt;ioc
 id|i
 )braket
 )paren
+comma
+id|i
 )paren
 suffix:semicolon
 )brace
@@ -5444,9 +5563,6 @@ id|sba_list
 op_assign
 id|sba_dev
 suffix:semicolon
-id|sba_count
-op_increment
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5465,7 +5581,7 @@ op_increment
 r_int
 id|res_size
 suffix:semicolon
-macro_line|#ifdef CONFIG_DMB_TRAP
+macro_line|#ifdef DEBUG_DMB_TRAP
 r_extern
 r_void
 id|iterate_pages
@@ -5521,6 +5637,27 @@ id|u64
 )paren
 suffix:semicolon
 multiline_comment|/* entries */
+multiline_comment|/* Second part of PIRANHA BUG */
+r_if
+c_cond
+(paren
+id|piranha_bad_128k
+)paren
+(brace
+id|res_size
+op_sub_assign
+(paren
+l_int|128
+op_star
+l_int|1024
+)paren
+op_div
+r_sizeof
+(paren
+id|u64
+)paren
+suffix:semicolon
+)brace
 id|res_size
 op_rshift_assign
 l_int|3
@@ -5568,7 +5705,7 @@ id|res_size
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DMB_TRAP
+macro_line|#ifdef DEBUG_DMB_TRAP
 id|iterate_pages
 c_func
 (paren
@@ -5678,7 +5815,105 @@ op_assign
 l_int|0xeeffc0addbba0080ULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DMB_TRAP
+multiline_comment|/* Third (and last) part of PIRANHA BUG */
+r_if
+c_cond
+(paren
+id|piranha_bad_128k
+)paren
+(brace
+multiline_comment|/* region from +1408K to +1536 is un-usable. */
+r_int
+id|idx_start
+op_assign
+(paren
+l_int|1408
+op_star
+l_int|1024
+op_div
+r_sizeof
+(paren
+id|u64
+)paren
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+r_int
+id|idx_end
+op_assign
+(paren
+l_int|1536
+op_star
+l_int|1024
+op_div
+r_sizeof
+(paren
+id|u64
+)paren
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+r_int
+op_star
+id|p_start
+op_assign
+(paren
+r_int
+op_star
+)paren
+op_amp
+(paren
+id|sba_dev-&gt;ioc
+(braket
+id|i
+)braket
+dot
+id|res_map
+(braket
+id|idx_start
+)braket
+)paren
+suffix:semicolon
+r_int
+op_star
+id|p_end
+op_assign
+(paren
+r_int
+op_star
+)paren
+op_amp
+(paren
+id|sba_dev-&gt;ioc
+(braket
+id|i
+)braket
+dot
+id|res_map
+(braket
+id|idx_end
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* mark that part of the io pdir busy */
+r_while
+c_loop
+(paren
+id|p_start
+OL
+id|p_end
+)paren
+op_star
+id|p_start
+op_increment
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#ifdef DEBUG_DMB_TRAP
 id|iterate_pages
 c_func
 (paren
@@ -5722,7 +5957,9 @@ macro_line|#endif
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;sba_common_init() %d res_map %x %p&bslash;n&quot;
+l_string|&quot;%s() %d res_map %x %p&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|i
 comma
@@ -5741,6 +5978,43 @@ id|sba_dev-&gt;sba_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+id|ioc_needs_fdc
+op_assign
+id|boot_cpu_data.pdc.capabilities
+op_amp
+id|PDC_MODEL_IOPDIR_FDC
+suffix:semicolon
+macro_line|#ifdef DEBUG_SBA_INIT
+multiline_comment|/*&n;&t; * If the PDC_MODEL capabilities has Non-coherent IO-PDIR bit set&n;&t; * (bit #61, big endian), we have to flush and sync every time&n;&t; * IO-PDIR is changed in Ike/Astro.&n;&t; */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.pdc.capabilities
+op_amp
+id|PDC_MODEL_IOPDIR_FDC
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|MODULE_NAME
+l_string|&quot; FDC/SYNC required.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|MODULE_NAME
+l_string|&quot; IOC has cache coherent PDIR.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|sba_proc_info
@@ -5772,7 +6046,6 @@ id|sba_dev
 op_assign
 id|sba_list
 suffix:semicolon
-multiline_comment|/* FIXME: Multi-IOC support broken! */
 r_struct
 id|ioc
 op_star
@@ -5784,6 +6057,7 @@ id|sba_dev-&gt;ioc
 l_int|0
 )braket
 suffix:semicolon
+multiline_comment|/* FIXME: Multi-IOC support! */
 r_int
 id|total_pages
 op_assign
@@ -5818,15 +6092,7 @@ id|buf
 comma
 l_string|&quot;%s rev %d.%d&bslash;n&quot;
 comma
-id|parisc_getHWdescription
-c_func
-(paren
-id|sba_dev-&gt;iodc-&gt;hw_type
-comma
-id|sba_dev-&gt;iodc-&gt;hversion
-comma
-id|sba_dev-&gt;iodc-&gt;sversion
-)paren
+id|sba_dev-&gt;name
 comma
 (paren
 id|sba_dev-&gt;hw_rev
@@ -5855,6 +6121,9 @@ comma
 id|buf
 comma
 (paren
+r_int
+)paren
+(paren
 (paren
 id|ioc-&gt;res_size
 op_lshift
@@ -5867,11 +6136,10 @@ id|u64
 )paren
 )paren
 comma
-multiline_comment|/* 8 bits per byte */
+multiline_comment|/* 8 bits/byte */
 id|total_pages
 )paren
 suffix:semicolon
-multiline_comment|/* 8 bits per byte */
 id|sprintf
 c_func
 (paren
@@ -6007,7 +6275,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%spci_map_single(): %8ld calls  %8ld pages (avg %d/1000)&bslash;n&quot;
+l_string|&quot;%spci_map_single(): %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
 comma
 id|buf
 comma
@@ -6033,8 +6301,6 @@ multiline_comment|/* KLUGE - unmap_sg calls unmap_single for each mapped page */
 id|min
 op_assign
 id|ioc-&gt;usingle_calls
-op_minus
-id|ioc-&gt;usg_calls
 suffix:semicolon
 id|max
 op_assign
@@ -6047,7 +6313,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%spci_unmap_single: %8ld calls  %8ld pages (avg %d/1000)&bslash;n&quot;
+l_string|&quot;%spci_unmap_single: %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
 comma
 id|buf
 comma
@@ -6074,7 +6340,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%spci_map_sg()    : %8ld calls  %8ld pages (avg %d/1000)&bslash;n&quot;
+l_string|&quot;%spci_map_sg()    : %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
 comma
 id|buf
 comma
@@ -6101,7 +6367,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%spci_unmap_sg()  : %8ld calls  %8ld pages (avg %d/1000)&bslash;n&quot;
+l_string|&quot;%spci_unmap_sg()  : %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
 comma
 id|buf
 comma
@@ -6131,9 +6397,10 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
+multiline_comment|/* XXX too much output - exceeds 4k limit and needs to be re-written */
 r_static
 r_int
-DECL|function|sba_resource_map
 id|sba_resource_map
 c_func
 (paren
@@ -6171,6 +6438,7 @@ id|sba_dev-&gt;ioc
 l_int|0
 )braket
 suffix:semicolon
+multiline_comment|/* FIXME: Mutli-IOC suppoer! */
 r_int
 r_int
 op_star
@@ -6185,6 +6453,13 @@ id|ioc-&gt;res_map
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|buf
+(braket
+l_int|0
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 r_for
 c_loop
@@ -6236,7 +6511,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%s %08lx&quot;
+l_string|&quot;%s %08x&quot;
 comma
 id|buf
 comma
@@ -6261,7 +6536,94 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* 0 */
+macro_line|#endif /* CONFIG_PROC_FS */
+DECL|variable|sba_tbl
+r_static
+r_struct
+id|parisc_device_id
+id|sba_tbl
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|HPHW_IOA
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|ASTRO_RUNWAY_PORT
+comma
+l_int|0xb
+)brace
+comma
+(brace
+id|HPHW_BCPORT
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|IKE_MERCED_PORT
+comma
+l_int|0xc
+)brace
+comma
+(brace
+id|HPHW_BCPORT
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|REO_MERCED_PORT
+comma
+l_int|0xc
+)brace
+comma
+(brace
+id|HPHW_BCPORT
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|REOG_MERCED_PORT
+comma
+l_int|0xc
+)brace
+comma
+multiline_comment|/* These two entries commented out because we don&squot;t find them in a&n; * buswalk yet.  If/when we do, they would cause us to think we had&n; * many more SBAs then we really do.&n; *&t;{ HPHW_BCPORT, HVERSION_REV_ANY_ID, ASTRO_ROPES_PORT, 0xc },&n; *&t;{ HPHW_BCPORT, HVERSION_REV_ANY_ID, IKE_ROPES_PORT, 0xc },&n; */
+(brace
+l_int|0
+comma
+)brace
+)brace
+suffix:semicolon
+r_int
+id|sba_driver_callback
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+)paren
+suffix:semicolon
+DECL|variable|sba_driver
+r_static
+r_struct
+id|parisc_driver
+id|sba_driver
+op_assign
+(brace
+id|name
+suffix:colon
+id|MODULE_NAME
+comma
+id|id_table
+suffix:colon
+id|sba_tbl
+comma
+id|probe
+suffix:colon
+id|sba_driver_callback
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n;** Determine if lba should claim this chip (return 0) or not (return 1).&n;** If so, initialize the chip and tell other partners in crime they&n;** have work to do.&n;*/
 r_int
 DECL|function|sba_driver_callback
@@ -6269,14 +6631,9 @@ id|sba_driver_callback
 c_func
 (paren
 r_struct
-id|hp_device
+id|parisc_device
 op_star
-id|d
-comma
-r_struct
-id|pa_iodc_driver
-op_star
-id|dri
+id|dev
 )paren
 (brace
 r_struct
@@ -6290,16 +6647,44 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_char
+op_star
+id|version
+suffix:semicolon
+macro_line|#ifdef DEBUG_SBA_INIT
+id|sba_dump_ranges
+c_func
+(paren
+id|dev-&gt;hpa
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Read HW Rev First */
+id|func_class
+op_assign
+id|READ_REG
+c_func
+(paren
+id|dev-&gt;hpa
+op_plus
+id|SBA_FCLASS
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|IS_ASTRO
 c_func
 (paren
-id|d
+op_amp
+id|dev-&gt;id
 )paren
 )paren
 (brace
+r_int
+r_int
+id|fclass
+suffix:semicolon
 r_static
 r_char
 id|astro_rev
@@ -6308,13 +6693,13 @@ id|astro_rev
 op_assign
 l_string|&quot;Astro ?.?&quot;
 suffix:semicolon
-multiline_comment|/* Read HW Rev First */
-id|func_class
+multiline_comment|/* Astro is broken...Read HW Rev First */
+id|fclass
 op_assign
-id|READ_REG32
+id|READ_REG
 c_func
 (paren
-id|d-&gt;hpa
+id|dev-&gt;hpa
 )paren
 suffix:semicolon
 id|astro_rev
@@ -6328,7 +6713,7 @@ op_plus
 r_char
 )paren
 (paren
-id|func_class
+id|fclass
 op_amp
 l_int|0x7
 )paren
@@ -6345,7 +6730,7 @@ r_char
 )paren
 (paren
 (paren
-id|func_class
+id|fclass
 op_amp
 l_int|0x18
 )paren
@@ -6353,12 +6738,22 @@ op_rshift
 l_int|3
 )paren
 suffix:semicolon
-id|dri-&gt;version
+id|version
 op_assign
 id|astro_rev
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|IS_IKE
+c_func
+(paren
+op_amp
+id|dev-&gt;id
+)paren
+)paren
 (brace
 r_static
 r_char
@@ -6367,17 +6762,6 @@ id|ike_rev
 )braket
 op_assign
 l_string|&quot;Ike rev ?&quot;
-suffix:semicolon
-multiline_comment|/* Read HW Rev First */
-id|func_class
-op_assign
-id|READ_REG32
-c_func
-(paren
-id|d-&gt;hpa
-op_plus
-id|SBA_FCLASS
-)paren
 suffix:semicolon
 id|ike_rev
 (braket
@@ -6395,23 +6779,96 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-id|dri-&gt;version
+id|version
 op_assign
 id|ike_rev
+suffix:semicolon
+)brace
+r_else
+(brace
+r_static
+r_char
+id|reo_rev
+(braket
+)braket
+op_assign
+l_string|&quot;REO rev ?&quot;
+suffix:semicolon
+id|reo_rev
+(braket
+l_int|8
+)braket
+op_assign
+l_char|&squot;0&squot;
+op_plus
+(paren
+r_char
+)paren
+(paren
+id|func_class
+op_amp
+l_int|0xff
+)paren
+suffix:semicolon
+id|version
+op_assign
+id|reo_rev
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|global_ioc_cnt
+)paren
+(brace
+id|global_ioc_cnt
+op_assign
+id|count_parisc_driver
+c_func
+(paren
+op_amp
+id|sba_driver
+)paren
+suffix:semicolon
+multiline_comment|/* Only Astro has one IOC per SBA */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_ASTRO
+c_func
+(paren
+op_amp
+id|dev-&gt;id
+)paren
+)paren
+id|global_ioc_cnt
+op_mul_assign
+l_int|2
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
-l_string|&quot;%s found %s at 0x%p&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s found %s at 0x%lx&bslash;n&quot;
 comma
-id|dri-&gt;name
+id|MODULE_NAME
 comma
-id|dri-&gt;version
+id|version
 comma
-id|d-&gt;hpa
+id|dev-&gt;hpa
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG_SBA_INIT
+id|sba_dump_tlb
+c_func
+(paren
+id|dev-&gt;hpa
+)paren
+suffix:semicolon
+macro_line|#endif
 id|sba_dev
 op_assign
 id|kmalloc
@@ -6437,6 +6894,7 @@ id|sba_dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 id|MODULE_NAME
 l_string|&quot; - couldn&squot;t alloc sba_device&bslash;n&quot;
 )paren
@@ -6445,6 +6903,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|dev-&gt;sysdata
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|sba_dev
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -6489,17 +6955,26 @@ id|res_lock
 )paren
 suffix:semicolon
 )brace
+id|sba_dev-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
 id|sba_dev-&gt;hw_rev
 op_assign
 id|func_class
 suffix:semicolon
 id|sba_dev-&gt;iodc
 op_assign
-id|d
+op_amp
+id|dev-&gt;id
+suffix:semicolon
+id|sba_dev-&gt;name
+op_assign
+id|dev-&gt;name
 suffix:semicolon
 id|sba_dev-&gt;sba_hpa
 op_assign
-id|d-&gt;hpa
+id|dev-&gt;hpa
 suffix:semicolon
 multiline_comment|/* faster access */
 id|sba_get_pat_resources
@@ -6532,7 +7007,8 @@ c_cond
 id|IS_ASTRO
 c_func
 (paren
-id|d
+op_amp
+id|dev-&gt;id
 )paren
 )paren
 (brace
@@ -6550,6 +7026,16 @@ id|sba_proc_info
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|IS_IKE
+c_func
+(paren
+op_amp
+id|dev-&gt;id
+)paren
+)paren
 (brace
 id|create_proc_info_entry
 c_func
@@ -6564,6 +7050,22 @@ id|sba_proc_info
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|create_proc_info_entry
+c_func
+(paren
+l_string|&quot;Reo&quot;
+comma
+l_int|0
+comma
+id|proc_runway_root
+comma
+id|sba_proc_info
+)paren
+suffix:semicolon
+)brace
+macro_line|#if 0
 id|create_proc_info_entry
 c_func
 (paren
@@ -6577,8 +7079,97 @@ id|sba_resource_map
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;** One time initialization to let the world know the SBA was found.&n;** This is the only routine which is NOT static.&n;** Must be called exactly once before pci_init().&n;*/
+DECL|function|sba_init
+r_void
+id|__init
+id|sba_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|register_parisc_driver
+c_func
+(paren
+op_amp
+id|sba_driver
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * sba_get_iommu - Assign the iommu pointer for the pci bus controller.&n; * @dev: The parisc device.&n; *&n; * This function searches through the registerd IOMMU&squot;s and returns the&n; * appropriate IOMMU data for the given parisc PCI controller.&n; */
+DECL|function|sba_get_iommu
+r_void
+op_star
+id|sba_get_iommu
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+id|pci_hba
+)paren
+(brace
+r_struct
+id|sba_device
+op_star
+id|sba
+op_assign
+(paren
+r_struct
+id|sba_device
+op_star
+)paren
+id|pci_hba-&gt;parent-&gt;sysdata
+suffix:semicolon
+r_char
+id|t
+op_assign
+id|pci_hba-&gt;parent-&gt;id.hw_type
+suffix:semicolon
+r_int
+id|iocnum
+op_assign
+(paren
+id|pci_hba-&gt;hw_path
+op_rshift
+l_int|3
+)paren
+suffix:semicolon
+multiline_comment|/* rope # */
+r_if
+c_cond
+(paren
+(paren
+id|t
+op_ne
+id|HPHW_IOA
+)paren
+op_logical_and
+(paren
+id|t
+op_ne
+id|HPHW_BCPORT
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_amp
+(paren
+id|sba-&gt;ioc
+(braket
+id|iocnum
+)braket
+)paren
 suffix:semicolon
 )brace
 eof

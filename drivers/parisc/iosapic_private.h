@@ -140,16 +140,6 @@ id|u32
 id|vi_eoi_data
 suffix:semicolon
 multiline_comment|/* IA64: ?       PA: swapped txn_data */
-DECL|member|vi_status
-id|u8
-id|vi_status
-suffix:semicolon
-multiline_comment|/* status/flags */
-DECL|member|vi_irqline
-id|u8
-id|vi_irqline
-suffix:semicolon
-multiline_comment|/* INTINn(IRQ) */
 DECL|member|vi_txn_irq
 r_int
 id|vi_txn_irq
@@ -165,6 +155,24 @@ id|ulong
 id|vi_txn_data
 suffix:semicolon
 multiline_comment|/* IA64: vector  PA: EIR bit */
+DECL|member|vi_status
+id|u8
+id|vi_status
+suffix:semicolon
+multiline_comment|/* status/flags */
+DECL|member|vi_irqline
+id|u8
+id|vi_irqline
+suffix:semicolon
+multiline_comment|/* INTINn(IRQ) */
+DECL|member|vi_name
+r_char
+id|vi_name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* user visible identity */
 )brace
 suffix:semicolon
 DECL|struct|iosapic_info
@@ -179,12 +187,11 @@ id|isi_next
 suffix:semicolon
 multiline_comment|/* list of I/O SAPIC          */
 DECL|member|isi_hpa
-r_volatile
-r_void
-op_star
+r_int
+r_int
 id|isi_hpa
 suffix:semicolon
-multiline_comment|/* physical base address      */
+multiline_comment|/* physical base address */
 DECL|member|isi_region
 r_struct
 id|irq_region
@@ -215,6 +222,15 @@ r_int
 id|isi_version
 suffix:semicolon
 multiline_comment|/* DEBUG: data fr version reg */
+multiline_comment|/* round up to next cacheline */
+DECL|member|isi_name
+r_char
+id|isi_name
+(braket
+l_int|20
+)braket
+suffix:semicolon
+multiline_comment|/* identify region for users */
 )brace
 suffix:semicolon
 macro_line|#ifdef __IA64__

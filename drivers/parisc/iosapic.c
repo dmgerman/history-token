@@ -11,18 +11,18 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;/* irqaction */
 macro_line|#include &lt;linux/irq.h&gt;&t;&t;/* irq_region support */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* get in-line asm for swab */
 macro_line|#include &lt;asm/pdc.h&gt;
-macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;&t;&t;/* gsc_read/write functions */
+macro_line|#include &lt;asm/io.h&gt;&t;&t;/* gsc_read/write functions */
+macro_line|#ifdef CONFIG_SUPERIO
+macro_line|#include &lt;asm/superio.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/iosapic.h&gt;
 macro_line|#include &quot;./iosapic_private.h&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;iosapic&quot;
 multiline_comment|/* &quot;local&quot; compile flags */
-DECL|macro|IOSAPIC_CALLBACK
-macro_line|#undef IOSAPIC_CALLBACK
 DECL|macro|PCI_BRIDGE_FUNCS
 macro_line|#undef PCI_BRIDGE_FUNCS
 DECL|macro|DEBUG_IOSAPIC
@@ -91,6 +91,8 @@ mdefine_line|#define DBG(x...) printk(x)
 macro_line|#else /* DEBUG_IOSAPIC */
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
+DECL|macro|ASSERT
+macro_line|#undef&t;ASSERT
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(EX)
 macro_line|#endif /* DEBUG_IOSAPIC */
@@ -168,83 +170,6 @@ DECL|macro|IOSAPIC_IRDT_ID_EID_SHIFT
 mdefine_line|#define IOSAPIC_IRDT_ID_EID_SHIFT              0x10
 DECL|macro|IOSAPIC_EOI
 mdefine_line|#define&t;IOSAPIC_EOI(eoi_addr, eoi_data) gsc_writel(eoi_data, eoi_addr)
-macro_line|#if IOSAPIC_CALLBACK
-multiline_comment|/*&n;** Shouldn&squot;t use callback since SAPIC doesn&squot;t have an officially assigned&n;** H or S version numbers. Slight long term risk the number chosen would&n;** collide with something else.&n;** But benefit is cleaner lba/sapic interface.&n;** Might be worth it but for just use direct calls for now.&n;**&n;** Entry below is copied from lba driver.&n;** Only thing different is hw_type.&n;*/
-DECL|variable|iosapic_driver_for
-r_static
-r_struct
-id|pa_iodc_driver
-id|iosapic_driver_for
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|HPHW_OTHER
-comma
-l_int|0x782
-comma
-l_int|0
-comma
-l_int|0x0000A
-comma
-l_int|0
-comma
-l_int|0x00
-comma
-id|DRIVER_CHECK_HWTYPE
-op_plus
-id|DRIVER_CHECK_HVERSION
-op_plus
-id|DRIVER_CHECK_SVERSION
-comma
-l_string|&quot;I/O Sapic&quot;
-comma
-l_string|&quot;&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|iosapic_callback
-)brace
-comma
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|NULL
-)brace
-)brace
-suffix:semicolon
-macro_line|#endif /* IOSAPIO_CALLBACK */
 DECL|variable|iosapic_list
 r_static
 r_struct
@@ -295,11 +220,6 @@ op_star
 id|irt
 )paren
 (brace
-r_struct
-id|pdc_pat_io_num
-id|pdc_io_num
-suffix:semicolon
-multiline_comment|/* PAT PDC return block */
 r_int
 id|status
 suffix:semicolon
@@ -308,8 +228,6 @@ r_struct
 id|irt_entry
 op_star
 id|table
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* start of interrupt routing tbl */
 r_int
@@ -326,13 +244,22 @@ op_ne
 id|irt
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME ASSERT(((&amp;pdc_io_num) &amp; (0x3f)) == 0);  enforce 32-byte alignment */
-multiline_comment|/* Try PAT_PDC to get interrupt routing table size */
+r_if
+c_cond
+(paren
+id|is_pdc_pat
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/* Use pat pdc routine to get interrupt routing table size */
 id|DBG
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;calling get_irt_size&bslash;n&quot;
+l_string|&quot;calling get_irt_size (cell %ld)&bslash;n&quot;
+comma
+id|cell_num
 )paren
 suffix:semicolon
 id|status
@@ -341,7 +268,7 @@ id|pdc_pat_get_irt_size
 c_func
 (paren
 op_amp
-id|pdc_io_num
+id|num_entries
 comma
 id|cell_num
 )paren
@@ -349,27 +276,20 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;get_irt_size: %ld&bslash;n&quot;
 comma
 id|status
 )paren
 suffix:semicolon
-r_switch
-c_cond
+id|ASSERT
+c_func
 (paren
 id|status
+op_eq
+id|PDC_OK
 )paren
-(brace
-r_case
-id|PDC_RET_OK
-suffix:colon
-multiline_comment|/* PAT box. Proceed to get the IRT */
-multiline_comment|/* save the number of entries in the table */
-id|num_entries
-op_assign
-id|pdc_io_num.num
 suffix:semicolon
+multiline_comment|/* save the number of entries in the table */
 id|ASSERT
 c_func
 (paren
@@ -416,10 +336,6 @@ op_assign
 id|pdc_pat_get_irt
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|table
 comma
 id|cell_num
@@ -428,7 +344,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;pdc_pat_get_irt: %ld&bslash;n&quot;
 comma
 id|status
@@ -439,16 +354,13 @@ c_func
 (paren
 id|status
 op_eq
-id|PDC_RET_OK
+id|PDC_OK
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PDC_RET_NE_PROC
-suffix:colon
-multiline_comment|/* Not a PAT platform. Try PDC_PCI extensions */
-multiline_comment|/*&n;&t;&t;** C3000/J5000 (and similar) platforms with &quot;legacy&quot; PDC&n;&t;&t;** will return exactly one IRT.&n;&t;&t;** So if we have one, don&squot;t need to get it again.&n;&t;&t;*/
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;** C3000/J5000 (and similar) platforms with Sprockets PDC&n;&t;&t;** will return exactly one IRT for all iosapics.&n;&t;&t;** So if we have one, don&squot;t need to get it again.&n;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -456,28 +368,24 @@ l_int|NULL
 op_ne
 id|irt_cell
 )paren
-r_break
+r_return
+l_int|0
 suffix:semicolon
+multiline_comment|/* Should be using the Elroy&squot;s HPA, but it&squot;s ignored anyway */
 id|status
 op_assign
 id|pdc_pci_irt_size
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
-id|pdc_io_num
+id|num_entries
 comma
-multiline_comment|/* elroy HPA (really a NOP) */
 l_int|0
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;pdc_pci_irt_size: %ld&bslash;n&quot;
 comma
 id|status
@@ -486,7 +394,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PDC_RET_OK
+id|PDC_OK
 op_ne
 id|status
 )paren
@@ -496,10 +404,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|num_entries
-op_assign
-id|pdc_io_num.num
-suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -539,55 +443,26 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* HPA ignored by this call too. */
 id|status
 op_assign
 id|pdc_pci_irt
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|pdc_io_num
+id|num_entries
 comma
-(paren
-r_void
-op_star
-)paren
-l_int|NULL
+l_int|0
 comma
-multiline_comment|/* Elroy HPA - not used */
-(paren
-r_void
-op_star
-)paren
 id|table
 )paren
 suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|PDC_RET_OK
+id|PDC_OK
 op_eq
 id|status
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|MODULE_NAME
-l_string|&quot;: PDC_PAT_IO call failed with %ld&bslash;n&quot;
-comma
-id|status
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 multiline_comment|/* return interrupt table address */
@@ -611,6 +486,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot; Interrupt Routing Table (cell %ld)&bslash;n&quot;
 comma
@@ -620,6 +496,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot; start = 0x%p num_entries %ld entry_size %d&bslash;n&quot;
 comma
@@ -658,6 +535,7 @@ op_increment
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot; %02x %02x %02x %02x %02x %02x %02x %02x %08x%08x&bslash;n&quot;
 comma
@@ -716,6 +594,12 @@ c_func
 r_void
 )paren
 (brace
+r_int
+r_int
+id|cell
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* init global data */
 id|iosapic_lock
 op_assign
@@ -740,13 +624,54 @@ c_func
 l_string|&quot;iosapic_init()&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef __LP64__
+r_if
+c_cond
+(paren
+id|is_pdc_pat
+c_func
+(paren
+)paren
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+r_struct
+id|pdc_pat_cell_num
+id|cell_info
+suffix:semicolon
+id|status
+op_assign
+id|pdc_pat_cell_get_number
+c_func
+(paren
+op_amp
+id|cell_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|PDC_OK
+)paren
+(brace
+id|cell
+op_assign
+id|cell_info.cell_num
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t;**  get IRT for this cell.&n;&t;*/
 id|irt_num_entry
 op_assign
 id|iosapic_load_irt
 c_func
 (paren
-l_int|0L
+id|cell
 comma
 op_amp
 id|irt_cell
@@ -764,15 +689,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* old PDC w/o iosapic */
-macro_line|#ifdef IOSAPIC_CALLBACK
-multiline_comment|/*&n;&t;** When new I/O SAPICs are discovered, this callback&n;&t;** will get invoked. Implies lba driver will register&n;&t;** I/O Sapic as a device it &quot;discovered&quot; with faked&n;&t;** IODC data.&n;&t;*/
-id|register_driver
-c_func
-(paren
-id|iosapic_driver_for
-)paren
-suffix:semicolon
-macro_line|#endif /* IOSAPIC_CALLBACK */
 )brace
 multiline_comment|/*&n;** Return the IRT entry in case we need to look something else up.&n;*/
 r_static
@@ -967,7 +883,7 @@ c_func
 (paren
 id|KERN_WARNING
 id|MODULE_NAME
-l_string|&quot;: 0x%p : no IRT entry for slot %d, pin %d&bslash;n&quot;
+l_string|&quot;: 0x%lx : no IRT entry for slot %d, pin %d&bslash;n&quot;
 comma
 id|isi-&gt;isi_hpa
 comma
@@ -1005,9 +921,6 @@ id|intr_pin
 comma
 id|intr_slot
 suffix:semicolon
-(paren
-r_void
-)paren
 id|pci_read_config_byte
 c_func
 (paren
@@ -1041,7 +954,7 @@ op_eq
 id|intr_pin
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;** The device does NOT support/use IRQ lines.&n;&t;&t;*/
+multiline_comment|/* The device does NOT support/use IRQ lines.  */
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1066,10 +979,10 @@ id|pci_bridge_funcs-&gt;xlate_intr_line
 (brace
 id|intr_pin
 op_assign
-(paren
-op_star
-id|pci_bridge_funcs-&gt;xlate_intr_line
-)paren
+id|pci_bridge_funcs
+op_member_access_from_pointer
+id|xlate_intr_line
+c_func
 (paren
 id|pcidev
 )paren
@@ -1304,6 +1217,17 @@ multiline_comment|/* line used by device */
 r_int
 id|tmp
 suffix:semicolon
+r_int
+id|return_irq
+suffix:semicolon
+macro_line|#ifdef CONFIG_SUPERIO
+r_int
+id|superio_irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1317,9 +1241,9 @@ c_func
 (paren
 id|KERN_WARNING
 id|MODULE_NAME
-l_string|&quot;: 0x%p hpa not registered&bslash;n&quot;
+l_string|&quot;: hpa not registered for %s&bslash;n&quot;
 comma
-id|isi-&gt;isi_hpa
+id|pcidev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1327,6 +1251,60 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SUPERIO
+r_if
+c_cond
+(paren
+id|is_superio_device
+c_func
+(paren
+id|pcidev
+)paren
+)paren
+(brace
+id|superio_irq
+op_assign
+id|superio_fixup_irq
+c_func
+(paren
+id|pcidev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|superio_irq
+op_eq
+op_minus
+l_int|1
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PCI_FUNC
+c_func
+(paren
+id|pcidev-&gt;devfn
+)paren
+op_ne
+id|SUPERIO_USB_FN
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * SuperIO USB controller has an irt entry.&n;&t;&t;&t; * Only let the USB controller hookup the rest&n;&t;&t;&t; * of the interrupt routing when it comes through.&n;&t;&t;&t; * Note that interrupts for all three functions&n;&t;&t;&t; * actually come through the PIC&squot;s on function 1!&n;&t;&t;&t; */
+id|pcidev-&gt;irq
+op_assign
+id|superio_irq
+suffix:semicolon
+r_return
+id|superio_irq
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_SUPERIO */
 multiline_comment|/* lookup IRT entry for isi/slot/pin set */
 id|irte
 op_assign
@@ -1476,7 +1454,7 @@ id|iosapic_interrupt
 comma
 l_int|0
 comma
-l_string|&quot;iosapic&quot;
+id|vi-&gt;vi_name
 comma
 id|vi
 )paren
@@ -1492,14 +1470,14 @@ suffix:semicolon
 id|vi-&gt;vi_eoi_addr
 op_assign
 (paren
-(paren
-r_void
+id|u32
 op_star
 )paren
+(paren
 id|isi-&gt;isi_hpa
-)paren
 op_plus
 id|IOSAPIC_REG_EOI
+)paren
 suffix:semicolon
 id|vi-&gt;vi_eoi_data
 op_assign
@@ -1517,12 +1495,38 @@ op_ne
 id|isi-&gt;isi_region
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;** pcidev-&gt;irq still needs to be virtualized.&n;&t;*/
-id|pcidev-&gt;irq
+multiline_comment|/* pcidev-&gt;irq still needs to be virtualized.  */
+id|return_irq
 op_assign
 id|isi-&gt;isi_region-&gt;data.irqbase
 op_plus
 id|isi_line
+suffix:semicolon
+macro_line|#ifdef CONFIG_SUPERIO
+r_if
+c_cond
+(paren
+id|superio_irq
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+id|superio_inform_irq
+c_func
+(paren
+id|return_irq
+)paren
+suffix:semicolon
+id|return_irq
+op_assign
+id|superio_irq
+suffix:semicolon
+)brace
+macro_line|#endif
+id|pcidev-&gt;irq
+op_assign
+id|return_irq
 suffix:semicolon
 id|DBG_IRT
 c_func
@@ -1547,11 +1551,11 @@ id|pcidev-&gt;device
 comma
 id|isi_line
 comma
-id|pcidev-&gt;irq
+id|return_irq
 )paren
 suffix:semicolon
 r_return
-id|pcidev-&gt;irq
+id|return_irq
 suffix:semicolon
 )brace
 r_static
@@ -1675,7 +1679,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-l_int|NULL
+l_int|0
 op_ne
 id|isp-&gt;isi_hpa
 )paren
@@ -1864,11 +1868,13 @@ id|u32
 id|vi-&gt;vi_txn_data
 suffix:semicolon
 multiline_comment|/*&n;&t;** Extracting id_eid isn&squot;t a real clean way of getting it.&n;&t;** But the encoding is the same for both PA and IA64 platforms.&n;&t;*/
-macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|pdc_pat
+id|is_pdc_pat
+c_func
+(paren
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;** PAT PDC just hands it to us &quot;right&quot;.&n;&t;&t;** vi_txn_addr comes from cpu_data[x].txn_addr.&n;&t;&t;*/
@@ -1884,7 +1890,6 @@ id|vi-&gt;vi_txn_addr
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 (brace
 multiline_comment|/* &n;&t;&t;** eg if base_addr == 0xfffa0000),&n;&t;&t;**    we want to get 0xa0ff0000.&n;&t;&t;**&n;&t;&t;** eid&t;0x0ff00000 -&gt; 0x00ff0000&n;&t;&t;** id&t;0x000ff000 -&gt; 0xff000000&n;&t;&t;*/
 op_star
@@ -2100,14 +2105,6 @@ c_func
 (paren
 l_int|0UL
 op_ne
-id|vi-&gt;vi_txn_addr
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-l_int|0UL
-op_ne
 id|vi-&gt;vi_txn_data
 )paren
 suffix:semicolon
@@ -2313,12 +2310,20 @@ id|irq_region_ops
 id|iosapic_irq_ops
 op_assign
 (brace
+id|disable_irq
+suffix:colon
 id|iosapic_disable_irq
 comma
+id|enable_irq
+suffix:colon
 id|iosapic_enable_irq
 comma
+id|mask_irq
+suffix:colon
 id|iosapic_mask_irq
 comma
+id|unmask_irq
+suffix:colon
 id|iosapic_unmask_irq
 )brace
 suffix:semicolon
@@ -2372,17 +2377,15 @@ id|IOSAPIC_REG_WINDOW
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef IOSAPIC_CALLBACK
-multiline_comment|/*&n;** iosapic_register() is the alternative to iosapic_driver_for().&n;** (Only one or the other should be implemented.)&n;*/
-multiline_comment|/*&n;** iosapic_register() is called by &quot;drivers&quot; with an integrated I/O SAPIC.&n;** Caller must be certain they have an I/O SAPIC and know it&squot;s MMIO address.&n;**&n;**&t;o allocate iosapic_info and add it to the list&n;**&t;o read iosapic version and squirrel that away&n;**&t;o read size of IRdT.&n;**&t;o allocate and initialize isi_vector[]&n;**&t;o allocate isi_region (registers region handlers)&n;*/
+multiline_comment|/*&n;** iosapic_register() is called by &quot;drivers&quot; with an integrated I/O SAPIC.&n;** Caller must be certain they have an I/O SAPIC and know its MMIO address.&n;**&n;**&t;o allocate iosapic_info and add it to the list&n;**&t;o read iosapic version and squirrel that away&n;**&t;o read size of IRdT.&n;**&t;o allocate and initialize isi_vector[]&n;**&t;o allocate isi_region (registers region handlers)&n;*/
 r_void
 op_star
 DECL|function|iosapic_register
 id|iosapic_register
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|hpa
 )paren
 (brace
@@ -2522,11 +2525,6 @@ id|iosapic_info
 suffix:semicolon
 id|isi-&gt;isi_hpa
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|hpa
 suffix:semicolon
 id|isi-&gt;isi_version
@@ -2601,6 +2599,17 @@ op_star
 id|isi-&gt;isi_num_vectors
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|isi-&gt;isi_name
+comma
+l_string|&quot;IO-SAPIC%02d&quot;
+comma
+id|iosapic_count
+op_increment
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;** Initialize vector array&n;&t;*/
 r_for
 c_loop
@@ -2632,6 +2641,18 @@ id|vip-&gt;vi_ios
 op_assign
 id|isi
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|vip-&gt;vi_name
+comma
+l_string|&quot;%s-L%d&quot;
+comma
+id|isi-&gt;isi_name
+comma
+id|cnt
+)paren
+suffix:semicolon
 )brace
 id|isi-&gt;isi_region
 op_assign
@@ -2643,11 +2664,7 @@ comma
 op_amp
 id|iosapic_irq_ops
 comma
-id|IRQ_REG_DIS
-op_or
-id|IRQ_REG_MASK
-comma
-l_string|&quot;I/O Sapic&quot;
+id|isi-&gt;isi_name
 comma
 (paren
 r_void
@@ -2674,7 +2691,6 @@ id|isi
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !IOSAPIC_CALLBACK */
 macro_line|#ifdef DEBUG_IOSAPIC
 r_static
 r_void
@@ -2895,7 +2911,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tisi_hpa: %p&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;tisi_hpa:       %lx&bslash;n&quot;
 comma
 id|isi-&gt;isi_hpa
 )paren
@@ -2904,7 +2920,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tisi_satus:     %x&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;tisi_status:     %x&bslash;n&quot;
 comma
 id|isi-&gt;isi_status
 )paren
