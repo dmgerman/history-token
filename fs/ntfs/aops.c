@@ -555,6 +555,10 @@ id|ntfs_volume
 op_star
 id|vol
 suffix:semicolon
+id|run_list_element
+op_star
+id|rl
+suffix:semicolon
 r_struct
 id|buffer_head
 op_star
@@ -735,6 +739,10 @@ l_string|&quot;very serious bug! Cannot continue...&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Loop through all the buffers in the page. */
+id|rl
+op_assign
+l_int|NULL
+suffix:semicolon
 id|nr
 op_assign
 id|i
@@ -826,9 +834,15 @@ id|blocksize_bits
 op_amp
 id|vol-&gt;cluster_size_mask
 suffix:semicolon
-id|retry_remap
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rl
+)paren
+(brace
+id|lock_retry_remap
 suffix:colon
-multiline_comment|/* Convert the vcn to the corresponding lcn. */
 id|down_read
 c_func
 (paren
@@ -836,22 +850,59 @@ op_amp
 id|ni-&gt;run_list.lock
 )paren
 suffix:semicolon
+id|rl
+op_assign
+id|ni-&gt;run_list.rl
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|rl
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+multiline_comment|/* Seek to element containing target vcn. */
+r_while
+c_loop
+(paren
+id|rl-&gt;length
+op_logical_and
+id|rl
+(braket
+l_int|1
+)braket
+dot
+id|vcn
+op_le
+id|vcn
+)paren
+id|rl
+op_increment
+suffix:semicolon
 id|lcn
 op_assign
 id|vcn_to_lcn
 c_func
 (paren
-id|ni-&gt;run_list.rl
+id|rl
 comma
 id|vcn
 )paren
 suffix:semicolon
-id|up_read
-c_func
+)brace
+r_else
+id|lcn
+op_assign
 (paren
-op_amp
-id|ni-&gt;run_list.lock
+id|LCN
 )paren
+id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 multiline_comment|/* Successful remap. */
 r_if
@@ -935,6 +986,14 @@ id|is_retry
 op_assign
 id|TRUE
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Attempt to map run list, dropping lock for&n;&t;&t;&t;&t; * the duration.&n;&t;&t;&t;&t; */
+id|up_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -948,7 +1007,11 @@ id|vcn
 )paren
 )paren
 r_goto
-id|retry_remap
+id|lock_retry_remap
+suffix:semicolon
+id|rl
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Hard error, zero out region. */
@@ -1058,6 +1121,19 @@ id|bh-&gt;b_this_page
 )paren
 op_ne
 id|head
+)paren
+suffix:semicolon
+multiline_comment|/* Release the lock if we took it. */
+r_if
+c_cond
+(paren
+id|rl
+)paren
+id|up_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
 )paren
 suffix:semicolon
 multiline_comment|/* Check we have at least one buffer ready for i/o. */

@@ -4034,7 +4034,7 @@ op_amp
 id|ni-&gt;run_list.lock
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure someone else didn&squot;t do the work while we were spinning. */
+multiline_comment|/* Make sure someone else didn&squot;t do the work while we were sleeping. */
 r_if
 c_cond
 (paren

@@ -346,7 +346,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|ntfs_read_locked_inode
 c_func
 (paren
@@ -397,6 +397,9 @@ id|vi
 suffix:semicolon
 id|ntfs_attr
 id|na
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|na.mft_no
 op_assign
@@ -451,6 +454,10 @@ op_minus
 id|ENOMEM
 )paren
 suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* If this is a freshly allocated inode, need to read it now. */
 r_if
 c_cond
@@ -460,6 +467,8 @@ op_amp
 id|I_NEW
 )paren
 (brace
+id|err
+op_assign
 id|ntfs_read_locked_inode
 c_func
 (paren
@@ -473,20 +482,14 @@ id|vi
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-singleline_comment|// TODO: Enable this and do the follow up cleanup, i.e. remove all the
-singleline_comment|// bad inode checks. -- BUT: Do we actually want to do this? -- It may
-singleline_comment|// result in repeated attemps to read a bad inode which is not
-singleline_comment|// desirable. (AIA)
-multiline_comment|/*&n;&t; * There is no point in keeping bad inodes around. This also simplifies&n;&t; * things in that we never need to check for bad inodes elsewhere.&n;&t; */
+multiline_comment|/*&n;&t; * There is no point in keeping bad inodes around if the failure was&n;&t; * due to ENOMEM. We want to be able to retry again layer.&n;&t; */
 r_if
 c_cond
 (paren
-id|is_bad_inode
-c_func
-(paren
-id|vi
-)paren
+id|err
+op_eq
+op_minus
+id|ENOMEM
 )paren
 (brace
 id|iput
@@ -500,12 +503,10 @@ op_assign
 id|ERR_PTR
 c_func
 (paren
-op_minus
-id|EIO
+id|err
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|vi
 suffix:semicolon
@@ -646,8 +647,7 @@ op_assign
 id|ERR_PTR
 c_func
 (paren
-op_minus
-id|EIO
+id|err
 )paren
 suffix:semicolon
 )brace
@@ -1509,10 +1509,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* NO, it is not an extended system file. */
 )brace
-multiline_comment|/**&n; * ntfs_read_locked_inode - read an inode from its device&n; * @vi:&t;&t;inode to read&n; *&n; * ntfs_read_locked_inode() is called from the ntfs_iget() to read the inode&n; * described by @vi into memory from the device.&n; *&n; * The only fields in @vi that we need to/can look at when the function is&n; * called are i_sb, pointing to the mounted device&squot;s super block, and i_ino,&n; * the number of the inode to load. If this is a fake inode, i.e. NInoAttr(),&n; * then the fields type, name, and name_len are also valid, and describe the&n; * attribute which this fake inode represents.&n; *&n; * ntfs_read_locked_inode() maps, pins and locks the mft record number i_ino&n; * for reading and sets up the necessary @vi fields as well as initializing&n; * the ntfs inode.&n; *&n; * Q: What locks are held when the function is called?&n; * A: i_state has I_LOCK set, hence the inode is locked, also&n; *    i_count is set to 1, so it is not going to go away&n; *    i_flags is set to 0 and we have no business touching it. Only an ioctl()&n; *    is allowed to write to them. We should of course be honouring them but&n; *    we need to do that using the IS_* macros defined in include/linux/fs.h.&n; *    In any case ntfs_read_locked_inode() has nothing to do with i_flags.&n; */
+multiline_comment|/**&n; * ntfs_read_locked_inode - read an inode from its device&n; * @vi:&t;&t;inode to read&n; *&n; * ntfs_read_locked_inode() is called from the ntfs_iget() to read the inode&n; * described by @vi into memory from the device.&n; *&n; * The only fields in @vi that we need to/can look at when the function is&n; * called are i_sb, pointing to the mounted device&squot;s super block, and i_ino,&n; * the number of the inode to load. If this is a fake inode, i.e. NInoAttr(),&n; * then the fields type, name, and name_len are also valid, and describe the&n; * attribute which this fake inode represents.&n; *&n; * ntfs_read_locked_inode() maps, pins and locks the mft record number i_ino&n; * for reading and sets up the necessary @vi fields as well as initializing&n; * the ntfs inode.&n; *&n; * Q: What locks are held when the function is called?&n; * A: i_state has I_LOCK set, hence the inode is locked, also&n; *    i_count is set to 1, so it is not going to go away&n; *    i_flags is set to 0 and we have no business touching it. Only an ioctl()&n; *    is allowed to write to them. We should of course be honouring them but&n; *    we need to do that using the IS_* macros defined in include/linux/fs.h.&n; *    In any case ntfs_read_locked_inode() has nothing to do with i_flags.&n; *&n; * Return 0 on success and -errno on error. In the error case, the inode will&n; * have had make_bad_inode() executed on it.&n; */
 DECL|function|ntfs_read_locked_inode
 r_static
-r_void
+r_int
 id|ntfs_read_locked_inode
 c_func
 (paren
@@ -1550,6 +1550,8 @@ id|ctx
 suffix:semicolon
 r_int
 id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -1571,7 +1573,6 @@ op_assign
 op_increment
 id|event
 suffix:semicolon
-multiline_comment|/* Set uid and gid from the mount options. */
 id|vi-&gt;i_uid
 op_assign
 id|vol-&gt;uid
@@ -1580,12 +1581,11 @@ id|vi-&gt;i_gid
 op_assign
 id|vol-&gt;gid
 suffix:semicolon
-multiline_comment|/* Set to zero so we can use logical operations on it from here on. */
 id|vi-&gt;i_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the ntfs specific part of @vi special casing&n;&t; * FILE_MFT which we need to do at mount time. This also sets&n;&t; * ni-&gt;mft_no to vi-&gt;i_ino.&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the ntfs specific part of @vi special casing&n;&t; * FILE_MFT which we need to do at mount time.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1607,7 +1607,6 @@ c_func
 id|vi
 )paren
 suffix:semicolon
-multiline_comment|/* Map, pin and lock the mft record for reading. */
 id|m
 op_assign
 id|map_mft_record
@@ -1640,7 +1639,32 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
-multiline_comment|/* Is the record in use? */
+id|ctx
+op_assign
+id|get_attr_search_ctx
+c_func
+(paren
+id|ni
+comma
+id|m
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ctx
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1665,7 +1689,6 @@ r_goto
 id|unm_err_out
 suffix:semicolon
 )brace
-multiline_comment|/* Is this an extent mft record / inode? Treat same as if not in use. */
 r_if
 c_cond
 (paren
@@ -1677,8 +1700,8 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Inode is an extent inode! iget() &quot;
-l_string|&quot;not possible. You should run chkdsk.&quot;
+l_string|&quot;Inode is an extent inode! You should &quot;
+l_string|&quot;run chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1686,7 +1709,6 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Transfer information from mft record into vfs and ntfs inodes. */
-multiline_comment|/* Cache the sequence number in the ntfs inode. */
 id|ni-&gt;seq_no
 op_assign
 id|le16_to_cpu
@@ -1717,7 +1739,7 @@ id|vi-&gt;i_mode
 op_or_assign
 id|S_IFDIR
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Linux/Unix do not support directory hard links and things&n;&t;&t; * break without this kludge.&n;&t;&t; */
+multiline_comment|/* Things break without this kludge! */
 r_if
 c_cond
 (paren
@@ -1735,32 +1757,6 @@ id|vi-&gt;i_mode
 op_or_assign
 id|S_IFREG
 suffix:semicolon
-id|ctx
-op_assign
-id|get_attr_search_ctx
-c_func
-(paren
-id|ni
-comma
-id|m
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctx
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|unm_err_out
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Find the standard information attribute in the mft record. At this&n;&t; * stage we haven&squot;t setup the attribute list stuff yet, so this could&n;&t; * in fact fail if the standard information is in an extent record, but&n;&t; * I don&squot;t think this actually ever happens.&n;&t; */
 r_if
 c_cond
@@ -1798,7 +1794,7 @@ l_string|&quot;missing.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Get the standard information attribute value. */
@@ -1857,7 +1853,7 @@ c_func
 id|si-&gt;last_access_time
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Find the attribute list attribute and set the corresponding bit in&n;&t; * ntfs_ino-&gt;state.&n;&t; */
+multiline_comment|/* Find the attribute list attribute if present. */
 id|reinit_attr_search_ctx
 c_func
 (paren
@@ -1940,7 +1936,7 @@ l_string|&quot;run chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Now allocate memory for the attribute list. */
@@ -1985,7 +1981,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|ec_put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2024,7 +2020,7 @@ l_string|&quot;chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; * Setup the run list. No need for locking as we have&n;&t;&t;&t; * exclusive access to the inode at this time.&n;&t;&t;&t; */
@@ -2077,7 +2073,7 @@ id|err
 )paren
 suffix:semicolon
 r_goto
-id|ec_put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Now load the attribute list. */
@@ -2124,7 +2120,7 @@ l_string|&quot;attribute list attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|ec_put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 )brace
@@ -2183,7 +2179,7 @@ l_string|&quot;in inode.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Now copy the attribute list. */
@@ -2293,7 +2289,7 @@ l_string|&quot;missing.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Set up the state. */
@@ -2313,7 +2309,7 @@ l_string|&quot;not resident. Not allowed.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Compressed/encrypted index root just means that the newly&n;&t;&t; * created files in that directory should be created compressed/&n;&t;&t; * encrypted. However index root cannot be both compressed and&n;&t;&t; * encrypted.&n;&t;&t; */
@@ -2357,7 +2353,7 @@ l_string|&quot;allowed.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|NInoSetEncrypted
@@ -2450,7 +2446,7 @@ l_string|&quot;corrupt.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|index_end
@@ -2485,7 +2481,7 @@ l_string|&quot;Directory index is corrupt.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2506,7 +2502,7 @@ l_string|&quot;$FILE_NAME. Not allowed.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2527,7 +2523,7 @@ l_string|&quot;COLLATION_FILE_NAME. Not allowed.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|ni
@@ -2586,7 +2582,7 @@ id|index_block_size
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2629,7 +2625,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 r_goto
-id|ec_put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2672,7 +2668,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 r_goto
-id|ec_put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|ni
@@ -2847,7 +2843,7 @@ l_string|&quot;indicated it is.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2867,7 +2863,7 @@ l_string|&quot;is resident.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2888,7 +2884,7 @@ l_string|&quot;is encrypted.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2909,7 +2905,7 @@ l_string|&quot;is sparse.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2930,7 +2926,7 @@ l_string|&quot;is compressed.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -2957,7 +2953,7 @@ l_string|&quot;You should run chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|vi-&gt;i_size
@@ -3044,7 +3040,7 @@ l_string|&quot;present but it must be.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -3071,7 +3067,7 @@ l_string|&quot;and/or encrypted and/or sparse.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -3110,7 +3106,7 @@ l_string|&quot;You should run chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|ni
@@ -3254,7 +3250,7 @@ id|err
 )paren
 suffix:semicolon
 r_goto
-id|ec_put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 )brace
@@ -3346,7 +3342,7 @@ id|vi-&gt;i_size
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|skip_large_dir_stuff
@@ -3490,7 +3486,7 @@ l_string|&quot;missing.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Setup the state. */
@@ -3542,7 +3538,7 @@ id|vol-&gt;cluster_size
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 r_if
@@ -3568,7 +3564,7 @@ l_string|&quot;corrupt file.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|ni
@@ -3630,7 +3626,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 r_goto
-id|ec_put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|ni
@@ -3704,7 +3700,7 @@ l_string|&quot;and compressed data.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 id|NInoSetEncrypted
@@ -3751,7 +3747,7 @@ l_string|&quot;You should run chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Setup all the sizes. */
@@ -3954,7 +3950,6 @@ id|compressed_size
 op_rshift
 l_int|9
 suffix:semicolon
-multiline_comment|/* Done. */
 id|put_attr_search_ctx
 c_func
 (paren
@@ -3976,35 +3971,32 @@ l_string|&quot;Done.&quot;
 )paren
 suffix:semicolon
 r_return
-suffix:semicolon
-id|ec_put_unm_err_out
-suffix:colon
-id|put_attr_search_ctx
-c_func
-(paren
-id|ctx
-)paren
-suffix:semicolon
-r_goto
-id|ec_unm_err_out
-suffix:semicolon
-id|put_unm_err_out
-suffix:colon
-id|put_attr_search_ctx
-c_func
-(paren
-id|ctx
-)paren
+l_int|0
 suffix:semicolon
 id|unm_err_out
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
 id|err
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
-id|ec_unm_err_out
-suffix:colon
+r_if
+c_cond
+(paren
+id|ctx
+)paren
+id|put_attr_search_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
 id|unmap_mft_record
 c_func
 (paren
@@ -4036,6 +4028,7 @@ id|vi
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_read_locked_attr_inode - read an attribute inode from its base inode&n; * @base_vi:&t;base inode&n; * @vi:&t;&t;attribute inode to read&n; *&n; * ntfs_read_locked_attr_inode() is called from the ntfs_attr_iget() to read&n; * the attribute inode described by @vi into memory from the base mft record&n; * described by @base_ni.&n; *&n; * ntfs_read_locked_attr_inode() maps, pins and locks the base inode for&n; * reading and looks up the attribute described by @vi before setting up the&n; * necessary fields in @vi as well as initializing the ntfs inode.&n; *&n; * Q: What locks are held when the function is called?&n; * A: i_state has I_LOCK set, hence the inode is locked, also&n; *    i_count is set to 1, so it is not going to go away&n; */

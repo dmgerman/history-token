@@ -1212,6 +1212,17 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+macro_line|#ifndef NTFS_RW
+op_star
+id|flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3290,9 +3301,6 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-singleline_comment|// FIXME: If mounting read-only, it would be ok to ignore errors when
-singleline_comment|// loading the mftbmp but we then need to make sure nobody remounts the
-singleline_comment|// volume read-write...
 multiline_comment|/* Get mft mirror inode. */
 id|vol-&gt;mftmirr_ino
 op_assign
@@ -5252,6 +5260,16 @@ c_func
 l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
+macro_line|#ifndef NTFS_RW
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Allocate a new ntfs_volume and place it in sb-&gt;u.generic_sbp. */
 id|sb-&gt;u.generic_sbp
 op_assign
@@ -5415,15 +5433,6 @@ id|opt
 )paren
 r_goto
 id|err_out_now
-suffix:semicolon
-multiline_comment|/* We are just a read-only fs at the moment. */
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_RDONLY
-op_or
-id|MS_NOATIME
-op_or
-id|MS_NODIRATIME
 suffix:semicolon
 multiline_comment|/*&n;&t; * TODO: Fail safety check. In the future we should really be able to&n;&t; * cope with this being the case, but for now just bail out.&n;&t; */
 r_if
@@ -6355,7 +6364,7 @@ id|KERN_INFO
 l_string|&quot;NTFS driver &quot;
 id|NTFS_VERSION
 l_string|&quot; [Flags: R/&quot;
-macro_line|#ifdef CONFIG_NTFS_RW
+macro_line|#ifdef NTFS_RW
 l_string|&quot;W&quot;
 macro_line|#else
 l_string|&quot;O&quot;
