@@ -56,13 +56,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
-id|ps2esdi_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|ps2esdi_geninit
@@ -540,6 +533,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* initialization routine called by ll_rw_blk.c   */
 DECL|function|ps2esdi_init
+r_static
 r_int
 id|__init
 id|ps2esdi_init
@@ -646,6 +640,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ps2esdi_init */
+macro_line|#ifndef MODULE
 DECL|variable|ps2esdi_init
 id|module_init
 c_func
@@ -653,7 +648,7 @@ c_func
 id|ps2esdi_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
+macro_line|#else
 DECL|variable|cyl
 r_static
 r_int
@@ -767,7 +762,7 @@ op_increment
 )paren
 (brace
 r_struct
-id|ps2_esdi_i_struct
+id|ps2esdi_i_struct
 op_star
 id|info
 op_assign
@@ -873,6 +868,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
