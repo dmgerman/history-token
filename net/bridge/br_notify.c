@@ -141,7 +141,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
@@ -177,7 +177,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren

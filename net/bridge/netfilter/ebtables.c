@@ -460,7 +460,6 @@ c_func
 (paren
 id|e-&gt;logical_in
 comma
-op_amp
 id|in-&gt;br_port-&gt;br-&gt;dev
 )paren
 comma
@@ -492,7 +491,6 @@ c_func
 (paren
 id|e-&gt;logical_out
 comma
-op_amp
 id|out-&gt;br_port-&gt;br-&gt;dev
 )paren
 comma
