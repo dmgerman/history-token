@@ -26,7 +26,11 @@ macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+multiline_comment|/* FIXME: (by jejb@steeleye.com) This warning is present for two&n; * reasons:&n; *&n; * 1) This driver badly needs converting to the correct driver model&n; *    probing API&n; *&n; * 2) Although all of the necessary command mapping places have the&n; * appropriate dma_map.. APIs, the driver still processes its internal&n; * queue using bus_to_virt() and virt_to_bus() which are illegal under&n; * the API.  The entire queue processing structure will need to be&n; * altered to fix this.&n; */
+macro_line|#warning this driver is still not properly converted to the DMA API
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;advansys.h&quot;
 macro_line|#ifdef CONFIG_PCI
@@ -6581,7 +6585,7 @@ DECL|macro|ASC_BUSY
 mdefine_line|#define ASC_BUSY        0
 DECL|macro|ASC_ERROR
 mdefine_line|#define ASC_ERROR       (-1)
-multiline_comment|/* Scsi_Cmnd function return codes */
+multiline_comment|/* struct scsi_cmnd function return codes */
 DECL|macro|STATUS_BYTE
 mdefine_line|#define STATUS_BYTE(byte)   (byte)
 DECL|macro|MSG_BYTE
@@ -6594,7 +6598,8 @@ multiline_comment|/*&n; * The following definitions and macros are OS independen
 DECL|typedef|REQ
 DECL|typedef|REQP
 r_typedef
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 id|REQ
 comma
 op_star
@@ -6990,7 +6995,8 @@ l_int|32
 suffix:semicolon
 multiline_comment|/* Request structure padding. */
 DECL|member|cmndp
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmndp
 suffix:semicolon
@@ -7086,7 +7092,8 @@ id|init_tidmask
 suffix:semicolon
 multiline_comment|/* Target init./valid mask */
 DECL|member|device
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|device
 (braket
@@ -7597,7 +7604,8 @@ r_int
 id|advansys_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -7606,7 +7614,8 @@ r_void
 id|asc_scsi_done_list
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -7615,7 +7624,8 @@ r_int
 id|asc_execute_scsi_cmnd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -7627,7 +7637,8 @@ c_func
 id|asc_board_t
 op_star
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -7639,7 +7650,8 @@ c_func
 id|asc_board_t
 op_star
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 id|ADV_SCSI_REQ_Q
@@ -7658,7 +7670,8 @@ comma
 id|adv_req_t
 op_star
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -7993,7 +8006,8 @@ r_void
 id|asc_prt_scsi_cmnd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -9023,7 +9037,8 @@ DECL|function|advansys_detect
 id|advansys_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -13288,7 +13303,8 @@ DECL|function|advansys_queuecommand
 id|advansys_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 comma
@@ -13298,7 +13314,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -13315,7 +13332,8 @@ suffix:semicolon
 id|ulong
 id|flags
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|done_scp
 suffix:semicolon
@@ -13517,7 +13535,8 @@ DECL|function|advansys_reset
 id|advansys_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 )paren
@@ -13542,7 +13561,8 @@ suffix:semicolon
 id|ulong
 id|flags
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|done_scp
 op_assign
@@ -13553,7 +13573,8 @@ id|last_scp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|tscp
 comma
@@ -14623,7 +14644,8 @@ suffix:semicolon
 multiline_comment|/*&n; * --- Loadable Driver Support&n; */
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
@@ -14725,7 +14747,8 @@ id|asc_board_t
 op_star
 id|boardp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|done_scp
 op_assign
@@ -14736,7 +14759,8 @@ id|last_scp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|new_last_scp
 suffix:semicolon
@@ -15062,7 +15086,8 @@ DECL|function|advansys_slave_configure
 id|advansys_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|device
 )paren
@@ -15190,12 +15215,14 @@ DECL|function|asc_scsi_done_list
 id|asc_scsi_done_list
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|tscp
 suffix:semicolon
@@ -15355,14 +15382,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Execute a single &squot;Scsi_Cmnd&squot;.&n; *&n; * The function &squot;done&squot; is called when the request has been completed.&n; *&n; * Scsi_Cmnd:&n; *&n; *  host - board controlling device&n; *  device - device to send command&n; *  target - target of device&n; *  lun - lun of device&n; *  cmd_len - length of SCSI CDB&n; *  cmnd - buffer for SCSI 8, 10, or 12 byte CDB&n; *  use_sg - if non-zero indicates scatter-gather request with use_sg elements&n; *&n; *  if (use_sg == 0) {&n; *    request_buffer - buffer address for request&n; *    request_bufflen - length of request buffer&n; *  } else {&n; *    request_buffer - pointer to scatterlist structure&n; *  }&n; *&n; *  sense_buffer - sense command buffer&n; *&n; *  result (4 bytes of an int):&n; *    Byte Meaning&n; *    0 SCSI Status Byte Code&n; *    1 SCSI One Byte Message Code&n; *    2 Host Error Code&n; *    3 Mid-Level Error Code&n; *&n; *  host driver fields:&n; *    SCp - Scsi_Pointer used for command processing status&n; *    scsi_done - used to save caller&squot;s done function&n; *    host_scribble - used for pointer to another Scsi_Cmnd&n; *&n; * If this function returns ASC_NOERROR the request has been enqueued&n; * on the board&squot;s &squot;active&squot; queue and will be completed from the&n; * interrupt handler.&n; *&n; * If this function returns ASC_NOERROR the request has been enqueued&n; * on the board&squot;s &squot;done&squot; queue and must be completed by the caller.&n; *&n; * If ASC_BUSY is returned the request will be enqueued by the&n; * caller on the target&squot;s waiting queue and re-tried later.&n; */
+multiline_comment|/*&n; * Execute a single &squot;Scsi_Cmnd&squot;.&n; *&n; * The function &squot;done&squot; is called when the request has been completed.&n; *&n; * Scsi_Cmnd:&n; *&n; *  host - board controlling device&n; *  device - device to send command&n; *  target - target of device&n; *  lun - lun of device&n; *  cmd_len - length of SCSI CDB&n; *  cmnd - buffer for SCSI 8, 10, or 12 byte CDB&n; *  use_sg - if non-zero indicates scatter-gather request with use_sg elements&n; *&n; *  if (use_sg == 0) {&n; *    request_buffer - buffer address for request&n; *    request_bufflen - length of request buffer&n; *  } else {&n; *    request_buffer - pointer to scatterlist structure&n; *  }&n; *&n; *  sense_buffer - sense command buffer&n; *&n; *  result (4 bytes of an int):&n; *    Byte Meaning&n; *    0 SCSI Status Byte Code&n; *    1 SCSI One Byte Message Code&n; *    2 Host Error Code&n; *    3 Mid-Level Error Code&n; *&n; *  host driver fields:&n; *    SCp - Scsi_Pointer used for command processing status&n; *    scsi_done - used to save caller&squot;s done function&n; *    host_scribble - used for pointer to another struct scsi_cmnd&n; *&n; * If this function returns ASC_NOERROR the request has been enqueued&n; * on the board&squot;s &squot;active&squot; queue and will be completed from the&n; * interrupt handler.&n; *&n; * If this function returns ASC_NOERROR the request has been enqueued&n; * on the board&squot;s &squot;done&squot; queue and must be completed by the caller.&n; *&n; * If ASC_BUSY is returned the request will be enqueued by the&n; * caller on the target&squot;s waiting queue and re-tried later.&n; */
 id|STATIC
 r_int
 DECL|function|asc_execute_scsi_cmnd
 id|asc_execute_scsi_cmnd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 )paren
@@ -15383,7 +15411,8 @@ id|ADV_SCSI_REQ_Q
 op_star
 id|adv_scsiqp
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|device
 suffix:semicolon
@@ -15874,7 +15903,8 @@ id|asc_board_t
 op_star
 id|boardp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 )paren
@@ -15901,7 +15931,7 @@ id|ASC_SCSI_Q
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Point the ASC_SCSI_Q to the &squot;Scsi_Cmnd&squot;.&n;     */
+multiline_comment|/*&n;     * Point the ASC_SCSI_Q to the &squot;struct scsi_cmnd&squot;.&n;     */
 id|asc_scsi_q.q2.srb_ptr
 op_assign
 id|ASC_VADDR_TO_U32
@@ -16384,7 +16414,8 @@ id|asc_board_t
 op_star
 id|boardp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 comma
@@ -16491,7 +16522,7 @@ c_func
 id|reqp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Set the adv_req_t &squot;cmndp&squot; to point to the Scsi_Cmnd structure.&n;     */
+multiline_comment|/*&n;     * Set the adv_req_t &squot;cmndp&squot; to point to the struct scsi_cmnd structure.&n;     */
 id|reqp-&gt;cmndp
 op_assign
 id|scp
@@ -16950,7 +16981,8 @@ id|adv_req_t
 op_star
 id|reqp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 comma
@@ -17310,7 +17342,8 @@ id|asc_board_t
 op_star
 id|boardp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 suffix:semicolon
@@ -17348,11 +17381,12 @@ comma
 id|qdonep
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Get the Scsi_Cmnd structure and Scsi_Host structure for the&n;     * command that has been completed.&n;     */
+multiline_comment|/*&n;     * Get the struct scsi_cmnd structure and Scsi_Host structure for the&n;     * command that has been completed.&n;     */
 id|scp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|ASC_U32_TO_VADDR
@@ -17839,7 +17873,7 @@ id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Because interrupts may be enabled by the &squot;Scsi_Cmnd&squot; done&n;     * function, add the command to the end of the board&squot;s done queue.&n;     * The done function for the command will be called from&n;     * advansys_interrupt().&n;     */
+multiline_comment|/*&n;     * Because interrupts may be enabled by the &squot;struct scsi_cmnd&squot; done&n;     * function, add the command to the end of the board&squot;s done queue.&n;     * The done function for the command will be called from&n;     * advansys_interrupt().&n;     */
 id|asc_enqueue
 c_func
 (paren
@@ -17882,7 +17916,8 @@ id|adv_sgblk_t
 op_star
 id|sgblkp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 suffix:semicolon
@@ -17966,7 +18001,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Get the Scsi_Cmnd structure and Scsi_Host structure for the&n;     * command that has been completed.&n;     *&n;     * Note: The adv_req_t request structure and adv_sgblk_t structure,&n;     * if any, are dropped, because a board structure pointer can not be&n;     * determined.&n;     */
+multiline_comment|/*&n;     * Get the struct scsi_cmnd structure and Scsi_Host structure for the&n;     * command that has been completed.&n;     *&n;     * Note: The adv_req_t request structure and adv_sgblk_t structure,&n;     * if any, are dropped, because a board structure pointer can not be&n;     * determined.&n;     */
 id|scp
 op_assign
 id|reqp-&gt;cmndp
@@ -18405,7 +18440,7 @@ id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Because interrupts may be enabled by the &squot;Scsi_Cmnd&squot; done&n;     * function, add the command to the end of the board&squot;s done queue.&n;     * The done function for the command will be called from&n;     * advansys_interrupt().&n;     */
+multiline_comment|/*&n;     * Because interrupts may be enabled by the &squot;struct scsi_cmnd&squot; done&n;     * function, add the command to the end of the board&squot;s done queue.&n;     * The done function for the command will be called from&n;     * advansys_interrupt().&n;     */
 id|asc_enqueue
 c_func
 (paren
@@ -19685,7 +19720,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Execute as many queued requests as possible for the specified queue.&n; *&n; * Calls asc_execute_scsi_cmnd() to execute a REQP/Scsi_Cmnd.&n; */
+multiline_comment|/*&n; * Execute as many queued requests as possible for the specified queue.&n; *&n; * Calls asc_execute_scsi_cmnd() to execute a REQP/struct scsi_cmnd.&n; */
 id|STATIC
 r_void
 DECL|function|asc_execute_queue
@@ -19789,7 +19824,8 @@ id|asc_execute_scsi_cmnd
 c_func
 (paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|reqp
@@ -27319,7 +27355,8 @@ DECL|function|asc_prt_scsi_cmnd
 id|asc_prt_scsi_cmnd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|s
 )paren
@@ -27327,7 +27364,7 @@ id|s
 id|printk
 c_func
 (paren
-l_string|&quot;Scsi_Cmnd at addr 0x%lx&bslash;n&quot;
+l_string|&quot;struct scsi_cmnd at addr 0x%lx&bslash;n&quot;
 comma
 (paren
 id|ulong
