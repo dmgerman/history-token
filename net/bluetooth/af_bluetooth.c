@@ -1340,6 +1340,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|variable|bt_sock_family_ops
+r_static
 r_struct
 id|net_proto_family
 id|bt_sock_family_ops
@@ -1499,11 +1500,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|bt_cleanup
+DECL|function|bt_exit
 r_static
 r_void
 id|__exit
-id|bt_cleanup
+id|bt_exit
 c_func
 (paren
 r_void
@@ -1547,11 +1548,11 @@ c_func
 id|bt_init
 )paren
 suffix:semicolon
-DECL|variable|bt_cleanup
+DECL|variable|bt_exit
 id|module_exit
 c_func
 (paren
-id|bt_cleanup
+id|bt_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

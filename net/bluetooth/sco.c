@@ -685,6 +685,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|sco_connect
+r_static
 r_int
 id|sco_connect
 c_func
@@ -2199,6 +2200,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|sco_sock_listen
+r_static
 r_int
 id|sco_sock_listen
 c_func
@@ -2286,6 +2288,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|sco_sock_accept
+r_static
 r_int
 id|sco_sock_accept
 c_func
@@ -2748,6 +2751,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|sco_sock_setsockopt
+r_static
 r_int
 id|sco_sock_setsockopt
 c_func
@@ -2824,6 +2828,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|sco_sock_getsockopt
+r_static
 r_int
 id|sco_sock_getsockopt
 c_func
@@ -3554,6 +3559,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----- SCO interface with lower layer (HCI) ----- */
 DECL|function|sco_connect_ind
+r_static
 r_int
 id|sco_connect_ind
 c_func
@@ -3591,6 +3597,7 @@ id|HCI_LM_ACCEPT
 suffix:semicolon
 )brace
 DECL|function|sco_connect_cfm
+r_static
 r_int
 id|sco_connect_cfm
 c_func
@@ -3683,6 +3690,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sco_disconn_ind
+r_static
 r_int
 id|sco_disconn_ind
 c_func
@@ -3733,6 +3741,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sco_recv_scodata
+r_static
 r_int
 id|sco_recv_scodata
 c_func
@@ -4347,6 +4356,7 @@ id|sco_recv_scodata
 )brace
 suffix:semicolon
 DECL|function|sco_init
+r_static
 r_int
 id|__init
 id|sco_init
@@ -4433,10 +4443,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sco_cleanup
+DECL|function|sco_exit
+r_static
 r_void
 id|__exit
-id|sco_cleanup
+id|sco_exit
 c_func
 (paren
 r_void
@@ -4502,11 +4513,11 @@ c_func
 id|sco_init
 )paren
 suffix:semicolon
-DECL|variable|sco_cleanup
+DECL|variable|sco_exit
 id|module_exit
 c_func
 (paren
-id|sco_cleanup
+id|sco_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

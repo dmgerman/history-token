@@ -9566,6 +9566,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* ---- Initialization ---- */
 DECL|function|rfcomm_init
+r_static
 r_int
 id|__init
 id|rfcomm_init
@@ -9618,10 +9619,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|rfcomm_cleanup
+DECL|function|rfcomm_exit
+r_static
 r_void
 id|__exit
-id|rfcomm_cleanup
+id|rfcomm_exit
 c_func
 (paren
 r_void
@@ -9682,11 +9684,11 @@ c_func
 id|rfcomm_init
 )paren
 suffix:semicolon
-DECL|variable|rfcomm_cleanup
+DECL|variable|rfcomm_exit
 id|module_exit
 c_func
 (paren
-id|rfcomm_cleanup
+id|rfcomm_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

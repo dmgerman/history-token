@@ -4624,7 +4624,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|hci_usb_init
+r_static
 r_int
+id|__init
 id|hci_usb_init
 c_func
 (paren
@@ -4668,9 +4670,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|hci_usb_cleanup
+DECL|function|hci_usb_exit
+r_static
 r_void
-id|hci_usb_cleanup
+id|__exit
+id|hci_usb_exit
 c_func
 (paren
 r_void
@@ -4691,11 +4695,11 @@ c_func
 id|hci_usb_init
 )paren
 suffix:semicolon
-DECL|variable|hci_usb_cleanup
+DECL|variable|hci_usb_exit
 id|module_exit
 c_func
 (paren
-id|hci_usb_cleanup
+id|hci_usb_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
