@@ -592,6 +592,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|d-&gt;list
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
