@@ -143,7 +143,7 @@ op_increment
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Requeue packets but don&squot;t change time stamp */
