@@ -49,6 +49,53 @@ op_star
 id|obj
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Basic structure for transmission/reception of a client XDR message.&n; * Features a header (for a linear buffer containing RPC headers&n; * and the data payload for short messages), and then an array of&n; * pages.&n; * The tail iovec allows you to append data after the page array. Its&n; * main interest is for appending padding to the pages in order to&n; * satisfy the int_32-alignment requirements in RFC1832.&n; *&n; * For the future, we might want to string several of these together&n; * in a list if anybody wants to make use of NFSv4 COMPOUND&n; * operations and/or has a need for scatter/gather involving pages.&n; */
+DECL|struct|xdr_buf
+r_struct
+id|xdr_buf
+(brace
+DECL|member|head
+r_struct
+id|iovec
+id|head
+(braket
+l_int|1
+)braket
+comma
+multiline_comment|/* RPC header + non-page data */
+DECL|member|tail
+id|tail
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* Appended after page data */
+DECL|member|pages
+r_struct
+id|page
+op_star
+op_star
+id|pages
+suffix:semicolon
+multiline_comment|/* Array of contiguous pages */
+DECL|member|page_base
+r_int
+r_int
+id|page_base
+comma
+multiline_comment|/* Start of page data */
+DECL|member|page_len
+id|page_len
+suffix:semicolon
+multiline_comment|/* Length of page data */
+DECL|member|len
+r_int
+r_int
+id|len
+suffix:semicolon
+multiline_comment|/* Total length of data */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * pre-xdr&squot;ed macros.&n; */
 DECL|macro|xdr_zero
 mdefine_line|#define&t;xdr_zero&t;__constant_htonl(0)
@@ -206,6 +253,26 @@ r_int
 id|len
 )paren
 suffix:semicolon
+r_void
+id|xdr_encode_pages
+c_func
+(paren
+r_struct
+id|xdr_buf
+op_star
+comma
+r_struct
+id|page
+op_star
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Decode 64bit quantities (NFSv3 support)&n; */
 r_static
 r_inline
@@ -360,6 +427,37 @@ op_star
 comma
 r_int
 comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * XDR buffer helper functions&n; */
+r_extern
+r_int
+id|xdr_kmap
+c_func
+(paren
+r_struct
+id|iovec
+op_star
+comma
+r_struct
+id|xdr_buf
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xdr_kunmap
+c_func
+(paren
+r_struct
+id|xdr_buf
+op_star
+comma
+r_int
 r_int
 )paren
 suffix:semicolon

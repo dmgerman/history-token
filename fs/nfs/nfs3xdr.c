@@ -14,9 +14,6 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
-multiline_comment|/* Uncomment this to support servers requiring longword lengths */
-DECL|macro|NFS_PAD_WRITES
-mdefine_line|#define NFS_PAD_WRITES&t;&t;1
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_XDR
 multiline_comment|/* Mapping from NFS error code to &quot;errno&quot; error code. */
@@ -1694,9 +1691,13 @@ op_star
 id|args
 )paren
 (brace
-r_int
-r_int
-id|nr
+r_struct
+id|xdr_buf
+op_star
+id|sndbuf
+op_assign
+op_amp
+id|req-&gt;rq_snd_buf
 suffix:semicolon
 id|u32
 id|count
@@ -1753,122 +1754,28 @@ c_func
 id|count
 )paren
 suffix:semicolon
-id|req-&gt;rq_slen
+id|sndbuf-&gt;len
 op_assign
 id|xdr_adjust_iovec
 c_func
 (paren
-id|req-&gt;rq_svec
+id|sndbuf-&gt;head
 comma
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/* Get the number of buffers in the send iovec */
-id|nr
-op_assign
-id|args-&gt;nriov
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nr
-op_plus
-l_int|2
-OG
-id|MAX_IOVEC
-)paren
-(brace
-id|printk
+multiline_comment|/* Copy the page array */
+id|xdr_encode_pages
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;NFS: Bad number of iov&squot;s in xdr_writeargs&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-multiline_comment|/* Copy the iovec */
-id|memcpy
-c_func
-(paren
-id|req-&gt;rq_svec
-op_plus
-l_int|1
+id|sndbuf
 comma
-id|args-&gt;iov
+id|args-&gt;pages
 comma
-id|nr
-op_star
-r_sizeof
-(paren
-r_struct
-id|iovec
-)paren
-)paren
-suffix:semicolon
-macro_line|#ifdef NFS_PAD_WRITES
-multiline_comment|/*&n;&t; * Some old servers require that the message length&n;&t; * be a multiple of 4, so we pad it here if needed.&n;&t; */
-r_if
-c_cond
-(paren
+id|args-&gt;pgbase
+comma
 id|count
-op_amp
-l_int|3
 )paren
-(brace
-r_struct
-id|iovec
-op_star
-id|iov
-op_assign
-id|req-&gt;rq_svec
-op_plus
-id|nr
-op_plus
-l_int|1
-suffix:semicolon
-r_int
-id|pad
-op_assign
-l_int|4
-op_minus
-(paren
-id|count
-op_amp
-l_int|3
-)paren
-suffix:semicolon
-id|iov-&gt;iov_base
-op_assign
-(paren
-r_void
-op_star
-)paren
-l_string|&quot;&bslash;0&bslash;0&bslash;0&quot;
-suffix:semicolon
-id|iov-&gt;iov_len
-op_assign
-id|pad
-suffix:semicolon
-id|count
-op_add_assign
-id|pad
-suffix:semicolon
-id|nr
-op_increment
-suffix:semicolon
-)brace
-macro_line|#endif
-id|req-&gt;rq_slen
-op_add_assign
-id|count
-suffix:semicolon
-id|req-&gt;rq_snr
-op_add_assign
-id|nr
 suffix:semicolon
 r_return
 l_int|0

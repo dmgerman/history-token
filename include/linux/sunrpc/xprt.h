@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
+macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 multiline_comment|/*&n; * Maximum number of iov&squot;s we use.&n; */
 DECL|macro|MAX_IOVEC
 mdefine_line|#define MAX_IOVEC&t;10
@@ -117,7 +118,7 @@ suffix:semicolon
 multiline_comment|/* timeout parms */
 DECL|member|rq_snd_buf
 r_struct
-id|rpc_iov
+id|xdr_buf
 id|rq_snd_buf
 suffix:semicolon
 multiline_comment|/* send buffer */
@@ -181,11 +182,9 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|rq_svec
-mdefine_line|#define rq_svec&t;&t;&t;rq_snd_buf.io_vec
-DECL|macro|rq_snr
-mdefine_line|#define rq_snr&t;&t;&t;rq_snd_buf.io_nr
+mdefine_line|#define rq_svec&t;&t;&t;rq_snd_buf.head
 DECL|macro|rq_slen
-mdefine_line|#define rq_slen&t;&t;&t;rq_snd_buf.io_len
+mdefine_line|#define rq_slen&t;&t;&t;rq_snd_buf.len
 DECL|macro|rq_rvec
 mdefine_line|#define rq_rvec&t;&t;&t;rq_rcv_buf.io_vec
 DECL|macro|rq_rnr

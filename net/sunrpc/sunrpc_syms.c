@@ -435,6 +435,13 @@ c_func
 id|xdr_encode_netobj
 )paren
 suffix:semicolon
+DECL|variable|xdr_encode_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_encode_pages
+)paren
+suffix:semicolon
 DECL|variable|xdr_shift_iovec
 id|EXPORT_SYMBOL
 c_func
