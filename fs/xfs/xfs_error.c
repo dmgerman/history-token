@@ -1343,6 +1343,13 @@ op_star
 id|ra
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|level
+op_le
+id|xfs_error_level
+)paren
 id|xfs_hex_dump
 c_func
 (paren

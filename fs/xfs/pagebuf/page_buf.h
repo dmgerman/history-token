@@ -475,10 +475,6 @@ DECL|macro|PBF_NOT_DONE
 mdefine_line|#define PBF_NOT_DONE(pb) (((pb)-&gt;pb_flags &amp; (PBF_PARTIAL|PBF_NONE)) != 0)
 DECL|macro|PBF_DONE
 mdefine_line|#define PBF_DONE(pb) (((pb)-&gt;pb_flags &amp; (PBF_PARTIAL|PBF_NONE)) == 0)
-DECL|macro|PBR_SECTOR_ONLY
-mdefine_line|#define PBR_SECTOR_ONLY&t;1&t;/* only use sector size buffer heads */
-DECL|macro|PBR_ALIGNED_ONLY
-mdefine_line|#define PBR_ALIGNED_ONLY 2&t;/* only use aligned I/O */
 DECL|struct|pb_target
 r_typedef
 r_struct
