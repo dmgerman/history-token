@@ -197,7 +197,7 @@ op_assign
 id|HCI_RESET
 )brace
 comma
-multiline_comment|/* Digianswer device */
+multiline_comment|/* Digianswer devices */
 (brace
 id|USB_DEVICE
 c_func
@@ -211,6 +211,21 @@ dot
 id|driver_info
 op_assign
 id|HCI_DIGIANSWER
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x08fd
+comma
+l_int|0x0002
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_IGNORE
 )brace
 comma
 multiline_comment|/* RTX Telecom based adapter with buggy SCO support */
@@ -3981,12 +3996,12 @@ id|HCI_DIGIANSWER
 )paren
 id|husb-&gt;ctrl_req
 op_assign
-id|HCI_DIGI_REQ
+id|USB_TYPE_VENDOR
 suffix:semicolon
 r_else
 id|husb-&gt;ctrl_req
 op_assign
-id|HCI_CTRL_REQ
+id|USB_TYPE_CLASS
 suffix:semicolon
 multiline_comment|/* Find isochronous endpoints that we can use */
 id|size
