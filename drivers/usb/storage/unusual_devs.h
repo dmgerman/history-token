@@ -250,6 +250,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Patch for Kyocera Finecam L3&n; * Submitted by Michael Krauth &lt;michael.krauth@web.de&gt;&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0482
+comma
+l_int|0x0105
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kyocera&quot;
+comma
+l_string|&quot;Finecam L3&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Paul Stewart &lt;stewart@wetlogic.net&gt;&n; * This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
@@ -1342,56 +1367,6 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4011
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;Dimage F300&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
-multiline_comment|/* Reported by Miguel A. Fosas &lt;amn3s1a@ono.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4017
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;DIMAGE E223&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
 multiline_comment|/* Following three Minolta cameras reported by Martin Pool&n; * &lt;mbp@sourcefrog.net&gt;.  Originally discovered by Kedar Petankar,&n; * Matthew Geier, Mikael Lofj&quot;ard, Marcel de Boer.&n; */
 id|UNUSUAL_DEV
 c_func
@@ -1455,6 +1430,56 @@ comma
 l_string|&quot;Minolta&quot;
 comma
 l_string|&quot;DiMAGE 7Hi&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
+multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4011
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;Dimage F300&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
+multiline_comment|/* Reported by Miguel A. Fosas &lt;amn3s1a@ono.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4017
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;DIMAGE E223&quot;
 comma
 id|US_SC_SCSI
 comma
@@ -1980,7 +2005,7 @@ l_string|&quot;Casio&quot;
 comma
 l_string|&quot;QV DigitalCamera&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
 id|US_PR_CB
 comma
@@ -2058,31 +2083,6 @@ comma
 id|US_SC_DEVICE
 comma
 id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
-)paren
-comma
-multiline_comment|/*Medion 6047 Digital Camera&n;Davide Andrian &lt;_nessuno_@katamail.com&gt;&n;*/
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x08ca
-comma
-l_int|0x2011
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;3MegaCam&quot;
-comma
-l_string|&quot;3MegaCam&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_BULK
 comma
 l_int|NULL
 comma
