@@ -7865,9 +7865,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+id|IS_ERR
+c_func
+(paren
 id|sg_class_member
+)paren
 )paren
 id|printk
 c_func
