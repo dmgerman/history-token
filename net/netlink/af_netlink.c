@@ -1106,10 +1106,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_netlink-&gt;pid
+id|nlk-&gt;pid
 op_logical_and
 op_logical_neg
-id|sk-&gt;protinfo.af_netlink-&gt;groups
+id|nlk-&gt;groups
 )paren
 (brace
 r_struct
@@ -1123,7 +1123,7 @@ id|sk-&gt;protocol
 comma
 id|pid
 suffix:colon
-id|sk-&gt;protinfo.af_netlink-&gt;pid
+id|nlk-&gt;pid
 )brace
 suffix:semicolon
 id|notifier_call_chain
