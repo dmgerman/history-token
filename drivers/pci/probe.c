@@ -12,6 +12,10 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
+DECL|macro|CARDBUS_LATENCY_TIMER
+mdefine_line|#define CARDBUS_LATENCY_TIMER&t;176&t;/* secondary latency timer */
+DECL|macro|CARDBUS_RESERVE_BUSNR
+mdefine_line|#define CARDBUS_RESERVE_BUSNR&t;3
 DECL|variable|pci_root_buses
 id|LIST_HEAD
 c_func
@@ -1712,20 +1716,19 @@ c_cond
 (paren
 id|is_cardbus
 )paren
+(brace
 id|buses
-op_assign
-(paren
+op_and_assign
+op_complement
+l_int|0xff000000
+suffix:semicolon
 id|buses
-op_amp
-l_int|0x00ffffff
-)paren
-op_or
-(paren
-l_int|176
+op_or_assign
+id|CARDBUS_LATENCY_TIMER
 op_lshift
 l_int|24
-)paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * We need to blast all three values with a single write.&n;&t;&t; */
 id|pci_write_config_dword
 c_func
@@ -1759,7 +1762,7 @@ r_else
 multiline_comment|/*&n;&t;&t;&t; * For CardBus bridges, we leave 4 bus numbers&n;&t;&t;&t; * as cards with a PCI-to-PCI bridge can be&n;&t;&t;&t; * inserted later.&n;&t;&t;&t; */
 id|max
 op_add_assign
-l_int|3
+id|CARDBUS_RESERVE_BUSNR
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Set the subordinate bus number to its real value.&n;&t;&t; */
