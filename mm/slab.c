@@ -163,13 +163,11 @@ DECL|member|spinlock
 id|spinlock_t
 id|spinlock
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 DECL|member|batchcount
 r_int
 r_int
 id|batchcount
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* 2) slab additions /removals */
 multiline_comment|/* order of pgs per slab (2^n) */
 DECL|member|gfporder
@@ -269,7 +267,6 @@ r_struct
 id|list_head
 id|next
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* 4) per-cpu data */
 DECL|member|cpudata
 id|cpucache_t
@@ -279,7 +276,6 @@ id|cpudata
 id|NR_CPUS
 )braket
 suffix:semicolon
-macro_line|#endif
 macro_line|#if STATS
 DECL|member|num_active
 r_int
@@ -311,7 +307,6 @@ r_int
 r_int
 id|errors
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 DECL|member|allochit
 id|atomic_t
 id|allochit
@@ -328,7 +323,6 @@ DECL|member|freemiss
 id|atomic_t
 id|freemiss
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 )brace
 suffix:semicolon
@@ -377,7 +371,7 @@ mdefine_line|#define&t;STATS_SET_HIGH(x)&t;do { } while (0)
 DECL|macro|STATS_INC_ERR
 mdefine_line|#define&t;STATS_INC_ERR(x)&t;do { } while (0)
 macro_line|#endif
-macro_line|#if STATS &amp;&amp; defined(CONFIG_SMP)
+macro_line|#if STATS
 DECL|macro|STATS_INC_ALLOCHIT
 mdefine_line|#define STATS_INC_ALLOCHIT(x)&t;atomic_inc(&amp;(x)-&gt;allochit)
 DECL|macro|STATS_INC_ALLOCMISS
@@ -800,7 +794,6 @@ id|cache_cache
 suffix:semicolon
 DECL|macro|cache_chain
 mdefine_line|#define cache_chain (cache_cache.next)
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * chicken and egg problem: delay the per-cpu array allocation&n; * until the general caches are up.&n; */
 DECL|variable|g_cpucache_up
 r_static
@@ -823,7 +816,6 @@ id|enable_all_cpucaches
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Cal the num objs, wastage, and bytes left over for a given slab size. */
 DECL|function|cache_estimate
 r_static
@@ -1201,7 +1193,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
 id|g_cpucache_up
 op_assign
 l_int|1
@@ -1211,7 +1202,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2430,7 +2420,6 @@ id|cachep-&gt;name
 op_assign
 id|name
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -2442,7 +2431,6 @@ c_func
 id|cachep
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Need the semaphore to access the chain. */
 id|down
 c_func
@@ -2661,7 +2649,6 @@ macro_line|#else
 DECL|macro|is_chained_cache
 mdefine_line|#define is_chained_cache(x) 1
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Waits for all CPUs to execute func().&n; */
 DECL|function|smp_call_function_all_cpus
 r_static
@@ -2976,10 +2963,6 @@ id|cache_chain_sem
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|drain_cpu_caches
-mdefine_line|#define drain_cpu_caches(cachep)&t;do { } while (0)
-macro_line|#endif
 DECL|function|__cache_shrink
 r_static
 r_int
@@ -3280,7 +3263,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
 (brace
 r_int
 id|i
@@ -3309,7 +3291,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|kmem_cache_free
 c_func
 (paren
@@ -4369,7 +4350,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Returns a ptr to an obj in the given cache.&n; * caller must guarantee synchronization&n; * #define for the goto optimization 8-)&n; */
 DECL|macro|cache_alloc_one
 mdefine_line|#define cache_alloc_one(cachep)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head * slabs_partial, * entry;&t;&t;&bslash;&n;&t;slab_t *slabp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabs_partial = &amp;(cachep)-&gt;slabs_partial;&t;&t;&bslash;&n;&t;entry = slabs_partial-&gt;next;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(entry == slabs_partial)) {&t;&t;&t;&bslash;&n;&t;&t;struct list_head * slabs_free;&t;&t;&t;&bslash;&n;&t;&t;slabs_free = &amp;(cachep)-&gt;slabs_free;&t;&t;&bslash;&n;&t;&t;entry = slabs_free-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely(entry == slabs_free))&t;&t;&bslash;&n;&t;&t;&t;goto alloc_new_slab;&t;&t;&t;&bslash;&n;&t;&t;list_del(entry);&t;&t;&t;&t;&bslash;&n;&t;&t;list_add(entry, slabs_partial);&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabp = list_entry(entry, slab_t, list);&t;&t;&bslash;&n;&t;cache_alloc_one_tail(cachep, slabp);&t;&t;&bslash;&n;})
-macro_line|#ifdef CONFIG_SMP
 DECL|function|cache_alloc_batch
 r_void
 op_star
@@ -4555,7 +4535,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|__cache_alloc
 r_static
 r_inline
@@ -4607,7 +4586,6 @@ c_func
 id|save_flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 (brace
 id|cpucache_t
 op_star
@@ -4714,16 +4692,6 @@ id|cachep-&gt;spinlock
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-id|objp
-op_assign
-id|cache_alloc_one
-c_func
-(paren
-id|cachep
-)paren
-suffix:semicolon
-macro_line|#endif
 id|local_irq_restore
 c_func
 (paren
@@ -4735,7 +4703,6 @@ id|objp
 suffix:semicolon
 id|alloc_new_slab
 suffix:colon
-macro_line|#ifdef CONFIG_SMP
 id|spin_unlock
 c_func
 (paren
@@ -4743,17 +4710,14 @@ op_amp
 id|cachep-&gt;spinlock
 )paren
 suffix:semicolon
-macro_line|#endif
 id|local_irq_restore
 c_func
 (paren
 id|save_flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|alloc_new_slab_nolock
 suffix:colon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5070,7 +5034,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_SMP
 DECL|function|__free_block
 r_static
 r_inline
@@ -5157,7 +5120,6 @@ id|cachep-&gt;spinlock
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * __cache_free&n; * called with disabled ints&n; */
 DECL|function|__cache_free
 r_static
@@ -5174,7 +5136,6 @@ op_star
 id|objp
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
 id|cpucache_t
 op_star
 id|cc
@@ -5290,16 +5251,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-id|cache_free_one
-c_func
-(paren
-id|cachep
-comma
-id|objp
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/**&n; * kmem_cache_alloc - Allocate an object&n; * @cachep: The cache to allocate from.&n; * @flags: See kmalloc().&n; *&n; * Allocate an object from this cache.  The flags are only relevant&n; * if the cache has no available objects.&n; */
 DECL|function|kmem_cache_alloc
@@ -5608,7 +5559,6 @@ suffix:colon
 id|csizep-&gt;cs_cachep
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* called with cache_chain_sem acquired.  */
 DECL|function|tune_cpucache
 r_static
@@ -6063,7 +6013,6 @@ id|cache_chain_sem
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/**&n; * cache_reap - Reclaim memory from caches.&n; * @gfp_mask: the type of memory required.&n; *&n; * Called from do_try_to_free_pages() and __alloc_pages()&n; */
 DECL|function|cache_reap
 r_int
@@ -6208,7 +6157,6 @@ r_goto
 id|next_unlock
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
 (brace
 id|cpucache_t
 op_star
@@ -6248,7 +6196,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 id|full_free
 op_assign
 l_int|0
@@ -6848,9 +6795,7 @@ l_string|&quot;slabinfo - version: 1.1&quot;
 macro_line|#if STATS
 l_string|&quot; (statistics)&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
 l_string|&quot; (SMP)&quot;
-macro_line|#endif
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7123,7 +7068,6 @@ id|errors
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
 (brace
 r_int
 r_int
@@ -7172,8 +7116,7 @@ id|batchcount
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if STATS &amp;&amp; defined(CONFIG_SMP)
+macro_line|#if STATS
 (brace
 r_int
 r_int
@@ -7311,7 +7254,6 @@ op_star
 id|ppos
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
 r_char
 id|kbuf
 (braket
@@ -7522,12 +7464,6 @@ suffix:semicolon
 r_return
 id|res
 suffix:semicolon
-macro_line|#else
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#endif
 eof
