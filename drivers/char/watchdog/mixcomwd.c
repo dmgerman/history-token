@@ -41,6 +41,7 @@ mdefine_line|#define FLASHCOM_ID 0x18
 DECL|variable|mixcomwd_opened
 r_static
 r_int
+r_int
 id|mixcomwd_opened
 suffix:semicolon
 multiline_comment|/* long req&squot;d for setbit --RR */
