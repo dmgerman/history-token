@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * DEC VSXXX-AA and VSXXX-GA mouse driver.&n; *&n; * Copyright (C) 2003-2004 by Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; *&n; * The packet format was taken from a patch to GPM which is (C) 2001&n; * by&t;Karsten Merker &lt;merker@linuxtag.org&gt;&n; * and&t;Maciej W. Rozycki &lt;macro@ds2.pg.gda.pl&gt;&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
-multiline_comment|/*&n; * Building an adaptor to DB9 / DB25 RS232&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * DISCLAIMER: Use this description AT YOUR OWN RISK! I&squot;ll not pay for&n; * anything if you break your mouse, your computer or whatever!&n; *&n; * In theory, this mouse is a simple RS232 device. In practice, it has got&n; * a quite uncommon plug and the requirement to additionally get a power&n; * supply at +5V and -12V.&n; *&n; * If you look at the socket/jack (_not_ at the plug), we use this pin&n; * numbering:&n; *    _______&n; *   / 7 6 5 &bslash;&n; *  | 4 --- 3 |&n; *   &bslash;  2 1  /&n; *    -------&n; * &n; *&t;DEC socket&t;DB9&t;DB25&t;Note&n; *&t;1 (GND)&t;&t;5&t;7&t;-&n; *&t;2 (RxD)&t;&t;3&t;3&t;-&n; *&t;3 (TxD)&t;&t;2&t;2&t;-&n; *&t;4 (-12V)&t;-&t;-&t;Somewhere from the PSU. At ATX, it&squot;s&n; *&t;&t;&t;&t;&t;the blue wire at pin 12 of the ATX&n; *&t;&t;&t;&t;&t;power connector. Please note that the&n; *&t;&t;&t;&t;&t;docs say this should be +12V! However,&n; *&t;&t;&t;&t;&t;I measured -12V...&n; *&t;5 (+5V)&t;&t;-&t;-&t;PSU (red wire of ATX power connector&n; *&t;&t;&t;&t;&t;on pin 4, 6, 19 or 20) or HDD power&n; *&t;&t;&t;&t;&t;connector (also red wire)&n; *&t;6 (not conn.)&t;-&t;-&t;-&n; *&t;7 (dev. avail.)&t;-&t;-&t;The mouse shorts this one to pin 1.&n; *&t;&t;&t;&t;&t;This way, the host computer can detect&n; *&t;&t;&t;&t;&t;the mouse. To use it with the adaptor,&n; *&t;&t;&t;&t;&t;simply don&squot;t connect this pin.&n; *&n; * So to get a working adaptor, you need to connect the mouse with three&n; * wires to a RS232 port and two additional wires for +5V and -12V to the&n; * PSU.&n; *&n; * Flow specification for the link is 4800, 8o1.&n; */
-multiline_comment|/*&n; * TODO list:&n; * - Automatically attach to a given serial port (no need for inputattach).&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; * Building an adaptor to DB9 / DB25 RS232&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * DISCLAIMER: Use this description AT YOUR OWN RISK! I&squot;ll not pay for&n; * anything if you break your mouse, your computer or whatever!&n; *&n; * In theory, this mouse is a simple RS232 device. In practice, it has got&n; * a quite uncommon plug and the requirement to additionally get a power&n; * supply at +5V and -12V.&n; *&n; * If you look at the socket/jack (_not_ at the plug), we use this pin&n; * numbering:&n; *    _______&n; *   / 7 6 5 &bslash;&n; *  | 4 --- 3 |&n; *   &bslash;  2 1  /&n; *    -------&n; * &n; *&t;DEC socket&t;DB9&t;DB25&t;Note&n; *&t;1 (GND)&t;&t;5&t;7&t;-&n; *&t;2 (RxD)&t;&t;2&t;3&t;-&n; *&t;3 (TxD)&t;&t;3&t;2&t;-&n; *&t;4 (-12V)&t;-&t;-&t;Somewhere from the PSU. At ATX, it&squot;s&n; *&t;&t;&t;&t;&t;the thin blue wire at pin 12 of the&n; *&t;&t;&t;&t;&t;ATX power connector. Only required for&n; *&t;&t;&t;&t;&t;VSXXX-AA/-GA mice.&n; *&t;5 (+5V)&t;&t;-&t;-&t;PSU (red wires of ATX power connector&n; *&t;&t;&t;&t;&t;on pin 4, 6, 19 or 20) or HDD power&n; *&t;&t;&t;&t;&t;connector (also red wire).&n; *&t;6 (+12V)&t;-&t;-&t;HDD power connector, yellow wire. Only&n; *&t;&t;&t;&t;&t;required for VSXXX-AB digitizer.&n; *&t;7 (dev. avail.)&t;-&t;-&t;The mouse shorts this one to pin 1.&n; *&t;&t;&t;&t;&t;This way, the host computer can detect&n; *&t;&t;&t;&t;&t;the mouse. To use it with the adaptor,&n; *&t;&t;&t;&t;&t;simply don&squot;t connect this pin.&n; *&n; * So to get a working adaptor, you need to connect the mouse with three&n; * wires to a RS232 port and two or three additional wires for +5V, +12V and&n; * -12V to the PSU.&n; *&n; * Flow specification for the link is 4800, 8o1.&n; *&n; * The mice and tablet are described in &quot;VCB02 Video Subsystem - Technical&n; * Manual&quot;, DEC EK-104AA-TM-001. You&squot;ll find it at MANX, a search engine&n; * specific for DEC documentation. Try&n; * http://www.vt100.net/manx/details?pn=EK-104AA-TM-001;id=21;cp=1&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -95,6 +94,13 @@ r_int
 r_char
 id|type
 suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|64
+)braket
+suffix:semicolon
 DECL|member|phys
 r_char
 id|phys
@@ -180,9 +186,9 @@ id|printk
 id|KERN_ERR
 l_string|&quot;%s on %s: Dropping a byte of full buffer.&bslash;n&quot;
 comma
-id|mouse-&gt;dev.name
+id|mouse-&gt;name
 comma
-id|mouse-&gt;dev.phys
+id|mouse-&gt;phys
 )paren
 suffix:semicolon
 id|vsxxxaa_drop_bytes
@@ -193,6 +199,14 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|DBG
+(paren
+id|KERN_INFO
+l_string|&quot;Queueing byte 0x%02x&bslash;n&quot;
+comma
+id|byte
+)paren
+suffix:semicolon
 id|mouse-&gt;buf
 (braket
 id|mouse-&gt;count
@@ -204,8 +218,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|vsxxxaa_report_mouse
-id|vsxxxaa_report_mouse
+DECL|function|vsxxxaa_detection_done
+id|vsxxxaa_detection_done
 (paren
 r_struct
 id|vsxxxaa
@@ -213,10 +227,6 @@ op_star
 id|mouse
 )paren
 (brace
-r_char
-op_star
-id|devtype
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -226,26 +236,35 @@ id|mouse-&gt;type
 r_case
 l_int|0x02
 suffix:colon
-id|devtype
-op_assign
-l_string|&quot;DEC mouse&quot;
+id|sprintf
+(paren
+id|mouse-&gt;name
+comma
+l_string|&quot;DEC VSXXX-AA/GA mouse&quot;
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|devtype
-op_assign
-l_string|&quot;DEC tablet&quot;
+id|sprintf
+(paren
+id|mouse-&gt;name
+comma
+l_string|&quot;DEC VSXXX-AB digitizer&quot;
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|devtype
-op_assign
-l_string|&quot;unknown DEC device&quot;
+id|sprintf
+(paren
+id|mouse-&gt;name
+comma
+l_string|&quot;unknown DEC pointer device&quot;
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -253,16 +272,16 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;Found %s version 0x%x from country 0x%x &quot;
+l_string|&quot;Found %s version 0x%02x from country 0x%02x &quot;
 l_string|&quot;on port %s&bslash;n&quot;
 comma
-id|devtype
+id|mouse-&gt;name
 comma
 id|mouse-&gt;version
 comma
 id|mouse-&gt;country
 comma
-id|mouse-&gt;dev.phys
+id|mouse-&gt;phys
 )paren
 suffix:semicolon
 )brace
@@ -495,9 +514,9 @@ l_int|0x01
 )paren
 ques
 c_cond
-op_minus
 l_int|1
 suffix:colon
+op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Low 7 bit of byte 2 are abs(dy), bit 7 is&n;&t; * 0, bit 3 of byte 0 is direction.&n;&t; */
@@ -592,9 +611,9 @@ id|DBG
 id|KERN_INFO
 l_string|&quot;%s on %s: dx=%d, dy=%d, buttons=%s%s%s&bslash;n&quot;
 comma
-id|mouse-&gt;dev.name
+id|mouse-&gt;name
 comma
-id|mouse-&gt;dev.phys
+id|mouse-&gt;phys
 comma
 id|dx
 comma
@@ -655,6 +674,15 @@ comma
 id|BTN_RIGHT
 comma
 id|right
+)paren
+suffix:semicolon
+id|input_report_key
+(paren
+id|dev
+comma
+id|BTN_TOUCH
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|input_report_rel
@@ -719,7 +747,7 @@ id|middle
 comma
 id|right
 comma
-id|extra
+id|touch
 suffix:semicolon
 r_int
 id|x
@@ -727,7 +755,7 @@ comma
 id|y
 suffix:semicolon
 multiline_comment|/*&n;&t; * Tablet position / button packet&n;&t; *&n;&t; * [0]:&t;1&t;1&t;0&t;B4&t;B3&t;B2&t;B1&t;Pr&n;&t; * [1]:&t;0&t;0&t;X5&t;X4&t;X3&t;X2&t;X1&t;X0&n;&t; * [2]:&t;0&t;0&t;X11&t;X10&t;X9&t;X8&t;X7&t;X6&n;&t; * [3]:&t;0&t;0&t;Y5&t;Y4&t;Y3&t;Y2&t;Y1&t;Y0&n;&t; * [4]:&t;0&t;0&t;Y11&t;Y10&t;Y9&t;Y8&t;Y7&t;Y6&n;&t; */
-multiline_comment|/*&n;&t; * Get X/Y position&n;&t; */
+multiline_comment|/*&n;&t; * Get X/Y position. Y axis needs to be inverted since VSXXX-AB&n;&t; * counts down-&gt;top while monitor counts top-&gt;bottom.&n;&t; */
 id|x
 op_assign
 (paren
@@ -775,6 +803,12 @@ l_int|3
 op_amp
 l_int|0x3f
 )paren
+suffix:semicolon
+id|y
+op_assign
+l_int|1023
+op_minus
+id|y
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get button state. It&squot;s bits &lt;4..1&gt; of byte 0.&n;&t; */
 id|left
@@ -825,7 +859,7 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|extra
+id|touch
 op_assign
 (paren
 id|buf
@@ -853,9 +887,9 @@ id|DBG
 id|KERN_INFO
 l_string|&quot;%s on %s: x=%d, y=%d, buttons=%s%s%s%s&bslash;n&quot;
 comma
-id|mouse-&gt;dev.name
+id|mouse-&gt;name
 comma
-id|mouse-&gt;dev.phys
+id|mouse-&gt;phys
 comma
 id|x
 comma
@@ -882,12 +916,12 @@ l_string|&quot;R&quot;
 suffix:colon
 l_string|&quot;r&quot;
 comma
-id|extra
+id|touch
 ques
 c_cond
-l_string|&quot;E&quot;
+l_string|&quot;T&quot;
 suffix:colon
-l_string|&quot;e&quot;
+l_string|&quot;t&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Report what we&squot;ve found so far...&n;&t; */
@@ -929,9 +963,9 @@ id|input_report_key
 (paren
 id|dev
 comma
-id|BTN_EXTRA
+id|BTN_TOUCH
 comma
-id|extra
+id|touch
 )paren
 suffix:semicolon
 id|input_report_abs
@@ -1030,7 +1064,7 @@ id|buf
 l_int|1
 )braket
 op_amp
-l_int|0x07
+l_int|0x0f
 suffix:semicolon
 id|error
 op_assign
@@ -1097,7 +1131,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|vsxxxaa_report_mouse
+id|vsxxxaa_detection_done
 (paren
 id|mouse
 )paren
@@ -1145,6 +1179,15 @@ comma
 id|right
 )paren
 suffix:semicolon
+id|input_report_key
+(paren
+id|dev
+comma
+id|BTN_TOUCH
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|input_sync
 (paren
 id|dev
@@ -1159,22 +1202,22 @@ id|KERN_ERR
 l_string|&quot;Your %s on %s reports an undefined error, &quot;
 l_string|&quot;please check it...&bslash;n&quot;
 comma
-id|mouse-&gt;dev.name
+id|mouse-&gt;name
 comma
-id|mouse-&gt;dev.phys
+id|mouse-&gt;phys
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If the mouse was hot-plugged, we need to&n;&t; * force differential mode now...&n;&t; */
+multiline_comment|/*&n;&t; * If the mouse was hot-plugged, we need to force differential mode&n;&t; * now... However, give it a second to recover from it&squot;s reset.&n;&t; */
 id|printk
 (paren
 id|KERN_NOTICE
 l_string|&quot;%s on %s: Forceing standard packet format and &quot;
 l_string|&quot;streaming mode&bslash;n&quot;
 comma
-id|mouse-&gt;dev.name
+id|mouse-&gt;name
 comma
-id|mouse-&gt;dev.phys
+id|mouse-&gt;phys
 )paren
 suffix:semicolon
 id|mouse-&gt;serio-&gt;write
@@ -1182,6 +1225,11 @@ id|mouse-&gt;serio-&gt;write
 id|mouse-&gt;serio
 comma
 l_char|&squot;S&squot;
+)paren
+suffix:semicolon
+id|mdelay
+(paren
+l_int|50
 )paren
 suffix:semicolon
 id|mouse-&gt;serio-&gt;write
@@ -1246,9 +1294,9 @@ id|KERN_ERR
 l_string|&quot;%s on %s: Dropping a byte to regain &quot;
 l_string|&quot;sync with mouse data stream...&bslash;n&quot;
 comma
-id|mouse-&gt;dev.name
+id|mouse-&gt;name
 comma
-id|mouse-&gt;dev.phys
+id|mouse-&gt;phys
 )paren
 suffix:semicolon
 id|vsxxxaa_drop_bytes
@@ -1641,7 +1689,13 @@ comma
 id|mouse-&gt;dev.evbit
 )paren
 suffix:semicolon
-multiline_comment|/* We can move */
+id|set_bit
+(paren
+id|EV_ABS
+comma
+id|mouse-&gt;dev.evbit
+)paren
+suffix:semicolon
 id|set_bit
 (paren
 id|BTN_LEFT
@@ -1666,7 +1720,7 @@ id|mouse-&gt;dev.keybit
 suffix:semicolon
 id|set_bit
 (paren
-id|BTN_EXTRA
+id|BTN_TOUCH
 comma
 id|mouse-&gt;dev.keybit
 )paren
@@ -1679,7 +1733,6 @@ comma
 id|mouse-&gt;dev.relbit
 )paren
 suffix:semicolon
-multiline_comment|/* We can move in */
 id|set_bit
 (paren
 id|REL_Y
@@ -1687,7 +1740,6 @@ comma
 id|mouse-&gt;dev.relbit
 )paren
 suffix:semicolon
-multiline_comment|/* two dimensions */
 id|set_bit
 (paren
 id|ABS_X
@@ -1695,7 +1747,6 @@ comma
 id|mouse-&gt;dev.absbit
 )paren
 suffix:semicolon
-multiline_comment|/* DEC tablet support */
 id|set_bit
 (paren
 id|ABS_Y
@@ -1745,6 +1796,13 @@ id|mouse
 suffix:semicolon
 id|sprintf
 (paren
+id|mouse-&gt;name
+comma
+l_string|&quot;DEC VSXXX-AA/GA mouse or VSXXX-AB digitizer&quot;
+)paren
+suffix:semicolon
+id|sprintf
+(paren
 id|mouse-&gt;phys
 comma
 l_string|&quot;%s/input0&quot;
@@ -1752,13 +1810,13 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+id|mouse-&gt;dev.name
+op_assign
+id|mouse-&gt;name
+suffix:semicolon
 id|mouse-&gt;dev.phys
 op_assign
 id|mouse-&gt;phys
-suffix:semicolon
-id|mouse-&gt;dev.name
-op_assign
-l_string|&quot;DEC VSXXX-AA/GA mouse or DEC tablet&quot;
 suffix:semicolon
 id|mouse-&gt;dev.id.bustype
 op_assign
@@ -1787,7 +1845,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Request selftest and differential stream mode.&n;&t; */
+multiline_comment|/*&n;&t; * Request selftest. Standard packet format and differential&n;&t; * mode will be requested after the device ID&squot;ed successfully.&n;&t; */
 id|mouse-&gt;serio-&gt;write
 (paren
 id|mouse-&gt;serio
@@ -1796,14 +1854,6 @@ l_char|&squot;T&squot;
 )paren
 suffix:semicolon
 multiline_comment|/* Test */
-id|mouse-&gt;serio-&gt;write
-(paren
-id|mouse-&gt;serio
-comma
-l_char|&squot;R&squot;
-)paren
-suffix:semicolon
-multiline_comment|/* Differential stream */
 id|input_register_device
 (paren
 op_amp
@@ -1815,9 +1865,9 @@ id|printk
 id|KERN_INFO
 l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
-id|mouse-&gt;dev.name
+id|mouse-&gt;name
 comma
-id|serio-&gt;phys
+id|mouse-&gt;phys
 )paren
 suffix:semicolon
 )brace
@@ -1829,19 +1879,20 @@ id|vsxxxaa_dev
 op_assign
 (brace
 dot
-id|interrupt
-op_assign
-id|vsxxxaa_interrupt
-comma
-dot
 id|connect
 op_assign
 id|vsxxxaa_connect
 comma
 dot
+id|interrupt
+op_assign
+id|vsxxxaa_interrupt
+comma
+dot
 id|disconnect
 op_assign
 id|vsxxxaa_disconnect
+comma
 )brace
 suffix:semicolon
 r_int

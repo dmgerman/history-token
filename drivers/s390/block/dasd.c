@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.136 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.139 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -219,6 +219,17 @@ r_sizeof
 r_struct
 id|dasd_device
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* open_count = 0 means device online but not in use */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|device-&gt;open_count
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Get two pages for normal block device operations. */
@@ -2045,6 +2056,15 @@ comma
 l_int|4
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|DASD_CQR_FLAGS_USE_ERP
+comma
+op_amp
+id|cqr-&gt;flags
+)paren
+suffix:semicolon
 id|dasd_get_device
 c_func
 (paren
@@ -2389,6 +2409,15 @@ op_amp
 id|cqr-&gt;magic
 comma
 l_int|4
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|DASD_CQR_FLAGS_USE_ERP
+comma
+op_amp
+id|cqr-&gt;flags
 )paren
 suffix:semicolon
 id|dasd_get_device
@@ -2798,10 +2827,15 @@ id|cqr-&gt;retries
 OG
 l_int|0
 )paren
+(brace
+id|cqr-&gt;retries
+op_decrement
+suffix:semicolon
 id|cqr-&gt;status
 op_assign
 id|DASD_CQR_QUEUED
 suffix:semicolon
+)brace
 r_else
 id|cqr-&gt;status
 op_assign
@@ -3995,6 +4029,25 @@ id|era
 op_assign
 id|dasd_era_none
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|DASD_CQR_FLAGS_USE_ERP
+comma
+op_amp
+id|cqr-&gt;flags
+)paren
+)paren
+id|era
+op_assign
+id|dasd_era_fatal
+suffix:semicolon
+multiline_comment|/* don&squot;t recover this request */
 r_else
 r_if
 c_cond
@@ -7548,9 +7601,10 @@ op_assign
 id|device-&gt;bdev
 ques
 c_cond
-l_int|1
-suffix:colon
 l_int|0
+suffix:colon
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond

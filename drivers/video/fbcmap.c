@@ -969,7 +969,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;fb_set_cmap - set the colormap&n; *&t;@cmap: frame buffer colormap structure&n; *&t;@kspc: boolean, 0 copy local, 1 get_user() function&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Sets the colormap @cmap for a screen of device @info.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; *&n; */
+multiline_comment|/**&n; *&t;fb_set_cmap - set the colormap&n; *&t;@cmap: frame buffer colormap structure&n; *&t;@kspc: boolean, 1 copy local, 0 get_user() function&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Sets the colormap @cmap for a screen of device @info.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; *&n; */
 DECL|function|fb_set_cmap
 r_int
 id|fb_set_cmap

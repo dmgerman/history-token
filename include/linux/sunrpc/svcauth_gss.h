@@ -16,6 +16,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|gss_svc_shutdown
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|svcauth_gss_register_pseudoflavor
 c_func

@@ -4671,6 +4671,11 @@ c_func
 r_void
 )paren
 (brace
+id|gss_svc_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|gss_mech_unregister_all
 c_func
 (paren

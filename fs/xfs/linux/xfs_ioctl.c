@@ -3442,10 +3442,10 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|xfs_fs_freeze
+id|freeze_bdev
 c_func
 (paren
-id|mp
+id|inode-&gt;i_sb-&gt;s_bdev
 )paren
 suffix:semicolon
 r_return
@@ -3468,10 +3468,12 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|xfs_fs_thaw
+id|thaw_bdev
 c_func
 (paren
-id|mp
+id|inode-&gt;i_sb-&gt;s_bdev
+comma
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return

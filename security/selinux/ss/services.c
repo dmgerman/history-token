@@ -1640,20 +1640,10 @@ id|out
 suffix:semicolon
 )brace
 )brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;security_context_to_sid: called before &quot;
-l_string|&quot;initial load_policy on unknown context %s&bslash;n&quot;
-comma
-id|scontext
-)paren
-suffix:semicolon
-id|rc
+op_star
+id|sid
 op_assign
-op_minus
-id|EINVAL
+id|SECINITSID_KERNEL
 suffix:semicolon
 r_goto
 id|out
@@ -4963,15 +4953,6 @@ op_assign
 id|j
 op_plus
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usercon.type
-op_eq
-id|fromcon-&gt;type
-)paren
-r_continue
 suffix:semicolon
 id|mls_for_user_ranges
 c_func

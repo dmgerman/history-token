@@ -748,33 +748,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|show_trace_task
-r_void
-id|show_trace_task
-(paren
-r_struct
-id|task_struct
-op_star
-id|t
-)paren
-(brace
-multiline_comment|/* blarg XXX */
-id|printk
-(paren
-l_string|&quot;show_trace_task: KSP = 0x%lx, USP = 0x%lx, UPC = 0x%lx&bslash;n&quot;
-comma
-id|t-&gt;thread.ksp
-comma
-id|KSTK_ESP
-(paren
-id|t
-)paren
-comma
-id|KSTK_EIP
-(paren
-id|t
-)paren
-)paren
-suffix:semicolon
-)brace
 eof

@@ -399,6 +399,18 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|typedef|vfs_freeze_t
+r_typedef
+r_void
+(paren
+op_star
+id|vfs_freeze_t
+)paren
+(paren
+id|bhv_desc_t
+op_star
+)paren
+suffix:semicolon
 DECL|struct|vfsops
 r_typedef
 r_struct
@@ -474,6 +486,11 @@ id|vfs_force_shutdown_t
 id|vfs_force_shutdown
 suffix:semicolon
 multiline_comment|/* crash and burn */
+DECL|member|vfs_freeze
+id|vfs_freeze_t
+id|vfs_freeze
+suffix:semicolon
+multiline_comment|/* freeze fs for snapshot */
 DECL|typedef|vfsops_t
 )brace
 id|vfsops_t
@@ -507,6 +524,8 @@ DECL|macro|VFS_INIT_VNODE
 mdefine_line|#define VFS_INIT_VNODE(v, vp,b,ul)&t;( vfs_init_vnode(VHEAD(v), vp,b,ul) )
 DECL|macro|VFS_FORCE_SHUTDOWN
 mdefine_line|#define VFS_FORCE_SHUTDOWN(v, fl,f,l)&t;( vfs_force_shutdown(VHEAD(v), fl,f,l) )
+DECL|macro|VFS_FREEZE
+mdefine_line|#define VFS_FREEZE(v)&t;&t;&t;( vfs_freeze(VHEAD(v)) )
 multiline_comment|/*&n; * PVFS&squot;s.  Operates on behavior descriptor pointers.&n; */
 DECL|macro|PVFS_MOUNT
 mdefine_line|#define PVFS_MOUNT(b, ma,cr, rv)&t;((rv) = vfs_mount(b, ma,cr))
@@ -534,6 +553,8 @@ DECL|macro|PVFS_INIT_VNODE
 mdefine_line|#define PVFS_INIT_VNODE(b, vp,b2,ul)&t;( vfs_init_vnode(b, vp,b2,ul) )
 DECL|macro|PVFS_FORCE_SHUTDOWN
 mdefine_line|#define PVFS_FORCE_SHUTDOWN(b, fl,f,l)&t;( vfs_force_shutdown(b, fl,f,l) )
+DECL|macro|PVFS_FREEZE
+mdefine_line|#define PVFS_FREEZE(b)&t;&t;&t;( vfs_freeze(b) )
 r_extern
 r_int
 id|vfs_mount
@@ -734,6 +755,15 @@ r_char
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vfs_freeze
+c_func
+(paren
+id|bhv_desc_t
+op_star
 )paren
 suffix:semicolon
 DECL|struct|bhv_vfsops

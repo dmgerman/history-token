@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_aux.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_AUX_REVISION
-mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.105 $&quot;
+mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.107 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 multiline_comment|/* accumulated log level (module parameter) */
 DECL|variable|loglevel
@@ -4191,63 +4191,6 @@ id|dbf_name
 l_int|20
 )braket
 suffix:semicolon
-multiline_comment|/* debug feature area which records fsf request sequence numbers */
-id|sprintf
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_REQ_DBF_NAME
-l_string|&quot;%s&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|adapter-&gt;req_dbf
-op_assign
-id|debug_register
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_REQ_DBF_INDEX
-comma
-id|ZFCP_REQ_DBF_AREAS
-comma
-id|ZFCP_REQ_DBF_LENGTH
-)paren
-suffix:semicolon
-id|debug_register_view
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-op_amp
-id|debug_hex_ascii_view
-)paren
-suffix:semicolon
-id|debug_set_level
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-id|ZFCP_REQ_DBF_LEVEL
-)paren
-suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|1
-comma
-l_string|&quot;zzz&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* debug feature area which records SCSI command failures (hostbyte) */
 id|rwlock_init
 c_func
@@ -4446,8 +4389,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;req_dbf
-op_logical_and
 id|adapter-&gt;cmd_dbf
 op_logical_and
 id|adapter-&gt;abort_dbf
@@ -4486,12 +4427,6 @@ id|debug_unregister
 c_func
 (paren
 id|adapter-&gt;erp_dbf
-)paren
-suffix:semicolon
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;req_dbf
 )paren
 suffix:semicolon
 id|debug_unregister

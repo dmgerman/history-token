@@ -1522,6 +1522,14 @@ suffix:semicolon
 r_case
 id|RAW3270_IO_STOP
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rq
+)paren
+r_break
+suffix:semicolon
 id|raw3270_halt_io_nolock
 c_func
 (paren
@@ -3774,6 +3782,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|oldview
+op_logical_or
 id|oldview-&gt;fn
 op_member_access_from_pointer
 id|activate

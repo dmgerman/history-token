@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.98 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.100 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -830,11 +830,6 @@ id|qeth_card
 op_star
 id|card
 suffix:semicolon
-DECL|member|tasklet
-r_struct
-id|tasklet_struct
-id|tasklet
-suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -849,11 +844,6 @@ DECL|member|next_buf_to_fill
 r_volatile
 r_int
 id|next_buf_to_fill
-suffix:semicolon
-DECL|member|next_buf_to_flush
-r_volatile
-r_int
-id|next_buf_to_flush
 suffix:semicolon
 multiline_comment|/*&n;&t; * number of buffers that are currently filled (PRIMED)&n;&t; * -&gt; these buffers are hardware-owned&n;&t; */
 DECL|member|used_buffers
@@ -907,11 +897,6 @@ suffix:semicolon
 DECL|member|in_buf_size
 r_int
 id|in_buf_size
-suffix:semicolon
-DECL|member|in_tasklet
-r_struct
-id|tasklet_struct
-id|in_tasklet
 suffix:semicolon
 multiline_comment|/* output */
 DECL|member|no_out_queues

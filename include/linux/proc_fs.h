@@ -19,7 +19,6 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Finally, the dynamically allocatable proc entries are reserved: */
 DECL|macro|PROC_SUPER_MAGIC
 mdefine_line|#define PROC_SUPER_MAGIC 0x9fa0
 multiline_comment|/*&n; * This is not completely implemented yet. The idea is to&n; * create an in-memory tree (like the actual /proc filesystem&n; * tree) of these proc_dir_entries, so that we can dynamically&n; * add new files to /proc.&n; *&n; * The &quot;next&quot; pointer creates a linked list of one /proc directory,&n; * while parent/subdir create the directory structure (every&n; * /proc file has a parent, but &quot;subdir&quot; is NULL for all&n; * non-directory entries).&n; *&n; * &quot;get_info&quot; is called at &quot;read&quot;, while &quot;owner&quot; is used to protect module&n; * from unloading while proc_dir_entry is in use&n; */
