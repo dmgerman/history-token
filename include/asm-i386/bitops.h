@@ -14,7 +14,7 @@ mdefine_line|#define LOCK_PREFIX &quot;&quot;
 macro_line|#endif
 DECL|macro|ADDR
 mdefine_line|#define ADDR (*(volatile long *) addr)
-multiline_comment|/**&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
+multiline_comment|/**&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; *&n; * Note: there are no guarantees that this function will not be reordered&n; * on non x86 architectures, so if you are writting portable code,&n; * make sure not to rely on its reordering guarantees.&n; *&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|set_bit
 r_static
 r_inline
@@ -198,7 +198,7 @@ id|nr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to change&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
+multiline_comment|/**&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to change&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered. It may be&n; * reordered on other architectures than x86.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|change_bit
 r_static
 r_inline
@@ -235,7 +235,7 @@ id|nr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
+multiline_comment|/**&n; * test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It may be reordered on other architectures than x86.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_set_bit
 r_static
 r_inline
@@ -331,7 +331,7 @@ r_return
 id|oldbit
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
+multiline_comment|/**&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It can be reorderdered on other architectures other than x86.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_clear_bit
 r_static
 r_inline
