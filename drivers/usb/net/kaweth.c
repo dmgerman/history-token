@@ -1673,7 +1673,7 @@ suffix:semicolon
 multiline_comment|/****************************************************************&n; *     kaweth_resubmit_rx_urb&n; ****************************************************************/
 DECL|function|kaweth_resubmit_rx_urb
 r_static
-r_void
+r_int
 id|kaweth_resubmit_rx_urb
 c_func
 (paren
@@ -1757,6 +1757,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+id|result
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -2093,6 +2096,9 @@ op_star
 )paren
 id|net-&gt;priv
 suffix:semicolon
+r_int
+id|res
+suffix:semicolon
 id|kaweth_dbg
 c_func
 (paren
@@ -2107,8 +2113,8 @@ c_func
 l_string|&quot;Opening network device.&quot;
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
+id|res
+op_assign
 id|kaweth_resubmit_rx_urb
 c_func
 (paren
@@ -2116,6 +2122,15 @@ id|kaweth
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|FILL_INT_URB
 c_func
@@ -2145,6 +2160,8 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
+id|res
+op_assign
 id|usb_submit_urb
 c_func
 (paren
@@ -2153,6 +2170,23 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+)paren
+(brace
+id|usb_unlink_urb
+c_func
+(paren
+id|kaweth-&gt;rx_urb
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|netif_start_queue
 c_func
 (paren
@@ -2215,8 +2249,6 @@ id|kaweth-&gt;status
 op_and_assign
 op_complement
 id|KAWETH_STATUS_CLOSING
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|printk
 c_func
