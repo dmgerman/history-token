@@ -396,6 +396,12 @@ DECL|member|pci_addr_len
 id|U32
 id|pci_addr_len
 suffix:semicolon
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
 DECL|member|timer
 r_struct
 id|timer_list
@@ -434,11 +440,10 @@ id|PU8
 id|msgbuf
 suffix:semicolon
 multiline_comment|/* Pointer to Lan Api Private Area */
-DECL|member|PLanApiPA
-id|PU8
-id|PLanApiPA
+DECL|member|msgbuf_dma
+id|dma_addr_t
+id|msgbuf_dma
 suffix:semicolon
-multiline_comment|/* Pointer to Lan Api Private Area (aligned) */
 DECL|member|pPab
 id|PPAB
 id|pPab
