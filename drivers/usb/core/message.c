@@ -4172,6 +4172,10 @@ id|err
 op_eq
 op_minus
 id|EPIPE
+op_logical_or
+id|err
+op_eq
+l_int|0
 )paren
 (brace
 id|dev_dbg
@@ -4246,6 +4250,10 @@ id|err
 op_eq
 op_minus
 id|EPIPE
+op_logical_or
+id|err
+op_eq
+l_int|0
 )paren
 (brace
 id|dev_dbg
