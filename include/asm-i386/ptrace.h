@@ -124,6 +124,28 @@ mdefine_line|#define PTRACE_GET_THREAD_AREA    25
 DECL|macro|PTRACE_SET_THREAD_AREA
 mdefine_line|#define PTRACE_SET_THREAD_AREA    26
 macro_line|#ifdef __KERNEL__
+r_struct
+id|task_struct
+suffix:semicolon
+r_extern
+r_void
+id|send_sigtrap
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+id|error_code
+)paren
+suffix:semicolon
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) ((VM_MASK &amp; (regs)-&gt;eflags) || (3 &amp; (regs)-&gt;xcs))
 DECL|macro|instruction_pointer
