@@ -7,7 +7,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwtimer&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_timer_resolution&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Number of bits of resolution in the PM Timer (24 or 32).&n; *&n; * DESCRIPTION: Obtains resolution of the ACPI PM Timer.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_timer_resolution&n; *&n; * PARAMETERS:  Resolution          - Where the resolution is returned&n; *&n; * RETURN:      Status and timer resolution&n; *&n; * DESCRIPTION: Obtains resolution of the ACPI PM Timer (24 or 32 bits).&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_timer_resolution
 id|acpi_get_timer_resolution
@@ -63,7 +63,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_timer&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Current value of the ACPI PM Timer (in ticks).&n; *&n; * DESCRIPTION: Obtains current value of ACPI PM Timer.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_timer&n; *&n; * PARAMETERS:  Ticks               - Where the timer value is returned&n; *&n; * RETURN:      Status and current ticks&n; *&n; * DESCRIPTION: Obtains current value of ACPI PM Timer (in ticks).&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_timer
 id|acpi_get_timer
@@ -112,7 +112,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_timer_duration&n; *&n; * PARAMETERS:  start_ticks&n; *              end_ticks&n; *              time_elapsed&n; *&n; * RETURN:      time_elapsed&n; *&n; * DESCRIPTION: Computes the time elapsed (in microseconds) between two&n; *              PM Timer time stamps, taking into account the possibility of&n; *              rollovers, the timer resolution, and timer frequency.&n; *&n; *              The PM Timer&squot;s clock ticks at roughly 3.6 times per&n; *              _microsecond_, and its clock continues through Cx state&n; *              transitions (unlike many CPU timestamp counters) -- making it&n; *              a versatile and accurate timer.&n; *&n; *              Note that this function accommodates only a single timer&n; *              rollover.  Thus for 24-bit timers, this function should only&n; *              be used for calculating durations less than ~4.6 seconds&n; *              (~20 minutes for 32-bit timers) -- calculations below&n; *&n; *              2**24 Ticks / 3,600,000 Ticks/Sec = 4.66 sec&n; *              2**32 Ticks / 3,600,000 Ticks/Sec = 1193 sec or 19.88 minutes&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_timer_duration&n; *&n; * PARAMETERS:  start_ticks         - Starting timestamp&n; *              end_ticks           - End timestamp&n; *              time_elapsed        - Where the elapsed time is returned&n; *&n; * RETURN:      Status and time_elapsed&n; *&n; * DESCRIPTION: Computes the time elapsed (in microseconds) between two&n; *              PM Timer time stamps, taking into account the possibility of&n; *              rollovers, the timer resolution, and timer frequency.&n; *&n; *              The PM Timer&squot;s clock ticks at roughly 3.6 times per&n; *              _microsecond_, and its clock continues through Cx state&n; *              transitions (unlike many CPU timestamp counters) -- making it&n; *              a versatile and accurate timer.&n; *&n; *              Note that this function accommodates only a single timer&n; *              rollover.  Thus for 24-bit timers, this function should only&n; *              be used for calculating durations less than ~4.6 seconds&n; *              (~20 minutes for 32-bit timers) -- calculations below:&n; *&n; *              2**24 Ticks / 3,600,000 Ticks/Sec = 4.66 sec&n; *              2**32 Ticks / 3,600,000 Ticks/Sec = 1193 sec or 19.88 minutes&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_timer_duration
 id|acpi_get_timer_duration
@@ -161,7 +161,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Compute Tick Delta:&n;&t; * -------------------&n;&t; * Handle (max one) timer rollovers on 24- versus 32-bit timers.&n;&t; */
+multiline_comment|/*&n;&t; * Compute Tick Delta:&n;&t; * Handle (max one) timer rollovers on 24- versus 32-bit timers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -240,7 +240,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Compute Duration:&n;&t; * -----------------&n;&t; *&n;&t; * Requires a 64-bit divide:&n;&t; *&n;&t; * time_elapsed = (delta_ticks * 1000000) / PM_TIMER_FREQUENCY;&n;&t; */
+multiline_comment|/*&n;&t; * Compute Duration (Requires a 64-bit divide):&n;&t; *&n;&t; * time_elapsed = (delta_ticks * 1000000) / PM_TIMER_FREQUENCY;&n;&t; */
 id|normalized_ticks.full
 op_assign
 (paren
