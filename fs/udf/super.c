@@ -593,11 +593,6 @@ op_assign
 id|udf_write_inode
 comma
 dot
-id|put_inode
-op_assign
-id|udf_put_inode
-comma
-dot
 id|delete_inode
 op_assign
 id|udf_delete_inode
