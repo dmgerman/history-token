@@ -304,7 +304,7 @@ suffix:semicolon
 multiline_comment|/* used with stateowner-&gt;so_id &n;&t;&t;&t;&t;&t;     * for stateid_hashtbl hash */
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* nfs4_stateid can either be an open stateid or (eventually) a lock stateid&n;*&n;* (open)nfs4_stateid: one per (open)nfs4_stateowner, nfs4_file&n;*&n;* &t;st_hash: stateid_hashtbl[] entry or lockstateid_hashtbl entry&n;* &t;st_perfile: file_hashtbl[] entry.&n;* &t;st_perfile_state: nfs4_stateowner-&gt;so_perfilestate&n;*       st_perlockowner: (open stateid) list of lock nfs4_stateowners&n;* &t;st_share_access: used only for open stateid&n;* &t;st_share_deny: used only for open stateid&n;*/
+multiline_comment|/*&n;* nfs4_stateid can either be an open stateid or (eventually) a lock stateid&n;*&n;* (open)nfs4_stateid: one per (open)nfs4_stateowner, nfs4_file&n;*&n;* &t;st_hash: stateid_hashtbl[] entry or lockstateid_hashtbl entry&n;* &t;st_perfile: file_hashtbl[] entry.&n;* &t;st_perfile_state: nfs4_stateowner-&gt;so_perfilestate&n;*       st_perlockowner: (open stateid) list of lock nfs4_stateowners&n;* &t;st_access_bmap: used only for open stateid&n;* &t;st_deny_bmap: used only for open stateid&n;*/
 DECL|struct|nfs4_stateid
 r_struct
 id|nfs4_stateid
@@ -354,15 +354,15 @@ DECL|member|st_vfs_set
 r_int
 id|st_vfs_set
 suffix:semicolon
-DECL|member|st_share_access
+DECL|member|st_access_bmap
 r_int
 r_int
-id|st_share_access
+id|st_access_bmap
 suffix:semicolon
-DECL|member|st_share_deny
+DECL|member|st_deny_bmap
 r_int
 r_int
-id|st_share_deny
+id|st_deny_bmap
 suffix:semicolon
 )brace
 suffix:semicolon
