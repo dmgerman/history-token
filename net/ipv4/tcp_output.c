@@ -4338,7 +4338,7 @@ id|tp-&gt;sack_ok
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Yeah, we have to make difficult choice between forward transmission&n;&t; * and retransmission... Both ways have their merits...&n;&t; *&n;&t; * For now we do not retrnamsit anything, while we have some new&n;&t; * segments to send.&n;&t; */
+multiline_comment|/* Yeah, we have to make difficult choice between forward transmission&n;&t; * and retransmission... Both ways have their merits...&n;&t; *&n;&t; * For now we do not retransmit anything, while we have some new&n;&t; * segments to send.&n;&t; */
 r_if
 c_cond
 (paren
