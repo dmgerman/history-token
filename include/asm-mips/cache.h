@@ -41,5 +41,7 @@ mdefine_line|#define L1_CACHE_BYTES &t;&t;32&t;/* A guess */
 macro_line|#endif
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES&t;&t;L1_CACHE_BYTES
+DECL|macro|L1_CACHE_SHIFT_MAX
+mdefine_line|#define L1_CACHE_SHIFT_MAX 5&t;/* largest L1 which this arch supports */
 macro_line|#endif /* _ASM_CACHE_H */
 eof
