@@ -9476,6 +9476,24 @@ id|VIA_DXS_ENABLE
 comma
 multiline_comment|/* EPoX EP-8K9A */
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1849
+comma
+dot
+id|device
+op_assign
+l_int|0x3059
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_DISABLE
+)brace
+comma
+multiline_comment|/* ASRock K7VM2 */
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
