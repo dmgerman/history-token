@@ -453,11 +453,6 @@ r_int
 id|ttport
 suffix:semicolon
 multiline_comment|/* device port on that tt hub */
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
-suffix:semicolon
-multiline_comment|/* Reference count */
 DECL|member|serialize
 r_struct
 id|semaphore

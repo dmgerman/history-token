@@ -1,5 +1,12 @@
 multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
+macro_line|#else
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -10,13 +17,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#ifdef CONFIG_USB_DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -1829,6 +1829,13 @@ id|dev
 )paren
 )paren
 suffix:semicolon
+id|device_initialize
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
 id|usb_bus_get
 c_func
 (paren
@@ -1855,15 +1862,6 @@ suffix:semicolon
 id|dev-&gt;parent
 op_assign
 id|parent
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|dev-&gt;refcnt
-comma
-l_int|1
-)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -1896,7 +1894,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_get_dev - increments the reference count of the device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them by calling usb_put_dev(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
+multiline_comment|/**&n; * usb_get_dev - increments the reference count of the usb device structure&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them by calling usb_put_dev(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
 DECL|function|usb_get_dev
 r_struct
 id|usb_device
@@ -1909,27 +1907,47 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|tmp
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev
 )paren
-(brace
-id|atomic_inc
+r_return
+l_int|NULL
+suffix:semicolon
+id|tmp
+op_assign
+id|get_device
+c_func
 (paren
 op_amp
-id|dev-&gt;refcnt
+id|dev-&gt;dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+)paren
 r_return
-id|dev
+id|to_usb_device
+c_func
+(paren
+id|tmp
+)paren
 suffix:semicolon
-)brace
+r_else
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_put_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
+multiline_comment|/**&n; * usb_put_dev - release a use of the usb device structure&n; * @dev: device that&squot;s been disconnected&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; */
 DECL|function|usb_put_dev
 r_void
 id|usb_put_dev
@@ -1944,43 +1962,82 @@ id|dev
 r_if
 c_cond
 (paren
-id|atomic_dec_and_test
+id|dev
+)paren
+id|put_device
 c_func
 (paren
 op_amp
-id|dev-&gt;refcnt
+id|dev-&gt;dev
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_release_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; *&n; * Will be called only by the device core when all users of this usb device are&n; * done.&n; */
+DECL|function|usb_release_dev
+r_static
+r_void
+id|usb_release_dev
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|udev
+suffix:semicolon
+id|udev
+op_assign
+id|to_usb_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;bus-&gt;op-&gt;deallocate
+op_logical_neg
+id|udev
 )paren
-id|dev-&gt;bus-&gt;op
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|udev-&gt;bus
+op_logical_and
+id|udev-&gt;bus-&gt;op
+op_logical_and
+id|udev-&gt;bus-&gt;op-&gt;deallocate
+)paren
+id|udev-&gt;bus-&gt;op
 op_member_access_from_pointer
 id|deallocate
 c_func
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 id|usb_destroy_configuration
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 id|usb_bus_put
 (paren
-id|dev-&gt;bus
+id|udev-&gt;bus
 )paren
 suffix:semicolon
 id|kfree
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; * usb_get_current_frame_number - return current bus frame number&n; * @dev: the device whose bus is being queried&n; *&n; * Returns the current frame number for the USB host controller&n; * used with the given USB device.  This can be used when scheduling&n; * isochronous requests.&n; *&n; * Note that different kinds of host controller have different&n; * &quot;scheduling horizons&quot;.  While one type might support scheduling only&n; * 32 frames into the future, others could support scheduling up to&n; * 1024 frames into the future.&n; */
 DECL|function|usb_get_current_frame_number
@@ -2720,6 +2777,16 @@ op_assign
 op_amp
 id|usb_bus_type
 suffix:semicolon
+id|dev-&gt;dev.release
+op_assign
+id|usb_release_dev
+suffix:semicolon
+id|usb_get_dev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3208,7 +3275,7 @@ macro_line|#endif
 multiline_comment|/* put into sysfs, with device and config specific files */
 id|err
 op_assign
-id|device_register
+id|device_add
 (paren
 op_amp
 id|dev-&gt;dev
@@ -3353,7 +3420,7 @@ comma
 id|interface-&gt;dev.bus_id
 )paren
 suffix:semicolon
-id|device_register
+id|device_add
 (paren
 op_amp
 id|interface-&gt;dev
