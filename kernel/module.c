@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -4154,7 +4155,7 @@ id|i
 dot
 id|sh_name
 comma
-l_string|&quot;.setup.init&quot;
+l_string|&quot;__param&quot;
 )paren
 op_eq
 l_int|0
@@ -4960,8 +4961,7 @@ l_int|0
 r_goto
 id|cleanup
 suffix:semicolon
-macro_line|#if 0 /* Needs param support */
-multiline_comment|/* Size of section 0 is 0, so this works well */
+multiline_comment|/* Size of section 0 is 0, so this works well if no params */
 id|err
 op_assign
 id|parse_args
@@ -5007,7 +5007,6 @@ l_int|0
 r_goto
 id|cleanup
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get rid of temporary copy */
 id|vfree
 c_func
