@@ -1902,6 +1902,19 @@ c_func
 id|result
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Critical temperature reached (%ld C), shutting down.&bslash;n&quot;
+comma
+id|KELVIN_TO_CELSIUS
+c_func
+(paren
+id|tz-&gt;temperature
+)paren
+)paren
+suffix:semicolon
 id|acpi_bus_generate_event
 c_func
 (paren
