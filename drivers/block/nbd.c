@@ -1287,7 +1287,7 @@ id|req
 id|FAIL
 c_func
 (paren
-l_string|&quot;que not empty but no request?&quot;
+l_string|&quot;queue not empty but no request?&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (8/3/2002) ganesh&n; * &t;The ipaq sometimes emits a &squot;&bslash;0&squot; before the CLIENT string. At this&n; * &t;point of time, the ppp ldisc is not yet attached to the tty, so&n; * &t;n_tty echoes &quot;^ &quot; to the ipaq, which messes up the chat. In 2.5.6-pre2&n; * &t;this causes a panic because echo_char() tries to sleep in interrupt&n; * &t;context.&n; * &t;The fix is to tell the upper layers that this is a raw device so that&n; * &t;echoing is suppressed. Thanks to Lyle Lindholm for a detailed bug&n; * &t;report.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
+multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (19/3/2002) ganesh&n; *&t;Don&squot;t submit urbs while holding spinlocks. Not strictly necessary&n; *&t;in 2.5.x.&n; *&n; * (8/3/2002) ganesh&n; * &t;The ipaq sometimes emits a &squot;&bslash;0&squot; before the CLIENT string. At this&n; * &t;point of time, the ppp ldisc is not yet attached to the tty, so&n; * &t;n_tty echoes &quot;^ &quot; to the ipaq, which messes up the chat. In 2.5.6-pre2&n; * &t;this causes a panic because echo_char() tries to sleep in interrupt&n; * &t;context.&n; * &t;The fix is to tell the upper layers that this is a raw device so that&n; * &t;echoing is suppressed. Thanks to Lyle Lindholm for a detailed bug&n; * &t;report.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -138,8 +138,8 @@ id|count
 )paren
 suffix:semicolon
 r_static
-r_int
-id|ipaq_write_flush
+r_void
+id|ipaq_write_gather
 c_func
 (paren
 r_struct
@@ -409,17 +409,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 id|bytes_in
 op_assign
 l_int|0
@@ -600,7 +589,7 @@ op_add_assign
 id|PACKET_SIZE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Force low latency on. This will immediately push data to the line&n;&t;&t; * discipline instead of queueing.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Force low latency on. This will immediately push data to the line&n;&t; * discipline instead of queueing.&n;&t; */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
@@ -613,7 +602,7 @@ id|port-&gt;tty-&gt;real_raw
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Lose the small buffers usbserial provides. Make larger ones.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Lose the small buffers usbserial provides. Make larger ones.&n;&t; */
 id|kfree
 c_func
 (paren
@@ -745,7 +734,7 @@ id|result
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Send out two control messages observed in win98 sniffs. Not sure what&n;&t;&t; * they do.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Send out two control messages observed in win98 sniffs. Not sure what&n;&t; * they do.&n;&t; */
 id|result
 op_assign
 id|usb_control_msg
@@ -845,7 +834,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 id|result
@@ -949,18 +937,7 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * shut down bulk read and write&n;&t;&t; */
+multiline_comment|/*&n;&t; * shut down bulk read and write&n;&t; */
 id|usb_unlink_urb
 c_func
 (paren
@@ -991,11 +968,6 @@ r_private
 op_assign
 l_int|NULL
 suffix:semicolon
-id|port-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
 multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
 )brace
@@ -1587,15 +1559,12 @@ id|priv-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
-id|result
-op_assign
-id|ipaq_write_flush
+id|ipaq_write_gather
 c_func
 (paren
 id|port
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1605,14 +1574,53 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|result
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+id|port-&gt;write_urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - failed submitting write urb, error %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|write_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 r_return
 id|result
 suffix:semicolon
 )brace
-DECL|function|ipaq_write_flush
+DECL|function|ipaq_write_gather
 r_static
-r_int
-id|ipaq_write_flush
+r_void
+id|ipaq_write_gather
 c_func
 (paren
 r_struct
@@ -1646,8 +1654,6 @@ r_int
 id|count
 comma
 id|room
-comma
-id|result
 suffix:semicolon
 r_struct
 id|ipaq_packet
@@ -1684,8 +1690,6 @@ l_string|&quot; - flushing while urb is active !&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EAGAIN
 suffix:semicolon
 )brace
 id|room
@@ -1842,34 +1846,7 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|result
-op_assign
-id|usb_submit_urb
-c_func
-(paren
-id|urb
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-)paren
-(brace
-id|err
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-)brace
 r_return
-id|result
 suffix:semicolon
 )brace
 DECL|function|ipaq_write_bulk_callback
@@ -1913,6 +1890,9 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|result
 suffix:semicolon
 r_if
 c_cond
@@ -1974,20 +1954,12 @@ id|priv-&gt;queue
 )paren
 )paren
 (brace
-id|ipaq_write_flush
+id|ipaq_write_gather
 c_func
 (paren
 id|port
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|priv-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1997,6 +1969,49 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|result
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+id|port-&gt;write_urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - failed submitting write urb, error %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|priv-&gt;active
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|write_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 id|queue_task
 c_func
 (paren
@@ -2263,57 +2278,11 @@ op_star
 id|serial
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|dbg
 (paren
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* stop reads and writes on all ports */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|serial-&gt;num_ports
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|ipaq_close
-c_func
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 DECL|function|ipaq_init
 r_static

@@ -1,9 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/filesystems.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  table of configured filesystems&n; */
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Handling of filesystem drivers list.&n; * Rules:&n; *&t;Inclusion to/removals from/scanning of list are protected by spinlock.&n; *&t;During the unload module must call unregister_filesystem().&n; *&t;We can access the fields of list element if:&n; *&t;&t;1) spinlock is held or&n; *&t;&t;2) we hold the reference to the module.&n; *&t;The latter can be guaranteed by call of try_inc_mod_count(); if it&n; *&t;returned 0 we must skip the element, otherwise we got the reference.&n; *&t;Once the reference is obtained we can drop the spinlock.&n; */

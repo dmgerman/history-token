@@ -325,6 +325,7 @@ id|maxlvt
 OG
 l_int|3
 )paren
+multiline_comment|/* Due to Pentium errata 3AP and 11AP. */
 id|apic_write
 c_func
 (paren
@@ -1416,6 +1417,11 @@ r_int
 r_int
 id|apic_tdcr
 suffix:semicolon
+DECL|member|apic_thmr
+r_int
+r_int
+id|apic_thmr
+suffix:semicolon
 DECL|variable|apic_pm_state
 )brace
 id|apic_pm_state
@@ -1550,6 +1556,14 @@ id|apic_read
 c_func
 (paren
 id|APIC_TDCR
+)paren
+suffix:semicolon
+id|apic_pm_state.apic_thmr
+op_assign
+id|apic_read
+c_func
+(paren
+id|APIC_LVTTHMR
 )paren
 suffix:semicolon
 id|__save_flags
@@ -1727,6 +1741,14 @@ c_func
 id|APIC_LVT1
 comma
 id|apic_pm_state.apic_lvt1
+)paren
+suffix:semicolon
+id|apic_write
+c_func
+(paren
+id|APIC_LVTTHMR
+comma
+id|apic_pm_state.apic_thmr
 )paren
 suffix:semicolon
 id|apic_write

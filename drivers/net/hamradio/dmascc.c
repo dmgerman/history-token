@@ -975,6 +975,12 @@ id|MAX_NUM_DEVS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module
@@ -5387,6 +5393,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|priv-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|priv-&gt;stats.rx_packets
 op_increment

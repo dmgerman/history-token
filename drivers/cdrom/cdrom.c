@@ -3879,6 +3879,10 @@ multiline_comment|/* Misc */
 r_case
 id|DVD_INVALIDATE_AGID
 suffix:colon
+id|cgc.quiet
+op_assign
+l_int|1
+suffix:semicolon
 id|cdinfo
 c_func
 (paren

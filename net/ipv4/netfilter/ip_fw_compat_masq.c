@@ -490,7 +490,7 @@ id|ret
 suffix:semicolon
 id|protocol
 op_assign
-id|find_proto
+id|ip_ct_find_proto
 c_func
 (paren
 id|iph-&gt;protocol

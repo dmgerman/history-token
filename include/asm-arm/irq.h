@@ -15,6 +15,9 @@ macro_line|#ifndef NO_IRQ
 DECL|macro|NO_IRQ
 mdefine_line|#define NO_IRQ&t;((unsigned int)(-1))
 macro_line|#endif
+r_struct
+id|irqaction
+suffix:semicolon
 DECL|macro|disable_irq_nosync
 mdefine_line|#define disable_irq_nosync(i) disable_irq(i)
 r_extern
@@ -66,6 +69,18 @@ comma
 r_int
 r_int
 id|type
+)paren
+suffix:semicolon
+r_int
+id|setup_irq
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|irqaction
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif

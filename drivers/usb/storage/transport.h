@@ -138,7 +138,7 @@ DECL|macro|US_BULK_RESET_REQUEST
 mdefine_line|#define US_BULK_RESET_REQUEST&t;0xff
 DECL|macro|US_BULK_GET_MAX_LUN
 mdefine_line|#define US_BULK_GET_MAX_LUN&t;0xfe
-multiline_comment|/*&n; * us_bulk_transfer() return codes&n; */
+multiline_comment|/*&n; * usb_stor_transfer() return codes&n; */
 DECL|macro|US_BULK_TRANSFER_GOOD
 mdefine_line|#define US_BULK_TRANSFER_GOOD&t;&t;0  /* good transfer                 */
 DECL|macro|US_BULK_TRANSFER_SHORT

@@ -2742,7 +2742,13 @@ l_string|&quot;MODE=%c, ITEM_POS=%d POS_IN_ITEM=%d&bslash;n&quot;
 l_string|&quot;=====================================================================&bslash;n&quot;
 l_string|&quot;* h *    S    *    L    *    R    *   F   *   FL  *   FR  *  CFL  *  CFR  *&bslash;n&quot;
 comma
-id|tb-&gt;tb_sb-&gt;u.reiserfs_sb.s_do_balance
+id|REISERFS_SB
+c_func
+(paren
+id|tb-&gt;tb_sb
+)paren
+op_member_access_from_pointer
+id|s_do_balance
 comma
 id|tb-&gt;tb_mode
 comma
@@ -3644,6 +3650,6 @@ op_star
 id|s
 )paren
 (brace
-multiline_comment|/*&n;  printk (&quot;reiserfs_put_super: session statistics: balances %d, fix_nodes %d, &bslash;&n;bmap with search %d, without %d, dir2ind %d, ind2dir %d&bslash;n&quot;,&n;&t;  s-&gt;u.reiserfs_sb.s_do_balance, s-&gt;u.reiserfs_sb.s_fix_nodes,&n;&t;  s-&gt;u.reiserfs_sb.s_bmaps, s-&gt;u.reiserfs_sb.s_bmaps_without_search,&n;&t;  s-&gt;u.reiserfs_sb.s_direct2indirect, s-&gt;u.reiserfs_sb.s_indirect2direct);&n;  */
+multiline_comment|/*&n;  printk (&quot;reiserfs_put_super: session statistics: balances %d, fix_nodes %d, &bslash;&n;bmap with search %d, without %d, dir2ind %d, ind2dir %d&bslash;n&quot;,&n;&t;  REISERFS_SB(s)-&gt;s_do_balance, REISERFS_SB(s)-&gt;s_fix_nodes,&n;&t;  REISERFS_SB(s)-&gt;s_bmaps, REISERFS_SB(s)-&gt;s_bmaps_without_search,&n;&t;  REISERFS_SB(s)-&gt;s_direct2indirect, REISERFS_SB(s)-&gt;s_indirect2direct);&n;  */
 )brace
 eof

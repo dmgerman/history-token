@@ -5710,7 +5710,15 @@ l_int|0xe0
 id|printk
 c_func
 (paren
-l_string|&quot;Disabling broken memory write queue.&bslash;n&quot;
+l_string|&quot;Disabling broken memory write queue: [%02x] %02x-&gt;%02x&bslash;n&quot;
+comma
+id|where
+comma
+id|v
+comma
+id|v
+op_amp
+l_int|0x1f
 )paren
 suffix:semicolon
 id|v

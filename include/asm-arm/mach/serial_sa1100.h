@@ -113,7 +113,7 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_SA1100) &amp;&amp; !defined(CONFIG_SERIAL_SA1100_OLD)
+macro_line|#ifdef CONFIG_SERIAL_SA1100
 r_void
 id|sa1100_register_uart_fns
 c_func
@@ -141,11 +141,4 @@ mdefine_line|#define sa1100_register_uart_fns(fns) do { } while (0)
 DECL|macro|sa1100_register_uart
 mdefine_line|#define sa1100_register_uart(idx,port) do { } while (0)
 macro_line|#endif
-r_void
-id|sa1100_uart1_altgpio
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 eof

@@ -197,13 +197,7 @@ id|drive-&gt;io_32bit
 op_assign
 l_int|1
 suffix:semicolon
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|drives
+id|drive-&gt;channel-&gt;drives
 (braket
 op_logical_neg
 id|drive-&gt;select.b.unit
@@ -427,7 +421,7 @@ id|ide_hwifs
 l_int|1
 )braket
 dot
-id|channel
+id|unit
 op_assign
 l_int|1
 suffix:semicolon

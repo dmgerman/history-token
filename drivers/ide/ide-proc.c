@@ -416,7 +416,8 @@ op_star
 id|data
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
@@ -638,7 +639,8 @@ op_star
 id|data
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
@@ -725,7 +727,8 @@ op_star
 id|data
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
@@ -739,7 +742,7 @@ id|page
 l_int|0
 )braket
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_char|&squot;1&squot;
@@ -2295,7 +2298,8 @@ r_void
 id|create_proc_ide_drives
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -2471,7 +2475,8 @@ r_void
 id|destroy_proc_ide_device
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 comma
@@ -2541,7 +2546,8 @@ r_void
 id|destroy_proc_ide_drives
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -2670,7 +2676,8 @@ id|h
 op_increment
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
@@ -2759,7 +2766,8 @@ id|h
 op_increment
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign

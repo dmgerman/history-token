@@ -17179,8 +17179,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dev-&gt;rmem_start
-op_assign
 id|dev-&gt;mem_start
 op_assign
 (paren
@@ -17194,8 +17192,6 @@ comma
 id|req.Size
 )paren
 suffix:semicolon
-id|dev-&gt;rmem_end
-op_assign
 id|dev-&gt;mem_end
 op_assign
 id|dev-&gt;mem_start

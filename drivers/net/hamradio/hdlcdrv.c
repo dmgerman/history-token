@@ -3924,6 +3924,12 @@ c_func
 l_string|&quot;Packet Radio network interface HDLC encoder/decoder&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|hdlcdrv_init_driver
 id|module_init
 c_func

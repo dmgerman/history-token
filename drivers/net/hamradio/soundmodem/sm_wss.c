@@ -26,7 +26,7 @@ mdefine_line|#define put_user(x,ptr) ({ __put_user((unsigned long)(x),(ptr),size
 DECL|macro|get_user
 mdefine_line|#define get_user(x,ptr) ({ x = ((__typeof__(*(ptr)))__get_user((ptr),sizeof(*(ptr)))); 0; })
 DECL|function|copy_from_user
-r_extern
+r_static
 r_inline
 r_int
 id|copy_from_user
@@ -82,7 +82,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|copy_to_user
-r_extern
+r_static
 r_inline
 r_int
 id|copy_to_user

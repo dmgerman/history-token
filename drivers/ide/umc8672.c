@@ -453,13 +453,7 @@ id|hwgroup
 op_assign
 id|ide_hwifs
 (braket
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|index
+id|drive-&gt;channel-&gt;index
 op_xor
 l_int|1
 )braket
@@ -762,7 +756,7 @@ id|ide_hwifs
 l_int|1
 )braket
 dot
-id|channel
+id|unit
 op_assign
 l_int|1
 suffix:semicolon

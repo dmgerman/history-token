@@ -28,18 +28,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &quot;cosa.h&quot;
-multiline_comment|/* Linux version stuff */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-DECL|typedef|wait_queue_head_t
-r_typedef
-r_struct
-id|wait_queue
-op_star
-id|wait_queue_head_t
-suffix:semicolon
-DECL|macro|DECLARE_WAITQUEUE
-mdefine_line|#define DECLARE_WAITQUEUE(wait, current) &bslash;&n;&t;struct wait_queue wait = { current, NULL }
-macro_line|#endif
 multiline_comment|/* Maximum length of the identification string. */
 DECL|macro|COSA_MAX_ID_STRING
 mdefine_line|#define COSA_MAX_ID_STRING&t;128

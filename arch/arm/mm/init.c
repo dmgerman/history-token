@@ -1876,6 +1876,7 @@ id|s
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing %s memory: %dK&bslash;n&quot;
 comma
 id|s

@@ -24,8 +24,6 @@ DECL|macro|cpu_cache_clean_invalidate_all
 mdefine_line|#define cpu_cache_clean_invalidate_all&t;__cpu_fn(CPU_NAME,_cache_clean_invalidate_all)
 DECL|macro|cpu_cache_clean_invalidate_range
 mdefine_line|#define cpu_cache_clean_invalidate_range __cpu_fn(CPU_NAME,_cache_clean_invalidate_range)
-DECL|macro|cpu_flush_ram_page
-mdefine_line|#define cpu_flush_ram_page&t;&t;__cpu_fn(CPU_NAME,_flush_ram_page)
 DECL|macro|cpu_dcache_invalidate_range
 mdefine_line|#define cpu_dcache_invalidate_range&t;__cpu_fn(CPU_NAME,_dcache_invalidate_range)
 DECL|macro|cpu_dcache_clean_range
@@ -118,16 +116,6 @@ id|end
 comma
 r_int
 id|flags
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_flush_ram_page
-c_func
-(paren
-r_void
-op_star
-id|virt_page
 )paren
 suffix:semicolon
 r_extern

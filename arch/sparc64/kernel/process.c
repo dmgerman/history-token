@@ -2168,6 +2168,12 @@ c_cond
 id|t-&gt;task-&gt;mm
 )paren
 (brace
+r_int
+r_int
+id|pgd_cache
+op_assign
+l_int|0UL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2194,10 +2200,6 @@ id|mm-&gt;pgd
 (braket
 l_int|0
 )braket
-suffix:semicolon
-r_int
-r_int
-id|pgd_cache
 suffix:semicolon
 r_if
 c_cond
@@ -2258,6 +2260,7 @@ id|pgd0
 op_lshift
 l_int|11UL
 suffix:semicolon
+)brace
 id|__asm__
 id|__volatile__
 c_func
@@ -2283,7 +2286,6 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 id|set_thread_wsaved
 c_func

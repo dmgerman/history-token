@@ -2144,10 +2144,12 @@ c_func
 id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
-id|invalidate_buffers
+id|invalidate_bdev
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;b_rdev
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|down

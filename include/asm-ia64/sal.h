@@ -633,23 +633,23 @@ mdefine_line|#define&t;SAL_MC_PARAM_BINIT_ESCALATE&t;0x10
 multiline_comment|/*&n;** Definition of the SAL Error Log from the SAL spec&n;*/
 multiline_comment|/* SAL Error Record Section GUID Definitions */
 DECL|macro|SAL_PROC_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PROC_DEV_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf1, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PROC_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID ( 0xe429faf1, 0x3cb7, 0x11d4,  0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_MEM_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_MEM_DEV_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf2, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_MEM_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf2, 0x3cb7, 0x11d4,  0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_SEL_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_SEL_DEV_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf3, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_SEL_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf3, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_PCI_BUS_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_PCI_BUS_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf4, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_PCI_BUS_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf4, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_SMBIOS_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_SMBIOS_DEV_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf5, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_SMBIOS_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf5, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_PCI_COMP_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_PCI_COMP_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf6, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_PCI_COMP_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf6, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_SPECIFIC_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_SPECIFIC_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf7, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_SPECIFIC_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf7, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_HOST_CTLR_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_HOST_CTLR_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf8, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_HOST_CTLR_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf8, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SAL_PLAT_BUS_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_BUS_ERR_SECT_GUID  &bslash;&n;    ((efi_guid_t) { 0xe429faf9, 0x3cb7, 0x11d4, { 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 }} )
+mdefine_line|#define SAL_PLAT_BUS_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf9, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|MAX_CACHE_ERRORS
 mdefine_line|#define MAX_CACHE_ERRORS&t;&t;&t;6
 DECL|macro|MAX_TLB_ERRORS

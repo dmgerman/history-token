@@ -2544,6 +2544,11 @@ r_struct
 id|smb_fattr
 id|fattr
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|smb_revalidate_inode
@@ -2970,6 +2975,11 @@ id|smb_refresh_inode
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

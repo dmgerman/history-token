@@ -1566,9 +1566,17 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|timeout
+)paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -6159,6 +6167,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Yam amateur radio modem driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|yam_init_driver

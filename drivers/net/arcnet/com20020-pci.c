@@ -96,6 +96,12 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|com20020pci_open_close
 r_static
 r_void
@@ -812,6 +818,7 @@ c_func
 (paren
 id|com20020pci_remove
 )paren
+comma
 )brace
 suffix:semicolon
 DECL|function|com20020pci_init

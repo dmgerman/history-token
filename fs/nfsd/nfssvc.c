@@ -1208,12 +1208,20 @@ id|svc_version
 id|nfsd_version2
 op_assign
 (brace
+id|vs_vers
+suffix:colon
 l_int|2
 comma
+id|vs_nproc
+suffix:colon
 l_int|18
 comma
+id|vs_proc
+suffix:colon
 id|nfsd_procedures2
 comma
+id|vs_dispatch
+suffix:colon
 id|nfsd_dispatch
 )brace
 suffix:semicolon
@@ -1225,12 +1233,20 @@ id|svc_version
 id|nfsd_version3
 op_assign
 (brace
+id|vs_vers
+suffix:colon
 l_int|3
 comma
+id|vs_nproc
+suffix:colon
 l_int|22
 comma
+id|vs_proc
+suffix:colon
 id|nfsd_procedures3
 comma
+id|vs_dispatch
+suffix:colon
 id|nfsd_dispatch
 )brace
 suffix:semicolon
@@ -1267,25 +1283,40 @@ id|svc_program
 id|nfsd_program
 op_assign
 (brace
+id|pg_prog
+suffix:colon
 id|NFS_PROGRAM
 comma
 multiline_comment|/* program number */
+id|pg_lovers
+suffix:colon
 l_int|2
 comma
+singleline_comment|// version
+id|pg_hivers
+suffix:colon
 id|NFSD_NRVERS
 op_minus
 l_int|1
 comma
-multiline_comment|/* version range */
+singleline_comment|// range
+id|pg_nvers
+suffix:colon
 id|NFSD_NRVERS
 comma
 multiline_comment|/* nr of entries in nfsd_version */
+id|pg_vers
+suffix:colon
 id|nfsd_version
 comma
 multiline_comment|/* version table */
+id|pg_name
+suffix:colon
 l_string|&quot;nfsd&quot;
 comma
 multiline_comment|/* program name */
+id|pg_stats
+suffix:colon
 op_amp
 id|nfsd_svcstats
 comma

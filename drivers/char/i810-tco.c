@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;i810-tco 0.02:&t;TCO timer driver for i810 chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i810/i815 chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the 82801AA (82801AB) chip,&n; *&t;see intel documentation from http://developer.intel.com,&n; *&t;order number 290655-003&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *      0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; */
+multiline_comment|/*&n; *&t;i810-tco 0.03:&t;TCO timer driver for i810 chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i810/i815 chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the 82801AA (82801AB) chip,&n; *&t;see intel documentation from http://developer.intel.com,&n; *&t;order number 290655-003&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *      0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      0.03 Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *           Didn&squot;t add timeout option as i810_margin already exists.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -46,6 +46,47 @@ id|MODULE_PARM
 id|i810_margin
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|i810_margin
+comma
+l_string|&quot;Watchdog timeout in steps of 0.6sec, 2&lt;n&lt;64. Default = 50 (30 seconds)&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Timer active flag&n; */
@@ -380,6 +421,15 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *      Reload and activate timer&n;&t; */
 id|tco_timer_reload
 (paren
@@ -414,7 +464,12 @@ id|file
 )paren
 (brace
 multiline_comment|/*&n;&t; *      Shut off the timer.&n;&t; */
-macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
 id|tco_timer_stop
 (paren
 )paren
@@ -423,7 +478,7 @@ id|timer_alive
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif&t;
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1075,7 +1130,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;i810 TCO timer: V0.02, timer margin: %d sec (0x%04x)&bslash;n&quot;
+l_string|&quot;i810 TCO timer: V0.03, timer margin: %d sec (0x%04x), nowayout: %d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1089,6 +1144,8 @@ l_int|10
 )paren
 comma
 id|TCOBASE
+comma
+id|nowayout
 )paren
 suffix:semicolon
 r_return

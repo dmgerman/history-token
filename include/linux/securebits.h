@@ -7,7 +7,7 @@ r_extern
 r_int
 id|securebits
 suffix:semicolon
-multiline_comment|/* When set UID 0 has no special privileges. When unset, we support&n;   inheritance of root-permissions and suid-root executablew under&n;   compatibility mode. We raise the effective and inheritable bitmasks&n;   *of the executable file* if the effective uid of the new process is&n;   0. If the real uid is 0, we raise the inheritable bitmask of the&n;   executable file. */
+multiline_comment|/* When set UID 0 has no special privileges. When unset, we support&n;   inheritance of root-permissions and suid-root executable under&n;   compatibility mode. We raise the effective and inheritable bitmasks&n;   *of the executable file* if the effective uid of the new process is&n;   0. If the real uid is 0, we raise the inheritable bitmask of the&n;   executable file. */
 DECL|macro|SECURE_NOROOT
 mdefine_line|#define SECURE_NOROOT            0
 multiline_comment|/* When set, setuid to/from uid 0 does not trigger capability-&quot;fixes&quot;&n;   to be compatible with old programs relying on set*uid to loose&n;   privileges. When unset, setuid doesn&squot;t change privileges. */

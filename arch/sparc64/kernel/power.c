@@ -33,8 +33,6 @@ DECL|variable|button_pressed
 r_static
 r_int
 id|button_pressed
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|power_handler
 r_static
@@ -281,8 +279,6 @@ suffix:semicolon
 r_static
 r_int
 id|invoked
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

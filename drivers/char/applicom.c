@@ -33,7 +33,7 @@ macro_line|#include &quot;applicom.h&quot;
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20300 
 multiline_comment|/* These probably want adding to &lt;linux/compatmac.h&gt; */
 DECL|macro|init_waitqueue_head
-mdefine_line|#define init_waitqueue_head(x) do { *(x) = NULL; } while (0);
+mdefine_line|#define init_waitqueue_head(x) do { *(x) = NULL; } while (0)
 DECL|macro|PCI_BASE_ADDRESS
 mdefine_line|#define PCI_BASE_ADDRESS(dev) (dev-&gt;base_address[0])
 DECL|macro|DECLARE_WAIT_QUEUE_HEAD

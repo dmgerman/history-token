@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PnP BIOS services&n; * &n; * Originally (C) 1998 Christian Schmidt &lt;schmidt@digadd.de&gt;&n; * Modifications (c) 1998 Tom Lees &lt;tom@lpsg.demon.co.uk&gt;&n; * Minor reorganizations by David Hinds &lt;dahinds@users.sourceforge.net&gt;&n; * Modifications (c) 2001 by Thomas Hood &lt;jdthood@mail.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * References:&n; *   Compaq Computer Corporation, Phoenix Technologies Ltd., Intel Corporation&n; *   Plug and Play BIOS Specification, Version 1.0A, May 5, 1994&n; *   Plug and Play BIOS Clarification Paper, October 6, 1994&n; *&n; */
+multiline_comment|/*&n; * PnP BIOS services&n; * &n; * Originally (C) 1998 Christian Schmidt &lt;schmidt@digadd.de&gt;&n; * Modifications (c) 1998 Tom Lees &lt;tom@lpsg.demon.co.uk&gt;&n; * Minor reorganizations by David Hinds &lt;dahinds@users.sourceforge.net&gt;&n; * Modifications (c) 2001,2002 by Thomas Hood &lt;jdthood@mail.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * References:&n; *   Compaq Computer Corporation, Phoenix Technologies Ltd., Intel Corporation&n; *   Plug and Play BIOS Specification, Version 1.0A, May 5, 1994&n; *   Plug and Play BIOS Clarification Paper, October 6, 1994&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -404,14 +404,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnPBIOS: Warning! Your PnP BIOS caused a fatal error. Attempting to continue.&bslash;n&quot;
+l_string|&quot;PnPBIOS: Warning! Your PnP BIOS caused a fatal error. Attempting to continue&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnPBIOS: You may need to reboot with the &bslash;&quot;nobiospnp&bslash;&quot; option to operate stably.&bslash;n&quot;
+l_string|&quot;PnPBIOS: You may need to reboot with the &bslash;&quot;nobiospnp&bslash;&quot; option to operate stably&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -427,6 +427,33 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * UTILITY FUNCTIONS&n; *&n; */
+DECL|function|pnpbios_warn_unexpected_status
+r_static
+r_void
+id|pnpbios_warn_unexpected_status
+c_func
+(paren
+r_const
+r_char
+op_star
+id|module
+comma
+id|u16
+id|status
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: Unexpected status 0x%x&bslash;n&quot;
+comma
+id|module
+comma
+id|status
+)paren
+suffix:semicolon
+)brace
 DECL|function|pnpbios_kmalloc
 r_void
 op_star
@@ -463,7 +490,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnPBIOS: kmalloc() failed.&bslash;n&quot;
+l_string|&quot;PnPBIOS: kmalloc() failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -551,6 +578,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -626,11 +654,10 @@ c_cond
 (paren
 id|status
 )paren
-id|printk
+id|pnpbios_warn_unexpected_status
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;PnPBIOS: dev_node_info: Unexpected status 0x%x&bslash;n&quot;
+l_string|&quot;dev_node_info&quot;
 comma
 id|status
 )paren
@@ -668,6 +695,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -779,11 +807,10 @@ c_cond
 (paren
 id|status
 )paren
-id|printk
+id|pnpbios_warn_unexpected_status
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;PnPBIOS: get_dev_node: Unexpected 0x%x&bslash;n&quot;
+l_string|&quot;get_dev_node&quot;
 comma
 id|status
 )paren
@@ -819,6 +846,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -916,11 +944,10 @@ c_cond
 id|status
 )paren
 (brace
-id|printk
+id|pnpbios_warn_unexpected_status
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;PnPBIOS: set_dev_node: Unexpected set_dev_node status 0x%x&bslash;n&quot;
+l_string|&quot;set_dev_node&quot;
 comma
 id|status
 )paren
@@ -944,7 +971,7 @@ id|nodenum
 suffix:semicolon
 id|status
 op_assign
-id|__pnp_bios_get_dev_node
+id|pnp_bios_get_dev_node
 c_func
 (paren
 op_amp
@@ -960,20 +987,9 @@ c_cond
 (paren
 id|status
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;PnPBIOS: set_dev_node: Unexpected get_dev_node status 0x%x&bslash;n&quot;
-comma
-id|status
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
-)brace
 id|update_devlist
 c_func
 (paren
@@ -1008,6 +1024,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1074,6 +1091,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1129,6 +1147,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1197,6 +1216,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1247,12 +1267,11 @@ id|status
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if needed
 multiline_comment|/*&n; * Call PnP BIOS with function 0x0a, &quot;get statically allocated resource&n; * information&quot;&n; */
-DECL|function|pnp_bios_get_stat_res
+DECL|function|__pnp_bios_get_stat_res
 r_static
 r_int
-id|pnp_bios_get_stat_res
+id|__pnp_bios_get_stat_res
 c_func
 (paren
 r_char
@@ -1268,6 +1287,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1312,7 +1332,44 @@ r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|function|pnp_bios_get_stat_res
+r_int
+id|pnp_bios_get_stat_res
+c_func
+(paren
+r_char
+op_star
+id|info
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+id|status
+op_assign
+id|__pnp_bios_get_stat_res
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|pnpbios_warn_unexpected_status
+c_func
+(paren
+l_string|&quot;get_stat_res&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+r_return
+id|status
+suffix:semicolon
+)brace
 macro_line|#if needed
 multiline_comment|/*&n; * Call PnP BIOS with function 0x0b, &quot;get APM id table&quot;&n; */
 DECL|function|pnp_bios_apm_id_table
@@ -1338,6 +1395,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1395,12 +1453,11 @@ id|status
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if needed
 multiline_comment|/*&n; * Call PnP BIOS with function 0x40, &quot;get isa pnp configuration structure&quot;&n; */
-DECL|function|pnp_bios_isapnp_config
+DECL|function|__pnp_bios_isapnp_config
 r_static
 r_int
-id|pnp_bios_isapnp_config
+id|__pnp_bios_isapnp_config
 c_func
 (paren
 r_struct
@@ -1417,6 +1474,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1463,13 +1521,50 @@ r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if needed
+DECL|function|pnp_bios_isapnp_config
+r_int
+id|pnp_bios_isapnp_config
+c_func
+(paren
+r_struct
+id|pnp_isa_config_struc
+op_star
+id|data
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+id|status
+op_assign
+id|__pnp_bios_isapnp_config
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|pnpbios_warn_unexpected_status
+c_func
+(paren
+l_string|&quot;isapnp_config&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+r_return
+id|status
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Call PnP BIOS with function 0x41, &quot;get ESCD info&quot;&n; */
-DECL|function|pnp_bios_escd_info
+DECL|function|__pnp_bios_escd_info
 r_static
 r_int
-id|pnp_bios_escd_info
+id|__pnp_bios_escd_info
 c_func
 (paren
 r_struct
@@ -1486,6 +1581,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1532,13 +1628,50 @@ r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if needed
+DECL|function|pnp_bios_escd_info
+r_int
+id|pnp_bios_escd_info
+c_func
+(paren
+r_struct
+id|escd_info_struc
+op_star
+id|data
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+id|status
+op_assign
+id|__pnp_bios_escd_info
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|pnpbios_warn_unexpected_status
+c_func
+(paren
+l_string|&quot;escd_info&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+r_return
+id|status
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Call PnP BIOS function 0x42, &quot;read ESCD&quot;&n; * nvram_base is determined by calling escd_info&n; */
-DECL|function|pnp_bios_read_escd
+DECL|function|__pnp_bios_read_escd
 r_static
 r_int
-id|pnp_bios_read_escd
+id|__pnp_bios_read_escd
 c_func
 (paren
 r_char
@@ -1557,6 +1690,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -1629,7 +1763,49 @@ r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|function|pnp_bios_read_escd
+r_int
+id|pnp_bios_read_escd
+c_func
+(paren
+r_char
+op_star
+id|data
+comma
+id|u32
+id|nvram_base
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+id|status
+op_assign
+id|__pnp_bios_read_escd
+c_func
+(paren
+id|data
+comma
+id|nvram_base
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|pnpbios_warn_unexpected_status
+c_func
+(paren
+l_string|&quot;read_escd&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+r_return
+id|status
+suffix:semicolon
+)brace
 macro_line|#if needed
 multiline_comment|/*&n; * Call PnP BIOS function 0x43, &quot;write ESCD&quot;&n; */
 DECL|function|pnp_bios_write_escd
@@ -1654,6 +1830,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -2030,6 +2207,8 @@ op_minus
 l_int|1
 comma
 id|d
+op_assign
+l_int|0
 suffix:semicolon
 id|daemonize
 c_func
@@ -2046,7 +2225,7 @@ c_func
 (paren
 id|current-&gt;comm
 comma
-l_string|&quot;kpnpbios&quot;
+l_string|&quot;kpnpbiosd&quot;
 )paren
 suffix:semicolon
 r_while
@@ -2064,7 +2243,7 @@ id|current
 )paren
 (brace
 r_int
-id|err
+id|status
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Poll every 2 seconds&n;&t;&t; */
 id|set_current_state
@@ -2094,7 +2273,7 @@ id|current
 r_break
 suffix:semicolon
 )brace
-id|err
+id|status
 op_assign
 id|pnp_bios_dock_station_info
 c_func
@@ -2106,7 +2285,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|err
+id|status
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * No dock to manage&n;&t;&t;&t; */
@@ -2142,13 +2321,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|pnpbios_warn_unexpected_status
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;PnPBIOS: pnp_dock_thread: Unexpected status 0x%x returned by BIOS.&bslash;n&quot;
+l_string|&quot;pnp_dock_thread&quot;
 comma
-id|err
+id|status
 )paren
 suffix:semicolon
 r_continue
@@ -2186,7 +2364,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: Docking station %stached.&bslash;n&quot;
+l_string|&quot;PnPBIOS: Docking station %stached&bslash;n&quot;
 comma
 id|docked
 ques
@@ -3438,17 +3616,16 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-r_int
+id|u8
 id|nodenum
 suffix:semicolon
+r_int
 r_int
 id|nodes_got
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|devs
 op_assign
@@ -3473,6 +3650,7 @@ c_cond
 (paren
 op_logical_neg
 id|pnp_bios_present
+c_func
 (paren
 )paren
 )paren
@@ -3513,42 +3691,28 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-comma
 id|nodenum
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|nodenum
 OL
 l_int|0xff
-op_logical_and
-id|nodenum
-op_ne
-l_int|0xff
 suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
-r_int
+id|u8
 id|thisnodenum
 op_assign
 id|nodenum
 suffix:semicolon
-multiline_comment|/* For now we build the list from the &quot;boot&quot; config&n;&t;&t; * because asking for the &quot;current&quot; config causes&n;&t;&t; * some BIOSes to crash.                          */
+multiline_comment|/* We build the list from the &quot;boot&quot; config because&n;&t;&t; * asking for the &quot;current&quot; config causes some&n;&t;&t; * BIOSes to crash.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|pnp_bios_get_dev_node
 c_func
 (paren
-(paren
-id|u8
-op_star
-)paren
 op_amp
 id|nodenum
 comma
@@ -3560,36 +3724,8 @@ comma
 id|node
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;PnPBIOS: PnP BIOS reported error on attempt to get dev node.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
-)brace
-multiline_comment|/* The BIOS returns with nodenum = the next node number */
-r_if
-c_cond
-(paren
-id|nodenum
-OL
-id|thisnodenum
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;PnPBIOS: Node number is out of sequence. Naughty BIOS!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|nodes_got
 op_increment
 suffix:semicolon
@@ -3682,6 +3818,36 @@ r_else
 id|devs
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nodenum
+op_le
+id|thisnodenum
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: build_devlist: Node number 0x%x is out of sequence following node 0x%x. Aborting.&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|nodenum
+comma
+(paren
+r_int
+r_int
+)paren
+id|thisnodenum
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 id|kfree
 c_func
@@ -3693,7 +3859,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: %i node%s reported by PnP BIOS; %i recorded by driver.&bslash;n&quot;
+l_string|&quot;PnPBIOS: %i node%s reported by PnP BIOS; %i recorded by driver&bslash;n&quot;
 comma
 id|nodes_got
 comma
@@ -4243,10 +4409,12 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|regionid
+comma
+l_int|16
 comma
 l_string|&quot;PnPBIOS %s&quot;
 comma
@@ -4293,7 +4461,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: %s: ioport range 0x%x-0x%x %s reserved.&bslash;n&quot;
+l_string|&quot;PnPBIOS: %s: ioport range 0x%x-0x%x %s reserved&bslash;n&quot;
 comma
 id|pnpid
 comma
@@ -4762,6 +4930,8 @@ r_int
 id|i
 comma
 id|length
+comma
+id|r
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -4787,11 +4957,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: Disabled.&bslash;n&quot;
+l_string|&quot;PnPBIOS: Disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -4911,7 +5082,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;PnPBIOS: PnP BIOS version %d.%d is not supported.&bslash;n&quot;
+l_string|&quot;PnPBIOS: PnP BIOS version %d.%d is not supported&bslash;n&quot;
 comma
 id|check-&gt;fields.version
 op_rshift
@@ -4929,7 +5100,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: Found PnP BIOS installation structure at 0x%p.&bslash;n&quot;
+l_string|&quot;PnPBIOS: Found PnP BIOS installation structure at 0x%p&bslash;n&quot;
 comma
 id|check
 )paren
@@ -4938,7 +5109,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: PnP BIOS version %d.%d, entry 0x%x:0x%x, dseg 0x%x.&bslash;n&quot;
+l_string|&quot;PnPBIOS: PnP BIOS version %d.%d, entry 0x%x:0x%x, dseg 0x%x&bslash;n&quot;
 comma
 id|check-&gt;fields.version
 op_rshift
@@ -5007,6 +5178,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pnp_bios_present
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|build_devlist
 c_func
 (paren
@@ -5024,12 +5208,36 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+id|r
+op_assign
 id|pnpbios_proc_init
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|r
+)paren
+r_return
+id|r
+suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|pnpbios_thread_init
+r_static
+r_int
+id|__init
+id|pnpbios_thread_init
+c_func
+(paren
+r_void
+)paren
+(brace
 macro_line|#ifdef CONFIG_HOTPLUG&t;
 id|init_completion
 c_func
@@ -5068,33 +5276,82 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
+macro_line|#ifndef MODULE
+multiline_comment|/* init/main.c calls pnpbios_init early */
+multiline_comment|/* Start the kernel thread later: */
+DECL|variable|pnpbios_thread_init
+id|module_init
+c_func
+(paren
+id|pnpbios_thread_init
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n; * N.B.: Building pnpbios as a module hasn&squot;t been fully implemented&n; */
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* We have to run it early and not as a module. */
-DECL|variable|pnpbios_init
-id|module_init
+DECL|function|pnpbios_init_all
+r_static
+r_int
+id|__init
+id|pnpbios_init_all
 c_func
 (paren
+r_void
+)paren
+(brace
+r_int
+id|r
+suffix:semicolon
+id|r
+op_assign
 id|pnpbios_init
+c_func
+(paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HOTPLUG
+r_if
+c_cond
+(paren
+id|r
+)paren
+r_return
+id|r
+suffix:semicolon
+id|r
+op_assign
+id|pnpbios_thread_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|r
+)paren
+r_return
+id|r
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|pnpbios_exit
 r_static
 r_void
+id|__exit
 id|pnpbios_exit
 c_func
 (paren
 r_void
 )paren
 (brace
-multiline_comment|/* free_resources() ought to go here */
-multiline_comment|/* pnpbios_proc_done() */
+macro_line|#ifdef CONFIG_HOTPLUG
 id|unloading
 op_assign
 l_int|1
@@ -5106,7 +5363,23 @@ op_amp
 id|unload_sem
 )paren
 suffix:semicolon
+macro_line|#endif
+id|pnpbios_proc_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* We ought to free resources here */
+r_return
+suffix:semicolon
 )brace
+DECL|variable|pnpbios_init_all
+id|module_init
+c_func
+(paren
+id|pnpbios_init_all
+)paren
+suffix:semicolon
 DECL|variable|pnpbios_exit
 id|module_exit
 c_func
@@ -5114,6 +5387,5 @@ c_func
 id|pnpbios_exit
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * ad1848.c&n; *&n; * Copyright:&t;Christoph Hellwig &lt;chhellwig@gmx.net&gt;&n; */
 DECL|macro|AD_F_CS4231
 mdefine_line|#define AD_F_CS4231     0x0001  /* Returned if a CS4232 (or compatible) detected */
 DECL|macro|AD_F_CS4248

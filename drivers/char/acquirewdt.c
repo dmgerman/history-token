@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Acquire Single Board Computer Watchdog Timer driver for Linux 2.1.x&n; *&n; *      Based on wdt.c. Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&t;Acquire Single Board Computer Watchdog Timer driver for Linux 2.1.x&n; *&n; *      Based on wdt.c. Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *          Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *          Can&squot;t add timeout - driver doesn&squot;t allow changing value&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -34,8 +34,39 @@ DECL|macro|WDT_STOP
 mdefine_line|#define WDT_STOP 0x43
 DECL|macro|WDT_START
 mdefine_line|#define WDT_START 0x443
-DECL|macro|WD_TIMO
-mdefine_line|#define WD_TIMO (100*60)&t;&t;/* 1 minute */
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Kernel methods.&n; */
 DECL|function|acq_ping
 r_static
@@ -319,6 +350,15 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; *&t;Activate &n;&t;&t;&t; */
 id|acq_is_open
 op_assign
@@ -384,14 +424,20 @@ op_amp
 id|acq_lock
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT&t;
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 id|inb_p
 c_func
 (paren
 id|WDT_STOP
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+)brace
 id|acq_is_open
 op_assign
 l_int|0

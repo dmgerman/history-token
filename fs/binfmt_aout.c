@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 r_static
 r_int
 id|load_aout_binary
@@ -86,16 +87,24 @@ id|linux_binfmt
 id|aout_format
 op_assign
 (brace
-l_int|NULL
-comma
+id|module
+suffix:colon
 id|THIS_MODULE
 comma
+id|load_binary
+suffix:colon
 id|load_aout_binary
 comma
+id|load_shlib
+suffix:colon
 id|load_aout_library
 comma
+id|core_dump
+suffix:colon
 id|aout_core_dump
 comma
+id|min_coredump
+suffix:colon
 id|PAGE_SIZE
 )brace
 suffix:semicolon

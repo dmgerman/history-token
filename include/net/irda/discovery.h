@@ -9,6 +9,30 @@ DECL|macro|DISCOVERY_EXPIRE_TIMEOUT
 mdefine_line|#define DISCOVERY_EXPIRE_TIMEOUT 6*HZ
 DECL|macro|DISCOVERY_DEFAULT_SLOTS
 mdefine_line|#define DISCOVERY_DEFAULT_SLOTS  0
+multiline_comment|/* Types of discovery */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|DISCOVERY_LOG
+id|DISCOVERY_LOG
+comma
+multiline_comment|/* What&squot;s in our discovery log */
+DECL|enumerator|DISCOVERY_ACTIVE
+id|DISCOVERY_ACTIVE
+comma
+multiline_comment|/* Doing our own discovery on the medium */
+DECL|enumerator|DISCOVERY_PASSIVE
+id|DISCOVERY_PASSIVE
+comma
+multiline_comment|/* Peer doing discovery on the medium */
+DECL|enumerator|EXPIRY_TIMEOUT
+id|EXPIRY_TIMEOUT
+comma
+multiline_comment|/* Entry expired due to timeout */
+DECL|typedef|DISCOVERY_MODE
+)brace
+id|DISCOVERY_MODE
+suffix:semicolon
 DECL|macro|NICKNAME_MAX_LEN
 mdefine_line|#define NICKNAME_MAX_LEN 21
 multiline_comment|/*&n; * The DISCOVERY structure is used for both discovery requests and responses&n; */

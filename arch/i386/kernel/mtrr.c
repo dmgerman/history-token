@@ -706,9 +706,6 @@ l_int|10
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 r_case
 id|MTRR_IF_AMD_K6
 suffix:colon

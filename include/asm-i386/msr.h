@@ -38,10 +38,10 @@ DECL|macro|MSR_IA32_UCODE_WRITE
 mdefine_line|#define MSR_IA32_UCODE_WRITE&t;&t;0x79
 DECL|macro|MSR_IA32_UCODE_REV
 mdefine_line|#define MSR_IA32_UCODE_REV&t;&t;0x8b
-DECL|macro|MSR_IA32_PERFCTR0
-mdefine_line|#define MSR_IA32_PERFCTR0&t;&t;0xc1
-DECL|macro|MSR_IA32_PERFCTR1
-mdefine_line|#define MSR_IA32_PERFCTR1&t;&t;0xc2
+DECL|macro|MSR_P6_PERFCTR0
+mdefine_line|#define MSR_P6_PERFCTR0&t;&t;0xc1
+DECL|macro|MSR_P6_PERFCTR1
+mdefine_line|#define MSR_P6_PERFCTR1&t;&t;0xc2
 DECL|macro|MSR_IA32_BBL_CR_CTL
 mdefine_line|#define MSR_IA32_BBL_CR_CTL&t;&t;0x119
 DECL|macro|MSR_IA32_MCG_CAP
@@ -50,10 +50,18 @@ DECL|macro|MSR_IA32_MCG_STATUS
 mdefine_line|#define MSR_IA32_MCG_STATUS&t;&t;0x17a
 DECL|macro|MSR_IA32_MCG_CTL
 mdefine_line|#define MSR_IA32_MCG_CTL&t;&t;0x17b
-DECL|macro|MSR_IA32_EVNTSEL0
-mdefine_line|#define MSR_IA32_EVNTSEL0&t;&t;0x186
-DECL|macro|MSR_IA32_EVNTSEL1
-mdefine_line|#define MSR_IA32_EVNTSEL1&t;&t;0x187
+DECL|macro|MSR_P6_EVNTSEL0
+mdefine_line|#define MSR_P6_EVNTSEL0&t;&t;0x186
+DECL|macro|MSR_P6_EVNTSEL1
+mdefine_line|#define MSR_P6_EVNTSEL1&t;&t;0x187
+DECL|macro|MSR_IA32_THERM_CONTROL
+mdefine_line|#define MSR_IA32_THERM_CONTROL&t;&t;0x19a
+DECL|macro|MSR_IA32_THERM_INTERRUPT
+mdefine_line|#define MSR_IA32_THERM_INTERRUPT&t;0x19b
+DECL|macro|MSR_IA32_THERM_STATUS
+mdefine_line|#define MSR_IA32_THERM_STATUS&t;&t;0x19c
+DECL|macro|MSR_IA32_MISC_ENABLE
+mdefine_line|#define MSR_IA32_MISC_ENABLE&t;&t;0x1a0
 DECL|macro|MSR_IA32_DEBUGCTLMSR
 mdefine_line|#define MSR_IA32_DEBUGCTLMSR&t;&t;0x1d9
 DECL|macro|MSR_IA32_LASTBRANCHFROMIP

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *   MODULE_NAME:&t;&t;jfs_mount.c&n; *&n; *   COMPONENT_NAME:&t;&t;sysjfs&n; *&n; *&n; *   Copyright (c) International Business Machines  Corp., 2000&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
-multiline_comment|/*&n; * Change History :&n; *&n; */
+multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; * Module: jfs_mount.c&n; *&n; * note: file system in transition to aggregate/fileset:&n; *&n; * file system mount is interpreted as the mount of aggregate, &n; * if not already mounted, and mount of the single/only fileset in &n; * the aggregate;&n; *&n; * a file system/aggregate is represented by an internal inode&n; * (aka mount inode) initialized with aggregate superblock;&n; * each vfs represents a fileset, and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka fileset inode):&n; * (an aggregate itself is structured recursively as a filset: &n; * an internal vfs is constructed and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka aggregate inode) where each inode &n; * represents a fileset inode) so that inode number is mapped to &n; * on-disk inode in uniform way at both aggregate and fileset level;&n; *&n; * each vnode/inode of a fileset is linked to its vfs (to facilitate&n; * per fileset inode operations, e.g., unmount of a fileset, etc.);&n; * each inode points to the mount inode (to facilitate access to&n; * per aggregate information, e.g., block size, etc.) as well as&n; * its file set inode.&n; *&n; *   aggregate &n; *   ipmnt&n; *   mntvfs -&gt; fileset ipimap+ -&gt; aggregate ipbmap -&gt; aggregate ipaimap;&n; *             fileset vfs     -&gt; vp(1) &lt;-&gt; ... &lt;-&gt; vp(n) &lt;-&gt;vproot;&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
@@ -736,58 +735,6 @@ id|rc
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef _STILL_TO_PORT
-multiline_comment|/*&n;&t; * get log device associated with the fs being mounted;&n;&t; */
-r_if
-c_cond
-(paren
-id|ipmnt-&gt;i_mntflag
-op_amp
-id|JFS_INLINELOG
-)paren
-(brace
-id|vfsp-&gt;vfs_logVPB
-op_assign
-id|vfsp-&gt;vfs_hVPB
-suffix:semicolon
-id|vfsp-&gt;vfs_logvpfs
-op_assign
-id|vfsp-&gt;vfs_vpfsi
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|vfsp-&gt;vfs_logvpfs
-op_eq
-l_int|NULL
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * XXX: there&squot;s only one external log per system;&n;&t;&t; */
-id|jERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: Mount Failure! No Log Device.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|errout30
-suffix:semicolon
-)brace
-id|logdev
-op_assign
-id|vfsp-&gt;vfs_logvpfs-&gt;vpi_unit
-suffix:semicolon
-id|ipmnt-&gt;i_logdev
-op_assign
-id|logdev
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _STILL_TO_PORT */
 multiline_comment|/*&n;&t; * open/initialize log&n;&t; */
 r_if
 c_cond
@@ -989,7 +936,7 @@ l_int|4
 )paren
 op_logical_or
 id|j_sb-&gt;s_version
-op_ne
+OG
 id|cpu_to_le32
 c_func
 (paren
@@ -1221,34 +1168,6 @@ id|JFS_BAD_SAIT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* in release 1, the flag MUST reflect inline log, and group commit */
-r_if
-c_cond
-(paren
-(paren
-id|j_sb-&gt;s_flag
-op_amp
-id|cpu_to_le32
-c_func
-(paren
-id|JFS_INLINELOG
-)paren
-)paren
-op_ne
-id|cpu_to_le32
-c_func
-(paren
-id|JFS_INLINELOG
-)paren
-)paren
-id|j_sb-&gt;s_flag
-op_or_assign
-id|cpu_to_le32
-c_func
-(paren
-id|JFS_INLINELOG
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1406,6 +1325,19 @@ id|sbi-&gt;logpxd
 op_assign
 id|j_sb-&gt;s_logpxd
 suffix:semicolon
+r_else
+id|sbi-&gt;logdev
+op_assign
+id|to_kdev_t
+c_func
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|j_sb-&gt;s_logdev
+)paren
+)paren
+suffix:semicolon
 id|sbi-&gt;ait2
 op_assign
 id|j_sb-&gt;s_ait2
@@ -1553,6 +1485,19 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|log-&gt;serial
+)paren
+suffix:semicolon
+multiline_comment|/* record our own device number in case the location&n;&t;&t; * changes after a reboot&n;&t;&t; */
+id|j_sb-&gt;s_device
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|kdev_t_to_nr
+c_func
+(paren
+id|sb-&gt;s_dev
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -161,12 +161,6 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 r_extern
 r_int
-id|nr_dquots
-comma
-id|nr_free_dquots
-suffix:semicolon
-r_extern
-r_int
 id|dquot_root_squash
 suffix:semicolon
 DECL|macro|NR_DQHASH

@@ -2520,7 +2520,7 @@ c_func
 (paren
 id|self-&gt;io.dma
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|self-&gt;tx_buff.data
@@ -3132,7 +3132,7 @@ c_func
 (paren
 id|self-&gt;io.dma
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|self-&gt;rx_buff.data

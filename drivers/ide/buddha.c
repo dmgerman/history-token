@@ -219,7 +219,8 @@ r_int
 id|buddha_ack_intr
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -262,7 +263,8 @@ r_int
 id|xsurf_ack_intr
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren

@@ -8,9 +8,11 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * Known problems:&n; *&n; * Interrupt handling is not guaranteed:&n; * - a real x86 will disable all interrupts for one instruction&n; *   after a &quot;mov ss,xx&quot; to make stack handling atomic even without&n; *   the &squot;lss&squot; instruction. We can&squot;t guarantee this in v86 mode,&n; *   as the next instruction might result in a page fault or similar.&n; * - a real x86 will have interrupts disabled for one instruction&n; *   past the &squot;sti&squot; that enables them. We don&squot;t bother with all the&n; *   details yet.&n; *&n; * Let&squot;s hope these problems do not actually matter for anything.&n; */
 DECL|macro|KVM86
 mdefine_line|#define KVM86&t;((struct kernel_vm86_struct *)regs)

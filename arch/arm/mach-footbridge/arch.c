@@ -99,6 +99,7 @@ op_star
 id|mi
 )paren
 (brace
+macro_line|#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_DUMMY_CONSOLE)
 id|ORIG_X
 op_assign
 id|params-&gt;u1.s.video_x
@@ -115,6 +116,7 @@ id|ORIG_VIDEO_LINES
 op_assign
 id|params-&gt;u1.s.video_num_rows
 suffix:semicolon
+macro_line|#endif
 )brace
 id|MACHINE_START
 c_func

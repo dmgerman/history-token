@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/mmx.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -356,13 +357,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__get_user_4
-)paren
-suffix:semicolon
-DECL|variable|strtok
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|strtok
 )paren
 suffix:semicolon
 DECL|variable|strpbrk

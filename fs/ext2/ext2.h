@@ -28,10 +28,6 @@ DECL|member|i_frag_size
 id|__u8
 id|i_frag_size
 suffix:semicolon
-DECL|member|i_osync
-id|__u16
-id|i_osync
-suffix:semicolon
 DECL|member|i_file_acl
 id|__u32
 id|i_file_acl

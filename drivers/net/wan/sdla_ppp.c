@@ -5187,9 +5187,10 @@ id|tokens
 l_int|0
 )braket
 op_assign
-id|strtok
+id|strsep
 c_func
 (paren
+op_amp
 id|str
 comma
 l_string|&quot;/&quot;
@@ -5234,10 +5235,11 @@ op_increment
 id|cnt
 )braket
 op_assign
-id|strtok
+id|strsep
 c_func
 (paren
-l_int|NULL
+op_amp
+id|str
 comma
 l_string|&quot;/&quot;
 )paren

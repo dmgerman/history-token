@@ -66,6 +66,10 @@ r_int
 id|quantum
 suffix:semicolon
 multiline_comment|/* Allotment per round: MUST BE &gt;= MTU */
+DECL|member|limit
+r_int
+id|limit
+suffix:semicolon
 multiline_comment|/* Variables */
 DECL|member|perturb_timer
 r_struct
@@ -1027,7 +1031,7 @@ c_cond
 op_increment
 id|sch-&gt;q.qlen
 OL
-id|SFQ_DEPTH
+id|q-&gt;limit
 op_minus
 l_int|1
 )paren
@@ -1226,7 +1230,7 @@ c_cond
 op_increment
 id|sch-&gt;q.qlen
 OL
-id|SFQ_DEPTH
+id|q-&gt;limit
 op_minus
 l_int|1
 )paren
@@ -1610,6 +1614,38 @@ id|ctl-&gt;perturb_period
 op_star
 id|HZ
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctl-&gt;limit
+)paren
+id|q-&gt;limit
+op_assign
+id|min_t
+c_func
+(paren
+id|u32
+comma
+id|ctl-&gt;limit
+comma
+id|SFQ_DEPTH
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|sch-&gt;q.qlen
+op_ge
+id|q-&gt;limit
+op_minus
+l_int|1
+)paren
+id|sfq_drop
+c_func
+(paren
+id|sch
+)paren
+suffix:semicolon
 id|del_timer
 c_func
 (paren
@@ -1771,6 +1807,10 @@ op_plus
 id|SFQ_DEPTH
 suffix:semicolon
 )brace
+id|q-&gt;limit
+op_assign
+id|SFQ_DEPTH
+suffix:semicolon
 id|q-&gt;max_depth
 op_assign
 l_int|0
@@ -1936,7 +1976,7 @@ id|HZ
 suffix:semicolon
 id|opt.limit
 op_assign
-id|SFQ_DEPTH
+id|q-&gt;limit
 suffix:semicolon
 id|opt.divisor
 op_assign
@@ -1944,7 +1984,7 @@ id|SFQ_HASH_DIVISOR
 suffix:semicolon
 id|opt.flows
 op_assign
-id|SFQ_DEPTH
+id|q-&gt;limit
 suffix:semicolon
 id|RTA_PUT
 c_func

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|sem_lock
@@ -4254,6 +4255,11 @@ id|nsems
 comma
 id|i
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* If the current process was sleeping for a semaphore,&n;&t; * remove it from the queue.&n;&t; */
 r_if
 c_cond
@@ -4541,6 +4547,11 @@ suffix:semicolon
 id|current-&gt;semundo
 op_assign
 l_int|NULL
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS

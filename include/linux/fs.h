@@ -2022,7 +2022,6 @@ macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 r_extern
 r_struct
@@ -2060,6 +2059,11 @@ DECL|member|s_blocksize_bits
 r_int
 r_char
 id|s_blocksize_bits
+suffix:semicolon
+DECL|member|s_old_blocksize
+r_int
+r_int
+id|s_old_blocksize
 suffix:semicolon
 DECL|member|s_dirt
 r_int
@@ -2198,11 +2202,6 @@ DECL|member|adfs_sb
 r_struct
 id|adfs_sb_info
 id|adfs_sb
-suffix:semicolon
-DECL|member|reiserfs_sb
-r_struct
-id|reiserfs_sb_info
-id|reiserfs_sb
 suffix:semicolon
 DECL|member|bfs_sb
 r_struct

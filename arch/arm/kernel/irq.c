@@ -1063,7 +1063,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-)brace
 id|irq_exit
 c_func
 (paren
@@ -1072,6 +1071,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * do_IRQ handles all hardware IRQ&squot;s.  Decoded IRQs should not&n; * come via this function.  Instead, they should provide their&n; * own &squot;handler&squot;&n; */
 DECL|function|asm_do_IRQ

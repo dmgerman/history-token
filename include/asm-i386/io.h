@@ -42,7 +42,7 @@ macro_line|#else
 DECL|macro|__io_virt
 mdefine_line|#define __io_virt(x) ((void *)(x))
 macro_line|#endif
-multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are pretty trivial&n; */
+multiline_comment|/**&n; *&t;virt_to_phys&t;-&t;map virtual addresses to physical&n; *&t;@address: address to remap&n; *&n; *&t;The returned physical address is the physical (CPU) mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses directly mapped or allocated via kmalloc. &n; *&n; *&t;This function does not give bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|virt_to_phys
 r_static
 r_inline
@@ -65,6 +65,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;phys_to_virt&t;-&t;map physical address to virtual&n; *&t;@address: address to remap&n; *&n; *&t;The returned virtual address is a current CPU mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses that have a kernel mapping&n; *&n; *&t;This function does not handle bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|phys_to_virt
 r_static
 r_inline
@@ -87,8 +88,13 @@ id|address
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
+macro_line|#ifdef CONFIG_HIGHMEM64G
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;((u64)(page - mem_map) &lt;&lt; PAGE_SHIFT)
+macro_line|#else
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
+macro_line|#endif
 r_extern
 r_void
 op_star
@@ -108,6 +114,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * ioremap     -   map bus memory into CPU space&n; * @offset:    bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address. &n; */
 DECL|function|ioremap
 r_static
 r_inline
@@ -136,7 +143,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This one maps high address device memory and turns off caching for that area.&n; * it&squot;s useful if some control registers are in such an area and write combining&n; * or read caching is not desirable:&n; */
+multiline_comment|/**&n; * ioremap_nocache     -   map bus memory into CPU space&n; * @offset:    bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap_nocache performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address. &n; *&n; * This version of ioremap ensures that the memory is marked uncachable&n; * on the CPU as well as honouring existing caching rules from things like&n; * the PCI bus. Note that there are other caches and buffers on many &n; * busses. In paticular driver authors should read up on PCI writes&n; *&n; * It&squot;s useful if some control registers are in such an area and&n; * write combining or read caching is not desirable:&n; */
 DECL|function|ioremap_nocache
 r_static
 r_inline
@@ -212,35 +219,11 @@ DECL|macro|isa_page_to_bus
 mdefine_line|#define isa_page_to_bus page_to_phys
 DECL|macro|isa_bus_to_virt
 mdefine_line|#define isa_bus_to_virt phys_to_virt
-multiline_comment|/*&n; * However PCI ones are not necessarily 1:1 and therefore these interfaces&n; * are forbidden in portable PCI drivers.&n; */
-r_extern
-r_int
-r_int
-id|virt_to_bus_not_defined_use_pci_map
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * However PCI ones are not necessarily 1:1 and therefore these interfaces&n; * are forbidden in portable PCI drivers.&n; *&n; * Allow them on x86 for legacy drivers, though.&n; */
 DECL|macro|virt_to_bus
-mdefine_line|#define virt_to_bus virt_to_bus_not_defined_use_pci_map
-r_extern
-r_int
-r_int
-id|bus_to_virt_not_defined_use_pci_map
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
+mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
-mdefine_line|#define bus_to_virt bus_to_virt_not_defined_use_pci_map
+mdefine_line|#define bus_to_virt phys_to_virt
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
 DECL|macro|readb
 mdefine_line|#define readb(addr) (*(volatile unsigned char *) __io_virt(addr))
@@ -298,6 +281,7 @@ DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),__io_virt(b),(c),(d))
 DECL|macro|isa_eth_io_copy_and_sum
 mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d)&t;eth_copy_and_sum((a),__io_virt(__ISA_IO_base + (b)),(c),(d))
+multiline_comment|/**&n; *&t;check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check &n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the mmio address io_addr. This&n; *&t;address should have been obtained by ioremap.&n; *&t;Returns 1 on a match.&n; */
 DECL|function|check_signature
 r_static
 r_inline
@@ -367,6 +351,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;isa_check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check &n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the ISA mmio address io_addr.&n; *&t;Returns 1 on a match.&n; *&n; *&t;This function is deprecated. New drivers should use ioremap and&n; *&t;check_signature.&n; */
 DECL|function|isa_check_signature
 r_static
 r_inline

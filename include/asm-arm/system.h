@@ -122,8 +122,6 @@ DECL|macro|save_flags
 mdefine_line|#define save_flags(x)&t;&t;__save_flags(x)
 DECL|macro|restore_flags
 mdefine_line|#define restore_flags(x)&t;__restore_flags(x)
-DECL|macro|save_flags_cli
-mdefine_line|#define save_flags_cli(x)&t;__save_flags_cli(x)
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif

@@ -194,7 +194,7 @@ id|MainSocket
 op_assign
 id|sock
 suffix:semicolon
-id|EnterFunction
+id|LeaveFunction
 c_func
 (paren
 l_string|&quot;StartListening&quot;

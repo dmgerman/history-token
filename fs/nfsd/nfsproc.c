@@ -2054,6 +2054,12 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|PROC
 mdefine_line|#define PROC(name, argt, rest, relt, cache, respsize)&t;&bslash;&n; { (svc_procfunc) nfsd_proc_##name,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_decode_##argt,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_encode_##rest,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_release_##relt,&t;&t;&bslash;&n;   sizeof(struct nfsd_##argt),&t;&t;&t;&bslash;&n;   sizeof(struct nfsd_##rest),&t;&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&t;&bslash;&n;   cache,&t;&t;&t;&t;&t;&bslash;&n;   respsize,&t;&t;&t;&t;       &t;&bslash;&n; }
+DECL|macro|ST
+mdefine_line|#define ST 1&t;&t;/* status */
+DECL|macro|FH
+mdefine_line|#define FH 8&t;&t;/* filehandle */
+DECL|macro|AT
+mdefine_line|#define&t;AT 18&t;&t;/* attributes */
 DECL|variable|nfsd_procedures2
 r_struct
 id|svc_procedure
@@ -2076,7 +2082,7 @@ id|none
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2092,9 +2098,9 @@ id|fhandle
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 op_plus
-l_int|18
+id|AT
 )paren
 comma
 id|PROC
@@ -2110,9 +2116,9 @@ id|fhandle
 comma
 id|RC_REPLBUFF
 comma
-l_int|1
+id|ST
 op_plus
-l_int|18
+id|AT
 )paren
 comma
 id|PROC
@@ -2128,7 +2134,7 @@ id|none
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2144,11 +2150,11 @@ id|fhandle
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 op_plus
-l_int|8
+id|FH
 op_plus
-l_int|18
+id|AT
 )paren
 comma
 id|PROC
@@ -2164,7 +2170,7 @@ id|none
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 op_plus
 l_int|1
 op_plus
@@ -2184,9 +2190,9 @@ id|fhandle
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 op_plus
-l_int|18
+id|AT
 op_plus
 l_int|1
 op_plus
@@ -2206,7 +2212,7 @@ id|none
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2222,9 +2228,9 @@ id|fhandle
 comma
 id|RC_REPLBUFF
 comma
-l_int|1
+id|ST
 op_plus
-l_int|18
+id|AT
 )paren
 comma
 id|PROC
@@ -2240,11 +2246,11 @@ id|fhandle
 comma
 id|RC_REPLBUFF
 comma
-l_int|1
+id|ST
 op_plus
-l_int|8
+id|FH
 op_plus
-l_int|18
+id|AT
 )paren
 comma
 id|PROC
@@ -2260,7 +2266,7 @@ id|none
 comma
 id|RC_REPLSTAT
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2276,7 +2282,7 @@ id|none
 comma
 id|RC_REPLSTAT
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2292,7 +2298,7 @@ id|none
 comma
 id|RC_REPLSTAT
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2308,7 +2314,7 @@ id|none
 comma
 id|RC_REPLSTAT
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2324,11 +2330,11 @@ id|fhandle
 comma
 id|RC_REPLBUFF
 comma
-l_int|1
+id|ST
 op_plus
-l_int|8
+id|FH
 op_plus
-l_int|18
+id|AT
 )paren
 comma
 id|PROC
@@ -2344,7 +2350,7 @@ id|none
 comma
 id|RC_REPLSTAT
 comma
-l_int|1
+id|ST
 )paren
 comma
 id|PROC
@@ -2376,7 +2382,7 @@ id|none
 comma
 id|RC_NOCACHE
 comma
-l_int|1
+id|ST
 op_plus
 l_int|5
 )paren

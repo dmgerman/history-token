@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/smpboot.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU&t;&t;&t;*/
 DECL|variable|smp_b_stepping

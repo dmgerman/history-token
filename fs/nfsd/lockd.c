@@ -177,20 +177,32 @@ id|nfsd_nlm_ops
 op_assign
 (brace
 id|exp_readlock
+suffix:colon
+id|exp_readlock
 comma
 multiline_comment|/* lock export table for reading */
+id|exp_unlock
+suffix:colon
 id|exp_readunlock
 comma
 multiline_comment|/* unlock export table */
 id|exp_getclient
+suffix:colon
+id|exp_getclient
 comma
 multiline_comment|/* look up NFS client */
+id|fopen
+suffix:colon
 id|nlm_fopen
 comma
 multiline_comment|/* open file for locking */
+id|fclose
+suffix:colon
 id|nlm_fclose
 comma
 multiline_comment|/* close file */
+id|detach
+suffix:colon
 id|exp_nlmdetach
 comma
 multiline_comment|/* lockd shutdown notification */

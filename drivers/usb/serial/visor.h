@@ -14,8 +14,12 @@ DECL|macro|PALM_M505_ID
 mdefine_line|#define PALM_M505_ID&t;&t;&t;0x0002
 DECL|macro|PALM_M515_ID
 mdefine_line|#define PALM_M515_ID&t;&t;&t;0x0003
+DECL|macro|PALM_I705_ID
+mdefine_line|#define PALM_I705_ID&t;&t;&t;0x0020
 DECL|macro|PALM_M125_ID
 mdefine_line|#define PALM_M125_ID&t;&t;&t;0x0040
+DECL|macro|PALM_M130_ID
+mdefine_line|#define PALM_M130_ID&t;&t;&t;0x0050
 DECL|macro|SONY_VENDOR_ID
 mdefine_line|#define SONY_VENDOR_ID&t;&t;&t;0x054C
 DECL|macro|SONY_CLIE_3_5_ID
@@ -24,6 +28,8 @@ DECL|macro|SONY_CLIE_4_0_ID
 mdefine_line|#define SONY_CLIE_4_0_ID&t;&t;0x0066
 DECL|macro|SONY_CLIE_S360_ID
 mdefine_line|#define SONY_CLIE_S360_ID&t;&t;0x0095
+DECL|macro|SONY_CLIE_4_1_ID
+mdefine_line|#define SONY_CLIE_4_1_ID&t;&t;0x009A
 multiline_comment|/****************************************************************************&n; * Handspring Visor Vendor specific request codes (bRequest values)&n; * A big thank you to Handspring for providing the following information.&n; * If anyone wants the original file where these values and structures came&n; * from, send email to &lt;greg@kroah.com&gt;.&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; * VISOR_REQUEST_BYTES_AVAILABLE asks the visor for the number of bytes that&n; * are available to be transferred to the host for the specified endpoint.&n; * Currently this is not used, and always returns 0x0001&n; ****************************************************************************/
 DECL|macro|VISOR_REQUEST_BYTES_AVAILABLE

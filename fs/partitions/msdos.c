@@ -41,6 +41,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;msdos.h&quot;
+macro_line|#include &quot;efi.h&quot;
 macro_line|#if CONFIG_BLK_DEV_MD
 r_extern
 r_void
@@ -2418,6 +2419,63 @@ op_plus
 l_int|0x1be
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EFI_PARTITION
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|i
+op_le
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+comma
+id|p
+op_increment
+)paren
+(brace
+multiline_comment|/* If this is an EFI GPT disk, msdos should ignore it. */
+r_if
+c_cond
+(paren
+id|SYS_IND
+c_func
+(paren
+id|p
+)paren
+op_eq
+id|EFI_PMBR_OSTYPE_EFI_GPT
+)paren
+(brace
+id|put_dev_sector
+c_func
+(paren
+id|sect
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|p
+op_assign
+(paren
+r_struct
+id|partition
+op_star
+)paren
+(paren
+id|data
+op_plus
+l_int|0x1be
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Look for partitions in two passes:&n;&t; * First find the primary and DOS-type extended partitions.&n;&t; * On the second pass look inside *BSD, Unixware and Solaris partitions.&n;&t; */
 id|current_minor
 op_add_assign

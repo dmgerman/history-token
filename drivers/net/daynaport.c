@@ -2121,11 +2121,11 @@ id|ei_status.stop_page
 op_assign
 id|CABLETRON_RX_STOP_PG
 suffix:semicolon
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 suffix:semicolon
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -2156,7 +2156,7 @@ id|dev-&gt;mem_start
 op_div
 l_int|256
 suffix:semicolon
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -2164,7 +2164,7 @@ id|TX_PAGES
 op_star
 l_int|256
 suffix:semicolon
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_assign
 id|dev-&gt;mem_end
 suffix:semicolon
@@ -3258,14 +3258,14 @@ id|xfer_start
 op_plus
 id|count
 OG
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 )paren
 (brace
 multiline_comment|/* We must wrap the input move. */
 r_int
 id|semi_count
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_minus
 id|xfer_start
 suffix:semicolon
@@ -3294,7 +3294,7 @@ id|skb-&gt;data
 op_plus
 id|semi_count
 comma
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_minus
 id|dev-&gt;mem_start
 comma
@@ -3487,14 +3487,14 @@ id|xfer_start
 op_plus
 id|count
 OG
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 )paren
 (brace
 multiline_comment|/* We must wrap the input move. */
 r_int
 id|semi_count
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_minus
 id|xfer_start
 suffix:semicolon
@@ -3529,7 +3529,7 @@ comma
 r_char
 op_star
 )paren
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 comma
 id|count
 )paren
@@ -3845,14 +3845,14 @@ id|xfer_start
 op_plus
 id|count
 OG
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 )paren
 (brace
 multiline_comment|/* We must wrap the input move. */
 r_int
 id|semi_count
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_minus
 id|xfer_start
 suffix:semicolon
@@ -3887,7 +3887,7 @@ comma
 r_char
 op_star
 )paren
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 comma
 id|count
 )paren
@@ -4056,5 +4056,10 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;
 )brace
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O6 -m486 -c daynaport.c&quot;&n; *  version-control: t&n; *  c-basic-offset: 4&n; *  tab-width: 4&n; *  kept-new-versions: 5&n; * End:&n; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

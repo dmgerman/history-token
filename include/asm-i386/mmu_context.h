@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * possibly do the LDT unload here?&n; */
 DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;&t;do { } while(0)

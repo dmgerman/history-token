@@ -7,6 +7,12 @@ macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_MAC_PARTITION */
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*================ Forward declarations ================*/
 r_static
 r_void
@@ -513,15 +519,6 @@ op_amp
 id|MS_RDONLY
 )paren
 suffix:semicolon
-multiline_comment|/* restore default blocksize for the device */
-id|set_blocksize
-c_func
-(paren
-id|sb-&gt;s_dev
-comma
-id|BLOCK_SIZE
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -723,32 +720,34 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-r_for
+r_while
 c_loop
+(paren
 (paren
 id|this_char
 op_assign
-id|strtok
+id|strsep
 c_func
 (paren
+op_amp
 id|options
 comma
 l_string|&quot;,&quot;
 )paren
-suffix:semicolon
-id|this_char
-suffix:semicolon
-id|this_char
-op_assign
-id|strtok
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;,&quot;
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|this_char
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1809,11 +1808,6 @@ r_struct
 id|hfs_cat_key
 id|key
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|s-&gt;s_dev
-suffix:semicolon
 id|hfs_s32
 id|part_size
 comma
@@ -1896,7 +1890,7 @@ l_string|&quot;hfs_fs: unable to parse mount options.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|bail3
+id|bail2
 suffix:semicolon
 )brace
 multiline_comment|/* set the device driver to 512-byte blocks */
@@ -2196,23 +2190,13 @@ id|MS_RDONLY
 suffix:semicolon
 id|bail2
 suffix:colon
-id|set_blocksize
-c_func
-(paren
-id|dev
-comma
-id|BLOCK_SIZE
-)paren
-suffix:semicolon
-id|bail3
-suffix:colon
 id|kfree
 c_func
 (paren
 id|sbi
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|s-&gt;u.generic_sbp
 op_assign
 l_int|NULL
 suffix:semicolon

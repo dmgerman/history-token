@@ -3113,7 +3113,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* ERROR_RETURN */
 )brace
-multiline_comment|/* On some hardware we have SCSI disconnected (6th bit low)&n;&t; * for about 100usecs. It is too expensive to wait a &n;&t; * tick on every loop so we busy wait for no more than&n;&t; * 500usecs to give the drive a chance first. We do not &n;&t; * change things for &quot;normal&quot; hardware since generally &n;&t; * the 6th bit is always high.&n;&t; * This makes the CPU load higher on some hardware &n;&t; * but otherwise we can not get more then 50K/secs &n;&t; * on this problem hardware.&n;&t; */
+multiline_comment|/* On some hardware we have SCSI disconnected (6th bit low)&n;&t; * for about 100usecs. It is too expensive to wait a &n;&t; * tick on every loop so we busy wait for no more than&n;&t; * 500usecs to give the drive a chance first. We do not &n;&t; * change things for &quot;normal&quot; hardware since generally &n;&t; * the 6th bit is always high.&n;&t; * This makes the CPU load higher on some hardware &n;&t; * but otherwise we can not get more than 50K/secs &n;&t; * on this problem hardware.&n;&t; */
 r_if
 c_cond
 (paren

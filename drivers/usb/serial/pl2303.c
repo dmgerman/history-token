@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2001_Oct_06 gkh&n; *&t;Added RTS and DTR line control.  Thanks to joe@bndlg.de for parts of it.&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
+multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_26 gkh&n; *&t;allowed driver to work properly if there is no tty assigned to a port&n; *&t;(this happens for serial console devices.)&n; *&n; * 2001_Oct_06 gkh&n; *&t;Added RTS and DTR line control.  Thanks to joe@bndlg.de for parts of it.&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -557,23 +557,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;tty
-)paren
-(brace
-id|err
-(paren
-id|__FUNCTION__
-l_string|&quot; - no tty???&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1677,21 +1660,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 DECL|macro|FISH
-mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
+mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
 DECL|macro|SOUP
-mdefine_line|#define SOUP(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_sndctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c, d, NULL, 0, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d&quot;,a,b,c,d,result);
+mdefine_line|#define SOUP(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;result=usb_control_msg(serial-&gt;dev, usb_sndctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;       b, a, c, d, NULL, 0, 100);&t;&t;&t;&bslash;&n;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d&quot;,a,b,c,d,result);
 id|FISH
 (paren
 id|VENDOR_READ_REQUEST_TYPE
@@ -1814,6 +1786,12 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* Setup termios */
+r_if
+c_cond
+(paren
+id|port-&gt;tty
+)paren
+(brace
 op_star
 (paren
 id|port-&gt;tty-&gt;termios
@@ -1841,6 +1819,7 @@ op_amp
 id|tmp_termios
 )paren
 suffix:semicolon
+)brace
 singleline_comment|//FIXME: need to assert RTS and DTR if CRTSCTS off
 id|dbg
 (paren
@@ -1934,7 +1913,6 @@ op_minus
 id|EPROTO
 suffix:semicolon
 )brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2009,21 +1987,16 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|port-&gt;open_count
-op_le
-l_int|0
+id|serial-&gt;dev
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|serial-&gt;dev
+id|port-&gt;tty
 )paren
 (brace
 id|c_cflag
@@ -2056,6 +2029,7 @@ comma
 id|priv-&gt;line_control
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* shutdown our urbs */
 id|dbg
@@ -2126,11 +2100,6 @@ l_string|&quot;(interrupt_in_urb) failed with reason: %d&quot;
 comma
 id|result
 )paren
-suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2644,7 +2613,6 @@ id|dbg
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* stop everything on all ports */
 r_for
 c_loop
 (paren
@@ -2659,30 +2627,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|pl2303_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|serial-&gt;port
@@ -2693,7 +2637,6 @@ dot
 r_private
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|pl2303_read_int_callback
 r_static
@@ -2972,6 +2915,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|tty
+op_logical_and
 id|urb-&gt;actual_length
 )paren
 (brace

@@ -1,5 +1,6 @@
 multiline_comment|/* $Id: semaphore.c,v 1.9 2001/11/18 00:12:56 davem Exp $&n; * semaphore.c: Sparc64 semaphore implementation.&n; *&n; * This is basically the PPC semaphore scheme ported to use&n; * the sparc64 atomic instructions, so see the PPC code for&n; * credits.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 multiline_comment|/*&n; * Atomically update sem-&gt;count.&n; * This does the equivalent of the following:&n; *&n; *&t;old_count = sem-&gt;count;&n; *&t;tmp = MAX(old_count, 0) + incr;&n; *&t;sem-&gt;count = tmp;&n; *&t;return old_count;&n; */
 DECL|function|__sem_update_count
 r_static

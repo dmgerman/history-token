@@ -1021,31 +1021,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|klsi_105_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1195,26 +1170,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; port %d&quot;
-comma
-id|port-&gt;number
-)paren
-suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 r_int
 id|rc
 suffix:semicolon
@@ -1225,8 +1180,17 @@ r_int
 r_int
 id|line_state
 suffix:semicolon
-multiline_comment|/* force low_latency on so that our tty_push actually forces&n;&t;&t; * the data through&n;&t;&t; * port-&gt;tty-&gt;low_latency = 1; */
-multiline_comment|/* Do a defined restart:&n;&t;&t; * Set up sane default baud rate and send the &squot;READ_ON&squot;&n;&t;&t; * vendor command. &n;&t;&t; * FIXME: set modem line control (how?)&n;&t;&t; * Then read the modem line control and store values in&n;&t;&t; * priv-&gt;line_state.&n;&t;&t; */
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; port %d&quot;
+comma
+id|port-&gt;number
+)paren
+suffix:semicolon
+multiline_comment|/* force low_latency on so that our tty_push actually forces&n;&t; * the data through&n;&t; * port-&gt;tty-&gt;low_latency = 1; */
+multiline_comment|/* Do a defined restart:&n;&t; * Set up sane default baud rate and send the &squot;READ_ON&squot;&n;&t; * vendor command. &n;&t; * FIXME: set modem line control (how?)&n;&t; * Then read the modem line control and store values in&n;&t; * priv-&gt;line_state.&n;&t; */
 id|priv-&gt;cfg.pktlen
 op_assign
 l_int|5
@@ -1467,7 +1431,6 @@ id|retval
 op_assign
 id|rc
 suffix:semicolon
-)brace
 m_exit
 suffix:colon
 r_return
@@ -1510,6 +1473,9 @@ id|port
 op_member_access_from_pointer
 r_private
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1538,23 +1504,10 @@ id|serial
 r_return
 suffix:semicolon
 )brace
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 multiline_comment|/* send READ_OFF */
-r_int
 id|rc
 op_assign
 id|usb_control_msg
-c_func
 (paren
 id|serial-&gt;dev
 comma
@@ -1618,10 +1571,6 @@ id|usb_unlink_urb
 id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
-id|port-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
 id|info
 c_func
 (paren
@@ -1632,7 +1581,6 @@ comma
 id|priv-&gt;bytes_out
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* klsi_105_close */
 multiline_comment|/* We need to write a complete 64-byte data block and encode the&n; * number actually sent in the first double-byte, LSB-order. That &n; * leaves at most 62 bytes of payload.&n; */

@@ -32,6 +32,9 @@ id|discovery_t
 op_star
 id|discovery
 comma
+id|DISCOVERY_MODE
+id|mode
+comma
 r_void
 op_star
 id|priv
@@ -1030,6 +1033,9 @@ id|discovery_t
 op_star
 id|discovery
 comma
+id|DISCOVERY_MODE
+id|mode
+comma
 r_void
 op_star
 id|priv
@@ -1053,6 +1059,18 @@ id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Important note :&n;&t; * We need to drop all passive discoveries.&n;&t; * The LSAP management of IrComm is deficient and doesn&squot;t deal&n;&t; * with the case of two instance connecting to each other&n;&t; * simultaneously (it will deadlock in LMP).&n;&t; * The proper fix would be to use the same technique as in IrNET,&n;&t; * to have one server socket and separate instances for the&n;&t; * connecting/connected socket.&n;&t; * The workaround is to drop passive discovery, which drastically&n;&t; * reduce the probability of this happening.&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+id|mode
+op_eq
+id|DISCOVERY_PASSIVE
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|info.daddr
 op_assign
 id|discovery-&gt;daddr

@@ -39,9 +39,14 @@ id|hwdev
 op_eq
 l_int|NULL
 op_logical_or
+(paren
+(paren
+id|u32
+)paren
 id|hwdev-&gt;dma_mask
 op_ne
 l_int|0xffffffff
+)paren
 )paren
 id|gfp
 op_or_assign

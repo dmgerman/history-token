@@ -9,9 +9,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
-macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 macro_line|#include &lt;linux/acct.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1613,8 +1611,8 @@ id|tasklist_lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * No need to unlock IRQs, we&squot;ll schedule() immediately&n;&t; * anyway. In the preemption case this also makes it&n;&t; * impossible for the task to get runnable again.&n;&t; */
-id|write_unlock
+multiline_comment|/*&n;&t; * No need to unlock IRQs, we&squot;ll schedule() immediately&n;&t; * anyway. In the preemption case this also makes it&n;&t; * impossible for the task to get runnable again (thus&n;&t; * the &quot;_raw_&quot; unlock - to make sure we don&squot;t try to&n;&t; * preempt here).&n;&t; */
+id|_raw_write_unlock
 c_func
 (paren
 op_amp
@@ -1689,25 +1687,46 @@ op_amp
 id|tsk-&gt;real_timer
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|preempt_get_count
+c_func
+(paren
+)paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;error: %s[%d] exited with preempt_count %d&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
+comma
+id|preempt_get_count
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|fake_volatile
 suffix:colon
-macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 id|acct_process
 c_func
 (paren
 id|code
 )paren
 suffix:semicolon
-macro_line|#endif
 id|__exit_mm
 c_func
 (paren
 id|tsk
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sem_exit

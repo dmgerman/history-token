@@ -3,6 +3,7 @@ DECL|macro|__ASM_APIC_H
 mdefine_line|#define __ASM_APIC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC

@@ -78,11 +78,38 @@ DECL|macro|SONYPI_EVENT_LID_CLOSED
 mdefine_line|#define SONYPI_EVENT_LID_CLOSED&t;&t;&t;36
 DECL|macro|SONYPI_EVENT_LID_OPENED
 mdefine_line|#define SONYPI_EVENT_LID_OPENED&t;&t;&t;37
-multiline_comment|/* brightness etc. ioctls */
+DECL|macro|SONYPI_EVENT_BLUETOOTH_ON
+mdefine_line|#define SONYPI_EVENT_BLUETOOTH_ON&t;&t;38
+DECL|macro|SONYPI_EVENT_BLUETOOTH_OFF
+mdefine_line|#define SONYPI_EVENT_BLUETOOTH_OFF&t;&t;39
+multiline_comment|/* get/set brightness */
 DECL|macro|SONYPI_IOCGBRT
-mdefine_line|#define SONYPI_IOCGBRT&t;_IOR(&squot;v&squot;, 0, __u8)
+mdefine_line|#define SONYPI_IOCGBRT&t;&t;_IOR(&squot;v&squot;, 0, __u8)
 DECL|macro|SONYPI_IOCSBRT
-mdefine_line|#define SONYPI_IOCSBRT&t;_IOW(&squot;v&squot;, 0, __u8)
+mdefine_line|#define SONYPI_IOCSBRT&t;&t;_IOW(&squot;v&squot;, 0, __u8)
+multiline_comment|/* get battery full capacity/remaining capacity */
+DECL|macro|SONYPI_IOCGBAT1CAP
+mdefine_line|#define SONYPI_IOCGBAT1CAP&t;_IOR(&squot;v&squot;, 2, __u16)
+DECL|macro|SONYPI_IOCGBAT1REM
+mdefine_line|#define SONYPI_IOCGBAT1REM&t;_IOR(&squot;v&squot;, 3, __u16)
+DECL|macro|SONYPI_IOCGBAT2CAP
+mdefine_line|#define SONYPI_IOCGBAT2CAP&t;_IOR(&squot;v&squot;, 4, __u16)
+DECL|macro|SONYPI_IOCGBAT2REM
+mdefine_line|#define SONYPI_IOCGBAT2REM&t;_IOR(&squot;v&squot;, 5, __u16)
+multiline_comment|/* get battery flags: battery1/battery2/ac adapter present */
+DECL|macro|SONYPI_BFLAGS_B1
+mdefine_line|#define SONYPI_BFLAGS_B1&t;0x01
+DECL|macro|SONYPI_BFLAGS_B2
+mdefine_line|#define SONYPI_BFLAGS_B2&t;0x02
+DECL|macro|SONYPI_BFLAGS_AC
+mdefine_line|#define SONYPI_BFLAGS_AC&t;0x04
+DECL|macro|SONYPI_IOCGBATFLAGS
+mdefine_line|#define SONYPI_IOCGBATFLAGS&t;_IOR(&squot;v&squot;, 7, __u8)
+multiline_comment|/* get/set bluetooth subsystem state on/off */
+DECL|macro|SONYPI_IOCGBLUE
+mdefine_line|#define SONYPI_IOCGBLUE&t;&t;_IOR(&squot;v&squot;, 8, __u8)
+DECL|macro|SONYPI_IOCSBLUE
+mdefine_line|#define SONYPI_IOCSBLUE&t;&t;_IOW(&squot;v&squot;, 9, __u8)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* used only for communication between v4l and sonypi */
 DECL|macro|SONYPI_COMMAND_GETCAMERA

@@ -2045,16 +2045,6 @@ id|iobase
 )paren
 (brace
 multiline_comment|/* Initialize new device structure */
-id|dev-&gt;rmem_end
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* shared memory isn&squot;t used */
-id|dev-&gt;rmem_start
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* shared memory isn&squot;t used */
 id|dev-&gt;mem_end
 op_assign
 l_int|0

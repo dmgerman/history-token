@@ -321,11 +321,7 @@ l_string|&quot;  jmp       1b&bslash;n&quot;
 id|LOCK_SECTION_END
 l_string|&quot;# ending __up_read&bslash;n&quot;
 suffix:colon
-l_string|&quot;+m&quot;
-(paren
-id|sem-&gt;count
-)paren
-comma
+multiline_comment|/*&quot;+m&quot;(sem-&gt;count),*/
 l_string|&quot;+d&quot;
 (paren
 id|tmp

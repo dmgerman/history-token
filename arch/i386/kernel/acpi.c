@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
