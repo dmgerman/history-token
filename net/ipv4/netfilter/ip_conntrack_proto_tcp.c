@@ -512,7 +512,7 @@ multiline_comment|/*ack*/
 (brace
 id|sIV
 comma
-id|sIV
+id|sIG
 comma
 id|sIV
 comma
@@ -531,7 +531,7 @@ comma
 id|sIV
 )brace
 comma
-multiline_comment|/*&n; *&t;sSS -&gt; sIV&t;ACK is invalid: we haven&squot;t seen a SYN/ACK yet.&n; *&t;sSR -&gt; sIV&t;Simultaneous open.&n; *&t;sES -&gt; sES&t;:-)&n; *&t;sFW -&gt; sCW&t;Normal close request answered by ACK.&n; *&t;sCW -&gt; sCW&n; *&t;sLA -&gt; sTW&t;Last ACK detected.&n; *&t;sTW -&gt; sTW&t;Retransmitted last ACK.&n; *&t;sCL -&gt; sCL&n; */
+multiline_comment|/*&n; *&t;sSS -&gt; sIG&t;Might be a half-open connection.&n; *&t;sSR -&gt; sIV&t;Simultaneous open.&n; *&t;sES -&gt; sES&t;:-)&n; *&t;sFW -&gt; sCW&t;Normal close request answered by ACK.&n; *&t;sCW -&gt; sCW&n; *&t;sLA -&gt; sTW&t;Last ACK detected.&n; *&t;sTW -&gt; sTW&t;Retransmitted last ACK.&n; *&t;sCL -&gt; sCL&n; */
 multiline_comment|/* &t;     sNO, sSS, sSR, sES, sFW, sCW, sLA, sTW, sCL, sLI&t;*/
 multiline_comment|/*rst*/
 (brace
@@ -1131,7 +1131,7 @@ suffix:semicolon
 )brace
 id|state-&gt;flags
 op_or_assign
-id|IP_CT_TCP_STATE_FLAG_WINDOW_SCALE
+id|IP_CT_TCP_FLAG_WINDOW_SCALE
 suffix:semicolon
 )brace
 id|ptr
@@ -1676,11 +1676,11 @@ op_logical_neg
 (paren
 id|sender-&gt;flags
 op_amp
-id|IP_CT_TCP_STATE_FLAG_WINDOW_SCALE
+id|IP_CT_TCP_FLAG_WINDOW_SCALE
 op_logical_and
 id|receiver-&gt;flags
 op_amp
-id|IP_CT_TCP_STATE_FLAG_WINDOW_SCALE
+id|IP_CT_TCP_FLAG_WINDOW_SCALE
 )paren
 )paren
 id|sender-&gt;td_scale
@@ -1722,6 +1722,8 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+(paren
 id|state-&gt;state
 op_eq
 id|TCP_CONNTRACK_SYN_SENT
@@ -1729,6 +1731,18 @@ op_logical_and
 id|dir
 op_eq
 id|IP_CT_DIR_ORIGINAL
+)paren
+op_logical_or
+(paren
+id|state-&gt;state
+op_eq
+id|TCP_CONNTRACK_SYN_RECV
+op_logical_and
+id|dir
+op_eq
+id|IP_CT_DIR_REPLY
+)paren
+)paren
 op_logical_and
 id|after
 c_func
@@ -2294,7 +2308,7 @@ c_cond
 id|before
 c_func
 (paren
-id|ack
+id|sack
 comma
 id|receiver-&gt;td_end
 op_plus
@@ -3105,7 +3119,7 @@ id|new_state
 r_case
 id|TCP_CONNTRACK_IGNORE
 suffix:colon
-multiline_comment|/* Either SYN in ORIGINAL, or SYN/ACK in REPLY direction. */
+multiline_comment|/* Either SYN in ORIGINAL&n;&t;&t; * or SYN/ACK in REPLY&n;&t;&t; * or ACK in REPLY direction (half-open connection). */
 r_if
 c_cond
 (paren
@@ -3239,7 +3253,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_string|&quot;ip_ct_tcp: invalid SYN (ignored) &quot;
+l_string|&quot;ip_ct_tcp: invalid packet ignored &quot;
 )paren
 suffix:semicolon
 r_return
@@ -3359,6 +3373,8 @@ id|index
 op_eq
 id|TCP_RST_SET
 op_logical_and
+(paren
+(paren
 id|test_bit
 c_func
 (paren
@@ -3371,6 +3387,12 @@ op_logical_and
 id|conntrack-&gt;proto.tcp.last_index
 op_le
 id|TCP_SYNACK_SET
+)paren
+op_logical_or
+id|conntrack-&gt;proto.tcp.last_index
+op_eq
+id|TCP_ACK_SET
+)paren
 op_logical_and
 id|after
 c_func
@@ -3385,7 +3407,7 @@ id|conntrack-&gt;proto.tcp.last_seq
 )paren
 )paren
 (brace
-multiline_comment|/* Ignore RST closing down invalid SYN &n;&t;&t;&t;   we had let trough. */
+multiline_comment|/* Ignore RST closing down invalid SYN or ACK&n;&t;&t;&t;   we had let trough. */
 id|WRITE_UNLOCK
 c_func
 (paren
