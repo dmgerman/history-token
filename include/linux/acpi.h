@@ -1483,7 +1483,7 @@ id|val
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_EC*/
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#ifdef CONFIG_ACPI_INTERPRETER
 r_int
 id|acpi_blacklisted
 c_func
@@ -1491,7 +1491,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|#else /*!CONFIG_ACPI_INTERPRETER*/
 DECL|function|acpi_blacklisted
 r_static
 r_inline
@@ -1506,6 +1506,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_ACPI*/
+macro_line|#endif /*!CONFIG_ACPI_INTERPRETER*/
 macro_line|#endif /*_LINUX_ACPI_H*/
 eof
