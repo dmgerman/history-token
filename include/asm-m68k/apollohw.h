@@ -2,7 +2,7 @@ multiline_comment|/* apollohw.h : some structures to access apollo HW */
 macro_line|#ifndef _ASMm68k_APOLLOHW_H_
 DECL|macro|_ASMm68k_APOLLOHW_H_
 mdefine_line|#define _ASMm68k_APOLLOHW_H_
-multiline_comment|/*&n;   apollo models &n;*/
+multiline_comment|/*&n;   apollo models&n;*/
 r_extern
 id|u_long
 id|apollo_model
@@ -19,7 +19,7 @@ DECL|macro|APOLLO_DN4000
 mdefine_line|#define APOLLO_DN4000 (4)
 DECL|macro|APOLLO_DN4500
 mdefine_line|#define APOLLO_DN4500 (5)
-multiline_comment|/* &n;   see scn2681 data sheet for more info. &n;   member names are read_write.&n;*/
+multiline_comment|/*&n;   see scn2681 data sheet for more info.&n;   member names are read_write.&n;*/
 DECL|macro|DECLARE_2681_FIELD
 mdefine_line|#define DECLARE_2681_FIELD(x) unsigned char x; unsigned char dummy##x
 DECL|struct|SCN2681
@@ -335,7 +335,7 @@ mdefine_line|#define pica (IO_BASE + pica_physaddr)
 DECL|macro|picb
 mdefine_line|#define picb (IO_BASE + picb_physaddr)
 DECL|macro|timer
-mdefine_line|#define timer (IO_BASE + timer_physaddr)&t;
+mdefine_line|#define timer (IO_BASE + timer_physaddr)
 DECL|macro|addr_xlat_map
 mdefine_line|#define addr_xlat_map ((unsigned short *)(IO_BASE + 0x17000))
 DECL|macro|isaIO2mem

@@ -2056,6 +2056,7 @@ id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
 DECL|function|datafab_info_destructor
+r_static
 r_void
 id|datafab_info_destructor
 c_func

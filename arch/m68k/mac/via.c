@@ -6,10 +6,10 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt; 
-macro_line|#include &lt;asm/macintosh.h&gt; 
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
-macro_line|#include &lt;asm/machw.h&gt; 
+macro_line|#include &lt;asm/machw.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/mac_psc.h&gt;
 DECL|variable|via1
@@ -483,7 +483,7 @@ id|vACR
 op_and_assign
 l_int|0x3F
 suffix:semicolon
-multiline_comment|/* &n;&t; * SE/30: disable video IRQ&n;&t; * XXX: testing for SE/30 VBL&n;&t; */
+multiline_comment|/*&n;&t; * SE/30: disable video IRQ&n;&t; * XXX: testing for SE/30 VBL&n;&t; */
 r_if
 c_cond
 (paren

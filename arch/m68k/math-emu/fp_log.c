@@ -157,7 +157,7 @@ id|dest
 r_return
 id|dest
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;&t; sqrt(m) * 2^(p)&t;, if e = 2*p&n;&t; * sqrt(m*2^e) = &n;&t; *&t;&t; sqrt(2*m) * 2^(p)&t;, if e = 2*p + 1&n;&t; *&n;&t; * So we use the last bit of the exponent to decide wether to&n;&t; * use the m or 2*m.&n;&t; *&n;&t; * Since only the fractional part of the mantissa is stored and&n;&t; * the integer part is assumed to be one, we place a 1 or 2 into&n;&t; * the fixed point representation.&n;&t; */
+multiline_comment|/*&n;&t; *&t;&t; sqrt(m) * 2^(p)&t;, if e = 2*p&n;&t; * sqrt(m*2^e) =&n;&t; *&t;&t; sqrt(2*m) * 2^(p)&t;, if e = 2*p + 1&n;&t; *&n;&t; * So we use the last bit of the exponent to decide wether to&n;&t; * use the m or 2*m.&n;&t; *&n;&t; * Since only the fractional part of the mantissa is stored and&n;&t; * the integer part is assumed to be one, we place a 1 or 2 into&n;&t; * the fixed point representation.&n;&t; */
 id|exp
 op_assign
 id|dest-&gt;exp
@@ -203,7 +203,7 @@ id|dest-&gt;exp
 op_decrement
 suffix:semicolon
 multiline_comment|/* * 1/2 */
-multiline_comment|/*&n;&t; * We now apply the newton rule to the function&n;&t; *&t;f(x) := x^2 - r&n;&t; * which has a null point on x = sqrt(r).&n;&t; *&n;&t; * It gives:&n;&t; * &t;x&squot; := x - f(x)/f&squot;(x)&n;&t; *&t;    = x - (x^2 -r)/(2*x)&n;&t; *&t;    = x - (x - r/x)/2&n;&t; *          = (2*x - x + r/x)/2&n;&t; *&t;    = (x + r/x)/2&n;&t; */
+multiline_comment|/*&n;&t; * We now apply the newton rule to the function&n;&t; *&t;f(x) := x^2 - r&n;&t; * which has a null point on x = sqrt(r).&n;&t; *&n;&t; * It gives:&n;&t; *&t;x&squot; := x - f(x)/f&squot;(x)&n;&t; *&t;    = x - (x^2 -r)/(2*x)&n;&t; *&t;    = x - (x - r/x)/2&n;&t; *          = (2*x - x + r/x)/2&n;&t; *&t;    = (x + r/x)/2&n;&t; */
 r_for
 c_loop
 (paren

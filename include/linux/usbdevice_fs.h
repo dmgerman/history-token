@@ -345,12 +345,6 @@ id|list_head
 id|list
 suffix:semicolon
 multiline_comment|/* state list */
-DECL|member|devsem
-r_struct
-id|rw_semaphore
-id|devsem
-suffix:semicolon
-multiline_comment|/* protects modifications to dev (dev == NULL indicating disconnect) */
 DECL|member|dev
 r_struct
 id|usb_device

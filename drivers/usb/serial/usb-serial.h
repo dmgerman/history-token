@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Serial Converter driver&n; *&n; *&t;Copyright (C) 1999 - 2003&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * (03/26/2002) gkh&n; *&t;removed the port-&gt;tty check from port_paranoia_check() due to serial&n; *&t;consoles not having a tty device assigned to them.&n; *&n; * (12/03/2001) gkh&n; *&t;removed active from the port structure.&n; *&t;added documentation to the usb_serial_device_type structure&n; *&n; * (10/10/2001) gkh&n; *&t;added vendor and product to serial structure.  Needed to determine device&n; *&t;owner when the device is disconnected.&n; *&n; * (05/30/2001) gkh&n; *&t;added sem to port structure and removed port_lock&n; *&n; * (10/05/2000) gkh&n; *&t;Added interrupt_in_endpointAddress and bulk_in_endpointAddress to help&n; *&t;fix bug with urb-&gt;dev not being set properly, now that the usb core&n; *&t;needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Added usb_serial_debug_data function to help get rid of #DEBUG in the&n; *&t;drivers.&n; *&n; * (08/28/2000) gkh&n; *&t;Added port_lock to port structure.&n; *&n; * (08/08/2000) gkh&n; *&t;Added open_count to port structure.&n; *&n; * (07/23/2000) gkh&n; *&t;Added bulk_out_endpointAddress to port structure.&n; *&n; * (07/19/2000) gkh, pberger, and borchers&n; *&t;Modifications to allow usb-serial drivers to be modules.&n; *&n; * &n; */
+multiline_comment|/*&n; * USB Serial Converter driver&n; *&n; *&t;Copyright (C) 1999 - 2004&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * (03/26/2002) gkh&n; *&t;removed the port-&gt;tty check from port_paranoia_check() due to serial&n; *&t;consoles not having a tty device assigned to them.&n; *&n; * (12/03/2001) gkh&n; *&t;removed active from the port structure.&n; *&t;added documentation to the usb_serial_device_type structure&n; *&n; * (10/10/2001) gkh&n; *&t;added vendor and product to serial structure.  Needed to determine device&n; *&t;owner when the device is disconnected.&n; *&n; * (05/30/2001) gkh&n; *&t;added sem to port structure and removed port_lock&n; *&n; * (10/05/2000) gkh&n; *&t;Added interrupt_in_endpointAddress and bulk_in_endpointAddress to help&n; *&t;fix bug with urb-&gt;dev not being set properly, now that the usb core&n; *&t;needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Added usb_serial_debug_data function to help get rid of #DEBUG in the&n; *&t;drivers.&n; *&n; * (08/28/2000) gkh&n; *&t;Added port_lock to port structure.&n; *&n; * (08/08/2000) gkh&n; *&t;Added open_count to port structure.&n; *&n; * (07/23/2000) gkh&n; *&t;Added bulk_out_endpointAddress to port structure.&n; *&n; * (07/19/2000) gkh, pberger, and borchers&n; *&t;Modifications to allow usb-serial drivers to be modules.&n; *&n; * &n; */
 macro_line|#ifndef __LINUX_USB_SERIAL_H
 DECL|macro|__LINUX_USB_SERIAL_H
 mdefine_line|#define __LINUX_USB_SERIAL_H
@@ -10,22 +10,14 @@ DECL|macro|SERIAL_TTY_MINORS
 mdefine_line|#define SERIAL_TTY_MINORS&t;255&t;/* loads of devices :) */
 DECL|macro|MAX_NUM_PORTS
 mdefine_line|#define MAX_NUM_PORTS&t;&t;8&t;/* The maximum number of ports one device can grab at once */
-DECL|macro|USB_SERIAL_MAGIC
-mdefine_line|#define USB_SERIAL_MAGIC&t;0x6702&t;/* magic number for usb_serial struct */
-DECL|macro|USB_SERIAL_PORT_MAGIC
-mdefine_line|#define USB_SERIAL_PORT_MAGIC&t;0x7301&t;/* magic number for usb_serial_port struct */
 multiline_comment|/* parity check flag */
 DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
-multiline_comment|/**&n; * usb_serial_port: structure for the specific ports of a device.&n; * @magic: magic number for internal validity of this pointer.&n; * @serial: pointer back to the struct usb_serial owner of this port.&n; * @tty: pointer to the corresponding tty for this port.&n; * @number: the number of the port (the minor number).&n; * @interrupt_in_buffer: pointer to the interrupt in buffer for this port.&n; * @interrupt_in_urb: pointer to the interrupt in struct urb for this port.&n; * @interrupt_in_endpointAddress: endpoint address for the interrupt in pipe&n; *&t;for this port.&n; * @bulk_in_buffer: pointer to the bulk in buffer for this port.&n; * @read_urb: pointer to the bulk in struct urb for this port.&n; * @bulk_in_endpointAddress: endpoint address for the bulk in pipe for this&n; *&t;port.&n; * @bulk_out_buffer: pointer to the bulk out buffer for this port.&n; * @bulk_out_size: the size of the bulk_out_buffer, in bytes.&n; * @write_urb: pointer to the bulk out struct urb for this port.&n; * @bulk_out_endpointAddress: endpoint address for the bulk out pipe for this&n; *&t;port.&n; * @write_wait: a wait_queue_head_t used by the port.&n; * @work: work queue entry for the line discipline waking up.&n; * @open_count: number of times this port has been opened.&n; *&n; * This structure is used by the usb-serial core and drivers for the specific&n; * ports of a device.&n; */
+multiline_comment|/**&n; * usb_serial_port: structure for the specific ports of a device.&n; * @serial: pointer back to the struct usb_serial owner of this port.&n; * @tty: pointer to the corresponding tty for this port.&n; * @number: the number of the port (the minor number).&n; * @interrupt_in_buffer: pointer to the interrupt in buffer for this port.&n; * @interrupt_in_urb: pointer to the interrupt in struct urb for this port.&n; * @interrupt_in_endpointAddress: endpoint address for the interrupt in pipe&n; *&t;for this port.&n; * @bulk_in_buffer: pointer to the bulk in buffer for this port.&n; * @read_urb: pointer to the bulk in struct urb for this port.&n; * @bulk_in_endpointAddress: endpoint address for the bulk in pipe for this&n; *&t;port.&n; * @bulk_out_buffer: pointer to the bulk out buffer for this port.&n; * @bulk_out_size: the size of the bulk_out_buffer, in bytes.&n; * @write_urb: pointer to the bulk out struct urb for this port.&n; * @bulk_out_endpointAddress: endpoint address for the bulk out pipe for this&n; *&t;port.&n; * @write_wait: a wait_queue_head_t used by the port.&n; * @work: work queue entry for the line discipline waking up.&n; * @open_count: number of times this port has been opened.&n; *&n; * This structure is used by the usb-serial core and drivers for the specific&n; * ports of a device.&n; */
 DECL|struct|usb_serial_port
 r_struct
 id|usb_serial_port
 (brace
-DECL|member|magic
-r_int
-id|magic
-suffix:semicolon
 DECL|member|serial
 r_struct
 id|usb_serial
@@ -166,15 +158,11 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @magic: magic number for internal validity of this pointer.&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.  Use usb_get_serial_data() and&n; *&t;usb_set_serial_data() to access this.&n; */
+multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.  Use usb_get_serial_data() and&n; *&t;usb_set_serial_data() to access this.&n; */
 DECL|struct|usb_serial
 r_struct
 id|usb_serial
 (brace
-DECL|member|magic
-r_int
-id|magic
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|usb_device
@@ -1029,221 +1017,6 @@ id|tty_driver
 op_star
 id|usb_serial_tty_driver
 suffix:semicolon
-multiline_comment|/* Inline functions to check the sanity of a pointer that is passed to us */
-DECL|function|serial_paranoia_check
-r_static
-r_inline
-r_int
-id|serial_paranoia_check
-(paren
-r_struct
-id|usb_serial
-op_star
-id|serial
-comma
-r_const
-r_char
-op_star
-id|function
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - serial == NULL&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|serial-&gt;magic
-op_ne
-id|USB_SERIAL_MAGIC
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad magic number for serial&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial-&gt;type
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - serial-&gt;type == NULL!&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|port_paranoia_check
-r_static
-r_inline
-r_int
-id|port_paranoia_check
-(paren
-r_struct
-id|usb_serial_port
-op_star
-id|port
-comma
-r_const
-r_char
-op_star
-id|function
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - port == NULL&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|port-&gt;magic
-op_ne
-id|USB_SERIAL_PORT_MAGIC
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad magic number for port&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;serial
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - port-&gt;serial == NULL&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|get_usb_serial
-r_static
-r_inline
-r_struct
-id|usb_serial
-op_star
-id|get_usb_serial
-(paren
-r_struct
-id|usb_serial_port
-op_star
-id|port
-comma
-r_const
-r_char
-op_star
-id|function
-)paren
-(brace
-multiline_comment|/* if no port was specified, or it fails a paranoia check */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port
-op_logical_or
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|function
-)paren
-op_logical_or
-id|serial_paranoia_check
-(paren
-id|port-&gt;serial
-comma
-id|function
-)paren
-)paren
-(brace
-multiline_comment|/* then say that we don&squot;t have a valid usb_serial thing, which will&n;&t;&t; * end up genrating -ENODEV return values */
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-r_return
-id|port-&gt;serial
-suffix:semicolon
-)brace
 DECL|function|usb_serial_debug_data
 r_static
 r_inline

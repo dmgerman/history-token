@@ -6852,7 +6852,7 @@ l_int|7
 op_assign
 l_int|18
 op_minus
-l_int|7
+l_int|8
 suffix:semicolon
 singleline_comment|// Additional sense length
 id|buf

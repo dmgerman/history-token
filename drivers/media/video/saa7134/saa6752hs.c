@@ -1380,7 +1380,7 @@ id|adap
 op_member_access_from_pointer
 r_class
 op_amp
-id|I2C_ADAP_CLASS_TV_ANALOG
+id|I2C_CLASS_TV_ANALOG
 )paren
 r_return
 id|i2c_probe

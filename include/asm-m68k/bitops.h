@@ -123,7 +123,7 @@ suffix:semicolon
 DECL|macro|set_bit
 mdefine_line|#define set_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_set_bit(nr, vaddr) : &bslash;&n;   __generic_set_bit(nr, vaddr))
 DECL|macro|__set_bit
-mdefine_line|#define __set_bit(nr,vaddr) set_bit(nr,vaddr) 
+mdefine_line|#define __set_bit(nr,vaddr) set_bit(nr,vaddr)
 DECL|function|__constant_set_bit
 r_static
 r_inline

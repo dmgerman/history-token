@@ -273,7 +273,7 @@ comma
 id|sysname
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;
+macro_line|#endif
 )brace
 r_return
 suffix:semicolon

@@ -4759,6 +4759,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|usb_bluetooth_init
+r_static
 r_int
 id|usb_bluetooth_init
 c_func
@@ -4966,6 +4967,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|usb_bluetooth_exit
+r_static
 r_void
 id|usb_bluetooth_exit
 c_func

@@ -321,11 +321,25 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Set state to ABORTING, set the ABORTING bit, and release the lock */
+multiline_comment|/* Set state to ABORTING and set the ABORTING bit, but only if&n;&t; * a device reset isn&squot;t already in progress (to avoid interfering&n;&t; * with the reset).  To prevent races with auto-reset, we must&n;&t; * stop any ongoing USB transfers while still holding the host&n;&t; * lock. */
 id|us-&gt;sm_state
 op_assign
 id|US_STATE_ABORTING
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_RESETTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
 id|set_bit
 c_func
 (paren
@@ -335,17 +349,17 @@ op_amp
 id|us-&gt;flags
 )paren
 suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-multiline_comment|/* Stop an ongoing USB transfer */
 id|usb_stor_stop_transport
 c_func
 (paren
 id|us
+)paren
+suffix:semicolon
+)brace
+id|scsi_unlock
+c_func
+(paren
+id|host
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for the aborted command to finish */
@@ -702,7 +716,7 @@ suffix:colon
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/* Report a driver-initiated device reset to the SCSI layer.&n; * Calling this for a SCSI-initiated reset is unnecessary but harmless. */
+multiline_comment|/* Report a driver-initiated device reset to the SCSI layer.&n; * Calling this for a SCSI-initiated reset is unnecessary but harmless.&n; * The caller must own the SCSI host lock. */
 DECL|function|usb_stor_report_device_reset
 r_void
 id|usb_stor_report_device_reset
@@ -716,12 +730,6 @@ id|us
 (brace
 r_int
 id|i
-suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|us-&gt;host
-)paren
 suffix:semicolon
 id|scsi_report_device_reset
 c_func
@@ -766,12 +774,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|scsi_unlock
-c_func
-(paren
-id|us-&gt;host
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * /proc/scsi/ functions&n; ***********************************************************************/
 multiline_comment|/* we use this macro to help us write into the buffer */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Apple Peripheral System Controller (PSC)&n; *&n; * The PSC is used on the AV Macs to control IO functions not handled&n; * by the VIAs (Ethernet, DSP, SCC, Sound). This includes nine DMA&n; * channels.&n; *&n; * The first seven DMA channels appear to be &quot;one-shot&quot; and are actually&n; * sets of two channels; one member is active while the other is being&n; * configured, and then you flip the active member and start all over again.&n; * The one-shot channels are grouped together and are:&n; *&n; * 1. SCSI&n; * 2. Ethernet Read&n; * 3. Ethernet Write&n; * 4. Floppy Disk Controller&n; * 5. SCC Channel A Receive&n; * 6. SCC Channel B Receive&n; * 7. SCC Channel A Transmit&n; *&n; * The remaining two channels are handled somewhat differently. They appear&n; * to be closely tied and share one set of registers. They also seem to run&n; * continuously, although how you keep the buffer filled in this scenario is&n; * not understood as there seems to be only one input and one output buffer&n; * pointer.&n; * &n; * Much of this was extrapolated from what was known about the Ethernet&n; * registers and subsequently confirmed using MacsBug (ie by pinging the&n; * machine with easy-to-find patterns and looking for them in the DMA&n; * buffers, or by sending a file over the serial ports and finding the&n; * file in the buffers.)&n; *&n; * 1999-05-25 (jmt)&n; */
+multiline_comment|/*&n; * Apple Peripheral System Controller (PSC)&n; *&n; * The PSC is used on the AV Macs to control IO functions not handled&n; * by the VIAs (Ethernet, DSP, SCC, Sound). This includes nine DMA&n; * channels.&n; *&n; * The first seven DMA channels appear to be &quot;one-shot&quot; and are actually&n; * sets of two channels; one member is active while the other is being&n; * configured, and then you flip the active member and start all over again.&n; * The one-shot channels are grouped together and are:&n; *&n; * 1. SCSI&n; * 2. Ethernet Read&n; * 3. Ethernet Write&n; * 4. Floppy Disk Controller&n; * 5. SCC Channel A Receive&n; * 6. SCC Channel B Receive&n; * 7. SCC Channel A Transmit&n; *&n; * The remaining two channels are handled somewhat differently. They appear&n; * to be closely tied and share one set of registers. They also seem to run&n; * continuously, although how you keep the buffer filled in this scenario is&n; * not understood as there seems to be only one input and one output buffer&n; * pointer.&n; *&n; * Much of this was extrapolated from what was known about the Ethernet&n; * registers and subsequently confirmed using MacsBug (ie by pinging the&n; * machine with easy-to-find patterns and looking for them in the DMA&n; * buffers, or by sending a file over the serial ports and finding the&n; * file in the buffers.)&n; *&n; * 1999-05-25 (jmt)&n; */
 DECL|macro|PSC_BASE
 mdefine_line|#define PSC_BASE&t;(0x50F31000)
 multiline_comment|/*&n; * The IER/IFR registers work like the VIA, except that it has 4&n; * of them each on different interrupt levels, and each register&n; * set only seems to handle four interrupts instead of seven.&n; *&n; * To access a particular set of registers, add 0xn0 to the base&n; * where n = 3,4,5 or 6.&n; */
@@ -37,11 +37,11 @@ mdefine_line|#define PSC_SET0&t;0x00
 DECL|macro|PSC_SET1
 mdefine_line|#define PSC_SET1&t;0x10
 DECL|macro|PSC_SCSI_ADDR
-mdefine_line|#define PSC_SCSI_ADDR&t;0x1000 &t;/* confirmed */
+mdefine_line|#define PSC_SCSI_ADDR&t;0x1000&t;/* confirmed */
 DECL|macro|PSC_SCSI_LEN
-mdefine_line|#define PSC_SCSI_LEN&t;0x1004 &t;/* confirmed */
+mdefine_line|#define PSC_SCSI_LEN&t;0x1004&t;/* confirmed */
 DECL|macro|PSC_SCSI_CMD
-mdefine_line|#define PSC_SCSI_CMD&t;0x1008 &t;/* confirmed */
+mdefine_line|#define PSC_SCSI_CMD&t;0x1008&t;/* confirmed */
 DECL|macro|PSC_ENETRD_ADDR
 mdefine_line|#define PSC_ENETRD_ADDR 0x1020&t;/* confirmed */
 DECL|macro|PSC_ENETRD_LEN

@@ -725,8 +725,6 @@ suffix:semicolon
 )brace
 id|qh_put
 (paren
-id|ehci
-comma
 id|qh
 )paren
 suffix:semicolon
@@ -2649,8 +2647,6 @@ id|done
 suffix:colon
 id|qh_put
 (paren
-id|ehci
-comma
 id|qh
 )paren
 suffix:semicolon
@@ -3629,8 +3625,6 @@ l_int|0
 suffix:semicolon
 id|qh_put
 (paren
-id|ehci
-comma
 id|qh
 )paren
 suffix:semicolon
@@ -3687,8 +3681,6 @@ r_else
 (brace
 id|qh_put
 (paren
-id|ehci
-comma
 id|qh
 )paren
 suffix:semicolon
@@ -4049,8 +4041,6 @@ id|regs
 suffix:semicolon
 id|qh_put
 (paren
-id|ehci
-comma
 id|qh
 )paren
 suffix:semicolon

@@ -1,6 +1,12 @@
 multiline_comment|/*&n; * USB Networking Links&n; * Copyright (C) 2000-2003 by David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * Copyright (C) 2002 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Copyright (C) 2003 David Hollis &lt;dhollis@davehollis.com&gt;&n; * Copyright (c) 2002-2003 TiVo Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * This is a generic &quot;USB networking&quot; framework that works with several&n; * kinds of full and high speed networking devices:&n; *&n; *   + USB host-to-host &quot;network cables&quot;, used for IP-over-USB links.&n; *     These are often used for Laplink style connectivity products.&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- GeneSys GL620USB-A&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; *   + Smart USB devices can support such links directly, using Internet&n; *     standard protocols instead of proprietary host-to-device links.&n; *&t;- Linux PDAs like iPaq, Yopy, and Zaurus&n; *&t;- The BLOB boot loader (for diskless booting)&n; *&t;- Linux &quot;gadgets&quot;, perhaps using PXA-2xx or Net2280 controllers&n; *&t;- Devices using EPSON&squot;s sample USB firmware&n; *&t;- CDC-Ethernet class devices, such as many cable modems&n; *&n; *   + Adapters to networks such as Ethernet.&n; *&t;- AX8817X based USB 2.0 products&n; *&n; * Links to these devices can be bridged using Linux Ethernet bridging.&n; * With minor exceptions, these all use similar USB framing for network&n; * traffic, but need different protocols for control traffic.&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the SA1110, Zaurus, or EPSON device/client support in this driver;&n; * slave/target drivers such as &quot;usb-eth&quot; (on most SA-1100 PDAs) or&n; * &quot;g_ether&quot; (in the Linux &quot;gadget&quot; framework) implement that behavior&n; * within devices.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; *&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; * 03-nov-2001&t;Merged GeneSys driver; original code from Jiun-Jie Huang&n; *&t;&t;&lt;huangjj@genesyslogic.com.tw&gt;, updated by Stanislav Brabec&n; *&t;&t;&lt;utx@penguin.cz&gt;.  Made framing options (NetChip/GeneSys)&n; *&t;&t;tie mostly to (sub)driver info.  Workaround some PL-2302&n; *&t;&t;chips that seem to reject SET_INTERFACE requests.&n; *&n; * 06-apr-2002&t;Added ethtool support, based on a patch from Brad Hards.&n; *&t;&t;Level of diagnostics is more configurable; they use device&n; *&t;&t;location (usb_device-&gt;devpath) instead of address (2.5).&n; *&t;&t;For tx_fixup, memflags can&squot;t be NOIO.&n; * 07-may-2002&t;Generalize/cleanup keventd support, handling rx stalls (mostly&n; *&t;&t;for USB 2.0 TTs) and memory shortages (potential) too. (db)&n; *&t;&t;Use &quot;locally assigned&quot; IEEE802 address space. (Brad Hards)&n; * 18-oct-2002&t;Support for Zaurus (Pavel Machek), related cleanup (db).&n; * 14-dec-2002&t;Remove Zaurus-private crc32 code (Pavel); 2.5 oops fix,&n; * &t;&t;cleanups and stubbed PXA-250 support (db), fix for framing&n; * &t;&t;issues on Z, net1080, and gl620a (Toby Milne)&n; *&n; * 31-mar-2003&t;Use endpoint descriptors:  high speed support, simpler sa1100&n; * &t;&t;vs pxa25x, and CDC Ethernet.  Throttle down log floods on&n; * &t;&t;disconnect; other cleanups. (db)  Flush net1080 fifos&n; * &t;&t;after several sequential framing errors. (Johannes Erdfelt)&n; * 22-aug-2003&t;AX8817X support (Dave Hollis).&n; *&n; *-------------------------------------------------------------------------*/
+singleline_comment|// #define&t;DEBUG&t;&t;&t;// error path messages, extra info
+singleline_comment|// #define&t;VERBOSE&t;&t;&t;// more; success messages
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef&t;CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+macro_line|#   define DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -13,14 +19,6 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-singleline_comment|// #define&t;DEBUG&t;&t;&t;// error path messages, extra info
-singleline_comment|// #define&t;VERBOSE&t;&t;&t;// more; success messages
-DECL|macro|REALLY_QUEUE
-mdefine_line|#define&t;REALLY_QUEUE
-macro_line|#if !defined (DEBUG) &amp;&amp; defined (CONFIG_USB_DEBUG)
-DECL|macro|DEBUG
-macro_line|#   define DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -30,17 +28,10 @@ DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION&t;&t;&quot;25-Aug-2003&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Nineteen USB 1.1 max size bulk transactions per frame (ms), max.&n; * Several dozen bytes of IPv4 data can fit in two such transactions.&n; * One maximum size Ethernet packet takes twenty four of them.&n; * For high speed, each frame comfortably fits almost 36 max size&n; * Ethernet packets (so queues should be bigger).&n; */
-macro_line|#ifdef REALLY_QUEUE
 DECL|macro|RX_QLEN
 mdefine_line|#define&t;RX_QLEN(dev) (((dev)-&gt;udev-&gt;speed == USB_SPEED_HIGH) ? 60 : 4)
 DECL|macro|TX_QLEN
 mdefine_line|#define&t;TX_QLEN(dev) (((dev)-&gt;udev-&gt;speed == USB_SPEED_HIGH) ? 60 : 4)
-macro_line|#else
-DECL|macro|RX_QLEN
-mdefine_line|#define&t;RX_QLEN(dev)&t;&t;1
-DECL|macro|TX_QLEN
-mdefine_line|#define&t;TX_QLEN(dev)&t;&t;1
-macro_line|#endif
 singleline_comment|// packets are always ethernet inside
 singleline_comment|// ... except they can be bigger (limit of 64K with NetChip framing)
 DECL|macro|MIN_PACKET
@@ -1700,6 +1691,7 @@ id|buf
 suffix:semicolon
 )brace
 DECL|function|ax8817x_get_wol
+r_static
 r_void
 id|ax8817x_get_wol
 c_func
@@ -1807,6 +1799,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ax8817x_set_wol
+r_static
 r_int
 id|ax8817x_set_wol
 c_func
@@ -1909,6 +1902,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ax8817x_get_eeprom
+r_static
 r_int
 id|ax8817x_get_eeprom
 c_func
@@ -3103,12 +3097,12 @@ id|u8
 op_star
 id|buf
 op_assign
-id|intf-&gt;altsetting-&gt;extra
+id|intf-&gt;cur_altsetting-&gt;extra
 suffix:semicolon
 r_int
 id|len
 op_assign
-id|intf-&gt;altsetting-&gt;extralen
+id|intf-&gt;cur_altsetting-&gt;extralen
 suffix:semicolon
 r_struct
 id|usb_interface_descriptor
@@ -3185,7 +3179,7 @@ multiline_comment|/* this assumes that if there&squot;s a non-RNDIS vendor varia
 id|rndis
 op_assign
 (paren
-id|intf-&gt;altsetting-&gt;desc.bInterfaceProtocol
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceProtocol
 op_eq
 l_int|0xff
 )paren
@@ -3385,6 +3379,7 @@ comma
 l_string|&quot;master #%u/%p slave #%u/%p&bslash;n&quot;
 comma
 id|info-&gt;u-&gt;bMasterInterface0
+comma
 id|info-&gt;control
 comma
 id|info-&gt;u-&gt;bSlaveInterface0
@@ -3439,7 +3434,7 @@ multiline_comment|/* a data interface altsetting does the real i/o */
 id|d
 op_assign
 op_amp
-id|info-&gt;data-&gt;altsetting-&gt;desc
+id|info-&gt;data-&gt;cur_altsetting-&gt;desc
 suffix:semicolon
 r_if
 c_cond
@@ -3886,24 +3881,38 @@ r_if
 c_cond
 (paren
 id|tmp
-OL
-l_int|0
+op_ne
+l_int|12
 )paren
-r_return
+(brace
+id|dev_dbg
+(paren
+op_amp
+id|dev-&gt;udev-&gt;dev
+comma
+l_string|&quot;bad MAC string %d fetch, %d&bslash;n&quot;
+comma
+id|e-&gt;iMACAddress
+comma
 id|tmp
+)paren
 suffix:semicolon
-r_else
 r_if
 c_cond
 (paren
 id|tmp
-op_ne
-l_int|12
+op_ge
+l_int|0
 )paren
-r_return
+id|tmp
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_return
+id|tmp
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -10842,6 +10851,7 @@ id|ethtool_ops
 id|usbnet_ethtool_ops
 suffix:semicolon
 singleline_comment|// precondition: never called in_interrupt
+r_static
 r_int
 DECL|function|usbnet_probe
 id|usbnet_probe
@@ -11631,6 +11641,27 @@ r_int
 )paren
 op_amp
 id|hawking_uf200_info
+comma
+)brace
+comma
+(brace
+singleline_comment|// Billionton Systems, USB2AR 
+id|USB_DEVICE
+(paren
+l_int|0x08dd
+comma
+l_int|0x90ff
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ax8817x_info
 comma
 )brace
 comma

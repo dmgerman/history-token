@@ -1386,6 +1386,7 @@ id|intf
 (brace
 )brace
 DECL|variable|emi62_driver
+r_static
 r_struct
 id|usb_driver
 id|emi62_driver

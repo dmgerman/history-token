@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
@@ -39,12 +40,14 @@ id|product
 op_assign
 l_int|0xffff
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vendor
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -55,12 +58,14 @@ comma
 l_string|&quot;User specified USB idVendor&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|product
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -240,20 +245,6 @@ r_int
 id|result
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 id|dbg
 c_func
@@ -833,12 +824,7 @@ id|usb_serial
 op_star
 id|serial
 op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
+id|port-&gt;serial
 suffix:semicolon
 r_struct
 id|tty_struct
@@ -868,24 +854,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad serial pointer, exiting&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1069,18 +1037,6 @@ op_star
 )paren
 id|urb-&gt;context
 suffix:semicolon
-r_struct
-id|usb_serial
-op_star
-id|serial
-op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1091,24 +1047,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad serial pointer, exiting&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

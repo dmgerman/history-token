@@ -6055,7 +6055,7 @@ id|this_adap
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef I2C_ADAP_CLASS_TV_ANALOG
+macro_line|#ifdef I2C_CLASS_TV_ANALOG
 r_if
 c_cond
 (paren
@@ -6063,7 +6063,7 @@ id|adap
 op_member_access_from_pointer
 r_class
 op_amp
-id|I2C_ADAP_CLASS_TV_ANALOG
+id|I2C_CLASS_TV_ANALOG
 )paren
 r_return
 id|i2c_probe

@@ -552,7 +552,7 @@ r_return
 id|unknown
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flip into 24bit mode for an instant - flushes the L2 cache card. We&n; * have to disable interrupts for this. Our IRQ handlers will crap &n; * themselves if they take an IRQ in 24bit mode!&n; */
+multiline_comment|/*&n; * Flip into 24bit mode for an instant - flushes the L2 cache card. We&n; * have to disable interrupts for this. Our IRQ handlers will crap&n; * themselves if they take an IRQ in 24bit mode!&n; */
 DECL|function|mac_cache_card_flush
 r_static
 r_void
@@ -746,7 +746,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; *&t;Macintosh Table: hardcoded model configuration data. &n; *&n; *&t;Much of this was defined by Alan, based on who knows what docs. &n; *&t;I&squot;ve added a lot more, and some of that was pure guesswork based &n; *&t;on hardware pages present on the Mac web site. Possibly wildly &n; *&t;inaccurate, so look here if a new Mac model won&squot;t run. Example: if&n; *&t;a Mac crashes immediately after the VIA1 registers have been dumped&n; *&t;to the screen, it probably died attempting to read DirB on a RBV. &n; *&t;Meaning it should have MAC_VIA_IIci here :-)&n; */
+multiline_comment|/*&n; *&t;Macintosh Table: hardcoded model configuration data.&n; *&n; *&t;Much of this was defined by Alan, based on who knows what docs.&n; *&t;I&squot;ve added a lot more, and some of that was pure guesswork based&n; *&t;on hardware pages present on the Mac web site. Possibly wildly&n; *&t;inaccurate, so look here if a new Mac model won&squot;t run. Example: if&n; *&t;a Mac crashes immediately after the VIA1 registers have been dumped&n; *&t;to the screen, it probably died attempting to read DirB on a RBV.&n; *&t;Meaning it should have MAC_VIA_IIci here :-)&n; */
 DECL|variable|macintosh_config
 r_struct
 id|mac_model
@@ -807,7 +807,7 @@ op_assign
 id|MAC_NUBUS
 )brace
 comma
-multiline_comment|/*&n;&t; *&t;Original MacII hardware&n;&t; *&t;&n;&t; */
+multiline_comment|/*&n;&t; *&t;Original MacII hardware&n;&t; *&n;&t; */
 (brace
 dot
 id|ident
@@ -1329,7 +1329,7 @@ op_assign
 id|MAC_NUBUS
 )brace
 comma
-multiline_comment|/*&n;&t; *&t;Quadra. Video is at 0xF9000000, via is like a MacII. We label it differently &n;&t; *&t;as some of the stuff connected to VIA2 seems different. Better SCSI chip and &n;&t; *&t;onboard ethernet using a NatSemi SONIC except the 660AV and 840AV which use an &n;&t; *&t;AMD 79C940 (MACE).&n;&t; *&t;The 700, 900 and 950 have some I/O chips in the wrong place to&n;&t; *&t;confuse us. The 840AV has a SCSI location of its own (same as&n;&t; *&t;the 660AV).&n;&t; */
+multiline_comment|/*&n;&t; *&t;Quadra. Video is at 0xF9000000, via is like a MacII. We label it differently&n;&t; *&t;as some of the stuff connected to VIA2 seems different. Better SCSI chip and&n;&t; *&t;onboard ethernet using a NatSemi SONIC except the 660AV and 840AV which use an&n;&t; *&t;AMD 79C940 (MACE).&n;&t; *&t;The 700, 900 and 950 have some I/O chips in the wrong place to&n;&t; *&t;confuse us. The 840AV has a SCSI location of its own (same as&n;&t; *&t;the 660AV).&n;&t; */
 (brace
 dot
 id|ident
@@ -1746,7 +1746,7 @@ op_assign
 id|MAC_NUBUS
 )brace
 comma
-multiline_comment|/* &n;&t; *&t;Performa - more LC type machines&n;&t; */
+multiline_comment|/*&n;&t; *&t;Performa - more LC type machines&n;&t; */
 (brace
 dot
 id|ident

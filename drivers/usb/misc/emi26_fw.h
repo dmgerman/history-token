@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is generated from three different files, pro
 multiline_comment|/* generated Fri Mar 8 15:11:35 EET 2002 */
 multiline_comment|/*&n; * This firmware is for the Emagic EMI 2|6 Audio Interface&n; *&n; * The firmware contained herein is Copyright (c) 1999-2002 Emagic&n; * as an unpublished work. This notice does not imply unrestricted&n; * or public access to this firmware which is a trade secret of Emagic,&n; * and which may not be reproduced, used, sold or transferred to&n; * any third party without Emagic&squot;s written consent. All Rights Reserved.&n; *&n; * This firmware may not be modified and may only be used with the&n; * Emagic EMI 2|6 Audio Interface. Distribution and/or Modification of&n; * any driver which includes this firmware, in whole or in part,&n; * requires the inclusion of this statement.&n; */
 DECL|variable|g_bitstream
+r_static
 id|INTEL_HEX_RECORD
 id|g_bitstream
 (braket
@@ -14,6 +15,7 @@ singleline_comment|// DATE=2001dec06
 singleline_comment|// PRODUCT=EMI 2|6
 multiline_comment|/*&n; * This firmware is for the Emagic EMI 2|6 Audio Interface&n; *&n; * The firmware contained herein is Copyright (c) 1999-2002 Emagic&n; * as an unpublished work. This notice does not imply unrestricted&n; * or public access to this firmware which is a trade secret of Emagic,&n; * and which may not be reproduced, used, sold or transferred to&n; * any third party without Emagic&squot;s written consent. All Rights Reserved.&n; *&n; * This firmware may not be modified and may only be used with the&n; * Emagic EMI 2|6 Audio Interface. Distribution and/or Modification of&n; * any driver which includes this firmware, in whole or in part,&n; * requires the inclusion of this statement.&n; */
 DECL|variable|g_Firmware
+r_static
 id|INTEL_HEX_RECORD
 id|g_Firmware
 (braket
@@ -48842,6 +48844,7 @@ suffix:semicolon
 multiline_comment|/*&n;VERSION=1.0.2.916&n;DATE=12.02.2002&n;*/
 multiline_comment|/*&n; * This firmware is for the Emagic EMI 2|6 Audio Interface&n; *&n; * The firmware contained herein is Copyright (c) 1999-2002 Emagic&n; * as an unpublished work. This notice does not imply unrestricted&n; * or public access to this firmware which is a trade secret of Emagic,&n; * and which may not be reproduced, used, sold or transferred to&n; * any third party without Emagic&squot;s written consent. All Rights Reserved.&n; *&n; * This firmware may not be modified and may only be used with the&n; * Emagic EMI 2|6 Audio Interface. Distribution and/or Modification of&n; * any driver which includes this firmware, in whole or in part,&n; * requires the inclusion of this statement.&n; */
 DECL|variable|g_Loader
+r_static
 id|INTEL_HEX_RECORD
 id|g_Loader
 (braket

@@ -313,7 +313,7 @@ multiline_comment|/* 20 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_ICH6_2
+id|PCI_DEVICE_ID_INTEL_ICH6_19
 comma
 l_string|&quot;ICH6&quot;
 )paren

@@ -633,7 +633,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
-multiline_comment|/* Puts in buffer a prom name in the form name@x,y or name (x for which_io &n; * and y for first regs phys address&n; */
+multiline_comment|/* Puts in buffer a prom name in the form name@x,y or name (x for which_io&n; * and y for first regs phys address&n; */
 r_extern
 r_int
 id|prom_getname

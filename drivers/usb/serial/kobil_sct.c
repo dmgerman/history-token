@@ -328,6 +328,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|kobil_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|kobil_device
@@ -636,7 +637,7 @@ l_int|0
 suffix:semicolon
 id|altsetting
 op_assign
-id|interface-&gt;altsetting
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 id|endpoint
 op_assign
@@ -906,20 +907,6 @@ suffix:semicolon
 id|priv-&gt;line_state
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 singleline_comment|// someone sets the dev to 0 if the close method has been called
 id|port-&gt;interrupt_in_urb-&gt;dev

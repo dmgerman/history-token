@@ -373,6 +373,11 @@ DECL|member|id
 r_int
 id|id
 suffix:semicolon
+DECL|member|class
+r_int
+r_int
+r_class
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -816,12 +821,6 @@ r_struct
 id|semaphore
 id|clist_lock
 suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* flags specifying div. data&t;&t;*/
 DECL|member|timeout
 r_int
 id|timeout
@@ -951,18 +950,22 @@ DECL|macro|I2C_CLIENT_TEN
 mdefine_line|#define I2C_CLIENT_TEN&t;0x10&t;&t;&t;/* we have a ten bit chip address&t;*/
 multiline_comment|/* Must equal I2C_M_TEN below */
 multiline_comment|/* i2c adapter classes (bitmask) */
-DECL|macro|I2C_ADAP_CLASS_SMBUS
-mdefine_line|#define I2C_ADAP_CLASS_SMBUS&t;&t;(1&lt;&lt;0)&t;/* lm_sensors, ... */
-DECL|macro|I2C_ADAP_CLASS_TV_ANALOG
-mdefine_line|#define I2C_ADAP_CLASS_TV_ANALOG&t;(1&lt;&lt;1)&t;/* bttv + friends */
-DECL|macro|I2C_ADAP_CLASS_TV_DIGITAL
-mdefine_line|#define I2C_ADAP_CLASS_TV_DIGITAL&t;(1&lt;&lt;2)&t;/* dbv cards */
-DECL|macro|I2C_ADAP_CLASS_DDC
-mdefine_line|#define I2C_ADAP_CLASS_DDC&t;&t;(1&lt;&lt;3)&t;/* i2c-matroxfb ? */
-DECL|macro|I2C_ADAP_CLASS_CAM_ANALOG
-mdefine_line|#define I2C_ADAP_CLASS_CAM_ANALOG&t;(1&lt;&lt;4)&t;/* camera with analog CCD */
-DECL|macro|I2C_ADAP_CLASS_CAM_DIGITAL
-mdefine_line|#define I2C_ADAP_CLASS_CAM_DIGITAL&t;(1&lt;&lt;5)&t;/* most webcams */
+DECL|macro|I2C_CLASS_HWMON
+mdefine_line|#define I2C_CLASS_HWMON&t;&t;(1&lt;&lt;0)&t;/* lm_sensors, ... */
+DECL|macro|I2C_CLASS_TV_ANALOG
+mdefine_line|#define I2C_CLASS_TV_ANALOG&t;(1&lt;&lt;1)&t;/* bttv + friends */
+DECL|macro|I2C_CLASS_TV_DIGITAL
+mdefine_line|#define I2C_CLASS_TV_DIGITAL&t;(1&lt;&lt;2)&t;/* dvb cards */
+DECL|macro|I2C_CLASS_DDC
+mdefine_line|#define I2C_CLASS_DDC&t;&t;(1&lt;&lt;3)&t;/* i2c-matroxfb ? */
+DECL|macro|I2C_CLASS_CAM_ANALOG
+mdefine_line|#define I2C_CLASS_CAM_ANALOG&t;(1&lt;&lt;4)&t;/* camera with analog CCD */
+DECL|macro|I2C_CLASS_CAM_DIGITAL
+mdefine_line|#define I2C_CLASS_CAM_DIGITAL&t;(1&lt;&lt;5)&t;/* most webcams */
+DECL|macro|I2C_CLASS_SOUND
+mdefine_line|#define I2C_CLASS_SOUND&t;&t;(1&lt;&lt;6)&t;/* sound devices */
+DECL|macro|I2C_CLASS_ALL
+mdefine_line|#define I2C_CLASS_ALL&t;&t;(UINT_MAX) /* all of the above */
 multiline_comment|/* i2c_client_address_data is the struct for holding default client&n; * addresses for a driver and for the parameters supplied on the&n; * command line&n; */
 DECL|struct|i2c_client_address_data
 r_struct

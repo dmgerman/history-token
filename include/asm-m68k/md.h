@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: md.h,v 1.1 1997/12/15 15:12:04 jj Exp $&n; * md.h: High speed xor_block operation for RAID4/5 &n; *&n; */
+multiline_comment|/* $Id: md.h,v 1.1 1997/12/15 15:12:04 jj Exp $&n; * md.h: High speed xor_block operation for RAID4/5&n; *&n; */
 macro_line|#ifndef __ASM_MD_H
 DECL|macro|__ASM_MD_H
 mdefine_line|#define __ASM_MD_H

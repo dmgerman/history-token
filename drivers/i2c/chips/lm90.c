@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * lm90.c - Part of lm_sensors, Linux kernel modules for hardware&n; *          monitoring&n; * Copyright (C) 2003  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Based on the lm83 driver. The LM90 is a sensor chip made by National&n; * Semiconductor. It reports up to two temperatures (its own plus up to&n; * one external one) with a 0.125 deg resolution (1 deg for local&n; * temperature) and a 3-4 deg accuracy. Complete datasheet can be&n; * obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM90.html&n; *&n; * This driver also supports the ADM1032, a sensor chip made by Analog&n; * Devices. That chip is similar to the LM90, with a few differences&n; * that are not handled by this driver. Complete datasheet can be&n; * obtained from Analog&squot;s website at:&n; *   http://products.analog.com/products/info.asp?product=ADM1032&n; *&n; * Since the LM90 was the first chipset supported by this driver, most&n; * comments will refer to this chipset, but are actually general and&n; * concern all supported chipsets, unless mentioned otherwise.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * lm90.c - Part of lm_sensors, Linux kernel modules for hardware&n; *          monitoring&n; * Copyright (C) 2003-2004  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Based on the lm83 driver. The LM90 is a sensor chip made by National&n; * Semiconductor. It reports up to two temperatures (its own plus up to&n; * one external one) with a 0.125 deg resolution (1 deg for local&n; * temperature) and a 3-4 deg accuracy. Complete datasheet can be&n; * obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM90.html&n; *&n; * This driver also supports the LM89 and LM99, two other sensor chips&n; * made by National Semiconductor. Both have an increased remote&n; * temperature measurement accuracy (1 degree), and the LM99&n; * additionally shifts remote temperatures (measured and limits) by 16&n; * degrees, which allows for higher temperatures measurement. The&n; * driver doesn&squot;t handle it since it can be done easily in user-space.&n; * Complete datasheets can be obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM89.html&n; *   http://www.national.com/pf/LM/LM99.html&n; * Note that there is no way to differenciate between both chips.&n; *&n; * This driver also supports the ADM1032, a sensor chip made by Analog&n; * Devices. That chip is similar to the LM90, with a few differences&n; * that are not handled by this driver. Complete datasheet can be&n; * obtained from Analog&squot;s website at:&n; *   http://products.analog.com/products/info.asp?product=ADM1032&n; *&n; * Since the LM90 was the first chipset supported by this driver, most&n; * comments will refer to this chipset, but are actually general and&n; * concern all supported chipsets, unless mentioned otherwise.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
-multiline_comment|/*&n; * Addresses to scan&n; * Address is fully defined internally and cannot be changed.&n; */
+multiline_comment|/*&n; * Addresses to scan&n; * Address is fully defined internally and cannot be changed.&n; * LM89, LM90, LM99 and ADM1032 have address 0x4c.&n; * LM89-1, and LM99-1 have address 0x4d.&n; */
 DECL|variable|normal_i2c
 r_static
 r_int
@@ -16,6 +16,8 @@ id|normal_i2c
 op_assign
 (brace
 l_int|0x4c
+comma
+l_int|0x4d
 comma
 id|I2C_CLIENT_END
 )brace
@@ -57,12 +59,14 @@ id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Insmod parameters&n; */
-id|SENSORS_INSMOD_2
+id|SENSORS_INSMOD_3
 c_func
 (paren
 id|lm90
 comma
 id|adm1032
+comma
+id|lm99
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The LM90 registers&n; */
@@ -764,7 +768,7 @@ id|adapter
 op_member_access_from_pointer
 r_class
 op_amp
-id|I2C_ADAP_CLASS_SMBUS
+id|I2C_CLASS_HWMON
 )paren
 )paren
 r_return
@@ -1028,18 +1032,21 @@ l_int|0x01
 )paren
 (brace
 multiline_comment|/* National Semiconductor */
+id|u8
+id|reg_config2
+suffix:semicolon
+id|reg_config2
+op_assign
+id|i2c_smbus_read_byte_data
+c_func
+(paren
+id|new_client
+comma
+id|LM90_REG_R_CONFIG2
+)paren
+suffix:semicolon
 r_if
 c_cond
-(paren
-id|chip_id
-op_ge
-l_int|0x21
-op_logical_and
-id|chip_id
-OL
-l_int|0x30
-multiline_comment|/* LM90 */
-op_logical_and
 (paren
 id|kind
 op_eq
@@ -1048,13 +1055,7 @@ multiline_comment|/* skip detection */
 op_logical_or
 (paren
 (paren
-id|i2c_smbus_read_byte_data
-c_func
-(paren
-id|new_client
-comma
-id|LM90_REG_R_CONFIG2
-)paren
+id|reg_config2
 op_amp
 l_int|0xF8
 )paren
@@ -1066,12 +1067,48 @@ op_le
 l_int|0x09
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|address
+op_eq
+l_int|0x4C
+op_logical_and
+(paren
+id|chip_id
+op_amp
+l_int|0xF0
+)paren
+op_eq
+l_int|0x20
 )paren
 (brace
+multiline_comment|/* LM90 */
 id|kind
 op_assign
 id|lm90
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|chip_id
+op_amp
+l_int|0xF0
+)paren
+op_eq
+l_int|0x30
+)paren
+(brace
+multiline_comment|/* LM89/LM99 */
+id|kind
+op_assign
+id|lm99
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
@@ -1087,6 +1124,10 @@ multiline_comment|/* Analog Devices */
 r_if
 c_cond
 (paren
+id|address
+op_eq
+l_int|0x4C
+op_logical_and
 (paren
 id|chip_id
 op_amp
@@ -1171,6 +1212,20 @@ id|adm1032
 id|name
 op_assign
 l_string|&quot;adm1032&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|lm99
+)paren
+(brace
+id|name
+op_assign
+l_string|&quot;lm99&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* We can fill in the remaining client fields */

@@ -47,7 +47,7 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Machine specific interrupt sources.&n; *&n; * Adding an interrupt service routine for a source with this bit&n; * set indicates a special machine specific interrupt source.&n; * The machine specific files define these sources.&n; *&n; * The IRQ_MACHSPEC bit is now gone - the only thing it did was to&n; * introduce unnecessary overhead.&n; *&n; * All interrupt handling is actually machine specific so it is better&n; * to use function pointers, as used by the Sparc port, and select the&n; * interrupt handling functions when initializing the kernel. This way&n; * we save some unnecessary overhead at run-time. &n; *                                                      01/11/97 - Jes&n; */
+multiline_comment|/*&n; * Machine specific interrupt sources.&n; *&n; * Adding an interrupt service routine for a source with this bit&n; * set indicates a special machine specific interrupt source.&n; * The machine specific files define these sources.&n; *&n; * The IRQ_MACHSPEC bit is now gone - the only thing it did was to&n; * introduce unnecessary overhead.&n; *&n; * All interrupt handling is actually machine specific so it is better&n; * to use function pointers, as used by the Sparc port, and select the&n; * interrupt handling functions when initializing the kernel. This way&n; * we save some unnecessary overhead at run-time.&n; *                                                      01/11/97 - Jes&n; */
 r_extern
 r_void
 (paren

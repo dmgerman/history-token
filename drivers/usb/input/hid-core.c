@@ -4247,6 +4247,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create a report.&n; */
 DECL|function|hid_output_report
+r_static
 r_void
 id|hid_output_report
 c_func
@@ -4708,7 +4709,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|hid_find_field_in_report
+macro_line|#if 0
+r_static
 r_int
 id|hid_find_field_in_report
 c_func
@@ -4801,6 +4803,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|hid_submit_out
 r_static
 r_int
@@ -6309,7 +6312,20 @@ DECL|macro|USB_VENDOR_ID_CHIC
 mdefine_line|#define USB_VENDOR_ID_CHIC&t;&t;0x05fe
 DECL|macro|USB_DEVICE_ID_CHIC_GAMEPAD
 mdefine_line|#define USB_DEVICE_ID_CHIC_GAMEPAD&t;0x0014
+DECL|macro|USB_VENDOR_ID_GLAB
+mdefine_line|#define USB_VENDOR_ID_GLAB&t;&t;0x06c2
+DECL|macro|USB_DEVICE_ID_4_PHIDGETSERVO_30
+mdefine_line|#define USB_DEVICE_ID_4_PHIDGETSERVO_30&t;0x0038
+DECL|macro|USB_DEVICE_ID_1_PHIDGETSERVO_30
+mdefine_line|#define USB_DEVICE_ID_1_PHIDGETSERVO_30&t;0x0039
+DECL|macro|USB_VENDOR_ID_WISEGROUP
+mdefine_line|#define USB_VENDOR_ID_WISEGROUP&t;&t;0x0925
+DECL|macro|USB_DEVICE_ID_1_PHIDGETSERVO_20
+mdefine_line|#define USB_DEVICE_ID_1_PHIDGETSERVO_20&t;0x8101
+DECL|macro|USB_DEVICE_ID_4_PHIDGETSERVO_20
+mdefine_line|#define USB_DEVICE_ID_4_PHIDGETSERVO_20&t;0x8104
 DECL|struct|hid_blacklist
+r_static
 r_struct
 id|hid_blacklist
 (brace
@@ -6688,6 +6704,38 @@ comma
 id|USB_VENDOR_ID_WACOM
 comma
 id|USB_DEVICE_ID_WACOM_PTU
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_GLAB
+comma
+id|USB_DEVICE_ID_4_PHIDGETSERVO_30
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_GLAB
+comma
+id|USB_DEVICE_ID_1_PHIDGETSERVO_30
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WISEGROUP
+comma
+id|USB_DEVICE_ID_4_PHIDGETSERVO_20
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WISEGROUP
+comma
+id|USB_DEVICE_ID_1_PHIDGETSERVO_20
 comma
 id|HID_QUIRK_IGNORE
 )brace
@@ -8509,7 +8557,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;hid&quot;
+l_string|&quot;usbhid&quot;
 comma
 dot
 id|probe

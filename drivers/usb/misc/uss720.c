@@ -2808,11 +2808,7 @@ id|i
 suffix:semicolon
 id|interface
 op_assign
-op_amp
-id|intf-&gt;altsetting
-(braket
-l_int|2
-)braket
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate parport interface &n;&t; */
 id|printk
