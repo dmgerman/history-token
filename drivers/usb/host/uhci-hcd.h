@@ -310,6 +310,12 @@ id|list_head
 id|list
 suffix:semicolon
 multiline_comment|/* P: urb-&gt;lock */
+DECL|member|remove_list
+r_struct
+id|list_head
+id|remove_list
+suffix:semicolon
+multiline_comment|/* P: uhci-&gt;td_remove_list_lock */
 DECL|member|frame
 r_int
 id|frame
@@ -618,6 +624,17 @@ id|list_head
 id|qh_remove_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;qh_remove_list_lock */
+multiline_comment|/* List of TD&squot;s that are done, but waiting to be freed (race) */
+DECL|member|td_remove_list_lock
+id|spinlock_t
+id|td_remove_list_lock
+suffix:semicolon
+DECL|member|td_remove_list
+r_struct
+id|list_head
+id|td_remove_list
+suffix:semicolon
+multiline_comment|/* P: uhci-&gt;td_remove_list_lock */
 multiline_comment|/* List of asynchronously unlinked URB&squot;s */
 DECL|member|urb_remove_list_lock
 id|spinlock_t
