@@ -2026,6 +2026,7 @@ id|startstop
 suffix:semicolon
 )brace
 multiline_comment|/* Arm the interrupt handler and send the command to the device. */
+multiline_comment|/* FIXME: make this locking go away */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5253,8 +5254,15 @@ id|sector_t
 id|block
 )paren
 (brace
-id|ide_startstop_t
-id|action
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 r_struct
 id|cdrom_info
@@ -5345,6 +5353,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5360,7 +5375,8 @@ id|IDECD_SEEK_THRESHOLD
 op_logical_and
 id|drive-&gt;dsc_overlap
 )paren
-id|action
+(brace
+id|ret
 op_assign
 id|cdrom_start_seek
 c_func
@@ -5372,6 +5388,7 @@ comma
 id|block
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 r_if
@@ -5385,7 +5402,7 @@ id|rq
 op_eq
 id|READ
 )paren
-id|action
+id|ret
 op_assign
 id|cdrom_start_read
 c_func
@@ -5398,7 +5415,7 @@ id|block
 )paren
 suffix:semicolon
 r_else
-id|action
+id|ret
 op_assign
 id|cdrom_start_write
 c_func
@@ -5413,8 +5430,14 @@ id|info-&gt;last_block
 op_assign
 id|block
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_return
-id|action
+id|ret
 suffix:semicolon
 )brace
 r_else
@@ -5430,7 +5453,15 @@ id|REQ_SENSE
 )paren
 )paren
 (brace
-r_return
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|cdrom_do_packet_command
 c_func
 (paren
@@ -5438,6 +5469,15 @@ id|drive
 comma
 id|rq
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 r_else
@@ -5449,6 +5489,13 @@ op_amp
 id|REQ_SPECIAL
 )paren
 (brace
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * FIXME: Kill REQ_SEPCIAL and replace it with commands queued&n;&t;&t; * at the request queue instead as suggested by Linus.&n;&t;&t; *&n;&t;&t; * right now this can only be a reset...&n;&t;&t; */
 id|cdrom_end_request
 c_func
@@ -5458,6 +5505,12 @@ comma
 id|rq
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -5479,6 +5532,13 @@ id|pc
 suffix:semicolon
 id|ide_startstop_t
 id|startstop
+suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -5532,6 +5592,12 @@ id|pc.stat
 op_increment
 id|rq-&gt;errors
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_return
 id|startstop
 suffix:semicolon
@@ -5544,6 +5610,13 @@ comma
 l_string|&quot;ide-cd bad flags&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|cdrom_end_request
 c_func
 (paren
@@ -5552,6 +5625,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -11617,7 +11696,7 @@ id|standby
 suffix:colon
 l_int|NULL
 comma
-id|do_request
+id|XXX_do_request
 suffix:colon
 id|ide_cdrom_do_request
 comma

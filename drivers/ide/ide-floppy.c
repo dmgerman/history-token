@@ -4812,6 +4812,13 @@ id|sector_t
 id|block
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
@@ -4822,6 +4829,9 @@ r_struct
 id|atapi_packet_command
 op_star
 id|pc
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_LOG
 id|printk
@@ -4898,6 +4908,13 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -4906,6 +4923,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4939,6 +4962,13 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -4947,6 +4977,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -5003,6 +5039,13 @@ comma
 l_string|&quot;ide-floppy: unsupported command in queue&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -5013,11 +5056,25 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-r_return
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|idefloppy_issue_pc
 c_func
 (paren
@@ -5027,6 +5084,15 @@ id|rq
 comma
 id|pc
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idefloppy_queue_pc_tail adds a special packet command request to the&n; *&t;tail of the request queue, and waits for it to be serviced.&n; */
@@ -8249,7 +8315,7 @@ id|standby
 suffix:colon
 l_int|NULL
 comma
-id|do_request
+id|XXX_do_request
 suffix:colon
 id|idefloppy_do_request
 comma

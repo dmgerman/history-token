@@ -2340,6 +2340,16 @@ id|sector_t
 id|block
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -2372,6 +2382,13 @@ id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2380,7 +2397,8 @@ op_amp
 id|REQ_PC
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|idescsi_issue_pc
 c_func
 (paren
@@ -2397,6 +2415,8 @@ id|rq-&gt;special
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
 id|blk_dump_rq_flags
 c_func
 (paren
@@ -2415,8 +2435,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_stopped
+suffix:semicolon
+)brace
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|idescsi_open
@@ -2558,7 +2589,7 @@ id|cleanup
 suffix:colon
 id|idescsi_cleanup
 comma
-id|do_request
+id|XXX_do_request
 suffix:colon
 id|idescsi_do_request
 comma

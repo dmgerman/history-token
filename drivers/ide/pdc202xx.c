@@ -422,8 +422,6 @@ id|BP
 comma
 id|CP
 comma
-id|DP
-comma
 id|TA
 op_assign
 l_int|0
@@ -434,6 +432,11 @@ id|TC
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if PDC202XX_DECODE_REGISTER_INFO
+id|u8
+id|DP
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -676,7 +679,7 @@ l_int|0x0B
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 r_case
 id|XFER_PIO_4
 suffix:colon

@@ -8011,6 +8011,13 @@ id|sector_t
 id|block
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -8031,6 +8038,9 @@ id|tape-&gt;postponed_rq
 suffix:semicolon
 id|idetape_status_reg_t
 id|status
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_LOG
 multiline_comment|/*&t;if (tape-&gt;debug_level &gt;= 5)&n;&t;&t;printk (KERN_INFO &quot;ide-tape: rq_status: %d, rq_dev: %u, cmd: %ld, errors: %d&bslash;n&quot;,rq-&gt;rq_status,(unsigned int) rq-&gt;rq_dev,rq-&gt;flags,rq-&gt;errors); */
@@ -8075,12 +8085,14 @@ comma
 id|rq-&gt;flags
 )paren
 suffix:semicolon
-id|ata_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
 comma
 id|rq
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -8106,7 +8118,18 @@ op_eq
 id|IDETAPE_REQUEST_SENSE_CMD
 )paren
 (brace
-r_return
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|idetape_issue_packet_command
 c_func
 (paren
@@ -8116,6 +8139,15 @@ id|rq
 comma
 id|tape-&gt;failed_pc
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#if IDETAPE_DEBUG_BUGS
@@ -8140,6 +8172,13 @@ id|KERN_ERR
 l_string|&quot;ide-tape: ide-tape.c bug - Two DSC requests were queued&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_end_request
 c_func
 (paren
@@ -8148,6 +8187,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -8195,6 +8240,7 @@ op_ne
 id|IDETAPE_PC_RQ2
 )paren
 id|set_bit
+c_func
 (paren
 id|IDETAPE_IGNORE_DSC
 comma
@@ -8513,12 +8559,25 @@ op_eq
 id|IDETAPE_PC_RQ2
 )paren
 (brace
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_media_access_finished
 c_func
 (paren
 id|drive
 comma
 id|rq
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -8546,12 +8605,25 @@ id|tape-&gt;dsc_polling_frequency
 op_assign
 id|IDETAPE_DSC_MA_SLOW
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_postpone_request
 c_func
 (paren
 id|drive
 comma
 id|rq
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -8633,11 +8705,13 @@ suffix:semicolon
 id|pc
 op_assign
 id|idetape_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idetape_create_read_cmd
+c_func
 (paren
 id|tape
 comma
@@ -8730,6 +8804,7 @@ id|drive
 )paren
 suffix:semicolon
 id|idetape_create_write_cmd
+c_func
 (paren
 id|tape
 comma
@@ -8757,6 +8832,7 @@ id|drive
 )paren
 suffix:semicolon
 id|idetape_create_read_buffer_cmd
+c_func
 (paren
 id|tape
 comma
@@ -8849,12 +8925,25 @@ suffix:semicolon
 r_case
 id|IDETAPE_PC_RQ2
 suffix:colon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_media_access_finished
 c_func
 (paren
 id|drive
 comma
 id|rq
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -8868,6 +8957,13 @@ id|KERN_ERR
 l_string|&quot;ide-tape: bug in IDETAPE_RQ_CMD macro&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_end_request
 c_func
 (paren
@@ -8878,11 +8974,25 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-r_return
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|idetape_issue_packet_command
 c_func
 (paren
@@ -8892,6 +9002,15 @@ id|rq
 comma
 id|pc
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Pipeline related functions&n; */
@@ -25424,7 +25543,7 @@ id|standby
 suffix:colon
 l_int|NULL
 comma
-id|do_request
+id|XXX_do_request
 suffix:colon
 id|idetape_do_request
 comma

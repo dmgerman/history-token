@@ -855,10 +855,10 @@ r_int
 id|max_failures
 suffix:semicolon
 multiline_comment|/* maximum allowed failure count */
-DECL|member|device
+DECL|member|dev
 r_struct
 id|device
-id|device
+id|dev
 suffix:semicolon
 multiline_comment|/* global device tree handle */
 multiline_comment|/*&n;&t; * tcq statistics&n;&t; */
@@ -1719,11 +1719,11 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-DECL|member|do_request
+DECL|member|XXX_do_request
 id|ide_startstop_t
 (paren
 op_star
-id|do_request
+id|XXX_do_request
 )paren
 (paren
 r_struct

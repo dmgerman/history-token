@@ -2317,13 +2317,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_struct
-id|ata_operations
-op_star
-id|sd
-op_assign
-l_int|NULL
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
