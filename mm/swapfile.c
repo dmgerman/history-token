@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/mm/swapfile.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *  Swap reorganised 29.12.95, Stephen Tweedie&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -1719,6 +1720,7 @@ multiline_comment|/* vma-&gt;vm_mm-&gt;page_table_lock is held */
 DECL|function|unuse_pmd
 r_static
 r_int
+r_int
 id|unuse_pmd
 c_func
 (paren
@@ -1890,8 +1892,13 @@ c_func
 id|pte
 )paren
 suffix:semicolon
+multiline_comment|/* add 1 since address may be 0 */
 r_return
 l_int|1
+op_plus
+id|offset
+op_plus
+id|address
 suffix:semicolon
 )brace
 id|address
@@ -1929,6 +1936,7 @@ suffix:semicolon
 multiline_comment|/* vma-&gt;vm_mm-&gt;page_table_lock is held */
 DECL|function|unuse_pgd
 r_static
+r_int
 r_int
 id|unuse_pgd
 c_func
@@ -1968,6 +1976,10 @@ r_int
 id|offset
 comma
 id|end
+suffix:semicolon
+r_int
+r_int
+id|foundaddr
 suffix:semicolon
 r_if
 c_cond
@@ -2062,9 +2074,8 @@ c_func
 suffix:semicolon
 r_do
 (brace
-r_if
-c_cond
-(paren
+id|foundaddr
+op_assign
 id|unuse_pmd
 c_func
 (paren
@@ -2084,9 +2095,14 @@ id|entry
 comma
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|foundaddr
 )paren
 r_return
-l_int|1
+id|foundaddr
 suffix:semicolon
 id|address
 op_assign
@@ -2122,6 +2138,7 @@ multiline_comment|/* vma-&gt;vm_mm-&gt;page_table_lock is held */
 DECL|function|unuse_vma
 r_static
 r_int
+r_int
 id|unuse_vma
 c_func
 (paren
@@ -2153,6 +2170,10 @@ id|end
 op_assign
 id|vma-&gt;vm_end
 suffix:semicolon
+r_int
+r_int
+id|foundaddr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2167,9 +2188,8 @@ c_func
 suffix:semicolon
 r_do
 (brace
-r_if
-c_cond
-(paren
+id|foundaddr
+op_assign
 id|unuse_pgd
 c_func
 (paren
@@ -2187,9 +2207,14 @@ id|entry
 comma
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|foundaddr
 )paren
 r_return
-l_int|1
+id|foundaddr
 suffix:semicolon
 id|start
 op_assign
@@ -2246,7 +2271,25 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
+r_int
+r_int
+id|foundaddr
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Go through process&squot; page directory.&n;&t; */
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -2268,6 +2311,17 @@ op_assign
 id|vma-&gt;vm_next
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+(brace
 id|pgd_t
 op_star
 id|pgd
@@ -2280,9 +2334,8 @@ comma
 id|vma-&gt;vm_start
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|foundaddr
+op_assign
 id|unuse_vma
 c_func
 (paren
@@ -2294,9 +2347,15 @@ id|entry
 comma
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|foundaddr
 )paren
 r_break
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock
 c_func
@@ -2305,8 +2364,38 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|foundaddr
+op_logical_and
+id|mremap_moved_anon_rmap
+c_func
+(paren
+id|page
+comma
+id|foundaddr
+)paren
+)paren
+id|ret
+op_assign
+id|make_page_exclusive
+c_func
+(paren
+id|vma
+comma
+id|foundaddr
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Scan swap_map from current position to next entry still in use.&n; * Recycle to start on reaching the end, returning 0 when empty.&n; */
