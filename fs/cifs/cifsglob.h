@@ -561,6 +561,20 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* file is marked to close */
+DECL|member|search_resume_name
+r_char
+op_star
+id|search_resume_name
+suffix:semicolon
+DECL|member|resume_name_length
+r_int
+r_int
+id|resume_name_length
+suffix:semicolon
+DECL|member|resume_key
+id|__u32
+id|resume_key
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * One of these for each file inode&n; */
@@ -609,6 +623,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* read and writebehind oplock */
+DECL|member|oplockPending
+r_int
+id|oplockPending
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|vfs_inode
 r_struct
 id|inode
@@ -723,6 +743,29 @@ suffix:semicolon
 multiline_comment|/* wish this were enum but can not pass to wait_event */
 )brace
 suffix:semicolon
+DECL|struct|oplock_q_entry
+r_struct
+id|oplock_q_entry
+(brace
+DECL|member|qhead
+r_struct
+id|list_head
+id|qhead
+suffix:semicolon
+DECL|member|file_to_flush
+r_struct
+id|file
+op_star
+id|file_to_flush
+suffix:semicolon
+DECL|member|tcon
+r_struct
+id|cifsTconInfo
+op_star
+id|tcon
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|MID_FREE
 mdefine_line|#define   MID_FREE 0
 DECL|macro|MID_REQUEST_ALLOCATED
@@ -812,6 +855,12 @@ id|rwlock_t
 id|GlobalSMBSeslock
 suffix:semicolon
 multiline_comment|/* protects list inserts on 3 above */
+DECL|variable|GlobalOplock_Q
+id|GLOBAL_EXTERN
+r_struct
+id|list_head
+id|GlobalOplock_Q
+suffix:semicolon
 multiline_comment|/*&n; * Global transaction id (XID) information&n; */
 DECL|variable|GlobalCurrentXid
 id|GLOBAL_EXTERN
@@ -884,6 +933,12 @@ id|GLOBAL_EXTERN
 r_int
 r_int
 id|oplockEnabled
+suffix:semicolon
+DECL|variable|lookupCacheEnabled
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|lookupCacheEnabled
 suffix:semicolon
 DECL|variable|extended_security
 id|GLOBAL_EXTERN
