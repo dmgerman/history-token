@@ -51,9 +51,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 r_if
@@ -93,9 +90,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -121,11 +115,16 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -280,6 +279,6 @@ macro_line|#endif
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { &bslash;&n;&t;load_gs_index(0); &bslash;&n;&t;asm volatile(&quot;movl %0,%%fs&quot;::&quot;r&quot;(0));  &bslash;&n;} while(0)
 DECL|macro|activate_mm
-mdefine_line|#define activate_mm(prev, next) &bslash;&n;&t;switch_mm((prev),(next),NULL,smp_processor_id())
+mdefine_line|#define activate_mm(prev, next) &bslash;&n;&t;switch_mm((prev),(next),NULL)
 macro_line|#endif
 eof

@@ -334,8 +334,6 @@ comma
 r_struct
 id|task_struct
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|member|mv_activate_mm

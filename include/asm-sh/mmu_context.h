@@ -305,10 +305,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-r_int
-id|cpu
 )paren
 (brace
 r_if
@@ -367,7 +363,7 @@ suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|macro|activate_mm
-mdefine_line|#define activate_mm(prev, next) &bslash;&n;&t;switch_mm((prev),(next),NULL,smp_processor_id())
+mdefine_line|#define activate_mm(prev, next) &bslash;&n;&t;switch_mm((prev),(next),NULL)
 r_static
 id|__inline__
 r_void
@@ -384,9 +380,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -404,13 +397,13 @@ mdefine_line|#define get_asid()&t;&t;&t;(0)
 DECL|macro|activate_context
 mdefine_line|#define activate_context(mm)&t;&t;do { } while (0)
 DECL|macro|switch_mm
-mdefine_line|#define switch_mm(prev,next,tsk,cpu)&t;do { } while (0)
+mdefine_line|#define switch_mm(prev,next,tsk)&t;do { } while (0)
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;&t;do { } while (0)
 DECL|macro|activate_mm
 mdefine_line|#define activate_mm(prev,next)&t;&t;do { } while (0)
 DECL|macro|enter_lazy_tlb
-mdefine_line|#define enter_lazy_tlb(mm,tsk,cpu)&t;do { } while (0)
+mdefine_line|#define enter_lazy_tlb(mm,tsk)&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_MMU */
 macro_line|#if defined(CONFIG_CPU_SH3) || defined(CONFIG_CPU_SH4)
 multiline_comment|/*&n; * If this processor has an MMU, we need methods to turn it off/on ..&n; * paging_init() will also have to be updated for the processor in&n; * question.&n; */

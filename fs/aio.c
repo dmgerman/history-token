@@ -2301,11 +2301,6 @@ c_func
 id|mm
 comma
 id|current
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 )brace

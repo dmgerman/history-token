@@ -1850,11 +1850,6 @@ c_func
 id|oldmm
 comma
 id|next
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1867,11 +1862,6 @@ comma
 id|mm
 comma
 id|next
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -8836,11 +8826,6 @@ op_amp
 id|init_mm
 comma
 id|current
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 )brace

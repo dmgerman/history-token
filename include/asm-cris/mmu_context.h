@@ -58,15 +58,12 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|macro|activate_mm
-mdefine_line|#define activate_mm(prev,next) switch_mm((prev),(next),NULL,smp_processor_id())
+mdefine_line|#define activate_mm(prev,next) switch_mm((prev),(next),NULL)
 multiline_comment|/* current active pgd - this is similar to other processors pgd &n; * registers like cr3 on the i386&n; */
 r_extern
 r_volatile
@@ -91,9 +88,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace

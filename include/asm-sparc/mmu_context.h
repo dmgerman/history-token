@@ -19,9 +19,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -61,16 +58,14 @@ comma
 r_struct
 id|task_struct
 op_star
-comma
-r_int
 )paren
 DECL|macro|switch_mm
-mdefine_line|#define switch_mm(old_mm, mm, tsk, cpu) BTFIXUP_CALL(switch_mm)(old_mm, mm, tsk, cpu)
+mdefine_line|#define switch_mm(old_mm, mm, tsk) BTFIXUP_CALL(switch_mm)(old_mm, mm, tsk)
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/* Activate a new MM instance for the current task. */
 DECL|macro|activate_mm
-mdefine_line|#define activate_mm(active_mm, mm) switch_mm((active_mm), (mm), NULL, smp_processor_id())
+mdefine_line|#define activate_mm(active_mm, mm) switch_mm((active_mm), (mm), NULL)
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC_MMU_CONTEXT_H) */
 eof

@@ -1094,9 +1094,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 multiline_comment|/* make sure we have a context */

@@ -299,8 +299,6 @@ op_amp
 id|init_mm
 comma
 id|current
-comma
-id|nr
 )paren
 suffix:semicolon
 )brace

@@ -23,9 +23,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -50,9 +47,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 r_int
@@ -142,7 +136,10 @@ macro_line|#endif /* __s390x__ */
 id|set_bit
 c_func
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 op_amp
 id|next-&gt;cpu_vm_mask
@@ -177,11 +174,6 @@ comma
 id|next
 comma
 id|current
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 )brace
