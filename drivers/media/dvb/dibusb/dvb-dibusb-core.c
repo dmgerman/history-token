@@ -2490,6 +2490,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* usb specific object needed to register this driver with the usb subsystem */
 DECL|variable|dibusb_driver
+r_static
 r_struct
 id|usb_driver
 id|dibusb_driver

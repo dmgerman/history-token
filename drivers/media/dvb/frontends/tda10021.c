@@ -69,6 +69,7 @@ mdefine_line|#define HAS_INVERSION(reg0)&t;&t;(!(reg0 &amp; 0x20))
 DECL|macro|FIN
 mdefine_line|#define FIN (XIN &gt;&gt; 4)
 DECL|variable|tda10021_inittab_size
+r_static
 r_int
 id|tda10021_inittab_size
 op_assign

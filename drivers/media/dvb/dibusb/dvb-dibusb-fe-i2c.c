@@ -2,6 +2,7 @@ multiline_comment|/*&n; * dvb-dibusb-fe-i2c.c is part of the driver for mobile U
 macro_line|#include &quot;dvb-dibusb.h&quot;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|function|dibusb_i2c_msg
+r_static
 r_int
 id|dibusb_i2c_msg
 c_func

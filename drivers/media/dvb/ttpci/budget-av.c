@@ -53,6 +53,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|enable_ci
+r_static
 r_int
 id|enable_ci
 op_assign
@@ -3330,6 +3331,7 @@ id|budget-&gt;dev-&gt;pci-&gt;dev
 suffix:semicolon
 )brace
 DECL|variable|philips_tu1216_config
+r_static
 r_struct
 id|tda1004x_config
 id|philips_tu1216_config
