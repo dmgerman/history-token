@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: psmouse.c,v 1.16 2002/01/26 19:20:36 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * $Id: psmouse.c,v 1.18 2002/03/13 10:03:43 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -910,11 +909,17 @@ c_cond
 (paren
 id|psmouse-&gt;pktcnt
 op_logical_and
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|psmouse-&gt;last
-OG
-l_int|2
+op_plus
+id|HZ
+op_div
+l_int|20
+)paren
 )paren
 (brace
 id|printk
@@ -1039,9 +1044,9 @@ id|byte
 r_int
 id|timeout
 op_assign
-l_int|1000
+l_int|10000
 suffix:semicolon
-multiline_comment|/* 10 msec */
+multiline_comment|/* 100 msec */
 id|psmouse-&gt;ack
 op_assign
 l_int|0
@@ -1106,9 +1111,9 @@ id|command
 r_int
 id|timeout
 op_assign
-l_int|100000
+l_int|500000
 suffix:semicolon
-multiline_comment|/* 100 msec */
+multiline_comment|/* 500 msec */
 r_int
 id|send
 op_assign
