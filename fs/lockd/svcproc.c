@@ -1943,6 +1943,8 @@ suffix:semicolon
 id|nlmsvc_grant_reply
 c_func
 (paren
+id|rqstp
+comma
 op_amp
 id|argp-&gt;cookie
 comma

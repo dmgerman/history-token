@@ -695,12 +695,14 @@ id|nlmsvc_grant_reply
 c_func
 (paren
 r_struct
+id|svc_rqst
+op_star
+comma
+r_struct
 id|nlm_cookie
 op_star
-id|cookie
 comma
 id|u32
-id|status
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * File handling for the server personality&n; */
