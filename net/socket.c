@@ -1202,6 +1202,10 @@ c_func
 id|sock_mnt
 )paren
 suffix:semicolon
+id|file-&gt;f_mapping
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+suffix:semicolon
 id|sock-&gt;file
 op_assign
 id|file

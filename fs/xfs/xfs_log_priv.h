@@ -2,14 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef&t;__XFS_LOG_PRIV_H__
 DECL|macro|__XFS_LOG_PRIV_H__
 mdefine_line|#define __XFS_LOG_PRIV_H__
-macro_line|#if defined(XFS_ALL_TRACE)
-DECL|macro|XFS_LOG_TRACE
-mdefine_line|#define&t;XFS_LOG_TRACE
-macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_LOG_TRACE
-macro_line|#undef XFS_LOG_TRACE
-macro_line|#endif
 r_struct
 id|xfs_buf
 suffix:semicolon
@@ -513,7 +505,7 @@ op_star
 op_star
 id|ic_callback_tail
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#ifdef XFS_LOG_TRACE
 DECL|member|ic_trace
 r_struct
 id|ktrace
@@ -820,7 +812,7 @@ r_int
 id|l_grant_write_bytes
 suffix:semicolon
 multiline_comment|/* The following fields don&squot;t need locking */
-macro_line|#ifdef DEBUG
+macro_line|#ifdef XFS_LOG_TRACE
 DECL|member|l_trace
 r_struct
 id|ktrace

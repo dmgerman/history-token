@@ -61,7 +61,7 @@ mdefine_line|#define CLONE_PARENT_SETTID&t;0x00100000&t;/* set the TID in the pa
 DECL|macro|CLONE_CHILD_CLEARTID
 mdefine_line|#define CLONE_CHILD_CLEARTID&t;0x00200000&t;/* clear the TID in the child */
 DECL|macro|CLONE_DETACHED
-mdefine_line|#define CLONE_DETACHED&t;&t;0x00400000&t;/* Not used - CLONE_THREAD implies detached uniquely */
+mdefine_line|#define CLONE_DETACHED&t;&t;0x00400000&t;/* Unused, ignored */
 DECL|macro|CLONE_UNTRACED
 mdefine_line|#define CLONE_UNTRACED&t;&t;0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
 DECL|macro|CLONE_CHILD_SETTID
@@ -1843,6 +1843,20 @@ r_struct
 id|task_struct
 op_star
 id|tsk
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|sched_fork
+c_func
+(paren
+id|task_t
+op_star
+id|p
 )paren
 )paren
 suffix:semicolon

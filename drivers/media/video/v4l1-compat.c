@@ -4,7 +4,6 @@ DECL|macro|__KERNEL__
 mdefine_line|#define __KERNEL__
 macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -67,7 +66,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;v4l1-compat: &quot; fmt, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;v4l1-compat: &quot; fmt , ## arg)
 multiline_comment|/*&n; *&t;I O C T L   T R A N S L A T I O N&n; *&n; *&t;From here on down is the code for translating the numerous&n; *&t;ioctl commands from the old API to the new API.&n; */
 r_static
 r_int
@@ -178,6 +177,7 @@ id|err
 OL
 l_int|0
 )paren
+(brace
 id|dprintk
 c_func
 (paren
@@ -186,6 +186,10 @@ comma
 id|err
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_return
 (paren
 (paren
@@ -678,23 +682,6 @@ id|poll_table
 op_star
 id|table
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,48)
-id|poll_table
-id|wait_table
-suffix:semicolon
-id|poll_initwait
-c_func
-(paren
-op_amp
-id|wait_table
-)paren
-suffix:semicolon
-id|table
-op_assign
-op_amp
-id|wait_table
-suffix:semicolon
-macro_line|#else
 r_struct
 id|poll_wqueues
 id|pwq
@@ -711,7 +698,6 @@ op_assign
 op_amp
 id|pwq.pt
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -777,19 +763,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,48)
-id|poll_freewait
+id|set_current_state
 c_func
 (paren
-op_amp
-id|wait_table
+id|TASK_RUNNING
 )paren
 suffix:semicolon
-macro_line|#else
 id|poll_freewait
 c_func
 (paren
@@ -797,7 +776,6 @@ op_amp
 id|pwq
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -1979,6 +1957,10 @@ id|fmt2-&gt;fmt.pix.field
 op_assign
 id|V4L2_FIELD_ANY
 suffix:semicolon
+id|fmt2-&gt;fmt.pix.bytesperline
+op_assign
+l_int|0
+suffix:semicolon
 id|err
 op_assign
 id|drv
@@ -2119,6 +2101,35 @@ id|VIDIOCCAPTURE
 suffix:colon
 multiline_comment|/*  turn on/off preview  */
 (brace
+r_int
+op_star
+id|on
+op_assign
+id|arg
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+op_star
+id|on
+)paren
+(brace
+multiline_comment|/* dirty hack time.  But v4l1 has no STREAMOFF&n;&t;&t;&t; * equivalent in the API, and this one at&n;&t;&t;&t; * least comes close ... */
+id|drv
+c_func
+(paren
+id|inode
+comma
+id|file
+comma
+id|VIDIOC_STREAMOFF
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|drv
@@ -3308,6 +3319,10 @@ id|freq
 op_assign
 id|arg
 suffix:semicolon
+id|freq2.tuner
+op_assign
+l_int|0
+suffix:semicolon
 id|err
 op_assign
 id|drv
@@ -3363,6 +3378,10 @@ op_star
 id|freq
 op_assign
 id|arg
+suffix:semicolon
+id|freq2.tuner
+op_assign
+l_int|0
 suffix:semicolon
 id|drv
 c_func
@@ -4189,6 +4208,10 @@ id|fmt2-&gt;fmt.pix.field
 op_assign
 id|V4L2_FIELD_ANY
 suffix:semicolon
+id|fmt2-&gt;fmt.pix.bytesperline
+op_assign
+l_int|0
+suffix:semicolon
 id|err
 op_assign
 id|drv
@@ -4310,8 +4333,7 @@ id|file
 comma
 id|VIDIOC_STREAMON
 comma
-op_amp
-id|buf2.type
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4835,9 +4857,9 @@ id|fmt2-&gt;fmt.vbi.sampling_rate
 op_ne
 id|fmt-&gt;sampling_rate
 op_logical_or
-id|fmt2-&gt;fmt.vbi.sample_format
+id|VIDEO_PALETTE_RAW
 op_ne
-id|V4L2_PIX_FMT_GREY
+id|fmt-&gt;sample_format
 op_logical_or
 id|fmt2-&gt;fmt.vbi.start
 (braket
@@ -4913,7 +4935,6 @@ id|err
 OL
 l_int|0
 )paren
-(brace
 id|dprintk
 c_func
 (paren
@@ -4924,7 +4945,6 @@ id|err
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_default
 suffix:colon

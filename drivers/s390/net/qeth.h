@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/qdio.h&gt;
 DECL|macro|QETH_NAME
 mdefine_line|#define QETH_NAME &quot; qeth&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.58 $&quot;
+mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.60 $&quot;
 multiline_comment|/******************** CONFIG STUFF ***********************/
 singleline_comment|//#define QETH_DBF_LIKE_HELL
 macro_line|#ifdef CONFIG_QETH_IPV6
@@ -357,6 +357,15 @@ DECL|macro|QETH_HEADER_PASSTHRU
 mdefine_line|#define QETH_HEADER_PASSTHRU&t;0x10
 DECL|macro|QETH_HEADER_IPV6
 mdefine_line|#define QETH_HEADER_IPV6&t;0x80
+DECL|macro|QETH_ETH_MAC_V4
+mdefine_line|#define QETH_ETH_MAC_V4      0x0100 /* like v4 */
+DECL|macro|QETH_ETH_MAC_V6
+mdefine_line|#define QETH_ETH_MAC_V6      0x3333 /* like v6 */
+multiline_comment|/* tr mc mac is longer, but that will be enough to detect mc frames */
+DECL|macro|QETH_TR_MAC_NC
+mdefine_line|#define QETH_TR_MAC_NC       0xc000 /* non-canonical */
+DECL|macro|QETH_TR_MAC_C
+mdefine_line|#define QETH_TR_MAC_C        0x0300 /* canonical */
 DECL|macro|QETH_CAST_FLAGS
 mdefine_line|#define QETH_CAST_FLAGS&t;&t;0x07
 DECL|macro|QETH_CAST_UNICAST
@@ -2297,13 +2306,15 @@ id|is_open
 suffix:semicolon
 multiline_comment|/* card is in use */
 multiline_comment|/* prevents deadlocks :-O */
-DECL|member|softsetup_lock
-id|spinlock_t
-id|softsetup_lock
+DECL|member|softsetup_sema
+r_struct
+id|semaphore
+id|softsetup_sema
 suffix:semicolon
-DECL|member|hardsetup_lock
-id|spinlock_t
-id|hardsetup_lock
+DECL|member|hardsetup_sema
+r_struct
+id|semaphore
+id|hardsetup_sema
 suffix:semicolon
 DECL|member|ioctl_lock
 id|spinlock_t

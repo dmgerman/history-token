@@ -66,16 +66,7 @@ r_int
 r_int
 id|iSeries_IoMmTable_Entry_Size
 suffix:semicolon
-multiline_comment|/************************************************************************/
-multiline_comment|/* iSeries_IoMmTable_Initialize                                         */
-multiline_comment|/************************************************************************/
-multiline_comment|/* - Initalizes the Address Translation Table and get it ready for use. */
-multiline_comment|/*   Must be called before any client calls any of the other methods.   */
-multiline_comment|/*                                                                      */
-multiline_comment|/* Parameters: None.                                                    */
-multiline_comment|/*                                                                      */
-multiline_comment|/* Return: None.                                                        */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * iSeries_IoMmTable_Initialize&n; *&n; * - Initalizes the Address Translation Table and get it ready for use.&n; *   Must be called before any client calls any of the other methods.&n; *&n; * Parameters: None.&n; *&n; * Return: None.&n; */
 r_extern
 r_void
 id|iSeries_IoMmTable_Initialize
@@ -92,21 +83,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/************************************************************************/
-multiline_comment|/* iSeries_allocateDeviceBars                                           */
-multiline_comment|/************************************************************************/
-multiline_comment|/* - Allocates ALL pci_dev BAR&squot;s and updates the resources with the BAR */
-multiline_comment|/*   value.  BARS with zero length will not have the resources.  The    */
-multiline_comment|/*   HvCallPci_getBarParms is used to get the size of the BAR space.    */
-multiline_comment|/*   It calls iSeries_IoMmTable_AllocateEntry to allocate each entry.   */
-multiline_comment|/*                                                                      */
-multiline_comment|/* Parameters:                                                          */
-multiline_comment|/* pci_dev = Pointer to pci_dev structure that will be mapped to pseudo */
-multiline_comment|/*           I/O Address.                                               */
-multiline_comment|/*                                                                      */
-multiline_comment|/* Return:                                                              */
-multiline_comment|/*   The pci_dev I/O resources updated with pseudo I/O Addresses.       */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * iSeries_allocateDeviceBars&n; *&n; * - Allocates ALL pci_dev BAR&squot;s and updates the resources with the BAR&n; *   value.  BARS with zero length will not have the resources.  The&n; *   HvCallPci_getBarParms is used to get the size of the BAR space.&n; *   It calls iSeries_IoMmTable_AllocateEntry to allocate each entry.&n; *&n; * Parameters:&n; * pci_dev = Pointer to pci_dev structure that will be mapped to pseudo&n; *           I/O Address.&n; *&n; * Return:&n; *   The pci_dev I/O resources updated with pseudo I/O Addresses.&n; */
 r_extern
 r_void
 id|iSeries_allocateDeviceBars
@@ -117,19 +94,7 @@ id|pci_dev
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/************************************************************************/
-multiline_comment|/* iSeries_xlateIoMmAddress                                             */
-multiline_comment|/************************************************************************/
-multiline_comment|/* - Translates an I/O Memory address to Device Node that has been the  */
-multiline_comment|/*   allocated the psuedo I/O Address.                                  */
-multiline_comment|/*                                                                      */
-multiline_comment|/* Parameters:                                                          */
-multiline_comment|/* IoAddress = I/O Memory Address.                                      */
-multiline_comment|/*                                                                      */
-multiline_comment|/* Return:                                                              */
-multiline_comment|/*   An iSeries_Device_Node to the device mapped to the I/O address. The*/
-multiline_comment|/*   BarNumber and BarOffset are valid if the Device Node is returned.  */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * iSeries_xlateIoMmAddress&n; *&n; * - Translates an I/O Memory address to Device Node that has been the&n; *   allocated the psuedo I/O Address.&n; *&n; * Parameters:&n; * IoAddress = I/O Memory Address.&n; *&n; * Return:&n; *   An iSeries_Device_Node to the device mapped to the I/O address. The&n; *   BarNumber and BarOffset are valid if the Device Node is returned.&n; */
 r_extern
 r_struct
 id|iSeries_Device_Node

@@ -239,6 +239,14 @@ op_assign
 id|i
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|pte_free_finish
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|tlb_flush
 r_static
 r_inline
@@ -316,6 +324,11 @@ suffix:semicolon
 id|batch-&gt;index
 op_assign
 l_int|0
+suffix:semicolon
+id|pte_free_finish
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* _PPC64_TLB_H */

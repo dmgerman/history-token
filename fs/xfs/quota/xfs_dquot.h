@@ -204,7 +204,7 @@ id|sv_t
 id|q_pinwait
 suffix:semicolon
 multiline_comment|/* sync var for pinning */
-macro_line|#ifdef DQUOT_TRACING
+macro_line|#ifdef XFS_DQUOT_TRACE
 DECL|member|q_trace
 r_struct
 id|ktrace
@@ -316,19 +316,15 @@ DECL|macro|XFS_DQ_TO_QIP
 mdefine_line|#define XFS_DQ_TO_QIP(dqp)&t;(XFS_QM_ISUDQ(dqp) ? &bslash;&n;&t;&t;&t;&t; XFS_DQ_TO_QINF(dqp)-&gt;qi_uquotaip : &bslash;&n;&t;&t;&t;&t; XFS_DQ_TO_QINF(dqp)-&gt;qi_gquotaip)
 DECL|macro|XFS_IS_THIS_QUOTA_OFF
 mdefine_line|#define XFS_IS_THIS_QUOTA_OFF(d) (! (XFS_QM_ISUDQ(d) ? &bslash;&n;&t;&t;&t;&t;     (XFS_IS_UQUOTA_ON((d)-&gt;q_mount)) : &bslash;&n;&t;&t;&t;&t;     (XFS_IS_GQUOTA_ON((d)-&gt;q_mount))))
-macro_line|#ifdef DQUOT_TRACING
+macro_line|#ifdef XFS_DQUOT_TRACE
 multiline_comment|/*&n; * Dquot Tracing stuff.&n; */
 DECL|macro|DQUOT_TRACE_SIZE
 mdefine_line|#define DQUOT_TRACE_SIZE&t;64
 DECL|macro|DQUOT_KTRACE_ENTRY
 mdefine_line|#define DQUOT_KTRACE_ENTRY&t;1
-DECL|macro|xfs_dqtrace_entry_ino
-mdefine_line|#define xfs_dqtrace_entry_ino(a,b,ip) &bslash;&n;xfs_dqtrace_entry__((a), (b), (void*)__return_address, (ip))
-DECL|macro|xfs_dqtrace_entry
-mdefine_line|#define xfs_dqtrace_entry(a,b) &bslash;&n;xfs_dqtrace_entry__((a), (b), (void*)__return_address, NULL)
 r_extern
 r_void
-id|xfs_dqtrace_entry__
+id|__xfs_dqtrace_entry
 c_func
 (paren
 id|xfs_dquot_t
@@ -346,6 +342,10 @@ id|xfs_inode_t
 op_star
 )paren
 suffix:semicolon
+DECL|macro|xfs_dqtrace_entry_ino
+mdefine_line|#define xfs_dqtrace_entry_ino(a,b,ip) &bslash;&n;&t;&t;__xfs_dqtrace_entry((a), (b), (void*)__return_address, (ip))
+DECL|macro|xfs_dqtrace_entry
+mdefine_line|#define xfs_dqtrace_entry(a,b) &bslash;&n;&t;&t;__xfs_dqtrace_entry((a), (b), (void*)__return_address, NULL)
 macro_line|#else
 DECL|macro|xfs_dqtrace_entry
 mdefine_line|#define xfs_dqtrace_entry(a,b)

@@ -12,5 +12,7 @@ multiline_comment|/*&n; * The attribute `pure&squot; is not implemented in GCC v
 macro_line|#if __GNUC_MINOR__ &gt;= 96
 DECL|macro|__attribute_pure__
 macro_line|# define __attribute_pure__&t;__attribute__((pure))
+DECL|macro|__attribute_const__
+macro_line|# define __attribute_const__&t;__attribute__((__const__))
 macro_line|#endif
 eof

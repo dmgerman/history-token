@@ -225,7 +225,8 @@ op_star
 id|off
 )paren
 (brace
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 suffix:semicolon
@@ -401,13 +402,14 @@ id|pageio
 suffix:semicolon
 macro_line|#endif
 r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
-id|afs_vnode_t
+id|afs_vnode
 op_star
 id|vnode
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
 suffix:semicolon
 r_int
 id|ret
@@ -590,7 +592,7 @@ c_func
 id|desc.buffer
 )paren
 suffix:semicolon
-multiline_comment|/* read the contents of the file from the server into the page */
+multiline_comment|/* read the contents of the file from the server into the&n;&t;&t; * page */
 id|ret
 op_assign
 id|afs_vnode_fetch_data
@@ -628,7 +630,8 @@ id|ENOENT
 id|_debug
 c_func
 (paren
-l_string|&quot;got NOENT from server - marking file deleted and stale&quot;
+l_string|&quot;got NOENT from server&quot;
+l_string|&quot; - marking file deleted and stale&quot;
 )paren
 suffix:semicolon
 id|vnode-&gt;flags
@@ -872,7 +875,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;&t; * We release buffers only if the entire page is being invalidated.&n;&t;&t; * The get_block cached value has been unconditionally invalidated,&n;&t;&t; * so real IO is not possible anymore.&n;&t;&t; */
+multiline_comment|/* We release buffers only if the entire page is being&n;&t;&t; * invalidated.&n;&t;&t; * The get_block cached value has been unconditionally&n;&t;&t; * invalidated, so real IO is not possible anymore.&n;&t;&t; */
 r_if
 c_cond
 (paren

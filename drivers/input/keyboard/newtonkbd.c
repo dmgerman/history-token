@@ -12,6 +12,18 @@ c_func
 l_string|&quot;Justin Cormack &lt;j.cormack@doc.ic.ac.uk&gt;&quot;
 )paren
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Newton keyboard driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|NKBD_KEY
 mdefine_line|#define NKBD_KEY&t;0x7f
 DECL|macro|NKBD_PRESS

@@ -262,6 +262,23 @@ l_int|256
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|union|compat_sigval
+r_typedef
+r_union
+id|compat_sigval
+(brace
+DECL|member|sival_int
+id|compat_int_t
+id|sival_int
+suffix:semicolon
+DECL|member|sival_ptr
+id|compat_uptr_t
+id|sival_ptr
+suffix:semicolon
+DECL|typedef|compat_sigval_t
+)brace
+id|compat_sigval_t
+suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

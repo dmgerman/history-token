@@ -1239,6 +1239,21 @@ suffix:colon
 multiline_comment|/* Read the present alarm time */
 (brace
 multiline_comment|/*&n;&t;&t; * This returns a struct rtc_time. Reading &gt;= 0xc0&n;&t;&t; * means &quot;don&squot;t care&quot; or &quot;match all&quot;. Only the tm_hour,&n;&t;&t; * tm_min, and tm_sec values are filled in.&n;&t;&t; */
+id|memset
+c_func
+(paren
+op_amp
+id|wtime
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|rtc_time
+)paren
+)paren
+suffix:semicolon
 id|get_rtc_alm_time
 c_func
 (paren
@@ -1441,6 +1456,21 @@ id|RTC_RD_TIME
 suffix:colon
 multiline_comment|/* Read the time/date from RTC&t;*/
 (brace
+id|memset
+c_func
+(paren
+op_amp
+id|wtime
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|rtc_time
+)paren
+)paren
+suffix:semicolon
 id|rtc_get_rtc_time
 c_func
 (paren

@@ -481,8 +481,7 @@ id|bhv_desc
 op_star
 id|bdp
 comma
-r_struct
-id|kstatfs
+id|xfs_statfs_t
 op_star
 id|sp
 comma

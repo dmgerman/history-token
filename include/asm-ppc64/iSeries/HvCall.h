@@ -5,22 +5,15 @@ singleline_comment|//&t;This file contains the &quot;hypervisor call&quot; inter
 singleline_comment|//&t;drive the hypervisor from the OS.
 singleline_comment|//
 singleline_comment|//===========================================================================
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Standard Includes
-singleline_comment|//-------------------------------------------------------------------
-macro_line|#ifndef  _HVCALLSC_H
-macro_line|#include &quot;HvCallSc.h&quot;
-macro_line|#endif
-macro_line|#ifndef  _HVTYPES_H
-macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
-macro_line|#endif
-macro_line|#include &lt;asm/paca.h&gt;
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Constants
-singleline_comment|//-------------------------------------------------------------------
 macro_line|#ifndef _HVCALL_H
 DECL|macro|_HVCALL_H
 mdefine_line|#define _HVCALL_H
+singleline_comment|//-------------------------------------------------------------------
+singleline_comment|// Standard Includes
+singleline_comment|//-------------------------------------------------------------------
+macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
+macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 multiline_comment|/*&n;enum HvCall_ReturnCode&n;{&n;&t;HvCall_Good&t;&t;= 0,&n;&t;HvCall_Partial&t;&t;= 1,&n;&t;HvCall_NotOwned&t;&t;= 2,&n;&t;HvCall_NotFreed&t;&t;= 3,&n;&t;HvCall_UnspecifiedError&t;= 4&n;};&n;&n;enum HvCall_TypeOfSIT&n;{&n;&t;HvCall_ReduceOnly&t;= 0,&n;&t;HvCall_Unconditional&t;= 1&n;};&n;&n;enum HvCall_TypeOfYield&n;{&n;&t;HvCall_YieldTimed&t;= 0,&t;// Yield until specified time&n;&t;HvCall_YieldToActive&t;= 1,&t;// Yield until all active procs have run&n;&t;HvCall_YieldToProc&t;= 2&t;// Yield until the specified processor has run&n;};&n;&n;enum HvCall_InterruptMasks&n;{&n;&t;HvCall_MaskIPI&t;&t;= 0x00000001,&n;&t;HvCall_MaskLpEvent&t;= 0x00000002,&n;&t;HvCall_MaskLpProd&t;= 0x00000004,&n;&t;HvCall_MaskTimeout&t;= 0x00000008&n;};&n;&n;enum HvCall_VaryOffChunkRc&n;{&n;&t;HvCall_VaryOffSucceeded&t;&t;= 0,&n;&t;HvCall_VaryOffWithdrawn&t;&t;= 1,&n;&t;HvCall_ChunkInLoadArea&t;&t;= 2,&n;&t;HvCall_ChunkInHPT&t;&t;= 3,&n;&t;HvCall_ChunkNotAccessible&t;= 4,&n;&t;HvCall_ChunkInUse&t;&t;= 5&n;};&n;*/
 multiline_comment|/* Type of yield for HvCallBaseYieldProcessor */
 DECL|macro|HvCall_YieldTimed
@@ -418,6 +411,5 @@ id|val
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 
-singleline_comment|// _HVCALL_H
+macro_line|#endif /* _HVCALL_H */
 eof

@@ -39,11 +39,6 @@ id|fd
 )paren
 suffix:semicolon
 r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
-r_struct
 id|address_space
 op_star
 id|mapping
@@ -74,13 +69,9 @@ r_return
 op_minus
 id|EBADF
 suffix:semicolon
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
 id|mapping
 op_assign
-id|inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_if
 c_cond

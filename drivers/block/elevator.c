@@ -519,6 +519,10 @@ c_func
 id|q
 )paren
 suffix:semicolon
+id|rq-&gt;q
+op_assign
+id|q
+suffix:semicolon
 id|q-&gt;elevator
 dot
 id|elevator_add_req_fn

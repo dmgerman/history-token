@@ -35,13 +35,6 @@ macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
-macro_line|#ifdef DEBUG
-DECL|variable|xfs_bmap_trace_buf
-id|ktrace_t
-op_star
-id|xfs_bmap_trace_buf
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef XFSDEBUG
 id|STATIC
 r_void
@@ -901,7 +894,7 @@ macro_line|#else
 DECL|macro|xfs_bmap_validate_ret
 mdefine_line|#define&t;xfs_bmap_validate_ret(bno,len,flags,mval,onmap,nmap)
 macro_line|#endif /* DEBUG */
-macro_line|#if defined(DEBUG) &amp;&amp; defined(XFS_RW_TRACE)
+macro_line|#if defined(XFS_RW_TRACE)
 id|STATIC
 r_void
 id|xfs_bunmap_trace
@@ -928,7 +921,7 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_bunmap_trace
 mdefine_line|#define&t;xfs_bunmap_trace(ip, bno, len, flags, ra)
-macro_line|#endif&t;/* DEBUG &amp;&amp; XFS_RW_TRACE */
+macro_line|#endif&t;/* XFS_RW_TRACE */
 id|STATIC
 r_int
 id|xfs_bmap_count_tree
@@ -16082,6 +16075,11 @@ id|prevp
 suffix:semicolon
 )brace
 macro_line|#ifdef XFS_BMAP_TRACE
+DECL|variable|xfs_bmap_trace_buf
+id|ktrace_t
+op_star
+id|xfs_bmap_trace_buf
+suffix:semicolon
 multiline_comment|/*&n; * Add a bmap trace buffer entry.  Base routine for the others.&n; */
 id|STATIC
 r_void
@@ -16290,15 +16288,23 @@ op_star
 id|__psunsigned_t
 )paren
 (paren
-id|INT_GET
-c_func
+id|r1-&gt;l0
+op_rshift
+l_int|32
+)paren
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+id|__psunsigned_t
+)paren
+(paren
+r_int
+)paren
 (paren
 id|r1-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
-op_rshift
-l_int|32
 )paren
 comma
 (paren
@@ -16308,34 +16314,8 @@ op_star
 (paren
 id|__psunsigned_t
 )paren
-(paren
-r_int
-)paren
-(paren
-id|INT_GET
-c_func
-(paren
-id|r1-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-comma
-(paren
-r_void
-op_star
-)paren
-(paren
-id|__psunsigned_t
-)paren
-(paren
-id|INT_GET
-c_func
 (paren
 id|r1-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 op_rshift
 l_int|32
 )paren
@@ -16350,14 +16330,8 @@ id|__psunsigned_t
 (paren
 r_int
 )paren
-(paren
-id|INT_GET
-c_func
 (paren
 id|r1-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 comma
 (paren
@@ -16368,13 +16342,7 @@ op_star
 id|__psunsigned_t
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
 op_rshift
 l_int|32
 )paren
@@ -16390,13 +16358,7 @@ id|__psunsigned_t
 r_int
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 comma
 (paren
@@ -16407,13 +16369,7 @@ op_star
 id|__psunsigned_t
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 op_rshift
 l_int|32
 )paren
@@ -16429,13 +16385,7 @@ id|__psunsigned_t
 r_int
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -16536,15 +16486,23 @@ op_star
 id|__psunsigned_t
 )paren
 (paren
-id|INT_GET
-c_func
+id|r1-&gt;l0
+op_rshift
+l_int|32
+)paren
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+id|__psunsigned_t
+)paren
+(paren
+r_int
+)paren
 (paren
 id|r1-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
-op_rshift
-l_int|32
 )paren
 comma
 (paren
@@ -16554,34 +16512,8 @@ op_star
 (paren
 id|__psunsigned_t
 )paren
-(paren
-r_int
-)paren
-(paren
-id|INT_GET
-c_func
-(paren
-id|r1-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-comma
-(paren
-r_void
-op_star
-)paren
-(paren
-id|__psunsigned_t
-)paren
-(paren
-id|INT_GET
-c_func
 (paren
 id|r1-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 op_rshift
 l_int|32
 )paren
@@ -16596,14 +16528,8 @@ id|__psunsigned_t
 (paren
 r_int
 )paren
-(paren
-id|INT_GET
-c_func
 (paren
 id|r1-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 comma
 (paren
@@ -16614,13 +16540,7 @@ op_star
 id|__psunsigned_t
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
 op_rshift
 l_int|32
 )paren
@@ -16636,13 +16556,7 @@ id|__psunsigned_t
 r_int
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l0
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 comma
 (paren
@@ -16653,13 +16567,7 @@ op_star
 id|__psunsigned_t
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 op_rshift
 l_int|32
 )paren
@@ -16675,13 +16583,7 @@ id|__psunsigned_t
 r_int
 )paren
 (paren
-id|INT_GET
-c_func
-(paren
 id|r2-&gt;l1
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -17191,7 +17093,7 @@ r_return
 id|rval
 suffix:semicolon
 )brace
-macro_line|#if defined(DEBUG) &amp;&amp; defined(XFS_RW_TRACE)
+macro_line|#if defined(XFS_RW_TRACE)
 id|STATIC
 r_void
 DECL|function|xfs_bunmap_trace
@@ -17334,11 +17236,13 @@ r_void
 op_star
 )paren
 (paren
-id|__psint_t
+r_int
+r_int
 )paren
-r_private
-dot
-id|p_cpuid
+id|current_cpu
+c_func
+(paren
+)paren
 comma
 (paren
 r_void

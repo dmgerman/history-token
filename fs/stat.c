@@ -1479,9 +1479,6 @@ id|stat64
 id|__user
 op_star
 id|statbuf
-comma
-r_int
-id|flags
 )paren
 (brace
 r_struct
@@ -1537,9 +1534,6 @@ id|stat64
 id|__user
 op_star
 id|statbuf
-comma
-r_int
-id|flags
 )paren
 (brace
 r_struct
@@ -1594,9 +1588,6 @@ id|stat64
 id|__user
 op_star
 id|statbuf
-comma
-r_int
-id|flags
 )paren
 (brace
 r_struct

@@ -43,4 +43,8 @@ DECL|macro|DCU10_VENDOR_ID
 mdefine_line|#define DCU10_VENDOR_ID&t;&t;0x0731
 DECL|macro|DCU10_PRODUCT_ID
 mdefine_line|#define DCU10_PRODUCT_ID&t;0x0528
+DECL|macro|SITECOM_VENDOR_ID
+mdefine_line|#define SITECOM_VENDOR_ID&t;0x6189
+DECL|macro|SITECOM_PRODUCT_ID
+mdefine_line|#define SITECOM_PRODUCT_ID&t;0x2068
 eof

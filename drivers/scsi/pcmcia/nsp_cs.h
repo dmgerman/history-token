@@ -1159,11 +1159,9 @@ comma
 id|ret
 )brace
 suffix:semicolon
-id|CardServices
+id|pcmcia_report_error
 c_func
 (paren
-id|ReportError
-comma
 id|handle
 comma
 op_amp

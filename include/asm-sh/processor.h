@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-sh/processor.h&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
+multiline_comment|/*&n; * include/asm-sh/processor.h&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002, 2003  Paul Mundt&n; */
 macro_line|#ifndef __ASM_SH_PROCESSOR_H
 DECL|macro|__ASM_SH_PROCESSOR_H
 mdefine_line|#define __ASM_SH_PROCESSOR_H
@@ -14,51 +14,72 @@ DECL|macro|CCN_PVR
 mdefine_line|#define CCN_PVR&t;&t;0xff000030
 DECL|macro|CCN_PRR
 mdefine_line|#define CCN_PRR&t;&t;0xff000044
-multiline_comment|/*&n; *  CPU type and hardware bug flags. Kept separately for each CPU.&n; */
+multiline_comment|/*&n; *  CPU type and hardware bug flags. Kept separately for each CPU.&n; *&n; *  Each one of these also needs a CONFIG_CPU_SUBTYPE_xxx entry&n; *  in arch/sh/Kconfig, as well as an entry in arch/sh/kernel/setup.c&n; *  for parsing the subtype in get_cpu_subtype().&n; */
 DECL|enum|cpu_type
 r_enum
 id|cpu_type
 (brace
+multiline_comment|/* SH-2 types */
 DECL|enumerator|CPU_SH7604
 id|CPU_SH7604
 comma
-multiline_comment|/* Represents 7604 */
+multiline_comment|/* SH-3 types */
+DECL|enumerator|CPU_SH7707
 DECL|enumerator|CPU_SH7708
+DECL|enumerator|CPU_SH7708S
+DECL|enumerator|CPU_SH7708R
+DECL|enumerator|CPU_SH7709
+id|CPU_SH7707
+comma
 id|CPU_SH7708
 comma
-multiline_comment|/* Represents 7707, 7708, 7708S, 7708R, 7709 */
+id|CPU_SH7708S
+comma
+id|CPU_SH7708R
+comma
+id|CPU_SH7709
+comma
+DECL|enumerator|CPU_SH7709A
 DECL|enumerator|CPU_SH7729
+DECL|enumerator|CPU_SH7300
+id|CPU_SH7709A
+comma
 id|CPU_SH7729
 comma
-multiline_comment|/* Represents 7709A, 7729 */
+id|CPU_SH7300
+comma
+multiline_comment|/* SH-4 types */
 DECL|enumerator|CPU_SH7750
+DECL|enumerator|CPU_SH7750S
+DECL|enumerator|CPU_SH7750R
+DECL|enumerator|CPU_SH7751
+DECL|enumerator|CPU_SH7751R
 id|CPU_SH7750
 comma
-multiline_comment|/* Represents 7750 */
-DECL|enumerator|CPU_SH7750S
 id|CPU_SH7750S
 comma
-multiline_comment|/* Represents 7750S */
-DECL|enumerator|CPU_SH7750R
 id|CPU_SH7750R
 comma
-multiline_comment|/* Represents 7750R */
-DECL|enumerator|CPU_SH7751
 id|CPU_SH7751
 comma
-multiline_comment|/* Represents 7751 */
-DECL|enumerator|CPU_SH7751R
 id|CPU_SH7751R
 comma
-multiline_comment|/* Represents 7751R */
+DECL|enumerator|CPU_SH7760
 DECL|enumerator|CPU_ST40RA
+DECL|enumerator|CPU_ST40GX1
+DECL|enumerator|CPU_SH4_202
+DECL|enumerator|CPU_SH4_501
+id|CPU_SH7760
+comma
 id|CPU_ST40RA
 comma
-multiline_comment|/* Represents ST40RA (formerly ST40STB1) */
-DECL|enumerator|CPU_ST40GX1
 id|CPU_ST40GX1
 comma
-multiline_comment|/* Represents ST40GX1 */
+id|CPU_SH4_202
+comma
+id|CPU_SH4_501
+comma
+multiline_comment|/* Unknown subtype */
 DECL|enumerator|CPU_SH_NONE
 id|CPU_SH_NONE
 )brace
@@ -119,6 +140,11 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|sh_cpuinfo
+id|boot_cpu_data
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_struct
@@ -130,11 +156,6 @@ suffix:semicolon
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
 macro_line|#else
-r_extern
-r_struct
-id|sh_cpuinfo
-id|boot_cpu_data
-suffix:semicolon
 DECL|macro|cpu_data
 mdefine_line|#define cpu_data (&amp;boot_cpu_data)
 DECL|macro|current_cpu_data
@@ -148,9 +169,11 @@ DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 3)
 multiline_comment|/*&n; * Bit of SR register&n; *&n; * FD-bit:&n; *     When it&squot;s set, it means the processor doesn&squot;t have right to use FPU,&n; *     and it results exception when the floating operation is executed.&n; *&n; * IMASK-bit:&n; *     Interrupt level mask&n; */
 DECL|macro|SR_FD
-mdefine_line|#define SR_FD    0x00008000
+mdefine_line|#define SR_FD&t;&t;0x00008000
+DECL|macro|SR_DSP
+mdefine_line|#define SR_DSP&t;&t;0x00001000
 DECL|macro|SR_IMASK
-mdefine_line|#define SR_IMASK 0x000000f0
+mdefine_line|#define SR_IMASK&t;0x000000f0
 multiline_comment|/*&n; * FPU structure and data&n; */
 DECL|struct|sh_fpu_hard_struct
 r_struct
@@ -248,8 +271,15 @@ id|soft
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* &n; * Processor flags&n; */
 DECL|macro|CPU_HAS_FPU
-mdefine_line|#define CPU_HAS_FPU&t;0x0001
+mdefine_line|#define CPU_HAS_FPU&t;&t;0x0001&t;/* Hardware FPU support */
+DECL|macro|CPU_HAS_P2_FLUSH_BUG
+mdefine_line|#define CPU_HAS_P2_FLUSH_BUG&t;0x0002&t;/* Need to flush the cache in P2 area */
+DECL|macro|CPU_HAS_MMU_PAGE_ASSOC
+mdefine_line|#define CPU_HAS_MMU_PAGE_ASSOC&t;0x0004&t;/* SH3: TLB way selection bit support */
+DECL|macro|CPU_HAS_DSP
+mdefine_line|#define CPU_HAS_DSP&t;&t;0x0008&t;/* SH-DSP: DSP support */
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -278,6 +308,11 @@ r_int
 id|address
 suffix:semicolon
 multiline_comment|/* Hardware debugging registers may come here */
+DECL|member|ubc_pc
+r_int
+r_int
+id|ubc_pc
+suffix:semicolon
 multiline_comment|/* floating point info */
 DECL|member|fpu
 r_union
@@ -286,8 +321,13 @@ id|fpu
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Count of active tasks with UBC settings */
+r_extern
+r_int
+id|ubc_usercnt
+suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sizeof(init_stack) + (long) &amp;init_stack, /* sp */&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t; /* pc */&t;&bslash;&n;&t;0, 0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{{{0,}},} &t;&t;&t;&t;/* fpu state */&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sizeof(init_stack) + (long) &amp;init_stack, /* sp */&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t; /* pc */&t;&bslash;&n;&t;0, 0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{{{0,}},} &t;&t;&t;&t;/* fpu state */&t;&bslash;&n;}
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs, new_pc, new_sp)&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t; &bslash;&n;&t;regs-&gt;pr = 0;   &t;&t; &t; &bslash;&n;&t;regs-&gt;sr = 0;&t;&t;/* User mode. */ &bslash;&n;&t;regs-&gt;pc = new_pc;&t;&t;&t; &bslash;&n;&t;regs-&gt;regs[15] = new_sp
@@ -466,6 +506,6 @@ mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.pc)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.sp)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;barrier()
+mdefine_line|#define cpu_relax()&t;__asm__ __volatile__ (&quot;sleep&quot; : : : &quot;memory&quot;)
 macro_line|#endif /* __ASM_SH_PROCESSOR_H */
 eof

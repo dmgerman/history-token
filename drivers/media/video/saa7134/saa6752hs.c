@@ -526,26 +526,34 @@ r_break
 suffix:semicolon
 )brace
 singleline_comment|// wait a bit
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|1
+id|HZ
+op_div
+l_int|100
 )paren
 suffix:semicolon
 )brace
 singleline_comment|// delay a bit to let encoder settle
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|5
+id|HZ
+op_div
+l_int|20
 )paren
 suffix:semicolon
 singleline_comment|// done
@@ -811,6 +819,10 @@ id|buf
 l_int|3
 )braket
 suffix:semicolon
+r_void
+op_star
+id|data
+suffix:semicolon
 singleline_comment|// check the bitrate parameters first
 r_if
 c_cond
@@ -1056,6 +1068,14 @@ l_int|3
 )paren
 suffix:semicolon
 singleline_comment|// setup bitrate settings
+id|data
+op_assign
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1073,7 +1093,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|client-&gt;data
+id|data
 comma
 id|params
 comma
@@ -1098,7 +1118,7 @@ r_struct
 id|mpeg_params
 op_star
 )paren
-id|client-&gt;data
+id|data
 )paren
 suffix:semicolon
 )brace
@@ -1323,9 +1343,13 @@ id|mpeg_params
 )paren
 )paren
 suffix:semicolon
-id|client-&gt;data
-op_assign
+id|i2c_set_clientdata
+c_func
+(paren
+id|client
+comma
 id|params
+)paren
 suffix:semicolon
 id|i2c_attach_client
 c_func
@@ -1386,6 +1410,18 @@ op_star
 id|client
 )paren
 (brace
+r_void
+op_star
+id|data
+suffix:semicolon
+id|data
+op_assign
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 id|i2c_detach_client
 c_func
 (paren
@@ -1395,7 +1431,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|client-&gt;data
+id|data
 )paren
 suffix:semicolon
 id|kfree

@@ -340,7 +340,7 @@ suffix:semicolon
 )brace
 macro_line|#if 0
 mdefine_line|#define __HAVE_ARCH_STRPBRK
-r_extern
+r_static
 r_inline
 r_char
 op_star
@@ -2145,7 +2145,7 @@ mdefine_line|#define memcmp(cs, ct, n) &bslash;&n;(__builtin_constant_p(n) ? &bs
 DECL|macro|__HAVE_ARCH_MEMCHR
 mdefine_line|#define __HAVE_ARCH_MEMCHR
 DECL|function|memchr
-r_extern
+r_static
 r_inline
 r_void
 op_star

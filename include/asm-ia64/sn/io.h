@@ -36,7 +36,7 @@ mdefine_line|#define IIO_ITTE_INVALID_WIDGET&t;3&t;/* an invalid widget  */
 DECL|macro|IIO_ITTE_PUT
 mdefine_line|#define IIO_ITTE_PUT(nasid, bigwin, io_or_mem, widget, addr) &bslash;&n;&t;REMOTE_HUB_S((nasid), IIO_ITTE(bigwin), &bslash;&n;&t;&t;(((((addr) &gt;&gt; BWIN_SIZE_BITS) &amp; &bslash;&n;&t;&t;   IIO_ITTE_OFFSET_MASK) &lt;&lt; IIO_ITTE_OFFSET_SHIFT) | &bslash;&n;&t;&t;(io_or_mem &lt;&lt; IIO_ITTE_IOSP_SHIFT) | &bslash;&n;&t;&t;(((widget) &amp; IIO_ITTE_WIDGET_MASK) &lt;&lt; IIO_ITTE_WIDGET_SHIFT)))
 DECL|macro|IIO_ITTE_DISABLE
-mdefine_line|#define IIO_ITTE_DISABLE(nasid, bigwin) &bslash;&n;&t;IIO_ITTE_PUT((nasid), HUB_PIO_MAP_TO_MEM, &bslash;&n;&t;&t;     (bigwin), IIO_ITTE_INVALID_WIDGET, 0)
+mdefine_line|#define IIO_ITTE_DISABLE(nasid, bigwin) &bslash;&n;&t;IIO_ITTE_PUT((nasid), (bigwin), HUB_PIO_MAP_TO_MEM, &bslash;&n;&t;&t;IIO_ITTE_INVALID_WIDGET, 0)
 DECL|macro|IIO_ITTE_GET
 mdefine_line|#define IIO_ITTE_GET(nasid, bigwin) REMOTE_HUB_ADDR((nasid), IIO_ITTE(bigwin))
 multiline_comment|/*&n; * Macro which takes the widget number, and returns the&n; * IO PRB address of that widget.&n; * value _x is expected to be a widget number in the range&n; * 0, 8 - 0xF&n; */

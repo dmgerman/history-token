@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: io.c,v 1.2 2001/06/26 14:02:43 pfg Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
@@ -22,15 +21,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 r_extern
 id|xtalk_provider_t
 id|hub_provider
-suffix:semicolon
-r_extern
-r_void
-id|hub_intr_init
-c_func
-(paren
-id|vertex_hdl_t
-id|hubv
-)paren
 suffix:semicolon
 DECL|variable|force_fire_and_forget
 r_static
@@ -208,7 +198,7 @@ comma
 id|HUB_PIO_CONVEYOR
 )paren
 suffix:semicolon
-id|mutex_spinlock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -298,10 +288,6 @@ suffix:semicolon
 r_volatile
 id|hubreg_t
 id|junk
-suffix:semicolon
-r_int
-r_int
-id|s
 suffix:semicolon
 id|caddr_t
 id|kvaddr
@@ -429,9 +415,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|s
-op_assign
-id|mutex_spinlock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -510,13 +494,11 @@ id|bw_piomap-&gt;hpio_xtalk_info.xp_target
 id|bw_piomap-&gt;hpio_holdcnt
 op_increment
 suffix:semicolon
-id|mutex_spinunlock
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|hubinfo-&gt;h_bwlock
-comma
-id|s
 )paren
 suffix:semicolon
 r_return
@@ -777,13 +759,11 @@ id|HUB_PIOMAP_IS_VALID
 suffix:semicolon
 id|done
 suffix:colon
-id|mutex_spinunlock
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|hubinfo-&gt;h_bwlock
-comma
-id|s
 )paren
 suffix:semicolon
 r_return
@@ -808,10 +788,6 @@ id|hubinfo
 suffix:semicolon
 id|nasid_t
 id|nasid
-suffix:semicolon
-r_int
-r_int
-id|s
 suffix:semicolon
 multiline_comment|/* &n;&t; * Small windows are permanently mapped to corresponding widgets,&n;&t; * so there&squot;re no resources to free.&n;&t; */
 r_if
@@ -859,9 +835,7 @@ id|nasid
 op_assign
 id|hubinfo-&gt;h_nasid
 suffix:semicolon
-id|s
-op_assign
-id|mutex_spinlock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -929,13 +903,11 @@ id|hubinfo-&gt;h_bwwait
 )paren
 suffix:semicolon
 )brace
-id|mutex_spinunlock
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|hubinfo-&gt;h_bwlock
-comma
-id|s
 )paren
 suffix:semicolon
 )brace
@@ -1285,7 +1257,7 @@ op_and_assign
 op_complement
 id|HUB_DMAMAP_IS_VALID
 suffix:semicolon
-id|kern_free
+id|kfree
 c_func
 (paren
 id|hub_dmamap
@@ -1344,35 +1316,33 @@ id|HUB_DMAMAP_IS_FIXED
 )paren
 )paren
 (brace
+r_char
+id|name
+(braket
+id|MAXDEVNAME
+)braket
+suffix:semicolon
 id|vhdl
 op_assign
 id|dmamap-&gt;hdma_xtalk_info.xd_dev
 suffix:semicolon
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%v: hub_dmamap_addr re-uses dmamap.&bslash;n&quot;
+l_string|&quot;%s: hub_dmamap_addr re-uses dmamap.&bslash;n&quot;
 comma
-id|vhdl
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
+id|vertex_to_name
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%p: hub_dmamap_addr re-uses dmamap.&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
 id|vhdl
+comma
+id|name
+comma
+id|MAXDEVNAME
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
@@ -1443,35 +1413,33 @@ id|HUB_DMAMAP_IS_FIXED
 )paren
 )paren
 (brace
+r_char
+id|name
+(braket
+id|MAXDEVNAME
+)braket
+suffix:semicolon
 id|vhdl
 op_assign
 id|hub_dmamap-&gt;hdma_xtalk_info.xd_dev
 suffix:semicolon
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%v: hub_dmamap_list re-uses dmamap&bslash;n&quot;
+l_string|&quot;%s: hub_dmamap_list re-uses dmamap&bslash;n&quot;
 comma
-id|vhdl
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
+id|vertex_to_name
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%p: hub_dmamap_list re-uses dmamap&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
 id|vhdl
+comma
+id|name
+comma
+id|MAXDEVNAME
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
@@ -1528,35 +1496,33 @@ id|HUB_DMAMAP_IS_FIXED
 )paren
 )paren
 (brace
+r_char
+id|name
+(braket
+id|MAXDEVNAME
+)braket
+suffix:semicolon
 id|vhdl
 op_assign
 id|hub_dmamap-&gt;hdma_xtalk_info.xd_dev
 suffix:semicolon
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%v: hub_dmamap_done already done with dmamap&bslash;n&quot;
+l_string|&quot;%s: hub_dmamap_done already done with dmamap&bslash;n&quot;
 comma
-id|vhdl
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
+id|vertex_to_name
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%p: hub_dmamap_done already done with dmamap&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
 id|vhdl
+comma
+id|name
+comma
+id|MAXDEVNAME
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 )brace
@@ -1689,12 +1655,6 @@ id|hubv
 )paren
 (brace
 id|hub_pio_init
-c_func
-(paren
-id|hubv
-)paren
-suffix:semicolon
-id|hub_intr_init
 c_func
 (paren
 id|hubv

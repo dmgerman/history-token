@@ -3829,6 +3829,10 @@ multiline_comment|/* check whether resolution fits on panel and in memory*/
 r_if
 c_cond
 (paren
+id|flatpanel
+op_logical_and
+id|nativex
+op_logical_and
 id|var-&gt;xres
 OG
 id|nativex

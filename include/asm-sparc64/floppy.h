@@ -1166,8 +1166,8 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 (paren
 l_int|NULL
@@ -1186,10 +1186,6 @@ l_int|0
 op_eq
 id|sun_pci_dma_pending.direction
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sun_pci_dma_current.buf

@@ -10,6 +10,7 @@ macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;css.h&quot;
 macro_line|#include &quot;device.h&quot;
+macro_line|#include &quot;ioasm.h&quot;
 multiline_comment|/*&n; * diag210 is used under VM to get information about a virtual device&n; */
 macro_line|#ifdef CONFIG_ARCH_S390X
 r_int
@@ -747,12 +748,17 @@ op_member_access_from_pointer
 r_private
 op_member_access_from_pointer
 id|iretry
-op_decrement
 OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* 0x00E2C9C4 == ebcdic &quot;SID&quot; */
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|iretry
+op_decrement
+suffix:semicolon
 id|ret
 op_assign
 id|cio_start
@@ -765,8 +771,6 @@ r_private
 op_member_access_from_pointer
 id|iccws
 comma
-l_int|0x00E2C9C4
-comma
 id|cdev
 op_member_access_from_pointer
 r_private
@@ -775,24 +779,6 @@ id|imask
 )paren
 suffix:semicolon
 multiline_comment|/* ret is 0, -EBUSY, -EACCES or -ENODEV */
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-op_minus
-id|EBUSY
-)paren
-(brace
-id|udelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -894,6 +880,11 @@ r_if
 c_cond
 (paren
 id|ret
+op_logical_and
+id|ret
+op_ne
+op_minus
+id|EBUSY
 )paren
 id|ccw_device_sense_id_done
 c_func
@@ -1032,12 +1023,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : device %04X on Subchannel %04X &quot;
+l_string|&quot;SenseID : device %s on Subchannel %s &quot;
 l_string|&quot;reports cmd reject or intervention required&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_return
@@ -1056,11 +1047,11 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : UC on dev %04X, &quot;
+l_string|&quot;SenseID : UC on dev %s, &quot;
 l_string|&quot;lpum %02X, cnt %02d, sns :&quot;
 l_string|&quot; %02X%02X%02X%02X %02X%02X%02X%02X ...&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
 id|irb-&gt;esw.esw0.sublog.lpum
 comma
@@ -1125,14 +1116,14 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : path %02X for device %04X on &quot;
-l_string|&quot;subchannel %04X is &squot;not operational&squot;&bslash;n&quot;
+l_string|&quot;SenseID : path %02X for device %s on &quot;
+l_string|&quot;subchannel %s is &squot;not operational&squot;&bslash;n&quot;
 comma
 id|sch-&gt;orb.lpm
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_return
@@ -1146,12 +1137,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : start_IO() for device %04X on &quot;
-l_string|&quot;subchannel %04X returns status %02X%02X&bslash;n&quot;
+l_string|&quot;SenseID : start_IO() for device %s on &quot;
+l_string|&quot;subchannel %s returns status %02X%02X&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 comma
 id|irb-&gt;scsw.dstat
 comma
@@ -1209,7 +1200,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/* Ignore unsolicited interrupts. */
+multiline_comment|/*&n;&t; * Unsolicited interrupts may pertain to an earlier status pending or&n;&t; * busy condition on the subchannel. Retry sense id.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1221,8 +1212,36 @@ op_or
 id|SCSW_STCTL_ALERT_STATUS
 )paren
 )paren
+(brace
+id|ret
+op_assign
+id|__ccw_device_sense_id_start
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_logical_and
+id|ret
+op_ne
+op_minus
+id|EBUSY
+)paren
+id|ccw_device_sense_id_done
+c_func
+(paren
+id|cdev
+comma
+id|ret
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

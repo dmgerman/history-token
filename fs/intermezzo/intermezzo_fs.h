@@ -3322,7 +3322,7 @@ id|presto_file_set
 op_star
 comma
 r_struct
-id|file
+id|presto_file_data
 op_star
 comma
 r_struct

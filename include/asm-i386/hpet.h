@@ -56,18 +56,12 @@ DECL|macro|HPET_T2_CMP
 mdefine_line|#define HPET_T2_CMP&t;0x148
 DECL|macro|HPET_T2_ROUTE
 mdefine_line|#define HPET_T2_ROUTE&t;0x150
-DECL|macro|HPET_ID_VENDOR
-mdefine_line|#define HPET_ID_VENDOR&t;0xffff0000
 DECL|macro|HPET_ID_LEGSUP
 mdefine_line|#define HPET_ID_LEGSUP&t;0x00008000
 DECL|macro|HPET_ID_NUMBER
 mdefine_line|#define HPET_ID_NUMBER&t;0x00001f00
 DECL|macro|HPET_ID_REV
 mdefine_line|#define HPET_ID_REV&t;0x000000ff
-DECL|macro|HPET_ID_VENDOR_SHIFT
-mdefine_line|#define HPET_ID_VENDOR_SHIFT&t;16
-DECL|macro|HPET_ID_VENDOR_8086
-mdefine_line|#define HPET_ID_VENDOR_8086&t;0x8086
 DECL|macro|HPET_CFG_ENABLE
 mdefine_line|#define HPET_CFG_ENABLE&t;0x001
 DECL|macro|HPET_CFG_LEGACY

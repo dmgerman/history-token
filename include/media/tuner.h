@@ -85,6 +85,12 @@ DECL|macro|TUNER_LG_NTSC_NEW_TAPC
 mdefine_line|#define TUNER_LG_NTSC_NEW_TAPC   39
 DECL|macro|TUNER_HITACHI_NTSC
 mdefine_line|#define TUNER_HITACHI_NTSC       40
+DECL|macro|TUNER_PHILIPS_PAL_MK
+mdefine_line|#define TUNER_PHILIPS_PAL_MK     41
+DECL|macro|TUNER_PHILIPS_ATSC
+mdefine_line|#define TUNER_PHILIPS_ATSC       42
+DECL|macro|TUNER_PHILIPS_FM1236_MK3
+mdefine_line|#define TUNER_PHILIPS_FM1236_MK3  43
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -95,6 +101,8 @@ DECL|macro|NTSC
 mdefine_line|#define NTSC    3
 DECL|macro|SECAM
 mdefine_line|#define SECAM   4
+DECL|macro|ATSC
+mdefine_line|#define ATSC    5
 DECL|macro|NoTuner
 mdefine_line|#define NoTuner 0
 DECL|macro|Philips

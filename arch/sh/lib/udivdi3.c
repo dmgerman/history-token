@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Simple __udivdi3 function which doesn&squot;t use FPU.
 macro_line|#include &lt;linux/types.h&gt;
 r_extern
 id|u64
-id|__div64_32
+id|__xdiv64_32
 c_func
 (paren
 id|u64
@@ -54,7 +54,7 @@ l_string|&quot;Need true 64-bit/64-bit division&quot;
 )paren
 suffix:semicolon
 r_return
-id|__div64_32
+id|__xdiv64_32
 c_func
 (paren
 id|n

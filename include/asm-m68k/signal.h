@@ -341,8 +341,8 @@ macro_line|#include &lt;asm/sigcontext.h&gt;
 DECL|macro|__HAVE_ARCH_SIG_BITOPS
 mdefine_line|#define __HAVE_ARCH_SIG_BITOPS
 DECL|function|sigaddset
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sigaddset
 c_func
@@ -382,8 +382,8 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|function|sigdelset
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sigdelset
 c_func
@@ -423,8 +423,8 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|function|__const_sigismember
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__const_sigismember
 c_func
@@ -465,8 +465,8 @@ id|_NSIG_BPW
 suffix:semicolon
 )brace
 DECL|function|__gen_sigismember
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__gen_sigismember
 c_func
@@ -517,8 +517,8 @@ suffix:semicolon
 DECL|macro|sigismember
 mdefine_line|#define sigismember(set,sig)&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(sig) ?&t;&t;&bslash;&n;&t; __const_sigismember(set,sig) :&t;&t;&bslash;&n;&t; __gen_sigismember(set,sig))
 DECL|function|sigfindinword
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|sigfindinword
 c_func

@@ -3,7 +3,11 @@ multiline_comment|/* i2c-velleman.c i2c-hw access for Velleman K8000 adapters&t;
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-96, 2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-velleman.c,v 1.29 2003/01/21 08:08:16 kmalkki Exp $ */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -12,13 +16,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
-DECL|macro|DEB
-mdefine_line|#define DEB(x)&t;&t;/* should be reasonable open, close &amp;c. &t;*/
-DECL|macro|DEB2
-mdefine_line|#define DEB2(x) &t;/* low level debugging - very slow &t;&t;*/
-DECL|macro|DEBE
-mdefine_line|#define DEBE(x)&t;x&t;/* error messages &t;&t;&t;&t;*/
 multiline_comment|/* Pin Port  Inverted&t;name&t;*/
 DECL|macro|I2C_SDA
 mdefine_line|#define I2C_SDA&t;&t;0x02&t;&t;/*  ctrl bit 1 &t;(inv)&t;*/
@@ -472,10 +469,9 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;i2c-velleman: found device at %#x.&bslash;n&quot;
 comma
 id|base

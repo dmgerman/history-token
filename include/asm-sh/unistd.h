@@ -532,8 +532,20 @@ DECL|macro|__NR_clock_getres
 mdefine_line|#define __NR_clock_getres&t;(__NR_timer_create+7)
 DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;268
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;269
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;270
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;271
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;272
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;273
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 268
+mdefine_line|#define NR_syscalls 274
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-sh/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-124)) { &bslash;&n;&t;/* Avoid using &quot;res&quot; which is declared to be in register r0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
@@ -802,7 +814,9 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
+macro_line|#ifndef cond_syscall
 DECL|macro|cond_syscall
 mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t&quot; #x &quot;,sys_ni_syscall&quot;);
+macro_line|#endif
 macro_line|#endif /* __ASM_SH_UNISTD_H */
 eof

@@ -11,7 +11,6 @@ macro_line|#include &quot;xfs_dir.h&quot;
 macro_line|#include &quot;xfs_dir2.h&quot;
 macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_mount.h&quot;
-macro_line|#ifndef CONFIG_XFS_QUOTA
 id|STATIC
 r_struct
 id|xfs_dquot
@@ -154,5 +153,4 @@ id|fs_noerr
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_XFS_QUOTA */
 eof

@@ -520,12 +520,29 @@ id|driver
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * proc_devtree.c&n; */
+r_struct
+id|device_node
+suffix:semicolon
 r_extern
 r_void
 id|proc_device_tree_init
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|proc_device_tree_add_node
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+comma
+r_struct
+id|proc_dir_entry
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * proc_rtas.c&n; */

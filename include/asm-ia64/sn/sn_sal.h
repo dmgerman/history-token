@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
+macro_line|#include &lt;asm/sn/nodepda.h&gt;
+macro_line|#include &lt;asm/sn/klconfig.h&gt;
 singleline_comment|// SGI Specific Calls
 DECL|macro|SN_SAL_POD_MODE
 mdefine_line|#define  SN_SAL_POD_MODE                           0x02000001
@@ -323,12 +325,6 @@ r_struct
 id|ia64_sal_retval
 id|ret_stuff
 suffix:semicolon
-r_extern
-id|u64
-id|klgraph_addr
-(braket
-)braket
-suffix:semicolon
 r_int
 id|cnodeid
 suffix:semicolon
@@ -340,17 +336,6 @@ c_func
 id|nasid
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|klgraph_addr
-(braket
-id|cnodeid
-)braket
-op_eq
-l_int|0
-)paren
-(brace
 id|ret_stuff.status
 op_assign
 l_int|0
@@ -392,7 +377,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; &t;* We should panic if a valid cnode nasid does not produce&n;&t; &t;* a klconfig address.&n;&t; &t;*/
+multiline_comment|/*&n;&t; * We should panic if a valid cnode nasid does not produce&n;&t; * a klconfig address.&n;&t; */
 r_if
 c_cond
 (paren
@@ -410,19 +395,8 @@ id|ret_stuff.status
 )paren
 suffix:semicolon
 )brace
-id|klgraph_addr
-(braket
-id|cnodeid
-)braket
-op_assign
-id|ret_stuff.v0
-suffix:semicolon
-)brace
 r_return
-id|klgraph_addr
-(braket
-id|cnodeid
-)braket
+id|ret_stuff.v0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Returns the next console character.&n; */
@@ -1761,7 +1735,45 @@ r_struct
 id|ia64_sal_retval
 id|ret_stuff
 suffix:semicolon
-id|SAL_CALL
+r_int
+id|cnodeid
+suffix:semicolon
+r_int
+r_int
+id|irq_flags
+suffix:semicolon
+id|cnodeid
+op_assign
+id|nasid_to_cnodeid
+c_func
+(paren
+id|get_node_number
+c_func
+(paren
+id|paddr
+)paren
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|NODEPDA
+c_func
+(paren
+id|cnodeid
+)paren
+op_member_access_from_pointer
+id|bist_lock
+)paren
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|irq_flags
+)paren
+suffix:semicolon
+id|SAL_CALL_NOLOCK
 c_func
 (paren
 id|ret_stuff
@@ -1781,6 +1793,25 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|irq_flags
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|NODEPDA
+c_func
+(paren
+id|cnodeid
+)paren
+op_member_access_from_pointer
+id|bist_lock
 )paren
 suffix:semicolon
 r_return

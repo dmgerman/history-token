@@ -43,6 +43,10 @@ dot
 dot
 )paren
 suffix:semicolon
+macro_line|#ifndef STATIC
+DECL|macro|STATIC
+macro_line|# define STATIC static
+macro_line|#endif
 macro_line|#ifdef DEBUG
 macro_line|# ifdef lint
 DECL|macro|ASSERT

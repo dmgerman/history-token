@@ -29,6 +29,8 @@ DECL|macro|MODULE_FORMAT_BRIEF
 mdefine_line|#define MODULE_FORMAT_BRIEF&t;1
 DECL|macro|MODULE_FORMAT_LONG
 mdefine_line|#define MODULE_FORMAT_LONG&t;2
+DECL|macro|MODULE_FORMAT_LCD
+mdefine_line|#define MODULE_FORMAT_LCD&t;3
 multiline_comment|/*&n; *&t;Module id format&n; *&n; *&t;31-16&t;Rack ID (encoded class, group, number - 16-bit unsigned int)&n; *&t; 15-8&t;Brick type (8-bit ascii character)&n; *&t;  7-0&t;Bay (brick position in rack (0-63) - 8-bit unsigned int)&n; *&n; */
 multiline_comment|/*&n; * Macros for getting the brick type&n; */
 DECL|macro|MODULE_BTYPE_MASK
@@ -127,6 +129,10 @@ DECL|macro|MODULE_PXBRICK
 mdefine_line|#define MODULE_PXBRICK          9
 DECL|macro|MODULE_IXBRICK
 mdefine_line|#define MODULE_IXBRICK          10
+DECL|macro|MODULE_CGBRICK
+mdefine_line|#define MODULE_CGBRICK&t;&t;11
+DECL|macro|MODULE_OPUSBRICK
+mdefine_line|#define MODULE_OPUSBRICK        12
 multiline_comment|/*&n; * Moduleid_t comparison macros&n; */
 multiline_comment|/* Don&squot;t compare the brick type:  only the position is significant */
 DECL|macro|MODULE_CMP
@@ -200,12 +206,6 @@ r_int
 id|shutdown
 suffix:semicolon
 multiline_comment|/* Shutdown in progress            */
-DECL|member|thdcnt
-r_struct
-id|semaphore
-id|thdcnt
-suffix:semicolon
-multiline_comment|/* Threads finished counter        */
 DECL|member|intrhist
 id|time_t
 id|intrhist

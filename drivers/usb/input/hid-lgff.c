@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * $$&n; *&n; * Force feedback support for hid-compliant for some of the devices from&n; * Logitech, namely:&n; * - WingMan Cordless RumblePad&n; * - WingMan Force 3D&n; *&n; *  Copyright (c) 2002 Johann Deneux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so by&n; * e-mail - mail your message to &lt;deneux@ifrance.com&gt;&n; */
+multiline_comment|/*&n; * $$&n; *&n; * Force feedback support for hid-compliant for some of the devices from&n; * Logitech, namely:&n; * - WingMan Cordless RumblePad&n; * - WingMan Force 3D&n; *&n; *  Copyright (c) 2002-2004 Johann Deneux&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so by&n; * e-mail - mail your message to &lt;johann.deneux@it.uu.se&gt;&n; */
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+singleline_comment|//#define DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &quot;hid.h&quot;
@@ -632,20 +631,6 @@ id|value
 l_int|0
 )braket
 op_assign
-l_int|0x03
-suffix:semicolon
-r_private
-op_member_access_from_pointer
-id|rumble-&gt;field
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|value
-(braket
-l_int|1
-)braket
-op_assign
 l_int|0x42
 suffix:semicolon
 r_private
@@ -768,7 +753,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Force feedback for Logitech force feedback devices by Johann Deneux &lt;deneux@ifrance.com&gt;&bslash;n&quot;
+l_string|&quot;Force feedback for Logitech force feedback devices by Johann Deneux &lt;johann.deneux@it.uu.se&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1037,8 +1022,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-op_amp
-id|hid-&gt;inputs
+id|hid-&gt;inputs.next
 comma
 r_struct
 id|hid_input
@@ -2383,7 +2367,7 @@ l_int|0
 op_member_access_from_pointer
 id|value
 (braket
-l_int|3
+l_int|2
 )braket
 op_logical_or
 id|right
@@ -2395,7 +2379,7 @@ l_int|0
 op_member_access_from_pointer
 id|value
 (braket
-l_int|4
+l_int|3
 )braket
 )paren
 (brace
@@ -2406,7 +2390,7 @@ l_int|0
 op_member_access_from_pointer
 id|value
 (braket
-l_int|3
+l_int|2
 )braket
 op_assign
 id|left
@@ -2418,7 +2402,7 @@ l_int|0
 op_member_access_from_pointer
 id|value
 (braket
-l_int|4
+l_int|3
 )braket
 op_assign
 id|right

@@ -1,5 +1,10 @@
 multiline_comment|/*&n;    via686a.c - Part of lm_sensors, Linux kernel modules&n;                for hardware monitoring&n;                &n;    Copyright (c) 1998 - 2002  Frodo Looijaard &lt;frodol@dds.nl&gt;,&n;                        Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;,&n;&t;&t;&t;Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;,&n;&t;&t;&t;and Bob Dougherty &lt;bobd@stanford.edu&gt;&n;    (Some conversion-factor data were contributed by Jonathan Teh Soon Yew &n;    &lt;j.teh@iname.com&gt; and Alex van Kaam &lt;darkside@chello.nl&gt;.)&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    Supports the Via VT82C686A, VT82C686B south bridges.&n;    Reports all as a 686A.&n;    See doc/chips/via686a for details.&n;    Warning - only supports a single device.&n;*/
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

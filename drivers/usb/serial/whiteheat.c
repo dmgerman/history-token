@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/termbits.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;

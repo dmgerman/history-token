@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: proc.c,v 1.1.2.1 1998/06/07 23:21:01 geert Exp $&n; *&n; *&t;Procfs interface for the Zorro bus.&n; *&n; *&t;Copyright (C) 1998-2000 Geert Uytterhoeven&n; *&n; *&t;Heavily based on the procfs interface for the PCI bus, which is&n; *&n; *&t;Copyright (C) 1997, 1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; */
+multiline_comment|/*&n; *&t;$Id: proc.c,v 1.1.2.1 1998/06/07 23:21:01 geert Exp $&n; *&n; *&t;Procfs interface for the Zorro bus.&n; *&n; *&t;Copyright (C) 1998-2003 Geert Uytterhoeven&n; *&n; *&t;Heavily based on the procfs interface for the PCI bus, which is&n; *&n; *&t;Copyright (C) 1997, 1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -157,7 +157,7 @@ suffix:semicolon
 r_struct
 id|zorro_dev
 op_star
-id|dev
+id|z
 op_assign
 id|dp-&gt;data
 suffix:semicolon
@@ -244,15 +244,15 @@ id|cd
 suffix:semicolon
 id|cd.cd_Rom
 op_assign
-id|dev-&gt;rom
+id|z-&gt;rom
 suffix:semicolon
 id|cd.cd_SlotAddr
 op_assign
-id|dev-&gt;slotaddr
+id|z-&gt;slotaddr
 suffix:semicolon
 id|cd.cd_SlotSize
 op_assign
-id|dev-&gt;slotsize
+id|z-&gt;slotsize
 suffix:semicolon
 id|cd.cd_BoardAddr
 op_assign
@@ -260,15 +260,19 @@ op_assign
 r_void
 op_star
 )paren
-id|dev-&gt;resource.start
+id|zorro_resource_start
+c_func
+(paren
+id|z
+)paren
 suffix:semicolon
 id|cd.cd_BoardSize
 op_assign
-id|dev-&gt;resource.end
-op_minus
-id|dev-&gt;resource.start
-op_plus
-l_int|1
+id|zorro_resource_len
+c_func
+(paren
+id|z
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -371,7 +375,7 @@ op_increment
 r_struct
 id|zorro_dev
 op_star
-id|dev
+id|z
 op_assign
 op_amp
 id|zorro_autocon
@@ -390,17 +394,21 @@ l_string|&quot;%02x&bslash;t%08x&bslash;t%08lx&bslash;t%08lx&bslash;t%02x&bslash
 comma
 id|slot
 comma
-id|dev-&gt;id
+id|z-&gt;id
 comma
-id|dev-&gt;resource.start
+id|zorro_resource_start
+c_func
+(paren
+id|z
+)paren
 comma
-id|dev-&gt;resource.end
-op_minus
-id|dev-&gt;resource.start
-op_plus
-l_int|1
+id|zorro_resource_len
+c_func
+(paren
+id|z
+)paren
 comma
-id|dev-&gt;rom.er_Type
+id|z-&gt;rom.er_Type
 )paren
 suffix:semicolon
 id|at

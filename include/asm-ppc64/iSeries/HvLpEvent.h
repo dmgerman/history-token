@@ -10,9 +10,7 @@ mdefine_line|#define _HVLPEVENT_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
-macro_line|#ifndef _HVCALLEVENT_H
 macro_line|#include &lt;asm/iSeries/HvCallEvent.h&gt;
-macro_line|#endif
 singleline_comment|//=====================================================================
 singleline_comment|//
 singleline_comment|// HvLpEvent is the structure for Lp Event messages passed between

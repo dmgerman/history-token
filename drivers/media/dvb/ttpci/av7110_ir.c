@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;av7110.h&quot;
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
+macro_line|#include &quot;input_fake.h&quot;
+macro_line|#endif
 DECL|macro|UP_TIMEOUT
 mdefine_line|#define UP_TIMEOUT (HZ/4)
 DECL|variable|av7110_ir_debug
@@ -597,8 +600,9 @@ id|timer_list
 id|keyup_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|av7110_emit_keyup
 )brace
 suffix:semicolon
@@ -1035,16 +1039,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|page
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -64,7 +64,7 @@ mdefine_line|#define flush_cache_vmap(start, end)&t;&t;flush_cache_all()
 DECL|macro|flush_cache_vunmap
 mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
 DECL|function|flush_cache_mm
-r_extern
+r_static
 r_inline
 r_void
 id|flush_cache_mm
@@ -91,7 +91,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* flush_cache_range/flush_cache_page must be macros to avoid&n;   a dependency on linux/mm.h, which includes this file... */
 DECL|function|flush_cache_range
-r_extern
+r_static
 r_inline
 r_void
 id|flush_cache_range
@@ -125,7 +125,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|flush_cache_page
-r_extern
+r_static
 r_inline
 r_void
 id|flush_cache_page
@@ -157,7 +157,7 @@ suffix:semicolon
 multiline_comment|/* Push the page at kernel virtual address and clear the icache */
 multiline_comment|/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
 DECL|function|__flush_page_to_ram
-r_extern
+r_static
 r_inline
 r_void
 id|__flush_page_to_ram

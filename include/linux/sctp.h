@@ -1225,7 +1225,7 @@ c_func
 l_int|0x0d
 )paren
 comma
-multiline_comment|/* ADDIP Section 3.3  New Error Causes&n;&t; *&n;&t; * Four new Error Causes are added to the SCTP Operational Errors,&n;&t; * primarily for use in the ASCONF-ACK chunk.&n;&t; *&n;&t; * Value          Cause Code&n;&t; * ---------      ----------------&n;&t; * 0x0100          Request to Delete Last Remaining IP Address.&n;&t; * 0x0101          Operation Refused Due to Resource Shortage.&n;&t; * 0x0102          Request to Delete Source IP Address.&n;&t; * 0x0103          Association Aborted due to illegal ASCONF-ACK&n;&t; */
+multiline_comment|/* ADDIP Section 3.3  New Error Causes&n;&t; *&n;&t; * Four new Error Causes are added to the SCTP Operational Errors,&n;&t; * primarily for use in the ASCONF-ACK chunk.&n;&t; *&n;&t; * Value          Cause Code&n;&t; * ---------      ----------------&n;&t; * 0x0100          Request to Delete Last Remaining IP Address.&n;&t; * 0x0101          Operation Refused Due to Resource Shortage.&n;&t; * 0x0102          Request to Delete Source IP Address.&n;&t; * 0x0103          Association Aborted due to illegal ASCONF-ACK&n;&t; * 0x0104          Request refused - no authorization.&n;&t; */
 DECL|enumerator|SCTP_ERROR_DEL_LAST_IP
 id|SCTP_ERROR_DEL_LAST_IP
 op_assign
@@ -1262,6 +1262,14 @@ c_func
 l_int|0x0103
 )paren
 comma
+DECL|enumerator|SCTP_ERROR_REQ_REFUSED
+id|SCTP_ERROR_REQ_REFUSED
+op_assign
+id|__constant_htons
+c_func
+(paren
+l_int|0x0104
+)paren
 DECL|typedef|sctp_error_t
 )brace
 id|sctp_error_t

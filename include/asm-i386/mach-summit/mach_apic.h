@@ -640,5 +640,29 @@ r_return
 id|apicid
 suffix:semicolon
 )brace
+multiline_comment|/* cpuid returns the value latched in the HW at reset, not the APIC ID&n; * register&squot;s value.  For any box whose BIOS changes APIC IDs, like&n; * clustered APIC systems, we must use hard_smp_processor_id.&n; *&n; * See Intel&squot;s IA-32 SW Dev&squot;s Manual Vol2 under CPUID.&n; */
+DECL|function|phys_pkg_id
+r_static
+r_inline
+id|u32
+id|phys_pkg_id
+c_func
+(paren
+id|u32
+id|cpuid_apic
+comma
+r_int
+id|index_msb
+)paren
+(brace
+r_return
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+op_rshift
+id|index_msb
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

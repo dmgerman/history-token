@@ -2,6 +2,23 @@ multiline_comment|/*&n; * linux/arch/sparc/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|function|sort_extable
+r_void
+id|sort_extable
+c_func
+(paren
+r_struct
+id|exception_table_entry
+op_star
+id|start
+comma
+r_struct
+id|exception_table_entry
+op_star
+id|finish
+)paren
+(brace
+)brace
 multiline_comment|/* Caller knows they are in a range if ret-&gt;fixup == 0 */
 r_const
 r_struct

@@ -18,6 +18,8 @@ DECL|macro|MMU_PAGE_ASSOC_BIT
 mdefine_line|#define MMU_PAGE_ASSOC_BIT&t;0x80
 DECL|macro|MMU_NTLB_ENTRIES
 mdefine_line|#define MMU_NTLB_ENTRIES&t;128&t;/* for 7708 */
+DECL|macro|MMU_NTLB_WAYS
+mdefine_line|#define MMU_NTLB_WAYS&t;&t;4
 DECL|macro|MMU_CONTROL_INIT
 mdefine_line|#define MMU_CONTROL_INIT&t;0x007&t;/* SV=0, TF=1, IX=1, AT=1 */
 macro_line|#endif /* __ASM_CPU_SH3_MMU_CONTEXT_H */

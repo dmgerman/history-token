@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * $Id: hid-ff.c,v 1.2 2002/04/18 22:02:47 jdeneux Exp $&n; *&n; *  Force feedback support for hid devices.&n; *  Not all hid devices use the same protocol. For example, some use PID,&n; *  other use their own proprietary procotol.&n; *&n; *  Copyright (c) 2002 Johann Deneux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so by&n; * e-mail - mail your message to &lt;deneux@ifrance.com&gt;&n; */
+multiline_comment|/*&n; * $Id: hid-ff.c,v 1.2 2002/04/18 22:02:47 jdeneux Exp $&n; *&n; *  Force feedback support for hid devices.&n; *  Not all hid devices use the same protocol. For example, some use PID,&n; *  other use their own proprietary procotol.&n; *&n; *  Copyright (c) 2002-2004 Johann Deneux&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so by&n; * e-mail - mail your message to &lt;johann.deneux@it.uu.se&gt;&n; */
 macro_line|#include &lt;linux/input.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -95,6 +95,7 @@ comma
 id|hid_lgff_init
 )brace
 comma
+singleline_comment|// Logitech Cordless rumble pad
 (brace
 l_int|0x46d
 comma
@@ -103,6 +104,16 @@ comma
 id|hid_lgff_init
 )brace
 comma
+singleline_comment|// Logitech Wingman Force 3d
+(brace
+l_int|0x46d
+comma
+l_int|0xc295
+comma
+id|hid_lgff_init
+)brace
+comma
+singleline_comment|// Logitech MOMO force wheel
 macro_line|#endif
 macro_line|#ifdef CONFIG_HID_PID
 (brace

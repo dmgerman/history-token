@@ -1,11 +1,10 @@
-multiline_comment|/*&n; *&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
@@ -77,80 +76,12 @@ id|btenum
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * The caller has already figured out the error type, we save that&n;&t; * in the bte handle structure for the thread excercising the&n;&t; * interface to consume.&n;&t; */
-r_switch
-c_cond
-(paren
+id|bte-&gt;bh_error
+op_assign
 id|ioe-&gt;ie_errortype
-)paren
-(brace
-r_case
-id|IIO_ICRB_ECODE_PERR
-suffix:colon
-id|bte-&gt;bh_error
-op_assign
-id|BTEFAIL_POISON
+op_plus
+id|BTEFAIL_OFFSET
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IIO_ICRB_ECODE_WERR
-suffix:colon
-id|bte-&gt;bh_error
-op_assign
-id|BTEFAIL_PROT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IIO_ICRB_ECODE_AERR
-suffix:colon
-id|bte-&gt;bh_error
-op_assign
-id|BTEFAIL_ACCESS
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IIO_ICRB_ECODE_TOUT
-suffix:colon
-id|bte-&gt;bh_error
-op_assign
-id|BTEFAIL_TOUT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IIO_ICRB_ECODE_XTERR
-suffix:colon
-id|bte-&gt;bh_error
-op_assign
-id|BTEFAIL_XTERR
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IIO_ICRB_ECODE_DERR
-suffix:colon
-id|bte-&gt;bh_error
-op_assign
-id|BTEFAIL_DIR
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IIO_ICRB_ECODE_PWERR
-suffix:colon
-r_case
-id|IIO_ICRB_ECODE_PRERR
-suffix:colon
-multiline_comment|/* NO BREAK */
-r_default
-suffix:colon
-id|bte-&gt;bh_error
-op_assign
-id|BTEFAIL_ERROR
-suffix:semicolon
-)brace
 id|bte-&gt;bte_error_count
 op_increment
 suffix:semicolon
@@ -158,11 +89,13 @@ id|BTE_PRINTK
 c_func
 (paren
 (paren
-l_string|&quot;Got an error on cnode %d bte %d&bslash;n&quot;
+l_string|&quot;Got an error on cnode %d bte %d: HW error type 0x%x&bslash;n&quot;
 comma
 id|bte-&gt;bte_cnode
 comma
 id|bte-&gt;bte_num
+comma
+id|ioe-&gt;ie_errortype
 )paren
 )paren
 suffix:semicolon

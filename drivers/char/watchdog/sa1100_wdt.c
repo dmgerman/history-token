@@ -167,6 +167,10 @@ op_amp
 id|sa1100wdt_users
 )paren
 suffix:semicolon
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -181,35 +181,6 @@ op_amp
 id|krxtimod_alive
 )paren
 suffix:semicolon
-multiline_comment|/* only certain signals are of interest */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
-id|siginitsetinv
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|recalc_sigpending
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
 multiline_comment|/* loop around looking for things to attend to */
 id|loop
 suffix:colon

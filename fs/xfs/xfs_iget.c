@@ -1596,19 +1596,6 @@ comma
 id|vp-&gt;v_number
 )paren
 suffix:semicolon
-macro_line|#ifdef NOTYET
-id|mutex_init
-c_func
-(paren
-op_amp
-id|ip-&gt;i_range_lock.r_spinlock
-comma
-id|MUTEX_SPIN
-comma
-l_string|&quot;xrange&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* NOTYET */
 id|init_waitqueue_head
 c_func
 (paren
@@ -2543,7 +2530,6 @@ id|ip-&gt;i_lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef XFS_ILOCK_TRACE
 id|xfs_ilock_trace
 c_func
 (paren
@@ -2557,10 +2543,9 @@ comma
 id|inst_t
 op_star
 )paren
-id|return_address
+id|__return_address
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * This is just like xfs_ilock(), except that the caller&n; * is guaranteed not to sleep.  It returns 1 if it gets&n; * the requested locks and 0 otherwise.  If the IO lock is&n; * obtained but the inode lock cannot be, then the IO lock&n; * is dropped before returning.&n; *&n; * ip -- the inode being locked&n; * lock_flags -- this parameter indicates the inode&squot;s locks to be&n; *       to be locked.  See the comment for xfs_ilock() for a list&n; *&t; of valid values.&n; *&n; */
 r_int
@@ -2786,7 +2771,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef XFS_ILOCK_TRACE
 id|xfs_ilock_trace
 c_func
 (paren
@@ -2803,7 +2787,6 @@ op_star
 id|__return_address
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3047,7 +3030,6 @@ id|ip-&gt;i_itemp
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef XFS_ILOCK_TRACE
 id|xfs_ilock_trace
 c_func
 (paren
@@ -3064,7 +3046,6 @@ op_star
 id|__return_address
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * give up write locks.  the i/o lock cannot be held nested&n; * if it is being demoted.&n; */
 r_void

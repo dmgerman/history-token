@@ -6075,6 +6075,9 @@ l_string|&quot;AX.25: Appending user data&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* User data follows immediately after the AX.25 data */
+r_if
+c_cond
+(paren
 id|memcpy_fromiovec
 c_func
 (paren
@@ -6090,7 +6093,23 @@ id|msg-&gt;msg_iov
 comma
 id|len
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|skb-&gt;nh.raw
 op_assign
 id|skb-&gt;data

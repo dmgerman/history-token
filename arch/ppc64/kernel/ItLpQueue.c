@@ -485,22 +485,19 @@ id|nextLpEvent
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* No more valid events&n;&t;&t;&t; * If overflow events are pending&n;&t;&t;&t; * process them&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|lpQueue-&gt;xPlicOverflowIntPending
 )paren
-(brace
+multiline_comment|/*&n;&t;&t;&t; * No more valid events. If overflow events are&n;&t;&t;&t; * pending process them&n;&t;&t;&t; */
 id|HvCallEvent_getOverflowLpEvents
 c_func
 (paren
 id|lpQueue-&gt;xIndex
 )paren
 suffix:semicolon
-)brace
 r_else
-multiline_comment|/* If nothing left then we are done */
 r_break
 suffix:semicolon
 )brace

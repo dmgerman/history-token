@@ -1234,6 +1234,9 @@ suffix:colon
 id|value
 op_assign
 (paren
+r_int
+)paren
+(paren
 id|value
 op_minus
 id|gp

@@ -128,8 +128,6 @@ DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu) cpu_isset(cpu, cpu_possible_map)
 r_extern
 r_int
 id|__cpu_up

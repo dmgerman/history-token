@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: xdi_adapter.h,v 1.5 2003/06/21 17:06:08 schindler Exp $ */
+multiline_comment|/* $Id: xdi_adapter.h,v 1.6 2003/12/05 18:45:05 armin Exp $ */
 macro_line|#ifndef __DIVA_OS_XDI_ADAPTER_H__
 DECL|macro|__DIVA_OS_XDI_ADAPTER_H__
 mdefine_line|#define __DIVA_OS_XDI_ADAPTER_H__
@@ -53,7 +53,7 @@ DECL|member|mem_type_id
 r_int
 id|mem_type_id
 (braket
-l_int|10
+id|MAX_MEM_TYPE
 )braket
 suffix:semicolon
 DECL|member|qoffset

@@ -1,16 +1,27 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef _ASM_SN_PCI_PCIIO_H
-DECL|macro|_ASM_SN_PCI_PCIIO_H
-mdefine_line|#define _ASM_SN_PCI_PCIIO_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_PCI_PCIIO_H
+DECL|macro|_ASM_IA64_SN_PCI_PCIIO_H
+mdefine_line|#define _ASM_IA64_SN_PCI_PCIIO_H
 multiline_comment|/*&n; * pciio.h -- platform-independent PCI interface&n; */
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
+macro_line|#else
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;ioerror.h&gt;
+macro_line|#include &lt;driver.h&gt;
+macro_line|#include &lt;hcl.h&gt;
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
+macro_line|#else
+macro_line|#include &lt;dmamap.h&gt;
+macro_line|#include &lt;alenlist.h&gt;
+macro_line|#endif
 DECL|typedef|pciio_vendor_id_t
 r_typedef
 r_int
@@ -145,6 +156,71 @@ DECL|typedef|pciio_endian_t
 )brace
 id|pciio_endian_t
 suffix:semicolon
+multiline_comment|/*&n; * Generic PCI bus information&n; */
+DECL|enum|pciio_asic_type_e
+r_typedef
+r_enum
+id|pciio_asic_type_e
+(brace
+DECL|enumerator|PCIIO_ASIC_TYPE_UNKNOWN
+id|PCIIO_ASIC_TYPE_UNKNOWN
+comma
+DECL|enumerator|PCIIO_ASIC_TYPE_MACE
+id|PCIIO_ASIC_TYPE_MACE
+comma
+DECL|enumerator|PCIIO_ASIC_TYPE_BRIDGE
+id|PCIIO_ASIC_TYPE_BRIDGE
+comma
+DECL|enumerator|PCIIO_ASIC_TYPE_XBRIDGE
+id|PCIIO_ASIC_TYPE_XBRIDGE
+comma
+DECL|enumerator|PCIIO_ASIC_TYPE_PIC
+id|PCIIO_ASIC_TYPE_PIC
+comma
+DECL|typedef|pciio_asic_type_t
+)brace
+id|pciio_asic_type_t
+suffix:semicolon
+DECL|enum|pciio_bus_type_e
+r_typedef
+r_enum
+id|pciio_bus_type_e
+(brace
+DECL|enumerator|PCIIO_BUS_TYPE_UNKNOWN
+id|PCIIO_BUS_TYPE_UNKNOWN
+comma
+DECL|enumerator|PCIIO_BUS_TYPE_PCI
+id|PCIIO_BUS_TYPE_PCI
+comma
+DECL|enumerator|PCIIO_BUS_TYPE_PCIX
+id|PCIIO_BUS_TYPE_PCIX
+DECL|typedef|pciio_bus_type_t
+)brace
+id|pciio_bus_type_t
+suffix:semicolon
+DECL|enum|pciio_bus_speed_e
+r_typedef
+r_enum
+id|pciio_bus_speed_e
+(brace
+DECL|enumerator|PCIIO_BUS_SPEED_UNKNOWN
+id|PCIIO_BUS_SPEED_UNKNOWN
+comma
+DECL|enumerator|PCIIO_BUS_SPEED_33
+id|PCIIO_BUS_SPEED_33
+comma
+DECL|enumerator|PCIIO_BUS_SPEED_66
+id|PCIIO_BUS_SPEED_66
+comma
+DECL|enumerator|PCIIO_BUS_SPEED_100
+id|PCIIO_BUS_SPEED_100
+comma
+DECL|enumerator|PCIIO_BUS_SPEED_133
+id|PCIIO_BUS_SPEED_133
+DECL|typedef|pciio_bus_speed_t
+)brace
+id|pciio_bus_speed_t
+suffix:semicolon
 multiline_comment|/*&n; * Interface to set PCI arbitration priority for devices that require&n; * realtime characteristics.  pciio_priority_set is used to switch a&n; * device between the PCI high-priority arbitration ring and the low&n; * priority arbitration ring.&n; *&n; * (Note: this is strictly for the PCI arbitrary priority.  It has&n; * no direct relationship to GBR.)&n; */
 DECL|enum|pciio_priority_e
 r_typedef
@@ -216,6 +292,20 @@ r_struct
 id|pciio_win_alloc_s
 op_star
 id|pciio_win_alloc_t
+suffix:semicolon
+DECL|typedef|pciio_bus_map_t
+r_typedef
+r_struct
+id|pciio_bus_map_s
+op_star
+id|pciio_bus_map_t
+suffix:semicolon
+DECL|typedef|pciio_businfo_t
+r_typedef
+r_struct
+id|pciio_businfo_s
+op_star
+id|pciio_businfo_t
 suffix:semicolon
 multiline_comment|/* PIO MANAGEMENT */
 multiline_comment|/*&n; *    A NOTE ON PCI PIO ADDRESSES&n; *&n; *      PCI supports three different address spaces: CFG&n; *      space, MEM space and I/O space. Further, each&n; *      card always accepts CFG accesses at an address&n; *      based on which slot it is attached to, but can&n; *      decode up to six address ranges.&n; *&n; *      Assignment of the base address registers for all&n; *      PCI devices is handled centrally; most commonly,&n; *      device drivers will want to talk to offsets&n; *      within one or another of the address ranges. In&n; *      order to do this, which of these &quot;address&n; *      spaces&quot; the PIO is directed into must be encoded&n; *      in the flag word.&n; *&n; *      We reserve the right to defer allocation of PCI&n; *      address space for a device window until the&n; *      driver makes a piomap_alloc or piotrans_addr&n; *      request.&n; *&n; *      If a device driver mucks with its device&squot;s base&n; *      registers through a PIO mapping to CFG space,&n; *      results of further PIO through the corresponding&n; *      window are UNDEFINED.&n; *&n; *      Windows are named by the index in the base&n; *      address register set for the device of the&n; *      desired register; IN THE CASE OF 64 BIT base&n; *      registers, the index should be to the word of&n; *      the register that contains the mapping type&n; *      bits; since the PCI CFG space is natively&n; *      organized little-endian fashion, this is the&n; *      first of the two words.&n; *&n; *      AT THE MOMENT, any required corrections for&n; *      endianness are the responsibility of the device&n; *      driver; not all platforms support control in&n; *      hardware of byteswapping hardware. We anticipate&n; *      providing flag bits to the PIO and DMA&n; *      management interfaces to request different&n; *      configurations of byteswapping hardware.&n; *&n; *      PIO Accesses to CFG space via the &quot;Bridge&quot; ASIC&n; *      used in IP30 platforms preserve the native byte&n; *      significance within the 32-bit word; byte&n; *      addresses for single byte accesses need to be&n; *      XORed with 3, and addresses for 16-bit accesses&n; *      need to be XORed with 2.&n; *&n; *      The IOC3 used on IP30, and other SGI PCI devices&n; *      as well, require use of 32-bit accesses to their&n; *      configuration space registers. Any potential PCI&n; *      bus providers need to be aware of this requirement.&n; */
@@ -706,18 +796,6 @@ id|value
 suffix:semicolon
 multiline_comment|/* value to store */
 r_typedef
-r_int
-DECL|typedef|pciio_error_devenable_f
-id|pciio_error_devenable_f
-(paren
-id|vertex_hdl_t
-id|pconn_vhdl
-comma
-r_int
-id|error_code
-)paren
-suffix:semicolon
-r_typedef
 id|pciio_slot_t
 DECL|typedef|pciio_error_extract_f
 id|pciio_error_extract_f
@@ -781,9 +859,9 @@ id|conn
 )paren
 suffix:semicolon
 r_typedef
-r_int
-DECL|typedef|pciio_dma_enabled_f
-id|pciio_dma_enabled_f
+id|pciio_businfo_t
+DECL|typedef|pciio_businfo_get_f
+id|pciio_businfo_get_f
 (paren
 id|vertex_hdl_t
 id|conn
@@ -940,11 +1018,6 @@ op_star
 id|config_set
 suffix:semicolon
 multiline_comment|/* Error handling interface */
-DECL|member|error_devenable
-id|pciio_error_devenable_f
-op_star
-id|error_devenable
-suffix:semicolon
 DECL|member|error_extract
 id|pciio_error_extract_f
 op_star
@@ -966,10 +1039,11 @@ id|pciio_device_unregister_f
 op_star
 id|device_unregister
 suffix:semicolon
-DECL|member|dma_enabled
-id|pciio_dma_enabled_f
+multiline_comment|/* GENERIC BUS INFO */
+DECL|member|businfo_get
+id|pciio_businfo_get_f
 op_star
-id|dma_enabled
+id|businfo_get
 suffix:semicolon
 DECL|typedef|pciio_provider_t
 )brace
@@ -1091,10 +1165,6 @@ suffix:semicolon
 r_extern
 id|pciio_config_set_f
 id|pciio_config_set
-suffix:semicolon
-r_extern
-id|pciio_error_devenable_f
-id|pciio_error_devenable
 suffix:semicolon
 r_extern
 id|pciio_error_extract_f
@@ -1729,14 +1799,6 @@ id|ioerror_t
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|pciio_dma_enabled
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * sn_pci_set_vchan - Set the requested Virtual Channel bits into the mapped DMA&n; *                    address.&n; * @pci_dev: pci device pointer&n; * @addr: mapped dma address&n; * @vchan: Virtual Channel to use 0 or 1.&n; *&n; * Set the Virtual Channel bit in the mapped dma address.&n; */
 r_static
 r_inline
@@ -1825,5 +1887,38 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* C or C++ */
-macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIIO_H */
+multiline_comment|/*&n; * Prototypes&n; */
+r_int
+id|snia_badaddr_val
+c_func
+(paren
+r_volatile
+r_void
+op_star
+id|addr
+comma
+r_int
+id|len
+comma
+r_volatile
+r_void
+op_star
+id|ptr
+)paren
+suffix:semicolon
+id|nasid_t
+id|snia_get_console_nasid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|nasid_t
+id|snia_get_master_baseio_nasid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_PCI_PCIIO_H */
 eof

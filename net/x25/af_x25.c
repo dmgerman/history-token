@@ -5739,13 +5739,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef MODULE
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-macro_line|#endif /* MODULE */
 id|sock_register
 c_func
 (paren
@@ -5786,65 +5779,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-multiline_comment|/*&n;&t; *&t;Register any pre existing devices.&n;&t; */
-id|read_lock
-c_func
-(paren
-op_amp
-id|dev_base_lock
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|dev
-op_assign
-id|dev_base
-suffix:semicolon
-id|dev
-suffix:semicolon
-id|dev
-op_assign
-id|dev-&gt;next
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_UP
-)paren
-op_logical_and
-(paren
-id|dev-&gt;type
-op_eq
-id|ARPHRD_X25
-macro_line|#if defined(CONFIG_LLC) || defined(CONFIG_LLC_MODULE)
-op_logical_or
-id|dev-&gt;type
-op_eq
-id|ARPHRD_ETHER
-macro_line|#endif
-)paren
-)paren
-id|x25_link_device_up
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|dev_base_lock
-)paren
-suffix:semicolon
-macro_line|#endif /* MODULE */
 r_return
 l_int|0
 suffix:semicolon

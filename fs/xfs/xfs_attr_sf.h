@@ -193,14 +193,7 @@ macro_line|#else
 DECL|macro|XFS_ATTR_SF_TOTSIZE
 mdefine_line|#define XFS_ATTR_SF_TOTSIZE(dp)&t;&t;&t;/* total space in use */ &bslash;&n;&t;(INT_GET(((xfs_attr_shortform_t *)((dp)-&gt;i_afp-&gt;if_u1.if_data))-&gt;hdr.totsize, ARCH_CONVERT))
 macro_line|#endif
-macro_line|#ifdef XFS_ALL_TRACE
-DECL|macro|XFS_ATTR_TRACE
-mdefine_line|#define&t;XFS_ATTR_TRACE
-macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_ATTR_TRACE
-macro_line|#undef&t;XFS_ATTR_TRACE
-macro_line|#endif
+macro_line|#if defined(XFS_ATTR_TRACE)
 multiline_comment|/*&n; * Kernel tracing support for attribute lists&n; */
 r_struct
 id|xfs_attr_list_context
@@ -216,6 +209,11 @@ id|xfs_attr_leafblock
 suffix:semicolon
 DECL|macro|XFS_ATTR_TRACE_SIZE
 mdefine_line|#define&t;XFS_ATTR_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
+r_extern
+id|ktrace_t
+op_star
+id|xfs_attr_trace_buf
+suffix:semicolon
 multiline_comment|/*&n; * Trace record types.&n; */
 DECL|macro|XFS_ATTR_KTRACE_L_C
 mdefine_line|#define&t;XFS_ATTR_KTRACE_L_C&t;1&t;/* context */
@@ -225,7 +223,6 @@ DECL|macro|XFS_ATTR_KTRACE_L_CB
 mdefine_line|#define&t;XFS_ATTR_KTRACE_L_CB&t;3&t;/* context, btree */
 DECL|macro|XFS_ATTR_KTRACE_L_CL
 mdefine_line|#define&t;XFS_ATTR_KTRACE_L_CL&t;4&t;/* context, leaf */
-macro_line|#if defined(XFS_ATTR_TRACE)
 r_void
 id|xfs_attr_trace_l_c
 c_func

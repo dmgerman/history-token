@@ -728,11 +728,6 @@ r_struct
 id|qlogicpti
 (brace
 multiline_comment|/* These are the hot elements in the cache, so they come first. */
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* Driver mutex&t;&t;      */
 DECL|member|qregs
 r_int
 r_int

@@ -2891,6 +2891,16 @@ comma
 (brace
 id|PCI_FIXUP_FINAL
 comma
+id|PCI_VENDOR_ID_AL
+comma
+id|PCI_DEVICE_ID_AL_M1533
+comma
+id|quirk_isa_dma_hangs
+)brace
+comma
+(brace
+id|PCI_FIXUP_FINAL
+comma
 id|PCI_VENDOR_ID_INTEL
 comma
 id|PCI_DEVICE_ID_INTEL_82454NX

@@ -7,24 +7,11 @@ macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#endif 
-macro_line|#ifndef __ASSEMBLY__
-DECL|macro|PS_UINT_CAST
-mdefine_line|#define PS_UINT_CAST&t;&t;(__psunsigned_t)
-DECL|macro|UINT64_CAST
-mdefine_line|#define UINT64_CAST&t;&t;(uint64_t)
 DECL|macro|HUBREG_CAST
 mdefine_line|#define HUBREG_CAST&t;&t;(volatile mmr_t *)
-macro_line|#elif __ASSEMBLY__
-DECL|macro|PS_UINT_CAST
-mdefine_line|#define PS_UINT_CAST
-DECL|macro|UINT64_CAST
-mdefine_line|#define UINT64_CAST
-DECL|macro|HUBREG_CAST
-mdefine_line|#define HUBREG_CAST
-macro_line|#endif
 multiline_comment|/*&n; * The following macros are used to index to the beginning of a specific&n; * node&squot;s address space.&n; */
 DECL|macro|NODE_OFFSET
-mdefine_line|#define NODE_OFFSET(_n)&t;&t;(UINT64_CAST (_n) &lt;&lt; NASID_SHFT)
+mdefine_line|#define NODE_OFFSET(_n)&t;&t;((uint64_t) (_n) &lt;&lt; NASID_SHFT)
 DECL|macro|NODE_CAC_BASE
 mdefine_line|#define NODE_CAC_BASE(_n)&t;(CAC_BASE  + NODE_OFFSET(_n))
 DECL|macro|NODE_HSPEC_BASE
@@ -46,14 +33,14 @@ mdefine_line|#define TO_NODE_MSPEC(_n, _x)&t;(NODE_MSPEC_BASE(_n) | ((_x) &amp; 
 DECL|macro|TO_NODE_HSPEC
 mdefine_line|#define TO_NODE_HSPEC(_n, _x)&t;(NODE_HSPEC_BASE(_n) | ((_x) &amp; TO_PHYS_MASK))
 DECL|macro|RAW_NODE_SWIN_BASE
-mdefine_line|#define RAW_NODE_SWIN_BASE(nasid, widget)&t;&t;&t;&t;&bslash;&n;&t;(NODE_IO_BASE(nasid) + (UINT64_CAST (widget) &lt;&lt; SWIN_SIZE_BITS))
+mdefine_line|#define RAW_NODE_SWIN_BASE(nasid, widget)&t;&t;&t;&t;&bslash;&n;&t;(NODE_IO_BASE(nasid) + ((uint64_t) (widget) &lt;&lt; SWIN_SIZE_BITS))
 DECL|macro|WIDGETID_GET
 mdefine_line|#define WIDGETID_GET(addr)&t;((unsigned char)((addr &gt;&gt; SWIN_SIZE_BITS) &amp; 0xff))
 multiline_comment|/*&n; * The following definitions pertain to the IO special address&n; * space.  They define the location of the big and little windows&n; * of any given node.&n; */
 DECL|macro|SWIN_SIZE_BITS
 mdefine_line|#define SWIN_SIZE_BITS&t;&t;24
 DECL|macro|SWIN_SIZE
-mdefine_line|#define SWIN_SIZE&t;&t;(1UL&lt;&lt;24)
+mdefine_line|#define SWIN_SIZE&t;&t;(1UL &lt;&lt; 24)
 DECL|macro|SWIN_SIZEMASK
 mdefine_line|#define&t;SWIN_SIZEMASK&t;&t;(SWIN_SIZE - 1)
 DECL|macro|SWIN_WIDGET_MASK

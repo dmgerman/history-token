@@ -2,7 +2,7 @@ macro_line|#ifndef _AV7110_IPACK_H_
 DECL|macro|_AV7110_IPACK_H_
 mdefine_line|#define _AV7110_IPACK_H_
 r_extern
-r_void
+r_int
 id|av7110_ipack_init
 c_func
 (paren

@@ -13,17 +13,6 @@ r_int
 r_int
 id|__softirq_pending
 suffix:semicolon
-DECL|member|__syscall_count
-r_int
-r_int
-id|__syscall_count
-suffix:semicolon
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
-suffix:semicolon
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned
@@ -112,6 +101,5 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/* XXX: MRB-remove&n;#define in_interrupt() ({ int __cpu = smp_processor_id(); &bslash;&n;&t;(local_irq_count(__cpu) + local_bh_count(__cpu) != 0); })&n;&n;#define in_irq() (local_irq_count(smp_processor_id()) != 0)&n;&n;#ifndef CONFIG_SMP&n;&n;#define hardirq_trylock(cpu)&t;(local_irq_count(cpu) == 0)&n;#define hardirq_endlock(cpu)&t;do { } while (0)&n;&n;#define irq_enter(cpu, irq)&t;(local_irq_count(cpu)++)&n;#define irq_exit(cpu, irq)&t;(local_irq_count(cpu)--)&n;&n;#define synchronize_irq()&t;barrier()&n;&n;#else&n;&n;#error Super-H SMP is not available&n;&n;#endif&n;*/
 macro_line|#endif /* __ASM_SH_HARDIRQ_H */
 eof

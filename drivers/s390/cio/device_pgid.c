@@ -131,12 +131,17 @@ op_member_access_from_pointer
 r_private
 op_member_access_from_pointer
 id|iretry
-op_decrement
 OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* 0xe2d5c9c4 == ebcdic &quot;SNID&quot; */
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|iretry
+op_decrement
+suffix:semicolon
 id|ret
 op_assign
 id|cio_start
@@ -149,8 +154,6 @@ r_private
 op_member_access_from_pointer
 id|iccws
 comma
-l_int|0xE2D5C9C4
-comma
 id|cdev
 op_member_access_from_pointer
 r_private
@@ -159,37 +162,6 @@ id|imask
 )paren
 suffix:semicolon
 multiline_comment|/* ret is 0, -EBUSY, -EACCES or -ENODEV */
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-op_minus
-id|EBUSY
-)paren
-(brace
-id|CIO_MSG_EVENT
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;SNID - device %04X, start_io() &quot;
-l_string|&quot;reports rc : %d, retrying ...&bslash;n&quot;
-comma
-id|sch-&gt;schib.pmcw.dev
-comma
-id|ret
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -206,13 +178,13 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - Device %04X on Subchannel &quot;
-l_string|&quot;%04X, lpm %02X, became &squot;not &quot;
+l_string|&quot;SNID - Device %s on Subchannel &quot;
+l_string|&quot;%s, lpm %02X, became &squot;not &quot;
 l_string|&quot;operational&squot;&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 comma
 id|cdev
 op_member_access_from_pointer
@@ -311,6 +283,11 @@ r_if
 c_cond
 (paren
 id|ret
+op_logical_and
+id|ret
+op_ne
+op_minus
+id|EBUSY
 )paren
 id|ccw_device_sense_pgid_done
 c_func
@@ -412,11 +389,11 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - device %04X, unit check, &quot;
+l_string|&quot;SNID - device %s, unit check, &quot;
 l_string|&quot;lpum %02X, cnt %02d, sns : &quot;
 l_string|&quot;%02X%02X%02X%02X %02X%02X%02X%02X ...&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
 id|irb-&gt;esw.esw0.sublog.lpum
 comma
@@ -481,13 +458,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - Device %04X on Subchannel &quot;
-l_string|&quot;%04X, lpm %02X, became &squot;not &quot;
-l_string|&quot;operational&squot;&bslash;n&quot;
+l_string|&quot;SNID - Device %s on Subchannel &quot;
+l_string|&quot;%s, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 comma
 id|sch-&gt;orb.lpm
 )paren
@@ -514,12 +490,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - Device %04X on Subchannel %04X &quot;
+l_string|&quot;SNID - Device %s on Subchannel %s &quot;
 l_string|&quot;is reserved by someone else&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_return
@@ -560,12 +536,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-r_int
-id|opm
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|irb
 op_assign
 (paren
@@ -575,7 +545,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/* Ignore unsolicited interrupts. */
+multiline_comment|/*&n;&t; * Unsolicited interrupts may pertain to an earlier status pending or&n;&t; * busy condition on the subchannel. Retry sense pgid.&n;&t; */
 r_if
 c_cond
 (paren
@@ -587,8 +557,36 @@ op_or
 id|SCSW_STCTL_ALERT_STATUS
 )paren
 )paren
+(brace
+id|ret
+op_assign
+id|__ccw_device_sense_pgid_start
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_logical_and
+id|ret
+op_ne
+op_minus
+id|EBUSY
+)paren
+id|ccw_device_sense_pgid_done
+c_func
+(paren
+id|cdev
+comma
+id|ret
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -627,54 +625,6 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* Sense Path Group ID successful. */
-id|opm
-op_assign
-id|sch-&gt;schib.pmcw.pim
-op_amp
-id|sch-&gt;schib.pmcw.pam
-op_amp
-id|sch-&gt;schib.pmcw.pom
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|opm
-op_eq
-(paren
-l_int|0x80
-op_lshift
-id|i
-)paren
-)paren
-(brace
-multiline_comment|/* Don&squot;t group single path devices. */
-id|cdev
-op_member_access_from_pointer
-r_private
-op_member_access_from_pointer
-id|options.pgroup
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -706,7 +656,16 @@ id|pgid
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* fall through. */
+id|ccw_device_sense_pgid_done
+c_func
+(paren
+id|cdev
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 op_minus
 id|EOPNOTSUPP
@@ -985,20 +944,25 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|cdev
 op_member_access_from_pointer
 r_private
 op_member_access_from_pointer
 id|iretry
-op_decrement
 OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* 0xE2D7C9C4 == ebcdic &quot;SPID&quot; */
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|iretry
+op_decrement
+suffix:semicolon
 id|ret
 op_assign
 id|cio_start
@@ -1010,8 +974,6 @@ op_member_access_from_pointer
 r_private
 op_member_access_from_pointer
 id|iccws
-comma
-l_int|0xE2D7C9C4
 comma
 id|cdev
 op_member_access_from_pointer
@@ -1025,30 +987,12 @@ r_if
 c_cond
 (paren
 id|ret
-op_eq
+op_ne
 op_minus
 id|EACCES
 )paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-op_minus
-id|EBUSY
-)paren
 r_return
 id|ret
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* PGID command failed on this path. Switch it off. */
@@ -1075,13 +1019,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SPID - Device %04X on Subchannel &quot;
-l_string|&quot;%04X, lpm %02X, became &squot;not &quot;
-l_string|&quot;operational&squot;&bslash;n&quot;
+l_string|&quot;SPID - Device %s on Subchannel &quot;
+l_string|&quot;%s, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 comma
 id|cdev
 op_member_access_from_pointer
@@ -1175,10 +1118,10 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SPID - device %04X, unit check, cnt %02d, &quot;
+l_string|&quot;SPID - device %s, unit check, cnt %02d, &quot;
 l_string|&quot;sns : %02X%02X%02X%02X %02X%02X%02X%02X ...&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
 id|irb-&gt;esw.esw0.erw.scnt
 comma
@@ -1241,13 +1184,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SPID - Device %04X on Subchannel &quot;
-l_string|&quot;%04X, lpm %02X, became &squot;not &quot;
-l_string|&quot;operational&squot;&bslash;n&quot;
+l_string|&quot;SPID - Device %s on Subchannel &quot;
+l_string|&quot;%s, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
 comma
-id|sch-&gt;schib.pmcw.dev
+id|cdev-&gt;dev.bus_id
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 comma
 id|cdev
 op_member_access_from_pointer
@@ -1376,6 +1318,11 @@ c_cond
 id|ret
 op_eq
 l_int|0
+op_logical_or
+id|ret
+op_eq
+op_minus
+id|EBUSY
 )paren
 r_return
 suffix:semicolon
@@ -1442,7 +1389,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/* Ignore unsolicited interrupts. */
+multiline_comment|/*&n;&t; * Unsolicited interrupts may pertain to an earlier status pending or&n;&t; * busy condition on the subchannel. Restart path verification.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1454,8 +1401,16 @@ op_or
 id|SCSW_STCTL_ALERT_STATUS
 )paren
 )paren
+(brace
+id|__ccw_device_verify_start
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -5978,6 +5978,9 @@ op_star
 id|apm_proc
 suffix:semicolon
 r_int
+id|ret
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 r_if
@@ -6653,6 +6656,8 @@ id|apm_proc-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+id|ret
+op_assign
 id|kernel_thread
 c_func
 (paren
@@ -6665,6 +6670,26 @@ op_or
 id|SIGCHLD
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;apm: disabled - Unable to start kernel thread.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

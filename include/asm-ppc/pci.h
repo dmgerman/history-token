@@ -237,16 +237,12 @@ r_int
 id|direction
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|direction
 op_eq
 id|PCI_DMA_NONE
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* nothing to do */
@@ -349,16 +345,12 @@ r_int
 id|direction
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|direction
 op_eq
 id|PCI_DMA_NONE
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Nothing to do */
@@ -391,16 +383,12 @@ id|direction
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|direction
 op_eq
 id|PCI_DMA_NONE
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * temporary 2.4 hack&n;&t; */

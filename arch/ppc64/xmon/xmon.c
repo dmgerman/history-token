@@ -27,6 +27,7 @@ DECL|macro|skipbl
 mdefine_line|#define skipbl&t;xmon_skipbl
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpus_in_xmon
+r_volatile
 r_int
 r_int
 id|cpus_in_xmon
@@ -49,6 +50,14 @@ id|take_xmon
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+DECL|variable|leaving_xmon
+r_static
+r_volatile
+r_int
+id|leaving_xmon
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 DECL|variable|adrs
@@ -709,7 +718,7 @@ r_char
 op_star
 id|help_string
 op_assign
-l_string|&quot;&bslash;&n;Commands:&bslash;n&bslash;&n;  b&t;show breakpoints&bslash;n&bslash;&n;  bd&t;set data breakpoint&bslash;n&bslash;&n;  bi&t;set instruction breakpoint&bslash;n&bslash;&n;  bc&t;clear breakpoint&bslash;n&bslash;&n;  d&t;dump bytes&bslash;n&bslash;&n;  di&t;dump instructions&bslash;n&bslash;&n;  df&t;dump float values&bslash;n&bslash;&n;  dd&t;dump double values&bslash;n&bslash;&n;  e&t;print exception information&bslash;n&bslash;&n;  f&t;flush cache&bslash;n&bslash;&n;  m&t;examine/change memory&bslash;n&bslash;&n;  mm&t;move a block of memory&bslash;n&bslash;&n;  ms&t;set a block of memory&bslash;n&bslash;&n;  md&t;compare two blocks of memory&bslash;n&bslash;&n;  ml&t;locate a block of memory&bslash;n&bslash;&n;  mz&t;zero a block of memory&bslash;n&bslash;&n;  mx&t;translation information for an effective address&bslash;n&bslash;&n;  mi&t;show information about memory allocation&bslash;n&bslash;&n;  M&t;print System.map&bslash;n&bslash;&n;  p &t;show the task list&bslash;n&bslash;&n;  r&t;print registers&bslash;n&bslash;&n;  s&t;single step&bslash;n&bslash;&n;  S&t;print special registers&bslash;n&bslash;&n;  t&t;print backtrace&bslash;n&bslash;&n;  T&t;Enable/Disable PPCDBG flags&bslash;n&bslash;&n;  x&t;exit monitor&bslash;n&bslash;&n;&quot;
+l_string|&quot;&bslash;&n;Commands:&bslash;n&bslash;&n;  b&t;show breakpoints&bslash;n&bslash;&n;  bd&t;set data breakpoint&bslash;n&bslash;&n;  bi&t;set instruction breakpoint&bslash;n&bslash;&n;  bc&t;clear breakpoint&bslash;n&bslash;&n;  d&t;dump bytes&bslash;n&bslash;&n;  di&t;dump instructions&bslash;n&bslash;&n;  df&t;dump float values&bslash;n&bslash;&n;  dd&t;dump double values&bslash;n&bslash;&n;  e&t;print exception information&bslash;n&bslash;&n;  f&t;flush cache&bslash;n&bslash;&n;  m&t;examine/change memory&bslash;n&bslash;&n;  mm&t;move a block of memory&bslash;n&bslash;&n;  ms&t;set a block of memory&bslash;n&bslash;&n;  md&t;compare two blocks of memory&bslash;n&bslash;&n;  ml&t;locate a block of memory&bslash;n&bslash;&n;  mz&t;zero a block of memory&bslash;n&bslash;&n;  mx&t;translation information for an effective address&bslash;n&bslash;&n;  mi&t;show information about memory allocation&bslash;n&bslash;&n;  p &t;show the task list&bslash;n&bslash;&n;  r&t;print registers&bslash;n&bslash;&n;  s&t;single step&bslash;n&bslash;&n;  S&t;print special registers&bslash;n&bslash;&n;  t&t;print backtrace&bslash;n&bslash;&n;  T&t;Enable/Disable PPCDBG flags&bslash;n&bslash;&n;  x&t;exit monitor&bslash;n&bslash;&n;&quot;
 suffix:semicolon
 DECL|variable|xmon_trace
 r_static
@@ -822,6 +831,8 @@ id|regs
 suffix:semicolon
 r_int
 id|cmd
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -942,6 +953,11 @@ id|excp
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+id|leaving_xmon
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* possible race condition here if a CPU is held up and gets&n;&t; * here while we are exiting */
 r_if
 c_cond
 (paren
@@ -957,6 +973,14 @@ op_amp
 id|cpus_in_xmon
 )paren
 )paren
+(brace
+multiline_comment|/* xmon probably caused an exception itself */
+id|printf
+c_func
+(paren
+l_string|&quot;We are already in xmon&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -964,6 +988,7 @@ suffix:semicolon
 suffix:semicolon
 )paren
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1039,6 +1064,15 @@ id|excp-&gt;msr
 op_or_assign
 id|MSR_SE
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP&t;&t;
+id|take_xmon
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;
 )brace
 r_else
 r_if
@@ -1095,6 +1129,17 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+id|leaving_xmon
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_ne
+l_char|&squot;s&squot;
+)paren
 id|clear_bit
 c_func
 (paren
@@ -1577,15 +1622,6 @@ id|bpt
 op_star
 id|bp
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|systemcfg-&gt;platform
-op_ne
-id|PLATFORM_PSERIES
-)paren
-r_return
-suffix:semicolon
 id|bp
 op_assign
 id|bpts
@@ -1730,15 +1766,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|systemcfg-&gt;platform
-op_ne
-id|PLATFORM_PSERIES
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 (paren
 id|cur_cpu_spec-&gt;cpu_features
 op_amp
@@ -1871,6 +1898,8 @@ id|excp
 (brace
 r_int
 id|cmd
+op_assign
+l_int|0
 suffix:semicolon
 id|last_cmd
 op_assign
@@ -1884,6 +1913,15 @@ suffix:semicolon
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* Need to check if we should take any commands on&n;&t;&t;   this CPU. */
+r_if
+c_cond
+(paren
+id|leaving_xmon
+)paren
+r_return
+id|cmd
+suffix:semicolon
 id|printf
 c_func
 (paren
@@ -3798,6 +3836,26 @@ id|bp-&gt;address
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|systemcfg-&gt;platform
+op_amp
+id|PLATFORM_PSERIES
+)paren
+)paren
+(brace
+id|printf
+c_func
+(paren
+l_string|&quot;Not supported for this platform&bslash;n&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_ccw.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * CCW driver related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_CCW_C_REVISION
-mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.33 $&quot;
+mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.36 $&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -21,7 +21,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|zfcp_ccw_remove
 c_func
 (paren
@@ -185,9 +185,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * zfcp_ccw_remove - remove function of zfcp driver&n; * @ccw_device: pointer to belonging ccw device&n; *&n; * This function gets called by the common i/o layer and removes an adapter&n; * from the system. Task of this function is to get rid of all units and&n; * ports that belong to this adapter. And addition all resources of this&n; * adapter will be freed too.&n; */
+multiline_comment|/**&n; * zfcp_ccw_remove - remove function of zfcp driver&n; * @ccw_device: pointer to belonging ccw device&n; *&n; * This function gets called by the common i/o layer and removes an adapter&n; * from the system. Task of this function is to get rid of all units and&n; * ports that belong to this adapter. And in addition all resources of this&n; * adapter will be freed too.&n; */
 r_static
-r_int
+r_void
 DECL|function|zfcp_ccw_remove
 id|zfcp_ccw_remove
 c_func
@@ -218,6 +218,12 @@ id|unit
 comma
 op_star
 id|u
+suffix:semicolon
+id|ccw_device_set_offline
+c_func
+(paren
+id|ccw_device
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -356,6 +362,13 @@ c_func
 id|unit
 )paren
 suffix:semicolon
+id|zfcp_sysfs_unit_remove_files
+c_func
+(paren
+op_amp
+id|unit-&gt;sysfs_device
+)paren
+suffix:semicolon
 id|device_unregister
 c_func
 (paren
@@ -368,6 +381,20 @@ id|zfcp_port_wait
 c_func
 (paren
 id|port
+)paren
+suffix:semicolon
+id|zfcp_sysfs_port_remove_files
+c_func
+(paren
+op_amp
+id|port-&gt;sysfs_device
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|port-&gt;status
+)paren
 )paren
 suffix:semicolon
 id|device_unregister
@@ -396,9 +423,6 @@ c_func
 op_amp
 id|zfcp_data.config_sema
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * zfcp_ccw_set_online - set_online function of zfcp driver&n; * @ccw_device: pointer to belonging ccw device&n; *&n; * This function gets called by the common i/o layer and sets an adapter&n; * into state online. Setting an fcp device online means that it will be&n; * registered with the SCSI stack, that the QDIO queues will be set up&n; * and that the adapter will be opened (asynchronously).&n; */
@@ -470,6 +494,12 @@ c_func
 id|adapter
 comma
 id|ZFCP_STATUS_COMMON_ERP_FAILED
+)paren
+suffix:semicolon
+id|zfcp_erp_wait
+c_func
+(paren
+id|adapter
 )paren
 suffix:semicolon
 id|out

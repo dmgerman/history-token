@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_port.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs port related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_SYSFS_PORT_C_REVISION
-mdefine_line|#define ZFCP_SYSFS_PORT_C_REVISION &quot;$Revision: 1.26 $&quot;
+mdefine_line|#define ZFCP_SYSFS_PORT_C_REVISION &quot;$Revision: 1.32 $&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -227,26 +227,33 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|zfcp_port_get
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
-multiline_comment|/* try to open unit only if adapter is online */
-r_if
-c_cond
-(paren
-id|port-&gt;adapter-&gt;ccw_device-&gt;online
-op_eq
-l_int|1
-)paren
 id|zfcp_erp_unit_reopen
 c_func
 (paren
 id|unit
 comma
-id|ZFCP_STATUS_COMMON_ERP_FAILED
+l_int|0
+)paren
+suffix:semicolon
+id|zfcp_erp_wait
+c_func
+(paren
+id|unit-&gt;port-&gt;adapter
+)paren
+suffix:semicolon
+id|wait_event
+c_func
+(paren
+id|unit-&gt;scsi_add_wq
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|unit-&gt;scsi_add_work
+)paren
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 id|zfcp_unit_put
@@ -508,6 +515,13 @@ c_func
 id|unit
 )paren
 suffix:semicolon
+id|zfcp_sysfs_unit_remove_files
+c_func
+(paren
+op_amp
+id|unit-&gt;sysfs_device
+)paren
+suffix:semicolon
 id|device_unregister
 c_func
 (paren
@@ -702,6 +716,12 @@ c_func
 id|port
 comma
 id|ZFCP_STATUS_COMMON_ERP_FAILED
+)paren
+suffix:semicolon
+id|zfcp_erp_wait
+c_func
+(paren
+id|port-&gt;adapter
 )paren
 suffix:semicolon
 id|out
@@ -952,7 +972,7 @@ id|zfcp_port_no_ns_attrs
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * zfcp_sysfs_create_port_files - create sysfs port files&n; * @dev: pointer to belonging device&n; *&n; * Create all attributes of the sysfs representation of a port.&n; */
+multiline_comment|/**&n; * zfcp_sysfs_port_create_files - create sysfs port files&n; * @dev: pointer to belonging device&n; *&n; * Create all attributes of the sysfs representation of a port.&n; */
 r_int
 DECL|function|zfcp_sysfs_port_create_files
 id|zfcp_sysfs_port_create_files
@@ -1025,6 +1045,52 @@ id|zfcp_port_common_attr_group
 suffix:semicolon
 r_return
 id|retval
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * zfcp_sysfs_port_remove_files - remove sysfs port files&n; * @dev: pointer to belonging device&n; *&n; * Remove all attributes of the sysfs representation of a port.&n; */
+r_void
+DECL|function|zfcp_sysfs_port_remove_files
+id|zfcp_sysfs_port_remove_files
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|flags
+)paren
+(brace
+id|sysfs_remove_group
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+comma
+op_amp
+id|zfcp_port_common_attr_group
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|ZFCP_STATUS_PORT_NAMESERVER
+)paren
+)paren
+id|sysfs_remove_group
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+comma
+op_amp
+id|zfcp_port_no_ns_attr_group
+)paren
 suffix:semicolon
 )brace
 DECL|macro|ZFCP_LOG_AREA

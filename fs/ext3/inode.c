@@ -5630,7 +5630,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 r_struct
 id|ext3_inode_info
@@ -11256,6 +11256,12 @@ id|i_flags
 op_and_assign
 op_complement
 id|EXT3_JOURNAL_DATA_FL
+suffix:semicolon
+id|ext3_set_aops
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 id|journal_unlock_updates
 c_func

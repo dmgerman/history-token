@@ -39,18 +39,12 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
-r_extern
-r_volatile
-r_int
-r_char
-op_star
-id|chrp_int_ack_special
-suffix:semicolon
 r_void
 id|chrp_progress
 c_func
@@ -207,7 +201,7 @@ id|ppc_tb_freq
 suffix:semicolon
 id|root
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/&quot;
@@ -240,6 +234,12 @@ comma
 id|model
 )paren
 suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|root
+)paren
+suffix:semicolon
 )brace
 DECL|macro|I8042_DATA_REG
 mdefine_line|#define I8042_DATA_REG 0x60
@@ -252,6 +252,11 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|device_node
+op_star
+id|i8042
+suffix:semicolon
 id|request_region
 c_func
 (paren
@@ -317,10 +322,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|find_type_devices
+(paren
+id|i8042
+op_assign
+id|of_find_node_by_type
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;8042&quot;
+)paren
 )paren
 )paren
 id|request_region
@@ -331,6 +342,12 @@ comma
 l_int|16
 comma
 l_string|&quot;reserved (no i8042)&quot;
+)paren
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|i8042
 )paren
 suffix:semicolon
 )brace
@@ -418,7 +435,7 @@ macro_line|#endif
 multiline_comment|/* Find the Open PIC if present */
 id|root
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/&quot;
@@ -510,6 +527,12 @@ id|_PAGE_NO_CACHE
 )paren
 suffix:semicolon
 )brace
+id|of_node_put
+c_func
+(paren
+id|root
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp
 op_assign
@@ -722,6 +745,19 @@ r_int
 id|r7
 )paren
 (brace
+r_struct
+id|device_node
+op_star
+id|dn
+suffix:semicolon
+r_char
+op_star
+id|hypertas
+suffix:semicolon
+r_int
+r_int
+id|len
+suffix:semicolon
 macro_line|#if 0 /* PPPBBB remove this later... -Peter */
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* take care of initrd if we have one */
@@ -828,23 +864,18 @@ id|ppc_md.progress
 op_assign
 id|chrp_progress
 suffix:semicolon
-multiline_comment|/* build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
-r_struct
-id|device_node
-op_star
-id|dn
+id|ppc_md.nvram_read
+op_assign
+id|pSeries_nvram_read
 suffix:semicolon
-r_char
-op_star
-id|hypertas
+id|ppc_md.nvram_write
+op_assign
+id|pSeries_nvram_write
 suffix:semicolon
-r_int
-r_int
-id|len
-suffix:semicolon
+multiline_comment|/* Build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
 id|dn
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/rtas&quot;
@@ -883,6 +914,8 @@ l_int|0
 (brace
 r_int
 id|i
+comma
+id|hypertas_len
 suffix:semicolon
 multiline_comment|/* check value against table of strings */
 r_for
@@ -934,8 +967,6 @@ multiline_comment|/* we have a match */
 id|cur_cpu_spec-&gt;firmware_features
 op_or_assign
 (paren
-l_int|1UL
-op_lshift
 id|firmware_features_table
 (braket
 id|i
@@ -948,7 +979,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_int
 id|hypertas_len
 op_assign
 id|strlen
@@ -971,10 +1001,17 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|udbg_printf
+id|of_node_put
 c_func
 (paren
-l_string|&quot;firmware_features bitmask: 0x%x &bslash;n&quot;
+id|dn
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;firmware_features = 0x%lx&bslash;n&quot;
 comma
 id|cur_cpu_spec-&gt;firmware_features
 )paren
@@ -1105,6 +1142,45 @@ c_func
 (paren
 l_string|&quot;set-indicator&quot;
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|display_character
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+(brace
+multiline_comment|/* use hex display */
+r_if
+c_cond
+(paren
+id|set_indicator
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+r_return
+suffix:semicolon
+id|rtas_call
+c_func
+(paren
+id|set_indicator
+comma
+l_int|3
+comma
+l_int|1
+comma
+l_int|NULL
+comma
+l_int|6
+comma
+l_int|0
+comma
+id|hex
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 r_if
@@ -1482,7 +1558,7 @@ id|freq
 comma
 id|processor_freq
 suffix:semicolon
-multiline_comment|/*&n;&t; * The cpu node should have a timebase-frequency property&n;&t; * to tell us the rate at which the decrementer counts. &n;&t; */
+multiline_comment|/*&n;&t; * The cpu node should have a timebase-frequency property&n;&t; * to tell us the rate at which the decrementer counts.&n;&t; */
 id|freq
 op_assign
 l_int|16666000
@@ -1490,9 +1566,11 @@ suffix:semicolon
 multiline_comment|/* hardcoded default */
 id|cpu
 op_assign
-id|find_type_devices
+id|of_find_node_by_type
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;cpu&quot;
 )paren
 suffix:semicolon
@@ -1581,6 +1659,12 @@ suffix:semicolon
 id|ppc_proc_freq
 op_assign
 id|processor_freq
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|cpu
+)paren
 suffix:semicolon
 id|printk
 c_func

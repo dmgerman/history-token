@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -6,7 +6,6 @@ macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
@@ -14,10 +13,7 @@ macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-DECL|macro|LDEBUG
-mdefine_line|#define LDEBUG 0
-DECL|macro|NIC_UNKNOWN
-mdefine_line|#define NIC_UNKNOWN ((nic_t) -1)
+macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 DECL|macro|DEBUG_KLGRAPH
 macro_line|#undef DEBUG_KLGRAPH
 macro_line|#ifdef DEBUG_KLGRAPH
@@ -27,9 +23,10 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif /* DEBUG_KLGRAPH */
-DECL|variable|klgraph_addr
-id|u64
-id|klgraph_addr
+DECL|variable|root_lboard
+id|lboard_t
+op_star
+id|root_lboard
 (braket
 id|MAX_COMPACT_NODES
 )braket
@@ -48,7 +45,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_string|&quot;crikxdpn%#=012345&quot;
+l_string|&quot;crikxdpn%#=vo^34567890123456789...&quot;
 suffix:semicolon
 id|lboard_t
 op_star
@@ -1020,47 +1017,11 @@ c_cond
 (paren
 id|brd-&gt;brd_type
 op_eq
-id|KLTYPE_PBRICK
+id|KLTYPE_OPUSBRICK
 )paren
 id|board_name
 op_assign
-id|EDGE_LBL_PBRICK
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|brd-&gt;brd_type
-op_eq
-id|KLTYPE_IBRICK
-)paren
-id|board_name
-op_assign
-id|EDGE_LBL_IBRICK
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|brd-&gt;brd_type
-op_eq
-id|KLTYPE_XBRICK
-)paren
-id|board_name
-op_assign
-id|EDGE_LBL_XBRICK
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|brd-&gt;brd_type
-op_eq
-id|KLTYPE_PEBRICK
-)paren
-id|board_name
-op_assign
-id|EDGE_LBL_PEBRICK
+id|EDGE_LBL_OPUSBRICK
 suffix:semicolon
 r_else
 r_if
@@ -1135,56 +1096,6 @@ id|brd-&gt;brd_geoid
 )paren
 comma
 id|board_name
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Get the module number for a NASID.&n; */
-id|moduleid_t
-DECL|function|get_module_id
-id|get_module_id
-c_func
-(paren
-id|nasid_t
-id|nasid
-)paren
-(brace
-id|lboard_t
-op_star
-id|brd
-suffix:semicolon
-id|brd
-op_assign
-id|find_lboard
-c_func
-(paren
-(paren
-id|lboard_t
-op_star
-)paren
-id|KL_CONFIG_INFO
-c_func
-(paren
-id|nasid
-)paren
-comma
-id|KLTYPE_SNIA
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|brd
-)paren
-r_return
-id|INVALID_MODULE
-suffix:semicolon
-r_else
-r_return
-id|geo_module
-c_func
-(paren
-id|brd-&gt;brd_geoid
 )paren
 suffix:semicolon
 )brace
@@ -1600,164 +1511,6 @@ id|KLCLASS_IO
 suffix:colon
 (brace
 multiline_comment|/* IO board */
-r_if
-c_cond
-(paren
-id|KLTYPE
-c_func
-(paren
-id|board-&gt;brd_type
-)paren
-op_eq
-id|KLTYPE_TPU
-)paren
-(brace
-multiline_comment|/* Special case for TPU boards */
-id|kltpu_t
-op_star
-id|tpu
-suffix:semicolon
-multiline_comment|/* Get the tpu component information */
-id|tpu
-op_assign
-(paren
-id|kltpu_t
-op_star
-)paren
-id|find_first_component
-c_func
-(paren
-id|board
-comma
-id|KLSTRUCT_TPU
-)paren
-suffix:semicolon
-multiline_comment|/* If we don&squot;t have a tpu component on a tpu board&n;&t;&t;&t; * then we have a weird klconfig.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tpu
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* Get the serial number information from&n;&t;&t;&t; * the tpu&squot;s manufacturing nic info&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|component_serial_number_get
-c_func
-(paren
-id|board
-comma
-id|tpu-&gt;tpu_mfg_nic
-comma
-id|serial_number
-comma
-l_string|&quot;&quot;
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|KLTYPE
-c_func
-(paren
-id|board-&gt;brd_type
-)paren
-op_eq
-id|KLTYPE_GSN_A
-)paren
-op_logical_or
-(paren
-id|KLTYPE
-c_func
-(paren
-id|board-&gt;brd_type
-)paren
-op_eq
-id|KLTYPE_GSN_B
-)paren
-)paren
-(brace
-multiline_comment|/* Special case for GSN boards */
-id|klgsn_t
-op_star
-id|gsn
-suffix:semicolon
-multiline_comment|/* Get the gsn component information */
-id|gsn
-op_assign
-(paren
-id|klgsn_t
-op_star
-)paren
-id|find_first_component
-c_func
-(paren
-id|board
-comma
-(paren
-(paren
-id|KLTYPE
-c_func
-(paren
-id|board-&gt;brd_type
-)paren
-op_eq
-id|KLTYPE_GSN_A
-)paren
-ques
-c_cond
-id|KLSTRUCT_GSN_A
-suffix:colon
-id|KLSTRUCT_GSN_B
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* If we don&squot;t have a gsn component on a gsn board&n;&t;&t;&t; * then we have a weird klconfig.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|gsn
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* Get the serial number information from&n;&t;&t;&t; * the gsn&squot;s manufacturing nic info&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|component_serial_number_get
-c_func
-(paren
-id|board
-comma
-id|gsn-&gt;gsn_mfg_nic
-comma
-id|serial_number
-comma
-l_string|&quot;&quot;
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_else
-(brace
 id|klbri_t
 op_star
 id|bridge
@@ -1777,7 +1530,7 @@ comma
 id|KLSTRUCT_BRI
 )paren
 suffix:semicolon
-multiline_comment|/* If we don&squot;t have a bridge component on an IO board&n;&t;&t;&t; * then we have a weird klconfig.&n;&t;&t;&t; */
+multiline_comment|/* If we don&squot;t have a bridge component on an IO board&n;&t;&t; * then we have a weird klconfig.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1787,7 +1540,7 @@ id|bridge
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* Get the serial number information from&n;&t;&t; &t; * the bridge&squot;s manufacturing nic info&n;&t;&t;&t; */
+multiline_comment|/* Get the serial number information from&n;&t; &t; * the bridge&squot;s manufacturing nic info&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1808,7 +1561,6 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_case
 id|KLCLASS_ROUTER
@@ -1940,7 +1692,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#include &quot;asm/sn/sn_private.h&quot;
-multiline_comment|/*&n; * Format a module id for printing.&n; */
+multiline_comment|/*&n; * Format a module id for printing.&n; *&n; * There are three possible formats:&n; *&n; *   MODULE_FORMAT_BRIEF&t;is the brief 6-character format, including&n; *&t;&t;&t;&t;the actual brick-type as recorded in the &n; *&t;&t;&t;&t;moduleid_t, eg. 002c15 for a C-brick, or&n; *&t;&t;&t;&t;101#17 for a PX-brick.&n; *&n; *   MODULE_FORMAT_LONG&t;&t;is the hwgraph format, eg. rack/002/bay/15&n; *&t;&t;&t;&t;of rack/101/bay/17 (note that the brick&n; *&t;&t;&t;&t;type does not appear in this format).&n; *&n; *   MODULE_FORMAT_LCD&t;&t;is like MODULE_FORMAT_BRIEF, except that it&n; *&t;&t;&t;&t;ensures that the module id provided appears&n; *&t;&t;&t;&t;exactly as it would on the LCD display of&n; *&t;&t;&t;&t;the corresponding brick, eg. still 002c15&n; *&t;&t;&t;&t;for a C-brick, but 101p17 for a PX-brick.&n; */
 r_void
 DECL|function|format_module_id
 id|format_module_id
@@ -1993,6 +1745,41 @@ c_func
 id|m
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fmt
+op_eq
+id|MODULE_FORMAT_LCD
+)paren
+(brace
+multiline_comment|/* Be sure we use the same brick type character as displayed&n;&t;     * on the brick&squot;s LCD&n;&t;     */
+r_switch
+c_cond
+(paren
+id|brickchar
+)paren
+(brace
+r_case
+id|L1_BRICKTYPE_PX
+suffix:colon
+id|brickchar
+op_assign
+id|L1_BRICKTYPE_P
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_IX
+suffix:colon
+id|brickchar
+op_assign
+id|L1_BRICKTYPE_I
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 id|position
 op_assign
 id|MODULE_GET_BPOS
@@ -2004,9 +1791,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|fmt
 op_eq
 id|MODULE_FORMAT_BRIEF
+)paren
+op_logical_or
+(paren
+id|fmt
+op_eq
+id|MODULE_FORMAT_LCD
+)paren
 )paren
 (brace
 multiline_comment|/* Brief module number format, eg. 002c15 */
@@ -2618,6 +2413,125 @@ r_int
 r_int
 )paren
 id|m
+suffix:semicolon
+)brace
+r_int
+DECL|function|cbrick_type_get_nasid
+id|cbrick_type_get_nasid
+c_func
+(paren
+id|nasid_t
+id|nasid
+)paren
+(brace
+id|lboard_t
+op_star
+id|brd
+suffix:semicolon
+id|moduleid_t
+id|module
+suffix:semicolon
+id|uint
+id|type
+suffix:semicolon
+r_int
+id|t
+suffix:semicolon
+id|brd
+op_assign
+id|find_lboard
+c_func
+(paren
+(paren
+id|lboard_t
+op_star
+)paren
+id|KL_CONFIG_INFO
+c_func
+(paren
+id|nasid
+)paren
+comma
+id|KLTYPE_SNIA
+)paren
+suffix:semicolon
+id|module
+op_assign
+id|geo_module
+c_func
+(paren
+id|brd-&gt;brd_geoid
+)paren
+suffix:semicolon
+id|type
+op_assign
+(paren
+id|module
+op_amp
+id|MODULE_BTYPE_MASK
+)paren
+op_rshift
+id|MODULE_BTYPE_SHFT
+suffix:semicolon
+multiline_comment|/* convert brick_type to lower case */
+r_if
+c_cond
+(paren
+(paren
+id|type
+op_ge
+l_char|&squot;A&squot;
+)paren
+op_logical_and
+(paren
+id|type
+op_le
+l_char|&squot;Z&squot;
+)paren
+)paren
+id|type
+op_assign
+id|type
+op_minus
+l_char|&squot;A&squot;
+op_plus
+l_char|&squot;a&squot;
+suffix:semicolon
+multiline_comment|/* convert to a module.h brick type */
+r_for
+c_loop
+(paren
+id|t
+op_assign
+l_int|0
+suffix:semicolon
+id|t
+OL
+id|MAX_BRICK_TYPES
+suffix:semicolon
+id|t
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|brick_types
+(braket
+id|t
+)braket
+op_eq
+id|type
+)paren
+(brace
+r_return
+id|t
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 eof

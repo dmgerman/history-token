@@ -42,6 +42,10 @@ id|num_line_byte
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|FORMAT_BYTE_SWAP
+mdefine_line|#define FORMAT_BYTE_SWAP&t;0x1
+DECL|macro|FORMAT_IS_PLANAR
+mdefine_line|#define FORMAT_IS_PLANAR&t;0x2
 DECL|struct|saa7146_format
 r_struct
 id|saa7146_format
@@ -52,7 +56,7 @@ op_star
 id|name
 suffix:semicolon
 DECL|member|pixelformat
-r_int
+id|u32
 id|pixelformat
 suffix:semicolon
 DECL|member|trans
@@ -63,9 +67,9 @@ DECL|member|depth
 id|u8
 id|depth
 suffix:semicolon
-DECL|member|swap
-r_int
-id|swap
+DECL|member|flags
+id|u8
+id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -281,6 +285,12 @@ r_struct
 id|timer_list
 id|vbi_read_timeout
 suffix:semicolon
+DECL|member|resources
+r_int
+r_int
+id|resources
+suffix:semicolon
+multiline_comment|/* resource management for device open */
 )brace
 suffix:semicolon
 DECL|struct|saa7146_vv
@@ -380,6 +390,12 @@ id|saa7146_dma
 id|d_clipping
 suffix:semicolon
 multiline_comment|/* pointer to clipping memory */
+DECL|member|resources
+r_int
+r_int
+id|resources
+suffix:semicolon
+multiline_comment|/* resource management for device */
 )brace
 suffix:semicolon
 DECL|macro|SAA7146_EXCLUSIVE
@@ -404,7 +420,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* flags */
-singleline_comment|// #define SAA7146_EXT_SWAP_ODD_EVEN&t;0x1     /* needs odd/even fields swapped */
 DECL|macro|SAA7146_USE_PORT_B_FOR_VBI
 mdefine_line|#define SAA7146_USE_PORT_B_FOR_VBI&t;0x2     /* use input port b for vbi hardware bug workaround */
 DECL|struct|saa7146_ext_vv
@@ -504,7 +519,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|open
-r_void
+r_int
 (paren
 op_star
 id|open
@@ -717,22 +732,24 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* from saa7146_hlp.c */
-r_void
-id|saa7146_set_overlay
+r_int
+id|saa7146_enable_overlay
 c_func
 (paren
-r_struct
-id|saa7146_dev
-op_star
-id|dev
-comma
 r_struct
 id|saa7146_fh
 op_star
 id|fh
-comma
-r_int
-id|v
+)paren
+suffix:semicolon
+r_void
+id|saa7146_disable_overlay
+c_func
+(paren
+r_struct
+id|saa7146_fh
+op_star
+id|fh
 )paren
 suffix:semicolon
 r_void
@@ -837,6 +854,69 @@ r_struct
 id|saa7146_use_ops
 id|saa7146_vbi_uops
 suffix:semicolon
+multiline_comment|/* resource management functions */
+r_int
+id|saa7146_res_get
+c_func
+(paren
+r_struct
+id|saa7146_fh
+op_star
+id|fh
+comma
+r_int
+r_int
+id|bit
+)paren
+suffix:semicolon
+r_int
+id|saa7146_res_check
+c_func
+(paren
+r_struct
+id|saa7146_fh
+op_star
+id|fh
+comma
+r_int
+r_int
+id|bit
+)paren
+suffix:semicolon
+r_int
+id|saa7146_res_locked
+c_func
+(paren
+r_struct
+id|saa7146_dev
+op_star
+id|dev
+comma
+r_int
+r_int
+id|bit
+)paren
+suffix:semicolon
+r_void
+id|saa7146_res_free
+c_func
+(paren
+r_struct
+id|saa7146_fh
+op_star
+id|fh
+comma
+r_int
+r_int
+id|bits
+)paren
+suffix:semicolon
+DECL|macro|RESOURCE_DMA1_HPS
+mdefine_line|#define RESOURCE_DMA1_HPS&t;0x1
+DECL|macro|RESOURCE_DMA2_CLP
+mdefine_line|#define RESOURCE_DMA2_CLP&t;0x2
+DECL|macro|RESOURCE_DMA3_BRS
+mdefine_line|#define RESOURCE_DMA3_BRS&t;0x4
 multiline_comment|/* saa7146 source inputs */
 DECL|macro|SAA7146_HPS_SOURCE_PORT_A
 mdefine_line|#define SAA7146_HPS_SOURCE_PORT_A&t;0x00

@@ -152,8 +152,8 @@ r_extern
 r_int
 id|smp_num_cpus
 suffix:semicolon
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;cpu_isset(cpu, cpu_present_mask)
+DECL|macro|cpu_possible_map
+mdefine_line|#define cpu_possible_map&t;cpu_present_mask
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
 r_extern

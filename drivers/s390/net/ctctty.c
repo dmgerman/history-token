@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctctty.c,v 1.13 2003/09/26 14:48:36 mschwide Exp $&n; *&n; * CTC / ESCON network driver, tty interface.&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * $Id: ctctty.c,v 1.14 2003/10/06 11:33:33 mschwide Exp $&n; *&n; * CTC / ESCON network driver, tty interface.&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -3265,27 +3265,6 @@ id|error
 )paren
 r_return
 id|error
-suffix:semicolon
-id|put_user
-c_func
-(paren
-id|C_CLOCAL
-c_func
-(paren
-id|tty
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-comma
-(paren
-id|ulong
-op_star
-)paren
-id|arg
-)paren
 suffix:semicolon
 r_return
 l_int|0

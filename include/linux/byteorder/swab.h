@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_BYTEORDER_SWAB_H
 DECL|macro|_LINUX_BYTEORDER_SWAB_H
 mdefine_line|#define _LINUX_BYTEORDER_SWAB_H
 multiline_comment|/*&n; * linux/byteorder/swab.h&n; * Byte-swapping, independently from CPU endianness&n; *&t;swabXX[ps]?(foo)&n; *&n; * Francois-Rene Rideau &lt;fare@tunes.org&gt; 19971205&n; *    separated swab functions from cpu_to_XX,&n; *    to clean up support for bizarre-endian architectures.&n; *&n; * See asm-i386/byteorder.h and suches for examples of how to provide&n; * architecture-dependent optimized versions&n; *&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* casts are necessary for constants, because we never know how for sure&n; * how U/UL/ULL map to __u16, __u32, __u64. At least not in a portable way.&n; */
 DECL|macro|___swab16
 mdefine_line|#define ___swab16(x) &bslash;&n;({ &bslash;&n;&t;__u16 __x = (x); &bslash;&n;&t;((__u16)( &bslash;&n;&t;&t;(((__u16)(__x) &amp; (__u16)0x00ffU) &lt;&lt; 8) | &bslash;&n;&t;&t;(((__u16)(__x) &amp; (__u16)0xff00U) &gt;&gt; 8) )); &bslash;&n;})
@@ -71,7 +72,7 @@ macro_line|#endif /* OPTIMIZE */
 DECL|function|__fswab16
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u16
 id|__fswab16
 c_func
@@ -130,7 +131,7 @@ suffix:semicolon
 DECL|function|__fswab32
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u32
 id|__fswab32
 c_func
@@ -190,7 +191,7 @@ macro_line|#ifdef __BYTEORDER_HAS_U64__
 DECL|function|__fswab64
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u64
 id|__fswab64
 c_func

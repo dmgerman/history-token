@@ -30,8 +30,14 @@ op_assign
 (brace
 multiline_comment|/* First, Sun3&squot;s */
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/160 Series&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3
 op_or
@@ -40,8 +46,14 @@ id|SM_3_160
 )brace
 comma
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/50&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3
 op_or
@@ -50,8 +62,14 @@ id|SM_3_50
 )brace
 comma
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/260 Series&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3
 op_or
@@ -60,8 +78,14 @@ id|SM_3_260
 )brace
 comma
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/110 Series&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3
 op_or
@@ -70,8 +94,14 @@ id|SM_3_110
 )brace
 comma
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/60&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3
 op_or
@@ -80,8 +110,14 @@ id|SM_3_60
 )brace
 comma
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/E&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3
 op_or
@@ -91,8 +127,14 @@ id|SM_3_E
 comma
 multiline_comment|/* Now, Sun3x&squot;s */
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/460 Series&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3X
 op_or
@@ -101,8 +143,14 @@ id|SM_3_460
 )brace
 comma
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Sun 3/80&quot;
 comma
+dot
+id|id_machtype
+op_assign
 (paren
 id|SM_SUN3X
 op_or
@@ -111,24 +159,24 @@ id|SM_3_80
 )brace
 comma
 multiline_comment|/* Then, Sun4&squot;s */
-singleline_comment|//{ &quot;Sun 4/100 Series&quot;, (SM_SUN4 | SM_4_110) },
-singleline_comment|//{ &quot;Sun 4/200 Series&quot;, (SM_SUN4 | SM_4_260) },
-singleline_comment|//{ &quot;Sun 4/300 Series&quot;, (SM_SUN4 | SM_4_330) },
-singleline_comment|//{ &quot;Sun 4/400 Series&quot;, (SM_SUN4 | SM_4_470) },
+singleline_comment|// { .name = &quot;Sun 4/100 Series&quot;,&t;.id_machtype = (SM_SUN4 | SM_4_110) },
+singleline_comment|// { .name = &quot;Sun 4/200 Series&quot;,&t;.id_machtype = (SM_SUN4 | SM_4_260) },
+singleline_comment|// { .name = &quot;Sun 4/300 Series&quot;,&t;.id_machtype = (SM_SUN4 | SM_4_330) },
+singleline_comment|// { .name = &quot;Sun 4/400 Series&quot;,&t;.id_machtype = (SM_SUN4 | SM_4_470) },
 multiline_comment|/* And now, Sun4c&squot;s */
-singleline_comment|//{ &quot;Sun4c SparcStation 1&quot;, (SM_SUN4C | SM_4C_SS1) },
-singleline_comment|//{ &quot;Sun4c SparcStation IPC&quot;, (SM_SUN4C | SM_4C_IPC) },
-singleline_comment|//{ &quot;Sun4c SparcStation 1+&quot;, (SM_SUN4C | SM_4C_SS1PLUS) },
-singleline_comment|//{ &quot;Sun4c SparcStation SLC&quot;, (SM_SUN4C | SM_4C_SLC) },
-singleline_comment|//{ &quot;Sun4c SparcStation 2&quot;, (SM_SUN4C | SM_4C_SS2) },
-singleline_comment|//{ &quot;Sun4c SparcStation ELC&quot;, (SM_SUN4C | SM_4C_ELC) },
-singleline_comment|//{ &quot;Sun4c SparcStation IPX&quot;, (SM_SUN4C | SM_4C_IPX) },
+singleline_comment|// { .name = &quot;Sun4c SparcStation 1&quot;,&t;.id_machtype = (SM_SUN4C | SM_4C_SS1) },
+singleline_comment|// { .name = &quot;Sun4c SparcStation IPC&quot;,&t;.id_machtype = (SM_SUN4C | SM_4C_IPC) },
+singleline_comment|// { .name = &quot;Sun4c SparcStation 1+&quot;,&t;.id_machtype = (SM_SUN4C | SM_4C_SS1PLUS) },
+singleline_comment|// { .name = &quot;Sun4c SparcStation SLC&quot;,&t;.id_machtype = (SM_SUN4C | SM_4C_SLC) },
+singleline_comment|// { .name = &quot;Sun4c SparcStation 2&quot;,&t;.id_machtype = (SM_SUN4C | SM_4C_SS2) },
+singleline_comment|// { .name = &quot;Sun4c SparcStation ELC&quot;,&t;.id_machtype = (SM_SUN4C | SM_4C_ELC) },
+singleline_comment|// { .name = &quot;Sun4c SparcStation IPX&quot;,&t;.id_machtype = (SM_SUN4C | SM_4C_IPX) },
 multiline_comment|/* Finally, early Sun4m&squot;s */
-singleline_comment|//{ &quot;Sun4m SparcSystem600&quot;, (SM_SUN4M | SM_4M_SS60) },
-singleline_comment|//{ &quot;Sun4m SparcStation10/20&quot;, (SM_SUN4M | SM_4M_SS50) },
-singleline_comment|//{ &quot;Sun4m SparcStation5&quot;, (SM_SUN4M | SM_4M_SS40) },
+singleline_comment|// { .name = &quot;Sun4m SparcSystem600&quot;,&t;.id_machtype = (SM_SUN4M | SM_4M_SS60) },
+singleline_comment|// { .name = &quot;Sun4m SparcStation10/20&quot;,&t;.id_machtype = (SM_SUN4M | SM_4M_SS50) },
+singleline_comment|// { .name = &quot;Sun4m SparcStation5&quot;,&t;.id_machtype = (SM_SUN4M | SM_4M_SS40) },
 multiline_comment|/* One entry for the OBP arch&squot;s which are sun4d, sun4e, and newer sun4m&squot;s */
-singleline_comment|//{ &quot;Sun4M OBP based system&quot;, (SM_SUN4M_OBP | 0x0) }
+singleline_comment|// { .name = &quot;Sun4M OBP based system&quot;,&t;.id_machtype = (SM_SUN4M_OBP | 0x0) }
 )brace
 suffix:semicolon
 DECL|function|display_system_type

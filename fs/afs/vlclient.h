@@ -264,7 +264,8 @@ r_int
 id|afs_rxvl_probe
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -278,7 +279,8 @@ r_int
 id|afs_rxvl_get_entry_by_name
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -302,7 +304,8 @@ r_int
 id|afs_rxvl_get_entry_by_id
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -323,7 +326,8 @@ r_int
 id|afs_rxvl_get_entry_by_id_async
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 comma
@@ -339,7 +343,8 @@ r_int
 id|afs_rxvl_get_entry_by_id_async2
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 comma

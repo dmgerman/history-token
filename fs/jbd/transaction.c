@@ -129,6 +129,8 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -598,7 +600,7 @@ id|new_transaction
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate a new handle.  This should probably be in a slab... */

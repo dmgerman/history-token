@@ -20,7 +20,8 @@ r_void
 id|afs_vlocation_update_timer
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 )paren
@@ -30,7 +31,8 @@ r_void
 id|afs_vlocation_update_attend
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -40,7 +42,8 @@ r_void
 id|afs_vlocation_update_discard
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -51,12 +54,14 @@ r_void
 id|__afs_vlocation_timeout
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 )paren
 (brace
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 op_assign
@@ -65,7 +70,8 @@ c_func
 (paren
 id|timer
 comma
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 comma
 id|timeout
 )paren
@@ -152,7 +158,8 @@ suffix:semicolon
 multiline_comment|/* queue of VLs awaiting update */
 DECL|variable|afs_vlocation_update
 r_static
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|afs_vlocation_update
 suffix:semicolon
@@ -241,14 +248,15 @@ comma
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * iterate through the VL servers in a cell until one of them admits knowing about the volume in&n; * question&n; * - caller must have cell-&gt;vl_sem write-locked&n; */
+multiline_comment|/*&n; * iterate through the VL servers in a cell until one of them admits knowing&n; * about the volume in question&n; * - caller must have cell-&gt;vl_sem write-locked&n; */
 DECL|function|afs_vlocation_access_vl_by_name
 r_static
 r_int
 id|afs_vlocation_access_vl_by_name
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 comma
@@ -266,13 +274,15 @@ op_star
 id|vldb
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 op_assign
 l_int|NULL
 suffix:semicolon
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 op_assign
@@ -546,14 +556,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_vlocation_access_vl_by_name() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * iterate through the VL servers in a cell until one of them admits knowing about the volume in&n; * question&n; * - caller must have cell-&gt;vl_sem write-locked&n; */
+multiline_comment|/*&n; * iterate through the VL servers in a cell until one of them admits knowing&n; * about the volume in question&n; * - caller must have cell-&gt;vl_sem write-locked&n; */
 DECL|function|afs_vlocation_access_vl_by_id
 r_static
 r_int
 id|afs_vlocation_access_vl_by_id
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 comma
@@ -569,13 +580,15 @@ op_star
 id|vldb
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 op_assign
 l_int|NULL
 suffix:semicolon
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 op_assign
@@ -845,13 +858,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_vlocation_access_vl_by_id() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * lookup volume location&n; * - caller must have cell-&gt;vol_sem write-locked&n; * - iterate through the VL servers in a cell until one of them admits knowing about the volume in&n; *   question&n; * - lookup in the local cache if not able to find on the VL server&n; * - insert/update in the local cache if did get a VL response&n; */
+multiline_comment|/*&n; * lookup volume location&n; * - caller must have cell-&gt;vol_sem write-locked&n; * - iterate through the VL servers in a cell until one of them admits knowing&n; *   about the volume in question&n; * - lookup in the local cache if not able to find on the VL server&n; * - insert/update in the local cache if did get a VL response&n; */
 DECL|function|afs_vlocation_lookup
 r_int
 id|afs_vlocation_lookup
 c_func
 (paren
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 comma
@@ -863,7 +877,8 @@ comma
 r_int
 id|namesz
 comma
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 op_star
 id|_vlocation
@@ -874,11 +889,7 @@ id|afs_cache_vlocation
 id|vldb
 suffix:semicolon
 r_struct
-id|list_head
-op_star
-id|_p
-suffix:semicolon
-id|afs_vlocation_t
+id|afs_vlocation
 op_star
 id|vlocation
 suffix:semicolon
@@ -934,27 +945,17 @@ id|ENAMETOOLONG
 suffix:semicolon
 )brace
 multiline_comment|/* search the cell&squot;s active list first */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|_p
+id|vlocation
 comma
 op_amp
 id|cell-&gt;vl_list
-)paren
-(brace
-id|vlocation
-op_assign
-id|list_entry
-c_func
-(paren
-id|_p
-comma
-id|afs_vlocation_t
 comma
 id|link
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -1001,27 +1002,17 @@ op_amp
 id|cell-&gt;vl_gylock
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|_p
+id|vlocation
 comma
 op_amp
 id|cell-&gt;vl_graveyard
-)paren
-(brace
-id|vlocation
-op_assign
-id|list_entry
-c_func
-(paren
-id|_p
-comma
-id|afs_vlocation_t
 comma
 id|link
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -1075,7 +1066,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 )paren
 comma
 id|GFP_KERNEL
@@ -1100,7 +1092,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 )paren
 )paren
 suffix:semicolon
@@ -1188,7 +1181,7 @@ id|cell-&gt;vl_list
 )paren
 suffix:semicolon
 macro_line|#ifdef AFS_CACHING_SUPPORT
-multiline_comment|/* we want to store it in the cache, plus it might already be encached */
+multiline_comment|/* we want to store it in the cache, plus it might already be&n;&t; * encached */
 id|cachefs_acquire_cookie
 c_func
 (paren
@@ -1720,27 +1713,6 @@ id|vlocation-&gt;vldb
 )paren
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* add volume entry to local cache */
-id|ret
-op_assign
-id|afsc_update_vlocation
-c_func
-(paren
-id|vlocation
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-r_goto
-id|error
-suffix:semicolon
-macro_line|#endif
 id|afs_kafstimod_add_timer
 c_func
 (paren
@@ -1752,6 +1724,15 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+multiline_comment|/* update volume entry in local cache */
+id|cachefs_update_cookie
+c_func
+(paren
+id|vlocation-&gt;cache
+)paren
+suffix:semicolon
+macro_line|#endif
 op_star
 id|_vlocation
 op_assign
@@ -1874,8 +1855,8 @@ op_assign
 id|vlocation-&gt;cell
 suffix:semicolon
 multiline_comment|/* sanity check */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -1885,10 +1866,6 @@ id|vlocation-&gt;usage
 )paren
 op_le
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1948,7 +1925,7 @@ op_amp
 id|cell-&gt;vl_graveyard
 )paren
 suffix:semicolon
-multiline_comment|/* remove from pending timeout queue (refcounted if actually being updated) */
+multiline_comment|/* remove from pending timeout queue (refcounted if actually being&n;&t; * updated) */
 id|list_del_init
 c_func
 (paren
@@ -1997,7 +1974,8 @@ r_void
 id|afs_put_vlocation
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 )paren
@@ -2045,12 +2023,14 @@ r_void
 id|afs_vlocation_do_timeout
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 )paren
 (brace
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 suffix:semicolon
@@ -2066,8 +2046,8 @@ id|cell
 op_assign
 id|vlocation-&gt;cell
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -2077,10 +2057,6 @@ id|vlocation-&gt;usage
 )paren
 OL
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* remove from graveyard if still dead */
@@ -2178,7 +2154,8 @@ r_int
 id|afs_vlocation_update_begin
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 )paren
@@ -2389,7 +2366,8 @@ r_void
 id|afs_vlocation_update_abandon
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 comma
@@ -2477,12 +2455,14 @@ r_void
 id|afs_vlocation_update_timer
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 )paren
 (brace
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 op_assign
@@ -2491,7 +2471,8 @@ c_func
 (paren
 id|timer
 comma
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 comma
 id|upd_timer
 )paren
@@ -2536,7 +2517,7 @@ op_amp
 id|afs_vlocation_update_lock
 )paren
 suffix:semicolon
-multiline_comment|/* if we were woken up due to EBUSY sleep then restart immediately if possible or else jump&n;&t; * to front of pending queue */
+multiline_comment|/* if we were woken up due to EBUSY sleep then restart immediately if&n;&t; * possible or else jump to front of pending queue */
 r_if
 c_cond
 (paren
@@ -2748,7 +2729,8 @@ r_void
 id|afs_vlocation_update_attend
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -2757,7 +2739,8 @@ r_struct
 id|afs_cache_vlocation
 id|vldb
 suffix:semicolon
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 op_assign
@@ -2766,7 +2749,8 @@ c_func
 (paren
 id|op
 comma
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 comma
 id|upd_op
 )paren
@@ -2945,7 +2929,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;kAFS: name of volume &squot;%s&squot; changed to &squot;%s&squot; on server&bslash;n&quot;
+l_string|&quot;kAFS: name of volume &squot;%s&squot;&quot;
+l_string|&quot; changed to &squot;%s&squot; on server&bslash;n&quot;
 comma
 id|vlocation-&gt;vldb.name
 comma
@@ -2968,15 +2953,7 @@ id|vlocation-&gt;vldb
 )paren
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* add volume entry to local cache */
-id|ret
-op_assign
-id|afsc_update_vlocation
-c_func
-(paren
-id|vlocation
-)paren
-suffix:semicolon
+multiline_comment|/* TODO update volume entry in local cache */
 macro_line|#endif
 id|up_write
 c_func
@@ -3326,12 +3303,14 @@ r_void
 id|afs_vlocation_update_discard
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
 (brace
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 op_assign
@@ -3340,7 +3319,8 @@ c_func
 (paren
 id|op
 comma
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 comma
 id|upd_op
 )paren

@@ -132,7 +132,7 @@ mdefine_line|#define dvma_vtob(x) dvma_vtop(x)
 DECL|macro|dvma_btov
 mdefine_line|#define dvma_btov(x) dvma_ptov(x)
 DECL|function|dvma_map_cpu
-r_extern
+r_static
 r_inline
 r_int
 id|dvma_map_cpu

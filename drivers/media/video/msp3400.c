@@ -14,10 +14,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/* kernel_thread */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &quot;msp3400.h&quot;
 multiline_comment|/* insmod parameters */
@@ -676,9 +672,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -849,9 +847,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -4182,9 +4182,11 @@ r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* some time for the tuner to sync */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -4367,9 +4369,11 @@ dot
 id|cdo
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -4579,9 +4583,11 @@ dot
 id|cdo
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -5692,9 +5698,11 @@ r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* some time for the tuner to sync */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -5961,9 +5969,11 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -6458,6 +6468,12 @@ suffix:semicolon
 r_case
 l_int|0x0003
 suffix:colon
+r_case
+l_int|0x0004
+suffix:colon
+r_case
+l_int|0x0005
+suffix:colon
 id|msp-&gt;mode
 op_assign
 id|MSP_MODE_FM_TERRA
@@ -6734,6 +6750,8 @@ id|c
 suffix:semicolon
 r_int
 id|i
+comma
+id|rc
 suffix:semicolon
 id|client_template.adapter
 op_assign
@@ -7061,7 +7079,10 @@ c_func
 (paren
 id|c-&gt;name
 comma
-id|I2C_NAME_SIZE
+r_sizeof
+(paren
+id|c-&gt;name
+)paren
 comma
 l_string|&quot;MSP34%02d%c-%c%d&quot;
 comma
@@ -7216,6 +7237,8 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
+id|rc
+op_assign
 id|kernel_thread
 c_func
 (paren
@@ -7235,6 +7258,21 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;msp34xx: kernel_thread() failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
 id|down
 c_func
 (paren
@@ -7454,6 +7492,7 @@ op_star
 id|adap
 )paren
 (brace
+macro_line|#ifdef I2C_ADAP_CLASS_TV_ANALOG
 r_if
 c_cond
 (paren
@@ -7475,6 +7514,31 @@ comma
 id|msp_attach
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|adap-&gt;id
+op_eq
+(paren
+id|I2C_ALGO_BIT
+op_or
+id|I2C_HW_B_BT848
+)paren
+)paren
+r_return
+id|i2c_probe
+c_func
+(paren
+id|adap
+comma
+op_amp
+id|addr_data
+comma
+id|msp_attach
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -1,4 +1,9 @@
 multiline_comment|/*&n; * SMBus 2.0 driver for AMD-8111 IO-Hub.&n; *&n; * Copyright (c) 2002 Vojtech Pavlik&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation version 2.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

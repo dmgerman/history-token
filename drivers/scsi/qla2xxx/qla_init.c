@@ -6435,6 +6435,12 @@ id|ha-&gt;dpc_flags
 )paren
 )paren
 (brace
+id|qla2x00_config_os
+c_func
+(paren
+id|ha
+)paren
+suffix:semicolon
 multiline_comment|/* If we found all devices then go ready */
 r_if
 c_cond

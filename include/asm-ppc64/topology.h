@@ -26,17 +26,13 @@ id|cpu
 )braket
 suffix:semicolon
 macro_line|#ifdef DEBUG_NUMA
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|node
 op_eq
 op_minus
 l_int|1
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif

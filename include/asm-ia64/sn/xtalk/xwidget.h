@@ -1,13 +1,16 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
-macro_line|#ifndef __ASM_SN_XTALK_XWIDGET_H__
-DECL|macro|__ASM_SN_XTALK_XWIDGET_H__
-mdefine_line|#define __ASM_SN_XTALK_XWIDGET_H__
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_XTALK_XWIDGET_H
+DECL|macro|_ASM_IA64_SN_XTALK_XWIDGET_H
+mdefine_line|#define _ASM_IA64_SN_XTALK_XWIDGET_H
 multiline_comment|/*&n; * xwidget.h - generic crosstalk widget header file&n; */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/cdl.h&gt;
 macro_line|#endif /* __ASSEMBLY__ */
-macro_line|#ifdef LITTLE_ENDIAN
+macro_line|#else
+macro_line|#include &lt;xtalk/xtalk.h&gt;
+macro_line|#endif
 DECL|macro|WIDGET_ID
 mdefine_line|#define WIDGET_ID&t;&t;&t;0x00
 DECL|macro|WIDGET_STATUS
@@ -30,30 +33,6 @@ DECL|macro|WIDGET_LLP_CFG
 mdefine_line|#define WIDGET_LLP_CFG&t;&t;&t;0x48
 DECL|macro|WIDGET_TFLUSH
 mdefine_line|#define WIDGET_TFLUSH&t;&t;&t;0x50
-macro_line|#else&t;/* !LITTLE_ENDIAN */
-DECL|macro|WIDGET_ID
-mdefine_line|#define WIDGET_ID                       0x04
-DECL|macro|WIDGET_STATUS
-mdefine_line|#define WIDGET_STATUS                   0x0c
-DECL|macro|WIDGET_ERR_UPPER_ADDR
-mdefine_line|#define WIDGET_ERR_UPPER_ADDR           0x14
-DECL|macro|WIDGET_ERR_LOWER_ADDR
-mdefine_line|#define WIDGET_ERR_LOWER_ADDR           0x1c
-DECL|macro|WIDGET_CONTROL
-mdefine_line|#define WIDGET_CONTROL                  0x24
-DECL|macro|WIDGET_REQ_TIMEOUT
-mdefine_line|#define WIDGET_REQ_TIMEOUT              0x2c
-DECL|macro|WIDGET_INTDEST_UPPER_ADDR
-mdefine_line|#define WIDGET_INTDEST_UPPER_ADDR       0x34
-DECL|macro|WIDGET_INTDEST_LOWER_ADDR
-mdefine_line|#define WIDGET_INTDEST_LOWER_ADDR       0x3c
-DECL|macro|WIDGET_ERR_CMD_WORD
-mdefine_line|#define WIDGET_ERR_CMD_WORD             0x44
-DECL|macro|WIDGET_LLP_CFG
-mdefine_line|#define WIDGET_LLP_CFG                  0x4c
-DECL|macro|WIDGET_TFLUSH
-mdefine_line|#define WIDGET_TFLUSH                   0x54
-macro_line|#endif
 multiline_comment|/* WIDGET_ID */
 DECL|macro|WIDGET_REV_NUM
 mdefine_line|#define WIDGET_REV_NUM&t;&t;&t;0xf0000000
@@ -171,7 +150,6 @@ r_volatile
 r_struct
 id|widget_cfg
 (brace
-macro_line|#ifdef LITTLE_ENDIAN
 multiline_comment|/*&n; * we access these through synergy unswizzled space, so the address&n; * gets twiddled (i.e. references to 0x4 actually go to 0x0 and vv.)&n; * That&squot;s why we put the register first and filler second.&n; */
 DECL|member|w_id
 id|widgetreg_t
@@ -283,101 +261,10 @@ id|widgetreg_t
 id|w_pad_10
 suffix:semicolon
 multiline_comment|/* 0x50 */
-macro_line|#else
-id|widgetreg_t
-id|w_pad_0
-suffix:semicolon
-multiline_comment|/* 0x00 */
-id|widgetreg_t
-id|w_id
-suffix:semicolon
-multiline_comment|/* 0x04 */
-id|widgetreg_t
-id|w_pad_1
-suffix:semicolon
-multiline_comment|/* 0x08 */
-id|widgetreg_t
-id|w_status
-suffix:semicolon
-multiline_comment|/* 0x0c */
-id|widgetreg_t
-id|w_pad_2
-suffix:semicolon
-multiline_comment|/* 0x10 */
-id|widgetreg_t
-id|w_err_upper_addr
-suffix:semicolon
-multiline_comment|/* 0x14 */
-id|widgetreg_t
-id|w_pad_3
-suffix:semicolon
-multiline_comment|/* 0x18 */
-id|widgetreg_t
-id|w_err_lower_addr
-suffix:semicolon
-multiline_comment|/* 0x1c */
-id|widgetreg_t
-id|w_pad_4
-suffix:semicolon
-multiline_comment|/* 0x20 */
-id|widgetreg_t
-id|w_control
-suffix:semicolon
-multiline_comment|/* 0x24 */
-id|widgetreg_t
-id|w_pad_5
-suffix:semicolon
-multiline_comment|/* 0x28 */
-id|widgetreg_t
-id|w_req_timeout
-suffix:semicolon
-multiline_comment|/* 0x2c */
-id|widgetreg_t
-id|w_pad_6
-suffix:semicolon
-multiline_comment|/* 0x30 */
-id|widgetreg_t
-id|w_intdest_upper_addr
-suffix:semicolon
-multiline_comment|/* 0x34 */
-id|widgetreg_t
-id|w_pad_7
-suffix:semicolon
-multiline_comment|/* 0x38 */
-id|widgetreg_t
-id|w_intdest_lower_addr
-suffix:semicolon
-multiline_comment|/* 0x3c */
-id|widgetreg_t
-id|w_pad_8
-suffix:semicolon
-multiline_comment|/* 0x40 */
-id|widgetreg_t
-id|w_err_cmd_word
-suffix:semicolon
-multiline_comment|/* 0x44 */
-id|widgetreg_t
-id|w_pad_9
-suffix:semicolon
-multiline_comment|/* 0x48 */
-id|widgetreg_t
-id|w_llp_cfg
-suffix:semicolon
-multiline_comment|/* 0x4c */
-id|widgetreg_t
-id|w_pad_10
-suffix:semicolon
-multiline_comment|/* 0x50 */
-id|widgetreg_t
-id|w_tflush
-suffix:semicolon
-multiline_comment|/* 0x54 */
-macro_line|#endif /* LITTLE_ENDIAN */
 DECL|typedef|widget_cfg_t
 )brace
 id|widget_cfg_t
 suffix:semicolon
-macro_line|#ifdef LITTLE_ENDIAN
 r_typedef
 r_struct
 (brace
@@ -451,82 +338,6 @@ DECL|typedef|w_err_cmd_word_f
 )brace
 id|w_err_cmd_word_f
 suffix:semicolon
-macro_line|#else
-r_typedef
-r_struct
-(brace
-DECL|member|didn
-r_int
-id|didn
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|sidn
-r_int
-id|sidn
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|pactyp
-r_int
-id|pactyp
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|tnum
-r_int
-id|tnum
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|ct
-r_int
-id|ct
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|ds
-r_int
-id|ds
-suffix:colon
-l_int|2
-suffix:semicolon
-DECL|member|gbr
-r_int
-id|gbr
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|vbpm
-r_int
-id|vbpm
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|error
-r_int
-id|error
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|bo
-r_int
-id|bo
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|other
-r_int
-id|other
-suffix:colon
-l_int|8
-suffix:semicolon
-DECL|typedef|w_err_cmd_word_f
-)brace
-id|w_err_cmd_word_f
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LITTLE_ENDIAN
 r_typedef
 r_union
 (brace
@@ -542,23 +353,6 @@ DECL|typedef|w_err_cmd_word_u
 )brace
 id|w_err_cmd_word_u
 suffix:semicolon
-macro_line|#else
-r_typedef
-r_union
-(brace
-DECL|member|r
-id|widgetreg_t
-id|r
-suffix:semicolon
-DECL|member|f
-id|w_err_cmd_word_f
-id|f
-suffix:semicolon
-DECL|typedef|w_err_cmd_word_u
-)brace
-id|w_err_cmd_word_u
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* IO widget initialization function */
 DECL|typedef|xwidget_info_t
 r_typedef
@@ -568,7 +362,6 @@ op_star
 id|xwidget_info_t
 suffix:semicolon
 multiline_comment|/*&n; * Crosstalk Widget Hardware Identification, as defined in the Crosstalk spec.&n; */
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|struct|xwidget_hwid_s
 r_typedef
 r_struct
@@ -591,30 +384,6 @@ DECL|typedef|xwidget_hwid_t
 op_star
 id|xwidget_hwid_t
 suffix:semicolon
-macro_line|#else
-DECL|struct|xwidget_hwid_s
-r_typedef
-r_struct
-id|xwidget_hwid_s
-(brace
-DECL|member|part_num
-id|xwidget_part_num_t
-id|part_num
-suffix:semicolon
-DECL|member|rev_num
-id|xwidget_rev_num_t
-id|rev_num
-suffix:semicolon
-DECL|member|mfg_num
-id|xwidget_mfg_num_t
-id|mfg_num
-suffix:semicolon
-DECL|typedef|xwidget_hwid_t
-)brace
-op_star
-id|xwidget_hwid_t
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Returns 1 if a driver that handles devices described by hwid1 is able&n; * to manage a device with hardwareid hwid2.  NOTE: We don&squot;t check rev&n; * numbers at all.&n; */
 DECL|macro|XWIDGET_HARDWARE_ID_MATCH
 mdefine_line|#define XWIDGET_HARDWARE_ID_MATCH(hwid1, hwid2) &bslash;&n;&t;(((hwid1)-&gt;part_num == (hwid2)-&gt;part_num) &amp;&amp; &bslash;&n;&t;(((hwid1)-&gt;mfg_num == XWIDGET_MFG_NUM_NONE) || &bslash;&n;&t;((hwid2)-&gt;mfg_num == XWIDGET_MFG_NUM_NONE) || &bslash;&n;&t;((hwid1)-&gt;mfg_num == (hwid2)-&gt;mfg_num)))
@@ -846,5 +615,5 @@ id|v_widget_t
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _KERNEL */
 macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
-macro_line|#endif&t;&t;&t;&t;/* __ASM_SN_XTALK_XWIDGET_H__ */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_XTALK_XWIDGET_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Athlon/Hammer specific Machine Check Exception Reporting&n; */
+multiline_comment|/*&n; * Athlon/Hammer specific Machine Check Exception Reporting&n; * (C) Copyright 2002 Dave Jones &lt;davej@codemonkey.org.uk&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_proc.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2002&n; *&n; * /proc interface for the dasd driver.&n; *&n; * $Revision: 1.23 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_proc.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2002&n; *&n; * /proc interface for the dasd driver.&n; *&n; * $Revision: 1.24 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -253,7 +253,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; at (%3d:%3d)&quot;
+l_string|&quot; at (%3d:%7d)&quot;
 comma
 id|device-&gt;gdp-&gt;major
 comma
@@ -266,32 +266,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;  at (???:???)&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Print device name. */
-r_if
-c_cond
-(paren
-id|device-&gt;gdp
-)paren
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot; is %-7s&quot;
-comma
-id|device-&gt;gdp-&gt;disk_name
-)paren
-suffix:semicolon
-r_else
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot; is ???????&quot;
+l_string|&quot;  at (???:???????)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Print devices features. */

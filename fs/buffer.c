@@ -612,6 +612,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+(brace
 id|buffer_io_error
 c_func
 (paren
@@ -622,7 +631,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;lost page write due to I/O error on %s&bslash;n&quot;
+l_string|&quot;lost page write due to &quot;
+l_string|&quot;I/O error on %s&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -633,6 +643,7 @@ id|b
 )paren
 )paren
 suffix:semicolon
+)brace
 id|set_buffer_write_io_error
 c_func
 (paren
@@ -1080,14 +1091,9 @@ op_star
 id|file
 suffix:semicolon
 r_struct
-id|dentry
+id|address_space
 op_star
-id|dentry
-suffix:semicolon
-r_struct
-id|inode
-op_star
-id|inode
+id|mapping
 suffix:semicolon
 r_int
 id|ret
@@ -1116,13 +1122,9 @@ id|file
 r_goto
 id|out
 suffix:semicolon
-id|dentry
+id|mapping
 op_assign
-id|file-&gt;f_dentry
-suffix:semicolon
-id|inode
-op_assign
-id|dentry-&gt;d_inode
+id|file-&gt;f_mapping
 suffix:semicolon
 id|ret
 op_assign
@@ -1149,7 +1151,7 @@ id|down
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|mapping-&gt;host-&gt;i_sem
 )paren
 suffix:semicolon
 id|current-&gt;flags
@@ -1161,7 +1163,7 @@ op_assign
 id|filemap_fdatawrite
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 id|err
@@ -1173,7 +1175,7 @@ c_func
 (paren
 id|file
 comma
-id|dentry
+id|file-&gt;f_dentry
 comma
 l_int|0
 )paren
@@ -1193,7 +1195,7 @@ op_assign
 id|filemap_fdatawait
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -1215,7 +1217,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|mapping-&gt;host-&gt;i_sem
 )paren
 suffix:semicolon
 id|out_putf
@@ -1249,14 +1251,9 @@ op_star
 id|file
 suffix:semicolon
 r_struct
-id|dentry
+id|address_space
 op_star
-id|dentry
-suffix:semicolon
-r_struct
-id|inode
-op_star
-id|inode
+id|mapping
 suffix:semicolon
 r_int
 id|ret
@@ -1285,14 +1282,6 @@ id|file
 r_goto
 id|out
 suffix:semicolon
-id|dentry
-op_assign
-id|file-&gt;f_dentry
-suffix:semicolon
-id|inode
-op_assign
-id|dentry-&gt;d_inode
-suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -1310,11 +1299,15 @@ id|file-&gt;f_op-&gt;fsync
 r_goto
 id|out_putf
 suffix:semicolon
+id|mapping
+op_assign
+id|file-&gt;f_mapping
+suffix:semicolon
 id|down
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|mapping-&gt;host-&gt;i_sem
 )paren
 suffix:semicolon
 id|current-&gt;flags
@@ -1326,7 +1319,7 @@ op_assign
 id|filemap_fdatawrite
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 id|err
@@ -1338,7 +1331,7 @@ c_func
 (paren
 id|file
 comma
-id|dentry
+id|file-&gt;f_dentry
 comma
 l_int|1
 )paren
@@ -1358,7 +1351,7 @@ op_assign
 id|filemap_fdatawait
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -1380,7 +1373,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|mapping-&gt;host-&gt;i_sem
 )paren
 suffix:semicolon
 id|out_putf
@@ -1653,7 +1646,8 @@ r_void
 r_struct
 id|zone
 op_star
-id|zone
+op_star
+id|zones
 suffix:semicolon
 id|pg_data_t
 op_star
@@ -1681,7 +1675,7 @@ c_func
 id|pgdat
 )paren
 (brace
-id|zone
+id|zones
 op_assign
 id|pgdat-&gt;node_zonelists
 (braket
@@ -1691,19 +1685,17 @@ id|GFP_ZONEMASK
 )braket
 dot
 id|zones
-(braket
-l_int|0
-)braket
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|zone
+op_star
+id|zones
 )paren
 id|try_to_free_pages
 c_func
 (paren
-id|zone
+id|zones
 comma
 id|GFP_NOFS
 comma
@@ -2003,6 +1995,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+(brace
 id|buffer_io_error
 c_func
 (paren
@@ -2013,7 +2014,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;lost page write due to I/O error on %s&bslash;n&quot;
+l_string|&quot;lost page write due to &quot;
+l_string|&quot;I/O error on %s&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -2024,6 +2026,7 @@ id|b
 )paren
 )paren
 suffix:semicolon
+)brace
 id|set_bit
 c_func
 (paren
@@ -11298,29 +11301,10 @@ id|ratelimit
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu_online
+id|for_each_cpu
 c_func
 (paren
 id|i
-)paren
 )paren
 id|tot
 op_add_assign
@@ -11334,7 +11318,6 @@ id|i
 dot
 id|nr
 suffix:semicolon
-)brace
 id|buffer_heads_over_limit
 op_assign
 (paren

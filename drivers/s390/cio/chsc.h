@@ -3,14 +3,12 @@ DECL|macro|S390_CHSC_H
 mdefine_line|#define S390_CHSC_H
 DECL|macro|NR_CHPIDS
 mdefine_line|#define NR_CHPIDS 256
-DECL|macro|CHP_OFFLINE
-mdefine_line|#define CHP_OFFLINE 0
-DECL|macro|CHP_LOGICALLY_OFFLINE
-mdefine_line|#define CHP_LOGICALLY_OFFLINE 1
 DECL|macro|CHP_STANDBY
-mdefine_line|#define CHP_STANDBY 2
+mdefine_line|#define CHP_STANDBY 1
+DECL|macro|CHP_LOGICALLY_OFFLINE
+mdefine_line|#define CHP_LOGICALLY_OFFLINE 2
 DECL|macro|CHP_ONLINE
-mdefine_line|#define CHP_ONLINE 3
+mdefine_line|#define CHP_ONLINE 4
 DECL|macro|CHSC_SEI_ACC_CHPID
 mdefine_line|#define CHSC_SEI_ACC_CHPID        1
 DECL|macro|CHSC_SEI_ACC_LINKADDR
@@ -39,8 +37,31 @@ DECL|member|id
 r_int
 id|id
 suffix:semicolon
-DECL|member|state
+r_struct
+(brace
+DECL|member|online
 r_int
+r_int
+id|online
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|logically_online
+r_int
+r_int
+id|logically_online
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|state
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|state
 suffix:semicolon
 DECL|member|dev

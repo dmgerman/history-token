@@ -485,8 +485,10 @@ mdefine_line|#define __NR_clock_getres&t;(__NR_timer_create+7)
 DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
 multiline_comment|/*&n; * Number 263 is reserved for vserver&n; */
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;264
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 264
+mdefine_line|#define NR_syscalls 265
 multiline_comment|/* &n; * There are some system calls that are not present on 64 bit, some&n; * have a different name although they do the same (e.g. __NR_chown32&n; * is __NR_chown on 64 bit).&n; */
 macro_line|#ifdef __s390x__
 DECL|macro|__NR_time
@@ -597,6 +599,8 @@ DECL|macro|__NR_fcntl64
 macro_line|#undef  __NR_fcntl64
 DECL|macro|__NR_sendfile64
 macro_line|#undef  __NR_sendfile64
+DECL|macro|__NR_fadvise64_64
+macro_line|#undef  __NR_fadvise64_64
 DECL|macro|__NR_select
 mdefine_line|#define __NR_select&t;&t;142
 DECL|macro|__NR_getrlimit

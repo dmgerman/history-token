@@ -3213,6 +3213,12 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+id|f1-&gt;f_mapping
+op_assign
+id|f2-&gt;f_mapping
+op_assign
+id|inode-&gt;i_mapping
+suffix:semicolon
 multiline_comment|/* read file */
 id|f1-&gt;f_pos
 op_assign

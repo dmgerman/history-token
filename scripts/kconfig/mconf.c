@@ -3996,9 +3996,6 @@ l_string|&quot;Your kernel configuration changes were NOT saved.&quot;
 l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 r_return
 l_int|0

@@ -259,6 +259,21 @@ id|RTC_RD_TIME
 suffix:colon
 multiline_comment|/* Read the time/date from RTC&t;*/
 (brace
+id|memset
+c_func
+(paren
+op_amp
+id|wtime
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|rtc_time
+)paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|get_rtc_time

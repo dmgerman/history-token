@@ -1356,11 +1356,4 @@ id|advice
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sys_pciconfig_iobase
-id|cond_syscall
-c_func
-(paren
-id|sys_pciconfig_iobase
-)paren
-suffix:semicolon
 eof

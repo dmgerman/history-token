@@ -1434,6 +1434,10 @@ comma
 id|elf_type
 )paren
 suffix:semicolon
+id|error
+op_assign
+id|map_addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3536,6 +3540,11 @@ c_func
 id|interpreter
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|interpreter
+)paren
 id|fput
 c_func
 (paren

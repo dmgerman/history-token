@@ -1,25 +1,11 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
 r_void
 id|do_pcibr_rrb_clear
 c_func
@@ -217,7 +203,7 @@ r_int
 id|vchan
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|tmp
 suffix:semicolon
 r_uint16
@@ -373,7 +359,7 @@ id|pciio_slot_t
 id|slot
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|tmp
 suffix:semicolon
 r_uint16
@@ -497,14 +483,11 @@ r_int
 id|more
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|reg
 comma
 id|tmp
 op_assign
-(paren
-id|bridgereg_t
-)paren
 l_int|0
 suffix:semicolon
 r_uint16
@@ -726,14 +709,11 @@ r_int
 id|less
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|reg
 comma
 id|tmp
 op_assign
-(paren
-id|bridgereg_t
-)paren
 l_int|0
 comma
 id|clr
@@ -1086,7 +1066,7 @@ r_int
 id|rrb
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|status
 suffix:semicolon
 multiline_comment|/* bridge_lock must be held;&n;     * this RRB must be disabled.&n;     */
@@ -1446,7 +1426,7 @@ id|bridge
 op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
-id|bridgereg_t
+r_uint64
 id|tmp
 suffix:semicolon
 r_uint16
@@ -1662,16 +1642,6 @@ dot
 id|reg
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 r_while
 c_loop
 (paren
@@ -1679,47 +1649,6 @@ op_star
 id|wrb_flush
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-id|wrb_flush
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_while
-c_loop
-(paren
-op_star
-id|wrb_flush
-)paren
-suffix:semicolon
-)brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2616,16 +2545,6 @@ comma
 id|vchan
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
@@ -2666,40 +2585,6 @@ id|VCHAN3
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|PCIBR_DEBUG_ALWAYS
-c_func
-(paren
-(paren
-id|PCIBR_DEBUG_RRB
-comma
-id|pcibr_vhdl
-comma
-l_string|&quot;pcibr_slot_initial_rrb_alloc: slot %d started with %d+%d&bslash;n&quot;
-comma
-id|PCIBR_DEVICE_TO_SLOT
-c_func
-(paren
-id|pcibr_soft
-comma
-id|slot
-)paren
-comma
-id|chan
-(braket
-id|VCHAN0
-)braket
-comma
-id|chan
-(braket
-id|VCHAN1
-)braket
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Do we really need any?&n;     */
 id|pcibr_infoh
 op_assign
@@ -2725,12 +2610,6 @@ c_func
 (paren
 id|PV856866
 comma
-id|pcibr_soft
-)paren
-op_logical_and
-id|IS_PIC_SOFT
-c_func
-(paren
 id|pcibr_soft
 )paren
 op_logical_and
@@ -3463,16 +3342,6 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
@@ -3485,22 +3354,6 @@ l_string|&quot;&bslash;tslot&bslash;tvchan0&bslash;tvchan1&bslash;tvchan2&bslash
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|PCIBR_DEBUG_ALWAYS
-c_func
-(paren
-(paren
-id|PCIBR_DEBUG_RRB
-comma
-id|pcibr_soft-&gt;bs_vhdl
-comma
-l_string|&quot;&bslash;tslot&bslash;tvchan0&bslash;tvchan1&bslash;treserved&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -3521,16 +3374,6 @@ op_increment
 )paren
 (brace
 multiline_comment|/*&n;             * The kernel only allows functions to have so many variable args,&n;             * attempting to call PCIBR_DEBUG_ALWAYS() with more than 5 printf&n;             * arguments fails so sprintf() it into a temporary string.&n;             */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|sprintf
 c_func
 (paren
@@ -3592,51 +3435,6 @@ id|slot
 )braket
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|sprintf
-c_func
-(paren
-id|tmp_str
-comma
-l_string|&quot;&bslash;t %d&bslash;t  %d&bslash;t  %d&bslash;t  %d&bslash;n&quot;
-comma
-id|PCIBR_DEVICE_TO_SLOT
-c_func
-(paren
-id|pcibr_soft
-comma
-id|slot
-)paren
-comma
-l_int|0xFFF
-op_amp
-id|pcibr_soft-&gt;bs_rrb_valid
-(braket
-id|slot
-)braket
-(braket
-id|VCHAN0
-)braket
-comma
-l_int|0xFFF
-op_amp
-id|pcibr_soft-&gt;bs_rrb_valid
-(braket
-id|slot
-)braket
-(braket
-id|VCHAN1
-)braket
-comma
-id|pcibr_soft-&gt;bs_rrb_res
-(braket
-id|slot
-)braket
-)paren
-suffix:semicolon
-)brace
 id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren

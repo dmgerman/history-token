@@ -39,7 +39,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|RCU_HEAD_INIT
-mdefine_line|#define RCU_HEAD_INIT(head) &bslash;&n;&t;&t;{ list: LIST_HEAD_INIT(head.list), func: NULL, arg: NULL }
+mdefine_line|#define RCU_HEAD_INIT(head) &bslash;&n;&t;&t;{ .list = LIST_HEAD_INIT(head.list), .func = NULL, .arg = NULL }
 DECL|macro|RCU_HEAD
 mdefine_line|#define RCU_HEAD(head) struct rcu_head head = RCU_HEAD_INIT(head)
 DECL|macro|INIT_RCU_HEAD

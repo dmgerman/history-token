@@ -232,7 +232,7 @@ suffix:semicolon
 id|force_page_cache_readahead
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 comma
 id|file
 comma

@@ -3,7 +3,7 @@ macro_line|#ifndef __QETH_MPC_H__
 DECL|macro|__QETH_MPC_H__
 mdefine_line|#define __QETH_MPC_H__
 DECL|macro|VERSION_QETH_MPC_H
-mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.16 $&quot;
+mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.18 $&quot;
 DECL|macro|QETH_IPA_TIMEOUT
 mdefine_line|#define QETH_IPA_TIMEOUT (card-&gt;ipa_timeout)
 DECL|macro|QETH_MPC_TIMEOUT
@@ -231,6 +231,8 @@ DECL|macro|IPA_FULL_VLAN
 mdefine_line|#define IPA_FULL_VLAN 0x00004000L
 DECL|macro|IPA_SOURCE_MAC_AVAIL
 mdefine_line|#define IPA_SOURCE_MAC_AVAIL 0x00010000L
+DECL|macro|IPA_OSA_MC_ROUTER_AVAIL
+mdefine_line|#define IPA_OSA_MC_ROUTER_AVAIL 0x00020000L
 DECL|macro|IPA_SETADP_QUERY_COMMANDS_SUPPORTED
 mdefine_line|#define IPA_SETADP_QUERY_COMMANDS_SUPPORTED 0x01
 DECL|macro|IPA_SETADP_ALTER_MAC_ADDRESS
@@ -788,10 +790,11 @@ id|packed
 suffix:semicolon
 DECL|macro|QETH_IOC_MAGIC
 mdefine_line|#define QETH_IOC_MAGIC 0x22
+multiline_comment|/* these don&squot;t really have &squot;unsigned long&squot; arguments but were defined that way */
 DECL|macro|QETH_IOCPROC_OSAEINTERFACES
-mdefine_line|#define QETH_IOCPROC_OSAEINTERFACES _IOWR(QETH_IOC_MAGIC, 1, arg)
+mdefine_line|#define QETH_IOCPROC_OSAEINTERFACES _IOWR(QETH_IOC_MAGIC, 1, unsigned long)
 DECL|macro|QETH_IOCPROC_INTERFACECHANGES
-mdefine_line|#define QETH_IOCPROC_INTERFACECHANGES _IOWR(QETH_IOC_MAGIC, 2, arg)
+mdefine_line|#define QETH_IOCPROC_INTERFACECHANGES _IOWR(QETH_IOC_MAGIC, 2, unsigned long)
 DECL|macro|SNMP_QUERY_CARD_INFO
 mdefine_line|#define SNMP_QUERY_CARD_INFO 0x00000002L
 DECL|macro|SNMP_REGISETER_MIB

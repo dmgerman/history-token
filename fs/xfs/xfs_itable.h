@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_ITABLE_H__
 DECL|macro|__XFS_ITABLE_H__
 mdefine_line|#define&t;__XFS_ITABLE_H__
-multiline_comment|/*&n; * xfs_bulkstat() is used to fill in xfs_bstat structures as well as dm_stat&n; * structures (by the dmi library). This is a pointer to a formatter function&n; * that will iget the inode and fill in the appropriate structure.&n; * see xfs_bulkstat_one() and dm_bulkstat_one() in dmi_xfs.c&n; */
+multiline_comment|/*&n; * xfs_bulkstat() is used to fill in xfs_bstat structures as well as dm_stat&n; * structures (by the dmi library). This is a pointer to a formatter function&n; * that will iget the inode and fill in the appropriate structure.&n; * see xfs_bulkstat_one() and xfs_dm_bulkstat_one() in dmapi_xfs.c&n; */
 DECL|typedef|bulkstat_one_pf
 r_typedef
 r_int
@@ -28,8 +28,19 @@ r_void
 op_star
 id|buffer
 comma
+r_int
+id|ubsize
+comma
+r_void
+op_star
+id|private_data
+comma
 id|xfs_daddr_t
 id|bno
+comma
+r_int
+op_star
+id|ubused
 comma
 r_void
 op_star
@@ -84,6 +95,11 @@ id|bulkstat_one_pf
 id|formatter
 comma
 multiline_comment|/* func that&squot;d fill a single buf */
+r_void
+op_star
+id|private_data
+comma
+multiline_comment|/* private data for formatter */
 r_int
 id|statstruct_size
 comma
@@ -141,8 +157,19 @@ r_void
 op_star
 id|buffer
 comma
+r_int
+id|ubsize
+comma
+r_void
+op_star
+id|private_data
+comma
 id|xfs_daddr_t
 id|bno
+comma
+r_int
+op_star
+id|ubused
 comma
 r_void
 op_star

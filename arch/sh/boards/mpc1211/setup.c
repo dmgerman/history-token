@@ -6,7 +6,9 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/mpc1211/mpc1211.h&gt;
+macro_line|#include &lt;asm/mpc1211/pci.h&gt;
 macro_line|#include &lt;asm/mpc1211/m1543c.h&gt;
 multiline_comment|/* ALI15X3 SMBus address offsets */
 DECL|macro|SMBHSTSTS
@@ -73,15 +75,6 @@ r_void
 r_return
 l_string|&quot;Interface MPC-1211(CTP/PCI/MPC-SH02)&quot;
 suffix:semicolon
-)brace
-DECL|function|platform_setup
-r_void
-id|platform_setup
-c_func
-(paren
-r_void
-)paren
-(brace
 )brace
 DECL|function|pci_write_config
 r_static
@@ -1369,10 +1362,54 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|setup_mpc1211
+multiline_comment|/*&n; * The Machine Vector&n; */
+DECL|variable|__initmv
+r_struct
+id|sh_machine_vector
+id|mv_mpc1211
+id|__initmv
+op_assign
+(brace
+dot
+id|mv_nr_irqs
+op_assign
+l_int|48
+comma
+dot
+id|mv_irq_demux
+op_assign
+id|mpc1211_irq_demux
+comma
+dot
+id|mv_init_irq
+op_assign
+id|init_mpc1211_IRQ
+comma
+macro_line|#ifdef CONFIG_HEARTBEAT
+dot
+id|mv_heartbeat
+op_assign
+id|heartbeat_mpc1211
+comma
+macro_line|#endif
+)brace
+suffix:semicolon
+id|ALIAS_MV
+c_func
+(paren
+id|mpc1211
+)paren
+multiline_comment|/* arch/sh/boards/mpc1211/rtc.c */
 r_void
+id|mpc1211_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
 id|__init
-id|setup_mpc1211
+id|platform_setup
 c_func
 (paren
 r_void
@@ -1384,6 +1421,12 @@ id|spd_buf
 (braket
 l_int|128
 )braket
+suffix:semicolon
+id|__set_io_port_base
+c_func
+(paren
+id|PA_PCI_IO
+)paren
 suffix:semicolon
 id|pci_write_config
 c_func
@@ -1399,8 +1442,8 @@ comma
 l_int|0xb0b00000
 )paren
 suffix:semicolon
-id|retry
-suffix:colon
+r_do
+(brace
 id|outb
 c_func
 (paren
@@ -1458,8 +1501,9 @@ l_int|6
 op_assign
 l_int|0x00
 suffix:semicolon
-r_if
-c_cond
+)brace
+r_while
+c_loop
 (paren
 id|put_smb_blk
 c_func
@@ -1475,10 +1519,13 @@ l_int|7
 OL
 l_int|0
 )paren
-(brace
-r_goto
-id|retry
 suffix:semicolon
-)brace
+id|board_time_init
+op_assign
+id|mpc1211_time_init
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

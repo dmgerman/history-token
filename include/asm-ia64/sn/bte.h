@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_BTE_H
 DECL|macro|_ASM_IA64_SN_BTE_H
 mdefine_line|#define _ASM_IA64_SN_BTE_H
@@ -63,6 +63,9 @@ mdefine_line|#define BTEREG_CTRL_ADDR ((u64 *)(bte-&gt;bte_base_addr + BTEOFF_CT
 DECL|macro|BTEREG_NOTIF_ADDR
 mdefine_line|#define BTEREG_NOTIF_ADDR ((u64 *)(bte-&gt;bte_base_addr + BTEOFF_NOTIFY))
 multiline_comment|/* Possible results from bte_copy and bte_unaligned_copy */
+multiline_comment|/* The following error codes map into the BTE hardware codes&n; * IIO_ICRB_ECODE_* (in shubio.h). The hardware uses&n; * an error code of 0 (IIO_ICRB_ECODE_DERR), but we want zero&n; * to mean BTE_SUCCESS, so add one (BTEFAIL_OFFSET) to the error&n; * codes to give the following error codes.&n; */
+DECL|macro|BTEFAIL_OFFSET
+mdefine_line|#define BTEFAIL_OFFSET&t;1
 r_typedef
 r_enum
 (brace
@@ -70,38 +73,42 @@ DECL|enumerator|BTE_SUCCESS
 id|BTE_SUCCESS
 comma
 multiline_comment|/* 0 is success */
+DECL|enumerator|BTEFAIL_DIR
+id|BTEFAIL_DIR
+comma
+multiline_comment|/* Directory error due to IIO access*/
+DECL|enumerator|BTEFAIL_POISON
+id|BTEFAIL_POISON
+comma
+multiline_comment|/* poison error on IO access (write to poison page) */
+DECL|enumerator|BTEFAIL_WERR
+id|BTEFAIL_WERR
+comma
+multiline_comment|/* Write error (ie WINV to a Read only line) */
+DECL|enumerator|BTEFAIL_ACCESS
+id|BTEFAIL_ACCESS
+comma
+multiline_comment|/* access error (protection violation) */
+DECL|enumerator|BTEFAIL_PWERR
+id|BTEFAIL_PWERR
+comma
+multiline_comment|/* Partial Write Error */
+DECL|enumerator|BTEFAIL_PRERR
+id|BTEFAIL_PRERR
+comma
+multiline_comment|/* Partial Read Error */
+DECL|enumerator|BTEFAIL_TOUT
+id|BTEFAIL_TOUT
+comma
+multiline_comment|/* CRB Time out */
+DECL|enumerator|BTEFAIL_XTERR
+id|BTEFAIL_XTERR
+comma
+multiline_comment|/* Incoming xtalk pkt had error bit */
 DECL|enumerator|BTEFAIL_NOTAVAIL
 id|BTEFAIL_NOTAVAIL
 comma
 multiline_comment|/* BTE not available */
-DECL|enumerator|BTEFAIL_POISON
-id|BTEFAIL_POISON
-comma
-multiline_comment|/* poison page */
-DECL|enumerator|BTEFAIL_PROT
-id|BTEFAIL_PROT
-comma
-multiline_comment|/* Protection violation */
-DECL|enumerator|BTEFAIL_ACCESS
-id|BTEFAIL_ACCESS
-comma
-multiline_comment|/* access error */
-DECL|enumerator|BTEFAIL_TOUT
-id|BTEFAIL_TOUT
-comma
-multiline_comment|/* Time out */
-DECL|enumerator|BTEFAIL_XTERR
-id|BTEFAIL_XTERR
-comma
-multiline_comment|/* Diretory error */
-DECL|enumerator|BTEFAIL_DIR
-id|BTEFAIL_DIR
-comma
-multiline_comment|/* Diretory error */
-DECL|enumerator|BTEFAIL_ERROR
-id|BTEFAIL_ERROR
-comma
-multiline_comment|/* Generic error */
 DECL|typedef|bte_result_t
 )brace
 id|bte_result_t

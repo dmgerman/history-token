@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * budget-patch.c: driver for Budget Patch,&n; * hardware modification of DVB-S cards enabling full TS&n; *&n; * Written by Emard &lt;emard@softhome.net&gt;&n; *&n; * Original idea by Roberto Deza &lt;rdeza@unav.es&gt;&n; *&n; * Special thanks to Holger Waechtler, Michael Hunold, Marian Durkovic&n; * and Metzlerbros&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &quot;budget.h&quot;
 macro_line|#include &quot;av7110.h&quot;
+macro_line|#include &quot;av7110_hw.h&quot;
 DECL|macro|budget_patch
 mdefine_line|#define budget_patch budget
 DECL|variable|budget_extension
@@ -47,10 +48,10 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|function|wdebi
+DECL|function|budget_wdebi
 r_static
 r_int
-id|wdebi
+id|budget_wdebi
 c_func
 (paren
 r_struct
@@ -169,10 +170,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|SOutCommand
+DECL|function|budget_av7110_send_fw_cmd
 r_static
 r_int
-id|SOutCommand
+id|budget_av7110_send_fw_cmd
 c_func
 (paren
 r_struct
@@ -215,7 +216,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|wdebi
+id|budget_wdebi
 c_func
 (paren
 id|budget
@@ -244,7 +245,7 @@ c_cond
 (paren
 id|length
 )paren
-id|wdebi
+id|budget_wdebi
 c_func
 (paren
 id|budget
@@ -267,7 +268,7 @@ l_int|2
 )paren
 suffix:semicolon
 r_else
-id|wdebi
+id|budget_wdebi
 c_func
 (paren
 id|budget
@@ -283,7 +284,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|wdebi
+id|budget_wdebi
 c_func
 (paren
 id|budget
@@ -357,7 +358,7 @@ id|budget
 )paren
 )paren
 suffix:semicolon
-id|SOutCommand
+id|budget_av7110_send_fw_cmd
 c_func
 (paren
 id|budget
@@ -536,7 +537,7 @@ id|msg
 id|i
 )braket
 suffix:semicolon
-id|SOutCommand
+id|budget_av7110_send_fw_cmd
 c_func
 (paren
 id|budget

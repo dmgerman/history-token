@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/sched.h&gt;                /* needed for smp_lock.
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 multiline_comment|/*&n;** Very simple and dumb string table that supports only find/insert.&n;** In practice, if this table gets too large, we may need a more&n;** efficient data structure.   Also note that currently there is no &n;** way to delete an item once it&squot;s added.  Therefore, name collision &n;** will return an error.&n;*/

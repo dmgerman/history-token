@@ -166,7 +166,8 @@ id|super_block
 op_star
 id|sb
 comma
-id|afs_fid_t
+r_struct
+id|afs_fid
 op_star
 id|fid
 comma
@@ -209,6 +210,25 @@ op_star
 id|inode
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * key_afs.c&n; */
+macro_line|#ifdef CONFIG_KEYS
+r_extern
+r_int
+id|afs_key_register
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|afs_key_unregister
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * main.c&n; */
 macro_line|#ifdef AFS_CACHING_SUPPORT
 r_extern
@@ -250,7 +270,8 @@ r_int
 id|afs_mntpt_check_symlink
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
@@ -273,7 +294,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|AFS_CB_HASH_COUNT
-mdefine_line|#define AFS_CB_HASH_COUNT (PAGE_SIZE/sizeof(struct list_head))
+mdefine_line|#define AFS_CB_HASH_COUNT (PAGE_SIZE / sizeof(struct list_head))
 r_extern
 r_struct
 id|list_head
@@ -286,7 +307,7 @@ id|spinlock_t
 id|afs_cb_hash_lock
 suffix:semicolon
 DECL|macro|afs_cb_hash
-mdefine_line|#define afs_cb_hash(SRV,FID) &bslash;&n;&t;afs_cb_hash_tbl[((unsigned long)(SRV) + (FID)-&gt;vid + (FID)-&gt;vnode + (FID)-&gt;unique) % &bslash;&n;&t;&t;&t;AFS_CB_HASH_COUNT]
+mdefine_line|#define afs_cb_hash(SRV,FID) &bslash;&n;&t;afs_cb_hash_tbl[((unsigned long)(SRV) + &bslash;&n;&t;&t;&t;(FID)-&gt;vid + (FID)-&gt;vnode + (FID)-&gt;unique) % &bslash;&n;&t;&t;&t;AFS_CB_HASH_COUNT]
 multiline_comment|/*&n; * proc.c&n; */
 r_extern
 r_int
@@ -309,7 +330,8 @@ r_int
 id|afs_proc_cell_setup
 c_func
 (paren
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 )paren
@@ -319,7 +341,8 @@ r_void
 id|afs_proc_cell_remove
 c_func
 (paren
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 )paren

@@ -116,27 +116,6 @@ DECL|macro|DELAYSTARTBLOCK
 mdefine_line|#define&t;DELAYSTARTBLOCK&t;&t;((xfs_fsblock_t)-1LL)
 DECL|macro|HOLESTARTBLOCK
 mdefine_line|#define&t;HOLESTARTBLOCK&t;&t;((xfs_fsblock_t)-2LL)
-multiline_comment|/*&n; * Trace operations for bmap extent tracing&n; */
-DECL|macro|XFS_BMAP_KTRACE_DELETE
-mdefine_line|#define&t;XFS_BMAP_KTRACE_DELETE&t;1
-DECL|macro|XFS_BMAP_KTRACE_INSERT
-mdefine_line|#define&t;XFS_BMAP_KTRACE_INSERT&t;2
-DECL|macro|XFS_BMAP_KTRACE_PRE_UP
-mdefine_line|#define&t;XFS_BMAP_KTRACE_PRE_UP&t;3
-DECL|macro|XFS_BMAP_KTRACE_POST_UP
-mdefine_line|#define&t;XFS_BMAP_KTRACE_POST_UP&t;4
-DECL|macro|XFS_BMAP_TRACE_SIZE
-mdefine_line|#define&t;XFS_BMAP_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
-DECL|macro|XFS_BMAP_KTRACE_SIZE
-mdefine_line|#define&t;XFS_BMAP_KTRACE_SIZE&t;32&t;/* size of per-inode trace buffer */
-macro_line|#if defined(XFS_ALL_TRACE)
-DECL|macro|XFS_BMAP_TRACE
-mdefine_line|#define&t;XFS_BMAP_TRACE
-macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_BMAP_TRACE
-macro_line|#undef&t;XFS_BMAP_TRACE
-macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BMAP_INIT)
 r_void
 id|xfs_bmap_init
@@ -256,6 +235,54 @@ DECL|typedef|xfs_bmalloca_t
 id|xfs_bmalloca_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#if defined(XFS_BMAP_TRACE)
+multiline_comment|/*&n; * Trace operations for bmap extent tracing&n; */
+DECL|macro|XFS_BMAP_KTRACE_DELETE
+mdefine_line|#define&t;XFS_BMAP_KTRACE_DELETE&t;1
+DECL|macro|XFS_BMAP_KTRACE_INSERT
+mdefine_line|#define&t;XFS_BMAP_KTRACE_INSERT&t;2
+DECL|macro|XFS_BMAP_KTRACE_PRE_UP
+mdefine_line|#define&t;XFS_BMAP_KTRACE_PRE_UP&t;3
+DECL|macro|XFS_BMAP_KTRACE_POST_UP
+mdefine_line|#define&t;XFS_BMAP_KTRACE_POST_UP&t;4
+DECL|macro|XFS_BMAP_TRACE_SIZE
+mdefine_line|#define&t;XFS_BMAP_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
+DECL|macro|XFS_BMAP_KTRACE_SIZE
+mdefine_line|#define&t;XFS_BMAP_KTRACE_SIZE&t;32&t;/* size of per-inode trace buffer */
+r_extern
+id|ktrace_t
+op_star
+id|xfs_bmap_trace_buf
+suffix:semicolon
+multiline_comment|/*&n; * Add bmap trace insert entries for all the contents of the extent list.&n; */
+r_void
+id|xfs_bmap_trace_exlist
+c_func
+(paren
+r_char
+op_star
+id|fname
+comma
+multiline_comment|/* function name */
+r_struct
+id|xfs_inode
+op_star
+id|ip
+comma
+multiline_comment|/* incore inode pointer */
+id|xfs_extnum_t
+id|cnt
+comma
+multiline_comment|/* count of entries in list */
+r_int
+id|whichfork
+)paren
+suffix:semicolon
+multiline_comment|/* data or attr fork */
+macro_line|#else
+DECL|macro|xfs_bmap_trace_exlist
+mdefine_line|#define&t;xfs_bmap_trace_exlist(f,ip,c,w)
+macro_line|#endif
 multiline_comment|/*&n; * Convert inode from non-attributed to attributed.&n; * Must not be in a transaction, ip must not be locked.&n; */
 r_int
 multiline_comment|/* error code */
@@ -492,36 +519,6 @@ id|whichfork
 )paren
 suffix:semicolon
 multiline_comment|/* data or attr fork */
-macro_line|#if defined(XFS_BMAP_TRACE)
-multiline_comment|/*&n; * Add bmap trace insert entries for all the contents of the extent list.&n; */
-r_void
-id|xfs_bmap_trace_exlist
-c_func
-(paren
-r_char
-op_star
-id|fname
-comma
-multiline_comment|/* function name */
-r_struct
-id|xfs_inode
-op_star
-id|ip
-comma
-multiline_comment|/* incore inode pointer */
-id|xfs_extnum_t
-id|cnt
-comma
-multiline_comment|/* count of entries in list */
-r_int
-id|whichfork
-)paren
-suffix:semicolon
-multiline_comment|/* data or attr fork */
-macro_line|#else
-DECL|macro|xfs_bmap_trace_exlist
-mdefine_line|#define&t;xfs_bmap_trace_exlist(f,ip,c,w)
-macro_line|#endif
 multiline_comment|/*&n; * Map file blocks to filesystem blocks.&n; * File range is given by the bno/len pair.&n; * Adds blocks to file if a write (&quot;flags &amp; XFS_BMAPI_WRITE&quot; set)&n; * into a hole or past eof.&n; * Only allocates blocks from a single allocation group,&n; * to avoid locking problems.&n; * The returned value in &quot;firstblock&quot; from the first call in a transaction&n; * must be remembered and presented to subsequent calls in &quot;firstblock&quot;.&n; * An upper bound for the number of blocks to be allocated is supplied to&n; * the first call in &quot;total&quot;; if no allocation group has that many free&n; * blocks then the call will fail (return NULLFSBLOCK in &quot;firstblock&quot;).&n; */
 r_int
 multiline_comment|/* error */
@@ -738,7 +735,8 @@ id|xfs_trans_t
 op_star
 id|tp
 comma
-id|xfs_inode_t
+r_struct
+id|xfs_inode
 op_star
 id|ip
 comma

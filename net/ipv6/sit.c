@@ -2031,6 +2031,11 @@ dot
 id|oif
 op_assign
 id|tunnel-&gt;parms.link
+comma
+dot
+id|proto
+op_assign
+id|IPPROTO_IPV6
 )brace
 suffix:semicolon
 r_if
@@ -3395,6 +3400,11 @@ dot
 id|oif
 op_assign
 id|tunnel-&gt;parms.link
+comma
+dot
+id|proto
+op_assign
+id|IPPROTO_IPV6
 )brace
 suffix:semicolon
 r_struct

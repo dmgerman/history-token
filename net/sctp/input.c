@@ -319,7 +319,7 @@ id|sctphdr
 )paren
 )paren
 r_goto
-id|bad_packet
+id|discard_it
 suffix:semicolon
 r_if
 c_cond
@@ -333,7 +333,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|bad_packet
+id|discard_it
 suffix:semicolon
 id|skb_pull
 c_func
@@ -374,7 +374,7 @@ id|af
 )paren
 )paren
 r_goto
-id|bad_packet
+id|discard_it
 suffix:semicolon
 multiline_comment|/* Initialize local addresses for lookups. */
 id|af
@@ -677,14 +677,6 @@ id|sk
 suffix:semicolon
 r_return
 id|ret
-suffix:semicolon
-id|bad_packet
-suffix:colon
-id|SCTP_INC_STATS
-c_func
-(paren
-id|SctpChecksumErrors
-)paren
 suffix:semicolon
 id|discard_it
 suffix:colon

@@ -1,7 +1,11 @@
 multiline_comment|/*&n;    amd756.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;&n;    Copyright (c) 1999-2002 Merlin Hughes &lt;merlin@merlin.org&gt;&n;&n;    Shamelessly ripped from i2c-piix4.c:&n;&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    2002-04-08: Added nForce support. (Csaba Halasz)&n;    2002-10-03: Fixed nForce PnP I/O port. (Michael Steil)&n;    2002-12-28: Rewritten into something that resembles a Linux driver (hch)&n;    2003-11-29: Added back AMD8111 removed by the previous rewrite.&n;                (Philip Pokorny)&n;*/
 multiline_comment|/*&n;   Supports AMD756, AMD766, AMD768, AMD8111 and nVidia nForce&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
-multiline_comment|/* #define DEBUG 1 */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

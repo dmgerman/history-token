@@ -307,6 +307,11 @@ suffix:semicolon
 id|uint
 id|flags
 suffix:semicolon
+macro_line|#ifdef DEBUG_ADB_IOP
+r_int
+id|i
+suffix:semicolon
+macro_line|#endif
 id|local_irq_save
 c_func
 (paren
@@ -321,7 +326,9 @@ macro_line|#ifdef DEBUG_ADB_IOP
 id|printk
 c_func
 (paren
-l_string|&quot;adb_iop_listen: rcvd packet, %d bytes: %02X %02X&quot;
+l_string|&quot;adb_iop_listen %p: rcvd packet, %d bytes: %02X %02X&quot;
+comma
+id|req
 comma
 (paren
 id|uint
@@ -341,18 +348,20 @@ id|uint
 id|amsg-&gt;cmd
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|i
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
 id|i
 OL
 id|amsg-&gt;count
+suffix:semicolon
+id|i
+op_increment
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -364,11 +373,9 @@ id|uint
 id|amsg-&gt;data
 (braket
 id|i
-op_increment
 )braket
 )paren
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -436,7 +443,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* TODO: is it possible for more tha one chunk of data  */
+multiline_comment|/* TODO: is it possible for more than one chunk of data  */
 multiline_comment|/*       to arrive before the timeout? If so we need to */
 multiline_comment|/*       use reply_ptr here like the other drivers do.  */
 r_if
@@ -540,6 +547,11 @@ r_struct
 id|adb_iopmsg
 id|amsg
 suffix:semicolon
+macro_line|#ifdef DEBUG_ADB_IOP
+r_int
+id|i
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* get the packet to send */
 id|req
 op_assign
@@ -563,7 +575,9 @@ macro_line|#ifdef DEBUG_ADB_IOP
 id|printk
 c_func
 (paren
-l_string|&quot;adb_iop_start: sending packet, %d bytes:&quot;
+l_string|&quot;adb_iop_start %p: sending packet, %d bytes:&quot;
+comma
+id|req
 comma
 id|req-&gt;nbytes
 )paren
@@ -956,30 +970,29 @@ r_void
 r_struct
 id|adb_request
 id|req
-suffix:semicolon
-id|req.reply_expected
+op_assign
+(brace
+dot
+id|reply_expected
 op_assign
 l_int|0
-suffix:semicolon
-id|req.nbytes
+comma
+dot
+id|nbytes
 op_assign
 l_int|2
-suffix:semicolon
-id|req.data
-(braket
-l_int|0
-)braket
+comma
+dot
+id|data
 op_assign
+(brace
 id|ADB_PACKET
-suffix:semicolon
-id|req.data
-(braket
-l_int|1
-)braket
-op_assign
+comma
 l_int|0
+)brace
+comma
+)brace
 suffix:semicolon
-multiline_comment|/* RESET */
 id|adb_iop_write
 c_func
 (paren
@@ -993,11 +1006,18 @@ c_loop
 op_logical_neg
 id|req.complete
 )paren
+(brace
 id|adb_iop_poll
 c_func
 (paren
 )paren
 suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -124,17 +124,13 @@ op_star
 id|page
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|in_interrupt
 c_func
 (paren
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -220,8 +216,8 @@ op_star
 id|PAGE_SIZE
 suffix:semicolon
 macro_line|#if HIGHMEM_DEBUG
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|pte_none
@@ -234,10 +230,6 @@ op_plus
 id|idx
 )paren
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -337,8 +329,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|vaddr
 op_ne
@@ -347,10 +339,6 @@ op_plus
 id|idx
 op_star
 id|PAGE_SIZE
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * force other mappings to Oops if they&squot;ll try to access&n;&t; * this pte without first remap it&n;&t; */

@@ -61,8 +61,8 @@ DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;(current_thread_info()-&gt;cpu)
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)       cpu_isset(cpu, cpu_present_mask)
+DECL|macro|cpu_possible_map
+mdefine_line|#define cpu_possible_map&t;cpu_present_map
 macro_line|#endif /* CONFIG_SMP */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */

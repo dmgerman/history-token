@@ -59,13 +59,16 @@ op_star
 id|peer
 )paren
 suffix:semicolon
+multiline_comment|/* XXX late_initcall is kludgy, but the only alternative seems to create&n; * a transport upon the first mount, which is worse. Or is it?&n; */
+multiline_comment|/* module_init(afs_init); */
 DECL|variable|afs_init
-id|module_init
+id|late_initcall
 c_func
 (paren
 id|afs_init
 )paren
 suffix:semicolon
+multiline_comment|/* must be called after net/ to create socket */
 DECL|variable|afs_exit
 id|module_exit
 c_func
@@ -89,6 +92,28 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|rootcell
+r_static
+r_char
+op_star
+id|rootcell
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|rootcell
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rootcell
+comma
+l_string|&quot;root AFS cell name and VL server IP addr list&quot;
 )paren
 suffix:semicolon
 DECL|variable|afs_peer_ops
@@ -264,10 +289,10 @@ r_goto
 id|error
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* initialise the cell DB */
+macro_line|#ifdef CONFIG_KEYS
 id|ret
 op_assign
-id|afs_cell_init
+id|afs_key_register
 c_func
 (paren
 )paren
@@ -281,6 +306,26 @@ l_int|0
 )paren
 r_goto
 id|error_cache
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* initialise the cell DB */
+id|ret
+op_assign
+id|afs_cell_init
+c_func
+(paren
+id|rootcell
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_goto
+id|error_keys
 suffix:semicolon
 multiline_comment|/* start the timeout daemon */
 id|ret
@@ -298,7 +343,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|error_cache
+id|error_keys
 suffix:semicolon
 multiline_comment|/* start the async operation daemon */
 id|ret
@@ -388,8 +433,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|error_keys
+suffix:colon
+macro_line|#ifdef CONFIG_KEYS
+id|afs_key_unregister
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error_cache
 suffix:colon
+macro_line|#endif
 macro_line|#ifdef AFS_CACHING_SUPPORT
 id|cachefs_unregister_netfs
 c_func
@@ -470,6 +524,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KEYS
+id|afs_key_unregister
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef AFS_CACHING_SUPPORT
 id|cachefs_unregister_netfs
 c_func
@@ -500,7 +561,8 @@ op_star
 id|peer
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -620,7 +682,8 @@ op_star
 id|peer
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -688,8 +751,6 @@ id|server-&gt;peer
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|//_debug(&quot;Server %p{u=%d}&bslash;n&quot;,server,atomic_read(&amp;server-&gt;usage));
-singleline_comment|//_debug(&quot;Cell %p{u=%d}&bslash;n&quot;,server-&gt;cell,atomic_read(&amp;server-&gt;cell-&gt;usage));
 )brace
 id|spin_unlock
 c_func

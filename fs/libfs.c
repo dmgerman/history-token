@@ -753,6 +753,12 @@ id|dcache_lock
 )paren
 suffix:semicolon
 )brace
+id|update_atime
+c_func
+(paren
+id|dentry-&gt;d_inode
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

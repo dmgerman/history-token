@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: netiucv.c,v 1.26 2003/09/23 16:48:17 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.26 $&n; *&n; */
+multiline_comment|/*&n; * $Id: netiucv.c,v 1.30 2003/12/02 12:29:32 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.30 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -4322,7 +4322,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n;&t; * If connection is not running, try to restart it&n;&t; * notify anybody about a link failure and throw&n;&t; * away packet. &n;&t; */
+multiline_comment|/**&n;&t; * If connection is not running, try to restart it&n;&t; * and throw away packet. &n;&t; */
 r_if
 c_cond
 (paren
@@ -4343,12 +4343,6 @@ comma
 id|DEV_EVENT_START
 comma
 id|dev
-)paren
-suffix:semicolon
-id|dst_link_failure
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -5532,7 +5526,7 @@ op_amp
 id|dev-&gt;kobj
 comma
 op_amp
-id|netiucv_stat_attr_group
+id|netiucv_attr_group
 )paren
 suffix:semicolon
 r_return
@@ -5569,7 +5563,7 @@ op_amp
 id|dev-&gt;kobj
 comma
 op_amp
-id|netiucv_stat_attr_group
+id|netiucv_attr_group
 )paren
 suffix:semicolon
 )brace
@@ -5633,7 +5627,6 @@ id|iucv_bus
 suffix:semicolon
 id|dev-&gt;parent
 op_assign
-op_amp
 id|iucv_root
 suffix:semicolon
 id|ret
@@ -6754,7 +6747,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.26 $&quot;
+l_string|&quot;$Revision: 1.30 $&quot;
 suffix:semicolon
 r_char
 op_star

@@ -1,8 +1,11 @@
 multiline_comment|/* &n; * linux/arch/sh/boards/cat68701/setup.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *               2001  Yutaro Ebihara&n; *&n; * Setup routines for A-ONE Corp CAT-68701 SH7708 Board&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/mach/io.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|function|get_system_type
 r_const
 r_char
@@ -17,17 +20,7 @@ r_return
 l_string|&quot;CAT-68701&quot;
 suffix:semicolon
 )brace
-DECL|function|platform_setup
-r_void
-id|platform_setup
-c_func
-(paren
-)paren
-(brace
-multiline_comment|/* dummy read erea5 (CS8900A) */
-)brace
 macro_line|#ifdef CONFIG_HEARTBEAT
-macro_line|#include &lt;linux/sched.h&gt;
 DECL|function|heartbeat_cat68701
 r_void
 id|heartbeat_cat68701
@@ -129,4 +122,146 @@ l_int|0x3fe
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_HEARTBEAT */
+DECL|function|cat68701_isa_port2addr
+r_int
+r_int
+id|cat68701_isa_port2addr
+c_func
+(paren
+r_int
+r_int
+id|offset
+)paren
+(brace
+multiline_comment|/* CompactFlash (IDE) */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|offset
+op_ge
+l_int|0x1f0
+)paren
+op_logical_and
+(paren
+id|offset
+op_le
+l_int|0x1f7
+)paren
+)paren
+op_logical_or
+(paren
+id|offset
+op_eq
+l_int|0x3f6
+)paren
+)paren
+r_return
+l_int|0xba000000
+op_plus
+id|offset
+suffix:semicolon
+multiline_comment|/* INPUT PORT */
+r_if
+c_cond
+(paren
+(paren
+id|offset
+op_ge
+l_int|0x3fc
+)paren
+op_logical_and
+(paren
+id|offset
+op_le
+l_int|0x3fd
+)paren
+)paren
+r_return
+l_int|0xb4007000
+op_plus
+id|offset
+suffix:semicolon
+multiline_comment|/* OUTPUT PORT */
+r_if
+c_cond
+(paren
+(paren
+id|offset
+op_ge
+l_int|0x3fe
+)paren
+op_logical_and
+(paren
+id|offset
+op_le
+l_int|0x3ff
+)paren
+)paren
+r_return
+l_int|0xb4007400
+op_plus
+id|offset
+suffix:semicolon
+r_return
+id|offset
+op_plus
+l_int|0xb4000000
+suffix:semicolon
+multiline_comment|/* other I/O (EREA 5)*/
+)brace
+multiline_comment|/*&n; * The Machine Vector&n; */
+DECL|variable|__initmv
+r_struct
+id|sh_machine_vector
+id|mv_cat68701
+id|__initmv
+op_assign
+(brace
+dot
+id|mv_nr_irqs
+op_assign
+l_int|32
+comma
+dot
+id|mv_isa_port2addr
+op_assign
+id|cat68701_isa_port2addr
+comma
+dot
+id|mv_irq_demux
+op_assign
+id|cat68701_irq_demux
+comma
+dot
+id|mv_init_irq
+op_assign
+id|init_cat68701_IRQ
+comma
+macro_line|#ifdef CONFIG_HEARTBEAT
+dot
+id|mv_heartbeat
+op_assign
+id|heartbeat_cat68701
+comma
+macro_line|#endif
+)brace
+suffix:semicolon
+DECL|function|ALIAS_MV
+id|ALIAS_MV
+c_func
+(paren
+id|cat68701
+)paren
+r_int
+id|__init
+id|platform_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* dummy read erea5 (CS8900A) */
+)brace
 eof

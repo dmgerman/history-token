@@ -33,12 +33,6 @@ macro_line|#include &quot;xfs_dir2_block.h&quot;
 macro_line|#include &quot;xfs_dir2_node.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
-macro_line|#if defined(XFSDEBUG) &amp;&amp; defined(CONFIG_KDB)
-DECL|macro|xfs_buftrace
-macro_line|#undef xfs_buftrace
-DECL|macro|xfs_buftrace
-mdefine_line|#define xfs_buftrace(A,B) &bslash;&n;&t;printk(&quot;    xfs_buftrace : %s (0x%p)&bslash;n&quot;, A, B); &bslash;&n;&t;BUG();
-macro_line|#endif
 multiline_comment|/*&n; * xfs_da_btree.c&n; *&n; * Routines to implement directories as Btrees of hashed names.&n; */
 multiline_comment|/*========================================================================&n; * Function prototypes for the kernel.&n; *========================================================================*/
 multiline_comment|/*&n; * Routines used for growing the Btree.&n; */

@@ -7,8 +7,8 @@ multiline_comment|/*&n; * Require 68020 or better.&n; *&n; * They use the standa
 DECL|macro|test_and_set_bit
 mdefine_line|#define test_and_set_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_test_and_set_bit(nr, vaddr) : &bslash;&n;   __generic_test_and_set_bit(nr, vaddr))
 DECL|function|__constant_test_and_set_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__constant_test_and_set_bit
 c_func
@@ -70,8 +70,8 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|__generic_test_and_set_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__generic_test_and_set_bit
 c_func
@@ -123,8 +123,8 @@ mdefine_line|#define set_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? 
 DECL|macro|__set_bit
 mdefine_line|#define __set_bit(nr,vaddr) set_bit(nr,vaddr) 
 DECL|function|__constant_set_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__constant_set_bit
 c_func
@@ -175,8 +175,8 @@ l_int|7
 suffix:semicolon
 )brace
 DECL|function|__generic_set_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__generic_set_bit
 c_func
@@ -218,8 +218,8 @@ mdefine_line|#define test_and_clear_bit(nr,vaddr) &bslash;&n;  (__builtin_consta
 DECL|macro|__test_and_clear_bit
 mdefine_line|#define __test_and_clear_bit(nr,vaddr) test_and_clear_bit(nr,vaddr)
 DECL|function|__constant_test_and_clear_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__constant_test_and_clear_bit
 c_func
@@ -281,8 +281,8 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|__generic_test_and_clear_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__generic_test_and_clear_bit
 c_func
@@ -339,8 +339,8 @@ mdefine_line|#define clear_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) 
 DECL|macro|__clear_bit
 mdefine_line|#define __clear_bit(nr,vaddr) clear_bit(nr,vaddr)
 DECL|function|__constant_clear_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__constant_clear_bit
 c_func
@@ -391,8 +391,8 @@ l_int|7
 suffix:semicolon
 )brace
 DECL|function|__generic_clear_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__generic_clear_bit
 c_func
@@ -436,8 +436,8 @@ mdefine_line|#define __test_and_change_bit(nr,vaddr) test_and_change_bit(nr,vadd
 DECL|macro|__change_bit
 mdefine_line|#define __change_bit(nr,vaddr) change_bit(nr,vaddr)
 DECL|function|__constant_test_and_change_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__constant_test_and_change_bit
 c_func
@@ -499,8 +499,8 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|__generic_test_and_change_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|__generic_test_and_change_bit
 c_func
@@ -550,8 +550,8 @@ suffix:semicolon
 DECL|macro|change_bit
 mdefine_line|#define change_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_change_bit(nr, vaddr) : &bslash;&n;   __generic_change_bit(nr, vaddr))
 DECL|function|__constant_change_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__constant_change_bit
 c_func
@@ -602,8 +602,8 @@ l_int|7
 suffix:semicolon
 )brace
 DECL|function|__generic_change_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__generic_change_bit
 c_func
@@ -641,8 +641,8 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|function|test_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|test_bit
 c_func
@@ -693,8 +693,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|find_first_zero_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|find_first_zero_bit
 c_func
@@ -836,10 +836,11 @@ l_int|31
 suffix:semicolon
 )brace
 DECL|function|find_next_zero_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|find_next_zero_bit
+c_func
 (paren
 r_const
 r_int
@@ -1001,8 +1002,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
 DECL|function|ffz
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|ffz
@@ -1247,11 +1248,12 @@ mdefine_line|#define hweight16(x) generic_hweight16(x)
 DECL|macro|hweight8
 mdefine_line|#define hweight8(x) generic_hweight8(x)
 multiline_comment|/* Bitmap functions for the minix filesystem */
-r_extern
-id|__inline__
-r_int
 DECL|function|minix_find_first_zero_bit
+r_static
+r_inline
+r_int
 id|minix_find_first_zero_bit
+c_func
 (paren
 r_const
 r_void
@@ -1381,11 +1383,12 @@ l_int|31
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
-r_int
 DECL|function|minix_test_and_set_bit
+r_static
+r_inline
+r_int
 id|minix_test_and_set_bit
+c_func
 (paren
 r_int
 id|nr
@@ -1436,11 +1439,12 @@ suffix:semicolon
 )brace
 DECL|macro|minix_set_bit
 mdefine_line|#define minix_set_bit(nr,addr)&t;((void)minix_test_and_set_bit(nr,addr))
-r_extern
-id|__inline__
-r_int
 DECL|function|minix_test_and_clear_bit
+r_static
+r_inline
+r_int
 id|minix_test_and_clear_bit
+c_func
 (paren
 r_int
 id|nr
@@ -1489,11 +1493,12 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
-r_int
 DECL|function|minix_test_bit
+r_static
+r_inline
+r_int
 id|minix_test_bit
+c_func
 (paren
 r_int
 id|nr
@@ -1540,11 +1545,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Bitmap functions for the ext2 filesystem. */
-r_extern
-id|__inline__
-r_int
 DECL|function|ext2_set_bit
+r_static
+r_inline
+r_int
 id|ext2_set_bit
+c_func
 (paren
 r_int
 id|nr
@@ -1593,11 +1599,12 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
-r_int
 DECL|function|ext2_clear_bit
+r_static
+r_inline
+r_int
 id|ext2_clear_bit
+c_func
 (paren
 r_int
 id|nr
@@ -1650,11 +1657,12 @@ DECL|macro|ext2_set_bit_atomic
 mdefine_line|#define ext2_set_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_set_bit((nr), (addr));&t;&bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|ext2_clear_bit_atomic
 mdefine_line|#define ext2_clear_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_clear_bit((nr), (addr));&t;&bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
-r_extern
-id|__inline__
-r_int
 DECL|function|ext2_test_bit
+r_static
+r_inline
+r_int
 id|ext2_test_bit
+c_func
 (paren
 r_int
 id|nr
@@ -1700,11 +1708,12 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
-r_int
 DECL|function|ext2_find_first_zero_bit
+r_static
+r_inline
+r_int
 id|ext2_find_first_zero_bit
+c_func
 (paren
 r_const
 r_void
@@ -1829,11 +1838,12 @@ op_plus
 id|res
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
-r_int
 DECL|function|ext2_find_next_zero_bit
+r_static
+r_inline
+r_int
 id|ext2_find_next_zero_bit
+c_func
 (paren
 r_const
 r_void

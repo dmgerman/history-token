@@ -925,9 +925,11 @@ c_loop
 (paren
 id|phb
 op_assign
-id|find_devices
+id|of_find_node_by_name
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;pci&quot;
 )paren
 suffix:semicolon
@@ -935,7 +937,13 @@ id|phb
 suffix:semicolon
 id|phb
 op_assign
-id|phb-&gt;next
+id|of_find_node_by_name
+c_func
+(paren
+id|phb
+comma
+l_string|&quot;pci&quot;
+)paren
 )paren
 (brace
 r_int

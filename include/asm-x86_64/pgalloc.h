@@ -90,8 +90,8 @@ op_star
 id|pmd
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 (paren
 r_int
@@ -104,10 +104,6 @@ id|PAGE_SIZE
 op_minus
 l_int|1
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|free_page
@@ -190,8 +186,8 @@ op_star
 id|pgd
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 (paren
 r_int
@@ -204,10 +200,6 @@ id|PAGE_SIZE
 op_minus
 l_int|1
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|free_page
@@ -318,8 +310,8 @@ op_star
 id|pte
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 (paren
 r_int
@@ -332,10 +324,6 @@ id|PAGE_SIZE
 op_minus
 l_int|1
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|free_page

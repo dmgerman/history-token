@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Non Fatal Machine Check Exception Reporting&n; */
+multiline_comment|/*&n; * Non Fatal Machine Check Exception Reporting&n; *&n; * (C) Copyright 2002 Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *&n; * This file contains routines to check for non-fatal MCEs every 15s&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -23,6 +23,11 @@ DECL|variable|timerset
 r_static
 r_int
 id|timerset
+suffix:semicolon
+DECL|variable|firstbank
+r_static
+r_int
+id|firstbank
 suffix:semicolon
 DECL|macro|MCE_RATE
 mdefine_line|#define MCE_RATE&t;15*HZ&t;/* timer rate is 15s */
@@ -54,7 +59,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+id|firstbank
 suffix:semicolon
 id|i
 OL
@@ -230,6 +235,69 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+op_assign
+op_amp
+id|boot_cpu_data
+suffix:semicolon
+multiline_comment|/* Check for MCE support */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has
+c_func
+(paren
+id|c
+comma
+id|X86_FEATURE_MCE
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Check for PPro style MCA */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has
+c_func
+(paren
+id|c
+comma
+id|X86_FEATURE_MCA
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Some Athlons misbehave when we frob bank 0 */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+op_logical_and
+id|boot_cpu_data.x86
+op_eq
+l_int|6
+)paren
+id|firstbank
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|firstbank
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

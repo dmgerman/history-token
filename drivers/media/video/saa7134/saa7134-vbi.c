@@ -56,7 +56,7 @@ l_string|&quot;number of vbi buffers, range 2-32&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (vbi_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/vbi: &quot; fmt, dev-&gt;name, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (vbi_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/vbi: &quot; fmt, dev-&gt;name , ## arg)
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|macro|VBI_LINE_COUNT
 mdefine_line|#define VBI_LINE_COUNT     16

@@ -4,8 +4,7 @@ DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.33 $&quot;
-macro_line|#ifdef __KERNEL__
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.38 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct
@@ -66,8 +65,30 @@ id|u32
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|zfcp_sysfs_port_remove_files
+c_func
+(paren
+r_struct
+id|device
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|zfcp_sysfs_unit_create_files
+c_func
+(paren
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_sysfs_unit_remove_files
 c_func
 (paren
 r_struct
@@ -621,28 +642,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|zfcp_scsi_insert_into_fake_queue
-c_func
-(paren
-r_struct
-id|zfcp_adapter
-op_star
-comma
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|zfcp_scsi_process_and_clear_fake_queue
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|zfcp_create_sbals_from_sg
 c_func
@@ -1030,6 +1029,5 @@ id|u32
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* ZFCP_EXT_H */
 eof

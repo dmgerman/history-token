@@ -3,6 +3,9 @@ macro_line|#ifndef _LINUX_AFS_KAFSTIMOD_H
 DECL|macro|_LINUX_AFS_KAFSTIMOD_H
 mdefine_line|#define _LINUX_AFS_KAFSTIMOD_H
 macro_line|#include &quot;types.h&quot;
+r_struct
+id|afs_timer
+suffix:semicolon
 DECL|struct|afs_timer_ops
 r_struct
 id|afs_timer_ops
@@ -58,7 +61,8 @@ r_void
 id|afs_timer_init
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 comma
@@ -102,7 +106,8 @@ r_void
 id|afs_kafstimod_add_timer
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 comma
@@ -116,7 +121,8 @@ r_int
 id|afs_kafstimod_del_timer
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 )paren

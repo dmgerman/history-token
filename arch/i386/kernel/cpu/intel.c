@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -8,6 +9,11 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cpu.h&quot;
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#include &lt;asm/apic.h&gt;
+macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#endif
 r_extern
 r_int
 id|trap_init_f00f_bug
@@ -1262,6 +1268,13 @@ comma
 id|edx
 suffix:semicolon
 r_int
+id|index_lsb
+comma
+id|index_msb
+comma
+id|tmp
+suffix:semicolon
+r_int
 id|cpu
 op_assign
 id|smp_processor_id
@@ -1322,6 +1335,14 @@ OG
 l_int|1
 )paren
 (brace
+id|index_lsb
+op_assign
+l_int|0
+suffix:semicolon
+id|index_msb
+op_assign
+l_int|31
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * At this point we only support two siblings per&n;&t;&t;&t; * processor package.&n;&t;&t;&t; */
 DECL|macro|NR_SIBLINGS
 mdefine_line|#define NR_SIBLINGS&t;2
@@ -1350,22 +1371,81 @@ r_goto
 id|too_many_siblings
 suffix:semicolon
 )brace
-multiline_comment|/* cpuid returns the value latched in the HW at reset,&n;&t;&t;&t; * not the APIC ID register&squot;s value.  For any box&n;&t;&t;&t; * whose BIOS changes APIC IDs, like clustered APIC&n;&t;&t;&t; * systems, we must use hard_smp_processor_id.&n;&t;&t;&t; * See Intel&squot;s IA-32 SW Dev&squot;s Manual Vol2 under CPUID.&n;&t;&t;&t; */
+id|tmp
+op_assign
+id|smp_num_siblings
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|tmp
+op_amp
+l_int|1
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|tmp
+op_rshift_assign
+l_int|1
+suffix:semicolon
+id|index_lsb
+op_increment
+suffix:semicolon
+)brace
+id|tmp
+op_assign
+id|smp_num_siblings
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|tmp
+op_amp
+l_int|0x80000000
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|tmp
+op_lshift_assign
+l_int|1
+suffix:semicolon
+id|index_msb
+op_decrement
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|index_lsb
+op_ne
+id|index_msb
+)paren
+id|index_msb
+op_increment
+suffix:semicolon
 id|phys_proc_id
 (braket
 id|cpu
 )braket
 op_assign
-id|hard_smp_processor_id
+id|phys_pkg_id
 c_func
 (paren
+(paren
+id|ebx
+op_rshift
+l_int|24
 )paren
 op_amp
-op_complement
-(paren
-id|smp_num_siblings
-op_minus
-l_int|1
+l_int|0xFF
+comma
+id|index_msb
 )paren
 suffix:semicolon
 id|printk

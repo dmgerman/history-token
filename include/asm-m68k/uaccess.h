@@ -13,7 +13,7 @@ multiline_comment|/* We let the MMU do all checking */
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) 1
 DECL|function|verify_area
-r_extern
+r_static
 r_inline
 r_int
 id|verify_area

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioremap.c,v 1.6 2003/05/04 19:29:55 lethal Exp $&n; *&n; * arch/sh/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
+multiline_comment|/* $Id: ioremap.c,v 1.8 2003/10/09 15:25:42 lethal Exp $&n; *&n; * arch/sh/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -596,6 +596,8 @@ id|PAGE_ALIGN
 c_func
 (paren
 id|last_addr
+op_plus
+l_int|1
 )paren
 op_minus
 id|phys_addr
@@ -619,6 +621,10 @@ id|area
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|area-&gt;phys_addr
+op_assign
+id|phys_addr
 suffix:semicolon
 id|addr
 op_assign
@@ -644,7 +650,7 @@ id|flags
 )paren
 )paren
 (brace
-id|vfree
+id|vunmap
 c_func
 (paren
 id|addr

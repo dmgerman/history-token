@@ -241,7 +241,7 @@ id|vp-&gt;v_fbhv
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
+macro_line|#ifdef XFS_VNODE_TRACE
 id|ktrace_free
 c_func
 (paren
@@ -481,7 +481,7 @@ comma
 l_string|&quot;vnode&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_XFS_VNODE_TRACING
+macro_line|#ifdef&t;XFS_VNODE_TRACE
 id|vp-&gt;v_trace
 op_assign
 id|ktrace_alloc
@@ -492,7 +492,15 @@ comma
 id|KM_SLEEP
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_XFS_VNODE_TRACING */
+id|printk
+c_func
+(paren
+l_string|&quot;Allocated VNODE_TRACE at 0x%p&bslash;n&quot;
+comma
+id|vp-&gt;v_trace
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* XFS_VNODE_TRACE */
 id|vn_trace_exit
 c_func
 (paren
@@ -1253,7 +1261,7 @@ id|vmap
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_XFS_VNODE_TRACING
+macro_line|#ifdef&t;XFS_VNODE_TRACE
 DECL|macro|KTRACE_ENTER
 mdefine_line|#define KTRACE_ENTER(vp, vk, s, line, ra)&t;&t;&t;&bslash;&n;&t;ktrace_enter(&t;(vp)-&gt;v_trace,&t;&t;&t;&t;&bslash;&n;/*  0 */&t;&t;(void *)(__psint_t)(vk),&t;&t;&bslash;&n;/*  1 */&t;&t;(void *)(s),&t;&t;&t;&t;&bslash;&n;/*  2 */&t;&t;(void *)(__psint_t) line,&t;&t;&bslash;&n;/*  3 */&t;&t;(void *)(vn_count(vp)), &bslash;&n;/*  4 */&t;&t;(void *)(ra),&t;&t;&t;&t;&bslash;&n;/*  5 */&t;&t;(void *)(__psunsigned_t)(vp)-&gt;v_flag,&t;&bslash;&n;/*  6 */&t;&t;(void *)(__psint_t)smp_processor_id(),&t;&bslash;&n;/*  7 */&t;&t;(void *)(__psint_t)(current-&gt;pid),&t;&bslash;&n;/*  8 */&t;&t;(void *)__return_address,&t;&t;&bslash;&n;/*  9 */&t;&t;0, 0, 0, 0, 0, 0, 0)
 multiline_comment|/*&n; * Vnode tracing code.&n; */
@@ -1431,5 +1439,5 @@ id|ra
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* CONFIG_XFS_VNODE_TRACING */
+macro_line|#endif&t;/* XFS_VNODE_TRACE */
 eof

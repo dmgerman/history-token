@@ -1,4 +1,9 @@
 multiline_comment|/*&n; * linux/drivers/i2c/i2c-frodo.c&n; *&n; * Author: Abraham van der Merwe &lt;abraham@2d3d.co.za&gt;&n; *&n; * An I2C adapter driver for the 2d3D, Inc. StrongARM SA-1110&n; * Development board (Frodo).&n; *&n; * This source code is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * version 2 as published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

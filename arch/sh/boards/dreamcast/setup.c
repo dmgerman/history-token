@@ -1,4 +1,4 @@
-multiline_comment|/* arch/sh/kernel/setup_dc.c&n; *&n; * Hardware support for the Sega Dreamcast.&n; *&n; * Copyright (c) 2001, 2002 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; * Copyright (c) 2002 Paul Mundt &lt;lethal@chaoticdreams.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; * &n; * This file originally bore the message (with enclosed-$):&n; *&t;Id: setup_dc.c,v 1.5 2001/05/24 05:09:16 mrbrown Exp&n; *&t;SEGA Dreamcast support&n; */
+multiline_comment|/* &n; * arch/sh/boards/dreamcast/setup.c&n; *&n; * Hardware support for the Sega Dreamcast.&n; *&n; * Copyright (c) 2001, 2002 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; * Copyright (c) 2002, 2003 Paul Mundt &lt;lethal@linux-sh.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; * &n; * This file originally bore the message (with enclosed-$):&n; *&t;Id: setup_dc.c,v 1.5 2001/05/24 05:09:16 mrbrown Exp&n; *&t;SEGA Dreamcast support&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
@@ -7,7 +7,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/dreamcast/sysasic.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/machvec_init.h&gt;
+macro_line|#include &lt;asm/mach/sysasic.h&gt;
 r_extern
 r_struct
 id|hw_interrupt_type
@@ -32,6 +34,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|gapspci_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|systemasic_irq_demux
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
 DECL|function|get_system_type
 r_const
 r_char
@@ -46,17 +64,31 @@ r_return
 l_string|&quot;Sega Dreamcast&quot;
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PCI
-r_extern
-r_int
-id|gapspci_init
+DECL|variable|__initmv
+r_struct
+id|sh_machine_vector
+id|mv_dreamcast
+id|__initmv
+op_assign
+(brace
+dot
+id|mv_nr_irqs
+op_assign
+id|NR_IRQS
+comma
+dot
+id|mv_irq_demux
+op_assign
+id|systemasic_irq_demux
+comma
+)brace
+suffix:semicolon
+DECL|function|ALIAS_MV
+id|ALIAS_MV
 c_func
 (paren
-r_void
+id|dreamcast
 )paren
-suffix:semicolon
-macro_line|#endif
-DECL|function|platform_setup
 r_int
 id|__init
 id|platform_setup
@@ -72,6 +104,12 @@ multiline_comment|/* Mask all hardware events */
 multiline_comment|/* XXX */
 multiline_comment|/* Acknowledge any previous events */
 multiline_comment|/* XXX */
+id|__set_io_port_base
+c_func
+(paren
+l_int|0xa0000000
+)paren
+suffix:semicolon
 multiline_comment|/* Assign all virtual IRQs to the System ASIC int. handler */
 r_for
 c_loop

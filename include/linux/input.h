@@ -319,30 +319,28 @@ DECL|macro|KEY_KP0
 mdefine_line|#define KEY_KP0&t;&t;&t;82
 DECL|macro|KEY_KPDOT
 mdefine_line|#define KEY_KPDOT&t;&t;83
-DECL|macro|KEY_103RD
-mdefine_line|#define KEY_103RD&t;&t;84
-DECL|macro|KEY_F13
-mdefine_line|#define KEY_F13&t;&t;&t;85
+DECL|macro|KEY_ZENKAKUHANKAKU
+mdefine_line|#define KEY_ZENKAKUHANKAKU&t;85
 DECL|macro|KEY_102ND
 mdefine_line|#define KEY_102ND&t;&t;86
 DECL|macro|KEY_F11
 mdefine_line|#define KEY_F11&t;&t;&t;87
 DECL|macro|KEY_F12
 mdefine_line|#define KEY_F12&t;&t;&t;88
-DECL|macro|KEY_F14
-mdefine_line|#define KEY_F14&t;&t;&t;89
-DECL|macro|KEY_F15
-mdefine_line|#define KEY_F15&t;&t;&t;90
-DECL|macro|KEY_F16
-mdefine_line|#define KEY_F16&t;&t;&t;91
-DECL|macro|KEY_F17
-mdefine_line|#define KEY_F17&t;&t;&t;92
-DECL|macro|KEY_F18
-mdefine_line|#define KEY_F18&t;&t;&t;93
-DECL|macro|KEY_F19
-mdefine_line|#define KEY_F19&t;&t;&t;94
-DECL|macro|KEY_F20
-mdefine_line|#define KEY_F20&t;&t;&t;95
+DECL|macro|KEY_RO
+mdefine_line|#define KEY_RO&t;&t;&t;89
+DECL|macro|KEY_KATAKANA
+mdefine_line|#define KEY_KATAKANA&t;&t;90
+DECL|macro|KEY_HIRAGANA
+mdefine_line|#define KEY_HIRAGANA&t;&t;91
+DECL|macro|KEY_HENKAN
+mdefine_line|#define KEY_HENKAN&t;&t;92
+DECL|macro|KEY_KATAKANAHIRAGANA
+mdefine_line|#define KEY_KATAKANAHIRAGANA&t;93
+DECL|macro|KEY_MUHENKAN
+mdefine_line|#define KEY_MUHENKAN&t;&t;94
+DECL|macro|KEY_KPJPCOMMA
+mdefine_line|#define KEY_KPJPCOMMA&t;&t;95
 DECL|macro|KEY_KPENTER
 mdefine_line|#define KEY_KPENTER&t;&t;96
 DECL|macro|KEY_RIGHTCTRL
@@ -391,16 +389,14 @@ DECL|macro|KEY_KPPLUSMINUS
 mdefine_line|#define KEY_KPPLUSMINUS&t;&t;118
 DECL|macro|KEY_PAUSE
 mdefine_line|#define KEY_PAUSE&t;&t;119
-DECL|macro|KEY_F21
-mdefine_line|#define KEY_F21&t;&t;&t;120
-DECL|macro|KEY_F22
-mdefine_line|#define KEY_F22&t;&t;&t;121
-DECL|macro|KEY_F23
-mdefine_line|#define KEY_F23&t;&t;&t;122
-DECL|macro|KEY_F24
-mdefine_line|#define KEY_F24&t;&t;&t;123
 DECL|macro|KEY_KPCOMMA
-mdefine_line|#define KEY_KPCOMMA&t;&t;124
+mdefine_line|#define KEY_KPCOMMA&t;&t;121
+DECL|macro|KEY_HANGUEL
+mdefine_line|#define KEY_HANGUEL&t;&t;122
+DECL|macro|KEY_HANJA
+mdefine_line|#define KEY_HANJA&t;&t;123
+DECL|macro|KEY_YEN
+mdefine_line|#define KEY_YEN&t;&t;&t;124
 DECL|macro|KEY_LEFTMETA
 mdefine_line|#define KEY_LEFTMETA&t;&t;125
 DECL|macro|KEY_RIGHTMETA
@@ -513,42 +509,30 @@ DECL|macro|KEY_KPLEFTPAREN
 mdefine_line|#define KEY_KPLEFTPAREN&t;&t;179
 DECL|macro|KEY_KPRIGHTPAREN
 mdefine_line|#define KEY_KPRIGHTPAREN&t;180
-DECL|macro|KEY_INTL1
-mdefine_line|#define KEY_INTL1&t;&t;181
-DECL|macro|KEY_INTL2
-mdefine_line|#define KEY_INTL2&t;&t;182
-DECL|macro|KEY_INTL3
-mdefine_line|#define KEY_INTL3&t;&t;183
-DECL|macro|KEY_INTL4
-mdefine_line|#define KEY_INTL4&t;&t;184
-DECL|macro|KEY_INTL5
-mdefine_line|#define KEY_INTL5&t;&t;185
-DECL|macro|KEY_INTL6
-mdefine_line|#define KEY_INTL6&t;&t;186
-DECL|macro|KEY_INTL7
-mdefine_line|#define KEY_INTL7&t;&t;187
-DECL|macro|KEY_INTL8
-mdefine_line|#define KEY_INTL8&t;&t;188
-DECL|macro|KEY_INTL9
-mdefine_line|#define KEY_INTL9&t;&t;189
-DECL|macro|KEY_LANG1
-mdefine_line|#define KEY_LANG1&t;&t;190
-DECL|macro|KEY_LANG2
-mdefine_line|#define KEY_LANG2&t;&t;191
-DECL|macro|KEY_LANG3
-mdefine_line|#define KEY_LANG3&t;&t;192
-DECL|macro|KEY_LANG4
-mdefine_line|#define KEY_LANG4&t;&t;193
-DECL|macro|KEY_LANG5
-mdefine_line|#define KEY_LANG5&t;&t;194
-DECL|macro|KEY_LANG6
-mdefine_line|#define KEY_LANG6&t;&t;195
-DECL|macro|KEY_LANG7
-mdefine_line|#define KEY_LANG7&t;&t;196
-DECL|macro|KEY_LANG8
-mdefine_line|#define KEY_LANG8&t;&t;197
-DECL|macro|KEY_LANG9
-mdefine_line|#define KEY_LANG9&t;&t;198
+DECL|macro|KEY_F13
+mdefine_line|#define KEY_F13&t;&t;&t;183
+DECL|macro|KEY_F14
+mdefine_line|#define KEY_F14&t;&t;&t;184
+DECL|macro|KEY_F15
+mdefine_line|#define KEY_F15&t;&t;&t;185
+DECL|macro|KEY_F16
+mdefine_line|#define KEY_F16&t;&t;&t;186
+DECL|macro|KEY_F17
+mdefine_line|#define KEY_F17&t;&t;&t;187
+DECL|macro|KEY_F18
+mdefine_line|#define KEY_F18&t;&t;&t;188
+DECL|macro|KEY_F19
+mdefine_line|#define KEY_F19&t;&t;&t;189
+DECL|macro|KEY_F20
+mdefine_line|#define KEY_F20&t;&t;&t;190
+DECL|macro|KEY_F21
+mdefine_line|#define KEY_F21&t;&t;&t;191
+DECL|macro|KEY_F22
+mdefine_line|#define KEY_F22&t;&t;&t;192
+DECL|macro|KEY_F23
+mdefine_line|#define KEY_F23&t;&t;&t;193
+DECL|macro|KEY_F24
+mdefine_line|#define KEY_F24&t;&t;&t;194
 DECL|macro|KEY_PLAYCD
 mdefine_line|#define KEY_PLAYCD&t;&t;200
 DECL|macro|KEY_PAUSECD
@@ -1010,6 +994,8 @@ DECL|macro|BUS_USB
 mdefine_line|#define BUS_USB&t;&t;&t;0x03
 DECL|macro|BUS_HIL
 mdefine_line|#define BUS_HIL&t;&t;&t;0x04
+DECL|macro|BUS_BLUETOOTH
+mdefine_line|#define BUS_BLUETOOTH&t;&t;0x05
 DECL|macro|BUS_ISA
 mdefine_line|#define BUS_ISA&t;&t;&t;0x10
 DECL|macro|BUS_I8042
@@ -1745,6 +1731,12 @@ id|input_handle
 op_star
 id|grab
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|h_list
 r_struct
 id|list_head
@@ -2205,7 +2197,8 @@ DECL|macro|input_sync
 mdefine_line|#define input_sync(a)&t;&t;do { input_event(a, EV_SYN, SYN_REPORT, 0); (a)-&gt;regs = NULL; } while (0)
 r_extern
 r_struct
-r_class
+id|class_simple
+op_star
 id|input_class
 suffix:semicolon
 macro_line|#endif

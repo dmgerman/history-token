@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
-macro_line|#ifndef _ASM_SN_SN_XTALK_XBOW_H
-DECL|macro|_ASM_SN_SN_XTALK_XBOW_H
-mdefine_line|#define _ASM_SN_SN_XTALK_XBOW_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_XTALK_XBOW_H
+DECL|macro|_ASM_IA64_SN_XTALK_XBOW_H
+mdefine_line|#define _ASM_IA64_SN_XTALK_XBOW_H
 multiline_comment|/*&n; * xbow.h - header file for crossbow chip and xbow section of xbridge&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
@@ -67,7 +67,6 @@ r_volatile
 r_struct
 id|xb_linkregs_s
 (brace
-macro_line|#ifdef LITTLE_ENDIAN
 multiline_comment|/* &n; * we access these through synergy unswizzled space, so the address&n; * gets twiddled (i.e. references to 0x4 actually go to 0x0 and vv.)&n; * That&squot;s why we put the register first and filler second.&n; */
 DECL|member|link_ibf
 id|xbowreg_t
@@ -134,57 +133,6 @@ DECL|member|filler7
 id|xbowreg_t
 id|filler7
 suffix:semicolon
-macro_line|#else
-id|xbowreg_t
-id|filler0
-suffix:semicolon
-multiline_comment|/* filler for proper alignment */
-id|xbowreg_t
-id|link_ibf
-suffix:semicolon
-id|xbowreg_t
-id|filler1
-suffix:semicolon
-id|xbowreg_t
-id|link_control
-suffix:semicolon
-id|xbowreg_t
-id|filler2
-suffix:semicolon
-id|xbowreg_t
-id|link_status
-suffix:semicolon
-id|xbowreg_t
-id|filler3
-suffix:semicolon
-id|xbowreg_t
-id|link_arb_upper
-suffix:semicolon
-id|xbowreg_t
-id|filler4
-suffix:semicolon
-id|xbowreg_t
-id|link_arb_lower
-suffix:semicolon
-id|xbowreg_t
-id|filler5
-suffix:semicolon
-id|xbowreg_t
-id|link_status_clr
-suffix:semicolon
-id|xbowreg_t
-id|filler6
-suffix:semicolon
-id|xbowreg_t
-id|link_reset
-suffix:semicolon
-id|xbowreg_t
-id|filler7
-suffix:semicolon
-id|xbowreg_t
-id|link_aux_status
-suffix:semicolon
-macro_line|#endif /* LITTLE_ENDIAN */
 DECL|typedef|xb_linkregs_t
 )brace
 id|xb_linkregs_t
@@ -224,7 +172,6 @@ DECL|macro|xb_wid_llp
 mdefine_line|#define xb_wid_llp                      xb_widget.w_llp_cfg
 DECL|macro|xb_wid_stat_clr
 mdefine_line|#define xb_wid_stat_clr                 xb_widget.w_tflush
-macro_line|#ifdef LITTLE_ENDIAN
 multiline_comment|/* &n; * we access these through synergy unswizzled space, so the address&n; * gets twiddled (i.e. references to 0x4 actually go to 0x0 and vv.)&n; * That&squot;s why we put the register first and filler second.&n; */
 multiline_comment|/* xbow-specific widget configuration                  0x000058-0x0000FF */
 DECL|member|xb_wid_arb_reload
@@ -371,153 +318,6 @@ id|_pad_0000d0
 l_int|12
 )braket
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* xbow-specific widget configuration                  0x000058-0x0000FF */
-DECL|member|_pad_000058
-id|xbowreg_t
-id|_pad_000058
-suffix:semicolon
-DECL|member|xb_wid_arb_reload
-id|xbowreg_t
-id|xb_wid_arb_reload
-suffix:semicolon
-multiline_comment|/* 0x00005C */
-DECL|member|_pad_000060
-id|xbowreg_t
-id|_pad_000060
-suffix:semicolon
-DECL|member|xb_perf_ctr_a
-id|xbowreg_t
-id|xb_perf_ctr_a
-suffix:semicolon
-multiline_comment|/* 0x000064 */
-DECL|member|_pad_000068
-id|xbowreg_t
-id|_pad_000068
-suffix:semicolon
-DECL|member|xb_perf_ctr_b
-id|xbowreg_t
-id|xb_perf_ctr_b
-suffix:semicolon
-multiline_comment|/* 0x00006c */
-DECL|member|_pad_000070
-id|xbowreg_t
-id|_pad_000070
-suffix:semicolon
-DECL|member|xb_nic
-id|xbowreg_t
-id|xb_nic
-suffix:semicolon
-multiline_comment|/* 0x000074 */
-multiline_comment|/* Xbridge only */
-DECL|member|_pad_000078
-id|xbowreg_t
-id|_pad_000078
-suffix:semicolon
-DECL|member|xb_w0_rst_fnc
-id|xbowreg_t
-id|xb_w0_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x00007C */
-DECL|member|_pad_000080
-id|xbowreg_t
-id|_pad_000080
-suffix:semicolon
-DECL|member|xb_l8_rst_fnc
-id|xbowreg_t
-id|xb_l8_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x000084 */
-DECL|member|_pad_000088
-id|xbowreg_t
-id|_pad_000088
-suffix:semicolon
-DECL|member|xb_l9_rst_fnc
-id|xbowreg_t
-id|xb_l9_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x00008c */
-DECL|member|_pad_000090
-id|xbowreg_t
-id|_pad_000090
-suffix:semicolon
-DECL|member|xb_la_rst_fnc
-id|xbowreg_t
-id|xb_la_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x000094 */
-DECL|member|_pad_000098
-id|xbowreg_t
-id|_pad_000098
-suffix:semicolon
-DECL|member|xb_lb_rst_fnc
-id|xbowreg_t
-id|xb_lb_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x00009c */
-DECL|member|_pad_0000a0
-id|xbowreg_t
-id|_pad_0000a0
-suffix:semicolon
-DECL|member|xb_lc_rst_fnc
-id|xbowreg_t
-id|xb_lc_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x0000a4 */
-DECL|member|_pad_0000a8
-id|xbowreg_t
-id|_pad_0000a8
-suffix:semicolon
-DECL|member|xb_ld_rst_fnc
-id|xbowreg_t
-id|xb_ld_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x0000ac */
-DECL|member|_pad_0000b0
-id|xbowreg_t
-id|_pad_0000b0
-suffix:semicolon
-DECL|member|xb_le_rst_fnc
-id|xbowreg_t
-id|xb_le_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x0000b4 */
-DECL|member|_pad_0000b8
-id|xbowreg_t
-id|_pad_0000b8
-suffix:semicolon
-DECL|member|xb_lf_rst_fnc
-id|xbowreg_t
-id|xb_lf_rst_fnc
-suffix:semicolon
-multiline_comment|/* 0x0000bc */
-DECL|member|_pad_0000c0
-id|xbowreg_t
-id|_pad_0000c0
-suffix:semicolon
-DECL|member|xb_lock
-id|xbowreg_t
-id|xb_lock
-suffix:semicolon
-multiline_comment|/* 0x0000c4 */
-DECL|member|_pad_0000c8
-id|xbowreg_t
-id|_pad_0000c8
-suffix:semicolon
-DECL|member|xb_lock_clr
-id|xbowreg_t
-id|xb_lock_clr
-suffix:semicolon
-multiline_comment|/* 0x0000cc */
-multiline_comment|/* end of Xbridge only */
-DECL|member|_pad_0000d0
-id|xbowreg_t
-id|_pad_0000d0
-(braket
-l_int|12
-)braket
-suffix:semicolon
-macro_line|#endif /* LITTLE_ENDIAN */
 multiline_comment|/* Link Specific Registers, port 8..15                 0x000100-0x000300 */
 DECL|member|xb_link_raw
 id|xb_linkregs_t
@@ -882,7 +682,6 @@ mdefine_line|#define PV863579 (1 &lt;&lt; 1) /* PIC: PIO to PIC register */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * XBOW Widget 0 Register formats.&n; * Format for many of these registers are similar to the standard&n; * widget register format described as part of xtalk specification&n; * Standard widget register field format description is available in&n; * xwidget.h&n; * Following structures define the format for xbow widget 0 registers&n; */
 multiline_comment|/*&n; * Xbow Widget 0 Command error word&n; */
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xbw0_cmdword_u
 r_typedef
 r_union
@@ -969,94 +768,6 @@ DECL|typedef|xbw0_cmdword_t
 )brace
 id|xbw0_cmdword_t
 suffix:semicolon
-macro_line|#else
-DECL|union|xbw0_cmdword_u
-r_typedef
-r_union
-id|xbw0_cmdword_u
-(brace
-DECL|member|cmdword
-id|xbowreg_t
-id|cmdword
-suffix:semicolon
-r_struct
-(brace
-DECL|member|destid
-r_uint32
-id|destid
-suffix:colon
-l_int|4
-comma
-multiline_comment|/* Desination ID number */
-DECL|member|srcid
-id|srcid
-suffix:colon
-l_int|4
-comma
-multiline_comment|/* Source ID number */
-DECL|member|pactyp
-id|pactyp
-suffix:colon
-l_int|4
-comma
-multiline_comment|/* Packet type: */
-DECL|member|tnum
-id|tnum
-suffix:colon
-l_int|5
-comma
-multiline_comment|/* Transaction Number */
-DECL|member|ct
-id|ct
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Is it a coherent transaction */
-DECL|member|ds
-id|ds
-suffix:colon
-l_int|2
-comma
-multiline_comment|/* Data size&t;&t;&t;*/
-DECL|member|gbr
-id|gbr
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* GBR enable ?&t;&t;&t;*/
-DECL|member|vbpm
-id|vbpm
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Virtual Backplane message */
-DECL|member|error
-id|error
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Error Occured */
-DECL|member|barr
-id|barr
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Barrier operation */
-DECL|member|rsvd
-id|rsvd
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|xbw0_cmdfield
-)brace
-id|xbw0_cmdfield
-suffix:semicolon
-DECL|typedef|xbw0_cmdword_t
-)brace
-id|xbw0_cmdword_t
-suffix:semicolon
-macro_line|#endif
 DECL|macro|xbcmd_destid
 mdefine_line|#define&t;xbcmd_destid&t;xbw0_cmdfield.destid
 DECL|macro|xbcmd_srcid
@@ -1104,7 +815,6 @@ mdefine_line|#define&t;XBCMDSZ_QUARTRCACHE&t;1
 DECL|macro|XBCMDSZ_FULLCACHE
 mdefine_line|#define&t;XBCMDSZ_FULLCACHE&t;2
 multiline_comment|/*&n; * Xbow widget 0 Status register format.&n; */
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xbw0_status_u
 r_typedef
 r_union
@@ -1176,85 +886,6 @@ DECL|typedef|xbw0_status_t
 )brace
 id|xbw0_status_t
 suffix:semicolon
-macro_line|#else
-DECL|union|xbw0_status_u
-r_typedef
-r_union
-id|xbw0_status_u
-(brace
-DECL|member|statusword
-id|xbowreg_t
-id|statusword
-suffix:semicolon
-r_struct
-(brace
-DECL|member|linkXintr
-r_uint32
-id|linkXintr
-suffix:colon
-l_int|8
-comma
-multiline_comment|/* link(x) error intr */
-DECL|member|wid0intr
-id|wid0intr
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Widget 0 err intr */
-DECL|member|resvd1
-id|resvd1
-suffix:colon
-l_int|13
-comma
-DECL|member|src_id
-id|src_id
-suffix:colon
-l_int|4
-comma
-multiline_comment|/* source id. Xbridge only */
-DECL|member|regacc_err
-id|regacc_err
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Reg Access error&t;*/
-multiline_comment|/* Xbridge only */
-DECL|member|w0_recv_tout
-id|w0_recv_tout
-comma
-multiline_comment|/* receive timeout err */
-DECL|member|w0_arb_tout
-id|w0_arb_tout
-comma
-multiline_comment|/* arbiter timeout err */
-multiline_comment|/* End of Xbridge only */
-DECL|member|xtalk_err
-id|xtalk_err
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Xtalk pkt with error bit */
-DECL|member|connect_tout
-id|connect_tout
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Connection timeout&t;*/
-DECL|member|mult_err
-id|mult_err
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Multiple error occurred */
-DECL|member|xbw0_stfield
-)brace
-id|xbw0_stfield
-suffix:semicolon
-DECL|typedef|xbw0_status_t
-)brace
-id|xbw0_status_t
-suffix:semicolon
-macro_line|#endif
 DECL|macro|xbst_linkXintr
 mdefine_line|#define&t;xbst_linkXintr&t;&t;xbw0_stfield.linkXintr
 DECL|macro|xbst_w0intr
@@ -1274,7 +905,6 @@ mdefine_line|#define xbst_w0_recv_tout&t;xbw0_stfield.w0_recv_tout   /* Xbridge 
 DECL|macro|xbst_w0_arb_tout
 mdefine_line|#define xbst_w0_arb_tout&t;xbw0_stfield.w0_arb_tout    /* Xbridge only */
 multiline_comment|/*&n; * Xbow widget 0 Control register format&n; */
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xbw0_ctrl_u
 r_typedef
 r_union
@@ -1344,78 +974,6 @@ DECL|typedef|xbw0_ctrl_t
 )brace
 id|xbw0_ctrl_t
 suffix:semicolon
-macro_line|#else
-DECL|union|xbw0_ctrl_u
-r_typedef
-r_union
-id|xbw0_ctrl_u
-(brace
-DECL|member|ctrlword
-id|xbowreg_t
-id|ctrlword
-suffix:semicolon
-r_struct
-(brace
-r_uint32
-DECL|member|resvd1
-id|resvd1
-suffix:colon
-l_int|24
-comma
-DECL|member|enable_watchdog
-id|enable_watchdog
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Xbridge only */
-DECL|member|enable_w0_tout_cntr
-id|enable_w0_tout_cntr
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Xbridge only */
-DECL|member|accerr_intr
-id|accerr_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|w0_recv_tout_intr
-id|w0_recv_tout_intr
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Xbridge only */
-DECL|member|w0_arg_tout_intr
-id|w0_arg_tout_intr
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Xbridge only */
-DECL|member|xtalkerr_intr
-id|xtalkerr_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|conntout_intr
-id|conntout_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|resvd3
-id|resvd3
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|xbw0_ctrlfield
-)brace
-id|xbw0_ctrlfield
-suffix:semicolon
-DECL|typedef|xbw0_ctrl_t
-)brace
-id|xbw0_ctrl_t
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xbow_linkctrl_u
 r_typedef
 r_union
@@ -1531,123 +1089,6 @@ DECL|typedef|xbow_linkctrl_t
 )brace
 id|xbow_linkctrl_t
 suffix:semicolon
-macro_line|#else
-DECL|union|xbow_linkctrl_u
-r_typedef
-r_union
-id|xbow_linkctrl_u
-(brace
-DECL|member|xbl_ctrlword
-id|xbowreg_t
-id|xbl_ctrlword
-suffix:semicolon
-r_struct
-(brace
-DECL|member|alive_intr
-r_uint32
-id|alive_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|rsvd1
-id|rsvd1
-suffix:colon
-l_int|1
-comma
-DECL|member|perf_mode
-id|perf_mode
-suffix:colon
-l_int|2
-comma
-DECL|member|inbuf_level
-id|inbuf_level
-suffix:colon
-l_int|3
-comma
-DECL|member|send_bm8
-id|send_bm8
-suffix:colon
-l_int|1
-comma
-DECL|member|force_badllp
-id|force_badllp
-suffix:colon
-l_int|1
-comma
-DECL|member|llp_credit
-id|llp_credit
-suffix:colon
-l_int|5
-comma
-DECL|member|idest_intr
-id|idest_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|obuf_intr
-id|obuf_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|rsvd2
-id|rsvd2
-suffix:colon
-l_int|7
-comma
-DECL|member|bwalloc_intr
-id|bwalloc_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|rcvov_intr
-id|rcvov_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|trxov_intr
-id|trxov_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|trx_max_retry_intr
-id|trx_max_retry_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|rcv_err_intr
-id|rcv_err_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|trx_retry_intr
-id|trx_retry_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|rsvd3
-id|rsvd3
-suffix:colon
-l_int|1
-comma
-DECL|member|maxto_intr
-id|maxto_intr
-suffix:colon
-l_int|1
-comma
-DECL|member|srcto_intr
-id|srcto_intr
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|xb_linkcontrol
-)brace
-id|xb_linkcontrol
-suffix:semicolon
-DECL|typedef|xbow_linkctrl_t
-)brace
-id|xbow_linkctrl_t
-suffix:semicolon
-macro_line|#endif
 DECL|macro|xbctl_accerr_intr
 mdefine_line|#define&t;xbctl_accerr_intr&t;(xbw0_ctrlfield.accerr_intr)
 DECL|macro|xbctl_xtalkerr_intr
@@ -1661,7 +1102,6 @@ mdefine_line|#define&t;XBW0_CTRL_XTERR_INTR&t;(1 &lt;&lt; 2)
 DECL|macro|XBW0_CTRL_CONNTOUT_INTR
 mdefine_line|#define&t;XBW0_CTRL_CONNTOUT_INTR&t;(1 &lt;&lt; 1)
 multiline_comment|/*&n; * Xbow Link specific Registers structure definitions.&n; */
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xbow_linkX_status_u
 r_typedef
 r_union
@@ -1756,102 +1196,6 @@ DECL|typedef|xbwX_stat_t
 )brace
 id|xbwX_stat_t
 suffix:semicolon
-macro_line|#else
-DECL|union|xbow_linkX_status_u
-r_typedef
-r_union
-id|xbow_linkX_status_u
-(brace
-DECL|member|linkstatus
-id|xbowreg_t
-id|linkstatus
-suffix:semicolon
-r_struct
-(brace
-DECL|member|alive
-r_uint32
-id|alive
-suffix:colon
-l_int|1
-comma
-DECL|member|resvd1
-id|resvd1
-suffix:colon
-l_int|12
-comma
-DECL|member|merror
-id|merror
-suffix:colon
-l_int|1
-comma
-DECL|member|illdest
-id|illdest
-suffix:colon
-l_int|1
-comma
-DECL|member|ioe
-id|ioe
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Input overallocation error */
-DECL|member|bw_errport
-id|bw_errport
-suffix:colon
-l_int|8
-comma
-multiline_comment|/* BW allocation error port   */
-DECL|member|llp_rxovflow
-id|llp_rxovflow
-suffix:colon
-l_int|1
-comma
-DECL|member|llp_txovflow
-id|llp_txovflow
-suffix:colon
-l_int|1
-comma
-DECL|member|llp_maxtxretry
-id|llp_maxtxretry
-suffix:colon
-l_int|1
-comma
-DECL|member|llp_rcverror
-id|llp_rcverror
-suffix:colon
-l_int|1
-comma
-DECL|member|llp_xmitretry
-id|llp_xmitretry
-suffix:colon
-l_int|1
-comma
-DECL|member|pkt_toutdest
-id|pkt_toutdest
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* reserved in Xbridge */
-DECL|member|pkt_toutconn
-id|pkt_toutconn
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* max_req_tout in Xbridge */
-DECL|member|pkt_toutsrc
-id|pkt_toutsrc
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|xb_linkstatus
-)brace
-id|xb_linkstatus
-suffix:semicolon
-DECL|typedef|xbwX_stat_t
-)brace
-id|xbwX_stat_t
-suffix:semicolon
-macro_line|#endif
 DECL|macro|link_alive
 mdefine_line|#define&t;link_alive&t;&t;xb_linkstatus.alive
 DECL|macro|link_multierror
@@ -1868,7 +1212,6 @@ DECL|macro|link_pkt_toutdest
 mdefine_line|#define link_pkt_toutdest&t;xb_linkstatus.pkt_toutdest
 DECL|macro|link_pkt_toutsrc
 mdefine_line|#define&t;link_pkt_toutsrc&t;xb_linkstatus.pkt_toutsrc
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xbow_aux_linkX_status_u
 r_typedef
 r_union
@@ -1929,69 +1272,6 @@ DECL|typedef|xbow_aux_link_status_t
 )brace
 id|xbow_aux_link_status_t
 suffix:semicolon
-macro_line|#else
-DECL|union|xbow_aux_linkX_status_u
-r_typedef
-r_union
-id|xbow_aux_linkX_status_u
-(brace
-DECL|member|aux_linkstatus
-id|xbowreg_t
-id|aux_linkstatus
-suffix:semicolon
-r_struct
-(brace
-DECL|member|rx_err_cnt
-r_uint32
-id|rx_err_cnt
-suffix:colon
-l_int|8
-comma
-DECL|member|tx_retry_cnt
-id|tx_retry_cnt
-suffix:colon
-l_int|8
-comma
-DECL|member|to_src_loc
-id|to_src_loc
-suffix:colon
-l_int|8
-comma
-DECL|member|rsvd1
-id|rsvd1
-suffix:colon
-l_int|1
-comma
-DECL|member|fail_mode
-id|fail_mode
-suffix:colon
-l_int|1
-comma
-DECL|member|wid_present
-id|wid_present
-suffix:colon
-l_int|1
-comma
-DECL|member|bit_mode_8
-id|bit_mode_8
-suffix:colon
-l_int|1
-comma
-DECL|member|rsvd2
-id|rsvd2
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|xb_aux_linkstatus
-)brace
-id|xb_aux_linkstatus
-suffix:semicolon
-DECL|typedef|xbow_aux_link_status_t
-)brace
-id|xbow_aux_link_status_t
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xbow_perf_count_u
 r_typedef
 r_union
@@ -2027,43 +1307,6 @@ DECL|typedef|xbow_perfcount_t
 )brace
 id|xbow_perfcount_t
 suffix:semicolon
-macro_line|#else
-DECL|union|xbow_perf_count_u
-r_typedef
-r_union
-id|xbow_perf_count_u
-(brace
-DECL|member|xb_counter_val
-id|xbowreg_t
-id|xb_counter_val
-suffix:semicolon
-r_struct
-(brace
-DECL|member|rsvd
-r_uint32
-id|rsvd
-suffix:colon
-l_int|9
-comma
-DECL|member|link_select
-id|link_select
-suffix:colon
-l_int|3
-comma
-DECL|member|count
-id|count
-suffix:colon
-l_int|20
-suffix:semicolon
-DECL|member|xb_perf
-)brace
-id|xb_perf
-suffix:semicolon
-DECL|typedef|xbow_perfcount_t
-)brace
-id|xbow_perfcount_t
-suffix:semicolon
-macro_line|#endif
 DECL|macro|XBOW_COUNTER_MASK
 mdefine_line|#define XBOW_COUNTER_MASK&t;0xFFFFF
 r_extern
@@ -2939,5 +2182,5 @@ suffix:semicolon
 multiline_comment|/* xbow_macrofield[] */
 macro_line|#endif&t;&t;&t;&t;/* MACROFIELD_LINE */
 macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
-macro_line|#endif                          /* _ASM_SN_SN_XTALK_XBOW_H */
+macro_line|#endif                          /* _ASM_IA64_SN_XTALK_XBOW_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_ADDRS_H
 DECL|macro|_ASM_IA64_SN_SN2_ADDRS_H
 mdefine_line|#define _ASM_IA64_SN_SN2_ADDRS_H
@@ -153,11 +153,11 @@ mdefine_line|#define NASID_META_BITS&t;&t;0&t;/* ???? */
 DECL|macro|NASID_LOCAL_BITS
 mdefine_line|#define NASID_LOCAL_BITS&t;7&t;/* same router as SN1 */
 DECL|macro|NODE_ADDRSPACE_SIZE
-mdefine_line|#define NODE_ADDRSPACE_SIZE     (UINT64_CAST 1 &lt;&lt; NODE_SIZE_BITS)
+mdefine_line|#define NODE_ADDRSPACE_SIZE     (1UL &lt;&lt; NODE_SIZE_BITS)
 DECL|macro|NASID_MASK
-mdefine_line|#define NASID_MASK              (UINT64_CAST NASID_BITMASK &lt;&lt; NASID_SHFT)
+mdefine_line|#define NASID_MASK              ((uint64_t) NASID_BITMASK &lt;&lt; NASID_SHFT)
 DECL|macro|NASID_GET
-mdefine_line|#define NASID_GET(_pa)          (int) ((UINT64_CAST (_pa) &gt;&gt;            &bslash;&n;                                        NASID_SHFT) &amp; NASID_BITMASK)
+mdefine_line|#define NASID_GET(_pa)          (int) (((uint64_t) (_pa) &gt;&gt;            &bslash;&n;                                        NASID_SHFT) &amp; NASID_BITMASK)
 DECL|macro|PHYS_TO_DMA
 mdefine_line|#define PHYS_TO_DMA(x)          ( ((x &amp; NASID_MASK) &gt;&gt; 2) |             &bslash;&n;                                  (x &amp; (NODE_ADDRSPACE_SIZE - 1)) )
 DECL|macro|CHANGE_NASID
@@ -170,15 +170,15 @@ DECL|macro|NODE_SWIN_BASE
 mdefine_line|#define NODE_SWIN_BASE(nasid, widget)                                   &bslash;&n;        ((widget == 0) ? NODE_BWIN_BASE((nasid), SWIN0_BIGWIN)          &bslash;&n;        : RAW_NODE_SWIN_BASE(nasid, widget))
 macro_line|#else
 DECL|macro|NODE_SWIN_BASE
-mdefine_line|#define NODE_SWIN_BASE(nasid, widget) &bslash;&n;     (NODE_IO_BASE(nasid) + (UINT64_CAST (widget) &lt;&lt; SWIN_SIZE_BITS))
+mdefine_line|#define NODE_SWIN_BASE(nasid, widget) &bslash;&n;     (NODE_IO_BASE(nasid) + ((uint64_t) (widget) &lt;&lt; SWIN_SIZE_BITS))
 DECL|macro|LOCAL_SWIN_BASE
-mdefine_line|#define LOCAL_SWIN_BASE(widget) &bslash;&n;&t;(UNCACHED | LOCAL_MMR_SPACE | ((UINT64_CAST (widget) &lt;&lt; SWIN_SIZE_BITS)))
+mdefine_line|#define LOCAL_SWIN_BASE(widget) &bslash;&n;&t;(UNCACHED | LOCAL_MMR_SPACE | (((uint64_t) (widget) &lt;&lt; SWIN_SIZE_BITS)))
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * The following definitions pertain to the IO special address&n; * space.  They define the location of the big and little windows&n; * of any given node.&n; */
 DECL|macro|BWIN_INDEX_BITS
 mdefine_line|#define BWIN_INDEX_BITS         3
 DECL|macro|BWIN_SIZE
-mdefine_line|#define BWIN_SIZE               (UINT64_CAST 1 &lt;&lt; BWIN_SIZE_BITS)
+mdefine_line|#define BWIN_SIZE               (1UL &lt;&lt; BWIN_SIZE_BITS)
 DECL|macro|BWIN_SIZEMASK
 mdefine_line|#define BWIN_SIZEMASK           (BWIN_SIZE - 1)
 DECL|macro|BWIN_WIDGET_MASK
@@ -186,7 +186,7 @@ mdefine_line|#define BWIN_WIDGET_MASK        0x7
 DECL|macro|NODE_BWIN_BASE0
 mdefine_line|#define NODE_BWIN_BASE0(nasid)  (NODE_IO_BASE(nasid) + BWIN_SIZE)
 DECL|macro|NODE_BWIN_BASE
-mdefine_line|#define NODE_BWIN_BASE(nasid, bigwin)   (NODE_BWIN_BASE0(nasid) +       &bslash;&n;                        (UINT64_CAST (bigwin) &lt;&lt; BWIN_SIZE_BITS))
+mdefine_line|#define NODE_BWIN_BASE(nasid, bigwin)   (NODE_BWIN_BASE0(nasid) +       &bslash;&n;                        ((uint64_t) (bigwin) &lt;&lt; BWIN_SIZE_BITS))
 DECL|macro|BWIN_WIDGETADDR
 mdefine_line|#define BWIN_WIDGETADDR(addr)   ((addr) &amp; BWIN_SIZEMASK)
 DECL|macro|BWIN_WINDOWNUM

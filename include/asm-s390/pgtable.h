@@ -4,8 +4,13 @@ DECL|macro|_ASM_S390_PGTABLE_H
 mdefine_line|#define _ASM_S390_PGTABLE_H
 multiline_comment|/*&n; * The Linux memory management assumes a three-level page table setup. For&n; * s390 31 bit we &quot;fold&quot; the mid level into the top-level page table, so&n; * that we physically have the same two-level page table as the s390 mmu&n; * expects in 31 bit mode. For s390 64 bit we use three of the five levels&n; * the hardware provides (region first and region second tables are not&n; * used).&n; *&n; * The &quot;pgd_xxx()&quot; functions are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; *&n; * This file contains the functions and defines necessary to modify and use&n; * the S390 page table tree.&n; */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/bug.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+r_struct
+id|vm_area_struct
+suffix:semicolon
+multiline_comment|/* forward declaration (include/linux/mm.h) */
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -124,9 +129,6 @@ DECL|macro|_PAGE_RO
 mdefine_line|#define _PAGE_RO        0x200          /* HW read-only                     */
 DECL|macro|_PAGE_INVALID
 mdefine_line|#define _PAGE_INVALID   0x400          /* HW invalid                       */
-multiline_comment|/* Software bits in the page table entry */
-DECL|macro|_PAGE_ISCLEAN
-mdefine_line|#define _PAGE_ISCLEAN   0x002
 multiline_comment|/* Mask and four different kinds of invalid pages. */
 DECL|macro|_PAGE_INVALID_MASK
 mdefine_line|#define _PAGE_INVALID_MASK&t;0x601
@@ -201,17 +203,17 @@ multiline_comment|/*&n; * No mapping available&n; */
 DECL|macro|PAGE_NONE_SHARED
 mdefine_line|#define PAGE_NONE_SHARED  __pgprot(_PAGE_INVALID_NONE)
 DECL|macro|PAGE_NONE_PRIVATE
-mdefine_line|#define PAGE_NONE_PRIVATE __pgprot(_PAGE_INVALID_NONE|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_NONE_PRIVATE __pgprot(_PAGE_INVALID_NONE)
 DECL|macro|PAGE_RO_SHARED
 mdefine_line|#define PAGE_RO_SHARED&t;  __pgprot(_PAGE_RO)
 DECL|macro|PAGE_RO_PRIVATE
-mdefine_line|#define PAGE_RO_PRIVATE&t;  __pgprot(_PAGE_RO|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_RO_PRIVATE&t;  __pgprot(_PAGE_RO)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;  __pgprot(_PAGE_RO|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_COPY&t;  __pgprot(_PAGE_RO)
 DECL|macro|PAGE_SHARED
 mdefine_line|#define PAGE_SHARED&t;  __pgprot(0)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;  __pgprot(_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_KERNEL&t;  __pgprot(0)
 multiline_comment|/*&n; * The S390 can&squot;t do page protection for execute, and considers that the&n; * same are read. Also, write permissions imply read permissions. This is&n; * the closest we can get..&n; */
 multiline_comment|/*xwr*/
 DECL|macro|__P000
@@ -671,47 +673,9 @@ id|pte_t
 id|pte
 )paren
 (brace
-r_int
-id|skey
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|_PAGE_ISCLEAN
-)paren
+multiline_comment|/* A pte is neither clean nor dirty on s/390. The dirty bit&n;&t; * is in the storage key. See page_test_and_clear_dirty for&n;&t; * details.&n;&t; */
 r_return
 l_int|0
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;iske %0,%1&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|skey
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
-r_return
-id|skey
-op_amp
-id|_PAGE_CHANGED
 suffix:semicolon
 )brace
 DECL|function|pte_young
@@ -725,33 +689,9 @@ id|pte_t
 id|pte
 )paren
 (brace
-r_int
-id|skey
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;iske %0,%1&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|skey
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* A pte is neither young nor old on s/390. The young bit&n;&t; * is in the storage key. See page_test_and_clear_young for&n;&t; * details.&n;&t; */
 r_return
-id|skey
-op_amp
-id|_PAGE_REFERENCED
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pgd/pmd/pte modification functions&n; */
@@ -931,8 +871,6 @@ id|pte
 )paren
 op_and_assign
 id|PAGE_MASK
-op_or
-id|_PAGE_ISCLEAN
 suffix:semicolon
 id|pte_val
 c_func
@@ -945,9 +883,6 @@ c_func
 (paren
 id|newprot
 )paren
-op_amp
-op_complement
-id|_PAGE_ISCLEAN
 suffix:semicolon
 r_return
 id|pte
@@ -964,6 +899,21 @@ id|pte_t
 id|pte
 )paren
 (brace
+multiline_comment|/* Do not clobber _PAGE_INVALID_NONE pages!  */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID
+)paren
+)paren
 id|pte_val
 c_func
 (paren
@@ -994,11 +944,7 @@ id|pte
 )paren
 op_and_assign
 op_complement
-(paren
 id|_PAGE_RO
-op_or
-id|_PAGE_ISCLEAN
-)paren
 suffix:semicolon
 r_return
 id|pte
@@ -1032,15 +978,6 @@ id|pte
 )paren
 (brace
 multiline_comment|/* We do not explicitly set the dirty bit because the&n;&t; * sske instruction is slow. It is faster to let the&n;&t; * next instruction set the dirty bit.&n;&t; */
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_and_assign
-op_complement
-id|_PAGE_ISCLEAN
-suffix:semicolon
 r_return
 id|pte
 suffix:semicolon
@@ -1056,24 +993,7 @@ id|pte_t
 id|pte
 )paren
 (brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;rrbe 0,%0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* S/390 doesn&squot;t keep its dirty/referenced bit in the pte.&n;&t; * There is no point in clearing the real referenced bit.&n;&t; */
 r_return
 id|pte
 suffix:semicolon
@@ -1089,27 +1009,7 @@ id|pte_t
 id|pte
 )paren
 (brace
-multiline_comment|/* To set the referenced bit we read the first word from the real&n;&t; * page with a special instruction: load using real address (lura).&n;&t; * Isn&squot;t S/390 a nice architecture ?! */
-id|asm
-r_volatile
-(paren
-l_string|&quot;lura 0,%0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|PAGE_MASK
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* S/390 doesn&squot;t keep its dirty/referenced bit in the pte.&n;&t; * There is no point in setting the real referenced bit.&n;&t; */
 r_return
 id|pte
 suffix:semicolon
@@ -1126,38 +1026,38 @@ op_star
 id|ptep
 )paren
 (brace
-r_int
-id|ccode
+r_return
+l_int|0
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;rrbe 0,%1&bslash;n&bslash;t&quot;
-l_string|&quot;ipm  %0&bslash;n&bslash;t&quot;
-l_string|&quot;srl  %0,28&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|ccode
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
+)brace
+r_static
+r_inline
+r_int
+DECL|function|ptep_clear_flush_young
+id|ptep_clear_flush_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
 op_star
 id|ptep
 )paren
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
+(brace
+multiline_comment|/* No need to flush TLB; bits are in storage key */
 r_return
-id|ccode
-op_amp
-l_int|2
+id|ptep_test_and_clear_young
+c_func
+(paren
+id|ptep
+)paren
 suffix:semicolon
 )brace
 DECL|function|ptep_test_and_clear_dirty
@@ -1172,76 +1072,38 @@ op_star
 id|ptep
 )paren
 (brace
-r_int
-id|skey
+r_return
+l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_val
+)brace
+r_static
+r_inline
+r_int
+DECL|function|ptep_clear_flush_dirty
+id|ptep_clear_flush_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
 op_star
-id|ptep
-)paren
-op_amp
-id|_PAGE_ISCLEAN
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;iske %0,%1&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|skey
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-op_star
-id|ptep
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|skey
-op_amp
-id|_PAGE_CHANGED
-)paren
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* We can&squot;t clear the changed bit atomically. For now we&n;         * clear (!) the page referenced bit. */
-id|asm
-r_volatile
-(paren
-l_string|&quot;sske %0,%1&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-l_int|0
-)paren
+id|vma
 comma
-l_string|&quot;a&quot;
-(paren
+r_int
+r_int
+id|address
+comma
+id|pte_t
 op_star
 id|ptep
 )paren
-)paren
-suffix:semicolon
+(brace
+multiline_comment|/* No need to flush TLB; bits are in storage key */
 r_return
-l_int|1
+id|ptep_test_and_clear_dirty
+c_func
+(paren
+id|ptep
+)paren
 suffix:semicolon
 )brace
 DECL|function|ptep_get_and_clear
@@ -1262,6 +1124,131 @@ op_assign
 op_star
 id|ptep
 suffix:semicolon
+id|pte_clear
+c_func
+(paren
+id|ptep
+)paren
+suffix:semicolon
+r_return
+id|pte
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|pte_t
+DECL|function|ptep_clear_flush
+id|ptep_clear_flush
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+id|pte_t
+id|pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+macro_line|#ifndef __s390x__
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID
+)paren
+)paren
+(brace
+multiline_comment|/* S390 has 1mb segments, we are emulating 4MB segments */
+id|pte_t
+op_star
+id|pto
+op_assign
+(paren
+id|pte_t
+op_star
+)paren
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|ptep
+)paren
+op_amp
+l_int|0x7ffffc00
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;ipte %0,%1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|pto
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+id|address
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* __s390x__ */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID
+)paren
+)paren
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;ipte %0,%1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|ptep
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+id|address
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 id|pte_clear
 c_func
 (paren
@@ -1323,6 +1310,55 @@ id|ptep
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|ptep_establish
+id|ptep_establish
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
+op_star
+id|ptep
+comma
+id|pte_t
+id|entry
+)paren
+(brace
+id|ptep_clear_flush
+c_func
+(paren
+id|vma
+comma
+id|address
+comma
+id|ptep
+)paren
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|entry
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Test and clear dirty bit in storage key.&n; * We can&squot;t clear the changed bit atomically. This is a potential&n; * race against modification of the referenced bit. This function&n; * should therefore only be called if it is not mapped in any&n; * address space.&n; */
+DECL|macro|page_test_and_clear_dirty
+mdefine_line|#define page_test_and_clear_dirty(page)&t;&t;&t;&t;&t;  &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;struct page *__page = (page);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;int __skey;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;asm volatile (&quot;iske %0,%1&quot; : &quot;=d&quot; (__skey) : &quot;a&quot; (__physpage));   &bslash;&n;&t;if (__skey &amp; _PAGE_CHANGED) {&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;asm volatile (&quot;sske %0,%1&quot;&t;&t;&t;&t;  &bslash;&n;&t;&t;&t;      : : &quot;d&quot; (__skey &amp; ~_PAGE_CHANGED),&t;  &bslash;&n;&t;&t;&t;          &quot;a&quot; (__physpage));&t;&t;&t;  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;(__skey &amp; _PAGE_CHANGED);&t;&t;&t;&t;&t;  &bslash;&n;})
+multiline_comment|/*&n; * Test and clear referenced bit in storage key.&n; */
+DECL|macro|page_test_and_clear_young
+mdefine_line|#define page_test_and_clear_young(page)&t;&t;&t;&t;&t;  &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;struct page *__page = (page);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;int __ccode;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;asm volatile (&quot;rrbe 0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;      &quot;ipm  %0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;      &quot;srl  %0,28&bslash;n&bslash;t&quot; &t;&t;&t;&t;&t;  &bslash;&n;                      : &quot;=d&quot; (__ccode) : &quot;a&quot; (__physpage) : &quot;cc&quot; );&t;  &bslash;&n;&t;(__ccode &amp; 2);&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;})
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|function|mk_pte_phys
 r_static
@@ -1476,25 +1512,39 @@ op_or
 id|_PAGE_INVALID_SWAP
 suffix:semicolon
 macro_line|#ifndef __s390x__
+id|BUG_ON
+c_func
+(paren
+(paren
 id|pte_val
 c_func
 (paren
 id|pte
 )paren
-op_and_assign
-l_int|0x7ffff6fe
+op_amp
+l_int|0x80000901
+)paren
+op_ne
+l_int|0
+)paren
 suffix:semicolon
-multiline_comment|/* better to be paranoid */
 macro_line|#else /* __s390x__ */
+id|BUG_ON
+c_func
+(paren
+(paren
 id|pte_val
 c_func
 (paren
 id|pte
 )paren
-op_and_assign
-l_int|0xfffffffffffff6fe
+op_amp
+l_int|0x901
+)paren
+op_ne
+l_int|0
+)paren
 suffix:semicolon
-multiline_comment|/* better to be paranoid */
 macro_line|#endif /* __s390x__ */
 r_return
 id|pte
@@ -1537,5 +1587,30 @@ macro_line|#ifdef __s390x__
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 macro_line|# define HAVE_ARCH_UNMAPPED_AREA
 macro_line|#endif /* __s390x__ */
+DECL|macro|__HAVE_ARCH_PTEP_ESTABLISH
+mdefine_line|#define __HAVE_ARCH_PTEP_ESTABLISH
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|macro|__HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
+mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+DECL|macro|__HAVE_ARCH_PTEP_CLEAR_FLUSH
+mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_FLUSH
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
+DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
+DECL|macro|__HAVE_ARCH_PAGE_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PAGE_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PAGE_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PAGE_TEST_AND_CLEAR_YOUNG
+macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _S390_PAGE_H */
 eof

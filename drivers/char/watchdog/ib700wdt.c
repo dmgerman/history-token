@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IB700 Single Board Computer WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Charles Howes &lt;chowes@vsol.net&gt;&n; *&n; *      Based on advantechwdt.c which is based on acquirewdt.c which&n; *       is based on wdt.c.&n; *&n; *&t;(c) Copyright 2000-2001 Marek Michalkiewicz &lt;marekm@linux.org.pl&gt;&n; *&n; *&t;Based on acquirewdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *           Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *           Added timeout module option to override default&n; * &n; */
+multiline_comment|/*&n; *&t;IB700 Single Board Computer WDT driver&n; *&n; *&t;(c) Copyright 2001 Charles Howes &lt;chowes@vsol.net&gt;&n; *&n; *      Based on advantechwdt.c which is based on acquirewdt.c which&n; *       is based on wdt.c.&n; *&n; *&t;(c) Copyright 2000-2001 Marek Michalkiewicz &lt;marekm@linux.org.pl&gt;&n; *&n; *&t;Based on acquirewdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *           Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *           Added timeout module option to override default&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|ibwdt_is_open
 r_static
 r_int
+r_int
 id|ibwdt_is_open
 suffix:semicolon
 DECL|variable|ibwdt_lock
@@ -26,10 +27,8 @@ id|ibwdt_lock
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;ib700wdt: &quot;
@@ -266,7 +265,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace
@@ -334,6 +333,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;IB700 WDT&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -376,32 +376,18 @@ suffix:semicolon
 r_case
 id|WDIOC_GETSTATUS
 suffix:colon
-r_if
-c_cond
-(paren
-id|copy_to_user
+r_return
+id|put_user
 c_func
 (paren
+l_int|0
+comma
 (paren
 r_int
 op_star
 )paren
 id|arg
-comma
-op_amp
-id|ibwdt_is_open
-comma
-r_sizeof
-(paren
-r_int
 )paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|WDIOC_KEEPALIVE
@@ -516,7 +502,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOTTY
+id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 r_return
@@ -540,18 +526,6 @@ op_star
 id|file
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|iminor
-c_func
-(paren
-id|inode
-)paren
-op_eq
-id|WATCHDOG_MINOR
-)paren
-(brace
 id|spin_lock
 c_func
 (paren
@@ -562,7 +536,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|ibwdt_is_open
+)paren
 )paren
 (brace
 id|spin_unlock
@@ -589,10 +570,6 @@ id|THIS_MODULE
 )paren
 suffix:semicolon
 multiline_comment|/* Activate */
-id|ibwdt_is_open
-op_assign
-l_int|1
-suffix:semicolon
 id|ibwdt_ping
 c_func
 (paren
@@ -608,14 +585,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 )brace
 r_static
 r_int
@@ -634,18 +603,6 @@ op_star
 id|file
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|iminor
-c_func
-(paren
-id|inode
-)paren
-op_eq
-id|WATCHDOG_MINOR
-)paren
-(brace
 id|spin_lock
 c_func
 (paren
@@ -657,6 +614,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 id|outb_p
 c_func
@@ -678,7 +637,16 @@ id|PFX
 l_string|&quot;WDT device closed unexpectedly.  WDT will not stop!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|ibwdt_is_open
+)paren
+suffix:semicolon
+id|expect_close
 op_assign
 l_int|0
 suffix:semicolon
@@ -689,7 +657,6 @@ op_amp
 id|ibwdt_lock
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -801,6 +768,7 @@ id|fops
 op_assign
 op_amp
 id|ibwdt_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off.&n; */
@@ -825,6 +793,7 @@ dot
 id|priority
 op_assign
 l_int|0
+comma
 )brace
 suffix:semicolon
 DECL|function|ibwdt_init

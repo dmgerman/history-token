@@ -433,7 +433,7 @@ id|ali_expect_release
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* scan to see wether or not we got the magic character */
+multiline_comment|/* scan to see whether or not we got the magic character */
 r_for
 c_loop
 (paren
@@ -1248,7 +1248,7 @@ op_amp
 id|ali_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Check wether or not the hardware watchdog is there */
+multiline_comment|/* Check whether or not the hardware watchdog is there */
 r_if
 c_cond
 (paren

@@ -164,6 +164,16 @@ id|DCU10_PRODUCT_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|SITECOM_VENDOR_ID
+comma
+id|SITECOM_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace

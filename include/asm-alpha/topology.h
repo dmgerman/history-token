@@ -39,16 +39,12 @@ id|cpu
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_NUMA
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|node
 OL
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif

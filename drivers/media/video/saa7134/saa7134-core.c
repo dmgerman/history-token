@@ -3196,7 +3196,6 @@ comma
 id|status
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIDEO_IR
 r_if
 c_cond
 (paren
@@ -3218,7 +3217,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 r_if
@@ -3360,14 +3358,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIDEO_IR
 id|saa7134_input_init1
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -3586,14 +3582,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIDEO_IR
 id|saa7134_input_fini
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 id|saa7134_vbi_fini
 c_func
 (paren
@@ -4556,9 +4550,11 @@ id|fail3
 suffix:semicolon
 )brace
 multiline_comment|/* wait a bit, register i2c bus */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -4626,6 +4622,15 @@ c_func
 l_string|&quot;saa6752hs&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef VIDIOC_G_PRIORITY
+id|v4l2_prio_init
+c_func
+(paren
+op_amp
+id|dev-&gt;prio
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* register v4l devices */
 id|dev-&gt;video_dev
 op_assign
@@ -5204,58 +5209,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown subsystems */
-r_switch
-c_cond
-(paren
-id|dev-&gt;pci-&gt;device
-)paren
-(brace
-r_case
-id|PCI_DEVICE_ID_PHILIPS_SAA7134
-suffix:colon
-r_case
-id|PCI_DEVICE_ID_PHILIPS_SAA7133
-suffix:colon
-r_case
-id|PCI_DEVICE_ID_PHILIPS_SAA7135
-suffix:colon
-id|saa7134_oss_fini
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|card_has_ts
-c_func
-(paren
-id|dev
-)paren
-)paren
-id|saa7134_ts_fini
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|saa7134_vbi_fini
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|saa7134_video_fini
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|saa7134_tvaudio_fini
+id|saa7134_hwfini
 c_func
 (paren
 id|dev
@@ -5452,6 +5406,31 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
+macro_line|#ifdef SNAPSHOT
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;saa7130/34: snapshot date %04d-%02d-%02d&bslash;n&quot;
+comma
+id|SNAPSHOT
+op_div
+l_int|10000
+comma
+(paren
+id|SNAPSHOT
+op_div
+l_int|100
+)paren
+op_mod
+l_int|100
+comma
+id|SNAPSHOT
+op_mod
+l_int|100
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func

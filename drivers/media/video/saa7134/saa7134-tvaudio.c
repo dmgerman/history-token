@@ -58,8 +58,55 @@ comma
 l_string|&quot;audio carrier location&quot;
 )paren
 suffix:semicolon
+DECL|variable|audio_ddep
+r_static
+r_int
+r_int
+id|audio_ddep
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|audio_ddep
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|audio_ddep
+comma
+l_string|&quot;audio ddep overwrite&quot;
+)paren
+suffix:semicolon
+DECL|variable|audio_clock_tweak
+r_static
+r_int
+id|audio_clock_tweak
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|audio_clock_tweak
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|audio_clock_tweak
+comma
+l_string|&quot;Audio clock tick fine tuning for cards with audio crystal that&squot;s slightly off (range [-1024 .. 1024])&quot;
+)paren
+suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (audio_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/audio: &quot; fmt, dev-&gt;name, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (audio_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/audio: &quot; fmt, dev-&gt;name , ## arg)
 DECL|macro|d2printk
 mdefine_line|#define d2printk(fmt, arg...)&t;if (audio_debug &gt; 1) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/audio: &quot; fmt, dev-&gt;name, ## arg)
 DECL|macro|print_regb
@@ -67,7 +114,7 @@ mdefine_line|#define print_regb(reg) printk(&quot;%s:   reg 0x%03x [%-16s]: 0x%0
 DECL|macro|SCAN_INITIAL_DELAY
 mdefine_line|#define SCAN_INITIAL_DELAY  (HZ)
 DECL|macro|SCAN_SAMPLE_DELAY
-mdefine_line|#define SCAN_SAMPLE_DELAY   (HZ/10)
+mdefine_line|#define SCAN_SAMPLE_DELAY   (HZ/5)
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* saa7134 code                                                       */
 DECL|variable|tvaudio
@@ -723,8 +770,20 @@ id|dev-&gt;hw_input
 op_eq
 id|in
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;mute/input: nothing to do [mute=%d,input=%s]&bslash;n&quot;
+comma
+id|mute
+comma
+id|in-&gt;name
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|dprintk
 c_func
 (paren
@@ -939,6 +998,49 @@ op_star
 id|note
 )paren
 (brace
+r_int
+id|acpf
+comma
+id|tweak
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;tvnorm-&gt;id
+op_eq
+id|V4L2_STD_NTSC
+)paren
+(brace
+id|acpf
+op_assign
+l_int|0x19066
+suffix:semicolon
+)brace
+r_else
+(brace
+id|acpf
+op_assign
+l_int|0x1e000
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|audio_clock_tweak
+OG
+op_minus
+l_int|1024
+op_logical_and
+id|audio_clock_tweak
+OL
+l_int|1024
+)paren
+id|tweak
+op_assign
+id|audio_clock_tweak
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -947,7 +1049,7 @@ id|note
 id|dprintk
 c_func
 (paren
-l_string|&quot;tvaudio_setmode: %s %s [%d.%03d/%d.%03d MHz]&bslash;n&quot;
+l_string|&quot;tvaudio_setmode: %s %s [%d.%03d/%d.%03d MHz] acpf=%d%+d&bslash;n&quot;
 comma
 id|note
 comma
@@ -968,22 +1070,28 @@ comma
 id|audio-&gt;carr2
 op_mod
 l_int|1000
+comma
+id|acpf
+comma
+id|tweak
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;tvnorm-&gt;id
-op_eq
-id|V4L2_STD_NTSC
-)paren
-(brace
+id|acpf
+op_add_assign
+id|tweak
+suffix:semicolon
 id|saa_writeb
 c_func
 (paren
 id|SAA7134_AUDIO_CLOCKS_PER_FIELD0
 comma
-l_int|0xde
+(paren
+id|acpf
+op_amp
+l_int|0x0000ff
+)paren
+op_rshift
+l_int|0
 )paren
 suffix:semicolon
 id|saa_writeb
@@ -991,7 +1099,13 @@ c_func
 (paren
 id|SAA7134_AUDIO_CLOCKS_PER_FIELD1
 comma
-l_int|0x15
+(paren
+id|acpf
+op_amp
+l_int|0x00ff00
+)paren
+op_rshift
+l_int|8
 )paren
 suffix:semicolon
 id|saa_writeb
@@ -999,37 +1113,15 @@ c_func
 (paren
 id|SAA7134_AUDIO_CLOCKS_PER_FIELD2
 comma
-l_int|0x02
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|saa_writeb
-c_func
 (paren
-id|SAA7134_AUDIO_CLOCKS_PER_FIELD0
-comma
-l_int|0x00
+id|acpf
+op_amp
+l_int|0x030000
+)paren
+op_rshift
+l_int|16
 )paren
 suffix:semicolon
-id|saa_writeb
-c_func
-(paren
-id|SAA7134_AUDIO_CLOCKS_PER_FIELD1
-comma
-l_int|0x80
-)paren
-suffix:semicolon
-id|saa_writeb
-c_func
-(paren
-id|SAA7134_AUDIO_CLOCKS_PER_FIELD2
-comma
-l_int|0x02
-)paren
-suffix:semicolon
-)brace
 id|tvaudio_setcarrier
 c_func
 (paren
@@ -1174,6 +1266,14 @@ comma
 l_int|0xa1
 )paren
 suffix:semicolon
+id|saa_writeb
+c_func
+(paren
+id|SAA7134_NICAM_CONFIG
+comma
+l_int|0x00
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1211,6 +1311,14 @@ comma
 l_int|0xa1
 )paren
 suffix:semicolon
+id|saa_writeb
+c_func
+(paren
+id|SAA7134_NICAM_CONFIG
+comma
+l_int|0x00
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1220,17 +1328,6 @@ multiline_comment|/* not implemented (yet) */
 r_break
 suffix:semicolon
 )brace
-id|saa_writel
-c_func
-(paren
-l_int|0x174
-op_rshift
-l_int|2
-comma
-l_int|0x0001e000
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
 )brace
 DECL|function|tvaudio_sleep
 r_static
@@ -1265,9 +1362,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -2171,6 +2270,8 @@ comma
 id|rx
 comma
 id|mode
+comma
+id|lastmode
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -2759,6 +2860,8 @@ c_func
 id|dev
 comma
 id|HZ
+op_star
+l_int|2
 )paren
 )paren
 r_goto
@@ -2846,6 +2949,10 @@ id|tvaudio
 id|audio
 )braket
 suffix:semicolon
+id|lastmode
+op_assign
+l_int|42
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2861,7 +2968,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|3
+l_int|5
 op_star
 id|HZ
 )paren
@@ -2922,6 +3029,14 @@ op_assign
 id|dev-&gt;thread.mode
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|lastmode
+op_ne
+id|mode
+)paren
+(brace
 id|tvaudio_setstereo
 c_func
 (paren
@@ -2936,6 +3051,11 @@ comma
 id|mode
 )paren
 suffix:semicolon
+id|lastmode
+op_assign
+id|mode
+suffix:semicolon
+)brace
 )brace
 )brace
 id|done
@@ -3108,9 +3228,9 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|DSP_RETRY
-mdefine_line|#define DSP_RETRY 30
+mdefine_line|#define DSP_RETRY 32
 DECL|macro|DSP_DELAY
-mdefine_line|#define DSP_DELAY 10
+mdefine_line|#define DSP_DELAY 16
 DECL|function|saa_dsp_wait_bit
 r_static
 r_inline
@@ -3720,6 +3840,44 @@ comma
 id|dev-&gt;thread.scan1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|audio_ddep
+op_ge
+l_int|0x04
+op_logical_and
+id|audio_ddep
+op_le
+l_int|0x0e
+)paren
+(brace
+multiline_comment|/* insmod option override */
+id|norms
+op_assign
+(paren
+id|audio_ddep
+op_lshift
+l_int|2
+)paren
+op_or
+l_int|0x01
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;ddep override: %s&bslash;n&quot;
+comma
+id|stdres
+(braket
+id|audio_ddep
+)braket
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* (let chip) scan for sound carrier */
 id|norms
 op_assign
 l_int|0
@@ -3731,11 +3889,19 @@ id|dev-&gt;tvnorm-&gt;id
 op_amp
 id|V4L2_STD_PAL
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;PAL scan&bslash;n&quot;
+)paren
+suffix:semicolon
 id|norms
 op_or_assign
 l_int|0x2c
 suffix:semicolon
 multiline_comment|/* B/G + D/K + I */
+)brace
 r_if
 c_cond
 (paren
@@ -3743,11 +3909,19 @@ id|dev-&gt;tvnorm-&gt;id
 op_amp
 id|V4L2_STD_NTSC
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;NTSC scan&bslash;n&quot;
+)paren
+suffix:semicolon
 id|norms
 op_or_assign
 l_int|0x40
 suffix:semicolon
 multiline_comment|/* M */
+)brace
 r_if
 c_cond
 (paren
@@ -3755,11 +3929,19 @@ id|dev-&gt;tvnorm-&gt;id
 op_amp
 id|V4L2_STD_SECAM
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;SECAM scan&bslash;n&quot;
+)paren
+suffix:semicolon
 id|norms
 op_or_assign
 l_int|0x18
 suffix:semicolon
 multiline_comment|/* L + D/K */
+)brace
 r_if
 c_cond
 (paren
@@ -3769,8 +3951,71 @@ id|norms
 )paren
 id|norms
 op_assign
-l_int|0x0000007c
+l_int|0x7c
 suffix:semicolon
+multiline_comment|/* all */
+id|dprintk
+c_func
+(paren
+l_string|&quot;scanning:%s%s%s%s%s&bslash;n&quot;
+comma
+(paren
+id|norms
+op_amp
+l_int|0x04
+)paren
+ques
+c_cond
+l_string|&quot; B/G&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|norms
+op_amp
+l_int|0x08
+)paren
+ques
+c_cond
+l_string|&quot; D/K&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|norms
+op_amp
+l_int|0x10
+)paren
+ques
+c_cond
+l_string|&quot; L/L&squot;&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|norms
+op_amp
+l_int|0x20
+)paren
+ques
+c_cond
+l_string|&quot; I&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|norms
+op_amp
+l_int|0x40
+)paren
+ques
+c_cond
+l_string|&quot; M&quot;
+suffix:colon
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* quick &amp; dirty -- to be fixed up later ... */
 id|saa_dsp_writel
 c_func
@@ -4400,7 +4645,7 @@ id|i2s_rate
 )paren
 (brace
 r_int
-id|rate
+id|i2sform
 op_assign
 (paren
 l_int|32000
@@ -4414,30 +4659,11 @@ id|i2s_rate
 )paren
 ques
 c_cond
-l_int|0x01
+l_int|0x00
 suffix:colon
-l_int|0x03
-suffix:semicolon
-multiline_comment|/* set rate */
-id|saa_andorb
-c_func
-(paren
-id|SAA7134_SIF_SAMPLE_FREQ
-comma
-l_int|0x03
-comma
-id|rate
-)paren
+l_int|0x01
 suffix:semicolon
 multiline_comment|/* enable I2S output */
-id|saa_writeb
-c_func
-(paren
-id|SAA7134_DSP_OUTPUT_SELECT
-comma
-l_int|0x80
-)paren
-suffix:semicolon
 id|saa_writeb
 c_func
 (paren
@@ -4451,7 +4677,7 @@ c_func
 (paren
 id|SAA7134_I2S_OUTPUT_FORMAT
 comma
-l_int|0x01
+id|i2sform
 )paren
 suffix:semicolon
 id|saa_writeb
@@ -4459,7 +4685,7 @@ c_func
 (paren
 id|SAA7134_I2S_OUTPUT_LEVEL
 comma
-l_int|0x00
+l_int|0x0F
 )paren
 suffix:semicolon
 id|saa_writeb

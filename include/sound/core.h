@@ -551,6 +551,12 @@ id|work_struct
 id|free_workq
 suffix:semicolon
 multiline_comment|/* for free in workqueue */
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|member|set_power_state
 r_int

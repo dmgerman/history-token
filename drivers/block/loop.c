@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -351,9 +352,7 @@ op_assign
 id|i_size_read
 c_func
 (paren
-id|lo-&gt;lo_backing_file-&gt;f_dentry
-op_member_access_from_pointer
-id|d_inode-&gt;i_mapping-&gt;host
+id|lo-&gt;lo_backing_file-&gt;f_mapping-&gt;host
 )paren
 suffix:semicolon
 id|offset
@@ -519,7 +518,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|address_space_operations
@@ -2667,6 +2666,11 @@ id|lo_device
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|address_space
+op_star
+id|mapping
+suffix:semicolon
 r_int
 id|lo_blocksize
 suffix:semicolon
@@ -2722,14 +2726,13 @@ id|file
 r_goto
 id|out
 suffix:semicolon
-id|error
+id|mapping
 op_assign
-op_minus
-id|EINVAL
+id|file-&gt;f_mapping
 suffix:semicolon
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode
+id|mapping-&gt;host
 suffix:semicolon
 r_if
 c_cond
@@ -2745,6 +2748,11 @@ id|lo_flags
 op_or_assign
 id|LO_FLAGS_READ_ONLY
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2757,7 +2765,11 @@ id|inode-&gt;i_mode
 (brace
 id|lo_device
 op_assign
-id|inode-&gt;i_bdev
+id|I_BDEV
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2773,7 +2785,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 r_goto
-id|out
+id|out_putf
 suffix:semicolon
 )brace
 id|lo_blocksize
@@ -2814,7 +2826,7 @@ id|address_space_operations
 op_star
 id|aops
 op_assign
-id|inode-&gt;i_mapping-&gt;a_ops
+id|mapping-&gt;a_ops
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we can&squot;t read - sorry. If we only can&squot;t write - well,&n;&t;&t; * it&squot;s going to be read-only.&n;&t;&t; */
 r_if
@@ -2847,20 +2859,10 @@ id|lo_flags
 op_or_assign
 id|LO_FLAGS_DO_BMAP
 suffix:semicolon
-id|error
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 r_else
 r_goto
 id|out_putf
-suffix:semicolon
-id|get_file
-c_func
-(paren
-id|file
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2933,12 +2935,6 @@ op_assign
 op_minus
 id|EFBIG
 suffix:semicolon
-id|fput
-c_func
-(paren
-id|file
-)paren
-suffix:semicolon
 r_goto
 id|out_putf
 suffix:semicolon
@@ -2948,13 +2944,13 @@ op_assign
 id|mapping_gfp_mask
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 id|mapping_set_gfp_mask
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 comma
 id|lo-&gt;old_gfp_mask
 op_amp
@@ -2964,14 +2960,6 @@ id|__GFP_IO
 op_or
 id|__GFP_FS
 )paren
-)paren
-suffix:semicolon
-id|set_blocksize
-c_func
-(paren
-id|bdev
-comma
-id|lo_blocksize
 )paren
 suffix:semicolon
 id|lo-&gt;lo_bio
@@ -3038,6 +3026,18 @@ comma
 id|q-&gt;max_hw_segments
 )paren
 suffix:semicolon
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|lo-&gt;lo_queue
+comma
+id|queue_hardsect_size
+c_func
+(paren
+id|q
+)paren
+)paren
+suffix:semicolon
 id|blk_queue_max_segment_size
 c_func
 (paren
@@ -3063,6 +3063,14 @@ id|q-&gt;merge_bvec_fn
 )paren
 suffix:semicolon
 )brace
+id|set_blocksize
+c_func
+(paren
+id|bdev
+comma
+id|lo_blocksize
+)paren
+suffix:semicolon
 id|kernel_thread
 c_func
 (paren
@@ -3078,12 +3086,6 @@ c_func
 (paren
 op_amp
 id|lo-&gt;lo_sem
-)paren
-suffix:semicolon
-id|fput
-c_func
-(paren
-id|file
 )paren
 suffix:semicolon
 r_return
@@ -3466,7 +3468,7 @@ suffix:semicolon
 id|mapping_set_gfp_mask
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 comma
 id|gfp
 )paren
@@ -4890,6 +4892,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|LOOP_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|LOOP_MAJOR
 )paren
 suffix:semicolon
 DECL|function|loop_register_transfer

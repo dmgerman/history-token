@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
@@ -296,7 +295,7 @@ id|SGI_UART_VECTOR
 suffix:semicolon
 id|local5_config.sh_local_int5_config_s.pid
 op_assign
-id|cpu0
+id|cpu
 suffix:semicolon
 id|HUB_S
 c_func
@@ -924,10 +923,7 @@ c_cond
 (paren
 id|cpu
 op_eq
-id|num_online_cpus
-c_func
-(paren
-)paren
+id|NR_CPUS
 )paren
 r_continue
 suffix:semicolon

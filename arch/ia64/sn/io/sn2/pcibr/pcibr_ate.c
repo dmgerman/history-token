@@ -1,29 +1,11 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#ifndef LOCAL
-DECL|macro|LOCAL
-mdefine_line|#define LOCAL           static
-macro_line|#endif
 multiline_comment|/*&n; * functions&n; */
 r_int
 id|pcibr_init_ext_ate_ram
@@ -138,7 +120,7 @@ DECL|macro|ATE_NUM_ENTRIES
 mdefine_line|#define ATE_NUM_ENTRIES(n) _ate_info[n]
 multiline_comment|/* Possible choices for number of ATE entries in Bridge&squot;s SSRAM */
 DECL|variable|_ate_info
-id|LOCAL
+r_static
 r_int
 id|_ate_info
 (braket
@@ -198,9 +180,6 @@ id|bridgereg_t
 id|old_enable
 comma
 id|new_enable
-suffix:semicolon
-r_int
-id|s
 suffix:semicolon
 multiline_comment|/* Probe SSRAM to determine its size. */
 id|old_enable
@@ -305,13 +284,6 @@ id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
 multiline_comment|/*&n;     * ensure that we write and read without any interruption.&n;     * The read following the write is required for the Bridge war&n;     */
-id|s
-op_assign
-id|splhi
-c_func
-(paren
-)paren
-suffix:semicolon
 id|bridge-&gt;b_wid_control
 op_assign
 (paren
@@ -330,12 +302,6 @@ suffix:semicolon
 id|bridge-&gt;b_wid_control
 suffix:semicolon
 multiline_comment|/* inval addr bug war */
-id|splx
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
 id|num_entries
 op_assign
 id|ATE_NUM_ENTRIES
@@ -1220,16 +1186,6 @@ id|bridge_ate_t
 id|ate
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 r_while
 c_loop
 (paren
@@ -1249,72 +1205,6 @@ id|ate
 op_add_assign
 id|IOPGSIZE
 suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|ate_ptr
-)paren
-)paren
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|ate_count
-op_decrement
-OG
-l_int|0
-)paren
-(brace
-op_star
-id|ate_ptr
-op_increment
-op_assign
-id|__swab64
-c_func
-(paren
-id|ate
-)paren
-suffix:semicolon
-id|ate
-op_add_assign
-id|IOPGSIZE
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_while
-c_loop
-(paren
-id|ate_count
-op_decrement
-OG
-l_int|0
-)paren
-(brace
-op_star
-id|ate_ptr
-op_increment
-op_assign
-id|ate
-suffix:semicolon
-id|ate
-op_add_assign
-id|IOPGSIZE
-suffix:semicolon
-)brace
-)brace
 )brace
 )brace
 macro_line|#if PCIBR_FREEZE_TIME
@@ -1441,16 +1331,6 @@ op_amp
 id|PCI_CMD_BUS_MASTER
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|pcibr_slot_config_set
 c_func
 (paren
@@ -1465,62 +1345,6 @@ comma
 id|cmd_reg
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|bridge-&gt;b_type0_cfg_dev
-(braket
-id|slot
-)braket
-dot
-id|l
-(braket
-id|PCI_CFG_COMMAND
-op_div
-l_int|4
-)braket
-op_assign
-id|__swab32
-c_func
-(paren
-id|cmd_reg
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-singleline_comment|//&t;&t;&t;&t;BUG(); /* Does this really work if called when io_get_sh_swapper = 0? */
-singleline_comment|//&t;&t;&t;&t;bridge-&gt;b_type0_cfg_dev[slot].l[PCI_CFG_COMMAND / 4] = cmd_reg;
-id|pcibr_slot_config_set
-c_func
-(paren
-id|bridge
-comma
-id|slot
-comma
-id|PCI_CFG_COMMAND
-op_div
-l_int|4
-comma
-id|cmd_reg
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 )brace
 id|pcibr_dmamap-&gt;bd_flags

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: setup.c,v 1.1.2.3 2002/11/04 20:33:57 lethal Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
+multiline_comment|/*&n; *&t;$Id: setup.c,v 1.4 2003/08/03 03:05:10 lethal Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -259,24 +259,46 @@ id|hw_interrupt_type
 id|hd64461_irq_type
 op_assign
 (brace
+dot
+r_typename
+op_assign
 l_string|&quot;HD64461-IRQ&quot;
 comma
+dot
+id|startup
+op_assign
 id|startup_hd64461_irq
 comma
+dot
+id|shutdown
+op_assign
 id|shutdown_hd64461_irq
 comma
+dot
+id|enable
+op_assign
 id|enable_hd64461_irq
 comma
+dot
+id|disable
+op_assign
 id|disable_hd64461_irq
 comma
+dot
+id|ack
+op_assign
 id|mask_and_ack_hd64461
 comma
+dot
+id|end
+op_assign
 id|end_hd64461_irq
+comma
 )brace
 suffix:semicolon
 DECL|function|hd64461_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|hd64461_interrupt
 c_func
 (paren
@@ -311,6 +333,9 @@ c_func
 id|HD64461_NIMR
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 DECL|function|hd64461_irq_demux

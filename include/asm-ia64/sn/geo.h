@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef __SYS_GEO_H__
-DECL|macro|__SYS_GEO_H__
-mdefine_line|#define __SYS_GEO_H__
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_GEO_H
+DECL|macro|_ASM_IA64_SN_GEO_H
+mdefine_line|#define _ASM_IA64_SN_GEO_H
 multiline_comment|/* Include a platform-specific geo.h.  It must define at least:&n; *   geoid_t:&t;&t;Geographic identifier data type&n; *   geo_type_t:&t;Data type for the kind of geoid this is&n; *   GEO_TYPE_xxx:&t;Values for geo_type_t vars, eg. GEO_TYPE_NODE&n; *   GEO_MAX_LEN:&t;The maximum length of a geoid, formatted for printing&n; */
 macro_line|#include &lt;asm/sn/sn2/geo.h&gt;
 multiline_comment|/* Declarations applicable to all platforms */
@@ -136,5 +136,5 @@ id|nasid_t
 id|nasid
 )paren
 suffix:semicolon
-macro_line|#endif /* __SYS_GEO_H__ */
+macro_line|#endif /* _ASM_IA64_SN_GEO_H */
 eof

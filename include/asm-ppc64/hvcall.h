@@ -18,6 +18,22 @@ DECL|macro|H_Not_Found
 mdefine_line|#define H_Not_Found&t;-7&t;/* PTE was not found&quot; */
 DECL|macro|H_Reserved_DABR
 mdefine_line|#define H_Reserved_DABR&t;-8&t;/* DABR address is reserved by the hypervisor on this processor&quot; */
+DECL|macro|H_NoMem
+mdefine_line|#define H_NoMem                 -9
+DECL|macro|H_Authority
+mdefine_line|#define H_Authority            -10
+DECL|macro|H_Permission
+mdefine_line|#define H_Permission           -11
+DECL|macro|H_Dropped
+mdefine_line|#define H_Dropped              -12
+DECL|macro|H_SourceParm
+mdefine_line|#define H_SourceParm           -13
+DECL|macro|H_DestParm
+mdefine_line|#define H_DestParm             -14
+DECL|macro|H_RemoteParm
+mdefine_line|#define H_RemoteParm           -15
+DECL|macro|H_Resource
+mdefine_line|#define H_Resource             -16
 multiline_comment|/* Flags */
 DECL|macro|H_LARGE_PAGE
 mdefine_line|#define H_LARGE_PAGE&t;&t;(1UL&lt;&lt;(63-16))
@@ -106,6 +122,36 @@ DECL|macro|H_XIRR
 mdefine_line|#define H_XIRR&t;&t;&t;0x74
 DECL|macro|H_PERFMON
 mdefine_line|#define H_PERFMON&t;&t;0x7c
+DECL|macro|H_MIGRATE_DMA
+mdefine_line|#define H_MIGRATE_DMA&t;&t;0x78
+DECL|macro|H_REGISTER_VPA
+mdefine_line|#define H_REGISTER_VPA&t;&t;0xDC
+DECL|macro|H_CEDE
+mdefine_line|#define H_CEDE&t;&t;        0xE0
+DECL|macro|H_CONFER
+mdefine_line|#define H_CONFER&t;&t;0xE4
+DECL|macro|H_PROD
+mdefine_line|#define H_PROD&t;&t;        0xE8
+DECL|macro|H_GET_PPP
+mdefine_line|#define H_GET_PPP&t;&t;0xEC
+DECL|macro|H_SET_PPP
+mdefine_line|#define H_SET_PPP&t;&t;0xF0
+DECL|macro|H_SET_PURR
+mdefine_line|#define H_SET_PURR&t;&t;0xF4
+DECL|macro|H_PIC
+mdefine_line|#define H_PIC&t;&t;        0xF8
+DECL|macro|H_REG_CRQ
+mdefine_line|#define H_REG_CRQ&t;&t;0xFC
+DECL|macro|H_FREE_CRQ
+mdefine_line|#define H_FREE_CRQ&t;&t;0x100
+DECL|macro|H_VIO_SIGNAL
+mdefine_line|#define H_VIO_SIGNAL&t;&t;0x104
+DECL|macro|H_SEND_CRQ
+mdefine_line|#define H_SEND_CRQ&t;&t;0x108
+DECL|macro|H_COPY_RDMA
+mdefine_line|#define H_COPY_RDMA             0x110
+DECL|macro|H_POLL_PENDING
+mdefine_line|#define H_POLL_PENDING&t;        0x1D8
 multiline_comment|/* plpar_hcall() -- Generic call interface using above opcodes&n; *&n; * The actual call interface is a hypervisor call instruction with&n; * the opcode in R3 and input args in R4-R7.&n; * Status is returned in R3 with variable output values in R4-R11.&n; * Only H_PTE_READ with H_READ_4 uses R6-R11 so we ignore it for now&n; * and return only two out args which MUST ALWAYS BE PROVIDED.&n; */
 r_int
 id|plpar_hcall
@@ -159,6 +205,99 @@ comma
 dot
 dot
 dot
+)paren
+suffix:semicolon
+multiline_comment|/* &n; * Special hcall interface for ibmveth support.&n; * Takes 8 input parms. Returns a rc and stores the&n; * R4 return value in *out1.&n; */
+r_int
+id|plpar_hcall_8arg_2ret
+c_func
+(paren
+r_int
+r_int
+id|opcode
+comma
+r_int
+r_int
+id|arg1
+comma
+r_int
+r_int
+id|arg2
+comma
+r_int
+r_int
+id|arg3
+comma
+r_int
+r_int
+id|arg4
+comma
+r_int
+r_int
+id|arg5
+comma
+r_int
+r_int
+id|arg6
+comma
+r_int
+r_int
+id|arg7
+comma
+r_int
+r_int
+id|arg8
+comma
+r_int
+r_int
+op_star
+id|out1
+)paren
+suffix:semicolon
+multiline_comment|/* plpar_hcall_4out()&n; *&n; * same as plpar_hcall except with 4 output arguments.  &n; * &n; */
+r_int
+id|plpar_hcall_4out
+c_func
+(paren
+r_int
+r_int
+id|opcode
+comma
+r_int
+r_int
+id|arg1
+comma
+r_int
+r_int
+id|arg2
+comma
+r_int
+r_int
+id|arg3
+comma
+r_int
+r_int
+id|arg4
+comma
+r_int
+r_int
+op_star
+id|out1
+comma
+r_int
+r_int
+op_star
+id|out2
+comma
+r_int
+r_int
+op_star
+id|out3
+comma
+r_int
+r_int
+op_star
+id|out4
 )paren
 suffix:semicolon
 eof

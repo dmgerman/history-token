@@ -3,6 +3,7 @@ macro_line|#ifndef _BTTV_H_
 DECL|macro|_BTTV_H_
 mdefine_line|#define _BTTV_H_
 macro_line|#include &lt;linux/videodev.h&gt;
+macro_line|#include &lt;linux/i2c.h&gt;
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* exported by bttv-cards.c                                   */
 DECL|macro|BTTV_UNKNOWN
@@ -203,6 +204,18 @@ DECL|macro|BTTV_IVC100
 mdefine_line|#define BTTV_IVC100         0x6e
 DECL|macro|BTTV_IVC120
 mdefine_line|#define BTTV_IVC120         0x6f
+DECL|macro|BTTV_PC_HDTV
+mdefine_line|#define BTTV_PC_HDTV        0x70
+DECL|macro|BTTV_TWINHAN_DST
+mdefine_line|#define BTTV_TWINHAN_DST    0x71
+DECL|macro|BTTV_WINFASTVC100
+mdefine_line|#define BTTV_WINFASTVC100   0x72
+DECL|macro|BTTV_SIMUS_GVC1100
+mdefine_line|#define BTTV_SIMUS_GVC1100  0x74
+DECL|macro|BTTV_NGSTV_PLUS
+mdefine_line|#define BTTV_NGSTV_PLUS     0x75
+DECL|macro|BTTV_LMLBT4
+mdefine_line|#define BTTV_LMLBT4         0x76
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -259,6 +272,51 @@ DECL|macro|DIGITAL_MODE_VIDEO
 mdefine_line|#define DIGITAL_MODE_VIDEO 1
 DECL|macro|DIGITAL_MODE_CAMERA
 mdefine_line|#define DIGITAL_MODE_CAMERA 2
+DECL|struct|bttv_core
+r_struct
+id|bttv_core
+(brace
+multiline_comment|/* device structs */
+DECL|member|pci
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
+DECL|member|i2c_adap
+r_struct
+id|i2c_adapter
+id|i2c_adap
+suffix:semicolon
+DECL|member|subs
+r_struct
+id|list_head
+id|subs
+suffix:semicolon
+multiline_comment|/* struct bttv_sub_device */
+multiline_comment|/* device config */
+DECL|member|nr
+r_int
+r_int
+id|nr
+suffix:semicolon
+multiline_comment|/* dev nr (for printk(&quot;bttv%d: ...&quot;);  */
+DECL|member|type
+r_int
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* card type (pointer into tvcards[])  */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* dev name */
+)brace
+suffix:semicolon
 r_struct
 id|bttv
 suffix:semicolon
@@ -362,6 +420,29 @@ DECL|member|no_video
 r_int
 r_int
 id|no_video
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_dvb
+r_int
+r_int
+id|has_dvb
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_remote
+r_int
+r_int
+id|has_remote
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|no_gpioirq
+r_int
+r_int
+id|no_gpioirq
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* other settings */
 DECL|member|pll
@@ -542,7 +623,7 @@ id|btv
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* exported by bttv-if.c                                      */
-multiline_comment|/* interface for gpio access by other modules                 */
+multiline_comment|/* this obsolete -- please use the sysfs-based&n;   interface below for new code */
 multiline_comment|/* returns card type + card ID (for bt878-based ones)&n;   for possible values see lines below beginning with #define BTTV_UNKNOWN&n;   returns negative value if error occurred &n;*/
 r_extern
 r_int
@@ -671,7 +752,155 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/* i2c */
+multiline_comment|/* ---------------------------------------------------------- */
+multiline_comment|/* sysfs/driver-moded based gpio access interface             */
+DECL|struct|bttv_sub_device
+r_struct
+id|bttv_sub_device
+(brace
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+DECL|member|core
+r_struct
+id|bttv_core
+op_star
+id|core
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|to_bttv_sub_dev
+mdefine_line|#define to_bttv_sub_dev(x) container_of((x), struct bttv_sub_device, dev)
+DECL|struct|bttv_sub_driver
+r_struct
+id|bttv_sub_driver
+(brace
+DECL|member|drv
+r_struct
+id|device_driver
+id|drv
+suffix:semicolon
+DECL|member|wanted
+r_char
+id|wanted
+(braket
+id|BUS_ID_SIZE
+)braket
+suffix:semicolon
+DECL|member|gpio_irq
+r_void
+(paren
+op_star
+id|gpio_irq
+)paren
+(paren
+r_struct
+id|bttv_sub_device
+op_star
+id|sub
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|to_bttv_sub_drv
+mdefine_line|#define to_bttv_sub_drv(x) container_of((x), struct bttv_sub_driver, drv)
+r_int
+id|bttv_sub_register
+c_func
+(paren
+r_struct
+id|bttv_sub_driver
+op_star
+id|drv
+comma
+r_char
+op_star
+id|wanted
+)paren
+suffix:semicolon
+r_int
+id|bttv_sub_unregister
+c_func
+(paren
+r_struct
+id|bttv_sub_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
+multiline_comment|/* gpio access functions */
+r_void
+id|bttv_gpio_inout
+c_func
+(paren
+r_struct
+id|bttv_core
+op_star
+id|core
+comma
+id|u32
+id|mask
+comma
+id|u32
+id|outbits
+)paren
+suffix:semicolon
+id|u32
+id|bttv_gpio_read
+c_func
+(paren
+r_struct
+id|bttv_core
+op_star
+id|core
+)paren
+suffix:semicolon
+r_void
+id|bttv_gpio_write
+c_func
+(paren
+r_struct
+id|bttv_core
+op_star
+id|core
+comma
+id|u32
+id|value
+)paren
+suffix:semicolon
+r_void
+id|bttv_gpio_bits
+c_func
+(paren
+r_struct
+id|bttv_core
+op_star
+id|core
+comma
+id|u32
+id|mask
+comma
+id|u32
+id|bits
+)paren
+suffix:semicolon
+DECL|macro|gpio_inout
+mdefine_line|#define gpio_inout(mask,bits)  bttv_gpio_inout(&amp;btv-&gt;c, mask, bits)
+DECL|macro|gpio_read
+mdefine_line|#define gpio_read()            bttv_gpio_read(&amp;btv-&gt;c)
+DECL|macro|gpio_write
+mdefine_line|#define gpio_write(value)      bttv_gpio_write(&amp;btv-&gt;c, value)
+DECL|macro|gpio_bits
+mdefine_line|#define gpio_bits(mask,bits)   bttv_gpio_bits(&amp;btv-&gt;c, mask, bits)
+multiline_comment|/* ---------------------------------------------------------- */
+multiline_comment|/* i2c                                                        */
 r_extern
 r_void
 id|bttv_bit_setscl

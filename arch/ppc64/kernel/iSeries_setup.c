@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -40,7 +42,30 @@ m_abort
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
+r_extern
+r_void
+id|ppcdbg_initialize
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iSeries_pcibios_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tce_init_iSeries
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 r_void
 id|build_iSeries_Memory_Map
@@ -71,7 +96,6 @@ r_int
 id|eaddr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_void
 id|build_valid_hpte
 c_func
@@ -99,25 +123,16 @@ r_int
 id|bolted
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|ppcdbg_initialize
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|iSeries_pcibios_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_void
 id|iSeries_setup_dprofile
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|iSeries_setup_arch
 c_func
 (paren
 r_void
@@ -129,76 +144,60 @@ r_static
 r_int
 r_int
 id|procFreqHz
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|procFreqMhz
 r_static
 r_int
 r_int
 id|procFreqMhz
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|procFreqMhzHundreths
 r_static
 r_int
 r_int
 id|procFreqMhzHundreths
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|tbFreqHz
 r_static
 r_int
 r_int
 id|tbFreqHz
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|tbFreqMhz
 r_static
 r_int
 r_int
 id|tbFreqMhz
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|tbFreqMhzHundreths
 r_static
 r_int
 r_int
 id|tbFreqMhzHundreths
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dprof_shift
 r_int
 r_int
 id|dprof_shift
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dprof_len
 r_int
 r_int
 id|dprof_len
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dprof_buffer
 r_int
 r_int
 op_star
 id|dprof_buffer
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|piranha_simulator
 r_int
 id|piranha_simulator
-op_assign
-l_int|0
+suffix:semicolon
+DECL|variable|boot_cpuid
+r_int
+id|boot_cpuid
 suffix:semicolon
 r_extern
 r_char
@@ -240,8 +239,6 @@ DECL|variable|mf_initialized
 r_static
 r_int
 id|mf_initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|struct|MemoryBlock
 r_struct
@@ -286,7 +283,6 @@ r_int
 id|max_entries
 )paren
 (brace
-multiline_comment|/* Determine if absolute memory has any&n;&t; * holes so that we can interpret the&n;&t; * access map we get back from the hypervisor&n;&t; * correctly.&n;&t; */
 r_int
 r_int
 id|holeFirstChunk
@@ -337,6 +333,7 @@ c_func
 l_string|&quot;Mainstore_VPD: Condor&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Determine if absolute memory has any&n;&t; * holes so that we can interpret the&n;&t; * access map we get back from the hypervisor&n;&t; * correctly.&n;&t; */
 id|mb_array
 (braket
 l_int|0
@@ -487,11 +484,11 @@ id|numMemoryBlocks
 suffix:semicolon
 )brace
 DECL|macro|MaxSegmentAreas
-mdefine_line|#define MaxSegmentAreas 32
+mdefine_line|#define MaxSegmentAreas&t;&t;&t;32
 DECL|macro|MaxSegmentAdrRangeBlocks
-mdefine_line|#define MaxSegmentAdrRangeBlocks 128
+mdefine_line|#define MaxSegmentAdrRangeBlocks&t;128
 DECL|macro|MaxAreaRangeBlocks
-mdefine_line|#define MaxAreaRangeBlocks 4
+mdefine_line|#define MaxAreaRangeBlocks&t;&t;4
 DECL|function|iSeries_process_Regatta_mainstore_vpd
 r_int
 r_int
@@ -714,14 +711,12 @@ id|numSegmentBlocks
 op_eq
 id|max_entries
 )paren
-(brace
 id|panic
 c_func
 (paren
 l_string|&quot;iSeries_process_mainstore_vpd: too many memory blocks&quot;
 )paren
 suffix:semicolon
-)brace
 id|mb_array
 (braket
 id|numSegmentBlocks
@@ -734,14 +729,12 @@ id|numSegmentBlocks
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot; (duplicate)&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|printk
 c_func
@@ -860,7 +853,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Assign &quot;logical&quot; addresses to each block.  These&n;&t; * addresses correspond to the hypervisor &quot;bitmap&quot; space.&n;&t; * Convert all addresses into units of 256K chunks.&n;&t; */
+multiline_comment|/*&n;&t; * Assign &quot;logical&quot; addresses to each block.  These&n;&t; * addresses correspond to the hypervisor &quot;bitmap&quot; space.&n;&t; * Convert all addresses into units of 256K chunks.&n;&t; */
 (brace
 r_int
 r_int
@@ -1173,17 +1166,15 @@ r_return
 id|mem_blocks
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * void __init iSeries_init_early()&n; */
+DECL|function|iSeries_init_early
 r_void
 id|__init
-DECL|function|iSeries_init_early
 id|iSeries_init_early
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_ISERIES
 id|ppcdbg_initialize
 c_func
 (paren
@@ -1255,7 +1246,7 @@ suffix:semicolon
 r_else
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 (brace
-multiline_comment|/*&t;&t;ROOT_DEV = MKDEV( VIODASD_MAJOR, 1 ); */
+multiline_comment|/* ROOT_DEV = MKDEV(VIODASD_MAJOR, 1); */
 )brace
 id|iSeries_recal_tb
 op_assign
@@ -1286,6 +1277,10 @@ suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign
 id|iSeries_init_IRQ
+suffix:semicolon
+id|ppc_md.init_irq_desc
+op_assign
+id|iSeries_init_irq_desc
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
@@ -1337,7 +1332,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the table which translate Linux physical addresses to&n;&t; * AS/400 absolute addresses&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the table which translate Linux physical addresses to&n;&t; * AS/400 absolute addresses&n;&t; */
 id|build_iSeries_Memory_Map
 c_func
 (paren
@@ -1367,12 +1362,10 @@ id|piranha_simulator
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 )brace
-multiline_comment|/*&n; * void __init iSeries_init()&n; */
+DECL|function|iSeries_init
 r_void
 id|__init
-DECL|function|iSeries_init
 id|iSeries_init
 c_func
 (paren
@@ -1397,6 +1390,13 @@ r_int
 id|r7
 )paren
 (brace
+r_char
+op_star
+id|p
+comma
+op_star
+id|q
+suffix:semicolon
 multiline_comment|/* Associate Lp Event Queue 0 with processor 0 */
 id|HvCallEvent_setLpEventQueueInterruptProc
 c_func
@@ -1406,15 +1406,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-(brace
 multiline_comment|/* copy the command line parameter from the primary VSP  */
-r_char
-op_star
-id|p
-comma
-op_star
-id|q
-suffix:semicolon
 id|HvCallEvent_dmaToSp
 c_func
 (paren
@@ -1494,7 +1486,6 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1507,13 +1498,6 @@ l_string|&quot;dprofile=&quot;
 )paren
 )paren
 (brace
-r_char
-op_star
-id|p
-comma
-op_star
-id|q
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1552,10 +1536,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|p
 OG
 id|cmd_line
+)paren
 op_logical_and
+(paren
 id|p
 (braket
 op_minus
@@ -1563,6 +1550,7 @@ l_int|1
 )braket
 op_ne
 l_char|&squot; &squot;
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -1716,7 +1704,6 @@ id|pmc_proc_init
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/*&n; * The iSeries may have very large memories ( &gt; 128 GB ) and a partition&n; * may get memory in &quot;chunks&quot; that may be anywhere in the 2**52 real&n; * address space.  The chunks are 256K in size.  To map this to the &n; * memory model Linux expects, the AS/400 specific code builds a &n; * translation table to translate what Linux thinks are &quot;physical&quot;&n; * addresses to the actual real addresses.  This allows us to make &n; * it appear to Linux that we have contiguous memory starting at&n; * physical address zero while in fact this could be far from the truth.&n; * To avoid confusion, I&squot;ll let the words physical and/or real address &n; * apply to the Linux addresses while I&squot;ll use &quot;absolute address&quot; to &n; * refer to the actual hardware real address.&n; *&n; * build_iSeries_Memory_Map gets information from the Hypervisor and &n; * looks at the Main Store VPD to determine the absolute addresses&n; * of the memory that has been assigned to our partition and builds&n; * a table used to translate Linux&squot;s physical addresses to these&n; * absolute addresses.  Absolute addresses are needed when &n; * communicating with the hypervisor (e.g. to build HPT entries)&n; */
 DECL|function|build_iSeries_Memory_Map
 r_static
@@ -1809,7 +1796,7 @@ op_lshift
 l_int|18
 )paren
 suffix:semicolon
-multiline_comment|/* Get absolute address of our load area&n;&t; * and map it to physical address 0&n;&t; * This guarantees that the loadarea ends up at physical 0&n;&t; * otherwise, it might not be returned by PLIC as the first&n;&t; * chunks&n;&t; */
+multiline_comment|/*&n;&t; * Get absolute address of our load area&n;&t; * and map it to physical address 0&n;&t; * This guarantees that the loadarea ends up at physical 0&n;&t; * otherwise, it might not be returned by PLIC as the first&n;&t; * chunks&n;&t; */
 id|loadAreaFirstChunk
 op_assign
 (paren
@@ -1825,7 +1812,7 @@ id|loadAreaSize
 op_assign
 id|itLpNaca.xLoadAreaChunks
 suffix:semicolon
-multiline_comment|/* Only add the pages already mapped here.  &n;&t; * Otherwise we might add the hpt pages &n;&t; * The rest of the pages of the load area&n;&t; * aren&squot;t in the HPT yet and can still&n;&t; * be assigned an arbitrary physical address&n;&t; */
+multiline_comment|/*&n;&t; * Only add the pages already mapped here.  &n;&t; * Otherwise we might add the hpt pages &n;&t; * The rest of the pages of the load area&n;&t; * aren&squot;t in the HPT yet and can still&n;&t; * be assigned an arbitrary physical address&n;&t; */
 r_if
 c_cond
 (paren
@@ -1851,7 +1838,7 @@ id|loadAreaSize
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* TODO Do we need to do something if the HPT is in the 64MB load area?&n;&t; * This would be required if the itLpNaca.xLoadAreaChunks includes &n;&t; * the HPT size&n;&t; */
+multiline_comment|/*&n;&t; * TODO Do we need to do something if the HPT is in the 64MB load area?&n;&t; * This would be required if the itLpNaca.xLoadAreaChunks includes &n;&t; * the HPT size&n;&t; */
 id|printk
 c_func
 (paren
@@ -1889,7 +1876,6 @@ suffix:semicolon
 op_increment
 id|nextPhysChunk
 )paren
-(brace
 id|msChunks.abs
 (braket
 id|nextPhysChunk
@@ -1899,8 +1885,7 @@ id|loadAreaFirstChunk
 op_plus
 id|nextPhysChunk
 suffix:semicolon
-)brace
-multiline_comment|/* Get absolute address of our HPT and remember it so&n;&t; * we won&squot;t map it to any physical address&n;&t; */
+multiline_comment|/*&n;&t; * Get absolute address of our HPT and remember it so&n;&t; * we won&squot;t map it to any physical address&n;&t; */
 id|hptFirstChunk
 op_assign
 (paren
@@ -1920,11 +1905,9 @@ op_assign
 (paren
 id|u32
 )paren
-(paren
 id|HvCallHpt_getHptPages
 c_func
 (paren
-)paren
 )paren
 suffix:semicolon
 id|hptSizeChunks
@@ -1990,12 +1973,12 @@ id|num_ptegs
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* The actual hashed page table is in the hypervisor, we have no direct access */
+multiline_comment|/*&n;&t; * The actual hashed page table is in the hypervisor,&n;&t; * we have no direct access&n;&t; */
 id|htab_data.htab
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Determine if absolute memory has any&n;&t; * holes so that we can interpret the&n;&t; * access map we get back from the hypervisor&n;&t; * correctly.&n;&t; */
+multiline_comment|/*&n;&t; * Determine if absolute memory has any&n;&t; * holes so that we can interpret the&n;&t; * access map we get back from the hypervisor&n;&t; * correctly.&n;&t; */
 id|numMemoryBlocks
 op_assign
 id|iSeries_process_mainstore_vpd
@@ -2006,7 +1989,7 @@ comma
 l_int|32
 )paren
 suffix:semicolon
-multiline_comment|/* Process the main store access map from the hypervisor&n;&t; * to build up our physical -&gt; absolute translation table&n;&t; */
+multiline_comment|/*&n;&t; * Process the main store access map from the hypervisor&n;&t; * to build up our physical -&gt; absolute translation table&n;&t; */
 id|curBlock
 op_assign
 l_int|0
@@ -2192,7 +2175,7 @@ op_add_assign
 l_int|64
 suffix:semicolon
 )brace
-multiline_comment|/* main store size (in chunks) is &n;&t; *   totalChunks - hptSizeChunks&n;&t; * which should be equal to &n;&t; *   nextPhysChunk&n;&t; */
+multiline_comment|/*&n;&t; * main store size (in chunks) is &n;&t; *   totalChunks - hptSizeChunks&n;&t; * which should be equal to &n;&t; *   nextPhysChunk&n;&t; */
 id|systemcfg-&gt;physicalMemorySize
 op_assign
 id|chunk_to_addr
@@ -2408,6 +2391,123 @@ id|systemcfg-&gt;iCacheL1LineSize
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Create a pte. Used during initialization only.&n; */
+DECL|function|iSeries_make_pte
+r_static
+r_void
+id|iSeries_make_pte
+c_func
+(paren
+r_int
+r_int
+id|va
+comma
+r_int
+r_int
+id|pa
+comma
+r_int
+id|mode
+)paren
+(brace
+id|HPTE
+id|local_hpte
+comma
+id|rhpte
+suffix:semicolon
+r_int
+r_int
+id|hash
+comma
+id|vpn
+suffix:semicolon
+r_int
+id|slot
+suffix:semicolon
+id|vpn
+op_assign
+id|va
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|hash
+op_assign
+id|hpt_hash
+c_func
+(paren
+id|vpn
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|local_hpte.dw1.dword1
+op_assign
+id|pa
+op_or
+id|mode
+suffix:semicolon
+id|local_hpte.dw0.dword0
+op_assign
+l_int|0
+suffix:semicolon
+id|local_hpte.dw0.dw0.avpn
+op_assign
+id|va
+op_rshift
+l_int|23
+suffix:semicolon
+id|local_hpte.dw0.dw0.bolted
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* bolted */
+id|local_hpte.dw0.dw0.v
+op_assign
+l_int|1
+suffix:semicolon
+id|slot
+op_assign
+id|HvCallHpt_findValid
+c_func
+(paren
+op_amp
+id|rhpte
+comma
+id|vpn
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot
+OL
+l_int|0
+)paren
+(brace
+multiline_comment|/* Must find space in primary group */
+id|panic
+c_func
+(paren
+l_string|&quot;hash_page: hpte already exists&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|HvCallHpt_addValidate
+c_func
+(paren
+id|slot
+comma
+l_int|0
+comma
+(paren
+id|HPTE
+op_star
+)paren
+op_amp
+id|local_hpte
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Bolt the kernel addr space into the HPT&n; */
 DECL|function|iSeries_bolt_kernel
 r_static
@@ -2536,30 +2636,38 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* No HPTE exists, so create a new bolted one */
-id|build_valid_hpte
+multiline_comment|/* And make sure the pp bits are correct */
+id|HvCallHpt_setPp
 c_func
 (paren
-id|vsid
+id|slot
 comma
+id|PP_RWXX
+)paren
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* No HPTE exists, so create a new bolted one */
+id|iSeries_make_pte
+c_func
+(paren
+id|va
+comma
+(paren
+r_int
+r_int
+)paren
+id|__v2a
+c_func
+(paren
 id|ea
-comma
-id|pa
-comma
-l_int|NULL
+)paren
 comma
 id|mode_rw
-comma
-l_int|1
 )paren
 suffix:semicolon
 )brace
 )brace
-)brace
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 r_extern
 r_int
 r_int
@@ -2571,9 +2679,9 @@ r_int
 id|ppc_tb_freq
 suffix:semicolon
 multiline_comment|/*&n; * Document me.&n; */
+DECL|function|iSeries_setup_arch
 r_void
 id|__init
-DECL|function|iSeries_setup_arch
 id|iSeries_setup_arch
 c_func
 (paren
@@ -2682,7 +2790,6 @@ id|procFreqHz
 op_assign
 (paren
 (paren
-(paren
 l_int|1UL
 op_lshift
 l_int|34
@@ -2697,7 +2804,6 @@ id|procIx
 )braket
 dot
 id|xProcFreq
-)paren
 suffix:semicolon
 id|procFreqMhz
 op_assign
@@ -2728,7 +2834,6 @@ id|tbFreqHz
 op_assign
 (paren
 (paren
-(paren
 l_int|1UL
 op_lshift
 l_int|32
@@ -2743,7 +2848,6 @@ id|procIx
 )braket
 dot
 id|xTimeBaseFreq
-)paren
 suffix:semicolon
 id|tbFreqMhz
 op_assign
@@ -2823,7 +2927,7 @@ id|systemcfg-&gt;processor
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * int as400_setup_residual()&n; *&n; * Description:&n; *   This routine pretty-prints CPU information gathered from the VPD    &n; *   for use in /proc/cpuinfo                               &n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU data is to be printed.             &n; *&n; * Output(s):&n; *  *buffer - Buffer with CPU data.&n; *&n; * Returns:&n; *   The number of bytes copied into &squot;buffer&squot; if OK, otherwise zero or less&n; *   on error.&n; */
+multiline_comment|/*&n; * int as400_setup_residual()&n; *&n; * Description:&n; *   This routine pretty-prints CPU information gathered from the VPD    &n; *   for use in /proc/cpuinfo                               &n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU data is to be printed.             &n; *&n; * Output(s):&n; *  *buffer - Buffer with CPU data.&n; */
 DECL|function|iSeries_setup_residual
 r_void
 id|iSeries_setup_residual
@@ -2833,6 +2937,9 @@ r_struct
 id|seq_file
 op_star
 id|m
+comma
+r_int
+id|cpu_id
 )paren
 (brace
 id|seq_printf
@@ -2901,8 +3008,8 @@ l_string|&quot;machine&bslash;t&bslash;t: 64-bit iSeries Logical Partition&bslas
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Document me.&n; * and Implement me.&n; */
-r_int
 DECL|function|iSeries_get_irq
+r_int
 id|iSeries_get_irq
 c_func
 (paren
@@ -2919,8 +3026,8 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Document me.&n; */
-r_void
 DECL|function|iSeries_restart
+r_void
 id|iSeries_restart
 c_func
 (paren
@@ -2936,8 +3043,8 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Document me.&n; */
-r_void
 DECL|function|iSeries_power_off
+r_void
 id|iSeries_power_off
 c_func
 (paren
@@ -2951,8 +3058,8 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Document me.&n; */
-r_void
 DECL|function|iSeries_halt
+r_void
 id|iSeries_halt
 c_func
 (paren
@@ -2982,9 +3089,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * void __init iSeries_calibrate_decr()&n; *&n; * Description:&n; *   This routine retrieves the internal processor frequency from the VPD,&n; *   and sets up the kernel timer decrementer based on that value.&n; *&n; */
+DECL|function|iSeries_calibrate_decr
 r_void
 id|__init
-DECL|function|iSeries_calibrate_decr
 id|iSeries_calibrate_decr
 c_func
 (paren
@@ -2999,15 +3106,14 @@ r_struct
 id|div_result
 id|divres
 suffix:semicolon
-multiline_comment|/* Compute decrementer (and TB) frequency &n;&t; * in cycles/sec &n;&t; */
+multiline_comment|/* Compute decrementer (and TB) frequency in cycles/sec */
 id|cyclesPerUsec
 op_assign
 id|ppc_tb_freq
 op_div
 l_int|1000000
 suffix:semicolon
-multiline_comment|/* cycles / usec */
-multiline_comment|/* Set the amount to refresh the decrementer by.  This&n;&t; * is the number of decrementer ticks it takes for &n;&t; * 1/HZ seconds.&n;&t; */
+multiline_comment|/*&n;&t; * Set the amount to refresh the decrementer by.  This&n;&t; * is the number of decrementer ticks it takes for &n;&t; * 1/HZ seconds.&n;&t; */
 id|tb_ticks_per_jiffy
 op_assign
 id|ppc_tb_freq
@@ -3070,9 +3176,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|iSeries_progress
 r_void
 id|__init
-DECL|function|iSeries_progress
 id|iSeries_progress
 c_func
 (paren
@@ -3136,7 +3242,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Change klimit to take into account any ram disk that may be included */
+multiline_comment|/*&n;&t; * Change klimit to take into account any ram disk&n;&t; * that may be included&n;&t; */
 r_if
 c_cond
 (paren
@@ -3159,8 +3265,7 @@ id|PAGE_SIZE
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* No ram disk was included - check and see if there was an embedded system map */
-multiline_comment|/* Change klimit to take into account any embedded system map */
+multiline_comment|/*&n;&t;&t; * No ram disk was included - check and see if there&n;&t;&t; * was an embedded system map.  Change klimit to take&n;&t;&t; * into account any embedded system map&n;&t;&t; */
 r_if
 c_cond
 (paren

@@ -441,12 +441,10 @@ id|cpi
 r_int
 id|cpu
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|cpu
-comma
-id|cpu_online_map
 )paren
 (brace
 r_if
@@ -5296,12 +5294,10 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|cpu
-comma
-id|cpu_online_map
 )paren
 (brace
 r_if
@@ -5676,12 +5672,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|real_cpu
-comma
-id|cpu_online_map
 )paren
 (brace
 r_if
@@ -6310,6 +6304,7 @@ suffix:semicolon
 r_int
 id|mask
 suffix:semicolon
+multiline_comment|/* Um... initialize me??? --RR */
 id|printk
 c_func
 (paren
@@ -6537,12 +6532,10 @@ multiline_comment|/* You can only have 32 interrupts in a voyager system&n;&t;&t
 r_return
 suffix:semicolon
 )brace
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|cpu
-comma
-id|cpu_online_map
 )paren
 (brace
 r_int
@@ -6773,12 +6766,10 @@ comma
 id|cpu
 suffix:semicolon
 multiline_comment|/* dump the interrupt masks of each processor */
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|cpu
-comma
-id|cpu_online_map
 )paren
 (brace
 id|__u16

@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 r_extern
 r_int
 r_int
@@ -941,4 +942,12 @@ r_return
 id|secs
 suffix:semicolon
 )brace
+multiline_comment|/* Only exists on P-series. */
+DECL|variable|ppc_rtas
+id|cond_syscall
+c_func
+(paren
+id|ppc_rtas
+)paren
+suffix:semicolon
 eof

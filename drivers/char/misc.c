@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 multiline_comment|/*&n; * Head entry for the doubly linked miscdevice list&n; */
@@ -625,6 +626,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/* &n; * TODO for 2.7:&n; *  - add a struct class_device to struct miscdevice and make all usages of&n; *    them dynamic.&n; */
+DECL|variable|misc_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|misc_class
+suffix:semicolon
 DECL|variable|misc_fops
 r_static
 r_struct
@@ -821,6 +830,24 @@ id|misc-&gt;name
 )paren
 suffix:semicolon
 )brace
+id|class_simple_device_add
+c_func
+(paren
+id|misc_class
+comma
+id|MKDEV
+c_func
+(paren
+id|MISC_MAJOR
+comma
+id|misc-&gt;minor
+)paren
+comma
+id|misc-&gt;dev
+comma
+id|misc-&gt;name
+)paren
+suffix:semicolon
 id|devfs_mk_cdev
 c_func
 (paren
@@ -908,6 +935,18 @@ c_func
 (paren
 op_amp
 id|misc-&gt;list
+)paren
+suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|MISC_MAJOR
+comma
+id|misc-&gt;minor
+)paren
 )paren
 suffix:semicolon
 id|devfs_remove
@@ -1007,6 +1046,32 @@ op_amp
 id|misc_proc_fops
 suffix:semicolon
 macro_line|#endif
+id|misc_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;misc&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|misc_class
+)paren
+)paren
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|misc_class
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MVME16x
 id|rtc_MK48T08_init
 c_func
@@ -1100,7 +1165,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|misc_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|misc_init

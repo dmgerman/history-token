@@ -47,5 +47,13 @@ r_struct
 id|proc_ppc64_t
 id|proc_ppc64
 suffix:semicolon
+r_extern
+r_int
+id|proc_ppc64_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _PPC64_PROC_FS_H */
 eof

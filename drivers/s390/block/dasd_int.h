@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.48 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.52 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -599,6 +599,11 @@ r_int
 id|use_diag_flag
 suffix:semicolon
 multiline_comment|/* diag allowed flag */
+DECL|member|disconnect_error_flag
+r_int
+id|disconnect_error_flag
+suffix:semicolon
+multiline_comment|/* return -EIO when disconnected */
 multiline_comment|/* Device discipline stuff. */
 DECL|member|discipline
 r_struct
@@ -709,6 +714,10 @@ DECL|macro|DASD_STOPPED_QUIESCE
 mdefine_line|#define DASD_STOPPED_QUIESCE 2         /* Quiesced */
 DECL|macro|DASD_STOPPED_PENDING
 mdefine_line|#define DASD_STOPPED_PENDING 4         /* long busy */
+DECL|macro|DASD_STOPPED_DC_WAIT
+mdefine_line|#define DASD_STOPPED_DC_WAIT 8         /* disconnected, wait */
+DECL|macro|DASD_STOPPED_DC_EIO
+mdefine_line|#define DASD_STOPPED_DC_EIO  16        /* disconnected, return -EIO */
 r_void
 id|dasd_put_device_wake
 c_func
@@ -1545,7 +1554,7 @@ id|dasd_discipline
 op_star
 )paren
 suffix:semicolon
-r_int
+r_void
 id|dasd_generic_remove
 (paren
 r_struct
@@ -1574,6 +1583,17 @@ r_struct
 id|ccw_device
 op_star
 id|cdev
+)paren
+suffix:semicolon
+r_int
+id|dasd_generic_notify
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_void
@@ -1631,6 +1651,26 @@ id|dasd_device
 op_star
 )paren
 suffix:semicolon
+r_int
+id|dasd_add_sysfs_files
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+)paren
+suffix:semicolon
+r_struct
+id|dasd_device
+op_star
+id|dasd_device_from_cdev
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+)paren
+suffix:semicolon
 r_struct
 id|dasd_device
 op_star
@@ -1645,16 +1685,6 @@ id|dasd_parse
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_int
-id|dasd_add_busid
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_int

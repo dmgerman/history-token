@@ -62,12 +62,12 @@ macro_line|#else
 DECL|macro|XFS_BIGFS_STRING
 macro_line|# define XFS_BIGFS_STRING
 macro_line|#endif
-macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
-DECL|macro|XFS_VNTRACE_STRING
-macro_line|# define XFS_VNTRACE_STRING&t;&quot;VN-trace, &quot;
+macro_line|#ifdef CONFIG_XFS_TRACE
+DECL|macro|XFS_TRACE_STRING
+macro_line|# define XFS_TRACE_STRING&t;&quot;tracing, &quot;
 macro_line|#else
-DECL|macro|XFS_VNTRACE_STRING
-macro_line|# define XFS_VNTRACE_STRING
+DECL|macro|XFS_TRACE_STRING
+macro_line|# define XFS_TRACE_STRING
 macro_line|#endif
 macro_line|#ifdef XFSDEBUG
 DECL|macro|XFS_DBG_STRING
@@ -77,11 +77,14 @@ DECL|macro|XFS_DBG_STRING
 macro_line|# define XFS_DBG_STRING&t;&t;&quot;no debug&quot;
 macro_line|#endif
 DECL|macro|XFS_BUILD_OPTIONS
-mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING &bslash;&n;&t;&t;&t;&t;XFS_REALTIME_STRING &bslash;&n;&t;&t;&t;&t;XFS_BIGFS_STRING &bslash;&n;&t;&t;&t;&t;XFS_VNTRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
+mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING &bslash;&n;&t;&t;&t;&t;XFS_REALTIME_STRING &bslash;&n;&t;&t;&t;&t;XFS_BIGFS_STRING &bslash;&n;&t;&t;&t;&t;XFS_TRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
 DECL|macro|LINVFS_GET_VFS
 mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info)
 DECL|macro|LINVFS_SET_VFS
 mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;s_fs_info = vfsp)
+r_struct
+id|xfs_inode
+suffix:semicolon
 r_struct
 id|xfs_mount
 suffix:semicolon
@@ -115,6 +118,26 @@ id|bhv_desc_t
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_flush_inode
+c_func
+(paren
+r_struct
+id|xfs_inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_flush_device
+c_func
+(paren
+r_struct
+id|xfs_inode
+op_star
 )paren
 suffix:semicolon
 r_extern

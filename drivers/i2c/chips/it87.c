@@ -1,5 +1,10 @@
 multiline_comment|/*&n;    it87.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring.&n;&n;    Supports: IT8705F  Super I/O chip w/LPC interface&n;              IT8712F  Super I/O chip w/LPC interface &amp; SMbus&n;              Sis950   A clone of the IT8705F&n;&n;    Copyright (c) 2001 Chris Gauthron &lt;chrisg@0-in.com&gt; &n;    Largely inspired by lm78.c of the same package&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    djg@pdp8.net David Gesswein 7/18/01&n;    Modified to fix bug with not all alarms enabled.&n;    Added ability to read battery voltage and select temperature sensor&n;    type at module load time.&n;*/
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2892,9 +2897,13 @@ id|kind
 op_eq
 l_int|0
 )paren
-id|printk
+id|dev_info
+c_func
 (paren
-l_string|&quot;it87.o: Ignoring &squot;force&squot; parameter for unknown chip at &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Ignoring &squot;force&squot; parameter for unknown chip at &quot;
 l_string|&quot;adapter %d, address 0x%02x&bslash;n&quot;
 comma
 id|i2c_adapter_id

@@ -186,6 +186,28 @@ DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to, from, n)                           &bslash;&n;({                                                              &bslash;&n;        __copy_from_user_asm(to, n, from);                      &bslash;&n;})
 DECL|macro|copy_from_user
 mdefine_line|#define copy_from_user(to, from, n)                             &bslash;&n;({                                                              &bslash;&n;        long err = 0;                                           &bslash;&n;        __typeof__(n) __n = (n);                                &bslash;&n;        might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;        if (__access_ok(from,__n)) {                            &bslash;&n;                err = __copy_from_user_asm(to, __n, from);      &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                err = __n;                                      &bslash;&n;        err;                                                    &bslash;&n;})
+r_extern
+r_int
+id|__copy_in_user_asm
+c_func
+(paren
+r_const
+r_void
+op_star
+id|from
+comma
+r_int
+id|n
+comma
+r_void
+op_star
+id|to
+)paren
+suffix:semicolon
+DECL|macro|__copy_in_user
+mdefine_line|#define __copy_in_user(to, from, n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__copy_in_user_asm(from, n, to);&t;&t;&t;&bslash;&n;})
+DECL|macro|copy_in_user
+mdefine_line|#define copy_in_user(to, from, n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(n) __n = (n);&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(from,__n) &amp;&amp; __access_ok(to,__n)) {&t;&bslash;&n;&t;&t;err = __copy_in_user_asm(from, __n, to);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;err = __n;&t;&t;&t;&t;&t;&bslash;&n;&t;err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Copy a null terminated string from userspace.&n; */
 macro_line|#ifndef __s390x__
 r_static
@@ -676,5 +698,5 @@ r_return
 id|n
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;       /* _S390_UACCESS_H&t;&t;   */
+macro_line|#endif /* __S390_UACCESS_H */
 eof

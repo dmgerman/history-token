@@ -217,8 +217,6 @@ id|late_time_init
 (paren
 r_void
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 r_extern
 r_void
@@ -1474,6 +1472,11 @@ c_func
 )paren
 suffix:semicolon
 id|kmem_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sort_main_extable
 c_func
 (paren
 )paren

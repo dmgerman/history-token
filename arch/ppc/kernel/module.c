@@ -269,6 +269,29 @@ id|is_init
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* We don&squot;t want to look at debug sections. */
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|secstrings
+op_plus
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_name
+comma
+l_string|&quot;.debug&quot;
+)paren
+op_ne
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1238,7 +1261,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Sort exception table --RR */
 DECL|function|module_finalize
 r_int
 id|module_finalize

@@ -107,7 +107,6 @@ id|virt_irq
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This gets called from serial.c, which is now used on&n; * powermacs as well as prep/chrp boxes.&n; * Prep and chrp both have cascaded 8259 PICs.&n; */
 DECL|function|irq_canonicalize
 r_static
 id|__inline__

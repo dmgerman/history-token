@@ -467,7 +467,7 @@ l_int|0x03
 suffix:semicolon
 id|max
 op_and_assign
-l_int|0x03ff
+l_int|0x07ff
 suffix:semicolon
 id|max
 op_mul_assign

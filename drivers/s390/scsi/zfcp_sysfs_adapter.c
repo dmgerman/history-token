@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_adapter.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs adapter related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_SYSFS_ADAPTER_C_REVISION
-mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.21 $&quot;
+mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.26 $&quot;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &quot;zfcp_ext.h&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
@@ -439,26 +439,18 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|zfcp_adapter_get
-c_func
-(paren
-id|adapter
-)paren
-suffix:semicolon
-multiline_comment|/* try to open port only if adapter is online */
-r_if
-c_cond
-(paren
-id|adapter-&gt;ccw_device-&gt;online
-op_eq
-l_int|1
-)paren
 id|zfcp_erp_port_reopen
 c_func
 (paren
 id|port
 comma
-id|ZFCP_STATUS_COMMON_ERP_FAILED
+l_int|0
+)paren
+suffix:semicolon
+id|zfcp_erp_wait
+c_func
+(paren
+id|port-&gt;adapter
 )paren
 suffix:semicolon
 id|zfcp_port_put
@@ -726,6 +718,20 @@ c_func
 id|port
 )paren
 suffix:semicolon
+id|zfcp_sysfs_port_remove_files
+c_func
+(paren
+op_amp
+id|port-&gt;sysfs_device
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|port-&gt;status
+)paren
+)paren
+suffix:semicolon
 id|device_unregister
 c_func
 (paren
@@ -920,6 +926,12 @@ c_func
 id|adapter
 comma
 id|ZFCP_STATUS_COMMON_ERP_FAILED
+)paren
+suffix:semicolon
+id|zfcp_erp_wait
+c_func
+(paren
+id|adapter
 )paren
 suffix:semicolon
 id|out

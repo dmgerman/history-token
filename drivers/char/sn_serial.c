@@ -8,8 +8,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
-macro_line|#include &lt;asm/sn/pci/pciio.h&gt;&t;&t;/* this is needed for get_console_nasid */
+macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 macro_line|#include &lt;asm/sn/sn2/sn_private.h&gt;
 macro_line|#if defined(CONFIG_SGI_L1_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
@@ -3014,7 +3015,7 @@ id|page
 comma
 l_string|&quot;sn_serial: nasid:%d irq:%d tx:%d rx:%d&bslash;n&quot;
 comma
-id|get_console_nasid
+id|ia64_sn_get_console_nasid
 c_func
 (paren
 )paren
@@ -3155,12 +3156,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|sn_debug_printf
-c_func
-(paren
-l_string|&quot;sn_serial: about to switch to asynchronous console&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* without early_printk, we may be invoked late enough to race&n;&t; * with other cpus doing console IO at this point, however&n;&t; * console interrupts will never be enabled */
 id|spin_lock_irqsave
 c_func
@@ -3169,6 +3164,30 @@ op_amp
 id|sn_sal_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sn_sal_is_asynch
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sn_sal_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|sn_debug_printf
+c_func
+(paren
+l_string|&quot;sn_serial: switch to asynchronous console&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* early_printk invocation may have done this for us */
@@ -3428,12 +3447,6 @@ id|sn_sal_driver_ops
 )paren
 suffix:semicolon
 multiline_comment|/* when this driver is compiled in, the console initialization&n;&t; * will have already switched us into asynchronous operation&n;&t; * before we get here through the module initcalls */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sn_sal_is_asynch
-)paren
 id|sn_sal_switch_to_asynch
 c_func
 (paren

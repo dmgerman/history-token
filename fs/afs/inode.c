@@ -15,11 +15,13 @@ r_struct
 id|afs_iget_data
 (brace
 DECL|member|fid
-id|afs_fid_t
+r_struct
+id|afs_fid
 id|fid
 suffix:semicolon
 DECL|member|volume
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 suffix:semicolon
@@ -34,7 +36,8 @@ r_int
 id|afs_inode_map_status
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
@@ -249,7 +252,8 @@ op_star
 id|inode
 )paren
 (brace
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 suffix:semicolon
@@ -353,7 +357,8 @@ id|data
 op_assign
 id|opaque
 suffix:semicolon
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 op_assign
@@ -397,7 +402,8 @@ id|super_block
 op_star
 id|sb
 comma
-id|afs_fid_t
+r_struct
+id|afs_fid
 op_star
 id|fid
 comma
@@ -605,15 +611,13 @@ suffix:semicolon
 id|_leave
 c_func
 (paren
-l_string|&quot; = 0 [CB { v=%u x=%lu t=%u } c=%p]&quot;
+l_string|&quot; = 0 [CB { v=%u x=%lu t=%u }]&quot;
 comma
 id|vnode-&gt;cb_version
 comma
 id|vnode-&gt;cb_timeout.timo_jif
 comma
 id|vnode-&gt;cb_type
-comma
-id|vnode-&gt;cache
 )paren
 suffix:semicolon
 r_return
@@ -677,13 +681,14 @@ id|stat
 )paren
 (brace
 r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
-id|afs_vnode_t
+id|afs_vnode
 op_star
 id|vnode
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
 suffix:semicolon
 r_int
 id|ret
@@ -814,7 +819,8 @@ op_star
 id|inode
 )paren
 (brace
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 suffix:semicolon

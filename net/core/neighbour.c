@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -7062,7 +7063,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma
@@ -7272,7 +7273,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma
@@ -7304,7 +7305,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma
@@ -7336,7 +7337,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma
@@ -7583,6 +7584,10 @@ comma
 r_char
 op_star
 id|p_name
+comma
+id|proc_handler
+op_star
+id|handler
 )paren
 (brace
 r_struct
@@ -7685,6 +7690,31 @@ op_assign
 op_amp
 id|p-&gt;retrans_time
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|handler
+)paren
+(brace
+id|t-&gt;neigh_vars
+(braket
+l_int|3
+)braket
+dot
+id|proc_handler
+op_assign
+id|handler
+suffix:semicolon
+id|t-&gt;neigh_vars
+(braket
+l_int|3
+)braket
+dot
+id|extra1
+op_assign
+id|dev
+suffix:semicolon
+)brace
 id|t-&gt;neigh_vars
 (braket
 l_int|4

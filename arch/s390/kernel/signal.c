@@ -669,6 +669,16 @@ id|sregs
 r_int
 id|err
 suffix:semicolon
+multiline_comment|/* Alwys make any pending restarted system call return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 id|err
 op_assign
 id|__copy_from_user

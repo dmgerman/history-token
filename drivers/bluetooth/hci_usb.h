@@ -10,12 +10,22 @@ DECL|macro|HCI_DEV_PROTOCOL
 mdefine_line|#define HCI_DEV_PROTOCOL     0x01&t;/* Bluetooth programming protocol */
 DECL|macro|HCI_CTRL_REQ
 mdefine_line|#define HCI_CTRL_REQ&t;     0x20
+DECL|macro|HCI_DIGI_REQ
+mdefine_line|#define HCI_DIGI_REQ&t;     0x40
+DECL|macro|HCI_IGNORE
+mdefine_line|#define HCI_IGNORE           0x01
+DECL|macro|HCI_DIGIANSWER
+mdefine_line|#define HCI_DIGIANSWER       0x02
 DECL|macro|HCI_MAX_IFACE_NUM
 mdefine_line|#define HCI_MAX_IFACE_NUM&t;3 
 DECL|macro|HCI_MAX_BULK_TX
 mdefine_line|#define HCI_MAX_BULK_TX     &t;4
 DECL|macro|HCI_MAX_BULK_RX
 mdefine_line|#define HCI_MAX_BULK_RX     &t;1
+DECL|macro|HCI_MAX_ISOC_RX
+mdefine_line|#define HCI_MAX_ISOC_RX&t;&t;2
+DECL|macro|HCI_MAX_ISOC_TX
+mdefine_line|#define HCI_MAX_ISOC_TX&t;&t;2
 DECL|macro|HCI_MAX_ISOC_FRAMES
 mdefine_line|#define HCI_MAX_ISOC_FRAMES     10
 DECL|struct|_urb_queue
@@ -367,6 +377,10 @@ r_struct
 id|usb_host_endpoint
 op_star
 id|isoc_in_ep
+suffix:semicolon
+DECL|member|ctrl_req
+id|__u8
+id|ctrl_req
 suffix:semicolon
 DECL|member|transmit_q
 r_struct

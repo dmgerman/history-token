@@ -151,6 +151,28 @@ suffix:semicolon
 r_struct
 id|xfs_mount
 suffix:semicolon
+r_struct
+id|xfs_buf_log_item
+suffix:semicolon
+macro_line|#if defined(XFS_BLI_TRACE)
+DECL|macro|XFS_BLI_TRACE_SIZE
+mdefine_line|#define&t;XFS_BLI_TRACE_SIZE&t;32
+r_void
+id|xfs_buf_item_trace
+c_func
+(paren
+r_char
+op_star
+comma
+r_struct
+id|xfs_buf_log_item
+op_star
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|xfs_buf_item_trace
+mdefine_line|#define&t;xfs_buf_item_trace(id, bip)
+macro_line|#endif
 multiline_comment|/*&n; * This is the in core log item structure used to track information&n; * needed to log buffers.  It tracks how many times the lock has been&n; * locked, and which 128 byte chunks of the buffer are dirty.&n; */
 DECL|struct|xfs_buf_log_item
 r_typedef
@@ -186,7 +208,7 @@ id|atomic_t
 id|bli_refcount
 suffix:semicolon
 multiline_comment|/* cnt of tp refs */
-macro_line|#ifdef DEBUG
+macro_line|#ifdef XFS_BLI_TRACE
 DECL|member|bli_trace
 r_struct
 id|ktrace
@@ -246,32 +268,6 @@ DECL|typedef|xfs_buf_cancel_t
 )brace
 id|xfs_buf_cancel_t
 suffix:semicolon
-DECL|macro|XFS_BLI_TRACE_SIZE
-mdefine_line|#define&t;XFS_BLI_TRACE_SIZE&t;32
-macro_line|#if defined(XFS_ALL_TRACE)
-DECL|macro|XFS_BLI_TRACE
-mdefine_line|#define&t;XFS_BLI_TRACE
-macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_BLI_TRACE
-macro_line|#undef XFS_BLI_TRACE
-macro_line|#endif
-macro_line|#if defined(XFS_BLI_TRACE)
-r_void
-id|xfs_buf_item_trace
-c_func
-(paren
-r_char
-op_star
-comma
-id|xfs_buf_log_item_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|xfs_buf_item_trace
-mdefine_line|#define&t;xfs_buf_item_trace(id, bip)
-macro_line|#endif
 r_void
 id|xfs_buf_item_init
 c_func

@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
@@ -687,13 +688,15 @@ c_func
 id|giveup_fpu
 )paren
 suffix:semicolon
-DECL|variable|enable_kernel_fp
+macro_line|#ifdef CONFIG_ALTIVEC
+DECL|variable|giveup_altivec
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|enable_kernel_fp
+id|giveup_altivec
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|flush_icache_range
 id|EXPORT_SYMBOL
 c_func
@@ -717,32 +720,25 @@ id|flush_dcache_page
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifdef CONFIG_PPC_ISERIES
-DECL|variable|__no_use_restore_flags
+DECL|variable|local_get_flags
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__no_use_restore_flags
+id|local_get_flags
 )paren
 suffix:semicolon
-DECL|variable|__no_use_save_flags
+DECL|variable|local_irq_disable
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__no_use_save_flags
+id|local_irq_disable
 )paren
 suffix:semicolon
-DECL|variable|__no_use_sti
+DECL|variable|local_irq_restore
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__no_use_sti
-)paren
-suffix:semicolon
-DECL|variable|__no_use_cli
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__no_use_cli
+id|local_irq_restore
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -754,6 +750,7 @@ c_func
 id|ppc_md
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|variable|find_devices
 id|EXPORT_SYMBOL
 c_func
@@ -810,6 +807,7 @@ c_func
 id|get_property
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|memcpy
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -1023,6 +1021,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|paca
+)paren
+suffix:semicolon
+DECL|variable|proc_ppc64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|proc_ppc64
 )paren
 suffix:semicolon
 eof

@@ -5,6 +5,11 @@ multiline_comment|/*   Copyright (C) 1995-97 Simon G. Vogl&n;                   
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
 multiline_comment|/* Partialy rewriten by Oleg I. Vdovikin for mmapped support of &n;   for Alpha Processor Inc. UP-2000(+) boards */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -50,11 +55,6 @@ r_static
 r_int
 id|mmapped
 suffix:semicolon
-DECL|variable|i2c_debug
-r_static
-r_int
-id|i2c_debug
-suffix:semicolon
 multiline_comment|/* vdovikin: removed static struct i2c_pcf_isa gpi; code - &n;  this module in real supports only one device, due to missing arguments&n;  in some functions, called from the algo-pcf module. Sometimes it&squot;s&n;  need to be rewriten - but for now just remove this for simpler reading */
 DECL|variable|pcf_wait
 r_static
@@ -66,15 +66,6 @@ r_static
 r_int
 id|pcf_pending
 suffix:semicolon
-multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
-DECL|macro|DEB
-mdefine_line|#define DEB(x)&t;if (i2c_debug&gt;=1) x
-DECL|macro|DEB2
-mdefine_line|#define DEB2(x) if (i2c_debug&gt;=2) x
-DECL|macro|DEB3
-mdefine_line|#define DEB3(x) if (i2c_debug&gt;=3) x
-DECL|macro|DEBE
-mdefine_line|#define DEBE(x)&t;x&t;/* error messages &t;&t;&t;&t;*/
 multiline_comment|/* ----- local functions ----------------------------------------------&t;*/
 DECL|function|pcf_isa_setbyte
 r_static
@@ -127,13 +118,9 @@ op_or_assign
 id|I2C_PCF_ENI
 suffix:semicolon
 )brace
-id|DEB3
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
 l_string|&quot;i2c-elektor: Write 0x%X 0x%02X&bslash;n&quot;
 comma
 id|address
@@ -141,7 +128,6 @@ comma
 id|val
 op_amp
 l_int|255
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -239,19 +225,14 @@ c_func
 id|address
 )paren
 suffix:semicolon
-id|DEB3
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
 l_string|&quot;i2c-elektor: Read 0x%X 0x%02X&bslash;n&quot;
 comma
 id|address
 comma
 id|val
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -638,17 +619,12 @@ id|config
 )paren
 )paren
 (brace
-id|DEB3
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
 l_string|&quot;i2c-elektor: found cy82c693, config register 0x47 = 0x%02x.&bslash;n&quot;
 comma
 id|config
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* UP2000 board has this register set to 0xe1,&n;                                   but the most significant bit as seems can be &n;&t;&t;&t;&t;   reset during the proper initialisation&n;                                   sequence if guys from API decides to do that&n;                                   (so, we can even enable Tsunami Pchip&n;                                   window for the upper 1 Gb) */
@@ -937,14 +913,6 @@ id|MODULE_PARM
 c_func
 (paren
 id|mmapped
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|i2c_debug
 comma
 l_string|&quot;i&quot;
 )paren

@@ -20,26 +20,23 @@ macro_line|#include &lt;asm/iSeries/ItExtVpdPanel.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/IoHriProcessorVpd.h&gt;
 macro_line|#include &lt;asm/iSeries/ItSpCommArea.h&gt;
-r_extern
-r_char
-id|_start_boltedStacks
-(braket
-)braket
-suffix:semicolon
-multiline_comment|/* The LparMap data is now located at offset 0x6000 in head.S&n; * It was put there so that the HvReleaseData could address it&n; * with a 32-bit offset as required by the iSeries hypervisor&n; *&n; * The Naca has a pointer to the ItVpdAreas.  The hypervisor finds&n; * the Naca via the HvReleaseData area.  The HvReleaseData has the&n; * offset into the Naca of the pointer to the ItVpdAreas.&n; */
-r_extern
-r_struct
-id|ItVpdAreas
-id|itVpdAreas
-suffix:semicolon
-multiline_comment|/* The LpQueue is used to pass event data from the hypervisor to&n; * the partition.  This is where I/O interrupt events are communicated.&n; * The ItLpQueue must be initialized (even though only to all zeros)&n; * If it were uninitialized (in .bss) it would get zeroed after the&n; * kernel gets control.  The hypervisor will have filled in some fields&n; * before the kernel gets control.  By initializing it we keep it out&n; * of the .bss&n; */
+multiline_comment|/* The LpQueue is used to pass event data from the hypervisor to&n; * the partition.  This is where I/O interrupt events are communicated.&n; */
+multiline_comment|/* May be filled in by the hypervisor so cannot end up in the BSS */
 DECL|variable|xItLpQueue
 r_struct
 id|ItLpQueue
 id|xItLpQueue
-op_assign
-(brace
-)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|__section__
+c_func
+(paren
+l_string|&quot;.data&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* The HvReleaseData is the root of the information shared between &n; * the hypervisor and Linux.  &n; */
 DECL|variable|hvReleaseData
@@ -103,7 +100,7 @@ comma
 multiline_comment|/* Min supported PLIC = v5r1m0 */
 l_int|3
 comma
-multiline_comment|/* Min usuable PLIC   = v5r1m0 */
+multiline_comment|/* Min usable PLIC   = v5r1m0 */
 (brace
 l_int|0xd3
 comma
@@ -511,21 +508,39 @@ multiline_comment|/* 0x480 I-SLB */
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* May be filled in by the hypervisor so cannot end up in the BSS */
 DECL|variable|xItIplParmsReal
 r_struct
 id|ItIplParmsReal
 id|xItIplParmsReal
-op_assign
-(brace
-)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|__section__
+c_func
+(paren
+l_string|&quot;.data&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
+multiline_comment|/* May be filled in by the hypervisor so cannot end up in the BSS */
 DECL|variable|xItExtVpdPanel
 r_struct
 id|ItExtVpdPanel
 id|xItExtVpdPanel
-op_assign
-(brace
-)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|__section__
+c_func
+(paren
+l_string|&quot;.data&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|macro|maxPhysicalProcessors
 mdefine_line|#define maxPhysicalProcessors 32
@@ -566,28 +581,46 @@ l_int|0x3600
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* Space for Main Store Vpd 27,200 bytes */
+multiline_comment|/* May be filled in by the hypervisor so cannot end up in the BSS */
 DECL|variable|xMsVpd
 id|u64
 id|xMsVpd
 (braket
 l_int|3400
 )braket
-op_assign
-(brace
-)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|__section__
+c_func
+(paren
+l_string|&quot;.data&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
-multiline_comment|/* Space for Main Store Vpd 27,200 bytes */
+multiline_comment|/* Space for Recovery Log Buffer */
+multiline_comment|/* May be filled in by the hypervisor so cannot end up in the BSS */
 DECL|variable|xRecoveryLogBuffer
 id|u64
 id|xRecoveryLogBuffer
 (braket
 l_int|32
 )braket
-op_assign
-(brace
-)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|__section__
+c_func
+(paren
+l_string|&quot;.data&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
-multiline_comment|/* Space for Recovery Log Buffer */
 DECL|variable|xSpCommArea
 r_struct
 id|SpCommArea
@@ -615,6 +648,7 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* The LparMap data is now located at offset 0x6000 in head.S&n; * It was put there so that the HvReleaseData could address it&n; * with a 32-bit offset as required by the iSeries hypervisor&n; *&n; * The Naca has a pointer to the ItVpdAreas.  The hypervisor finds&n; * the Naca via the HvReleaseData area.  The HvReleaseData has the&n; * offset into the Naca of the pointer to the ItVpdAreas.&n; */
 DECL|variable|itVpdAreas
 r_struct
 id|ItVpdAreas
@@ -640,7 +674,7 @@ multiline_comment|/* # VPD array entries */
 l_int|10
 comma
 multiline_comment|/* # DMA array entries */
-id|MAX_PROCESSORS
+id|NR_CPUS
 op_star
 l_int|2
 comma
@@ -893,18 +927,6 @@ DECL|variable|msChunks
 r_struct
 id|msChunks
 id|msChunks
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-)brace
 suffix:semicolon
 multiline_comment|/* Depending on whether this is called from iSeries or pSeries setup&n; * code, the location of the msChunks struct may or may not have&n; * to be reloc&squot;d, so we force the caller to do that for us by passing&n; * in a pointer to the structure.&n; */
 r_int

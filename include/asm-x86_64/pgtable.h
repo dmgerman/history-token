@@ -1514,5 +1514,18 @@ DECL|macro|kc_vaddr_to_offset
 mdefine_line|#define&t;kc_vaddr_to_offset(v) ((v) &amp; __VIRTUAL_MASK)
 DECL|macro|kc_offset_to_vaddr
 mdefine_line|#define&t;kc_offset_to_vaddr(o) &bslash;&n;   (((o) &amp; (1UL &lt;&lt; (__VIRTUAL_MASK_SHIFT-1))) ? ((o) | (~__VIRTUAL_MASK)) : (o))
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
+DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
+macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _X86_64_PGTABLE_H */
 eof

@@ -1,26 +1,11 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/byteorder/swab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
 r_extern
 id|pcibr_info_t
 id|pcibr_info_get
@@ -77,25 +62,13 @@ comma
 r_uint64
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * on sn-ia we need to twiddle the the addresses going out&n; * the pci bus because we use the unswizzled synergy space&n; * (the alternative is to use the swizzled synergy space&n; * and byte swap the data)&n; */
-DECL|macro|CB
-mdefine_line|#define CB(b,r) (((volatile uint8_t *) b)[((r)^4)])
-DECL|macro|CS
-mdefine_line|#define CS(b,r) (((volatile uint16_t *) b)[((r^4)/2)])
-DECL|macro|CW
-mdefine_line|#define CW(b,r) (((volatile uint32_t *) b)[((r^4)/4)])
+multiline_comment|/*&n; * fancy snia bit twiddling....&n; */
 DECL|macro|CBP
 mdefine_line|#define&t;CBP(b,r) (((volatile uint8_t *) b)[(r)])
 DECL|macro|CSP
 mdefine_line|#define&t;CSP(b,r) (((volatile uint16_t *) b)[((r)/2)])
 DECL|macro|CWP
 mdefine_line|#define&t;CWP(b,r) (((volatile uint32_t *) b)[(r)/4])
-DECL|macro|SCB
-mdefine_line|#define SCB(b,r) (((volatile uint8_t *) b)[((r)^3)])
-DECL|macro|SCS
-mdefine_line|#define SCS(b,r) (((volatile uint16_t *) b)[((r^2)/2)])
-DECL|macro|SCW
-mdefine_line|#define SCW(b,r) (((volatile uint32_t *) b)[((r)/4)])
 multiline_comment|/*&n; * Return a config space address for given slot / func / offset.  Note the&n; * returned pointer is a 32bit word (ie. cfg_p) aligned pointer pointing to&n; * the 32bit word that contains the &quot;offset&quot; byte.&n; */
 id|cfg_p
 DECL|function|pcibr_func_config_addr

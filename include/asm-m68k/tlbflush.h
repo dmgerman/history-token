@@ -322,7 +322,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|flush_tlb_pgtables
-r_extern
+r_static
 r_inline
 r_void
 id|flush_tlb_pgtables
@@ -892,7 +892,7 @@ id|SUN3_INVALID_PMEG
 suffix:semicolon
 )brace
 DECL|function|flush_tlb_pgtables
-r_extern
+r_static
 r_inline
 r_void
 id|flush_tlb_pgtables

@@ -4217,6 +4217,13 @@ op_star
 )paren
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|cmd-&gt;device-&gt;host
+suffix:semicolon
 id|idescsi_scsi_t
 op_star
 id|scsi
@@ -4224,7 +4231,7 @@ op_assign
 id|scsihost_to_idescsi
 c_func
 (paren
-id|cmd-&gt;device-&gt;host
+id|host
 )paren
 suffix:semicolon
 id|ide_drive_t
@@ -4517,7 +4524,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-id|cmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 (paren
@@ -4535,7 +4542,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|cmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return

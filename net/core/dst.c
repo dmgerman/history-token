@@ -84,9 +84,9 @@ c_func
 (paren
 id|dst_run_gc
 comma
-l_int|0
-comma
 id|DST_GC_MIN
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|function|dst_run_gc

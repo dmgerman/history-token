@@ -1,0 +1,53 @@
+multiline_comment|/*&n; * Network interface table.&n; *&n; * Network interfaces (devices) do not have a security field, so we&n; * maintain a table associating each interface with a SID.&n; *&n; * Author: James Morris &lt;jmorris@redhat.com&gt;&n; *&n; * Copyright (C) 2003 Red Hat, Inc., James Morris &lt;jmorris@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2,&n; * as published by the Free Software Foundation.&n; */
+macro_line|#ifndef _SELINUX_NETIF_H_
+DECL|macro|_SELINUX_NETIF_H_
+mdefine_line|#define _SELINUX_NETIF_H_
+DECL|struct|sel_netif
+r_struct
+id|sel_netif
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|users
+id|atomic_t
+id|users
+suffix:semicolon
+DECL|member|nsec
+r_struct
+id|netif_security_struct
+id|nsec
+suffix:semicolon
+DECL|member|rcu_head
+r_struct
+id|rcu_head
+id|rcu_head
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|sel_netif
+op_star
+id|sel_netif_lookup
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|sel_netif_put
+c_func
+(paren
+r_struct
+id|sel_netif
+op_star
+id|netif
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* _SELINUX_NETIF_H_ */
+eof

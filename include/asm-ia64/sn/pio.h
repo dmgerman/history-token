@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_PIO_H
 DECL|macro|_ASM_IA64_SN_PIO_H
 mdefine_line|#define _ASM_IA64_SN_PIO_H
@@ -20,11 +20,13 @@ r_struct
 id|piomap
 (brace
 DECL|member|pio_bus
-id|uint
+r_int
+r_int
 id|pio_bus
 suffix:semicolon
 DECL|member|pio_adap
-id|uint
+r_int
+r_int
 id|pio_adap
 suffix:semicolon
 DECL|member|pio_flag

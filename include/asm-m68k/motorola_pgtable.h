@@ -48,14 +48,20 @@ r_int
 id|m68k_pgtable_cachemode
 suffix:semicolon
 multiline_comment|/* This is the cache mode for normal pages, for supervisor access on&n; * processors &gt;= &squot;040. It is used in pte_mkcache(), and the variable is&n; * defined and initialized in head.S */
-macro_line|#if defined(CONFIG_060_WRITETHROUGH)
+macro_line|#if defined(CPU_M68060_ONLY) &amp;&amp; defined(CONFIG_060_WRITETHROUGH)
+DECL|macro|m68k_supervisor_cachemode
+mdefine_line|#define m68k_supervisor_cachemode _PAGE_CACHE040W
+macro_line|#elif defined(CPU_M68040_OR_M68060_ONLY)
+DECL|macro|m68k_supervisor_cachemode
+mdefine_line|#define m68k_supervisor_cachemode _PAGE_CACHE040
+macro_line|#elif defined(CPU_M68020_OR_M68030_ONLY)
+DECL|macro|m68k_supervisor_cachemode
+mdefine_line|#define m68k_supervisor_cachemode 0
+macro_line|#else
 r_extern
 r_int
 id|m68k_supervisor_cachemode
 suffix:semicolon
-macro_line|#else
-DECL|macro|m68k_supervisor_cachemode
-mdefine_line|#define m68k_supervisor_cachemode _PAGE_CACHE040
 macro_line|#endif
 macro_line|#if defined(CPU_M68040_OR_M68060_ONLY)
 DECL|macro|mm_cachebits
@@ -126,7 +132,7 @@ multiline_comment|/*&n; * Conversion functions: convert a page and protection to
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot) pfn_pte(page_to_pfn(page), (pgprot))
 DECL|function|pte_modify
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_modify
@@ -166,7 +172,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pmd_set
-r_extern
+r_static
 r_inline
 r_void
 id|pmd_set
@@ -238,7 +244,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|pgd_set
-r_extern
+r_static
 r_inline
 r_void
 id|pgd_set
@@ -315,7 +321,7 @@ DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
-r_extern
+r_static
 r_inline
 r_int
 id|pte_read
@@ -330,7 +336,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pte_write
-r_extern
+r_static
 r_inline
 r_int
 id|pte_write
@@ -354,7 +360,7 @@ id|_PAGE_RONLY
 suffix:semicolon
 )brace
 DECL|function|pte_exec
-r_extern
+r_static
 r_inline
 r_int
 id|pte_exec
@@ -369,7 +375,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
-r_extern
+r_static
 r_inline
 r_int
 id|pte_dirty
@@ -390,7 +396,7 @@ id|_PAGE_DIRTY
 suffix:semicolon
 )brace
 DECL|function|pte_young
-r_extern
+r_static
 r_inline
 r_int
 id|pte_young
@@ -432,7 +438,7 @@ id|_PAGE_FILE
 suffix:semicolon
 )brace
 DECL|function|pte_wrprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_wrprotect
@@ -455,7 +461,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_rdprotect
@@ -470,7 +476,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_exprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_exprotect
@@ -485,7 +491,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkclean
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkclean
@@ -509,7 +515,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkold
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkold
@@ -533,7 +539,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkwrite
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkwrite
@@ -557,7 +563,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkread
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkread
@@ -572,7 +578,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkexec
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkexec
@@ -587,7 +593,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkdirty
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkdirty
@@ -610,7 +616,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkyoung
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkyoung
@@ -633,7 +639,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mknocache
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mknocache
@@ -666,7 +672,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkcache
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkcache
@@ -704,7 +710,7 @@ DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address)     ((address) &gt;&gt; PGDIR_SHIFT)
 multiline_comment|/* to find an entry in a page-table-directory */
 DECL|function|pgd_offset
-r_extern
+r_static
 r_inline
 id|pgd_t
 op_star
@@ -741,7 +747,7 @@ l_int|128
 )braket
 suffix:semicolon
 DECL|function|pgd_offset_k
-r_extern
+r_static
 r_inline
 id|pgd_t
 op_star
@@ -765,7 +771,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|function|pmd_offset
-r_extern
+r_static
 r_inline
 id|pmd_t
 op_star
@@ -810,7 +816,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|function|pte_offset_kernel
-r_extern
+r_static
 r_inline
 id|pte_t
 op_star

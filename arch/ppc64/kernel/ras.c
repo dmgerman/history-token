@@ -97,7 +97,7 @@ c_cond
 (paren
 id|np
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/event-sources/internal-errors&quot;
@@ -176,13 +176,19 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+id|of_node_put
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 id|np
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/event-sources/epow-events&quot;
@@ -261,6 +267,12 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+id|of_node_put
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -331,9 +343,9 @@ l_int|0x500
 comma
 id|irq
 comma
-id|EPOW_WARNING
+id|RTAS_EPOW_WARNING
 op_or
-id|POWERMGM_EVENTS
+id|RTAS_POWERMGM_EVENTS
 comma
 l_int|1
 comma
@@ -387,6 +399,22 @@ comma
 id|status
 )paren
 suffix:semicolon
+multiline_comment|/* format and print the extended information */
+id|log_error
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|log_entry
+comma
+id|ERR_TYPE_RTAS_LOG
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -429,6 +457,9 @@ id|status
 op_assign
 l_int|0xdeadbeef
 suffix:semicolon
+r_int
+id|fatal
+suffix:semicolon
 id|status
 op_assign
 id|rtas_call
@@ -450,7 +481,7 @@ l_int|0x500
 comma
 id|irq
 comma
-id|INTERNAL_ERROR
+id|RTAS_INTERNAL_ERROR
 comma
 l_int|1
 comma
@@ -470,8 +501,8 @@ c_cond
 (paren
 (paren
 id|status
-op_ne
-l_int|1
+op_eq
+l_int|0
 )paren
 op_logical_and
 (paren
@@ -479,6 +510,36 @@ id|log_entry.severity
 op_ge
 id|SEVERITY_ERROR_SYNC
 )paren
+)paren
+id|fatal
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|fatal
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* format and print the extended information */
+id|log_error
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|log_entry
+comma
+id|ERR_TYPE_RTAS_LOG
+comma
+id|fatal
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fatal
 )paren
 (brace
 id|udbg_printf
@@ -521,7 +582,7 @@ id|status
 )paren
 suffix:semicolon
 macro_line|#ifndef DEBUG
-multiline_comment|/* Don&squot;t actually power off when debugging so we can test&n;&t;&t; * without actually failing while injecting errors.&n;&t;&t; */
+multiline_comment|/* Don&squot;t actually power off when debugging so we can test&n;&t;&t; * without actually failing while injecting errors.&n;&t;&t; * Error data will not be logged to syslog.&n;&t;&t; */
 id|ppc_md
 dot
 id|power_off

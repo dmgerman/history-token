@@ -796,6 +796,8 @@ id|logitech_mx
 )braket
 op_assign
 (brace
+l_int|61
+comma
 l_int|112
 comma
 op_minus

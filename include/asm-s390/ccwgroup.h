@@ -84,7 +84,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|remove
-r_int
+r_void
 (paren
 op_star
 id|remove
@@ -92,18 +92,6 @@ id|remove
 (paren
 r_struct
 id|ccwgroup_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|release
-r_int
-(paren
-op_star
-id|release
-)paren
-(paren
-r_struct
-id|ccwgroup_driver
 op_star
 )paren
 suffix:semicolon
@@ -199,7 +187,7 @@ id|cdev
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|ccwgroup_remove_ccwdev
 c_func
 (paren

@@ -3,10 +3,11 @@ DECL|macro|__ASM_SH_BYTEORDER_H
 mdefine_line|#define __ASM_SH_BYTEORDER_H
 multiline_comment|/*&n; * Copyright (C) 1999  Niibe Yutaka&n; */
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 DECL|function|___arch__swab32
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u32
 id|___arch__swab32
 c_func
@@ -40,7 +41,7 @@ suffix:semicolon
 DECL|function|___arch__swab16
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u16
 id|___arch__swab16
 c_func

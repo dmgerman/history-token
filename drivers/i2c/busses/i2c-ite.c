@@ -1,6 +1,11 @@
 multiline_comment|/*&n;   -------------------------------------------------------------------------&n;   i2c-adap-ite.c i2c-hw access for the IIC peripheral on the ITE MIPS system&n;   -------------------------------------------------------------------------&n;   Hai-Pao Fan, MontaVista Software, Inc.&n;   hpfan@mvista.com or source@mvista.com&n;&n;   Copyright 2001 MontaVista Software Inc.&n;&n;   ----------------------------------------------------------------------------&n;   This file was highly leveraged from i2c-elektor.c, which was created&n;   by Simon G. Vogl and Hans Berglund:&n;&n; &n;     Copyright (C) 1995-97 Simon G. Vogl&n;                   1998-99 Hans Berglund&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -51,13 +56,6 @@ id|own
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|i2c_debug
-r_static
-r_int
-id|i2c_debug
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|gpi
 r_static
 r_struct
@@ -74,15 +72,6 @@ r_static
 r_int
 id|iic_pending
 suffix:semicolon
-multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
-DECL|macro|DEB
-mdefine_line|#define DEB(x)&t;if (i2c_debug&gt;=1) x
-DECL|macro|DEB2
-mdefine_line|#define DEB2(x) if (i2c_debug&gt;=2) x
-DECL|macro|DEB3
-mdefine_line|#define DEB3(x) if (i2c_debug&gt;=3) x
-DECL|macro|DEBE
-mdefine_line|#define DEBE(x)&t;x&t;/* error messages &t;&t;&t;&t;*/
 multiline_comment|/* ----- local functions ----------------------------------------------&t;*/
 DECL|function|iic_ite_setiic
 r_static
@@ -109,10 +98,7 @@ id|jiffies
 op_plus
 l_int|10
 suffix:semicolon
-id|DEB3
-c_func
-(paren
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; Write 0x%02x to 0x%x&bslash;n&quot;
@@ -127,13 +113,10 @@ id|ctl
 op_amp
 l_int|0xff
 )paren
-)paren
 suffix:semicolon
-id|DEB3
-c_func
-(paren
-(brace
+macro_line|#ifdef DEBUG
 r_while
+c_loop
 (paren
 id|time_before
 c_func
@@ -148,8 +131,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-)paren
+macro_line|#endif
 id|outw
 c_func
 (paren
@@ -184,10 +166,7 @@ c_func
 id|ctl
 )paren
 suffix:semicolon
-id|DEB3
-c_func
-(paren
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;Read 0x%02x from 0x%x&bslash;n&quot;
@@ -201,7 +180,6 @@ comma
 id|ctl
 op_amp
 l_int|0xff
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -358,16 +336,6 @@ id|regs
 id|iic_pending
 op_assign
 l_int|1
-suffix:semicolon
-id|DEB2
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;iic_ite_handler: in interrupt handler&bslash;n&quot;
-)paren
-)paren
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -779,14 +747,6 @@ id|MODULE_PARM
 c_func
 (paren
 id|own
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|i2c_debug
 comma
 l_string|&quot;i&quot;
 )paren

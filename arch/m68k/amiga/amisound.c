@@ -118,6 +118,9 @@ id|resource
 id|beep_res
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Beep&quot;
 )brace
 suffix:semicolon

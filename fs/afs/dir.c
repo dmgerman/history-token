@@ -227,177 +227,171 @@ mdefine_line|#define AFS_DIR_DIRENT_SIZE&t;32
 DECL|macro|AFS_DIRENT_PER_BLOCK
 mdefine_line|#define AFS_DIRENT_PER_BLOCK&t;64
 DECL|union|afs_dirent
-r_typedef
 r_union
 id|afs_dirent
 (brace
 r_struct
 (brace
 DECL|member|valid
-id|u8
+r_uint8
 id|valid
 suffix:semicolon
 DECL|member|unused
-id|u8
+r_uint8
 id|unused
 (braket
 l_int|1
 )braket
 suffix:semicolon
 DECL|member|hash_next
-id|u16
+r_uint16
 id|hash_next
 suffix:semicolon
 DECL|member|vnode
-id|u32
+r_uint32
 id|vnode
 suffix:semicolon
 DECL|member|unique
-id|u32
+r_uint32
 id|unique
 suffix:semicolon
 DECL|member|name
-id|u8
+r_uint8
 id|name
 (braket
 l_int|16
 )braket
 suffix:semicolon
 DECL|member|overflow
-id|u8
+r_uint8
 id|overflow
 (braket
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* if any char of the name (inc NUL) reaches here, consume&n;&t;&t;&t;&t;&t; * the next dirent too */
+multiline_comment|/* if any char of the name (inc&n;&t;&t;&t;&t;&t;&t; * NUL) reaches here, consume&n;&t;&t;&t;&t;&t;&t; * the next dirent too */
 DECL|member|u
 )brace
 id|u
 suffix:semicolon
 DECL|member|extended_name
-id|u8
+r_uint8
 id|extended_name
 (braket
 l_int|32
 )braket
 suffix:semicolon
-DECL|typedef|afs_dirent_t
 )brace
-id|afs_dirent_t
 suffix:semicolon
 multiline_comment|/* AFS directory page header (one at the beginning of every 2048-byte chunk) */
 DECL|struct|afs_dir_pagehdr
-r_typedef
 r_struct
 id|afs_dir_pagehdr
 (brace
 DECL|member|npages
-id|u16
+r_uint16
 id|npages
 suffix:semicolon
 DECL|member|magic
-id|u16
+r_uint16
 id|magic
 suffix:semicolon
 DECL|macro|AFS_DIR_MAGIC
 mdefine_line|#define AFS_DIR_MAGIC htons(1234)
 DECL|member|nentries
-id|u8
+r_uint8
 id|nentries
 suffix:semicolon
 DECL|member|bitmap
-id|u8
+r_uint8
 id|bitmap
 (braket
 l_int|8
 )braket
 suffix:semicolon
 DECL|member|pad
-id|u8
+r_uint8
 id|pad
 (braket
 l_int|19
 )braket
 suffix:semicolon
-DECL|typedef|afs_dir_pagehdr_t
 )brace
-id|afs_dir_pagehdr_t
 suffix:semicolon
 multiline_comment|/* directory block layout */
 DECL|union|afs_dir_block
-r_typedef
 r_union
 id|afs_dir_block
 (brace
 DECL|member|pagehdr
-id|afs_dir_pagehdr_t
+r_struct
+id|afs_dir_pagehdr
 id|pagehdr
 suffix:semicolon
 r_struct
 (brace
 DECL|member|pagehdr
-id|afs_dir_pagehdr_t
+r_struct
+id|afs_dir_pagehdr
 id|pagehdr
 suffix:semicolon
 DECL|member|alloc_ctrs
-id|u8
+r_uint8
 id|alloc_ctrs
 (braket
 l_int|128
 )braket
 suffix:semicolon
+multiline_comment|/* dir hash table */
 DECL|member|hashtable
-id|u16
+r_uint16
 id|hashtable
 (braket
 id|AFS_DIR_HASHTBL_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* dir hash table */
 DECL|member|hdr
 )brace
 id|hdr
 suffix:semicolon
 DECL|member|dirents
-id|afs_dirent_t
+r_union
+id|afs_dirent
 id|dirents
 (braket
 id|AFS_DIRENT_PER_BLOCK
 )braket
 suffix:semicolon
-DECL|typedef|afs_dir_block_t
 )brace
-id|afs_dir_block_t
 suffix:semicolon
 multiline_comment|/* layout on a linux VM page */
 DECL|struct|afs_dir_page
-r_typedef
 r_struct
 id|afs_dir_page
 (brace
 DECL|member|blocks
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 id|blocks
 (braket
 id|PAGE_SIZE
 op_div
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 )braket
 suffix:semicolon
-DECL|typedef|afs_dir_page_t
 )brace
-id|afs_dir_page_t
 suffix:semicolon
 DECL|struct|afs_dir_lookup_cookie
 r_struct
 id|afs_dir_lookup_cookie
 (brace
 DECL|member|fid
-id|afs_fid_t
+r_struct
+id|afs_fid
 id|fid
 suffix:semicolon
 DECL|member|name
@@ -436,7 +430,8 @@ op_star
 id|page
 )paren
 (brace
-id|afs_dir_page_t
+r_struct
+id|afs_dir_page
 op_star
 id|dbuf
 suffix:semicolon
@@ -552,7 +547,8 @@ id|qty
 op_div_assign
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 suffix:semicolon
 multiline_comment|/* check them */
@@ -843,34 +839,28 @@ comma
 id|inode-&gt;i_ino
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 op_ne
 l_int|2048
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 op_ne
 l_int|32
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -913,7 +903,8 @@ r_int
 op_star
 id|fpos
 comma
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 op_star
 id|block
 comma
@@ -928,7 +919,8 @@ id|filldir_t
 id|filldir
 )paren
 (brace
-id|afs_dirent_t
+r_union
+id|afs_dirent
 op_star
 id|dire
 suffix:semicolon
@@ -971,7 +963,8 @@ id|blkoff
 op_div
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 suffix:semicolon
 multiline_comment|/* walk through the block, an entry at a time */
@@ -1033,7 +1026,8 @@ id|blkoff
 op_div
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 comma
 id|offset
@@ -1055,7 +1049,8 @@ id|next
 op_star
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 suffix:semicolon
 r_continue
@@ -1087,7 +1082,8 @@ id|offset
 op_star
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 )paren
 suffix:semicolon
@@ -1100,7 +1096,8 @@ id|blkoff
 op_div
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 comma
 id|offset
@@ -1137,7 +1134,8 @@ id|tmp
 op_sub_assign
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 )paren
 (brace
@@ -1153,13 +1151,15 @@ id|_debug
 c_func
 (paren
 l_string|&quot;ENT[%Zu.%u]:&quot;
-l_string|&quot; %u travelled beyond end dir block (len %u/%Zu)&bslash;n&quot;
+l_string|&quot; %u travelled beyond end dir block&quot;
+l_string|&quot; (len %u/%Zu)&bslash;n&quot;
 comma
 id|blkoff
 op_div
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 comma
 id|offset
@@ -1203,13 +1203,15 @@ l_int|8
 id|_debug
 c_func
 (paren
-l_string|&quot;ENT[%Zu.%u]: %u unmarked extension (len %u/%Zu)&bslash;n&quot;
+l_string|&quot;ENT[%Zu.%u]:&quot;
+l_string|&quot; %u unmarked extension (len %u/%Zu)&bslash;n&quot;
 comma
 id|blkoff
 op_div
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 comma
 id|offset
@@ -1235,7 +1237,8 @@ id|blkoff
 op_div
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 comma
 id|next
@@ -1277,7 +1280,8 @@ id|offset
 op_star
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 comma
 id|ntohl
@@ -1323,7 +1327,8 @@ id|next
 op_star
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 suffix:semicolon
 )brace
@@ -1363,11 +1368,13 @@ id|filldir_t
 id|filldir
 )paren
 (brace
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 op_star
 id|dblock
 suffix:semicolon
-id|afs_dir_page_t
+r_struct
+id|afs_dir_page
 op_star
 id|dbuf
 suffix:semicolon
@@ -1426,7 +1433,8 @@ id|fpos
 op_add_assign
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 op_minus
 l_int|1
@@ -1438,7 +1446,8 @@ op_complement
 (paren
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 op_minus
 l_int|1
@@ -1467,7 +1476,8 @@ op_complement
 (paren
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 op_minus
 l_int|1
@@ -1542,7 +1552,8 @@ id|PAGE_SIZE
 op_div
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 )braket
 suffix:semicolon
@@ -1584,7 +1595,8 @@ id|blkoff
 op_add_assign
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 suffix:semicolon
 )brace
@@ -1701,7 +1713,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_dir_readdir() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * search the directory for a name&n; * - if afs_dir_iterate_block() spots this function, it&squot;ll pass the FID uniquifier through dtype&n; */
+multiline_comment|/*&n; * search the directory for a name&n; * - if afs_dir_iterate_block() spots this function, it&squot;ll pass the FID&n; *   uniquifier through dtype&n; */
 DECL|function|afs_dir_lookup_filldir
 r_static
 r_int
@@ -1853,13 +1865,14 @@ op_star
 id|as
 suffix:semicolon
 r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
-id|afs_vnode_t
+id|afs_vnode
 op_star
 id|vnode
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
 suffix:semicolon
 r_int
 id|fpos
@@ -1885,7 +1898,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|afs_dir_block_t
+r_union
+id|afs_dir_block
 )paren
 op_ne
 l_int|2048
@@ -1896,7 +1910,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|afs_dirent_t
+r_union
+id|afs_dirent
 )paren
 op_ne
 l_int|32
@@ -2133,7 +2148,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_dir_lookup() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * check that a dentry lookup hit has found a valid entry&n; * - NOTE! the hit can be a negative hit too, so we can&squot;t assume we have an inode&n; * (derived from nfs_lookup_revalidate)&n; */
+multiline_comment|/*&n; * check that a dentry lookup hit has found a valid entry&n; * - NOTE! the hit can be a negative hit too, so we can&squot;t assume we have an&n; *   inode&n; * (derived from nfs_lookup_revalidate)&n; */
 DECL|function|afs_d_revalidate
 r_static
 r_int
@@ -2201,7 +2216,7 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-multiline_comment|/* handle a negative inode */
+multiline_comment|/* handle a negative dentry */
 r_if
 c_cond
 (paren
@@ -2236,7 +2251,7 @@ r_goto
 id|out_bad
 suffix:semicolon
 )brace
-multiline_comment|/* force a full look up if the parent directory changed since last the server was consulted&n;&t; * - otherwise this inode must still exist, even if the inode details themselves have&n;&t; *   changed&n;&t; */
+multiline_comment|/* force a full look up if the parent directory changed since last the&n;&t; * server was consulted&n;&t; * - otherwise this inode must still exist, even if the inode details&n;&t; *   themselves have changed&n;&t; */
 r_if
 c_cond
 (paren
@@ -2443,7 +2458,7 @@ r_goto
 id|not_found
 suffix:semicolon
 )brace
-multiline_comment|/* if the vnode ID has changed, then the dirent points to a different file */
+multiline_comment|/* if the vnode ID has changed, then the dirent points to a&n;&t;&t; * different file */
 r_if
 c_cond
 (paren
@@ -2470,7 +2485,7 @@ r_goto
 id|not_found
 suffix:semicolon
 )brace
-multiline_comment|/* if the vnode ID uniqifier has changed, then the file has been deleted */
+multiline_comment|/* if the vnode ID uniqifier has changed, then the file has&n;&t;&t; * been deleted */
 r_if
 c_cond
 (paren
@@ -2656,7 +2671,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_d_revalidate() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * allow the VFS to enquire as to whether a dentry should be unhashed (mustn&squot;t sleep)&n; * - called from dput() when d_count is going to 0.&n; * - return 1 to request dentry be unhashed, 0 otherwise&n; */
+multiline_comment|/*&n; * allow the VFS to enquire as to whether a dentry should be unhashed (mustn&squot;t&n; * sleep)&n; * - called from dput() when d_count is going to 0.&n; * - return 1 to request dentry be unhashed, 0 otherwise&n; */
 DECL|function|afs_d_delete
 r_static
 r_int

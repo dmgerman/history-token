@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.58 $&t; $Date: 2003/09/22 13:33:56 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.61 $&t; $Date: 2003/12/02 15:18:50 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -22,7 +22,7 @@ macro_line|#error Cannot compile lcs.c without some net devices switched on.
 macro_line|#endif
 multiline_comment|/**&n; * initialization string for output&n; */
 DECL|macro|VERSION_LCS_C
-mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.58 $&quot;
+mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.61 $&quot;
 DECL|variable|__initdata
 r_static
 r_char
@@ -5043,12 +5043,6 @@ op_ne
 id|DEV_STATE_UP
 )paren
 (brace
-id|dst_link_failure
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -8082,7 +8076,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * lcs_remove_device, free buffers and card&n; */
 r_static
-r_int
+r_void
 DECL|function|lcs_remove_device
 id|lcs_remove_device
 c_func
@@ -8124,8 +8118,47 @@ op_logical_neg
 id|card
 )paren
 r_return
-l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ccwgdev-&gt;state
+op_eq
+id|CCWGROUP_ONLINE
+)paren
+(brace
+id|lcs_stop_device
+c_func
+(paren
+id|card-&gt;dev
+)paren
+suffix:semicolon
+multiline_comment|/* Ignore rc. */
+id|sysfs_remove_link
+c_func
+(paren
+op_amp
+id|card-&gt;dev-&gt;class_dev.kobj
+comma
+id|ccwgdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+id|sysfs_remove_link
+c_func
+(paren
+op_amp
+id|ccwgdev-&gt;dev.kobj
+comma
+id|card-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+id|unregister_netdev
+c_func
+(paren
+id|card-&gt;dev
+)paren
+suffix:semicolon
+)brace
 id|sysfs_remove_group
 c_func
 (paren
@@ -8154,9 +8187,6 @@ c_func
 op_amp
 id|ccwgdev-&gt;dev
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * LCS ccwgroup driver registration&n; */

@@ -488,6 +488,11 @@ id|__u8
 id|lpm
 suffix:semicolon
 multiline_comment|/* logical path mask */
+DECL|member|opm
+id|__u8
+id|opm
+suffix:semicolon
+multiline_comment|/* operational path mask */
 DECL|member|schib
 r_struct
 id|schib
@@ -621,9 +626,6 @@ r_struct
 id|ccw1
 op_star
 comma
-r_int
-r_int
-comma
 id|__u8
 )paren
 suffix:semicolon
@@ -656,6 +658,15 @@ id|subchannel
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|cio_modify
+(paren
+r_struct
+id|subchannel
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Use with care. */
 r_extern
 r_struct
@@ -670,6 +681,25 @@ suffix:semicolon
 r_extern
 r_void
 id|cio_release_console
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cio_is_console
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|subchannel
+op_star
+id|cio_get_console_subchannel
 c_func
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.12 2003/06/28 15:35:28 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/time.c&n; *&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *  Copyright (C) 2002, 2003  Paul Mundt&n; *  Copyright (C) 2002  M. R. Brown  &lt;mrbrown@linux-sh.org&gt;&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
+multiline_comment|/* $Id: time.c,v 1.18 2003/10/09 16:28:14 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/time.c&n; *&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *  Copyright (C) 2002, 2003  Paul Mundt&n; *  Copyright (C) 2002  M. R. Brown  &lt;mrbrown@linux-sh.org&gt;&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -68,7 +68,7 @@ r_int
 id|wall_jiffies
 suffix:semicolon
 DECL|macro|TICK_SIZE
-mdefine_line|#define TICK_SIZE (TICK_NSEC / 1000)
+mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 DECL|variable|tmu0_lock
 id|spinlock_t
 id|tmu0_lock
@@ -331,6 +331,32 @@ suffix:semicolon
 macro_line|#else
 macro_line|#error &quot;Unknown ifc/bfc/pfc/stc values for this processor&quot;
 macro_line|#endif
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
 DECL|function|do_gettimeoffset
 r_static
 r_int
@@ -803,11 +829,15 @@ r_int
 id|pc
 )paren
 (brace
+multiline_comment|/* Don&squot;t profile cpu_idle.. */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|prof_buffer
+op_logical_or
+op_logical_neg
+id|current-&gt;pid
 )paren
 r_return
 suffix:semicolon
@@ -1323,6 +1353,60 @@ id|irq
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_int
+r_int
+id|sh_pclk_freq
+id|__initdata
+op_assign
+id|CONFIG_SH_PCLK_FREQ
+suffix:semicolon
+DECL|function|sh_pclk_setup
+r_static
+r_int
+id|__init
+id|sh_pclk_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_int
+r_int
+id|freq
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|freq
+)paren
+)paren
+id|sh_pclk_freq
+op_assign
+id|freq
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;sh_pclk=&quot;
+comma
+id|sh_pclk_setup
+)paren
+suffix:semicolon
 DECL|variable|irq0
 r_static
 r_struct
@@ -1536,6 +1620,8 @@ r_void
 r_int
 r_int
 id|timer_freq
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -1559,7 +1645,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * XXX: Hmm... when cpu/ is proposed, this looks like a good spot for&n;&t; * it, but we need a rtc to get the timer_freq so board_time_init()&n;&t; * must always come before a CPU time_(rtc?)_init().&n;&t; */
 id|get_current_frequency_divisors
 c_func
 (paren
@@ -1573,6 +1658,25 @@ op_amp
 id|pfc
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we don&squot;t have an RTC (such as with the SH7300), don&squot;t attempt to&n;&t; * probe the timer frequency. Rely on an either hardcoded peripheral&n;&t; * clock value, or on the sh_pclk command line option.&n;&t; */
+id|current_cpu_data.module_clock
+op_assign
+id|sh_pclk_freq
+suffix:semicolon
+multiline_comment|/* XXX: Switch this over to a more generic test. */
+r_if
+c_cond
+(paren
+id|current_cpu_data.type
+op_ne
+id|CPU_SH7300
+)paren
+(brace
+r_int
+r_int
+id|freq
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * If we&squot;ve specified a peripheral clock frequency, and we have&n;&t;&t; * an RTC, compare it against the autodetected value. Complain&n;&t;&t; * if there&squot;s a mismatch.&n;&t;&t; *&n;&t;&t; * Note: We should allow for some high and low watermarks for&n;&t;&t; * the frequency here (compensating for potential drift), as&n;&t;&t; * otherwise we&squot;ll likely end up triggering this essentially&n;&t;&t; * on every boot.&n;&t;&t; */
 id|timer_freq
 op_assign
 id|get_timer_frequency
@@ -1580,12 +1684,40 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|current_cpu_data.module_clock
+id|freq
 op_assign
 id|timer_freq
 op_star
 l_int|4
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sh_pclk_freq
+op_logical_and
+id|sh_pclk_freq
+op_ne
+id|freq
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Calculated peripheral clock value &quot;
+l_string|&quot;%d differs from sh_pclk value %d, fixing..&bslash;n&quot;
+comma
+id|freq
+comma
+id|sh_pclk_freq
+)paren
+suffix:semicolon
+id|current_cpu_data.module_clock
+op_assign
+id|freq
+suffix:semicolon
+)brace
+)brace
 id|rtc_get_time
 c_func
 (paren

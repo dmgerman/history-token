@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.25 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.26 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -642,6 +642,13 @@ id|opm
 )paren
 suffix:semicolon
 multiline_comment|/* reset status to queued to handle the request again... */
+r_if
+c_cond
+(paren
+id|erp-&gt;status
+OG
+id|DASD_CQR_QUEUED
+)paren
 id|erp-&gt;status
 op_assign
 id|DASD_CQR_QUEUED
@@ -669,6 +676,13 @@ id|opm
 )paren
 suffix:semicolon
 multiline_comment|/* post request with permanent error */
+r_if
+c_cond
+(paren
+id|erp-&gt;status
+OG
+id|DASD_CQR_QUEUED
+)paren
 id|erp-&gt;status
 op_assign
 id|DASD_CQR_FAILED

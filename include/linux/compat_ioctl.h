@@ -1,4 +1,12 @@
 multiline_comment|/* List here explicitly which ioctl&squot;s are known to have&n; * compatible types passed or none at all... Please include&n; * only stuff that is compatible on *all architectures*.&n; */
+macro_line|#ifndef COMPATIBLE_IOCTL /* pointer to compatible structure or no argument */
+DECL|macro|COMPATIBLE_IOCTL
+mdefine_line|#define COMPATIBLE_IOCTL(cmd)  HANDLE_IOCTL((cmd),(ioctl_trans_handler_t)sys_ioctl)
+macro_line|#endif
+macro_line|#ifndef ULONG_IOCTL /* argument is an unsigned long integer, not a pointer */
+DECL|macro|ULONG_IOCTL
+mdefine_line|#define ULONG_IOCTL(cmd)  HANDLE_IOCTL((cmd),(ioctl_trans_handler_t)sys_ioctl)
+macro_line|#endif
 multiline_comment|/* Big T */
 id|COMPATIBLE_IOCTL
 c_func
@@ -156,7 +164,7 @@ c_func
 (paren
 id|TIOCGPGRP
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|TIOCSCTTY
@@ -176,7 +184,6 @@ c_func
 (paren
 id|TIOCSERGETLSR
 )paren
-macro_line|#ifdef CONFIG_FB
 multiline_comment|/* Big F */
 id|COMPATIBLE_IOCTL
 c_func
@@ -203,7 +210,6 @@ c_func
 (paren
 id|FBIOPUT_CON2FBMAP
 )paren
-macro_line|#endif
 multiline_comment|/* Little f */
 id|COMPATIBLE_IOCTL
 c_func
@@ -288,7 +294,6 @@ c_func
 (paren
 id|HDIO_SET_NICE
 )paren
-macro_line|#ifdef CONFIG_BLK_DEV_FD
 multiline_comment|/* 0x02 -- Floppy ioctls */
 id|COMPATIBLE_IOCTL
 c_func
@@ -370,7 +375,6 @@ c_func
 (paren
 id|FDRAWCMD
 )paren
-macro_line|#endif
 multiline_comment|/* 0x12 */
 id|COMPATIBLE_IOCTL
 c_func
@@ -402,12 +406,12 @@ c_func
 (paren
 id|BLKSSZGET
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|BLKRASET
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|BLKFRASET
@@ -448,7 +452,7 @@ c_func
 (paren
 id|ADD_NEW_DISK
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|HOT_REMOVE_DISK
@@ -478,12 +482,12 @@ c_func
 (paren
 id|PROTECT_ARRAY
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|HOT_ADD_DISK
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|SET_DISK_FAULTY
@@ -493,7 +497,7 @@ c_func
 (paren
 id|RUN_ARRAY
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|START_ARRAY
@@ -513,7 +517,6 @@ c_func
 (paren
 id|RESTART_ARRAY_RW
 )paren
-macro_line|#ifdef CONFIG_BLK_DEV_DM
 multiline_comment|/* DM */
 macro_line|#ifdef CONFIG_DM_IOCTL_V4
 id|COMPATIBLE_IOCTL
@@ -633,7 +636,6 @@ c_func
 id|DM_TARGET_WAIT
 )paren
 macro_line|#endif
-macro_line|#endif
 multiline_comment|/* Big K */
 id|COMPATIBLE_IOCTL
 c_func
@@ -645,7 +647,7 @@ c_func
 (paren
 id|GIO_FONT
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KDSIGACCEPT
@@ -660,12 +662,12 @@ c_func
 (paren
 id|KDSETKEYCODE
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KIOCSOUND
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KDMKTONE
@@ -675,7 +677,7 @@ c_func
 (paren
 id|KDGKBTYPE
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KDSETMODE
@@ -685,7 +687,7 @@ c_func
 (paren
 id|KDGETMODE
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KDSKBMODE
@@ -695,7 +697,7 @@ c_func
 (paren
 id|KDGKBMODE
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KDSKBMETA
@@ -745,7 +747,7 @@ c_func
 (paren
 id|KDGKBLED
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KDSKBLED
@@ -755,7 +757,7 @@ c_func
 (paren
 id|KDGETLED
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|KDSETLED
@@ -878,22 +880,22 @@ c_func
 (paren
 id|VT_OPENQRY
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|VT_ACTIVATE
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|VT_WAITACTIVE
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|VT_RELDISP
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|VT_DISALLOCATE
@@ -918,7 +920,6 @@ c_func
 (paren
 id|VT_UNLOCKSWITCH
 )paren
-macro_line|#if defined(CONFIG_VIDEO_DEV) || defined(CONFIG_VIDEO_DEV_MODULE)
 multiline_comment|/* Little v */
 multiline_comment|/* Little v, the video4linux ioctls (conflict?) */
 id|COMPATIBLE_IOCTL
@@ -1128,7 +1129,6 @@ comma
 r_int
 )paren
 )paren
-macro_line|#endif
 multiline_comment|/* Little p (/dev/rtc, /dev/envctrl, etc.) */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1250,13 +1250,9 @@ id|SIOCGIFENCAP
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|SIOCSIFBR
+id|SIOCSIFNAME
 )paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|SIOCGIFBR
-)paren
+multiline_comment|/* FIXME: not compatible&n;COMPATIBLE_IOCTL(SIOCSIFBR)&n;COMPATIBLE_IOCTL(SIOCGIFBR)&n;*/
 id|COMPATIBLE_IOCTL
 c_func
 (paren
@@ -1338,7 +1334,7 @@ c_func
 (paren
 id|SG_EMULATED_HOST
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|SG_SET_TRANSFORM
@@ -1438,7 +1434,6 @@ c_func
 (paren
 id|SG_GET_KEEP_ORPHAN
 )paren
-macro_line|#if defined(CONFIG_PPP) || defined(CONFIG_PPP_MODULE)
 multiline_comment|/* PPP stuff */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1580,7 +1575,6 @@ c_func
 (paren
 id|PPPOEIOCDFWD
 )paren
-macro_line|#endif
 multiline_comment|/* LP */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1643,7 +1637,7 @@ c_func
 (paren
 id|CDROMSUBCHNL
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROMEJECT_SW
@@ -1683,32 +1677,32 @@ c_func
 (paren
 id|CDROMCLOSETRAY
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_SET_OPTIONS
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_CLEAR_OPTIONS
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_SELECT_SPEED
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_SELECT_DISC
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_MEDIA_CHANGED
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_DRIVE_STATUS
@@ -1723,12 +1717,12 @@ c_func
 (paren
 id|CDROM_CHANGER_NSLOTS
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_LOCKDOOR
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|CDROM_DEBUG
@@ -1781,7 +1775,7 @@ c_func
 id|DVD_AUTH
 )paren
 multiline_comment|/* Big L */
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|LOOP_SET_FD
@@ -1803,7 +1797,6 @@ id|LOOP_SET_STATUS64
 )paren
 multiline_comment|/* Big A */
 multiline_comment|/* sparc only */
-macro_line|#if defined(CONFIG_SOUND) || defined (CONFIG_SOUND_MODULE)
 multiline_comment|/* Big Q for sound/OSS */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2590,14 +2583,13 @@ c_func
 (paren
 id|OSS_GETVERSION
 )paren
-macro_line|#endif
 multiline_comment|/* AUTOFS */
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|AUTOFS_IOC_READY
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|AUTOFS_IOC_FAIL
@@ -2716,7 +2708,6 @@ c_func
 (paren
 id|NCP_IOC_SETDENTRYTTL
 )paren
-macro_line|#if defined(CONFIG_ATM) || defined(CONFIG_ATM_MODULE)
 multiline_comment|/* Little a */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2793,7 +2784,6 @@ c_func
 (paren
 id|ATMMPC_DATA
 )paren
-macro_line|#endif
 multiline_comment|/* Big W */
 multiline_comment|/* WIOC_GETSUPPORT not yet implemented -E */
 id|COMPATIBLE_IOCTL
@@ -2852,7 +2842,6 @@ c_func
 (paren
 id|RNDCLEARPOOL
 )paren
-macro_line|#if defined(CONFIG_BT) || defined(CONFIG_BT_MODULE)
 multiline_comment|/* Bluetooth ioctls */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2999,8 +2988,6 @@ c_func
 (paren
 id|BNEPGETCONNINFO
 )paren
-macro_line|#endif
-macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* Misc. */
 id|COMPATIBLE_IOCTL
 c_func
@@ -3034,8 +3021,6 @@ c_func
 (paren
 id|PCIIOC_WRITE_COMBINE
 )paren
-macro_line|#endif
-macro_line|#if defined(CONFIG_USB) || defined(CONFIG_USB_MODULE)
 multiline_comment|/* USB */
 id|COMPATIBLE_IOCTL
 c_func
@@ -3092,8 +3077,6 @@ c_func
 (paren
 id|USBDEVFS_CLEAR_HALT
 )paren
-macro_line|#endif
-macro_line|#if defined(CONFIG_MTD) || defined(CONFIG_MTD_MODULE)
 multiline_comment|/* MTD */
 id|COMPATIBLE_IOCTL
 c_func
@@ -3125,19 +3108,18 @@ c_func
 (paren
 id|MEMGETREGIONINFO
 )paren
-macro_line|#endif
 multiline_comment|/* NBD */
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|NBD_SET_SOCK
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|NBD_SET_BLKSIZE
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|NBD_SET_SIZE
@@ -3162,7 +3144,7 @@ c_func
 (paren
 id|NBD_PRINT_DEBUG
 )paren
-id|COMPATIBLE_IOCTL
+id|ULONG_IOCTL
 c_func
 (paren
 id|NBD_SET_SIZE_BLOCKS
@@ -3202,5 +3184,156 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|I2C_TIMEOUT
+)paren
+multiline_comment|/* wireless */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWCOMMIT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWNAME
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWNWID
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWNWID
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWFREQ
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWFREQ
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWMODE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWMODE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWSENS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWSENS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWRANGE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWPRIV
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWPRIV
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWSTATS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWSTATS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWAP
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWAP
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWSCAN
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWRATE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWRATE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWRTS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWRTS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWFRAG
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWFRAG
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWTXPOW
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWTXPOW
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWRETRY
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWRETRY
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIWPOWER
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIWPOWER
 )paren
 eof

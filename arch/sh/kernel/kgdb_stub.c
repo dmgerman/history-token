@@ -3151,7 +3151,7 @@ id|trap_registers.pc
 op_plus
 l_int|2
 suffix:semicolon
-id|flush_icache_range
+id|kgdb_flush_icache_range
 c_func
 (paren
 id|addr
@@ -3217,7 +3217,7 @@ op_assign
 id|STEP_OPCODE
 suffix:semicolon
 multiline_comment|/* Flush and return */
-id|flush_icache_range
+id|kgdb_flush_icache_range
 c_func
 (paren
 (paren
@@ -3265,7 +3265,7 @@ id|stepped_address
 op_assign
 id|stepped_opcode
 suffix:semicolon
-id|flush_icache_range
+id|kgdb_flush_icache_range
 c_func
 (paren
 id|stepped_address
@@ -3793,7 +3793,7 @@ comma
 id|length
 )paren
 suffix:semicolon
-id|flush_icache_range
+id|kgdb_flush_icache_range
 c_func
 (paren
 id|addr

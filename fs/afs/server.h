@@ -21,7 +21,8 @@ id|atomic_t
 id|usage
 suffix:semicolon
 DECL|member|cell
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 suffix:semicolon
@@ -39,7 +40,8 @@ id|sem
 suffix:semicolon
 multiline_comment|/* access lock */
 DECL|member|timeout
-id|afs_timer_t
+r_struct
+id|afs_timer
 id|timeout
 suffix:semicolon
 multiline_comment|/* graveyard timeout */
@@ -136,7 +138,8 @@ r_int
 id|afs_server_lookup
 c_func
 (paren
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 comma
@@ -146,7 +149,8 @@ id|in_addr
 op_star
 id|addr
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 op_star
 id|_server
@@ -159,7 +163,8 @@ r_void
 id|afs_put_server
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 )paren
@@ -169,7 +174,8 @@ r_void
 id|afs_server_do_timeout
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 )paren
@@ -185,7 +191,8 @@ id|rxrpc_peer
 op_star
 id|peer
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 op_star
 id|_server
@@ -196,7 +203,8 @@ r_int
 id|afs_server_get_vlconn
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -207,10 +215,11 @@ op_star
 id|_conn
 )paren
 suffix:semicolon
-DECL|function|afs_server_get_from_peer
 r_static
 r_inline
-id|afs_server_t
+DECL|function|afs_server_get_from_peer
+r_struct
+id|afs_server
 op_star
 id|afs_server_get_from_peer
 c_func
@@ -221,7 +230,8 @@ op_star
 id|peer
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -306,7 +316,8 @@ r_int
 id|afs_server_request_callslot
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -321,7 +332,8 @@ r_void
 id|afs_server_release_callslot
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma

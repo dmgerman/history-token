@@ -3448,6 +3448,8 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+DECL|macro|NFS_VALID_ATTRS
+mdefine_line|#define NFS_VALID_ATTRS (ATTR_MODE|ATTR_UID|ATTR_GID|ATTR_SIZE|ATTR_ATIME|ATTR_ATIME_SET|ATTR_MTIME|ATTR_MTIME_SET)
 r_int
 DECL|function|nfs_setattr
 id|nfs_setattr
@@ -3477,6 +3479,21 @@ id|fattr
 suffix:semicolon
 r_int
 id|error
+suffix:semicolon
+multiline_comment|/* Optimization: if the end result is no change, don&squot;t RPC */
+id|attr-&gt;ia_valid
+op_and_assign
+id|NFS_VALID_ATTRS
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|attr-&gt;ia_valid
+op_eq
+l_int|0
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -3533,6 +3550,16 @@ id|attr-&gt;ia_valid
 op_and_assign
 op_complement
 id|ATTR_SIZE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|attr-&gt;ia_valid
+op_eq
+l_int|0
+)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else

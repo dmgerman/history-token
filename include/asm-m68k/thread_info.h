@@ -62,8 +62,7 @@ mdefine_line|#define alloc_thread_info(tsk)   ((struct thread_info *)__get_free_
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti)  free_pages((unsigned long)(ti),1)
 macro_line|#endif /* PAGE_SHIFT == 13 */
-DECL|macro|init_thread_info
-mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
+singleline_comment|//#define init_thread_info&t;(init_task.thread.info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
 DECL|macro|current_thread_info

@@ -16,7 +16,10 @@ mdefine_line|#define Elf_Sym&t;&t;&t;Elf32_Sym
 DECL|macro|Elf_Ehdr
 mdefine_line|#define Elf_Ehdr&t;&t;Elf32_Ehdr
 macro_line|#ifdef CONFIG_CPU_LITTLE_ENDIAN
-macro_line|# ifdef CONFIG_CPU_SH3
+macro_line|# ifdef CONFIG_CPU_SH2
+DECL|macro|MODULE_PROC_FAMILY
+macro_line|#  define MODULE_PROC_FAMILY &quot;SH2LE &quot;
+macro_line|# elif defined  CONFIG_CPU_SH3
 DECL|macro|MODULE_PROC_FAMILY
 macro_line|#  define MODULE_PROC_FAMILY &quot;SH3LE &quot;
 macro_line|# elif defined  CONFIG_CPU_SH4
@@ -26,7 +29,10 @@ macro_line|# else
 macro_line|#  error unknown processor family
 macro_line|# endif
 macro_line|#else
-macro_line|# ifdef CONFIG_CPU_SH3
+macro_line|# ifdef CONFIG_CPU_SH2
+DECL|macro|MODULE_PROC_FAMILY
+macro_line|#  define MODULE_PROC_FAMILY &quot;SH2BE &quot;
+macro_line|# elif defined  CONFIG_CPU_SH3
 DECL|macro|MODULE_PROC_FAMILY
 macro_line|#  define MODULE_PROC_FAMILY &quot;SH3BE &quot;
 macro_line|# elif defined  CONFIG_CPU_SH4

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Copyright (c) 2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * You should have received a copy of the GNU General Public&n; * License along with this program; if not, write the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2657,7 +2656,8 @@ id|IOC4_CMD_CTL_BLK_SIZE
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 r_if
@@ -2811,12 +2811,6 @@ DECL|typedef|pciio_endian_t
 id|pciio_endian_t
 suffix:semicolon
 id|pciio_endian_t
-id|__attribute__
-(paren
-(paren
-id|weak
-)paren
-)paren
 id|snia_pciio_endian_set
 c_func
 (paren
@@ -2854,6 +2848,9 @@ r_int
 r_int
 id|class_rev
 suffix:semicolon
+id|pciio_endian_t
+id|endian_status
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2876,7 +2873,8 @@ id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|pci_set_master
@@ -2935,16 +2933,13 @@ id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Enable Byte Swapping in the PIC... */
-r_if
-c_cond
-(paren
-id|snia_pciio_endian_set
-)paren
-(brace
+id|endian_status
+op_assign
 id|snia_pciio_endian_set
 c_func
 (paren
@@ -2955,8 +2950,13 @@ comma
 id|PCIDMA_ENDIAN_BIG
 )paren
 suffix:semicolon
-)brace
-r_else
+r_if
+c_cond
+(paren
+id|endian_status
+op_ne
+id|PCIDMA_ENDIAN_BIG
+)paren
 (brace
 id|printk
 c_func
@@ -2970,7 +2970,8 @@ id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_return

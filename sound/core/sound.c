@@ -32,7 +32,6 @@ id|cards_limit
 op_assign
 id|SNDRV_CARDS
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 DECL|variable|device_mode
 r_static
 r_int
@@ -44,7 +43,6 @@ id|S_IRUGO
 op_or
 id|S_IWUGO
 suffix:semicolon
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -175,6 +173,12 @@ c_func
 (paren
 id|sound_mutex
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|class_simple
+op_star
+id|sound_class
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
 multiline_comment|/**&n; * snd_request_card - try to load the card module&n; * @card: the card number&n; *&n; * Tries to load the module &quot;snd-card-X&quot; for the given card number&n; * via KMOD.  Returns immediately if already loaded.&n; */
@@ -763,6 +767,13 @@ id|snd_minor_t
 op_star
 id|preg
 suffix:semicolon
+r_struct
+id|device
+op_star
+id|device
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -893,7 +904,6 @@ id|minor
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 r_if
 c_cond
 (paren
@@ -907,6 +917,7 @@ comma
 l_int|8
 )paren
 )paren
+(brace
 multiline_comment|/* created in sound.c */
 id|devfs_mk_cdev
 c_func
@@ -928,7 +939,34 @@ comma
 id|name
 )paren
 suffix:semicolon
-macro_line|#endif
+r_if
+c_cond
+(paren
+id|card
+)paren
+id|device
+op_assign
+id|card-&gt;dev
+suffix:semicolon
+id|class_simple_device_add
+c_func
+(paren
+id|sound_class
+comma
+id|MKDEV
+c_func
+(paren
+id|major
+comma
+id|minor
+)paren
+comma
+id|device
+comma
+id|name
+)paren
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -1019,7 +1057,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_FS
 r_if
 c_cond
 (paren
@@ -1033,6 +1070,7 @@ comma
 l_int|8
 )paren
 )paren
+(brace
 multiline_comment|/* created in sound.c */
 id|devfs_remove
 c_func
@@ -1042,7 +1080,19 @@ comma
 id|mptr-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|major
+comma
+id|minor
+)paren
+)paren
+suffix:semicolon
+)brace
 id|list_del
 c_func
 (paren
@@ -1341,11 +1391,9 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
 r_int
 id|controlnum
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SND_OSSEMUL
 r_int
 id|err
@@ -1497,7 +1545,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEVFS_FS
 r_for
 c_loop
 (paren
@@ -1512,6 +1559,7 @@ suffix:semicolon
 id|controlnum
 op_increment
 )paren
+(brace
 id|devfs_mk_cdev
 c_func
 (paren
@@ -1534,7 +1582,29 @@ comma
 id|controlnum
 )paren
 suffix:semicolon
-macro_line|#endif
+id|class_simple_device_add
+c_func
+(paren
+id|sound_class
+comma
+id|MKDEV
+c_func
+(paren
+id|major
+comma
+id|controlnum
+op_lshift
+l_int|5
+)paren
+comma
+l_int|NULL
+comma
+l_string|&quot;controlC%d&quot;
+comma
+id|controlnum
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifndef MODULE
 id|printk
 c_func
@@ -1578,6 +1648,7 @@ suffix:semicolon
 id|controlnum
 op_increment
 )paren
+(brace
 id|devfs_remove
 c_func
 (paren
@@ -1586,6 +1657,21 @@ comma
 id|controlnum
 )paren
 suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|major
+comma
+id|controlnum
+op_lshift
+l_int|5
+)paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SND_OSSEMUL
 id|snd_info_minor_unregister
 c_func

@@ -1189,5 +1189,18 @@ mdefine_line|#define io_remap_page_range remap_page_range
 multiline_comment|/* We provide our own get_unmapped_area to provide cache coherency */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
+DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
+macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _PARISC_PGTABLE_H */
 eof

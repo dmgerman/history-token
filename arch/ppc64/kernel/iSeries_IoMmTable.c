@@ -1,3 +1,5 @@
+DECL|macro|PCIFR
+mdefine_line|#define PCIFR(...)
 multiline_comment|/************************************************************************/
 multiline_comment|/* This module supports the iSeries I/O Address translation mapping     */
 multiline_comment|/* Copyright (C) 20yy  &lt;Allan H Trautman&gt; &lt;IBM Corp&gt;                    */
@@ -30,15 +32,11 @@ macro_line|#include &lt;asm/resource.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/flight_recorder.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &quot;iSeries_IoMmTable.h&quot;
 macro_line|#include &quot;pci.h&quot;
-multiline_comment|/*******************************************************************/
-multiline_comment|/* Table defines                                                   */
-multiline_comment|/* Each Entry size is 4 MB * 1024 Entries = 4GB I/O address space. */
-multiline_comment|/*******************************************************************/
+multiline_comment|/*&n; * Table defines&n; * Each Entry size is 4 MB * 1024 Entries = 4GB I/O address space.&n; */
 DECL|macro|Max_Entries
 mdefine_line|#define Max_Entries 1024
 DECL|variable|iSeries_IoMmTable_Entry_Size
@@ -69,9 +67,7 @@ id|iSeries_CurrentIndex
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*******************************************************************/
-multiline_comment|/* Lookup Tables.                                                  */
-multiline_comment|/*******************************************************************/
+multiline_comment|/*&n; * Lookup Tables.&n; */
 DECL|variable|iSeries_IoMmTable
 r_struct
 id|iSeries_Device_Node
@@ -84,9 +80,7 @@ id|u8
 op_star
 id|iSeries_IoBarTable
 suffix:semicolon
-multiline_comment|/*******************************************************************/
-multiline_comment|/* Static and Global variables                                     */
-multiline_comment|/*******************************************************************/
+multiline_comment|/*&n; * Static and Global variables&n; */
 DECL|variable|iSeriesPciIoText
 r_static
 r_char
@@ -102,16 +96,7 @@ id|iSeriesIoMmTableLock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*******************************************************************/
-multiline_comment|/* iSeries_IoMmTable_Initialize                                    */
-multiline_comment|/*******************************************************************/
-multiline_comment|/* Allocates and initalizes the Address Translation Table and Bar  */
-multiline_comment|/* Tables to get them ready for use.  Must be called before any    */
-multiline_comment|/* I/O space is handed out to the device BARs.                     */
-multiline_comment|/* A follow up method,iSeries_IoMmTable_Status can be called to    */
-multiline_comment|/* adjust the table after the device BARs have been assiged to     */
-multiline_comment|/* resize the table.                                               */
-multiline_comment|/*******************************************************************/
+multiline_comment|/*&n; * iSeries_IoMmTable_Initialize&n; *&n; * Allocates and initalizes the Address Translation Table and Bar&n; * Tables to get them ready for use.  Must be called before any&n; * I/O space is handed out to the device BARs.&n; * A follow up method,iSeries_IoMmTable_Status can be called to&n; * adjust the table after the device BARs have been assiged to&n; * resize the table.&n; */
 DECL|function|iSeries_IoMmTable_Initialize
 r_void
 id|iSeries_IoMmTable_Initialize
@@ -176,15 +161,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|iSeries_IoMmTable
 op_eq
 l_int|NULL
+)paren
 op_logical_or
+(paren
 id|iSeries_IoBarTable
 op_eq
 l_int|NULL
 )paren
-(brace
+)paren
 id|panic
 c_func
 (paren
@@ -192,19 +180,7 @@ l_string|&quot;PCI: I/O tables allocation failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*******************************************************************/
-multiline_comment|/* iSeries_IoMmTable_AllocateEntry                                 */
-multiline_comment|/*******************************************************************/
-multiline_comment|/* Adds pci_dev entry in address translation table                 */
-multiline_comment|/*******************************************************************/
-multiline_comment|/* - Allocates the number of entries required in table base on BAR */
-multiline_comment|/*   size.                                                         */
-multiline_comment|/* - Allocates starting at iSeries_Base_Io_Memory and increases.   */
-multiline_comment|/* - The size is round up to be a multiple of entry size.          */
-multiline_comment|/* - CurrentIndex is incremented to keep track of the last entry.  */
-multiline_comment|/* - Builds the resource entry for allocated BARs.                 */
-multiline_comment|/*******************************************************************/
+multiline_comment|/*&n; * iSeries_IoMmTable_AllocateEntry&n; *&n; * Adds pci_dev entry in address translation table&n; *&n; * - Allocates the number of entries required in table base on BAR&n; *   size.&n; * - Allocates starting at iSeries_Base_Io_Memory and increases.&n; * - The size is round up to be a multiple of entry size.&n; * - CurrentIndex is incremented to keep track of the last entry.&n; * - Builds the resource entry for allocated BARs.&n; */
 DECL|function|iSeries_IoMmTable_AllocateEntry
 r_static
 r_void
@@ -242,9 +218,7 @@ comma
 id|BarNumber
 )paren
 suffix:semicolon
-multiline_comment|/***********************************************************/
-multiline_comment|/* No space to allocate, quick exit, skip Allocation.      */
-multiline_comment|/***********************************************************/
+multiline_comment|/*&n;&t; * No space to allocate, quick exit, skip Allocation.&n;&t; */
 r_if
 c_cond
 (paren
@@ -252,13 +226,9 @@ id|BarSize
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
-multiline_comment|/***********************************************************/
-multiline_comment|/* Set Resource values.                                    */
-multiline_comment|/***********************************************************/
+multiline_comment|/*&n;&t; * Set Resource values.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -288,9 +258,7 @@ id|BarSize
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/***********************************************************/
-multiline_comment|/* Allocate the number of table entries needed for BAR.    */
-multiline_comment|/***********************************************************/
+multiline_comment|/*&n;&t; * Allocate the number of table entries needed for BAR.&n;&t; */
 r_while
 c_loop
 (paren
@@ -332,13 +300,13 @@ suffix:semicolon
 )brace
 id|iSeries_Max_Io_Memory
 op_assign
+id|iSeries_Base_Io_Memory
+op_plus
 (paren
 id|iSeries_IoMmTable_Entry_Size
 op_star
 id|iSeries_CurrentIndex
 )paren
-op_plus
-id|iSeries_Base_Io_Memory
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -348,17 +316,7 @@ id|iSeriesIoMmTableLock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************/
-multiline_comment|/* iSeries_allocateDeviceBars                                      */
-multiline_comment|/*******************************************************************/
-multiline_comment|/* - Allocates ALL pci_dev BAR&squot;s and updates the resources with the*/
-multiline_comment|/*   BAR value.  BARS with zero length will have the resources     */
-multiline_comment|/*   The HvCallPci_getBarParms is used to get the size of the BAR  */
-multiline_comment|/*   space.  It calls iSeries_IoMmTable_AllocateEntry to allocate  */
-multiline_comment|/*   each entry.                                                   */
-multiline_comment|/* - Loops through The Bar resources(0 - 5) including the ROM      */
-multiline_comment|/*   is resource(6).                                               */
-multiline_comment|/*******************************************************************/
+multiline_comment|/*&n; * iSeries_allocateDeviceBars&n; *&n; * - Allocates ALL pci_dev BAR&squot;s and updates the resources with the&n; *   BAR value.  BARS with zero length will have the resources&n; *   The HvCallPci_getBarParms is used to get the size of the BAR&n; *   space.  It calls iSeries_IoMmTable_AllocateEntry to allocate&n; *   each entry.&n; * - Loops through The Bar resources(0 - 5) including the ROM&n; *   is resource(6).&n; */
 DECL|function|iSeries_allocateDeviceBars
 r_void
 id|iSeries_allocateDeviceBars
@@ -411,10 +369,7 @@ id|BarNumber
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* Translates the IoAddress to the device that is mapped to IoSpace.    */
-multiline_comment|/* This code is inlined, see the iSeries_pci.c file for the replacement.*/
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * Translates the IoAddress to the device that is mapped to IoSpace.&n; * This code is inlined, see the iSeries_pci.c file for the replacement.&n; */
 DECL|function|iSeries_xlateIoMmAddress
 r_struct
 id|iSeries_Device_Node
@@ -431,7 +386,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************&n; * Status hook for IoMmTable&n; ************************************************************************/
+multiline_comment|/*&n; * Status hook for IoMmTable&n; */
 DECL|function|iSeries_IoMmTable_Status
 r_void
 id|iSeries_IoMmTable_Status
@@ -457,8 +412,6 @@ id|iSeries_Base_Io_Memory
 comma
 id|iSeries_Max_Io_Memory
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 eof

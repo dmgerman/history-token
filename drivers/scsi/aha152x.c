@@ -18562,6 +18562,7 @@ id|DISABLE_CLUSTERING
 comma
 )brace
 suffix:semicolon
+macro_line|#ifndef PCMCIA
 DECL|variable|aha152x_init
 id|module_init
 c_func
@@ -18576,4 +18577,5 @@ c_func
 id|aha152x_exit
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

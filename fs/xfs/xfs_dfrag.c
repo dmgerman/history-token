@@ -528,7 +528,11 @@ r_if
 c_cond
 (paren
 (paren
-id|current-&gt;fsuid
+id|current_fsuid
+c_func
+(paren
+id|cred
+)paren
 op_ne
 id|ip-&gt;i_d.di_uid
 )paren
@@ -565,7 +569,11 @@ r_if
 c_cond
 (paren
 (paren
-id|current-&gt;fsuid
+id|current_fsuid
+c_func
+(paren
+id|cred
+)paren
 op_ne
 id|tip-&gt;i_d.di_uid
 )paren

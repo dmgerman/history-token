@@ -3,6 +3,7 @@ macro_line|#ifndef __XFS_VFS_H__
 DECL|macro|__XFS_VFS_H__
 mdefine_line|#define __XFS_VFS_H__
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &quot;xfs_fs.h&quot;
 r_struct
 id|fid
 suffix:semicolon
@@ -24,6 +25,12 @@ suffix:semicolon
 r_struct
 id|xfs_mount_args
 suffix:semicolon
+DECL|typedef|xfs_statfs_t
+r_typedef
+r_struct
+id|kstatfs
+id|xfs_statfs_t
+suffix:semicolon
 DECL|struct|vfs
 r_typedef
 r_struct
@@ -35,12 +42,12 @@ id|vfs_flag
 suffix:semicolon
 multiline_comment|/* flags */
 DECL|member|vfs_fsid
-id|fsid_t
+id|xfs_fsid_t
 id|vfs_fsid
 suffix:semicolon
 multiline_comment|/* file system ID */
 DECL|member|vfs_altfsid
-id|fsid_t
+id|xfs_fsid_t
 op_star
 id|vfs_altfsid
 suffix:semicolon
@@ -273,8 +280,7 @@ id|vfs_statvfs_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|kstatfs
+id|xfs_statfs_t
 op_star
 comma
 r_struct
@@ -629,8 +635,7 @@ c_func
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|kstatfs
+id|xfs_statfs_t
 op_star
 comma
 r_struct

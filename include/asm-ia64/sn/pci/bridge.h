@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_BRIDGE_H
 DECL|macro|_ASM_SN_PCI_BRIDGE_H
 mdefine_line|#define _ASM_SN_PCI_BRIDGE_H
@@ -6,26 +6,18 @@ multiline_comment|/*&n; * bridge.h - header file for bridge chip and bridge port
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/pci/pic.h&gt;
-r_extern
-r_int
-id|io_get_sh_swapper
-c_func
-(paren
-id|nasid_t
-)paren
-suffix:semicolon
 DECL|macro|BRIDGE_REG_GET32
 mdefine_line|#define BRIDGE_REG_GET32(reg) &bslash;&n;                __swab32( *(volatile uint32_t *) (((uint64_t)reg)^4) )
 DECL|macro|BRIDGE_REG_SET32
 mdefine_line|#define BRIDGE_REG_SET32(reg) &bslash;&n;                *(volatile uint32_t *) (((uint64_t)reg)^4)
 multiline_comment|/* I/O page size */
-macro_line|#if _PAGESZ == 4096
+macro_line|#if PAGE_SIZE == 4096
 DECL|macro|IOPFNSHIFT
 mdefine_line|#define IOPFNSHIFT&t;&t;12&t;/* 4K per mapped page */
 macro_line|#else
 DECL|macro|IOPFNSHIFT
 mdefine_line|#define IOPFNSHIFT&t;&t;14&t;/* 16K per mapped page */
-macro_line|#endif&t;&t;&t;&t;/* _PAGESZ */
+macro_line|#endif&t;&t;&t;&t;/* PAGE_SIZE */
 DECL|macro|IOPGSIZE
 mdefine_line|#define IOPGSIZE&t;&t;(1 &lt;&lt; IOPFNSHIFT)
 DECL|macro|IOPG
@@ -1974,9 +1966,9 @@ mdefine_line|#define PCIBR_TYPE1_CFG(ps)         PCIBRIDGE_TYPE1_CFG((ps)-&gt;bs
 DECL|macro|PCIBR_BUS_TYPE0_CFG_DEV0
 mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEV0(ps) PCIBR_TYPE0_CFG_DEV(ps, 0)
 DECL|macro|PCIBR_TYPE0_CFG_DEV
-mdefine_line|#define PCIBR_TYPE0_CFG_DEV(ps, s) &bslash;&n;    ((IS_PIC_SOFT(ps)) ? PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s+1) : &bslash;&n;&t;&t;  &t;     PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s))
+mdefine_line|#define PCIBR_TYPE0_CFG_DEV(ps, s) PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s+1)
 DECL|macro|PCIBR_BUS_TYPE0_CFG_DEVF
-mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEVF(ps,s,f) &bslash;&n;    ((IS_PIC_SOFT(ps)) ? PCIBRIDGE_TYPE0_CFG_DEVF((ps)-&gt;bs_busnum,(s+1),f) : &bslash;&n;&t;&t;&t;     PCIBRIDGE_TYPE0_CFG_DEVF((ps)-&gt;bs_busnum,s,f))
+mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEVF(ps,s,f) PCIBRIDGE_TYPE0_CFG_DEVF((ps)-&gt;bs_busnum,(s+1),f)
 macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
 DECL|macro|BRIDGE_EXTERNAL_FLASH
 mdefine_line|#define BRIDGE_EXTERNAL_FLASH&t;0x00C00000&t;/* External Flash PROMS */

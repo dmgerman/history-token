@@ -47,6 +47,11 @@ macro_line|#ifndef __attribute_pure__
 DECL|macro|__attribute_pure__
 macro_line|# define __attribute_pure__&t;/* unimplemented */
 macro_line|#endif
+multiline_comment|/*&n; * From the GCC manual:&n; *&n; * Many functions do not examine any values except their arguments,&n; * and have no effects except the return value.  Basically this is&n; * just slightly more strict class than the `pure&squot; attribute above,&n; * since function is not allowed to read global memory.&n; *&n; * Note that a function that has pointer arguments and examines the&n; * data pointed to must _not_ be declared `const&squot;.  Likewise, a&n; * function that calls a non-`const&squot; function usually must not be&n; * `const&squot;.  It does not make sense for a `const&squot; function to return&n; * `void&squot;.&n; */
+macro_line|#ifndef __attribute_const__
+DECL|macro|__attribute_const__
+macro_line|# define __attribute_const__&t;/* unimplemented */
+macro_line|#endif
 multiline_comment|/* Optimization barrier */
 macro_line|#ifndef barrier
 DECL|macro|barrier

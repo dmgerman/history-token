@@ -6550,6 +6550,9 @@ op_star
 id|ext_hdrs
 )paren
 (brace
+id|__u8
+id|proto
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -6632,6 +6635,10 @@ comma
 l_int|3
 )paren
 suffix:semicolon
+id|proto
+op_assign
+id|x-&gt;id.proto
+suffix:semicolon
 id|xfrm_state_put
 c_func
 (paren
@@ -6676,7 +6683,7 @@ op_assign
 id|pfkey_proto2satype
 c_func
 (paren
-id|x-&gt;id.proto
+id|proto
 )paren
 suffix:semicolon
 id|out_hdr-&gt;sadb_msg_errno

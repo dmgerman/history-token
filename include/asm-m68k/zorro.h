@@ -21,7 +21,7 @@ mdefine_line|#define z_memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|z_memcpy_toio
 mdefine_line|#define z_memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
 DECL|function|z_remap_nocache_ser
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -50,7 +50,7 @@ id|IOMAP_NOCACHE_SER
 suffix:semicolon
 )brace
 DECL|function|z_remap_nocache_nonser
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -79,7 +79,7 @@ id|IOMAP_NOCACHE_NONSER
 suffix:semicolon
 )brace
 DECL|function|z_remap_writethrough
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -108,7 +108,7 @@ id|IOMAP_WRITETHROUGH
 suffix:semicolon
 )brace
 DECL|function|z_remap_fullcache
-r_extern
+r_static
 r_inline
 r_void
 op_star

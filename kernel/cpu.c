@@ -21,8 +21,6 @@ r_struct
 id|notifier_block
 op_star
 id|cpu_chain
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Need to know about CPUs going up/down? */
 DECL|function|register_cpu_notifier

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: setup.c,v 1.1.2.3 2002/11/04 20:33:57 lethal Exp $&n; *&n; * Setup and IRQ handling code for the HD64465 companion chip.&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * Copyright (c) 2000 PocketPenguins Inc&n; *&n; * Derived from setup_hd64461.c which bore the message:&n; * Copyright (C) 2000 YAEGASHI Takeshi&n; */
+multiline_comment|/*&n; * $Id: setup.c,v 1.4 2003/08/03 03:05:10 lethal Exp $&n; *&n; * Setup and IRQ handling code for the HD64465 companion chip.&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * Copyright (c) 2000 PocketPenguins Inc&n; *&n; * Derived from setup_hd64461.c which bore the message:&n; * Copyright (C) 2000 YAEGASHI Takeshi&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,15 +11,6 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hd64465/hd64465.h&gt;
-DECL|macro|HD64465_DEBUG
-macro_line|#undef HD64465_DEBUG
-macro_line|#ifdef HD64465_DEBUG
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(args...)&t;printk(args)
-macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(args...)
-macro_line|#endif
 DECL|function|disable_hd64465_irq
 r_static
 r_void
@@ -51,7 +42,7 @@ op_minus
 id|HD64465_IRQ_BASE
 )paren
 suffix:semicolon
-id|DPRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;disable_hd64465_irq(%d): mask=%x&bslash;n&quot;
@@ -125,7 +116,7 @@ op_minus
 id|HD64465_IRQ_BASE
 )paren
 suffix:semicolon
-id|DPRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;enable_hd64465_irq(%d): mask=%x&bslash;n&quot;
@@ -305,11 +296,12 @@ dot
 id|end
 op_assign
 id|end_hd64465_irq
+comma
 )brace
 suffix:semicolon
 DECL|function|hd64465_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|hd64465_interrupt
 c_func
 (paren
@@ -344,6 +336,9 @@ c_func
 id|HD64465_REG_NIMR
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/*====================================================*/
@@ -504,7 +499,7 @@ c_func
 id|HD64465_REG_NIMR
 )paren
 suffix:semicolon
-id|DPRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;hd64465_irq_demux, nirr=%04x, nimr=%04x&bslash;n&quot;

@@ -624,6 +624,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dev
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|register_netdevice
 c_func
 (paren

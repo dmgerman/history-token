@@ -2,8 +2,8 @@ multiline_comment|/*&n; * include/asm-sh/cpu-sh2/cache.h&n; *&n; * Copyright (C)
 macro_line|#ifndef __ASM_CPU_SH2_CACHE_H
 DECL|macro|__ASM_CPU_SH2_CACHE_H
 mdefine_line|#define __ASM_CPU_SH2_CACHE_H
-DECL|macro|L1_CACHE_BYTES
-mdefine_line|#define&t;L1_CACHE_BYTES&t;16
+DECL|macro|L1_CACHE_SHIFT
+mdefine_line|#define L1_CACHE_SHIFT&t;4
 DECL|macro|CCR
 mdefine_line|#define CCR&t;&t;0xfffffe92&t;/* Address of Cache Control Register */
 DECL|macro|CCR_CACHE_CE

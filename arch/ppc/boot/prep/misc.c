@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &quot;of1275.h&quot;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/*&n; * Please send me load/board info and such data for hardware not&n; * listed here so I can keep track since things are getting tricky&n; * with the different load addrs with different firmware.  This will&n; * help to avoid breaking the load/boot process.&n; * -- Cort&n; */
@@ -426,6 +427,10 @@ comma
 id|RESIDUAL
 op_star
 id|residual
+comma
+r_void
+op_star
+id|OFW_interface
 )paren
 (brace
 r_int
@@ -449,14 +454,6 @@ r_int
 id|TotalMemory
 suffix:semicolon
 r_int
-r_char
-id|board_type
-suffix:semicolon
-r_int
-r_char
-id|base_mod
-suffix:semicolon
-r_int
 id|start_multi
 op_assign
 l_int|0
@@ -470,6 +467,18 @@ comma
 id|tulip_pci_base
 comma
 id|tulip_base
+suffix:semicolon
+multiline_comment|/* If we have Open Firmware, initialise it immediately */
+r_if
+c_cond
+(paren
+id|OFW_interface
+)paren
+id|ofinit
+c_func
+(paren
+id|OFW_interface
+)paren
 suffix:semicolon
 id|serial_fixups
 c_func
@@ -730,6 +739,12 @@ id|residual-&gt;VitalProductData.FirmwareSupplier
 )paren
 )paren
 (brace
+r_int
+r_char
+id|base_mod
+suffix:semicolon
+r_int
+r_char
 id|board_type
 op_assign
 id|inb
@@ -997,8 +1012,82 @@ id|TotalMemory
 op_assign
 id|residual-&gt;TotalMemory
 suffix:semicolon
-multiline_comment|/* Fall back to hard-coding 32MB. */
 r_else
+r_if
+c_cond
+(paren
+id|OFW_interface
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This is a &squot;best guess&squot; check.  We want to make sure&n;&t;&t; * we don&squot;t try this on a PReP box without OF&n;&t;&t; *     -- Cort&n;&t;&t; */
+r_while
+c_loop
+(paren
+id|OFW_interface
+)paren
+(brace
+id|phandle
+id|dev_handle
+suffix:semicolon
+r_int
+id|mem_info
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* get handle to memory description */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dev_handle
+op_assign
+id|finddevice
+c_func
+(paren
+l_string|&quot;/memory@0&quot;
+)paren
+)paren
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* get the info */
+r_if
+c_cond
+(paren
+id|getprop
+c_func
+(paren
+id|dev_handle
+comma
+l_string|&quot;reg&quot;
+comma
+id|mem_info
+comma
+r_sizeof
+(paren
+id|mem_info
+)paren
+)paren
+op_ne
+l_int|8
+)paren
+r_break
+suffix:semicolon
+id|TotalMemory
+op_assign
+id|mem_info
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+multiline_comment|/* Fall back to hard-coding 32MB. */
 id|TotalMemory
 op_assign
 l_int|32
@@ -1426,6 +1515,28 @@ c_func
 l_string|&quot;&bslash;nUncompressing Linux...&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we have OF, then we have deferred setting the MSR.&n;&t; * We must set it now because we are about to overwrite&n;&t; * the exception table.  The new MSR value will disable&n;&t; * machine check exceptions and point the exception table&n;&t; * to the ROM.&n;&t; */
+r_if
+c_cond
+(paren
+id|OFW_interface
+)paren
+(brace
+id|mtmsr
+c_func
+(paren
+id|MSR_IP
+op_or
+id|MSR_FP
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;isync&quot;
+)paren
+suffix:semicolon
+)brace
 id|gunzip
 c_func
 (paren

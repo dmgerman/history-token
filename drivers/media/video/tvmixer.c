@@ -1082,6 +1082,21 @@ id|file-&gt;private_data
 op_assign
 id|mix
 suffix:semicolon
+macro_line|#ifndef I2C_PEC
+r_if
+c_cond
+(paren
+id|client-&gt;adapter-&gt;inc_use
+)paren
+id|client-&gt;adapter
+op_member_access_from_pointer
+id|inc_use
+c_func
+(paren
+id|client-&gt;adapter
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1143,6 +1158,21 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef I2C_PEC
+r_if
+c_cond
+(paren
+id|client-&gt;adapter-&gt;dec_use
+)paren
+id|client-&gt;adapter
+op_member_access_from_pointer
+id|dec_use
+c_func
+(paren
+id|client-&gt;adapter
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1165,11 +1195,13 @@ id|i2c_driver
 id|driver
 op_assign
 (brace
+macro_line|#ifdef I2C_PEC
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
+macro_line|#endif
 dot
 id|name
 op_assign
@@ -1180,6 +1212,13 @@ id|id
 op_assign
 id|I2C_DRIVERID_TVMIXER
 comma
+macro_line|#ifdef I2C_DF_DUMMY
+dot
+id|flags
+op_assign
+id|I2C_DF_DUMMY
+comma
+macro_line|#else
 dot
 id|flags
 op_assign
@@ -1190,6 +1229,7 @@ id|detach_adapter
 op_assign
 id|tvmixer_adapters
 comma
+macro_line|#endif
 dot
 id|attach_adapter
 op_assign
@@ -1313,6 +1353,7 @@ id|i
 comma
 id|minor
 suffix:semicolon
+macro_line|#ifdef I2C_ADAP_CLASS_TV_ANALOG
 r_if
 c_cond
 (paren
@@ -1329,6 +1370,36 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* TV card ??? */
+r_switch
+c_cond
+(paren
+id|client-&gt;adapter-&gt;id
+)paren
+(brace
+r_case
+id|I2C_ALGO_BIT
+op_or
+id|I2C_HW_B_BT848
+suffix:colon
+r_case
+id|I2C_ALGO_BIT
+op_or
+id|I2C_HW_B_RIVA
+suffix:colon
+multiline_comment|/* ok, have a look ... */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* ignore that one */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* unregister ?? */
 r_for
 c_loop

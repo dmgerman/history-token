@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.32 2003/09/18 06:59:59 schindler Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.35 2003/12/05 18:45:05 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__
@@ -112,6 +112,8 @@ DECL|macro|MEM_TYPE_CONFIG
 mdefine_line|#define MEM_TYPE_CONFIG&t;&t;7
 DECL|macro|MEM_TYPE_CONTROL
 mdefine_line|#define MEM_TYPE_CONTROL&t;8
+DECL|macro|MAX_MEM_TYPE
+mdefine_line|#define MAX_MEM_TYPE&t;&t;10
 DECL|macro|DIVA_OS_MEM_ATTACH_RAM
 mdefine_line|#define DIVA_OS_MEM_ATTACH_RAM(a)&t;((a)-&gt;ram)
 DECL|macro|DIVA_OS_MEM_ATTACH_PORT

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctcmain.c,v 1.47 2003/09/22 13:40:51 cohuck Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.47 $&n; *&n; */
+multiline_comment|/*&n; * $Id: ctcmain.c,v 1.50 2003/12/02 15:18:50 cohuck Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.50 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -430,7 +430,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.47 $&quot;
+l_string|&quot;$Revision: 1.50 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -10126,7 +10126,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n;&t; * If channels are not running, try to restart them&n;&t; * notify anybody about a link failure and throw&n;&t; * away packet. &n;&t; */
+multiline_comment|/**&n;&t; * If channels are not running, try to restart them&n;&t; * and throw away packet. &n;&t; */
 r_if
 c_cond
 (paren
@@ -10159,12 +10159,6 @@ id|CTC_PROTO_LINUX_TTY
 r_return
 op_minus
 id|EBUSY
-suffix:semicolon
-id|dst_link_failure
-c_func
-(paren
-id|skb
-)paren
 suffix:semicolon
 id|dev_kfree_skb
 c_func
@@ -12602,7 +12596,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_int
+r_void
 DECL|function|ctc_remove_device
 id|ctc_remove_device
 c_func
@@ -12629,7 +12623,19 @@ op_logical_neg
 id|priv
 )paren
 r_return
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cgdev-&gt;state
+op_eq
+id|CCWGROUP_ONLINE
+)paren
+id|ctc_shutdown_device
+c_func
+(paren
+id|cgdev
+)paren
 suffix:semicolon
 id|ctc_remove_files
 c_func
@@ -12654,9 +12660,6 @@ c_func
 op_amp
 id|cgdev-&gt;dev
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ctc_group_driver

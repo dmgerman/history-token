@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef __SYS_SN_SN2_GEO_H__
-DECL|macro|__SYS_SN_SN2_GEO_H__
-mdefine_line|#define __SYS_SN_SN2_GEO_H__
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN2_GEO_H
+DECL|macro|_ASM_IA64_SN_SN2_GEO_H
+mdefine_line|#define _ASM_IA64_SN_SN2_GEO_H
 multiline_comment|/* Headers required by declarations in this file */
 macro_line|#include &lt;asm/sn/slotnum.h&gt;
 multiline_comment|/* The geoid_t implementation below is based loosely on the pcfg_t&n;   implementation in sys/SN/promcfg.h. */
@@ -233,5 +233,5 @@ DECL|macro|GEO_COMPT_MEMSLOT
 mdefine_line|#define GEO_COMPT_MEMSLOT&t;7
 DECL|macro|GEO_INVALID_STR
 mdefine_line|#define GEO_INVALID_STR&t;&t;&quot;&lt;invalid&gt;&quot;
-macro_line|#endif /* __SYS_SN_SN2_GEO_H__ */
+macro_line|#endif /* _ASM_IA64_SN_SN2_GEO_H */
 eof

@@ -100,11 +100,12 @@ mdefine_line|#define SUN3_BUSERR_INVALID&t;(0x80)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Read bus error status register (implicitly clearing it). */
 DECL|function|sun3_get_buserr
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_char
 id|sun3_get_buserr
+c_func
 (paren
 r_void
 )paren
@@ -143,11 +144,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* Read segmap from hardware MMU. */
 DECL|function|sun3_get_segmap
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|sun3_get_segmap
+c_func
 (paren
 r_int
 r_int
@@ -203,10 +205,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write segmap to hardware MMU. */
 DECL|function|sun3_put_segmap
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sun3_put_segmap
+c_func
 (paren
 r_int
 r_int
@@ -254,11 +257,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* Read PTE from hardware MMU. */
 DECL|function|sun3_get_pte
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|sun3_get_pte
+c_func
 (paren
 r_int
 r_int
@@ -308,10 +312,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write PTE to hardware MMU. */
 DECL|function|sun3_put_pte
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sun3_put_pte
+c_func
 (paren
 r_int
 r_int
@@ -359,8 +364,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* get current context */
 DECL|function|sun3_get_context
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_char
 id|sun3_get_context
@@ -407,8 +412,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* set alternate context */
 DECL|function|sun3_put_context
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sun3_put_context
 c_func

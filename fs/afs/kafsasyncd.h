@@ -3,6 +3,9 @@ macro_line|#ifndef _LINUX_AFS_KAFSASYNCD_H
 DECL|macro|_LINUX_AFS_KAFSASYNCD_H
 mdefine_line|#define _LINUX_AFS_KAFSASYNCD_H
 macro_line|#include &quot;types.h&quot;
+r_struct
+id|afs_async_op
+suffix:semicolon
 DECL|struct|afs_async_op_ops
 r_struct
 id|afs_async_op_ops
@@ -14,7 +17,8 @@ op_star
 id|attend
 )paren
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -26,7 +30,8 @@ op_star
 id|discard
 )paren
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -45,7 +50,8 @@ id|list_head
 id|link
 suffix:semicolon
 DECL|member|server
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -79,7 +85,8 @@ r_void
 id|afs_async_op_init
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 comma
@@ -127,7 +134,8 @@ r_void
 id|afs_kafsasyncd_begin_op
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -137,7 +145,8 @@ r_void
 id|afs_kafsasyncd_attend_op
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -147,7 +156,8 @@ r_void
 id|afs_kafsasyncd_terminate_op
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren

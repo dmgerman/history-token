@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/parser.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;xattr.h&quot;
 macro_line|#include &quot;acl.h&quot;
@@ -5786,6 +5787,25 @@ suffix:semicolon
 id|sbi-&gt;s_gdb_count
 op_assign
 id|db_count
+suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+op_amp
+id|sbi-&gt;s_next_generation
+comma
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|sbi-&gt;s_next_gen_lock
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * set up enough so that it can read an inode&n;&t; */
 id|sb-&gt;s_op

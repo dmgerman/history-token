@@ -56,8 +56,12 @@ DECL|macro|RTM_DELTFILTER
 mdefine_line|#define&t;RTM_DELTFILTER&t;(RTM_BASE+29)
 DECL|macro|RTM_GETTFILTER
 mdefine_line|#define&t;RTM_GETTFILTER&t;(RTM_BASE+30)
+DECL|macro|RTM_NEWPREFIX
+mdefine_line|#define RTM_NEWPREFIX&t;(RTM_BASE+36)
+DECL|macro|RTM_GETPREFIX
+mdefine_line|#define RTM_GETPREFIX&t;(RTM_BASE+38)
 DECL|macro|RTM_MAX
-mdefine_line|#define&t;RTM_MAX&t;&t;(RTM_BASE+31)
+mdefine_line|#define&t;RTM_MAX&t;&t;(RTM_BASE+39)
 multiline_comment|/* &n;   Generic structure for encapsulation of optional route information.&n;   It is reminiscent of sockaddr, but with sa_family replaced&n;   with attribute type.&n; */
 DECL|struct|rtattr
 r_struct
@@ -830,6 +834,66 @@ suffix:semicolon
 multiline_comment|/* IFF_* change mask */
 )brace
 suffix:semicolon
+multiline_comment|/********************************************************************&n; *&t;&t;prefix information &n; ****/
+DECL|struct|prefixmsg
+r_struct
+id|prefixmsg
+(brace
+DECL|member|prefix_family
+r_int
+r_char
+id|prefix_family
+suffix:semicolon
+DECL|member|prefix_ifindex
+r_int
+id|prefix_ifindex
+suffix:semicolon
+DECL|member|prefix_type
+r_int
+r_char
+id|prefix_type
+suffix:semicolon
+DECL|member|prefix_len
+r_int
+r_char
+id|prefix_len
+suffix:semicolon
+DECL|member|prefix_flags
+r_int
+r_char
+id|prefix_flags
+suffix:semicolon
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|PREFIX_UNSPEC
+id|PREFIX_UNSPEC
+comma
+DECL|enumerator|PREFIX_ADDRESS
+id|PREFIX_ADDRESS
+comma
+DECL|enumerator|PREFIX_CACHEINFO
+id|PREFIX_CACHEINFO
+comma
+)brace
+suffix:semicolon
+DECL|macro|PREFIX_MAX
+mdefine_line|#define PREFIX_MAX&t;PREFIX_CACHEINFO
+DECL|struct|prefix_cacheinfo
+r_struct
+id|prefix_cacheinfo
+(brace
+DECL|member|preferred_time
+id|__u32
+id|preferred_time
+suffix:semicolon
+DECL|member|valid_time
+id|__u32
+id|valid_time
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* The struct should be in sync with struct net_device_stats */
 DECL|struct|rtnl_link_stats
 r_struct
@@ -1031,10 +1095,37 @@ DECL|enumerator|IFLA_INET6_MCAST
 id|IFLA_INET6_MCAST
 comma
 multiline_comment|/* MC things. What of them?&t;*/
+DECL|enumerator|IFLA_INET6_CACHEINFO
+id|IFLA_INET6_CACHEINFO
+comma
+multiline_comment|/* time values and max reasm size */
+)brace
+suffix:semicolon
+DECL|struct|ifla_cacheinfo
+r_struct
+id|ifla_cacheinfo
+(brace
+DECL|member|max_reasm_len
+id|__u32
+id|max_reasm_len
+suffix:semicolon
+DECL|member|tstamp
+id|__u32
+id|tstamp
+suffix:semicolon
+multiline_comment|/* ipv6InterfaceTable updated timestamp */
+DECL|member|reachable_time
+id|__u32
+id|reachable_time
+suffix:semicolon
+DECL|member|retrans_time
+id|__u32
+id|retrans_time
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|IFLA_INET6_MAX
-mdefine_line|#define IFLA_INET6_MAX&t;IFLA_INET6_MCAST
+mdefine_line|#define IFLA_INET6_MAX&t;IFLA_INET6_CACHEINFO
 multiline_comment|/*****************************************************************&n; *&t;&t;Traffic control messages.&n; ****/
 DECL|struct|tcmsg
 r_struct
@@ -1125,10 +1216,14 @@ DECL|macro|RTMGRP_IPV6_MROUTE
 mdefine_line|#define RTMGRP_IPV6_MROUTE&t;0x200
 DECL|macro|RTMGRP_IPV6_ROUTE
 mdefine_line|#define RTMGRP_IPV6_ROUTE&t;0x400
+DECL|macro|RTMGRP_IPV6_IFINFO
+mdefine_line|#define RTMGRP_IPV6_IFINFO&t;0x800
 DECL|macro|RTMGRP_DECnet_IFADDR
 mdefine_line|#define RTMGRP_DECnet_IFADDR    0x1000
 DECL|macro|RTMGRP_DECnet_ROUTE
 mdefine_line|#define RTMGRP_DECnet_ROUTE     0x4000
+DECL|macro|RTMGRP_IPV6_PREFIX
+mdefine_line|#define RTMGRP_IPV6_PREFIX&t;0x20000
 multiline_comment|/* End of information exported to user level */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;

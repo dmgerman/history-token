@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_LABELCL_H
 DECL|macro|_ASM_IA64_SN_LABELCL_H
 mdefine_line|#define _ASM_IA64_SN_LABELCL_H
@@ -10,47 +10,6 @@ DECL|macro|INFO_DESC_PRIVATE
 mdefine_line|#define INFO_DESC_PRIVATE (-1)      &t;/* default */
 DECL|macro|INFO_DESC_EXPORT
 mdefine_line|#define INFO_DESC_EXPORT  0       &t;/* export info itself */
-multiline_comment|/*&n; * Internal Error codes.&n; */
-DECL|enum|labelcl_error_e
-DECL|enumerator|LABELCL_SUCCESS
-r_typedef
-r_enum
-id|labelcl_error_e
-(brace
-id|LABELCL_SUCCESS
-comma
-multiline_comment|/* 0 */
-DECL|enumerator|LABELCL_DUP
-id|LABELCL_DUP
-comma
-multiline_comment|/* 1 */
-DECL|enumerator|LABELCL_NOT_FOUND
-id|LABELCL_NOT_FOUND
-comma
-multiline_comment|/* 2 */
-DECL|enumerator|LABELCL_BAD_PARAM
-id|LABELCL_BAD_PARAM
-comma
-multiline_comment|/* 3 */
-DECL|enumerator|LABELCL_HIT_LIMIT
-id|LABELCL_HIT_LIMIT
-comma
-multiline_comment|/* 4 */
-DECL|enumerator|LABELCL_CANNOT_ALLOC
-id|LABELCL_CANNOT_ALLOC
-comma
-multiline_comment|/* 5 */
-DECL|enumerator|LABELCL_ILLEGAL_REQUEST
-id|LABELCL_ILLEGAL_REQUEST
-comma
-multiline_comment|/* 6 */
-DECL|enumerator|LABELCL_IN_USE
-id|LABELCL_IN_USE
-multiline_comment|/* 7 */
-DECL|typedef|labelcl_error_t
-)brace
-id|labelcl_error_t
-suffix:semicolon
 multiline_comment|/*&n; * Description of a label entry.&n; */
 DECL|struct|label_info_s
 r_typedef

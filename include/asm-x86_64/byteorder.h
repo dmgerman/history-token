@@ -2,11 +2,12 @@ macro_line|#ifndef _X86_64_BYTEORDER_H
 DECL|macro|_X86_64_BYTEORDER_H
 mdefine_line|#define _X86_64_BYTEORDER_H
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef __GNUC__
 DECL|function|___arch__swab64
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u64
 id|___arch__swab64
 c_func
@@ -38,7 +39,7 @@ suffix:semicolon
 DECL|function|___arch__swab32
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u32
 id|___arch__swab32
 c_func

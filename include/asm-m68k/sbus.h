@@ -54,7 +54,7 @@ mdefine_line|#define ARCH_SUN4  0
 multiline_comment|/* sbus IO functions stolen from include/asm-sparc/io.h for the serial driver */
 multiline_comment|/* No SBUS on the Sun3, kludge -- sam */
 DECL|function|_sbus_writeb
-r_extern
+r_static
 r_inline
 r_void
 id|_sbus_writeb
@@ -82,7 +82,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|_sbus_readb
-r_extern
+r_static
 r_inline
 r_int
 r_char
@@ -106,7 +106,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|_sbus_writel
-r_extern
+r_static
 r_inline
 r_void
 id|_sbus_writel

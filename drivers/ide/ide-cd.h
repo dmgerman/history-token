@@ -19,6 +19,11 @@ macro_line|#ifndef NO_DOOR_LOCKING
 DECL|macro|NO_DOOR_LOCKING
 mdefine_line|#define NO_DOOR_LOCKING 0
 macro_line|#endif
+multiline_comment|/*&n; * typical timeout for packet command&n; */
+DECL|macro|ATAPI_WAIT_PC
+mdefine_line|#define ATAPI_WAIT_PC&t;&t;(60 * HZ)
+DECL|macro|ATAPI_WAIT_WRITE_BUSY
+mdefine_line|#define ATAPI_WAIT_WRITE_BUSY&t;(10 * HZ)
 multiline_comment|/************************************************************************/
 DECL|macro|SECTOR_BITS
 mdefine_line|#define SECTOR_BITS &t;&t;9
@@ -148,6 +153,27 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Drive can write DVD-RAM */
+DECL|member|mrw
+id|__u8
+id|mrw
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive can read mrw */
+DECL|member|mrw_w
+id|__u8
+id|mrw_w
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive can write mrw */
+DECL|member|ram
+id|__u8
+id|ram
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* generic WRITE (dvd-ram/mrw) */
 DECL|member|test_write
 id|__u8
 id|test_write
@@ -1440,6 +1466,11 @@ DECL|member|devinfo
 r_struct
 id|cdrom_device_info
 id|devinfo
+suffix:semicolon
+DECL|member|write_timeout
+r_int
+r_int
+id|write_timeout
 suffix:semicolon
 )brace
 suffix:semicolon

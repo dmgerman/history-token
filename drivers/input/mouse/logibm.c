@@ -2,6 +2,7 @@ multiline_comment|/*&n; * $Id: logibm.c,v 1.11 2001/09/25 10:12:07 vojtech Exp $
 multiline_comment|/*&n; * Logitech Bus Mouse Driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -59,20 +60,32 @@ DECL|macro|LOGIBM_SIGNATURE_BYTE
 mdefine_line|#define LOGIBM_SIGNATURE_BYTE&t;0xa5
 DECL|macro|LOGIBM_IRQ
 mdefine_line|#define LOGIBM_IRQ&t;&t;5
-id|MODULE_PARM
-c_func
-(paren
-id|logibm_irq
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 DECL|variable|logibm_irq
 r_static
 r_int
 id|logibm_irq
 op_assign
 id|LOGIBM_IRQ
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|irq
+comma
+id|logibm_irq
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;IRQ number (5=default)&quot;
+)paren
 suffix:semicolon
 DECL|variable|logibm_used
 r_static
@@ -536,71 +549,6 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-macro_line|#ifndef MODULE
-DECL|function|logibm_setup
-r_static
-r_int
-id|__init
-id|logibm_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|ints
-(braket
-l_int|4
-)braket
-suffix:semicolon
-id|str
-op_assign
-id|get_options
-c_func
-(paren
-id|str
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|ints
-)paren
-comma
-id|ints
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ints
-(braket
-l_int|0
-)braket
-OG
-l_int|0
-)paren
-id|logibm_irq
-op_assign
-id|ints
-(braket
-l_int|1
-)braket
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;logibm_irq=&quot;
-comma
-id|logibm_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|logibm_init
 r_static
 r_int

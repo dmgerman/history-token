@@ -533,7 +533,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_void
-id|__devinit
 DECL|function|pcibios_resource_to_bus
 id|pcibios_resource_to_bus
 c_func
@@ -812,6 +811,27 @@ r_char
 op_star
 id|model
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+id|hose
+op_assign
+(paren
+r_struct
+id|pci_controller
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|pci_controller
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+macro_line|#else
 id|hose
 op_assign
 (paren
@@ -829,6 +849,7 @@ id|pci_controller
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -868,6 +889,17 @@ c_cond
 id|controller_type
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
+r_case
+id|phb_type_hypervisor
+suffix:colon
+id|model
+op_assign
+l_string|&quot;PHB HV&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_case
 id|phb_type_python
 suffix:colon
@@ -1079,6 +1111,7 @@ id|child_bus
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC_ISERIES
 DECL|function|pcibios_claim_of_setup
 r_static
 r_void
@@ -1130,6 +1163,7 @@ id|b
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|pcibios_init
 r_static
 r_int
@@ -1204,6 +1238,7 @@ op_assign
 id|bus-&gt;subordinate
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC_ISERIES
 r_if
 c_cond
 (paren
@@ -1221,6 +1256,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Call machine dependent fixup */
 id|pcibios_final_fixup
 c_func
@@ -1447,6 +1483,11 @@ op_star
 id|bus
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#else
 r_struct
 id|pci_controller
 op_star
@@ -1461,7 +1502,15 @@ suffix:semicolon
 r_return
 id|hose-&gt;global_number
 suffix:semicolon
+macro_line|#endif
 )brace
+DECL|variable|pci_domain_nr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_domain_nr
+)paren
+suffix:semicolon
 multiline_comment|/* Set the name of the bus as it appears in /proc/bus/pci */
 DECL|function|pci_name_bus
 r_int
@@ -1478,6 +1527,7 @@ op_star
 id|bus
 )paren
 (brace
+macro_line|#ifndef CONFIG_PPC_ISERIES
 r_struct
 id|pci_controller
 op_star
@@ -1511,6 +1561,7 @@ id|bus-&gt;number
 )paren
 suffix:semicolon
 r_else
+macro_line|#endif
 id|sprintf
 c_func
 (paren

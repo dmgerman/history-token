@@ -99,7 +99,7 @@ id|conn-&gt;dst
 suffix:semicolon
 id|cp.pscan_rep_mode
 op_assign
-l_int|0x01
+l_int|0x02
 suffix:semicolon
 r_if
 c_cond

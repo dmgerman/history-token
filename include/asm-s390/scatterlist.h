@@ -23,7 +23,12 @@ id|length
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __s390x__
 DECL|macro|ISA_DMA_THRESHOLD
-mdefine_line|#define ISA_DMA_THRESHOLD (0xffffffffffffffff)
+mdefine_line|#define ISA_DMA_THRESHOLD (0xffffffffffffffffUL)
+macro_line|#else
+DECL|macro|ISA_DMA_THRESHOLD
+mdefine_line|#define ISA_DMA_THRESHOLD (0xffffffffUL)
+macro_line|#endif
 macro_line|#endif /* _ASMS390X_SCATTERLIST_H */
 eof

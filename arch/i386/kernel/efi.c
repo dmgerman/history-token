@@ -570,8 +570,8 @@ id|status
 suffix:semicolon
 )brace
 DECL|function|efi_set_rtc_mmss
-r_int
 r_inline
+r_int
 id|efi_set_rtc_mmss
 c_func
 (paren
@@ -709,9 +709,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This should only be used during kernel init and before runtime&n; * services have been remapped, therefore, we&squot;ll need to call in physical&n; * mode.  Note, this call isn&squot;t used later, so mark it __init.&n; */
 DECL|function|efi_get_time
-r_int
-r_int
 r_inline
+r_int
+r_int
 id|__init
 id|efi_get_time
 c_func

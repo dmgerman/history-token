@@ -8,6 +8,11 @@ DECL|macro|SPEEDSTEP_PROCESSOR_PIII_T
 mdefine_line|#define SPEEDSTEP_PROCESSOR_PIII_T &t;&t;0x00000003  /* Tualatin core */
 DECL|macro|SPEEDSTEP_PROCESSOR_P4M
 mdefine_line|#define SPEEDSTEP_PROCESSOR_P4M&t;&t;&t;0x00000004  /* P4-M  */
+multiline_comment|/* the following processors are not speedstep-capable and are not auto-detected&n; * in speedstep_detect_processor(). However, their speed can be detected using&n; * the speedstep_get_processor_frequency() call. */
+DECL|macro|SPEEDSTEP_PROCESSOR_PM
+mdefine_line|#define SPEEDSTEP_PROCESSOR_PM&t;&t;&t;0xFFFFFF03  /* Pentium M  */
+DECL|macro|SPEEDSTEP_PROCESSOR_P4D
+mdefine_line|#define SPEEDSTEP_PROCESSOR_P4D&t;&t;&t;0xFFFFFF04  /* desktop P4  */
 multiline_comment|/* speedstep states -- only two of them */
 DECL|macro|SPEEDSTEP_HIGH
 mdefine_line|#define SPEEDSTEP_HIGH                  0x00000000

@@ -35,6 +35,7 @@ op_star
 id|data
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_struct
 id|pci_controller
 op_star
@@ -180,6 +181,7 @@ l_int|0xff
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
@@ -259,6 +261,7 @@ id|nextdn
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -338,6 +341,7 @@ id|data
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

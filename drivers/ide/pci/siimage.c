@@ -3096,6 +3096,7 @@ id|name
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pdev_is_sata
 c_func
 (paren
@@ -3103,10 +3104,6 @@ id|dev
 )paren
 )paren
 (brace
-r_goto
-id|sata_skip
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -3132,7 +3129,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;DISABLED !&bslash;n&quot;
+l_string|&quot;DISABLED!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3143,7 +3140,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;== 2X PCI &bslash;n&quot;
+l_string|&quot;== 2X PCI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3154,7 +3151,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;== 133 &bslash;n&quot;
+l_string|&quot;== 133&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3165,14 +3162,13 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;== 100 &bslash;n&quot;
+l_string|&quot;== 100&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|sata_skip
-suffix:colon
+)brace
 macro_line|#if defined(DISPLAY_SIIMAGE_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 id|siimage_devs
 (braket

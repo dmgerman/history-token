@@ -78,8 +78,8 @@ r_int
 r_int
 id|ap_wakeup_vector
 suffix:semicolon
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;cpu_isset(cpu, phys_cpu_present_map)
+DECL|macro|cpu_possible_map
+mdefine_line|#define cpu_possible_map phys_cpu_present_map
 multiline_comment|/*&n; * Function to map hard smp processor id to logical id.  Slow, so don&squot;t use this in&n; * performance-critical code.&n; */
 r_static
 r_inline

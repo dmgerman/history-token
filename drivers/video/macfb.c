@@ -2647,10 +2647,6 @@ c_func
 r_char
 op_star
 id|options
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
 r_char

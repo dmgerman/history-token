@@ -1118,7 +1118,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
+id|filp-&gt;f_mapping-&gt;host
 suffix:semicolon
 r_int
 id|status
@@ -1268,7 +1268,7 @@ op_assign
 id|filemap_fdatawrite
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 )paren
 suffix:semicolon
 id|down
@@ -1308,7 +1308,7 @@ op_assign
 id|filemap_fdatawait
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 )paren
 suffix:semicolon
 r_if
@@ -1395,7 +1395,7 @@ id|F_UNLCK
 id|filemap_fdatawrite
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 )paren
 suffix:semicolon
 id|down
@@ -1422,7 +1422,7 @@ suffix:semicolon
 id|filemap_fdatawait
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 )paren
 suffix:semicolon
 id|nfs_zap_caches

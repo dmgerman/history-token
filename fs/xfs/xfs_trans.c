@@ -530,10 +530,6 @@ comma
 id|KM_SLEEP
 )paren
 suffix:semicolon
-id|tp-&gt;t_dqinfo
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the transaction structure.&n;&t; */
 id|tp-&gt;t_magic
 op_assign

@@ -886,5 +886,18 @@ mdefine_line|#define kern_addr_valid(addr)&t;(1)
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
+DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
+macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _I386_PGTABLE_H */
 eof

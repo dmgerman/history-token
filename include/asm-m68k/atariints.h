@@ -509,7 +509,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * In opposite to {en,dis}able_irq, requests between turn{off,on}_irq are not&n; * &quot;stored&quot;&n; */
 DECL|function|atari_turnon_irq
-r_extern
+r_static
 r_inline
 r_void
 id|atari_turnon_irq
@@ -542,7 +542,7 @@ id|MFP_ENABLE
 suffix:semicolon
 )brace
 DECL|function|atari_turnoff_irq
-r_extern
+r_static
 r_inline
 r_void
 id|atari_turnoff_irq
@@ -583,7 +583,7 @@ id|MFP_PENDING
 suffix:semicolon
 )brace
 DECL|function|atari_clear_pending_irq
-r_extern
+r_static
 r_inline
 r_void
 id|atari_clear_pending_irq
@@ -616,7 +616,7 @@ id|MFP_PENDING
 suffix:semicolon
 )brace
 DECL|function|atari_irq_pending
-r_extern
+r_static
 r_inline
 r_int
 id|atari_irq_pending

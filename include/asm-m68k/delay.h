@@ -4,8 +4,8 @@ mdefine_line|#define _M68K_DELAY_H
 macro_line|#include &lt;asm/param.h&gt;
 multiline_comment|/*&n; * Copyright (C) 1994 Hamish Macdonald&n; *&n; * Delay routines, using a pre-computed &quot;loops_per_jiffy&quot; value.&n; */
 DECL|function|__delay
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__delay
 c_func
@@ -116,8 +116,8 @@ multiline_comment|/* 2**32 / 1000000 */
 DECL|macro|udelay
 mdefine_line|#define udelay(n) (__builtin_constant_p(n) ? &bslash;&n;&t;((n) &gt; 20000 ? __bad_udelay() : __const_udelay((n) * 4295)) : &bslash;&n;&t;__udelay(n))
 DECL|function|muldiv
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|muldiv

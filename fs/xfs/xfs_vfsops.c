@@ -27,6 +27,7 @@ macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_bmap.h&quot;
 macro_line|#include &quot;xfs_da_btree.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_refcache.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_extfree_item.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
@@ -60,27 +61,12 @@ r_void
 r_extern
 id|kmem_zone_t
 op_star
-id|xfs_da_state_zone
-suffix:semicolon
-r_extern
-id|kmem_zone_t
-op_star
 id|xfs_bmap_free_item_zone
 suffix:semicolon
 r_extern
 id|kmem_zone_t
 op_star
 id|xfs_btree_cur_zone
-suffix:semicolon
-r_extern
-id|kmem_zone_t
-op_star
-id|xfs_inode_zone
-suffix:semicolon
-r_extern
-id|kmem_zone_t
-op_star
-id|xfs_chashlist_zone
 suffix:semicolon
 r_extern
 id|kmem_zone_t
@@ -95,50 +81,8 @@ suffix:semicolon
 r_extern
 id|kmem_zone_t
 op_star
-id|xfs_efd_zone
-suffix:semicolon
-r_extern
-id|kmem_zone_t
-op_star
-id|xfs_efi_zone
-suffix:semicolon
-r_extern
-id|kmem_zone_t
-op_star
 id|xfs_dabuf_zone
 suffix:semicolon
-macro_line|#ifdef DEBUG_NOT
-r_extern
-id|ktrace_t
-op_star
-id|xfs_alloc_trace_buf
-suffix:semicolon
-r_extern
-id|ktrace_t
-op_star
-id|xfs_bmap_trace_buf
-suffix:semicolon
-r_extern
-id|ktrace_t
-op_star
-id|xfs_bmbt_trace_buf
-suffix:semicolon
-r_extern
-id|ktrace_t
-op_star
-id|xfs_dir_trace_buf
-suffix:semicolon
-r_extern
-id|ktrace_t
-op_star
-id|xfs_attr_trace_buf
-suffix:semicolon
-r_extern
-id|ktrace_t
-op_star
-id|xfs_dir2_trace_buf
-suffix:semicolon
-macro_line|#endif&t;/* DEBUG */
 macro_line|#ifdef XFS_DABUF_DEBUG
 r_extern
 id|lock_t
@@ -369,23 +313,6 @@ comma
 l_string|&quot;xfs_acl&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
-id|ktrace_init
-c_func
-(paren
-id|VNODE_TRACE_SIZE
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#ifdef DEBUG
-id|ktrace_init
-c_func
-(paren
-l_int|64
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n;&t; * Allocate global trace buffers.&n;&t; */
 macro_line|#ifdef XFS_ALLOC_TRACE
 id|xfs_alloc_trace_buf
@@ -553,6 +480,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|xfs_refcache_destroy
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kmem_cache_destroy
 c_func
 (paren
@@ -631,13 +563,6 @@ c_func
 id|xfs_acl_zone
 )paren
 suffix:semicolon
-macro_line|#if  (defined(DEBUG) || defined(CONFIG_XFS_VNODE_TRACING))
-id|ktrace_uninit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * xfs_start_flags&n; *&n; * This function fills in xfs_mount_t fields based on mount args.&n; * Note: the superblock has _not_ yet been read in.&n; */
 id|STATIC
@@ -1977,6 +1902,13 @@ suffix:colon
 id|DM_FLAGS_UNWANTED
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * First blow any referenced inode from this file system&n;&t; * out of the reference cache, and delete the timer.&n;&t; */
+id|xfs_refcache_purge_mp
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
 id|XFS_bflush
 c_func
 (paren
@@ -2228,6 +2160,12 @@ op_amp
 id|MS_RDONLY
 )paren
 (brace
+id|xfs_refcache_purge_mp
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
 id|pagebuf_delwri_flush
 c_func
 (paren
@@ -2720,8 +2658,7 @@ id|bhv_desc_t
 op_star
 id|bdp
 comma
-r_struct
-id|kstatfs
+id|xfs_statfs_t
 op_star
 id|statp
 comma
@@ -4749,6 +4686,22 @@ id|error
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * If this is the periodic sync, then kick some entries out of&n;&t; * the reference cache.  This ensures that idle entries are&n;&t; * eventually kicked out of the cache.&n;&t; */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|SYNC_REFCACHE
+)paren
+(brace
+id|xfs_refcache_purge_some
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Now check to see if the log needs a &quot;dummy&quot; transaction.&n;&t; */
 r_if
 c_cond
@@ -6284,10 +6237,31 @@ op_assign
 (brace
 multiline_comment|/* the few simple ones we can get from the mount struct */
 (brace
+id|XFS_MOUNT_WSYNC
+comma
+l_string|&quot;,&quot;
+id|MNTOPT_WSYNC
+)brace
+comma
+(brace
+id|XFS_MOUNT_INO64
+comma
+l_string|&quot;,&quot;
+id|MNTOPT_INO64
+)brace
+comma
+(brace
 id|XFS_MOUNT_NOALIGN
 comma
 l_string|&quot;,&quot;
 id|MNTOPT_NOALIGN
+)brace
+comma
+(brace
+id|XFS_MOUNT_NOUUID
+comma
+l_string|&quot;,&quot;
+id|MNTOPT_NOUUID
 )brace
 comma
 (brace
@@ -6305,10 +6279,17 @@ id|MNTOPT_OSYNCISOSYNC
 )brace
 comma
 (brace
-id|XFS_MOUNT_NOUUID
+id|XFS_MOUNT_NOLOGFLUSH
 comma
 l_string|&quot;,&quot;
-id|MNTOPT_NOUUID
+id|MNTOPT_NOLOGFLUSH
+)brace
+comma
+(brace
+id|XFS_MOUNT_IDELETE
+comma
+l_string|&quot;,&quot;
+id|MNTOPT_NOIKEEP
 )brace
 comma
 (brace
@@ -6522,6 +6503,25 @@ id|mp
 comma
 id|mp-&gt;m_swidth
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mp-&gt;m_flags
+op_amp
+id|XFS_MOUNT_32BITINOOPT
+)paren
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;,&quot;
+id|MNTOPT_64BITINODE
 )paren
 suffix:semicolon
 r_return

@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * linux/arch/sh/stboards/mach.c&n; *&n; * Copyright (C) 2000 Stuart Menefy (stuart.menefy@st.com)&n; *&n; * May be copied or modified under the terms of the GNU General Public&n; * License.  See linux/COPYING for more information.&n; *&n; * Machine vector for the STMicroelectronics STB1 HARP and compatible boards&n; */
+multiline_comment|/*&n; * linux/arch/sh/boards/harp/mach.c&n; *&n; * Copyright (C) 2000 Stuart Menefy (stuart.menefy@st.com)&n; *&n; * May be copied or modified under the terms of the GNU General Public&n; * License.  See linux/COPYING for more information.&n; *&n; * Machine vector for the STMicroelectronics STB1 HARP and compatible boards&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;
-macro_line|#include &lt;asm/hd64465.h/io.h&gt;
+macro_line|#include &lt;asm/hd64465/io.h&gt;
 macro_line|#include &lt;asm/hd64465/hd64465.h&gt;
 r_void
 id|setup_harp
@@ -130,46 +130,6 @@ dot
 id|mv_outsl
 op_assign
 id|hd64465_outsl
-comma
-dot
-id|mv_readb
-op_assign
-id|generic_readb
-comma
-dot
-id|mv_readw
-op_assign
-id|generic_readw
-comma
-dot
-id|mv_readl
-op_assign
-id|generic_readl
-comma
-dot
-id|mv_writeb
-op_assign
-id|generic_writeb
-comma
-dot
-id|mv_writew
-op_assign
-id|generic_writew
-comma
-dot
-id|mv_writel
-op_assign
-id|generic_writel
-comma
-dot
-id|mv_ioremap
-op_assign
-id|generic_ioremap
-comma
-dot
-id|mv_iounmap
-op_assign
-id|generic_iounmap
 comma
 dot
 id|mv_isa_port2addr

@@ -761,16 +761,5 @@ r_int
 id|key
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the highlevel system */
-r_void
-id|init_hpsb_highlevel
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
 macro_line|#endif /* IEEE1394_HIGHLEVEL_H */
 eof

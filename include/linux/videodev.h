@@ -3,13 +3,13 @@ DECL|macro|__LINUX_VIDEODEV_H
 mdefine_line|#define __LINUX_VIDEODEV_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|HAVE_V4L2
 mdefine_line|#define HAVE_V4L2 1
 macro_line|#include &lt;linux/videodev2.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|video_device
 r_struct
 id|video_device
@@ -1239,7 +1239,7 @@ mdefine_line|#define VID_HARDWARE_VICAM      34
 DECL|macro|VID_HARDWARE_SF16FMR2
 mdefine_line|#define VID_HARDWARE_SF16FMR2&t;35
 DECL|macro|VID_HARDWARE_W9968CF
-mdefine_line|#define VID_HARDWARE_W9968CF&t;36&t;/* W996[87]CF JPEG USB Dual Mode Cam */
+mdefine_line|#define VID_HARDWARE_W9968CF    36
 macro_line|#endif /* __LINUX_VIDEODEV_H */
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

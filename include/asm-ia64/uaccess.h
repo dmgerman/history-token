@@ -397,6 +397,10 @@ r_int
 suffix:semicolon
 DECL|macro|strnlen_user
 mdefine_line|#define strnlen_user(str, len)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char *__su_str = (str);&t;&t;&t;&t;&bslash;&n;&t;unsigned long __su_ret = 0;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) __su_str, 0, get_fs()))&t;&t;&bslash;&n;&t;&t;__su_ret = __strnlen_user(__su_str, len);&t;&bslash;&n;&t;__su_ret;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARCH_HAS_SORT_EXTABLE
+mdefine_line|#define ARCH_HAS_SORT_EXTABLE
+DECL|macro|ARCH_HAS_SEARCH_EXTABLE
+mdefine_line|#define ARCH_HAS_SEARCH_EXTABLE
 DECL|struct|exception_table_entry
 r_struct
 id|exception_table_entry

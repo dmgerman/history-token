@@ -407,7 +407,8 @@ r_int
 id|afs_rxvl_probe
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -415,14 +416,6 @@ r_int
 id|alloc_flags
 )paren
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|myself
-comma
-id|current
-)paren
-suffix:semicolon
 r_struct
 id|rxrpc_connection
 op_star
@@ -451,6 +444,14 @@ id|param
 (braket
 l_int|1
 )braket
+suffix:semicolon
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|myself
+comma
+id|current
+)paren
 suffix:semicolon
 multiline_comment|/* get hold of the vlserver connection */
 id|ret
@@ -751,7 +752,8 @@ r_int
 id|afs_rxvl_get_entry_by_name
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -1451,7 +1453,8 @@ r_int
 id|afs_rxvl_get_entry_by_id
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -2158,7 +2161,8 @@ r_int
 id|afs_rxvl_get_entry_by_id_async
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 comma
@@ -2479,7 +2483,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-multiline_comment|/* force kafsasyncd to handle it */
+multiline_comment|/* make kafsasyncd handle it */
 id|ret
 op_assign
 l_int|0
@@ -2515,7 +2519,8 @@ r_int
 id|afs_rxvl_get_entry_by_id_async2
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 comma
@@ -2985,7 +2990,8 @@ op_star
 id|call
 )paren
 (brace
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 op_assign
@@ -3105,7 +3111,8 @@ op_star
 id|call
 )paren
 (brace
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 op_assign

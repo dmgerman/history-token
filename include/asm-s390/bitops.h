@@ -2638,6 +2638,7 @@ op_star
 id|addr
 comma
 r_int
+r_int
 id|size
 )paren
 (brace
@@ -2647,6 +2648,7 @@ id|cmp
 comma
 id|count
 suffix:semicolon
+r_int
 r_int
 id|res
 suffix:semicolon
@@ -2749,6 +2751,7 @@ op_star
 id|addr
 comma
 r_int
+r_int
 id|size
 )paren
 (brace
@@ -2758,6 +2761,7 @@ id|cmp
 comma
 id|count
 suffix:semicolon
+r_int
 r_int
 id|res
 suffix:semicolon
@@ -4137,7 +4141,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * fls: find last bit set.&n; */
 DECL|function|fls
-r_extern
+r_static
 id|__inline__
 r_int
 id|fls
@@ -4238,6 +4242,7 @@ op_star
 id|vaddr
 comma
 r_int
+r_int
 id|size
 )paren
 (brace
@@ -4247,6 +4252,7 @@ id|cmp
 comma
 id|count
 suffix:semicolon
+r_int
 r_int
 id|res
 suffix:semicolon
@@ -4349,6 +4355,7 @@ op_star
 id|vaddr
 comma
 r_int
+r_int
 id|size
 comma
 r_int
@@ -4381,6 +4388,7 @@ id|word
 comma
 id|reg
 suffix:semicolon
+r_int
 r_int
 id|bit
 op_assign

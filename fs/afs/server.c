@@ -26,12 +26,14 @@ r_void
 id|__afs_server_timeout
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 op_assign
@@ -40,7 +42,8 @@ c_func
 (paren
 id|timer
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 comma
 id|timeout
 )paren
@@ -89,7 +92,8 @@ r_int
 id|afs_server_lookup
 c_func
 (paren
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 comma
@@ -99,18 +103,15 @@ id|in_addr
 op_star
 id|addr
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 op_star
 id|_server
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|_p
-suffix:semicolon
-id|afs_server_t
+id|afs_server
 op_star
 id|server
 comma
@@ -145,7 +146,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 )paren
 comma
 id|GFP_KERNEL
@@ -178,7 +180,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 )paren
 )paren
 suffix:semicolon
@@ -292,27 +295,17 @@ id|cell-&gt;sv_lock
 )paren
 suffix:semicolon
 multiline_comment|/* check the active list */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|_p
+id|active
 comma
 op_amp
 id|cell-&gt;sv_list
-)paren
-(brace
-id|active
-op_assign
-id|list_entry
-c_func
-(paren
-id|_p
-comma
-id|afs_server_t
 comma
 id|link
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -332,27 +325,17 @@ op_amp
 id|cell-&gt;sv_gylock
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|_p
+id|zombie
 comma
 op_amp
 id|cell-&gt;sv_graveyard
-)paren
-(brace
-id|zombie
-op_assign
-id|list_entry
-c_func
-(paren
-id|_p
-comma
-id|afs_server_t
 comma
 id|link
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -458,7 +441,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* found a matching server in the graveyard, so resurrect it and dispose of the new rec */
+multiline_comment|/* found a matching server in the graveyard, so resurrect it and&n;&t; * dispose of the new record */
 id|resurrect_server
 suffix:colon
 id|_debug
@@ -542,12 +525,14 @@ r_void
 id|afs_put_server
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 )paren
 (brace
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 suffix:semicolon
@@ -572,8 +557,8 @@ op_assign
 id|server-&gt;cell
 suffix:semicolon
 multiline_comment|/* sanity check */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -584,12 +569,8 @@ id|server-&gt;usage
 op_le
 l_int|0
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-multiline_comment|/* to prevent a race, the decrement and the dequeue must be effectively atomic */
+multiline_comment|/* to prevent a race, the decrement and the dequeue must be effectively&n;&t; * atomic */
 id|write_lock
 c_func
 (paren
@@ -694,7 +675,8 @@ r_void
 id|afs_server_do_timeout
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 )paren
@@ -704,7 +686,8 @@ id|rxrpc_peer
 op_star
 id|peer
 suffix:semicolon
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 suffix:semicolon
@@ -723,8 +706,8 @@ id|cell
 op_assign
 id|server-&gt;cell
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -734,10 +717,6 @@ id|server-&gt;usage
 )paren
 OL
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* remove from graveyard if still dead */
@@ -903,7 +882,8 @@ r_int
 id|afs_server_request_callslot
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -1072,7 +1052,7 @@ id|obtained_slot
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* none were available - wait interruptibly for one to become available */
+multiline_comment|/* none were available - wait interruptibly for one to become&n;&t; * available */
 id|set_current_state
 c_func
 (paren
@@ -1162,7 +1142,7 @@ id|nconn
 op_assign
 id|callslot-&gt;nconn
 suffix:semicolon
-multiline_comment|/* if interrupted, we must release any slot we also got before returning an error */
+multiline_comment|/* if interrupted, we must release any slot we also got before&n;&t; * returning an error */
 r_if
 c_cond
 (paren
@@ -1182,7 +1162,7 @@ r_goto
 id|error_release
 suffix:semicolon
 )brace
-multiline_comment|/* if we were woken up with an error, then pass that error back to the called */
+multiline_comment|/* if we were woken up with an error, then pass that error back to the&n;&t; * called */
 r_if
 c_cond
 (paren
@@ -1355,7 +1335,7 @@ id|server-&gt;sem
 suffix:semicolon
 id|error_release
 suffix:colon
-multiline_comment|/* either release the callslot or pass it along to another deserving task */
+multiline_comment|/* either release the callslot or pass it along to another deserving&n;&t; * task */
 id|spin_lock
 c_func
 (paren
@@ -1476,11 +1456,6 @@ id|server-&gt;fs_lock
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|callslot-&gt;conn
-)paren
 id|rxrpc_put_connection
 c_func
 (paren
@@ -1511,7 +1486,8 @@ r_void
 id|afs_server_release_callslot
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -1545,16 +1521,12 @@ comma
 id|callslot-&gt;nconn
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|callslot-&gt;nconn
 OL
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1664,11 +1636,6 @@ id|server-&gt;fs_lock
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|callslot-&gt;conn
-)paren
 id|rxrpc_put_connection
 c_func
 (paren
@@ -1684,13 +1651,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_server_release_callslot() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * get a handle to a connection to the vlserver (volume location) on the specified server&n; */
+multiline_comment|/*&n; * get a handle to a connection to the vlserver (volume location) on the&n; * specified server&n; */
 DECL|function|afs_server_get_vlconn
 r_int
 id|afs_server_get_vlconn
 c_func
 (paren
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma

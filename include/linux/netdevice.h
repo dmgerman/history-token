@@ -3057,8 +3057,8 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|test_bit
@@ -3069,10 +3069,6 @@ comma
 op_amp
 id|dev-&gt;state
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|list_del
@@ -3179,8 +3175,8 @@ op_star
 id|dev
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|test_bit
@@ -3191,10 +3187,6 @@ comma
 op_amp
 id|dev-&gt;state
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|list_del

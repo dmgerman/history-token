@@ -438,6 +438,18 @@ op_assign
 l_int|59
 comma
 multiline_comment|/* int: hppa unaligned-trap enable */
+DECL|enumerator|KERN_PRINTK_RATELIMIT
+id|KERN_PRINTK_RATELIMIT
+op_assign
+l_int|60
+comma
+multiline_comment|/* int: tune printk ratelimiting */
+DECL|enumerator|KERN_PRINTK_RATELIMIT_BURST
+id|KERN_PRINTK_RATELIMIT_BURST
+op_assign
+l_int|61
+comma
+multiline_comment|/* int: tune printk ratelimiting */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -1615,6 +1627,11 @@ DECL|enumerator|NET_IPV6_MAX_DESYNC_FACTOR
 id|NET_IPV6_MAX_DESYNC_FACTOR
 op_assign
 l_int|15
+comma
+DECL|enumerator|NET_IPV6_MAX_ADDRESSES
+id|NET_IPV6_MAX_ADDRESSES
+op_assign
+l_int|16
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6/icmp */
@@ -2179,6 +2196,11 @@ DECL|enumerator|NET_SCTP_MAX_BURST
 id|NET_SCTP_MAX_BURST
 op_assign
 l_int|12
+comma
+DECL|enumerator|NET_SCTP_ADDIP_ENABLE
+id|NET_SCTP_ADDIP_ENABLE
+op_assign
+l_int|13
 comma
 )brace
 suffix:semicolon
@@ -2797,6 +2819,28 @@ suffix:semicolon
 r_extern
 r_int
 id|proc_dointvec_jiffies
+c_func
+(paren
+id|ctl_table
+op_star
+comma
+r_int
+comma
+r_struct
+id|file
+op_star
+comma
+r_void
+id|__user
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|proc_dointvec_userhz_jiffies
 c_func
 (paren
 id|ctl_table

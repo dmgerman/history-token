@@ -2,6 +2,7 @@ macro_line|#ifndef _I386_BYTEORDER_H
 DECL|macro|_I386_BYTEORDER_H
 mdefine_line|#define _I386_BYTEORDER_H
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef __GNUC__
 multiline_comment|/* For avoiding bswap on i386 */
 macro_line|#ifdef __KERNEL__
@@ -10,7 +11,7 @@ macro_line|#endif
 DECL|function|___arch__swab32
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u32
 id|___arch__swab32
 c_func
@@ -63,43 +64,10 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/* gcc should generate this for open coded C now too. May be worth switching to &n;   it because inline assembly cannot be scheduled. -AK */
-DECL|function|___arch__swab16
-r_static
-id|__inline__
-id|__const__
-id|__u16
-id|___arch__swab16
-c_func
-(paren
-id|__u16
-id|x
-)paren
-(brace
-id|__asm__
-c_func
-(paren
-l_string|&quot;xchgb %b0,%h0&quot;
-multiline_comment|/* swap bytes&t;&t;*/
-suffix:colon
-l_string|&quot;=q&quot;
-(paren
-id|x
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|x
-)paren
-)paren
-suffix:semicolon
-r_return
-id|x
-suffix:semicolon
-)brace
 DECL|function|___arch__swab64
 r_static
-r_inline
+id|__inline__
+id|__attribute_const__
 id|__u64
 id|___arch__swab64
 c_func
@@ -205,12 +173,11 @@ r_return
 id|v.u
 suffix:semicolon
 )brace
+multiline_comment|/* Do not define swab16.  Gcc is smart enough to recognize &quot;C&quot; version and&n;   convert it into rotation or exhange.  */
 DECL|macro|__arch__swab64
 mdefine_line|#define __arch__swab64(x) ___arch__swab64(x)
 DECL|macro|__arch__swab32
 mdefine_line|#define __arch__swab32(x) ___arch__swab32(x)
-DECL|macro|__arch__swab16
-mdefine_line|#define __arch__swab16(x) ___arch__swab16(x)
 DECL|macro|__BYTEORDER_HAS_U64__
 mdefine_line|#define __BYTEORDER_HAS_U64__
 macro_line|#endif /* __GNUC__ */

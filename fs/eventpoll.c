@@ -51,6 +51,9 @@ macro_line|#else /* #if DEBUG_EPI != 0 */
 DECL|macro|EPI_SLAB_DEBUG
 mdefine_line|#define EPI_SLAB_DEBUG 0
 macro_line|#endif /* #if DEBUG_EPI != 0 */
+multiline_comment|/* Epoll private bits inside the event mask */
+DECL|macro|EP_PRIVATE_BITS
+mdefine_line|#define EP_PRIVATE_BITS (EPOLLONESHOT | EPOLLET)
 multiline_comment|/* Maximum number of poll wake up nests we are allowing */
 DECL|macro|EP_MAX_POLLWAKE_NESTS
 mdefine_line|#define EP_MAX_POLLWAKE_NESTS 4
@@ -2247,6 +2250,10 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+id|file-&gt;f_mapping
+op_assign
+id|inode-&gt;i_mapping
+suffix:semicolon
 id|file-&gt;f_pos
 op_assign
 l_int|0
@@ -4387,6 +4394,21 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If the event mask does not contain any poll(2) event, we consider the&n;&t; * descriptor to be disabled. This condition is likely the effect of the&n;&t; * EPOLLONESHOT bit that disables the descriptor when an event is received,&n;&t; * until the next EPOLL_CTL_MOD will be issued.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|epi-&gt;event.events
+op_amp
+op_complement
+id|EP_PRIVATE_BITS
+)paren
+)paren
+r_goto
+id|is_disabled
+suffix:semicolon
 multiline_comment|/* If this file is already in the ready list we exit soon */
 r_if
 c_cond
@@ -4444,6 +4466,8 @@ id|ep-&gt;poll_wait
 id|pwake
 op_increment
 suffix:semicolon
+id|is_disabled
+suffix:colon
 id|write_unlock_irqrestore
 c_func
 (paren
@@ -4931,6 +4955,17 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|epi-&gt;event.events
+op_amp
+id|EPOLLONESHOT
+)paren
+id|epi-&gt;event.events
+op_and_assign
+id|EP_PRIVATE_BITS
+suffix:semicolon
 )brace
 )brace
 r_if

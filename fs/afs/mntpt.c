@@ -166,7 +166,8 @@ r_int
 id|afs_mntpt_check_symlink
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
@@ -175,6 +176,10 @@ r_struct
 id|page
 op_star
 id|page
+suffix:semicolon
+id|filler_t
+op_star
+id|filler
 suffix:semicolon
 r_int
 id|size
@@ -197,6 +202,20 @@ id|vnode-&gt;fid.unique
 )paren
 suffix:semicolon
 multiline_comment|/* read the contents of the symlink into the pagecache */
+id|filler
+op_assign
+(paren
+id|filler_t
+op_star
+)paren
+id|AFS_VNODE_TO_I
+c_func
+(paren
+id|vnode
+)paren
+op_member_access_from_pointer
+id|i_mapping-&gt;a_ops-&gt;readpage
+suffix:semicolon
 id|page
 op_assign
 id|read_cache_page
@@ -212,17 +231,7 @@ id|i_mapping
 comma
 l_int|0
 comma
-(paren
-id|filler_t
-op_star
-)paren
-id|AFS_VNODE_TO_I
-c_func
-(paren
-id|vnode
-)paren
-op_member_access_from_pointer
-id|i_mapping-&gt;a_ops-&gt;readpage
+id|filler
 comma
 l_int|NULL
 )paren
@@ -657,6 +666,12 @@ r_goto
 id|error
 suffix:semicolon
 multiline_comment|/* read the contents of the AFS special symlink */
+id|filler_t
+op_star
+id|filler
+op_assign
+id|mntpt-&gt;d_inode-&gt;i_mapping-&gt;a_ops-&gt;readpage
+suffix:semicolon
 id|page
 op_assign
 id|read_cache_page
@@ -666,11 +681,7 @@ id|mntpt-&gt;d_inode-&gt;i_mapping
 comma
 l_int|0
 comma
-(paren
-id|filler_t
-op_star
-)paren
-id|mntpt-&gt;d_inode-&gt;i_mapping-&gt;a_ops-&gt;readpage
+id|filler
 comma
 l_int|NULL
 )paren

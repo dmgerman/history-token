@@ -1,6 +1,12 @@
 macro_line|#ifndef _ASM_GENERIC_PGTABLE_H
 DECL|macro|_ASM_GENERIC_PGTABLE_H
 mdefine_line|#define _ASM_GENERIC_PGTABLE_H
+macro_line|#ifndef __HAVE_ARCH_PTEP_ESTABLISH
+multiline_comment|/*&n; * Establish a new mapping:&n; *  - flush the old one&n; *  - update the page tables&n; *  - inform the TLB about the new one&n; *&n; * We hold the mm semaphore for reading and vma-&gt;vm_mm-&gt;page_table_lock&n; */
+DECL|macro|ptep_establish
+mdefine_line|#define ptep_establish(__vma, __address, __ptep, __entry)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(__ptep, __entry);&t;&t;&t;&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 DECL|function|ptep_test_and_clear_young
 r_static
 r_inline
@@ -48,6 +54,12 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+DECL|macro|ptep_clear_flush_young
+mdefine_line|#define ptep_clear_flush_young(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __young = ptep_test_and_clear_young(__ptep);&t;&t;&bslash;&n;&t;if (__young)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&bslash;&n;&t;__young;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
 DECL|function|ptep_test_and_clear_dirty
 r_static
 r_inline
@@ -95,6 +107,12 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
+DECL|macro|ptep_clear_flush_dirty
+mdefine_line|#define ptep_clear_flush_dirty(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __dirty = ptep_test_and_clear_dirty(__ptep);&t;&t;&bslash;&n;&t;if (__dirty)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&bslash;&n;&t;__dirty;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|function|ptep_get_and_clear
 r_static
 r_inline
@@ -123,6 +141,12 @@ r_return
 id|pte
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_CLEAR_FLUSH
+DECL|macro|ptep_clear_flush
+mdefine_line|#define ptep_clear_flush(__vma, __address, __ptep)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte = ptep_get_and_clear(__ptep);&t;&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_SET_WRPROTECT
 DECL|function|ptep_set_wrprotect
 r_static
 r_inline
@@ -154,6 +178,8 @@ id|old_pte
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTEP_MKDIRTY
 DECL|function|ptep_mkdirty
 r_static
 r_inline
@@ -185,7 +211,18 @@ id|old_pte
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PTE_SAME
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PAGE_TEST_AND_CLEAR_DIRTY
+DECL|macro|page_test_and_clear_dirty
+mdefine_line|#define page_test_and_clear_dirty(page) (0)
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PAGE_TEST_AND_CLEAR_YOUNG
+DECL|macro|page_test_and_clear_young
+mdefine_line|#define page_test_and_clear_young(page) (0)
+macro_line|#endif
 macro_line|#endif /* _ASM_GENERIC_PGTABLE_H */
 eof

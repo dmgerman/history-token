@@ -1535,6 +1535,7 @@ op_star
 id|skb-&gt;cb
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 r_if
 c_cond
 (paren
@@ -1544,6 +1545,7 @@ id|brnf_call_arptables
 r_return
 id|NF_ACCEPT
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

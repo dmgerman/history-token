@@ -81,14 +81,6 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_void
-id|sort_exception_table
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; *&n; * This gets kind of ugly. We want to return _two_ values in &quot;get_user()&quot;&n; * and yet we don&squot;t want to do any pointers, because that is too much&n; * of a performance impact. Thus we have a few rather ugly macros here,&n; * and hide all the ugliness from the user.&n; *&n; * The &quot;__xxx&quot; versions of the user access functions are versions that&n; * do not verify the address space, that must have been done previously&n; * with a separate &quot;access_ok()&quot; call (this is used when we do multiple&n; * accesses to the same area of user memory).&n; *&n; * As we use the same address space for kernel and user data on the&n; * PowerPC, we can just do these as direct assignments.  (Of course, the&n; * exception handling means that it&squot;s no longer &quot;just&quot;...)&n; *&n; * The &quot;user64&quot; versions of the user access functions are versions that &n; * allow access of 64-bit data. The &quot;get_user&quot; functions do not &n; * properly handle 64-bit data because the value gets down cast to a long. &n; * The &quot;put_user&quot; functions already handle 64-bit data properly but we add &n; * &quot;user64&quot; versions for completeness&n; */
 DECL|macro|get_user
 mdefine_line|#define get_user(x,ptr) &bslash;&n;  __get_user_check((x),(ptr),sizeof(*(ptr)))

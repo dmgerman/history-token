@@ -20,6 +20,7 @@ macro_line|#include &quot;xfs_ialloc.h&quot;
 macro_line|#include &quot;xfs_fsops.h&quot;
 macro_line|#include &quot;xfs_itable.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_refcache.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_rtalloc.h&quot;
 macro_line|#include &quot;xfs_dir2.h&quot;
@@ -2736,6 +2737,13 @@ c_func
 id|mp
 comma
 id|XFS_FREEZE_WRITE
+)paren
+suffix:semicolon
+multiline_comment|/* Flush the refcache */
+id|xfs_refcache_purge_mp
+c_func
+(paren
+id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* Flush delalloc and delwri data */

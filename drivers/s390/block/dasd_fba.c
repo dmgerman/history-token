@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.30 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.32 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -224,6 +224,11 @@ dot
 id|set_online
 op_assign
 id|dasd_fba_set_online
+comma
+dot
+id|notify
+op_assign
+id|dasd_generic_notify
 comma
 )brace
 suffix:semicolon
@@ -1176,7 +1181,7 @@ op_add_assign
 id|idal_nr_words
 c_func
 (paren
-id|kmap
+id|page_address
 c_func
 (paren
 id|bv-&gt;bv_page
@@ -1421,7 +1426,7 @@ id|i
 (brace
 id|dst
 op_assign
-id|kmap
+id|page_address
 c_func
 (paren
 id|bv-&gt;bv_page

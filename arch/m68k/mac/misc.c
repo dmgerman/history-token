@@ -45,6 +45,7 @@ id|rom_reset
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ADB
 multiline_comment|/*&n; * Return the current time as the number of seconds since January 1, 1904.&n; */
 DECL|function|adb_read_time
 r_static
@@ -317,6 +318,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ADB */
 multiline_comment|/*&n; * VIA PRAM/RTC access routines&n; *&n; * Must be called with interrupts disabled and&n; * the RTC should be enabled.&n; */
 DECL|function|via_pram_readbyte
 r_static
@@ -1194,10 +1196,15 @@ op_eq
 id|MAC_ADB_CUDA
 )paren
 (brace
+macro_line|#ifdef CONFIG_ADB
 id|func
 op_assign
 id|adb_read_pram
 suffix:semicolon
+macro_line|#else
+r_return
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -1289,10 +1296,15 @@ op_eq
 id|MAC_ADB_CUDA
 )paren
 (brace
+macro_line|#ifdef CONFIG_ADB
 id|func
 op_assign
 id|adb_write_pram
 suffix:semicolon
+macro_line|#else
+r_return
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -2121,6 +2133,7 @@ c_func
 suffix:semicolon
 )brace
 r_else
+macro_line|#ifdef CONFIG_ADB
 r_if
 c_cond
 (paren
@@ -2158,6 +2171,7 @@ c_func
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -6,7 +6,7 @@ mdefine_line|#define __ASM_PPC_FLOPPY_H
 DECL|macro|fd_inb
 mdefine_line|#define fd_inb(port)&t;&t;&t;inb_p(port)
 DECL|macro|fd_outb
-mdefine_line|#define fd_outb(port,value)&t;&t;outb_p(port,value)
+mdefine_line|#define fd_outb(value,port)&t;&t;outb_p(value,port)
 DECL|macro|fd_enable_dma
 mdefine_line|#define fd_enable_dma()         enable_dma(FLOPPY_DMA)
 DECL|macro|fd_disable_dma

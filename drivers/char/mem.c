@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -2949,6 +2950,13 @@ id|kmsg_fops
 comma
 )brace
 suffix:semicolon
+DECL|variable|mem_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|mem_class
+suffix:semicolon
 DECL|function|chr_dev_init
 r_static
 r_int
@@ -2984,6 +2992,16 @@ comma
 id|MEM_MAJOR
 )paren
 suffix:semicolon
+id|mem_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;mem&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3003,6 +3021,34 @@ id|i
 op_increment
 )paren
 (brace
+id|class_simple_device_add
+c_func
+(paren
+id|mem_class
+comma
+id|MKDEV
+c_func
+(paren
+id|MEM_MAJOR
+comma
+id|devlist
+(braket
+id|i
+)braket
+dot
+id|minor
+)paren
+comma
+l_int|NULL
+comma
+id|devlist
+(braket
+id|i
+)braket
+dot
+id|name
+)paren
+suffix:semicolon
 id|devfs_mk_cdev
 c_func
 (paren

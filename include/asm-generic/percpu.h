@@ -28,7 +28,7 @@ macro_line|#else /* ! SMP */
 DECL|macro|DEFINE_PER_CPU
 mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __typeof__(type) per_cpu__##name
 DECL|macro|per_cpu
-mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;((void)cpu, per_cpu__##var)
+mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;(*((void)cpu, &amp;per_cpu__##var))
 DECL|macro|__get_cpu_var
 mdefine_line|#define __get_cpu_var(var)&t;&t;&t;per_cpu__##var
 macro_line|#endif&t;/* SMP */

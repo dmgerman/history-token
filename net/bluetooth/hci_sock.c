@@ -42,9 +42,9 @@ l_int|0x10
 comma
 multiline_comment|/* Events */
 (brace
-l_int|0xd9fe
+l_int|0x1000d9fe
 comma
-l_int|0x0
+l_int|0x0000300c
 )brace
 comma
 multiline_comment|/* Commands */
@@ -55,57 +55,57 @@ l_int|0x0
 comma
 multiline_comment|/* OGF_LINK_CTL */
 (brace
-l_int|0x2a000002
+l_int|0xbe000006
 comma
-l_int|0x0
+l_int|0x00000001
 comma
-l_int|0x0
+l_int|0x0000
 comma
-l_int|0x0
+l_int|0x00
 )brace
 comma
 multiline_comment|/* OGF_LINK_POLICY */
 (brace
-l_int|0x1200
+l_int|0x00005200
 comma
-l_int|0x0
+l_int|0x00000000
 comma
-l_int|0x0
+l_int|0x0000
 comma
-l_int|0x0
+l_int|0x00
 )brace
 comma
 multiline_comment|/* OGF_HOST_CTL */
 (brace
-l_int|0x80100000
+l_int|0xaab00200
 comma
-l_int|0x202a
+l_int|0x2b402aaa
 comma
-l_int|0x0
+l_int|0x0154
 comma
-l_int|0x0
+l_int|0x00
 )brace
 comma
 multiline_comment|/* OGF_INFO_PARAM */
 (brace
-l_int|0x22a
+l_int|0x000002be
 comma
-l_int|0x0
+l_int|0x00000000
 comma
-l_int|0x0
+l_int|0x0000
 comma
-l_int|0x0
+l_int|0x00
 )brace
 comma
 multiline_comment|/* OGF_STATUS_PARAM */
 (brace
-l_int|0x2e
+l_int|0x000000ea
 comma
-l_int|0x0
+l_int|0x00000000
 comma
-l_int|0x0
+l_int|0x0000
 comma
-l_int|0x0
+l_int|0x00
 )brace
 )brace
 )brace

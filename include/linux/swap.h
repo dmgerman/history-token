@@ -501,6 +501,7 @@ c_func
 r_struct
 id|zone
 op_star
+op_star
 comma
 r_int
 r_int

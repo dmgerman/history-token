@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * Copyright 2002 IBM Corporation&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh &lt;arzeh@de.ibm.com&gt;&n; *            Wolfgang Taphorn &lt;taphorn@de.ibm.com&gt;&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.12 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.16 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -363,12 +363,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req
 op_logical_and
 (paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_POOL
+)paren
 )paren
 )paren
 (brace
@@ -401,12 +405,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req
 op_logical_and
 (paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_POOL
+)paren
 )paren
 )paren
 id|debug_text_event
@@ -577,8 +585,12 @@ singleline_comment|//switch(fsf_cmd)
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|fsf_req
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -638,7 +650,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req-&gt;qtcb
+)paren
 )paren
 id|debug_event
 c_func
@@ -696,9 +712,13 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_POOL
+)paren
 )paren
 (brace
 id|del_timer
@@ -979,9 +999,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;fsf_command
 op_eq
 id|FSF_QTCB_UNSOLICITED_STATUS
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -1012,9 +1036,13 @@ multiline_comment|/*&n;&t; * fsf_req may be deleted due to waking up functions, 
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_CLEANUP
+)paren
 )paren
 id|cleanup
 op_assign
@@ -1033,7 +1061,11 @@ multiline_comment|/* cleanup request if requested by initiator */
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|cleanup
+)paren
 )paren
 (brace
 id|ZFCP_LOG_TRACE
@@ -1071,6 +1103,7 @@ r_int
 id|fsf_req
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * FIXME: Race! We must not access fsf_req here as it might have been&n;&t;&t; * cleaned up already due to the set ZFCP_STATUS_FSFREQ_COMPLETED&n;&t;&t; * flag. It&squot;s an improbable case. But, we have the same paranoia for&n;&t;&t; * the cleanup flag already.&n;&t;&t; * Might better be handled using complete()?&n;&t;&t; * (setting the flag and doing wakeup ought to be atomic&n;&t;&t; *  with regard to checking the flag as long as waitqueue is&n;&t;&t; *  part of the to be released structure)&n;&t;&t; */
 id|wake_up
 c_func
 (paren
@@ -1169,7 +1202,11 @@ multiline_comment|/* log additional information provided by FSF (if any) */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;qtcb-&gt;header.log_length
+)paren
 )paren
 (brace
 multiline_comment|/* do not trust them ;-) */
@@ -2377,9 +2414,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_ERROR
+)paren
 )paren
 (brace
 r_goto
@@ -2916,9 +2957,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_ERROR
+)paren
 )paren
 (brace
 id|ZFCP_LOG_TRACE
@@ -6958,6 +7003,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* check whether D_ID has changed during open */
+multiline_comment|/*&n;&t;&t; * FIXME: This check is not airtight, as the FCP channel does&n;&t;&t; * not monitor closures of target port connections caused on&n;&t;&t; * the remote side. Thus, they might miss out on invalidating&n;&t;&t; * locally cached WWPNs (and other N_Port parameters) of gone&n;&t;&t; * target ports. So, our heroic attempt to make things safe&n;&t;&t; * could be undermined by &squot;open port&squot; response data tagged with&n;&t;&t; * obsolete WWPNs. Another reason to monitor potential&n;&t;&t; * connection closures ourself at least (by interpreting&n;&t;&t; * incoming ELS&squot; and unsolicited status). It just crosses my&n;&t;&t; * mind that one should be able to cross-check by means of&n;&t;&t; * another GID_PN straight after a port has been opened.&n;&t;&t; * Alternately, an ADISC/PDISC ELS should suffice, as well.&n;&t;&t; */
 id|plogi
 op_assign
 (paren
@@ -8231,15 +8277,7 @@ id|erp_action-&gt;fsf_req-&gt;qtcb-&gt;header.port_handle
 op_assign
 id|erp_action-&gt;port-&gt;handle
 suffix:semicolon
-op_star
-(paren
-id|fcp_lun_t
-op_star
-)paren
-op_amp
-(paren
 id|erp_action-&gt;fsf_req-&gt;qtcb-&gt;bottom.support.fcp_lun
-)paren
 op_assign
 id|erp_action-&gt;unit-&gt;fcp_lun
 suffix:semicolon
@@ -9729,9 +9767,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|retval
 OL
 l_int|0
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -10000,7 +10042,11 @@ multiline_comment|/* set task attributes in FCP_CMND IU in QTCB */
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|scsi_cmnd-&gt;device-&gt;simple_tags
+)paren
 )paren
 (brace
 id|fcp_cmnd_iu-&gt;task_attribute
@@ -10031,9 +10077,13 @@ multiline_comment|/* set additional length of FCP_CDB in FCP_CMND IU in QTCB, if
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|scsi_cmnd-&gt;cmd_len
 OG
 id|FCP_CDB_LENGTH
+)paren
 )paren
 (brace
 id|fcp_cmnd_iu-&gt;add_fcp_cdb_length
@@ -10107,9 +10157,13 @@ multiline_comment|/* Note: &gt;= and not = because the combined scatter-gather e
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|real_bytes
 op_ge
 id|scsi_cmnd-&gt;request_bufflen
+)paren
 )paren
 (brace
 id|ZFCP_LOG_TRACE
@@ -10123,9 +10177,13 @@ r_else
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|real_bytes
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -10224,9 +10282,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|retval
 OL
 l_int|0
+)paren
 )paren
 (brace
 id|ZFCP_LOG_INFO
@@ -10656,9 +10718,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_TASK_MANAGEMENT
+)paren
 )paren
 id|unit
 op_assign
@@ -10672,9 +10738,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_ERROR
+)paren
 )paren
 (brace
 multiline_comment|/* go directly to calls of special handlers */
@@ -11776,13 +11846,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|zfcp_adapter
-op_star
-id|adapter
-op_assign
-id|fsf_req-&gt;adapter
-suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|scpnt
@@ -11857,8 +11920,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|scpnt
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -11880,9 +11947,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_ABORTED
+)paren
 )paren
 (brace
 multiline_comment|/* FIXME: (design) mid-layer should handle DID_ABORT like&n;&t;&t; *        DID_SOFT_ERROR by retrying the request for devices&n;&t;&t; *        that allow retries.&n;&t;&t; */
@@ -11917,9 +11988,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_ERROR
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -11956,7 +12031,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fcp_rsp_iu-&gt;scsi_status
+)paren
 )paren
 (brace
 multiline_comment|/* DEBUG */
@@ -12021,7 +12100,11 @@ multiline_comment|/* check FCP_RSP_INFO */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fcp_rsp_iu-&gt;validity.bits.fcp_rsp_len_valid
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -12372,7 +12455,11 @@ multiline_comment|/* check for sense data */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fcp_rsp_iu-&gt;validity.bits.fcp_sns_len_valid
+)paren
 )paren
 (brace
 id|sns_len
@@ -12492,7 +12579,11 @@ multiline_comment|/* check for overrun */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fcp_rsp_iu-&gt;validity.bits.fcp_resid_over
+)paren
 )paren
 (brace
 id|ZFCP_LOG_INFO
@@ -12532,7 +12623,11 @@ multiline_comment|/* check for underrun */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fcp_rsp_iu-&gt;validity.bits.fcp_resid_under
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -12646,27 +12741,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE:&n;&t; * according to the outcome of a discussion on linux-scsi we&n;&t; * don&squot;t need to grab the io_request_lock here since we use&n;&t; * the new eh&n;&t; */
 multiline_comment|/* always call back */
-(paren
-id|scpnt-&gt;scsi_done
-)paren
-(paren
-id|scpnt
-)paren
-suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|adapter-&gt;scsi_reqs_active
-)paren
-suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|adapter-&gt;scsi_reqs_active_wq
-)paren
-suffix:semicolon
 macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
@@ -12735,20 +12809,6 @@ id|scpnt-&gt;scsi_done
 )paren
 (paren
 id|scpnt
-)paren
-suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|adapter-&gt;scsi_reqs_active
-)paren
-suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|adapter-&gt;scsi_reqs_active_wq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We must hold this lock until scsi_done has been called.&n;&t; * Otherwise we may call scsi_done after abort regarding this&n;&t; * command has completed.&n;&t; * Note: scsi_done must not block!&n;&t; */
@@ -13126,6 +13186,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|atomic_read
 c_func
 (paren
@@ -13134,6 +13197,7 @@ id|queue-&gt;free_count
 )paren
 op_ge
 id|needed
+)paren
 )paren
 r_return
 l_int|1
@@ -13230,8 +13294,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|fsf_req
+)paren
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
@@ -13279,9 +13347,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|req_flags
 op_amp
 id|ZFCP_REQ_AUTO_CLEANUP
+)paren
 )paren
 id|fsf_req-&gt;status
 op_or_assign
@@ -13291,9 +13363,13 @@ multiline_comment|/* initialize QTCB */
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_cmd
 op_ne
 id|FSF_QTCB_UNSOLICITED_STATUS
+)paren
 )paren
 (brace
 id|ZFCP_LOG_TRACE
@@ -13355,9 +13431,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|req_flags
 op_amp
 id|ZFCP_WAIT_FOR_SBAL
+)paren
 )paren
 (brace
 id|timeout
@@ -13480,9 +13560,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_cmd
 op_ne
 id|FSF_QTCB_UNSOLICITED_STATUS
+)paren
 )paren
 (brace
 id|buffere
@@ -13855,7 +13939,11 @@ multiline_comment|/* set sequence counter in QTCB */
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req-&gt;qtcb
+)paren
 )paren
 (brace
 id|fsf_req-&gt;qtcb-&gt;prefix.req_seq_no
@@ -13926,7 +14014,11 @@ multiline_comment|/* figure out expiration time of timeout and start timeout */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|timer
+)paren
 )paren
 (brace
 id|timer-&gt;expires
@@ -14057,7 +14149,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|retval
+)paren
 )paren
 (brace
 multiline_comment|/* Queues are down..... */
@@ -14181,7 +14277,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|inc_seq_no
+)paren
 )paren
 (brace
 id|debug_event
@@ -14220,7 +14320,11 @@ multiline_comment|/* Don&squot;t increase for unsolicited status */
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|inc_seq_no
+)paren
 )paren
 (brace
 id|adapter-&gt;fsf_req_seq_no
@@ -14353,7 +14457,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req
+)paren
 )paren
 (brace
 id|memset
@@ -14382,7 +14490,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req
+)paren
 )paren
 (brace
 id|memset
@@ -14404,7 +14516,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req
+)paren
 )paren
 id|fsf_req-&gt;qtcb
 op_assign
