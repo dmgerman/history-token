@@ -138,7 +138,7 @@ op_assign
 id|do_bad_IRQ
 comma
 dot
-id|depth
+id|disable_depth
 op_assign
 l_int|1
 comma

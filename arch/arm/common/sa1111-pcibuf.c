@@ -63,7 +63,7 @@ id|safe_dma_addr
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|safe_buffers
+r_static
 id|LIST_HEAD
 c_func
 (paren
