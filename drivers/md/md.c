@@ -233,7 +233,7 @@ op_assign
 l_int|0555
 comma
 dot
-id|proc_handler
+id|child
 op_assign
 id|raid_dir_table
 comma
