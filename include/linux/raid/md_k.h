@@ -619,6 +619,7 @@ r_int
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
+multiline_comment|/* recovery_running is 0 for no recovery/resync,&n;&t; * 1 for active recovery&n;&t; * 2 for active resync&n;&t; * -error for an error (e.g. -EINTR)&n;&t; * it can only be set &gt; 0 under reconfig_sem&n;&t; */
 DECL|member|recovery_running
 r_int
 id|recovery_running
@@ -627,16 +628,6 @@ DECL|member|reconfig_sem
 r_struct
 id|semaphore
 id|reconfig_sem
-suffix:semicolon
-DECL|member|recovery_sem
-r_struct
-id|semaphore
-id|recovery_sem
-suffix:semicolon
-DECL|member|resync_sem
-r_struct
-id|semaphore
-id|resync_sem
 suffix:semicolon
 DECL|member|active
 id|atomic_t
