@@ -979,6 +979,7 @@ id|ss1
 comma
 id|__ss1h
 suffix:semicolon
+multiline_comment|/* ss1 is used to cache MSR_IA32_SYSENTER_CS */
 DECL|member|esp2
 r_int
 r_int
@@ -1263,6 +1264,18 @@ c_cond
 id|cpu_has_sep
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tss-&gt;ss1
+op_ne
+id|__KERNEL_CS
+)paren
+(brace
+id|tss-&gt;ss1
+op_assign
+id|__KERNEL_CS
+suffix:semicolon
 id|wrmsr
 c_func
 (paren
@@ -1273,6 +1286,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|wrmsr
 c_func
 (paren
@@ -1292,7 +1306,10 @@ r_void
 id|disable_sysenter
 c_func
 (paren
-r_void
+r_struct
+id|tss_struct
+op_star
+id|tss
 )paren
 (brace
 r_if
@@ -1300,6 +1317,11 @@ c_cond
 (paren
 id|cpu_has_sep
 )paren
+(brace
+id|tss-&gt;ss1
+op_assign
+l_int|0
+suffix:semicolon
 id|wrmsr
 c_func
 (paren
@@ -1310,6 +1332,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs, new_eip, new_esp) do {&t;&t;&bslash;&n;&t;__asm__(&quot;movl %0,%%fs ; movl %0,%%gs&quot;: :&quot;r&quot; (0));&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xds = __USER_DS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xes = __USER_DS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xss = __USER_DS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xcs = __USER_CS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;eip = new_eip;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;esp = new_esp;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
