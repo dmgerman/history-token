@@ -1249,10 +1249,12 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|update_atime
+id|touch_atime
 c_func
 (paren
-id|inode
+id|nd.mnt
+comma
+id|nd.dentry
 )paren
 suffix:semicolon
 id|error

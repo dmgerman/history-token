@@ -1,26 +1,12 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/hpfs_fn.h&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  function headers&n; */
 singleline_comment|//#define DBG
 singleline_comment|//#define DEBUG_LOCKS
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/hpfs_fs.h&gt;
-macro_line|#include &lt;linux/hpfs_fs_i.h&gt;
-macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &quot;hpfs.h&quot;
-DECL|macro|memcpy_tofs
-mdefine_line|#define memcpy_tofs memcpy
-DECL|macro|memcpy_fromfs
-mdefine_line|#define memcpy_fromfs memcpy
 DECL|macro|EIOERROR
 mdefine_line|#define EIOERROR  EIO
 DECL|macro|EFSERROR
@@ -58,12 +44,252 @@ macro_line|#undef PRINTK
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(x)
 macro_line|#endif
-DECL|typedef|nonconst
-r_typedef
-r_void
-id|nonconst
+DECL|struct|hpfs_inode_info
+r_struct
+id|hpfs_inode_info
+(brace
+DECL|member|mmu_private
+id|loff_t
+id|mmu_private
 suffix:semicolon
-multiline_comment|/* What this is for ? */
+DECL|member|i_parent_dir
+id|ino_t
+id|i_parent_dir
+suffix:semicolon
+multiline_comment|/* (directories) gives fnode of parent dir */
+DECL|member|i_dno
+r_int
+id|i_dno
+suffix:semicolon
+multiline_comment|/* (directories) root dnode */
+DECL|member|i_dpos
+r_int
+id|i_dpos
+suffix:semicolon
+multiline_comment|/* (directories) temp for readdir */
+DECL|member|i_dsubdno
+r_int
+id|i_dsubdno
+suffix:semicolon
+multiline_comment|/* (directories) temp for readdir */
+DECL|member|i_file_sec
+r_int
+id|i_file_sec
+suffix:semicolon
+multiline_comment|/* (files) minimalist cache of alloc info */
+DECL|member|i_disk_sec
+r_int
+id|i_disk_sec
+suffix:semicolon
+multiline_comment|/* (files) minimalist cache of alloc info */
+DECL|member|i_n_secs
+r_int
+id|i_n_secs
+suffix:semicolon
+multiline_comment|/* (files) minimalist cache of alloc info */
+DECL|member|i_ea_size
+r_int
+id|i_ea_size
+suffix:semicolon
+multiline_comment|/* size of extended attributes */
+DECL|member|i_conv
+r_int
+id|i_conv
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* (files) crlf-&gt;newline hackery */
+DECL|member|i_ea_mode
+r_int
+id|i_ea_mode
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* file&squot;s permission is stored in ea */
+DECL|member|i_ea_uid
+r_int
+id|i_ea_uid
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* file&squot;s uid is stored in ea */
+DECL|member|i_ea_gid
+r_int
+id|i_ea_gid
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* file&squot;s gid is stored in ea */
+DECL|member|i_dirty
+r_int
+id|i_dirty
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|i_sem
+r_struct
+id|semaphore
+id|i_sem
+suffix:semicolon
+DECL|member|i_parent
+r_struct
+id|semaphore
+id|i_parent
+suffix:semicolon
+DECL|member|i_rddir_off
+id|loff_t
+op_star
+op_star
+id|i_rddir_off
+suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|hpfs_sb_info
+r_struct
+id|hpfs_sb_info
+(brace
+DECL|member|sb_root
+id|ino_t
+id|sb_root
+suffix:semicolon
+multiline_comment|/* inode number of root dir */
+DECL|member|sb_fs_size
+r_int
+id|sb_fs_size
+suffix:semicolon
+multiline_comment|/* file system size, sectors */
+DECL|member|sb_bitmaps
+r_int
+id|sb_bitmaps
+suffix:semicolon
+multiline_comment|/* sector number of bitmap list */
+DECL|member|sb_dirband_start
+r_int
+id|sb_dirband_start
+suffix:semicolon
+multiline_comment|/* directory band start sector */
+DECL|member|sb_dirband_size
+r_int
+id|sb_dirband_size
+suffix:semicolon
+multiline_comment|/* directory band size, dnodes */
+DECL|member|sb_dmap
+r_int
+id|sb_dmap
+suffix:semicolon
+multiline_comment|/* sector number of dnode bit map */
+DECL|member|sb_n_free
+r_int
+id|sb_n_free
+suffix:semicolon
+multiline_comment|/* free blocks for statfs, or -1 */
+DECL|member|sb_n_free_dnodes
+r_int
+id|sb_n_free_dnodes
+suffix:semicolon
+multiline_comment|/* free dnodes for statfs, or -1 */
+DECL|member|sb_uid
+id|uid_t
+id|sb_uid
+suffix:semicolon
+multiline_comment|/* uid from mount options */
+DECL|member|sb_gid
+id|gid_t
+id|sb_gid
+suffix:semicolon
+multiline_comment|/* gid from mount options */
+DECL|member|sb_mode
+id|umode_t
+id|sb_mode
+suffix:semicolon
+multiline_comment|/* mode from mount options */
+DECL|member|sb_conv
+r_int
+id|sb_conv
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* crlf-&gt;newline hackery */
+DECL|member|sb_eas
+r_int
+id|sb_eas
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* eas: 0-ignore, 1-ro, 2-rw */
+DECL|member|sb_err
+r_int
+id|sb_err
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* on errs: 0-cont, 1-ro, 2-panic */
+DECL|member|sb_chk
+r_int
+id|sb_chk
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* checks: 0-no, 1-normal, 2-strict */
+DECL|member|sb_lowercase
+r_int
+id|sb_lowercase
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* downcase filenames hackery */
+DECL|member|sb_was_error
+r_int
+id|sb_was_error
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* there was an error, set dirty flag */
+DECL|member|sb_chkdsk
+r_int
+id|sb_chkdsk
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* chkdsk: 0-no, 1-on errs, 2-allways */
+DECL|member|sb_cp_table
+r_int
+r_char
+op_star
+id|sb_cp_table
+suffix:semicolon
+multiline_comment|/* code page tables: */
+multiline_comment|/* &t;128 bytes uppercasing table &amp; */
+multiline_comment|/*&t;128 bytes lowercasing table */
+DECL|member|sb_bmp_dir
+r_int
+op_star
+id|sb_bmp_dir
+suffix:semicolon
+multiline_comment|/* main bitmap directory */
+DECL|member|sb_c_bitmap
+r_int
+id|sb_c_bitmap
+suffix:semicolon
+multiline_comment|/* current bitmap */
+DECL|member|hpfs_creation_de
+r_struct
+id|semaphore
+id|hpfs_creation_de
+suffix:semicolon
+multiline_comment|/* when creating dirents, nobody else&n;&t;&t;&t;&t;&t;   can alloc blocks */
+multiline_comment|/*unsigned sb_mounting : 1;*/
+DECL|member|sb_timeshift
+r_int
+id|sb_timeshift
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * conv= options&n; */
 DECL|macro|CONV_BINARY
 mdefine_line|#define CONV_BINARY 0&t;&t;&t;/* no conversion */
@@ -691,9 +917,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_struct
-id|statfs
-suffix:semicolon
 multiline_comment|/* alloc.c */
 r_int
 id|hpfs_chk_sectors
@@ -1003,104 +1226,6 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|hpfs_lock_iget
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_void
-id|hpfs_unlock_iget
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-)paren
-suffix:semicolon
-r_void
-id|hpfs_lock_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_void
-id|hpfs_unlock_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_void
-id|hpfs_lock_2inodes
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_void
-id|hpfs_unlock_2inodes
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_void
-id|hpfs_lock_3inodes
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_void
-id|hpfs_unlock_3inodes
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_void
 op_star
 id|hpfs_map_sector
 c_func
@@ -1199,46 +1324,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* dir.c */
-r_int
-id|hpfs_dir_release
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-id|loff_t
-id|hpfs_dir_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-id|loff_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
-id|hpfs_readdir
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_void
-op_star
-comma
-id|filldir_t
-)paren
-suffix:semicolon
 r_struct
 id|dentry
 op_star
@@ -1257,6 +1342,11 @@ r_struct
 id|nameidata
 op_star
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|hpfs_dir_ops
 suffix:semicolon
 multiline_comment|/* dnode.c */
 r_void
@@ -1575,32 +1665,6 @@ r_int
 suffix:semicolon
 multiline_comment|/* file.c */
 r_int
-id|hpfs_file_release
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hpfs_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-r_int
 id|hpfs_file_fsync
 c_func
 (paren
@@ -1615,71 +1679,31 @@ comma
 r_int
 )paren
 suffix:semicolon
-id|secno
-id|hpfs_bmap
-c_func
-(paren
+r_extern
 r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
+id|file_operations
+id|hpfs_file_ops
 suffix:semicolon
-r_void
-id|hpfs_truncate
-c_func
-(paren
+r_extern
 r_struct
-id|inode
-op_star
-)paren
+id|inode_operations
+id|hpfs_file_iops
 suffix:semicolon
-r_int
-id|hpfs_get_block
-c_func
-(paren
+r_extern
 r_struct
-id|inode
-op_star
-id|inode
-comma
-id|sector_t
-id|iblock
-comma
-r_struct
-id|buffer_head
-op_star
-id|bh_result
-comma
-r_int
-id|create
-)paren
-suffix:semicolon
-id|ssize_t
-id|hpfs_file_write
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_const
-r_char
-id|__user
-op_star
-id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-op_star
-id|ppos
-)paren
+id|address_space_operations
+id|hpfs_aops
 suffix:semicolon
 multiline_comment|/* inode.c */
+r_void
+id|hpfs_init_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
 r_void
 id|hpfs_read_inode
 c_func
@@ -1987,133 +2011,15 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* namei.c */
-r_int
-id|hpfs_mkdir
-c_func
-(paren
+r_extern
 r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-comma
-r_int
-)paren
+id|inode_operations
+id|hpfs_dir_iops
 suffix:semicolon
-r_int
-id|hpfs_create
-c_func
-(paren
+r_extern
 r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-comma
-r_int
-comma
-r_struct
-id|nameidata
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hpfs_mknod
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-comma
-r_int
-comma
-id|dev_t
-)paren
-suffix:semicolon
-r_int
-id|hpfs_symlink
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-comma
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hpfs_unlink
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hpfs_rmdir
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hpfs_symlink_readpage
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hpfs_rename
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|dentry
-op_star
-)paren
+id|address_space_operations
+id|hpfs_symlink_aops
 suffix:semicolon
 DECL|function|hpfs_i
 r_static
@@ -2200,30 +2106,6 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|hpfs_remount_fs
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_int
-op_star
-comma
-r_char
-op_star
-)paren
-suffix:semicolon
-r_void
-id|hpfs_put_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-)paren
-suffix:semicolon
-r_int
 id|hpfs_count_one_bitmap
 c_func
 (paren
@@ -2233,24 +2115,6 @@ op_star
 comma
 id|secno
 )paren
-suffix:semicolon
-r_int
-id|hpfs_statfs
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_struct
-id|kstatfs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|address_space_operations
-id|hpfs_aops
 suffix:semicolon
 multiline_comment|/*&n; * local time (HPFS) to GMT (Unix)&n; */
 DECL|function|local_to_gmt

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/name.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  operations with filenames&n; */
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|variable|text_postfix
 r_char

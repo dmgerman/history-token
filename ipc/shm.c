@@ -532,10 +532,10 @@ op_star
 id|vma
 )paren
 (brace
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode
+id|file
 )paren
 suffix:semicolon
 id|vma-&gt;vm_ops

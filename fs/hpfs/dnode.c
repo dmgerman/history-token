@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/dnode.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  handling directory dnode tree - adding, deleteing &amp; searching for dirents&n; */
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|function|get_pos
 r_static
@@ -209,7 +208,7 @@ id|loff_t
 op_star
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -1611,7 +1610,7 @@ c_func
 (paren
 l_int|256
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -1911,7 +1910,7 @@ c_func
 (paren
 l_int|0x924
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -3409,7 +3408,7 @@ c_func
 (paren
 id|de-&gt;length
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -4251,7 +4250,7 @@ c_func
 (paren
 id|de-&gt;length
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -4717,7 +4716,7 @@ c_func
 (paren
 id|de_prev-&gt;length
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -7040,7 +7039,7 @@ c_func
 (paren
 l_int|256
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren

@@ -4405,10 +4405,12 @@ id|inode-&gt;i_op-&gt;readlink
 r_goto
 id|out
 suffix:semicolon
-id|update_atime
+id|touch_atime
 c_func
 (paren
-id|inode
+id|fhp-&gt;fh_export-&gt;ex_mnt
+comma
+id|dentry
 )paren
 suffix:semicolon
 multiline_comment|/* N.B. Why does this call need a get_fs()??&n;&t; * Remove the set_fs and watch the fireworks:-) --okir&n;&t; */

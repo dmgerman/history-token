@@ -723,10 +723,10 @@ id|ret
 OG
 l_int|0
 )paren
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|inode
+id|filp
 )paren
 suffix:semicolon
 r_return

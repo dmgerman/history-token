@@ -1209,6 +1209,11 @@ c_func
 (paren
 id|fd
 )paren
+ques
+c_cond
+id|FD_CLOEXEC
+suffix:colon
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1226,7 +1231,7 @@ id|fd
 comma
 id|arg
 op_amp
-l_int|1
+id|FD_CLOEXEC
 )paren
 suffix:semicolon
 r_break

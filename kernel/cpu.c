@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* This protects CPUs going up and down... */
 DECL|variable|cpucontrol
@@ -34,7 +35,30 @@ op_star
 id|nb
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
+id|down_interruptible
+c_func
+(paren
+op_amp
+id|cpucontrol
+)paren
+)paren
+op_ne
+l_int|0
+)paren
 r_return
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|notifier_chain_register
 c_func
 (paren
@@ -44,7 +68,24 @@ comma
 id|nb
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|cpucontrol
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
+DECL|variable|register_cpu_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_cpu_notifier
+)paren
+suffix:semicolon
 DECL|function|unregister_cpu_notifier
 r_void
 id|unregister_cpu_notifier
@@ -56,6 +97,13 @@ op_star
 id|nb
 )paren
 (brace
+id|down
+c_func
+(paren
+op_amp
+id|cpucontrol
+)paren
+suffix:semicolon
 id|notifier_chain_unregister
 c_func
 (paren
@@ -65,7 +113,21 @@ comma
 id|nb
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|cpucontrol
+)paren
+suffix:semicolon
 )brace
+DECL|variable|unregister_cpu_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_cpu_notifier
+)paren
+suffix:semicolon
 DECL|function|cpu_up
 r_int
 id|__devinit

@@ -7412,13 +7412,14 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
 id|snd_dma_pci_data
 c_func
 (paren
 id|chip-&gt;dev_u.pdev
 )paren
+comma
 l_int|64
 op_star
 l_int|1024

@@ -3092,6 +3092,14 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|sgiioc4_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|driver
 r_static
 r_struct
