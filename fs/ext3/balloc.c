@@ -671,6 +671,8 @@ c_func
 id|handle
 comma
 id|bitmap_bh
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1555,6 +1557,11 @@ id|have_access
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|credits
+op_assign
+l_int|0
+suffix:semicolon
 op_star
 id|errp
 op_assign
@@ -1666,6 +1673,9 @@ c_func
 id|handle
 comma
 id|bitmap_bh
+comma
+op_amp
+id|credits
 )paren
 suffix:semicolon
 r_if
@@ -1811,6 +1821,8 @@ c_func
 id|handle
 comma
 id|bitmap_bh
+comma
+id|credits
 )paren
 suffix:semicolon
 )brace

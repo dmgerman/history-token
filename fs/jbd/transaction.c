@@ -1441,6 +1441,10 @@ id|jh
 comma
 r_int
 id|force_copy
+comma
+r_int
+op_star
+id|credits
 )paren
 (brace
 r_struct
@@ -1685,6 +1689,17 @@ l_int|0
 suffix:semicolon
 id|handle-&gt;h_buffer_credits
 op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|credits
+)paren
+(paren
+op_star
+id|credits
+)paren
+op_increment
 suffix:semicolon
 r_goto
 id|done_locked
@@ -1935,6 +1950,17 @@ suffix:semicolon
 id|handle-&gt;h_buffer_credits
 op_decrement
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|credits
+)paren
+(paren
+op_star
+id|credits
+)paren
+op_increment
+suffix:semicolon
 multiline_comment|/* Finally, if the buffer is not journaled right now, we need to&n;&t; * make sure it doesn&squot;t get written to disk before the caller&n;&t; * actually commits the new data. */
 r_if
 c_cond
@@ -2138,6 +2164,7 @@ multiline_comment|/**&n; * int journal_get_write_access() - notify intent to mod
 DECL|function|journal_get_write_access
 r_int
 id|journal_get_write_access
+c_func
 (paren
 id|handle_t
 op_star
@@ -2147,6 +2174,10 @@ r_struct
 id|buffer_head
 op_star
 id|bh
+comma
+r_int
+op_star
+id|credits
 )paren
 (brace
 r_struct
@@ -2174,6 +2205,8 @@ comma
 id|jh
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|journal_put_journal_head
@@ -2442,7 +2475,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * int journal_get_undo_access() -  Notify intent to modify metadata with&n; *     non-rewindable consequences&n; * @handle: transaction&n; * @bh: buffer to undo&n; * &n; * Sometimes there is a need to distinguish between metadata which has&n; * been committed to disk and that which has not.  The ext3fs code uses&n; * this for freeing and allocating space, we have to make sure that we&n; * do not reuse freed space until the deallocation has been committed,&n; * since if we overwrote that space we would make the delete&n; * un-rewindable in case of a crash.&n; * &n; * To deal with that, journal_get_undo_access requests write access to a&n; * buffer for parts of non-rewindable operations such as delete&n; * operations on the bitmaps.  The journaling code must keep a copy of&n; * the buffer&squot;s contents prior to the undo_access call until such time&n; * as we know that the buffer has definitely been committed to disk.&n; * &n; * We never need to know which transaction the committed data is part&n; * of, buffers touched here are guaranteed to be dirtied later and so&n; * will be committed to a new transaction in due course, at which point&n; * we can discard the old committed data pointer.&n; *&n; * Returns error number or 0 on success.  &n; */
+multiline_comment|/**&n; * int journal_get_undo_access() -  Notify intent to modify metadata with&n; *     non-rewindable consequences&n; * @handle: transaction&n; * @bh: buffer to undo&n; * @credits: store the number of taken credits here (if not NULL)&n; *&n; * Sometimes there is a need to distinguish between metadata which has&n; * been committed to disk and that which has not.  The ext3fs code uses&n; * this for freeing and allocating space, we have to make sure that we&n; * do not reuse freed space until the deallocation has been committed,&n; * since if we overwrote that space we would make the delete&n; * un-rewindable in case of a crash.&n; * &n; * To deal with that, journal_get_undo_access requests write access to a&n; * buffer for parts of non-rewindable operations such as delete&n; * operations on the bitmaps.  The journaling code must keep a copy of&n; * the buffer&squot;s contents prior to the undo_access call until such time&n; * as we know that the buffer has definitely been committed to disk.&n; * &n; * We never need to know which transaction the committed data is part&n; * of, buffers touched here are guaranteed to be dirtied later and so&n; * will be committed to a new transaction in due course, at which point&n; * we can discard the old committed data pointer.&n; *&n; * Returns error number or 0 on success.&n; */
 DECL|function|journal_get_undo_access
 r_int
 id|journal_get_undo_access
@@ -2456,6 +2489,10 @@ r_struct
 id|buffer_head
 op_star
 id|bh
+comma
+r_int
+op_star
+id|credits
 )paren
 (brace
 r_int
@@ -2486,16 +2523,19 @@ comma
 l_string|&quot;entry&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Do this first --- it can drop the journal lock, so we want to&n;&t; * make sure that obtaining the committed_data is done&n;&t; * atomically wrt. completion of any outstanding commits. */
+multiline_comment|/*&n;&t; * Do this first --- it can drop the journal lock, so we want to&n;&t; * make sure that obtaining the committed_data is done&n;&t; * atomically wrt. completion of any outstanding commits.&n;&t; */
 id|err
 op_assign
 id|do_get_write_access
+c_func
 (paren
 id|handle
 comma
 id|jh
 comma
 l_int|1
+comma
+id|credits
 )paren
 suffix:semicolon
 r_if
@@ -3225,9 +3265,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * journal_release_buffer: undo a get_write_access without any buffer&n; * updates, if the update decided in the end that it didn&squot;t need access.&n; *&n; * journal_get_write_access() can block, so it is quite possible for a&n; * journaling component to decide after the write access is returned&n; * that global state has changed and the update is no longer required.  */
-DECL|function|journal_release_buffer
+multiline_comment|/* &n; * journal_release_buffer: undo a get_write_access without any buffer&n; * updates, if the update decided in the end that it didn&squot;t need access.&n; *&n; * journal_get_write_access() can block, so it is quite possible for a&n; * journaling component to decide after the write access is returned&n; * that global state has changed and the update is no longer required.&n; *&n; * The caller passes in the number of credits which should be put back for&n; * this buffer (zero or one).&n; */
 r_void
+DECL|function|journal_release_buffer
 id|journal_release_buffer
 c_func
 (paren
@@ -3239,6 +3279,9 @@ r_struct
 id|buffer_head
 op_star
 id|bh
+comma
+r_int
+id|credits
 )paren
 (brace
 id|transaction_t
@@ -3317,9 +3360,6 @@ comma
 l_string|&quot;unused: refiling it&quot;
 )paren
 suffix:semicolon
-id|handle-&gt;h_buffer_credits
-op_increment
-suffix:semicolon
 id|__journal_refile_buffer
 c_func
 (paren
@@ -3339,6 +3379,10 @@ c_func
 (paren
 id|bh
 )paren
+suffix:semicolon
+id|handle-&gt;h_buffer_credits
+op_add_assign
+id|credits
 suffix:semicolon
 id|JBUFFER_TRACE
 c_func

@@ -1949,6 +1949,11 @@ id|sb
 )paren
 )paren
 (brace
+r_int
+id|credits
+op_assign
+l_int|0
+suffix:semicolon
 id|BUFFER_TRACE
 c_func
 (paren
@@ -1959,12 +1964,15 @@ l_string|&quot;get_write_access&quot;
 suffix:semicolon
 id|err
 op_assign
-id|ext3_journal_get_write_access
+id|ext3_journal_get_write_access_credits
 c_func
 (paren
 id|handle
 comma
 id|bitmap_bh
+comma
+op_amp
+id|credits
 )paren
 suffix:semicolon
 r_if
@@ -2034,6 +2042,8 @@ c_func
 id|handle
 comma
 id|bitmap_bh
+comma
+id|credits
 )paren
 suffix:semicolon
 )brace

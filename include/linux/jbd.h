@@ -1355,6 +1355,7 @@ suffix:semicolon
 r_extern
 r_int
 id|journal_get_write_access
+c_func
 (paren
 id|handle_t
 op_star
@@ -1362,6 +1363,10 @@ comma
 r_struct
 id|buffer_head
 op_star
+comma
+r_int
+op_star
+id|credits
 )paren
 suffix:semicolon
 r_extern
@@ -1379,6 +1384,7 @@ suffix:semicolon
 r_extern
 r_int
 id|journal_get_undo_access
+c_func
 (paren
 id|handle_t
 op_star
@@ -1386,6 +1392,10 @@ comma
 r_struct
 id|buffer_head
 op_star
+comma
+r_int
+op_star
+id|credits
 )paren
 suffix:semicolon
 r_extern
@@ -1422,6 +1432,9 @@ comma
 r_struct
 id|buffer_head
 op_star
+comma
+r_int
+id|credits
 )paren
 suffix:semicolon
 r_extern
