@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
@@ -25,9 +24,8 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-macro_line|#ifdef CONFIG_PPC_EEH
 macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/tlb.h&gt;
 multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; */
 DECL|variable|htab_data
 id|HTAB
@@ -745,6 +743,10 @@ comma
 id|pte_t
 op_star
 id|ptep
+comma
+r_int
+r_int
+id|trap
 )paren
 (brace
 r_int
@@ -796,6 +798,9 @@ multiline_comment|/*&n;&t; * If no pte found or not present, send the problem up
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|ptep
 op_logical_or
@@ -805,6 +810,7 @@ c_func
 (paren
 op_star
 id|ptep
+)paren
 )paren
 )paren
 r_return
@@ -818,6 +824,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|access
 op_amp
 op_complement
@@ -827,6 +836,7 @@ c_func
 (paren
 op_star
 id|ptep
+)paren
 )paren
 )paren
 )paren
@@ -882,9 +892,109 @@ id|new_pte
 )paren
 )paren
 suffix:semicolon
+DECL|macro|PPC64_HWNOEXEC
+mdefine_line|#define PPC64_HWNOEXEC (1 &lt;&lt; 2)
+multiline_comment|/* We do lazy icache flushing on POWER4 */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4
+)paren
+op_logical_and
+id|pfn_valid
+c_func
+(paren
+id|pte_pfn
+c_func
+(paren
+id|new_pte
+)paren
+)paren
+)paren
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|pte_page
+c_func
+(paren
+id|new_pte
+)paren
+suffix:semicolon
+multiline_comment|/* page is dirty */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageReserved
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|trap
+op_eq
+l_int|0x400
+)paren
+(brace
+id|__flush_dcache_icache
+c_func
+(paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|newpp
+op_or_assign
+id|PPC64_HWNOEXEC
+suffix:semicolon
+)brace
+)brace
+)brace
 multiline_comment|/* Check if pte already has an hpte (case 2) */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|pte_val
 c_func
@@ -893,6 +1003,7 @@ id|old_pte
 )paren
 op_amp
 id|_PAGE_HASHPTE
+)paren
 )paren
 (brace
 multiline_comment|/* There MIGHT be an HPTE for this pte */
@@ -1015,6 +1126,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 (paren
 id|pte_val
@@ -1024,6 +1138,7 @@ id|old_pte
 )paren
 op_amp
 id|_PAGE_HASHPTE
+)paren
 )paren
 )paren
 (brace
@@ -1270,6 +1385,10 @@ comma
 r_int
 r_int
 id|access
+comma
+r_int
+r_int
+id|trap
 )paren
 (brace
 r_void
@@ -1381,7 +1500,6 @@ id|ea
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
 r_case
 id|IO_UNMAPPED_REGION_ID
 suffix:colon
@@ -1408,7 +1526,6 @@ id|ea
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|KERNEL_REGION_ID
 suffix:colon
@@ -1489,6 +1606,8 @@ comma
 id|vsid
 comma
 id|ptep
+comma
+id|trap
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -1724,20 +1843,17 @@ r_int
 id|i
 suffix:semicolon
 r_struct
-id|tlb_batch_data
+id|ppc64_tlb_batch
 op_star
-id|ptes
+id|batch
 op_assign
 op_amp
-id|tlb_batch_array
+id|ppc64_tlb_batch
 (braket
 id|smp_processor_id
 c_func
 (paren
 )paren
-)braket
-(braket
-l_int|0
 )braket
 suffix:semicolon
 r_for
@@ -1754,23 +1870,24 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|flush_hash_page
 c_func
 (paren
 id|context
 comma
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 comma
-id|ptes-&gt;pte
+id|batch-&gt;pte
+(braket
+id|i
+)braket
 comma
 id|local
 )paren
 suffix:semicolon
-id|ptes
-op_increment
-suffix:semicolon
-)brace
 )brace
 )brace
 eof

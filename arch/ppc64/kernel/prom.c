@@ -21,7 +21,6 @@ macro_line|#else
 DECL|macro|call_yaboot
 mdefine_line|#define call_yaboot(FUNC,...) do { ; } while (0)
 macro_line|#endif
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -11496,7 +11495,6 @@ multiline_comment|/*&n; * Returns all nodes linked together&n; */
 r_struct
 id|device_node
 op_star
-id|__openfirmware
 DECL|function|find_all_nodes
 id|find_all_nodes
 c_func
@@ -12005,7 +12003,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Add a property to a node&n; */
 r_void
-id|__openfirmware
 DECL|function|prom_add_property
 id|prom_add_property
 c_func
@@ -12058,7 +12055,6 @@ suffix:semicolon
 )brace
 macro_line|#if 0
 r_void
-id|__openfirmware
 id|print_properties
 c_func
 (paren
