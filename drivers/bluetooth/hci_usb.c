@@ -39,7 +39,7 @@ r_static
 r_int
 id|isoc
 op_assign
-l_int|1
+l_int|2
 suffix:semicolon
 macro_line|#endif
 DECL|macro|VERSION
@@ -4192,8 +4192,12 @@ r_if
 c_cond
 (paren
 id|ep-&gt;desc.wMaxPacketSize
-template_param
-l_int|2
+OL
+id|size
+op_logical_or
+id|uif-&gt;desc.bAlternateSetting
+op_ne
+id|isoc
 )paren
 r_break
 suffix:semicolon
@@ -4768,9 +4772,9 @@ c_func
 (paren
 id|isoc
 comma
-r_bool
+r_int
 comma
-l_int|0
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

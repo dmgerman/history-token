@@ -2056,6 +2056,117 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Same as inet6_dgram_ops, sans udp_poll.  */
+DECL|variable|inet6_sockraw_ops
+r_static
+r_struct
+id|proto_ops
+id|inet6_sockraw_ops
+op_assign
+(brace
+dot
+id|family
+op_assign
+id|PF_INET6
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|release
+op_assign
+id|inet6_release
+comma
+dot
+id|bind
+op_assign
+id|inet6_bind
+comma
+dot
+id|connect
+op_assign
+id|inet_dgram_connect
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|socketpair
+op_assign
+id|sock_no_socketpair
+comma
+multiline_comment|/* a do nothing&t;*/
+dot
+id|accept
+op_assign
+id|sock_no_accept
+comma
+multiline_comment|/* a do nothing&t;*/
+dot
+id|getname
+op_assign
+id|inet6_getname
+comma
+dot
+id|poll
+op_assign
+id|datagram_poll
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|ioctl
+op_assign
+id|inet6_ioctl
+comma
+multiline_comment|/* must change  */
+dot
+id|listen
+op_assign
+id|sock_no_listen
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|shutdown
+op_assign
+id|inet_shutdown
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|setsockopt
+op_assign
+id|sock_common_setsockopt
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|getsockopt
+op_assign
+id|sock_common_getsockopt
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|sendmsg
+op_assign
+id|inet_sendmsg
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|recvmsg
+op_assign
+id|sock_common_recvmsg
+comma
+multiline_comment|/* ok&t;&t;*/
+dot
+id|mmap
+op_assign
+id|sock_no_mmap
+comma
+dot
+id|sendpage
+op_assign
+id|sock_no_sendpage
+comma
+)brace
+suffix:semicolon
 DECL|variable|rawv6_protosw
 r_static
 r_struct
@@ -2084,7 +2195,7 @@ dot
 id|ops
 op_assign
 op_amp
-id|inet6_dgram_ops
+id|inet6_sockraw_ops
 comma
 dot
 id|capability

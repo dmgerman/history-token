@@ -113,7 +113,7 @@ c_func
 (paren
 l_string|&quot;init_targ: Failed to find %s&bslash;n&quot;
 comma
-id|t-&gt;u.kernel.target-&gt;name
+id|t-&gt;u.user.name
 )paren
 suffix:semicolon
 r_return
