@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/uart6850.c&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; * Extended by Alan Cox for Red Hat Software. Now a loadable MIDI driver.&n; * 28/4/97 - (C) Copyright Alan Cox. Released under the GPL version 2.&n; *&n; * Alan Cox:&t;&t;Updated for new modular code. Removed snd_* irq handling. Now&n; *&t;&t;&t;uses native linux resources&n; * Christoph Hellwig:&t;Adapted to module_init/module_exit&n; * Jeff Garzik:&t;&t;Made it work again, in theory&n; *&t;&t;&t;FIXME: If the request_irq() succeeds, the probe succeeds. Ug.&n; *&n; *&t;Status: Testing required (no shit -jgarzik)&n; *&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/* Mon Nov 22 22:38:35 MET 1993 marco@driq.home.usn.nl:&n; *      added 6850 support, used with COVOX SoundMaster II and custom cards.&n; */
 macro_line|#include &quot;sound_config.h&quot;
 DECL|variable|uart6850_base
@@ -127,6 +128,13 @@ DECL|variable|my_dev
 r_static
 r_int
 id|my_dev
+suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|midi_input_intr
 r_static
@@ -305,15 +313,13 @@ id|OPEN_READ
 r_return
 suffix:semicolon
 multiline_comment|/* Device has been closed */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -343,9 +349,12 @@ id|uart6850_timer
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Come back later&n;&t; */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -480,15 +489,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * Test for input since pending input seems to block the output.&n;&t; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -504,9 +511,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -782,15 +792,13 @@ id|uart6850_irq
 op_assign
 id|hw_config-&gt;irq
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for
@@ -825,9 +833,12 @@ id|ok
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
