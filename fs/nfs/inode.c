@@ -310,6 +310,11 @@ op_assign
 op_amp
 id|nfs_rpcstat
 comma
+dot
+id|pipe_dir_name
+op_assign
+l_string|&quot;/nfs&quot;
+comma
 )brace
 suffix:semicolon
 r_static
