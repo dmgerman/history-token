@@ -4449,7 +4449,7 @@ comma
 multiline_comment|/* AMD-defined (#2) */
 l_string|&quot;lahf_lm&quot;
 comma
-l_string|&quot;htvalid&quot;
+l_string|&quot;cmp_legacy&quot;
 comma
 l_int|NULL
 comma
