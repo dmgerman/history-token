@@ -1975,10 +1975,6 @@ op_star
 id|x
 )paren
 (brace
-r_int
-r_int
-id|f
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -22619,21 +22615,21 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_PERFMON */
+macro_line|#else  /* !CONFIG_PERFMON */
 id|asmlinkage
 r_int
 DECL|function|sys_perfmonctl
 id|sys_perfmonctl
 (paren
-id|pfm_ctxid_t
-id|ctxid
+r_int
+id|fd
 comma
 r_int
 id|cmd
 comma
 r_void
 op_star
-id|req
+id|arg
 comma
 r_int
 id|count
@@ -22659,5 +22655,5 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_PERFMON */
+macro_line|#endif /* CONFIG_PERFMON */
 eof

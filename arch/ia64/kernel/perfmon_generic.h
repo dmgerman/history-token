@@ -4,20 +4,20 @@ mdefine_line|#define RDEP(x)&t;(1UL&lt;&lt;(x))
 macro_line|#if defined(CONFIG_ITANIUM) || defined (CONFIG_MCKINLEY)
 macro_line|#error &quot;This file should not be used when CONFIG_ITANIUM or CONFIG_MCKINLEY is defined&quot;
 macro_line|#endif
-DECL|variable|pmc_gen_desc
+DECL|variable|pfm_gen_pmc_desc
 r_static
 id|pfm_reg_desc_t
-id|pmc_gen_desc
+id|pfm_gen_pmc_desc
 (braket
 id|PMU_MAX_PMCS
 )braket
 op_assign
 initialization_block
 suffix:semicolon
-DECL|variable|pmd_gen_desc
+DECL|variable|pfm_gen_pmd_desc
 r_static
 id|pfm_reg_desc_t
-id|pmd_gen_desc
+id|pfm_gen_pmd_desc
 (braket
 id|PMU_MAX_PMDS
 )braket
