@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
-multiline_comment|/**&n; * struct rcu_head - callback structure for use with RCU&n; * @next: next update requests in a list&n; * @func: actual update function to call after the grace period.&n; * @arg: argument to be passed to the actual update function.&n; */
+multiline_comment|/**&n; * struct rcu_head - callback structure for use with RCU&n; * @next: next update requests in a list&n; * @func: actual update function to call after the grace period.&n; */
 DECL|struct|rcu_head
 r_struct
 id|rcu_head
@@ -27,24 +27,20 @@ op_star
 id|func
 )paren
 (paren
-r_void
+r_struct
+id|rcu_head
 op_star
-id|obj
+id|head
 )paren
-suffix:semicolon
-DECL|member|arg
-r_void
-op_star
-id|arg
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|RCU_HEAD_INIT
-mdefine_line|#define RCU_HEAD_INIT(head) { .next = NULL, .func = NULL, .arg = NULL }
+mdefine_line|#define RCU_HEAD_INIT(head) { .next = NULL, .func = NULL }
 DECL|macro|RCU_HEAD
 mdefine_line|#define RCU_HEAD(head) struct rcu_head head = RCU_HEAD_INIT(head)
 DECL|macro|INIT_RCU_HEAD
-mdefine_line|#define INIT_RCU_HEAD(ptr) do { &bslash;&n;       (ptr)-&gt;next = NULL; (ptr)-&gt;func = NULL; (ptr)-&gt;arg = NULL; &bslash;&n;} while (0)
+mdefine_line|#define INIT_RCU_HEAD(ptr) do { &bslash;&n;       (ptr)-&gt;next = NULL; (ptr)-&gt;func = NULL; &bslash;&n;} while (0)
 multiline_comment|/* Global control variables for rcupdate callback mechanism. */
 DECL|struct|rcu_ctrlblk
 r_struct
@@ -344,14 +340,11 @@ op_star
 id|func
 )paren
 (paren
-r_void
+r_struct
+id|rcu_head
 op_star
-id|arg
+id|head
 )paren
-comma
-r_void
-op_star
-id|arg
 )paren
 )paren
 suffix:semicolon

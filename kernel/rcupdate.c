@@ -100,7 +100,7 @@ l_int|NULL
 suffix:semicolon
 DECL|macro|RCU_tasklet
 mdefine_line|#define RCU_tasklet(cpu) (per_cpu(rcu_tasklet, cpu))
-multiline_comment|/**&n; * call_rcu - Queue an RCU update request.&n; * @head: structure to be used for queueing the RCU updates.&n; * @func: actual update function to be invoked after the grace period&n; * @arg: argument to be passed to the update function&n; *&n; * The update function will be invoked as soon as all CPUs have performed &n; * a context switch or been seen in the idle loop or in a user process. &n; * The read-side of critical section that use call_rcu() for updation must &n; * be protected by rcu_read_lock()/rcu_read_unlock().&n; */
+multiline_comment|/**&n; * call_rcu - Queue an RCU update request.&n; * @head: structure to be used for queueing the RCU updates.&n; * @func: actual update function to be invoked after the grace period&n; *&n; * The update function will be invoked as soon as all CPUs have performed &n; * a context switch or been seen in the idle loop or in a user process. &n; * The read-side of critical section that use call_rcu() for updation must &n; * be protected by rcu_read_lock()/rcu_read_unlock().&n; */
 DECL|function|call_rcu
 r_void
 id|fastcall
@@ -118,14 +118,11 @@ op_star
 id|func
 )paren
 (paren
-r_void
+r_struct
+id|rcu_head
 op_star
-id|arg
+id|rcu
 )paren
-comma
-r_void
-op_star
-id|arg
 )paren
 (brace
 r_int
@@ -138,10 +135,6 @@ suffix:semicolon
 id|head-&gt;func
 op_assign
 id|func
-suffix:semicolon
-id|head-&gt;arg
-op_assign
-id|arg
 suffix:semicolon
 id|head-&gt;next
 op_assign
@@ -218,7 +211,7 @@ op_member_access_from_pointer
 id|func
 c_func
 (paren
-id|list-&gt;arg
+id|list
 )paren
 suffix:semicolon
 id|list
@@ -1164,6 +1157,22 @@ id|rcu_nb
 )paren
 suffix:semicolon
 )brace
+DECL|struct|rcu_synchronize
+r_struct
+id|rcu_synchronize
+(brace
+DECL|member|head
+r_struct
+id|rcu_head
+id|head
+suffix:semicolon
+DECL|member|completion
+r_struct
+id|completion
+id|completion
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Because of FASTCALL declaration of complete, we use this wrapper */
 DECL|function|wakeme_after_rcu
 r_static
@@ -1171,15 +1180,35 @@ r_void
 id|wakeme_after_rcu
 c_func
 (paren
-r_void
+r_struct
+id|rcu_head
 op_star
-id|completion
+id|head
 )paren
 (brace
+r_struct
+id|rcu_synchronize
+op_star
+id|rcu
+suffix:semicolon
+id|rcu
+op_assign
+id|container_of
+c_func
+(paren
+id|head
+comma
+r_struct
+id|rcu_synchronize
+comma
+id|head
+)paren
+suffix:semicolon
 id|complete
 c_func
 (paren
-id|completion
+op_amp
+id|rcu-&gt;completion
 )paren
 suffix:semicolon
 )brace
@@ -1193,13 +1222,14 @@ r_void
 )paren
 (brace
 r_struct
-id|rcu_head
+id|rcu_synchronize
 id|rcu
 suffix:semicolon
-id|DECLARE_COMPLETION
+id|init_completion
 c_func
 (paren
-id|completion
+op_amp
+id|rcu.completion
 )paren
 suffix:semicolon
 multiline_comment|/* Will wake me after RCU finished */
@@ -1207,12 +1237,9 @@ id|call_rcu
 c_func
 (paren
 op_amp
-id|rcu
+id|rcu.head
 comma
 id|wakeme_after_rcu
-comma
-op_amp
-id|completion
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for it */
@@ -1220,7 +1247,7 @@ id|wait_for_completion
 c_func
 (paren
 op_amp
-id|completion
+id|rcu.completion
 )paren
 suffix:semicolon
 )brace
