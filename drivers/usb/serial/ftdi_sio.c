@@ -9479,6 +9479,14 @@ id|clear
 r_int
 id|ret
 suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s TIOCMSET&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
