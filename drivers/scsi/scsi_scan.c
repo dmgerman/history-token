@@ -5,10 +5,10 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|ALLOC_FAILURE_MSG
@@ -517,6 +517,10 @@ comma
 op_star
 id|device
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|sdev
 op_assign
 id|kmalloc
@@ -552,15 +556,6 @@ r_sizeof
 op_star
 id|sdev
 )paren
-)paren
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sdev-&gt;access_count
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|sdev-&gt;vendor
@@ -701,13 +696,21 @@ id|out_free_queue
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If there are any same target siblings, add this to the&n;&t; * sibling list&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|list_for_each_entry
 c_func
 (paren
 id|device
 comma
 op_amp
-id|shost-&gt;my_devices
+id|shost-&gt;__devices
 comma
 id|siblings
 )paren
@@ -753,7 +756,6 @@ id|sdev-&gt;scsi_level
 op_assign
 id|SCSI_2
 suffix:semicolon
-multiline_comment|/*&n;&t; * Add it to the end of the shost-&gt;my_devices list.&n;&t; */
 id|list_add_tail
 c_func
 (paren
@@ -761,7 +763,15 @@ op_amp
 id|sdev-&gt;siblings
 comma
 op_amp
-id|shost-&gt;my_devices
+id|shost-&gt;__devices
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -813,6 +823,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|sdev-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -827,6 +845,14 @@ op_amp
 id|sdev-&gt;same_target_siblings
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|sdev-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -836,17 +862,6 @@ id|scsi_free_queue
 c_func
 (paren
 id|sdev-&gt;request_queue
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdev-&gt;inquiry
-)paren
-id|kfree
-c_func
-(paren
-id|sdev-&gt;inquiry
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -868,11 +883,7 @@ r_if
 c_cond
 (paren
 id|sdev-&gt;single_lun
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 op_decrement
 id|sdev-&gt;sdev_target-&gt;starget_refcnt
 op_eq
@@ -884,13 +895,18 @@ c_func
 id|sdev-&gt;sdev_target
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
 id|sdev-&gt;host-&gt;host_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sdev-&gt;inquiry
 )paren
 suffix:semicolon
 id|kfree
@@ -2092,7 +2108,7 @@ id|rescan
 (brace
 id|sdev
 op_assign
-id|scsi_find_device
+id|scsi_device_lookup
 c_func
 (paren
 id|host
@@ -2157,6 +2173,13 @@ comma
 id|sdev-&gt;vendor
 comma
 id|sdev-&gt;model
+)paren
+suffix:semicolon
+multiline_comment|/* XXX: bandaid until callers do refcounting */
+id|scsi_device_put
+c_func
+(paren
+id|sdev
 )paren
 suffix:semicolon
 r_return
@@ -4049,40 +4072,45 @@ id|shost
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|le
-comma
-op_star
-id|lh
-suffix:semicolon
-r_struct
 id|scsi_device
 op_star
 id|sdev
+comma
+op_star
+id|tmp
 suffix:semicolon
-id|list_for_each_safe
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/*&n;&t; * Ok, this look a bit strange.  We always look for the first device&n;&t; * on the list as scsi_remove_device removes them from it - thus we&n;&t; * also have to release the lock.&n;&t; * We don&squot;t need to get another reference to the device before&n;&t; * releasing the lock as we already own the reference from&n;&t; * scsi_register_device that&squot;s release in scsi_remove_device.  And&n;&t; * after that we don&squot;t look at sdev anymore.&n;&t; */
+id|spin_lock_irqsave
 c_func
 (paren
-id|le
+id|shost-&gt;host_lock
 comma
-id|lh
+id|flags
+)paren
+suffix:semicolon
+id|list_for_each_entry_safe
+c_func
+(paren
+id|sdev
+comma
+id|tmp
 comma
 op_amp
-id|shost-&gt;my_devices
-)paren
-(brace
-id|sdev
-op_assign
-id|list_entry
-c_func
-(paren
-id|le
-comma
-r_struct
-id|scsi_device
+id|shost-&gt;__devices
 comma
 id|siblings
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|scsi_remove_device
@@ -4091,7 +4119,23 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_get_host_dev()&n; *&n; * Purpose:     Create a Scsi_Device that points to the host adapter itself.&n; *&n; * Arguments:   SHpnt   - Host that needs a Scsi_Device&n; *&n; * Lock status: None assumed.&n; *&n; * Returns:     The Scsi_Device or NULL&n; *&n; * Notes:&n; *&t;Attach a single Scsi_Device to the Scsi_Host - this should&n; *&t;be made to look like a &quot;pseudo-device&quot; that points to the&n; *&t;HA itself.&n; *&n; *&t;Note - this device is not accessible from any high-level&n; *&t;drivers (including generics), which is probably not&n; *&t;optimal.  We can add hooks later to attach &n; */
 DECL|function|scsi_get_host_dev

@@ -4908,18 +4908,14 @@ suffix:semicolon
 r_case
 id|SG_GET_ACCESS_COUNT
 suffix:colon
+multiline_comment|/* faked - we don&squot;t have a real access count anymore */
 id|val
 op_assign
 (paren
 id|sdp-&gt;device
 ques
 c_cond
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sdp-&gt;device-&gt;access_count
-)paren
+l_int|1
 suffix:colon
 l_int|0
 )paren
@@ -15677,15 +15673,7 @@ r_int
 )paren
 id|scsidp-&gt;type
 comma
-(paren
-r_int
-)paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|scsidp-&gt;access_count
-)paren
+l_int|1
 comma
 (paren
 r_int

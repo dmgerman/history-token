@@ -35,18 +35,6 @@ DECL|struct|scsi_device
 r_struct
 id|scsi_device
 (brace
-DECL|member|siblings
-r_struct
-id|list_head
-id|siblings
-suffix:semicolon
-multiline_comment|/* list of all devices on this host */
-DECL|member|same_target_siblings
-r_struct
-id|list_head
-id|same_target_siblings
-suffix:semicolon
-multiline_comment|/* just the devices sharing same target id */
 DECL|member|host
 r_struct
 id|Scsi_Host
@@ -59,6 +47,19 @@ id|request_queue
 op_star
 id|request_queue
 suffix:semicolon
+multiline_comment|/* the next two are protected by the host-&gt;host_lock */
+DECL|member|siblings
+r_struct
+id|list_head
+id|siblings
+suffix:semicolon
+multiline_comment|/* list of all devices on this host */
+DECL|member|same_target_siblings
+r_struct
+id|list_head
+id|same_target_siblings
+suffix:semicolon
+multiline_comment|/* just the devices sharing same target id */
 DECL|member|device_busy
 r_volatile
 r_int
@@ -139,11 +140,6 @@ r_int
 id|sector_size
 suffix:semicolon
 multiline_comment|/* size in bytes */
-DECL|member|access_count
-id|atomic_t
-id|access_count
-suffix:semicolon
-multiline_comment|/* Count of open channels/mounts */
 DECL|member|hostdata
 r_void
 op_star
@@ -440,19 +436,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|scsi_device_cancel_cb
-c_func
-(paren
-r_struct
-id|device
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|scsi_device_cancel
 c_func
 (paren
@@ -483,8 +466,65 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|scsi_device
+op_star
+id|scsi_device_lookup
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+id|uint
+comma
+id|uint
+comma
+id|uint
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|scsi_device
+op_star
+id|__scsi_device_lookup
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+id|uint
+comma
+id|uint
+comma
+id|uint
+)paren
+suffix:semicolon
+multiline_comment|/* only exposed to implement shost_for_each_device */
+r_extern
+r_struct
+id|scsi_device
+op_star
+id|__scsi_iterate_devices
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * shost_for_each_device  -  iterate over all devices of a host&n; * @sdev:&t;iterator&n; * @host:&t;host whiches devices we want to iterate over&n; *&n; * This traverses over each devices of @shost.  The devices have&n; * a reference that must be released by scsi_host_put when breaking&n; * out of the loop.&n; */
 DECL|macro|shost_for_each_device
-mdefine_line|#define shost_for_each_device(sdev, shost) &bslash;&n;&t;list_for_each_entry((sdev), &amp;((shost)-&gt;my_devices), siblings)
+mdefine_line|#define shost_for_each_device(sdev, shost) &bslash;&n;&t;for ((sdev) = __scsi_iterate_devices((shost), NULL); &bslash;&n;&t;     (sdev); &bslash;&n;&t;     (sdev) = __scsi_iterate_devices((shost), (sdev)))
+multiline_comment|/**&n; * __shost_for_each_device  -  iterate over all devices of a host (UNLOCKED)&n; * @sdev:&t;iterator&n; * @host:&t;host whiches devices we want to iterate over&n; *&n; * This traverses over each devices of @shost.  It does _not_ take a&n; * reference on the scsi_device, thus it the whole loop must be protected&n; * by shost-&gt;host_lock.&n; *&n; * Note:  The only reason why drivers would want to use this is because&n; * they&squot;re need to access the device list in irq context.  Otherwise you&n; * really want to use shost_for_each_device instead.&n; */
+DECL|macro|__shost_for_each_device
+mdefine_line|#define __shost_for_each_device(sdev, shost) &bslash;&n;&t;list_for_each_entry((sdev), &amp;((shost)-&gt;__devices), siblings)
 r_extern
 r_void
 id|scsi_adjust_queue_depth
