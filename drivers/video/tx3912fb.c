@@ -1071,14 +1071,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|tx3912fb_fix.id
-)paren
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV

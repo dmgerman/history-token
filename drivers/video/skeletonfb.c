@@ -77,13 +77,6 @@ id|xxx_par
 id|__initdata
 id|current_par
 suffix:semicolon
-multiline_comment|/* To go away in the near future */
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
-suffix:semicolon
 r_int
 id|xxxfb_init
 c_func

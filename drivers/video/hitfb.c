@@ -589,14 +589,6 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|fb_info.fix.id
-)paren
-suffix:semicolon
 id|fb_info.currcon
 op_assign
 op_minus

@@ -3198,14 +3198,6 @@ id|sgivwfb_fix.ypanstep
 op_assign
 id|ypan
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|sgivwfb_fix.id
-)paren
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV

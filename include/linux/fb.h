@@ -649,14 +649,6 @@ DECL|member|sy
 id|__u32
 id|sy
 suffix:semicolon
-DECL|member|width
-id|__u32
-id|width
-suffix:semicolon
-DECL|member|height
-id|__u32
-id|height
-suffix:semicolon
 DECL|member|dx
 id|__u32
 id|dx
@@ -664,6 +656,14 @@ suffix:semicolon
 DECL|member|dy
 id|__u32
 id|dy
+suffix:semicolon
+DECL|member|width
+id|__u32
+id|width
+suffix:semicolon
+DECL|member|height
+id|__u32
+id|height
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -702,6 +702,15 @@ DECL|struct|fb_image
 r_struct
 id|fb_image
 (brace
+DECL|member|dx
+id|__u32
+id|dx
+suffix:semicolon
+multiline_comment|/* Where to place image */
+DECL|member|dy
+id|__u32
+id|dy
+suffix:semicolon
 DECL|member|width
 id|__u32
 id|width
@@ -710,15 +719,6 @@ multiline_comment|/* Size of image */
 DECL|member|height
 id|__u32
 id|height
-suffix:semicolon
-DECL|member|dx
-id|__u16
-id|dx
-suffix:semicolon
-multiline_comment|/* Where to place image */
-DECL|member|dy
-id|__u16
-id|dy
 suffix:semicolon
 DECL|member|fg_color
 id|__u32
@@ -1094,14 +1094,6 @@ DECL|struct|fb_info
 r_struct
 id|fb_info
 (brace
-DECL|member|modename
-r_char
-id|modename
-(braket
-l_int|40
-)braket
-suffix:semicolon
-multiline_comment|/* default video mode */
 DECL|member|node
 id|kdev_t
 id|node

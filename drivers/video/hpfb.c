@@ -711,14 +711,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|fb_info.fix.id
-)paren
-suffix:semicolon
 id|fb_info.updatevar
 op_assign
 id|gen_update_var

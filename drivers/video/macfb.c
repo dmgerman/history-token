@@ -3816,14 +3816,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|macfb_fix.id
-)paren
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV

@@ -522,15 +522,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;   if (i&amp;0x8 == 0)&n;&t;&t;   maxinefb_ims332_write_register (IMS332_REG_CURSOR_RAM + i, 0x0f);&n;&t;&t;   else&n;&t;&t;   maxinefb_ims332_write_register (IMS332_REG_CURSOR_RAM + i, 0xf0);&n;&t;&t; */
 )brace
-multiline_comment|/* Let there be consoles... */
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-l_string|&quot;Maxine onboard graphics 1024x768x8&quot;
-)paren
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV

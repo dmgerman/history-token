@@ -388,14 +388,6 @@ id|info-&gt;par
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      Let there be consoles..&n;&t; */
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-id|pmagbafb_fix.id
-)paren
-suffix:semicolon
 id|info-&gt;node
 op_assign
 id|NODEV

@@ -2559,14 +2559,6 @@ id|fix-&gt;id
 )paren
 )paren
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-id|fix-&gt;id
-)paren
-suffix:semicolon
 id|info-&gt;node
 op_assign
 id|NODEV

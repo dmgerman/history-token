@@ -854,14 +854,6 @@ id|mem_start
 r_int
 id|err
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|dnfb_fix.id
-)paren
-suffix:semicolon
 id|fb_info.fontname
 (braket
 l_int|0

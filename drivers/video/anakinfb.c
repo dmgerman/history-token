@@ -282,14 +282,6 @@ id|fb_info
 )paren
 )paren
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|anakinfb_fix.id
-)paren
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV

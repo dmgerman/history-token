@@ -1612,14 +1612,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|vesafb_fix.id
-)paren
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV

@@ -7162,14 +7162,6 @@ id|info-&gt;var.accel_flags
 op_assign
 l_int|0
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-id|info-&gt;fix.id
-)paren
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp
