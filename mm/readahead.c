@@ -159,8 +159,7 @@ l_int|0
 suffix:semicolon
 id|ra-&gt;size
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 id|ra-&gt;ahead_start
 op_assign
@@ -1454,10 +1453,6 @@ op_logical_and
 id|req_size
 op_eq
 l_int|1
-op_logical_and
-id|ra-&gt;size
-op_ne
-l_int|0
 )paren
 r_goto
 id|out
@@ -1517,28 +1512,13 @@ multiline_comment|/*&n;&t; * Special case - first read.  We&squot;ll assume it&s
 r_if
 c_cond
 (paren
-(paren
-id|ra-&gt;size
-op_eq
-l_int|0
-op_logical_and
-id|offset
-op_eq
-l_int|0
-)paren
-multiline_comment|/* first io and start of file */
-op_logical_or
-(paren
-id|ra-&gt;size
-op_eq
-op_minus
-l_int|1
-op_logical_and
 id|sequential
-)paren
+op_logical_and
+id|ra-&gt;size
+op_eq
+l_int|0
 )paren
 (brace
-multiline_comment|/* First sequential */
 id|ra-&gt;size
 op_assign
 id|get_init_ra_size
@@ -1606,12 +1586,6 @@ c_cond
 (paren
 op_logical_neg
 id|sequential
-op_logical_or
-(paren
-id|ra-&gt;size
-op_eq
-l_int|0
-)paren
 )paren
 (brace
 id|ra_off
