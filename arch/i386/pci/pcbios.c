@@ -1580,11 +1580,13 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;PCI: Device %02x:%02x not found by BIOS&bslash;n&quot;
+l_string|&quot;PCI: Device %s not found by BIOS&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|list_del
