@@ -3265,10 +3265,10 @@ id|CB_CVSTEST
 suffix:semicolon
 )brace
 multiline_comment|/* Called at resume and initialization events */
-DECL|function|yenta_init
+DECL|function|yenta_sock_init
 r_static
 r_int
-id|yenta_init
+id|yenta_sock_init
 c_func
 (paren
 r_struct
@@ -3305,7 +3305,22 @@ c_func
 id|socket
 )paren
 suffix:semicolon
-multiline_comment|/* Re-enable interrupts */
+r_if
+c_cond
+(paren
+id|socket-&gt;type
+op_logical_and
+id|socket-&gt;type-&gt;sock_init
+)paren
+id|socket-&gt;type
+op_member_access_from_pointer
+id|sock_init
+c_func
+(paren
+id|socket
+)paren
+suffix:semicolon
+multiline_comment|/* Re-enable CSC interrupts */
 id|cb_writel
 c_func
 (paren
@@ -3320,10 +3335,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|yenta_suspend
+DECL|function|yenta_sock_suspend
 r_static
 r_int
-id|yenta_suspend
+id|yenta_sock_suspend
 c_func
 (paren
 r_struct
@@ -3357,7 +3372,7 @@ op_amp
 id|dead_socket
 )paren
 suffix:semicolon
-multiline_comment|/* Disable interrupts */
+multiline_comment|/* Disable CSC interrupts */
 id|cb_writel
 c_func
 (paren
@@ -3368,7 +3383,7 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This does not work currently. The controller&n;&t; * loses too much information during D3 to come up&n;&t; * cleanly. We should probably fix yenta_init()&n;&t; * to update all the critical registers, notably&n;&t; * the IO and MEM bridging region data.. That is&n;&t; * something that pci_set_power_state() should&n;&t; * probably know about bridges anyway.&n;&t; *&n;&t;pci_set_power_state(socket-&gt;dev, 3);&n;&t; */
+multiline_comment|/*&n;&t; * This does not work currently. The controller&n;&t; * loses too much information during D3 to come up&n;&t; * cleanly. We should probably fix yenta_sock_init()&n;&t; * to update all the critical registers, notably&n;&t; * the IO and MEM bridging region data.. That is&n;&t; * something that pci_set_power_state() should&n;&t; * probably know about bridges anyway.&n;&t; *&n;&t;pci_set_power_state(socket-&gt;dev, 3);&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -4043,12 +4058,12 @@ op_assign
 dot
 id|init
 op_assign
-id|yenta_init
+id|yenta_sock_init
 comma
 dot
 id|suspend
 op_assign
-id|yenta_suspend
+id|yenta_sock_suspend
 comma
 dot
 id|get_status
@@ -4122,6 +4137,11 @@ id|override
 op_assign
 id|ti_override
 comma
+dot
+id|sock_init
+op_assign
+id|ti_init
+comma
 )brace
 comma
 (braket
@@ -4133,6 +4153,11 @@ dot
 id|override
 op_assign
 id|ti113x_override
+comma
+dot
+id|sock_init
+op_assign
+id|ti113x_init
 comma
 )brace
 comma
@@ -4146,6 +4171,11 @@ id|override
 op_assign
 id|ti12xx_override
 comma
+dot
+id|sock_init
+op_assign
+id|ti113x_init
+comma
 )brace
 comma
 (braket
@@ -4158,6 +4188,11 @@ id|override
 op_assign
 id|ti1250_override
 comma
+dot
+id|sock_init
+op_assign
+id|ti1250_init
+comma
 )brace
 comma
 (braket
@@ -4169,6 +4204,11 @@ dot
 id|override
 op_assign
 id|ricoh_override
+comma
+dot
+id|sock_init
+op_assign
+id|ricoh_init
 comma
 )brace
 comma
