@@ -5634,7 +5634,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blk_queue_empty
+id|elv_queue_empty
 c_func
 (paren
 id|q
