@@ -1708,13 +1708,27 @@ op_amp
 id|vfsp-&gt;vfs_sync_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We can get woken by laptop mode, to do a sync -&n;&t;&t; * that&squot;s the (only!) case where the list would be&n;&t;&t; * empty with time remaining.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeleft
+op_logical_or
+id|list_empty
+c_func
+(paren
+op_amp
+id|vfsp-&gt;vfs_sync_list
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|timeleft
 )paren
-(brace
 id|timeleft
 op_assign
 (paren
@@ -2168,7 +2182,7 @@ id|prev_sync_seq
 op_assign
 id|vfsp-&gt;vfs_sync_seq
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The disk must be active because we&squot;re syncing.&n;&t;&t; * We schedule syncd now (now that the disk is&n;&t;&t; * active) instead of later (when it might not be).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The disk must be active because we&squot;re syncing.&n;&t;&t; * We schedule xfssyncd now (now that the disk is&n;&t;&t; * active) instead of later (when it might not be).&n;&t;&t; */
 id|wake_up_process
 c_func
 (paren
