@@ -3527,14 +3527,14 @@ id|self-&gt;tsap
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Flush (drain) ppp_generic Tx queue (most often we have blocked it) */
+multiline_comment|/* Cleanup &amp; close the PPP channel, which will kill pppd and the rest */
 r_if
 c_cond
 (paren
 id|self-&gt;ppp_open
 )paren
 (brace
-id|ppp_output_wakeup
+id|ppp_unregister_channel
 c_func
 (paren
 op_amp
@@ -3542,6 +3542,10 @@ id|self-&gt;chan
 )paren
 suffix:semicolon
 )brace
+id|self-&gt;ppp_open
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Cleanup the socket in case we want to reconnect */
 id|self-&gt;stsap_sel
