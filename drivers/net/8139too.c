@@ -4022,7 +4022,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* Changing the MII-advertised media because might prevent&n;&t;&t;   re-connection. */
-id|tp-&gt;mii.duplex_lock
+id|tp-&gt;mii.force_media
 op_assign
 l_int|1
 suffix:semicolon
@@ -5166,7 +5166,7 @@ suffix:semicolon
 )brace
 id|tp-&gt;mii.full_duplex
 op_assign
-id|tp-&gt;mii.duplex_lock
+id|tp-&gt;mii.force_media
 suffix:semicolon
 id|tp-&gt;tx_flag
 op_assign
@@ -6177,7 +6177,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tp-&gt;mii.duplex_lock
+id|tp-&gt;mii.force_media
 op_logical_and
 id|mii_lpa
 op_ne
@@ -8123,7 +8123,7 @@ l_int|0x01C0
 op_eq
 l_int|0x0040
 op_logical_or
-id|tp-&gt;mii.duplex_lock
+id|tp-&gt;mii.force_media
 suffix:semicolon
 r_if
 c_cond

@@ -177,13 +177,15 @@ id|full_duplex
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|duplex_lock
+multiline_comment|/* is full duplex? */
+DECL|member|force_media
 r_int
 r_int
-id|duplex_lock
+id|force_media
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/* is autoneg. disabled? */
 DECL|member|dev
 r_struct
 id|net_device

@@ -2581,7 +2581,7 @@ op_plus
 id|ANARANLPAR
 )paren
 suffix:semicolon
-id|np-&gt;mii.duplex_lock
+id|np-&gt;mii.force_media
 op_assign
 l_int|1
 suffix:semicolon
@@ -3777,7 +3777,7 @@ suffix:semicolon
 multiline_comment|/* tx store and forward, tx/rx enable */
 id|np-&gt;mii.full_duplex
 op_assign
-id|np-&gt;mii.duplex_lock
+id|np-&gt;mii.force_media
 suffix:semicolon
 id|getlinkstatus
 c_func

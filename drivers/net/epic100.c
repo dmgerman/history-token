@@ -2183,7 +2183,7 @@ c_cond
 id|duplex
 )paren
 (brace
-id|ep-&gt;mii.duplex_lock
+id|ep-&gt;mii.force_media
 op_assign
 id|ep-&gt;mii.full_duplex
 op_assign
@@ -4106,7 +4106,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ep-&gt;mii.duplex_lock
+id|ep-&gt;mii.force_media
 )paren
 r_return
 suffix:semicolon
@@ -7532,7 +7532,7 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* Check for autonegotiation on or reset. */
-id|ep-&gt;mii.duplex_lock
+id|ep-&gt;mii.force_media
 op_assign
 (paren
 id|value
@@ -7548,7 +7548,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ep-&gt;mii.duplex_lock
+id|ep-&gt;mii.force_media
 )paren
 id|ep-&gt;mii.full_duplex
 op_assign

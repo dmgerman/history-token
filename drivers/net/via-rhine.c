@@ -2468,7 +2468,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|np-&gt;mii_if.duplex_lock
+id|np-&gt;mii_if.force_media
 op_assign
 l_int|1
 suffix:semicolon
@@ -3943,7 +3943,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;mii_if.duplex_lock
+id|np-&gt;mii_if.force_media
 )paren
 id|np-&gt;chip_cmd
 op_or_assign
@@ -4200,7 +4200,7 @@ op_amp
 l_int|0x9000
 )paren
 multiline_comment|/* Autonegotiation. */
-id|np-&gt;mii_if.duplex_lock
+id|np-&gt;mii_if.force_media
 op_assign
 l_int|0
 suffix:semicolon
@@ -4566,7 +4566,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;mii_if.duplex_lock
+id|np-&gt;mii_if.force_media
 op_logical_or
 id|mii_lpa
 op_eq

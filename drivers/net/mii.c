@@ -544,7 +544,7 @@ comma
 id|bmcr
 )paren
 suffix:semicolon
-id|mii-&gt;duplex_lock
+id|mii-&gt;force_media
 op_assign
 l_int|0
 suffix:semicolon
@@ -638,7 +638,7 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-id|mii-&gt;duplex_lock
+id|mii-&gt;force_media
 op_assign
 l_int|1
 suffix:semicolon
@@ -834,7 +834,7 @@ multiline_comment|/* if forced media, go no further */
 r_if
 c_cond
 (paren
-id|mii-&gt;duplex_lock
+id|mii-&gt;force_media
 )paren
 r_return
 l_int|0
