@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.40 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.43 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -91,6 +91,8 @@ op_star
 id|sch
 )paren
 comma
+id|GFP_KERNEL
+op_or
 id|GFP_DMA
 )paren
 suffix:semicolon
@@ -509,9 +511,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|schedule_work
+id|queue_work
 c_func
 (paren
+id|ccw_device_work
+comma
 op_amp
 id|work
 )paren
@@ -564,9 +568,11 @@ id|devno
 op_ne
 id|sch-&gt;schib.pmcw.dev
 )paren
-id|schedule_work
+id|queue_work
 c_func
 (paren
+id|ccw_device_work
+comma
 op_amp
 id|work
 )paren

@@ -86,15 +86,20 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * Let&squot;s build our path group ID here.&n;&t; */
+macro_line|#ifdef CONFIG_SMP
 id|global_pgid.cpu_addr
 op_assign
-op_star
+id|hard_smp_processor_id
+c_func
 (paren
-id|__u16
-op_star
 )paren
-id|__LC_CPUADDR
 suffix:semicolon
+macro_line|#else
+id|global_pgid.cpu_addr
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|global_pgid.cpu_id
 op_assign
 (paren

@@ -295,6 +295,12 @@ id|packed
 )paren
 id|flags
 suffix:semicolon
+DECL|member|intparm
+r_int
+r_int
+id|intparm
+suffix:semicolon
+multiline_comment|/* user interruption parameter */
 DECL|member|qdio_data
 r_struct
 id|qdio_irq

@@ -157,18 +157,16 @@ op_member_access_from_pointer
 id|imask
 )paren
 suffix:semicolon
-multiline_comment|/* ret is 0, -EBUSY or -ENODEV */
+multiline_comment|/* ret is 0, -EBUSY, -EACCES or -ENODEV */
 r_if
 c_cond
 (paren
 id|ret
-op_ne
+op_eq
 op_minus
 id|EBUSY
 )paren
-r_return
-id|ret
-suffix:semicolon
+(brace
 id|CIO_MSG_EVENT
 c_func
 (paren
@@ -189,6 +187,38 @@ l_int|100
 )paren
 suffix:semicolon
 r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+op_minus
+id|EACCES
+)paren
+r_return
+id|ret
+suffix:semicolon
+id|CIO_MSG_EVENT
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;SNID - Device %04X on Subchannel &quot;
+l_string|&quot;%04X, lpm %02X, became &squot;not &quot;
+l_string|&quot;operational&squot;&bslash;n&quot;
+comma
+id|sch-&gt;schib.pmcw.dev
+comma
+id|sch-&gt;irq
+comma
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|imask
+)paren
 suffix:semicolon
 )brace
 id|cdev
@@ -1004,7 +1034,17 @@ op_member_access_from_pointer
 id|imask
 )paren
 suffix:semicolon
-multiline_comment|/* ret is 0, -EBUSY or -ENODEV */
+multiline_comment|/* ret is 0, -EBUSY, -EACCES or -ENODEV */
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|EACCES
+)paren
+r_break
+suffix:semicolon
 r_if
 c_cond
 (paren

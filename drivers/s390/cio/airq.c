@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/airq.c&n; *   S/390 common I/O routines -- support for adapter interruptions&n; *&n; *   $Revision: 1.10 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/airq.c&n; *   S/390 common I/O routines -- support for adapter interruptions&n; *&n; *   $Revision: 1.11 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -207,8 +207,7 @@ r_void
 DECL|function|do_adapter_IO
 id|do_adapter_IO
 (paren
-id|__u32
-id|intparm
+r_void
 )paren
 (brace
 id|CIO_TRACE_EVENT
@@ -234,7 +233,6 @@ op_star
 id|adapter_handler
 )paren
 (paren
-id|intparm
 )paren
 suffix:semicolon
 id|spin_unlock

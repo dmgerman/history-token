@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.91 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.97 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -630,8 +630,16 @@ id|schib
 )paren
 suffix:semicolon
 r_return
+(paren
+id|sch-&gt;lpm
+ques
+c_cond
+op_minus
+id|EACCES
+suffix:colon
 op_minus
 id|ENODEV
+)paren
 suffix:semicolon
 )brace
 r_int
@@ -687,14 +695,7 @@ id|dbf_txt
 suffix:semicolon
 id|sch-&gt;orb.intparm
 op_assign
-(paren
-id|__u32
-)paren
-(paren
-r_int
-)paren
-op_amp
-id|sch-&gt;u_intparm
+id|intparm
 suffix:semicolon
 id|sch-&gt;orb.fmt
 op_assign
@@ -787,10 +788,6 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/*&n;&t;&t; * initialize device status information&n;&t;&t; */
-id|sch-&gt;u_intparm
-op_assign
-id|intparm
-suffix:semicolon
 id|sch-&gt;schib.scsw.actl
 op_or_assign
 id|SCSW_ACTL_START_PEND
@@ -922,7 +919,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Note: The &quot;intparm&quot; parameter is not used by the halt_IO() function&n; *&t; itself, as no ORB is built for the HSCH instruction. However,&n; *&t; it allows the device interrupt handler to associate the upcoming&n; *&t; interrupt with the halt_IO() request.&n; */
+multiline_comment|/*&n; * halt I/O operation&n; */
 r_int
 DECL|function|cio_halt
 id|cio_halt
@@ -932,10 +929,6 @@ r_struct
 id|subchannel
 op_star
 id|sch
-comma
-r_int
-r_int
-id|intparm
 )paren
 (brace
 r_char
@@ -1007,10 +1000,6 @@ id|ccode
 r_case
 l_int|0
 suffix:colon
-id|sch-&gt;u_intparm
-op_assign
-id|intparm
-suffix:semicolon
 id|sch-&gt;schib.scsw.actl
 op_or_assign
 id|SCSW_ACTL_HALT_PEND
@@ -1039,7 +1028,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Note: The &quot;intparm&quot; parameter is not used by the clear_IO() function&n; *&t; itself, as no ORB is built for the CSCH instruction. However,&n; *&t; it allows the device interrupt handler to associate the upcoming&n; *&t; interrupt with the clear_IO() request.&n; */
+multiline_comment|/*&n; * Clear I/O operation&n; */
 r_int
 DECL|function|cio_clear
 id|cio_clear
@@ -1049,10 +1038,6 @@ r_struct
 id|subchannel
 op_star
 id|sch
-comma
-r_int
-r_int
-id|intparm
 )paren
 (brace
 r_char
@@ -1124,10 +1109,6 @@ id|ccode
 r_case
 l_int|0
 suffix:colon
-id|sch-&gt;u_intparm
-op_assign
-id|intparm
-suffix:semicolon
 id|sch-&gt;schib.scsw.actl
 op_or_assign
 id|SCSW_ACTL_CLEAR_PEND
@@ -1223,6 +1204,15 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* success */
+multiline_comment|/* Update information in scsw. */
+id|stsch
+(paren
+id|sch-&gt;irq
+comma
+op_amp
+id|sch-&gt;schib
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1988,8 +1978,8 @@ id|IO_INTERRUPT_TYPE
 )paren
 (brace
 id|do_adapter_IO
+c_func
 (paren
-id|tpi_info-&gt;intparm
 )paren
 suffix:semicolon
 r_continue

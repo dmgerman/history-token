@@ -33,22 +33,18 @@ comma
 DECL|enumerator|DEV_STATE_BOXED
 id|DEV_STATE_BOXED
 comma
-multiline_comment|/* special states for qdio */
-DECL|enumerator|DEV_STATE_QDIO_INIT
-id|DEV_STATE_QDIO_INIT
-comma
-DECL|enumerator|DEV_STATE_QDIO_ACTIVE
-id|DEV_STATE_QDIO_ACTIVE
-comma
-DECL|enumerator|DEV_STATE_QDIO_CLEANUP
-id|DEV_STATE_QDIO_CLEANUP
-comma
 multiline_comment|/* states to wait for i/o completion before doing something */
 DECL|enumerator|DEV_STATE_ONLINE_VERIFY
 id|DEV_STATE_ONLINE_VERIFY
 comma
 DECL|enumerator|DEV_STATE_W4SENSE_VERIFY
 id|DEV_STATE_W4SENSE_VERIFY
+comma
+DECL|enumerator|DEV_STATE_CLEAR_VERIFY
+id|DEV_STATE_CLEAR_VERIFY
+comma
+DECL|enumerator|DEV_STATE_TIMEOUT_KILL
+id|DEV_STATE_TIMEOUT_KILL
 comma
 multiline_comment|/* last element! */
 DECL|enumerator|NR_DEV_STATES
@@ -192,13 +188,20 @@ id|DEV_STATE_BOXED
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|workqueue_struct
+op_star
+id|ccw_device_work
+suffix:semicolon
 r_void
-id|io_subchannel_register
+id|io_subchannel_recog_done
 c_func
 (paren
-r_void
+r_struct
+id|ccw_device
 op_star
-id|data
+id|cdev
 )paren
 suffix:semicolon
 r_int

@@ -9,8 +9,7 @@ op_star
 id|adapter_int_handler_t
 )paren
 (paren
-id|__u32
-id|intparm
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -35,8 +34,7 @@ r_extern
 r_void
 id|do_adapter_IO
 (paren
-id|__u32
-id|intparm
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif

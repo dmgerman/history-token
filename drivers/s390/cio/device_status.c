@@ -506,7 +506,7 @@ id|cdev_irb-&gt;esw.esw0.erw.auth
 op_assign
 id|irb-&gt;esw.esw0.erw.auth
 suffix:semicolon
-multiline_comment|/* Copy path verification required flag. FIXME: how to verify ?? */
+multiline_comment|/* Copy path verification required flag. */
 id|cdev_irb-&gt;esw.esw0.erw.pvrf
 op_assign
 id|irb-&gt;esw.esw0.erw.pvrf
@@ -915,7 +915,7 @@ id|sch-&gt;sense_ccw
 comma
 l_int|0xE2C5D5E2
 comma
-l_int|0
+l_int|0xff
 )paren
 suffix:semicolon
 )brace

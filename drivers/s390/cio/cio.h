@@ -488,13 +488,6 @@ id|__u8
 id|lpm
 suffix:semicolon
 multiline_comment|/* logical path mask */
-singleline_comment|// TODO: intparm for second start i/o
-DECL|member|u_intparm
-r_int
-r_int
-id|u_intparm
-suffix:semicolon
-multiline_comment|/* user interruption parameter */
 DECL|member|schib
 r_struct
 id|schib
@@ -596,27 +589,6 @@ id|cio_clear
 r_struct
 id|subchannel
 op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|cio_do_io
-(paren
-r_struct
-id|subchannel
-op_star
-comma
-r_struct
-id|ccw1
-op_star
-comma
-r_int
-r_int
-comma
-id|__u8
 )paren
 suffix:semicolon
 r_extern
@@ -635,9 +607,6 @@ id|cio_halt
 r_struct
 id|subchannel
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern

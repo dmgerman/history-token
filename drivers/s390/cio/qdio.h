@@ -2,7 +2,7 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.11 $&quot;
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.16 $&quot;
 singleline_comment|//#define QDIO_DBF_LIKE_HELL
 macro_line|#ifdef QDIO_DBF_LIKE_HELL
 DECL|macro|QDIO_VERBOSE_LEVEL
@@ -54,8 +54,6 @@ DECL|macro|QDIO_PERF
 mdefine_line|#define QDIO_PERF &quot;qdio_perf&quot;
 multiline_comment|/* must be a power of 2 */
 multiline_comment|/*#define QDIO_STATS_NUMBER 4&n;&n;#define QDIO_STATS_CLASSES 2&n;#define QDIO_STATS_COUNT_NEEDED 2*/
-DECL|macro|QDIO_ACTIVATE_DELAY
-mdefine_line|#define QDIO_ACTIVATE_DELAY 5 /* according to brenton belmar and paul&n;&t;&t;&t;&t; gioquindo it can take up to 5ms before&n;&t;&t;&t;&t; queues are really active */
 DECL|macro|QDIO_NO_USE_COUNT_TIME
 mdefine_line|#define QDIO_NO_USE_COUNT_TIME 10
 DECL|macro|QDIO_NO_USE_COUNT_TIMEOUT
@@ -63,21 +61,38 @@ mdefine_line|#define QDIO_NO_USE_COUNT_TIMEOUT 1000 /* wait for 1 sec on each q 
 DECL|macro|QDIO_ESTABLISH_TIMEOUT
 mdefine_line|#define QDIO_ESTABLISH_TIMEOUT 1000
 DECL|macro|QDIO_ACTIVATE_TIMEOUT
-mdefine_line|#define QDIO_ACTIVATE_TIMEOUT 100
+mdefine_line|#define QDIO_ACTIVATE_TIMEOUT 5
 DECL|macro|QDIO_CLEANUP_CLEAR_TIMEOUT
 mdefine_line|#define QDIO_CLEANUP_CLEAR_TIMEOUT 20000
 DECL|macro|QDIO_CLEANUP_HALT_TIMEOUT
 mdefine_line|#define QDIO_CLEANUP_HALT_TIMEOUT 10000
-DECL|macro|QDIO_IRQ_STATE_FRESH
-mdefine_line|#define QDIO_IRQ_STATE_FRESH 0 /* must be 0 -&gt; memset has set it to 0 */
-DECL|macro|QDIO_IRQ_STATE_INACTIVE
-mdefine_line|#define QDIO_IRQ_STATE_INACTIVE 1
-DECL|macro|QDIO_IRQ_STATE_ESTABLISHED
-mdefine_line|#define QDIO_IRQ_STATE_ESTABLISHED 2
-DECL|macro|QDIO_IRQ_STATE_ACTIVE
-mdefine_line|#define QDIO_IRQ_STATE_ACTIVE 3
-DECL|macro|QDIO_IRQ_STATE_STOPPED
-mdefine_line|#define QDIO_IRQ_STATE_STOPPED 4
+DECL|enum|qdio_irq_states
+r_enum
+id|qdio_irq_states
+(brace
+DECL|enumerator|QDIO_IRQ_STATE_INACTIVE
+id|QDIO_IRQ_STATE_INACTIVE
+comma
+DECL|enumerator|QDIO_IRQ_STATE_ESTABLISHED
+id|QDIO_IRQ_STATE_ESTABLISHED
+comma
+DECL|enumerator|QDIO_IRQ_STATE_ACTIVE
+id|QDIO_IRQ_STATE_ACTIVE
+comma
+DECL|enumerator|QDIO_IRQ_STATE_STOPPED
+id|QDIO_IRQ_STATE_STOPPED
+comma
+DECL|enumerator|QDIO_IRQ_STATE_CLEANUP
+id|QDIO_IRQ_STATE_CLEANUP
+comma
+DECL|enumerator|QDIO_IRQ_STATE_ERR
+id|QDIO_IRQ_STATE_ERR
+comma
+DECL|enumerator|NR_QDIO_IRQ_STATES
+id|NR_QDIO_IRQ_STATES
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* used as intparm in do_IO: */
 DECL|macro|QDIO_DOING_SENSEID
 mdefine_line|#define QDIO_DOING_SENSEID 0
@@ -772,308 +787,6 @@ DECL|macro|CHSC_FLAG_SIGA_SYNC_DONE_ON_THININTS
 mdefine_line|#define CHSC_FLAG_SIGA_SYNC_DONE_ON_THININTS 0x08
 DECL|macro|CHSC_FLAG_SIGA_SYNC_DONE_ON_OUTB_PCIS
 mdefine_line|#define CHSC_FLAG_SIGA_SYNC_DONE_ON_OUTB_PCIS 0x04
-DECL|struct|qdio_chsc_area
-r_struct
-id|qdio_chsc_area
-(brace
-r_struct
-(brace
-multiline_comment|/* word 0 */
-DECL|member|command_code1
-id|__u16
-id|command_code1
-suffix:semicolon
-DECL|member|command_code2
-id|__u16
-id|command_code2
-suffix:semicolon
-multiline_comment|/* word 1 */
-DECL|member|operation_code
-id|__u16
-id|operation_code
-suffix:semicolon
-DECL|member|first_sch
-id|__u16
-id|first_sch
-suffix:semicolon
-multiline_comment|/* word 2 */
-DECL|member|reserved1
-id|__u8
-id|reserved1
-suffix:semicolon
-DECL|member|image_id
-id|__u8
-id|image_id
-suffix:semicolon
-DECL|member|last_sch
-id|__u16
-id|last_sch
-suffix:semicolon
-multiline_comment|/* word 3 */
-DECL|member|reserved2
-id|__u32
-id|reserved2
-suffix:semicolon
-multiline_comment|/* word 4 */
-r_union
-(brace
-r_struct
-(brace
-multiline_comment|/* word 4&amp;5 */
-DECL|member|summary_indicator_addr
-id|__u64
-id|summary_indicator_addr
-suffix:semicolon
-multiline_comment|/* word 6&amp;7 */
-DECL|member|subchannel_indicator_addr
-id|__u64
-id|subchannel_indicator_addr
-suffix:semicolon
-multiline_comment|/* word 8 */
-DECL|member|ks
-r_int
-id|ks
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|kc
-r_int
-id|kc
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|reserved1
-r_int
-id|reserved1
-suffix:colon
-l_int|21
-suffix:semicolon
-DECL|member|isc
-r_int
-id|isc
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* word 9&amp;10 */
-DECL|member|reserved2
-id|__u32
-id|reserved2
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* word 11 */
-DECL|member|subsystem_id
-id|__u32
-id|subsystem_id
-suffix:semicolon
-multiline_comment|/* word 12-1015 */
-DECL|member|reserved3
-id|__u32
-id|reserved3
-(braket
-l_int|1004
-)braket
-suffix:semicolon
-DECL|member|set_chsc
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-l_int|4
-)paren
-)paren
-)paren
-id|set_chsc
-suffix:semicolon
-r_struct
-(brace
-multiline_comment|/* word 4&amp;5 */
-DECL|member|reserved1
-id|__u32
-id|reserved1
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* word 6 */
-DECL|member|delay_target
-id|__u32
-id|delay_target
-suffix:semicolon
-multiline_comment|/* word 7-1015 */
-DECL|member|reserved4
-id|__u32
-id|reserved4
-(braket
-l_int|1009
-)braket
-suffix:semicolon
-DECL|member|set_chsc_fast
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-l_int|4
-)paren
-)paren
-)paren
-id|set_chsc_fast
-suffix:semicolon
-r_struct
-(brace
-multiline_comment|/* word 0 */
-DECL|member|length
-id|__u16
-id|length
-suffix:semicolon
-DECL|member|response_code
-id|__u16
-id|response_code
-suffix:semicolon
-multiline_comment|/* word 1 */
-DECL|member|reserved1
-id|__u32
-id|reserved1
-suffix:semicolon
-multiline_comment|/* words 2 to 9 for st sch qdio data */
-DECL|member|flags
-id|__u8
-id|flags
-suffix:semicolon
-DECL|member|reserved2
-id|__u8
-id|reserved2
-suffix:semicolon
-DECL|member|sch
-id|__u16
-id|sch
-suffix:semicolon
-DECL|member|qfmt
-id|__u8
-id|qfmt
-suffix:semicolon
-DECL|member|reserved3
-id|__u8
-id|reserved3
-suffix:semicolon
-DECL|member|qdioac
-id|__u8
-id|qdioac
-suffix:semicolon
-DECL|member|sch_class
-id|__u8
-id|sch_class
-suffix:semicolon
-DECL|member|reserved4
-id|__u8
-id|reserved4
-suffix:semicolon
-DECL|member|icnt
-id|__u8
-id|icnt
-suffix:semicolon
-DECL|member|reserved5
-id|__u8
-id|reserved5
-suffix:semicolon
-DECL|member|ocnt
-id|__u8
-id|ocnt
-suffix:semicolon
-multiline_comment|/* plus 5 words of reserved fields */
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-DECL|member|store_qdio_data_response
-id|store_qdio_data_response
-suffix:semicolon
-DECL|member|operation_data_area
-)brace
-id|operation_data_area
-suffix:semicolon
-DECL|member|request_block
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-id|request_block
-suffix:semicolon
-r_struct
-(brace
-multiline_comment|/* word 0 */
-DECL|member|length
-id|__u16
-id|length
-suffix:semicolon
-DECL|member|response_code
-id|__u16
-id|response_code
-suffix:semicolon
-multiline_comment|/* word 1 */
-DECL|member|reserved1
-id|__u32
-id|reserved1
-suffix:semicolon
-DECL|member|response_block
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-id|response_block
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-id|PAGE_SIZE
-)paren
-)paren
-)paren
-suffix:semicolon
 macro_line|#ifdef QDIO_PERFORMANCE_STATS
 DECL|struct|qdio_perf_stats
 r_struct
@@ -1308,8 +1021,8 @@ id|tasklet
 suffix:semicolon
 macro_line|#endif /* QDIO_USE_TIMERS_FOR_POLLING */
 DECL|member|state
-r_int
-r_int
+r_enum
+id|qdio_irq_states
 id|state
 suffix:semicolon
 multiline_comment|/* used to store the error condition during a data transfer */
@@ -1451,8 +1164,8 @@ r_int
 id|sync_done_on_outb_pcis
 suffix:semicolon
 DECL|member|state
-r_int
-r_int
+r_enum
+id|qdio_irq_states
 id|state
 suffix:semicolon
 DECL|member|setting_up_sema
@@ -1519,74 +1232,11 @@ r_struct
 id|qib
 id|qib
 suffix:semicolon
-multiline_comment|/* Functions called via the generic cio layer */
-DECL|member|cleanup_irq
+DECL|member|original_int_handler
 r_void
 (paren
 op_star
-id|cleanup_irq
-)paren
-(paren
-r_struct
-id|ccw_device
-op_star
-comma
-r_int
-r_int
-comma
-r_struct
-id|irb
-op_star
-)paren
-suffix:semicolon
-DECL|member|cleanup_timeout
-r_void
-(paren
-op_star
-id|cleanup_timeout
-)paren
-(paren
-r_struct
-id|ccw_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|establish_irq
-r_void
-(paren
-op_star
-id|establish_irq
-)paren
-(paren
-r_struct
-id|ccw_device
-op_star
-comma
-r_int
-r_int
-comma
-r_struct
-id|irb
-op_star
-)paren
-suffix:semicolon
-DECL|member|establish_timeout
-r_void
-(paren
-op_star
-id|establish_timeout
-)paren
-(paren
-r_struct
-id|ccw_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|handler
-r_void
-(paren
-op_star
-id|handler
+id|original_int_handler
 )paren
 (paren
 r_struct
