@@ -74,7 +74,7 @@ c_func
 (paren
 l_string|&quot;TASK_REGS&quot;
 comma
-l_string|&quot;struct uml_pt_regs&quot;
+l_string|&quot;union uml_pt_regs&quot;
 comma
 m_offsetof
 (paren

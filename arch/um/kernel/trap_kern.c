@@ -789,7 +789,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -814,7 +814,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|regs-&gt;is_user
+id|UPT_IS_USER
+c_func
+(paren
+id|regs
+)paren
 )paren
 (brace
 id|panic
@@ -843,7 +847,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs

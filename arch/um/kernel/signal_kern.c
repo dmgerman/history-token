@@ -14,6 +14,7 @@ macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;user_util.h&quot;
+macro_line|#include &quot;asm/ucontext.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;signal_kern.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
@@ -1059,6 +1060,11 @@ comma
 r_void
 op_star
 id|from
+comma
+r_struct
+id|arch_frame_data
+op_star
+id|arch
 )paren
 (brace
 r_int
@@ -1072,12 +1078,16 @@ c_func
 id|copy_sc_from_user_tt
 c_func
 (paren
-id|to-&gt;regs.mode.tt
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|to-&gt;regs
+)paren
 comma
 id|from
 comma
-op_amp
-id|signal_frame_sc.arch
+id|arch
 )paren
 comma
 id|copy_sc_from_user_skas
@@ -1115,7 +1125,7 @@ id|PT_REGS_SP
 c_func
 (paren
 op_amp
-id|regs
+id|current-&gt;thread.regs
 )paren
 )paren
 suffix:semicolon
@@ -1130,7 +1140,7 @@ id|PT_REGS_SP
 c_func
 (paren
 op_amp
-id|regs
+id|current-&gt;thread.regs
 )paren
 )paren
 suffix:semicolon
@@ -1223,6 +1233,9 @@ op_amp
 id|current-&gt;thread.regs
 comma
 id|sc
+comma
+op_amp
+id|signal_frame_sc.common.arch
 )paren
 suffix:semicolon
 r_return
@@ -1244,35 +1257,25 @@ id|pt_regs
 id|regs
 )paren
 (brace
-r_void
+r_struct
+id|ucontext
 op_star
-id|sc
+id|uc
 op_assign
-id|sp_to_rt_sc
+id|sp_to_uc
 c_func
 (paren
 id|PT_REGS_SP
 c_func
 (paren
 op_amp
-id|regs
+id|current-&gt;thread.regs
 )paren
 )paren
 suffix:semicolon
 r_void
 op_star
-id|mask
-op_assign
-id|sp_to_rt_mask
-c_func
-(paren
-id|PT_REGS_SP
-c_func
-(paren
-op_amp
-id|regs
-)paren
-)paren
+id|fp
 suffix:semicolon
 r_int
 id|sig_size
@@ -1298,7 +1301,8 @@ c_func
 op_amp
 id|current-&gt;blocked
 comma
-id|mask
+op_amp
+id|uc-&gt;uc_sigmask
 comma
 id|sig_size
 )paren
@@ -1325,13 +1329,39 @@ op_amp
 id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
+id|fp
+op_assign
+(paren
+r_void
+op_star
+)paren
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|uc
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|ucontext
+)paren
+)paren
+suffix:semicolon
 id|copy_sc_from_user
 c_func
 (paren
 op_amp
 id|current-&gt;thread.regs
 comma
-id|sc
+op_amp
+id|uc-&gt;uc_mcontext
+comma
+op_amp
+id|signal_frame_si.common.arch
 )paren
 suffix:semicolon
 r_return

@@ -44,7 +44,12 @@ op_increment
 suffix:semicolon
 id|syscall
 op_assign
-id|regs-&gt;regs.syscall
+id|UPT_SYSCALL_NR
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 suffix:semicolon
 r_if
 c_cond

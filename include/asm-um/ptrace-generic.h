@@ -4,7 +4,6 @@ DECL|macro|__UM_PTRACE_GENERIC_H
 mdefine_line|#define __UM_PTRACE_GENERIC_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &quot;linux/config.h&quot;
-macro_line|#include &quot;skas_ptrace.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
 DECL|macro|pt_regs
 mdefine_line|#define pt_regs pt_regs_subarch
@@ -20,12 +19,13 @@ macro_line|#undef user_mode
 DECL|macro|instruction_pointer
 macro_line|#undef instruction_pointer
 macro_line|#include &quot;sysdep/ptrace.h&quot;
+macro_line|#include &quot;skas_ptrace.h&quot;
 DECL|struct|pt_regs
 r_struct
 id|pt_regs
 (brace
 DECL|member|regs
-r_struct
+r_union
 id|uml_pt_regs
 id|regs
 suffix:semicolon

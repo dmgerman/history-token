@@ -6,10 +6,15 @@ DECL|struct|arch_frame_data_raw
 r_struct
 id|arch_frame_data_raw
 (brace
-DECL|member|sc_end
+DECL|member|fp_start
 r_int
 r_int
-id|sc_end
+id|fp_start
+suffix:semicolon
+DECL|member|sr
+r_int
+r_int
+id|sr
 suffix:semicolon
 )brace
 suffix:semicolon
