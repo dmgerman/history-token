@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-ite.h&gt;
-macro_line|#include &quot;i2c-ite.h&quot;
+macro_line|#include &quot;i2c-algo-ite.h&quot;
 DECL|macro|PM_DSR
 mdefine_line|#define&t;PM_DSR&t;&t;IT8172_PCI_IO_BASE + IT_PM_DSR
 DECL|macro|PM_IBSR
