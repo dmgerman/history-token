@@ -970,33 +970,7 @@ c_func
 id|length
 )paren
 suffix:semicolon
-multiline_comment|/* This abbreviates icmp-&gt;send-&gt;ip_build_xmit-&gt;ip_dont_fragment */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ipv4_config.no_pmtu_disc
-op_logical_and
-op_logical_neg
-(paren
-id|rt-&gt;u.dst.mxlock
-op_amp
-(paren
-l_int|1
-op_lshift
-id|RTAX_MTU
-)paren
-)paren
-)paren
-id|iph-&gt;frag_off
-op_assign
-id|htons
-c_func
-(paren
-id|IP_DF
-)paren
-suffix:semicolon
-r_else
+multiline_comment|/* PMTU discovery never applies to ICMP packets. */
 id|iph-&gt;frag_off
 op_assign
 l_int|0
