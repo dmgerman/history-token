@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/suspend.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
+multiline_comment|/*&n; * linux/kernel/suspend.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001-2003 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * This file is released under the GPLv2.&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -894,6 +894,16 @@ r_struct
 id|page
 op_star
 id|page
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|printk
 c_func
@@ -2755,11 +2765,26 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|arch_prepare_suspend
 c_func
 (paren
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%sArchitecture failed to prepare&bslash;n&quot;
+comma
+id|name_suspend
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4476,9 +4501,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called from init kernel_thread.&n; * We check if we have an image and if so we try to resume&n; */
+multiline_comment|/**&n; *&t;software_resume - Resume from a saved image.&n; *&n; *&t;Called as a late_initcall (so all devices are discovered and &n; *&t;initialized), we call swsusp to see if we have a saved image or not.&n; *&t;If so, we quiesce devices, then restore the saved image. We will &n; *&t;return above (in pm_suspend_disk() ) if everything goes well. &n; *&t;Otherwise, we fail gracefully and return to the normally &n; *&t;scheduled program.&n; *&n; */
 DECL|function|software_resume
-r_void
+r_static
+r_int
+id|__init
 id|software_resume
 c_func
 (paren
@@ -4504,6 +4531,8 @@ l_string|&quot;Software Suspend has malfunctioning SMP support. Disabled :(&bsla
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* We enable the possibility of machine suspend */
@@ -4518,6 +4547,7 @@ op_logical_neg
 id|resume_status
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|printk
 c_func
@@ -4560,6 +4590,7 @@ l_string|&quot;disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|MDELAY
@@ -4603,6 +4634,8 @@ l_string|&quot;suspension device unspecified&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|printk
@@ -4647,8 +4680,16 @@ c_func
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|software_resume
+id|late_initcall
+c_func
+(paren
+id|software_resume
+)paren
+suffix:semicolon
 DECL|function|resume_setup
 r_static
 r_int
