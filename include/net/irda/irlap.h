@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/ppp_defs.h&gt;
-macro_line|#include &lt;linux/ppp-comp.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;net/irda/irlap_event.h&gt;
 DECL|macro|CONFIG_IRDA_DYNAMIC_WINDOW
@@ -774,5 +772,64 @@ DECL|macro|IRLAP_GET_HEADER_SIZE
 mdefine_line|#define IRLAP_GET_HEADER_SIZE(self) (LAP_MAX_HEADER)
 DECL|macro|IRLAP_GET_TX_QUEUE_LEN
 mdefine_line|#define IRLAP_GET_TX_QUEUE_LEN(self) skb_queue_len(&amp;self-&gt;txq)
+multiline_comment|/* Return TRUE if the node is in primary mode (i.e. master)&n; * - Jean II */
+DECL|function|irlap_is_primary
+r_static
+r_inline
+r_int
+id|irlap_is_primary
+c_func
+(paren
+r_struct
+id|irlap_cb
+op_star
+id|self
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|self-&gt;state
+)paren
+(brace
+r_case
+id|LAP_XMIT_P
+suffix:colon
+r_case
+id|LAP_NRM_P
+suffix:colon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LAP_XMIT_S
+suffix:colon
+r_case
+id|LAP_NRM_S
+suffix:colon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ret
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+id|ret
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

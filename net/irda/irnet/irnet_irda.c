@@ -4231,9 +4231,28 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Socket connecting ?&n;   * Clear up flag : prevent irnet_disconnect_indication() to mess up tsap */
+multiline_comment|/* The following code is a bit tricky, so need comments ;-)&n;   */
+multiline_comment|/* If ttp_connect is set, the socket is trying to connect to the other&n;   * end and may have sent a IrTTP connection request and is waiting for&n;   * a connection response (that may never come).&n;   * Now, the pain is that the socket may have opened a tsap and is&n;   * waiting on it, while the other end is trying to connect to it on&n;   * another tsap.&n;   * Because IrNET can be peer to peer, we need to workaround this.&n;   * Furthermore, the way the irnetd script is implemented, the&n;   * target will create a second IrNET connection back to the&n;   * originator and expect the originator to bind this new connection&n;   * to the original PPPD instance.&n;   * And of course, if we don&squot;t use irnetd, we can have a race when&n;   * both side try to connect simultaneously, which could leave both&n;   * connections half closed (yuck).&n;   * Conclusions :&n;   *&t;1) The &quot;originator&quot; must accept the new connection and get rid&n;   *&t;   of the old one so that irnetd works&n;   *&t;2) One side must deny the new connection to avoid races,&n;   *&t;   but both side must agree on which side it is...&n;   * Most often, the originator is primary at the LAP layer.&n;   * Jean II&n;   */
+multiline_comment|/* Now, let&squot;s look at the way I wrote the test...&n;   * We need to clear up the ttp_connect flag atomically to prevent&n;   * irnet_disconnect_indication() to mess up the tsap we are going to close.&n;   * We want to clear the ttp_connect flag only if we close the tsap,&n;   * otherwise we will never close it, so we need to check for primary&n;   * *before* doing the test on the flag.&n;   * And of course, ALLOW_SIMULT_CONNECT can disable this entirely...&n;   * Jean II&n;   */
+multiline_comment|/* Socket already connecting ? On primary ? */
 r_if
 c_cond
+(paren
+l_int|0
+macro_line|#ifdef ALLOW_SIMULT_CONNECT
+op_logical_or
+(paren
+(paren
+id|irttp_is_primary
+c_func
+(paren
+id|server-&gt;tsap
+)paren
+op_eq
+l_int|1
+)paren
+multiline_comment|/* primary */
+op_logical_and
 (paren
 id|test_and_clear_bit
 c_func
@@ -4246,18 +4265,19 @@ op_member_access_from_pointer
 id|ttp_connect
 )paren
 )paren
+)paren
+macro_line|#endif /* ALLOW_SIMULT_CONNECT */
+)paren
 (brace
-multiline_comment|/* The socket is trying to connect to the other end and may have sent&n;       * a IrTTP connection request and is waiting for a connection response&n;       * (that may never come).&n;       * Now, the pain is that the socket may have opened a tsap and is&n;       * waiting on it, while the other end is trying to connect to it on&n;       * another tsap.&n;       */
 id|DERROR
 c_func
 (paren
 id|IRDA_CB_ERROR
 comma
-l_string|&quot;Socket already connecting. Ouch !&bslash;n&quot;
+l_string|&quot;Socket already connecting, but going to reuse it !&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef ALLOW_SIMULT_CONNECT
-multiline_comment|/* Cleanup the TSAP if necessary - IrIAP will be cleaned up later */
+multiline_comment|/* Cleanup the old TSAP if necessary - IrIAP will be cleaned up later */
 r_if
 c_cond
 (paren
@@ -4268,7 +4288,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Close the connection the new socket was attempting.&n;&t;   * This seems to be safe... */
+multiline_comment|/* Close the old connection the new socket was attempting,&n;&t;   * so that we can hook it up to the new connection.&n;&t;   * It&squot;s now safe to do it... */
 id|irttp_close_tsap
 c_func
 (paren
@@ -4284,24 +4304,26 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Note : no return, fall through... */
-macro_line|#else /* ALLOW_SIMULT_CONNECT */
-id|irnet_disconnect_server
-c_func
-(paren
-id|server
-comma
-id|skb
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-macro_line|#endif /* ALLOW_SIMULT_CONNECT */
 )brace
 r_else
-multiline_comment|/* If socket is not connecting or connected, tsap should be NULL */
+(brace
+multiline_comment|/* Three options :&n;       * 1) socket was not connecting or connected : ttp_connect should be 0.&n;       * 2) we don&squot;t want to connect the socket because we are secondary or&n;       * ALLOW_SIMULT_CONNECT is undefined. ttp_connect should be 1.&n;       * 3) we are half way in irnet_disconnect_indication(), and it&squot;s a&n;       * nice race condition... Fortunately, we can detect that by checking&n;       * if tsap is still alive. On the other hand, we can&squot;t be in&n;       * irda_irnet_destroy() otherwise we would not have found this&n;       * socket in the hashbin.&n;       * Jean II */
 r_if
 c_cond
+(paren
+(paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+r_new
+op_member_access_from_pointer
+id|ttp_connect
+)paren
+)paren
+op_logical_or
 (paren
 r_new
 op_member_access_from_pointer
@@ -4309,15 +4331,15 @@ id|tsap
 op_ne
 l_int|NULL
 )paren
+)paren
 (brace
-multiline_comment|/* If we are here, we are also in irnet_disconnect_indication(),&n;&t; * and it&squot;s a nice race condition... On the other hand, we can&squot;t be&n;&t; * in irda_irnet_destroy() otherwise we would not have found the&n;&t; * socket in the hashbin. */
-multiline_comment|/* Better get out of here, otherwise we will mess up tsaps ! */
+multiline_comment|/* Don&squot;t mess this socket, somebody else in in charge... */
 id|DERROR
 c_func
 (paren
 id|IRDA_CB_ERROR
 comma
-l_string|&quot;Race condition detected, abort connect...&bslash;n&quot;
+l_string|&quot;Race condition detected, socket in use, abort connect...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irnet_disconnect_server
@@ -4330,6 +4352,7 @@ id|skb
 suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* So : at this point, we have a socket, and it is idle. Good ! */
 id|irnet_connect_socket
