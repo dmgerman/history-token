@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/moduleloader.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* FIXME: We don&squot;t do .init separately.  To do this, we&squot;d need to have&n;   a separate r2 value in the init and core section, and stub between&n;   them, too.&n;&n;   Using a magic allocator which places modules within 32MB solves&n;   this, and makes other things simpler.  Anton?&n;   --RR.  */
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
@@ -1795,11 +1796,11 @@ id|me
 id|sort_ex_table
 c_func
 (paren
-id|me-&gt;extable.entry
+id|me-&gt;extable
 comma
-id|me-&gt;extable.entry
+id|me-&gt;extable
 op_plus
-id|me-&gt;extable.num_entries
+id|me-&gt;num_exentries
 )paren
 suffix:semicolon
 r_return
