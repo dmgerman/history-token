@@ -3342,6 +3342,11 @@ id|us_data
 op_star
 id|ss
 suffix:semicolon
+r_struct
+id|scsi_device
+op_star
+id|sdev
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -3373,7 +3378,33 @@ op_eq
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: set devices offline -- need host lock for this */
+multiline_comment|/* set devices offline -- need host lock for this */
+id|scsi_lock
+c_func
+(paren
+id|ss-&gt;host
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|sdev
+comma
+op_amp
+id|ss-&gt;host-&gt;my_devices
+comma
+id|siblings
+)paren
+id|sdev-&gt;online
+op_assign
+l_int|0
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|ss-&gt;host
+)paren
+suffix:semicolon
 multiline_comment|/* lock device access -- no need to unlock, as we&squot;re going away */
 id|down
 c_func
