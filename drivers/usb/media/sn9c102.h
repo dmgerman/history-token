@@ -41,9 +41,9 @@ mdefine_line|#define SN9C102_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo
 DECL|macro|SN9C102_MODULE_LICENSE
 mdefine_line|#define SN9C102_MODULE_LICENSE  &quot;GPL&quot;
 DECL|macro|SN9C102_MODULE_VERSION
-mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.06&quot;
+mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.07&quot;
 DECL|macro|SN9C102_MODULE_VERSION_CODE
-mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 6)
+mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 7)
 id|SN9C102_ID_TABLE
 suffix:semicolon
 id|SN9C102_SENSOR_TABLE

@@ -789,7 +789,7 @@ comma
 dot
 id|default_value
 op_assign
-l_int|0x06
+l_int|0x0c
 comma
 dot
 id|flags
