@@ -974,7 +974,19 @@ r_uint16
 id|data
 )paren
 (brace
-multiline_comment|/*  Prepare the EEPROM for writing  */
+r_struct
+id|ixgb_ee_map_type
+op_star
+id|ee_map
+op_assign
+(paren
+r_struct
+id|ixgb_ee_map_type
+op_star
+)paren
+id|hw-&gt;eeprom
+suffix:semicolon
+multiline_comment|/* Prepare the EEPROM for writing */
 id|ixgb_setup_eeprom
 c_func
 (paren
@@ -1081,6 +1093,11 @@ c_func
 (paren
 id|hw
 )paren
+suffix:semicolon
+multiline_comment|/* clear the init_ctrl_reg_1 to signify that the cache is invalidated */
+id|ee_map-&gt;init_ctrl_reg_1
+op_assign
+id|EEPROM_ICW1_SIGNATURE_CLEAR
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1260,6 +1277,11 @@ c_func
 (paren
 l_string|&quot;ixgb_ee: Checksum invalid.&bslash;n&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* clear the init_ctrl_reg_1 to signify that the cache is&n;&t;&t; * invalidated */
+id|ee_map-&gt;init_ctrl_reg_1
+op_assign
+id|EEPROM_ICW1_SIGNATURE_CLEAR
 suffix:semicolon
 r_return
 (paren

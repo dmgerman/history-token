@@ -57,6 +57,8 @@ DECL|macro|EEPROM_ICW1_SIGNATURE_MASK
 mdefine_line|#define EEPROM_ICW1_SIGNATURE_MASK  0xC000
 DECL|macro|EEPROM_ICW1_SIGNATURE_VALID
 mdefine_line|#define EEPROM_ICW1_SIGNATURE_VALID 0x4000
+DECL|macro|EEPROM_ICW1_SIGNATURE_CLEAR
+mdefine_line|#define EEPROM_ICW1_SIGNATURE_CLEAR 0x0000
 multiline_comment|/* For checksumming, the sum of all words in the EEPROM should equal 0xBABA. */
 DECL|macro|EEPROM_SUM
 mdefine_line|#define EEPROM_SUM 0xBABA
