@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Machine vector for IA-64.&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2001, 2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Machine vector for IA-64.&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2001, 2003-2004 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_MACHVEC_H
 DECL|macro|_ASM_IA64_MACHVEC_H
 mdefine_line|#define _ASM_IA64_MACHVEC_H
@@ -34,7 +34,6 @@ DECL|typedef|ia64_mv_cpu_init_t
 r_typedef
 r_void
 id|ia64_mv_cpu_init_t
-c_func
 (paren
 r_void
 )paren
@@ -43,45 +42,6 @@ DECL|typedef|ia64_mv_irq_init_t
 r_typedef
 r_void
 id|ia64_mv_irq_init_t
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|typedef|ia64_mv_mca_init_t
-r_typedef
-r_void
-id|ia64_mv_mca_init_t
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|typedef|ia64_mv_mca_handler_t
-r_typedef
-r_void
-id|ia64_mv_mca_handler_t
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|typedef|ia64_mv_cmci_handler_t
-r_typedef
-r_void
-id|ia64_mv_cmci_handler_t
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ia64_mv_log_print_t
-r_typedef
-r_void
-id|ia64_mv_log_print_t
 (paren
 r_void
 )paren
@@ -508,9 +468,57 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|machvec_memory_fence
+id|machvec_setup
 (paren
+r_char
+op_star
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
+id|machvec_timer_interrupt
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|machvec_dma_sync_single
+(paren
+r_struct
+id|device
+op_star
+comma
+id|dma_addr_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|machvec_dma_sync_sg
+(paren
+r_struct
+id|device
+op_star
+comma
+r_struct
+id|scatterlist
+op_star
+comma
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|# if defined (CONFIG_IA64_HP_SIM)
@@ -533,14 +541,6 @@ DECL|macro|platform_cpu_init
 macro_line|#  define platform_cpu_init&t;ia64_mv.cpu_init
 DECL|macro|platform_irq_init
 macro_line|#  define platform_irq_init&t;ia64_mv.irq_init
-DECL|macro|platform_mca_init
-macro_line|#  define platform_mca_init&t;ia64_mv.mca_init
-DECL|macro|platform_mca_handler
-macro_line|#  define platform_mca_handler&t;ia64_mv.mca_handler
-DECL|macro|platform_cmci_handler
-macro_line|#  define platform_cmci_handler&t;ia64_mv.cmci_handler
-DECL|macro|platform_log_print
-macro_line|#  define platform_log_print&t;ia64_mv.log_print
 DECL|macro|platform_send_ipi
 macro_line|#  define platform_send_ipi&t;ia64_mv.send_ipi
 DECL|macro|platform_timer_interrupt
@@ -631,26 +631,6 @@ DECL|member|irq_init
 id|ia64_mv_irq_init_t
 op_star
 id|irq_init
-suffix:semicolon
-DECL|member|mca_init
-id|ia64_mv_mca_init_t
-op_star
-id|mca_init
-suffix:semicolon
-DECL|member|mca_handler
-id|ia64_mv_mca_handler_t
-op_star
-id|mca_handler
-suffix:semicolon
-DECL|member|cmci_handler
-id|ia64_mv_cmci_handler_t
-op_star
-id|cmci_handler
-suffix:semicolon
-DECL|member|log_print
-id|ia64_mv_log_print_t
-op_star
-id|log_print
 suffix:semicolon
 DECL|member|send_ipi
 id|ia64_mv_send_ipi_t
@@ -827,7 +807,7 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* align attrib? see above comment */
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -898,39 +878,23 @@ suffix:semicolon
 multiline_comment|/*&n; * Define default versions so we can extend machvec for new platforms without having&n; * to update the machvec files for all existing platforms.&n; */
 macro_line|#ifndef platform_setup
 DECL|macro|platform_setup
-macro_line|# define platform_setup&t;&t;((ia64_mv_setup_t *) machvec_noop)
+macro_line|# define platform_setup&t;&t;&t;machvec_setup
 macro_line|#endif
 macro_line|#ifndef platform_cpu_init
 DECL|macro|platform_cpu_init
-macro_line|# define platform_cpu_init&t;((ia64_mv_cpu_init_t *) machvec_noop)
+macro_line|# define platform_cpu_init&t;&t;machvec_noop
 macro_line|#endif
 macro_line|#ifndef platform_irq_init
 DECL|macro|platform_irq_init
-macro_line|# define platform_irq_init&t;((ia64_mv_irq_init_t *) machvec_noop)
-macro_line|#endif
-macro_line|#ifndef platform_mca_init
-DECL|macro|platform_mca_init
-macro_line|# define platform_mca_init&t;((ia64_mv_mca_init_t *) machvec_noop)
-macro_line|#endif
-macro_line|#ifndef platform_mca_handler
-DECL|macro|platform_mca_handler
-macro_line|# define platform_mca_handler&t;((ia64_mv_mca_handler_t *) machvec_noop)
-macro_line|#endif
-macro_line|#ifndef platform_cmci_handler
-DECL|macro|platform_cmci_handler
-macro_line|# define platform_cmci_handler&t;((ia64_mv_cmci_handler_t *) machvec_noop)
-macro_line|#endif
-macro_line|#ifndef platform_log_print
-DECL|macro|platform_log_print
-macro_line|# define platform_log_print&t;((ia64_mv_log_print_t *) machvec_noop)
+macro_line|# define platform_irq_init&t;&t;machvec_noop
 macro_line|#endif
 macro_line|#ifndef platform_send_ipi
 DECL|macro|platform_send_ipi
-macro_line|# define platform_send_ipi&t;ia64_send_ipi&t;/* default to architected version */
+macro_line|# define platform_send_ipi&t;&t;ia64_send_ipi&t;/* default to architected version */
 macro_line|#endif
 macro_line|#ifndef platform_timer_interrupt
 DECL|macro|platform_timer_interrupt
-macro_line|# define platform_timer_interrupt &t;((ia64_mv_timer_interrupt_t *) machvec_noop)
+macro_line|# define platform_timer_interrupt &t;machvec_timer_interrupt
 macro_line|#endif
 macro_line|#ifndef platform_global_tlb_purge
 DECL|macro|platform_global_tlb_purge

@@ -53,14 +53,14 @@ mdefine_line|#define platform_dma_map_sg&t;&t;sba_map_sg
 DECL|macro|platform_dma_unmap_sg
 mdefine_line|#define platform_dma_unmap_sg&t;&t;sba_unmap_sg
 DECL|macro|platform_dma_sync_single_for_cpu
-mdefine_line|#define platform_dma_sync_single_for_cpu ((ia64_mv_dma_sync_single_for_cpu *) machvec_memory_fence)
+mdefine_line|#define platform_dma_sync_single_for_cpu&t;machvec_dma_sync_single
 DECL|macro|platform_dma_sync_sg_for_cpu
-mdefine_line|#define platform_dma_sync_sg_for_cpu&t;((ia64_mv_dma_sync_sg_for_cpu *) machvec_memory_fence)
+mdefine_line|#define platform_dma_sync_sg_for_cpu&t;&t;machvec_dma_sync_sg
 DECL|macro|platform_dma_sync_single_for_device
-mdefine_line|#define platform_dma_sync_single_for_device ((ia64_mv_dma_sync_single_for_device *) machvec_memory_fence)
+mdefine_line|#define platform_dma_sync_single_for_device&t;machvec_dma_sync_single
 DECL|macro|platform_dma_sync_sg_for_device
-mdefine_line|#define platform_dma_sync_sg_for_device&t;((ia64_mv_dma_sync_sg_for_device *) machvec_memory_fence)
+mdefine_line|#define platform_dma_sync_sg_for_device&t;&t;machvec_dma_sync_sg
 DECL|macro|platform_dma_supported
-mdefine_line|#define platform_dma_supported&t;&t;sba_dma_supported
+mdefine_line|#define platform_dma_supported&t;&t;&t;sba_dma_supported
 macro_line|#endif /* _ASM_IA64_MACHVEC_HPZX1_h */
 eof
