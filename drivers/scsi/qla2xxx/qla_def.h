@@ -532,6 +532,10 @@ DECL|macro|NVR_DESELECT
 mdefine_line|#define NVR_DESELECT&t;&t;0
 DECL|macro|NVR_BUSY
 mdefine_line|#define NVR_BUSY&t;&t;BIT_15
+DECL|macro|NVR_WRT_ENABLE
+mdefine_line|#define NVR_WRT_ENABLE&t;&t;BIT_14&t;/* Write enable */
+DECL|macro|NVR_PR_ENABLE
+mdefine_line|#define NVR_PR_ENABLE&t;&t;BIT_13&t;/* Protection register enable */
 DECL|macro|NVR_DATA_IN
 mdefine_line|#define NVR_DATA_IN&t;&t;BIT_3
 DECL|macro|NVR_DATA_OUT

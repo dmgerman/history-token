@@ -908,6 +908,15 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|qla2x00_release_nvram_protection
+c_func
+(paren
+id|scsi_qla_host_t
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_uint16
 id|qla2x00_get_nvram_word
 c_func

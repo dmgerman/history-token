@@ -2336,6 +2336,12 @@ c_func
 id|ha
 )paren
 suffix:semicolon
+id|qla2x00_release_nvram_protection
+c_func
+(paren
+id|ha
+)paren
+suffix:semicolon
 id|witer
 op_assign
 (paren
