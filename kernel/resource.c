@@ -2226,10 +2226,6 @@ c_func
 id|res
 )paren
 suffix:semicolon
-id|res
-op_assign
-l_int|NULL
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace

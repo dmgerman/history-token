@@ -55,8 +55,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|res
-op_logical_and
 id|res-&gt;parent
 )paren
 id|release_resource
