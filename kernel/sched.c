@@ -6062,7 +6062,7 @@ op_logical_neg
 id|p-&gt;array
 )paren
 (brace
-id|p-&gt;cpu
+id|p-&gt;thread_info-&gt;cpu
 op_assign
 id|__ffs
 c_func
