@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 id|MODULE_DESCRIPTION
@@ -859,6 +860,12 @@ op_star
 id|client
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_struct
 id|saa7110
 op_star
@@ -895,15 +902,34 @@ comma
 id|decoder-&gt;input
 )paren
 suffix:semicolon
-id|sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|decoder-&gt;wq
 comma
+op_amp
+id|wait
+comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|HZ
 op_div
 l_int|4
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|decoder-&gt;wq
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 id|status
@@ -1112,15 +1138,34 @@ l_int|0x59
 )paren
 suffix:semicolon
 singleline_comment|//saa7110_write(client,0x2E,0x9A);
-id|sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|decoder-&gt;wq
 comma
+op_amp
+id|wait
+comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|HZ
 op_div
 l_int|4
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|decoder-&gt;wq
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 id|status
