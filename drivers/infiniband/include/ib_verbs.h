@@ -2531,6 +2531,11 @@ DECL|member|qp_num
 id|u32
 id|qp_num
 suffix:semicolon
+DECL|member|qp_type
+r_enum
+id|ib_qp_type
+id|qp_type
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|ib_mr
