@@ -801,25 +801,6 @@ DECL|macro|SVWRKS_POSTFLUSH
 mdefine_line|#define SVWRKS_POSTFLUSH&t;0x14
 DECL|macro|SVWRKS_DIRFLUSH
 mdefine_line|#define SVWRKS_DIRFLUSH&t;&t;0x0c
-multiline_comment|/* NVIDIA registers */
-DECL|macro|NVIDIA_0_APBASE
-mdefine_line|#define NVIDIA_0_APBASE&t;&t;0x10
-DECL|macro|NVIDIA_0_APSIZE
-mdefine_line|#define NVIDIA_0_APSIZE&t;&t;0x80
-DECL|macro|NVIDIA_1_WBC
-mdefine_line|#define NVIDIA_1_WBC&t;&t;0xf0
-DECL|macro|NVIDIA_2_GARTCTRL
-mdefine_line|#define NVIDIA_2_GARTCTRL&t;0xd0
-DECL|macro|NVIDIA_2_APBASE
-mdefine_line|#define NVIDIA_2_APBASE&t;&t;0xd8
-DECL|macro|NVIDIA_2_APLIMIT
-mdefine_line|#define NVIDIA_2_APLIMIT&t;0xdc
-DECL|macro|NVIDIA_2_ATTBASE
-mdefine_line|#define NVIDIA_2_ATTBASE(i)&t;(0xe0 + (i) * 4)
-DECL|macro|NVIDIA_3_APBASE
-mdefine_line|#define NVIDIA_3_APBASE&t;&t;0x50
-DECL|macro|NVIDIA_3_APLIMIT
-mdefine_line|#define NVIDIA_3_APLIMIT&t;0x54
 multiline_comment|/* HP ZX1 SBA registers */
 DECL|macro|HP_ZX1_CTRL
 mdefine_line|#define HP_ZX1_CTRL&t;&t;0x200

@@ -47,12 +47,6 @@ comma
 DECL|enumerator|NVIDIA_GENERIC
 id|NVIDIA_GENERIC
 comma
-DECL|enumerator|NVIDIA_NFORCE
-id|NVIDIA_NFORCE
-comma
-DECL|enumerator|NVIDIA_NFORCE2
-id|NVIDIA_NFORCE2
-comma
 )brace
 suffix:semicolon
 DECL|struct|agp_version
