@@ -301,6 +301,23 @@ id|host-&gt;generation
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Send a PHY configuration packet.&n; */
+r_int
+id|hpsb_send_phy_config
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+r_int
+id|rootid
+comma
+r_int
+id|gapcnt
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Queue packet for transmitting, return 0 for failure.&n; */
 r_int
 id|hpsb_send_packet
@@ -367,17 +384,6 @@ id|phyid
 comma
 r_int
 id|isroot
-)paren
-suffix:semicolon
-multiline_comment|/* &n; * Check bus reset results to find cycle master&n; */
-r_void
-id|hpsb_check_cycle_master
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Notify core of sending a packet.  Ackcode is the ack code returned for async&n; * transmits or ACKX_SEND_ERROR if the transmission failed completely; ACKX_NONE&n; * for other cases (internal errors that don&squot;t justify a panic).  Safe to call&n; * from within a transmit packet routine.&n; */
@@ -494,11 +500,6 @@ c_func
 r_int
 id|blocknum
 )paren
-suffix:semicolon
-multiline_comment|/* the devfs handle for /dev/ieee1394; NULL if devfs is not in use */
-r_extern
-id|devfs_handle_t
-id|ieee1394_devfs_handle
 suffix:semicolon
 multiline_comment|/* the proc_fs entry for /proc/ieee1394 */
 r_extern

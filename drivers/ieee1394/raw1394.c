@@ -45,11 +45,6 @@ macro_line|#else
 DECL|macro|DBGMSG
 mdefine_line|#define DBGMSG(fmt, args...)
 macro_line|#endif
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 r_static
 id|LIST_HEAD
 c_func
@@ -687,6 +682,11 @@ r_struct
 id|hpsb_host
 op_star
 id|host
+comma
+r_struct
+id|hpsb_highlevel
+op_star
+id|hl
 )paren
 (brace
 r_struct
@@ -714,15 +714,7 @@ r_struct
 id|host_info
 )paren
 comma
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
-id|SLAB_ATOMIC
-suffix:colon
-id|SLAB_KERNEL
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -13274,8 +13266,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -13283,7 +13273,7 @@ l_int|NULL
 comma
 id|RAW1394_DEVICE_NAME
 comma
-id|DEVFS_FL_NONE
+l_int|0
 comma
 id|IEEE1394_MAJOR
 comma
@@ -13324,10 +13314,10 @@ c_func
 l_string|&quot;raw1394 failed to register minor device block&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+id|RAW1394_DEVICE_NAME
 )paren
 suffix:semicolon
 id|hpsb_unregister_highlevel
@@ -13384,10 +13374,10 @@ c_func
 id|IEEE1394_MINOR_BLOCK_RAW1394
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+id|RAW1394_DEVICE_NAME
 )paren
 suffix:semicolon
 id|hpsb_unregister_highlevel

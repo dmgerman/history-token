@@ -120,11 +120,6 @@ DECL|struct|host_info
 r_struct
 id|host_info
 (brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
 DECL|member|host
 r_struct
 id|hpsb_host

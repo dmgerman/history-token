@@ -3979,7 +3979,7 @@ comma
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;keyword to long, cut after %d bytes&bslash;n&quot;
+l_string|&quot;keyword too long, cut after %d bytes&bslash;n&quot;
 comma
 id|VPD_MAX_LEN
 )paren

@@ -3318,7 +3318,7 @@ comma
 suffix:semicolon
 DECL|function|sa1100_rs_console_init
 r_static
-r_void
+r_int
 id|__init
 id|sa1100_rs_console_init
 c_func
@@ -3337,6 +3337,9 @@ c_func
 op_amp
 id|sa1100_console
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sa1100_rs_console_init

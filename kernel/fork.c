@@ -3643,9 +3643,8 @@ id|p
 r_goto
 id|bad_fork_cleanup_signal
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|copy_namespace
 c_func
 (paren
@@ -3653,6 +3652,11 @@ id|clone_flags
 comma
 id|p
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_goto
 id|bad_fork_cleanup_mm
