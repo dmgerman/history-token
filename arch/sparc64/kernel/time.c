@@ -641,6 +641,7 @@ r_int
 id|timer_tick_compare
 suffix:semicolon
 DECL|variable|timer_ticks_per_usec_quotient
+r_static
 r_int
 r_int
 id|timer_ticks_per_usec_quotient
@@ -3424,6 +3425,7 @@ r_return
 id|clock
 suffix:semicolon
 )brace
+multiline_comment|/* The quotient formula is taken from the IA64 port. */
 DECL|function|time_init
 r_void
 id|__init
@@ -3447,16 +3449,20 @@ id|timer_ticks_per_usec_quotient
 op_assign
 (paren
 (paren
-l_int|1UL
+(paren
+l_int|1000000UL
 op_lshift
-l_int|32
+l_int|30
 )paren
-op_div
+op_plus
 (paren
 id|clock
 op_div
-l_int|1000020
+l_int|2
 )paren
+)paren
+op_div
+id|clock
 )paren
 suffix:semicolon
 )brace
@@ -3497,7 +3503,7 @@ op_star
 id|timer_ticks_per_usec_quotient
 )paren
 op_rshift
-l_int|32UL
+l_int|30UL
 suffix:semicolon
 )brace
 DECL|function|do_settimeofday
