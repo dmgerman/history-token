@@ -37,7 +37,7 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 DECL|macro|NUD_IN_TIMER
-mdefine_line|#define NUD_IN_TIMER&t;(NUD_INCOMPLETE|NUD_DELAY|NUD_PROBE)
+mdefine_line|#define NUD_IN_TIMER&t;(NUD_INCOMPLETE|NUD_REACHABLE|NUD_DELAY|NUD_PROBE)
 DECL|macro|NUD_VALID
 mdefine_line|#define NUD_VALID&t;(NUD_PERMANENT|NUD_NOARP|NUD_REACHABLE|NUD_PROBE|NUD_STALE|NUD_DELAY)
 DECL|macro|NUD_CONNECTED
