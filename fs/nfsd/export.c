@@ -4346,7 +4346,7 @@ l_string|&quot;&quot;
 )brace
 comma
 (brace
-id|NFSEXP_CROSSMNT
+id|NFSEXP_NOHIDE
 comma
 (brace
 l_string|&quot;nohide&quot;

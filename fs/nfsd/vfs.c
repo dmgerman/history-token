@@ -81,7 +81,7 @@ id|raparms
 op_star
 id|raparm_cache
 suffix:semicolon
-multiline_comment|/*&n; * Look up one component of a pathname.&n; * N.B. After this call _both_ fhp and resfh need an fh_put&n; *&n; * If the lookup would cross a mountpoint, and the mounted filesystem&n; * is exported to the client with NFSEXP_CROSSMNT, then the lookup is&n; * accepted as it stands and the mounted directory is&n; * returned. Otherwise the covered directory is returned.&n; * NOTE: this mountpoint crossing is not supported properly by all&n; *   clients and is explicitly disallowed for NFSv3&n; *      NeilBrown &lt;neilb@cse.unsw.edu.au&gt;&n; */
+multiline_comment|/*&n; * Look up one component of a pathname.&n; * N.B. After this call _both_ fhp and resfh need an fh_put&n; *&n; * If the lookup would cross a mountpoint, and the mounted filesystem&n; * is exported to the client with NFSEXP_NOHIDE, then the lookup is&n; * accepted as it stands and the mounted directory is&n; * returned. Otherwise the covered directory is returned.&n; * NOTE: this mountpoint crossing is not supported properly by all&n; *   clients and is explicitly disallowed for NFSv3&n; *      NeilBrown &lt;neilb@cse.unsw.edu.au&gt;&n; */
 r_int
 DECL|function|nfsd_lookup
 id|nfsd_lookup
@@ -245,7 +245,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|EX_CROSSMNT
+id|EX_NOHIDE
 c_func
 (paren
 id|exp
@@ -520,7 +520,7 @@ c_cond
 (paren
 id|exp2
 op_logical_and
-id|EX_CROSSMNT
+id|EX_NOHIDE
 c_func
 (paren
 id|exp2
