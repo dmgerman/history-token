@@ -2399,7 +2399,6 @@ id|size
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the &quot;read()&quot; routine for all filesystems&n; * that can use the page cache directly.&n; */
-r_static
 id|ssize_t
 DECL|function|__generic_file_aio_read
 id|__generic_file_aio_read
@@ -2832,6 +2831,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|generic_file_aio_read
+)paren
+suffix:semicolon
+DECL|variable|__generic_file_aio_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__generic_file_aio_read
 )paren
 suffix:semicolon
 id|ssize_t
