@@ -2987,7 +2987,13 @@ id|ops
 suffix:semicolon
 id|b-&gt;subordinate
 op_assign
-id|pci_do_scan_bus
+id|pci_scan_child_bus
+c_func
+(paren
+id|b
+)paren
+suffix:semicolon
+id|pci_bus_add_devices
 c_func
 (paren
 id|b
