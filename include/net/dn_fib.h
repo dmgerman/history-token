@@ -1,6 +1,7 @@
 macro_line|#ifndef _NET_DN_FIB_H
 DECL|macro|_NET_DN_FIB_H
 mdefine_line|#define _NET_DN_FIB_H
+multiline_comment|/* WARNING: The ordering of these elements must match ordering&n; *          of RTA_* rtnetlink attribute numbers.&n; */
 DECL|struct|dn_kern_rta
 r_struct
 id|dn_kern_rta
@@ -59,8 +60,7 @@ op_star
 id|rta_protoinfo
 suffix:semicolon
 DECL|member|rta_flow
-r_int
-r_char
+id|u32
 op_star
 id|rta_flow
 suffix:semicolon
@@ -69,6 +69,17 @@ r_struct
 id|rta_cacheinfo
 op_star
 id|rta_ci
+suffix:semicolon
+DECL|member|rta_sess
+r_struct
+id|rta_session
+op_star
+id|rta_sess
+suffix:semicolon
+DECL|member|rta_hoplimit
+id|u8
+op_star
+id|rta_hoplimit
 suffix:semicolon
 )brace
 suffix:semicolon

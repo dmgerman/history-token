@@ -5568,6 +5568,8 @@ op_amp
 id|rtmsg
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5650,6 +5652,8 @@ op_amp
 id|rtmsg
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5711,6 +5715,8 @@ c_func
 (paren
 op_amp
 id|rtmsg
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -6089,6 +6095,8 @@ id|ip6_del_rt
 c_func
 (paren
 id|rt
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -8810,6 +8818,8 @@ c_func
 (paren
 op_amp
 id|rtmsg
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren

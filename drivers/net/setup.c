@@ -46,14 +46,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|dlci_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|sdla_setup
 c_func
 (paren
@@ -144,14 +136,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif&t;
-macro_line|#if defined(CONFIG_DLCI)
-(brace
-id|dlci_setup
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#if defined(CONFIG_SDLA)
 (brace
 id|sdla_c_setup
