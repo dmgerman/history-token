@@ -1518,6 +1518,7 @@ op_star
 comma
 r_struct
 id|flock
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1535,6 +1536,7 @@ r_int
 comma
 r_struct
 id|flock
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1550,6 +1552,7 @@ op_star
 comma
 r_struct
 id|flock64
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1567,6 +1570,7 @@ r_int
 comma
 r_struct
 id|flock64
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -6653,6 +6657,7 @@ id|vfs_stat
 c_func
 (paren
 r_char
+id|__user
 op_star
 comma
 r_struct
@@ -6666,6 +6671,7 @@ id|vfs_lstat
 c_func
 (paren
 r_char
+id|__user
 op_star
 comma
 r_struct
@@ -7001,6 +7007,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int

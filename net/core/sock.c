@@ -83,6 +83,7 @@ op_star
 id|timeo_p
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -233,6 +234,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -318,6 +320,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -1109,10 +1112,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -1618,10 +1623,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|optval
 comma
 id|address
@@ -1629,12 +1630,10 @@ comma
 id|len
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_goto
 id|lenout
 suffix:semicolon
@@ -3536,11 +3535,19 @@ id|msg.msg_flags
 op_assign
 id|flags
 suffix:semicolon
+multiline_comment|/* This cast is ok because of the &quot;set_fs(KERNEL_DS)&quot; */
 id|iov.iov_base
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+(paren
 id|kaddr
 op_plus
 id|offset
+)paren
 suffix:semicolon
 id|iov.iov_len
 op_assign
