@@ -29,6 +29,11 @@ r_extern
 id|spinlock_t
 id|i8259A_lock
 suffix:semicolon
+DECL|variable|pit_latch_buggy
+r_int
+id|pit_latch_buggy
+suffix:semicolon
+multiline_comment|/* extern */
 macro_line|#include &quot;do_timer.h&quot;
 DECL|variable|jiffies_64
 id|u64
