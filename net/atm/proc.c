@@ -23,25 +23,9 @@ macro_line|#include &lt;asm/param.h&gt; /* for HZ */
 macro_line|#include &quot;resources.h&quot;
 macro_line|#include &quot;common.h&quot; /* atm_proc_init prototype */
 macro_line|#include &quot;signaling.h&quot; /* to get sigd - ugly too */
-macro_line|#ifdef CONFIG_ATM_CLIP
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 macro_line|#include &lt;net/atmclip.h&gt;
 macro_line|#include &quot;ipcommon.h&quot;
-r_extern
-r_void
-id|clip_push
-c_func
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 macro_line|#include &quot;lec.h&quot;
@@ -323,7 +307,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ATM_CLIP
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 DECL|function|svc_addr
 r_static
 r_int
@@ -954,13 +938,22 @@ id|vcc-&gt;qos.txtp.traffic_class
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ATM_CLIP
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
+r_if
+c_cond
+(paren
+id|try_atm_clip_ops
+c_func
+(paren
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
 id|vcc-&gt;push
 op_eq
-id|clip_push
+id|atm_clip_ops-&gt;clip_push
 )paren
 (brace
 r_struct
@@ -1035,6 +1028,13 @@ op_plus
 id|off
 comma
 l_string|&quot;None&quot;
+)paren
+suffix:semicolon
+)brace
+id|module_put
+c_func
+(paren
+id|atm_clip_ops-&gt;owner
 )paren
 suffix:semicolon
 )brace
@@ -2214,7 +2214,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ATM_CLIP
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 DECL|function|atm_arp_info
 r_static
 r_int
@@ -2257,6 +2257,18 @@ l_string|&quot;ATM address&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_atm_clip_ops
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|count
 op_assign
 id|pos
@@ -2265,7 +2277,7 @@ id|read_lock_bh
 c_func
 (paren
 op_amp
-id|clip_tbl.lock
+id|clip_tbl_hook-&gt;lock
 )paren
 suffix:semicolon
 r_for
@@ -2287,7 +2299,7 @@ c_loop
 (paren
 id|n
 op_assign
-id|clip_tbl.hash_buckets
+id|clip_tbl_hook-&gt;hash_buckets
 (braket
 id|i
 )braket
@@ -2346,7 +2358,13 @@ id|read_unlock_bh
 c_func
 (paren
 op_amp
-id|clip_tbl.lock
+id|clip_tbl_hook-&gt;lock
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|atm_clip_ops-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -2395,7 +2413,13 @@ id|read_unlock_bh
 c_func
 (paren
 op_amp
-id|clip_tbl.lock
+id|clip_tbl_hook-&gt;lock
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|atm_clip_ops-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -2411,7 +2435,13 @@ id|read_unlock_bh
 c_func
 (paren
 op_amp
-id|clip_tbl.lock
+id|clip_tbl_hook-&gt;lock
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|atm_clip_ops-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -3391,7 +3421,7 @@ c_func
 id|vc
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ATM_CLIP
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 id|CREATE_ENTRY
 c_func
 (paren

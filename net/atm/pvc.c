@@ -4,16 +4,12 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/net.h&gt;&t;&t;/* struct socket, struct proto_ops */
 macro_line|#include &lt;linux/atm.h&gt;&t;&t;/* ATM stuff */
 macro_line|#include &lt;linux/atmdev.h&gt;&t;/* ATM devices */
-macro_line|#include &lt;linux/atmclip.h&gt;&t;/* Classical IP over ATM */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* error codes */
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;&t;/* for sock_no_* */
-macro_line|#ifdef CONFIG_ATM_CLIP
-macro_line|#include &lt;net/atmclip.h&gt;
-macro_line|#endif
 macro_line|#include &quot;resources.h&quot;&t;&t;/* devs and vccs */
 macro_line|#include &quot;common.h&quot;&t;&t;/* common for PVCs and SVCs */
 macro_line|#ifndef NULL
@@ -514,13 +510,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ATM_CLIP
-id|atm_clip_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|error
 op_assign

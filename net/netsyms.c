@@ -42,6 +42,9 @@ macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
+macro_line|#include &lt;net/atmclip.h&gt;
+macro_line|#endif
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
@@ -2625,6 +2628,15 @@ c_func
 id|arp_tbl
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
+DECL|variable|clip_tbl_hook
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clip_tbl_hook
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|arp_find
 id|EXPORT_SYMBOL
 c_func
