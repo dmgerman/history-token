@@ -974,7 +974,7 @@ multiline_comment|/* Useful definitions to get the memory dimm given a physical&
 DECL|macro|paddr_dimm
 mdefine_line|#define paddr_dimm(_pa)&t;&t;((_pa &amp; MD_BANK_MASK) &gt;&gt; MD_BANK_SHFT)
 DECL|macro|paddr_cnode
-mdefine_line|#define paddr_cnode(_pa)&t;(NASID_TO_COMPACT_NODEID(NASID_GET(_pa)))
+mdefine_line|#define paddr_cnode(_pa)&t;(nasid_to_cnodeid(NASID_GET(_pa)))
 r_extern
 r_void
 id|membank_pathname_get

@@ -16,14 +16,6 @@ DECL|struct|nodepda_s
 r_struct
 id|nodepda_s
 (brace
-DECL|member|node_first_cpu
-id|cpuid_t
-id|node_first_cpu
-suffix:semicolon
-multiline_comment|/* Starting cpu number for node */
-multiline_comment|/* WARNING: no guarantee that   */
-multiline_comment|/*  the second cpu on a node is */
-multiline_comment|/*  node_first_cpu+1.           */
 DECL|member|xbow_vhdl
 id|vertex_hdl_t
 id|xbow_vhdl

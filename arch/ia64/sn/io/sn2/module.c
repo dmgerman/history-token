@@ -705,7 +705,7 @@ op_increment
 (brace
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|node
@@ -826,7 +826,7 @@ l_int|16
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|node

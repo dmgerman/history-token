@@ -494,7 +494,7 @@ suffix:semicolon
 multiline_comment|/* Take the least significant bits*/
 id|hubio_eint.ii_iidsr_fld_s.i_node
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -1171,7 +1171,7 @@ id|hinfo-&gt;h_nasid
 suffix:semicolon
 id|cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid

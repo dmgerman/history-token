@@ -1041,7 +1041,7 @@ id|hubinfo-&gt;h_nasid
 suffix:semicolon
 id|cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid
@@ -1985,7 +1985,7 @@ op_star
 (paren
 id|NODE_SWIN_BASE
 (paren
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnodeid
@@ -2055,7 +2055,7 @@ op_star
 id|NODE_SWIN_BASE
 c_func
 (paren
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnodeid
@@ -2225,7 +2225,7 @@ op_assign
 id|NODEPDA
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|npdap-&gt;xbow_peer

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNISTD_H
 DECL|macro|_ASM_IA64_UNISTD_H
 mdefine_line|#define _ASM_IA64_UNISTD_H
-multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/break.h&gt;
 DECL|macro|__BREAK_SYSCALL
 mdefine_line|#define __BREAK_SYSCALL&t;&t;&t;__IA64_BREAK_SYSCALL
@@ -622,7 +622,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_int
+r_void
 DECL|function|_exit
 id|_exit
 (paren
@@ -630,7 +630,6 @@ r_int
 id|value
 )paren
 (brace
-r_return
 id|sys_exit
 c_func
 (paren
@@ -964,7 +963,7 @@ id|sigsetsize
 suffix:semicolon
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * Note, this macro can only be used in the file which defines sys_ni_syscall, i.e., in&n; * kernel/sys.c.  This version causes warnings because the declaration isn&squot;t a&n; * proper prototype, but we can&squot;t use __typeof__ either, because not all cond_syscall()&n; * declarations have prototypes at the moment.&n; */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asmlinkage long x() __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
+mdefine_line|#define cond_syscall(x) asmlinkage long x (void) __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_UNISTD_H */
