@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Copyright (C) 2004 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Modified debugged and enhanced by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.77 2004/11/16 20:36:12 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Copyright (C) 2004 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Modified debugged and enhanced by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.81 2004/11/20 10:44:07 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -1821,6 +1821,12 @@ l_string|&quot;wbuf recovery completed OK&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Meaning of pad argument:&n;   0: Do not pad. Probably pointless - we only ever use this when we can&squot;t pad anyway.&n;   1: Pad, do not adjust nextblock free_size&n;   2: Pad, adjust nextblock free_size&n;*/
+DECL|macro|NOPAD
+mdefine_line|#define NOPAD&t;&t;0
+DECL|macro|PAD_NOACCOUNT
+mdefine_line|#define PAD_NOACCOUNT&t;1
+DECL|macro|PAD_ACCOUNTING
+mdefine_line|#define PAD_ACCOUNTING&t;2
 DECL|function|__jffs2_flush_wbuf
 r_static
 r_int
@@ -2455,6 +2461,13 @@ l_string|&quot;jffs2_flush_wbuf_gc() padding. Not finished checking&bslash;n&quo
 )paren
 )paren
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|__jffs2_flush_wbuf
@@ -2462,7 +2475,14 @@ c_func
 (paren
 id|c
 comma
-l_int|2
+id|PAD_ACCOUNTING
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
 )paren
 suffix:semicolon
 )brace
@@ -2517,6 +2537,13 @@ op_amp
 id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|__jffs2_flush_wbuf
@@ -2524,7 +2551,14 @@ c_func
 (paren
 id|c
 comma
-l_int|2
+id|PAD_ACCOUNTING
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
 )paren
 suffix:semicolon
 r_break
@@ -2572,14 +2606,35 @@ op_star
 id|c
 )paren
 (brace
-r_return
+r_int
+id|ret
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|__jffs2_flush_wbuf
 c_func
 (paren
 id|c
 comma
-l_int|1
+id|PAD_NOACCOUNT
 )paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|macro|PAGE_DIV
@@ -2688,6 +2743,13 @@ comma
 id|to
 comma
 id|retlen
+)paren
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
 )paren
 suffix:semicolon
 multiline_comment|/* If wbuf_ofs is not initialized, set it to target address */
@@ -2837,10 +2899,12 @@ id|c-&gt;wbuf_ofs
 suffix:semicolon
 id|ret
 op_assign
-id|jffs2_flush_wbuf_pad
+id|__jffs2_flush_wbuf
 c_func
 (paren
 id|c
+comma
+id|PAD_NOACCOUNT
 )paren
 suffix:semicolon
 r_if
@@ -2868,8 +2932,8 @@ id|retlen
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 )brace
 )brace
@@ -3117,7 +3181,7 @@ c_func
 (paren
 id|c
 comma
-l_int|0
+id|NOPAD
 )paren
 suffix:semicolon
 r_if
@@ -3146,8 +3210,8 @@ id|retlen
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|outvec_to
@@ -3359,9 +3423,6 @@ l_int|1
 r_uint32
 id|remainder
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 id|remainder
 op_assign
 id|outvecs
@@ -3459,8 +3520,8 @@ id|retlen
 op_assign
 id|donelen
 suffix:semicolon
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|donelen
@@ -3620,8 +3681,21 @@ comma
 id|ino
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+m_exit
+suffix:colon
+id|up_write
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This is the entry for flash write.&n; *&t;Check, if we work on NAND FLASH, if so build an kvec and write it via vritev&n;*/
@@ -3779,6 +3853,13 @@ id|c
 )paren
 )paren
 (brace
+id|down_read
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3893,8 +3974,8 @@ op_logical_or
 op_logical_neg
 id|c-&gt;wbuf_len
 )paren
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 multiline_comment|/* if we read in a different block, return */
 r_if
@@ -3922,8 +4003,8 @@ l_int|1
 )paren
 )paren
 )paren
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 r_if
 c_cond
@@ -3950,8 +4031,8 @@ OG
 id|c-&gt;wbuf_len
 )paren
 multiline_comment|/* is read beyond write buffer ? */
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 id|lwbf
 op_assign
@@ -3991,8 +4072,8 @@ OG
 id|len
 )paren
 multiline_comment|/* is write beyond write buffer ? */
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 id|lwbf
 op_assign
@@ -4032,6 +4113,15 @@ op_plus
 id|owbf
 comma
 id|lwbf
+)paren
+suffix:semicolon
+m_exit
+suffix:colon
+id|up_read
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
 )paren
 suffix:semicolon
 r_return
@@ -5137,6 +5227,13 @@ r_int
 id|res
 suffix:semicolon
 multiline_comment|/* Initialise write buffer */
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
 id|c-&gt;wbuf_pagesize
 op_assign
 id|c-&gt;mtd-&gt;oobblock
@@ -5259,6 +5356,13 @@ op_assign
 l_int|16
 suffix:semicolon
 multiline_comment|/* Initialize write buffer */
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_sem
+)paren
+suffix:semicolon
 id|c-&gt;wbuf_pagesize
 op_assign
 id|c-&gt;mtd-&gt;eccsize
