@@ -1540,7 +1540,7 @@ multiline_comment|/*  26 */
 l_string|&quot;SigmaTel 3D Enhancement&quot;
 comma
 multiline_comment|/*  27 */
-l_string|&quot;Reserved 27&quot;
+l_string|&quot;IC Ensemble/KS Waves&quot;
 comma
 multiline_comment|/*  28 */
 l_string|&quot;Rockwell 3D Stereo Enhancement&quot;
