@@ -1335,6 +1335,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* logical blocks are represented by 40 bits in pxd_t, etc. */
 id|sb-&gt;s_maxbytes
 op_assign
 (paren
@@ -1347,10 +1348,12 @@ op_lshift
 l_int|40
 suffix:semicolon
 macro_line|#if BITS_PER_LONG == 32
+multiline_comment|/*&n;&t; * Page cache is indexed by long.&n;&t; * I would use MAX_LFS_FILESIZE, but it&squot;s only half as big&n;&t; */
 id|sb-&gt;s_maxbytes
 op_assign
 id|min
 c_func
+(paren
 (paren
 (paren
 id|u64
@@ -1358,6 +1361,9 @@ id|u64
 id|PAGE_CACHE_SIZE
 op_lshift
 l_int|32
+)paren
+op_minus
+l_int|1
 comma
 id|sb-&gt;s_maxbytes
 )paren
