@@ -4696,12 +4696,7 @@ suffix:semicolon
 id|endpoint
 op_assign
 op_amp
-id|intf-&gt;altsetting
-(braket
-l_int|0
-)braket
-dot
-id|endpoint
+id|intf-&gt;cur_altsetting-&gt;endpoint
 (braket
 l_int|0
 )braket
