@@ -77,6 +77,37 @@ suffix:semicolon
 multiline_comment|/* in 10^(-9) s */
 )brace
 suffix:semicolon
+DECL|struct|cpufreq_real_policy
+r_struct
+id|cpufreq_real_policy
+(brace
+DECL|member|min
+r_int
+r_int
+id|min
+suffix:semicolon
+multiline_comment|/* in kHz */
+DECL|member|max
+r_int
+r_int
+id|max
+suffix:semicolon
+multiline_comment|/* in kHz */
+DECL|member|policy
+r_int
+r_int
+id|policy
+suffix:semicolon
+multiline_comment|/* see above */
+DECL|member|governor
+r_struct
+id|cpufreq_governor
+op_star
+id|governor
+suffix:semicolon
+multiline_comment|/* see below */
+)brace
+suffix:semicolon
 DECL|struct|cpufreq_policy
 r_struct
 id|cpufreq_policy
@@ -130,6 +161,11 @@ id|semaphore
 id|lock
 suffix:semicolon
 multiline_comment|/* CPU -&gt;setpolicy or -&gt;target may&n;&t;&t;&t;&t;&t;   only be called once a time */
+DECL|member|user_policy
+r_struct
+id|cpufreq_real_policy
+id|user_policy
+suffix:semicolon
 DECL|member|kobj
 r_struct
 id|kobject
@@ -662,6 +698,15 @@ id|cpufreq_policy
 op_star
 id|policy
 comma
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_int
+id|cpufreq_update_policy
+c_func
+(paren
 r_int
 r_int
 id|cpu
