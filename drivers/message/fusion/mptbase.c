@@ -775,6 +775,23 @@ id|evHandlers
 suffix:semicolon
 r_static
 r_void
+id|mpt_sp_ioc_info
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+comma
+id|u32
+id|ioc_status
+comma
+id|MPT_FRAME_HDR
+op_star
+id|mf
+)paren
+suffix:semicolon
+r_static
+r_void
 id|mpt_fc_log_info
 c_func
 (paren
@@ -982,6 +999,16 @@ id|mptbase_pci_table
 )braket
 op_assign
 (brace
+(brace
+id|PCI_VENDOR_ID_LSI_LOGIC
+comma
+id|PCI_DEVICE_ID_LSI_FC909
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
 (brace
 id|PCI_VENDOR_ID_LSI_LOGIC
 comma
@@ -1346,6 +1373,43 @@ c_func
 id|ioc
 comma
 id|log_info
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ioc_stat
+op_amp
+id|MPI_IOCSTATUS_MASK
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+)paren
+id|ioc-&gt;chip_type
+op_le
+(paren
+r_int
+)paren
+id|FC929
+)paren
+suffix:semicolon
+r_else
+id|mpt_sp_ioc_info
+c_func
+(paren
+id|ioc
+comma
+(paren
+id|u32
+)paren
+id|ioc_stat
+comma
+id|mf
 )paren
 suffix:semicolon
 )brace
@@ -4683,6 +4747,23 @@ id|ioc-&gt;chip_type
 op_assign
 id|FCUNK
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;device
+op_eq
+id|MPI_MANUFACTPAGE_DEVICEID_FC909
+)paren
+(brace
+id|ioc-&gt;chip_type
+op_assign
+id|FC909
+suffix:semicolon
+id|ioc-&gt;prod_name
+op_assign
+l_string|&quot;LSIFC909&quot;
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -23407,6 +23488,42 @@ l_string|&quot;Outbound DMA Overrun&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0x00090000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Task Management&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x000A0000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Device Problem&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x000B0000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Invalid Phase Change&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x000C0000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Untagged Table Size&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|printk
 c_func
@@ -23417,6 +23534,336 @@ comma
 id|ioc-&gt;name
 comma
 id|log_info
+comma
+id|desc
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+multiline_comment|/*&n; *&t;mpt_sp_ioc_info - IOC information returned from SCSI Parallel IOC.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@ioc_status: U32 IOCStatus word from IOC&n; *&t;@mf: Pointer to MPT request frame&n; *&n; *&t;Refer to lsi/mpi.h.&n; */
+r_static
+r_void
+DECL|function|mpt_sp_ioc_info
+id|mpt_sp_ioc_info
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+comma
+id|u32
+id|ioc_status
+comma
+id|MPT_FRAME_HDR
+op_star
+id|mf
+)paren
+(brace
+id|u32
+id|status
+op_assign
+id|ioc_status
+op_amp
+id|MPI_IOCSTATUS_MASK
+suffix:semicolon
+r_char
+op_star
+id|desc
+op_assign
+l_string|&quot;&quot;
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|status
+)paren
+(brace
+r_case
+id|MPI_IOCSTATUS_INVALID_FUNCTION
+suffix:colon
+multiline_comment|/* 0x0001 */
+id|desc
+op_assign
+l_string|&quot;Invalid Function&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_BUSY
+suffix:colon
+multiline_comment|/* 0x0002 */
+id|desc
+op_assign
+l_string|&quot;Busy&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_INVALID_SGL
+suffix:colon
+multiline_comment|/* 0x0003 */
+id|desc
+op_assign
+l_string|&quot;Invalid SGL&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_INTERNAL_ERROR
+suffix:colon
+multiline_comment|/* 0x0004 */
+id|desc
+op_assign
+l_string|&quot;Internal Error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_RESERVED
+suffix:colon
+multiline_comment|/* 0x0005 */
+id|desc
+op_assign
+l_string|&quot;Reserved&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_INSUFFICIENT_RESOURCES
+suffix:colon
+multiline_comment|/* 0x0006 */
+id|desc
+op_assign
+l_string|&quot;Insufficient Resources&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_INVALID_FIELD
+suffix:colon
+multiline_comment|/* 0x0007 */
+id|desc
+op_assign
+l_string|&quot;Invalid Field&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_INVALID_STATE
+suffix:colon
+multiline_comment|/* 0x0008 */
+id|desc
+op_assign
+l_string|&quot;Invalid State&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_CONFIG_INVALID_ACTION
+suffix:colon
+multiline_comment|/* 0x0020 */
+r_case
+id|MPI_IOCSTATUS_CONFIG_INVALID_TYPE
+suffix:colon
+multiline_comment|/* 0x0021 */
+r_case
+id|MPI_IOCSTATUS_CONFIG_INVALID_PAGE
+suffix:colon
+multiline_comment|/* 0x0022 */
+r_case
+id|MPI_IOCSTATUS_CONFIG_INVALID_DATA
+suffix:colon
+multiline_comment|/* 0x0023 */
+r_case
+id|MPI_IOCSTATUS_CONFIG_NO_DEFAULTS
+suffix:colon
+multiline_comment|/* 0x0024 */
+r_case
+id|MPI_IOCSTATUS_CONFIG_CANT_COMMIT
+suffix:colon
+multiline_comment|/* 0x0025 */
+multiline_comment|/* No message for Config IOCStatus values */
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_RECOVERED_ERROR
+suffix:colon
+multiline_comment|/* 0x0040 */
+multiline_comment|/* No message for recovered error&n;&t;&t;desc = &quot;SCSI Recovered Error&quot;;&n;&t;&t;*/
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_INVALID_BUS
+suffix:colon
+multiline_comment|/* 0x0041 */
+id|desc
+op_assign
+l_string|&quot;SCSI Invalid Bus&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_INVALID_TARGETID
+suffix:colon
+multiline_comment|/* 0x0042 */
+id|desc
+op_assign
+l_string|&quot;SCSI Invalid TargetID&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_DEVICE_NOT_THERE
+suffix:colon
+multiline_comment|/* 0x0043 */
+(brace
+id|SCSIIORequest_t
+op_star
+id|pScsiReq
+op_assign
+(paren
+id|SCSIIORequest_t
+op_star
+)paren
+id|mf
+suffix:semicolon
+id|U8
+id|cdb
+op_assign
+id|pScsiReq-&gt;CDB
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cdb
+op_ne
+l_int|0x12
+)paren
+(brace
+multiline_comment|/* Inquiry is issued for device scanning */
+id|desc
+op_assign
+l_string|&quot;SCSI Device Not There&quot;
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+r_case
+id|MPI_IOCSTATUS_SCSI_DATA_OVERRUN
+suffix:colon
+multiline_comment|/* 0x0044 */
+id|desc
+op_assign
+l_string|&quot;SCSI Data Overrun&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_DATA_UNDERRUN
+suffix:colon
+multiline_comment|/* 0x0045 */
+multiline_comment|/* This error is checked in scsi_io_done(). Skip. &n;&t;&t;desc = &quot;SCSI Data Underrun&quot;;&n;&t;&t;*/
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_IO_DATA_ERROR
+suffix:colon
+multiline_comment|/* 0x0046 */
+id|desc
+op_assign
+l_string|&quot;SCSI I/O Data Error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_PROTOCOL_ERROR
+suffix:colon
+multiline_comment|/* 0x0047 */
+id|desc
+op_assign
+l_string|&quot;SCSI Protocol Error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_TASK_TERMINATED
+suffix:colon
+multiline_comment|/* 0x0048 */
+id|desc
+op_assign
+l_string|&quot;SCSI Task Terminated&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_RESIDUAL_MISMATCH
+suffix:colon
+multiline_comment|/* 0x0049 */
+id|desc
+op_assign
+l_string|&quot;SCSI Residual Mismatch&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_TASK_MGMT_FAILED
+suffix:colon
+multiline_comment|/* 0x004A */
+id|desc
+op_assign
+l_string|&quot;SCSI Task Management Failed&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_IOC_TERMINATED
+suffix:colon
+multiline_comment|/* 0x004B */
+id|desc
+op_assign
+l_string|&quot;SCSI IOC Terminated&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MPI_IOCSTATUS_SCSI_EXT_TERMINATED
+suffix:colon
+multiline_comment|/* 0x004C */
+id|desc
+op_assign
+l_string|&quot;SCSI Ext Terminated&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Others&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|desc
+op_ne
+l_string|&quot;&quot;
+)paren
+id|printk
+c_func
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;IOCStatus(0x%04x): %s&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|status
 comma
 id|desc
 )paren
