@@ -261,7 +261,7 @@ id|dma
 r_if
 c_cond
 (paren
-id|rq-&gt;sector
+id|block
 op_plus
 id|rq-&gt;nr_sectors
 OG
