@@ -1147,6 +1147,24 @@ DECL|typedef|vc_map
 )brace
 id|vc_map
 suffix:semicolon
+DECL|struct|ns_skb_data
+r_struct
+id|ns_skb_data
+(brace
+DECL|member|vcc
+r_struct
+id|atm_vcc
+op_star
+id|vcc
+suffix:semicolon
+DECL|member|iovcnt
+r_int
+id|iovcnt
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|NS_SKB
+mdefine_line|#define NS_SKB(skb) (((struct ns_skb_data *) (skb)-&gt;cb))
 DECL|struct|ns_dev
 r_typedef
 r_struct

@@ -2346,17 +2346,6 @@ c_func
 id|skb
 )paren
 op_member_access_from_pointer
-id|iovcnt
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* just to be safe ... */
-id|ATM_SKB
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
 id|atm_options
 op_assign
 id|entry-&gt;shortcut-&gt;atm_options

@@ -1148,11 +1148,6 @@ op_star
 id|vcc
 suffix:semicolon
 multiline_comment|/* ATM VCC */
-DECL|member|iovcnt
-r_int
-id|iovcnt
-suffix:semicolon
-multiline_comment|/* 0 for &quot;normal&quot; operation */
 DECL|member|atm_options
 r_int
 r_int
