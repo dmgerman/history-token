@@ -323,22 +323,6 @@ op_star
 id|NWD
 )braket
 suffix:semicolon
-singleline_comment|// indexed by minor numbers
-DECL|member|hd
-r_struct
-id|hd_struct
-id|hd
-(braket
-l_int|256
-)braket
-suffix:semicolon
-DECL|member|sizes
-r_int
-id|sizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
 DECL|member|scsi_ctlr
 r_void

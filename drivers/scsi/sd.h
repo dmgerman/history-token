@@ -8,12 +8,6 @@ macro_line|#endif
 macro_line|#ifndef _GENDISK_H
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#endif
-r_extern
-r_struct
-id|hd_struct
-op_star
-id|sd
-suffix:semicolon
 DECL|struct|scsi_disk
 r_typedef
 r_struct

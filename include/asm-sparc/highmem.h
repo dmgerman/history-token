@@ -194,6 +194,11 @@ r_int
 r_int
 id|vaddr
 suffix:semicolon
+id|inc_preempt_count
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -349,9 +354,16 @@ id|vaddr
 OL
 id|FIX_KMAP_BEGIN
 )paren
+(brace
 singleline_comment|// FIXME
+id|dec_preempt_count
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -409,6 +421,11 @@ c_func
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+id|dec_preempt_count
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_HIGHMEM_H */

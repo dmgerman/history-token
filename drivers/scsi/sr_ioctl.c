@@ -24,14 +24,6 @@ id|xa_test
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_void
-id|get_sectorsize
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 DECL|macro|IOCTL_RETRIES
 mdefine_line|#define IOCTL_RETRIES 3
 multiline_comment|/* The CDROM is fairly slow, so we need a little extra time */
@@ -239,11 +231,7 @@ r_return
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
+id|cdi-&gt;handle
 comma
 id|sr_cmd
 comma
@@ -265,8 +253,9 @@ r_int
 id|sr_do_ioctl
 c_func
 (paren
-r_int
-id|target
+id|Scsi_CD
+op_star
+id|cd
 comma
 r_int
 r_char
@@ -322,12 +311,7 @@ id|bounce_buffer
 suffix:semicolon
 id|SDev
 op_assign
-id|scsi_CDs
-(braket
-id|target
-)braket
-dot
-id|device
+id|cd-&gt;device
 suffix:semicolon
 id|SRpnt
 op_assign
@@ -560,9 +544,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: disc change detected.&bslash;n&quot;
+l_string|&quot;%s: disc change detected.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_if
@@ -616,9 +600,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: CDROM not ready yet.&bslash;n&quot;
+l_string|&quot;%s: CDROM not ready yet.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_if
@@ -665,9 +649,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: CDROM not ready.  Make sure there is a disc in the drive.&bslash;n&quot;
+l_string|&quot;%s: CDROM not ready.  Make sure there is a disc in the drive.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -700,10 +684,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sr%d: CDROM (ioctl) reports ILLEGAL &quot;
+l_string|&quot;%s: CDROM (ioctl) reports ILLEGAL &quot;
 l_string|&quot;REQUEST.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_if
@@ -763,9 +747,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sr%d: CDROM (ioctl) error, command: &quot;
+l_string|&quot;%s: CDROM (ioctl) error, command: &quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 id|print_command
@@ -831,26 +815,15 @@ r_int
 id|test_unit_ready
 c_func
 (paren
-r_int
-id|minor
-)paren
-(brace
 id|Scsi_CD
 op_star
-id|SCp
-suffix:semicolon
+id|cd
+)paren
+(brace
 id|u_char
 id|sr_cmd
 (braket
 l_int|10
-)braket
-suffix:semicolon
-id|SCp
-op_assign
-op_amp
-id|scsi_CDs
-(braket
-id|minor
 )braket
 suffix:semicolon
 id|sr_cmd
@@ -866,7 +839,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -874,7 +847,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 )paren
 op_lshift
 l_int|5
@@ -908,7 +881,7 @@ r_return
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|sr_cmd
 comma
@@ -940,7 +913,7 @@ id|pos
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -963,7 +936,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -971,7 +944,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 )paren
 op_lshift
 l_int|5
@@ -1018,11 +991,7 @@ r_return
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
+id|cd
 comma
 id|sr_cmd
 comma
@@ -1054,7 +1023,7 @@ id|lock
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -1062,7 +1031,7 @@ r_return
 id|scsi_ioctl
 c_func
 (paren
-id|SCp-&gt;device
+id|cd-&gt;device
 comma
 id|lock
 ques
@@ -1111,11 +1080,7 @@ op_eq
 id|test_unit_ready
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
+id|cdi-&gt;handle
 )paren
 )paren
 r_return
@@ -1138,7 +1103,7 @@ id|cdi
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -1261,7 +1226,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;xa_flag
+id|cd-&gt;xa_flag
 )paren
 r_return
 id|CDS_XA_2_1
@@ -1289,19 +1254,19 @@ id|ms_info
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
 id|ms_info-&gt;addr.lba
 op_assign
-id|SCp-&gt;ms_offset
+id|cd-&gt;ms_offset
 suffix:semicolon
 id|ms_info-&gt;xa_flag
 op_assign
-id|SCp-&gt;xa_flag
+id|cd-&gt;xa_flag
 op_logical_or
-id|SCp-&gt;ms_offset
+id|cd-&gt;ms_offset
 OG
 l_int|0
 suffix:semicolon
@@ -1327,7 +1292,7 @@ id|mcn
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -1359,7 +1324,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -1367,7 +1332,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 )paren
 op_lshift
 l_int|5
@@ -1436,11 +1401,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
+id|cd
 comma
 id|sr_cmd
 comma
@@ -1489,12 +1450,6 @@ op_star
 id|cdi
 )paren
 (brace
-id|invalidate_buffers
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1515,7 +1470,7 @@ id|speed
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -1567,7 +1522,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -1575,7 +1530,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 )paren
 op_lshift
 l_int|5
@@ -1613,11 +1568,7 @@ c_cond
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
+id|cd
 comma
 id|sr_cmd
 comma
@@ -1666,7 +1617,7 @@ id|arg
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -1678,14 +1629,6 @@ l_int|10
 suffix:semicolon
 r_int
 id|result
-comma
-id|target
-op_assign
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
 suffix:semicolon
 r_int
 r_char
@@ -1742,7 +1685,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -1750,7 +1693,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 )paren
 op_lshift
 l_int|5
@@ -1793,7 +1736,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|target
+id|cd
 comma
 id|sr_cmd
 comma
@@ -1854,7 +1797,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -1862,7 +1805,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 )paren
 op_lshift
 l_int|5
@@ -1928,7 +1871,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|target
+id|cd
 comma
 id|sr_cmd
 comma
@@ -2075,14 +2018,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -2122,7 +2065,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|target
+id|cd
 comma
 id|sr_cmd
 comma
@@ -2188,12 +2131,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* -----------------------------------------------------------------------&n; * a function to read all sorts of funny cdrom sectors using the READ_CD&n; * scsi-3 mmc command&n; *&n; * lba:     linear block address&n; * format:  0 = data (anything)&n; *          1 = audio&n; *          2 = data (mode 1)&n; *          3 = data (mode 2)&n; *          4 = data (mode 2 form1)&n; *          5 = data (mode 2 form2)&n; * blksize: 2048 | 2336 | 2340 | 2352&n; */
 DECL|function|sr_read_cd
+r_static
 r_int
 id|sr_read_cd
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
+id|cd
 comma
 r_int
 r_char
@@ -2217,23 +2162,13 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_CD
-op_star
-id|SCp
-op_assign
-op_amp
-id|scsi_CDs
-(braket
-id|minor
-)braket
-suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: sr_read_cd lba=%d format=%d blksize=%d&bslash;n&quot;
+l_string|&quot;%s: sr_read_cd lba=%d format=%d blksize=%d&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 comma
 id|lba
 comma
@@ -2267,14 +2202,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -2425,7 +2360,7 @@ r_return
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -2443,12 +2378,14 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * read sectors with blocksizes other than 2048&n; */
 DECL|function|sr_read_sector
+r_static
 r_int
 id|sr_read_sector
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
+id|cd
 comma
 r_int
 id|lba
@@ -2470,16 +2407,6 @@ id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* the scsi-command */
-id|Scsi_CD
-op_star
-id|SCp
-op_assign
-op_amp
-id|scsi_CDs
-(braket
-id|minor
-)braket
-suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -2487,7 +2414,7 @@ multiline_comment|/* we try the READ CD command first... */
 r_if
 c_cond
 (paren
-id|SCp-&gt;readcd_known
+id|cd-&gt;readcd_known
 )paren
 (brace
 id|rc
@@ -2495,7 +2422,7 @@ op_assign
 id|sr_read_cd
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|dest
 comma
@@ -2517,7 +2444,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-id|SCp-&gt;readcd_known
+id|cd-&gt;readcd_known
 op_assign
 l_int|0
 suffix:semicolon
@@ -2535,7 +2462,7 @@ c_cond
 (paren
 id|blksize
 op_ne
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 )paren
 (brace
 r_if
@@ -2549,7 +2476,7 @@ op_assign
 id|sr_set_blocklength
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|blksize
 )paren
@@ -2563,9 +2490,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: sr_read_sector lba=%d blksize=%d&bslash;n&quot;
+l_string|&quot;%s: sr_read_sector lba=%d blksize=%d&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 comma
 id|lba
 comma
@@ -2596,14 +2523,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -2686,7 +2613,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -2711,24 +2638,15 @@ r_int
 id|sr_is_xa
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
+id|cd
 )paren
 (brace
 r_int
 r_char
 op_star
 id|raw_sector
-suffix:semicolon
-id|Scsi_CD
-op_star
-id|SCp
-op_assign
-op_amp
-id|scsi_CDs
-(braket
-id|minor
-)braket
 suffix:semicolon
 r_int
 id|is_xa
@@ -2777,9 +2695,9 @@ op_eq
 id|sr_read_sector
 c_func
 (paren
-id|minor
+id|cd
 comma
-id|SCp-&gt;ms_offset
+id|cd-&gt;ms_offset
 op_plus
 l_int|16
 comma
@@ -2825,9 +2743,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: sr_is_xa: %d&bslash;n&quot;
+l_string|&quot;%s: sr_is_xa: %d&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 comma
 id|is_xa
 )paren
@@ -2858,7 +2776,7 @@ id|arg
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -2875,7 +2793,7 @@ r_return
 id|put_user
 c_func
 (paren
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 comma
 (paren
 r_int
@@ -2895,7 +2813,7 @@ c_func
 (paren
 id|u64
 )paren
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_lshift
 l_int|9
 comma
@@ -2912,7 +2830,7 @@ r_return
 id|scsi_ioctl
 c_func
 (paren
-id|SCp-&gt;device
+id|cd-&gt;device
 comma
 id|cmd
 comma

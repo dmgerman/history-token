@@ -347,8 +347,20 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|macro|t2_pci_tbi
-mdefine_line|#define t2_pci_tbi ((void *)0)
+r_extern
+r_void
+id|t2_pci_tbi
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+comma
+id|dma_addr_t
+comma
+id|dma_addr_t
+)paren
+suffix:semicolon
 multiline_comment|/* core_titan.c */
 r_extern
 r_struct

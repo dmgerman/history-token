@@ -203,11 +203,6 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* primary (master) devfs entry  */
-DECL|member|number
-r_int
-id|number
-suffix:semicolon
-multiline_comment|/* stupid old code wastes space  */
 DECL|member|hd_driverfs_dev
 r_struct
 id|device
@@ -218,6 +213,10 @@ multiline_comment|/* support driverfs hiearchy     */
 suffix:semicolon
 DECL|macro|GENHD_FL_REMOVABLE
 mdefine_line|#define GENHD_FL_REMOVABLE  1
+DECL|macro|GENHD_FL_DRIVERFS
+mdefine_line|#define GENHD_FL_DRIVERFS  2
+DECL|macro|GENHD_FL_DEVFS
+mdefine_line|#define GENHD_FL_DEVFS&t;4
 DECL|struct|gendisk
 r_struct
 id|gendisk
@@ -250,11 +249,6 @@ op_star
 id|part
 suffix:semicolon
 multiline_comment|/* [indexed by minor] */
-DECL|member|nr_real
-r_int
-id|nr_real
-suffix:semicolon
-multiline_comment|/* number of real devices */
 DECL|member|next
 r_struct
 id|gendisk
@@ -267,26 +261,40 @@ id|block_device_operations
 op_star
 id|fops
 suffix:semicolon
-DECL|member|de_arr
-id|devfs_handle_t
-op_star
-id|de_arr
+DECL|member|capacity
+id|sector_t
+id|capacity
 suffix:semicolon
-multiline_comment|/* one per physical disc */
-DECL|member|driverfs_dev_arr
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+DECL|member|number
+r_int
+id|number
+suffix:semicolon
+multiline_comment|/* devfs crap */
+DECL|member|de
+id|devfs_handle_t
+id|de
+suffix:semicolon
+multiline_comment|/* more of the same */
+DECL|member|disk_de
+id|devfs_handle_t
+id|disk_de
+suffix:semicolon
+multiline_comment|/* piled higher and deeper */
+DECL|member|driverfs_dev
 r_struct
 id|device
 op_star
-op_star
-id|driverfs_dev_arr
+id|driverfs_dev
 suffix:semicolon
-multiline_comment|/* support driverfs hierarchy */
-DECL|member|flags
-r_char
-op_star
-id|flags
+DECL|member|disk_dev
+r_struct
+id|device
+id|disk_dev
 suffix:semicolon
-multiline_comment|/* one per physical disc */
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/block/genhd.c */
@@ -304,6 +312,17 @@ suffix:semicolon
 r_extern
 r_void
 id|del_gendisk
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|gp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unlink_gendisk
 c_func
 (paren
 r_struct
@@ -339,6 +358,44 @@ id|bdev
 (brace
 r_return
 id|bdev-&gt;bd_offset
+suffix:semicolon
+)brace
+DECL|function|get_capacity
+r_static
+r_inline
+id|sector_t
+id|get_capacity
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|disk
+)paren
+(brace
+r_return
+id|disk-&gt;capacity
+suffix:semicolon
+)brace
+DECL|function|set_capacity
+r_static
+r_inline
+r_void
+id|set_capacity
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|disk
+comma
+id|sector_t
+id|size
+)paren
+(brace
+id|disk-&gt;capacity
+op_assign
+id|size
 suffix:semicolon
 )brace
 macro_line|#endif  /*  __KERNEL__  */
@@ -890,7 +947,7 @@ op_star
 id|hd
 comma
 r_int
-id|minor
+id|part
 comma
 r_char
 op_star
@@ -898,32 +955,33 @@ id|buf
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|devfs_register_partitions
+r_int
+id|rescan_partitions
+c_func
 (paren
 r_struct
 id|gendisk
 op_star
-id|dev
+id|disk
 comma
-r_int
-id|minor
-comma
-r_int
-id|unregister
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|driverfs_remove_partitions
+id|update_partition
+c_func
 (paren
 r_struct
 id|gendisk
 op_star
-id|hd
+id|disk
 comma
 r_int
-id|minor
+id|part
 )paren
 suffix:semicolon
 DECL|function|disk_index

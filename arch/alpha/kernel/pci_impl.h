@@ -20,10 +20,12 @@ mdefine_line|#define XL_DEFAULT_MEM_BASE ((16+2)*1024*1024) /* 16M to 64M-1 is a
 multiline_comment|/*&n; * APECS and LCA have only 34 bits for physical addresses, thus limiting PCI&n; * bus memory addresses for SPARSE access to be less than 128Mb.&n; */
 DECL|macro|APECS_AND_LCA_DEFAULT_MEM_BASE
 mdefine_line|#define APECS_AND_LCA_DEFAULT_MEM_BASE ((16+2)*1024*1024)
-multiline_comment|/*&n; * Because the MCPCIA core logic supports more bits for physical addresses,&n; * it should allow an expanded range of SPARSE memory addresses.&n; * However, we do not use them all, in order to avoid the HAE manipulation&n; * that would be needed.&n; */
+multiline_comment|/*&n; * Because MCPCIA and T2 core logic support more bits for&n; * physical addresses, they should allow an expanded range of SPARSE&n; * memory addresses.  However, we do not use them all, in order to&n; * avoid the HAE manipulation that would be needed.&n; */
 DECL|macro|MCPCIA_DEFAULT_MEM_BASE
 mdefine_line|#define MCPCIA_DEFAULT_MEM_BASE ((32+2)*1024*1024)
-multiline_comment|/*&n; * Because CIA and PYXIS and T2 have more bits for physical addresses,&n; * they support an expanded range of SPARSE memory addresses.&n; */
+DECL|macro|T2_DEFAULT_MEM_BASE
+mdefine_line|#define T2_DEFAULT_MEM_BASE ((16+1)*1024*1024)
+multiline_comment|/*&n; * Because CIA and PYXIS have more bits for physical addresses,&n; * they support an expanded range of SPARSE memory addresses.&n; */
 DECL|macro|DEFAULT_MEM_BASE
 mdefine_line|#define DEFAULT_MEM_BASE ((128+16)*1024*1024)
 multiline_comment|/* ??? Experimenting with no HAE for CIA.  */
@@ -190,20 +192,6 @@ r_int
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|iommu_arena_alloc
-c_func
-(paren
-r_struct
-id|pci_iommu_arena
-op_star
-id|arena
-comma
-r_int
-id|n
 )paren
 suffix:semicolon
 r_extern

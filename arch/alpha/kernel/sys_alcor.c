@@ -849,7 +849,7 @@ id|cia_machine_check
 comma
 id|max_dma_address
 suffix:colon
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_ALCOR_MAX_DMA_ADDRESS
 comma
 id|min_io_address
 suffix:colon
