@@ -73,7 +73,6 @@ c_func
 )paren
 (brace
 r_int
-r_int
 id|cpu
 suffix:semicolon
 id|__u32
