@@ -6821,7 +6821,7 @@ macro_line|#else
 macro_line|#if   SYM_CONF_DMA_ADDRESSING_MODE == 1
 mdefine_line|#define&t;PciDmaMask&t;0xffffffffff
 macro_line|#elif SYM_CONF_DMA_ADDRESSING_MODE == 2
-mdefine_line|#define&t;PciDmaMask&t;0xffffffffffffffff
+mdefine_line|#define&t;PciDmaMask&t;0xffffffffffffffffULL
 macro_line|#endif
 r_if
 c_cond
