@@ -5611,7 +5611,7 @@ suffix:semicolon
 id|mptscsih_sync_irq
 c_func
 (paren
-id|ioc-&gt;irq
+id|pdev-&gt;irq
 )paren
 suffix:semicolon
 id|pci_set_drvdata
