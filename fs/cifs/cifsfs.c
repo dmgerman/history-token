@@ -1619,6 +1619,21 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;In read_wrapper size %d at %d&quot;
+comma
+id|read_size
+comma
+op_star
+id|poffset
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1648,34 +1663,11 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* BB do we need to lock inode from here until after invalidate? */
-r_if
-c_cond
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
-)paren
-(brace
-id|filemap_fdatawrite
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
-)paren
-suffix:semicolon
-id|filemap_fdatawait
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* force read from the server since we do not have oplock */
-multiline_comment|/* BB we should relax this and do it on a timer and call cifs_revalidate */
-multiline_comment|/* BB we should make timer configurable */
-id|invalidate_remote_inode
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
+multiline_comment|/*&t;&t;if(file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping) {&n;&t;&t;&t;filemap_fdatawrite(file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping);&n;&t;&t;&t;filemap_fdatawait(file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping);&n;&t;&t;}*/
+multiline_comment|/*&t;&t;cifs_revalidate(file-&gt;f_dentry);*/
+multiline_comment|/* BB fixme */
+multiline_comment|/* BB we should make timer configurable - perhaps &n;&t;&t;   by simply calling cifs_revalidate here */
+multiline_comment|/* invalidate_remote_inode(file-&gt;f_dentry-&gt;d_inode);*/
 r_return
 id|generic_file_read
 c_func
@@ -1759,6 +1751,21 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;In write_wrapper size %d at %d&quot;
+comma
+id|write_size
+comma
+op_star
+id|poffset
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* check whether we can cache writes locally */
 id|written
 op_assign
@@ -2560,6 +2567,13 @@ c_func
 id|oplock_item
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2604,6 +2618,13 @@ r_else
 id|rc
 op_assign
 l_int|0
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
 suffix:semicolon
 r_if
 c_cond

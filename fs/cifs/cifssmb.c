@@ -12652,7 +12652,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;SetFileSize (via SetFileInfo)&quot;
+l_string|&quot;SetFileSize (via SetFileInfo) %ld 0x%lx&quot;
+comma
+id|size
+comma
+id|size
 )paren
 )paren
 suffix:semicolon

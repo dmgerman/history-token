@@ -266,16 +266,6 @@ id|inode_operations
 id|cifs_file_inode_ops
 suffix:semicolon
 r_extern
-r_void
-id|cifs_truncate_file
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|inode_operations
 id|cifs_symlink_inode_ops
