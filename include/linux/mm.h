@@ -2811,6 +2811,17 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|vmalloc_to_pfn
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|page
 op_star

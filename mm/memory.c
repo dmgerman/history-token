@@ -8070,6 +8070,37 @@ c_func
 id|vmalloc_to_page
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Map a vmalloc()-space virtual address to the physical page frame number.&n; */
+DECL|function|vmalloc_to_pfn
+r_int
+r_int
+id|vmalloc_to_pfn
+c_func
+(paren
+r_void
+op_star
+id|vmalloc_addr
+)paren
+(brace
+r_return
+id|page_to_pfn
+c_func
+(paren
+id|vmalloc_to_page
+c_func
+(paren
+id|vmalloc_addr
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|vmalloc_to_pfn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_to_pfn
+)paren
+suffix:semicolon
 macro_line|#if !defined(CONFIG_ARCH_GATE_AREA)
 macro_line|#if defined(AT_SYSINFO_EHDR)
 DECL|variable|gate_vma

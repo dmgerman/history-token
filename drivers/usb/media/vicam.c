@@ -7183,10 +7183,7 @@ l_int|0
 (brace
 id|page
 op_assign
-id|page_to_pfn
-c_func
-(paren
-id|vmalloc_to_page
+id|vmalloc_to_pfn
 c_func
 (paren
 (paren
@@ -7194,7 +7191,6 @@ r_void
 op_star
 )paren
 id|pos
-)paren
 )paren
 suffix:semicolon
 r_if
