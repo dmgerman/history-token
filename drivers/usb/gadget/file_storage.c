@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -4765,6 +4766,19 @@ suffix:semicolon
 id|fsg-&gt;thread_wakeup_needed
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_FREEZE
+)paren
 suffix:semicolon
 r_return
 (paren
