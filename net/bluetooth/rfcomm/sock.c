@@ -291,7 +291,7 @@ op_star
 id|__rfcomm_get_sock_by_addr
 c_func
 (paren
-r_int
+id|u8
 id|channel
 comma
 id|bdaddr_t
@@ -366,7 +366,7 @@ c_func
 r_int
 id|state
 comma
-id|__u16
+id|u8
 id|channel
 comma
 id|bdaddr_t
@@ -493,7 +493,7 @@ c_func
 r_int
 id|state
 comma
-id|__u16
+id|u8
 id|channel
 comma
 id|bdaddr_t
@@ -3715,7 +3715,6 @@ r_void
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */

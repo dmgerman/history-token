@@ -101,19 +101,19 @@ id|arg
 )paren
 (brace
 r_struct
-id|bnep_conlist_req
+id|bnep_connlist_req
 id|cl
 suffix:semicolon
 r_struct
-id|bnep_conadd_req
+id|bnep_connadd_req
 id|ca
 suffix:semicolon
 r_struct
-id|bnep_condel_req
+id|bnep_conndel_req
 id|cd
 suffix:semicolon
 r_struct
-id|bnep_coninfo
+id|bnep_conninfo
 id|ci
 suffix:semicolon
 r_struct
@@ -141,7 +141,7 @@ id|cmd
 )paren
 (brace
 r_case
-id|BNEPCONADD
+id|BNEPCONNADD
 suffix:colon
 r_if
 c_cond
@@ -269,7 +269,7 @@ r_return
 id|err
 suffix:semicolon
 r_case
-id|BNEPCONDEL
+id|BNEPCONNDEL
 suffix:colon
 r_if
 c_cond
@@ -319,7 +319,7 @@ id|cd
 )paren
 suffix:semicolon
 r_case
-id|BNEPGETCONLIST
+id|BNEPGETCONNLIST
 suffix:colon
 r_if
 c_cond
@@ -359,7 +359,7 @@ id|EINVAL
 suffix:semicolon
 id|err
 op_assign
-id|bnep_get_conlist
+id|bnep_get_connlist
 c_func
 (paren
 op_amp
@@ -398,7 +398,7 @@ r_return
 id|err
 suffix:semicolon
 r_case
-id|BNEPGETCONINFO
+id|BNEPGETCONNINFO
 suffix:colon
 r_if
 c_cond
@@ -427,7 +427,7 @@ id|EFAULT
 suffix:semicolon
 id|err
 op_assign
-id|bnep_get_coninfo
+id|bnep_get_conninfo
 c_func
 (paren
 op_amp
