@@ -1731,24 +1731,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Now copy the iommu_table ptr from the bus devices down to every&n;&t; * pci device_node.  This means get_iommu_table() won&squot;t need to search&n;&t; * up the device tree to find it.&n;&t; */
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 id|mydn
