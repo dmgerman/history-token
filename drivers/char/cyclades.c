@@ -9794,7 +9794,9 @@ suffix:semicolon
 r_int
 r_int
 id|orig_jiffies
-comma
+suffix:semicolon
+r_int
+r_int
 id|char_time
 suffix:semicolon
 r_if
@@ -9849,7 +9851,7 @@ r_if
 c_cond
 (paren
 id|char_time
-op_eq
+op_le
 l_int|0
 )paren
 id|char_time

@@ -115,6 +115,10 @@ DECL|member|setonboot
 id|u8
 id|setonboot
 suffix:semicolon
+DECL|member|resource_type
+id|u8
+id|resource_type
+suffix:semicolon
 DECL|member|possible_count
 id|u8
 id|possible_count
@@ -328,6 +332,10 @@ id|link-&gt;irq.active_high_low
 op_assign
 id|p-&gt;active_high_low
 suffix:semicolon
+id|link-&gt;irq.resource_type
+op_assign
+id|ACPI_RSTYPE_IRQ
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -437,6 +445,10 @@ suffix:semicolon
 id|link-&gt;irq.active_high_low
 op_assign
 id|p-&gt;active_high_low
+suffix:semicolon
+id|link-&gt;irq.resource_type
+op_assign
+id|ACPI_RSTYPE_EXT_IRQ
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1172,6 +1184,22 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+id|resource_type
+op_assign
+id|link-&gt;irq.resource_type
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|resource_type
+op_ne
+id|ACPI_RSTYPE_IRQ
+op_logical_and
+id|resource_type
+op_ne
+id|ACPI_RSTYPE_EXT_IRQ
+)paren
+(brace
 multiline_comment|/* If IRQ&lt;=15, first try with a &quot;normal&quot; IRQ descriptor. If that fails, try with&n;&t; * an extended one */
 r_if
 c_cond
@@ -1192,6 +1220,7 @@ id|resource_type
 op_assign
 id|ACPI_RSTYPE_EXT_IRQ
 suffix:semicolon
+)brace
 )brace
 id|retry_programming
 suffix:colon

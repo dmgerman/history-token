@@ -190,8 +190,68 @@ id|fpregs
 )paren
 suffix:semicolon
 )brace
+DECL|function|save_access_regs
+r_static
+r_inline
+r_void
+id|save_access_regs
+c_func
+(paren
+r_int
+r_int
+op_star
+id|acrs
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;stam 0,15,0(%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|acrs
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|restore_access_regs
+r_static
+r_inline
+r_void
+id|restore_access_regs
+c_func
+(paren
+r_int
+r_int
+op_star
+id|acrs
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;lam 0,15,0(%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|acrs
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs(&amp;next-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;prev = __switch_to(prev,next);&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
+mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs(&amp;next-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;save_access_regs(&amp;prev-&gt;thread.acrs[0]);&t;&t;&t;     &bslash;&n;&t;restore_access_regs(&amp;next-&gt;thread.acrs[0]);&t;&t;&t;     &bslash;&n;&t;prev = __switch_to(prev,next);&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq, next)&t;do { } while(0)
+DECL|macro|task_running
+mdefine_line|#define task_running(rq, p)&t;&t;((rq)-&gt;curr == (p))
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq, prev) do {&t;&t;&t;&t;     &bslash;&n;&t;set_fs(current-&gt;thread.mm_segment);&t;&t;&t;&t;     &bslash;&n;&t;spin_unlock_irq(&amp;(rq)-&gt;lock);&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
 DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|xchg

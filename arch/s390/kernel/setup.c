@@ -2027,7 +2027,7 @@ suffix:semicolon
 id|lc-&gt;restart_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2041,7 +2041,7 @@ suffix:semicolon
 id|lc-&gt;external_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2051,11 +2051,15 @@ suffix:semicolon
 id|lc-&gt;svc_new_psw.mask
 op_assign
 id|PSW_KERNEL_BITS
+op_or
+id|PSW_MASK_IO
+op_or
+id|PSW_MASK_EXT
 suffix:semicolon
 id|lc-&gt;svc_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2069,7 +2073,7 @@ suffix:semicolon
 id|lc-&gt;program_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2083,7 +2087,7 @@ suffix:semicolon
 id|lc-&gt;mcck_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2097,7 +2101,7 @@ suffix:semicolon
 id|lc-&gt;io_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2151,6 +2155,15 @@ r_int
 r_int
 )paren
 id|init_thread_union.thread_info.task
+suffix:semicolon
+id|lc-&gt;thread_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|init_thread_union
 suffix:semicolon
 macro_line|#ifdef CONFIG_ARCH_S390X
 r_if

@@ -1674,26 +1674,6 @@ r_struct
 id|resource
 op_star
 id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;mmio
-)paren
-id|res
-op_assign
-id|request_mem_region
-c_func
-(paren
-id|addr
-comma
-id|num
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_else
-id|res
 op_assign
 id|request_region
 c_func
@@ -1715,16 +1695,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: %s resource 0x%lX-0x%lX not free.&bslash;n&quot;
+l_string|&quot;%s: I/O resource 0x%lX-0x%lX not free.&bslash;n&quot;
 comma
 id|hwif-&gt;name
-comma
-id|hwif-&gt;mmio
-ques
-c_cond
-l_string|&quot;MMIO&quot;
-suffix:colon
-l_string|&quot;I/O&quot;
 comma
 id|addr
 comma
@@ -1739,8 +1712,6 @@ r_return
 id|res
 suffix:semicolon
 )brace
-DECL|macro|hwif_release_region
-mdefine_line|#define hwif_release_region(addr, num) &bslash;&n;&t;((hwif-&gt;mmio) ? release_mem_region((addr),(num)) : release_region((addr),(num)))
 multiline_comment|/**&n; *&t;ide_hwif_request_regions - request resources for IDE&n; *&t;@hwif: interface to use&n; *&n; *&t;Requests all the needed resources for an interface.&n; *&t;Right now core IDE code does this work which is deeply wrong.&n; *&t;MMIO leaves it to the controller driver,&n; *&t;PIO will migrate this way over time.&n; */
 DECL|function|ide_hwif_request_regions
 r_int
@@ -1769,6 +1740,14 @@ l_int|2
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|hwif-&gt;mmio
+op_eq
+l_int|1
+)paren
 suffix:semicolon
 id|addr
 op_assign
@@ -1890,7 +1869,7 @@ c_loop
 op_decrement
 id|i
 )paren
-id|hwif_release_region
+id|release_region
 c_func
 (paren
 id|addr
@@ -1920,7 +1899,7 @@ c_cond
 (paren
 id|addr
 )paren
-id|hwif_release_region
+id|release_region
 c_func
 (paren
 id|addr
@@ -1976,7 +1955,7 @@ id|hwif-&gt;io_ports
 id|IDE_CONTROL_OFFSET
 )braket
 )paren
-id|hwif_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -1993,7 +1972,7 @@ c_cond
 id|hwif-&gt;straight8
 )paren
 (brace
-id|hwif_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -2029,7 +2008,7 @@ id|hwif-&gt;io_ports
 id|i
 )braket
 )paren
-id|hwif_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -2704,7 +2683,6 @@ op_amp
 id|ide_lock
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_DMA_NONPCI)
 r_if
 c_cond
 (paren
@@ -2749,7 +2727,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* !(CONFIG_DMA_NONPCI) */
 id|old_hwif
 op_assign
 op_star
@@ -10288,7 +10265,6 @@ c_func
 id|index
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_DMA_NONPCI)
 r_if
 c_cond
 (paren
@@ -10312,7 +10288,6 @@ id|index
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* !(CONFIG_DMA_NONPCI) */
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_ide_destroy

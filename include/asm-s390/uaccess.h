@@ -19,9 +19,14 @@ mdefine_line|#define USER_DS         MAKE_MM_SEG(1)
 DECL|macro|get_ds
 mdefine_line|#define get_ds()        (KERNEL_DS)
 DECL|macro|get_fs
-mdefine_line|#define get_fs()        ({ mm_segment_t __x; &bslash;&n;&t;&t;&t;   asm volatile(&quot;ear   %0,4&quot;:&quot;=a&quot; (__x)); &bslash;&n;&t;&t;&t;   __x;})
+mdefine_line|#define get_fs()        (current-&gt;thread.mm_segment)
+macro_line|#ifdef __s390x__
 DECL|macro|set_fs
-mdefine_line|#define set_fs(x)       ({asm volatile(&quot;sar   4,%0&quot;::&quot;a&quot; ((x).ar4));})
+mdefine_line|#define set_fs(x) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pto;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;thread.mm_segment = (x);&t;&t;&t;&t;&bslash;&n;&t;__pto = current-&gt;thread.mm_segment.ar4 ?&t;&t;&t;&bslash;&n;&t;&t;S390_lowcore.user_asce : S390_lowcore.kernel_asce;&t;&bslash;&n;&t;asm volatile (&quot;lctlg 7,7,%0&quot; : : &quot;m&quot; (__pto) );&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|set_fs
+mdefine_line|#define set_fs(x) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pto;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;thread.mm_segment = (x);&t;&t;&t;&t;&bslash;&n;&t;__pto = current-&gt;thread.mm_segment.ar4 ?&t;&t;&t;&bslash;&n;&t;&t;S390_lowcore.user_asce : S390_lowcore.kernel_asce;&t;&bslash;&n;&t;asm volatile (&quot;lctl  7,7,%0&quot; : : &quot;m&quot; (__pto) );&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b) ((a).ar4 == (b).ar4)
 DECL|macro|__access_ok
@@ -81,30 +86,27 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Standard fixup section for uaccess inline functions.&n; * local label 0: is the fault point&n; * local label 1: is the return point&n; * %0 is the error variable&n; * %3 is the error value -EFAULT&n; */
 macro_line|#ifndef __s390x__
 DECL|macro|__uaccess_fixup
-mdefine_line|#define __uaccess_fixup &bslash;&n;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;8: sacf  0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;   lhi&t;  %0,%h3&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   bras  4,9f&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   .long 1b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;9: l&t;  4,0(4)&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   br&t;  4&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;   .align 4&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;   .long  0b,8b&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;.previous&quot;
+mdefine_line|#define __uaccess_fixup &bslash;&n;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;2: lhi    %0,%4&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   bras   1,3f&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   .long  1b&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;3: l      1,0(1)&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   br     1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;   .align 4&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;   .long  0b,2b&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;.previous&quot;
+DECL|macro|__uaccess_clobber
+mdefine_line|#define __uaccess_clobber &quot;cc&quot;, &quot;1&quot;
 macro_line|#else /* __s390x__ */
 DECL|macro|__uaccess_fixup
-mdefine_line|#define __uaccess_fixup &bslash;&n;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;9: sacf  0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;   lhi&t;  %0,%h3&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   jg&t;  1b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;   .align 8&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;   .quad  0b,9b&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;.previous&quot;
+mdefine_line|#define __uaccess_fixup &bslash;&n;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;2: lghi   %0,%4&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;   jg     1b&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&quot;   .align 8&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;   .quad  0b,2b&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;.previous&quot;
+DECL|macro|__uaccess_clobber
+mdefine_line|#define __uaccess_clobber &quot;cc&quot;
 macro_line|#endif /* __s390x__ */
 multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; */
-macro_line|#ifndef __s390x__
-DECL|macro|__put_user_asm_8
-mdefine_line|#define __put_user_asm_8(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(x) const * __from asm(&quot;2&quot;);&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) * __to asm(&quot;4&quot;);&t;&t;&bslash;&n;&t;__from = &amp;(x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__to = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvc&t;  0(8,%1),0(%2)&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__to),&quot;a&quot; (__from),&quot;K&quot; (-EFAULT),&quot;0&quot; (0),&bslash;&n;&t;&t;  &quot;m&quot; (x) : &quot;cc&quot; );&t;&t;&t;&t;&bslash;&n;})
-macro_line|#else /* __s390x__ */
-DECL|macro|__put_user_asm_8
-mdefine_line|#define __put_user_asm_8(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) * __ptr asm(&quot;4&quot;);&t;&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: stg&t;  %2,0(%1)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;d&quot; (x), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#endif /* __s390x__ */
-DECL|macro|__put_user_asm_4
-mdefine_line|#define __put_user_asm_4(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) * __ptr asm(&quot;4&quot;);&t;&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: st&t;  %2,0(%1)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;d&quot; (x), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__put_user_asm_2
-mdefine_line|#define __put_user_asm_2(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) * __ptr asm(&quot;4&quot;);&t;&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: sth&t;  %2,0(%1)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;d&quot; (x), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__put_user_asm_1
-mdefine_line|#define __put_user_asm_1(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) * __ptr asm(&quot;4&quot;);&t;&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: stc&t;  %2,0(%1)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;d&quot; (x),&t;&quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#if __GNUC__ &gt; 2
+DECL|macro|__put_user_asm
+mdefine_line|#define __put_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcs  0(%1,%2),%3,%0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr), &quot;Q&quot; (x),&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|__put_user_asm
+mdefine_line|#define __put_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcs  0(%1,%2),0(%3),%0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr), &quot;a&quot; (&amp;(x)),&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT), &quot;m&quot; (x)&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 DECL|macro|__put_user
-mdefine_line|#define __put_user(x, ptr) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x = (x);&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof (*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_1(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_2(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_4(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_8(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__pu_err = __put_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user(x, ptr) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x = (x);&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof (*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__pu_err = __put_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|put_user
 mdefine_line|#define put_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user(x, ptr);&t;&t;&t;&t;&t;&bslash;&n;})
 r_extern
@@ -115,21 +117,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef __s390x__
-DECL|macro|__get_user_asm_8
-mdefine_line|#define __get_user_asm_8(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __from asm(&quot;4&quot;);&t;&bslash;&n;&t;register __typeof__(x) * __to asm(&quot;2&quot;);&t;&t;&t;&bslash;&n;&t;__from = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__to = &amp;(x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvc&t;  0(8,%2),0(%4)&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=m&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__to),&quot;K&quot; (-EFAULT),&quot;a&quot; (__from),&quot;0&quot; (0)&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#else /* __s390x__ */
-DECL|macro|__get_user_asm_8
-mdefine_line|#define __get_user_asm_8(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: lg&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=d&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#endif /* __s390x__ */
-DECL|macro|__get_user_asm_4
-mdefine_line|#define __get_user_asm_4(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: l&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=d&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__get_user_asm_2
-mdefine_line|#define __get_user_asm_2(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: lh&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=d&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__get_user_asm_1
-mdefine_line|#define __get_user_asm_1(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sr&t;  %1,%1&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: ic&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=&amp;d&quot; (x)&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#if __GNUC__ &gt; 2
+DECL|macro|__get_user_asm
+mdefine_line|#define __get_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcp  %O1(%2,%R1),0(%3),%0&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err), &quot;=Q&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr),&t;&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|__get_user_asm
+mdefine_line|#define __get_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcp  0(%2,%5),0(%3),%0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err), &quot;=m&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr),&t;&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT), &quot;a&quot; (&amp;(x))&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 DECL|macro|__get_user
-mdefine_line|#define __get_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x;&t;&t;&t;&t;&t;&bslash;&n;&t;int __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_1(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_2(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_4(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_8(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__x = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__gu_err = __get_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = __x;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x;&t;&t;&t;&t;&t;&bslash;&n;&t;int __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__x = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__gu_err = __get_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = __x;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|get_user
 mdefine_line|#define get_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user(x, ptr);&t;&t;&t;&t;&t;&bslash;&n;})
 r_extern
@@ -140,7 +136,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * access register are set up, that 4 points to secondary (user),&n; * 2 to primary (kernel)&n; */
 r_extern
 r_int
 id|__copy_to_user_asm
@@ -154,16 +149,105 @@ comma
 r_int
 id|n
 comma
-r_const
 r_void
 op_star
 id|to
 )paren
 suffix:semicolon
-DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to, from, n)                             &bslash;&n;({                                                              &bslash;&n;        __copy_to_user_asm(from, n, to);                        &bslash;&n;})
-DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(to, from, n)                               &bslash;&n;({                                                              &bslash;&n;        long err = 0;                                           &bslash;&n;        __typeof__(n) __n = (n);                                &bslash;&n;        might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;        if (__access_ok(to,__n)) {                              &bslash;&n;                err = __copy_to_user_asm(from, __n, to);        &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                err = __n;                                      &bslash;&n;        err;                                                    &bslash;&n;})
+multiline_comment|/**&n; * __copy_to_user: - Copy a block of data into user space, with less checking.&n; * @to:   Destination address, in user space.&n; * @from: Source address, in kernel space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from kernel space to user space.  Caller must check&n; * the specified block with access_ok() before calling this function.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|__copy_to_user
+id|__copy_to_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|to
+comma
+r_const
+r_void
+op_star
+id|from
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+r_return
+id|__copy_to_user_asm
+c_func
+(paren
+id|from
+comma
+id|n
+comma
+id|to
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * copy_to_user: - Copy a block of data into user space.&n; * @to:   Destination address, in user space.&n; * @from: Source address, in kernel space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from kernel space to user space.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|copy_to_user
+id|copy_to_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|to
+comma
+r_const
+r_void
+op_star
+id|from
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|access_ok
+c_func
+(paren
+id|VERIFY_WRITE
+comma
+id|to
+comma
+id|n
+)paren
+)paren
+id|n
+op_assign
+id|__copy_to_user
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|__copy_from_user_asm
@@ -182,10 +266,111 @@ op_star
 id|from
 )paren
 suffix:semicolon
-DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to, from, n)                           &bslash;&n;({                                                              &bslash;&n;        __copy_from_user_asm(to, n, from);                      &bslash;&n;})
-DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(to, from, n)                             &bslash;&n;({                                                              &bslash;&n;        long err = 0;                                           &bslash;&n;        __typeof__(n) __n = (n);                                &bslash;&n;        might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;        if (__access_ok(from,__n)) {                            &bslash;&n;                err = __copy_from_user_asm(to, __n, from);      &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                err = __n;                                      &bslash;&n;        err;                                                    &bslash;&n;})
+multiline_comment|/**&n; * __copy_from_user: - Copy a block of data from user space, with less checking.&n; * @to:   Destination address, in kernel space.&n; * @from: Source address, in user space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from user space to kernel space.  Caller must check&n; * the specified block with access_ok() before calling this function.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; *&n; * If some data could not be copied, this function will pad the copied&n; * data to the requested size using zero bytes.&n; */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|__copy_from_user
+id|__copy_from_user
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_const
+r_void
+id|__user
+op_star
+id|from
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+r_return
+id|__copy_from_user_asm
+c_func
+(paren
+id|to
+comma
+id|n
+comma
+id|from
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * copy_from_user: - Copy a block of data from user space.&n; * @to:   Destination address, in kernel space.&n; * @from: Source address, in user space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from user space to kernel space.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; *&n; * If some data could not be copied, this function will pad the copied&n; * data to the requested size using zero bytes.&n; */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|copy_from_user
+id|copy_from_user
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_const
+r_void
+id|__user
+op_star
+id|from
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|access_ok
+c_func
+(paren
+id|VERIFY_READ
+comma
+id|from
+comma
+id|n
+)paren
+)paren
+id|n
+op_assign
+id|__copy_from_user
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+suffix:semicolon
+r_else
+id|memset
+c_func
+(paren
+id|to
+comma
+l_int|0
+comma
+id|n
+)paren
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|__copy_in_user_asm
@@ -204,17 +389,109 @@ op_star
 id|to
 )paren
 suffix:semicolon
-DECL|macro|__copy_in_user
-mdefine_line|#define __copy_in_user(to, from, n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__copy_in_user_asm(from, n, to);&t;&t;&t;&bslash;&n;})
-DECL|macro|copy_in_user
-mdefine_line|#define copy_in_user(to, from, n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(n) __n = (n);&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(from,__n) &amp;&amp; __access_ok(to,__n)) {&t;&bslash;&n;&t;&t;err = __copy_in_user_asm(from, __n, to);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;err = __n;&t;&t;&t;&t;&t;&bslash;&n;&t;err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+r_static
+r_inline
+r_int
+r_int
+DECL|function|__copy_in_user
+id|__copy_in_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|to
+comma
+r_const
+r_void
+id|__user
+op_star
+id|from
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+id|__copy_in_user_asm
+c_func
+(paren
+id|from
+comma
+id|n
+comma
+id|to
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+r_int
+DECL|function|copy_in_user
+id|copy_in_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|to
+comma
+r_const
+r_void
+id|__user
+op_star
+id|from
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|__access_ok
+c_func
+(paren
+id|from
+comma
+id|n
+)paren
+op_logical_and
+id|__access_ok
+c_func
+(paren
+id|to
+comma
+id|n
+)paren
+)paren
+id|n
+op_assign
+id|__copy_in_user_asm
+c_func
+(paren
+id|from
+comma
+id|n
+comma
+id|to
+)paren
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Copy a null terminated string from userspace.&n; */
-macro_line|#ifndef __s390x__
-r_static
-r_inline
+r_extern
 r_int
-DECL|function|__strncpy_from_user
-id|__strncpy_from_user
+id|__strncpy_from_user_asm
 c_func
 (paren
 r_char
@@ -229,170 +506,7 @@ comma
 r_int
 id|count
 )paren
-(brace
-r_int
-id|len
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;   slr   %0,%0&bslash;n&quot;
-l_string|&quot;   lr    2,%1&bslash;n&quot;
-l_string|&quot;   lr    4,%2&bslash;n&quot;
-l_string|&quot;   slr   3,3&bslash;n&quot;
-l_string|&quot;   sacf  512&bslash;n&quot;
-l_string|&quot;0: ic&t;  3,0(%0,4)&bslash;n&quot;
-l_string|&quot;1: stc&t;  3,0(%0,2)&bslash;n&quot;
-l_string|&quot;   ltr&t;  3,3&bslash;n&quot;
-l_string|&quot;   jz&t;  2f&bslash;n&quot;
-l_string|&quot;   ahi&t;  %0,1&bslash;n&quot;
-l_string|&quot;   clr&t;  %0,%3&bslash;n&quot;
-l_string|&quot;   jl&t;  0b&bslash;n&quot;
-l_string|&quot;2: sacf  0&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;3: lhi&t;  %0,%h4&bslash;n&quot;
-l_string|&quot;   basr  3,0&bslash;n&quot;
-l_string|&quot;   l&t;  3,4f-.(3)&bslash;n&quot;
-l_string|&quot;   br&t;  3&bslash;n&quot;
-l_string|&quot;4: .long 2b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;   .align 4&bslash;n&quot;
-l_string|&quot;   .long  0b,3b&bslash;n&quot;
-l_string|&quot;   .long  1b,3b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;=&amp;a&quot;
-(paren
-id|len
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|dst
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|src
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;K&quot;
-(paren
-op_minus
-id|EFAULT
-)paren
-suffix:colon
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
-comma
-l_string|&quot;4&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
-)brace
-macro_line|#else /* __s390x__ */
-r_static
-r_inline
-r_int
-DECL|function|__strncpy_from_user
-id|__strncpy_from_user
-c_func
-(paren
-r_char
-op_star
-id|dst
-comma
-r_const
-r_char
-op_star
-id|src
-comma
-r_int
-id|count
-)paren
-(brace
-r_int
-id|len
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;   slgr  %0,%0&bslash;n&quot;
-l_string|&quot;   lgr&t;  2,%1&bslash;n&quot;
-l_string|&quot;   lgr&t;  4,%2&bslash;n&quot;
-l_string|&quot;   slr&t;  3,3&bslash;n&quot;
-l_string|&quot;   sacf  512&bslash;n&quot;
-l_string|&quot;0: ic&t;  3,0(%0,4)&bslash;n&quot;
-l_string|&quot;1: stc&t;  3,0(%0,2)&bslash;n&quot;
-l_string|&quot;   ltr&t;  3,3&bslash;n&quot;
-l_string|&quot;   jz&t;  2f&bslash;n&quot;
-l_string|&quot;   aghi  %0,1&bslash;n&quot;
-l_string|&quot;   cgr&t;  %0,%3&bslash;n&quot;
-l_string|&quot;   jl&t;  0b&bslash;n&quot;
-l_string|&quot;2: sacf  0&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;3: lghi  %0,%h4&bslash;n&quot;
-l_string|&quot;   jg&t;  2b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;   .align 8&bslash;n&quot;
-l_string|&quot;   .quad  0b,3b&bslash;n&quot;
-l_string|&quot;   .quad  1b,3b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;=&amp;a&quot;
-(paren
-id|len
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|dst
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|src
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;K&quot;
-(paren
-op_minus
-id|EFAULT
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
-comma
-l_string|&quot;4&quot;
-)paren
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
-)brace
-macro_line|#endif /* __s390x__ */
 r_static
 r_inline
 r_int
@@ -439,7 +553,7 @@ l_int|1
 )paren
 id|res
 op_assign
-id|__strncpy_from_user
+id|__strncpy_from_user_asm
 c_func
 (paren
 id|dst
@@ -453,8 +567,20 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return the size of a string (including the ending 0)&n; *&n; * Return 0 for error&n; */
-macro_line|#ifndef __s390x__
+r_extern
+r_int
+id|__strnlen_user_asm
+c_func
+(paren
+r_const
+r_char
+op_star
+id|src
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_int
@@ -478,159 +604,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;   alr   %0,%1&bslash;n&quot;
-l_string|&quot;   slr   0,0&bslash;n&quot;
-l_string|&quot;   lr    4,%1&bslash;n&quot;
-l_string|&quot;   sacf  512&bslash;n&quot;
-l_string|&quot;0: srst  %0,4&bslash;n&quot;
-l_string|&quot;   jo    0b&bslash;n&quot;
-l_string|&quot;   slr   %0,%1&bslash;n&quot;
-l_string|&quot;   ahi   %0,1&bslash;n&quot;
-l_string|&quot;   sacf  0&bslash;n&quot;
-l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;2: sacf  0&bslash;n&quot;
-l_string|&quot;   slr   %0,%0&bslash;n&quot;
-l_string|&quot;   bras  4,3f&bslash;n&quot;
-l_string|&quot;   .long 1b&bslash;n&quot;
-l_string|&quot;3: l     4,0(4)&bslash;n&quot;
-l_string|&quot;   br    4&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;  .align 4&bslash;n&quot;
-l_string|&quot;  .long  0b,2b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;+&amp;a&quot;
-(paren
-id|n
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|src
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;0&quot;
-comma
-l_string|&quot;4&quot;
-)paren
-suffix:semicolon
 r_return
-id|n
-suffix:semicolon
-)brace
-macro_line|#else /* __s390x__ */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|strnlen_user
-id|strnlen_user
+id|__strnlen_user_asm
 c_func
 (paren
-r_const
-r_char
-op_star
 id|src
 comma
-r_int
-r_int
 id|n
 )paren
-(brace
-id|might_sleep
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#if 0
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;   algr  %0,%1&bslash;n&quot;
-l_string|&quot;   slgr  0,0&bslash;n&quot;
-l_string|&quot;   lgr&t;  4,%1&bslash;n&quot;
-l_string|&quot;   sacf  512&bslash;n&quot;
-l_string|&quot;0: srst  %0,4&bslash;n&quot;
-l_string|&quot;   jo&t;0b&bslash;n&quot;
-l_string|&quot;   slgr  %0,%1&bslash;n&quot;
-l_string|&quot;   aghi  %0,1&bslash;n&quot;
-l_string|&quot;1: sacf  0&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;2: slgr  %0,%0&bslash;n&quot;
-l_string|&quot;   jg&t;  1b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;  .align 8&bslash;n&quot;
-l_string|&quot;  .quad  0b,2b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;+&amp;a&quot;
-(paren
-id|n
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|src
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;0&quot;
-comma
-l_string|&quot;4&quot;
-)paren
-suffix:semicolon
-macro_line|#else
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;   lgr&t;  4,%1&bslash;n&quot;
-l_string|&quot;   sacf  512&bslash;n&quot;
-l_string|&quot;0: cli   0(4),0x00&bslash;n&quot;
-l_string|&quot;   la    4,1(4)&bslash;n&quot;
-l_string|&quot;   je    1f&bslash;n&quot;
-l_string|&quot;   brctg %0,0b&bslash;n&quot;
-l_string|&quot;1: lgr&t;  %0,4&bslash;n&quot;
-l_string|&quot;   slgr  %0,%1&bslash;n&quot;
-l_string|&quot;2: sacf  0&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;3: slgr  %0,%0&bslash;n&quot;
-l_string|&quot;   jg    2b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;  .align 8&bslash;n&quot;
-l_string|&quot;  .quad  0b,3b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;+&amp;a&quot;
-(paren
-id|n
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|src
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;4&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|n
 suffix:semicolon
 )brace
-macro_line|#endif /* __s390x__ */
+multiline_comment|/**&n; * strlen_user: - Get the size of a string in user space.&n; * @str: The string to measure.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Get the size of a NUL-terminated string in user space.&n; *&n; * Returns the size of the string INCLUDING the terminating NUL.&n; * On exception, returns 0.&n; *&n; * If there is a limit on the length of a valid string, you may wish to&n; * consider using strnlen_user() instead.&n; */
 DECL|macro|strlen_user
 mdefine_line|#define strlen_user(str) strnlen_user(str, ~0UL)
 multiline_comment|/*&n; * Zero Userspace&n; */
@@ -647,8 +631,33 @@ r_int
 id|n
 )paren
 suffix:semicolon
-DECL|macro|__clear_user
-mdefine_line|#define __clear_user(to, n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__clear_user_asm(to, n);&t;&t;&t;&t;&bslash;&n;})
+r_static
+r_inline
+r_int
+r_int
+DECL|function|__clear_user
+id|__clear_user
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+r_return
+id|__clear_user_asm
+c_func
+(paren
+id|to
+comma
+id|n
+)paren
+suffix:semicolon
+)brace
 r_static
 r_inline
 r_int
@@ -686,7 +695,7 @@ id|n
 )paren
 id|n
 op_assign
-id|__clear_user
+id|__clear_user_asm
 c_func
 (paren
 id|to

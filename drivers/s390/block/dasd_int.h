@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.55 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.56 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -576,6 +576,12 @@ DECL|member|request_queue_lock
 id|spinlock_t
 id|request_queue_lock
 suffix:semicolon
+DECL|member|bdev
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
 DECL|member|devindex
 r_int
 r_int
@@ -599,21 +605,12 @@ r_int
 id|s2b_shift
 suffix:semicolon
 multiline_comment|/* log2 (bp_block/512) */
-DECL|member|ro_flag
+DECL|member|flags
 r_int
-id|ro_flag
-suffix:semicolon
-multiline_comment|/* read-only flag */
-DECL|member|use_diag_flag
 r_int
-id|use_diag_flag
+id|flags
 suffix:semicolon
-multiline_comment|/* diag allowed flag */
-DECL|member|disconnect_error_flag
-r_int
-id|disconnect_error_flag
-suffix:semicolon
-multiline_comment|/* return -EIO when disconnected */
+multiline_comment|/* per device flags */
 multiline_comment|/* Device discipline stuff. */
 DECL|member|discipline
 r_struct
@@ -728,6 +725,15 @@ DECL|macro|DASD_STOPPED_DC_WAIT
 mdefine_line|#define DASD_STOPPED_DC_WAIT 8         /* disconnected, wait */
 DECL|macro|DASD_STOPPED_DC_EIO
 mdefine_line|#define DASD_STOPPED_DC_EIO  16        /* disconnected, return -EIO */
+multiline_comment|/* per device flags */
+DECL|macro|DASD_FLAG_RO
+mdefine_line|#define DASD_FLAG_RO&t;&t;0&t;/* device is read-only */
+DECL|macro|DASD_FLAG_USE_DIAG
+mdefine_line|#define DASD_FLAG_USE_DIAG&t;1&t;/* use diag disciplnie */
+DECL|macro|DASD_FLAG_DSC_ERROR
+mdefine_line|#define DASD_FLAG_DSC_ERROR&t;2&t;/* return -EIO when disconnected */
+DECL|macro|DASD_FLAG_OFFLINE
+mdefine_line|#define DASD_FLAG_OFFLINE&t;3&t;/* device is in offline processing */
 r_void
 id|dasd_put_device_wake
 c_func
@@ -1747,7 +1753,7 @@ id|dasd_device
 op_star
 )paren
 suffix:semicolon
-r_void
+r_int
 id|dasd_scan_partitions
 c_func
 (paren

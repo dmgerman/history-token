@@ -2065,6 +2065,9 @@ r_case
 id|ACPI_TYPE_LOCAL_ALIAS
 suffix:colon
 r_case
+id|ACPI_TYPE_LOCAL_METHOD_ALIAS
+suffix:colon
+r_case
 id|ACPI_TYPE_LOCAL_EXTRA
 suffix:colon
 r_case

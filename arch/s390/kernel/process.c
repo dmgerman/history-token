@@ -436,6 +436,12 @@ l_int|7
 )braket
 op_assign
 id|STACK_FRAME_OVERHEAD
+op_plus
+r_sizeof
+(paren
+r_struct
+id|pt_regs
+)paren
 suffix:semicolon
 id|regs.gprs
 (braket
@@ -672,6 +678,7 @@ id|p-&gt;clear_child_tid
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Store access registers to kernel stack of new process. */
 id|frame-&gt;childregs
 op_assign
 op_star
@@ -722,6 +729,17 @@ r_int
 )paren
 id|frame
 suffix:semicolon
+multiline_comment|/* Save access registers to new thread structure. */
+id|save_access_regs
+c_func
+(paren
+op_amp
+id|p-&gt;thread.acrs
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_ARCH_S390X
 multiline_comment|/*&n;&t; * save fprs to current-&gt;thread.fp_regs to merge them with&n;&t; * the emulated registers and then copy the result to the child.&n;&t; */
 id|save_fp_regs
@@ -768,7 +786,7 @@ id|clone_flags
 op_amp
 id|CLONE_SETTLS
 )paren
-id|frame-&gt;childregs.acrs
+id|p-&gt;thread.acrs
 (braket
 l_int|0
 )braket
@@ -820,7 +838,7 @@ id|TIF_31BIT
 )paren
 )paren
 (brace
-id|frame-&gt;childregs.acrs
+id|p-&gt;thread.acrs
 (braket
 l_int|0
 )braket
@@ -837,7 +855,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|frame-&gt;childregs.acrs
+id|p-&gt;thread.acrs
 (braket
 l_int|0
 )braket
@@ -855,7 +873,7 @@ op_rshift
 l_int|32
 )paren
 suffix:semicolon
-id|frame-&gt;childregs.acrs
+id|p-&gt;thread.acrs
 (braket
 l_int|1
 )braket
@@ -873,14 +891,12 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ARCH_S390X */
 multiline_comment|/* start new process with ar4 pointing to the correct address space */
-id|p-&gt;thread.ar4
+id|p-&gt;thread.mm_segment
 op_assign
 id|get_fs
 c_func
 (paren
 )paren
-dot
-id|ar4
 suffix:semicolon
 multiline_comment|/* Don&squot;t copy debug registers */
 id|memset

@@ -67,6 +67,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 32
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|typedef|s8
 r_typedef
 id|__signed__

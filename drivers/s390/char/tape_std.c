@@ -82,9 +82,9 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;%s: Assignment timeout. Device busy.&bslash;n&quot;
+l_string|&quot;%08x: Assignment timeout. Device busy.&bslash;n&quot;
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+id|device-&gt;cdev_id
 )paren
 suffix:semicolon
 id|PRINT_ERR
@@ -270,9 +270,9 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;%s: assign failed - device might be busy&bslash;n&quot;
+l_string|&quot;%08x: assign failed - device might be busy&bslash;n&quot;
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+id|device-&gt;cdev_id
 )paren
 suffix:semicolon
 )brace
@@ -283,9 +283,9 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;%s: Tape assigned&bslash;n&quot;
+l_string|&quot;%08x: Tape assigned&bslash;n&quot;
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+id|device-&gt;cdev_id
 )paren
 suffix:semicolon
 )brace
@@ -318,6 +318,37 @@ id|tape_request
 op_star
 id|request
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|device-&gt;tape_state
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|DBF_EVENT
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;(%08x): Can&squot;t unassign device&bslash;n&quot;
+comma
+id|device-&gt;cdev_id
+)paren
+suffix:semicolon
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;(%s): Can&squot;t unassign device - device gone&bslash;n&quot;
+comma
+id|device-&gt;cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|request
 op_assign
 id|tape_alloc_request
@@ -397,9 +428,9 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;%s: Unassign failed&bslash;n&quot;
+l_string|&quot;%08x: Unassign failed&bslash;n&quot;
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+id|device-&gt;cdev_id
 )paren
 suffix:semicolon
 id|PRINT_WARN
@@ -418,9 +449,9 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;%s: Tape unassigned&bslash;n&quot;
+l_string|&quot;%08x: Tape unassigned&bslash;n&quot;
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+id|device-&gt;cdev_id
 )paren
 suffix:semicolon
 )brace

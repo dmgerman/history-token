@@ -415,7 +415,7 @@ id|node
 id|ACPI_REPORT_WARNING
 (paren
 (paren
-l_string|&quot;ns_get_type: Null Node ptr&quot;
+l_string|&quot;ns_get_type: Null Node input pointer&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

@@ -1027,6 +1027,25 @@ c_func
 id|device
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|device-&gt;blk_data.disk
+)paren
+(brace
+id|PRINT_ERR
+c_func
+(paren
+l_string|&quot;(%s): No gendisk to clean up!&bslash;n&quot;
+comma
+id|device-&gt;cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+r_goto
+id|cleanup_queue
+suffix:semicolon
+)brace
 id|del_gendisk
 c_func
 (paren
@@ -1051,6 +1070,8 @@ id|device-&gt;blk_data.disk
 op_assign
 l_int|NULL
 suffix:semicolon
+id|cleanup_queue
+suffix:colon
 id|device-&gt;blk_data.request_queue-&gt;queuedata
 op_assign
 id|tape_put_device

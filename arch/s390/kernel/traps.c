@@ -714,6 +714,14 @@ l_int|15
 )braket
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* FIXME: this isn&squot;t needed any more but it changes the ksymoops&n;&t; * input. To remove or not to remove ... */
+id|save_access_regs
+c_func
+(paren
+id|regs-&gt;acrs
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -820,6 +828,7 @@ l_int|15
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Print the first 20 byte of the instruction stream at the&n;&t; * time of the fault.&n;&t; */
 id|old_fs
 op_assign
@@ -1129,22 +1138,22 @@ id|buffer
 comma
 l_string|&quot;User ACRS: %08x %08x %08x %08x&bslash;n&quot;
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|0
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|1
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|2
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|3
 )braket
@@ -1159,22 +1168,22 @@ id|buffer
 comma
 l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|4
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|5
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|6
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|7
 )braket
@@ -1189,22 +1198,22 @@ id|buffer
 comma
 l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|8
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|9
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|10
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|11
 )braket
@@ -1219,22 +1228,22 @@ id|buffer
 comma
 l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|12
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|13
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|14
 )braket
 comma
-id|regs-&gt;acrs
+id|task-&gt;thread.acrs
 (braket
 l_int|15
 )braket

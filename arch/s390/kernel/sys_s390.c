@@ -17,17 +17,10 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#endif /* CONFIG_ARCH_S390X */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
-macro_line|#ifndef CONFIG_ARCH_S390X
-DECL|macro|__SYS_RETTYPE
-mdefine_line|#define __SYS_RETTYPE int
-macro_line|#else
-DECL|macro|__SYS_RETTYPE
-mdefine_line|#define __SYS_RETTYPE long
-macro_line|#endif /* CONFIG_ARCH_S390X */
 multiline_comment|/*&n; * sys_pipe() is the normal C calling standard for creating&n; * a pipe. It&squot;s not the way Unix traditionally does this, though.&n; */
 DECL|function|sys_pipe
 id|asmlinkage
-id|__SYS_RETTYPE
+r_int
 id|sys_pipe
 c_func
 (paren
@@ -122,7 +115,7 @@ r_int
 id|pgoff
 )paren
 (brace
-id|__SYS_RETTYPE
+r_int
 id|error
 op_assign
 op_minus
@@ -327,7 +320,7 @@ suffix:semicolon
 )brace
 DECL|function|old_mmap
 id|asmlinkage
-id|__SYS_RETTYPE
+r_int
 id|old_mmap
 c_func
 (paren
@@ -341,7 +334,7 @@ r_struct
 id|mmap_arg_struct
 id|a
 suffix:semicolon
-id|__SYS_RETTYPE
+r_int
 id|error
 op_assign
 op_minus
@@ -653,7 +646,7 @@ macro_line|#endif /* CONFIG_ARCH_S390X */
 multiline_comment|/*&n; * sys_ipc() is the de-multiplexer for the SysV IPC calls..&n; *&n; * This is really horribly ugly.&n; */
 DECL|function|sys_ipc
 id|asmlinkage
-id|__SYS_RETTYPE
+r_int
 id|sys_ipc
 (paren
 id|uint

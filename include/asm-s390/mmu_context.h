@@ -49,10 +49,6 @@ op_star
 id|tsk
 )paren
 (brace
-r_int
-r_int
-id|pgd
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -62,7 +58,7 @@ id|next
 )paren
 (brace
 macro_line|#ifndef __s390x__
-id|pgd
+id|S390_lowcore.user_asce
 op_assign
 (paren
 id|__pa
@@ -80,24 +76,21 @@ op_or
 id|USER_STD_MASK
 )paren
 suffix:semicolon
-multiline_comment|/* Load page tables */
+multiline_comment|/* Load home space page table origin. */
 id|asm
 r_volatile
 (paren
-l_string|&quot;    lctl  7,7,%0&bslash;n&quot;
-multiline_comment|/* secondary space */
-l_string|&quot;    lctl  13,13,%0&bslash;n&quot;
-multiline_comment|/* home space */
+l_string|&quot;lctl  13,13,%0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-id|pgd
+id|S390_lowcore.user_asce
 )paren
 )paren
 suffix:semicolon
 macro_line|#else /* __s390x__ */
-id|pgd
+id|S390_lowcore.user_asce
 op_assign
 (paren
 id|__pa
@@ -115,19 +108,16 @@ op_or
 id|USER_STD_MASK
 )paren
 suffix:semicolon
-multiline_comment|/* Load page tables */
+multiline_comment|/* Load home space page table origin. */
 id|asm
 r_volatile
 (paren
-l_string|&quot;    lctlg 7,7,%0&bslash;n&quot;
-multiline_comment|/* secondary space */
-l_string|&quot;    lctlg 13,13,%0&bslash;n&quot;
-multiline_comment|/* home space */
+l_string|&quot;lctlg  13,13,%0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-id|pgd
+id|S390_lowcore.user_asce
 )paren
 )paren
 suffix:semicolon
@@ -173,6 +163,12 @@ comma
 id|next
 comma
 id|current
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|current-&gt;thread.mm_segment
 )paren
 suffix:semicolon
 )brace
