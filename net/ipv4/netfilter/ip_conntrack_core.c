@@ -1103,7 +1103,7 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure don&squot;t leave any orphaned expectations lying around */
+multiline_comment|/* Expectations will have been removed in clean_from_lists,&n;&t; * except TFTP can create an expectation on the first packet,&n;&t; * before connection is in the list, so we need to clean here,&n;&t; * too. */
 r_if
 c_cond
 (paren
