@@ -1977,7 +1977,8 @@ op_assign
 r_new
 suffix:semicolon
 multiline_comment|/* Caller *must* be holding owner-&gt;so_sem */
-id|list_add
+multiline_comment|/* Note: The reclaim code dictates that we add stateless&n;&t;&t; * and read-only stateids to the end of the list */
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -2245,7 +2246,11 @@ c_cond
 id|state-&gt;nwriters
 op_eq
 l_int|0
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|state-&gt;nreaders
 op_eq
 l_int|0
@@ -2257,6 +2262,18 @@ op_amp
 id|state-&gt;inode_states
 )paren
 suffix:semicolon
+multiline_comment|/* See reclaim code */
+id|list_move_tail
+c_func
+(paren
+op_amp
+id|state-&gt;open_states
+comma
+op_amp
+id|owner-&gt;so_states
+)paren
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
@@ -3448,6 +3465,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Note: we rely on the sp-&gt;so_states list being ordered &n;&t; * so that we always reclaim open(O_RDWR) and/or open(O_WRITE)&n;&t; * states first.&n;&t; * This is needed to ensure that the server won&squot;t give us any&n;&t; * read delegations that we have to return if, say, we are&n;&t; * recovering after a network partition or a reboot from a&n;&t; * server that doesn&squot;t support a grace period.&n;&t; */
 id|list_for_each_entry
 c_func
 (paren
