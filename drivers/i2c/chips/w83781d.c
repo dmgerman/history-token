@@ -2703,8 +2703,7 @@ suffix:colon
 id|dev_err
 c_func
 (paren
-op_amp
-id|client-&gt;dev
+id|dev
 comma
 l_string|&quot;Invalid sensor type %ld; must be 1, 2, or %d&bslash;n&quot;
 comma
@@ -6695,9 +6694,11 @@ op_logical_neg
 id|data-&gt;valid
 )paren
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
+id|dev
+comma
 l_string|&quot;Starting device update&bslash;n&quot;
 )paren
 suffix:semicolon

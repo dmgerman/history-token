@@ -219,27 +219,6 @@ id|gpi.iic_clock
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_static
-r_void
-id|iic_ite_sleep
-c_func
-(paren
-r_int
-r_int
-id|timeout
-)paren
-(brace
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-op_star
-id|HZ
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Put this process to sleep.  We will wake up when the&n; * IIC controller interrupts.&n; */
 DECL|function|iic_ite_waitforpin
 r_static

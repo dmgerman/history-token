@@ -1999,6 +1999,16 @@ id|PCI_DEVICE_ID_SI_503
 )brace
 comma
 (brace
+id|PCI_DEVICE
+c_func
+(paren
+id|PCI_VENDOR_ID_SI
+comma
+id|PCI_DEVICE_ID_SI_LPC
+)paren
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
