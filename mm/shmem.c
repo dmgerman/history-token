@@ -36,9 +36,11 @@ DECL|macro|SHMEM_MAX_BYTES
 mdefine_line|#define SHMEM_MAX_BYTES  ((unsigned long long)SHMEM_MAX_INDEX &lt;&lt; PAGE_CACHE_SHIFT)
 DECL|macro|VM_ACCT
 mdefine_line|#define VM_ACCT(size)    (PAGE_CACHE_ALIGN(size) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/* info-&gt;flags needs a VM_flag to handle pagein/truncate races efficiently */
+multiline_comment|/* info-&gt;flags needs VM_flags to handle pagein/truncate races efficiently */
 DECL|macro|SHMEM_PAGEIN
 mdefine_line|#define SHMEM_PAGEIN&t; VM_READ
+DECL|macro|SHMEM_TRUNCATE
+mdefine_line|#define SHMEM_TRUNCATE&t; VM_WRITE
 multiline_comment|/* Pretend that each entry is of this size in directory&squot;s i_size */
 DECL|macro|BOGO_DIRENT_SIZE
 mdefine_line|#define BOGO_DIRENT_SIZE 20
@@ -1333,6 +1335,10 @@ op_amp
 id|info-&gt;lock
 )paren
 suffix:semicolon
+id|info-&gt;flags
+op_or_assign
+id|SHMEM_TRUNCATE
+suffix:semicolon
 id|limit
 op_assign
 id|info-&gt;next_index
@@ -1911,6 +1917,11 @@ id|info-&gt;lock
 )paren
 suffix:semicolon
 )brace
+id|info-&gt;flags
+op_and_assign
+op_complement
+id|SHMEM_TRUNCATE
+suffix:semicolon
 id|shmem_recalc_inode
 c_func
 (paren
@@ -2990,14 +3001,29 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
+r_if
+c_cond
 (paren
 id|index
 op_ge
 id|info-&gt;next_index
 )paren
+(brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+(paren
+id|info-&gt;flags
+op_amp
+id|SHMEM_TRUNCATE
+)paren
+)paren
 suffix:semicolon
+r_goto
+id|unlock
+suffix:semicolon
+)brace
 id|entry
 op_assign
 id|shmem_swp_entry
@@ -3076,6 +3102,8 @@ c_func
 id|entry
 )paren
 suffix:semicolon
+id|unlock
+suffix:colon
 id|spin_unlock
 c_func
 (paren
