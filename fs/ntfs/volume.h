@@ -28,7 +28,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* Miscellaneous flags, see above. */
+multiline_comment|/* Miscellaneous flags, see below. */
 DECL|member|uid
 id|uid_t
 id|uid
@@ -183,6 +183,7 @@ r_int
 id|nr_mft_records
 suffix:semicolon
 multiline_comment|/* Number of mft records == number of&n;&t;&t;&t;&t;&t;   bits in mft bitmap. */
+macro_line|#ifdef NTFS_RW
 DECL|member|mftmirr_ino
 r_struct
 id|inode
@@ -195,6 +196,7 @@ r_int
 id|mftmirr_size
 suffix:semicolon
 multiline_comment|/* Size of mft mirror in mft records. */
+macro_line|#endif /* NTFS_RW */
 DECL|member|lcnbmp_ino
 r_struct
 id|inode
@@ -219,7 +221,7 @@ DECL|member|vol_flags
 id|VOLUME_FLAGS
 id|vol_flags
 suffix:semicolon
-multiline_comment|/* Volume flags (VOLUME_*). */
+multiline_comment|/* Volume flags. */
 DECL|member|major_ver
 id|u8
 id|major_ver
