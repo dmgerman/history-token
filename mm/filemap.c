@@ -6928,8 +6928,8 @@ r_if
 c_cond
 (paren
 id|written
-op_ge
-l_int|0
+op_eq
+id|count
 op_logical_and
 op_logical_neg
 id|is_sync_kiocb
@@ -6947,17 +6947,24 @@ r_if
 c_cond
 (paren
 id|written
-op_ne
-op_minus
-id|ENOTBLK
+OL
+l_int|0
+op_logical_or
+id|written
+op_eq
+id|count
 )paren
 r_goto
 id|out_status
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * direct-io write to a hole: fall through to buffered I/O&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * direct-io write to a hole: fall through to buffered I/O&n;&t;&t; * for completing the rest of the request.&n;&t;&t; */
+id|pos
+op_add_assign
 id|written
-op_assign
-l_int|0
+suffix:semicolon
+id|count
+op_sub_assign
+id|written
 suffix:semicolon
 )brace
 id|buf
