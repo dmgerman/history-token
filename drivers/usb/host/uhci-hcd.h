@@ -3,6 +3,10 @@ DECL|macro|__LINUX_UHCI_HCD_H
 mdefine_line|#define __LINUX_UHCI_HCD_H
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+DECL|macro|usb_packetid
+mdefine_line|#define usb_packetid(pipe)&t;(usb_pipein(pipe) ? USB_PID_IN : USB_PID_OUT)
+DECL|macro|PIPE_DEVEP_MASK
+mdefine_line|#define PIPE_DEVEP_MASK&t;&t;0x0007ff00
 multiline_comment|/*&n; * Universal Host Controller Interface data structures and defines&n; */
 multiline_comment|/* Command register */
 DECL|macro|USBCMD
