@@ -882,9 +882,17 @@ id|sctp_pf
 op_star
 id|pf
 suffix:semicolon
+multiline_comment|/* Access to HMAC transform. */
+DECL|member|hmac
+r_struct
+id|crypto_tfm
+op_star
+id|hmac
+suffix:semicolon
 multiline_comment|/* What is our base endpointer? */
 DECL|member|ep
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -2814,13 +2822,6 @@ DECL|member|base
 id|sctp_endpoint_common_t
 id|base
 suffix:semicolon
-multiline_comment|/* These are the system-wide defaults and other stuff which is&n;&t; * endpoint-independent.&n;&t; */
-DECL|member|proto
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-suffix:semicolon
 multiline_comment|/* Associations: A list of current associations and mappings&n;&t; *            to the data consumers for each association. This&n;&t; *            may be in the form of a hash table or other&n;&t; *            implementation dependent structure. The data&n;&t; *            consumers may be process identification&n;&t; *            information such as file descriptors, named pipe&n;&t; *            pointer, or table pointers dependent on how SCTP&n;&t; *            is implemented.&n;&t; */
 multiline_comment|/* This is really a list of struct sctp_association entries. */
 DECL|member|asocs
@@ -2872,7 +2873,8 @@ multiline_comment|/* Recover the outter endpoint structure. */
 DECL|function|sctp_ep
 r_static
 r_inline
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|sctp_ep
 c_func
@@ -2882,7 +2884,8 @@ op_star
 id|base
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -2893,7 +2896,8 @@ c_func
 (paren
 id|base
 comma
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 comma
 id|base
 )paren
@@ -2903,15 +2907,12 @@ id|ep
 suffix:semicolon
 )brace
 multiline_comment|/* These are function signatures for manipulating endpoints.  */
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|sctp_endpoint_new
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-comma
 r_struct
 id|sock
 op_star
@@ -2919,17 +2920,14 @@ comma
 r_int
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|sctp_endpoint_init
 c_func
 (paren
 r_struct
 id|sctp_endpoint
-op_star
-comma
-r_struct
-id|sctp_protocol
 op_star
 comma
 r_struct
@@ -2944,7 +2942,8 @@ r_void
 id|sctp_endpoint_free
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -2952,7 +2951,8 @@ r_void
 id|sctp_endpoint_put
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -2960,7 +2960,8 @@ r_void
 id|sctp_endpoint_hold
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -2968,13 +2969,13 @@ r_void
 id|sctp_endpoint_add_asoc
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 comma
 r_struct
 id|sctp_association
 op_star
-id|asoc
 )paren
 suffix:semicolon
 r_struct
@@ -2984,7 +2985,8 @@ id|sctp_endpoint_lookup_assoc
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -3004,7 +3006,8 @@ r_int
 id|sctp_endpoint_is_peeled_off
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 comma
 r_const
@@ -3013,12 +3016,14 @@ id|sctp_addr
 op_star
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|sctp_endpoint_is_match
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 comma
 r_const
@@ -3124,7 +3129,8 @@ id|sctp_generate_tag
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -3133,7 +3139,8 @@ id|sctp_generate_tsn
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -3161,7 +3168,8 @@ id|eyecatcher
 suffix:semicolon
 multiline_comment|/* This is our parent endpoint.  */
 DECL|member|ep
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -3608,7 +3616,8 @@ id|sctp_association_new
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 comma
 r_const
@@ -3634,7 +3643,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 comma
 r_const

@@ -476,35 +476,6 @@ id|__u32
 id|pmtu
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * sctp/hashdriver.c&n; */
-r_extern
-r_void
-id|sctp_hash_digest
-c_func
-(paren
-r_const
-r_char
-op_star
-id|secret
-comma
-r_const
-r_int
-id|secret_len
-comma
-r_const
-r_char
-op_star
-id|text
-comma
-r_const
-r_int
-id|text_len
-comma
-id|__u8
-op_star
-id|digest
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *  Section:  Macros, externs, and inlines&n; */
 macro_line|#ifdef TEST_FRAME
 macro_line|#include &lt;test_frame.h&gt;

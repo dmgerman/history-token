@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/random.h&gt;&t;/* get_random_bytes() */
+macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
@@ -14,33 +15,31 @@ r_void
 id|sctp_endpoint_bh_rcv
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
 suffix:semicolon
-multiline_comment|/* Create a sctp_endpoint_t with all that boring stuff initialized.&n; * Returns NULL if there isn&squot;t enough memory.&n; */
+multiline_comment|/* Create a sctp_endpoint with all that boring stuff initialized.&n; * Returns NULL if there isn&squot;t enough memory.&n; */
 DECL|function|sctp_endpoint_new
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|sctp_endpoint_new
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-comma
 r_struct
 id|sock
 op_star
 id|sk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -50,9 +49,10 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -73,11 +73,9 @@ c_func
 (paren
 id|ep
 comma
-id|proto
-comma
 id|sk
 comma
-id|priority
+id|gfp
 )paren
 )paren
 r_goto
@@ -112,19 +110,16 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the base fields of the endpoint structure.&n; */
 DECL|function|sctp_endpoint_init
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|sctp_endpoint_init
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
-comma
-r_struct
-id|sctp_protocol
-op_star
-id|proto
 comma
 r_struct
 id|sock
@@ -132,7 +127,7 @@ op_star
 id|sk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -155,7 +150,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 )paren
 )paren
 suffix:semicolon
@@ -237,11 +233,6 @@ c_func
 (paren
 id|ep-&gt;base.sk
 )paren
-suffix:semicolon
-multiline_comment|/* This pointer is useful to access the default protocol parameter&n;&t; * values.&n;&t; */
-id|ep-&gt;proto
-op_assign
-id|proto
 suffix:semicolon
 multiline_comment|/* Create the lists of associations.  */
 id|INIT_LIST_HEAD
@@ -378,11 +369,13 @@ r_void
 id|sctp_endpoint_add_asoc
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -437,7 +430,8 @@ r_void
 id|sctp_endpoint_free
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -459,7 +453,8 @@ r_void
 id|sctp_endpoint_destroy
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -485,7 +480,31 @@ c_func
 id|ep
 )paren
 suffix:semicolon
-multiline_comment|/* Cleanup the inqueue. */
+multiline_comment|/* Free up the HMAC transform. */
+r_if
+c_cond
+(paren
+id|sctp_sk
+c_func
+(paren
+id|ep-&gt;base.sk
+)paren
+op_member_access_from_pointer
+id|hmac
+)paren
+id|crypto_free_tfm
+c_func
+(paren
+id|sctp_sk
+c_func
+(paren
+id|ep-&gt;base.sk
+)paren
+op_member_access_from_pointer
+id|hmac
+)paren
+suffix:semicolon
+multiline_comment|/* Cleanup. */
 id|sctp_inq_free
 c_func
 (paren
@@ -553,7 +572,8 @@ r_void
 id|sctp_endpoint_hold
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -572,7 +592,8 @@ r_void
 id|sctp_endpoint_put
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -596,12 +617,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* Is this the endpoint we are looking for?  */
 DECL|function|sctp_endpoint_is_match
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|sctp_endpoint_is_match
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -612,7 +635,8 @@ op_star
 id|laddr
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|retval
 suffix:semicolon
@@ -678,15 +702,17 @@ suffix:semicolon
 )brace
 multiline_comment|/* Find the association that goes with this chunk.&n; * We do a linear search of the associations for this endpoint.&n; * We return the matching transport address too.&n; */
 DECL|function|__sctp_endpoint_lookup_assoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|__sctp_endpoint_lookup_assoc
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
-id|endpoint
+id|ep
 comma
 r_const
 r_union
@@ -704,7 +730,8 @@ id|transport
 r_int
 id|rport
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -723,7 +750,7 @@ c_func
 id|pos
 comma
 op_amp
-id|endpoint-&gt;asocs
+id|ep-&gt;asocs
 )paren
 (brace
 id|asoc
@@ -733,7 +760,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -793,13 +821,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* Lookup association on an endpoint based on a peer address.  BH-safe.  */
 DECL|function|sctp_endpoint_lookup_assoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_endpoint_lookup_assoc
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -816,7 +846,8 @@ op_star
 id|transport
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -852,7 +883,8 @@ r_int
 id|sctp_endpoint_is_peeled_off
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -954,12 +986,14 @@ r_void
 id|sctp_endpoint_bh_rcv
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
