@@ -194,7 +194,7 @@ id|page
 id|swap_unplug_io_fn
 c_func
 (paren
-id|page
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
