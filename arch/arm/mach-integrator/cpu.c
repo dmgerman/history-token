@@ -589,6 +589,11 @@ op_assign
 op_amp
 id|integrator_policy
 comma
+dot
+id|name
+op_assign
+l_string|&quot;integrator&quot;
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
