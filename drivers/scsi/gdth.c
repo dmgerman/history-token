@@ -1907,12 +1907,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* parameters for modprobe/insmod */
-id|module_param
+id|module_param_array
 c_func
 (paren
 id|irq
 comma
 r_int
+comma
+l_int|NULL
 comma
 l_int|0
 )paren
