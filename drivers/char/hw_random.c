@@ -1210,6 +1210,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|via_rng_datum
+r_static
 id|u32
 id|via_rng_datum
 suffix:semicolon
