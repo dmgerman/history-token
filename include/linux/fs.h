@@ -617,7 +617,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* Unfortunately this kludge is needed for FIBMAP. Don&squot;t use it */
 DECL|member|bmap
-r_int
+id|sector_t
 (paren
 op_star
 id|bmap
@@ -627,7 +627,7 @@ r_struct
 id|address_space
 op_star
 comma
-r_int
+id|sector_t
 )paren
 suffix:semicolon
 DECL|member|invalidatepage
@@ -904,8 +904,7 @@ r_int
 id|bd_block_size
 suffix:semicolon
 DECL|member|bd_offset
-r_int
-r_int
+id|sector_t
 id|bd_offset
 suffix:semicolon
 DECL|member|bd_part_count
@@ -5155,7 +5154,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|sector_t
 id|bmap
 c_func
 (paren
@@ -5163,7 +5162,7 @@ r_struct
 id|inode
 op_star
 comma
-r_int
+id|sector_t
 )paren
 suffix:semicolon
 r_extern

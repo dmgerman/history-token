@@ -2266,8 +2266,13 @@ id|rq
 id|printk
 c_func
 (paren
-l_string|&quot;, sector=%ld&quot;
+l_string|&quot;, sector=%llu&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|HWGROUP
 c_func
 (paren
@@ -14343,8 +14348,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace

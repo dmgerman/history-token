@@ -191,7 +191,7 @@ op_star
 id|md_recovery_thread
 suffix:semicolon
 DECL|variable|md_size
-r_int
+id|sector_t
 id|md_size
 (braket
 id|MAX_MD_DEVS
@@ -738,8 +738,7 @@ suffix:semicolon
 )brace
 DECL|function|calc_dev_sboffset
 r_static
-r_int
-r_int
+id|sector_t
 id|calc_dev_sboffset
 c_func
 (paren
@@ -749,8 +748,7 @@ op_star
 id|bdev
 )paren
 (brace
-r_int
-r_int
+id|sector_t
 id|size
 op_assign
 id|bdev-&gt;bd_inode-&gt;i_size
@@ -767,8 +765,7 @@ suffix:semicolon
 )brace
 DECL|function|calc_dev_size
 r_static
-r_int
-r_int
+id|sector_t
 id|calc_dev_size
 c_func
 (paren
@@ -782,8 +779,7 @@ op_star
 id|mddev
 )paren
 (brace
-r_int
-r_int
+id|sector_t
 id|size
 suffix:semicolon
 r_if
@@ -815,6 +811,9 @@ id|size
 op_and_assign
 op_complement
 (paren
+(paren
+id|sector_t
+)paren
 id|mddev-&gt;chunk_size
 op_div
 l_int|1024
@@ -828,8 +827,7 @@ suffix:semicolon
 )brace
 DECL|function|zoned_raid_size
 r_static
-r_int
-r_int
+id|sector_t
 id|zoned_raid_size
 c_func
 (paren
@@ -838,8 +836,7 @@ op_star
 id|mddev
 )paren
 (brace
-r_int
-r_int
+id|sector_t
 id|mask
 suffix:semicolon
 id|mdk_rdev_t
@@ -856,6 +853,9 @@ id|mask
 op_assign
 op_complement
 (paren
+(paren
+id|sector_t
+)paren
 id|mddev-&gt;chunk_size
 op_div
 l_int|1024
@@ -1196,8 +1196,7 @@ op_star
 id|rdev
 )paren
 (brace
-r_int
-r_int
+id|sector_t
 id|sb_offset
 suffix:semicolon
 r_if
@@ -2283,7 +2282,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: rdev %s, SZ:%08ld F:%d S:%d DN:%d &quot;
+l_string|&quot;md: rdev %s, SZ:%08llu F:%d S:%d DN:%d &quot;
 comma
 id|bdev_partition_name
 c_func
@@ -2291,6 +2290,11 @@ c_func
 id|rdev-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rdev-&gt;size
 comma
 id|rdev-&gt;faulty
@@ -2658,10 +2662,10 @@ op_star
 id|rdev
 )paren
 (brace
-r_int
-r_int
+id|sector_t
 id|sb_offset
-comma
+suffix:semicolon
+id|sector_t
 id|size
 suffix:semicolon
 r_if
@@ -2732,7 +2736,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s&squot;s sb offset has changed from %ld to %ld, skipping&bslash;n&quot;
+l_string|&quot;%s&squot;s sb offset has changed from %llu to %llu, skipping&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -2740,8 +2744,18 @@ c_func
 id|rdev-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rdev-&gt;sb_offset
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sb_offset
 )paren
 suffix:semicolon
@@ -2772,7 +2786,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s&squot;s size has changed from %ld to %ld since import, skipping&bslash;n&quot;
+l_string|&quot;%s&squot;s size has changed from %llu to %llu since import, skipping&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -2780,8 +2794,18 @@ c_func
 id|rdev-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rdev-&gt;size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|size
 )paren
 suffix:semicolon
@@ -2793,7 +2817,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;(write) %s&squot;s sb offset: %ld&bslash;n&quot;
+l_string|&quot;(write) %s&squot;s sb offset: %llu&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -2801,6 +2825,11 @@ c_func
 id|rdev-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sb_offset
 )paren
 suffix:semicolon
@@ -3609,8 +3638,7 @@ id|mdk_rdev_t
 op_star
 id|rdev
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|size
 suffix:semicolon
 id|rdev
@@ -4684,7 +4712,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: Dev %s smaller than chunk_size: %ldk &lt; %dk&bslash;n&quot;
+l_string|&quot;md: Dev %s smaller than chunk_size: %lluk &lt; %dk&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -4692,6 +4720,11 @@ c_func
 id|rdev-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rdev-&gt;size
 comma
 id|mddev-&gt;chunk_size
@@ -5448,6 +5481,52 @@ op_amp
 id|mddev-&gt;queue
 comma
 id|mddev-&gt;pers-&gt;make_request
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: setting max_sectors to %d, segment boundary to %d&bslash;n&quot;
+comma
+id|disk-&gt;disk_name
+comma
+id|chunk_size
+op_rshift
+l_int|9
+comma
+(paren
+id|chunk_size
+op_rshift
+l_int|1
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|blk_queue_max_sectors
+c_func
+(paren
+op_amp
+id|mddev-&gt;queue
+comma
+id|chunk_size
+op_rshift
+l_int|9
+)paren
+suffix:semicolon
+id|blk_queue_segment_boundary
+c_func
+(paren
+op_amp
+id|mddev-&gt;queue
+comma
+(paren
+id|chunk_size
+op_rshift
+l_int|1
+)paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|mddev-&gt;queue.queuedata
@@ -7272,7 +7351,7 @@ op_star
 id|info
 )paren
 (brace
-r_int
+id|sector_t
 id|size
 suffix:semicolon
 id|mdk_rdev_t
@@ -8033,7 +8112,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: disk size %d blocks &lt; array size %ld&bslash;n&quot;
+l_string|&quot;md%d: disk size %llu blocks &lt; array size %llu&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -8041,8 +8120,18 @@ c_func
 id|mddev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|mddev-&gt;size
 )paren
 suffix:semicolon
@@ -10473,7 +10562,8 @@ op_assign
 l_int|0
 comma
 id|j
-comma
+suffix:semicolon
+id|sector_t
 id|size
 suffix:semicolon
 r_struct
@@ -10725,8 +10815,13 @@ id|page
 op_plus
 id|sz
 comma
-l_string|&quot;&bslash;n      %d blocks&quot;
+l_string|&quot;&bslash;n      %llu blocks&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|md_size
 (braket
 id|mdidx
@@ -10747,8 +10842,13 @@ id|page
 op_plus
 id|sz
 comma
-l_string|&quot;&bslash;n      %d blocks&quot;
+l_string|&quot;&bslash;n      %llu blocks&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|size
 )paren
 suffix:semicolon

@@ -1197,8 +1197,11 @@ c_func
 l_int|4
 comma
 l_string|&quot;cancelled existing revoke on &quot;
-l_string|&quot;blocknr %lu&bslash;n&quot;
+l_string|&quot;blocknr %llu&bslash;n&quot;
 comma
+(paren
+id|u64
+)paren
 id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon

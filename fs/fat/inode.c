@@ -5029,7 +5029,7 @@ suffix:semicolon
 )brace
 DECL|function|_fat_bmap
 r_static
-r_int
+id|sector_t
 id|_fat_bmap
 c_func
 (paren
@@ -5038,7 +5038,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

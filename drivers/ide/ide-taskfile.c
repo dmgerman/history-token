@@ -1532,8 +1532,13 @@ id|rq
 id|printk
 c_func
 (paren
-l_string|&quot;, sector=%lu&quot;
+l_string|&quot;, sector=%llu&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|HWGROUP
 c_func
 (paren

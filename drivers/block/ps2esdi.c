@@ -2357,12 +2357,17 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;Grrr. error. ps2esdi_drives: %d, %lu %lu&bslash;n&quot;
+l_string|&quot;Grrr. error. ps2esdi_drives: %d, %lu %llu&bslash;n&quot;
 comma
 id|ps2esdi_drives
 comma
 id|CURRENT-&gt;sector
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|get_capacity
 c_func
 (paren

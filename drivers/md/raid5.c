@@ -11,6 +11,8 @@ DECL|macro|NR_STRIPES
 mdefine_line|#define NR_STRIPES&t;&t;256
 DECL|macro|STRIPE_SIZE
 mdefine_line|#define STRIPE_SIZE&t;&t;PAGE_SIZE
+DECL|macro|STRIPE_SHIFT
+mdefine_line|#define STRIPE_SHIFT&t;&t;(PAGE_SHIFT - 9)
 DECL|macro|STRIPE_SECTORS
 mdefine_line|#define STRIPE_SECTORS&t;&t;(STRIPE_SIZE&gt;&gt;9)
 DECL|macro|IO_THRESHOLD
@@ -24,7 +26,7 @@ mdefine_line|#define NR_HASH&t;&t;&t;(HASH_PAGES * PAGE_SIZE / sizeof(struct str
 DECL|macro|HASH_MASK
 mdefine_line|#define HASH_MASK&t;&t;(NR_HASH - 1)
 DECL|macro|stripe_hash
-mdefine_line|#define stripe_hash(conf, sect)&t;((conf)-&gt;stripe_hashtbl[((sect) / STRIPE_SECTORS) &amp; HASH_MASK])
+mdefine_line|#define stripe_hash(conf, sect)&t;((conf)-&gt;stripe_hashtbl[((sect) &gt;&gt; STRIPE_SHIFT) &amp; HASH_MASK])
 multiline_comment|/*&n; * The following can be used to debug the driver&n; */
 DECL|macro|RAID5_DEBUG
 mdefine_line|#define RAID5_DEBUG&t;0
@@ -321,8 +323,13 @@ id|sh
 id|PRINTK
 c_func
 (paren
-l_string|&quot;remove_hash(), stripe %lu&bslash;n&quot;
+l_string|&quot;remove_hash(), stripe %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -387,8 +394,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;insert_hash(), stripe %lu&bslash;n&quot;
+l_string|&quot;insert_hash(), stripe %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -746,8 +758,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;init_stripe called, stripe %lu&bslash;n&quot;
+l_string|&quot;init_stripe called, stripe %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -814,8 +831,13 @@ id|dev-&gt;flags
 id|printk
 c_func
 (paren
-l_string|&quot;sector=%lx i=%d %p %p %p %d&bslash;n&quot;
+l_string|&quot;sector=%llx i=%d %p %p %p %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -1603,8 +1625,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;end_read_request %lu/%d, count: %d, uptodate %d.&bslash;n&quot;
+l_string|&quot;end_read_request %llu/%d, count: %d, uptodate %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -1986,8 +2013,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;end_write_request %lu/%d, count %d, uptodate: %d.&bslash;n&quot;
+l_string|&quot;end_write_request %llu/%d, count %d, uptodate: %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -2104,8 +2136,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_int
-r_int
+id|sector_t
 id|compute_blocknr
 c_func
 (paren
@@ -2330,7 +2361,7 @@ op_star
 id|conf
 )paren
 (brace
-id|sector_t
+r_int
 id|stripe
 suffix:semicolon
 r_int
@@ -2353,17 +2384,27 @@ l_int|9
 suffix:semicolon
 multiline_comment|/* First compute the information on this sector */
 multiline_comment|/*&n;&t; * Compute the chunk number and the sector offset inside the chunk&n;&t; */
+id|chunk_offset
+op_assign
+id|sector_div
+c_func
+(paren
+id|r_sector
+comma
+id|sectors_per_chunk
+)paren
+suffix:semicolon
 id|chunk_number
 op_assign
 id|r_sector
-op_div
-id|sectors_per_chunk
 suffix:semicolon
-id|chunk_offset
-op_assign
+id|BUG_ON
+c_func
+(paren
 id|r_sector
-op_mod
-id|sectors_per_chunk
+op_ne
+id|chunk_number
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Compute the stripe number&n;&t; */
 id|stripe
@@ -2581,19 +2622,11 @@ id|conf-&gt;chunk_size
 op_rshift
 l_int|9
 suffix:semicolon
-id|sector_t
+r_int
 id|stripe
-op_assign
-id|new_sector
-op_div
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|chunk_offset
-op_assign
-id|new_sector
-op_mod
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|chunk_number
@@ -2608,6 +2641,28 @@ id|i
 suffix:semicolon
 id|sector_t
 id|r_sector
+suffix:semicolon
+id|chunk_offset
+op_assign
+id|sector_div
+c_func
+(paren
+id|new_sector
+comma
+id|sectors_per_chunk
+)paren
+suffix:semicolon
+id|stripe
+op_assign
+id|new_sector
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|new_sector
+op_ne
+id|stripe
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -2680,6 +2735,9 @@ id|i
 suffix:semicolon
 id|r_sector
 op_assign
+(paren
+id|sector_t
+)paren
 id|chunk_number
 op_star
 id|sectors_per_chunk
@@ -3034,8 +3092,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;compute_block, stripe %lu, idx %d&bslash;n&quot;
+l_string|&quot;compute_block, stripe %llu, idx %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|dd_idx
@@ -3137,10 +3200,15 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;compute_block() %d, stripe %lu, %d not present&bslash;n&quot;
+l_string|&quot;compute_block() %d, stripe %llu, %d not present&bslash;n&quot;
 comma
 id|dd_idx
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -3236,8 +3304,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;compute_parity, stripe %lu, method %d&bslash;n&quot;
+l_string|&quot;compute_parity, stripe %llu, method %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|method
@@ -3840,10 +3913,20 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;adding bh b#%lu to stripe s#%lu&bslash;n&quot;
+l_string|&quot;adding bh b#%llu to stripe s#%llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bi-&gt;bi_sector
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -3969,10 +4052,20 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;added bi b#%lu to stripe s#%lu, disk %d.&bslash;n&quot;
+l_string|&quot;added bi b#%llu to stripe s#%llu, disk %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bi-&gt;bi_sector
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|dd_idx
@@ -4163,8 +4256,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;handling stripe %ld, cnt=%d, pd_idx=%d&bslash;n&quot;
+l_string|&quot;handling stripe %llu, cnt=%d, pd_idx=%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|atomic_read
@@ -5388,8 +5486,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;for sector %ld, rmw=%d rcw=%d&bslash;n&quot;
+l_string|&quot;for sector %llu, rmw=%d rcw=%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|rmw
@@ -6375,8 +6478,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;for %ld schedule op %ld on disc %d&bslash;n&quot;
+l_string|&quot;for %llu schedule op %ld on disc %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|bi-&gt;bi_rw
@@ -6439,12 +6547,17 @@ r_else
 id|PRINTK
 c_func
 (paren
-l_string|&quot;skip op %ld on disc %d for sector %ld&bslash;n&quot;
+l_string|&quot;skip op %ld on disc %d for sector %llu&bslash;n&quot;
 comma
 id|bi-&gt;bi_rw
 comma
 id|i
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -6989,20 +7102,15 @@ id|conf-&gt;chunk_size
 op_rshift
 l_int|9
 suffix:semicolon
+id|sector_t
+id|x
+suffix:semicolon
 r_int
 r_int
 id|stripe
-op_assign
-id|sector_nr
-op_div
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|chunk_offset
-op_assign
-id|sector_nr
-op_mod
-id|sectors_per_chunk
 suffix:semicolon
 r_int
 id|dd_idx
@@ -7037,6 +7145,32 @@ l_int|1
 multiline_comment|/* just being told to finish up .. nothing to do */
 r_return
 l_int|0
+suffix:semicolon
+id|x
+op_assign
+id|sector_nr
+suffix:semicolon
+id|chunk_offset
+op_assign
+id|sector_div
+c_func
+(paren
+id|x
+comma
+id|sectors_per_chunk
+)paren
+suffix:semicolon
+id|stripe
+op_assign
+id|x
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|x
+op_ne
+id|stripe
+)paren
 suffix:semicolon
 id|first_sector
 op_assign
@@ -8111,8 +8245,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sh %lu, pd_idx %d, state %ld.&bslash;n&quot;
+l_string|&quot;sh %llu, pd_idx %d, state %ld.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|sh-&gt;pd_idx
@@ -8123,8 +8262,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sh %lu,  count %d.&bslash;n&quot;
+l_string|&quot;sh %llu,  count %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|atomic_read
@@ -8138,8 +8282,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sh %lu, &quot;
+l_string|&quot;sh %llu, &quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon

@@ -2266,7 +2266,7 @@ suffix:semicolon
 )brace
 DECL|function|ext2_bmap
 r_static
-r_int
+id|sector_t
 id|ext2_bmap
 c_func
 (paren
@@ -2275,7 +2275,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

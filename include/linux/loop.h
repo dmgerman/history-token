@@ -75,7 +75,7 @@ comma
 r_int
 id|size
 comma
-r_int
+id|sector_t
 id|real_block
 )paren
 suffix:semicolon
@@ -375,7 +375,7 @@ comma
 r_int
 id|size
 comma
-r_int
+id|sector_t
 id|real_block
 )paren
 suffix:semicolon

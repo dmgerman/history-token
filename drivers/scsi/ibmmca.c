@@ -13295,6 +13295,11 @@ op_star
 id|info
 )paren
 (brace
+r_int
+id|size
+op_assign
+id|disk-&gt;capacity
+suffix:semicolon
 id|info
 (braket
 l_int|0
@@ -13314,7 +13319,7 @@ id|info
 l_int|2
 )braket
 op_assign
-id|disk-&gt;capacity
+id|size
 op_div
 (paren
 id|info
@@ -13358,7 +13363,7 @@ id|info
 l_int|2
 )braket
 op_assign
-id|disk-&gt;capacity
+id|size
 op_div
 (paren
 id|info
@@ -13402,7 +13407,7 @@ id|info
 l_int|2
 )braket
 op_assign
-id|disk-&gt;capacity
+id|size
 op_div
 (paren
 id|info

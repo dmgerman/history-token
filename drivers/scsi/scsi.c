@@ -7780,7 +7780,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;(%3d) %2d:%1d:%2d:%2d (%6s %4ld %4ld %4ld %4x %1d) (%1d %1d 0x%2x) (%4d %4d %4d) 0x%2.2x 0x%2.2x 0x%8.8x&bslash;n&quot;
+l_string|&quot;(%3d) %2d:%1d:%2d:%2d (%6s %4llu %4ld %4ld %4x %1d) (%1d %1d 0x%2x) (%4d %4d %4d) 0x%2.2x 0x%2.2x 0x%8.8x&bslash;n&quot;
 comma
 id|i
 op_increment
@@ -7799,6 +7799,11 @@ c_func
 id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|SCpnt-&gt;request-&gt;sector
 comma
 id|SCpnt-&gt;request-&gt;nr_sectors

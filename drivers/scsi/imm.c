@@ -4754,6 +4754,10 @@ l_int|2
 )braket
 op_assign
 (paren
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_plus
 l_int|1
@@ -4802,6 +4806,10 @@ l_int|2
 )braket
 op_assign
 (paren
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_plus
 l_int|1

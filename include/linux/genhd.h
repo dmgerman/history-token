@@ -189,13 +189,11 @@ r_struct
 id|hd_struct
 (brace
 DECL|member|start_sect
-r_int
-r_int
+id|sector_t
 id|start_sect
 suffix:semicolon
 DECL|member|nr_sects
-r_int
-r_int
+id|sector_t
 id|nr_sects
 suffix:semicolon
 DECL|member|de
@@ -356,8 +354,7 @@ suffix:semicolon
 DECL|function|get_start_sect
 r_static
 r_inline
-r_int
-r_int
+id|sector_t
 id|get_start_sect
 c_func
 (paren
