@@ -6097,7 +6097,7 @@ op_star
 op_star
 )paren
 op_amp
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -6118,11 +6118,11 @@ c_func
 (paren
 id|ctlr
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|scsi3addr
 )paren
