@@ -4616,17 +4616,6 @@ comma
 id|qe-&gt;buffers_dvma
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|qe_devs
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|priv
-)paren
-suffix:semicolon
 )brace
 id|kfree
 c_func
