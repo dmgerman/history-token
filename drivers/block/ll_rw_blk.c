@@ -4115,6 +4115,15 @@ id|rw
 )braket
 op_eq
 id|BLKDEV_MAX_RQ
+op_logical_or
+op_logical_neg
+id|elv_may_queue
+c_func
+(paren
+id|q
+comma
+id|rw
+)paren
 )paren
 (brace
 id|spin_unlock_irq
