@@ -48,14 +48,6 @@ id|xfs_qm
 op_star
 id|xfs_Gqm
 suffix:semicolon
-DECL|variable|xfs_Gqm
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfs_Gqm
-)paren
-suffix:semicolon
-multiline_comment|/* used by xfsidbg */
 DECL|variable|qm_dqzone
 id|kmem_zone_t
 op_star
