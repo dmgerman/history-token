@@ -3567,6 +3567,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change # of rows and columns (0 means unchanged/the size of fg_console)&n; * [this is to be used together with some user program&n; * like resize that changes the hardware videomode]&n; */
+DECL|macro|VC_RESIZE_MAXCOL
+mdefine_line|#define VC_RESIZE_MAXCOL (32767)
+DECL|macro|VC_RESIZE_MAXROW
+mdefine_line|#define VC_RESIZE_MAXROW (32767)
 DECL|function|vc_resize
 r_int
 id|vc_resize
@@ -3643,6 +3647,21 @@ id|currcons
 r_return
 op_minus
 id|ENXIO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cols
+OG
+id|VC_RESIZE_MAXCOL
+op_logical_or
+id|lines
+OG
+id|VC_RESIZE_MAXROW
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|new_cols
 op_assign
