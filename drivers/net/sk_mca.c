@@ -820,7 +820,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* reenable interrupts */
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -964,7 +964,7 @@ id|priv-&gt;ioregaddr
 )paren
 suffix:semicolon
 multiline_comment|/* reenable interrupts */
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -3455,7 +3455,7 @@ op_or
 id|CSR0_TDMD
 )paren
 suffix:semicolon
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
