@@ -849,7 +849,7 @@ id|policy-&gt;max
 suffix:semicolon
 id|freqs.cpu
 op_assign
-id|CPUFREQ_ALL_CPUS
+l_int|0
 suffix:semicolon
 id|cpufreq_notify_transition
 c_func
