@@ -4225,7 +4225,6 @@ suffix:semicolon
 )brace
 DECL|function|agp_frontend_cleanup
 r_void
-id|__exit
 id|agp_frontend_cleanup
 c_func
 (paren
