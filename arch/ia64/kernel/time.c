@@ -36,9 +36,9 @@ r_int
 id|last_cli_ip
 suffix:semicolon
 macro_line|#endif
+macro_line|#if 0
 r_static
 r_void
-DECL|function|do_profile
 id|do_profile
 (paren
 r_int
@@ -126,6 +126,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Return the number of micro-seconds that elapsed since the last update to jiffy.  The&n; * xtime_lock must be at least read-locked when calling this routine.&n; */
 r_static
 r_inline
@@ -516,6 +517,11 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Do kernel PC profiling here.  We multiply the instruction number by&n;&t;&t; * four so that we can use a prof_shift of 2 to get instruction-level&n;&t;&t; * instead of just bundle-level accuracy.&n;&t;&t; */
+macro_line|#if 0
+id|XXX
+id|fix
+id|me
+op_logical_neg
 r_if
 c_cond
 (paren
@@ -542,6 +548,7 @@ op_member_access_from_pointer
 id|ri
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|smp_do_timer
 c_func

@@ -253,13 +253,6 @@ id|loglevel_save
 op_assign
 id|console_loglevel
 suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|timerlist_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
