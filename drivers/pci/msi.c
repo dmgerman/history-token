@@ -2563,6 +2563,8 @@ comma
 id|pos
 comma
 id|dev_msi_cap
+comma
+id|i
 suffix:semicolon
 id|u32
 id|phys_addr
@@ -2908,15 +2910,15 @@ multiline_comment|/* Initialize all entries from 1 up to 0 */
 r_for
 c_loop
 (paren
-id|pos
+id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|pos
+id|i
 OL
 id|dev_msi_cap
 suffix:semicolon
-id|pos
+id|i
 op_increment
 )paren
 (brace
@@ -2927,7 +2929,7 @@ l_int|0
 comma
 id|base
 op_plus
-id|pos
+id|i
 op_star
 id|PCI_MSIX_ENTRY_SIZE
 op_plus
@@ -2941,7 +2943,7 @@ l_int|0
 comma
 id|base
 op_plus
-id|pos
+id|i
 op_star
 id|PCI_MSIX_ENTRY_SIZE
 op_plus
@@ -2955,7 +2957,7 @@ l_int|0
 comma
 id|base
 op_plus
-id|pos
+id|i
 op_star
 id|PCI_MSIX_ENTRY_SIZE
 op_plus
