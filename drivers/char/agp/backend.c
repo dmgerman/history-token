@@ -956,6 +956,10 @@ c_func
 id|drv-&gt;owner
 )paren
 suffix:semicolon
+id|drv-&gt;dev
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 id|ret_val
 suffix:semicolon
