@@ -5398,7 +5398,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;aint error: Host tried to perform illegal operation &bslash;n&quot;
+l_string|&quot;aint error: Host tried to perform invalid operation &bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

@@ -1681,7 +1681,7 @@ macro_line|#endif
 DECL|macro|SMT_E0100
 mdefine_line|#define&t;SMT_E0100&t;SMT_EBASE + 0
 DECL|macro|SMT_E0100_MSG
-mdefine_line|#define&t;SMT_E0100_MSG&t;&quot;cfm FSM: illegal ce_type&quot;
+mdefine_line|#define&t;SMT_E0100_MSG&t;&quot;cfm FSM: invalid ce_type&quot;
 DECL|macro|SMT_E0101
 mdefine_line|#define&t;SMT_E0101&t;SMT_EBASE + 1
 DECL|macro|SMT_E0101_MSG
@@ -1689,27 +1689,27 @@ mdefine_line|#define&t;SMT_E0101_MSG&t;&quot;CEM: case ???&quot;
 DECL|macro|SMT_E0102
 mdefine_line|#define&t;SMT_E0102&t;SMT_EBASE + 2
 DECL|macro|SMT_E0102_MSG
-mdefine_line|#define&t;SMT_E0102_MSG&t;&quot;CEM A: illegal state&quot;
+mdefine_line|#define&t;SMT_E0102_MSG&t;&quot;CEM A: invalid state&quot;
 DECL|macro|SMT_E0103
 mdefine_line|#define&t;SMT_E0103&t;SMT_EBASE + 3
 DECL|macro|SMT_E0103_MSG
-mdefine_line|#define&t;SMT_E0103_MSG&t;&quot;CEM B: illegal state&quot;
+mdefine_line|#define&t;SMT_E0103_MSG&t;&quot;CEM B: invalid state&quot;
 DECL|macro|SMT_E0104
 mdefine_line|#define&t;SMT_E0104&t;SMT_EBASE + 4
 DECL|macro|SMT_E0104_MSG
-mdefine_line|#define&t;SMT_E0104_MSG&t;&quot;CEM M: illegal state&quot;
+mdefine_line|#define&t;SMT_E0104_MSG&t;&quot;CEM M: invalid state&quot;
 DECL|macro|SMT_E0105
 mdefine_line|#define&t;SMT_E0105&t;SMT_EBASE + 5
 DECL|macro|SMT_E0105_MSG
-mdefine_line|#define&t;SMT_E0105_MSG&t;&quot;CEM S: illegal state&quot;
+mdefine_line|#define&t;SMT_E0105_MSG&t;&quot;CEM S: invalid state&quot;
 DECL|macro|SMT_E0106
 mdefine_line|#define&t;SMT_E0106&t;SMT_EBASE + 6
 DECL|macro|SMT_E0106_MSG
-mdefine_line|#define&t;SMT_E0106_MSG&t;&quot;CFM : illegal state&quot;
+mdefine_line|#define&t;SMT_E0106_MSG&t;&quot;CFM : invalid state&quot;
 DECL|macro|SMT_E0107
 mdefine_line|#define&t;SMT_E0107&t;SMT_EBASE + 7
 DECL|macro|SMT_E0107_MSG
-mdefine_line|#define&t;SMT_E0107_MSG&t;&quot;ECM : illegal state&quot;
+mdefine_line|#define&t;SMT_E0107_MSG&t;&quot;ECM : invalid state&quot;
 DECL|macro|SMT_E0108
 mdefine_line|#define&t;SMT_E0108&t;SMT_EBASE + 8
 DECL|macro|SMT_E0108_MSG
@@ -1753,7 +1753,7 @@ mdefine_line|#define&t;SMT_E0117_MSG&t;&quot;E_SMT_001: RxD count for receive qu
 DECL|macro|SMT_E0118
 mdefine_line|#define&t;SMT_E0118&t;SMT_EBASE + 18
 DECL|macro|SMT_E0118_MSG
-mdefine_line|#define&t;SMT_E0118_MSG&t;&quot;PCM : illegal state&quot;
+mdefine_line|#define&t;SMT_E0118_MSG&t;&quot;PCM : invalid state&quot;
 DECL|macro|SMT_E0119
 mdefine_line|#define&t;SMT_E0119&t;SMT_EBASE + 19
 DECL|macro|SMT_E0119_MSG
@@ -1765,15 +1765,15 @@ mdefine_line|#define&t;SMT_E0120_MSG&t;&quot;smt_set_para&quot;
 DECL|macro|SMT_E0121
 mdefine_line|#define&t;SMT_E0121&t;SMT_EBASE + 21
 DECL|macro|SMT_E0121_MSG
-mdefine_line|#define&t;SMT_E0121_MSG&t;&quot;illegal event in dispatcher&quot;
+mdefine_line|#define&t;SMT_E0121_MSG&t;&quot;invalid event in dispatcher&quot;
 DECL|macro|SMT_E0122
 mdefine_line|#define&t;SMT_E0122&t;SMT_EBASE + 22
 DECL|macro|SMT_E0122_MSG
-mdefine_line|#define&t;SMT_E0122_MSG&t;&quot;RMT : illegal state&quot;
+mdefine_line|#define&t;SMT_E0122_MSG&t;&quot;RMT : invalid state&quot;
 DECL|macro|SMT_E0123
 mdefine_line|#define&t;SMT_E0123&t;SMT_EBASE + 23
 DECL|macro|SMT_E0123_MSG
-mdefine_line|#define&t;SMT_E0123_MSG&t;&quot;SBA: state machine has illegal state&quot;
+mdefine_line|#define&t;SMT_E0123_MSG&t;&quot;SBA: state machine has invalid state&quot;
 DECL|macro|SMT_E0124
 mdefine_line|#define&t;SMT_E0124&t;SMT_EBASE + 24
 DECL|macro|SMT_E0124_MSG
@@ -1781,7 +1781,7 @@ mdefine_line|#define&t;SMT_E0124_MSG&t;&quot;sba_free_session() called with NULL
 DECL|macro|SMT_E0125
 mdefine_line|#define&t;SMT_E0125&t;SMT_EBASE + 25
 DECL|macro|SMT_E0125_MSG
-mdefine_line|#define&t;SMT_E0125_MSG&t;&quot;SBA : illegal session pointer&quot;
+mdefine_line|#define&t;SMT_E0125_MSG&t;&quot;SBA : invalid session pointer&quot;
 DECL|macro|SMT_E0126
 mdefine_line|#define&t;SMT_E0126&t;SMT_EBASE + 26
 DECL|macro|SMT_E0126_MSG

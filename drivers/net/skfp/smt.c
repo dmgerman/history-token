@@ -3406,7 +3406,7 @@ id|illegal
 id|DB_SMT
 c_func
 (paren
-l_string|&quot;SMT: discarding illegal frame, reason = %d&bslash;n&quot;
+l_string|&quot;SMT: discarding invalid frame, reason = %d&bslash;n&quot;
 comma
 id|illegal
 comma
