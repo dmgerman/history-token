@@ -2190,7 +2190,12 @@ op_amp
 l_int|2
 )paren
 (brace
-id|current_thread_info-&gt;xfsr
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|xfsr
 (braket
 l_int|0
 )braket
