@@ -362,7 +362,7 @@ DECL|member|wrsent
 r_int
 id|wrsent
 suffix:semicolon
-multiline_comment|/* Data akready sent */
+multiline_comment|/* Data already sent */
 )brace
 suffix:semicolon
 multiline_comment|/* do some startup allocations not currently performed by usb_serial_probe() */
@@ -580,22 +580,6 @@ c_func
 id|port-&gt;serial-&gt;dev
 comma
 id|port-&gt;write_urb-&gt;pipe
-)paren
-suffix:semicolon
-id|usb_clear_halt
-c_func
-(paren
-id|port-&gt;serial-&gt;dev
-comma
-id|port-&gt;read_urb-&gt;pipe
-)paren
-suffix:semicolon
-id|usb_clear_halt
-c_func
-(paren
-id|port-&gt;serial-&gt;dev
-comma
-id|port-&gt;interrupt_in_urb-&gt;pipe
 )paren
 suffix:semicolon
 multiline_comment|/* force low_latency on so that our tty_push actually forces&n;&t; * the data through, otherwise it is scheduled, and with high&n;&t; * data rates (like with OHCI) data can get lost.&n;&t; */
@@ -827,14 +811,6 @@ suffix:semicolon
 r_int
 id|wrexpected
 suffix:semicolon
-r_int
-r_char
-id|localbuf
-(braket
-id|CYBERJACK_LOCAL_BUF_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* Buffer for collecting data to write */
 id|dbg
 c_func
 (paren
@@ -922,18 +898,9 @@ r_sizeof
 (paren
 id|priv-&gt;wrbuf
 )paren
-op_logical_or
-(paren
-id|count
-OG
-r_sizeof
-(paren
-id|localbuf
-)paren
-)paren
 )paren
 (brace
-multiline_comment|/* To much data  for buffer. Reset buffer. */
+multiline_comment|/* To much data for buffer. Reset buffer. */
 id|priv-&gt;wrfilled
 op_assign
 l_int|0
@@ -953,15 +920,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|priv-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Copy data */
 r_if
 c_cond
@@ -975,7 +933,9 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|localbuf
+id|priv-&gt;wrbuf
+op_plus
+id|priv-&gt;wrfilled
 comma
 id|buf
 comma
@@ -983,6 +943,15 @@ id|count
 )paren
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT
@@ -993,7 +962,9 @@ r_else
 (brace
 id|memcpy
 (paren
-id|localbuf
+id|priv-&gt;wrbuf
+op_plus
+id|priv-&gt;wrfilled
 comma
 id|buf
 comma
@@ -1001,26 +972,6 @@ id|count
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|priv-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|memcpy
-(paren
-id|priv-&gt;wrbuf
-op_plus
-id|priv-&gt;wrfilled
-comma
-id|localbuf
-comma
-id|count
-)paren
-suffix:semicolon
 id|usb_serial_debug_data
 (paren
 id|__FILE__

@@ -793,6 +793,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func

@@ -523,16 +523,6 @@ id|file
 )paren
 suffix:semicolon
 r_static
-r_int
-id|pwc_video_release
-c_func
-(paren
-r_struct
-id|video_device
-op_star
-)paren
-suffix:semicolon
-r_static
 id|ssize_t
 id|pwc_video_read
 c_func
@@ -4769,27 +4759,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pwc_video_release
-r_static
-r_int
-id|pwc_video_release
-c_func
-(paren
-r_struct
-id|video_device
-op_star
-id|vfd
-)paren
-(brace
-id|Trace
-c_func
-(paren
-id|TRACE_OPEN
-comma
-l_string|&quot;pwc_video_release() called. Now what?&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;FIXME: what about two parallel reads ????&n; *      ANSWER: Not supported. You can&squot;t open the device more than once,&n;                despite what the V4L1 interface says. First, I don&squot;t see&n;                the need, second there&squot;s no mechanism of alerting the&n;                2nd/3rd/... process of events like changing image size.&n;                And I don&squot;t see the point of blocking that for the&n;                2nd/3rd/... process.&n;                In multi-threaded environments reading parallel from any&n;                device is tricky anyhow.&n; */
 DECL|function|pwc_video_read
 r_static
@@ -7644,7 +7613,7 @@ suffix:semicolon
 )brace
 id|pdev-&gt;vdev.release
 op_assign
-id|pwc_video_release
+id|video_device_release
 suffix:semicolon
 id|i
 op_assign

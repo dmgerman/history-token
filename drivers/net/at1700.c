@@ -653,6 +653,8 @@ r_if
 c_cond
 (paren
 id|lp-&gt;mca_slot
+op_ge
+l_int|0
 )paren
 id|mca_mark_as_unused
 c_func
@@ -1676,7 +1678,7 @@ l_int|8
 )paren
 (brace
 r_goto
-id|err_out
+id|err_mca
 suffix:semicolon
 )brace
 )brace
@@ -1701,7 +1703,7 @@ op_ne
 id|ioaddr
 )paren
 r_goto
-id|err_out
+id|err_mca
 suffix:semicolon
 id|irq
 op_assign
@@ -2224,12 +2226,29 @@ id|irq
 )paren
 suffix:semicolon
 r_goto
-id|err_out
+id|err_mca
 suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
+id|err_mca
+suffix:colon
+macro_line|#ifdef CONFIG_MCA
+r_if
+c_cond
+(paren
+id|slot
+op_ge
+l_int|0
+)paren
+id|mca_mark_as_unused
+c_func
+(paren
+id|slot
+)paren
+suffix:semicolon
+macro_line|#endif
 id|err_out
 suffix:colon
 macro_line|#ifndef CONFIG_X86_PC9800

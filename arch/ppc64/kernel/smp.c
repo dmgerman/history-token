@@ -1339,21 +1339,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Fixup atomic count: it exited inside IRQ handler. */
-(paren
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
 id|paca
 (braket
 id|lcpu
 )braket
 dot
-id|xCurrent
-)paren
-op_member_access_from_pointer
-id|thread_info-&gt;preempt_count
+id|xCurrent-&gt;thread_info-&gt;preempt_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -3063,9 +3054,6 @@ id|cpu
 dot
 id|xCurrent
 op_assign
-(paren
-id|u64
-)paren
 id|p
 suffix:semicolon
 id|current_set
@@ -3237,9 +3225,6 @@ id|boot_cpuid
 dot
 id|xCurrent
 op_assign
-(paren
-id|u64
-)paren
 id|current
 suffix:semicolon
 id|current_set

@@ -405,6 +405,30 @@ id|status
 suffix:semicolon
 r_do
 (brace
+r_if
+c_cond
+(paren
+id|inl
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|CSR5
+)paren
+op_eq
+l_int|0xffffffff
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot; In tulip_poll(), hardware disappeared.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* Acknowledge current RX interrupt sources. */
 id|outl
 c_func

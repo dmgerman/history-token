@@ -24,7 +24,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.52-k2&quot;
+l_string|&quot;5.2.52-k4&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -9115,6 +9115,9 @@ c_func
 (paren
 id|adapter
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_return

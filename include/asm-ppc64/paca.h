@@ -32,6 +32,9 @@ l_string|&quot;r13&quot;
 suffix:semicolon
 DECL|macro|get_paca
 mdefine_line|#define get_paca()&t;local_paca
+r_struct
+id|task_struct
+suffix:semicolon
 multiline_comment|/*============================================================================&n; * Name_______:&t;paca&n; *&n; * Description:&n; *&n; *&t;Defines the layout of the paca.  &n; *&n; *&t;This structure is not directly accessed by PLIC or the SP except&n; *&t;for the first two pointers that point to the ItLpPaca area and the&n; *&t;ItLpRegSave area for this processor.  Both the ItLpPaca and&n; *&t;ItLpRegSave objects are currently contained within the&n; *&t;PACA but they do not need to be.&n; *&n; *============================================================================&n; */
 DECL|struct|paca_struct
 r_struct
@@ -53,7 +56,9 @@ id|xLpRegSavePtr
 suffix:semicolon
 multiline_comment|/* Pointer to LpRegSave for PLIC&t;0x08 */
 DECL|member|xCurrent
-id|u64
+r_struct
+id|task_struct
+op_star
 id|xCurrent
 suffix:semicolon
 multiline_comment|/* Pointer to current&t;&t;&t;0x10 */
