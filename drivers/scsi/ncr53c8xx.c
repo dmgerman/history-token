@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n;**  Device driver for the PCI-SCSI NCR538XX controller family.&n;**&n;**  Copyright (C) 1994  Wolfgang Stanglmeier&n;**&n;**  This program is free software; you can redistribute it and/or modify&n;**  it under the terms of the GNU General Public License as published by&n;**  the Free Software Foundation; either version 2 of the License, or&n;**  (at your option) any later version.&n;**&n;**  This program is distributed in the hope that it will be useful,&n;**  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;**  GNU General Public License for more details.&n;**&n;**  You should have received a copy of the GNU General Public License&n;**  along with this program; if not, write to the Free Software&n;**  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;**&n;**-----------------------------------------------------------------------------&n;**&n;**  This driver has been ported to Linux from the FreeBSD NCR53C8XX driver&n;**  and is currently maintained by&n;**&n;**          Gerard Roudier              &lt;groudier@free.fr&gt;&n;**&n;**  Being given that this driver originates from the FreeBSD version, and&n;**  in order to keep synergy on both, any suggested enhancements and corrections&n;**  received on Linux are automatically a potential candidate for the FreeBSD &n;**  version.&n;**&n;**  The original driver has been written for 386bsd and FreeBSD by&n;**          Wolfgang Stanglmeier        &lt;wolf@cologne.de&gt;&n;**          Stefan Esser                &lt;se@mi.Uni-Koeln.de&gt;&n;**&n;**  And has been ported to NetBSD by&n;**          Charles M. Hannum           &lt;mycroft@gnu.ai.mit.edu&gt;&n;**&n;**-----------------------------------------------------------------------------&n;**&n;**                     Brief history&n;**&n;**  December 10 1995 by Gerard Roudier:&n;**     Initial port to Linux.&n;**&n;**  June 23 1996 by Gerard Roudier:&n;**     Support for 64 bits architectures (Alpha).&n;**&n;**  November 30 1996 by Gerard Roudier:&n;**     Support for Fast-20 scsi.&n;**     Support for large DMA fifo and 128 dwords bursting.&n;**&n;**  February 27 1997 by Gerard Roudier:&n;**     Support for Fast-40 scsi.&n;**     Support for on-Board RAM.&n;**&n;**  May 3 1997 by Gerard Roudier:&n;**     Full support for scsi scripts instructions pre-fetching.&n;**&n;**  May 19 1997 by Richard Waltham &lt;dormouse@farsrobt.demon.co.uk&gt;:&n;**     Support for NvRAM detection and reading.&n;**&n;**  August 18 1997 by Cort &lt;cort@cs.nmt.edu&gt;:&n;**     Support for Power/PC (Big Endian).&n;**&n;**  June 20 1998 by Gerard Roudier&n;**     Support for up to 64 tags per lun.&n;**     O(1) everywhere (C and SCRIPTS) for normal cases.&n;**     Low PCI traffic for command handling when on-chip RAM is present.&n;**     Aggressive SCSI SCRIPTS optimizations.&n;**&n;*******************************************************************************&n;*/
-multiline_comment|/*&n;**&t;Supported SCSI-II features:&n;**&t;    Synchronous negotiation&n;**&t;    Wide negotiation        (depends on the NCR Chip)&n;**&t;    Enable disconnection&n;**&t;    Tagged command queuing&n;**&t;    Parity checking&n;**&t;    Etc...&n;**&n;**&t;Supported NCR/SYMBIOS chips:&n;**&t;&t;53C720&t;&t;(Wide,   Fast SCSI-2, HP Zalon)&n;**&t;&t;53C810&t;&t;(8 bits, Fast SCSI-2, no rom BIOS) &n;**&t;&t;53C815&t;&t;(8 bits, Fast SCSI-2, on board rom BIOS)&n;**&t;&t;53C820&t;&t;(Wide,   Fast SCSI-2, no rom BIOS)&n;**&t;&t;53C825&t;&t;(Wide,   Fast SCSI-2, on board rom BIOS)&n;**&t;&t;53C860&t;&t;(8 bits, Fast 20,     no rom BIOS)&n;**&t;&t;53C875&t;&t;(Wide,   Fast 20,     on board rom BIOS)&n;**&t;&t;53C895&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C895A&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C896&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C897&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C1510D&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&n;**&t;Other features:&n;**&t;&t;Memory mapped IO (linux-1.3.X and above only)&n;**&t;&t;Module&n;**&t;&t;Shared IRQ (since linux-1.3.72)&n;*/
+multiline_comment|/*&n;**&t;Supported SCSI-II features:&n;**&t;    Synchronous negotiation&n;**&t;    Wide negotiation        (depends on the NCR Chip)&n;**&t;    Enable disconnection&n;**&t;    Tagged command queuing&n;**&t;    Parity checking&n;**&t;    Etc...&n;**&n;**&t;Supported NCR/SYMBIOS chips:&n;**&t;&t;53C720&t;&t;(Wide,   Fast SCSI-2, intfly problems)&n;**&t;&t;53C810&t;&t;(8 bits, Fast SCSI-2, no rom BIOS) &n;**&t;&t;53C815&t;&t;(8 bits, Fast SCSI-2, on board rom BIOS)&n;**&t;&t;53C820&t;&t;(Wide,   Fast SCSI-2, no rom BIOS)&n;**&t;&t;53C825&t;&t;(Wide,   Fast SCSI-2, on board rom BIOS)&n;**&t;&t;53C860&t;&t;(8 bits, Fast 20,     no rom BIOS)&n;**&t;&t;53C875&t;&t;(Wide,   Fast 20,     on board rom BIOS)&n;**&t;&t;53C895&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C895A&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C896&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C897&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C1510D&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&n;**&t;Other features:&n;**&t;&t;Memory mapped IO (linux-1.3.X and above only)&n;**&t;&t;Module&n;**&t;&t;Shared IRQ (since linux-1.3.72)&n;*/
 multiline_comment|/*&n;**&t;Name and version of the driver&n;*/
 DECL|macro|SCSI_NCR_DRIVER_NAME
 mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3b-20010512&quot;
@@ -57,36 +57,6 @@ DECL|macro|BITS_PER_LONG
 mdefine_line|#define&t;BITS_PER_LONG&t;64
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/*&n;**&t;Define the BSD style u_int32 and u_int64 type.&n;**&t;Are in fact u_int32_t and u_int64_t :-)&n;*/
-DECL|typedef|u_int32
-r_typedef
-id|u32
-id|u_int32
-suffix:semicolon
-DECL|typedef|u_int64
-r_typedef
-id|u64
-id|u_int64
-suffix:semicolon
-DECL|typedef|vm_offset_t
-r_typedef
-id|u_long
-id|vm_offset_t
-suffix:semicolon
-macro_line|#ifdef __hppa__
-multiline_comment|/*&n; * Yuck.  Current plan is to use ncr58c8xx.c for non-pci big endian&n; * chips, and sym53c8xx.c for pci little endian chips.  Define this&n; * here so it gets seen by sym53c8xx_defs.h, pulled in via ncr53c8xx.h.&n; */
-DECL|macro|SCSI_NCR_BIG_ENDIAN
-mdefine_line|#define SCSI_NCR_BIG_ENDIAN
-multiline_comment|/* INTFLY interrupts don&squot;t always seem to get serviced atm..... */
-DECL|macro|SIMULATED_INTFLY
-mdefine_line|#define SIMULATED_INTFLY
-macro_line|#endif
-macro_line|#if defined(CONFIG_SCSI_ZALON) || defined(CONFIG_SCSI_ZALON_MODULE)
-DECL|macro|ENABLE_SCSI_ZALON
-mdefine_line|#define ENABLE_SCSI_ZALON
-macro_line|#include &lt;asm/parisc-device.h&gt;
-macro_line|#include &quot;zalon.h&quot;
-macro_line|#endif
 macro_line|#include &quot;ncr53c8xx.h&quot;
 multiline_comment|/*&n;**&t;Donnot compile integrity checking code for Linux-2.3.0 &n;**&t;and above since SCSI data structures are not ready yet.&n;*/
 multiline_comment|/* #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
@@ -100,6 +70,53 @@ mdefine_line|#define NAME53C8XX&t;&t;&quot;ncr53c8xx&quot;
 DECL|macro|DRIVER_SMP_LOCK
 mdefine_line|#define DRIVER_SMP_LOCK&t;&t;ncr53c8xx_lock
 macro_line|#include &quot;sym53c8xx_comm.h&quot;
+r_int
+id|ncr53c8xx_slave_configure
+c_func
+(paren
+id|Scsi_Device
+op_star
+id|device
+)paren
+suffix:semicolon
+r_int
+id|ncr53c8xx_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_int
+id|ncr53c8xx_queue_command
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+comma
+r_void
+(paren
+op_star
+id|done
+)paren
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+)paren
+suffix:semicolon
+r_const
+r_char
+op_star
+id|ncr53c8xx_info
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+)paren
+suffix:semicolon
 multiline_comment|/*==========================================================&n;**&n;**&t;The CCB done queue uses an array of CCB virtual &n;**&t;addresses. Empty entries are flagged using the bogus &n;**&t;virtual address 0xffffffff.&n;**&n;**&t;Since PCI ensures that only aligned DWORDs are accessed &n;**&t;atomically, 64 bit little-endian architecture requires &n;**&t;to test the high order DWORD of the entry to determine &n;**&t;if it is empty or valid.&n;**&n;**&t;BTW, I will make things differently as soon as I will &n;**&t;have a better idea, but this is simple and should work.&n;**&n;**==========================================================&n;*/
 DECL|macro|SCSI_NCR_CCB_DONE_SUPPORT
 mdefine_line|#define SCSI_NCR_CCB_DONE_SUPPORT
@@ -227,24 +244,6 @@ suffix:semicolon
 multiline_comment|/*&n;**&t;Other definitions&n;*/
 DECL|macro|ScsiResult
 mdefine_line|#define ScsiResult(host_code, scsi_code) (((host_code) &lt;&lt; 16) + ((scsi_code) &amp; 0x7f))
-r_static
-id|irqreturn_t
-id|ncr53c8xx_intr
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 r_static
 r_void
 id|ncr53c8xx_timeout
@@ -1635,7 +1634,7 @@ DECL|macro|NCB_SCRIPTH_PHYS
 mdefine_line|#define NCB_SCRIPTH_PHYS(np,lbl) (np-&gt;p_scripth + offsetof (struct scripth,lbl))
 multiline_comment|/*==========================================================&n;**&n;**&n;**      Script for NCR-Processor.&n;**&n;**&t;Use ncr_script_fill() to create the variable parts.&n;**&t;Use ncr_script_copy_and_bind() to make a copy and&n;**&t;bind to physical addresses.&n;**&n;**&n;**==========================================================&n;**&n;**&t;We have to know the offsets of all labels before&n;**&t;we reach them (for forward jumps).&n;**&t;Therefore we declare a struct here.&n;**&t;If you make changes inside the script,&n;**&t;DONT FORGET TO CHANGE THE LENGTHS HERE!&n;**&n;**----------------------------------------------------------&n;*/
 multiline_comment|/*&n;**&t;For HP Zalon/53c720 systems, the Zalon interface&n;**&t;between CPU and 53c720 does prefetches, which causes&n;**&t;problems with self modifying scripts.  The problem&n;**&t;is overcome by calling a dummy subroutine after each&n;**&t;modification, to force a refetch of the script on&n;**&t;return from the subroutine.&n;*/
-macro_line|#ifdef ENABLE_SCSI_ZALON
+macro_line|#ifdef CONFIG_NCR53C8XX_PREFETCH
 DECL|macro|PREFETCH_FLUSH_CNT
 mdefine_line|#define PREFETCH_FLUSH_CNT&t;2
 DECL|macro|PREFETCH_FLUSH
@@ -2819,22 +2818,6 @@ id|np
 )paren
 suffix:semicolon
 macro_line|#endif
-r_static
-r_int
-id|ncr_attach
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
-comma
-r_int
-id|unit
-comma
-id|ncr_device
-op_star
-id|device
-)paren
-suffix:semicolon
 r_static
 r_void
 id|insert_into_waiting_list
@@ -7590,7 +7573,7 @@ DECL|macro|burst_length
 mdefine_line|#define burst_length(bc) (!(bc))? 0 : 1 &lt;&lt; (bc)
 multiline_comment|/*&n; *&t;Burst code from io register bits.  Burst enable is ctest0 for c720,&n; *&t;ctest4 for others.&n; */
 DECL|macro|burst_code
-mdefine_line|#define burst_code(dmode, ctest0, ctest4, ctest5) &bslash;&n;&t;(np-&gt;device_id == PSEUDO_ZALON_720_ID) ? &bslash;&n;&t;(ctest0) &amp; 0x80? 0 : (((dmode) &amp; 0xc0) &gt;&gt; 6) + 1 : &bslash;&n;&t;(ctest4) &amp; 0x80? 0 : (((dmode) &amp; 0xc0) &gt;&gt; 6) + ((ctest5) &amp; 0x04) + 1
+mdefine_line|#define burst_code(dmode, ctest0, ctest4, ctest5) &bslash;&n;&t;(np-&gt;device_id == PSEUDO_720_ID) ? &bslash;&n;&t;(ctest0) &amp; 0x80? 0 : (((dmode) &amp; 0xc0) &gt;&gt; 6) + 1 : &bslash;&n;&t;(ctest4) &amp; 0x80? 0 : (((dmode) &amp; 0xc0) &gt;&gt; 6) + ((ctest5) &amp; 0x04) + 1
 multiline_comment|/*&n; *&t;Set initial io register bits from burst code.&n; */
 DECL|function|ncr_init_burst
 r_static
@@ -7613,7 +7596,7 @@ op_assign
 (paren
 id|np-&gt;device_id
 op_eq
-id|PSEUDO_ZALON_720_ID
+id|PSEUDO_720_ID
 )paren
 ques
 c_cond
@@ -9180,8 +9163,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**&t;Host attach and initialisations.&n;**&n;**&t;Allocate host data and ncb structure.&n;**&t;Request IO region and remap MMIO region.&n;**&t;Do chip initialization.&n;**&t;If all is OK, install interrupt handling and&n;**&t;start the timer daemon.&n;*/
-r_static
-r_int
+r_struct
+id|Scsi_Host
+op_star
 id|__init
 DECL|function|ncr_attach
 id|ncr_attach
@@ -9229,7 +9213,59 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifndef ENABLE_SCSI_ZALON
+macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
+id|tpnt-&gt;proc_info
+op_assign
+id|ncr53c8xx_proc_info
+comma
+macro_line|#endif
+id|tpnt-&gt;info
+op_assign
+id|ncr53c8xx_info
+suffix:semicolon
+id|tpnt-&gt;queuecommand
+op_assign
+id|ncr53c8xx_queue_command
+suffix:semicolon
+id|tpnt-&gt;slave_configure
+op_assign
+id|ncr53c8xx_slave_configure
+suffix:semicolon
+id|tpnt-&gt;eh_bus_reset_handler
+op_assign
+id|ncr53c8xx_bus_reset
+suffix:semicolon
+id|tpnt-&gt;can_queue
+op_assign
+id|SCSI_NCR_CAN_QUEUE
+suffix:semicolon
+id|tpnt-&gt;this_id
+op_assign
+l_int|7
+suffix:semicolon
+id|tpnt-&gt;sg_tablesize
+op_assign
+id|SCSI_NCR_SG_TABLESIZE
+suffix:semicolon
+id|tpnt-&gt;cmd_per_lun
+op_assign
+id|SCSI_NCR_CMD_PER_LUN
+suffix:semicolon
+id|tpnt-&gt;use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|device-&gt;differential
+)paren
+(brace
+id|driver_setup.diff_support
+op_assign
+id|device-&gt;differential
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -9275,7 +9311,6 @@ id|device-&gt;slot.irq
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n;&t;**&t;Allocate host_data structure&n;&t;*/
 r_if
 c_cond
@@ -9284,7 +9319,7 @@ op_logical_neg
 (paren
 id|instance
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 id|tpnt
@@ -9550,6 +9585,18 @@ suffix:colon
 l_int|0
 suffix:semicolon
 macro_line|#ifndef SCSI_NCR_IOMAPPED
+r_if
+c_cond
+(paren
+id|device-&gt;slot.base_v
+)paren
+(brace
+id|np-&gt;vaddr
+op_assign
+id|device-&gt;slot.base_v
+suffix:semicolon
+)brace
+r_else
 id|np-&gt;vaddr
 op_assign
 id|remap_pci_mem
@@ -9623,24 +9670,13 @@ op_star
 )paren
 id|np-&gt;vaddr
 suffix:semicolon
-macro_line|#endif /* !defined SCSI_NCR_IOMAPPED */
+macro_line|#else
 multiline_comment|/*&n;&t;**&t;Try to map the controller chip into iospace.&n;&t;*/
-macro_line|#ifndef ENABLE_SCSI_ZALON
-id|request_region
-c_func
-(paren
-id|device-&gt;slot.io_port
-comma
-l_int|128
-comma
-l_string|&quot;ncr53c8xx&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|np-&gt;base_io
 op_assign
 id|device-&gt;slot.io_port
 suffix:semicolon
+macro_line|#endif /* !defined SCSI_NCR_IOMAPPED */
 macro_line|#ifdef SCSI_NCR_NVRAM_SUPPORT
 r_if
 c_cond
@@ -10115,94 +10151,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Install the interrupt handler.&n;&t;*/
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|device-&gt;slot.irq
-comma
-id|ncr53c8xx_intr
-comma
-(paren
-(paren
-id|driver_setup.irqm
-op_amp
-l_int|0x10
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|SA_SHIRQ
-)paren
-op_or
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,0)
-(paren
-(paren
-id|driver_setup.irqm
-op_amp
-l_int|0x20
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|SA_INTERRUPT
-)paren
-comma
-macro_line|#else
-l_int|0
-comma
-macro_line|#endif
-l_string|&quot;ncr53c8xx&quot;
-comma
-id|np
-)paren
-)paren
-(brace
-macro_line|#ifdef __sparc__
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: request irq %s failure&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|__irq_itoa
-c_func
-(paren
-id|device-&gt;slot.irq
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: request irq %d failure&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|device-&gt;slot.irq
-)paren
-suffix:semicolon
-macro_line|#endif
-r_goto
-id|attach_error
-suffix:semicolon
-)brace
 id|np-&gt;irq
 op_assign
 id|device-&gt;slot.irq
@@ -10351,7 +10299,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|instance
 suffix:semicolon
 id|attach_error
 suffix:colon
@@ -10362,8 +10310,7 @@ op_logical_neg
 id|instance
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|printk
 c_func
@@ -10387,141 +10334,6 @@ id|np
 r_goto
 id|unregister
 suffix:semicolon
-macro_line|#ifndef SCSI_NCR_IOMAPPED
-r_if
-c_cond
-(paren
-id|np-&gt;vaddr
-)paren
-(brace
-macro_line|#ifdef DEBUG_NCR53C8XX
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: releasing memory mapped IO region %lx[%d]&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-(paren
-id|u_long
-)paren
-id|np-&gt;vaddr
-comma
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#endif
-id|unmap_pci_mem
-c_func
-(paren
-(paren
-id|vm_offset_t
-)paren
-id|np-&gt;vaddr
-comma
-(paren
-id|u_long
-)paren
-l_int|128
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* !SCSI_NCR_IOMAPPED */
-r_if
-c_cond
-(paren
-id|np-&gt;base_io
-)paren
-(brace
-macro_line|#ifdef DEBUG_NCR53C8XX
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: releasing IO region %x[%d]&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|np-&gt;base_io
-comma
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef ENABLE_SCSI_ZALON
-id|release_region
-c_func
-(paren
-id|np-&gt;base_io
-comma
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-r_if
-c_cond
-(paren
-id|np-&gt;irq
-)paren
-(brace
-macro_line|#ifdef DEBUG_NCR53C8XX
-macro_line|#ifdef __sparc__
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: freeing irq %s&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|__irq_itoa
-c_func
-(paren
-id|np-&gt;irq
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: freeing irq %d&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|np-&gt;irq
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-id|free_irq
-c_func
-(paren
-id|np-&gt;irq
-comma
-id|np
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -10595,15 +10407,14 @@ l_string|&quot;NCB&quot;
 suffix:semicolon
 id|unregister
 suffix:colon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|instance
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Done SCSI commands list management.&n;**&n;**&t;We donnot enter the scsi_done() callback immediately &n;**&t;after a command has been seen as completed but we &n;**&t;insert it into a list which is flushed outside any kind &n;**&t;of driver critical section.&n;**&t;This allows to do minimal stuff under interrupt and &n;**&t;inside critical sections and to also avoid locking up &n;**&t;on recursive calls to driver entry points under SMP.&n;**&t;In fact, the only kernel point which is entered by the &n;**&t;driver with a driver lock set is kmalloc(GFP_ATOMIC) &n;**&t;that shall not reenter the driver under any circumstances,&n;**&t;AFAIK.&n;**&n;**==========================================================&n;*/
@@ -13199,7 +13010,7 @@ c_cond
 (paren
 id|np-&gt;device_id
 op_ne
-id|PSEUDO_ZALON_720_ID
+id|PSEUDO_720_ID
 )paren
 id|OUTB
 (paren
@@ -13957,52 +13768,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;**&t;Free irq&n;*/
-macro_line|#ifdef DEBUG_NCR53C8XX
-macro_line|#ifdef __sparc__
-id|printk
-c_func
-(paren
-l_string|&quot;%s: freeing irq %s&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|__irq_itoa
-c_func
-(paren
-id|np-&gt;irq
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;%s: freeing irq %d&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|np-&gt;irq
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-id|free_irq
-c_func
-(paren
-id|np-&gt;irq
-comma
-id|np
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Reset NCR chip&n;&t;**&t;Restore bios setting for automatic clock detection.&n;&t;*/
 id|printk
 c_func
@@ -14096,72 +13861,6 @@ comma
 id|np-&gt;sv_scntl3
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Release Memory mapped IO region and IO mapped region&n;&t;*/
-macro_line|#ifndef SCSI_NCR_IOMAPPED
-macro_line|#ifdef DEBUG_NCR53C8XX
-id|printk
-c_func
-(paren
-l_string|&quot;%s: releasing memory mapped IO region %lx[%d]&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-(paren
-id|u_long
-)paren
-id|np-&gt;vaddr
-comma
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#endif
-id|unmap_pci_mem
-c_func
-(paren
-(paren
-id|vm_offset_t
-)paren
-id|np-&gt;vaddr
-comma
-(paren
-id|u_long
-)paren
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#endif /* !SCSI_NCR_IOMAPPED */
-macro_line|#ifdef DEBUG_NCR53C8XX
-id|printk
-c_func
-(paren
-l_string|&quot;%s: releasing IO region %x[%d]&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|np-&gt;base_io
-comma
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef ENABLE_SCSI_ZALON
-id|release_region
-c_func
-(paren
-id|np-&gt;base_io
-comma
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;**&t;Free allocated ccb(s)&n;&t;*/
 r_while
 c_loop
@@ -26375,6 +26074,7 @@ c_cond
 (paren
 id|bootverbose
 )paren
+(brace
 id|printk
 (paren
 l_string|&quot;%s: NCR clock is %uKHz, %uKHz&bslash;n&quot;
@@ -26390,6 +26090,7 @@ comma
 id|f2
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -26860,7 +26561,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;**   Linux entry point of the interrupt handler.&n;**   Since linux versions &gt; 1.3.70, we trust the kernel for &n;**   passing the internal host descriptor as &squot;dev_id&squot;.&n;**   Otherwise, we scan the host list and call the interrupt &n;**   routine for each host that uses this IRQ.&n;*/
 DECL|function|ncr53c8xx_intr
-r_static
 id|irqreturn_t
 id|ncr53c8xx_intr
 c_func
@@ -26882,13 +26582,34 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+op_assign
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+id|dev_id
+suffix:semicolon
+r_struct
+id|host_data
+op_star
+id|host_data
+op_assign
+(paren
+r_struct
+id|host_data
+op_star
+)paren
+id|shost-&gt;hostdata
+suffix:semicolon
 id|ncb_p
 id|np
 op_assign
-(paren
-id|ncb_p
-)paren
-id|dev_id
+id|host_data-&gt;ncb
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -29155,7 +28876,7 @@ id|ncr_chip_ids
 id|__initdata
 op_assign
 (brace
-id|PSEUDO_ZALON_720_ID
+id|PSEUDO_720_ID
 comma
 id|PCI_DEVICE_ID_NCR_53C810
 comma
@@ -29182,318 +28903,6 @@ comma
 id|PCI_DEVICE_ID_NCR_53C1510D
 )brace
 suffix:semicolon
-macro_line|#ifdef ENABLE_SCSI_ZALON
-multiline_comment|/* Attach a 53c720 interfaced via Zalon chip on HP boxes.  */
-DECL|function|zalon_attach
-r_int
-id|zalon_attach
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
-comma
-r_int
-r_int
-id|io_port
-comma
-r_struct
-id|parisc_device
-op_star
-id|dev
-comma
-r_int
-id|irq
-comma
-r_int
-id|unit
-)paren
-(brace
-id|u_short
-id|device_id
-suffix:semicolon
-id|u_char
-id|revision
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|ncr_chip
-op_star
-id|chip
-suffix:semicolon
-id|ncr_device
-id|device
-suffix:semicolon
-id|tpnt-&gt;proc_name
-op_assign
-id|NAME53C8XX
-suffix:semicolon
-id|tpnt-&gt;proc_info
-op_assign
-id|ncr53c8xx_proc_info
-suffix:semicolon
-macro_line|#if&t;defined(SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT) &amp;&amp; defined(MODULE)
-r_if
-c_cond
-(paren
-id|ncr53c8xx
-)paren
-id|ncr53c8xx_setup
-c_func
-(paren
-id|ncr53c8xx
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef SCSI_NCR_DEBUG_INFO_SUPPORT
-id|ncr_debug
-op_assign
-id|driver_setup.debug
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|initverbose
-op_ge
-l_int|2
-)paren
-id|ncr_print_driver_setup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|device
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|ncr_device
-)paren
-)paren
-suffix:semicolon
-id|chip
-op_assign
-l_int|0
-suffix:semicolon
-id|device_id
-op_assign
-id|PSEUDO_ZALON_720_ID
-suffix:semicolon
-id|revision
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-r_sizeof
-(paren
-id|ncr_chip_table
-)paren
-op_div
-r_sizeof
-(paren
-id|ncr_chip_table
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|device_id
-op_ne
-id|ncr_chip_table
-(braket
-id|i
-)braket
-dot
-id|device_id
-)paren
-r_continue
-suffix:semicolon
-id|chip
-op_assign
-op_amp
-id|device.chip
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|chip
-comma
-op_amp
-id|ncr_chip_table
-(braket
-id|i
-)braket
-comma
-r_sizeof
-(paren
-op_star
-id|chip
-)paren
-)paren
-suffix:semicolon
-id|chip-&gt;revision_id
-op_assign
-id|revision
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|chip
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|NAME53C8XX
-l_string|&quot;: not initializing, device not supported&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Fix some features according to driver setup. */
-id|driver_setup.diff_support
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* The following three are needed before any other access. */
-id|writeb
-c_func
-(paren
-l_int|0x20
-comma
-id|io_port
-op_plus
-l_int|0x38
-)paren
-suffix:semicolon
-multiline_comment|/* DCNTL_REG,  EA  */
-id|writeb
-c_func
-(paren
-l_int|0x04
-comma
-id|io_port
-op_plus
-l_int|0x1b
-)paren
-suffix:semicolon
-multiline_comment|/* CTEST0_REG, EHP */
-id|writeb
-c_func
-(paren
-l_int|0x80
-comma
-id|io_port
-op_plus
-l_int|0x22
-)paren
-suffix:semicolon
-multiline_comment|/* CTEST4_REG, MUX */
-multiline_comment|/* Initialise ncr_device structure with items required by ncr_attach. */
-id|device.host_id
-op_assign
-id|driver_setup.host_id
-suffix:semicolon
-id|device.dev
-op_assign
-op_amp
-id|dev-&gt;dev
-suffix:semicolon
-id|device.slot.bus
-op_assign
-l_int|0
-suffix:semicolon
-id|device.slot.device_fn
-op_assign
-l_int|0
-suffix:semicolon
-id|device.slot.base
-op_assign
-(paren
-id|u_long
-)paren
-id|io_port
-suffix:semicolon
-id|device.slot.base_c
-op_assign
-(paren
-id|u_long
-)paren
-id|io_port
-suffix:semicolon
-id|device.slot.base_2
-op_assign
-l_int|0
-suffix:semicolon
-id|device.slot.base_2_c
-op_assign
-l_int|0
-suffix:semicolon
-id|device.slot.io_port
-op_assign
-id|io_port
-suffix:semicolon
-id|device.slot.irq
-op_assign
-id|irq
-suffix:semicolon
-id|device.attach_done
-op_assign
-l_int|0
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|NAME53C8XX
-l_string|&quot;: 53c%s detected&bslash;n&quot;
-comma
-id|device.chip.name
-)paren
-suffix:semicolon
-r_return
-id|ncr_attach
-c_func
-(paren
-id|tpnt
-comma
-id|unit
-comma
-op_amp
-id|device
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Chip detection entry point.&n;**&n;**==========================================================&n;*/
 DECL|function|ncr53c8xx_detect
 r_int
@@ -29559,105 +28968,4 @@ r_return
 id|SCSI_NCR_DRIVER_NAME
 suffix:semicolon
 )brace
-multiline_comment|/*&n;**&t;Module stuff&n;*/
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-DECL|variable|driver_template
-r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-(brace
-macro_line|#ifdef ENABLE_SCSI_ZALON
-dot
-id|proc_name
-op_assign
-l_string|&quot;zalon720&quot;
-comma
-dot
-id|detect
-op_assign
-id|zalon7xx_detect
-comma
-dot
-id|release
-op_assign
-id|zalon7xx_release
-comma
-macro_line|#else
-dot
-id|proc_name
-op_assign
-id|NAME53C8XX
-comma
-dot
-id|detect
-op_assign
-id|ncr53c8xx_detect
-comma
-dot
-id|release
-op_assign
-id|ncr53c8xx_release
-comma
-macro_line|#endif
-macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
-dot
-id|proc_info
-op_assign
-id|ncr53c8xx_proc_info
-comma
-macro_line|#endif
-dot
-id|info
-op_assign
-id|ncr53c8xx_info
-comma
-dot
-id|queuecommand
-op_assign
-id|ncr53c8xx_queue_command
-comma
-dot
-id|slave_configure
-op_assign
-id|ncr53c8xx_slave_configure
-comma
-dot
-id|eh_bus_reset_handler
-op_assign
-id|ncr53c8xx_bus_reset
-comma
-dot
-id|can_queue
-op_assign
-id|SCSI_NCR_CAN_QUEUE
-comma
-dot
-id|this_id
-op_assign
-l_int|7
-comma
-dot
-id|sg_tablesize
-op_assign
-id|SCSI_NCR_SG_TABLESIZE
-comma
-dot
-id|cmd_per_lun
-op_assign
-id|SCSI_NCR_CMD_PER_LUN
-comma
-dot
-id|use_clustering
-op_assign
-id|DISABLE_CLUSTERING
-comma
-)brace
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
 eof
