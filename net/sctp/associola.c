@@ -2383,7 +2383,8 @@ id|inqueue
 suffix:semicolon
 r_int
 id|state
-comma
+suffix:semicolon
+id|sctp_subtype_t
 id|subtype
 suffix:semicolon
 r_int
@@ -2433,7 +2434,11 @@ id|asoc-&gt;state
 suffix:semicolon
 id|subtype
 op_assign
+id|SCTP_ST_CHUNK
+c_func
+(paren
 id|chunk-&gt;chunk_hdr-&gt;type
+)paren
 suffix:semicolon
 multiline_comment|/* Remember where the last DATA chunk came from so we&n;&t;&t; * know where to send the SACK.&n;&t;&t; */
 r_if
@@ -2473,11 +2478,7 @@ c_func
 (paren
 id|SCTP_EVENT_T_CHUNK
 comma
-id|SCTP_ST_CHUNK
-c_func
-(paren
 id|subtype
-)paren
 comma
 id|state
 comma

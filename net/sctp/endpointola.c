@@ -1076,9 +1076,13 @@ id|inqueue
 )paren
 )paren
 (brace
-id|subtype.chunk
+id|subtype
 op_assign
+id|SCTP_ST_CHUNK
+c_func
+(paren
 id|chunk-&gt;chunk_hdr-&gt;type
+)paren
 suffix:semicolon
 multiline_comment|/* We might have grown an association since last we&n;&t;&t; * looked, so try again.&n;&t;&t; *&n;&t;&t; * This happens when we&squot;ve just processed our&n;&t;&t; * COOKIE-ECHO chunk.&n;&t;&t; */
 r_if

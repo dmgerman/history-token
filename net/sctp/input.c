@@ -375,6 +375,21 @@ id|sctphdr
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure we at least have chunk headers worth of data left. */
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+r_sizeof
+(paren
+r_struct
+id|sctp_chunkhdr
+)paren
+)paren
+r_goto
+id|discard_it
+suffix:semicolon
 id|family
 op_assign
 id|ipver2af
@@ -1740,9 +1755,6 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
-multiline_comment|/* Scan through all the chunks in the packet.  */
-r_do
-(brace
 id|ch_end
 op_assign
 (paren
@@ -1763,6 +1775,23 @@ id|ch-&gt;length
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Scan through all the chunks in the packet.  */
+r_while
+c_loop
+(paren
+id|ch_end
+OG
+(paren
+id|__u8
+op_star
+)paren
+id|ch
+op_logical_and
+id|ch_end
+OL
+id|skb-&gt;tail
+)paren
+(brace
 multiline_comment|/* RFC 8.4, 2) If the OOTB packet contains an ABORT chunk, the&n;&t;&t; * receiver MUST silently discard the OOTB packet and take no&n;&t;&t; * further action.&n;&t;&t; */
 r_if
 c_cond
@@ -1832,15 +1861,27 @@ op_star
 )paren
 id|ch_end
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
 id|ch_end
-OL
-id|skb-&gt;tail
+op_assign
+(paren
+(paren
+id|__u8
+op_star
+)paren
+id|ch
+)paren
+op_plus
+id|WORD_ROUND
+c_func
+(paren
+id|ntohs
+c_func
+(paren
+id|ch-&gt;length
+)paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2870,6 +2911,25 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* The code below will attempt to walk the chunk and extract&n;&t; * parameter information.  Before we do that, we need to verify&n;&t; * that the chunk length doesn&squot;t cause overflow.  Otherwise, we&squot;ll&n;&t; * walk off the end.&n;&t; */
+r_if
+c_cond
+(paren
+id|WORD_ROUND
+c_func
+(paren
+id|ntohs
+c_func
+(paren
+id|ch-&gt;length
+)paren
+)paren
+OG
+id|skb-&gt;len
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n;&t; * This code will NOT touch anything inside the chunk--it is&n;&t; * strictly READ-ONLY.&n;&t; *&n;&t; * RFC 2960 3  SCTP packet Format&n;&t; *&n;&t; * Multiple chunks can be bundled into one SCTP packet up to&n;&t; * the MTU size, except for the INIT, INIT ACK, and SHUTDOWN&n;&t; * COMPLETE chunks.  These chunks MUST NOT be bundled with any&n;&t; * other chunk in a packet.  See Section 6.10 for more details&n;&t; * on chunk bundling.&n;&t; */
 multiline_comment|/* Find the start of the TLVs and the end of the chunk.  This is&n;&t; * the region we search for address parameters.&n;&t; */
 id|init

@@ -1187,11 +1187,11 @@ multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust t
 DECL|macro|sctp_walk_params
 mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params((pos), (chunk), WORD_ROUND(ntohs((chunk)-&gt;chunk_hdr.length)), member)
 DECL|macro|_sctp_walk_params
-mdefine_line|#define _sctp_walk_params(pos, chunk, end, member)&bslash;&n;for (pos.v = chunk-&gt;member;&bslash;&n;     pos.v &lt;= (void *)chunk + end - sizeof(sctp_paramhdr_t) &amp;&amp;&bslash;&n;     pos.v &lt;= (void *)chunk + end - WORD_ROUND(ntohs(pos.p-&gt;length)); &bslash;&n;     pos.v += WORD_ROUND(ntohs(pos.p-&gt;length)))
+mdefine_line|#define _sctp_walk_params(pos, chunk, end, member)&bslash;&n;for (pos.v = chunk-&gt;member;&bslash;&n;     pos.v &lt;= (void *)chunk + end - sizeof(sctp_paramhdr_t) &amp;&amp;&bslash;&n;     pos.v &lt;= (void *)chunk + end - WORD_ROUND(ntohs(pos.p-&gt;length)) &amp;&amp;&bslash;&n;     ntohs(pos.p-&gt;length) &gt;= sizeof(sctp_paramhdr_t);&bslash;&n;     pos.v += WORD_ROUND(ntohs(pos.p-&gt;length)))
 DECL|macro|sctp_walk_errors
 mdefine_line|#define sctp_walk_errors(err, chunk_hdr)&bslash;&n;_sctp_walk_errors((err), (chunk_hdr), ntohs((chunk_hdr)-&gt;length))
 DECL|macro|_sctp_walk_errors
-mdefine_line|#define _sctp_walk_errors(err, chunk_hdr, end)&bslash;&n;for (err = (sctp_errhdr_t *)((void *)chunk_hdr + &bslash;&n;&t;    sizeof(sctp_chunkhdr_t));&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - sizeof(sctp_errhdr_t) &amp;&amp;&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - &bslash;&n;&t;&t;    WORD_ROUND(ntohs(err-&gt;length));&bslash;&n;     err = (sctp_errhdr_t *)((void *)err + &bslash;&n;&t;    WORD_ROUND(ntohs(err-&gt;length))))
+mdefine_line|#define _sctp_walk_errors(err, chunk_hdr, end)&bslash;&n;for (err = (sctp_errhdr_t *)((void *)chunk_hdr + &bslash;&n;&t;    sizeof(sctp_chunkhdr_t));&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - sizeof(sctp_errhdr_t) &amp;&amp;&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - WORD_ROUND(ntohs(err-&gt;length)) &amp;&amp;&bslash;&n;     ntohs(err-&gt;length) &gt;= sizeof(sctp_errhdr_t); &bslash;&n;     err = (sctp_errhdr_t *)((void *)err + WORD_ROUND(ntohs(err-&gt;length))))
 DECL|macro|sctp_walk_fwdtsn
 mdefine_line|#define sctp_walk_fwdtsn(pos, chunk)&bslash;&n;_sctp_walk_fwdtsn((pos), (chunk), ntohs((chunk)-&gt;chunk_hdr-&gt;length) - sizeof(struct sctp_fwdtsn_chunk))
 DECL|macro|_sctp_walk_fwdtsn
