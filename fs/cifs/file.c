@@ -2587,6 +2587,19 @@ id|cifsFileInfo
 op_star
 id|open_file
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|file-&gt;f_dentry
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|EBADF
+suffix:semicolon
+)brace
 id|xid
 op_assign
 id|GetXid
@@ -3177,6 +3190,15 @@ comma
 id|flist
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|open_file-&gt;closePend
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* We check if file is open for writing first */
 r_if
 c_cond
@@ -3266,6 +3288,20 @@ OL
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EBADF
+)paren
+(brace
+multiline_comment|/* have seen a case in which&n;&t;&t;&t;&t;kernel seemed to have closed/freed a file&n;&t;&t;&t;&t;even with writes active so we might as well&n;&t;&t;&t;&t;see if there are other file structs to try&n;&t;&t;&t;&t;for the same inode before giving up */
+r_continue
+suffix:semicolon
+)brace
+r_else
 id|rc
 op_assign
 id|bytes_written
