@@ -235,6 +235,11 @@ DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
+multiline_comment|/* fs/proc/kcore.c */
+DECL|macro|kc_vaddr_to_offset
+mdefine_line|#define&t;kc_vaddr_to_offset(v) ((v) - 0xA000000000000000)
+DECL|macro|kc_offset_to_vaddr
+mdefine_line|#define&t;kc_offset_to_vaddr(o) ((o) + 0xA000000000000000)
 multiline_comment|/*&n; * Conversion functions: convert page frame number (pfn) and a protection value to a page&n; * table entry (pte).&n; */
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = ((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot); __pte; })

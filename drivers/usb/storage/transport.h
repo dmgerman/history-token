@@ -289,6 +289,9 @@ id|data
 comma
 id|u16
 id|size
+comma
+r_int
+id|timeout
 )paren
 suffix:semicolon
 r_extern
@@ -299,6 +302,7 @@ c_func
 r_struct
 id|us_data
 op_star
+id|us
 comma
 r_int
 r_int

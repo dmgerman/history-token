@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * Default generic APIC driver. This handles upto 8 CPUs.&n; */
 DECL|macro|APIC_DEFINITION
 mdefine_line|#define APIC_DEFINITION 1
+macro_line|#include &lt;asm/mach-default/mach_apicdef.h&gt;
 macro_line|#include &lt;asm/genapic.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
@@ -9,7 +10,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-default/mach_apic.h&gt;
-macro_line|#include &lt;asm/mach-default/mach_apicdef.h&gt;
 macro_line|#include &lt;asm/mach-default/mach_ipi.h&gt;
 macro_line|#include &lt;asm/mach-default/mach_mpparse.h&gt;
 multiline_comment|/* should be called last. */

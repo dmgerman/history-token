@@ -32,10 +32,10 @@ l_string|&quot;Attempting to init eUSCSI bridge...&bslash;n&quot;
 suffix:semicolon
 id|result
 op_assign
-id|usb_control_msg
+id|usb_stor_control_msg
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|us-&gt;send_ctrl_pipe
 comma

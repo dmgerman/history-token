@@ -2674,6 +2674,10 @@ id|vma-&gt;vm_private_data
 op_assign
 l_int|NULL
 suffix:semicolon
+id|vma-&gt;vm_next
+op_assign
+l_int|NULL
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

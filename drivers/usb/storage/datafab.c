@@ -3382,9 +3382,7 @@ id|UNIT_ATTENTION
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 )brace
 r_return

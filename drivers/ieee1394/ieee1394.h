@@ -95,13 +95,6 @@ id|hpsb_speedto_str
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_const
-id|u8
-id|hpsb_speedto_maxrec
-(braket
-)braket
-suffix:semicolon
 DECL|macro|SELFID_PWRCL_NO_POWER
 mdefine_line|#define SELFID_PWRCL_NO_POWER    0x0
 DECL|macro|SELFID_PWRCL_PROVIDE_15W
