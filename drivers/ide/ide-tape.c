@@ -24603,20 +24603,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|idetape_revalidate
-r_static
-r_void
-id|idetape_revalidate
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|_dummy
-)paren
-(brace
-multiline_comment|/* We don&squot;t have to handle any partition information here, which is the&n;&t; * default behaviour of this method.&n;&t; */
-)brace
 r_static
 r_void
 id|idetape_attach
@@ -24678,16 +24664,6 @@ dot
 id|release
 op_assign
 id|idetape_blkdev_release
-comma
-dot
-id|check_media_change
-op_assign
-l_int|NULL
-comma
-dot
-id|revalidate
-op_assign
-id|idetape_revalidate
 comma
 )brace
 suffix:semicolon
