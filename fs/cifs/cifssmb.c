@@ -13,6 +13,46 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+macro_line|#ifdef CONFIG_CIFS_POSIX
+r_static
+r_struct
+(brace
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|variable|protocols
+)brace
+id|protocols
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|CIFS_PROT
+comma
+l_string|&quot;&bslash;2NT LM 0.12&quot;
+)brace
+comma
+(brace
+id|CIFS_PROT
+comma
+l_string|&quot;&bslash;2POSIX 2&quot;
+)brace
+comma
+(brace
+id|BAD_PROT
+comma
+l_string|&quot;&bslash;2&quot;
+)brace
+)brace
+suffix:semicolon
+macro_line|#else
 r_static
 r_struct
 (brace
@@ -45,6 +85,7 @@ l_string|&quot;&bslash;2&quot;
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Mark as invalid, all open files on tree connections since they&n;   were closed when session to server was lost */
 DECL|function|mark_open_files_invalid
 r_static
@@ -454,6 +495,7 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* BB should we add a retry in here if not a writepage? */
 r_return
 op_minus
 id|ENOMEM
@@ -488,6 +530,24 @@ id|wct
 multiline_comment|/*wct */
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_if
+c_cond
+(paren
+id|tcon
+op_ne
+l_int|NULL
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_smbs_sent
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 id|rc
 suffix:semicolon
@@ -1769,6 +1829,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_deletes
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2026,6 +2098,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_rmdirs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2284,6 +2368,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_mkdirs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2781,6 +2877,15 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_opens
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -3426,7 +3531,7 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
@@ -3815,7 +3920,7 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
@@ -11805,6 +11910,30 @@ op_plus
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
+id|response_data-&gt;Attributes
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|response_data-&gt;Attributes
+)paren
+suffix:semicolon
+id|response_data-&gt;MaxPathNameComponentLength
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|response_data-&gt;MaxPathNameComponentLength
+)paren
+suffix:semicolon
+id|response_data-&gt;FileSystemNameLen
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|response_data-&gt;FileSystemNameLen
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -12171,6 +12300,22 @@ op_plus
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
+id|response_data-&gt;DeviceType
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|response_data-&gt;DeviceType
+)paren
+suffix:semicolon
+id|response_data-&gt;DeviceCharacteristics
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|response_data-&gt;DeviceCharacteristics
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -12534,6 +12679,30 @@ id|pSMBr-&gt;hdr.Protocol
 )paren
 op_plus
 id|pSMBr-&gt;DataOffset
+)paren
+suffix:semicolon
+id|response_data-&gt;MajorVersionNumber
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|response_data-&gt;MajorVersionNumber
+)paren
+suffix:semicolon
+id|response_data-&gt;MinorVersionNumber
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|response_data-&gt;MinorVersionNumber
+)paren
+suffix:semicolon
+id|response_data-&gt;Capability
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|response_data-&gt;Capability
 )paren
 suffix:semicolon
 id|memcpy
@@ -13372,7 +13541,11 @@ suffix:semicolon
 multiline_comment|/* now safe to change to le */
 id|parm_data-&gt;FileSize
 op_assign
+id|cpu_to_le64
+c_func
+(paren
 id|size
+)paren
 suffix:semicolon
 id|pSMB-&gt;Fid
 op_assign
