@@ -160,7 +160,7 @@ id|nonblock_open
 comma
 r_bool
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

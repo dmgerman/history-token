@@ -55,7 +55,7 @@ id|seq_oss_debug
 comma
 r_int
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -162,7 +162,7 @@ id|seq_default_timer_class
 comma
 r_int
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -180,7 +180,7 @@ id|seq_default_timer_sclass
 comma
 r_int
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -198,7 +198,7 @@ id|seq_default_timer_card
 comma
 r_int
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -216,7 +216,7 @@ id|seq_default_timer_device
 comma
 r_int
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -234,7 +234,7 @@ id|seq_default_timer_subdevice
 comma
 r_int
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -252,7 +252,7 @@ id|seq_default_timer_resolution
 comma
 r_int
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
