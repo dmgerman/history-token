@@ -304,38 +304,35 @@ id|screen_info
 id|screen_info
 op_assign
 (brace
+dot
+id|orig_x
+op_assign
 l_int|0
 comma
+dot
+id|orig_y
+op_assign
 l_int|25
 comma
-multiline_comment|/* orig-x, orig-y */
-l_int|0
-comma
-multiline_comment|/* unused */
-l_int|0
-comma
-multiline_comment|/* orig-video-page */
-l_int|0
-comma
-multiline_comment|/* orig-video-mode */
+dot
+id|orig_video_cols
+op_assign
 l_int|80
 comma
-multiline_comment|/* orig-video-cols */
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* ega_ax, ega_bx, ega_cx */
+dot
+id|orig_video_lines
+op_assign
 l_int|25
 comma
-multiline_comment|/* orig-video-lines */
+dot
+id|orig_video_isVGA
+op_assign
 l_int|1
 comma
-multiline_comment|/* orig-video-isVGA */
+dot
+id|orig_video_points
+op_assign
 l_int|16
-multiline_comment|/* orig-video-points */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * These are used in binfmt_elf.c to put aux entries on the stack&n; * for each elf executable being started.&n; */
