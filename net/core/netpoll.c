@@ -1694,7 +1694,13 @@ op_assign
 id|ntohs
 c_func
 (paren
-id|skb-&gt;mac.ethernet-&gt;h_proto
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|h_proto
 )paren
 suffix:semicolon
 r_if

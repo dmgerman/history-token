@@ -843,8 +843,12 @@ c_func
 (paren
 id|point
 comma
+id|eth_hdr
+c_func
+(paren
 op_star
-id|pskb.mac.ethernet
+id|pskb
+)paren
 comma
 id|in
 comma
