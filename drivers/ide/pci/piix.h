@@ -1659,7 +1659,7 @@ comma
 )brace
 comma
 (brace
-multiline_comment|/* 17 */
+multiline_comment|/* 18 */
 dot
 id|vendor
 op_assign
@@ -1668,12 +1668,12 @@ comma
 dot
 id|device
 op_assign
-id|PCI_DEVICE_ID_INTEL_82801DB_10
+id|PCI_DEVICE_ID_INTEL_82801EB_1
 comma
 dot
 id|name
 op_assign
-l_string|&quot;ICH4&quot;
+l_string|&quot;ICH5-SATA&quot;
 comma
 dot
 id|init_setup

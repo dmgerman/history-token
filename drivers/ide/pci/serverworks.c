@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/pci/serverworks.c&t;&t;Version 0.7&t;10 Sept 2002&n; *&n; * Copyright (C) 1998-2000 Michel Aubry&n; * Copyright (C) 1998-2000 Andrzej Krzysztofowicz&n; * Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions copyright (c) 2001 Sun Microsystems&n; *&n; *&n; * RCC/ServerWorks IDE driver for Linux&n; *&n; *   OSB4: `Open South Bridge&squot; IDE Interface (fn 1)&n; *         supports UDMA mode 2 (33 MB/s)&n; *&n; *   CSB5: `Champion South Bridge&squot; IDE Interface (fn 1)&n; *         all revisions support UDMA mode 4 (66 MB/s)&n; *         revision A2.0 and up support UDMA mode 5 (100 MB/s)&n; *&n; *         *** The CSB5 does not provide ANY register ***&n; *         *** to detect 80-conductor cable presence. ***&n; *&n; *   CSB6: `Champion South Bridge&squot; IDE Interface (optional: third channel)&n; *&n; * Documentation:&n; *&t;Available under NDA only. Errata info very hard to get.&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/serverworks.c&t;&t;Version 0.8&t; 25 Ebr 2003&n; *&n; * Copyright (C) 1998-2000 Michel Aubry&n; * Copyright (C) 1998-2000 Andrzej Krzysztofowicz&n; * Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions copyright (c) 2001 Sun Microsystems&n; *&n; *&n; * RCC/ServerWorks IDE driver for Linux&n; *&n; *   OSB4: `Open South Bridge&squot; IDE Interface (fn 1)&n; *         supports UDMA mode 2 (33 MB/s)&n; *&n; *   CSB5: `Champion South Bridge&squot; IDE Interface (fn 1)&n; *         all revisions support UDMA mode 4 (66 MB/s)&n; *         revision A2.0 and up support UDMA mode 5 (100 MB/s)&n; *&n; *         *** The CSB5 does not provide ANY register ***&n; *         *** to detect 80-conductor cable presence. ***&n; *&n; *   CSB6: `Champion South Bridge&squot; IDE Interface (optional: third channel)&n; *&n; * Documentation:&n; *&t;Available under NDA only. Errata info very hard to get.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1371,6 +1371,49 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif  /* defined(DISPLAY_SVWKS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
+DECL|function|check_in_drive_lists
+r_static
+r_int
+id|check_in_drive_lists
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_const
+r_char
+op_star
+op_star
+id|list
+)paren
+(brace
+r_while
+c_loop
+(paren
+op_star
+id|list
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+op_star
+id|list
+op_increment
+comma
+id|drive-&gt;id-&gt;model
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|svwks_ratemask
 r_static
 id|u8
@@ -1396,6 +1439,23 @@ id|pci_dev
 suffix:semicolon
 id|u8
 id|mode
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|svwks_revision
+)paren
+id|pci_read_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_REVISION_ID
+comma
+op_amp
+id|svwks_revision
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1498,6 +1558,8 @@ suffix:semicolon
 id|mode
 op_assign
 id|btr
+op_amp
+l_int|0x3
 suffix:semicolon
 r_if
 c_cond
@@ -1521,6 +1583,26 @@ id|u8
 )paren
 l_int|1
 )paren
+suffix:semicolon
+multiline_comment|/* If someone decides to do UDMA133 on CSB5 the same&n;&t;&t;   issue will bite so be inclusive */
+r_if
+c_cond
+(paren
+id|mode
+OG
+l_int|2
+op_logical_and
+id|check_in_drive_lists
+c_func
+(paren
+id|drive
+comma
+id|svwks_bad_ata100
+)paren
+)paren
+id|mode
+op_assign
+l_int|2
 suffix:semicolon
 )brace
 r_if
@@ -2730,15 +2812,27 @@ id|u8
 id|pio
 )paren
 (brace
-multiline_comment|/* Tune to desired value or to &quot;best&quot;. We must not adjust&n;&t;   &quot;best&quot; when we adjust from pio numbers to rate values! */
 r_if
 c_cond
 (paren
 id|pio
-op_ne
+op_eq
 l_int|255
 )paren
 (brace
+(paren
+r_void
+)paren
+id|svwks_tune_chipset
+c_func
+(paren
+id|drive
+comma
+l_int|255
+)paren
+suffix:semicolon
+)brace
+r_else
 (paren
 r_void
 )paren
@@ -2752,19 +2846,6 @@ id|XFER_PIO_0
 op_plus
 id|pio
 )paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(paren
-r_void
-)paren
-id|svwks_tune_chipset
-c_func
-(paren
-id|drive
-comma
-l_int|255
 )paren
 suffix:semicolon
 )brace
@@ -2870,8 +2951,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|id
-op_logical_and
 (paren
 id|id-&gt;capability
 op_amp
@@ -3071,6 +3150,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This can go soon */
 DECL|function|svwks_ide_dma_end
 r_static
 r_int
@@ -3081,86 +3161,6 @@ op_star
 id|drive
 )paren
 (brace
-multiline_comment|/*&n;&t; *&t;We never place the OSB4 into a UDMA mode with a disk&n;&t; *&t;medium, that means the UDMA &quot;all my data is 4 byte shifted&quot;&n;&t; *&t;problem cannot occur.&n;&t; */
-macro_line|#if 0
-id|ide_hwif_t
-op_star
-id|hwif
-op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-id|u8
-id|dma_stat
-op_assign
-id|hwif
-op_member_access_from_pointer
-id|INB
-c_func
-(paren
-id|hwif-&gt;dma_status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|dma_stat
-op_amp
-l_int|1
-)paren
-op_logical_and
-id|drive-&gt;media
-op_eq
-id|ide_disk
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;Serverworks OSB4 in impossible state.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;Disable UDMA or if you are using Seagate then try switching disk types&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;on this controller. Please report this event to osb4-bug@ide.cabal.tm&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Panic might sys_sync -&gt; death by corrupt disk */
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;OSB4: continuing might cause disk corruption.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-id|cpu_relax
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif&t;
 r_return
 id|__ide_dma_end
 c_func
@@ -3678,8 +3678,6 @@ op_star
 id|hwif
 )paren
 (brace
-singleline_comment|//&t;struct pci_dev *dev = hwif-&gt;pci_dev;
-singleline_comment|//&t;return 0;
 r_return
 l_int|1
 suffix:semicolon

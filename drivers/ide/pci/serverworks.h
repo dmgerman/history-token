@@ -10,6 +10,27 @@ DECL|macro|SVWKS_CSB5_REVISION_NEW
 mdefine_line|#define SVWKS_CSB5_REVISION_NEW&t;0x92 /* min PCI_REVISION_ID for UDMA5 (A2.0) */
 DECL|macro|SVWKS_CSB6_REVISION
 mdefine_line|#define SVWKS_CSB6_REVISION&t;0xa0 /* min PCI_REVISION_ID for UDMA4 (A1.0) */
+multiline_comment|/* Seagate Barracuda ATA IV Family drives in UDMA mode 5&n; * can overrun their FIFOs when used with the CSB5 */
+DECL|variable|svwks_bad_ata100
+r_const
+r_char
+op_star
+id|svwks_bad_ata100
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;ST320011A&quot;
+comma
+l_string|&quot;ST340016A&quot;
+comma
+l_string|&quot;ST360021A&quot;
+comma
+l_string|&quot;ST380021A&quot;
+comma
+l_int|NULL
+)brace
+suffix:semicolon
 DECL|macro|DISPLAY_SVWKS_TIMINGS
 mdefine_line|#define DISPLAY_SVWKS_TIMINGS&t;1
 macro_line|#if defined(DISPLAY_SVWKS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
