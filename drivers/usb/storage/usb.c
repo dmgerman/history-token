@@ -1263,9 +1263,7 @@ id|usb_stor_sense_invalidCDB
 suffix:semicolon
 id|us-&gt;srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 )brace
 multiline_comment|/* Handle those devices which need us to fake &n;&t;&t; * their inquiry data */
@@ -1332,9 +1330,7 @@ l_int|36
 suffix:semicolon
 id|us-&gt;srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 )brace
 multiline_comment|/* we&squot;ve got a command, let&squot;s do it! */
@@ -1417,7 +1413,7 @@ l_string|&quot;scsi command aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* in case an abort request was received after the command&n;&t;&t; * completed, we must use a separate test to see whether&n;&t;&t; * we need to signal that the abort has finished */
+multiline_comment|/* If an abort request was received we need to signal that&n;&t;&t; * the abort has finished.  The proper test for this is&n;&t;&t; * sm_state == US_STATE_ABORTING, not srb-&gt;result == DID_ABORT,&n;&t;&t; * because an abort request might be received after all the&n;&t;&t; * USB processing was complete. */
 r_if
 c_cond
 (paren
@@ -2652,14 +2648,6 @@ id|us-&gt;transport_reset
 op_assign
 id|usb_stor_Bulk_reset
 suffix:semicolon
-id|us-&gt;max_lun
-op_assign
-id|usb_stor_Bulk_max_lun
-c_func
-(paren
-id|us
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
@@ -2988,6 +2976,22 @@ id|us
 )paren
 r_goto
 id|BadDevice
+suffix:semicolon
+multiline_comment|/* For bulk-only devices, determine the max LUN value */
+r_if
+c_cond
+(paren
+id|us-&gt;protocol
+op_eq
+id|US_PR_BULK
+)paren
+id|us-&gt;max_lun
+op_assign
+id|usb_stor_Bulk_max_lun
+c_func
+(paren
+id|us
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Since this is a new device, we need to generate a scsi &n;&t; * host definition, and register with the higher SCSI layers&n;&t; */
 multiline_comment|/* Just before we start our control thread, initialize&n;&t; * the device if it needs initialization */

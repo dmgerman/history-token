@@ -1534,9 +1534,7 @@ suffix:colon
 multiline_comment|/* Indicate a good result */
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1720,9 +1718,7 @@ id|srb
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 multiline_comment|/* If things are really okay, then let&squot;s show that */
 r_if
@@ -1741,9 +1737,7 @@ l_int|0x0
 )paren
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 )brace
 r_else
@@ -1764,9 +1758,7 @@ id|USB_STOR_TRANSPORT_FAILED
 )paren
 id|srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG
@@ -3969,9 +3961,7 @@ id|srb-&gt;request_bufflen
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -4047,9 +4037,7 @@ l_string|&quot;   Media Status not supported, just report okay&bslash;n&quot;
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -4126,9 +4114,7 @@ l_string|&quot;   Media Status not supported, just report okay&bslash;n&quot;
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -4237,9 +4223,7 @@ id|srb-&gt;request_bufflen
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -4769,9 +4753,7 @@ l_string|&quot;   Not removeable media, just report okay&bslash;n&quot;
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -4915,9 +4897,7 @@ l_string|&quot;   Nothing to do, just report okay&bslash;n&quot;
 suffix:semicolon
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign

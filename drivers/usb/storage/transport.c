@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/***********************************************************************&n; * Data transfer routines&n; ***********************************************************************/
-multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function (usb_storage_command_abort() in scsiglue.c) first&n; * sets the machine state and the ABORTING bit in us-&gt;flags to prevent&n; * new URBs from being submitted.  It then calls usb_stor_stop_transport()&n; * below, which atomically tests-and-clears the URB_ACTIVE bit in us-&gt;flags&n; * to see if the current_urb needs to be stopped.  Likewise, the SG_ACTIVE&n; * bit is tested to see if the current_sg scatter-gather request needs to be&n; * stopped.&n; *&n; * When a disconnect occurs, the DISCONNECTING bit in us-&gt;flags is set to&n; * prevent new URBs from being submitted, and usb_stor_stop_transport() is&n; * called to stop any ongoing requests.&n; *&n; * The submit function first verifies that the submitting is allowed&n; * (neither ABORTING nor DISCONNECTING bits are set) and that the submit&n; * completes without errors, and only then sets the URB_ACTIVE bit.  This&n; * prevents the stop_transport() function from trying to cancel the URB&n; * while the submit call is underway.  Next, the submit function must test&n; * the flags to see if an abort or disconnect occurred during the submission&n; * or before the URB_ACTIVE bit was set.  If so, it&squot;s essential to cancel&n; * the URB if it hasn&squot;t been cancelled already (i.e., if the URB_ACTIVE bit&n; * is still set).  Either way, the function must then wait for the URB to&n; * finish.  Note that because the URB_ASYNC_UNLINK flag is set, the URB can&n; * still be in progress even after a call to usb_unlink_urb() returns.&n; *&n; * The idea is that (1) once the ABORTING or DISCONNECTING bit is set,&n; * either the stop_transport() function or the submitting function&n; * is guaranteed to call usb_unlink_urb() for an active URB,&n; * and (2) test_and_clear_bit() prevents usb_unlink_urb() from being&n; * called more than once or from being called during usb_submit_urb().&n; */
+multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function (usb_storage_command_abort() in scsiglue.c) first&n; * sets the machine state and the ABORTING bit in us-&gt;flags to prevent&n; * new URBs from being submitted.  It then calls usb_stor_stop_transport()&n; * below, which atomically tests-and-clears the URB_ACTIVE bit in us-&gt;flags&n; * to see if the current_urb needs to be stopped.  Likewise, the SG_ACTIVE&n; * bit is tested to see if the current_sg scatter-gather request needs to be&n; * stopped.  The timeout callback routine does much the same thing.&n; *&n; * When a disconnect occurs, the DISCONNECTING bit in us-&gt;flags is set to&n; * prevent new URBs from being submitted, and usb_stor_stop_transport() is&n; * called to stop any ongoing requests.&n; *&n; * The submit function first verifies that the submitting is allowed&n; * (neither ABORTING nor DISCONNECTING bits are set) and that the submit&n; * completes without errors, and only then sets the URB_ACTIVE bit.  This&n; * prevents the stop_transport() function from trying to cancel the URB&n; * while the submit call is underway.  Next, the submit function must test&n; * the flags to see if an abort or disconnect occurred during the submission&n; * or before the URB_ACTIVE bit was set.  If so, it&squot;s essential to cancel&n; * the URB if it hasn&squot;t been cancelled already (i.e., if the URB_ACTIVE bit&n; * is still set).  Either way, the function must then wait for the URB to&n; * finish.  Note that because the URB_ASYNC_UNLINK flag is set, the URB can&n; * still be in progress even after a call to usb_unlink_urb() returns.&n; *&n; * The idea is that (1) once the ABORTING or DISCONNECTING bit is set,&n; * either the stop_transport() function or the submitting function&n; * is guaranteed to call usb_unlink_urb() for an active URB,&n; * and (2) test_and_clear_bit() prevents usb_unlink_urb() from being&n; * called more than once or from being called during usb_submit_urb().&n; */
 multiline_comment|/* This is the completion handler which will wake us up when an URB&n; * completes.&n; */
 DECL|function|usb_stor_blocking_completion
 r_static
@@ -46,6 +46,57 @@ id|urb_done_ptr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This is the timeout handler which will cancel an URB when its timeout&n; * expires.&n; */
+DECL|function|timeout_handler
+r_static
+r_void
+id|timeout_handler
+c_func
+(paren
+r_int
+r_int
+id|us_
+)paren
+(brace
+r_struct
+id|us_data
+op_star
+id|us
+op_assign
+(paren
+r_struct
+id|us_data
+op_star
+)paren
+id|us_
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_and_clear_bit
+c_func
+(paren
+id|US_FLIDX_URB_ACTIVE
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Timeout -- cancelling URB&bslash;n&quot;
+)paren
+suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|us-&gt;current_urb
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* This is the common part of the URB message submission code&n; *&n; * All URBs from the usb-storage driver involved in handling a queued scsi&n; * command _must_ pass through this function (or something like it) for the&n; * abort mechanisms to work properly.&n; */
 DECL|function|usb_stor_msg_common
 r_static
@@ -57,11 +108,18 @@ r_struct
 id|us_data
 op_star
 id|us
+comma
+r_int
+id|timeout
 )paren
 (brace
 r_struct
 id|completion
 id|urb_done
+suffix:semicolon
+r_struct
+id|timer_list
+id|to_timer
 suffix:semicolon
 r_int
 id|status
@@ -177,6 +235,48 @@ id|us-&gt;current_urb
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* submit the timeout timer, if a timeout was requested */
+r_if
+c_cond
+(paren
+id|timeout
+OG
+l_int|0
+)paren
+(brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|to_timer
+)paren
+suffix:semicolon
+id|to_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|timeout
+suffix:semicolon
+id|to_timer.function
+op_assign
+id|timeout_handler
+suffix:semicolon
+id|to_timer.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|us
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|to_timer
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* wait for the completion of the URB */
 id|wait_for_completion
 c_func
@@ -194,12 +294,27 @@ op_amp
 id|us-&gt;flags
 )paren
 suffix:semicolon
+multiline_comment|/* clean up the timeout timer */
+r_if
+c_cond
+(paren
+id|timeout
+OG
+l_int|0
+)paren
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|to_timer
+)paren
+suffix:semicolon
 multiline_comment|/* return the URB status */
 r_return
 id|us-&gt;current_urb-&gt;status
 suffix:semicolon
 )brace
-multiline_comment|/* This is our function to emulate usb_control_msg() with enough control&n; * to make aborts/resets/timeouts work&n; */
+multiline_comment|/*&n; * Transfer one control message, with timeouts, and allowing early&n; * termination.  Return codes are usual -Exxx, *not* USB_STOR_XFER_xxx.&n; */
 DECL|function|usb_stor_control_msg
 r_int
 id|usb_stor_control_msg
@@ -232,10 +347,31 @@ id|data
 comma
 id|u16
 id|size
+comma
+r_int
+id|timeout
 )paren
 (brace
 r_int
 id|status
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;%s: rq=%02x rqtype=%02x value=%04x index=%02x len=%u&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|request
+comma
+id|requesttype
+comma
+id|value
+comma
+id|index
+comma
+id|size
+)paren
 suffix:semicolon
 multiline_comment|/* fill in the devrequest structure */
 id|us-&gt;dr-&gt;bRequestType
@@ -302,6 +438,8 @@ id|usb_stor_msg_common
 c_func
 (paren
 id|us
+comma
+id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/* return the actual length of the data transferred if no error */
@@ -320,7 +458,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* This is a version of usb_clear_halt() that doesn&squot;t read the status from&n; * the device -- this is because some devices crash their internal firmware&n; * when the status is requested after a halt.&n; *&n; * A definitive list of these &squot;bad&squot; devices is too difficult to maintain or&n; * make complete enough to be useful.  This problem was first observed on the&n; * Hagiwara FlashGate DUAL unit.  However, bus traces reveal that neither&n; * MacOS nor Windows checks the status after clearing a halt.&n; *&n; * Since many vendors in this space limit their testing to interoperability&n; * with these two OSes, specification violations like this one are common.&n; */
+multiline_comment|/* This is a version of usb_clear_halt() that allows early termination and&n; * doesn&squot;t read the status from the device -- this is because some devices&n; * crash their internal firmware when the status is requested after a halt.&n; *&n; * A definitive list of these &squot;bad&squot; devices is too difficult to maintain or&n; * make complete enough to be useful.  This problem was first observed on the&n; * Hagiwara FlashGate DUAL unit.  However, bus traces reveal that neither&n; * MacOS nor Windows checks the status after clearing a halt.&n; *&n; * Since many vendors in this space limit their testing to interoperability&n; * with these two OSes, specification violations like this one are common.&n; */
 DECL|function|usb_stor_clear_halt
 r_int
 id|usb_stor_clear_halt
@@ -380,27 +518,11 @@ comma
 l_int|NULL
 comma
 l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* note: no 3*HZ timeout */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_clear_halt: result=%d&bslash;n&quot;
 comma
-id|result
+l_int|3
+op_star
+id|HZ
 )paren
-suffix:semicolon
-multiline_comment|/* this is a failure case */
-r_if
-c_cond
-(paren
-id|result
-OL
-l_int|0
-)paren
-r_return
-id|result
 suffix:semicolon
 multiline_comment|/* reset the toggles and endpoint flags */
 id|usb_endpoint_running
@@ -441,8 +563,18 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;%s: result = %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|result
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Interpret the results of a URB transfer&n; *&n; * This function prints appropriate debugging messages, clears halts on&n; * non-control endpoints, and translates the status to the corresponding&n; * USB_STOR_XFER_xxx return code.&n; */
@@ -753,6 +885,8 @@ id|usb_stor_msg_common
 c_func
 (paren
 id|us
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -869,6 +1003,8 @@ id|usb_stor_msg_common
 c_func
 (paren
 id|us
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -954,6 +1090,8 @@ id|usb_stor_msg_common
 c_func
 (paren
 id|us
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* store the actual length of the data transferred */
@@ -1356,7 +1494,6 @@ id|Handle_Abort
 suffix:semicolon
 )brace
 multiline_comment|/* if there is a transport error, reset and don&squot;t auto-sense */
-multiline_comment|/* What if we want to abort during the reset? */
 r_if
 c_cond
 (paren
@@ -1583,6 +1720,10 @@ id|old_cmnd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
+r_int
+r_int
+id|old_serial_number
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -1698,6 +1839,15 @@ id|srb-&gt;use_sg
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* change the serial number -- toggle the high bit*/
+id|old_serial_number
+op_assign
+id|srb-&gt;serial_number
+suffix:semicolon
+id|srb-&gt;serial_number
+op_xor_assign
+l_int|0x80000000
+suffix:semicolon
 multiline_comment|/* issue the auto-sense command */
 id|temp_result
 op_assign
@@ -1723,6 +1873,10 @@ suffix:semicolon
 id|srb-&gt;use_sg
 op_assign
 id|old_sg
+suffix:semicolon
+id|srb-&gt;serial_number
+op_assign
+id|old_serial_number
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
@@ -1790,8 +1944,6 @@ op_amp
 id|US_FL_SCM_MULT_TARG
 )paren
 )paren
-(brace
-multiline_comment|/* What if we try to abort during the reset? */
 id|us
 op_member_access_from_pointer
 id|transport_reset
@@ -1800,7 +1952,6 @@ c_func
 id|us
 )paren
 suffix:semicolon
-)brace
 id|srb-&gt;result
 op_assign
 id|DID_ERROR
@@ -1872,9 +2023,7 @@ macro_line|#endif
 multiline_comment|/* set the result so the higher layers expect this data */
 id|srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 multiline_comment|/* If things are really okay, then let&squot;s show that */
 r_if
@@ -1893,18 +2042,14 @@ l_int|0x0
 )paren
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 )brace
 r_else
 multiline_comment|/* if (need_auto_sense) */
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 multiline_comment|/* Regardless of auto-sense, if we _know_ we have an error&n;&t; * condition, show that in the result code&n;&t; */
 r_if
@@ -1916,9 +2061,7 @@ id|USB_STOR_TRANSPORT_FAILED
 )paren
 id|srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 multiline_comment|/* If we think we&squot;re good, then make sure the sense data shows it.&n;&t; * This is necessary because the auto-sense for some devices always&n;&t; * sets byte 0 == 0x70, even if there is no error&n;&t; */
 r_if
@@ -2539,21 +2682,15 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-multiline_comment|/* Issue the command -- use usb_control_msg() because this is&n;&t; * not a scsi queued-command.  Also note that at this point the&n;&t; * cached pipe values have not yet been stored. */
+multiline_comment|/* issue the command */
 id|result
 op_assign
-id|usb_control_msg
+id|usb_stor_control_msg
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
-id|usb_rcvctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
+id|us-&gt;recv_ctrl_pipe
 comma
 id|US_BULK_GET_MAX_LUN
 comma
@@ -3053,14 +3190,16 @@ id|size
 r_int
 id|result
 suffix:semicolon
+r_int
+id|result2
+suffix:semicolon
 multiline_comment|/* A 20-second timeout may seem rather long, but a LaCie&n;&t; *  StudioDrive USB2 device takes 16+ seconds to get going&n;&t; *  following a powerup or USB attach event. */
-multiline_comment|/* Use usb_control_msg() because this is not a queued-command */
 id|result
 op_assign
-id|usb_control_msg
+id|usb_stor_control_msg
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|us-&gt;send_ctrl_pipe
 comma
@@ -3088,10 +3227,27 @@ id|result
 OL
 l_int|0
 )paren
-r_goto
-id|Done
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Soft reset failed: %d&bslash;n&quot;
+comma
+id|result
+)paren
 suffix:semicolon
-multiline_comment|/* long wait for reset */
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/* long wait for reset, so unlock to allow disconnects */
+id|up
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
+)paren
+suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -3112,7 +3268,13 @@ c_func
 id|TASK_RUNNING
 )paren
 suffix:semicolon
-multiline_comment|/* Use usb_clear_halt() because this is not a queued-command */
+id|down
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
+)paren
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -3121,23 +3283,13 @@ l_string|&quot;Soft reset: clearing bulk-in endpoint halt&bslash;n&quot;
 suffix:semicolon
 id|result
 op_assign
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|us-&gt;recv_bulk_pipe
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-OL
-l_int|0
-)paren
-r_goto
-id|Done
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -3145,18 +3297,16 @@ c_func
 l_string|&quot;Soft reset: clearing bulk-out endpoint halt&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
+id|result2
 op_assign
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|us-&gt;send_bulk_pipe
 )paren
 suffix:semicolon
-id|Done
-suffix:colon
 multiline_comment|/* return a result code based on the result of the control message */
 r_if
 c_cond
@@ -3164,36 +3314,30 @@ c_cond
 id|result
 OL
 l_int|0
+op_logical_or
+id|result2
+OL
+l_int|0
 )paren
 (brace
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Soft reset failed: %d&bslash;n&quot;
-comma
-id|result
+l_string|&quot;Soft reset failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
-op_assign
+r_return
 id|FAILED
 suffix:semicolon
 )brace
-r_else
-(brace
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;Soft reset done&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
-op_assign
-id|SUCCESS
-suffix:semicolon
-)brace
 r_return
-id|result
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* This issues a CB[I] Reset to the device in question&n; */
