@@ -1298,7 +1298,13 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|xfs_syncd_interval
+(paren
+id|xfs_syncd_centisecs
+op_star
+id|HZ
+)paren
+op_div
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* swsusp */
