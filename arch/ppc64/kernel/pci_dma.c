@@ -208,7 +208,6 @@ id|order
 )paren
 suffix:semicolon
 multiline_comment|/* allocates a range of tces and sets them to the pages  */
-r_static
 r_inline
 id|dma_addr_t
 id|get_tces
@@ -713,7 +712,6 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* &n; * Build a TceTable structure.  This contains a multi-level bit map which&n; * is used to manage allocation of the tce space.&n; */
 DECL|function|build_tce_table
-r_static
 r_struct
 id|TceTable
 op_star
@@ -2157,7 +2155,6 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|get_tces
-r_static
 r_inline
 id|dma_addr_t
 id|get_tces
@@ -2307,7 +2304,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|tce_free_one_iSeries
-r_static
 r_void
 id|tce_free_one_iSeries
 c_func
@@ -2419,7 +2415,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|tce_free
-r_static
 r_void
 id|tce_free
 c_func
