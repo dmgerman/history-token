@@ -497,6 +497,13 @@ op_star
 id|out
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CRYPTO_HMAC
+DECL|member|dit_hmac_block
+r_void
+op_star
+id|dit_hmac_block
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|compress_tfm
