@@ -2277,7 +2277,7 @@ macro_line|#ifdef __sparc__
 r_if
 c_cond
 (paren
-id|io_remap_page_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|DRM_RPR_ARG
@@ -2287,6 +2287,7 @@ id|vma
 )paren
 id|vma-&gt;vm_start
 comma
+(paren
 id|VM_OFFSET
 c_func
 (paren
@@ -2294,14 +2295,15 @@ id|vma
 )paren
 op_plus
 id|offset
+)paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|vma-&gt;vm_end
 op_minus
 id|vma-&gt;vm_start
 comma
 id|vma-&gt;vm_page_prot
-comma
-l_int|0
 )paren
 )paren
 macro_line|#else

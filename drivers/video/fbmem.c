@@ -4631,7 +4631,7 @@ macro_line|#if defined(__sparc_v9__)
 r_if
 c_cond
 (paren
-id|io_remap_page_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
@@ -4639,14 +4639,14 @@ comma
 id|vma-&gt;vm_start
 comma
 id|off
+op_rshift
+id|PAGE_SHIFT
 comma
 id|vma-&gt;vm_end
 op_minus
 id|vma-&gt;vm_start
 comma
 id|vma-&gt;vm_page_prot
-comma
-l_int|0
 )paren
 )paren
 r_return
@@ -4802,7 +4802,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|io_remap_page_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
@@ -4810,6 +4810,8 @@ comma
 id|vma-&gt;vm_start
 comma
 id|off
+op_rshift
+id|PAGE_SHIFT
 comma
 id|vma-&gt;vm_end
 op_minus
