@@ -799,12 +799,10 @@ c_func
 suffix:semicolon
 id|status
 op_assign
-id|nfs_wb_file
+id|nfs_wb_all
 c_func
 (paren
 id|inode
-comma
-id|file
 )paren
 suffix:semicolon
 r_if

@@ -356,12 +356,10 @@ id|FLUSH_WAIT
 suffix:colon
 l_int|0
 suffix:semicolon
-id|nfs_commit_file
+id|nfs_commit_inode
 c_func
 (paren
 id|inode
-comma
-l_int|NULL
 comma
 l_int|0
 comma
