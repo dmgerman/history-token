@@ -242,7 +242,7 @@ id|ntfs_volume
 op_star
 id|vol
 comma
-id|run_list_element
+id|run_list
 op_star
 id|rl
 comma
@@ -253,6 +253,10 @@ comma
 r_const
 id|s64
 id|size
+comma
+r_const
+id|s64
+id|initialized_size
 )paren
 suffix:semicolon
 DECL|function|attribute_value_length
