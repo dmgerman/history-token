@@ -968,7 +968,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;device_attach - try to attach device to a driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;Walk the list of drivers that the bus has and call bus_match()&n; *&t;for each pair. If a compatible pair is found, break out and return.&n; */
 DECL|function|device_attach
-r_static
 r_int
 id|device_attach
 c_func
@@ -2638,6 +2637,20 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|device_release_driver
+)paren
+suffix:semicolon
+DECL|variable|device_attach
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|device_attach
+)paren
+suffix:semicolon
+DECL|variable|driver_attach
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|driver_attach
 )paren
 suffix:semicolon
 DECL|variable|bus_add_device

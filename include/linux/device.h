@@ -1597,6 +1597,17 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|device_attach
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|driver_attach
 c_func
