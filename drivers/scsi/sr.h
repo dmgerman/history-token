@@ -19,6 +19,11 @@ id|Scsi_Device_Template
 op_star
 id|driver
 suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 DECL|member|capacity
 r_int
 id|capacity

@@ -350,13 +350,6 @@ c_func
 id|scsi_host_put
 )paren
 suffix:semicolon
-DECL|variable|scsi_devicelist
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_devicelist
-)paren
-suffix:semicolon
 DECL|variable|scsi_device_types
 id|EXPORT_SYMBOL
 c_func
