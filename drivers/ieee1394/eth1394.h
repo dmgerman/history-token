@@ -9,9 +9,28 @@ DECL|macro|ETHER1394_REGION_ADDR
 mdefine_line|#define ETHER1394_REGION_ADDR&t;&t;0xfffff0200000ULL
 DECL|macro|ETHER1394_REGION_ADDR_END
 mdefine_line|#define ETHER1394_REGION_ADDR_END&t;(ETHER1394_REGION_ADDR + ETHER1394_REGION_ADDR_LEN)
+multiline_comment|/* GASP identifier numbers for IPv4 over IEEE 1394 */
+DECL|macro|ETHER1394_GASP_SPECIFIER_ID
+mdefine_line|#define ETHER1394_GASP_SPECIFIER_ID&t;0x00005E
+DECL|macro|ETHER1394_GASP_VERSION
+mdefine_line|#define ETHER1394_GASP_VERSION&t;&t;1
 multiline_comment|/* Node set == 64 */
 DECL|macro|NODE_SET
 mdefine_line|#define NODE_SET&t;&t;&t;(ALL_NODES + 1)
+DECL|enum|eth1394_bc_states
+DECL|enumerator|ETHER1394_BC_CLOSED
+DECL|enumerator|ETHER1394_BC_OPENED
+r_enum
+id|eth1394_bc_states
+(brace
+id|ETHER1394_BC_CLOSED
+comma
+id|ETHER1394_BC_OPENED
+comma
+DECL|enumerator|ETHER1394_BC_CHECK
+id|ETHER1394_BC_CHECK
+)brace
+suffix:semicolon
 multiline_comment|/* Private structure for our ethernet driver */
 DECL|struct|eth1394_priv
 r_struct
@@ -77,6 +96,24 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 multiline_comment|/* Private lock&t;&t;&t; */
+DECL|member|broadcast_channel
+r_int
+id|broadcast_channel
+suffix:semicolon
+multiline_comment|/* Async stream Broadcast Channel */
+DECL|member|bc_state
+r_enum
+id|eth1394_bc_states
+id|bc_state
+suffix:semicolon
+multiline_comment|/* broadcast channel state&t; */
+DECL|member|iso
+r_struct
+id|hpsb_iso
+op_star
+id|iso
+suffix:semicolon
+multiline_comment|/* Async stream recv handle&t; */
 )brace
 suffix:semicolon
 DECL|struct|host_info
@@ -101,6 +138,18 @@ op_star
 id|dev
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|enumerator|ETH1394_GASP
+DECL|enumerator|ETH1394_WRREQ
+DECL|typedef|eth1394_tx_type
+r_typedef
+r_enum
+(brace
+id|ETH1394_GASP
+comma
+id|ETH1394_WRREQ
+)brace
+id|eth1394_tx_type
 suffix:semicolon
 multiline_comment|/* This is our task struct. It&squot;s used for the packet complete callback.  */
 DECL|struct|packet_task
@@ -130,6 +179,11 @@ id|hpsb_queue_struct
 id|tq
 suffix:semicolon
 multiline_comment|/* The task */
+DECL|member|tx_type
+id|eth1394_tx_type
+id|tx_type
+suffix:semicolon
+multiline_comment|/* Send data via GASP or Write Req. */
 )brace
 suffix:semicolon
 multiline_comment|/* IP1394 headers */
