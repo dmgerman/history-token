@@ -200,11 +200,11 @@ r_int
 id|paddr
 )paren
 suffix:semicolon
-DECL|variable|clear_page
+DECL|variable|clear_pages
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|clear_page
+id|clear_pages
 )paren
 suffix:semicolon
 DECL|variable|clear_user_page
