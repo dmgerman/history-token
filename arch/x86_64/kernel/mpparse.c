@@ -3352,7 +3352,7 @@ id|idx
 dot
 id|mpc_dstapic
 op_eq
-id|ioapic
+id|intsrc.mpc_dstapic
 )paren
 op_logical_and
 (paren
