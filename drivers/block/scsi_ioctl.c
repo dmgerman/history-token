@@ -2289,6 +2289,15 @@ multiline_comment|/*&n;&t;&t; * old junk scsi send command ioctl&n;&t;&t; */
 r_case
 id|SCSI_IOCTL_SEND_COMMAND
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;program %s is using a deprecated SCSI ioctl, please convert it to SG_IO&bslash;n&quot;
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus

@@ -1714,10 +1714,6 @@ id|DUN
 )brace
 suffix:semicolon
 multiline_comment|/* __initfunc, __initdata macros */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
-DECL|macro|__devinitdata
-mdefine_line|#define __devinitdata
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|macro|GDTH_INITFUNC
 mdefine_line|#define GDTH_INITFUNC(type, func)       type __init func 

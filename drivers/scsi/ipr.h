@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * ipr.h -- driver for IBM Power Linux RAID adapters&n; *&n; * Written By: Brian King, IBM Corporation&n; *&n; * Copyright (C) 2003, 2004 IBM Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; * ipr.h -- driver for IBM Power Linux RAID adapters&n; *&n; * Written By: Brian King &lt;brking@us.ibm.com&gt;, IBM Corporation&n; *&n; * Copyright (C) 2003, 2004 IBM Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Alan Cox &lt;alan@redhat.com&gt; - Removed several careless u32/dma_addr_t errors&n; *&t;&t;&t;&t;that broke 64bit platforms.&n; */
 macro_line|#ifndef _IPR_H
 DECL|macro|_IPR_H
 mdefine_line|#define _IPR_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#ifdef CONFIG_KDB
@@ -12,9 +13,9 @@ macro_line|#include &lt;linux/kdb.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Literals&n; */
 DECL|macro|IPR_DRIVER_VERSION
-mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.10&quot;
+mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.11&quot;
 DECL|macro|IPR_DRIVER_DATE
-mdefine_line|#define IPR_DRIVER_DATE &quot;(June 7, 2004)&quot;
+mdefine_line|#define IPR_DRIVER_DATE &quot;(August 3, 2004)&quot;
 multiline_comment|/*&n; * IPR_DBG_TRACE: Setting this to 1 will turn on some general function tracing&n; *&t;&t;&t;resulting in a bunch of extra debugging printks to the console&n; *&n; * IPR_DEBUG:&t;Setting this to 1 will turn on some error path tracing.&n; *&t;&t;&t;Enables the ipr_trace macro.&n; */
 macro_line|#ifdef IPR_DEBUG_ALL
 DECL|macro|IPR_DEBUG
@@ -43,6 +44,10 @@ DECL|macro|IPR_SUBS_DEV_ID_572E
 mdefine_line|#define IPR_SUBS_DEV_ID_572E  0x02D3
 DECL|macro|IPR_SUBS_DEV_ID_573D
 mdefine_line|#define IPR_SUBS_DEV_ID_573D  0x02D4
+DECL|macro|IPR_SUBS_DEV_ID_570F
+mdefine_line|#define IPR_SUBS_DEV_ID_570F&t;0x02BD
+DECL|macro|IPR_SUBS_DEV_ID_571B
+mdefine_line|#define IPR_SUBS_DEV_ID_571B&t;0x02BE
 DECL|macro|IPR_NAME
 mdefine_line|#define IPR_NAME&t;&t;&t;&t;&quot;ipr&quot;
 multiline_comment|/*&n; * Return codes&n; */
@@ -149,8 +154,6 @@ DECL|macro|IPR_ID_HOST_RR_Q
 mdefine_line|#define IPR_ID_HOST_RR_Q&t;&t;&t;&t;0xC4
 DECL|macro|IPR_QUERY_IOA_CONFIG
 mdefine_line|#define IPR_QUERY_IOA_CONFIG&t;&t;&t;&t;0xC5
-DECL|macro|IPR_ABORT_TASK
-mdefine_line|#define IPR_ABORT_TASK&t;&t;&t;&t;&t;0xC7
 DECL|macro|IPR_CANCEL_ALL_REQUESTS
 mdefine_line|#define IPR_CANCEL_ALL_REQUESTS&t;&t;&t;0xCE
 DECL|macro|IPR_HOST_CONTROLLED_ASYNC
@@ -2038,7 +2041,7 @@ id|ipr_hcam
 id|hcam
 suffix:semicolon
 DECL|member|hostrcb_dma
-id|u32
+id|dma_addr_t
 id|hostrcb_dma
 suffix:semicolon
 DECL|member|queue
@@ -2688,7 +2691,7 @@ op_star
 id|cfg_table
 suffix:semicolon
 DECL|member|cfg_table_dma
-id|u32
+id|dma_addr_t
 id|cfg_table_dma
 suffix:semicolon
 DECL|member|resource_table_label
@@ -2735,7 +2738,7 @@ id|IPR_NUM_HCAMS
 )braket
 suffix:semicolon
 DECL|member|hostrcb_dma
-id|u32
+id|dma_addr_t
 id|hostrcb_dma
 (braket
 id|IPR_NUM_HCAMS
@@ -2757,7 +2760,7 @@ op_star
 id|host_rrq
 suffix:semicolon
 DECL|member|host_rrq_dma
-id|u32
+id|dma_addr_t
 id|host_rrq_dma
 suffix:semicolon
 DECL|macro|IPR_HRRQ_REQ_RESP_HANDLE_MASK
@@ -2902,7 +2905,7 @@ op_star
 id|vpd_cbs
 suffix:semicolon
 DECL|member|vpd_cbs_dma
-id|u32
+id|dma_addr_t
 id|vpd_cbs_dma
 suffix:semicolon
 DECL|member|ipr_cmd_pool
@@ -3435,10 +3438,10 @@ DECL|struct|ipr_dump
 r_struct
 id|ipr_dump
 (brace
-DECL|member|kobj
+DECL|member|kref
 r_struct
-id|kobject
-id|kobj
+id|kref
+id|kref
 suffix:semicolon
 DECL|member|ioa_cfg
 r_struct

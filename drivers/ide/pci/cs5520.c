@@ -1030,6 +1030,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|pci_set_dma_mask
 c_func
 (paren
@@ -1037,7 +1040,20 @@ id|dev
 comma
 l_int|0xFFFFFFFF
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cs5520: No suitable DMA available.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|init_chipset_cs5520
 c_func
 (paren

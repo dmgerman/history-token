@@ -930,6 +930,21 @@ suffix:semicolon
 DECL|macro|TCA_ATM_MAX
 mdefine_line|#define TCA_ATM_MAX&t;TCA_ATM_STATE
 multiline_comment|/* Network emulator */
+r_enum
+(brace
+DECL|enumerator|TCA_NETEM_UNSPEC
+id|TCA_NETEM_UNSPEC
+comma
+DECL|enumerator|TCA_NETEM_CORR
+id|TCA_NETEM_CORR
+comma
+DECL|enumerator|TCA_NETEM_DELAY_DIST
+id|TCA_NETEM_DELAY_DIST
+comma
+)brace
+suffix:semicolon
+DECL|macro|TCA_NETEM_MAX
+mdefine_line|#define TCA_NETEM_MAX&t;TCA_NETEM_DELAY_DIST
 DECL|struct|tc_netem_qopt
 r_struct
 id|tc_netem_qopt
@@ -964,6 +979,51 @@ id|__u32
 id|jitter
 suffix:semicolon
 multiline_comment|/* random jitter in latency (us) */
+)brace
+suffix:semicolon
+DECL|struct|tc_netem_corr
+r_struct
+id|tc_netem_corr
+(brace
+DECL|member|delay_corr
+id|__u32
+id|delay_corr
+suffix:semicolon
+multiline_comment|/* delay correlation */
+DECL|member|loss_corr
+id|__u32
+id|loss_corr
+suffix:semicolon
+multiline_comment|/* packet loss correlation */
+DECL|member|dup_corr
+id|__u32
+id|dup_corr
+suffix:semicolon
+multiline_comment|/* duplicate correlation  */
+)brace
+suffix:semicolon
+DECL|struct|tc_netem_dist
+r_struct
+id|tc_netem_dist
+(brace
+DECL|member|size
+id|__u32
+id|size
+suffix:semicolon
+multiline_comment|/* table size */
+DECL|member|factor
+id|__u32
+id|factor
+suffix:semicolon
+multiline_comment|/* table scaling factor */
+DECL|member|data
+id|__s16
+id|data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* distribution table values */
 )brace
 suffix:semicolon
 macro_line|#endif

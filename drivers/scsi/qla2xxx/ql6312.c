@@ -334,4 +334,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|QLA2XXX_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|QLA2XXX_VERSION
+)paren
+suffix:semicolon
 eof

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
@@ -533,12 +534,10 @@ l_int|10
 )paren
 (brace
 multiline_comment|/* sleep 2 sec and try again */
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|2
-op_star
-id|HZ
 )paren
 suffix:semicolon
 r_goto

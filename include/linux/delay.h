@@ -33,5 +33,26 @@ r_int
 id|msecs
 )paren
 suffix:semicolon
+DECL|function|ssleep
+r_static
+r_inline
+r_void
+id|ssleep
+c_func
+(paren
+r_int
+r_int
+id|seconds
+)paren
+(brace
+id|msleep
+c_func
+(paren
+id|seconds
+op_star
+l_int|1000
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* defined(_LINUX_DELAY_H) */
 eof
