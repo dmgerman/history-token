@@ -3457,6 +3457,38 @@ id|flowi
 op_star
 id|fl
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|dev-&gt;dev_addr
+comma
+op_amp
+id|p-&gt;laddr
+comma
+r_sizeof
+(paren
+r_struct
+id|in6_addr
+)paren
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|dev-&gt;broadcast
+comma
+op_amp
+id|p-&gt;raddr
+comma
+r_sizeof
+(paren
+r_struct
+id|in6_addr
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Set up flowi template */
 id|fl
 op_assign
@@ -4348,10 +4380,13 @@ id|dev-&gt;iflink
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Hmm... MAX_ADDR_LEN is 8, so the ipv6 addresses can&squot;t be&n;&t;   copied to dev-&gt;dev_addr and dev-&gt;broadcast, like the ipv4&n;&t;   addresses were in ipip.c, ip_gre.c and sit.c. */
 id|dev-&gt;addr_len
 op_assign
-l_int|0
+r_sizeof
+(paren
+r_struct
+id|in6_addr
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_tnl_dev_init_gen - general initializer for all tunnel devices&n; *   @dev: virtual device associated with tunnel&n; **/
