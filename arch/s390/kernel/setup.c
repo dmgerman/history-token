@@ -67,6 +67,13 @@ id|machine_flags
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|default_storage_key
+r_int
+r_int
+id|default_storage_key
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 (brace
 DECL|member|addr

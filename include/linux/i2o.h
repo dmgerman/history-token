@@ -10,7 +10,7 @@ mdefine_line|#define I2O_MAX_DRIVERS&t;&t;4
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;&t;/* Needed for MUTEX init macros */
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/dma-mapping.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 multiline_comment|/* message queue empty */
 DECL|macro|I2O_QUEUE_EMPTY
 mdefine_line|#define I2O_QUEUE_EMPTY&t;&t;0xffffffff

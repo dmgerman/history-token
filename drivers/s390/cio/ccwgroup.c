@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.28 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.29 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -808,27 +808,20 @@ id|del_drvdata
 op_assign
 l_int|1
 suffix:semicolon
-op_star
-id|gdev
+id|gdev-&gt;creator_id
+op_assign
+id|creator_id
+suffix:semicolon
+id|gdev-&gt;count
+op_assign
+id|argc
+suffix:semicolon
+id|gdev-&gt;dev
 op_assign
 (paren
 r_struct
-id|ccwgroup_device
+id|device
 )paren
-(brace
-dot
-id|creator_id
-op_assign
-id|creator_id
-comma
-dot
-id|count
-op_assign
-id|argc
-comma
-dot
-id|dev
-op_assign
 (brace
 dot
 id|bus
@@ -845,8 +838,6 @@ dot
 id|release
 op_assign
 id|ccwgroup_release
-comma
-)brace
 comma
 )brace
 suffix:semicolon
