@@ -6426,6 +6426,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|ndisc_netdev_notifier
+r_static
 r_struct
 id|notifier_block
 id|ndisc_netdev_notifier

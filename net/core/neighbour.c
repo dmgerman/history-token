@@ -6891,6 +6891,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ARPD */
 macro_line|#ifdef CONFIG_SYSCTL
 DECL|struct|neigh_sysctl_table
+r_static
 r_struct
 id|neigh_sysctl_table
 (brace
