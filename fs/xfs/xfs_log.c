@@ -428,7 +428,6 @@ id|__psint_t
 id|ptr
 )paren
 suffix:semicolon
-macro_line|#ifdef XFSDEBUG
 id|STATIC
 r_void
 id|xlog_verify_disk_cycle_no
@@ -443,7 +442,6 @@ op_star
 id|iclog
 )paren
 suffix:semicolon
-macro_line|#endif
 id|STATIC
 r_void
 id|xlog_verify_grant_head
@@ -11417,7 +11415,7 @@ l_string|&quot;xlog_verify_dest_ptr: invalid ptr&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_verify_dest_ptr */
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 multiline_comment|/* check split LR write */
 id|STATIC
 r_void

@@ -35,7 +35,7 @@ macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 id|STATIC
 r_void
 id|xfs_bmap_check_leaf_extents
@@ -379,7 +379,7 @@ id|whichfork
 )paren
 suffix:semicolon
 multiline_comment|/* data or attr fork */
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 multiline_comment|/*&n; * Check that the extents list for the inode ip is in the right order.&n; */
 id|STATIC
 r_void
@@ -2235,7 +2235,7 @@ suffix:semicolon
 )brace
 id|done
 suffix:colon
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -27108,7 +27108,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 multiline_comment|/*&n; * Check that the extents list for the inode ip is in the right order.&n; */
 id|STATIC
 r_void
