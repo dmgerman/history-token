@@ -5881,11 +5881,7 @@ id|icb-&gt;add_firmware_options
 l_int|0
 )braket
 op_or_assign
-(paren
-id|BIT_1
-op_or
-id|BIT_0
-)paren
+id|BIT_2
 suffix:semicolon
 id|icb-&gt;response_accumulation_timer
 op_assign
