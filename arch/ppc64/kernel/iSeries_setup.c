@@ -3308,4 +3308,35 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|function|iSeries_src_init
+r_int
+id|__init
+id|iSeries_src_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* clear the progress line */
+id|ppc_md
+dot
+id|progress
+c_func
+(paren
+l_string|&quot; &quot;
+comma
+l_int|0xffff
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|iSeries_src_init
+id|late_initcall
+c_func
+(paren
+id|iSeries_src_init
+)paren
+suffix:semicolon
 eof
