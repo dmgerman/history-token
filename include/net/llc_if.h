@@ -16,7 +16,7 @@ mdefine_line|#define LLC_DISC_PRIM&t;&t;3
 DECL|macro|LLC_RESET_PRIM
 mdefine_line|#define LLC_RESET_PRIM&t;&t;4
 DECL|macro|LLC_FLOWCONTROL_PRIM
-mdefine_line|#define LLC_FLOWCONTROL_PRIM&t;5
+mdefine_line|#define LLC_FLOWCONTROL_PRIM&t;5 /* Not supported at this time */
 DECL|macro|LLC_DISABLE_PRIM
 mdefine_line|#define LLC_DISABLE_PRIM&t;6
 DECL|macro|LLC_XID_PRIM
@@ -113,26 +113,6 @@ suffix:semicolon
 multiline_comment|/* used only by indicate */
 )brace
 suffix:semicolon
-DECL|struct|llc_prim_flow_ctrl
-r_struct
-id|llc_prim_flow_ctrl
-(brace
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-DECL|member|link
-id|u16
-id|link
-suffix:semicolon
-DECL|member|amount
-id|u32
-id|amount
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Sending data in conection-less mode */
 DECL|struct|llc_prim_unit_data
 r_struct
@@ -227,11 +207,6 @@ DECL|member|res
 r_struct
 id|llc_prim_reset
 id|res
-suffix:semicolon
-DECL|member|fc
-r_struct
-id|llc_prim_flow_ctrl
-id|fc
 suffix:semicolon
 DECL|member|udata
 r_struct

@@ -5520,9 +5520,6 @@ suffix:semicolon
 r_case
 id|LLC_RESET_PRIM
 suffix:colon
-r_case
-id|LLC_FLOWCONTROL_PRIM
-suffix:colon
 r_default
 suffix:colon
 r_break

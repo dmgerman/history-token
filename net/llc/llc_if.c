@@ -70,17 +70,6 @@ op_star
 id|prim
 )paren
 suffix:semicolon
-r_static
-r_int
-id|llc_flowcontrol_req_handler
-c_func
-(paren
-r_struct
-id|llc_prim_if_block
-op_star
-id|prim
-)paren
-suffix:semicolon
 multiline_comment|/* table of request handler functions */
 DECL|variable|llc_req_prim
 r_static
@@ -128,8 +117,9 @@ comma
 id|LLC_FLOWCONTROL_PRIM
 )braket
 op_assign
-id|llc_flowcontrol_req_handler
+l_int|NULL
 comma
+multiline_comment|/* Not supported at this time */
 (braket
 id|LLC_XID_PRIM
 )braket
@@ -1168,23 +1158,6 @@ suffix:semicolon
 )brace
 r_return
 id|rc
-suffix:semicolon
-)brace
-multiline_comment|/* We don&squot;t support flow control. The original code from procom has&n; * some bits, but for now I&squot;m cleaning this&n; */
-DECL|function|llc_flowcontrol_req_handler
-r_static
-r_int
-id|llc_flowcontrol_req_handler
-c_func
-(paren
-r_struct
-id|llc_prim_if_block
-op_star
-id|prim
-)paren
-(brace
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|variable|llc_sap_open
