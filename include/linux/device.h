@@ -293,7 +293,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|BUS_ATTR
-mdefine_line|#define BUS_ATTR(_name,_str,_mode,_show,_store)&t;&bslash;&n;struct bus_attribute bus_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name&t;= _str,&t;.mode&t;= _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define BUS_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct bus_attribute bus_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
 r_extern
 r_int
 id|bus_create_file
@@ -594,7 +594,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DRIVER_ATTR
-mdefine_line|#define DRIVER_ATTR(_name,_str,_mode,_show,_store)&t;&bslash;&n;struct driver_attribute driver_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name&t;= _str,&t;.mode&t;= _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define DRIVER_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct driver_attribute driver_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
 r_extern
 r_int
 id|driver_create_file
@@ -873,7 +873,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DEVICE_ATTR
-mdefine_line|#define DEVICE_ATTR(_name,_str,_mode,_show,_store)&t;&bslash;&n;struct device_attribute dev_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name&t;= _str,&t;.mode&t;= _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define DEVICE_ATTR(_name,_mode,_show,_store) &bslash;&n;struct device_attribute dev_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
 r_extern
 r_int
 id|device_create_file
@@ -978,10 +978,10 @@ id|dev-&gt;lock
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_device - atomically increment the reference count for the device.&n; *&n; */
-DECL|function|get_device
-r_static
-r_inline
-r_void
+r_extern
+r_struct
+id|device
+op_star
 id|get_device
 c_func
 (paren
@@ -990,27 +990,7 @@ id|device
 op_star
 id|dev
 )paren
-(brace
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|atomic_read
-c_func
-(paren
-op_amp
-id|dev-&gt;refcount
-)paren
-)paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|dev-&gt;refcount
-)paren
-suffix:semicolon
-)brace
 r_extern
 r_void
 id|put_device

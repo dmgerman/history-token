@@ -2342,9 +2342,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|config
-comma
-l_string|&quot;configuration&quot;
+id|configuration
 comma
 id|S_IRUGO
 comma
@@ -2411,8 +2409,6 @@ id|DEVICE_ATTR
 c_func
 (paren
 id|altsetting
-comma
-l_string|&quot;altsetting&quot;
 comma
 id|S_IRUGO
 comma
@@ -2518,8 +2514,6 @@ c_func
 (paren
 id|product
 comma
-l_string|&quot;product&quot;
-comma
 id|S_IRUGO
 comma
 id|show_product
@@ -2624,8 +2618,6 @@ c_func
 (paren
 id|manufacturer
 comma
-l_string|&quot;manufacturer&quot;
-comma
 id|S_IRUGO
 comma
 id|show_manufacturer
@@ -2729,8 +2721,6 @@ id|DEVICE_ATTR
 c_func
 (paren
 id|serial
-comma
-l_string|&quot;serial&quot;
 comma
 id|S_IRUGO
 comma
@@ -4579,7 +4569,7 @@ op_amp
 id|dev-&gt;dev
 comma
 op_amp
-id|dev_attr_config
+id|dev_attr_configuration
 )paren
 suffix:semicolon
 r_if
