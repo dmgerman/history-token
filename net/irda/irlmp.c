@@ -133,8 +133,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize the irlmp structure. */
@@ -622,8 +623,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -834,8 +836,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Looks like somebody has removed me already!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Looks like somebody has removed me already!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1043,8 +1046,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|link
@@ -1185,8 +1189,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), slsap_sel=%02x, dlsap_sel=%02x, saddr=%08x, daddr=%08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), slsap_sel=%02x, dlsap_sel=%02x, saddr=%08x, daddr=%08x&bslash;n&quot;
 comma
 id|self-&gt;slsap_sel
 comma
@@ -1354,8 +1359,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), no daddr&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no daddr&bslash;n&quot;
 )paren
 suffix:semicolon
 id|discovery
@@ -1421,8 +1427,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unable to find a usable link!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to find a usable link!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1470,8 +1477,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), sorry, but I&squot;m waiting for LAP to timeout!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sorry, but I&squot;m waiting for LAP to timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1485,8 +1493,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), sorry, but link is busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sorry, but link is busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1695,8 +1704,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), slsap_sel=%02x, dlsap_sel=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), slsap_sel=%02x, dlsap_sel=%02x&bslash;n&quot;
 comma
 id|self-&gt;slsap_sel
 comma
@@ -1841,8 +1851,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), slsap_sel=%02x, dlsap_sel=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), slsap_sel=%02x, dlsap_sel=%02x&bslash;n&quot;
 comma
 id|self-&gt;slsap_sel
 comma
@@ -1920,8 +1931,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1998,8 +2010,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), max_header_size=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), max_header_size=%d&bslash;n&quot;
 comma
 id|max_header_size
 )paren
@@ -2079,8 +2092,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2116,8 +2130,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to find LSAP&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to find LSAP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2160,8 +2175,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to kmalloc&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to kmalloc&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2332,8 +2348,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), already disconnected!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), already disconnected!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -2528,8 +2545,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), reason=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reason=%s&bslash;n&quot;
 comma
 id|lmp_reasons
 (braket
@@ -2564,8 +2582,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), slsap_sel=%02x, dlsap_sel=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), slsap_sel=%02x, dlsap_sel=%02x&bslash;n&quot;
 comma
 id|self-&gt;slsap_sel
 comma
@@ -2592,8 +2611,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), already disconnected!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), already disconnected!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2730,8 +2750,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), no handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3274,8 +3295,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check if client wants or not partial/selective log (optimisation) */
@@ -3381,8 +3403,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3489,8 +3512,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3591,8 +3615,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3793,8 +3818,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3870,8 +3896,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3974,8 +4001,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4159,8 +4187,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4246,8 +4275,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Not implemented&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4356,8 +4386,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), no handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|curr
@@ -4430,8 +4461,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() : %d lsaps to scan&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() : %d lsaps to scan&bslash;n&quot;
 comma
 id|lsap_todo
 )paren
@@ -4524,8 +4556,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() : curr is %p, next was %p and is now %p, still %d to go - queue len = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() : curr is %p, next was %p and is now %p, still %d to go - queue len = %d&bslash;n&quot;
 comma
 id|curr
 comma
@@ -4568,8 +4601,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), no handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4618,8 +4652,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unable to kmalloc!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to kmalloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5111,8 +5146,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown service!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown service!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -5142,8 +5178,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), hints = %04x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), hints = %04x&bslash;n&quot;
 comma
 id|hints
 )paren
@@ -5174,8 +5211,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unable to kmalloc!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to kmalloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5241,8 +5279,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -5283,8 +5322,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown service!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown service!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5403,8 +5443,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -5445,8 +5486,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unable to kmalloc!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to kmalloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5562,8 +5604,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown client!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown client!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5612,8 +5655,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -5654,8 +5698,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown client!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown client!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5668,8 +5713,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), removing client!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), removing client!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hashbin_remove_this
@@ -5759,8 +5805,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_ULTRA
@@ -6036,8 +6083,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), next free lsap_sel=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), next free lsap_sel=%02x&bslash;n&quot;
 comma
 id|lsap_sel
 )paren
@@ -6076,8 +6124,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), LAP_DISC_INDICATION&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LAP_DISC_INDICATION&bslash;n&quot;
 )paren
 suffix:semicolon
 id|reason
@@ -6095,8 +6144,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), LAP_NO_RESPONSE&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LAP_NO_RESPONSE&bslash;n&quot;
 )paren
 suffix:semicolon
 id|reason
@@ -6113,8 +6163,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), LAP_RESET_INDICATION&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LAP_RESET_INDICATION&bslash;n&quot;
 )paren
 suffix:semicolon
 id|reason
@@ -6137,8 +6188,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), LAP_FOUND_NONE, LAP_MEDIA_BUSY or LAP_PRIMARY_CONFLICT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LAP_FOUND_NONE, LAP_MEDIA_BUSY or LAP_PRIMARY_CONFLICT&bslash;n&quot;
 )paren
 suffix:semicolon
 id|reason
@@ -6154,8 +6206,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknow IrLAP disconnect reason %d!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknow IrLAP disconnect reason %d!&bslash;n&quot;
 comma
 id|lap_reason
 )paren

@@ -222,8 +222,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize the irlap structure. */
@@ -640,8 +641,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -709,8 +711,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Didn&squot;t find myself!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Didn&squot;t find myself!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -745,8 +748,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -825,8 +829,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_do_event
@@ -876,8 +881,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), daddr=0x%08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), daddr=0x%08x&bslash;n&quot;
 comma
 id|daddr
 )paren
@@ -969,8 +975,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1110,8 +1117,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1273,8 +1281,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1366,8 +1375,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1448,8 +1458,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1542,8 +1553,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), disconnect pending!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), disconnect pending!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;disconnect_pending
@@ -1574,8 +1586,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), reason=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reason=%s&bslash;n&quot;
 comma
 id|lap_reasons
 (braket
@@ -1626,8 +1639,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Sending reset request!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Sending reset request!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_do_event
@@ -1745,8 +1759,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), nslots = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), nslots = %d&bslash;n&quot;
 comma
 id|discovery-&gt;nslots
 )paren
@@ -1796,8 +1811,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), discovery only possible in NDM mode&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), discovery only possible in NDM mode&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_discovery_confirm
@@ -1981,8 +1997,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2123,8 +2140,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2196,8 +2214,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2498,8 +2517,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), expected!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), expected!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2577,8 +2597,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2824,8 +2845,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), setting speed to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), setting speed to %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -2962,8 +2984,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Found user specified QoS!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Found user specified QoS!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3035,8 +3058,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3233,8 +3257,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
