@@ -3813,7 +3813,6 @@ id|icmp_rcv
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;Called by socket.c on kernel startup.  &n; */
 DECL|function|inet_init
 r_static
 r_int
