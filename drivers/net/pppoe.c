@@ -1,4 +1,4 @@
-multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.9&n; *&n; * 220102 :&t;Fix module use count on failure in pppoe_create, pppox_sk -acme&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against&n; *&t;&t;simultaneous invocation of ppp_input&n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk&n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; * 050101 :&t;Fix PADT procesing.&n; * 140501 :&t;Use pppoe_rcv_core to handle all backlog. (Alexey)&n; * 170701 :&t;Do not lock_sock with rwlock held. (DaveM)&n; *&t;&t;Ignore discovery frames if user has socket&n; *&t;&t;locked. (DaveM)&n; *&t;&t;Ignore return value of dev_queue_xmit in __pppoe_xmit&n; *&t;&t;or else we may kfree an SKB twice. (DaveM)&n; * 190701 :&t;When doing copies of skb&squot;s in __pppoe_xmit, always delete&n; *&t;&t;the original skb that was passed in on success, never on&n; *&t;&t;failure.  Delete the copy of the skb on failure to avoid&n; *&t;&t;a memory leak.&n; * 081001 :     Misc. cleanup (licence string, non-blocking, prevent&n; *              reference of device on close).&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@speakeasy.net&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&t;&t;David S. Miller (davem@redhat.com)&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.10&n; *&n; * 220102 :&t;Fix module use count on failure in pppoe_create, pppox_sk -acme&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against&n; *&t;&t;simultaneous invocation of ppp_input&n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk&n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; * 050101 :&t;Fix PADT procesing.&n; * 140501 :&t;Use pppoe_rcv_core to handle all backlog. (Alexey)&n; * 170701 :&t;Do not lock_sock with rwlock held. (DaveM)&n; *&t;&t;Ignore discovery frames if user has socket&n; *&t;&t;locked. (DaveM)&n; *&t;&t;Ignore return value of dev_queue_xmit in __pppoe_xmit&n; *&t;&t;or else we may kfree an SKB twice. (DaveM)&n; * 190701 :&t;When doing copies of skb&squot;s in __pppoe_xmit, always delete&n; *&t;&t;the original skb that was passed in on success, never on&n; *&t;&t;failure.  Delete the copy of the skb on failure to avoid&n; *&t;&t;a memory leak.&n; * 081001 :     Misc. cleanup (licence string, non-blocking, prevent&n; *              reference of device on close).&n; * 121301 :     New ppp channels interface; cannot unregister a channel&n; *              from interrupts.  Thus, we mark the socket as a ZOMBIE&n; *              and do the unregistration later.&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@speakeasy.net&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&t;&t;David S. Miller (davem@redhat.com)&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -94,13 +94,13 @@ id|proto_ops
 id|pppoe_ops
 suffix:semicolon
 macro_line|#if 0
-mdefine_line|#define CHECKPTR(x,y) { if (!(x) &amp;&amp; pppoe_debug &amp;7 ){ printk(KERN_CRIT &quot;PPPoE Invalid pointer : %s , %p&bslash;n&quot;,#x,(x)); error=-EINVAL; goto y; }}
-mdefine_line|#define DEBUG(s,args...) if( pppoe_debug &amp; (s) ) printk(KERN_CRIT args );
+mdefine_line|#define CHECKPTR(x,y) do { if (!(x) &amp;&amp; pppoe_debug &amp;7 ){ printk(KERN_CRIT &quot;PPPoE Invalid pointer : %s , %p&bslash;n&quot;,#x,(x)); error=-EINVAL; goto y; }} while (0)
+mdefine_line|#define DEBUG(s,args...) do { if( pppoe_debug &amp; (s) ) printk(KERN_CRIT args ); } while (0)
 macro_line|#else
 DECL|macro|CHECKPTR
-mdefine_line|#define CHECKPTR(x,y) do {} while (0);
+mdefine_line|#define CHECKPTR(x,y) do { } while (0)
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(s,args...) do { } while (0);
+mdefine_line|#define DEBUG(s,args...) do { } while (0)
 macro_line|#endif
 DECL|variable|pppoe_hash_lock
 r_static
@@ -896,7 +896,7 @@ id|dev
 suffix:semicolon
 id|sk-&gt;state
 op_assign
-id|PPPOX_DEAD
+id|PPPOX_ZOMBIE
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
@@ -1432,12 +1432,18 @@ id|sk-&gt;lock.users
 op_eq
 l_int|0
 )paren
+(brace
+id|sk-&gt;state
+op_assign
+id|PPPOX_ZOMBIE
+suffix:semicolon
 id|pppox_unbind_sock
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
+)brace
 id|bh_unlock_sock
 c_func
 (paren
@@ -2498,7 +2504,13 @@ c_cond
 (paren
 id|sk-&gt;state
 op_amp
+(paren
 id|PPPOX_BOUND
+op_or
+id|PPPOX_ZOMBIE
+op_or
+id|PPPOX_DEAD
+)paren
 )paren
 r_break
 suffix:semicolon
