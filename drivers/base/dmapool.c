@@ -877,17 +877,28 @@ id|page-&gt;bitmap
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pool-&gt;dev
+)paren
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_destroy %s, %p busy&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+id|page-&gt;vaddr
+)paren
+suffix:semicolon
+r_else
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;dma_pool_destroy %s/%s, %p busy&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;bus_id
-suffix:colon
-l_int|NULL
+l_string|&quot;dma_pool_destroy %s, %p busy&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
@@ -1375,17 +1386,34 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pool-&gt;dev
+)paren
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_free %s, %p/%lx (bad dma)&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+id|vaddr
+comma
+(paren
+r_int
+r_int
+)paren
+id|dma
+)paren
+suffix:semicolon
+r_else
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;dma_pool_free %s/%s, %p/%lx (bad dma)&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;bus_id
-suffix:colon
-l_int|NULL
+l_string|&quot;dma_pool_free %s, %p/%lx (bad dma)&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
@@ -1442,17 +1470,35 @@ op_ne
 id|vaddr
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pool-&gt;dev
+)paren
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_free %s, %p (bad vaddr)/%Lx&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+id|vaddr
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|dma
+)paren
+suffix:semicolon
+r_else
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;dma_pool_free %s/%s, %p (bad vaddr)/%Lx&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;bus_id
-suffix:colon
-l_int|NULL
+l_string|&quot;dma_pool_free %s, %p (bad vaddr)/%Lx&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
@@ -1484,17 +1530,33 @@ id|block
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pool-&gt;dev
+)paren
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_free %s, dma %Lx already free&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|dma
+)paren
+suffix:semicolon
+r_else
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;dma_pool_free %s/%s, dma %Lx already free&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;bus_id
-suffix:colon
-l_int|NULL
+l_string|&quot;dma_pool_free %s, dma %Lx already free&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
