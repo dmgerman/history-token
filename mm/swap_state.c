@@ -525,7 +525,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|ClearPageDirty
+id|__clear_page_dirty
 c_func
 (paren
 id|page
@@ -958,7 +958,7 @@ id|entry
 )paren
 suffix:semicolon
 multiline_comment|/* shift page from clean_pages to dirty_pages list */
-id|ClearPageDirty
+id|__clear_page_dirty
 c_func
 (paren
 id|page

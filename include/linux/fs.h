@@ -936,6 +936,11 @@ id|bd_private
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Radix-tre tags, for tagging dirty and writeback pages within the pagecache&n; * radix trees&n; */
+DECL|macro|PAGECACHE_TAG_DIRTY
+mdefine_line|#define PAGECACHE_TAG_DIRTY&t;0
+DECL|macro|PAGECACHE_TAG_WRITEBACK
+mdefine_line|#define PAGECACHE_TAG_WRITEBACK&t;1
 multiline_comment|/*&n; * Use sequence counter to get consistent i_size on 32-bit processors.&n; */
 macro_line|#if BITS_PER_LONG==32 &amp;&amp; defined(CONFIG_SMP)
 macro_line|#include &lt;linux/seqlock.h&gt;

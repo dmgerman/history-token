@@ -509,5 +509,15 @@ id|page
 )paren
 suffix:semicolon
 )brace
+r_int
+id|__clear_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* PAGE_FLAGS_H */
 eof

@@ -2807,6 +2807,17 @@ op_amp
 id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
+id|radix_tree_tag_set
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_tree
+comma
+id|page-&gt;index
+comma
+id|PAGECACHE_TAG_DIRTY
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock_irq
 c_func
