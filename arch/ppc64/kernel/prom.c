@@ -218,27 +218,16 @@ id|lmb
 id|lmb
 suffix:semicolon
 DECL|macro|MAX_PHB
-mdefine_line|#define MAX_PHB 16 * 3  
-singleline_comment|// 16 Towers * 3 PHBs/tower
+mdefine_line|#define MAX_PHB (32 * 6)  /* 32 drawers * 6 PHBs/drawer */
 DECL|variable|of_tce_table
 r_struct
-id|_of_tce_table
+id|of_tce_table
 id|of_tce_table
 (braket
 id|MAX_PHB
 op_plus
 l_int|1
 )braket
-op_assign
-(brace
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-)brace
 suffix:semicolon
 DECL|variable|bootpath
 r_char
@@ -3991,7 +3980,7 @@ comma
 id|minsize
 suffix:semicolon
 r_struct
-id|_of_tce_table
+id|of_tce_table
 op_star
 id|prom_tce_table
 op_assign
@@ -4037,6 +4026,28 @@ id|node
 suffix:semicolon
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|table
+op_eq
+id|MAX_PHB
+)paren
+(brace
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;WARNING: PCI host bridge ignored, &quot;
+l_string|&quot;need to increase MAX_PHB&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|compatible
 (braket
 l_int|0
@@ -4395,11 +4406,32 @@ op_lshift
 l_int|20
 suffix:semicolon
 )brace
-multiline_comment|/* Even though we read what OF wants, we just set the table&n;&t;&t; * size to 4 MB.  This is enough to map 2GB of PCI DMA space.&n;&t;&t; * By doing this, we avoid the pitfalls of trying to DMA to&n;&t;&t; * MMIO space and the DMA alias hole.&n;&t;&t; */
-multiline_comment|/* &n;&t;&t; * On POWER4, firmware sets the TCE region by assuming&n;&t;&t; * each TCE table is 8MB. Using this memory for anything&n;&t;&t; * else will impact performance, so we always allocate 8MB.&n;&t;&t; * Anton&n;&t;&t; *&n;&t;&t; * XXX FIXME use a cpu feature here&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Even though we read what OF wants, we just set the table&n;&t;&t; * size to 4 MB.  This is enough to map 2GB of PCI DMA space.&n;&t;&t; * By doing this, we avoid the pitfalls of trying to DMA to&n;&t;&t; * MMIO space and the DMA alias hole.&n;&t;&t; *&n;&t;&t; * On POWER4, firmware sets the TCE region by assuming&n;&t;&t; * each TCE table is 8MB. Using this memory for anything&n;&t;&t; * else will impact performance, so we always allocate 8MB.&n;&t;&t; * Anton&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4
+)paren
+op_logical_or
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4p
+)paren
+)paren
 id|minsize
 op_assign
 l_int|8UL
+op_lshift
+l_int|20
+suffix:semicolon
+r_else
+id|minsize
+op_assign
+l_int|4UL
 op_lshift
 l_int|20
 suffix:semicolon
