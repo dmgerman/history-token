@@ -13295,6 +13295,8 @@ op_assign
 id|generic_ide_ioctl
 c_func
 (paren
+id|drive
+comma
 id|file
 comma
 id|bdev
