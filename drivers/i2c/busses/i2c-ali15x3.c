@@ -256,12 +256,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|ali15x3_smba
 comma
 id|ALI15X3_SMB_IOSIZE
+comma
+l_string|&quot;ali15x3-smb&quot;
 )paren
 )paren
 (brace
@@ -471,17 +474,6 @@ comma
 id|SMBCLK
 comma
 l_int|0x20
-)paren
-suffix:semicolon
-multiline_comment|/* Everything is happy, let&squot;s grab the memory and set things up. */
-id|request_region
-c_func
-(paren
-id|ali15x3_smba
-comma
-id|ALI15X3_SMB_IOSIZE
-comma
-l_string|&quot;ali15x3-smb&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;  The interrupt routing for SMB is set up in register 0x77 in the&n;  1533 ISA Bridge device, NOT in the 7101 device.&n;  Don&squot;t bother with finding the 1533 device and reading the register.&n;&t;if ((....... &amp; 0x0F) == 1)&n;&t;&t;dev_dbg(&amp;ALI15X3_dev-&gt;dev, &quot;ALI15X3 using Interrupt 9 for SMBus.&bslash;n&quot;);&n;*/
