@@ -240,5 +240,27 @@ id|u32
 id|new_size
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ntfs_attr_set
+c_func
+(paren
+id|ntfs_inode
+op_star
+id|ni
+comma
+r_const
+id|s64
+id|ofs
+comma
+r_const
+id|s64
+id|cnt
+comma
+r_const
+id|u8
+id|val
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_NTFS_ATTRIB_H */
 eof
