@@ -2644,13 +2644,7 @@ comma
 r_void
 op_star
 )paren
-id|kdev_t_to_nr
-c_func
-(paren
-id|sb
-op_member_access_from_pointer
-id|s_dev
-)paren
+id|sb-&gt;s_bdev-&gt;bd_dev
 )paren
 suffix:colon
 l_int|NULL

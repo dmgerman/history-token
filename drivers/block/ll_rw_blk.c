@@ -5332,14 +5332,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: rw=%ld, want=%ld, limit=%Lu&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bio-&gt;bi_bdev-&gt;bd_dev
-)paren
+id|bio-&gt;bi_bdev
 )paren
 comma
 id|bio-&gt;bi_rw
@@ -5393,14 +5389,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;generic_make_request: Trying to access nonexistent block-device %s (%Lu)&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bio-&gt;bi_bdev-&gt;bd_dev
-)paren
+id|bio-&gt;bi_bdev
 )paren
 comma
 (paren
