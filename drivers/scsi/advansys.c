@@ -8859,18 +8859,14 @@ op_add_assign
 id|cnt
 suffix:semicolon
 multiline_comment|/*&n;     * Display target driver information for each device attached&n;     * to the board.&n;     */
-r_for
-c_loop
+id|list_for_each_entry
 (paren
 id|scd
-op_assign
-id|shp-&gt;host_queue
-suffix:semicolon
-id|scd
-suffix:semicolon
-id|scd
-op_assign
-id|scd-&gt;next
+comma
+op_amp
+id|shp-&gt;my_devices
+comma
+id|siblings
 )paren
 (brace
 r_if
@@ -27615,12 +27611,7 @@ macro_line|#if ASC_LINUX_KERNEL24
 id|printk
 c_func
 (paren
-l_string|&quot; host_queue 0x%lx, hostt 0x%lx&bslash;n&quot;
-comma
-(paren
-id|ulong
-)paren
-id|s-&gt;host_queue
+l_string|&quot; hostt 0x%lx&bslash;n&quot;
 comma
 (paren
 id|ulong

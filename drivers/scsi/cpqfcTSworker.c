@@ -9278,7 +9278,6 @@ id|PFC_LOGGEDIN_PORT
 id|pLoggedInPort
 )paren
 (brace
-singleline_comment|//  Scsi_Device *sdev = HostAdapter-&gt;host_queue;
 id|CPQFCHBA
 op_star
 id|cpqfcHBAdata
