@@ -2709,6 +2709,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|wait_on_page_writeback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2719,20 +2725,12 @@ c_func
 id|page
 )paren
 )paren
-(brace
-id|wait_on_page_writeback
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|delete_from_swap_cache
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * So we could skip searching mms once swap count went&n;&t;&t; * to 1, we did not mark any present ptes as dirty: must&n;&t;&t; * mark page dirty so try_to_swap_out will preserve it.&n;&t;&t; */
 id|SetPageDirty
 c_func
