@@ -1938,7 +1938,7 @@ comma
 (brace
 id|PCI_FIXUP_FINAL
 comma
-id|PCI_VENDOR_ID_SIS
+id|PCI_VENDOR_ID_SI
 comma
 id|PCI_ANY_ID
 comma
