@@ -131,7 +131,7 @@ mdefine_line|#define irq_exit()&t;&t;br_read_unlock(BR_GLOBALIRQ_LOCK)
 macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|synchronize_irq
-mdefine_line|#define synchronize_irq()&t;barrier()
+mdefine_line|#define synchronize_irq(irq)&t;barrier()
 macro_line|#else /* (CONFIG_SMP) */
 DECL|function|irqs_running
 r_static

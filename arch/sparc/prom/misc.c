@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/auxio.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 r_extern
 r_void
 id|restore_current
@@ -173,10 +174,6 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|serial_console
-suffix:semicolon
 multiline_comment|/* Drop into the prom, with the chance to continue with the &squot;go&squot;&n; * prom command.&n; */
 r_void
 DECL|function|prom_cmdline
@@ -186,14 +183,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_void
-id|kernel_enter_debugger
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|install_obp_ticker
@@ -213,11 +202,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|kernel_enter_debugger
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -234,11 +218,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|install_obp_ticker
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -246,6 +225,11 @@ op_amp
 id|prom_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|install_obp_ticker
+c_func
+(paren
 )paren
 suffix:semicolon
 (paren
@@ -262,6 +246,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|install_linux_ticker
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -269,11 +258,6 @@ op_amp
 id|prom_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|install_linux_ticker
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SUN_AUXIO
