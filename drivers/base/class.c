@@ -1213,17 +1213,6 @@ op_member_access_from_pointer
 r_class
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|class_dev-&gt;dev
-)paren
-id|get_device
-c_func
-(paren
-id|class_dev-&gt;dev
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
