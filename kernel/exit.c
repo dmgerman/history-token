@@ -2890,7 +2890,6 @@ id|tsk-&gt;exit_state
 op_assign
 id|state
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clear these here so that update_process_times() won&squot;t try to deliver&n;&t; * itimer, profile or rlimit signals to this task while it is in late exit.&n;&t; */
 id|tsk-&gt;it_virt_value
 op_assign
 id|cputime_zero
@@ -2898,18 +2897,6 @@ suffix:semicolon
 id|tsk-&gt;it_prof_value
 op_assign
 id|cputime_zero
-suffix:semicolon
-id|tsk-&gt;it_virt_expires
-op_assign
-id|cputime_zero
-suffix:semicolon
-id|tsk-&gt;it_prof_expires
-op_assign
-id|cputime_zero
-suffix:semicolon
-id|tsk-&gt;it_sched_expires
-op_assign
-l_int|0
 suffix:semicolon
 id|write_unlock_irq
 c_func
@@ -3107,6 +3094,19 @@ c_func
 op_amp
 id|tsk-&gt;real_timer
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure we don&squot;t try to process any timer firings&n;&t; * while we are already exiting.&n;&t; */
+id|tsk-&gt;it_virt_expires
+op_assign
+id|cputime_zero
+suffix:semicolon
+id|tsk-&gt;it_prof_expires
+op_assign
+id|cputime_zero
+suffix:semicolon
+id|tsk-&gt;it_sched_expires
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
