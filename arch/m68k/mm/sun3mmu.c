@@ -40,16 +40,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|empty_bad_page_table
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|empty_bad_page
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|num_pages
 suffix:semicolon
 DECL|function|free_initmem
