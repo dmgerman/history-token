@@ -205,6 +205,14 @@ r_int
 id|vaddr
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_APUS
+DECL|macro|PPC_MEMSTART
+mdefine_line|#define PPC_MEMSTART&t;0
+DECL|macro|PPC_PGSTART
+mdefine_line|#define PPC_PGSTART&t;0
+DECL|macro|PPC_MEMOFFSET
+mdefine_line|#define PPC_MEMOFFSET&t;PAGE_OFFSET
+macro_line|#else
 r_extern
 r_int
 r_int
@@ -213,16 +221,17 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+id|ppc_pgstart
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|ppc_memoffset
 suffix:semicolon
-macro_line|#ifndef CONFIG_APUS
-DECL|macro|PPC_MEMSTART
-mdefine_line|#define PPC_MEMSTART&t;0
-DECL|macro|PPC_MEMOFFSET
-mdefine_line|#define PPC_MEMOFFSET&t;PAGE_OFFSET
-macro_line|#else
 DECL|macro|PPC_MEMSTART
 mdefine_line|#define PPC_MEMSTART&t;ppc_memstart
+DECL|macro|PPC_PGSTART
+mdefine_line|#define PPC_PGSTART&t;ppc_pgstart
 DECL|macro|PPC_MEMOFFSET
 mdefine_line|#define PPC_MEMOFFSET&t;ppc_memoffset
 macro_line|#endif
@@ -351,21 +360,16 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x) ___pa((unsigned long)(x))
 DECL|macro|__va
 mdefine_line|#define __va(x) ((void *)(___va((unsigned long)(x))))
-DECL|macro|MAP_PAGE_RESERVED
-mdefine_line|#define MAP_PAGE_RESERVED&t;(1&lt;&lt;15)
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + ((pfn) - PPC_PGSTART))
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map) + PPC_PGSTART)
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + (((unsigned long)kaddr-PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
-r_extern
-r_int
-r_int
-id|get_zero_page_fast
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn) - PPC_PGSTART) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_extern
@@ -380,7 +384,7 @@ id|size
 )paren
 (brace
 r_int
-id|order
+id|lz
 suffix:semicolon
 id|size
 op_assign
@@ -390,35 +394,27 @@ op_minus
 l_int|1
 )paren
 op_rshift
-(paren
 id|PAGE_SHIFT
-op_minus
-l_int|1
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;cntlzw %0,%1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|lz
 )paren
-suffix:semicolon
-id|order
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_do
-(brace
-id|size
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|order
-op_increment
-suffix:semicolon
-)brace
-r_while
-c_loop
+suffix:colon
+l_string|&quot;r&quot;
 (paren
 id|size
+)paren
 )paren
 suffix:semicolon
 r_return
-id|order
+l_int|32
+op_minus
+id|lz
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASSEMBLY__ */

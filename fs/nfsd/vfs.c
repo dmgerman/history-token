@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
@@ -20,6 +19,7 @@ macro_line|#include &lt;linux/in.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#ifdef CONFIG_NFSD_V3
@@ -1467,9 +1467,19 @@ op_star
 id|inode
 suffix:semicolon
 r_int
+id|flags
+op_assign
+id|O_RDONLY
+op_or
+id|O_LARGEFILE
+comma
+id|mode
+op_assign
+id|FMODE_READ
+comma
 id|err
 suffix:semicolon
-multiline_comment|/* If we get here, then the client has already done an &quot;open&quot;, and (hopefully)&n;&t; * checked permission - so allow OWNER_OVERRIDE in case a chmod has now revoked&n;&t; * permission */
+multiline_comment|/*&n;&t; * If we get here, then the client has already done an &quot;open&quot;,&n;&t; * and (hopefully) checked permission - so allow OWNER_OVERRIDE&n;&t; * in case a chmod has now revoked permission.&n;&t; */
 id|err
 op_assign
 id|fh_verify
@@ -1565,13 +1575,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|access
 op_amp
 id|MAY_WRITE
 )paren
-op_logical_and
-(paren
+(brace
 id|err
 op_assign
 id|get_write_access
@@ -1579,67 +1587,22 @@ c_func
 (paren
 id|inode
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-r_goto
-id|out_nfserr
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|filp
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|filp
-)paren
-)paren
-suffix:semicolon
-id|filp-&gt;f_op
-op_assign
-id|fops_get
-c_func
-(paren
-id|inode-&gt;i_fop
-)paren
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|filp-&gt;f_count
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|filp-&gt;f_dentry
-op_assign
-id|dentry
-suffix:semicolon
-id|filp-&gt;f_vfsmnt
-op_assign
-id|fhp-&gt;fh_export-&gt;ex_mnt
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|access
-op_amp
-id|MAY_WRITE
+id|err
 )paren
-(brace
-id|filp-&gt;f_flags
+r_goto
+id|out_nfserr
+suffix:semicolon
+id|flags
 op_assign
 id|O_WRONLY
 op_or
 id|O_LARGEFILE
 suffix:semicolon
-id|filp-&gt;f_mode
+id|mode
 op_assign
 id|FMODE_WRITE
 suffix:semicolon
@@ -1650,55 +1613,35 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-r_else
+id|err
+op_assign
+id|init_private_file
+c_func
+(paren
+id|filp
+comma
+id|dentry
+comma
+id|mode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
 (brace
 id|filp-&gt;f_flags
 op_assign
-id|O_RDONLY
-op_or
-id|O_LARGEFILE
+id|flags
 suffix:semicolon
-id|filp-&gt;f_mode
+id|filp-&gt;f_vfsmnt
 op_assign
-id|FMODE_READ
+id|fhp-&gt;fh_export-&gt;ex_mnt
 suffix:semicolon
 )brace
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|filp-&gt;f_op
-op_logical_and
-id|filp-&gt;f_op-&gt;open
-)paren
-(brace
-id|err
-op_assign
-id|filp-&gt;f_op
-op_member_access_from_pointer
-id|open
-c_func
-(paren
-id|inode
-comma
-id|filp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-id|fops_put
-c_func
-(paren
-id|filp-&gt;f_op
-)paren
-suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -1712,16 +1655,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/* I nearly added put_filp() call here, but this filp&n;&t;&t;&t; * is really on callers stack frame. -DaveM&n;&t;&t;&t; */
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|filp-&gt;f_count
-)paren
-suffix:semicolon
-)brace
-)brace
 id|out_nfserr
 suffix:colon
 r_if
@@ -1772,8 +1705,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|filp-&gt;f_op
-op_logical_and
 id|filp-&gt;f_op-&gt;release
 )paren
 id|filp-&gt;f_op
@@ -1784,12 +1715,6 @@ c_func
 id|inode
 comma
 id|filp
-)paren
-suffix:semicolon
-id|fops_put
-c_func
-(paren
-id|filp-&gt;f_op
 )paren
 suffix:semicolon
 r_if

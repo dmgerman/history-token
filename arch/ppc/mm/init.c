@@ -414,17 +414,6 @@ comma
 id|cached
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Free up now-unused memory */
 DECL|function|free_sec
@@ -1036,11 +1025,6 @@ l_int|0x211
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BOOTX_TEXT
-multiline_comment|/* By default, we are no longer mapped */
-id|boot_text_mapped
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Must be done last, or ppc_md.progress will die. */
 id|map_boot_text
 c_func

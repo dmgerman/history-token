@@ -1,10 +1,9 @@
 multiline_comment|/*&n; *&t;fs/bfs/dir.c&n; *&t;BFS directory operations.&n; *&t;Copyright (C) 1999,2000  Tigran Aivazian &lt;tigran@veritas.com&gt;&n; */
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/bfs_fs.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;bfs_defs.h&quot;
+macro_line|#include &quot;bfs.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG

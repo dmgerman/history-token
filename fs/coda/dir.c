@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -340,13 +339,13 @@ id|permission
 suffix:colon
 id|coda_permission
 comma
-id|revalidate
+id|getattr
 suffix:colon
-id|coda_revalidate_inode
+id|coda_getattr
 comma
 id|setattr
 suffix:colon
-id|coda_notify_change
+id|coda_setattr
 comma
 )brace
 suffix:semicolon
@@ -709,11 +708,6 @@ r_int
 id|mask
 )paren
 (brace
-id|umode_t
-id|mode
-op_assign
-id|inode-&gt;i_mode
-suffix:semicolon
 r_int
 id|error
 suffix:semicolon

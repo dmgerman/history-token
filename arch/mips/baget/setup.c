@@ -13,8 +13,6 @@ id|vac_memory_upper
 suffix:semicolon
 DECL|macro|CACHEABLE_STR
 mdefine_line|#define CACHEABLE_STR(val) ((val) ? &quot;not cached&quot; : &quot;cached&quot;)
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)           (((a)&lt;(b)) ? (a):(b)) 
 DECL|function|vac_show
 r_static
 r_void
@@ -676,7 +674,7 @@ l_string|&quot;&bslash;ta24 at %08lx (%dMB)&bslash;t[vme, A24/%s, %s]&bslash;n&q
 comma
 id|a24_addr
 comma
-id|MIN
+id|min
 c_func
 (paren
 (paren
@@ -691,7 +689,7 @@ id|from
 op_rshift
 l_int|20
 comma
-l_int|32
+l_int|32U
 )paren
 comma
 (paren

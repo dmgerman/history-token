@@ -9619,7 +9619,6 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-op_logical_neg
 id|ACE_IS_TIGON_I
 c_func
 (paren

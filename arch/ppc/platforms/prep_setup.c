@@ -41,6 +41,7 @@ macro_line|#include &lt;asm/raven.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/vga.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 DECL|variable|ucSystemType
@@ -2534,26 +2535,6 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_int
-id|__prep
-DECL|function|prep_get_irq
-id|prep_get_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_return
-id|i8259_irq
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
 r_void
 id|__init
 DECL|function|prep_init_IRQ
@@ -2579,8 +2560,6 @@ c_func
 l_int|1
 comma
 id|NUM_8259_INTERRUPTS
-comma
-l_int|0
 comma
 op_minus
 l_int|1
@@ -2613,10 +2592,9 @@ suffix:semicolon
 id|i8259_init
 c_func
 (paren
-l_int|0xbffffff0
+id|MPC10X_MAPA_PCI_INTACK_ADDR
 )paren
 suffix:semicolon
-multiline_comment|/* PCI interrupt ack address for MPC105 and 106 */
 )brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
@@ -3183,7 +3161,7 @@ suffix:semicolon
 multiline_comment|/* this gets changed later on if we have an OpenPIC -- Cort */
 id|ppc_md.get_irq
 op_assign
-id|prep_get_irq
+id|i8259_irq
 suffix:semicolon
 id|ppc_md.init
 op_assign

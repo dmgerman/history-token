@@ -3,7 +3,6 @@ DECL|macro|_BLK_H
 mdefine_line|#define _BLK_H
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
@@ -489,15 +488,13 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|SET_INTR
 mdefine_line|#define SET_INTR(x) (DEVICE_INTR = (x))
-macro_line|#ifdef DEVICE_INTR
+macro_line|# ifdef DEVICE_INTR
 DECL|macro|CLEAR_INTR
-mdefine_line|#define CLEAR_INTR SET_INTR(NULL)
-macro_line|#else
+macro_line|#  define CLEAR_INTR SET_INTR(NULL)
+macro_line|# else
 DECL|macro|CLEAR_INTR
-mdefine_line|#define CLEAR_INTR
-macro_line|#endif
-DECL|macro|INIT_REQUEST
-mdefine_line|#define INIT_REQUEST&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (QUEUE_EMPTY) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;CLEAR_INTR;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (major(CURRENT-&gt;rq_dev) != MAJOR_NR) &t;&t;&t;&bslash;&n;&t;&t;panic(DEVICE_NAME &quot;: request list destroyed&quot;);&t;&bslash;&n;&t;if (!CURRENT-&gt;bio)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;panic(DEVICE_NAME &quot;: no bio&quot;);&t;&t;&t;&bslash;&n;
+macro_line|#  define CLEAR_INTR
+macro_line|# endif
 macro_line|#endif /* !defined(IDE_DRIVER) */
 multiline_comment|/*&n; * If we have our own end_request, we do not want to include this mess&n; */
 macro_line|#ifndef LOCAL_END_REQUEST

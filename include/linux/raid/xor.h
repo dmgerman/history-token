@@ -13,11 +13,14 @@ r_int
 r_int
 id|count
 comma
-r_struct
-id|buffer_head
+r_int
+r_int
+id|bytes
+comma
+r_void
 op_star
 op_star
-id|bh_ptr
+id|ptr
 )paren
 suffix:semicolon
 DECL|struct|xor_block_template

@@ -274,12 +274,14 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Spawn a new process normally.  Grab a pointer to&n;&t;&t;   its task struct so we can mess with it */
+id|p
+op_assign
 id|do_fork
 c_func
 (paren
 id|CLONE_VM
 op_or
-id|CLONE_PID
+id|CLONE_IDLETASK
 comma
 l_int|0
 comma
@@ -287,15 +289,6 @@ op_amp
 id|regs
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|p
-op_assign
-id|prev_task
-c_func
-(paren
-op_amp
-id|init_task
 )paren
 suffix:semicolon
 multiline_comment|/* Schedule the first task manually */
@@ -379,7 +372,7 @@ l_int|0
 comma
 l_int|NULL
 comma
-id|CLONE_PID
+id|CLONE_IDLETASK
 )paren
 suffix:semicolon
 id|p
@@ -538,7 +531,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The caller of this wants the passed function to run on every cpu.  If wait&n; * is set, wait until all cpus have finished the function before returning.&n; * The lock is here to protect the call structure.&n; */
+multiline_comment|/*&n; * The caller of this wants the passed function to run on every cpu.  If wait&n; * is set, wait until all cpus have finished the function before returning.&n; * The lock is here to protect the call structure.&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 DECL|function|smp_call_function
 r_int
 id|smp_call_function
@@ -587,7 +580,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -667,7 +660,7 @@ id|cpus
 (brace
 )brace
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp

@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/shmem_fs.h&gt;
@@ -1571,10 +1570,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|PageLaunder
-c_func
 (paren
-id|page
+id|current-&gt;flags
+op_amp
+id|PF_MEMALLOC
 )paren
 )paren
 r_return

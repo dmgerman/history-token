@@ -1221,22 +1221,6 @@ l_int|8
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifndef CONFIG_PARPORT
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|pi-&gt;port
-comma
-id|range
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif /* !CONFIG_PARPORT */
 id|pi-&gt;reserved
 op_assign
 id|range
@@ -1308,21 +1292,6 @@ l_int|8
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifndef CONFIG_PARPORT
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|pi-&gt;port
-comma
-id|range
-)paren
-)paren
-r_break
-suffix:semicolon
-macro_line|#endif /* !CONFIG_PARPORT */
 id|pi-&gt;reserved
 op_assign
 id|range
@@ -1430,22 +1399,6 @@ id|verbose
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifndef CONFIG_PARPORT
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|pi-&gt;port
-comma
-l_int|3
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif /* !CONFIG_PARPORT */
 r_if
 c_cond
 (paren
@@ -1991,6 +1944,10 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_PARPORT
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -2000,7 +1957,21 @@ id|pi-&gt;reserved
 comma
 id|pi-&gt;device
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;paride: Unable to request region 0x%x&bslash;n&quot;
+comma
+id|pi-&gt;port
+)paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* !CONFIG_PARPORT */
 r_if
 c_cond

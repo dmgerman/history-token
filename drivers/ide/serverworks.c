@@ -1,15 +1,16 @@
-multiline_comment|/*&n; * linux/drivers/ide/serverworks.c&t;&t;Version 0.3&t;26 Oct 2001&n; *&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Copyright (C) 1998-2000 Michel Aubry&n; * Copyright (C) 1998-2000 Andrzej Krzysztofowicz&n; * Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions copyright (c) 2001 Sun Microsystems&n; *&n; *&n; * RCC/ServerWorks IDE driver for Linux&n; *&n; *   OSB4: `Open South Bridge&squot; IDE Interface (fn 1)&n; *         supports UDMA mode 2 (33 MB/s)&n; *&n; *   CSB5: `Champion South Bridge&squot; IDE Interface (fn 1)&n; *         all revisions support UDMA mode 4 (66 MB/s)&n; *         revision A2.0 and up support UDMA mode 5 (100 MB/s)&n; *&n; *         *** The CSB5 does not provide ANY register ***&n; *         *** to detect 80-conductor cable presence. ***&n; *&n; *&n; * here&squot;s the default lspci:&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0211 (prog-if 8a [Master SecP PriP])&n; *&t;Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR+ FastB2B-&n; *&t;Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *&t;Latency: 255&n; *&t;Region 4: I/O ports at c200&n; * 00: 66 11 11 02 05 01 00 02 00 8a 01 01 00 ff 80 00&n; * 10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 20: 01 c2 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 99 99 99 99 ff ff ff ff 0c 0c 00 00 00 00 00 00&n; * 50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92) (prog-if 8a [Master SecP PriP])&n; *         Subsystem: ServerWorks: Unknown device 0212&n; *         Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B-&n; *         Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *         Latency: 64, cache line size 08&n; *         Region 0: I/O ports at 01f0&n; *         Region 1: I/O ports at 03f4&n; *         Region 2: I/O ports at 0170&n; *         Region 3: I/O ports at 0374&n; *         Region 4: I/O ports at 08b0&n; *         Region 5: I/O ports at 1000&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92)&n; * 00: 66 11 12 02 05 00 00 02 92 8a 01 01 08 40 80 00&n; * 10: f1 01 00 00 f5 03 00 00 71 01 00 00 75 03 00 00&n; * 20: b1 08 00 00 01 10 00 00 00 00 00 00 66 11 12 02&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 4f 4f 4f 4f 20 ff ff ff f0 50 44 44 00 00 00 00&n; * 50: 00 00 00 00 07 00 44 02 0f 04 03 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; *&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * linux/drivers/ide/serverworks.c&t;&t;Version 0.3&t;26 Oct 2001&n; *&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Copyright (C) 1998-2000 Michel Aubry&n; * Copyright (C) 1998-2000 Andrzej Krzysztofowicz&n; * Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions copyright (c) 2001 Sun Microsystems&n; *&n; *&n; * RCC/ServerWorks IDE driver for Linux&n; *&n; *   OSB4: `Open South Bridge&squot; IDE Interface (fn 1)&n; *         supports UDMA mode 2 (33 MB/s)&n; *&n; *   CSB5: `Champion South Bridge&squot; IDE Interface (fn 1)&n; *         all revisions support UDMA mode 4 (66 MB/s)&n; *         revision A2.0 and up support UDMA mode 5 (100 MB/s)&n; *&n; *         *** The CSB5 does not provide ANY register ***&n; *         *** to detect 80-conductor cable presence. ***&n; *&n; *&n; * here&squot;s the default lspci:&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0211 (prog-if 8a [Master SecP PriP])&n; *&t;Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR+ FastB2B-&n; *&t;Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *&t;Latency: 255&n; *&t;Region 4: I/O ports at c200&n; * 00: 66 11 11 02 05 01 00 02 00 8a 01 01 00 ff 80 00&n; * 10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 20: 01 c2 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 99 99 99 99 ff ff ff ff 0c 0c 00 00 00 00 00 00&n; * 50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92) (prog-if 8a [Master SecP PriP])&n; *         Subsystem: ServerWorks: Unknown device 0212&n; *         Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B-&n; *         Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *         Latency: 64, cache line size 08&n; *         Region 0: I/O ports at 01f0&n; *         Region 1: I/O ports at 03f4&n; *         Region 2: I/O ports at 0170&n; *         Region 3: I/O ports at 0374&n; *         Region 4: I/O ports at 08b0&n; *         Region 5: I/O ports at 1000&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92)&n; * 00: 66 11 12 02 05 00 00 02 92 8a 01 01 08 40 80 00&n; * 10: f1 01 00 00 f5 03 00 00 71 01 00 00 75 03 00 00&n; * 20: b1 08 00 00 01 10 00 00 00 00 00 00 66 11 12 02&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 4f 4f 4f 4f 20 ff ff ff f0 50 44 44 00 00 00 00&n; * 50: 00 00 00 00 07 00 44 02 0f 04 03 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|DISPLAY_SVWKS_TIMINGS
 macro_line|#undef DISPLAY_SVWKS_TIMINGS
 DECL|macro|SVWKS_DEBUG_DRIVE_INFO
@@ -1305,8 +1306,10 @@ DECL|function|svwks_tune_chipset
 r_static
 r_int
 id|svwks_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1314,7 +1317,8 @@ id|byte
 id|speed
 )paren
 (brace
-id|byte
+r_static
+id|u8
 id|udma_modes
 (braket
 )braket
@@ -1333,7 +1337,8 @@ comma
 l_int|0x05
 )brace
 suffix:semicolon
-id|byte
+r_static
+id|u8
 id|dma_modes
 (braket
 )braket
@@ -1346,7 +1351,8 @@ comma
 l_int|0x20
 )brace
 suffix:semicolon
-id|byte
+r_static
+id|u8
 id|pio_modes
 (braket
 )braket
@@ -1407,7 +1413,7 @@ id|dma_base
 op_assign
 id|hwif-&gt;dma_base
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 r_int
 id|err
 suffix:semicolon
@@ -2002,8 +2008,10 @@ DECL|function|config_chipset_for_pio
 r_static
 r_void
 id|config_chipset_for_pio
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2238,8 +2246,10 @@ DECL|function|svwks_tune_drive
 r_static
 r_void
 id|svwks_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2318,8 +2328,10 @@ DECL|function|config_chipset_for_dma
 r_static
 r_int
 id|config_chipset_for_dma
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -3000,11 +3012,12 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|pci_init_svwks
+DECL|function|svwks_init_chipset
+r_static
 r_int
 r_int
 id|__init
-id|pci_init_svwks
+id|svwks_init_chipset
 c_func
 (paren
 r_struct
@@ -3304,11 +3317,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ata66_svwks
+DECL|function|svwks_ata66_check
+r_static
 r_int
 r_int
 id|__init
-id|ata66_svwks
+id|svwks_ata66_check
 c_func
 (paren
 r_struct
@@ -3357,6 +3371,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ide_init_svwks
+r_static
 r_void
 id|__init
 id|ide_init_svwks
@@ -3416,7 +3431,7 @@ id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#else /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -3473,6 +3488,121 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipsets
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_SERVERWORKS
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_SERVERWORKS_OSB4IDE
+comma
+id|init_chipset
+suffix:colon
+id|svwks_init_chipset
+comma
+id|ata66_check
+suffix:colon
+id|svwks_ata66_check
+comma
+id|init_channel
+suffix:colon
+id|ide_init_svwks
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+comma
+id|flags
+suffix:colon
+id|ATA_F_DMA
+)brace
+comma
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_SERVERWORKS
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
+comma
+id|init_chipset
+suffix:colon
+id|svwks_init_chipset
+comma
+id|ata66_check
+suffix:colon
+id|svwks_ata66_check
+comma
+id|init_channel
+suffix:colon
+id|ide_init_svwks
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|function|init_svwks
+r_int
+id|__init
+id|init_svwks
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|chipsets
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipsets
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

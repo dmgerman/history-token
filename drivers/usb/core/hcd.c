@@ -4016,7 +4016,7 @@ id|urb-&gt;dev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|dev
 )paren
@@ -4368,22 +4368,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|urb-&gt;next
-)paren
-(brace
-id|warn
-(paren
-l_string|&quot;use explicit queuing not urb-&gt;next&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG
 multiline_comment|/* stuff that drivers shouldn&squot;t do, but which shouldn&squot;t&n;&t; * cause problems in HCDs if they get it wrong.&n;&t; */
 (brace
@@ -4661,7 +4645,7 @@ op_ne
 id|USB_STATE_QUIESCING
 )paren
 (brace
-id|usb_inc_dev_use
+id|usb_get_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -5393,6 +5377,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hcd-&gt;driver-&gt;free_config
+)paren
 id|hcd-&gt;driver-&gt;free_config
 (paren
 id|hcd
@@ -5531,7 +5520,7 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause deadlocks if it resubmits this URB,&n; * and won&squot;t confuse things by modifying and resubmitting this one.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; *&n; * NOTE that no urb-&gt;next processing is done, even for isochronous URBs.&n; * ISO streaming functionality can be achieved by having completion handlers&n; * re-queue URBs.  Such explicit queuing doesn&squot;t discard error reports.&n; */
+multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause deadlocks if it resubmits this URB,&n; * and won&squot;t confuse things by modifying and resubmitting this one.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; */
 DECL|function|usb_hcd_giveback_urb
 r_void
 id|usb_hcd_giveback_urb

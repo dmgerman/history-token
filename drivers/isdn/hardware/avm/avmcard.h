@@ -163,6 +163,11 @@ id|capi_ctr
 op_star
 id|capi_ctrl
 suffix:semicolon
+DECL|member|ncci_head
+r_struct
+id|list_head
+id|ncci_head
+suffix:semicolon
 DECL|typedef|avmctrl_info
 )brace
 id|avmctrl_info
@@ -1952,6 +1957,20 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* b1.c */
+r_void
+id|b1_set_revision
+c_func
+(paren
+r_struct
+id|capi_driver
+op_star
+id|driver
+comma
+r_char
+op_star
+id|rev
+)paren
+suffix:semicolon
 id|avmcard
 op_star
 id|b1_alloc_card
@@ -2081,7 +2100,7 @@ id|u16
 id|appl
 )paren
 suffix:semicolon
-r_void
+id|u16
 id|b1_send_message
 c_func
 (paren
@@ -2288,7 +2307,7 @@ id|u16
 id|appl
 )paren
 suffix:semicolon
-r_void
+id|u16
 id|b1dma_send_message
 c_func
 (paren

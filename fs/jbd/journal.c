@@ -5,11 +5,12 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|journal_start
@@ -534,6 +535,10 @@ op_amp
 id|all_journals
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_KERNTHREAD
+suffix:semicolon
 multiline_comment|/* And now, wait forever for commit wakeup events. */
 r_while
 c_loop
@@ -611,6 +616,40 @@ op_amp
 id|journal-&gt;j_wait_done_commit
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+multiline_comment|/* The simpler the better. Flushing journal isn&squot;t a&n;&t;&t;&t;&t;&t;&t;     good idea, because that depends on threads that&n;&t;&t;&t;&t;&t;&t;     may be already stopped. */
+id|jbd_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;Now suspending kjournald&bslash;n&quot;
+)paren
+suffix:semicolon
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
+id|jbd_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;Resuming kjournald&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* we assume on resume that commits are already there,&n;&t;&t;&t;&t;   so we don&squot;t sleep */
 id|interruptible_sleep_on
 c_func
 (paren

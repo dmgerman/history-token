@@ -2,9 +2,9 @@ multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of th
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;&t;/* For bdev_hardsect_size(). */
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
@@ -5931,41 +5931,22 @@ suffix:colon
 id|ntfs_dirty_inode
 comma
 multiline_comment|/* VFS: Called from&n;&t;&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
-id|write_inode
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* VFS: Write dirty inode to disk. */
-id|put_inode
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* VFS: Called whenever the reference&n;&t;&t;&t;&t;&t;   count (i_count) of the inode is&n;&t;&t;&t;&t;&t;   going to be decreased but before the&n;&t;&t;&t;&t;&t;   actual decrease. */
-id|delete_inode
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* VFS: Delete inode from disk. Called&n;&t;&t;&t;&t;&t;   when i_count becomes 0 and i_nlink is&n;&t;&t;&t;&t;&t;   also 0. */
+singleline_comment|//write_inode:&t;NULL,&t;&t;/* VFS: Write dirty inode to disk. */
+singleline_comment|//put_inode:&t;NULL,&t;&t;/* VFS: Called whenever the reference
+singleline_comment|//&t;&t;&t;&t;   count (i_count) of the inode is
+singleline_comment|//&t;&t;&t;&t;   going to be decreased but before the
+singleline_comment|//&t;&t;&t;&t;   actual decrease. */
+singleline_comment|//delete_inode:&t;NULL,&t;&t;/* VFS: Delete inode from disk. Called
+singleline_comment|//&t;&t;&t;&t;   when i_count becomes 0 and i_nlink is
+singleline_comment|//&t;&t;&t;&t;   also 0. */
 id|put_super
 suffix:colon
 id|ntfs_put_super
 comma
 multiline_comment|/* Syscall: umount. */
-id|write_super
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Flush dirty super block to disk. */
-id|write_super_lockfs
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* ? */
-id|unlockfs
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* ? */
+singleline_comment|//write_super:&t;NULL,&t;&t;/* Flush dirty super block to disk. */
+singleline_comment|//write_super_lockfs:&t;NULL,&t;/* ? */
+singleline_comment|//unlockfs:&t;NULL,&t;&t;/* ? */
 id|statfs
 suffix:colon
 id|ntfs_statfs
@@ -5981,22 +5962,7 @@ suffix:colon
 id|ntfs_clear_big_inode
 comma
 multiline_comment|/* VFS: Called when an inode is&n;&t;&t;&t;&t;&t;&t;   removed from memory. */
-id|umount_begin
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Forced umount. */
-multiline_comment|/*&n;&t; * These are NFSd support functions but NTFS is a standard fs so&n;&t; * shouldn&squot;t need to implement these manually. At least we can try&n;&t; * without and if it doesn&squot;t work in some way we can always implement&n;&t; * something here.&n;&t; */
-id|fh_to_dentry
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Get dentry for given file handle. */
-id|dentry_to_fh
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Get file handle for given dentry. */
+singleline_comment|//umount_begin:&t;NULL,&t;&t;/* Forced umount. */
 id|show_options
 suffix:colon
 id|ntfs_show_options
@@ -6260,6 +6226,25 @@ op_amp
 id|vol-&gt;mftbmp_mapping.i_shared_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * private_lock and private_list are unused by ntfs.  But they&n;&t; * are available.&n;&t; */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_mapping.private_lock
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_mapping.private_list
+)paren
+suffix:semicolon
+id|vol-&gt;mftbmp_mapping.assoc_mapping
+op_assign
+l_int|NULL
+suffix:semicolon
 id|vol-&gt;mftbmp_mapping.dirtied_when
 op_assign
 l_int|0
@@ -6268,9 +6253,9 @@ id|vol-&gt;mftbmp_mapping.gfp_mask
 op_assign
 id|GFP_HIGHUSER
 suffix:semicolon
-id|vol-&gt;mftbmp_mapping.ra_pages
+id|vol-&gt;mftbmp_mapping.backing_dev_info
 op_assign
-id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;ra_pages
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;backing_dev_info
 suffix:semicolon
 multiline_comment|/*&n;&t; * Default is group and other don&squot;t have any access to files or&n;&t; * directories while owner has full access. Further files by default&n;&t; * are not executable but directories are of course browseable.&n;&t; */
 id|vol-&gt;fmask

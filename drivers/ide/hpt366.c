@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/hpt366.c&t;&t;Version 0.22&t;20 Sep 2001&n; *&n; * Copyright (C) 1999-2000&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions Copyright (C) 2001&t;        Sun Microsystems, Inc.&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Thanks to HighPoint Technologies for their assistance, and hardware.&n; * Special Thanks to Jon Burchmore in SanDiego for the deep pockets, his&n; * donation of an ABit BP6 mainboard, processor, and memory acellerated&n; * development and support.&n; *&n; * Note that final HPT370 support was done by force extraction of GPL.&n; *&n; * - add function for getting/setting power status of drive&n; * - the HPT370&squot;s state machine can get confused. reset it before each dma &n; *   xfer to prevent that from happening.&n; * - reset state engine whenever we get an error.&n; * - check for busmaster state at end of dma. &n; * - use new highpoint timings.&n; * - detect bus speed using highpoint register.&n; * - use pll if we don&squot;t have a clock table. added a 66MHz table that&squot;s&n; *   just 2x the 33MHz table.&n; * - removed turnaround. NOTE: we never want to switch between pll and&n; *   pci clocks as the chip can glitch in those cases. the highpoint&n; *   approved workaround slows everything down too much to be useful. in&n; *   addition, we would have to serialize access to each chip.&n; * &t;Adrian Sun &lt;a.sun@sun.com&gt;&n; *&n; * add drive timings for 66MHz PCI bus,&n; * fix ATA Cable signal detection, fix incorrect /proc info&n; * add /proc display for per-drive PIO/DMA/UDMA mode and&n; * per-channel ATA-33/66 Cable detect.&n; * &t;Duncan Laurie &lt;void@sun.com&gt;&n; *&n; * fixup /proc output for multiple controllers&n; *&t;Tim Hockin &lt;thockin@sun.com&gt;&n; *&n; * On hpt366: &n; * Reset the hpt366 on error, reset on dma&n; * Fix disabling Fast Interrupt hpt366.&n; * &t;Mike Waychison &lt;crlf@sun.com&gt;&n; *&n; * 02 May 2002 - HPT374 support (Andre Hedrick &lt;andre@linux-ide.org&gt;)&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * linux/drivers/ide/hpt366.c&t;&t;Version 0.22&t;20 Sep 2001&n; *&n; * Copyright (C) 1999-2000&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions Copyright (C) 2001&t;        Sun Microsystems, Inc.&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Thanks to HighPoint Technologies for their assistance, and hardware.&n; * Special Thanks to Jon Burchmore in SanDiego for the deep pockets, his&n; * donation of an ABit BP6 mainboard, processor, and memory acellerated&n; * development and support.&n; *&n; * Note that final HPT370 support was done by force extraction of GPL.&n; *&n; * - add function for getting/setting power status of drive&n; * - the HPT370&squot;s state machine can get confused. reset it before each dma&n; *   xfer to prevent that from happening.&n; * - reset state engine whenever we get an error.&n; * - check for busmaster state at end of dma.&n; * - use new highpoint timings.&n; * - detect bus speed using highpoint register.&n; * - use pll if we don&squot;t have a clock table. added a 66MHz table that&squot;s&n; *   just 2x the 33MHz table.&n; * - removed turnaround. NOTE: we never want to switch between pll and&n; *   pci clocks as the chip can glitch in those cases. the highpoint&n; *   approved workaround slows everything down too much to be useful. in&n; *   addition, we would have to serialize access to each chip.&n; *&t;Adrian Sun &lt;a.sun@sun.com&gt;&n; *&n; * add drive timings for 66MHz PCI bus,&n; * fix ATA Cable signal detection, fix incorrect /proc info&n; * add /proc display for per-drive PIO/DMA/UDMA mode and&n; * per-channel ATA-33/66 Cable detect.&n; *&t;Duncan Laurie &lt;void@sun.com&gt;&n; *&n; * fixup /proc output for multiple controllers&n; *&t;Tim Hockin &lt;thockin@sun.com&gt;&n; *&n; * On hpt366:&n; * Reset the hpt366 on error, reset on dma&n; * Fix disabling Fast Interrupt hpt366.&n; *&t;Mike Waychison &lt;crlf@sun.com&gt;&n; *&n; * 02 May 2002 - HPT374 support (Andre Hedrick &lt;andre@linux-ide.org&gt;)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|DISPLAY_HPT366_TIMINGS
 macro_line|#undef DISPLAY_HPT366_TIMINGS
 multiline_comment|/* various tuning parameters */
@@ -28,6 +29,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#endif  /* defined(DISPLAY_HPT366_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 DECL|variable|quirk_drives
+r_static
 r_const
 r_char
 op_star
@@ -48,6 +50,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata100_5
+r_static
 r_const
 r_char
 op_star
@@ -90,6 +93,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata66_4
+r_static
 r_const
 r_char
 op_star
@@ -132,6 +136,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata66_3
+r_static
 r_const
 r_char
 op_star
@@ -146,6 +151,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata33
+r_static
 r_const
 r_char
 op_star
@@ -240,7 +246,7 @@ r_struct
 id|chipset_bus_clock_list_entry
 (brace
 DECL|member|xfer_speed
-id|byte
+id|u8
 id|xfer_speed
 suffix:semicolon
 DECL|member|chipset_settings
@@ -252,6 +258,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* key for bus clock timings&n; * bit&n; * 0:3    data_high_time. inactive time of DIOW_/DIOR_ for PIO and MW&n; *        DMA. cycles = value + 1&n; * 4:8    data_low_time. active time of DIOW_/DIOR_ for PIO and MW&n; *        DMA. cycles = value + 1&n; * 9:12   cmd_high_time. inactive time of DIOW_/DIOR_ during task file&n; *        register access.&n; * 13:17  cmd_low_time. active time of DIOW_/DIOR_ during task file&n; *        register access.&n; * 18:21  udma_cycle_time. clock freq and clock cycles for UDMA xfer.&n; *        during task file register access.&n; * 22:24  pre_high_time. time to initialize 1st cycle for PIO and MW DMA&n; *        xfer.&n; * 25:27  cmd_pre_high_time. time to initialize 1st PIO cycle for task&n; *        register access.&n; * 28     UDMA enable&n; * 29     DMA enable&n; * 30     PIO_MST enable. if set, the chip is in bus master mode during&n; *        PIO.&n; * 31     FIFO enable.&n; */
 DECL|variable|forty_base_hpt366
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|forty_base_hpt366
@@ -345,6 +352,7 @@ l_int|0x0120d9d9
 )brace
 suffix:semicolon
 DECL|variable|thirty_three_base_hpt366
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt366
@@ -441,6 +449,7 @@ l_int|0x0120a7a7
 )brace
 suffix:semicolon
 DECL|variable|twenty_five_base_hpt366
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|twenty_five_base_hpt366
@@ -536,6 +545,7 @@ suffix:semicolon
 macro_line|#if 1
 multiline_comment|/* these are the current (4 sep 2001) timings from highpoint */
 DECL|variable|thirty_three_base_hpt370
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt370
@@ -636,6 +646,7 @@ l_int|0x06814ea7
 suffix:semicolon
 multiline_comment|/* 2x 33MHz timings */
 DECL|variable|sixty_six_base_hpt370
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt370
@@ -737,6 +748,7 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/* from highpoint documentation. these are old values */
 DECL|variable|thirty_three_base_hpt370
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt370
@@ -836,6 +848,7 @@ l_int|0x06514e57
 )brace
 suffix:semicolon
 DECL|variable|sixty_six_base_hpt370
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt370
@@ -936,6 +949,7 @@ l_int|0x06514e57
 suffix:semicolon
 macro_line|#endif
 DECL|variable|fifty_base_hpt370
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|fifty_base_hpt370
@@ -1035,6 +1049,7 @@ l_int|0x0ac1f48a
 )brace
 suffix:semicolon
 DECL|variable|thirty_three_base_hpt372
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt372
@@ -1145,6 +1160,7 @@ l_int|0x0d029d5e
 )brace
 suffix:semicolon
 DECL|variable|fifty_base_hpt372
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|fifty_base_hpt372
@@ -1244,6 +1260,7 @@ l_int|0x0a81f443
 )brace
 suffix:semicolon
 DECL|variable|sixty_six_base_hpt372
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt372
@@ -1349,6 +1366,7 @@ l_int|0x0d029d26
 )brace
 suffix:semicolon
 DECL|variable|thirty_three_base_hpt374
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt374
@@ -1454,6 +1472,7 @@ l_int|0x06814e93
 )brace
 suffix:semicolon
 macro_line|#if 0
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|fifty_base_hpt374
@@ -1544,6 +1563,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt374
@@ -1758,7 +1778,8 @@ id|dev
 )paren
 suffix:semicolon
 DECL|variable|hpt366_proc
-id|byte
+r_static
+id|u8
 id|hpt366_proc
 op_assign
 l_int|0
@@ -1767,8 +1788,9 @@ r_extern
 r_char
 op_star
 id|ide_xfer_verbose
+c_func
 (paren
-id|byte
+id|u8
 id|xfer_rate
 )paren
 suffix:semicolon
@@ -2217,7 +2239,7 @@ id|c2
 comma
 id|c3
 suffix:semicolon
-multiline_comment|/* older revs don&squot;t have these registers mapped &n;&t;&t;&t; * into io space */
+multiline_comment|/* older revs don&squot;t have these registers mapped&n;&t;&t;&t; * into io space */
 id|pci_read_config_byte
 c_func
 (paren
@@ -2659,8 +2681,10 @@ DECL|function|check_in_drive_lists
 r_static
 r_int
 id|check_in_drive_lists
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2752,6 +2776,7 @@ r_static
 r_int
 r_int
 id|pci_bus_clock_list
+c_func
 (paren
 id|byte
 id|speed
@@ -2791,8 +2816,10 @@ DECL|function|hpt366_tune_chipset
 r_static
 r_void
 id|hpt366_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2851,7 +2878,7 @@ id|drive_fast
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Disable the &quot;fast interrupt&quot; prediction. &n;&t; */
+multiline_comment|/*&n;&t; * Disable the &quot;fast interrupt&quot; prediction.&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -2868,7 +2895,7 @@ c_cond
 (paren
 id|drive_fast
 op_amp
-l_int|0x02
+l_int|0x80
 )paren
 id|pci_write_config_byte
 c_func
@@ -2880,7 +2907,7 @@ comma
 id|drive_fast
 op_amp
 op_complement
-l_int|0x20
+l_int|0x80
 )paren
 suffix:semicolon
 id|pci_read_config_dword
@@ -2972,8 +2999,10 @@ DECL|function|hpt368_tune_chipset
 r_static
 r_void
 id|hpt368_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2994,8 +3023,10 @@ DECL|function|hpt370_tune_chipset
 r_static
 r_void
 id|hpt370_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3067,7 +3098,7 @@ id|dev
 op_assign
 id|drive-&gt;channel-&gt;pci_dev
 suffix:semicolon
-multiline_comment|/*&n;&t; * Disable the &quot;fast interrupt&quot; prediction.&n;&t; * don&squot;t holdoff on interrupts. (== 0x01 despite what the docs say) &n;&t; */
+multiline_comment|/*&n;&t; * Disable the &quot;fast interrupt&quot; prediction.&n;&t; * don&squot;t holdoff on interrupts. (== 0x01 despite what the docs say)&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -3213,8 +3244,10 @@ DECL|function|hpt372_tune_chipset
 r_static
 r_void
 id|hpt372_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3380,8 +3413,10 @@ DECL|function|hpt374_tune_chipset
 r_static
 r_void
 id|hpt374_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3402,8 +3437,10 @@ DECL|function|hpt3xx_tune_chipset
 r_static
 r_int
 id|hpt3xx_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3553,8 +3590,10 @@ DECL|function|config_chipset_for_pio
 r_static
 r_void
 id|config_chipset_for_pio
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -3789,8 +3828,10 @@ DECL|function|hpt3xx_tune_drive
 r_static
 r_void
 id|hpt3xx_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3870,8 +3911,10 @@ DECL|function|config_chipset_for_dma
 r_static
 r_int
 id|config_chipset_for_dma
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -4261,10 +4304,13 @@ id|rval
 suffix:semicolon
 )brace
 DECL|function|hpt3xx_quirkproc
+r_static
 r_int
 id|hpt3xx_quirkproc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -4285,10 +4331,13 @@ id|quirk_drives
 suffix:semicolon
 )brace
 DECL|function|hpt3xx_intrproc
+r_static
 r_void
 id|hpt3xx_intrproc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -4323,10 +4372,13 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|hpt3xx_maskproc
+r_static
 r_void
 id|hpt3xx_maskproc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -4474,8 +4526,10 @@ DECL|function|config_drive_xfer_rate
 r_static
 r_int
 id|config_drive_xfer_rate
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -5484,10 +5538,13 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Since SUN Cobalt is attempting to do this operation, I should disclose&n; * this has been a long time ago Thu Jul 27 16:40:57 2000 was the patch date&n; * HOTSWAP ATA Infrastructure.&n; */
 DECL|function|hpt3xx_reset
+r_static
 r_void
 id|hpt3xx_reset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -5561,8 +5618,10 @@ macro_line|#if 0
 r_static
 r_int
 id|hpt3xx_tristate
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -5573,7 +5632,7 @@ id|state
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
@@ -5582,13 +5641,13 @@ id|pci_dev
 op_star
 id|dev
 op_assign
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 suffix:semicolon
 id|byte
 id|reset
 op_assign
 (paren
-id|hwif-&gt;unit
+id|ch-&gt;unit
 )paren
 ques
 c_cond
@@ -5600,7 +5659,7 @@ id|byte
 id|state_reg
 op_assign
 (paren
-id|hwif-&gt;unit
+id|ch-&gt;unit
 )paren
 ques
 c_cond
@@ -5622,13 +5681,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hwif
+id|ch
 )paren
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-singleline_comment|//&t;hwif-&gt;bus_state = state;
+singleline_comment|//&t;ch-&gt;bus_state = state;
 id|pci_read_config_byte
 c_func
 (paren
@@ -5722,7 +5781,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* &n; * set/get power state for a drive.&n; * turning the power off does the following things:&n; *   1) soft-reset the drive&n; *   2) tri-states the ide bus&n; *&n; * when we turn things back on, we need to re-initialize things.&n; */
+multiline_comment|/*&n; * set/get power state for a drive.&n; * turning the power off does the following things:&n; *   1) soft-reset the drive&n; *   2) tri-states the ide bus&n; *&n; * when we turn things back on, we need to re-initialize things.&n; */
 DECL|macro|TRISTATE_BIT
 mdefine_line|#define TRISTATE_BIT  0x8000
 DECL|function|hpt370_busproc
@@ -5731,7 +5790,8 @@ r_int
 id|hpt370_busproc
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -5742,11 +5802,11 @@ id|state
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|byte
+id|u8
 id|tristate
 comma
 id|resetmask
@@ -5760,20 +5820,20 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hwif
+id|ch
 )paren
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|hwif-&gt;bus_state
+id|ch-&gt;bus_state
 op_assign
 id|state
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwif-&gt;unit
+id|ch-&gt;unit
 )paren
 (brace
 multiline_comment|/* secondary channel */
@@ -5802,7 +5862,7 @@ multiline_comment|/* grab status */
 id|pci_read_config_word
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 id|tristate
 comma
@@ -5813,7 +5873,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 l_int|0x59
 comma
@@ -5831,7 +5891,7 @@ id|state
 r_case
 id|BUSSTATE_ON
 suffix:colon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
@@ -5840,7 +5900,7 @@ id|failures
 op_assign
 l_int|0
 suffix:semicolon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
@@ -5878,14 +5938,14 @@ suffix:semicolon
 r_case
 id|BUSSTATE_OFF
 suffix:colon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
 dot
 id|failures
 op_assign
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
@@ -5894,14 +5954,14 @@ id|max_failures
 op_plus
 l_int|1
 suffix:semicolon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
 dot
 id|failures
 op_assign
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
@@ -5944,14 +6004,14 @@ suffix:semicolon
 r_case
 id|BUSSTATE_TRISTATE
 suffix:colon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
 dot
 id|failures
 op_assign
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
@@ -5960,14 +6020,14 @@ id|max_failures
 op_plus
 l_int|1
 suffix:semicolon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
 dot
 id|failures
 op_assign
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
@@ -6008,7 +6068,7 @@ suffix:semicolon
 id|pci_write_config_byte
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 l_int|0x59
 comma
@@ -6018,7 +6078,7 @@ suffix:semicolon
 id|pci_write_config_word
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 id|tristate
 comma
@@ -6029,11 +6089,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|init_hpt37x
+DECL|function|hpt37x_init
 r_static
 r_void
 id|__init
-id|init_hpt37x
+id|hpt37x_init
 c_func
 (paren
 r_struct
@@ -6053,7 +6113,7 @@ suffix:semicolon
 id|u32
 id|pll
 suffix:semicolon
-id|byte
+id|u8
 id|reg5bh
 suffix:semicolon
 multiline_comment|/*&n;&t; * default to pci clock. make sure MA15/16 are set to output&n;&t; * to prevent drives having problems with 40-pin cables.&n;&t; */
@@ -6067,7 +6127,7 @@ comma
 l_int|0x23
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * set up the PLL. we need to adjust it so that it&squot;s stable. &n;&t; * freq = Tpll * 192 / Tpci&n;&t; */
+multiline_comment|/*&n;&t; * set up the PLL. we need to adjust it so that it&squot;s stable.&n;&t; * freq = Tpll * 192 / Tpci&n;&t; */
 id|pci_read_config_word
 c_func
 (paren
@@ -6650,11 +6710,12 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_hpt366
+DECL|function|hpt366_init
 r_static
 r_void
 id|__init
-id|init_hpt366
+id|hpt366_init
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -6668,7 +6729,7 @@ id|reg1
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
+id|u8
 id|drive_fast
 op_assign
 l_int|0
@@ -6772,11 +6833,12 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|pci_init_hpt366
+DECL|function|hpt366_init_chipset
+r_static
 r_int
 r_int
 id|__init
-id|pci_init_hpt366
+id|hpt366_init_chipset
 c_func
 (paren
 r_struct
@@ -6785,7 +6847,7 @@ op_star
 id|dev
 )paren
 (brace
-id|byte
+id|u8
 id|test
 op_assign
 l_int|0
@@ -6946,14 +7008,14 @@ c_func
 id|dev
 )paren
 )paren
-id|init_hpt37x
+id|hpt37x_init
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 r_else
-id|init_hpt366
+id|hpt366_init
 c_func
 (paren
 id|dev
@@ -6997,29 +7059,30 @@ r_return
 id|dev-&gt;irq
 suffix:semicolon
 )brace
-DECL|function|ata66_hpt366
+DECL|function|hpt366_ata66_check
+r_static
 r_int
 r_int
 id|__init
-id|ata66_hpt366
+id|hpt366_ata66_check
 c_func
 (paren
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 )paren
 (brace
-id|byte
+id|u8
 id|ata66
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
+id|u8
 id|regmask
 op_assign
 (paren
-id|hwif-&gt;unit
+id|ch-&gt;unit
 )paren
 ques
 c_cond
@@ -7030,7 +7093,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 l_int|0x5a
 comma
@@ -7060,7 +7123,7 @@ comma
 id|PCI_FUNC
 c_func
 (paren
-id|hwif-&gt;pci_dev-&gt;devfn
+id|ch-&gt;pci_dev-&gt;devfn
 )paren
 )paren
 suffix:semicolon
@@ -7080,41 +7143,37 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|ide_init_hpt366
+DECL|function|hpt366_init_channel
+r_static
 r_void
 id|__init
-id|ide_init_hpt366
+id|hpt366_init_channel
 c_func
 (paren
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 )paren
 (brace
-id|hwif-&gt;tuneproc
+id|ch-&gt;tuneproc
 op_assign
-op_amp
 id|hpt3xx_tune_drive
 suffix:semicolon
-id|hwif-&gt;speedproc
+id|ch-&gt;speedproc
 op_assign
-op_amp
 id|hpt3xx_tune_chipset
 suffix:semicolon
-id|hwif-&gt;quirkproc
+id|ch-&gt;quirkproc
 op_assign
-op_amp
 id|hpt3xx_quirkproc
 suffix:semicolon
-id|hwif-&gt;intrproc
+id|ch-&gt;intrproc
 op_assign
-op_amp
 id|hpt3xx_intrproc
 suffix:semicolon
-id|hwif-&gt;maskproc
+id|ch-&gt;maskproc
 op_assign
-op_amp
 id|hpt3xx_maskproc
 suffix:semicolon
 macro_line|#ifdef HPT_SERIALIZE_IO
@@ -7122,11 +7181,11 @@ multiline_comment|/* serialize access to this device */
 r_if
 c_cond
 (paren
-id|hwif-&gt;mate
+id|ch-&gt;mate
 )paren
-id|hwif-&gt;serialized
+id|ch-&gt;serialized
 op_assign
-id|hwif-&gt;mate-&gt;serialized
+id|ch-&gt;mate-&gt;serialized
 op_assign
 l_int|1
 suffix:semicolon
@@ -7135,7 +7194,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 )paren
 (brace
 r_if
@@ -7144,7 +7203,7 @@ c_cond
 id|pci_rev3_check_hpt3xx
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 )paren
 )paren
 (brace
@@ -7156,7 +7215,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 l_int|0x5a
 comma
@@ -7175,7 +7234,7 @@ multiline_comment|/* interrupt force enable */
 id|pci_write_config_byte
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 l_int|0x5a
 comma
@@ -7186,11 +7245,11 @@ l_int|0x10
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * set up ioctl for power status.&n;&t;&t;&t; * note: power affects both&n;&t;&t;&t; * drives on each channel&n;&t;&t;&t; */
-id|hwif-&gt;resetproc
+id|ch-&gt;resetproc
 op_assign
 id|hpt3xx_reset
 suffix:semicolon
-id|hwif-&gt;busproc
+id|ch-&gt;busproc
 op_assign
 id|hpt370_busproc
 suffix:semicolon
@@ -7200,15 +7259,15 @@ c_cond
 id|pci_rev7_check_hpt3xx
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 )paren
 )paren
 (brace
-id|hwif-&gt;udma_stop
+id|ch-&gt;udma_stop
 op_assign
 id|hpt374_udma_stop
 suffix:semicolon
-id|hwif-&gt;XXX_udma
+id|ch-&gt;XXX_udma
 op_assign
 id|hpt374_dmaproc
 suffix:semicolon
@@ -7220,15 +7279,15 @@ c_cond
 id|pci_rev5_check_hpt3xx
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 )paren
 )paren
 (brace
-id|hwif-&gt;udma_stop
+id|ch-&gt;udma_stop
 op_assign
 id|hpt374_udma_stop
 suffix:semicolon
-id|hwif-&gt;XXX_udma
+id|ch-&gt;XXX_udma
 op_assign
 id|hpt374_dmaproc
 suffix:semicolon
@@ -7237,16 +7296,16 @@ r_else
 r_if
 c_cond
 (paren
-id|hwif-&gt;pci_dev-&gt;device
+id|ch-&gt;pci_dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_TTI_HPT372
 )paren
 (brace
-id|hwif-&gt;udma_stop
+id|ch-&gt;udma_stop
 op_assign
 id|hpt374_udma_stop
 suffix:semicolon
-id|hwif-&gt;XXX_udma
+id|ch-&gt;XXX_udma
 op_assign
 id|hpt374_dmaproc
 suffix:semicolon
@@ -7258,27 +7317,27 @@ c_cond
 id|pci_rev3_check_hpt3xx
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 )paren
 )paren
 (brace
-id|hwif-&gt;udma_start
+id|ch-&gt;udma_start
 op_assign
 id|hpt370_udma_start
 suffix:semicolon
-id|hwif-&gt;udma_stop
+id|ch-&gt;udma_stop
 op_assign
 id|hpt370_udma_stop
 suffix:semicolon
-id|hwif-&gt;udma_timeout
+id|ch-&gt;udma_timeout
 op_assign
 id|hpt370_udma_timeout
 suffix:semicolon
-id|hwif-&gt;udma_irq_lost
+id|ch-&gt;udma_irq_lost
 op_assign
 id|hpt370_udma_irq_lost
 suffix:semicolon
-id|hwif-&gt;XXX_udma
+id|ch-&gt;XXX_udma
 op_assign
 id|hpt370_dmaproc
 suffix:semicolon
@@ -7291,30 +7350,30 @@ c_cond
 id|pci_rev2_check_hpt3xx
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 )paren
 )paren
 (brace
-id|hwif-&gt;udma_irq_lost
+id|ch-&gt;udma_irq_lost
 op_assign
 id|hpt366_udma_irq_lost
 suffix:semicolon
-singleline_comment|//&t;&t;&t;hwif-&gt;resetproc&t;= hpt3xx_reset;
-singleline_comment|//&t;&t;&t;hwif-&gt;busproc = hpt3xx_tristate;
-id|hwif-&gt;XXX_udma
+singleline_comment|//&t;&t;&t;ch-&gt;resetproc = hpt3xx_reset;
+singleline_comment|//&t;&t;&t;ch-&gt;busproc = hpt3xx_tristate;
+id|ch-&gt;XXX_udma
 op_assign
 id|hpt366_dmaproc
 suffix:semicolon
 )brace
 r_else
 (brace
-id|hwif-&gt;udma_irq_lost
+id|ch-&gt;udma_irq_lost
 op_assign
 id|hpt366_udma_irq_lost
 suffix:semicolon
-singleline_comment|//&t;&t;&t;hwif-&gt;resetproc = hpt3xx_reset;
-singleline_comment|//&t;&t;&t;hwif-&gt;busproc = hpt3xx_tristate;
-id|hwif-&gt;XXX_udma
+singleline_comment|//&t;&t;&t;ch-&gt;resetproc = hpt3xx_reset;
+singleline_comment|//&t;&t;&t;ch-&gt;busproc = hpt3xx_tristate;
+id|ch-&gt;XXX_udma
 op_assign
 id|hpt366_dmaproc
 suffix:semicolon
@@ -7325,27 +7384,27 @@ c_cond
 op_logical_neg
 id|noautodma
 )paren
-id|hwif-&gt;autodma
+id|ch-&gt;autodma
 op_assign
 l_int|1
 suffix:semicolon
 r_else
-id|hwif-&gt;autodma
+id|ch-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-id|hwif-&gt;highmem
+id|ch-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
 )brace
 r_else
 (brace
-id|hwif-&gt;autodma
+id|ch-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
@@ -7354,7 +7413,7 @@ id|autotune
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
@@ -7364,8 +7423,8 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_BLK_DEV_IDEDMA */
-id|hwif-&gt;drives
+macro_line|#else
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
@@ -7374,7 +7433,7 @@ id|autotune
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
@@ -7383,42 +7442,45 @@ id|autotune
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;autodma
+id|ch-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 )brace
-DECL|function|ide_dmacapable_hpt366
+DECL|function|hpt366_init_dma
+r_static
 r_void
 id|__init
-id|ide_dmacapable_hpt366
+id|hpt366_init_dma
 c_func
 (paren
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 comma
 r_int
 r_int
 id|dmabase
 )paren
 (brace
-id|byte
+id|u8
 id|masterdma
 op_assign
 l_int|0
-comma
+suffix:semicolon
+id|u8
 id|slavedma
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
+id|u8
 id|dma_new
 op_assign
 l_int|0
-comma
+suffix:semicolon
+id|u8
 id|dma_old
 op_assign
 id|inb
@@ -7429,43 +7491,26 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|byte
+id|u8
 id|primary
 op_assign
-id|hwif-&gt;unit
+id|ch-&gt;unit
 ques
 c_cond
 l_int|0x4b
 suffix:colon
 l_int|0x43
 suffix:semicolon
-id|byte
+id|u8
 id|secondary
 op_assign
-id|hwif-&gt;unit
+id|ch-&gt;unit
 ques
 c_cond
 l_int|0x4f
 suffix:colon
 l_int|0x47
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|__save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|dma_new
 op_assign
 id|dma_old
@@ -7473,7 +7518,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 id|primary
 comma
@@ -7484,7 +7529,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 id|secondary
 comma
@@ -7531,22 +7576,198 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|__restore_flags
+id|ata_init_dma
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
-id|ide_setup_dma
-c_func
-(paren
-id|hwif
+id|ch
 comma
 id|dmabase
-comma
-l_int|8
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipsets
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_TTI
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_TTI_HPT366
+comma
+id|init_chipset
+suffix:colon
+id|hpt366_init_chipset
+comma
+id|ata66_check
+suffix:colon
+id|hpt366_ata66_check
+comma
+id|init_channel
+suffix:colon
+id|hpt366_init_channel
+comma
+id|init_dma
+suffix:colon
+id|hpt366_init_dma
+comma
+id|bootable
+suffix:colon
+id|OFF_BOARD
+comma
+id|extra
+suffix:colon
+l_int|240
+comma
+id|flags
+suffix:colon
+id|ATA_F_IRQ
+op_or
+id|ATA_F_HPTHACK
+op_or
+id|ATA_F_DMA
+)brace
+comma
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_TTI
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_TTI_HPT372
+comma
+id|init_chipset
+suffix:colon
+id|hpt366_init_chipset
+comma
+id|ata66_check
+suffix:colon
+id|hpt366_ata66_check
+comma
+id|init_channel
+suffix:colon
+id|hpt366_init_channel
+comma
+id|init_dma
+suffix:colon
+id|hpt366_init_dma
+comma
+id|bootable
+suffix:colon
+id|OFF_BOARD
+comma
+id|extra
+suffix:colon
+l_int|0
+comma
+id|flags
+suffix:colon
+id|ATA_F_IRQ
+op_or
+id|ATA_F_HPTHACK
+op_or
+id|ATA_F_DMA
+)brace
+comma
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_TTI
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_TTI_HPT374
+comma
+id|init_chipset
+suffix:colon
+id|hpt366_init_chipset
+comma
+id|ata66_check
+suffix:colon
+id|hpt366_ata66_check
+comma
+id|init_channel
+suffix:colon
+id|hpt366_init_channel
+comma
+id|init_dma
+suffix:colon
+id|hpt366_init_dma
+comma
+id|bootable
+suffix:colon
+id|OFF_BOARD
+comma
+id|extra
+suffix:colon
+l_int|0
+comma
+id|flags
+suffix:colon
+id|ATA_F_IRQ
+op_or
+id|ATA_F_HPTHACK
+op_or
+id|ATA_F_DMA
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|function|init_hpt366
+r_int
+id|__init
+id|init_hpt366
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|chipsets
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipsets
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

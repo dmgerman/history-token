@@ -826,6 +826,12 @@ suffix:semicolon
 )brace
 id|data
 suffix:semicolon
+id|CHECK_FULL_REGS
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_4xx)
 multiline_comment|/* The 4xx-family processors have no DSISR register,&n;&t; * so we emulate it.&n;&t; */
 id|instr

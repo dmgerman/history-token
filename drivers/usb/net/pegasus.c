@@ -4843,7 +4843,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|usb_inc_dev_use
+id|usb_get_dev
 c_func
 (paren
 id|dev
@@ -5354,7 +5354,7 @@ c_func
 id|pegasus-&gt;net
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *      jfs_txnmgr.c: transaction manager&n; *&n; * notes:&n; * transaction starts with txBegin() and ends with txCommit()&n; * or txAbort().&n; *&n; * tlock is acquired at the time of update;&n; * (obviate scan at commit time for xtree and dtree)&n; * tlock and mp points to each other;&n; * (no hashlist for mp -&gt; tlock).&n; *&n; * special cases:&n; * tlock on in-memory inode:&n; * in-place tlock in the in-memory inode itself;&n; * converted to page lock by iWrite() at commit time.&n; *&n; * tlock during write()/mmap() under anonymous transaction (tid = 0):&n; * transferred (?) to transaction at commit time.&n; *&n; * use the page itself to update allocation maps&n; * (obviate intermediate replication of allocation/deallocation data)&n; * hold on to mp+lock thru update of maps&n; */
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
@@ -3484,47 +3483,7 @@ c_func
 id|ip
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * BUGBUG - Should we call filemap_fdatawrite here instead&n;&t;&t; * of fsync_inode_data?&n;&t;&t; * If we do, we have a deadlock condition since we may end&n;&t;&t; * up recursively calling jfs_get_block with the IWRITELOCK&n;&t;&t; * held.  We may be able to do away with IWRITELOCK while&n;&t;&t; * committing transactions and use i_sem instead.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|S_ISDIR
-c_func
-(paren
-id|ip-&gt;i_mode
-)paren
-)paren
-op_logical_and
-(paren
-id|tblk-&gt;flag
-op_amp
-id|COMMIT_DELETE
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|filemap_fdatawait
-c_func
-(paren
-id|ip-&gt;i_mapping
-)paren
-suffix:semicolon
-id|filemap_fdatawrite
-c_func
-(paren
-id|ip-&gt;i_mapping
-)paren
-suffix:semicolon
-id|filemap_fdatawait
-c_func
-(paren
-id|ip-&gt;i_mapping
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t;&t; * BUGBUG - This code has temporarily been removed.  The&n;&t;&t; * intent is to ensure that any file data is written before&n;&t;&t; * the metadata is committed to the journal.  This prevents&n;&t;&t; * uninitialized data from appearing in a file after the&n;&t;&t; * journal has been replayed.  (The uninitialized data&n;&t;&t; * could be sensitive data removed by another user.)&n;&t;&t; *&n;&t;&t; * The problem now is that we are holding the IWRITELOCK&n;&t;&t; * on the inode, and calling filemap_fdatawrite on an&n;&t;&t; * unmapped page will cause a deadlock in jfs_get_block.&n;&t;&t; *&n;&t;&t; * The long term solution is to pare down the use of&n;&t;&t; * IWRITELOCK.  We are currently holding it too long.&n;&t;&t; * We could also be smarter about which data pages need&n;&t;&t; * to be written before the transaction is committed and&n;&t;&t; * when we don&squot;t need to worry about it at all.&n;&t;&t; *&n;&t;&t; * if ((!S_ISDIR(ip-&gt;i_mode))&n;&t;&t; *    &amp;&amp; (tblk-&gt;flag &amp; COMMIT_DELETE) == 0) {&n;&t;&t; *&t;filemap_fdatawait(ip-&gt;i_mapping);&n;&t;&t; *&t;filemap_fdatawrite(ip-&gt;i_mapping);&n;&t;&t; *&t;filemap_fdatawait(ip-&gt;i_mapping);&n;&t;&t; * }&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * Mark inode as not dirty.  It will still be on the dirty&n;&t;&t; * inode list, but we&squot;ll know not to commit it again unless&n;&t;&t; * it gets marked dirty again&n;&t;&t; */
 id|clear_cflag
 c_func

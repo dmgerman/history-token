@@ -244,6 +244,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide%d: %s IDE interface&bslash;n&quot;
 comma
 id|index
@@ -521,6 +522,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide: %s prepare failed&bslash;n&quot;
 comma
 id|DEV_NAME
@@ -559,6 +561,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide: %s activate failed&bslash;n&quot;
 comma
 id|DEV_NAME

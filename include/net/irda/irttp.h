@@ -198,6 +198,7 @@ suffix:semicolon
 multiline_comment|/* Close, but disconnect_pend */
 DECL|member|disconnect_pend
 r_int
+r_int
 id|disconnect_pend
 suffix:semicolon
 multiline_comment|/* Disconnect, but still data to send */

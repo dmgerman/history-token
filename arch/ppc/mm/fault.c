@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 r_extern
 r_void
@@ -220,7 +221,11 @@ multiline_comment|/*&n;&t; * Fortunately the bit assignments in SRR1 for an inst
 r_if
 c_cond
 (paren
-id|regs-&gt;trap
+id|TRAP
+c_func
+(paren
+id|regs
+)paren
 op_eq
 l_int|0x400
 )paren
@@ -242,7 +247,11 @@ c_cond
 (paren
 id|debugger_fault_handler
 op_logical_and
-id|regs-&gt;trap
+id|TRAP
+c_func
+(paren
+id|regs
+)paren
 op_eq
 l_int|0x300
 )paren
@@ -429,7 +438,11 @@ r_else
 r_if
 c_cond
 (paren
-id|regs-&gt;trap
+id|TRAP
+c_func
+(paren
+id|regs
+)paren
 op_eq
 l_int|0x400
 )paren
@@ -507,24 +520,22 @@ id|page-&gt;flags
 )paren
 )paren
 (brace
-id|__flush_dcache_icache
-c_func
-(paren
-(paren
 r_int
 r_int
-)paren
-id|kmap
+id|phys
+op_assign
+id|page_to_pfn
 c_func
 (paren
 id|page
 )paren
-)paren
+op_lshift
+id|PAGE_SHIFT
 suffix:semicolon
-id|kunmap
+id|__flush_dcache_icache_phys
 c_func
 (paren
-id|page
+id|phys
 )paren
 suffix:semicolon
 id|set_bit

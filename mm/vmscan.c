@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we&n; * will scan in one go. A value of 6 for DEF_PRIORITY implies&n; * that we&squot;ll scan 1/64th of the queues (&quot;queue_length &gt;&gt; 6&quot;)&n; * during a normal aging round.&n; */
@@ -1690,7 +1691,7 @@ id|page-&gt;mapping
 r_goto
 id|page_mapped
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The page is locked. IO in progress?&n;&t;&t; * Move it to the back of the list.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * IO in progress? Leave it at the back of the list.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1708,17 +1709,9 @@ id|page
 r_if
 c_cond
 (paren
-id|PageLaunder
-c_func
-(paren
-id|page
-)paren
-op_logical_and
-(paren
 id|gfp_mask
 op_amp
 id|__GFP_FS
-)paren
 )paren
 (brace
 id|page_cache_get
@@ -1817,11 +1810,6 @@ id|__GFP_FS
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * It is not critical here to write it only if&n;&t;&t;&t; * the page is unmapped beause any direct writer&n;&t;&t;&t; * like O_DIRECT would set the page&squot;s dirty bitflag&n;&t;&t;&t; * on the phisical page after having successfully&n;&t;&t;&t; * pinned it and after the I/O to the page is finished,&n;&t;&t;&t; * so the direct writes to the page cannot get lost.&n;&t;&t;&t; */
-r_struct
-id|address_space_operations
-op_star
-id|a_ops
-suffix:semicolon
 r_int
 (paren
 op_star
@@ -1836,43 +1824,31 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_const
 r_int
-(paren
-op_star
-id|writepage
-)paren
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * There&squot;s no guarantee that writeback() will actually&n;&t;&t;&t; * start I/O against *this* page.  Which is broken if we&squot;re&n;&t;&t;&t; * trying to free memory in a particular zone.  FIXME.&n;&t;&t;&t; */
-id|a_ops
+id|nr_pages
 op_assign
-id|mapping-&gt;a_ops
+id|SWAP_CLUSTER_MAX
+suffix:semicolon
+r_int
+id|nr_to_write
+op_assign
+id|nr_pages
 suffix:semicolon
 id|writeback
 op_assign
-id|a_ops-&gt;vm_writeback
-suffix:semicolon
-id|writepage
-op_assign
-id|a_ops-&gt;writepage
+id|mapping-&gt;a_ops-&gt;vm_writeback
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|writeback
-op_logical_or
-id|writepage
+op_eq
+l_int|NULL
 )paren
-(brace
-id|SetPageLaunder
-c_func
-(paren
-id|page
-)paren
+id|writeback
+op_assign
+id|generic_vm_writeback
 suffix:semicolon
 id|page_cache_get
 c_func
@@ -1887,25 +1863,10 @@ op_amp
 id|pagemap_lru_lock
 )paren
 suffix:semicolon
-id|ClearPageDirty
-c_func
 (paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_star
 id|writeback
 )paren
-(brace
-r_int
-id|nr_to_write
-op_assign
-id|WRITEOUT_PAGES
-suffix:semicolon
-id|writeback
-c_func
 (paren
 id|page
 comma
@@ -1913,16 +1874,14 @@ op_amp
 id|nr_to_write
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|writepage
-c_func
+id|max_scan
+op_sub_assign
 (paren
-id|page
+id|nr_pages
+op_minus
+id|nr_to_write
 )paren
 suffix:semicolon
-)brace
 id|page_cache_release
 c_func
 (paren
@@ -1938,7 +1897,6 @@ id|pagemap_lru_lock
 suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t;&t; * If the page has buffers, try to free the buffer mappings&n;&t;&t; * associated with this page. If we succeed we try to free&n;&t;&t; * the page as well.&n;&t;&t; */
 r_if
@@ -2513,6 +2471,11 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+id|wakeup_bdflush
+c_func
+(paren
+)paren
+suffix:semicolon
 id|shrink_dcache_memory
 c_func
 (paren
@@ -2991,6 +2954,8 @@ multiline_comment|/*&n;&t; * Tell the memory management that we&squot;re a &quot
 id|tsk-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
+op_or
+id|PF_KERNTHREAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Kswapd main loop.&n;&t; */
 r_for
@@ -3000,6 +2965,19 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
 id|__set_current_state
 c_func
 (paren
@@ -3029,11 +3007,13 @@ c_func
 (paren
 )paren
 )paren
+(brace
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|__set_current_state
 c_func
 (paren

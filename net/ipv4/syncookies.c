@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n; *  Copyright (C) 1997 Andi Kleen&n; *  Based on ideas by D.J.Bernstein and Eric Schenk. &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; * &n; *  $Id: syncookies.c,v 1.18 2002/02/01 22:01:04 davem Exp $&n; *&n; *  Missing: IPv6 support. &n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_SYN_COOKIES) 
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
@@ -711,5 +709,4 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

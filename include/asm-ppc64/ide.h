@@ -157,12 +157,6 @@ r_void
 )paren
 (brace
 )brace
-DECL|macro|ide_ack_intr
-mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_release_lock
-mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
-DECL|macro|ide_get_lock
-mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMPPC64_IDE_H */
 eof

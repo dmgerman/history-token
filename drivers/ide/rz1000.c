@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (C) 1995-1998  Linus Torvalds &amp; author (see below)&n; *&n; *  Principal Author:  mlord@pobox.com (Mark Lord)&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; *  This file provides support for disabling the buggy read-ahead&n; *  mode of the RZ1000 IDE chipset, commonly used on Intel motherboards.&n; *&n; *  Dunno if this fixes both ports, or only the primary port (?).&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; *  Copyright (C) 1995-1998  Linus Torvalds &amp; author (see below)&n; *&n; *  Principal Author:  mlord@pobox.com (Mark Lord)&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; *  This file provides support for disabling the buggy read-ahead&n; *  mode of the RZ1000 IDE chipset, commonly used on Intel motherboards.&n; *&n; *  Dunno if this fixes both ports, or only the primary port (?).&n; */
 macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_PCI */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,14 +9,16 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_PCI
-DECL|function|ide_init_rz1000
+macro_line|#include &quot;pcihost.h&quot;
+DECL|function|rz1000_init_channel
+r_static
 r_void
 id|__init
-id|ide_init_rz1000
+id|rz1000_init_channel
 c_func
 (paren
 r_struct
@@ -24,7 +26,6 @@ id|ata_channel
 op_star
 id|hwif
 )paren
-multiline_comment|/* called from ide-pci.c */
 (brace
 r_int
 r_int
@@ -97,6 +98,101 @@ id|hwif-&gt;name
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipsets
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_PCTECH
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_PCTECH_RZ1000
+comma
+id|init_channel
+suffix:colon
+id|rz1000_init_channel
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+comma
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_PCTECH
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_PCTECH_RZ1001
+comma
+id|init_channel
+suffix:colon
+id|rz1000_init_channel
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|function|init_rz1000
+r_int
+id|__init
+id|init_rz1000
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|chipsets
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipsets
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|init_rz1000
@@ -339,7 +435,7 @@ id|dev
 op_ne
 l_int|NULL
 )paren
-id|init_rz1000
+id|rz1000_init
 (paren
 id|dev
 comma
@@ -365,7 +461,7 @@ id|dev
 op_ne
 l_int|NULL
 )paren
-id|init_rz1000
+id|rz1000_init
 (paren
 id|dev
 comma

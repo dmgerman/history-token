@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/gt64120/gt64120.h&gt;
@@ -3823,10 +3824,6 @@ r_return
 id|arrayCounter
 suffix:semicolon
 )brace
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN(val,align)        (((val) + ((align) - 1)) &amp; ~((align) - 1))
-DECL|macro|MAX
-mdefine_line|#define MAX(val1, val2) ((val1) &gt; (val2) ? (val1) : (val2))
 multiline_comment|/*&n; * This function goes through the list of devices and allocates the BARs in&n; * either IO or MEM space.  It does it in order of size, which will limit the&n; * amount of fragmentation we have in the IO and MEM spaces.&n; */
 DECL|function|allocate_pci_space
 r_static
@@ -4039,10 +4036,10 @@ l_int|1
 (brace
 id|alignto
 op_assign
-id|MAX
+id|max
 c_func
 (paren
-l_int|0x1000
+l_int|0x1000U
 comma
 id|maxSize
 )paren
@@ -4087,10 +4084,10 @@ r_else
 (brace
 id|alignto
 op_assign
-id|MAX
+id|max
 c_func
 (paren
-l_int|0x1000
+l_int|0x1000U
 comma
 id|maxSize
 )paren

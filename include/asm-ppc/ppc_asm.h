@@ -22,6 +22,10 @@ DECL|macro|REST_8GPRS
 mdefine_line|#define REST_8GPRS(n, base)&t;REST_4GPRS(n, base); REST_4GPRS(n+4, base)
 DECL|macro|REST_10GPRS
 mdefine_line|#define REST_10GPRS(n, base)&t;REST_8GPRS(n, base); REST_2GPRS(n+8, base)
+DECL|macro|SAVE_NVGPRS
+mdefine_line|#define SAVE_NVGPRS(base)&t;SAVE_GPR(13, base); SAVE_8GPRS(14, base); &bslash;&n;&t;&t;&t;&t;SAVE_10GPRS(22, base)
+DECL|macro|REST_NVGPRS
+mdefine_line|#define REST_NVGPRS(base)&t;REST_GPR(13, base); REST_8GPRS(14, base); &bslash;&n;&t;&t;&t;&t;REST_10GPRS(22, base)
 DECL|macro|SAVE_FPR
 mdefine_line|#define SAVE_FPR(n, base)&t;stfd&t;n,THREAD_FPR0+8*(n)(base)
 DECL|macro|SAVE_2FPRS

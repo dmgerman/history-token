@@ -234,10 +234,12 @@ multiline_comment|/* ------------------------ IrTTP part -----------------------
 multiline_comment|/* We create a pseudo &quot;socket&quot; over the IrDA tranport */
 DECL|member|ttp_open
 r_int
+r_int
 id|ttp_open
 suffix:semicolon
 multiline_comment|/* Set when IrTTP is ready */
 DECL|member|ttp_connect
+r_int
 r_int
 id|ttp_connect
 suffix:semicolon

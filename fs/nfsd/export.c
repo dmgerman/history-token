@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsfh.h&gt;
@@ -1233,35 +1234,46 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* There are two requirements on a filesystem to be exportable.&n;&t; * 1:  We must be able to identify the filesystem from a number.&n;&t; *       either a device number (so FS_REQUIRES_DEV needed)&n;&t; *       or an FSID number (so NFSEXP_FSID needed).&n;&t; * 2:  We must be able to find an inode from a filehandle.&n;&t; *       either using fh_to_dentry (prefered)&n;&t; *       or using read_inode (the hack).&n;&t; */
+multiline_comment|/* There are two requirements on a filesystem to be exportable.&n;&t; * 1:  We must be able to identify the filesystem from a number.&n;&t; *       either a device number (so FS_REQUIRES_DEV needed)&n;&t; *       or an FSID number (so NFSEXP_FSID needed).&n;&t; * 2:  We must be able to find an inode from a filehandle.&n;&t; *       This means that s_export_op must be set.&n;&t; */
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 (paren
 id|inode-&gt;i_sb-&gt;s_type-&gt;fs_flags
 op_amp
 id|FS_REQUIRES_DEV
 )paren
-op_logical_or
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|nxp-&gt;ex_flags
 op_amp
 id|NFSEXP_FSID
 )paren
 )paren
-op_logical_and
+(brace
+id|dprintk
+c_func
 (paren
-id|inode-&gt;i_sb-&gt;s_op-&gt;read_inode
-op_logical_or
-id|inode-&gt;i_sb-&gt;s_export_op
-op_logical_or
-id|inode-&gt;i_sb-&gt;s_op-&gt;fh_to_dentry
+l_string|&quot;exp_export: export of non-dev fs without fsid&quot;
 )paren
-)paren
-multiline_comment|/* Ok, we can export it */
 suffix:semicolon
-r_else
+r_goto
+id|finish
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inode-&gt;i_sb-&gt;s_export_op
+)paren
 (brace
 id|dprintk
 c_func
@@ -1273,11 +1285,11 @@ r_goto
 id|finish
 suffix:semicolon
 )brace
+multiline_comment|/* Ok, we can export it */
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;s_export_op
-op_logical_and
 op_logical_neg
 id|inode-&gt;i_sb-&gt;s_export_op-&gt;find_exported_dentry
 )paren

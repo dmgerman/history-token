@@ -542,6 +542,24 @@ comma
 id|dev_t
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sysv_getattr
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+comma
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|kstat
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* dir.c */
 r_extern
 r_struct

@@ -5,7 +5,6 @@ DECL|macro|__ASM_HARDIRQ_H
 mdefine_line|#define __ASM_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-multiline_comment|/* entry.S is sensitive to the offsets of these fields */
 multiline_comment|/* The __last_jiffy_stamp field is needed to ensure that no decrementer &n; * interrupt is lost on SMP machines. Since on most CPUs it is in the same &n; * cache line as local_irq_count, it is cheap to access and is also used on UP &n; * for uniformity.&n; */
 r_typedef
 r_struct
@@ -61,9 +60,9 @@ mdefine_line|#define hardirq_trylock(cpu)&t;(local_irq_count(cpu) == 0)
 DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock(cpu)&t;do { } while (0)
 DECL|macro|hardirq_enter
-mdefine_line|#define hardirq_enter(cpu)&t;(local_irq_count(cpu)++)
+mdefine_line|#define hardirq_enter(cpu)&t;do { preempt_disable(); local_irq_count(cpu)++; } while (0)
 DECL|macro|hardirq_exit
-mdefine_line|#define hardirq_exit(cpu)&t;(local_irq_count(cpu)--)
+mdefine_line|#define hardirq_exit(cpu)&t;do { local_irq_count(cpu)--; preempt_enable(); } while (0)
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq()&t;do { } while (0)
 DECL|macro|release_irqlock
@@ -179,6 +178,11 @@ id|loops
 op_assign
 l_int|10000000
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 op_increment
 id|local_irq_count
 c_func
@@ -270,6 +274,11 @@ id|local_irq_count
 c_func
 (paren
 id|cpu
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

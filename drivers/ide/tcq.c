@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2001, 2002 Jens Axboe &lt;axboe@suse.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Support for the DMA queued protocol, which enables ATA disk drives to&n; * use tagged command queueing.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -48,6 +49,11 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 suffix:semicolon
 DECL|function|drive_ctl_nien
@@ -130,6 +136,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 id|GET_STAT
 c_func
 (paren
@@ -164,15 +172,12 @@ op_star
 id|drive
 )paren
 (brace
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 id|request_queue_t
 op_star
@@ -213,8 +218,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -223,7 +227,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|hwgroup-&gt;timer
+id|ch-&gt;timer
 )paren
 suffix:semicolon
 r_if
@@ -234,8 +238,7 @@ c_func
 (paren
 id|IDE_DMA
 comma
-op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 id|udma_stop
@@ -263,8 +266,7 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 suffix:semicolon
 id|clear_bit
@@ -272,11 +274,10 @@ c_func
 (paren
 id|IDE_DMA
 comma
-op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 suffix:semicolon
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -420,8 +421,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -457,15 +457,12 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_int
 r_int
@@ -483,8 +480,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -497,15 +493,14 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ATA: %s: hwgroup not busy&bslash;n&quot;
+l_string|&quot;ATA: %s: IRQ handler not busy&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -513,15 +508,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwgroup-&gt;handler
-op_eq
-l_int|NULL
+op_logical_neg
+id|ch-&gt;handler
 )paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ATA: %s: missing isr!&bslash;n&quot;
+l_string|&quot;ATA: %s: missing ISR!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -529,8 +523,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -561,6 +554,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|drive-&gt;rq
 )paren
 op_eq
 id|ide_started
@@ -595,15 +590,12 @@ op_star
 id|handler
 )paren
 (brace
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_int
 r_int
@@ -612,30 +604,29 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * always just bump the timer for now, the timeout handling will&n;&t; * have to be changed to be per-command&n;&t; */
-id|hwgroup-&gt;timer.function
+multiline_comment|/*&n;&t; * always just bump the timer for now, the timeout handling will&n;&t; * have to be changed to be per-command&n;&t; *&n;&t; * FIXME: Jens - this is broken it will interfere with&n;&t; * the normal timer function on serialized drives!&n;&t; */
+id|ch-&gt;timer.function
 op_assign
 id|ata_tcq_irq_timeout
 suffix:semicolon
-id|hwgroup-&gt;timer.data
+id|ch-&gt;timer.data
 op_assign
 (paren
 r_int
 r_int
 )paren
-id|hwgroup-&gt;XXX_drive
+id|ch-&gt;drive
 suffix:semicolon
 id|mod_timer
 c_func
 (paren
 op_amp
-id|hwgroup-&gt;timer
+id|ch-&gt;timer
 comma
 id|jiffies
 op_plus
@@ -644,15 +635,14 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 id|handler
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -760,13 +750,13 @@ r_struct
 id|ata_device
 op_star
 id|drive
-)paren
-(brace
+comma
 r_struct
 id|request
 op_star
 id|rq
-suffix:semicolon
+)paren
+(brace
 id|u8
 id|feat
 suffix:semicolon
@@ -793,14 +783,7 @@ c_func
 (paren
 id|IDE_DMA
 comma
-op_amp
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|flags
+id|drive-&gt;channel-&gt;active
 )paren
 )paren
 r_return
@@ -812,13 +795,7 @@ c_cond
 (paren
 id|drive
 op_ne
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|XXX_drive
+id|drive-&gt;channel-&gt;drive
 )paren
 (brace
 id|SELECT_DRIVE
@@ -882,6 +859,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 id|__FUNCTION__
 comma
 id|stat
@@ -919,6 +898,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 id|__FUNCTION__
 comma
 id|stat
@@ -950,13 +931,7 @@ op_amp
 id|NSEC_REL
 )paren
 (brace
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1023,13 +998,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 op_assign
 id|rq
 suffix:semicolon
@@ -1064,6 +1033,11 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 id|u8
@@ -1111,6 +1085,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we have pending commands, wait for interrupt&n;&t; */
@@ -1197,6 +1173,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 id|__FUNCTION__
 comma
 id|stat
@@ -1258,6 +1236,8 @@ id|check_service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -1338,6 +1318,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -1356,6 +1338,8 @@ id|check_service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -1877,8 +1861,7 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
-id|ch-&gt;hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 id|printk
@@ -2017,6 +2000,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 l_string|&quot;queued start&quot;
 comma
 id|stat
@@ -2053,6 +2038,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 l_string|&quot;tcq_start&quot;
 comma
 id|stat
@@ -2081,13 +2068,7 @@ id|NSEC_REL
 id|drive-&gt;immed_rel
 op_increment
 suffix:semicolon
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2124,6 +2105,8 @@ id|service
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 r_return
@@ -2274,4 +2257,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: This should go away! */
+DECL|variable|udma_tcq_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_tcq_enable
+)paren
+suffix:semicolon
 eof

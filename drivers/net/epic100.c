@@ -2383,6 +2383,7 @@ mdefine_line|#define EE_ERASE_CMD&t;(7 &lt;&lt; 6)
 DECL|function|read_eeprom
 r_static
 r_int
+id|__devinit
 id|read_eeprom
 c_func
 (paren

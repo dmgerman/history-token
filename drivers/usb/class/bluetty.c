@@ -1580,6 +1580,9 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 (paren
 id|temp_buffer
@@ -1588,7 +1591,17 @@ id|buf
 comma
 id|count
 )paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 id|current_buffer
 op_assign
 id|temp_buffer

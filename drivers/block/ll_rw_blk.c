@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -15,6 +14,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
@@ -142,12 +142,12 @@ dot
 id|request_queue
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_get_ra_pages - get the address of a queue&squot;s readahead tunable&n; * @dev:&t;device&n; *&n; * Locates the passed device&squot;s request queue and returns the address of its&n; * readahead setting.&n; *&n; * Will return NULL if the request queue cannot be located.&n; */
-DECL|function|blk_get_ra_pages
-r_int
-r_int
+multiline_comment|/**&n; * blk_get_backing_dev_info - get the address of a queue&squot;s backing_dev_info&n; * @dev:&t;device&n; *&n; * Locates the passed device&squot;s request queue and returns the address of its&n; * backing_dev_info&n; *&n; * Will return NULL if the request queue cannot be located.&n; */
+DECL|function|blk_get_backing_dev_info
+r_struct
+id|backing_dev_info
 op_star
-id|blk_get_ra_pages
+id|blk_get_backing_dev_info
 c_func
 (paren
 r_struct
@@ -156,8 +156,8 @@ op_star
 id|bdev
 )paren
 (brace
-r_int
-r_int
+r_struct
+id|backing_dev_info
 op_star
 id|ret
 op_assign
@@ -185,7 +185,7 @@ id|q
 id|ret
 op_assign
 op_amp
-id|q-&gt;ra_pages
+id|q-&gt;backing_dev_info
 suffix:semicolon
 r_return
 id|ret
@@ -238,7 +238,7 @@ id|q-&gt;make_request_fn
 op_assign
 id|mfn
 suffix:semicolon
-id|q-&gt;ra_pages
+id|q-&gt;backing_dev_info.ra_pages
 op_assign
 (paren
 id|VM_MAX_READAHEAD
@@ -247,6 +247,10 @@ l_int|1024
 )paren
 op_div
 id|PAGE_CACHE_SIZE
+suffix:semicolon
+id|q-&gt;backing_dev_info.state
+op_assign
+l_int|0
 suffix:semicolon
 id|blk_queue_max_sectors
 c_func
@@ -1346,182 +1350,6 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * standard prep_rq_fn that builds 10 byte cmds&n; */
-DECL|function|ll_10byte_cmd_build
-r_int
-id|ll_10byte_cmd_build
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-comma
-r_struct
-id|request
-op_star
-id|rq
-)paren
-(brace
-r_int
-id|hard_sect
-op_assign
-id|queue_hardsect_size
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-id|sector_t
-id|block
-op_assign
-id|rq-&gt;hard_sector
-op_div
-(paren
-id|hard_sect
-op_rshift
-l_int|9
-)paren
-suffix:semicolon
-r_int
-r_int
-id|blocks
-op_assign
-id|rq-&gt;hard_nr_sectors
-op_div
-(paren
-id|hard_sect
-op_rshift
-l_int|9
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|rq-&gt;flags
-op_amp
-id|REQ_CMD
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|rq-&gt;cmd
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|rq-&gt;cmd
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|READ
-)paren
-id|rq-&gt;cmd
-(braket
-l_int|0
-)braket
-op_assign
-id|READ_10
-suffix:semicolon
-r_else
-id|rq-&gt;cmd
-(braket
-l_int|0
-)braket
-op_assign
-id|WRITE_10
-suffix:semicolon
-multiline_comment|/*&n;&t; * fill in lba&n;&t; */
-id|rq-&gt;cmd
-(braket
-l_int|2
-)braket
-op_assign
-(paren
-id|block
-op_rshift
-l_int|24
-)paren
-op_amp
-l_int|0xff
-suffix:semicolon
-id|rq-&gt;cmd
-(braket
-l_int|3
-)braket
-op_assign
-(paren
-id|block
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xff
-suffix:semicolon
-id|rq-&gt;cmd
-(braket
-l_int|4
-)braket
-op_assign
-(paren
-id|block
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xff
-suffix:semicolon
-id|rq-&gt;cmd
-(braket
-l_int|5
-)braket
-op_assign
-id|block
-op_amp
-l_int|0xff
-suffix:semicolon
-multiline_comment|/*&n;&t; * and transfer length&n;&t; */
-id|rq-&gt;cmd
-(braket
-l_int|7
-)braket
-op_assign
-(paren
-id|blocks
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xff
-suffix:semicolon
-id|rq-&gt;cmd
-(braket
-l_int|8
-)braket
-op_assign
-id|blocks
-op_amp
-l_int|0xff
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|blk_recount_segments
@@ -4951,6 +4779,11 @@ id|req-&gt;biotail
 op_assign
 id|bio
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bio-&gt;bi_bdev
+)paren
 id|req-&gt;rq_dev
 op_assign
 id|to_kdev_t
@@ -4958,6 +4791,11 @@ c_func
 (paren
 id|bio-&gt;bi_bdev-&gt;bd_dev
 )paren
+suffix:semicolon
+r_else
+id|req-&gt;rq_dev
+op_assign
+id|NODEV
 suffix:semicolon
 id|add_request
 c_func
@@ -6087,6 +5925,8 @@ id|rq-&gt;hard_sector
 op_add_assign
 id|nsect
 suffix:semicolon
+id|rq-&gt;nr_sectors
+op_assign
 id|rq-&gt;hard_nr_sectors
 op_sub_assign
 id|nsect
@@ -6094,10 +5934,6 @@ suffix:semicolon
 id|rq-&gt;sector
 op_assign
 id|rq-&gt;hard_sector
-suffix:semicolon
-id|rq-&gt;nr_sectors
-op_assign
-id|rq-&gt;hard_nr_sectors
 suffix:semicolon
 id|rq-&gt;current_nr_sectors
 op_assign
@@ -6766,13 +6602,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_hw_contig_segment
-)paren
-suffix:semicolon
-DECL|variable|ll_10byte_cmd_build
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ll_10byte_cmd_build
 )paren
 suffix:semicolon
 DECL|variable|blk_queue_prep_rq

@@ -2607,6 +2607,7 @@ multiline_comment|/* Read the EEPROM and MII Management Data I/O (MDIO) interfac
 DECL|function|eeprom_read
 r_static
 r_int
+id|__devinit
 id|eeprom_read
 c_func
 (paren

@@ -95,9 +95,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -365,6 +365,6 @@ id|end
 )paren
 (brace
 )brace
-macro_line|#endif _PPC_TLBFLUSH_H
-macro_line|#endif __KERNEL__
+macro_line|#endif /* _PPC_TLBFLUSH_H */
+macro_line|#endif /*__KERNEL__ */
 eof

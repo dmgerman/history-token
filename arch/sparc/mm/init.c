@@ -222,17 +222,6 @@ id|pgd_cache_size
 )paren
 suffix:semicolon
 macro_line|#endif&t;
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 )brace
 r_extern
 id|pgprot_t

@@ -1505,7 +1505,9 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_int
+r_struct
+id|task_struct
+op_star
 id|__init
 DECL|function|fork_by_hand
 id|fork_by_hand
@@ -1525,7 +1527,7 @@ c_func
 (paren
 id|CLONE_VM
 op_or
-id|CLONE_PID
+id|CLONE_IDLETASK
 comma
 l_int|0
 comma
@@ -1560,43 +1562,26 @@ r_int
 id|timeout
 suffix:semicolon
 multiline_comment|/* Cook up an idler for this guy.  Note that the address we&n;&t;   give to kernel_thread is irrelevant -- it&squot;s going to start&n;&t;   where HWRPB.CPU_restart says to start.  But this gets all&n;&t;   the other task-y sort of data structures set up like we&n;&t;   wish.  We can&squot;t use kernel_thread since we must avoid&n;&t;   rescheduling the child.  */
-r_if
-c_cond
-(paren
+id|idle
+op_assign
 id|fork_by_hand
 c_func
 (paren
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|idle
+)paren
 )paren
 id|panic
 c_func
 (paren
 l_string|&quot;failed fork for CPU %d&quot;
-comma
-id|cpuid
-)paren
-suffix:semicolon
-id|idle
-op_assign
-id|prev_task
-c_func
-(paren
-op_amp
-id|init_task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|idle
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;No idle process for CPU %d&quot;
 comma
 id|cpuid
 )paren
@@ -3177,7 +3162,7 @@ id|IPI_CPU_STOP
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Run a function on all other CPUs.&n; *  &lt;func&gt;&t;The function to run. This must be fast and non-blocking.&n; *  &lt;info&gt;&t;An arbitrary pointer to pass to the function.&n; *  &lt;retry&gt;&t;If true, keep retrying until ready.&n; *  &lt;wait&gt;&t;If true, wait until function has completed on other CPUs.&n; *  [RETURNS]   0 on success, else a negative status code.&n; *&n; * Does not return until remote CPUs are nearly ready to execute &lt;func&gt;&n; * or are or have executed.&n; */
+multiline_comment|/*&n; * Run a function on all other CPUs.&n; *  &lt;func&gt;&t;The function to run. This must be fast and non-blocking.&n; *  &lt;info&gt;&t;An arbitrary pointer to pass to the function.&n; *  &lt;retry&gt;&t;If true, keep retrying until ready.&n; *  &lt;wait&gt;&t;If true, wait until function has completed on other CPUs.&n; *  [RETURNS]   0 on success, else a negative status code.&n; *&n; * Does not return until remote CPUs are nearly ready to execute &lt;func&gt;&n; * or are or have executed.&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 r_int
 DECL|function|smp_call_function_on_cpu
 id|smp_call_function_on_cpu

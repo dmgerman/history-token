@@ -403,6 +403,9 @@ op_star
 id|IEV_SZ
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -418,6 +421,9 @@ id|fixit
 comma
 id|ev_len
 )paren
+)paren
+r_goto
+id|out
 suffix:semicolon
 id|p
 op_add_assign
@@ -441,6 +447,8 @@ id|iqlen
 op_decrement
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|restore_flags
 c_func
 (paren
@@ -913,6 +921,9 @@ op_ge
 l_int|4
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -932,6 +943,9 @@ id|p
 comma
 l_int|4
 )paren
+)paren
+r_goto
+id|out
 suffix:semicolon
 id|ev_code
 op_assign
@@ -1126,6 +1140,9 @@ op_minus
 id|c
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1151,6 +1168,9 @@ l_int|4
 comma
 l_int|4
 )paren
+)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else
@@ -1395,6 +1415,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|count
 suffix:semicolon

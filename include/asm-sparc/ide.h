@@ -224,10 +224,6 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef  SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 mdefine_line|#define SUPPORT_SLOW_DATA_PORTS 0
-DECL|macro|SUPPORT_VLB_SYNC
-macro_line|#undef  SUPPORT_VLB_SYNC
-DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC 0
 DECL|macro|HD_DATA
 macro_line|#undef  HD_DATA
 DECL|macro|HD_DATA
@@ -546,13 +542,6 @@ suffix:semicolon
 multiline_comment|/* __flush_dcache_range((unsigned long)src, end); */
 multiline_comment|/* P3 see hme */
 )brace
-DECL|macro|ide_ack_intr
-mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-multiline_comment|/* #define ide_ack_intr(hwif)&t;((hwif)-&gt;hw.ack_intr ? (hwif)-&gt;hw.ack_intr(hwif) : 1) */
-DECL|macro|ide_release_lock
-mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
-DECL|macro|ide_get_lock
-mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SPARC_IDE_H */
 eof

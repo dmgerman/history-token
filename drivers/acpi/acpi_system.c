@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
@@ -207,6 +209,27 @@ id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|dmi_broken
+op_amp
+id|BROKEN_INIT_AFTER_S1
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Broken toshiba laptop -&gt; kicking interrupts&bslash;n&quot;
+)paren
+suffix:semicolon
+id|init_8259A
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 r_return
 id|AE_OK
 suffix:semicolon
@@ -426,29 +449,6 @@ id|state
 r_case
 id|ACPI_STATE_S1
 suffix:colon
-multiline_comment|/* do nothing */
-r_break
-suffix:semicolon
-r_case
-id|ACPI_STATE_S2
-suffix:colon
-r_case
-id|ACPI_STATE_S3
-suffix:colon
-id|acpi_save_register_state
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-op_logical_and
-id|acpi_sleep_done
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|barrier
 c_func
 (paren
@@ -462,8 +462,29 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|acpi_sleep_done
+r_break
+suffix:semicolon
+r_case
+id|ACPI_STATE_S2
 suffix:colon
+r_case
+id|ACPI_STATE_S3
+suffix:colon
+id|do_suspend_magic
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;acpi_restore_register_state...&quot;
+)paren
+suffix:semicolon
 id|acpi_restore_register_state
 c_func
 (paren
@@ -473,6 +494,12 @@ id|restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;acpi returning...&quot;
 )paren
 suffix:semicolon
 r_return
@@ -501,6 +528,11 @@ id|ACPI_STATE_S5
 )paren
 r_return
 id|AE_ERROR
+suffix:semicolon
+id|freeze_processes
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* do we have a wakeup address for S2 and S3? */
 r_if
@@ -588,10 +620,22 @@ c_func
 id|state
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;acpi_leave_sleep_state...&quot;
+)paren
+suffix:semicolon
 id|acpi_leave_sleep_state
 c_func
 (paren
 id|state
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;ook&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* make sure interrupts are enabled */
@@ -608,6 +652,11 @@ c_func
 id|ACPI_PHYSICAL_ADDRESS
 )paren
 l_int|0
+)paren
+suffix:semicolon
+id|thaw_processes
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2280,6 +2329,29 @@ op_minus
 id|ENODEV
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+r_if
+c_cond
+(paren
+id|state
+op_eq
+l_int|4
+)paren
+(brace
+multiline_comment|/* We are working from process context, that&squot;s why we may call it directly. */
+id|do_software_suspend
+c_func
+(paren
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+id|count
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|status
 op_assign
 id|acpi_suspend
@@ -4528,6 +4600,22 @@ c_func
 l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Software suspend =&gt; we can do S4.&quot;
+)paren
+suffix:semicolon
+id|system-&gt;states
+(braket
+l_int|4
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PM
 multiline_comment|/* Install the soft-off (S5) handler. */
 r_if

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -42,8 +43,8 @@ DECL|macro|CLONE_FILES
 mdefine_line|#define CLONE_FILES&t;0x00000400&t;/* set if open files shared between processes */
 DECL|macro|CLONE_SIGHAND
 mdefine_line|#define CLONE_SIGHAND&t;0x00000800&t;/* set if signal handlers and blocked signals shared */
-DECL|macro|CLONE_PID
-mdefine_line|#define CLONE_PID&t;0x00001000&t;/* set if pid shared */
+DECL|macro|CLONE_IDLETASK
+mdefine_line|#define CLONE_IDLETASK&t;0x00001000&t;/* set if new pid should be 0 (kernel only)*/
 DECL|macro|CLONE_PTRACE
 mdefine_line|#define CLONE_PTRACE&t;0x00002000&t;/* set if we want to let tracing continue on the child too */
 DECL|macro|CLONE_VFORK
@@ -500,6 +501,13 @@ id|siglock
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_OTHER tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_RT_USER_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
+DECL|macro|MAX_USER_RT_PRIO
+mdefine_line|#define MAX_USER_RT_PRIO&t;100
+DECL|macro|MAX_RT_PRIO
+mdefine_line|#define MAX_RT_PRIO&t;&t;MAX_USER_RT_PRIO
+DECL|macro|MAX_PRIO
+mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
 multiline_comment|/*&n; * Some day this will be a full-fledged user tracking system..&n; */
 DECL|struct|user_struct
 r_struct
@@ -1110,6 +1118,14 @@ DECL|macro|PF_FLUSHER
 mdefine_line|#define PF_FLUSHER&t;0x00004000&t;/* responsible for disk writeback */
 DECL|macro|PF_RADIX_TREE
 mdefine_line|#define PF_RADIX_TREE&t;0x00008000&t;/* debug: performing radix tree alloc */
+DECL|macro|PF_FREEZE
+mdefine_line|#define PF_FREEZE&t;0x00010000&t;/* this task should be frozen for suspend */
+DECL|macro|PF_IOTHREAD
+mdefine_line|#define PF_IOTHREAD&t;0x00020000&t;/* this thread is needed for doing I/O to swap */
+DECL|macro|PF_KERNTHREAD
+mdefine_line|#define PF_KERNTHREAD&t;0x00040000&t;/* this thread is a kernel thread that cannot be sent signals to */
+DECL|macro|PF_FROZEN
+mdefine_line|#define PF_FROZEN&t;0x00080000&t;/* frozen for system suspend */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -1437,12 +1453,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/current.h&gt;
-r_extern
-r_int
-r_int
-r_volatile
-id|jiffies
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -2634,7 +2644,9 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_struct
+id|task_struct
+op_star
 id|do_fork
 c_func
 (paren

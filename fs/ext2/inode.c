@@ -1,9 +1,9 @@
 multiline_comment|/*&n; *  linux/fs/ext2/inode.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/inode.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Goal-directed block allocation by Stephen Tweedie&n; * &t;(sct@dcs.ed.ac.uk), 1993, 1998&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; *  64-bit file support on 64-bit platforms by Jakub Jelinek&n; * &t;(jj@sunsite.ms.mff.cuni.cz)&n; *&n; *  Assorted race fixes, rewrite of ext2_get_block() by Al Viro, 2000&n; */
 macro_line|#include &quot;ext2.h&quot;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_AUTHOR
@@ -49,6 +49,19 @@ op_star
 id|inode
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|inode-&gt;i_count
+)paren
+OL
+l_int|2
+)paren
+multiline_comment|/* final iput? */
 id|ext2_discard_prealloc
 (paren
 id|inode
@@ -2232,6 +2245,60 @@ id|ext2_get_block
 )paren
 suffix:semicolon
 )brace
+r_static
+r_int
+DECL|function|ext2_writeback_mapping
+id|ext2_writeback_mapping
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+op_star
+id|nr_to_write
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|ret
+op_assign
+id|write_mapping_buffers
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|generic_writeback_mapping
+c_func
+(paren
+id|mapping
+comma
+id|nr_to_write
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+id|ret
+op_assign
+id|err
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|variable|ext2_aops
 r_struct
 id|address_space_operations
@@ -2268,7 +2335,7 @@ id|ext2_direct_IO
 comma
 id|writeback_mapping
 suffix:colon
-id|generic_writeback_mapping
+id|ext2_writeback_mapping
 comma
 id|vm_writeback
 suffix:colon
@@ -3366,10 +3433,10 @@ id|inode
 )paren
 )paren
 (brace
-id|fsync_inode_buffers
+id|sync_mapping_buffers
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|ext2_sync_inode

@@ -65,6 +65,7 @@ r_int
 id|trap
 suffix:semicolon
 multiline_comment|/* Reason for being here */
+multiline_comment|/* N.B. for critical exceptions on 4xx, the dar and dsisr&n;&t;   fields are overloaded to hold srr0 and srr1. */
 DECL|member|dar
 r_int
 r_int
@@ -84,20 +85,31 @@ suffix:semicolon
 multiline_comment|/* Result of a system call */
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* iSeries uses mq field for soft enable flag */
 DECL|macro|softEnable
 mdefine_line|#define softEnable mq
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_FRAME_OVERHEAD
 mdefine_line|#define STACK_FRAME_OVERHEAD&t;16&t;/* size of minimum stack frame */
 multiline_comment|/* Size of stack frame allocated when calling signal handler. */
 DECL|macro|__SIGNAL_FRAMESIZE
 mdefine_line|#define __SIGNAL_FRAMESIZE&t;64
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;nip)
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (((regs)-&gt;msr &amp; MSR_PR) != 0)
+multiline_comment|/*&n; * We use the least-significant bit of the trap field to indicate&n; * whether we have saved the full set of registers, or only a&n; * partial set.  A 1 there means the partial set.&n; * On 4xx we use the next bit to indicate whether the exception&n; * is a critical exception (1 means it is).&n; */
+DECL|macro|FULL_REGS
+mdefine_line|#define FULL_REGS(regs)&t;&t;(((regs)-&gt;trap &amp; 1) == 0)
+DECL|macro|IS_CRITICAL_EXC
+mdefine_line|#define IS_CRITICAL_EXC(regs)&t;(((regs)-&gt;trap &amp; 2) == 0)
+DECL|macro|TRAP
+mdefine_line|#define TRAP(regs)&t;&t;((regs)-&gt;trap &amp; ~0xF)
+DECL|macro|CHECK_FULL_REGS
+mdefine_line|#define CHECK_FULL_REGS(regs)&t;&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;if ((regs)-&gt;trap &amp; 1)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;printk(KERN_CRIT &quot;%s: partial register set&bslash;n&quot;, __FUNCTION__); &bslash;&n;} while (0)
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Offsets used by &squot;ptrace&squot; system call interface.&n; * These can&squot;t be changed without breaking binary compatibility&n; * with MkLinux, etc.&n; */
 DECL|macro|PT_R0

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
@@ -1262,6 +1263,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * NOTE: if/when swap gets buffer/page coherency&n;&t;&t;&t; * like other mappings, we&squot;ll need to mark the buffers&n;&t;&t;&t; * dirty here too.  set_page_dirty().&n;&t;&t;&t; */
 id|SetPageDirty
 c_func
 (paren
@@ -4727,6 +4729,13 @@ r_if
 c_cond
 (paren
 id|swap_file
+op_logical_and
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|swap_file
+)paren
 )paren
 id|filp_close
 c_func

@@ -599,17 +599,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * stupid algorithm to decide if we have enough memory: while&n;&t; * simple, it hopefully works in most obvious cases.. Easy to&n;&t; * fool it, but this should catch most mistakes.&n;&t; */
 id|freepages
 op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|buffermem_pages
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-id|freepages
-op_add_assign
 id|get_page_cache_size
 c_func
 (paren
@@ -4555,7 +4544,7 @@ suffix:semicolon
 )brace
 r_extern
 id|asmlinkage
-r_int
+id|ssize_t
 id|sys_read
 c_func
 (paren
@@ -4573,7 +4562,7 @@ id|count
 suffix:semicolon
 r_extern
 id|asmlinkage
-r_int
+id|ssize_t
 id|sys_write
 c_func
 (paren

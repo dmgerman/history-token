@@ -9919,28 +9919,22 @@ id|irq
 op_assign
 id|pci_dev-&gt;irq
 suffix:semicolon
-singleline_comment|// check IO region
+multiline_comment|/* XXX DEV_LABEL is a guess */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 (paren
 id|iobase
 comma
 id|HRZ_IO_EXTENT
-)paren
-)paren
-(brace
-id|PRINTD
-(paren
-id|DBG_WARN
 comma
-l_string|&quot;IO range already in use&quot;
+id|DEV_LABEL
 )paren
-suffix:semicolon
+)paren
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -10099,16 +10093,6 @@ suffix:semicolon
 id|dev-&gt;pci_dev
 op_assign
 id|pci_dev
-suffix:semicolon
-multiline_comment|/* XXX DEV_LABEL is a guess */
-id|request_region
-(paren
-id|iobase
-comma
-id|HRZ_IO_EXTENT
-comma
-id|DEV_LABEL
-)paren
 suffix:semicolon
 singleline_comment|// enable bus master accesses
 id|pci_set_master
@@ -10455,6 +10439,14 @@ multiline_comment|/* request_irq */
 id|kfree
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|iobase
+comma
+id|HRZ_IO_EXTENT
 )paren
 suffix:semicolon
 )brace

@@ -679,8 +679,13 @@ DECL|macro|IRQ_MAP_LEN
 mdefine_line|#define IRQ_MAP_LEN 0x0004 /*  No of bytes to read for the IRQ map */
 DECL|macro|PNP_IRQ_FRMT
 mdefine_line|#define PNP_IRQ_FRMT 0x0022 /*  PNP small item IRQ format */
+macro_line|#ifdef CONFIG_SH_HICOSH4
+DECL|macro|CS8900_IRQ_MAP
+mdefine_line|#define CS8900_IRQ_MAP 0x0002 /* HiCO-SH4 board has its IRQ on #1 */
+macro_line|#else
 DECL|macro|CS8900_IRQ_MAP
 mdefine_line|#define CS8900_IRQ_MAP 0x1c20 /*  This IRQ map is fixed */
+macro_line|#endif
 DECL|macro|CS8920_NO_INTS
 mdefine_line|#define CS8920_NO_INTS 0x0F   /*  Max CS8920 interrupt select # */
 DECL|macro|PNP_ADD_PORT

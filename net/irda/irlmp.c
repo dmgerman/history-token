@@ -234,12 +234,6 @@ op_assign
 l_int|0x10
 suffix:semicolon
 multiline_comment|/* Reserved 0x00-0x0f */
-macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
-id|irlmp-&gt;cache.valid
-op_assign
-id|FALSE
-suffix:semicolon
-macro_line|#endif
 id|strcpy
 c_func
 (paren
@@ -677,23 +671,6 @@ c_func
 id|self-&gt;conn_skb
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
-id|ASSERT
-c_func
-(paren
-id|irlmp
-op_ne
-l_int|NULL
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
-id|irlmp-&gt;cache.valid
-op_assign
-id|FALSE
-suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -809,6 +786,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+id|lap-&gt;cache.valid
+op_assign
+id|FALSE
+suffix:semicolon
+macro_line|#endif
 )brace
 id|self-&gt;lap
 op_assign
@@ -992,6 +975,12 @@ c_func
 id|HB_GLOBAL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+id|lap-&gt;cache.valid
+op_assign
+id|FALSE
+suffix:semicolon
+macro_line|#endif
 id|lap-&gt;lap_state
 op_assign
 id|LAP_STANDBY
@@ -2199,7 +2188,9 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Make sure that we invalidate the cache */
 macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
-id|irlmp-&gt;cache.valid
+r_new
+op_member_access_from_pointer
+id|lap-&gt;cache.valid
 op_assign
 id|FALSE
 suffix:semicolon
@@ -2561,12 +2552,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
-id|irlmp-&gt;cache.valid
-op_assign
-id|FALSE
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* &n;&t; *  Remove association between this LSAP and the link it used &n;&t; */
 id|ASSERT
 c_func
@@ -2605,6 +2590,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+id|self-&gt;lap-&gt;cache.valid
+op_assign
+id|FALSE
+suffix:semicolon
+macro_line|#endif
 id|ASSERT
 c_func
 (paren

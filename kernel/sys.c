@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/kernel/sys.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
@@ -1078,6 +1079,36 @@ id|buffer
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+r_case
+id|LINUX_REBOOT_CMD_SW_SUSPEND
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|software_suspend_enabled
+)paren
+(brace
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
+id|software_suspend
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_exit
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|unlock_kernel
@@ -2274,11 +2305,11 @@ id|current-&gt;euid
 op_assign
 id|euid
 suffix:semicolon
+)brace
 id|current-&gt;fsuid
 op_assign
-id|euid
+id|current-&gt;euid
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2553,11 +2584,11 @@ id|current-&gt;egid
 op_assign
 id|egid
 suffix:semicolon
+)brace
 id|current-&gt;fsgid
 op_assign
-id|egid
+id|current-&gt;egid
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

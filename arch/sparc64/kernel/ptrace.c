@@ -258,6 +258,7 @@ id|pt_rq
 )braket
 op_assign
 (brace
+multiline_comment|/* 0  */
 l_string|&quot;TRACEME&quot;
 comma
 l_string|&quot;PEEKTEXT&quot;
@@ -266,6 +267,7 @@ l_string|&quot;PEEKDATA&quot;
 comma
 l_string|&quot;PEEKUSR&quot;
 comma
+multiline_comment|/* 4  */
 l_string|&quot;POKETEXT&quot;
 comma
 l_string|&quot;POKEDATA&quot;
@@ -274,6 +276,7 @@ l_string|&quot;POKEUSR&quot;
 comma
 l_string|&quot;CONT&quot;
 comma
+multiline_comment|/* 8  */
 l_string|&quot;KILL&quot;
 comma
 l_string|&quot;SINGLESTEP&quot;
@@ -282,6 +285,7 @@ l_string|&quot;SUNATTACH&quot;
 comma
 l_string|&quot;SUNDETACH&quot;
 comma
+multiline_comment|/* 12 */
 l_string|&quot;GETREGS&quot;
 comma
 l_string|&quot;SETREGS&quot;
@@ -290,6 +294,7 @@ l_string|&quot;GETFPREGS&quot;
 comma
 l_string|&quot;SETFPREGS&quot;
 comma
+multiline_comment|/* 16 */
 l_string|&quot;READDATA&quot;
 comma
 l_string|&quot;WRITEDATA&quot;
@@ -298,9 +303,17 @@ l_string|&quot;READTEXT&quot;
 comma
 l_string|&quot;WRITETEXT&quot;
 comma
+multiline_comment|/* 20 */
 l_string|&quot;GETFPAREGS&quot;
 comma
 l_string|&quot;SETFPAREGS&quot;
+comma
+l_string|&quot;unknown&quot;
+comma
+l_string|&quot;unknown&quot;
+comma
+multiline_comment|/* 24 */
+l_string|&quot;SYSCALL&quot;
 comma
 l_string|&quot;&quot;
 )brace
@@ -422,14 +435,14 @@ c_cond
 (paren
 (paren
 id|request
-OG
+op_ge
 l_int|0
 )paren
 op_logical_and
 (paren
 id|request
-OL
-l_int|21
+op_le
+l_int|24
 )paren
 )paren
 id|s

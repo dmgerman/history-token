@@ -3,7 +3,6 @@ multiline_comment|/**&n; ** old_item_num&n; ** old_entry_num&n; ** set_entry_siz
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 multiline_comment|/* To make any changes in the tree we find a node, that contains item&n;   to be changed/deleted or position in the node we insert a new item&n;   to. We call this node S. To do balancing we need to decide what we&n;   will shift to left/right neighbor, or to a new node, where new item&n;   will be etc. To make this analysis simpler we build virtual&n;   node. Virtual node is an array of items, that will replace items of&n;   node S. (For instance if we are going to delete an item, virtual&n;   node does not contain it). Virtual node keeps information about&n;   item sizes and types, mergeability of first and last items, sizes&n;   of all entries in directory item. We use this array of items when&n;   calculating what we can shift to neighbors and how many nodes we&n;   have to have if we do not any shiftings, if we shift to left/right&n;   neighbor or to both. */
 multiline_comment|/* taking item number in virtual node, returns number of item, that it has in source buffer */
@@ -8707,15 +8706,91 @@ op_star
 id|bh
 )paren
 (brace
-singleline_comment|//  int size = sizeof (struct virtual_item); /* for new item in case of insert */
-singleline_comment|//  int i, nr_items;
-singleline_comment|//  struct item_head * ih;
-singleline_comment|// this is enough for _ALL_ currently possible cases. In 4 k block
-singleline_comment|// one may put &lt; 170 empty items. Each virtual item eats 12
-singleline_comment|// byte. The biggest direntry item may have &lt; 256 entries. Each
-singleline_comment|// entry would eat 2 byte of virtual node space
-r_return
+r_int
+id|max_num_of_items
+suffix:semicolon
+r_int
+id|max_num_of_entries
+suffix:semicolon
+r_int
+r_int
+id|blocksize
+op_assign
 id|sb-&gt;s_blocksize
+suffix:semicolon
+DECL|macro|MIN_NAME_LEN
+mdefine_line|#define MIN_NAME_LEN 1
+id|max_num_of_items
+op_assign
+(paren
+id|blocksize
+op_minus
+id|BLKH_SIZE
+)paren
+op_div
+(paren
+id|IH_SIZE
+op_plus
+id|MIN_ITEM_LEN
+)paren
+suffix:semicolon
+id|max_num_of_entries
+op_assign
+(paren
+id|blocksize
+op_minus
+id|BLKH_SIZE
+op_minus
+id|IH_SIZE
+)paren
+op_div
+(paren
+id|DEH_SIZE
+op_plus
+id|MIN_NAME_LEN
+)paren
+suffix:semicolon
+r_return
+r_sizeof
+(paren
+r_struct
+id|virtual_node
+)paren
+op_plus
+id|max
+c_func
+(paren
+id|max_num_of_items
+op_star
+r_sizeof
+(paren
+r_struct
+id|virtual_item
+)paren
+comma
+r_sizeof
+(paren
+r_struct
+id|virtual_item
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|direntry_uarea
+)paren
+op_plus
+(paren
+id|max_num_of_entries
+op_minus
+l_int|1
+)paren
+op_star
+r_sizeof
+(paren
+id|__u16
+)paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* maybe we should fail balancing we are going to perform when kmalloc&n;   fails several times. But now it will loop until kmalloc gets&n;   required memory */

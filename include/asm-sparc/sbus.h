@@ -339,7 +339,7 @@ DECL|macro|SBUS_DMA_NONE
 mdefine_line|#define&t;SBUS_DMA_NONE&t;&t;3
 multiline_comment|/* All the rest use streaming mode mappings. */
 r_extern
-id|u32
+id|dma_addr_t
 id|sbus_map_single
 c_func
 (paren
@@ -364,7 +364,7 @@ r_struct
 id|sbus_dev
 op_star
 comma
-id|u32
+id|dma_addr_t
 comma
 r_int
 comma
@@ -417,7 +417,7 @@ r_struct
 id|sbus_dev
 op_star
 comma
-id|u32
+id|dma_addr_t
 comma
 r_int
 comma

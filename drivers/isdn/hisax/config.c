@@ -1924,6 +1924,10 @@ c_cond
 (paren
 id|user
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1933,7 +1937,12 @@ id|cs-&gt;status_read
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_else
 id|memcpy
 c_func
@@ -1997,6 +2006,10 @@ c_cond
 (paren
 id|user
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2006,7 +2019,12 @@ id|cs-&gt;status_read
 comma
 id|cnt
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_else
 id|memcpy
 c_func

@@ -89,18 +89,6 @@ singleline_comment|//-----------------------------------------------------------
 DECL|macro|WPG_I2C_IOREMAP_SIZE
 mdefine_line|#define WPG_I2C_IOREMAP_SIZE&t;0x2044&t;
 singleline_comment|// size of linear address interval
-DECL|macro|WPG_CTLR_MAX
-mdefine_line|#define WPG_CTLR_MAX&t;&t;0x01&t;
-singleline_comment|// max controllers
-DECL|macro|WPG_SLOT_MAX
-mdefine_line|#define WPG_SLOT_MAX&t;&t;0x06&t;
-singleline_comment|// max slots
-DECL|macro|WPG_CTLR_SLOT_MAX
-mdefine_line|#define WPG_CTLR_SLOT_MAX&t;0x06&t;
-singleline_comment|// max slots per controller
-DECL|macro|WPG_FIRST_CTLR
-mdefine_line|#define WPG_FIRST_CTLR&t;&t;0x00&t;
-singleline_comment|// index of the controller
 singleline_comment|//----------------------------------------------------------------------------
 singleline_comment|// command index
 singleline_comment|//----------------------------------------------------------------------------
@@ -276,6 +264,10 @@ id|process_changeinlatch
 id|u8
 comma
 id|u8
+comma
+r_struct
+id|controller
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -2801,6 +2793,8 @@ id|process_changeinlatch
 id|oldlatchlow
 comma
 id|curlatchlow
+comma
+id|pslot-&gt;ctrl
 )paren
 suffix:semicolon
 )brace
@@ -3251,7 +3245,6 @@ op_amp
 l_int|0x01
 )paren
 )paren
-multiline_comment|/* ????????? DO WE NEED TO UPDATE BUS SPEED INFO HERE ??? */
 id|update
 op_assign
 id|TRUE
@@ -3335,9 +3328,27 @@ singleline_comment|// OFF -&gt; ON: ignore, ON -&gt; OFF: disable slot
 r_if
 c_cond
 (paren
+(paren
 id|poldslot-&gt;status
 op_amp
 l_int|0x20
+)paren
+op_logical_and
+(paren
+id|SLOT_CONNECT
+(paren
+id|poldslot-&gt;status
+)paren
+op_eq
+id|HPC_SLOT_CONNECTED
+)paren
+op_logical_and
+(paren
+id|SLOT_PRESENT
+(paren
+id|poldslot-&gt;status
+)paren
+)paren
 )paren
 id|disable
 op_assign
@@ -3378,7 +3389,7 @@ l_int|0x80
 r_if
 c_cond
 (paren
-id|SLOT_POWER
+id|SLOT_PWRGD
 (paren
 id|pslot-&gt;status
 )paren
@@ -3408,7 +3419,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SLOT_POWER
+id|SLOT_PWRGD
 (paren
 id|status
 )paren
@@ -3432,14 +3443,14 @@ r_if
 c_cond
 (paren
 (paren
-id|SLOT_POWER
+id|SLOT_PWRGD
 (paren
 id|poldslot-&gt;status
 )paren
 op_eq
-id|HPC_SLOT_POWER_ON
+id|HPC_SLOT_PWRGD_GOOD
 )paren
-op_logical_or
+op_logical_and
 (paren
 id|SLOT_CONNECT
 (paren
@@ -3447,6 +3458,13 @@ id|poldslot-&gt;status
 )paren
 op_eq
 id|HPC_SLOT_CONNECTED
+)paren
+op_logical_and
+(paren
+id|SLOT_PRESENT
+(paren
+id|poldslot-&gt;status
+)paren
 )paren
 )paren
 (brace
@@ -3542,6 +3560,11 @@ id|old
 comma
 id|u8
 r_new
+comma
+r_struct
+id|controller
+op_star
+id|ctrl
 )paren
 (brace
 r_struct
@@ -3579,11 +3602,11 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|1
+id|ctrl-&gt;starting_slot_num
 suffix:semicolon
 id|i
 op_le
-l_int|6
+id|ctrl-&gt;ending_slot_num
 suffix:semicolon
 id|i
 op_increment

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
+multiline_comment|/*&n; *  Support for the interrupt controllers found on Power Macintosh,&n; *  currently Apple&squot;s &quot;Grand Central&quot; interrupt controller in all&n; *  it&squot;s incarnations. OpenPIC support used on newer machines is&n; *  in a separate file&n; *&n; *  Copyright (C) 1997 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  Maintained by Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1785,8 +1786,6 @@ id|openpic_init
 c_func
 (paren
 l_int|1
-comma
-l_int|0
 comma
 l_int|0
 comma

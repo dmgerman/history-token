@@ -54,6 +54,10 @@ id|truncate
 suffix:colon
 id|minix_truncate
 comma
+id|getattr
+suffix:colon
+id|minix_getattr
+comma
 )brace
 suffix:semicolon
 DECL|function|minix_sync_file
@@ -87,10 +91,10 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|fsync_inode_buffers
+id|sync_mapping_buffers
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 r_if

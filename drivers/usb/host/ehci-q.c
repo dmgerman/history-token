@@ -507,31 +507,38 @@ id|pipe
 )paren
 )paren
 (brace
-id|err
+r_struct
+id|usb_device
+op_star
+id|tt
+op_assign
+id|urb-&gt;dev-&gt;tt-&gt;hub
+suffix:semicolon
+id|dbg
 (paren
-l_string|&quot;must CLEAR_TT_BUFFER, hub port %d%s addr %d ep %d&quot;
+l_string|&quot;clear tt %s-%s p%d buffer, a%d ep%d&quot;
+comma
+id|tt-&gt;bus-&gt;bus_name
+comma
+id|tt-&gt;devpath
 comma
 id|urb-&gt;dev-&gt;ttport
-comma
-multiline_comment|/* devpath */
-id|urb-&gt;dev-&gt;tt-&gt;multi
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot; (all-ports TT)&quot;
 comma
 id|urb-&gt;dev-&gt;devnum
 comma
 id|usb_pipeendpoint
 (paren
-id|urb-&gt;pipe
+id|pipe
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// FIXME something (khubd?) should make the hub
-singleline_comment|// CLEAR_TT_BUFFER ASAP, it&squot;s blocking other
-singleline_comment|// fs/ls requests... hub_tt_clear_buffer() ?
+id|usb_hub_tt_clear_buffer
+(paren
+id|urb-&gt;dev
+comma
+id|pipe
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -3164,9 +3171,7 @@ multiline_comment|/* no URB queued */
 r_else
 (brace
 singleline_comment|// dbg_qh (&quot;empty qh&quot;, ehci, qh);
-singleline_comment|// FIXME:  how handle usb_clear_halt() for an EP with queued URBs?
-singleline_comment|// usbcore may not let us handle that cleanly...
-singleline_comment|// likely must cancel them all first!
+multiline_comment|/* NOTE: we already canceled any queued URBs&n;&t;&t;&t; * when the endpoint halted.&n;&t;&t;&t; */
 multiline_comment|/* usb_clear_halt() means qh data toggle gets reset */
 r_if
 c_cond

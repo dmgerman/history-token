@@ -1518,17 +1518,6 @@ id|pgd_cache_size
 )paren
 suffix:semicolon
 macro_line|#endif&t;
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|mmu_info
 r_void
@@ -8510,6 +8499,8 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+id|totalram_pages
+op_assign
 id|num_physpages
 op_assign
 id|free_all_bootmem
@@ -8727,6 +8718,9 @@ suffix:semicolon
 id|num_physpages
 op_increment
 suffix:semicolon
+id|totalram_pages
+op_increment
+suffix:semicolon
 )brace
 macro_line|#endif
 id|printk
@@ -8912,6 +8906,9 @@ suffix:semicolon
 id|num_physpages
 op_increment
 suffix:semicolon
+id|totalram_pages
+op_increment
+suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
@@ -8994,6 +8991,9 @@ id|p
 )paren
 suffix:semicolon
 id|num_physpages
+op_increment
+suffix:semicolon
+id|totalram_pages
 op_increment
 suffix:semicolon
 )brace

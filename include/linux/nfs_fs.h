@@ -187,8 +187,6 @@ DECL|macro|NFS_IS_SNAPSHOT
 mdefine_line|#define NFS_IS_SNAPSHOT&t;&t;0x0010&t;&t;/* a snapshot file */
 DECL|macro|NFS_INO_FLUSH
 mdefine_line|#define NFS_INO_FLUSH&t;&t;0x0020&t;&t;/* inode is due for flushing */
-DECL|macro|NFS_INO_NEW
-mdefine_line|#define NFS_INO_NEW&t;&t;0x0040&t;&t;/* hadn&squot;t been filled yet */
 DECL|function|NFS_I
 r_static
 r_inline
@@ -263,8 +261,6 @@ DECL|macro|NFS_REVALIDATING
 mdefine_line|#define NFS_REVALIDATING(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_REVALIDATING)
 DECL|macro|NFS_STALE
 mdefine_line|#define NFS_STALE(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_STALE)
-DECL|macro|NFS_NEW
-mdefine_line|#define NFS_NEW(inode)&t;&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_NEW)
 DECL|macro|NFS_FILEID
 mdefine_line|#define NFS_FILEID(inode)&t;&t;(NFS_I(inode)-&gt;fileid)
 multiline_comment|/* Inode Flags */
@@ -377,11 +373,19 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|nfs_revalidate
+id|nfs_getattr
 c_func
 (paren
 r_struct
+id|vfsmount
+op_star
+comma
+r_struct
 id|dentry
+op_star
+comma
+r_struct
+id|kstat
 op_star
 )paren
 suffix:semicolon
@@ -441,7 +445,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|nfs_notify_change
+id|nfs_setattr
 c_func
 (paren
 r_struct

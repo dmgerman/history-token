@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * This file implement the Wireless Extensions APIs.&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2002 Jean Tourrilhes, All Rights Reserved.&n; *&n; * (As all part of the Linux kernel, this file is GPL)&n; */
 multiline_comment|/************************** DOCUMENTATION **************************/
-multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; *&n; * v3 - 19.12.01 - Jean II&n; *&t;o Make sure we don&squot;t go out of standard_ioctl[] in ioctl_standard_call&n; *&t;o Fix /proc/net/wireless to handle __u8 to __s8 change in iwqual&n; *&t;o Add event dispatcher function&n; *&t;o Add event description&n; *&t;o Propagate events as rtnetlink IFLA_WIRELESS option&n; *&t;o Generate event on selected SET requests&n; */
+multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; *&n; * v3 - 19.12.01 - Jean II&n; *&t;o Make sure we don&squot;t go out of standard_ioctl[] in ioctl_standard_call&n; *&t;o Add event dispatcher function&n; *&t;o Add event description&n; *&t;o Propagate events as rtnetlink IFLA_WIRELESS option&n; *&t;o Generate event on selected SET requests&n; *&n; * v4 - 18.04.01 - Jean II&n; *&t;o Fix stupid off by one in iw_ioctl_description : IW_ESSID_MAX_SIZE + 1&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* copy_to_user() */
 macro_line|#include &lt;linux/config.h&gt;&t;&t;/* Not needed ??? */
@@ -469,6 +469,8 @@ comma
 l_int|0
 comma
 id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
 comma
 id|IW_DESCR_FLAG_EVENT
 )brace
@@ -484,6 +486,8 @@ comma
 l_int|0
 comma
 id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
 comma
 id|IW_DESCR_FLAG_DUMP
 )brace
@@ -499,6 +503,8 @@ comma
 l_int|0
 comma
 id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
 comma
 l_int|0
 )brace
@@ -514,6 +520,8 @@ comma
 l_int|0
 comma
 id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
 comma
 l_int|0
 )brace

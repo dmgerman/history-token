@@ -2737,6 +2737,34 @@ suffix:semicolon
 multiline_comment|/* array of items (including a new one, excluding item to be deleted) */
 )brace
 suffix:semicolon
+multiline_comment|/* used by directory items when creating virtual nodes */
+DECL|struct|direntry_uarea
+r_struct
+id|direntry_uarea
+(brace
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+DECL|member|entry_count
+id|__u16
+id|entry_count
+suffix:semicolon
+DECL|member|entry_sizes
+id|__u16
+id|entry_sizes
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                  TREE BALANCE                                           */
 multiline_comment|/***************************************************************************/
@@ -3330,13 +3358,17 @@ DECL|macro|B_I_POS_UNFM_POINTER
 mdefine_line|#define B_I_POS_UNFM_POINTER(bh,ih,pos) le32_to_cpu(*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)))
 DECL|macro|PUT_B_I_POS_UNFM_POINTER
 mdefine_line|#define PUT_B_I_POS_UNFM_POINTER(bh,ih,pos, val) do {*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)) = cpu_to_le32(val); } while (0)
-DECL|struct|reiserfs_iget4_args
+DECL|struct|reiserfs_iget_args
 r_struct
-id|reiserfs_iget4_args
+id|reiserfs_iget_args
 (brace
 DECL|member|objectid
 id|__u32
 id|objectid
+suffix:semicolon
+DECL|member|dirid
+id|__u32
+id|dirid
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4662,16 +4694,36 @@ id|length
 suffix:semicolon
 multiline_comment|/* inode.c */
 r_void
-id|reiserfs_read_inode
+id|reiserfs_read_locked_inode
+c_func
 (paren
 r_struct
 id|inode
 op_star
 id|inode
+comma
+r_struct
+id|reiserfs_iget_args
+op_star
+id|args
 )paren
 suffix:semicolon
+r_int
+id|reiserfs_find_actor
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
 r_void
-id|reiserfs_read_inode2
+op_star
+id|p
+)paren
+suffix:semicolon
+r_int
+id|reiserfs_init_locked_inode
 c_func
 (paren
 r_struct
@@ -4880,9 +4932,7 @@ op_star
 id|key
 )paren
 suffix:semicolon
-r_struct
-id|inode
-op_star
+r_int
 id|reiserfs_new_inode
 (paren
 r_struct
@@ -4903,8 +4953,8 @@ r_char
 op_star
 id|symname
 comma
-r_int
-id|item_len
+id|loff_t
+id|i_size
 comma
 r_struct
 id|dentry
@@ -4915,10 +4965,6 @@ r_struct
 id|inode
 op_star
 id|inode
-comma
-r_int
-op_star
-id|err
 )paren
 suffix:semicolon
 r_int

@@ -1,19 +1,24 @@
-multiline_comment|/*&n; *  linux/fs/adfs/map.c&n; *&n; *  Copyright (C) 1997-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/fs/adfs/map.c&n; *&n; *  Copyright (C) 1997-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/adfs_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &quot;adfs.h&quot;
+multiline_comment|/*&n; * The ADFS map is basically a set of sectors.  Each sector is called a&n; * zone which contains a bitstream made up of variable sized fragments.&n; * Each bit refers to a set of bytes in the filesystem, defined by&n; * log2bpmb.  This may be larger or smaller than the sector size, but&n; * the overall size it describes will always be a round number of&n; * sectors.  A fragment id is always idlen bits long.&n; *&n; *  &lt; idlen &gt; &lt;       n        &gt; &lt;1&gt;&n; * +---------+-------//---------+---+&n; * | frag id |  0000....000000  | 1 |&n; * +---------+-------//---------+---+&n; *&n; * The physical disk space used by a fragment is taken from the start of&n; * the fragment id up to and including the &squot;1&squot; bit - ie, idlen + n + 1&n; * bits.&n; *&n; * A fragment id can be repeated multiple times in the whole map for&n; * large or fragmented files.  The first map zone a fragment starts in&n; * is given by fragment id / ids_per_zone - this allows objects to start&n; * from any zone on the disk.&n; *&n; * Free space is described by a linked list of fragments.  Each free&n; * fragment describes free space in the same way as the other fragments,&n; * however, the frag id specifies an offset (in map bits) from the end&n; * of this fragment to the start of the next free fragment.&n; *&n; * Objects stored on the disk are allocated object ids (we use these as&n; * our inode numbers.)  Object ids contain a fragment id and an optional&n; * offset.  This allows a directory fragment to contain small files&n; * associated with that directory.&n; */
 multiline_comment|/*&n; * For the future...&n; */
 DECL|variable|adfs_map_lock
 r_static
 id|rwlock_t
 id|adfs_map_lock
+op_assign
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/*&n; * This is fun.  We need to load up to 19 bits from the map at an&n; * arbitary bit alignment.  (We&squot;re limited to 19 bits by F+ version 2).&n; */
 DECL|macro|GET_FRAG_ID
-mdefine_line|#define GET_FRAG_ID(_map,_start,_idmask)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long _v2, _frag;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int _tmp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = _start &gt;&gt; 5;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_frag = le32_to_cpu(_map[_tmp]);&t;&t;&t;&bslash;&n;&t;&t;_v2   = le32_to_cpu(_map[_tmp + 1]);&t;&t;&t;&bslash;&n;&t;&t;_tmp = start &amp; 31;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_frag = (_frag &gt;&gt; _tmp) | (_v2 &lt;&lt; (32 - _tmp));&t;&t;&bslash;&n;&t;&t;_frag &amp; _idmask;&t;&t;&t;&t;&t;&bslash;&n;&t;})
-multiline_comment|/*&n; * return the map bit offset of the fragment frag_id in&n; * the zone dm.&n; * Note that the loop is optimised for best asm code -&n; * look at the output of:&n; *  gcc -D__KERNEL__ -O2 -I../../include -o - -S map.c&n; */
+mdefine_line|#define GET_FRAG_ID(_map,_start,_idmask)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned char *_m = _map + (_start &gt;&gt; 3);&t;&t;&bslash;&n;&t;&t;u32 _frag = get_unaligned((u32 *)_m);&t;&t;&t;&bslash;&n;&t;&t;_frag &gt;&gt;= (_start &amp; 7);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_frag &amp; _idmask;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+multiline_comment|/*&n; * return the map bit offset of the fragment frag_id in the zone dm.&n; * Note that the loop is optimised for best asm code - look at the&n; * output of:&n; *  gcc -D__KERNEL__ -O2 -I../../include -o - -S map.c&n; */
 r_static
 r_int
 DECL|function|lookup_zone
@@ -50,8 +55,7 @@ op_assign
 id|dm-&gt;dm_endbit
 suffix:semicolon
 r_const
-r_int
-r_int
+id|u32
 id|idmask
 op_assign
 (paren
@@ -63,20 +67,13 @@ op_minus
 l_int|1
 suffix:semicolon
 r_int
-r_int
+r_char
 op_star
 id|map
 op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
 id|dm-&gt;dm_bh-&gt;b_data
-)paren
 op_plus
-l_int|1
+l_int|4
 suffix:semicolon
 r_int
 r_int
@@ -88,12 +85,11 @@ r_int
 r_int
 id|mapptr
 suffix:semicolon
-r_do
-(brace
-r_int
-r_int
+id|u32
 id|frag
 suffix:semicolon
+r_do
+(brace
 id|frag
 op_assign
 id|GET_FRAG_ID
@@ -114,29 +110,41 @@ id|idlen
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * find end of fragment&n;&t;&t; */
 (brace
-r_int
-r_int
-id|v2
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|v2
+id|u32
+id|v
+comma
+op_star
+id|_map
 op_assign
+(paren
+id|u32
+op_star
+)paren
 id|map
+suffix:semicolon
+id|v
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|_map
 (braket
 id|mapptr
 op_rshift
 l_int|5
 )braket
+)paren
 op_rshift
 (paren
 id|mapptr
 op_amp
 l_int|31
 )paren
-)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|v
 op_eq
 l_int|0
 )paren
@@ -162,6 +170,19 @@ id|mapsize
 r_goto
 id|error
 suffix:semicolon
+id|v
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|_map
+(braket
+id|mapptr
+op_rshift
+l_int|5
+)braket
+)paren
+suffix:semicolon
 )brace
 id|mapptr
 op_add_assign
@@ -171,7 +192,7 @@ id|ffz
 c_func
 (paren
 op_complement
-id|v2
+id|v
 )paren
 suffix:semicolon
 )brace
@@ -200,8 +221,25 @@ OL
 id|mapsize
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|error
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;adfs: oversized fragment 0x%x at 0x%x-0x%x&bslash;n&quot;
+comma
+id|frag
+comma
+id|start
+comma
+id|mapptr
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -292,8 +330,7 @@ suffix:colon
 l_int|15
 suffix:semicolon
 r_const
-r_int
-r_int
+id|u32
 id|idmask
 op_assign
 (paren
@@ -305,15 +342,10 @@ op_minus
 l_int|1
 suffix:semicolon
 r_int
-r_int
+r_char
 op_star
 id|map
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|dm-&gt;dm_bh-&gt;b_data
 suffix:semicolon
 r_int
@@ -324,8 +356,7 @@ l_int|8
 comma
 id|mapptr
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|frag
 suffix:semicolon
 r_int
@@ -385,29 +416,41 @@ id|idlen
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * find end of fragment&n;&t;&t; */
 (brace
-r_int
-r_int
-id|v2
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|v2
+id|u32
+id|v
+comma
+op_star
+id|_map
 op_assign
+(paren
+id|u32
+op_star
+)paren
 id|map
+suffix:semicolon
+id|v
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|_map
 (braket
 id|mapptr
 op_rshift
 l_int|5
 )braket
+)paren
 op_rshift
 (paren
 id|mapptr
 op_amp
 l_int|31
 )paren
-)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|v
 op_eq
 l_int|0
 )paren
@@ -433,6 +476,19 @@ id|mapsize
 r_goto
 id|error
 suffix:semicolon
+id|v
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|_map
+(braket
+id|mapptr
+op_rshift
+l_int|5
+)braket
+)paren
+suffix:semicolon
 )brace
 id|mapptr
 op_add_assign
@@ -442,7 +498,7 @@ id|ffz
 c_func
 (paren
 op_complement
-id|v2
+id|v
 )paren
 suffix:semicolon
 )brace
@@ -699,9 +755,10 @@ id|asb-&gt;s_map2blk
 )paren
 suffix:semicolon
 )brace
-DECL|function|adfs_map_lookup
 r_int
+DECL|function|adfs_map_lookup
 id|adfs_map_lookup
+c_func
 (paren
 r_struct
 id|super_block
@@ -709,8 +766,10 @@ op_star
 id|sb
 comma
 r_int
+r_int
 id|frag_id
 comma
+r_int
 r_int
 id|offset
 )paren
@@ -845,7 +904,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;fragment %04X at offset %d not found in map&quot;
+l_string|&quot;fragment 0x%04x at offset %d not found in map&quot;
 comma
 id|frag_id
 comma
@@ -862,7 +921,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;fragment %X is invalid (zone = %d, max = %d)&quot;
+l_string|&quot;invalid fragment 0x%04x (zone = %d, max = %d)&quot;
 comma
 id|frag_id
 comma

@@ -1100,6 +1100,9 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1116,6 +1119,10 @@ id|ppos
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 op_star
 id|ppos
@@ -1347,6 +1354,15 @@ id|unit
 op_member_access_from_pointer
 id|bd_openers
 op_increment
+suffix:semicolon
+id|rd_bdev
+(braket
+id|unit
+)braket
+op_member_access_from_pointer
+id|bd_block_size
+op_assign
+id|rd_blocksize
 suffix:semicolon
 id|rd_bdev
 (braket

@@ -3,11 +3,15 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-DECL|variable|default_ra_pages
-r_int
-r_int
-id|default_ra_pages
+macro_line|#include &lt;linux/backing-dev.h&gt;
+DECL|variable|default_backing_dev_info
+r_struct
+id|backing_dev_info
+id|default_backing_dev_info
 op_assign
+(brace
+id|ra_pages
+suffix:colon
 (paren
 id|VM_MAX_READAHEAD
 op_star
@@ -15,6 +19,12 @@ l_int|1024
 )paren
 op_div
 id|PAGE_CACHE_SIZE
+comma
+id|state
+suffix:colon
+l_int|0
+comma
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Return max readahead size for this inode in number-of-pages.&n; */
 DECL|function|get_max_readahead
@@ -140,6 +150,13 @@ id|PAGE_CACHE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Preallocate as many pages as we will need.&n;&t; */
+id|read_lock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -172,13 +189,6 @@ id|end_index
 )paren
 r_break
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
 id|page
 op_assign
 id|radix_tree_lookup
@@ -190,13 +200,6 @@ comma
 id|page_offset
 )paren
 suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -204,12 +207,26 @@ id|page
 )paren
 r_continue
 suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
 id|page
 op_assign
 id|page_cache_alloc
 c_func
 (paren
 id|mapping
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 r_if
@@ -238,6 +255,13 @@ id|nr_to_really_read
 op_increment
 suffix:semicolon
 )brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Now start the IO.  We ignore I/O errors - if the page is not&n;&t; * uptodate then the caller will launch readpage again, and&n;&t; * will then handle the error.&n;&t; */
 r_for
 c_loop

@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -159,79 +158,6 @@ id|dr-&gt;log2secsize
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * The following checks are not required for F+&n;&t; * stage 1.&n;&t; */
-macro_line|#if 0
-multiline_comment|/* idlen must be smaller be no greater than 15 */
-r_if
-c_cond
-(paren
-id|dr-&gt;idlen
-OG
-l_int|15
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* nzones must be less than 128 for the root&n;&t; * directory to be addressable&n;&t; */
-r_if
-c_cond
-(paren
-id|dr-&gt;nzones
-op_ge
-l_int|128
-op_logical_and
-id|dr-&gt;nzones_high
-op_eq
-l_int|0
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* root must be of the form 0x2.. */
-r_if
-c_cond
-(paren
-(paren
-id|le32_to_cpu
-c_func
-(paren
-id|dr-&gt;root
-)paren
-op_amp
-l_int|0xffffff00
-)paren
-op_ne
-l_int|0x00000200
-)paren
-r_return
-l_int|1
-suffix:semicolon
-macro_line|#else
-multiline_comment|/*&n;&t; * Stage 2 F+ does not require the following check&n;&t; */
-macro_line|#if 0
-multiline_comment|/* idlen must be no greater than 16 v2 [1.0] */
-r_if
-c_cond
-(paren
-id|dr-&gt;idlen
-OG
-l_int|16
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* we can&squot;t handle F+ discs yet */
-r_if
-c_cond
-(paren
-id|dr-&gt;format_version
-op_logical_or
-id|dr-&gt;root_size
-)paren
-r_return
-l_int|1
-suffix:semicolon
-macro_line|#else
 multiline_comment|/* idlen must be no greater than 19 v2 [1.0] */
 r_if
 c_cond
@@ -243,8 +169,6 @@ l_int|19
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/* reserved bytes should be zero */
 r_for
 c_loop

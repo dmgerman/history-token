@@ -276,17 +276,6 @@ comma
 id|cached
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* References to section boundaries */
 r_extern
@@ -1350,19 +1339,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;movl %0,%%cr3&bslash;n&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
-id|__pa
+id|load_cr3
 c_func
 (paren
 id|swapper_pg_dir
-)paren
-)paren
 )paren
 suffix:semicolon
 macro_line|#if CONFIG_X86_PAE

@@ -350,6 +350,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ADB */
 macro_line|#ifdef CONFIG_PPC
 r_int
+id|__init
 DECL|function|find_via_cuda
 id|find_via_cuda
 c_func
@@ -651,7 +652,9 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC */
 DECL|function|via_cuda_start
+r_static
 r_int
+id|__init
 id|via_cuda_start
 c_func
 (paren
@@ -668,6 +671,16 @@ l_int|NULL
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+id|request_OF_resource
+c_func
+(paren
+id|vias
+comma
+l_int|0
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -715,6 +728,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|via_cuda_start
+id|device_initcall
+c_func
+(paren
+id|via_cuda_start
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ADB
 r_static
 r_int
@@ -759,6 +779,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__init
 DECL|function|cuda_init
 id|cuda_init
 c_func

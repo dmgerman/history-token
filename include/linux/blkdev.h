@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|request_queue
@@ -488,11 +489,10 @@ id|prep_rq_fn
 op_star
 id|prep_rq_fn
 suffix:semicolon
-multiline_comment|/*&n;&t; * The VM-level readahead tunable for this device.  In&n;&t; * units of PAGE_CACHE_SIZE pages.&n;&t; */
-DECL|member|ra_pages
-r_int
-r_int
-id|ra_pages
+DECL|member|backing_dev_info
+r_struct
+id|backing_dev_info
+id|backing_dev_info
 suffix:semicolon
 multiline_comment|/*&n;&t; * The queue owner gets to use this for whatever they like.&n;&t; * ll_rw_blk doesn&squot;t touch it.&n;&t; */
 DECL|member|queuedata
@@ -924,19 +924,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ll_10byte_cmd_build
-c_func
-(paren
-id|request_queue_t
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * get ready for proper ref counting&n; */
 DECL|macro|blk_put_queue
 mdefine_line|#define blk_put_queue(q)&t;do { } while (0)
@@ -1094,10 +1081,10 @@ id|pfn
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+r_struct
+id|backing_dev_info
 op_star
-id|blk_get_ra_pages
+id|blk_get_backing_dev_info
 c_func
 (paren
 r_struct

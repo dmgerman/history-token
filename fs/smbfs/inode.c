@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -2483,6 +2482,54 @@ id|SMB_MAXPATHLEN
 suffix:semicolon
 r_return
 id|result
+suffix:semicolon
+)brace
+DECL|function|smb_getattr
+r_int
+id|smb_getattr
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+id|mnt
+comma
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|kstat
+op_star
+id|stat
+)paren
+(brace
+r_int
+id|err
+op_assign
+id|smb_revalidate_inode
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+id|generic_fillattr
+c_func
+(paren
+id|dentry-&gt;d_inode
+comma
+id|stat
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_int

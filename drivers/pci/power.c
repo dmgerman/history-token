@@ -1,5 +1,6 @@
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; * PCI Power management..&n; *&n; * This needs to be done centralized, so that we power manage PCI&n; * devices in the right order: we should not shut down PCI bridges&n; * before we&squot;ve shut down the devices behind them, and we should&n; * not wake up devices before we&squot;ve woken up the bridge to the&n; * device.. Eh?&n; *&n; * We do not touch devices that don&squot;t have a driver that exports&n; * a suspend/resume function. That is just too dangerous. If the default&n; * PCI suspend/resume functions work for a device, the driver can&n; * easily implement them (ie just have a suspend function that calls&n; * the pci_set_power_state() function).&n; */
 DECL|function|pci_pm_save_state_device
 r_static
@@ -459,7 +460,6 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|pci_pm_suspend
-r_static
 r_int
 id|pci_pm_suspend
 c_func
@@ -517,7 +517,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pci_pm_resume
-r_static
 r_int
 id|pci_pm_resume
 c_func

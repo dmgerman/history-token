@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/ide-geometry.c&n; *&n; * Sun Feb 24 23:13:03 CET 2002: Patch by Andries Brouwer to remove the&n; * confused CMOS probe applied. This is solving more problems then it my&n; * (unexpectedly) introduce.&n; */
+multiline_comment|/*&n; * Sun Feb 24 23:13:03 CET 2002: Patch by Andries Brouwer to remove the&n; * confused CMOS probe applied. This is solving more problems than it may&n; * (unexpectedly) introduce.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
@@ -6,7 +6,8 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 r_extern
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|get_info_ptr
 c_func
@@ -21,7 +22,8 @@ DECL|function|ontrack
 id|ontrack
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -44,7 +46,7 @@ id|s
 (brace
 r_static
 r_const
-id|byte
+id|u8
 id|dm_head_vals
 (braket
 )braket
@@ -68,7 +70,7 @@ l_int|0
 )brace
 suffix:semicolon
 r_const
-id|byte
+id|u8
 op_star
 id|headp
 op_assign
@@ -164,10 +166,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine is called from the partition-table code in pt/msdos.c.&n; * It has two tasks:&n; * (i) to handle Ontrack DiskManager by offsetting everything by 63 sectors,&n; *  or to handle EZdrive by remapping sector 0 to sector 1.&n; * (ii) to invent a translated geometry.&n; * Part (i) is suppressed if the user specifies the &quot;noremap&quot; option&n; * on the command line.&n; * Part (ii) is suppressed if the user specifies an explicit geometry.&n; *&n; * The ptheads parameter is either 0 or tells about the number of&n; * heads shown by the end of the first nonempty partition.&n; * If this is either 16, 32, 64, 128, 240 or 255 we&squot;ll believe it.&n; *&n; * The xparm parameter has the following meaning:&n; *&t; 0 = convert to CHS with fewer than 1024 cyls&n; *&t;     using the same method as Ontrack DiskManager.&n; *&t; 1 = same as &quot;0&quot;, plus offset everything by 63 sectors.&n; *&t;-1 = similar to &quot;0&quot;, plus redirect sector 0 to sector 1.&n; *&t; 2 = convert to a CHS geometry with &quot;ptheads&quot; heads.&n; *&n; * Returns 0 if the translation was not possible, if the device was not &n; * an IDE disk drive, or if a geometry was &quot;forced&quot; on the commandline.&n; * Returns 1 if the geometry translation was successful.&n; */
+multiline_comment|/*&n; * This routine is called from the partition-table code in pt/msdos.c.&n; * It has two tasks:&n; * (i) to handle Ontrack DiskManager by offsetting everything by 63 sectors,&n; *  or to handle EZdrive by remapping sector 0 to sector 1.&n; * (ii) to invent a translated geometry.&n; * Part (i) is suppressed if the user specifies the &quot;noremap&quot; option&n; * on the command line.&n; * Part (ii) is suppressed if the user specifies an explicit geometry.&n; *&n; * The ptheads parameter is either 0 or tells about the number of&n; * heads shown by the end of the first nonempty partition.&n; * If this is either 16, 32, 64, 128, 240 or 255 we&squot;ll believe it.&n; *&n; * The xparm parameter has the following meaning:&n; *&t; 0 = convert to CHS with fewer than 1024 cyls&n; *&t;     using the same method as Ontrack DiskManager.&n; *&t; 1 = same as &quot;0&quot;, plus offset everything by 63 sectors.&n; *&t;-1 = similar to &quot;0&quot;, plus redirect sector 0 to sector 1.&n; *&t; 2 = convert to a CHS geometry with &quot;ptheads&quot; heads.&n; *&n; * Returns 0 if the translation was not possible, if the device was not&n; * an IDE disk drive, or if a geometry was &quot;forced&quot; on the commandline.&n; * Returns 1 if the geometry translation was successful.&n; */
 DECL|function|ide_xlate_1024
 r_int
 id|ide_xlate_1024
+c_func
 (paren
 id|kdev_t
 id|i_rdev
@@ -184,7 +187,8 @@ op_star
 id|msg
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -468,5 +472,5 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif /* defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE) */
+macro_line|#endif
 eof

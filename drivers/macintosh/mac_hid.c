@@ -2110,7 +2110,7 @@ id|KEY_KPENTER
 comma
 id|KEY_RIGHTCTRL
 comma
-l_int|0
+id|KEY_VOLUMEUP
 comma
 l_int|0
 comma
@@ -2125,9 +2125,9 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+id|KEY_VOLUMEDOWN
 comma
-l_int|0
+id|KEY_MUTE
 comma
 l_int|0
 comma
@@ -2168,11 +2168,11 @@ comma
 multiline_comment|/* 0x30-0x37 */
 id|KEY_RIGHTALT
 comma
-l_int|0
+id|KEY_BRIGHTNESSUP
 comma
-l_int|0
+id|KEY_BRIGHTNESSDOWN
 comma
-l_int|0
+id|KEY_EJECTCD
 comma
 l_int|0
 comma
@@ -2246,7 +2246,7 @@ id|KEY_RIGHTMETA
 comma
 id|KEY_COMPOSE
 comma
-l_int|0
+id|KEY_POWER
 comma
 l_int|0
 comma

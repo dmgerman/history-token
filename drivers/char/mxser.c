@@ -9781,6 +9781,7 @@ id|tmp.hub6
 op_assign
 l_int|0
 suffix:semicolon
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -9795,11 +9796,12 @@ op_star
 id|retinfo
 )paren
 )paren
-suffix:semicolon
-r_return
-(paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|mxser_set_serial_info
@@ -9847,6 +9849,9 @@ op_minus
 id|EFAULT
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -9860,6 +9865,10 @@ r_sizeof
 id|new_serial
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond

@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -284,8 +283,9 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -295,14 +295,10 @@ id|buffer
 comma
 id|buffer_len
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_else

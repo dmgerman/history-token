@@ -2263,6 +2263,7 @@ macro_line|#endif
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_EP405
+macro_line|#include &lt;linux/serial_reg.h&gt;
 r_void
 DECL|function|embed_config
 id|embed_config
@@ -2274,6 +2275,9 @@ op_star
 id|bdp
 )paren
 (brace
+id|u32
+id|chcr0
+suffix:semicolon
 id|u_char
 op_star
 id|cp
@@ -2282,6 +2286,54 @@ id|bd_t
 op_star
 id|bd
 suffix:semicolon
+multiline_comment|/* Different versions of the PlanetCore firmware vary in how&n;&t;   they set up the serial port - in particular whether they&n;&t;   use the internal or external serial clock for UART0.  Make&n;&t;   sure the UART is in a known state. */
+multiline_comment|/* FIXME: We should use the board&squot;s 11.0592MHz external serial&n;&t;   clock - it will be more accurate for serial rates.  For&n;&t;   now, however the baud rates in ep405.h are for the internal&n;&t;   clock. */
+id|chcr0
+op_assign
+id|mfdcr
+c_func
+(paren
+id|DCRN_CHCR0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|chcr0
+op_amp
+l_int|0x1fff
+)paren
+op_ne
+l_int|0x103e
+)paren
+(brace
+id|mtdcr
+c_func
+(paren
+id|DCRN_CHCR0
+comma
+(paren
+id|chcr0
+op_amp
+l_int|0xffffe000
+)paren
+op_or
+l_int|0x103e
+)paren
+suffix:semicolon
+multiline_comment|/* The following tricks serial_init() into resetting the baud rate */
+id|writeb
+c_func
+(paren
+l_int|0
+comma
+id|UART0_IO_BASE
+op_plus
+id|UART_LCR
+)paren
+suffix:semicolon
+)brace
 id|bd
 op_assign
 op_amp

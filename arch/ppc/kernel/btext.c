@@ -754,6 +754,16 @@ op_assign
 op_amp
 id|disp_bi
 suffix:semicolon
+r_int
+r_char
+op_star
+id|vbase
+suffix:semicolon
+multiline_comment|/* By default, we are no longer mapped */
+id|boot_text_mapped
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -803,7 +813,7 @@ id|bi-&gt;dispDeviceRect
 l_int|0
 )braket
 suffix:semicolon
-id|bi-&gt;logicalDisplayBase
+id|vbase
 op_assign
 id|ioremap
 c_func
@@ -816,14 +826,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bi-&gt;logicalDisplayBase
+id|vbase
 op_eq
 l_int|0
 )paren
 r_return
 suffix:semicolon
 id|bi-&gt;logicalDisplayBase
-op_add_assign
+op_assign
+id|vbase
+op_plus
 id|offset
 suffix:semicolon
 id|boot_text_mapped

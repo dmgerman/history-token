@@ -328,6 +328,8 @@ DECL|macro|VENDOR_ACCTON
 mdefine_line|#define&t;VENDOR_ACCTON&t;&t;0x083a
 DECL|macro|VENDOR_ADMTEK
 mdefine_line|#define&t;VENDOR_ADMTEK&t;&t;0x07a6
+DECL|macro|VENDOR_AEILAB
+mdefine_line|#define&t;VENDOR_AEILAB&t;&t;0x3334
 DECL|macro|VENDOR_ALLIEDTEL
 mdefine_line|#define&t;VENDOR_ALLIEDTEL&t;0x07c9
 DECL|macro|VENDOR_BELKIN
@@ -562,6 +564,19 @@ comma
 id|VENDOR_ADMTEK
 comma
 l_int|1986
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;AEI USB Fast Ethernet Adapter&quot;
+comma
+id|VENDOR_AEILAB
+comma
+l_int|0x1701
 comma
 id|DEFAULT_GPIO_RESET
 op_or

@@ -195,8 +195,6 @@ DECL|macro|TD_CTRL_LS
 mdefine_line|#define TD_CTRL_LS&t;&t;(1 &lt;&lt; 26)&t;/* Low Speed Device */
 DECL|macro|TD_CTRL_IOS
 mdefine_line|#define TD_CTRL_IOS&t;&t;(1 &lt;&lt; 25)&t;/* Isochronous Select */
-DECL|macro|TD_CTRL_IOC_BIT
-mdefine_line|#define TD_CTRL_IOC_BIT&t;&t;24
 DECL|macro|TD_CTRL_IOC
 mdefine_line|#define TD_CTRL_IOC&t;&t;(1 &lt;&lt; 24)&t;/* Interrupt on Complete */
 DECL|macro|TD_CTRL_ACTIVE
@@ -222,8 +220,10 @@ mdefine_line|#define uhci_status_bits(ctrl_sts)&t;(ctrl_sts &amp; 0xFE0000)
 DECL|macro|uhci_actual_length
 mdefine_line|#define uhci_actual_length(ctrl_sts)&t;((ctrl_sts + 1) &amp; TD_CTRL_ACTLEN_MASK) /* 1-based */
 multiline_comment|/*&n; * for TD &lt;info&gt;: (a.k.a. Token)&n; */
+DECL|macro|TD_TOKEN_TOGGLE_SHIFT
+mdefine_line|#define TD_TOKEN_TOGGLE_SHIFT&t;19
 DECL|macro|TD_TOKEN_TOGGLE
-mdefine_line|#define TD_TOKEN_TOGGLE&t;&t;19
+mdefine_line|#define TD_TOKEN_TOGGLE&t;&t;(1 &lt;&lt; 19)
 DECL|macro|TD_TOKEN_PID_MASK
 mdefine_line|#define TD_TOKEN_PID_MASK&t;0xFF
 DECL|macro|TD_TOKEN_EXPLEN_MASK
@@ -233,7 +233,7 @@ mdefine_line|#define uhci_maxlen(token)&t;((token) &gt;&gt; 21)
 DECL|macro|uhci_expected_length
 mdefine_line|#define uhci_expected_length(info) (((info &gt;&gt; 21) + 1) &amp; TD_TOKEN_EXPLEN_MASK) /* 1-based */
 DECL|macro|uhci_toggle
-mdefine_line|#define uhci_toggle(token)&t;(((token) &gt;&gt; TD_TOKEN_TOGGLE) &amp; 1)
+mdefine_line|#define uhci_toggle(token)&t;(((token) &gt;&gt; TD_TOKEN_TOGGLE_SHIFT) &amp; 1)
 DECL|macro|uhci_endpoint
 mdefine_line|#define uhci_endpoint(token)&t;(((token) &gt;&gt; 15) &amp; 0xf)
 DECL|macro|uhci_devaddr

@@ -358,7 +358,7 @@ comma
 r_int
 id|wait
 )paren
-multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler, you may call it from a bottom half handler.&n; */
+multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 (brace
 r_struct
 id|call_data_struct
@@ -423,7 +423,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -482,7 +482,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1665,7 +1665,9 @@ r_void
 )brace
 DECL|function|fork_by_hand
 r_static
-r_int
+r_struct
+id|task_struct
+op_star
 id|__init
 id|fork_by_hand
 c_func
@@ -1699,7 +1701,7 @@ c_func
 (paren
 id|CLONE_VM
 op_or
-id|CLONE_PID
+id|CLONE_IDLETASK
 comma
 l_int|0
 comma
@@ -1732,15 +1734,21 @@ op_star
 id|cpu_lowcore
 suffix:semicolon
 multiline_comment|/* We can&squot;t use kernel_thread since we must _avoid_ to reschedule&n;           the child. */
-r_if
-c_cond
-(paren
+id|idle
+op_assign
 id|fork_by_hand
 c_func
 (paren
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|idle
+)paren
 )paren
 id|panic
 c_func
@@ -1751,29 +1759,6 @@ id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         * We remove it from the pidhash and the runqueue&n;         * once we got the process:&n;         */
-id|idle
-op_assign
-id|prev_task
-c_func
-(paren
-op_amp
-id|init_task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|idle
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;No idle process for CPU %d&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
 id|idle-&gt;processor
 op_assign
 id|cpu

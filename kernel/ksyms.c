@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
@@ -38,6 +37,7 @@ macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -510,13 +510,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|iunique
-)paren
-suffix:semicolon
-DECL|variable|iget4
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iget4
 )paren
 suffix:semicolon
 DECL|variable|iput
@@ -1255,6 +1248,20 @@ c_func
 id|get_unused_fd
 )paren
 suffix:semicolon
+DECL|variable|vfs_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_read
+)paren
+suffix:semicolon
+DECL|variable|vfs_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_write
+)paren
+suffix:semicolon
 DECL|variable|vfs_create
 id|EXPORT_SYMBOL
 c_func
@@ -1358,6 +1365,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|generic_read_dir
+)paren
+suffix:semicolon
+DECL|variable|generic_fillattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_fillattr
 )paren
 suffix:semicolon
 DECL|variable|generic_file_llseek
@@ -1512,6 +1526,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|lock_may_write
+)paren
+suffix:semicolon
+DECL|variable|dcache_dir_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_dir_open
+)paren
+suffix:semicolon
+DECL|variable|dcache_dir_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_dir_close
+)paren
+suffix:semicolon
+DECL|variable|dcache_dir_lseek
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_dir_lseek
 )paren
 suffix:semicolon
 DECL|variable|dcache_readdir
@@ -2514,6 +2549,13 @@ c_func
 id|jiffies
 )paren
 suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
+suffix:semicolon
 DECL|variable|xtime
 id|EXPORT_SYMBOL
 c_func
@@ -2788,6 +2830,20 @@ c_func
 id|seq_lseek
 )paren
 suffix:semicolon
+DECL|variable|single_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_open
+)paren
+suffix:semicolon
+DECL|variable|single_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_release
+)paren
+suffix:semicolon
 multiline_comment|/* Program loader interfaces */
 DECL|variable|setup_arg_pages
 id|EXPORT_SYMBOL
@@ -2889,11 +2945,11 @@ c_func
 id|new_inode
 )paren
 suffix:semicolon
-DECL|variable|insert_inode_hash
+DECL|variable|__insert_inode_hash
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|insert_inode_hash
+id|__insert_inode_hash
 )paren
 suffix:semicolon
 DECL|variable|remove_inode_hash
@@ -3022,20 +3078,6 @@ id|strsep
 )paren
 suffix:semicolon
 multiline_comment|/* software interrupts */
-DECL|variable|tasklet_hi_vec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tasklet_hi_vec
-)paren
-suffix:semicolon
-DECL|variable|tasklet_vec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tasklet_vec
-)paren
-suffix:semicolon
 DECL|variable|bh_task_vec
 id|EXPORT_SYMBOL
 c_func

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
-multiline_comment|/*&n; * Support for PCI bridges found on Power Macintoshes.&n; * At present the &quot;bandit&quot; and &quot;chaos&quot; bridges are supported.&n; * Fortunately you access configuration space in the same&n; * way with either bridge.&n; *&n; * Copyright (C) 1997 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * Support for PCI bridges found on Power Macintoshes.&n; * &n; * This includes support for bandit, chaos, grackle (motorola&n; * MPC106), and uninorth&n; *&n; * Copyright (C) 1997 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; * Maintained by Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -799,11 +799,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Unknown revision %d for bandit at %08lx&bslash;n&quot;
+l_string|&quot;Unknown revision %d for bandit&bslash;n&quot;
 comma
 id|rev
-comma
-id|bp-&gt;io_base_phys
 )paren
 suffix:semicolon
 )brace
@@ -834,53 +832,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* read the revision id */
-id|out_le32
-c_func
-(paren
-id|bp-&gt;cfg_addr
-comma
-(paren
-l_int|1UL
-op_lshift
-id|BANDIT_DEVNUM
-)paren
-op_plus
-id|PCI_REVISION_ID
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|2
-)paren
-suffix:semicolon
-id|rev
-op_assign
-id|in_8
-c_func
-(paren
-id|bp-&gt;cfg_data
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rev
-op_ne
-id|BANDIT_REVID
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Unknown revision %d for bandit at %08lx&bslash;n&quot;
-comma
-id|rev
-comma
-id|bp-&gt;io_base_phys
-)paren
-suffix:semicolon
 multiline_comment|/* read the word at offset 0x50 */
 id|out_le32
 c_func
@@ -957,9 +908,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Cache coherency enabled for bandit/PSX at %08lx&bslash;n&quot;
-comma
-id|bp-&gt;io_base_phys
+l_string|&quot;Cache coherency enabled for bandit/PSX&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2030,42 +1979,16 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
+multiline_comment|/*&n;&t; * Open Firmware often doesn&squot;t initialize the&n;&t; * PCI_INTERRUPT_LINE config register properly, so we&n;&t; * should find the device node and apply the interrupt&n;&t; * obtained from the OF device-tree&n;&t; */
 id|pci_for_each_dev
 c_func
 (paren
 id|dev
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Open Firmware often doesn&squot;t initialize the,&n;&t;&t; * PCI_INTERRUPT_LINE config register properly, so we&n;&t;&t; * should find the device node and se if it has an&n;&t;&t; * AAPL,interrupts property.&n;&t;&t; */
-r_int
-r_char
-id|pin
-suffix:semicolon
 r_struct
 id|device_node
 op_star
-id|node
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_read_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_INTERRUPT_PIN
-comma
-op_amp
-id|pin
-)paren
-op_logical_or
-op_logical_neg
-id|pin
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* No interrupt generated -&gt; no fixup */
 id|node
 op_assign
 id|pci_device_to_OF_node
@@ -2074,32 +1997,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|node
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;No OF node for device %x:%x&bslash;n&quot;
-comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
-op_rshift
-l_int|3
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 multiline_comment|/* this is the node, see if it has interrupts */
 r_if
 c_cond
 (paren
+id|node
+op_logical_and
 id|node-&gt;n_intrs
 OG
 l_int|0

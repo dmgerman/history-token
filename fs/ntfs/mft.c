@@ -1,9 +1,6 @@
 multiline_comment|/**&n; * mft.c - NTFS kernel mft record operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
-DECL|macro|MAX_BUF_PER_PAGE
-mdefine_line|#define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)
 multiline_comment|/**&n; * __format_mft_record - initialize an empty mft record&n; * @m:&t;&t;mapped, pinned and locked for writing mft record&n; * @size:&t;size of the mft record&n; * @rec_no:&t;mft record number / inode number&n; *&n; * Private function to initialize an empty mft record. Use one of the two&n; * provided format_mft_record() functions instead.&n; */
 DECL|function|__format_mft_record
 r_static
@@ -414,28 +411,6 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* . */
-id|bmap
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Needed for FIBMAP.&n;&t;&t;&t;&t;&t;&t;   Don&squot;t use it. */
-id|flushpage
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-id|releasepage
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-macro_line|#ifdef KERNEL_HAS_O_DIRECT
-id|direct_IO
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * map_mft_record_page - map the page in which a specific mft record resides&n; * @ni:&t;&t;ntfs inode whose mft record page to map&n; *&n; * This maps the page in which the mft record of the ntfs inode @ni is situated&n; * and returns a pointer to the mft record within the mapped page.&n; *&n; * Return value needs to be checked with IS_ERR() and if that is true PTR_ERR()&n; * contains the negative error code returned.&n; */

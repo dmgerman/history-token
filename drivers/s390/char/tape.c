@@ -639,22 +639,6 @@ comma
 multiline_comment|/* close */
 )brace
 suffix:semicolon
-DECL|variable|tape_devices_inode_ops
-r_static
-r_struct
-id|inode_operations
-id|tape_devices_inode_ops
-op_assign
-(brace
-macro_line|#if !(LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
-id|default_file_ops
-suffix:colon
-op_amp
-id|tape_devices_file_ops
-multiline_comment|/* file ops */
-macro_line|#endif&t;&t;&t;&t;/* LINUX_IS_24 */
-)brace
-suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* SECTION: Parameters for tape */
 DECL|variable|tape
@@ -935,7 +919,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,2,16))
 id|__setup
 c_func
 (paren
@@ -944,7 +927,6 @@ comma
 id|tape_parm_call_setup
 )paren
 suffix:semicolon
-macro_line|#endif   /* kernel &lt;2.2.19 */
 macro_line|#endif   /* not defined MODULE */
 r_static
 r_inline
@@ -4137,7 +4119,6 @@ id|tape_init_emergency_req
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
 id|tape_devices_entry
 op_assign
 id|create_proc_entry
@@ -4159,109 +4140,6 @@ op_assign
 op_amp
 id|tape_devices_file_ops
 suffix:semicolon
-id|tape_devices_entry-&gt;proc_iops
-op_assign
-op_amp
-id|tape_devices_inode_ops
-suffix:semicolon
-macro_line|#else
-id|tape_devices_entry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-id|kmalloc
-(paren
-r_sizeof
-(paren
-r_struct
-id|proc_dir_entry
-)paren
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tape_devices_entry
-)paren
-(brace
-id|memset
-(paren
-id|tape_devices_entry
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|proc_dir_entry
-)paren
-)paren
-suffix:semicolon
-id|tape_devices_entry-&gt;name
-op_assign
-l_string|&quot;tapedevices&quot;
-suffix:semicolon
-id|tape_devices_entry-&gt;namelen
-op_assign
-id|strlen
-(paren
-l_string|&quot;tapedevices&quot;
-)paren
-suffix:semicolon
-id|tape_devices_entry-&gt;low_ino
-op_assign
-l_int|0
-suffix:semicolon
-id|tape_devices_entry-&gt;mode
-op_assign
-(paren
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-)paren
-suffix:semicolon
-id|tape_devices_entry-&gt;nlink
-op_assign
-l_int|1
-suffix:semicolon
-id|tape_devices_entry-&gt;uid
-op_assign
-l_int|0
-suffix:semicolon
-id|tape_devices_entry-&gt;gid
-op_assign
-l_int|0
-suffix:semicolon
-id|tape_devices_entry-&gt;size
-op_assign
-l_int|0
-suffix:semicolon
-id|tape_devices_entry-&gt;get_info
-op_assign
-l_int|NULL
-suffix:semicolon
-id|tape_devices_entry-&gt;ops
-op_assign
-op_amp
-id|tape_devices_inode_ops
-suffix:semicolon
-id|proc_register
-(paren
-op_amp
-id|proc_root
-comma
-id|tape_devices_entry
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#endif /* CONFIG_PROC_FS */
 r_return
 l_int|0
@@ -4518,7 +4396,6 @@ id|tape_devfs_root_entry
 suffix:semicolon
 macro_line|#endif CONFIG_DEVFS_FS
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
 id|remove_proc_entry
 (paren
 l_string|&quot;tapedevices&quot;
@@ -4527,21 +4404,6 @@ op_amp
 id|proc_root
 )paren
 suffix:semicolon
-macro_line|#else
-id|proc_unregister
-(paren
-op_amp
-id|proc_root
-comma
-id|tape_devices_entry-&gt;low_ino
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|tape_devices_entry
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* LINUX_IS_24 */
 macro_line|#endif 
 macro_line|#ifdef CONFIG_S390_TAPE_CHAR
 id|tapechar_uninit

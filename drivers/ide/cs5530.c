@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/cs5530.c&t;&t;Version 0.6&t;Mar. 18, 2000&n; *&n; * Copyright (C) 2000&t;&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Ditto of GNU General Public License.&n; *&n; * Copyright (C) 2000&t;&t;&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Development of this chipset driver was funded&n; * by the nice folks at National Semiconductor.&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * linux/drivers/ide/cs5530.c&t;&t;Version 0.6&t;Mar. 18, 2000&n; *&n; * Copyright (C) 2000&t;&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Ditto of GNU General Public License.&n; *&n; * Copyright (C) 2000&t;&t;&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Development of this chipset driver was funded&n; * by the nice folks at National Semiconductor.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|DISPLAY_CS5530_TIMINGS
 macro_line|#undef DISPLAY_CS5530_TIMINGS
 macro_line|#if defined(DISPLAY_CS5530_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
@@ -1078,6 +1079,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Initialize the cs5530 bridge for reliable IDE DMA operation.&n; */
 DECL|function|pci_init_cs5530
+r_static
 r_int
 r_int
 id|__init
@@ -1327,6 +1329,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This gets invoked by the IDE driver once for each channel,&n; * and performs channel-specific pre-initialization before drive probing.&n; */
 DECL|function|ide_init_cs5530
+r_static
 r_void
 id|__init
 id|ide_init_cs5530
@@ -1517,5 +1520,59 @@ suffix:semicolon
 multiline_comment|/* needs autotuning later */
 )brace
 )brace
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_CYRIX
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_CYRIX_5530_IDE
+comma
+id|init_chipset
+suffix:colon
+id|pci_init_cs5530
+comma
+id|init_channel
+suffix:colon
+id|ide_init_cs5530
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+comma
+id|flags
+suffix:colon
+id|ATA_F_DMA
+)brace
+suffix:semicolon
+DECL|function|init_cs5530
+r_int
+id|__init
+id|init_cs5530
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

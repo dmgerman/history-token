@@ -271,13 +271,7 @@ multiline_comment|/*  Save value of CR4 and clear Page Global Enable (bit 7)  */
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_PGE
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_pge
 )paren
 (brace
 id|ctxt-&gt;cr4val
@@ -516,13 +510,7 @@ multiline_comment|/*  Restore value of CR4  */
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_PGE
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_pge
 )paren
 id|write_cr4
 c_func
@@ -8498,13 +8486,7 @@ r_void
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_MTRR
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_mtrr
 )paren
 (brace
 multiline_comment|/* Intel (P6) standard MTRRs */
@@ -8643,13 +8625,7 @@ r_else
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_K6_MTRR
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_k6_mtrr
 )paren
 (brace
 multiline_comment|/* Pre-Athlon (K6) AMD CPU MTRRs */
@@ -8679,13 +8655,7 @@ r_else
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_CYRIX_ARR
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_cyrix_arr
 )paren
 (brace
 multiline_comment|/* Cyrix ARRs */
@@ -8724,13 +8694,7 @@ r_else
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_CENTAUR_MCR
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_centaur_mcr
 )paren
 (brace
 multiline_comment|/* Centaur MCRs */

@@ -586,7 +586,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|FLUSH_ALL
 mdefine_line|#define FLUSH_ALL&t;0xffffffff
-multiline_comment|/*&n; * We cannot call mmdrop() because we are in interrupt context, &n; * instead update mm-&gt;cpu_vm_mask.&n; */
+multiline_comment|/*&n; * We cannot call mmdrop() because we are in interrupt context, &n; * instead update mm-&gt;cpu_vm_mask.&n; *&n; * We need to reload %cr3 since the page tables may be going&n; * away from under us..&n; */
 DECL|function|leave_mm
 r_static
 r_void
@@ -627,6 +627,12 @@ id|cpu
 )braket
 dot
 id|active_mm-&gt;cpu_vm_mask
+)paren
+suffix:semicolon
+id|load_cr3
+c_func
+(paren
+id|swapper_pg_dir
 )paren
 suffix:semicolon
 )brace
@@ -1275,7 +1281,7 @@ comma
 r_int
 id|wait
 )paren
-multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler, you may call it from a bottom half handler.&n; */
+multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 (brace
 r_struct
 id|call_data_struct
@@ -1332,7 +1338,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1396,7 +1402,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp

@@ -39,6 +39,10 @@ id|truncate
 suffix:colon
 id|sysv_truncate
 comma
+id|getattr
+suffix:colon
+id|sysv_getattr
+comma
 )brace
 suffix:semicolon
 DECL|function|sysv_sync_file
@@ -72,10 +76,10 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|fsync_inode_buffers
+id|sync_mapping_buffers
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 r_if

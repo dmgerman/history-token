@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/stats.h&gt;
@@ -81,16 +80,6 @@ suffix:semicolon
 r_static
 r_void
 id|nfs_destroy_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|nfs_read_inode
 c_func
 (paren
 r_struct
@@ -192,10 +181,6 @@ comma
 id|destroy_inode
 suffix:colon
 id|nfs_destroy_inode
-comma
-id|read_inode
-suffix:colon
-id|nfs_read_inode
 comma
 id|write_inode
 suffix:colon
@@ -325,20 +310,6 @@ c_func
 id|fattr-&gt;fileid
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * The &quot;read_inode&quot; function doesn&squot;t actually do anything:&n; * the real data is filled in later in nfs_fhget.&n; */
-r_static
-r_void
-DECL|function|nfs_read_inode
-id|nfs_read_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
 )brace
 r_static
 r_void
@@ -2568,10 +2539,6 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-r_int
-id|ino
-comma
 r_void
 op_star
 id|opaque
@@ -2675,6 +2642,78 @@ id|inode
 suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|nfs_init_locked
+id|nfs_init_locked
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_void
+op_star
+id|opaque
+)paren
+(brace
+r_struct
+id|nfs_find_desc
+op_star
+id|desc
+op_assign
+(paren
+r_struct
+id|nfs_find_desc
+op_star
+)paren
+id|opaque
+suffix:semicolon
+r_struct
+id|nfs_fh
+op_star
+id|fh
+op_assign
+id|desc-&gt;fh
+suffix:semicolon
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+op_assign
+id|desc-&gt;fattr
+suffix:semicolon
+id|NFS_FILEID
+c_func
+(paren
+id|inode
+)paren
+op_assign
+id|fattr-&gt;fileid
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|NFS_FH
+c_func
+(paren
+id|inode
+)paren
+comma
+id|fh
+comma
+r_sizeof
+(paren
+r_struct
+id|nfs_fh
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is our own version of iget that looks up inodes by file handle&n; * instead of inode number.  We use this technique instead of using&n; * the vfs read_inode function because there is no way to pass the&n; * file handle or current attributes into the read_inode function.&n; *&n; */
@@ -2784,7 +2823,7 @@ l_int|NULL
 suffix:semicolon
 r_int
 r_int
-id|ino
+id|hash
 suffix:semicolon
 r_if
 c_cond
@@ -2817,7 +2856,7 @@ r_goto
 id|out_no_inode
 suffix:semicolon
 )brace
-id|ino
+id|hash
 op_assign
 id|nfs_fattr_to_ino_t
 c_func
@@ -2832,14 +2871,16 @@ op_logical_neg
 (paren
 id|inode
 op_assign
-id|iget4
+id|iget5_locked
 c_func
 (paren
 id|sb
 comma
-id|ino
+id|hash
 comma
 id|nfs_find_actor
+comma
+id|nfs_init_locked
 comma
 op_amp
 id|desc
@@ -2852,11 +2893,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|NFS_NEW
-c_func
-(paren
-id|inode
-)paren
+id|inode-&gt;i_state
+op_amp
+id|I_NEW
 )paren
 (brace
 id|__u64
@@ -2870,42 +2909,12 @@ suffix:semicolon
 id|time_t
 id|new_atime
 suffix:semicolon
-multiline_comment|/* We can&squot;t support UPDATE_ATIME(), since the server will reset it */
-id|NFS_FLAGS
-c_func
-(paren
-id|inode
-)paren
-op_and_assign
-op_complement
-id|NFS_INO_NEW
-suffix:semicolon
-id|NFS_FILEID
-c_func
-(paren
-id|inode
-)paren
+multiline_comment|/* We set i_ino for the few things that still rely on it,&n;&t;&t; * such as stat(2) */
+id|inode-&gt;i_ino
 op_assign
-id|fattr-&gt;fileid
+id|hash
 suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|NFS_FH
-c_func
-(paren
-id|inode
-)paren
-comma
-id|fh
-comma
-r_sizeof
-(paren
-r_struct
-id|nfs_fh
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* We can&squot;t support UPDATE_ATIME(), since the server will reset it */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_NOATIME
@@ -3159,6 +3168,12 @@ id|inode
 )paren
 )paren
 suffix:semicolon
+id|unlock_new_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 )brace
 r_else
 id|nfs_refresh_inode
@@ -3212,8 +3227,8 @@ id|out
 suffix:semicolon
 )brace
 r_int
-DECL|function|nfs_notify_change
-id|nfs_notify_change
+DECL|function|nfs_setattr
+id|nfs_setattr
 c_func
 (paren
 r_struct
@@ -3271,7 +3286,7 @@ macro_line|#ifdef NFS_PARANOIA
 id|printk
 c_func
 (paren
-l_string|&quot;nfs_notify_change: revalidate failed, error=%d&bslash;n&quot;
+l_string|&quot;nfs_setattr: revalidate failed, error=%d&bslash;n&quot;
 comma
 id|error
 )paren
@@ -3376,7 +3391,7 @@ id|fattr.size
 id|printk
 c_func
 (paren
-l_string|&quot;nfs_notify_change: attr=%Ld, fattr=%Ld??&bslash;n&quot;
+l_string|&quot;nfs_setattr: attr=%Ld, fattr=%Ld??&bslash;n&quot;
 comma
 (paren
 r_int
@@ -3554,16 +3569,25 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Externally visible revalidation function&n; */
+DECL|function|nfs_getattr
 r_int
-DECL|function|nfs_revalidate
-id|nfs_revalidate
+id|nfs_getattr
 c_func
 (paren
+r_struct
+id|vfsmount
+op_star
+id|mnt
+comma
 r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|kstat
+op_star
+id|stat
 )paren
 (brace
 r_struct
@@ -3573,7 +3597,9 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-r_return
+r_int
+id|err
+op_assign
 id|nfs_revalidate_inode
 c_func
 (paren
@@ -3585,6 +3611,23 @@ id|inode
 comma
 id|inode
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+id|generic_fillattr
+c_func
+(paren
+id|inode
+comma
+id|stat
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ensure that mmap has a recent RPC credential for use when writing out&n; * shared pages&n; */
@@ -5433,7 +5476,7 @@ l_int|NULL
 suffix:semicolon
 id|nfsi-&gt;flags
 op_assign
-id|NFS_INO_NEW
+l_int|0
 suffix:semicolon
 id|nfsi-&gt;mm_cred
 op_assign

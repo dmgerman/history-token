@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
-multiline_comment|/*&n; * Miscellaneous procedures for dealing with the PowerMac hardware.&n; */
+multiline_comment|/*&n; *  arch/ppc/platforms/pmac_nvram.c&n; *&n; *  Copyright (C) 2002 Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *  &n; *  Todo: - cleanup some coding horrors in the flash code&n; *        - add support for the OF persistent properties&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -166,7 +166,7 @@ id|pmac_newworld
 suffix:semicolon
 r_static
 id|u8
-id|__openfirmware
+id|__pmac
 DECL|function|chrp_checksum
 id|chrp_checksum
 c_func
@@ -1542,9 +1542,9 @@ suffix:semicolon
 )brace
 r_int
 r_char
-id|__openfirmware
-DECL|function|nvram_read_byte
-id|nvram_read_byte
+id|__pmac
+DECL|function|pmac_nvram_read_byte
+id|pmac_nvram_read_byte
 c_func
 (paren
 r_int
@@ -1679,17 +1679,17 @@ l_int|0
 suffix:semicolon
 )brace
 r_void
-id|__openfirmware
-DECL|function|nvram_write_byte
-id|nvram_write_byte
+id|__pmac
+DECL|function|pmac_nvram_write_byte
+id|pmac_nvram_write_byte
 c_func
 (paren
 r_int
-r_char
-id|val
+id|addr
 comma
 r_int
-id|addr
+r_char
+id|val
 )paren
 (brace
 r_switch
@@ -1876,7 +1876,7 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|nvram_read_byte
+id|pmac_nvram_read_byte
 c_func
 (paren
 id|xpaddr
@@ -1915,14 +1915,14 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-id|nvram_write_byte
+id|pmac_nvram_write_byte
 c_func
 (paren
+id|data
+comma
 id|xpaddr
 op_plus
 id|offset
-comma
-id|data
 )paren
 suffix:semicolon
 )brace

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|next_mmu_context
 id|mm_context_t
 id|next_mmu_context
@@ -45,9 +46,9 @@ r_void
 suffix:semicolon
 macro_line|#endif /* FEW_CONTEXTS */
 multiline_comment|/*&n; * Initialize the context management stuff.&n; */
-DECL|function|mmu_context_init
 r_void
 id|__init
+DECL|function|mmu_context_init
 id|mmu_context_init
 c_func
 (paren
@@ -90,8 +91,8 @@ macro_line|#endif /* FEW_CONTEXTS */
 )brace
 macro_line|#ifdef FEW_CONTEXTS
 multiline_comment|/*&n; * Steal a context from a task that has one at the moment.&n; * This is only used on 8xx and 4xx and we presently assume that&n; * they don&squot;t do SMP.  If they do then this will have to check&n; * whether the MM we steal is in use.&n; * We also assume that this is only used on systems that don&squot;t&n; * use an MMU hash table - this is true for 8xx and 4xx.&n; * This isn&squot;t an LRU system, it just frees up each context in&n; * turn (sort-of pseudo-random replacement :).  This would be the&n; * place to implement an LRU scheme if anyone was motivated to do it.&n; *  -- paulus&n; */
-DECL|function|steal_context
 r_void
+DECL|function|steal_context
 id|steal_context
 c_func
 (paren

@@ -80,6 +80,7 @@ id|do_power_save
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Check if CPU can powersave */
 r_if
 c_cond
 (paren
@@ -93,7 +94,11 @@ c_func
 op_member_access_from_pointer
 id|cpu_features
 op_amp
+(paren
 id|CPU_FTR_CAN_DOZE
+op_or
+id|CPU_FTR_CAN_NAP
+)paren
 )paren
 id|do_power_save
 op_assign
@@ -279,8 +284,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|nap
-op_logical_and
+op_logical_or
+(paren
 id|cur_cpu_spec
 (braket
 id|smp_processor_id
@@ -291,7 +298,9 @@ c_func
 op_member_access_from_pointer
 id|cpu_features
 op_amp
-id|CPU_FTR_SPEC7450
+id|CPU_FTR_CAN_DOZE
+)paren
+)paren
 )paren
 r_return
 suffix:semicolon

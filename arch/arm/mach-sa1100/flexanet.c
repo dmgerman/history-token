@@ -380,9 +380,9 @@ op_star
 id|desc
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
-id|params
+id|tags
 comma
 r_char
 op_star
@@ -395,13 +395,6 @@ op_star
 id|mi
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
-r_int
-r_int
-id|now
-suffix:semicolon
 multiline_comment|/* fixed RAM size, by now (64MB) */
 id|SET_BANK
 c_func

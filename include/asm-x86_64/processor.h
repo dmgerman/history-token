@@ -188,6 +188,8 @@ DECL|macro|cpu_has_vme
 mdefine_line|#define cpu_has_vme 1
 DECL|macro|cpu_has_fxsr
 mdefine_line|#define cpu_has_fxsr 1
+DECL|macro|cpu_has_mmx
+mdefine_line|#define cpu_has_mmx 1
 DECL|macro|cpu_has_xmm
 mdefine_line|#define cpu_has_xmm 1
 DECL|macro|cpu_has_apic

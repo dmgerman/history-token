@@ -1165,6 +1165,9 @@ r_return
 id|word
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * fls: find last bit set.&n; */
+DECL|macro|fls
+mdefine_line|#define fls(x) generic_fls(x)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 140-bit bitmap where the first 100 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 140&n; * bits is cleared.&n; */
 DECL|function|sched_find_first_bit

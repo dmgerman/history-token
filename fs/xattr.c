@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Extended attribute memory allocation wrappers, originally&n; * based on the Intermezzo PRESTO_ALLOC/PRESTO_FREE macros.&n; * The vmalloc use here is very uncommon - extended attributes&n; * are supposed to be small chunks of metadata, and it is quite&n; * unusual to have very many extended attributes, so lists tend&n; * to be quite short as well.  The 64K upper limit is derived&n; * from the extended attribute size limit used by XFS.&n; * Intentionally allow zero @size for value/list size requests.&n; */
 r_static

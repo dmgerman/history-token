@@ -607,7 +607,7 @@ comma
 r_int
 id|wait
 )paren
-multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler, you may call it from a bottom half handler.&n; */
+multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 (brace
 r_if
 c_cond
@@ -739,7 +739,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -905,7 +905,7 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1152,15 +1152,14 @@ id|pt_regs
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|p
+op_assign
 id|do_fork
 c_func
 (paren
 id|CLONE_VM
 op_or
-id|CLONE_PID
+id|CLONE_IDLETASK
 comma
 l_int|0
 comma
@@ -1169,36 +1168,20 @@ id|regs
 comma
 l_int|0
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|p
+)paren
 )paren
 id|panic
 c_func
 (paren
 l_string|&quot;failed fork for CPU %d&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-id|p
-op_assign
-id|prev_task
-c_func
-(paren
-op_amp
-id|init_task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|p
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;No idle task for CPU %d&quot;
 comma
 id|i
 )paren

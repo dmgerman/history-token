@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Maintain information about the progress of the recovery job, so that&n; * the different passes can carry information between them. &n; */
 DECL|struct|recovery_info
@@ -1563,6 +1562,12 @@ comma
 l_string|&quot;marking dirty&quot;
 )paren
 suffix:semicolon
+id|set_buffer_uptodate
+c_func
+(paren
+id|nbh
+)paren
+suffix:semicolon
 id|mark_buffer_dirty
 c_func
 (paren
@@ -1575,12 +1580,6 @@ c_func
 id|nbh
 comma
 l_string|&quot;marking uptodate&quot;
-)paren
-suffix:semicolon
-id|set_buffer_uptodate
-c_func
-(paren
-id|nbh
 )paren
 suffix:semicolon
 op_increment

@@ -1,5 +1,4 @@
 macro_line|#include &quot;minix.h&quot;
-macro_line|#include &lt;linux/locks.h&gt;
 DECL|enumerator|DEPTH
 DECL|enumerator|DIRECT
 r_enum
@@ -286,6 +285,23 @@ id|truncate
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+)brace
+DECL|function|V1_minix_blocks
+r_int
+id|V1_minix_blocks
+c_func
+(paren
+id|loff_t
+id|size
+)paren
+(brace
+r_return
+id|nblocks
+c_func
+(paren
+id|size
 )paren
 suffix:semicolon
 )brace
