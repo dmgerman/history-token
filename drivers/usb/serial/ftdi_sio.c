@@ -160,7 +160,8 @@ r_struct
 id|ftdi_private
 (brace
 DECL|member|ftdi_type
-id|ftdi_type_t
+r_enum
+id|ftdi_type
 id|ftdi_type
 suffix:semicolon
 DECL|member|last_set_data_urb_value
@@ -2252,7 +2253,8 @@ r_int
 r_int
 id|cflag
 comma
-id|ftdi_type_t
+r_enum
+id|ftdi_type
 id|ftdi_type
 )paren
 (brace
