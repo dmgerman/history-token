@@ -1648,15 +1648,13 @@ c_func
 id|xfrm_calg_get_byname
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
-DECL|variable|skb_ah_walk
+DECL|variable|skb_icv_walk
 id|EXPORT_SYMBOL_GPL
 c_func
 (paren
-id|skb_ah_walk
+id|skb_icv_walk
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
 DECL|variable|skb_cow_data
 id|EXPORT_SYMBOL_GPL
@@ -1670,13 +1668,6 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|pskb_put
-)paren
-suffix:semicolon
-DECL|variable|skb_icv_walk
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|skb_icv_walk
 )paren
 suffix:semicolon
 DECL|variable|skb_to_sgvec
