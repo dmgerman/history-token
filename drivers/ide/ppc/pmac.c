@@ -4896,22 +4896,7 @@ id|pmif-&gt;mediabay
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Disable the bus */
-id|ppc_md
-dot
-id|feature_call
-c_func
-(paren
-id|PMAC_FTR_IDE_ENABLE
-comma
-id|pmif-&gt;node
-comma
-id|pmif-&gt;aapl_bus_id
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Kauai has it different */
+multiline_comment|/* Kauai has bus control FCRs directly here */
 r_if
 c_cond
 (paren
@@ -4945,6 +4930,21 @@ id|pmif-&gt;kauai_fcr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Disable the bus on older machines and the cell on kauai */
+id|ppc_md
+dot
+id|feature_call
+c_func
+(paren
+id|PMAC_FTR_IDE_ENABLE
+comma
+id|pmif-&gt;node
+comma
+id|pmif-&gt;aapl_bus_id
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
