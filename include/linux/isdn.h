@@ -459,14 +459,12 @@ DECL|macro|ISDN_TIMER_MODEMRING
 mdefine_line|#define ISDN_TIMER_MODEMRING   4
 DECL|macro|ISDN_TIMER_MODEMXMIT
 mdefine_line|#define ISDN_TIMER_MODEMXMIT   8
-DECL|macro|ISDN_TIMER_NETHANGUP
-mdefine_line|#define ISDN_TIMER_NETHANGUP  32
 DECL|macro|ISDN_TIMER_CARRIER
 mdefine_line|#define ISDN_TIMER_CARRIER   256 /* Wait for Carrier */
 DECL|macro|ISDN_TIMER_FAST
 mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMPLUS | &bslash;&n;                              ISDN_TIMER_MODEMXMIT)
 DECL|macro|ISDN_TIMER_SLOW
-mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_CARRIER)
+mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_CARRIER)
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
@@ -485,13 +483,14 @@ mdefine_line|#define ISDN_NET_CBOUT      0x10       /* remote machine does callb
 DECL|macro|ISDN_NET_MAGIC
 mdefine_line|#define ISDN_NET_MAGIC      0x49344C02 /* for paranoia-checking             */
 multiline_comment|/* Phone-list-element */
-r_typedef
+DECL|struct|isdn_net_phone
 r_struct
+id|isdn_net_phone
 (brace
-DECL|member|next
-r_void
-op_star
-id|next
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|num
 r_char
@@ -500,9 +499,7 @@ id|num
 id|ISDN_MSNLEN
 )braket
 suffix:semicolon
-DECL|typedef|isdn_net_phone
 )brace
-id|isdn_net_phone
 suffix:semicolon
 multiline_comment|/*&n;   Principles when extending structures for generic encapsulation protocol&n;   (&quot;concap&quot;) support:&n;   - Stuff which is hardware specific (here i4l-specific) goes in &n;     the netdev -&gt; local structure (here: isdn_net_local)&n;   - Stuff which is encapsulation protocol specific goes in the structure&n;     which holds the linux device structure (here: isdn_net_device)&n;*/
 multiline_comment|/* Local interface-data */
@@ -511,6 +508,10 @@ r_typedef
 r_struct
 id|isdn_net_local_s
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|magic
 id|ulong
 id|magic
@@ -528,7 +529,7 @@ r_struct
 id|timer_list
 id|dial_timer
 suffix:semicolon
-multiline_comment|/* dial timeout                     */
+multiline_comment|/* dial events timer                */
 DECL|member|dial_event
 r_int
 id|dial_event
@@ -540,6 +541,12 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
+DECL|member|hup_timer
+r_struct
+id|timer_list
+id|hup_timer
+suffix:semicolon
+multiline_comment|/* auto hangup timer                */
 DECL|member|isdn_slot
 r_int
 id|isdn_slot
@@ -715,8 +722,8 @@ id|triggercps
 suffix:semicolon
 multiline_comment|/* BogoCPS needed for trigger slave */
 DECL|member|phone
-id|isdn_net_phone
-op_star
+r_struct
+id|list_head
 id|phone
 (braket
 l_int|2
@@ -726,11 +733,10 @@ multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
 DECL|member|dial
-id|isdn_net_phone
-op_star
+r_int
 id|dial
 suffix:semicolon
-multiline_comment|/* Pointer to dialed number         */
+multiline_comment|/* # of phone number just dialed    */
 DECL|member|master
 r_struct
 id|net_device
