@@ -8702,6 +8702,13 @@ id|SCpnt-&gt;SCp.Status
 op_assign
 l_int|0
 suffix:semicolon
+id|SCpnt-&gt;request_bufflen
+op_assign
+r_sizeof
+(paren
+id|SCpnt-&gt;sense_buffer
+)paren
+suffix:semicolon
 id|SCpnt-&gt;sc_data_direction
 op_assign
 id|SCSI_DATA_READ
