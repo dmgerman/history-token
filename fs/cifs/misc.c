@@ -8,7 +8,7 @@ macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;smberr.h&quot;
 macro_line|#include &quot;nterr.h&quot;
-macro_line|#ifdef CIFS_EXPERIMENTAL
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 r_extern
 id|mempool_t
 op_star
@@ -636,7 +636,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CIFS_EXPERIMENTAL
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 r_struct
 id|smb_hdr
 op_star

@@ -728,7 +728,7 @@ id|kmem_cache_t
 op_star
 id|cifs_oplock_cachep
 suffix:semicolon
-macro_line|#ifdef CIFS_EXPERIMENTAL
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 DECL|variable|cifs_sm_req_cachep
 r_static
 id|kmem_cache_t
@@ -2424,8 +2424,8 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef CIFS_EXPERIMENTAL
-multiline_comment|/* 120 bytes is enough for most SMB responses and handle&n;&t;based requests (but not write response, nor is it&n;&t;sufficient for path based requests).  120 bytes is 83 &n;&t;more than sizeof(struct smb_hdr) and smaller than 128 byte&n;&t;cutoff which should make it easy to alloc off the slab &n;&t;compared to 17K (5page) alloc of large cifs buffers */
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
+multiline_comment|/* 120 bytes is enough for most SMB responses and handle&n;&t;based requests (but not write response, nor is it&n;&t;sufficient for path based requests).  112 bytes is 75 more than&n;&t;sizeof(struct smb_hdr) but still (with slab hdr) just smaller than&n;&t;128 byte cutoff which should make it easy to alloc off the slab &n;&t;compared to 17K (5page) alloc of large cifs buffers and not &n;&t;so large as to force a single page alloc for each slab entry */
 id|cifs_sm_req_cachep
 op_assign
 id|kmem_cache_create
@@ -2433,7 +2433,7 @@ c_func
 (paren
 l_string|&quot;cifs_small_rq&quot;
 comma
-l_int|120
+l_int|112
 comma
 l_int|0
 comma
@@ -2550,7 +2550,7 @@ id|KERN_WARNING
 l_string|&quot;cifs_destroy_request_cache: error not all structures were freed&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CIFS_EXPERIMENTAL
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 id|mempool_destroy
 c_func
 (paren

@@ -920,6 +920,28 @@ id|buf
 op_add_assign
 id|item_length
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;SMB Small Req/Resp Buffer: %d&bslash;n&quot;
+comma
+id|smBufAllocCount.counter
+)paren
+suffix:semicolon
+id|length
+op_add_assign
+id|item_length
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+macro_line|#endif /* CIFS_EXPERIMENTAL */
 id|item_length
 op_assign
 id|sprintf

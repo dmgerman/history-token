@@ -997,7 +997,7 @@ mdefine_line|#define   MID_RETRY_NEEDED      8 /* session closed while this requ
 DECL|macro|MID_NO_RESP_NEEDED
 mdefine_line|#define   MID_NO_RESP_NEEDED 0x10
 DECL|macro|MID_SMALL_BUFFER
-mdefine_line|#define   MID_SMALL_BUFFER   0x20 /* 120 byte response buffer instead of 4K */
+mdefine_line|#define   MID_SMALL_BUFFER   0x20 /* 112 byte response buffer instead of 4K */
 multiline_comment|/*&n; *****************************************************************&n; * All constants go here&n; *****************************************************************&n; */
 DECL|macro|UID_HASH
 mdefine_line|#define UID_HASH (16)
@@ -1130,6 +1130,13 @@ id|GLOBAL_EXTERN
 id|atomic_t
 id|bufAllocCount
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
+DECL|variable|smBufAllocCount
+id|GLOBAL_EXTERN
+id|atomic_t
+id|smBufAllocCount
+suffix:semicolon
+macro_line|#endif /* CIFS_EXPERIMENTAL */
 DECL|variable|midCount
 id|GLOBAL_EXTERN
 id|atomic_t
