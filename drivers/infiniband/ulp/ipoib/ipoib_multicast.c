@@ -3391,10 +3391,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_safe
 c_func
 (paren
 id|mcast
+comma
+id|tmcast
 comma
 op_amp
 id|remove_list
@@ -3914,10 +3916,12 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* We have to cancel outside of the spinlock */
-id|list_for_each_entry
+id|list_for_each_entry_safe
 c_func
 (paren
 id|mcast
+comma
+id|tmcast
 comma
 op_amp
 id|remove_list
