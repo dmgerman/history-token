@@ -1,24 +1,23 @@
 multiline_comment|/*&n; * llc_mac.c - Manages interface between LLC and MAC&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/if_arp.h&gt;
-macro_line|#include &lt;linux/if_tr.h&gt;
-macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
-macro_line|#include &lt;net/llc_evnt.h&gt;
-macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#if 0
 mdefine_line|#define dprintk(args...) printk(KERN_DEBUG args)
 macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(args...)
 macro_line|#endif
+multiline_comment|/*&n; * Packet handler for the station, registerable because in the minimal&n; * LLC core that is taking shape only the very minimal subset of LLC that&n; * is needed for things like IPX, Appletalk, etc will stay, with all the&n; * rest in the llc1 and llc2 modules.&n; */
+DECL|variable|llc_station_handler
 r_static
 r_void
-id|llc_station_rcv
-c_func
+(paren
+op_star
+id|llc_station_handler
+)paren
 (paren
 r_struct
 id|sk_buff
@@ -120,6 +119,29 @@ id|type
 )braket
 op_assign
 l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|llc_set_station_handler
+r_void
+id|llc_set_station_handler
+c_func
+(paren
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+)paren
+(brace
+id|llc_station_handler
+op_assign
+id|handler
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_type - returns which LLC component must handle for PDU&n; *&t;@skb: input skb&n; *&n; *&t;This function returns which LLC component must handle this PDU.&n; */
@@ -474,26 +496,10 @@ op_logical_neg
 id|pdu-&gt;dsap
 )paren
 )paren
-(brace
 multiline_comment|/* NULL DSAP, refer to station */
-id|dprintk
-c_func
-(paren
-l_string|&quot;%s: calling llc_station_rcv!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|llc_station_rcv
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_goto
-id|out
+id|handle_station
 suffix:semicolon
-)brace
 id|sap
 op_assign
 id|llc_sap_find
@@ -608,47 +614,25 @@ suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
-multiline_comment|/*&n; *&t;llc_station_rcv - send received pdu to the station state machine&n; *&t;@skb: received frame.&n; *&n; *&t;Sends data unit to station state machine.&n; */
-DECL|function|llc_station_rcv
-r_static
-r_void
-id|llc_station_rcv
-c_func
+id|handle_station
+suffix:colon
+r_if
+c_cond
 (paren
-r_struct
-id|sk_buff
-op_star
-id|skb
+op_logical_neg
+id|llc_station_handler
 )paren
-(brace
-r_struct
-id|llc_station_state_ev
-op_star
-id|ev
-op_assign
-id|llc_station_ev
+r_goto
+id|drop
+suffix:semicolon
+id|llc_station_handler
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-id|ev-&gt;type
-op_assign
-id|LLC_STATION_EV_TYPE_PDU
-suffix:semicolon
-id|ev-&gt;reason
-op_assign
-l_int|0
-suffix:semicolon
-id|llc_station_state_process
-c_func
-(paren
-op_amp
-id|llc_main_station
-comma
-id|skb
-)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|variable|llc_add_pack
@@ -663,6 +647,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|llc_remove_pack
+)paren
+suffix:semicolon
+DECL|variable|llc_set_station_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|llc_set_station_handler
 )paren
 suffix:semicolon
 eof

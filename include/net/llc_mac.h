@@ -70,5 +70,23 @@ r_int
 id|type
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|llc_set_station_handler
+c_func
+(paren
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+)paren
+suffix:semicolon
 macro_line|#endif /* LLC_MAC_H */
 eof
