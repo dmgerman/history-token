@@ -1216,13 +1216,14 @@ multiline_comment|/*&n;&t;&t;&t; *&t;Same priority level&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-(paren
 id|iter-&gt;rt6i_dev
 op_eq
 id|rt-&gt;rt6i_dev
-)paren
 op_logical_and
-(paren
+id|iter-&gt;rt6i_idev
+op_eq
+id|rt-&gt;rt6i_idev
+op_logical_and
 id|ipv6_addr_cmp
 c_func
 (paren
@@ -1234,7 +1235,6 @@ id|rt-&gt;rt6i_gateway
 )paren
 op_eq
 l_int|0
-)paren
 )paren
 (brace
 r_if
