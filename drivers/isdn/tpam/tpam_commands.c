@@ -15,7 +15,8 @@ c_func
 id|tpam_card
 op_star
 comma
-id|u32
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -26,7 +27,8 @@ c_func
 id|tpam_card
 op_star
 comma
-id|u32
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -406,7 +408,8 @@ id|tpam_card
 op_star
 id|card
 comma
-id|u32
+r_int
+r_int
 id|arg
 )paren
 (brace
@@ -473,10 +476,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 id|tdl.address
 comma
 (paren
@@ -506,7 +505,8 @@ id|tpam_card
 op_star
 id|card
 comma
-id|u32
+r_int
+r_int
 id|arg
 )paren
 (brace
@@ -583,10 +583,6 @@ r_sizeof
 id|tpam_dsp_ioctl
 )paren
 comma
-(paren
-r_void
-op_star
-)paren
 id|tdl.address
 comma
 id|tdl.data_len
@@ -655,10 +651,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 id|TPAM_MAGICNUMBER_REGISTER
 comma
 l_int|0xdeadface
@@ -720,10 +712,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 id|TPAM_MAGICNUMBER_REGISTER
 )paren
 suffix:semicolon
@@ -1842,7 +1830,8 @@ id|free_page
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|finaldata
 )paren
@@ -1889,7 +1878,8 @@ id|free_page
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|tempdata
 )paren
@@ -1935,7 +1925,8 @@ id|free_page
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|finaldata
 )paren
@@ -1962,7 +1953,8 @@ id|free_page
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|finaldata
 )paren
@@ -3120,7 +3112,8 @@ id|free_page
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|tempdata
 )paren
@@ -3148,7 +3141,8 @@ id|free_page
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|tempdata
 )paren
