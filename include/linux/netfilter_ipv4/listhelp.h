@@ -7,12 +7,12 @@ macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 multiline_comment|/* Header to do more comprehensive job than linux/list.h; assume list&n;   is first entry in structure. */
 multiline_comment|/* Return pointer to first true entry, if any, or NULL.  A macro&n;   required to allow inlining of cmpfn. */
 DECL|macro|LIST_FIND
-mdefine_line|#define LIST_FIND(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_READ_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((const type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define LIST_FIND(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i, *__j = NULL;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_READ_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;list_for_each(__i, (head))&t;&t;&t;&bslash;&n;&t;&t;if (cmpfn((const type)__i , ## args)) {&t;&bslash;&n;&t;&t;&t;__j = __i;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;(type)__j;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|LIST_FIND_W
-mdefine_line|#define LIST_FIND_W(head, cmpfn, type, args...)&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_WRITE_LOCK(head);&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;next;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define LIST_FIND_W(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i, *__j = NULL;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_WRITE_LOCK(head);&t;&t;&t;&bslash;&n;&t;list_for_each(__i, (head))&t;&t;&t;&bslash;&n;&t;&t;if (cmpfn((type)__i , ## args)) {&t;&bslash;&n;&t;&t;&t;__j = __i;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;(type)__j;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* Just like LIST_FIND but we search backwards */
 DECL|macro|LIST_FIND_B
-mdefine_line|#define LIST_FIND_B(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_READ_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;prev;&t;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((const type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define LIST_FIND_B(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i, *__j = NULL;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_READ_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;list_for_each_prev(__i, (head))&t;&t;&t;&bslash;&n;&t;&t;if (cmpfn((const type)__i , ## args)) {&t;&bslash;&n;&t;&t;&t;__j = __i;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;(type)__j;&t;&t;&t;&t;&t;&bslash;&n;})
 r_static
 r_inline
 r_int
@@ -155,7 +155,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Insert according to ordering function; insert before first true. */
 DECL|macro|LIST_INSERT
-mdefine_line|#define LIST_INSERT(head, new, cmpfn)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head *__i;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_WRITE_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;for (__i = (head)-&gt;next;&t;&t;&t;&t;&bslash;&n;&t;     !cmpfn((new), (typeof (new))__i) &amp;&amp; __i != (head);&t;&bslash;&n;&t;     __i = __i-&gt;next);&t;&t;&t;&t;&t;&bslash;&n;&t;list_add((struct list_head *)(new), __i-&gt;prev);&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define LIST_INSERT(head, new, cmpfn)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head *__i;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_WRITE_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;list_for_each(__i, (head))&t;&t;&t;&t;&bslash;&n;&t;&t;if ((new), (typeof (new))__i)&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;list_add((struct list_head *)(new), __i-&gt;prev);&t;&t;&bslash;&n;} while(0)
 multiline_comment|/* If the field after the list_head is a nul-terminated string, you&n;   can use these functions. */
 DECL|function|__list_cmp_name
 r_static
