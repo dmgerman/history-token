@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_XTALK_XTALK_PRIVATE_H
 DECL|macro|_ASM_SN_XTALK_XTALK_PRIVATE_H
 mdefine_line|#define _ASM_SN_XTALK_XTALK_PRIVATE_H
@@ -13,7 +13,7 @@ r_struct
 id|xtalk_piomap_s
 (brace
 DECL|member|xp_dev
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xp_dev
 suffix:semicolon
 multiline_comment|/* a requestor of this mapping */
@@ -45,7 +45,7 @@ r_struct
 id|xtalk_dmamap_s
 (brace
 DECL|member|xd_dev
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xd_dev
 suffix:semicolon
 multiline_comment|/* a requestor of this mapping */
@@ -62,7 +62,7 @@ r_struct
 id|xtalk_intr_s
 (brace
 DECL|member|xi_dev
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xi_dev
 suffix:semicolon
 multiline_comment|/* requestor of this intr */
@@ -114,7 +114,7 @@ op_star
 id|w_fingerprint
 suffix:semicolon
 DECL|member|w_vertex
-id|devfs_handle_t
+id|vertex_hdl_t
 id|w_vertex
 suffix:semicolon
 multiline_comment|/* back pointer to vertex */
@@ -130,7 +130,7 @@ id|w_hwid
 suffix:semicolon
 multiline_comment|/* hardware identification (part/rev/mfg) */
 DECL|member|w_master
-id|devfs_handle_t
+id|vertex_hdl_t
 id|w_master
 suffix:semicolon
 multiline_comment|/* CACHED widget&squot;s master */

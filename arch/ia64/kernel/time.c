@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -17,17 +18,14 @@ r_int
 r_int
 id|wall_jiffies
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|last_nsec_offset
-suffix:semicolon
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
 suffix:semicolon
+DECL|macro|TIME_KEEPER_ID
+mdefine_line|#define TIME_KEEPER_ID&t;0&t;/* smp_processor_id() of time-keeper */
 macro_line|#ifdef CONFIG_IA64_DEBUG_IRQ
 DECL|variable|last_cli_ip
 r_int
@@ -125,13 +123,31 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return the number of nano-seconds that elapsed since the last update to jiffy.  The&n; * xtime_lock must be at least read-locked when calling this routine.&n; */
 r_static
-r_inline
+r_void
+DECL|function|itc_reset
+id|itc_reset
+(paren
+r_void
+)paren
+(brace
+)brace
+multiline_comment|/*&n; * Adjust for the fact that xtime has been advanced by delta_nsec (may be negative and/or&n; * larger than NSEC_PER_SEC.&n; */
+r_static
+r_void
+DECL|function|itc_update
+id|itc_update
+(paren
+r_int
+id|delta_nsec
+)paren
+(brace
+)brace
+multiline_comment|/*&n; * Return the number of nano-seconds that elapsed since the last update to jiffy.  The&n; * xtime_lock must be at least read-locked when calling this routine.&n; */
 r_int
 r_int
-DECL|function|gettimeoffset
-id|gettimeoffset
+DECL|function|itc_get_offset
+id|itc_get_offset
 (paren
 r_void
 )paren
@@ -152,15 +168,13 @@ id|now
 comma
 id|last_tick
 suffix:semicolon
-DECL|macro|time_keeper_id
-macro_line|#&t;define time_keeper_id&t;0&t;/* smp_processor_id() of time-keeper */
 id|last_tick
 op_assign
 (paren
 id|cpu_data
 c_func
 (paren
-id|time_keeper_id
+id|TIME_KEEPER_ID
 )paren
 op_member_access_from_pointer
 id|itm_next
@@ -174,7 +188,7 @@ op_star
 id|cpu_data
 c_func
 (paren
-id|time_keeper_id
+id|TIME_KEEPER_ID
 )paren
 op_member_access_from_pointer
 id|itm_delta
@@ -242,6 +256,29 @@ op_rshift
 id|IA64_NSEC_PER_CYC_SHIFT
 suffix:semicolon
 )brace
+DECL|variable|itc_interpolator
+r_static
+r_struct
+id|time_interpolator
+id|itc_interpolator
+op_assign
+(brace
+dot
+id|get_offset
+op_assign
+id|itc_get_offset
+comma
+dot
+id|update
+op_assign
+id|itc_update
+comma
+dot
+id|reset
+op_assign
+id|itc_reset
+)brace
+suffix:semicolon
 r_static
 r_inline
 r_void
@@ -351,7 +388,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the value&n;&t;&t; * in this location is the value at the most recent update of wall time.&n;&t;&t; * Discover what correction gettimeofday would have done, and then undo&n;&t;&t; * it!&n;&t;&t; */
 id|nsec
 op_sub_assign
-id|gettimeoffset
+id|time_interpolator_get_offset
 c_func
 (paren
 )paren
@@ -415,6 +452,11 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
+id|time_interpolator_reset
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|write_sequnlock_irq
 c_func
@@ -456,21 +498,6 @@ id|old
 comma
 id|offset
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|tv-&gt;tv_nsec
-op_ge
-id|NSEC_PER_SEC
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -493,7 +520,7 @@ id|last_nsec_offset
 suffix:semicolon
 id|offset
 op_assign
-id|gettimeoffset
+id|time_interpolator_get_offset
 c_func
 (paren
 )paren
@@ -713,7 +740,7 @@ c_func
 (paren
 )paren
 op_eq
-l_int|0
+id|TIME_KEEPER_ID
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Here we are in the timer irq handler. We have irqs locally&n;&t;&t;&t; * disabled, but we don&squot;t know if the timer_bh is running on&n;&t;&t;&t; * another CPU. We need to avoid to SMP race by acquiring the&n;&t;&t;&t; * xtime_lock.&n;&t;&t;&t; */
@@ -923,8 +950,6 @@ r_int
 id|platform_base_freq
 comma
 id|itc_freq
-comma
-id|drift
 suffix:semicolon
 r_struct
 id|pal_freq_ratio
@@ -934,6 +959,10 @@ id|proc_ratio
 suffix:semicolon
 r_int
 id|status
+comma
+id|platform_base_drift
+comma
+id|itc_drift
 suffix:semicolon
 multiline_comment|/*&n;&t; * According to SAL v2.6, we need to use a SAL call to determine the platform base&n;&t; * frequency and then a PAL call to determine the frequency ratio between the ITC&n;&t; * and the base frequency.&n;&t; */
 id|status
@@ -947,7 +976,7 @@ op_amp
 id|platform_base_freq
 comma
 op_amp
-id|drift
+id|platform_base_drift
 )paren
 suffix:semicolon
 r_if
@@ -1025,6 +1054,12 @@ id|platform_base_freq
 op_assign
 l_int|100000000
 suffix:semicolon
+id|platform_base_drift
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* no drift info */
 id|itc_ratio.num
 op_assign
 l_int|3
@@ -1054,6 +1089,11 @@ suffix:semicolon
 id|platform_base_freq
 op_assign
 l_int|75000000
+suffix:semicolon
+id|platform_base_drift
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -1088,6 +1128,28 @@ id|itc_ratio.num
 op_div
 id|itc_ratio.den
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|platform_base_drift
+op_ne
+op_minus
+l_int|1
+)paren
+id|itc_drift
+op_assign
+id|platform_base_drift
+op_star
+id|itc_ratio.num
+op_div
+id|itc_ratio.den
+suffix:semicolon
+r_else
+id|itc_drift
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|local_cpu_data-&gt;itm_delta
 op_assign
 (paren
@@ -1105,7 +1167,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;CPU %d: base freq=%lu.%03luMHz, ITC ratio=%lu/%lu, &quot;
-l_string|&quot;ITC freq=%lu.%03luMHz&bslash;n&quot;
+l_string|&quot;ITC freq=%lu.%03luMHz+/-%ldppm&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -1139,6 +1201,8 @@ l_int|1000
 )paren
 op_mod
 l_int|1000
+comma
+id|itc_drift
 )paren
 suffix:semicolon
 id|local_cpu_data-&gt;proc_freq
@@ -1183,6 +1247,33 @@ l_int|2
 op_div
 id|itc_freq
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sal_platform_features
+op_amp
+id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+)paren
+)paren
+(brace
+id|itc_interpolator.frequency
+op_assign
+id|local_cpu_data-&gt;itc_freq
+suffix:semicolon
+id|itc_interpolator.drift
+op_assign
+id|itc_drift
+suffix:semicolon
+id|register_time_interpolator
+c_func
+(paren
+op_amp
+id|itc_interpolator
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Setup the CPU local timer tick */
 id|ia64_cpu_local_tick
 c_func

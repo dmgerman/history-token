@@ -584,8 +584,12 @@ mdefine_line|#define EXT2_MOUNT_DATA_FLAGS&t;&t;EXT3_MOUNT_DATA_FLAGS
 macro_line|#endif
 DECL|macro|ext3_set_bit
 mdefine_line|#define ext3_set_bit&t;&t;&t;ext2_set_bit
+DECL|macro|ext3_set_bit_atomic
+mdefine_line|#define ext3_set_bit_atomic&t;&t;ext2_set_bit_atomic
 DECL|macro|ext3_clear_bit
 mdefine_line|#define ext3_clear_bit&t;&t;&t;ext2_clear_bit
+DECL|macro|ext3_clear_bit_atomic
+mdefine_line|#define ext3_clear_bit_atomic&t;&t;ext2_clear_bit_atomic
 DECL|macro|ext3_test_bit
 mdefine_line|#define ext3_test_bit&t;&t;&t;ext2_test_bit
 DECL|macro|ext3_find_first_zero_bit
@@ -1745,6 +1749,17 @@ id|inode
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ext3_set_aops
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 multiline_comment|/* ioctl.c */
 r_extern
 r_int
@@ -2082,17 +2097,6 @@ r_extern
 r_struct
 id|file_operations
 id|ext3_file_operations
-suffix:semicolon
-multiline_comment|/* inode.c */
-r_extern
-r_struct
-id|address_space_operations
-id|ext3_aops
-suffix:semicolon
-r_extern
-r_struct
-id|address_space_operations
-id|ext3_writeback_aops
 suffix:semicolon
 multiline_comment|/* namei.c */
 r_extern

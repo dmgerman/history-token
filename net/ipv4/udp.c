@@ -501,12 +501,6 @@ c_func
 id|sk-&gt;sk_prot
 )paren
 suffix:semicolon
-id|sock_hold
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 )brace
 id|write_unlock_bh
 c_func
@@ -592,12 +586,6 @@ id|sock_prot_dec_use
 c_func
 (paren
 id|sk-&gt;sk_prot
-)paren
-suffix:semicolon
-id|__sock_put
-c_func
-(paren
-id|sk
 )paren
 suffix:semicolon
 )brace

@@ -325,9 +325,6 @@ suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|status
 op_assign
 id|acpi_find_vendor_resource

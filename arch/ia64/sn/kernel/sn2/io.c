@@ -1,8 +1,5 @@
 multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003 Silicon Graphics, Inc. All rights reserved.&n; *&n; * The generic kernel requires function pointers to these routines, so&n; * we wrap the inlines from asm/ia64/sn/sn2/io.h here.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sn2/io.h&gt;
-macro_line|#ifdef CONFIG_IA64_GENERIC
 r_int
 r_int
 DECL|function|sn_inb
@@ -189,6 +186,7 @@ id|__sn_readq
 (paren
 id|addr
 )paren
+suffix:semicolon
 )brace
 multiline_comment|/* define aliases: */
 id|asm
@@ -256,5 +254,4 @@ id|asm
 l_string|&quot;__sn_readq = sn_readq&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IA64_GENERIC */
 eof

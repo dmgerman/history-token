@@ -38,5 +38,12 @@ mdefine_line|#define node_to_memblk(node) (node)
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 10
+r_void
+id|build_cpu_to_node_map
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_TOPOLOGY_H */
 eof

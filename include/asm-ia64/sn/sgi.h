@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SGI_H
 DECL|macro|_ASM_IA64_SN_SGI_H
 mdefine_line|#define _ASM_IA64_SN_SGI_H
@@ -7,6 +7,13 @@ macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* for copy_??_user */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;asm/sn/hwgfs.h&gt;
+DECL|typedef|vertex_hdl_t
+r_typedef
+id|hwgfs_handle_t
+id|vertex_hdl_t
+suffix:semicolon
 DECL|typedef|__psint_t
 r_typedef
 r_int64
@@ -25,10 +32,6 @@ id|B_TRUE
 )brace
 id|boolean_t
 suffix:semicolon
-DECL|macro|ctob
-mdefine_line|#define ctob(x)&t;&t;&t;((uint64_t)(x)*NBPC)
-DECL|macro|btoc
-mdefine_line|#define btoc(x)&t;&t;&t;(((uint64_t)(x)+(NBPC-1))/NBPC)
 multiline_comment|/*&n;** Possible return values from graph routines.&n;*/
 DECL|enum|graph_error_e
 r_typedef
@@ -83,32 +86,14 @@ r_typedef
 r_uint64
 id|vhandl_t
 suffix:semicolon
-macro_line|#ifndef NBPP
 DECL|macro|NBPP
-mdefine_line|#define NBPP 4096
-macro_line|#endif
-macro_line|#ifndef D_MP
-DECL|macro|D_MP
-mdefine_line|#define D_MP 1
-macro_line|#endif
+mdefine_line|#define NBPP PAGE_SIZE
+DECL|macro|_PAGESZ
+mdefine_line|#define _PAGESZ PAGE_SIZE
 macro_line|#ifndef MAXDEVNAME
 DECL|macro|MAXDEVNAME
 mdefine_line|#define MAXDEVNAME 256
 macro_line|#endif
-macro_line|#ifndef NBPC
-DECL|macro|NBPC
-mdefine_line|#define NBPC 0
-macro_line|#endif
-macro_line|#ifndef _PAGESZ
-DECL|macro|_PAGESZ
-mdefine_line|#define _PAGESZ 4096
-macro_line|#endif
-DECL|typedef|mrlock_t
-r_typedef
-r_uint64
-id|mrlock_t
-suffix:semicolon
-multiline_comment|/* needed by devsupport.c */
 DECL|macro|HUB_PIO_CONVEYOR
 mdefine_line|#define HUB_PIO_CONVEYOR 0x1
 DECL|macro|CNODEID_NONE
@@ -121,12 +106,6 @@ DECL|macro|COPYIN
 mdefine_line|#define COPYIN(a, b, c)&t;&t;copy_from_user(b,a,c)
 DECL|macro|COPYOUT
 mdefine_line|#define COPYOUT(a, b, c)&t;copy_to_user(b,a,c)
-DECL|macro|kvtophys
-mdefine_line|#define kvtophys(x)&t;&t;(alenaddr_t) (x)
-DECL|macro|POFFMASK
-mdefine_line|#define POFFMASK&t;&t;(NBPP - 1)
-DECL|macro|poff
-mdefine_line|#define poff(X)&t;&t;&t;((__psunsigned_t)(X) &amp; POFFMASK)
 DECL|macro|BZERO
 mdefine_line|#define BZERO(a,b)&t;&t;memset(a, 0, b)
 DECL|macro|kern_malloc
@@ -205,13 +184,6 @@ mdefine_line|#define ASSERT_ALWAYS(expr)&t;do {&bslash;&n;        if(!(expr)) { 
 macro_line|#endif&t;/* DISABLE_ASSERT */
 DECL|macro|PRINT_PANIC
 mdefine_line|#define PRINT_PANIC&t;&t;panic
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|cpu_enabled
-mdefine_line|#define cpu_enabled(cpu)        (test_bit(cpu, &amp;cpu_online_map))
-macro_line|#else
-DECL|macro|cpu_enabled
-mdefine_line|#define cpu_enabled(cpu)&t;(1)
-macro_line|#endif
 multiline_comment|/* print_register() defs */
 multiline_comment|/*&n; * register values&n; * map between numeric values and symbolic values&n; */
 DECL|struct|reg_values
@@ -283,6 +255,76 @@ id|reg_desc
 op_star
 )paren
 suffix:semicolon
-macro_line|#include &lt;asm/sn/hack.h&gt;&t;/* for now */
+multiline_comment|/******************************************&n; * Definitions that do not exist in linux *&n; ******************************************/
+DECL|macro|DELAY
+mdefine_line|#define DELAY(a)
+multiline_comment|/************************************************&n; * Routines redefined to use linux equivalents. *&n; ************************************************/
+multiline_comment|/* #define FIXME(s) printk(&quot;FIXME: [ %s ] in %s at %s:%d&bslash;n&quot;, s, __FUNCTION__, __FILE__, __LINE__) */
+DECL|macro|FIXME
+mdefine_line|#define FIXME(s)
+multiline_comment|/* move to stubs.c yet */
+DECL|macro|dev_to_vhdl
+mdefine_line|#define dev_to_vhdl(dev) 0
+DECL|macro|get_timestamp
+mdefine_line|#define get_timestamp() 0
+DECL|macro|us_delay
+mdefine_line|#define us_delay(a)
+DECL|macro|v_mapphys
+mdefine_line|#define v_mapphys(a,b,c) 0    
+singleline_comment|// printk(&quot;Fixme: v_mapphys - soft-&gt;base 0x%p&bslash;n&quot;, b);
+DECL|macro|splhi
+mdefine_line|#define splhi()  0
+DECL|macro|splx
+mdefine_line|#define splx(s)
+r_extern
+r_void
+op_star
+id|snia_kmem_alloc_node
+c_func
+(paren
+r_register
+r_int
+comma
+r_register
+r_int
+comma
+id|cnodeid_t
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|snia_kmem_zalloc
+c_func
+(paren
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|snia_kmem_zalloc_node
+c_func
+(paren
+r_register
+r_int
+comma
+r_register
+r_int
+comma
+id|cnodeid_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|is_specified
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_SGI_H */
 eof

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * IA-32 exception handlers&n; *&n; * Copyright (C) 2000 Asit K. Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 06/16/00&t;A. Mallick&t;added siginfo for most cases (close to IA32)&n; * 09/29/00&t;D. Mosberger&t;added ia32_intercept()&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 macro_line|#include &lt;asm/ptrace.h&gt;
 r_int
 DECL|function|ia32_intercept

@@ -1997,7 +1997,7 @@ id|hub-&gt;buffer_dma
 suffix:semicolon
 id|hub-&gt;urb-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 id|ret
 op_assign

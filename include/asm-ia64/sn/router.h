@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_ROUTER_H
 DECL|macro|_ASM_IA64_SN_ROUTER_H
 mdefine_line|#define _ASM_IA64_SN_ROUTER_H
@@ -761,7 +761,7 @@ id|GLBL_PARMS_REGS
 suffix:semicolon
 multiline_comment|/* Global parms0&amp;1 register contents*/
 DECL|member|ri_vertex
-id|devfs_handle_t
+id|vertex_hdl_t
 id|ri_vertex
 suffix:semicolon
 multiline_comment|/* hardware graph vertex            */
@@ -782,7 +782,7 @@ id|ri_hist_type
 suffix:semicolon
 multiline_comment|/* histogram type&t;&t;    */
 DECL|member|ri_guardian
-id|devfs_handle_t
+id|vertex_hdl_t
 id|ri_guardian
 suffix:semicolon
 multiline_comment|/* guardian node for the router&t;    */
@@ -869,7 +869,7 @@ r_struct
 id|nodepda_router_info_s
 (brace
 DECL|member|router_vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|router_vhdl
 suffix:semicolon
 multiline_comment|/* vertex handle of the router &t;    */
@@ -977,12 +977,12 @@ r_struct
 (brace
 multiline_comment|/* vertex handle for the router */
 DECL|member|vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 suffix:semicolon
 multiline_comment|/* guardian for this router */
 DECL|member|guard
-id|devfs_handle_t
+id|vertex_hdl_t
 id|guard
 suffix:semicolon
 multiline_comment|/* vector router from the guardian to the router */
@@ -1091,28 +1091,13 @@ r_int
 id|router_get_info
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|routerv
 comma
 id|router_info_t
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_int
-id|router_init
-c_func
-(paren
-id|cnodeid_t
-id|cnode
-comma
-r_int
-id|writeid
-comma
-id|nodepda_router_info_t
-op_star
-id|npda_rip
 )paren
 suffix:semicolon
 r_int
@@ -1188,7 +1173,7 @@ r_void
 id|router_guardians_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 )paren
 suffix:semicolon

@@ -1313,12 +1313,12 @@ r_char
 op_star
 id|policy
 suffix:semicolon
-multiline_comment|/*&n;&t; * ARMv5 can use ECC memory.&n;&t; */
+multiline_comment|/*&n;&t; * ARMv5 and higher can use ECC memory.&n;&t; */
 r_if
 c_cond
 (paren
 id|cpu_arch
-op_eq
+op_ge
 id|CPU_ARCH_ARMv5
 )paren
 (brace

@@ -2,6 +2,7 @@ macro_line|#ifndef _ASM_IA64_RESOURCE_H
 DECL|macro|_ASM_IA64_RESOURCE_H
 mdefine_line|#define _ASM_IA64_RESOURCE_H
 multiline_comment|/*&n; * Resource limits&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+macro_line|#include &lt;asm/ustack.h&gt;
 DECL|macro|RLIMIT_CPU
 mdefine_line|#define RLIMIT_CPU&t;0&t;&t;/* CPU time in ms */
 DECL|macro|RLIMIT_FSIZE
@@ -31,7 +32,7 @@ DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY  (~0UL)
 macro_line|# ifdef __KERNEL__
 DECL|macro|INIT_RLIMITS
-mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{      _STK_LIM, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{             0, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{             0,             0 },&t;&t;&bslash;&n;&t;{      INR_OPEN,     INR_OPEN  },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{      _STK_LIM, DEFAULT_USER_STACK_SIZE },&t;&bslash;&n;&t;{             0, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{             0,             0 },&t;&t;&bslash;&n;&t;{      INR_OPEN,     INR_OPEN  },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;}
 macro_line|# endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_RESOURCE_H */
 eof

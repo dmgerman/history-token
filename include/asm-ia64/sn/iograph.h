@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_IOGRAPH_H
 DECL|macro|_ASM_IA64_SN_IOGRAPH_H
 mdefine_line|#define _ASM_IA64_SN_IOGRAPH_H
@@ -121,7 +121,7 @@ mdefine_line|#define EDGE_LBL_LUN                    &quot;lun&quot;
 DECL|macro|EDGE_LBL_LINUX
 mdefine_line|#define EDGE_LBL_LINUX                  &quot;linux&quot;
 DECL|macro|EDGE_LBL_LINUX_BUS
-mdefine_line|#define EDGE_LBL_LINUX_BUS              EDGE_LBL_LINUX &quot;/busnum&quot;
+mdefine_line|#define EDGE_LBL_LINUX_BUS              EDGE_LBL_LINUX &quot;/bus/pci-x&quot;
 DECL|macro|EDGE_LBL_MACE
 mdefine_line|#define EDGE_LBL_MACE                   &quot;mace&quot; &t;&t;/* O2 mace */
 DECL|macro|EDGE_LBL_MACHDEP
@@ -220,10 +220,18 @@ DECL|macro|EDGE_LBL_IOBRICK
 mdefine_line|#define EDGE_LBL_IOBRICK&t;&t;&quot;iobrick&quot;
 DECL|macro|EDGE_LBL_PBRICK
 mdefine_line|#define EDGE_LBL_PBRICK&t;&t;&t;&quot;Pbrick&quot;
+DECL|macro|EDGE_LBL_PEBRICK
+mdefine_line|#define EDGE_LBL_PEBRICK&t;&t;&quot;PEbrick&quot;
+DECL|macro|EDGE_LBL_PXBRICK
+mdefine_line|#define EDGE_LBL_PXBRICK&t;&t;&quot;PXbrick&quot;
+DECL|macro|EDGE_LBL_IXBRICK
+mdefine_line|#define EDGE_LBL_IXBRICK&t;&t;&quot;IXbrick&quot;
 DECL|macro|EDGE_LBL_IBRICK
 mdefine_line|#define EDGE_LBL_IBRICK&t;&t;&t;&quot;Ibrick&quot;
 DECL|macro|EDGE_LBL_XBRICK
 mdefine_line|#define EDGE_LBL_XBRICK&t;&t;&t;&quot;Xbrick&quot;
+DECL|macro|EDGE_LBL_CGBRICK
+mdefine_line|#define EDGE_LBL_CGBRICK&t;&t;&quot;CGbrick&quot;
 DECL|macro|EDGE_LBL_CPUBUS
 mdefine_line|#define EDGE_LBL_CPUBUS&t;&t;&t;&quot;cpubus&quot;&t;/* CPU Interfaces (SysAd) */
 multiline_comment|/* vertex info labels in hwgraph */
@@ -361,7 +369,7 @@ r_int
 id|io_path_map_widget
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Map a brick&squot;s widget number to a meaningful int&n; */

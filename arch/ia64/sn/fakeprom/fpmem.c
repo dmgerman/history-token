@@ -1,5 +1,5 @@
 multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
-multiline_comment|/*&n; * FPROM EFI memory descriptor build routines&n; *&n; * &t;- Routines to build the EFI memory descriptor map&n; * &t;- Should also be usable by the SGI SN1 prom to convert&n; * &t;  klconfig to efi_memmap&n; */
+multiline_comment|/*&n; * FPROM EFI memory descriptor build routines&n; *&n; * &t;- Routines to build the EFI memory descriptor map&n; * &t;- Should also be usable by the SGI prom to convert&n; * &t;  klconfig to efi_memmap&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &quot;fpmem.h&quot;
@@ -27,12 +27,7 @@ DECL|macro|KERNEL_SIZE
 mdefine_line|#define KERNEL_SIZE&t;&t;(4*MB)
 DECL|macro|PROMRESERVED_SIZE
 mdefine_line|#define PROMRESERVED_SIZE&t;(1*MB)
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|macro|PHYS_ADDRESS
-mdefine_line|#define PHYS_ADDRESS(_n, _x)&t;&t;(((long)_n&lt;&lt;33) | (long)_x)
-DECL|macro|MD_BANK_SHFT
-mdefine_line|#define MD_BANK_SHFT 30
-macro_line|#else
+macro_line|#ifdef SGI_SN2
 DECL|macro|PHYS_ADDRESS
 mdefine_line|#define PHYS_ADDRESS(_n, _x)&t;&t;(((long)_n&lt;&lt;38) | (long)_x | 0x3000000000UL)
 DECL|macro|MD_BANK_SHFT
@@ -63,7 +58,7 @@ r_return
 id|sn_config-&gt;cpus
 suffix:semicolon
 )brace
-multiline_comment|/* For SN1, get the index th nasid */
+multiline_comment|/* For SN, get the index th nasid */
 r_int
 DECL|function|GetNasid
 id|GetNasid
@@ -128,144 +123,7 @@ id|cpu
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Made this into an explicit case statement so that&n; * we can assign specific properties to banks like bank0&n; * actually disabled etc.&n; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-r_int
-DECL|function|IsBankPresent
-id|IsBankPresent
-c_func
-(paren
-r_int
-id|index
-comma
-id|node_memmap_t
-id|nmemmap
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|index
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-r_return
-id|nmemmap.b0
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-r_return
-id|nmemmap.b1
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-r_return
-id|nmemmap.b2
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-r_return
-id|nmemmap.b3
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-r_return
-id|nmemmap.b4
-suffix:semicolon
-r_case
-l_int|5
-suffix:colon
-r_return
-id|nmemmap.b5
-suffix:semicolon
-r_case
-l_int|6
-suffix:colon
-r_return
-id|nmemmap.b6
-suffix:semicolon
-r_case
-l_int|7
-suffix:colon
-r_return
-id|nmemmap.b7
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_int
-DECL|function|GetBankSize
-id|GetBankSize
-c_func
-(paren
-r_int
-id|index
-comma
-id|node_memmap_t
-id|nmemmap
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|index
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-r_case
-l_int|1
-suffix:colon
-r_return
-id|nmemmap.b01size
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-r_case
-l_int|3
-suffix:colon
-r_return
-id|nmemmap.b23size
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-r_case
-l_int|5
-suffix:colon
-r_return
-id|nmemmap.b45size
-suffix:semicolon
-r_case
-l_int|6
-suffix:colon
-r_case
-l_int|7
-suffix:colon
-r_return
-id|nmemmap.b67size
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-)brace
-macro_line|#else
+macro_line|#ifdef SGI_SN2
 r_int
 DECL|function|IsBankPresent
 id|IsBankPresent
@@ -552,7 +410,7 @@ l_int|0
 suffix:semicolon
 id|bank
 OL
-id|NR_BANKS_PER_NODE
+id|MD_BANKS_PER_NODE
 suffix:semicolon
 id|bank
 op_increment
@@ -603,7 +461,7 @@ c_func
 id|bsize
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
+macro_line|#ifdef SGI_SN2
 multiline_comment|/* &n;&t;&t;&t;&t; * Ignore directory.&n;&t;&t;&t;&t; * Shorten memory chunk by 1 page - makes a better&n;&t;&t;&t;&t; * testcase &amp; is more like the real PROM.&n;&t;&t;&t;&t; */
 id|numbytes
 op_assign
@@ -640,7 +498,7 @@ op_sub_assign
 l_int|1000
 suffix:semicolon
 )brace
-multiline_comment|/*&n;                                 * Check for the node 0 hole. Since banks can&squot;t&n;                                 * span the hole, we only need to check if the end of&n;                                 * the range is the end of the hole.&n;                                 */
+multiline_comment|/*&n;                                 * Check for the node 0 hole. Since banks cant&n;                                 * span the hole, we only need to check if the end of&n;                                 * the range is the end of the hole.&n;                                 */
 r_if
 c_cond
 (paren
@@ -654,7 +512,7 @@ id|numbytes
 op_sub_assign
 id|NODE0_HOLE_SIZE
 suffix:semicolon
-multiline_comment|/*&n;                                 * UGLY hack - we must skip overr the kernel and&n;                                 * PROM runtime services but we don&squot;t exactly where it is.&n;                                 * So lets just reserve:&n;&t;&t;&t;&t; *&t;node 0&n;&t;&t;&t;&t; *&t;&t;0-1MB for PAL&n;&t;&t;&t;&t; *&t;&t;1-4MB for SAL&n;&t;&t;&t;&t; *&t;node 1-N&n;&t;&t;&t;&t; *&t;&t;0-1 for SAL&n;                                 */
+multiline_comment|/*&n;                                 * UGLY hack - we must skip overr the kernel and&n;                                 * PROM runtime services but we dont exactly where it is.&n;                                 * So lets just reserve:&n;&t;&t;&t;&t; *&t;node 0&n;&t;&t;&t;&t; *&t;&t;0-1MB for PAL&n;&t;&t;&t;&t; *&t;&t;1-4MB for SAL&n;&t;&t;&t;&t; *&t;node 1-N&n;&t;&t;&t;&t; *&t;&t;0-1 for SAL&n;                                 */
 r_if
 c_cond
 (paren

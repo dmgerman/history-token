@@ -464,6 +464,9 @@ DECL|macro|__NR_sys_clock_getres
 mdefine_line|#define __NR_sys_clock_getres&t;&t;1255
 DECL|macro|__NR_sys_clock_nanosleep
 mdefine_line|#define __NR_sys_clock_nanosleep&t;1256
+macro_line|#ifdef __KERNEL__
+DECL|macro|NR_syscalls
+mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int
@@ -750,9 +753,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
-multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
+multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))), but it doesn&squot;t work on&n; * all toolchains, so we just do it by hand.  Note, this macro can only be used in the&n; * file which defines sys_ni_syscall, i.e., in kernel/sys.c.&n; */
 DECL|macro|cond_syscall
 mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t&quot; #x &quot;,sys_ni_syscall&quot;);
 macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_UNISTD_H */
 eof

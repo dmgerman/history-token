@@ -125,7 +125,7 @@ op_assign
 id|INIT_THREAD_INFO
 c_func
 (paren
-id|init_thread_union.s.thread_info
+id|init_thread_union.s.task
 )paren
 )brace
 )brace

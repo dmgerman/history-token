@@ -9093,7 +9093,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|u.r.wIndex
+id|u.r.wValue
 op_ne
 l_int|0
 multiline_comment|/* HALT feature */
@@ -9172,7 +9172,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|u.r.wIndex
+id|u.r.wValue
 op_ne
 l_int|0
 multiline_comment|/* HALT feature */

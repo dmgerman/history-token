@@ -7,13 +7,13 @@ macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
-DECL|macro|KERNEL_START
-mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 68*1024*1024)
-multiline_comment|/* 0xa000000000000000 - 0xa000000000000000+PERCPU_MAX_SIZE remain unmapped */
+multiline_comment|/* 0xa000000000000000 - 0xa000000000000000+PERCPU_PAGE_SIZE remain unmapped */
 DECL|macro|PERCPU_ADDR
 mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + PERCPU_PAGE_SIZE)
 DECL|macro|GATE_ADDR
 mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + 2*PERCPU_PAGE_SIZE)
+DECL|macro|KERNEL_START
+mdefine_line|#define KERNEL_START&t;&t; 0xa000000100000000
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -293,11 +293,11 @@ macro_line|#endif
 DECL|macro|IA64_HAS_EXTRA_STATE
 mdefine_line|#define IA64_HAS_EXTRA_STATE(t)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((t)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID)&t;&bslash;&n;&t; || IS_IA32_PROCESS(ia64_task_regs(t)) || PERFMON_IS_SYSWIDE())
 DECL|macro|__switch_to
-mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;struct task_struct *__fpu_owner = ia64_get_fpu_owner();&t;&t;&t;&t;&t; &bslash;&n;&t;if (IA64_HAS_EXTRA_STATE(prev))&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;if (IA64_HAS_EXTRA_STATE(next))&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;ia64_psr(ia64_task_regs(next))-&gt;dfh =&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;!(__fpu_owner == (next) &amp;&amp; ((next)-&gt;thread.last_fph_cpu == smp_processor_id())); &bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while (0)
+mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;if (IA64_HAS_EXTRA_STATE(prev))&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;if (IA64_HAS_EXTRA_STATE(next))&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;ia64_psr(ia64_task_regs(next))-&gt;dfh = !ia64_is_local_fpu_owner(next);&t;&t;&t; &bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * In the SMP case, we save the fph state when context-switching away from a thread that&n; * modified fph.  This way, when the thread gets scheduled on another CPU, the CPU can&n; * pick up the state from task-&gt;thread.fph, avoiding the complication of having to fetch&n; * the latest fph state from another CPU.  In other words: eager save, lazy restore.&n; */
 DECL|macro|switch_to
-macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.last_fph_cpu = smp_processor_id();&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev, next, last);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev, next, last);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|switch_to
 macro_line|# define switch_to(prev,next,last)&t;__switch_to(prev, next, last)
@@ -309,6 +309,8 @@ DECL|macro|finish_arch_switch
 mdefine_line|#define finish_arch_switch(rq, prev)&t;spin_unlock_irq(&amp;(prev)-&gt;switch_lock)
 DECL|macro|task_running
 mdefine_line|#define task_running(rq, p) &t;&t;((rq)-&gt;curr == (p) || spin_is_locked(&amp;(p)-&gt;switch_lock))
+DECL|macro|ia64_platform_is
+mdefine_line|#define ia64_platform_is(x) (strcmp(x, platform_name) == 0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SYSTEM_H */

@@ -43,9 +43,9 @@ mdefine_line|#define LLC_PDU_CMD&t;&t;0
 DECL|macro|LLC_PDU_RSP
 mdefine_line|#define LLC_PDU_RSP&t;&t;1
 DECL|macro|LLC_PDU_IS_CMD
-mdefine_line|#define LLC_PDU_IS_CMD(pdu)    ((pdu-&gt;ssap &amp; LLC_PDU_RSP) ? 1 : 0)
+mdefine_line|#define LLC_PDU_IS_CMD(pdu)    ((pdu-&gt;ssap &amp; LLC_PDU_RSP) ? 0 : 1)
 DECL|macro|LLC_PDU_IS_RSP
-mdefine_line|#define LLC_PDU_IS_RSP(pdu)    ((pdu-&gt;ssap &amp; LLC_PDU_RSP) ? 0 : 1)
+mdefine_line|#define LLC_PDU_IS_RSP(pdu)    ((pdu-&gt;ssap &amp; LLC_PDU_RSP) ? 1 : 0)
 multiline_comment|/* Get PDU type from 2 lowest-order bits of control field first byte */
 DECL|macro|LLC_PDU_TYPE_I_MASK
 mdefine_line|#define LLC_PDU_TYPE_I_MASK    0x01&t;/* 16-bit control field */
@@ -62,18 +62,18 @@ mdefine_line|#define LLC_PDU_TYPE_S&t;1&t;/* first two bits */
 DECL|macro|LLC_PDU_TYPE_U
 mdefine_line|#define LLC_PDU_TYPE_U&t;3&t;/* first two bits */
 DECL|macro|LLC_PDU_TYPE_IS_I
-mdefine_line|#define LLC_PDU_TYPE_IS_I(pdu) &bslash;&n;&t;((!(pdu-&gt;ctrl_1 &amp; LLC_PDU_TYPE_I_MASK)) ? 0 : 1)
+mdefine_line|#define LLC_PDU_TYPE_IS_I(pdu) &bslash;&n;&t;((!(pdu-&gt;ctrl_1 &amp; LLC_PDU_TYPE_I_MASK)) ? 1 : 0)
 DECL|macro|LLC_PDU_TYPE_IS_U
-mdefine_line|#define LLC_PDU_TYPE_IS_U(pdu) &bslash;&n;&t;(((pdu-&gt;ctrl_1 &amp; LLC_PDU_TYPE_U_MASK) == LLC_PDU_TYPE_U) ? 0 : 1)
+mdefine_line|#define LLC_PDU_TYPE_IS_U(pdu) &bslash;&n;&t;(((pdu-&gt;ctrl_1 &amp; LLC_PDU_TYPE_U_MASK) == LLC_PDU_TYPE_U) ? 1 : 0)
 DECL|macro|LLC_PDU_TYPE_IS_S
-mdefine_line|#define LLC_PDU_TYPE_IS_S(pdu) &bslash;&n;&t;(((pdu-&gt;ctrl_1 &amp; LLC_PDU_TYPE_S_MASK) == LLC_PDU_TYPE_S) ? 0 : 1)
+mdefine_line|#define LLC_PDU_TYPE_IS_S(pdu) &bslash;&n;&t;(((pdu-&gt;ctrl_1 &amp; LLC_PDU_TYPE_S_MASK) == LLC_PDU_TYPE_S) ? 1 : 0)
 multiline_comment|/* U-format PDU control field masks */
 DECL|macro|LLC_U_PF_BIT_MASK
 mdefine_line|#define LLC_U_PF_BIT_MASK      0x10&t;/* P/F bit mask */
 DECL|macro|LLC_U_PF_IS_1
-mdefine_line|#define LLC_U_PF_IS_1(pdu)     ((pdu-&gt;ctrl_1 &amp; LLC_U_PF_BIT_MASK) ? 0 : 1)
+mdefine_line|#define LLC_U_PF_IS_1(pdu)     ((pdu-&gt;ctrl_1 &amp; LLC_U_PF_BIT_MASK) ? 1 : 0)
 DECL|macro|LLC_U_PF_IS_0
-mdefine_line|#define LLC_U_PF_IS_0(pdu)     ((!(pdu-&gt;ctrl_1 &amp; LLC_U_PF_BIT_MASK)) ? 0 : 1)
+mdefine_line|#define LLC_U_PF_IS_0(pdu)     ((!(pdu-&gt;ctrl_1 &amp; LLC_U_PF_BIT_MASK)) ? 1 : 0)
 DECL|macro|LLC_U_PDU_CMD_MASK
 mdefine_line|#define LLC_U_PDU_CMD_MASK     0xEC&t;/* cmd/rsp mask */
 DECL|macro|LLC_U_PDU_CMD
@@ -144,9 +144,9 @@ mdefine_line|#define LLC_I_GET_NR(pdu)     (u8)((pdu-&gt;ctrl_2 &amp; 0xFE) &gt;
 DECL|macro|LLC_I_PF_BIT_MASK
 mdefine_line|#define LLC_I_PF_BIT_MASK      0x01
 DECL|macro|LLC_I_PF_IS_0
-mdefine_line|#define LLC_I_PF_IS_0(pdu)     ((!(pdu-&gt;ctrl_2 &amp; LLC_I_PF_BIT_MASK)) ? 0 : 1)
+mdefine_line|#define LLC_I_PF_IS_0(pdu)     ((!(pdu-&gt;ctrl_2 &amp; LLC_I_PF_BIT_MASK)) ? 1 : 0)
 DECL|macro|LLC_I_PF_IS_1
-mdefine_line|#define LLC_I_PF_IS_1(pdu)     ((pdu-&gt;ctrl_2 &amp; LLC_I_PF_BIT_MASK) ? 0 : 1)
+mdefine_line|#define LLC_I_PF_IS_1(pdu)     ((pdu-&gt;ctrl_2 &amp; LLC_I_PF_BIT_MASK) ? 1 : 0)
 multiline_comment|/* S-PDU supervisory commands and responses */
 DECL|macro|LLC_S_PDU_CMD_MASK
 mdefine_line|#define LLC_S_PDU_CMD_MASK     0x0C
@@ -169,9 +169,9 @@ mdefine_line|#define LLC_2_PDU_RSP_RNR      0x04&t;/* rx not ready rsp */
 DECL|macro|LLC_S_PF_BIT_MASK
 mdefine_line|#define LLC_S_PF_BIT_MASK      0x01
 DECL|macro|LLC_S_PF_IS_0
-mdefine_line|#define LLC_S_PF_IS_0(pdu)     ((!(pdu-&gt;ctrl_2 &amp; LLC_S_PF_BIT_MASK)) ? 0 : 1)
+mdefine_line|#define LLC_S_PF_IS_0(pdu)     ((!(pdu-&gt;ctrl_2 &amp; LLC_S_PF_BIT_MASK)) ? 1 : 0)
 DECL|macro|LLC_S_PF_IS_1
-mdefine_line|#define LLC_S_PF_IS_1(pdu)     ((pdu-&gt;ctrl_2 &amp; LLC_S_PF_BIT_MASK) ? 0 : 1)
+mdefine_line|#define LLC_S_PF_IS_1(pdu)     ((pdu-&gt;ctrl_2 &amp; LLC_S_PF_BIT_MASK) ? 1 : 0)
 DECL|macro|PDU_SUPV_GET_Nr
 mdefine_line|#define PDU_SUPV_GET_Nr(pdu)   ((pdu-&gt;ctrl_2 &amp; 0xFE) &gt;&gt; 1)
 DECL|macro|PDU_GET_NEXT_Vr
