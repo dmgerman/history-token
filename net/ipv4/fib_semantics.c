@@ -25,6 +25,7 @@ macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/ip_fib.h&gt;
+macro_line|#include &lt;net/ip_mp_alg.h&gt;
 macro_line|#include &quot;fib_lookup.h&quot;
 DECL|macro|FSprintk
 mdefine_line|#define FSprintk(a...)
@@ -2693,6 +2694,13 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
+id|u32
+id|mp_alg
+op_assign
+id|IP_MP_ALG_NONE
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Fast check to catch the most weird cases */
 r_if
 c_cond
@@ -2730,6 +2738,30 @@ c_cond
 id|nhs
 op_eq
 l_int|0
+)paren
+r_goto
+id|err_inval
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
+r_if
+c_cond
+(paren
+id|rta-&gt;rta_mp_alg
+)paren
+(brace
+id|mp_alg
+op_assign
+op_star
+id|rta-&gt;rta_mp_alg
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mp_alg
+template_param
+id|IP_MP_ALG_MAX
 )paren
 r_goto
 id|err_inval
@@ -3231,6 +3263,12 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
+id|fi-&gt;fib_mp_alg
+op_assign
+id|mp_alg
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3849,7 +3887,7 @@ id|res-&gt;fi
 op_assign
 id|fa-&gt;fa_info
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_WRANDOM
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
 id|res-&gt;netmask
 op_assign
 id|mask

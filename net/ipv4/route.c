@@ -38,6 +38,7 @@ macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#include &lt;net/ip_mp_alg.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
@@ -200,8 +201,7 @@ r_int
 id|rt_deadline
 suffix:semicolon
 DECL|macro|RTprint
-mdefine_line|#define RTprint(a...)&t;
-singleline_comment|// printk(KERN_DEBUG a)
+mdefine_line|#define RTprint(a...)&t;printk(KERN_DEBUG a)
 DECL|variable|rt_flush_timer
 r_static
 r_struct
@@ -2080,12 +2080,10 @@ id|rth
 op_eq
 id|expentry
 )paren
-(brace
 id|passedexpired
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2183,13 +2181,11 @@ op_logical_and
 op_logical_neg
 id|nextstep
 )paren
-(brace
 id|nextstep
 op_assign
 op_amp
 id|rth-&gt;u.rt_next
 suffix:semicolon
-)brace
 id|rthp
 op_assign
 op_amp
@@ -2218,7 +2214,7 @@ r_return
 id|nextstep
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_IP_ROUTE_MULTIPATH_CACHED */
 multiline_comment|/* This runs via a timer and thus is always in BH context. */
 DECL|function|rt_check_expire
 r_static
@@ -2421,10 +2417,8 @@ c_cond
 op_logical_neg
 id|rthp
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -3156,7 +3150,7 @@ r_continue
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
-multiline_comment|/* remove all related balanced entries if necessary */
+multiline_comment|/* remove all related balanced entries&n;&t;&t;&t;&t; * if necessary&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3197,10 +3191,8 @@ c_cond
 op_logical_neg
 id|rthp
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -7835,7 +7827,7 @@ id|u32
 id|tos
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED 
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
 r_struct
 id|rtable
 op_star
@@ -7856,6 +7848,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_int
+r_int
 id|hash
 suffix:semicolon
 r_if
@@ -7863,19 +7856,15 @@ c_cond
 (paren
 id|res-&gt;fi
 )paren
-(brace
 id|hopcount
 op_assign
 id|res-&gt;fi-&gt;fib_nhs
 suffix:semicolon
-)brace
 r_else
-(brace
 id|hopcount
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|lasthop
 op_assign
 id|hopcount
@@ -7909,17 +7898,6 @@ comma
 id|tos
 )paren
 suffix:semicolon
-id|RTprint
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: entered (hopcount: %d)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|hopcount
-)paren
-suffix:semicolon
 multiline_comment|/* add all alternatives to the routing cache */
 r_for
 c_loop
@@ -7932,24 +7910,13 @@ id|hop
 OL
 id|hopcount
 suffix:semicolon
-op_increment
 id|hop
+op_increment
 )paren
 (brace
 id|res-&gt;nh_sel
 op_assign
 id|hop
-suffix:semicolon
-id|RTprint
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: entered (hopcount: %d)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|hopcount
-)paren
 suffix:semicolon
 multiline_comment|/* create a routing cache entry */
 id|err
@@ -8031,6 +7998,8 @@ multiline_comment|/* forward hop information to multipath impl. */
 id|multipath_set_nhinfo
 c_func
 (paren
+id|rth
+comma
 id|FIB_RES_NETWORK
 c_func
 (paren
@@ -8056,18 +8025,7 @@ id|res
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* only for the last hop the reference count is handled &n;&t;&t;   outside */
-id|RTprint
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: balanced entry created: %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|rth
-)paren
-suffix:semicolon
+multiline_comment|/* only for the last hop the reference count is handled&n;&t;&t; * outside&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8090,7 +8048,7 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-macro_line|#else /* CONFIG_IP_ROUTE_MULTIPATH_CACHED  */ 
+macro_line|#else /* CONFIG_IP_ROUTE_MULTIPATH_CACHED  */
 r_return
 id|ip_mkroute_input_def
 c_func
@@ -8110,7 +8068,7 @@ comma
 id|tos
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IP_ROUTE_MULTIPATH_CACHED  */ 
+macro_line|#endif /* CONFIG_IP_ROUTE_MULTIPATH_CACHED  */
 )brace
 multiline_comment|/*&n; *&t;NOTE. We drop all the packets that has local source&n; *&t;addresses, because every properly looped back packet&n; *&t;must have correct destination already attached by output routine.&n; *&n; *&t;Such approach solves two big problems:&n; *&t;1. Not simplex devices are handled properly.&n; *&t;2. IP spoofing attempts are filtered with 100% of guarantee.&n; */
 DECL|function|ip_route_input_slow
@@ -9513,7 +9471,15 @@ r_if
 c_cond
 (paren
 id|res-&gt;fi
-op_logical_and
+)paren
+(brace
+id|rth-&gt;rt_multipath_alg
+op_assign
+id|res-&gt;fi-&gt;fib_mp_alg
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|res-&gt;fi-&gt;fib_nhs
 OG
 l_int|1
@@ -9522,6 +9488,7 @@ id|rth-&gt;u.dst.flags
 op_or_assign
 id|DST_BALANCED
 suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond
@@ -9956,19 +9923,6 @@ id|hopcount
 op_assign
 id|res-&gt;fi-&gt;fib_nhs
 suffix:semicolon
-id|RTprint
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: entered (hopcount: %d, fl-&gt;oif: %d)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|hopcount
-comma
-id|fl-&gt;oif
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9980,27 +9934,14 @@ id|hop
 OL
 id|hopcount
 suffix:semicolon
-op_increment
 id|hop
+op_increment
 )paren
 (brace
 r_struct
 id|net_device
 op_star
 id|dev2nexthop
-suffix:semicolon
-id|RTprint
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: hop %d of %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|hop
-comma
-id|hopcount
-)paren
 suffix:semicolon
 id|res-&gt;nh_sel
 op_assign
@@ -10041,27 +9982,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/** FIXME remove debug code */
-id|RTprint
-c_func
-(paren
-l_string|&quot;%s: balanced entry created: %d &quot;
-"&bslash;"
-l_string|&quot; (GW: %u)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-op_amp
-id|rth-&gt;u.dst
-comma
-id|FIB_RES_GW
-c_func
-(paren
-op_star
-id|res
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10069,21 +9989,8 @@ id|err
 op_ne
 l_int|0
 )paren
-(brace
 r_goto
 id|cleanup
-suffix:semicolon
-)brace
-id|RTprint
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: created successfully %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|hop
-)paren
 suffix:semicolon
 id|hash
 op_assign
@@ -10115,21 +10022,12 @@ comma
 id|rp
 )paren
 suffix:semicolon
-id|RTprint
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: hashed  %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|hop
-)paren
-suffix:semicolon
 multiline_comment|/* forward hop information to multipath impl. */
 id|multipath_set_nhinfo
 c_func
 (paren
+id|rth
+comma
 id|FIB_RES_NETWORK
 c_func
 (paren
@@ -10171,20 +10069,10 @@ id|err
 op_ne
 l_int|0
 )paren
-(brace
 r_return
 id|err
 suffix:semicolon
 )brace
-)brace
-id|RTprint
-c_func
-(paren
-l_string|&quot;%s: exited loop&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 id|atomic_set
 c_func
 (paren
@@ -11075,11 +10963,11 @@ id|RTO_ONLINK
 )paren
 )paren
 (brace
-multiline_comment|/* check for multipath routes and choose one if&n;&t;&t;&t;   necessary */
+multiline_comment|/* check for multipath routes and choose one if&n;&t;&t;&t; * necessary&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|multipath_selectroute
+id|multipath_select_route
 c_func
 (paren
 id|flp
@@ -11548,6 +11436,35 @@ op_amp
 id|rt-&gt;u.dst.tclassid
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
+r_if
+c_cond
+(paren
+id|rt-&gt;rt_multipath_alg
+op_ne
+id|IP_MP_ALG_NONE
+)paren
+(brace
+id|__u32
+id|alg
+op_assign
+id|rt-&gt;rt_multipath_alg
+suffix:semicolon
+id|RTA_PUT
+c_func
+(paren
+id|skb
+comma
+id|RTA_MP_ALGO
+comma
+l_int|4
+comma
+op_amp
+id|alg
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond

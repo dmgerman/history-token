@@ -33,9 +33,6 @@ macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/ip_mp_alg.h&gt;
-DECL|macro|RTprint
-mdefine_line|#define RTprint(a...)&t;
-singleline_comment|// printk(KERN_DEBUG a)
 DECL|macro|MULTIPATH_MAX_CANDIDATES
 mdefine_line|#define MULTIPATH_MAX_CANDIDATES 40
 DECL|variable|last_used
@@ -47,9 +44,10 @@ id|last_used
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|function|__multipath_remove
+DECL|function|rr_remove
+r_static
 r_void
-id|__multipath_remove
+id|rr_remove
 c_func
 (paren
 r_struct
@@ -70,9 +68,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|__multipath_selectroute
+DECL|function|rr_select_route
+r_static
 r_void
-id|__multipath_selectroute
+id|rr_select_route
 c_func
 (paren
 r_const
@@ -129,15 +128,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|RTprint
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;%s: holding route &bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|last_used
@@ -220,15 +210,6 @@ op_assign
 id|nh
 suffix:semicolon
 )brace
-id|RTprint
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;%s: found balanced entry&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 )brace
 )brace
 id|result
@@ -260,4 +241,78 @@ op_assign
 id|result
 suffix:semicolon
 )brace
+DECL|variable|rr_ops
+r_static
+r_struct
+id|ip_mp_alg_ops
+id|rr_ops
+op_assign
+(brace
+dot
+id|mp_alg_select_route
+op_assign
+id|rr_select_route
+comma
+dot
+id|mp_alg_remove
+op_assign
+id|rr_remove
+comma
+)brace
+suffix:semicolon
+DECL|function|rr_init
+r_static
+r_int
+id|__init
+id|rr_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|multipath_alg_register
+c_func
+(paren
+op_amp
+id|rr_ops
+comma
+id|IP_MP_ALG_RR
+)paren
+suffix:semicolon
+)brace
+DECL|function|rr_exit
+r_static
+r_void
+id|__exit
+id|rr_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|multipath_alg_unregister
+c_func
+(paren
+op_amp
+id|rr_ops
+comma
+id|IP_MP_ALG_RR
+)paren
+suffix:semicolon
+)brace
+DECL|variable|rr_init
+id|module_init
+c_func
+(paren
+id|rr_init
+)paren
+suffix:semicolon
+DECL|variable|rr_exit
+id|module_exit
+c_func
+(paren
+id|rr_exit
+)paren
+suffix:semicolon
 eof

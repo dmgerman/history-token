@@ -80,6 +80,11 @@ id|rta_session
 op_star
 id|rta_sess
 suffix:semicolon
+DECL|member|rta_mp_alg
+id|u32
+op_star
+id|rta_mp_alg
+suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
@@ -209,6 +214,12 @@ r_int
 id|fib_power
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
+DECL|member|fib_mp_alg
+id|u32
+id|fib_mp_alg
+suffix:semicolon
+macro_line|#endif
 DECL|member|fib_nh
 r_struct
 id|fib_nh
@@ -250,7 +261,7 @@ r_int
 r_char
 id|scope
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_WRANDOM
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
 DECL|member|network
 id|__u32
 id|network
@@ -295,12 +306,12 @@ DECL|macro|FIB_RES_DEV
 mdefine_line|#define FIB_RES_DEV(res)&t;&t;(FIB_RES_NH(res).nh_dev)
 DECL|macro|FIB_RES_OIF
 mdefine_line|#define FIB_RES_OIF(res)&t;&t;(FIB_RES_NH(res).nh_oif)
-macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_WRANDOM
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_CACHED
 DECL|macro|FIB_RES_NETWORK
 mdefine_line|#define FIB_RES_NETWORK(res)&t;&t;((res).network)
 DECL|macro|FIB_RES_NETMASK
 mdefine_line|#define FIB_RES_NETMASK(res)&t;        ((res).netmask)
-macro_line|#else /* CONFIG_IP_ROUTE_MULTIPATH_WRANDOM */
+macro_line|#else /* CONFIG_IP_ROUTE_MULTIPATH_CACHED */
 DECL|macro|FIB_RES_NETWORK
 mdefine_line|#define FIB_RES_NETWORK(res)&t;&t;(0)
 DECL|macro|FIB_RES_NETMASK
