@@ -401,6 +401,10 @@ DECL|member|id
 id|u32
 id|id
 suffix:semicolon
+DECL|member|pblk
+id|u32
+id|pblk
+suffix:semicolon
 DECL|member|performance_platform_limit
 r_int
 id|performance_platform_limit
