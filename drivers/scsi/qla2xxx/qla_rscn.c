@@ -838,7 +838,7 @@ id|iodesc-&gt;ha-&gt;dpc_flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * qla2x00_add_iodesc_timer() - Add and start a timer for an IO descriptor.&n; * @iodesc: io descriptor&n; *&n; * NOTE:&n; * The firmware shall timeout an outstanding mailbox IOCB in 2 * R_A_TOV (in&n; * tenths of a second).  The driver will wait 2.5 * R_A_TOV before scheduling&n; * a recovery (big hammer).&n; */
+multiline_comment|/**&n; * qla2x00_add_iodesc_timer() - Add and start a timer for an IO descriptor.&n; * @iodesc: io descriptor&n; *&n; * NOTE:&n; * The firmware shall timeout an outstanding mailbox IOCB in 2 * R_A_TOV (in&n; * tenths of a second) after it hits the wire.  But, if there are any request&n; * resource contraints (i.e. during heavy I/O), exchanges can be held off for&n; * at most R_A_TOV.  Therefore, the driver will wait 4 * R_A_TOV before&n; * scheduling a recovery (big hammer).&n; */
 r_static
 r_inline
 r_void
@@ -859,17 +859,9 @@ suffix:semicolon
 id|timeout
 op_assign
 (paren
-(paren
 id|iodesc-&gt;ha-&gt;r_a_tov
 op_star
-l_int|2
-)paren
-op_plus
-(paren
-id|iodesc-&gt;ha-&gt;r_a_tov
-op_div
-l_int|2
-)paren
+l_int|4
 )paren
 op_div
 l_int|10
