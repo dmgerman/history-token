@@ -1075,6 +1075,25 @@ comma
 l_string|&quot;krb5&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|svcauth_gss_register_pseudoflavor
+c_func
+(paren
+id|RPC_AUTH_GSS_KRB5I
+comma
+l_string|&quot;krb5i&quot;
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Failed to register %s with server!&bslash;n&quot;
+comma
+l_string|&quot;krb5i&quot;
+)paren
+suffix:semicolon
 id|gss_mech_put
 c_func
 (paren

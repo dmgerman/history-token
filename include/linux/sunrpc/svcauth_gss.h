@@ -28,24 +28,6 @@ op_star
 id|name
 )paren
 suffix:semicolon
-DECL|struct|gss_svc_data
-r_struct
-id|gss_svc_data
-(brace
-multiline_comment|/* decoded gss client cred: */
-DECL|member|clcred
-r_struct
-id|rpc_gss_wire_cred
-id|clcred
-suffix:semicolon
-multiline_comment|/* pointer to the beginning of the procedure-specific results, which&n;&t; * may be encrypted/checksummed in svcauth_gss_release: */
-DECL|member|body_start
-id|u32
-op_star
-id|body_start
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SUNRPC_SVCAUTH_GSS_H */
 eof
