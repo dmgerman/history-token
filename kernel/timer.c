@@ -1670,6 +1670,10 @@ DECL|variable|time_adjust
 r_int
 id|time_adjust
 suffix:semicolon
+DECL|variable|time_next_adjust
+r_int
+id|time_next_adjust
+suffix:semicolon
 multiline_comment|/*&n; * this routine handles the overflow of the microsecond field&n; *&n; * The tricky bits of code to handle the accurate clock support&n; * were provided by Dave Mills (Mills@UDEL.EDU) of NTP fame.&n; * They were originally developed for SUN and DEC kernels.&n; * All the kudos should go to Dave for this stuff.&n; *&n; */
 DECL|function|second_overflow
 r_static
@@ -2309,6 +2313,24 @@ c_func
 id|delta_nsec
 )paren
 suffix:semicolon
+multiline_comment|/* Changes by adjtime() do not take effect till next tick. */
+r_if
+c_cond
+(paren
+id|time_next_adjust
+op_ne
+l_int|0
+)paren
+(brace
+id|time_adjust
+op_assign
+id|time_next_adjust
+suffix:semicolon
+id|time_next_adjust
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Using a loop looks inefficient, but &quot;ticks&quot; is&n; * usually just one (we shouldn&squot;t be losing ticks,&n; * we&squot;re doing this this way mainly for interrupt&n; * latency reasons, not because we think we&squot;ll&n; * have lots of lost timer ticks&n; */
 DECL|function|update_wall_time
