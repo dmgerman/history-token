@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
@@ -1020,6 +1021,34 @@ id|jfs_get_block
 )paren
 suffix:semicolon
 )brace
+DECL|function|jfs_writepages
+r_static
+r_int
+id|jfs_writepages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+op_star
+id|nr_to_write
+)paren
+(brace
+r_return
+id|mpage_writepages
+c_func
+(paren
+id|mapping
+comma
+id|nr_to_write
+comma
+id|jfs_get_block
+)paren
+suffix:semicolon
+)brace
 DECL|function|jfs_readpage
 r_static
 r_int
@@ -1038,10 +1067,44 @@ id|page
 )paren
 (brace
 r_return
-id|block_read_full_page
+id|mpage_readpage
 c_func
 (paren
 id|page
+comma
+id|jfs_get_block
+)paren
+suffix:semicolon
+)brace
+DECL|function|jfs_readpages
+r_static
+r_int
+id|jfs_readpages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+)paren
+(brace
+r_return
+id|mpage_readpages
+c_func
+(paren
+id|mapping
+comma
+id|pages
+comma
+id|nr_pages
 comma
 id|jfs_get_block
 )paren
@@ -1229,9 +1292,19 @@ op_assign
 id|jfs_readpage
 comma
 dot
+id|readpages
+op_assign
+id|jfs_readpages
+comma
+dot
 id|writepage
 op_assign
 id|jfs_writepage
+comma
+dot
+id|writepages
+op_assign
+id|jfs_writepages
 comma
 dot
 id|sync_page
