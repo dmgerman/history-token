@@ -919,7 +919,7 @@ id|in_max
 )paren
 suffix:semicolon
 DECL|macro|store_in_reg
-mdefine_line|#define store_in_reg(REG, reg) &bslash;&n;static ssize_t store_in_##reg (struct device *dev, const char *buf, size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t;u32 val; &bslash;&n;&t; &bslash;&n;&t;val = simple_strtoul(buf, NULL, 10); &bslash;&n;&t;data-&gt;in_##reg[nr] = (IN_TO_REG(val) / 10); &bslash;&n;&t;w83781d_write_value(client, W83781D_REG_IN_##REG(nr), data-&gt;in_##reg[nr]); &bslash;&n;&t; &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define store_in_reg(REG, reg) &bslash;&n;static ssize_t store_in_##reg (struct device *dev, const char *buf, size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t;u32 val; &bslash;&n;&t; &bslash;&n;&t;val = simple_strtoul(buf, NULL, 10) / 10; &bslash;&n;&t;data-&gt;in_##reg[nr] = IN_TO_REG(val); &bslash;&n;&t;w83781d_write_value(client, W83781D_REG_IN_##REG(nr), data-&gt;in_##reg[nr]); &bslash;&n;&t; &bslash;&n;&t;return count; &bslash;&n;}
 id|store_in_reg
 c_func
 (paren
