@@ -26,7 +26,7 @@ macro_line|#ifdef RTL8169_DEBUG
 DECL|macro|assert
 mdefine_line|#define assert(expr) &bslash;&n;        if(!(expr)) {&t;&t;&t;&t;&t;&bslash;&n;&t;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&t;&bslash;&n;        &t;#expr,__FILE__,__FUNCTION__,__LINE__);&t;&t;&bslash;&n;        }
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, args...)&t;do { printk(PFX fmt, ## args) } while (0)
+mdefine_line|#define dprintk(fmt, args...)&t;do { printk(PFX fmt, ## args); } while (0)
 macro_line|#else
 DECL|macro|assert
 mdefine_line|#define assert(expr) do {} while (0)
