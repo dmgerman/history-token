@@ -222,20 +222,6 @@ id|irda_param_unpack
 )paren
 suffix:semicolon
 multiline_comment|/* IrLAP */
-DECL|variable|irda_init_max_qos_capabilies
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_init_max_qos_capabilies
-)paren
-suffix:semicolon
-DECL|variable|irda_qos_bits_to_value
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_qos_bits_to_value
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|irda_debug
 id|__u32

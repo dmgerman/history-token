@@ -1181,6 +1181,13 @@ op_assign
 l_int|0xff
 suffix:semicolon
 )brace
+DECL|variable|irda_init_max_qos_capabilies
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_init_max_qos_capabilies
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlap_adjust_qos_settings (qos)&n; *&n; *     Adjust QoS settings in case some values are not possible to use because&n; *     of other settings&n; */
 DECL|function|irlap_adjust_qos_settings
 r_void
@@ -2857,4 +2864,11 @@ id|index
 )braket
 suffix:semicolon
 )brace
+DECL|variable|irda_qos_bits_to_value
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_qos_bits_to_value
+)paren
+suffix:semicolon
 eof
