@@ -65,6 +65,8 @@ DECL|macro|IF_IFACE_E1
 mdefine_line|#define IF_IFACE_E1&t;0x1004&t;&t;/* E1 telco serial interface&t;*/
 DECL|macro|IF_IFACE_SYNC_SERIAL
 mdefine_line|#define IF_IFACE_SYNC_SERIAL 0x1005&t;/* can&squot;t be set by software&t;*/
+DECL|macro|IF_IFACE_X21D
+mdefine_line|#define IF_IFACE_X21D   0x1006          /* X.21 Dual Clocking (FarSite) */
 multiline_comment|/* For definitions see hdlc.h */
 DECL|macro|IF_PROTO_HDLC
 mdefine_line|#define IF_PROTO_HDLC&t;0x2000&t;&t;/* raw HDLC protocol&t;&t;*/
@@ -90,6 +92,8 @@ DECL|macro|IF_PROTO_FR_PVC
 mdefine_line|#define IF_PROTO_FR_PVC&t;0x200A&t;&t;/* for reading PVC status&t;*/
 DECL|macro|IF_PROTO_FR_ETH_PVC
 mdefine_line|#define IF_PROTO_FR_ETH_PVC 0x200B
+DECL|macro|IF_PROTO_RAW
+mdefine_line|#define IF_PROTO_RAW    0x200C          /* RAW Socket                   */
 multiline_comment|/*&n; *&t;Device mapping structure. I&squot;d just gone off and designed a &n; *&t;beautiful scheme using only loadable modules with arguments&n; *&t;for driver options and along come the PCMCIA people 8)&n; *&n; *&t;Ah well. The get() side of this is good for WDSETUP, and it&squot;ll&n; *&t;be handy for debugging things. The set side is fine for now and&n; *&t;being very small might be worth keeping for clean configuration.&n; */
 DECL|struct|ifmap
 r_struct
