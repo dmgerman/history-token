@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|variable|sysfs_initialized
 r_static
@@ -61,6 +62,71 @@ comma
 l_string|&quot;%u&bslash;n&quot;
 )paren
 suffix:semicolon
+DECL|function|local_cpus_show
+r_static
+id|ssize_t
+id|local_cpus_show
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|cpumask_t
+id|mask
+op_assign
+id|pcibus_to_cpumask
+c_func
+(paren
+id|pdev-&gt;bus-&gt;number
+)paren
+suffix:semicolon
+r_int
+id|len
+op_assign
+id|cpumask_scnprintf
+c_func
+(paren
+id|buf
+comma
+id|PAGE_SIZE
+op_minus
+l_int|2
+comma
+id|mask
+)paren
+suffix:semicolon
+id|strcat
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+op_plus
+id|len
+suffix:semicolon
+)brace
 multiline_comment|/* show resources */
 r_static
 id|ssize_t
@@ -218,6 +284,12 @@ id|__ATTR_RO
 c_func
 (paren
 id|irq
+)paren
+comma
+id|__ATTR_RO
+c_func
+(paren
+id|local_cpus
 )paren
 comma
 id|__ATTR_NULL
