@@ -658,10 +658,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* Clear Pending Interrupt by writing &squot;1&squot; to it */
 op_star
 id|IXP4XX_OSST
