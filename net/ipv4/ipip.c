@@ -1522,7 +1522,7 @@ c_cond
 (paren
 id|rel_info
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|skb2-&gt;dst
@@ -2153,7 +2153,7 @@ id|tiph-&gt;frag_off
 )paren
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -2172,7 +2172,7 @@ op_assign
 id|skb-&gt;dst
 ques
 c_cond
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|skb-&gt;dst

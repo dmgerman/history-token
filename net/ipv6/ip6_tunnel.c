@@ -2685,7 +2685,7 @@ suffix:semicolon
 )brace
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
@@ -2730,7 +2730,7 @@ id|skb-&gt;dst
 op_logical_and
 id|mtu
 OL
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|skb-&gt;dst
