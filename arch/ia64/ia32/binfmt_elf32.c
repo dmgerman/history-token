@@ -309,7 +309,10 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-r_return
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -422,7 +425,10 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-r_return
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -534,7 +540,10 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-r_return
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace
