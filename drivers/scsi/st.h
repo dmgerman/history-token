@@ -25,6 +25,7 @@ r_int
 r_char
 id|do_dio
 suffix:semicolon
+multiline_comment|/* direct i/o set up? */
 DECL|member|buffer_size
 r_int
 id|buffer_size
