@@ -1783,7 +1783,7 @@ id|size
 r_int
 id|i
 op_assign
-l_int|5
+l_int|3
 suffix:semicolon
 r_int
 id|result
@@ -1858,21 +1858,6 @@ op_minus
 id|EPIPE
 )paren
 r_break
-suffix:semicolon
-id|dev_dbg
-(paren
-op_amp
-id|dev-&gt;dev
-comma
-l_string|&quot;RETRY descriptor, result %d&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-id|result
-op_assign
-op_minus
-id|ENOMSG
 suffix:semicolon
 )brace
 r_return

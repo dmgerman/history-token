@@ -2928,12 +2928,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dum-&gt;hdev
-)paren
 id|dum-&gt;hdev
 op_assign
 id|urb-&gt;dev-&gt;hcpriv
@@ -3569,6 +3563,8 @@ r_return
 id|limit
 suffix:semicolon
 )brace
+DECL|macro|is_active
+mdefine_line|#define is_active(dum)&t;((dum-&gt;port_status &amp; &bslash;&n;&t;&t;(USB_PORT_STAT_CONNECTION | USB_PORT_STAT_ENABLE | &bslash;&n;&t;&t;&t;USB_PORT_STAT_SUSPEND)) &bslash;&n;&t;&t;== (USB_PORT_STAT_CONNECTION | USB_PORT_STAT_ENABLE))
 DECL|function|find_endpoint
 r_static
 r_struct
@@ -3587,6 +3583,18 @@ id|address
 (brace
 r_int
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_active
+(paren
+id|dum
+)paren
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -3656,6 +3664,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|macro|is_active
+macro_line|#undef is_active
 DECL|macro|Dev_Request
 mdefine_line|#define Dev_Request&t;(USB_TYPE_STANDARD | USB_RECIP_DEVICE)
 DECL|macro|Dev_InRequest
@@ -5170,17 +5180,17 @@ id|dum-&gt;port_status
 op_assign
 l_int|0
 suffix:semicolon
-id|dum-&gt;address
-op_assign
-l_int|0
-suffix:semicolon
-id|dum-&gt;hdev
-op_assign
-l_int|0
-suffix:semicolon
 id|dum-&gt;resuming
 op_assign
 l_int|0
+suffix:semicolon
+id|stop_activity
+c_func
+(paren
+id|dum
+comma
+id|dum-&gt;driver
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -1164,7 +1164,7 @@ l_string|&quot;Digital Camera EX-20 DSC&quot;
 comma
 id|US_SC_8070
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1189,6 +1189,31 @@ comma
 id|US_SC_RBC
 comma
 id|US_PR_CB
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
+multiline_comment|/* Submitted by Jol Bourquard &lt;numlock@freesurf.ch&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05ab
+comma
+l_int|0x0060
+comma
+l_int|0x1104
+comma
+l_int|0x1110
+comma
+l_string|&quot;In-System&quot;
+comma
+l_string|&quot;PyroGate External CD-ROM Enclosure (FCD-523)&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
 comma
 l_int|NULL
 comma
