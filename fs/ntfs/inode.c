@@ -7951,9 +7951,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_write_inode - write out a dirty inode&n; * @vi:&t;&t;inode to write out&n; * @sync:&t;if true, write out synchronously&n; *&n; * Write out a dirty inode to disk including any extent inodes if present.&n; *&n; * If @sync is true, commit the inode to disk and wait for io completion.  This&n; * is done using write_mft_record().&n; *&n; * If @sync is false, just schedule the write to happen but do not wait for i/o&n; * completion.  In 2.6 kernels, scheduling usually happens just by virtue of&n; * marking the page (and in this case mft record) dirty but we do not implement&n; * this yet as write_mft_record() largely ignores the @sync parameter and&n; * always performs synchronous writes.&n; */
+multiline_comment|/**&n; * ntfs_write_inode - write out a dirty inode&n; * @vi:&t;&t;inode to write out&n; * @sync:&t;if true, write out synchronously&n; *&n; * Write out a dirty inode to disk including any extent inodes if present.&n; *&n; * If @sync is true, commit the inode to disk and wait for io completion.  This&n; * is done using write_mft_record().&n; *&n; * If @sync is false, just schedule the write to happen but do not wait for i/o&n; * completion.  In 2.6 kernels, scheduling usually happens just by virtue of&n; * marking the page (and in this case mft record) dirty but we do not implement&n; * this yet as write_mft_record() largely ignores the @sync parameter and&n; * always performs synchronous writes.&n; *&n; * Return 0 on success and -errno on error.&n; */
 DECL|function|ntfs_write_inode
-r_void
+r_int
 id|ntfs_write_inode
 c_func
 (paren
@@ -8028,6 +8028,7 @@ id|ni
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Map, pin, and lock the mft record belonging to the inode. */
@@ -8401,6 +8402,7 @@ l_string|&quot;Done.&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 macro_line|#if 0
 id|unm_err_out
@@ -8462,6 +8464,31 @@ id|vi
 suffix:semicolon
 )brace
 r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * ntfs_write_inode_vfs - write out a dirty inode&n; * @vi:&t;&t;inode to write out&n; * @sync:&t;if true, write out synchronously&n; *&n; * Write out a dirty inode to disk including any extent inodes if present.&n; *&n; * If @sync is true, commit the inode to disk and wait for io completion.  This&n; * is done using write_mft_record().&n; *&n; * If @sync is false, just schedule the write to happen but do not wait for i/o&n; * completion.  In 2.6 kernels, scheduling usually happens just by virtue of&n; * marking the page (and in this case mft record) dirty but we do not implement&n; * this yet as write_mft_record() largely ignores the @sync parameter and&n; * always performs synchronous writes.&n; *&n; * This functions does not have a return value which is the required behaviour&n; * for the VFS super_operations -&gt;dirty_inode function.&n; */
+DECL|function|ntfs_write_inode_vfs
+r_void
+id|ntfs_write_inode_vfs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+comma
+r_int
+id|sync
+)paren
+(brace
+id|ntfs_write_inode
+c_func
+(paren
+id|vi
+comma
+id|sync
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* NTFS_RW */
