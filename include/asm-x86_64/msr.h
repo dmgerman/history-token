@@ -19,7 +19,7 @@ mdefine_line|#define rdtsc(low,high) &bslash;&n;     __asm__ __volatile__(&quot;
 DECL|macro|rdtscl
 mdefine_line|#define rdtscl(low) &bslash;&n;     __asm__ __volatile__ (&quot;rdtsc&quot; : &quot;=a&quot; (low) : : &quot;edx&quot;)
 DECL|macro|rdtscll
-mdefine_line|#define rdtscll(val) do { &bslash;&n;     unsigned int a,d; &bslash;&n;     asm volatile(&quot;rdtsc&quot; : &quot;=a&quot; (a), &quot;=d&quot; (d)); &bslash;&n;     (val) = ((unsigned long)a) | (((unsigned long)d)&lt;&lt;32); &bslash;&n;} while(0)
+mdefine_line|#define rdtscll(val) do { &bslash;&n;     unsigned int __a,__d; &bslash;&n;     asm volatile(&quot;rdtsc&quot; : &quot;=a&quot; (__a), &quot;=d&quot; (__d)); &bslash;&n;     (val) = ((unsigned long)__a) | (((unsigned long)__d)&lt;&lt;32); &bslash;&n;} while(0)
 DECL|macro|rdpmc
 mdefine_line|#define rdpmc(counter,low,high) &bslash;&n;     __asm__ __volatile__(&quot;rdpmc&quot; &bslash;&n;&t;&t;&t;  : &quot;=a&quot; (low), &quot;=d&quot; (high) &bslash;&n;&t;&t;&t;  : &quot;c&quot; (counter))
 DECL|macro|write_tsc
