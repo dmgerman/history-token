@@ -1780,8 +1780,7 @@ DECL|macro|FE_RECORD_FMT_CRLF
 mdefine_line|#define FE_RECORD_FMT_CRLF&t;&t;0x0A
 DECL|macro|FE_RECORD_FMT_LFCR
 mdefine_line|#define FE_RECORD_FMT_LFCR&t;&t;0x0B
-DECL|macro|Record
-mdefine_line|#define Record Display Attributes (ECMA 167r3 4/14.9.8) */
+multiline_comment|/* Record Display Attributes (ECMA 167r3 4/14.9.8) */
 DECL|macro|FE_RECORD_DISPLAY_ATTR_UNDEF
 mdefine_line|#define FE_RECORD_DISPLAY_ATTR_UNDEF&t;0x00
 DECL|macro|FE_RECORD_DISPLAY_ATTR_1
