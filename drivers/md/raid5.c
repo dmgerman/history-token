@@ -7636,8 +7636,6 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7663,8 +7661,6 @@ id|mddev
 comma
 id|mddev-&gt;level
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -8278,8 +8274,6 @@ id|mddev
 )paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -8346,8 +8340,6 @@ op_member_access_from_pointer
 r_private
 op_assign
 l_int|NULL
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -9092,6 +9084,11 @@ dot
 id|name
 op_assign
 l_string|&quot;raid5&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|make_request

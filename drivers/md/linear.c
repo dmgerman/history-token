@@ -213,8 +213,6 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|conf
 op_assign
 id|kmalloc
@@ -563,8 +561,6 @@ c_func
 id|conf
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -600,8 +596,6 @@ c_func
 (paren
 id|conf
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -915,6 +909,11 @@ dot
 id|name
 op_assign
 l_string|&quot;linear&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|make_request

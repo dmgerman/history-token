@@ -4379,8 +4379,6 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4789,8 +4787,6 @@ l_int|NULL
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -4850,8 +4846,6 @@ r_private
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4866,6 +4860,11 @@ dot
 id|name
 op_assign
 l_string|&quot;raid1&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|make_request
