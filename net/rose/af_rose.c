@@ -7015,17 +7015,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|kfree
-c_func
-(paren
-id|dev_rose
-(braket
-id|i
-)braket
-dot
-id|name
-)paren
-suffix:semicolon
 )brace
 id|kfree
 c_func
