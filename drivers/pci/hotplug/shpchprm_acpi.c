@@ -961,16 +961,6 @@ c_func
 id|ab-&gt;handle
 )paren
 suffix:semicolon
-r_struct
-id|acpi_buffer
-id|ret_buf
-op_assign
-(brace
-l_int|0
-comma
-l_int|NULL
-)brace
-suffix:semicolon
 multiline_comment|/* run OSHP */
 id|status
 op_assign
@@ -983,8 +973,7 @@ id|METHOD_NAME_OSHP
 comma
 l_int|NULL
 comma
-op_amp
-id|ret_buf
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
