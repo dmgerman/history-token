@@ -84,11 +84,56 @@ r_void
 suffix:semicolon
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF            /* No processor magic marker */
-multiline_comment|/* 1 to 1 mapping on PPC -- Cort */
-DECL|macro|cpu_logical_map
-mdefine_line|#define cpu_logical_map(cpu) (cpu)
-DECL|macro|cpu_number_map
-mdefine_line|#define cpu_number_map(x) (x)
+DECL|macro|cpu_online
+mdefine_line|#define cpu_online(cpu)&t;test_bit((cpu), &amp;cpu_online_map)
+DECL|macro|cpu_possible
+mdefine_line|#define cpu_possible(cpu)&t;paca[cpu].active
+DECL|function|num_online_cpus
+r_static
+r_inline
+r_int
+id|num_online_cpus
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+comma
+id|nr
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|nr
+op_add_assign
+id|test_bit
+c_func
+(paren
+id|i
+comma
+op_amp
+id|cpu_online_map
+)paren
+suffix:semicolon
+r_return
+id|nr
+suffix:semicolon
+)brace
 r_extern
 r_volatile
 r_int
@@ -100,10 +145,15 @@ id|NR_CPUS
 suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (get_paca()-&gt;xPacaIndex)
-DECL|macro|hard_smp_processor_id
-mdefine_line|#define hard_smp_processor_id() (get_paca()-&gt;xHwProcNum)
-DECL|macro|get_hard_smp_processor_id
-mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].xHwProcNum)
+multiline_comment|/* remove when the boot sequence gets rewritten to use hotplug interface */
+r_extern
+r_int
+id|boot_cpuid
+suffix:semicolon
+r_extern
+r_int
+id|ppc64_is_smp
+suffix:semicolon
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION   0

@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#endif
