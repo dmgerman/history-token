@@ -3,7 +3,6 @@ DECL|macro|_PPC64_PGTABLE_H
 mdefine_line|#define _PPC64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the ppc64 hashed page table.&n; */
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -983,11 +982,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Page tables may have changed.  We don&squot;t need to do anything here&n; * as entries are faulted into the hash table by the low-level&n; * data/instruction access exception handlers.&n; */
-macro_line|#if 0
-multiline_comment|/*&n; * We won&squot;t be able to use update_mmu_cache to update the &n; * hardware page table because we need to update the pte&n; * as well, but we don&squot;t get the address of the pte, only&n; * its value.&n; */
-mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
-macro_line|#else
 multiline_comment|/*&n; * This gets called at the end of handling a page fault, when&n; * the kernel has put a new PTE into the page table for the process.&n; * We use it to put a corresponding HPTE into the hash table&n; * ahead of time, instead of waiting for the inevitable extra&n; * hash-table miss exception.&n; */
 r_extern
 r_void
@@ -1004,7 +998,6 @@ comma
 id|pte_t
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|SWP_TYPE
 mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
