@@ -503,7 +503,7 @@ mdefine_line|#define AUTO_TEMP_MIN_FROM_REG_DEG(reg)&t;((((reg) &gt;&gt; 3) &amp
 DECL|macro|AUTO_TEMP_OFF_FROM_REG
 mdefine_line|#define AUTO_TEMP_OFF_FROM_REG(reg)&t;&t;&bslash;&n;&t;(AUTO_TEMP_MIN_FROM_REG(reg) - 5000)
 DECL|macro|AUTO_TEMP_MAX_FROM_REG
-mdefine_line|#define AUTO_TEMP_MAX_FROM_REG(reg)&t;&t;&bslash;&n;&t;AUTO_TEMP_RANGE_FROM_REG(reg) +&t;&t;&bslash;&n;&t;AUTO_TEMP_MIN_FROM_REG(reg)
+mdefine_line|#define AUTO_TEMP_MAX_FROM_REG(reg)&t;&t;&bslash;&n;&t;(AUTO_TEMP_RANGE_FROM_REG(reg) +&t;&bslash;&n;&t;AUTO_TEMP_MIN_FROM_REG(reg))
 DECL|function|AUTO_TEMP_MAX_TO_REG
 r_static
 r_int
