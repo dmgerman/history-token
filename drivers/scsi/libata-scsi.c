@@ -1133,7 +1133,7 @@ l_string|&quot;EXIT - badcmd&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_rbuf_get - Map response buffer.&n; *&t;@cmd: SCSI command containing buffer to be mapped.&n; *&t;@buf_out: Pointer to mapped area.&n; *&n; *&t;Maps buffer contained within SCSI command @cmd.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&t;FIXME: kmap inside spin_lock_irqsave ok?&n; *&n; *&t;RETURNS:&n; *&t;Length of response buffer.&n; */
+multiline_comment|/**&n; *&t;ata_scsi_rbuf_get - Map response buffer.&n; *&t;@cmd: SCSI command containing buffer to be mapped.&n; *&t;@buf_out: Pointer to mapped area.&n; *&n; *&t;Maps buffer contained within SCSI command @cmd.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Length of response buffer.&n; */
 DECL|function|ata_scsi_rbuf_get
 r_static
 r_int
@@ -1182,10 +1182,12 @@ id|cmd-&gt;request_buffer
 suffix:semicolon
 id|buf
 op_assign
-id|kmap
+id|kmap_atomic
 c_func
 (paren
 id|sg-&gt;page
+comma
+id|KM_USER0
 )paren
 op_plus
 id|sg-&gt;offset
@@ -1259,10 +1261,12 @@ op_star
 )paren
 id|cmd-&gt;request_buffer
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
 id|sg-&gt;page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace
