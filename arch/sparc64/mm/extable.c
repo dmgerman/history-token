@@ -61,7 +61,7 @@ id|start
 suffix:semicolon
 id|walk
 op_le
-id|end
+id|last
 suffix:semicolon
 id|walk
 op_increment
@@ -104,7 +104,7 @@ suffix:semicolon
 id|walk
 op_le
 (paren
-id|end
+id|last
 op_minus
 l_int|1
 )paren

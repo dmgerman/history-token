@@ -95,8 +95,8 @@ comma
 DECL|enumerator|VIA_VT8605
 id|VIA_VT8605
 comma
-DECL|enumerator|VIA_P4X400
-id|VIA_P4X400
+DECL|enumerator|VIA_P4X
+id|VIA_P4X
 comma
 DECL|enumerator|SIS_GENERIC
 id|SIS_GENERIC

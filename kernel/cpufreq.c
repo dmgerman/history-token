@@ -3072,7 +3072,24 @@ id|cpufreq_set_policy
 )paren
 suffix:semicolon
 multiline_comment|/*********************************************************************&n; *            EXTERNALLY AFFECTING FREQUENCY CHANGES                 *&n; *********************************************************************/
-multiline_comment|/**&n; * adjust_jiffies - adjust the system &quot;loops_per_jiffy&quot;&n; *&n; * This function alters the system &quot;loops_per_jiffy&quot; for the clock&n; * speed change. Note that loops_per_jiffy is only updated if all&n; * CPUs are affected - else there is a need for per-CPU loops_per_jiffy&n; * values which are provided by various architectures. &n; */
+multiline_comment|/**&n; * adjust_jiffies - adjust the system &quot;loops_per_jiffy&quot;&n; *&n; * This function alters the system &quot;loops_per_jiffy&quot; for the clock&n; * speed change. Note that loops_per_jiffy cannot be updated on SMP&n; * systems as each CPU might be scaled differently. So, use the arch &n; * per-CPU loops_per_jiffy value wherever possible.&n; */
+macro_line|#ifndef CONFIG_SMP
+DECL|variable|l_p_j_ref
+r_static
+r_int
+r_int
+id|l_p_j_ref
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|l_p_j_ref_freq
+r_static
+r_int
+r_int
+id|l_p_j_ref_freq
+op_assign
+l_int|0
+suffix:semicolon
 DECL|function|adjust_jiffies
 r_static
 r_inline
@@ -3090,6 +3107,22 @@ op_star
 id|ci
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|l_p_j_ref_freq
+)paren
+(brace
+id|l_p_j_ref
+op_assign
+id|loops_per_jiffy
+suffix:semicolon
+id|l_p_j_ref_freq
+op_assign
+id|ci-&gt;old
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3117,21 +3150,14 @@ op_member_access_from_pointer
 r_new
 )paren
 )paren
-r_if
-c_cond
-(paren
-id|ci-&gt;cpu
-op_eq
-id|CPUFREQ_ALL_CPUS
-)paren
 id|loops_per_jiffy
 op_assign
 id|cpufreq_scale
 c_func
 (paren
-id|loops_per_jiffy
+id|l_p_j_ref
 comma
-id|ci-&gt;old
+id|l_p_j_ref_freq
 comma
 id|ci
 op_member_access_from_pointer
@@ -3139,6 +3165,10 @@ r_new
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|adjust_jiffies
+mdefine_line|#define adjust_jiffies(...)
+macro_line|#endif
 multiline_comment|/**&n; * cpufreq_notify_transition - call notifier chain and adjust_jiffies on frequency transition&n; *&n; * This function calls the transition notifiers and the &quot;adjust_jiffies&quot; function. It is called&n; * twice on all CPU frequency changes that have external effects. &n; */
 DECL|function|cpufreq_notify_transition
 r_void

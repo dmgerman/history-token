@@ -1494,10 +1494,6 @@ id|agp_bridge.masks
 op_assign
 id|hp_zx1_masks
 suffix:semicolon
-id|agp_bridge.num_of_masks
-op_assign
-l_int|1
-suffix:semicolon
 id|agp_bridge.dev_private_data
 op_assign
 l_int|NULL

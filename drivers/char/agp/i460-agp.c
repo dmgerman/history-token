@@ -2269,10 +2269,6 @@ id|unused
 )paren
 )paren
 (brace
-id|agp_bridge.num_of_masks
-op_assign
-l_int|1
-suffix:semicolon
 id|agp_bridge.masks
 op_assign
 id|i460_masks

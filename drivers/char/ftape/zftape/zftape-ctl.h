@@ -63,14 +63,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|zft_dirty
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*  hooks for the VFS interface &n; */
 r_extern
 r_int

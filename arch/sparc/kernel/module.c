@@ -99,17 +99,14 @@ r_int
 id|module_frob_arch_sections
 c_func
 (paren
-r_const
 id|Elf_Ehdr
 op_star
 id|hdr
 comma
-r_const
 id|Elf_Shdr
 op_star
 id|sechdrs
 comma
-r_const
 r_char
 op_star
 id|secstrings

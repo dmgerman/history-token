@@ -13,7 +13,7 @@ DECL|macro|__ARCH_SI_TRAPNO
 mdefine_line|#define __ARCH_SI_TRAPNO
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/compat.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 DECL|union|sigval32
 r_typedef
 r_union
@@ -61,7 +61,7 @@ multiline_comment|/* kill() */
 r_struct
 (brace
 DECL|member|_pid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
@@ -96,7 +96,7 @@ multiline_comment|/* POSIX.1b signals */
 r_struct
 (brace
 DECL|member|_pid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
@@ -118,7 +118,7 @@ multiline_comment|/* SIGCHLD */
 r_struct
 (brace
 DECL|member|_pid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* which child */

@@ -1146,7 +1146,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PID hash table entries: %d (order %d: %d bytes)&bslash;n&quot;
+l_string|&quot;PID hash table entries: %d (order %d: %Zd bytes)&bslash;n&quot;
 comma
 id|pidhash_size
 comma

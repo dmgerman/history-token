@@ -413,6 +413,16 @@ op_ne
 id|MODULE_STATE_GOING
 suffix:semicolon
 )brace
+multiline_comment|/* Is this address in a module? */
+r_int
+id|module_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODULE_UNLOAD
 r_void
 id|__symbol_put
@@ -697,6 +707,22 @@ id|addr
 (brace
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* Is this address in a module? */
+DECL|function|module_text_address
+r_static
+r_int
+id|module_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */
@@ -1013,10 +1039,6 @@ DECL|macro|MOD_IN_USE
 mdefine_line|#define MOD_IN_USE 0
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
-DECL|macro|__mod_between
-mdefine_line|#define __mod_between(a_start, a_len, b_start, b_len)&t;&t;&bslash;&n;(((a_start) &gt;= (b_start) &amp;&amp; (a_start) &lt;= (b_start)+(b_len))&t;&bslash;&n; || ((a_start)+(a_len) &gt;= (b_start)&t;&t;&t;&t;&bslash;&n;     &amp;&amp; (a_start)+(a_len) &lt;= (b_start)+(b_len)))
-DECL|macro|mod_bound
-mdefine_line|#define mod_bound(p, n, m)&t;&t;&t;&t;&t;&bslash;&n;(((m)-&gt;module_init&t;&t;&t;&t;&t;&t;&bslash;&n;  &amp;&amp; __mod_between((p),(n),(m)-&gt;module_init,(m)-&gt;init_size))&t;&bslash;&n; || __mod_between((p),(n),(m)-&gt;module_core,(m)-&gt;core_size))
 multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
 r_extern
 id|spinlock_t
