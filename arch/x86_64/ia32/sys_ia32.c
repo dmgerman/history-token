@@ -44,7 +44,6 @@ macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;net/scm.h&gt;

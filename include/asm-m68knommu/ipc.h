@@ -1,2 +1,2 @@
-macro_line|#include &lt;asm-m68k/ipc.h&gt;
+macro_line|#include &lt;asm-generic/ipc.h&gt;
 eof
