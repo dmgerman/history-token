@@ -938,7 +938,7 @@ op_complement
 id|PMACZILOG_FLAG_BREAK
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+macro_line|#if defined(CONFIG_MAGIC_SYSRQ) &amp;&amp; defined(CONFIG_SERIAL_CORE_CONSOLE)
 macro_line|#ifdef USE_CTRL_O_SYSRQ
 multiline_comment|/* Handle the SysRq ^O Hack */
 r_if
@@ -1007,7 +1007,7 @@ r_goto
 id|next_char
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ &amp;&amp; CONFIG_SERIAL_CORE_CONSOLE */
 multiline_comment|/* A real serial line, record the character and status.  */
 r_if
 c_cond
@@ -6909,7 +6909,7 @@ c_cond
 (paren
 id|pm_state
 op_eq
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_logical_or
 id|pm_state
 OL
@@ -7134,7 +7134,7 @@ c_func
 l_string|&quot;suspend, switching complete&bslash;n&quot;
 )paren
 suffix:semicolon
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 id|pm_state
 suffix:semicolon
@@ -7193,7 +7193,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_eq
 l_int|0
 )paren
@@ -7445,7 +7445,7 @@ c_func
 l_string|&quot;resume, switching complete&bslash;n&quot;
 )paren
 suffix:semicolon
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon
