@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 id|DEFINE_PER_CPU
 c_func
@@ -2420,6 +2421,41 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_FSYS
+multiline_comment|/*&n; * Boot command-line option &quot;nolwsys&quot; can be used to disable the use of any light-weight&n; * system call handler.  When this option is in effect, all fsyscalls will end up bubbling&n; * down into the kernel and calling the normal (heavy-weight) syscall handler.  This is&n; * useful for performance testing, but conceivably could also come in handy for debugging&n; * purposes.&n; */
+DECL|variable|nolwsys
+r_static
+r_int
+id|nolwsys
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|nolwsys_setup
+id|nolwsys_setup
+(paren
+r_char
+op_star
+id|s
+)paren
+(brace
+id|nolwsys
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;nolwsys&quot;
+comma
+id|nolwsys_setup
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_FSYS */
 r_void
 DECL|function|mem_init
 id|mem_init
@@ -2665,6 +2701,69 @@ l_int|1
 op_assign
 id|num_pgt_pages
 suffix:semicolon
+macro_line|#ifdef CONFIG_FSYS
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * For fsyscall entrpoints with no light-weight handler, use the ordinary&n;&t;&t; * (heavy-weight) handler, but mark it by setting bit 0, so the fsyscall entry&n;&t;&t; * code can tell them apart.&n;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_syscalls
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_extern
+r_int
+r_int
+id|fsyscall_table
+(braket
+id|NR_syscalls
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|sys_call_table
+(braket
+id|NR_syscalls
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fsyscall_table
+(braket
+id|i
+)braket
+op_logical_or
+id|nolwsys
+)paren
+id|fsyscall_table
+(braket
+id|i
+)braket
+op_assign
+id|sys_call_table
+(braket
+id|i
+)braket
+op_or
+l_int|1
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/* install the gate page in the global page table: */
 id|put_gate_page
 c_func

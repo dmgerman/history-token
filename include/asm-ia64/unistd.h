@@ -464,6 +464,8 @@ DECL|macro|__NR_sys_clock_getres
 mdefine_line|#define __NR_sys_clock_getres&t;&t;1255
 DECL|macro|__NR_sys_clock_nanosleep
 mdefine_line|#define __NR_sys_clock_nanosleep&t;1256
+DECL|macro|NR_syscalls
+mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int
