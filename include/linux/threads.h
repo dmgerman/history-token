@@ -3,12 +3,13 @@ DECL|macro|_LINUX_THREADS_H
 mdefine_line|#define _LINUX_THREADS_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * The default limit for the nr of threads is now in&n; * /proc/sys/kernel/threads-max.&n; */
+multiline_comment|/*&n; * Maximum supported processors that can run under SMP.  This value is&n; * set via configure setting.  The maximum is equal to the size of the&n; * bitmasks used on that platform, i.e. 32 or 64.  Setting this smaller&n; * saves quite a bit of memory.&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|NR_CPUS
-mdefine_line|#define NR_CPUS&t;32&t;&t;/* Max processors that can be running in SMP */
+mdefine_line|#define NR_CPUS&t;&t;CONFIG_NR_CPUS
 macro_line|#else
 DECL|macro|NR_CPUS
-mdefine_line|#define NR_CPUS 1
+mdefine_line|#define NR_CPUS&t;&t;1
 macro_line|#endif
 DECL|macro|MIN_THREADS_LEFT_FOR_ROOT
 mdefine_line|#define MIN_THREADS_LEFT_FOR_ROOT 4
