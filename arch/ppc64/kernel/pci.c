@@ -1457,6 +1457,14 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+id|ppc64_boot_msg
+c_func
+(paren
+l_int|0x40
+comma
+l_string|&quot;PCI Probe&quot;
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1634,6 +1642,14 @@ c_func
 id|PPCDBG_BUSWALK
 comma
 l_string|&quot;PCI: Probing PCI hardware done.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ppc64_boot_msg
+c_func
+(paren
+l_int|0x41
+comma
+l_string|&quot;PCI Done&quot;
 )paren
 suffix:semicolon
 )brace

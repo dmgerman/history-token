@@ -1070,14 +1070,12 @@ op_star
 )paren
 id|OpenPIC_Addr
 suffix:semicolon
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;openpic enter&quot;
+l_int|0x20
 comma
-l_int|0x122
+l_string|&quot;OpenPic Init&quot;
 )paren
 suffix:semicolon
 id|t
@@ -1233,14 +1231,12 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize timer interrupts */
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;openpic timer&quot;
+l_int|0x21
 comma
-l_int|0x3ba
+l_string|&quot;OpenPic Timer&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1283,14 +1279,12 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Initialize IPI interrupts */
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;openpic ipi&quot;
+l_int|0x22
 comma
-l_int|0x3bb
+l_string|&quot;OpenPic IPI&quot;
 )paren
 suffix:semicolon
 id|openpic_test_broken_IPI
@@ -1355,14 +1349,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Initialize external interrupts */
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;openpic ext&quot;
+l_int|0x23
 comma
-l_int|0x3bc
+l_string|&quot;OpenPic Ext&quot;
 )paren
 suffix:semicolon
 id|openpic_set_priority
@@ -1536,14 +1528,12 @@ op_amp
 id|open_pic
 suffix:semicolon
 multiline_comment|/* Initialize the spurious interrupt */
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;openpic spurious&quot;
+l_int|0x24
 comma
-l_int|0x3bd
+l_string|&quot;OpenPic Spurious&quot;
 )paren
 suffix:semicolon
 id|openpic_set_spurious
@@ -1595,14 +1585,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;openpic exit&quot;
+l_int|0x25
 comma
-l_int|0x222
+l_string|&quot;OpenPic Done&quot;
 )paren
 suffix:semicolon
 )brace

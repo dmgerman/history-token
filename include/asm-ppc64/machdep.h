@@ -601,6 +601,67 @@ id|cmd_line
 l_int|512
 )braket
 suffix:semicolon
+multiline_comment|/* Functions to produce codes on the leds.&n; * The SRC code should be unique for the message category and should&n; * be limited to the lower 24 bits (the upper 8 are set by these funcs),&n; * and (for boot &amp; dump) should be sorted numerically in the order&n; * the events occur.&n; */
+multiline_comment|/* Print a boot progress message. */
+r_void
+id|ppc64_boot_msg
+c_func
+(paren
+r_int
+r_int
+id|src
+comma
+r_const
+r_char
+op_star
+id|msg
+)paren
+suffix:semicolon
+multiline_comment|/* Print a termination message (print only -- does not stop the kernel) */
+r_void
+id|ppc64_terminate_msg
+c_func
+(paren
+r_int
+r_int
+id|src
+comma
+r_const
+r_char
+op_star
+id|msg
+)paren
+suffix:semicolon
+multiline_comment|/* Print something that needs attention (device error, etc) */
+r_void
+id|ppc64_attention_msg
+c_func
+(paren
+r_int
+r_int
+id|src
+comma
+r_const
+r_char
+op_star
+id|msg
+)paren
+suffix:semicolon
+multiline_comment|/* Print a dump progress message. */
+r_void
+id|ppc64_dump_msg
+c_func
+(paren
+r_int
+r_int
+id|src
+comma
+r_const
+r_char
+op_star
+id|msg
+)paren
+suffix:semicolon
 macro_line|#endif /* _PPC64_MACHDEP_H */
 macro_line|#endif /* __KERNEL__ */
 eof
