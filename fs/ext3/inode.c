@@ -9743,6 +9743,11 @@ comma
 l_string|&quot;called recursively, non-PF_MEMALLOC!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
