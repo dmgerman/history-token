@@ -109,6 +109,10 @@ c_func
 (paren
 r_int
 id|sock
+comma
+r_int
+r_int
+id|cpu_clock
 )paren
 (brace
 r_struct
@@ -120,8 +124,6 @@ id|u32
 id|mecr
 suffix:semicolon
 r_int
-id|clock
-suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
@@ -154,14 +156,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|clock
-op_assign
-id|cpufreq_get
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 id|bs
 op_assign
 id|pcmcia_low_level
@@ -171,7 +165,7 @@ c_func
 (paren
 id|sock
 comma
-id|clock
+id|cpu_clock
 comma
 id|skt-&gt;speed_io
 )paren
@@ -2103,6 +2097,12 @@ id|sa1100_pcmcia_set_mecr
 c_func
 (paren
 id|sock
+comma
+id|cpufreq_get
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2443,6 +2443,12 @@ id|sa1100_pcmcia_set_mecr
 c_func
 (paren
 id|sock
+comma
+id|cpufreq_get
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3137,14 +3143,14 @@ suffix:semicolon
 op_increment
 id|sock
 )paren
-(brace
 id|sa1100_pcmcia_set_mecr
 c_func
 (paren
 id|sock
+comma
+id|clock
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* sa1100_pcmcia_notifier()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^&n; * When changing the processor core clock frequency, it is necessary&n; * to adjust the MECR timings accordingly. We&squot;ve recorded the timings&n; * requested by Card Services, so this is just a matter of finding&n; * out what our current speed is, and then recomputing the new MECR&n; * values.&n; *&n; * Returns: 0 on success, -1 on error&n; */
 r_static
@@ -3168,9 +3174,9 @@ id|data
 )paren
 (brace
 r_struct
-id|cpufreq_info
+id|cpufreq_freqs
 op_star
-id|ci
+id|freqs
 op_assign
 id|data
 suffix:semicolon
@@ -3186,9 +3192,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 OG
-id|ci-&gt;old_freq
+id|freqs-&gt;old
 )paren
 (brace
 id|DEBUG
@@ -3196,28 +3204,33 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s(): new frequency %u.%uMHz &gt; %u.%uMHz, pre-updating&bslash;n&quot;
+l_string|&quot;%s(): new frequency %u.%uMHz &gt; %u.%uMHz, &quot;
+l_string|&quot;pre-updating&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 op_div
 l_int|1000
 comma
 (paren
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 op_div
 l_int|100
 )paren
 op_mod
 l_int|10
 comma
-id|ci-&gt;old_freq
+id|freqs-&gt;old
 op_div
 l_int|1000
 comma
 (paren
-id|ci-&gt;old_freq
+id|freqs-&gt;old
 op_div
 l_int|100
 )paren
@@ -3228,7 +3241,9 @@ suffix:semicolon
 id|sa1100_pcmcia_update_mecr
 c_func
 (paren
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 )paren
 suffix:semicolon
 )brace
@@ -3240,9 +3255,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 OL
-id|ci-&gt;old_freq
+id|freqs-&gt;old
 )paren
 (brace
 id|DEBUG
@@ -3250,28 +3267,33 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s(): new frequency %u.%uMHz &lt; %u.%uMHz, post-updating&bslash;n&quot;
+l_string|&quot;%s(): new frequency %u.%uMHz &lt; %u.%uMHz, &quot;
+l_string|&quot;post-updating&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 op_div
 l_int|1000
 comma
 (paren
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 op_div
 l_int|100
 )paren
 op_mod
 l_int|10
 comma
-id|ci-&gt;old_freq
+id|freqs-&gt;old
 op_div
 l_int|1000
 comma
 (paren
-id|ci-&gt;old_freq
+id|freqs-&gt;old
 op_div
 l_int|100
 )paren
@@ -3282,7 +3304,9 @@ suffix:semicolon
 id|sa1100_pcmcia_update_mecr
 c_func
 (paren
-id|ci-&gt;new_freq
+id|freqs
+op_member_access_from_pointer
+r_new
 )paren
 suffix:semicolon
 )brace
@@ -3336,6 +3360,8 @@ suffix:semicolon
 r_int
 r_int
 id|i
+comma
+id|cpu_clock
 suffix:semicolon
 r_int
 id|ret
@@ -3470,6 +3496,14 @@ r_goto
 id|shutdown
 suffix:semicolon
 )brace
+id|cpu_clock
+op_assign
+id|cpufreq_get
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We initialize the MECR to default values here, because we are&n;&t; * not guaranteed to see a SetIOMap operation at runtime.&n;&t; */
 r_for
 c_loop
@@ -3641,6 +3675,8 @@ id|sa1100_pcmcia_set_mecr
 c_func
 (paren
 id|i
+comma
+id|cpu_clock
 )paren
 suffix:semicolon
 )brace
@@ -3918,7 +3954,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SA-1100 PCMCIA (CS release %s)&bslash;n&quot;
+l_string|&quot;SA11x0 PCMCIA (CS release %s)&bslash;n&quot;
 comma
 id|CS_RELEASE
 )paren
@@ -3999,6 +4035,8 @@ c_func
 (paren
 op_amp
 id|sa1100_pcmcia_notifier_block
+comma
+id|CPUFREQ_TRANSITION_NOTIFIER
 )paren
 suffix:semicolon
 r_if
@@ -4212,6 +4250,8 @@ c_func
 (paren
 op_amp
 id|sa1100_pcmcia_notifier_block
+comma
+id|CPUFREQ_TRANSITION_NOTIFIER
 )paren
 suffix:semicolon
 macro_line|#endif
