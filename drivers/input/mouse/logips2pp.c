@@ -1083,6 +1083,7 @@ l_int|61
 comma
 id|PS2PP_KIND_MX
 comma
+multiline_comment|/* MX700 */
 id|PS2PP_WHEEL
 op_or
 id|PS2PP_SIDE_BTN
@@ -1094,7 +1095,6 @@ op_or
 id|PS2PP_NAV_BTN
 )brace
 comma
-multiline_comment|/* MX700 */
 (brace
 l_int|73
 comma
@@ -1176,6 +1176,7 @@ l_int|100
 comma
 id|PS2PP_KIND_MX
 comma
+multiline_comment|/* MX510 */
 id|PS2PP_WHEEL
 op_or
 id|PS2PP_SIDE_BTN
@@ -1187,12 +1188,25 @@ op_or
 id|PS2PP_NAV_BTN
 )brace
 comma
-multiline_comment|/* MX510 */
+(brace
+l_int|111
+comma
+id|PS2PP_KIND_MX
+comma
+multiline_comment|/* MX300 */
+id|PS2PP_WHEEL
+op_or
+id|PS2PP_EXTRA_BTN
+op_or
+id|PS2PP_TASK_BTN
+)brace
+comma
 (brace
 l_int|112
 comma
 id|PS2PP_KIND_MX
 comma
+multiline_comment|/* MX500 */
 id|PS2PP_WHEEL
 op_or
 id|PS2PP_SIDE_BTN
@@ -1204,12 +1218,12 @@ op_or
 id|PS2PP_NAV_BTN
 )brace
 comma
-multiline_comment|/* MX500 */
 (brace
 l_int|114
 comma
 id|PS2PP_KIND_MX
 comma
+multiline_comment|/* MX310 */
 id|PS2PP_WHEEL
 op_or
 id|PS2PP_SIDE_BTN
@@ -1219,7 +1233,6 @@ op_or
 id|PS2PP_EXTRA_BTN
 )brace
 comma
-multiline_comment|/* M310 */
 (brace
 )brace
 )brace
