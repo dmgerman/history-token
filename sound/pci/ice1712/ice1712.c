@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *   ALSA driver for ICEnsemble ICE1712 (Envy24)&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 multiline_comment|/*&n;  NOTES:&n;  - spdif nonaudio consumer mode does not work (at least with my&n;    Sony STR-DB830)&n;*/
-multiline_comment|/*&n; * Changes:&n; *&n; *  2002.09.09&t;Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&t;split the code to several files.  each low-level routine&n; *&t;is stored in the local file and called from registration&n; *&t;function from card_info struct.&n; *&n; *  2002.11.26&t;James Stafford &lt;jstafford@ampltd.com&gt;&n; *&t;Added support for VT1724 (Envy24HT)&n; *&t;I have left out support for 176.4 and 192 KHz for the moment. &n; *  I also haven&squot;t done anything with the internal S/PDIF transmitter or the MPU-401&n; *&n; *  2003.02.20  Taksahi Iwai &lt;tiwai@suse.de&gt;&n; *&t;Split vt1724 part to an independent driver.&n; *&t;The GPIO is accessed through the callback functions now.&n; */
+multiline_comment|/*&n; * Changes:&n; *&n; *  2002.09.09&t;Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&t;split the code to several files.  each low-level routine&n; *&t;is stored in the local file and called from registration&n; *&t;function from card_info struct.&n; *&n; *  2002.11.26&t;James Stafford &lt;jstafford@ampltd.com&gt;&n; *&t;Added support for VT1724 (Envy24HT)&n; *&t;I have left out support for 176.4 and 192 KHz for the moment. &n; *  I also haven&squot;t done anything with the internal S/PDIF transmitter or the MPU-401&n; *&n; *  2003.02.20  Taksahi Iwai &lt;tiwai@suse.de&gt;&n; *&t;Split vt1724 part to an independent driver.&n; *&t;The GPIO is accessed through the callback functions now.&n; *&n; * 2004.03.31 Doug McLain &lt;nostar@comcast.net&gt;&n; *    Added support for Event Electronics EZ8 card to hoontech.c.&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -96,22 +96,6 @@ id|omni
 (braket
 id|SNDRV_CARDS
 )braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-(paren
-id|SNDRV_CARDS
-op_minus
-l_int|1
-)paren
-)braket
-op_assign
-l_int|0
-)brace
 suffix:semicolon
 multiline_comment|/* Delta44 &amp; 66 Omni I/O support */
 DECL|variable|cs8427_timeout
@@ -139,6 +123,15 @@ l_int|500
 )brace
 suffix:semicolon
 multiline_comment|/* CS8427 S/PDIF transciever reset timeout value in msec */
+DECL|variable|ez8
+r_static
+r_int
+id|ez8
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
+multiline_comment|/* EZ8 card */
 DECL|variable|boot_devs
 r_static
 r_int
@@ -285,6 +278,36 @@ id|cs8427_timeout
 comma
 id|SNDRV_ENABLED
 l_string|&quot;, allows:{{1,1000}},default=500,skill:advanced&quot;
+)paren
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|ez8
+comma
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ez8
+comma
+l_string|&quot;Enable Event Electronics EZ8 support.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|ez8
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
+id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifndef PCI_VENDOR_ID_ICE
@@ -13701,6 +13724,9 @@ comma
 r_int
 id|cs8427_timeout
 comma
+r_int
+id|ez8
+comma
 id|ice1712_t
 op_star
 op_star
@@ -13840,6 +13866,15 @@ l_int|1000
 id|cs8427_timeout
 op_assign
 l_int|1000
+suffix:semicolon
+id|ice-&gt;ez8
+op_assign
+id|ez8
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 id|ice-&gt;cs8427_timeout
 op_assign
@@ -14544,6 +14579,11 @@ id|dev
 )braket
 comma
 id|cs8427_timeout
+(braket
+id|dev
+)braket
+comma
+id|ez8
 (braket
 id|dev
 )braket
