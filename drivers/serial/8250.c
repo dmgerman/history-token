@@ -69,6 +69,11 @@ multiline_comment|/*&n; * HUB6 is always on.  This will be removed once the head
 DECL|macro|CONFIG_HUB6
 mdefine_line|#define CONFIG_HUB6 1
 macro_line|#include &lt;asm/serial.h&gt;
+multiline_comment|/*&n; * SERIAL_PORT_DFNS tells us about built-in ports that have no&n; * standard enumeration mechanism.   Platforms that can find all&n; * serial ports via mechanisms like ACPI or PCI need not supply it.&n; */
+macro_line|#ifndef SERIAL_PORT_DFNS
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS
+macro_line|#endif
 DECL|variable|old_serial_port
 r_static
 r_struct
@@ -83,7 +88,7 @@ multiline_comment|/* defined in asm/serial.h */
 )brace
 suffix:semicolon
 DECL|macro|UART_NR
-mdefine_line|#define UART_NR&t;ARRAY_SIZE(old_serial_port)
+mdefine_line|#define UART_NR&t;(ARRAY_SIZE(old_serial_port) + CONFIG_SERIAL_8250_NR_UARTS)
 macro_line|#if defined(CONFIG_SERIAL_8250_RSA) &amp;&amp; defined(MODULE)
 DECL|macro|PORT_RSA_MAX
 mdefine_line|#define PORT_RSA_MAX 4
@@ -8780,7 +8785,12 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Serial: 8250/16550 driver $Revision: 1.90 $ &quot;
-l_string|&quot;IRQ sharing %sabled&bslash;n&quot;
+l_string|&quot;%d ports, IRQ sharing %sabled&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+id|UART_NR
 comma
 id|share_irqs
 ques
