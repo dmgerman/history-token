@@ -556,6 +556,7 @@ id|ULTRA_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|ultra_probe
 r_struct
 id|net_device
@@ -670,6 +671,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ultra_probe1
 r_static
 r_int

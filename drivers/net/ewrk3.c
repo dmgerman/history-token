@@ -578,6 +578,7 @@ suffix:semicolon
 multiline_comment|/*&n;   ** Miscellaneous defines...&n; */
 DECL|macro|INIT_EWRK3
 mdefine_line|#define INIT_EWRK3 {&bslash;&n;    outb(EEPROM_INIT, EWRK3_IOPR);&bslash;&n;    mdelay(1);&bslash;&n;}
+macro_line|#ifndef MODULE
 DECL|function|ewrk3_probe
 r_struct
 id|net_device
@@ -692,6 +693,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ewrk3_probe1
 r_static
 r_int

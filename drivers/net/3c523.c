@@ -2069,6 +2069,7 @@ id|ELMC_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|elmc_probe
 r_struct
 id|net_device
@@ -2188,6 +2189,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**********************************************&n; * init the chip (elmc-interrupt should be disabled?!)&n; * needs a correct &squot;allocated&squot; memory&n; */
 DECL|function|init586
 r_static

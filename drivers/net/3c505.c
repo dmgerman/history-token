@@ -6287,6 +6287,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|elplus_probe
 r_struct
 id|net_device
@@ -6378,7 +6379,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
+macro_line|#else
 DECL|variable|dev_3c505
 r_static
 r_struct

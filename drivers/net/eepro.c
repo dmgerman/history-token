@@ -966,6 +966,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|eepro_probe
 r_struct
 id|net_device
@@ -1093,6 +1094,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|printEEPROMInfo
 r_static
 r_void

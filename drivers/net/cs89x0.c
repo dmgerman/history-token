@@ -683,7 +683,6 @@ comma
 id|media_fn
 )paren
 suffix:semicolon
-macro_line|#endif
 "&f;"
 multiline_comment|/* Check for a network adaptor of this type, and return &squot;0&squot; iff one exists.&n;   If dev-&gt;base_addr == 0, probe all likely locations.&n;   If dev-&gt;base_addr == 1, always return failure.&n;   If dev-&gt;base_addr == 2, allocate space for the device and return success&n;   (detachable devices only).&n;   Return 0 on success.&n;   */
 DECL|function|cs89x0_probe
@@ -939,6 +938,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|readreg

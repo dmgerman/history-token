@@ -396,6 +396,7 @@ id|E21_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|e2100_probe
 r_struct
 id|net_device
@@ -510,6 +511,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|e21_probe1
 r_static
 r_int

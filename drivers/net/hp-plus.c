@@ -467,6 +467,7 @@ id|HP_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|hp_plus_probe
 r_struct
 id|net_device
@@ -581,6 +582,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Do the interesting part of the probe at a single address. */
 DECL|function|hpp_probe1
 r_static

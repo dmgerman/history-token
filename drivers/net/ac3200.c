@@ -415,6 +415,7 @@ id|dev-&gt;mem_start
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|ac3200_probe
 r_struct
 id|net_device
@@ -529,6 +530,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ac_probe1
 r_static
 r_int
