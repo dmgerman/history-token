@@ -1542,6 +1542,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
+macro_line|#ifdef CONFIG_XFRM
 id|secpath_put
 c_func
 (paren
@@ -1552,6 +1553,7 @@ id|skb-&gt;sp
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;nh.raw
