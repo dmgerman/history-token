@@ -205,6 +205,7 @@ id|irq
 suffix:semicolon
 DECL|member|mmio
 r_void
+id|__iomem
 op_star
 id|mmio
 suffix:semicolon
@@ -320,27 +321,37 @@ id|sram_virt
 suffix:semicolon
 multiline_comment|/* Shared memory base address */
 DECL|member|init_srb
-id|__u32
+r_void
+id|__iomem
+op_star
 id|init_srb
 suffix:semicolon
 multiline_comment|/* Initial System Request Block address */
 DECL|member|srb
-id|__u32
+r_void
+id|__iomem
+op_star
 id|srb
 suffix:semicolon
 multiline_comment|/* System Request Block address */
 DECL|member|ssb
-id|__u32
+r_void
+id|__iomem
+op_star
 id|ssb
 suffix:semicolon
 multiline_comment|/* System Status Block address */
 DECL|member|arb
-id|__u32
+r_void
+id|__iomem
+op_star
 id|arb
 suffix:semicolon
 multiline_comment|/* Adapter Request Block address */
 DECL|member|asb
-id|__u32
+r_void
+id|__iomem
+op_star
 id|asb
 suffix:semicolon
 multiline_comment|/* Adapter Status Block address */

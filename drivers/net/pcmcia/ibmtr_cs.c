@@ -1434,10 +1434,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ti-&gt;mmio
 )paren
 suffix:semicolon
