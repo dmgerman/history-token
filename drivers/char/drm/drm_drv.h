@@ -2527,9 +2527,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#if __HAVE_CTX_BITMAP
 r_int
 id|retcode
 suffix:semicolon
+macro_line|#endif
 id|DRM_DEBUG
 c_func
 (paren
