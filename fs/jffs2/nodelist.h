@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.93 2003/02/24 21:47:28 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.104 2003/10/08 11:45:11 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -16,7 +16,7 @@ macro_line|#include &quot;os-linux.h&quot;
 macro_line|#endif
 macro_line|#ifndef CONFIG_JFFS2_FS_DEBUG
 DECL|macro|CONFIG_JFFS2_FS_DEBUG
-mdefine_line|#define CONFIG_JFFS2_FS_DEBUG 2
+mdefine_line|#define CONFIG_JFFS2_FS_DEBUG 1
 macro_line|#endif
 macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt; 0
 DECL|macro|D1
@@ -362,27 +362,101 @@ singleline_comment|// MAYBE&t;struct jffs2_raw_node_ref_list *deletia;
 )brace
 suffix:semicolon
 DECL|macro|ACCT_SANITY_CHECK
-mdefine_line|#define ACCT_SANITY_CHECK(c, jeb) do { &bslash;&n;&t;if (jeb-&gt;used_size + jeb-&gt;dirty_size + jeb-&gt;free_size + jeb-&gt;wasted_size + jeb-&gt;unchecked_size != c-&gt;sector_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting for block at 0x%08x is screwed&bslash;n&quot;, jeb-&gt;offset); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x + wasted %08x + unchecked %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;jeb-&gt;free_size, jeb-&gt;dirty_size, jeb-&gt;used_size, jeb-&gt;wasted_size, jeb-&gt;unchecked_size, c-&gt;sector_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;&t;if (c-&gt;used_size + c-&gt;dirty_size + c-&gt;free_size + c-&gt;erasing_size + c-&gt;bad_size + c-&gt;wasted_size + c-&gt;unchecked_size != c-&gt;flash_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting superblock info is screwed&bslash;n&quot;); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x + erasing %08x + bad %08x + wasted %08x + unchecked %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;c-&gt;free_size, c-&gt;dirty_size, c-&gt;used_size, c-&gt;erasing_size, c-&gt;bad_size, c-&gt;wasted_size, c-&gt;unchecked_size, c-&gt;flash_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;} while(0)
+mdefine_line|#define ACCT_SANITY_CHECK(c, jeb) do { &bslash;&n;&t;&t;struct jffs2_eraseblock *___j = jeb; &bslash;&n;&t;&t;if ((___j) &amp;&amp; ___j-&gt;used_size + ___j-&gt;dirty_size + ___j-&gt;free_size + ___j-&gt;wasted_size + ___j-&gt;unchecked_size != c-&gt;sector_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting for block at 0x%08x is screwed&bslash;n&quot;, ___j-&gt;offset); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x + wasted %08x + unchecked %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;___j-&gt;free_size, ___j-&gt;dirty_size, ___j-&gt;used_size, ___j-&gt;wasted_size, ___j-&gt;unchecked_size, c-&gt;sector_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;&t;if (c-&gt;used_size + c-&gt;dirty_size + c-&gt;free_size + c-&gt;erasing_size + c-&gt;bad_size + c-&gt;wasted_size + c-&gt;unchecked_size != c-&gt;flash_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting superblock info is screwed&bslash;n&quot;); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x + erasing %08x + bad %08x + wasted %08x + unchecked %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;c-&gt;free_size, c-&gt;dirty_size, c-&gt;used_size, c-&gt;erasing_size, c-&gt;bad_size, c-&gt;wasted_size, c-&gt;unchecked_size, c-&gt;flash_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;} while(0)
+DECL|function|paranoia_failed_dump
+r_static
+r_inline
+r_void
+id|paranoia_failed_dump
+c_func
+(paren
+r_struct
+id|jffs2_eraseblock
+op_star
+id|jeb
+)paren
+(brace
+r_struct
+id|jffs2_raw_node_ref
+op_star
+id|ref
+suffix:semicolon
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|ref
+op_assign
+id|jeb-&gt;first_node
+suffix:semicolon
+id|ref
+suffix:semicolon
+id|ref
+op_assign
+id|ref-&gt;next_phys
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%08x-&gt;&quot;
+comma
+id|ref_offset
+c_func
+(paren
+id|ref
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|i
+op_eq
+l_int|8
+)paren
+(brace
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+id|KERN_NOTICE
+)paren
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 DECL|macro|ACCT_PARANOIA_CHECK
-mdefine_line|#define ACCT_PARANOIA_CHECK(jeb) do { &bslash;&n;&t;&t;uint32_t my_used_size = 0; &bslash;&n;&t;&t;uint32_t my_unchecked_size = 0; &bslash;&n;&t;&t;struct jffs2_raw_node_ref *ref2 = jeb-&gt;first_node; &bslash;&n;&t;&t;while (ref2) { &bslash;&n;&t;&t;&t;if (ref_flags(ref2) == REF_UNCHECKED) &bslash;&n;&t;&t;&t;&t;my_unchecked_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;else if (!ref_obsolete(ref2)) &bslash;&n;&t;&t;&t;&t;my_used_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;ref2 = ref2-&gt;next_phys; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_used_size != jeb-&gt;used_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated used size %08x != stored used size %08x&bslash;n&quot;, my_used_size, jeb-&gt;used_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_unchecked_size != jeb-&gt;unchecked_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated unchecked size %08x != stored unchecked size %08x&bslash;n&quot;, my_unchecked_size, jeb-&gt;unchecked_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while(0)
+mdefine_line|#define ACCT_PARANOIA_CHECK(jeb) do { &bslash;&n;&t;&t;uint32_t my_used_size = 0; &bslash;&n;&t;&t;uint32_t my_unchecked_size = 0; &bslash;&n;&t;&t;struct jffs2_raw_node_ref *ref2 = jeb-&gt;first_node; &bslash;&n;&t;&t;while (ref2) { &bslash;&n;&t;&t;&t;if (unlikely(ref2-&gt;flash_offset &lt; jeb-&gt;offset || &bslash;&n;&t;&t;&t;&t;     ref2-&gt;flash_offset &gt; jeb-&gt;offset + c-&gt;sector_size)) { &bslash;&n;&t;&t;&t;&t;printk(KERN_NOTICE &quot;Node %08x shouldn&squot;t be in block at %08x!&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;       ref_offset(ref2), jeb-&gt;offset); &bslash;&n;&t;&t;&t;&t;paranoia_failed_dump(jeb); &bslash;&n;&t;&t;&t;&t;BUG(); &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;&t;if (ref_flags(ref2) == REF_UNCHECKED) &bslash;&n;&t;&t;&t;&t;my_unchecked_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;else if (!ref_obsolete(ref2)) &bslash;&n;&t;&t;&t;&t;my_used_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;if (unlikely((!ref2-&gt;next_phys) != (ref2 == jeb-&gt;last_node))) { &bslash;&n;&t;&t;&t;&t;printk(&quot;ref for node at %p (phys %08x) has next_phys-&gt;%p (%08x), last_node-&gt;%p (phys %08x)&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;       ref2, ref_offset(ref2), ref2-&gt;next_phys, ref_offset(ref2-&gt;next_phys), &bslash;&n;&t;&t;&t;&t;       jeb-&gt;last_node, ref_offset(jeb-&gt;last_node)); &bslash;&n;&t;&t;&t;&t;paranoia_failed_dump(jeb); &bslash;&n;&t;&t;&t;&t;BUG(); &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;&t;ref2 = ref2-&gt;next_phys; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_used_size != jeb-&gt;used_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated used size %08x != stored used size %08x&bslash;n&quot;, my_used_size, jeb-&gt;used_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_unchecked_size != jeb-&gt;unchecked_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated unchecked size %08x != stored unchecked size %08x&bslash;n&quot;, my_unchecked_size, jeb-&gt;unchecked_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while(0)
 DECL|macro|ALLOC_NORMAL
 mdefine_line|#define ALLOC_NORMAL&t;0&t;/* Normal allocation */
 DECL|macro|ALLOC_DELETION
 mdefine_line|#define ALLOC_DELETION&t;1&t;/* Deletion node. Best to allow it */
 DECL|macro|ALLOC_GC
 mdefine_line|#define ALLOC_GC&t;2&t;/* Space requested for GC. Give it or die */
-DECL|macro|JFFS2_RESERVED_BLOCKS_BASE
-mdefine_line|#define JFFS2_RESERVED_BLOCKS_BASE 3&t;&t;&t;&t;&t;&t;/* Number of free blocks there must be before we... */
-DECL|macro|JFFS2_RESERVED_BLOCKS_WRITE
-mdefine_line|#define JFFS2_RESERVED_BLOCKS_WRITE (JFFS2_RESERVED_BLOCKS_BASE + 2)&t;&t;/* ... allow a normal filesystem write */
-DECL|macro|JFFS2_RESERVED_BLOCKS_DELETION
-mdefine_line|#define JFFS2_RESERVED_BLOCKS_DELETION (JFFS2_RESERVED_BLOCKS_BASE)&t;&t;/* ... allow a normal filesystem deletion */
-DECL|macro|JFFS2_RESERVED_BLOCKS_GCTRIGGER
-mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCTRIGGER (JFFS2_RESERVED_BLOCKS_BASE + 3)&t;/* ... wake up the GC thread */
-DECL|macro|JFFS2_RESERVED_BLOCKS_GCBAD
-mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCBAD (JFFS2_RESERVED_BLOCKS_BASE + 1)&t;&t;/* ... pick a block from the bad_list to GC */
-DECL|macro|JFFS2_RESERVED_BLOCKS_GCMERGE
-mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCMERGE (JFFS2_RESERVED_BLOCKS_BASE)&t;&t;/* ... merge pages when garbage collecting */
+DECL|macro|ALLOC_NORETRY
+mdefine_line|#define ALLOC_NORETRY&t;3&t;/* For jffs2_write_dnode: On failure, return -EAGAIN instead of retrying */
 multiline_comment|/* How much dirty space before it goes on the very_dirty_list */
 DECL|macro|VERYDIRTY
 mdefine_line|#define VERYDIRTY(c, size) ((size) &gt;= ((c)-&gt;sector_size / 2))
@@ -913,9 +987,8 @@ comma
 r_uint32
 id|flash_ofs
 comma
-r_uint32
-op_star
-id|writelen
+r_int
+id|alloc_mode
 )paren
 suffix:semicolon
 r_struct
@@ -951,9 +1024,8 @@ comma
 r_uint32
 id|flash_ofs
 comma
-r_uint32
-op_star
-id|writelen
+r_int
+id|alloc_mode
 )paren
 suffix:semicolon
 r_int
@@ -1532,7 +1604,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_JFFS2_FS_NAND
 multiline_comment|/* wbuf.c */
 r_int
-id|jffs2_flush_wbuf
+id|jffs2_flush_wbuf_gc
 c_func
 (paren
 r_struct
@@ -1540,8 +1612,18 @@ id|jffs2_sb_info
 op_star
 id|c
 comma
+r_uint32
+id|ino
+)paren
+suffix:semicolon
 r_int
-id|pad
+id|jffs2_flush_wbuf_pad
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
 )paren
 suffix:semicolon
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: jffs2.h,v 1.30 2003/02/15 00:15:22 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: jffs2.h,v 1.31 2003/10/04 08:33:05 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __LINUX_JFFS2_H__
 DECL|macro|__LINUX_JFFS2_H__
 mdefine_line|#define __LINUX_JFFS2_H__
