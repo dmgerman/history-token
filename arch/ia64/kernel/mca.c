@@ -1162,11 +1162,15 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-op_star
 id|dst_banked
+(braket
+id|i
+)braket
 op_assign
-op_star
 id|src_banked
+(braket
+id|i
+)braket
 suffix:semicolon
 id|pt-&gt;b0
 op_assign

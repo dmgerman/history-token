@@ -1259,12 +1259,54 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
+r_int
+id|__init
+DECL|function|decay
+id|decay
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_int
+id|ticks
+suffix:semicolon
+id|get_option
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|ticks
+)paren
+suffix:semicolon
+id|cache_decay_ticks
+op_assign
+id|ticks
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;decay=&quot;
+comma
+id|decay
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * # of ticks an idle task is considered cache-hot.  Highly application-dependent.  There&n; * are apps out there which are known to suffer significantly with values &gt;= 4.&n; */
 DECL|variable|cache_decay_ticks
 r_int
 r_int
 id|cache_decay_ticks
+op_assign
+l_int|10
 suffix:semicolon
-multiline_comment|/* # of ticks an idle task is considered cache-hot */
+multiline_comment|/* equal to MIN_TIMESLICE */
 r_static
 r_void
 DECL|function|smp_tune_scheduling
@@ -1273,11 +1315,6 @@ id|smp_tune_scheduling
 r_void
 )paren
 (brace
-id|cache_decay_ticks
-op_assign
-l_int|10
-suffix:semicolon
-multiline_comment|/* XXX base this on PAL info and cache-bandwidth estimate */
 id|printk
 c_func
 (paren

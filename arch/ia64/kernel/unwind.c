@@ -3282,6 +3282,7 @@ OL
 (paren
 r_int
 )paren
+(paren
 r_sizeof
 (paren
 id|unw.save_order
@@ -3293,6 +3294,7 @@ id|unw.save_order
 (braket
 l_int|0
 )braket
+)paren
 )paren
 suffix:semicolon
 op_increment
@@ -3347,7 +3349,6 @@ id|cp
 op_assign
 id|sr-&gt;imask
 suffix:semicolon
-r_int
 r_int
 id|t
 suffix:semicolon
@@ -9323,7 +9324,7 @@ comma
 r_int
 r_int
 )paren
-id|task
+id|t
 comma
 id|rbslimit
 comma
@@ -9410,6 +9411,16 @@ op_assign
 op_amp
 id|pt-&gt;cr_ifs
 suffix:semicolon
+id|info-&gt;unat_loc
+op_assign
+op_amp
+id|pt-&gt;ar_unat
+suffix:semicolon
+id|info-&gt;pfs_loc
+op_assign
+op_amp
+id|pt-&gt;ar_pfs
+suffix:semicolon
 id|sof
 op_assign
 op_star
@@ -9466,6 +9477,8 @@ l_string|&quot;unwind.%s:&bslash;n&quot;
 l_string|&quot;  bsp    0x%lx&bslash;n&quot;
 l_string|&quot;  sof    0x%lx&bslash;n&quot;
 l_string|&quot;  ip     0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|info-&gt;bsp
 comma
@@ -9576,6 +9589,8 @@ l_string|&quot;unwind.%s:&bslash;n&quot;
 l_string|&quot;  bsp    0x%lx&bslash;n&quot;
 l_string|&quot;  sol    0x%lx&bslash;n&quot;
 l_string|&quot;  ip     0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|info-&gt;bsp
 comma

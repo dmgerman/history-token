@@ -23,17 +23,153 @@ DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED&t;&t;&t;(spinlock_t) { 0 }
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)&t;&t;&t;((x)-&gt;lock = 0)
-DECL|macro|DEBUG_SPIN_LOCK
-mdefine_line|#define DEBUG_SPIN_LOCK&t;0
-macro_line|#if DEBUG_SPIN_LOCK
-macro_line|#include &lt;ia64intrin.h&gt;
-DECL|macro|_raw_spin_lock
-mdefine_line|#define _raw_spin_lock(x)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _timeout = 1000000000;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;volatile unsigned int _old = 0, _new = 1, *_ptr = &amp;((x)-&gt;lock);&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (_timeout-- == 0) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;extern void dump_stack (void);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;kernel DEADLOCK at %s:%d?&bslash;n&quot;, __FILE__, __LINE__);&t;&bslash;&n;&t;&t;&t;dump_stack();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (__sync_val_compare_and_swap(_ptr, _old, _new) != _old);&t;&t;&bslash;&n;} while (0)
+DECL|macro|NEW_LOCK
+mdefine_line|#define NEW_LOCK
+macro_line|#ifdef NEW_LOCK
+multiline_comment|/*&n; * Try to get the lock.  If we fail to get the lock, make a non-standard call to&n; * ia64_spinlock_contention().  We do not use a normal call because that would force all&n; * callers of spin_lock() to be non-leaf routines.  Instead, ia64_spinlock_contention() is&n; * carefully coded to touch only those registers that spin_lock() marks &quot;clobbered&quot;.&n; */
+DECL|macro|IA64_SPINLOCK_CLOBBERS
+mdefine_line|#define IA64_SPINLOCK_CLOBBERS &quot;ar.pfs&quot;, &quot;p14&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;b6&quot;, &quot;memory&quot;
+r_static
+r_inline
+r_void
+DECL|function|_raw_spin_lock
+id|_raw_spin_lock
+(paren
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+r_register
+r_volatile
+r_int
+r_int
+op_star
+id|ptr
+id|asm
+(paren
+l_string|&quot;r31&quot;
+)paren
+op_assign
+op_amp
+id|lock-&gt;lock
+suffix:semicolon
+macro_line|#if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+macro_line|# ifdef CONFIG_ITANIUM
+multiline_comment|/* don&squot;t use brl on Itanium... */
+id|asm
+r_volatile
+(paren
+l_string|&quot;{&bslash;n&bslash;t&quot;
+l_string|&quot;  mov ar.ccv = r0&bslash;n&bslash;t&quot;
+l_string|&quot;  mov r28 = ip&bslash;n&bslash;t&quot;
+l_string|&quot;  mov r30 = 1;;&bslash;n&bslash;t&quot;
+l_string|&quot;}&bslash;n&bslash;t&quot;
+l_string|&quot;cmpxchg4.acq r30 = [%1], r30, ar.ccv&bslash;n&bslash;t&quot;
+l_string|&quot;movl r29 = ia64_spinlock_contention_pre3_4;;&bslash;n&bslash;t&quot;
+l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
+l_string|&quot;mov b6 = r29;;&bslash;n&quot;
+l_string|&quot;(p14) br.cond.spnt.many b6&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+id|IA64_SPINLOCK_CLOBBERS
+)paren
+suffix:semicolon
+macro_line|# else
+id|asm
+r_volatile
+(paren
+l_string|&quot;{&bslash;n&bslash;t&quot;
+l_string|&quot;  mov ar.ccv = r0&bslash;n&bslash;t&quot;
+l_string|&quot;  mov r28 = ip&bslash;n&bslash;t&quot;
+l_string|&quot;  mov r30 = 1;;&bslash;n&bslash;t&quot;
+l_string|&quot;}&bslash;n&bslash;t&quot;
+l_string|&quot;cmpxchg4.acq r30 = [%1], r30, ar.ccv;;&bslash;n&bslash;t&quot;
+l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&quot;
+l_string|&quot;(p14) brl.cond.spnt.many ia64_spinlock_contention_pre3_4&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+id|IA64_SPINLOCK_CLOBBERS
+)paren
+suffix:semicolon
+macro_line|# endif /* CONFIG_MCKINLEY */
 macro_line|#else
+macro_line|# ifdef CONFIG_ITANIUM
+multiline_comment|/* don&squot;t use brl on Itanium... */
+multiline_comment|/* mis-declare, so we get the entry-point, not it&squot;s function descriptor: */
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov r30 = 1&bslash;n&bslash;t&quot;
+l_string|&quot;mov ar.ccv = r0;;&bslash;n&bslash;t&quot;
+l_string|&quot;cmpxchg4.acq r30 = [%0], r30, ar.ccv&bslash;n&bslash;t&quot;
+l_string|&quot;movl r29 = ia64_spinlock_contention;;&bslash;n&bslash;t&quot;
+l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
+l_string|&quot;mov b6 = r29;;&bslash;n&quot;
+l_string|&quot;(p14) br.call.spnt.many b6 = b6&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+id|IA64_SPINLOCK_CLOBBERS
+)paren
+suffix:semicolon
+macro_line|# else
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov r30 = 1&bslash;n&bslash;t&quot;
+l_string|&quot;mov ar.ccv = r0;;&bslash;n&bslash;t&quot;
+l_string|&quot;cmpxchg4.acq r30 = [%0], r30, ar.ccv;;&bslash;n&bslash;t&quot;
+l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
+l_string|&quot;(p14) brl.call.spnt.many b6=ia64_spinlock_contention&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|ptr
+)paren
+suffix:colon
+id|IA64_SPINLOCK_CLOBBERS
+)paren
+suffix:semicolon
+macro_line|# endif /* CONFIG_MCKINLEY */
+macro_line|#endif
+)brace
+macro_line|#else /* !NEW_LOCK */
 multiline_comment|/*&n; * Streamlined test_and_set_bit(0, (x)).  We use test-and-test-and-set&n; * rather than a simple xchg to avoid writing the cache-line when&n; * there is contention.&n; */
 DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(x) __asm__ __volatile__ (&t;&t;&bslash;&n;&t;&quot;mov ar.ccv = r0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov r29 = 1&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ld4.bias r2 = [%0]&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;cmp4.eq p0,p7 = r0,r2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;(p7) br.cond.spnt.few 1b &bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;cmpxchg4.acq r2 = [%0], r29, ar.ccv&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;cmp4.eq p0,p7 = r0, r2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;(p7) br.cond.spnt.few 1b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:: &quot;r&quot;(&amp;(x)-&gt;lock) : &quot;ar.ccv&quot;, &quot;p7&quot;, &quot;r2&quot;, &quot;r29&quot;, &quot;memory&quot;)
-macro_line|#endif /* !DEBUG_SPIN_LOCK */
+macro_line|#endif /* !NEW_LOCK */
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|_raw_spin_unlock
