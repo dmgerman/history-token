@@ -520,9 +520,7 @@ id|data
 comma
 id|size
 comma
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 )brace
@@ -573,9 +571,7 @@ id|data
 comma
 id|size
 comma
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 )brace
