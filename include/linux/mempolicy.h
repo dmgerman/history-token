@@ -28,7 +28,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/bitmap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 r_struct
 id|vm_area_struct
 suffix:semicolon
@@ -317,10 +317,9 @@ r_struct
 id|rb_root
 id|root
 suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -341,11 +340,11 @@ id|info-&gt;root
 op_assign
 id|RB_ROOT
 suffix:semicolon
-id|init_MUTEX
+id|spin_lock_init
 c_func
 (paren
 op_amp
-id|info-&gt;sem
+id|info-&gt;lock
 )paren
 suffix:semicolon
 )brace
