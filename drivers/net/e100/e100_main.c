@@ -2912,13 +2912,29 @@ id|bdp-&gt;device-&gt;name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Disabling all WOLs as initialization */
 id|bdp-&gt;wolsupported
 op_assign
+l_int|0
+suffix:semicolon
 id|bdp-&gt;wolopts
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Check if WoL is enabled on EEPROM */
+r_if
+c_cond
+(paren
+id|e100_eeprom_read
+c_func
+(paren
+id|bdp
+comma
+id|EEPROM_ID_WORD
+)paren
+op_amp
+id|BIT_5
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2926,7 +2942,6 @@ id|bdp-&gt;rev_id
 op_ge
 id|D101A4_REV_ID
 )paren
-(brace
 id|bdp-&gt;wolsupported
 op_assign
 id|WAKE_PHY
@@ -2946,6 +2961,8 @@ id|WAKE_UCAST
 op_or
 id|WAKE_ARP
 suffix:semicolon
+multiline_comment|/* Magic Packet WoL is enabled on device by default */
+multiline_comment|/* if EEPROM WoL bit is TRUE                        */
 id|bdp-&gt;wolopts
 op_assign
 id|WAKE_MAGIC
@@ -15776,13 +15793,7 @@ comma
 id|bdp-&gt;pci_state
 )paren
 suffix:semicolon
-multiline_comment|/* If wol is enabled */
-r_if
-c_cond
-(paren
-id|bdp-&gt;wolopts
-)paren
-(brace
+multiline_comment|/* Enable or disable WoL */
 id|e100_do_wol
 c_func
 (paren
@@ -15791,6 +15802,13 @@ comma
 id|bdp
 )paren
 suffix:semicolon
+multiline_comment|/* If wol is enabled */
+r_if
+c_cond
+(paren
+id|bdp-&gt;wolopts
+)paren
+(brace
 id|pci_enable_wake
 c_func
 (paren
