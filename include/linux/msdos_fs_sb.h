@@ -93,12 +93,6 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* create escape sequences for unhandled Unicode */
-DECL|member|posixfs
-id|posixfs
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Allow names like makefile and Makefile to coexist */
 DECL|member|numtail
 id|numtail
 suffix:colon

@@ -988,8 +988,6 @@ id|opts-&gt;utf8
 op_assign
 id|opts-&gt;unicode_xlate
 op_assign
-id|opts-&gt;posixfs
-op_assign
 l_int|0
 suffix:semicolon
 id|opts-&gt;numtail
@@ -2039,25 +2037,12 @@ l_string|&quot;posix&quot;
 )paren
 )paren
 (brace
-id|ret
-op_assign
-id|simple_getbool
+id|printk
 c_func
 (paren
-id|value
-comma
-op_amp
-id|val
+l_string|&quot;FAT: posix option is obsolete, &quot;
+l_string|&quot;not supported now&bslash;n&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-id|opts-&gt;posixfs
-op_assign
-id|val
 suffix:semicolon
 )brace
 r_else
@@ -2224,15 +2209,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|opts-&gt;posixfs
-)paren
-id|opts-&gt;name_check
-op_assign
-l_char|&squot;s&squot;
-suffix:semicolon
 r_if
 c_cond
 (paren
