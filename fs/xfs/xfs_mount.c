@@ -4930,13 +4930,13 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|XFS_BUF_TARGET_DEV
+id|XFS_BUF_TARGET
 c_func
 (paren
 id|sbp
 )paren
 op_eq
-id|mp-&gt;m_dev
+id|mp-&gt;m_ddev_targp
 )paren
 suffix:semicolon
 id|xfsbdstrat

@@ -274,6 +274,8 @@ mdefine_line|#define XFS_BUF_V_IODONESEMA(bp) up(&amp;bp-&gt;pb_iodonesema);
 multiline_comment|/* setup the buffer target from a buftarg structure */
 DECL|macro|XFS_BUF_SET_TARGET
 mdefine_line|#define XFS_BUF_SET_TARGET(bp, target)&t;&bslash;&n;&t;(bp)-&gt;pb_target = (target)
+DECL|macro|XFS_BUF_TARGET
+mdefine_line|#define XFS_BUF_TARGET(bp)&t;((bp)-&gt;pb_target)
 DECL|macro|XFS_BUF_TARGET_DEV
 mdefine_line|#define XFS_BUF_TARGET_DEV(bp)&t;((bp)-&gt;pb_target-&gt;pbr_dev)
 DECL|macro|XFS_BUF_SET_VTYPE_REF
