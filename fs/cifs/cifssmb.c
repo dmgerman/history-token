@@ -2542,6 +2542,18 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* tcon and ses pointer are checked in smb_init */
+r_if
+c_cond
+(paren
+id|tcon-&gt;ses-&gt;server
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ECONNABORTED
+suffix:semicolon
 id|pSMB-&gt;AndXCommand
 op_assign
 l_int|0xFF
@@ -2872,6 +2884,18 @@ id|rc
 )paren
 r_return
 id|rc
+suffix:semicolon
+multiline_comment|/* tcon and ses pointer are checked in smb_init */
+r_if
+c_cond
+(paren
+id|tcon-&gt;ses-&gt;server
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ECONNABORTED
 suffix:semicolon
 id|pSMB-&gt;AndXCommand
 op_assign

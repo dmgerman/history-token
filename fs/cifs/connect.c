@@ -982,12 +982,25 @@ c_func
 l_int|1
 comma
 (paren
-id|KERN_ERR
 l_string|&quot;Invalid size or format for SMB found with length %d and pdu_lenght %d&quot;
 comma
 id|length
 comma
 id|pdu_length
+)paren
+)paren
+suffix:semicolon
+id|cifs_dump_mem
+c_func
+(paren
+l_string|&quot;Received Data is: &quot;
+comma
+id|temp
+comma
+r_sizeof
+(paren
+r_struct
+id|smb_hdr
 )paren
 )paren
 suffix:semicolon
