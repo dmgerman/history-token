@@ -4905,11 +4905,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-DECL|function|snd_cs4281_gameport
+DECL|function|snd_cs4281_create_gameport
 r_static
 r_inline
 r_int
-id|snd_cs4281_gameport
+id|snd_cs4281_create_gameport
 c_func
 (paren
 id|cs4281_t
@@ -4922,11 +4922,11 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
-DECL|function|snd_cs4281_gameport_free
+DECL|function|snd_cs4281_free_gameport
 r_static
 r_inline
 r_void
-id|snd_cs4281_gameport_free
+id|snd_cs4281_free_gameport
 c_func
 (paren
 id|cs4281_t
