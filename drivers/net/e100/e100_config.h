@@ -167,6 +167,17 @@ id|bdp
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|e100_config_init_82557
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
+r_extern
 r_int
 r_char
 id|e100_force_config
