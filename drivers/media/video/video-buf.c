@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB as&n; * data often must be uncompressed by the drivers).&n; * &n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB 1.1&n; * as data often must be uncompressed by the drivers).&n; * &n; * (c) 2001-2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -2464,6 +2464,30 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|q-&gt;streaming
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|q-&gt;stream
+)paren
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -2858,6 +2882,27 @@ id|buf-&gt;bsize
 )paren
 r_goto
 id|done
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|STATE_NEEDS_INIT
+op_ne
+id|buf-&gt;state
+op_logical_and
+id|buf-&gt;baddr
+op_ne
+id|b-&gt;m.userptr
+)paren
+id|q-&gt;ops
+op_member_access_from_pointer
+id|buf_release
+c_func
+(paren
+id|file
+comma
+id|buf
+)paren
 suffix:semicolon
 id|buf-&gt;baddr
 op_assign
@@ -5339,7 +5384,6 @@ multiline_comment|/* nothing */
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 id|dprintk
 c_func

@@ -39,34 +39,6 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-r_int
-id|videobuf_lock
-c_func
-(paren
-r_struct
-id|page
-op_star
-op_star
-id|pages
-comma
-r_int
-id|nr_pages
-)paren
-suffix:semicolon
-r_int
-id|videobuf_unlock
-c_func
-(paren
-r_struct
-id|page
-op_star
-op_star
-id|pages
-comma
-r_int
-id|nr_pages
-)paren
-suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * A small set of helper functions to manage buffers (both userland&n; * and kernel) for DMA.&n; *&n; * videobuf_dma_init_*()&n; *&t;creates a buffer.  The userland version takes a userspace&n; *&t;pointer + length.  The kernel version just wants the size and&n; *&t;does memory allocation too using vmalloc_32().&n; *&n; * videobuf_dma_pci_*()&n; *&t;see Documentation/DMA-mapping.txt, these functions to&n; *&t;basically the same.  The map function does also build a&n; *&t;scatterlist for the buffer (and unmap frees it ...)&n; *&n; * videobuf_dma_free()&n; *&t;no comment ...&n; *&n; */
 DECL|struct|videobuf_dmabuf
