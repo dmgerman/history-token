@@ -1148,18 +1148,28 @@ DECL|macro|AGP_MINOR_VERSION_SHIFT
 mdefine_line|#define AGP_MINOR_VERSION_SHIFT&t;(16)
 DECL|macro|AGPSTAT_RQ_DEPTH
 mdefine_line|#define AGPSTAT_RQ_DEPTH&t;(0xff000000)
+DECL|macro|AGPSTAT_CAL_MASK
+mdefine_line|#define AGPSTAT_CAL_MASK&t;(1&lt;&lt;12|1&lt;&lt;11|1&lt;&lt;10)
+DECL|macro|AGPSTAT_ARQSZ
+mdefine_line|#define AGPSTAT_ARQSZ&t;&t;(1&lt;&lt;15|1&lt;&lt;14|1&lt;&lt;13)
 DECL|macro|AGPSTAT_ARQSZ_SHIFT
 mdefine_line|#define AGPSTAT_ARQSZ_SHIFT&t;13
 DECL|macro|AGPSTAT_AGP_ENABLE
 mdefine_line|#define AGPSTAT_AGP_ENABLE&t;(1&lt;&lt;8)
 DECL|macro|AGPSTAT_SBA
 mdefine_line|#define AGPSTAT_SBA&t;&t;(1&lt;&lt;9)
+DECL|macro|AGPSTAT_MODE_3_0
+mdefine_line|#define AGPSTAT_MODE_3_0&t;(1&lt;&lt;3)
 DECL|macro|AGPSTAT2_1X
 mdefine_line|#define AGPSTAT2_1X&t;&t;(1&lt;&lt;0)
 DECL|macro|AGPSTAT2_2X
 mdefine_line|#define AGPSTAT2_2X&t;&t;(1&lt;&lt;1)
 DECL|macro|AGPSTAT2_4X
 mdefine_line|#define AGPSTAT2_4X&t;&t;(1&lt;&lt;2)
+DECL|macro|AGPSTAT3_8X
+mdefine_line|#define AGPSTAT3_8X&t;&t;(1&lt;&lt;1)
+DECL|macro|AGPSTAT3_4X
+mdefine_line|#define AGPSTAT3_4X&t;&t;(1)
 DECL|macro|AGPSTAT_FW
 mdefine_line|#define AGPSTAT_FW&t;&t;(1&lt;&lt;4)
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
