@@ -2747,7 +2747,11 @@ id|ED_UNLINK
 suffix:semicolon
 id|ed-&gt;hwINFO
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 id|ED_DEQUEUE
+)paren
 suffix:semicolon
 id|ed_deschedule
 (paren

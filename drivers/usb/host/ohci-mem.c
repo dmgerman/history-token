@@ -421,7 +421,11 @@ c_cond
 (paren
 id|td-&gt;hwINFO
 op_amp
+id|cpu_to_le32
+c_func
+(paren
 id|TD_DONE
+)paren
 )paren
 op_ne
 l_int|0

@@ -12,18 +12,18 @@ suffix:semicolon
 multiline_comment|/* endpoint config bitmap */
 multiline_comment|/* info bits defined by hcd */
 DECL|macro|ED_DEQUEUE
-mdefine_line|#define ED_DEQUEUE&t;__constant_cpu_to_le32(1 &lt;&lt; 27)
+mdefine_line|#define ED_DEQUEUE&t;(1 &lt;&lt; 27)
 multiline_comment|/* info bits defined by the hardware */
 DECL|macro|ED_ISO
-mdefine_line|#define ED_ISO&t;&t;__constant_cpu_to_le32(1 &lt;&lt; 15)
+mdefine_line|#define ED_ISO&t;&t;(1 &lt;&lt; 15)
 DECL|macro|ED_SKIP
-mdefine_line|#define ED_SKIP&t;&t;__constant_cpu_to_le32(1 &lt;&lt; 14)
+mdefine_line|#define ED_SKIP&t;&t;(1 &lt;&lt; 14)
 DECL|macro|ED_LOWSPEED
-mdefine_line|#define ED_LOWSPEED&t;__constant_cpu_to_le32(1 &lt;&lt; 13)
+mdefine_line|#define ED_LOWSPEED&t;(1 &lt;&lt; 13)
 DECL|macro|ED_OUT
-mdefine_line|#define ED_OUT&t;&t;__constant_cpu_to_le32(0x01 &lt;&lt; 11)
+mdefine_line|#define ED_OUT&t;&t;(0x01 &lt;&lt; 11)
 DECL|macro|ED_IN
-mdefine_line|#define ED_IN&t;&t;__constant_cpu_to_le32(0x02 &lt;&lt; 11)
+mdefine_line|#define ED_IN&t;&t;(0x02 &lt;&lt; 11)
 DECL|member|hwTailP
 id|__le32
 id|hwTailP
@@ -35,9 +35,9 @@ id|hwHeadP
 suffix:semicolon
 multiline_comment|/* head of TD list (hc r/w) */
 DECL|macro|ED_C
-mdefine_line|#define ED_C&t;&t;__constant_cpu_to_le32(0x02)&t;/* toggle carry */
+mdefine_line|#define ED_C&t;&t;(0x02)&t;&t;&t;/* toggle carry */
 DECL|macro|ED_H
-mdefine_line|#define ED_H&t;&t;__constant_cpu_to_le32(0x01)&t;/* halted */
+mdefine_line|#define ED_H&t;&t;(0x01)&t;&t;&t;/* halted */
 DECL|member|hwNextED
 id|__le32
 id|hwNextED

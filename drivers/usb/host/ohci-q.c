@@ -459,7 +459,10 @@ comma
 (paren
 id|ed-&gt;hwINFO
 op_amp
+id|cpu_to_le32
+(paren
 id|ED_ISO
+)paren
 )paren
 ques
 c_cond
@@ -1053,7 +1056,10 @@ comma
 (paren
 id|ed-&gt;hwINFO
 op_amp
+id|cpu_to_le32
+(paren
 id|ED_ISO
+)paren
 )paren
 ques
 c_cond
@@ -1090,7 +1096,10 @@ id|ed
 (brace
 id|ed-&gt;hwINFO
 op_or_assign
+id|cpu_to_le32
+(paren
 id|ED_SKIP
+)paren
 suffix:semicolon
 id|wmb
 (paren
@@ -1529,9 +1538,6 @@ id|ED_IDLE
 id|u32
 id|info
 suffix:semicolon
-id|__le32
-id|hw_info
-suffix:semicolon
 id|info
 op_assign
 id|usb_pipedevice
@@ -1562,13 +1568,6 @@ id|is_out
 op_lshift
 l_int|16
 suffix:semicolon
-id|hw_info
-op_assign
-id|cpu_to_le32
-(paren
-id|info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1576,7 +1575,7 @@ id|udev-&gt;speed
 op_eq
 id|USB_SPEED_LOW
 )paren
-id|hw_info
+id|info
 op_or_assign
 id|ED_LOWSPEED
 suffix:semicolon
@@ -1589,7 +1588,7 @@ op_ne
 id|PIPE_CONTROL
 )paren
 (brace
-id|hw_info
+id|info
 op_or_assign
 id|is_out
 ques
@@ -1614,7 +1613,7 @@ id|type
 op_eq
 id|PIPE_ISOCHRONOUS
 )paren
-id|hw_info
+id|info
 op_or_assign
 id|ED_ISO
 suffix:semicolon
@@ -1664,7 +1663,11 @@ suffix:semicolon
 )brace
 id|ed-&gt;hwINFO
 op_assign
-id|hw_info
+id|cpu_to_le32
+c_func
+(paren
+id|info
+)paren
 suffix:semicolon
 )brace
 id|done
@@ -1701,7 +1704,10 @@ id|ed
 (brace
 id|ed-&gt;hwINFO
 op_or_assign
+id|cpu_to_le32
+(paren
 id|ED_DEQUEUE
+)paren
 suffix:semicolon
 id|ed_deschedule
 (paren
@@ -2111,7 +2117,10 @@ suffix:semicolon
 id|urb_priv-&gt;ed-&gt;hwHeadP
 op_and_assign
 op_complement
+id|cpu_to_le32
+(paren
 id|ED_C
+)paren
 suffix:semicolon
 )brace
 id|urb_priv-&gt;td_cnt
@@ -2964,12 +2973,18 @@ id|toggle
 op_assign
 id|ed-&gt;hwHeadP
 op_amp
+id|cpu_to_le32
+(paren
 id|ED_C
+)paren
 suffix:semicolon
 multiline_comment|/* clear ed halt; this is the td that caused it, but keep it inactive&n;&t; * until its urb-&gt;complete() has a chance to clean up.&n;&t; */
 id|ed-&gt;hwINFO
 op_or_assign
+id|cpu_to_le32
+(paren
 id|ED_SKIP
+)paren
 suffix:semicolon
 id|wmb
 (paren
@@ -2978,7 +2993,10 @@ suffix:semicolon
 id|ed-&gt;hwHeadP
 op_and_assign
 op_complement
+id|cpu_to_le32
+(paren
 id|ED_H
+)paren
 suffix:semicolon
 multiline_comment|/* put any later tds from this urb onto the donelist, after &squot;td&squot;,&n;&t; * order won&squot;t matter here: no errors, and nothing was transferred.&n;&t; * also patch the ed so it looks as if those tds completed normally.&n;&t; */
 r_while
@@ -3260,7 +3278,10 @@ op_logical_and
 (paren
 id|td-&gt;ed-&gt;hwHeadP
 op_amp
+id|cpu_to_le32
+(paren
 id|ED_H
+)paren
 )paren
 )paren
 id|td_rev
@@ -3630,7 +3651,11 @@ suffix:semicolon
 id|ed-&gt;hwHeadP
 op_and_assign
 op_complement
+id|cpu_to_le32
+c_func
+(paren
 id|ED_H
+)paren
 suffix:semicolon
 id|ed-&gt;hwNextED
 op_assign
@@ -3643,6 +3668,7 @@ suffix:semicolon
 id|ed-&gt;hwINFO
 op_and_assign
 op_complement
+id|cpu_to_le32
 (paren
 id|ED_SKIP
 op_or
@@ -3944,6 +3970,7 @@ c_cond
 (paren
 id|ed-&gt;hwINFO
 op_amp
+id|cpu_to_le32
 (paren
 id|ED_SKIP
 op_or
@@ -3951,7 +3978,10 @@ id|ED_DEQUEUE
 )paren
 )paren
 op_eq
+id|cpu_to_le32
+(paren
 id|ED_SKIP
+)paren
 )paren
 (brace
 id|td
@@ -3973,14 +4003,20 @@ op_logical_neg
 (paren
 id|td-&gt;hwINFO
 op_amp
+id|cpu_to_le32
+(paren
 id|TD_DONE
+)paren
 )paren
 )paren
 (brace
 id|ed-&gt;hwINFO
 op_and_assign
 op_complement
+id|cpu_to_le32
+(paren
 id|ED_SKIP
+)paren
 suffix:semicolon
 multiline_comment|/* ... hc may need waking-up */
 r_switch
