@@ -636,7 +636,7 @@ id|type
 suffix:semicolon
 id|tmp-&gt;linear
 op_assign
-id|le64_to_cpu
+id|cpu_to_le64
 c_func
 (paren
 id|tmp-&gt;linear
@@ -721,7 +721,7 @@ id|offset
 suffix:semicolon
 id|tmp-&gt;linear
 op_assign
-id|le64_to_cpu
+id|cpu_to_le64
 c_func
 (paren
 id|tmp-&gt;linear
