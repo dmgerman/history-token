@@ -13,7 +13,9 @@ macro_line|#endif
 DECL|macro|MIN_THREADS_LEFT_FOR_ROOT
 mdefine_line|#define MIN_THREADS_LEFT_FOR_ROOT 4
 multiline_comment|/*&n; * This controls the maximum pid allocated to a process&n; */
+DECL|macro|PID_MASK
+mdefine_line|#define PID_MASK 0x3fffffff
 DECL|macro|PID_MAX
-mdefine_line|#define PID_MAX 0x8000
+mdefine_line|#define PID_MAX (PID_MASK+1)
 macro_line|#endif
 eof

@@ -38,6 +38,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;drm_os_linux.h&quot;
 multiline_comment|/* DRM template customization defaults&n; */
 macro_line|#ifndef __HAVE_AGP
 DECL|macro|__HAVE_AGP
@@ -75,6 +76,8 @@ DECL|macro|__REALLY_HAVE_AGP
 mdefine_line|#define __REALLY_HAVE_AGP&t;(__HAVE_AGP &amp;&amp; (defined(CONFIG_AGP) || &bslash;&n;&t;&t;&t;&t;&t;&t;defined(CONFIG_AGP_MODULE)))
 DECL|macro|__REALLY_HAVE_MTRR
 mdefine_line|#define __REALLY_HAVE_MTRR&t;(__HAVE_MTRR &amp;&amp; defined(CONFIG_MTRR))
+DECL|macro|__REALLY_HAVE_SG
+mdefine_line|#define __REALLY_HAVE_SG&t;(__HAVE_SG)
 multiline_comment|/* Begin the DRM...&n; */
 DECL|macro|DRM_DEBUG_CODE
 mdefine_line|#define DRM_DEBUG_CODE 2&t;  /* Include debugging code (if &gt; 1, then&n;&t;&t;&t;&t;     also include looping detection. */

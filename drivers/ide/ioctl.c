@@ -1368,17 +1368,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-r_case
-id|BLKRRPART
-suffix:colon
-multiline_comment|/* Re-read partition tables */
-r_return
-id|ata_revalidate
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
 multiline_comment|/* Now check whatever this particular ioctl has a device type&n;&t;&t; * specific implementation.&n;&t;&t; */
 r_default
 suffix:colon

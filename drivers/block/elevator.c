@@ -1773,6 +1773,13 @@ c_func
 id|elv_remove_request
 )paren
 suffix:semicolon
+DECL|variable|elv_queue_empty
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|elv_queue_empty
+)paren
+suffix:semicolon
 DECL|variable|elevator_exit
 id|EXPORT_SYMBOL
 c_func

@@ -1193,6 +1193,13 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|page-&gt;mapping
+)paren
+(brace
+multiline_comment|/* Race with truncate? */
 id|list_del
 c_func
 (paren
@@ -1210,6 +1217,7 @@ op_amp
 id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
+)brace
 id|write_unlock
 c_func
 (paren
@@ -1294,6 +1302,13 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|page-&gt;mapping
+)paren
+(brace
+multiline_comment|/* Race with truncate? */
 id|list_del
 c_func
 (paren
@@ -1311,6 +1326,7 @@ op_amp
 id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
+)brace
 id|write_unlock
 c_func
 (paren

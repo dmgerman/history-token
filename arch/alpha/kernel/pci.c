@@ -682,7 +682,7 @@ macro_line|#undef MB
 DECL|macro|GB
 macro_line|#undef GB
 r_static
-r_void
+r_int
 id|__init
 DECL|function|pcibios_init
 id|pcibios_init
@@ -694,17 +694,17 @@ r_void
 r_if
 c_cond
 (paren
-op_logical_neg
 id|alpha_mv.init_pci
 )paren
-r_return
-suffix:semicolon
 id|alpha_mv
 dot
 id|init_pci
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pcibios_init

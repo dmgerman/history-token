@@ -209,6 +209,9 @@ DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;var
 DECL|macro|this_cpu
 mdefine_line|#define this_cpu(var)&t;&t;&t;&t;var
+r_struct
+id|notifier_block
+suffix:semicolon
 multiline_comment|/* Need to know about CPUs going up/down? */
 DECL|function|register_cpu_notifier
 r_static
