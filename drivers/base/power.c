@@ -33,6 +33,13 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Suspending Devices&bslash;n&quot;
+)paren
+suffix:semicolon
 id|get_device
 c_func
 (paren
@@ -265,6 +272,13 @@ c_func
 id|prev
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Devices Resumed&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * device_shutdown - queisce all the devices before reboot/shutdown&n; *&n; * Do depth first iteration over device tree, calling -&gt;remove() for each&n; * device. This should ensure the devices are put into a sane state before&n; * we reboot the system.&n; *&n; */
 DECL|function|device_shutdown
@@ -287,6 +301,13 @@ id|prev
 op_assign
 op_amp
 id|device_root
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Shutting down devices&bslash;n&quot;
+)paren
 suffix:semicolon
 id|get_device
 c_func

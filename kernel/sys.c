@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * this is where the system-wide overflow UID and GID are defined, for&n; * architectures that now have 32-bit UID/GID but didn&squot;t in the past&n; */
@@ -860,6 +861,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -907,6 +913,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -939,6 +950,11 @@ comma
 id|SYS_POWER_OFF
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|device_shutdown
+c_func
+(paren
 )paren
 suffix:semicolon
 id|printk
@@ -1024,6 +1040,11 @@ comma
 id|SYS_RESTART
 comma
 id|buffer
+)paren
+suffix:semicolon
+id|device_shutdown
+c_func
+(paren
 )paren
 suffix:semicolon
 id|printk
