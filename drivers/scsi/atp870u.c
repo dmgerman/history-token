@@ -3747,9 +3747,6 @@ l_int|0x10000
 )paren
 (brace
 (paren
-id|u16
-)paren
-(paren
 (paren
 (paren
 id|u16
@@ -3769,9 +3766,6 @@ op_assign
 l_int|0x0000
 suffix:semicolon
 (paren
-id|u16
-)paren
-(paren
 (paren
 (paren
 id|u16
@@ -3790,9 +3784,6 @@ l_int|2
 op_assign
 l_int|0x0000
 suffix:semicolon
-(paren
-id|u32
-)paren
 (paren
 (paren
 (paren
@@ -3830,9 +3821,6 @@ l_int|0x04
 suffix:semicolon
 )brace
 (paren
-id|u32
-)paren
-(paren
 (paren
 (paren
 id|u32
@@ -3855,9 +3843,6 @@ c_func
 id|bttl
 )paren
 suffix:semicolon
-(paren
-id|u16
-)paren
 (paren
 (paren
 (paren
@@ -3882,9 +3867,6 @@ id|l
 )paren
 suffix:semicolon
 (paren
-id|u16
-)paren
-(paren
 (paren
 (paren
 id|u16
@@ -3908,9 +3890,6 @@ op_add_assign
 l_int|0x04
 suffix:semicolon
 )brace
-(paren
-id|u16
-)paren
 (paren
 (paren
 (paren
@@ -3959,9 +3938,6 @@ l_int|0x10000
 )paren
 (brace
 (paren
-id|u16
-)paren
-(paren
 (paren
 (paren
 id|u16
@@ -3981,9 +3957,6 @@ op_assign
 l_int|0x0000
 suffix:semicolon
 (paren
-id|u16
-)paren
-(paren
 (paren
 (paren
 id|u16
@@ -4002,9 +3975,6 @@ l_int|2
 op_assign
 l_int|0x0000
 suffix:semicolon
-(paren
-id|u32
-)paren
 (paren
 (paren
 (paren
@@ -4042,9 +4012,6 @@ l_int|0x04
 suffix:semicolon
 )brace
 (paren
-id|u16
-)paren
-(paren
 (paren
 (paren
 id|u16
@@ -4068,9 +4035,6 @@ l_int|0x8000
 )paren
 suffix:semicolon
 (paren
-id|u16
-)paren
-(paren
 (paren
 (paren
 id|u16
@@ -4093,9 +4057,6 @@ c_func
 id|l
 )paren
 suffix:semicolon
-(paren
-id|u32
-)paren
 (paren
 (paren
 (paren
