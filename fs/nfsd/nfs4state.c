@@ -5356,9 +5356,13 @@ id|stp
 (brace
 r_return
 (paren
-id|fhp-&gt;fh_dentry
+id|stp-&gt;st_vfs_set
+op_eq
+l_int|0
+op_logical_or
+id|fhp-&gt;fh_dentry-&gt;d_inode
 op_ne
-id|stp-&gt;st_vfs_file.f_dentry
+id|stp-&gt;st_vfs_file.f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
 )brace
@@ -5525,6 +5529,10 @@ c_func
 (paren
 l_string|&quot;NFSD: preprocess_stateid_op: fh-stateid mismatch!&bslash;n&quot;
 )paren
+suffix:semicolon
+id|stp-&gt;st_vfs_set
+op_assign
+l_int|0
 suffix:semicolon
 r_goto
 id|out
@@ -5776,6 +5784,10 @@ c_func
 (paren
 l_string|&quot;NFSD: preprocess_seqid_op: fh-stateid mismatch!&bslash;n&quot;
 )paren
+suffix:semicolon
+id|stp-&gt;st_vfs_set
+op_assign
+l_int|0
 suffix:semicolon
 r_goto
 id|out
