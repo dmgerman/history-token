@@ -1880,6 +1880,10 @@ l_int|3
 op_assign
 id|signr
 suffix:semicolon
+id|regs-&gt;result
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -2997,6 +2997,10 @@ id|regs-&gt;trap
 op_assign
 l_int|0
 suffix:semicolon
+id|regs-&gt;result
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 suffix:semicolon
 id|badframe
@@ -3498,10 +3502,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|regs-&gt;result
-op_and_assign
-l_int|0xFFFFFFFF
-suffix:semicolon
 id|ret
 op_assign
 id|regs-&gt;result
@@ -3808,6 +3808,10 @@ id|regs-&gt;trap
 op_assign
 l_int|0
 suffix:semicolon
+id|regs-&gt;result
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 suffix:semicolon
 id|badframe
@@ -4016,10 +4020,6 @@ l_int|1
 )paren
 r_goto
 id|badframe
-suffix:semicolon
-id|regs-&gt;result
-op_and_assign
-l_int|0xFFFFFFFF
 suffix:semicolon
 id|ret
 op_assign
