@@ -489,6 +489,8 @@ DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;&t;1267
 DECL|macro|__NR_kexec_load
 mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;&t;1269
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
