@@ -6443,9 +6443,9 @@ id|nic-&gt;cbs
 r_while
 c_loop
 (paren
-id|nic-&gt;cb_to_clean
+id|nic-&gt;cbs_avail
 op_ne
-id|nic-&gt;cb_to_use
+id|nic-&gt;params.cbs.count
 )paren
 (brace
 r_struct
@@ -6492,11 +6492,10 @@ id|nic-&gt;cb_to_clean
 op_assign
 id|nic-&gt;cb_to_clean-&gt;next
 suffix:semicolon
-)brace
 id|nic-&gt;cbs_avail
-op_assign
-id|nic-&gt;params.cbs.count
+op_increment
 suffix:semicolon
+)brace
 id|pci_free_consistent
 c_func
 (paren
