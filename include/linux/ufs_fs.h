@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/ufs_fs_i.h&gt;
+macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 DECL|macro|UFS_BBLOCK
 mdefine_line|#define UFS_BBLOCK 0
 DECL|macro|UFS_BBSIZE
@@ -896,7 +898,7 @@ DECL|macro|UFS_DYNAMICPOSTBLFMT
 mdefine_line|#define UFS_DYNAMICPOSTBLFMT&t;1&t;/* dynamic rotational table format */
 multiline_comment|/*&n; * Convert cylinder group to base address of its global summary info.&n; */
 DECL|macro|fs_cs
-mdefine_line|#define fs_cs(indx) &bslash;&n;&t;u.ufs_sb.s_csp[(indx) &gt;&gt; uspi-&gt;s_csshift][(indx) &amp; ~uspi-&gt;s_csmask]
+mdefine_line|#define fs_cs(indx) &bslash;&n;&t;s_csp[(indx) &gt;&gt; uspi-&gt;s_csshift][(indx) &amp; ~uspi-&gt;s_csmask]
 multiline_comment|/*&n; * Cylinder group block for a file system.&n; *&n; * Writable fields in the cylinder group are protected by the associated&n; * super block lock fs-&gt;fs_lock.&n; */
 DECL|macro|CG_MAGIC
 mdefine_line|#define&t;CG_MAGIC&t;0x090255
@@ -2700,7 +2702,25 @@ id|inode
 op_star
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/ufs_fs_i.h&gt;
+DECL|function|UFS_SB
+r_static
+r_inline
+r_struct
+id|ufs_sb_info
+op_star
+id|UFS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|UFS_I
 r_static
 r_inline

@@ -2050,8 +2050,6 @@ DECL|macro|MNT_DETACH
 mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
 macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
-macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -2245,16 +2243,6 @@ DECL|member|hpfs_sb
 r_struct
 id|hpfs_sb_info
 id|hpfs_sb
-suffix:semicolon
-DECL|member|ufs_sb
-r_struct
-id|ufs_sb_info
-id|ufs_sb
-suffix:semicolon
-DECL|member|romfs_sb
-r_struct
-id|romfs_sb_info
-id|romfs_sb
 suffix:semicolon
 DECL|member|generic_sbp
 r_void

@@ -534,7 +534,13 @@ c_cond
 (paren
 id|l
 OG
-id|sb-&gt;u.ufs_sb.s_uspi-&gt;s_maxsymlinklen
+id|UFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_uspi-&gt;s_maxsymlinklen
 )paren
 (brace
 multiline_comment|/* slow symlink */

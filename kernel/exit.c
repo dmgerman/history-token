@@ -2862,6 +2862,14 @@ r_if
 c_cond
 (paren
 id|flag
+op_logical_or
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|current-&gt;ptrace_children
+)paren
 )paren
 (brace
 id|retval
