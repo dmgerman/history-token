@@ -233,7 +233,7 @@ DECL|variable|uart_config
 r_static
 r_const
 r_struct
-id|serial_uart_config
+id|serial8250_config
 id|uart_config
 (braket
 id|PORT_MAX_8250
@@ -2609,7 +2609,7 @@ id|uart_config
 id|up-&gt;port.type
 )braket
 dot
-id|dfl_xmit_fifo_size
+id|fifo_size
 suffix:semicolon
 id|up-&gt;capabilities
 op_assign

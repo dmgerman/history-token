@@ -78,6 +78,29 @@ id|iomem_reg_shift
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This replaces serial_uart_config in include/linux/serial.h&n; */
+DECL|struct|serial8250_config
+r_struct
+id|serial8250_config
+(brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|fifo_size
+r_int
+r_int
+id|fifo_size
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|SERIAL_DEBUG_PCI
 macro_line|#undef SERIAL_DEBUG_PCI
 macro_line|#if defined(__i386__) &amp;&amp; (defined(CONFIG_M386) || defined(CONFIG_M486))
