@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
