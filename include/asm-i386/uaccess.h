@@ -26,7 +26,148 @@ DECL|macro|set_fs
 mdefine_line|#define set_fs(x)&t;(current_thread_info()-&gt;addr_limit = (x))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
+multiline_comment|/*&n; * movsl can be slow when source and dest are not both 8-byte aligned&n; */
+macro_line|#if defined(CONFIG_M586MMX) || defined(CONFIG_M686) || &bslash;&n;&t;defined(CONFIG_MPENTIUMIII) || defined(CONFIG_MPENTIUM4)
+DECL|macro|INTEL_MOVSL
+mdefine_line|#define INTEL_MOVSL
+macro_line|#endif
+macro_line|#ifdef INTEL_MOVSL
+DECL|struct|movsl_mask
 r_extern
+r_struct
+id|movsl_mask
+(brace
+DECL|member|mask
+r_int
+id|mask
+suffix:semicolon
+)brace
+id|____cacheline_aligned_in_smp
+id|movsl_mask
+suffix:semicolon
+DECL|function|movsl_is_ok
+r_static
+r_inline
+r_int
+id|movsl_is_ok
+c_func
+(paren
+r_const
+r_void
+op_star
+id|a1
+comma
+r_const
+r_void
+op_star
+id|a2
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|n
+OL
+l_int|64
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+(paren
+r_const
+r_int
+)paren
+id|a1
+op_xor
+(paren
+r_const
+r_int
+)paren
+id|a2
+)paren
+op_amp
+id|movsl_mask.mask
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|movsl_is_ok
+r_static
+r_inline
+r_int
+id|movsl_is_ok
+c_func
+(paren
+r_const
+r_void
+op_star
+id|a1
+comma
+r_const
+r_void
+op_star
+id|a2
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* These are undefined on !INTEL_MOVSL.  And they should be unreferenced. */
+r_int
+r_int
+id|__copy_user_int
+c_func
+(paren
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_int
+r_int
+id|__copy_user_zeroing_int
+c_func
+(paren
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 r_int
 id|__verify_write
 c_func
@@ -235,9 +376,9 @@ mdefine_line|#define __get_user_asm(x, addr, err, itype, rtype, ltype)&t;&bslash
 multiline_comment|/*&n; * Copy To/From Userspace&n; */
 multiline_comment|/* Generic arbitrary sized copy.  */
 DECL|macro|__copy_user
-mdefine_line|#define __copy_user(to,from,size)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __d0, __d1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0:&t;rep; movsl&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;lea 0(%3,%0,4),%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;c&quot;(size), &quot;=&amp;D&quot; (__d0), &quot;=&amp;S&quot; (__d1)&t;&t;&bslash;&n;&t;&t;: &quot;r&quot;(size &amp; 3), &quot;0&quot;(size / 4), &quot;1&quot;(to), &quot;2&quot;(from)&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __copy_user(to,from,size)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __d0, __d1, __d2;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;cmp  $7,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jbe  1f&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %1,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;negl %0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;andl $7,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;subl %0,%3&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;shrl $2,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;andl $3,%3&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 2,0x90&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0:&t;rep; movsl&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;5:&t;addl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;lea 0(%3,%0,4),%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 4b,5b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;c&quot;(size), &quot;=&amp;D&quot; (__d0), &quot;=&amp;S&quot; (__d1), &quot;=r&quot;(__d2)&t;&bslash;&n;&t;&t;: &quot;3&quot;(size), &quot;0&quot;(size), &quot;1&quot;(to), &quot;2&quot;(from)&t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__copy_user_zeroing
-mdefine_line|#define __copy_user_zeroing(to,from,size)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __d0, __d1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0:&t;rep; movsl&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;lea 0(%3,%0,4),%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;pushl %0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;pushl %%eax&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;xorl %%eax,%%eax&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;rep; stosb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;popl %%eax&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;popl %0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,4b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;c&quot;(size), &quot;=&amp;D&quot; (__d0), &quot;=&amp;S&quot; (__d1)&t;&t;&bslash;&n;&t;&t;: &quot;r&quot;(size &amp; 3), &quot;0&quot;(size / 4), &quot;1&quot;(to), &quot;2&quot;(from)&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __copy_user_zeroing(to,from,size)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __d0, __d1, __d2;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;cmp  $7,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jbe  1f&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %1,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;negl %0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;andl $7,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;subl %0,%3&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;shrl $2,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;andl $3,%3&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 2,0x90&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0:&t;rep; movsl&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;5:&t;addl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 6f&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;lea 0(%3,%0,4),%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;6:&t;pushl %0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;pushl %%eax&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;xorl %%eax,%%eax&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;rep; stosb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;popl %%eax&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;popl %0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 4b,5b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,6b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;c&quot;(size), &quot;=&amp;D&quot; (__d0), &quot;=&amp;S&quot; (__d1), &quot;=r&quot;(__d2)&t;&bslash;&n;&t;&t;: &quot;3&quot;(size), &quot;0&quot;(size), &quot;1&quot;(to), &quot;2&quot;(from)&t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* We let the __ versions of copy_from/to_user inline, because they&squot;re often&n; * used in fast paths and have only a small space overhead.&n; */
 r_static
 r_inline
@@ -261,7 +402,33 @@ r_int
 id|n
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|movsl_is_ok
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+)paren
 id|__copy_user_zeroing
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+suffix:semicolon
+r_else
+id|n
+op_assign
+id|__copy_user_zeroing_int
 c_func
 (paren
 id|to
@@ -297,7 +464,33 @@ r_int
 id|n
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|movsl_is_ok
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+)paren
 id|__copy_user
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+suffix:semicolon
+r_else
+id|n
+op_assign
+id|__copy_user_int
 c_func
 (paren
 id|to
@@ -537,13 +730,13 @@ id|n
 suffix:semicolon
 )brace
 DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(to,from,n)&t;&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(n) ?&t;&t;&t;&bslash;&n;&t; __constant_copy_to_user((to),(from),(n)) :&t;&bslash;&n;&t; __generic_copy_to_user((to),(from),(n)))
+mdefine_line|#define copy_to_user(to,from,n)&t;&t;&t;&t;&bslash;&n;&t; __generic_copy_to_user((to),(from),(n))
 DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(to,from,n)&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(n) ?&t;&t;&t;&bslash;&n;&t; __constant_copy_from_user((to),(from),(n)) :&t;&bslash;&n;&t; __generic_copy_from_user((to),(from),(n)))
+mdefine_line|#define copy_from_user(to,from,n)&t;&t;&t;&bslash;&n;&t; __generic_copy_from_user((to),(from),(n))
 DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(n) ?&t;&t;&t;&bslash;&n;&t; __constant_copy_to_user_nocheck((to),(from),(n)) :&t;&bslash;&n;&t; __generic_copy_to_user_nocheck((to),(from),(n)))
+mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&bslash;&n;&t; __generic_copy_to_user_nocheck((to),(from),(n))
 DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(n) ?&t;&t;&t;&bslash;&n;&t; __constant_copy_from_user_nocheck((to),(from),(n)) :&t;&bslash;&n;&t; __generic_copy_from_user_nocheck((to),(from),(n)))
+mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&bslash;&n;&t; __generic_copy_from_user_nocheck((to),(from),(n))
 r_int
 id|strncpy_from_user
 c_func

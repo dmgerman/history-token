@@ -192,6 +192,20 @@ comma
 id|n
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|movsl_is_ok
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+)paren
 id|__copy_user
 c_func
 (paren
@@ -202,6 +216,20 @@ comma
 id|n
 )paren
 suffix:semicolon
+r_else
+id|n
+op_assign
+id|__copy_user_int
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+suffix:semicolon
+)brace
 r_return
 id|n
 suffix:semicolon
@@ -245,6 +273,20 @@ comma
 id|n
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|movsl_is_ok
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+)paren
 id|__copy_user_zeroing
 c_func
 (paren
@@ -256,6 +298,21 @@ id|n
 )paren
 suffix:semicolon
 r_else
+id|n
+op_assign
+id|__copy_user_zeroing_int
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|n
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|memset
 c_func
 (paren
@@ -266,6 +323,7 @@ comma
 id|n
 )paren
 suffix:semicolon
+)brace
 r_return
 id|n
 suffix:semicolon
@@ -538,4 +596,310 @@ op_amp
 id|mask
 suffix:semicolon
 )brace
+macro_line|#ifdef INTEL_MOVSL
+multiline_comment|/*&n; * Copy To/From Userspace&n; */
+multiline_comment|/* Generic arbitrary sized copy.  */
+DECL|function|__copy_user_int
+r_int
+r_int
+id|__copy_user_int
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_const
+r_void
+op_star
+id|from
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_int
+id|d0
+comma
+id|d1
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;       .align 2,0x90&bslash;n&quot;
+l_string|&quot;0:     movl 32(%4), %%eax&bslash;n&quot;
+l_string|&quot;       cmpl $67, %0&bslash;n&quot;
+l_string|&quot;       jbe 1f&bslash;n&quot;
+l_string|&quot;       movl 64(%4), %%eax&bslash;n&quot;
+l_string|&quot;       .align 2,0x90&bslash;n&quot;
+l_string|&quot;1:     movl 0(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 4(%4), %%edx&bslash;n&quot;
+l_string|&quot;2:     movl %%eax, 0(%3)&bslash;n&quot;
+l_string|&quot;21:    movl %%edx, 4(%3)&bslash;n&quot;
+l_string|&quot;       movl 8(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 12(%4),%%edx&bslash;n&quot;
+l_string|&quot;3:     movl %%eax, 8(%3)&bslash;n&quot;
+l_string|&quot;31:    movl %%edx, 12(%3)&bslash;n&quot;
+l_string|&quot;       movl 16(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 20(%4), %%edx&bslash;n&quot;
+l_string|&quot;4:     movl %%eax, 16(%3)&bslash;n&quot;
+l_string|&quot;41:    movl %%edx, 20(%3)&bslash;n&quot;
+l_string|&quot;       movl 24(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 28(%4), %%edx&bslash;n&quot;
+l_string|&quot;10:    movl %%eax, 24(%3)&bslash;n&quot;
+l_string|&quot;51:    movl %%edx, 28(%3)&bslash;n&quot;
+l_string|&quot;       movl 32(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 36(%4), %%edx&bslash;n&quot;
+l_string|&quot;11:    movl %%eax, 32(%3)&bslash;n&quot;
+l_string|&quot;61:    movl %%edx, 36(%3)&bslash;n&quot;
+l_string|&quot;       movl 40(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 44(%4), %%edx&bslash;n&quot;
+l_string|&quot;12:    movl %%eax, 40(%3)&bslash;n&quot;
+l_string|&quot;71:    movl %%edx, 44(%3)&bslash;n&quot;
+l_string|&quot;       movl 48(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 52(%4), %%edx&bslash;n&quot;
+l_string|&quot;13:    movl %%eax, 48(%3)&bslash;n&quot;
+l_string|&quot;81:    movl %%edx, 52(%3)&bslash;n&quot;
+l_string|&quot;       movl 56(%4), %%eax&bslash;n&quot;
+l_string|&quot;       movl 60(%4), %%edx&bslash;n&quot;
+l_string|&quot;14:    movl %%eax, 56(%3)&bslash;n&quot;
+l_string|&quot;91:    movl %%edx, 60(%3)&bslash;n&quot;
+l_string|&quot;       addl $-64, %0&bslash;n&quot;
+l_string|&quot;       addl $64, %4&bslash;n&quot;
+l_string|&quot;       addl $64, %3&bslash;n&quot;
+l_string|&quot;       cmpl $63, %0&bslash;n&quot;
+l_string|&quot;       ja  0b&bslash;n&quot;
+l_string|&quot;5:     movl  %0, %%eax&bslash;n&quot;
+l_string|&quot;       shrl  $2, %0&bslash;n&quot;
+l_string|&quot;       andl  $3, %%eax&bslash;n&quot;
+l_string|&quot;       cld&bslash;n&quot;
+l_string|&quot;6:     rep; movsl&bslash;n&quot;
+l_string|&quot;       movl %%eax, %0&bslash;n&quot;
+l_string|&quot;7:     rep; movsb&bslash;n&quot;
+l_string|&quot;8:&bslash;n&quot;
+l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;9:     lea 0(%%eax,%0,4),%0&bslash;n&quot;
+l_string|&quot;       jmp 8b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;       .align 4&bslash;n&quot;
+l_string|&quot;       .long 2b,8b&bslash;n&quot;
+l_string|&quot;       .long 21b,8b&bslash;n&quot;
+l_string|&quot;       .long 3b,8b&bslash;n&quot;
+l_string|&quot;       .long 31b,8b&bslash;n&quot;
+l_string|&quot;       .long 4b,8b&bslash;n&quot;
+l_string|&quot;       .long 41b,8b&bslash;n&quot;
+l_string|&quot;       .long 10b,8b&bslash;n&quot;
+l_string|&quot;       .long 51b,8b&bslash;n&quot;
+l_string|&quot;       .long 11b,8b&bslash;n&quot;
+l_string|&quot;       .long 61b,8b&bslash;n&quot;
+l_string|&quot;       .long 12b,8b&bslash;n&quot;
+l_string|&quot;       .long 71b,8b&bslash;n&quot;
+l_string|&quot;       .long 13b,8b&bslash;n&quot;
+l_string|&quot;       .long 81b,8b&bslash;n&quot;
+l_string|&quot;       .long 14b,8b&bslash;n&quot;
+l_string|&quot;       .long 91b,8b&bslash;n&quot;
+l_string|&quot;       .long 6b,9b&bslash;n&quot;
+l_string|&quot;       .long 7b,8b&bslash;n&quot;
+l_string|&quot;.previous&quot;
+suffix:colon
+l_string|&quot;=&amp;c&quot;
+(paren
+id|size
+)paren
+comma
+l_string|&quot;=&amp;D&quot;
+(paren
+id|d0
+)paren
+comma
+l_string|&quot;=&amp;S&quot;
+(paren
+id|d1
+)paren
+suffix:colon
+l_string|&quot;1&quot;
+(paren
+id|to
+)paren
+comma
+l_string|&quot;2&quot;
+(paren
+id|from
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|size
+)paren
+suffix:colon
+l_string|&quot;eax&quot;
+comma
+l_string|&quot;edx&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|size
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|__copy_user_zeroing_int
+id|__copy_user_zeroing_int
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_const
+r_void
+op_star
+id|from
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_int
+id|d0
+comma
+id|d1
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;        .align 2,0x90&bslash;n&quot;
+l_string|&quot;0:      movl 32(%4), %%eax&bslash;n&quot;
+l_string|&quot;        cmpl $67, %0&bslash;n&quot;
+l_string|&quot;        jbe 2f&bslash;n&quot;
+l_string|&quot;1:      movl 64(%4), %%eax&bslash;n&quot;
+l_string|&quot;        .align 2,0x90&bslash;n&quot;
+l_string|&quot;2:      movl 0(%4), %%eax&bslash;n&quot;
+l_string|&quot;21:     movl 4(%4), %%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 0(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 4(%3)&bslash;n&quot;
+l_string|&quot;3:      movl 8(%4), %%eax&bslash;n&quot;
+l_string|&quot;31:     movl 12(%4),%%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 8(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 12(%3)&bslash;n&quot;
+l_string|&quot;4:      movl 16(%4), %%eax&bslash;n&quot;
+l_string|&quot;41:     movl 20(%4), %%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 16(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 20(%3)&bslash;n&quot;
+l_string|&quot;10:     movl 24(%4), %%eax&bslash;n&quot;
+l_string|&quot;51:     movl 28(%4), %%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 24(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 28(%3)&bslash;n&quot;
+l_string|&quot;11:     movl 32(%4), %%eax&bslash;n&quot;
+l_string|&quot;61:     movl 36(%4), %%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 32(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 36(%3)&bslash;n&quot;
+l_string|&quot;12:     movl 40(%4), %%eax&bslash;n&quot;
+l_string|&quot;71:     movl 44(%4), %%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 40(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 44(%3)&bslash;n&quot;
+l_string|&quot;13:     movl 48(%4), %%eax&bslash;n&quot;
+l_string|&quot;81:     movl 52(%4), %%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 48(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 52(%3)&bslash;n&quot;
+l_string|&quot;14:     movl 56(%4), %%eax&bslash;n&quot;
+l_string|&quot;91:     movl 60(%4), %%edx&bslash;n&quot;
+l_string|&quot;        movl %%eax, 56(%3)&bslash;n&quot;
+l_string|&quot;        movl %%edx, 60(%3)&bslash;n&quot;
+l_string|&quot;        addl $-64, %0&bslash;n&quot;
+l_string|&quot;        addl $64, %4&bslash;n&quot;
+l_string|&quot;        addl $64, %3&bslash;n&quot;
+l_string|&quot;        cmpl $63, %0&bslash;n&quot;
+l_string|&quot;        ja  0b&bslash;n&quot;
+l_string|&quot;5:      movl  %0, %%eax&bslash;n&quot;
+l_string|&quot;        shrl  $2, %0&bslash;n&quot;
+l_string|&quot;        andl $3, %%eax&bslash;n&quot;
+l_string|&quot;        cld&bslash;n&quot;
+l_string|&quot;6:      rep; movsl&bslash;n&quot;
+l_string|&quot;        movl %%eax,%0&bslash;n&quot;
+l_string|&quot;7:      rep; movsb&bslash;n&quot;
+l_string|&quot;8:&bslash;n&quot;
+l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;9:      lea 0(%%eax,%0,4),%0&bslash;n&quot;
+l_string|&quot;16:     pushl %0&bslash;n&quot;
+l_string|&quot;        pushl %%eax&bslash;n&quot;
+l_string|&quot;        xorl %%eax,%%eax&bslash;n&quot;
+l_string|&quot;        rep; stosb&bslash;n&quot;
+l_string|&quot;        popl %%eax&bslash;n&quot;
+l_string|&quot;        popl %0&bslash;n&quot;
+l_string|&quot;        jmp 8b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;.align 4&bslash;n&quot;
+l_string|&quot;&t;.long 0b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 1b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 2b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 21b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 3b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 31b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 4b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 41b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 10b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 51b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 11b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 61b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 12b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 71b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 13b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 81b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 14b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 91b,16b&bslash;n&quot;
+l_string|&quot;&t;.long 6b,9b&bslash;n&quot;
+l_string|&quot;        .long 7b,16b&bslash;n&quot;
+l_string|&quot;.previous&quot;
+suffix:colon
+l_string|&quot;=&amp;c&quot;
+(paren
+id|size
+)paren
+comma
+l_string|&quot;=&amp;D&quot;
+(paren
+id|d0
+)paren
+comma
+l_string|&quot;=&amp;S&quot;
+(paren
+id|d1
+)paren
+suffix:colon
+l_string|&quot;1&quot;
+(paren
+id|to
+)paren
+comma
+l_string|&quot;2&quot;
+(paren
+id|from
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|size
+)paren
+suffix:colon
+l_string|&quot;eax&quot;
+comma
+l_string|&quot;edx&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|size
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* INTEL_MOVSL */
 eof
