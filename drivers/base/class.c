@@ -1193,14 +1193,6 @@ c_func
 (paren
 id|class_dev
 comma
-id|class_subsys
-)paren
-suffix:semicolon
-id|kobj_set_kset_s
-c_func
-(paren
-id|class_dev
-comma
 id|class_obj_subsys
 )paren
 suffix:semicolon
