@@ -132,6 +132,9 @@ id|dst
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* This is optimized opposed to a memset of the whole structure.  Everything we&n; * really care about is the  source/destination unions */
+DECL|macro|IP_CT_TUPLE_U_BLANK
+mdefine_line|#define IP_CT_TUPLE_U_BLANK(tuple) &t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(tuple)-&gt;src.u.all = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;(tuple)-&gt;dst.u.all = 0;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|enum|ip_conntrack_dir
 r_enum
 id|ip_conntrack_dir
