@@ -10,6 +10,60 @@ id|pt_regs
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* ======================================================================== */
+multiline_comment|/* PPC Sys devices definition                                               */
+multiline_comment|/* ======================================================================== */
+DECL|enum|ppc_sys_devices
+r_enum
+id|ppc_sys_devices
+(brace
+DECL|enumerator|MPC52xx_MSCAN1
+id|MPC52xx_MSCAN1
+comma
+DECL|enumerator|MPC52xx_MSCAN2
+id|MPC52xx_MSCAN2
+comma
+DECL|enumerator|MPC52xx_SPI
+id|MPC52xx_SPI
+comma
+DECL|enumerator|MPC52xx_USB
+id|MPC52xx_USB
+comma
+DECL|enumerator|MPC52xx_BDLC
+id|MPC52xx_BDLC
+comma
+DECL|enumerator|MPC52xx_PSC1
+id|MPC52xx_PSC1
+comma
+DECL|enumerator|MPC52xx_PSC2
+id|MPC52xx_PSC2
+comma
+DECL|enumerator|MPC52xx_PSC3
+id|MPC52xx_PSC3
+comma
+DECL|enumerator|MPC52xx_PSC4
+id|MPC52xx_PSC4
+comma
+DECL|enumerator|MPC52xx_PSC5
+id|MPC52xx_PSC5
+comma
+DECL|enumerator|MPC52xx_PSC6
+id|MPC52xx_PSC6
+comma
+DECL|enumerator|MPC52xx_FEC
+id|MPC52xx_FEC
+comma
+DECL|enumerator|MPC52xx_ATA
+id|MPC52xx_ATA
+comma
+DECL|enumerator|MPC52xx_I2C1
+id|MPC52xx_I2C1
+comma
+DECL|enumerator|MPC52xx_I2C2
+id|MPC52xx_I2C2
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* ======================================================================== */
 multiline_comment|/* Main registers/struct addresses                                          */
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* MBAR position */
@@ -1267,6 +1321,44 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Matching of PSC function */
+DECL|struct|mpc52xx_psc_func
+r_struct
+id|mpc52xx_psc_func
+(brace
+DECL|member|id
+r_int
+id|id
+suffix:semicolon
+DECL|member|func
+r_char
+op_star
+id|func
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|mpc52xx_match_psc_function
+c_func
+(paren
+r_int
+id|psc_idx
+comma
+r_const
+r_char
+op_star
+id|func
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|mpc52xx_psc_func
+id|mpc52xx_psc_functions
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* This array is to be defined in platform file */
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* ========================================================================= */
 multiline_comment|/* Platform configuration                                                    */

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
+macro_line|#include &lt;asm/ppc_sys.h&gt;
 macro_line|#include &lt;syslib/mpc52xx_pci.h&gt;
 r_extern
 r_int
@@ -30,6 +31,44 @@ multiline_comment|/* For modules */
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* Platform specific code                                                   */
 multiline_comment|/* ======================================================================== */
+multiline_comment|/* Supported PSC function in &quot;preference&quot; order */
+DECL|variable|mpc52xx_psc_functions
+r_struct
+id|mpc52xx_psc_func
+id|mpc52xx_psc_functions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|func
+op_assign
+l_string|&quot;uart&quot;
+comma
+)brace
+comma
+(brace
+dot
+id|id
+op_assign
+op_minus
+l_int|1
+comma
+multiline_comment|/* End entry */
+dot
+id|func
+op_assign
+l_int|NULL
+comma
+)brace
+)brace
+suffix:semicolon
 r_static
 r_int
 DECL|function|lite5200_show_cpuinfo
@@ -442,6 +481,17 @@ id|KERNELBASE
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* PPC Sys identification */
+id|identify_ppc_sys_by_id
+c_func
+(paren
+id|mfspr
+c_func
+(paren
+id|SPRN_SVR
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* BAT setup */
 id|mpc52xx_set_bat
 c_func
