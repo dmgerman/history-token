@@ -2301,6 +2301,17 @@ c_func
 l_string|&quot;acpi_system_add_fs&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+id|return_VALUE
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

@@ -443,6 +443,17 @@ c_func
 l_string|&quot;acpi_event_init&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+id|return_VALUE
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* &squot;event&squot; [R] */
 id|entry
 op_assign
