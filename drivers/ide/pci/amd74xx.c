@@ -73,40 +73,18 @@ id|amd_ide_chips
 op_assign
 (brace
 (brace
-id|PCI_DEVICE_ID_AMD_8111_IDE
+id|PCI_DEVICE_ID_AMD_COBRA_7401
 comma
 l_int|0x00
 comma
 l_int|0x40
 comma
-id|AMD_UDMA_100
-)brace
-comma
-multiline_comment|/* AMD-8111 */
-(brace
-id|PCI_DEVICE_ID_AMD_OPUS_7441
-comma
-l_int|0x00
-comma
-l_int|0x40
-comma
-id|AMD_UDMA_100
-)brace
-comma
-multiline_comment|/* AMD-768 Opus */
-(brace
-id|PCI_DEVICE_ID_AMD_VIPER_7411
-comma
-l_int|0x00
-comma
-l_int|0x40
-comma
-id|AMD_UDMA_100
+id|AMD_UDMA_33
 op_or
-id|AMD_BAD_FIFO
+id|AMD_BAD_SWDMA
 )brace
 comma
-multiline_comment|/* AMD-766 Viper */
+multiline_comment|/* AMD-755 Cobra */
 (brace
 id|PCI_DEVICE_ID_AMD_VIPER_7409
 comma
@@ -121,18 +99,40 @@ id|AMD_CHECK_SWDMA
 comma
 multiline_comment|/* AMD-756 Viper */
 (brace
-id|PCI_DEVICE_ID_AMD_COBRA_7401
+id|PCI_DEVICE_ID_AMD_VIPER_7411
 comma
 l_int|0x00
 comma
 l_int|0x40
 comma
-id|AMD_UDMA_33
+id|AMD_UDMA_100
 op_or
-id|AMD_BAD_SWDMA
+id|AMD_BAD_FIFO
 )brace
 comma
-multiline_comment|/* AMD-755 Cobra */
+multiline_comment|/* AMD-766 Viper */
+(brace
+id|PCI_DEVICE_ID_AMD_OPUS_7441
+comma
+l_int|0x00
+comma
+l_int|0x40
+comma
+id|AMD_UDMA_100
+)brace
+comma
+multiline_comment|/* AMD-768 Opus */
+(brace
+id|PCI_DEVICE_ID_AMD_8111_IDE
+comma
+l_int|0x00
+comma
+l_int|0x40
+comma
+id|AMD_UDMA_100
+)brace
+comma
+multiline_comment|/* AMD-8111 */
 (brace
 id|PCI_DEVICE_ID_NVIDIA_NFORCE_IDE
 comma
