@@ -98,6 +98,7 @@ macro_line|#include &lt;linux/nbd.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/filter.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
+macro_line|#include &lt;linux/hiddev.h&gt;
 DECL|macro|INCLUDES
 macro_line|#undef INCLUDES
 macro_line|#endif

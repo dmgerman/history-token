@@ -17,6 +17,8 @@ DECL|macro|PSMOUSE_CMD_SETRATE
 mdefine_line|#define PSMOUSE_CMD_SETRATE&t;0x10f3
 DECL|macro|PSMOUSE_CMD_ENABLE
 mdefine_line|#define PSMOUSE_CMD_ENABLE&t;0x00f4
+DECL|macro|PSMOUSE_CMD_DISABLE
+mdefine_line|#define PSMOUSE_CMD_DISABLE&t;0x00f5
 DECL|macro|PSMOUSE_CMD_RESET_DIS
 mdefine_line|#define PSMOUSE_CMD_RESET_DIS&t;0x00f6
 DECL|macro|PSMOUSE_CMD_RESET_BAT
@@ -29,13 +31,32 @@ DECL|macro|PSMOUSE_RET_ACK
 mdefine_line|#define PSMOUSE_RET_ACK&t;&t;0xfa
 DECL|macro|PSMOUSE_RET_NAK
 mdefine_line|#define PSMOUSE_RET_NAK&t;&t;0xfe
-multiline_comment|/* psmouse states */
-DECL|macro|PSMOUSE_CMD_MODE
-mdefine_line|#define PSMOUSE_CMD_MODE&t;0
-DECL|macro|PSMOUSE_ACTIVATED
-mdefine_line|#define PSMOUSE_ACTIVATED&t;1
-DECL|macro|PSMOUSE_IGNORE
-mdefine_line|#define PSMOUSE_IGNORE&t;&t;2
+DECL|macro|PSMOUSE_FLAG_ACK
+mdefine_line|#define PSMOUSE_FLAG_ACK&t;0&t;/* Waiting for ACK/NAK */
+DECL|macro|PSMOUSE_FLAG_CMD
+mdefine_line|#define PSMOUSE_FLAG_CMD&t;1&t;/* Waiting for command to finish */
+DECL|macro|PSMOUSE_FLAG_CMD1
+mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* Waiting for the first byte of command response */
+DECL|macro|PSMOUSE_FLAG_WAITID
+mdefine_line|#define PSMOUSE_FLAG_WAITID&t;3&t;/* Command execiting is GET ID */
+DECL|enum|psmouse_state
+r_enum
+id|psmouse_state
+(brace
+DECL|enumerator|PSMOUSE_IGNORE
+id|PSMOUSE_IGNORE
+comma
+DECL|enumerator|PSMOUSE_INITIALIZING
+id|PSMOUSE_INITIALIZING
+comma
+DECL|enumerator|PSMOUSE_CMD_MODE
+id|PSMOUSE_CMD_MODE
+comma
+DECL|enumerator|PSMOUSE_ACTIVATED
+id|PSMOUSE_ACTIVATED
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* psmouse protocol handler return codes */
 r_typedef
 r_enum
@@ -51,46 +72,6 @@ id|PSMOUSE_FULL_PACKET
 DECL|typedef|psmouse_ret_t
 )brace
 id|psmouse_ret_t
-suffix:semicolon
-r_struct
-id|psmouse
-suffix:semicolon
-DECL|struct|psmouse_ptport
-r_struct
-id|psmouse_ptport
-(brace
-DECL|member|serio
-r_struct
-id|serio
-id|serio
-suffix:semicolon
-DECL|member|activate
-r_void
-(paren
-op_star
-id|activate
-)paren
-(paren
-r_struct
-id|psmouse
-op_star
-id|parent
-)paren
-suffix:semicolon
-DECL|member|deactivate
-r_void
-(paren
-op_star
-id|deactivate
-)paren
-(paren
-r_struct
-id|psmouse
-op_star
-id|parent
-)paren
-suffix:semicolon
-)brace
 suffix:semicolon
 DECL|struct|psmouse
 r_struct
@@ -111,12 +92,6 @@ r_struct
 id|serio
 op_star
 id|serio
-suffix:semicolon
-DECL|member|ptport
-r_struct
-id|psmouse_ptport
-op_star
-id|ptport
 suffix:semicolon
 DECL|member|vendor
 r_char
@@ -175,18 +150,14 @@ r_int
 id|out_of_sync
 suffix:semicolon
 DECL|member|state
-r_int
-r_char
+r_enum
+id|psmouse_state
 id|state
 suffix:semicolon
-DECL|member|acking
+DECL|member|nak
+r_int
 r_char
-id|acking
-suffix:semicolon
-DECL|member|ack
-r_volatile
-r_char
-id|ack
+id|nak
 suffix:semicolon
 DECL|member|error
 r_char
@@ -205,6 +176,16 @@ id|phys
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Used to signal completion from interrupt handler */
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
 suffix:semicolon
 DECL|member|protocol_handler
 id|psmouse_ret_t
@@ -242,6 +223,32 @@ r_void
 (paren
 op_star
 id|disconnect
+)paren
+(paren
+r_struct
+id|psmouse
+op_star
+id|psmouse
+)paren
+suffix:semicolon
+DECL|member|pt_activate
+r_void
+(paren
+op_star
+id|pt_activate
+)paren
+(paren
+r_struct
+id|psmouse
+op_star
+id|psmouse
+)paren
+suffix:semicolon
+DECL|member|pt_deactivate
+r_void
+(paren
+op_star
+id|pt_deactivate
 )paren
 (paren
 r_struct

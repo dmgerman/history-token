@@ -9,16 +9,19 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Sun keyboard driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Sun keyboard driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1030,9 +1033,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -1259,7 +1262,7 @@ c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 )paren
 (brace
@@ -1450,13 +1453,29 @@ id|sunkbd
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sunkbd_dev
+DECL|variable|sunkbd_drv
 r_static
 r_struct
-id|serio_dev
-id|sunkbd_dev
+id|serio_driver
+id|sunkbd_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;sunkbd&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|interrupt
 op_assign
@@ -1471,6 +1490,7 @@ dot
 id|disconnect
 op_assign
 id|sunkbd_disconnect
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The functions for insering/removing us as a module.&n; */
@@ -1483,11 +1503,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_register_device
+id|serio_register_driver
 c_func
 (paren
 op_amp
-id|sunkbd_dev
+id|sunkbd_drv
 )paren
 suffix:semicolon
 r_return
@@ -1503,11 +1523,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_unregister_device
+id|serio_unregister_driver
 c_func
 (paren
 op_amp
-id|sunkbd_dev
+id|sunkbd_drv
 )paren
 suffix:semicolon
 )brace
