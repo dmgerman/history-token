@@ -6,11 +6,15 @@ DECL|macro|__user
 macro_line|# define __user&t;&t;__attribute__((noderef, address_space(1)))
 DECL|macro|__kernel
 macro_line|# define __kernel&t;/* default address space */
+DECL|macro|__safe
+macro_line|# define __safe&t;&t;__attribute__((safe))
 macro_line|#else
 DECL|macro|__user
 macro_line|# define __user
 DECL|macro|__kernel
 macro_line|# define __kernel
+DECL|macro|__safe
+macro_line|# define __safe
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
