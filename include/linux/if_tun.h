@@ -20,10 +20,10 @@ DECL|struct|tun_struct
 r_struct
 id|tun_struct
 (brace
-DECL|member|name
-r_char
-op_star
-id|name
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|flags
 r_int

@@ -2640,10 +2640,13 @@ id|iocb-&gt;ki_users
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|ret
+op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_else
+(brace
 id|spin_lock_irq
 c_func
 (paren
@@ -2669,6 +2672,7 @@ op_amp
 id|ctx-&gt;ctx_lock
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* sync iocbs put the task here for us */
 id|wake_up_process
 c_func

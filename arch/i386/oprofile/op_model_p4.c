@@ -1116,9 +1116,9 @@ mdefine_line|#define ESCR_SET_EVENT_SELECT(escr, sel) ((escr) |= (((sel) &amp; 0
 DECL|macro|ESCR_SET_EVENT_MASK
 mdefine_line|#define ESCR_SET_EVENT_MASK(escr, mask) ((escr) |= (((mask) &amp; 0xffff) &lt;&lt; 9))
 DECL|macro|ESCR_READ
-mdefine_line|#define ESCR_READ(escr,high,ev,i) do {rdmsr(ev-&gt;bindings[(i)].escr_address, (escr), (high));} while (0);
+mdefine_line|#define ESCR_READ(escr,high,ev,i) do {rdmsr(ev-&gt;bindings[(i)].escr_address, (escr), (high));} while (0)
 DECL|macro|ESCR_WRITE
-mdefine_line|#define ESCR_WRITE(escr,high,ev,i) do {wrmsr(ev-&gt;bindings[(i)].escr_address, (escr), (high));} while (0);
+mdefine_line|#define ESCR_WRITE(escr,high,ev,i) do {wrmsr(ev-&gt;bindings[(i)].escr_address, (escr), (high));} while (0)
 DECL|macro|CCCR_RESERVED_BITS
 mdefine_line|#define CCCR_RESERVED_BITS 0x38030FFF
 DECL|macro|CCCR_CLEAR
@@ -1136,17 +1136,17 @@ mdefine_line|#define CCCR_SET_ENABLE(cccr) ((cccr) |= (1&lt;&lt;12))
 DECL|macro|CCCR_SET_DISABLE
 mdefine_line|#define CCCR_SET_DISABLE(cccr) ((cccr) &amp;= ~(1&lt;&lt;12))
 DECL|macro|CCCR_READ
-mdefine_line|#define CCCR_READ(low, high, i) do {rdmsr (p4_counters[(i)].cccr_address, (low), (high));} while (0);
+mdefine_line|#define CCCR_READ(low, high, i) do {rdmsr (p4_counters[(i)].cccr_address, (low), (high));} while (0)
 DECL|macro|CCCR_WRITE
-mdefine_line|#define CCCR_WRITE(low, high, i) do {wrmsr (p4_counters[(i)].cccr_address, (low), (high));} while (0);
+mdefine_line|#define CCCR_WRITE(low, high, i) do {wrmsr (p4_counters[(i)].cccr_address, (low), (high));} while (0)
 DECL|macro|CCCR_OVF_P
 mdefine_line|#define CCCR_OVF_P(cccr) ((cccr) &amp; (1U&lt;&lt;31))
 DECL|macro|CCCR_CLEAR_OVF
 mdefine_line|#define CCCR_CLEAR_OVF(cccr) ((cccr) &amp;= (~(1U&lt;&lt;31)))
 DECL|macro|CTR_READ
-mdefine_line|#define CTR_READ(l,h,i) do {rdmsr(p4_counters[(i)].counter_address, (l), (h));} while (0);
+mdefine_line|#define CTR_READ(l,h,i) do {rdmsr(p4_counters[(i)].counter_address, (l), (h));} while (0)
 DECL|macro|CTR_WRITE
-mdefine_line|#define CTR_WRITE(l,i) do {wrmsr(p4_counters[(i)].counter_address, -(u32)(l), -1);} while (0);
+mdefine_line|#define CTR_WRITE(l,i) do {wrmsr(p4_counters[(i)].counter_address, -(u32)(l), -1);} while (0)
 DECL|macro|CTR_OVERFLOW_P
 mdefine_line|#define CTR_OVERFLOW_P(ctr) (!((ctr) &amp; 0x80000000))
 multiline_comment|/* this assigns a &quot;stagger&quot; to the current CPU, which is used throughout&n;   the code in this module as an extra array offset, to select the &quot;even&quot;&n;   or &quot;odd&quot; part of all the divided resources. */

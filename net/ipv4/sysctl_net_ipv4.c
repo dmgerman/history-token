@@ -377,6 +377,11 @@ id|EFAULT
 suffix:semicolon
 )brace
 )brace
+op_star
+id|valp
+op_assign
+r_new
+suffix:semicolon
 id|inet_forward_change
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/fs/nfsd/nfs3xdr.c&n; *&n; * XDR support for nfsd/protocol version 3.&n; *&n; * Copyright (C) 1995, 1996, 1997 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+multiline_comment|/*&n; * linux/fs/nfsd/nfs3xdr.c&n; *&n; * XDR support for nfsd/protocol version 3.&n; *&n; * Copyright (C) 1995, 1996, 1997 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; *&n; * 2003-08-09 Jamie Lokier: Use htonl() for nanoseconds, not htons()!&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
@@ -97,7 +97,7 @@ op_star
 id|p
 op_increment
 op_assign
-id|htons
+id|htonl
 c_func
 (paren
 id|time-&gt;tv_nsec

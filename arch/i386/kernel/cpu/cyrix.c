@@ -471,7 +471,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_OOSTORE
 id|u8
 id|ccr3
 suffix:semicolon
@@ -521,13 +520,11 @@ op_complement
 l_int|0x80
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NOHIGHMEM
 multiline_comment|/* set load/store serialize from 1GB to 4GB */
 id|ccr3
 op_or_assign
 l_int|0xe0
 suffix:semicolon
-macro_line|#endif
 id|setCx86
 c_func
 (paren
@@ -536,7 +533,6 @@ comma
 id|ccr3
 )paren
 suffix:semicolon
-macro_line|#endif&t;
 )brace
 DECL|function|set_cx86_memwb
 r_static

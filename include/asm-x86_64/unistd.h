@@ -1824,7 +1824,7 @@ c_func
 (paren
 id|__NR_time
 comma
-id|sys_time
+id|sys_time64
 )paren
 DECL|macro|__NR_futex
 mdefine_line|#define __NR_futex     202

@@ -2741,7 +2741,7 @@ id|cmd
 op_amp
 id|IOC_IN
 )paren
-id|copy_from_user
+id|__copy_from_user
 c_func
 (paren
 (paren
@@ -3384,7 +3384,7 @@ id|cmd
 op_amp
 id|IOC_OUT
 )paren
-id|copy_to_user
+id|__copy_to_user
 c_func
 (paren
 (paren

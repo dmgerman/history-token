@@ -1371,6 +1371,11 @@ op_star
 id|tpnt
 )paren
 (brace
+r_int
+id|present
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
@@ -1859,7 +1864,7 @@ id|port_base
 )paren
 )paren
 suffix:semicolon
-id|tpnt-&gt;present
+id|present
 op_assign
 l_int|1
 suffix:semicolon
@@ -2112,7 +2117,7 @@ suffix:semicolon
 macro_line|#endif
 r_return
 (paren
-id|tpnt-&gt;present
+id|present
 )paren
 suffix:semicolon
 macro_line|#if USE_DMA

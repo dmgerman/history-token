@@ -5182,7 +5182,14 @@ id|O_NONBLOCK
 r_if
 c_cond
 (paren
-id|sdp-&gt;device-&gt;host-&gt;in_recovery
+id|test_bit
+c_func
+(paren
+id|SHOST_RECOVERY
+comma
+op_amp
+id|sdp-&gt;device-&gt;host-&gt;shost_state
+)paren
 )paren
 r_return
 op_minus

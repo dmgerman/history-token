@@ -2399,9 +2399,9 @@ c_func
 (paren
 id|drive
 comma
-id|pio
+l_int|255
 comma
-l_int|5
+id|pio
 comma
 l_int|NULL
 )paren

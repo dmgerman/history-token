@@ -975,6 +975,39 @@ suffix:semicolon
 r_struct
 id|flowi
 suffix:semicolon
+macro_line|#ifndef CONFIG_XFRM
+DECL|function|xfrm_lookup
+r_static
+r_inline
+r_int
+id|xfrm_lookup
+c_func
+(paren
+r_struct
+id|dst_entry
+op_star
+op_star
+id|dst_p
+comma
+r_struct
+id|flowi
+op_star
+id|fl
+comma
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+id|flags
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
 r_extern
 r_int
 id|xfrm_lookup
@@ -1000,6 +1033,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif /* _NET_DST_H */
 eof
