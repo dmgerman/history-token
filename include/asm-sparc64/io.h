@@ -333,8 +333,9 @@ r_void
 id|outsb
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_const
@@ -352,8 +353,9 @@ r_void
 id|outsw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_const
@@ -371,8 +373,9 @@ r_void
 id|outsl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_const
@@ -390,8 +393,9 @@ r_void
 id|insb
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_void
@@ -408,8 +412,9 @@ r_void
 id|insw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_void
@@ -426,8 +431,9 @@ r_void
 id|insl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_void
@@ -439,6 +445,18 @@ r_int
 id|count
 )paren
 suffix:semicolon
+DECL|macro|ioread8_rep
+mdefine_line|#define ioread8_rep(a,d,c)&t;insb(a,d,c)
+DECL|macro|ioread16_rep
+mdefine_line|#define ioread16_rep(a,d,c)&t;insw(a,d,c)
+DECL|macro|ioread32_rep
+mdefine_line|#define ioread32_rep(a,d,c)&t;insl(a,d,c)
+DECL|macro|iowrite8_rep
+mdefine_line|#define iowrite8_rep(a,s,c)&t;outsb(a,s,c)
+DECL|macro|iowrite16_rep
+mdefine_line|#define iowrite16_rep(a,s,c)&t;outsw(a,s,c)
+DECL|macro|iowrite32_rep
+mdefine_line|#define iowrite32_rep(a,s,c)&t;outsl(a,s,c)
 multiline_comment|/* Memory functions, same as I/O accesses on Ultra. */
 DECL|function|_readb
 r_static
