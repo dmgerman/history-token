@@ -477,8 +477,6 @@ multiline_comment|/* only allow create if -&gt;d_fsdata is not NULL (so we can a
 r_if
 c_cond
 (paren
-id|dentry-&gt;d_fsdata
-op_logical_and
 id|inode
 )paren
 (brace
@@ -2706,10 +2704,9 @@ id|driver_dir_entry
 op_star
 id|parent
 comma
-r_struct
-id|driver_file_entry
+r_char
 op_star
-id|entry
+id|name
 comma
 r_char
 op_star
@@ -2729,9 +2726,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|entry
-op_logical_or
 op_logical_neg
 id|parent
 )paren
@@ -2775,7 +2769,7 @@ c_func
 (paren
 id|parent-&gt;dentry
 comma
-id|entry-&gt;name
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -2788,15 +2782,6 @@ c_func
 id|dentry
 )paren
 )paren
-(brace
-id|dentry-&gt;d_fsdata
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|entry
-suffix:semicolon
 id|error
 op_assign
 id|driverfs_symlink
@@ -2809,7 +2794,6 @@ comma
 id|target
 )paren
 suffix:semicolon
-)brace
 r_else
 id|error
 op_assign

@@ -139,10 +139,9 @@ id|driver_dir_entry
 op_star
 id|parent
 comma
-r_struct
-id|driver_file_entry
+r_char
 op_star
-id|entry
+id|name
 comma
 r_char
 op_star
