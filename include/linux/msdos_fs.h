@@ -2,8 +2,6 @@ macro_line|#ifndef _LINUX_MSDOS_FS_H
 DECL|macro|_LINUX_MSDOS_FS_H
 mdefine_line|#define _LINUX_MSDOS_FS_H
 multiline_comment|/*&n; * The MS-DOS filesystem constants/structures&n; */
-macro_line|#include &lt;linux/msdos_fs_i.h&gt;
-macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|MSDOS_ROOT_INO
 mdefine_line|#define MSDOS_ROOT_INO  1 /* == MINIX_ROOT_INO */
@@ -65,53 +63,6 @@ mdefine_line|#define IS_FREE(n) (!*(n) || *(const unsigned char *) (n) == DELETE
 DECL|macro|MSDOS_VALID_MODE
 mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)
 multiline_comment|/* valid file mode bits */
-DECL|function|MSDOS_SB
-r_static
-r_inline
-r_struct
-id|msdos_sb_info
-op_star
-id|MSDOS_SB
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-)paren
-(brace
-r_return
-id|sb-&gt;u.generic_sbp
-suffix:semicolon
-)brace
-DECL|function|MSDOS_I
-r_static
-r_inline
-r_struct
-id|msdos_inode_info
-op_star
-id|MSDOS_I
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-id|list_entry
-c_func
-(paren
-id|inode
-comma
-r_struct
-id|msdos_inode_info
-comma
-id|vfs_inode
-)paren
-suffix:semicolon
-)brace
 DECL|macro|MSDOS_NAME
 mdefine_line|#define MSDOS_NAME 11 /* maximum name length */
 DECL|macro|MSDOS_LONGNAME
@@ -511,6 +462,55 @@ DECL|macro|MSDOS_MKATTR
 mdefine_line|#define MSDOS_MKATTR(m) ((m &amp; S_IWUGO) ? ATTR_NONE : ATTR_RO)
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/nls.h&gt;
+macro_line|#include &lt;linux/msdos_fs_i.h&gt;
+macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
+DECL|function|MSDOS_SB
+r_static
+r_inline
+r_struct
+id|msdos_sb_info
+op_star
+id|MSDOS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
+DECL|function|MSDOS_I
+r_static
+r_inline
+r_struct
+id|msdos_inode_info
+op_star
+id|MSDOS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|msdos_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 DECL|struct|fat_cache
 r_struct
 id|fat_cache
