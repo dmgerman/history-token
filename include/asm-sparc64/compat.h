@@ -461,6 +461,11 @@ id|usp
 op_add_assign
 id|STACK_BIAS
 suffix:semicolon
+r_else
+id|usp
+op_and_assign
+l_int|0xffffffffUL
+suffix:semicolon
 r_return
 (paren
 r_void
