@@ -164,6 +164,8 @@ DECL|macro|pgd_present
 mdefine_line|#define pgd_present(pgd)&t;(1)
 DECL|macro|pgd_clear
 mdefine_line|#define pgd_clear(pgdp)&t;&t;do { } while (0)
+DECL|macro|set_pgd
+mdefine_line|#define set_pgd(pgd,pgdp)&t;do { } while (0)
 DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page,prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
