@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/udbg.h&gt;
@@ -830,6 +831,85 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Given an RTAS status code of 990n compute the hinted delay of 10^n&n; * (last digit) milliseconds.  For now we bound at n=3 (1 sec).&n; */
+r_int
+r_int
+DECL|function|rtas_extended_busy_delay_time
+id|rtas_extended_busy_delay_time
+c_func
+(paren
+r_int
+id|status
+)paren
+(brace
+r_int
+id|order
+op_assign
+id|status
+op_minus
+l_int|9900
+suffix:semicolon
+r_int
+r_int
+id|ms
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|order
+OL
+l_int|0
+)paren
+id|order
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* RTC depends on this for -2 clock busy */
+r_else
+r_if
+c_cond
+(paren
+id|order
+OG
+l_int|3
+)paren
+id|order
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* bound */
+multiline_comment|/* Use microseconds for reasonable accuracy */
+r_for
+c_loop
+(paren
+id|ms
+op_assign
+l_int|1000
+suffix:semicolon
+id|order
+OG
+l_int|0
+suffix:semicolon
+id|order
+op_decrement
+)paren
+id|ms
+op_assign
+id|ms
+op_star
+l_int|10
+suffix:semicolon
+r_return
+id|ms
+op_div
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* round down is fine */
 )brace
 DECL|macro|FLASH_BLOCK_LIST_VERSION
 mdefine_line|#define FLASH_BLOCK_LIST_VERSION (1UL)
