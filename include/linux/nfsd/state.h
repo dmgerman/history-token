@@ -465,5 +465,21 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|nfs4_in_grace
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfs4_in_no_grace
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif   /* NFSD4_STATE_H */
 eof
