@@ -2370,11 +2370,6 @@ r_int
 id|sa1111_init
 c_func
 (paren
-r_struct
-id|device
-op_star
-id|parent
-comma
 r_int
 r_int
 id|phys
