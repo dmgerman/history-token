@@ -97,6 +97,37 @@ r_void
 op_assign
 id|dummy_gettimeoffset
 suffix:semicolon
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+r_int
+id|this_offset
+suffix:semicolon
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Handle kernel profile stuff...&n; */
 DECL|function|do_profile
 r_static
