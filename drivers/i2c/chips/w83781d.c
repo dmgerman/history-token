@@ -4805,9 +4805,15 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|val1
 op_eq
 l_int|0x20
+op_logical_or
+id|val1
+op_eq
+l_int|0x72
+)paren
 op_logical_and
 id|vendid
 op_eq
