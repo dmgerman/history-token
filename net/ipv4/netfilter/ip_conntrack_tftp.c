@@ -251,6 +251,31 @@ id|exp
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|TFTP_OPCODE_DATA
+suffix:colon
+r_case
+id|TFTP_OPCODE_ACK
+suffix:colon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;Data/ACK opcode&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TFTP_OPCODE_ERROR
+suffix:colon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;Error opcode&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|DEBUGP

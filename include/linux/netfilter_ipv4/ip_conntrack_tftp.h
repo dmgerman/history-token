@@ -17,5 +17,11 @@ DECL|macro|TFTP_OPCODE_READ
 mdefine_line|#define TFTP_OPCODE_READ&t;1
 DECL|macro|TFTP_OPCODE_WRITE
 mdefine_line|#define TFTP_OPCODE_WRITE&t;2
+DECL|macro|TFTP_OPCODE_DATA
+mdefine_line|#define TFTP_OPCODE_DATA&t;3
+DECL|macro|TFTP_OPCODE_ACK
+mdefine_line|#define TFTP_OPCODE_ACK&t;&t;4
+DECL|macro|TFTP_OPCODE_ERROR
+mdefine_line|#define TFTP_OPCODE_ERROR&t;5
 macro_line|#endif /* _IP_CT_TFTP */
 eof
