@@ -10882,7 +10882,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;imsttfb: Device 0x%lx unknown, &quot;
+l_string|&quot;imsttfb: Device 0x%x unknown, &quot;
 l_string|&quot;contact maintainer.&bslash;n&quot;
 comma
 id|pdev-&gt;device

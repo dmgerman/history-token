@@ -37,6 +37,9 @@ macro_line|#ifdef CONFIG_ADB_PMU
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+macro_line|#include &lt;asm/btext.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_NVRAM
 macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#endif
@@ -4565,6 +4568,50 @@ id|info-&gt;ati_regbase_phys
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+id|btext_update_display
+c_func
+(paren
+id|info-&gt;frame_buffer_phys
+comma
+(paren
+(paren
+(paren
+id|par-&gt;crtc.h_tot_disp
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+)paren
+op_plus
+l_int|1
+)paren
+op_star
+l_int|8
+comma
+(paren
+(paren
+id|par-&gt;crtc.v_tot_disp
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0x7ff
+)paren
+op_plus
+l_int|1
+comma
+id|par-&gt;crtc.bpp
+comma
+id|par-&gt;crtc.vxres
+op_star
+id|par-&gt;crtc.bpp
+op_div
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
 DECL|function|atyfb_decode_var
 r_static

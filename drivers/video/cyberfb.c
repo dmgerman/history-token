@@ -2718,6 +2718,9 @@ c_func
 l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/**************************************************************&n; * We are waiting for &quot;fifo&quot; FIFO-slots empty&n; */
 DECL|function|Cyber_WaitQueue
