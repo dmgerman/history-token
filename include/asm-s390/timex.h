@@ -35,19 +35,19 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;stck 0(%0)&quot;
+l_string|&quot;stck 0(%1)&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|cycles
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
-(paren
 id|cycles
 )paren
-)paren
 suffix:colon
-l_string|&quot;memory&quot;
-comma
 l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
@@ -76,19 +76,19 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;stck 0(%0)&quot;
+l_string|&quot;stck 0(%1)&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|clk
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
-(paren
 id|clk
 )paren
-)paren
 suffix:colon
-l_string|&quot;memory&quot;
-comma
 l_string|&quot;cc&quot;
 )paren
 suffix:semicolon

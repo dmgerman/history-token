@@ -66,6 +66,8 @@ id|rp
 suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 macro_line|#else /* __s390x__ */
@@ -96,6 +98,8 @@ id|len
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 comma
 l_string|&quot;2&quot;
 comma

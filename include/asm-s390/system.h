@@ -47,14 +47,25 @@ id|fpregs
 id|asm
 r_volatile
 (paren
-l_string|&quot;   std   0,8(%0)&bslash;n&quot;
-l_string|&quot;   std   2,24(%0)&bslash;n&quot;
-l_string|&quot;   std   4,40(%0)&bslash;n&quot;
-l_string|&quot;   std   6,56(%0)&quot;
+l_string|&quot;   std   0,8(%1)&bslash;n&quot;
+l_string|&quot;   std   2,24(%1)&bslash;n&quot;
+l_string|&quot;   std   4,40(%1)&bslash;n&quot;
+l_string|&quot;   std   6,56(%1)&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|fpregs
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
+id|fpregs
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
 id|fpregs
 )paren
 suffix:colon
@@ -72,23 +83,34 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;   stfpc 0(%0)&bslash;n&quot;
-l_string|&quot;   std   1,16(%0)&bslash;n&quot;
-l_string|&quot;   std   3,32(%0)&bslash;n&quot;
-l_string|&quot;   std   5,48(%0)&bslash;n&quot;
-l_string|&quot;   std   7,64(%0)&bslash;n&quot;
-l_string|&quot;   std   8,72(%0)&bslash;n&quot;
-l_string|&quot;   std   9,80(%0)&bslash;n&quot;
-l_string|&quot;   std   10,88(%0)&bslash;n&quot;
-l_string|&quot;   std   11,96(%0)&bslash;n&quot;
-l_string|&quot;   std   12,104(%0)&bslash;n&quot;
-l_string|&quot;   std   13,112(%0)&bslash;n&quot;
-l_string|&quot;   std   14,120(%0)&bslash;n&quot;
-l_string|&quot;   std   15,128(%0)&bslash;n&quot;
+l_string|&quot;   stfpc 0(%1)&bslash;n&quot;
+l_string|&quot;   std   1,16(%1)&bslash;n&quot;
+l_string|&quot;   std   3,32(%1)&bslash;n&quot;
+l_string|&quot;   std   5,48(%1)&bslash;n&quot;
+l_string|&quot;   std   7,64(%1)&bslash;n&quot;
+l_string|&quot;   std   8,72(%1)&bslash;n&quot;
+l_string|&quot;   std   9,80(%1)&bslash;n&quot;
+l_string|&quot;   std   10,88(%1)&bslash;n&quot;
+l_string|&quot;   std   11,96(%1)&bslash;n&quot;
+l_string|&quot;   std   12,104(%1)&bslash;n&quot;
+l_string|&quot;   std   13,112(%1)&bslash;n&quot;
+l_string|&quot;   std   14,120(%1)&bslash;n&quot;
+l_string|&quot;   std   15,128(%1)&bslash;n&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|fpregs
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
+id|fpregs
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
 id|fpregs
 )paren
 suffix:colon
@@ -121,6 +143,12 @@ l_string|&quot;a&quot;
 (paren
 id|fpregs
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|fpregs
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -151,6 +179,12 @@ suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
 (paren
+id|fpregs
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
 id|fpregs
 )paren
 )paren
@@ -231,16 +265,26 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;    l   %0,0(%3)&bslash;n&quot;
+l_string|&quot;    l   %0,0(%4)&bslash;n&quot;
 l_string|&quot;0:  lr  0,%0&bslash;n&quot;
-l_string|&quot;    nr  0,%2&bslash;n&quot;
-l_string|&quot;    or  0,%1&bslash;n&quot;
-l_string|&quot;    cs  %0,0,0(%3)&bslash;n&quot;
+l_string|&quot;    nr  0,%3&bslash;n&quot;
+l_string|&quot;    or  0,%2&bslash;n&quot;
+l_string|&quot;    cs  %0,0,0(%4)&bslash;n&quot;
 l_string|&quot;    jl  0b&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
 id|old
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
+id|addr
 )paren
 suffix:colon
 l_string|&quot;d&quot;
@@ -262,6 +306,16 @@ id|shift
 comma
 l_string|&quot;a&quot;
 (paren
+id|addr
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
 id|addr
 )paren
 suffix:colon
@@ -314,16 +368,26 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;    l   %0,0(%3)&bslash;n&quot;
+l_string|&quot;    l   %0,0(%4)&bslash;n&quot;
 l_string|&quot;0:  lr  0,%0&bslash;n&quot;
-l_string|&quot;    nr  0,%2&bslash;n&quot;
-l_string|&quot;    or  0,%1&bslash;n&quot;
-l_string|&quot;    cs  %0,0,0(%3)&bslash;n&quot;
+l_string|&quot;    nr  0,%3&bslash;n&quot;
+l_string|&quot;    or  0,%2&bslash;n&quot;
+l_string|&quot;    cs  %0,0,0(%4)&bslash;n&quot;
 l_string|&quot;    jl  0b&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
 id|old
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
+id|addr
 )paren
 suffix:colon
 l_string|&quot;d&quot;
@@ -345,6 +409,16 @@ id|shift
 comma
 l_string|&quot;a&quot;
 (paren
+id|addr
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
 id|addr
 )paren
 suffix:colon
@@ -369,13 +443,23 @@ suffix:colon
 id|asm
 r_volatile
 (paren
-l_string|&quot;    l   %0,0(%2)&bslash;n&quot;
-l_string|&quot;0:  cs  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;    l   %0,0(%3)&bslash;n&quot;
+l_string|&quot;0:  cs  %0,%2,0(%3)&bslash;n&quot;
 l_string|&quot;    jl  0b&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
 id|old
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
+id|ptr
 )paren
 suffix:colon
 l_string|&quot;d&quot;
@@ -387,12 +471,20 @@ l_string|&quot;a&quot;
 (paren
 id|ptr
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
+id|ptr
+)paren
 suffix:colon
 l_string|&quot;memory&quot;
 comma
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 id|x
@@ -408,13 +500,23 @@ suffix:colon
 id|asm
 r_volatile
 (paren
-l_string|&quot;    lg  %0,0(%2)&bslash;n&quot;
-l_string|&quot;0:  csg %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;    lg  %0,0(%3)&bslash;n&quot;
+l_string|&quot;0:  csg %0,%2,0(%3)&bslash;n&quot;
 l_string|&quot;    jl  0b&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
 id|old
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
+id|ptr
 )paren
 suffix:colon
 l_string|&quot;d&quot;
@@ -426,12 +528,20 @@ l_string|&quot;a&quot;
 (paren
 id|ptr
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_int
+op_star
+)paren
+id|ptr
+)paren
 suffix:colon
 l_string|&quot;memory&quot;
 comma
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 id|x
@@ -793,18 +903,18 @@ DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value)     do { var = value; wmb(); } while (0)
 multiline_comment|/* interrupt control.. */
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable() ({ &bslash;&n;        unsigned long  __dummy; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stosm 0(%1),0x03&quot; : &quot;=m&quot; (__dummy) : &quot;a&quot; (&amp;__dummy) ); &bslash;&n;        })
+mdefine_line|#define local_irq_enable() ({ &bslash;&n;        unsigned long  __dummy; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stosm 0(%1),0x03&quot; &bslash;&n;&t;&t;: &quot;=m&quot; (__dummy) : &quot;a&quot; (&amp;__dummy) : &quot;memory&quot; ); &bslash;&n;        })
 DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable() ({ &bslash;&n;        unsigned long __flags; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stnsm 0(%1),0xfc&quot; : &quot;=m&quot; (__flags) : &quot;a&quot; (&amp;__flags) ); &bslash;&n;        __flags; &bslash;&n;        })
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;stosm 0(%1),0&quot; : &quot;=m&quot; (x) : &quot;a&quot; (&amp;x) )
+mdefine_line|#define local_save_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;stosm 0(%1),0&quot; : &quot;=m&quot; (x) : &quot;a&quot; (&amp;x), &quot;m&quot; (x) )
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x) &bslash;&n;        __asm__ __volatile__(&quot;ssm   0(%0)&quot; : : &quot;a&quot; (&amp;x) : &quot;memory&quot;)
+mdefine_line|#define local_irq_restore(x) &bslash;&n;        __asm__ __volatile__(&quot;ssm   0(%0)&quot; : : &quot;a&quot; (&amp;x), &quot;m&quot; (x) : &quot;memory&quot;)
 DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;        !((flags &gt;&gt; __FLAG_SHIFT) &amp; 3);&t;&bslash;&n;})
 macro_line|#ifdef __s390x__
 DECL|macro|__load_psw
-mdefine_line|#define __load_psw(psw) &bslash;&n;        __asm__ __volatile__(&quot;lpswe 0(%0)&quot; : : &quot;a&quot; (&amp;psw) : &quot;cc&quot; );
+mdefine_line|#define __load_psw(psw) &bslash;&n;        __asm__ __volatile__(&quot;lpswe 0(%0)&quot; : : &quot;a&quot; (&amp;psw), &quot;m&quot; (psw) : &quot;cc&quot; );
 DECL|macro|__ctl_load
 mdefine_line|#define __ctl_load(array, low, high) ({ &bslash;&n;&t;__asm__ __volatile__ ( &bslash;&n;&t;&t;&quot;   bras  1,0f&bslash;n&quot; &bslash;&n;                &quot;   lctlg 0,0,0(%0)&bslash;n&quot; &bslash;&n;&t;&t;&quot;0: ex    %1,0(1)&quot; &bslash;&n;&t;&t;: : &quot;a&quot; (&amp;array), &quot;a&quot; (((low)&lt;&lt;4)+(high)) : &quot;1&quot; ); &bslash;&n;&t;})
 DECL|macro|__ctl_store
