@@ -160,8 +160,5 @@ op_star
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* This is unnecessary on the SpitFire since D-CACHE is write-through. */
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
 macro_line|#endif /* _SPARC64_CACHEFLUSH_H */
 eof

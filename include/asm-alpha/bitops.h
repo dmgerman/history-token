@@ -1955,8 +1955,12 @@ suffix:semicolon
 )brace
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit                 __test_and_set_bit
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(l,n,a)   test_and_set_bit(n,a)
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit               __test_and_clear_bit
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(l,n,a) test_and_clear_bit(n,a)
 DECL|macro|ext2_test_bit
 mdefine_line|#define ext2_test_bit                test_bit
 DECL|macro|ext2_find_first_zero_bit

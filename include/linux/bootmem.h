@@ -55,6 +55,12 @@ r_int
 r_int
 id|last_pos
 suffix:semicolon
+DECL|member|last_success
+r_int
+r_int
+id|last_success
+suffix:semicolon
+multiline_comment|/* Previous allocation point.  To speed&n;&t;&t;&t;&t;&t; * up searching */
 DECL|typedef|bootmem_data_t
 )brace
 id|bootmem_data_t

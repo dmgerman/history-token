@@ -3049,7 +3049,7 @@ op_assign
 op_minus
 id|EMFILE
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3223,7 +3223,7 @@ id|fd
 suffix:semicolon
 id|out
 suffix:colon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3288,7 +3288,7 @@ id|files
 op_assign
 id|current-&gt;files
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3303,7 +3303,7 @@ comma
 id|fd
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3334,7 +3334,7 @@ id|files
 op_assign
 id|current-&gt;files
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3367,7 +3367,7 @@ id|fd
 op_assign
 id|file
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3681,7 +3681,7 @@ id|files
 op_assign
 id|current-&gt;files
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3737,7 +3737,7 @@ comma
 id|fd
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3755,7 +3755,7 @@ id|files
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

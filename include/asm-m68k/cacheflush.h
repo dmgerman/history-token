@@ -152,8 +152,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Push the page at kernel virtual address and clear the icache */
 multiline_comment|/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page) __flush_page_to_ram(page_address(page))
 DECL|function|__flush_page_to_ram
 r_extern
 r_inline
@@ -221,7 +219,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
+mdefine_line|#define flush_dcache_page(page)&t;__flush_page_to_ram(page_address(page))
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)              do { } while (0)
 DECL|macro|flush_icache_user_range

@@ -3219,8 +3219,12 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * ATTENTION: intel byte ordering convention for ext2 and minix !!&n; * bit 0 is the LSB of addr; bit 31 is the MSB of addr;&n; * bit 32 is the LSB of (addr+4).&n; * That combined with the little endian byte order of Intel gives the&n; * following bit order in memory:&n; *    07 06 05 04 03 02 01 00 15 14 13 12 11 10 09 08 &bslash;&n; *    23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 24&n; */
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr, addr)       &bslash;&n;&t;test_and_set_bit((nr)^24, (unsigned long *)addr)
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(lock, nr, addr)       &bslash;&n;&t;        test_and_set_bit((nr)^24, (unsigned long *)addr)
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit(nr, addr)     &bslash;&n;&t;test_and_clear_bit((nr)^24, (unsigned long *)addr)
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(lock, nr, addr)     &bslash;&n;&t;        test_and_clear_bit((nr)^24, (unsigned long *)addr)
 DECL|macro|ext2_test_bit
 mdefine_line|#define ext2_test_bit(nr, addr)      &bslash;&n;&t;test_bit((nr)^24, (unsigned long *)addr)
 r_static

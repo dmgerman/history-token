@@ -673,6 +673,7 @@ comma
 id|addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * FIXME!  We used to have flush_page_to_ram() in here, but&n;&t;&t; * that was wrong.  davem says we need a new per-arch primitive&n;&t;&t; * to handle this correctly.&n;&t;&t; */
 id|maddr
 op_assign
 id|kmap
@@ -697,12 +698,6 @@ comma
 id|buf
 comma
 id|bytes
-)paren
-suffix:semicolon
-id|flush_page_to_ram
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 id|flush_icache_user_range
@@ -730,12 +725,6 @@ op_plus
 id|offset
 comma
 id|bytes
-)paren
-suffix:semicolon
-id|flush_page_to_ram
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 )brace

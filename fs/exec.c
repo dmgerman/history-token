@@ -1202,12 +1202,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|flush_page_to_ram
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|set_pte
 c_func
 (paren
@@ -1687,7 +1681,12 @@ suffix:semicolon
 macro_line|#endif
 id|mpnt-&gt;vm_page_prot
 op_assign
-id|PAGE_COPY
+id|protection_map
+(braket
+id|VM_STACK_FLAGS
+op_amp
+l_int|0x7
+)braket
 suffix:semicolon
 id|mpnt-&gt;vm_flags
 op_assign
@@ -3171,7 +3170,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3235,7 +3234,7 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3272,7 +3271,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3280,7 +3279,7 @@ id|files-&gt;file_lock
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
