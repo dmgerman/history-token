@@ -845,6 +845,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|tty3270_driver
 suffix:semicolon
 macro_line|#ifndef spin_trylock_irqsave
@@ -921,7 +922,6 @@ c_cond
 (paren
 id|current-&gt;tty-&gt;driver
 op_eq
-op_amp
 id|tty3270_driver
 )paren
 id|minor
