@@ -1808,7 +1808,6 @@ id|sctx
 op_assign
 id|ctx
 suffix:semicolon
-r_const
 r_static
 id|u8
 id|padding

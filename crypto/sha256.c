@@ -4419,7 +4419,7 @@ id|i
 comma
 id|j
 suffix:semicolon
-r_const
+r_static
 id|u8
 id|padding
 (braket
