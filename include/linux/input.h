@@ -828,6 +828,8 @@ DECL|macro|BUS_ADB
 mdefine_line|#define BUS_ADB&t;&t;&t;0x17
 DECL|macro|BUS_I2C
 mdefine_line|#define BUS_I2C&t;&t;&t;0x18
+DECL|macro|BUS_HOST
+mdefine_line|#define BUS_HOST&t;&t;0x19
 multiline_comment|/*&n; * Values describing the status of an effect&n; */
 DECL|macro|FF_STATUS_STOPPED
 mdefine_line|#define FF_STATUS_STOPPED&t;0x00

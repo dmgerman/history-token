@@ -114,7 +114,7 @@ l_string|&quot;rpcmouse/input0&quot;
 comma
 id|idbus
 suffix:colon
-id|BUS_ISA
+id|BUS_HOST
 comma
 id|idvendor
 suffix:colon
