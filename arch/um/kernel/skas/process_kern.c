@@ -18,13 +18,15 @@ macro_line|#include &quot;tlb.h&quot;
 macro_line|#include &quot;frame.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;mode.h&quot;
-macro_line|#ifdef PTRACE_SYSEMU
 DECL|variable|using_sysemu
 r_static
 id|atomic_t
 id|using_sysemu
 suffix:semicolon
-macro_line|#endif
+DECL|variable|sysemu_supported
+r_int
+id|sysemu_supported
+suffix:semicolon
 DECL|function|set_using_sysemu
 r_void
 id|set_using_sysemu
@@ -40,6 +42,8 @@ c_func
 op_amp
 id|using_sysemu
 comma
+id|sysemu_supported
+op_logical_and
 id|value
 )paren
 suffix:semicolon
@@ -218,6 +222,17 @@ id|proc_dir_entry
 op_star
 id|ent
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mode_tt
+op_logical_or
+op_logical_neg
+id|sysemu_supported
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|ent
 op_assign
 id|create_proc_entry
@@ -225,19 +240,11 @@ c_func
 (paren
 l_string|&quot;sysemu&quot;
 comma
-l_int|00600
+l_int|0600
 comma
 op_amp
 id|proc_root
 )paren
-suffix:semicolon
-id|ent-&gt;read_proc
-op_assign
-id|proc_read_sysemu
-suffix:semicolon
-id|ent-&gt;write_proc
-op_assign
-id|proc_write_sysemu
 suffix:semicolon
 r_if
 c_cond
@@ -257,6 +264,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|ent-&gt;read_proc
+op_assign
+id|proc_read_sysemu
+suffix:semicolon
+id|ent-&gt;write_proc
+op_assign
+id|proc_write_sysemu
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

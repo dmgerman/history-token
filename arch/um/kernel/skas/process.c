@@ -739,7 +739,14 @@ id|err
 id|panic
 c_func
 (paren
-l_string|&quot;userspace - PTRACE_SYSCALL failed, errno = %d&bslash;n&quot;
+l_string|&quot;userspace - PTRACE_%s failed, errno = %d&bslash;n&quot;
+comma
+id|local_using_sysemu
+ques
+c_cond
+l_string|&quot;SYSEMU&quot;
+suffix:colon
+l_string|&quot;SYSCALL&quot;
 comma
 id|errno
 )paren
@@ -958,8 +965,15 @@ id|err
 id|panic
 c_func
 (paren
-l_string|&quot;userspace - PTRACE_SYSCALL failed, &quot;
+l_string|&quot;userspace - PTRACE_%s failed, &quot;
 l_string|&quot;errno = %d&bslash;n&quot;
+comma
+id|local_using_sysemu
+ques
+c_cond
+l_string|&quot;SYSEMU&quot;
+suffix:colon
+l_string|&quot;SYSCALL&quot;
 comma
 id|errno
 )paren

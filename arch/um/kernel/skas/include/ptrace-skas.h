@@ -24,6 +24,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sysemu_supported
+suffix:semicolon
 macro_line|#include &quot;skas_ptregs.h&quot;
 DECL|macro|HOST_FRAME_SIZE
 mdefine_line|#define HOST_FRAME_SIZE 17
