@@ -2762,6 +2762,7 @@ op_star
 id|SRpnt
 suffix:semicolon
 r_int
+r_int
 id|startwait
 op_assign
 id|jiffies
@@ -3152,6 +3153,7 @@ id|Scsi_Request
 op_star
 id|SRpnt
 suffix:semicolon
+r_int
 r_int
 id|startwait
 op_assign
@@ -3790,6 +3792,7 @@ r_int
 id|to
 )paren
 (brace
+r_int
 r_int
 id|startwait
 op_assign
@@ -6623,6 +6626,7 @@ id|STp
 )paren
 suffix:semicolon
 r_int
+r_int
 id|startwait
 op_assign
 id|jiffies
@@ -7803,6 +7807,7 @@ id|flag
 op_assign
 l_int|1
 suffix:semicolon
+r_int
 r_int
 id|startwait
 op_assign
