@@ -66,11 +66,12 @@ r_typedef
 r_struct
 id|card_s
 (brace
-DECL|member|hdlc
-id|hdlc_device
-id|hdlc
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
 suffix:semicolon
-multiline_comment|/* HDLC device struct - must be first */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -1118,6 +1119,12 @@ id|C101_MAPPED_RAM_SIZE
 )paren
 suffix:semicolon
 )brace
+id|free_hdlcdev
+c_func
+(paren
+id|card-&gt;dev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1255,6 +1262,39 @@ id|card_t
 )paren
 )paren
 suffix:semicolon
+id|card-&gt;dev
+op_assign
+id|alloc_hdlcdev
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|card-&gt;dev
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;c101: unable to allocate memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOBUFS
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1528,6 +1568,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/* XXX: are we OK with having that done when card is already up? */
 id|sca_init_sync_port
 c_func
 (paren
