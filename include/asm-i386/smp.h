@@ -18,7 +18,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_CLUSTERED_APIC
+macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
 macro_line|#else

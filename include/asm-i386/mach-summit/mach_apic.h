@@ -242,5 +242,22 @@ r_void
 )paren
 (brace
 )brace
+DECL|function|check_phys_apicid_present
+r_static
+r_inline
+r_int
+id|check_phys_apicid_present
+c_func
+(paren
+r_int
+id|boot_cpu_physical_apicid
+)paren
+(brace
+r_return
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
