@@ -21,7 +21,7 @@ mdefine_line|#define RX_BUCKET_SIZE 256
 DECL|macro|BIT
 macro_line|#undef BIT
 DECL|macro|BIT
-mdefine_line|#define BIT(x)&t;(1 &lt;&lt; (x))
+mdefine_line|#define BIT(x)&t;(1UL &lt;&lt; (x))
 multiline_comment|/* For more detailed explanations of what each field menas,&n;   see Nick&squot;s great comments to #defines below (or docs, if&n;   you are lucky enough toget hold of them :)*/
 multiline_comment|/* tx status vector is written over tx command header upon&n;   dma completion. */
 DECL|struct|tx_status_vector

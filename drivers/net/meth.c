@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt; /* eth_type_trans */
 macro_line|#include &lt;linux/ip.h&gt;          /* struct iphdr */
 macro_line|#include &lt;linux/tcp.h&gt;         /* struct tcphdr */
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/mii.h&gt; /*MII definitions */
+macro_line|#include &lt;linux/mii.h&gt;         /* MII definitions */
 macro_line|#include &lt;asm/ip32/mace.h&gt;
 macro_line|#include &lt;asm/ip32/ip32_ints.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -326,27 +326,24 @@ id|o2meth_eaddr
 id|i
 )braket
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.mac_addr
+op_assign
 (paren
 op_star
 (paren
-id|u64
+r_int
+r_int
 op_star
 )paren
 id|o2meth_eaddr
 )paren
 op_rshift
 l_int|16
-comma
-id|mac_addr
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Waits for BUSY status of mdio bus to clear&n; */
 DECL|macro|WAIT_FOR_PHY
-mdefine_line|#define WAIT_FOR_PHY(___rval)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while ((___rval = mace_eth_read(phy_data)) &amp; MDIO_BUSY) {&t;&bslash;&n;&t;&t;udelay(25);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
+mdefine_line|#define WAIT_FOR_PHY(___rval)&t;&t;&t;&t;&t;&bslash;&n;&t;while ((___rval = mace-&gt;eth.phy_data) &amp; MDIO_BUSY) {&t;&bslash;&n;&t;&t;udelay(25);&t;&t;&t;&t;&t;&bslash;&n;&t;}
 multiline_comment|/*read phy register, return value read */
 DECL|function|mdio_read
 r_static
@@ -375,9 +372,8 @@ c_func
 id|rval
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.phy_regs
+op_assign
 (paren
 id|priv-&gt;phy_addr
 op_lshift
@@ -389,9 +385,6 @@ id|phyreg
 op_amp
 l_int|0x1f
 )paren
-comma
-id|phy_regs
-)paren
 suffix:semicolon
 id|udelay
 c_func
@@ -399,13 +392,9 @@ c_func
 l_int|25
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.phy_trans_go
+op_assign
 l_int|1
-comma
-id|phy_trans_go
-)paren
 suffix:semicolon
 id|udelay
 c_func
@@ -788,13 +777,9 @@ op_and_assign
 op_complement
 id|METH_PHY_FDX
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.mac_ctrl
+op_assign
 id|priv-&gt;mac_ctrl
-comma
-id|mac_ctrl
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -837,13 +822,9 @@ op_and_assign
 op_complement
 id|METH_100MBIT
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.mac_ctrl
+op_assign
 id|priv-&gt;mac_ctrl
-comma
-id|mac_ctrl
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -903,13 +884,9 @@ id|priv-&gt;tx_write
 op_assign
 l_int|0
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.tx_ring_base
+op_assign
 id|priv-&gt;tx_ring_dma
-comma
-id|tx_ring_base
-)paren
 suffix:semicolon
 multiline_comment|/* Now init skb save area */
 id|memset
@@ -985,7 +962,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* 8byte status vector+3quad padding + 2byte padding,&n;&t;&t;   to put data on 64bit aligned boundary */
+multiline_comment|/* 8byte status vector + 3quad padding + 2byte padding,&n;&t;&t; * to put data on 64bit aligned boundary */
 id|skb_reserve
 c_func
 (paren
@@ -1036,16 +1013,12 @@ comma
 id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.rx_fifo
+op_assign
 id|priv-&gt;rx_ring_dmas
 (braket
 id|i
 )braket
-comma
-id|rx_fifo
-)paren
 suffix:semicolon
 )brace
 id|priv-&gt;rx_write
@@ -1220,21 +1193,19 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* Reset card */
-id|mace_eth_write
+id|mace-&gt;eth.mac_ctrl
+op_assign
+id|SGI_MAC_RESET
+suffix:semicolon
+id|udelay
 c_func
 (paren
-id|SGI_MAC_RESET
-comma
-id|mac_ctrl
+l_int|1
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.mac_ctrl
+op_assign
 l_int|0
-comma
-id|mac_ctrl
-)paren
 suffix:semicolon
 id|udelay
 c_func
@@ -1288,19 +1259,13 @@ id|dev-&gt;flags
 op_or
 id|IFF_PROMISC
 )paren
-(brace
 id|priv-&gt;mac_ctrl
 op_or_assign
 id|METH_PROMISC
 suffix:semicolon
-)brace
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.mac_ctrl
+op_assign
 id|priv-&gt;mac_ctrl
-comma
-id|mac_ctrl
-)paren
 suffix:semicolon
 multiline_comment|/* Autonegotiate speed and duplex mode */
 id|meth_check_link
@@ -1324,13 +1289,9 @@ op_lshift
 id|METH_RX_DEPTH_SHIFT
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1469,13 +1430,9 @@ id|METH_DMA_RX_EN
 op_or
 id|METH_DMA_RX_INT_EN
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -1558,13 +1515,9 @@ op_or
 id|METH_DMA_RX_INT_EN
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 id|free_irq
 c_func
@@ -1612,6 +1565,10 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+r_int
+r_int
+id|status
+suffix:semicolon
 r_struct
 id|meth_private
 op_star
@@ -1648,13 +1605,9 @@ op_and_assign
 op_complement
 id|METH_DMA_RX_INT_EN
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -1679,9 +1632,7 @@ op_minus
 l_int|1
 )paren
 op_amp
-(paren
-l_int|0xF
-)paren
+l_int|0x0f
 suffix:semicolon
 )brace
 r_while
@@ -1692,9 +1643,6 @@ op_ne
 id|fifo_rptr
 )paren
 (brace
-id|u64
-id|status
-suffix:semicolon
 id|dma_unmap_single
 c_func
 (paren
@@ -1766,7 +1714,7 @@ op_assign
 (paren
 id|status
 op_amp
-l_int|0xFFFF
+l_int|0xffff
 )paren
 op_minus
 l_int|4
@@ -1785,7 +1733,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: bogus packet size: %d, status=%#2lx.&bslash;n&quot;
+l_string|&quot;%s: bogus packet size: %ld, status=%#2lx.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -1864,7 +1812,7 @@ id|priv-&gt;rx_skbs
 id|priv-&gt;rx_write
 )braket
 suffix:semicolon
-multiline_comment|/* 8byte status vector+3quad padding + 2byte padding,&n;&t;&t;&t;&t;&t;   to put data on 64bit aligned boundary */
+multiline_comment|/* 8byte status vector + 3quad padding + 2byte padding,&n;&t;&t;&t;&t;&t; * to put data on 64bit aligned boundary */
 id|skb_reserve
 c_func
 (paren
@@ -2083,16 +2031,12 @@ comma
 id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.rx_fifo
+op_assign
 id|priv-&gt;rx_ring_dmas
 (braket
 id|priv-&gt;rx_write
 )braket
-comma
-id|rx_fifo
-)paren
 suffix:semicolon
 id|ADVANCE_RX_PTR
 c_func
@@ -2115,21 +2059,13 @@ id|METH_DMA_RX_INT_EN
 op_or
 id|METH_DMA_RX_EN
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.int_stat
+op_assign
 id|METH_INT_RX_THRESHOLD
-comma
-id|int_stat
-)paren
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -2164,11 +2100,13 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 r_return
+(paren
 id|priv-&gt;tx_count
 op_ge
 id|TX_RING_ENTRIES
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 DECL|function|meth_tx_cleanup
@@ -2194,7 +2132,8 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|u64
+r_int
+r_int
 id|status
 suffix:semicolon
 r_struct
@@ -2229,13 +2168,9 @@ op_complement
 id|METH_DMA_TX_INT_EN
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2269,7 +2204,6 @@ id|priv-&gt;tx_read
 op_eq
 id|priv-&gt;tx_write
 )paren
-(brace
 id|DPRINTK
 c_func
 (paren
@@ -2282,7 +2216,6 @@ comma
 id|rptr
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 r_if
 c_cond
@@ -2497,15 +2430,11 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.int_stat
+op_assign
 id|METH_INT_TX_EMPTY
 op_or
 id|METH_INT_TX_PKT
-comma
-id|int_stat
-)paren
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -2526,7 +2455,7 @@ id|net_device
 op_star
 id|dev
 comma
-id|u32
+r_int
 id|status
 )paren
 (brace
@@ -2641,27 +2570,19 @@ op_amp
 id|priv-&gt;meth_lock
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.int_stat
+op_assign
 id|METH_INT_RX_UNDERFLOW
-comma
-id|int_stat
-)paren
 suffix:semicolon
-multiline_comment|/* more underflow interrupts will be delivered, &n;&t;&t;   effectively throwing us into an infinite loop.&n;&t;&t;   Thus I stop processing Rx in this case.&n;&t;&t;*/
+multiline_comment|/* more underflow interrupts will be delivered, &n;&t;&t; * effectively throwing us into an infinite loop.&n;&t;&t; *  Thus I stop processing Rx in this case. */
 id|priv-&gt;dma_ctrl
 op_and_assign
 op_complement
 id|METH_DMA_RX_EN
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -2677,13 +2598,9 @@ id|priv-&gt;meth_lock
 )paren
 suffix:semicolon
 )brace
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.int_stat
+op_assign
 id|METH_INT_ERROR
-comma
-id|int_stat
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The typical interrupt entry point&n; */
@@ -2736,21 +2653,17 @@ id|status
 suffix:semicolon
 id|status
 op_assign
-id|mace_eth_read
-c_func
-(paren
-id|int_stat
-)paren
+id|mace-&gt;eth.int_stat
 suffix:semicolon
 r_while
 c_loop
 (paren
 id|status
 op_amp
-l_int|0xFF
+l_int|0xff
 )paren
 (brace
-multiline_comment|/* First handle errors - if we get Rx underflow,&n;&t;&t;   Rx DMA will be disabled, and Rx handler will reenable&n;&t;&t;   it. I don&squot;t think it&squot;s possible to get Rx underflow,&n;&t;&t;   without getting Rx interrupt */
+multiline_comment|/* First handle errors - if we get Rx underflow,&n;&t;&t; * Rx DMA will be disabled, and Rx handler will reenable&n;&t;&t; * it. I don&squot;t think it&squot;s possible to get Rx underflow,&n;&t;&t; * without getting Rx interrupt */
 r_if
 c_cond
 (paren
@@ -2822,11 +2735,7 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|mace_eth_read
-c_func
-(paren
-id|int_stat
-)paren
+id|mace-&gt;eth.int_stat
 suffix:semicolon
 )brace
 r_return
@@ -2919,7 +2828,6 @@ id|skb-&gt;len
 OL
 id|len
 )paren
-(brace
 id|memset
 c_func
 (paren
@@ -2938,7 +2846,6 @@ op_minus
 id|skb-&gt;len
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|macro|TX_CATBUF1
 mdefine_line|#define TX_CATBUF1 BIT(25)
@@ -3461,13 +3368,9 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.tx_info
+op_assign
 id|priv-&gt;tx_write
-comma
-id|tx_info
-)paren
 suffix:semicolon
 id|priv-&gt;tx_count
 op_increment
@@ -3524,13 +3427,9 @@ op_complement
 id|METH_DMA_TX_INT_EN
 )paren
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 id|meth_add_to_tx_ring
 c_func
@@ -3575,13 +3474,9 @@ id|priv-&gt;dma_ctrl
 op_or_assign
 id|METH_DMA_TX_INT_EN
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -3688,13 +3583,9 @@ id|METH_DMA_RX_EN
 op_or
 id|METH_DMA_RX_INT_EN
 suffix:semicolon
-id|mace_eth_write
-c_func
-(paren
+id|mace-&gt;eth.dma_ctrl
+op_assign
 id|priv-&gt;dma_ctrl
-comma
-id|dma_ctrl
-)paren
 suffix:semicolon
 multiline_comment|/* Enable interrupt */
 id|spin_unlock_irqrestore
@@ -3740,15 +3631,29 @@ r_int
 id|cmd
 )paren
 (brace
-id|DPRINTK
-c_func
+multiline_comment|/* XXX Not yet implemented */
+r_switch
+c_cond
 (paren
-l_string|&quot;ioctl&bslash;n&quot;
+id|cmd
 )paren
-suffix:semicolon
+(brace
+r_case
+id|SIOCGMIIPHY
+suffix:colon
+r_case
+id|SIOCGMIIREG
+suffix:colon
+r_case
+id|SIOCSMIIREG
+suffix:colon
+r_default
+suffix:colon
 r_return
-l_int|0
+op_minus
+id|EOPNOTSUPP
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Return statistics to the caller&n; */
 DECL|function|meth_stats
@@ -3932,13 +3837,11 @@ comma
 r_int
 r_int
 )paren
-id|mace_eth_read
-c_func
 (paren
-id|mac_ctrl
-)paren
+id|mace-&gt;eth.mac_ctrl
 op_rshift
 l_int|29
+)paren
 )paren
 suffix:semicolon
 r_return
