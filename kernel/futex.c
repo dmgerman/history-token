@@ -28,6 +28,10 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
+DECL|member|offset
+r_int
+id|offset
+suffix:semicolon
 DECL|member|shared
 )brace
 id|shared
@@ -45,6 +49,10 @@ id|mm_struct
 op_star
 id|mm
 suffix:semicolon
+DECL|member|offset
+r_int
+id|offset
+suffix:semicolon
 DECL|member|private
 )brace
 r_private
@@ -61,13 +69,13 @@ r_void
 op_star
 id|ptr
 suffix:semicolon
-DECL|member|both
-)brace
-id|both
-suffix:semicolon
 DECL|member|offset
 r_int
 id|offset
+suffix:semicolon
+DECL|member|both
+)brace
+id|both
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -162,7 +170,7 @@ r_int
 )paren
 id|key-&gt;both.ptr
 op_plus
-id|key-&gt;offset
+id|key-&gt;both.offset
 comma
 id|FUTEX_HASHBITS
 )paren
@@ -198,9 +206,9 @@ id|key1-&gt;both.ptr
 op_eq
 id|key2-&gt;both.ptr
 op_logical_and
-id|key1-&gt;offset
+id|key1-&gt;both.offset
 op_eq
-id|key2-&gt;offset
+id|key2-&gt;both.offset
 )paren
 suffix:semicolon
 )brace
@@ -242,7 +250,7 @@ r_int
 id|err
 suffix:semicolon
 multiline_comment|/*&n;&t; * The futex address must be &quot;naturally&quot; aligned.&n;&t; */
-id|key-&gt;offset
+id|key-&gt;both.offset
 op_assign
 id|uaddr
 op_mod
@@ -255,7 +263,7 @@ id|unlikely
 c_func
 (paren
 (paren
-id|key-&gt;offset
+id|key-&gt;both.offset
 op_mod
 r_sizeof
 (paren
@@ -272,7 +280,7 @@ id|EINVAL
 suffix:semicolon
 id|uaddr
 op_sub_assign
-id|key-&gt;offset
+id|key-&gt;both.offset
 suffix:semicolon
 multiline_comment|/*&n;&t; * The futex is hashed differently depending on whether&n;&t; * it&squot;s in a shared or private mapping.  So check vma first.&n;&t; */
 id|vma
@@ -518,6 +526,9 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|err
@@ -526,7 +537,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Wake up all waiters hashed on the physical page that is mapped&n; * to this virtual address:&n; */
 DECL|function|futex_wake
 r_static
-r_inline
 r_int
 id|futex_wake
 c_func
@@ -710,7 +720,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Requeue all waiters hashed on one physical page to another&n; * physical page.&n; */
 DECL|function|futex_requeue
 r_static
-r_inline
 r_int
 id|futex_requeue
 c_func
@@ -938,6 +947,22 @@ id|nr_requeue
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* Make sure to stop if key1 == key2 */
+r_if
+c_cond
+(paren
+id|head1
+op_eq
+id|head2
+op_logical_and
+id|head1
+op_ne
+id|next
+)paren
+id|head1
+op_assign
+id|i
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -1098,7 +1123,6 @@ suffix:semicolon
 )brace
 DECL|function|futex_wait
 r_static
-r_inline
 r_int
 id|futex_wait
 c_func

@@ -284,8 +284,8 @@ mdefine_line|#define CONFIG_IO_REQ&t;&t;0x04
 multiline_comment|/* Flags in socket state */
 DECL|macro|SOCKET_PRESENT
 mdefine_line|#define SOCKET_PRESENT&t;&t;0x0008
-DECL|macro|SOCKET_SETUP_PENDING
-mdefine_line|#define SOCKET_SETUP_PENDING&t;0x0010
+DECL|macro|SOCKET_INUSE
+mdefine_line|#define SOCKET_INUSE&t;&t;0x0010
 DECL|macro|SOCKET_SHUTDOWN_PENDING
 mdefine_line|#define SOCKET_SHUTDOWN_PENDING&t;0x0020
 DECL|macro|SOCKET_RESET_PENDING
@@ -302,6 +302,85 @@ DECL|macro|SOCKET_CARDBUS
 mdefine_line|#define SOCKET_CARDBUS&t;&t;0x8000
 DECL|macro|SOCKET_CARDBUS_CONFIG
 mdefine_line|#define SOCKET_CARDBUS_CONFIG&t;0x10000
+DECL|function|cs_socket_get
+r_static
+r_inline
+r_int
+id|cs_socket_get
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|skt
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|skt-&gt;state
+op_amp
+id|SOCKET_INUSE
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|try_module_get
+c_func
+(paren
+id|skt-&gt;owner
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|skt-&gt;state
+op_or_assign
+id|SOCKET_INUSE
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|cs_socket_put
+r_static
+r_inline
+r_void
+id|cs_socket_put
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|skt
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|skt-&gt;state
+op_amp
+id|SOCKET_INUSE
+)paren
+(brace
+id|skt-&gt;state
+op_and_assign
+op_complement
+id|SOCKET_INUSE
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|skt-&gt;owner
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|macro|CHECK_HANDLE
 mdefine_line|#define CHECK_HANDLE(h) &bslash;&n;    (((h) == NULL) || ((h)-&gt;client_magic != CLIENT_MAGIC))
 DECL|macro|CHECK_SOCKET
