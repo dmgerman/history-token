@@ -7578,7 +7578,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|ide_release_dma
 c_func
 (paren
