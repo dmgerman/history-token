@@ -80,7 +80,7 @@ c_cond
 (paren
 id|hwif-&gt;chipset
 op_eq
-id|ide_generic
+id|ide_forced
 )paren
 r_return
 id|hwif

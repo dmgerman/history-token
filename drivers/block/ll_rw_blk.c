@@ -371,6 +371,13 @@ op_assign
 id|data
 suffix:semicolon
 )brace
+DECL|variable|blk_queue_activity_fn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_activity_fn
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * blk_queue_prep_rq - set a prepare_request function for queue&n; * @q:&t;&t;queue&n; * @pfn:&t;prepare_request function&n; *&n; * It&squot;s possible for a queue to register a prepare_request callback which&n; * is invoked before the request is handed to the request_fn. The goal of&n; * the function is to prepare a request for I/O, it can be used to build a&n; * cdb from the request data for instance.&n; *&n; */
 DECL|function|blk_queue_prep_rq
 r_void
