@@ -1934,7 +1934,6 @@ mdefine_line|#define TCP_ADD_STATS_BH(field, val)&t;SNMP_ADD_STATS_BH(tcp_statis
 DECL|macro|TCP_ADD_STATS_USER
 mdefine_line|#define TCP_ADD_STATS_USER(field, val)&t;SNMP_ADD_STATS_USER(tcp_statistics, field, val)
 r_extern
-r_inline
 r_void
 id|tcp_put_port
 c_func

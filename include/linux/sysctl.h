@@ -1382,6 +1382,11 @@ id|NET_IPV4_CONF_NOPOLICY
 op_assign
 l_int|16
 comma
+DECL|enumerator|NET_IPV4_CONF_FORCE_IGMP_VERSION
+id|NET_IPV4_CONF_FORCE_IGMP_VERSION
+op_assign
+l_int|17
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv4/netfilter */
