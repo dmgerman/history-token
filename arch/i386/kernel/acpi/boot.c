@@ -1332,6 +1332,12 @@ r_int
 r_int
 id|irq
 suffix:semicolon
+r_int
+r_int
+id|plat_gsi
+op_assign
+id|gsi
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;&t; * Make sure all (legacy) PCI IRQs are set as level-triggered.&n;&t; */
 r_if
@@ -1422,6 +1428,8 @@ op_eq
 id|ACPI_IRQ_MODEL_IOAPIC
 )paren
 (brace
+id|plat_gsi
+op_assign
 id|mp_register_gsi
 c_func
 (paren
@@ -1437,7 +1445,7 @@ macro_line|#endif
 id|acpi_gsi_to_irq
 c_func
 (paren
-id|gsi
+id|plat_gsi
 comma
 op_amp
 id|irq
