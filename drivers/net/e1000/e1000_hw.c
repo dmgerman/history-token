@@ -2894,7 +2894,7 @@ id|phy_data
 op_or_assign
 id|M88E1000_PSCR_ASSERT_CRS_ON_TX
 suffix:semicolon
-multiline_comment|/* Options:&n;     *   MDI/MDI-X = 0 (default)&n;     *   0 - Auto for all speeds&n;     *   1 - MDI mode&n;     *   2 - MDI-X mode&n;     *   3 - Auto for 1000Base-T only (MDI-X for 10/100Base-T modes)&n;     */
+multiline_comment|/* Options:&n;         *   MDI/MDI-X = 0 (default)&n;         *   0 - Auto for all speeds&n;         *   1 - MDI mode&n;         *   2 - MDI-X mode&n;         *   3 - Auto for 1000Base-T only (MDI-X for 10/100Base-T modes)&n;         */
 id|phy_data
 op_and_assign
 op_complement
@@ -2945,7 +2945,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Options:&n;     *   disable_polarity_correction = 0 (default)&n;     *       Automatic Correction for Reversed Cable Polarity&n;     *   0 - Disabled&n;     *   1 - Enabled&n;     */
+multiline_comment|/* Options:&n;         *   disable_polarity_correction = 0 (default)&n;         *       Automatic Correction for Reversed Cable Polarity&n;         *   0 - Disabled&n;         *   1 - Enabled&n;         */
 id|phy_data
 op_and_assign
 op_complement
@@ -2991,7 +2991,7 @@ op_minus
 id|E1000_ERR_PHY
 suffix:semicolon
 )brace
-multiline_comment|/* Force TX_CLK in the Extended PHY Specific Control Register&n;     * to 25MHz clock.&n;     */
+multiline_comment|/* Force TX_CLK in the Extended PHY Specific Control Register&n;         * to 25MHz clock.&n;         */
 r_if
 c_cond
 (paren
@@ -4144,7 +4144,7 @@ op_minus
 id|E1000_ERR_PHY
 suffix:semicolon
 )brace
-multiline_comment|/* Clear Auto-Crossover to force MDI manually. M88E1000 requires MDI&n;     * forced whenever speed are duplex are forced.&n;     */
+multiline_comment|/* Clear Auto-Crossover to force MDI manually. M88E1000 requires MDI&n;         * forced whenever speed are duplex are forced.&n;         */
 id|phy_data
 op_and_assign
 op_complement
@@ -4193,7 +4193,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Clear Auto-Crossover to force MDI manually.  IGP requires MDI&n;     * forced whenever speed or duplex are forced.&n;     */
+multiline_comment|/* Clear Auto-Crossover to force MDI manually.  IGP requires MDI&n;         * forced whenever speed or duplex are forced.&n;         */
 r_if
 c_cond
 (paren
@@ -4540,7 +4540,7 @@ op_eq
 id|e1000_phy_m88
 )paren
 (brace
-multiline_comment|/* Because we reset the PHY above, we need to re-force TX_CLK in the&n;     * Extended PHY Specific Control Register to 25MHz clock.  This value&n;     * defaults back to a 2.5MHz clock when the PHY is reset.&n;     */
+multiline_comment|/* Because we reset the PHY above, we need to re-force TX_CLK in the&n;         * Extended PHY Specific Control Register to 25MHz clock.  This value&n;         * defaults back to a 2.5MHz clock when the PHY is reset.&n;         */
 r_if
 c_cond
 (paren
@@ -4600,7 +4600,7 @@ op_minus
 id|E1000_ERR_PHY
 suffix:semicolon
 )brace
-multiline_comment|/* In addition, because of the s/w reset above, we need to enable CRS on&n;     * TX.  This must be set for both full and half duplex operation.&n;     */
+multiline_comment|/* In addition, because of the s/w reset above, we need to enable CRS on&n;         * TX.  This must be set for both full and half duplex operation.&n;         */
 r_if
 c_cond
 (paren
@@ -4839,7 +4839,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-multiline_comment|/* Set up speed in the Device Control register depending on&n;     * negotiated values.&n;     */
+multiline_comment|/* Set up speed in the Device Control register depending on&n;         * negotiated values.&n;         */
 r_if
 c_cond
 (paren
@@ -4931,7 +4931,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-multiline_comment|/* Set up speed in the Device Control register depending on&n;     * negotiated values.&n;     */
+multiline_comment|/* Set up speed in the Device Control register depending on&n;         * negotiated values.&n;         */
 r_if
 c_cond
 (paren
