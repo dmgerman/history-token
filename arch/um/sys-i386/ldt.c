@@ -23,6 +23,7 @@ r_int
 id|bytecount
 )paren
 suffix:semicolon
+multiline_comment|/* XXX this needs copy_to_user and copy_from_user */
 DECL|function|sys_modify_ldt_tt
 r_int
 id|sys_modify_ldt_tt

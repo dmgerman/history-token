@@ -4,6 +4,7 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;limits.h&gt;
 macro_line|#include &lt;sys/mman.h&gt; 
+macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;sys/utsname.h&gt;
@@ -850,6 +851,87 @@ id|host.version
 comma
 id|host.machine
 )paren
+suffix:semicolon
+)brace
+DECL|function|setjmp_wrapper
+r_int
+id|setjmp_wrapper
+c_func
+(paren
+r_void
+(paren
+op_star
+id|proc
+)paren
+(paren
+r_void
+op_star
+comma
+r_void
+op_star
+)paren
+comma
+dot
+dot
+dot
+)paren
+(brace
+id|va_list
+id|args
+suffix:semicolon
+id|sigjmp_buf
+id|buf
+suffix:semicolon
+r_int
+id|n
+suffix:semicolon
+id|n
+op_assign
+id|sigsetjmp
+c_func
+(paren
+id|buf
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
+op_eq
+l_int|0
+)paren
+(brace
+id|va_start
+c_func
+(paren
+id|args
+comma
+id|proc
+)paren
+suffix:semicolon
+(paren
+op_star
+id|proc
+)paren
+(paren
+op_amp
+id|buf
+comma
+op_amp
+id|args
+)paren
+suffix:semicolon
+)brace
+id|va_end
+c_func
+(paren
+id|args
+)paren
+suffix:semicolon
+r_return
+id|n
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
