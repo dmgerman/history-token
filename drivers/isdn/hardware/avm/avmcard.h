@@ -163,6 +163,11 @@ id|capi_ctr
 op_star
 id|capi_ctrl
 suffix:semicolon
+DECL|member|ncci_head
+r_struct
+id|list_head
+id|ncci_head
+suffix:semicolon
 DECL|typedef|avmctrl_info
 )brace
 id|avmctrl_info
@@ -2081,7 +2086,7 @@ id|u16
 id|appl
 )paren
 suffix:semicolon
-r_void
+id|u16
 id|b1_send_message
 c_func
 (paren
@@ -2288,7 +2293,7 @@ id|u16
 id|appl
 )paren
 suffix:semicolon
-r_void
+id|u16
 id|b1dma_send_message
 c_func
 (paren

@@ -77,6 +77,7 @@ mdefine_line|#define KCAPI_TRACE_SHORT&t;&t;3
 DECL|macro|KCAPI_TRACE_FULL
 mdefine_line|#define KCAPI_TRACE_FULL&t;&t;4
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/skbuff.h&gt;
 DECL|struct|capi_interface
 r_struct
 id|capi_interface
