@@ -1,4 +1,4 @@
-multiline_comment|/* iptables module for setting the IPv4 DSCP field, Version 1.8&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh &lt;mgm@paktronix.com&gt;&n; * This software is distributed under GNU GPL v2, 1991&n; * &n; * See RFC2474 for a description of the DSCP field within the IP Header.&n; *&n; * ipt_DSCP.c,v 1.8 2002/08/06 18:41:57 laforge Exp&n;*/
+multiline_comment|/* iptables module for setting the IPv4 DSCP field, Version 1.8&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@netfilter.org&gt;&n; * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh &lt;mgm@paktronix.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as &n; * published by the Free Software Foundation.&n; * &n; * See RFC2474 for a description of the DSCP field within the IP Header.&n; *&n; * ipt_DSCP.c,v 1.8 2002/08/06 18:41:57 laforge Exp&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
