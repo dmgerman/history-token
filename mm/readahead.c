@@ -10,8 +10,9 @@ id|backing_dev_info
 id|default_backing_dev_info
 op_assign
 (brace
+dot
 id|ra_pages
-suffix:colon
+op_assign
 (paren
 id|VM_MAX_READAHEAD
 op_star
@@ -20,8 +21,9 @@ l_int|1024
 op_div
 id|PAGE_CACHE_SIZE
 comma
+dot
 id|state
-suffix:colon
+op_assign
 l_int|0
 comma
 )brace

@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2776,14 +2777,15 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-id|ide_stall_queue
+multiline_comment|/* FIXME: we should use timeouts here */
+id|mdelay
 c_func
 (paren
-id|drive
-comma
 id|HZ
 op_div
 l_int|2
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 r_return
@@ -4292,12 +4294,13 @@ id|tape-&gt;postponed_rq
 op_assign
 id|rq
 suffix:semicolon
-id|ide_stall_queue
+multiline_comment|/* FIXME: we should use timeouts here */
+id|mdelay
 c_func
 (paren
-id|drive
-comma
 id|tape-&gt;dsc_polling_frequency
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -24585,7 +24588,7 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 (paren
 id|IDETAPE_MAJOR
 comma
@@ -24833,7 +24836,7 @@ c_cond
 op_logical_neg
 id|idetape_chrdev_present
 op_logical_and
-id|devfs_register_chrdev
+id|register_chrdev
 (paren
 id|IDETAPE_MAJOR
 comma
@@ -25096,7 +25099,7 @@ op_logical_neg
 id|supported
 )paren
 (brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 (paren
 id|IDETAPE_MAJOR
 comma

@@ -6537,8 +6537,9 @@ id|sched_param
 id|param
 op_assign
 (brace
+dot
 id|sched_priority
-suffix:colon
+op_assign
 id|MAX_RT_PRIO
 op_minus
 l_int|1

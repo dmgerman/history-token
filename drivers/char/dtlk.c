@@ -1227,7 +1227,7 @@ l_int|0
 suffix:semicolon
 id|dtlk_major
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 l_int|0
@@ -1361,7 +1361,7 @@ c_func
 id|DTLK_CLEAR
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|dtlk_major

@@ -1443,7 +1443,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|cosa_major
@@ -1479,7 +1479,7 @@ op_logical_neg
 (paren
 id|cosa_major
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 l_int|0
@@ -1620,7 +1620,7 @@ id|KERN_WARNING
 l_string|&quot;cosa: no devices found.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|cosa_major
@@ -1750,7 +1750,7 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|cosa_major

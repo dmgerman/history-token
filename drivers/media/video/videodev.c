@@ -1826,7 +1826,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|VIDEO_MAJOR
@@ -1877,7 +1877,7 @@ id|videodev_proc_destroy
 )paren
 suffix:semicolon
 macro_line|#endif
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|VIDEO_MAJOR

@@ -7155,12 +7155,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|synchronize_irq
-c_func
-(paren
-id|state-&gt;card-&gt;irq
-)paren
-suffix:semicolon
 id|dmabuf-&gt;ready
 op_assign
 l_int|0

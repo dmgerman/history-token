@@ -98,6 +98,7 @@ multiline_comment|/*      Local vars.&n; */
 DECL|variable|busy_flag
 r_static
 r_int
+r_int
 id|busy_flag
 suffix:semicolon
 DECL|variable|orig_sigmask
@@ -1316,7 +1317,7 @@ suffix:semicolon
 id|TRACE_CATCH
 c_func
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|QIC117_TAPE_MAJOR
@@ -1687,7 +1688,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|QIC117_TAPE_MAJOR

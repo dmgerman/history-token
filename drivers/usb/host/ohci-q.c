@@ -2101,7 +2101,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; * this way, only final tds (or ones with an error) cause IRQs.&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; * Drivers that queue bulk urbs may request that behavior.&n;&t; */
+multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; * this way, only final tds (or ones with an error) cause IRQs.&n;&t; * at least immediately; use DI=6 in case any control request is&n;&t; * tempted to die part way through.&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; * Drivers that queue bulk urbs may request that behavior.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2123,7 +2123,7 @@ id|info
 op_or_assign
 id|TD_DI_SET
 (paren
-l_int|7
+l_int|6
 )paren
 suffix:semicolon
 multiline_comment|/* use this td as the next dummy */
@@ -3172,6 +3172,9 @@ c_loop
 id|td_list_hc
 )paren
 (brace
+r_int
+id|cc
+suffix:semicolon
 id|td_list
 op_assign
 id|dma_to_td
@@ -3188,9 +3191,8 @@ id|cpu_to_le32
 id|TD_DONE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|cc
+op_assign
 id|TD_CC_GET
 (paren
 id|le32_to_cpup
@@ -3199,6 +3201,13 @@ op_amp
 id|td_list-&gt;hwINFO
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cc
+op_ne
+id|TD_CC_NOERROR
 )paren
 (brace
 id|urb_priv
@@ -3234,23 +3243,55 @@ id|urb_priv-&gt;length
 )paren
 )paren
 (brace
-macro_line|#ifdef OHCI_VERBOSE_DEBUG
+r_struct
+id|urb
+op_star
+id|urb
+op_assign
+id|td_list-&gt;urb
+suffix:semicolon
+multiline_comment|/* help for troubleshooting: */
 id|dbg
 (paren
-l_string|&quot;urb %p TD %p (%d/%d), patch ED&quot;
+l_string|&quot;urb %p usb-%s-%s ep-%d-%s &quot;
+l_string|&quot;(td %d/%d), &quot;
+l_string|&quot;cc %d --&gt; status %d&quot;
 comma
 id|td_list-&gt;urb
 comma
-id|td_list
+id|urb-&gt;dev-&gt;bus-&gt;bus_name
+comma
+id|urb-&gt;dev-&gt;devpath
+comma
+id|usb_pipeendpoint
+(paren
+id|urb-&gt;pipe
+)paren
+comma
+id|usb_pipein
+(paren
+id|urb-&gt;pipe
+)paren
+ques
+c_cond
+l_string|&quot;IN&quot;
+suffix:colon
+l_string|&quot;OUT&quot;
 comma
 l_int|1
 op_plus
 id|td_list-&gt;index
 comma
 id|urb_priv-&gt;length
+comma
+id|cc
+comma
+id|cc_to_error
+(braket
+id|cc
+)braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|td_list-&gt;ed-&gt;hwHeadP
 op_assign
 (paren

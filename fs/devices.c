@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -372,6 +373,17 @@ id|fops
 r_if
 c_cond
 (paren
+id|devfs_only
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|major
 op_eq
 l_int|0
@@ -550,6 +562,17 @@ op_star
 id|name
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|devfs_only
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
