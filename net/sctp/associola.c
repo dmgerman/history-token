@@ -3220,6 +3220,9 @@ suffix:colon
 r_case
 id|SCTP_STATE_SHUTDOWN_RECEIVED
 suffix:colon
+r_case
+id|SCTP_STATE_SHUTDOWN_SENT
+suffix:colon
 r_if
 c_cond
 (paren

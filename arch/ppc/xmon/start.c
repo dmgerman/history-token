@@ -2022,7 +2022,7 @@ suffix:semicolon
 id|xmon_write
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;ATE1V1&bslash;r&quot;
 comma
@@ -2044,7 +2044,7 @@ l_int|5
 id|xmon_write
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;ATA&bslash;r&quot;
 comma
@@ -2068,7 +2068,7 @@ suffix:semicolon
 id|xmon_write
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;+++&quot;
 comma
@@ -2796,7 +2796,7 @@ op_eq
 id|str
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon

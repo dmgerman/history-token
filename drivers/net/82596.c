@@ -2355,7 +2355,7 @@ id|dev
 comma
 id|PORT_RESET
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|udelay
@@ -3009,7 +3009,7 @@ id|dev
 comma
 id|PORT_RESET
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

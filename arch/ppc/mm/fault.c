@@ -126,6 +126,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|regs-&gt;nip
@@ -853,6 +854,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address
@@ -960,6 +962,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address

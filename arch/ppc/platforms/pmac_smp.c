@@ -1597,7 +1597,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;primary IPI&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 id|printk

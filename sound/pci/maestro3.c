@@ -2045,7 +2045,7 @@ comma
 comma
 multiline_comment|/* END */
 (brace
-l_int|0
+l_int|NULL
 )brace
 )brace
 suffix:semicolon

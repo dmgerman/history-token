@@ -96,7 +96,7 @@ c_func
 id|cs-&gt;hw.hfcD.addr
 )paren
 suffix:semicolon
-macro_line|#if HFC_REG_DEBUG
+macro_line|#ifdef HFC_REG_DEBUG
 r_if
 c_cond
 (paren
@@ -199,7 +199,7 @@ comma
 id|value
 )paren
 suffix:semicolon
-macro_line|#if HFC_REG_DEBUG
+macro_line|#ifdef HFC_REG_DEBUG
 r_if
 c_cond
 (paren

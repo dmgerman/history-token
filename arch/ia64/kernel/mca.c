@@ -187,14 +187,6 @@ id|cpe_poll_enabled
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|cpe_vector
-r_static
-r_int
-id|cpe_vector
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 r_extern
 r_void
 id|salinfo_log_wakeup
@@ -627,6 +619,14 @@ suffix:semicolon
 multiline_comment|/*&n; * platform dependent error handling&n; */
 macro_line|#ifndef PLATFORM_MCA_HANDLERS
 macro_line|#ifdef CONFIG_ACPI
+DECL|variable|cpe_vector
+r_static
+r_int
+id|cpe_vector
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_static
 id|irqreturn_t
 DECL|function|ia64_mca_cpe_int_handler

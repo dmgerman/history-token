@@ -1141,7 +1141,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_PMAC_BACKLIGHT */
 id|cmd
@@ -1232,7 +1232,7 @@ c_func
 )paren
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|clear_bit
@@ -1683,7 +1683,7 @@ r_return
 id|bp
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_static
@@ -4981,7 +4981,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -6374,7 +6374,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|n
@@ -6547,7 +6547,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|n
@@ -9053,7 +9053,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Input scanning routines */
@@ -10150,7 +10150,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|termch
 op_assign
@@ -10447,7 +10447,7 @@ id|prev
 suffix:semicolon
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|rbuffer
@@ -10516,7 +10516,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|NULL
@@ -10757,7 +10757,7 @@ suffix:semicolon
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|result

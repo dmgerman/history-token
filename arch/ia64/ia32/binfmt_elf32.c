@@ -47,6 +47,8 @@ DECL|macro|SET_PERSONALITY
 macro_line|#undef SET_PERSONALITY
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;elf32_set_personality()
+DECL|macro|elf_read_implies_exec
+mdefine_line|#define elf_read_implies_exec(ex, have_pt_gnu_stack)&t;(!(have_pt_gnu_stack))
 multiline_comment|/* Ugly but avoids duplication */
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
 r_extern
@@ -782,11 +784,6 @@ op_assign
 id|IA32_PAGE_OFFSET
 suffix:semicolon
 multiline_comment|/* use what Linux/x86 uses... */
-id|current-&gt;thread.flags
-op_or_assign
-id|IA64_THREAD_XSTACK
-suffix:semicolon
-multiline_comment|/* data must be executable */
 id|set_fs
 c_func
 (paren

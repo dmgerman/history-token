@@ -2019,7 +2019,7 @@ id|np
 comma
 l_string|&quot;ibm,interrupt-server-ranges&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2403,7 +2403,7 @@ id|np
 comma
 l_string|&quot;interrupts&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2681,7 +2681,7 @@ l_int|0
 comma
 l_string|&quot;8259 cascade&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 id|printk
@@ -2740,7 +2740,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|get_irq_desc

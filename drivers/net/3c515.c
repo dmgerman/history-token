@@ -4135,7 +4135,7 @@ id|vp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|outl
 c_func
@@ -6014,7 +6014,7 @@ id|lp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|dirty_tx
@@ -7634,7 +7634,7 @@ id|vp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -7692,7 +7692,7 @@ id|vp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -712,17 +712,17 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_MCOUNT)
 r_extern
 r_void
-id|mcount
+id|_mcount
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|variable|mcount
+DECL|variable|_mcount
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|mcount
+id|_mcount
 )paren
 suffix:semicolon
 macro_line|#endif

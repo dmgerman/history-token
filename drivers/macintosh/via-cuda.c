@@ -1616,7 +1616,7 @@ suffix:semicolon
 )brace
 id|req-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|req-&gt;sent
 op_assign
@@ -1833,9 +1833,9 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|local_irq_restore

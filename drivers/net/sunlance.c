@@ -3909,8 +3909,6 @@ r_struct
 id|net_device
 op_star
 id|last_dev
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|lance_open
 r_static
@@ -6979,14 +6977,14 @@ id|sbus_dev
 op_star
 id|sdev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|sbus_dma
 op_star
 id|ledma
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_static
 r_int
@@ -7055,9 +7053,9 @@ c_func
 (paren
 id|sdev
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 )paren
@@ -7105,7 +7103,7 @@ id|sdev-&gt;child
 comma
 id|ledma
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 )paren
@@ -7143,7 +7141,7 @@ c_func
 (paren
 id|sdev-&gt;child
 comma
-l_int|0
+l_int|NULL
 comma
 id|sdev
 )paren

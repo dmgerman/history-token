@@ -628,8 +628,7 @@ DECL|macro|PIR
 mdefine_line|#define&t;PIR&t;SPRN_PIR&t;/* Processor ID */
 DECL|macro|PURR
 mdefine_line|#define&t;PURR&t;SPRN_PURR&t;/* Processor Utilization of Resource Register */
-DECL|macro|RPA
-mdefine_line|#define&t;RPA&t;SPRN_RPA&t;/* Required Physical Address Register */
+singleline_comment|//#define&t;RPA&t;SPRN_RPA&t;/* Required Physical Address Register */
 DECL|macro|SDR1
 mdefine_line|#define&t;SDR1&t;SPRN_SDR1      &t;/* MMU hash base register */
 DECL|macro|SPR0

@@ -1569,7 +1569,7 @@ id|lp-&gt;rx_tail
 suffix:semicolon
 id|lp-&gt;rx_tail
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#if 0
 r_for

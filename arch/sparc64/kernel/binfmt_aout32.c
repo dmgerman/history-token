@@ -1083,6 +1083,7 @@ id|bprm-&gt;file
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|N_TXTADDR
@@ -1120,6 +1121,7 @@ id|bprm-&gt;file
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|N_DATADDR
@@ -1184,6 +1186,7 @@ id|bprm-&gt;file
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|N_TXTADDR
@@ -1285,6 +1288,7 @@ id|bprm-&gt;file
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|N_TXTADDR

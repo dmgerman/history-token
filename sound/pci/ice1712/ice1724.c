@@ -9420,7 +9420,7 @@ id|snd_vt1724_amp_cards
 comma
 id|snd_vt1724_aureon_cards
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon

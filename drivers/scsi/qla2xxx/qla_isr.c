@@ -3486,7 +3486,7 @@ id|ha-&gt;outstanding_cmds
 id|index
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4122,7 +4122,7 @@ id|ha-&gt;outstanding_cmds
 id|pkt-&gt;handle
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -6151,7 +6151,7 @@ id|ha-&gt;outstanding_cmds
 id|pkt-&gt;handle
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -6409,7 +6409,7 @@ id|ha-&gt;outstanding_cmds
 id|pkt-&gt;handle1
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|add_to_done_queue
 c_func

@@ -1156,7 +1156,7 @@ suffix:semicolon
 macro_line|#endif
 r_else
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Bind a script to physical addresses.&n; */

@@ -4897,7 +4897,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY
+macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
 DECL|function|psched_tod_diff
 r_int
 id|psched_tod_diff
@@ -4962,11 +4962,7 @@ id|psched_tod_diff
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|psched_time_base
-id|psched_time_t
-id|psched_time_base
-suffix:semicolon
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
+macro_line|#ifdef CONFIG_NET_SCH_CLK_CPU
 DECL|variable|psched_clock_per_hz
 id|psched_tdiff_t
 id|psched_clock_per_hz
@@ -4989,10 +4985,12 @@ c_func
 id|psched_clock_scale
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef PSCHED_WATCHER
+DECL|variable|psched_time_base
+id|psched_time_t
+id|psched_time_base
+suffix:semicolon
 DECL|variable|psched_time_mark
-id|PSCHED_WATCHER
+id|cycles_t
 id|psched_time_mark
 suffix:semicolon
 DECL|variable|psched_time_mark
@@ -5009,6 +5007,7 @@ c_func
 id|psched_time_base
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Periodically adjust psched_time_base to avoid overflow&n; * with 32-bit get_cycles(). Safe up to 4GHz CPU.&n; */
 r_static
 r_void
 id|psched_tick
@@ -5045,7 +5044,20 @@ r_int
 id|dummy
 )paren
 (brace
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+id|cycles_t
+)paren
+op_eq
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+(brace
 id|psched_time_t
 id|dummy_stamp
 suffix:semicolon
@@ -5055,7 +5067,6 @@ c_func
 id|dummy_stamp
 )paren
 suffix:semicolon
-multiline_comment|/* It is OK up to 4GHz cpu */
 id|psched_timer.expires
 op_assign
 id|jiffies
@@ -5064,43 +5075,6 @@ l_int|1
 op_star
 id|HZ
 suffix:semicolon
-macro_line|#else
-r_int
-r_int
-id|now
-op_assign
-id|jiffies
-suffix:semicolon
-id|psched_time_base
-op_add_assign
-(paren
-(paren
-id|u64
-)paren
-(paren
-id|now
-op_minus
-id|psched_time_mark
-)paren
-)paren
-op_lshift
-id|PSCHED_JSCALE
-suffix:semicolon
-id|psched_time_mark
-op_assign
-id|now
-suffix:semicolon
-id|psched_timer.expires
-op_assign
-id|now
-op_plus
-l_int|60
-op_star
-l_int|60
-op_star
-id|HZ
-suffix:semicolon
-macro_line|#endif
 id|add_timer
 c_func
 (paren
@@ -5109,8 +5083,7 @@ id|psched_timer
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
+)brace
 DECL|function|psched_calibrate_clock
 r_int
 id|__init
@@ -5141,14 +5114,12 @@ r_int
 r_int
 id|stop
 suffix:semicolon
-macro_line|#ifdef PSCHED_WATCHER
 id|psched_tick
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|stop
 op_assign
 id|jiffies
@@ -5305,7 +5276,7 @@ id|rtnetlink_link
 op_star
 id|link_p
 suffix:semicolon
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
+macro_line|#ifdef CONFIG_NET_SCH_CLK_CPU
 r_if
 c_cond
 (paren
@@ -5320,7 +5291,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#elif PSCHED_CLOCK_SOURCE == PSCHED_JIFFIES
+macro_line|#elif defined(CONFIG_NET_SCH_CLK_JIFFIES)
 id|psched_tick_per_us
 op_assign
 id|HZ
@@ -5331,14 +5302,6 @@ id|psched_us_per_tick
 op_assign
 l_int|1000000
 suffix:semicolon
-macro_line|#ifdef PSCHED_WATCHER
-id|psched_tick
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 id|link_p
 op_assign

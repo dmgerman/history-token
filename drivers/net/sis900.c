@@ -282,7 +282,7 @@ id|LAN
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 comma
@@ -6338,7 +6338,7 @@ id|sis_priv-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sis_priv-&gt;tx_ring
 (braket
@@ -7892,7 +7892,7 @@ id|sis_priv-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -7952,7 +7952,7 @@ id|sis_priv-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

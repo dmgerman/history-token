@@ -166,6 +166,7 @@ DECL|member|index
 id|__u32
 id|index
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_CLS_ACT
 DECL|member|refcnt
 r_int
 id|refcnt
@@ -174,6 +175,8 @@ DECL|member|bindcnt
 r_int
 id|bindcnt
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Turned off because it requires new tc&n; * to work (for now maintain ABI)&n; *&n;#ifdef CONFIG_NET_CLS_ACT&n;&t;__u32&t;&t;&t;capab;&n;#endif&n;*/
 DECL|member|action
 r_int
 id|action
@@ -312,12 +315,16 @@ comma
 DECL|enumerator|TCA_U32_POLICE
 id|TCA_U32_POLICE
 comma
+macro_line|#ifdef CONFIG_NET_CLS_ACT
 DECL|enumerator|TCA_U32_ACT
 id|TCA_U32_ACT
 comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_NET_CLS_IND
 DECL|enumerator|TCA_U32_INDEV
 id|TCA_U32_INDEV
 comma
+macro_line|#endif
 DECL|enumerator|__TCA_U32_MAX
 id|__TCA_U32_MAX
 )brace
@@ -344,10 +351,13 @@ DECL|member|offmask
 r_int
 id|offmask
 suffix:semicolon
+macro_line|#ifdef CONFIG_CLS_U32_PERF
 DECL|member|kcnt
-id|__u32
+r_int
+r_int
 id|kcnt
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|tc_u32_sel
@@ -389,14 +399,7 @@ DECL|member|hmask
 id|__u32
 id|hmask
 suffix:semicolon
-DECL|member|keys
-r_struct
-id|tc_u32_key
-id|keys
-(braket
-l_int|0
-)braket
-suffix:semicolon
+macro_line|#ifdef CONFIG_CLS_U32_PERF
 DECL|member|rcnt
 r_int
 r_int
@@ -406,6 +409,15 @@ DECL|member|rhit
 r_int
 r_int
 id|rhit
+suffix:semicolon
+macro_line|#endif
+DECL|member|keys
+r_struct
+id|tc_u32_key
+id|keys
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -532,12 +544,16 @@ comma
 DECL|enumerator|TCA_FW_POLICE
 id|TCA_FW_POLICE
 comma
+macro_line|#ifdef CONFIG_NET_CLS_IND
 DECL|enumerator|TCA_FW_INDEV
 id|TCA_FW_INDEV
 comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_NET_CLS_ACT
 DECL|enumerator|TCA_FW_ACT
 id|TCA_FW_ACT
 comma
+macro_line|#endif
 DECL|enumerator|__TCA_FW_MAX
 id|__TCA_FW_MAX
 )brace

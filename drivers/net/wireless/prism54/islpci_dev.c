@@ -185,7 +185,7 @@ id|firmware
 op_star
 id|fw_entry
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|fw_len
@@ -2415,7 +2415,7 @@ id|priv-&gt;device_base
 suffix:semicolon
 id|priv-&gt;device_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* free consistent DMA area... */
 r_if
@@ -2438,7 +2438,7 @@ suffix:semicolon
 multiline_comment|/* clear some dangling pointers */
 id|priv-&gt;driver_mem_address
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|priv-&gt;device_host_address
 op_assign
@@ -2450,7 +2450,7 @@ l_int|0
 suffix:semicolon
 id|priv-&gt;control_block
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* clean up mgmt rx buffers */
 r_for
@@ -2590,7 +2590,7 @@ id|priv-&gt;data_low_rx
 id|counter
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Free the acces control list and the WPA list */
@@ -3042,7 +3042,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|free_netdev
@@ -3053,7 +3053,7 @@ id|ndev
 suffix:semicolon
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|NULL
