@@ -1360,10 +1360,10 @@ id|NET_XMIT_SUCCESS
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|len
 suffix:semicolon
@@ -1393,7 +1393,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifndef CONFIG_NET_CLS_ACT
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_if
@@ -1432,7 +1432,7 @@ op_eq
 id|ret
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -1515,7 +1515,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -1583,7 +1583,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|cl-&gt;stats.drops
@@ -2649,10 +2649,10 @@ l_int|0
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|len
 suffix:semicolon
@@ -2672,14 +2672,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -3770,7 +3770,7 @@ c_cond
 id|sch-&gt;q.qlen
 )paren
 (brace
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 r_if

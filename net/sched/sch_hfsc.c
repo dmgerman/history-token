@@ -6926,7 +6926,7 @@ op_eq
 id|ret
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -6949,7 +6949,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -6984,7 +6984,7 @@ id|NET_XMIT_SUCCESS
 id|cl-&gt;stats.drops
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -7013,10 +7013,10 @@ id|cl-&gt;stats.bytes
 op_add_assign
 id|len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|len
 suffix:semicolon
@@ -7153,7 +7153,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 id|hfsc_schedule_watchdog
@@ -7448,7 +7448,7 @@ suffix:semicolon
 id|cl-&gt;stats.drops
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|sch-&gt;q.qlen

@@ -2916,7 +2916,7 @@ op_eq
 id|ret
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -2967,7 +2967,7 @@ id|kfree_skb
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -2993,7 +2993,7 @@ op_ne
 id|NET_XMIT_SUCCESS
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|cl-&gt;stats.drops
@@ -3023,10 +3023,10 @@ suffix:semicolon
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -3171,7 +3171,7 @@ id|kfree_skb
 id|tskb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -3196,7 +3196,7 @@ op_ne
 id|NET_XMIT_SUCCESS
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|cl-&gt;stats.drops
@@ -4943,7 +4943,7 @@ id|sch-&gt;flags
 op_or_assign
 id|TCQ_F_THROTTLED
 suffix:semicolon
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 id|HTB_DBG

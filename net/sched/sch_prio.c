@@ -358,11 +358,11 @@ op_eq
 id|NET_XMIT_SUCCESS
 )paren
 (brace
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 id|sch-&gt;q.qlen
@@ -384,14 +384,14 @@ id|ret
 )paren
 (brace
 macro_line|#endif
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 )brace
 r_else
 (brace
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 multiline_comment|/* abuse, but noone uses it */
@@ -480,7 +480,7 @@ suffix:semicolon
 )brace
 id|dropped
 suffix:colon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
