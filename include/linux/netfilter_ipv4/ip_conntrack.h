@@ -107,12 +107,18 @@ comma
 suffix:semicolon
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_sctp.h&gt;
 multiline_comment|/* per conntrack: protocol private data */
 DECL|union|ip_conntrack_proto
 r_union
 id|ip_conntrack_proto
 (brace
 multiline_comment|/* insert conntrack proto private data here */
+DECL|member|sctp
+r_struct
+id|ip_ct_sctp
+id|sctp
+suffix:semicolon
 DECL|member|tcp
 r_struct
 id|ip_ct_tcp
@@ -295,6 +301,20 @@ id|help
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|ip_conntrack_counter
+r_struct
+id|ip_conntrack_counter
+(brace
+DECL|member|packets
+id|u_int64_t
+id|packets
+suffix:semicolon
+DECL|member|bytes
+id|u_int64_t
+id|bytes
+suffix:semicolon
+)brace
+suffix:semicolon
 r_struct
 id|ip_conntrack_helper
 suffix:semicolon
@@ -329,6 +349,17 @@ r_struct
 id|timer_list
 id|timeout
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_CT_ACCT
+multiline_comment|/* Accounting Information (same cache line as other written members) */
+DECL|member|counters
+r_struct
+id|ip_conntrack_counter
+id|counters
+(braket
+id|IP_CT_DIR_MAX
+)braket
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* If we&squot;re expecting another related connection, this will be&n;           in expected linked list */
 DECL|member|sibling_list
 r_struct
@@ -527,7 +558,7 @@ suffix:semicolon
 multiline_comment|/* Refresh conntrack for this many jiffies */
 r_extern
 r_void
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 r_struct
@@ -535,12 +566,42 @@ id|ip_conntrack
 op_star
 id|ct
 comma
+r_enum
+id|ip_conntrack_info
+id|ctinfo
+comma
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
 r_int
 r_int
 id|extra_jiffies
 )paren
 suffix:semicolon
 multiline_comment|/* These are for NAT.  Icky. */
+multiline_comment|/* Update TCP window tracking data when NAT mangles the packet */
+r_extern
+r_int
+id|ip_conntrack_tcp_update
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|ip_conntrack
+op_star
+id|conntrack
+comma
+r_int
+id|dir
+)paren
+suffix:semicolon
 multiline_comment|/* Call me when a conntrack is destroyed. */
 r_extern
 r_void
@@ -631,6 +692,87 @@ r_extern
 r_int
 r_int
 id|ip_conntrack_htable_size
+suffix:semicolon
+DECL|struct|ip_conntrack_stat
+r_struct
+id|ip_conntrack_stat
+(brace
+DECL|member|searched
+r_int
+r_int
+id|searched
+suffix:semicolon
+DECL|member|found
+r_int
+r_int
+id|found
+suffix:semicolon
+DECL|member|new
+r_int
+r_int
+r_new
+suffix:semicolon
+DECL|member|invalid
+r_int
+r_int
+id|invalid
+suffix:semicolon
+DECL|member|ignore
+r_int
+r_int
+id|ignore
+suffix:semicolon
+DECL|member|delete
+r_int
+r_int
+r_delete
+suffix:semicolon
+DECL|member|delete_list
+r_int
+r_int
+id|delete_list
+suffix:semicolon
+DECL|member|insert
+r_int
+r_int
+id|insert
+suffix:semicolon
+DECL|member|insert_failed
+r_int
+r_int
+id|insert_failed
+suffix:semicolon
+DECL|member|drop
+r_int
+r_int
+id|drop
+suffix:semicolon
+DECL|member|early_drop
+r_int
+r_int
+id|early_drop
+suffix:semicolon
+DECL|member|icmp_error
+r_int
+r_int
+id|icmp_error
+suffix:semicolon
+DECL|member|expect_new
+r_int
+r_int
+id|expect_new
+suffix:semicolon
+DECL|member|expect_create
+r_int
+r_int
+id|expect_create
+suffix:semicolon
+DECL|member|expect_delete
+r_int
+r_int
+id|expect_delete
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/* eg. PROVIDES_CONNTRACK(ftp); */
 DECL|macro|PROVIDES_CONNTRACK

@@ -18,6 +18,7 @@ DECL|macro|ASSERT_WRITE_LOCK
 mdefine_line|#define ASSERT_WRITE_LOCK(x) MUST_BE_WRITE_LOCKED(&amp;ip_conntrack_lock)
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_core.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_protocol.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_core.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/listhelp.h&gt;
@@ -521,9 +522,9 @@ r_case
 id|IPPROTO_ICMP
 suffix:colon
 multiline_comment|/* ICMP errors. */
-id|ct
-op_assign
-id|icmp_error_track
+id|protocol
+op_member_access_from_pointer
+id|error
 c_func
 (paren
 op_star
@@ -534,6 +535,20 @@ id|ctinfo
 comma
 id|NF_IP_PRE_ROUTING
 )paren
+suffix:semicolon
+id|ct
+op_assign
+(paren
+r_struct
+id|ip_conntrack
+op_star
+)paren
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|nfct-&gt;master
 suffix:semicolon
 r_if
 c_cond
@@ -623,7 +638,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|get_tuple
+id|ip_ct_get_tuple
 c_func
 (paren
 (paren

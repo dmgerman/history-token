@@ -238,15 +238,6 @@ suffix:semicolon
 multiline_comment|/* Packet and byte counters */
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-r_static
-id|DECLARE_MUTEX
-c_func
-(paren
-id|ip6t_mutex
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Values for &quot;flag&quot; field in struct ip6t_ip6 (general ip6 structure). */
 DECL|macro|IP6T_F_PROTO
 mdefine_line|#define IP6T_F_PROTO&t;&t;0x01&t;/* Set if rule cares about upper &n;&t;&t;&t;&t;&t;   protocols */

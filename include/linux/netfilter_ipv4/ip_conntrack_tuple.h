@@ -42,6 +42,16 @@ DECL|member|icmp
 )brace
 id|icmp
 suffix:semicolon
+r_struct
+(brace
+DECL|member|port
+id|u_int16_t
+id|port
+suffix:semicolon
+DECL|member|sctp
+)brace
+id|sctp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* The manipulable part of the tuple. */
@@ -116,6 +126,16 @@ suffix:semicolon
 DECL|member|icmp
 )brace
 id|icmp
+suffix:semicolon
+r_struct
+(brace
+DECL|member|port
+id|u_int16_t
+id|port
+suffix:semicolon
+DECL|member|sctp
+)brace
+id|sctp
 suffix:semicolon
 DECL|member|u
 )brace

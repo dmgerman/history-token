@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
@@ -34,12 +35,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|master_timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0600
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -150,10 +153,14 @@ r_return
 id|NF_ACCEPT
 suffix:semicolon
 multiline_comment|/* increase the UDP timeout of the master connection as replies from&n;&t; * Amanda clients to the server can be quite delayed */
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 id|ct
+comma
+id|ctinfo
+comma
+l_int|NULL
 comma
 id|master_timeout
 op_star
