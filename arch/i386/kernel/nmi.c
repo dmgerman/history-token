@@ -61,12 +61,12 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * lapic_nmi_owner tracks the ownership of the lapic NMI hardware:&n; * - it may be reserved by some other driver, or not&n; * - when not reserved by some other driver, it may be used for&n; *   the NMI watchdog, or not&n; *&n; * This is maintained separately from nmi_active because the NMI&n; * watchdog may also be driven from the I/O APIC timer.&n; */
-DECL|variable|lapic_nmi_owner_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lapic_nmi_owner_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|lapic_nmi_owner
 r_static

@@ -909,13 +909,13 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* Lock for enable/disable of VIC interrupts */
-DECL|variable|__cacheline_aligned
 r_static
-id|spinlock_t
-id|vic_irq_lock
 id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|vic_irq_lock
+)paren
 suffix:semicolon
 multiline_comment|/* The boot processor is correctly set up in PC mode when it &n; * comes up, but the secondaries need their master/slave 8259&n; * pairs initializing correctly */
 multiline_comment|/* Interrupt counters (per cpu) and total - used to try to&n; * even up the interrupt handling routines */
@@ -2974,10 +2974,11 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cmn_int_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* common ints are broadcast, so make sure we only do this once */
 id|_raw_spin_lock
@@ -3081,12 +3082,12 @@ r_int
 r_int
 id|flush_va
 suffix:semicolon
-DECL|variable|tlbstate_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tlbstate_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|FLUSH_ALL
 mdefine_line|#define FLUSH_ALL&t;0xffffffff
@@ -3857,12 +3858,12 @@ l_string|&quot;hlt&quot;
 suffix:semicolon
 )brace
 )brace
-DECL|variable|call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|call_data_struct
 r_struct

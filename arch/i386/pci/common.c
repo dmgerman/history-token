@@ -172,10 +172,11 @@ id|pcibios_scanned
 suffix:semicolon
 multiline_comment|/*&n; * This interrupt-safe spinlock protects all accesses to PCI&n; * configuration space.&n; */
 DECL|variable|pci_config_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pci_config_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Several buggy motherboards address only 16 devices and mirror&n; * them to next 16 IDs. We try to detect this `feature&squot; on all&n; * primary buses (those containing host bridges as they are&n; * expected to be unique) and remove the ghost devices.&n; */
 DECL|function|pcibios_fixup_ghosts

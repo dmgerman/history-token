@@ -35,12 +35,12 @@ DECL|variable|irq_mis_count
 id|atomic_t
 id|irq_mis_count
 suffix:semicolon
-DECL|variable|ioapic_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ioapic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Is the SiS APIC rmw bug present ?&n; *&t;-1 = don&squot;t know, 0 = no, 1 = yes&n; */
 DECL|variable|sis_apic_bug
