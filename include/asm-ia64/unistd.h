@@ -428,7 +428,8 @@ DECL|macro|__NR_free_hugepages
 mdefine_line|#define __NR_free_hugepages&t;&t;1235
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;&t;1236
-multiline_comment|/* 1237 currently unused */
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;&t;1237
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;&t;&t;1238
 DECL|macro|__NR_io_destroy
