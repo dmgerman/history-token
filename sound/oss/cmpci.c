@@ -4355,7 +4355,7 @@ suffix:semicolon
 id|pstart
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|pstart
@@ -4681,7 +4681,7 @@ suffix:semicolon
 id|pstart
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|pstart

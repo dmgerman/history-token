@@ -687,7 +687,7 @@ id|i
 )paren
 r_break
 suffix:semicolon
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|virt_to_page
@@ -729,7 +729,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|virt_to_page
@@ -2393,7 +2393,7 @@ id|i
 op_increment
 )paren
 (brace
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|virt_to_page
