@@ -57,17 +57,17 @@ mdefine_line|#define SIG_KERNEL_COREDUMP_MASK (&bslash;&n;        M(SIGQUIT)   |
 DECL|macro|T
 mdefine_line|#define T(sig, mask) &bslash;&n;&t;((1UL &lt;&lt; (sig)) &amp; mask)
 DECL|macro|sig_user_specific
-mdefine_line|#define sig_user_specific(sig)&t;&t;T(sig, SIG_USER_SPECIFIC_MASK)
+mdefine_line|#define sig_user_specific(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_USER_SPECIFIC_MASK))
 DECL|macro|sig_user_load_balance
-mdefine_line|#define sig_user_load_balance(sig) &bslash;&n;&t;&t;(T(sig, SIG_USER_LOAD_BALANCE_MASK) || ((sig) &gt;= SIGRTMIN))
+mdefine_line|#define sig_user_load_balance(sig) &bslash;&n;&t;&t;(((sig) &gt;= SIGRTMIN) || T(sig, SIG_USER_LOAD_BALANCE_MASK))
 DECL|macro|sig_kernel_specific
-mdefine_line|#define sig_kernel_specific(sig)&t;T(sig, SIG_KERNEL_SPECIFIC_MASK)
+mdefine_line|#define sig_kernel_specific(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_SPECIFIC_MASK))
 DECL|macro|sig_kernel_broadcast
-mdefine_line|#define sig_kernel_broadcast(sig) &bslash;&n;&t;&t;(T(sig, SIG_KERNEL_BROADCAST_MASK) || ((sig) &gt;= SIGRTMIN))
+mdefine_line|#define sig_kernel_broadcast(sig) &bslash;&n;&t;&t;(((sig) &gt;= SIGRTMIN) || T(sig, SIG_KERNEL_BROADCAST_MASK))
 DECL|macro|sig_kernel_only
-mdefine_line|#define sig_kernel_only(sig)&t;&t;T(sig, SIG_KERNEL_ONLY_MASK)
+mdefine_line|#define sig_kernel_only(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_ONLY_MASK))
 DECL|macro|sig_kernel_coredump
-mdefine_line|#define sig_kernel_coredump(sig)&t;T(sig, SIG_KERNEL_COREDUMP_MASK)
+mdefine_line|#define sig_kernel_coredump(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_COREDUMP_MASK))
 DECL|macro|sig_user_defined
 mdefine_line|#define sig_user_defined(t, sig) &bslash;&n;&t;(((t)-&gt;sig-&gt;action[(sig)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sig-&gt;action[(sig)-1].sa.sa_handler != SIG_IGN))
 DECL|macro|sig_ignored
