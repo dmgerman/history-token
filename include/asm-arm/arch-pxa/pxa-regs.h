@@ -1824,21 +1824,21 @@ mdefine_line|#define _GEDR(x)&t;__REG2(0x40E00048, ((x) &amp; 0x60) &gt;&gt; 3)
 DECL|macro|_GAFR
 mdefine_line|#define _GAFR(x)&t;__REG2(0x40E00054, ((x) &amp; 0x70) &gt;&gt; 2)
 DECL|macro|GPLR
-mdefine_line|#define GPLR(x) &t;((((x) &amp; 0x7f) &lt; 96) ? _GPLR(x) : GPLR3)
+mdefine_line|#define GPLR(x) &t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GPLR(x) : &amp;GPLR3))
 DECL|macro|GPDR
-mdefine_line|#define GPDR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GPDR(x) : GPDR3)
+mdefine_line|#define GPDR(x)&t;&t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GPDR(x) : &amp;GPDR3))
 DECL|macro|GPSR
-mdefine_line|#define GPSR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GPSR(x) : GPSR3)
+mdefine_line|#define GPSR(x)&t;&t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GPSR(x) : &amp;GPSR3))
 DECL|macro|GPCR
-mdefine_line|#define GPCR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GPCR(x) : GPCR3)
+mdefine_line|#define GPCR(x)&t;&t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GPCR(x) : &amp;GPCR3))
 DECL|macro|GRER
-mdefine_line|#define GRER(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GRER(x) : GRER3)
+mdefine_line|#define GRER(x)&t;&t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GRER(x) : &amp;GRER3))
 DECL|macro|GFER
-mdefine_line|#define GFER(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GFER(x) : GFER3)
+mdefine_line|#define GFER(x)&t;&t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GFER(x) : &amp;GFER3))
 DECL|macro|GEDR
-mdefine_line|#define GEDR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GEDR(x) : GEDR3)
+mdefine_line|#define GEDR(x)&t;&t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GEDR(x) : &amp;GEDR3))
 DECL|macro|GAFR
-mdefine_line|#define GAFR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GAFR(x) : &bslash;&n;&t;&t;&t; ((((x) &amp; 0x7f) &lt; 112) ? GAFR3_L : GAFR3_U))
+mdefine_line|#define GAFR(x)&t;&t;(*((((x) &amp; 0x7f) &lt; 96) ? &amp;_GAFR(x) : &bslash;&n;&t;&t;&t; ((((x) &amp; 0x7f) &lt; 112) ? &amp;GAFR3_L : &amp;GAFR3_U)))
 macro_line|#else
 DECL|macro|GPLR
 mdefine_line|#define GPLR(x)&t;&t;__REG2(0x40E00000, ((x) &amp; 0x60) &gt;&gt; 3)
