@@ -2096,9 +2096,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|packet-&gt;header_size
-op_plus
-id|packet-&gt;data_size
+id|size
 comma
 id|GFP_ATOMIC
 )paren
