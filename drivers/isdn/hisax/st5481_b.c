@@ -575,7 +575,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 )brace
@@ -759,9 +759,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|urb-&gt;status
 OL
 l_int|0
+)paren
 )paren
 (brace
 r_if
@@ -771,6 +775,11 @@ id|urb-&gt;status
 op_ne
 op_minus
 id|ENOENT
+op_logical_and
+id|urb-&gt;status
+op_ne
+op_minus
+id|ESHUTDOWN
 )paren
 (brace
 id|WARN

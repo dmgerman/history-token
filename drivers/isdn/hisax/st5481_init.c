@@ -90,7 +90,6 @@ multiline_comment|/*&n; * This function will be called when the adapter is plugg
 DECL|function|probe_st5481
 r_static
 r_int
-id|__devinit
 id|probe_st5481
 c_func
 (paren

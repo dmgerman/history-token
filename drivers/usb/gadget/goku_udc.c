@@ -7141,13 +7141,12 @@ r_goto
 id|stall
 suffix:semicolon
 )brace
-multiline_comment|/* endpoint halt */
 r_if
 c_cond
 (paren
 id|ctrl.wValue
 op_ne
-l_int|0
+id|USB_ENDPOINT_HALT
 )paren
 r_goto
 id|stall

@@ -187,7 +187,51 @@ mdefine_line|#define PROTEGO_R2X0&t;&t;0xFC71&t;/* R200-USB TRNG unit (R210, R22
 DECL|macro|PROTEGO_SPECIAL_3
 mdefine_line|#define PROTEGO_SPECIAL_3&t;0xFC72&t;/* special/unknown device */
 DECL|macro|PROTEGO_SPECIAL_4
-mdefine_line|#define PROTEGO_SPECIAL_4&t;0xFC73&t;/* special/unknown device */ 
+mdefine_line|#define PROTEGO_SPECIAL_4&t;0xFC73&t;/* special/unknown device */
+multiline_comment|/*&n; * Gude Analog- und Digitalsysteme GmbH&n; */
+DECL|macro|FTDI_GUDEADS_E808_PID
+mdefine_line|#define FTDI_GUDEADS_E808_PID    0xE808
+DECL|macro|FTDI_GUDEADS_E809_PID
+mdefine_line|#define FTDI_GUDEADS_E809_PID    0xE809
+DECL|macro|FTDI_GUDEADS_E80A_PID
+mdefine_line|#define FTDI_GUDEADS_E80A_PID    0xE80A
+DECL|macro|FTDI_GUDEADS_E80B_PID
+mdefine_line|#define FTDI_GUDEADS_E80B_PID    0xE80B
+DECL|macro|FTDI_GUDEADS_E80C_PID
+mdefine_line|#define FTDI_GUDEADS_E80C_PID    0xE80C
+DECL|macro|FTDI_GUDEADS_E80D_PID
+mdefine_line|#define FTDI_GUDEADS_E80D_PID    0xE80D
+DECL|macro|FTDI_GUDEADS_E80E_PID
+mdefine_line|#define FTDI_GUDEADS_E80E_PID    0xE80E
+DECL|macro|FTDI_GUDEADS_E80F_PID
+mdefine_line|#define FTDI_GUDEADS_E80F_PID    0xE80F
+DECL|macro|FTDI_GUDEADS_E888_PID
+mdefine_line|#define FTDI_GUDEADS_E888_PID    0xE888  /* Expert ISDN Control USB */
+DECL|macro|FTDI_GUDEADS_E889_PID
+mdefine_line|#define FTDI_GUDEADS_E889_PID    0xE889  /* USB RS-232 OptoBridge */
+DECL|macro|FTDI_GUDEADS_E88A_PID
+mdefine_line|#define FTDI_GUDEADS_E88A_PID    0xE88A
+DECL|macro|FTDI_GUDEADS_E88B_PID
+mdefine_line|#define FTDI_GUDEADS_E88B_PID    0xE88B
+DECL|macro|FTDI_GUDEADS_E88C_PID
+mdefine_line|#define FTDI_GUDEADS_E88C_PID    0xE88C
+DECL|macro|FTDI_GUDEADS_E88D_PID
+mdefine_line|#define FTDI_GUDEADS_E88D_PID    0xE88D
+DECL|macro|FTDI_GUDEADS_E88E_PID
+mdefine_line|#define FTDI_GUDEADS_E88E_PID    0xE88E
+DECL|macro|FTDI_GUDEADS_E88F_PID
+mdefine_line|#define FTDI_GUDEADS_E88F_PID    0xE88F
+multiline_comment|/*&n; * Linx Technologies product ids&n; */
+DECL|macro|LINX_SDMUSBQSS_PID
+mdefine_line|#define LINX_SDMUSBQSS_PID&t;0xF448&t;/* Linx SDM-USB-QS-S */
+DECL|macro|LINX_MASTERDEVEL2_PID
+mdefine_line|#define LINX_MASTERDEVEL2_PID   0xF449   /* Linx Master Development 2.0 */
+DECL|macro|LINX_FUTURE_0_PID
+mdefine_line|#define LINX_FUTURE_0_PID   0xF44A   /* Linx future device */
+DECL|macro|LINX_FUTURE_1_PID
+mdefine_line|#define LINX_FUTURE_1_PID   0xF44B   /* Linx future device */
+DECL|macro|LINX_FUTURE_2_PID
+mdefine_line|#define LINX_FUTURE_2_PID   0xF44C   /* Linx future device */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */

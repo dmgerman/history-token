@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;

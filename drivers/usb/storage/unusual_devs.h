@@ -417,7 +417,7 @@ l_string|&quot;LS-120 Camera&quot;
 comma
 id|US_SC_UFI
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1258,9 +1258,9 @@ l_string|&quot;Lexar&quot;
 comma
 l_string|&quot;USB CF Reader&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1279,9 +1279,9 @@ l_int|0x0000
 comma
 l_int|0xffff
 comma
-l_string|&quot;SIIG&quot;
+l_string|&quot;Genesys Logic&quot;
 comma
-l_string|&quot;CompactFlash Card Reader&quot;
+l_string|&quot;USB to IDE Card Reader&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -1304,9 +1304,9 @@ l_int|0x0000
 comma
 l_int|0xffff
 comma
-l_string|&quot;&quot;
+l_string|&quot;Genesys Logic&quot;
 comma
-l_string|&quot;USB TO IDE&quot;
+l_string|&quot;USB to IDE Optical&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -1327,36 +1327,11 @@ l_int|0x0702
 comma
 l_int|0x0000
 comma
-l_int|0x0001
+l_int|0xffff
 comma
-l_string|&quot;EagleTec&quot;
+l_string|&quot;Genesys Logic&quot;
 comma
-l_string|&quot;External Hard Disk&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* Reported by Henning Schild &lt;henning@wh9.tu-dresden.de&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x05e3
-comma
-l_int|0x0702
-comma
-l_int|0x0113
-comma
-l_int|0x0113
-comma
-l_string|&quot;EagleTec&quot;
-comma
-l_string|&quot;External Hard Disk&quot;
+l_string|&quot;USB to IDE Disk&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -2338,6 +2313,58 @@ comma
 id|isd200_Initialization
 comma
 l_int|0
+)paren
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_DATAFAB
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0c0b
+comma
+l_int|0xa109
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Acomdata&quot;
+comma
+l_string|&quot;CF&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DATAFAB
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0c0b
+comma
+l_int|0xa109
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Acomdata&quot;
+comma
+l_string|&quot;SM&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_SDDR55
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif

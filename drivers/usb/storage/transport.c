@@ -534,7 +534,7 @@ id|USB_REQ_CLEAR_FEATURE
 comma
 id|USB_RECIP_ENDPOINT
 comma
-l_int|0
+id|USB_ENDPOINT_HALT
 comma
 id|endp
 comma

@@ -10016,8 +10016,7 @@ c_cond
 (paren
 id|u.r.wValue
 op_ne
-l_int|0
-multiline_comment|/* HALT feature */
+id|USB_ENDPOINT_HALT
 op_logical_or
 id|u.r.wLength
 op_ne
@@ -10095,8 +10094,7 @@ c_cond
 (paren
 id|u.r.wValue
 op_ne
-l_int|0
-multiline_comment|/* HALT feature */
+id|USB_ENDPOINT_HALT
 op_logical_or
 id|u.r.wLength
 op_ne

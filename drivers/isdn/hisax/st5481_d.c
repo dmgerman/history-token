@@ -1398,9 +1398,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|urb-&gt;status
 OL
 l_int|0
+)paren
 )paren
 (brace
 r_if
@@ -1410,6 +1414,11 @@ id|urb-&gt;status
 op_ne
 op_minus
 id|ENOENT
+op_logical_and
+id|urb-&gt;status
+op_ne
+op_minus
+id|ESHUTDOWN
 )paren
 (brace
 id|WARN
@@ -2778,7 +2787,6 @@ suffix:semicolon
 DECL|function|st5481_setup_d_out
 r_static
 r_int
-id|__devinit
 id|st5481_setup_d_out
 c_func
 (paren
@@ -2926,7 +2934,6 @@ suffix:semicolon
 )brace
 DECL|function|st5481_setup_d
 r_int
-id|__devinit
 id|st5481_setup_d
 c_func
 (paren

@@ -169,6 +169,44 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * Dummy_hcd, software-based loopback controller.&n; *&n; * This imitates the abilities of the NetChip 2280, so we will use&n; * the same configuration.&n; */
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DUMMY_HCD
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&t;&quot;dummy&quot;
+DECL|macro|EP0_MAXPACKET
+mdefine_line|#define EP0_MAXPACKET&t;&t;&t;64
+DECL|variable|EP_OUT_NAME
+r_static
+r_const
+r_char
+id|EP_OUT_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep-a&quot;
+suffix:semicolon
+DECL|macro|EP_OUT_NUM
+mdefine_line|#define EP_OUT_NUM&t;&t;&t;2
+DECL|variable|EP_IN_NAME
+r_static
+r_const
+r_char
+id|EP_IN_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep-b&quot;
+suffix:semicolon
+DECL|macro|EP_IN_NUM
+mdefine_line|#define EP_IN_NUM&t;&t;&t;2
+DECL|macro|HIGHSPEED
+mdefine_line|#define HIGHSPEED
+DECL|macro|SELFPOWER
+mdefine_line|#define SELFPOWER&t;&t;&t;USB_CONFIG_ATT_SELFPOWER
+multiline_comment|/* no hw optimizations to apply */
+DECL|macro|hw_optimize
+mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
+macro_line|#endif
 multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
 macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
 DECL|macro|CHIP

@@ -849,13 +849,12 @@ c_cond
 (paren
 id|status
 )paren
-id|err
+id|dev_err
 (paren
-l_string|&quot;usb-%s-%s clear tt %d (%04x) error %d&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;bus-&gt;bus_name
-comma
-id|dev-&gt;devpath
+l_string|&quot;clear tt %d (%04x) error %d&bslash;n&quot;
 comma
 id|clear-&gt;tt
 comma
@@ -929,13 +928,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;can&squot;t save CLEAR_TT_BUFFER state for hub at usb-%s-%s&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;bus-&gt;bus_name
-comma
-id|tt-&gt;hub-&gt;devpath
+l_string|&quot;can&squot;t save CLEAR_TT_BUFFER state&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME recover somehow ... RESET_TT? */
@@ -2518,10 +2516,15 @@ op_logical_neg
 id|hub
 )paren
 (brace
-id|err
+id|dev_dbg
+(paren
+id|hubdev
 c_func
 (paren
-l_string|&quot;couldn&squot;t kmalloc hub struct&quot;
+id|dev
+)paren
+comma
+l_string|&quot;couldn&squot;t kmalloc hub struct&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2971,12 +2974,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;cannot disconnect hub %s&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;cannot disconnect hub!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4783,10 +4787,11 @@ id|current
 )paren
 )paren
 suffix:semicolon
-id|dbg
-c_func
+id|pr_debug
 (paren
-l_string|&quot;hub_thread exiting&quot;
+l_string|&quot;%s: khubd exiting&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 id|complete_and_exit
@@ -4908,10 +4913,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|printk
 c_func
 (paren
-l_string|&quot;Unable to register USB hub driver&quot;
+id|KERN_ERR
+l_string|&quot;%s: can&squot;t register hub driver&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 r_return
@@ -4955,10 +4963,13 @@ op_amp
 id|hub_driver
 )paren
 suffix:semicolon
-id|err
+id|printk
 c_func
 (paren
-l_string|&quot;failed to start hub_thread&quot;
+id|KERN_ERR
+l_string|&quot;%s: can&squot;t start khubd&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 r_return
@@ -5338,145 +5349,23 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ret
+multiline_comment|/* FIXME Linux doesn&squot;t yet handle these &quot;device morphed&quot;&n;&t;&t; * paths.  DFU variants need this to work ... and they&n;&t;&t; * include the &quot;config descriptors changed&quot; case this&n;&t;&t; * doesn&squot;t yet detect!&n;&t;&t; */
+id|dev-&gt;state
 op_assign
-id|usb_get_device_descriptor
+id|USB_STATE_NOTATTACHED
+suffix:semicolon
+id|dev_err
 c_func
 (paren
-id|dev
+op_amp
+id|dev-&gt;dev
 comma
-r_sizeof
-(paren
-id|dev-&gt;descriptor
+l_string|&quot;device morphed (DFU?), nyet supported&bslash;n&quot;
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-r_sizeof
-(paren
-id|dev-&gt;descriptor
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-id|err
-c_func
-(paren
-l_string|&quot;unable to get device %s descriptor &quot;
-l_string|&quot;(error=%d)&quot;
-comma
-id|dev-&gt;devpath
-comma
-id|ret
-)paren
-suffix:semicolon
-r_else
-id|err
-c_func
-(paren
-l_string|&quot;USB device %s descriptor short read &quot;
-l_string|&quot;(expected %Zi, got %i)&quot;
-comma
-id|dev-&gt;devpath
-comma
-r_sizeof
-(paren
-id|dev-&gt;descriptor
-)paren
-comma
-id|ret
-)paren
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|dev-&gt;devnum
-comma
-id|dev-&gt;bus-&gt;devmap.devicemap
-)paren
-suffix:semicolon
-id|dev-&gt;devnum
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 r_return
 op_minus
-id|EIO
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|usb_get_configuration
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;unable to get configuration (error=%d)&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
-id|usb_destroy_configuration
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|dev-&gt;devnum
-comma
-id|dev-&gt;bus-&gt;devmap.devicemap
-)paren
-suffix:semicolon
-id|dev-&gt;devnum
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|usb_set_configuration
-c_func
-(paren
-id|dev
-comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
-)paren
-suffix:semicolon
-r_return
-l_int|1
+id|ENODEV
 suffix:semicolon
 )brace
 id|kfree

@@ -1045,6 +1045,24 @@ suffix:semicolon
 id|u8
 id|tempbyte
 suffix:semicolon
+id|init_timer
+(paren
+op_amp
+id|ehci-&gt;watchdog
+)paren
+suffix:semicolon
+id|ehci-&gt;watchdog.function
+op_assign
+id|ehci_watchdog
+suffix:semicolon
+id|ehci-&gt;watchdog.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ehci
+suffix:semicolon
 multiline_comment|/*&n;&t; * hw default: 1K periodic list heads, one per frame.&n;&t; * periodic_size can shrink by USBCMD update if hcc_params allows.&n;&t; */
 id|ehci-&gt;periodic_size
 op_assign
@@ -1395,24 +1413,6 @@ id|temp
 )paren
 suffix:semicolon
 multiline_comment|/* set async sleep time = 10 us ... ? */
-id|init_timer
-(paren
-op_amp
-id|ehci-&gt;watchdog
-)paren
-suffix:semicolon
-id|ehci-&gt;watchdog.function
-op_assign
-id|ehci_watchdog
-suffix:semicolon
-id|ehci-&gt;watchdog.data
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ehci
-suffix:semicolon
 multiline_comment|/* wire up the root hub */
 id|bus
 op_assign
