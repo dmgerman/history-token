@@ -2375,7 +2375,7 @@ suffix:semicolon
 multiline_comment|/*  MII transceiver control section.&n;&t;Read and write the MII registers using software-generated serial&n;&t;MDIO protocol.  See the MII specifications or DP83840A data sheet&n;&t;for details.&n;&n;&t;The maximum data clock rate is 2.5 Mhz.  The minimum timing is usually&n;&t;met by back-to-back 33Mhz PCI cycles. */
 DECL|macro|mdio_delay
 mdefine_line|#define mdio_delay(mdio_addr) readl(mdio_addr)
-multiline_comment|/* Set iff a MII transceiver on any interface requires mdio preamble.&n;   This only set with older tranceivers, so the extra&n;   code size of a per-interface flag is not worthwhile. */
+multiline_comment|/* Set iff a MII transceiver on any interface requires mdio preamble.&n;   This only set with older transceivers, so the extra&n;   code size of a per-interface flag is not worthwhile. */
 DECL|variable|mii_preamble_required
 r_static
 r_char

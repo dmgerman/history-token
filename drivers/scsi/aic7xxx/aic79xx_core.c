@@ -25874,7 +25874,7 @@ op_or
 id|ENSCSIPERR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now that termination is set, wait for up&n;&t; * to 500ms for our transceivers to settle.  If&n;&t; * the adapter does not have a cable attached,&n;&t; * the tranceivers may never settle, so don&squot;t&n;&t; * complain if we fail here.&n;&t; */
+multiline_comment|/*&n;&t; * Now that termination is set, wait for up&n;&t; * to 500ms for our transceivers to settle.  If&n;&t; * the adapter does not have a cable attached,&n;&t; * the transceivers may never settle, so don&squot;t&n;&t; * complain if we fail here.&n;&t; */
 r_for
 c_loop
 (paren

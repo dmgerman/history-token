@@ -21241,7 +21241,7 @@ l_int|0
 r_int
 id|wait
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Wait for up to 500ms for our transceivers&n;&t;&t; * to settle.  If the adapter does not have&n;&t;&t; * a cable attached, the tranceivers may&n;&t;&t; * never settle, so don&squot;t complain if we&n;&t;&t; * fail here.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Wait for up to 500ms for our transceivers&n;&t;&t; * to settle.  If the adapter does not have&n;&t;&t; * a cable attached, the transceivers may&n;&t;&t; * never settle, so don&squot;t complain if we&n;&t;&t; * fail here.&n;&t;&t; */
 id|ahc_pause
 c_func
 (paren

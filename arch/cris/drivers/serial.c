@@ -8620,7 +8620,7 @@ id|REG_TR_CTRL
 op_assign
 id|info-&gt;tx_ctrl
 suffix:semicolon
-multiline_comment|/* the DMA gets awfully confused if we toggle the tranceiver like this &n;&t; * so we need to reset it &n;&t; */
+multiline_comment|/* the DMA gets awfully confused if we toggle the transceiver like this &n;&t; * so we need to reset it &n;&t; */
 op_star
 id|info-&gt;ocmdadr
 op_assign

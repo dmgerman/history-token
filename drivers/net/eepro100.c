@@ -351,7 +351,7 @@ c_func
 (paren
 id|options
 comma
-l_string|&quot;Bits 0-3: tranceiver type, bit 4: full duplex, bit 5: 100Mbps&quot;
+l_string|&quot;Bits 0-3: transceiver type, bit 4: full duplex, bit 5: 100Mbps&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

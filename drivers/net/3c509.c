@@ -5310,7 +5310,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* obtain current tranceiver via WN4_MEDIA? */
+multiline_comment|/* obtain current transceiver via WN4_MEDIA? */
 id|tmp
 op_assign
 id|inw
@@ -7243,7 +7243,7 @@ c_func
 (paren
 id|xcvr
 comma
-l_string|&quot;tranceiver(s) (0=internal, 1=external)&quot;
+l_string|&quot;transceiver(s) (0=internal, 1=external)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
