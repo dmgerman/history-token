@@ -18,7 +18,7 @@ mdefine_line|#define PFX &quot;powernow-k8: &quot;
 DECL|macro|BFX
 mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;version 1.00.08b&quot;
+mdefine_line|#define VERSION &quot;version 1.00.09b&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
 multiline_comment|/* serialize freq changes  */
 r_static
@@ -1714,53 +1714,44 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|eax
 op_amp
-id|CPUID_XFAM_MOD
+id|CPUID_USE_XFAM_XMOD
 )paren
-op_eq
-id|ATHLON64_XFAM_MOD
+op_ne
+id|CPUID_USE_XFAM_XMOD
 )paren
-(brace
-id|dprintk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;AMD Althon 64 Processor found&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
+op_logical_or
 (paren
 (paren
 id|eax
 op_amp
-id|CPUID_XFAM_MOD
+id|CPUID_XFAM
 )paren
-op_eq
-id|OPTERON_XFAM_MOD
+op_ne
+id|CPUID_XFAM_K8
 )paren
-(brace
-id|dprintk
-c_func
+op_logical_or
 (paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;AMD Opteron Processor found&bslash;n&quot;
+(paren
+id|eax
+op_amp
+id|CPUID_XMOD
 )paren
-suffix:semicolon
-)brace
-r_else
+OG
+id|CPUID_XMOD_REV_E
+)paren
+)paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;AMD Athlon 64 or AMD Opteron processor required&bslash;n&quot;
+l_string|&quot;Processor cpuid %x not supported&bslash;n&quot;
+comma
+id|eax
 )paren
 suffix:semicolon
 r_goto

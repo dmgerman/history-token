@@ -72,19 +72,23 @@ macro_line|#endif
 suffix:semicolon
 multiline_comment|/* processor&squot;s cpuid instruction support */
 DECL|macro|CPUID_PROCESSOR_SIGNATURE
-mdefine_line|#define CPUID_PROCESSOR_SIGNATURE             1&t;/* function 1 */
-DECL|macro|CPUID_XFAM_MOD
-mdefine_line|#define CPUID_XFAM_MOD               0x0ff00ff0&t;/* extended fam, fam + model */
-DECL|macro|ATHLON64_XFAM_MOD
-mdefine_line|#define ATHLON64_XFAM_MOD            0x00000f40&t;/* extended fam, fam + model */
-DECL|macro|OPTERON_XFAM_MOD
-mdefine_line|#define OPTERON_XFAM_MOD             0x00000f50&t;/* extended fam, fam + model */
+mdefine_line|#define CPUID_PROCESSOR_SIGNATURE&t;1&t;/* function 1 */
+DECL|macro|CPUID_XFAM
+mdefine_line|#define CPUID_XFAM&t;&t;&t;0x0ff00000&t;/* extended family */
+DECL|macro|CPUID_XFAM_K8
+mdefine_line|#define CPUID_XFAM_K8&t;&t;&t;0
+DECL|macro|CPUID_XMOD
+mdefine_line|#define CPUID_XMOD&t;&t;&t;0x000f0000&t;/* extended model */
+DECL|macro|CPUID_XMOD_REV_E
+mdefine_line|#define CPUID_XMOD_REV_E&t;&t;0x00020000
+DECL|macro|CPUID_USE_XFAM_XMOD
+mdefine_line|#define CPUID_USE_XFAM_XMOD&t;&t;0x00000f00
 DECL|macro|CPUID_GET_MAX_CAPABILITIES
-mdefine_line|#define CPUID_GET_MAX_CAPABILITIES   0x80000000
+mdefine_line|#define CPUID_GET_MAX_CAPABILITIES&t;0x80000000
 DECL|macro|CPUID_FREQ_VOLT_CAPABILITIES
-mdefine_line|#define CPUID_FREQ_VOLT_CAPABILITIES 0x80000007
+mdefine_line|#define CPUID_FREQ_VOLT_CAPABILITIES&t;0x80000007
 DECL|macro|P_STATE_TRANSITION_CAPABLE
-mdefine_line|#define P_STATE_TRANSITION_CAPABLE            6
+mdefine_line|#define P_STATE_TRANSITION_CAPABLE&t;6
 multiline_comment|/* Model Specific Registers for p-state transitions. MSRs are 64-bit. For     */
 multiline_comment|/* writes (wrmsr - opcode 0f 30), the register number is placed in ecx, and   */
 multiline_comment|/* the value to write is placed in edx:eax. For reads (rdmsr - opcode 0f 32), */
