@@ -963,7 +963,7 @@ id|addr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Mapping from port numbers to __iomem space is pretty easy.&n; */
-multiline_comment|/* These two have to be extern inline so that we don&squot;t get redefinition&n;   errors building lib/iomap.c.  Which we don&squot;t want anyway, but...  */
+multiline_comment|/* These two have to be extern inline because of the extern prototype from&n;   &lt;asm-generic/iomap.h&gt;.  It is not legal to mix &quot;extern&quot; and &quot;static&quot; for&n;   the same declaration.  */
 DECL|function|ioport_map
 r_extern
 r_inline
