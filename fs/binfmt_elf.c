@@ -385,7 +385,7 @@ id|k_platform
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#if defined(__i386__) &amp;&amp; defined(CONFIG_SMP)
+macro_line|#ifdef CONFIG_X86_HT
 multiline_comment|/*&n;&t;&t; * In some cases (e.g. Hyper-Threading), we want to avoid L1&n;&t;&t; * evictions by the processes running on the same package. One&n;&t;&t; * thing we can do is to shuffle the initial stack for them.&n;&t;&t; *&n;&t;&t; * The conditionals here are unneeded, but kept in to make the&n;&t;&t; * code behaviour the same as pre change unless we have&n;&t;&t; * hyperthreaded processors. This should be cleaned up&n;&t;&t; * before 2.6&n;&t;&t; */
 r_if
 c_cond
