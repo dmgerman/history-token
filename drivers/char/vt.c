@@ -10952,7 +10952,6 @@ id|arg
 suffix:semicolon
 r_break
 suffix:semicolon
-suffix:semicolon
 r_case
 id|TIOCL_SETKMSGREDIRECT
 suffix:colon

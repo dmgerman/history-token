@@ -1132,7 +1132,6 @@ id|mmio
 op_assign
 id|par-&gt;mmio_start_virtual
 suffix:semicolon
-suffix:semicolon
 id|i810_writel
 c_func
 (paren

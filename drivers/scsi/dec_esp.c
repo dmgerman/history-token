@@ -1601,7 +1601,6 @@ id|sp
 r_return
 id|sp-&gt;SCp.this_residual
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|dma_dump_state
 r_static

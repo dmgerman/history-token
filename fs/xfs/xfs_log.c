@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * High level interface routines for log manager&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
@@ -3358,6 +3358,10 @@ id|xlog_in_core_t
 op_star
 id|iclog
 suffix:semicolon
+id|xlog_t
+op_star
+id|l
+suffix:semicolon
 r_int
 id|aborted
 suffix:semicolon
@@ -3407,9 +3411,18 @@ id|aborted
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some versions of cpp barf on the recursive definition of&n;&t; * ic_log -&gt; hic_fields.ic_log and expand ic_log twice when&n;&t; * it is passed through two macros.  Workaround broken cpp.&n;&t; */
+id|l
+op_assign
+id|iclog-&gt;ic_log
+suffix:semicolon
 multiline_comment|/*&n;&t; * Race to shutdown the filesystem if we see an error.&n;&t; */
 r_if
 c_cond
+(paren
+id|XFS_TEST_ERROR
+c_func
+(paren
 (paren
 id|XFS_BUF_GETERROR
 c_func
@@ -3417,19 +3430,21 @@ c_func
 id|bp
 )paren
 )paren
+comma
+id|l-&gt;l_mp
+comma
+id|XFS_ERRTAG_IODONE_IOERR
+comma
+id|XFS_RANDOM_IODONE_IOERR
+)paren
+)paren
 (brace
-multiline_comment|/* Some versions of cpp barf on the recursive definition of&n;&t;&t; * ic_log -&gt; hic_fields.ic_log and expand ic_log twice when&n;&t;&t; * it is passed through two macros.  Workaround for broken cpp&n;&t;&t; */
-r_struct
-id|log
-op_star
-id|l
-suffix:semicolon
 id|xfs_ioerror_alert
 c_func
 (paren
 l_string|&quot;xlog_iodone&quot;
 comma
-id|iclog-&gt;ic_log-&gt;l_mp
+id|l-&gt;l_mp
 comma
 id|bp
 comma
@@ -3445,10 +3460,6 @@ c_func
 (paren
 id|bp
 )paren
-suffix:semicolon
-id|l
-op_assign
-id|iclog-&gt;ic_log
 suffix:semicolon
 id|xfs_force_shutdown
 c_func
@@ -11104,6 +11115,9 @@ id|xlog_ticket_t
 op_star
 id|tic
 suffix:semicolon
+id|uint
+id|num_headers
+suffix:semicolon
 id|SPLDECL
 c_func
 (paren
@@ -11184,20 +11198,73 @@ comma
 id|s
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Permanent reservations have up to &squot;cnt&squot;-1 active log operations&n;&t; * in the log.  A unit in this case is the amount of space for one&n;&t; * of these log operations.  Normal reservations have a cnt of 1&n;&t; * and their unit amount is the total amount of space required.&n;&t; * The following line of code adds one log record header length&n;&t; * for each part of an operation which may fall on a different&n;&t; * log record.&n;&t; *&n;&t; * One more XLOG_HEADER_SIZE is added to account for possible&n;&t; * round off errors when syncing a LR to disk.  The bytes are&n;&t; * subtracted if the thread using this ticket is the first writer&n;&t; * to a new LR.&n;&t; *&n;&t; * We add an extra log header for the possibility that the commit&n;&t; * record is the first data written to a new log record.  In this&n;&t; * case it is separate from the rest of the transaction data and&n;&t; * will be charged for the log record header.&n;&t; */
+multiline_comment|/*&n;&t; * Permanent reservations have up to &squot;cnt&squot;-1 active log operations&n;&t; * in the log.  A unit in this case is the amount of space for one&n;&t; * of these log operations.  Normal reservations have a cnt of 1&n;&t; * and their unit amount is the total amount of space required.&n;&t; *&n;&t; * The following lines of code account for non-transaction data&n;&t; * which occupy space in the on-disk log. &n;&t; */
+multiline_comment|/* for start-rec */
+id|unit_bytes
+op_add_assign
+r_sizeof
+(paren
+id|xlog_op_header_t
+)paren
+suffix:semicolon
+multiline_comment|/* for padding */
+r_if
+c_cond
+(paren
+id|XFS_SB_VERSION_HASLOGV2
+c_func
+(paren
+op_amp
+id|log-&gt;l_mp-&gt;m_sb
+)paren
+op_logical_and
+id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
+OG
+l_int|1
+)paren
+(brace
+multiline_comment|/* log su roundoff */
+id|unit_bytes
+op_add_assign
+id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* BB roundoff */
+id|unit_bytes
+op_add_assign
+id|BBSIZE
+suffix:semicolon
+)brace
+multiline_comment|/* for commit-rec */
+id|unit_bytes
+op_add_assign
+r_sizeof
+(paren
+id|xlog_op_header_t
+)paren
+suffix:semicolon
+multiline_comment|/* for LR headers */
+id|num_headers
+op_assign
+(paren
+(paren
+id|unit_bytes
+op_plus
+id|log-&gt;l_iclog_size
+op_minus
+l_int|1
+)paren
+op_rshift
+id|log-&gt;l_iclog_size_log
+)paren
+suffix:semicolon
 id|unit_bytes
 op_add_assign
 id|log-&gt;l_iclog_hsize
 op_star
-(paren
-id|XLOG_BTOLRBB
-c_func
-(paren
-id|unit_bytes
-)paren
-op_plus
-l_int|2
-)paren
+id|num_headers
 suffix:semicolon
 id|tic-&gt;t_unit_res
 op_assign

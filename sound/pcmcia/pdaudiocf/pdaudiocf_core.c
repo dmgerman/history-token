@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &quot;pdaudiocf.h&quot;
-DECL|macro|SNDRV_GET_ID
-mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 multiline_comment|/*&n; *&n; */
 DECL|function|pdacf_ak4117_read

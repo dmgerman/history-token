@@ -6290,7 +6290,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-suffix:semicolon
 id|qopt
 op_assign
 id|RTA_DATA

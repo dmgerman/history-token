@@ -5330,7 +5330,6 @@ id|UCBF_MATCHED
 )paren
 r_break
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11444,7 +11443,6 @@ r_continue
 suffix:semicolon
 r_break
 suffix:semicolon
-suffix:semicolon
 id|unregister
 suffix:colon
 suffix:semicolon
@@ -12398,7 +12396,6 @@ id|MAXADAPTER
 r_continue
 suffix:semicolon
 r_break
-suffix:semicolon
 suffix:semicolon
 id|unregister1
 suffix:colon

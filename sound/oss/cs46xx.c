@@ -15551,7 +15551,6 @@ l_int|0
 op_assign
 l_int|NULL
 suffix:semicolon
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -15899,7 +15898,6 @@ l_int|1
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
 suffix:semicolon
 r_return
 op_minus

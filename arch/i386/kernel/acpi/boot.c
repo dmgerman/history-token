@@ -108,6 +108,9 @@ op_assign
 id|APIC_DEFAULT_PHYS_BASE
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_CMPXCHG
+macro_line|#warning ACPI uses CMPXCHG, i486 and later hardware
+macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * The default interrupt routing model is PIC (8259).  This gets&n; * overriden if IOAPICs are enumerated (below).&n; */
 DECL|variable|acpi_irq_model

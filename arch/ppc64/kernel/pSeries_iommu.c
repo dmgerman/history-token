@@ -94,7 +94,7 @@ multiline_comment|/* can&squot;t move this out since we might cross LMB boundary
 id|t.te_rpn
 op_assign
 (paren
-id|virt_to_absolute
+id|virt_to_abs
 c_func
 (paren
 id|uaddr

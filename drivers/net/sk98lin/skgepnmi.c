@@ -26994,7 +26994,6 @@ r_sizeof
 id|SK_DEVICE_POWER_STATE
 )paren
 suffix:semicolon
-suffix:semicolon
 id|RetCode
 op_assign
 id|SK_PNMI_ERR_OK

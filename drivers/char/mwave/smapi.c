@@ -2521,7 +2521,6 @@ id|usDI
 op_assign
 id|dspio_index
 suffix:semicolon
-suffix:semicolon
 )brace
 r_if
 c_cond

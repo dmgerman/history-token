@@ -1218,7 +1218,7 @@ id|ac97-&gt;ext_id
 op_amp
 id|AC97_EI_REV_MASK
 )paren
-op_eq
+op_ge
 id|AC97_EI_REV_22
 suffix:semicolon
 )brace

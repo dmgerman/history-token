@@ -693,7 +693,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-suffix:semicolon
 )brace
 id|task_lock
 c_func
@@ -857,7 +856,6 @@ id|u_long
 id|old
 op_assign
 id|current-&gt;personality
-suffix:semicolon
 suffix:semicolon
 r_if
 c_cond

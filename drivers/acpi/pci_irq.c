@@ -867,7 +867,6 @@ id|entry-&gt;irq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * current thinking is that acpi_pci_irq_derive() adds no value&n; * and should be deleted, so warn if it actually does something.&n; */
 r_static
 r_int
 DECL|function|acpi_pci_irq_derive
@@ -894,6 +893,11 @@ id|irq
 op_assign
 l_int|0
 suffix:semicolon
+id|u8
+id|bridge_pin
+op_assign
+l_int|0
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -913,7 +917,7 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Attempt to derive an IRQ for this device from a parent bridge&squot;s&n;&t; * PCI interrupt routing entry (a.k.a. the &quot;bridge swizzle&quot;).&n;&t; */
+multiline_comment|/* &n;&t; * Attempt to derive an IRQ for this device from a parent bridge&squot;s&n;&t; * PCI interrupt routing entry (eg. yenta bridge and add-in card bridge).&n;&t; */
 r_while
 c_loop
 (paren
@@ -941,6 +945,71 @@ id|bridge
 op_assign
 id|bridge-&gt;bus-&gt;self
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|bridge
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+)paren
+op_eq
+id|PCI_CLASS_BRIDGE_CARDBUS
+)paren
+(brace
+multiline_comment|/* PC card has the same IRQ as its cardbridge */
+id|pci_read_config_byte
+c_func
+(paren
+id|bridge
+comma
+id|PCI_INTERRUPT_PIN
+comma
+op_amp
+id|bridge_pin
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bridge_pin
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+c_func
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;No interrupt pin configured for device %s&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|bridge
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Pin is from 0 to 3 */
+id|bridge_pin
+op_decrement
+suffix:semicolon
+id|pin
+op_assign
+id|bridge_pin
+suffix:semicolon
+)brace
 id|irq
 op_assign
 id|acpi_pci_irq_lookup
@@ -992,7 +1061,7 @@ id|ACPI_DEBUG_PRINT
 c_func
 (paren
 (paren
-id|ACPI_DB_WARN
+id|ACPI_DB_INFO
 comma
 l_string|&quot;Derive IRQ %d for device %s from %s&bslash;n&quot;
 comma
@@ -1143,19 +1212,6 @@ id|dev-&gt;devfn
 comma
 id|pin
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Check if the device has an IRQ,&n;&t; * Hotplug devices may get IRQs by scanning&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|irq
-op_logical_and
-id|dev-&gt;irq
-)paren
-id|irq
-op_assign
-id|dev-&gt;irq
 suffix:semicolon
 multiline_comment|/*&n;&t; * If no PRT entry was found, we&squot;ll try to derive an IRQ from the&n;&t; * device&squot;s parent bridge.&n;&t; */
 r_if

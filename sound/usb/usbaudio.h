@@ -403,8 +403,6 @@ id|driver
 suffix:semicolon
 multiline_comment|/*&n; * retrieve usb_interface descriptor from the host interface&n; * (conditional for compatibility with the older API)&n; */
 macro_line|#ifndef get_iface_desc
-DECL|macro|get_iface
-mdefine_line|#define get_iface(cfg, num)&t;((cfg)-&gt;interface[(num)])
 DECL|macro|get_iface_desc
 mdefine_line|#define get_iface_desc(iface)&t;(&amp;(iface)-&gt;desc)
 DECL|macro|get_endpoint
@@ -421,6 +419,10 @@ macro_line|#endif
 macro_line|#ifndef snd_usb_complete_callback
 DECL|macro|snd_usb_complete_callback
 mdefine_line|#define snd_usb_complete_callback(x) (x)
+macro_line|#endif
+macro_line|#ifndef snd_usb_get_speed
+DECL|macro|snd_usb_get_speed
+mdefine_line|#define snd_usb_get_speed(dev) ((dev)-&gt;speed)
 macro_line|#endif
 macro_line|#endif /* __USBAUDIO_H */
 eof

@@ -729,7 +729,18 @@ r_if
 c_cond
 (paren
 id|pci_mem
-template_param
+OL
+id|memtop
+)paren
+id|memtop
+op_assign
+id|pci_mem
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|memtop
+OG
 id|alpha_mv.min_mem_address
 )paren
 (brace
@@ -745,7 +756,7 @@ comma
 id|__va
 c_func
 (paren
-id|pci_mem
+id|memtop
 )paren
 )paren
 suffix:semicolon
@@ -755,7 +766,7 @@ c_func
 l_string|&quot;nautilus_init_pci: %ldk freed&bslash;n&quot;
 comma
 (paren
-id|pci_mem
+id|memtop
 op_minus
 id|alpha_mv.min_mem_address
 )paren

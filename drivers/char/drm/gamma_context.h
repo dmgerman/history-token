@@ -245,7 +245,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 multiline_comment|/* In an incredibly convoluted setup, the kernel module actually calls&n; * back into the X server to perform context switches on behalf of the&n; * 3d clients.&n; */
 DECL|function|write_string

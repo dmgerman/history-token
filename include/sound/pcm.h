@@ -1460,9 +1460,8 @@ DECL|member|xrun_debug
 r_int
 r_int
 id|xrun_debug
-suffix:colon
-l_int|1
 suffix:semicolon
+multiline_comment|/* 0 = disabled, 1 = verbose, 2 = stacktrace */
 DECL|member|proc_xrun_debug_entry
 id|snd_info_entry_t
 op_star

@@ -522,6 +522,12 @@ id|in_dev-&gt;cnf
 )paren
 suffix:semicolon
 macro_line|#endif
+id|ip_mc_init_dev
+c_func
+(paren
+id|in_dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

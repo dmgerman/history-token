@@ -30,6 +30,7 @@ multiline_comment|/*   Ported to ppc64, May 25, 2001                            
 multiline_comment|/* End Change Activity                                                  */
 multiline_comment|/************************************************************************/
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
+macro_line|#include &lt;asm/abs_addr.h&gt;
 r_struct
 id|pci_dev
 suffix:semicolon
@@ -76,8 +77,8 @@ mdefine_line|#define ISERIES_DECODE_FUNCTION(linuxdevfn) (linuxdevfn &amp; 0x07)
 multiline_comment|/************************************************************************/
 multiline_comment|/* Converts Virtual Address to Real Address for Hypervisor calls        */
 multiline_comment|/************************************************************************/
-DECL|macro|REALADDR
-mdefine_line|#define REALADDR(virtaddr)  (0x8000000000000000 | (virt_to_absolute((u64)virtaddr) ))
+DECL|macro|ISERIES_HV_ADDR
+mdefine_line|#define ISERIES_HV_ADDR(virtaddr)  (0x8000000000000000 | virt_to_abs(virtaddr))
 multiline_comment|/************************************************************************/
 multiline_comment|/* iSeries Device Information                                           */
 multiline_comment|/************************************************************************/

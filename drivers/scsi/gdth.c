@@ -5990,7 +5990,6 @@ op_amp
 id|dp6_ptr-&gt;io.irqen
 )paren
 suffix:semicolon
-suffix:semicolon
 id|gdth_writeb
 c_func
 (paren

@@ -7996,7 +7996,6 @@ suffix:semicolon
 r_return
 id|return_status
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|isp2x00_biosparam
 r_int

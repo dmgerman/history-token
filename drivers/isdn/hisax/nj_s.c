@@ -359,7 +359,6 @@ suffix:semicolon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
-suffix:semicolon
 )brace
 id|cs-&gt;hw.njet.irqstat0
 op_assign

@@ -101,7 +101,7 @@ c_func
 (paren
 l_string|&quot;masquerade_check: bad table `%s&squot;.&bslash;n&quot;
 comma
-id|table
+id|tablename
 )paren
 suffix:semicolon
 r_return

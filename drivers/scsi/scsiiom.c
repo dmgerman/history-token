@@ -7865,7 +7865,6 @@ id|pdcb-&gt;GoingSRBCnt
 op_assign
 l_int|0
 suffix:semicolon
-suffix:semicolon
 id|pdcb-&gt;pGoingSRB
 op_assign
 l_int|NULL

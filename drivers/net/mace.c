@@ -1032,7 +1032,6 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-suffix:semicolon
 id|mp-&gt;tx_cmds
 op_assign
 (paren

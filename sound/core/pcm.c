@@ -2131,8 +2131,6 @@ id|line
 )paren
 id|pstr-&gt;xrun_debug
 op_assign
-op_logical_neg
-op_logical_neg
 id|simple_strtoul
 c_func
 (paren

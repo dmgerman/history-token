@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/abs_addr.h&gt;
 multiline_comment|/* in pSeries_hvCall.S */
 DECL|variable|plpar_hcall
 id|EXPORT_SYMBOL
@@ -520,7 +521,7 @@ suffix:semicolon
 id|tce.te_rpn
 op_assign
 (paren
-id|virt_to_absolute
+id|virt_to_abs
 c_func
 (paren
 id|uaddr

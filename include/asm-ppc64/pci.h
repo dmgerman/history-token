@@ -6,6 +6,7 @@ multiline_comment|/*&n; * This program is free software; you can redistribute it
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -711,8 +712,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|PCI_DMA_ERROR_CODE
-mdefine_line|#define PCI_DMA_ERROR_CODE      (~(dma_addr_t)0x0)
 DECL|function|pci_dma_mapping_error
 r_static
 r_inline
@@ -725,10 +724,10 @@ id|dma_addr
 )paren
 (brace
 r_return
+id|dma_mapping_error
+c_func
 (paren
 id|dma_addr
-op_eq
-id|PCI_DMA_ERROR_CODE
 )paren
 suffix:semicolon
 )brace

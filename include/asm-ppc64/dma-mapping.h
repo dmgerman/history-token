@@ -9,6 +9,8 @@ multiline_comment|/* need struct page definitions */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
+DECL|macro|DMA_ERROR_CODE
+mdefine_line|#define DMA_ERROR_CODE&t;&t;(~(dma_addr_t)0x0)
 r_extern
 r_int
 id|dma_supported
@@ -353,6 +355,25 @@ multiline_comment|/* could define this in terms of the dma_cache ... operations,
 id|BUG
 c_func
 (paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|dma_mapping_error
+r_static
+r_inline
+r_int
+id|dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+(paren
+id|dma_addr
+op_eq
+id|DMA_ERROR_CODE
 )paren
 suffix:semicolon
 )brace

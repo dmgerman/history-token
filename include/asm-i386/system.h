@@ -484,6 +484,7 @@ multiline_comment|/*&n; * Atomic compare and exchange.  Compare OLD with MEM, if
 macro_line|#ifdef CONFIG_X86_CMPXCHG
 DECL|macro|__HAVE_ARCH_CMPXCHG
 mdefine_line|#define __HAVE_ARCH_CMPXCHG 1
+macro_line|#endif
 DECL|function|__cmpxchg
 r_static
 r_inline
@@ -649,9 +650,6 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&bslash;&n;&t;((__typeof__(*(ptr)))__cmpxchg((ptr),(unsigned long)(o),&bslash;&n;&t;&t;&t;&t;&t;(unsigned long)(n),sizeof(*(ptr))))
-macro_line|#else
-multiline_comment|/* Compiling for a 386 proper.&t;Is it worth implementing via cli/sti?  */
-macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|struct|alt_instr
 r_struct

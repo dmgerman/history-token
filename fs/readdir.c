@@ -714,6 +714,7 @@ id|dirent
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|dirent
@@ -1159,6 +1160,7 @@ id|dirent
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|dirent

@@ -251,41 +251,9 @@ id|pchunk
 )braket
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_int
-r_int
-DECL|function|phys_to_absolute
-id|phys_to_absolute
-c_func
-(paren
-r_int
-r_int
-id|pa
-)paren
-(brace
-r_return
-id|chunk_to_addr
-c_func
-(paren
-id|abs_chunk
-c_func
-(paren
-id|addr_to_chunk
-c_func
-(paren
-id|pa
-)paren
-)paren
-)paren
-op_plus
-id|chunk_offset
-c_func
-(paren
-id|pa
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* A macro so it can take pointers or unsigned long. */
+DECL|macro|phys_to_abs
+mdefine_line|#define phys_to_abs(pa)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;({ unsigned long _pa = (unsigned long)(pa);&t;&t;&t;     &bslash;&n;&t;   chunk_to_addr(abs_chunk(addr_to_chunk(_pa))) + chunk_offset(_pa); &bslash;&n;&t;})
 r_static
 r_inline
 r_int
@@ -311,7 +279,7 @@ r_int
 r_int
 id|aa
 op_assign
-id|phys_to_absolute
+id|phys_to_abs
 c_func
 (paren
 id|pa
@@ -325,27 +293,9 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_int
-r_int
-DECL|function|absolute_to_phys
-id|absolute_to_phys
-c_func
-(paren
-r_int
-r_int
-id|aa
-)paren
-(brace
-r_return
-id|lmb_abs_to_phys
-c_func
-(paren
-id|aa
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* A macro so it can take pointers or unsigned long. */
+DECL|macro|abs_to_phys
+mdefine_line|#define abs_to_phys(aa) lmb_abs_to_phys((unsigned long)(aa))
 macro_line|#else  /* !CONFIG_MSCHUNKS */
 DECL|macro|chunk_to_addr
 mdefine_line|#define chunk_to_addr(chunk) ((unsigned long)(chunk))
@@ -355,66 +305,17 @@ DECL|macro|chunk_offset
 mdefine_line|#define chunk_offset(addr) (0)
 DECL|macro|abs_chunk
 mdefine_line|#define abs_chunk(pchunk) (pchunk)
-DECL|macro|phys_to_absolute
-mdefine_line|#define phys_to_absolute(pa) (pa)
+DECL|macro|phys_to_abs
+mdefine_line|#define phys_to_abs(pa) (pa)
 DECL|macro|physRpn_to_absRpn
 mdefine_line|#define physRpn_to_absRpn(rpn) (rpn)
-DECL|macro|absolute_to_phys
-mdefine_line|#define absolute_to_phys(aa) (aa)
+DECL|macro|abs_to_phys
+mdefine_line|#define abs_to_phys(aa) (aa)
 macro_line|#endif /* !CONFIG_MSCHUNKS */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|virt_to_absolute
-id|virt_to_absolute
-c_func
-(paren
-r_int
-r_int
-id|ea
-)paren
-(brace
-r_return
-id|phys_to_absolute
-c_func
-(paren
-id|__pa
-c_func
-(paren
-id|ea
-)paren
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-r_int
-DECL|function|absolute_to_virt
-id|absolute_to_virt
-c_func
-(paren
-r_int
-r_int
-id|aa
-)paren
-(brace
-r_return
-(paren
-r_int
-r_int
-)paren
-id|__va
-c_func
-(paren
-id|absolute_to_phys
-c_func
-(paren
-id|aa
-)paren
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* Convenience macros */
+DECL|macro|virt_to_abs
+mdefine_line|#define virt_to_abs(va) phys_to_abs(__pa(va))
+DECL|macro|abs_to_virt
+mdefine_line|#define abs_to_virt(aa) __va(abs_to_phys(aa))
 macro_line|#endif /* _ABS_ADDR_H */
 eof
