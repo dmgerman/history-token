@@ -904,8 +904,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
-op_logical_or
 id|CURRENT-&gt;sector
 op_eq
 op_minus

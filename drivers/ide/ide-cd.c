@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;linux/atapi.h&gt;
 macro_line|#include &quot;ide-cd.h&quot;
 multiline_comment|/****************************************************************************&n; * Generic packet command support and error handling routines.&n; */
 multiline_comment|/* Mark that we&squot;ve seen a media change, and invalidate our internal&n;   buffers. */
@@ -2250,22 +2251,22 @@ OG
 l_int|0
 )paren
 (brace
-r_int
-id|dum
-op_assign
-l_int|0
+id|u8
+id|dummy
+(braket
+l_int|4
+)braket
 suffix:semicolon
 id|atapi_write
 c_func
 (paren
 id|drive
 comma
-op_amp
-id|dum
+id|dummy
 comma
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 )paren
 suffix:semicolon
@@ -2273,7 +2274,7 @@ id|len
 op_sub_assign
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 suffix:semicolon
 )brace
@@ -3923,22 +3924,22 @@ OG
 id|thislen
 )paren
 (brace
-r_int
-id|dum
-op_assign
-l_int|0
+id|u8
+id|dummy
+(braket
+l_int|4
+)braket
 suffix:semicolon
 id|atapi_write
 c_func
 (paren
 id|drive
 comma
-op_amp
-id|dum
+id|dummy
 comma
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 )paren
 suffix:semicolon
@@ -3946,7 +3947,7 @@ id|len
 op_sub_assign
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 suffix:semicolon
 )brace
@@ -3994,22 +3995,22 @@ OG
 id|thislen
 )paren
 (brace
-r_int
-id|dum
-op_assign
-l_int|0
+id|u8
+id|dummy
+(braket
+l_int|4
+)braket
 suffix:semicolon
 id|atapi_read
 c_func
 (paren
 id|drive
 comma
-op_amp
-id|dum
+id|dummy
 comma
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 )paren
 suffix:semicolon
@@ -4017,7 +4018,7 @@ id|len
 op_sub_assign
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 suffix:semicolon
 )brace
@@ -4497,22 +4498,22 @@ OG
 l_int|0
 )paren
 (brace
-r_int
-id|dum
-op_assign
-l_int|0
+id|u8
+id|dummy
+(braket
+l_int|4
+)braket
 suffix:semicolon
 id|atapi_write
 c_func
 (paren
 id|drive
 comma
-op_amp
-id|dum
+id|dummy
 comma
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 )paren
 suffix:semicolon
@@ -4520,7 +4521,7 @@ id|len
 op_sub_assign
 r_sizeof
 (paren
-id|dum
+id|dummy
 )paren
 suffix:semicolon
 )brace
@@ -11728,7 +11729,7 @@ id|drive
 op_minus
 id|channel-&gt;drives
 suffix:semicolon
-id|ide_revalidate_disk
+id|ata_revalidate
 c_func
 (paren
 id|mk_kdev

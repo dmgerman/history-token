@@ -2142,22 +2142,13 @@ op_minus
 id|buffer
 suffix:semicolon
 )brace
-macro_line|#endif /* defined(DISPLAY_SIS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 DECL|variable|sis_proc
 id|byte
 id|sis_proc
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
+macro_line|#endif
 DECL|function|sis5513_ratemask
 r_static
 r_int

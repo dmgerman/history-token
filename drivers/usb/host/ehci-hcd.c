@@ -28,9 +28,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by: Brad Hards, Rory Bolt, ...&n; *&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
+multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by: Brad Hards, Rory Bolt, ...&n; *&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-May-11&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-May-24&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -2044,7 +2044,20 @@ id|urb-&gt;start_frame
 comma
 id|qh
 comma
+(paren
+id|urb-&gt;dev-&gt;speed
+op_eq
+id|USB_SPEED_HIGH
+)paren
+ques
+c_cond
 id|urb-&gt;interval
+suffix:colon
+(paren
+id|urb-&gt;interval
+op_lshift
+l_int|3
+)paren
 )paren
 suffix:semicolon
 r_if

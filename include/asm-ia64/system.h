@@ -3,6 +3,7 @@ DECL|macro|_ASM_IA64_SYSTEM_H
 mdefine_line|#define _ASM_IA64_SYSTEM_H
 multiline_comment|/*&n; * System defines. Note that this is included both from .c and .S&n; * files, so it does only defines, not any C code.  This is based&n; * on information published in the Processor Abstraction Layer&n; * and the System Abstraction Layer manual.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 68*1024*1024)
@@ -33,7 +34,7 @@ id|pin
 suffix:semicolon
 multiline_comment|/* PCI PIN (0 = A, 1 = B, 2 = C, 3 = D) */
 DECL|member|irq
-id|__u8
+id|__u32
 id|irq
 suffix:semicolon
 multiline_comment|/* IRQ assigned */
@@ -176,7 +177,7 @@ macro_line|# define local_irq_save(x)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&
 DECL|macro|local_irq_disable
 macro_line|# define local_irq_disable()&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long ip, psr;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;mov %0=psr;; rsm psr.i;;&quot; : &quot;=r&quot; (psr) :: &quot;memory&quot;);&t;&bslash;&n;&t;if (psr &amp; (1UL &lt;&lt; 14)) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;mov %0=ip&quot; : &quot;=r&quot;(ip));&t;&t;&t;&t;&t;&bslash;&n;&t;&t;last_cli_ip = ip;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|local_irq_restore
-macro_line|# define local_irq_restore(x)&t;&t;&t;&t;&t;&t; &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;unsigned long ip, old_psr, psr = (x);&t;&t;&t;&t; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;__asm__ __volatile__ (&quot;;;mov %0=psr; mov psr.l=%1;; srlz.d&quot;&t; &bslash;&n;&t;&t;&t;      : &quot;=&amp;r&quot; (old_psr) : &quot;r&quot; (psr) : &quot;memory&quot;); &bslash;&n;&t;if ((old_psr &amp; (1UL &lt;&lt; 14)) &amp;&amp; !(psr &amp; (1UL &lt;&lt; 14))) {&t;&t; &bslash;&n;&t;&t;__asm__ (&quot;mov %0=ip&quot; : &quot;=r&quot;(ip));&t;&t;&t; &bslash;&n;&t;&t;last_cli_ip = ip;&t;&t;&t;&t;&t; &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while (0)
+macro_line|# define local_irq_restore(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long ip, old_psr, psr = (x);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;mov %0=psr;&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;cmp.ne p6,p7=%1,r0;;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p6) ssm psr.i;&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p7) rsm psr.i;;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;srlz.d&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      : &quot;=&amp;r&quot; (old_psr) : &quot;r&quot;((psr) &amp; IA64_PSR_I)&t;&bslash;&n;&t;&t;&t;      : &quot;p6&quot;, &quot;p7&quot;, &quot;memory&quot;);&t;&t;&t;&t;&bslash;&n;&t;if ((old_psr &amp; IA64_PSR_I) &amp;&amp; !(psr &amp; IA64_PSR_I)) {&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;mov %0=ip&quot; : &quot;=r&quot;(ip));&t;&t;&t;&t;&bslash;&n;&t;&t;last_cli_ip = ip;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else /* !CONFIG_IA64_DEBUG_IRQ */
 multiline_comment|/* clearing of psr.i is implicitly serialized (visible by next insn) */
 DECL|macro|local_irq_save
@@ -185,7 +186,7 @@ DECL|macro|local_irq_disable
 macro_line|# define local_irq_disable()&t;__asm__ __volatile__ (&quot;;; rsm psr.i;;&quot; ::: &quot;memory&quot;)
 multiline_comment|/* (potentially) setting psr.i requires data serialization: */
 DECL|macro|local_irq_restore
-macro_line|# define local_irq_restore(x)&t;__asm__ __volatile__ (&quot;;; mov psr.l=%0;; srlz.d&quot;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      :: &quot;r&quot; (x) : &quot;memory&quot;)
+macro_line|# define local_irq_restore(x)&t;__asm__ __volatile__ (&quot;cmp.ne p6,p7=%0,r0;;&quot;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      &quot;(p6) ssm psr.i;&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      &quot;(p7) rsm psr.i;;&quot;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      &quot;srlz.d&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      :: &quot;r&quot;((x) &amp; IA64_PSR_I)&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      : &quot;p6&quot;, &quot;p7&quot;, &quot;memory&quot;)
 macro_line|#endif /* !CONFIG_IA64_DEBUG_IRQ */
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__ (&quot;;; ssm psr.i;; srlz.d&quot; ::: &quot;memory&quot;)

@@ -9527,10 +9527,6 @@ comma
 l_string|&quot;kreiserfsd&quot;
 )paren
 suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_KERNTHREAD
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren

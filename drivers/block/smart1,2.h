@@ -767,7 +767,7 @@ op_plus
 id|SMART1_LOCAL_DOORBELL
 )paren
 suffix:semicolon
-macro_line|#error Please convert me to Documentation/DMA-mapping.txt
+multiline_comment|/*&n;&t;&t; * this is x86 (actually compaq x86) only, so it&squot;s ok&n;&t;&t; */
 r_if
 c_cond
 (paren

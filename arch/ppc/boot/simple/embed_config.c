@@ -1,19 +1,15 @@
 multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
-multiline_comment|/* Board specific functions for those embedded 8xx boards that do&n; * not have boot monitor support for board information.&n; */
+multiline_comment|/* Board specific functions for those embedded 8xx boards that do&n; * not have boot monitor support for board information.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_8xx
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_8260
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/immap_8260.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_4xx
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#endif
-macro_line|#if defined(CONFIG_405GP) || defined(CONFIG_NP405H) || defined(CONFIG_NP405L)
-macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#endif
 multiline_comment|/* For those boards that don&squot;t provide one.&n;*/
 macro_line|#if !defined(CONFIG_MBX)
@@ -662,6 +658,63 @@ l_int|1024
 suffix:semicolon
 )brace
 macro_line|#endif /* LITE || CLASSIC || EP405 */
+macro_line|#if defined(CONFIG_EP405)
+r_static
+r_void
+DECL|function|rpx_nvramsize
+id|rpx_nvramsize
+c_func
+(paren
+id|bd_t
+op_star
+id|bd
+comma
+id|u_char
+op_star
+id|cp
+)paren
+(brace
+id|uint
+id|size
+suffix:semicolon
+id|size
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|cp
+op_ne
+l_char|&squot;&bslash;n&squot;
+)paren
+(brace
+id|size
+op_mul_assign
+l_int|10
+suffix:semicolon
+id|size
+op_add_assign
+(paren
+op_star
+id|cp
+)paren
+op_minus
+l_char|&squot;0&squot;
+suffix:semicolon
+id|cp
+op_increment
+suffix:semicolon
+)brace
+id|bd-&gt;bi_nvramsize
+op_assign
+id|size
+op_star
+l_int|1024
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_EP405 */
 macro_line|#endif&t;/* Embedded Planet boards */
 macro_line|#if defined(CONFIG_RPXLITE) || defined(CONFIG_RPXCLASSIC)
 multiline_comment|/* Read the EEPROM on the RPX-Lite board.&n;*/
@@ -2010,8 +2063,13 @@ suffix:semicolon
 macro_line|#endif /* WILLOW */
 macro_line|#ifdef CONFIG_TREEBOOT
 multiline_comment|/* This could possibly work for all treeboot roms.&n;*/
+macro_line|#if defined(CONFIG_ASH)
+DECL|macro|BOARD_INFO_VECTOR
+mdefine_line|#define BOARD_INFO_VECTOR       0xFFF80B50 /* openbios 1.19 moved this vector down  - armin */
+macro_line|#else
 DECL|macro|BOARD_INFO_VECTOR
 mdefine_line|#define&t;BOARD_INFO_VECTOR&t;0xFFFE0B50
+macro_line|#endif
 r_void
 DECL|function|embed_config
 id|embed_config
@@ -2087,6 +2145,10 @@ id|mtdcr
 c_func
 (paren
 id|DCRN_MALCR
+c_func
+(paren
+id|DCRN_MAL_BASE
+)paren
 comma
 id|MALCR_MMSR
 )paren
@@ -2099,6 +2161,10 @@ id|mfdcr
 c_func
 (paren
 id|DCRN_MALCR
+c_func
+(paren
+id|DCRN_MAL_BASE
+)paren
 )paren
 op_amp
 id|MALCR_MMSR
@@ -2217,6 +2283,14 @@ op_increment
 suffix:semicolon
 macro_line|#endif
 )brace
+id|bd-&gt;bi_tbfreq
+op_assign
+l_int|200
+op_star
+l_int|1000
+op_star
+l_int|1000
+suffix:semicolon
 id|bd-&gt;bi_intfreq
 op_assign
 l_int|200000000
@@ -2231,20 +2305,9 @@ op_assign
 l_int|66666666
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Yeah, this look weird, but on Redwood 4 they are&n;&t;&t; * different object in the structure.  When RW5 uses&n;&t;&t; * OpenBIOS, it requires a special value.&n;&t;&t; */
+)brace
+multiline_comment|/* Yeah, this look weird, but on Redwood 4 they are&n;&t; * different object in the structure.  When RW5 uses&n;&t; * OpenBIOS, it requires a special value.&n;&t; */
 macro_line|#ifdef CONFIG_REDWOOD_5
-id|bd-&gt;bi_intfreq
-op_assign
-l_int|200
-op_star
-l_int|1000
-op_star
-l_int|1000
-suffix:semicolon
-id|bd-&gt;bi_busfreq
-op_assign
-l_int|0
-suffix:semicolon
 id|bd-&gt;bi_tbfreq
 op_assign
 l_int|27
@@ -2253,13 +2316,7 @@ l_int|1000
 op_star
 l_int|1000
 suffix:semicolon
-macro_line|#elif CONFIG_REDWOOD_4
-id|bd-&gt;bi_tbfreq
-op_assign
-id|bd-&gt;bi_intfreq
-suffix:semicolon
 macro_line|#endif
-)brace
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_EP405
@@ -2430,6 +2487,41 @@ id|cp
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+op_star
+id|cp
+op_eq
+l_char|&squot;N&squot;
+)paren
+(brace
+id|cp
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|cp
+op_eq
+l_char|&squot;V&squot;
+)paren
+(brace
+id|cp
+op_add_assign
+l_int|2
+suffix:semicolon
+id|rpx_nvramsize
+c_func
+(paren
+id|bd
+comma
+id|cp
+)paren
+suffix:semicolon
+)brace
+)brace
 r_while
 c_loop
 (paren
@@ -2503,6 +2595,98 @@ op_assign
 l_int|33000000
 suffix:semicolon
 macro_line|#endif
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_RAINIER
+multiline_comment|/* Rainier uses vxworks bootrom */
+r_void
+DECL|function|embed_config
+id|embed_config
+c_func
+(paren
+id|bd_t
+op_star
+op_star
+id|bdp
+)paren
+(brace
+id|u_char
+op_star
+id|cp
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|bd_t
+op_star
+id|bd
+suffix:semicolon
+id|bd
+op_assign
+op_amp
+id|bdinfo
+suffix:semicolon
+op_star
+id|bdp
+op_assign
+id|bd
+suffix:semicolon
+id|bd-&gt;bi_memsize
+op_assign
+(paren
+l_int|32
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+suffix:semicolon
+id|bd-&gt;bi_intfreq
+op_assign
+l_int|133000000
+suffix:semicolon
+singleline_comment|//the internal clock is 133 MHz
+id|bd-&gt;bi_busfreq
+op_assign
+l_int|100000000
+suffix:semicolon
+id|bd-&gt;bi_pci_busfreq
+op_assign
+l_int|33000000
+suffix:semicolon
+id|cp
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|def_enet_addr
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|6
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|bd-&gt;bi_enetaddr
+(braket
+id|i
+)braket
+op_assign
+op_star
+id|cp
+op_increment
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 eof

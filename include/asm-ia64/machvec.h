@@ -17,6 +17,9 @@ suffix:semicolon
 r_struct
 id|irq_desc
 suffix:semicolon
+r_struct
+id|page
+suffix:semicolon
 DECL|typedef|ia64_mv_setup_t
 r_typedef
 r_void
@@ -315,6 +318,18 @@ id|scatterlist
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|ia64_mv_pci_dma_supported
+r_typedef
+r_int
+id|ia64_mv_pci_dma_supported
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|u64
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * WARNING: The legacy I/O space is _architected_.  Platforms are&n; * expected to follow this architected model (see Section 10.7 in the&n; * IA-64 Architecture Software Developer&squot;s Manual).  Unfortunately,&n; * some broken machines do not follow that model, which is why we have&n; * to make the inX/outX operations part of the machine vector.&n; * Platform designers should follow the architected model whenever&n; * possible.&n; */
 DECL|typedef|ia64_mv_inb_t
 r_typedef
@@ -455,6 +470,8 @@ DECL|macro|platform_pci_dma_sync_sg
 macro_line|#  define platform_pci_dma_sync_sg&t;ia64_mv.sync_sg
 DECL|macro|platform_pci_dma_address
 macro_line|#  define platform_pci_dma_address&t;ia64_mv.dma_address
+DECL|macro|platform_pci_dma_supported
+macro_line|#  define platform_pci_dma_supported&t;ia64_mv.dma_supported
 DECL|macro|platform_irq_desc
 macro_line|#  define platform_irq_desc&t;&t;ia64_mv.irq_desc
 DECL|macro|platform_irq_to_vector
@@ -591,6 +608,11 @@ id|ia64_mv_pci_dma_address
 op_star
 id|dma_address
 suffix:semicolon
+DECL|member|dma_supported
+id|ia64_mv_pci_dma_supported
+op_star
+id|dma_supported
+suffix:semicolon
 DECL|member|irq_desc
 id|ia64_mv_irq_desc
 op_star
@@ -644,7 +666,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;        platform_mmiob                          &bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_pci_dma_supported,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;        platform_mmiob                          &bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -784,6 +806,10 @@ macro_line|#endif
 macro_line|#ifndef platform_pci_dma_address
 DECL|macro|platform_pci_dma_address
 macro_line|# define  platform_pci_dma_address&t;swiotlb_dma_address
+macro_line|#endif
+macro_line|#ifndef platform_pci_dma_supported
+DECL|macro|platform_pci_dma_supported
+macro_line|# define  platform_pci_dma_supported&t;swiotlb_pci_dma_supported
 macro_line|#endif
 macro_line|#ifndef platform_irq_desc
 DECL|macro|platform_irq_desc

@@ -2003,7 +2003,52 @@ id|FS_DQSTATS
 op_assign
 l_int|16
 comma
-multiline_comment|/* int: disc quota suage statistics */
+multiline_comment|/* disc quota usage statistics */
+)brace
+suffix:semicolon
+multiline_comment|/* /proc/sys/fs/quota/ */
+r_enum
+(brace
+DECL|enumerator|FS_DQ_LOOKUPS
+id|FS_DQ_LOOKUPS
+op_assign
+l_int|1
+comma
+DECL|enumerator|FS_DQ_DROPS
+id|FS_DQ_DROPS
+op_assign
+l_int|2
+comma
+DECL|enumerator|FS_DQ_READS
+id|FS_DQ_READS
+op_assign
+l_int|3
+comma
+DECL|enumerator|FS_DQ_WRITES
+id|FS_DQ_WRITES
+op_assign
+l_int|4
+comma
+DECL|enumerator|FS_DQ_CACHE_HITS
+id|FS_DQ_CACHE_HITS
+op_assign
+l_int|5
+comma
+DECL|enumerator|FS_DQ_ALLOCATED
+id|FS_DQ_ALLOCATED
+op_assign
+l_int|6
+comma
+DECL|enumerator|FS_DQ_FREE
+id|FS_DQ_FREE
+op_assign
+l_int|7
+comma
+DECL|enumerator|FS_DQ_SYNCS
+id|FS_DQ_SYNCS
+op_assign
+l_int|8
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_DEBUG names: */

@@ -2994,7 +2994,6 @@ id|regs
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/* This one may be merged with PReP and CHRP */
 r_int
 DECL|function|openpic_get_irq
 id|openpic_get_irq
@@ -3006,7 +3005,6 @@ op_star
 id|regs
 )paren
 (brace
-multiline_comment|/*&n; * Clean up needed. -VAL&n; */
 r_int
 id|irq
 op_assign
@@ -3015,8 +3013,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Management of the cascade should be moved out of here */
-multiline_comment|/* Yep - because openpic !=&gt; i8259, for one thing. -VAL */
+multiline_comment|/*&n;&t; * This needs to be cleaned up.  We don&squot;t necessarily have&n;&t; * an i8259 cascaded or even a cascade.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3027,7 +3024,7 @@ op_eq
 id|open_pic_irq_offset
 )paren
 (brace
-macro_line|#ifndef CONFIG_GEMINI
+multiline_comment|/* Get the IRQ from the cascade. */
 id|irq
 op_assign
 id|i8259_irq
@@ -3036,14 +3033,13 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/* get IRQ from cascade */
-macro_line|#endif
 id|openpic_eoi
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren

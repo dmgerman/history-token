@@ -224,8 +224,6 @@ c_func
 (paren
 op_amp
 id|hw
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|ide_init_hwif_ports
@@ -255,8 +253,6 @@ c_func
 (paren
 op_amp
 id|hw
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -320,8 +316,6 @@ c_func
 (paren
 op_amp
 id|hw
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -386,8 +380,6 @@ c_func
 (paren
 op_amp
 id|hw
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

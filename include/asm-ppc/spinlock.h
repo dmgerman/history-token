@@ -137,7 +137,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|_raw_spin_trylock
-mdefine_line|#define _raw_spin_trylock(lock) (!test_and_set_bit(0,(lock)))
+mdefine_line|#define _raw_spin_trylock(l) (!test_and_set_bit(0,&amp;(l)-&gt;lock))
 macro_line|#else
 r_extern
 r_void

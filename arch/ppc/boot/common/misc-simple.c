@@ -160,7 +160,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|setup_legacy
+id|serial_fixups
 c_func
 (paren
 r_void
@@ -204,7 +204,7 @@ comma
 op_star
 id|birecs
 suffix:semicolon
-id|setup_legacy
+id|serial_fixups
 c_func
 (paren
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simulated Serial Driver (fake serial)&n; *&n; * This driver is mostly used for bringup purposes and will go away.&n; * It has a strong dependency on the system console. All outputs&n; * are rerouted to the same facility as the one used by printk which, in our&n; * case means sys_sim.c console (goes via the simulator). The code hereafter&n; * is completely leveraged from the serial.c driver.&n; *&n; * Copyright (C) 1999-2000 Hewlett-Packard Co&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/04/00 D. Mosberger&t;Merged in serial.c bug fixes in rs_close().&n; * 02/25/00 D. Mosberger&t;Synced up with 2.3.99pre-5 version of serial.c.&n; */
+multiline_comment|/*&n; * Simulated Serial Driver (fake serial)&n; *&n; * This driver is mostly used for bringup purposes and will go away.&n; * It has a strong dependency on the system console. All outputs&n; * are rerouted to the same facility as the one used by printk which, in our&n; * case means sys_sim.c console (goes via the simulator). The code hereafter&n; * is completely leveraged from the serial.c driver.&n; *&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/04/00 D. Mosberger&t;Merged in serial.c bug fixes in rs_close().&n; * 02/25/00 D. Mosberger&t;Synced up with 2.3.99pre-5 version of serial.c.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;

@@ -251,7 +251,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Each physical page in the system has a struct page associated with&n; * it to keep track of whatever it is we are using the page for at the&n; * moment. Note that we have no way to track which tasks are using&n; * a page.&n; *&n; * Try to keep the most commonly accessed fields in single cache lines&n; * here (16 bytes or greater).  This ordering should be particularly&n; * beneficial on 32-bit processors.&n; *&n; * The first line is data used in page cache lookup, the second line&n; * is used for linear searches (eg. clock algorithm scans). &n; *&n; * TODO: make this structure smaller, it could be as small as 32 bytes.&n; */
 DECL|struct|page
-r_typedef
 r_struct
 id|page
 (brace
@@ -306,9 +305,7 @@ r_virtual
 suffix:semicolon
 multiline_comment|/* Kernel virtual address (NULL if&n;&t;&t;&t;&t;&t;   not kmapped, ie. highmem) */
 macro_line|#endif /* CONFIG_HIGMEM || WANT_PAGE_VIRTUAL */
-DECL|typedef|mem_map_t
 )brace
-id|mem_map_t
 suffix:semicolon
 multiline_comment|/*&n; * Methods to modify the page usage count.&n; *&n; * What counts for a page usage:&n; * - cache mapping   (page-&gt;mapping)&n; * - private data    (page-&gt;private)&n; * - page mapped in a task&squot;s page tables, each mapping&n; *   is counted separately&n; *&n; * Also, many kernel routines increase the page count before a critical&n; * routine so they can be sure the page doesn&squot;t go away from under them.&n; */
 DECL|macro|get_page
@@ -420,7 +417,8 @@ DECL|macro|NOPAGE_OOM
 mdefine_line|#define NOPAGE_OOM&t;((struct page *) (-1))
 multiline_comment|/* The array of struct pages */
 r_extern
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|mem_map
 suffix:semicolon
@@ -1522,7 +1520,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* mm/page-writeback.c */
 r_int
-id|generic_writeback_mapping
+id|generic_writepages
 c_func
 (paren
 r_struct

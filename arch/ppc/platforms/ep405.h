@@ -44,6 +44,12 @@ r_int
 id|bi_pci_busfreq
 suffix:semicolon
 multiline_comment|/* PCI Bus speed, in Hz */
+DECL|member|bi_nvramsize
+r_int
+r_int
+id|bi_nvramsize
+suffix:semicolon
+multiline_comment|/* Size of the NVRAM/RTC */
 DECL|typedef|bd_t
 )brace
 id|bd_t
@@ -52,12 +58,12 @@ multiline_comment|/* Some 4xx parts use a different timebase frequency from the 
 DECL|macro|bi_tbfreq
 mdefine_line|#define bi_tbfreq bi_intfreq
 r_extern
-r_void
+id|u8
 op_star
 id|ep405_bcsr
 suffix:semicolon
 r_extern
-r_void
+id|u8
 op_star
 id|ep405_nvram
 suffix:semicolon
@@ -68,34 +74,6 @@ DECL|macro|EP405_BCSR_SIZE
 mdefine_line|#define EP405_BCSR_SIZE&t;&t;((uint)16)
 DECL|macro|EP405_NVRAM_PADDR
 mdefine_line|#define EP405_NVRAM_PADDR&t;((uint)0xf4200000)
-multiline_comment|/* FIXME: what if the board has something other than 512k NVRAM */
-DECL|macro|EP405_NVRAM_SIZE
-mdefine_line|#define EP405_NVRAM_SIZE&t;((uint)512*1024)
-multiline_comment|/* Early initialization address mapping for block_io.&n; * Standard 405GP map.&n; */
-DECL|macro|PPC4xx_PCI_IO_PADDR
-mdefine_line|#define PPC4xx_PCI_IO_PADDR&t;((uint)PPC405_PCI_PHY_IO_BASE)
-DECL|macro|PPC4xx_PCI_IO_VADDR
-mdefine_line|#define PPC4xx_PCI_IO_VADDR&t;PPC4xx_PCI_IO_PADDR
-DECL|macro|PPC4xx_PCI_IO_SIZE
-mdefine_line|#define PPC4xx_PCI_IO_SIZE&t;((uint)64*1024)
-DECL|macro|PPC4xx_PCI_CFG_PADDR
-mdefine_line|#define PPC4xx_PCI_CFG_PADDR&t;((uint)PPC405_PCI_CONFIG_ADDR)
-DECL|macro|PPC4xx_PCI_CFG_VADDR
-mdefine_line|#define PPC4xx_PCI_CFG_VADDR&t;PPC4xx_PCI_CFG_PADDR
-DECL|macro|PPC4xx_PCI_CFG_SIZE
-mdefine_line|#define PPC4xx_PCI_CFG_SIZE&t;((uint)4*1024)
-DECL|macro|PPC4xx_PCI_LCFG_PADDR
-mdefine_line|#define PPC4xx_PCI_LCFG_PADDR&t;((uint)0xef400000)
-DECL|macro|PPC4xx_PCI_LCFG_VADDR
-mdefine_line|#define PPC4xx_PCI_LCFG_VADDR&t;PPC4xx_PCI_LCFG_PADDR
-DECL|macro|PPC4xx_PCI_LCFG_SIZE
-mdefine_line|#define PPC4xx_PCI_LCFG_SIZE&t;((uint)4*1024)
-DECL|macro|PPC4xx_ONB_IO_PADDR
-mdefine_line|#define PPC4xx_ONB_IO_PADDR&t;((uint)0xef600000)
-DECL|macro|PPC4xx_ONB_IO_VADDR
-mdefine_line|#define PPC4xx_ONB_IO_VADDR&t;PPC4xx_ONB_IO_PADDR
-DECL|macro|PPC4xx_ONB_IO_SIZE
-mdefine_line|#define PPC4xx_ONB_IO_SIZE&t;((uint)4*1024)
 multiline_comment|/* serial defines */
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;&t;399193

@@ -1253,7 +1253,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|page
 op_assign
@@ -1263,7 +1264,8 @@ c_func
 id|res
 )paren
 suffix:semicolon
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|last_page
 op_assign
@@ -1411,7 +1413,8 @@ id|size
 r_int
 id|pg
 suffix:semicolon
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|page
 comma
@@ -1600,7 +1603,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|page
 op_assign
@@ -1610,7 +1614,8 @@ c_func
 id|dma_area
 )paren
 suffix:semicolon
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|last_page
 op_assign
@@ -1875,7 +1880,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|page
 op_assign
@@ -1885,7 +1891,8 @@ c_func
 id|res
 )paren
 suffix:semicolon
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|last_page
 op_assign
@@ -2037,7 +2044,8 @@ id|dma_addr
 r_int
 id|pg
 suffix:semicolon
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|page
 comma

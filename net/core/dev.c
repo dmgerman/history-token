@@ -2683,6 +2683,12 @@ op_ne
 id|cpu
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * The spin_lock effectivly does a preempt lock, but &n;&t;&t;&t; * we are about to drop that...&n;&t;&t;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -2700,6 +2706,11 @@ suffix:semicolon
 id|dev-&gt;xmit_lock_owner
 op_assign
 id|cpu
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

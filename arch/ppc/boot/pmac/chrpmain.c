@@ -180,6 +180,22 @@ DECL|macro|PROG_SIZE
 mdefine_line|#define PROG_SIZE&t;0x003f0000
 DECL|macro|SCRATCH_SIZE
 mdefine_line|#define SCRATCH_SIZE&t;(128 &lt;&lt; 10)
+DECL|typedef|kernel_start_t
+r_typedef
+r_void
+(paren
+op_star
+id|kernel_start_t
+)paren
+(paren
+r_int
+comma
+r_int
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
 DECL|function|boot
 r_void
 id|boot
@@ -552,12 +568,7 @@ suffix:semicolon
 (paren
 op_star
 (paren
-r_void
-(paren
-op_star
-)paren
-(paren
-)paren
+id|kernel_start_t
 )paren
 id|sa
 )paren

@@ -627,8 +627,7 @@ DECL|macro|HDIO_GETGEO_BIG_RAW
 mdefine_line|#define HDIO_GETGEO_BIG_RAW&t;0x0331&t;/* */
 DECL|macro|__NEW_HD_DRIVE_ID
 mdefine_line|#define __NEW_HD_DRIVE_ID
-multiline_comment|/* structure returned by HDIO_GET_IDENTITY,&n; * as per ANSI NCITS ATA6 rev.1b spec&n; */
-multiline_comment|/* if you change something here remember to update ide_fix_driveid() */
+multiline_comment|/*&n; * Structure returned by HDIO_GET_IDENTITY, as per ANSI NCITS ATA6 rev.1b spec.&n; *&n; * If you change something here, please remember to update fix_driveid() in&n; * ide/probe.c.&n; */
 DECL|struct|hd_driveid
 r_struct
 id|hd_driveid

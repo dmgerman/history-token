@@ -455,22 +455,16 @@ macro_line|#if (MAJOR_NR != SCSI_TAPE_MAJOR) &amp;&amp; (MAJOR_NR != OSST_MAJOR)
 macro_line|#if !defined(IDE_DRIVER)
 macro_line|#ifndef CURRENT
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;blk_dev[MAJOR_NR].request_queue)
+macro_line|# define CURRENT elv_next_request(&amp;blk_dev[MAJOR_NR].request_queue)
 macro_line|#endif
 macro_line|#ifndef QUEUE
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;blk_dev[MAJOR_NR].request_queue)
-macro_line|#endif
-macro_line|#ifndef QUEUE_EMPTY
-DECL|macro|QUEUE_EMPTY
-mdefine_line|#define QUEUE_EMPTY blk_queue_empty(QUEUE)
+macro_line|# define QUEUE (&amp;blk_dev[MAJOR_NR].request_queue)
 macro_line|#endif
 macro_line|#ifndef DEVICE_NAME
 DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;unknown&quot;
+macro_line|# define DEVICE_NAME &quot;unknown&quot;
 macro_line|#endif
-DECL|macro|CURRENT_DEV
-mdefine_line|#define CURRENT_DEV DEVICE_NR(CURRENT-&gt;rq_dev)
 macro_line|#ifdef DEVICE_INTR
 DECL|variable|DEVICE_INTR
 r_static

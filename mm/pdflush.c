@@ -157,8 +157,6 @@ suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_FLUSHER
-op_or
-id|PF_KERNTHREAD
 suffix:semicolon
 id|my_work-&gt;fn
 op_assign
@@ -218,14 +216,6 @@ op_amp
 id|pdflush_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_bdflush
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -239,7 +229,6 @@ c_func
 id|PF_IOTHREAD
 )paren
 suffix:semicolon
-macro_line|#endif
 id|schedule
 c_func
 (paren

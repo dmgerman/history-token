@@ -1868,13 +1868,6 @@ c_func
 id|read_dev_sector
 )paren
 suffix:semicolon
-DECL|variable|tq_disk
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tq_disk
-)paren
-suffix:semicolon
 DECL|variable|init_buffer
 id|EXPORT_SYMBOL
 c_func

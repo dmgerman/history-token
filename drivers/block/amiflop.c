@@ -506,12 +506,6 @@ comma
 id|NODEV
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Current device number. Taken either from the block header or from the&n; * format request descriptor.&n; */
-DECL|macro|CURRENT_DEVICE
-mdefine_line|#define CURRENT_DEVICE (CURRENT-&gt;rq_dev)
-multiline_comment|/* Current error count. */
-DECL|macro|CURRENT_ERRORS
-mdefine_line|#define CURRENT_ERRORS (CURRENT-&gt;errors)
 multiline_comment|/*&n; * Here come the actual hardware access and helper functions.&n; * They are not reentrant and single threaded because all drives&n; * share the same hardware and the same trackbuffer.&n; */
 multiline_comment|/* Milliseconds timer */
 DECL|function|ms_isr
@@ -7379,26 +7373,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|QUEUE_EMPTY
-op_logical_and
-id|CURRENT-&gt;rq_status
-op_eq
-id|RQ_INACTIVE
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 id|repeat
 suffix:colon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 (brace
 multiline_comment|/* Nothing left to do */
@@ -7428,7 +7412,7 @@ op_assign
 id|minor
 c_func
 (paren
-id|CURRENT_DEVICE
+id|CURRENT-&gt;rq_dev
 )paren
 suffix:semicolon
 r_if

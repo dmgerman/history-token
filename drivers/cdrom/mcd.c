@@ -46,8 +46,41 @@ DECL|macro|QUICK_LOOP_DELAY
 mdefine_line|#define QUICK_LOOP_DELAY udelay(45)&t;/* use udelay */
 DECL|macro|QUICK_LOOP_COUNT
 mdefine_line|#define QUICK_LOOP_COUNT 20
-DECL|macro|CURRENT_VALID
-mdefine_line|#define CURRENT_VALID &bslash;&n;(!QUEUE_EMPTY &amp;&amp; major(CURRENT -&gt; rq_dev) == MAJOR_NR &amp;&amp; CURRENT -&gt; cmd == READ &bslash;&n;&amp;&amp; CURRENT -&gt; sector != -1)
+DECL|function|current_valid
+r_static
+r_int
+id|current_valid
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+op_logical_neg
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
+op_logical_and
+id|major
+c_func
+(paren
+id|CURRENT-&gt;rq_dev
+)paren
+op_eq
+id|MAJOR_NR
+op_logical_and
+id|CURRENT-&gt;cmd
+op_eq
+id|READ
+op_logical_and
+id|CURRENT-&gt;sector
+op_ne
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 DECL|macro|MFL_STATUSorDATA
 mdefine_line|#define MFL_STATUSorDATA (MFL_STATUS | MFL_DATA)
 DECL|macro|MCD_BUF_SIZ
@@ -1930,9 +1963,14 @@ r_void
 r_if
 c_cond
 (paren
-id|CURRENT_VALID
+op_logical_neg
+id|current_valid
+c_func
+(paren
 )paren
-(brace
+)paren
+r_return
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2091,7 +2129,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-)brace
 multiline_comment|/*&n; * We only seem to get interrupts after an error.&n; * Just take the interrupt and clear out the status reg.&n; */
 DECL|function|mcd_interrupt
 r_static
@@ -2235,7 +2272,10 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 (brace
 id|mcd_transfer
@@ -2295,7 +2335,10 @@ l_int|0
 r_while
 c_loop
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 id|end_request
 c_func
@@ -2534,7 +2577,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 id|end_request
 c_func
@@ -2793,7 +2839,10 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 id|end_request
 c_func
@@ -2964,7 +3013,10 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 id|end_request
 c_func
@@ -2979,7 +3031,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 (brace
 r_struct
@@ -3149,7 +3204,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 id|end_request
 c_func
@@ -3188,7 +3246,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 op_logical_and
 id|mcd_buf_in
 op_eq
@@ -3274,7 +3335,10 @@ id|mcd_transfer_is_active
 r_while
 c_loop
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 (brace
 id|mcd_transfer
@@ -3303,7 +3367,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 op_logical_and
 (paren
 id|CURRENT-&gt;sector
@@ -3742,7 +3809,10 @@ c_func
 (paren
 l_string|&quot;CURRENT_VALID %d mcd_mode %d&bslash;n&quot;
 comma
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 comma
 id|mcd_mode
 )paren
@@ -3751,7 +3821,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT_VALID
+id|current_valid
+c_func
+(paren
+)paren
 )paren
 (brace
 r_if

@@ -2,11 +2,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;&t;&t;/* for hotplug_path */
 r_extern
-r_struct
-id|list_head
-id|pci_drivers
-suffix:semicolon
-r_extern
 r_int
 id|pci_announce_device
 c_func
@@ -282,12 +277,12 @@ c_loop
 (paren
 id|ln
 op_assign
-id|pci_drivers.next
+id|pci_bus_type.drivers.next
 suffix:semicolon
 id|ln
 op_ne
 op_amp
-id|pci_drivers
+id|pci_bus_type.drivers
 suffix:semicolon
 id|ln
 op_assign

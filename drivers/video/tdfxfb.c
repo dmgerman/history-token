@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * tdfxfb.c&n; *&n; * Author: Hannu Mallat &lt;hmallat@cc.hut.fi&gt;&n; *&n; * Copyright &#xfffd; 1999 Hannu Mallat&n; * All rights reserved&n; *&n; * Created      : Thu Sep 23 18:17:43 1999, hmallat&n; * Last modified: Tue Nov  2 21:19:47 1999, hmallat&n; *&n; * Lots of the information here comes from the Daryll Strauss&squot; Banshee &n; * patches to the XF86 server, and the rest comes from the 3dfx&n; * Banshee specification. I&squot;m very much indebted to Daryll for his&n; * work on the X server.&n; *&n; * Voodoo3 support was contributed Harold Oga. Lots of additions&n; * (proper acceleration, 24 bpp, hardware cursor) and bug fixes by Attila&n; * Kesmarki. Thanks guys!&n; * &n; * Voodoo1 and Voodoo2 support aren&squot;t relevant to this driver as they&n; * behave very differently from the Voodoo3/4/5. For anyone wanting to&n; * use frame buffer on the Voodoo1/2, see the sstfb driver (which is&n; * located at http://www.sourceforge.net/projects/sstfb).&n; *&n; * While I _am_ grateful to 3Dfx for releasing the specs for Banshee,&n; * I do wish the next version is a bit more complete. Without the XF86&n; * patches I couldn&squot;t have gotten even this far... for instance, the&n; * extensions to the VGA register set go completely unmentioned in the&n; * spec! Also, lots of references are made to the &squot;SST core&squot;, but no&n; * spec is publicly available, AFAIK.&n; *&n; * The structure of this driver comes pretty much from the Permedia&n; * driver by Ilario Nardinocchi, which in turn is based on skeletonfb.&n; * &n; * TODO:&n; * - support for 16/32 bpp needs fixing (funky bootup penguin)&n; * - multihead support (basically need to support an array of fb_infos)&n; * - support other architectures (PPC, Alpha); does the fact that the VGA&n; *   core can be accessed only thru I/O (not memory mapped) complicate&n; *   things?&n; *&n; * Version history:&n; *&n; * 0.1.3 (released 1999-11-02) added Attila&squot;s panning support, code&n; *&t;&t;&t;       reorg, hwcursor address page size alignment&n; *                             (for mmaping both frame buffer and regs),&n; *                             and my changes to get rid of hardcoded&n; *                             VGA i/o register locations (uses PCI&n; *                             configuration info now)&n; * 0.1.2 (released 1999-10-19) added Attila Kesmarki&squot;s bug fixes and&n; *                             improvements&n; * 0.1.1 (released 1999-10-07) added Voodoo3 support by Harold Oga.&n; * 0.1.0 (released 1999-10-06) initial version&n; *&n; */
+multiline_comment|/*&n; *&n; * tdfxfb.c&n; *&n; * Author: Hannu Mallat &lt;hmallat@cc.hut.fi&gt;&n; *&n; * Copyright &#xfffd; 1999 Hannu Mallat&n; * All rights reserved&n; *&n; * Created      : Thu Sep 23 18:17:43 1999, hmallat&n; * Last modified: Tue Nov  2 21:19:47 1999, hmallat&n; *&n; * Lots of the information here comes from the Daryll Strauss&squot; Banshee &n; * patches to the XF86 server, and the rest comes from the 3dfx&n; * Banshee specification. I&squot;m very much indebted to Daryll for his&n; * work on the X server.&n; *&n; * Voodoo3 support was contributed Harold Oga. Lots of additions&n; * (proper acceleration, 24 bpp, hardware cursor) and bug fixes by Attila&n; * Kesmarki. Thanks guys!&n; * &n; * Voodoo1 and Voodoo2 support aren&squot;t relevant to this driver as they&n; * behave very differently from the Voodoo3/4/5. For anyone wanting to&n; * use frame buffer on the Voodoo1/2, see the sstfb driver (which is&n; * located at http://www.sourceforge.net/projects/sstfb).&n; *&n; * While I _am_ grateful to 3Dfx for releasing the specs for Banshee,&n; * I do wish the next version is a bit more complete. Without the XF86&n; * patches I couldn&squot;t have gotten even this far... for instance, the&n; * extensions to the VGA register set go completely unmentioned in the&n; * spec! Also, lots of references are made to the &squot;SST core&squot;, but no&n; * spec is publicly available, AFAIK.&n; *&n; * The structure of this driver comes pretty much from the Permedia&n; * driver by Ilario Nardinocchi, which in turn is based on skeletonfb.&n; * &n; * TODO:&n; * - support for 16/32 bpp needs fixing (funky bootup penguin)&n; * - multihead support (basically need to support an array of fb_infos)&n; * - support other architectures (PPC, Alpha); does the fact that the VGA&n; *   core can be accessed only thru I/O (not memory mapped) complicate&n; *   things?&n; *&n; * Version history:&n; *&n; * 0.1.4 (released 2002-05-28) ported over to new fbdev api by James Simmons&n; *&n; * 0.1.3 (released 1999-11-02) added Attila&squot;s panning support, code&n; *&t;&t;&t;       reorg, hwcursor address page size alignment&n; *                             (for mmaping both frame buffer and regs),&n; *                             and my changes to get rid of hardcoded&n; *                             VGA i/o register locations (uses PCI&n; *                             configuration info now)&n; * 0.1.2 (released 1999-10-19) added Attila Kesmarki&squot;s bug fixes and&n; *                             improvements&n; * 0.1.1 (released 1999-10-07) added Voodoo3 support by Harold Oga.&n; * 0.1.0 (released 1999-10-06) initial version&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7,281 +7,27 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
-macro_line|#include &lt;linux/kd.h&gt;
-macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/selection.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
+macro_line|#include &lt;video/tdfx.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
-macro_line|#include &lt;video/fbcon-cfb24.h&gt;
-macro_line|#include &lt;video/fbcon-cfb32.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifndef PCI_DEVICE_ID_3DFX_VOODOO5
 DECL|macro|PCI_DEVICE_ID_3DFX_VOODOO5
 mdefine_line|#define PCI_DEVICE_ID_3DFX_VOODOO5&t;0x0009
-macro_line|#endif
-multiline_comment|/* membase0 register offsets */
-DECL|macro|STATUS
-mdefine_line|#define STATUS&t;&t;0x00
-DECL|macro|PCIINIT0
-mdefine_line|#define PCIINIT0&t;0x04
-DECL|macro|SIPMONITOR
-mdefine_line|#define SIPMONITOR&t;0x08
-DECL|macro|LFBMEMORYCONFIG
-mdefine_line|#define LFBMEMORYCONFIG&t;0x0c
-DECL|macro|MISCINIT0
-mdefine_line|#define MISCINIT0&t;0x10
-DECL|macro|MISCINIT1
-mdefine_line|#define MISCINIT1&t;0x14
-DECL|macro|DRAMINIT0
-mdefine_line|#define DRAMINIT0&t;0x18
-DECL|macro|DRAMINIT1
-mdefine_line|#define DRAMINIT1&t;0x1c
-DECL|macro|AGPINIT
-mdefine_line|#define AGPINIT&t;&t;0x20
-DECL|macro|TMUGBEINIT
-mdefine_line|#define TMUGBEINIT&t;0x24
-DECL|macro|VGAINIT0
-mdefine_line|#define VGAINIT0&t;0x28
-DECL|macro|VGAINIT1
-mdefine_line|#define VGAINIT1&t;0x2c
-DECL|macro|DRAMCOMMAND
-mdefine_line|#define DRAMCOMMAND&t;0x30
-DECL|macro|DRAMDATA
-mdefine_line|#define DRAMDATA&t;0x34
-multiline_comment|/* reserved             0x38 */
-multiline_comment|/* reserved             0x3c */
-DECL|macro|PLLCTRL0
-mdefine_line|#define PLLCTRL0&t;0x40
-DECL|macro|PLLCTRL1
-mdefine_line|#define PLLCTRL1&t;0x44
-DECL|macro|PLLCTRL2
-mdefine_line|#define PLLCTRL2&t;0x48
-DECL|macro|DACMODE
-mdefine_line|#define DACMODE&t;&t;0x4c
-DECL|macro|DACADDR
-mdefine_line|#define DACADDR&t;&t;0x50
-DECL|macro|DACDATA
-mdefine_line|#define DACDATA&t;&t;0x54
-DECL|macro|RGBMAXDELTA
-mdefine_line|#define RGBMAXDELTA&t;0x58
-DECL|macro|VIDPROCCFG
-mdefine_line|#define VIDPROCCFG&t;0x5c
-DECL|macro|HWCURPATADDR
-mdefine_line|#define HWCURPATADDR&t;0x60
-DECL|macro|HWCURLOC
-mdefine_line|#define HWCURLOC&t;0x64
-DECL|macro|HWCURC0
-mdefine_line|#define HWCURC0&t;&t;0x68
-DECL|macro|HWCURC1
-mdefine_line|#define HWCURC1&t;&t;0x6c
-DECL|macro|VIDINFORMAT
-mdefine_line|#define VIDINFORMAT&t;0x70
-DECL|macro|VIDINSTATUS
-mdefine_line|#define VIDINSTATUS&t;0x74
-DECL|macro|VIDSERPARPORT
-mdefine_line|#define VIDSERPARPORT&t;0x78
-DECL|macro|VIDINXDELTA
-mdefine_line|#define VIDINXDELTA&t;0x7c
-DECL|macro|VIDININITERR
-mdefine_line|#define VIDININITERR&t;0x80
-DECL|macro|VIDINYDELTA
-mdefine_line|#define VIDINYDELTA&t;0x84
-DECL|macro|VIDPIXBUFTHOLD
-mdefine_line|#define VIDPIXBUFTHOLD&t;0x88
-DECL|macro|VIDCHRMIN
-mdefine_line|#define VIDCHRMIN&t;0x8c
-DECL|macro|VIDCHRMAX
-mdefine_line|#define VIDCHRMAX&t;0x90
-DECL|macro|VIDCURLIN
-mdefine_line|#define VIDCURLIN&t;0x94
-DECL|macro|VIDSCREENSIZE
-mdefine_line|#define VIDSCREENSIZE&t;0x98
-DECL|macro|VIDOVRSTARTCRD
-mdefine_line|#define VIDOVRSTARTCRD&t;0x9c
-DECL|macro|VIDOVRENDCRD
-mdefine_line|#define VIDOVRENDCRD&t;0xa0
-DECL|macro|VIDOVRDUDX
-mdefine_line|#define VIDOVRDUDX&t;0xa4
-DECL|macro|VIDOVRDUDXOFF
-mdefine_line|#define VIDOVRDUDXOFF&t;0xa8
-DECL|macro|VIDOVRDVDY
-mdefine_line|#define VIDOVRDVDY&t;0xac
-multiline_comment|/*  ... */
-DECL|macro|VIDOVRDVDYOFF
-mdefine_line|#define VIDOVRDVDYOFF&t;0xe0
-DECL|macro|VIDDESKSTART
-mdefine_line|#define VIDDESKSTART&t;0xe4
-DECL|macro|VIDDESKSTRIDE
-mdefine_line|#define VIDDESKSTRIDE&t;0xe8
-DECL|macro|VIDINADDR0
-mdefine_line|#define VIDINADDR0&t;0xec
-DECL|macro|VIDINADDR1
-mdefine_line|#define VIDINADDR1&t;0xf0
-DECL|macro|VIDINADDR2
-mdefine_line|#define VIDINADDR2&t;0xf4
-DECL|macro|VIDINSTRIDE
-mdefine_line|#define VIDINSTRIDE&t;0xf8
-DECL|macro|VIDCUROVRSTART
-mdefine_line|#define VIDCUROVRSTART&t;0xfc
-DECL|macro|INTCTRL
-mdefine_line|#define INTCTRL&t;&t;(0x00100000 + 0x04)
-DECL|macro|CLIP0MIN
-mdefine_line|#define CLIP0MIN&t;(0x00100000 + 0x08)
-DECL|macro|CLIP0MAX
-mdefine_line|#define CLIP0MAX&t;(0x00100000 + 0x0c)
-DECL|macro|DSTBASE
-mdefine_line|#define DSTBASE&t;&t;(0x00100000 + 0x10)
-DECL|macro|DSTFORMAT
-mdefine_line|#define DSTFORMAT&t;(0x00100000 + 0x14)
-DECL|macro|SRCBASE
-mdefine_line|#define SRCBASE&t;&t;(0x00100000 + 0x34)
-DECL|macro|COMMANDEXTRA_2D
-mdefine_line|#define COMMANDEXTRA_2D&t;(0x00100000 + 0x38)
-DECL|macro|CLIP1MIN
-mdefine_line|#define CLIP1MIN&t;(0x00100000 + 0x4c)
-DECL|macro|CLIP1MAX
-mdefine_line|#define CLIP1MAX&t;(0x00100000 + 0x50)
-DECL|macro|SRCFORMAT
-mdefine_line|#define SRCFORMAT&t;(0x00100000 + 0x54)
-DECL|macro|SRCSIZE
-mdefine_line|#define SRCSIZE&t;&t;(0x00100000 + 0x58)
-DECL|macro|SRCXY
-mdefine_line|#define SRCXY&t;&t;(0x00100000 + 0x5c)
-DECL|macro|COLORBACK
-mdefine_line|#define COLORBACK&t;(0x00100000 + 0x60)
-DECL|macro|COLORFORE
-mdefine_line|#define COLORFORE&t;(0x00100000 + 0x64)
-DECL|macro|DSTSIZE
-mdefine_line|#define DSTSIZE&t;&t;(0x00100000 + 0x68)
-DECL|macro|DSTXY
-mdefine_line|#define DSTXY&t;&t;(0x00100000 + 0x6c)
-DECL|macro|COMMAND_2D
-mdefine_line|#define COMMAND_2D&t;(0x00100000 + 0x70)
-DECL|macro|LAUNCH_2D
-mdefine_line|#define LAUNCH_2D&t;(0x00100000 + 0x80)
-DECL|macro|COMMAND_3D
-mdefine_line|#define COMMAND_3D&t;(0x00200000 + 0x120)
-multiline_comment|/* register bitfields (not all, only as needed) */
-DECL|macro|BIT
-mdefine_line|#define BIT(x) (1UL &lt;&lt; (x))
-multiline_comment|/* COMMAND_2D reg. values */
-DECL|macro|TDFX_ROP_COPY
-mdefine_line|#define TDFX_ROP_COPY&t;     0xcc     
-singleline_comment|// src
-DECL|macro|TDFX_ROP_INVERT
-mdefine_line|#define TDFX_ROP_INVERT      0x55     
-singleline_comment|// NOT dst
-DECL|macro|TDFX_ROP_XOR
-mdefine_line|#define TDFX_ROP_XOR         0x66     
-singleline_comment|// src XOR dst
-DECL|macro|AUTOINC_DSTX
-mdefine_line|#define AUTOINC_DSTX                    BIT(10)
-DECL|macro|AUTOINC_DSTY
-mdefine_line|#define AUTOINC_DSTY                    BIT(11)
-DECL|macro|COMMAND_2D_FILLRECT
-mdefine_line|#define COMMAND_2D_FILLRECT&t;&t;0x05
-DECL|macro|COMMAND_2D_S2S_BITBLT
-mdefine_line|#define COMMAND_2D_S2S_BITBLT&t;&t;0x01      
-singleline_comment|// screen to screen
-DECL|macro|COMMAND_2D_H2S_BITBLT
-mdefine_line|#define COMMAND_2D_H2S_BITBLT           0x03       
-singleline_comment|// host to screen
-DECL|macro|COMMAND_3D_NOP
-mdefine_line|#define COMMAND_3D_NOP&t;&t;&t;0x00
-DECL|macro|STATUS_RETRACE
-mdefine_line|#define STATUS_RETRACE&t;&t;&t;BIT(6)
-DECL|macro|STATUS_BUSY
-mdefine_line|#define STATUS_BUSY&t;&t;&t;BIT(9)
-DECL|macro|MISCINIT1_CLUT_INV
-mdefine_line|#define MISCINIT1_CLUT_INV&t;&t;BIT(0)
-DECL|macro|MISCINIT1_2DBLOCK_DIS
-mdefine_line|#define MISCINIT1_2DBLOCK_DIS&t;&t;BIT(15)
-DECL|macro|DRAMINIT0_SGRAM_NUM
-mdefine_line|#define DRAMINIT0_SGRAM_NUM&t;&t;BIT(26)
-DECL|macro|DRAMINIT0_SGRAM_TYPE
-mdefine_line|#define DRAMINIT0_SGRAM_TYPE&t;&t;BIT(27)
-DECL|macro|DRAMINIT1_MEM_SDRAM
-mdefine_line|#define DRAMINIT1_MEM_SDRAM&t;&t;BIT(30)
-DECL|macro|VGAINIT0_VGA_DISABLE
-mdefine_line|#define VGAINIT0_VGA_DISABLE&t;&t;BIT(0)
-DECL|macro|VGAINIT0_EXT_TIMING
-mdefine_line|#define VGAINIT0_EXT_TIMING&t;&t;BIT(1)
-DECL|macro|VGAINIT0_8BIT_DAC
-mdefine_line|#define VGAINIT0_8BIT_DAC&t;&t;BIT(2)
-DECL|macro|VGAINIT0_EXT_ENABLE
-mdefine_line|#define VGAINIT0_EXT_ENABLE&t;&t;BIT(6)
-DECL|macro|VGAINIT0_WAKEUP_3C3
-mdefine_line|#define VGAINIT0_WAKEUP_3C3&t;&t;BIT(8)
-DECL|macro|VGAINIT0_LEGACY_DISABLE
-mdefine_line|#define VGAINIT0_LEGACY_DISABLE&t;&t;BIT(9)
-DECL|macro|VGAINIT0_ALT_READBACK
-mdefine_line|#define VGAINIT0_ALT_READBACK&t;&t;BIT(10)
-DECL|macro|VGAINIT0_FAST_BLINK
-mdefine_line|#define VGAINIT0_FAST_BLINK&t;&t;BIT(11)
-DECL|macro|VGAINIT0_EXTSHIFTOUT
-mdefine_line|#define VGAINIT0_EXTSHIFTOUT&t;&t;BIT(12)
-DECL|macro|VGAINIT0_DECODE_3C6
-mdefine_line|#define VGAINIT0_DECODE_3C6&t;&t;BIT(13)
-DECL|macro|VGAINIT0_SGRAM_HBLANK_DISABLE
-mdefine_line|#define VGAINIT0_SGRAM_HBLANK_DISABLE&t;BIT(22)
-DECL|macro|VGAINIT1_MASK
-mdefine_line|#define VGAINIT1_MASK&t;&t;&t;0x1fffff
-DECL|macro|VIDCFG_VIDPROC_ENABLE
-mdefine_line|#define VIDCFG_VIDPROC_ENABLE&t;&t;BIT(0)
-DECL|macro|VIDCFG_CURS_X11
-mdefine_line|#define VIDCFG_CURS_X11&t;&t;&t;BIT(1)
-DECL|macro|VIDCFG_HALF_MODE
-mdefine_line|#define VIDCFG_HALF_MODE&t;&t;BIT(4)
-DECL|macro|VIDCFG_DESK_ENABLE
-mdefine_line|#define VIDCFG_DESK_ENABLE&t;&t;BIT(7)
-DECL|macro|VIDCFG_CLUT_BYPASS
-mdefine_line|#define VIDCFG_CLUT_BYPASS&t;&t;BIT(10)
-DECL|macro|VIDCFG_2X
-mdefine_line|#define VIDCFG_2X&t;&t;&t;BIT(26)
-DECL|macro|VIDCFG_HWCURSOR_ENABLE
-mdefine_line|#define VIDCFG_HWCURSOR_ENABLE          BIT(27)
-DECL|macro|VIDCFG_PIXFMT_SHIFT
-mdefine_line|#define VIDCFG_PIXFMT_SHIFT&t;&t;18
-DECL|macro|DACMODE_2X
-mdefine_line|#define DACMODE_2X&t;&t;&t;BIT(0)
-multiline_comment|/* VGA rubbish, need to change this for multihead support */
-DECL|macro|MISC_W
-mdefine_line|#define MISC_W &t;0x3c2
-DECL|macro|MISC_R
-mdefine_line|#define MISC_R &t;0x3cc
-DECL|macro|SEQ_I
-mdefine_line|#define SEQ_I &t;0x3c4
-DECL|macro|SEQ_D
-mdefine_line|#define SEQ_D&t;0x3c5
-DECL|macro|CRT_I
-mdefine_line|#define CRT_I&t;0x3d4
-DECL|macro|CRT_D
-mdefine_line|#define CRT_D&t;0x3d5
-DECL|macro|ATT_IW
-mdefine_line|#define ATT_IW&t;0x3c0
-DECL|macro|IS1_R
-mdefine_line|#define IS1_R&t;0x3da
-DECL|macro|GRA_I
-mdefine_line|#define GRA_I&t;0x3ce
-DECL|macro|GRA_D
-mdefine_line|#define GRA_D&t;0x3cf
-macro_line|#ifndef FB_ACCEL_3DFX_BANSHEE 
-DECL|macro|FB_ACCEL_3DFX_BANSHEE
-mdefine_line|#define FB_ACCEL_3DFX_BANSHEE 31
 macro_line|#endif
 DECL|macro|TDFXF_HSYNC_ACT_HIGH
 mdefine_line|#define TDFXF_HSYNC_ACT_HIGH&t;0x01
@@ -306,178 +52,13 @@ mdefine_line|#define DPRINTK(a,b...) printk(KERN_DEBUG &quot;fb: %s: &quot; a, _
 macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
-macro_line|#endif 
-DECL|macro|PICOS2KHZ
-mdefine_line|#define PICOS2KHZ(a) (1000000000UL/(a))
-DECL|macro|KHZ2PICOS
-mdefine_line|#define KHZ2PICOS(a) (1000000000UL/(a))
+macro_line|#endif
 DECL|macro|BANSHEE_MAX_PIXCLOCK
 mdefine_line|#define BANSHEE_MAX_PIXCLOCK 270000.0
 DECL|macro|VOODOO3_MAX_PIXCLOCK
 mdefine_line|#define VOODOO3_MAX_PIXCLOCK 300000.0
 DECL|macro|VOODOO5_MAX_PIXCLOCK
 mdefine_line|#define VOODOO5_MAX_PIXCLOCK 350000.0
-DECL|struct|banshee_reg
-r_struct
-id|banshee_reg
-(brace
-multiline_comment|/* VGA rubbish */
-DECL|member|att
-r_int
-r_char
-id|att
-(braket
-l_int|21
-)braket
-suffix:semicolon
-DECL|member|crt
-r_int
-r_char
-id|crt
-(braket
-l_int|25
-)braket
-suffix:semicolon
-DECL|member|gra
-r_int
-r_char
-id|gra
-(braket
-l_int|9
-)braket
-suffix:semicolon
-DECL|member|misc
-r_int
-r_char
-id|misc
-(braket
-l_int|1
-)braket
-suffix:semicolon
-DECL|member|seq
-r_int
-r_char
-id|seq
-(braket
-l_int|5
-)braket
-suffix:semicolon
-multiline_comment|/* Banshee extensions */
-DECL|member|ext
-r_int
-r_char
-id|ext
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|vidcfg
-r_int
-r_int
-id|vidcfg
-suffix:semicolon
-DECL|member|vidpll
-r_int
-r_int
-id|vidpll
-suffix:semicolon
-DECL|member|mempll
-r_int
-r_int
-id|mempll
-suffix:semicolon
-DECL|member|gfxpll
-r_int
-r_int
-id|gfxpll
-suffix:semicolon
-DECL|member|dacmode
-r_int
-r_int
-id|dacmode
-suffix:semicolon
-DECL|member|vgainit0
-r_int
-r_int
-id|vgainit0
-suffix:semicolon
-DECL|member|vgainit1
-r_int
-r_int
-id|vgainit1
-suffix:semicolon
-DECL|member|screensize
-r_int
-r_int
-id|screensize
-suffix:semicolon
-DECL|member|stride
-r_int
-r_int
-id|stride
-suffix:semicolon
-DECL|member|cursloc
-r_int
-r_int
-id|cursloc
-suffix:semicolon
-DECL|member|curspataddr
-r_int
-r_int
-id|curspataddr
-suffix:semicolon
-DECL|member|cursc0
-r_int
-r_int
-id|cursc0
-suffix:semicolon
-DECL|member|cursc1
-r_int
-r_int
-id|cursc1
-suffix:semicolon
-DECL|member|startaddr
-r_int
-r_int
-id|startaddr
-suffix:semicolon
-DECL|member|clip0min
-r_int
-r_int
-id|clip0min
-suffix:semicolon
-DECL|member|clip0max
-r_int
-r_int
-id|clip0max
-suffix:semicolon
-DECL|member|clip1min
-r_int
-r_int
-id|clip1min
-suffix:semicolon
-DECL|member|clip1max
-r_int
-r_int
-id|clip1max
-suffix:semicolon
-DECL|member|srcbase
-r_int
-r_int
-id|srcbase
-suffix:semicolon
-DECL|member|dstbase
-r_int
-r_int
-id|dstbase
-suffix:semicolon
-DECL|member|miscinit0
-r_int
-r_int
-id|miscinit0
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|tdfxfb_par
 r_struct
 id|tdfxfb_par
@@ -618,13 +199,12 @@ r_int
 r_int
 id|iobase
 suffix:semicolon
+r_struct
+(brace
 DECL|member|red
 DECL|member|green
 DECL|member|blue
 DECL|member|pad
-DECL|member|palette
-r_struct
-(brace
 r_int
 id|red
 comma
@@ -634,6 +214,7 @@ id|blue
 comma
 id|pad
 suffix:semicolon
+DECL|member|palette
 )brace
 id|palette
 (braket
@@ -655,7 +236,7 @@ r_struct
 id|display
 id|disp
 suffix:semicolon
-macro_line|#if defined(FBCON_HAS_CFB16) || defined(FBCON_HAS_CFB24) || defined(FBCON_HAS_CFB32)  
+macro_line|#if defined(FBCON_HAS_CFB16) || defined(FBCON_HAS_CFB24) || defined(FBCON_HAS_CFB32)
 r_union
 (brace
 macro_line|#ifdef FBCON_HAS_CFB16
@@ -1680,7 +1261,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- &n; *                      Hardware-specific funcions&n; * ------------------------------------------------------------------------- */
-macro_line|#ifdef VGA_REG_IO 
+macro_line|#ifdef VGA_REG_IO
 DECL|function|vga_inb
 r_static
 r_inline
@@ -2437,9 +2018,7 @@ l_int|0x1f
 OL
 id|size
 )paren
-(brace
 suffix:semicolon
-)brace
 )brace
 DECL|function|banshee_wait_idle
 r_static
@@ -2502,10 +2081,8 @@ id|i
 op_eq
 l_int|3
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/*&n; * Set the color of a palette entry in 8bpp mode &n; */
@@ -3978,7 +3555,7 @@ id|fref
 op_assign
 l_int|14318
 suffix:semicolon
-multiline_comment|/* this really could be done with more intelligence --&n;     255*63*4 = 64260 iterations is silly */
+multiline_comment|/* this really could be done with more intelligence --&n;&t;   255*63*4 = 64260 iterations is silly */
 id|best_error
 op_assign
 id|freq
@@ -4278,7 +3855,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|seq_outb
 c_func
 (paren
@@ -4290,7 +3866,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -4305,7 +3880,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|crt_outb
 c_func
 (paren
@@ -4317,7 +3891,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -4332,7 +3905,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|gra_outb
 c_func
 (paren
@@ -4344,7 +3916,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -4359,7 +3930,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|att_outb
 c_func
 (paren
@@ -4371,7 +3941,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 id|crt_outb
 c_func
 (paren
@@ -7713,7 +7282,6 @@ id|var-&gt;xres_virtual
 )paren
 (brace
 id|DPRINTK
-c_func
 (paren
 l_string|&quot;virtual x resolution != physical x resolution not supported&bslash;n&quot;
 )paren
@@ -7732,7 +7300,6 @@ id|var-&gt;yres_virtual
 )paren
 (brace
 id|DPRINTK
-c_func
 (paren
 l_string|&quot;virtual y resolution &lt; physical y resolution not possible&bslash;n&quot;
 )paren
@@ -8007,12 +7574,10 @@ id|var-&gt;sync
 op_amp
 id|FB_SYNC_HOR_HIGH_ACT
 )paren
-(brace
 id|par-&gt;video
 op_or_assign
 id|TDFXF_HSYNC_ACT_HIGH
 suffix:semicolon
-)brace
 r_else
 id|par-&gt;video
 op_or_assign
@@ -8025,12 +7590,10 @@ id|var-&gt;sync
 op_amp
 id|FB_SYNC_VERT_HIGH_ACT
 )paren
-(brace
 id|par-&gt;video
 op_or_assign
 id|TDFXF_VSYNC_ACT_HIGH
 suffix:semicolon
-)brace
 r_else
 id|par-&gt;video
 op_or_assign
@@ -8047,12 +7610,10 @@ id|FB_VMODE_MASK
 op_eq
 id|FB_VMODE_DOUBLE
 )paren
-(brace
 id|par-&gt;video
 op_or_assign
 id|TDFXF_LINE_DOUBLE
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8060,12 +7621,10 @@ id|var-&gt;activate
 op_eq
 id|FB_ACTIVATE_NOW
 )paren
-(brace
 id|par-&gt;video
 op_or_assign
 id|TDFXF_VIDEO_ENABLE
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -8074,12 +7633,10 @@ id|var-&gt;accel_flags
 op_amp
 id|FB_ACCELF_TEXT
 )paren
-(brace
 id|par-&gt;accel_flags
 op_assign
 id|FB_ACCELF_TEXT
 suffix:semicolon
-)brace
 r_else
 id|par-&gt;accel_flags
 op_assign
@@ -8311,12 +7868,10 @@ id|TDFXF_HSYNC_MASK
 op_eq
 id|TDFXF_HSYNC_ACT_HIGH
 )paren
-(brace
 id|v.sync
 op_or_assign
 id|FB_SYNC_HOR_HIGH_ACT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8328,12 +7883,10 @@ id|TDFXF_VSYNC_MASK
 op_eq
 id|TDFXF_VSYNC_ACT_HIGH
 )paren
-(brace
 id|v.sync
 op_or_assign
 id|FB_SYNC_VERT_HIGH_ACT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8341,12 +7894,10 @@ id|par-&gt;video
 op_amp
 id|TDFXF_LINE_DOUBLE
 )paren
-(brace
 id|v.vmode
 op_assign
 id|FB_VMODE_DOUBLE
 suffix:semicolon
-)brace
 op_star
 id|var
 op_assign
@@ -8562,12 +8113,10 @@ op_eq
 op_minus
 l_int|1
 )paren
-(brace
 id|par
 op_assign
 id|info-&gt;default_par
 suffix:semicolon
-)brace
 r_else
 id|tdfxfb_decode_var
 c_func
@@ -8642,7 +8191,6 @@ op_eq
 op_minus
 l_int|1
 )paren
-(brace
 id|tdfxfb_encode_var
 c_func
 (paren
@@ -8654,7 +8202,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-)brace
 r_else
 op_star
 id|var
@@ -8920,7 +8467,6 @@ id|con
 op_ge
 l_int|0
 )paren
-(brace
 id|display
 op_assign
 op_amp
@@ -8929,7 +8475,6 @@ id|fb_display
 id|con
 )braket
 suffix:semicolon
-)brace
 r_else
 id|display
 op_assign
@@ -8954,11 +8499,9 @@ id|info
 )paren
 )paren
 )paren
-(brace
 r_return
 id|err
 suffix:semicolon
-)brace
 id|tdfxfb_encode_var
 c_func
 (paren
@@ -9118,12 +8661,10 @@ c_cond
 (paren
 id|nopan
 )paren
-(brace
 id|display-&gt;scrollmode
 op_assign
 id|SCROLL_YREDRAW
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9231,7 +8772,6 @@ id|con
 OL
 l_int|0
 )paren
-(brace
 id|tdfxfb_set_par
 c_func
 (paren
@@ -9241,7 +8781,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9295,11 +8834,9 @@ l_int|0
 )paren
 )paren
 )paren
-(brace
 r_return
 id|err
 suffix:semicolon
-)brace
 id|do_install_cmap
 c_func
 (paren
@@ -9354,23 +8891,19 @@ c_cond
 (paren
 id|nopan
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|var-&gt;xoffset
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9378,12 +8911,10 @@ id|var-&gt;yoffset
 OG
 id|var-&gt;yres_virtual
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9397,12 +8928,10 @@ OG
 id|var-&gt;yres_virtual
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9663,11 +9192,9 @@ l_int|0
 )paren
 )paren
 )paren
-(brace
 r_return
 id|err
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -9845,6 +9372,7 @@ suffix:semicolon
 id|fb_info.bufbase_phys
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -9925,6 +9453,7 @@ suffix:semicolon
 id|fb_info.iobase
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -10215,7 +9744,6 @@ r_if
 c_cond
 (paren
 id|tdfxfb_decode_var
-c_func
 (paren
 op_amp
 id|var
@@ -10489,10 +10017,8 @@ op_logical_neg
 op_star
 id|options
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -10519,10 +10045,8 @@ op_logical_neg
 op_star
 id|this_opt
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -10747,7 +10271,6 @@ id|fb-&gt;currcon
 dot
 id|cmap.len
 )paren
-(brace
 id|fb_get_cmap
 c_func
 (paren
@@ -10766,7 +10289,6 @@ comma
 id|fb
 )paren
 suffix:semicolon
-)brace
 id|fb-&gt;currcon
 op_assign
 id|con
@@ -11158,13 +10680,11 @@ c_cond
 (paren
 id|vgablank
 )paren
-(brace
 id|vga_disable_video
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_else
 id|vga_enable_video
 c_func
@@ -11365,7 +10885,7 @@ op_star
 )paren
 id|info
 suffix:semicolon
-macro_line|#ifdef FBCON_HAS_CFB8   
+macro_line|#ifdef FBCON_HAS_CFB8
 id|u32
 id|rgbcol
 suffix:semicolon

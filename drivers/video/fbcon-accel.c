@@ -876,7 +876,7 @@ c_func
 (paren
 l_int|1
 comma
-l_int|32
+l_int|16
 )paren
 )brace
 suffix:semicolon

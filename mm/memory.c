@@ -94,7 +94,8 @@ id|address
 suffix:semicolon
 )brace
 DECL|variable|mem_map
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|mem_map
 suffix:semicolon

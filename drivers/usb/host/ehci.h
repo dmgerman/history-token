@@ -620,6 +620,12 @@ r_int
 id|usecs
 suffix:semicolon
 multiline_comment|/* intr bandwidth */
+DECL|member|c_usecs
+r_int
+r_int
+id|c_usecs
+suffix:semicolon
+multiline_comment|/* ... split completion bw */
 DECL|member|qh_state
 r_int
 id|qh_state
@@ -630,12 +636,6 @@ DECL|macro|QH_STATE_UNLINK
 mdefine_line|#define&t;QH_STATE_UNLINK&t;&t;2&t;&t;/* HC may still see this */
 DECL|macro|QH_STATE_IDLE
 mdefine_line|#define&t;QH_STATE_IDLE&t;&t;3&t;&t;/* HC doesn&squot;t see this */
-macro_line|#ifdef EHCI_SOFT_RETRIES
-DECL|member|retries
-r_int
-id|retries
-suffix:semicolon
-macro_line|#endif
 )brace
 id|__attribute__
 (paren
@@ -826,6 +826,18 @@ id|dma_addr_t
 id|buf_dma
 suffix:semicolon
 multiline_comment|/* buffer address */
+DECL|member|usecs
+r_int
+r_int
+id|usecs
+suffix:semicolon
+multiline_comment|/* start bandwidth */
+DECL|member|c_usecs
+r_int
+r_int
+id|c_usecs
+suffix:semicolon
+multiline_comment|/* completion bandwidth */
 )brace
 id|__attribute__
 (paren

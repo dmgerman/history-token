@@ -42,10 +42,10 @@ DECL|enumerator|BH_Async_Write
 id|BH_Async_Write
 comma
 multiline_comment|/* Is under end_buffer_async_write I/O */
-DECL|enumerator|BH_JBD
-id|BH_JBD
+DECL|enumerator|BH_Boundary
+id|BH_Boundary
 comma
-multiline_comment|/* Has an attached ext3 journal_head */
+multiline_comment|/* Block is followed by a discontiguity */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -231,6 +231,13 @@ c_func
 id|Async_Write
 comma
 id|async_write
+)paren
+id|BUFFER_FNS
+c_func
+(paren
+id|Boundary
+comma
+id|boundary
 )paren
 multiline_comment|/*&n; * FIXME: this is used only by bh_kmap, which is used only by RAID5.&n; * Move all that stuff into raid5.c&n; */
 DECL|macro|bh_offset
@@ -420,6 +427,19 @@ r_struct
 id|address_space
 op_star
 id|mapping
+)paren
+suffix:semicolon
+r_void
+id|unmap_underlying_metadata
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+comma
+id|sector_t
+id|block
 )paren
 suffix:semicolon
 r_void

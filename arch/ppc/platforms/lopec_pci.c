@@ -1,15 +1,8 @@
-multiline_comment|/*&n; * arch/ppc/platforms/lopec_pci.c&n; * &n; * PCI setup routines for the Motorola LoPEC.&n; *&n; * Author: Dan Cox&n; *         danc@mvista.com (or, alternately, source@mvista.com)&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
+multiline_comment|/*&n; * arch/ppc/platforms/lopec_pci.c&n; * &n; * PCI setup routines for the Motorola LoPEC.&n; *&n; * Author: Dan Cox&n; *         danc@mvista.com (or, alternately, source@mvista.com)&n; *&n; * Copyright 2001-2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/mpc10x.h&gt;
 r_static
 r_inline

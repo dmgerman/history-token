@@ -15,14 +15,6 @@ macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
-DECL|variable|revision
-r_static
-r_char
-op_star
-id|revision
-op_assign
-l_string|&quot;$Revision: 1.1.4.1.2.1 $&quot;
-suffix:semicolon
 DECL|macro|CONFIG_T1PCI_DEBUG
 macro_line|#undef CONFIG_T1PCI_DEBUG
 DECL|macro|CONFIG_T1PCI_POLLDEBUG
@@ -80,17 +72,24 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
+r_static
+r_char
+op_star
+id|t1pci_procinfo
+c_func
+(paren
+r_struct
+id|capi_ctr
+op_star
+id|ctrl
+)paren
+suffix:semicolon
 DECL|function|t1pci_add_card
 r_static
 r_int
 id|t1pci_add_card
 c_func
 (paren
-r_struct
-id|capi_driver
-op_star
-id|driver
-comma
 r_struct
 id|capicardparams
 op_star
@@ -132,9 +131,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: no memory.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: no memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -151,7 +148,7 @@ op_assign
 id|avmcard_dma_alloc
 c_func
 (paren
-id|driver-&gt;name
+l_string|&quot;t1pci&quot;
 comma
 id|pdev
 comma
@@ -175,9 +172,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: no memory.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: no memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -238,9 +233,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: ports 0x%03x-0x%03x in use.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: ports 0x%03x-0x%03x in use.&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -279,9 +272,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: can&squot;t remap memory at 0x%lx&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: can&squot;t remap memory at 0x%lx&bslash;n&quot;
 comma
 id|card-&gt;membase
 )paren
@@ -328,9 +319,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: NO card at 0x%x (%d)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: NO card at 0x%x (%d)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -342,9 +331,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: card at 0x%x, but cabel not connected or T1 has no power (%d)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: card at 0x%x, but cable not connected or T1 has no power (%d)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -392,9 +379,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: unable to get IRQ %d.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: unable to get IRQ %d.&bslash;n&quot;
 comma
 id|card-&gt;irq
 )paren
@@ -408,32 +393,77 @@ r_goto
 id|err_unmap
 suffix:semicolon
 )brace
+id|cinfo-&gt;capi_ctrl.driver_name
+op_assign
+l_string|&quot;t1pci&quot;
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.driverdata
+op_assign
+id|cinfo
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.register_appl
+op_assign
+id|b1dma_register_appl
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.release_appl
+op_assign
+id|b1dma_release_appl
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.send_message
+op_assign
+id|b1dma_send_message
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.load_firmware
+op_assign
+id|b1dma_load_firmware
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.reset_ctr
+op_assign
+id|b1dma_reset_ctr
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.procinfo
+op_assign
+id|t1pci_procinfo
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.ctr_read_proc
+op_assign
+id|b1dmactl_read_proc
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|cinfo-&gt;capi_ctrl.name
+comma
+id|card-&gt;name
+)paren
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
 id|cinfo-&gt;capi_ctrl
+)paren
+suffix:semicolon
+id|retval
 op_assign
 id|attach_capi_ctr
 c_func
 (paren
-id|driver
-comma
-id|card-&gt;name
-comma
-id|cinfo
+op_amp
+id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cinfo-&gt;capi_ctrl
+id|retval
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: attach controller failed.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: attach controller failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -447,15 +477,13 @@ suffix:semicolon
 )brace
 id|card-&gt;cardnr
 op_assign
-id|cinfo-&gt;capi_ctrl-&gt;cnr
+id|cinfo-&gt;capi_ctrl.cnr
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: AVM T1 PCI at i/o %#x, irq %d, mem %#lx&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: AVM T1 PCI at i/o %#x, irq %d, mem %#lx&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -563,6 +591,7 @@ suffix:semicolon
 id|detach_capi_ctr
 c_func
 (paren
+op_amp
 id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
@@ -693,61 +722,6 @@ id|cinfo-&gt;infobuf
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|t1pci_driver
-r_static
-r_struct
-id|capi_driver
-id|t1pci_driver
-op_assign
-(brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
-id|name
-suffix:colon
-l_string|&quot;t1pci&quot;
-comma
-id|revision
-suffix:colon
-l_string|&quot;0.0&quot;
-comma
-id|load_firmware
-suffix:colon
-id|b1dma_load_firmware
-comma
-id|reset_ctr
-suffix:colon
-id|b1dma_reset_ctr
-comma
-id|register_appl
-suffix:colon
-id|b1dma_register_appl
-comma
-id|release_appl
-suffix:colon
-id|b1dma_release_appl
-comma
-id|send_message
-suffix:colon
-id|b1dma_send_message
-comma
-id|procinfo
-suffix:colon
-id|t1pci_procinfo
-comma
-id|ctr_read_proc
-suffix:colon
-id|b1dmactl_read_proc
-comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
-)brace
-suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|t1pci_probe
 r_static
 r_int
@@ -767,14 +741,6 @@ op_star
 id|ent
 )paren
 (brace
-r_struct
-id|capi_driver
-op_star
-id|driver
-op_assign
-op_amp
-id|t1pci_driver
-suffix:semicolon
 r_struct
 id|capicardparams
 id|param
@@ -798,9 +764,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: failed to enable AVM-T1-PCI&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: failed to enable AVM-T1-PCI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -842,9 +806,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: PCI BIOS reports AVM-T1-PCI at i/o %#x, irq %d, mem %#x&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: PCI BIOS reports AVM-T1-PCI at i/o %#x, irq %d, mem %#x&bslash;n&quot;
 comma
 id|param.port
 comma
@@ -858,8 +820,6 @@ op_assign
 id|t1pci_add_card
 c_func
 (paren
-id|driver
-comma
 op_amp
 id|param
 comma
@@ -878,9 +838,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: no AVM-T1-PCI at i/o %#x, irq %d detected, mem %#x&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;t1pci: no AVM-T1-PCI at i/o %#x, irq %d detected, mem %#x&bslash;n&quot;
 comma
 id|param.port
 comma
@@ -933,75 +891,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-id|b1_set_revision
-c_func
-(paren
-op_amp
-id|t1pci_driver
-comma
-id|revision
-)paren
-suffix:semicolon
-id|attach_capi_driver
-c_func
-(paren
-op_amp
-id|t1pci_driver
-)paren
-suffix:semicolon
-id|retval
-op_assign
-id|pci_register_driver
+r_return
+id|pci_module_init
 c_func
 (paren
 op_amp
 id|t1pci_pci_driver
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-OL
-l_int|0
-)paren
-r_goto
-id|err
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %d T1-PCI card(s) detected&bslash;n&quot;
-comma
-id|t1pci_driver.name
-comma
-id|retval
-)paren
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-id|err
-suffix:colon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|t1pci_driver
-)paren
-suffix:semicolon
-id|out
-suffix:colon
-r_return
-id|retval
 suffix:semicolon
 )brace
 DECL|function|t1pci_exit
@@ -1019,13 +915,6 @@ c_func
 (paren
 op_amp
 id|t1pci_pci_driver
-)paren
-suffix:semicolon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|t1pci_driver
 )paren
 suffix:semicolon
 )brace

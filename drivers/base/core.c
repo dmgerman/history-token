@@ -247,6 +247,12 @@ id|dev
 r_goto
 id|register_done
 suffix:semicolon
+id|bus_add_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* notify platform of device entry */
 r_if
 c_cond
@@ -343,13 +349,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* remove the driverfs directory */
-id|device_remove_dir
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* Notify the platform of the removal, in case they&n;&t; * need to do anything...&n;&t; */
 r_if
 c_cond
@@ -357,6 +356,12 @@ c_cond
 id|platform_notify_remove
 )paren
 id|platform_notify_remove
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|bus_remove_device
 c_func
 (paren
 id|dev
@@ -378,6 +383,26 @@ c_func
 id|dev
 comma
 id|REMOVE_FREE_RESOURCES
+)paren
+suffix:semicolon
+multiline_comment|/* remove the driverfs directory */
+id|device_remove_dir
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;release
+)paren
+id|dev
+op_member_access_from_pointer
+id|release
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 id|put_device

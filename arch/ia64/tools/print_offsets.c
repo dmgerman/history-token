@@ -148,6 +148,18 @@ id|thread.ksp
 )brace
 comma
 (brace
+l_string|&quot;IA64_TASK_PID_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|task_struct
+comma
+id|pid
+)paren
+)brace
+comma
+(brace
 l_string|&quot;IA64_PT_REGS_CR_IPSR_OFFSET&quot;
 comma
 m_offsetof
@@ -1452,6 +1464,7 @@ id|sc
 )paren
 )brace
 comma
+multiline_comment|/* for assembly files which can&squot;t include sched.h: */
 (brace
 l_string|&quot;IA64_CLONE_VFORK&quot;
 comma
@@ -1647,6 +1660,16 @@ id|value
 suffix:semicolon
 )brace
 )brace
+id|printf
+(paren
+l_string|&quot;&bslash;n#define CLONE_IDLETASK_BIT&t;%ld&bslash;n&quot;
+comma
+id|ia64_fls
+(paren
+id|CLONE_IDLETASK
+)paren
+)paren
+suffix:semicolon
 id|printf
 (paren
 l_string|&quot;&bslash;n#endif /* _ASM_IA64_OFFSETS_H */&bslash;n&quot;

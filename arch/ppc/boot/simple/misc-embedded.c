@@ -94,7 +94,7 @@ id|netroot_string
 (braket
 )braket
 op_assign
-l_string|&quot;root=/dev/nfs rw ip=auto&quot;
+l_string|&quot;root=/dev/nfs rw ip=on&quot;
 suffix:semicolon
 multiline_comment|/* Serial port to use. */
 DECL|variable|com_port

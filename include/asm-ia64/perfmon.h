@@ -31,6 +31,8 @@ DECL|macro|PFM_DEBUG
 mdefine_line|#define PFM_DEBUG&t;&t;0x0d
 DECL|macro|PFM_UNPROTECT_CONTEXT
 mdefine_line|#define PFM_UNPROTECT_CONTEXT&t;0x0e
+DECL|macro|PFM_GET_PMC_RESET_VAL
+mdefine_line|#define PFM_GET_PMC_RESET_VAL&t;0x0f
 multiline_comment|/*&n; * CPU model specific commands (may not be supported on all models)&n; */
 DECL|macro|PFM_WRITE_IBRS
 mdefine_line|#define PFM_WRITE_IBRS&t;&t;0x20
@@ -470,6 +472,10 @@ id|pfm_ovfl_block_reset
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|pfm_syst_wide
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_PERFMON_H */

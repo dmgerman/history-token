@@ -319,7 +319,7 @@ DECL|macro|MAX_NR_NODES
 mdefine_line|#define MAX_NR_NODES&t;&t;(255 / MAX_NR_ZONES)
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|MAP_ALIGN
-mdefine_line|#define MAP_ALIGN(x)&t;((((x) % sizeof(mem_map_t)) == 0) ? (x) : ((x) + &bslash;&n;&t;&t;sizeof(mem_map_t) - ((x) % sizeof(mem_map_t))))
+mdefine_line|#define MAP_ALIGN(x)&t;((((x) % sizeof(struct page)) == 0) ? (x) : ((x) + &bslash;&n;&t;&t;sizeof(struct page) - ((x) % sizeof(struct page))))
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MMZONE_H */

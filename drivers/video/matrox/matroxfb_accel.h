@@ -37,17 +37,6 @@ id|p
 )paren
 suffix:semicolon
 r_void
-id|matrox_text_createcursor
-c_func
-(paren
-id|WPMINFO
-r_struct
-id|display
-op_star
-id|p
-)paren
-suffix:semicolon
-r_void
 id|matrox_text_round
 c_func
 (paren

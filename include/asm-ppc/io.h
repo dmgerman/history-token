@@ -29,7 +29,7 @@ DECL|macro|PREP_ISA_MEM_BASE
 mdefine_line|#define PREP_ISA_MEM_BASE &t;0xc0000000
 DECL|macro|PREP_PCI_DRAM_OFFSET
 mdefine_line|#define PREP_PCI_DRAM_OFFSET &t;0x80000000
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#elif defined(CONFIG_8xx)
 macro_line|#include &lt;asm/mpc8xx.h&gt;
@@ -1224,13 +1224,95 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Nothing to do */
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+multiline_comment|/*&n; * DMA-consistent mapping functions for PowerPCs that don&squot;t support&n; * cache snooping.  These allocate/free a region of uncached mapped&n; * memory space for use with DMA devices.  Alternatively, you could&n; * allocate the space &quot;normally&quot; and use the cache management functions&n; * to ensure it is consistent.&n; */
+r_extern
+r_void
+op_star
+id|consistent_alloc
+c_func
+(paren
+r_int
+id|gfp
+comma
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|handle
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|consistent_free
+c_func
+(paren
+r_void
+op_star
+id|vaddr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|consistent_sync
+c_func
+(paren
+r_void
+op_star
+id|vaddr
+comma
+r_int
+id|size
+comma
+r_int
+id|rw
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|consistent_sync_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|size
+comma
+r_int
+id|rw
+)paren
+suffix:semicolon
+DECL|macro|dma_cache_inv
+mdefine_line|#define dma_cache_inv(_start,_size) &bslash;&n;&t;invalidate_dcache_range(_start, (_start + _size))
+DECL|macro|dma_cache_wback
+mdefine_line|#define dma_cache_wback(_start,_size) &bslash;&n;&t;clean_dcache_range(_start, (_start + _size))
+DECL|macro|dma_cache_wback_inv
+mdefine_line|#define dma_cache_wback_inv(_start,_size) &bslash;&n;&t;flush_dcache_range(_start, (_start + _size))
+macro_line|#else /* ! CONFIG_NOT_COHERENT_CACHE */
+multiline_comment|/*&n; * Cache coherent cores.&n; */
 DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)
 DECL|macro|dma_cache_wback
 mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { } while (0)
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
-macro_line|#endif
+DECL|macro|consistent_alloc
+mdefine_line|#define consistent_alloc(gfp, size, handle)&t;NULL
+DECL|macro|consistent_free
+mdefine_line|#define consistent_free(addr, size)&t;&t;do { } while (0)
+DECL|macro|consistent_sync
+mdefine_line|#define consistent_sync(addr, size, rw)&t;&t;do { } while (0)
+DECL|macro|consistent_sync_page
+mdefine_line|#define consistent_sync_page(pg, off, sz, rw)&t;do { } while (0)
+macro_line|#endif /* ! CONFIG_NOT_COHERENT_CACHE */
+macro_line|#endif /* _PPC_IO_H */
 macro_line|#endif /* __KERNEL__ */
 eof

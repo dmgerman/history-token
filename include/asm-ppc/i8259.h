@@ -8,13 +8,16 @@ r_struct
 id|hw_interrupt_type
 id|i8259_pic
 suffix:semicolon
+r_extern
 r_void
 id|i8259_init
 c_func
 (paren
 r_int
+id|intack_addr
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|i8259_irq
 c_func
@@ -23,13 +26,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-r_int
-id|i8259_poll
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* _PPC_KERNEL_i8259_H */

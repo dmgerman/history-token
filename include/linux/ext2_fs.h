@@ -295,12 +295,22 @@ mdefine_line|#define EXT2_ECOMPR_FL&t;&t;&t;0x00000800 /* Compression error */
 multiline_comment|/* End compression flags --- maybe not all used */
 DECL|macro|EXT2_BTREE_FL
 mdefine_line|#define EXT2_BTREE_FL&t;&t;&t;0x00001000 /* btree format dir */
+DECL|macro|EXT2_INDEX_FL
+mdefine_line|#define EXT2_INDEX_FL&t;&t;&t;0x00001000 /* hash-indexed directory */
+DECL|macro|EXT2_IMAGIC_FL
+mdefine_line|#define EXT2_IMAGIC_FL&t;&t;&t;0x00002000 /* AFS directory */
+DECL|macro|EXT2_JOURNAL_DATA_FL
+mdefine_line|#define EXT2_JOURNAL_DATA_FL&t;&t;0x00004000 /* Reserved for ext3 */
+DECL|macro|EXT2_NOTAIL_FL
+mdefine_line|#define EXT2_NOTAIL_FL&t;&t;&t;0x00008000 /* file tail should not be merged */
+DECL|macro|EXT2_DIRSYNC_FL
+mdefine_line|#define EXT2_DIRSYNC_FL&t;&t;&t;0x00010000 /* dirsync behaviour (directories only) */
 DECL|macro|EXT2_RESERVED_FL
 mdefine_line|#define EXT2_RESERVED_FL&t;&t;0x80000000 /* reserved for ext2 lib */
 DECL|macro|EXT2_FL_USER_VISIBLE
-mdefine_line|#define EXT2_FL_USER_VISIBLE&t;&t;0x00001FFF /* User visible flags */
+mdefine_line|#define EXT2_FL_USER_VISIBLE&t;&t;0x00011FFF /* User visible flags */
 DECL|macro|EXT2_FL_USER_MODIFIABLE
-mdefine_line|#define EXT2_FL_USER_MODIFIABLE&t;&t;0x000000FF /* User modifiable flags */
+mdefine_line|#define EXT2_FL_USER_MODIFIABLE&t;&t;0x000100FF /* User modifiable flags */
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|EXT2_IOC_GETFLAGS
 mdefine_line|#define&t;EXT2_IOC_GETFLAGS&t;&t;_IOR(&squot;f&squot;, 1, long)

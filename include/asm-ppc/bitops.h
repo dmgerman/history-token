@@ -1258,6 +1258,43 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * fls: find last (most-significant) bit set.&n; * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.&n; */
+DECL|function|fls
+r_static
+id|__inline__
+r_int
+id|fls
+c_func
+(paren
+r_int
+r_int
+id|x
+)paren
+(brace
+r_int
+id|lz
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;cntlzw %0,%1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|lz
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|32
+op_minus
+id|lz
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)

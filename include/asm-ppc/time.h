@@ -80,7 +80,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 r_return
 (paren
 id|mfspr
@@ -114,7 +114,7 @@ r_int
 id|val
 )paren
 (brace
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 r_return
 suffix:semicolon
 multiline_comment|/* Have to let it auto-reload */

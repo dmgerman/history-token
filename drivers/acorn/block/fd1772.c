@@ -1483,7 +1483,11 @@ multiline_comment|/* DAG tmp */
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -3520,12 +3524,6 @@ id|fd_device
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Current device number. Taken either from the block header or from the&n; * format request descriptor.&n; */
-DECL|macro|CURRENT_DEVICE
-mdefine_line|#define CURRENT_DEVICE (CURRENT-&gt;rq_dev)
-multiline_comment|/* Current error count. */
-DECL|macro|CURRENT_ERRORS
-mdefine_line|#define CURRENT_ERRORS (CURRENT-&gt;errors)
 multiline_comment|/* dummy for blk.h */
 DECL|function|floppy_off
 r_static
@@ -3563,7 +3561,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -3857,7 +3855,7 @@ id|ReqCmd
 op_eq
 id|READ
 op_logical_and
-id|CURRENT_ERRORS
+id|CURRENT-&gt;errors
 op_eq
 l_int|0
 )paren
@@ -3925,7 +3923,11 @@ suffix:colon
 l_int|0
 comma
 op_logical_neg
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 ques
 c_cond
 id|CURRENT-&gt;sector
@@ -3934,25 +3936,16 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|QUEUE_EMPTY
-op_logical_and
-id|CURRENT-&gt;rq_status
-op_eq
-id|RQ_INACTIVE
-)paren
-r_goto
-id|the_end
-suffix:semicolon
 id|repeat
 suffix:colon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 r_goto
 id|the_end
@@ -3960,7 +3953,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -4001,10 +3994,10 @@ suffix:semicolon
 )brace
 id|device
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
-id|CURRENT_DEVICE
+id|CURRENT-&gt;rq_dev
 )paren
 suffix:semicolon
 id|drive
@@ -4458,7 +4451,7 @@ id|inode-&gt;i_rdev
 suffix:semicolon
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -5054,7 +5047,7 @@ suffix:semicolon
 )brace
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -5066,7 +5059,7 @@ r_if
 c_cond
 (paren
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -5259,7 +5252,7 @@ id|filp
 r_int
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

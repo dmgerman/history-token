@@ -1,0 +1,22 @@
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * Copyright (C) 2002 Marcin Dalecki &lt;martin@dalecki.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; * more details.&n; */
+r_extern
+r_int
+id|ata_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+eof

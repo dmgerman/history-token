@@ -709,6 +709,23 @@ r_int
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifndef HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+r_extern
+r_int
+id|get_signal_to_deliver
+c_func
+(paren
+id|siginfo_t
+op_star
+id|info
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SIGNAL_H */
 eof

@@ -2670,6 +2670,10 @@ id|curr-&gt;semval
 op_assign
 id|val
 suffix:semicolon
+id|curr-&gt;sempid
+op_assign
+id|current-&gt;pid
+suffix:semicolon
 id|sma-&gt;sem_ctime
 op_assign
 id|CURRENT_TIME

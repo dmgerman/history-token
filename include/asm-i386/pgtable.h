@@ -149,20 +149,27 @@ DECL|macro|PAGE_COPY
 mdefine_line|#define PAGE_COPY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
-DECL|macro|__PAGE_KERNEL
-mdefine_line|#define __PAGE_KERNEL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED)
-DECL|macro|__PAGE_KERNEL_NOCACHE
-mdefine_line|#define __PAGE_KERNEL_NOCACHE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_PCD | _PAGE_ACCESSED)
+DECL|macro|_PAGE_KERNEL
+mdefine_line|#define _PAGE_KERNEL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED)
+r_extern
+r_int
+r_int
+id|__PAGE_KERNEL
+suffix:semicolon
 DECL|macro|__PAGE_KERNEL_RO
-mdefine_line|#define __PAGE_KERNEL_RO &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_DIRTY | _PAGE_ACCESSED)
-DECL|macro|MAKE_GLOBAL
-macro_line|# define MAKE_GLOBAL(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;pgprot_t __ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (cpu_has_pge)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ret = __pgprot((x) | _PAGE_GLOBAL);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ret = __pgprot(x);&t;&t;&t;&bslash;&n;&t;&t;__ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define __PAGE_KERNEL_RO&t;(__PAGE_KERNEL &amp; ~_PAGE_RW)
+DECL|macro|__PAGE_KERNEL_NOCACHE
+mdefine_line|#define __PAGE_KERNEL_NOCACHE&t;(__PAGE_KERNEL | _PAGE_PCD)
+DECL|macro|__PAGE_KERNEL_LARGE
+mdefine_line|#define __PAGE_KERNEL_LARGE&t;(__PAGE_KERNEL | _PAGE_PSE)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL MAKE_GLOBAL(__PAGE_KERNEL)
+mdefine_line|#define PAGE_KERNEL&t;&t;__pgprot(__PAGE_KERNEL)
 DECL|macro|PAGE_KERNEL_RO
-mdefine_line|#define PAGE_KERNEL_RO MAKE_GLOBAL(__PAGE_KERNEL_RO)
+mdefine_line|#define PAGE_KERNEL_RO&t;&t;__pgprot(__PAGE_KERNEL_RO)
 DECL|macro|PAGE_KERNEL_NOCACHE
-mdefine_line|#define PAGE_KERNEL_NOCACHE MAKE_GLOBAL(__PAGE_KERNEL_NOCACHE)
+mdefine_line|#define PAGE_KERNEL_NOCACHE&t;__pgprot(__PAGE_KERNEL_NOCACHE)
+DECL|macro|PAGE_KERNEL_LARGE
+mdefine_line|#define PAGE_KERNEL_LARGE&t;__pgprot(__PAGE_KERNEL_LARGE)
 multiline_comment|/*&n; * The i386 can&squot;t do page protection for execute, and considers that&n; * the same are read. Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE

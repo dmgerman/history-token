@@ -234,6 +234,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#  include &lt;asm/sigcontext.h&gt;
+DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 macro_line|#endif /* __KERNEL__ */
 macro_line|# endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SIGNAL_H */

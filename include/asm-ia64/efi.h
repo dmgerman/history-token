@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_EFI_H
 DECL|macro|_ASM_IA64_EFI_H
 mdefine_line|#define _ASM_IA64_EFI_H
-multiline_comment|/*&n; * Extensible Firmware Interface&n; * Based on &squot;Extensible Firmware Interface Specification&squot; version 0.9, April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Hewlett-Packard Co.&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; * Based on &squot;Extensible Firmware Interface Specification&squot; version 0.9, April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -864,7 +864,17 @@ r_extern
 id|u32
 id|efi_mem_type
 (paren
+r_int
+r_int
+id|phys_addr
+)paren
+suffix:semicolon
+r_extern
 id|u64
+id|efi_mem_attributes
+(paren
+r_int
+r_int
 id|phys_addr
 )paren
 suffix:semicolon

@@ -8317,7 +8317,7 @@ id|drive
 op_minus
 id|channel-&gt;drives
 suffix:semicolon
-id|ide_revalidate_disk
+id|ata_revalidate
 c_func
 (paren
 id|mk_kdev

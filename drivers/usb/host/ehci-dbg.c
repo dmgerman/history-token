@@ -416,9 +416,16 @@ id|label
 )brace
 macro_line|#endif
 macro_line|#ifdef&t;DEBUG
-macro_line|#if 0
 r_static
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|__unused__
+)paren
+)paren
+DECL|function|dbg_qh
 id|dbg_qh
 (paren
 r_char
@@ -503,7 +510,6 @@ l_int|4
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 DECL|variable|fls_strings
 r_static
 r_const
@@ -525,10 +531,17 @@ l_string|&quot;??&quot;
 )brace
 suffix:semicolon
 macro_line|#else
-macro_line|#if 0
 r_static
 r_inline
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|__unused__
+)paren
+)paren
+DECL|function|dbg_qh
 id|dbg_qh
 (paren
 r_char
@@ -547,7 +560,6 @@ id|qh
 )paren
 (brace
 )brace
-macro_line|#endif
 macro_line|#endif&t;/* DEBUG */
 multiline_comment|/* functions have the &quot;wrong&quot; filename when they&squot;re output... */
 DECL|macro|dbg_status

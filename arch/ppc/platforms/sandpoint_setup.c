@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/sandpoint_setup.c&n; * &n; * Board setup routines for the Motorola SPS Sandpoint Test Platform.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * Copyright 2000, 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/sandpoint_setup.c&n; * &n; * Board setup routines for the Motorola SPS Sandpoint Test Platform.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * Copyright 2000-2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 multiline_comment|/*&n; * This file adds support for the Motorola SPS Sandpoint Test Platform.&n; * These boards have a PPMC slot for the processor so any combination&n; * of cpu and host bridge can be attached.  This port is for an 8240 PPMC&n; * module from Motorola SPS and other closely related cpu/host bridge&n; * combinations (e.g., 750/755/7400 with MPC107 host bridge).&n; * The sandpoint itself has a Windbond 83c553 (PCI-ISA bridge, 2 DMA ctlrs, 2&n; * cascaded 8259 interrupt ctlrs, 8254 Timer/Counter, and an IDE ctlr), a&n; * National 87308 (RTC, 2 UARTs, Keyboard &amp; mouse ctlrs, and a floppy ctlr),&n; * and 4 PCI slots (only 2 of which are usable; the other 2 are keyed for 3.3V&n; * but are really 5V).&n; *&n; * The firmware on the sandpoint is called DINK (not my acronym :).  This port&n; * depends on DINK to do some basic initialization (e.g., initialize the memory&n; * ctlr) and to ensure that the processor is using MAP B (CHRP map).&n; *&n; * The switch settings for the Sandpoint board MUST be as follows:&n; * &t;S3: down&n; * &t;S4: up&n; * &t;S5: up&n; * &t;S6: down&n; *&n; * &squot;down&squot; is in the direction from the PCI slots towards the PPMC slot;&n; * &squot;up&squot; is in the direction from the PPMC slot towards the PCI slots.&n; * Be careful, the way the sandpoint board is installed in XT chasses will&n; * make the directions reversed.&n; *&n; * Since Motorola listened to our suggestions for improvement, we now have&n; * the Sandpoint X3 board.  All of the PCI slots are available, it uses&n; * the serial interrupt interface (just a hardware thing we need to&n; * configure properly).&n; *&n; * Use the default X3 switch settings.  The interrupts are then:&n; *&t;&t;EPIC&t;Source&n; *&t;&t;  0&t;SIOINT &t;&t;(8259, active low)&n; *&t;&t;  1&t;PCI #1&n; *&t;&t;  2&t;PCI #2&n; *&t;&t;  3&t;PCI #3&n; *&t;&t;  4&t;PCI #4&n; *&t;&t;  7&t;Winbond INTC&t;(IDE interrupt)&n; *&t;&t;  8&t;Winbond INTD&t;(IDE interrupt)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -319,7 +318,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Sandpoint port (C) 2000, 2001 MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
+l_string|&quot;Sandpoint port (MontaVista Software, Inc. (source@mvista.com))&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The Sandpoint rom doesn&squot;t enable any caches.  Do that now.&n;&t; * The 7450 portion will also set up the L3s once I get enough&n;&t; * information do do so.  If the processor running doesn&squot;t have&n;&t; * and L2, the _set_L2CR is a no-op.&n;&t; */

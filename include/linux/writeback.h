@@ -157,7 +157,7 @@ id|arg0
 )paren
 suffix:semicolon
 r_int
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 r_struct

@@ -15,14 +15,6 @@ macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
-DECL|variable|revision
-r_static
-r_char
-op_star
-id|revision
-op_assign
-l_string|&quot;$Revision: 1.1.4.1.2.1 $&quot;
-suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|variable|__devinitdata
 r_static
@@ -174,11 +166,6 @@ id|b1pci_probe
 c_func
 (paren
 r_struct
-id|capi_driver
-op_star
-id|driver
-comma
-r_struct
 id|capicardparams
 op_star
 id|p
@@ -219,9 +206,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: no memory.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: no memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -278,9 +263,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: ports 0x%03x-0x%03x in use.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: ports 0x%03x-0x%03x in use.&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -324,9 +307,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: NO card at 0x%x (%d)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: NO card at 0x%x (%d)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -380,9 +361,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: unable to get IRQ %d.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: unable to get IRQ %d.&bslash;n&quot;
 comma
 id|card-&gt;irq
 )paren
@@ -396,38 +375,78 @@ r_goto
 id|err_release_region
 suffix:semicolon
 )brace
+id|cinfo-&gt;capi_ctrl.driver_name
+op_assign
+l_string|&quot;b1pci&quot;
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.driverdata
+op_assign
+id|cinfo
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.register_appl
+op_assign
+id|b1_register_appl
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.release_appl
+op_assign
+id|b1_release_appl
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.send_message
+op_assign
+id|b1_send_message
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.load_firmware
+op_assign
+id|b1_load_firmware
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.reset_ctr
+op_assign
+id|b1_reset_ctr
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.procinfo
+op_assign
+id|b1pci_procinfo
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.ctr_read_proc
+op_assign
+id|b1ctl_read_proc
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|cinfo-&gt;capi_ctrl.name
+comma
+id|card-&gt;name
+)paren
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
 id|cinfo-&gt;capi_ctrl
+)paren
+suffix:semicolon
+id|retval
 op_assign
 id|attach_capi_ctr
 c_func
 (paren
-id|driver
-comma
-id|card-&gt;name
-comma
-id|cinfo
+op_amp
+id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cinfo-&gt;capi_ctrl
+id|retval
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: attach controller failed.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: attach controller failed.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EBUSY
 suffix:semicolon
 r_goto
 id|err_free_irq
@@ -445,9 +464,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: AVM B1 PCI V4 at i/o %#x, irq %d, revision %d (no dma)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: AVM B1 PCI V4 at i/o %#x, irq %d, revision %d (no dma)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -463,9 +480,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: AVM B1 PCI at i/o %#x, irq %d, revision %d&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: AVM B1 PCI at i/o %#x, irq %d, revision %d&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -569,6 +584,7 @@ suffix:semicolon
 id|detach_capi_ctr
 c_func
 (paren
+op_amp
 id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
@@ -595,61 +611,6 @@ id|card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|b1pci_driver
-r_static
-r_struct
-id|capi_driver
-id|b1pci_driver
-op_assign
-(brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
-id|name
-suffix:colon
-l_string|&quot;b1pci&quot;
-comma
-id|revision
-suffix:colon
-l_string|&quot;0.0&quot;
-comma
-id|load_firmware
-suffix:colon
-id|b1_load_firmware
-comma
-id|reset_ctr
-suffix:colon
-id|b1_reset_ctr
-comma
-id|register_appl
-suffix:colon
-id|b1_register_appl
-comma
-id|release_appl
-suffix:colon
-id|b1_release_appl
-comma
-id|send_message
-suffix:colon
-id|b1_send_message
-comma
-id|procinfo
-suffix:colon
-id|b1pci_procinfo
-comma
-id|ctr_read_proc
-suffix:colon
-id|b1ctl_read_proc
-comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
-)brace
-suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|b1pciv4_procinfo
@@ -757,11 +718,6 @@ id|b1pciv4_probe
 c_func
 (paren
 r_struct
-id|capi_driver
-op_star
-id|driver
-comma
-r_struct
 id|capicardparams
 op_star
 id|p
@@ -802,9 +758,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: no memory.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: no memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -821,7 +775,7 @@ op_assign
 id|avmcard_dma_alloc
 c_func
 (paren
-id|driver-&gt;name
+l_string|&quot;b1pci&quot;
 comma
 id|pdev
 comma
@@ -845,9 +799,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: dma alloc.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: dma alloc.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -908,9 +860,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: ports 0x%03x-0x%03x in use.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: ports 0x%03x-0x%03x in use.&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -949,9 +899,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: can&squot;t remap memory at 0x%lx&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: can&squot;t remap memory at 0x%lx&bslash;n&quot;
 comma
 id|card-&gt;membase
 )paren
@@ -989,9 +937,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: NO card at 0x%x (%d)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: NO card at 0x%x (%d)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -1045,9 +991,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: unable to get IRQ %d.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: unable to get IRQ %d.&bslash;n&quot;
 comma
 id|card-&gt;irq
 )paren
@@ -1061,38 +1005,78 @@ r_goto
 id|err_unmap
 suffix:semicolon
 )brace
+id|cinfo-&gt;capi_ctrl.driver_name
+op_assign
+l_string|&quot;b1pciv4&quot;
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.driverdata
+op_assign
+id|cinfo
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.register_appl
+op_assign
+id|b1dma_register_appl
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.release_appl
+op_assign
+id|b1dma_release_appl
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.send_message
+op_assign
+id|b1dma_send_message
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.load_firmware
+op_assign
+id|b1dma_load_firmware
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.reset_ctr
+op_assign
+id|b1dma_reset_ctr
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.procinfo
+op_assign
+id|b1pciv4_procinfo
+suffix:semicolon
+id|cinfo-&gt;capi_ctrl.ctr_read_proc
+op_assign
+id|b1dmactl_read_proc
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|cinfo-&gt;capi_ctrl.name
+comma
+id|card-&gt;name
+)paren
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
 id|cinfo-&gt;capi_ctrl
+)paren
+suffix:semicolon
+id|retval
 op_assign
 id|attach_capi_ctr
 c_func
 (paren
-id|driver
-comma
-id|card-&gt;name
-comma
-id|cinfo
+op_amp
+id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cinfo-&gt;capi_ctrl
+id|retval
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: attach controller failed.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: attach controller failed.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EBUSY
 suffix:semicolon
 r_goto
 id|err_free_irq
@@ -1100,15 +1084,13 @@ suffix:semicolon
 )brace
 id|card-&gt;cardnr
 op_assign
-id|cinfo-&gt;capi_ctrl-&gt;cnr
+id|cinfo-&gt;capi_ctrl.cnr
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: AVM B1 PCI V4 at i/o %#x, irq %d, mem %#lx, revision %d (dma)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: AVM B1 PCI V4 at i/o %#x, irq %d, mem %#lx, revision %d (dma)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -1217,6 +1199,7 @@ suffix:semicolon
 id|detach_capi_ctr
 c_func
 (paren
+op_amp
 id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
@@ -1255,61 +1238,6 @@ id|card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|b1pciv4_driver
-r_static
-r_struct
-id|capi_driver
-id|b1pciv4_driver
-op_assign
-(brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
-id|name
-suffix:colon
-l_string|&quot;b1pciv4&quot;
-comma
-id|revision
-suffix:colon
-l_string|&quot;0.0&quot;
-comma
-id|load_firmware
-suffix:colon
-id|b1dma_load_firmware
-comma
-id|reset_ctr
-suffix:colon
-id|b1dma_reset_ctr
-comma
-id|register_appl
-suffix:colon
-id|b1dma_register_appl
-comma
-id|release_appl
-suffix:colon
-id|b1dma_release_appl
-comma
-id|send_message
-suffix:colon
-id|b1dma_send_message
-comma
-id|procinfo
-suffix:colon
-id|b1pciv4_procinfo
-comma
-id|ctr_read_proc
-suffix:colon
-id|b1dmactl_read_proc
-comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
-)brace
-suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_DRV_AVMB1_B1PCIV4 */
 DECL|function|b1pci_pci_probe
 r_static
@@ -1330,14 +1258,6 @@ op_star
 id|ent
 )paren
 (brace
-r_struct
-id|capi_driver
-op_star
-id|driver
-op_assign
-op_amp
-id|b1pci_driver
-suffix:semicolon
 r_struct
 id|capicardparams
 id|param
@@ -1361,9 +1281,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: failed to enable AVM-B1&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: failed to enable AVM-B1&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1389,11 +1307,6 @@ l_int|2
 (brace
 multiline_comment|/* B1 PCI V4 */
 macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
-id|driver
-op_assign
-op_amp
-id|b1pciv4_driver
-suffix:semicolon
 id|pci_set_master
 c_func
 (paren
@@ -1425,9 +1338,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: PCI BIOS reports AVM-B1 V4 at i/o %#x, irq %d, mem %#x&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: PCI BIOS reports AVM-B1 V4 at i/o %#x, irq %d, mem %#x&bslash;n&quot;
 comma
 id|param.port
 comma
@@ -1442,8 +1353,6 @@ op_assign
 id|b1pciv4_probe
 c_func
 (paren
-id|driver
-comma
 op_amp
 id|param
 comma
@@ -1456,8 +1365,6 @@ op_assign
 id|b1pci_probe
 c_func
 (paren
-id|driver
-comma
 op_amp
 id|param
 comma
@@ -1477,9 +1384,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: no AVM-B1 V4 at i/o %#x, irq %d, mem %#x detected&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: no AVM-B1 V4 at i/o %#x, irq %d, mem %#x detected&bslash;n&quot;
 comma
 id|param.port
 comma
@@ -1510,9 +1415,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: PCI BIOS reports AVM-B1 at i/o %#x, irq %d&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: PCI BIOS reports AVM-B1 at i/o %#x, irq %d&bslash;n&quot;
 comma
 id|param.port
 comma
@@ -1524,8 +1427,6 @@ op_assign
 id|b1pci_probe
 c_func
 (paren
-id|driver
-comma
 op_amp
 id|param
 comma
@@ -1544,9 +1445,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: no AVM-B1 at i/o %#x, irq %d detected&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pci: no AVM-B1 at i/o %#x, irq %d detected&bslash;n&quot;
 comma
 id|param.port
 comma
@@ -1640,102 +1539,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-id|b1_set_revision
-c_func
-(paren
-op_amp
-id|b1pci_driver
-comma
-id|revision
-)paren
-suffix:semicolon
-id|attach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pci_driver
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
-id|b1_set_revision
-c_func
-(paren
-op_amp
-id|b1pciv4_driver
-comma
-id|revision
-)paren
-suffix:semicolon
-id|attach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pciv4_driver
-)paren
-suffix:semicolon
-macro_line|#endif
-id|retval
-op_assign
+r_return
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|b1pci_pci_driver
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-OL
-l_int|0
-)paren
-r_goto
-id|err
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %d B1-PCI card(s) detected&bslash;n&quot;
-comma
-id|b1pci_driver.name
-comma
-id|retval
-)paren
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-id|err
-suffix:colon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pci_driver
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pciv4_driver
-)paren
-suffix:semicolon
-macro_line|#endif
-id|out
-suffix:colon
-r_return
-id|retval
 suffix:semicolon
 )brace
 DECL|function|b1pci_exit
@@ -1755,22 +1565,6 @@ op_amp
 id|b1pci_pci_driver
 )paren
 suffix:semicolon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pci_driver
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pciv4_driver
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|b1pci_init
 id|module_init

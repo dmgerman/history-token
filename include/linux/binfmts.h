@@ -31,6 +31,12 @@ id|page
 id|MAX_ARG_PAGES
 )braket
 suffix:semicolon
+DECL|member|mm
+r_struct
+id|mm_struct
+op_star
+id|mm
+suffix:semicolon
 DECL|member|p
 r_int
 r_int

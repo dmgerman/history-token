@@ -31,6 +31,15 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 r_void
+id|thermal_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
 id|smp_thermal_interrupt
 c_func
 (paren

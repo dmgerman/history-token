@@ -1183,7 +1183,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT_DEV
+id|DEVICE_NR
+c_func
+(paren
+id|CURRENT-&gt;rq_dev
+)paren
 OL
 id|xd_drives
 op_logical_and
@@ -1263,7 +1267,11 @@ c_func
 id|CURRENT
 )paren
 comma
-id|CURRENT_DEV
+id|DEVICE_NR
+c_func
+(paren
+id|CURRENT-&gt;rq_dev
+)paren
 comma
 id|CURRENT-&gt;buffer
 comma

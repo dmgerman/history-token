@@ -234,5 +234,5 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* __asm_h */
+macro_line|#endif /* __irq_h */
 eof

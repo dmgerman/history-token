@@ -3503,9 +3503,9 @@ id|commit_write
 suffix:colon
 id|blkdev_commit_write
 comma
-id|writeback_mapping
+id|writepages
 suffix:colon
-id|generic_writeback_mapping
+id|generic_writepages
 comma
 id|vm_writeback
 suffix:colon

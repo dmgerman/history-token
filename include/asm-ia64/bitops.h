@@ -1093,6 +1093,27 @@ op_minus
 l_int|0xffff
 suffix:semicolon
 )brace
+r_static
+r_int
+DECL|function|fls
+id|fls
+(paren
+r_int
+id|x
+)paren
+(brace
+r_return
+id|ia64_fls
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|x
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as the libc and compiler builtin&n; * ffs routines, therefore differs in spirit from the above ffz (man ffs): it operates on&n; * &quot;int&quot; values only and the result value is the bit number + 1.  ffs(0) is defined to&n; * return zero.&n; */
 DECL|macro|ffs
 mdefine_line|#define ffs(x)&t;__builtin_ffs(x)

@@ -250,6 +250,11 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|saved_videomode
+r_int
+r_int
+id|saved_videomode
+suffix:semicolon
 r_extern
 r_int
 r_int
@@ -2389,7 +2394,6 @@ op_assign
 id|APM_BIOS_INFO
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ACPI_SLEEP
 id|saved_videomode
 op_assign
 id|VIDEO_MODE
@@ -2402,7 +2406,6 @@ comma
 id|saved_videomode
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -444,7 +444,11 @@ c_func
 (paren
 l_string|&quot;MTD device %d doesn&squot;t appear to exist any more&bslash;n&quot;
 comma
-id|CURRENT_DEV
+id|DEVICE_NR
+c_func
+(paren
+id|CURRENT-&gt;rq_dev
+)paren
 )paren
 suffix:semicolon
 id|mtdblock_end_request

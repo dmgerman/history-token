@@ -510,11 +510,10 @@ DECL|member|bounce_gfp
 r_int
 id|bounce_gfp
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is used to remove the plug when tq_disk runs.&n;&t; */
-DECL|member|plug_tq
+DECL|member|plug_list
 r_struct
-id|tq_struct
-id|plug_tq
+id|list_head
+id|plug_list
 suffix:semicolon
 multiline_comment|/*&n;&t; * various queue flags, see QUEUE_* below&n;&t; */
 DECL|member|queue_flags
@@ -587,6 +586,8 @@ DECL|macro|QUEUE_FLAG_CLUSTER
 mdefine_line|#define QUEUE_FLAG_CLUSTER&t;1&t;/* cluster several segments into 1 */
 DECL|macro|QUEUE_FLAG_QUEUED
 mdefine_line|#define QUEUE_FLAG_QUEUED&t;2&t;/* uses generic tag queueing */
+DECL|macro|QUEUE_FLAG_STOPPED
+mdefine_line|#define QUEUE_FLAG_STOPPED&t;3&t;/* queue is stopped */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_mark_plugged
@@ -924,6 +925,26 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_start_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_stop_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * get ready for proper ref counting&n; */

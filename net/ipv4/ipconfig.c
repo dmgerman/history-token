@@ -4451,11 +4451,6 @@ r_void
 )paren
 (brace
 r_int
-id|retries
-op_assign
-id|CONF_OPEN_RETRIES
-suffix:semicolon
-r_int
 r_int
 id|jiff
 suffix:semicolon
@@ -4488,8 +4483,10 @@ l_string|&quot;IP-Config: Entered.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef IPCONFIG_DYNAMIC
 id|try_try_again
 suffix:colon
+macro_line|#endif
 multiline_comment|/* Give hardware a chance to settle */
 id|jiff
 op_assign
@@ -4575,6 +4572,11 @@ id|ic_first_dev-&gt;next
 )paren
 (brace
 macro_line|#ifdef IPCONFIG_DYNAMIC
+r_int
+id|retries
+op_assign
+id|CONF_OPEN_RETRIES
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -260,11 +260,8 @@ id|dquot-&gt;dq_flags
 op_or_assign
 id|DQ_FAKE
 suffix:semicolon
+id|dqstats.reads
 op_increment
-id|dqstats_array
-(braket
-id|DQSTATS_READS
-)braket
 suffix:semicolon
 r_return
 l_int|0
@@ -482,11 +479,8 @@ c_func
 id|fs
 )paren
 suffix:semicolon
+id|dqstats.writes
 op_increment
-id|dqstats_array
-(braket
-id|DQSTATS_WRITES
-)braket
 suffix:semicolon
 r_return
 id|ret
@@ -1241,6 +1235,8 @@ id|v1_quota_format
 )paren
 suffix:semicolon
 )brace
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 DECL|variable|init_v1_quota_format
 id|module_init
 c_func

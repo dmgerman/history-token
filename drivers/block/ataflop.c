@@ -2268,7 +2268,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -5219,12 +5223,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Current device number. Taken either from the block header or from the&n; * format request descriptor.&n; */
-DECL|macro|CURRENT_DEVICE
-mdefine_line|#define CURRENT_DEVICE (CURRENT-&gt;rq_dev)
-multiline_comment|/* Current error count. */
-DECL|macro|CURRENT_ERRORS
-mdefine_line|#define CURRENT_ERRORS (CURRENT-&gt;errors)
 multiline_comment|/* dummy for blk.h */
 DECL|function|floppy_off
 r_static
@@ -5580,7 +5578,7 @@ id|ReqCmd
 op_eq
 id|READ
 op_logical_and
-id|CURRENT_ERRORS
+id|CURRENT-&gt;errors
 op_eq
 l_int|0
 )paren
@@ -5640,7 +5638,11 @@ r_int
 id|CURRENT
 comma
 op_logical_neg
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 ques
 c_cond
 id|CURRENT-&gt;rq_dev
@@ -5648,7 +5650,11 @@ suffix:colon
 l_int|0
 comma
 op_logical_neg
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 ques
 c_cond
 id|CURRENT-&gt;sector
@@ -5661,26 +5667,16 @@ id|IsFormatting
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|QUEUE_EMPTY
-op_logical_and
-id|CURRENT-&gt;rq_status
-op_eq
-id|RQ_INACTIVE
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 id|repeat
 suffix:colon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 r_goto
 id|the_end
@@ -5727,7 +5723,7 @@ op_assign
 id|minor
 c_func
 (paren
-id|CURRENT_DEVICE
+id|CURRENT-&gt;rq_dev
 )paren
 suffix:semicolon
 id|drive

@@ -23,7 +23,7 @@ DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;PAGE_SIZE
 multiline_comment|/*&n; * This is the location that an ET_DYN program is loaded if exec&squot;ed.&n; * Typical use of this is to invoke &quot;./ld.so someprog&quot; to test out a&n; * new version of the loader.  We need to make sure that it is out of&n; * the way of the program that it will &quot;exec&quot;, and that there is&n; * sufficient room for the brk.&n; */
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_BASE + 0x1000000)
+mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_BASE + 0x800000000)
 multiline_comment|/*&n; * We use (abuse?) this macro to insert the (empty) vm_area that is&n; * used to map the register backing store.  I don&squot;t see any better&n; * place to do this, but we should discuss this with Linus once we can&n; * talk to him...&n; */
 r_extern
 r_void

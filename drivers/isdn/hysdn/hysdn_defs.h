@@ -513,7 +513,6 @@ suffix:semicolon
 DECL|member|capi_ctrl
 r_struct
 id|capi_ctr
-op_star
 id|capi_ctrl
 suffix:semicolon
 DECL|member|skbs

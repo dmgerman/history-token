@@ -4261,7 +4261,11 @@ multiline_comment|/* paranoia */
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 op_logical_or
 (paren
 id|rq_data_dir
@@ -4281,12 +4285,6 @@ id|CURRENT-&gt;rq_dev
 )paren
 op_ne
 id|pf_unit
-)paren
-op_logical_or
-(paren
-id|CURRENT-&gt;rq_status
-op_eq
-id|RQ_INACTIVE
 )paren
 op_logical_or
 (paren

@@ -28000,7 +28000,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 (brace
 id|printk

@@ -45,9 +45,9 @@ DECL|variable|i8259_pic_irq_offset
 r_int
 id|i8259_pic_irq_offset
 suffix:semicolon
-multiline_comment|/* Acknowledge the irq using the PCI host bridge&squot;s interrupt acknowledge&n; * feature. (Polling is somehow broken on some IBM and Motorola PReP boxes.)&n; */
-DECL|function|i8259_irq
+multiline_comment|/*&n; * Acknowledge the IRQ using either the PCI host bridge&squot;s interrupt&n; * acknowledge feature or poll.  How i8259_init() is called determines&n; * which is called.  It should be noted that polling is broken on some&n; * IBM and Motorola PReP boxes so we must use the int-ack feature on them.&n; */
 r_int
+DECL|function|i8259_irq
 id|i8259_irq
 c_func
 (paren
@@ -61,80 +61,26 @@ r_int
 id|irq
 suffix:semicolon
 id|spin_lock
-multiline_comment|/*_irqsave*/
+c_func
 (paren
 op_amp
 id|i8259_lock
-multiline_comment|/*, flags*/
 )paren
 suffix:semicolon
+multiline_comment|/* Either int-ack or poll for the IRQ */
+r_if
+c_cond
+(paren
+id|pci_intack
+)paren
 id|irq
 op_assign
 op_star
 id|pci_intack
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-l_int|7
-)paren
+r_else
 (brace
-multiline_comment|/*&n;&t;&t; * This may be a spurious interrupt.&n;&t;&t; *&n;&t;&t; * Read the interrupt status register (ISR). If the most&n;&t;&t; * significant bit is not set then there is no valid&n;&t;&t; * interrupt.&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_complement
-id|inb
-c_func
-(paren
-l_int|0x20
-)paren
-op_amp
-l_int|0x80
-)paren
-(brace
-id|irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-)brace
-id|spin_unlock
-multiline_comment|/*_irqrestore*/
-(paren
-op_amp
-id|i8259_lock
-multiline_comment|/*, flags*/
-)paren
-suffix:semicolon
-r_return
-id|irq
-suffix:semicolon
-)brace
-multiline_comment|/* Poke the 8259&squot;s directly using poll commands. */
-DECL|function|i8259_poll
-r_int
-id|i8259_poll
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|irq
-suffix:semicolon
-id|spin_lock
-multiline_comment|/*_irqsave*/
-(paren
-op_amp
-id|i8259_lock
-multiline_comment|/*, flags*/
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Perform an interrupt acknowledge cycle on controller 1&n;&t; */
+multiline_comment|/* Perform an interrupt acknowledge cycle on controller 1. */
 id|outb
 c_func
 (paren
@@ -162,7 +108,7 @@ op_eq
 l_int|2
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Interrupt is cascaded so perform interrupt&n;&t;&t; * acknowledge on controller 2&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Interrupt is cascaded so perform interrupt&n;&t;&t;&t; * acknowledge on controller 2.&n;&t;&t;&t; */
 id|outb
 c_func
 (paren
@@ -187,7 +133,7 @@ op_plus
 l_int|8
 suffix:semicolon
 )brace
-r_else
+)brace
 r_if
 c_cond
 (paren
@@ -196,15 +142,22 @@ op_eq
 l_int|7
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This may be a spurious interrupt&n;&t;&t; *&n;&t;&t; * Read the interrupt status register. If the most&n;&t;&t; * significant bit is not set then there is no valid&n;&t;&t; * interrupt&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This may be a spurious interrupt.&n;&t;&t; *&n;&t;&t; * Read the interrupt status register (ISR). If the most&n;&t;&t; * significant bit is not set then there is no valid&n;&t;&t; * interrupt.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_intack
+)paren
 id|outb
 c_func
 (paren
-l_int|0x0b
+l_int|0x0B
 comma
 l_int|0x20
 )paren
 suffix:semicolon
+multiline_comment|/* ISR register */
 r_if
 c_cond
 (paren
@@ -218,26 +171,18 @@ op_amp
 l_int|0x80
 )paren
 (brace
-id|spin_unlock
-multiline_comment|/*_irqrestore*/
-(paren
-op_amp
-id|i8259_lock
-multiline_comment|/*, flags*/
-)paren
-suffix:semicolon
-r_return
+id|irq
+op_assign
 op_minus
 l_int|1
 suffix:semicolon
 )brace
 )brace
 id|spin_unlock
-multiline_comment|/*_irqrestore*/
+c_func
 (paren
 op_amp
 id|i8259_lock
-multiline_comment|/*, flags*/
 )paren
 suffix:semicolon
 r_return
@@ -665,10 +610,10 @@ comma
 id|IORESOURCE_BUSY
 )brace
 suffix:semicolon
-multiline_comment|/* i8259_init()&n; * intack_addr - PCI interrupt acknowledge (real) address which will return&n; *               the active irq from the 8259&n; */
-DECL|function|i8259_init
+multiline_comment|/*&n; * i8259_init()&n; * intack_addr - PCI interrupt acknowledge (real) address which will return&n; *               the active irq from the 8259&n; */
 r_void
 id|__init
+DECL|function|i8259_init
 id|i8259_init
 c_func
 (paren
@@ -853,20 +798,13 @@ op_amp
 id|pic_edgectrl_iores
 )paren
 suffix:semicolon
-multiline_comment|/* XXX remove me after board maintainers fix their i8259_init calls */
 r_if
 c_cond
 (paren
 id|intack_addr
-op_eq
+op_ne
 l_int|0
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;You must supply a PCI interrupt acknowledge address to i8259_init()&bslash;n&quot;
-)paren
-suffix:semicolon
 id|pci_intack
 op_assign
 id|ioremap

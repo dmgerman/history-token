@@ -307,10 +307,6 @@ DECL|macro|TX_NUM_FIFO
 mdefine_line|#define TX_NUM_FIFO&t;4
 DECL|macro|TX_BUF_SIZE
 mdefine_line|#define TX_BUF_SIZE&t;32
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* The async_struct in serial.h does not really give us what we&n; * need, so define our own here.&n; */
 DECL|struct|serial_info
 r_typedef
@@ -3229,7 +3225,7 @@ l_int|1
 (brace
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
@@ -6304,7 +6300,7 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|char_time

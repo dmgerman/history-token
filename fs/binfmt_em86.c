@@ -7,7 +7,9 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 DECL|macro|EM86_INTERP
 mdefine_line|#define EM86_INTERP&t;&quot;/usr/bin/em86&quot;
 DECL|macro|EM86_I_NAME

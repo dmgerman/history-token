@@ -789,11 +789,9 @@ id|gfp_nowait
 r_return
 l_int|NULL
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|add_wait_queue_exclusive

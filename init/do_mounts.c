@@ -2017,6 +2017,7 @@ id|name
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined(BLOCK_DEV_RAM) || defined(CONFIG_BLK_DEV_FD)
 DECL|function|change_floppy
 r_static
 r_void
@@ -2214,6 +2215,7 @@ id|fd
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 DECL|variable|rd_prompt
 r_int

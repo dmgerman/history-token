@@ -47,8 +47,6 @@ macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/pplus.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-DECL|macro|CONFIG_SERIAL_TEXT_DEBUG
-macro_line|#undef CONFIG_SERIAL_TEXT_DEBUG
 DECL|macro|DUMP_DBATS
 macro_line|#undef DUMP_DBATS
 id|TODC_ALLOC
@@ -1695,12 +1693,7 @@ id|ppc_md.progress
 op_assign
 id|pplus_progress
 suffix:semicolon
-macro_line|#else /* !CONFIG_SERIAL_TEXT_DEBUG */
-id|ppc_md.progress
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL_TEXT_DEBUG */
+macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|ppc_ide_md.default_irq
 op_assign

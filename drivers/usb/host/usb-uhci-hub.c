@@ -1,4 +1,4 @@
-multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, UHCI Root Hub&n;    &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net&n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at&n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-hub.c,v 1.1 2002/05/14 20:36:57 acher Exp $&n;*/
+multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, UHCI Root Hub&n;    &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net&n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at&n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-hub.c,v 1.2 2002/05/21 21:40:16 acher Exp $&n;*/
 DECL|macro|CLR_RH_PORTSTAT
 mdefine_line|#define CLR_RH_PORTSTAT(x) &bslash;&n;&t;&t;status = inw(io_addr+USBPORTSC1+2*(wIndex-1)); &bslash;&n;&t;&t;status = (status &amp; 0xfff5) &amp; ~(x); &bslash;&n;&t;&t;outw(status, io_addr+USBPORTSC1+2*(wIndex-1))
 DECL|macro|SET_RH_PORTSTAT
@@ -42,6 +42,7 @@ r_int
 id|io_addr
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|uhci-&gt;hcd.regs
@@ -400,6 +401,7 @@ r_int
 id|io_addr
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|uhci-&gt;hcd.regs
