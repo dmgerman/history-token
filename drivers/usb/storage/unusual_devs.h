@@ -41,9 +41,9 @@ l_string|&quot;Mitsumi&quot;
 comma
 l_string|&quot;USB FDD&quot;
 comma
-id|US_SC_UFI
+id|US_SC_DEVICE
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
