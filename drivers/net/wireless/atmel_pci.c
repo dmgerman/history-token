@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &quot;atmel.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -85,48 +86,6 @@ c_func
 r_struct
 id|pci_dev
 op_star
-)paren
-suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|init_atmel_card
-c_func
-(paren
-r_int
-comma
-r_int
-comma
-r_char
-op_star
-comma
-r_struct
-id|device
-op_star
-comma
-r_int
-(paren
-op_star
-id|present_func
-)paren
-(paren
-r_void
-op_star
-)paren
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_void
-id|stop_atmel_card
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|variable|atmel_driver
@@ -219,7 +178,7 @@ l_int|1
 dot
 id|start
 comma
-l_string|&quot;atmel_at76c506%s.bin&quot;
+id|ATMEL_FW_TYPE_506
 comma
 op_amp
 id|pdev-&gt;dev
