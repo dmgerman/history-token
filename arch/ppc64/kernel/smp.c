@@ -407,6 +407,14 @@ comma
 id|cpu_present_at_boot
 )paren
 suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|i
+comma
+id|cpu_present_map
+)paren
+suffix:semicolon
 op_increment
 id|np
 suffix:semicolon
