@@ -2692,12 +2692,6 @@ c_func
 id|HEATHROW_FCR
 )paren
 suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -10400,7 +10394,7 @@ l_string|&quot;PowerMac G4 Windtunnel&quot;
 comma
 id|PMAC_TYPE_WINDTUNNEL
 comma
-id|rackmac_features
+id|core99_features
 comma
 l_int|0
 comma
@@ -10483,6 +10477,21 @@ comma
 comma
 (brace
 l_string|&quot;PowerBook6,3&quot;
+comma
+l_string|&quot;iBook G4&quot;
+comma
+id|PMAC_TYPE_UNKNOWN_INTREPID
+comma
+id|intrepid_features
+comma
+id|PMAC_MB_HAS_FW_POWER
+op_or
+id|PMAC_MB_MOBILE
+comma
+)brace
+comma
+(brace
+l_string|&quot;PowerBook6,5&quot;
 comma
 l_string|&quot;iBook G4&quot;
 comma
