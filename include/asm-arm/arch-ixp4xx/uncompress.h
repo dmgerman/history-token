@@ -109,9 +109,10 @@ multiline_comment|/*&n;&t; * Coyote only has UART2 connected&n;&t; */
 r_if
 c_cond
 (paren
-id|__machine_arch_type
-op_eq
-id|MACH_TYPE_ADI_COYOTE
+id|machine_is_adi_coyote
+c_func
+(paren
+)paren
 )paren
 id|uart_base
 op_assign
