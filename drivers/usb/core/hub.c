@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;hub.h&quot;
 multiline_comment|/* Wakes up khubd */
@@ -5353,13 +5354,18 @@ id|usb_get_device_descriptor
 c_func
 (paren
 id|dev
+comma
+r_sizeof
+(paren
+id|dev-&gt;descriptor
+)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|ret
-OL
+op_ne
 r_sizeof
 (paren
 id|dev-&gt;descriptor

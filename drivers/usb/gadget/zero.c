@@ -74,7 +74,7 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * MAX_USB_POWER ... define if we use other than 100 mA bus current&n; * SELFPOWER ... if we can run on bus power, zero&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
 multiline_comment|/*&n; * DRIVER_VERSION_NUM 0x0000 (?):  Martin Diehl&squot;s ezusb an21/fx code&n; */
 multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * This has half a dozen configurable endpoints, four with dedicated&n; * DMA channels to manage their FIFOs.  It supports high speed.&n; * Those endpoints can be arranged in any desired configuration.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ZERO_NET2280
+macro_line|#if defined(CONFIG_USB_GADGET_NET2280) || defined(CONFIG_USB_GADGET_DUMMY_HCD)
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
 DECL|macro|DRIVER_VERSION_NUM
@@ -109,7 +109,7 @@ multiline_comment|/* specific hardware configs could be bus-powered */
 multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
 macro_line|#endif
 multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ZERO_PXA2XX
+macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx&quot;
 DECL|macro|DRIVER_VERSION_NUM
@@ -142,7 +142,7 @@ multiline_comment|/* doesn&squot;t support bus-powered operation */
 multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
 macro_line|#endif
 multiline_comment|/*&n; * SA-1100 UDC:  widely used in first gen Linux-capable PDAs.&n; *&n; * This has only two fixed function endpoints, which can only&n; * be used for bulk (or interrupt) transfers.  (Plus control.)&n; *&n; * Since it can&squot;t flush its TX fifos without disabling the UDC,&n; * the current configuration or altsettings can&squot;t change except&n; * in special situations.  So this is a case of &quot;choose it right&n; * during enumeration&quot; ...&n; */
-macro_line|#ifdef&t;CONFIG_USB_ZERO_SA1100
+macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
 DECL|macro|DRIVER_VERSION_NUM
@@ -175,7 +175,7 @@ multiline_comment|/* doesn&squot;t support bus-powered operation */
 multiline_comment|/* doesn&squot;t support remote wakeup? */
 macro_line|#endif
 multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ZERO_GOKU
+macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;goku&quot;
 DECL|macro|DRIVER_VERSION_NUM
@@ -2660,7 +2660,7 @@ id|dev-&gt;config
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_ZERO_SA1100
+macro_line|#ifdef CONFIG_USB_GADGET_SA1100
 r_if
 c_cond
 (paren

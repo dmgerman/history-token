@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -12454,10 +12455,22 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|usb_get_device_descriptor
+id|usb_get_descriptor
 c_func
 (paren
 id|dev
+comma
+id|USB_DT_DEVICE
+comma
+l_int|0
+comma
+op_amp
+id|dev-&gt;descriptor
+comma
+r_sizeof
+(paren
+id|dev-&gt;descriptor
+)paren
 )paren
 suffix:semicolon
 id|config
@@ -12474,7 +12487,7 @@ l_int|0
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;error usb_get_device_descriptor: %d&bslash;n&quot;
+l_string|&quot;error usb_get_descriptor: %d&bslash;n&quot;
 comma
 id|err
 )paren
