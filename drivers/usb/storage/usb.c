@@ -1317,13 +1317,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
-c_func
 (paren
-id|DEV_ATTACHED
-comma
+id|us-&gt;flags
 op_amp
-id|us-&gt;bitflags
+id|US_FL_DEV_ATTACHED
 )paren
 )paren
 (brace
@@ -1448,7 +1445,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* test_bit(DEV_ATTACHED, &amp;us-&gt;bitflags) */
+multiline_comment|/* !(us-&gt;flags &amp; US_FL_DEV_ATTACHED) */
 multiline_comment|/* Handle those devices which need us to fake &n;&t;&t; * their inquiry data */
 r_else
 r_if
@@ -2046,14 +2043,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* mark the device as gone */
-id|clear_bit
-c_func
-(paren
-id|DEV_ATTACHED
-comma
-op_amp
-id|ss-&gt;bitflags
-)paren
+id|ss-&gt;flags
+op_and_assign
+op_complement
+id|US_FL_DEV_ATTACHED
 suffix:semicolon
 id|usb_put_dev
 c_func
@@ -2736,13 +2729,10 @@ l_int|NULL
 )paren
 op_logical_and
 (paren
-id|test_bit
-c_func
 (paren
-id|DEV_ATTACHED
-comma
+id|ss-&gt;flags
 op_amp
-id|ss-&gt;bitflags
+id|US_FL_DEV_ATTACHED
 )paren
 op_logical_or
 op_logical_neg
@@ -2801,14 +2791,9 @@ id|ss-&gt;pusb_dev
 op_assign
 id|dev
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|DEV_ATTACHED
-comma
-op_amp
-id|ss-&gt;bitflags
-)paren
+id|ss-&gt;flags
+op_or_assign
+id|US_FL_DEV_ATTACHED
 suffix:semicolon
 multiline_comment|/* copy over the endpoint data */
 id|ss-&gt;ep_in
@@ -3011,6 +2996,8 @@ suffix:semicolon
 id|ss-&gt;flags
 op_assign
 id|flags
+op_or
+id|US_FL_DEV_ATTACHED
 suffix:semicolon
 id|ss-&gt;unusual_dev
 op_assign
@@ -3646,15 +3633,6 @@ op_amp
 id|ss-&gt;sm_state
 comma
 id|US_STATE_IDLE
-)paren
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|DEV_ATTACHED
-comma
-op_amp
-id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 id|ss-&gt;pid
