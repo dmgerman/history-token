@@ -664,6 +664,33 @@ mdefine_line|#define I830_RDRAM_DDT(x)&t;&t;(((x) &amp; 0x18) &gt;&gt; 3)
 multiline_comment|/* This one is for I830MP w. an external graphic card */
 DECL|macro|INTEL_I830_ERRSTS
 mdefine_line|#define INTEL_I830_ERRSTS&t;0x92
+multiline_comment|/* Intel 855GM/852GM registers */
+DECL|macro|I855_GMCH_GMS_STOLEN_0M
+mdefine_line|#define I855_GMCH_GMS_STOLEN_0M&t;&t;0x0
+DECL|macro|I855_GMCH_GMS_STOLEN_1M
+mdefine_line|#define I855_GMCH_GMS_STOLEN_1M&t;&t;(0x1 &lt;&lt; 4)
+DECL|macro|I855_GMCH_GMS_STOLEN_4M
+mdefine_line|#define I855_GMCH_GMS_STOLEN_4M&t;&t;(0x2 &lt;&lt; 4)
+DECL|macro|I855_GMCH_GMS_STOLEN_8M
+mdefine_line|#define I855_GMCH_GMS_STOLEN_8M&t;&t;(0x3 &lt;&lt; 4)
+DECL|macro|I855_GMCH_GMS_STOLEN_16M
+mdefine_line|#define I855_GMCH_GMS_STOLEN_16M&t;(0x4 &lt;&lt; 4)
+DECL|macro|I855_GMCH_GMS_STOLEN_32M
+mdefine_line|#define I855_GMCH_GMS_STOLEN_32M&t;(0x5 &lt;&lt; 4)
+DECL|macro|I85X_CAPID
+mdefine_line|#define I85X_CAPID&t;&t;&t;0x44
+DECL|macro|I85X_VARIANT_MASK
+mdefine_line|#define I85X_VARIANT_MASK&t;&t;0x7
+DECL|macro|I85X_VARIANT_SHIFT
+mdefine_line|#define I85X_VARIANT_SHIFT&t;&t;5
+DECL|macro|I855_GME
+mdefine_line|#define I855_GME&t;&t;&t;0x0
+DECL|macro|I855_GM
+mdefine_line|#define I855_GM&t;&t;&t;&t;0x4
+DECL|macro|I852_GME
+mdefine_line|#define I852_GME&t;&t;&t;0x2
+DECL|macro|I852_GM
+mdefine_line|#define I852_GM&t;&t;&t;&t;0x5
 multiline_comment|/* intel 815 register */
 DECL|macro|INTEL_815_APCONT
 mdefine_line|#define INTEL_815_APCONT&t;0x51
