@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -6954,6 +6953,8 @@ c_cond
 id|up-&gt;port.type
 op_eq
 id|PORT_UNKNOWN
+op_logical_and
+id|res_std
 )paren
 id|release_resource
 c_func
