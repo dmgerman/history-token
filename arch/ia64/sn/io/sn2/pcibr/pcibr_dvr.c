@@ -20,6 +20,7 @@ l_int|0x0
 suffix:semicolon
 multiline_comment|/* 0x00000000 to disable */
 DECL|variable|pcibr_debug_module
+r_static
 r_char
 op_star
 id|pcibr_debug_module
@@ -28,6 +29,7 @@ l_string|&quot;all&quot;
 suffix:semicolon
 multiline_comment|/* &squot;all&squot; for all modules */
 DECL|variable|pcibr_debug_widget
+r_static
 r_int
 id|pcibr_debug_widget
 op_assign
@@ -36,6 +38,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* &squot;-1&squot; for all widgets  */
 DECL|variable|pcibr_debug_slot
+r_static
 r_int
 id|pcibr_debug_slot
 op_assign
