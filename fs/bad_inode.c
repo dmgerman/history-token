@@ -5,41 +5,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
-multiline_comment|/*&n; * The follow_link operation is special: it must behave as a no-op&n; * so that a bad root inode can at least be unmounted. To do this&n; * we must dput() the base and return the dentry with a dget().&n; */
-DECL|function|bad_follow_link
-r_static
-r_int
-id|bad_follow_link
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dent
-comma
-r_struct
-id|nameidata
-op_star
-id|nd
-)paren
-(brace
-id|nd_set_link
-c_func
-(paren
-id|nd
-comma
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|EIO
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|return_EIO
 r_static
 r_int
@@ -226,11 +191,7 @@ id|readlink
 op_assign
 id|EIO_ERROR
 comma
-dot
-id|follow_link
-op_assign
-id|bad_follow_link
-comma
+multiline_comment|/* follow_link must be no-op, otherwise unmounting this inode&n;&t;   won&squot;t work */
 dot
 id|truncate
 op_assign
