@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2203,10 +2204,6 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PNPACPI
-r_extern
-r_int
-id|pnpacpi_disabled
-suffix:semicolon
 r_if
 c_cond
 (paren
