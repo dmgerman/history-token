@@ -1866,24 +1866,10 @@ l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Probe for Intel, AMD RNGs */
-r_while
-c_loop
-(paren
-(paren
-id|pdev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|pdev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 id|ent

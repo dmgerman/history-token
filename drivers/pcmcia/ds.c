@@ -52,14 +52,16 @@ l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
-DECL|variable|pc_debug
+DECL|variable|ds_pc_debug
 r_int
-id|pc_debug
+id|ds_pc_debug
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
 id|pc_debug
+comma
+id|ds_pc_debug
 comma
 r_int
 comma
@@ -67,7 +69,7 @@ l_int|0644
 )paren
 suffix:semicolon
 DECL|macro|ds_dbg
-mdefine_line|#define ds_dbg(lvl, fmt, arg...) do {&t;&t;&t;&t;&bslash;&n;&t;if (pc_debug &gt; (lvl))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;ds: &quot; fmt , ## arg);&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define ds_dbg(lvl, fmt, arg...) do {&t;&t;&t;&t;&bslash;&n;&t;if (ds_pc_debug &gt; (lvl))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;ds: &quot; fmt , ## arg);&t;&t;&bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|ds_dbg
 mdefine_line|#define ds_dbg(lvl, fmt, arg...) do { } while (0)

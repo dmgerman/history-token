@@ -18,12 +18,12 @@ macro_line|#include &quot;cs_internal.h&quot;
 macro_line|#ifdef DEBUG
 r_extern
 r_int
-id|pc_debug
+id|ds_pc_debug
 suffix:semicolon
 DECL|macro|cs_socket_name
 mdefine_line|#define cs_socket_name(skt)&t;((skt)-&gt;dev.class_id)
 DECL|macro|ds_dbg
-mdefine_line|#define ds_dbg(skt, lvl, fmt, arg...) do {&t;&t;&bslash;&n;&t;if (pc_debug &gt;= lvl)&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;ds: %s: &quot; fmt, &t;&bslash;&n;&t;&t;       cs_socket_name(skt) , ## arg);&t;&bslash;&n;} while (0)
+mdefine_line|#define ds_dbg(skt, lvl, fmt, arg...) do {&t;&t;&bslash;&n;&t;if (ds_pc_debug &gt;= lvl)&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;ds: %s: &quot; fmt, &t;&bslash;&n;&t;&t;       cs_socket_name(skt) , ## arg);&t;&bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|ds_dbg
 mdefine_line|#define ds_dbg(lvl, fmt, arg...) do { } while (0)

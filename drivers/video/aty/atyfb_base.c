@@ -9754,9 +9754,16 @@ macro_line|#ifdef __sparc__
 multiline_comment|/*&n;&t;&t;&t; * Map memory-mapped registers.&n;&t;&t;&t; */
 id|default_par-&gt;ati_regbase
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
 id|addr
 op_plus
 l_int|0x7ffc00UL
+)paren
 suffix:semicolon
 id|info-&gt;fix.mmio_start
 op_assign
@@ -11048,9 +11055,15 @@ l_int|1
 dot
 id|poff
 op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
 id|default_par-&gt;ati_regbase
 op_amp
 id|PAGE_MASK
+)paren
 suffix:semicolon
 id|default_par-&gt;mmap_map
 (braket
