@@ -5,6 +5,9 @@ mdefine_line|#define _SYSFS_H_
 r_struct
 id|kobject
 suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
 DECL|struct|attribute
 r_struct
 id|attribute
@@ -13,6 +16,12 @@ DECL|member|name
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 DECL|member|mode
 id|mode_t
