@@ -313,16 +313,6 @@ c_func
 id|id
 )paren
 dot
-id|pgdcache_size
-op_assign
-l_int|0
-suffix:semicolon
-id|cpu_data
-c_func
-(paren
-id|id
-)paren
-dot
 id|pgd_cache
 op_assign
 l_int|NULL
