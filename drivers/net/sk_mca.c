@@ -4115,6 +4115,13 @@ id|net_device_stats
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* set base + irq for this device (irq not allocated so far) */
 id|dev-&gt;irq
 op_assign
