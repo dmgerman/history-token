@@ -4064,7 +4064,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;illegal chorus mode %d for uploading&bslash;n&quot;
+l_string|&quot;invalid chorus mode %d for uploading&bslash;n&quot;
 comma
 id|mode
 )paren
@@ -5113,7 +5113,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;illegal reverb mode %d for uploading&bslash;n&quot;
+l_string|&quot;invalid reverb mode %d for uploading&bslash;n&quot;
 comma
 id|mode
 )paren
