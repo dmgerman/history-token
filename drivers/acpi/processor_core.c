@@ -2073,7 +2073,12 @@ suffix:semicolon
 r_case
 id|ACPI_PROCESSOR_NOTIFY_POWER
 suffix:colon
-multiline_comment|/* TBD */
+id|acpi_processor_cst_has_changed
+c_func
+(paren
+id|pr
+)paren
+suffix:semicolon
 id|acpi_bus_generate_event
 c_func
 (paren

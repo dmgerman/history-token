@@ -797,6 +797,15 @@ op_star
 id|id
 )paren
 suffix:semicolon
+r_int
+id|acpi_processor_cst_has_changed
+(paren
+r_struct
+id|acpi_processor
+op_star
+id|pr
+)paren
+suffix:semicolon
 multiline_comment|/* in processor_thermal.c */
 r_int
 id|acpi_processor_get_limit_info
