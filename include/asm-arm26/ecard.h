@@ -11,6 +11,10 @@ DECL|macro|PROD_ACORN_ETHER1
 mdefine_line|#define PROD_ACORN_ETHER1&t;&t;0x0003
 DECL|macro|PROD_ACORN_MFM
 mdefine_line|#define PROD_ACORN_MFM&t;&t;&t;0x000b
+DECL|macro|MANU_CCONCEPTS
+mdefine_line|#define MANU_CCONCEPTS&t;&t;0x0009
+DECL|macro|PROD_CCONCEPTS_COLOURCARD
+mdefine_line|#define PROD_CCONCEPTS_COLOURCARD&t;0x0050
 DECL|macro|MANU_ANT2
 mdefine_line|#define MANU_ANT2&t;&t;0x0011
 DECL|macro|PROD_ANT_ETHER3

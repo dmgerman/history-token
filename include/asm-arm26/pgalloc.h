@@ -117,11 +117,11 @@ DECL|macro|pmd_populate
 mdefine_line|#define pmd_populate(mm,pmdp,ptep) pmd_populate_kernel(mm,pmdp,(pte_t *)ptep)
 multiline_comment|/*&n; * Since we have only two-level page tables, these are trivial&n; * &n; * trick __pmd_alloc into optimising away. The actual value is irrelevant though as it&n; * is thrown away. It just cant be zero. -IM&n; */
 DECL|macro|pmd_alloc_one
-mdefine_line|#define pmd_alloc_one(mm,addr)&t;&t;((pmd_t *)2); BUG()
+mdefine_line|#define pmd_alloc_one(mm,addr)&t;&t;({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(pmd)&t;&t;&t;do { } while (0)
 DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(mm,pmd,pte)&t;(0)
+mdefine_line|#define pgd_populate(mm,pmd,pte)&t;BUG()
 r_extern
 id|pgd_t
 op_star

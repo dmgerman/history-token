@@ -22,7 +22,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-macro_line|#include &lt;asm/arch.h&gt;
+singleline_comment|//#include &lt;asm/arch.h&gt;
 macro_line|#include &lt;asm/map.h&gt;
 DECL|macro|TABLE_SIZE
 mdefine_line|#define TABLE_SIZE&t;PTRS_PER_PTE * sizeof(pte_t))

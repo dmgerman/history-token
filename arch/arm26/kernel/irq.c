@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irqchip.h&gt;
-multiline_comment|/*&n; * Maximum IRQ count.  Currently, this is arbitary.  However, it should&n; * not be set too low to prevent false triggering.  Conversely, if it&n; * is set too high, then you could miss a stuck IRQ.&n; *&n; * Maybe we ought to set a timer and re-enable the IRQ at a later time?&n; */
+multiline_comment|/*&n; * Maximum IRQ count.  Currently, this is arbitary.  However, it should&n; * not be set too low to prevent false triggering.  Conversely, if it&n; * is set too high, then you could miss a stuck IRQ.&n; *&n; * FIXME Maybe we ought to set a timer and re-enable the IRQ at a later time?&n; */
 DECL|macro|MAX_IRQ_CNT
 mdefine_line|#define MAX_IRQ_CNT&t;100000
 DECL|variable|irq_err_count
@@ -39,18 +39,6 @@ id|irq_desc
 (braket
 id|NR_IRQS
 )braket
-suffix:semicolon
-r_void
-(paren
-op_star
-id|init_arch_irq
-)paren
-(paren
-r_void
-)paren
-id|__initdata
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * Dummy mask/unmask handler&n; */
 DECL|function|dummy_mask_unmask_irq
@@ -264,6 +252,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+singleline_comment|//FIXME bum addresses reported - why?
 )brace
 r_else
 r_if
@@ -2476,7 +2465,7 @@ id|desc
 op_assign
 id|bad_irq_desc
 suffix:semicolon
-id|init_arch_irq
+id|arc_init_irq
 c_func
 (paren
 )paren

@@ -118,10 +118,6 @@ op_star
 id|mm
 )paren
 (brace
-r_void
-op_star
-id|pg2k
-suffix:semicolon
 id|pgd_t
 op_star
 id|new_pgd
@@ -142,10 +138,6 @@ id|new_pte
 comma
 op_star
 id|init_pte
-suffix:semicolon
-r_struct
-id|mm_struct
-id|bob
 suffix:semicolon
 id|new_pgd
 op_assign
