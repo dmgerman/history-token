@@ -11,14 +11,6 @@ macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irtty.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
-DECL|variable|irtty
-r_static
-id|hashbin_t
-op_star
-id|irtty
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|variable|irda_ldisc
 r_static
 r_struct
@@ -307,35 +299,6 @@ r_void
 r_int
 id|status
 suffix:semicolon
-multiline_comment|/* Probably no need to lock here because all operations done in&n;&t; * open()/close() which are already safe - Jean II */
-id|irtty
-op_assign
-id|hashbin_new
-c_func
-(paren
-id|HB_NOLOCK
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irtty
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;IrDA: Can&squot;t allocate irtty hashbin!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 multiline_comment|/* Fill in our line protocol discipline, and register it */
 id|memset
 c_func
@@ -494,15 +457,6 @@ id|ret
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  The TTY should care of deallocating the instances by using the&n;&t; *  callback to irtty_close(), therefore we do give any deallocation&n;&t; *  function to hashbin_destroy().&n;&t; */
-id|hashbin_delete
-c_func
-(paren
-id|irtty
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* &n; *  Function irtty_open(tty)&n; *&n; *    This function is called by the TTY module when the IrDA line&n; *    discipline is called for.  Because we are sure the tty line exists,&n; *    we only have to link it to a free IrDA channel.  &n; */
 DECL|function|irtty_open
@@ -646,25 +600,6 @@ c_func
 id|name
 comma
 id|tty-&gt;name
-)paren
-suffix:semicolon
-id|hashbin_insert
-c_func
-(paren
-id|irtty
-comma
-(paren
-id|irda_queue_t
-op_star
-)paren
-id|self
-comma
-(paren
-r_int
-)paren
-id|self
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1072,21 +1007,6 @@ id|unregister_netdev
 c_func
 (paren
 id|self-&gt;netdev
-)paren
-suffix:semicolon
-id|self
-op_assign
-id|hashbin_remove
-c_func
-(paren
-id|irtty
-comma
-(paren
-r_int
-)paren
-id|self
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Protect access to self-&gt;task and self-&gt;?x_buff - Jean II */
