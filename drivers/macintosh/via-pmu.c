@@ -4320,7 +4320,7 @@ comma
 id|vmax_charged
 suffix:semicolon
 r_int
-id|current
+id|amperage
 comma
 id|voltage
 comma
@@ -4461,7 +4461,7 @@ l_int|72665
 op_div
 l_int|10
 suffix:semicolon
-id|current
+id|amperage
 op_assign
 id|req-&gt;reply
 (braket
@@ -4486,7 +4486,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|current
+id|amperage
 OG
 l_int|200
 )paren
@@ -4494,7 +4494,7 @@ id|vb
 op_add_assign
 (paren
 (paren
-id|current
+id|amperage
 op_minus
 l_int|200
 )paren
@@ -4607,7 +4607,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current
+id|amperage
 OG
 l_int|0
 )paren
@@ -4619,7 +4619,7 @@ op_star
 l_int|16440
 )paren
 op_div
-id|current
+id|amperage
 suffix:semicolon
 r_else
 id|time
@@ -4630,10 +4630,10 @@ id|max
 op_assign
 l_int|100
 suffix:semicolon
-id|current
+id|amperage
 op_assign
 op_minus
-id|current
+id|amperage
 suffix:semicolon
 )brace
 r_else
@@ -4641,7 +4641,7 @@ id|charge
 op_assign
 id|max
 op_assign
-id|current
+id|amperage
 op_assign
 id|voltage
 op_assign
@@ -4681,9 +4681,9 @@ id|pmu_batteries
 id|pmu_cur_battery
 )braket
 dot
-id|current
+id|amperage
 op_assign
-id|current
+id|amperage
 suffix:semicolon
 id|pmu_batteries
 (braket
@@ -4725,7 +4725,7 @@ op_assign
 id|PMU_BATT_TYPE_SMART
 suffix:semicolon
 r_int
-id|current
+id|amperage
 suffix:semicolon
 r_int
 r_int
@@ -4799,7 +4799,7 @@ id|req-&gt;reply
 l_int|3
 )braket
 suffix:semicolon
-id|current
+id|amperage
 op_assign
 op_star
 (paren
@@ -4859,7 +4859,7 @@ id|req-&gt;reply
 l_int|5
 )braket
 suffix:semicolon
-id|current
+id|amperage
 op_assign
 op_star
 (paren
@@ -4933,7 +4933,7 @@ id|capa
 op_assign
 id|max
 op_assign
-id|current
+id|amperage
 op_assign
 id|voltage
 op_assign
@@ -4952,7 +4952,7 @@ l_int|0x01
 )paren
 op_logical_and
 (paren
-id|current
+id|amperage
 OG
 l_int|0
 )paren
@@ -4993,9 +4993,9 @@ id|pmu_batteries
 id|pmu_cur_battery
 )braket
 dot
-id|current
+id|amperage
 op_assign
-id|current
+id|amperage
 suffix:semicolon
 id|pmu_batteries
 (braket
@@ -5009,7 +5009,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current
+id|amperage
 )paren
 (brace
 r_if
@@ -5025,7 +5025,7 @@ l_int|0x01
 )paren
 op_logical_and
 (paren
-id|current
+id|amperage
 OG
 l_int|0
 )paren
@@ -5047,7 +5047,7 @@ op_star
 l_int|3600
 )paren
 op_div
-id|current
+id|amperage
 suffix:semicolon
 r_else
 id|pmu_batteries
@@ -5065,7 +5065,7 @@ l_int|3600
 op_div
 (paren
 op_minus
-id|current
+id|amperage
 )paren
 suffix:semicolon
 )brace
@@ -5486,7 +5486,7 @@ id|pmu_batteries
 id|batnum
 )braket
 dot
-id|current
+id|amperage
 )paren
 suffix:semicolon
 id|p
