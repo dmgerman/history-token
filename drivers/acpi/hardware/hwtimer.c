@@ -104,8 +104,6 @@ id|ticks
 comma
 op_amp
 id|acpi_gbl_FADT-&gt;xpm_tmr_blk
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
