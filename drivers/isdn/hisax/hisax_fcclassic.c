@@ -1060,7 +1060,7 @@ op_assign
 op_amp
 id|fcclassic_write_isac_fifo
 suffix:semicolon
-id|isac_setup
+id|hisax_isac_setup
 c_func
 (paren
 op_amp
