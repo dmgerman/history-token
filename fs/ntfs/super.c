@@ -21,6 +21,7 @@ multiline_comment|/* Error constants/strings used in inode.c::ntfs_show_options(
 r_typedef
 r_enum
 (brace
+multiline_comment|/* One of these must be present, default is ON_ERRORS_CONTINUE. */
 DECL|enumerator|ON_ERRORS_PANIC
 id|ON_ERRORS_PANIC
 op_assign
@@ -36,6 +37,7 @@ id|ON_ERRORS_CONTINUE
 op_assign
 l_int|0x04
 comma
+multiline_comment|/* Optional, can be combined with any of the above. */
 DECL|enumerator|ON_ERRORS_RECOVER
 id|ON_ERRORS_RECOVER
 op_assign
@@ -77,30 +79,6 @@ comma
 id|ON_ERRORS_RECOVER
 comma
 l_string|&quot;recover&quot;
-)brace
-comma
-(brace
-id|ON_ERRORS_RECOVER
-op_or
-id|ON_ERRORS_PANIC
-comma
-l_string|&quot;recover_or_panic&quot;
-)brace
-comma
-(brace
-id|ON_ERRORS_RECOVER
-op_or
-id|ON_ERRORS_REMOUNT_RO
-comma
-l_string|&quot;recover_or_remount-ro&quot;
-)brace
-comma
-(brace
-id|ON_ERRORS_RECOVER
-op_or
-id|ON_ERRORS_CONTINUE
-comma
-l_string|&quot;recover_or_continue&quot;
 )brace
 comma
 (brace
@@ -1163,9 +1141,13 @@ c_cond
 (paren
 op_logical_neg
 id|vol-&gt;on_errors
+op_logical_or
+id|vol-&gt;on_errors
+op_eq
+id|ON_ERRORS_RECOVER
 )paren
 id|vol-&gt;on_errors
-op_assign
+op_or_assign
 id|ON_ERRORS_CONTINUE
 suffix:semicolon
 r_if
@@ -7310,7 +7292,7 @@ macro_line|#endif
 macro_line|#ifdef MODULE
 l_string|&quot; MODULE&quot;
 macro_line|#endif
-l_string|&quot;]. Copyright (c) 2001 Anton Altaparmakov.&bslash;n&quot;
+l_string|&quot;]. Copyright (c) 2001,2002 Anton Altaparmakov.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ntfs_debug
