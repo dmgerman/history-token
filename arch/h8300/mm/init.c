@@ -450,7 +450,7 @@ id|__init_end
 suffix:semicolon
 r_extern
 r_int
-r_char
+r_int
 id|_ramend
 comma
 id|_ramstart

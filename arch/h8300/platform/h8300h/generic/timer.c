@@ -55,7 +55,7 @@ r_int
 id|platform_timer_setup
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_int
@@ -177,7 +177,7 @@ r_int
 id|platform_timer_setup
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_int
