@@ -133,23 +133,6 @@ id|llc_station
 id|llc_main_station
 suffix:semicolon
 multiline_comment|/* only one of its kind */
-DECL|variable|llc_ind_prim
-DECL|variable|llc_cfm_prim
-r_struct
-id|llc_prim_if_block
-id|llc_ind_prim
-comma
-id|llc_cfm_prim
-suffix:semicolon
-DECL|variable|llc_ind_data_prim
-DECL|variable|llc_cfm_data_prim
-r_static
-r_union
-id|llc_u_prim_data
-id|llc_ind_data_prim
-comma
-id|llc_cfm_data_prim
-suffix:semicolon
 multiline_comment|/**&n; *&t;llc_sap_alloc - allocates and initializes sap.&n; *&n; *&t;Allocates and initializes sap.&n; */
 DECL|function|llc_sap_alloc
 r_struct
@@ -232,6 +215,16 @@ c_func
 op_amp
 id|sap-&gt;mac_pdu_q
 )paren
+suffix:semicolon
+id|sap-&gt;llc_ind_prim.data
+op_assign
+op_amp
+id|sap-&gt;llc_ind_data_prim
+suffix:semicolon
+id|sap-&gt;llc_cfm_prim.data
+op_assign
+op_amp
+id|sap-&gt;llc_cfm_data_prim
 suffix:semicolon
 )brace
 r_return
@@ -2264,16 +2257,6 @@ id|llc_main_station
 comma
 id|ev
 )paren
-suffix:semicolon
-id|llc_ind_prim.data
-op_assign
-op_amp
-id|llc_ind_data_prim
-suffix:semicolon
-id|llc_cfm_prim.data
-op_assign
-op_amp
-id|llc_cfm_data_prim
 suffix:semicolon
 id|proc_net_create
 c_func
