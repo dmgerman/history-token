@@ -4875,12 +4875,6 @@ r_int
 r_int
 id|misc
 suffix:semicolon
-id|patch_ad1881
-c_func
-(paren
-id|ac97
-)paren
-suffix:semicolon
 id|ac97-&gt;build_ops
 op_assign
 op_amp
@@ -4897,9 +4891,10 @@ id|AC97_AD_MISC
 )paren
 suffix:semicolon
 multiline_comment|/* switch front/surround line-out/hp-out */
-multiline_comment|/* center/LFE, surround in High-Z mode */
+multiline_comment|/* center/LFE, mic in 3.75V mode */
 multiline_comment|/* AD-compatible mode */
 multiline_comment|/* Stereo mutes enabled */
+multiline_comment|/* in accordance with ADI driver: misc | 0x5c28 */
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -4909,7 +4904,7 @@ id|AC97_AD_MISC
 comma
 id|misc
 op_or
-id|AC97_AD198X_VREFD
+id|AC97_AD198X_VREFH
 op_or
 id|AC97_AD198X_LOSEL
 op_or
