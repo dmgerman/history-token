@@ -7421,7 +7421,12 @@ id|asoc-&gt;unack_data
 suffix:semicolon
 id|status.sstat_penddata
 op_assign
-id|asoc-&gt;peer.tsn_map.pending_data
+id|sctp_tsnmap_pending
+c_func
+(paren
+op_amp
+id|asoc-&gt;peer.tsn_map
+)paren
 suffix:semicolon
 id|status.sstat_instrms
 op_assign
