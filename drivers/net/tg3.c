@@ -29253,7 +29253,7 @@ op_or_assign
 id|TG3_FLG2_SUN_5704
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If we have an AMD 762 or Intel ICH/ICH0 chipset, write&n;&t; * reordering to the mailbox registers done by the host&n;&t; * controller can cause major troubles.  We read back from&n;&t; * every mailbox register write to force the writes to be&n;&t; * posted to the chip in order.&n;&t; */
+multiline_comment|/* If we have an AMD 762 or Intel ICH/ICH0/ICH2 chipset, write&n;&t; * reordering to the mailbox registers done by the host&n;&t; * controller can cause major troubles.  We read back from&n;&t; * every mailbox register write to force the writes to be&n;&t; * posted to the chip in order.&n;&t; */
 r_if
 c_cond
 (paren
@@ -29273,6 +29273,26 @@ c_func
 id|PCI_VENDOR_ID_INTEL
 comma
 id|PCI_DEVICE_ID_INTEL_82801AB_8
+comma
+l_int|NULL
+)paren
+op_logical_or
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801BA_11
+comma
+l_int|NULL
+)paren
+op_logical_or
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801BA_6
 comma
 l_int|NULL
 )paren
