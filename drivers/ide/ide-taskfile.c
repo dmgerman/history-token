@@ -553,10 +553,10 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* drive ready: *might* be interrupting */
 )brace
-multiline_comment|/*&n; * FIXME: Channel lock should be held on entry.&n; */
-DECL|function|ata_taskfile
+multiline_comment|/*&n; * Channel lock should be held on entry.&n; */
+DECL|function|ata_do_taskfile
 id|ide_startstop_t
-id|ata_taskfile
+id|ata_do_taskfile
 c_func
 (paren
 r_struct
@@ -683,10 +683,6 @@ c_cond
 id|ar-&gt;handler
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -695,15 +691,6 @@ op_assign
 id|drive-&gt;channel
 suffix:semicolon
 multiline_comment|/* This is apparently supposed to reset the wait timeout for&n;&t;&t; * the interrupt to accur.&n;&t;&t; */
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -722,14 +709,6 @@ c_func
 id|ar-&gt;cmd
 comma
 id|IDE_COMMAND_REG
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Warning check for race between handler and prehandler&n;&t;&t; * for writing first block of data.  however since we are well&n;&t;&t; * inside the boundaries of the seek, we should be okay.&n;&t;&t; *&n;&t;&t; * FIXME: Replace the switch by using a proper command_type.&n;&t;&t; */
@@ -888,6 +867,9 @@ r_else
 r_int
 id|i
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* Polling wait until the drive is ready.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Stuff the first sector(s) by calling the&n;&t;&t;&t;&t; * handler driectly therafter.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * FIXME: Replace hard-coded 100, what about&n;&t;&t;&t;&t; * error handling?&n;&t;&t;&t;&t; */
 r_for
 c_loop
@@ -935,7 +917,15 @@ l_string|&quot;DISASTER WAITING TO HAPPEN!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_return
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|ar
 op_member_access_from_pointer
 id|handler
@@ -945,6 +935,15 @@ id|drive
 comma
 id|rq
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 )brace
@@ -1608,11 +1607,11 @@ c_func
 id|ata_write
 )paren
 suffix:semicolon
-DECL|variable|ata_taskfile
+DECL|variable|ata_do_taskfile
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ata_taskfile
+id|ata_do_taskfile
 )paren
 suffix:semicolon
 DECL|variable|ata_special_intr

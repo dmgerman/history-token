@@ -5419,6 +5419,15 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
@@ -5454,13 +5463,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
+id|spin_unlock_irqrestore
 c_func
 (paren
 id|ch-&gt;lock
@@ -5468,6 +5471,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|ide_stopped
+suffix:semicolon
+)brace
+macro_line|#endif
 id|bcount.b.high
 op_assign
 id|IN_BYTE
@@ -5843,6 +5851,15 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+multiline_comment|/* FIXME: Move this lock upwards.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5870,19 +5887,13 @@ id|KERN_ERR
 l_string|&quot;ide-tape: Strange, packet command initiated yet DRQ isn&squot;t asserted&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|startstop
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+r_else
+(brace
 id|ireason.all
 op_assign
 id|IN_BYTE
@@ -6004,6 +6015,7 @@ id|ret
 op_assign
 id|ide_started
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -8605,25 +8617,12 @@ id|tape-&gt;dsc_polling_frequency
 op_assign
 id|IDETAPE_DSC_MA_SLOW
 suffix:semicolon
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|idetape_postpone_request
 c_func
 (paren
 id|drive
 comma
 id|rq
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -25543,7 +25542,7 @@ id|standby
 suffix:colon
 l_int|NULL
 comma
-id|XXX_do_request
+id|do_request
 suffix:colon
 id|idetape_do_request
 comma

@@ -1792,7 +1792,7 @@ op_amp
 id|args
 suffix:semicolon
 r_return
-id|ata_taskfile
+id|ata_do_taskfile
 c_func
 (paren
 id|drive
@@ -2012,7 +2012,7 @@ op_amp
 id|args
 suffix:semicolon
 r_return
-id|ata_taskfile
+id|ata_do_taskfile
 c_func
 (paren
 id|drive
@@ -2269,7 +2269,7 @@ op_amp
 id|args
 suffix:semicolon
 r_return
-id|ata_taskfile
+id|ata_do_taskfile
 c_func
 (paren
 id|drive
@@ -2302,19 +2302,24 @@ id|sector_t
 id|block
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-r_int
-id|ret
+multiline_comment|/* This issues a special drive command.&n;&t; */
+r_if
+c_cond
+(paren
+id|rq-&gt;flags
+op_amp
+id|REQ_SPECIAL
+)paren
+r_return
+id|ata_do_taskfile
+c_func
+(paren
+id|drive
+comma
+id|rq-&gt;special
+comma
+id|rq
+)paren
 suffix:semicolon
 multiline_comment|/* FIXME: this check doesn&squot;t make sense */
 r_if
@@ -5639,7 +5644,7 @@ id|standby
 suffix:colon
 id|idedisk_standby
 comma
-id|XXX_do_request
+id|do_request
 suffix:colon
 id|idedisk_do_request
 comma

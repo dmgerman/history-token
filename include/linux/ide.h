@@ -1719,11 +1719,11 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-DECL|member|XXX_do_request
+DECL|member|do_request
 id|ide_startstop_t
 (paren
 op_star
-id|XXX_do_request
+id|do_request
 )paren
 (paren
 r_struct
@@ -2238,7 +2238,7 @@ r_int
 suffix:semicolon
 r_extern
 id|ide_startstop_t
-id|ata_taskfile
+id|ata_do_taskfile
 c_func
 (paren
 r_struct
