@@ -12277,6 +12277,7 @@ r_int
 id|addr
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 id|down
@@ -12524,7 +12525,7 @@ id|timeout
 op_assign
 l_int|5
 op_star
-id|HZ
+l_int|1000
 suffix:semicolon
 r_while
 c_loop
@@ -12541,7 +12542,7 @@ l_int|0
 (brace
 id|timeout
 op_assign
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|timeout
@@ -15595,10 +15596,6 @@ id|i
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;fbq
 (braket
 id|i
@@ -18604,10 +18601,6 @@ suffix:semicolon
 multiline_comment|/* Do the I/O remapping... */
 id|card-&gt;membase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -18775,10 +18768,6 @@ id|card-&gt;fbq
 id|i
 )braket
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren

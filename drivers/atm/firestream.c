@@ -6480,9 +6480,6 @@ l_int|0
 suffix:semicolon
 id|dev-&gt;base
 op_assign
-(paren
-id|ulong
-)paren
 id|ioremap
 c_func
 (paren
@@ -6626,21 +6623,10 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Try again after 10ms. */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-(paren
-(paren
-id|HZ
-op_plus
-l_int|99
-)paren
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 )brace
