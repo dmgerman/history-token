@@ -115,8 +115,7 @@ suffix:semicolon
 r_int
 r_int
 id|oldcount
-suffix:semicolon
-r_int
+comma
 id|woken
 comma
 id|loop
