@@ -269,6 +269,11 @@ r_int
 id|retries
 )paren
 (brace
+r_struct
+id|request_queue
+op_star
+id|q
+suffix:semicolon
 multiline_comment|/*&n;&t; * If the upper level driver is reusing these things, then&n;&t; * we should release the low-level block now.  Another one will&n;&t; * be allocated later when this request is getting queued.&n;&t; */
 r_if
 c_cond
@@ -276,6 +281,10 @@ c_cond
 id|sreq-&gt;sr_command
 )paren
 (brace
+id|q
+op_assign
+id|sreq-&gt;sr_command-&gt;device-&gt;request_queue
+suffix:semicolon
 id|scsi_put_command
 c_func
 (paren
@@ -285,6 +294,14 @@ suffix:semicolon
 id|sreq-&gt;sr_command
 op_assign
 l_int|NULL
+suffix:semicolon
+id|scsi_queue_next_request
+c_func
+(paren
+id|q
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Our own function scsi_done (which marks the host as not busy,&n;&t; * disables the timeout counter, etc) will be called by us or by the&n;&t; * scsi_hosts[host].queuecommand() function needs to also call&n;&t; * the completion function for the high level driver.&n;&t; */
@@ -458,6 +475,11 @@ r_int
 id|retries
 )paren
 (brace
+r_struct
+id|request_queue
+op_star
+id|q
+suffix:semicolon
 id|DECLARE_COMPLETION
 c_func
 (paren
@@ -514,10 +536,22 @@ c_cond
 id|sreq-&gt;sr_command
 )paren
 (brace
+id|q
+op_assign
+id|sreq-&gt;sr_command-&gt;device-&gt;request_queue
+suffix:semicolon
 id|scsi_put_command
 c_func
 (paren
 id|sreq-&gt;sr_command
+)paren
+suffix:semicolon
+id|scsi_queue_next_request
+c_func
+(paren
+id|q
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|sreq-&gt;sr_command
@@ -698,7 +732,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_queue_next_request()&n; *&n; * Purpose:     Handle post-processing of completed commands.&n; *&n; * Arguments:   cmd&t;- command that may need to be requeued.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       After command completion, there may be blocks left&n; *              over which weren&squot;t finished by the previous command&n; *              this can be for a number of reasons - the main one is&n; *              that a medium error occurred, and the sectors after&n; *              the bad block need to be re-read.&n; *&n; *              If cmd is NULL, it means that the previous command&n; *              was completely finished, and we should simply start&n; *              a new command, if possible.&n; *&n; *&t;&t;This is where a lot of special case code has begun to&n; *&t;&t;accumulate.  It doesn&squot;t really affect readability or&n; *&t;&t;anything, but it might be considered architecturally&n; *&t;&t;inelegant.  If more of these special cases start to&n; *&t;&t;accumulate, I am thinking along the lines of implementing&n; *&t;&t;an atexit() like technology that gets run when commands&n; *&t;&t;complete.  I am not convinced that it is worth the&n; *&t;&t;added overhead, however.  Right now as things stand,&n; *&t;&t;there are simple conditional checks, and most hosts&n; *&t;&t;would skip past.&n; *&n; *&t;&t;Another possible solution would be to tailor different&n; *&t;&t;handler functions, sort of like what we did in scsi_merge.c.&n; *&t;&t;This is probably a better solution, but the number of different&n; *&t;&t;permutations grows as 2**N, and if too many more special cases&n; *&t;&t;get added, we start to get screwed.&n; */
 DECL|function|scsi_queue_next_request
-r_static
 r_void
 id|scsi_queue_next_request
 c_func
