@@ -15635,7 +15635,6 @@ macro_line|#else
 DECL|macro|sched_domain_debug
 mdefine_line|#define sched_domain_debug() {}
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Initial dummy domain for early boot and for hotplug cpu. Being static,&n; * it is initialized to zero, so all balancing flags are cleared which is&n; * what we want.&n; */
 DECL|variable|sched_domain_dummy
 r_static
@@ -15643,7 +15642,6 @@ r_struct
 id|sched_domain
 id|sched_domain_dummy
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
 multiline_comment|/*&n; * Force a reinitialization of the sched domains hierarchy.  The domains&n; * and groups cannot be updated in place without racing with the balancing&n; * code, so we temporarily attach all running cpus to a &quot;dummy&quot; domain&n; * which will prevent rebalancing while the sched domains are recalculated.&n; */
 DECL|function|update_sched_domains
