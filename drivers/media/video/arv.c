@@ -32,7 +32,7 @@ multiline_comment|/*&n; * USE_INT is always 0, interrupt mode is not available&n
 DECL|macro|USE_INT
 mdefine_line|#define USE_INT&t;&t;0&t;/* Don&squot;t modify */
 DECL|macro|VERSION
-mdefine_line|#define VERSION&t;&quot;0.02&quot;
+mdefine_line|#define VERSION&t;&quot;0.03&quot;
 DECL|macro|ar_inl
 mdefine_line|#define ar_inl(addr) &t;&t;inl((unsigned long)(addr))
 DECL|macro|ar_outl
@@ -73,11 +73,11 @@ DECL|macro|MAX_AR_LINE_BYTES
 mdefine_line|#define MAX_AR_LINE_BYTES&t;AR_LINE_BYTES_VGA
 multiline_comment|/* frame size &amp; type */
 DECL|macro|AR_FRAME_BYTES_VGA
-mdefine_line|#define AR_FRAME_BYTES_VGA&t;(AR_WIDTH_VGA * AR_HEIGHT_VGA * &bslash;&n;&t;&t;&t;&t; AR_BYTES_PER_PIXEL)
+mdefine_line|#define AR_FRAME_BYTES_VGA &bslash;&n;&t;(AR_WIDTH_VGA * AR_HEIGHT_VGA * AR_BYTES_PER_PIXEL)
 DECL|macro|AR_FRAME_BYTES_QVGA
-mdefine_line|#define AR_FRAME_BYTES_QVGA&t;(AR_WIDTH_QVGA * AR_HEIGHT_QVGA * &bslash;&n;&t;&t;&t;&t; AR_BYTES_PER_PIXEL)
+mdefine_line|#define AR_FRAME_BYTES_QVGA &bslash;&n;&t;(AR_WIDTH_QVGA * AR_HEIGHT_QVGA * AR_BYTES_PER_PIXEL)
 DECL|macro|MAX_AR_FRAME_BYTES
-mdefine_line|#define MAX_AR_FRAME_BYTES&t;(MAX_AR_WIDTH * MAX_AR_HEIGHT * &bslash;&n;&t;&t;&t;&t; AR_BYTES_PER_PIXEL)
+mdefine_line|#define MAX_AR_FRAME_BYTES &bslash;&n;&t;(MAX_AR_WIDTH * MAX_AR_HEIGHT * AR_BYTES_PER_PIXEL)
 DECL|macro|AR_MAX_FRAME
 mdefine_line|#define AR_MAX_FRAME&t;&t;15
 multiline_comment|/* capture size */
@@ -105,7 +105,7 @@ r_int
 r_int
 id|start_capture
 suffix:semicolon
-singleline_comment|// duaring capture in INT. mode.
+multiline_comment|/* duaring capture in INT. mode. */
 macro_line|#if USE_INT
 DECL|member|line_buff
 r_int
@@ -113,7 +113,7 @@ r_char
 op_star
 id|line_buff
 suffix:semicolon
-singleline_comment|// DMA line buffer
+multiline_comment|/* DMA line buffer */
 macro_line|#endif
 DECL|member|frame
 r_int
@@ -124,17 +124,17 @@ id|frame
 id|MAX_AR_HEIGHT
 )braket
 suffix:semicolon
-singleline_comment|// frame data
+multiline_comment|/* frame data */
 DECL|member|size
 r_int
 id|size
 suffix:semicolon
-singleline_comment|// capture size
+multiline_comment|/* capture size */
 DECL|member|mode
 r_int
 id|mode
 suffix:semicolon
-singleline_comment|// capture mode
+multiline_comment|/* capture mode */
 DECL|member|width
 DECL|member|height
 r_int
@@ -181,8 +181,7 @@ suffix:semicolon
 multiline_comment|/* module parameters */
 multiline_comment|/* default frequency */
 DECL|macro|DEFAULT_FREQ
-mdefine_line|#define DEFAULT_FREQ&t;50&t;
-singleline_comment|// 50 or 75 (MHz) is available as BCLK
+mdefine_line|#define DEFAULT_FREQ&t;50&t;/* 50 or 75 (MHz) is available as BCLK */
 DECL|variable|freq
 r_static
 r_int
@@ -242,6 +241,103 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|function|wait_for_vsync
+r_static
+r_inline
+r_void
+id|wait_for_vsync
+c_func
+(paren
+r_void
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|ar_inl
+c_func
+(paren
+id|ARVCR0
+)paren
+op_amp
+id|ARVCR0_VDS
+)paren
+multiline_comment|/* wait for VSYNC */
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+(paren
+id|ar_inl
+c_func
+(paren
+id|ARVCR0
+)paren
+op_amp
+id|ARVCR0_VDS
+)paren
+)paren
+multiline_comment|/* wait for VSYNC */
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|wait_acknowledge
+r_static
+r_inline
+r_void
+id|wait_acknowledge
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|1000
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|ar_inl
+c_func
+(paren
+id|PLDI2CSTS
+)paren
+op_amp
+id|PLDI2CSTS_NOACK
+)paren
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************&n; * I2C functions&n; *******************************************************************/
 DECL|function|iic
 r_void
@@ -280,35 +376,11 @@ comma
 id|PLDI2CDATA
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_for_vsync
 c_func
 (paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
 )paren
 suffix:semicolon
-singleline_comment|// wait for VSYNC
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|ar_inl
-c_func
-(paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
-)paren
-)paren
-suffix:semicolon
-singleline_comment|// wait for VSYNC
 multiline_comment|/* Start */
 id|ar_outl
 c_func
@@ -318,38 +390,12 @@ comma
 id|PLDI2CCND
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_acknowledge
 c_func
 (paren
-id|PLDI2CSTS
 )paren
-op_amp
-id|PLDI2CSTS_NOACK
-)paren
-(brace
 suffix:semicolon
-)brace
-multiline_comment|/* Trasfer data 1 */
+multiline_comment|/* Transfer data 1 */
 id|ar_outl
 c_func
 (paren
@@ -358,35 +404,11 @@ comma
 id|PLDI2CDATA
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_for_vsync
 c_func
 (paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
 )paren
 suffix:semicolon
-singleline_comment|// wait for VSYNC
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|ar_inl
-c_func
-(paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
-)paren
-)paren
-suffix:semicolon
-singleline_comment|// wait for VSYNC
 id|ar_outl
 c_func
 (paren
@@ -395,39 +417,12 @@ comma
 id|PLDI2CSTEN
 )paren
 suffix:semicolon
-multiline_comment|/* Ack wait */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_acknowledge
 c_func
 (paren
-id|PLDI2CSTS
 )paren
-op_amp
-id|PLDI2CSTS_NOACK
-)paren
-(brace
 suffix:semicolon
-)brace
-multiline_comment|/* Trasfer data 2 */
+multiline_comment|/* Transfer data 2 */
 id|ar_outl
 c_func
 (paren
@@ -436,35 +431,11 @@ comma
 id|PLDI2CDATA
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_for_vsync
 c_func
 (paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
 )paren
 suffix:semicolon
-singleline_comment|// wait for VSYNC
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|ar_inl
-c_func
-(paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
-)paren
-)paren
-suffix:semicolon
-singleline_comment|// wait for VSYNC
 id|ar_outl
 c_func
 (paren
@@ -473,38 +444,11 @@ comma
 id|PLDI2CSTEN
 )paren
 suffix:semicolon
-multiline_comment|/* Ack wait */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_acknowledge
 c_func
 (paren
-id|PLDI2CSTS
 )paren
-op_amp
-id|PLDI2CSTS_NOACK
-)paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -513,7 +457,7 @@ op_eq
 l_int|3
 )paren
 (brace
-multiline_comment|/* Trasfer data 3 */
+multiline_comment|/* Transfer data 3 */
 id|ar_outl
 c_func
 (paren
@@ -522,35 +466,11 @@ comma
 id|PLDI2CDATA
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_for_vsync
 c_func
 (paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
 )paren
 suffix:semicolon
-singleline_comment|// wait for VSYNC
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|ar_inl
-c_func
-(paren
-id|ARVCR0
-)paren
-op_amp
-id|ARVCR0_VDS
-)paren
-)paren
-suffix:semicolon
-singleline_comment|// wait for VSYNC
 id|ar_outl
 c_func
 (paren
@@ -559,38 +479,11 @@ comma
 id|PLDI2CSTEN
 )paren
 suffix:semicolon
-multiline_comment|/* Ack wait */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|10000
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ar_inl
+id|wait_acknowledge
 c_func
 (paren
-id|PLDI2CSTS
 )paren
-op_amp
-id|PLDI2CSTS_NOACK
-)paren
-(brace
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Stop */
 r_for
@@ -607,9 +500,11 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
 id|ar_outl
 c_func
 (paren
@@ -637,9 +532,11 @@ id|PLDI2CSTS
 op_amp
 id|PLDI2CSTS_BB
 )paren
-(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|init_iic
 r_void
@@ -735,7 +632,7 @@ comma
 id|PLDI2CFREQ
 )paren
 suffix:semicolon
-multiline_comment|/* default:BCLK = 50MHz */
+multiline_comment|/* default: BCLK = 50MHz */
 )brace
 id|ar_outl
 c_func
@@ -748,6 +645,66 @@ suffix:semicolon
 multiline_comment|/* I2CCR Enable */
 )brace
 multiline_comment|/**************************************************************************&n; *&n; * Video4Linux Interface functions&n; *&n; **************************************************************************/
+DECL|function|disable_dma
+r_static
+r_inline
+r_void
+id|disable_dma
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ar_outl
+c_func
+(paren
+l_int|0x8000
+comma
+id|M32R_DMAEN_PORTL
+)paren
+suffix:semicolon
+multiline_comment|/* disable DMA0 */
+)brace
+DECL|function|enable_dma
+r_static
+r_inline
+r_void
+id|enable_dma
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ar_outl
+c_func
+(paren
+l_int|0x8080
+comma
+id|M32R_DMAEN_PORTL
+)paren
+suffix:semicolon
+multiline_comment|/* enable DMA0 */
+)brace
+DECL|function|clear_dma_status
+r_static
+r_inline
+r_void
+id|clear_dma_status
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ar_outl
+c_func
+(paren
+l_int|0x8000
+comma
+id|M32R_DMAEDET_PORTL
+)paren
+suffix:semicolon
+multiline_comment|/* clear status */
+)brace
 DECL|function|wait_for_vertical_sync
 r_static
 r_inline
@@ -769,7 +726,7 @@ multiline_comment|/* FIXME */
 r_int
 id|l
 suffix:semicolon
-multiline_comment|/*&n; &t; * check HCOUNT because we can not check vertual sync.&n; &t; */
+multiline_comment|/*&n;&t; * check HCOUNT because we cannot check vertical sync.&n; &t; */
 r_for
 c_loop
 (paren
@@ -828,6 +785,10 @@ id|ARVHCOUNT
 )paren
 op_ne
 id|exp_line
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -959,15 +920,11 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|ar_outl
+id|disable_dma
 c_func
 (paren
-l_int|0x80000
-comma
-id|M32R_DMAEN_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// disable DMA0
 id|ar_outl
 c_func
 (paren
@@ -984,7 +941,7 @@ comma
 id|M32R_DMA0CR1_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// set AR FIFO address as source(BSEL5)
+multiline_comment|/* set AR FIFO address as source(BSEL5) */
 id|ar_outl
 c_func
 (paren
@@ -993,7 +950,6 @@ comma
 id|M32R_DMA0CSA_PORTL
 )paren
 suffix:semicolon
-singleline_comment|//
 id|ar_outl
 c_func
 (paren
@@ -1002,7 +958,6 @@ comma
 id|M32R_DMA0RSA_PORTL
 )paren
 suffix:semicolon
-singleline_comment|//
 id|ar_outl
 c_func
 (paren
@@ -1011,7 +966,7 @@ comma
 id|M32R_DMA0CDA_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// destination address
+multiline_comment|/* destination addr. */
 id|ar_outl
 c_func
 (paren
@@ -1020,7 +975,7 @@ comma
 id|M32R_DMA0RDA_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// reload address
+multiline_comment|/* reload address */
 id|ar_outl
 c_func
 (paren
@@ -1029,7 +984,7 @@ comma
 id|M32R_DMA0CBCUT_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// byte count(bytes)
+multiline_comment|/* byte count (bytes) */
 id|ar_outl
 c_func
 (paren
@@ -1038,7 +993,7 @@ comma
 id|M32R_DMA0RBCUT_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// reload count (bytes)
+multiline_comment|/* reload count (bytes) */
 multiline_comment|/*&n;&t; * Okey , kicks AR LSI to invoke an interrupt&n;&t; */
 id|ar-&gt;start_capture
 op_assign
@@ -1103,15 +1058,11 @@ comma
 id|ARVCR1
 )paren
 suffix:semicolon
-id|ar_outl
+id|disable_dma
 c_func
 (paren
-l_int|0x80000
-comma
-id|M32R_DMAEN_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// disable DMA0
 id|ar_outl
 c_func
 (paren
@@ -1185,8 +1136,12 @@ id|ARVHCOUNT
 op_ne
 l_int|0
 )paren
+multiline_comment|/* wait for 0 */
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-singleline_comment|// wait for 0
 r_if
 c_cond
 (paren
@@ -1273,15 +1228,11 @@ comma
 id|M32R_DMA0CDA_PORTL
 )paren
 suffix:semicolon
-id|ar_outl
+id|enable_dma
 c_func
 (paren
-l_int|0x8080
-comma
-id|M32R_DMAEN_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// enable DMA0
 r_while
 c_loop
 (paren
@@ -1296,25 +1247,21 @@ op_amp
 l_int|0x8000
 )paren
 )paren
-suffix:semicolon
-id|ar_outl
+id|cpu_relax
 c_func
 (paren
-l_int|0x80000
-comma
-id|M32R_DMAEN_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// disable DMA0
-id|ar_outl
+id|disable_dma
 c_func
 (paren
-l_int|0x8000
-comma
-id|M32R_DMAEDET_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// clear status
+id|clear_dma_status
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ar_outl
 c_func
 (paren
@@ -1363,15 +1310,11 @@ comma
 id|M32R_DMA0CDA_PORTL
 )paren
 suffix:semicolon
-id|ar_outl
+id|enable_dma
 c_func
 (paren
-l_int|0x8080
-comma
-id|M32R_DMAEN_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// enable DMA0
 r_while
 c_loop
 (paren
@@ -1386,25 +1329,21 @@ op_amp
 l_int|0x8000
 )paren
 )paren
-suffix:semicolon
-id|ar_outl
+id|cpu_relax
 c_func
 (paren
-l_int|0x80000
-comma
-id|M32R_DMAEN_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// disable DMA0
-id|ar_outl
+id|disable_dma
 c_func
 (paren
-l_int|0x8000
-comma
-id|M32R_DMAEDET_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// clear status
+id|clear_dma_status
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ar_outl
 c_func
 (paren
@@ -1852,31 +1791,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|w-&gt;width
-op_ne
-id|AR_WIDTH_QVGA
-op_logical_and
-id|w-&gt;height
-op_ne
-id|AR_HEIGHT_QVGA
-)paren
-r_if
-c_cond
 (paren
 id|w-&gt;width
 op_ne
 id|AR_WIDTH_VGA
-op_logical_and
+op_logical_or
 id|w-&gt;height
 op_ne
 id|AR_HEIGHT_VGA
 )paren
-(brace
+op_logical_and
+(paren
+id|w-&gt;width
+op_ne
+id|AR_WIDTH_QVGA
+op_logical_or
+id|w-&gt;height
+op_ne
+id|AR_HEIGHT_QVGA
+)paren
+)paren
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|down
 c_func
 (paren
@@ -2351,7 +2289,7 @@ c_func
 id|ARVHCOUNT
 )paren
 suffix:semicolon
-singleline_comment|// line number
+multiline_comment|/* line number */
 r_if
 c_cond
 (paren
@@ -2424,16 +2362,22 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * It is an interrupt for line 0.&n;&t;&t; * we have to start capture.&n;&t;&t; */
+id|disable_dma
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#if 0
 id|ar_outl
 c_func
 (paren
-l_int|0x8000
+id|ar-&gt;line_buff
 comma
-id|M32R_DMAEN_PORTL
+id|M32R_DMA0CDA_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// disable DMA0
-singleline_comment|//ar_outl(ar-&gt;line_buff, M32R_DMA0CDA_PORTL);&t;// needless?
+multiline_comment|/* needless? */
+macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -2447,21 +2391,26 @@ comma
 id|ar-&gt;line_bytes
 )paren
 suffix:semicolon
-singleline_comment|//ar_outl(0xa1861300, M32R_DMA0CR0_PORTL);
+macro_line|#if 0
 id|ar_outl
 c_func
 (paren
-l_int|0x8080
+l_int|0xa1861300
 comma
-id|M32R_DMAEN_PORTL
+id|M32R_DMA0CR0_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// enable DMA0
+macro_line|#endif
+id|enable_dma
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ar-&gt;start_capture
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// during capture
+multiline_comment|/* during capture */
 r_return
 suffix:semicolon
 )brace
@@ -2481,15 +2430,11 @@ l_int|1
 )paren
 )paren
 (brace
-id|ar_outl
+id|disable_dma
 c_func
 (paren
-l_int|0x8000
-comma
-id|M32R_DMAEN_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// disable DMA0
 id|memcpy
 c_func
 (paren
@@ -2535,7 +2480,7 @@ op_and_assign
 op_complement
 id|ARVCR1_HIEN
 suffix:semicolon
-singleline_comment|// clear int. flag
+multiline_comment|/* clear int. flag */
 id|ar_outl
 c_func
 (paren
@@ -2544,7 +2489,7 @@ comma
 id|ARVCR1
 )paren
 suffix:semicolon
-singleline_comment|// disable
+multiline_comment|/* disable */
 id|wake_up_interruptible
 c_func
 (paren
@@ -2555,17 +2500,29 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//ar_outl(ar-&gt;line_buff, M32R_DMA0CDA_PORTL);
-singleline_comment|//ar_outl(0xa1861300, M32R_DMA0CR0_PORTL);
+macro_line|#if 0
 id|ar_outl
 c_func
 (paren
-l_int|0x8080
+id|ar-&gt;line_buff
 comma
-id|M32R_DMAEN_PORTL
+id|M32R_DMA0CDA_PORTL
 )paren
 suffix:semicolon
-singleline_comment|// enable DMA
+id|ar_outl
+c_func
+(paren
+l_int|0xa1861300
+comma
+id|M32R_DMA0CR0_PORTL
+)paren
+suffix:semicolon
+macro_line|#endif
+id|enable_dma
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -2625,7 +2582,7 @@ comma
 id|ARVCR0
 )paren
 suffix:semicolon
-singleline_comment|// assert reset of AR LSI
+multiline_comment|/* assert reset of AR LSI */
 r_for
 c_loop
 (paren
@@ -2640,10 +2597,12 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
+multiline_comment|/* wait for over 10 cycles @ 27MHz */
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
-singleline_comment|// wait for over 10 cycles @ 27MHz
 id|ar_outl
 c_func
 (paren
@@ -2652,7 +2611,7 @@ comma
 id|ARVCR0
 )paren
 suffix:semicolon
-singleline_comment|// negate reset of AR LSI (enable)
+multiline_comment|/* negate reset of AR LSI (enable) */
 r_for
 c_loop
 (paren
@@ -2667,10 +2626,12 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
+multiline_comment|/* wait for over 420 cycles @ 27MHz */
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
-singleline_comment|// wait for over 420 cycles @ 27MHz
 multiline_comment|/* AR uses INT3 of CPU as interrupt pin. */
 id|ar_outl
 c_func
@@ -2730,7 +2691,8 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-singleline_comment|// &gt; 0xa1d10,  56ms
+(brace
+multiline_comment|/* &gt; 0xa1d10,  56ms */
 r_if
 c_cond
 (paren
@@ -2745,13 +2707,14 @@ id|ARVCR0_VDS
 )paren
 )paren
 (brace
-singleline_comment|// VSYNC
+multiline_comment|/* VSYNC */
 id|found
 op_assign
 l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -2760,12 +2723,10 @@ id|found
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -2786,7 +2747,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// start
+multiline_comment|/* start */
 id|iic
 c_func
 (paren
@@ -3029,7 +2990,23 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|//&t;iic(2,0x78,0x90,0x00,0x00);&t;// AWB on=1 off=0
+macro_line|#if 0
+id|iic
+c_func
+(paren
+l_int|2
+comma
+l_int|0x78
+comma
+l_int|0x90
+comma
+l_int|0x00
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+multiline_comment|/* AWB on=1 off=0 */
+macro_line|#endif
 id|iic
 c_func
 (paren
@@ -3238,135 +3215,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|//&t;iic(2,0x78,0x83,0x8c,0x00);&t;// brightness
-id|printk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
-singleline_comment|// color correction
 macro_line|#if 0
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x00
-comma
-l_int|0x89
-)paren
-suffix:semicolon
-singleline_comment|// a
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x01
-comma
-l_int|0x96
-)paren
-suffix:semicolon
-singleline_comment|// b
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x03
-comma
-l_int|0x85
-)paren
-suffix:semicolon
-singleline_comment|// c
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x04
-comma
-l_int|0x87
-)paren
-suffix:semicolon
-singleline_comment|// d
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x02
-comma
-l_int|0x66
-)paren
-suffix:semicolon
-singleline_comment|// e(Lo)
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x05
-comma
-l_int|0x84
-)paren
-suffix:semicolon
-singleline_comment|// f(Lo)
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x06
-comma
-l_int|0x04
-)paren
-suffix:semicolon
-singleline_comment|// e(Hi)
-id|iic
-c_func
-(paren
-l_int|3
-comma
-l_int|0x78
-comma
-l_int|0x49
-comma
-l_int|0x07
-comma
-l_int|0x04
-)paren
-suffix:semicolon
-singleline_comment|// e(Hi)
 id|iic
 c_func
 (paren
@@ -3374,15 +3223,22 @@ l_int|2
 comma
 l_int|0x78
 comma
-l_int|0x48
+l_int|0x83
 comma
-l_int|0x01
+l_int|0x8c
 comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// on=1 off=0
-macro_line|#else
+multiline_comment|/* brightness */
+macro_line|#endif
+id|printk
+c_func
+(paren
+l_string|&quot;.&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* color correction */
 id|iic
 c_func
 (paren
@@ -3397,7 +3253,7 @@ comma
 l_int|0x95
 )paren
 suffix:semicolon
-singleline_comment|// a
+multiline_comment|/* a&t;&t;*/
 id|iic
 c_func
 (paren
@@ -3412,7 +3268,7 @@ comma
 l_int|0x96
 )paren
 suffix:semicolon
-singleline_comment|// b
+multiline_comment|/* b&t;&t;*/
 id|iic
 c_func
 (paren
@@ -3427,7 +3283,7 @@ comma
 l_int|0x85
 )paren
 suffix:semicolon
-singleline_comment|// c
+multiline_comment|/* c&t;&t;*/
 id|iic
 c_func
 (paren
@@ -3442,7 +3298,7 @@ comma
 l_int|0x97
 )paren
 suffix:semicolon
-singleline_comment|// d
+multiline_comment|/* d&t;&t;*/
 id|iic
 c_func
 (paren
@@ -3457,7 +3313,7 @@ comma
 l_int|0x7e
 )paren
 suffix:semicolon
-singleline_comment|// e(Lo)
+multiline_comment|/* e(Lo)&t;*/
 id|iic
 c_func
 (paren
@@ -3472,7 +3328,7 @@ comma
 l_int|0xa4
 )paren
 suffix:semicolon
-singleline_comment|// f(Lo)
+multiline_comment|/* f(Lo)&t;*/
 id|iic
 c_func
 (paren
@@ -3487,7 +3343,7 @@ comma
 l_int|0x04
 )paren
 suffix:semicolon
-singleline_comment|// e(Hi)
+multiline_comment|/* e(Hi)&t;*/
 id|iic
 c_func
 (paren
@@ -3502,7 +3358,7 @@ comma
 l_int|0x04
 )paren
 suffix:semicolon
-singleline_comment|// e(Hi)
+multiline_comment|/* e(Hi)&t;*/
 id|iic
 c_func
 (paren
@@ -3517,8 +3373,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// on=1 off=0
-macro_line|#endif
+multiline_comment|/* on=1 off=0&t;*/
 id|printk
 c_func
 (paren
@@ -3539,7 +3394,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// end
+multiline_comment|/* end */
 id|printk
 c_func
 (paren
@@ -4115,6 +3970,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -4132,6 +3988,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 id|out_line_buff
 suffix:colon
 macro_line|#if USE_INT
@@ -4249,6 +4106,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -4266,6 +4124,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 macro_line|#if USE_INT
 id|kfree
 c_func
