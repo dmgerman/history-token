@@ -5176,8 +5176,6 @@ id|dev
 r_int
 id|retval
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -5219,8 +5217,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -5255,8 +5251,6 @@ l_string|&quot;unable to get IRQ %d&bslash;n&quot;
 comma
 id|dev-&gt;irq
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|retval
@@ -5331,8 +5325,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
