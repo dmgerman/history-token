@@ -3797,12 +3797,6 @@ c_func
 (paren
 id|n-&gt;handle
 )paren
-op_logical_and
-id|n-&gt;exts.action
-op_logical_and
-id|n-&gt;exts.action-&gt;type
-op_eq
-id|TCA_OLD_COMPAT
 )paren
 r_if
 c_cond

@@ -464,6 +464,8 @@ comma
 r_struct
 id|tc_action
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_CLS_ACT */
