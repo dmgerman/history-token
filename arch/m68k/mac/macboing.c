@@ -452,15 +452,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|del_timer
@@ -606,7 +601,7 @@ op_amp
 id|mac_sound_timer
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -694,15 +689,10 @@ op_div
 id|mac_asc_samplespersec
 suffix:semicolon
 multiline_comment|/* this is reasonably big for small frequencies */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* set the volume */
@@ -781,7 +771,7 @@ op_amp
 id|mac_sound_timer
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -813,15 +803,10 @@ id|__u32
 id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * we neither want a sound buffer overflow nor underflow, so we need to match&n;&t; * the number of samples per timer interrupt as exactly as possible.&n;&t; * using the asc interrupt will give better results in the future&n;&t; * ...and the possibility to use a real sample (a boingy noise, maybe...)&n;&t; */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|del_timer
@@ -901,7 +886,7 @@ l_int|0x801
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -521,20 +521,15 @@ id|data
 (brace
 r_int
 r_int
-id|cpu_flags
+id|flags
 suffix:semicolon
 r_int
 id|is_read
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the RTC and make sure the strobe line is high */
@@ -640,10 +635,10 @@ id|vBufB
 op_or_assign
 id|VIA1B_vRTCEnb
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|cpu_flags
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1411,7 +1406,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1449,7 +1444,7 @@ id|MAC_ADB_II
 (brace
 r_int
 r_int
-id|cpu_flags
+id|flags
 suffix:semicolon
 multiline_comment|/* need ROMBASE in booter */
 multiline_comment|/* indeed, plus need to MAP THE ROM !! */
@@ -1489,15 +1484,10 @@ multiline_comment|/*&n;&t;&t;&t; * MSch: Machines known to crash on ROM reset ..
 )brace
 r_else
 (brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|flags
 )paren
 suffix:semicolon
 id|rom_reset
@@ -1505,10 +1495,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|cpu_flags
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1594,7 +1584,7 @@ id|phys
 op_minus
 id|virt
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1682,7 +1672,7 @@ l_string|&quot;a0&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* should never get here */
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
