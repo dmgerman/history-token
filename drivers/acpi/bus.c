@@ -2077,7 +2077,7 @@ r_struct
 id|acpi_bus_event
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
