@@ -301,5 +301,14 @@ op_assign
 l_int|0x0301
 )brace
 suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
+r_extern
+r_struct
+id|device
+op_star
+id|iSeries_vio_dev
+suffix:semicolon
 macro_line|#endif /* _ISERIES_VIO_H */
 eof

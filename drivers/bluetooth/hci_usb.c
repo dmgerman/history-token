@@ -1,7 +1,7 @@
 multiline_comment|/* &n;   HCI USB driver for Linux Bluetooth protocol stack (BlueZ)&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   Copyright (C) 2003 Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
 multiline_comment|/*&n; * Bluetooth HCI USB driver.&n; * Based on original USB Bluetooth driver for Linux kernel&n; *    Copyright (c) 2000 Greg Kroah-Hartman        &lt;greg@kroah.com&gt;&n; *    Copyright (c) 2000 Mark Douglas Corner       &lt;mcorner@umich.edu&gt;&n; *&n; * $Id: hci_usb.c,v 1.8 2002/07/18 17:23:09 maxk Exp $    &n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.4&quot;
+mdefine_line|#define VERSION &quot;2.5&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -49,38 +49,6 @@ id|bluetooth_ids
 )braket
 op_assign
 (brace
-multiline_comment|/* Broadcom BCM2033 without firmware */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x0a5c
-comma
-l_int|0x2033
-)paren
-comma
-dot
-id|driver_info
-op_assign
-id|HCI_IGNORE
-)brace
-comma
-multiline_comment|/* Digianswer device */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x08fd
-comma
-l_int|0x0001
-)paren
-comma
-dot
-id|driver_info
-op_assign
-id|HCI_DIGIANSWER
-)brace
-comma
 multiline_comment|/* Generic Bluetooth USB device */
 (brace
 id|USB_DEVICE_INFO
@@ -138,6 +106,68 @@ id|usb
 comma
 id|bluetooth_ids
 )paren
+suffix:semicolon
+DECL|variable|blacklist_ids
+r_static
+r_struct
+id|usb_device_id
+id|blacklist_ids
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* Broadcom BCM2033 without firmware */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0a5c
+comma
+l_int|0x2033
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_IGNORE
+)brace
+comma
+multiline_comment|/* Broadcom BCM2035 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0a5c
+comma
+l_int|0x200a
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_RESET
+)brace
+comma
+multiline_comment|/* Digianswer device */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x08fd
+comma
+l_int|0x0001
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_DIGIANSWER
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
 suffix:semicolon
 DECL|function|_urb_alloc
 r_struct
@@ -3697,6 +3727,39 @@ comma
 id|ifnum
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|id-&gt;driver_info
+)paren
+(brace
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|match
+suffix:semicolon
+id|match
+op_assign
+id|usb_match_id
+c_func
+(paren
+id|intf
+comma
+id|blacklist_ids
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|match
+)paren
+id|id
+op_assign
+id|match
+suffix:semicolon
+)brace
 id|iface
 op_assign
 id|udev-&gt;actconfig-&gt;interface
@@ -4359,6 +4422,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|id-&gt;driver_info
+op_amp
+id|HCI_RESET
+)paren
+id|set_bit
+c_func
+(paren
+id|HCI_QUIRK_RESET_ON_INIT
+comma
+op_amp
+id|hdev-&gt;quirks
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|hci_register_dev
 c_func
 (paren
@@ -4622,7 +4701,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Marcel Holtmann &lt;marcel@holtmann.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

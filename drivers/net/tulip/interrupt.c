@@ -841,7 +841,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s: Internal fault: The skbuff addresses &quot;
-l_string|&quot;do not match in tulip_rx: %08x vs. %llx %p / %p.&bslash;n&quot;
+l_string|&quot;do not match in tulip_rx: %08x vs. %08llx %p / %p.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

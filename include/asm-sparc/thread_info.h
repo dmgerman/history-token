@@ -129,10 +129,10 @@ suffix:semicolon
 DECL|macro|current_thread_info
 mdefine_line|#define current_thread_info()   (current_thread_info_reg)
 multiline_comment|/*&n; * thread information allocation&n; */
-macro_line|#ifdef CONFIG_SUN4
+macro_line|#if PAGE_SHIFT == 13
 DECL|macro|THREAD_INFO_ORDER
 mdefine_line|#define THREAD_INFO_ORDER  0
-macro_line|#else
+macro_line|#else /* PAGE_SHIFT */
 DECL|macro|THREAD_INFO_ORDER
 mdefine_line|#define THREAD_INFO_ORDER  1
 macro_line|#endif

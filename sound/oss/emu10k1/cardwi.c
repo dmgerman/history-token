@@ -546,12 +546,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|emu10k1_wavein_close
-c_func
-(paren
-id|wave_dev
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1

@@ -785,6 +785,7 @@ suffix:semicolon
 )brace
 DECL|function|wait_on_page_bit
 r_void
+id|fastcall
 id|wait_on_page_bit
 c_func
 (paren
@@ -885,6 +886,7 @@ suffix:semicolon
 multiline_comment|/**&n; * unlock_page() - unlock a locked page&n; *&n; * @page: the page&n; *&n; * Unlocks the page and wakes up sleepers in ___wait_on_page_locked().&n; * Also wakes sleepers in wait_on_page_writeback() because the wakeup&n; * mechananism between PageLocked pages and PageWriteback pages is shared.&n; * But that&squot;s OK - sleepers in wait_on_page_writeback() just go back to sleep.&n; *&n; * The first mb is necessary to safely close the critical section opened by the&n; * TestSetPageLocked(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page_locked()).&n; */
 DECL|function|unlock_page
 r_void
+id|fastcall
 id|unlock_page
 c_func
 (paren
@@ -1050,6 +1052,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Get a lock on the page, assuming we need to sleep to get it.&n; *&n; * Ugly: running sync_page() in state TASK_UNINTERRUPTIBLE is scary.  If some&n; * random driver&squot;s requestfn sets TASK_RUNNING, we could busywait.  However&n; * chances are that on the second loop, the block layer&squot;s plug list is empty,&n; * so sync_page() will then return in state TASK_UNINTERRUPTIBLE.&n; */
 DECL|function|__lock_page
 r_void
+id|fastcall
 id|__lock_page
 c_func
 (paren
@@ -3444,6 +3447,7 @@ suffix:semicolon
 DECL|function|page_cache_read
 r_static
 r_int
+id|fastcall
 id|page_cache_read
 c_func
 (paren

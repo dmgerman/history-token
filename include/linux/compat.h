@@ -127,11 +127,11 @@ r_int
 id|put_compat_timespec
 c_func
 (paren
+r_const
 r_struct
 id|timespec
 op_star
 comma
-r_const
 r_struct
 id|compat_timespec
 op_star

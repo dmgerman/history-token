@@ -1855,6 +1855,7 @@ suffix:semicolon
 DECL|function|free_hot_cold_page
 r_static
 r_void
+id|fastcall
 id|free_hot_cold_page
 c_func
 (paren
@@ -1982,6 +1983,7 @@ suffix:semicolon
 )brace
 DECL|function|free_hot_page
 r_void
+id|fastcall
 id|free_hot_page
 c_func
 (paren
@@ -2002,6 +2004,7 @@ suffix:semicolon
 )brace
 DECL|function|free_cold_page
 r_void
+id|fastcall
 id|free_cold_page
 c_func
 (paren
@@ -2250,6 +2253,7 @@ multiline_comment|/*&n; * This is the &squot;heart&squot; of the zoned buddy all
 r_struct
 id|page
 op_star
+id|fastcall
 DECL|function|__alloc_pages
 id|__alloc_pages
 c_func
@@ -2938,6 +2942,7 @@ id|__alloc_pages
 suffix:semicolon
 multiline_comment|/*&n; * Common helper functions.&n; */
 DECL|function|__get_free_pages
+id|fastcall
 r_int
 r_int
 id|__get_free_pages
@@ -2996,6 +3001,7 @@ id|__get_free_pages
 )paren
 suffix:semicolon
 DECL|function|get_zeroed_page
+id|fastcall
 r_int
 r_int
 id|get_zeroed_page
@@ -3112,6 +3118,7 @@ id|pvec-&gt;cold
 suffix:semicolon
 )brace
 DECL|function|__free_pages
+id|fastcall
 r_void
 id|__free_pages
 c_func
@@ -3175,6 +3182,7 @@ id|__free_pages
 )paren
 suffix:semicolon
 DECL|function|free_pages
+id|fastcall
 r_void
 id|free_pages
 c_func
