@@ -1011,35 +1011,35 @@ suffix:semicolon
 multiline_comment|/* disable all IRQs */
 id|ICMR
 op_assign
-id|ICMR2
-op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* all IRQs are IRQ, not FIQ */
 id|ICLR
-op_assign
-id|ICLR2
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* clear all GPIO edge detects */
 id|GFER0
 op_assign
+l_int|0
+suffix:semicolon
 id|GFER1
 op_assign
+l_int|0
+suffix:semicolon
 id|GFER2
-op_assign
-id|GFER3
 op_assign
 l_int|0
 suffix:semicolon
 id|GRER0
 op_assign
+l_int|0
+suffix:semicolon
 id|GRER1
 op_assign
+l_int|0
+suffix:semicolon
 id|GRER2
-op_assign
-id|GRER3
 op_assign
 l_int|0
 suffix:semicolon
@@ -1055,10 +1055,29 @@ id|GEDR2
 op_assign
 id|GEDR2
 suffix:semicolon
+macro_line|#ifdef CONFIG_PXA27x
+multiline_comment|/* And similarly for the extra regs on the PXA27x */
+id|ICMR2
+op_assign
+l_int|0
+suffix:semicolon
+id|ICLR2
+op_assign
+l_int|0
+suffix:semicolon
+id|GFER3
+op_assign
+l_int|0
+suffix:semicolon
+id|GRER3
+op_assign
+l_int|0
+suffix:semicolon
 id|GEDR3
 op_assign
 id|GEDR3
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* only unmasked interrupts kick us out of idle */
 id|ICCR
 op_assign
