@@ -559,6 +559,14 @@ id|powerstate
 op_assign
 id|ISL38XX_PSM_POWERSAVE_STATE
 suffix:semicolon
+multiline_comment|/* lock the interrupt handler */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|priv-&gt;slock
+)paren
+suffix:semicolon
 multiline_comment|/* received an interrupt request on a shared IRQ line&n;&t; * first check whether the device is in sleep mode */
 id|reg
 op_assign
@@ -589,33 +597,17 @@ l_string|&quot;Assuming someone else called the IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|IRQ_NONE
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|islpci_get_state
-c_func
-(paren
-id|priv
-)paren
-op_ne
-id|PRV_STATE_SLEEP
-)paren
-id|powerstate
-op_assign
-id|ISL38XX_PSM_ACTIVE_STATE
-suffix:semicolon
-multiline_comment|/* lock the interrupt handler */
-id|spin_lock
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|priv-&gt;slock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
 multiline_comment|/* check whether there is any source of interrupt on the device */
 id|reg
 op_assign
@@ -650,6 +642,21 @@ op_ne
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|islpci_get_state
+c_func
+(paren
+id|priv
+)paren
+op_ne
+id|PRV_STATE_SLEEP
+)paren
+id|powerstate
+op_assign
+id|ISL38XX_PSM_ACTIVE_STATE
+suffix:semicolon
 multiline_comment|/* reset the request bits in the Identification register */
 id|isl38xx_w32_flush
 c_func
@@ -1062,6 +1069,29 @@ id|priv-&gt;device_base
 )paren
 suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+macro_line|#if VERBOSE &gt; SHOW_ERROR_MESSAGES
+id|DEBUG
+c_func
+(paren
+id|SHOW_TRACING
+comma
+l_string|&quot;Assuming someone else called the IRQ&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|priv-&gt;slock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/* sleep -&gt; ready */
 r_if
