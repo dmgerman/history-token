@@ -1,63 +1,23 @@
 multiline_comment|/*&n; *  arch/ppc/syslib/m8260_setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx and 8260 by Dan.&n; */
-multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/user.h&gt;
-macro_line|#include &lt;linux/a.out.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/ide.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;cpm2_pic.h&quot;
-r_static
-r_int
-id|m8260_set_rtc_time
-c_func
-(paren
-r_int
-r_int
-id|time
-)paren
-suffix:semicolon
-r_static
-r_int
-r_int
-id|m8260_get_rtc_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|m8260_calibrate_decr
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|__res
 r_int
 r_char
@@ -103,7 +63,19 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Reset the Communication Processor Module.&n;&t;*/
+multiline_comment|/* Print out Vendor and Machine info. */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s %s port&bslash;n&quot;
+comma
+id|CPUINFO_VENDOR
+comma
+id|CPUINFO_MACHINE
+)paren
+suffix:semicolon
+multiline_comment|/* Reset the Communication Processor Module. */
 id|cpm2_reset
 c_func
 (paren
@@ -368,8 +340,6 @@ id|m
 id|bd_t
 op_star
 id|bp
-suffix:semicolon
-id|bp
 op_assign
 (paren
 id|bd_t
@@ -431,13 +401,6 @@ r_void
 r_int
 id|i
 suffix:semicolon
-r_void
-id|cpm_interrupt_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -494,15 +457,6 @@ r_void
 (brace
 id|bd_t
 op_star
-id|binfo
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|__res
-(braket
-)braket
-suffix:semicolon
 id|binfo
 op_assign
 (paren
@@ -572,11 +526,28 @@ id|_PAGE_IO
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Place-holder for board-specific init */
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|__init
+DECL|function|m82xx_board_init
+id|m82xx_board_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 multiline_comment|/* Inputs:&n; *   r3 - Optional pointer to a board information structure.&n; *   r4 - Optional pointer to the physical starting address of the init RAM&n; *        disk.&n; *   r5 - Optional pointer to the physical ending address of the init RAM&n; *        disk.&n; *   r6 - Optional pointer to the physical starting address of any kernel&n; *        command-line parameters.&n; *   r7 - Optional pointer to the physical ending address of any kernel&n; *        command-line parameters.&n; */
 r_void
 id|__init
-DECL|function|m8260_init
-id|m8260_init
+DECL|function|platform_init
+id|platform_init
 c_func
 (paren
 r_int
@@ -698,6 +669,12 @@ id|KERNELBASE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Call back for board-specific settings. */
+id|m82xx_board_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
 id|m8260_setup_arch
@@ -706,10 +683,6 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|m8260_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_canonicalize
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign
 id|m8260_init_IRQ
@@ -717,10 +690,6 @@ suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|cpm2_get_irq
-suffix:semicolon
-id|ppc_md.init
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ppc_md.restart
 op_assign
@@ -733,10 +702,6 @@ suffix:semicolon
 id|ppc_md.halt
 op_assign
 id|m8260_halt
-suffix:semicolon
-id|ppc_md.time_init
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ppc_md.set_rtc_time
 op_assign

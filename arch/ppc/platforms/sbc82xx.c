@@ -1,26 +1,15 @@
 multiline_comment|/*&n; * arch/ppc/platforms/sbc82xx.c&n; *&n; * SBC82XX platform support&n; *&n; * Author: Guy Streeter &lt;streeter@redhat.com&gt;&n; *&n; * Derived from: est8260_setup.c by Allen Curtis, ONZ&n; *&n; * Copyright 2004 Red Hat, Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
-DECL|variable|callback_setup_arch
-r_static
-r_void
-(paren
-op_star
-id|callback_setup_arch
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|callback_init_IRQ
 r_static
 r_void
@@ -45,32 +34,6 @@ id|bd_t
 suffix:semicolon
 r_extern
 r_void
-id|m8260_init
-c_func
-(paren
-r_int
-r_int
-id|r3
-comma
-r_int
-r_int
-id|r4
-comma
-r_int
-r_int
-id|r5
-comma
-r_int
-r_int
-id|r6
-comma
-r_int
-r_int
-id|r7
-)paren
-suffix:semicolon
-r_extern
-r_void
 (paren
 op_star
 id|late_time_init
@@ -79,28 +42,6 @@ id|late_time_init
 r_void
 )paren
 suffix:semicolon
-r_static
-r_void
-id|__init
-DECL|function|sbc82xx_setup_arch
-id|sbc82xx_setup_arch
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;SBC PowerQUICC II Port&bslash;n&quot;
-)paren
-suffix:semicolon
-id|callback_setup_arch
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_GEN_RTC
 id|TODC_ALLOC
 c_func
@@ -873,46 +814,13 @@ suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|platform_init
-id|platform_init
+DECL|function|m82xx_board_init
+id|m82xx_board_init
 c_func
 (paren
-r_int
-r_int
-id|r3
-comma
-r_int
-r_int
-id|r4
-comma
-r_int
-r_int
-id|r5
-comma
-r_int
-r_int
-id|r6
-comma
-r_int
-r_int
-id|r7
+r_void
 )paren
 (brace
-multiline_comment|/* Generic 8260 platform initialization */
-id|m8260_init
-c_func
-(paren
-id|r3
-comma
-id|r4
-comma
-id|r5
-comma
-id|r6
-comma
-id|r7
-)paren
-suffix:semicolon
 multiline_comment|/* u-boot may be using one of the FCC Ethernet devices.&n;&t;   Use the MAC address to the SCC. */
 id|__res
 (braket
@@ -931,10 +839,6 @@ op_complement
 l_int|3
 suffix:semicolon
 multiline_comment|/* Anything special for this platform */
-id|callback_setup_arch
-op_assign
-id|ppc_md.setup_arch
-suffix:semicolon
 id|callback_init_IRQ
 op_assign
 id|ppc_md.init_IRQ
