@@ -1856,6 +1856,9 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+r_int
+id|cardnr
 )paren
 (brace
 id|avmctrl_info
@@ -1868,12 +1871,6 @@ id|card
 suffix:semicolon
 r_int
 id|retval
-suffix:semicolon
-r_static
-r_int
-id|cardnr
-op_assign
-l_int|1
 suffix:semicolon
 id|card
 op_assign
@@ -1933,7 +1930,6 @@ suffix:semicolon
 id|card-&gt;cardnr
 op_assign
 id|cardnr
-op_increment
 suffix:semicolon
 id|sprintf
 c_func
@@ -2669,6 +2665,14 @@ id|irq
 id|MAX_CARDS
 )braket
 suffix:semicolon
+DECL|variable|cardnr
+r_static
+r_int
+id|cardnr
+(braket
+id|MAX_CARDS
+)braket
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -2687,6 +2691,20 @@ id|MODULE_PARM
 c_func
 (paren
 id|irq
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|MAX_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|cardnr
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -2711,6 +2729,14 @@ c_func
 id|irq
 comma
 l_string|&quot;IRQ number(s) (assigned)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|cardnr
+comma
+l_string|&quot;Card number(s) (as jumpered)&quot;
 )paren
 suffix:semicolon
 DECL|function|t1isa_init
@@ -2817,6 +2843,11 @@ c_func
 (paren
 op_amp
 id|isa_dev
+(braket
+id|i
+)braket
+comma
+id|cardnr
 (braket
 id|i
 )braket
