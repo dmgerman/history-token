@@ -23,13 +23,6 @@ DECL|variable|io_bat_index
 r_int
 id|io_bat_index
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|variable|quicklists
-r_struct
-id|pgtable_cache_struct
-id|quicklists
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_6xx) || defined(CONFIG_POWER3)
 DECL|macro|HAVE_BATS
 mdefine_line|#define HAVE_BATS&t;1
@@ -530,7 +523,7 @@ suffix:semicolon
 multiline_comment|/* Use middle 10 bits of VA to index the second-level map */
 id|pg
 op_assign
-id|pte_alloc
+id|pte_alloc_kernel
 c_func
 (paren
 op_amp
@@ -585,7 +578,12 @@ l_int|0
 comma
 id|va
 comma
-id|pg
+id|pmd_val
+c_func
+(paren
+op_star
+id|pd
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -946,7 +944,7 @@ id|pmd
 (brace
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmd
@@ -971,6 +969,7 @@ id|ptep
 op_assign
 id|pte
 suffix:semicolon
+multiline_comment|/* XXX caller needs to do pte_unmap, yuck */
 )brace
 )brace
 )brace
@@ -1057,6 +1056,7 @@ op_amp
 id|pte
 )paren
 )paren
+(brace
 id|pa
 op_assign
 (paren
@@ -1077,6 +1077,13 @@ op_complement
 id|PAGE_MASK
 )paren
 suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+)brace
 r_return
 id|pa
 suffix:semicolon
