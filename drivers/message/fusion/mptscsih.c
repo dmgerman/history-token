@@ -1676,6 +1676,16 @@ id|SCpnt-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sges_left
+op_eq
+l_int|0
+)paren
+r_return
+id|FAILED
+suffix:semicolon
 )brace
 r_else
 r_if
