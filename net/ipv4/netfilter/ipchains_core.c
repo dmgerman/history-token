@@ -37,6 +37,12 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Rusty Russell &lt;rusty@rustcorp.com.au&gt;&quot;
+)paren
+suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
