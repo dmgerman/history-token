@@ -54,7 +54,7 @@ mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 multiline_comment|/* thread information allocation */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info() ((struct thread_info *) &bslash;&n;&t;&t;&t;&t;__get_free_pages(GFP_KERNEL, 1))
+mdefine_line|#define alloc_thread_info(tsk) ((struct thread_info *) &bslash;&n;&t;&t;&t;&t;__get_free_pages(GFP_KERNEL, 1))
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti)&t;free_pages((unsigned long) (ti), 1)
 DECL|macro|get_thread_info
