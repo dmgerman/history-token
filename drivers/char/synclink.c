@@ -16650,7 +16650,7 @@ suffix:semicolon
 multiline_comment|/* enumerate user specified ISA adapters&n; */
 DECL|function|mgsl_enum_isa_devices
 r_static
-r_int
+r_void
 id|mgsl_enum_isa_devices
 c_func
 (paren

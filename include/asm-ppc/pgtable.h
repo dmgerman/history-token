@@ -1275,7 +1275,7 @@ id|bits
 suffix:semicolon
 )brace
 DECL|macro|ptep_set_access_flags
-mdefine_line|#define  ptep_set_access_flags(__vma, __address, __ptep, __entry, __dirty) &bslash;&n;        __ptep_set_access_flags(__ptep, __entry, __dirty)
+mdefine_line|#define  ptep_set_access_flags(__vma, __address, __ptep, __entry, __dirty) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;__ptep_set_access_flags(__ptep, __entry, __dirty);&t;   &bslash;&n;&t;&t;flush_tlb_page_nohash(__vma, __address);&t;       &t;   &bslash;&n;&t;} while(0)
 multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))

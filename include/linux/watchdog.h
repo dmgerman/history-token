@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_WATCHDOG_H
 DECL|macro|_LINUX_WATCHDOG_H
 mdefine_line|#define _LINUX_WATCHDOG_H
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|WATCHDOG_IOCTL_BASE
 mdefine_line|#define&t;WATCHDOG_IOCTL_BASE&t;&squot;W&squot;
 DECL|struct|watchdog_info
