@@ -5,13 +5,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#ifdef DEBUG_SLOW
-DECL|macro|MDELAY
-mdefine_line|#define MDELAY(a) mdelay(a)
-macro_line|#else
-DECL|macro|MDELAY
-mdefine_line|#define MDELAY(a)
-macro_line|#endif
 multiline_comment|/* &n; * Timeout for stopping processes&n; */
 DECL|macro|TIMEOUT
 mdefine_line|#define TIMEOUT&t;(6 * HZ)
@@ -474,12 +467,6 @@ id|printk
 c_func
 (paren
 l_string|&quot; done&bslash;n&quot;
-)paren
-suffix:semicolon
-id|MDELAY
-c_func
-(paren
-l_int|500
 )paren
 suffix:semicolon
 )brace
