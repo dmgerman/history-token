@@ -7681,7 +7681,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;EFX voices mask&quot;
+l_string|&quot;Captured FX8010 Outputs&quot;
 comma
 dot
 id|info
@@ -9241,7 +9241,7 @@ id|emu-&gt;efx_voices_mask
 l_int|0
 )braket
 op_assign
-l_int|0xffff
+l_int|0xffff0000
 suffix:semicolon
 id|emu-&gt;efx_voices_mask
 (braket
