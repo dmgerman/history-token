@@ -1089,7 +1089,27 @@ r_return
 op_minus
 id|EDOM
 suffix:semicolon
-multiline_comment|/* expect strict spec conformance for the descriptors */
+multiline_comment|/* expect strict spec conformance for the descriptors, but&n;&t; * cope with firmware which stores them in the wrong place&n;&t; */
+r_if
+c_cond
+(paren
+id|len
+op_eq
+l_int|0
+op_logical_and
+id|dev-&gt;udev-&gt;config-&gt;extralen
+)paren
+(brace
+multiline_comment|/* Motorola SB4100 (and maybe others) put&n;&t;&t; * CDC descriptors here&n;&t;&t; */
+id|buf
+op_assign
+id|dev-&gt;udev-&gt;config-&gt;extra
+suffix:semicolon
+id|len
+op_assign
+id|dev-&gt;udev-&gt;config-&gt;extralen
+suffix:semicolon
+)brace
 id|memset
 (paren
 id|info
@@ -1441,7 +1461,14 @@ l_int|0
 suffix:semicolon
 id|bad_desc
 suffix:colon
-singleline_comment|// devdbg (dev, &quot;bad CDC descriptors&quot;);
+id|dev_info
+(paren
+op_amp
+id|dev-&gt;udev-&gt;dev
+comma
+l_string|&quot;bad CDC descriptors&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -4909,7 +4936,7 @@ macro_line|#ifdef CONFIG_USB_ZAURUS
 DECL|macro|HAVE_HARDWARE
 mdefine_line|#define&t;HAVE_HARDWARE
 macro_line|#include &lt;linux/crc32.h&gt;
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Zaurus is also a SA-1110 based PDA, but one using a different driver&n; * (and framing) for its USB slave/gadget controller than the case above.&n; *&n; * For the current version of that driver, the main way that framing is&n; * nonstandard (also from perspective of the CDC ethernet model!) is a&n; * crc32, added to help detect when some sa1100 usb-to-memory DMA errata&n; * haven&squot;t been fully worked around.&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Zaurus is also a SA-1110 based PDA, but one using a different driver&n; * (and framing) for its USB slave/gadget controller than the case above.&n; *&n; * For the current version of that driver, the main way that framing is&n; * nonstandard (also from perspective of the CDC ethernet model!) is a&n; * crc32, added to help detect when some sa1100 usb-to-memory DMA errata&n; * haven&squot;t been fully worked around.&n; *&n; * PXA based models use the same framing, and also can&squot;t implement&n; * set_interface properly.&n; *&n; *-------------------------------------------------------------------------*/
 r_static
 r_struct
 id|sk_buff
@@ -5133,18 +5160,18 @@ id|zaurus_tx_fixup
 comma
 )brace
 suffix:semicolon
-DECL|variable|zaurus_sla300_info
+DECL|variable|zaurus_pxa_info
 r_static
 r_const
 r_struct
 id|driver_info
-id|zaurus_sla300_info
+id|zaurus_pxa_info
 op_assign
 (brace
 dot
 id|description
 op_assign
-l_string|&quot;Sharp Zaurus SL-A300&quot;
+l_string|&quot;Sharp Zaurus, PXA-2xx based&quot;
 comma
 dot
 id|flags
@@ -5173,88 +5200,6 @@ l_int|2
 comma
 )brace
 suffix:semicolon
-DECL|variable|zaurus_slb500_info
-r_static
-r_const
-r_struct
-id|driver_info
-id|zaurus_slb500_info
-op_assign
-(brace
-multiline_comment|/* Japanese B500 ~= US SL-5600 */
-dot
-id|description
-op_assign
-l_string|&quot;Sharp Zaurus SL-B500&quot;
-comma
-dot
-id|flags
-op_assign
-id|FLAG_FRAMING_Z
-comma
-dot
-id|check_connect
-op_assign
-id|always_connected
-comma
-dot
-id|tx_fixup
-op_assign
-id|zaurus_tx_fixup
-comma
-dot
-id|in
-op_assign
-l_int|1
-comma
-dot
-id|out
-op_assign
-l_int|2
-comma
-)brace
-suffix:semicolon
-DECL|variable|zaurus_slc700_info
-r_static
-r_const
-r_struct
-id|driver_info
-id|zaurus_slc700_info
-op_assign
-(brace
-dot
-id|description
-op_assign
-l_string|&quot;Sharp Zaurus SL-C700&quot;
-comma
-dot
-id|flags
-op_assign
-id|FLAG_FRAMING_Z
-comma
-dot
-id|check_connect
-op_assign
-id|always_connected
-comma
-dot
-id|tx_fixup
-op_assign
-id|zaurus_tx_fixup
-comma
-dot
-id|in
-op_assign
-l_int|1
-comma
-dot
-id|out
-op_assign
-l_int|2
-comma
-)brace
-suffix:semicolon
-singleline_comment|// SL-5600 and C-700 are PXA based; should resemble A300
 macro_line|#endif
 "&f;"
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Network Device Driver (peer link to &quot;Host Device&quot;, from USB host)&n; *&n; *-------------------------------------------------------------------------*/
@@ -9416,7 +9361,7 @@ comma
 comma
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_ZAURUS
-multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; */
+multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; *&n; * PXA-2xx based models are also lying-about-cdc.&n; */
 (brace
 dot
 id|match_flags
@@ -9482,6 +9427,7 @@ id|idProduct
 op_assign
 l_int|0x8005
 comma
+multiline_comment|/* A-300 */
 dot
 id|bInterfaceClass
 op_assign
@@ -9505,7 +9451,7 @@ r_int
 r_int
 )paren
 op_amp
-id|zaurus_sla300_info
+id|zaurus_pxa_info
 comma
 )brace
 comma
@@ -9527,6 +9473,7 @@ id|idProduct
 op_assign
 l_int|0x8006
 comma
+multiline_comment|/* B-500/SL-5600 */
 dot
 id|bInterfaceClass
 op_assign
@@ -9550,7 +9497,7 @@ r_int
 r_int
 )paren
 op_amp
-id|zaurus_slb500_info
+id|zaurus_pxa_info
 comma
 )brace
 comma
@@ -9572,6 +9519,7 @@ id|idProduct
 op_assign
 l_int|0x8007
 comma
+multiline_comment|/* C-700 */
 dot
 id|bInterfaceClass
 op_assign
@@ -9595,7 +9543,53 @@ r_int
 r_int
 )paren
 op_amp
-id|zaurus_slc700_info
+id|zaurus_pxa_info
+comma
+)brace
+comma
+(brace
+dot
+id|match_flags
+op_assign
+id|USB_DEVICE_ID_MATCH_INT_INFO
+op_or
+id|USB_DEVICE_ID_MATCH_DEVICE
+comma
+dot
+id|idVendor
+op_assign
+l_int|0x04DD
+comma
+dot
+id|idProduct
+op_assign
+l_int|0x9031
+comma
+multiline_comment|/* C-750 */
+dot
+id|bInterfaceClass
+op_assign
+l_int|0x02
+comma
+dot
+id|bInterfaceSubClass
+op_assign
+l_int|0x0a
+comma
+dot
+id|bInterfaceProtocol
+op_assign
+l_int|0x00
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|zaurus_pxa_info
 comma
 )brace
 comma
@@ -9646,6 +9640,7 @@ comma
 multiline_comment|/* BLACKLIST */
 )brace
 comma
+singleline_comment|// FIXME blacklist the other Zaurus models too, sigh
 macro_line|#endif
 (brace
 multiline_comment|/* CDC Ether uses two interfaces, not necessarily consecutive.&n;&t; * We match the main interface, ignoring the optional device&n;&t; * class so we could handle devices that aren&squot;t exclusively&n;&t; * CDC ether.&n;&t; *&n;&t; * NOTE:  this match must come AFTER entries working around&n;&t; * bugs/quirks in a given product (like Zaurus, above).&n;&t; */
