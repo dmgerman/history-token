@@ -9423,7 +9423,9 @@ id|get_max_resource
 c_func
 (paren
 op_amp
+(paren
 id|resources-&gt;bus_head
+)paren
 comma
 l_int|1
 )paren
