@@ -135,9 +135,10 @@ r_void
 id|cisco_keepalive_send
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 id|u32
 id|type
@@ -187,11 +188,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Memory squeeze on cisco_keepalive_send()&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -210,11 +207,7 @@ c_func
 (paren
 id|skb
 comma
-id|hdlc_to_dev
-c_func
-(paren
-id|hdlc
-)paren
+id|dev
 comma
 id|CISCO_KEEPALIVE
 comma
@@ -297,11 +290,7 @@ id|TC_PRIO_CONTROL
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
-id|hdlc_to_dev
-c_func
-(paren
-id|hdlc
-)paren
+id|dev
 suffix:semicolon
 id|skb-&gt;nh.raw
 op_assign
@@ -441,6 +430,13 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|skb-&gt;dev
+suffix:semicolon
 id|hdlc_device
 op_star
 id|hdlc
@@ -448,7 +444,7 @@ op_assign
 id|dev_to_hdlc
 c_func
 (paren
-id|skb-&gt;dev
+id|dev
 )paren
 suffix:semicolon
 id|hdlc_header
@@ -557,11 +553,7 @@ id|KERN_INFO
 l_string|&quot;%s: Invalid length of Cisco &quot;
 l_string|&quot;control packet (%d bytes)&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|skb-&gt;len
 )paren
@@ -600,13 +592,7 @@ suffix:colon
 multiline_comment|/* Stolen from syncppp.c :-) */
 id|in_dev
 op_assign
-id|hdlc_to_dev
-c_func
-(paren
-id|hdlc
-)paren
-op_member_access_from_pointer
-id|ip_ptr
+id|dev-&gt;ip_ptr
 suffix:semicolon
 id|addr
 op_assign
@@ -650,11 +636,7 @@ c_cond
 id|strcmp
 c_func
 (paren
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 (paren
 op_star
@@ -702,7 +684,7 @@ suffix:semicolon
 id|cisco_keepalive_send
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|CISCO_ADDR_REPLY
 comma
@@ -731,11 +713,7 @@ id|KERN_INFO
 l_string|&quot;%s: Unexpected Cisco IP address &quot;
 l_string|&quot;reply&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_goto
@@ -837,11 +815,7 @@ id|KERN_INFO
 l_string|&quot;%s: Link up (peer &quot;
 l_string|&quot;uptime %ud%uh%um%us)&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|days
 comma
@@ -877,11 +851,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Unsupported protocol %x&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|data-&gt;protocol
 )paren
@@ -922,15 +892,27 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+id|arg
+suffix:semicolon
 id|hdlc_device
 op_star
 id|hdlc
 op_assign
+id|dev_to_hdlc
+c_func
 (paren
-id|hdlc_device
-op_star
+id|dev
 )paren
-id|arg
 suffix:semicolon
 r_if
 c_cond
@@ -956,11 +938,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Link down&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -969,22 +947,20 @@ c_cond
 id|netif_carrier_ok
 c_func
 (paren
-op_amp
-id|hdlc-&gt;netdev
+id|dev
 )paren
 )paren
 id|netif_carrier_off
 c_func
 (paren
-op_amp
-id|hdlc-&gt;netdev
+id|dev
 )paren
 suffix:semicolon
 )brace
 id|cisco_keepalive_send
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|CISCO_KEEPALIVE_REQ
 comma
@@ -1078,7 +1054,7 @@ op_assign
 r_int
 r_int
 )paren
-id|hdlc
+id|dev
 suffix:semicolon
 id|add_timer
 c_func
@@ -1134,9 +1110,10 @@ r_int
 id|hdlc_cisco_ioctl
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_struct
 id|ifreq
@@ -1162,15 +1139,14 @@ suffix:semicolon
 id|cisco_proto
 id|new_settings
 suffix:semicolon
-r_struct
-id|net_device
+id|hdlc_device
 op_star
-id|dev
+id|hdlc
 op_assign
-id|hdlc_to_dev
+id|dev_to_hdlc
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_int

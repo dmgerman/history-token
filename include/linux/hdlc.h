@@ -577,9 +577,10 @@ r_int
 id|hdlc_cisco_ioctl
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_struct
 id|ifreq
