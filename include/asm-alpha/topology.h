@@ -55,7 +55,7 @@ suffix:semicolon
 DECL|function|node_to_cpumask
 r_static
 r_inline
-r_int
+id|cpumask_t
 id|node_to_cpumask
 c_func
 (paren
@@ -63,11 +63,10 @@ r_int
 id|node
 )paren
 (brace
-r_int
-r_int
+id|cpumask_t
 id|node_cpu_mask
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 r_int
 id|cpu
@@ -106,14 +105,16 @@ op_eq
 id|node
 )paren
 )paren
-id|node_cpu_mask
-op_or_assign
-l_int|1UL
-op_lshift
+id|cpu_set
+c_func
+(paren
 id|cpu
+comma
+id|node_cpu_mask
+)paren
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_NUMA
+macro_line|#ifdef DEBUG_NUMA
 id|printk
 c_func
 (paren
@@ -132,6 +133,8 @@ suffix:semicolon
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 macro_line|# define NODE_BALANCE_RATE 10
+DECL|macro|pcibus_to_cpumask
+mdefine_line|#define pcibus_to_cpumask(bus)&t;(cpu_online_map)
 macro_line|#else /* CONFIG_NUMA */
 macro_line|# include &lt;asm-generic/topology.h&gt;
 macro_line|#endif /* !CONFIG_NUMA */
