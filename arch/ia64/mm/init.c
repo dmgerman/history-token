@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -64,6 +65,13 @@ r_struct
 id|page
 op_star
 id|vmem_map
+suffix:semicolon
+DECL|variable|vmem_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmem_map
+)paren
 suffix:semicolon
 macro_line|#endif
 DECL|variable|pgt_cache_water
