@@ -25,7 +25,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/vga.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;

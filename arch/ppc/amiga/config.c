@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|powerup_PCI_present
@@ -302,24 +301,6 @@ r_struct
 id|pt_regs
 op_star
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* amiga specific keyboard functions */
-r_extern
-r_int
-id|amiga_keyb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|amiga_kbdrate
-(paren
-r_struct
-id|kbd_repeat
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/* amiga specific irq functions */
@@ -641,32 +622,6 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-DECL|variable|amiga_sysrq_xlate
-r_char
-id|amiga_sysrq_xlate
-(braket
-l_int|128
-)braket
-op_assign
-l_string|&quot;&bslash;0001234567890-=&bslash;&bslash;&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x00 - 0x0f */
-l_string|&quot;qwertyuiop[]&bslash;000123&quot;
-multiline_comment|/* 0x10 - 0x1f */
-l_string|&quot;asdfghjkl;&squot;&bslash;000&bslash;000456&quot;
-multiline_comment|/* 0x20 - 0x2f */
-l_string|&quot;&bslash;000zxcvbnm,./&bslash;000+789&quot;
-multiline_comment|/* 0x30 - 0x3f */
-l_string|&quot; &bslash;177&bslash;t&bslash;r&bslash;r&bslash;000&bslash;177&bslash;000&bslash;000&bslash;000-&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x40 - 0x4f */
-l_string|&quot;&bslash;000&bslash;201&bslash;202&bslash;203&bslash;204&bslash;205&bslash;206&bslash;207&bslash;210&bslash;211()/*+&bslash;000&quot;
-multiline_comment|/* 0x50 - 0x5f */
-l_string|&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x60 - 0x6f */
-l_string|&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-suffix:semicolon
-multiline_comment|/* 0x70 - 0x7f */
-macro_line|#endif
 r_extern
 r_void
 (paren
@@ -1828,14 +1783,6 @@ suffix:semicolon
 id|mach_sched_init
 op_assign
 id|amiga_sched_init
-suffix:semicolon
-id|mach_keyb_init
-op_assign
-id|amiga_keyb_init
-suffix:semicolon
-id|mach_kbdrate
-op_assign
-id|amiga_kbdrate
 suffix:semicolon
 id|mach_init_IRQ
 op_assign

@@ -19,6 +19,7 @@ macro_line|#include &lt;platforms/ibm_ocp.h&gt;
 macro_line|#ifdef CONFIG_PPC_RTC
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#endif
+macro_line|#include &quot;walnut.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
@@ -149,10 +150,6 @@ c_func
 r_void
 )paren
 (brace
-DECL|macro|WALNUT_PS2_BASE
-mdefine_line|#define WALNUT_PS2_BASE&t;&t;0xF0100000
-DECL|macro|WALNUT_FPGA_BASE
-mdefine_line|#define WALNUT_FPGA_BASE&t;0xF0300000
 r_void
 op_star
 id|fpga_brdc

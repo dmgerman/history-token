@@ -35,34 +35,6 @@ DECL|macro|SPRUCE_NVRAM_BASE_ADDR
 mdefine_line|#define SPRUCE_NVRAM_BASE_ADDR&t;0xff800000
 DECL|macro|SPRUCE_RTC_BASE_ADDR
 mdefine_line|#define SPRUCE_RTC_BASE_ADDR&t;SPRUCE_NVRAM_BASE_ADDR
-DECL|macro|KEYBOARD_IRQ
-mdefine_line|#define KEYBOARD_IRQ    22
-DECL|macro|AUX_IRQ
-mdefine_line|#define AUX_IRQ &t;21
-r_int
-r_char
-id|spruce_read_keyb_data
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-r_char
-id|spruce_read_keyb_status
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|kbd_read_input
-mdefine_line|#define kbd_read_input  spruce_read_keyb_data
-DECL|macro|kbd_read_status
-mdefine_line|#define kbd_read_status spruce_read_keyb_status
-DECL|macro|kbd_write_output
-mdefine_line|#define kbd_write_output(val) *((unsigned char *)0xff810000) = (char)val
-DECL|macro|kbd_write_command
-mdefine_line|#define kbd_write_command(val) *((unsigned char *)0xff810001) = (char)val
 macro_line|#endif /* __ASM_SPRUCE_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

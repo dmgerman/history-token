@@ -107,24 +107,6 @@ DECL|macro|WALNUT_PS2_BASE
 mdefine_line|#define WALNUT_PS2_BASE&t;&t;0xF0100000
 DECL|macro|WALNUT_FPGA_BASE
 mdefine_line|#define WALNUT_FPGA_BASE&t;0xF0300000
-r_extern
-r_void
-op_star
-id|kb_cs
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|kb_data
-suffix:semicolon
-DECL|macro|kbd_read_input
-mdefine_line|#define kbd_read_input()&t;readb(kb_data)
-DECL|macro|kbd_read_status
-mdefine_line|#define kbd_read_status()&t;readb(kb_cs)
-DECL|macro|kbd_write_output
-mdefine_line|#define kbd_write_output(val)&t;writeb(val, kb_data)
-DECL|macro|kbd_write_command
-mdefine_line|#define kbd_write_command(val)&t;writeb(val, kb_cs)
 DECL|macro|PPC4xx_MACHINE_NAME
 mdefine_line|#define PPC4xx_MACHINE_NAME&t;&quot;IBM Walnut&quot;
 macro_line|#endif /* !__ASSEMBLY__ */
