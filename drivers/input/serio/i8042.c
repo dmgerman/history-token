@@ -6,10 +6,7 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sysdev.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2854,61 +2851,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We need to reset the 8042 back to original mode on system shutdown,&n; * because otherwise BIOSes will be confused.&n; */
-DECL|function|i8042_notify_sys
-r_static
-r_int
-id|i8042_notify_sys
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|this
-comma
-r_int
-r_int
-id|code
-comma
-r_void
-op_star
-id|unused
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|code
-op_eq
-id|SYS_DOWN
-op_logical_or
-id|code
-op_eq
-id|SYS_HALT
-)paren
-id|i8042_controller_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|NOTIFY_DONE
-suffix:semicolon
-)brace
-DECL|variable|i8042_notifier
-r_static
-r_struct
-id|notifier_block
-id|i8042_notifier
-op_assign
-(brace
-id|i8042_notify_sys
-comma
-l_int|NULL
-comma
-l_int|0
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Here we try to restore the original BIOS settings&n; */
 DECL|function|i8042_suspend
 r_static
@@ -3135,6 +3077,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We need to reset the 8042 back to original mode on system shutdown,&n; * because otherwise BIOSes will be confused.&n; */
 DECL|function|i8042_shutdown
 r_static
 r_void
@@ -3807,13 +3750,6 @@ op_plus
 id|I8042_POLL_PERIOD
 )paren
 suffix:semicolon
-id|register_reboot_notifier
-c_func
-(paren
-op_amp
-id|i8042_notifier
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3829,13 +3765,6 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-id|unregister_reboot_notifier
-c_func
-(paren
-op_amp
-id|i8042_notifier
-)paren
 suffix:semicolon
 id|i8042_controller_cleanup
 c_func
