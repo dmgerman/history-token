@@ -3039,10 +3039,6 @@ id|hwif-&gt;ide_dma_verbose
 op_assign
 id|old_hwif.ide_dma_verbose
 suffix:semicolon
-id|hwif-&gt;ide_dma_retune
-op_assign
-id|old_hwif.ide_dma_retune
-suffix:semicolon
 id|hwif-&gt;ide_dma_lostirq
 op_assign
 id|old_hwif.ide_dma_lostirq
