@@ -285,7 +285,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* dir stuff */
 multiline_comment|/* Inode stuff */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 r_int
 id|adfs_get_block
 c_func
@@ -307,21 +306,6 @@ r_int
 id|create
 )paren
 suffix:semicolon
-macro_line|#else
-r_int
-id|adfs_bmap
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|block
-)paren
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|inode
 op_star
