@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/nmi.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
@@ -878,30 +879,42 @@ id|u32
 id|us
 )paren
 (brace
+r_while
+c_loop
+(paren
+id|us
+)paren
+(brace
+id|u32
+id|delay
+op_assign
+l_int|1000
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|us
+id|delay
 OG
-l_int|10000
-)paren
-(brace
-id|mdelay
-c_func
-(paren
 id|us
-op_div
-l_int|1000
 )paren
+id|delay
+op_assign
+id|us
 suffix:semicolon
-)brace
-r_else
-(brace
 id|udelay
 c_func
 (paren
-id|us
+id|delay
 )paren
+suffix:semicolon
+id|touch_nmi_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
+id|us
+op_sub_assign
+id|delay
 suffix:semicolon
 )brace
 )brace
