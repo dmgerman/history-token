@@ -5551,6 +5551,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -5646,6 +5647,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|newinfo
 )paren
@@ -9711,6 +9713,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -9822,6 +9825,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -9924,6 +9928,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -9942,6 +9947,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg

@@ -9546,6 +9546,7 @@ id|edge_port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -9764,6 +9765,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -9954,6 +9956,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
