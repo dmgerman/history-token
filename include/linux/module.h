@@ -712,6 +712,7 @@ suffix:semicolon
 multiline_comment|/* Is this address in a module? */
 DECL|function|module_text_address
 r_static
+r_inline
 r_int
 id|module_text_address
 c_func
