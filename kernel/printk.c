@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;&t;/* For in_interrupt() */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#if defined(CONFIG_X86_NUMAQ) || defined(CONFIG_IA64)
 DECL|macro|LOG_BUF_LEN
@@ -26,10 +27,6 @@ mdefine_line|#define LOG_BUF_LEN&t;(16384)&t;&t;&t;/* This must be a power of tw
 macro_line|#endif
 DECL|macro|LOG_BUF_MASK
 mdefine_line|#define LOG_BUF_MASK&t;(LOG_BUF_LEN-1)
-macro_line|#ifndef arch_consoles_callable
-DECL|macro|arch_consoles_callable
-mdefine_line|#define arch_consoles_callable() (1)
-macro_line|#endif
 multiline_comment|/* printk&squot;s without a loglevel use this.. */
 DECL|macro|DEFAULT_MESSAGE_LOGLEVEL
 mdefine_line|#define DEFAULT_MESSAGE_LOGLEVEL 4 /* KERN_WARNING */
@@ -1820,13 +1817,17 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|arch_consoles_callable
+id|cpu_online
+c_func
+(paren
+id|smp_processor_id
 c_func
 (paren
 )paren
 )paren
+)paren
 (brace
-multiline_comment|/*&n;&t;&t; * On some architectures, the consoles are not usable&n;&t;&t; * on secondary CPUs early in the boot process.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Some console drivers may assume that per-cpu resources have&n;&t;&t; * been allocated.  So don&squot;t allow them to be called by this&n;&t;&t; * CPU until it is officially up.  We shouldn&squot;t be calling into&n;&t;&t; * random console drivers on a CPU which doesn&squot;t exist yet..&n;&t;&t; */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2478,7 +2479,7 @@ op_amp
 id|CON_PRINTBUFFER
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * release_console_sem() will print out the buffered messages for us.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * release_console_sem() will print out the buffered messages&n;&t;&t; * for us.&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
