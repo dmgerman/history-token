@@ -12758,6 +12758,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+macro_line|#ifdef CONFIG_XFRM
 id|xfrm_init
 c_func
 (paren
@@ -12768,6 +12769,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|out
 suffix:colon
 r_return
