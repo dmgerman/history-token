@@ -318,10 +318,9 @@ r_struct
 id|timer_list
 id|ipfrag_secret_timer
 suffix:semicolon
-DECL|variable|ipfrag_secret_interval
-r_static
+DECL|variable|sysctl_ipfrag_secret_interval
 r_int
-id|ipfrag_secret_interval
+id|sysctl_ipfrag_secret_interval
 op_assign
 l_int|10
 op_star
@@ -504,7 +503,7 @@ id|ipfrag_secret_timer
 comma
 id|now
 op_plus
-id|ipfrag_secret_interval
+id|sysctl_ipfrag_secret_interval
 )paren
 suffix:semicolon
 )brace
@@ -2799,7 +2798,7 @@ id|ipfrag_secret_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|ipfrag_secret_interval
+id|sysctl_ipfrag_secret_interval
 suffix:semicolon
 id|add_timer
 c_func
