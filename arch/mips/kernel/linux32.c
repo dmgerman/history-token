@@ -87,7 +87,11 @@ id|tmp
 suffix:semicolon
 id|tmp.st_dev
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|stat-&gt;dev
+)paren
 suffix:semicolon
 id|tmp.st_ino
 op_assign
@@ -119,7 +123,11 @@ id|stat-&gt;gid
 suffix:semicolon
 id|tmp.st_rdev
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|stat-&gt;rdev
+)paren
 suffix:semicolon
 id|tmp.st_size
 op_assign

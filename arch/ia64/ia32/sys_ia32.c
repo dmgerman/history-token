@@ -639,7 +639,11 @@ op_assign
 id|__put_user
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|stat-&gt;dev
+)paren
 comma
 op_amp
 id|ubuf-&gt;st_dev
@@ -713,7 +717,11 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|stat-&gt;rdev
+)paren
 comma
 op_amp
 id|ubuf-&gt;st_rdev
@@ -13782,7 +13790,11 @@ op_assign
 id|__put_user
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|kbuf-&gt;dev
+)paren
 comma
 op_amp
 id|ubuf-&gt;st_dev
@@ -13872,7 +13884,11 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|kbuf-&gt;rdev
+)paren
 comma
 op_amp
 id|ubuf-&gt;st_rdev

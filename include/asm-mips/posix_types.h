@@ -4,12 +4,6 @@ DECL|macro|_ASM_POSIX_TYPES_H
 mdefine_line|#define _ASM_POSIX_TYPES_H
 macro_line|#include &lt;asm/sgidefs.h&gt;
 multiline_comment|/*&n; * This file is generally used by user-level software, so you need to&n; * be a little careful about namespace pollution etc.  Also, we cannot&n; * assume GCC is being used.&n; */
-DECL|typedef|__kernel_dev_t
-r_typedef
-r_int
-r_int
-id|__kernel_dev_t
-suffix:semicolon
 DECL|typedef|__kernel_ino_t
 r_typedef
 r_int

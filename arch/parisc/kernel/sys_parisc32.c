@@ -1878,7 +1878,11 @@ op_assign
 id|put_user
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|stat-&gt;dev
+)paren
 comma
 op_amp
 id|statbuf-&gt;st_dev
@@ -1944,7 +1948,11 @@ op_or_assign
 id|put_user
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|stat-&gt;rdev
+)paren
 comma
 op_amp
 id|statbuf-&gt;st_rdev

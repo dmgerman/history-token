@@ -76,12 +76,6 @@ id|__kernel_loff_t
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __s390x__
-DECL|typedef|__kernel_dev_t
-r_typedef
-r_int
-r_int
-id|__kernel_dev_t
-suffix:semicolon
 DECL|typedef|__kernel_ino_t
 r_typedef
 r_int
@@ -159,12 +153,6 @@ r_int
 id|__kernel_old_dev_t
 suffix:semicolon
 macro_line|#else /* __s390x__ */
-DECL|typedef|__kernel_dev_t
-r_typedef
-r_int
-r_int
-id|__kernel_dev_t
-suffix:semicolon
 DECL|typedef|__kernel_ino_t
 r_typedef
 r_int
