@@ -1507,20 +1507,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-singleline_comment|// Enable hotplug event interrupts.
-r_if
-c_cond
-(paren
-id|host-&gt;host_desc-&gt;enable_hotplug
-)paren
-id|host-&gt;host_desc
-op_member_access_from_pointer
-id|enable_hotplug
-c_func
-(paren
-id|probe_ent
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|ata_device_add
@@ -1538,6 +1524,20 @@ id|NV_PORTS
 )paren
 r_goto
 id|err_out_iounmap
+suffix:semicolon
+singleline_comment|// Enable hotplug event interrupts.
+r_if
+c_cond
+(paren
+id|host-&gt;host_desc-&gt;enable_hotplug
+)paren
+id|host-&gt;host_desc
+op_member_access_from_pointer
+id|enable_hotplug
+c_func
+(paren
+id|probe_ent
+)paren
 suffix:semicolon
 id|kfree
 c_func
