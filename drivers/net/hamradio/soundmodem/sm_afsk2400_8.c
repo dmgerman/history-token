@@ -369,7 +369,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|convolution14_u8
-r_extern
+r_static
 id|__inline__
 r_int
 id|convolution14_u8
@@ -618,7 +618,7 @@ id|sum
 suffix:semicolon
 )brace
 DECL|function|convolution14_s16
-r_extern
+r_static
 id|__inline__
 r_int
 id|convolution14_s16
@@ -863,7 +863,7 @@ id|sum
 suffix:semicolon
 )brace
 DECL|function|do_filter_2400_u8
-r_extern
+r_static
 id|__inline__
 r_int
 id|do_filter_2400_u8
@@ -930,7 +930,7 @@ id|sum
 suffix:semicolon
 )brace
 DECL|function|do_filter_2400_s16
-r_extern
+r_static
 id|__inline__
 r_int
 id|do_filter_2400_s16

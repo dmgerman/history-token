@@ -70,7 +70,7 @@ mdefine_line|#define E21_SAPROM&t;&t;0x10&t;/* Offset to station address data. *
 DECL|macro|E21_IO_EXTENT
 mdefine_line|#define E21_IO_EXTENT&t; 0x20
 DECL|function|mem_on
-r_extern
+r_static
 r_inline
 r_void
 id|mem_on
@@ -120,7 +120,7 @@ id|E21_MEM_ON
 suffix:semicolon
 )brace
 DECL|function|mem_off
-r_extern
+r_static
 r_inline
 r_void
 id|mem_off
