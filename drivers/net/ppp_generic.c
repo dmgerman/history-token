@@ -3227,6 +3227,7 @@ DECL|macro|PPP_MAJOR
 mdefine_line|#define PPP_MAJOR&t;108
 multiline_comment|/* Called at boot time if ppp is compiled into the kernel,&n;   or at module load time (from init_module) if compiled as a module. */
 DECL|function|ppp_init
+r_static
 r_int
 id|__init
 id|ppp_init
@@ -3285,6 +3286,19 @@ op_or
 id|S_IRUSR
 op_or
 id|S_IWUSR
+comma
+l_string|&quot;ppp&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|unregister_chrdev
+c_func
+(paren
+id|PPP_MAJOR
 comma
 l_string|&quot;ppp&quot;
 )paren
