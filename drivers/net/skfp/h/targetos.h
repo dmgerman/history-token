@@ -40,7 +40,7 @@ DECL|macro|ADDR
 macro_line|#undef ADDR
 macro_line|#ifdef MEM_MAPPED_IO
 DECL|macro|ADDR
-mdefine_line|#define&t;ADDR(a) (char far *) smc-&gt;hw.iop+(a)
+mdefine_line|#define&t;ADDR(a) (smc-&gt;hw.iop+(a))
 macro_line|#else
 DECL|macro|ADDR
 mdefine_line|#define&t;ADDR(a) (((a)&gt;&gt;7) ? (outp(smc-&gt;hw.iop+B0_RAP,(a)&gt;&gt;7), (smc-&gt;hw.iop+( ((a)&amp;0x7F) | ((a)&gt;&gt;7 ? 0x80:0)) )) : (smc-&gt;hw.iop+(((a)&amp;0x7F)|((a)&gt;&gt;7 ? 0x80:0))))

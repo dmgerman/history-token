@@ -4,13 +4,8 @@ macro_line|#ifndef&t;_FPLUS_
 DECL|macro|_FPLUS_
 mdefine_line|#define _FPLUS_
 macro_line|#ifndef&t;HW_PTR
-macro_line|#ifdef&t;MEM_MAPPED_IO
 DECL|macro|HW_PTR
-mdefine_line|#define&t;HW_PTR&t;u_long
-macro_line|#else
-DECL|macro|HW_PTR
-mdefine_line|#define&t;HW_PTR&t;u_short
-macro_line|#endif
+mdefine_line|#define&t;HW_PTR&t;void __iomem *
 macro_line|#endif
 multiline_comment|/*&n; * fplus error statistic structure&n; */
 DECL|struct|err_st
