@@ -1542,8 +1542,6 @@ id|i
 suffix:semicolon
 r_int
 r_char
-id|lpstatus
-comma
 id|newChannel
 suffix:semicolon
 r_int
@@ -2236,8 +2234,7 @@ c_func
 (paren
 id|usblp
 comma
-op_amp
-id|lpstatus
+id|usblp-&gt;statusbuf
 )paren
 )paren
 (brace
@@ -2260,7 +2257,8 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|lpstatus
+op_star
+id|usblp-&gt;statusbuf
 suffix:semicolon
 r_if
 c_cond
