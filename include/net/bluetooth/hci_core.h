@@ -1105,6 +1105,16 @@ op_star
 id|conn
 )paren
 suffix:semicolon
+r_int
+id|hci_conn_change_link_key
+c_func
+(paren
+r_struct
+id|hci_conn
+op_star
+id|conn
+)paren
+suffix:semicolon
 DECL|function|hci_conn_set_timer
 r_static
 r_inline

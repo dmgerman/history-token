@@ -2088,9 +2088,12 @@ id|cp-&gt;flags
 op_assign
 id|flags
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|cp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the entry is referenced by the current thread before hashing&n;&t; * it in the table, so that other thread run ip_vs_random_dropentry&n;&t; * but cannot drop this entry.&n;&t; */
 id|atomic_set
@@ -3430,14 +3433,17 @@ id|idx
 op_increment
 )paren
 (brace
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|__ip_vs_conntbl_lock_array
 (braket
 id|idx
 )braket
 dot
 id|l
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 id|proc_net_fops_create

@@ -1,10 +1,11 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/mach/flash.h&n; *&n; *  Copyright (C) 2003 Russell King, All Rights Reserved.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/mach/flash.h&n; *&n; *  Copyright (C) 2003 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef ASMARM_MACH_FLASH_H
-DECL|macro|ASMAMR_MACH_FLASH_H
-mdefine_line|#define ASMAMR_MACH_FLASH_H
+DECL|macro|ASMARM_MACH_FLASH_H
+mdefine_line|#define ASMARM_MACH_FLASH_H
 r_struct
 id|mtd_partition
 suffix:semicolon
+multiline_comment|/*&n; * map_name:&t;the map probe function name&n; * width:&t;width of mapped device&n; * init:&t;method called at driver/device initialisation&n; * exit:&t;method called at driver/device removal&n; * set_vpp:&t;method called to enable or disable VPP&n; * parts:&t;optional array of mtd_partitions for static partitioning&n; * nr_parts:&t;number of mtd_partitions for static partitoning&n; */
 DECL|struct|flash_platform_data
 r_struct
 id|flash_platform_data
@@ -16,6 +17,7 @@ op_star
 id|map_name
 suffix:semicolon
 DECL|member|width
+r_int
 r_int
 id|width
 suffix:semicolon
@@ -49,6 +51,17 @@ id|set_vpp
 r_int
 id|on
 )paren
+suffix:semicolon
+DECL|member|parts
+r_struct
+id|mtd_partition
+op_star
+id|parts
+suffix:semicolon
+DECL|member|nr_parts
+r_int
+r_int
+id|nr_parts
 suffix:semicolon
 )brace
 suffix:semicolon

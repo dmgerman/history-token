@@ -800,9 +800,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|nr_node-&gt;node_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|nr_node-&gt;routes
 (braket
