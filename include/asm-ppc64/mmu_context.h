@@ -410,7 +410,7 @@ suffix:semicolon
 )brace
 r_extern
 r_void
-id|flush_stab
+id|switch_stab
 c_func
 (paren
 r_struct
@@ -532,7 +532,7 @@ id|next
 )paren
 suffix:semicolon
 r_else
-id|flush_stab
+id|switch_stab
 c_func
 (paren
 id|tsk
