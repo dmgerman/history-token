@@ -590,6 +590,8 @@ id|vts
 comma
 id|tty
 comma
+id|from_user
+comma
 id|buf
 comma
 id|count

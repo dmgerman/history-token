@@ -160,13 +160,22 @@ id|errno
 )paren
 )paren
 suffix:semicolon
-id|_exit
+id|os_kill_process
 c_func
 (paren
-l_int|1
+id|os_getpid
+c_func
+(paren
+)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+multiline_comment|/* XXX The alloc_stack here breaks if this is called in the tracing thread */
 DECL|function|run_helper
 r_int
 id|run_helper

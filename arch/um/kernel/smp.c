@@ -392,7 +392,7 @@ id|ipi_pipe
 l_int|0
 )braket
 comma
-id|current-&gt;thread.extern_pid
+id|current-&gt;thread.mode.tt.extern_pid
 )paren
 suffix:semicolon
 id|wmb
@@ -545,7 +545,7 @@ id|cpu_task
 dot
 id|pid
 op_assign
-id|new_task-&gt;thread.extern_pid
+id|new_task-&gt;thread.mode.tt.extern_pid
 comma
 dot
 id|task
@@ -561,10 +561,13 @@ id|cpu
 op_assign
 id|new_task
 suffix:semicolon
+id|CHOOSE_MODE
+c_func
+(paren
 id|write
 c_func
 (paren
-id|new_task-&gt;thread.switch_pipe
+id|new_task-&gt;thread.mode.tt.switch_pipe
 (braket
 l_int|1
 )braket
@@ -575,6 +578,18 @@ comma
 r_sizeof
 (paren
 id|c
+)paren
+)paren
+comma
+(paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;skas mode doesn&squot;t support SMP&quot;
+)paren
+suffix:semicolon
+)brace
 )paren
 )paren
 suffix:semicolon
@@ -670,7 +685,7 @@ id|ipi_pipe
 l_int|0
 )braket
 comma
-id|current-&gt;thread.extern_pid
+id|current-&gt;thread.mode.tt.extern_pid
 )paren
 suffix:semicolon
 r_for
