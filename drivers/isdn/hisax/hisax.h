@@ -5029,6 +5029,7 @@ r_char
 op_star
 id|head
 comma
+r_const
 r_char
 op_star
 id|fmt
