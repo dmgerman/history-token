@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * arch/ppc/syslib/mpc52xx_common.c&n; *&n; * Common code for the boards based on Freescale MPC52xx embedded CPU.&n; *&n; * &n; * Maintainer : Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; *&n; * Support for other bootloaders than UBoot by Dale Farnsworth &n; * &lt;dfarnsworth@mvista.com&gt;&n; * &n; * Copyright (C) 2004 Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; * Copyright (C) 2003 Montavista Software, Inc&n; * &n; * This file is licensed under the terms of the GNU General Public License&n; * version 2. This program is licensed &quot;as is&quot; without any warranty of any&n; * kind, whether express or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/mpc52xx_setup.c&n; *&n; * Common code for the boards based on Freescale MPC52xx embedded CPU.&n; *&n; * &n; * Maintainer : Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; *&n; * Support for other bootloaders than UBoot by Dale Farnsworth &n; * &lt;dfarnsworth@mvista.com&gt;&n; * &n; * Copyright (C) 2004 Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; * Copyright (C) 2003 Montavista Software, Inc&n; * &n; * This file is licensed under the terms of the GNU General Public License&n; * version 2. This program is licensed &quot;as is&quot; without any warranty of any&n; * kind, whether express or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#include &lt;asm/mpc52xx_psc.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
 r_extern
 id|bd_t
@@ -263,6 +264,48 @@ mdefine_line|#define MPC52xx_CONSOLE MPC52xx_PSCx(MPC52xx_PF_CONSOLE_PORT)
 macro_line|#else
 macro_line|#error &quot;mpc52xx PSC for console not selected&quot;
 macro_line|#endif
+r_static
+r_void
+DECL|function|mpc52xx_psc_putc
+id|mpc52xx_psc_putc
+c_func
+(paren
+r_struct
+id|mpc52xx_psc
+op_star
+id|psc
+comma
+r_int
+r_char
+id|c
+)paren
+(brace
+r_while
+c_loop
+(paren
+op_logical_neg
+(paren
+id|in_be16
+c_func
+(paren
+op_amp
+id|psc-&gt;mpc52xx_psc_status
+)paren
+op_amp
+id|MPC52xx_PSC_SR_TXRDY
+)paren
+)paren
+suffix:semicolon
+id|out_8
+c_func
+(paren
+op_amp
+id|psc-&gt;mpc52xx_psc_buffer_8
+comma
+id|c
+)paren
+suffix:semicolon
+)brace
 r_void
 DECL|function|mpc52xx_progress
 id|mpc52xx_progress
@@ -292,7 +335,6 @@ suffix:semicolon
 r_char
 id|c
 suffix:semicolon
-multiline_comment|/* Don&squot;t we need to disable serial interrupts ? */
 r_while
 c_loop
 (paren
@@ -314,59 +356,39 @@ id|c
 op_eq
 l_char|&squot;&bslash;n&squot;
 )paren
-(brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|in_be16
+id|mpc52xx_psc_putc
 c_func
 (paren
-op_amp
-id|psc-&gt;mpc52xx_psc_status
-)paren
-op_amp
-id|MPC52xx_PSC_SR_TXRDY
-)paren
-)paren
-suffix:semicolon
-id|out_8
-c_func
-(paren
-op_amp
-id|psc-&gt;mpc52xx_psc_buffer_8
+id|psc
 comma
 l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|in_be16
+id|mpc52xx_psc_putc
 c_func
 (paren
-op_amp
-id|psc-&gt;mpc52xx_psc_status
-)paren
-op_amp
-id|MPC52xx_PSC_SR_TXRDY
-)paren
-)paren
-suffix:semicolon
-id|out_8
-c_func
-(paren
-op_amp
-id|psc-&gt;mpc52xx_psc_buffer_8
+id|psc
 comma
 id|c
 )paren
 suffix:semicolon
 )brace
+id|mpc52xx_psc_putc
+c_func
+(paren
+id|psc
+comma
+l_char|&squot;&bslash;r&squot;
+)paren
+suffix:semicolon
+id|mpc52xx_psc_putc
+c_func
+(paren
+id|psc
+comma
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif  /* CONFIG_SERIAL_TEXT_DEBUG */
 r_int
@@ -491,12 +513,6 @@ l_int|0xf
 )paren
 op_plus
 l_int|17
-)paren
-suffix:semicolon
-id|iounmap
-c_func
-(paren
-id|mmap_ctl
 )paren
 suffix:semicolon
 )brace
