@@ -405,6 +405,7 @@ id|dm_interface_init
 comma
 )brace
 suffix:semicolon
+DECL|variable|_exits
 r_void
 (paren
 op_star
@@ -415,7 +416,6 @@ id|_exits
 (paren
 r_void
 )paren
-id|__exitdata
 op_assign
 (brace
 id|local_exit
