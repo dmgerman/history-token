@@ -3381,7 +3381,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: RFC2461 7.1.1:&n;&t; &t; *&t;If the IP source address is the unspecified address, &n;&t;&t; *&t;there MUST NOT be source link-layer address option &n;&t;&t; *&t;in the message.&n;&t;&t; */
+multiline_comment|/* RFC2461 7.1.1:&n;&t; &t; *&t;If the IP source address is the unspecified address, &n;&t;&t; *&t;there MUST NOT be source link-layer address option &n;&t;&t; *&t;in the message.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5299,7 +5299,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: RFC2461 8.1: &n;&t; *&t;The IP source address of the Redirect MUST be the same as the current&n;&t; *&t;first-hop router for the specified ICMP Destination Address.&n;&t; */
+multiline_comment|/* RFC2461 8.1: &n;&t; *&t;The IP source address of the Redirect MUST be the same as the current&n;&t; *&t;first-hop router for the specified ICMP Destination Address.&n;&t; */
 r_if
 c_cond
 (paren

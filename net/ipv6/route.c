@@ -750,7 +750,7 @@ op_ge
 l_int|12
 )paren
 (brace
-multiline_comment|/* we choose the lastest default router if it&n;&t;&t;&t;&t; * is in (probably) reachable state.&n;&t;&t;&t;&t; * If route changed, we should do pmtu&n;&t;&t;&t;&t; * discovery. --yoshfuji&n;&t;&t;&t;&t; */
+multiline_comment|/* we choose the last default router if it&n;&t;&t;&t;&t; * is in (probably) reachable state.&n;&t;&t;&t;&t; * If route changed, we should do pmtu&n;&t;&t;&t;&t; * discovery. --yoshfuji&n;&t;&t;&t;&t; */
 r_break
 suffix:semicolon
 )brace

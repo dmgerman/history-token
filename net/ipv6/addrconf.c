@@ -4774,7 +4774,7 @@ suffix:semicolon
 r_case
 id|ARPHRD_ARCNET
 suffix:colon
-multiline_comment|/* XXX: inherit EUI-64 fro mother interface -- yoshfuji */
+multiline_comment|/* XXX: inherit EUI-64 from other interface -- yoshfuji */
 r_if
 c_cond
 (paren
