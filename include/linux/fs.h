@@ -1278,7 +1278,6 @@ op_member_access_from_pointer
 id|vfs_inode
 suffix:semicolon
 )brace
-macro_line|#include &lt;linux/shmem_fs.h&gt;
 multiline_comment|/* will die */
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/ext3_fs_i.h&gt;
@@ -2202,11 +2201,6 @@ DECL|member|ufs_sb
 r_struct
 id|ufs_sb_info
 id|ufs_sb
-suffix:semicolon
-DECL|member|shmem_sb
-r_struct
-id|shmem_sb_info
-id|shmem_sb
 suffix:semicolon
 DECL|member|romfs_sb
 r_struct
