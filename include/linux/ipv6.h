@@ -703,6 +703,7 @@ id|inet6
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 DECL|function|inet6_sk
 r_static
 r_inline
@@ -759,7 +760,6 @@ op_member_access_from_pointer
 id|raw6
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 DECL|macro|__ipv6_only_sock
 mdefine_line|#define __ipv6_only_sock(sk)&t;(inet6_sk(sk)-&gt;ipv6only)
 DECL|macro|ipv6_only_sock
