@@ -231,6 +231,7 @@ multiline_comment|/*&n; * clean up the Rx module&n; */
 DECL|function|rxrpc_cleanup
 r_static
 r_void
+id|__exit
 id|rxrpc_cleanup
 c_func
 (paren
