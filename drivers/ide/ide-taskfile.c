@@ -2362,11 +2362,11 @@ r_if
 c_cond
 (paren
 (paren
-id|rq-&gt;current_nr_sectors
+id|rq-&gt;nr_sectors
 op_eq
 l_int|1
 )paren
-op_xor
+op_ne
 (paren
 id|stat
 op_amp

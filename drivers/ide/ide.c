@@ -4665,7 +4665,7 @@ r_return
 id|sleep
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Select the next device which will be serviced.  This selects onlt between&n; * devices on the same channel, since everything else will be scheduled on the&n; * queue level.&n; */
+multiline_comment|/*&n; * Select the next device which will be serviced.  This selects only between&n; * devices on the same channel, since everything else will be scheduled on the&n; * queue level.&n; */
 DECL|function|choose_urgent_device
 r_static
 r_struct
