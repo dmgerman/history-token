@@ -348,8 +348,6 @@ c_func
 id|curr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|macro|ENTRIES_PER_PAGE
 mdefine_line|#define ENTRIES_PER_PAGE&t;&t;(PAGE_SIZE / sizeof(unsigned long))
@@ -429,9 +427,6 @@ r_return
 r_new
 suffix:semicolon
 )brace
-multiline_comment|/* We always increase the module count, since free auto-decrements it */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|scratch_pages
 op_assign
 (paren
@@ -459,13 +454,9 @@ r_new
 op_eq
 l_int|NULL
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

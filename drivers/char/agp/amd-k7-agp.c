@@ -1998,6 +1998,20 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|variable|amd_k7_agp_driver
+r_static
+r_struct
+id|agp_driver
+id|amd_k7_agp_driver
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* Supported Device Scanning routine */
 DECL|function|agp_amdk7_probe
 r_static
@@ -2078,10 +2092,15 @@ op_amp
 id|agp_bridge.mode
 )paren
 suffix:semicolon
+id|amd_k7_agp_driver.dev
+op_assign
+id|dev
+suffix:semicolon
 id|agp_register_driver
 c_func
 (paren
-id|dev
+op_amp
+id|amd_k7_agp_driver
 )paren
 suffix:semicolon
 r_return
@@ -2226,6 +2245,8 @@ r_void
 id|agp_unregister_driver
 c_func
 (paren
+op_amp
+id|amd_k7_agp_driver
 )paren
 suffix:semicolon
 id|pci_unregister_driver
