@@ -5,7 +5,6 @@ multiline_comment|/* CHANGELOG&n; *&n; * Version 2.8&n; *&n; * Fixed bad bug aff
 DECL|macro|NCR_700_VERSION
 mdefine_line|#define NCR_700_VERSION &quot;2.8&quot;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
