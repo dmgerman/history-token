@@ -159,8 +159,6 @@ c_func
 id|vhci
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|hci_vhci_send_frame
 r_static
@@ -1105,6 +1103,10 @@ id|hdev-&gt;destruct
 op_assign
 id|hci_vhci_destruct
 suffix:semicolon
+id|hdev-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1128,8 +1130,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|file-&gt;private_data
 op_assign
 id|hci_vhci
