@@ -1,11 +1,11 @@
 multiline_comment|/* 8139cp.c: A Linux PCI Ethernet driver for the RealTek 8139C+ chips. */
-multiline_comment|/*&n;&t;Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;TODO, in rough priority order:&n;&t;* dev-&gt;tx_timeout&n;&t;* LinkChg interrupt&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Implement PCI suspend/resume&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* support 64-bit PCI DMA&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Rx checksumming&n;&t;* Tx checksumming&n;&t;* ETHTOOL_GREGS, ETHTOOL_[GS]WOL,&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;        * Implement Tx software interrupt mitigation via&n;&t;          Tx descriptor bit&n;&t;* Determine correct value for CP_{MIN,MAX}_MTU, instead of&n;&t;  using conservative guesses.&n;&n; */
+multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;TODO, in rough priority order:&n;&t;* dev-&gt;tx_timeout&n;&t;* LinkChg interrupt&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Implement PCI suspend/resume&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* support 64-bit PCI DMA&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Rx checksumming&n;&t;* Tx checksumming&n;&t;* ETHTOOL_GREGS, ETHTOOL_[GS]WOL,&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;        * Implement Tx software interrupt mitigation via&n;&t;          Tx descriptor bit&n;&t;* Determine correct value for CP_{MIN,MAX}_MTU, instead of&n;&t;  using conservative guesses.&n;&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;8139cp&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.0.6&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.0.7&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;Nov 19, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;Feb 27, 2002&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -3326,106 +3326,6 @@ id|jiffies
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* Set or clear the multicast filter for this adaptor.&n;   This routine is not state sensitive and need not be SMP locked. */
-DECL|variable|ethernet_polynomial
-r_static
-r_int
-r_const
-id|ethernet_polynomial
-op_assign
-l_int|0x04c11db7U
-suffix:semicolon
-DECL|function|ether_crc
-r_static
-r_inline
-id|u32
-id|ether_crc
-(paren
-r_int
-id|length
-comma
-r_int
-r_char
-op_star
-id|data
-)paren
-(brace
-r_int
-id|crc
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_decrement
-id|length
-op_ge
-l_int|0
-)paren
-(brace
-r_int
-r_char
-id|current_octet
-op_assign
-op_star
-id|data
-op_increment
-suffix:semicolon
-r_int
-id|bit
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|bit
-op_assign
-l_int|0
-suffix:semicolon
-id|bit
-OL
-l_int|8
-suffix:semicolon
-id|bit
-op_increment
-comma
-id|current_octet
-op_rshift_assign
-l_int|1
-)paren
-id|crc
-op_assign
-(paren
-id|crc
-op_lshift
-l_int|1
-)paren
-op_xor
-(paren
-(paren
-id|crc
-OL
-l_int|0
-)paren
-op_xor
-(paren
-id|current_octet
-op_amp
-l_int|1
-)paren
-ques
-c_cond
-id|ethernet_polynomial
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_return
-id|crc
 suffix:semicolon
 )brace
 DECL|function|__cp_set_rx_mode
