@@ -4,6 +4,7 @@ mdefine_line|#define _ASM_IA64_SOFTIRQ_H
 macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 DECL|macro|__local_bh_enable
 mdefine_line|#define __local_bh_enable()&t;do { barrier(); really_local_bh_count()--; } while (0)
 DECL|macro|local_bh_disable

@@ -179,7 +179,7 @@ multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 DECL|macro|pci_controller_num
 mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 DECL|macro|sg_dma_len
-mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
+mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;dma_length)
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP
 r_extern
