@@ -46,9 +46,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;ixj.h&quot;
 DECL|macro|TYPE
-mdefine_line|#define TYPE(dev) (MINOR(dev) &gt;&gt; 4)
+mdefine_line|#define TYPE(dev) (minor(dev) &gt;&gt; 4)
 DECL|macro|NUM
-mdefine_line|#define NUM(dev) (MINOR(dev) &amp; 0xf)
+mdefine_line|#define NUM(dev) (minor(dev) &amp; 0xf)
 DECL|variable|ixjdebug
 r_static
 r_int
@@ -386,7 +386,7 @@ DECL|macro|ixj_perfmon
 mdefine_line|#define ixj_perfmon(x)&t;((x)++)
 macro_line|#else
 DECL|macro|ixj_perfmon
-mdefine_line|#define ixj_perfmon(x)&t;do {} while(0);
+mdefine_line|#define ixj_perfmon(x)&t;do { } while(0)
 macro_line|#endif
 DECL|variable|ixj_convert_loaded
 r_static
@@ -15260,9 +15260,9 @@ c_loop
 id|len
 op_decrement
 )paren
+(brace
 op_star
 id|buff
-op_increment
 op_assign
 id|table_ulaw2alaw
 (braket
@@ -15275,6 +15275,10 @@ op_star
 id|buff
 )braket
 suffix:semicolon
+id|buff
+op_increment
+suffix:semicolon
+)brace
 )brace
 DECL|function|alaw2ulaw
 r_static
@@ -15819,9 +15823,9 @@ c_loop
 id|len
 op_decrement
 )paren
+(brace
 op_star
 id|buff
-op_increment
 op_assign
 id|table_alaw2ulaw
 (braket
@@ -15834,6 +15838,10 @@ op_star
 id|buff
 )braket
 suffix:semicolon
+id|buff
+op_increment
+suffix:semicolon
+)brace
 )brace
 DECL|function|ixj_read
 r_static
@@ -31055,7 +31063,7 @@ l_int|0U
 op_div
 r_sizeof
 (paren
-id|IXJ_CADENCE
+id|IXJ_CADENCE_ELEMENT
 )paren
 )paren
 (brace
@@ -32753,7 +32761,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
