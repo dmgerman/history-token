@@ -233,6 +233,12 @@ id|rpc_wait_queue
 id|sending
 suffix:semicolon
 multiline_comment|/* requests waiting to send */
+DECL|member|resend
+r_struct
+id|rpc_wait_queue
+id|resend
+suffix:semicolon
+multiline_comment|/* requests waiting to resend */
 DECL|member|pending
 r_struct
 id|rpc_wait_queue
