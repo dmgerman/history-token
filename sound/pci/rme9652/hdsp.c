@@ -15148,7 +15148,7 @@ id|snd_hdsp_midi_input_read
 op_amp
 id|hdsp-&gt;midi
 (braket
-l_int|0
+l_int|1
 )braket
 )paren
 suffix:semicolon
