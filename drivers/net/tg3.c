@@ -10528,6 +10528,31 @@ id|tg3
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|tg3_poll_controller
+r_static
+r_void
+id|tg3_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|tg3_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|tg3_reset_task
 r_static
 r_void
@@ -38572,6 +38597,12 @@ id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|tg3_poll_controller
+suffix:semicolon
+macro_line|#endif
 id|err
 op_assign
 id|tg3_get_invariants

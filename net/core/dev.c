@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/netpoll.h&gt;
 macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#include &lt;net/iw_handler.h&gt;
@@ -4234,6 +4235,30 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
+r_if
+c_cond
+(paren
+id|skb-&gt;dev-&gt;netpoll_rx
+op_logical_and
+id|netpoll_rx
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NET_RX_DROP
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4857,6 +4882,32 @@ id|type
 op_assign
 id|skb-&gt;protocol
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
+r_if
+c_cond
+(paren
+id|skb-&gt;dev-&gt;netpoll_rx
+op_logical_and
+id|skb-&gt;dev-&gt;poll
+op_logical_and
+id|netpoll_rx
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NET_RX_DROP
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren

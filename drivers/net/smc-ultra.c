@@ -334,6 +334,43 @@ mdefine_line|#define ULTRA_IO_EXTENT 32
 DECL|macro|EN0_ERWCNT
 mdefine_line|#define EN0_ERWCNT&t;&t;0x08&t;/* Early receive warning count. */
 "&f;"
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|ultra_poll
+r_static
+r_void
+id|ultra_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|ei_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&t;Probe for the Ultra.  This looks like a 8013 with the station&n;&t;address PROM at I/O ports &lt;base&gt;+8 to &lt;base&gt;+13, with a checksum&n;&t;following.&n;*/
 DECL|function|ultra_probe
 r_int
@@ -361,6 +398,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|ultra_poll
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1128,6 +1172,12 @@ op_assign
 op_amp
 id|ultra_close_card
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|ei_poll
+suffix:semicolon
+macro_line|#endif
 id|NS8390_init
 c_func
 (paren

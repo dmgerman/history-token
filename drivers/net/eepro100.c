@@ -1831,6 +1831,16 @@ id|dev
 )paren
 suffix:semicolon
 r_static
+r_void
+id|poll_speedo
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
 id|irqreturn_t
 id|speedo_interrupt
 c_func
@@ -3796,6 +3806,13 @@ op_assign
 op_amp
 id|speedo_ioctl
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|poll_speedo
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7888,6 +7905,43 @@ id|handled
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n; */
+DECL|function|poll_speedo
+r_static
+r_void
+id|poll_speedo
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* disable_irq is not very nice, but with the funny lockless design&n;&t;   we have no other choice. */
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|speedo_interrupt
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|speedo_rx_alloc
 r_static
 r_inline
