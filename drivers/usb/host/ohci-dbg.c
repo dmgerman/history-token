@@ -2018,9 +2018,9 @@ id|ED_C
 )paren
 ques
 c_cond
-l_string|&quot;data1&quot;
+id|data1
 suffix:colon
-l_string|&quot;data0&quot;
+id|data0
 )paren
 suffix:semicolon
 id|size
