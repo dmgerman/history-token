@@ -1017,14 +1017,9 @@ id|i
 )paren
 suffix:semicolon
 r_else
-(brace
 id|group_freed
 op_increment
 suffix:semicolon
-id|freed
-op_increment
-suffix:semicolon
-)brace
 )brace
 id|mark_buffer_dirty
 c_func
@@ -1065,6 +1060,10 @@ id|bh2
 comma
 id|group_freed
 )paren
+suffix:semicolon
+id|freed
+op_add_assign
+id|group_freed
 suffix:semicolon
 r_if
 c_cond
