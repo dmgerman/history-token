@@ -259,16 +259,6 @@ comma
 id|alg-&gt;cra_cipher.cia_max_keysize
 )paren
 suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;ivsize       : %u&bslash;n&quot;
-comma
-id|alg-&gt;cra_cipher.cia_ivsize
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case

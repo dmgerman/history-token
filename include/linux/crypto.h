@@ -67,11 +67,6 @@ r_int
 r_int
 id|cia_max_keysize
 suffix:semicolon
-DECL|member|cia_ivsize
-r_int
-r_int
-id|cia_ivsize
-suffix:semicolon
 DECL|member|cia_setkey
 r_int
 (paren
@@ -404,6 +399,11 @@ DECL|member|cit_iv
 r_void
 op_star
 id|cit_iv
+suffix:semicolon
+DECL|member|cit_ivsize
+r_int
+r_int
+id|cit_ivsize
 suffix:semicolon
 DECL|member|cit_mode
 id|u32
@@ -944,7 +944,7 @@ id|CRYPTO_ALG_TYPE_CIPHER
 )paren
 suffix:semicolon
 r_return
-id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_ivsize
+id|tfm-&gt;crt_cipher.cit_ivsize
 suffix:semicolon
 )brace
 DECL|function|crypto_tfm_alg_blocksize

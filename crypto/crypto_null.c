@@ -389,11 +389,6 @@ op_assign
 id|NULL_KEY_SIZE
 comma
 dot
-id|cia_ivsize
-op_assign
-l_int|0
-comma
-dot
 id|cia_setkey
 op_assign
 id|null_setkey

@@ -13780,11 +13780,6 @@ op_assign
 id|DES_KEY_SIZE
 comma
 dot
-id|cia_ivsize
-op_assign
-id|DES_BLOCK_SIZE
-comma
-dot
 id|cia_setkey
 op_assign
 id|des_setkey
@@ -13864,11 +13859,6 @@ dot
 id|cia_max_keysize
 op_assign
 id|DES3_EDE_KEY_SIZE
-comma
-dot
-id|cia_ivsize
-op_assign
-id|DES3_EDE_BLOCK_SIZE
 comma
 dot
 id|cia_setkey

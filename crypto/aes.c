@@ -1961,11 +1961,6 @@ op_assign
 id|AES_MAX_KEY_SIZE
 comma
 dot
-id|cia_ivsize
-op_assign
-id|AES_BLOCK_SIZE
-comma
-dot
 id|cia_setkey
 op_assign
 id|aes_set_key
