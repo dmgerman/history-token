@@ -2,6 +2,8 @@ macro_line|#ifndef _PPC64_PROM_H
 DECL|macro|_PPC64_PROM_H
 mdefine_line|#define _PPC64_PROM_H
 multiline_comment|/*&n; * Definitions for talking to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; *&n; * Updates for PPC64 by Peter Bergner &amp; David Engebretsen, IBM Corp.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|PTRRELOC
 mdefine_line|#define PTRRELOC(x)     ((typeof(x))((unsigned long)(x) - offset))
 DECL|macro|PTRUNRELOC
@@ -452,8 +454,124 @@ op_star
 id|allnext
 suffix:semicolon
 multiline_comment|/* next in list of all nodes */
+DECL|member|pde
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
+suffix:semicolon
+multiline_comment|/* this node&squot;s proc directory */
+DECL|member|name_link
+r_struct
+id|proc_dir_entry
+op_star
+id|name_link
+suffix:semicolon
+multiline_comment|/* name symlink */
+DECL|member|addr_link
+r_struct
+id|proc_dir_entry
+op_star
+id|addr_link
+suffix:semicolon
+multiline_comment|/* addr symlink */
+DECL|member|_users
+id|atomic_t
+id|_users
+suffix:semicolon
+multiline_comment|/* reference count */
+DECL|member|_flags
+r_int
+r_int
+id|_flags
+suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* flag descriptions */
+DECL|macro|OF_STALE
+mdefine_line|#define OF_STALE   0 /* node is slated for deletion */
+DECL|macro|OF_DYNAMIC
+mdefine_line|#define OF_DYNAMIC 1 /* node and properties were allocated via kmalloc */
+DECL|macro|OF_IS_STALE
+mdefine_line|#define OF_IS_STALE(x) test_bit(OF_STALE, &amp;x-&gt;_flags)
+DECL|macro|OF_MARK_STALE
+mdefine_line|#define OF_MARK_STALE(x) set_bit(OF_STALE, &amp;x-&gt;_flags)
+DECL|macro|OF_IS_DYNAMIC
+mdefine_line|#define OF_IS_DYNAMIC(x) test_bit(OF_DYNAMIC, &amp;x-&gt;_flags)
+DECL|macro|OF_MARK_DYNAMIC
+mdefine_line|#define OF_MARK_DYNAMIC(x) set_bit(OF_DYNAMIC, &amp;x-&gt;_flags)
+multiline_comment|/*&n; * Until 32-bit ppc can add proc_dir_entries to its device_node&n; * definition, we cannot refer to pde, name_link, and addr_link&n; * in arch-independent code.&n; */
+DECL|macro|HAVE_ARCH_DEVTREE_FIXUPS
+mdefine_line|#define HAVE_ARCH_DEVTREE_FIXUPS
+DECL|function|set_node_proc_entry
+r_static
+r_inline
+r_void
+id|set_node_proc_entry
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+comma
+r_struct
+id|proc_dir_entry
+op_star
+id|de
+)paren
+(brace
+id|dn-&gt;pde
+op_assign
+id|de
+suffix:semicolon
+)brace
+DECL|function|set_node_name_link
+r_static
+r_void
+r_inline
+id|set_node_name_link
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+comma
+r_struct
+id|proc_dir_entry
+op_star
+id|de
+)paren
+(brace
+id|dn-&gt;name_link
+op_assign
+id|de
+suffix:semicolon
+)brace
+DECL|function|set_node_addr_link
+r_static
+r_void
+r_inline
+id|set_node_addr_link
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+comma
+r_struct
+id|proc_dir_entry
+op_star
+id|de
+)paren
+(brace
+id|dn-&gt;addr_link
+op_assign
+id|de
+suffix:semicolon
+)brace
 DECL|typedef|prom_arg_t
 r_typedef
 id|u32
@@ -761,6 +879,34 @@ r_struct
 id|device_node
 op_star
 id|node
+)paren
+suffix:semicolon
+multiline_comment|/* For updating the device tree at runtime */
+r_extern
+r_int
+id|of_add_node
+c_func
+(paren
+r_const
+r_char
+op_star
+id|path
+comma
+r_struct
+id|property
+op_star
+id|proplist
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|of_remove_node
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|np
 )paren
 suffix:semicolon
 multiline_comment|/* Other Prototypes */
