@@ -13,7 +13,7 @@ DECL|macro|MY_PRINT_NAME
 mdefine_line|#define MY_PRINT_NAME &quot;appldata_mem&quot;&t;&t;/* for debug messages, etc. */
 DECL|macro|P2K
 mdefine_line|#define P2K(x) ((x) &lt;&lt; (PAGE_SHIFT - 10))&t;/* Converts #Pages to KB */
-multiline_comment|/*&n; * Memory data&n; */
+multiline_comment|/*&n; * Memory data&n; *&n; * This is accessed as binary data by z/VM. If changes to it can&squot;t be avoided,&n; * the structure version (product ID, see appldata_base.c) needs to be changed&n; * as well and all documentation and z/VM applications using it must be&n; * updated.&n; *&n; * The record layout is documented in the Linux for zSeries Device Drivers&n; * book:&n; * http://oss.software.ibm.com/developerworks/opensource/linux390/index.shtml&n; */
 DECL|struct|appldata_mem_data
 r_struct
 id|appldata_mem_data
@@ -98,19 +98,11 @@ id|freeswap
 suffix:semicolon
 multiline_comment|/* free swap space */
 singleline_comment|// New in 2.6 --&gt;
-DECL|member|pgalloc_high
+DECL|member|pgalloc
 id|u64
-id|pgalloc_high
+id|pgalloc
 suffix:semicolon
 multiline_comment|/* page allocations */
-DECL|member|pgalloc_normal
-id|u64
-id|pgalloc_normal
-suffix:semicolon
-DECL|member|pgalloc_dma
-id|u64
-id|pgalloc_dma
-suffix:semicolon
 DECL|member|pgfault
 id|u64
 id|pgfault
@@ -180,25 +172,9 @@ suffix:semicolon
 id|P_DEBUG
 c_func
 (paren
-l_string|&quot;pgalloc_high   = %8lu &bslash;n&quot;
+l_string|&quot;pgalloc    = %8lu &bslash;n&quot;
 comma
-id|mem_data-&gt;pgalloc_high
-)paren
-suffix:semicolon
-id|P_DEBUG
-c_func
-(paren
-l_string|&quot;pgalloc_normal = %8lu &bslash;n&quot;
-comma
-id|mem_data-&gt;pgalloc_normal
-)paren
-suffix:semicolon
-id|P_DEBUG
-c_func
-(paren
-l_string|&quot;pgalloc_dma    = %8lu &bslash;n&quot;
-comma
-id|mem_data-&gt;pgalloc_dma
+id|mem_data-&gt;pgalloc
 )paren
 suffix:semicolon
 id|P_DEBUG
@@ -373,16 +349,12 @@ id|mem_data-&gt;pswpout
 op_assign
 id|ps.pswpout
 suffix:semicolon
-id|mem_data-&gt;pgalloc_high
+id|mem_data-&gt;pgalloc
 op_assign
 id|ps.pgalloc_high
-suffix:semicolon
-id|mem_data-&gt;pgalloc_normal
-op_assign
+op_plus
 id|ps.pgalloc_normal
-suffix:semicolon
-id|mem_data-&gt;pgalloc_dma
-op_assign
+op_plus
 id|ps.pgalloc_dma
 suffix:semicolon
 id|mem_data-&gt;pgfault
@@ -392,20 +364,6 @@ suffix:semicolon
 id|mem_data-&gt;pgmajfault
 op_assign
 id|ps.pgmajfault
-suffix:semicolon
-id|P_DEBUG
-c_func
-(paren
-l_string|&quot;pgalloc_high = %lu, pgalloc_normal = %lu, pgalloc_dma = %lu, pgfree = %lu&bslash;n&quot;
-comma
-id|ps.pgalloc_high
-comma
-id|ps.pgalloc_normal
-comma
-id|ps.pgalloc_dma
-comma
-id|ps.pgfree
-)paren
 suffix:semicolon
 id|si_meminfo
 c_func

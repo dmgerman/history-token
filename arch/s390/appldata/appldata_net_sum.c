@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &quot;appldata.h&quot;
 DECL|macro|MY_PRINT_NAME
 mdefine_line|#define MY_PRINT_NAME&t;&quot;appldata_net_sum&quot;&t;/* for debug messages, etc. */
-multiline_comment|/*&n; * Network data&n; */
+multiline_comment|/*&n; * Network data&n; *&n; * This is accessed as binary data by z/VM. If changes to it can&squot;t be avoided,&n; * the structure version (product ID, see appldata_base.c) needs to be changed&n; * as well and all documentation and z/VM applications using it must be updated.&n; *&n; * The record layout is documented in the Linux for zSeries Device Drivers&n; * book:&n; * http://oss.software.ibm.com/developerworks/opensource/linux390/index.shtml&n; */
 DECL|struct|appldata_net_sum_data
 r_struct
 id|appldata_net_sum_data
