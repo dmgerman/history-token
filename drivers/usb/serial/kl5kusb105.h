@@ -11,7 +11,6 @@ mdefine_line|#define KLSI_KL5KUSB105D_PID&t;0x00c0
 multiline_comment|/* Vendor commands: */
 multiline_comment|/* port table -- the chip supports up to 4 channels */
 multiline_comment|/* baud rates */
-r_typedef
 r_enum
 (brace
 DECL|enumerator|kl5kusb105a_sio_b115200
@@ -67,9 +66,7 @@ id|kl5kusb105a_sio_b600
 op_assign
 l_int|0xb
 multiline_comment|/* unchecked */
-DECL|typedef|KL5KUSB105A_SIO_baudrate_t
 )brace
-id|KL5KUSB105A_SIO_baudrate_t
 suffix:semicolon
 multiline_comment|/* data bits */
 DECL|macro|kl5kusb105a_dtb_7
