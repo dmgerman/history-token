@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file implements the perfmon-2 subsystem which is used&n; * to program the IA-64 Performance Monitoring Unit (PMU).&n; *&n; * The initial version of perfmon.c was written by&n; * Ganesh Venkitachalam, IBM Corp.&n; *&n; * Then it was modified for perfmon-1.x by Stephane Eranian and &n; * David Mosberger, Hewlett Packard Co.&n; * &n; * Version Perfmon-2.x is a rewrite of perfmon-1.x&n; * by Stephane Eranian, Hewlett Packard Co. &n; *&n; * Copyright (C) 1999-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *               David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * More information about perfmon available at:&n; * &t;http://www.hpl.hp.com/research/linux/perfmon&n; */
+multiline_comment|/*&n; * This file implements the perfmon-2 subsystem which is used&n; * to program the IA-64 Performance Monitoring Unit (PMU).&n; *&n; * The initial version of perfmon.c was written by&n; * Ganesh Venkitachalam, IBM Corp.&n; *&n; * Then it was modified for perfmon-1.x by Stephane Eranian and&n; * David Mosberger, Hewlett Packard Co.&n; *&n; * Version Perfmon-2.x is a rewrite of perfmon-1.x&n; * by Stephane Eranian, Hewlett Packard Co.&n; *&n; * Copyright (C) 1999-2003, 2005  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *               David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * More information about perfmon available at:&n; * &t;http://www.hpl.hp.com/research/linux/perfmon&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16140,36 +16140,8 @@ id|arg
 comma
 r_int
 id|count
-comma
-r_int
-id|arg5
-comma
-r_int
-id|arg6
-comma
-r_int
-id|arg7
-comma
-r_int
-id|arg8
-comma
-r_int
-id|stack
 )paren
 (brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-op_amp
-id|stack
-suffix:semicolon
 r_struct
 id|file
 op_star
@@ -16787,7 +16759,11 @@ id|args_k
 comma
 id|count
 comma
-id|regs
+id|ia64_task_regs
+c_func
+(paren
+id|current
+)paren
 )paren
 suffix:semicolon
 id|call_made
@@ -22722,21 +22698,6 @@ id|arg
 comma
 r_int
 id|count
-comma
-r_int
-id|arg5
-comma
-r_int
-id|arg6
-comma
-r_int
-id|arg7
-comma
-r_int
-id|arg8
-comma
-r_int
-id|stack
 )paren
 (brace
 r_return

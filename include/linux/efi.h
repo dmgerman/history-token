@@ -927,6 +927,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+op_star
+id|efi_get_pal_addr
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|efi_map_pal_code
 (paren
 r_void
