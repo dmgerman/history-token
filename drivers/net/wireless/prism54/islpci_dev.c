@@ -274,6 +274,7 @@ id|fw_entry
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EILSEQ
 suffix:semicolon
 multiline_comment|/* Illegal byte sequence  */
@@ -399,6 +400,20 @@ c_func
 id|fw_len
 op_ne
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Firmware version is at offset 40 (also for &quot;newmac&quot;) */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: firmware version: %.8s&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+comma
+id|fw_entry-&gt;data
+op_plus
+l_int|40
 )paren
 suffix:semicolon
 id|release_firmware
