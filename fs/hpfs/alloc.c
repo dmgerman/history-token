@@ -562,6 +562,8 @@ op_plus
 id|forward
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|q
@@ -781,6 +783,8 @@ op_plus
 id|forward
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|q

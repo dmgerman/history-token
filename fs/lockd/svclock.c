@@ -184,6 +184,8 @@ op_assign
 op_star
 id|bp
 )paren
+op_ne
+l_int|0
 )paren
 id|bp
 op_assign
@@ -253,6 +255,8 @@ op_assign
 op_star
 id|bp
 )paren
+op_ne
+l_int|0
 suffix:semicolon
 id|bp
 op_assign
@@ -361,6 +365,8 @@ op_assign
 op_star
 id|head
 )paren
+op_ne
+l_int|0
 suffix:semicolon
 id|head
 op_assign
@@ -1720,6 +1726,8 @@ op_assign
 op_star
 id|bp
 )paren
+op_ne
+l_int|0
 suffix:semicolon
 id|bp
 op_assign
@@ -2422,6 +2430,8 @@ id|block
 op_assign
 id|nlm_blocked
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 r_if

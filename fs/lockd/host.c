@@ -235,6 +235,8 @@ op_assign
 op_star
 id|hp
 )paren
+op_ne
+l_int|0
 suffix:semicolon
 id|hp
 op_assign
@@ -618,6 +620,8 @@ op_assign
 op_star
 id|hp
 )paren
+op_ne
+l_int|0
 suffix:semicolon
 id|hp
 op_assign

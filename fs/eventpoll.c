@@ -2429,6 +2429,8 @@ op_amp
 id|ep-&gt;rbr
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|epi

@@ -750,6 +750,8 @@ op_assign
 op_star
 id|wql
 )paren
+op_ne
+l_int|0
 suffix:semicolon
 id|wql
 op_assign
