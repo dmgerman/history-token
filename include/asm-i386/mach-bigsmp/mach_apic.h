@@ -15,6 +15,8 @@ DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (1)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
+DECL|macro|NO_IOAPIC_CHECK
+mdefine_line|#define NO_IOAPIC_CHECK (0)
 DECL|function|apic_id_registered
 r_static
 r_inline

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * include/asm-arm/arch-sa1100/serial.h&n; * (C) 1999 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * All this is intended to be used with a 16550-like UART on the SA1100&squot;s &n; * PCMCIA bus.  It has nothing to do with the SA1100&squot;s internal serial ports.&n; * This is included by serial.c -- serial_sa1100.c makes no use of it.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Standard COM flags */
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)

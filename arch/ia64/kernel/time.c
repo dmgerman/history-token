@@ -503,8 +503,7 @@ comma
 id|slot
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|prof_cpu_mask
 suffix:semicolon
 id|profile_hook

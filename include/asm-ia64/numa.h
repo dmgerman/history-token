@@ -25,8 +25,7 @@ id|__cacheline_aligned
 suffix:semicolon
 r_extern
 r_volatile
-r_int
-r_int
+id|cpumask_t
 id|node_to_cpu_mask
 (braket
 id|NR_NODES

@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/hardware.h&n; *&n; *  
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * These are statically mapped PCMCIA IO space for designs using it as a&n; * generic IO bus, typically with ISA parts, hardwired IDE interfaces, etc.&n; * The actual PCMCIA code is mapping required IO region at run time.&n; */
 DECL|macro|PCMCIA_IO_0_BASE

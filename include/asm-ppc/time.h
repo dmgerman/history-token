@@ -322,6 +322,36 @@ r_return
 id|rtcl
 suffix:semicolon
 )brace
+DECL|function|get_rtcu
+r_extern
+id|__inline__
+r_int
+r_int
+id|get_rtcu
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|rtcu
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mfrtcu %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|rtcu
+)paren
+)paren
+suffix:semicolon
+r_return
+id|rtcu
+suffix:semicolon
+)brace
 DECL|function|get_native_tbl
 r_extern
 id|__inline__
@@ -494,6 +524,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Use mulhwu to scale processor timebase to timeval */
+multiline_comment|/* Specifically, this computes (x * y) / 2^32.  -- paulus */
 DECL|macro|mulhwu
 mdefine_line|#define mulhwu(x,y) &bslash;&n;({unsigned z; asm (&quot;mulhwu %0,%1,%2&quot; : &quot;=r&quot; (z) : &quot;r&quot; (x), &quot;r&quot; (y)); z;})
 r_int

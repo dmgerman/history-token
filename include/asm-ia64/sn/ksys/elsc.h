@@ -2,8 +2,6 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_KSYS_ELSC_H
 DECL|macro|_ASM_SN_KSYS_ELSC_H
 mdefine_line|#define _ASM_SN_KSYS_ELSC_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 multiline_comment|/*&n; * Error codes&n; *&n; *   The possible ELSC error codes are a superset of the I2C error codes,&n; *   so ELSC error codes begin at -100.&n; */
 DECL|macro|ELSC_ERROR_NONE
 mdefine_line|#define ELSC_ERROR_NONE&t;&t;&t;0

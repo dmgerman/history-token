@@ -2,7 +2,6 @@ multiline_comment|/*&n; * LAPB protocol module for the COMX driver &n; * for Lin
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;0.80&quot;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

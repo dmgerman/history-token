@@ -1,6 +1,5 @@
 multiline_comment|/*****************************************************************************&n;* sdla_fr.c&t;WANPIPE(tm) Multiprotocol WAN Link Driver. Frame relay module.&n;*&n;* Author(s):&t;Nenad Corbic  &lt;ncorbic@sangoma.com&gt;&n;*&t;&t;Gideon Hack&n;*&n;* Copyright:&t;(c) 1995-2001 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Nov 23, 2000  Nenad Corbic    o Added support for 2.4.X kernels&n;* Nov 15, 2000  David Rokavarg  &n;*               Nenad Corbic&t;o Added frame relay bridging support.&n;* &t;&t;&t;&t;  Original code from Mark Wells and Kristian Hoffmann has&n;* &t;&t;&t;&t;  been integrated into the frame relay driver.&n;* Nov 13, 2000  Nenad Corbic    o Added true interface type encoding option.&n;* &t;&t;&t;&t;  Tcpdump doesn&squot;t support Frame Relay inteface&n;* &t;&t;&t;&t;  types, to fix this true type option will set&n;* &t;&t;&t;&t;  the interface type to RAW IP mode.&n;* Nov 07, 2000  Nenad Corbic&t;o Added security features for UDP debugging:&n;*                                 Deny all and specify allowed requests.&n;* Nov 06, 2000  Nenad Corbic&t;o Wanpipe interfaces conform to raw packet interfaces.  &n;*                                 Moved the if_header into the if_send() routine.&n;*                                 The if_header() was breaking the libpcap &n;*                                 support. i.e. support for tcpdump, ethereal ...&n;* Oct 12. 2000  Nenad Corbic    o Added error message in fr_configure&n;* Jul 31, 2000  Nenad Corbic&t;o Fixed the Router UP Time.&n;* Apr 28, 2000  Nenad Corbic&t;o Added the option to shutdown an interface&n;*                                 when the channel gets disconnected.&n;* Apr 28, 2000  Nenad Corbic &t;o Added M.Grants patch: disallow duplicate&n;*                                 interface setups. &n;* Apr 25, 2000  Nenad Corbic&t;o Added M.Grants patch: dynamically add/remove &n;*                                 new dlcis/interfaces.&n;* Mar 23, 2000  Nenad Corbic &t;o Improved task queue, bh handling.&n;* Mar 16, 2000&t;Nenad Corbic&t;o Added Inverse ARP support&n;* Mar 13, 2000  Nenad Corbic&t;o Added new socket API support.&n;* Mar 06, 2000  Nenad Corbic&t;o Bug Fix: corrupted mbox recovery.&n;* Feb 24, 2000  Nenad Corbic    o Fixed up FT1 UDP debugging problem.&n;* Dev 15, 1999  Nenad Corbic    o Fixed up header files for 2.0.X kernels&n;*&n;* Nov 08, 1999  Nenad Corbic    o Combined all debug UDP calls into one function&n;*                               o Removed the ARP support. This has to be done&n;*                                 in the next version.&n;*                               o Only a Node can implement NO signalling.&n;*                                 Initialize DLCI during if_open() if NO &n;*&t;&t;&t;&t;  signalling.&n;*&t;&t;&t;&t;o Took out IPX support, implement in next&n;*                                 version&n;* Sep 29, 1999  Nenad Corbic&t;o Added SMP support and changed the update&n;*                                 function to use timer interrupt.&n;*&t;&t;&t;&t;o Fixed the CIR bug:  Set the value of BC&n;*                                 to CIR when the CIR is enabled.&n;*  &t;&t;&t;&t;o Updated comments, statistics and tracing.&n;* Jun 02, 1999&t;Gideon Hack&t;o Updated for S514 support.&n;* Sep 18, 1998&t;Jaspreet Singh&t;o Updated for 2.2.X kernels.&n;* Jul 31, 1998&t;Jaspreet Singh&t;o Removed wpf_poll routine.  The channel/DLCI &n;*&t;&t;&t;&t;  status is received through an event interrupt.&n;* Jul 08, 1998&t;David Fong&t;o Added inverse ARP support.&n;* Mar 26, 1997&t;Jaspreet Singh&t;o Returning return codes for failed UDP cmds.&n;* Jan 28, 1997&t;Jaspreet Singh  o Improved handling of inactive DLCIs.&n;* Dec 30, 1997&t;Jaspreet Singh&t;o Replaced dev_tint() with mark_bh(NET_BH)&n;* Dec 16, 1997&t;Jaspreet Singh&t;o Implemented Multiple IPX support.&n;* Nov 26, 1997&t;Jaspreet Singh&t;o Improved load sharing with multiple boards&n;*&t;&t;&t;&t;o Added Cli() to protect enabling of interrupts&n;*&t;&t;&t;&t;  while polling is called.&n;* Nov 24, 1997&t;Jaspreet Singh&t;o Added counters to avoid enabling of interrupts&n;*&t;&t;&t;&t;  when they have been disabled by another&n;*&t;&t;&t;&t;  interface or routine (eg. wpf_poll).&n;* Nov 06, 1997&t;Jaspreet Singh&t;o Added INTR_TEST_MODE to avoid polling&t;&n;*&t;&t;&t;&t;  routine disable interrupts during interrupt&n;*&t;&t;&t;&t;  testing.&n;* Oct 20, 1997  Jaspreet Singh  o Added hooks in for Router UP time.&n;* Oct 16, 1997  Jaspreet Singh  o The critical flag is used to maintain flow&n;*                                 control by avoiding RACE conditions.  The&n;*                                 cli() and restore_flags() are taken out.&n;*                                 The fr_channel structure is appended for &n;*                                 Driver Statistics.&n;* Oct 15, 1997  Farhan Thawar    o updated if_send() and receive for IPX&n;* Aug 29, 1997  Farhan Thawar    o Removed most of the cli() and sti()&n;*                                o Abstracted the UDP management stuff&n;*                                o Now use tbusy and critical more intelligently&n;* Jul 21, 1997  Jaspreet Singh&t; o Can configure T391, T392, N391, N392 &amp; N393&n;*&t;&t;&t;&t;   through router.conf.&n;*&t;&t;&t;&t; o Protected calls to sdla_peek() by adDing &n;*&t;&t;&t;&t;   save_flags(), cli() and restore_flags().&n;*&t;&t;&t;&t; o Added error message for Inactive DLCIs in&n;*&t;&t;&t;&t;   fr_event() and update_chan_state().&n;*&t;&t;&t;&t; o Fixed freeing up of buffers using kfree() &n;*&t;&t;&t;           when packets are received.&n;* Jul 07, 1997&t;Jaspreet Singh&t; o Added configurable TTL for UDP packets &n;*&t;&t;&t;&t; o Added ability to discard multicast and &n;*&t;&t;&t;&t;   broadcast source addressed packets&n;* Jun 27, 1997&t;Jaspreet Singh&t; o Added FT1 monitor capabilities &n;*&t;&t;&t;&t;   New case (0x44) statement in if_send routine &n;*&t;&t;&t;&t;   Added a global variable rCount to keep track&n;*&t;&t;&t; &t;   of FT1 status enabled on the board.&n;* May 29, 1997&t;Jaspreet Singh&t; o Fixed major Flow Control Problem&n;*&t;&t;&t;&t;   With multiple boards a problem was seen where&n;*&t;&t;&t;&t;   the second board always stopped transmitting&n;*&t;&t;&t;&t;   packet after running for a while. The code&n;*&t;&t;&t;&t;   got into a stage where the interrupts were&n;*&t;&t;&t;&t;   disabled and dev-&gt;tbusy was set to 1.&n;*                  &t;&t;   This caused the If_send() routine to get into&n;*                                  the if clause for it(0,dev-&gt;tbusy) &n;*&t;&t;&t;&t;   forever.&n;*&t;&t;&t;&t;   The code got into this stage due to an &n;*&t;&t;&t;&t;   interrupt occurring within the if clause for &n;*&t;&t;&t;&t;   set_bit(0,dev-&gt;tbusy).  Since an interrupt &n;*&t;&t;&t;&t;   disables furhter transmit interrupt and &n;* &t;&t;&t;&t;   makes dev-&gt;tbusy = 0, this effect was undone &n;*                                  by making dev-&gt;tbusy = 1 in the if clause.&n;*&t;&t;&t;&t;   The Fix checks to see if Transmit interrupts&n;*&t;&t;&t;&t;   are disabled then do not make dev-&gt;tbusy = 1&n;* &t;   &t;&t;&t;   Introduced a global variable: int_occur and&n;*&t;&t;&t;&t;   added tx_int_enabled in the wan_device &n;*&t;&t;&t;&t;   structure.&t;&n;* May 21, 1997  Jaspreet Singh   o Fixed UDP Management for multiple&n;*                                  boards.&n;*&n;* Apr 25, 1997  Farhan Thawar    o added UDP Management stuff&n;*                                o fixed bug in if_send() and tx_intr() to&n;*                                  sleep and wakeup all devices&n;* Mar 11, 1997  Farhan Thawar   Version 3.1.1&n;*                                o fixed (+1) bug in fr508_rx_intr()&n;*                                o changed if_send() to return 0 if&n;*                                  wandev.critical() is true&n;*                                o free socket buffer in if_send() if&n;*                                  returning 0 &n;*                                o added tx_intr() routine&n;* Jan 30, 1997&t;Gene Kozin&t;Version 3.1.0&n;*&t;&t;&t;&t; o implemented exec() entry point&n;*&t;&t;&t;&t; o fixed a bug causing driver configured as&n;*&t;&t;&t;&t;   a FR switch to be stuck in WAN_&n;*&t;&t;&t;&t;   mode&n;* Jan 02, 1997&t;Gene Kozin&t;Initial version.&n;*****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
@@ -8,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
 macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definitions */
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;&t;/* ARPHRD_* defines */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for inb(), outb(), etc. */
@@ -267,10 +267,10 @@ id|atomic_t
 id|bh_buff_used
 suffix:semicolon
 multiline_comment|/* Polling task queue. Each interface&n;         * has its own task queue, which is used&n;         * to defer events from the interrupt */
-DECL|member|fr_poll_task
+DECL|member|fr_poll_work
 r_struct
-id|tq_struct
-id|fr_poll_task
+id|work_struct
+id|fr_poll_work
 suffix:semicolon
 DECL|member|fr_arp_timer
 r_struct
@@ -3328,25 +3328,20 @@ op_assign
 id|chan
 suffix:semicolon
 multiline_comment|/* Initialize FR Polling Task Queue&n;         * We need a poll routine for each network&n;         * interface. &n;         */
-id|chan-&gt;fr_poll_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chan-&gt;fr_poll_task.routine
-op_assign
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|chan-&gt;fr_poll_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|fr_poll
-suffix:semicolon
-id|chan-&gt;fr_poll_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 id|init_timer
 c_func
@@ -4076,25 +4071,20 @@ id|chan-&gt;tq_working
 op_assign
 l_int|0
 suffix:semicolon
-id|chan-&gt;common.wanpipe_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.routine
-op_assign
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|chan-&gt;common.wanpipe_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|fr_bh
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate and initialize BH circular buffer */
 id|chan-&gt;bh_head
@@ -7542,7 +7532,7 @@ op_assign
 id|skb-&gt;data
 suffix:semicolon
 )brace
-multiline_comment|/* Send a packed up the IP stack */
+multiline_comment|/* Send a packet up the IP stack */
 id|skb-&gt;dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -7599,7 +7589,7 @@ op_assign
 id|card-&gt;u.f.rxmb_base
 suffix:semicolon
 )brace
-multiline_comment|/*==================================================================&n; * tx_intr:&t;Transmit interrupt handler.&n; *&n; * Rationale:&n; *      If the board is busy transmitting, if_send() will&n; *      buffers a single packet and turn on&n; *      the tx interrupt. Tx interrupt will be called&n; *      by the board, once the firmware can send more&n; *      data. Thus, no polling is required.&t; &n; *&n; * Description:&n; *&t;Tx interrupt is called for each &n; *      configured dlci channel. Thus: &n; * &t;1. Obtain the netowrk interface based on the&n; *         dlci number.&n; *      2. Check that network interface is up and&n; *         properly setup.&n; * &t;3. Check for a buffered packed.&n; *      4. Transmit the packed.&n; *&t;5. If we are in WANPIPE mode, mark the &n; *         NET_BH handler. &n; *      6. If we are in API mode, kick&n; *         the AF_WANPIPE socket for more data. &n; *&t;   &n; */
+multiline_comment|/*==================================================================&n; * tx_intr:&t;Transmit interrupt handler.&n; *&n; * Rationale:&n; *      If the board is busy transmitting, if_send() will&n; *      buffers a single packet and turn on&n; *      the tx interrupt. Tx interrupt will be called&n; *      by the board, once the firmware can send more&n; *      data. Thus, no polling is required.&t; &n; *&n; * Description:&n; *&t;Tx interrupt is called for each &n; *      configured dlci channel. Thus: &n; * &t;1. Obtain the netowrk interface based on the&n; *         dlci number.&n; *      2. Check that network interface is up and&n; *         properly setup.&n; * &t;3. Check for a buffered packet.&n; *      4. Transmit the packet.&n; *&t;5. If we are in WANPIPE mode, mark the &n; *         NET_BH handler. &n; *      6. If we are in API mode, kick&n; *         the AF_WANPIPE socket for more data. &n; *&t;   &n; */
 DECL|function|tx_intr
 r_static
 r_void
@@ -15420,7 +15410,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*----------------------------------------------------------------------&n;                  RECEIVE INTERRUPT: BOTTOM HALF HANDLERS &n; ----------------------------------------------------------------------*/
-multiline_comment|/*========================================================&n; * bh_enqueue&n; *&n; * Description:&n; *&t;Insert a received packed into a circular&n; *      rx queue.  This packed will be picked up &n; *      by fr_bh() and sent up the stack to the&n; *      user.&n; *       &t;&n; * Usage: &n; *&t;This function is called by rx interrupt,&n; *      in API mode.&n; *&n; */
+multiline_comment|/*========================================================&n; * bh_enqueue&n; *&n; * Description:&n; *&t;Insert a received packet into a circular&n; *      rx queue.  This packet will be picked up &n; *      by fr_bh() and sent up the stack to the&n; *      user.&n; *       &t;&n; * Usage: &n; *&t;This function is called by rx interrupt,&n; *      in API mode.&n; *&n; */
 DECL|function|bh_enqueue
 r_static
 r_int
@@ -15552,21 +15542,16 @@ id|chan-&gt;tq_working
 )paren
 )paren
 (brace
-id|wanpipe_queue_tq
+id|wanpipe_queue_work
 c_func
 (paren
 op_amp
-id|chan-&gt;common.wanpipe_task
-)paren
-suffix:semicolon
-id|wanpipe_mark_bh
-c_func
-(paren
+id|chan-&gt;common.wanpipe_work
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*========================================================&n; * fr_bh&n; *&n; * Description:&n; *&t;Frame relay receive BH handler. &n; *&t;Dequeue data from the BH circular &n; *&t;buffer and pass it up the API sock.&n; *       &t;&n; * Rationale: &n; *&t;This fuction is used to offload the &n; *&t;rx_interrupt during API operation mode.  &n; *&t;The fr_bh() function executes for each &n; *&t;dlci/interface.  &n; * &n; *      Once receive interrupt copies data from the&n; *      card into an skb buffer, the skb buffer&n; *  &t;is appended to a circular BH buffer.&n; *  &t;Then the interrupt kicks fr_bh() to finish the&n; *      job at a later time (no within the interrupt).&n; *       &n; * Usage:&n; * &t;Interrupts use this to defer a taks to &n; *      a polling routine.&n; *&n; */
+multiline_comment|/*========================================================&n; * fr_bh&n; *&n; * Description:&n; *&t;Frame relay receive BH handler. &n; *&t;Dequeue data from the BH circular &n; *&t;buffer and pass it up the API sock.&n; *       &t;&n; * Rationale: &n; *&t;This fuction is used to offload the &n; *&t;rx_interrupt during API operation mode.  &n; *&t;The fr_bh() function executes for each &n; *&t;dlci/interface.  &n; * &n; *      Once receive interrupt copies data from the&n; *      card into an skb buffer, the skb buffer&n; *  &t;is appended to a circular BH buffer.&n; *  &t;Then the interrupt kicks fr_bh() to finish the&n; *      job at a later time (not within the interrupt).&n; *       &n; * Usage:&n; * &t;Interrupts use this to defer a task to &n; *      a polling routine.&n; *&n; */
 DECL|function|fr_bh
 r_static
 r_void
@@ -15864,11 +15849,11 @@ id|chan
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|chan-&gt;fr_poll_task
+id|chan-&gt;fr_poll_work
 )paren
 suffix:semicolon
 r_return

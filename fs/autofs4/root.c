@@ -1112,7 +1112,11 @@ l_string|&quot;autofs_lookup: pid = %u, pgrp = %u, catatonic = %d, oz_mode = %d&
 comma
 id|current-&gt;pid
 comma
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 comma
 id|sbi-&gt;catatonic
 comma
@@ -2119,7 +2123,11 @@ id|arg
 comma
 id|sbi
 comma
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 )paren
 )paren
 suffix:semicolon

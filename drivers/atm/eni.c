@@ -13090,9 +13090,6 @@ c_func
 l_string|&quot;eni_init_one&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* @@@ we don&squot;t support unloading yet */
 r_if
 c_cond
 (paren
@@ -13298,9 +13295,6 @@ id|eni_dev
 suffix:semicolon
 id|out0
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* @@@ we don&squot;t support unloading yet */
 r_return
 id|error
 suffix:semicolon
@@ -13490,18 +13484,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-DECL|function|eni_cleanup
-r_static
-r_void
-id|__exit
-id|eni_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/*&n;&t; * Well, there&squot;s no way to get rid of the driver yet, so we don&squot;t&n;&t; * have to clean up, right ? :-)&n;&t; */
-)brace
 DECL|variable|eni_init
 id|module_init
 c_func
@@ -13509,13 +13491,7 @@ c_func
 id|eni_init
 )paren
 suffix:semicolon
-DECL|variable|eni_cleanup
-id|module_exit
-c_func
-(paren
-id|eni_cleanup
-)paren
-suffix:semicolon
+multiline_comment|/* @@@ since exit routine not defined, this module can not be unloaded */
 id|MODULE_LICENSE
 c_func
 (paren

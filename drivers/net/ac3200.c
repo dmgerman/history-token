@@ -11,6 +11,7 @@ op_assign
 l_string|&quot;ac3200.c:v1.01 7/1/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -2,10 +2,7 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_KSYS_L1_H
 DECL|macro|_ASM_SN_KSYS_L1_H
 mdefine_line|#define _ASM_SN_KSYS_L1_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/sn/vector.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/sn/types.h&gt;
 multiline_comment|/* L1 Target Addresses */
 multiline_comment|/*&n; * L1 commands and responses use source/target addresses that are&n; * 32 bits long.  These are broken up into multiple bitfields that&n; * specify the type of the target controller (could actually be L2&n; * L3, not just L1), the rack and bay of the target, and the task&n; * id (L1 functionality is divided into several independent &quot;tasks&quot;&n; * that can each receive command requests and transmit responses)&n; */
 DECL|macro|L1_ADDR_TYPE_L1
@@ -36,12 +33,6 @@ DECL|macro|L1_ADDR_TASK_BEDROCK
 mdefine_line|#define L1_ADDR_TASK_BEDROCK&t;0x05&t;/* bedrock&t;&t;*/
 DECL|macro|L1_ADDR_TASK_GENERAL
 mdefine_line|#define L1_ADDR_TASK_GENERAL&t;0x06&t;/* general requests&t;*/
-DECL|macro|L1_ADDR_LOCAL
-mdefine_line|#define L1_ADDR_LOCAL&t;&t;&t;&t;&bslash;&n;    (L1_ADDR_TYPE_L1 &lt;&lt; L1_ADDR_TYPE_SHFT) |&t;&bslash;&n;    (L1_ADDR_RACK_LOCAL &lt;&lt; L1_ADDR_RACK_SHFT) |&t;&bslash;&n;    (L1_ADDR_BAY_LOCAL &lt;&lt; L1_ADDR_BAY_SHFT)
-DECL|macro|L1_ADDR_LOCALIO
-mdefine_line|#define L1_ADDR_LOCALIO&t;&t;&t;&t;&t;&bslash;&n;    (L1_ADDR_TYPE_IOBRICK &lt;&lt; L1_ADDR_TYPE_SHFT) |&t;&bslash;&n;    (L1_ADDR_RACK_LOCAL &lt;&lt; L1_ADDR_RACK_SHFT) |&t;&t;&bslash;&n;    (L1_ADDR_BAY_LOCAL &lt;&lt; L1_ADDR_BAY_SHFT)
-DECL|macro|L1_ADDR_LOCAL_SHFT
-mdefine_line|#define L1_ADDR_LOCAL_SHFT&t;L1_ADDR_BAY_SHFT
 multiline_comment|/* response argument types */
 DECL|macro|L1_ARG_INT
 mdefine_line|#define L1_ARG_INT&t;&t;0x00&t;/* 4-byte integer (big-endian)&t;*/
@@ -159,15 +150,6 @@ DECL|macro|L1_EEP_IUSE
 mdefine_line|#define L1_EEP_IUSE&t;&t;3&t;/* internal use area */
 DECL|macro|L1_EEP_SPD
 mdefine_line|#define L1_EEP_SPD&t;&t;4&t;/* serial presence detect record */
-DECL|typedef|l1addr_t
-r_typedef
-r_uint32
-id|l1addr_t
-suffix:semicolon
-DECL|macro|L1_BUILD_ADDR
-mdefine_line|#define L1_BUILD_ADDR(addr,at,r,s,t)&t;&t;&t;&t;&t;&bslash;&n;    (*(l1addr_t *)(addr) = ((l1addr_t)(at) &lt;&lt; L1_ADDR_TYPE_SHFT) |&t;&bslash;&n;&t;&t;&t;     ((l1addr_t)(r)  &lt;&lt; L1_ADDR_RACK_SHFT) |&t;&bslash;&n;&t;&t;&t;     ((l1addr_t)(s)  &lt;&lt; L1_ADDR_BAY_SHFT) |&t;&bslash;&n;&t;&t;&t;     ((l1addr_t)(t)  &lt;&lt; L1_ADDR_TASK_SHFT))
-DECL|macro|L1_ADDRESS_TO_TASK
-mdefine_line|#define L1_ADDRESS_TO_TASK(addr,trb,tsk)&t;&t;&t;&t;&bslash;&n;    (*(l1addr_t *)(addr) = (l1addr_t)(trb) |&t;&t;&t;&t;&bslash;&n;    &t;&t;&t;     ((l1addr_t)(tsk) &lt;&lt; L1_ADDR_TASK_SHFT))
 DECL|macro|L1_DISPLAY_LINE_LENGTH
 mdefine_line|#define L1_DISPLAY_LINE_LENGTH&t;12&t;/* L1 display characters/line */
 macro_line|#ifdef L1_DISP_2LINES
@@ -177,8 +159,6 @@ macro_line|#else
 DECL|macro|L1_DISPLAY_LINES
 mdefine_line|#define L1_DISPLAY_LINES&t;1&t;/* number of L1 display lines available&n;&t;&t;&t;&t;&t; * to system software */
 macro_line|#endif
-DECL|macro|bzero
-mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
 r_int
 id|elsc_display_line
 c_func
@@ -201,15 +181,18 @@ c_func
 id|nasid_t
 id|nasid
 comma
-id|uint
+r_int
+r_int
 op_star
 id|rack
 comma
-id|uint
+r_int
+r_int
 op_star
 id|bay
 comma
-id|uint
+r_int
+r_int
 op_star
 id|brick_type
 )paren

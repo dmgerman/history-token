@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;speedstep-smi: &quot;
 multiline_comment|/* speedstep system management interface port/command.&n; *&n; * These parameters are got from IST-SMI BIOS call.&n; * If user gives it, these are used.&n; * &n; */
 DECL|variable|smi_port
 r_static
@@ -804,7 +806,8 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;speedstep-smi: could not detect low and high frequencies by SMI call.&bslash;n&quot;
+id|PFX
+l_string|&quot;could not detect low and high frequencies by SMI call.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -854,7 +857,8 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;speedstep-smi: could not detect two different speeds -- aborting.&bslash;n&quot;
+id|PFX
+l_string|&quot;could not detect two different speeds -- aborting.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -866,7 +870,8 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;speedstep-smi: workaround worked.&bslash;n&quot;
+id|PFX
+l_string|&quot;workaround worked.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1024,10 +1029,39 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+op_assign
+id|cpu_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;x86_vendor
+op_ne
+id|X86_VENDOR_INTEL
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;No Intel CPU detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|dprintk
 c_func
 (paren
-l_string|&quot;speedstep-smi: signature:0%.8lx, command:0lx%.8lx, event:0x%.8lx, perf_level:0x%.8lx.&bslash;n&quot;
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;signature:0x%.8lx, command:0x%.8lx, event:0x%.8lx, perf_level:0x%.8lx.&bslash;n&quot;
 comma
 id|ist_info.signature
 comma

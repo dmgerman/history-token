@@ -3122,10 +3122,8 @@ r_int
 id|cacheflush_time
 op_div
 id|cpu_khz
-op_star
-id|HZ
-op_div
-l_int|1000
+op_plus
+l_int|1
 suffix:semicolon
 id|printk
 c_func
@@ -3166,15 +3164,7 @@ c_func
 (paren
 l_string|&quot;task migration cache decay timeout: %ld msecs.&bslash;n&quot;
 comma
-(paren
 id|cache_decay_ticks
-op_plus
-l_int|1
-)paren
-op_star
-l_int|1000
-op_div
-id|HZ
 )paren
 suffix:semicolon
 )brace

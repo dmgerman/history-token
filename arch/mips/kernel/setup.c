@@ -40,20 +40,6 @@ id|screen_info
 id|screen_info
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Set if box has EISA slots.&n; */
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-r_int
-id|EISA_bus
-suffix:semicolon
-DECL|variable|EISA_bus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|EISA_bus
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_FD) || defined(CONFIG_BLK_DEV_FD_MODULE)
 r_extern
 r_struct

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/trizeps.h&n; *&n; * 
 macro_line|#ifndef _ASM_ARCH_TRIZEPS_H_
 DECL|macro|_ASM_ARCH_TRIZEPS_H_
 mdefine_line|#define _ASM_ARCH_TRIZEPS_H_
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_TRIZEPS_MFTB2
 macro_line|#include &quot;mftb2.h&quot;
 macro_line|#endif

@@ -4171,6 +4171,12 @@ c_cond
 (paren
 id|dev-&gt;driver
 op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|dev-&gt;driver
+op_eq
 op_amp
 id|usb_generic_driver
 )paren
@@ -4204,8 +4210,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|driver
-op_logical_and
 id|driver-&gt;suspend
 )paren
 r_return
@@ -4251,6 +4255,12 @@ c_cond
 (paren
 id|dev-&gt;driver
 op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|dev-&gt;driver
+op_eq
 op_amp
 id|usb_generic_driver
 )paren
@@ -4284,8 +4294,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|driver
-op_logical_and
 id|driver-&gt;resume
 )paren
 r_return

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_assabet.c&n; *&n; * PCMCIA implementation routines for Assabet&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

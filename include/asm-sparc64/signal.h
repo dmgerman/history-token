@@ -134,7 +134,7 @@ mdefine_line|#define _NSIG_WORDS   &t;(__NEW_NSIG / _NSIG_BPW)
 DECL|macro|SIGRTMIN
 mdefine_line|#define SIGRTMIN       32
 DECL|macro|SIGRTMAX
-mdefine_line|#define SIGRTMAX       (__NEW_NSIG - 1)
+mdefine_line|#define SIGRTMAX       __NEW_NSIG
 macro_line|#if defined(__KERNEL__) || defined(__WANT_POSIX1B_SIGNALS__)
 DECL|macro|_NSIG
 mdefine_line|#define _NSIG&t;&t;&t;__NEW_NSIG

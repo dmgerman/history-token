@@ -1383,6 +1383,10 @@ c_cond
 id|up-&gt;pending
 )paren
 (brace
+id|up-&gt;len
+op_assign
+l_int|0
+suffix:semicolon
 id|up-&gt;pending
 op_assign
 l_int|0

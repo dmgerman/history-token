@@ -3909,7 +3909,11 @@ id|current-&gt;session
 suffix:semicolon
 id|info-&gt;pgrp
 op_assign
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 r_if
 c_cond

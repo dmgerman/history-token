@@ -673,6 +673,11 @@ op_assign
 id|PF_BLUETOOTH
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|create
 op_assign
 id|bnep_sock_create

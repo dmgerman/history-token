@@ -4438,7 +4438,11 @@ id|p-&gt;parent-&gt;pid
 suffix:semicolon
 id|prstatus-&gt;pr_pgrp
 op_assign
-id|p-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|prstatus-&gt;pr_sid
 op_assign
@@ -4606,7 +4610,11 @@ id|p-&gt;parent-&gt;pid
 suffix:semicolon
 id|psinfo-&gt;pr_pgrp
 op_assign
-id|p-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|psinfo-&gt;pr_sid
 op_assign

@@ -18,6 +18,7 @@ l_string|&quot;sl&quot;
 suffix:semicolon
 DECL|macro|GET_USERREG
 mdefine_line|#define GET_USERREG() (user_registers)
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 multiline_comment|/* includes */
 macro_line|#include &quot;fpsr.h&quot;&t;&t;/* FP control and status register definitions */

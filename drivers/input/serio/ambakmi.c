@@ -266,7 +266,7 @@ id|amba_kmi_int
 comma
 l_int|0
 comma
-id|kmi-&gt;io.phys
+l_string|&quot;kmi-pl050&quot;
 comma
 id|kmi
 )paren
@@ -425,7 +425,7 @@ id|amba_kmi_close
 suffix:semicolon
 id|kmi-&gt;io.name
 op_assign
-id|dev-&gt;dev.name
+id|dev-&gt;dev.bus_id
 suffix:semicolon
 id|kmi-&gt;io.phys
 op_assign
@@ -444,7 +444,7 @@ id|dev-&gt;res.start
 comma
 id|KMI_SIZE
 comma
-id|kmi-&gt;io.phys
+l_string|&quot;kmi-pl050&quot;
 )paren
 suffix:semicolon
 r_if
@@ -600,9 +600,6 @@ r_struct
 id|amba_device
 op_star
 id|dev
-comma
-id|u32
-id|level
 )paren
 (brace
 r_struct
@@ -616,14 +613,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|level
-op_eq
-id|RESUME_ENABLE
-)paren
-(brace
 multiline_comment|/* kick the serio layer to rescan this port */
 id|serio_rescan
 c_func
@@ -632,7 +621,6 @@ op_amp
 id|kmi-&gt;io
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

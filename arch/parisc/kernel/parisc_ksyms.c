@@ -185,15 +185,6 @@ c_func
 id|boot_cpu_data
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|EISA_bus
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &lt;linux/pm.h&gt;
 DECL|variable|pm_power_off
 id|EXPORT_SYMBOL

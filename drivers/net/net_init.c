@@ -1012,7 +1012,7 @@ id|ETH_ALEN
 suffix:semicolon
 id|dev-&gt;tx_queue_len
 op_assign
-l_int|100
+l_int|1000
 suffix:semicolon
 multiline_comment|/* Ethernet wants good queues */
 id|memset

@@ -1,7 +1,6 @@
 multiline_comment|/*****************************************************************************&n;* sdla_x25.c&t;WANPIPE(tm) Multiprotocol WAN Link Driver.  X.25 module.&n;*&n;* Author:&t;Nenad Corbic&t;&lt;ncorbic@sangoma.com&gt;&n;*&n;* Copyright:&t;(c) 1995-2001 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Apr 03, 2001  Nenad Corbic&t; o Fixed the rx_skb=NULL bug in x25 in rx_intr().&n;* Dec 26, 2000  Nenad Corbic&t; o Added a new polling routine, that uses&n;*                                  a kernel timer (more efficient).&n;* Dec 25, 2000  Nenad Corbic&t; o Updated for 2.4.X kernel&n;* Jul 26, 2000  Nenad Corbic&t; o Increased the local packet buffering&n;* &t;&t;&t;&t;   for API to 4096+header_size. &n;* Jul 17, 2000  Nenad Corbic&t; o Fixed the x25 startup bug. Enable &n;* &t;&t;&t;&t;   communications only after all interfaces&n;* &t;&t;&t;&t;   come up.  HIGH SVC/PVC is used to calculate&n;* &t;&t;&t;&t;   the number of channels.&n;*                                  Enable protocol only after all interfaces&n;*                                  are enabled.&n;* Jul 10, 2000&t;Nenad Corbic&t; o Fixed the M_BIT bug. &n;* Apr 25, 2000  Nenad Corbic&t; o Pass Modem messages to the API.&n;*                                  Disable idle timeout in X25 API.&n;* Apr 14, 2000  Nenad Corbic&t; o Fixed: Large LCN number support.&n;*                                  Maximum LCN number is 4095.&n;*                                  Maximum number of X25 channels is 255.&n;* Apr 06, 2000  Nenad Corbic&t; o Added SMP Support.&n;* Mar 29, 2000  Nenad Corbic&t; o Added support for S514 PCI Card&n;* Mar 23, 2000  Nenad Corbic&t; o Improved task queue, BH handling.&n;* Mar 14, 2000  Nenad Corbic  &t; o Updated Protocol Violation handling&n;*                                  routines.  Bug Fix.&n;* Mar 10, 2000  Nenad Corbic&t; o Bug Fix: corrupted mbox recovery.&n;* Mar 09, 2000  Nenad Corbic     o Fixed the auto HDLC bug.&n;* Mar 08, 2000&t;Nenad Corbic     o Fixed LAPB HDLC startup problems.&n;*                                  Application must bring the link up &n;*                                  before tx/rx, and bring the &n;*                                  link down on close().&n;* Mar 06, 2000&t;Nenad Corbic&t; o Added an option for logging call setup &n;*                                  information. &n;* Feb 29, 2000  Nenad Corbic &t; o Added support for LAPB HDLC API&n;* Feb 25, 2000  Nenad Corbic     o Fixed the modem failure handling.&n;*                                  No Modem OOB message will be passed &n;*                                  to the user.&n;* Feb 21, 2000  Nenad Corbic &t; o Added Xpipemon Debug Support&n;* Dec 30, 1999 &t;Nenad Corbic&t; o Socket based X25API &n;* Sep 17, 1998&t;Jaspreet Singh&t; o Updates for 2.2.X  kernel&n;* Mar 15, 1998&t;Alan Cox&t; o 2.1.x porting&n;* Dec 19, 1997&t;Jaspreet Singh&t; o Added multi-channel IPX support&n;* Nov 27, 1997&t;Jaspreet Singh&t; o Added protection against enabling of irqs&n;*&t;&t;&t;&t;   when they are disabled.&n;* Nov 17, 1997  Farhan Thawar    o Added IPX support&n;*&t;&t;&t;&t; o Changed if_send() to now buffer packets when&n;*&t;&t;&t;&t;   the board is busy&n;*&t;&t;&t;&t; o Removed queueing of packets via the polling&n;*&t;&t;&t;&t;   routing&n;*&t;&t;&t;&t; o Changed if_send() critical flags to properly&n;*&t;&t;&t;&t;   handle race conditions&n;* Nov 06, 1997  Farhan Thawar    o Added support for SVC timeouts&n;*&t;&t;&t;&t; o Changed PVC encapsulation to ETH_P_IP&n;* Jul 21, 1997  Jaspreet Singh&t; o Fixed freeing up of buffers using kfree()&n;*&t;&t;&t;&t;   when packets are received.&n;* Mar 11, 1997  Farhan Thawar   Version 3.1.1&n;*                                o added support for V35&n;*                                o changed if_send() to return 0 if&n;*                                  wandev.critical() is true&n;*                                o free socket buffer in if_send() if&n;*                                  returning 0&n;*                                o added support for single &squot;@&squot; address to&n;*                                  accept all incoming calls&n;*                                o fixed bug in set_chan_state() to disconnect&n;* Jan 15, 1997&t;Gene Kozin&t;Version 3.1.0&n;*&t;&t;&t;&t; o implemented exec() entry point&n;* Jan 07, 1997&t;Gene Kozin&t;Initial version.&n;*****************************************************************************/
 multiline_comment|/*======================================================&n; * &t;Includes &n; *=====================================================*/
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
@@ -10,6 +9,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definitions */
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;&t;/* Experimental delay */
@@ -2834,25 +2834,20 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|card-&gt;u.x.x25_poll_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|card-&gt;u.x.x25_poll_task.routine
-op_assign
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|card-&gt;u.x.x25_poll_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|wpx_poll
-suffix:semicolon
-id|card-&gt;u.x.x25_poll_task.data
-op_assign
+comma
 id|card
+)paren
 suffix:semicolon
 id|init_timer
 c_func
@@ -3801,7 +3796,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*===================================================================&n; * Name:&t;if_open(),   Open/Bring up the Netowrk Interface &n; *&n; * Purpose:&t;To bring up a network interface.&n; * &n; * Rationale:&t;&n; *                &n; * Description:&t;Open network interface.&n; * &t;&t;o prevent module from unloading by incrementing use count&n; * &t;&t;o if link is disconnected then initiate connection&n; *&n; * Called by:&t;Kernel (/usr/src/linux/net/core/dev.c)&n; * &t;&t;(dev-&gt;open())&n; *&n; * Assumptions: None&n; *&t;&n; * Warnings:&t;None&n; *&n; * Return: &t;0 &t;Ok&n; * &t;&t;&lt;0 &t;Failur: Interface will not come up.&n; */
+multiline_comment|/*===================================================================&n; * Name:&t;if_open(),   Open/Bring up the Netowrk Interface &n; *&n; * Purpose:&t;To bring up a network interface.&n; * &n; * Rationale:&t;&n; *                &n; * Description:&t;Open network interface.&n; * &t;&t;o prevent module from unloading by incrementing use count&n; * &t;&t;o if link is disconnected then initiate connection&n; *&n; * Called by:&t;Kernel (/usr/src/linux/net/core/dev.c)&n; * &t;&t;(dev-&gt;open())&n; *&n; * Assumptions: None&n; *&t;&n; * Warnings:&t;None&n; *&n; * Return: &t;0 &t;Ok&n; * &t;&t;&lt;0 &t;Failure: Interface will not come up.&n; */
 DECL|function|if_open
 r_static
 r_int
@@ -3851,26 +3846,21 @@ id|chan-&gt;tq_working
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the task queue */
-id|chan-&gt;common.wanpipe_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.routine
-op_assign
+multiline_comment|/* Initialize the workqueue */
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|chan-&gt;common.wanpipe_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|x25api_bh
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate and initialize BH circular buffer */
 multiline_comment|/* Add 1 to MAX_BH_BUFF so we don&squot;t have test with (MAX_BH_BUFF-1) */
@@ -5552,16 +5542,11 @@ id|chan-&gt;tq_working
 )paren
 )paren
 (brace
-id|wanpipe_queue_tq
+id|wanpipe_queue_work
 c_func
 (paren
 op_amp
-id|chan-&gt;common.wanpipe_task
-)paren
-suffix:semicolon
-id|wanpipe_mark_bh
-c_func
-(paren
+id|chan-&gt;common.wanpipe_work
 )paren
 suffix:semicolon
 )brace
@@ -7218,7 +7203,7 @@ id|card-&gt;devname
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Background Polling Routines  &n; */
-multiline_comment|/*====================================================================&n; * &t;Main polling routine.&n; * &t;This routine is repeatedly called by the WANPIPE &squot;thead&squot; to allow for&n; * &t;time-dependent housekeeping work.&n; *&n; * &t;Notes:&n; * &t;1. This routine may be called on interrupt context with all interrupts&n; *    &t;enabled. Beware!&n; *====================================================================*/
+multiline_comment|/*====================================================================&n; * &t;Main polling routine.&n; * &t;This routine is repeatedly called by the WANPIPE &squot;thread&squot; to allow for&n; * &t;time-dependent housekeeping work.&n; *&n; * &t;Notes:&n; * &t;1. This routine may be called on interrupt context with all interrupts&n; *    &t;enabled. Beware!&n; *====================================================================*/
 DECL|function|wpx_poll
 r_static
 r_void
@@ -7351,11 +7336,11 @@ op_star
 id|card
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|card-&gt;u.x.x25_poll_task
+id|card-&gt;u.x.x25_poll_work
 )paren
 suffix:semicolon
 )brace

@@ -3343,6 +3343,12 @@ c_func
 l_string|&quot;Not able to get a minor for this device.&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|hiddev
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1

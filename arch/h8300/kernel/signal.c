@@ -2894,7 +2894,11 @@ c_cond
 id|is_orphaned_pgrp
 c_func
 (paren
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 )paren
 )paren
 r_continue

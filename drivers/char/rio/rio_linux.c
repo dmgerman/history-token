@@ -388,7 +388,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifndef TWO_ZERO
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -431,7 +430,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|rio_real_driver
 r_static
 r_struct
@@ -3492,15 +3490,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef TWO_ZERO
-DECL|macro|PDEV
-mdefine_line|#define PDEV unsigned char pci_bus, unsigned pci_fun
-DECL|macro|pdev
-mdefine_line|#define pdev pci_bus, pci_fun
-macro_line|#else
-DECL|macro|PDEV
-mdefine_line|#define PDEV   struct pci_dev *pdev
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* This was written for SX, but applies to RIO too...&n;    (including bugs....)&n;&n;    There is another bit besides Bit 17. Turning that bit off&n;    (on boards shipped with the fix in the eeprom) results in a &n;    hang on the next access to the card. &n; */
 multiline_comment|/******************************************************** &n; * Setting bit 17 in the CNTRL register of the PLX 9050  * &n; * chip forces a retry on writes while a read is pending.*&n; * This is to prevent the card locking up on Intel Xeon  *&n; * multiprocessor systems with the NX chipset.    -- NV  *&n; ********************************************************/
@@ -3509,7 +3498,10 @@ DECL|function|fix_rio_pci
 r_void
 id|fix_rio_pci
 (paren
-id|PDEV
+r_struct
+id|pci_dev
+op_star
+id|pdev
 )paren
 (brace
 r_int
@@ -3640,7 +3632,6 @@ r_int
 id|okboard
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
-macro_line|#ifndef TWO_ZERO
 r_struct
 id|pci_dev
 op_star
@@ -3648,15 +3639,6 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#else
-r_int
-r_char
-id|pci_bus
-comma
-id|pci_fun
-suffix:semicolon
-multiline_comment|/* in 2.2.x pdev is a pointer defining a PCI device. In 2.0 its the bus/fn */
-macro_line|#endif
 r_int
 r_int
 id|tint
@@ -3769,7 +3751,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* First look for the JET devices: */
-macro_line|#ifndef TWO_ZERO
 r_while
 c_loop
 (paren
@@ -3798,43 +3779,6 @@ id|pdev
 )paren
 r_continue
 suffix:semicolon
-macro_line|#else
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|RIO_NBOARDS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pcibios_find_device
-(paren
-id|PCI_VENDOR_ID_SPECIALIX
-comma
-id|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
-comma
-id|i
-comma
-op_amp
-id|pci_bus
-comma
-op_amp
-id|pci_fun
-)paren
-)paren
-r_break
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Specialix has a whole bunch of cards with&n;         0x2000 as the device ID. They say its because&n;         the standard requires it. Stupid standard. */
 multiline_comment|/* It seems that reading a word doesn&squot;t work reliably on 2.0.&n;         Also, reading a non-aligned dword doesn&squot;t work. So we read the&n;         whole dword at 0x2c and extract the word at 0x2e (SUBSYSTEM_ID)&n;         ourselves */
 multiline_comment|/* I don&squot;t know why the define doesn&squot;t work, constant 0x2c does --REW */
@@ -4208,15 +4152,8 @@ id|Caddr
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef TWO_ZERO
 )brace
-multiline_comment|/* We have two variants with the opening brace, so to prevent */
-macro_line|#else
-)brace
-multiline_comment|/* Emacs from getting confused we have two closing braces too. */
-macro_line|#endif
 multiline_comment|/* Then look for the older PCI card.... : */
-macro_line|#ifndef TWO_ZERO
 multiline_comment|/* These older PCI cards have problems (only byte-mode access is&n;     supported), which makes them a bit awkward to support. &n;     They also have problems sharing interrupts. Be careful. &n;     (The driver now refuses to share interrupts for these&n;     cards. This should be sufficient).&n;  */
 multiline_comment|/* Then look for the older RIO/PCI devices: */
 r_while
@@ -4247,43 +4184,6 @@ id|pdev
 )paren
 r_continue
 suffix:semicolon
-macro_line|#else
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|RIO_NBOARDS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pcibios_find_device
-(paren
-id|PCI_VENDOR_ID_SPECIALIX
-comma
-id|PCI_DEVICE_ID_SPECIALIX_RIO
-comma
-id|i
-comma
-op_amp
-id|pci_bus
-comma
-op_amp
-id|pci_fun
-)paren
-)paren
-r_break
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_RIO_OLDPCI
 id|pci_read_config_dword
 c_func
@@ -4619,13 +4519,7 @@ l_string|&quot;compiled to support it.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef TWO_ZERO
 )brace
-multiline_comment|/* We have two variants with the opening brace, so to prevent */
-macro_line|#else
-)brace
-multiline_comment|/* Emacs from getting confused we have two closing braces too. */
-macro_line|#endif
 macro_line|#endif /* PCI */
 multiline_comment|/* Now probe for ISA cards... */
 r_for

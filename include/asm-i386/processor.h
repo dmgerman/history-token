@@ -658,15 +658,6 @@ mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
 DECL|macro|setCx86
 mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
 multiline_comment|/*&n; * Bus types (default is ISA, but people can check others with these..)&n; * pc98 indicates PC98 systems (CBUS)&n; */
-macro_line|#ifdef CONFIG_EISA
-r_extern
-r_int
-id|EISA_bus
-suffix:semicolon
-macro_line|#else
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus (0)
-macro_line|#endif
 r_extern
 r_int
 id|MCA_bus

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * pc300_tty.c&t;Cyclades-PC300(tm) TTY Driver.&n; *&n; * Author:&t;Regina Kodato &lt;reginak@cyclades.com&gt;&n; *&n; * Copyright:&t;(c) 1999-2002 Cyclades Corp.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *   &n; *  $Log: pc300_tty.c,v $&n; *  Revision 3.7  2002/03/07 14:17:09  henrique&n; *  License data fixed&n; *&n; *  Revision 3.6  2001/12/10 12:29:42  regina&n; *  Fix the MLPPP bug&n; *&n; *  Revision 3.5  2001/10/31 11:20:05  regina&n; *  automatic pppd starts&n; *&n; *  Revision 3.4  2001/08/06 12:01:51  regina&n; *  problem in DSR_DE bit&n; *&n; *  Revision 3.3  2001/07/26 22:58:41  regina&n; *  update EDA value&n; *&n; *  Revision 3.2  2001/07/12 13:11:20  regina&n; *  bug fix - DCD-OFF in pc300 tty driver&n; *&n; *&t;DMA transmission bug fix&n; *  &n; *  Revision 3.1  2001/06/22 13:13:02  regina&n; *  MLPPP implementation&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

@@ -21,10 +21,6 @@ multiline_comment|/*&n; * Default implementation of macro that returns current&n
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr()&t;({ __label__ _l; _l: &amp;&amp;_l;})
 multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 0
-DECL|macro|EISA_bus__is_a_macro
-mdefine_line|#define EISA_bus__is_a_macro /* for versions in ksyms.c */
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

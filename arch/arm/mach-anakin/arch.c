@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-anakin/arch.c&n; *&n; *  Copyright (C) 2001 Aleph One Ltd. for Acunia N.V.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   09-Apr-2001 W/TTC&t;Created&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;

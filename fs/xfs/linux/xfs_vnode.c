@@ -643,6 +643,8 @@ suffix:semicolon
 id|va.va_mask
 op_assign
 id|XFS_AT_STAT
+op_or
+id|XFS_AT_GENCOUNT
 suffix:semicolon
 id|VOP_GETATTR
 c_func

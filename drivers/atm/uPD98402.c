@@ -1380,7 +1380,6 @@ comma
 suffix:semicolon
 DECL|function|uPD98402_init
 r_int
-id|__init
 id|uPD98402_init
 c_func
 (paren
@@ -1405,7 +1404,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_LICENSE
 c_func
 (paren
@@ -1419,29 +1417,26 @@ c_func
 id|uPD98402_init
 )paren
 suffix:semicolon
-DECL|function|init_module
+DECL|function|uPD98402_module_init
+r_static
+id|__init
 r_int
-id|init_module
+id|uPD98402_module_init
 c_func
 (paren
 r_void
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|uPD98402_module_init
+id|module_init
 c_func
 (paren
-r_void
+id|uPD98402_module_init
 )paren
-(brace
-multiline_comment|/* Nay */
-)brace
-macro_line|#endif
+suffix:semicolon
+multiline_comment|/* module_exit not defined so not unloadable */
 eof
