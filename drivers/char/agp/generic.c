@@ -4214,13 +4214,6 @@ op_star
 id|curr
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|curr-&gt;memory
-op_ne
-l_int|NULL
-)paren
 id|vfree
 c_func
 (paren
