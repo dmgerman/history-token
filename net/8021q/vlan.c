@@ -169,6 +169,9 @@ comma
 multiline_comment|/* VLAN receive method */
 )brace
 suffix:semicolon
+multiline_comment|/* Bits of netdev state that are propogated from real device to virtual */
+DECL|macro|VLAN_LINK_STATE_MASK
+mdefine_line|#define VLAN_LINK_STATE_MASK &bslash;&n;&t;((1&lt;&lt;__LINK_STATE_PRESENT)|(1&lt;&lt;__LINK_STATE_NOCARRIER))
 multiline_comment|/* End of global variables definitions. */
 multiline_comment|/*&n; * Function vlan_proto_init (pro)&n; *&n; *    Initialize VLAN protocol layer, &n; *&n; */
 DECL|function|vlan_proto_init
@@ -1512,6 +1515,12 @@ op_and_assign
 op_complement
 id|IFF_UP
 suffix:semicolon
+id|new_dev-&gt;state
+op_assign
+id|real_dev-&gt;state
+op_amp
+id|VLAN_LINK_STATE_MASK
+suffix:semicolon
 multiline_comment|/* need 4 bytes for extra VLAN header info,&n;&t; * hope the underlying device can handle it.&n;&t; */
 id|new_dev-&gt;mtu
 op_assign
@@ -1991,12 +2000,76 @@ id|event
 )paren
 (brace
 r_case
-id|NETDEV_CHANGEADDR
+id|NETDEV_CHANGE
 suffix:colon
-r_case
-id|NETDEV_GOING_DOWN
-suffix:colon
-multiline_comment|/* Ignore for now */
+multiline_comment|/* Propogate real device state to vlan devices */
+id|flgs
+op_assign
+id|dev-&gt;state
+op_amp
+id|VLAN_LINK_STATE_MASK
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|VLAN_GROUP_ARRAY_LEN
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|vlandev
+op_assign
+id|grp-&gt;vlan_devices
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vlandev
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|vlandev-&gt;state
+op_amp
+id|VLAN_LINK_STATE_MASK
+)paren
+op_ne
+id|flgs
+)paren
+(brace
+id|vlandev-&gt;state
+op_assign
+(paren
+id|vlandev-&gt;state
+op_amp
+op_complement
+id|VLAN_LINK_STATE_MASK
+)paren
+op_or
+id|flgs
+suffix:semicolon
+id|netdev_state_change
+c_func
+(paren
+id|vlandev
+)paren
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 r_case
