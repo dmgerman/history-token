@@ -722,14 +722,6 @@ id|inode-&gt;i_atime
 op_assign
 id|va.va_atime
 suffix:semicolon
-id|i_size_write
-c_func
-(paren
-id|inode
-comma
-id|va.va_size
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
