@@ -3355,10 +3355,6 @@ id|us-&gt;flags
 op_amp
 id|US_FL_IGNORE_RESIDUE
 )paren
-op_logical_or
-id|srb-&gt;sc_data_direction
-op_eq
-id|DMA_TO_DEVICE
 )paren
 (brace
 id|residue
