@@ -8084,9 +8084,13 @@ id|tp-&gt;snd_cwnd_cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|tp-&gt;ca_state
-op_assign
+id|tcp_set_ca_state
+c_func
+(paren
+id|tp
+comma
 id|TCP_CA_Open
+)paren
 suffix:semicolon
 id|tcp_clear_retrans
 c_func

@@ -2884,9 +2884,13 @@ id|newtp-&gt;frto_highmark
 op_assign
 l_int|0
 suffix:semicolon
-id|newtp-&gt;ca_state
-op_assign
+id|tcp_set_ca_state
+c_func
+(paren
+id|newtp
+comma
 id|TCP_CA_Open
+)paren
 suffix:semicolon
 id|tcp_init_xmit_timers
 c_func
