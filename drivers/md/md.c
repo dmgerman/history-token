@@ -12893,23 +12893,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|mddev
-op_logical_or
-id|atomic_read
-c_func
-(paren
-op_amp
-id|mddev-&gt;active
 )paren
-OL
-l_int|2
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -12926,7 +12912,7 @@ c_func
 id|mddev
 )paren
 suffix:semicolon
-multiline_comment|/* the caller must hold a reference... */
+)brace
 r_return
 id|q
 suffix:semicolon
