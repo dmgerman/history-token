@@ -5217,11 +5217,6 @@ op_assign
 id|xfs_mount
 comma
 dot
-id|vfs_dounmount
-op_assign
-id|fs_dounmount
-comma
-dot
 id|vfs_unmount
 op_assign
 id|xfs_unmount

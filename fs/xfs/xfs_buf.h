@@ -245,18 +245,20 @@ DECL|macro|XFS_BUF_SET_PTR
 mdefine_line|#define XFS_BUF_SET_PTR(bp, val, count)&t;&t;&bslash;&n;&t;&t;&t;&t;pagebuf_associate_memory(bp, val, count)
 DECL|macro|XFS_BUF_ADDR
 mdefine_line|#define XFS_BUF_ADDR(bp)&t;((bp)-&gt;pb_bn)
-DECL|macro|XFS_BUF_OFFSET
-mdefine_line|#define XFS_BUF_OFFSET(bp)&t;((bp)-&gt;pb_file_offset &gt;&gt; 9)
 DECL|macro|XFS_BUF_SET_ADDR
 mdefine_line|#define XFS_BUF_SET_ADDR(bp, blk)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_bn = (page_buf_daddr_t)(blk))
+DECL|macro|XFS_BUF_OFFSET
+mdefine_line|#define XFS_BUF_OFFSET(bp)&t;((bp)-&gt;pb_file_offset)
+DECL|macro|XFS_BUF_SET_OFFSET
+mdefine_line|#define XFS_BUF_SET_OFFSET(bp, off)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_file_offset = (off))
 DECL|macro|XFS_BUF_COUNT
 mdefine_line|#define XFS_BUF_COUNT(bp)&t;((bp)-&gt;pb_count_desired)
 DECL|macro|XFS_BUF_SET_COUNT
-mdefine_line|#define XFS_BUF_SET_COUNT(bp, cnt)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_count_desired = cnt)
+mdefine_line|#define XFS_BUF_SET_COUNT(bp, cnt)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_count_desired = (cnt))
 DECL|macro|XFS_BUF_SIZE
 mdefine_line|#define XFS_BUF_SIZE(bp)&t;((bp)-&gt;pb_buffer_length)
 DECL|macro|XFS_BUF_SET_SIZE
-mdefine_line|#define XFS_BUF_SET_SIZE(bp, cnt)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_buffer_length = cnt)
+mdefine_line|#define XFS_BUF_SET_SIZE(bp, cnt)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_buffer_length = (cnt))
 DECL|macro|XFS_BUF_SET_VTYPE_REF
 mdefine_line|#define XFS_BUF_SET_VTYPE_REF(bp, type, ref)
 DECL|macro|XFS_BUF_SET_VTYPE
@@ -410,7 +412,7 @@ DECL|macro|xfs_buftrace
 macro_line|# define xfs_buftrace(id, bp)&t;do { } while (0)
 macro_line|#endif
 DECL|macro|xfs_biodone
-mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, 0)
+mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, 0, 0)
 DECL|macro|xfs_incore
 mdefine_line|#define xfs_incore(buftarg,blkno,len,lockit) &bslash;&n;&t;    pagebuf_find(buftarg, blkno ,len, lockit)
 DECL|macro|xfs_biomove

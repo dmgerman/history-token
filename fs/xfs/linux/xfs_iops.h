@@ -101,5 +101,17 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|linvfs_unwritten_done
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 macro_line|#endif /* __XFS_IOPS_H__ */
 eof

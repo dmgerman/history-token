@@ -34,6 +34,7 @@ mdefine_line|#define XFS_MAX_RW_NBMAPS&t;4
 r_extern
 r_int
 id|xfs_bmap
+c_func
 (paren
 r_struct
 id|bhv_desc
@@ -56,6 +57,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfsbdstrat
+c_func
 (paren
 r_struct
 id|xfs_mount
@@ -69,6 +71,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_bdstrat_cb
+c_func
 (paren
 r_struct
 id|page_buf_s
@@ -78,6 +81,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_zero_eof
+c_func
 (paren
 r_struct
 id|vnode
@@ -97,6 +101,7 @@ suffix:semicolon
 r_extern
 id|ssize_t
 id|xfs_read
+c_func
 (paren
 r_struct
 id|bhv_desc
@@ -125,6 +130,7 @@ suffix:semicolon
 r_extern
 id|ssize_t
 id|xfs_write
+c_func
 (paren
 r_struct
 id|bhv_desc
@@ -153,6 +159,7 @@ suffix:semicolon
 r_extern
 id|ssize_t
 id|xfs_sendfile
+c_func
 (paren
 r_struct
 id|bhv_desc
@@ -180,6 +187,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_iomap
+c_func
 (paren
 r_struct
 id|xfs_iocore
@@ -202,6 +210,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_iomap_write_direct
+c_func
 (paren
 r_struct
 id|xfs_inode
@@ -226,6 +235,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_iomap_write_delay
+c_func
 (paren
 r_struct
 id|xfs_inode
@@ -248,6 +258,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_iomap_write_allocate
+c_func
 (paren
 r_struct
 id|xfs_inode
@@ -264,6 +275,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_iomap_write_unwritten
+c_func
 (paren
 r_struct
 id|xfs_inode
@@ -277,6 +289,7 @@ suffix:semicolon
 r_extern
 r_int
 id|xfs_dev_is_read_only
+c_func
 (paren
 r_struct
 id|xfs_mount
@@ -289,6 +302,7 @@ suffix:semicolon
 r_extern
 r_void
 id|XFS_log_write_unmount_ro
+c_func
 (paren
 r_struct
 id|bhv_desc

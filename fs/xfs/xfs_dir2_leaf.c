@@ -4338,6 +4338,23 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+op_ge
+(paren
+r_char
+op_star
+)paren
+id|data
+op_plus
+id|mp-&gt;m_dirblksize
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n;&t;&t; * We have a pointer to an entry.&n;&t;&t; * Is it a live one?&n;&t;&t; */
@@ -4406,7 +4423,6 @@ c_func
 id|p.namelen
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * NOTE! Linux &quot;filldir&quot; semantics require that the&n;&t;&t; *&t; offset &quot;cookie&quot; be for this entry, not the&n;&t;&t; *&t; next; all the actual shuffling to make it&n;&t;&t; *&t; &quot;look right&quot; to the user is done in filldir.&n;&t;&t; */
 id|p.cook
 op_assign
 id|XFS_DIR2_BYTE_TO_DATAPTR
@@ -4415,6 +4431,8 @@ c_func
 id|mp
 comma
 id|curoff
+op_plus
+id|length
 )paren
 suffix:semicolon
 macro_line|#if XFS_BIG_FILESYSTEMS

@@ -22,6 +22,8 @@ comma
 l_int|0
 comma
 l_int|0
+comma
+l_int|3
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Used to serialize atomicIncWithWrap.&n; */
