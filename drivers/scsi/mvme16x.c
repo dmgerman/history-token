@@ -14,7 +14,9 @@ macro_line|#include &quot;53c7xx.h&quot;
 macro_line|#include &quot;mvme16x.h&quot;
 macro_line|#include&lt;linux/stat.h&gt;
 r_extern
+r_int
 id|ncr53c7xx_init
+c_func
 (paren
 id|Scsi_Host_Template
 op_star

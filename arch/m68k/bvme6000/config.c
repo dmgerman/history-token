@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -479,6 +480,7 @@ id|mach_sched_init
 op_assign
 id|bvme6000_sched_init
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|bvme6000_keyb_init
@@ -487,6 +489,7 @@ id|mach_kbdrate
 op_assign
 id|bvme6000_kbdrate
 suffix:semicolon
+macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|bvme6000_init_IRQ

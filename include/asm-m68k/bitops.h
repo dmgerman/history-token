@@ -2,6 +2,7 @@ macro_line|#ifndef _M68K_BITOPS_H
 DECL|macro|_M68K_BITOPS_H
 mdefine_line|#define _M68K_BITOPS_H
 multiline_comment|/*&n; * Copyright 1992, Linus Torvalds.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Require 68020 or better.&n; *&n; * They use the standard big-endian m680x0 bit ordering.&n; */
 DECL|macro|test_and_set_bit
 mdefine_line|#define test_and_set_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_test_and_set_bit(nr, vaddr) : &bslash;&n;   __generic_test_and_set_bit(nr, vaddr))
@@ -16,7 +17,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -78,7 +80,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -130,7 +133,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -181,7 +185,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -223,7 +228,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -285,7 +291,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -342,7 +349,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -393,7 +401,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -437,7 +446,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -499,7 +509,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -549,7 +560,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -600,7 +612,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -639,7 +652,8 @@ id|nr
 comma
 r_const
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 )paren
@@ -685,7 +699,8 @@ r_int
 id|find_first_zero_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 comma
@@ -824,7 +839,8 @@ id|__inline__
 r_int
 id|find_next_zero_bit
 (paren
-r_void
+r_int
+r_int
 op_star
 id|vaddr
 comma
@@ -1025,8 +1041,8 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|ffs
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|ffs
 c_func
@@ -1038,9 +1054,7 @@ id|x
 r_int
 id|cnt
 suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
+id|asm
 (paren
 l_string|&quot;bfffo %1{#0:#0},%0&quot;
 suffix:colon
@@ -1066,6 +1080,42 @@ suffix:semicolon
 )brace
 DECL|macro|__ffs
 mdefine_line|#define __ffs(x) (ffs(x) - 1)
+multiline_comment|/*&n; * fls: find last bit set.&n; */
+DECL|function|fls
+r_static
+r_inline
+r_int
+id|fls
+c_func
+(paren
+r_int
+id|x
+)paren
+(brace
+r_int
+id|cnt
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;bfffo %1{#0,#0},%0&quot;
+suffix:colon
+l_string|&quot;=d&quot;
+(paren
+id|cnt
+)paren
+suffix:colon
+l_string|&quot;dm&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|32
+op_minus
+id|cnt
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 140-bit bitmap where the first 100 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 140&n; * bits is cleared.&n; */
 DECL|function|sched_find_first_bit
 r_static

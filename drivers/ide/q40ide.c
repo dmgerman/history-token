@@ -209,6 +209,9 @@ op_star
 )paren
 id|pcide_offsets
 comma
+(paren
+id|ide_ioreg_t
+)paren
 id|pcide_bases
 (braket
 id|i

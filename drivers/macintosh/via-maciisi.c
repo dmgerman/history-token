@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Device driver for the IIsi-style ADB on some Mac LC and II-class machines&n; *&n; * Based on via-cuda.c and via-macii.c, as well as the original&n; * adb-bus.c, which in turn is somewhat influenced by (but uses no&n; * code from) the NetBSD HWDIRECT ADB code.  Original IIsi driver work&n; * was done by Robert Thompson and integrated into the old style&n; * driver by Michael Schmitz.&n; *&n; * Original sources (c) Alan Cox, Paul Mackerras, and others.&n; *&n; * Rewritten for Unified ADB by David Huggins-Daines &lt;dhd@debian.org&gt; */
+multiline_comment|/*&n; * Device driver for the IIsi-style ADB on some Mac LC and II-class machines&n; *&n; * Based on via-cuda.c and via-macii.c, as well as the original&n; * adb-bus.c, which in turn is somewhat influenced by (but uses no&n; * code from) the NetBSD HWDIRECT ADB code.  Original IIsi driver work&n; * was done by Robert Thompson and integrated into the old style&n; * driver by Michael Schmitz.&n; *&n; * Original sources (c) Alan Cox, Paul Mackerras, and others.&n; *&n; * Rewritten for Unified ADB by David Huggins-Daines &lt;dhd@debian.org&gt;&n; * &n; * 7/13/2000- extensive changes by Andrew McPherson &lt;andrew@macduff.dhs.org&gt;&n; * Works about 30% of the time now.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -66,6 +66,8 @@ DECL|macro|SR_CLOCK
 mdefine_line|#define SR_CLOCK&t;0x10&t;&t;/* Shift register clock */
 DECL|macro|ADB_DELAY
 mdefine_line|#define ADB_DELAY 150
+DECL|macro|DEBUG_MACIISI_ADB
+macro_line|#undef DEBUG_MACIISI_ADB
 DECL|variable|current_req
 r_static
 r_struct
@@ -117,6 +119,16 @@ r_static
 r_int
 id|reply_len
 suffix:semicolon
+DECL|variable|tmp
+r_static
+r_int
+id|tmp
+suffix:semicolon
+DECL|variable|need_sync
+r_static
+r_int
+id|need_sync
+suffix:semicolon
 DECL|enum|maciisi_state
 r_static
 r_enum
@@ -163,6 +175,17 @@ id|req
 comma
 r_int
 id|sync
+)paren
+suffix:semicolon
+r_static
+r_void
+id|maciisi_sync
+c_func
+(paren
+r_struct
+id|adb_request
+op_star
+id|req
 )paren
 suffix:semicolon
 r_static
@@ -230,7 +253,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|maciisi_start
 c_func
 (paren
@@ -352,6 +375,8 @@ comma
 id|maciisi_interrupt
 comma
 id|IRQ_FLG_LOCK
+op_or
+id|IRQ_FLG_FAST
 comma
 l_string|&quot;ADB&quot;
 comma
@@ -376,13 +401,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;adb: Mac IIsi driver v0.1 for Unified ADB.&bslash;n&quot;
+l_string|&quot;adb: Mac IIsi driver v0.2 for Unified ADB.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Flush data from the ADB controller */
 r_static
 r_void
 DECL|function|maciisi_stfu
@@ -414,16 +440,70 @@ op_amp
 id|TREQ
 )paren
 (brace
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 (paren
 id|KERN_DEBUG
 l_string|&quot;maciisi_stfu called with TREQ high!&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* start transfer */
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
+id|via
+(braket
+id|ACR
+)braket
+op_and_assign
+op_complement
+id|SR_OUT
+suffix:semicolon
+id|via
+(braket
+id|IER
+)braket
+op_assign
+id|IER_CLR
+op_or
+id|SR_INT
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|via
+(braket
+id|B
+)braket
+op_amp
+(paren
+id|TIP
+op_or
+id|TREQ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|status
+op_amp
+id|TREQ
+)paren
+)paren
+(brace
 id|via
 (braket
 id|B
@@ -434,12 +514,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_logical_neg
-(paren
-id|status
-op_amp
-id|TREQ
-)paren
+l_int|1
 )paren
 (brace
 r_int
@@ -481,23 +556,43 @@ op_or
 id|TREQ
 )paren
 suffix:semicolon
+id|tmp
+op_assign
 id|via
 (braket
 id|SR
 )braket
 suffix:semicolon
 multiline_comment|/* Clear shift register */
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;maciisi_stfu: status %x timeout %d&bslash;n&quot;
+l_string|&quot;maciisi_stfu: status %x timeout %d data %x&bslash;n&quot;
 comma
 id|status
 comma
 id|poll_timeout
+comma
+id|tmp
 )paren
 suffix:semicolon
+macro_line|#endif&t;
+r_if
+c_cond
+(paren
+id|via
+(braket
+id|B
+)braket
+op_amp
+id|TREQ
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* ACK on-off */
 id|via
 (braket
@@ -530,6 +625,22 @@ op_and_assign
 op_complement
 id|TIP
 suffix:semicolon
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
+)brace
+id|via
+(braket
+id|IER
+)braket
+op_assign
+id|IER_SET
+op_or
+id|SR_INT
+suffix:semicolon
 )brace
 multiline_comment|/* All specifically VIA-related initialization goes here */
 r_static
@@ -541,6 +652,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* Set the lines up. We want TREQ as input TACK|TIP as output */
 id|via
 (braket
@@ -579,6 +693,7 @@ id|SR_CTRL
 op_or
 id|SR_EXT
 suffix:semicolon
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 c_func
 (paren
@@ -597,6 +712,25 @@ id|TREQ
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Wipe any pending data and int */
+id|tmp
+op_assign
+id|via
+(braket
+id|SR
+)braket
+suffix:semicolon
+multiline_comment|/* Enable keyboard interrupts */
+id|via
+(braket
+id|IER
+)braket
+op_assign
+id|IER_SET
+op_or
+id|SR_INT
+suffix:semicolon
 multiline_comment|/* Set initial state: idle */
 id|via
 (braket
@@ -610,16 +744,48 @@ op_or
 id|TIP
 )paren
 suffix:semicolon
-multiline_comment|/* Wipe any pending data and int */
+multiline_comment|/* Clear interrupt bit */
 id|via
 (braket
-id|SR
+id|IFR
 )braket
+op_assign
+id|SR_INT
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|60
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
+id|maciisi_stfu
+c_func
+(paren
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
 suffix:semicolon
 r_if
 c_cond
-(paren
-op_logical_neg
 (paren
 id|via
 (braket
@@ -628,24 +794,32 @@ id|B
 op_amp
 id|TREQ
 )paren
+(brace
+r_break
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|60
 )paren
-id|maciisi_stfu
+id|printk
 c_func
 (paren
+id|KERN_ERR
+l_string|&quot;maciisi_init_via: bus jam?&bslash;n&quot;
 )paren
-suffix:semicolon
-id|via
-(braket
-id|IER
-)braket
-op_assign
-id|IER_SET
-op_or
-id|SR_INT
 suffix:semicolon
 id|maciisi_state
 op_assign
 id|idle
+suffix:semicolon
+id|need_sync
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -670,12 +844,14 @@ id|sync
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef DEBUG_MACIISI_ADB
 r_static
 r_int
 id|dump_packet
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -693,6 +869,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+macro_line|#ifdef DEBUG_MACIISI_ADB
 r_if
 c_cond
 (paren
@@ -736,10 +913,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot; sync %d&bslash;n&quot;
+comma
+id|sync
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|req-&gt;reply_expected
 op_assign
 l_int|1
@@ -757,20 +937,88 @@ c_cond
 (paren
 id|i
 )paren
+(brace
+multiline_comment|/* Normally, if a packet requires syncing, that happens at the end of&n;&t;&t; * maciisi_send_request. But if the transfer fails, it will be restarted&n;&t;&t; * by maciisi_interrupt(). We use need_sync to tell maciisi_interrupt&n;&t;&t; * when to sync a packet that it sends out.&n;&t;&t; * &n;&t;&t; * Suggestions on a better way to do this are welcome.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|i
+op_eq
+op_minus
+id|EBUSY
+op_logical_and
+id|sync
+)paren
+(brace
+id|need_sync
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+id|need_sync
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 id|i
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|sync
 )paren
 (brace
+id|maciisi_sync
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Poll the ADB chip until the request completes */
+DECL|function|maciisi_sync
+r_static
+r_void
+id|maciisi_sync
+c_func
+(paren
+r_struct
+id|adb_request
+op_star
+id|req
+)paren
+(brace
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef DEBUG_MACIISI_ADB
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;maciisi_sync called&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* If for some reason the ADB chip shuts up on us, we want to avoid an endless loop. */
 r_while
 c_loop
 (paren
 op_logical_neg
 id|req-&gt;complete
+op_logical_and
+id|count
+op_increment
+OL
+l_int|50
 )paren
 (brace
 id|maciisi_poll
@@ -779,10 +1027,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
-)brace
-r_return
-l_int|0
+multiline_comment|/* This could be BAD... when the ADB controller doesn&squot;t respond&n;&t; * for this long, it&squot;s probably not coming back :-( */
+r_if
+c_cond
+(paren
+id|count
+op_ge
+l_int|50
+)paren
+(brace
+multiline_comment|/* Hopefully shouldn&squot;t happen */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;maciisi_send_request: poll timed out!&bslash;n&quot;
+)paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Enqueue a request, and run the queue if possible */
 r_static
@@ -801,19 +1063,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;maciisi_write called, state=%d ifr=%x&bslash;n&quot;
-comma
-id|maciisi_state
-comma
-id|via
-(braket
-id|IFR
-)braket
-)paren
+r_int
+id|i
 suffix:semicolon
 multiline_comment|/* We will accept CUDA packets - the VIA sends them to us, so&n;           it figures that we should be able to send them to it */
 r_if
@@ -900,12 +1151,36 @@ id|maciisi_state
 op_eq
 id|idle
 )paren
+(brace
+id|i
+op_assign
 id|maciisi_start
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_ne
+l_int|0
+)paren
+(brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+)brace
 r_else
+(brace
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 c_func
 (paren
@@ -915,6 +1190,18 @@ comma
 id|maciisi_state
 )paren
 suffix:semicolon
+macro_line|#endif
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 id|restore_flags
 c_func
 (paren
@@ -926,7 +1213,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|maciisi_start
 id|maciisi_start
 c_func
@@ -942,13 +1229,29 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+macro_line|#ifdef DEBUG_MACIISI_ADB
+id|status
+op_assign
+id|via
+(braket
+id|B
+)braket
+op_amp
+(paren
+id|TIP
+op_or
+id|TREQ
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;maciisi_start called, state=%d, ifr=%x&bslash;n&quot;
+l_string|&quot;maciisi_start called, state=%d, status=%x, ifr=%x&bslash;n&quot;
 comma
 id|maciisi_state
+comma
+id|status
 comma
 id|via
 (braket
@@ -956,6 +1259,7 @@ id|IFR
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -973,6 +1277,8 @@ l_string|&quot;maciisi_start: maciisi_start called when driver busy!&bslash;n&qu
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 id|req
@@ -987,6 +1293,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|status
 op_assign
@@ -1012,7 +1320,7 @@ id|TREQ
 )paren
 )paren
 (brace
-multiline_comment|/* Bus is busy, set up for reading */
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 c_func
 (paren
@@ -1020,10 +1328,14 @@ id|KERN_DEBUG
 l_string|&quot;maciisi_start: bus busy - aborting&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* Okay, send */
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 c_func
 (paren
@@ -1031,6 +1343,7 @@ id|KERN_DEBUG
 l_string|&quot;maciisi_start: sending&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Set state to active */
 id|via
 (braket
@@ -1047,6 +1360,13 @@ id|B
 op_and_assign
 op_complement
 id|TACK
+suffix:semicolon
+multiline_comment|/* Delay */
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
 suffix:semicolon
 multiline_comment|/* Shift out and send */
 id|via
@@ -1081,6 +1401,9 @@ suffix:semicolon
 id|maciisi_state
 op_assign
 id|sending
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_void
@@ -1128,6 +1451,14 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_else
+multiline_comment|/* avoid calling this function too quickly in a loop */
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -1163,12 +1494,63 @@ id|adb_request
 op_star
 id|req
 suffix:semicolon
+macro_line|#ifdef DEBUG_MACIISI_ADB
 r_static
 r_int
 id|dump_reply
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
+macro_line|#endif
+r_int
+id|i
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|via
+(braket
+id|B
+)braket
+op_amp
+(paren
+id|TIP
+op_or
+id|TREQ
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG_MACIISI_ADB
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;state %d status %x ifr %x&bslash;n&quot;
+comma
+id|maciisi_state
+comma
+id|status
+comma
+id|via
+(braket
+id|IFR
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1187,42 +1569,21 @@ multiline_comment|/* Shouldn&squot;t happen, we hope */
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 l_string|&quot;maciisi_interrupt: called without interrupt flag set&bslash;n&quot;
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|status
-op_assign
-id|via
-(braket
-id|B
-)braket
-op_amp
-(paren
-id|TIP
-op_or
-id|TREQ
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;state %d status %x ifr %x&bslash;n&quot;
-comma
-id|maciisi_state
-comma
-id|status
-comma
-id|via
-(braket
-id|IFR
-)braket
-)paren
-suffix:semicolon
+multiline_comment|/* Clear the interrupt */
+multiline_comment|/* via[IFR] = SR_INT; */
 id|switch_start
 suffix:colon
 r_switch
@@ -1234,15 +1595,6 @@ id|maciisi_state
 r_case
 id|idle
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;maciisi_interrupt: state=idle, status %x&bslash;n&quot;
-comma
-id|status
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1253,16 +1605,24 @@ id|TIP
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 l_string|&quot;maciisi_interrupt: state is idle but TIP asserted!&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|reading_reply
+)paren
+(brace
 id|udelay
 c_func
 (paren
 id|ADB_DELAY
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Shift in */
 id|via
 (braket
@@ -1281,6 +1641,8 @@ op_or_assign
 id|TIP
 suffix:semicolon
 multiline_comment|/* Clear the interrupt (throw this value on the floor, it&squot;s useless) */
+id|tmp
+op_assign
 id|via
 (braket
 id|SR
@@ -1329,13 +1691,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;maciisi_interrupt: received unsolicited packet&bslash;n&quot;
-)paren
-suffix:semicolon
 id|reply_ptr
 op_assign
 id|maciisi_rbuf
@@ -1346,21 +1701,7 @@ suffix:semicolon
 r_case
 id|sending
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;maciisi_interrupt: state=sending, status=%x&bslash;n&quot;
-comma
-id|status
-)paren
-suffix:semicolon
-multiline_comment|/* Clear interrupt */
-id|via
-(braket
-id|SR
-)braket
-suffix:semicolon
+multiline_comment|/* via[SR]; */
 multiline_comment|/* Set ACK off */
 id|via
 (braket
@@ -1389,19 +1730,11 @@ multiline_comment|/* collision */
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 l_string|&quot;maciisi_interrupt: send collision&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Set idle and input */
-id|via
-(braket
-id|B
-)braket
-op_and_assign
-op_complement
-id|TIP
-suffix:semicolon
 id|via
 (braket
 id|ACR
@@ -1409,6 +1742,21 @@ id|ACR
 op_and_assign
 op_complement
 id|SR_OUT
+suffix:semicolon
+id|tmp
+op_assign
+id|via
+(braket
+id|SR
+)braket
+suffix:semicolon
+id|via
+(braket
+id|B
+)braket
+op_and_assign
+op_complement
+id|TIP
 suffix:semicolon
 multiline_comment|/* Must re-send */
 id|reading_reply
@@ -1423,11 +1771,23 @@ id|maciisi_state
 op_assign
 id|idle
 suffix:semicolon
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
 multiline_comment|/* process this now, because the IFR has been cleared */
 r_goto
 id|switch_start
 suffix:semicolon
 )brace
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1445,6 +1805,13 @@ id|ACR
 op_and_assign
 op_complement
 id|SR_OUT
+suffix:semicolon
+id|tmp
+op_assign
+id|via
+(braket
+id|SR
+)braket
 suffix:semicolon
 multiline_comment|/* End of frame */
 id|via
@@ -1494,6 +1861,46 @@ id|req-&gt;done
 id|req
 )paren
 suffix:semicolon
+multiline_comment|/* Do any queued requests now */
+id|i
+op_assign
+id|maciisi_start
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+op_logical_and
+id|need_sync
+)paren
+(brace
+multiline_comment|/* Packet needs to be synced */
+id|maciisi_sync
+c_func
+(paren
+id|current_req
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_ne
+op_minus
+id|EBUSY
+)paren
+(brace
+id|need_sync
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
@@ -1506,13 +1913,6 @@ id|ACR
 )braket
 op_or_assign
 id|SR_OUT
-suffix:semicolon
-multiline_comment|/* Delay */
-id|udelay
-c_func
-(paren
-id|ADB_DELAY
-)paren
 suffix:semicolon
 multiline_comment|/* Write */
 id|via
@@ -1540,24 +1940,9 @@ suffix:semicolon
 r_case
 id|reading
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;maciisi_interrupt: state=reading, status=%x&bslash;n&quot;
-comma
-id|status
-)paren
-suffix:semicolon
 multiline_comment|/* Shift in */
-id|via
-(braket
-id|ACR
-)braket
-op_and_assign
-op_complement
-id|SR_OUT
-suffix:semicolon
+multiline_comment|/* via[ACR] &amp;= ~SR_OUT; */
+multiline_comment|/* Not in 2.2 */
 r_if
 c_cond
 (paren
@@ -1603,14 +1988,49 @@ id|maciisi_state
 op_assign
 id|idle
 suffix:semicolon
+id|i
+op_assign
 id|maciisi_start
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+op_logical_and
+id|need_sync
+)paren
+(brace
+multiline_comment|/* Packet needs to be synced */
+id|maciisi_sync
+c_func
+(paren
+id|current_req
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_ne
+op_minus
+id|EBUSY
+)paren
+(brace
+id|need_sync
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Read data */
 op_star
 id|reply_ptr
 op_increment
@@ -1677,6 +2097,21 @@ op_and_assign
 op_complement
 id|TIP
 suffix:semicolon
+id|tmp
+op_assign
+id|via
+(braket
+id|SR
+)braket
+suffix:semicolon
+multiline_comment|/* That&squot;s what happens in 2.2 */
+id|udelay
+c_func
+(paren
+id|ADB_DELAY
+)paren
+suffix:semicolon
+multiline_comment|/* Give controller time to recover */
 multiline_comment|/* end of packet, deal with it */
 r_if
 c_cond
@@ -1752,6 +2187,7 @@ id|req-&gt;reply_len
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef DEBUG_MACIISI_ADB
 r_if
 c_cond
 (paren
@@ -1800,6 +2236,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|req-&gt;complete
 op_assign
 l_int|1
@@ -1870,7 +2307,8 @@ id|TREQ
 )paren
 )paren
 (brace
-multiline_comment|/* Timeout?! */
+multiline_comment|/* Timeout?! More likely, another packet coming in already */
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 c_func
 (paren
@@ -1885,18 +2323,89 @@ id|IFR
 )braket
 )paren
 suffix:semicolon
-id|maciisi_stfu
+macro_line|#endif
+macro_line|#if 0
+id|udelay
 c_func
 (paren
+id|ADB_DELAY
 )paren
 suffix:semicolon
+id|via
+(braket
+id|B
+)braket
+op_or_assign
+id|TIP
+suffix:semicolon
+id|maciisi_state
+op_assign
+id|reading
+suffix:semicolon
+id|reading_reply
+op_assign
+l_int|0
+suffix:semicolon
+id|reply_ptr
+op_assign
+id|maciisi_rbuf
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* Process the packet now */
+id|reading_reply
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|switch_start
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* We used to do this... but the controller might actually have data for us */
+multiline_comment|/* maciisi_stfu(); */
 )brace
+r_else
+(brace
 multiline_comment|/* Do any queued requests now if possible */
+id|i
+op_assign
 id|maciisi_start
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+op_logical_and
+id|need_sync
+)paren
+(brace
+multiline_comment|/* Packet needs to be synced */
+id|maciisi_sync
+c_func
+(paren
+id|current_req
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_ne
+op_minus
+id|EBUSY
+)paren
+(brace
+id|need_sync
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -1910,6 +2419,12 @@ id|maciisi_state
 )paren
 suffix:semicolon
 )brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -1931,9 +2446,11 @@ op_star
 id|regs
 )paren
 (brace
+macro_line|#ifdef DEBUG_MACIISI_ADB
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -1971,6 +2488,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+macro_line|#ifdef DEBUG_MACIISI_ADB
 id|printk
 c_func
 (paren
@@ -2010,6 +2528,9 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
+suffix:semicolon
+macro_line|#endif
+r_break
 suffix:semicolon
 )brace
 )brace

@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_APOLLO_DMA_H
 DECL|macro|_ASM_APOLLO_DMA_H
 mdefine_line|#define _ASM_APOLLO_DMA_H
 macro_line|#include &lt;asm/apollohw.h&gt;&t;&t;/* need byte IO */
-macro_line|#include &lt;asm/spinlock.h&gt;&t;/* And spinlocks */
+macro_line|#include &lt;linux/spinlock.h&gt;&t;&t;/* And spinlocks */
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|dma_outb
 mdefine_line|#define dma_outb(val,addr) (*((volatile unsigned char *)(addr+IO_BASE)) = (val))

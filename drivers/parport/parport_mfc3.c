@@ -1303,6 +1303,8 @@ id|p
 suffix:semicolon
 r_int
 id|pias
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|pia

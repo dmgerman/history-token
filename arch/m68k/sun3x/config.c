@@ -118,6 +118,7 @@ op_assign
 l_int|0xffffffff
 suffix:semicolon
 multiline_comment|/* we can DMA anywhere, whee */
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|sun3x_keyb_init
@@ -130,6 +131,7 @@ id|mach_kbd_leds
 op_assign
 id|sun3x_kbd_leds
 suffix:semicolon
+macro_line|#endif
 id|mach_default_handler
 op_assign
 op_amp

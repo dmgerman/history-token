@@ -33,6 +33,7 @@ multiline_comment|/* hack to avoid including scsi.h */
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt; /* for HDIO_GETGEO */
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1186,7 +1187,7 @@ r_int
 id|revalidate_acsidisk
 c_func
 (paren
-r_int
+id|kdev_t
 id|dev
 comma
 r_int
@@ -1197,7 +1198,7 @@ r_static
 r_int
 id|acsi_revalidate
 (paren
-id|dev_t
+id|kdev_t
 )paren
 suffix:semicolon
 multiline_comment|/************************* End of Prototypes **************************/
@@ -1207,14 +1208,8 @@ id|timer_list
 id|acsi_timer
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-comma
+id|function
+suffix:colon
 id|acsi_times_out
 )brace
 suffix:semicolon
@@ -2828,14 +2823,10 @@ l_int|0
 r_int
 id|dev
 op_assign
-id|DEVICE_NR
-c_func
-(paren
 id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
-)paren
 )paren
 suffix:semicolon
 id|printk
@@ -2999,14 +2990,10 @@ l_int|0
 r_int
 id|dev
 op_assign
-id|DEVICE_NR
-c_func
-(paren
 id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
-)paren
 )paren
 suffix:semicolon
 id|printk
@@ -3585,7 +3572,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -3642,11 +3629,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|DEVICE_NR
-c_func
-(paren
 id|dev
-)paren
 op_ge
 id|NDevices
 op_logical_or
@@ -3668,11 +3651,7 @@ c_func
 (paren
 l_string|&quot;ad%c: attempted access for blocks %d...%ld past end of device at block %ld.&bslash;n&quot;
 comma
-id|DEVICE_NR
-c_func
-(paren
 id|dev
-)paren
 op_plus
 l_char|&squot;a&squot;
 comma
@@ -3710,11 +3689,7 @@ c_cond
 (paren
 id|acsi_info
 (braket
-id|DEVICE_NR
-c_func
-(paren
 id|dev
-)paren
 )braket
 dot
 id|changed
@@ -3727,11 +3702,7 @@ id|KERN_NOTICE
 l_string|&quot;ad%c: request denied because cartridge has &quot;
 l_string|&quot;been changed.&bslash;n&quot;
 comma
-id|DEVICE_NR
-c_func
-(paren
 id|dev
-)paren
 op_plus
 l_char|&squot;a&squot;
 )paren
@@ -3752,11 +3723,7 @@ id|target
 op_assign
 id|acsi_info
 (braket
-id|DEVICE_NR
-c_func
-(paren
 id|dev
-)paren
 )braket
 dot
 id|target
@@ -3765,11 +3732,7 @@ id|lun
 op_assign
 id|acsi_info
 (braket
-id|DEVICE_NR
-c_func
-(paren
 id|dev
-)paren
 )braket
 dot
 id|lun
@@ -3996,7 +3959,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -4105,7 +4072,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|READ
 )paren
@@ -4221,7 +4192,7 @@ r_int
 id|arg
 )paren
 (brace
-r_int
+id|dev_t
 id|dev
 suffix:semicolon
 r_if
@@ -4236,14 +4207,10 @@ id|EINVAL
 suffix:semicolon
 id|dev
 op_assign
-id|DEVICE_NR
-c_func
-(paren
 id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4452,14 +4419,10 @@ id|aip
 suffix:semicolon
 id|device
 op_assign
-id|DEVICE_NR
-c_func
-(paren
 id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4600,14 +4563,10 @@ id|file
 r_int
 id|device
 op_assign
-id|DEVICE_NR
-c_func
-(paren
 id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4731,21 +4690,17 @@ r_static
 r_int
 id|acsi_media_change
 (paren
-id|dev_t
+id|kdev_t
 id|dev
 )paren
 (brace
 r_int
 id|device
 op_assign
-id|DEVICE_NR
-c_func
-(paren
 id|minor
 c_func
 (paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_struct
@@ -7235,7 +7190,7 @@ r_int
 id|revalidate_acsidisk
 c_func
 (paren
-r_int
+id|kdev_t
 id|dev
 comma
 r_int
@@ -7394,7 +7349,7 @@ r_static
 r_int
 id|acsi_revalidate
 (paren
-id|dev_t
+id|kdev_t
 id|dev
 )paren
 (brace

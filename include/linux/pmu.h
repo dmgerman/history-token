@@ -116,6 +116,14 @@ DECL|enumerator|PMU_KEYLARGO_BASED
 id|PMU_KEYLARGO_BASED
 comma
 multiline_comment|/* Core99 motherboard (PMU99) */
+DECL|enumerator|PMU_68K_V1
+id|PMU_68K_V1
+comma
+multiline_comment|/* 68K PMU, version 1 */
+DECL|enumerator|PMU_68K_V2
+id|PMU_68K_V2
+comma
+multiline_comment|/* 68K PMU, version 2 */
 )brace
 suffix:semicolon
 multiline_comment|/* PMU PMU_POWER_EVENTS commands */

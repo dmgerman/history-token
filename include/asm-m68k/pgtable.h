@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the m68k page table tree.&n; */
 macro_line|#include &lt;asm/virtconvert.h&gt;
@@ -92,32 +93,11 @@ mdefine_line|#define VMALLOC_END vmalloc_end
 macro_line|#endif /* CONFIG_SUN3 */
 multiline_comment|/* zero page used for uninitialized stuff */
 r_extern
-r_int
-r_int
+r_void
+op_star
 id|empty_zero_page
 suffix:semicolon
-multiline_comment|/*&n; * BAD_PAGETABLE is used when we need a bogus page-table, while&n; * BAD_PAGE is used for a bogus page.&n; *&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
-r_extern
-id|pte_t
-id|__bad_page
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|pte_t
-op_star
-id|__bad_pagetable
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|BAD_PAGETABLE
-mdefine_line|#define BAD_PAGETABLE __bad_pagetable()
-DECL|macro|BAD_PAGE
-mdefine_line|#define BAD_PAGE __bad_page()
+multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(virt_to_page(empty_zero_page))
 multiline_comment|/* number of bits that fit into a memory pointer */
@@ -245,5 +225,7 @@ macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _M68K_PGTABLE_H */
 eof

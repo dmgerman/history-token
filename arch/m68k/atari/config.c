@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;
@@ -351,20 +352,6 @@ l_string|&quot;0.&bslash;r&bslash;000&bslash;000&bslash;000&bslash;000&bslash;00
 suffix:semicolon
 multiline_comment|/* 0x70 - 0x7f */
 macro_line|#endif
-r_extern
-r_void
-(paren
-op_star
-id|kd_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* I&squot;ve moved hwreg_present() and hwreg_present_bywrite() out into&n; * mm/hwtest.c, to avoid having multiple copies of the same routine&n; * in the kernel [I wanted them in hp300 and they were already used&n; * in the nubus code. NB: I don&squot;t have an Atari so this might (just&n; * conceivably) break something.&n; * I&squot;ve preserved the #if 0 version of hwreg_present_bywrite() here&n; * for posterity.&n; *   -- Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;, 05/1998&n; */
 macro_line|#if 0
 r_static
@@ -925,6 +912,7 @@ id|mach_sched_init
 op_assign
 id|atari_sched_init
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|atari_keyb_init
@@ -937,16 +925,11 @@ id|mach_kbd_translate
 op_assign
 id|atari_kbd_translate
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|SYSRQ_KEY
-op_assign
-l_int|0xff
-suffix:semicolon
-macro_line|#endif
 id|mach_kbd_leds
 op_assign
 id|atari_kbd_leds
 suffix:semicolon
+macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|atari_init_IRQ
@@ -1004,11 +987,17 @@ id|mach_max_dma_address
 op_assign
 l_int|0xffffff
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|kd_mksound
 op_assign
 id|atari_mksound
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|SYSRQ_KEY
+op_assign
+l_int|0xff
+suffix:semicolon
 id|mach_sysrq_key
 op_assign
 l_int|98

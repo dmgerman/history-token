@@ -28,7 +28,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;82596.c $Revision: 1.4 $&bslash;n&quot;
+l_string|&quot;82596.c $Revision: 1.5 $&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* DEBUG flags&n; */
 DECL|macro|DEB_INIT
@@ -1330,6 +1330,7 @@ id|delcnt
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: %s, status %4.4x, cmd %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1400,6 +1401,7 @@ id|delcnt
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: %s, status %4.4x, cmd %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1409,6 +1411,81 @@ comma
 id|lp-&gt;scb.status
 comma
 id|lp-&gt;scb.command
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|wait_cfg
+r_static
+r_inline
+r_int
+id|wait_cfg
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|i596_cmd
+op_star
+id|cmd
+comma
+r_int
+id|delcnt
+comma
+r_char
+op_star
+id|str
+)paren
+(brace
+r_volatile
+r_struct
+id|i596_cmd
+op_star
+id|c
+op_assign
+id|cmd
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_decrement
+id|delcnt
+op_logical_and
+id|c-&gt;command
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|delcnt
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: %s.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|str
 )paren
 suffix:semicolon
 r_return
@@ -1463,6 +1540,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;lp and scp at %p, .sysbus = %08lx, .iscp = %p&bslash;n&quot;
 comma
 op_amp
@@ -1476,6 +1554,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;iscp at %p, iscp.stat = %08lx, .scb = %p&bslash;n&quot;
 comma
 op_amp
@@ -1489,6 +1568,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scb at %p, scb.status = %04x, .command = %04x,&quot;
 l_string|&quot; .cmd = %p, .rfd = %p&bslash;n&quot;
 comma
@@ -1507,6 +1587,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;   errors: crc %lx, align %lx, resource %lx,&quot;
 l_string|&quot; over %lx, rcvdt %lx, short %lx&bslash;n&quot;
 comma
@@ -1538,6 +1619,7 @@ id|I596_NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;cmd at %p, .status = %04x, .command = %04x, .b_next = %p&bslash;n&quot;
 comma
 id|cmd
@@ -1561,6 +1643,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rfd_head = %p&bslash;n&quot;
 comma
 id|rfd
@@ -1569,7 +1652,9 @@ suffix:semicolon
 r_do
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;   %p .stat %04x, .cmd %04x, b_next %p, rbd %p,&quot;
 l_string|&quot; count %04x&bslash;n&quot;
 comma
@@ -1606,6 +1691,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rbd_head = %p&bslash;n&quot;
 comma
 id|rbd
@@ -1616,6 +1702,7 @@ r_do
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;   %p .count %04x, b_next %p, b_data %p, size %04x&bslash;n&quot;
 comma
 id|rbd
@@ -1670,6 +1757,13 @@ id|dev
 op_assign
 id|dev_id
 suffix:semicolon
+macro_line|#ifdef ENABLE_MVME16x_NET
+r_if
+c_cond
+(paren
+id|MACH_IS_MVME16x
+)paren
+(brace
 r_volatile
 r_int
 r_char
@@ -1697,9 +1791,44 @@ l_int|0x2b
 op_assign
 l_int|0x1d
 suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef ENABLE_BVME6000_NET
+r_if
+c_cond
+(paren
+id|MACH_IS_BVME6000
+)paren
+(brace
+r_volatile
+r_int
+r_char
+op_star
+id|ethirq
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|BVME_ETHIRQ_REG
+suffix:semicolon
+op_star
+id|ethirq
+op_assign
+l_int|1
+suffix:semicolon
+op_star
+id|ethirq
+op_assign
+l_int|3
+suffix:semicolon
+)brace
+macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Error interrupt&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2494,6 +2623,27 @@ id|lp-&gt;scb.cmd
 op_assign
 id|I596_NULL
 suffix:semicolon
+macro_line|#ifdef ENABLE_BVME6000_NET
+r_if
+c_cond
+(paren
+id|MACH_IS_BVME6000
+)paren
+(brace
+id|lp-&gt;scb.t_on
+op_assign
+l_int|7
+op_star
+l_int|25
+suffix:semicolon
+id|lp-&gt;scb.t_off
+op_assign
+l_int|1
+op_star
+l_int|25
+suffix:semicolon
+)brace
+macro_line|#endif
 id|DEB
 c_func
 (paren
@@ -2502,6 +2652,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: starting i82596.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2563,6 +2714,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: i82596 initialization successful&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2653,6 +2805,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: queuing CmdConfigure&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2690,6 +2843,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: queuing CmdSASetup&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2727,6 +2881,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: queuing CmdTDR&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2790,6 +2945,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Issuing RX_START&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2840,6 +2996,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Receive unit started OK&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2854,6 +3011,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;%s: Failed to initialise 82596&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2920,7 +3078,9 @@ c_func
 id|DEB_RXFRAME
 comma
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i596_rx(), rfd_head %p, rbd_head %p&bslash;n&quot;
 comma
 id|lp-&gt;rfd_head
@@ -2973,6 +3133,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;%s: rbd chain broken!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2992,6 +3153,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;  rfd %p, rfd.rbd %p, rfd.stat %04x&bslash;n&quot;
 comma
 id|rfd
@@ -3170,7 +3332,9 @@ l_int|NULL
 (brace
 multiline_comment|/* XXX tulip.c can defer packets here!! */
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: i596_rx Memory squeeze, dropping packet.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3276,6 +3440,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Error, rfd.stat = 0x%04x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3440,7 +3605,9 @@ c_func
 id|DEB_RXFRAME
 comma
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;frames %d&bslash;n&quot;
 comma
 id|frames
@@ -3612,6 +3779,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i596_reset&bslash;n&quot;
 )paren
 )paren
@@ -3748,6 +3916,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i596_add_cmd&bslash;n&quot;
 )paren
 )paren
@@ -3889,6 +4058,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;%s: command unit timed out, status resetting.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3931,6 +4101,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: i596_open() irq %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3961,6 +4132,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: IRQ %d not free&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4084,6 +4256,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: transmit timed out, status resetting.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4108,7 +4281,9 @@ c_func
 id|DEB_ERRORS
 comma
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Resetting board.&bslash;n&quot;
 )paren
 )paren
@@ -4133,7 +4308,9 @@ c_func
 id|DEB_ERRORS
 comma
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Kicking board.&bslash;n&quot;
 )paren
 )paren
@@ -4227,6 +4404,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: i596_start_xmit(%x,%x) called&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4265,17 +4443,13 @@ c_cond
 id|tx_cmd-&gt;cmd.command
 )paren
 (brace
-id|DEB
+id|printk
 c_func
 (paren
-id|DEB_ERRORS
-comma
-id|printk
-(paren
+id|KERN_NOTICE
 l_string|&quot;%s: xmit ring full, dropping packet.&bslash;n&quot;
 comma
 id|dev-&gt;name
-)paren
 )paren
 suffix:semicolon
 id|lp-&gt;stats.tx_dropped
@@ -4435,6 +4609,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i596 0x%p, &quot;
 comma
 id|add
@@ -4577,6 +4752,7 @@ id|MVME16x_CONFIG_NO_ETHERNET
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Ethernet probe disabled - chip not present&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4733,6 +4909,7 @@ id|dev-&gt;name
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;82596: IO address 0x%04x in use&bslash;n&quot;
 comma
 id|ioaddr
@@ -4878,6 +5055,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: 82596 at %#3lx,&quot;
 comma
 id|dev-&gt;name
@@ -4944,6 +5122,9 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
+l_string|&quot;%s&quot;
+comma
 id|version
 )paren
 )paren
@@ -5002,7 +5183,9 @@ c_func
 id|DEB_INIT
 comma
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: lp at 0x%08lx (%d bytes), lp-&gt;scb at 0x%08lx&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5185,11 +5368,11 @@ id|BVME_ETHERR
 id|i596_error
 c_func
 (paren
-id|BVME_IRQ_I596
+id|irq
 comma
-l_int|NULL
+id|dev_id
 comma
-l_int|NULL
+id|regs
 )paren
 suffix:semicolon
 r_return
@@ -5208,6 +5391,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i596_interrupt(): irq %d for unknown device.&bslash;n&quot;
 comma
 id|irq
@@ -5259,6 +5443,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: i596 interrupt, IRQ %d, status %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5313,6 +5498,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: i596 interrupt completed command.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5336,6 +5522,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: i596 interrupt command unit inactive %x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5374,6 +5561,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;cmd_head-&gt;status = %04x, -&gt;command = %04x&bslash;n&quot;
 comma
 id|lp-&gt;cmd_head-&gt;status
@@ -5560,11 +5748,12 @@ l_int|0x8000
 id|DEB
 c_func
 (paren
-id|DEB_ANY
+id|DEB_TDR
 comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: link ok.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5584,6 +5773,7 @@ l_int|0x4000
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Transceiver problem.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5599,6 +5789,7 @@ l_int|0x2000
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Termination problem.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5614,6 +5805,7 @@ l_int|0x1000
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Short circuit.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5627,6 +5819,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Time %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5643,6 +5836,9 @@ suffix:semicolon
 )brace
 r_case
 id|CmdConfigure
+suffix:colon
+r_case
+id|CmdMulticastList
 suffix:colon
 multiline_comment|/* Zap command so set_multicast_list() knows it is free */
 id|ptr-&gt;command
@@ -5752,6 +5948,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: i596 interrupt received a frame.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5791,6 +5988,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: i596 interrupt receive unit inactive, status 0x%x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5933,6 +6131,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: exiting interrupt.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5990,6 +6189,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Shutting down ethercard, status was %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6234,6 +6434,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: set multicast list, %d entries, promisc %s, allmulti %s&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6263,153 +6464,156 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_PROMISC
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|8
-)braket
-op_amp
-l_int|0x01
-)paren
-)paren
-(brace
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|8
-)braket
-op_or_assign
-l_int|0x01
-suffix:semicolon
-id|config
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_PROMISC
-)paren
-op_logical_and
-(paren
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|8
-)braket
-op_amp
-l_int|0x01
-)paren
-)paren
-(brace
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|8
-)braket
-op_and_assign
-op_complement
-l_int|0x01
-suffix:semicolon
-id|config
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_ALLMULTI
-)paren
-op_logical_and
-(paren
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|11
-)braket
-op_amp
-l_int|0x20
-)paren
-)paren
-(brace
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|11
-)braket
-op_and_assign
-op_complement
-l_int|0x20
-suffix:semicolon
-id|config
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_ALLMULTI
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|11
-)braket
-op_amp
-l_int|0x20
-)paren
-)paren
-(brace
-id|lp-&gt;cf_cmd.i596_config
-(braket
-l_int|11
-)braket
-op_or_assign
-l_int|0x20
-suffix:semicolon
-id|config
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|config
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|lp-&gt;cf_cmd.cmd.command
-)paren
-id|printk
+id|wait_cfg
 c_func
 (paren
-l_string|&quot;%s: config change request already queued&bslash;n&quot;
+id|dev
 comma
-id|dev-&gt;name
+op_amp
+id|lp-&gt;cf_cmd.cmd
+comma
+l_int|1000
+comma
+l_string|&quot;config change request timed out&quot;
 )paren
+)paren
+r_return
 suffix:semicolon
-r_else
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_PROMISC
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|8
+)braket
+op_amp
+l_int|0x01
+)paren
+)paren
+(brace
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|8
+)braket
+op_or_assign
+l_int|0x01
+suffix:semicolon
+id|config
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_PROMISC
+)paren
+op_logical_and
+(paren
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|8
+)braket
+op_amp
+l_int|0x01
+)paren
+)paren
+(brace
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|8
+)braket
+op_and_assign
+op_complement
+l_int|0x01
+suffix:semicolon
+id|config
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_ALLMULTI
+)paren
+op_logical_and
+(paren
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|11
+)braket
+op_amp
+l_int|0x20
+)paren
+)paren
+(brace
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|11
+)braket
+op_and_assign
+op_complement
+l_int|0x20
+suffix:semicolon
+id|config
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_ALLMULTI
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|11
+)braket
+op_amp
+l_int|0x20
+)paren
+)paren
+(brace
+id|lp-&gt;cf_cmd.i596_config
+(braket
+l_int|11
+)braket
+op_or_assign
+l_int|0x20
+suffix:semicolon
+id|config
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|config
+)paren
 (brace
 id|lp-&gt;cf_cmd.cmd.command
 op_assign
@@ -6424,7 +6628,6 @@ op_amp
 id|lp-&gt;cf_cmd.cmd
 )paren
 suffix:semicolon
-)brace
 )brace
 id|cnt
 op_assign
@@ -6445,6 +6648,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Only %d multicast addresses supported&quot;
 comma
 id|dev-&gt;name
@@ -6475,6 +6679,24 @@ r_struct
 id|mc_cmd
 op_star
 id|cmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|wait_cfg
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|lp-&gt;mc_cmd.cmd
+comma
+l_int|1000
+comma
+l_string|&quot;multicast list change request timed out&quot;
+)paren
+)paren
+r_return
 suffix:semicolon
 id|cmd
 op_assign
@@ -6545,6 +6767,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Adding address %02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
 id|dev-&gt;name

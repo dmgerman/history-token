@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/amifdreg.h&gt;
 macro_line|#include &lt;linux/amifd.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
@@ -9915,12 +9916,6 @@ op_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/* one-shot, stop */
-(paren
-r_void
-)paren
-id|do_floppy
-suffix:semicolon
-multiline_comment|/* avoid warning about unused variable */
 r_return
 l_int|0
 suffix:semicolon

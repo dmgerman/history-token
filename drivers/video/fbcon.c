@@ -2447,7 +2447,7 @@ id|p
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_MAC
+macro_line|#ifdef CONFIG_FBCON_MAC
 r_if
 c_cond
 (paren
@@ -13106,12 +13106,9 @@ id|x1
 id|fb_writeb
 c_func
 (paren
-id|fb_readb
-c_func
-(paren
+op_star
 id|src
 op_increment
-)paren
 op_xor
 id|inverse
 comma

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -254,20 +255,6 @@ id|dn_dummy_debug_init
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|kd_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -798,6 +785,7 @@ op_assign
 id|dn_sched_init
 suffix:semicolon
 multiline_comment|/* */
+macro_line|#ifdef CONFIG_VT
 id|mach_keyb_init
 op_assign
 id|dn_keyb_init
@@ -806,6 +794,7 @@ id|mach_kbdrate
 op_assign
 id|dn_dummy_kbdrate
 suffix:semicolon
+macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|dn_init_IRQ
@@ -878,10 +867,12 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 id|kd_mksound
 op_assign
 id|dn_mksound
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
 id|mach_heartbeat
 op_assign

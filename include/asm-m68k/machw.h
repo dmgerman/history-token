@@ -97,12 +97,14 @@ macro_line|# define mac_scc ((*(volatile struct SCC*)MAC_SCC_BAS))
 macro_line|#endif
 multiline_comment|/* hardware stuff */
 DECL|macro|MACHW_DECLARE
-mdefine_line|#define MACHW_DECLARE(name)    unsigned name : 1
+mdefine_line|#define MACHW_DECLARE(name)&t;unsigned name : 1
 DECL|macro|MACHW_SET
-mdefine_line|#define MACHW_SET(name)                (mac_hw_present.name = 1)
+mdefine_line|#define MACHW_SET(name)&t;&t;(mac_hw_present.name = 1)
 DECL|macro|MACHW_PRESENT
-mdefine_line|#define MACHW_PRESENT(name)    (mac_hw_present.name)
+mdefine_line|#define MACHW_PRESENT(name)&t;(mac_hw_present.name)
+DECL|struct|mac_hw_present
 r_struct
+id|mac_hw_present
 (brace
 multiline_comment|/* video hardware */
 multiline_comment|/* sound hardware */
@@ -189,11 +191,13 @@ id|NUBUS
 )paren
 suffix:semicolon
 multiline_comment|/* NUBUS */
-DECL|variable|mac_hw_present
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|mac_hw_present
 id|mac_hw_present
 suffix:semicolon
-multiline_comment|/* extern struct mac_hw_present mac_hw_present; */
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* linux/machw.h */
 eof

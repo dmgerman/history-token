@@ -297,8 +297,6 @@ DECL|macro|NCR_PRINT_PHASE
 mdefine_line|#define NCR_PRINT_PHASE(mask) &bslash;&n;&t;((NDEBUG &amp; (mask)) ? NCR5380_print_phase(instance) : (void)0)
 DECL|macro|NCR_PRINT_STATUS
 mdefine_line|#define NCR_PRINT_STATUS(mask) &bslash;&n;&t;((NDEBUG &amp; (mask)) ? NCR5380_print_status(instance) : (void)0)
-DECL|macro|NDEBUG_ANY
-mdefine_line|#define NDEBUG_ANY&t;0xffffffff
 macro_line|#endif /* ndef ASM */
 macro_line|#endif /* ATARI_SCSI_H */
 eof

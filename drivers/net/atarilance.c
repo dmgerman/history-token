@@ -1744,7 +1744,7 @@ id|dev
 id|printk
 c_func
 (paren
-l_string|&quot;Lance: request for irq %d failed&bslash;n&quot;
+l_string|&quot;Lance: request for irq %ld failed&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -3552,7 +3552,7 @@ l_int|0
 comma
 (paren
 l_string|&quot;out-of-sync dirty pointer,&quot;
-l_string|&quot; %d vs. %d, full=%d.&bslash;n&quot;
+l_string|&quot; %d vs. %d, full=%ld.&bslash;n&quot;
 comma
 id|dirty_tx
 comma

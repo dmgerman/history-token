@@ -2,12 +2,14 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/apollohw.h&gt;
+macro_line|#include &lt;asm/errno.h&gt;
 DECL|variable|dn_irqs
 r_static
 id|irq_handler_t
@@ -15,57 +17,6 @@ id|dn_irqs
 (braket
 l_int|16
 )braket
-suffix:semicolon
-r_extern
-r_void
-id|write_keyb_cmd
-c_func
-(paren
-id|u_short
-id|length
-comma
-id|u_char
-op_star
-id|cmd
-)paren
-suffix:semicolon
-DECL|variable|BellOnCommand
-r_static
-r_char
-id|BellOnCommand
-(braket
-)braket
-op_assign
-(brace
-l_int|0xFF
-comma
-l_int|0x21
-comma
-l_int|0x81
-)brace
-comma
-DECL|variable|BellOffCommand
-id|BellOffCommand
-(braket
-)braket
-op_assign
-(brace
-l_int|0xFF
-comma
-l_int|0x21
-comma
-l_int|0x82
-)brace
-suffix:semicolon
-r_extern
-r_void
-id|dn_serial_print
-(paren
-r_const
-r_char
-op_star
-id|str
-)paren
 suffix:semicolon
 DECL|function|dn_process_int
 r_void
@@ -620,6 +571,48 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_VT
+r_extern
+r_void
+id|write_keyb_cmd
+c_func
+(paren
+id|u_short
+id|length
+comma
+id|u_char
+op_star
+id|cmd
+)paren
+suffix:semicolon
+DECL|variable|BellOnCommand
+r_static
+r_char
+id|BellOnCommand
+(braket
+)braket
+op_assign
+(brace
+l_int|0xFF
+comma
+l_int|0x21
+comma
+l_int|0x81
+)brace
+comma
+DECL|variable|BellOffCommand
+id|BellOffCommand
+(braket
+)braket
+op_assign
+(brace
+l_int|0xFF
+comma
+l_int|0x21
+comma
+l_int|0x82
+)brace
+suffix:semicolon
 DECL|function|dn_nosound
 r_static
 r_void
@@ -725,6 +718,7 @@ id|BellOffCommand
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_VT */
 DECL|function|dn_dummy_video_setup
 r_void
 id|dn_dummy_video_setup
