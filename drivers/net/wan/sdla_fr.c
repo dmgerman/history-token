@@ -19,13 +19,9 @@ macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_wanpipe_common.h&gt;&t;/* Wanpipe Socket */
 macro_line|#include &lt;linux/if_wanpipe.h&gt;&t;
 macro_line|#include &lt;linux/sdla_fr.h&gt;&t;&t;/* frame relay firmware API definitions */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#endif
 macro_line|#include &lt;net/route.h&gt;          &t;/* Dynamic Route Creation */
 macro_line|#include &lt;linux/etherdevice.h&gt;&t;&t;/* eth_type_trans() used for bridging */
 macro_line|#include &lt;linux/random.h&gt;
