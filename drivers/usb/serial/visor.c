@@ -347,6 +347,16 @@ id|SONY_CLIE_4_1_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|SONY_VENDOR_ID
+comma
+id|SONY_CLIE_NX60_ID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -501,6 +511,16 @@ c_func
 id|SONY_VENDOR_ID
 comma
 id|SONY_CLIE_4_1_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|SONY_VENDOR_ID
+comma
+id|SONY_CLIE_NX60_ID
 )paren
 )brace
 comma
