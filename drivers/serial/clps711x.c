@@ -1166,6 +1166,8 @@ r_int
 r_int
 id|ubrlcr
 comma
+id|baud
+comma
 id|quot
 suffix:semicolon
 r_int
@@ -1178,9 +1180,9 @@ op_or_assign
 id|CREAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ask the core to calculate the divisor for us.&n;&t; */
-id|quot
+id|baud
 op_assign
-id|uart_get_divisor
+id|uart_get_baud_rate
 c_func
 (paren
 id|port
@@ -1188,6 +1190,22 @@ comma
 id|termios
 comma
 id|old
+comma
+l_int|0
+comma
+id|port-&gt;uartclk
+op_div
+l_int|16
+)paren
+suffix:semicolon
+id|quot
+op_assign
+id|uart_get_divisor
+c_func
+(paren
+id|port
+comma
+id|baud
 )paren
 suffix:semicolon
 r_switch
@@ -1301,7 +1319,7 @@ id|port
 comma
 id|termios-&gt;c_cflag
 comma
-id|quot
+id|baud
 )paren
 suffix:semicolon
 id|port-&gt;read_status_mask
