@@ -864,6 +864,38 @@ suffix:semicolon
 r_struct
 id|file
 suffix:semicolon
+multiline_comment|/*&n; * Register/unregister for framebuffer events&n; */
+multiline_comment|/*&t;The resolution of the passed in fb_info about to change */
+DECL|macro|FB_EVENT_MODE_CHANGE
+mdefine_line|#define FB_EVENT_MODE_CHANGE&t;&t;0x01
+multiline_comment|/*&t;The display on this fb_info is beeing suspended, no access to the&n; *&t;framebuffer is allowed any more after that call returns&n; */
+DECL|macro|FB_EVENT_SUSPEND
+mdefine_line|#define FB_EVENT_SUSPEND&t;&t;0x02
+multiline_comment|/*&t;The display on this fb_info was resumed, you can restore the display&n; *&t;if you own it&n; */
+DECL|macro|FB_EVENT_RESUME
+mdefine_line|#define FB_EVENT_RESUME&t;&t;&t;0x03
+r_extern
+r_int
+id|fb_register_client
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_unregister_client
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Pixmap structure definition&n; *&n; * The purpose of this structure is to translate data&n; * from the hardware independent format of fbdev to what&n; * format the hardware needs.&n; */
 DECL|macro|FB_PIXMAP_DEFAULT
 mdefine_line|#define FB_PIXMAP_DEFAULT 1     /* used internally by fbcon */
@@ -945,15 +977,6 @@ id|u8
 op_star
 id|addr
 )paren
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* spinlock                      */
-DECL|member|count
-id|atomic_t
-id|count
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1404,18 +1427,21 @@ r_int
 id|currcon
 suffix:semicolon
 multiline_comment|/* Current VC. */
-DECL|member|class_dev
-r_struct
-id|class_device
-id|class_dev
-suffix:semicolon
-multiline_comment|/* Sysfs data */
 DECL|member|pseudo_palette
 r_void
 op_star
 id|pseudo_palette
 suffix:semicolon
 multiline_comment|/* Fake palette of 16 colors */
+DECL|macro|FBINFO_STATE_RUNNING
+mdefine_line|#define FBINFO_STATE_RUNNING&t;0
+DECL|macro|FBINFO_STATE_SUSPENDED
+mdefine_line|#define FBINFO_STATE_SUSPENDED&t;1
+DECL|member|state
+id|u32
+id|state
+suffix:semicolon
+multiline_comment|/* Hardware state i.e suspend */
 multiline_comment|/* From here on everything is device dependent */
 DECL|member|par
 r_void
@@ -1451,7 +1477,7 @@ DECL|macro|fb_writeq
 mdefine_line|#define fb_writeq sbus_writeq
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset sbus_memset_io
-macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__)
+macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__) || defined(__sh__)
 DECL|macro|fb_readb
 mdefine_line|#define fb_readb __raw_readb
 DECL|macro|fb_readw
@@ -1785,22 +1811,6 @@ id|fb_info
 op_star
 id|info
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|fb_add_class_device
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_extern
-r_struct
-r_class
-id|fb_class
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
 DECL|macro|FB_MAXTIMINGS

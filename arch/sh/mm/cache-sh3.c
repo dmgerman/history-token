@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cache-sh3.c,v 1.7 2003/08/28 16:16:09 lethal Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
+multiline_comment|/* $Id: cache-sh3.c,v 1.8 2004/02/01 16:26:27 lethal Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -13,10 +13,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
-r_static
+DECL|function|detect_cpu_and_cache_system
 r_int
 id|__init
-DECL|function|detect_cpu_and_cache_system
 id|detect_cpu_and_cache_system
 c_func
 (paren

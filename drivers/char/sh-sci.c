@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sh-sci.c,v 1.15 2003/10/13 07:21:19 lethal Exp $&n; *&n; *  linux/drivers/char/sh-sci.c&n; *&n; *  SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2000  Sugioka Toshinobu&n; *  Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *  Modified to support SH7760 SCIF. Paul Mundt (Oct 2003).&n; *&n; * TTY code is based on sx.c (Specialix SX driver) by:&n; *&n; *   (C) 1998 R.E.Wolff@BitWizard.nl&n; *&n; */
+multiline_comment|/* $Id: sh-sci.c,v 1.16 2004/02/10 17:04:17 lethal Exp $&n; *&n; *  linux/drivers/char/sh-sci.c&n; *&n; *  SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2000  Sugioka Toshinobu&n; *  Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *  Modified to support SH7760 SCIF. Paul Mundt (Oct 2003).&n; *  Modified to support H8/300 Series. Yoshinori Sato (Feb 2004).&n; *&n; * TTY code is based on sx.c (Specialix SX driver) by:&n; *&n; *   (C) 1998 R.E.Wolff@BitWizard.nl&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1318,6 +1318,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+macro_line|#if !defined(__H8300H__) &amp;&amp; !defined(__H8300S__)
 macro_line|#if defined(SCI_ONLY) || defined(SCI_AND_SCIF)
 DECL|function|sci_init_pins_sci
 r_static
@@ -1566,6 +1567,175 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif /* SCIF_ONLY || SCI_AND_SCIF */
+macro_line|#else /* !defined(__H8300H__) &amp;&amp; !defined(__H8300S__) */
+DECL|function|sci_init_pins_sci
+r_static
+r_void
+id|sci_init_pins_sci
+c_func
+(paren
+r_struct
+id|sci_port
+op_star
+id|port
+comma
+r_int
+r_int
+id|cflag
+)paren
+(brace
+r_int
+id|ch
+op_assign
+(paren
+id|port-&gt;base
+op_minus
+id|SMR0
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+multiline_comment|/* set DDR regs */
+id|H8300_GPIO_DDR
+c_func
+(paren
+id|h8300_sci_pins
+(braket
+id|ch
+)braket
+dot
+id|port
+comma
+id|h8300_sci_pins
+(braket
+id|ch
+)braket
+dot
+id|rx
+comma
+id|H8300_GPIO_INPUT
+)paren
+suffix:semicolon
+id|H8300_GPIO_DDR
+c_func
+(paren
+id|h8300_sci_pins
+(braket
+id|ch
+)braket
+dot
+id|port
+comma
+id|h8300_sci_pins
+(braket
+id|ch
+)braket
+dot
+id|tx
+comma
+id|H8300_GPIO_OUTPUT
+)paren
+suffix:semicolon
+multiline_comment|/* tx mark output*/
+id|H8300_SCI_DR
+c_func
+(paren
+id|ch
+)paren
+op_or_assign
+id|h8300_sci_pins
+(braket
+id|ch
+)braket
+dot
+id|tx
+suffix:semicolon
+)brace
+macro_line|#if defined(__H8300S__)
+DECL|enumerator|sci_disable
+DECL|enumerator|sci_enable
+r_enum
+(brace
+id|sci_disable
+comma
+id|sci_enable
+)brace
+suffix:semicolon
+DECL|function|h8300_sci_enable
+r_static
+r_void
+id|h8300_sci_enable
+c_func
+(paren
+r_struct
+id|sci_port
+op_star
+id|port
+comma
+r_int
+r_int
+id|ctrl
+)paren
+(brace
+r_volatile
+r_int
+r_char
+op_star
+id|mstpcrl
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|MSTPCRL
+suffix:semicolon
+r_int
+id|ch
+op_assign
+(paren
+id|port-&gt;base
+op_minus
+id|SMR0
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+r_int
+r_char
+id|mask
+op_assign
+l_int|1
+op_lshift
+(paren
+id|ch
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctrl
+op_eq
+id|sci_disable
+)paren
+op_star
+id|mstpcrl
+op_or_assign
+id|mask
+suffix:semicolon
+r_else
+op_star
+id|mstpcrl
+op_and_assign
+op_complement
+id|mask
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#endif
 DECL|function|sci_setsignals
 r_static
 r_void
@@ -1901,6 +2071,7 @@ l_int|0x00
 )paren
 suffix:semicolon
 multiline_comment|/* TE=0, RE=0, CKE1=0 */
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -1922,6 +2093,7 @@ id|SCFCR_TFRST
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|smr_val
 op_assign
 id|sci_in
@@ -2238,6 +2410,7 @@ id|count
 op_assign
 id|port-&gt;gs.xmit_cnt
 suffix:semicolon
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -2285,6 +2458,27 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+id|txroom
+op_assign
+(paren
+id|sci_in
+c_func
+(paren
+id|port
+comma
+id|SCxSR
+)paren
+op_amp
+id|SCI_TDRE
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2448,6 +2642,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -2480,6 +2675,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|ctrl
 op_or_assign
 id|SCI_CTRL_FLAGS_TIE
@@ -2578,6 +2774,7 @@ c_loop
 l_int|1
 )paren
 (brace
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -2625,6 +2822,31 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+id|count
+op_assign
+(paren
+id|sci_in
+c_func
+(paren
+id|port
+comma
+id|SCxSR
+)paren
+op_amp
+id|SCxSR_RDxF
+c_func
+(paren
+id|port
+)paren
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Don&squot;t copy more bytes than there is room for in the buffer */
 r_if
 c_cond
@@ -3641,6 +3863,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#if !defined(SCI_ONLY)
 DECL|function|sci_br_interrupt
 r_static
 id|irqreturn_t
@@ -3692,6 +3915,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|do_softint
 r_static
 r_void
@@ -4048,6 +4272,7 @@ id|port
 op_assign
 id|ptr
 suffix:semicolon
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -4118,6 +4343,30 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#else
+r_return
+(paren
+id|sci_in
+c_func
+(paren
+id|port
+comma
+id|SCxSR
+)paren
+op_amp
+id|SCxSR_TEND
+c_func
+(paren
+id|port
+)paren
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|sci_shutdown_port
 r_static
@@ -4167,6 +4416,16 @@ c_func
 id|port
 )paren
 suffix:semicolon
+macro_line|#if defined(__H8300S__)
+id|h8300_sci_enable
+c_func
+(paren
+id|port
+comma
+id|sci_disable
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* ********************************************************************** *&n; *                Here are the routines that actually                     *&n; *               interface with the rest of the system                    *&n; * ********************************************************************** */
 DECL|function|sci_open
@@ -4253,6 +4512,16 @@ comma
 id|port
 )paren
 suffix:semicolon
+macro_line|#if defined(__H8300S__)
+id|h8300_sci_enable
+c_func
+(paren
+id|port
+comma
+id|sci_enable
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Start up serial port&n;&t; */
 id|retval
 op_assign
@@ -5702,6 +5971,7 @@ id|port
 r_int
 id|i
 suffix:semicolon
+macro_line|#if !defined(SCI_ONLY)
 id|irqreturn_t
 (paren
 op_star
@@ -5735,6 +6005,39 @@ id|sci_br_interrupt
 comma
 )brace
 suffix:semicolon
+macro_line|#else
+r_void
+(paren
+op_star
+id|handlers
+(braket
+l_int|3
+)braket
+)paren
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|ptr
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+op_assign
+(brace
+id|sci_er_interrupt
+comma
+id|sci_rx_interrupt
+comma
+id|sci_tx_interrupt
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -5744,7 +6047,20 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|4
+(paren
+r_sizeof
+(paren
+id|handlers
+)paren
+op_div
+r_sizeof
+(paren
+id|handlers
+(braket
+l_int|0
+)braket
+)paren
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -6295,6 +6611,16 @@ id|sercons_baud
 op_assign
 id|baud
 suffix:semicolon
+macro_line|#if defined(__H8300S__)
+id|h8300_sci_enable
+c_func
+(paren
+id|sercons_port
+comma
+id|sci_enable
+)paren
+suffix:semicolon
+macro_line|#endif
 id|sci_set_termios_cflag
 c_func
 (paren

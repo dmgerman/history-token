@@ -630,9 +630,7 @@ l_int|1
 )paren
 op_logical_and
 op_logical_neg
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_bad_drive
+id|__ide_dma_bad_drive
 c_func
 (paren
 id|mate
@@ -700,9 +698,7 @@ op_logical_and
 id|hwif-&gt;autodma
 op_logical_and
 op_logical_neg
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_bad_drive
+id|__ide_dma_bad_drive
 c_func
 (paren
 id|drive
@@ -2354,9 +2350,7 @@ c_cond
 id|drive-&gt;present
 op_logical_and
 op_logical_neg
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_bad_drive
+id|__ide_dma_bad_drive
 c_func
 (paren
 id|drive
