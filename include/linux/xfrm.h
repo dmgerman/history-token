@@ -435,11 +435,11 @@ id|xfrm_usersa_info
 id|info
 suffix:semicolon
 DECL|member|min
-id|u32
+id|__u32
 id|min
 suffix:semicolon
 DECL|member|max
-id|u32
+id|__u32
 id|max
 suffix:semicolon
 )brace
