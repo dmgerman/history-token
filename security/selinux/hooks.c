@@ -3212,8 +3212,12 @@ c_func
 id|context
 )paren
 suffix:semicolon
-r_goto
-id|out
+multiline_comment|/* Leave with the unlabeled SID */
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
