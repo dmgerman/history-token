@@ -483,11 +483,13 @@ mdefine_line|#define ISDN_NET_CBOUT      0x10       /* remote machine does callb
 DECL|macro|ISDN_NET_MAGIC
 mdefine_line|#define ISDN_NET_MAGIC      0x49344C02 /* for paranoia-checking             */
 multiline_comment|/* Phone-list-element */
-r_typedef
+DECL|struct|isdn_net_phone
 r_struct
+id|isdn_net_phone
 (brace
 DECL|member|next
-r_void
+r_struct
+id|isdn_net_phone
 op_star
 id|next
 suffix:semicolon
@@ -498,9 +500,7 @@ id|num
 id|ISDN_MSNLEN
 )braket
 suffix:semicolon
-DECL|typedef|isdn_net_phone
 )brace
-id|isdn_net_phone
 suffix:semicolon
 multiline_comment|/*&n;   Principles when extending structures for generic encapsulation protocol&n;   (&quot;concap&quot;) support:&n;   - Stuff which is hardware specific (here i4l-specific) goes in &n;     the netdev -&gt; local structure (here: isdn_net_local)&n;   - Stuff which is encapsulation protocol specific goes in the structure&n;     which holds the linux device structure (here: isdn_net_device)&n;*/
 multiline_comment|/* Local interface-data */
@@ -719,6 +719,7 @@ id|triggercps
 suffix:semicolon
 multiline_comment|/* BogoCPS needed for trigger slave */
 DECL|member|phone
+r_struct
 id|isdn_net_phone
 op_star
 id|phone
@@ -730,6 +731,7 @@ multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
 DECL|member|dial
+r_struct
 id|isdn_net_phone
 op_star
 id|dial
