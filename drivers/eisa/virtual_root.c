@@ -20,6 +20,15 @@ id|force_probe
 op_assign
 id|EISA_FORCE_PROBE_DEFAULT
 suffix:semicolon
+r_static
+r_void
+id|virtual_eisa_release
+(paren
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* The default EISA device parent (virtual root device).&n; * Now use a platform device, since that&squot;s the obvious choice. */
 DECL|variable|eisa_root_dev
 r_static
@@ -37,6 +46,17 @@ dot
 id|id
 op_assign
 l_int|0
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|release
+op_assign
+id|virtual_eisa_release
+comma
+)brace
 comma
 )brace
 suffix:semicolon
@@ -76,6 +96,19 @@ l_int|0xffffffff
 comma
 )brace
 suffix:semicolon
+DECL|function|virtual_eisa_release
+r_static
+r_void
+id|virtual_eisa_release
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* nothing really to do here */
+)brace
 DECL|function|virtual_eisa_root_init
 r_static
 r_int

@@ -746,6 +746,9 @@ r_int
 r_int
 id|sig_addr
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|sig_addr
 op_assign
 id|SLOT_ADDRESS
@@ -848,11 +851,6 @@ comma
 id|slot
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_EISA_NAMES
-(brace
-r_int
-id|i
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -867,6 +865,8 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+macro_line|#ifdef CONFIG_EISA_NAMES
 id|edev-&gt;res
 (braket
 id|i
@@ -876,8 +876,18 @@ id|name
 op_assign
 id|edev-&gt;pretty_name
 suffix:semicolon
-)brace
+macro_line|#else
+id|edev-&gt;res
+(braket
+id|i
+)braket
+dot
+id|name
+op_assign
+id|edev-&gt;id.sig
+suffix:semicolon
 macro_line|#endif
+)brace
 r_if
 c_cond
 (paren
@@ -1273,9 +1283,11 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;EISA: Probing bus %d&bslash;n&quot;
+l_string|&quot;EISA: Probing bus %d at %s&bslash;n&quot;
 comma
 id|root-&gt;bus_nr
+comma
+id|root-&gt;dev-&gt;bus_id
 )paren
 suffix:semicolon
 multiline_comment|/* First try to get hold of slot 0. If there is no device&n;&t; * here, simply fail, unless root-&gt;force_probe is set. */
