@@ -9109,9 +9109,9 @@ multiline_comment|/* To stop the swapper from even considering these pages. */
 id|vma-&gt;vm_flags
 op_or_assign
 (paren
-id|VM_SHM
+id|VM_IO
 op_or
-id|VM_LOCKED
+id|VM_RESERVED
 )paren
 suffix:semicolon
 r_if
@@ -9372,10 +9372,6 @@ id|map_size
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_IO
 suffix:semicolon
 r_if
 c_cond

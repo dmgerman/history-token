@@ -209,11 +209,9 @@ multiline_comment|/* To stop the swapper from even considering these pages */
 id|vma-&gt;vm_flags
 op_or_assign
 (paren
-id|VM_SHM
-op_or
 id|VM_IO
 op_or
-id|VM_LOCKED
+id|VM_RESERVED
 )paren
 suffix:semicolon
 multiline_comment|/* Each page, see which map applies */
