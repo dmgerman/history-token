@@ -242,11 +242,11 @@ id|out
 suffix:semicolon
 id|va
 op_assign
-id|VMALLOC_VMADDR
-c_func
 (paren
-id|area-&gt;addr
+r_int
+r_int
 )paren
+id|area-&gt;addr
 suffix:semicolon
 id|flags
 op_assign

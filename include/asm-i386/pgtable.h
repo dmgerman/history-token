@@ -143,8 +143,6 @@ DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET&t;(8*1024*1024)
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;(((unsigned long) high_memory + 2*VMALLOC_OFFSET-1) &amp; &bslash;&n;&t;&t;&t;&t;&t;&t;~(VMALLOC_OFFSET-1))
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|macro|VMALLOC_END
 macro_line|# define VMALLOC_END&t;(PKMAP_BASE-2*PAGE_SIZE)

@@ -111,8 +111,6 @@ DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET  (8*1024*1024)
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START   (((unsigned long) high_memory + VMALLOC_OFFSET) &bslash;&n;&t;&t;&t; &amp; ~(VMALLOC_OFFSET-1))
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 macro_line|#ifndef __s390x__
 DECL|macro|VMALLOC_END
 macro_line|# define VMALLOC_END     (0x7fffffffL)

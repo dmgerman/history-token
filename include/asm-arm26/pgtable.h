@@ -204,8 +204,6 @@ mdefine_line|#define pgd_offset_k(addr)&t;(pgd_offset(&amp;init_mm, addr))
 multiline_comment|/*&n; * The vmalloc() routines leaves a hole of 4kB between each vmalloced&n; * area for the same reason. ;) FIXME: surely 1 page not 4k ?&n; */
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START     0x01a00000
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END       0x01c00000
 multiline_comment|/* Is pmd_page supposed to return a pointer to a page in some arches? ours seems to&n; * return a pointer to memory (no special alignment)&n; */

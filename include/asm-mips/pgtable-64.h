@@ -44,8 +44,6 @@ DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;XKSEG
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&bslash;&n;&t;(VMALLOC_START + ((1 &lt;&lt; PGD_ORDER) * PTRS_PER_PTE * PAGE_SIZE))
 macro_line|#ifndef __ASSEMBLY__

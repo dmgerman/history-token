@@ -14,6 +14,10 @@ DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;do { } while (0)
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;do { } while (0)
 multiline_comment|/* Note that the following two definitions are _highly_ dependent&n;   on the contexts in which they are used in the kernel.  I personally&n;   think it is criminal how loosely defined these macros are.  */
 multiline_comment|/* We need to flush the kernel&squot;s icache after loading modules.  The&n;   only other use of this macro is in load_aout_interp which is not&n;   used on Alpha. &n;&n;   Note that this definition should *not* be used for userspace&n;   icache flushing.  While functional, it is _way_ overkill.  The&n;   icache is tagged with ASNs and it suffices to allocate a new ASN&n;   for the process.  */
 macro_line|#ifndef CONFIG_SMP
@@ -138,5 +142,9 @@ macro_line|#endif
 multiline_comment|/* This is used only in do_no_page and do_swap_page.  */
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page) &bslash;&n;  flush_icache_user_range((vma), (page), 0, 0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { memcpy(dst, src, len); &bslash;&n;     flush_icache_user_range(vma, page, vaddr, len); &bslash;&n;} while (0)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
 macro_line|#endif /* _ALPHA_CACHEFLUSH_H */
 eof
