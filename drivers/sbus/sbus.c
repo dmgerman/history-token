@@ -34,6 +34,7 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPARC32
 DECL|variable|__initdata
 r_static
 r_int
@@ -47,6 +48,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 r_extern
 r_int
@@ -408,7 +410,7 @@ suffix:semicolon
 id|no_ranges
 suffix:colon
 multiline_comment|/* XXX Unfortunately, IRQ issues are very arch specific.&n;&t; * XXX Pull this crud out into an arch specific area&n;&t; * XXX at some point. -DaveM&n;&t; */
-macro_line|#ifdef __sparc_v9__
+macro_line|#ifdef CONFIG_SPARC64
 id|len
 op_assign
 id|prom_getproperty
@@ -499,7 +501,8 @@ id|pri
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
+macro_line|#endif /* CONFIG_SPARC64 */
+macro_line|#ifdef CONFIG_SPARC32
 id|len
 op_assign
 id|prom_getproperty
@@ -729,7 +732,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* !__sparc_v9__ */
+macro_line|#endif /* CONFIG_SPARC32 */
 )brace
 multiline_comment|/* This routine gets called from whoever needs the sbus first, to scan&n; * the SBus device tree.  Currently it just prints out the devices&n; * found on the bus and builds trees of SBUS structs and attached&n; * devices.&n; */
 r_extern
@@ -1414,7 +1417,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* How many did we find? */
-macro_line|#ifndef __sparc_v9__
+macro_line|#ifdef CONFIG_SPARC32
 id|register_proc_sparc_ioport
 c_func
 (paren
@@ -1495,7 +1498,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef __sparc_v9__
+macro_line|#ifdef CONFIG_SPARC64
 id|firetruck_init
 c_func
 (paren
@@ -1741,7 +1744,7 @@ c_loop
 id|this_sbus
 )paren
 (brace
-macro_line|#ifdef __sparc_v9__&t;&t;&t;&t;&t;&t;  
+macro_line|#ifdef CONFIG_SPARC64
 multiline_comment|/* IOMMU hides inside SBUS/SYSIO prom node on Ultra. */
 r_if
 c_cond
@@ -1774,8 +1777,8 @@ id|sbus
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifndef __sparc_v9__&t;&t;&t;&t;&t;&t;  
+macro_line|#endif /* CONFIG_SPARC64 */
+macro_line|#ifdef CONFIG_SPARC32
 r_if
 c_cond
 (paren
@@ -1793,7 +1796,7 @@ comma
 id|sbus
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;&t;&t;   
+macro_line|#endif /* CONFIG_SPARC32 */
 id|printk
 c_func
 (paren
@@ -1904,7 +1907,7 @@ id|sbus-&gt;clock_freq
 op_assign
 id|sbus_clock
 suffix:semicolon
-macro_line|#ifndef __sparc_v9__&t;&t;
+macro_line|#ifdef CONFIG_SPARC32
 r_if
 c_cond
 (paren
@@ -2413,7 +2416,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __sparc_v9__
+macro_line|#ifdef CONFIG_SPARC64
 r_if
 c_cond
 (paren
@@ -2442,7 +2445,7 @@ id|auxio_probe
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __sparc_v9__
+macro_line|#ifdef CONFIG_SPARC64
 r_if
 c_cond
 (paren
