@@ -845,6 +845,14 @@ c_func
 (paren
 id|GLOBAL_INTERRUPT_QUEUE
 comma
+(paren
+l_int|1UL
+op_lshift
+id|interrupt_server_size
+)paren
+op_minus
+l_int|1
+op_minus
 id|default_distrib_server
 comma
 l_int|1

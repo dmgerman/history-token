@@ -88,5 +88,10 @@ r_int
 r_int
 id|default_distrib_server
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|interrupt_server_size
+suffix:semicolon
 macro_line|#endif /* _PPC64_KERNEL_XICS_H */
 eof

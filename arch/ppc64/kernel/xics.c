@@ -269,6 +269,13 @@ id|default_distrib_server
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|interrupt_server_size
+r_int
+r_int
+id|interrupt_server_size
+op_assign
+l_int|8
+suffix:semicolon
 multiline_comment|/*&n; * XICS only has a single IPI, so encode the messages per CPU&n; */
 DECL|variable|__cacheline_aligned
 r_struct
@@ -2295,6 +2302,32 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* take last element */
 )brace
+id|ireg
+op_assign
+(paren
+id|uint
+op_star
+)paren
+id|get_property
+c_func
+(paren
+id|np
+comma
+l_string|&quot;ibm,interrupt-server#-size&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ireg
+)paren
+id|interrupt_server_size
+op_assign
+op_star
+id|ireg
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2942,7 +2975,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Refuse any new interrupts... */
+multiline_comment|/* remove ourselves from the global interrupt queue */
 id|status
 op_assign
 id|rtas_set_indicator
@@ -2950,10 +2983,15 @@ c_func
 (paren
 id|GLOBAL_INTERRUPT_QUEUE
 comma
-id|hard_smp_processor_id
-c_func
 (paren
+l_int|1UL
+op_lshift
+id|interrupt_server_size
 )paren
+op_minus
+l_int|1
+op_minus
+id|default_distrib_server
 comma
 l_int|0
 )paren
