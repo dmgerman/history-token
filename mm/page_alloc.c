@@ -203,9 +203,11 @@ id|page
 id|printk
 c_func
 (paren
-l_string|&quot;Bad page state at %s&bslash;n&quot;
+l_string|&quot;Bad page state at %s (in process &squot;%s&squot;)&bslash;n&quot;
 comma
 id|function
+comma
+id|current-&gt;comm
 )paren
 suffix:semicolon
 id|printk
