@@ -1,5 +1,7 @@
 DECL|macro|cons_num
 mdefine_line|#define cons_num&t;(vc_cons[currcons].d-&gt;vc_num)
+DECL|macro|video_scan_lines
+mdefine_line|#define video_scan_lines (vc_cons[currcons].d-&gt;vc_scan_lines)
 DECL|macro|sw
 mdefine_line|#define sw&t;&t;(vc_cons[currcons].d-&gt;vc_sw)
 DECL|macro|screenbuf

@@ -11,32 +11,14 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
-macro_line|#include &lt;video/fbcon-cfb32.h&gt;
-macro_line|#include &lt;video/macmodes.h&gt;
 macro_line|#include &quot;platinumfb.h&quot;
-DECL|variable|__initdata
-r_static
-r_char
-id|fontname
-(braket
-l_int|40
-)braket
-id|__initdata
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
+macro_line|#include &quot;macmodes.h&quot;
 DECL|variable|default_vmode
 r_static
 r_int
@@ -94,12 +76,6 @@ r_struct
 id|fb_info
 id|info
 suffix:semicolon
-DECL|member|display
-r_struct
-id|display
-id|display
-suffix:semicolon
-multiline_comment|/* Will disappear */
 DECL|member|par
 r_struct
 id|fb_par_platinum
@@ -391,11 +367,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_check_var
 op_assign
 id|platinumfb_check_var
@@ -404,16 +375,6 @@ dot
 id|fb_set_par
 op_assign
 id|platinumfb_set_par
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -439,6 +400,11 @@ dot
 id|fb_imageblit
 op_assign
 id|cfb_imageblit
+comma
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
 comma
 )brace
 suffix:semicolon
@@ -1514,19 +1480,6 @@ id|p
 )paren
 (brace
 multiline_comment|/* Fill fb_info */
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-l_string|&quot;platinum&quot;
-)paren
-suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;par
 op_assign
 op_amp
@@ -1541,11 +1494,6 @@ op_assign
 op_amp
 id|platinumfb_ops
 suffix:semicolon
-id|info-&gt;disp
-op_assign
-op_amp
-id|p-&gt;display
-suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
 id|p-&gt;pseudo_palette
@@ -1553,38 +1501,6 @@ suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
-suffix:semicolon
-id|strncpy
-(paren
-id|info-&gt;fontname
-comma
-id|fontname
-comma
-r_sizeof
-(paren
-id|info-&gt;fontname
-)paren
-)paren
-suffix:semicolon
-id|info-&gt;fontname
-(braket
-r_sizeof
-(paren
-id|info-&gt;fontname
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;display_fg
-op_assign
-l_int|NULL
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
@@ -1595,18 +1511,6 @@ op_star
 id|p-&gt;frame_buffer
 op_plus
 l_int|0x20
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|info-&gt;updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|fb_alloc_cmap
 c_func

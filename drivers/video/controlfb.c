@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
@@ -661,19 +660,6 @@ id|control_fb
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_char
-id|fontname
-(braket
-l_int|40
-)braket
-id|__initdata
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
-DECL|variable|__initdata
-r_static
 r_int
 id|default_vmode
 id|__initdata
@@ -744,6 +730,11 @@ dot
 id|fb_imageblit
 op_assign
 id|cfb_imageblit
+comma
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
 comma
 )brace
 suffix:semicolon

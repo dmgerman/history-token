@@ -3862,6 +3862,10 @@ id|ws.ws_col
 op_assign
 id|video_num_columns
 suffix:semicolon
+id|ws.ws_ypixel
+op_assign
+id|video_scan_lines
+suffix:semicolon
 r_if
 c_cond
 (paren
