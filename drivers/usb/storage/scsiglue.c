@@ -1170,37 +1170,11 @@ op_assign
 id|usb_storage_proc_info
 comma
 dot
-id|proc_dir
-op_assign
-l_int|NULL
-comma
-dot
 id|info
 op_assign
 id|usb_storage_info
 comma
-dot
-id|ioctl
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* old-style detect and release */
-dot
-id|detect
-op_assign
-l_int|NULL
-comma
-dot
-id|release
-op_assign
-l_int|NULL
-comma
 multiline_comment|/* command interface -- queued only */
-dot
-id|command
-op_assign
-l_int|NULL
-comma
 dot
 id|queuecommand
 op_assign
@@ -1222,16 +1196,6 @@ id|eh_bus_reset_handler
 op_assign
 id|usb_storage_bus_reset
 comma
-dot
-id|eh_host_reset_handler
-op_assign
-l_int|NULL
-comma
-dot
-id|eh_strategy_handler
-op_assign
-l_int|NULL
-comma
 multiline_comment|/* queue commands only, only one command per LUN */
 dot
 id|can_queue
@@ -1250,44 +1214,11 @@ op_assign
 op_minus
 l_int|1
 comma
-multiline_comment|/* no limit on commands */
-dot
-id|max_sectors
-op_assign
-l_int|0
-comma
-multiline_comment|/* pre- and post- device scan functions */
-dot
-id|slave_alloc
-op_assign
-l_int|NULL
-comma
-dot
-id|slave_configure
-op_assign
-l_int|NULL
-comma
-dot
-id|slave_destroy
-op_assign
-l_int|NULL
-comma
 multiline_comment|/* lots of sg segments can be handled */
 dot
 id|sg_tablesize
 op_assign
 id|SG_ALL
-comma
-multiline_comment|/* use 32-bit address space for DMA */
-dot
-id|unchecked_isa_dma
-op_assign
-id|FALSE
-comma
-dot
-id|highmem_io
-op_assign
-id|FALSE
 comma
 multiline_comment|/* merge commands... this seems to help performance, but&n;&t; * periodically someone should test to see which setting is more&n;&t; * optimal.&n;&t; */
 dot
@@ -1300,12 +1231,6 @@ dot
 id|emulated
 op_assign
 id|TRUE
-comma
-multiline_comment|/* sorry, no BIOS to help us */
-dot
-id|bios_param
-op_assign
-l_int|NULL
 comma
 multiline_comment|/* module management */
 dot

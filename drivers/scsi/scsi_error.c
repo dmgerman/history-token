@@ -1033,6 +1033,12 @@ id|host
 op_assign
 id|scmd-&gt;device-&gt;host
 suffix:semicolon
+id|DECLARE_MUTEX_LOCKED
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1076,18 +1082,6 @@ op_amp
 l_int|0xe0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|host-&gt;can_queue
-)paren
-(brace
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|sem
-)paren
-suffix:semicolon
 id|scsi_add_timer
 c_func
 (paren
@@ -1098,7 +1092,7 @@ comma
 id|scsi_eh_times_out
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * set up the semaphore so we wait for the command to complete.&n;&t;&t; */
+multiline_comment|/*&n;&t; * set up the semaphore so we wait for the command to complete.&n;&t; */
 id|scmd-&gt;device-&gt;host-&gt;eh_action
 op_assign
 op_amp
@@ -1145,7 +1139,7 @@ id|scmd-&gt;device-&gt;host-&gt;eh_action
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * see if timeout.  if so, tell the host to forget about it.&n;&t;&t; * in other words, we don&squot;t want a callback any more.&n;&t;&t; */
+multiline_comment|/*&n;&t; * see if timeout.  if so, tell the host to forget about it.&n;&t; * in other words, we don&squot;t want a callback any more.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1170,7 +1164,7 @@ id|scmd-&gt;owner
 op_assign
 id|SCSI_OWNER_LOWLEVEL
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * as far as the low level driver is&n;&t;&t;&t; * concerned, this command is still active, so&n;&t;&t;&t; * we must give the low level driver a chance&n;&t;&t;&t; * to abort it. (db) &n;&t;&t;&t; *&n;&t;&t;&t; * FIXME(eric) - we are not tracking whether we could&n;&t;&t;&t; * abort a timed out command or not.  not sure how&n;&t;&t;&t; * we should treat them differently anyways.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * as far as the low level driver is&n;&t;&t; * concerned, this command is still active, so&n;&t;&t; * we must give the low level driver a chance&n;&t;&t; * to abort it. (db) &n;&t;&t; *&n;&t;&t; * FIXME(eric) - we are not tracking whether we could&n;&t;&t; * abort a timed out command or not.  not sure how&n;&t;&t; * we should treat them differently anyways.&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1231,45 +1225,6 @@ id|rtn
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_int
-id|temp
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we damn well had better never use this code.  there is no&n;&t;&t; * timeout protection here, since we would end up waiting in&n;&t;&t; * the actual low level driver, we don&squot;t know how to wake it up.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|temp
-op_assign
-id|host-&gt;hostt
-op_member_access_from_pointer
-id|command
-c_func
-(paren
-id|scmd
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|scmd-&gt;result
-op_assign
-id|temp
-suffix:semicolon
-multiline_comment|/* fall through to code below to examine status. */
-)brace
 multiline_comment|/*&n;&t; * now examine the actual status codes to see whether the command&n;&t; * actually did complete normally.&n;&t; */
 r_if
 c_cond
