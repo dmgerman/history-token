@@ -2106,6 +2106,7 @@ id|off
 comma
 r_int
 r_int
+id|__user
 op_star
 id|ret
 )paren
@@ -2251,6 +2252,7 @@ op_star
 id|tsk
 comma
 r_void
+id|__user
 op_star
 id|uregs
 )paren
@@ -2301,6 +2303,7 @@ op_star
 id|tsk
 comma
 r_void
+id|__user
 op_star
 id|uregs
 )paren
@@ -2393,6 +2396,7 @@ op_star
 id|tsk
 comma
 r_void
+id|__user
 op_star
 id|ufp
 )paren
@@ -2433,6 +2437,7 @@ op_star
 id|tsk
 comma
 r_void
+id|__user
 op_star
 id|ufp
 )paren
@@ -2590,6 +2595,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -2861,6 +2867,7 @@ id|child
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|data
@@ -2880,6 +2887,7 @@ id|child
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|data
@@ -2899,6 +2907,7 @@ id|child
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|data
@@ -2918,6 +2927,7 @@ id|child
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|data
