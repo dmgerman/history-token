@@ -343,18 +343,16 @@ id|zones_size
 id|ZONE_DMA
 )braket
 op_assign
-l_int|0
-op_rshift
-id|PAGE_SHIFT
+id|max_low_pfn
+op_minus
+id|min_low_pfn
 suffix:semicolon
 id|zones_size
 (braket
 id|ZONE_NORMAL
 )braket
 op_assign
-id|max_low_pfn
-op_minus
-id|min_low_pfn
+l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
 id|zones_size
