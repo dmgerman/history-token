@@ -530,6 +530,13 @@ l_string|&quot;%d&bslash;n&quot;
 suffix:semicolon
 id|sdev_rd_attr
 (paren
+id|scsi_level
+comma
+l_string|&quot;%d&bslash;n&quot;
+)paren
+suffix:semicolon
+id|sdev_rd_attr
+(paren
 id|access_count
 comma
 l_string|&quot;%d&bslash;n&quot;
@@ -584,6 +591,9 @@ id|dev_attr_new_queue_depth
 comma
 op_amp
 id|dev_attr_type
+comma
+op_amp
+id|dev_attr_scsi_level
 comma
 op_amp
 id|dev_attr_access_count
