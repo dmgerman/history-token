@@ -1453,7 +1453,7 @@ id|SCTP_ACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
-id|ADDRESS_AVAILABLE
+id|SCTP_ADDR_REACHABLE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1466,7 +1466,7 @@ id|SCTP_INACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
-id|ADDRESS_UNREACHABLE
+id|SCTP_ADDR_UNREACHABLE
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -1362,7 +1362,7 @@ op_star
 id|event
 suffix:semicolon
 r_struct
-id|sctp_rcv_pdapi_event
+id|sctp_pdapi_event
 op_star
 id|pd
 suffix:semicolon
@@ -1408,7 +1408,7 @@ id|pd
 op_assign
 (paren
 r_struct
-id|sctp_rcv_pdapi_event
+id|sctp_pdapi_event
 op_star
 )paren
 id|skb_put
@@ -1419,7 +1419,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|sctp_rcv_pdapi_event
+id|sctp_pdapi_event
 )paren
 )paren
 suffix:semicolon
@@ -1432,13 +1432,13 @@ id|pd-&gt;pdapi_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* pdapi_length: 32 bits (unsigned integer)&n;&t; *&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.  It will generally be sizeof (struct&n;&t; * sctp_rcv_pdapi_event).&n;&t; */
+multiline_comment|/* pdapi_length: 32 bits (unsigned integer)&n;&t; *&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.  It will generally be sizeof (struct&n;&t; * sctp_pdapi_event).&n;&t; */
 id|pd-&gt;pdapi_length
 op_assign
 r_sizeof
 (paren
 r_struct
-id|sctp_rcv_pdapi_event
+id|sctp_pdapi_event
 )paren
 suffix:semicolon
 multiline_comment|/*  pdapi_indication: 32 bits (unsigned integer)&n;&t; *&n;&t; * This field holds the indication being sent to the application.&n;&t; */
@@ -1518,7 +1518,7 @@ op_star
 id|skb-&gt;data
 suffix:semicolon
 r_return
-id|notification-&gt;h.sn_type
+id|notification-&gt;sn_header.sn_type
 suffix:semicolon
 )brace
 multiline_comment|/* Copy out the sndrcvinfo into a msghdr.  */

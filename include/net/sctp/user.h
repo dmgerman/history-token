@@ -1,16 +1,16 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This header represents the structures and constants needed to support&n; * the SCTP Extension to the Sockets API. &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll    &lt;piggy@acm.org&gt;&n; *    R. Stewart               &lt;randall@sctp.chicago.il.us&gt;&n; *    K. Morneau               &lt;kmorneau@cisco.com&gt;&n; *    Q. Xie                   &lt;qxie1@email.mot.com&gt;&n; *    Karl Knutson             &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm                &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang              &lt;daisyc@us.ibm.com&gt;&n; *    Ryan Layer               &lt;rmlayer@us.ibm.com&gt;&n; * &n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This header represents the structures and constants needed to support&n; * the SCTP Extension to the Sockets API.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll    &lt;piggy@acm.org&gt;&n; *    R. Stewart               &lt;randall@sctp.chicago.il.us&gt;&n; *    K. Morneau               &lt;kmorneau@cisco.com&gt;&n; *    Q. Xie                   &lt;qxie1@email.mot.com&gt;&n; *    Karl Knutson             &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm                &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang              &lt;daisyc@us.ibm.com&gt;&n; *    Ryan Layer               &lt;rmlayer@us.ibm.com&gt;&n; *    Sridhar Samudrala        &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __net_sctp_user_h__
 DECL|macro|__net_sctp_user_h__
 mdefine_line|#define __net_sctp_user_h__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/socket.h&gt;
 DECL|typedef|sctp_assoc_t
 r_typedef
 r_void
 op_star
 id|sctp_assoc_t
 suffix:semicolon
-multiline_comment|/* The following symbols come from the Sockets API Extensions for&n; * SCTP &lt;draft-ietf-tsvwg-sctpsocket-04.txt&gt;.&n; */
+multiline_comment|/* The following symbols come from the Sockets API Extensions for&n; * SCTP &lt;draft-ietf-tsvwg-sctpsocket-07.txt&gt;.&n; */
 DECL|enum|sctp_optname
 r_enum
 id|sctp_optname
@@ -20,56 +20,74 @@ id|SCTP_RTOINFO
 comma
 DECL|macro|SCTP_RTOINFO
 mdefine_line|#define SCTP_RTOINFO SCTP_RTOINFO
-DECL|enumerator|SCTP_ASSOCRTXINFO
-id|SCTP_ASSOCRTXINFO
+DECL|enumerator|SCTP_ASSOCINFO
+id|SCTP_ASSOCINFO
 comma
-DECL|macro|SCTP_ASSOCRTXINFO
-mdefine_line|#define SCTP_ASSOCRTXINFO SCTP_ASSOCRTXINFO
+DECL|macro|SCTP_ASSOCINFO
+mdefine_line|#define SCTP_ASSOCINFO SCTP_ASSOCINFO
 DECL|enumerator|SCTP_INITMSG
 id|SCTP_INITMSG
 comma
 DECL|macro|SCTP_INITMSG
 mdefine_line|#define SCTP_INITMSG SCTP_INITMSG
-DECL|enumerator|SCTP_AUTO_CLOSE
-id|SCTP_AUTO_CLOSE
+DECL|enumerator|SCTP_NODELAY
+id|SCTP_NODELAY
 comma
-DECL|macro|SCTP_AUTO_CLOSE
-mdefine_line|#define SCTP_AUTO_CLOSE SCTP_AUTO_CLOSE
-DECL|enumerator|SCTP_SET_PRIMARY_ADDR
-id|SCTP_SET_PRIMARY_ADDR
+multiline_comment|/* Get/set nodelay option. */
+DECL|macro|SCTP_NODELAY
+mdefine_line|#define SCTP_NODELAY&t;SCTP_NODELAY
+DECL|enumerator|SCTP_AUTOCLOSE
+id|SCTP_AUTOCLOSE
 comma
-DECL|macro|SCTP_SET_PRIMARY_ADDR
-mdefine_line|#define SCTP_SET_PRIMARY_ADDR SCTP_SET_PRIMARY_ADDR
+DECL|macro|SCTP_AUTOCLOSE
+mdefine_line|#define SCTP_AUTOCLOSE SCTP_AUTOCLOSE
 DECL|enumerator|SCTP_SET_PEER_PRIMARY_ADDR
 id|SCTP_SET_PEER_PRIMARY_ADDR
 comma
 DECL|macro|SCTP_SET_PEER_PRIMARY_ADDR
 mdefine_line|#define SCTP_SET_PEER_PRIMARY_ADDR SCTP_SET_PEER_PRIMARY_ADDR
-DECL|enumerator|SCTP_SET_ADAPTATION_LAYER
-id|SCTP_SET_ADAPTATION_LAYER
+DECL|enumerator|SCTP_PRIMARY_ADDR
+id|SCTP_PRIMARY_ADDR
 comma
-DECL|macro|SCTP_SET_ADAPTATION_LAYER
-mdefine_line|#define SCTP_SET_ADAPTATION_LAYER SCTP_SET_ADAPTATION_LAYER
-DECL|enumerator|SCTP_SET_STREAM_TIMEOUTS
-id|SCTP_SET_STREAM_TIMEOUTS
+DECL|macro|SCTP_PRIMARY_ADDR
+mdefine_line|#define SCTP_PRIMARY_ADDR SCTP_PRIMARY_ADDR
+DECL|enumerator|SCTP_ADAPTION_LAYER
+id|SCTP_ADAPTION_LAYER
 comma
-DECL|macro|SCTP_SET_STREAM_TIMEOUTS
-mdefine_line|#define SCTP_SET_STREAM_TIMEOUTS SCTP_SET_STREAM_TIMEOUTS
+DECL|macro|SCTP_ADAPTION_LAYER
+mdefine_line|#define SCTP_ADAPTION_LAYER SCTP_ADAPTION_LAYER
 DECL|enumerator|SCTP_DISABLE_FRAGMENTS
 id|SCTP_DISABLE_FRAGMENTS
 comma
 DECL|macro|SCTP_DISABLE_FRAGMENTS
 mdefine_line|#define SCTP_DISABLE_FRAGMENTS SCTP_DISABLE_FRAGMENTS
-DECL|enumerator|SCTP_SET_PEER_ADDR_PARAMS
-id|SCTP_SET_PEER_ADDR_PARAMS
+DECL|enumerator|SCTP_PEER_ADDR_PARAMS
+id|SCTP_PEER_ADDR_PARAMS
 comma
-DECL|macro|SCTP_SET_PEER_ADDR_PARAMS
-mdefine_line|#define SCTP_SET_PEER_ADDR_PARAMS SCTP_SET_PEER_ADDR_PARAMS
-DECL|enumerator|SCTP_GET_PEER_ADDR_PARAMS
-id|SCTP_GET_PEER_ADDR_PARAMS
+DECL|macro|SCTP_PEER_ADDR_PARAMS
+mdefine_line|#define SCTP_PEER_ADDR_PARAMS SCTP_PEER_ADDR_PARAMS
+DECL|enumerator|SCTP_DEFAULT_SEND_PARAM
+id|SCTP_DEFAULT_SEND_PARAM
 comma
-DECL|macro|SCTP_GET_PEER_ADDR_PARAMS
-mdefine_line|#define SCTP_GET_PEER_ADDR_PARAMS SCTP_GET_PEER_ADDR_PARAMS
+DECL|macro|SCTP_DEFAULT_SEND_PARAM
+mdefine_line|#define SCTP_DEFAULT_SEND_PARAM SCTP_DEFAULT_SEND_PARAM
+DECL|enumerator|SCTP_EVENTS
+id|SCTP_EVENTS
+comma
+DECL|macro|SCTP_EVENTS
+mdefine_line|#define SCTP_EVENTS SCTP_EVENTS
+DECL|enumerator|SCTP_I_WANT_MAPPED_V4_ADDR
+id|SCTP_I_WANT_MAPPED_V4_ADDR
+comma
+multiline_comment|/* Turn on/off mapped v4 addresses  */
+DECL|macro|SCTP_I_WANT_MAPPED_V4_ADDR
+mdefine_line|#define SCTP_I_WANT_MAPPED_V4_ADDR SCTP_I_WANT_MAPPED_V4_ADDR
+DECL|enumerator|SCTP_MAXSEG
+id|SCTP_MAXSEG
+comma
+multiline_comment|/* Get/set maximum fragment. */
+DECL|macro|SCTP_MAXSEG
+mdefine_line|#define SCTP_MAXSEG &t;SCTP_MAXSEG
 DECL|enumerator|SCTP_STATUS
 id|SCTP_STATUS
 comma
@@ -80,31 +98,11 @@ id|SCTP_GET_PEER_ADDR_INFO
 comma
 DECL|macro|SCTP_GET_PEER_ADDR_INFO
 mdefine_line|#define SCTP_GET_PEER_ADDR_INFO SCTP_GET_PEER_ADDR_INFO
-DECL|enumerator|SCTP_SET_EVENTS
-id|SCTP_SET_EVENTS
-comma
-DECL|macro|SCTP_SET_EVENTS
-mdefine_line|#define SCTP_SET_EVENTS SCTP_SET_EVENTS
-DECL|enumerator|SCTP_AUTOCLOSE
-id|SCTP_AUTOCLOSE
-comma
-DECL|macro|SCTP_AUTOCLOSE
-mdefine_line|#define SCTP_AUTOCLOSE SCTP_AUTOCLOSE
-DECL|enumerator|SCTP_SET_DEFAULT_SEND_PARAM
-id|SCTP_SET_DEFAULT_SEND_PARAM
-comma
-DECL|macro|SCTP_SET_DEFAULT_SEND_PARAM
-mdefine_line|#define SCTP_SET_DEFAULT_SEND_PARAM SCTP_SET_DEFAULT_SEND_PARAM
-DECL|enumerator|SCTP_SOCKOPT_DEBUG_NAME
-id|SCTP_SOCKOPT_DEBUG_NAME
-op_assign
-l_int|42
-comma
-multiline_comment|/* FIXME */
-DECL|macro|SCTP_SOCKOPT_DEBUG_NAME
-mdefine_line|#define SCTP_SOCKOPT_DEBUG_NAME&t;SCTP_SOCKOPT_DEBUG_NAME
+multiline_comment|/* Internal Socket Options. Some of the sctp library functions are &n;&t; * implemented using these socket options.&n;&t; */
 DECL|enumerator|SCTP_SOCKOPT_BINDX_ADD
 id|SCTP_SOCKOPT_BINDX_ADD
+op_assign
+l_int|100
 comma
 multiline_comment|/* BINDX requests for adding addresses. */
 DECL|macro|SCTP_SOCKOPT_BINDX_ADD
@@ -145,27 +143,8 @@ comma
 multiline_comment|/* Get all local addresss. */
 DECL|macro|SCTP_GET_LOCAL_ADDRS
 mdefine_line|#define SCTP_GET_LOCAL_ADDRS&t;SCTP_GET_LOCAL_ADDRS
-DECL|enumerator|SCTP_NODELAY
-id|SCTP_NODELAY
-comma
-multiline_comment|/* Get/set nodelay option. */
-DECL|macro|SCTP_NODELAY
-mdefine_line|#define SCTP_NODELAY&t;SCTP_NODELAY
-DECL|enumerator|SCTP_I_WANT_MAPPED_V4_ADDR
-id|SCTP_I_WANT_MAPPED_V4_ADDR
-comma
-multiline_comment|/* Turn on/off mapped v4 addresses  */
-DECL|macro|SCTP_I_WANT_MAPPED_V4_ADDR
-mdefine_line|#define SCTP_I_WANT_MAPPED_V4_ADDR SCTP_I_WANT_MAPPED_V4_ADDR
-DECL|enumerator|SCTP_MAXSEG
-id|SCTP_MAXSEG
-comma
-multiline_comment|/* Get/set maximum fragment. */
-DECL|macro|SCTP_MAXSEG
-mdefine_line|#define SCTP_MAXSEG &t;SCTP_MAXSEG
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * 5.2 SCTP msg_control Structures&n; *&n; * A key element of all SCTP-specific socket extensions is the use of&n; * ancillary data to specify and access SCTP-specific data via the&n; * struct msghdr&squot;s msg_control member used in sendmsg() and recvmsg().&n; * Fine-grained control over initialization and sending parameters are&n; * handled with ancillary data.&n; *&n; * Each ancillary data item is preceeded by a struct cmsghdr (see&n; * Section 5.1), which defines the function and purpose of the data&n; * contained in in the cmsg_data[] member.&n; */
 multiline_comment|/*&n; * 5.2.1 SCTP Initiation Structure (SCTP_INIT)&n; *&n; *   This cmsghdr structure provides information for initializing new&n; *   SCTP associations with sendmsg().  The SCTP_INITMSG socket option&n; *   uses this same data structure.  This structure is not used for&n; *   recvmsg().&n; *&n; *   cmsg_level    cmsg_type      cmsg_data[]&n; *   ------------  ------------   ----------------------&n; *   IPPROTO_SCTP  SCTP_INIT      struct sctp_initmsg&n; *&n; */
 DECL|struct|sctp_initmsg
 r_struct
@@ -399,20 +378,20 @@ DECL|enum|sctp_spc_state
 r_enum
 id|sctp_spc_state
 (brace
-DECL|enumerator|ADDRESS_AVAILABLE
-id|ADDRESS_AVAILABLE
+DECL|enumerator|SCTP_ADDR_REACHABLE
+id|SCTP_ADDR_REACHABLE
 comma
-DECL|enumerator|ADDRESS_UNREACHABLE
-id|ADDRESS_UNREACHABLE
+DECL|enumerator|SCTP_ADDR_UNREACHABLE
+id|SCTP_ADDR_UNREACHABLE
 comma
-DECL|enumerator|ADDRESS_REMOVED
-id|ADDRESS_REMOVED
+DECL|enumerator|SCTP_ADDR_REMOVED
+id|SCTP_ADDR_REMOVED
 comma
-DECL|enumerator|ADDRESS_ADDED
-id|ADDRESS_ADDED
+DECL|enumerator|SCTP_ADDR_ADDED
+id|SCTP_ADDR_ADDED
 comma
-DECL|enumerator|ADDRESS_MADE_PRIM
-id|ADDRESS_MADE_PRIM
+DECL|enumerator|SCTP_ADDR_MADE_PRIM
+id|SCTP_ADDR_MADE_PRIM
 comma
 )brace
 suffix:semicolon
@@ -436,10 +415,6 @@ suffix:semicolon
 DECL|member|sre_error
 id|__u16
 id|sre_error
-suffix:semicolon
-DECL|member|sre_len
-id|__u16
-id|sre_len
 suffix:semicolon
 DECL|member|sre_assoc_id
 id|sctp_assoc_t
@@ -546,20 +521,20 @@ DECL|member|sai_length
 id|__u32
 id|sai_length
 suffix:semicolon
-DECL|member|sai_adaptation_bits
+DECL|member|sai_adaption_ind
 id|__u32
-id|sai_adaptation_bits
+id|sai_adaption_ind
 suffix:semicolon
-DECL|member|sse_assoc_id
+DECL|member|sai_assoc_id
 id|sctp_assoc_t
-id|sse_assoc_id
+id|sai_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
-DECL|struct|sctp_rcv_pdapi_event
+DECL|struct|sctp_pdapi_event
 r_struct
-id|sctp_rcv_pdapi_event
+id|sctp_pdapi_event
 (brace
 DECL|member|pdapi_type
 id|__u16
@@ -651,19 +626,19 @@ DECL|member|sn_length
 id|__u32
 id|sn_length
 suffix:semicolon
-DECL|member|h
+DECL|member|sn_header
 )brace
-id|h
+id|sn_header
 suffix:semicolon
 DECL|member|sn_assoc_change
 r_struct
 id|sctp_assoc_change
 id|sn_assoc_change
 suffix:semicolon
-DECL|member|sn_padr_change
+DECL|member|sn_paddr_change
 r_struct
 id|sctp_paddr_change
-id|sn_padr_change
+id|sn_paddr_change
 suffix:semicolon
 DECL|member|sn_remote_error
 r_struct
@@ -685,10 +660,10 @@ r_struct
 id|sctp_adaption_event
 id|sn_adaption_event
 suffix:semicolon
-DECL|member|sn_rcv_pdapi_event
+DECL|member|sn_pdapi_event
 r_struct
-id|sctp_rcv_pdapi_event
-id|sn_rcv_pdapi_event
+id|sctp_pdapi_event
+id|sn_pdapi_event
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -760,11 +735,112 @@ DECL|typedef|sctp_sn_error_t
 )brace
 id|sctp_sn_error_t
 suffix:semicolon
-multiline_comment|/*&n; *&n; * 7.1.14 Peer Address Parameters&n; *&n; *   Applications can enable or disable heartbeats for any peer address&n; *   of an association, modify an address&squot;s heartbeat interval, force a&n; *   heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; *   number of retransmissions sent before an address is considered&n; *   unreachable. The following structure is used to access and modify an&n; *   address&squot;s parameters:&n; */
+multiline_comment|/*&n; * 7.1.1 Retransmission Timeout Parameters (SCTP_RTOINFO)&n; *&n; *   The protocol parameters used to initialize and bound retransmission&n; *   timeout (RTO) are tunable.  See [SCTP] for more information on how&n; *   these parameters are used in RTO calculation. &n; */
+DECL|struct|sctp_rtoinfo
+r_struct
+id|sctp_rtoinfo
+(brace
+DECL|member|srto_assoc_id
+id|sctp_assoc_t
+id|srto_assoc_id
+suffix:semicolon
+DECL|member|srto_initial
+id|__u32
+id|srto_initial
+suffix:semicolon
+DECL|member|srto_max
+id|__u32
+id|srto_max
+suffix:semicolon
+DECL|member|srto_min
+id|__u32
+id|srto_min
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * 7.1.2 Association Parameters (SCTP_ASSOCINFO)&n; *&n; *   This option is used to both examine and set various association and&n; *   endpoint parameters.&n; */
+DECL|struct|sctp_assocparams
+r_struct
+id|sctp_assocparams
+(brace
+DECL|member|sasoc_assoc_id
+id|sctp_assoc_t
+id|sasoc_assoc_id
+suffix:semicolon
+DECL|member|sasoc_asocmaxrxt
+id|__u16
+id|sasoc_asocmaxrxt
+suffix:semicolon
+DECL|member|sasoc_number_peer_destinations
+id|__u16
+id|sasoc_number_peer_destinations
+suffix:semicolon
+DECL|member|sasoc_peer_rwnd
+id|__u32
+id|sasoc_peer_rwnd
+suffix:semicolon
+DECL|member|sasoc_local_rwnd
+id|__u32
+id|sasoc_local_rwnd
+suffix:semicolon
+DECL|member|sasoc_cookie_life
+id|__u32
+id|sasoc_cookie_life
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * 7.1.9 Set Peer Primary Address (SCTP_SET_PEER_PRIMARY_ADDR)&n; *&n; *  Requests that the peer mark the enclosed address as the association&n; *  primary. The enclosed address must be one of the association&squot;s&n; *  locally bound addresses. The following structure is used to make a&n; *   set primary request:&n; */
+DECL|struct|sctp_setpeerprim
+r_struct
+id|sctp_setpeerprim
+(brace
+DECL|member|sspp_assoc_id
+id|sctp_assoc_t
+id|sspp_assoc_id
+suffix:semicolon
+DECL|member|sspp_addr
+r_struct
+id|sockaddr_storage
+id|sspp_addr
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * 7.1.10 Set Primary Address (SCTP_PRIMARY_ADDR)&n; *&n; *  Requests that the local SCTP stack use the enclosed peer address as&n; *  the association primary. The enclosed address must be one of the&n; *  association peer&squot;s addresses. The following structure is used to&n; *  make a set peer primary request:&n; */
+DECL|struct|sctp_prim
+r_struct
+id|sctp_prim
+(brace
+DECL|member|ssp_assoc_id
+id|sctp_assoc_t
+id|ssp_assoc_id
+suffix:semicolon
+DECL|member|ssp_addr
+r_struct
+id|sockaddr_storage
+id|ssp_addr
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * 7.1.11 Set Adaption Layer Indicator (SCTP_ADAPTION_LAYER)&n; *&n; * Requests that the local endpoint set the specified Adaption Layer&n; * Indication parameter for all future INIT and INIT-ACK exchanges.&n; */
+DECL|struct|sctp_setadaption
+r_struct
+id|sctp_setadaption
+(brace
+DECL|member|ssb_adaption_ind
+id|__u32
+id|ssb_adaption_ind
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * 7.1.13 Peer Address Parameters  (SCTP_PEER_ADDR_PARAMS)&n; *&n; *   Applications can enable or disable heartbeats for any peer address&n; *   of an association, modify an address&squot;s heartbeat interval, force a&n; *   heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; *   number of retransmissions sent before an address is considered&n; *   unreachable. The following structure is used to access and modify an&n; *   address&squot;s parameters:&n; */
 DECL|struct|sctp_paddrparams
 r_struct
 id|sctp_paddrparams
 (brace
+DECL|member|spp_assoc_id
+id|sctp_assoc_t
+id|spp_assoc_id
+suffix:semicolon
 DECL|member|spp_address
 r_struct
 id|sockaddr_storage
@@ -777,10 +853,6 @@ suffix:semicolon
 DECL|member|spp_pathmaxrxt
 id|__u16
 id|spp_pathmaxrxt
-suffix:semicolon
-DECL|member|spp_assoc_id
-id|sctp_assoc_t
-id|spp_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -833,92 +905,6 @@ id|SCTP_ACTIVE
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * 7.1.1 Retransmission Timeout Parameters (SCTP_RTOINFO)&n; *&n; *   The protocol parameters used to initialize and bound retransmission&n; *   timeout (RTO) are tunable.  See [SCTP] for more information on how&n; *   these parameters are used in RTO calculation.  The peer address&n; *   parameter is ignored for TCP style socket.&n; */
-DECL|struct|sctp_rtoinfo
-r_struct
-id|sctp_rtoinfo
-(brace
-DECL|member|srto_initial
-id|__u32
-id|srto_initial
-suffix:semicolon
-DECL|member|srto_max
-id|__u32
-id|srto_max
-suffix:semicolon
-DECL|member|srto_min
-id|__u32
-id|srto_min
-suffix:semicolon
-DECL|member|srto_assoc_id
-id|sctp_assoc_t
-id|srto_assoc_id
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * 7.1.2 Association Retransmission Parameter (SCTP_ASSOCRTXINFO)&n; *&n; *   The protocol parameter used to set the number of retransmissions&n; *   sent before an association is considered unreachable.&n; *   See [SCTP] for more information on how this parameter is used.  The&n; *   peer address parameter is ignored for TCP style socket.&n; */
-DECL|struct|sctp_assocparams
-r_struct
-id|sctp_assocparams
-(brace
-DECL|member|sasoc_assoc_id
-id|sctp_assoc_t
-id|sasoc_assoc_id
-suffix:semicolon
-DECL|member|sasoc_asocmaxrxt
-id|__u16
-id|sasoc_asocmaxrxt
-suffix:semicolon
-DECL|member|sasoc_number_peer_destinations
-id|__u16
-id|sasoc_number_peer_destinations
-suffix:semicolon
-DECL|member|sasoc_peer_rwnd
-id|__u32
-id|sasoc_peer_rwnd
-suffix:semicolon
-DECL|member|sasoc_local_rwnd
-id|__u32
-id|sasoc_local_rwnd
-suffix:semicolon
-DECL|member|sasoc_cookie_life
-id|__u32
-id|sasoc_cookie_life
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * 7.1.9 Set Primary Address (SCTP_SET_PRIMARY_ADDR)&n; *&n; *  Requests that the peer mark the enclosed address as the association&n; *  primary. The enclosed address must be one of the association&squot;s&n; *  locally bound addresses. The following structure is used to make a&n; *   set primary request:&n; */
-DECL|struct|sctp_setprim
-r_struct
-id|sctp_setprim
-(brace
-DECL|member|ssp_addr
-r_struct
-id|sockaddr_storage
-id|ssp_addr
-suffix:semicolon
-DECL|member|ssp_assoc_id
-id|sctp_assoc_t
-id|ssp_assoc_id
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * 7.1.10 Set Peer Primary Address (SCTP_SET_PEER_PRIMARY_ADDR)&n; *&n; *  Requests that the local SCTP stack use the enclosed peer address as&n; *  the association primary. The enclosed address must be one of the&n; *  association peer&squot;s addresses. The following structure is used to&n; *  make a set peer primary request:&n; */
-DECL|struct|sctp_setpeerprim
-r_struct
-id|sctp_setpeerprim
-(brace
-DECL|member|sspp_addr
-r_struct
-id|sockaddr_storage
-id|sspp_addr
-suffix:semicolon
-DECL|member|sspp_assoc_id
-id|sctp_assoc_t
-id|sspp_assoc_id
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * 7.2.1 Association Status (SCTP_STATUS)&n; *&n; *   Applications can retrieve current status information about an&n; *   association, including association state, peer receiver window size,&n; *   number of unacked data chunks, and number of data chunks pending&n; *   receipt.  This information is read-only.  The following structure is&n; *   used to access this information:&n; */
 DECL|struct|sctp_status
 r_struct
@@ -963,41 +949,7 @@ id|sstat_primary
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * 7.1.12 Set Adaption Layer Indicator&n; *&n; * Requests that the local endpoint set the specified Adaption Layer&n; * Indication parameter for all future&n; *  INIT and INIT-ACK exchanges.&n; */
-DECL|struct|sctp_setadaption
-r_struct
-id|sctp_setadaption
-(brace
-DECL|member|ssb_adaption_ind
-id|__u32
-id|ssb_adaption_ind
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * 7.1.12 Set default message time outs (SCTP_SET_STREAM_TIMEOUTS)&n; *&n; * This option requests that the requested stream apply a&n; *  default time-out for messages in queue.&n; */
-DECL|struct|sctp_setstrm_timeout
-r_struct
-id|sctp_setstrm_timeout
-(brace
-DECL|member|ssto_assoc_id
-id|sctp_assoc_t
-id|ssto_assoc_id
-suffix:semicolon
-DECL|member|ssto_timeout
-id|__u32
-id|ssto_timeout
-suffix:semicolon
-DECL|member|ssto_streamid_start
-id|__u16
-id|ssto_streamid_start
-suffix:semicolon
-DECL|member|ssto_streamid_end
-id|__u16
-id|ssto_streamid_end
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * 8.3 8.5 get all peer/local addresses on a socket&n; * This parameter struct is for getsockopt&n; */
+multiline_comment|/*&n; * 8.3, 8.5 get all peer/local addresses on a socket&n; * This parameter struct is for getsockopt&n; */
 DECL|struct|sctp_getaddrs
 r_struct
 id|sctp_getaddrs
@@ -1034,10 +986,10 @@ mdefine_line|#define MSG_NOTIFICATION MSG_NOTIFICATION
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * 8.1 sctp_bindx()&n; *&n; * The flags parameter is formed from the bitwise OR of zero or more of the&n; * following currently defined flags:&n; */
-DECL|macro|BINDX_ADD_ADDR
-mdefine_line|#define BINDX_ADD_ADDR 0x01
-DECL|macro|BINDX_REM_ADDR
-mdefine_line|#define BINDX_REM_ADDR 0x02
+DECL|macro|SCTP_BINDX_ADD_ADDR
+mdefine_line|#define SCTP_BINDX_ADD_ADDR 0x01
+DECL|macro|SCTP_BINDX_REM_ADDR
+mdefine_line|#define SCTP_BINDX_REM_ADDR 0x02
 multiline_comment|/* This is the structure that is passed as an argument(optval) to&n; * getsockopt(SCTP_SOCKOPT_PEELOFF).&n; */
 r_typedef
 r_struct

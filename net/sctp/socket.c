@@ -1072,7 +1072,7 @@ comma
 id|addrcnt
 comma
 (paren
-id|BINDX_ADD_ADDR
+id|SCTP_BINDX_ADD_ADDR
 op_eq
 id|flags
 )paren
@@ -1082,7 +1082,7 @@ l_string|&quot;ADD&quot;
 suffix:colon
 (paren
 (paren
-id|BINDX_REM_ADDR
+id|SCTP_BINDX_REM_ADDR
 op_eq
 id|flags
 )paren
@@ -1101,7 +1101,7 @@ id|flags
 )paren
 (brace
 r_case
-id|BINDX_ADD_ADDR
+id|SCTP_BINDX_ADD_ADDR
 suffix:colon
 id|retval
 op_assign
@@ -1118,7 +1118,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|BINDX_REM_ADDR
+id|SCTP_BINDX_REM_ADDR
 suffix:colon
 id|retval
 op_assign
@@ -4577,7 +4577,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* 7.1.13 Peer Address Parameters (SCTP_SET_PEER_ADDR_PARAMS)&n; *&n; * Applications can enable or disable heartbeats for any peer address of&n; * an association, modify an address&squot;s heartbeat interval, force a&n; * heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; * number of retransmissions sent before an address is considered&n; * unreachable.  The following structure is used to access and modify an&n; * address&squot;s parameters:&n; *&n; *  struct sctp_paddrparams {&n; *      sctp_assoc_t            spp_assoc_id;&n; *      struct sockaddr_storage spp_address;&n; *      uint32_t                spp_hbinterval;&n; *      uint16_t                spp_pathmaxrxt;&n; *  };&n; *&n; *   spp_assoc_id    - (UDP style socket) This is filled in the application,&n; *                     and identifies the association for this query.&n; *   spp_address     - This specifies which address is of interest.&n; *   spp_hbinterval  - This contains the value of the heartbeat interval,&n; *                     in milliseconds.  A value of 0, when modifying the&n; *                     parameter, specifies that the heartbeat on this&n; *                     address should be disabled. A value of UINT32_MAX&n; *                     (4294967295), when modifying the parameter,&n; *                     specifies that a heartbeat should be sent&n; *                     immediately to the peer address, and the current&n; *                     interval should remain unchanged.&n; *   spp_pathmaxrxt  - This contains the maximum number of&n; *                     retransmissions before this address shall be&n; *                     considered unreachable.&n; */
+multiline_comment|/* 7.1.13 Peer Address Parameters (SCTP_PEER_ADDR_PARAMS)&n; *&n; * Applications can enable or disable heartbeats for any peer address of&n; * an association, modify an address&squot;s heartbeat interval, force a&n; * heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; * number of retransmissions sent before an address is considered&n; * unreachable.  The following structure is used to access and modify an&n; * address&squot;s parameters:&n; *&n; *  struct sctp_paddrparams {&n; *      sctp_assoc_t            spp_assoc_id;&n; *      struct sockaddr_storage spp_address;&n; *      uint32_t                spp_hbinterval;&n; *      uint16_t                spp_pathmaxrxt;&n; *  };&n; *&n; *   spp_assoc_id    - (UDP style socket) This is filled in the application,&n; *                     and identifies the association for this query.&n; *   spp_address     - This specifies which address is of interest.&n; *   spp_hbinterval  - This contains the value of the heartbeat interval,&n; *                     in milliseconds.  A value of 0, when modifying the&n; *                     parameter, specifies that the heartbeat on this&n; *                     address should be disabled. A value of UINT32_MAX&n; *                     (4294967295), when modifying the parameter,&n; *                     specifies that a heartbeat should be sent&n; *                     immediately to the peer address, and the current&n; *                     interval should remain unchanged.&n; *   spp_pathmaxrxt  - This contains the maximum number of&n; *                     retransmissions before this address shall be&n; *                     considered unreachable.&n; */
 DECL|function|sctp_setsockopt_peer_addr_params
 r_static
 r_int
@@ -4949,11 +4949,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* 7.1.10 Set Peer Primary Address (SCTP_SET_PEER_PRIMARY_ADDR)&n; *&n; * Requests that the local SCTP stack use the enclosed peer address as&n; * the association primary.  The enclosed address must be one of the&n; * association peer&squot;s addresses.&n; */
-DECL|function|sctp_setsockopt_peer_prim
+multiline_comment|/* 7.1.10 Set Peer Primary Address (SCTP_PRIMARY_ADDR)&n; *&n; * Requests that the local SCTP stack use the enclosed peer address as&n; * the association primary.  The enclosed address must be one of the&n; * association peer&squot;s addresses.&n; */
+DECL|function|sctp_setsockopt_primary_addr
 r_static
 r_int
-id|sctp_setsockopt_peer_prim
+id|sctp_setsockopt_primary_addr
 c_func
 (paren
 r_struct
@@ -4970,7 +4970,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|sctp_setpeerprim
+id|sctp_prim
 id|prim
 suffix:semicolon
 r_struct
@@ -4986,7 +4986,7 @@ op_ne
 r_sizeof
 (paren
 r_struct
-id|sctp_setpeerprim
+id|sctp_prim
 )paren
 )paren
 r_return
@@ -5007,7 +5007,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|sctp_setpeerprim
+id|sctp_prim
 )paren
 )paren
 )paren
@@ -5023,9 +5023,9 @@ c_func
 id|sk
 comma
 op_amp
-id|prim.sspp_addr
+id|prim.ssp_addr
 comma
-id|prim.sspp_assoc_id
+id|prim.ssp_assoc_id
 )paren
 suffix:semicolon
 r_if
@@ -5327,10 +5327,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * 7.1.2 SCTP_ASSOCINFO&n; *&n; * This option is used to tune the the maximum retransmission attempts&n; * of the association.&n; * Returns an error if the new association retransmission value is&n; * greater than the sum of the retransmission value  of the peer.&n; * See [SCTP] for more information.&n; *&n; */
-DECL|function|sctp_setsockopt_assocrtx
+DECL|function|sctp_setsockopt_associnfo
 r_static
 r_int
-id|sctp_setsockopt_assocrtx
+id|sctp_setsockopt_associnfo
 c_func
 (paren
 r_struct
@@ -5685,10 +5685,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-r_char
-op_star
-id|tmp
-suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -5756,81 +5752,6 @@ id|optname
 )paren
 (brace
 r_case
-id|SCTP_SOCKOPT_DEBUG_NAME
-suffix:colon
-multiline_comment|/* BUG! we don&squot;t ever seem to free this memory. --jgrimm */
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-(paren
-id|tmp
-op_assign
-id|kmalloc
-c_func
-(paren
-id|optlen
-op_plus
-l_int|1
-comma
-id|GFP_KERNEL
-)paren
-)paren
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out_unlock
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|tmp
-comma
-id|optval
-comma
-id|optlen
-)paren
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_goto
-id|out_unlock
-suffix:semicolon
-)brace
-id|tmp
-(braket
-id|optlen
-)braket
-op_assign
-l_char|&squot;&bslash;000&squot;
-suffix:semicolon
-id|sctp_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|ep-&gt;debug_name
-op_assign
-id|tmp
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|SCTP_SOCKOPT_BINDX_ADD
 suffix:colon
 multiline_comment|/* &squot;optlen&squot; is the size of the addresses buffer. */
@@ -5850,7 +5771,7 @@ id|optval
 comma
 id|optlen
 comma
-id|BINDX_ADD_ADDR
+id|SCTP_BINDX_ADD_ADDR
 )paren
 suffix:semicolon
 r_break
@@ -5875,7 +5796,7 @@ id|optval
 comma
 id|optlen
 comma
-id|BINDX_REM_ADDR
+id|SCTP_BINDX_REM_ADDR
 )paren
 suffix:semicolon
 r_break
@@ -5898,7 +5819,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_SET_EVENTS
+id|SCTP_EVENTS
 suffix:colon
 id|retval
 op_assign
@@ -5932,7 +5853,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_SET_PEER_ADDR_PARAMS
+id|SCTP_PEER_ADDR_PARAMS
 suffix:colon
 id|retval
 op_assign
@@ -5966,7 +5887,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_SET_DEFAULT_SEND_PARAM
+id|SCTP_DEFAULT_SEND_PARAM
 suffix:colon
 id|retval
 op_assign
@@ -5983,11 +5904,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_SET_PEER_PRIMARY_ADDR
+id|SCTP_PRIMARY_ADDR
 suffix:colon
 id|retval
 op_assign
-id|sctp_setsockopt_peer_prim
+id|sctp_setsockopt_primary_addr
 c_func
 (paren
 id|sk
@@ -6034,11 +5955,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_ASSOCRTXINFO
+id|SCTP_ASSOCINFO
 suffix:colon
 id|retval
 op_assign
-id|sctp_setsockopt_assocrtx
+id|sctp_setsockopt_associnfo
 c_func
 (paren
 id|sk
@@ -6095,8 +6016,6 @@ r_break
 suffix:semicolon
 )brace
 suffix:semicolon
-id|out_unlock
-suffix:colon
 id|sctp_release_sock
 c_func
 (paren
@@ -7049,7 +6968,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Default Peer Address Parameters.  These defaults can&n;&t; * be modified via SCTP_SET_PEER_ADDR_PARAMS&n;&t; */
+multiline_comment|/* Default Peer Address Parameters.  These defaults can&n;&t; * be modified via SCTP_PEER_ADDR_PARAMS&n;&t; */
 id|sp-&gt;paddrparam.spp_hbinterval
 op_assign
 (paren
@@ -7902,11 +7821,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* 7.1.15 Set notification and ancillary events (SCTP_SET_EVENTS)&n; *&n; * This socket option is used to specify various notifications and&n; * ancillary data the user wishes to receive.&n; */
-DECL|function|sctp_getsockopt_set_events
+multiline_comment|/* 7.1.15 Set notification and ancillary events (SCTP_EVENTS)&n; *&n; * This socket option is used to specify various notifications and&n; * ancillary data the user wishes to receive.&n; */
+DECL|function|sctp_getsockopt_events
 r_static
 r_int
-id|sctp_getsockopt_set_events
+id|sctp_getsockopt_events
 c_func
 (paren
 r_struct
@@ -8357,7 +8276,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* 7.1.13 Peer Address Parameters (SCTP_SET_PEER_ADDR_PARAMS)&n; *&n; * Applications can enable or disable heartbeats for any peer address of&n; * an association, modify an address&squot;s heartbeat interval, force a&n; * heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; * number of retransmissions sent before an address is considered&n; * unreachable.  The following structure is used to access and modify an&n; * address&squot;s parameters:&n; *&n; *  struct sctp_paddrparams {&n; *      sctp_assoc_t            spp_assoc_id;&n; *      struct sockaddr_storage spp_address;&n; *      uint32_t                spp_hbinterval;&n; *      uint16_t                spp_pathmaxrxt;&n; *  };&n; *&n; *   spp_assoc_id    - (UDP style socket) This is filled in the application,&n; *                     and identifies the association for this query.&n; *   spp_address     - This specifies which address is of interest.&n; *   spp_hbinterval  - This contains the value of the heartbeat interval,&n; *                     in milliseconds.  A value of 0, when modifying the&n; *                     parameter, specifies that the heartbeat on this&n; *                     address should be disabled. A value of UINT32_MAX&n; *                     (4294967295), when modifying the parameter,&n; *                     specifies that a heartbeat should be sent&n; *                     immediately to the peer address, and the current&n; *                     interval should remain unchanged.&n; *   spp_pathmaxrxt  - This contains the maximum number of&n; *                     retransmissions before this address shall be&n; *                     considered unreachable.&n; */
+multiline_comment|/* 7.1.13 Peer Address Parameters (SCTP_PEER_ADDR_PARAMS)&n; *&n; * Applications can enable or disable heartbeats for any peer address of&n; * an association, modify an address&squot;s heartbeat interval, force a&n; * heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; * number of retransmissions sent before an address is considered&n; * unreachable.  The following structure is used to access and modify an&n; * address&squot;s parameters:&n; *&n; *  struct sctp_paddrparams {&n; *      sctp_assoc_t            spp_assoc_id;&n; *      struct sockaddr_storage spp_address;&n; *      uint32_t                spp_hbinterval;&n; *      uint16_t                spp_pathmaxrxt;&n; *  };&n; *&n; *   spp_assoc_id    - (UDP style socket) This is filled in the application,&n; *                     and identifies the association for this query.&n; *   spp_address     - This specifies which address is of interest.&n; *   spp_hbinterval  - This contains the value of the heartbeat interval,&n; *                     in milliseconds.  A value of 0, when modifying the&n; *                     parameter, specifies that the heartbeat on this&n; *                     address should be disabled. A value of UINT32_MAX&n; *                     (4294967295), when modifying the parameter,&n; *                     specifies that a heartbeat should be sent&n; *                     immediately to the peer address, and the current&n; *                     interval should remain unchanged.&n; *   spp_pathmaxrxt  - This contains the maximum number of&n; *                     retransmissions before this address shall be&n; *                     considered unreachable.&n; */
 DECL|function|sctp_getsockopt_peer_addr_params
 r_static
 r_int
@@ -9340,11 +9259,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* 7.1.10 Set Peer Primary Address (SCTP_SET_PEER_PRIMARY_ADDR)&n; *&n; * Requests that the local SCTP stack use the enclosed peer address as&n; * the association primary.  The enclosed address must be one of the&n; * association peer&squot;s addresses.&n; */
-DECL|function|sctp_getsockopt_peer_prim
+multiline_comment|/* 7.1.10 Set Primary Address (SCTP_PRIMARY_ADDR)&n; *&n; * Requests that the local SCTP stack use the enclosed peer address as&n; * the association primary.  The enclosed address must be one of the&n; * association peer&squot;s addresses.&n; */
+DECL|function|sctp_getsockopt_primary_addr
 r_static
 r_int
-id|sctp_getsockopt_peer_prim
+id|sctp_getsockopt_primary_addr
 c_func
 (paren
 r_struct
@@ -9365,7 +9284,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|sctp_setpeerprim
+id|sctp_prim
 id|prim
 suffix:semicolon
 r_struct
@@ -9381,7 +9300,7 @@ op_ne
 r_sizeof
 (paren
 r_struct
-id|sctp_setpeerprim
+id|sctp_prim
 )paren
 )paren
 r_return
@@ -9402,7 +9321,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|sctp_setpeerprim
+id|sctp_prim
 )paren
 )paren
 )paren
@@ -9417,7 +9336,7 @@ c_func
 (paren
 id|sk
 comma
-id|prim.sspp_assoc_id
+id|prim.ssp_assoc_id
 )paren
 suffix:semicolon
 r_if
@@ -9444,7 +9363,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|prim.sspp_addr
+id|prim.ssp_addr
 comma
 op_amp
 id|asoc-&gt;peer.primary_path-&gt;ipaddr
@@ -9470,7 +9389,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|sctp_setpeerprim
+id|sctp_prim
 )paren
 )paren
 )paren
@@ -9971,10 +9890,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * 7.1.2 SCTP_ASSOCINFO&n; *&n; * This option is used to tune the the maximum retransmission attempts&n; * of the association.&n; * Returns an error if the new association retransmission value is&n; * greater than the sum of the retransmission value  of the peer.&n; * See [SCTP] for more information.&n; *&n; */
-DECL|function|sctp_getsockopt_assocrtx
+DECL|function|sctp_getsockopt_associnfo
 r_static
 r_int
-id|sctp_getsockopt_assocrtx
+id|sctp_getsockopt_associnfo
 c_func
 (paren
 r_struct
@@ -10544,11 +10463,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_SET_EVENTS
+id|SCTP_EVENTS
 suffix:colon
 id|retval
 op_assign
-id|sctp_getsockopt_set_events
+id|sctp_getsockopt_events
 c_func
 (paren
 id|sk
@@ -10601,7 +10520,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_GET_PEER_ADDR_PARAMS
+id|SCTP_PEER_ADDR_PARAMS
 suffix:colon
 id|retval
 op_assign
@@ -10715,7 +10634,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_SET_DEFAULT_SEND_PARAM
+id|SCTP_DEFAULT_SEND_PARAM
 suffix:colon
 id|retval
 op_assign
@@ -10734,11 +10653,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_SET_PEER_PRIMARY_ADDR
+id|SCTP_PRIMARY_ADDR
 suffix:colon
 id|retval
 op_assign
-id|sctp_getsockopt_peer_prim
+id|sctp_getsockopt_primary_addr
 c_func
 (paren
 id|sk
@@ -10791,11 +10710,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_ASSOCRTXINFO
+id|SCTP_ASSOCINFO
 suffix:colon
 id|retval
 op_assign
-id|sctp_getsockopt_assocrtx
+id|sctp_getsockopt_associnfo
 c_func
 (paren
 id|sk
