@@ -109,31 +109,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_int
-id|irda_device_proc_read
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|len
-comma
-r_int
-id|unused
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 DECL|function|irda_device_init
 r_int
 id|__init
