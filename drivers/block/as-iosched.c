@@ -5791,6 +5791,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Note! At this stage of this and the next function, our next&n;&t;&t; * request may not be optimal - eg the request may have &quot;grown&quot;&n;&t;&t; * behind the disk head. We currently don&squot;t bother adjusting.&n;&t;&t; */
 )brace
+r_if
+c_cond
+(paren
+id|arq-&gt;on_hash
+)paren
 id|q-&gt;last_merge
 op_assign
 id|req
