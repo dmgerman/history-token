@@ -23916,10 +23916,6 @@ r_void
 r_int
 id|i
 comma
-id|rc
-op_assign
-l_int|0
-comma
 id|have_isa_dev
 op_assign
 l_int|0
@@ -24020,8 +24016,6 @@ id|KERN_INFO
 l_string|&quot;airo:  Probing for PCI adapters&bslash;n&quot;
 )paren
 suffix:semicolon
-id|rc
-op_assign
 id|pci_module_init
 c_func
 (paren
@@ -24121,6 +24115,8 @@ c_cond
 (paren
 id|is_pci
 )paren
+(brace
+macro_line|#ifdef CONFIG_PCI
 id|pci_unregister_driver
 c_func
 (paren
@@ -24128,6 +24124,8 @@ op_amp
 id|airo_driver
 )paren
 suffix:semicolon
+macro_line|#endif
+)brace
 )brace
 macro_line|#ifdef WIRELESS_EXT
 multiline_comment|/*&n; * Initial Wireless Extension code for Aironet driver by :&n; *&t;Jean Tourrilhes &lt;jt@hpl.hp.com&gt; - HPL - 17 November 00&n; * Conversion to new driver API by :&n; *&t;Jean Tourrilhes &lt;jt@hpl.hp.com&gt; - HPL - 26 March 02&n; * Javier also did a good amount of work here, adding some new extensions&n; * and fixing my code. Let&squot;s just say that without him this code just&n; * would not work at all... - Jean II&n; */
