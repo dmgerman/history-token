@@ -1514,10 +1514,6 @@ id|make-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
-id|make-&gt;sk_pair
-op_assign
-id|sk
-suffix:semicolon
 id|sk-&gt;sk_ack_backlog
 op_increment
 suffix:semicolon
