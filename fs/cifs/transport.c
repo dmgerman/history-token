@@ -1069,6 +1069,8 @@ op_assign
 id|schedule_timeout
 c_func
 (paren
+l_int|2
+op_star
 id|HZ
 )paren
 suffix:semicolon
@@ -1076,37 +1078,32 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* use normal timeout */
-id|timeout
-op_assign
-id|wait_event_interruptible_timeout
-c_func
-(paren
-id|ses-&gt;server-&gt;response_q
-comma
+multiline_comment|/* using normal timeout */
+multiline_comment|/* timeout = wait_event_interruptible_timeout(ses-&gt;server-&gt;response_q,&n;&t;&t;&t;(midQ-&gt;midState &amp; MID_RESPONSE_RECEIVED) || &n;&t;&t;&t;((ses-&gt;server-&gt;tcpStatus != CifsGood) &amp;&amp;&n;&t;&t;&t; (ses-&gt;server-&gt;tcpStatus != CifsNew)),&n;&t;&t;&t;timeout); */
+multiline_comment|/* Can not allow user interrupts- wreaks havoc with performance */
+r_if
+c_cond
 (paren
 id|midQ-&gt;midState
 op_amp
-id|MID_RESPONSE_RECEIVED
+id|MID_REQUEST_SUBMITTED
 )paren
-op_logical_or
+(brace
+id|set_current_state
+c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|timeout
+op_assign
+id|schedule_timeout
+c_func
 (paren
-id|ses-&gt;server-&gt;tcpStatus
-op_ne
-id|CifsGood
-)paren
-op_logical_and
-(paren
-id|ses-&gt;server-&gt;tcpStatus
-op_ne
-id|CifsNew
-)paren
-)paren
-comma
 id|timeout
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -1118,6 +1115,19 @@ id|current
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|midQ-&gt;resp_buf
+op_eq
+l_int|NULL
+)paren
+id|rc
+op_assign
+op_minus
+id|EINTR
+suffix:semicolon
+multiline_comment|/* BB are we supposed to return -ERESTARTSYS ? */
 id|DeleteMidQEntry
 c_func
 (paren
@@ -1125,10 +1135,9 @@ id|midQ
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EINTR
+id|rc
 suffix:semicolon
-multiline_comment|/* BB are we supposed to return -ERESTARTSYS ? */
+multiline_comment|/* why bother returning an error if it succeeded */
 )brace
 r_else
 (brace
