@@ -799,6 +799,10 @@ op_assign
 id|xics_get_irq
 suffix:semicolon
 )brace
+id|ppc_md.log_error
+op_assign
+id|pSeries_log_error
+suffix:semicolon
 id|ppc_md.init
 op_assign
 id|chrp_init2
