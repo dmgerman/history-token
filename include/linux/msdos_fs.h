@@ -15,6 +15,14 @@ DECL|macro|MSDOS_DPS
 mdefine_line|#define MSDOS_DPS&t;(SECTOR_SIZE / sizeof(struct msdos_dir_entry))
 DECL|macro|MSDOS_DPS_BITS
 mdefine_line|#define MSDOS_DPS_BITS&t;4&t;&t;/* log2(MSDOS_DPS) */
+DECL|macro|CF_LE_W
+mdefine_line|#define CF_LE_W(v)&t;le16_to_cpu(v)
+DECL|macro|CF_LE_L
+mdefine_line|#define CF_LE_L(v)&t;le32_to_cpu(v)
+DECL|macro|CT_LE_W
+mdefine_line|#define CT_LE_W(v)&t;cpu_to_le16(v)
+DECL|macro|CT_LE_L
+mdefine_line|#define CT_LE_L(v)&t;cpu_to_le32(v)
 DECL|macro|MSDOS_SUPER_MAGIC
 mdefine_line|#define MSDOS_SUPER_MAGIC 0x4d44 /* MD */
 DECL|macro|MSDOS_ROOT_INO
@@ -27,33 +35,33 @@ mdefine_line|#define FAT_MAX_DIR_ENTRIES&t;(65536)
 DECL|macro|FAT_MAX_DIR_SIZE
 mdefine_line|#define FAT_MAX_DIR_SIZE&t;(FAT_MAX_DIR_ENTRIES &lt;&lt; MSDOS_DIR_BITS)
 DECL|macro|ATTR_NONE
-mdefine_line|#define ATTR_NONE    0 /* no attribute bits */
+mdefine_line|#define ATTR_NONE&t;0&t;/* no attribute bits */
 DECL|macro|ATTR_RO
-mdefine_line|#define ATTR_RO      1  /* read-only */
+mdefine_line|#define ATTR_RO&t;&t;1&t;/* read-only */
 DECL|macro|ATTR_HIDDEN
-mdefine_line|#define ATTR_HIDDEN  2  /* hidden */
+mdefine_line|#define ATTR_HIDDEN&t;2&t;/* hidden */
 DECL|macro|ATTR_SYS
-mdefine_line|#define ATTR_SYS     4  /* system */
+mdefine_line|#define ATTR_SYS&t;4&t;/* system */
 DECL|macro|ATTR_VOLUME
-mdefine_line|#define ATTR_VOLUME  8  /* volume label */
+mdefine_line|#define ATTR_VOLUME&t;8&t;/* volume label */
 DECL|macro|ATTR_DIR
-mdefine_line|#define ATTR_DIR     16 /* directory */
+mdefine_line|#define ATTR_DIR&t;16&t;/* directory */
 DECL|macro|ATTR_ARCH
-mdefine_line|#define ATTR_ARCH    32 /* archived */
+mdefine_line|#define ATTR_ARCH&t;32&t;/* archived */
 multiline_comment|/* attribute bits that are copied &quot;as is&quot; */
 DECL|macro|ATTR_UNUSED
-mdefine_line|#define ATTR_UNUSED  (ATTR_VOLUME | ATTR_ARCH | ATTR_SYS | ATTR_HIDDEN)
+mdefine_line|#define ATTR_UNUSED&t;(ATTR_VOLUME | ATTR_ARCH | ATTR_SYS | ATTR_HIDDEN)
 multiline_comment|/* bits that are used by the Windows 95/Windows NT extended FAT */
 DECL|macro|ATTR_EXT
-mdefine_line|#define ATTR_EXT     (ATTR_RO | ATTR_HIDDEN | ATTR_SYS | ATTR_VOLUME)
+mdefine_line|#define ATTR_EXT&t;(ATTR_RO | ATTR_HIDDEN | ATTR_SYS | ATTR_VOLUME)
 DECL|macro|CASE_LOWER_BASE
-mdefine_line|#define CASE_LOWER_BASE 8&t;/* base is lower case */
+mdefine_line|#define CASE_LOWER_BASE&t;8&t;/* base is lower case */
 DECL|macro|CASE_LOWER_EXT
-mdefine_line|#define CASE_LOWER_EXT  16&t;/* extension is lower case */
+mdefine_line|#define CASE_LOWER_EXT&t;16&t;/* extension is lower case */
 DECL|macro|DELETED_FLAG
-mdefine_line|#define DELETED_FLAG 0xe5 /* marks file as deleted when in name[0] */
+mdefine_line|#define DELETED_FLAG&t;0xe5&t;/* marks file as deleted when in name[0] */
 DECL|macro|IS_FREE
-mdefine_line|#define IS_FREE(n) (!*(n) || *(n) == DELETED_FLAG)
+mdefine_line|#define IS_FREE(n)&t;(!*(n) || *(n) == DELETED_FLAG)
 multiline_comment|/* valid file mode bits */
 DECL|macro|MSDOS_VALID_MODE
 mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)
@@ -62,17 +70,17 @@ DECL|macro|MSDOS_MKMODE
 mdefine_line|#define MSDOS_MKMODE(a, m) (m &amp; (a &amp; ATTR_RO ? S_IRUGO|S_IXUGO : S_IRWXUGO))
 multiline_comment|/* Convert the UNIX mode to MS-DOS attribute bits. */
 DECL|macro|MSDOS_MKATTR
-mdefine_line|#define MSDOS_MKATTR(m) ((m &amp; S_IWUGO) ? ATTR_NONE : ATTR_RO)
+mdefine_line|#define MSDOS_MKATTR(m)&t;((m &amp; S_IWUGO) ? ATTR_NONE : ATTR_RO)
 DECL|macro|MSDOS_NAME
-mdefine_line|#define MSDOS_NAME 11 /* maximum name length */
+mdefine_line|#define MSDOS_NAME&t;11&t;/* maximum name length */
 DECL|macro|MSDOS_LONGNAME
-mdefine_line|#define MSDOS_LONGNAME 256 /* maximum name length */
+mdefine_line|#define MSDOS_LONGNAME&t;256&t;/* maximum name length */
 DECL|macro|MSDOS_SLOTS
-mdefine_line|#define MSDOS_SLOTS 21  /* max # of slots needed for short and long names */
+mdefine_line|#define MSDOS_SLOTS&t;21&t;/* max # of slots for short and long names */
 DECL|macro|MSDOS_DOT
-mdefine_line|#define MSDOS_DOT    &quot;.          &quot; /* &quot;.&quot;, padded to MSDOS_NAME chars */
+mdefine_line|#define MSDOS_DOT&t;&quot;.          &quot;&t;/* &quot;.&quot;, padded to MSDOS_NAME chars */
 DECL|macro|MSDOS_DOTDOT
-mdefine_line|#define MSDOS_DOTDOT &quot;..         &quot; /* &quot;..&quot;, padded to MSDOS_NAME chars */
+mdefine_line|#define MSDOS_DOTDOT&t;&quot;..         &quot;&t;/* &quot;..&quot;, padded to MSDOS_NAME chars */
 multiline_comment|/* media of boot sector */
 DECL|macro|FAT_VALID_MEDIA
 mdefine_line|#define FAT_VALID_MEDIA(x)&t;((0xF8 &lt;= (x) &amp;&amp; (x) &lt;= 0xFF) || (x) == 0xF0)
@@ -80,31 +88,31 @@ DECL|macro|FAT_FIRST_ENT
 mdefine_line|#define FAT_FIRST_ENT(s, x)&t;((MSDOS_SB(s)-&gt;fat_bits == 32 ? 0x0FFFFF00 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? 0xFF00 : 0xF00) | (x))
 multiline_comment|/* maximum number of clusters */
 DECL|macro|MAX_FAT12
-mdefine_line|#define MAX_FAT12 0xFF4
+mdefine_line|#define MAX_FAT12&t;0xFF4
 DECL|macro|MAX_FAT16
-mdefine_line|#define MAX_FAT16 0xFFF4
+mdefine_line|#define MAX_FAT16&t;0xFFF4
 DECL|macro|MAX_FAT32
-mdefine_line|#define MAX_FAT32 0x0FFFFFF6
+mdefine_line|#define MAX_FAT32&t;0x0FFFFFF6
 DECL|macro|MAX_FAT
-mdefine_line|#define MAX_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? MAX_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? MAX_FAT16 : MAX_FAT12)
+mdefine_line|#define MAX_FAT(s)&t;(MSDOS_SB(s)-&gt;fat_bits == 32 ? MAX_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? MAX_FAT16 : MAX_FAT12)
 multiline_comment|/* bad cluster mark */
 DECL|macro|BAD_FAT12
-mdefine_line|#define BAD_FAT12 0xFF7
+mdefine_line|#define BAD_FAT12&t;0xFF7
 DECL|macro|BAD_FAT16
-mdefine_line|#define BAD_FAT16 0xFFF7
+mdefine_line|#define BAD_FAT16&t;0xFFF7
 DECL|macro|BAD_FAT32
-mdefine_line|#define BAD_FAT32 0x0FFFFFF7
+mdefine_line|#define BAD_FAT32&t;0x0FFFFFF7
 DECL|macro|BAD_FAT
-mdefine_line|#define BAD_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? BAD_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? BAD_FAT16 : BAD_FAT12)
+mdefine_line|#define BAD_FAT(s)&t;(MSDOS_SB(s)-&gt;fat_bits == 32 ? BAD_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? BAD_FAT16 : BAD_FAT12)
 multiline_comment|/* standard EOF */
 DECL|macro|EOF_FAT12
-mdefine_line|#define EOF_FAT12 0xFFF
+mdefine_line|#define EOF_FAT12&t;0xFFF
 DECL|macro|EOF_FAT16
-mdefine_line|#define EOF_FAT16 0xFFFF
+mdefine_line|#define EOF_FAT16&t;0xFFFF
 DECL|macro|EOF_FAT32
-mdefine_line|#define EOF_FAT32 0x0FFFFFFF
+mdefine_line|#define EOF_FAT32&t;0x0FFFFFFF
 DECL|macro|EOF_FAT
-mdefine_line|#define EOF_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? EOF_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
+mdefine_line|#define EOF_FAT(s)&t;(MSDOS_SB(s)-&gt;fat_bits == 32 ? EOF_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
 DECL|macro|FAT_ENT_FREE
 mdefine_line|#define FAT_ENT_FREE&t;(0)
 DECL|macro|FAT_ENT_BAD
@@ -122,7 +130,7 @@ DECL|macro|VFAT_IOCTL_READDIR_BOTH
 mdefine_line|#define&t;VFAT_IOCTL_READDIR_BOTH&t;&t;_IOR(&squot;r&squot;, 1, struct dirent [2])
 DECL|macro|VFAT_IOCTL_READDIR_SHORT
 mdefine_line|#define&t;VFAT_IOCTL_READDIR_SHORT&t;_IOR(&squot;r&squot;, 2, struct dirent [2])
-multiline_comment|/* &n; * vfat shortname flags&n; */
+multiline_comment|/*&n; * vfat shortname flags&n; */
 DECL|macro|VFAT_SFN_DISPLAY_LOWER
 mdefine_line|#define VFAT_SFN_DISPLAY_LOWER&t;0x0001 /* convert to lowercase for display */
 DECL|macro|VFAT_SFN_DISPLAY_WIN95
@@ -133,15 +141,6 @@ DECL|macro|VFAT_SFN_CREATE_WIN95
 mdefine_line|#define VFAT_SFN_CREATE_WIN95&t;0x0100 /* emulate win95 rule for create */
 DECL|macro|VFAT_SFN_CREATE_WINNT
 mdefine_line|#define VFAT_SFN_CREATE_WINNT&t;0x0200 /* emulate winnt rule for create */
-multiline_comment|/*&n; * Conversion from and to little-endian byte order. (no-op on i386/i486)&n; *&n; * Naming: Ca_b_c, where a: F = from, T = to, b: LE = little-endian,&n; * BE = big-endian, c: W = word (16 bits), L = longword (32 bits)&n; */
-DECL|macro|CF_LE_W
-mdefine_line|#define CF_LE_W(v) le16_to_cpu(v)
-DECL|macro|CF_LE_L
-mdefine_line|#define CF_LE_L(v) le32_to_cpu(v)
-DECL|macro|CT_LE_W
-mdefine_line|#define CT_LE_W(v) cpu_to_le16(v)
-DECL|macro|CT_LE_L
-mdefine_line|#define CT_LE_L(v) cpu_to_le32(v)
 DECL|struct|fat_boot_sector
 r_struct
 id|fat_boot_sector
@@ -984,6 +983,17 @@ macro_line|#endif
 )brace
 multiline_comment|/* fat/cache.c */
 r_extern
+r_void
+id|fat_cache_inval_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|fat_access
 c_func
@@ -998,35 +1008,6 @@ id|nr
 comma
 r_int
 id|new_value
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fat_bmap
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-id|sector_t
-id|sector
-comma
-id|sector_t
-op_star
-id|phys
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fat_cache_inval_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
 )paren
 suffix:semicolon
 r_extern
@@ -1053,7 +1034,7 @@ id|dclus
 suffix:semicolon
 r_extern
 r_int
-id|fat_free
+id|fat_bmap
 c_func
 (paren
 r_struct
@@ -1061,8 +1042,12 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-id|skip
+id|sector_t
+id|sector
+comma
+id|sector_t
+op_star
+id|phys
 )paren
 suffix:semicolon
 multiline_comment|/* fat/dir.c */
@@ -1219,24 +1204,18 @@ id|fat_file_inode_operations
 suffix:semicolon
 r_extern
 r_int
-id|fat_get_block
+id|fat_notify_change
 c_func
 (paren
 r_struct
-id|inode
+id|dentry
 op_star
-id|inode
-comma
-id|sector_t
-id|iblock
+id|dentry
 comma
 r_struct
-id|buffer_head
+id|iattr
 op_star
-id|bh_result
-comma
-r_int
-id|create
+id|attr
 )paren
 suffix:semicolon
 r_extern
@@ -1342,22 +1321,6 @@ r_int
 id|isvfat
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|fat_notify_change
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_struct
-id|iattr
-op_star
-id|attr
-)paren
-suffix:semicolon
 multiline_comment|/* fat/misc.c */
 r_extern
 r_void
@@ -1415,19 +1378,6 @@ suffix:semicolon
 r_extern
 r_int
 id|fat_add_cluster
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|buffer_head
-op_star
-id|fat_extend_dir
 c_func
 (paren
 r_struct
