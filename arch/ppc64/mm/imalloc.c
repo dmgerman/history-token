@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|variable|imlist_lock
 id|rwlock_t
 id|imlist_lock
