@@ -2930,6 +2930,10 @@ c_cond
 id|x-&gt;km.seq
 op_eq
 id|seq
+op_logical_and
+id|x-&gt;km.state
+op_eq
+id|XFRM_STATE_ACQ
 )paren
 (brace
 id|xfrm_state_hold
