@@ -1669,7 +1669,7 @@ multiline_comment|/* 20*/
 id|s64
 id|last_access_time
 suffix:semicolon
-multiline_comment|/* Last time this mft record was&n;&t;&t;&t;&t;&t;   accessed. */
+multiline_comment|/* Time this mft record was last&n;&t;&t;&t;&t;&t;   accessed. */
 DECL|member|allocated_size
 multiline_comment|/* 28*/
 id|s64
