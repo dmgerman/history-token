@@ -19,6 +19,9 @@ macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
@@ -6080,6 +6083,13 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|variable|fb_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|fb_class
+suffix:semicolon
 multiline_comment|/**&n; *&t;register_framebuffer - registers a frame buffer device&n; *&t;@fb_info: frame buffer info structure&n; *&n; *&t;Registers a frame buffer device @fb_info.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 r_int
 DECL|function|register_framebuffer
@@ -6094,6 +6104,11 @@ id|fb_info
 (brace
 r_int
 id|i
+suffix:semicolon
+r_struct
+id|class_device
+op_star
+id|c
 suffix:semicolon
 r_if
 c_cond
@@ -6138,6 +6153,55 @@ id|fb_info-&gt;node
 op_assign
 id|i
 suffix:semicolon
+id|c
+op_assign
+id|class_simple_device_add
+c_func
+(paren
+id|fb_class
+comma
+id|MKDEV
+c_func
+(paren
+id|FB_MAJOR
+comma
+id|i
+)paren
+comma
+l_int|NULL
+comma
+l_string|&quot;fb%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|c
+)paren
+)paren
+(brace
+multiline_comment|/* Not fatal */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Unable to create class_device for framebuffer %d; errno = %ld&bslash;n&quot;
+comma
+id|i
+comma
+id|PTR_ERR
+c_func
+(paren
+id|c
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6391,6 +6455,18 @@ suffix:semicolon
 id|num_registered_fb
 op_decrement
 suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|FB_MAJOR
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6552,6 +6628,44 @@ comma
 id|FB_MAJOR
 )paren
 suffix:semicolon
+id|fb_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;graphics&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|fb_class
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Unable to create fb class; errno = %ld&bslash;n&quot;
+comma
+id|PTR_ERR
+c_func
+(paren
+id|fb_class
+)paren
+)paren
+suffix:semicolon
+id|fb_class
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_FB_OF
 r_if
 c_cond
