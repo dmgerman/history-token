@@ -17,6 +17,19 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;pci.h&quot;
+multiline_comment|/* legal IO pages under MAX_ISA_PORT.  This is to ensure we don&squot;t touch&n;   devices we don&squot;t have access to. */
+DECL|variable|io_page_mask
+r_int
+r_int
+id|io_page_mask
+suffix:semicolon
+DECL|variable|io_page_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|io_page_mask
+)paren
+suffix:semicolon
 multiline_comment|/* RTAS tokens */
 DECL|variable|read_pci_config
 r_static
@@ -1137,6 +1150,12 @@ id|hose-&gt;io_base_phys
 comma
 id|hose-&gt;io_base_virt
 )paren
+suffix:semicolon
+multiline_comment|/* Allow all IO */
+id|io_page_mask
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -2355,6 +2374,16 @@ id|hose-&gt;io_base_virt
 op_minus
 id|pci_io_base
 suffix:semicolon
+r_int
+r_int
+id|start
+comma
+id|end
+comma
+id|mask
+suffix:semicolon
+id|start
+op_assign
 id|dev-&gt;resource
 (braket
 id|i
@@ -2364,6 +2393,8 @@ id|start
 op_add_assign
 id|offset
 suffix:semicolon
+id|end
+op_assign
 id|dev-&gt;resource
 (braket
 id|i
@@ -2373,6 +2404,66 @@ id|end
 op_add_assign
 id|offset
 suffix:semicolon
+multiline_comment|/* Need to allow IO access to pages that are in the&n;                           ISA range */
+r_if
+c_cond
+(paren
+id|start
+OL
+id|MAX_ISA_PORT
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|end
+OG
+id|MAX_ISA_PORT
+)paren
+id|end
+op_assign
+id|MAX_ISA_PORT
+suffix:semicolon
+id|start
+op_rshift_assign
+id|PAGE_SHIFT
+suffix:semicolon
+id|end
+op_rshift_assign
+id|PAGE_SHIFT
+suffix:semicolon
+multiline_comment|/* get the range of pages for the map */
+id|mask
+op_assign
+(paren
+(paren
+l_int|1
+op_lshift
+(paren
+id|end
+op_plus
+l_int|1
+)paren
+)paren
+op_minus
+l_int|1
+)paren
+op_xor
+(paren
+(paren
+l_int|1
+op_lshift
+id|start
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|io_page_mask
+op_or_assign
+id|mask
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
