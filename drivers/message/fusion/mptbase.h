@@ -290,17 +290,10 @@ id|_MPT_FRAME_TRACKER
 (brace
 r_struct
 (brace
-DECL|member|forw
+DECL|member|list
 r_struct
-id|_MPT_FRAME_HDR
-op_star
-id|forw
-suffix:semicolon
-DECL|member|back
-r_struct
-id|_MPT_FRAME_HDR
-op_star
-id|back
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|arg1
 id|u32
@@ -411,26 +404,6 @@ id|MPT_FRAME_HDR
 suffix:semicolon
 DECL|macro|MPT_REQ_MSGFLAGS_DROPME
 mdefine_line|#define MPT_REQ_MSGFLAGS_DROPME&t;&t;0x80
-multiline_comment|/* Used for tracking the free request frames&n; * and free reply frames.&n; */
-DECL|struct|_MPT_Q_TRACKER
-r_typedef
-r_struct
-id|_MPT_Q_TRACKER
-(brace
-DECL|member|head
-id|MPT_FRAME_HDR
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-id|MPT_FRAME_HDR
-op_star
-id|tail
-suffix:semicolon
-DECL|typedef|MPT_Q_TRACKER
-)brace
-id|MPT_Q_TRACKER
-suffix:semicolon
 DECL|struct|_MPT_SGL_HDR
 r_typedef
 r_struct
@@ -462,48 +435,6 @@ suffix:semicolon
 DECL|typedef|MPT_SGL64_HDR
 )brace
 id|MPT_SGL64_HDR
-suffix:semicolon
-DECL|struct|_Q_ITEM
-r_typedef
-r_struct
-id|_Q_ITEM
-(brace
-DECL|member|forw
-r_struct
-id|_Q_ITEM
-op_star
-id|forw
-suffix:semicolon
-DECL|member|back
-r_struct
-id|_Q_ITEM
-op_star
-id|back
-suffix:semicolon
-DECL|typedef|Q_ITEM
-)brace
-id|Q_ITEM
-suffix:semicolon
-DECL|struct|_Q_TRACKER
-r_typedef
-r_struct
-id|_Q_TRACKER
-(brace
-DECL|member|head
-r_struct
-id|_Q_ITEM
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-r_struct
-id|_Q_ITEM
-op_star
-id|tail
-suffix:semicolon
-DECL|typedef|Q_TRACKER
-)brace
-id|Q_TRACKER
 suffix:semicolon
 multiline_comment|/*&n; *  Chip-specific stuff... FC929 delineates break between&n; *  FC and Parallel SCSI parts. Do NOT re-order.&n; */
 r_typedef
@@ -737,18 +668,6 @@ r_typedef
 r_struct
 id|_VirtDevice
 (brace
-DECL|member|forw
-r_struct
-id|_VirtDevice
-op_star
-id|forw
-suffix:semicolon
-DECL|member|back
-r_struct
-id|_VirtDevice
-op_star
-id|back
-suffix:semicolon
 DECL|member|device
 r_struct
 id|scsi_device
@@ -855,18 +774,6 @@ DECL|member|gone_timer
 r_struct
 id|timer_list
 id|gone_timer
-suffix:semicolon
-DECL|member|WaitQ
-id|ScsiCmndTracker
-id|WaitQ
-suffix:semicolon
-DECL|member|SentQ
-id|ScsiCmndTracker
-id|SentQ
-suffix:semicolon
-DECL|member|DoneQ
-id|ScsiCmndTracker
-id|DoneQ
 suffix:semicolon
 DECL|member|num_luns
 id|u32
@@ -1277,18 +1184,6 @@ r_typedef
 r_struct
 id|_MPT_ADAPTER
 (brace
-DECL|member|forw
-r_struct
-id|_MPT_ADAPTER
-op_star
-id|forw
-suffix:semicolon
-DECL|member|back
-r_struct
-id|_MPT_ADAPTER
-op_star
-id|back
-suffix:semicolon
 DECL|member|id
 r_int
 id|id
@@ -1419,7 +1314,8 @@ id|dma_addr_t
 id|ChainBufferDMA
 suffix:semicolon
 DECL|member|FreeChainQ
-id|MPT_Q_TRACKER
+r_struct
+id|list_head
 id|FreeChainQ
 suffix:semicolon
 DECL|member|FreeChainQlock
@@ -1460,7 +1356,8 @@ id|spinlock_t
 id|FreeQlock
 suffix:semicolon
 DECL|member|FreeQ
-id|MPT_Q_TRACKER
+r_struct
+id|list_head
 id|FreeQ
 suffix:semicolon
 multiline_comment|/* Pool of SCSI sense buffers for commands coming from&n;&t;&t; * the SCSI mid-layer.  We have one 256 byte sense buffer&n;&t;&t; * for each REQ entry.&n;&t;&t; */
@@ -1590,7 +1487,8 @@ id|dma_addr_t
 id|cached_fw_dma
 suffix:semicolon
 DECL|member|configQ
-id|Q_TRACKER
+r_struct
+id|list_head
 id|configQ
 suffix:semicolon
 multiline_comment|/* linked list of config. requests */
@@ -2013,16 +1911,6 @@ DECL|macro|MFPTR_2_MPT_INDEX
 mdefine_line|#define MFPTR_2_MPT_INDEX(ioc,mf) &bslash;&n;&t;(int)( ((u8*)mf - (u8*)(ioc)-&gt;req_frames) / (ioc)-&gt;req_sz )
 DECL|macro|MPT_INDEX_2_RFPTR
 mdefine_line|#define MPT_INDEX_2_RFPTR(ioc,idx) &bslash;&n;&t;(MPT_FRAME_HDR*)( (u8*)(ioc)-&gt;reply_frames + (ioc)-&gt;req_sz * (idx) )
-DECL|macro|Q_INIT
-mdefine_line|#define Q_INIT(q,type)  (q)-&gt;head = (q)-&gt;tail = (type*)(q)
-DECL|macro|Q_IS_EMPTY
-mdefine_line|#define Q_IS_EMPTY(q)   ((Q_ITEM*)(q)-&gt;head == (Q_ITEM*)(q))
-DECL|macro|Q_ADD_TAIL
-mdefine_line|#define Q_ADD_TAIL(qt,i,type) { &bslash;&n;&t;Q_TRACKER&t;*_qt = (Q_TRACKER*)(qt); &bslash;&n;&t;Q_ITEM&t;&t;*oldTail = _qt-&gt;tail; &bslash;&n;&t;(i)-&gt;forw = (type*)_qt; &bslash;&n;&t;(i)-&gt;back = (type*)oldTail; &bslash;&n;&t;oldTail-&gt;forw = (Q_ITEM*)(i); &bslash;&n;&t;_qt-&gt;tail = (Q_ITEM*)(i); &bslash;&n;}
-DECL|macro|Q_ADD_HEAD
-mdefine_line|#define Q_ADD_HEAD(qt,i,type) { &bslash;&n;&t;Q_TRACKER&t;*_qt = (Q_TRACKER*)(qt); &bslash;&n;&t;Q_ITEM&t;&t;*oldHead = _qt-&gt;head; &bslash;&n;&t;(i)-&gt;forw = (type*)oldHead; &bslash;&n;&t;(i)-&gt;back = (type*)_qt; &bslash;&n;&t;oldHead-&gt;back = (Q_ITEM*)(i); &bslash;&n;&t;_qt-&gt;head = (Q_ITEM*)(i); &bslash;&n;}
-DECL|macro|Q_DEL_ITEM
-mdefine_line|#define Q_DEL_ITEM(i) { &bslash;&n;&t;Q_ITEM  *_forw = (Q_ITEM*)(i)-&gt;forw; &bslash;&n;&t;Q_ITEM  *_back = (Q_ITEM*)(i)-&gt;back; &bslash;&n;&t;_back-&gt;forw = _forw; &bslash;&n;&t;_forw-&gt;back = _back; &bslash;&n;}
 DECL|macro|SWAB4
 mdefine_line|#define SWAB4(value) &bslash;&n;&t;(u32)(   (((value) &amp; 0x000000ff) &lt;&lt; 24) &bslash;&n;&t;       | (((value) &amp; 0x0000ff00) &lt;&lt; 8)  &bslash;&n;&t;       | (((value) &amp; 0x00ff0000) &gt;&gt; 8)  &bslash;&n;&t;       | (((value) &amp; 0xff000000) &gt;&gt; 24) )
 macro_line|#if defined(MPT_DEBUG) || defined(MPT_DEBUG_MSG_FRAME)
@@ -2167,15 +2055,6 @@ id|TMtimer
 suffix:semicolon
 multiline_comment|/* Timer for TM commands ONLY */
 multiline_comment|/* Pool of memory for holding SCpnts before doing&n;&t;&t; * OS callbacks. freeQ is the free pool.&n;&t;&t; */
-DECL|member|taskQ
-id|MPT_Q_TRACKER
-id|taskQ
-suffix:semicolon
-multiline_comment|/* TM request Q */
-DECL|member|taskQcnt
-r_int
-id|taskQcnt
-suffix:semicolon
 DECL|member|tmPending
 id|u8
 id|tmPending
@@ -2380,7 +2259,8 @@ r_struct
 id|_x_config_parms
 (brace
 DECL|member|linkage
-id|Q_ITEM
+r_struct
+id|list_head
 id|linkage
 suffix:semicolon
 multiline_comment|/* linked list */
