@@ -778,6 +778,10 @@ singleline_comment|// BUG ();
 r_if
 c_cond
 (paren
+id|io-&gt;status
+op_eq
+l_int|0
+op_logical_and
 id|urb-&gt;status
 op_logical_and
 id|urb-&gt;status
@@ -797,7 +801,13 @@ id|io-&gt;status
 op_assign
 id|urb-&gt;status
 suffix:semicolon
-multiline_comment|/* the previous urbs, and this one, completed already.&n;&t;&t; * unlink pending urbs so they won&squot;t rx/tx bad data.&n;&t;&t; */
+multiline_comment|/* the previous urbs, and this one, completed already.&n;&t;&t; * unlink pending urbs so they won&squot;t rx/tx bad data.&n;&t;&t; * careful: unlink can sometimes be synchronous...&n;&t;&t; */
+id|spin_unlock
+(paren
+op_amp
+id|io-&gt;lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -894,6 +904,12 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|spin_lock
+(paren
+op_amp
+id|io-&gt;lock
+)paren
+suffix:semicolon
 )brace
 id|urb-&gt;dev
 op_assign
@@ -1656,6 +1672,12 @@ op_assign
 op_minus
 id|ECONNRESET
 suffix:semicolon
+id|spin_unlock
+(paren
+op_amp
+id|io-&gt;lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1723,6 +1745,12 @@ id|retval
 )paren
 suffix:semicolon
 )brace
+id|spin_lock
+(paren
+op_amp
+id|io-&gt;lock
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
 (paren
