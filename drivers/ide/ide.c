@@ -7967,6 +7967,7 @@ id|max_hwif
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Be VERY CAREFUL changing this: note hardcoded indexes below&n;&t;&t; * (-8, -9, -10) are reserved to ease the hardcoding.&n;&t;&t; */
+r_static
 r_const
 r_char
 op_star
