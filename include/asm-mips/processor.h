@@ -31,11 +31,6 @@ id|vced_count
 comma
 id|vcei_count
 suffix:semicolon
-multiline_comment|/*&n; * Bus types (default is ISA, but people can check others with these..)&n; */
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
-DECL|macro|MCA_bus__is_a_macro
-mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
 macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/*&n; * User space process size: 2GB. This is hardcoded into a few places,&n; * so don&squot;t change it unless you know what you are doing.&n; */
 DECL|macro|TASK_SIZE

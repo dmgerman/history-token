@@ -676,11 +676,6 @@ DECL|macro|getCx86
 mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
 DECL|macro|setCx86
 mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
-multiline_comment|/*&n; * Bus types (default is ISA, but people can check others with these..)&n; */
-r_extern
-r_int
-id|MCA_bus
-suffix:semicolon
 DECL|function|__monitor
 r_static
 r_inline

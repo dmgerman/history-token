@@ -350,11 +350,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
-DECL|macro|MCA_bus__is_a_macro
-mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
 multiline_comment|/* Copy and release all segment info associated with a VM */
 DECL|macro|copy_segments
 mdefine_line|#define copy_segments(p, mm)&t;do { } while (0)

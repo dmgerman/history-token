@@ -345,11 +345,6 @@ l_string|&quot;ax&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
-DECL|macro|MCA_bus__is_a_macro
-mdefine_line|#define MCA_bus__is_a_macro
 multiline_comment|/*&n; * User space process size: 512GB - 1GB (default).&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0x0000007fc0000000UL)

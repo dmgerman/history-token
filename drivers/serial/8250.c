@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -7566,7 +7567,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-macro_line|#ifdef CONFIG_MCA
 multiline_comment|/*&n;&t; * Don&squot;t probe for MCA ports on non-MCA machines.&n;&t; */
 r_if
 c_cond
@@ -7580,7 +7580,6 @@ id|MCA_bus
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Find the region that we can probe for.  This in turn&n;&t; * tells us whether we can probe for the type of port.&n;&t; */
 id|ret
 op_assign

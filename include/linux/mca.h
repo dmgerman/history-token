@@ -2,18 +2,16 @@ multiline_comment|/*&n; * Header for Microchannel Architecture Bus&n; * Written 
 macro_line|#ifndef _LINUX_MCA_H
 DECL|macro|_LINUX_MCA_H
 mdefine_line|#define _LINUX_MCA_H
-multiline_comment|/* FIXME: This shouldn&squot;t happen, but we need everything that previously&n; * included mca.h to compile.  Take it out later when the MCA #includes&n; * are sorted out */
 macro_line|#include &lt;linux/device.h&gt;
-multiline_comment|/* get the platform specific defines */
 macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;asm/mca.h&gt;
-macro_line|#endif
-multiline_comment|/* The detection of MCA bus is done in the real mode (using BIOS).&n; * The information is exported to the protected code, where this&n; * variable is set to one in case MCA bus was detected.&n; */
-macro_line|#ifndef MCA_bus__is_a_macro
 r_extern
 r_int
 id|MCA_bus
 suffix:semicolon
+macro_line|#else
+DECL|macro|MCA_bus
+mdefine_line|#define MCA_bus 0
 macro_line|#endif
 multiline_comment|/* This sets up an information callback for /proc/mca/slot?.  The&n; * function is called with the buffer, slot, and device pointer (or&n; * some equally informative context information, or nothing, if you&n; * prefer), and is expected to put useful information into the&n; * buffer.  The adapter name, id, and POS registers get printed&n; * before this is called though, so don&squot;t do it again.&n; *&n; * This should be called with a NULL procfn when a module&n; * unregisters, thus preventing kernel crashes and other such&n; * nastiness.&n; */
 DECL|typedef|MCA_ProcFn
