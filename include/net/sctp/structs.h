@@ -647,6 +647,20 @@ id|sctp_addr
 op_star
 )paren
 suffix:semicolon
+DECL|member|skb_iif
+r_int
+(paren
+op_star
+id|skb_iif
+)paren
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|sk
+)paren
+suffix:semicolon
 DECL|member|net_header_len
 id|__u16
 id|net_header_len
@@ -762,6 +776,22 @@ r_int
 (paren
 op_star
 id|bind_verify
+)paren
+(paren
+r_struct
+id|sctp_opt
+op_star
+comma
+r_union
+id|sctp_addr
+op_star
+)paren
+suffix:semicolon
+DECL|member|send_verify
+r_int
+(paren
+op_star
+id|send_verify
 )paren
 (paren
 r_struct
@@ -1166,7 +1196,7 @@ id|__u16
 id|out
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_void
@@ -1370,7 +1400,8 @@ id|sinfo
 suffix:semicolon
 multiline_comment|/* Which association does this belong to?  */
 DECL|member|asoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1468,7 +1499,8 @@ id|sctp_make_chunk
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 id|__u8
@@ -1517,7 +1549,8 @@ id|sk_buff
 op_star
 comma
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_struct
@@ -1580,7 +1613,8 @@ op_star
 id|sctp_packet_phandler_t
 )paren
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -1628,17 +1662,22 @@ id|get_prepend_chunk
 suffix:semicolon
 multiline_comment|/* This packet should advertise ECN capability to the network&n;&t; * via the ECT bit.&n;&t; */
 DECL|member|ecn_capable
-r_int
+r_char
 id|ecn_capable
 suffix:semicolon
 multiline_comment|/* This packet contains a COOKIE-ECHO chunk. */
 DECL|member|has_cookie_echo
-r_int
+r_char
 id|has_cookie_echo
+suffix:semicolon
+multiline_comment|/* This packet containsa SACK chunk. */
+DECL|member|has_sack
+r_char
+id|has_sack
 suffix:semicolon
 multiline_comment|/* SCTP cannot fragment this packet. So let ip fragment it. */
 DECL|member|ipfragok
-r_int
+r_char
 id|ipfragok
 suffix:semicolon
 DECL|member|malloced
@@ -1813,7 +1852,8 @@ id|af_specific
 suffix:semicolon
 multiline_comment|/* Which association do we belong to?  */
 DECL|member|asoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -2017,7 +2057,8 @@ r_struct
 id|sctp_transport
 op_star
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -2245,7 +2286,8 @@ r_struct
 id|sctp_outq
 (brace
 DECL|member|asoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -2260,6 +2302,11 @@ r_int
 id|out_qlen
 suffix:semicolon
 multiline_comment|/* Total length of queued data chunks. */
+multiline_comment|/* Error of send failed, may used in SCTP_SEND_FAILED event. */
+DECL|member|error
+r_int
+id|error
+suffix:semicolon
 multiline_comment|/* These are control chunks we want to send.  */
 DECL|member|control
 r_struct
@@ -2327,7 +2374,8 @@ op_star
 id|sctp_outq_new
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -2335,7 +2383,8 @@ r_void
 id|sctp_outq_init
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_struct
@@ -2538,7 +2587,7 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|flags
@@ -2556,7 +2605,7 @@ id|sctp_addr
 op_star
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_int
@@ -2594,7 +2643,8 @@ id|sctp_bind_addrs_to_raw
 c_func
 (paren
 r_const
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -2603,30 +2653,30 @@ op_star
 id|addrs_len
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_int
 id|sctp_raw_to_bind_addrs
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
 id|__u8
 op_star
-id|raw_addr_list
+id|raw
 comma
 r_int
-id|addrs_len
+id|len
 comma
-r_int
-r_int
+id|__u16
 id|port
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 id|sctp_scope_t
@@ -2772,7 +2822,7 @@ op_star
 id|proto
 suffix:semicolon
 multiline_comment|/* Associations: A list of current associations and mappings&n;&t; *            to the data consumers for each association. This&n;&t; *            may be in the form of a hash table or other&n;&t; *            implementation dependent structure. The data&n;&t; *            consumers may be process identification&n;&t; *            information such as file descriptors, named pipe&n;&t; *            pointer, or table pointers dependent on how SCTP&n;&t; *            is implemented.&n;&t; */
-multiline_comment|/* This is really a list of sctp_association_t entries. */
+multiline_comment|/* This is really a list of struct sctp_association entries. */
 DECL|member|asocs
 r_struct
 id|list_head
@@ -2887,7 +2937,7 @@ id|sock
 op_star
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_void
@@ -2921,12 +2971,14 @@ c_func
 id|sctp_endpoint_t
 op_star
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_endpoint_lookup_assoc
 c_func
@@ -2997,22 +3049,24 @@ id|sctp_verify_init
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
 id|sctp_cid_t
-id|cid
 comma
 id|sctp_init_chunk_t
 op_star
 id|peer_init
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|err_chunk
@@ -3022,9 +3076,9 @@ r_int
 id|sctp_process_init
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|asoc
 comma
 id|sctp_cid_t
 id|cid
@@ -3033,23 +3087,23 @@ r_const
 r_union
 id|sctp_addr
 op_star
-id|peer_addr
+id|peer
 comma
 id|sctp_init_chunk_t
 op_star
-id|peer_init
+id|init
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_int
 id|sctp_process_param
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|asoc
 comma
 r_union
 id|sctp_params
@@ -3059,10 +3113,10 @@ r_const
 r_union
 id|sctp_addr
 op_star
-id|peer_addr
+id|from
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 id|__u32
@@ -3072,7 +3126,6 @@ c_func
 r_const
 id|sctp_endpoint_t
 op_star
-id|ep
 )paren
 suffix:semicolon
 id|__u32
@@ -3082,7 +3135,6 @@ c_func
 r_const
 id|sctp_endpoint_t
 op_star
-id|ep
 )paren
 suffix:semicolon
 multiline_comment|/* RFC2960&n; *&n; * 12. Recommended Transmission Control Block (TCB) Parameters&n; *&n; * This section details a recommended set of parameters that should&n; * be contained within the TCB for an implementation. This section is&n; * for illustrative purposes and should not be deemed as requirements&n; * on an implementation or as an exhaustive list of all parameters&n; * inside an SCTP TCB. Each implementation may need its own additional&n; * parameters for optimization.&n; */
@@ -3102,7 +3154,7 @@ r_struct
 id|list_head
 id|asocs
 suffix:semicolon
-multiline_comment|/* This is a signature that lets us know that this is a&n;&t; * sctp_association_t data structure.  Used for mapping an&n;&t; * association id to an association.&n;&t; */
+multiline_comment|/* This is a signature that lets us know that this is a&n;&t; * struct sctp_association data structure.  Used for mapping an&n;&t; * association id to an association.&n;&t; */
 DECL|member|eyecatcher
 id|__u32
 id|eyecatcher
@@ -3515,7 +3567,8 @@ multiline_comment|/* Recover the outter association structure. */
 DECL|function|sctp_assoc
 r_static
 r_inline
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_assoc
 c_func
@@ -3525,7 +3578,8 @@ op_star
 id|base
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -3536,7 +3590,8 @@ c_func
 (paren
 id|base
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|base
 )paren
@@ -3546,7 +3601,8 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* These are function signatures for manipulating associations.  */
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_association_new
 c_func
@@ -3564,15 +3620,17 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_association_init
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_const
@@ -3588,14 +3646,15 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_void
 id|sctp_association_free
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -3603,7 +3662,8 @@ r_void
 id|sctp_association_put
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -3611,7 +3671,8 @@ r_void
 id|sctp_association_hold
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -3621,7 +3682,8 @@ op_star
 id|sctp_assoc_choose_shutdown_transport
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -3629,7 +3691,8 @@ r_void
 id|sctp_assoc_update_retran_path
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -3640,7 +3703,8 @@ id|sctp_assoc_lookup_paddr
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_const
@@ -3655,7 +3719,8 @@ op_star
 id|sctp_assoc_add_peer
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_const
@@ -3666,7 +3731,7 @@ id|address
 comma
 r_const
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_void
@@ -3692,7 +3757,8 @@ op_star
 id|sctp_assoc_lookup_tsn
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 id|__u32
@@ -3704,7 +3770,8 @@ op_star
 id|sctp_assoc_is_match
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_const
@@ -3722,7 +3789,8 @@ r_void
 id|sctp_assoc_migrate
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_struct
@@ -3734,13 +3802,15 @@ r_void
 id|sctp_assoc_update
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|dst
+id|old
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|src
+r_new
 )paren
 suffix:semicolon
 id|__u32
@@ -3811,7 +3881,8 @@ r_int
 id|sctp_assoc_set_bind_addr_from_ep
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_int
@@ -3821,13 +3892,15 @@ r_int
 id|sctp_assoc_set_bind_addr_from_cookie
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 id|sctp_cookie_t
 op_star
 comma
 r_int
+id|gfp
 )paren
 suffix:semicolon
 r_int
@@ -3852,7 +3925,8 @@ op_star
 id|sctp_get_ecne_prepend
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -3862,7 +3936,8 @@ op_star
 id|sctp_get_no_prepend
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren

@@ -23,6 +23,10 @@ DECL|member|msg_flags
 r_int
 id|msg_flags
 suffix:semicolon
+DECL|member|iif
+r_int
+id|iif
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Retrieve the skb this event sits inside of. */
