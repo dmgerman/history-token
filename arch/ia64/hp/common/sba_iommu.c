@@ -24,6 +24,11 @@ mdefine_line|#define PFX &quot;IOC: &quot;
 multiline_comment|/*&n;** This option allows cards capable of 64bit DMA to bypass the IOMMU.  If&n;** not defined, all DMA will be 32bit and go through the TLB.&n;** There&squot;s potentially a conflict in the bio merge code with us&n;** advertising an iommu, but then bypassing it.  Since I/O MMU bypassing&n;** appears to give more performance than bio-level virtual merging, we&squot;ll&n;** do the former for now.&n;*/
 DECL|macro|ALLOW_IOV_BYPASS
 mdefine_line|#define ALLOW_IOV_BYPASS
+macro_line|#ifdef CONFIG_PROC_FS
+multiline_comment|/* turn it off for now; without per-CPU counters, it&squot;s too much of a scalability bottleneck: */
+DECL|macro|SBA_PROC_FS
+macro_line|# define SBA_PROC_FS 0
+macro_line|#endif
 multiline_comment|/*&n;** If a device prefetches beyond the end of a valid pdir entry, it will cause&n;** a hard failure, ie. MCA.  Version 3.0 and later of the zx1 LBA should&n;** disconnect on 4k boundaries and prevent such issues.  If the device is&n;** particularly agressive, this option will keep the entire pdir valid such&n;** that prefetching will hit a valid address.  This could severely impact&n;** error containment, and is therefore off by default.  The page that is&n;** used for spill-over is poisoned, so that should help debugging somewhat.&n;*/
 DECL|macro|FULL_VALID_PDIR
 macro_line|#undef FULL_VALID_PDIR
@@ -227,7 +232,7 @@ id|DELAYED_RESOURCE_CNT
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 DECL|macro|SBA_SEARCH_SAMPLE
 mdefine_line|#define SBA_SEARCH_SAMPLE&t;0x100
 DECL|member|avg_search
@@ -1348,7 +1353,7 @@ id|size
 op_rshift
 id|IOVP_SHIFT
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 r_int
 r_int
 id|itc_start
@@ -1527,7 +1532,7 @@ comma
 id|ioc-&gt;res_bitshift
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 (brace
 r_int
 r_int
@@ -1721,7 +1726,7 @@ op_star
 id|res_ptr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|ioc-&gt;used_pages
 op_sub_assign
 id|bits_not_wanted
@@ -2236,7 +2241,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n; &t;&t;** Device is bit capable of DMA&squot;ing to the buffer...&n;&t;&t;** just return the PCI address of ptr&n; &t;&t;*/
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2349,7 +2354,7 @@ l_string|&quot;Sanity check failed&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|ioc-&gt;msingle_calls
 op_increment
 suffix:semicolon
@@ -2575,7 +2580,7 @@ id|ioc-&gt;ibase
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;** Address does not fall w/in IOVA, must be bypassing&n;&t;&t;*/
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2683,7 +2688,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|ioc-&gt;usingle_calls
 op_increment
 suffix:semicolon
@@ -3323,7 +3328,7 @@ comma
 id|IOVP_SIZE
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|ioc-&gt;msg_pages
 op_add_assign
 id|cnt
@@ -3824,7 +3829,7 @@ id|sg
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3883,7 +3888,7 @@ comma
 id|dir
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 multiline_comment|/*&n;&t;&t;** Should probably do some stats counting, but trying to&n;&t;&t;** be precise quickly starts wasting CPU time.&n;&t;&t;*/
 macro_line|#endif
 r_return
@@ -3930,7 +3935,7 @@ l_string|&quot;Check before sba_map_sg()&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|ioc-&gt;msg_calls
 op_increment
 suffix:semicolon
@@ -4088,7 +4093,7 @@ c_func
 id|ioc
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|ioc-&gt;usg_calls
 op_increment
 suffix:semicolon
@@ -4141,7 +4146,7 @@ comma
 id|dir
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 multiline_comment|/*&n;&t;&t;** This leaves inconsistent data in the stats, but we can&squot;t&n;&t;&t;** tell which sg lists were mapped by map_single and which&n;&t;&t;** were coalesced to a single entry.  The stats are fun,&n;&t;&t;** but speed is more important.&n;&t;&t;*/
 id|ioc-&gt;usg_pages
 op_add_assign
@@ -5501,7 +5506,7 @@ id|ioc
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n;**&n;**   SBA initialization code (HW and SW)&n;**&n;**   o identify SBA chip itself&n;**   o FIXME: initialize DMA hints for reasonable defaults&n;**&n;**************************************************************************/
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 r_static
 r_void
 op_star
@@ -6693,7 +6698,7 @@ id|b
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if SBA_PROC_FS
 id|ioc_proc_init
 c_func
 (paren
