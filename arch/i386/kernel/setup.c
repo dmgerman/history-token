@@ -5907,6 +5907,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
+id|acpi_boot_table_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|acpi_boot_init
 c_func
 (paren

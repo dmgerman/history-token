@@ -2159,6 +2159,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/*&n;&t; * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;&t; * Call this early for SRAT node setup.&n;&t; */
+id|acpi_boot_table_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 id|numa_initmem_init
 c_func
@@ -2366,7 +2374,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
-multiline_comment|/*&n;        * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;        * Must do this after paging_init (due to reliance on fixmap, and thus&n;        * the bootmem allocator) but before get_smp_config (to allow parsing&n;        * of MADT).&n;        */
+multiline_comment|/*&n;&t; * Read APIC and some other early information from ACPI tables.&n;&t; */
 id|acpi_boot_init
 c_func
 (paren
