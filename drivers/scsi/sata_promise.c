@@ -6082,8 +6082,8 @@ r_if
 c_cond
 (paren
 id|tf-&gt;protocol
-op_ne
-id|ATA_PROT_DMA
+op_eq
+id|ATA_PROT_PIO
 )paren
 id|ata_tf_load_mmio
 c_func
@@ -6115,8 +6115,8 @@ r_if
 c_cond
 (paren
 id|tf-&gt;protocol
-op_ne
-id|ATA_PROT_DMA
+op_eq
+id|ATA_PROT_PIO
 )paren
 id|ata_exec_command_mmio
 c_func
