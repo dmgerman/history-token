@@ -790,7 +790,7 @@ multiline_comment|/* Hardware periodic table */
 id|ehci-&gt;periodic
 op_assign
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|dma_alloc_coherent
@@ -801,7 +801,7 @@ id|ehci-&gt;periodic_size
 op_star
 r_sizeof
 (paren
-id|u32
+id|__le32
 )paren
 comma
 op_amp

@@ -178,7 +178,7 @@ id|index
 comma
 id|offset
 suffix:semicolon
-id|u32
+id|__be32
 id|c
 suffix:semicolon
 r_int

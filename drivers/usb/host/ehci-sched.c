@@ -26,7 +26,7 @@ id|ehci_shadow
 op_star
 id|periodic
 comma
-r_int
+id|__le32
 id|tag
 )paren
 (brace
@@ -97,7 +97,7 @@ id|ehci-&gt;pshadow
 id|frame
 )braket
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|hw_p
 op_assign
@@ -230,7 +230,7 @@ r_int
 id|uframe
 )paren
 (brace
-id|u32
+id|__le32
 op_star
 id|hw_p
 op_assign
@@ -601,7 +601,7 @@ r_union
 id|ehci_shadow
 id|here
 suffix:semicolon
-id|u32
+id|__le32
 id|type
 suffix:semicolon
 id|here
@@ -1270,7 +1270,7 @@ id|ehci_qh
 op_star
 id|qh
 comma
-id|u32
+id|__le32
 op_star
 id|c_maskp
 )paren
@@ -1315,10 +1315,7 @@ suffix:semicolon
 op_star
 id|c_maskp
 op_assign
-id|cpu_to_le32
-(paren
 l_int|0
-)paren
 suffix:semicolon
 r_goto
 id|done
@@ -1419,7 +1416,7 @@ suffix:semicolon
 r_int
 id|uframe
 suffix:semicolon
-id|u32
+id|__le32
 id|c_mask
 suffix:semicolon
 r_int
@@ -3712,6 +3709,9 @@ id|mod
 suffix:semicolon
 id|stream-&gt;splits
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|stream-&gt;raw_mask
 op_lshift
 (paren
@@ -3719,11 +3719,6 @@ id|uframe
 op_amp
 l_int|7
 )paren
-suffix:semicolon
-id|cpu_to_le32s
-(paren
-op_amp
-id|stream-&gt;splits
 )paren
 suffix:semicolon
 r_return
@@ -7007,7 +7002,7 @@ comma
 op_star
 id|q_p
 suffix:semicolon
-id|u32
+id|__le32
 id|type
 comma
 op_star

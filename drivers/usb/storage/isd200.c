@@ -607,11 +607,11 @@ r_struct
 id|read_capacity_data
 (brace
 DECL|member|LogicalBlockAddress
-id|__u32
+id|__be32
 id|LogicalBlockAddress
 suffix:semicolon
 DECL|member|BytesPerBlock
-id|__u32
+id|__be32
 id|BytesPerBlock
 suffix:semicolon
 )brace
@@ -3100,10 +3100,11 @@ multiline_comment|/* ATA Command Identify successful */
 r_int
 id|i
 suffix:semicolon
-id|__u16
+id|__be16
 op_star
 id|src
-comma
+suffix:semicolon
+id|__u16
 op_star
 id|dest
 suffix:semicolon
@@ -3393,7 +3394,7 @@ multiline_comment|/* Fill in vendor identification fields */
 id|src
 op_assign
 (paren
-id|__u16
+id|__be16
 op_star
 )paren
 id|id-&gt;model
@@ -3437,7 +3438,7 @@ suffix:semicolon
 id|src
 op_assign
 (paren
-id|__u16
+id|__be16
 op_star
 )paren
 (paren
@@ -3485,7 +3486,7 @@ suffix:semicolon
 id|src
 op_assign
 (paren
-id|__u16
+id|__be16
 op_star
 )paren
 id|id-&gt;fw_rev
