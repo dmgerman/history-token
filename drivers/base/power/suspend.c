@@ -107,7 +107,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_suspend - Save state and stop all devices in system.&n; *&t;@state:&t;&t;Power state to put each device in. &n; *&n; *&t;Walk the dpm_active list, call -&gt;suspend() for each device, and move&n; *&t;it to dpm_off. &n; *&t;Check the return value for each. If it returns 0, then we move the&n; *&t;the device to the dpm_off list. If it returns -EAGAIN, we move it to &n; *&t;the dpm_off_irq list. If we get a different error, try and back out. &n; *&n; *&t;If we hit a failure with any of the devices, call device_resume()&n; *&t;above to bring the suspended devices back to life. &n; *&n; *&t;Note this function leaves dpm_sem held to&n; *&t;a) block other devices from registering.&n; *&t;b) prevent other PM operations from happening after we&squot;ve begun.&n; *&t;c) make sure we&squot;re exclusive when we disable interrupts.&n; *&n; *&t;device_resume() will release dpm_sem after restoring state to &n; *&t;all devices (as will this on error). You must call it once you&squot;ve &n; *&t;called device_suspend().&n; */
+multiline_comment|/**&n; *&t;device_suspend - Save state and stop all devices in system.&n; *&t;@state:&t;&t;Power state to put each device in. &n; *&n; *&t;Walk the dpm_active list, call -&gt;suspend() for each device, and move&n; *&t;it to dpm_off. &n; *&t;Check the return value for each. If it returns 0, then we move the&n; *&t;the device to the dpm_off list. If it returns -EAGAIN, we move it to &n; *&t;the dpm_off_irq list. If we get a different error, try and back out. &n; *&n; *&t;If we hit a failure with any of the devices, call device_resume()&n; *&t;above to bring the suspended devices back to life. &n; *&n; *&t;Note this function leaves dpm_sem held to&n; *&t;a) block other devices from registering.&n; *&t;b) prevent other PM operations from happening after we&squot;ve begun.&n; *&t;c) make sure we&squot;re exclusive when we disable interrupts.&n; *&n; */
 DECL|function|device_suspend
 r_int
 id|device_suspend
@@ -180,6 +180,13 @@ suffix:semicolon
 )brace
 id|Done
 suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|dpm_sem
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

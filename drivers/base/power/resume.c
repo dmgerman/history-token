@@ -41,7 +41,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_resume - Restore state of each device in system.&n; *&n; *&t;Restore normal device state and release the dpm_sem.&n; */
+multiline_comment|/**&n; *&t;device_resume - Restore state of each device in system.&n; *&n; *&t;Walk the dpm_off list, remove each entry, resume the device,&n; *&t;then add it to the dpm_active list. &n; */
 DECL|function|device_resume
 r_void
 id|device_resume
@@ -50,6 +50,13 @@ c_func
 r_void
 )paren
 (brace
+id|down
+c_func
+(paren
+op_amp
+id|dpm_sem
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
