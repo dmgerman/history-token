@@ -921,6 +921,48 @@ r_int
 id|type
 )paren
 suffix:semicolon
+multiline_comment|/* generic routines for agp&gt;=3 */
+r_int
+id|agp3_generic_fetch_size
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|agp3_generic_tlbflush
+c_func
+(paren
+r_struct
+id|agp_memory
+op_star
+id|mem
+)paren
+suffix:semicolon
+r_int
+id|agp3_generic_configure
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|agp3_generic_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* aperture sizes have been standardised since v3 */
+DECL|macro|AGP_GENERIC_SIZES_ENTRIES
+mdefine_line|#define AGP_GENERIC_SIZES_ENTRIES 11
+r_extern
+r_struct
+id|aper_size_info_16
+id|agp3_generic_sizes
+(braket
+)braket
+suffix:semicolon
 r_extern
 r_int
 id|agp_off
@@ -939,9 +981,15 @@ mdefine_line|#define AGPCMD&t;&t;0x8
 DECL|macro|AGPNISTAT
 mdefine_line|#define AGPNISTAT&t;0xc
 DECL|macro|AGPCTRL
-mdefine_line|#define AGPCTRL                 0x10
+mdefine_line|#define AGPCTRL&t;&t;0x10
+DECL|macro|AGPAPSIZE
+mdefine_line|#define AGPAPSIZE&t;0x14
 DECL|macro|AGPNEPG
 mdefine_line|#define AGPNEPG&t;&t;0x16
+DECL|macro|AGPGARTLO
+mdefine_line|#define AGPGARTLO&t;0x18
+DECL|macro|AGPGARTHI
+mdefine_line|#define AGPGARTHI&t;0x1c
 DECL|macro|AGPNICMD
 mdefine_line|#define AGPNICMD&t;0x20
 DECL|macro|AGP_MAJOR_VERSION_SHIFT
@@ -950,6 +998,8 @@ DECL|macro|AGP_MINOR_VERSION_SHIFT
 mdefine_line|#define AGP_MINOR_VERSION_SHIFT&t;(16)
 DECL|macro|AGPSTAT_RQ_DEPTH
 mdefine_line|#define AGPSTAT_RQ_DEPTH&t;(0xff000000)
+DECL|macro|AGPSTAT_RQ_DEPTH_SHIFT
+mdefine_line|#define AGPSTAT_RQ_DEPTH_SHIFT&t;24
 DECL|macro|AGPSTAT_CAL_MASK
 mdefine_line|#define AGPSTAT_CAL_MASK&t;(1&lt;&lt;12|1&lt;&lt;11|1&lt;&lt;10)
 DECL|macro|AGPSTAT_ARQSZ
@@ -976,5 +1026,9 @@ DECL|macro|AGPSTAT3_8X
 mdefine_line|#define AGPSTAT3_8X&t;&t;(1&lt;&lt;1)
 DECL|macro|AGPSTAT3_4X
 mdefine_line|#define AGPSTAT3_4X&t;&t;(1)
+DECL|macro|AGPCTRL_APERENB
+mdefine_line|#define AGPCTRL_APERENB&t;&t;(1&lt;&lt;8)
+DECL|macro|AGPCTRL_GTLBEN
+mdefine_line|#define AGPCTRL_GTLBEN&t;&t;(1&lt;&lt;7)
 macro_line|#endif&t;/* _AGP_BACKEND_PRIV_H */
 eof
