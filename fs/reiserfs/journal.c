@@ -7674,6 +7674,19 @@ id|reiserfs_mounted_fs_count
 op_decrement
 suffix:semicolon
 multiline_comment|/* wait for all commits to finish */
+id|cancel_delayed_work
+c_func
+(paren
+op_amp
+id|SB_JOURNAL
+c_func
+(paren
+id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|j_work
+)paren
+suffix:semicolon
 id|flush_workqueue
 c_func
 (paren
