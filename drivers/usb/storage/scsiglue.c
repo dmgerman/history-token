@@ -562,9 +562,9 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* This resets the device port, and simulates the device&n; * disconnect/reconnect for all drivers which have claimed&n; * interfaces, including ourself. */
+multiline_comment|/* This resets the device port */
+multiline_comment|/* It refuses to work if there&squot;s more than one interface in&n;   this device, so that other users are not affected. */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-multiline_comment|/* FIXME: This needs to be re-examined in the face of the new&n; * hotplug system -- this will implicitly cause a detach/reattach of&n; * usb-storage, which is not what we want now.&n; *&n; * Can we just skip over usb-storage in the while loop?&n; */
 DECL|function|usb_storage_bus_reset
 r_static
 r_int
@@ -646,6 +646,12 @@ id|result
 op_assign
 op_minus
 id|EBUSY
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;cannot reset a multiinterface device. failing to reset.&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 id|US_DEBUGP
