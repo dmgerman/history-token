@@ -3,7 +3,7 @@ macro_line|#ifndef __XFS_ERROR_H__
 DECL|macro|__XFS_ERROR_H__
 mdefine_line|#define __XFS_ERROR_H__
 DECL|macro|prdev
-mdefine_line|#define prdev(fmt,dev,args...) &bslash;&n;&t;printk(&quot;XFS: device 0x%x- &quot; fmt &quot;&bslash;n&quot;, dev, ## args)
+mdefine_line|#define prdev(fmt,dev,args...) &bslash;&n;&t;printk(&quot;XFS: device 0x%x- &quot; fmt &quot;&bslash;n&quot;, (unsigned)dev, ## args)
 DECL|macro|XFS_ERECOVER
 mdefine_line|#define XFS_ERECOVER&t;1&t;/* Failure to recover log */
 DECL|macro|XFS_ELOGSTAT
