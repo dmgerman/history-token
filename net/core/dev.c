@@ -4557,7 +4557,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETPOLL_RX
+macro_line|#ifdef CONFIG_NETPOLL
 r_if
 c_cond
 (paren
@@ -5352,7 +5352,7 @@ r_int
 r_int
 id|type
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETPOLL_RX
+macro_line|#ifdef CONFIG_NETPOLL
 r_if
 c_cond
 (paren
