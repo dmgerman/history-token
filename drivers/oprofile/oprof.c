@@ -457,8 +457,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* this is our fallback case */
-id|oprofile_timer_init
+id|oprofile_arch_init
 c_func
 (paren
 op_amp
@@ -478,10 +477,7 @@ id|KERN_INFO
 l_string|&quot;oprofile: using timer interrupt.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|oprofile_arch_init
+id|oprofile_timer_init
 c_func
 (paren
 op_amp
