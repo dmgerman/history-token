@@ -4234,6 +4234,13 @@ id|tp-&gt;retrans_out
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Which congestion algorithim is in use on the connection.&n; */
+DECL|macro|tcp_is_vegas
+mdefine_line|#define tcp_is_vegas(__tp)&t;((__tp)-&gt;adv_cong == TCP_VEGAS)
+DECL|macro|tcp_is_westwood
+mdefine_line|#define tcp_is_westwood(__tp)&t;((__tp)-&gt;adv_cong == TCP_WESTWOOD)
+DECL|macro|tcp_is_bic
+mdefine_line|#define tcp_is_bic(__tp)&t;((__tp)-&gt;adv_cong == TCP_BIC)
 multiline_comment|/* Recalculate snd_ssthresh, we want to set it to:&n; *&n; * Reno:&n; * &t;one half the current congestion window, but no&n; *&t;less than two segments&n; *&n; * BIC:&n; *&t;behave like Reno until low_window is reached,&n; *&t;then increase congestion window slowly&n; */
 DECL|function|tcp_recalc_ssthresh
 r_static
@@ -4251,7 +4258,11 @@ id|tp
 r_if
 c_cond
 (paren
-id|sysctl_tcp_bic
+id|tcp_is_bic
+c_func
+(paren
+id|tp
+)paren
 )paren
 (brace
 r_if
@@ -4326,9 +4337,6 @@ suffix:semicolon
 multiline_comment|/* Stop taking Vegas samples for now. */
 DECL|macro|tcp_vegas_disable
 mdefine_line|#define tcp_vegas_disable(__tp)&t;((__tp)-&gt;vegas.doing_vegas_now = 0)
-multiline_comment|/* Is this TCP connection using Vegas (regardless of whether it is taking&n; * Vegas measurements at the current time)?&n; */
-DECL|macro|tcp_is_vegas
-mdefine_line|#define tcp_is_vegas(__tp)&t;((__tp)-&gt;vegas.do_vegas)
 DECL|function|tcp_vegas_enable
 r_static
 r_inline
@@ -4367,7 +4375,7 @@ DECL|macro|tcp_vegas_enabled
 mdefine_line|#define tcp_vegas_enabled(__tp)&t;((__tp)-&gt;vegas.doing_vegas_now)
 r_extern
 r_void
-id|tcp_vegas_init
+id|tcp_ca_init
 c_func
 (paren
 r_struct
@@ -7516,7 +7524,11 @@ id|rtt_seq
 r_if
 c_cond
 (paren
-id|sysctl_tcp_westwood
+id|tcp_is_westwood
+c_func
+(paren
+id|tp
+)paren
 )paren
 id|tp-&gt;westwood.rtt
 op_assign
@@ -7570,7 +7582,15 @@ id|skb
 r_if
 c_cond
 (paren
-id|sysctl_tcp_westwood
+id|tcp_is_westwood
+c_func
+(paren
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+)paren
 )paren
 id|__tcp_westwood_fast_bw
 c_func
@@ -7602,7 +7622,15 @@ id|skb
 r_if
 c_cond
 (paren
-id|sysctl_tcp_westwood
+id|tcp_is_westwood
+c_func
+(paren
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+)paren
 )paren
 id|__tcp_westwood_slow_bw
 c_func
@@ -7665,7 +7693,11 @@ id|tp
 )paren
 (brace
 r_return
-id|sysctl_tcp_westwood
+id|tcp_is_westwood
+c_func
+(paren
+id|tp
+)paren
 ques
 c_cond
 id|__tcp_westwood_bw_rttmin
@@ -7698,7 +7730,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sysctl_tcp_westwood
+id|tcp_is_westwood
+c_func
+(paren
+id|tp
+)paren
 )paren
 (brace
 id|ssthresh
@@ -7748,7 +7784,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sysctl_tcp_westwood
+id|tcp_is_westwood
+c_func
+(paren
+id|tp
+)paren
 )paren
 (brace
 id|cwnd
