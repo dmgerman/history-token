@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/vcache.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1958,8 +1959,6 @@ id|mm-&gt;page_table_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a quick page-table lookup for a single page.&n; * mm-&gt;page_table_lock must be held.&n; */
-r_static
-r_inline
 r_struct
 id|page
 op_star
@@ -2148,7 +2147,7 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Given a physical address, is there a useful struct page pointing to&n; * it?  This may become more complex in the future if we start dealing&n; * with IO-aperture pages in kiobufs.&n; */
@@ -4355,6 +4354,16 @@ op_star
 id|page_table
 )paren
 (brace
+id|invalidate_vcache
+c_func
+(paren
+id|address
+comma
+id|vma-&gt;vm_mm
+comma
+id|new_page
+)paren
+suffix:semicolon
 id|flush_page_to_ram
 c_func
 (paren

@@ -786,6 +786,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* notify userspace of device entry */
+id|dev_hotplug
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;add&quot;
+)paren
+suffix:semicolon
 id|register_done
 suffix:colon
 r_if
@@ -1021,6 +1030,14 @@ id|platform_notify_remove
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* notify userspace that this device is about to disappear */
+id|dev_hotplug
+(paren
+id|dev
+comma
+l_string|&quot;remove&quot;
 )paren
 suffix:semicolon
 id|device_detach
