@@ -2950,7 +2950,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|LockPage
+id|SetPageLocked
 c_func
 (paren
 id|page
@@ -11532,7 +11532,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|LockPage
+id|SetPageLocked
 c_func
 (paren
 id|page

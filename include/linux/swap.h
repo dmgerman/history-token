@@ -254,10 +254,6 @@ id|nr_async_pages
 suffix:semicolon
 r_extern
 id|atomic_t
-id|page_cache_size
-suffix:semicolon
-r_extern
-id|atomic_t
 id|buffermem_pages
 suffix:semicolon
 r_extern

@@ -23,16 +23,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
-DECL|variable|page_cache_size
-id|atomic_t
-id|page_cache_size
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Lock ordering:&n; *&t;pagemap_lru_lock ==&gt; page_lock ==&gt; i_shared_lock&n; */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
@@ -105,11 +95,10 @@ suffix:semicolon
 id|mapping-&gt;nrpages
 op_decrement
 suffix:semicolon
-id|atomic_dec
+id|dec_page_state
 c_func
 (paren
-op_amp
-id|page_cache_size
+id|nr_pagecache
 )paren
 suffix:semicolon
 )brace
@@ -230,13 +219,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_and_set_bit
+id|TestSetPageDirty
 c_func
 (paren
-id|PG_dirty
-comma
-op_amp
-id|page-&gt;flags
+id|page
 )paren
 )paren
 (brace
@@ -2196,10 +2182,6 @@ r_int
 id|offset
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|page_cache_get
 c_func
 (paren
@@ -2225,10 +2207,8 @@ l_int|0
 r_goto
 id|nomem
 suffix:semicolon
-id|flags
-op_assign
 id|page-&gt;flags
-op_amp
+op_and_assign
 op_complement
 (paren
 l_int|1
@@ -2238,10 +2218,6 @@ op_or
 l_int|1
 op_lshift
 id|PG_error
-op_or
-l_int|1
-op_lshift
-id|PG_dirty
 op_or
 l_int|1
 op_lshift
@@ -2256,14 +2232,16 @@ op_lshift
 id|PG_checked
 )paren
 suffix:semicolon
-id|page-&gt;flags
-op_assign
-id|flags
-op_or
+id|SetPageLocked
+c_func
 (paren
-l_int|1
-op_lshift
-id|PG_locked
+id|page
+)paren
+suffix:semicolon
+id|ClearPageDirty
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 id|___add_to_page_cache
@@ -2811,17 +2789,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_and_clear_bit
+id|TestClearPageLocked
 c_func
 (paren
-id|PG_locked
-comma
-op_amp
-(paren
 id|page
-)paren
-op_member_access_from_pointer
-id|flags
 )paren
 )paren
 id|BUG

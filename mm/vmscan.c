@@ -1719,7 +1719,7 @@ op_logical_and
 id|mapping
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * It is not critical here to write it only if&n;&t;&t;&t; * the page is unmapped beause any direct writer&n;&t;&t;&t; * like O_DIRECT would set the PG_dirty bitflag&n;&t;&t;&t; * on the phisical page after having successfully&n;&t;&t;&t; * pinned it and after the I/O to the page is finished,&n;&t;&t;&t; * so the direct writes to the page cannot get lost.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * It is not critical here to write it only if&n;&t;&t;&t; * the page is unmapped beause any direct writer&n;&t;&t;&t; * like O_DIRECT would set the page&squot;s dirty bitflag&n;&t;&t;&t; * on the phisical page after having successfully&n;&t;&t;&t; * pinned it and after the I/O to the page is finished,&n;&t;&t;&t; * so the direct writes to the page cannot get lost.&n;&t;&t;&t; */
 r_int
 (paren
 op_star

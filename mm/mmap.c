@@ -90,11 +90,9 @@ suffix:semicolon
 multiline_comment|/* The page cache contains buffer pages these days.. */
 id|free
 op_assign
-id|atomic_read
+id|get_page_cache_size
 c_func
 (paren
-op_amp
-id|page_cache_size
 )paren
 suffix:semicolon
 id|free

@@ -296,7 +296,7 @@ r_int
 r_int
 r_private
 suffix:semicolon
-multiline_comment|/* fs-private opaque data */
+multiline_comment|/* mapping-private opaque data */
 multiline_comment|/*&n;&t; * On machines where all RAM is mapped into kernel address space,&n;&t; * we can simply calculate the virtual address. On machines with&n;&t; * highmem some memory is mapped into kernel virtual memory&n;&t; * dynamically, so we need a place to store that address.&n;&t; * Note that this field could be 16 bits on x86 ... ;)&n;&t; *&n;&t; * Architectures with slow multiplication can define&n;&t; * WANT_PAGE_VIRTUAL in asm/page.h&n;&t; */
 macro_line|#if defined(CONFIG_HIGHMEM) || defined(WANT_PAGE_VIRTUAL)
 DECL|member|virtual
@@ -321,27 +321,28 @@ DECL|macro|page_count
 mdefine_line|#define page_count(p)&t;&t;atomic_read(&amp;(p)-&gt;count)
 DECL|macro|set_page_count
 mdefine_line|#define set_page_count(p,v) &t;atomic_set(&amp;(p)-&gt;count, v)
-multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped&n; * out. Some of them might not even exist (eg empty_bad_page)...&n; *&n; * Multiple processes may &quot;see&quot; the same page. E.g. for untouched&n; * mappings of /dev/null, all processes see the same page full of&n; * zeroes, and text pages of executables and shared libraries have&n; * only one copy in memory, at most, normally.&n; *&n; * For the non-reserved pages, page-&gt;count denotes a reference count.&n; *   page-&gt;count == 0 means the page is free.&n; *   page-&gt;count == 1 means the page is used for exactly one purpose&n; *   (e.g. a private data page of one process).&n; *&n; * A page may be used for kmalloc() or anyone else who does a&n; * __get_free_page(). In this case the page-&gt;count is at least 1, and&n; * all other fields are unused but should be 0 or NULL. The&n; * management of this page is the responsibility of the one who uses&n; * it.&n; *&n; * The other pages (we may call them &quot;process pages&quot;) are completely&n; * managed by the Linux memory manager: I/O, buffers, swapping etc.&n; * The following discussion applies only to them.&n; *&n; * A page may belong to an inode&squot;s memory mapping. In this case,&n; * page-&gt;mapping is the pointer to the inode, and page-&gt;index is the&n; * file offset of the page, in units of PAGE_CACHE_SIZE.&n; *&n; * A page contains an opaque `private&squot; member, which belongs to the&n; * page&squot;s address_space.  Usually, this is the address of a circular&n; * list of the page&squot;s disk buffers.&n; *&n; * The PG_private bitflag is set if page-&gt;private contains a valid&n; * value.&n; * For pages belonging to inodes, the page-&gt;count is the number of&n; * attaches, plus 1 if `private&squot; contains something, plus one for&n; * the page cache itself.&n; *&n; * All pages belonging to an inode are in these doubly linked lists:&n; * mapping-&gt;clean_pages, mapping-&gt;dirty_pages and mapping-&gt;locked_pages;&n; * using the page-&gt;list list_head. These fields are also used for&n; * freelist managemet (when page-&gt;count==0).&n; *&n; * There is also a per-mapping radix tree mapping index to the page&n; * in memory if present. The tree is rooted at mapping-&gt;root.  &n; *&n; * All process pages can do I/O:&n; * - inode pages may need to be read from disk,&n; * - inode pages which have been modified and are MAP_SHARED may need&n; *   to be written to disk,&n; * - private pages which have been modified may need to be swapped out&n; *   to swap space and (later) to be read back into memory.&n; * During disk I/O, PG_locked is used. This bit is set before I/O&n; * and reset when I/O completes. page_waitqueue(page) is a wait queue of all&n; * tasks waiting for the I/O on this page to complete.&n; * PG_uptodate tells whether the page&squot;s contents is valid.&n; * When a read completes, the page becomes uptodate, unless a disk I/O&n; * error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a&n; * PG_referenced bit, which is set any time the system accesses&n; * that page through the (mapping,index) hash table. This referenced&n; * bit, together with the referenced bit in the page tables, is used&n; * to manipulate page-&gt;age and move the page across the active,&n; * inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the&n; * active, inactive_dirty and inactive_clean lists are protected by&n; * the pagemap_lru_lock, and *NOT* by the usual PG_locked bit!&n; *&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain&n; * parts of the address space.&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic&n; * code guarantees that this bit is cleared for a page when it first&n; * is entered into the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual&n; * address space, they need to be kmapped separately for doing IO on&n; * the pages. The struct page (these bits with information) are always&n; * mapped into kernel address space...&n; */
-DECL|macro|PG_locked
-mdefine_line|#define PG_locked&t;&t; 0&t;/* Page is locked. Don&squot;t touch. */
+multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped&n; * out. Some of them might not even exist (eg empty_bad_page)...&n; *&n; * Multiple processes may &quot;see&quot; the same page. E.g. for untouched&n; * mappings of /dev/null, all processes see the same page full of&n; * zeroes, and text pages of executables and shared libraries have&n; * only one copy in memory, at most, normally.&n; *&n; * For the non-reserved pages, page-&gt;count denotes a reference count.&n; *   page-&gt;count == 0 means the page is free.&n; *   page-&gt;count == 1 means the page is used for exactly one purpose&n; *   (e.g. a private data page of one process).&n; *&n; * A page may be used for kmalloc() or anyone else who does a&n; * __get_free_page(). In this case the page-&gt;count is at least 1, and&n; * all other fields are unused but should be 0 or NULL. The&n; * management of this page is the responsibility of the one who uses&n; * it.&n; *&n; * The other pages (we may call them &quot;process pages&quot;) are completely&n; * managed by the Linux memory manager: I/O, buffers, swapping etc.&n; * The following discussion applies only to them.&n; *&n; * A page may belong to an inode&squot;s memory mapping. In this case,&n; * page-&gt;mapping is the pointer to the inode, and page-&gt;index is the&n; * file offset of the page, in units of PAGE_CACHE_SIZE.&n; *&n; * A page contains an opaque `private&squot; member, which belongs to the&n; * page&squot;s address_space.  Usually, this is the address of a circular&n; * list of the page&squot;s disk buffers.&n; *&n; * The PG_private bitflag is set if page-&gt;private contains a valid&n; * value.&n; * For pages belonging to inodes, the page-&gt;count is the number of&n; * attaches, plus 1 if `private&squot; contains something, plus one for&n; * the page cache itself.&n; *&n; * All pages belonging to an inode are in these doubly linked lists:&n; * mapping-&gt;clean_pages, mapping-&gt;dirty_pages and mapping-&gt;locked_pages;&n; * using the page-&gt;list list_head. These fields are also used for&n; * freelist managemet (when page-&gt;count==0).&n; *&n; * There is also a per-mapping radix tree mapping index to the page&n; * in memory if present. The tree is rooted at mapping-&gt;root.  &n; *&n; * All process pages can do I/O:&n; * - inode pages may need to be read from disk,&n; * - inode pages which have been modified and are MAP_SHARED may need&n; *   to be written to disk,&n; * - private pages which have been modified may need to be swapped out&n; *   to swap space and (later) to be read back into memory.&n; * During disk I/O, PG_locked_dontuse is used. This bit is set before I/O&n; * and reset when I/O completes. page_waitqueue(page) is a wait queue of all&n; * tasks waiting for the I/O on this page to complete.&n; * PG_uptodate tells whether the page&squot;s contents is valid.&n; * When a read completes, the page becomes uptodate, unless a disk I/O&n; * error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a&n; * PG_referenced bit, which is set any time the system accesses&n; * that page through the (mapping,index) hash table. This referenced&n; * bit, together with the referenced bit in the page tables, is used&n; * to manipulate page-&gt;age and move the page across the active,&n; * inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the&n; * active, inactive_dirty and inactive_clean lists are protected by&n; * the pagemap_lru_lock, and *NOT* by the usual PG_locked_dontuse bit!&n; *&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain&n; * parts of the address space.&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic&n; * code guarantees that this bit is cleared for a page when it first&n; * is entered into the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual&n; * address space, they need to be kmapped separately for doing IO on&n; * the pages. The struct page (these bits with information) are always&n; * mapped into kernel address space...&n; */
+multiline_comment|/*&n; * Don&squot;t use the *_dontuse flags.  Use the macros.  Otherwise&n; * you&squot;ll break locked- and dirty-page accounting.&n; */
+DECL|macro|PG_locked_dontuse
+mdefine_line|#define PG_locked_dontuse&t; 0&t;/* Page is locked. Don&squot;t touch. */
 DECL|macro|PG_error
 mdefine_line|#define PG_error&t;&t; 1
 DECL|macro|PG_referenced
 mdefine_line|#define PG_referenced&t;&t; 2
 DECL|macro|PG_uptodate
 mdefine_line|#define PG_uptodate&t;&t; 3
-DECL|macro|PG_dirty
-mdefine_line|#define PG_dirty&t;&t; 4
+DECL|macro|PG_dirty_dontuse
+mdefine_line|#define PG_dirty_dontuse&t; 4
 DECL|macro|PG_unused
-mdefine_line|#define PG_unused&t;&t; 5
+mdefine_line|#define PG_unused&t;&t; 5&t;/* err.  This is unused. */
 DECL|macro|PG_lru
 mdefine_line|#define PG_lru&t;&t;&t; 6
 DECL|macro|PG_active
 mdefine_line|#define PG_active&t;&t; 7
 DECL|macro|PG_slab
-mdefine_line|#define PG_slab&t;&t;&t; 8
+mdefine_line|#define PG_slab&t;&t;&t; 8&t;/* slab debug (Suparna wants this) */
 DECL|macro|PG_skip
-mdefine_line|#define PG_skip&t;&t;&t;10
+mdefine_line|#define PG_skip&t;&t;&t;10&t;/* kill me now: obsolete */
 DECL|macro|PG_highmem
 mdefine_line|#define PG_highmem&t;&t;11
 DECL|macro|PG_checked
@@ -354,43 +355,8 @@ DECL|macro|PG_launder
 mdefine_line|#define PG_launder&t;&t;15&t;/* written out by VM pressure.. */
 DECL|macro|PG_private
 mdefine_line|#define PG_private&t;&t;16&t;/* Has something at -&gt;private */
-multiline_comment|/* Make it prettier to test the above... */
-DECL|macro|UnlockPage
-mdefine_line|#define UnlockPage(page)&t;unlock_page(page)
-DECL|macro|Page_Uptodate
-mdefine_line|#define Page_Uptodate(page)&t;test_bit(PG_uptodate, &amp;(page)-&gt;flags)
-DECL|macro|SetPageUptodate
-mdefine_line|#define SetPageUptodate(page)&t;set_bit(PG_uptodate, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageUptodate
-mdefine_line|#define ClearPageUptodate(page)&t;clear_bit(PG_uptodate, &amp;(page)-&gt;flags)
-DECL|macro|PageDirty
-mdefine_line|#define PageDirty(page)&t;&t;test_bit(PG_dirty, &amp;(page)-&gt;flags)
-DECL|macro|SetPageDirty
-mdefine_line|#define SetPageDirty(page)&t;set_bit(PG_dirty, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageDirty
-mdefine_line|#define ClearPageDirty(page)&t;clear_bit(PG_dirty, &amp;(page)-&gt;flags)
-DECL|macro|PageLocked
-mdefine_line|#define PageLocked(page)&t;test_bit(PG_locked, &amp;(page)-&gt;flags)
-DECL|macro|LockPage
-mdefine_line|#define LockPage(page)&t;&t;set_bit(PG_locked, &amp;(page)-&gt;flags)
-DECL|macro|TryLockPage
-mdefine_line|#define TryLockPage(page)&t;test_and_set_bit(PG_locked, &amp;(page)-&gt;flags)
-DECL|macro|PageChecked
-mdefine_line|#define PageChecked(page)&t;test_bit(PG_checked, &amp;(page)-&gt;flags)
-DECL|macro|SetPageChecked
-mdefine_line|#define SetPageChecked(page)&t;set_bit(PG_checked, &amp;(page)-&gt;flags)
-DECL|macro|PageLaunder
-mdefine_line|#define PageLaunder(page)&t;test_bit(PG_launder, &amp;(page)-&gt;flags)
-DECL|macro|SetPageLaunder
-mdefine_line|#define SetPageLaunder(page)&t;set_bit(PG_launder, &amp;(page)-&gt;flags)
-DECL|macro|__SetPageReserved
-mdefine_line|#define __SetPageReserved(page)&t;__set_bit(PG_reserved, &amp;(page)-&gt;flags)
-DECL|macro|SetPagePrivate
-mdefine_line|#define SetPagePrivate(page)&t;set_bit(PG_private, &amp;(page)-&gt;flags)
-DECL|macro|ClearPagePrivate
-mdefine_line|#define ClearPagePrivate(page)&t;clear_bit(PG_private, &amp;(page)-&gt;flags)
-DECL|macro|PagePrivate
-mdefine_line|#define PagePrivate(page)&t;test_bit(PG_private, &amp;(page)-&gt;flags)
+multiline_comment|/*&n; * FIXME: take this include out, include page-flags.h in&n; * files which need it (119 of them)&n; */
+macro_line|#include &lt;linux/page-flags.h&gt;
 multiline_comment|/*&n; * The zone field is never updated after free_area_init_core()&n; * sets it, so none of the operations on it need to be atomic.&n; */
 DECL|macro|NODE_SHIFT
 mdefine_line|#define NODE_SHIFT 4
@@ -494,52 +460,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The first mb is necessary to safely close the critical section opened by the&n; * TryLockPage(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page).&n; */
-DECL|macro|PageError
-mdefine_line|#define PageError(page)&t;&t;test_bit(PG_error, &amp;(page)-&gt;flags)
-DECL|macro|SetPageError
-mdefine_line|#define SetPageError(page)&t;set_bit(PG_error, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageError
-mdefine_line|#define ClearPageError(page)&t;clear_bit(PG_error, &amp;(page)-&gt;flags)
-DECL|macro|PageReferenced
-mdefine_line|#define PageReferenced(page)&t;test_bit(PG_referenced, &amp;(page)-&gt;flags)
-DECL|macro|SetPageReferenced
-mdefine_line|#define SetPageReferenced(page)&t;set_bit(PG_referenced, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageReferenced
-mdefine_line|#define ClearPageReferenced(page)&t;clear_bit(PG_referenced, &amp;(page)-&gt;flags)
-DECL|macro|PageTestandClearReferenced
-mdefine_line|#define PageTestandClearReferenced(page)&t;test_and_clear_bit(PG_referenced, &amp;(page)-&gt;flags)
-DECL|macro|PageSlab
-mdefine_line|#define PageSlab(page)&t;&t;test_bit(PG_slab, &amp;(page)-&gt;flags)
-DECL|macro|PageSetSlab
-mdefine_line|#define PageSetSlab(page)&t;set_bit(PG_slab, &amp;(page)-&gt;flags)
-DECL|macro|PageClearSlab
-mdefine_line|#define PageClearSlab(page)&t;clear_bit(PG_slab, &amp;(page)-&gt;flags)
-DECL|macro|PageReserved
-mdefine_line|#define PageReserved(page)&t;test_bit(PG_reserved, &amp;(page)-&gt;flags)
-DECL|macro|PageActive
-mdefine_line|#define PageActive(page)&t;test_bit(PG_active, &amp;(page)-&gt;flags)
-DECL|macro|SetPageActive
-mdefine_line|#define SetPageActive(page)&t;set_bit(PG_active, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageActive
-mdefine_line|#define ClearPageActive(page)&t;clear_bit(PG_active, &amp;(page)-&gt;flags)
-DECL|macro|PageLRU
-mdefine_line|#define PageLRU(page)&t;&t;test_bit(PG_lru, &amp;(page)-&gt;flags)
-DECL|macro|TestSetPageLRU
-mdefine_line|#define TestSetPageLRU(page)&t;test_and_set_bit(PG_lru, &amp;(page)-&gt;flags)
-DECL|macro|TestClearPageLRU
-mdefine_line|#define TestClearPageLRU(page)&t;test_and_clear_bit(PG_lru, &amp;(page)-&gt;flags)
-macro_line|#ifdef CONFIG_HIGHMEM
-DECL|macro|PageHighMem
-mdefine_line|#define PageHighMem(page)&t;&t;test_bit(PG_highmem, &amp;(page)-&gt;flags)
-macro_line|#else
-DECL|macro|PageHighMem
-mdefine_line|#define PageHighMem(page)&t;&t;0 /* needed to optimize away at compile time */
-macro_line|#endif
-DECL|macro|SetPageReserved
-mdefine_line|#define SetPageReserved(page)&t;&t;set_bit(PG_reserved, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageReserved
-mdefine_line|#define ClearPageReserved(page)&t;&t;clear_bit(PG_reserved, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * Error return values for the *_nopage functions&n; */
 DECL|macro|NOPAGE_SIGBUS
 mdefine_line|#define NOPAGE_SIGBUS&t;(NULL)
@@ -1948,6 +1868,15 @@ c_func
 r_void
 op_star
 id|addr
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|get_page_cache_size
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

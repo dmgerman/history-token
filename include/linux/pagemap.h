@@ -62,11 +62,6 @@ multiline_comment|/*&n; * From a kernel address, get the &quot;struct page *&quo
 DECL|macro|page_cache_entry
 mdefine_line|#define page_cache_entry(x)&t;virt_to_page(x)
 r_extern
-id|atomic_t
-id|page_cache_size
-suffix:semicolon
-multiline_comment|/* # of pages currently in the page cache */
-r_extern
 r_struct
 id|page
 op_star
@@ -255,11 +250,10 @@ suffix:semicolon
 id|mapping-&gt;nrpages
 op_increment
 suffix:semicolon
-id|atomic_inc
+id|inc_page_state
 c_func
 (paren
-op_amp
-id|page_cache_size
+id|nr_pagecache
 )paren
 suffix:semicolon
 )brace
