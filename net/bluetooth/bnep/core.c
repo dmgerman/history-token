@@ -2543,6 +2543,16 @@ comma
 l_string|&quot;bnep%d&quot;
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|dev-&gt;broadcast
+comma
+l_int|0xff
+comma
+id|ETH_ALEN
+)paren
+suffix:semicolon
 multiline_comment|/* This is rx header therefor addresses are swaped.&n;&t; * ie eh.h_dest is our local address. */
 id|memcpy
 c_func
