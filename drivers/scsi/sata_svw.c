@@ -236,7 +236,7 @@ op_lshift
 l_int|8
 )paren
 comma
-id|ioaddr-&gt;error_addr
+id|ioaddr-&gt;feature_addr
 )paren
 suffix:semicolon
 id|writew
@@ -328,7 +328,7 @@ c_func
 (paren
 id|tf-&gt;feature
 comma
-id|ioaddr-&gt;error_addr
+id|ioaddr-&gt;feature_addr
 )paren
 suffix:semicolon
 id|writew
@@ -532,7 +532,7 @@ c_func
 r_void
 op_star
 )paren
-id|ap-&gt;ioaddr.cmdstat_addr
+id|ap-&gt;ioaddr.status_addr
 )paren
 suffix:semicolon
 )brace
@@ -980,6 +980,8 @@ id|base
 op_plus
 id|K2_SATA_TF_DATA_OFFSET
 suffix:semicolon
+id|port-&gt;feature_addr
+op_assign
 id|port-&gt;error_addr
 op_assign
 id|base
@@ -1016,12 +1018,16 @@ id|base
 op_plus
 id|K2_SATA_TF_DEVICE_OFFSET
 suffix:semicolon
-id|port-&gt;cmdstat_addr
+id|port-&gt;command_addr
+op_assign
+id|port-&gt;status_addr
 op_assign
 id|base
 op_plus
 id|K2_SATA_TF_CMDSTAT_OFFSET
 suffix:semicolon
+id|port-&gt;altstatus_addr
+op_assign
 id|port-&gt;ctl_addr
 op_assign
 id|base

@@ -5922,6 +5922,8 @@ id|port-&gt;data_addr
 op_assign
 id|base
 suffix:semicolon
+id|port-&gt;feature_addr
+op_assign
 id|port-&gt;error_addr
 op_assign
 id|base
@@ -5958,12 +5960,16 @@ id|base
 op_plus
 l_int|0x18
 suffix:semicolon
-id|port-&gt;cmdstat_addr
+id|port-&gt;command_addr
+op_assign
+id|port-&gt;status_addr
 op_assign
 id|base
 op_plus
 l_int|0x1c
 suffix:semicolon
+id|port-&gt;altstatus_addr
+op_assign
 id|port-&gt;ctl_addr
 op_assign
 id|base
