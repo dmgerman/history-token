@@ -1186,12 +1186,13 @@ id|list_del
 c_func
 (paren
 op_amp
-id|rq-&gt;queue
+id|rq-&gt;queuelist
 )paren
 suffix:semicolon
-id|rq-&gt;tagged
-op_assign
-l_int|0
+id|rq-&gt;flags
+op_and_assign
+op_complement
+id|REQ_QUEUED
 suffix:semicolon
 )brace
 r_else
