@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 multiline_comment|/*&n; * The following structures are usually initialized by ACPI or&n; * similar mechanisms and describe the NUMA characteristics of the machine.&n; */
 DECL|variable|num_memblks
@@ -34,9 +33,9 @@ DECL|variable|numa_slit
 id|u8
 id|numa_slit
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 op_star
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 multiline_comment|/* Identify which cnode a physical address resides on */

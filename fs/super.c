@@ -417,7 +417,7 @@ c_func
 id|deactivate_super
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;grab_super&t;- acquire an active reference&n; *&t;@s&t;- reference we are trying to make active&n; *&n; *&t;Tries to acquire an active reference.  grab_super() is used when we&n; * &t;had just found a superblock in super_blocks or fs_type-&gt;fs_supers&n; *&t;and want to turn it into a full-blown active reference.  grab_super()&n; *&t;is called with sb_lock held and drops it.  Returns 1 in case of&n; *&t;success, 0 if we had failed (superblock contents was already dead or&n; *&t;dying when grab_super() had been called).&n; */
+multiline_comment|/**&n; *&t;grab_super - acquire an active reference&n; *&t;@s: reference we are trying to make active&n; *&n; *&t;Tries to acquire an active reference.  grab_super() is used when we&n; * &t;had just found a superblock in super_blocks or fs_type-&gt;fs_supers&n; *&t;and want to turn it into a full-blown active reference.  grab_super()&n; *&t;is called with sb_lock held and drops it.  Returns 1 in case of&n; *&t;success, 0 if we had failed (superblock contents was already dead or&n; *&t;dying when grab_super() had been called).&n; */
 DECL|function|grab_super
 r_static
 r_int
@@ -1361,7 +1361,7 @@ id|mutex
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;get_super&t;-&t;get the superblock of a device&n; *&t;@dev: device to get the superblock for&n; *&t;&n; *&t;Scans the superblock list and finds the superblock of the file system&n; *&t;mounted on the device given. %NULL is returned if no match is found.&n; */
+multiline_comment|/**&n; *&t;get_super - get the superblock of a device&n; *&t;@bdev: device to get the superblock for&n; *&t;&n; *&t;Scans the superblock list and finds the superblock of the file system&n; *&t;mounted on the device given. %NULL is returned if no match is found.&n; */
 DECL|function|get_super
 r_struct
 id|super_block
@@ -1781,7 +1781,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;do_remount_sb&t;-&t;asks filesystem to change mount options.&n; *&t;@sb:&t;superblock in question&n; *&t;@flags:&t;numeric part of options&n; *&t;@data:&t;the rest of options&n; *&n; *&t;Alters the mount options of a mounted file system.&n; */
+multiline_comment|/**&n; *&t;do_remount_sb - asks filesystem to change mount options.&n; *&t;@sb:&t;superblock in question&n; *&t;@flags:&t;numeric part of options&n; *&t;@data:&t;the rest of options&n; *      @force: whether or not to force the change&n; *&n; *&t;Alters the mount options of a mounted file system.&n; */
 DECL|function|do_remount_sb
 r_int
 id|do_remount_sb

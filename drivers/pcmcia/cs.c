@@ -63,8 +63,7 @@ r_char
 op_star
 id|release
 op_assign
-l_string|&quot;Linux Kernel Card Services &quot;
-id|CS_RELEASE
+l_string|&quot;Linux Kernel Card Services&quot;
 suffix:semicolon
 DECL|variable|options
 r_static
@@ -87,9 +86,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Linux Kernel Card Services &quot;
-id|CS_RELEASE
-l_string|&quot;&bslash;n  options:&quot;
+l_string|&quot;Linux Kernel Card Services&bslash;noptions:&quot;
 id|OPTIONS
 )paren
 suffix:semicolon
@@ -1622,6 +1619,17 @@ c_func
 id|s
 )paren
 suffix:semicolon
+id|s-&gt;ops
+op_member_access_from_pointer
+id|set_socket
+c_func
+(paren
+id|s
+comma
+op_amp
+id|s-&gt;socket
+)paren
+suffix:semicolon
 id|s-&gt;irq.AssignedIRQ
 op_assign
 id|s-&gt;irq.Config
@@ -1655,38 +1663,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Should not the socket be forced quiet as well?  e.g. turn off Vcc */
-multiline_comment|/* Without these changes, the socket is left hot, even though card-services */
-multiline_comment|/* realizes that no card is in place. */
-id|s-&gt;socket.flags
-op_and_assign
-op_complement
-id|SS_OUTPUT_ENA
-suffix:semicolon
-id|s-&gt;socket.Vpp
-op_assign
-l_int|0
-suffix:semicolon
-id|s-&gt;socket.Vcc
-op_assign
-l_int|0
-suffix:semicolon
-id|s-&gt;socket.io_irq
-op_assign
-l_int|0
-suffix:semicolon
-id|s-&gt;ops
-op_member_access_from_pointer
-id|set_socket
-c_func
-(paren
-id|s
-comma
-op_amp
-id|s-&gt;socket
-)paren
-suffix:semicolon
-multiline_comment|/* */
 macro_line|#ifdef CONFIG_CARDBUS
 id|cb_free
 c_func
@@ -1796,6 +1772,40 @@ op_amp
 id|s-&gt;c_region
 )paren
 suffix:semicolon
+(brace
+r_int
+id|status
+suffix:semicolon
+id|skt-&gt;ops
+op_member_access_from_pointer
+id|get_status
+c_func
+(paren
+id|skt
+comma
+op_amp
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|SS_POWERON
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PCMCIA: socket %p: *** DANGER *** unable to remove socket power&bslash;n&quot;
+comma
+id|skt
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/* shutdown_socket */
 multiline_comment|/*======================================================================&n;&n;    The central event handler.  Send_event() sends an event to all&n;    valid clients.  Parse_events() interprets the event bits from&n;    a card status change report.  Do_shutdown() handles the high&n;    priority stuff associated with a card removal.&n;    &n;======================================================================*/
@@ -2505,6 +2515,40 @@ id|vcc_settle
 )paren
 )paren
 suffix:semicolon
+id|skt-&gt;ops
+op_member_access_from_pointer
+id|get_status
+c_func
+(paren
+id|skt
+comma
+op_amp
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|status
+op_amp
+id|SS_POWERON
+)paren
+)paren
+(brace
+id|pcmcia_error
+c_func
+(paren
+id|skt
+comma
+l_string|&quot;unable to apply power.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|CS_BAD_TYPE
+suffix:semicolon
+)brace
 r_return
 id|socket_reset
 c_func
@@ -2706,6 +2750,17 @@ id|init
 c_func
 (paren
 id|skt
+)paren
+suffix:semicolon
+id|skt-&gt;ops
+op_member_access_from_pointer
+id|set_socket
+c_func
+(paren
+id|skt
+comma
+op_amp
+id|skt-&gt;socket
 )paren
 suffix:semicolon
 id|ret
@@ -2993,6 +3048,17 @@ id|init
 c_func
 (paren
 id|skt
+)paren
+suffix:semicolon
+id|skt-&gt;ops
+op_member_access_from_pointer
+id|set_socket
+c_func
+(paren
+id|skt
+comma
+op_amp
+id|skt-&gt;socket
 )paren
 suffix:semicolon
 multiline_comment|/* register with the device core */
@@ -5762,7 +5828,11 @@ op_logical_and
 (paren
 id|c-&gt;IntType
 op_amp
+(paren
 id|INT_MEMORY_AND_IO
+op_or
+id|INT_ZOOMED_VIDEO
+)paren
 )paren
 )paren
 (brace
@@ -7594,6 +7664,19 @@ id|INT_MEMORY_AND_IO
 )paren
 id|s-&gt;socket.flags
 op_or_assign
+id|SS_IOCARD
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req-&gt;IntType
+op_amp
+id|INT_ZOOMED_VIDEO
+)paren
+id|s-&gt;socket.flags
+op_or_assign
+id|SS_ZVCARD
+op_or
 id|SS_IOCARD
 suffix:semicolon
 r_if

@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
@@ -2489,6 +2490,13 @@ id|ROOT_DEV
 op_assign
 id|Root_SDA2
 suffix:semicolon
+macro_line|#ifdef CONFIG_EISA
+multiline_comment|/* FIXME:  only set this when we actually have EISA in this box? */
+id|EISA_bus
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Check ASN in HWRPB for validity, report if bad.&n;&t; * FIXME: how was this failing?  Should we trust it instead,&n;&t; * and copy the value into alpha_mv.max_asn?&n; &t; */
 r_if
 c_cond

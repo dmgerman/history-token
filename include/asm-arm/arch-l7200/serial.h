@@ -8,8 +8,6 @@ mdefine_line|#define BASE_BAUD&t;3686400
 multiline_comment|/*&n; * Standard COM flags&n; */
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE 2
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;/* MAGIC UART CLK   PORT       IRQ     FLAGS */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, UART1_BASE, IRQ_UART_1, STD_COM_FLAGS },  /* ttyLU0 */ &bslash;&n;&t;{ 0, BASE_BAUD, UART2_BASE, IRQ_UART_2, STD_COM_FLAGS },  /* ttyLU1 */ &bslash;&n;
 DECL|macro|EXTRA_SERIAL_PORT_DEFNS

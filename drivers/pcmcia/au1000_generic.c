@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -406,9 +405,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nAu1x00 PCMCIA (CS release %s)&bslash;n&quot;
-comma
-id|CS_RELEASE
+l_string|&quot;&bslash;nAu1x00 PCMCIA&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_64BIT_PHYS_ADDR

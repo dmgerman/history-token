@@ -10588,6 +10588,12 @@ r_struct
 id|sigevent
 id|se
 suffix:semicolon
+id|mm_segment_t
+id|oldfs
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10680,7 +10686,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|mm_segment_t
 id|oldfs
 op_assign
 id|get_fs
@@ -10694,7 +10699,6 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
-r_int
 id|err
 op_assign
 id|sys_timer_create

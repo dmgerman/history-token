@@ -1008,7 +1008,11 @@ id|current-&gt;gid
 suffix:semicolon
 id|ac.ac_tty
 op_assign
-id|current-&gt;tty
+id|process_tty
+c_func
+(paren
+id|current
+)paren
 ques
 c_cond
 id|old_encode_dev
@@ -1017,7 +1021,11 @@ c_func
 id|tty_devnum
 c_func
 (paren
-id|current-&gt;tty
+id|process_tty
+c_func
+(paren
+id|current
+)paren
 )paren
 )paren
 suffix:colon

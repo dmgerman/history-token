@@ -1496,7 +1496,7 @@ DECL|variable|node_2_cpu_mask
 id|cpumask_t
 id|node_2_cpu_mask
 (braket
-id|MAX_NR_NODES
+id|MAX_NUMNODES
 )braket
 op_assign
 (brace
@@ -1505,7 +1505,7 @@ l_int|0
 dot
 dot
 dot
-id|MAX_NR_NODES
+id|MAX_NUMNODES
 op_minus
 l_int|1
 )braket
@@ -1611,7 +1611,7 @@ l_int|0
 suffix:semicolon
 id|node
 OL
-id|MAX_NR_NODES
+id|MAX_NUMNODES
 suffix:semicolon
 id|node
 op_increment

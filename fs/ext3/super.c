@@ -1759,7 +1759,7 @@ id|ei-&gt;xattr_sem
 )paren
 suffix:semicolon
 macro_line|#endif
-id|init_rwsem
+id|init_MUTEX
 c_func
 (paren
 op_amp

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/i386/kernel/i387.c&n; *&n; *  Copyright (C) 1994 Linus Torvalds&n; *&n; *  Pentium III FXSR, SSE support&n; *  General FPU state handling cleanups&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/math_emu.h&gt;
