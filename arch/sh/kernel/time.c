@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -913,115 +914,6 @@ r_static
 r_int
 id|last_rtc_update
 suffix:semicolon
-multiline_comment|/* Profiling definitions */
-r_extern
-r_int
-r_int
-id|prof_cpu_mask
-suffix:semicolon
-r_extern
-r_int
-r_int
-op_star
-id|prof_buffer
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_len
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_shift
-suffix:semicolon
-r_extern
-r_char
-id|_stext
-suffix:semicolon
-DECL|function|sh_do_profile
-r_static
-r_inline
-r_void
-id|sh_do_profile
-c_func
-(paren
-r_int
-r_int
-id|pc
-)paren
-(brace
-multiline_comment|/* Don&squot;t profile cpu_idle.. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|prof_buffer
-op_logical_or
-op_logical_neg
-id|current-&gt;pid
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pc
-op_ge
-l_int|0xa0000000UL
-op_logical_and
-id|pc
-OL
-l_int|0xc0000000UL
-)paren
-id|pc
-op_sub_assign
-l_int|0x20000000
-suffix:semicolon
-id|pc
-op_sub_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_stext
-suffix:semicolon
-id|pc
-op_rshift_assign
-id|prof_shift
-suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t ignore out-of-bounds PC values silently,&n;&t; * put them into the last histogram slot, so if&n;&t; * present, they will show up as a sharp peak.&n;&t; */
-r_if
-c_cond
-(paren
-id|pc
-OG
-id|prof_len
-op_minus
-l_int|1
-)paren
-id|pc
-op_assign
-id|prof_len
-op_minus
-l_int|1
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-(paren
-id|atomic_t
-op_star
-)paren
-op_amp
-id|prof_buffer
-(braket
-id|pc
-)braket
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|do_timer_interrupt
 r_static
@@ -1049,20 +941,12 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
-)paren
-)paren
-id|sh_do_profile
-c_func
-(paren
-id|regs-&gt;pc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HEARTBEAT

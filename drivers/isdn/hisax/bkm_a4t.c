@@ -1176,7 +1176,7 @@ id|I20_REGISTER_FILE
 op_star
 id|pI20_Regs
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 macro_line|#endif
 id|strcpy
 c_func
@@ -1218,7 +1218,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 r_while
 c_loop
 (paren

@@ -1040,7 +1040,7 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 macro_line|#ifdef __BIG_ENDIAN
 macro_line|#error &quot;not running on big endian machines now&quot;
 macro_line|#endif

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 r_extern
 id|kmem_cache_t
 op_star

@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/mostek.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
@@ -1312,92 +1313,6 @@ suffix:semicolon
 multiline_comment|/* do it again in 60 s */
 )brace
 )brace
-DECL|function|sparc64_do_profile
-r_void
-id|sparc64_do_profile
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_int
-r_int
-id|pc
-suffix:semicolon
-id|profile_hook
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|prof_buffer
-)paren
-r_return
-suffix:semicolon
-id|pc
-op_assign
-id|regs-&gt;tpc
-suffix:semicolon
-id|pc
-op_sub_assign
-(paren
-r_int
-r_int
-)paren
-id|_stext
-suffix:semicolon
-id|pc
-op_rshift_assign
-id|prof_shift
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pc
-op_ge
-id|prof_len
-)paren
-(brace
-id|pc
-op_assign
-id|prof_len
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|atomic_inc
-c_func
-(paren
-(paren
-id|atomic_t
-op_star
-)paren
-op_amp
-id|prof_buffer
-(braket
-id|pc
-)braket
-)paren
-suffix:semicolon
-)brace
 DECL|function|timer_interrupt
 r_static
 id|irqreturn_t
@@ -1433,9 +1348,11 @@ suffix:semicolon
 r_do
 (brace
 macro_line|#ifndef CONFIG_SMP
-id|sparc64_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon

@@ -319,6 +319,8 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!((regs)-&gt;tstate &amp; TSTATE_PRIV))
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;tpc)
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 r_extern
 r_void
 id|show_regs

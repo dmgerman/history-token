@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;tcrypt.h&quot;
 multiline_comment|/*&n; * Need to kmalloc() memory for testing kmap().&n; */
 DECL|macro|TVMEMSIZE
@@ -4842,12 +4843,14 @@ c_func
 id|fini
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

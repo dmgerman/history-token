@@ -2847,7 +2847,7 @@ op_star
 id|sp
 suffix:semicolon
 )brace
-macro_line|#if !CONFIG_KALLSYMS
+macro_line|#ifndef CONFIG_KALLSYMS
 r_if
 c_cond
 (paren

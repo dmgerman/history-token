@@ -3682,7 +3682,7 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 DECL|member|pci_state
 id|u32
 id|pci_state

@@ -730,6 +730,12 @@ suffix:semicolon
 id|success
 suffix:colon
 multiline_comment|/*&n;&t; * vm_flags and vm_page_prot are protected by the mmap_sem&n;&t; * held in write mode.&n;&t; */
+id|vm_stat_unaccount
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
 id|vma-&gt;vm_flags
 op_assign
 id|newflags
@@ -748,6 +754,12 @@ comma
 id|end
 comma
 id|newprot
+)paren
+suffix:semicolon
+id|vm_stat_account
+c_func
+(paren
+id|vma
 )paren
 suffix:semicolon
 r_return

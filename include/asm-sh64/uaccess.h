@@ -260,6 +260,10 @@ DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&bslash;&n;&t;__copy_user((void *)(to),&t;&t;&bslash;&n;&t;&t;    (void *)(from), n)
 DECL|macro|__copy_from_user_ret
 mdefine_line|#define __copy_from_user_ret(to,from,n,retval) ({ &bslash;&n;if (__copy_from_user(to,from,n)) &bslash;&n;&t;return retval; &bslash;&n;})
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 multiline_comment|/* XXX: Not sure it works well..&n;   should be such that: 4byte clear and the rest. */
 r_extern
 id|__kernel_size_t

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;&t;/* For bdev_hardsect_size(). */
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 macro_line|#include &quot;logfile.h&quot;
@@ -10758,12 +10759,14 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug_msgs
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

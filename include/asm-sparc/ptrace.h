@@ -167,6 +167,16 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!((regs)-&gt;psr &amp; PSR_PS))
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;pc)
+r_int
+r_int
+id|profile_pc
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|show_regs

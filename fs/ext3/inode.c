@@ -95,6 +95,11 @@ id|blocknr
 r_int
 id|err
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|BUFFER_TRACE
 c_func
 (paren
@@ -11071,6 +11076,11 @@ id|iloc
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|err
 op_assign

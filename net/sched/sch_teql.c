@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 multiline_comment|/*&n;   How to setup it.&n;   ----------------&n;&n;   After loading this module you will find a new device teqlN&n;   and new qdisc with the same name. To join a slave to the equalizer&n;   you should just set this qdisc on a device f.e.&n;&n;   # tc qdisc add dev eth0 root teql0&n;   # tc qdisc add dev eth1 root teql0&n;&n;   That&squot;s all. Full PnP 8)&n;&n;   Applicability.&n;   --------------&n;&n;   1. Slave devices MUST be active devices, i.e., they must raise the tbusy&n;      signal and generate EOI events. If you want to equalize virtual devices&n;      like tunnels, use a normal eql device.&n;   2. This device puts no limitations on physical slave characteristics&n;      f.e. it will equalize 9600baud line and 100Mb ethernet perfectly :-)&n;      Certainly, large difference in link speeds will make the resulting&n;      eqalized link unusable, because of huge packet reordering.&n;      I estimate an upper useful difference as ~10 times.&n;   3. If the slave requires address resolution, only protocols using&n;      neighbour cache (IPv4/IPv6) will work over the equalized link.&n;      Other protocols are still allowed to use the slave device directly,&n;      which will not break load balancing, though native slave&n;      traffic will have the highest priority.  */
@@ -1890,12 +1891,14 @@ id|max_equalizers
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_equalizers
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

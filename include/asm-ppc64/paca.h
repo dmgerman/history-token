@@ -238,42 +238,6 @@ r_struct
 id|ItLpRegSave
 id|reg_save
 suffix:semicolon
-multiline_comment|/*&n;&t; * iSeries profiling support&n;&t; *&n;&t; * FIXME: do we still want this, or can we ditch it in favour&n;&t; * of oprofile?&n;&t; */
-DECL|member|prof_buffer
-id|u32
-op_star
-id|prof_buffer
-suffix:semicolon
-multiline_comment|/* iSeries profiling buffer */
-DECL|member|prof_stext
-id|u32
-op_star
-id|prof_stext
-suffix:semicolon
-multiline_comment|/* iSeries start of kernel text */
-DECL|member|prof_multiplier
-id|u32
-id|prof_multiplier
-suffix:semicolon
-DECL|member|prof_counter
-id|u32
-id|prof_counter
-suffix:semicolon
-DECL|member|prof_shift
-id|u32
-id|prof_shift
-suffix:semicolon
-multiline_comment|/* iSeries shift for profile&n;&t;&t;&t;&t;&t; * bucket size */
-DECL|member|prof_len
-id|u32
-id|prof_len
-suffix:semicolon
-multiline_comment|/* iSeries length of profile */
-DECL|member|prof_enabled
-id|u8
-id|prof_enabled
-suffix:semicolon
-multiline_comment|/* 1=iSeries profiling enabled */
 )brace
 suffix:semicolon
 macro_line|#endif /* _PPC64_PACA_H */

@@ -101,6 +101,7 @@ DECL|function|csum_partial_copy_from_user
 r_int
 r_int
 id|csum_partial_copy_from_user
+c_func
 (paren
 r_const
 r_char
@@ -123,8 +124,14 @@ op_star
 id|err_ptr
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|csum_partial_copy_generic
+c_func
 (paren
 (paren
 id|__force
@@ -562,6 +569,11 @@ op_star
 id|err_ptr
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

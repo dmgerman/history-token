@@ -249,10 +249,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send SIGSEGV to task.  This is an external routine&n; * to keep the stack usage of do_page_fault small.&n; */
-DECL|function|force_sigsegv
+DECL|function|do_sigsegv
 r_static
 r_void
-id|force_sigsegv
+id|do_sigsegv
 c_func
 (paren
 r_struct
@@ -710,7 +710,7 @@ id|tsk-&gt;thread.trap_no
 op_assign
 id|error_code
 suffix:semicolon
-id|force_sigsegv
+id|do_sigsegv
 c_func
 (paren
 id|regs

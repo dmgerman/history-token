@@ -1713,6 +1713,10 @@ c_func
 id|address
 )paren
 suffix:semicolon
+r_int
+r_int
+id|pgd_paddr
+suffix:semicolon
 id|pgd_t
 op_star
 id|pgd
@@ -1738,7 +1742,7 @@ l_string|&quot;movl %%cr3,%0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|pgd
+id|pgd_paddr
 )paren
 )paren
 suffix:semicolon
@@ -1753,7 +1757,7 @@ op_star
 id|__va
 c_func
 (paren
-id|pgd
+id|pgd_paddr
 )paren
 suffix:semicolon
 id|pgd_k

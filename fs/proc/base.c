@@ -7270,6 +7270,11 @@ op_star
 id|proc_dentry
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
