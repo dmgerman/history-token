@@ -303,6 +303,14 @@ DECL|macro|readl
 mdefine_line|#define readl(addr) (*(volatile unsigned int *) __io_virt(addr))
 DECL|macro|readq
 mdefine_line|#define readq(addr) (*(volatile unsigned long *) __io_virt(addr))
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(a) readb(a)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(a) readw(a)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(a) readl(a)
+DECL|macro|readq_relaxed
+mdefine_line|#define readq_relaxed(a) readq(a)
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb readb
 DECL|macro|__raw_readw

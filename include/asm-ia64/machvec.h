@@ -425,6 +425,46 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|ia64_mv_readb_relaxed_t
+r_typedef
+r_int
+r_char
+id|ia64_mv_readb_relaxed_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_readw_relaxed_t
+r_typedef
+r_int
+r_int
+id|ia64_mv_readw_relaxed_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_readl_relaxed_t
+r_typedef
+r_int
+r_int
+id|ia64_mv_readl_relaxed_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_readq_relaxed_t
+r_typedef
+r_int
+r_int
+id|ia64_mv_readq_relaxed_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|machvec_noop
@@ -519,6 +559,14 @@ DECL|macro|platform_readl
 macro_line|#  define platform_readl        ia64_mv.readl
 DECL|macro|platform_readq
 macro_line|#  define platform_readq        ia64_mv.readq
+DECL|macro|platform_readb_relaxed
+macro_line|#  define platform_readb_relaxed        ia64_mv.readb_relaxed
+DECL|macro|platform_readw_relaxed
+macro_line|#  define platform_readw_relaxed        ia64_mv.readw_relaxed
+DECL|macro|platform_readl_relaxed
+macro_line|#  define platform_readl_relaxed        ia64_mv.readl_relaxed
+DECL|macro|platform_readq_relaxed
+macro_line|#  define platform_readq_relaxed        ia64_mv.readq_relaxed
 macro_line|# endif
 multiline_comment|/* __attribute__((__aligned__(16))) is required to make size of the&n; * structure multiple of 16 bytes.&n; * This will fillup the holes created because of section 3.3.1 in&n; * Software Conventions guide.&n; */
 DECL|struct|ia64_machine_vector
@@ -696,6 +744,26 @@ id|ia64_mv_readq_t
 op_star
 id|readq
 suffix:semicolon
+DECL|member|readb_relaxed
+id|ia64_mv_readb_relaxed_t
+op_star
+id|readb_relaxed
+suffix:semicolon
+DECL|member|readw_relaxed
+id|ia64_mv_readw_relaxed_t
+op_star
+id|readw_relaxed
+suffix:semicolon
+DECL|member|readl_relaxed
+id|ia64_mv_readl_relaxed_t
+op_star
+id|readl_relaxed
+suffix:semicolon
+DECL|member|readq_relaxed
+id|ia64_mv_readq_relaxed_t
+op_star
+id|readq_relaxed
+suffix:semicolon
 )brace
 id|__attribute__
 c_func
@@ -711,7 +779,7 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* align attrib? see above comment */
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single,&t;&t;&bslash;&n;&t;platform_dma_sync_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single,&t;&t;&bslash;&n;&t;platform_dma_sync_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -903,6 +971,22 @@ macro_line|#endif
 macro_line|#ifndef platform_readq
 DECL|macro|platform_readq
 macro_line|# define platform_readq&t;&t;__ia64_readq
+macro_line|#endif
+macro_line|#ifndef platform_readb_relaxed
+DECL|macro|platform_readb_relaxed
+macro_line|# define platform_readb_relaxed&t;__ia64_readb_relaxed
+macro_line|#endif
+macro_line|#ifndef platform_readw_relaxed
+DECL|macro|platform_readw_relaxed
+macro_line|# define platform_readw_relaxed&t;__ia64_readw_relaxed
+macro_line|#endif
+macro_line|#ifndef platform_readl_relaxed
+DECL|macro|platform_readl_relaxed
+macro_line|# define platform_readl_relaxed&t;__ia64_readl_relaxed
+macro_line|#endif
+macro_line|#ifndef platform_readq_relaxed
+DECL|macro|platform_readq_relaxed
+macro_line|# define platform_readq_relaxed&t;__ia64_readq_relaxed
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_MACHVEC_H */
 eof
