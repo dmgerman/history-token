@@ -1630,6 +1630,12 @@ r_int
 id|sr_underflow
 suffix:semicolon
 multiline_comment|/* Return error if less than&n;&t;&t;&t;&t;   this amount is transferred */
+DECL|member|upper_private_data
+r_void
+op_star
+id|upper_private_data
+suffix:semicolon
+multiline_comment|/* reserved for owner (usually upper&n; &t;&t;&t;&t;&t;   level driver) of this request */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * FIXME(eric) - one of the great regrets that I have is that I failed to define&n; * these structure elements as something like sc_foo instead of foo.  This would&n; * make it so much easier to grep through sources and so forth.  I propose that&n; * all new elements that get added to these structures follow this convention.&n; * As time goes on and as people have the stomach for it, it should be possible to &n; * go back and retrofit at least some of the elements here with with the prefix.&n; */
