@@ -3286,6 +3286,11 @@ op_star
 id|str
 op_eq
 l_char|&squot; &squot;
+op_logical_or
+op_star
+id|str
+op_eq
+l_char|&squot;:&squot;
 )paren
 op_star
 id|p
