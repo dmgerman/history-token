@@ -1063,17 +1063,6 @@ op_amp
 id|early_vga_console
 suffix:semicolon
 )brace
-r_else
-(brace
-id|early_console
-op_assign
-l_int|NULL
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|early_console_initialized
 op_assign
 l_int|1

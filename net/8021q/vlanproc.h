@@ -40,9 +40,9 @@ mdefine_line|#define vlan_proc_init()&t;(0)
 DECL|macro|vlan_proc_cleanup
 mdefine_line|#define vlan_proc_cleanup()&t;do {} while(0)
 DECL|macro|vlan_proc_add_dev
-mdefine_line|#define vlan_proc_add_dev(dev)&t;((void)(dev), 0)
+mdefine_line|#define vlan_proc_add_dev(dev)&t;({(void)(dev), 0;})
 DECL|macro|vlan_proc_rem_dev
-mdefine_line|#define vlan_proc_rem_dev(dev)&t;((void)(dev), 0)
+mdefine_line|#define vlan_proc_rem_dev(dev)&t;({(void)(dev), 0;})
 macro_line|#endif
 macro_line|#endif /* !(__BEN_VLAN_PROC_INC__) */
 eof

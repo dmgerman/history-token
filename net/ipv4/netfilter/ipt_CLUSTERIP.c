@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/netfilter_arp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_CLUSTERIP.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 DECL|macro|CLUSTERIP_VERSION
 mdefine_line|#define CLUSTERIP_VERSION &quot;0.6&quot;
 DECL|macro|DEBUG_CLUSTERIP

@@ -212,6 +212,8 @@ id|e
 )paren
 r_return
 l_int|1
+op_xor
+id|minfo-&gt;invert
 suffix:semicolon
 r_if
 c_cond
@@ -230,6 +232,8 @@ id|e
 )paren
 r_return
 l_int|1
+op_xor
+id|minfo-&gt;invert
 suffix:semicolon
 r_if
 c_cond
@@ -262,6 +266,8 @@ id|e
 )paren
 r_return
 l_int|1
+op_xor
+id|minfo-&gt;invert
 suffix:semicolon
 )brace
 r_else
@@ -288,6 +294,8 @@ id|s
 )paren
 r_return
 l_int|1
+op_xor
+id|minfo-&gt;invert
 suffix:semicolon
 r_if
 c_cond
@@ -302,6 +310,8 @@ id|s
 )paren
 r_return
 l_int|1
+op_xor
+id|minfo-&gt;invert
 suffix:semicolon
 r_if
 c_cond
@@ -322,11 +332,13 @@ id|s
 )paren
 r_return
 l_int|1
+op_xor
+id|minfo-&gt;invert
 suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+id|minfo-&gt;invert
 suffix:semicolon
 )brace
 r_static
