@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -339,11 +340,6 @@ op_assign
 l_int|0
 comma
 id|pmc2
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|n
 op_assign
 l_int|0
 suffix:semicolon
@@ -718,7 +714,7 @@ op_logical_neg
 id|capable
 c_func
 (paren
-id|CAPS_SYS_ADMIN
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
