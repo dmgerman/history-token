@@ -2405,6 +2405,26 @@ id|irqbalance_disabled
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* disable irqbalance completely if there is only one processor online */
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+OL
+l_int|2
+)paren
+(brace
+id|irqbalance_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Enable physical balance only if more than 1 physical processor&n;&t; * is present&n;&t; */
 r_if
 c_cond
