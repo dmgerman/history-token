@@ -45,15 +45,24 @@ id|HvReleaseData
 id|hvReleaseData
 op_assign
 (brace
+dot
+id|xDesc
+op_assign
 l_int|0xc8a5d9c4
 comma
-multiline_comment|/* desc = &quot;HvRD&quot; ebcdic */
+multiline_comment|/* &quot;HvRD&quot; ebcdic */
+dot
+id|xSize
+op_assign
 r_sizeof
 (paren
 r_struct
 id|HvReleaseData
 )paren
 comma
+dot
+id|xVpdAreasPtrOffset
+op_assign
 m_offsetof
 (paren
 r_struct
@@ -62,39 +71,70 @@ comma
 id|xItVpdAreas
 )paren
 comma
+dot
+id|xSlicNacaAddr
+op_assign
 op_amp
 id|naca
 comma
 multiline_comment|/* 64-bit Naca address */
+dot
+id|xMsNucDataOffset
+op_assign
 l_int|0x6000
 comma
 multiline_comment|/* offset of LparMap within loadarea (see head.S) */
-l_int|0
-comma
+dot
+id|xTagsMode
+op_assign
 l_int|1
 comma
 multiline_comment|/* tags inactive       */
+dot
+id|xAddressSize
+op_assign
 l_int|0
 comma
 multiline_comment|/* 64 bit              */
+dot
+id|xNoSharedProcs
+op_assign
 l_int|0
 comma
 multiline_comment|/* shared processors   */
+dot
+id|xNoHMT
+op_assign
 l_int|0
 comma
 multiline_comment|/* HMT allowed         */
+dot
+id|xRsvd2
+op_assign
 l_int|6
 comma
 multiline_comment|/* TEMP: This allows non-GA driver */
+dot
+id|xVrmIndex
+op_assign
 l_int|4
 comma
 multiline_comment|/* We are v5r2m0               */
+dot
+id|xMinSupportedPlicVrmIndex
+op_assign
 l_int|3
 comma
-multiline_comment|/* Min supported PLIC = v5r1m0 */
+multiline_comment|/* v5r1m0 */
+dot
+id|xMinCompatablePlicVrmIndex
+op_assign
 l_int|3
 comma
-multiline_comment|/* Min usable PLIC   = v5r1m0 */
+multiline_comment|/* v5r1m0 */
+dot
+id|xVrmName
+op_assign
 (brace
 l_int|0xd3
 comma
@@ -104,7 +144,7 @@ l_int|0x95
 comma
 l_int|0xa4
 comma
-multiline_comment|/* &quot;Linux 2.4   &quot;*/
+multiline_comment|/* &quot;Linux 2.4.64&quot; ebcdic */
 l_int|0xa7
 comma
 l_int|0x40
@@ -122,9 +162,6 @@ comma
 l_int|0xf4
 )brace
 comma
-(brace
-l_int|0
-)brace
 )brace
 suffix:semicolon
 r_extern
@@ -269,119 +306,159 @@ id|ItLpNaca
 id|itLpNaca
 op_assign
 (brace
+dot
+id|xDesc
+op_assign
 l_int|0xd397d581
 comma
-multiline_comment|/* desc = &quot;LpNa&quot; ebcdic */
+multiline_comment|/* &quot;LpNa&quot; ebcdic */
+dot
+id|xSize
+op_assign
 l_int|0x0400
 comma
-multiline_comment|/* size of ItLpNaca     */
+multiline_comment|/* size of ItLpNaca */
+dot
+id|xIntHdlrOffset
+op_assign
 l_int|0x0300
 comma
+multiline_comment|/* offset to int array */
+dot
+id|xMaxIntHdlrEntries
+op_assign
 l_int|19
 comma
-multiline_comment|/* offset to int array, # ents */
+multiline_comment|/* # ents */
+dot
+id|xPrimaryLpIndex
+op_assign
 l_int|0
 comma
+multiline_comment|/* Part # of primary */
+dot
+id|xServiceLpIndex
+op_assign
 l_int|0
 comma
+multiline_comment|/* Part # of serv */
+dot
+id|xLpIndex
+op_assign
 l_int|0
 comma
-multiline_comment|/* Part # of primary, serv, me */
+multiline_comment|/* Part # of me */
+dot
+id|xMaxLpQueues
+op_assign
 l_int|0
 comma
+multiline_comment|/* # of LP queues */
+dot
+id|xLpQueueOffset
+op_assign
 l_int|0x100
 comma
-multiline_comment|/* # of LP queues, offset */
-l_int|0
-comma
-l_int|0
-comma
+multiline_comment|/* offset of start of LP queues */
+dot
+id|xPirEnvironMode
+op_assign
 l_int|0
 comma
 multiline_comment|/* Piranha stuff */
-(brace
+dot
+id|xPirConsoleMode
+op_assign
 l_int|0
 comma
+dot
+id|xPirDasdMode
+op_assign
 l_int|0
 comma
+dot
+id|xLparInstalled
+op_assign
 l_int|0
 comma
+dot
+id|xSysPartitioned
+op_assign
 l_int|0
 comma
-l_int|0
-)brace
-comma
-multiline_comment|/* reserved */
-l_int|0
-comma
+dot
+id|xHwSyncedTBs
+op_assign
 l_int|0
 comma
+dot
+id|xIntProcUtilHmt
+op_assign
 l_int|0
 comma
+dot
+id|xSpVpdFormat
+op_assign
 l_int|0
 comma
+dot
+id|xIntProcRatio
+op_assign
 l_int|0
 comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* stuff    */
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* reserved */
-l_int|0
-comma
-multiline_comment|/* reserved */
+dot
+id|xPlicVrmIndex
+op_assign
 l_int|0
 comma
 multiline_comment|/* VRM index of PLIC */
+dot
+id|xMinSupportedSlicVrmInd
+op_assign
 l_int|0
 comma
+multiline_comment|/* min supported SLIC */
+dot
+id|xMinCompatableSlicVrmInd
+op_assign
 l_int|0
 comma
-multiline_comment|/* min supported, compat SLIC */
+multiline_comment|/* min compat SLIC */
+dot
+id|xLoadAreaAddr
+op_assign
 l_int|0
 comma
-multiline_comment|/* 64-bit addr of load area   */
+multiline_comment|/* 64-bit addr of load area */
+dot
+id|xLoadAreaChunks
+op_assign
 l_int|0
 comma
-multiline_comment|/* chunks for load area  */
+multiline_comment|/* chunks for load area */
+dot
+id|xPaseSysCallCRMask
+op_assign
 l_int|0
 comma
+multiline_comment|/* PASE mask */
+dot
+id|xSlicSegmentTablePtr
+op_assign
 l_int|0
 comma
-multiline_comment|/* PASE mask, seg table  */
+multiline_comment|/* seg table */
+dot
+id|xOldLpQueue
+op_assign
 (brace
 l_int|0
 )brace
 comma
-multiline_comment|/* 64 reserved bytes  */
-(brace
-l_int|0
-)brace
-comma
-multiline_comment|/* 128 reserved bytes */
-(brace
-l_int|0
-)brace
-comma
-multiline_comment|/* Old LP Queue       */
-(brace
-l_int|0
-)brace
-comma
-multiline_comment|/* 384 reserved bytes */
+multiline_comment|/* Old LP Queue */
+dot
+id|xInterruptHdlr
+op_assign
 (brace
 (paren
 id|u64
@@ -635,25 +712,16 @@ id|SpCommArea
 id|xSpCommArea
 op_assign
 (brace
+dot
+id|xDesc
+op_assign
 l_int|0xE2D7C3C2
 comma
+dot
+id|xFormat
+op_assign
 l_int|1
 comma
-(brace
-l_int|0
-)brace
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-(brace
-l_int|0
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/* The LparMap data is now located at offset 0x6000 in head.S&n; * It was put there so that the HvReleaseData could address it&n; * with a 32-bit offset as required by the iSeries hypervisor&n; *&n; * The Naca has a pointer to the ItVpdAreas.  The hypervisor finds&n; * the Naca via the HvReleaseData area.  The HvReleaseData has the&n; * offset into the Naca of the pointer to the ItVpdAreas.&n; */
@@ -663,32 +731,50 @@ id|ItVpdAreas
 id|itVpdAreas
 op_assign
 (brace
+dot
+id|xSlicDesc
+op_assign
 l_int|0xc9a3e5c1
 comma
 multiline_comment|/* &quot;ItVA&quot; */
+dot
+id|xSlicSize
+op_assign
 r_sizeof
 (paren
 r_struct
 id|ItVpdAreas
 )paren
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|26
+dot
+id|xSlicVpdEntries
+op_assign
+id|ItVpdMaxEntries
 comma
 multiline_comment|/* # VPD array entries */
-l_int|10
+dot
+id|xSlicDmaEntries
+op_assign
+id|ItDmaMaxEntries
 comma
 multiline_comment|/* # DMA array entries */
+dot
+id|xSlicMaxLogicalProcs
+op_assign
 id|NR_CPUS
 op_star
 l_int|2
 comma
+multiline_comment|/* Max logical procs */
+dot
+id|xSlicMaxPhysicalProcs
+op_assign
 id|maxPhysicalProcessors
 comma
-multiline_comment|/* Max logical, physical procs */
+multiline_comment|/* Max physical procs */
+dot
+id|xSlicDmaToksOffset
+op_assign
 m_offsetof
 (paren
 r_struct
@@ -697,7 +783,9 @@ comma
 id|xPlicDmaToks
 )paren
 comma
-multiline_comment|/* offset to DMA toks */
+dot
+id|xSlicVpdAdrsOffset
+op_assign
 m_offsetof
 (paren
 r_struct
@@ -706,7 +794,9 @@ comma
 id|xSlicVpdAdrs
 )paren
 comma
-multiline_comment|/* offset to VPD addrs */
+dot
+id|xSlicDmaLensOffset
+op_assign
 m_offsetof
 (paren
 r_struct
@@ -715,7 +805,9 @@ comma
 id|xPlicDmaLens
 )paren
 comma
-multiline_comment|/* offset to DMA lens */
+dot
+id|xSlicVpdLensOffset
+op_assign
 m_offsetof
 (paren
 r_struct
@@ -724,32 +816,37 @@ comma
 id|xSlicVpdLens
 )paren
 comma
-multiline_comment|/* offset to VPD lens */
+dot
+id|xSlicMaxSlotLabels
+op_assign
 l_int|0
 comma
 multiline_comment|/* max slot labels */
+dot
+id|xSlicMaxLpQueues
+op_assign
 l_int|1
 comma
 multiline_comment|/* max LP queues */
-(brace
-l_int|0
-)brace
-comma
-(brace
-l_int|0
-)brace
-comma
-multiline_comment|/* reserved */
+dot
+id|xPlicDmaLens
+op_assign
 (brace
 l_int|0
 )brace
 comma
 multiline_comment|/* DMA lengths */
+dot
+id|xPlicDmaToks
+op_assign
 (brace
 l_int|0
 )brace
 comma
 multiline_comment|/* DMA tokens */
+dot
+id|xSlicVpdLens
+op_assign
 (brace
 multiline_comment|/* VPD lengths */
 l_int|0
@@ -848,6 +945,9 @@ l_int|0
 multiline_comment|/* 24 - 25 */
 )brace
 comma
+dot
+id|xSlicVpdAdrs
+op_assign
 (brace
 multiline_comment|/* VPD addresses */
 l_int|0
