@@ -2563,7 +2563,6 @@ id|rt-&gt;u.dst.metrics
 comma
 r_sizeof
 (paren
-op_amp
 id|dst_prev-&gt;metrics
 )paren
 )paren
@@ -3646,7 +3645,7 @@ op_ge
 l_int|0
 suffix:semicolon
 id|i
-op_increment
+op_decrement
 )paren
 (brace
 r_if
