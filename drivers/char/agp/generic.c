@@ -1588,14 +1588,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|major
-OL
-l_int|3
-)paren
-(brace
+multiline_comment|/* AGP v&lt;3 */
 id|pci_read_config_dword
 c_func
 (paren
@@ -1643,7 +1636,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|agp_generic_create_gatt_table
 r_int
