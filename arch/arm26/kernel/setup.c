@@ -187,11 +187,6 @@ r_struct
 id|processor
 id|processor
 suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-suffix:semicolon
 DECL|variable|elf_platform
 r_char
 id|elf_platform

@@ -237,11 +237,6 @@ id|cpu_cache_fns
 id|cpu_cache
 suffix:semicolon
 macro_line|#endif
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-suffix:semicolon
 DECL|variable|elf_platform
 r_char
 id|elf_platform

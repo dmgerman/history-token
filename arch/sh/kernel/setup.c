@@ -58,13 +58,6 @@ r_struct
 id|screen_info
 id|screen_info
 suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
 macro_line|#if defined(CONFIG_SH_UNKNOWN)
 DECL|variable|sh_mv
 r_struct

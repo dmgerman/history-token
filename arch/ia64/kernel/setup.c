@@ -133,14 +133,6 @@ r_int
 r_int
 id|num_io_spaces
 suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
-multiline_comment|/* XXX remove this when legacy I/O is gone */
 multiline_comment|/*&n; * The merge_mask variable needs to be set to (max(iommu_page_size(iommu)) - 1).  This&n; * mask specifies a mask of address bits that must be 0 in order for two buffers to be&n; * mergeable by the I/O MMU (i.e., the end address of the first buffer and the start&n; * address of the second buffer must be aligned to (merge_mask+1) in order to be&n; * mergeable).  By default, we assume there is no I/O MMU which can merge physically&n; * discontiguous buffers, so we set the merge_mask to ~0UL, which corresponds to a iommu&n; * page-size of 2^64.&n; */
 DECL|variable|ia64_max_iommu_merge_mask
 r_int

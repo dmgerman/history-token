@@ -270,11 +270,6 @@ r_struct
 id|e820map
 id|e820
 suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-suffix:semicolon
 r_extern
 r_void
 id|early_cpu_init
@@ -5957,10 +5952,6 @@ l_int|2
 )braket
 suffix:semicolon
 )brace
-id|aux_device_present
-op_assign
-id|AUX_DEVICE_INFO
-suffix:semicolon
 id|bootloader_type
 op_assign
 id|LOADER_TYPE

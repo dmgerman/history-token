@@ -29,11 +29,6 @@ r_struct
 id|screen_info
 id|screen_info
 suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-suffix:semicolon
 r_extern
 r_int
 id|root_mountflags

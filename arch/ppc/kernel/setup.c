@@ -134,11 +134,6 @@ id|boot_infos_t
 op_star
 id|boot_infos
 suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-suffix:semicolon
 DECL|variable|ppc_ide_md
 r_struct
 id|ide_machdep_calls

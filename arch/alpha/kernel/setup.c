@@ -156,13 +156,6 @@ r_int
 id|alpha_using_srm
 suffix:semicolon
 macro_line|#endif
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
 DECL|macro|N
 mdefine_line|#define N(a) (sizeof(a)/sizeof(a[0]))
 r_static

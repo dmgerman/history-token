@@ -40,14 +40,6 @@ r_struct
 id|screen_info
 id|screen_info
 suffix:semicolon
-multiline_comment|/* On a PC this would be initialised as a result of the BIOS detecting the&n; * mouse. */
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 r_extern
 r_int
