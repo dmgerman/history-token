@@ -4,14 +4,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
-DECL|variable|__initdata
-r_static
-r_int
-id|agp_try_unsupported
-id|__initdata
-op_assign
-l_int|0
-suffix:semicolon
 DECL|struct|serverworks_page_map
 r_struct
 id|serverworks_page_map
@@ -2101,19 +2093,20 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
-r_if
-c_cond
+id|printk
+c_func
 (paren
-op_logical_neg
-id|agp_try_unsupported
+id|KERN_ERR
+id|PFX
+l_string|&quot;Unsupported Serverworks chipset &quot;
+l_string|&quot;(device id: %04x)&bslash;n&quot;
+comma
+id|pdev-&gt;device
 )paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 id|serverworks_private.svrwrks_dev
@@ -2464,14 +2457,6 @@ id|module_exit
 c_func
 (paren
 id|agp_serverworks_cleanup
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|agp_try_unsupported
-comma
-l_string|&quot;1i&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
