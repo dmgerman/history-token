@@ -9863,7 +9863,8 @@ id|ivideo
 )paren
 suffix:semicolon
 r_static
-r_char
+r_void
+id|__iomem
 op_star
 id|sis_find_rom
 c_func
