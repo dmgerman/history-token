@@ -920,7 +920,7 @@ id|inode
 (brace
 DECL|member|i_hash
 r_struct
-id|list_head
+id|hlist_node
 id|i_hash
 suffix:semicolon
 DECL|member|i_list
@@ -2031,7 +2031,7 @@ suffix:semicolon
 multiline_comment|/* parked for writeback */
 DECL|member|s_anon
 r_struct
-id|list_head
+id|hlist_head
 id|s_anon
 suffix:semicolon
 multiline_comment|/* anonymous dentries for (nfs) exporting */
