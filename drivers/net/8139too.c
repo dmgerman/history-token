@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|RTL8139_DRIVER_NAME
@@ -6419,6 +6420,20 @@ op_amp
 id|tp-&gt;thr_wait
 comma
 id|timeout
+)paren
+suffix:semicolon
+multiline_comment|/* make swsusp happy with our thread */
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 )brace

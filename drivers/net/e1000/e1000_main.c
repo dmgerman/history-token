@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.1.13-k1&quot;
+l_string|&quot;5.1.13-k2&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
