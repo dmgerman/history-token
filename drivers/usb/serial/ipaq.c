@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (30/4/2002) ganesh&n; * &t;Added support for the Casio EM500. Completely untested. Thanks&n; * &t;to info from Nathan &lt;wfilardo@fuse.net&gt;&n; *&n; * (19/3/2002) ganesh&n; *&t;Don&squot;t submit urbs while holding spinlocks. Not strictly necessary&n; *&t;in 2.5.x.&n; *&n; * (8/3/2002) ganesh&n; * &t;The ipaq sometimes emits a &squot;&bslash;0&squot; before the CLIENT string. At this&n; * &t;point of time, the ppp ldisc is not yet attached to the tty, so&n; * &t;n_tty echoes &quot;^ &quot; to the ipaq, which messes up the chat. In 2.5.6-pre2&n; * &t;this causes a panic because echo_char() tries to sleep in interrupt&n; * &t;context.&n; * &t;The fix is to tell the upper layers that this is a raw device so that&n; * &t;echoing is suppressed. Thanks to Lyle Lindholm for a detailed bug&n; * &t;report.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
+multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (26/7/2002) ganesh&n; * &t;Fixed up broken error handling in ipaq_open. Retry the &quot;kickstart&quot;&n; * &t;packet much harder - this drastically reduces connection failures.&n; *&n; * (30/4/2002) ganesh&n; * &t;Added support for the Casio EM500. Completely untested. Thanks&n; * &t;to info from Nathan &lt;wfilardo@fuse.net&gt;&n; *&n; * (19/3/2002) ganesh&n; *&t;Don&squot;t submit urbs while holding spinlocks. Not strictly necessary&n; *&t;in 2.5.x.&n; *&n; * (8/3/2002) ganesh&n; * &t;The ipaq sometimes emits a &squot;&bslash;0&squot; before the CLIENT string. At this&n; * &t;point of time, the ppp ldisc is not yet attached to the tty, so&n; * &t;n_tty echoes &quot;^ &quot; to the ipaq, which messes up the chat. In 2.5.6-pre2&n; * &t;this causes a panic because echo_char() tries to sleep in interrupt&n; * &t;context.&n; * &t;The fix is to tell the upper layers that this is a raw device so that&n; * &t;echoing is suppressed. Thanks to Lyle Lindholm for a detailed bug&n; * &t;report.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -30,6 +30,8 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;ipaq.h&quot;
+DECL|macro|KP_RETRIES
+mdefine_line|#define KP_RETRIES&t;100
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v0.2&quot;
@@ -405,6 +407,11 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|retries
+op_assign
+id|KP_RETRIES
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -755,8 +762,18 @@ comma
 id|result
 )paren
 suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Send out two control messages observed in win98 sniffs. Not sure what&n;&t; * they do.&n;&t; */
+multiline_comment|/*&n;&t; * Send out control message observed in win98 sniffs. Not sure what&n;&t; * it does, but from empirical observations, it seems that the device&n;&t; * will start the chat sequence once one of these messages gets&n;&t; * through. Since this has a reasonably high failure rate, we retry&n;&t; * several times.&n;&t; */
+r_while
+c_loop
+(paren
+id|retries
+op_decrement
+)paren
+(brace
 id|result
 op_assign
 id|usb_control_msg
@@ -784,83 +801,53 @@ l_int|NULL
 comma
 l_int|0
 comma
-l_int|5
-op_star
 id|HZ
+op_div
+l_int|10
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|result
-OL
+op_eq
 l_int|0
 )paren
 (brace
-id|err
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - failed doing control urb, error %d&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-)brace
-id|result
-op_assign
-id|usb_control_msg
-c_func
-(paren
-id|serial-&gt;dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|serial-&gt;dev
-comma
-l_int|0
-)paren
-comma
-l_int|0x22
-comma
-l_int|0x21
-comma
-l_int|0x1
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|5
-op_star
-id|HZ
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-OL
-l_int|0
-)paren
-(brace
-id|err
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - failed doing control urb, error %d&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-)brace
 r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - failed doing control urb, error %d&quot;
+comma
 id|result
+)paren
+suffix:semicolon
+r_goto
+id|error
 suffix:semicolon
 id|enomem
+suffix:colon
+id|result
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - Out of memory&quot;
+)paren
+suffix:semicolon
+id|error
 suffix:colon
 id|ipaq_destroy_lists
 c_func
@@ -874,16 +861,8 @@ c_func
 id|priv
 )paren
 suffix:semicolon
-id|err
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - Out of memory&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|result
 suffix:semicolon
 )brace
 DECL|function|ipaq_close
