@@ -9769,6 +9769,10 @@ comma
 id|ahd-&gt;unit
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_FREEZE
+suffix:semicolon
 macro_line|#endif
 id|unlock_kernel
 c_func
