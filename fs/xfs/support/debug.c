@@ -26,13 +26,17 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Translate from CE_FOO to KERN_FOO, err_level(CE_FOO) == KERN_FOO */
+DECL|macro|MAX_XFS_ERR_LEVEL
+mdefine_line|#define MAX_XFS_ERR_LEVEL&t;7
 DECL|variable|err_level
 r_static
 r_char
 op_star
 id|err_level
 (braket
-l_int|8
+id|XFS_MAX_ERR_LEVEL
+op_plus
+l_int|1
 )braket
 op_assign
 (brace
@@ -201,6 +205,17 @@ suffix:semicolon
 id|va_list
 id|ap
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|level
+OG
+id|XFS_MAX_ERR_LEVEL
+)paren
+id|level
+op_assign
+id|XFS_MAX_ERR_LEVEL
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -293,6 +308,17 @@ id|va_list
 id|ap
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|level
+OG
+id|XFS_MAX_ERR_LEVEL
+)paren
+id|level
+op_assign
+id|XFS_MAX_ERR_LEVEL
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
