@@ -8232,6 +8232,14 @@ id|cmd
 op_assign
 id|qc-&gt;scsicmd
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|qc-&gt;flags
+op_amp
+id|ATA_QCFLAG_SG
+)paren
+(brace
 multiline_comment|/* set up SG table */
 r_if
 c_cond
@@ -8275,6 +8283,7 @@ c_func
 id|qc
 )paren
 suffix:semicolon
+)brace
 id|qc-&gt;ap-&gt;active_tag
 op_assign
 id|qc-&gt;tag
@@ -8388,15 +8397,12 @@ r_case
 id|ATA_PROT_PIO
 suffix:colon
 multiline_comment|/* load tf registers, initiate polling pio */
-id|qc-&gt;flags
-op_or_assign
-id|ATA_QCFLAG_POLL
+id|ata_qc_set_polling
+c_func
+(paren
+id|qc
+)paren
 suffix:semicolon
-id|qc-&gt;tf.ctl
-op_or_assign
-id|ATA_NIEN
-suffix:semicolon
-multiline_comment|/* disable interrupts */
 id|ata_tf_to_host_nolock
 c_func
 (paren
@@ -8424,6 +8430,26 @@ suffix:semicolon
 r_case
 id|ATA_PROT_ATAPI
 suffix:colon
+id|ata_tf_to_host_nolock
+c_func
+(paren
+id|ap
+comma
+op_amp
+id|qc-&gt;tf
+)paren
+suffix:semicolon
+id|queue_work
+c_func
+(paren
+id|ata_wq
+comma
+op_amp
+id|ap-&gt;packet_task
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|ATA_PROT_ATAPI_DMA
 suffix:colon

@@ -2795,19 +2795,16 @@ l_int|0
 )paren
 )paren
 (brace
-id|qc-&gt;flags
-op_or_assign
-id|ATA_QCFLAG_POLL
+id|ata_qc_set_polling
+c_func
+(paren
+id|qc
+)paren
 suffix:semicolon
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI
 suffix:semicolon
-id|qc-&gt;tf.ctl
-op_or_assign
-id|ATA_NIEN
-suffix:semicolon
-multiline_comment|/* disable interrupts */
 id|qc-&gt;tf.lbam
 op_assign
 (paren
