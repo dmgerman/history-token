@@ -51,6 +51,7 @@ l_string|&quot;Bitmask of remote control channels to ignore&quot;
 )paren
 suffix:semicolon
 DECL|variable|debug
+r_static
 r_int
 id|debug
 op_assign
