@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.45 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.50 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -863,6 +863,9 @@ op_star
 id|cdev
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -912,6 +915,8 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|ccw_device_offline
 c_func
 (paren
@@ -924,6 +929,13 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
 id|wait_event
 c_func
 (paren
@@ -940,6 +952,18 @@ id|cdev
 )paren
 )paren
 suffix:semicolon
+r_else
+singleline_comment|//FIXME: we can&squot;t fail!
+id|pr_debug
+c_func
+(paren
+l_string|&quot;ccw_device_offline returned %d, device %s&bslash;n&quot;
+comma
+id|ret
+comma
+id|cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|ccw_device_set_online
@@ -952,14 +976,14 @@ op_star
 id|cdev
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|cdev
-op_logical_or
-op_logical_neg
-id|cdev-&gt;handler
 )paren
 r_return
 suffix:semicolon
@@ -979,6 +1003,8 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|ccw_device_online
 c_func
 (paren
@@ -991,6 +1017,13 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
 id|wait_event
 c_func
 (paren
@@ -1007,6 +1040,21 @@ id|cdev
 )paren
 )paren
 suffix:semicolon
+r_else
+(brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;ccw_device_online returned %d, device %s&bslash;n&quot;
+comma
+id|ret
+comma
+id|cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1050,6 +1098,8 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|ccw_device_offline
 c_func
 (paren
@@ -1062,6 +1112,13 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
 id|wait_event
 c_func
 (paren
@@ -1076,6 +1133,17 @@ c_func
 (paren
 id|cdev
 )paren
+)paren
+suffix:semicolon
+r_else
+id|pr_debug
+c_func
+(paren
+l_string|&quot;ccw_device_offline returned %d, device %s&bslash;n&quot;
+comma
+id|ret
+comma
+id|cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 )brace
@@ -2508,7 +2576,6 @@ multiline_comment|/*&n;&t; * Set device offline, so device drivers don&squot;t e
 id|pr_debug
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;removing device %s, sch %d, devno %x&bslash;n&quot;
 comma
 id|cdev-&gt;dev.name

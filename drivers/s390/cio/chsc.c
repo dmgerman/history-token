@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.46 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.57 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -151,34 +151,6 @@ id|chpids_logical
 )paren
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_void
-DECL|function|chsc_clear_chpid
-id|chsc_clear_chpid
-c_func
-(paren
-r_struct
-id|subchannel
-op_star
-id|sch
-comma
-r_int
-id|chp
-)paren
-(brace
-id|clear_bit
-c_func
-(paren
-id|sch-&gt;schib.pmcw.chpid
-(braket
-id|chp
-)braket
-comma
-id|chpids
-)paren
-suffix:semicolon
-)brace
 r_void
 DECL|function|chsc_validate_chpids
 id|chsc_validate_chpids
@@ -232,7 +204,6 @@ id|sch-&gt;lpm
 op_amp
 id|mask
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -251,38 +222,6 @@ op_and_assign
 op_complement
 id|mask
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* This chpid is not&n;&t;&t;&t; * available to us */
-id|chsc_clear_chpid
-c_func
-(paren
-id|sch
-comma
-id|chp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|chp
-comma
-id|chpids_known
-)paren
-)paren
-id|set_chp_status
-c_func
-(paren
-id|chp
-comma
-id|CHP_STANDBY
-)paren
-suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* FIXME: this is _always_ called for every subchannel. shouldn&squot;t we&n; *&t;  process more than one at a time?*/
@@ -1004,6 +943,7 @@ l_int|NULL
 r_continue
 suffix:semicolon
 multiline_comment|/* we don&squot;t know the device anyway */
+multiline_comment|/* FIXME: Kill pending I/O. */
 id|s390_subchannel_remove_chpid
 c_func
 (paren
@@ -1326,6 +1266,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: Kill pending I/O. */
 id|spin_lock_irq
 c_func
 (paren
@@ -1431,7 +1372,7 @@ id|ignore
 )paren
 (brace
 r_int
-id|ccode
+id|do_sei
 suffix:semicolon
 multiline_comment|/*&n;&t; * build the chsc request block for store event information&n;&t; * and do the call&n;&t; */
 multiline_comment|/* FIXME: chsc_area_sei cannot be on the stack since it needs to&n;&t; * be page-aligned. Implement proper locking or dynamic&n;&t; * allocation or prove that this function does not have to be&n;&t; * reentrant! */
@@ -1485,6 +1426,19 @@ comma
 l_string|&quot;prcss&quot;
 )paren
 suffix:semicolon
+id|do_sei
+op_assign
+l_int|1
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|do_sei
+)paren
+(brace
+r_int
+id|ccode
+suffix:semicolon
 id|ccode
 op_assign
 id|chsc
@@ -1506,7 +1460,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|chsc_area_sei.response_block.response_code
+id|sei_res-&gt;response_code
 )paren
 (brace
 multiline_comment|/* for debug purposes, check for problems */
@@ -1524,8 +1478,10 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;chsc_process_crw:invalid command!&bslash;n&quot;
+l_string|&quot;chsc_process_crw: invalid command!&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 r_case
 l_int|0x0003
@@ -1549,8 +1505,8 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;chsc_process_crw: no event information &quot;
-l_string|&quot;stored&bslash;n&quot;
+l_string|&quot;chsc_process_crw: no event &quot;
+l_string|&quot;information stored&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1564,7 +1520,7 @@ l_int|2
 comma
 l_string|&quot;chsc_process_crw: chsc response %d&bslash;n&quot;
 comma
-id|chsc_area_sei.response_block.response_code
+id|sei_res-&gt;response_code
 )paren
 suffix:semicolon
 r_return
@@ -1575,8 +1531,47 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;chsc_process_crw: event information successfully &quot;
-l_string|&quot;stored&bslash;n&quot;
+l_string|&quot;chsc_process_crw: event information &quot;
+l_string|&quot;successfully stored&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Check if there is more event information pending. */
+r_if
+c_cond
+(paren
+id|sei_res-&gt;flags
+op_amp
+l_int|0x80
+)paren
+id|CIO_CRW_EVENT
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;chsc_process_crw: &quot;
+l_string|&quot;further event information pending&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|do_sei
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Check if we might have lost some information. */
+r_if
+c_cond
+(paren
+id|sei_res-&gt;flags
+op_amp
+l_int|0x40
+)paren
+id|CIO_CRW_EVENT
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;chsc_process_crw: Event information &quot;
+l_string|&quot;has been lost due to overflow!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1592,14 +1587,13 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;chsc_process_crw: &quot;
-l_string|&quot;reporting source (%04X) isn&squot;t a chpid!&quot;
-l_string|&quot;Aborting processing of machine check...&bslash;n&quot;
+l_string|&quot;chsc_process_crw: reporting source &quot;
+l_string|&quot;(%04X) isn&squot;t a chpid!&bslash;n&quot;
 comma
 id|sei_res-&gt;rsid
 )paren
 suffix:semicolon
-r_return
+r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* which kind of information was stored? */
@@ -1650,14 +1644,12 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Data received after sei: &bslash;n&quot;
 )paren
 suffix:semicolon
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Validity flags: %x&bslash;n&quot;
 comma
 id|sei_res-&gt;vf
@@ -1706,7 +1698,6 @@ l_int|0
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;chpid: %x&bslash;n&quot;
 comma
 id|sei_res-&gt;rsid
@@ -1739,7 +1730,6 @@ l_int|0x80
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;chpid: %x link addr: %x&bslash;n&quot;
 comma
 id|sei_res-&gt;rsid
@@ -1774,7 +1764,6 @@ l_int|0xc0
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;chpid: %x full link addr: %x&bslash;n&quot;
 comma
 id|sei_res-&gt;rsid
@@ -1796,7 +1785,6 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1817,6 +1805,37 @@ id|sei_res-&gt;cc
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|do_sei
+)paren
+(brace
+id|memset
+c_func
+(paren
+op_amp
+id|chsc_area_sei
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|sei_area
+)paren
+)paren
+suffix:semicolon
+id|chsc_area_sei.request_block.command_code1
+op_assign
+l_int|0x0010
+suffix:semicolon
+id|chsc_area_sei.request_block.command_code2
+op_assign
+l_int|0x000e
+suffix:semicolon
+)brace
 )brace
 )brace
 r_void
@@ -1845,6 +1864,333 @@ op_amp
 id|work
 )paren
 suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|chp_add
+id|chp_add
+c_func
+(paren
+r_int
+id|chpid
+)paren
+(brace
+r_struct
+id|subchannel
+op_star
+id|sch
+suffix:semicolon
+r_int
+id|irq
+comma
+id|ret
+suffix:semicolon
+r_char
+id|dbf_txt
+(braket
+l_int|15
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|chpid
+comma
+id|chpids_logical
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* no need to do the rest */
+id|sprintf
+c_func
+(paren
+id|dbf_txt
+comma
+l_string|&quot;cadd%x&quot;
+comma
+id|chpid
+)paren
+suffix:semicolon
+id|CIO_TRACE_EVENT
+c_func
+(paren
+l_int|2
+comma
+id|dbf_txt
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|irq
+op_assign
+l_int|0
+suffix:semicolon
+id|irq
+op_le
+id|__MAX_SUBCHANNELS
+suffix:semicolon
+id|irq
+op_increment
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|sch
+op_assign
+id|ioinfo
+(braket
+id|irq
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sch
+)paren
+(brace
+id|ret
+op_assign
+id|css_probe_device
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|ENXIO
+)paren
+multiline_comment|/* We&squot;re through */
+r_return
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* FIXME: Kill pending I/O. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|sch-&gt;schib.pmcw.chpid
+(braket
+id|i
+)braket
+op_eq
+id|chpid
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|stsch
+c_func
+(paren
+id|sch-&gt;irq
+comma
+op_amp
+id|sch-&gt;schib
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* Endgame. */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|8
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|sch-&gt;lpm
+op_assign
+(paren
+id|sch-&gt;schib.pmcw.pim
+op_amp
+id|sch-&gt;schib.pmcw.pam
+op_amp
+id|sch-&gt;schib.pmcw.pom
+)paren
+op_or
+l_int|0x80
+op_rshift
+id|i
+suffix:semicolon
+id|chsc_validate_chpids
+c_func
+(paren
+id|sch
+)paren
+suffix:semicolon
+id|dev_fsm_event
+c_func
+(paren
+id|sch-&gt;dev.driver_data
+comma
+id|DEV_EVENT_VERIFY
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* &n; * Handling of crw machine checks with channel path source.&n; */
+r_void
+DECL|function|chp_process_crw
+id|chp_process_crw
+c_func
+(paren
+r_int
+id|chpid
+)paren
+(brace
+multiline_comment|/*&n;&t; * Update our descriptions. We need this since we don&squot;t always&n;&t; * get machine checks for path come and can&squot;t rely on our information&n;&t; * being consistent otherwise.&n;&t; */
+id|chsc_get_sch_descriptions
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cio_chsc_desc_avail
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Something went wrong...&n;&t;&t; * We can&squot;t reliably say whether a path was there before.&n;&t;&t; */
+id|CIO_CRW_EVENT
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;Error: Could not retrieve &quot;
+l_string|&quot;subchannel descriptions, will not process chp&quot;
+l_string|&quot;machine check...&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|chpid
+comma
+id|chpids
+)paren
+)paren
+(brace
+multiline_comment|/* Path has gone. We use the link incident routine.*/
+id|s390_set_chpid_offline
+c_func
+(paren
+id|chpid
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* &n;&t;&t; * Path has come. Allocate a new channel path structure,&n;&t;&t; * if needed. &n;&t;&t; */
+r_if
+c_cond
+(paren
+id|chps
+(braket
+id|chpid
+)braket
+op_eq
+l_int|NULL
+)paren
+id|new_channel_path
+c_func
+(paren
+id|chpid
+comma
+id|CHP_ONLINE
+)paren
+suffix:semicolon
+r_else
+id|set_chp_status
+c_func
+(paren
+id|chpid
+comma
+id|CHP_ONLINE
+)paren
+suffix:semicolon
+multiline_comment|/* Avoid the extra overhead in process_rec_acc. */
+id|chp_add
+c_func
+(paren
+id|chpid
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function: s390_vary_chpid&n; * Varies the specified chpid online or offline&n; */
 r_static
@@ -2183,22 +2529,6 @@ id|buf
 )paren
 (brace
 r_struct
-id|sys_device
-op_star
-id|sdev
-op_assign
-id|container_of
-c_func
-(paren
-id|dev
-comma
-r_struct
-id|sys_device
-comma
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|channel_path
 op_star
 id|chp
@@ -2206,12 +2536,12 @@ op_assign
 id|container_of
 c_func
 (paren
-id|sdev
+id|dev
 comma
 r_struct
 id|channel_path
 comma
-id|sdev
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -2305,22 +2635,6 @@ id|count
 )paren
 (brace
 r_struct
-id|sys_device
-op_star
-id|sdev
-op_assign
-id|container_of
-c_func
-(paren
-id|dev
-comma
-r_struct
-id|sys_device
-comma
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|channel_path
 op_star
 id|cp
@@ -2328,12 +2642,12 @@ op_assign
 id|container_of
 c_func
 (paren
-id|sdev
+id|dev
 comma
 r_struct
 id|channel_path
 comma
-id|sdev
+id|dev
 )paren
 suffix:semicolon
 r_char
@@ -2494,6 +2808,20 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|chp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|channel_path
+)paren
+)paren
+suffix:semicolon
 id|chps
 (braket
 id|chpid
@@ -2510,10 +2838,15 @@ id|chp-&gt;state
 op_assign
 id|status
 suffix:semicolon
+id|chp-&gt;dev.parent
+op_assign
+op_amp
+id|css_bus_device
+suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|chp-&gt;sdev.dev.name
+id|chp-&gt;dev.name
 comma
 id|DEVICE_NAME_SIZE
 comma
@@ -2522,22 +2855,26 @@ comma
 id|chpid
 )paren
 suffix:semicolon
-id|chp-&gt;sdev.name
-op_assign
-l_string|&quot;channel_path&quot;
-suffix:semicolon
-id|chp-&gt;sdev.id
-op_assign
+id|snprintf
+c_func
+(paren
+id|chp-&gt;dev.bus_id
+comma
+id|DEVICE_ID_SIZE
+comma
+l_string|&quot;chp%x&quot;
+comma
 id|chpid
+)paren
 suffix:semicolon
 multiline_comment|/* make it known to the system */
 id|ret
 op_assign
-id|sys_device_register
+id|device_register
 c_func
 (paren
 op_amp
-id|chp-&gt;sdev
+id|chp-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -2567,7 +2904,7 @@ id|device_create_file
 c_func
 (paren
 op_amp
-id|chp-&gt;sdev.dev
+id|chp-&gt;dev
 comma
 op_amp
 id|dev_attr_status
@@ -2578,11 +2915,11 @@ c_cond
 (paren
 id|ret
 )paren
-id|sys_device_unregister
+id|device_unregister
 c_func
 (paren
 op_amp
-id|chp-&gt;sdev
+id|chp-&gt;dev
 )paren
 suffix:semicolon
 r_return

@@ -177,8 +177,10 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;cio_process_irq(%04X) - path(s) %02x are &quot;
-l_string|&quot;not operational &quot;
+l_string|&quot;%s(%04X) - path(s) %02x are &quot;
+l_string|&quot;not operational &bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|sch-&gt;irq
 comma
@@ -849,7 +851,15 @@ multiline_comment|/* A sense is required, can we do it now ? */
 r_if
 c_cond
 (paren
+(paren
 id|irb-&gt;scsw.actl
+op_amp
+(paren
+id|SCSW_ACTL_DEVACT
+op_or
+id|SCSW_ACTL_SCHACT
+)paren
+)paren
 op_ne
 l_int|0
 )paren
@@ -1036,7 +1046,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|irb-&gt;scsw.actl
+op_amp
+(paren
+id|SCSW_ACTL_DEVACT
+op_or
+id|SCSW_ACTL_SCHACT
+)paren
+)paren
 op_ne
 l_int|0
 )paren

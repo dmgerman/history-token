@@ -474,7 +474,7 @@ id|ps-&gt;reserved
 op_assign
 l_int|0xff
 suffix:semicolon
-multiline_comment|/* Special case for bloddy osa devices. */
+multiline_comment|/* Special case for bloody osa devices. */
 r_if
 c_cond
 (paren
