@@ -63,7 +63,7 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
-multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; *&n; *   Tries to change the SpeedStep state. &n; */
+multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; * @notify: whether to call cpufreq_notify_transition for CPU speed changes&n; *&n; *   Tries to change the SpeedStep state. &n; */
 DECL|function|speedstep_set_state
 r_static
 r_void
@@ -626,7 +626,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_setpolicy - set a new CPUFreq policy&n; * @policy: new policy&n; *&n; * Sets a new CPUFreq policy.&n; */
+multiline_comment|/**&n; * speedstep_target - set a new CPUFreq policy&n; * @policy: new policy&n; * @target_freq: the target frequency&n; * @relation: how that frequency relates to achieved frequency (CPUFREQ_RELATION_L or CPUFREQ_RELATION_H)&n; *&n; * Sets a new CPUFreq policy.&n; */
 DECL|function|speedstep_target
 r_static
 r_int
@@ -690,7 +690,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_verify - verifies a new CPUFreq policy&n; * @freq: new policy&n; *&n; * Limit must be within speedstep_low_freq and speedstep_high_freq, with&n; * at least one border included.&n; */
+multiline_comment|/**&n; * speedstep_verify - verifies a new CPUFreq policy&n; * @policy: new policy&n; *&n; * Limit must be within speedstep_low_freq and speedstep_high_freq, with&n; * at least one border included.&n; */
 DECL|function|speedstep_verify
 r_static
 r_int

@@ -395,7 +395,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * powernow_k6_setpolicy - sets a new CPUFreq policy&n; * @policy - new policy&n; *&n; * sets a new CPUFreq policy&n; */
+multiline_comment|/**&n; * powernow_k6_setpolicy - sets a new CPUFreq policy&n; * @policy: new policy&n; * @target_freq: the target frequency&n; * @relation: how that frequency relates to achieved frequency (CPUFREQ_RELATION_L or CPUFREQ_RELATION_H)&n; *&n; * sets a new CPUFreq policy&n; */
 DECL|function|powernow_k6_target
 r_static
 r_int

@@ -1691,7 +1691,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * centrino_verify - verifies a new CPUFreq policy&n; * @freq: new policy&n; *&n; * Limit must be within this model&squot;s frequency range at least one&n; * border included.&n; */
+multiline_comment|/**&n; * centrino_verify - verifies a new CPUFreq policy&n; * @policy: new policy&n; *&n; * Limit must be within this model&squot;s frequency range at least one&n; * border included.&n; */
 DECL|function|centrino_verify
 r_static
 r_int
@@ -1713,7 +1713,7 @@ id|centrino_model-&gt;op_points
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * centrino_setpolicy - set a new CPUFreq policy&n; * @policy: new policy&n; *&n; * Sets a new CPUFreq policy.&n; */
+multiline_comment|/**&n; * centrino_setpolicy - set a new CPUFreq policy&n; * @policy: new policy&n; * @target_freq: the target frequency&n; * @relation: how that frequency relates to achieved frequency (CPUFREQ_RELATION_L or CPUFREQ_RELATION_H)&n; *&n; * Sets a new CPUFreq policy.&n; */
 DECL|function|centrino_target
 r_static
 r_int

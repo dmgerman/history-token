@@ -123,7 +123,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * longrun_set_policy - sets a new CPUFreq policy&n; * @policy - new policy&n; *&n; * Sets a new CPUFreq policy on LongRun-capable processors. This function&n; * has to be called with cpufreq_driver locked.&n; */
+multiline_comment|/**&n; * longrun_set_policy - sets a new CPUFreq policy&n; * @policy: new policy&n; *&n; * Sets a new CPUFreq policy on LongRun-capable processors. This function&n; * has to be called with cpufreq_driver locked.&n; */
 DECL|function|longrun_set_policy
 r_static
 r_int
@@ -301,7 +301,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * longrun_verify_poliy - verifies a new CPUFreq policy&n; *&n; * Validates a new CPUFreq policy. This function has to be called with &n; * cpufreq_driver locked.&n; */
+multiline_comment|/**&n; * longrun_verify_poliy - verifies a new CPUFreq policy&n; * @policy: the policy to verify&n; *&n; * Validates a new CPUFreq policy. This function has to be called with &n; * cpufreq_driver locked.&n; */
 DECL|function|longrun_verify_policy
 r_static
 r_int
@@ -361,7 +361,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * longrun_determine_freqs - determines the lowest and highest possible core frequency&n; *&n; * Determines the lowest and highest possible core frequencies on this CPU.&n; * This is necessary to calculate the performance percentage according to&n; * TMTA rules:&n; * performance_pctg = (target_freq - low_freq)/(high_freq - low_freq)&n; */
+multiline_comment|/**&n; * longrun_determine_freqs - determines the lowest and highest possible core frequency&n; * @low_freq: an int to put the lowest frequency into&n; * @high_freq: an int to put the highest frequency into&n; *&n; * Determines the lowest and highest possible core frequencies on this CPU.&n; * This is necessary to calculate the performance percentage according to&n; * TMTA rules:&n; * performance_pctg = (target_freq - low_freq)/(high_freq - low_freq)&n; */
 DECL|function|longrun_determine_freqs
 r_static
 r_int
