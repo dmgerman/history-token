@@ -8725,6 +8725,16 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_goto
+id|arch_cleanup
+suffix:semicolon
 id|err
 op_assign
 id|mod_sysfs_setup
