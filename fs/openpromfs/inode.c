@@ -1643,7 +1643,7 @@ id|OPP_HEXSTRING
 r_char
 id|buffer
 (braket
-l_int|2
+l_int|8
 )braket
 suffix:semicolon
 r_if
@@ -1670,6 +1670,9 @@ id|buffer
 comma
 l_string|&quot;%02x&quot;
 comma
+(paren
+r_int
+)paren
 op_star
 (paren
 id|op-&gt;value
@@ -1680,6 +1683,8 @@ op_rshift
 l_int|1
 )paren
 )paren
+op_amp
+l_int|0xff
 )paren
 suffix:semicolon
 r_if
@@ -1740,6 +1745,9 @@ id|buffer
 comma
 l_string|&quot;%02x&quot;
 comma
+(paren
+r_int
+)paren
 op_star
 (paren
 id|op-&gt;value
@@ -1750,6 +1758,8 @@ op_rshift
 l_int|1
 )paren
 )paren
+op_amp
+l_int|0xff
 )paren
 suffix:semicolon
 r_if
@@ -1798,6 +1808,9 @@ id|buffer
 comma
 l_string|&quot;%02x&quot;
 comma
+(paren
+r_int
+)paren
 op_star
 (paren
 id|op-&gt;value
@@ -1808,6 +1821,8 @@ op_rshift
 l_int|1
 )paren
 )paren
+op_amp
+l_int|0xff
 )paren
 suffix:semicolon
 r_if
