@@ -657,6 +657,19 @@ op_star
 id|mii
 )paren
 (brace
+multiline_comment|/* first, a dummy read, needed to latch some MII phys */
+id|mii
+op_member_access_from_pointer
+id|mdio_read
+c_func
+(paren
+id|mii-&gt;dev
+comma
+id|mii-&gt;phy_id
+comma
+id|MII_BMSR
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
