@@ -3493,6 +3493,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|csz_qdisc_ops
+r_static
 r_struct
 id|Qdisc_ops
 id|csz_qdisc_ops
@@ -3575,10 +3576,11 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
+DECL|function|csz_module_init
+r_static
 r_int
-id|init_module
+id|__init
+id|csz_module_init
 c_func
 (paren
 r_void
@@ -3593,9 +3595,11 @@ id|csz_qdisc_ops
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|csz_module_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|csz_module_exit
 c_func
 (paren
 r_void
@@ -3609,7 +3613,16 @@ id|csz_qdisc_ops
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+id|module_init
+c_func
+(paren
+id|csz_module_init
+)paren
+id|module_exit
+c_func
+(paren
+id|csz_module_exit
+)paren
 id|MODULE_LICENSE
 c_func
 (paren

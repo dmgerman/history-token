@@ -10666,13 +10666,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_SCHED
-id|pktsched_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 l_int|0

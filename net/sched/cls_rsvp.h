@@ -3339,6 +3339,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|RSVP_OPS
+r_static
 r_struct
 id|tcf_proto_ops
 id|RSVP_OPS
@@ -3406,10 +3407,11 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
+DECL|function|init_rsvp
+r_static
 r_int
-id|init_module
+id|__init
+id|init_rsvp
 c_func
 (paren
 r_void
@@ -3424,9 +3426,11 @@ id|RSVP_OPS
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|exit_rsvp
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|exit_rsvp
 c_func
 (paren
 r_void
@@ -3440,5 +3444,14 @@ id|RSVP_OPS
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+id|module_init
+c_func
+(paren
+id|init_rsvp
+)paren
+id|module_exit
+c_func
+(paren
+id|exit_rsvp
+)paren
 eof

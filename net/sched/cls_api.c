@@ -2181,6 +2181,7 @@ id|skb-&gt;len
 suffix:semicolon
 )brace
 DECL|function|tc_filter_init
+r_static
 r_int
 id|__init
 id|tc_filter_init
@@ -2251,60 +2252,17 @@ op_assign
 id|tc_dump_tfilter
 suffix:semicolon
 )brace
-DECL|macro|INIT_TC_FILTER
-mdefine_line|#define INIT_TC_FILTER(name) { &bslash;&n;          extern struct tcf_proto_ops cls_##name##_ops; &bslash;&n;          register_tcf_proto_ops(&amp;cls_##name##_ops); &bslash;&n;&t;}
-macro_line|#ifdef CONFIG_NET_CLS_U32
-id|INIT_TC_FILTER
-c_func
-(paren
-id|u32
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_ROUTE4
-id|INIT_TC_FILTER
-c_func
-(paren
-id|route4
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_FW
-id|INIT_TC_FILTER
-c_func
-(paren
-id|fw
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_RSVP
-id|INIT_TC_FILTER
-c_func
-(paren
-id|rsvp
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_TCINDEX
-id|INIT_TC_FILTER
-c_func
-(paren
-id|tcindex
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_RSVP6
-id|INIT_TC_FILTER
-c_func
-(paren
-id|rsvp6
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|tc_filter_init
+id|subsys_initcall
+c_func
+(paren
+id|tc_filter_init
+)paren
+suffix:semicolon
 DECL|variable|register_tcf_proto_ops
 id|EXPORT_SYMBOL
 c_func
