@@ -709,13 +709,6 @@ id|host-&gt;h_reclaiming
 op_assign
 l_int|0
 suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|host-&gt;h_gracewait
-)paren
-suffix:semicolon
 multiline_comment|/* Now, wake up all processes that sleep on a blocked lock */
 r_for
 c_loop
