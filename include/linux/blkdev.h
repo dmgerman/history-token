@@ -1618,8 +1618,9 @@ comma
 r_int
 r_int
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 )paren
 suffix:semicolon
 r_extern

@@ -208,7 +208,7 @@ id|buffer
 suffix:semicolon
 multiline_comment|/* the buffer for the ioctl */
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -297,7 +297,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -469,7 +469,7 @@ id|buffer
 suffix:semicolon
 multiline_comment|/* the buffer for the ioctl */
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -539,7 +539,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon

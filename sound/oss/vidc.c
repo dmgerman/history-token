@@ -306,7 +306,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -364,6 +366,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -494,6 +497,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

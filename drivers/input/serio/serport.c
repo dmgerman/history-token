@@ -451,6 +451,7 @@ id|file
 comma
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -597,6 +598,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

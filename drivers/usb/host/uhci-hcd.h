@@ -637,6 +637,12 @@ id|list_head
 id|qh_remove_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;schedule_lock */
+DECL|member|qh_remove_age
+r_int
+r_int
+id|qh_remove_age
+suffix:semicolon
+multiline_comment|/* Age in frames */
 multiline_comment|/* List of TD&squot;s that are done, but waiting to be freed (race) */
 DECL|member|td_remove_list
 r_struct
@@ -644,6 +650,12 @@ id|list_head
 id|td_remove_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;schedule_lock */
+DECL|member|td_remove_age
+r_int
+r_int
+id|td_remove_age
+suffix:semicolon
+multiline_comment|/* Age in frames */
 multiline_comment|/* List of asynchronously unlinked URB&squot;s */
 DECL|member|urb_remove_list
 r_struct
@@ -651,6 +663,12 @@ id|list_head
 id|urb_remove_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;schedule_lock */
+DECL|member|urb_remove_age
+r_int
+r_int
+id|urb_remove_age
+suffix:semicolon
+multiline_comment|/* Age in frames */
 multiline_comment|/* List of URB&squot;s awaiting completion callback */
 DECL|member|complete_list
 r_struct

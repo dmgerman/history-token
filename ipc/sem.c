@@ -2228,6 +2228,7 @@ id|GETALL
 suffix:colon
 (brace
 id|ushort
+id|__user
 op_star
 id|array
 op_assign

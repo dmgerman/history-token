@@ -213,6 +213,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|buf
@@ -233,6 +234,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|buf
@@ -253,6 +255,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|buf
@@ -286,6 +289,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|buf
@@ -305,6 +309,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|buf
@@ -324,6 +329,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|buf
@@ -440,6 +446,7 @@ id|byte
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 id|buf
@@ -490,6 +497,7 @@ id|word
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 id|buf
@@ -540,6 +548,7 @@ id|dword
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|buf

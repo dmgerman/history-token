@@ -660,7 +660,7 @@ op_star
 id|tty
 comma
 r_int
-r_int
+id|__user
 op_star
 id|value
 )paren
@@ -695,6 +695,7 @@ op_star
 id|tty
 comma
 r_int
+id|__user
 op_star
 id|arg
 )paren
@@ -807,6 +808,7 @@ id|tty
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -881,6 +883,7 @@ id|tty
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -899,6 +902,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

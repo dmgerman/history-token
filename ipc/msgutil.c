@@ -30,6 +30,7 @@ op_star
 id|load_msg
 c_func
 (paren
+r_const
 r_void
 id|__user
 op_star
@@ -149,6 +150,7 @@ op_assign
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|src
@@ -275,6 +277,7 @@ op_assign
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|src
@@ -388,6 +391,7 @@ op_assign
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|dest
@@ -450,6 +454,7 @@ op_assign
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|dest

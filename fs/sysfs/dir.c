@@ -6,6 +6,13 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &quot;sysfs.h&quot;
+DECL|variable|sysfs_rename_sem
+id|DECLARE_RWSEM
+c_func
+(paren
+id|sysfs_rename_sem
+)paren
+suffix:semicolon
 DECL|function|init_dir
 r_static
 r_int
@@ -533,6 +540,12 @@ l_string|&quot;removing&quot;
 )paren
 suffix:semicolon
 multiline_comment|/**&n;&t;&t;&t; * Unlink and unhash.&n;&t;&t;&t; */
+id|__d_drop
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -540,10 +553,20 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-id|d_delete
+multiline_comment|/* release the target kobject in case of &n;&t;&t;&t; * a symlink&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|S_ISLNK
 c_func
 (paren
-id|d
+id|d-&gt;d_inode-&gt;i_mode
+)paren
+)paren
+id|kobject_put
+c_func
+(paren
+id|d-&gt;d_fsdata
 )paren
 suffix:semicolon
 id|simple_unlink
@@ -666,6 +689,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|sysfs_rename_sem
+)paren
+suffix:semicolon
 id|parent
 op_assign
 id|kobj-&gt;parent-&gt;dentry
@@ -742,6 +772,13 @@ c_func
 (paren
 op_amp
 id|parent-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|sysfs_rename_sem
 )paren
 suffix:semicolon
 r_return

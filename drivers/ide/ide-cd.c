@@ -9174,7 +9174,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 )paren
@@ -9311,7 +9311,7 @@ id|arg
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -9364,6 +9364,7 @@ id|spindown
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -9479,6 +9480,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -10977,7 +10979,7 @@ op_amp
 id|info-&gt;devinfo
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int

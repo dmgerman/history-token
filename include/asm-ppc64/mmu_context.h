@@ -602,13 +602,8 @@ id|VSID_RANDOMIZER
 op_amp
 id|VSID_MASK
 suffix:semicolon
-id|ifppcdebug
-c_func
-(paren
-id|PPCDBG_HTABSTRESS
-)paren
-(brace
-multiline_comment|/* For debug, this path creates a very poor vsid distribuition.&n;&t;&t; * A user program can access virtual addresses in the form&n;&t;&t; * 0x0yyyyxxxx000 where yyyy = xxxx to cause multiple mappings&n;&t;&t; * to hash to the same page table group.&n;&t;&t; */
+macro_line|#ifdef HTABSTRESS
+multiline_comment|/* For debug, this path creates a very poor vsid distribuition.&n;&t; * A user program can access virtual addresses in the form&n;&t; * 0x0yyyyxxxx000 where yyyy = xxxx to cause multiple mappings&n;&t; * to hash to the same page table group.&n;&t; */
 id|ordinal
 op_assign
 (paren
@@ -633,7 +628,7 @@ id|ordinal
 op_amp
 id|VSID_MASK
 suffix:semicolon
-)brace
+macro_line|#endif /* HTABSTRESS */
 r_return
 id|vsid
 suffix:semicolon
@@ -690,12 +685,7 @@ id|VSID_RANDOMIZER
 op_amp
 id|VSID_MASK
 suffix:semicolon
-id|ifppcdebug
-c_func
-(paren
-id|PPCDBG_HTABSTRESS
-)paren
-(brace
+macro_line|#ifdef HTABSTRESS
 multiline_comment|/* See comment above. */
 id|ordinal
 op_assign
@@ -721,7 +711,7 @@ id|ordinal
 op_amp
 id|VSID_MASK
 suffix:semicolon
-)brace
+macro_line|#endif /* HTABSTRESS */
 r_return
 id|vsid
 suffix:semicolon

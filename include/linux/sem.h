@@ -122,6 +122,7 @@ multiline_comment|/* value for SETVAL */
 DECL|member|buf
 r_struct
 id|semid_ds
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -129,6 +130,7 @@ multiline_comment|/* buffer for IPC_STAT &amp; IPC_SET */
 DECL|member|array
 r_int
 r_int
+id|__user
 op_star
 id|array
 suffix:semicolon
@@ -136,12 +138,14 @@ multiline_comment|/* array for GETALL &amp; SETALL */
 DECL|member|__buf
 r_struct
 id|seminfo
+id|__user
 op_star
 id|__buf
 suffix:semicolon
 multiline_comment|/* buffer for IPC_INFO */
 DECL|member|__pad
 r_void
+id|__user
 op_star
 id|__pad
 suffix:semicolon

@@ -5,25 +5,9 @@ mdefine_line|#define __ASM_ARCH_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/arch/iop310.h&gt;
 macro_line|#include &lt;asm/arch/iop321.h&gt;
-multiline_comment|/*&n; * Task size: 3GB&n; */
-DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;(0xbf000000UL)
-DECL|macro|TASK_SIZE_26
-mdefine_line|#define TASK_SIZE_26&t;(0x04000000UL)
-multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
-DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE (0x40000000)
-multiline_comment|/*&n; * Page offset: 3GB&n; */
-DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;(0xc0000000UL)
 multiline_comment|/*&n; * Physical DRAM offset.&n; */
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0xa0000000UL)
-multiline_comment|/*&n; * physical vs virtual ram conversion&n; */
-DECL|macro|__virt_to_phys
-mdefine_line|#define __virt_to_phys(x)&t;((x) - PAGE_OFFSET + PHYS_OFFSET)
-DECL|macro|__phys_to_virt
-mdefine_line|#define __phys_to_virt(x)&t;((x) - PHYS_OFFSET + PAGE_OFFSET)
 multiline_comment|/*&n; * Virtual view &lt;-&gt; DMA view memory address translations&n; * virt_to_bus: Used to translate the virtual address to an&n; *&t;&t;address suitable to be passed to set_dma_addr&n; * bus_to_virt: Used to convert an address for DMA operations&n; *&t;&t;to an address that the kernel can use.&n; */
 macro_line|#ifdef CONFIG_ARCH_IOP310
 DECL|macro|__virt_to_bus

@@ -47,6 +47,7 @@ r_int
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -3608,11 +3609,13 @@ id|p
 comma
 r_int
 r_int
+id|__user
 op_star
 id|stat_addr
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 id|ru
 )paren
@@ -3885,11 +3888,13 @@ id|delayed_group_leader
 comma
 r_int
 r_int
+id|__user
 op_star
 id|stat_addr
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 id|ru
 )paren
@@ -4123,6 +4128,7 @@ id|pid
 comma
 r_int
 r_int
+id|__user
 op_star
 id|stat_addr
 comma
@@ -4131,6 +4137,7 @@ id|options
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 id|ru
 )paren
@@ -4544,7 +4551,7 @@ id|pid_t
 id|pid
 comma
 r_int
-r_int
+id|__user
 op_star
 id|stat_addr
 comma

@@ -418,6 +418,7 @@ op_star
 comma
 r_struct
 id|autofs_packet_expire
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -438,6 +439,7 @@ id|autofs_sb_info
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon

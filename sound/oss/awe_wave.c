@@ -1261,7 +1261,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -1367,6 +1369,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1683,6 +1686,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1701,6 +1705,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1719,6 +1724,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1737,6 +1743,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1755,6 +1762,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1773,6 +1781,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1791,6 +1800,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1809,6 +1819,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1824,6 +1835,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1838,7 +1850,7 @@ id|pmgr_flag
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*static int awe_probe_info(awe_patch_info *patch, const char *addr, int count);*/
+multiline_comment|/*static int awe_probe_info(awe_patch_info *patch, const char __user *addr, int count);*/
 r_static
 r_int
 id|awe_probe_data
@@ -1850,6 +1862,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1878,6 +1891,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -2190,6 +2204,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -2225,6 +2240,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -11031,7 +11047,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -11066,10 +11084,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -14754,6 +14768,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -15704,6 +15719,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -15908,6 +15924,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -15969,6 +15986,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -16132,6 +16150,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -16370,6 +16389,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -16525,6 +16545,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -16709,6 +16730,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -17097,6 +17119,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -17200,6 +17223,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -17459,6 +17483,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -17754,6 +17779,7 @@ DECL|variable|readbuf_addr
 r_static
 r_const
 r_char
+id|__user
 op_star
 id|readbuf_addr
 suffix:semicolon
@@ -17776,6 +17802,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -17839,6 +17866,7 @@ id|cc
 comma
 (paren
 r_int
+id|__user
 r_char
 op_star
 )paren
@@ -17872,6 +17900,7 @@ id|c
 comma
 (paren
 r_int
+id|__user
 r_int
 op_star
 )paren
@@ -17923,6 +17952,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -18451,6 +18481,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -21641,7 +21672,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -21754,7 +21787,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -21794,6 +21829,7 @@ id|level
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -22132,6 +22168,7 @@ id|level
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -25364,6 +25401,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -26381,6 +26419,7 @@ id|patch
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -27412,7 +27451,9 @@ comma
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -28045,7 +28086,9 @@ comma
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace

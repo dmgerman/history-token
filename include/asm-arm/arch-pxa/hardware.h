@@ -14,7 +14,7 @@ multiline_comment|/*&n; * Intel PXA2xx internal register mapping:&n; *&n; * 0x40
 DECL|macro|io_p2v
 mdefine_line|#define io_p2v(x) (0xf2000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x1c000000) &gt;&gt; 1))
 DECL|macro|io_v2p
-mdefine_line|#define io_v2p(x) (0x40000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x0e000000) &lt;&lt; 1))
+mdefine_line|#define io_v2p(x) (0x3c000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x0e000000) &lt;&lt; 1))
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#if 0
 macro_line|# define __REG(x)&t;(*((volatile u32 *)io_p2v(x)))

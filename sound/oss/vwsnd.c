@@ -190,16 +190,19 @@ r_struct
 id|lithium
 (brace
 DECL|member|page0
-id|caddr_t
+r_void
+op_star
 id|page0
 suffix:semicolon
 multiline_comment|/* virtual addresses */
 DECL|member|page1
-id|caddr_t
+r_void
+op_star
 id|page1
 suffix:semicolon
 DECL|member|page2
-id|caddr_t
+r_void
+op_star
 id|page2
 suffix:semicolon
 DECL|member|lock
@@ -1401,7 +1404,8 @@ id|lith
 op_assign
 id|chan-&gt;lith
 suffix:semicolon
-id|caddr_t
+r_void
+op_star
 id|lith1
 op_assign
 id|lith-&gt;page1
@@ -1518,7 +1522,8 @@ id|lith
 op_assign
 id|chan-&gt;lith
 suffix:semicolon
-id|caddr_t
+r_void
+op_star
 id|lith2
 op_assign
 id|lith-&gt;page2
@@ -5152,7 +5157,8 @@ r_int
 id|hwbuf_vaddr
 suffix:semicolon
 DECL|member|hwbuf
-id|caddr_t
+r_void
+op_star
 id|hwbuf
 suffix:semicolon
 multiline_comment|/* hwbuf == hwbuf_vaddr */
@@ -5162,7 +5168,8 @@ id|hwbuf_max
 suffix:semicolon
 multiline_comment|/* max bytes to preload */
 DECL|member|swbuf
-id|caddr_t
+r_void
+op_star
 id|swbuf
 suffix:semicolon
 DECL|member|swbuf_size
@@ -12614,7 +12621,9 @@ r_int
 r_int
 id|nr
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -12851,6 +12860,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -12872,7 +12882,9 @@ r_int
 r_int
 id|nr
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -12903,6 +12915,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -13087,6 +13100,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -13200,7 +13214,9 @@ comma
 id|nr
 comma
 (paren
-id|caddr_t
+r_void
+id|__user
+op_star
 )paren
 id|arg
 )paren
@@ -13232,7 +13248,9 @@ comma
 id|nr
 comma
 (paren
-id|caddr_t
+r_void
+id|__user
+op_star
 )paren
 id|arg
 )paren
@@ -13583,7 +13601,8 @@ suffix:semicolon
 id|devc-&gt;rport.hwbuf
 op_assign
 (paren
-id|caddr_t
+r_void
+op_star
 )paren
 id|devc-&gt;rport.hwbuf_vaddr
 suffix:semicolon
@@ -13643,7 +13662,8 @@ suffix:semicolon
 id|devc-&gt;wport.hwbuf
 op_assign
 (paren
-id|caddr_t
+r_void
+op_star
 )paren
 id|devc-&gt;wport.hwbuf_vaddr
 suffix:semicolon

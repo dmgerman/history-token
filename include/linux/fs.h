@@ -1719,7 +1719,7 @@ DECL|macro|MAX_LFS_FILESIZE
 mdefine_line|#define MAX_LFS_FILESIZE&t;(((u64)PAGE_CACHE_SIZE &lt;&lt; (BITS_PER_LONG-1))-1) 
 macro_line|#elif BITS_PER_LONG==64
 DECL|macro|MAX_LFS_FILESIZE
-mdefine_line|#define MAX_LFS_FILESIZE &t;0x7fffffffffffffff
+mdefine_line|#define MAX_LFS_FILESIZE &t;0x7fffffffffffffffUL
 macro_line|#endif
 DECL|macro|FL_POSIX
 mdefine_line|#define FL_POSIX&t;1

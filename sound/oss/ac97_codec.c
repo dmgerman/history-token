@@ -2974,6 +2974,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -3054,6 +3055,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -3116,6 +3118,7 @@ id|SOUND_VERSION
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -3264,6 +3267,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -3299,6 +3303,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

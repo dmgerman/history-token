@@ -55,7 +55,7 @@ id|cdrom_tochdr
 id|tochdr
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -183,7 +183,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -266,7 +266,7 @@ op_star
 id|cd
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 )paren
@@ -722,7 +722,7 @@ id|cd
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|memset
@@ -736,7 +736,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -791,7 +791,7 @@ op_assign
 id|cdi-&gt;handle
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|memset
@@ -805,7 +805,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -1144,7 +1144,7 @@ op_assign
 id|cdi-&gt;handle
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -1179,7 +1179,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -1305,7 +1305,7 @@ op_assign
 id|cdi-&gt;handle
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_if
@@ -1337,7 +1337,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -1432,7 +1432,7 @@ op_assign
 id|cdi-&gt;handle
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -1468,7 +1468,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -1886,7 +1886,7 @@ id|blksize
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -1916,7 +1916,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -2119,7 +2119,7 @@ id|dest
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -2226,7 +2226,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -2501,6 +2501,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

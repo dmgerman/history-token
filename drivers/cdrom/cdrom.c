@@ -192,9 +192,9 @@ mdefine_line|#define cdinfo(type, fmt, args...)
 macro_line|#endif
 multiline_comment|/* These are used to simplify getting data in from and back to user land */
 DECL|macro|IOCTL_IN
-mdefine_line|#define IOCTL_IN(arg, type, in)&t;&t;&t;&t;&t;&bslash;&n;&t;if (copy_from_user(&amp;(in), (type *) (arg), sizeof (in)))&t;&bslash;&n;&t;&t;return -EFAULT;
+mdefine_line|#define IOCTL_IN(arg, type, in)&t;&t;&t;&t;&t;&bslash;&n;&t;if (copy_from_user(&amp;(in), (type __user *) (arg), sizeof (in)))&t;&bslash;&n;&t;&t;return -EFAULT;
 DECL|macro|IOCTL_OUT
-mdefine_line|#define IOCTL_OUT(arg, type, out) &bslash;&n;&t;if (copy_to_user((type *) (arg), &amp;(out), sizeof (out)))&t;&bslash;&n;&t;&t;return -EFAULT;
+mdefine_line|#define IOCTL_OUT(arg, type, out) &bslash;&n;&t;if (copy_to_user((type __user *) (arg), &amp;(out), sizeof (out)))&t;&bslash;&n;&t;&t;return -EFAULT;
 multiline_comment|/* The (cdo-&gt;capability &amp; ~cdi-&gt;mask &amp; CDC_XXX) construct was used in&n;   a lot of places. This macro makes the code more clear. */
 DECL|macro|CDROM_CAN
 mdefine_line|#define CDROM_CAN(type) (cdi-&gt;ops-&gt;capability &amp; ~cdi-&gt;mask &amp; (type))
@@ -822,7 +822,7 @@ id|med
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -973,7 +973,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -1079,7 +1079,7 @@ id|write
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -1220,7 +1220,7 @@ id|cont
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -1399,7 +1399,7 @@ id|immed
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|init_cdrom_command
@@ -1475,7 +1475,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|init_cdrom_command
@@ -1614,7 +1614,7 @@ id|space
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -1779,7 +1779,7 @@ id|rfd
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -1953,7 +1953,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -2383,7 +2383,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -3813,7 +3813,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -4179,7 +4179,7 @@ id|slot
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|cdinfo
@@ -5005,7 +5005,7 @@ id|init_cdrom_command
 c_func
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -5030,7 +5030,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -5084,7 +5084,7 @@ id|setup_report_key
 c_func
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -5183,7 +5183,7 @@ id|setup_send_key
 c_func
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -5292,7 +5292,7 @@ l_int|20
 )braket
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6090,7 +6090,7 @@ op_star
 id|layer
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6412,7 +6412,7 @@ l_int|8
 )braket
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6542,7 +6542,7 @@ op_star
 id|buf
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6714,7 +6714,7 @@ l_int|188
 )braket
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6867,7 +6867,7 @@ op_star
 id|buf
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -7162,7 +7162,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -7258,7 +7258,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 )paren
@@ -7370,7 +7370,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -7551,7 +7551,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -7707,7 +7707,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -7942,7 +7942,7 @@ id|nframes
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -8663,6 +8663,11 @@ id|ip-&gt;i_bdev-&gt;bd_disk
 comma
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon
@@ -10626,7 +10631,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -10785,7 +10790,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -11078,6 +11083,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -12004,6 +12010,7 @@ id|s
 comma
 (paren
 id|dvd_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -12057,6 +12064,7 @@ c_func
 (paren
 (paren
 id|dvd_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -12289,7 +12297,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -12453,7 +12461,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -13163,6 +13171,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -14316,6 +14325,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma

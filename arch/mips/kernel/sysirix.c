@@ -758,6 +758,7 @@ id|who
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 id|ru
 )paren

@@ -919,13 +919,6 @@ id|new_client-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Now, we do the remaining detection. It is not there, unless you force&n;&t;   the checksum to work out. */
-r_if
-c_cond
-(paren
-id|checksum
-)paren
-(brace
 multiline_comment|/* prevent 24RF08 corruption */
 id|i2c_smbus_write_quick
 c_func
@@ -935,6 +928,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Now, we do the remaining detection. It is not there, unless you force&n;&t;   the checksum to work out. */
+r_if
+c_cond
+(paren
+id|checksum
+)paren
+(brace
 id|cs
 op_assign
 l_int|0

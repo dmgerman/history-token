@@ -1149,6 +1149,7 @@ op_star
 id|freq
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1876,6 +1877,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma

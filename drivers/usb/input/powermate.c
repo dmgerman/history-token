@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|POWERMATE_VENDOR
 mdefine_line|#define POWERMATE_VENDOR&t;0x077d&t;/* Griffin Technology, Inc. */
@@ -84,8 +85,7 @@ id|input_dev
 id|input
 suffix:semicolon
 DECL|member|lock
-r_struct
-id|semaphore
+id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|static_brightness
@@ -310,7 +310,7 @@ id|retval
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Decide if we need to issue a control message and do so. Must be called with pm-&gt;lock down */
+multiline_comment|/* Decide if we need to issue a control message and do so. Must be called with pm-&gt;lock taken */
 DECL|function|powermate_sync_state
 r_static
 r_void
@@ -662,6 +662,10 @@ id|pm
 op_assign
 id|urb-&gt;context
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -676,11 +680,13 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
-id|down
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|pm-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|powermate_sync_state
@@ -689,11 +695,13 @@ c_func
 id|pm
 )paren
 suffix:semicolon
-id|up
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|pm-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -725,6 +733,10 @@ r_int
 id|pulse_awake
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -781,11 +793,13 @@ op_logical_neg
 op_logical_neg
 id|pulse_awake
 suffix:semicolon
-id|down
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|pm-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* mark state updates which are required */
@@ -879,11 +893,13 @@ c_func
 id|pm
 )paren
 suffix:semicolon
-id|up
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|pm-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1436,12 +1452,9 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|init_MUTEX
-c_func
-(paren
-op_amp
 id|pm-&gt;lock
-)paren
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|init_input_dev
 c_func
@@ -1819,13 +1832,6 @@ c_cond
 id|pm
 )paren
 (brace
-id|down
-c_func
-(paren
-op_amp
-id|pm-&gt;lock
-)paren
-suffix:semicolon
 id|pm-&gt;requires_update
 op_assign
 l_int|0

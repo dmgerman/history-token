@@ -980,6 +980,7 @@ id|copy_msqid_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1189,6 +1190,7 @@ op_star
 id|out
 comma
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1333,6 +1335,7 @@ id|cmd
 comma
 r_struct
 id|msqid_ds
+id|__user
 op_star
 id|buf
 )paren
@@ -2324,6 +2327,7 @@ id|msqid
 comma
 r_struct
 id|msgbuf
+id|__user
 op_star
 id|msgp
 comma
@@ -2810,6 +2814,7 @@ id|msqid
 comma
 r_struct
 id|msgbuf
+id|__user
 op_star
 id|msgp
 comma

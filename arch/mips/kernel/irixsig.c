@@ -2807,6 +2807,7 @@ r_int
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 )paren
 suffix:semicolon

@@ -387,8 +387,10 @@ DECL|enumerator|XFRMA_TMPL
 id|XFRMA_TMPL
 comma
 multiline_comment|/* 1 or more struct xfrm_user_tmpl */
+DECL|enumerator|__XFRMA_MAX
+id|__XFRMA_MAX
 DECL|macro|XFRMA_MAX
-mdefine_line|#define XFRMA_MAX XFRMA_TMPL
+mdefine_line|#define XFRMA_MAX (__XFRMA_MAX - 1)
 )brace
 suffix:semicolon
 DECL|struct|xfrm_usersa_info

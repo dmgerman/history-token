@@ -886,7 +886,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;WDT driver for Advantech single board computer initialising.&bslash;n&quot;
+l_string|&quot;WDT driver for the Winbond(TM) W83627HF Super I/O chip initialising.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

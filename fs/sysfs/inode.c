@@ -431,10 +431,26 @@ id|victim-&gt;d_count
 )paren
 )paren
 suffix:semicolon
-id|d_delete
+id|d_drop
 c_func
 (paren
 id|victim
+)paren
+suffix:semicolon
+multiline_comment|/* release the target kobject in case of &n;&t;&t;&t; * a symlink&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|S_ISLNK
+c_func
+(paren
+id|victim-&gt;d_inode-&gt;i_mode
+)paren
+)paren
+id|kobject_put
+c_func
+(paren
+id|victim-&gt;d_fsdata
 )paren
 suffix:semicolon
 id|simple_unlink

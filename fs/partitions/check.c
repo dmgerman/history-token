@@ -1540,6 +1540,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|bdev
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|blkdev_get
 c_func
 (paren

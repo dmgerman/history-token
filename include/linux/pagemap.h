@@ -890,10 +890,6 @@ c_func
 (paren
 id|c
 comma
-(paren
-r_char
-op_star
-)paren
 id|uaddr
 )paren
 suffix:semicolon
@@ -945,10 +941,6 @@ c_func
 (paren
 id|c
 comma
-(paren
-r_char
-op_star
-)paren
 id|end
 )paren
 suffix:semicolon

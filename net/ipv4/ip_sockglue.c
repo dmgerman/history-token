@@ -1709,6 +1709,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1860,6 +1861,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -1897,6 +1899,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|optval
@@ -4060,10 +4063,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -4576,10 +4581,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|optval
 comma
 op_amp
@@ -4675,6 +4676,7 @@ comma
 (paren
 r_struct
 id|ip_msfilter
+id|__user
 op_star
 )paren
 id|optval
@@ -4769,6 +4771,7 @@ comma
 (paren
 r_struct
 id|group_filter
+id|__user
 op_star
 )paren
 id|optval

@@ -4032,6 +4032,7 @@ comma
 r_const
 r_struct
 id|loop_info
+id|__user
 op_star
 id|arg
 )paren
@@ -4101,6 +4102,7 @@ comma
 r_const
 r_struct
 id|loop_info64
+id|__user
 op_star
 id|arg
 )paren
@@ -4155,6 +4157,7 @@ id|lo
 comma
 r_struct
 id|loop_info
+id|__user
 op_star
 id|arg
 )paren
@@ -4260,6 +4263,7 @@ id|lo
 comma
 r_struct
 id|loop_info64
+id|__user
 op_star
 id|arg
 )paren
@@ -4444,6 +4448,7 @@ comma
 (paren
 r_struct
 id|loop_info
+id|__user
 op_star
 )paren
 id|arg
@@ -4464,6 +4469,7 @@ comma
 (paren
 r_struct
 id|loop_info
+id|__user
 op_star
 )paren
 id|arg
@@ -4484,6 +4490,7 @@ comma
 (paren
 r_struct
 id|loop_info64
+id|__user
 op_star
 )paren
 id|arg
@@ -4504,6 +4511,7 @@ comma
 (paren
 r_struct
 id|loop_info64
+id|__user
 op_star
 )paren
 id|arg

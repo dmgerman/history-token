@@ -1,26 +1,11 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/arch-clps711x/mmu.h&n; *&n; *  Copyright (C) 1999 ARM Limited&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#ifndef __ASM_ARCH_MMU_H
-DECL|macro|__ASM_ARCH_MMU_H
-mdefine_line|#define __ASM_ARCH_MMU_H
+multiline_comment|/*&n; *  linux/include/asm-arm/arch-clps711x/memory.h&n; *&n; *  Copyright (C) 1999 ARM Limited&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#ifndef __ASM_ARCH_MEMORY_H
+DECL|macro|__ASM_ARCH_MEMORY_H
+mdefine_line|#define __ASM_ARCH_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * Task size: 3GB&n; */
-DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;(0xbf000000UL)
-DECL|macro|TASK_SIZE_26
-mdefine_line|#define TASK_SIZE_26&t;(0x04000000UL)
-multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
-DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE (0x40000000)
-multiline_comment|/*&n; * Page offset: 3GB&n; */
-DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;(0xc0000000UL)
+multiline_comment|/*&n; * Physical DRAM offset.&n; */
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0xc0000000UL)
-multiline_comment|/*&n; * On integrator, the dram is contiguous&n; */
-DECL|macro|__virt_to_phys
-mdefine_line|#define __virt_to_phys(vpage) ((vpage) - PAGE_OFFSET + PHYS_OFFSET)
-DECL|macro|__phys_to_virt
-mdefine_line|#define __phys_to_virt(ppage) ((ppage) + PAGE_OFFSET - PHYS_OFFSET)
 multiline_comment|/*&n; * Virtual view &lt;-&gt; DMA view memory address translations&n; * virt_to_bus: Used to translate the virtual address to an&n; *              address suitable to be passed to set_dma_addr&n; * bus_to_virt: Used to convert an address for DMA operations&n; *              to an address that the kernel can use.&n; */
 macro_line|#if defined(CONFIG_ARCH_CDB89712)
 DECL|macro|__virt_to_bus

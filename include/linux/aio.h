@@ -456,6 +456,7 @@ id|ctx
 comma
 r_struct
 id|iocb
+id|__user
 op_star
 id|user_iocb
 comma
@@ -492,6 +493,7 @@ id|ctx
 comma
 r_struct
 id|iocb
+id|__user
 op_star
 id|user_iocb
 comma

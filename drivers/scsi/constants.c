@@ -38,6 +38,9 @@ macro_line|#undef CONSTANTS
 macro_line|#endif
 DECL|macro|CONSTANTS
 mdefine_line|#define CONSTANTS (CONST_COMMAND | CONST_STATUS | CONST_SENSE | CONST_XSENSE &bslash;&n;&t;&t;   | CONST_CMND | CONST_MSG | CONST_HOST | CONST_DRIVER)
+macro_line|#else
+DECL|macro|CONSTANTS
+mdefine_line|#define CONSTANTS 0
 macro_line|#endif
 macro_line|#if (CONSTANTS &amp; CONST_COMMAND)
 DECL|variable|group_0_commands

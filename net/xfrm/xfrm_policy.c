@@ -4855,6 +4855,14 @@ op_star
 id|dst
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dst-&gt;xfrm
+)paren
+r_return
+suffix:semicolon
 id|xfrm_state_put
 c_func
 (paren

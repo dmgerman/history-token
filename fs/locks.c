@@ -6702,7 +6702,7 @@ c_cond
 id|inode
 )paren
 (brace
-macro_line|#if WE_CAN_BREAK_LSLK_NOW
+macro_line|#ifdef WE_CAN_BREAK_LSLK_NOW
 id|out
 op_add_assign
 id|sprintf

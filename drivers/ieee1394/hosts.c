@@ -693,6 +693,13 @@ id|host-&gt;is_shutdown
 op_assign
 l_int|1
 suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|host-&gt;delayed_reset
+)paren
+suffix:semicolon
 id|host-&gt;driver
 op_assign
 op_amp
