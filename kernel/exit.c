@@ -1106,6 +1106,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|allow_signal
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|allow_signal
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Put all the gunge required to become a kernel thread without&n; *&t;attached user resources in one place where it belongs.&n; */
 DECL|function|daemonize
 r_void
