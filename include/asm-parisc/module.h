@@ -25,6 +25,9 @@ mdefine_line|#define Elf_Addr Elf32_Addr
 DECL|macro|Elf_Rela
 mdefine_line|#define Elf_Rela Elf32_Rela
 macro_line|#endif
+r_struct
+id|unwind_table
+suffix:semicolon
 DECL|struct|mod_arch_specific
 r_struct
 id|mod_arch_specific
@@ -72,6 +75,16 @@ comma
 id|init_stub_count
 comma
 id|init_stub_max
+suffix:semicolon
+DECL|member|unwind_section
+r_int
+id|unwind_section
+suffix:semicolon
+DECL|member|unwind
+r_struct
+id|unwind_table
+op_star
+id|unwind
 suffix:semicolon
 )brace
 suffix:semicolon
