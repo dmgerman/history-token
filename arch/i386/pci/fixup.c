@@ -427,6 +427,24 @@ id|d
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/*&n;&t; * Runs the fixup only for the first IDE controller&n;&t; * (Shai Fultheim - shai@ftcon.com)&n;&t; */
+r_static
+r_int
+id|called
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|called
+)paren
+r_return
+suffix:semicolon
+id|called
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * There exist PCI IDE controllers which have utter garbage&n;&t; * in first four base registers. Ignore that.&n;&t; */
 id|DBG
 c_func
