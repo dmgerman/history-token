@@ -2345,7 +2345,7 @@ id|_sp
 l_int|12
 )braket
 op_eq
-l_int|0x7265677368657265
+l_int|0x7265677368657265ul
 )paren
 (brace
 r_struct

@@ -6668,7 +6668,7 @@ r_int
 op_logical_and
 id|marker
 op_eq
-l_int|0x7265677368657265
+l_int|0x7265677368657265ul
 )paren
 (brace
 r_if
