@@ -1246,7 +1246,7 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* Submitted by Jol Bourquard &lt;numlock@freesurf.ch&gt; */
+multiline_comment|/* Submitted by Joel Bourquard &lt;numlock@freesurf.ch&gt;&n; * Some versions of this device need the SubClass and Protocol overrides&n; * while others don&squot;t.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1268,7 +1268,7 @@ id|US_PR_BULK
 comma
 l_int|NULL
 comma
-l_int|0
+id|US_FL_NEED_OVERRIDE
 )paren
 comma
 macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
