@@ -1052,6 +1052,11 @@ r_struct
 id|usb_device
 op_star
 id|dev
+comma
+r_struct
+id|device
+op_star
+id|parent
 )paren
 suffix:semicolon
 r_extern
@@ -1377,43 +1382,6 @@ DECL|macro|usb_endpoint_halt
 mdefine_line|#define usb_endpoint_halt(dev, ep, out) ((dev)-&gt;halted[out] |= (1 &lt;&lt; (ep)))
 DECL|macro|usb_endpoint_out
 mdefine_line|#define usb_endpoint_out(ep_dir)&t;(!((ep_dir) &amp; USB_DIR_IN))
-multiline_comment|/* for probe/disconnect with correct module usage counting */
-r_void
-op_star
-id|usb_bind_driver
-c_func
-(paren
-r_struct
-id|usb_driver
-op_star
-id|driver
-comma
-r_struct
-id|usb_interface
-op_star
-id|intf
-)paren
-suffix:semicolon
-r_void
-id|usb_unbind_driver
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|device
-comma
-r_struct
-id|usb_interface
-op_star
-id|intf
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|usb_driver_list
-suffix:semicolon
 multiline_comment|/*&n; * USB device fs stuff&n; */
 macro_line|#ifdef CONFIG_USB_DEVICEFS
 multiline_comment|/*&n; * these are expected to be called from the USB core/hub thread&n; * with the kernel lock held&n; */

@@ -78,7 +78,8 @@ id|vm_flags
 suffix:semicolon
 multiline_comment|/* Flags, listed below. */
 DECL|member|vm_rb
-id|rb_node_t
+r_struct
+id|rb_node
 id|vm_rb
 suffix:semicolon
 multiline_comment|/*&n;&t; * For areas with an address space and backing store,&n;&t; * one of the address_space-&gt;i_mmap{,shared} lists,&n;&t; * for shm areas, the list of attaches, otherwise unused.&n;&t; */

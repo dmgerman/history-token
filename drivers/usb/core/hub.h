@@ -296,11 +296,11 @@ DECL|struct|usb_hub
 r_struct
 id|usb_hub
 (brace
-DECL|member|dev
+DECL|member|intf
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
+id|intf
 suffix:semicolon
 multiline_comment|/* the &quot;real&quot; device */
 DECL|member|urb

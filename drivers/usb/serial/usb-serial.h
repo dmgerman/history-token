@@ -526,6 +526,34 @@ op_star
 id|device
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|usb_serial_probe
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|iface
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_serial_disconnect
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|iface
+)paren
+suffix:semicolon
 multiline_comment|/* determine if we should include the EzUSB loader functions */
 DECL|macro|USES_EZUSB_FUNCTIONS
 macro_line|#undef USES_EZUSB_FUNCTIONS

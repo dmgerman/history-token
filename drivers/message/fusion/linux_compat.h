@@ -309,6 +309,20 @@ macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1)
 DECL|macro|MPT_SCSI_USE_NEW_EH
 mdefine_line|#define MPT_SCSI_USE_NEW_EH
 macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
+DECL|macro|mptscsih_save_flags
+mdefine_line|#define mptscsih_save_flags(flags) &bslash;&n;({&t;local_save_flags(flags); &bslash;&n;&t;local_irq_disable(); &bslash;&n;})
+macro_line|#else
+DECL|macro|mptscsih_save_flags
+mdefine_line|#define mptscsih_save_flags(flags) &bslash;&n;({&t;save_flags(flags); &bslash;&n;&t;cli(); &bslash;&n;})
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
+DECL|macro|mptscsih_restore_flags
+mdefine_line|#define mptscsih_restore_flags(flags) &bslash;&n;({&t;local_irq_enable(); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;})
+macro_line|#else
+DECL|macro|mptscsih_restore_flags
+mdefine_line|#define mptscsih_restore_flags(flags)  restore_flags(flags);
+macro_line|#endif
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

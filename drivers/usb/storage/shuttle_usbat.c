@@ -1138,6 +1138,10 @@ id|i
 op_eq
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|usb_stor_clear_halt
 c_func
 (paren
@@ -1151,7 +1155,13 @@ comma
 id|us-&gt;ep_out
 )paren
 )paren
+OL
+l_int|0
+)paren
+r_return
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * Read status: is the device angry, or just busy?&n;&t;&t;&t; */
 id|result
 op_assign

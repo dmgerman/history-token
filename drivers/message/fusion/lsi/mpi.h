@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI.H&n; *          Title:  MPI Message independent structures and definitions&n; *  Creation Date:  July 27, 2000&n; *&n; *    MPI Version:  01.02.03&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added MPI_IOCSTATUS_SCSI_RESIDUAL_MISMATCH definition.&n; *  06-06-00  01.00.01  Update MPI_VERSION_MAJOR and MPI_VERSION_MINOR.&n; *  06-22-00  01.00.02  Added MPI_IOCSTATUS_LAN_ definitions.&n; *                      Removed LAN_SUSPEND function definition.&n; *                      Added MPI_MSGFLAGS_CONTINUATION_REPLY definition.&n; *  06-30-00  01.00.03  Added MPI_CONTEXT_REPLY_TYPE_LAN definition.&n; *                      Added MPI_GET/SET_CONTEXT_REPLY_TYPE macros.&n; *  07-27-00  01.00.04  Added MPI_FAULT_ definitions.&n; *                      Removed MPI_IOCSTATUS_MSG/DATA_XFER_ERROR definitions.&n; *                      Added MPI_IOCSTATUS_INTERNAL_ERROR definition.&n; *                      Added MPI_IOCSTATUS_TARGET_XFER_COUNT_MISMATCH.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added new function codes.&n; *  01-09-01  01.01.03  Added more definitions to the system interface section&n; *                      Added MPI_IOCSTATUS_TARGET_STS_DATA_NOT_SENT.&n; *  01-25-01  01.01.04  Changed MPI_VERSION_MINOR from 0x00 to 0x01.&n; *  02-20-01  01.01.05  Started using MPI_POINTER.&n; *                      Fixed value for MPI_DIAG_RW_ENABLE.&n; *                      Added defines for MPI_DIAG_PREVENT_IOC_BOOT and&n; *                      MPI_DIAG_CLEAR_FLASH_BAD_SIG.&n; *                      Obsoleted MPI_IOCSTATUS_TARGET_FC_ defines.&n; *  02-27-01  01.01.06  Removed MPI_HOST_INDEX_REGISTER define.&n; *                      Added function codes for RAID.&n; *  04-09-01  01.01.07  Added alternate define for MPI_DOORBELL_ACTIVE,&n; *                      MPI_DOORBELL_USED, to better match the spec.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *                      Changed MPI_VERSION_MINOR from 0x01 to 0x02.&n; *                      Added define MPI_FUNCTION_TOOLBOX.&n; *  09-28-01  01.02.02  New function code MPI_SCSI_ENCLOSURE_PROCESSOR.&n; *  11-01-01  01.02.03  Changed name to MPI_FUNCTION_SCSI_ENCLOSURE_PROCESSOR.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2002 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI.H&n; *          Title:  MPI Message independent structures and definitions&n; *  Creation Date:  July 27, 2000&n; *&n; *    MPI.H Version:  01.02.06&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added MPI_IOCSTATUS_SCSI_RESIDUAL_MISMATCH definition.&n; *  06-06-00  01.00.01  Update MPI_VERSION_MAJOR and MPI_VERSION_MINOR.&n; *  06-22-00  01.00.02  Added MPI_IOCSTATUS_LAN_ definitions.&n; *                      Removed LAN_SUSPEND function definition.&n; *                      Added MPI_MSGFLAGS_CONTINUATION_REPLY definition.&n; *  06-30-00  01.00.03  Added MPI_CONTEXT_REPLY_TYPE_LAN definition.&n; *                      Added MPI_GET/SET_CONTEXT_REPLY_TYPE macros.&n; *  07-27-00  01.00.04  Added MPI_FAULT_ definitions.&n; *                      Removed MPI_IOCSTATUS_MSG/DATA_XFER_ERROR definitions.&n; *                      Added MPI_IOCSTATUS_INTERNAL_ERROR definition.&n; *                      Added MPI_IOCSTATUS_TARGET_XFER_COUNT_MISMATCH.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added new function codes.&n; *  01-09-01  01.01.03  Added more definitions to the system interface section&n; *                      Added MPI_IOCSTATUS_TARGET_STS_DATA_NOT_SENT.&n; *  01-25-01  01.01.04  Changed MPI_VERSION_MINOR from 0x00 to 0x01.&n; *  02-20-01  01.01.05  Started using MPI_POINTER.&n; *                      Fixed value for MPI_DIAG_RW_ENABLE.&n; *                      Added defines for MPI_DIAG_PREVENT_IOC_BOOT and&n; *                      MPI_DIAG_CLEAR_FLASH_BAD_SIG.&n; *                      Obsoleted MPI_IOCSTATUS_TARGET_FC_ defines.&n; *  02-27-01  01.01.06  Removed MPI_HOST_INDEX_REGISTER define.&n; *                      Added function codes for RAID.&n; *  04-09-01  01.01.07  Added alternate define for MPI_DOORBELL_ACTIVE,&n; *                      MPI_DOORBELL_USED, to better match the spec.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *                      Changed MPI_VERSION_MINOR from 0x01 to 0x02.&n; *                      Added define MPI_FUNCTION_TOOLBOX.&n; *  09-28-01  01.02.02  New function code MPI_SCSI_ENCLOSURE_PROCESSOR.&n; *  11-01-01  01.02.03  Changed name to MPI_FUNCTION_SCSI_ENCLOSURE_PROCESSOR.&n; *  03-14-02  01.02.04  Added MPI_HEADER_VERSION_ defines.&n; *  05-31-02  01.02.05  Bumped MPI_HEADER_VERSION_UNIT.&n; *  07-12-02  01.02.06  Added define for MPI_FUNCTION_MAILBOX.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_H
 DECL|macro|MPI_H
 mdefine_line|#define MPI_H
@@ -7,9 +7,38 @@ DECL|macro|MPI_VERSION_MAJOR
 mdefine_line|#define MPI_VERSION_MAJOR                   (0x01)
 DECL|macro|MPI_VERSION_MINOR
 mdefine_line|#define MPI_VERSION_MINOR                   (0x02)
+DECL|macro|MPI_VERSION_MAJOR_MASK
+mdefine_line|#define MPI_VERSION_MAJOR_MASK              (0xFF00)
+DECL|macro|MPI_VERSION_MAJOR_SHIFT
+mdefine_line|#define MPI_VERSION_MAJOR_SHIFT             (8)
+DECL|macro|MPI_VERSION_MINOR_MASK
+mdefine_line|#define MPI_VERSION_MINOR_MASK              (0x00FF)
+DECL|macro|MPI_VERSION_MINOR_SHIFT
+mdefine_line|#define MPI_VERSION_MINOR_SHIFT             (0)
 DECL|macro|MPI_VERSION
-mdefine_line|#define MPI_VERSION            ((MPI_VERSION_MAJOR &lt;&lt; 8) | MPI_VERSION_MINOR)
+mdefine_line|#define MPI_VERSION ((MPI_VERSION_MAJOR &lt;&lt; MPI_VERSION_MAJOR_SHIFT) |   &bslash;&n;                                      MPI_VERSION_MINOR)
+DECL|macro|MPI_VERSION_01_00
+mdefine_line|#define MPI_VERSION_01_00                   (0x0100)
+DECL|macro|MPI_VERSION_01_01
+mdefine_line|#define MPI_VERSION_01_01                   (0x0101)
+DECL|macro|MPI_VERSION_01_02
+mdefine_line|#define MPI_VERSION_01_02                   (0x0102)
 multiline_comment|/* Note: The major versions of 0xe0 through 0xff are reserved */
+multiline_comment|/* versioning for this MPI header set */
+DECL|macro|MPI_HEADER_VERSION_UNIT
+mdefine_line|#define MPI_HEADER_VERSION_UNIT             (0x07)
+DECL|macro|MPI_HEADER_VERSION_DEV
+mdefine_line|#define MPI_HEADER_VERSION_DEV              (0x00)
+DECL|macro|MPI_HEADER_VERSION_UNIT_MASK
+mdefine_line|#define MPI_HEADER_VERSION_UNIT_MASK        (0xFF00)
+DECL|macro|MPI_HEADER_VERSION_UNIT_SHIFT
+mdefine_line|#define MPI_HEADER_VERSION_UNIT_SHIFT       (8)
+DECL|macro|MPI_HEADER_VERSION_DEV_MASK
+mdefine_line|#define MPI_HEADER_VERSION_DEV_MASK         (0x00FF)
+DECL|macro|MPI_HEADER_VERSION_DEV_SHIFT
+mdefine_line|#define MPI_HEADER_VERSION_DEV_SHIFT        (0)
+DECL|macro|MPI_HEADER_VERSION
+mdefine_line|#define MPI_HEADER_VERSION ((MPI_HEADER_VERSION_UNIT &lt;&lt; 8) | MPI_HEADER_VERSION_DEV)
 multiline_comment|/*****************************************************************************&n;*&n;*        I O C    S t a t e    D e f i n i t i o n s&n;*&n;*****************************************************************************/
 DECL|macro|MPI_IOC_STATE_RESET
 mdefine_line|#define MPI_IOC_STATE_RESET                 (0x00000000)
@@ -219,6 +248,8 @@ DECL|macro|MPI_FUNCTION_TOOLBOX
 mdefine_line|#define MPI_FUNCTION_TOOLBOX                        (0x17)
 DECL|macro|MPI_FUNCTION_SCSI_ENCLOSURE_PROCESSOR
 mdefine_line|#define MPI_FUNCTION_SCSI_ENCLOSURE_PROCESSOR       (0x18)
+DECL|macro|MPI_FUNCTION_MAILBOX
+mdefine_line|#define MPI_FUNCTION_MAILBOX                        (0x19)
 DECL|macro|MPI_FUNCTION_LAN_SEND
 mdefine_line|#define MPI_FUNCTION_LAN_SEND                       (0x20)
 DECL|macro|MPI_FUNCTION_LAN_RECEIVE

@@ -6915,18 +6915,13 @@ multiline_comment|/* Special USB driver functions                               
 multiline_comment|/* Probe if this driver wants to serve an USB device&n;&n;   This entry point is called whenever a new device is attached to the bus.&n;   Then the device driver has to create a new instance of its internal data&n;   structures for the new device.&n;&n;   The  dev argument specifies the device context, which contains pointers&n;   to all USB descriptors. The  interface argument specifies the interface&n;   number. If a USB driver wants to bind itself to a particular device and&n;   interface it has to return a pointer. This pointer normally references&n;   the device driver&squot;s context structure.&n;&n;   Probing normally is done by checking the vendor and product identifications&n;   or the class and subclass definitions. If they match the interface number&n;   is compared with the ones supported by the driver. When probing is done&n;   class based it might be necessary to parse some more USB descriptors because&n;   the device properties can differ in a wide range.&n;*/
 DECL|function|auerswald_probe
 r_static
-r_void
-op_star
+r_int
 id|auerswald_probe
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|usbdev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -6935,6 +6930,17 @@ op_star
 id|id
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|usbdev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 id|pauerswald_t
 id|cp
 op_assign
@@ -6964,13 +6970,11 @@ id|ret
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;probe: vendor id 0x%x, device id 0x%x ifnum:%d&quot;
+l_string|&quot;probe: vendor id 0x%x, device id 0x%x&quot;
 comma
 id|usbdev-&gt;descriptor.idVendor
 comma
 id|usbdev-&gt;descriptor.idProduct
-comma
-id|ifnum
 )paren
 suffix:semicolon
 multiline_comment|/* See if the device offered us matches that we can accept */
@@ -6982,18 +6986,20 @@ op_ne
 id|ID_AUERSWALD
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* we use only the first -and only- interface */
 r_if
 c_cond
 (paren
-id|ifnum
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
 op_ne
 l_int|0
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* prevent module unloading while sleeping */
 id|MOD_INC_USE_COUNT
@@ -7538,8 +7544,16 @@ id|pfail
 suffix:semicolon
 )brace
 multiline_comment|/* all OK */
-r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
 id|cp
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Error exit: clean up the memory */
 id|pfail
@@ -7552,7 +7566,8 @@ suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Disconnect driver from a served device&n;&n;   This function is called whenever a device which was served by this driver&n;   is disconnected.&n;&n;   The argument  dev specifies the device context and the  driver_context&n;   returns a pointer to the previously registered  driver_context of the&n;   probe function. After returning from the disconnect function the USB&n;   framework completly deallocates all data structures associated with&n;   this device. So especially the usb_device structure must not be used&n;   any longer by the usb driver.&n;*/
@@ -7562,26 +7577,39 @@ r_void
 id|auerswald_disconnect
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|usbdev
-comma
-r_void
-op_star
-id|driver_context
+id|intf
 )paren
 (brace
 id|pauerswald_t
 id|cp
 op_assign
+id|dev_get_drvdata
 (paren
-id|pauerswald_t
+op_amp
+id|intf-&gt;dev
 )paren
-id|driver_context
 suffix:semicolon
 r_int
 r_int
 id|u
+suffix:semicolon
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cp
+)paren
+r_return
 suffix:semicolon
 id|down
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_INIT.H&n; *          Title:  MPI initiator mode messages and structures&n; *  Creation Date:  June 8, 2000&n; *&n; *    MPI Version:  01.02.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added SenseBufferLength to _MSG_SCSI_IO_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added MPI_SCSI_RSP_INFO_ definitions.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added MPI_SCSIIO_CONTROL_NO_DISCONNECT.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  04-10-01  01.01.05  Added new MsgFlag for MSG_SCSI_TASK_MGMT.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  08-29-01  01.02.02  Added MPI_SCSITASKMGMT_TASKTYPE_LOGICAL_UNIT_RESET.&n; *                      Added MPI_SCSI_STATE_QUEUE_TAG_REJECTED for&n; *                      MSG_SCSI_IO_REPLY.&n; *  09-28-01  01.02.03  Added structures and defines for SCSI Enclosure&n; *                      Processor messages.&n; *  10-04-01  01.02.04  Added defines for SEP request Action field.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2002 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_INIT.H&n; *          Title:  MPI initiator mode messages and structures&n; *  Creation Date:  June 8, 2000&n; *&n; *    MPI_INIT.H Version:  01.02.05&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added SenseBufferLength to _MSG_SCSI_IO_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added MPI_SCSI_RSP_INFO_ definitions.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added MPI_SCSIIO_CONTROL_NO_DISCONNECT.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  04-10-01  01.01.05  Added new MsgFlag for MSG_SCSI_TASK_MGMT.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  08-29-01  01.02.02  Added MPI_SCSITASKMGMT_TASKTYPE_LOGICAL_UNIT_RESET.&n; *                      Added MPI_SCSI_STATE_QUEUE_TAG_REJECTED for&n; *                      MSG_SCSI_IO_REPLY.&n; *  09-28-01  01.02.03  Added structures and defines for SCSI Enclosure&n; *                      Processor messages.&n; *  10-04-01  01.02.04  Added defines for SEP request Action field.&n; *  05-31-02  01.02.05  Added MPI_SCSIIO_MSGFLGS_CMD_DETERMINES_DATA_DIR define&n; *                      for SCSI IO requests.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_INIT_H
 DECL|macro|MPI_INIT_H
 mdefine_line|#define MPI_INIT_H
@@ -107,20 +107,22 @@ comma
 id|MPI_POINTER
 id|pSCSIIORequest_t
 suffix:semicolon
-multiline_comment|/* SCSIO MsgFlags bits */
+multiline_comment|/* SCSI IO MsgFlags bits */
 DECL|macro|MPI_SCSIIO_MSGFLGS_SENSE_WIDTH
-mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_WIDTH          (0x01)
+mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_WIDTH              (0x01)
 DECL|macro|MPI_SCSIIO_MSGFLGS_SENSE_WIDTH_32
-mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_WIDTH_32       (0x00)
+mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_WIDTH_32           (0x00)
 DECL|macro|MPI_SCSIIO_MSGFLGS_SENSE_WIDTH_64
-mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_WIDTH_64       (0x01)
+mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_WIDTH_64           (0x01)
 DECL|macro|MPI_SCSIIO_MSGFLGS_SENSE_LOCATION
-mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_LOCATION       (0x02)
+mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_LOCATION           (0x02)
 DECL|macro|MPI_SCSIIO_MSGFLGS_SENSE_LOC_HOST
-mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_LOC_HOST       (0x00)
+mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_LOC_HOST           (0x00)
 DECL|macro|MPI_SCSIIO_MSGFLGS_SENSE_LOC_IOC
-mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_LOC_IOC        (0x02)
-multiline_comment|/* SCSIIO LUN fields */
+mdefine_line|#define MPI_SCSIIO_MSGFLGS_SENSE_LOC_IOC            (0x02)
+DECL|macro|MPI_SCSIIO_MSGFLGS_CMD_DETERMINES_DATA_DIR
+mdefine_line|#define MPI_SCSIIO_MSGFLGS_CMD_DETERMINES_DATA_DIR  (0x04)
+multiline_comment|/* SCSI IO LUN fields */
 DECL|macro|MPI_SCSIIO_LUN_FIRST_LEVEL_ADDRESSING
 mdefine_line|#define MPI_SCSIIO_LUN_FIRST_LEVEL_ADDRESSING   (0x0000FFFF)
 DECL|macro|MPI_SCSIIO_LUN_SECOND_LEVEL_ADDRESSING
@@ -133,7 +135,7 @@ DECL|macro|MPI_SCSIIO_LUN_LEVEL_1_WORD
 mdefine_line|#define MPI_SCSIIO_LUN_LEVEL_1_WORD             (0xFF00)
 DECL|macro|MPI_SCSIIO_LUN_LEVEL_1_DWORD
 mdefine_line|#define MPI_SCSIIO_LUN_LEVEL_1_DWORD            (0x0000FF00)
-multiline_comment|/* SCSIO Control bits */
+multiline_comment|/* SCSI IO Control bits */
 DECL|macro|MPI_SCSIIO_CONTROL_DATADIRECTION_MASK
 mdefine_line|#define MPI_SCSIIO_CONTROL_DATADIRECTION_MASK   (0x03000000)
 DECL|macro|MPI_SCSIIO_CONTROL_NODATATRANSFER
@@ -178,7 +180,7 @@ DECL|macro|MPI_SCSIIO_CONTROL_ABORT_TASK_SET
 mdefine_line|#define MPI_SCSIIO_CONTROL_ABORT_TASK_SET       (0x00020000)
 DECL|macro|MPI_SCSIIO_CONTROL_RESERVED2
 mdefine_line|#define MPI_SCSIIO_CONTROL_RESERVED2            (0x00010000)
-multiline_comment|/* SCSIIO reply structure */
+multiline_comment|/* SCSI IO reply structure */
 DECL|struct|_MSG_SCSI_IO_REPLY
 r_typedef
 r_struct
@@ -279,7 +281,7 @@ comma
 id|MPI_POINTER
 id|pSCSIIOReply_t
 suffix:semicolon
-multiline_comment|/* SCSIIO Reply SCSIStatus values (SAM-2 status codes) */
+multiline_comment|/* SCSI IO Reply SCSIStatus values (SAM-2 status codes) */
 DECL|macro|MPI_SCSI_STATUS_SUCCESS
 mdefine_line|#define MPI_SCSI_STATUS_SUCCESS                 (0x00)
 DECL|macro|MPI_SCSI_STATUS_CHECK_CONDITION
@@ -300,7 +302,7 @@ DECL|macro|MPI_SCSI_STATUS_TASK_SET_FULL
 mdefine_line|#define MPI_SCSI_STATUS_TASK_SET_FULL           (0x28)
 DECL|macro|MPI_SCSI_STATUS_ACA_ACTIVE
 mdefine_line|#define MPI_SCSI_STATUS_ACA_ACTIVE              (0x30)
-multiline_comment|/* SCSIIO Reply SCSIState values */
+multiline_comment|/* SCSI IO Reply SCSIState values */
 DECL|macro|MPI_SCSI_STATE_AUTOSENSE_VALID
 mdefine_line|#define MPI_SCSI_STATE_AUTOSENSE_VALID          (0x01)
 DECL|macro|MPI_SCSI_STATE_AUTOSENSE_FAILED
@@ -313,7 +315,7 @@ DECL|macro|MPI_SCSI_STATE_RESPONSE_INFO_VALID
 mdefine_line|#define MPI_SCSI_STATE_RESPONSE_INFO_VALID      (0x10)
 DECL|macro|MPI_SCSI_STATE_QUEUE_TAG_REJECTED
 mdefine_line|#define MPI_SCSI_STATE_QUEUE_TAG_REJECTED       (0x20)
-multiline_comment|/* SCSIIO Reply ResponseInfo values */
+multiline_comment|/* SCSI IO Reply ResponseInfo values */
 multiline_comment|/* (FCP-1 RSP_CODE values and SPI-3 Packetized Failure codes) */
 DECL|macro|MPI_SCSI_RSP_INFO_FUNCTION_COMPLETE
 mdefine_line|#define MPI_SCSI_RSP_INFO_FUNCTION_COMPLETE     (0x00000000)

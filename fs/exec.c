@@ -21,6 +21,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -2468,6 +2469,9 @@ op_star
 id|leader
 op_assign
 id|current-&gt;group_leader
+comma
+op_star
+id|parent
 suffix:semicolon
 r_struct
 id|dentry
@@ -2480,11 +2484,20 @@ suffix:semicolon
 r_int
 r_int
 id|state
+comma
+id|ptrace
 suffix:semicolon
-id|wait_task_inactive
+multiline_comment|/*&n;&t;&t; * Wait for the thread group leader to be a zombie.&n;&t;&t; * It should already be zombie at this point, most&n;&t;&t; * of the time.&n;&t;&t; */
+r_while
+c_loop
+(paren
+id|leader-&gt;state
+op_ne
+id|TASK_ZOMBIE
+)paren
+id|yield
 c_func
 (paren
-id|leader
 )paren
 suffix:semicolon
 id|write_lock_irq
@@ -2535,6 +2548,26 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * An exec() starts a new thread group with the&n;&t;&t; * TGID of the previous thread group. Rehash the&n;&t;&t; * two threads with a switched PID, and release&n;&t;&t; * the former thread group leader:&n;&t;&t; */
+id|ptrace
+op_assign
+id|leader-&gt;ptrace
+suffix:semicolon
+id|parent
+op_assign
+id|leader-&gt;parent
+suffix:semicolon
+id|ptrace_unlink
+c_func
+(paren
+id|leader
+)paren
+suffix:semicolon
+id|ptrace_unlink
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|unhash_pid
 c_func
 (paren
@@ -2547,6 +2580,26 @@ c_func
 id|leader
 )paren
 suffix:semicolon
+id|remove_parent
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|remove_parent
+c_func
+(paren
+id|leader
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Split up the last two remaining members of the&n;&t;&t; * thread group:&n;&t;&t; */
+id|list_del_init
+c_func
+(paren
+op_amp
+id|leader-&gt;thread_group
+)paren
+suffix:semicolon
 id|leader-&gt;pid
 op_assign
 id|leader-&gt;tgid
@@ -2557,6 +2610,57 @@ id|current-&gt;pid
 op_assign
 id|current-&gt;tgid
 suffix:semicolon
+id|current-&gt;parent
+op_assign
+id|current-&gt;real_parent
+op_assign
+id|leader-&gt;real_parent
+suffix:semicolon
+id|leader-&gt;parent
+op_assign
+id|leader-&gt;real_parent
+op_assign
+id|child_reaper
+suffix:semicolon
+id|current-&gt;exit_signal
+op_assign
+id|SIGCHLD
+suffix:semicolon
+id|add_parent
+c_func
+(paren
+id|current
+comma
+id|current-&gt;parent
+)paren
+suffix:semicolon
+id|add_parent
+c_func
+(paren
+id|leader
+comma
+id|leader-&gt;parent
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptrace
+)paren
+(brace
+id|current-&gt;ptrace
+op_assign
+id|ptrace
+suffix:semicolon
+id|__ptrace_link
+c_func
+(paren
+id|current
+comma
+id|parent
+)paren
+suffix:semicolon
+)brace
 id|hash_pid
 c_func
 (paren
@@ -2594,9 +2698,14 @@ r_if
 c_cond
 (paren
 id|state
-op_eq
+op_ne
 id|TASK_ZOMBIE
 )paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|release_task
 c_func
 (paren
