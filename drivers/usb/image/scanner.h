@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 singleline_comment|// #define DEBUG
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.4.15&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.4.16&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Scanner Driver&quot;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -842,7 +842,19 @@ l_int|0x2018
 )brace
 comma
 multiline_comment|/* ColorPage HR7X */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x201b
+)paren
+)brace
+comma
+multiline_comment|/* Colorpage Vivid 4x */
 multiline_comment|/* Hewlett Packard */
+multiline_comment|/* IMPORTANT: Hewlett-Packard multi-function peripherals (OfficeJet, &n;&t;   Printer/Scanner/Copier (PSC), LaserJet, or PhotoSmart printer)&n;&t;   should not be added to this table because they are accessed by a&n;&t;   userspace driver (hpoj) */
 (brace
 id|USB_DEVICE
 c_func
@@ -1054,17 +1066,7 @@ l_int|0x1305
 )brace
 comma
 multiline_comment|/* Scanjet 4570c */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x03f0
-comma
-l_int|0x1411
-)paren
-)brace
-comma
-multiline_comment|/* PSC 750 */
+singleline_comment|//&t;{ USB_DEVICE(0x03f0, 0x1411) }, /* PSC 750 - NOT SUPPORTED - use hpoj userspace driver */
 (brace
 id|USB_DEVICE
 c_func
@@ -1087,17 +1089,7 @@ l_int|0x2205
 )brace
 comma
 multiline_comment|/* ScanJet 3500c */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x03f0
-comma
-l_int|0x2f11
-)paren
-)brace
-comma
-multiline_comment|/* PSC 1210 */
+singleline_comment|//&t;{ USB_DEVICE(0x03f0, 0x2f11) }, /* PSC 1210 - NOT SUPPORTED - use hpoj userspace driver */
 multiline_comment|/* Lexmark */
 (brace
 id|USB_DEVICE
@@ -1213,6 +1205,17 @@ l_int|0x30d4
 )brace
 comma
 multiline_comment|/* ScanMaker 3830 + 3840 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05da
+comma
+l_int|0x30d8
+)paren
+)brace
+comma
+multiline_comment|/* ScanMaker 5900 */
 (brace
 id|USB_DEVICE
 c_func
@@ -1659,6 +1662,17 @@ l_int|0x0403
 )brace
 comma
 multiline_comment|/* U16B */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0413
+)paren
+)brace
+comma
+multiline_comment|/* OpticSlim 1200 */
 multiline_comment|/* Primax/Colorado */
 (brace
 id|USB_DEVICE
@@ -1815,6 +1829,18 @@ l_int|0x0014
 )brace
 comma
 multiline_comment|/* Winscan Pro 2448U */
+multiline_comment|/* Reflecta  */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0120
+)paren
+)brace
+comma
+multiline_comment|/* iScan 1800 */
 multiline_comment|/* Relisis */
 singleline_comment|// { USB_DEVICE(0x0475, 0x0103) },&t;/* Episode - undetected endpoint */
 (brace
@@ -2055,6 +2081,17 @@ c_func
 (paren
 l_int|0x04b8
 comma
+l_int|0x011f
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 1670 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
 l_int|0x0801
 )paren
 )brace
@@ -2263,6 +2300,17 @@ l_int|0x0226
 )brace
 comma
 multiline_comment|/* OneTouch 5800 USB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a7
+comma
+l_int|0x0229
+)paren
+)brace
+comma
+multiline_comment|/* OneTouch 7100 USB */
 (brace
 id|USB_DEVICE
 c_func
