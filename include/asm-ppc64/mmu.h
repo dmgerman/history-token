@@ -30,15 +30,6 @@ DECL|typedef|mm_context_t
 )brace
 id|mm_context_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-DECL|macro|KERNEL_LOW_HPAGES
-mdefine_line|#define KERNEL_LOW_HPAGES&t;.htlb_segs = 0,
-macro_line|#else
-DECL|macro|KERNEL_LOW_HPAGES
-mdefine_line|#define KERNEL_LOW_HPAGES
-macro_line|#endif
-DECL|macro|KERNEL_CONTEXT
-mdefine_line|#define KERNEL_CONTEXT(ea) ({ &bslash;&n;&t;&t;mm_context_t ctx = { .id = REGION_ID(ea), KERNEL_LOW_HPAGES}; &bslash;&n;&t;&t;ctx; })
 DECL|macro|STE_ESID_V
 mdefine_line|#define STE_ESID_V&t;0x80
 DECL|macro|STE_ESID_KS
