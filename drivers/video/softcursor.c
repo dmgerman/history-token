@@ -154,6 +154,16 @@ op_assign
 id|cursor-&gt;image.depth
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|s_pitch
 op_assign
 (paren
