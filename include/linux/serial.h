@@ -187,8 +187,6 @@ DECL|macro|SERIAL_IO_HUB6
 mdefine_line|#define SERIAL_IO_HUB6&t;1
 DECL|macro|SERIAL_IO_MEM
 mdefine_line|#define SERIAL_IO_MEM&t;2
-DECL|macro|SERIAL_IO_GSC
-mdefine_line|#define SERIAL_IO_GSC&t;3
 DECL|struct|serial_uart_config
 r_struct
 id|serial_uart_config
