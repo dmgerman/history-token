@@ -8420,7 +8420,7 @@ l_int|0
 )paren
 )paren
 op_amp
-l_int|0x8600
+l_int|0x8f00
 op_logical_and
 op_decrement
 id|boguscnt
