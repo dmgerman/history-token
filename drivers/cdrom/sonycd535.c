@@ -6066,7 +6066,7 @@ id|CDU535_BLOCK_SIZE
 suffix:semicolon
 id|sony_toc
 op_assign
-id|kamlloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
