@@ -168,6 +168,18 @@ op_amp
 id|t
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+OL
+id|vxtime.last_tsc
+)paren
+id|t
+op_assign
+id|vxtime.last_tsc
+suffix:semicolon
+multiline_comment|/* hack */
 id|x
 op_assign
 (paren

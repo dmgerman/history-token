@@ -64,8 +64,6 @@ DECL|macro|OFFSET4K
 mdefine_line|#define OFFSET4K(a)&t;&t;((a) &amp; 0xfff)
 DECL|macro|PAGE_START
 mdefine_line|#define PAGE_START(addr)&t;((addr) &amp; PAGE_MASK)
-DECL|macro|PAGE_OFF
-mdefine_line|#define PAGE_OFF(addr)&t;&t;((addr) &amp; ~PAGE_MASK)
 DECL|macro|high2lowuid
 mdefine_line|#define high2lowuid(uid) ((uid) &gt; 65535 ? 65534 : (uid))
 DECL|macro|high2lowgid
@@ -569,6 +567,7 @@ id|USER_DS
 )paren
 suffix:semicolon
 multiline_comment|/* establish new task-size as the address-limit */
+)brace
 id|out
 suffix:colon
 id|kfree
@@ -577,7 +576,6 @@ c_func
 id|av
 )paren
 suffix:semicolon
-)brace
 r_return
 id|r
 suffix:semicolon
@@ -1148,7 +1146,7 @@ multiline_comment|/* copy back the old page contents.  */
 r_if
 c_cond
 (paren
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|start
@@ -1169,7 +1167,7 @@ id|start
 comma
 id|page
 comma
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|start
@@ -1179,7 +1177,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|end
@@ -1196,7 +1194,7 @@ id|end
 comma
 id|page
 op_plus
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|end
@@ -1204,7 +1202,7 @@ id|end
 comma
 id|PAGE_SIZE
 op_minus
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|end
@@ -1556,7 +1554,7 @@ op_plus
 id|len
 )paren
 op_minus
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|end
@@ -1648,7 +1646,7 @@ id|start
 op_assign
 id|pstart
 op_plus
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|off
@@ -1691,7 +1689,7 @@ id|MAP_ANONYMOUS
 )paren
 op_logical_or
 (paren
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|poff
@@ -2787,7 +2785,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|start
@@ -2842,7 +2840,7 @@ multiline_comment|/* retval is already zero... */
 r_if
 c_cond
 (paren
-id|PAGE_OFF
+id|offset_in_page
 c_func
 (paren
 id|end

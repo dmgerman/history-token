@@ -499,14 +499,6 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-DECL|member|__cacheline_filler
-id|u32
-id|__cacheline_filler
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* size is 0x100 */
 DECL|variable|____cacheline_aligned
 )brace
 id|__attribute__

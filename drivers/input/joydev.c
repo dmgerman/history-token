@@ -742,10 +742,10 @@ suffix:semicolon
 r_int
 id|i
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|JOYDEV_MINOR_BASE

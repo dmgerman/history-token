@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/*&n; * This flag is set in ide.c by the parameter:  ide0=cmd640_vlb&n; */
 DECL|variable|cmd640_vlb
 r_int

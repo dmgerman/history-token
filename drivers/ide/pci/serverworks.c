@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;serverworks.h&quot;
 DECL|variable|svwks_revision
 r_static

@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;cy82c693.h&quot;
 multiline_comment|/*&n; * calc clocks using bus_speed&n; * returns (rounded up) time in bus clocks for time in ns&n; */
 DECL|function|calc_clk
@@ -185,7 +184,7 @@ op_or
 id|clk2
 suffix:semicolon
 multiline_comment|/* combine active and recovery clocks */
-multiline_comment|/* note: we use the same values for 16bit IOR and IOW&n;         *&t;those are all the same, since I don&squot;t have other&n;&t; *&t;timings than those from ide_modes.h&n;&t; */
+multiline_comment|/* note: we use the same values for 16bit IOR and IOW&n;         *&t;those are all the same, since I don&squot;t have other&n;&t; *&t;timings than those from ide-lib.c&n;&t; */
 id|p_pclk-&gt;time_16r
 op_assign
 (paren

@@ -1235,10 +1235,10 @@ id|file
 r_if
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_ne
 id|EEPROM_MINOR_NR
@@ -1252,10 +1252,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_ne
 id|EEPROM_MAJOR_NR

@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/*&n; * Changing this #undef to #define may solve start up problems in some systems.&n; */
 DECL|macro|ALWAYS_SET_DTC2278_PIO_MODE
 macro_line|#undef ALWAYS_SET_DTC2278_PIO_MODE

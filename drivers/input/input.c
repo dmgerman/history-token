@@ -2424,10 +2424,10 @@ id|handler
 op_assign
 id|input_table
 (braket
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_rshift
 l_int|5

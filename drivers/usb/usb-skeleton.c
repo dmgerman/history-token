@@ -666,9 +666,10 @@ id|__FUNCTION__
 suffix:semicolon
 id|subminor
 op_assign
-id|minor
+id|iminor
+c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 multiline_comment|/* prevent disconnects */

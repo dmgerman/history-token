@@ -182,7 +182,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|do_magic
 c_func
 (paren
