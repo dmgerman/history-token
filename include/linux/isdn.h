@@ -912,67 +912,6 @@ id|modem_info
 suffix:semicolon
 DECL|macro|ISDN_MODEM_WINSIZE
 mdefine_line|#define ISDN_MODEM_WINSIZE 8
-multiline_comment|/* Description of one ISDN-tty */
-r_typedef
-r_struct
-(brace
-DECL|member|refcount
-r_int
-id|refcount
-suffix:semicolon
-multiline_comment|/* Number of opens        */
-DECL|member|tty_modem
-r_struct
-id|tty_driver
-id|tty_modem
-suffix:semicolon
-multiline_comment|/* tty-device             */
-DECL|member|cua_modem
-r_struct
-id|tty_driver
-id|cua_modem
-suffix:semicolon
-multiline_comment|/* cua-device             */
-DECL|member|modem_table
-r_struct
-id|tty_struct
-op_star
-id|modem_table
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* ?? copied from Orig */
-DECL|member|modem_termios
-r_struct
-id|termios
-op_star
-id|modem_termios
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-DECL|member|modem_termios_locked
-r_struct
-id|termios
-op_star
-id|modem_termios_locked
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-DECL|member|info
-id|modem_info
-id|info
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Private data           */
-DECL|typedef|modem
-)brace
-id|modem
-suffix:semicolon
 multiline_comment|/*======================= End of ISDN-tty stuff ============================*/
 multiline_comment|/*======================== Start of V.110 stuff ============================*/
 DECL|macro|V110_BUFSIZE
@@ -1160,11 +1099,6 @@ op_star
 id|profd
 suffix:semicolon
 multiline_comment|/* For iprofd                 */
-DECL|member|mdm
-id|modem
-id|mdm
-suffix:semicolon
-multiline_comment|/* tty-driver-data            */
 DECL|member|sem
 r_struct
 id|semaphore

@@ -166,6 +166,11 @@ op_assign
 l_string|&quot;cui&quot;
 suffix:semicolon
 macro_line|#endif
+DECL|variable|isdn_mdm
+r_struct
+id|isdn_modem
+id|isdn_mdm
+suffix:semicolon
 DECL|variable|bit2si
 r_static
 r_int
@@ -499,7 +504,7 @@ l_int|0
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|midx
 )braket
@@ -7183,7 +7188,7 @@ suffix:semicolon
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|line
 )braket
@@ -8372,7 +8377,8 @@ c_func
 r_void
 )paren
 (brace
-id|modem
+r_struct
+id|isdn_modem
 op_star
 id|m
 suffix:semicolon
@@ -8388,7 +8394,7 @@ suffix:semicolon
 id|m
 op_assign
 op_amp
-id|dev-&gt;mdm
+id|isdn_mdm
 suffix:semicolon
 id|memset
 c_func
@@ -8882,7 +8888,7 @@ id|tty_unregister_driver
 c_func
 (paren
 op_amp
-id|dev-&gt;mdm.cua_modem
+id|isdn_mdm.cua_modem
 )paren
 suffix:semicolon
 id|err_unregister_tty
@@ -8891,7 +8897,7 @@ id|tty_unregister_driver
 c_func
 (paren
 op_amp
-id|dev-&gt;mdm.tty_modem
+id|isdn_mdm.tty_modem
 )paren
 suffix:semicolon
 id|err
@@ -8908,13 +8914,6 @@ c_func
 r_void
 )paren
 (brace
-id|modem
-op_star
-id|m
-op_assign
-op_amp
-id|dev-&gt;mdm
-suffix:semicolon
 id|modem_info
 op_star
 id|info
@@ -8940,7 +8939,7 @@ op_increment
 id|info
 op_assign
 op_amp
-id|m-&gt;info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -8972,14 +8971,14 @@ id|tty_unregister_driver
 c_func
 (paren
 op_amp
-id|dev-&gt;mdm.cua_modem
+id|isdn_mdm.cua_modem
 )paren
 suffix:semicolon
 id|tty_unregister_driver
 c_func
 (paren
 op_amp
-id|dev-&gt;mdm.tty_modem
+id|isdn_mdm.tty_modem
 )paren
 suffix:semicolon
 )brace
@@ -9385,7 +9384,7 @@ op_star
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -10350,7 +10349,7 @@ op_increment
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -17459,7 +17458,7 @@ op_star
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|midx
 )braket
@@ -17559,7 +17558,7 @@ op_star
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -17632,7 +17631,7 @@ op_star
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -17707,7 +17706,7 @@ op_star
 id|info
 op_assign
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket

@@ -1322,6 +1322,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* should become broadcast later */
 r_static
 r_int
 DECL|function|slot_in_dhup
@@ -1341,12 +1342,33 @@ op_star
 id|arg
 )paren
 (brace
+r_struct
+id|isdn_slot
+op_star
+id|slot
+op_assign
+id|fi-&gt;userdata
+suffix:semicolon
+id|isdn_ctrl
+op_star
+id|ctrl
+op_assign
+id|arg
+suffix:semicolon
 id|fsm_change_state
 c_func
 (paren
 id|fi
 comma
 id|ST_SLOT_NULL
+)paren
+suffix:semicolon
+id|do_stat_cb
+c_func
+(paren
+id|slot
+comma
+id|ctrl
 )paren
 suffix:semicolon
 r_return
@@ -8661,7 +8683,7 @@ c_func
 (paren
 id|p
 comma
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -8687,7 +8709,7 @@ c_func
 (paren
 id|p
 comma
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -8713,7 +8735,7 @@ c_func
 (paren
 id|p
 comma
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -8827,7 +8849,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -8853,7 +8875,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -8879,7 +8901,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -11639,7 +11661,6 @@ suffix:semicolon
 )brace
 id|HERE
 suffix:semicolon
-singleline_comment|//&t;return isdn_command(ctrl);
 r_return
 op_minus
 l_int|1
@@ -12910,7 +12931,7 @@ id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket
@@ -12922,7 +12943,7 @@ id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|dev-&gt;mdm.info
+id|isdn_mdm.info
 (braket
 id|i
 )braket

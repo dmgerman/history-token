@@ -1355,6 +1355,8 @@ op_assign
 id|ISDN_NET_CBHUP
 op_or
 id|ISDN_NET_DM_MANUAL
+op_or
+id|ISDN_NET_SECURE
 suffix:semicolon
 id|mlp-&gt;cbdelay
 op_assign
