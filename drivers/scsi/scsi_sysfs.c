@@ -1738,7 +1738,7 @@ id|scsi_sysfs_release_attributes
 c_func
 (paren
 r_struct
-id|SHT
+id|scsi_host_template
 op_star
 id|hostt
 )paren

@@ -6431,7 +6431,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * register this HBA as SCSI device&n;&t; */
 id|host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -7217,7 +7217,7 @@ id|data-&gt;lunt_list
 suffix:semicolon
 id|scsi_unregister
 suffix:colon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host
