@@ -172,11 +172,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|apicid_to_quad
+DECL|function|apicid_to_node
 r_static
 r_inline
 r_int
-id|apicid_to_quad
+id|apicid_to_node
 c_func
 (paren
 r_int
@@ -214,7 +214,7 @@ op_lshift
 (paren
 l_int|4
 op_star
-id|apicid_to_quad
+id|apicid_to_node
 c_func
 (paren
 id|logical_apicid

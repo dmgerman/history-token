@@ -107,6 +107,26 @@ id|nr_ioapics
 )paren
 suffix:semicolon
 )brace
+DECL|function|apicid_to_node
+r_static
+r_inline
+r_int
+id|apicid_to_node
+c_func
+(paren
+r_int
+id|logical_apicid
+)paren
+(brace
+r_return
+(paren
+id|logical_apicid
+op_rshift
+l_int|5
+)paren
+suffix:semicolon
+multiline_comment|/* 2 clusterids per CEC */
+)brace
 DECL|function|cpu_present_to_apicid
 r_static
 r_inline
