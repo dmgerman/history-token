@@ -275,10 +275,10 @@ op_logical_neg
 id|fhp-&gt;fh_dentry
 )paren
 (brace
-id|kdev_t
+id|dev_t
 id|xdev
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 id|ino_t
 id|xino
@@ -406,7 +406,7 @@ op_increment
 suffix:semicolon
 id|xdev
 op_assign
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|nfsdev
@@ -473,7 +473,7 @@ suffix:semicolon
 multiline_comment|/* assume old filehandle format */
 id|xdev
 op_assign
-id|u32_to_kdev_t
+id|u32_to_dev_t
 c_func
 (paren
 id|fh-&gt;ofh_xdev
@@ -1128,13 +1128,13 @@ c_func
 (paren
 l_string|&quot;nfsd: fh_compose(exp %02x:%02x/%ld %s/%s, ino=%ld)&bslash;n&quot;
 comma
-id|major
+id|MAJOR
 c_func
 (paren
 id|exp-&gt;ex_dev
 )paren
 comma
-id|minor
+id|MINOR
 c_func
 (paren
 id|exp-&gt;ex_dev
@@ -1244,7 +1244,7 @@ id|htonl
 c_func
 (paren
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|exp-&gt;ex_dev
@@ -1253,7 +1253,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-id|minor
+id|MINOR
 c_func
 (paren
 id|exp-&gt;ex_dev
@@ -1369,7 +1369,7 @@ id|htonl
 c_func
 (paren
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|exp-&gt;ex_dev
@@ -1378,7 +1378,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-id|minor
+id|MINOR
 c_func
 (paren
 id|exp-&gt;ex_dev

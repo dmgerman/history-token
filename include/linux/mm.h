@@ -415,6 +415,15 @@ DECL|macro|NOPAGE_SIGBUS
 mdefine_line|#define NOPAGE_SIGBUS&t;(NULL)
 DECL|macro|NOPAGE_OOM
 mdefine_line|#define NOPAGE_OOM&t;((struct page *) (-1))
+multiline_comment|/*&n; * Different kinds of faults, as returned by handle_mm_fault().&n; * Used to decide whether a process gets delivered SIGBUS or&n; * just gets major/minor fault counters bumped up.&n; */
+DECL|macro|VM_FAULT_OOM
+mdefine_line|#define VM_FAULT_OOM&t;(-1)
+DECL|macro|VM_FAULT_SIGBUS
+mdefine_line|#define VM_FAULT_SIGBUS&t;0
+DECL|macro|VM_FAULT_MINOR
+mdefine_line|#define VM_FAULT_MINOR&t;1
+DECL|macro|VM_FAULT_MAJOR
+mdefine_line|#define VM_FAULT_MAJOR&t;2
 multiline_comment|/* The array of struct pages */
 r_extern
 r_struct

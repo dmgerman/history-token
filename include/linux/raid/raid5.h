@@ -145,10 +145,6 @@ DECL|struct|disk_info
 r_struct
 id|disk_info
 (brace
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
 DECL|member|bdev
 r_struct
 id|block_device
