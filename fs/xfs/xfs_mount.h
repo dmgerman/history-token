@@ -1094,6 +1094,11 @@ id|xfs_agnumber_t
 id|m_agirotor
 suffix:semicolon
 multiline_comment|/* last ag dir inode alloced */
+DECL|member|m_agirotor_lock
+id|lock_t
+id|m_agirotor_lock
+suffix:semicolon
+multiline_comment|/* .. and lock protecting it */
 DECL|member|m_maxagi
 id|xfs_agnumber_t
 id|m_maxagi
