@@ -454,18 +454,18 @@ suffix:semicolon
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
 id|NET_XMIT_SUCCESS
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|kfree_skb
@@ -538,7 +538,7 @@ c_func
 l_string|&quot;netem_enqueue: random loss&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -629,7 +629,7 @@ c_cond
 (paren
 id|ret
 )paren
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -757,7 +757,7 @@ l_int|0
 id|sch-&gt;q.qlen
 op_decrement
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -908,7 +908,7 @@ comma
 id|q-&gt;qdisc
 )paren
 )paren
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace

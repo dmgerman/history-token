@@ -66,7 +66,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_plus
 id|skb-&gt;len
 op_le
@@ -82,22 +82,22 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
@@ -155,7 +155,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -196,7 +196,7 @@ c_cond
 (paren
 id|skb
 )paren
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_sub_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -243,7 +243,7 @@ id|len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_sub_assign
 id|len
 suffix:semicolon
@@ -280,7 +280,7 @@ op_amp
 id|sch-&gt;q
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_assign
 l_int|0
 suffix:semicolon
@@ -330,18 +330,18 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_POLICE

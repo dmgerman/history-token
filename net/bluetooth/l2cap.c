@@ -4764,6 +4764,13 @@ c_cond
 (paren
 id|parent
 )paren
+(brace
+id|bt_accept_unlink
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|parent
 op_member_access_from_pointer
 id|sk_data_ready
@@ -4774,6 +4781,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 r_else
 id|sk
 op_member_access_from_pointer
@@ -6185,7 +6193,7 @@ comma
 id|pi-&gt;imtu
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME. Need actual value of the flush timeout */
+multiline_comment|/* FIXME: Need actual value of the flush timeout */
 singleline_comment|//if (flush_to != L2CAP_DEFAULT_FLUSH_TO)
 singleline_comment|//   l2cap_add_conf_opt(&amp;ptr, L2CAP_CONF_FLUSH_TO, 2, pi-&gt;flush_to);
 id|req-&gt;dcid

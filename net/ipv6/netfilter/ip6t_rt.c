@@ -291,9 +291,11 @@ r_struct
 id|ipv6_opt_hdr
 op_star
 )paren
+(paren
 id|skb-&gt;data
 op_plus
 id|ptr
+)paren
 suffix:semicolon
 multiline_comment|/* Calculate the header length */
 r_if
@@ -504,19 +506,11 @@ suffix:semicolon
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;SGS_LEFT %u %08X&bslash;n&quot;
+l_string|&quot;SGS_LEFT %u %02X&bslash;n&quot;
 comma
-id|ntohl
-c_func
-(paren
 id|route-&gt;segments_left
-)paren
 comma
-id|ntohl
-c_func
-(paren
 id|route-&gt;segments_left
-)paren
 )paren
 suffix:semicolon
 id|DEBUGP
@@ -538,11 +532,7 @@ id|rtinfo-&gt;segsleft
 l_int|1
 )braket
 comma
-id|ntohl
-c_func
-(paren
 id|route-&gt;segments_left
-)paren
 comma
 op_logical_neg
 op_logical_neg
@@ -692,11 +682,7 @@ id|rtinfo-&gt;segsleft
 l_int|1
 )braket
 comma
-id|ntohl
-c_func
-(paren
 id|route-&gt;segments_left
-)paren
 comma
 op_logical_neg
 op_logical_neg
