@@ -226,14 +226,14 @@ c_func
 suffix:semicolon
 )brace
 )brace
-DECL|function|ide_get_lock
 r_static
 id|__inline__
 r_void
+DECL|function|ide_get_lock
 id|ide_get_lock
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
