@@ -658,7 +658,7 @@ id|pci_dev
 op_star
 id|pci_dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -12517,7 +12517,7 @@ c_func
 (paren
 id|card-&gt;pcidev
 comma
-l_int|3
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 )brace
@@ -12538,7 +12538,7 @@ id|pci_dev
 op_star
 id|pci_dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace

@@ -15015,7 +15015,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|pm_state
 )paren
 (brace

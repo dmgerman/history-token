@@ -1086,7 +1086,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|unused
 )paren
 suffix:semicolon
@@ -16944,7 +16944,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|unused
 )paren
 (brace
