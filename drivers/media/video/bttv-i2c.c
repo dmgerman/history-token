@@ -112,6 +112,7 @@ suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* I2C functions - bitbanging adapter (software i2c)                       */
 DECL|function|bttv_bit_setscl
+r_static
 r_void
 id|bttv_bit_setscl
 c_func
@@ -167,6 +168,7 @@ id|BT848_I2C
 suffix:semicolon
 )brace
 DECL|function|bttv_bit_setsda
+r_static
 r_void
 id|bttv_bit_setsda
 c_func
