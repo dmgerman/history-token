@@ -1177,11 +1177,5 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_struct
-id|workqueue_struct
-op_star
-id|pagebuf_workqueue
-suffix:semicolon
 macro_line|#endif /* __PAGE_BUF_H__ */
 eof

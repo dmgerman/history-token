@@ -265,6 +265,13 @@ c_func
 r_int
 )paren
 suffix:semicolon
+DECL|variable|pagebuf_workqueue
+id|STATIC
+r_struct
+id|workqueue_struct
+op_star
+id|pagebuf_workqueue
+suffix:semicolon
 multiline_comment|/*&n; * Pagebuf module configuration parameters, exported via&n; * /proc/sys/vm/pagebuf&n; */
 DECL|variable|pagebuf_min
 r_int
@@ -333,13 +340,6 @@ DECL|variable|pbstats
 r_struct
 id|pbstats
 id|pbstats
-suffix:semicolon
-multiline_comment|/*&n; * Queue for delayed I/O completion.&n; */
-DECL|variable|pagebuf_workqueue
-r_struct
-id|workqueue_struct
-op_star
-id|pagebuf_workqueue
 suffix:semicolon
 multiline_comment|/*&n; * Pagebuf allocation / freeing.&n; */
 DECL|macro|pb_to_gfp
