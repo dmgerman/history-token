@@ -469,6 +469,8 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
+DECL|macro|shost_for_each_device
+mdefine_line|#define shost_for_each_device(sdev, shost) &bslash;&n;&t;list_for_each_entry((sdev), &amp;((shost)-&gt;my_devices), siblings)
 r_extern
 r_void
 id|scsi_adjust_queue_depth

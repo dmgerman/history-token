@@ -1108,15 +1108,12 @@ id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|sdev
 comma
-op_amp
-id|shost-&gt;my_devices
-comma
-id|siblings
+id|shost
 )paren
 id|scsi_run_queue
 c_func
