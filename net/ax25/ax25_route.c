@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -26,6 +27,13 @@ r_static
 id|ax25_route
 op_star
 id|ax25_route_list
+suffix:semicolon
+DECL|variable|ax25_route_lock
+r_static
+id|rwlock_t
+id|ax25_route_lock
+op_assign
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 id|ax25_route
@@ -118,6 +126,15 @@ op_star
 id|t
 comma
 op_star
+id|ax25_rt
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+)paren
+suffix:semicolon
 id|ax25_rt
 op_assign
 id|ax25_route_list
@@ -234,6 +251,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|ax25_rt_ioctl
 r_int
@@ -249,10 +273,6 @@ op_star
 id|arg
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|ax25_route
 op_star
 id|s
@@ -339,6 +359,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|write_lock
+c_func
+(paren
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -422,10 +448,18 @@ id|GFP_ATOMIC
 op_eq
 l_int|NULL
 )paren
+(brace
+id|write_unlock
+c_func
+(paren
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|ax25_rt-&gt;digipeat-&gt;lastrepeat
 op_assign
 op_minus
@@ -494,10 +528,18 @@ id|GFP_ATOMIC
 op_eq
 l_int|NULL
 )paren
+(brace
+id|write_unlock
+c_func
+(paren
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|ax25_rt-&gt;callsign
 op_assign
 id|route.dest_addr
@@ -543,6 +585,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|write_unlock
+c_func
+(paren
+id|ax25_route_lock
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -597,17 +645,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ax25_rt-&gt;next
 op_assign
 id|ax25_route_list
@@ -616,10 +653,10 @@ id|ax25_route_list
 op_assign
 id|ax25_rt
 suffix:semicolon
-id|restore_flags
+id|write_unlock
 c_func
 (paren
-id|flags
+id|ax25_route_lock
 )paren
 suffix:semicolon
 r_break
@@ -842,6 +879,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|write_lock
+c_func
+(paren
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -926,6 +969,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|write_unlock
+c_func
+(paren
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -986,9 +1035,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|cli
+id|read_lock
 c_func
 (paren
+op_amp
+id|ax25_route_lock
 )paren
 suffix:semicolon
 id|len
@@ -1214,9 +1265,11 @@ id|length
 r_break
 suffix:semicolon
 )brace
-id|sti
+id|read_unlock
 c_func
 (paren
+op_amp
+id|ax25_route_lock
 )paren
 suffix:semicolon
 op_star
@@ -1286,6 +1339,13 @@ suffix:semicolon
 id|ax25_route
 op_star
 id|ax25_rt
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Bind to the physical interface we heard them on, or the default&n;&t; *&t;route if none is found;&n;&t; */
 r_for
@@ -1407,6 +1467,13 @@ id|ax25_rt
 suffix:semicolon
 )brace
 )brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1892,6 +1959,13 @@ id|ax25_rt
 op_assign
 id|ax25_route_list
 suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1928,5 +2002,12 @@ id|s
 )paren
 suffix:semicolon
 )brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+)paren
+suffix:semicolon
 )brace
 eof

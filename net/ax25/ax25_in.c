@@ -1169,7 +1169,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; *&t;Remove the control and PID.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; *&t;Remove the control and PID.&n;&t;&t;&t;&t;&t; */
 id|skb_pull
 c_func
 (paren

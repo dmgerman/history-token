@@ -207,7 +207,7 @@ c_func
 id|ax25
 )paren
 suffix:semicolon
-multiline_comment|/* according to DK4EG&#xfffd;s spec we are required to&n;&t;&t;&t; * send a RR RESPONSE FINAL NR=0. &n;&t;&t;&t; */
+multiline_comment|/* according to DK4EG&#xfffd;s spec we are required to&n;&t;&t; * send a RR RESPONSE FINAL NR=0. &n;&t;&t; */
 id|ax25_std_enquiry_response
 c_func
 (paren

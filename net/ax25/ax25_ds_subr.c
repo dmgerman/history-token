@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
@@ -47,6 +48,10 @@ op_star
 id|ax25
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ax25_cb
 op_star
 id|ax25o
@@ -123,6 +128,15 @@ id|ax25_ds_set_timer
 c_func
 (paren
 id|ax25-&gt;ax25_dev
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_for
@@ -249,6 +263,15 @@ id|ax25o
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|ax25_ds_establish_data_link
 r_void
@@ -408,9 +431,27 @@ op_star
 id|ax25_dev
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ax25_cb
 op_star
 id|ax25
+suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -444,11 +485,25 @@ id|ax25-&gt;state
 OG
 id|AX25_STATE_1
 )paren
-r_return
+(brace
+id|res
+op_assign
 l_int|1
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|res
 suffix:semicolon
 )brace
 DECL|function|ax25_dev_dama_on
