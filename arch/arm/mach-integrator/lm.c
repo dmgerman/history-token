@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/lm.c&n; *&n; *  Copyright (C) 2003 Deep Blue Solutions Ltd, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/arch/lm.h&gt;
@@ -334,4 +335,18 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|lm_driver_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lm_driver_register
+)paren
+suffix:semicolon
+DECL|variable|lm_driver_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lm_driver_unregister
+)paren
+suffix:semicolon
 eof
