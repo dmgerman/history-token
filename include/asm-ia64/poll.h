@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_POLL_H
 DECL|macro|_ASM_IA64_POLL_H
 mdefine_line|#define _ASM_IA64_POLL_H
-multiline_comment|/*&n; * poll(2) bit definitions.  Chosen to be compatible with Linux/x86.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * poll(2) bit definitions.  Based on &lt;asm-i386/poll.h&gt;.&n; *&n; * Modified 1998, 1999, 2002&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 DECL|macro|POLLIN
 mdefine_line|#define POLLIN&t;&t;0x0001
 DECL|macro|POLLPRI
