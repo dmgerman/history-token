@@ -22,17 +22,12 @@ macro_line|#endif
 macro_line|#if defined(__H8300H__)
 DECL|macro|CPU
 mdefine_line|#define CPU &quot;H8/300H&quot;
+macro_line|#include &lt;asm/regs306x.h&gt;
 macro_line|#endif
 macro_line|#if defined(__H8300S__)
 DECL|macro|CPU
 mdefine_line|#define CPU &quot;H8S&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_INTELFLASH)
-DECL|macro|BLKOFFSET
-mdefine_line|#define BLKOFFSET 512
-macro_line|#else
-DECL|macro|BLKOFFSET
-mdefine_line|#define BLKOFFSET 0
+macro_line|#include &lt;asm/regs267x.h&gt;
 macro_line|#endif
 DECL|macro|STUBSIZE
 mdefine_line|#define STUBSIZE 0xc000;
@@ -50,12 +45,6 @@ DECL|variable|memory_end
 r_int
 r_int
 id|memory_end
-suffix:semicolon
-DECL|variable|_current_task
-r_struct
-id|task_struct
-op_star
-id|_current_task
 suffix:semicolon
 DECL|variable|command_line
 r_char
@@ -258,11 +247,7 @@ c_func
 r_void
 op_star
 )paren
-(paren
 id|memory_start
-op_plus
-id|BLKOFFSET
-)paren
 comma
 l_string|&quot;-rom1fs-&quot;
 comma
@@ -276,8 +261,6 @@ macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
 id|initrd_start
 op_assign
 id|memory_start
-op_add_assign
-id|BLKOFFSET
 suffix:semicolon
 id|initrd_end
 op_assign
@@ -302,10 +285,6 @@ l_int|2
 )paren
 suffix:semicolon
 macro_line|#else
-id|memory_start
-op_add_assign
-id|BLKOFFSET
-suffix:semicolon
 id|memory_start
 op_add_assign
 id|be32_to_cpu
@@ -672,6 +651,78 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_H8300_AKI3068NET) &amp;&amp; defined(CONFIG_IDE)
+(brace
+DECL|macro|AREABIT
+mdefine_line|#define AREABIT(addr) (1 &lt;&lt; (((addr) &gt;&gt; 21) &amp; 7))
+multiline_comment|/* setup BSC */
+r_volatile
+r_int
+r_char
+op_star
+id|abwcr
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|ABWCR
+suffix:semicolon
+r_volatile
+r_int
+r_char
+op_star
+id|cscr
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|CSCR
+suffix:semicolon
+op_star
+id|abwcr
+op_and_assign
+op_complement
+(paren
+id|AREABIT
+c_func
+(paren
+id|CONFIG_H8300_IDE_BASE
+)paren
+op_or
+id|AREABIT
+c_func
+(paren
+id|CONFIG_H8300_IDE_ALT
+)paren
+)paren
+suffix:semicolon
+op_star
+id|cscr
+op_or_assign
+(paren
+id|AREABIT
+c_func
+(paren
+id|CONFIG_H8300_IDE_BASE
+)paren
+op_or
+id|AREABIT
+c_func
+(paren
+id|CONFIG_H8300_IDE_ALT
+)paren
+)paren
+op_or
+l_int|0x0f
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef DEBUG
 id|printk
 c_func
