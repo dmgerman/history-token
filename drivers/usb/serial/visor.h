@@ -54,6 +54,8 @@ DECL|macro|SAMSUNG_VENDOR_ID
 mdefine_line|#define SAMSUNG_VENDOR_ID&t;&t;0x04E8
 DECL|macro|SAMSUNG_SCH_I330_ID
 mdefine_line|#define SAMSUNG_SCH_I330_ID&t;&t;0x8001
+DECL|macro|SAMSUNG_SPH_I500_ID
+mdefine_line|#define SAMSUNG_SPH_I500_ID&t;&t;0x6601
 DECL|macro|GARMIN_VENDOR_ID
 mdefine_line|#define GARMIN_VENDOR_ID&t;&t;0x091E
 DECL|macro|GARMIN_IQUE_3600_ID
