@@ -4700,10 +4700,18 @@ comma
 id|vb
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|vb
+)paren
+suffix:semicolon
 r_return
 id|FALSE
 suffix:semicolon
 multiline_comment|/* Already logged */
+)brace
 multiline_comment|/* Put vblk into the correct list. */
 r_switch
 c_cond

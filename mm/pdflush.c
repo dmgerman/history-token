@@ -203,6 +203,13 @@ c_func
 id|PF_IOTHREAD
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|pdflush_lock
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
