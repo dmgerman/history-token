@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/udp.h&gt;
+macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
@@ -647,6 +649,11 @@ op_star
 id|iph
 suffix:semicolon
 r_struct
+id|udphdr
+op_star
+id|udph
+suffix:semicolon
+r_struct
 id|icmphdr
 op_star
 id|icmph
@@ -752,6 +759,97 @@ id|IP_OFFSET
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* if UDP checksum is set, verify it&squot;s correct */
+r_if
+c_cond
+(paren
+id|iph-&gt;protocol
+op_eq
+id|IPPROTO_UDP
+op_logical_and
+id|skb_in-&gt;tail
+op_minus
+(paren
+id|u8
+op_star
+)paren
+id|iph
+op_ge
+r_sizeof
+(paren
+r_struct
+id|udphdr
+)paren
+)paren
+(brace
+r_int
+id|datalen
+op_assign
+id|skb_in-&gt;len
+op_minus
+(paren
+id|iph-&gt;ihl
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+id|udph
+op_assign
+(paren
+r_struct
+id|udphdr
+op_star
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|iph
+op_plus
+(paren
+id|iph-&gt;ihl
+op_lshift
+l_int|2
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|udph-&gt;check
+op_logical_and
+id|csum_tcpudp_magic
+c_func
+(paren
+id|iph-&gt;saddr
+comma
+id|iph-&gt;daddr
+comma
+id|datalen
+comma
+id|IPPROTO_UDP
+comma
+id|csum_partial
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|udph
+comma
+id|datalen
+comma
+l_int|0
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* If we send an ICMP error to an ICMP error a mess would result.. */
 r_if
 c_cond
