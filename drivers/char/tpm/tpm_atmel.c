@@ -503,10 +503,16 @@ op_assign
 id|TPM_ATML_BASE
 comma
 dot
-id|miscdev.fops
+id|miscdev
+op_assign
+(brace
+dot
+id|fops
 op_assign
 op_amp
 id|atmel_ops
+comma
+)brace
 comma
 )brace
 suffix:semicolon
