@@ -77,7 +77,7 @@ id|hook_mask
 (brace
 r_const
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_multi_range_compat
 op_star
 id|mr
 op_assign
@@ -265,12 +265,12 @@ id|ctinfo
 suffix:semicolon
 r_const
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_multi_range_compat
 op_star
 id|mr
 suffix:semicolon
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_range
 id|newrange
 suffix:semicolon
 r_struct
@@ -410,12 +410,8 @@ op_assign
 (paren
 (paren
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_range
 )paren
-(brace
-l_int|1
-comma
-(brace
 (brace
 id|mr-&gt;range
 (braket
@@ -444,8 +440,6 @@ l_int|0
 dot
 id|max
 )brace
-)brace
-)brace
 )paren
 suffix:semicolon
 multiline_comment|/* Hand modified range to generic setup. */
@@ -469,7 +463,6 @@ DECL|function|device_cmp
 id|device_cmp
 c_func
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star
@@ -559,7 +552,7 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 id|device_cmp
@@ -632,7 +625,7 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 id|device_cmp

@@ -121,6 +121,20 @@ c_func
 id|strstr
 )paren
 suffix:semicolon
+DECL|variable|vsyscall_ehdr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vsyscall_ehdr
+)paren
+suffix:semicolon
+DECL|variable|vsyscall_end
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vsyscall_end
+)paren
+suffix:semicolon
 multiline_comment|/* Here, instead, I can provide a fake prototype. Yes, someone cares: genksyms.&n; * However, the modules will use the CRC defined *here*, no matter if it is&n; * good; so the versions of these symbols will always match&n; */
 DECL|macro|EXPORT_SYMBOL_PROTO
 mdefine_line|#define EXPORT_SYMBOL_PROTO(sym)       &bslash;&n;       int sym(void);                  &bslash;&n;       EXPORT_SYMBOL(sym);

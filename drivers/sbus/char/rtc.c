@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mostek.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -32,8 +33,9 @@ op_star
 id|t
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
+id|__iomem
 id|regs
 op_assign
 id|mstk48t02_regs
@@ -177,8 +179,9 @@ op_star
 id|t
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
+id|__iomem
 id|regs
 op_assign
 id|mstk48t02_regs

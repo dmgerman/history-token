@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -1435,7 +1434,7 @@ id|size_bytes
 op_assign
 l_int|1UL
 op_lshift
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 suffix:semicolon
 r_int
 r_int
@@ -1717,7 +1716,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -2018,6 +2017,8 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|ppc64_tlb_batch

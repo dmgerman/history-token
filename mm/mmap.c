@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * mm/mmap.c&n; *&n; * Written by obz.&n; *&n; * Address space accounting code&t;&lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -13,6 +14,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
@@ -4133,6 +4135,16 @@ id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 )brace
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|addr
 suffix:semicolon
@@ -5390,6 +5402,16 @@ comma
 id|grow
 )paren
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|anon_vma_unlock
 c_func
 (paren
@@ -5658,6 +5680,16 @@ comma
 id|vma-&gt;vm_file
 comma
 id|grow
+)paren
+suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
 )paren
 suffix:semicolon
 id|anon_vma_unlock
@@ -7358,6 +7390,16 @@ id|len
 )paren
 suffix:semicolon
 )brace
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|addr
 suffix:semicolon

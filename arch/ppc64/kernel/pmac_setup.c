@@ -983,7 +983,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
 multiline_comment|/* Setup interrupt mapping options */
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_OPEN_PIC
 suffix:semicolon

@@ -1504,12 +1504,6 @@ id|total_lowmem
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|highmem_start_page
-op_assign
-id|mem_map
-op_plus
-id|highmem_mapnr
-suffix:semicolon
 macro_line|#endif /* CONFIG_HIGHMEM */
 id|max_mapnr
 op_assign

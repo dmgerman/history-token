@@ -124,6 +124,19 @@ DECL|macro|IXP4XX_ICIH_OFFSET
 mdefine_line|#define IXP4XX_ICIH_OFFSET&t;0x18 /* IRQ Highest Pri Int */
 DECL|macro|IXP4XX_ICFH_OFFSET
 mdefine_line|#define IXP4XX_ICFH_OFFSET&t;0x1C /* FIQ Highest Pri Int */
+multiline_comment|/*&n; * IXP465-only&n; */
+DECL|macro|IXP4XX_ICPR2_OFFSET
+mdefine_line|#define&t;IXP4XX_ICPR2_OFFSET&t;0x20 /* Interrupt Status 2 */
+DECL|macro|IXP4XX_ICMR2_OFFSET
+mdefine_line|#define&t;IXP4XX_ICMR2_OFFSET&t;0x24 /* Interrupt Enable 2 */
+DECL|macro|IXP4XX_ICLR2_OFFSET
+mdefine_line|#define&t;IXP4XX_ICLR2_OFFSET&t;0x28 /* Interrupt IRQ/FIQ Select 2 */
+DECL|macro|IXP4XX_ICIP2_OFFSET
+mdefine_line|#define IXP4XX_ICIP2_OFFSET     0x2C /* IRQ Status */
+DECL|macro|IXP4XX_ICFP2_OFFSET
+mdefine_line|#define IXP4XX_ICFP2_OFFSET&t;0x30 /* FIQ Status */
+DECL|macro|IXP4XX_ICEEN_OFFSET
+mdefine_line|#define IXP4XX_ICEEN_OFFSET&t;0x34 /* Error High Pri Enable */
 multiline_comment|/*&n; * Interrupt Controller Register Definitions.&n; */
 DECL|macro|IXP4XX_INTC_REG
 mdefine_line|#define IXP4XX_INTC_REG(x) ((volatile u32 *)(IXP4XX_INTC_BASE_VIRT+(x)))
@@ -143,6 +156,18 @@ DECL|macro|IXP4XX_ICIH
 mdefine_line|#define IXP4XX_ICIH     IXP4XX_INTC_REG(IXP4XX_ICIH_OFFSET) 
 DECL|macro|IXP4XX_ICFH
 mdefine_line|#define IXP4XX_ICFH     IXP4XX_INTC_REG(IXP4XX_ICFH_OFFSET)
+DECL|macro|IXP4XX_ICPR2
+mdefine_line|#define IXP4XX_ICPR2&t;IXP4XX_INTC_REG(IXP4XX_ICPR2_OFFSET)
+DECL|macro|IXP4XX_ICMR2
+mdefine_line|#define IXP4XX_ICMR2    IXP4XX_INTC_REG(IXP4XX_ICMR2_OFFSET)
+DECL|macro|IXP4XX_ICLR2
+mdefine_line|#define IXP4XX_ICLR2    IXP4XX_INTC_REG(IXP4XX_ICLR2_OFFSET)
+DECL|macro|IXP4XX_ICIP2
+mdefine_line|#define IXP4XX_ICIP2    IXP4XX_INTC_REG(IXP4XX_ICIP2_OFFSET)
+DECL|macro|IXP4XX_ICFP2
+mdefine_line|#define IXP4XX_ICFP2    IXP4XX_INTC_REG(IXP4XX_ICFP2_OFFSET)
+DECL|macro|IXP4XX_ICEEN
+mdefine_line|#define IXP4XX_ICEEN    IXP4XX_INTC_REG(IXP4XX_ICEEN_OFFSET)
 multiline_comment|/*&n; * Constants to make it easy to access GPIO registers&n; */
 DECL|macro|IXP4XX_GPIO_GPOUTR_OFFSET
 mdefine_line|#define IXP4XX_GPIO_GPOUTR_OFFSET       0x00
@@ -738,5 +763,53 @@ DECL|macro|USIR1_IR15
 mdefine_line|#define USIR1_IR15&t;(1 &lt;&lt; 7)&t;/* Interrup request ep 15 */
 DECL|macro|DCMD_LENGTH
 mdefine_line|#define DCMD_LENGTH&t;0x01fff&t;&t;/* length mask (max = 8K - 1) */
+macro_line|#ifndef __ASSEMBLY__
+DECL|function|cpu_is_ixp46x
+r_static
+r_inline
+r_int
+id|cpu_is_ixp46x
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_CPU_IXP46X
+r_int
+r_int
+id|processor_id
+suffix:semicolon
+id|asm
+c_func
+(paren
+l_string|&quot;mrc p15, 0, %0, cr0, cr0, 0;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|processor_id
+)paren
+suffix:colon
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|processor_id
+op_amp
+l_int|0xffffff00
+)paren
+op_eq
+l_int|0x69054200
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif
 eof

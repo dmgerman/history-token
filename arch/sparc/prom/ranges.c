@@ -153,7 +153,6 @@ id|ot_parent_base
 suffix:semicolon
 )brace
 )brace
-r_static
 r_void
 DECL|function|prom_adjust_ranges
 id|prom_adjust_ranges

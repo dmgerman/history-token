@@ -1066,48 +1066,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Do a delayed shutdown, with the delay in milliseconds.  If power_off is&n;   false, do a reset.  If power_off is true, do a power down.  This is&n;   primarily for the IMB code&squot;s shutdown. */
-DECL|function|ipmi_delayed_shutdown
-r_void
-id|ipmi_delayed_shutdown
-c_func
-(paren
-r_int
-id|delay
-comma
-r_int
-id|power_off
-)paren
-(brace
-id|ipmi_ignore_heartbeat
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|power_off
-)paren
-id|ipmi_watchdog_state
-op_assign
-id|WDOG_TIMEOUT_POWER_DOWN
-suffix:semicolon
-r_else
-id|ipmi_watchdog_state
-op_assign
-id|WDOG_TIMEOUT_RESET
-suffix:semicolon
-id|timeout
-op_assign
-id|delay
-suffix:semicolon
-id|ipmi_set_timeout
-c_func
-(paren
-id|IPMI_SET_TIMEOUT_HB_IF_NECESSARY
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* We use a semaphore to make sure that only one thing can send a&n;   heartbeat at one time, because we only have one copy of the data.&n;   The semaphore is claimed when the set_timeout is sent and freed&n;   when both messages are free. */
 DECL|variable|heartbeat_tofree
 r_static
@@ -3105,11 +3063,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
-multiline_comment|/* Why isn&squot;t this defined anywhere? */
 DECL|function|wdog_panic_handler
 r_static
 r_int
@@ -3764,17 +3717,6 @@ op_amp
 id|ipmi_wdog_miscdev
 )paren
 suffix:semicolon
-multiline_comment|/*  Disable the timer. */
-id|ipmi_watchdog_state
-op_assign
-id|WDOG_TIMEOUT_NONE
-suffix:semicolon
-id|ipmi_set_timeout
-c_func
-(paren
-id|IPMI_SET_TIMEOUT_NO_HB
-)paren
-suffix:semicolon
 multiline_comment|/* Wait to make sure the message makes it out.  The lower layer has&n;&t;   pointers to our buffers, we want to make sure they are done before&n;&t;   we release our memory. */
 r_while
 c_loop
@@ -3868,13 +3810,6 @@ id|module_exit
 c_func
 (paren
 id|ipmi_wdog_exit
-)paren
-suffix:semicolon
-DECL|variable|ipmi_delayed_shutdown
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ipmi_delayed_shutdown
 )paren
 suffix:semicolon
 DECL|variable|ipmi_wdog_init

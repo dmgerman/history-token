@@ -509,14 +509,6 @@ comma
 l_string|&quot;mmapper&quot;
 )paren
 suffix:semicolon
-id|devfs_mk_symlink
-c_func
-(paren
-l_string|&quot;mmapper0&quot;
-comma
-l_string|&quot;mmapper&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -117,8 +117,8 @@ mdefine_line|#define X86_FEATURE_XTPR&t;(4*32+14) /* Send Task Priority Messages
 multiline_comment|/* More extended AMD flags: CPUID level 0x80000001, ecx, word 5 */
 DECL|macro|X86_FEATURE_LAHF_LM
 mdefine_line|#define X86_FEATURE_LAHF_LM&t;(5*32+ 0) /* LAHF/SAHF in long mode */
-DECL|macro|X86_FEATURE_HTVALID
-mdefine_line|#define X86_FEATURE_HTVALID&t;(5*32+ 1) /* HyperThreading valid, otherwise CMP */
+DECL|macro|X86_FEATURE_CMP_LEGACY
+mdefine_line|#define X86_FEATURE_CMP_LEGACY&t;(5*32+ 1) /* If yes HyperThreading not valid */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)                test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has

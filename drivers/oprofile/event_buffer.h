@@ -43,6 +43,10 @@ DECL|macro|MODULE_LOADED_CODE
 mdefine_line|#define MODULE_LOADED_CODE&t;&t;6
 DECL|macro|CTX_TGID_CODE
 mdefine_line|#define CTX_TGID_CODE&t;&t;&t;7
+DECL|macro|TRACE_BEGIN_CODE
+mdefine_line|#define TRACE_BEGIN_CODE&t;&t;8
+DECL|macro|TRACE_END_CODE
+mdefine_line|#define TRACE_END_CODE&t;&t;&t;9
 multiline_comment|/* add data to the event buffer */
 r_void
 id|add_event_entry

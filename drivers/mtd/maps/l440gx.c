@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: l440gx.c,v 1.16 2004/11/16 18:29:02 dwmw2 Exp $&n; *&n; * BIOS Flash chip on Intel 440GX board.&n; *&n; * Bugs this currently does not work under linuxBIOS.&n; */
+multiline_comment|/*&n; * $Id: l440gx.c,v 1.17 2004/11/28 09:40:39 dwmw2 Exp $&n; *&n; * BIOS Flash chip on Intel 440GX board.&n; *&n; * Bugs this currently does not work under linuxBIOS.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

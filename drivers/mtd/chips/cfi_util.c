@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   Generic utility functions not dependant on command set&n; *&n; * Copyright (C) 2002 Red Hat&n; * Copyright (C) 2003 STMicroelectronics Limited&n; *&n; * This code is covered by the GPL.&n; *&n; * $Id: cfi_util.c,v 1.5 2004/08/12 06:40:23 eric Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   Generic utility functions not dependant on command set&n; *&n; * Copyright (C) 2002 Red Hat&n; * Copyright (C) 2003 STMicroelectronics Limited&n; *&n; * This code is covered by the GPL.&n; *&n; * $Id: cfi_util.c,v 1.8 2004/12/14 19:55:56 nico Exp $&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/mtd/xip.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
@@ -17,6 +18,7 @@ r_struct
 id|cfi_extquery
 op_star
 DECL|function|cfi_read_pri
+id|__xipram
 id|cfi_read_pri
 c_func
 (paren
@@ -86,25 +88,6 @@ id|adr
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* Switch it into Query Mode */
-id|cfi_send_gen_cmd
-c_func
-(paren
-l_int|0x98
-comma
-l_int|0x55
-comma
-id|base
-comma
-id|map
-comma
-id|cfi
-comma
-id|cfi-&gt;device_type
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|extp
 op_assign
 id|kmalloc
@@ -133,6 +116,32 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MTD_XIP
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Switch it into Query Mode */
+id|cfi_send_gen_cmd
+c_func
+(paren
+l_int|0x98
+comma
+l_int|0x55
+comma
+id|base
+comma
+id|map
+comma
+id|cfi
+comma
+id|cfi-&gt;device_type
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/* Read in the Extended Query Table */
 r_for
 c_loop
@@ -180,6 +189,67 @@ id|ofs_factor
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Make sure it returns to read mode */
+id|cfi_send_gen_cmd
+c_func
+(paren
+l_int|0xf0
+comma
+l_int|0
+comma
+id|base
+comma
+id|map
+comma
+id|cfi
+comma
+id|cfi-&gt;device_type
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|cfi_send_gen_cmd
+c_func
+(paren
+l_int|0xff
+comma
+l_int|0
+comma
+id|base
+comma
+id|map
+comma
+id|cfi
+comma
+id|cfi-&gt;device_type
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_XIP
+(paren
+r_void
+)paren
+id|map_read
+c_func
+(paren
+id|map
+comma
+id|base
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;.rep 8; nop; .endr&quot;
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -218,49 +288,9 @@ id|extp
 op_assign
 l_int|NULL
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
 id|out
 suffix:colon
-multiline_comment|/* Make sure it&squot;s in read mode */
-id|cfi_send_gen_cmd
-c_func
-(paren
-l_int|0xf0
-comma
-l_int|0
-comma
-id|base
-comma
-id|map
-comma
-id|cfi
-comma
-id|cfi-&gt;device_type
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|cfi_send_gen_cmd
-c_func
-(paren
-l_int|0xff
-comma
-l_int|0
-comma
-id|base
-comma
-id|map
-comma
-id|cfi
-comma
-id|cfi-&gt;device_type
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 r_return
 id|extp
 suffix:semicolon
@@ -592,10 +622,6 @@ id|len
 )paren
 (brace
 r_int
-r_int
-id|chipmask
-suffix:semicolon
-r_int
 id|size
 op_assign
 id|regions
@@ -639,31 +665,19 @@ id|adr
 op_add_assign
 id|size
 suffix:semicolon
+id|ofs
+op_add_assign
+id|size
+suffix:semicolon
 id|len
 op_sub_assign
 id|size
 suffix:semicolon
-id|chipmask
-op_assign
-(paren
-l_int|1
-op_lshift
-id|cfi-&gt;chipshift
-)paren
-op_minus
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|adr
-op_amp
-id|chipmask
-)paren
+id|ofs
 op_eq
-(paren
-(paren
 id|regions
 (braket
 id|i
@@ -679,10 +693,6 @@ id|i
 )braket
 dot
 id|numblocks
-)paren
-op_amp
-id|chipmask
-)paren
 )paren
 id|i
 op_increment

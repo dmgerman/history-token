@@ -2116,7 +2116,7 @@ id|dir-&gt;i_mtime
 op_assign
 id|dir-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|EXT2_I
 c_func
@@ -2639,7 +2639,7 @@ id|dir-&gt;i_mtime
 op_assign
 id|dir-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|EXT2_I
 c_func
@@ -2936,7 +2936,7 @@ id|inode-&gt;i_ctime
 op_assign
 id|inode-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|EXT2_I
 c_func

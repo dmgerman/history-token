@@ -1,9 +1,29 @@
 macro_line|#ifndef _ASM_M32R_ASSEMBLER_H
 DECL|macro|_ASM_M32R_ASSEMBLER_H
 mdefine_line|#define _ASM_M32R_ASSEMBLER_H
-multiline_comment|/* $Id$ */
-multiline_comment|/*&n; * linux/asm-m32r/assembler.h&n; *&n; * This file contains M32R architecture specific defines.&n; *&n; * Do not include any C declarations in this file - it is included by&n; * assembler source.&n; */
+multiline_comment|/*&n; * linux/asm-m32r/assembler.h&n; *&n; * Copyright (C) 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; *&n; * This file contains M32R architecture specific macro definitions.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifndef __STR
+macro_line|#ifdef __ASSEMBLY__
+DECL|macro|__STR
+mdefine_line|#define __STR(x) x
+macro_line|#else
+DECL|macro|__STR
+mdefine_line|#define __STR(x) #x
+macro_line|#endif
+macro_line|#endif /* __STR */
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|M32R_LOCK
+mdefine_line|#define M32R_LOCK&t;__STR(lock)
+DECL|macro|M32R_UNLOCK
+mdefine_line|#define M32R_UNLOCK&t;__STR(unlock)
+macro_line|#else
+DECL|macro|M32R_LOCK
+mdefine_line|#define M32R_LOCK&t;__STR(ld)
+DECL|macro|M32R_UNLOCK
+mdefine_line|#define M32R_UNLOCK&t;__STR(st)
+macro_line|#endif
+macro_line|#ifdef __ASSEMBLY__
 DECL|macro|ENTRY
 macro_line|#undef ENTRY
 DECL|macro|ENTRY
@@ -22,7 +42,8 @@ id|name
 suffix:colon
 dot
 id|endm
-multiline_comment|/*&n; * LDIMM: load immediate value&n; *&n; * STI: enable interruption&n; * CLI: disable interruption&n; */
+macro_line|#endif
+multiline_comment|/**&n; * LDIMM - load immediate value&n; * STI - enable interruption&n; * CLI - disable interruption&n; */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|LDIMM
 mdefine_line|#define LDIMM(reg,x) LDIMM reg x

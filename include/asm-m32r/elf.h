@@ -84,6 +84,12 @@ DECL|macro|R_M32R_GOTPC_HI_SLO
 mdefine_line|#define R_M32R_GOTPC_HI_SLO&t;60
 DECL|macro|R_M32R_GOTPC_LO
 mdefine_line|#define R_M32R_GOTPC_LO&t;&t;61
+DECL|macro|R_M32R_GOTOFF_HI_ULO
+mdefine_line|#define R_M32R_GOTOFF_HI_ULO&t;62
+DECL|macro|R_M32R_GOTOFF_HI_SLO
+mdefine_line|#define R_M32R_GOTOFF_HI_SLO&t;63
+DECL|macro|R_M32R_GOTOFF_LO
+mdefine_line|#define R_M32R_GOTOFF_LO&t;64
 DECL|macro|R_M32R_NUM
 mdefine_line|#define R_M32R_NUM&t;&t;256
 multiline_comment|/*&n; * ELF register definitions..&n; */

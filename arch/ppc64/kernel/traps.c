@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -20,6 +21,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* This is true if we are using the firmware NMI handler (typically LPAR) */
 r_extern
@@ -169,6 +171,72 @@ id|__debugger_fault_handler
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|ppc64_die_chain
+r_struct
+id|notifier_block
+op_star
+id|ppc64_die_chain
+suffix:semicolon
+DECL|variable|die_notifier_lock
+r_static
+id|spinlock_t
+id|die_notifier_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|register_die_notifier
+r_int
+id|register_die_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|die_notifier_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|notifier_chain_register
+c_func
+(paren
+op_amp
+id|ppc64_die_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|die_notifier_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Trap &amp; Exception support&n; */
 DECL|variable|die_lock
 r_static
@@ -1041,6 +1109,29 @@ id|regs
 r_if
 c_cond
 (paren
+id|notify_die
+c_func
+(paren
+id|DIE_IABR_MATCH
+comma
+l_string|&quot;iabr_match&quot;
+comma
+id|regs
+comma
+l_int|5
+comma
+l_int|5
+comma
+id|SIGTRAP
+)paren
+op_eq
+id|NOTIFY_STOP
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|debugger_iabr_match
 c_func
 (paren
@@ -1079,6 +1170,29 @@ op_complement
 id|MSR_SE
 suffix:semicolon
 multiline_comment|/* Turn off &squot;trace&squot; bit */
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_SSTEP
+comma
+l_string|&quot;single_step&quot;
+comma
+id|regs
+comma
+l_int|5
+comma
+l_int|5
+comma
+id|SIGTRAP
+)paren
+op_eq
+id|NOTIFY_STOP
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1691,6 +1805,17 @@ id|regs
 r_if
 c_cond
 (paren
+id|debugger_fault_handler
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|regs-&gt;msr
 op_amp
 l_int|0x100000
@@ -1737,6 +1862,29 @@ l_int|0x20000
 )paren
 (brace
 multiline_comment|/* trap exception */
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_BPT
+comma
+l_string|&quot;breakpoint&quot;
+comma
+id|regs
+comma
+l_int|5
+comma
+l_int|5
+comma
+id|SIGTRAP
+)paren
+op_eq
+id|NOTIFY_STOP
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren

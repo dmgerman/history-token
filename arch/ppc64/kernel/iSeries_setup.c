@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;iSeries_setup.h&quot;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
@@ -1225,7 +1226,7 @@ multiline_comment|/*&n;&t; * If the init RAM disk has been configured and there 
 r_if
 c_cond
 (paren
-id|naca-&gt;xRamDisk
+id|naca.xRamDisk
 )paren
 (brace
 id|initrd_start
@@ -1237,14 +1238,14 @@ r_int
 id|__va
 c_func
 (paren
-id|naca-&gt;xRamDisk
+id|naca.xRamDisk
 )paren
 suffix:semicolon
 id|initrd_end
 op_assign
 id|initrd_start
 op_plus
-id|naca-&gt;xRamDiskSize
+id|naca.xRamDiskSize
 op_star
 id|PAGE_SIZE
 suffix:semicolon
@@ -1270,12 +1271,12 @@ op_div
 id|PAGE_SIZE
 )paren
 OL
-id|naca-&gt;xRamDiskSize
+id|naca.xRamDiskSize
 )paren
 id|rd_size
 op_assign
 (paren
-id|naca-&gt;xRamDiskSize
+id|naca.xRamDiskSize
 op_star
 id|PAGE_SIZE
 )paren
@@ -1649,8 +1650,7 @@ op_star
 l_int|256
 )paren
 suffix:semicolon
-multiline_comment|/* Fill in the htab_data structure */
-multiline_comment|/* Fill in size of hashed page table */
+multiline_comment|/* Fill in the hashed page table hash mask */
 id|num_ptegs
 op_assign
 id|hptSizePages
@@ -1668,18 +1668,14 @@ id|HPTES_PER_GROUP
 )paren
 )paren
 suffix:semicolon
-id|htab_data.htab_num_ptegs
-op_assign
-id|num_ptegs
-suffix:semicolon
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 op_assign
 id|num_ptegs
 op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * The actual hashed page table is in the hypervisor,&n;&t; * we have no direct access&n;&t; */
-id|htab_data.htab
+id|htab_address
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1956,9 +1952,11 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|lppaca.xDynHvPhysicalProcIndex
+id|lppaca.dyn_hv_phys_proc_index
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1Size
+id|systemcfg-&gt;icache_size
+op_assign
+id|ppc64_caches.isize
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1969,7 +1967,9 @@ id|xInstCacheSize
 op_star
 l_int|1024
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1LineSize
+id|systemcfg-&gt;icache_line_size
+op_assign
+id|ppc64_caches.iline_size
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1978,7 +1978,9 @@ id|procIx
 dot
 id|xInstCacheOperandSize
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1Size
+id|systemcfg-&gt;dcache_size
+op_assign
+id|ppc64_caches.dsize
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1989,7 +1991,9 @@ id|xDataL1CacheSizeKB
 op_star
 l_int|1024
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dcache_line_size
+op_assign
+id|ppc64_caches.dline_size
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1998,21 +2002,21 @@ id|procIx
 dot
 id|xDataCacheOperandSize
 suffix:semicolon
-id|naca-&gt;iCacheL1LinesPerPage
+id|ppc64_caches.ilines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 suffix:semicolon
-id|naca-&gt;dCacheL1LinesPerPage
+id|ppc64_caches.dlines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 suffix:semicolon
 id|i
 op_assign
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 suffix:semicolon
 id|n
 op_assign
@@ -2034,13 +2038,13 @@ l_int|2
 op_increment
 id|n
 suffix:semicolon
-id|naca-&gt;iCacheL1LogLineSize
+id|ppc64_caches.log_iline_size
 op_assign
 id|n
 suffix:semicolon
 id|i
 op_assign
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 suffix:semicolon
 id|n
 op_assign
@@ -2062,7 +2066,7 @@ l_int|2
 op_increment
 id|n
 suffix:semicolon
-id|naca-&gt;dCacheL1LogLineSize
+id|ppc64_caches.log_dline_size
 op_assign
 id|n
 suffix:semicolon
@@ -2075,7 +2079,7 @@ comma
 r_int
 r_int
 )paren
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 )paren
 suffix:semicolon
 id|printk
@@ -2087,7 +2091,7 @@ comma
 r_int
 r_int
 )paren
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 )paren
 suffix:semicolon
 )brace
@@ -2396,7 +2400,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|lppaca.xDynHvPhysicalProcIndex
+id|lppaca.dyn_hv_phys_proc_index
 suffix:semicolon
 multiline_comment|/* Add an eye catcher and the systemcfg layout version number */
 id|strcpy
@@ -2884,7 +2888,7 @@ multiline_comment|/*&n;&t; * Change klimit to take into account any ram disk&n;&
 r_if
 c_cond
 (paren
-id|naca-&gt;xRamDisk
+id|naca.xRamDisk
 )paren
 id|klimit
 op_assign
@@ -2893,10 +2897,10 @@ op_plus
 (paren
 id|u64
 )paren
-id|naca-&gt;xRamDisk
+id|naca.xRamDisk
 op_plus
 (paren
-id|naca-&gt;xRamDiskSize
+id|naca.xRamDiskSize
 op_star
 id|PAGE_SIZE
 )paren

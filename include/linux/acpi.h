@@ -1301,6 +1301,12 @@ r_void
 )paren
 suffix:semicolon
 r_int
+id|acpi_boot_table_init
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
 id|acpi_numa_init
 (paren
 r_void
@@ -1483,6 +1489,20 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|acpi_boot_table_init
+r_static
+r_inline
+r_int
+id|acpi_boot_table_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif &t;/*!CONFIG_ACPI_BOOT*/
 r_int
 r_int
@@ -1510,6 +1530,16 @@ op_star
 id|irq
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This function undoes the effect of one call to acpi_register_gsi().&n; * If this matches the last registration, any IRQ resources for gsi&n; * are freed.&n; */
+macro_line|#ifdef CONFIG_ACPI_DEALLOCATE_IRQ
+r_void
+id|acpi_unregister_gsi
+(paren
+id|u32
+id|gsi
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|struct|acpi_prt_entry
 r_struct
@@ -1589,6 +1619,17 @@ r_int
 id|irq
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_DEALLOCATE_IRQ
+r_void
+id|acpi_pci_irq_disable
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|struct|acpi_pci_driver
 r_struct
 id|acpi_pci_driver

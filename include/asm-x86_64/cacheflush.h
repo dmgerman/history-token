@@ -55,5 +55,20 @@ id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
+r_int
+id|change_page_attr_addr
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+id|numpages
+comma
+id|pgprot_t
+id|prot
+)paren
+suffix:semicolon
 macro_line|#endif /* _X8664_CACHEFLUSH_H */
 eof

@@ -74,6 +74,132 @@ DECL|macro|ZERO_STATEID
 mdefine_line|#define ZERO_STATEID(stateid)       (!memcmp((stateid), &amp;zerostateid, sizeof(stateid_t)))
 DECL|macro|ONE_STATEID
 mdefine_line|#define ONE_STATEID(stateid)        (!memcmp((stateid), &amp;onestateid, sizeof(stateid_t)))
+multiline_comment|/* Delegation recall states */
+DECL|macro|NFS4_NO_RECALL
+mdefine_line|#define NFS4_NO_RECALL&t;&t;&t;0x000
+DECL|macro|NFS4_RECALL_IN_PROGRESS
+mdefine_line|#define NFS4_RECALL_IN_PROGRESS&t;&t;0x001
+DECL|macro|NFS4_RECALL_COMPLETE
+mdefine_line|#define NFS4_RECALL_COMPLETE&t;&t;0x002
+DECL|macro|NFS4_REAP_DELEG
+mdefine_line|#define NFS4_REAP_DELEG&t;&t;&t;0x004
+DECL|struct|nfs4_cb_recall
+r_struct
+id|nfs4_cb_recall
+(brace
+DECL|member|cbr_ident
+id|u32
+id|cbr_ident
+suffix:semicolon
+DECL|member|cbr_trunc
+r_int
+id|cbr_trunc
+suffix:semicolon
+DECL|member|cbr_stateid
+id|stateid_t
+id|cbr_stateid
+suffix:semicolon
+DECL|member|cbr_fhlen
+id|u32
+id|cbr_fhlen
+suffix:semicolon
+DECL|member|cbr_fhval
+id|u32
+id|cbr_fhval
+(braket
+id|NFS4_FHSIZE
+)braket
+suffix:semicolon
+DECL|member|cbr_dp
+r_struct
+id|nfs4_delegation
+op_star
+id|cbr_dp
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfs4_delegation
+r_struct
+id|nfs4_delegation
+(brace
+DECL|member|dl_del_perfile
+r_struct
+id|list_head
+id|dl_del_perfile
+suffix:semicolon
+multiline_comment|/* nfs4_file-&gt;fi_del_perfile */
+DECL|member|dl_del_perclnt
+r_struct
+id|list_head
+id|dl_del_perclnt
+suffix:semicolon
+multiline_comment|/* nfs4_client-&gt;cl_del_perclnt*/
+DECL|member|dl_recall_lru
+r_struct
+id|list_head
+id|dl_recall_lru
+suffix:semicolon
+multiline_comment|/* delegation recalled */
+DECL|member|dl_recall_cnt
+id|atomic_t
+id|dl_recall_cnt
+suffix:semicolon
+multiline_comment|/* resend cb_recall only once */
+DECL|member|dl_count
+id|atomic_t
+id|dl_count
+suffix:semicolon
+multiline_comment|/* ref count */
+DECL|member|dl_state
+id|atomic_t
+id|dl_state
+suffix:semicolon
+multiline_comment|/* recall state */
+DECL|member|dl_client
+r_struct
+id|nfs4_client
+op_star
+id|dl_client
+suffix:semicolon
+DECL|member|dl_file
+r_struct
+id|nfs4_file
+op_star
+id|dl_file
+suffix:semicolon
+DECL|member|dl_flock
+r_struct
+id|file_lock
+op_star
+id|dl_flock
+suffix:semicolon
+DECL|member|dl_stp
+r_struct
+id|nfs4_stateid
+op_star
+id|dl_stp
+suffix:semicolon
+DECL|member|dl_type
+id|u32
+id|dl_type
+suffix:semicolon
+DECL|member|dl_time
+id|time_t
+id|dl_time
+suffix:semicolon
+DECL|member|dl_recall
+r_struct
+id|nfs4_cb_recall
+id|dl_recall
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|dl_stateid
+mdefine_line|#define dl_stateid      dl_recall.cbr_stateid
+DECL|macro|dl_fhlen
+mdefine_line|#define dl_fhlen        dl_recall.cbr_fhlen
+DECL|macro|dl_fhval
+mdefine_line|#define dl_fhval        dl_recall.cbr_fhval
 multiline_comment|/* client delegation callback info */
 DECL|struct|nfs4_callback
 r_struct
@@ -102,14 +228,9 @@ DECL|member|cb_ident
 id|u32
 id|cb_ident
 suffix:semicolon
-DECL|member|cb_netid
-r_struct
-id|xdr_netobj
-id|cb_netid
-suffix:semicolon
 multiline_comment|/* RPC client info */
 DECL|member|cb_set
-id|u32
+id|atomic_t
 id|cb_set
 suffix:semicolon
 multiline_comment|/* successful CB_NULL call */
@@ -154,6 +275,12 @@ id|list_head
 id|cl_perclient
 suffix:semicolon
 multiline_comment|/* list: stateowners */
+DECL|member|cl_del_perclnt
+r_struct
+id|list_head
+id|cl_del_perclnt
+suffix:semicolon
+multiline_comment|/* list: delegations */
 DECL|member|cl_lru
 r_struct
 id|list_head
@@ -208,6 +335,11 @@ id|time_t
 id|cl_first_state
 suffix:semicolon
 multiline_comment|/* first state aquisition*/
+DECL|member|cl_count
+id|atomic_t
+id|cl_count
+suffix:semicolon
+multiline_comment|/* ref count */
 )brace
 suffix:semicolon
 multiline_comment|/* struct nfs4_client_reset&n; * one per old client. Populates reset_str_hashtbl. Filled from conf_id_hashtbl&n; * upon lease reset, or from upcall to state_daemon (to read in state&n; * from non-volitile storage) upon reboot.&n; */
@@ -406,6 +538,12 @@ id|list_head
 id|fi_perfile
 suffix:semicolon
 multiline_comment|/* list: nfs4_stateid */
+DECL|member|fi_del_perfile
+r_struct
+id|list_head
+id|fi_del_perfile
+suffix:semicolon
+multiline_comment|/* list: nfs4_delegation */
 DECL|member|fi_inode
 r_struct
 id|inode
@@ -491,10 +629,14 @@ DECL|macro|OPEN_STATE
 mdefine_line|#define OPEN_STATE              0x00000004
 DECL|macro|LOCK_STATE
 mdefine_line|#define LOCK_STATE              0x00000008
-DECL|macro|RDWR_STATE
-mdefine_line|#define RDWR_STATE              0x00000010
+DECL|macro|RD_STATE
+mdefine_line|#define RD_STATE&t;        0x00000010
+DECL|macro|WR_STATE
+mdefine_line|#define WR_STATE&t;        0x00000020
 DECL|macro|CLOSE_STATE
-mdefine_line|#define CLOSE_STATE             0x00000020
+mdefine_line|#define CLOSE_STATE             0x00000040
+DECL|macro|DELEG_RET
+mdefine_line|#define DELEG_RET               0x00000080
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)                       &bslash;&n;&t;(((err) != nfserr_stale_clientid) &amp;&amp;    &bslash;&n;&t;((err) != nfserr_bad_seqid) &amp;&amp;          &bslash;&n;&t;((err) != nfserr_stale_stateid) &amp;&amp;      &bslash;&n;&t;((err) != nfserr_bad_stateid))
 r_extern
@@ -531,12 +673,6 @@ id|stateid
 comma
 r_int
 id|flags
-comma
-r_struct
-id|nfs4_stateid
-op_star
-op_star
-id|stpp
 )paren
 suffix:semicolon
 r_extern
@@ -590,6 +726,17 @@ id|clid
 suffix:semicolon
 r_extern
 r_void
+id|put_nfs4_client
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+id|clp
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|nfs4_free_stateowner
 c_func
 (paren
@@ -597,6 +744,28 @@ r_struct
 id|kref
 op_star
 id|kref
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfsd4_probe_callback
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+id|clp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfsd4_cb_recall
+c_func
+(paren
+r_struct
+id|nfs4_delegation
+op_star
+id|dp
 )paren
 suffix:semicolon
 r_static

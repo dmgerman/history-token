@@ -280,39 +280,8 @@ DECL|macro|pfn_to_kaddr
 mdefine_line|#define pfn_to_kaddr(pfn)      __va((pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(((current-&gt;personality &amp; READ_IMPLIES_EXEC) ? VM_EXEC : 0 ) | &bslash;&n;&t; VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-DECL|macro|CONFIG_ARCH_GATE_AREA
-mdefine_line|#define CONFIG_ARCH_GATE_AREA 1&t;
-macro_line|#ifndef __ASSEMBLY__
-r_struct
-id|task_struct
-suffix:semicolon
-r_struct
-id|vm_area_struct
-op_star
-id|get_gate_vma
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-suffix:semicolon
-r_int
-id|in_gate_area
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-macro_line|#endif
+DECL|macro|__HAVE_ARCH_GATE_AREA
+mdefine_line|#define __HAVE_ARCH_GATE_AREA 1&t;
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _X86_64_PAGE_H */
 eof

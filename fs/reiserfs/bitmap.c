@@ -4594,6 +4594,8 @@ id|reiserfs_debug
 (paren
 id|s
 comma
+id|REISERFS_DEBUG_CODE
+comma
 l_string|&quot;reiserquota: allocating %d blocks id=%u&quot;
 comma
 id|amount_needed
@@ -4633,6 +4635,8 @@ macro_line|#ifdef REISERQUOTA_DEBUG
 id|reiserfs_debug
 (paren
 id|s
+comma
+id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;reiserquota: allocating (prealloc) %d blocks id=%u&quot;
 comma
@@ -4798,6 +4802,8 @@ id|reiserfs_debug
 (paren
 id|s
 comma
+id|REISERFS_DEBUG_CODE
+comma
 l_string|&quot;reiserquota: freeing (nospace) %d blocks id=%u&quot;
 comma
 id|amount_needed
@@ -4914,6 +4920,8 @@ id|reiserfs_debug
 (paren
 id|s
 comma
+id|REISERFS_DEBUG_CODE
+comma
 l_string|&quot;reiserquota: freeing (failed prealloc) %d blocks id=%u&quot;
 comma
 id|amount_needed
@@ -4922,7 +4930,7 @@ id|hint-&gt;prealloc_size
 op_minus
 id|nr_allocated
 op_minus
-id|INODE_INFO
+id|REISERFS_I
 c_func
 (paren
 id|hint-&gt;inode

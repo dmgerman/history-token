@@ -17,16 +17,6 @@ macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* prototypes */
 r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-op_star
-id|unused
-)paren
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 id|__cpu_logical_map
@@ -1961,8 +1951,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|pfault_token
+r_void
+id|pfault_fini
 c_func
 (paren
 r_void
@@ -2033,12 +2023,13 @@ id|S390_lowcore.cpu_data
 )paren
 suffix:semicolon
 multiline_comment|/* cpu_idle will call schedule for us */
-r_return
 id|cpu_idle
 c_func
 (paren
-l_int|NULL
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|smp_create_idle
@@ -2089,6 +2080,18 @@ c_func
 id|p
 )paren
 )paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|init_mm.mm_count
+)paren
+suffix:semicolon
+id|p-&gt;active_mm
+op_assign
+op_amp
+id|init_mm
 suffix:semicolon
 id|current_set
 (braket
@@ -2656,6 +2659,14 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PFAULT
+multiline_comment|/* Disable pfault pseudo page faults on this cpu. */
+id|pfault_fini
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* disable all external interrupts */
 id|cr_parms.start_ctl
 op_assign

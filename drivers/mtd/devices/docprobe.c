@@ -2,7 +2,7 @@ multiline_comment|/* Linux driver for Disk-On-Chip devices&t;&t;&t;*/
 multiline_comment|/* Probe routines common to all DoC devices&t;&t;&t;*/
 multiline_comment|/* (C) 1999 Machine Vision Holdings, Inc.&t;&t;&t;*/
 multiline_comment|/* (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&t;&t;*/
-multiline_comment|/* $Id: docprobe.c,v 1.43 2004/11/16 18:29:01 dwmw2 Exp $&t;*/
+multiline_comment|/* $Id: docprobe.c,v 1.44 2005/01/05 12:40:36 dwmw2 Exp $&t;*/
 multiline_comment|/* DOC_PASSIVE_PROBE:&n;   In order to ensure that the BIOS checksum is correct at boot time, and &n;   hence that the onboard BIOS extension gets executed, the DiskOnChip &n;   goes into reset mode when it is read sequentially: all registers &n;   return 0xff until the chip is woken up again by writing to the &n;   DOCControl register. &n;&n;   Unfortunately, this means that the probe for the DiskOnChip is unsafe, &n;   because one of the first things it does is write to where it thinks &n;   the DOCControl register should be - which may well be shared memory &n;   for another device. I&squot;ve had machines which lock up when this is &n;   attempted. Hence the possibility to do a passive probe, which will fail &n;   to detect a chip in reset mode, but is at least guaranteed not to lock&n;   the machine.&n;&n;   If you have this problem, uncomment the following line:&n;#define DOC_PASSIVE_PROBE&n;*/
 multiline_comment|/* DOC_SINGLE_DRIVER:&n;   Millennium driver has been merged into DOC2000 driver.&n;&n;   The old Millennium-only driver has been retained just in case there&n;   are problems with the new code. If the combined driver doesn&squot;t work&n;   for you, you can try the old one by undefining DOC_SINGLE_DRIVER &n;   below and also enabling it in your configuration. If this fixes the&n;   problems, please send a report to the MTD mailing list at &n;   &lt;linux-mtd@lists.infradead.org&gt;.&n;*/
 DECL|macro|DOC_SINGLE_DRIVER
@@ -169,8 +169,9 @@ id|__init
 id|doccheck
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|potential
 comma
 r_int
@@ -178,8 +179,9 @@ r_int
 id|physadr
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|window
 op_assign
 id|potential
@@ -732,8 +734,9 @@ r_int
 id|physadr
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 suffix:semicolon
 r_struct
@@ -788,10 +791,6 @@ l_int|NULL
 suffix:semicolon
 id|docptr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -843,10 +842,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|docptr
 )paren
 suffix:semicolon
@@ -894,10 +889,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|docptr
 )paren
 suffix:semicolon
@@ -961,11 +952,6 @@ id|this
 suffix:semicolon
 id|this-&gt;virtadr
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|docptr
 suffix:semicolon
 id|this-&gt;physadr
@@ -1134,10 +1120,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|docptr
 )paren
 suffix:semicolon

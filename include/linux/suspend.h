@@ -1,7 +1,7 @@
 macro_line|#ifndef _LINUX_SWSUSP_H
 DECL|macro|_LINUX_SWSUSP_H
 mdefine_line|#define _LINUX_SWSUSP_H
-macro_line|#ifdef CONFIG_X86
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_FRV)
 macro_line|#include &lt;asm/suspend.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/swap.h&gt;
@@ -63,59 +63,21 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|mark_free_pages
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|zone
+)paren
+suffix:semicolon
 multiline_comment|/* kernel/power/swsusp.c */
 r_extern
 r_int
 id|software_suspend
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
-DECL|function|software_suspend
-r_static
-r_inline
-r_int
-id|software_suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Warning: fake suspend called&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* CONFIG_SOFTWARE_SUSPEND */
-macro_line|#ifdef CONFIG_PM
-r_extern
-r_void
-id|refrigerator
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|freeze_processes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|thaw_processes
 c_func
 (paren
 r_void
@@ -138,20 +100,28 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|function|refrigerator
+DECL|function|software_suspend
 r_static
 r_inline
-r_void
-id|refrigerator
+r_int
+id|software_suspend
 c_func
 (paren
-r_int
-r_int
-id|flag
+r_void
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;Warning: fake suspend called&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 )brace
-macro_line|#endif&t;/* CONFIG_PM */
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void

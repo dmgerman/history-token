@@ -7918,6 +7918,10 @@ l_int|31
 suffix:semicolon
 multiline_comment|/* 2 GB */
 )brace
+id|sb-&gt;s_time_gran
+op_assign
+l_int|100
+suffix:semicolon
 multiline_comment|/* on error free sesinfo and tcon struct if needed */
 r_if
 c_cond

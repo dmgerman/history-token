@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/**&n; *&t;ide_match_hwif&t;-&t;match a PCI IDE against an ide_hwif&n; *&t;@io_base: I/O base of device&n; *&t;@bootable: set if its bootable&n; *&t;@name: name of device&n; *&n; *&t;Match a PCI IDE port against an entry in ide_hwifs[],&n; *&t;based on io_base port if possible. Return the matching hwif,&n; *&t;or a new hwif. If we find an error (clashing, out of devices, etc)&n; *&t;return NULL&n; *&n; *&t;FIXME: we need to handle mmio matches here too&n; */
@@ -1382,6 +1383,30 @@ id|hwif-&gt;hw
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifndef IDE_ARCH_OBSOLETE_INIT
+id|ide_std_init_ports
+c_func
+(paren
+op_amp
+id|hwif-&gt;hw
+comma
+id|base
+comma
+(paren
+id|ctl
+op_or
+l_int|2
+)paren
+)paren
+suffix:semicolon
+id|hwif-&gt;hw.io_ports
+(braket
+id|IDE_IRQ_OFFSET
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
 id|ide_init_hwif_ports
 c_func
 (paren
@@ -1399,6 +1424,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 id|memcpy
 c_func
 (paren

@@ -128,20 +128,6 @@ r_int
 id|blocks
 suffix:semicolon
 multiline_comment|/* number of blocks */
-DECL|member|req
-r_struct
-id|request
-op_star
-id|req
-id|__attribute__
-c_func
-(paren
-(paren
-id|deprecated
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* request structure (use the sg list instead) */
 DECL|member|error
 r_int
 r_int

@@ -2910,7 +2910,7 @@ l_int|6
 op_assign
 id|condition
 suffix:semicolon
-multiline_comment|/* Mask out spurious TF errors due to lazy TF clearing */
+multiline_comment|/*&n;&t; * Single-stepping through TF: make sure we ignore any events in&n;&t; * kernel space (but re-enable TF when returning to user mode).&n;&t; * And if the event was due to a debugger (PT_DTRACE), clear the&n;&t; * TF flag so that register information is correct.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2919,7 +2919,7 @@ op_amp
 id|DR_STEP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The TF error should be masked out only if the current&n;&t;&t; * process is not traced and if the TRAP flag has been set&n;&t;&t; * previously by a tracing process (condition detected by&n;&t;&t; * the PT_DTRACE flag); remember that the i386 TRAP flag&n;&t;&t; * can be modified by the process itself in user mode,&n;&t;&t; * allowing programs to debug themselves without the ptrace()&n;&t;&t; * interface.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We already checked v86 mode above, so we can&n;&t;&t; * check for kernel mode by just checking the CPL&n;&t;&t; * of CS.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2934,35 +2934,27 @@ l_int|0
 r_goto
 id|clear_TF_reenable
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Was the TF flag set by a debugger? If so, clear it now,&n;&t;&t; * so that register information is correct.&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|likely
+c_func
 (paren
 id|tsk-&gt;ptrace
 op_amp
 id|PT_DTRACE
 )paren
+)paren
 (brace
+id|tsk-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_DTRACE
+suffix:semicolon
 id|regs-&gt;eflags
 op_and_assign
 op_complement
 id|TF_MASK
-suffix:semicolon
-id|tsk-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_DTRACE
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tsk-&gt;ptrace
-op_amp
-id|PT_DTRACE
-)paren
-r_goto
-id|clear_TF
 suffix:semicolon
 )brace
 )brace
@@ -3024,8 +3016,6 @@ comma
 id|TIF_SINGLESTEP
 )paren
 suffix:semicolon
-id|clear_TF
-suffix:colon
 id|regs-&gt;eflags
 op_and_assign
 op_complement

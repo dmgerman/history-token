@@ -2326,8 +2326,12 @@ suffix:semicolon
 r_extern
 r_char
 id|__initramfs_start
+(braket
+)braket
 comma
 id|__initramfs_end
+(braket
+)braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;linux/initrd.h&gt;
@@ -2348,13 +2352,10 @@ op_assign
 id|unpack_to_rootfs
 c_func
 (paren
-op_amp
 id|__initramfs_start
 comma
-op_amp
 id|__initramfs_end
 op_minus
-op_amp
 id|__initramfs_start
 comma
 l_int|0

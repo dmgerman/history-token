@@ -62,6 +62,8 @@ suffix:semicolon
 )brace
 DECL|macro|__ARCH_IRQ_STAT
 mdefine_line|#define __ARCH_IRQ_STAT
+DECL|macro|__ARCH_HAS_DO_SOFTIRQ
+mdefine_line|#define __ARCH_HAS_DO_SOFTIRQ
 DECL|macro|HARDIRQ_BITS
 mdefine_line|#define HARDIRQ_BITS&t;8
 r_extern
@@ -74,11 +76,5 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|macro|__ARCH_HAS_DO_SOFTIRQ
-mdefine_line|#define __ARCH_HAS_DO_SOFTIRQ
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(preempt_count() += HARDIRQ_OFFSET);&t;&t;&t;&t;&bslash;&n;} while(0)
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; local_softirq_pending())&t;&t;&t;&bslash;&n;&t;&t;/* Use the async. stack for softirq */&t;&t;&t;&bslash;&n;&t;&t;do_softirq();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

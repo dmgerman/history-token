@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * amd76xrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: amd76xrom.c,v 1.18 2004/11/16 18:29:02 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * amd76xrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: amd76xrom.c,v 1.19 2004/11/28 09:40:39 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

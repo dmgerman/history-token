@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -97,6 +98,11 @@ DECL|macro|CT_TO_SECS
 mdefine_line|#define CT_TO_SECS(x)&t;((x) / HZ)
 DECL|macro|CT_TO_USECS
 mdefine_line|#define CT_TO_USECS(x)&t;(((x) % HZ) * 1000000/HZ)
+r_extern
+r_int
+r_int
+id|total_forks
+suffix:semicolon
 r_extern
 r_int
 id|nr_threads
@@ -708,6 +714,18 @@ r_struct
 id|kioctx
 id|default_kioctx
 suffix:semicolon
+DECL|member|hiwater_rss
+r_int
+r_int
+id|hiwater_rss
+suffix:semicolon
+multiline_comment|/* High-water RSS usage */
+DECL|member|hiwater_vm
+r_int
+r_int
+id|hiwater_vm
+suffix:semicolon
+multiline_comment|/* High-water virtual memory usage */
 )brace
 suffix:semicolon
 DECL|struct|sighand_struct
@@ -745,6 +763,11 @@ DECL|member|live
 id|atomic_t
 id|live
 suffix:semicolon
+DECL|member|wait_chldexit
+id|wait_queue_head_t
+id|wait_chldexit
+suffix:semicolon
+multiline_comment|/* for wait4() */
 multiline_comment|/* current thread group signal load-balancing target: */
 DECL|member|curr_target
 id|task_t
@@ -758,10 +781,6 @@ id|sigpending
 id|shared_pending
 suffix:semicolon
 multiline_comment|/* thread group exit support */
-DECL|member|group_exit
-r_int
-id|group_exit
-suffix:semicolon
 DECL|member|group_exit_code
 r_int
 id|group_exit_code
@@ -782,11 +801,12 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
-multiline_comment|/* 1 if group stopped since last SIGCONT, -1 if SIGCONT since report */
-DECL|member|stop_state
+DECL|member|flags
 r_int
-id|stop_state
+r_int
+id|flags
 suffix:semicolon
+multiline_comment|/* see SIGNAL_* flags below */
 multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|posix_timers
 r_struct
@@ -872,6 +892,15 @@ id|RLIM_NLIMITS
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Bits in flags field of signal_struct.&n; */
+DECL|macro|SIGNAL_STOP_STOPPED
+mdefine_line|#define SIGNAL_STOP_STOPPED&t;0x00000001 /* job control stop in effect */
+DECL|macro|SIGNAL_STOP_DEQUEUED
+mdefine_line|#define SIGNAL_STOP_DEQUEUED&t;0x00000002 /* stop signal dequeued */
+DECL|macro|SIGNAL_STOP_CONTINUED
+mdefine_line|#define SIGNAL_STOP_CONTINUED&t;0x00000004 /* SIGCONT since WCONTINUED reap */
+DECL|macro|SIGNAL_GROUP_EXIT
+mdefine_line|#define SIGNAL_GROUP_EXIT&t;0x00000008 /* group exit in progress */
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
 DECL|macro|MAX_USER_RT_PRIO
 mdefine_line|#define MAX_USER_RT_PRIO&t;100
@@ -1583,11 +1612,6 @@ id|pids
 id|PIDTYPE_MAX
 )braket
 suffix:semicolon
-DECL|member|wait_chldexit
-id|wait_queue_head_t
-id|wait_chldexit
-suffix:semicolon
-multiline_comment|/* for wait4() */
 DECL|member|vfork_done
 r_struct
 id|completion
@@ -1942,6 +1966,37 @@ id|wait_queue_t
 op_star
 id|io_wait
 suffix:semicolon
+multiline_comment|/* i/o counters(bytes read/written, #syscalls */
+DECL|member|rchar
+DECL|member|wchar
+DECL|member|syscr
+DECL|member|syscw
+id|u64
+id|rchar
+comma
+id|wchar
+comma
+id|syscr
+comma
+id|syscw
+suffix:semicolon
+macro_line|#if defined(CONFIG_BSD_PROCESS_ACCT)
+DECL|member|acct_rss_mem1
+id|u64
+id|acct_rss_mem1
+suffix:semicolon
+multiline_comment|/* accumulated rss usage */
+DECL|member|acct_vm_mem1
+id|u64
+id|acct_vm_mem1
+suffix:semicolon
+multiline_comment|/* accumulated virtual memory usage */
+DECL|member|acct_stimexpd
+id|clock_t
+id|acct_stimexpd
+suffix:semicolon
+multiline_comment|/* clock_t-converted stime since last update */
+macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|mempolicy
 r_struct
@@ -2097,6 +2152,22 @@ id|cpumask_t
 id|new_mask
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpus_intersects
+c_func
+(paren
+id|new_mask
+comma
+id|cpu_online_map
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4055,6 +4126,133 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* try_to_freeze&n; *&n; * Checks whether we need to enter the refrigerator&n; * and returns 1 if we did so.&n; */
+macro_line|#ifdef CONFIG_PM
+r_extern
+r_void
+id|refrigerator
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|freeze_processes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|thaw_processes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|try_to_freeze
+r_static
+r_inline
+r_int
+id|try_to_freeze
+c_func
+(paren
+r_int
+r_int
+id|refrigerator_flags
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+id|refrigerator_flags
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|refrigerator
+r_static
+r_inline
+r_void
+id|refrigerator
+c_func
+(paren
+r_int
+r_int
+id|flag
+)paren
+(brace
+)brace
+DECL|function|freeze_processes
+r_static
+r_inline
+r_int
+id|freeze_processes
+c_func
+(paren
+r_void
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|thaw_processes
+r_static
+r_inline
+r_void
+id|thaw_processes
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|try_to_freeze
+r_static
+r_inline
+r_int
+id|try_to_freeze
+c_func
+(paren
+r_int
+r_int
+id|refrigerator_flags
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PM */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

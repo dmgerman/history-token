@@ -24,7 +24,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
@@ -118,16 +117,6 @@ r_char
 id|stab_array
 (braket
 )braket
-suffix:semicolon
-r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-op_star
-id|unused
-)paren
 suffix:semicolon
 r_void
 id|smp_call_function_interrupt
@@ -422,28 +411,6 @@ id|next_jiffy_update_tb
 suffix:semicolon
 )brace
 )brace
-)brace
-DECL|function|smp_local_timer_interrupt
-r_void
-id|smp_local_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|update_process_times
-c_func
-(paren
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|smp_message_recv
 r_void
@@ -1740,12 +1707,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren
-l_int|NULL
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|setup_profiling_timer

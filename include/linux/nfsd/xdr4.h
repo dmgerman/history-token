@@ -7,40 +7,6 @@ DECL|macro|NFSD4_MAX_TAGLEN
 mdefine_line|#define NFSD4_MAX_TAGLEN&t;128
 DECL|macro|XDR_LEN
 mdefine_line|#define XDR_LEN(n)                     (((n) + 3) &amp; ~3)
-DECL|typedef|delegation_zero_t
-r_typedef
-id|u32
-id|delegation_zero_t
-suffix:semicolon
-DECL|typedef|delegation_boot_t
-r_typedef
-id|u32
-id|delegation_boot_t
-suffix:semicolon
-DECL|typedef|delegation_id_t
-r_typedef
-id|u64
-id|delegation_id_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|ds_zero
-id|delegation_zero_t
-id|ds_zero
-suffix:semicolon
-DECL|member|ds_boot
-id|delegation_boot_t
-id|ds_boot
-suffix:semicolon
-DECL|member|ds_id
-id|delegation_id_t
-id|ds_id
-suffix:semicolon
-DECL|typedef|delegation_stateid_t
-)brace
-id|delegation_stateid_t
-suffix:semicolon
 DECL|struct|nfsd4_change_info
 r_struct
 id|nfsd4_change_info
@@ -226,6 +192,16 @@ DECL|macro|cr_specdata1
 mdefine_line|#define cr_specdata1&t;u.dev.specdata1
 DECL|macro|cr_specdata2
 mdefine_line|#define cr_specdata2&t;u.dev.specdata2
+DECL|struct|nfsd4_delegreturn
+r_struct
+id|nfsd4_delegreturn
+(brace
+DECL|member|dr_stateid
+id|stateid_t
+id|dr_stateid
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|nfsd4_getattr
 r_struct
 id|nfsd4_getattr
@@ -546,10 +522,10 @@ id|op_delegate_type
 suffix:semicolon
 multiline_comment|/* request - CLAIM_PREV only */
 DECL|member|op_delegate_stateid
-id|delegation_stateid_t
+id|stateid_t
 id|op_delegate_stateid
 suffix:semicolon
-multiline_comment|/* request - CLAIM_DELEGATE_CUR only */
+multiline_comment|/* request - response */
 DECL|member|op_create
 id|u32
 id|op_create
@@ -1142,6 +1118,11 @@ DECL|member|create
 r_struct
 id|nfsd4_create
 id|create
+suffix:semicolon
+DECL|member|delegreturn
+r_struct
+id|nfsd4_delegreturn
+id|delegreturn
 suffix:semicolon
 DECL|member|getattr
 r_struct
@@ -1808,6 +1789,27 @@ c_func
 r_struct
 id|nfsd4_compoundargs
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfsd4_delegreturn
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
+id|svc_fh
+op_star
+id|current_fh
+comma
+r_struct
+id|nfsd4_delegreturn
+op_star
+id|dr
 )paren
 suffix:semicolon
 macro_line|#endif

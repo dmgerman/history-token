@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.32 2004/11/16 18:29:01 dwmw2 Exp $&n;&n;  This driver provides a method to access memory not used by the kernel&n;  itself (i.e. if the kernel commandline mem=xxx is used). To actually&n;  use slram at least mtdblock or mtdchar is required (for block or&n;  character device access).&n;&n;  Usage:&n;&n;  if compiled as loadable module:&n;    modprobe slram map=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;  if statically linked into the kernel use the following kernel cmd.line&n;    slram=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;&n;  &lt;name&gt;: name of the device that will be listed in /proc/mtd&n;  &lt;start&gt;: start of the memory region, decimal or hex (0xabcdef)&n;  &lt;end/offset&gt;: end of the memory region. It&squot;s possible to use +0x1234&n;                to specify the offset instead of the absolute address&n;    &n;  NOTE:&n;  With slram it&squot;s only possible to map a contigous memory region. Therfore&n;  if there&squot;s a device mapped somewhere in the region specified slram will&n;  fail to load (see kernel log if modprobe fails).&n;&n;  -&n;  &n;  Jochen Schaeuble &lt;psionic@psionic.de&gt;&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.33 2005/01/05 18:05:13 dwmw2 Exp $&n;&n;  This driver provides a method to access memory not used by the kernel&n;  itself (i.e. if the kernel commandline mem=xxx is used). To actually&n;  use slram at least mtdblock or mtdchar is required (for block or&n;  character device access).&n;&n;  Usage:&n;&n;  if compiled as loadable module:&n;    modprobe slram map=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;  if statically linked into the kernel use the following kernel cmd.line&n;    slram=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;&n;  &lt;name&gt;: name of the device that will be listed in /proc/mtd&n;  &lt;start&gt;: start of the memory region, decimal or hex (0xabcdef)&n;  &lt;end/offset&gt;: end of the memory region. It&squot;s possible to use +0x1234&n;                to specify the offset instead of the absolute address&n;    &n;  NOTE:&n;  With slram it&squot;s only possible to map a contigous memory region. Therfore&n;  if there&squot;s a device mapped somewhere in the region specified slram will&n;  fail to load (see kernel log if modprobe fails).&n;&n;  -&n;  &n;  Jochen Schaeuble &lt;psionic@psionic.de&gt;&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -298,10 +298,6 @@ id|slram_priv_t
 op_star
 id|priv
 op_assign
-(paren
-id|slram_priv_t
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 op_star
@@ -373,10 +369,6 @@ id|slram_priv_t
 op_star
 id|priv
 op_assign
-(paren
-id|slram_priv_t
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|memcpy
@@ -431,10 +423,6 @@ id|slram_priv_t
 op_star
 id|priv
 op_assign
-(paren
-id|slram_priv_t
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|memcpy
@@ -610,10 +598,6 @@ id|curmtd
 op_member_access_from_pointer
 id|mtdinfo-&gt;priv
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|kmalloc
 c_func
 (paren

@@ -80,7 +80,6 @@ macro_line|#else
 DECL|macro|synchronize_irq
 macro_line|# define synchronize_irq(irq)&t;barrier()
 macro_line|#endif
-macro_line|#ifdef CONFIG_GENERIC_HARDIRQS
 DECL|macro|nmi_enter
 mdefine_line|#define nmi_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 DECL|macro|nmi_exit
@@ -95,6 +94,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* LINUX_HARDIRQ_H */
 eof

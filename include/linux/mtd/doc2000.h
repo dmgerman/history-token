@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Linux driver for Disk-On-Chip devices&n; *&n; * Copyright (C) 1999 Machine Vision Holdings, Inc.   &n; * Copyright (C) 2001-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Copyright (C) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * Copyright (C) 2002-2003 SnapGear Inc&n; *&n; * $Id: doc2000.h,v 1.23 2004/09/16 23:26:08 gleixner Exp $ &n; *&n; * Released under GPL&n; */
+multiline_comment|/* &n; * Linux driver for Disk-On-Chip devices&n; *&n; * Copyright (C) 1999 Machine Vision Holdings, Inc.   &n; * Copyright (C) 2001-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Copyright (C) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * Copyright (C) 2002-2003 SnapGear Inc&n; *&n; * $Id: doc2000.h,v 1.24 2005/01/05 12:40:38 dwmw2 Exp $ &n; *&n; * Released under GPL&n; */
 macro_line|#ifndef __MTD_DOC2000_H__
 DECL|macro|__MTD_DOC2000_H__
 mdefine_line|#define __MTD_DOC2000_H__
@@ -127,9 +127,9 @@ DECL|macro|DOC_IOREMAP_LEN
 mdefine_line|#define DOC_IOREMAP_LEN 0x4000
 macro_line|#else
 DECL|macro|ReadDOC_
-mdefine_line|#define ReadDOC_(adr, reg)      readb((void __iomem *)(((unsigned long)adr) + (reg)))
+mdefine_line|#define ReadDOC_(adr, reg)      readb((void __iomem *)(adr) + (reg))
 DECL|macro|WriteDOC_
-mdefine_line|#define WriteDOC_(d, adr, reg)  writeb(d, (void __iomem *)(((unsigned long)adr) + (reg)))
+mdefine_line|#define WriteDOC_(d, adr, reg)  writeb(d, (void __iomem *)(adr) + (reg))
 DECL|macro|DOC_IOREMAP_LEN
 mdefine_line|#define DOC_IOREMAP_LEN 0x2000
 macro_line|#endif

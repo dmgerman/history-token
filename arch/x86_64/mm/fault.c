@@ -809,6 +809,16 @@ r_int
 id|sig
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tsk-&gt;pid
+op_eq
+l_int|1
+)paren
+r_return
+l_int|1
+suffix:semicolon
 multiline_comment|/* Warn for strace, but not for gdb */
 r_if
 c_cond
@@ -1900,8 +1910,16 @@ id|SIGSEGV
 id|printk
 c_func
 (paren
+l_string|&quot;%s%s[%d]: segfault at %016lx rip %016lx rsp %016lx error %lx&bslash;n&quot;
+comma
+id|tsk-&gt;pid
+OG
+l_int|1
+ques
+c_cond
 id|KERN_INFO
-l_string|&quot;%s[%d]: segfault at %016lx rip %016lx rsp %016lx error %lx&bslash;n&quot;
+suffix:colon
+id|KERN_EMERG
 comma
 id|tsk-&gt;comm
 comma

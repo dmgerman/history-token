@@ -3120,7 +3120,7 @@ op_amp
 id|rtc_fops
 )brace
 suffix:semicolon
-macro_line|#ifdef RTC_IRQ
+macro_line|#if defined(RTC_IRQ) &amp;&amp; !defined(__sparc__)
 DECL|variable|rtc_int_handler_ptr
 r_static
 id|irqreturn_t

@@ -63,8 +63,9 @@ suffix:semicolon
 DECL|variable|linux_banner
 r_const
 r_char
-op_star
 id|linux_banner
+(braket
+)braket
 op_assign
 l_string|&quot;Linux version &quot;
 id|UTS_RELEASE

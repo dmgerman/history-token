@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -59,12 +60,6 @@ r_void
 op_star
 id|high_memory
 suffix:semicolon
-DECL|variable|highmem_start_page
-r_struct
-id|page
-op_star
-id|highmem_start_page
-suffix:semicolon
 DECL|variable|vmalloc_earlyreserve
 r_int
 r_int
@@ -75,13 +70,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|num_physpages
-)paren
-suffix:semicolon
-DECL|variable|highmem_start_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|highmem_start_page
 )paren
 suffix:semicolon
 DECL|variable|high_memory
@@ -3476,6 +3464,11 @@ comma
 id|end
 )paren
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -3485,11 +3478,12 @@ id|mm-&gt;page_table_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a quick page-table lookup for a single page.&n; * mm-&gt;page_table_lock must be held.&n; */
+r_static
 r_struct
 id|page
 op_star
-DECL|function|follow_page
-id|follow_page
+DECL|function|__follow_page
+id|__follow_page
 c_func
 (paren
 r_struct
@@ -3500,6 +3494,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|read
 comma
 r_int
 id|write
@@ -3737,6 +3734,21 @@ id|pte
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|read
+op_logical_and
+op_logical_neg
+id|pte_read
+c_func
+(paren
+id|pte
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|pfn
 op_assign
 id|pte_pfn
@@ -3805,6 +3817,81 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_struct
+id|page
+op_star
+DECL|function|follow_page
+id|follow_page
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+comma
+r_int
+id|write
+)paren
+(brace
+r_return
+id|__follow_page
+c_func
+(paren
+id|mm
+comma
+id|address
+comma
+multiline_comment|/*read*/
+l_int|0
+comma
+id|write
+)paren
+suffix:semicolon
+)brace
+r_int
+DECL|function|check_user_page_readable
+id|check_user_page_readable
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_return
+id|__follow_page
+c_func
+(paren
+id|mm
+comma
+id|address
+comma
+multiline_comment|/*read*/
+l_int|1
+comma
+multiline_comment|/*write*/
+l_int|0
+)paren
+op_ne
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|variable|check_user_page_readable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|check_user_page_readable
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * Given a physical address, is there a useful struct page pointing to&n; * it?  This may become more complex in the future if we start dealing&n; * with IO-aperture pages for direct-IO.&n; */
 DECL|function|get_page_map
 r_static
@@ -6508,9 +6595,21 @@ c_func
 id|old_page
 )paren
 )paren
+(brace
 op_increment
 id|mm-&gt;rss
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_else
 id|page_remove_rmap
 c_func
@@ -7656,6 +7755,16 @@ suffix:semicolon
 id|mm-&gt;rss
 op_increment
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pte
 op_assign
 id|mk_pte
@@ -7902,7 +8011,7 @@ op_assign
 id|alloc_page_vma
 c_func
 (paren
-id|GFP_HIGHUSER
+id|GFP_HIGHZERO
 comma
 id|vma
 comma
@@ -7917,14 +8026,6 @@ id|page
 )paren
 r_goto
 id|no_mem
-suffix:semicolon
-id|clear_user_highpage
-c_func
-(paren
-id|page
-comma
-id|addr
-)paren
 suffix:semicolon
 id|spin_lock
 c_func
@@ -7981,6 +8082,16 @@ suffix:semicolon
 id|mm-&gt;rss
 op_increment
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|entry
 op_assign
 id|maybe_mkwrite
@@ -8007,7 +8118,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|mark_page_accessed
+id|SetPageReferenced
 c_func
 (paren
 id|page
@@ -8406,6 +8517,16 @@ id|new_page
 )paren
 op_increment
 id|mm-&gt;rss
+suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
 suffix:semicolon
 id|flush_icache_page
 c_func
@@ -9111,7 +9232,7 @@ id|VM_FAULT_OOM
 suffix:semicolon
 )brace
 macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK
-macro_line|#if (PTRS_PER_PGD &gt; 1)
+macro_line|#if (PTRS_PER_PUD &gt; 1)
 multiline_comment|/*&n; * Allocate page upper directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level or three-level page table, this ends up actually being&n; * entirely optimized away.&n; */
 DECL|function|__pud_alloc
 id|pud_t
@@ -9216,7 +9337,7 @@ id|address
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if (PTRS_PER_PUD &gt; 1)
+macro_line|#if (PTRS_PER_PMD &gt; 1)
 multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level page table, this ends up actually being entirely&n; * optimized away.&n; */
 DECL|function|__pmd_alloc
 id|pmd_t
@@ -9758,7 +9879,53 @@ c_func
 id|vmalloc_to_pfn
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_GATE_AREA)
+multiline_comment|/*&n; * update_mem_hiwater&n; *&t;- update per process rss and vm high water data&n; */
+DECL|function|update_mem_hiwater
+r_void
+id|update_mem_hiwater
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|tsk
+op_assign
+id|current
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;mm
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tsk-&gt;mm-&gt;hiwater_rss
+OL
+id|tsk-&gt;mm-&gt;rss
+)paren
+id|tsk-&gt;mm-&gt;hiwater_rss
+op_assign
+id|tsk-&gt;mm-&gt;rss
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;mm-&gt;hiwater_vm
+OL
+id|tsk-&gt;mm-&gt;total_vm
+)paren
+id|tsk-&gt;mm-&gt;hiwater_vm
+op_assign
+id|tsk-&gt;mm-&gt;total_vm
+suffix:semicolon
+)brace
+)brace
+macro_line|#if !defined(__HAVE_ARCH_GATE_AREA)
 macro_line|#if defined(AT_SYSINFO_EHDR)
 DECL|variable|gate_vma
 r_struct
@@ -9831,16 +9998,11 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|in_gate_area
+DECL|function|in_gate_area_no_task
 r_int
-id|in_gate_area
+id|in_gate_area_no_task
 c_func
 (paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
 r_int
 r_int
 id|addr
@@ -9870,5 +10032,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif&t;/* __HAVE_ARCH_GATE_AREA */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_fs.c ($Revision: 1.10 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to procfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_fs.c ($Revision: 1.13 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to procfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|VERSION_QETH_PROC_C
 op_assign
-l_string|&quot;$Revision: 1.10 $&quot;
+l_string|&quot;$Revision: 1.13 $&quot;
 suffix:semicolon
 multiline_comment|/***** /proc/qeth *****/
 DECL|macro|QETH_PROCFILE_NAME
@@ -486,7 +486,11 @@ id|card
 comma
 id|card-&gt;info.chpid
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|qeth_get_cardname_short
 c_func
@@ -878,7 +882,11 @@ c_func
 id|card
 )paren
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 id|seq_printf

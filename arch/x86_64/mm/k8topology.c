@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * AMD K8 NUMA support.&n; * Discover the memory map and associated nodes.&n; * &n; * Doesn&squot;t use the ACPI SRAT table because it has a questionable license.&n; * Instead the northbridge registers are read directly. &n; * XXX in 2.5 we could use the generic SRAT code&n; * &n; * Copyright 2002,2003 Andi Kleen, SuSE Labs.&n; */
+multiline_comment|/* &n; * AMD K8 NUMA support.&n; * Discover the memory map and associated nodes.&n; * &n; * This version reads it directly from the K8 northbridge.&n; * &n; * Copyright 2002,2003 Andi Kleen, SuSE Labs.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -137,7 +137,7 @@ r_struct
 id|node
 id|nodes
 (braket
-id|MAXNODE
+l_int|8
 )braket
 suffix:semicolon
 r_int
@@ -683,7 +683,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAXNODE
+l_int|8
 suffix:semicolon
 id|i
 op_increment

@@ -595,6 +595,9 @@ suffix:semicolon
 id|update_process_times
 c_func
 (paren
+id|CHOOSE_MODE
+c_func
+(paren
 id|user_context
 c_func
 (paren
@@ -603,6 +606,13 @@ c_func
 (paren
 id|regs
 )paren
+)paren
+comma
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|skas.is_user
 )paren
 )paren
 suffix:semicolon

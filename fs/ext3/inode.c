@@ -172,6 +172,7 @@ comma
 l_string|&quot;call journal_forget&quot;
 )paren
 suffix:semicolon
+r_return
 id|ext3_journal_forget
 c_func
 (paren
@@ -2055,7 +2056,7 @@ multiline_comment|/* Writer: end */
 multiline_comment|/* We are done with atomic stuff, now do the rest of housekeeping */
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_mark_inode_dirty
 c_func
@@ -3727,7 +3728,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|ext3_journal_dirty_data
 id|ext3_journal_dirty_data
@@ -8032,7 +8032,7 @@ id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_mark_inode_dirty
 c_func
@@ -8362,7 +8362,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * ext3_get_inode_loc returns with an extra refcount against the inode&squot;s&n; * underlying buffer_head on success.  If `in_mem&squot; is false then we&squot;re purely&n; * trying to determine the inode&squot;s location on-disk and no read need be&n; * performed.&n; */
 DECL|function|ext3_get_inode_loc
-r_static
 r_int
 id|ext3_get_inode_loc
 c_func
@@ -9311,6 +9310,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|EXT3_INODE_SIZE
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+OG
+id|EXT3_GOOD_OLD_INODE_SIZE
+)paren
+id|ei-&gt;i_extra_isize
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|raw_inode-&gt;i_extra_isize
+)paren
+suffix:semicolon
+r_else
+id|ei-&gt;i_extra_isize
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|S_ISREG
 c_func
 (paren
@@ -10035,6 +10058,25 @@ id|ei-&gt;i_data
 (braket
 id|block
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|EXT3_INODE_SIZE
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+OG
+id|EXT3_GOOD_OLD_INODE_SIZE
+)paren
+id|raw_inode-&gt;i_extra_isize
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|ei-&gt;i_extra_isize
+)paren
 suffix:semicolon
 id|BUFFER_TRACE
 c_func

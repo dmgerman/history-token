@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -197,10 +198,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
 id|sb1250_setup
 c_func
 (paren

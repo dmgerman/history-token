@@ -737,11 +737,14 @@ suffix:semicolon
 DECL|function|next_entry
 r_static
 r_inline
-r_void
-op_star
+r_int
 id|next_entry
 c_func
 (paren
+r_void
+op_star
+id|buf
+comma
 r_struct
 id|policy_file
 op_star
@@ -751,10 +754,6 @@ r_int
 id|bytes
 )paren
 (brace
-r_void
-op_star
-id|buf
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -763,11 +762,18 @@ OG
 id|fp-&gt;len
 )paren
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
+id|memcpy
+c_func
+(paren
 id|buf
-op_assign
+comma
 id|fp-&gt;data
+comma
+id|bytes
+)paren
 suffix:semicolon
 id|fp-&gt;data
 op_add_assign
@@ -778,7 +784,7 @@ op_sub_assign
 id|bytes
 suffix:semicolon
 r_return
-id|buf
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* _SS_POLICYDB_H_ */

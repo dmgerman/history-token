@@ -552,8 +552,6 @@ op_eq
 id|ignored_task
 op_logical_or
 id|p-&gt;exit_state
-op_ge
-id|EXIT_ZOMBIE
 op_logical_or
 id|p-&gt;real_parent-&gt;pid
 op_eq
@@ -1764,11 +1762,9 @@ id|exit_fs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Turn us into a lazy TLB process if we&n; * aren&squot;t already..&n; */
-DECL|function|__exit_mm
-r_static
-r_inline
+DECL|function|exit_mm
 r_void
-id|__exit_mm
+id|exit_mm
 c_func
 (paren
 r_struct
@@ -1921,24 +1917,6 @@ id|mm
 )paren
 suffix:semicolon
 )brace
-DECL|function|exit_mm
-r_void
-id|exit_mm
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-id|__exit_mm
-c_func
-(paren
-id|tsk
-)paren
-suffix:semicolon
-)brace
 DECL|function|choose_new_parent
 r_static
 r_inline
@@ -1966,10 +1944,6 @@ c_func
 id|p
 op_eq
 id|reaper
-op_logical_or
-id|reaper-&gt;state
-op_ge
-id|EXIT_ZOMBIE
 op_logical_or
 id|reaper-&gt;exit_state
 op_ge
@@ -2303,8 +2277,6 @@ r_while
 c_loop
 (paren
 id|reaper-&gt;exit_state
-op_ge
-id|EXIT_ZOMBIE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * There are only two places where our children can be:&n;&t; *&n;&t; * - in our child list&n;&t; * - in our ptraced child list&n;&t; *&n;&t; * Search them and reparent children.&n;&t; */
@@ -2532,7 +2504,11 @@ id|tsk
 )paren
 op_logical_and
 op_logical_neg
-id|tsk-&gt;signal-&gt;group_exit
+(paren
+id|tsk-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
+)paren
 op_logical_and
 op_logical_neg
 id|thread_group_empty
@@ -3118,6 +3094,16 @@ id|SIGTRAP
 )paren
 suffix:semicolon
 )brace
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|group_dead
 op_assign
 id|atomic_dec_and_test
@@ -3138,7 +3124,7 @@ c_func
 id|code
 )paren
 suffix:semicolon
-id|__exit_mm
+id|exit_mm
 c_func
 (paren
 id|tsk
@@ -3419,7 +3405,9 @@ multiline_comment|/* core dumps don&squot;t get here */
 r_if
 c_cond
 (paren
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 id|exit_code
 op_assign
@@ -3470,7 +3458,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sig-&gt;group_exit
+id|sig-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 multiline_comment|/* Another thread got here before we took the lock.  */
 id|exit_code
@@ -3479,9 +3469,9 @@ id|sig-&gt;group_exit_code
 suffix:semicolon
 r_else
 (brace
-id|sig-&gt;group_exit
+id|sig-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_GROUP_EXIT
 suffix:semicolon
 id|sig-&gt;group_exit_code
 op_assign
@@ -4234,7 +4224,11 @@ l_int|0
 suffix:semicolon
 id|status
 op_assign
-id|p-&gt;signal-&gt;group_exit
+(paren
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
+)paren
 ques
 c_cond
 id|p-&gt;signal-&gt;group_exit_code
@@ -4734,8 +4728,6 @@ id|unlikely
 c_func
 (paren
 id|p-&gt;exit_state
-op_ge
-id|EXIT_ZOMBIE
 )paren
 )paren
 (brace
@@ -5058,9 +5050,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;signal-&gt;stop_state
-op_ge
-l_int|0
+op_logical_neg
+(paren
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_STOP_CONTINUED
+)paren
 )paren
 r_return
 l_int|0
@@ -5072,15 +5067,18 @@ op_amp
 id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
+multiline_comment|/* Re-check with the lock held.  */
 r_if
 c_cond
 (paren
-id|p-&gt;signal-&gt;stop_state
-op_ge
-l_int|0
+op_logical_neg
+(paren
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_STOP_CONTINUED
+)paren
 )paren
 (brace
-multiline_comment|/* Re-check with the lock held.  */
 id|spin_unlock_irq
 c_func
 (paren
@@ -5098,9 +5096,10 @@ c_cond
 op_logical_neg
 id|noreap
 )paren
-id|p-&gt;signal-&gt;stop_state
-op_assign
-l_int|0
+id|p-&gt;signal-&gt;flags
+op_and_assign
+op_complement
+id|SIGNAL_STOP_CONTINUED
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -5324,7 +5323,7 @@ id|add_wait_queue
 c_func
 (paren
 op_amp
-id|current-&gt;wait_chldexit
+id|current-&gt;signal-&gt;wait_chldexit
 comma
 op_amp
 id|wait
@@ -5803,7 +5802,7 @@ id|remove_wait_queue
 c_func
 (paren
 op_amp
-id|current-&gt;wait_chldexit
+id|current-&gt;signal-&gt;wait_chldexit
 comma
 op_amp
 id|wait

@@ -4815,7 +4815,11 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -5014,7 +5018,11 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -6301,7 +6309,11 @@ op_increment
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -6789,7 +6801,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Like most other Unix systems, set the ctime for inodes on a&n;&t; * rename.&n;&t; */
 id|old_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|old_inode-&gt;i_sb
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -6885,7 +6901,11 @@ op_decrement
 suffix:semicolon
 id|new_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|new_inode-&gt;i_sb
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -6898,7 +6918,11 @@ id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|old_dir-&gt;i_sb
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func

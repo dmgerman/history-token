@@ -22,16 +22,19 @@ r_void
 suffix:semicolon
 multiline_comment|/* Stuff from the get device id command. */
 DECL|variable|mfg_id
+r_static
 r_int
 r_int
 id|mfg_id
 suffix:semicolon
 DECL|variable|prod_id
+r_static
 r_int
 r_int
 id|prod_id
 suffix:semicolon
 DECL|variable|capabilities
+r_static
 r_int
 r_char
 id|capabilities

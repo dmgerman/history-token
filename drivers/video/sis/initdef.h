@@ -1,6 +1,6 @@
 multiline_comment|/* $XFree86$ */
 multiline_comment|/* $XdotOrg$ */
-multiline_comment|/*&n; * Global definitions for init.c and init301.c&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESSED OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
+multiline_comment|/*&n; * Global definitions for init.c and init301.c&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
 macro_line|#ifndef _INITDEF_
 DECL|macro|_INITDEF_
 mdefine_line|#define _INITDEF_
@@ -53,6 +53,8 @@ DECL|macro|VB_SIS302ELV
 mdefine_line|#define VB_SIS302ELV&t;&t;0x0020
 DECL|macro|VB_SIS301C
 mdefine_line|#define VB_SIS301C              0x0040
+DECL|macro|VB_UMC
+mdefine_line|#define VB_UMC&t;&t;&t;0x4000
 DECL|macro|VB_NoLCD
 mdefine_line|#define VB_NoLCD        &t;0x8000
 DECL|macro|VB_SIS301BLV302BLV
@@ -67,6 +69,12 @@ DECL|macro|VB_SISTMDS
 mdefine_line|#define VB_SISTMDS&t;&t;(VB_SIS301 | VB_SIS301B302B)
 DECL|macro|VB_SISLVDS
 mdefine_line|#define VB_SISLVDS&t;&t;VB_SIS301LV302LV
+DECL|macro|VB_SISLCDA
+mdefine_line|#define VB_SISLCDA&t;&t;(VB_SIS302B|VB_SIS301C|VB_SIS301LV|VB_SIS302LV|VB_SIS302ELV)
+DECL|macro|VB_SISYPBPR
+mdefine_line|#define VB_SISYPBPR&t;&t;(VB_SIS301C|VB_SIS301LV|VB_SIS302LV|VB_SIS302ELV)
+DECL|macro|VB_SISHIVISION
+mdefine_line|#define VB_SISHIVISION&t;&t;(VB_SIS301|VB_SIS301B|VB_SIS302B)
 multiline_comment|/* VBInfo */
 DECL|macro|SetSimuScanMode
 mdefine_line|#define SetSimuScanMode         0x0001   /* CR 30 */
@@ -134,8 +142,8 @@ DECL|macro|Mode24Bpp
 mdefine_line|#define Mode24Bpp               0x06
 DECL|macro|Mode32Bpp
 mdefine_line|#define Mode32Bpp               0x07
-DECL|macro|ModeInfoFlag
-mdefine_line|#define ModeInfoFlag            0x07
+DECL|macro|ModeTypeMask
+mdefine_line|#define ModeTypeMask            0x07
 DECL|macro|IsTextMode
 mdefine_line|#define IsTextMode              0x07
 DECL|macro|DACInfoFlag
@@ -156,7 +164,7 @@ mdefine_line|#define HalfDCLK                0x1000
 DECL|macro|NoSupportSimuTV
 mdefine_line|#define NoSupportSimuTV         0x2000
 DECL|macro|NoSupportLCDScale
-mdefine_line|#define NoSupportLCDScale&t;0x4000 /* TMDS: No scaling possible (no matter what panel) */
+mdefine_line|#define NoSupportLCDScale&t;0x4000 /* SiS bridge: No scaling possible (no matter what panel) */
 DECL|macro|DoubleScanMode
 mdefine_line|#define DoubleScanMode          0x8000
 multiline_comment|/* Infoflag */
@@ -441,13 +449,13 @@ mdefine_line|#define Panel_1280x768          0x0a    /* 30xB/C and LVDS only (BI
 DECL|macro|Panel_1600x1200
 mdefine_line|#define Panel_1600x1200         0x0b
 DECL|macro|Panel_1280x800
-mdefine_line|#define Panel_1280x800&t;&t;0x0c    /* 661etc  */
+mdefine_line|#define Panel_1280x800&t;&t;0x0c    /* 661etc (TMDS) */
 DECL|macro|Panel_1680x1050
 mdefine_line|#define Panel_1680x1050         0x0d    /* 661etc  */
 DECL|macro|Panel_1280x720
 mdefine_line|#define Panel_1280x720&t;&t;0x0e    /* 661etc  */
 DECL|macro|Panel_Custom
-mdefine_line|#define Panel_Custom&t;&t;0x0f&t;/* MUST BE 0x0f (for DVI DDC detection */
+mdefine_line|#define Panel_Custom&t;&t;0x0f&t;/* MUST BE 0x0f (for DVI DDC detection) */
 DECL|macro|Panel_320x480
 mdefine_line|#define Panel_320x480           0x10    /* SiS 550 fstn - TW: This is fake, can be any */
 DECL|macro|Panel_Barco1366
@@ -461,7 +469,9 @@ mdefine_line|#define Panel_640x480_3&t;&t;0x14    /* SiS 550 */
 DECL|macro|Panel_1280x768_2
 mdefine_line|#define Panel_1280x768_2        0x15&t;/* 30xLV */
 DECL|macro|Panel_1280x768_3
-mdefine_line|#define Panel_1280x768_3        0x16    /* 30xLV */
+mdefine_line|#define Panel_1280x768_3        0x16    /* (unused) */
+DECL|macro|Panel_1280x800_2
+mdefine_line|#define Panel_1280x800_2&t;0x17    /* 30xLV */
 multiline_comment|/* Index in ModeResInfo table */
 DECL|macro|SIS_RI_320x200
 mdefine_line|#define SIS_RI_320x200    0
@@ -529,6 +539,8 @@ DECL|macro|SIS_RI_1920x1080
 mdefine_line|#define SIS_RI_1920x1080 31
 DECL|macro|SIS_RI_960x540
 mdefine_line|#define SIS_RI_960x540   32
+DECL|macro|SIS_RI_960x600
+mdefine_line|#define SIS_RI_960x600   33
 multiline_comment|/* CR5F */
 DECL|macro|IsM650
 mdefine_line|#define IsM650                  0x80
@@ -573,7 +585,7 @@ mdefine_line|#define VCLK100_300             0x43   /* Index in VCLKData table (
 DECL|macro|VCLK34_300
 mdefine_line|#define VCLK34_300              0x3d   /* Index in VCLKData table (300) */
 DECL|macro|VCLK_CUSTOM_300
-mdefine_line|#define VCLK_CUSTOM_300&t;&t;0x46
+mdefine_line|#define VCLK_CUSTOM_300&t;&t;0x47
 DECL|macro|VCLK65_315
 mdefine_line|#define VCLK65_315              0x0b   /* Index in (VB)VCLKData table (315) */
 DECL|macro|VCLK108_2_315
@@ -590,10 +602,8 @@ DECL|macro|VCLK34_315
 mdefine_line|#define VCLK34_315              0x55
 DECL|macro|VCLK68_315
 mdefine_line|#define VCLK68_315&t;&t;0x0d
-DECL|macro|VCLK69_315
-mdefine_line|#define VCLK69_315&t;&t;0x5c   /* deprecated ! Index in VBVCLKData table (315) */
-DECL|macro|VCLK83_315
-mdefine_line|#define VCLK83_315&t;&t;0x5c   /* Index in VBVCLKData table (315) */
+DECL|macro|VCLK_1280x800_315_2
+mdefine_line|#define VCLK_1280x800_315_2&t;0x5c   /* Index in VBVCLKData table (315) */
 DECL|macro|VCLK121_315
 mdefine_line|#define VCLK121_315&t;&t;0x5d   /* Index in VBVCLKData table (315) */
 DECL|macro|VCLK_1280x720
@@ -601,7 +611,7 @@ mdefine_line|#define VCLK_1280x720&t;&t;0x5f
 DECL|macro|VCLK_1280x768_2
 mdefine_line|#define VCLK_1280x768_2&t;&t;0x60
 DECL|macro|VCLK_1280x768_3
-mdefine_line|#define VCLK_1280x768_3&t;&t;0x61
+mdefine_line|#define VCLK_1280x768_3&t;&t;0x61   /* (unused?) */
 DECL|macro|VCLK_CUSTOM_315
 mdefine_line|#define VCLK_CUSTOM_315&t;&t;0x62
 DECL|macro|VCLK_1280x720_2
@@ -624,6 +634,8 @@ DECL|macro|VCLK_1152x864
 mdefine_line|#define VCLK_1152x864&t;&t;0x64
 DECL|macro|VCLK_1360x768
 mdefine_line|#define VCLK_1360x768&t;&t;0x58
+DECL|macro|VCLK_1280x800_315
+mdefine_line|#define VCLK_1280x800_315&t;0x6c
 DECL|macro|TVCLKBASE_300
 mdefine_line|#define TVCLKBASE_300&t;&t;0x21   /* Indices on TV clocks in VCLKData table (300) */
 DECL|macro|TVCLKBASE_315

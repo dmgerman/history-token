@@ -55,10 +55,6 @@ id|mach_early_init
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
 multiline_comment|/* The sim85e2 simulator tracks `undefined&squot; values, so to make&n;&t;   debugging easier, we begin by zeroing out all otherwise&n;&t;   undefined registers.  This is not strictly necessary.&n;&n;&t;   The registers we zero are:&n;&t;       Every GPR except:&n;&t;           stack-pointer (r3)&n;&t;&t;   task-pointer (r16)&n;&t;&t;   our return addr (r31)&n;&t;       Every system register (SPR) that we know about except for&n;&t;       the PSW (SPR 5), which we zero except for the&n;&t;       disable-interrupts bit.&n;&t;*/
 multiline_comment|/* GPRs */
 id|asm

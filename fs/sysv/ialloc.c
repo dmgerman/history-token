@@ -840,7 +840,7 @@ id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign

@@ -5506,6 +5506,8 @@ id|reiserfs_debug
 (paren
 id|p_s_sb
 comma
+id|REISERFS_DEBUG_CODE
+comma
 l_string|&quot;reiserquota delete_item(): freeing %u, id=%u type=%c&quot;
 comma
 id|quota_cut_bytes
@@ -5840,6 +5842,8 @@ macro_line|#ifdef REISERQUOTA_DEBUG
 id|reiserfs_debug
 (paren
 id|th-&gt;t_super
+comma
+id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;reiserquota delete_solid_item(): freeing %u id=%u type=%c&quot;
 comma
@@ -7238,6 +7242,8 @@ id|reiserfs_debug
 (paren
 id|p_s_inode-&gt;i_sb
 comma
+id|REISERFS_DEBUG_CODE
+comma
 l_string|&quot;reiserquota cut_from_item(): freeing %u id=%u type=%c&quot;
 comma
 id|quota_cut_bytes
@@ -7789,7 +7795,7 @@ id|p_s_inode-&gt;i_mtime
 op_assign
 id|p_s_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 )brace
 id|reiserfs_update_sd
@@ -7906,7 +7912,7 @@ id|p_s_inode-&gt;i_mtime
 op_assign
 id|p_s_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 )brace
 id|reiserfs_update_sd
@@ -8167,6 +8173,8 @@ id|reiserfs_debug
 (paren
 id|inode-&gt;i_sb
 comma
+id|REISERFS_DEBUG_CODE
+comma
 l_string|&quot;reiserquota paste_into_item(): allocating %u id=%u type=%c&quot;
 comma
 id|n_pasted_size
@@ -8402,6 +8410,8 @@ id|reiserfs_debug
 (paren
 id|inode-&gt;i_sb
 comma
+id|REISERFS_DEBUG_CODE
+comma
 l_string|&quot;reiserquota paste_into_item(): freeing %u id=%u type=%c&quot;
 comma
 id|n_pasted_size
@@ -8546,6 +8556,8 @@ macro_line|#ifdef REISERQUOTA_DEBUG
 id|reiserfs_debug
 (paren
 id|inode-&gt;i_sb
+comma
+id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;reiserquota insert_item(): allocating %u id=%u type=%c&quot;
 comma
@@ -8778,6 +8790,8 @@ macro_line|#ifdef REISERQUOTA_DEBUG
 id|reiserfs_debug
 (paren
 id|th-&gt;t_super
+comma
+id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;reiserquota insert_item(): freeing %u id=%u type=%c&quot;
 comma

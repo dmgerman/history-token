@@ -704,15 +704,15 @@ DECL|macro|CPU_MASK_LAST_WORD
 mdefine_line|#define CPU_MASK_LAST_WORD BITMAP_LAST_WORD_MASK(NR_CPUS)
 macro_line|#if NR_CPUS &lt;= BITS_PER_LONG
 DECL|macro|CPU_MASK_ALL
-mdefine_line|#define CPU_MASK_ALL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[BITS_TO_LONGS(NR_CPUS)-1] = CPU_MASK_LAST_WORD&t;&t;&t;&bslash;&n;} })
+mdefine_line|#define CPU_MASK_ALL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;(cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[BITS_TO_LONGS(NR_CPUS)-1] = CPU_MASK_LAST_WORD&t;&t;&t;&bslash;&n;} }
 macro_line|#else
 DECL|macro|CPU_MASK_ALL
-mdefine_line|#define CPU_MASK_ALL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0 ... BITS_TO_LONGS(NR_CPUS)-2] = ~0UL,&t;&t;&t;&bslash;&n;&t;[BITS_TO_LONGS(NR_CPUS)-1] = CPU_MASK_LAST_WORD&t;&t;&t;&bslash;&n;} })
+mdefine_line|#define CPU_MASK_ALL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;(cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0 ... BITS_TO_LONGS(NR_CPUS)-2] = ~0UL,&t;&t;&t;&bslash;&n;&t;[BITS_TO_LONGS(NR_CPUS)-1] = CPU_MASK_LAST_WORD&t;&t;&t;&bslash;&n;} }
 macro_line|#endif
 DECL|macro|CPU_MASK_NONE
-mdefine_line|#define CPU_MASK_NONE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0 ... BITS_TO_LONGS(NR_CPUS)-1] =  0UL&t;&t;&t;&t;&bslash;&n;} })
+mdefine_line|#define CPU_MASK_NONE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;(cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0 ... BITS_TO_LONGS(NR_CPUS)-1] =  0UL&t;&t;&t;&t;&bslash;&n;} }
 DECL|macro|CPU_MASK_CPU0
-mdefine_line|#define CPU_MASK_CPU0&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0] =  1UL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} })
+mdefine_line|#define CPU_MASK_CPU0&t;&t;&t;&t;&t;&t;&t;&bslash;&n;(cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0] =  1UL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} }
 DECL|macro|cpus_addr
 mdefine_line|#define cpus_addr(src) ((src).bits)
 DECL|macro|cpumask_scnprintf

@@ -1937,7 +1937,6 @@ DECL|function|kill_helper
 id|kill_helper
 c_func
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star
@@ -2040,7 +2039,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Find anything using it, and umm, kill them.  We can&squot;t turn&n;&t;   them into normal connections: if we&squot;ve adjusted SYNs, then&n;&t;   they&squot;ll ackstorm.  So we just drop it.  We used to just&n;&t;   bump module count when a connection existed, but that&n;&t;   forces admins to gen fake RSTs or bounce box, either of&n;&t;   which is just a long-winded way of making things&n;&t;   worse. --RR */
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 id|kill_helper

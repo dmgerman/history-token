@@ -90,10 +90,12 @@ DECL|macro|PT_SHLIB
 mdefine_line|#define PT_SHLIB   5
 DECL|macro|PT_PHDR
 mdefine_line|#define PT_PHDR    6
+DECL|macro|PT_TLS
+mdefine_line|#define PT_TLS     7               /* Thread local storage segment */
 DECL|macro|PT_LOOS
-mdefine_line|#define PT_LOOS&t;   0x60000000
+mdefine_line|#define PT_LOOS    0x60000000      /* OS-specific */
 DECL|macro|PT_HIOS
-mdefine_line|#define PT_HIOS&t;   0x6fffffff
+mdefine_line|#define PT_HIOS    0x6fffffff      /* OS-specific */
 DECL|macro|PT_LOPROC
 mdefine_line|#define PT_LOPROC  0x70000000
 DECL|macro|PT_HIPROC
@@ -176,6 +178,8 @@ mdefine_line|#define EM_CYGNUS_M32R&t;0x9041
 multiline_comment|/*&n; * This is the old interim value for S/390 architecture&n; */
 DECL|macro|EM_S390_OLD
 mdefine_line|#define EM_S390_OLD     0xA390
+DECL|macro|EM_FRV
+mdefine_line|#define EM_FRV&t;&t;0x5441&t;&t;/* Fujitsu FR-V */
 multiline_comment|/* This is the info that is needed to parse the dynamic section of the file */
 DECL|macro|DT_NULL
 mdefine_line|#define DT_NULL&t;&t;0

@@ -3191,28 +3191,6 @@ id|mod
 )paren
 (brace
 )brace
-id|asmlinkage
-r_int
-DECL|function|sys_delete_module
-id|sys_delete_module
-c_func
-(paren
-r_const
-r_char
-id|__user
-op_star
-id|name_user
-comma
-r_int
-r_int
-id|flags
-)paren
-(brace
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_MODULE_UNLOAD */
 macro_line|#ifdef CONFIG_OBSOLETE_MODPARM
 multiline_comment|/* Bounds checking done below */

@@ -2107,6 +2107,25 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ACPI_DEALLOCATE_IRQ
+r_void
+DECL|function|pcibios_disable_device
+id|pcibios_disable_device
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|acpi_pci_irq_disable
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ACPI_DEALLOCATE_IRQ */
 r_void
 DECL|function|pcibios_align_resource
 id|pcibios_align_resource

@@ -138,7 +138,7 @@ id|vm_set
 suffix:semicolon
 DECL|member|prio_tree_node
 r_struct
-id|prio_tree_node
+id|raw_prio_tree_node
 id|prio_tree_node
 suffix:semicolon
 DECL|member|shared
@@ -186,6 +186,13 @@ op_star
 id|vm_private_data
 suffix:semicolon
 multiline_comment|/* was vm_pte (shared mem) */
+macro_line|#ifndef CONFIG_MMU
+DECL|member|vm_usage
+id|atomic_t
+id|vm_usage
+suffix:semicolon
+multiline_comment|/* refcount (VMAs shared if !MMU) */
+macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|vm_policy
 r_struct
@@ -197,6 +204,49 @@ multiline_comment|/* NUMA policy for the VMA */
 macro_line|#endif
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This struct defines the per-mm list of VMAs for uClinux. If CONFIG_MMU is&n; * disabled, then there&squot;s a single shared list of VMAs maintained by the&n; * system, and mm&squot;s subscribe to these individually&n; */
+DECL|struct|vm_list_struct
+r_struct
+id|vm_list_struct
+(brace
+DECL|member|next
+r_struct
+id|vm_list_struct
+op_star
+id|next
+suffix:semicolon
+DECL|member|vma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifndef CONFIG_MMU
+r_extern
+r_struct
+id|rb_root
+id|nommu_vma_tree
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+id|nommu_vma_sem
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|kobjsize
+c_func
+(paren
+r_const
+r_void
+op_star
+id|objp
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * vm_flags..&n; */
 DECL|macro|VM_READ
 mdefine_line|#define VM_READ&t;&t;0x00000001&t;/* currently active flags */
@@ -1870,6 +1920,33 @@ op_star
 id|page
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|do_mremap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|old_len
+comma
+r_int
+r_int
+id|new_len
+comma
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|new_addr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Prototype to add a shrinker callback for ageable caches.&n; * &n; * These functions are passed a count `nr_to_scan&squot; and a gfpmask.  They should&n; * scan `nr_to_scan&squot; objects, attempting to free them.&n; *&n; * The callback must the number of objects which remain in the cache.&n; *&n; * The callback will be passes nr_to_scan == 0 when the VM is querying the&n; * cache size, so a fastpath for that case is appropriate.&n; */
 DECL|typedef|shrinker_t
 r_typedef
@@ -1918,6 +1995,7 @@ id|shrinker
 suffix:semicolon
 multiline_comment|/*&n; * On a two-level or three-level page table, this ends up being trivial. Thus&n; * the inlining and the symmetry break with pte_alloc_map() that does all&n; * of this out-of-line.&n; */
 multiline_comment|/*&n; * The following ifdef needed to get the 4level-fixup.h header to work.&n; * Remove it when 4level-fixup.h has been removed.&n; */
+macro_line|#ifdef CONFIG_MMU
 macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK 
 DECL|function|pud_alloc
 r_static
@@ -2026,6 +2104,7 @@ id|address
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#endif /* CONFIG_MMU */
 r_extern
 r_void
 id|free_area_init
@@ -2629,6 +2708,8 @@ DECL|macro|VM_MAX_READAHEAD
 mdefine_line|#define VM_MAX_READAHEAD&t;128&t;/* kbytes */
 DECL|macro|VM_MIN_READAHEAD
 mdefine_line|#define VM_MIN_READAHEAD&t;16&t;/* kbytes (includes current page) */
+DECL|macro|VM_MAX_CACHE_HIT
+mdefine_line|#define VM_MAX_CACHE_HIT    &t;256&t;/* max pages in a row in cache before&n;&t;&t;&t;&t;&t; * turning readahead off */
 r_int
 id|do_page_cache_readahead
 c_func
@@ -2675,7 +2756,8 @@ r_int
 id|nr_to_read
 )paren
 suffix:semicolon
-r_void
+r_int
+r_int
 id|page_cache_readahead
 c_func
 (paren
@@ -2697,6 +2779,10 @@ comma
 r_int
 r_int
 id|offset
+comma
+r_int
+r_int
+id|size
 )paren
 suffix:semicolon
 r_void
@@ -2922,6 +3008,21 @@ r_int
 id|write
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|check_user_page_readable
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+suffix:semicolon
 r_int
 id|remap_pfn_range
 c_func
@@ -3098,6 +3199,15 @@ id|vma
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* update per process rss and vm hiwater data */
+r_extern
+r_void
+id|update_mem_hiwater
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_DEBUG_PAGEALLOC
 r_static
 r_inline
@@ -3120,7 +3230,6 @@ id|enable
 (brace
 )brace
 macro_line|#endif
-macro_line|#ifndef CONFIG_ARCH_GATE_AREA
 r_extern
 r_struct
 id|vm_area_struct
@@ -3132,6 +3241,16 @@ r_struct
 id|task_struct
 op_star
 id|tsk
+)paren
+suffix:semicolon
+macro_line|#ifdef&t;__HAVE_ARCH_GATE_AREA
+r_int
+id|in_gate_area_no_task
+c_func
+(paren
+r_int
+r_int
+id|addr
 )paren
 suffix:semicolon
 r_int
@@ -3148,7 +3267,19 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#else
+r_int
+id|in_gate_area_no_task
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+DECL|macro|in_gate_area
+mdefine_line|#define in_gate_area(task, addr) ({(void)task; in_gate_area_no_task(addr);})
+macro_line|#endif&t;/* __HAVE_ARCH_GATE_AREA */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MM_H */
 eof

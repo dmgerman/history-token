@@ -207,10 +207,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lpaca-&gt;lppaca.xSharedProc
+id|lpaca-&gt;lppaca.shared_proc
 )paren
 (brace
-id|lpaca-&gt;lppaca.xVirtualDecr
+id|lpaca-&gt;lppaca.virtual_decr
 op_assign
 id|val
 suffix:semicolon

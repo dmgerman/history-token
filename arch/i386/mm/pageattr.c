@@ -559,20 +559,16 @@ id|page
 op_star
 id|kpte_page
 suffix:semicolon
-macro_line|#ifdef CONFIG_HIGHMEM
-r_if
-c_cond
-(paren
-id|page
-op_ge
-id|highmem_start_page
-)paren
-id|BUG
+id|BUG_ON
 c_func
 (paren
+id|PageHighMem
+c_func
+(paren
+id|page
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|address
 op_assign
 (paren

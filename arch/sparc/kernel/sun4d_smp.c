@@ -379,7 +379,6 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;ld [%0], %%g6&bslash;n&bslash;t&quot;
-l_string|&quot;sta %%g6, [%%g0] %1&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -389,11 +388,6 @@ id|current_set
 (braket
 id|cpuid
 )braket
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|ASI_M_VIKING_TMP2
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -487,16 +481,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-op_star
-id|unused
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|init_IRQ
@@ -2232,14 +2216,11 @@ op_star
 id|addr
 )paren
 (brace
-multiline_comment|/* We have a nice Linux current register :) */
 r_int
 id|rd
 op_assign
+op_star
 id|addr
-(braket
-l_int|1
-)braket
 op_amp
 l_int|0x3e000000
 suffix:semicolon
@@ -2248,19 +2229,35 @@ id|addr
 l_int|0
 )braket
 op_assign
-l_int|0x10800006
-suffix:semicolon
-multiline_comment|/* b .+24 */
-id|addr
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0xc0800820
+l_int|0xc0800800
 op_or
 id|rd
 suffix:semicolon
-multiline_comment|/* lda [%g0] ASI_M_VIKING_TMP2, reg */
+multiline_comment|/* lda [%g0] ASI_M_VIKING_TMP1, reg */
+id|addr
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0x81282002
+op_or
+id|rd
+op_or
+(paren
+id|rd
+op_rshift
+l_int|11
+)paren
+suffix:semicolon
+multiline_comment|/* sll reg, 2, reg */
+id|addr
+(braket
+l_int|4
+)braket
+op_assign
+l_int|0x01000000
+suffix:semicolon
+multiline_comment|/* nop */
 )brace
 DECL|function|sun4d_init_smp
 r_void
@@ -2277,13 +2274,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|patchme_store_new_current
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|t_nmi
 (braket
 )braket
@@ -2295,37 +2285,6 @@ comma
 id|linux_trap_ipi15_sun4m
 (braket
 )braket
-suffix:semicolon
-multiline_comment|/* Store current into Linux current register :) */
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;sta %%g6, [%%g0] %0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-id|ASI_M_VIKING_TMP2
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Patch switch_to */
-id|patchme_store_new_current
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-id|patchme_store_new_current
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0x3e000000
-)paren
-op_or
-l_int|0xc0a00820
 suffix:semicolon
 multiline_comment|/* Patch ipi15 trap table */
 id|t_nmi

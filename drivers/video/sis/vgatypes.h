@@ -1,15 +1,12 @@
 multiline_comment|/* $XFree86$ */
 multiline_comment|/* $XdotOrg$ */
-multiline_comment|/*&n; * General type definitions for universal mode switching modules&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESSED OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
+multiline_comment|/*&n; * General type definitions for universal mode switching modules&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
 macro_line|#ifndef _VGATYPES_
 DECL|macro|_VGATYPES_
 mdefine_line|#define _VGATYPES_
-macro_line|#ifdef LINUX_XF86
-macro_line|#include &quot;xf86Version.h&quot;
-macro_line|#include &quot;xf86Pci.h&quot;
-macro_line|#endif
 macro_line|#ifdef LINUX_KERNEL  /* We don&squot;t want the X driver to depend on kernel source */
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
 macro_line|#ifndef FALSE
 DECL|macro|FALSE
@@ -71,17 +68,13 @@ macro_line|#endif
 macro_line|#ifndef BOOLEAN
 DECL|typedef|BOOLEAN
 r_typedef
-id|UCHAR
+r_int
+r_char
 id|BOOLEAN
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef bool
-DECL|typedef|bool
-r_typedef
-id|UCHAR
-r_bool
-suffix:semicolon
-macro_line|#endif
+DECL|macro|SISIOMEMTYPE
+mdefine_line|#define SISIOMEMTYPE
 macro_line|#ifdef LINUX_KERNEL
 DECL|typedef|SISIOADDRESS
 r_typedef
@@ -89,6 +82,13 @@ r_int
 r_int
 id|SISIOADDRESS
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,6,8)
+macro_line|#include &lt;linux/types.h&gt;  /* Need __iomem */
+DECL|macro|SISIOMEMTYPE
+macro_line|#undef SISIOMEMTYPE
+DECL|macro|SISIOMEMTYPE
+mdefine_line|#define SISIOMEMTYPE __iomem
+macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef LINUX_XF86
 macro_line|#if XF86_VERSION_CURRENT &lt; XF86_VERSION_NUMERIC(4,2,0,0,0)
@@ -183,93 +183,6 @@ DECL|enumerator|MAX_SIS_CHIP
 id|MAX_SIS_CHIP
 )brace
 suffix:semicolon
-macro_line|#ifdef LINUX_KERNEL
-DECL|enum|_SIS_LCD_TYPE
-r_enum
-id|_SIS_LCD_TYPE
-(brace
-DECL|enumerator|LCD_INVALID
-id|LCD_INVALID
-op_assign
-l_int|0
-comma
-DECL|enumerator|LCD_800x600
-id|LCD_800x600
-comma
-DECL|enumerator|LCD_1024x768
-id|LCD_1024x768
-comma
-DECL|enumerator|LCD_1280x1024
-id|LCD_1280x1024
-comma
-DECL|enumerator|LCD_1280x960
-id|LCD_1280x960
-comma
-DECL|enumerator|LCD_640x480
-id|LCD_640x480
-comma
-DECL|enumerator|LCD_1600x1200
-id|LCD_1600x1200
-comma
-DECL|enumerator|LCD_1920x1440
-id|LCD_1920x1440
-comma
-DECL|enumerator|LCD_2048x1536
-id|LCD_2048x1536
-comma
-DECL|enumerator|LCD_320x480
-id|LCD_320x480
-comma
-multiline_comment|/* FSTN */
-DECL|enumerator|LCD_1400x1050
-id|LCD_1400x1050
-comma
-DECL|enumerator|LCD_1152x864
-id|LCD_1152x864
-comma
-DECL|enumerator|LCD_1152x768
-id|LCD_1152x768
-comma
-DECL|enumerator|LCD_1280x768
-id|LCD_1280x768
-comma
-DECL|enumerator|LCD_1024x600
-id|LCD_1024x600
-comma
-DECL|enumerator|LCD_640x480_2
-id|LCD_640x480_2
-comma
-multiline_comment|/* DSTN */
-DECL|enumerator|LCD_640x480_3
-id|LCD_640x480_3
-comma
-multiline_comment|/* DSTN */
-DECL|enumerator|LCD_848x480
-id|LCD_848x480
-comma
-DECL|enumerator|LCD_1280x800
-id|LCD_1280x800
-comma
-DECL|enumerator|LCD_1680x1050
-id|LCD_1680x1050
-comma
-DECL|enumerator|LCD_1280x720
-id|LCD_1280x720
-comma
-DECL|enumerator|LCD_CUSTOM
-id|LCD_CUSTOM
-comma
-DECL|enumerator|LCD_UNKNOWN
-id|LCD_UNKNOWN
-)brace
-suffix:semicolon
-DECL|typedef|SIS_LCD_TYPE
-r_typedef
-r_int
-r_int
-id|SIS_LCD_TYPE
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifndef SIS_HW_INFO
 DECL|typedef|SIS_HW_INFO
 DECL|typedef|PSIS_HW_INFO
@@ -280,24 +193,6 @@ id|SIS_HW_INFO
 comma
 op_star
 id|PSIS_HW_INFO
-suffix:semicolon
-DECL|typedef|PSIS_QUERYSPACE
-r_typedef
-id|BOOLEAN
-(paren
-op_star
-id|PSIS_QUERYSPACE
-)paren
-(paren
-id|PSIS_HW_INFO
-comma
-id|ULONG
-comma
-id|ULONG
-comma
-id|ULONG
-op_star
-)paren
 suffix:semicolon
 DECL|struct|_SIS_HW_INFO
 r_struct
@@ -321,8 +216,10 @@ id|BOOLEAN
 id|UseROM
 suffix:semicolon
 multiline_comment|/* Use the ROM image if provided */
+macro_line|#ifdef LINUX_KERNEL
 DECL|member|pjVideoMemoryAddress
 id|UCHAR
+id|SISIOMEMTYPE
 op_star
 id|pjVideoMemoryAddress
 suffix:semicolon
@@ -333,6 +230,7 @@ id|ULONG
 id|ulVideoMemorySize
 suffix:semicolon
 multiline_comment|/* size, in bytes, of the memory on the board */
+macro_line|#endif
 DECL|member|ulIOAddress
 id|SISIOADDRESS
 id|ulIOAddress
@@ -354,14 +252,6 @@ id|BOOLEAN
 id|bIntegratedMMEnabled
 suffix:semicolon
 multiline_comment|/* supporting integration MM enable */
-macro_line|#ifdef LINUX_KERNEL
-DECL|member|ulCRT2LCDType
-id|ULONG
-id|ulCRT2LCDType
-suffix:semicolon
-multiline_comment|/* defined in the data structure type */
-multiline_comment|/* &quot;SIS_LCD_TYPE&quot; */
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif

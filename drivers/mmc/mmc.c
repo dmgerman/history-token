@@ -1024,7 +1024,7 @@ id|ocr
 suffix:semicolon
 )brace
 DECL|macro|UNSTUFF_BITS
-mdefine_line|#define UNSTUFF_BITS(resp,start,size)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;const u32 __mask = (1 &lt;&lt; (size)) - 1;&t;&t;&t;&bslash;&n;&t;&t;const int __off = 3 - ((start) / 32);&t;&t;&t;&bslash;&n;&t;&t;const int __shft = (start) &amp; 31;&t;&t;&t;&bslash;&n;&t;&t;u32 __res;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = resp[__off] &gt;&gt; __shft;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((size) + __shft &gt;= 32)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__res |= resp[__off-1] &lt;&lt; (32 - __shft);&t;&bslash;&n;&t;&t;__res &amp; __mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define UNSTUFF_BITS(resp,start,size)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;const int __size = size;&t;&t;&t;&t;&bslash;&n;&t;&t;const u32 __mask = (__size &lt; 32 ? 1 &lt;&lt; __size : 0) - 1;&t;&bslash;&n;&t;&t;const int __off = 3 - ((start) / 32);&t;&t;&t;&bslash;&n;&t;&t;const int __shft = (start) &amp; 31;&t;&t;&t;&bslash;&n;&t;&t;u32 __res;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = resp[__off] &gt;&gt; __shft;&t;&t;&t;&t;&bslash;&n;&t;&t;if (__size + __shft &gt; 32)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__res |= resp[__off-1] &lt;&lt; ((32 - __shft) % 32);&t;&bslash;&n;&t;&t;__res &amp; __mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * Given the decoded CSD structure, decode the raw CID to our CID structure.&n; */
 DECL|function|mmc_decode_cid
 r_static

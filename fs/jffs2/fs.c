@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.46 2004/07/13 08:56:54 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.51 2004/11/28 12:19:37 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
@@ -1102,7 +1103,7 @@ id|avail
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|D1
+id|D2
 c_func
 (paren
 id|jffs2_dump_block_lists
@@ -2171,7 +2172,7 @@ id|inode-&gt;i_ctime
 op_assign
 id|inode-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ri-&gt;atime
 op_assign
@@ -2290,6 +2291,17 @@ id|c-&gt;flash_size
 op_div
 id|c-&gt;sector_size
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|c-&gt;mtd-&gt;flags
+op_amp
+id|MTD_NO_VIRTBLOCKS
+)paren
+)paren
+(brace
 r_while
 c_loop
 (paren
@@ -2318,6 +2330,7 @@ id|c-&gt;sector_size
 op_lshift_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Size alignment check&n;&t; */
 r_if
@@ -2628,6 +2641,20 @@ c_func
 id|c
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;mtd-&gt;flags
+op_amp
+id|MTD_NO_VIRTBLOCKS
+)paren
+id|vfree
+c_func
+(paren
+id|c-&gt;blocks
+)paren
+suffix:semicolon
+r_else
 id|kfree
 c_func
 (paren
@@ -3114,6 +3141,33 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* add setups for other bizarre flashes here... */
+r_if
+c_cond
+(paren
+id|jffs2_nor_ecc
+c_func
+(paren
+id|c
+)paren
+)paren
+(brace
+id|ret
+op_assign
+id|jffs2_nor_ecc_flash_setup
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -3147,5 +3201,22 @@ id|c
 suffix:semicolon
 )brace
 multiline_comment|/* add cleanups for other bizarre flashes here... */
+r_if
+c_cond
+(paren
+id|jffs2_nor_ecc
+c_func
+(paren
+id|c
+)paren
+)paren
+(brace
+id|jffs2_nor_ecc_flash_cleanup
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+)brace
 )brace
 eof

@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_KMOD
@@ -1316,6 +1317,8 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|macro|EXTRA_STACK_VM_PAGES
+mdefine_line|#define EXTRA_STACK_VM_PAGES&t;20&t;/* random */
 DECL|function|setup_arg_pages
 r_int
 id|setup_arg_pages
@@ -1325,6 +1328,10 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+r_int
+id|stack_top
 comma
 r_int
 id|executable_stack
@@ -1528,15 +1535,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Adjust bprm-&gt;p to point to the end of the strings. */
-id|bprm-&gt;p
-op_assign
-id|PAGE_SIZE
-op_star
-id|i
-op_minus
-id|offset
-suffix:semicolon
 multiline_comment|/* Limit stack size to 1GB */
 id|stack_base
 op_assign
@@ -1569,10 +1567,21 @@ op_assign
 id|PAGE_ALIGN
 c_func
 (paren
-id|STACK_TOP
+id|stack_top
 op_minus
 id|stack_base
 )paren
+suffix:semicolon
+multiline_comment|/* Adjust bprm-&gt;p to point to the end of the strings. */
+id|bprm-&gt;p
+op_assign
+id|stack_base
+op_plus
+id|PAGE_SIZE
+op_star
+id|i
+op_minus
+id|offset
 suffix:semicolon
 id|mm-&gt;arg_start
 op_assign
@@ -1603,21 +1612,23 @@ suffix:semicolon
 macro_line|#else
 id|stack_base
 op_assign
-id|STACK_TOP
+id|stack_top
 op_minus
 id|MAX_ARG_PAGES
 op_star
 id|PAGE_SIZE
 suffix:semicolon
+id|bprm-&gt;p
+op_add_assign
+id|stack_base
+suffix:semicolon
 id|mm-&gt;arg_start
 op_assign
 id|bprm-&gt;p
-op_plus
-id|stack_base
 suffix:semicolon
 id|arg_size
 op_assign
-id|STACK_TOP
+id|stack_top
 op_minus
 (paren
 id|PAGE_MASK
@@ -1630,9 +1641,11 @@ id|mm-&gt;arg_start
 )paren
 suffix:semicolon
 macro_line|#endif
-id|bprm-&gt;p
+id|arg_size
 op_add_assign
-id|stack_base
+id|EXTRA_STACK_VM_PAGES
+op_star
+id|PAGE_SIZE
 suffix:semicolon
 r_if
 c_cond
@@ -1725,34 +1738,20 @@ id|stack_base
 suffix:semicolon
 id|mpnt-&gt;vm_end
 op_assign
-id|PAGE_MASK
-op_amp
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
+id|stack_base
 op_plus
-(paren
-r_int
-r_int
-)paren
-id|bprm-&gt;p
-)paren
+id|arg_size
 suffix:semicolon
 macro_line|#else
-id|mpnt-&gt;vm_start
-op_assign
-id|PAGE_MASK
-op_amp
-(paren
-r_int
-r_int
-)paren
-id|bprm-&gt;p
-suffix:semicolon
 id|mpnt-&gt;vm_end
 op_assign
-id|STACK_TOP
+id|stack_top
+suffix:semicolon
+id|mpnt-&gt;vm_start
+op_assign
+id|mpnt-&gt;vm_end
+op_minus
+id|arg_size
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Adjust stack execute permissions; explicitly enable&n;&t;&t; * for EXSTACK_ENABLE_X, disable for EXSTACK_DISABLE_X&n;&t;&t; * and leave alone (arch default) otherwise. */
@@ -2536,7 +2535,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sig-&gt;group_exit
+id|sig-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Another group action in progress, just&n;&t;&t; * return so that the signal is processed.&n;&t;&t; */
@@ -2566,10 +2567,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|sig-&gt;group_exit
-op_assign
-l_int|1
-suffix:semicolon
 id|zap_other_threads
 c_func
 (paren
@@ -2939,7 +2936,7 @@ id|leader
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now there are really no other threads at all,&n;&t; * so it&squot;s safe to stop telling them to kill themselves.&n;&t; */
-id|sig-&gt;group_exit
+id|sig-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -4934,6 +4931,16 @@ c_func
 id|bprm
 )paren
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -5890,9 +5897,9 @@ op_amp
 id|mm-&gt;core_done
 )paren
 suffix:semicolon
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_GROUP_EXIT
 suffix:semicolon
 id|current-&gt;signal-&gt;group_exit_code
 op_assign

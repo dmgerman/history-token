@@ -2274,8 +2274,6 @@ DECL|macro|__ARCH_WANT_SYS_SGETMASK
 mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
 DECL|macro|__ARCH_WANT_SYS_SIGNAL
 mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
-DECL|macro|__ARCH_WANT_SYS_TIME
-mdefine_line|#define __ARCH_WANT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
 mdefine_line|#define __ARCH_WANT_SYS_UTIME
 DECL|macro|__ARCH_WANT_SYS_WAITPID
@@ -2300,6 +2298,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
 DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
 mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
+DECL|macro|__ARCH_WANT_COMPAT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_COMPAT_SYS_TIME
 macro_line|#endif
 macro_line|#ifndef __KERNEL_SYSCALLS__
 DECL|macro|__syscall

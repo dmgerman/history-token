@@ -19,40 +19,6 @@ r_int
 id|reiserfs_default_io_size
 suffix:semicolon
 multiline_comment|/* default io size devuned in super.c */
-multiline_comment|/* args for the create parameter of reiserfs_get_block */
-DECL|macro|GET_BLOCK_NO_CREATE
-mdefine_line|#define GET_BLOCK_NO_CREATE 0 /* don&squot;t create new blocks or convert tails */
-DECL|macro|GET_BLOCK_CREATE
-mdefine_line|#define GET_BLOCK_CREATE 1    /* add anything you need to find block */
-DECL|macro|GET_BLOCK_NO_HOLE
-mdefine_line|#define GET_BLOCK_NO_HOLE 2   /* return -ENOENT for file holes */
-DECL|macro|GET_BLOCK_READ_DIRECT
-mdefine_line|#define GET_BLOCK_READ_DIRECT 4  /* read the tail if indirect item not found */
-DECL|macro|GET_BLOCK_NO_ISEM
-mdefine_line|#define GET_BLOCK_NO_ISEM     8 /* i_sem is not held, don&squot;t preallocate */
-DECL|macro|GET_BLOCK_NO_DANGLE
-mdefine_line|#define GET_BLOCK_NO_DANGLE   16 /* don&squot;t leave any transactions running */
-r_static
-r_int
-id|reiserfs_get_block
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-id|sector_t
-id|block
-comma
-r_struct
-id|buffer_head
-op_star
-id|bh_result
-comma
-r_int
-id|create
-)paren
-suffix:semicolon
 r_static
 r_int
 id|reiserfs_commit_write
@@ -85,12 +51,17 @@ op_star
 id|inode
 )paren
 (brace
+multiline_comment|/* We need blocks for transaction + (user+group) quota update (possibly delete) */
 r_int
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|2
+op_plus
+l_int|2
+op_star
+id|REISERFS_QUOTA_INIT_BLOCKS
 suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
@@ -100,12 +71,6 @@ id|reiserfs_write_lock
 c_func
 (paren
 id|inode-&gt;i_sb
-)paren
-suffix:semicolon
-id|DQUOT_FREE_INODE
-c_func
-(paren
-id|inode
 )paren
 suffix:semicolon
 multiline_comment|/* The = 0 happens when we abort creating a new inode for some reason like lack of space.. */
@@ -195,6 +160,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* Do quota update inside a transaction for journaled quotas. We must do that&n;&t; * after delete_object so that quota updates go into the same transaction as&n;&t; * stat data deletion */
+id|DQUOT_FREE_INODE
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2245,7 +2217,7 @@ id|th
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* space reserved in transaction batch: &n;        . 3 balancings in direct-&gt;indirect conversion&n;        . 1 block involved into reiserfs_update_sd()&n;       XXX in practically impossible worst case direct2indirect()&n;       can incur (much) more that 3 balancings. */
+multiline_comment|/* space reserved in transaction batch: &n;        . 3 balancings in direct-&gt;indirect conversion&n;        . 1 block involved into reiserfs_update_sd()&n;       XXX in practically impossible worst case direct2indirect()&n;       can incur (much) more than 3 balancings.&n;       quota update for user, group */
 r_int
 id|jbegin_count
 op_assign
@@ -2254,6 +2226,10 @@ op_star
 l_int|3
 op_plus
 l_int|1
+op_plus
+l_int|2
+op_star
+id|REISERFS_QUOTA_TRANS_BLOCKS
 suffix:semicolon
 r_int
 id|version
@@ -7387,6 +7363,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|DQUOT_ALLOC_INODE
+c_func
+(paren
+id|inode
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EDQUOT
+suffix:semicolon
+r_goto
+id|out_end_trans
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|dir
 op_logical_or
@@ -7533,7 +7528,7 @@ id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|inode-&gt;i_size
 op_assign
@@ -8272,7 +8267,15 @@ id|k_objectid
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* dquot_drop must be done outside a transaction */
+multiline_comment|/* Quota change must be inside a transaction for journaling */
+id|DQUOT_FREE_INODE
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|out_end_trans
+suffix:colon
 id|journal_end
 c_func
 (paren
@@ -8283,12 +8286,7 @@ comma
 id|th-&gt;t_blocks_allocated
 )paren
 suffix:semicolon
-id|DQUOT_FREE_INODE
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
+multiline_comment|/* Drop can be outside and it needs more credits so it&squot;s better to have it outside */
 id|DQUOT_DROP
 c_func
 (paren
@@ -12434,6 +12432,27 @@ c_cond
 op_logical_neg
 id|error
 )paren
+(brace
+r_struct
+id|reiserfs_transaction_handle
+id|th
+suffix:semicolon
+multiline_comment|/* (user+group)*(old+new) structure - we count quota info and , inode write (sb, inode) */
+id|journal_begin
+c_func
+(paren
+op_amp
+id|th
+comma
+id|inode-&gt;i_sb
+comma
+l_int|4
+op_star
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+l_int|2
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|DQUOT_TRANSFER
@@ -12450,6 +12469,76 @@ id|EDQUOT
 suffix:colon
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|journal_end
+c_func
+(paren
+op_amp
+id|th
+comma
+id|inode-&gt;i_sb
+comma
+l_int|4
+op_star
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+l_int|2
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+multiline_comment|/* Update corresponding info in inode so that everything is in&n;&t;&t;     * one transaction */
+r_if
+c_cond
+(paren
+id|attr-&gt;ia_valid
+op_amp
+id|ATTR_UID
+)paren
+id|inode-&gt;i_uid
+op_assign
+id|attr-&gt;ia_uid
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|attr-&gt;ia_valid
+op_amp
+id|ATTR_GID
+)paren
+id|inode-&gt;i_gid
+op_assign
+id|attr-&gt;ia_gid
+suffix:semicolon
+id|mark_inode_dirty
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|journal_end
+c_func
+(paren
+op_amp
+id|th
+comma
+id|inode-&gt;i_sb
+comma
+l_int|4
+op_star
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+l_int|2
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

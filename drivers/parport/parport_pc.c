@@ -15245,12 +15245,6 @@ id|dma
 id|PARPORT_PC_MAX_PORTS
 )braket
 suffix:semicolon
-DECL|variable|init_mode
-r_static
-r_char
-op_star
-id|init_mode
-suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -15352,6 +15346,12 @@ l_int|0644
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
+DECL|variable|init_mode
+r_static
+r_char
+op_star
+id|init_mode
+suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -15360,12 +15360,14 @@ comma
 l_string|&quot;Initialise mode for VIA VT8231 port (spp, ps2, epp, ecp or ecpepp)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|init_mode
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.64 2004/11/16 18:29:01 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.66 2005/01/05 18:05:12 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -2276,11 +2276,6 @@ id|DiskOnChip
 op_star
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_struct
@@ -2301,11 +2296,6 @@ id|doc2klist
 )paren
 id|old
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|doc2klist-&gt;priv
 suffix:semicolon
 r_while
@@ -2338,10 +2328,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;virtadr
 )paren
 suffix:semicolon
@@ -2361,11 +2347,6 @@ id|old-&gt;nextdoc
 )paren
 id|old
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|old-&gt;nextdoc-&gt;priv
 suffix:semicolon
 r_else
@@ -2455,10 +2436,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;virtadr
 )paren
 suffix:semicolon
@@ -2602,10 +2579,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;virtadr
 )paren
 suffix:semicolon
@@ -2725,11 +2698,6 @@ id|DiskOnChip
 op_star
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_void
@@ -3500,11 +3468,6 @@ id|DiskOnChip
 op_star
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_int
@@ -4687,11 +4650,6 @@ id|DiskOnChip
 op_star
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_int
@@ -4972,11 +4930,6 @@ id|DiskOnChip
 op_star
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_int
@@ -5503,11 +5456,6 @@ id|DiskOnChip
 op_star
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_int
@@ -5569,11 +5517,6 @@ id|DiskOnChip
 op_star
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|__u32
@@ -5936,11 +5879,6 @@ id|doc2klist
 (brace
 id|this
 op_assign
-(paren
-r_struct
-id|DiskOnChip
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|doc2klist
@@ -5956,10 +5894,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;virtadr
 )paren
 suffix:semicolon

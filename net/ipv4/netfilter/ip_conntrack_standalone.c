@@ -55,7 +55,6 @@ r_int
 id|kill_proto
 c_func
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star
@@ -3502,8 +3501,13 @@ c_func
 l_string|&quot;ip_conntrack: can&squot;t register to sysctl.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
-id|cleanup
+id|cleanup_localinops
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -3519,6 +3523,8 @@ c_func
 id|ip_ct_sysctl_header
 )paren
 suffix:semicolon
+id|cleanup_localinops
+suffix:colon
 macro_line|#endif
 id|nf_unregister_hook
 c_func
@@ -3600,10 +3606,12 @@ suffix:semicolon
 id|cleanup_proc_stat
 suffix:colon
 macro_line|#ifdef CONFIG_PROC_FS
-id|proc_net_remove
+id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;ip_conntrack_stat&quot;
+l_string|&quot;ip_conntrack&quot;
+comma
+id|proc_net_stat
 )paren
 suffix:semicolon
 id|cleanup_proc_exp
@@ -3741,7 +3749,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Remove all contrack entries for this protocol */
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 id|kill_proto
@@ -3873,11 +3881,11 @@ c_func
 id|ip_conntrack_helper_unregister
 )paren
 suffix:semicolon
-DECL|variable|ip_ct_selective_cleanup
+DECL|variable|ip_ct_iterate_cleanup
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 )paren
 suffix:semicolon
 DECL|variable|ip_ct_refresh_acct

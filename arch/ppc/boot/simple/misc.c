@@ -253,7 +253,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_44x
+macro_line|#if defined(CONFIG_44x) &amp;&amp; defined(PPC44x_EMAC0_MR0)
 multiline_comment|/* Reset MAL */
 id|mtdcr
 c_func

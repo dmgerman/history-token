@@ -10,7 +10,7 @@ DECL|macro|VGABASE
 mdefine_line|#define VGABASE&t;&t;(__ISA_IO_base + 0xb8000)
 macro_line|#else
 DECL|macro|VGABASE
-mdefine_line|#define VGABASE&t;&t;((void *)0xffffffff800b8000UL)
+mdefine_line|#define VGABASE&t;&t;((void __iomem *)0xffffffff800b8000UL)
 macro_line|#endif
 DECL|macro|MAX_YPOS
 mdefine_line|#define MAX_YPOS&t;25

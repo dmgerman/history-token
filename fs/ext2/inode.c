@@ -1798,7 +1798,7 @@ suffix:semicolon
 multiline_comment|/* We are done with atomic stuff, now do the rest of housekeeping */
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 multiline_comment|/* had we spliced it onto indirect block? */
 r_if
@@ -1897,7 +1897,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocation strategy is simple: if we have to allocate something, we will&n; * have to go the whole way to leaf. So let&squot;s do it before attaching anything&n; * to tree, set linkage between the newborn blocks, write them if sync is&n; * required, recheck the path, free and repeat if check fails, otherwise&n; * set the last missing link (that will protect us from any truncate-generated&n; * removals - all blocks on the path are immune now) and possibly force the&n; * write on the parent block.&n; * That has a nice additional property: no special recovery from the failed&n; * allocations is needed - we simply release blocks and do not touch anything&n; * reachable from inode.&n; */
 DECL|function|ext2_get_block
-r_static
 r_int
 id|ext2_get_block
 c_func
@@ -3798,7 +3797,7 @@ id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 r_if
 c_cond

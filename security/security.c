@@ -81,7 +81,6 @@ id|call
 suffix:semicolon
 id|call
 op_assign
-op_amp
 id|__security_initcall_start
 suffix:semicolon
 r_while
@@ -89,7 +88,6 @@ c_loop
 (paren
 id|call
 OL
-op_amp
 id|__security_initcall_end
 )paren
 (brace

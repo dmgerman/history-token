@@ -75,6 +75,7 @@ op_mod
 id|MAX_PROBE_HASH
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* get block device names in somewhat random order */
 DECL|function|get_blkdev_list
 r_int
@@ -176,6 +177,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|register_blkdev
 r_int
 id|register_blkdev

@@ -293,7 +293,7 @@ r_int
 id|scale
 comma
 r_int
-id|consider_highmem
+id|flags
 comma
 r_int
 r_int
@@ -304,7 +304,29 @@ r_int
 r_int
 op_star
 id|_hash_mask
+comma
+r_int
+r_int
+id|limit
 )paren
 suffix:semicolon
+DECL|macro|HASH_HIGHMEM
+mdefine_line|#define HASH_HIGHMEM&t;0x00000001&t;/* Consider highmem? */
+DECL|macro|HASH_EARLY
+mdefine_line|#define HASH_EARLY&t;0x00000002&t;/* Allocating during early boot? */
+multiline_comment|/* Only NUMA needs hash distribution.&n; * IA64 is known to have sufficient vmalloc space.&n; */
+macro_line|#if defined(CONFIG_NUMA) &amp;&amp; defined(CONFIG_IA64)
+DECL|macro|HASHDIST_DEFAULT
+mdefine_line|#define HASHDIST_DEFAULT 1
+macro_line|#else
+DECL|macro|HASHDIST_DEFAULT
+mdefine_line|#define HASHDIST_DEFAULT 0
+macro_line|#endif
+r_extern
+r_int
+id|__initdata
+id|hashdist
+suffix:semicolon
+multiline_comment|/* Distribute hashes across NUMA nodes? */
 macro_line|#endif /* _LINUX_BOOTMEM_H */
 eof

@@ -2344,7 +2344,7 @@ id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|memset
 c_func
@@ -2532,6 +2532,38 @@ suffix:semicolon
 id|ei-&gt;i_state
 op_assign
 id|EXT3_STATE_NEW
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|EXT3_INODE_SIZE
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+OG
+id|EXT3_GOOD_OLD_INODE_SIZE
+)paren
+(brace
+id|ei-&gt;i_extra_isize
+op_assign
+r_sizeof
+(paren
+id|__u16
+)paren
+multiline_comment|/* i_extra_isize */
+op_plus
+r_sizeof
+(paren
+id|__u16
+)paren
+suffix:semicolon
+multiline_comment|/* i_pad1 */
+)brace
+r_else
+id|ei-&gt;i_extra_isize
+op_assign
+l_int|0
 suffix:semicolon
 id|ret
 op_assign

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
@@ -8136,15 +8137,7 @@ id|likely
 c_func
 (paren
 op_logical_neg
-(paren
 id|current-&gt;exit_state
-op_amp
-(paren
-id|EXIT_DEAD
-op_or
-id|EXIT_ZOMBIE
-)paren
-)paren
 )paren
 )paren
 (brace
@@ -14441,6 +14434,16 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+r_if
+c_cond
+(paren
+id|ints
+(braket
+id|i
+)braket
+OL
+id|NR_CPUS
+)paren
 id|cpu_set
 c_func
 (paren
@@ -16234,6 +16237,9 @@ op_logical_and
 id|system_state
 op_eq
 id|SYSTEM_RUNNING
+op_logical_and
+op_logical_neg
+id|oops_in_progress
 )paren
 (brace
 r_if

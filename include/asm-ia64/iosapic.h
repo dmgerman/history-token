@@ -227,6 +227,17 @@ r_int
 id|trigger
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_DEALLOCATE_IRQ
+r_extern
+r_void
+id|iosapic_unregister_intr
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|__init
@@ -317,6 +328,8 @@ DECL|macro|iosapic_init
 mdefine_line|#define iosapic_init(address,gsi_base)&t;&t;&t;&t;do { } while (0)
 DECL|macro|iosapic_register_intr
 mdefine_line|#define iosapic_register_intr(gsi,polarity,trigger)&t;&t;(gsi)
+DECL|macro|iosapic_unregister_intr
+mdefine_line|#define iosapic_unregister_intr(irq)&t;&t;&t;&t;do { } while (0)
 DECL|macro|iosapic_override_isa_irq
 mdefine_line|#define iosapic_override_isa_irq(isa_irq,gsi,polarity,trigger)&t;do { } while (0)
 DECL|macro|iosapic_register_platform_intr

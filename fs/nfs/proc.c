@@ -93,7 +93,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: reply getattr %d&bslash;n&quot;
+l_string|&quot;%s: reply getattr: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -136,7 +136,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: reply statfs %d&bslash;n&quot;
+l_string|&quot;%s: reply statfs: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -246,7 +246,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS reply getattr&bslash;n&quot;
+l_string|&quot;NFS reply getattr: %d&bslash;n&quot;
+comma
+id|status
 )paren
 suffix:semicolon
 r_return
@@ -339,7 +341,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS reply setattr&bslash;n&quot;
+l_string|&quot;NFS reply setattr: %d&bslash;n&quot;
+comma
+id|status
 )paren
 suffix:semicolon
 r_return
@@ -866,9 +870,9 @@ op_star
 id|dir
 comma
 r_struct
-id|qstr
+id|dentry
 op_star
-id|name
+id|dentry
 comma
 r_struct
 id|iattr
@@ -904,12 +908,12 @@ comma
 dot
 id|name
 op_assign
-id|name-&gt;name
+id|dentry-&gt;d_name.name
 comma
 dot
 id|len
 op_assign
-id|name-&gt;len
+id|dentry-&gt;d_name.len
 comma
 dot
 id|sattr
@@ -947,7 +951,7 @@ c_func
 (paren
 l_string|&quot;NFS call  create %s&bslash;n&quot;
 comma
-id|name-&gt;name
+id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
 id|status

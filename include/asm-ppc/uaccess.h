@@ -118,11 +118,11 @@ mdefine_line|#define __put_user_asm(x, addr, err, op)&t;&t;&t;&bslash;&n;&t;__as
 DECL|macro|__put_user_asm2
 mdefine_line|#define __put_user_asm2(x, addr, err)&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;stw %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&t;stw %1+1,4(%2)&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;li %0,%3&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;b 3b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,4b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 2b,4b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (x), &quot;b&quot; (addr), &quot;i&quot; (-EFAULT), &quot;0&quot; (err))
 DECL|macro|__get_user_nocheck
-mdefine_line|#define __get_user_nocheck(x, ptr, size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err, __gu_val;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user_size(__gu_val, (ptr), (size), __gu_err);&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_nocheck(x, ptr, size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __gu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user_size(__gu_val, (ptr), (size), __gu_err);&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user64_nocheck
 mdefine_line|#define __get_user64_nocheck(x, ptr, size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long long __gu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user_size64(__gu_val, (ptr), (size), __gu_err);&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user_check
-mdefine_line|#define __get_user_check(x, ptr, size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = -EFAULT, __gu_val = 0;&t;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) __user *__gu_addr = (ptr);&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ, __gu_addr, (size)))&t;&t;&t;&bslash;&n;&t;&t;__get_user_size(__gu_val, __gu_addr, (size), __gu_err);&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_check(x, ptr, size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = -EFAULT;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long  __gu_val = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) __user *__gu_addr = (ptr);&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ, __gu_addr, (size)))&t;&t;&t;&bslash;&n;&t;&t;__get_user_size(__gu_val, __gu_addr, (size), __gu_err);&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user64_check
 mdefine_line|#define __get_user64_check(x, ptr, size)&t;&t;&t;&t;  &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;long __gu_err = -EFAULT;&t;&t;&t;&t;&t;  &bslash;&n;&t;long long __gu_val = 0;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;const __typeof__(*(ptr)) __user *__gu_addr = (ptr);&t;&t;  &bslash;&n;&t;if (access_ok(VERIFY_READ, __gu_addr, (size)))&t;&t;&t;  &bslash;&n;&t;&t;__get_user_size64(__gu_val, __gu_addr, (size), __gu_err); &bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&t;  &bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;})
 r_extern
@@ -208,6 +208,7 @@ id|__copy_tofrom_user
 c_func
 (paren
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -248,6 +249,7 @@ id|__copy_tofrom_user
 c_func
 (paren
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -315,6 +317,7 @@ c_func
 id|to
 comma
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -355,6 +358,7 @@ c_func
 id|to
 comma
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -373,10 +377,88 @@ r_return
 id|n
 suffix:semicolon
 )brace
-DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((void __user *)(to), (from), (size))
-DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((to), (void __user *)(from), (size))
+DECL|function|__copy_from_user
+r_static
+r_inline
+r_int
+r_int
+id|__copy_from_user
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_const
+r_void
+id|__user
+op_star
+id|from
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__copy_tofrom_user
+c_func
+(paren
+(paren
+id|__force
+r_void
+id|__user
+op_star
+)paren
+id|to
+comma
+id|from
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
+DECL|function|__copy_to_user
+r_static
+r_inline
+r_int
+r_int
+id|__copy_to_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|to
+comma
+r_const
+r_void
+op_star
+id|from
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__copy_tofrom_user
+c_func
+(paren
+id|to
+comma
+(paren
+id|__force
+r_void
+id|__user
+op_star
+)paren
+id|from
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
 DECL|macro|__copy_to_user_inatomic
 mdefine_line|#define __copy_to_user_inatomic __copy_to_user
 DECL|macro|__copy_from_user_inatomic

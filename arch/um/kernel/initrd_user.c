@@ -111,6 +111,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|os_close_file
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

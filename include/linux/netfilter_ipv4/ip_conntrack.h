@@ -434,9 +434,9 @@ suffix:semicolon
 multiline_comment|/* get master conntrack via master expectation */
 DECL|macro|master_ct
 mdefine_line|#define master_ct(conntr) (conntr-&gt;master ? conntr-&gt;master-&gt;expectant : NULL)
-multiline_comment|/* Alter reply tuple (maybe alter helper).  If it&squot;s already taken,&n;   return 0 and don&squot;t do alteration. */
+multiline_comment|/* Alter reply tuple (maybe alter helper). */
 r_extern
-r_int
+r_void
 id|ip_conntrack_alter_reply
 c_func
 (paren
@@ -655,19 +655,18 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* Delete all conntracks which match. */
+multiline_comment|/* Iterate over all conntracks: if iter returns true, it&squot;s deleted. */
 r_extern
 r_void
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 r_int
 (paren
 op_star
-id|kill
+id|iter
 )paren
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star

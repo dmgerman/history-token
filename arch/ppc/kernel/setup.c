@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
@@ -2823,10 +2824,6 @@ op_star
 id|cmdline_p
 )paren
 (brace
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
 r_extern
 r_char
 op_star

@@ -714,7 +714,7 @@ id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|inode-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|hpfs_i
 c_func

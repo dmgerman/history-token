@@ -353,16 +353,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|udf_put_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|udf_delete_inode
 c_func
 (paren

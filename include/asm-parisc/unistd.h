@@ -1561,6 +1561,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGNAL
 mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
 DECL|macro|__ARCH_WANT_SYS_TIME
 mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_COMPAT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_COMPAT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
 mdefine_line|#define __ARCH_WANT_SYS_UTIME
 DECL|macro|__ARCH_WANT_SYS_WAITPID

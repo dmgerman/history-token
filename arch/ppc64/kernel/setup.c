@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
@@ -30,7 +31,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
@@ -43,6 +43,9 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -98,10 +101,6 @@ mdefine_line|#define EARLY_DEBUG_INIT() udbg_init_pmac_realmode()
 mdefine_line|#define EARLY_DEBUG_INIT()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { ppc_md.udbg_putc = call_rtas_display_status_delay; } while(0)
 macro_line|#endif
 multiline_comment|/* extern void *stab; */
-r_extern
-id|HTAB
-id|htab_data
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -217,6 +216,19 @@ DECL|variable|boot_dev
 id|dev_t
 id|boot_dev
 suffix:semicolon
+DECL|variable|ppc64_pft_size
+id|u64
+id|ppc64_pft_size
+suffix:semicolon
+DECL|variable|ppc64_debug_switch
+id|u64
+id|ppc64_debug_switch
+suffix:semicolon
+DECL|variable|ppc64_caches
+r_struct
+id|ppc64_caches
+id|ppc64_caches
+suffix:semicolon
 multiline_comment|/*&n; * These are used in binfmt_elf.c to put aux entries on the stack&n; * for each elf executable being started.&n; */
 DECL|variable|dcache_bsize
 r_int
@@ -326,7 +338,7 @@ c_func
 r_void
 )paren
 (brace
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_assign
 id|PPC_DEBUG_DEFAULT
 suffix:semicolon
@@ -1123,7 +1135,7 @@ c_func
 l_string|&quot; -&gt; early_setup()&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fill the default DBG level in naca (do we want to keep&n;&t; * that old mecanism around forever ?)&n;&t; */
+multiline_comment|/*&n;&t; * Fill the default DBG level (do we want to keep&n;&t; * that old mecanism around forever ?)&n;&t; */
 id|ppcdbg_initialize
 c_func
 (paren
@@ -1242,12 +1254,12 @@ l_string|&quot; &lt;- early_setup()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize some remaining members of the naca and systemcfg structures&n; * (at least until we get rid of them completely). This is mostly some&n; * cache informations about the CPU that will be used by cache flush&n; * routines and/or provided to userland&n; */
-DECL|function|initialize_naca
+multiline_comment|/*&n; * Initialize some remaining members of the ppc64_caches and systemcfg structures&n; * (at least until we get rid of them completely). This is mostly some&n; * cache informations about the CPU that will be used by cache flush&n; * routines and/or provided to userland&n; */
+DECL|function|initialize_cache_info
 r_static
 r_void
 id|__init
-id|initialize_naca
+id|initialize_cache_info
 c_func
 (paren
 r_void
@@ -1267,7 +1279,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot; -&gt; initialize_naca()&bslash;n&quot;
+l_string|&quot; -&gt; initialize_cache_info()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1439,15 +1451,19 @@ comma
 id|lsizep
 )paren
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1Size
+id|systemcfg-&gt;dcache_size
+op_assign
+id|ppc64_caches.dsize
 op_assign
 id|size
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dcache_line_size
+op_assign
+id|ppc64_caches.dline_size
 op_assign
 id|lsize
 suffix:semicolon
-id|naca-&gt;dCacheL1LogLineSize
+id|ppc64_caches.log_dline_size
 op_assign
 id|__ilog2
 c_func
@@ -1455,13 +1471,11 @@ c_func
 id|lsize
 )paren
 suffix:semicolon
-id|naca-&gt;dCacheL1LinesPerPage
+id|ppc64_caches.dlines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
 id|lsize
-)paren
 suffix:semicolon
 id|size
 op_assign
@@ -1549,15 +1563,19 @@ comma
 id|lsizep
 )paren
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1Size
+id|systemcfg-&gt;icache_size
+op_assign
+id|ppc64_caches.isize
 op_assign
 id|size
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1LineSize
+id|systemcfg-&gt;icache_line_size
+op_assign
+id|ppc64_caches.iline_size
 op_assign
 id|lsize
 suffix:semicolon
-id|naca-&gt;iCacheL1LogLineSize
+id|ppc64_caches.log_iline_size
 op_assign
 id|__ilog2
 c_func
@@ -1565,13 +1583,11 @@ c_func
 id|lsize
 )paren
 suffix:semicolon
-id|naca-&gt;iCacheL1LinesPerPage
+id|ppc64_caches.ilines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
 id|lsize
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -1603,7 +1619,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot; &lt;- initialize_naca()&bslash;n&quot;
+l_string|&quot; &lt;- initialize_cache_info()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1807,8 +1823,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fill the naca &amp; systemcfg structures with informations&n;&t; * retreived from the device-tree. Need to be called before&n;&t; * finish_device_tree() since the later requires some of the&n;&t; * informations filled up here to properly parse the interrupt&n;&t; * tree.&n;&t; * It also sets up the cache line sizes which allows to call&n;&t; * routines like flush_icache_range (used by the hash init&n;&t; * later on).&n;&t; */
-id|initialize_naca
+multiline_comment|/*&n;&t; * Fill the ppc64_caches &amp; systemcfg structures with informations&n;&t; * retreived from the device-tree. Need to be called before&n;&t; * finish_device_tree() since the later requires some of the&n;&t; * informations filled up here to properly parse the interrupt&n;&t; * tree.&n;&t; * It also sets up the cache line sizes which allows to call&n;&t; * routines like flush_icache_range (used by the hash init&n;&t; * later on).&n;&t; */
+id|initialize_cache_info
 c_func
 (paren
 )paren
@@ -1909,33 +1925,25 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca                          = 0x%p&bslash;n&quot;
+l_string|&quot;ppc64_pft_size                = 0x%lx&bslash;n&quot;
 comma
-id|naca
+id|ppc64_pft_size
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;pftSize                 = 0x%lx&bslash;n&quot;
+l_string|&quot;ppc64_debug_switch            = 0x%lx&bslash;n&quot;
 comma
-id|naca-&gt;pftSize
+id|ppc64_debug_switch
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;debug_switch            = 0x%lx&bslash;n&quot;
+l_string|&quot;ppc64_interrupt_controller    = 0x%ld&bslash;n&quot;
 comma
-id|naca-&gt;debug_switch
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;interrupt_controller    = 0x%ld&bslash;n&quot;
-comma
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 )paren
 suffix:semicolon
 id|printk
@@ -1973,33 +1981,33 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcfg-&gt;dCacheL1LineSize   = 0x%x&bslash;n&quot;
+l_string|&quot;ppc64_caches.dcache_line_size = 0x%x&bslash;n&quot;
 comma
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcfg-&gt;iCacheL1LineSize   = 0x%x&bslash;n&quot;
+l_string|&quot;ppc64_caches.icache_line_size = 0x%x&bslash;n&quot;
 comma
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;htab_data.htab                = 0x%p&bslash;n&quot;
+l_string|&quot;htab_address                  = 0x%p&bslash;n&quot;
 comma
-id|htab_data.htab
+id|htab_address
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;htab_data.num_ptegs           = 0x%lx&bslash;n&quot;
+l_string|&quot;htab_hash_mask                = 0x%lx&bslash;n&quot;
 comma
-id|htab_data.htab_num_ptegs
+id|htab_hash_mask
 )paren
 suffix:semicolon
 id|printk
@@ -3355,10 +3363,6 @@ id|cmdline_p
 )paren
 (brace
 r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
-r_extern
 r_void
 id|do_init_bootmem
 c_func
@@ -3382,11 +3386,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set cache line size based on type of cpu as a default.&n;&t; * Systems with OF can look in the properties on the cpu node(s)&n;&t; * for a possibly more accurate value.&n;&t; */
 id|dcache_bsize
 op_assign
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 suffix:semicolon
 id|icache_bsize
 op_assign
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 suffix:semicolon
 multiline_comment|/* reboot on panic */
 id|panic_timeout
@@ -4045,6 +4049,10 @@ id|__init
 id|generic_find_legacy_serial_ports
 c_func
 (paren
+id|u64
+op_star
+id|physport
+comma
 r_int
 r_int
 op_star
@@ -4095,7 +4103,8 @@ c_func
 l_string|&quot; -&gt; generic_find_legacy_serial_port()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|naca-&gt;serialPortAddr
+op_star
+id|physport
 op_assign
 l_int|0
 suffix:semicolon
@@ -4780,7 +4789,8 @@ op_ne
 l_int|0
 )paren
 (brace
-id|naca-&gt;serialPortAddr
+op_star
+id|physport
 op_assign
 id|io_base
 op_plus

@@ -321,6 +321,22 @@ DECL|macro|PM2F_LINE_DOUBLE
 mdefine_line|#define PM2F_LINE_DOUBLE&t;&t;&t;&t;0x04
 DECL|macro|PM2F_VIDEO_ENABLE
 mdefine_line|#define PM2F_VIDEO_ENABLE&t;&t;&t;&t;0x01
+DECL|macro|PM2F_RD_PIXELFORMAT_SVGA
+mdefine_line|#define PM2F_RD_PIXELFORMAT_SVGA&t;&t;&t;0x01
+DECL|macro|PM2F_RD_PIXELFORMAT_RGB232OFFSET
+mdefine_line|#define PM2F_RD_PIXELFORMAT_RGB232OFFSET&t;&t;0x02
+DECL|macro|PM2F_RD_PIXELFORMAT_RGBA2321
+mdefine_line|#define PM2F_RD_PIXELFORMAT_RGBA2321&t;&t;&t;0x03
+DECL|macro|PM2F_RD_PIXELFORMAT_RGBA5551
+mdefine_line|#define PM2F_RD_PIXELFORMAT_RGBA5551&t;&t;&t;0x04
+DECL|macro|PM2F_RD_PIXELFORMAT_RGBA4444
+mdefine_line|#define PM2F_RD_PIXELFORMAT_RGBA4444&t;&t;&t;0x05
+DECL|macro|PM2F_RD_PIXELFORMAT_RGB565
+mdefine_line|#define PM2F_RD_PIXELFORMAT_RGB565&t;&t;&t;0x06
+DECL|macro|PM2F_RD_PIXELFORMAT_RGBA8888
+mdefine_line|#define PM2F_RD_PIXELFORMAT_RGBA8888&t;&t;&t;0x08
+DECL|macro|PM2F_RD_PIXELFORMAT_RGB888
+mdefine_line|#define PM2F_RD_PIXELFORMAT_RGB888&t;&t;&t;0x09
 DECL|macro|PM2F_RD_GUI_ACTIVE
 mdefine_line|#define PM2F_RD_GUI_ACTIVE&t;&t;&t;&t;0x10
 DECL|macro|PM2F_RD_COLOR_MODE_RGB
@@ -363,6 +379,12 @@ DECL|macro|PM2F_MEM_BANKS_3
 mdefine_line|#define PM2F_MEM_BANKS_3&t;&t;&t;&t;(2L&lt;&lt;29)
 DECL|macro|PM2F_MEM_BANKS_4
 mdefine_line|#define PM2F_MEM_BANKS_4&t;&t;&t;&t;(3L&lt;&lt;29)
+DECL|macro|PM2F_APERTURE_STANDARD
+mdefine_line|#define PM2F_APERTURE_STANDARD&t;&t;&t;&t;0
+DECL|macro|PM2F_APERTURE_BYTESWAP
+mdefine_line|#define PM2F_APERTURE_BYTESWAP&t;&t;&t;&t;1
+DECL|macro|PM2F_APERTURE_HALFWORDSWAP
+mdefine_line|#define PM2F_APERTURE_HALFWORDSWAP&t;&t;&t;2
 r_typedef
 r_enum
 (brace
