@@ -271,12 +271,6 @@ id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* no settable parameters */
-id|hdlc_detach
-c_func
-(paren
-id|hdlc
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|hdlc
@@ -296,16 +290,15 @@ c_cond
 (paren
 id|result
 )paren
-(brace
-id|hdlc-&gt;proto
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
-)brace
+id|hdlc_proto_detach
+c_func
+(paren
+id|hdlc
+)paren
+suffix:semicolon
 id|hdlc-&gt;open
 op_assign
 id|ppp_open
