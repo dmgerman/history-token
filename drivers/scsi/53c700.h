@@ -69,7 +69,7 @@ op_star
 id|host
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|NCR_700_intr
 c_func
 (paren

@@ -1855,7 +1855,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_alloc_sdev - allocate and setup a Scsi_Device&n; *&n; * Description:&n; *     Allocate, initialize for io, and return a pointer to a Scsi_Device.&n; *     Stores the @shost, @channel, @id, and @lun in the Scsi_Device, and&n; *     adds Scsi_Device to the appropriate list.&n; *&n; * Return value:&n; *     Scsi_Device pointer, or NULL on failure.&n; **/
+multiline_comment|/**&n; * scsi_alloc_sdev - allocate and setup a scsi_Device&n; *&n; * Description:&n; *     Allocate, initialize for io, and return a pointer to a scsi_Device.&n; *     Stores the @shost, @channel, @id, and @lun in the scsi_Device, and&n; *     adds scsi_Device to the appropriate list.&n; *&n; * Return value:&n; *     scsi_Device pointer, or NULL on failure.&n; **/
 DECL|function|scsi_alloc_sdev
 r_static
 r_struct
@@ -2137,11 +2137,6 @@ id|sdev
 suffix:semicolon
 id|out_free_queue
 suffix:colon
-r_if
-c_cond
-(paren
-id|sdev-&gt;request_queue
-)paren
 id|scsi_free_queue
 c_func
 (paren
@@ -2170,7 +2165,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_free_sdev - cleanup and free a Scsi_Device&n; * @sdev:&t;cleanup and free this Scsi_Device&n; *&n; * Description:&n; *     Undo the actions in scsi_alloc_sdev, including removing @sdev from&n; *     the list, and freeing @sdev.&n; **/
+multiline_comment|/**&n; * scsi_free_sdev - cleanup and free a scsi_device&n; * @sdev:&t;cleanup and free this scsi_device&n; *&n; * Description:&n; *     Undo the actions in scsi_alloc_sdev, including removing @sdev from&n; *     the list, and freeing @sdev.&n; **/
 DECL|function|scsi_free_sdev
 r_static
 r_void
@@ -2257,12 +2252,10 @@ c_cond
 id|sdev-&gt;single_lun
 )paren
 (brace
-id|sdev-&gt;sdev_target-&gt;starget_refcnt
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren
+op_decrement
 id|sdev-&gt;sdev_target-&gt;starget_refcnt
 op_eq
 l_int|0
@@ -3987,6 +3980,8 @@ suffix:semicolon
 r_int
 id|possible_inq_resp_len
 suffix:semicolon
+id|repeat_inquiry
+suffix:colon
 id|SCSI_LOG_SCAN_BUS
 c_func
 (paren
@@ -4349,8 +4344,26 @@ c_cond
 (paren
 id|sreq-&gt;sr_result
 )paren
-r_return
+(brace
+multiline_comment|/* if the longer inquiry has failed, flag the device&n;&t;&t;&t; * as only accepting 36 byte inquiries and retry the&n;&t;&t;&t; * 36 byte inquiry */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi scan: %d byte inquiry failed with code %d.  Consider BLIST_INQUIRY_36 for this device&bslash;n&quot;
+comma
+id|sreq-&gt;sr_result
+)paren
 suffix:semicolon
+op_star
+id|bflags
+op_or_assign
+id|BLIST_INQUIRY_36
+suffix:semicolon
+r_goto
+id|repeat_inquiry
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * The INQUIRY can change, this means the length can change.&n;&t;&t; */
 id|possible_inq_resp_len
 op_assign
@@ -5512,14 +5525,15 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SCSI_REPORT_LUNS
-multiline_comment|/**&n; * scsilun_to_int: convert a ScsiLun to an int&n; * @scsilun:&t;ScsiLun to be converted.&n; *&n; * Description:&n; *     Convert @scsilun from a ScsiLun to a four byte host byte-ordered&n; *     integer, and return the result. The caller must check for&n; *     truncation before using this function.&n; *&n; * Notes:&n; *     The ScsiLun is assumed to be four levels, with each level&n; *     effectively containing a SCSI byte-ordered (big endian) short; the&n; *     addressing bits of each level are ignored (the highest two bits).&n; *     For a description of the LUN format, post SCSI-3 see the SCSI&n; *     Architecture Model, for SCSI-3 see the SCSI Controller Commands.&n; *&n; *     Given a ScsiLun of: 0a 04 0b 03 00 00 00 00, this function returns&n; *     the integer: 0x0b030a04&n; **/
+multiline_comment|/**&n; * scsilun_to_int: convert a scsi_lun to an int&n; * @scsilun:&t;struct scsi_lun to be converted.&n; *&n; * Description:&n; *     Convert @scsilun from a struct scsi_lun to a four byte host byte-ordered&n; *     integer, and return the result. The caller must check for&n; *     truncation before using this function.&n; *&n; * Notes:&n; *     The struct scsi_lun is assumed to be four levels, with each level&n; *     effectively containing a SCSI byte-ordered (big endian) short; the&n; *     addressing bits of each level are ignored (the highest two bits).&n; *     For a description of the LUN format, post SCSI-3 see the SCSI&n; *     Architecture Model, for SCSI-3 see the SCSI Controller Commands.&n; *&n; *     Given a struct scsi_lun of: 0a 04 0b 03 00 00 00 00, this function returns&n; *     the integer: 0x0b030a04&n; **/
 DECL|function|scsilun_to_int
 r_static
 r_int
 id|scsilun_to_int
 c_func
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 op_star
 id|scsilun
 )paren
@@ -5587,7 +5601,6 @@ r_return
 id|lun
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/**&n; * scsi_report_lun_scan - Scan using SCSI REPORT LUN results&n; * @sdevscan:&t;scan the host, channel, and id of this Scsi_Device&n; *&n; * Description:&n; *     If @sdevscan is for a SCSI-3 or up device, send a REPORT LUN&n; *     command, and scan the resulting list of LUNs by calling&n; *     scsi_probe_and_add_lun.&n; *&n; *     Modifies sdevscan-&gt;lun.&n; *&n; * Return:&n; *     0: scan completed (or no memory, so further scanning is futile)&n; *     1: no report lun scan, or not configured&n; **/
 DECL|function|scsi_report_lun_scan
 r_static
@@ -5595,7 +5608,8 @@ r_int
 id|scsi_report_lun_scan
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 comma
@@ -5603,7 +5617,6 @@ r_int
 id|bflags
 )paren
 (brace
-macro_line|#ifdef CONFIG_SCSI_REPORT_LUNS
 r_char
 id|devname
 (braket
@@ -5633,14 +5646,16 @@ r_int
 r_int
 id|retries
 suffix:semicolon
-id|ScsiLun
+r_struct
+id|scsi_lun
 op_star
-id|fcp_cur_lun
+id|lunp
 comma
 op_star
 id|lun_data
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|sreq
 suffix:semicolon
@@ -5680,23 +5695,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sreq
-op_eq
-l_int|NULL
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|ALLOC_FAILURE_MSG
-comma
-id|__FUNCTION__
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|sprintf
 c_func
 (paren
@@ -5711,7 +5715,7 @@ comma
 id|sdev-&gt;id
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allocate enough to hold the header (the same size as one ScsiLun)&n;&t; * plus the max number of luns we are requesting.&n;&t; *&n;&t; * Reallocating and trying again (with the exact amount we need)&n;&t; * would be nice, but then we need to somehow limit the size&n;&t; * allocated based on the available memory and the limits of&n;&t; * kmalloc - we don&squot;t want a kmalloc() failure of a huge value to&n;&t; * prevent us from finding any LUNs on this target.&n;&t; */
+multiline_comment|/*&n;&t; * Allocate enough to hold the header (the same size as one scsi_lun)&n;&t; * plus the max number of luns we are requesting.&n;&t; *&n;&t; * Reallocating and trying again (with the exact amount we need)&n;&t; * would be nice, but then we need to somehow limit the size&n;&t; * allocated based on the available memory and the limits of&n;&t; * kmalloc - we don&squot;t want a kmalloc() failure of a huge value to&n;&t; * prevent us from finding any LUNs on this target.&n;&t; */
 id|length
 op_assign
 (paren
@@ -5722,15 +5726,12 @@ l_int|1
 op_star
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 suffix:semicolon
 id|lun_data
 op_assign
-(paren
-id|ScsiLun
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -5742,7 +5743,7 @@ op_or
 id|sdev-&gt;host-&gt;unchecked_isa_dma
 ques
 c_cond
-id|GFP_DMA
+id|__GFP_DMA
 suffix:colon
 l_int|0
 )paren
@@ -5751,30 +5752,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|lun_data
-op_eq
-l_int|NULL
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|ALLOC_FAILURE_MSG
-comma
-id|__FUNCTION__
-)paren
+r_goto
+id|out_release_request
 suffix:semicolon
-id|scsi_release_request
-c_func
-(paren
-id|sreq
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We are out of memory, don&squot;t try scanning any further.&n;&t;&t; */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|scsi_cmd
 (braket
 l_int|0
@@ -5887,17 +5870,19 @@ op_assign
 id|SCSI_DATA_READ
 suffix:semicolon
 multiline_comment|/*&n;&t; * We can get a UNIT ATTENTION, for example a power on/reset, so&n;&t; * retry a few times (like sd.c does for TEST UNIT READY).&n;&t; * Experience shows some combinations of adapter/devices get at&n;&t; * least two power on/resets.&n;&t; *&n;&t; * Illegal requests (for devices that do not support REPORT LUNS)&n;&t; * should come through as a check condition, and will not generate&n;&t; * a retry.&n;&t; */
+r_for
+c_loop
+(paren
 id|retries
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
 id|retries
-op_increment
 OL
 l_int|3
+suffix:semicolon
+id|retries
+op_increment
 )paren
 (brace
 id|SCSI_LOG_SCAN_BUS
@@ -5922,16 +5907,8 @@ c_func
 (paren
 id|sreq
 comma
-(paren
-r_void
-op_star
-)paren
 id|scsi_cmd
 comma
-(paren
-r_void
-op_star
-)paren
 id|lun_data
 comma
 id|length
@@ -5996,10 +5973,6 @@ multiline_comment|/*&n;&t;&t; * The device probably does not support a REPORT LU
 id|kfree
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|lun_data
 )paren
 suffix:semicolon
@@ -6068,17 +6041,22 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|num_luns
+op_assign
 (paren
 id|length
 op_div
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_luns
 OG
 id|max_scsi_report_luns
 )paren
@@ -6095,12 +6073,7 @@ id|devname
 comma
 id|max_scsi_report_luns
 comma
-id|length
-op_div
-r_sizeof
-(paren
-id|ScsiLun
-)paren
+id|num_luns
 )paren
 suffix:semicolon
 id|num_luns
@@ -6108,18 +6081,6 @@ op_assign
 id|max_scsi_report_luns
 suffix:semicolon
 )brace
-r_else
-id|num_luns
-op_assign
-(paren
-id|length
-op_div
-r_sizeof
-(paren
-id|ScsiLun
-)paren
-)paren
-suffix:semicolon
 id|SCSI_LOG_SCAN_BUS
 c_func
 (paren
@@ -6143,7 +6104,7 @@ multiline_comment|/*&n;&t; * Scan the luns in lun_data. The entry at offset 0 is
 r_for
 c_loop
 (paren
-id|fcp_cur_lun
+id|lunp
 op_assign
 op_amp
 id|lun_data
@@ -6151,7 +6112,7 @@ id|lun_data
 l_int|1
 )braket
 suffix:semicolon
-id|fcp_cur_lun
+id|lunp
 op_le
 op_amp
 id|lun_data
@@ -6159,7 +6120,7 @@ id|lun_data
 id|num_luns
 )braket
 suffix:semicolon
-id|fcp_cur_lun
+id|lunp
 op_increment
 )paren
 (brace
@@ -6168,10 +6129,10 @@ op_assign
 id|scsilun_to_int
 c_func
 (paren
-id|fcp_cur_lun
+id|lunp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Check if the unused part of fcp_cur_lun is non-zero,&n;&t;&t; * and so does not fit in lun.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check if the unused part of lunp is non-zero, and so&n;&t;&t; * does not fit in lun.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6179,7 +6140,7 @@ id|memcmp
 c_func
 (paren
 op_amp
-id|fcp_cur_lun-&gt;scsi_lun
+id|lunp-&gt;scsi_lun
 (braket
 r_sizeof
 (paren
@@ -6191,8 +6152,6 @@ l_string|&quot;&bslash;0&bslash;0&bslash;0&bslash;0&quot;
 comma
 l_int|4
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 r_int
@@ -6214,7 +6173,7 @@ op_assign
 r_char
 op_star
 )paren
-id|fcp_cur_lun-&gt;scsi_lun
+id|lunp-&gt;scsi_lun
 suffix:semicolon
 r_for
 c_loop
@@ -6227,7 +6186,8 @@ id|i
 OL
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 suffix:semicolon
 id|i
@@ -6337,22 +6297,39 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|lun_data
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else
-r_return
-l_int|1
+id|out_release_request
+suffix:colon
+id|scsi_release_request
+c_func
+(paren
+id|sreq
+)paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_SCSI_REPORT_LUNS */
+id|out
+suffix:colon
+multiline_comment|/*&n;&t; * We are out of memory, don&squot;t try scanning any further.&n;&t; */
+id|printk
+c_func
+(paren
+id|ALLOC_FAILURE_MSG
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|scsi_report_lun_scan
+macro_line|# define scsi_report_lun_scan(sdev, blags)&t;(1)
+macro_line|#endif&t;/* CONFIG_SCSI_REPORT_LUNS */
 DECL|function|scsi_add_device
 r_struct
 id|scsi_device

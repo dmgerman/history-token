@@ -230,7 +230,7 @@ multiline_comment|/*&n;**&t;Other definitions&n;*/
 DECL|macro|ScsiResult
 mdefine_line|#define ScsiResult(host_code, scsi_code) (((host_code) &lt;&lt; 16) + ((scsi_code) &amp; 0x7f))
 r_static
-r_void
+id|irqreturn_t
 id|ncr53c8xx_intr
 c_func
 (paren
@@ -13454,7 +13454,7 @@ id|np-&gt;settle_time
 )paren
 (brace
 r_return
-id|SCSI_RESET_PUNT
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Start the reset process.&n; * The script processor is then assumed to be stopped.&n; * Commands will now be queued in the waiting list until a settle &n; * delay of 2 seconds will be completed.&n; */
@@ -13587,7 +13587,7 @@ id|cmd
 suffix:semicolon
 )brace
 r_return
-id|SCSI_RESET_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Abort an SCSI command.&n;**&t;This is called from the generic SCSI driver.&n;**&n;**&n;**==========================================================&n;*/
@@ -26860,7 +26860,7 @@ suffix:semicolon
 multiline_comment|/*&n;**   Linux entry point of the interrupt handler.&n;**   Since linux versions &gt; 1.3.70, we trust the kernel for &n;**   passing the internal host descriptor as &squot;dev_id&squot;.&n;**   Otherwise, we scan the host list and call the interrupt &n;**   routine for each host that uses this IRQ.&n;*/
 DECL|function|ncr53c8xx_intr
 r_static
-r_void
+id|irqreturn_t
 id|ncr53c8xx_intr
 c_func
 (paren
@@ -26984,6 +26984,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;**   Linux entry point of the timer handler&n;*/
 DECL|function|ncr53c8xx_timeout
@@ -27077,30 +27080,15 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;**   Linux entry point of reset() function&n;*/
-macro_line|#if defined SCSI_RESET_SYNCHRONOUS &amp;&amp; defined SCSI_RESET_ASYNCHRONOUS
-DECL|function|ncr53c8xx_reset
+DECL|function|ncr53c8xx_bus_reset
 r_int
-id|ncr53c8xx_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-comma
-r_int
-r_int
-id|reset_flags
-)paren
-macro_line|#else
-r_int
-id|ncr53c8xx_reset
+id|ncr53c8xx_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
 )paren
-macro_line|#endif
 (brace
 id|ncb_p
 id|np
@@ -27127,31 +27115,6 @@ id|Scsi_Cmnd
 op_star
 id|done_list
 suffix:semicolon
-macro_line|#if defined SCSI_RESET_SYNCHRONOUS &amp;&amp; defined SCSI_RESET_ASYNCHRONOUS
-id|printk
-c_func
-(paren
-l_string|&quot;ncr53c8xx_reset: pid=%lu reset_flags=%x serial_number=%ld serial_number_at_timeout=%ld&bslash;n&quot;
-comma
-id|cmd-&gt;pid
-comma
-id|reset_flags
-comma
-id|cmd-&gt;serial_number
-comma
-id|cmd-&gt;serial_number_at_timeout
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;ncr53c8xx_reset: command pid %lu&bslash;n&quot;
-comma
-id|cmd-&gt;pid
-)paren
-suffix:semicolon
-macro_line|#endif
 id|NCR_LOCK_NCB
 c_func
 (paren
@@ -27160,27 +27123,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have to just ignore reset requests in some situations.&n;&t; */
-macro_line|#if defined SCSI_RESET_NOT_RUNNING
-r_if
-c_cond
-(paren
-id|cmd-&gt;serial_number
-op_ne
-id|cmd-&gt;serial_number_at_timeout
-)paren
-(brace
-id|sts
-op_assign
-id|SCSI_RESET_NOT_RUNNING
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*&n;&t; * If the mid-level driver told us reset is synchronous, it seems &n;&t; * that we must call the done() callback for the involved command, &n;&t; * even if this command was not queued to the low-level driver, &n;&t; * before returning SCSI_RESET_SUCCESS.&n;&t; */
-macro_line|#if defined SCSI_RESET_SYNCHRONOUS &amp;&amp; defined SCSI_RESET_ASYNCHRONOUS
+multiline_comment|/*&n;&t; * If the mid-level driver told us reset is synchronous, it seems &n;&t; * that we must call the done() callback for the involved command, &n;&t; * even if this command was not queued to the low-level driver, &n;&t; * before returning SUCCESS.&n;&t; */
 id|sts
 op_assign
 id|ncr_reset_bus
@@ -27190,49 +27133,9 @@ id|np
 comma
 id|cmd
 comma
-(paren
-id|reset_flags
-op_amp
-(paren
-id|SCSI_RESET_SYNCHRONOUS
-op_or
-id|SCSI_RESET_ASYNCHRONOUS
-)paren
-)paren
-op_eq
-id|SCSI_RESET_SYNCHRONOUS
+l_int|1
 )paren
 suffix:semicolon
-macro_line|#else
-id|sts
-op_assign
-id|ncr_reset_bus
-c_func
-(paren
-id|np
-comma
-id|cmd
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * Since we always reset the controller, when we return success, &n;&t; * we add this information to the return code.&n;&t; */
-macro_line|#if defined SCSI_RESET_HOST_RESET
-r_if
-c_cond
-(paren
-id|sts
-op_eq
-id|SCSI_RESET_SUCCESS
-)paren
-id|sts
-op_or_assign
-id|SCSI_RESET_HOST_RESET
-suffix:semicolon
-macro_line|#endif
-id|out
-suffix:colon
 id|done_list
 op_assign
 id|np-&gt;done_list
@@ -29739,6 +29642,16 @@ dot
 id|queuecommand
 op_assign
 id|ncr53c8xx_queue_command
+comma
+dot
+id|slave_configure
+op_assign
+id|ncr53c8xx_slave_configure
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|ncr53c8xx_bus_reset
 comma
 dot
 id|can_queue
