@@ -1297,8 +1297,7 @@ macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_BCOPY
 multiline_comment|/**&n; * bcopy - Copy one area of memory to another&n; * @src: Where to copy from&n; * @dest: Where to copy to&n; * @count: The size of the area.&n; *&n; * Note that this is the same as memcpy(), with the arguments reversed.&n; * memcpy() is the standard, bcopy() is a legacy BSD function.&n; *&n; * You should not use this function to access IO space, use memcpy_toio()&n; * or memcpy_fromio() instead.&n; */
 DECL|function|bcopy
-r_char
-op_star
+r_void
 id|bcopy
 c_func
 (paren
@@ -1334,9 +1333,6 @@ op_assign
 op_star
 id|src
 op_increment
-suffix:semicolon
-r_return
-id|dest
 suffix:semicolon
 )brace
 macro_line|#endif
