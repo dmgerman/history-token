@@ -970,7 +970,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The backing_dev_info is shared between files which are backed by the ramdisk&n; * inode and by the ramdisk inode itself.  This is a bit unfortunate because&n; * they really want separate semantics.  The files *do* want full writeback&n; * and dirty-memory accounting treatment, whereas the ramdisk blockdev mapping&n; * wants neither.&n; *&n; * So we make things look like a regular blockdev and the cheat in various ways&n; * in the ramdisk inode&squot;s a_ops.&n; */
+multiline_comment|/*&n; * This is the backing_dev_info for the blockdev inode itself.  It doesn&squot;t need&n; * writeback and it does not contribute to dirty memory accounting.&n; */
 DECL|variable|rd_backing_dev_info
 r_static
 r_struct
@@ -990,6 +990,33 @@ op_assign
 l_int|1
 comma
 multiline_comment|/* Does not contribute to dirty memory */
+dot
+id|unplug_io_fn
+op_assign
+id|default_unplug_io_fn
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * This is the backing_dev_info for the files which live atop the ramdisk&n; * &quot;device&quot;.  These files do need writeback and they do contribute to dirty&n; * memory accounting.&n; */
+DECL|variable|rd_file_backing_dev_info
+r_static
+r_struct
+id|backing_dev_info
+id|rd_file_backing_dev_info
+op_assign
+(brace
+dot
+id|ra_pages
+op_assign
+l_int|0
+comma
+multiline_comment|/* No readahead */
+dot
+id|memory_backed
+op_assign
+l_int|0
+comma
+multiline_comment|/* Does contribute to dirty memory */
 dot
 id|unplug_io_fn
 op_assign
@@ -1097,6 +1124,11 @@ id|mapping-&gt;backing_dev_info
 op_assign
 op_amp
 id|rd_backing_dev_info
+suffix:semicolon
+id|bdev-&gt;bd_inode_backing_dev_info
+op_assign
+op_amp
+id|rd_file_backing_dev_info
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Deep badness.  rd_blkdev_pagecache_IO() needs to allocate&n;&t;&t; * pagecache pages within a request_fn.  We cannot recur back&n;&t;&t; * into the filesytem which is mounted atop the ramdisk, because&n;&t;&t; * that would deadlock on fs locks.  And we really don&squot;t want&n;&t;&t; * to reenter rd_blkdev_pagecache_IO when we&squot;re already within&n;&t;&t; * that function.&n;&t;&t; *&n;&t;&t; * So we turn off __GFP_FS and __GFP_IO.&n;&t;&t; *&n;&t;&t; * And to give this thing a hope of working, turn on __GFP_HIGH.&n;&t;&t; * Hopefully, there&squot;s enough regular memory allocation going on&n;&t;&t; * for the page allocator emergency pools to keep the ramdisk&n;&t;&t; * driver happy.&n;&t;&t; */
 id|gfp_mask
