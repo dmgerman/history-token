@@ -8045,10 +8045,6 @@ op_logical_and
 id|driver-&gt;supports_dsc_overlap
 )paren
 suffix:semicolon
-id|drive-&gt;nice1
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 r_if

@@ -3157,29 +3157,30 @@ comma
 l_int|255
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;autotune
+op_ne
+id|IDE_TUNE_DEFAULT
+op_logical_and
+id|drive-&gt;autotune
+op_ne
+id|IDE_TUNE_AUTO
+)paren
+r_continue
+suffix:semicolon
+id|drive-&gt;nice1
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * MAJOR HACK BARF :-/&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME: chipsets own this cruft!&n;&t;&t;&t; */
 multiline_comment|/*&n;&t;&t;&t; * Move here to prevent module loading clashing.&n;&t;&t;&t; */
 singleline_comment|//&t;&t;drive-&gt;autodma = hwif-&gt;autodma;
 r_if
 c_cond
 (paren
-(paren
 id|hwif-&gt;ide_dma_check
-)paren
-op_logical_and
-(paren
-(paren
-id|drive-&gt;autotune
-op_eq
-id|IDE_TUNE_DEFAULT
-)paren
-op_logical_or
-(paren
-id|drive-&gt;autotune
-op_eq
-id|IDE_TUNE_AUTO
-)paren
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Force DMAing for the beginning of the check.&n;&t;&t;&t;&t; * Some chipsets appear to do interesting&n;&t;&t;&t;&t; * things, if not checked and cleared.&n;&t;&t;&t;&t; *   PARANOIA!!!&n;&t;&t;&t;&t; */
