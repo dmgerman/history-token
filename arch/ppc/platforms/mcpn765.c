@@ -1347,6 +1347,37 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_static
+r_int
+id|__init
+DECL|function|mcpn765_request_cascade
+id|mcpn765_request_cascade
+c_func
+(paren
+r_void
+)paren
+(brace
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|mcpn765_request_cascade
+id|arch_initcall
+c_func
+(paren
+id|mcpn765_request_cascade
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Interrupt setup and service.&n; * Have MPIC on HAWK and cascaded 8259s on VIA 82586 cascaded to MPIC.&n; */
 r_static
 r_void
@@ -1380,16 +1411,6 @@ id|openpic_init
 c_func
 (paren
 id|NUM_8259_INTERRUPTS
-)paren
-suffix:semicolon
-id|openpic_hookup_cascade
-c_func
-(paren
-id|NUM_8259_INTERRUPTS
-comma
-l_string|&quot;82c59 cascade&quot;
-comma
-id|i8259_irq
 )paren
 suffix:semicolon
 r_for

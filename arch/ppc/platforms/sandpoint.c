@@ -1053,6 +1053,37 @@ c_func
 id|sandpoint_request_io
 )paren
 suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|sandpoint_request_cascade
+id|sandpoint_request_cascade
+c_func
+(paren
+r_void
+)paren
+(brace
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|sandpoint_request_cascade
+id|arch_initcall
+c_func
+(paren
+id|sandpoint_request_cascade
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Interrupt setup and service.  Interrrupts on the Sandpoint come&n; * from the four PCI slots plus the 8259 in the Winbond Super I/O (SIO).&n; * The 8259 is cascaded from EPIC IRQ0, IRQ1-4 map to PCI slots 1-4,&n; * IDE is on EPIC 7 and 8.&n; */
 r_static
 r_void
@@ -1081,16 +1112,6 @@ suffix:semicolon
 id|mpc10x_set_openpic
 c_func
 (paren
-)paren
-suffix:semicolon
-id|openpic_hookup_cascade
-c_func
-(paren
-id|NUM_8259_INTERRUPTS
-comma
-l_string|&quot;82c59 cascade&quot;
-comma
-id|i8259_irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * openpic_init() has set up irq_desc[16-31] to be openpic&n;&t; * interrupts.  We need to set irq_desc[0-15] to be i8259&n;&t; * interrupts.&n;&t; */
