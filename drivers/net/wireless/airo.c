@@ -4538,6 +4538,10 @@ c_func
 id|ai
 )paren
 suffix:semicolon
+id|cfgr
+op_assign
+id|ai-&gt;config
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4558,10 +4562,6 @@ id|ai-&gt;flags
 op_and_assign
 op_complement
 id|FLAG_ADHOC
-suffix:semicolon
-id|cfgr
-op_assign
-id|ai-&gt;config
 suffix:semicolon
 r_for
 c_loop
