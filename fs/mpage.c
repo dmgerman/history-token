@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 multiline_comment|/*&n; * I/O completion handler for multipage BIOs.&n; *&n; * The mpage code never puts partial pages into a BIO (except for end-of-file).&n; * If a page does not map to a contiguous run of blocks then it simply falls&n; * back to block_read_full_page().&n; *&n; * Why is this?  If a page&squot;s completion depends on a number of different BIOs&n; * which can complete in any order (or at the same time) then determining the&n; * status of that page is hard.  See end_buffer_async_read() for the details.&n; * There is no point in duplicating all that complexity.&n; */
 DECL|function|mpage_end_io_read
@@ -1953,6 +1954,13 @@ id|get_block
 )paren
 (brace
 r_struct
+id|backing_dev_info
+op_star
+id|bdi
+op_assign
+id|mapping-&gt;backing_dev_info
+suffix:semicolon
+r_struct
 id|bio
 op_star
 id|bio
@@ -1997,6 +2005,31 @@ id|page
 op_star
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|wbc-&gt;nonblocking
+op_logical_and
+id|bdi_write_congested
+c_func
+(paren
+id|bdi
+)paren
+)paren
+(brace
+id|blk_run_queues
+c_func
+(paren
+)paren
+suffix:semicolon
+id|wbc-&gt;encountered_congestion
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|writepage
 op_assign
 l_int|NULL
@@ -2332,6 +2365,32 @@ id|done
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|wbc-&gt;nonblocking
+op_logical_and
+id|bdi_write_congested
+c_func
+(paren
+id|bdi
+)paren
+)paren
+(brace
+id|blk_run_queues
+c_func
+(paren
+)paren
+suffix:semicolon
+id|wbc-&gt;encountered_congestion
+op_assign
+l_int|1
+suffix:semicolon
+id|done
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace

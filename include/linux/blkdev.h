@@ -1274,6 +1274,18 @@ id|request_queue_t
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|blk_congestion_wait
+c_func
+(paren
+r_int
+id|rw
+comma
+r_int
+id|timeout
+)paren
+suffix:semicolon
 DECL|macro|MAX_PHYS_SEGMENTS
 mdefine_line|#define MAX_PHYS_SEGMENTS 128
 DECL|macro|MAX_HW_SEGMENTS

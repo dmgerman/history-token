@@ -583,7 +583,7 @@ id|wbc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Write out a superblock&squot;s list of dirty inodes.  A wait will be performed&n; * upon no inodes, all inodes or the final one, depending upon sync_mode.&n; *&n; * If older_than_this is non-NULL, then only write out mappings which&n; * had their first dirtying at a time earlier than *older_than_this.&n; *&n; * If we&squot;re a pdlfush thread, then implement pdflush collision avoidance&n; * against the entire list.&n; *&n; * WB_SYNC_HOLD is a hack for sys_sync(): reattach the inode to sb-&gt;s_dirty so&n; * that it can be located for waiting on in __writeback_single_inode().&n; *&n; * Called under inode_lock.&n; *&n; * If `bdi&squot; is non-zero then we&squot;re being asked to writeback a specific queue.&n; * This function assumes that the blockdev superblock&squot;s inodes are backed by&n; * a variety of queues, so all inodes are searched.  For other superblocks,&n; * assume that all inodes are backed by the same queue.&n; *&n; * FIXME: this linear search could get expensive with many fileystems.  But&n; * how to fix?  We need to go from an address_space to all inodes which share&n; * a queue with that address_space.&n; *&n; * The inodes to be written are parked on sb-&gt;s_io.  They are moved back onto&n; * sb-&gt;s_dirty as they are selected for writing.  This way, none can be missed&n; * on the writer throttling path, and we get decent balancing between many&n; * thrlttled threads: we don&squot;t want them all piling up on __wait_on_inode.&n; */
+multiline_comment|/*&n; * Write out a superblock&squot;s list of dirty inodes.  A wait will be performed&n; * upon no inodes, all inodes or the final one, depending upon sync_mode.&n; *&n; * If older_than_this is non-NULL, then only write out mappings which&n; * had their first dirtying at a time earlier than *older_than_this.&n; *&n; * If we&squot;re a pdlfush thread, then implement pdflush collision avoidance&n; * against the entire list.&n; *&n; * WB_SYNC_HOLD is a hack for sys_sync(): reattach the inode to sb-&gt;s_dirty so&n; * that it can be located for waiting on in __writeback_single_inode().&n; *&n; * Called under inode_lock.&n; *&n; * If `bdi&squot; is non-zero then we&squot;re being asked to writeback a specific queue.&n; * This function assumes that the blockdev superblock&squot;s inodes are backed by&n; * a variety of queues, so all inodes are searched.  For other superblocks,&n; * assume that all inodes are backed by the same queue.&n; *&n; * FIXME: this linear search could get expensive with many fileystems.  But&n; * how to fix?  We need to go from an address_space to all inodes which share&n; * a queue with that address_space.  (Easy: have a global &quot;dirty superblocks&quot;&n; * list).&n; *&n; * The inodes to be written are parked on sb-&gt;s_io.  They are moved back onto&n; * sb-&gt;s_dirty as they are selected for writing.  This way, none can be missed&n; * on the writer throttling path, and we get decent balancing between many&n; * throlttled threads: we don&squot;t want them all piling up on __wait_on_inode.&n; */
 r_static
 r_void
 DECL|function|sync_sb_inodes
@@ -601,16 +601,6 @@ op_star
 id|wbc
 )paren
 (brace
-r_struct
-id|list_head
-op_star
-id|tmp
-suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|head
-suffix:semicolon
 r_const
 r_int
 r_int
@@ -629,21 +619,16 @@ op_amp
 id|sb-&gt;s_io
 )paren
 suffix:semicolon
-id|head
-op_assign
-op_amp
-id|sb-&gt;s_io
-suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+id|list_empty
+c_func
 (paren
-id|tmp
-op_assign
-id|head-&gt;prev
+op_amp
+id|sb-&gt;s_io
 )paren
-op_ne
-id|head
 )paren
 (brace
 r_struct
@@ -654,7 +639,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|tmp
+id|sb-&gt;s_io.prev
 comma
 r_struct
 id|inode
@@ -673,6 +658,8 @@ r_struct
 id|backing_dev_info
 op_star
 id|bdi
+op_assign
+id|mapping-&gt;backing_dev_info
 suffix:semicolon
 r_int
 id|really_sync
@@ -680,9 +667,49 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|wbc-&gt;nonblocking
+op_logical_and
+id|bdi_write_congested
+c_func
+(paren
+id|bdi
+)paren
+)paren
+(brace
+id|wbc-&gt;encountered_congestion
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb
+op_ne
+id|blockdev_superblock
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* Skip a congested fs */
+id|list_move
+c_func
+(paren
+op_amp
+id|inode-&gt;i_list
+comma
+op_amp
+id|sb-&gt;s_dirty
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+multiline_comment|/* Skip a congested blockdev */
+)brace
+r_if
+c_cond
+(paren
 id|wbc-&gt;bdi
 op_logical_and
-id|mapping-&gt;backing_dev_info
+id|bdi
 op_ne
 id|wbc-&gt;bdi
 )paren
@@ -696,7 +723,7 @@ id|blockdev_superblock
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* inappropriate superblock */
+multiline_comment|/* fs has the wrong queue */
 id|list_move
 c_func
 (paren
@@ -709,7 +736,7 @@ id|sb-&gt;s_dirty
 suffix:semicolon
 r_continue
 suffix:semicolon
-multiline_comment|/* not this blockdev */
+multiline_comment|/* blockdev has wrong queue */
 )brace
 multiline_comment|/* Was this inode dirtied after sync_sb_inodes was called? */
 r_if
@@ -725,6 +752,7 @@ id|start
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* Was this inode dirtied too recently? */
 r_if
 c_cond
 (paren
@@ -739,13 +767,9 @@ op_star
 id|wbc-&gt;older_than_this
 )paren
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
-id|bdi
-op_assign
-id|mapping-&gt;backing_dev_info
-suffix:semicolon
+multiline_comment|/* Is another pdflush already flushing this queue? */
 r_if
 c_cond
 (paren
@@ -872,11 +896,9 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-id|out
-suffix:colon
-multiline_comment|/*&n;&t; * Leave any unwritten inodes on s_io.&n;&t; */
 r_return
 suffix:semicolon
+multiline_comment|/* Leave any unwritten inodes on s_io */
 )brace
 multiline_comment|/*&n; * Start writeback of dirty pagecache data against all unlocked inodes.&n; *&n; * Note:&n; * We don&squot;t need to grab a reference to superblock here. If it has non-empty&n; * -&gt;s_dirty it&squot;s hadn&squot;t been killed yet and kill_super() won&squot;t proceed&n; * past sync_inodes_sb() until both the -&gt;s_dirty and -&gt;s_io lists are&n; * empty. Since __sync_single_inode() regains inode_lock before it finally moves&n; * inode from superblock lists we are OK.&n; *&n; * If `older_than_this&squot; is non-zero then only flush inodes which have a&n; * flushtime older than *older_than_this.&n; *&n; * If `bdi&squot; is non-zero then we will scan the first inode against each&n; * superblock until we find the matching ones.  One group will be the dirty&n; * inodes against a filesystem.  Then when we hit the dummy blockdev superblock,&n; * sync_sb_inodes will seekout the blockdev which matches `bdi&squot;.  Maybe not&n; * super-efficient but we&squot;re about to do a ton of I/O...&n; */
 r_void

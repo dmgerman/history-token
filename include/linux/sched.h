@@ -605,6 +605,9 @@ r_struct
 id|prio_array
 id|prio_array_t
 suffix:semicolon
+r_struct
+id|backing_dev_info
+suffix:semicolon
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -1164,6 +1167,12 @@ r_struct
 id|dentry
 op_star
 id|proc_dentry
+suffix:semicolon
+DECL|member|backing_dev_info
+r_struct
+id|backing_dev_info
+op_star
+id|backing_dev_info
 suffix:semicolon
 )brace
 suffix:semicolon

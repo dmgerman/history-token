@@ -6958,6 +6958,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* We can write back this queue in page reclaim */
+id|current-&gt;backing_dev_info
+op_assign
+id|mapping-&gt;backing_dev_info
+suffix:semicolon
 id|pagevec_init
 c_func
 (paren
@@ -7893,6 +7898,10 @@ c_func
 op_amp
 id|lru_pvec
 )paren
+suffix:semicolon
+id|current-&gt;backing_dev_info
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|err
