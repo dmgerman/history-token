@@ -1083,7 +1083,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
 DECL|function|schedule_tail
 id|asmlinkage
 r_void
