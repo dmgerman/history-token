@@ -635,6 +635,16 @@ id|list_head
 id|j_prealloc_list
 suffix:semicolon
 multiline_comment|/* list of inodes which have preallocated blocks */
+DECL|member|j_max_trans_size
+r_int
+r_int
+id|j_max_trans_size
+suffix:semicolon
+DECL|member|j_max_batch_size
+r_int
+r_int
+id|j_max_batch_size
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|JOURNAL_DESC_MAGIC
