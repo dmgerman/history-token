@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_I386_TOPOLOGY_H
 DECL|macro|_ASM_I386_TOPOLOGY_H
 mdefine_line|#define _ASM_I386_TOPOLOGY_H
 macro_line|#ifdef CONFIG_NUMA
+macro_line|#include &lt;asm/mpspec.h&gt;
 multiline_comment|/* Mappings between logical cpu number and node number */
 r_extern
 r_volatile
@@ -91,6 +92,30 @@ suffix:semicolon
 multiline_comment|/* Returns the number of the first MemBlk on Node &squot;node&squot; */
 DECL|macro|node_to_memblk
 mdefine_line|#define node_to_memblk(node) (node)
+multiline_comment|/* Returns the number of the node containing PCI bus &squot;bus&squot; */
+DECL|function|pcibus_to_cpumask
+r_static
+r_inline
+r_int
+r_int
+id|pcibus_to_cpumask
+c_func
+(paren
+r_int
+id|bus
+)paren
+(brace
+r_return
+id|node_to_cpumask
+c_func
+(paren
+id|mp_bus_id_to_node
+(braket
+id|bus
+)braket
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 100
