@@ -51,9 +51,9 @@ DECL|macro|NS_TO_JIFFIES
 mdefine_line|#define NS_TO_JIFFIES(TIME)&t;((TIME) / (1000000000 / HZ))
 DECL|macro|JIFFIES_TO_NS
 mdefine_line|#define JIFFIES_TO_NS(TIME)&t;((TIME) * (1000000000 / HZ))
-multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 10 msecs, default timeslice is 100 msecs,&n; * maximum timeslice is 200 msecs. Timeslices get refilled after&n; * they expire.&n; */
+multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 5 msecs (or 1 jiffy, whichever is larger),&n; * default timeslice is 100 msecs, maximum timeslice is 200 msecs.&n; * Timeslices get refilled after they expire.&n; */
 DECL|macro|MIN_TIMESLICE
-mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
+mdefine_line|#define MIN_TIMESLICE&t;&t;max(5 * HZ / 1000, 1)
 DECL|macro|MAX_TIMESLICE
 mdefine_line|#define MAX_TIMESLICE&t;&t;(200 * HZ / 1000)
 DECL|macro|ON_RUNQUEUE_WEIGHT
@@ -104,7 +104,7 @@ DECL|macro|TASK_PREEMPTS_CURR
 mdefine_line|#define TASK_PREEMPTS_CURR(p, rq) &bslash;&n;&t;((p)-&gt;prio &lt; (rq)-&gt;curr-&gt;prio)
 multiline_comment|/*&n; * BASE_TIMESLICE scales user-nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a thread&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority thread gets MIN_TIMESLICE worth of execution time.&n; *&n; * task_timeslice() is the interface that is used by the scheduler.&n; */
 DECL|macro|BASE_TIMESLICE
-mdefine_line|#define BASE_TIMESLICE(p) (MIN_TIMESLICE + &bslash;&n;&t;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * &bslash;&n;&t;&t;&t;(MAX_PRIO-1 - (p)-&gt;static_prio) / (MAX_USER_PRIO-1)))
+mdefine_line|#define BASE_TIMESLICE(p) &bslash;&n;&t;max(MAX_TIMESLICE * (MAX_PRIO - (p)-&gt;static_prio) / (MAX_USER_PRIO), &bslash;&n;&t;&t;MIN_TIMESLICE)
 DECL|function|task_timeslice
 r_static
 r_int
