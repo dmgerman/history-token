@@ -4323,7 +4323,7 @@ id|drive
 op_member_access_from_pointer
 id|rq
 suffix:semicolon
-r_int
+id|sector_t
 id|frame
 op_assign
 id|rq-&gt;sector
