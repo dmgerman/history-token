@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 multiline_comment|/*&n; * This is the &squot;legacy&squot; 8259A Programmable Interrupt Controller,&n; * present in the majority of PC/AT boxes.&n; * plus some generic x86 specific things if generic specifics makes&n; * any sense at all.&n; * this file should become arch/i386/kernel/irq.c when the old irq.c&n; * moves to arch independent land&n; */
 DECL|variable|i8259A_lock
@@ -1062,29 +1063,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * IRQ2 is cascade interrupt to second interrupt controller&n; */
-macro_line|#ifndef CONFIG_VISWS
-DECL|variable|irq2
-r_static
-r_struct
-id|irqaction
-id|irq2
-op_assign
-(brace
-id|no_action
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_string|&quot;cascade&quot;
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|function|init_ISA_irqs
 r_void
 id|__init
@@ -1199,19 +1177,12 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_VISWS_APIC
-id|init_ISA_irqs
+multiline_comment|/* all the set up before the call gates are initialised */
+id|pre_intr_init_hook
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|init_VISWS_APIC_irqs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Cover the whole vector space, no vector can escape&n;&t; * us. (some of these will be overridden and become&n;&t; * &squot;special&squot; SMP interrupts)&n;&t; */
 r_for
 c_loop
@@ -1254,86 +1225,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */
-id|set_intr_gate
+multiline_comment|/* setup after call gates are initialised (usually add in&n;&t; * the architecture specific gates */
+id|intr_init_hook
 c_func
 (paren
-id|FIRST_DEVICE_VECTOR
-comma
-id|interrupt
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The reschedule interrupt is a CPU-to-CPU reschedule-helper&n;&t; * IPI, driven by wakeup.&n;&t; */
-id|set_intr_gate
-c_func
-(paren
-id|RESCHEDULE_VECTOR
-comma
-id|reschedule_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI for invalidation */
-id|set_intr_gate
-c_func
-(paren
-id|INVALIDATE_TLB_VECTOR
-comma
-id|invalidate_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI for generic function call */
-id|set_intr_gate
-c_func
-(paren
-id|CALL_FUNCTION_VECTOR
-comma
-id|call_function_interrupt
-)paren
-suffix:semicolon
-macro_line|#endif&t;
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-multiline_comment|/* self generated IPI for local APIC timer */
-id|set_intr_gate
-c_func
-(paren
-id|LOCAL_TIMER_VECTOR
-comma
-id|apic_timer_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI vectors for APIC spurious and error interrupts */
-id|set_intr_gate
-c_func
-(paren
-id|SPURIOUS_APIC_VECTOR
-comma
-id|spurious_interrupt
-)paren
-suffix:semicolon
-id|set_intr_gate
-c_func
-(paren
-id|ERROR_APIC_VECTOR
-comma
-id|error_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* thermal monitor LVT interrupt */
-macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
-id|set_intr_gate
-c_func
-(paren
-id|THERMAL_APIC_VECTOR
-comma
-id|thermal_interrupt
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n;&t; * Set the clock to HZ Hz, we already have a valid&n;&t; * vector now:&n;&t; */
 id|outb_p
 c_func
@@ -1366,17 +1263,6 @@ l_int|0x40
 )paren
 suffix:semicolon
 multiline_comment|/* MSB */
-macro_line|#ifndef CONFIG_VISWS
-id|setup_irq
-c_func
-(paren
-l_int|2
-comma
-op_amp
-id|irq2
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * External FPU? Set up irq13 if so, for&n;&t; * original braindamaged IBM FERR coupling.&n;&t; */
 r_if
 c_cond
