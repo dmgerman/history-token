@@ -3078,7 +3078,7 @@ c_func
 (paren
 id|dev
 comma
-id|ep-&gt;desc.bEndpointAddress
+id|ep
 )paren
 suffix:semicolon
 )brace

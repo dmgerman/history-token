@@ -1787,6 +1787,13 @@ id|dev-&gt;state
 op_assign
 id|USB_STATE_ATTACHED
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|dev-&gt;ep0.urb_list
+)paren
+suffix:semicolon
 id|dev-&gt;ep0.desc.bLength
 op_assign
 id|USB_DT_ENDPOINT_SIZE

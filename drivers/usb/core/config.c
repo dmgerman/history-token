@@ -345,6 +345,13 @@ op_amp
 id|endpoint-&gt;desc.wMaxPacketSize
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|endpoint-&gt;urb_list
+)paren
+suffix:semicolon
 multiline_comment|/* Skip over any Class Specific or Vendor Specific descriptors;&n;&t; * find the next endpoint or interface descriptor */
 id|endpoint-&gt;extra
 op_assign
