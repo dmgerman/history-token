@@ -170,7 +170,7 @@ suffix:semicolon
 multiline_comment|/* Address */
 DECL|member|tq
 r_struct
-id|hpsb_queue_struct
+id|work_struct
 id|tq
 suffix:semicolon
 multiline_comment|/* The task */
