@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * P6 specific Machine Check Exception Reporting&n; */
+multiline_comment|/*&n; * P6 specific Machine Check Exception Reporting&n; * (C) Copyright 2002 Alan Cox &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

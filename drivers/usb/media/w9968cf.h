@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; * Video4Linux driver for W996[87]CF JPEG USB Dual Mode Camera Chip.       *&n; *                                                                         *&n; * Copyright (C) 2002 2003 by Luca Risolia &lt;luca_ing@libero.it&gt;            *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * Video4Linux driver for W996[87]CF JPEG USB Dual Mode Camera Chip.       *&n; *                                                                         *&n; * Copyright (C) 2002-2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;  *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#ifndef _W9968CF_H_
 DECL|macro|_W9968CF_H_
 mdefine_line|#define _W9968CF_H_
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &quot;w9968cf_externaldef.h&quot;
@@ -257,8 +258,8 @@ DECL|macro|W9968CF_LARGEVIEW
 mdefine_line|#define W9968CF_LARGEVIEW      1 /* 0 disable, 1 enable */
 DECL|macro|W9968CF_UPSCALING
 mdefine_line|#define W9968CF_UPSCALING      0 /* 0 disable, 1 enable */
-DECL|macro|W9968CF_SENSOR_MONO
-mdefine_line|#define W9968CF_SENSOR_MONO    0 /* 0 not monochrome, 1 monochrome sensor */
+DECL|macro|W9968CF_MONOCHROME
+mdefine_line|#define W9968CF_MONOCHROME     0 /* 0 not monochrome, 1 monochrome sensor */
 DECL|macro|W9968CF_BRIGHTNESS
 mdefine_line|#define W9968CF_BRIGHTNESS     31000 /* from 0 to 65535 */
 DECL|macro|W9968CF_HUE
@@ -289,11 +290,13 @@ multiline_comment|/*************************************************************
 DECL|macro|W9968CF_MODULE_NAME
 mdefine_line|#define W9968CF_MODULE_NAME     &quot;V4L driver for W996[87]CF JPEG USB &quot; &bslash;&n;                                &quot;Dual Mode Camera Chip&quot;
 DECL|macro|W9968CF_MODULE_VERSION
-mdefine_line|#define W9968CF_MODULE_VERSION  &quot;v1.22&quot;
+mdefine_line|#define W9968CF_MODULE_VERSION  &quot;v1.25-basic&quot;
 DECL|macro|W9968CF_MODULE_AUTHOR
-mdefine_line|#define W9968CF_MODULE_AUTHOR   &quot;(C) 2002 2003 Luca Risolia&quot;
+mdefine_line|#define W9968CF_MODULE_AUTHOR   &quot;(C) 2002-2004 Luca Risolia&quot;
 DECL|macro|W9968CF_AUTHOR_EMAIL
-mdefine_line|#define W9968CF_AUTHOR_EMAIL    &quot;&lt;luca_ing@libero.it&gt;&quot;
+mdefine_line|#define W9968CF_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo.it&gt;&quot;
+DECL|macro|W9968CF_MODULE_LICENSE
+mdefine_line|#define W9968CF_MODULE_LICENSE  &quot;GPL&quot;
 DECL|variable|w9968cf_vppmod_present
 r_static
 id|u8
@@ -445,6 +448,8 @@ DECL|struct|w9968cf_frame_t
 r_struct
 id|w9968cf_frame_t
 (brace
+DECL|macro|W9968CF_HW_BUF_SIZE
+mdefine_line|#define W9968CF_HW_BUF_SIZE 640*480*2 /* buf.size of original frames */
 DECL|member|buffer
 r_void
 op_star
@@ -535,9 +540,10 @@ multiline_comment|/* private device identifier */
 DECL|member|v4ldev
 r_struct
 id|video_device
+op_star
 id|v4ldev
 suffix:semicolon
-multiline_comment|/* V4L structure */
+multiline_comment|/* -&gt; V4L structure */
 DECL|member|v4llist
 r_struct
 id|list_head
@@ -617,7 +623,7 @@ r_void
 op_star
 id|vpp_buffer
 suffix:semicolon
-multiline_comment|/* -&gt; helper buffer for post-processing routines */
+multiline_comment|/*-&gt; helper buf.for video post-processing routines */
 DECL|member|max_buffers
 id|u8
 id|max_buffers
@@ -664,13 +670,13 @@ r_struct
 id|video_picture
 id|picture
 suffix:semicolon
-multiline_comment|/* current window settings */
+multiline_comment|/* current picture settings */
 DECL|member|window
 r_struct
 id|video_window
 id|window
 suffix:semicolon
-multiline_comment|/* current picture settings */
+multiline_comment|/* current window settings */
 DECL|member|hw_depth
 id|u16
 id|hw_depth
@@ -694,8 +700,16 @@ comma
 multiline_comment|/* 0=negative sync pulse, 1=positive sync pulse */
 DECL|member|vs_polarity
 id|vs_polarity
-suffix:semicolon
+comma
 multiline_comment|/* 0=negative sync pulse, 1=positive sync pulse */
+DECL|member|start_cropx
+id|start_cropx
+comma
+multiline_comment|/* pixels from HS inactive edge to 1st cropped pixel*/
+DECL|member|start_cropy
+id|start_cropy
+suffix:semicolon
+multiline_comment|/* pixels from VS incative edge to 1st cropped pixel*/
 DECL|member|vpp_flag
 r_enum
 id|w9968cf_vpp_flag
@@ -727,31 +741,38 @@ DECL|member|streaming
 id|streaming
 suffix:semicolon
 multiline_comment|/* flag: yes=1, no=0 */
+DECL|member|sensor_initialized
+id|u8
+id|sensor_initialized
+suffix:semicolon
+multiline_comment|/* flag: yes=1, no=0 */
+multiline_comment|/* Determined by CMOS sensor type: */
 DECL|member|sensor
 r_int
 id|sensor
+comma
+multiline_comment|/* type of image sensor chip (CC_*) */
+DECL|member|monochrome
+id|monochrome
 suffix:semicolon
-multiline_comment|/* type of image CMOS sensor chip (CC_*) */
-multiline_comment|/* Determined by CMOS sensor type */
+multiline_comment|/* CMOS sensor is (probably) monochrome */
 DECL|member|maxwidth
 id|u16
 id|maxwidth
 comma
+multiline_comment|/* maximum width supported by the CMOS sensor */
 DECL|member|maxheight
 id|maxheight
 comma
+multiline_comment|/* maximum height supported by the CMOS sensor */
 DECL|member|minwidth
 id|minwidth
 comma
+multiline_comment|/* minimum width supported by the CMOS sensor */
 DECL|member|minheight
 id|minheight
-comma
-DECL|member|start_cropx
-id|start_cropx
-comma
-DECL|member|start_cropy
-id|start_cropy
 suffix:semicolon
+multiline_comment|/* minimum height supported by the CMOS sensor */
 DECL|member|auto_brt
 id|u8
 id|auto_brt
@@ -782,11 +803,6 @@ id|s8
 id|clockdiv
 suffix:semicolon
 multiline_comment|/* clock divisor */
-DECL|member|sensor_mono
-r_int
-id|sensor_mono
-suffix:semicolon
-multiline_comment|/* CMOS sensor is (probably) monochrome */
 multiline_comment|/* I2C interface to kernel */
 DECL|member|i2c_adapter
 r_struct
@@ -836,18 +852,12 @@ id|wait_queue
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|W9968CF_HW_BUF_SIZE
-mdefine_line|#define W9968CF_HW_BUF_SIZE 640*480*2 /* buf. size for original video frames */
-DECL|macro|SENSOR_FORMAT
-mdefine_line|#define SENSOR_FORMAT          VIDEO_PALETTE_UYVY
-DECL|macro|SENSOR_FATAL_ERROR
-mdefine_line|#define SENSOR_FATAL_ERROR(rc) ((rc) &lt; 0 &amp;&amp; (rc) != -EPERM)
-multiline_comment|/****************************************************************************&n; * Macros and other constants                                               *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; * Macros for debugging                                                     *&n; ****************************************************************************/
 DECL|macro|DBG
 macro_line|#undef DBG
 macro_line|#ifdef W9968CF_DEBUG
 DECL|macro|DBG
-macro_line|#&t;define DBG(level, fmt, args...) &bslash;&n;{ &bslash;&n;if ( ((specific_debug) &amp;&amp; (debug == (level))) || &bslash;&n;     ((!specific_debug) &amp;&amp; (debug &gt;= (level))) ) { &bslash;&n;&t;if ((level) == 1) &bslash;&n;&t;&t;err(fmt, ## args); &bslash;&n;&t;else if ((level) == 2 || (level) == 3) &bslash;&n;&t;&t;info(fmt, ## args); &bslash;&n;&t;else if ((level) == 4) &bslash;&n;&t;&t;warn(fmt, ## args); &bslash;&n;&t;else if ((level) &gt;= 5) &bslash;&n;&t;&t;info(&quot;[%s,%d] &quot; fmt, &bslash;&n;&t;&t;     __PRETTY_FUNCTION__, __LINE__ , ## args); &bslash;&n;} &bslash;&n;}
+macro_line|#&t;define DBG(level, fmt, args...) &bslash;&n;{ &bslash;&n;if ( ((specific_debug) &amp;&amp; (debug == (level))) || &bslash;&n;     ((!specific_debug) &amp;&amp; (debug &gt;= (level))) ) { &bslash;&n;&t;if ((level) == 1) &bslash;&n;&t;&t;err(fmt, ## args); &bslash;&n;&t;else if ((level) == 2 || (level) == 3) &bslash;&n;&t;&t;info(fmt, ## args); &bslash;&n;&t;else if ((level) == 4) &bslash;&n;&t;&t;warn(fmt, ## args); &bslash;&n;&t;else if ((level) &gt;= 5) &bslash;&n;&t;&t;info(&quot;[%s:%d] &quot; fmt, &bslash;&n;&t;&t;     __PRETTY_FUNCTION__, __LINE__ , ## args); &bslash;&n;} &bslash;&n;}
 macro_line|#else
 multiline_comment|/* Not debugging: nothing */
 DECL|macro|DBG
@@ -858,7 +868,7 @@ macro_line|#undef PDBG
 DECL|macro|PDBGG
 macro_line|#undef PDBGG
 DECL|macro|PDBG
-mdefine_line|#define PDBG(fmt, args...) info(&quot;[%s, %d] &quot;fmt, &bslash;&n;&t;                        __PRETTY_FUNCTION__, __LINE__ , ## args);
+mdefine_line|#define PDBG(fmt, args...) info(&quot;[%s:%d] &quot;fmt, &bslash;&n;&t;                        __PRETTY_FUNCTION__, __LINE__ , ## args);
 DECL|macro|PDBGG
 mdefine_line|#define PDBGG(fmt, args...) do {;} while(0); /* nothing: it&squot;s a placeholder */
 macro_line|#endif /* _W9968CF_H_ */

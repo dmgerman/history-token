@@ -213,6 +213,26 @@ r_int
 r_int
 id|amd_clock
 suffix:semicolon
+DECL|variable|amd_dma
+r_static
+r_char
+op_star
+id|amd_dma
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;MWDMA16&quot;
+comma
+l_string|&quot;UDMA33&quot;
+comma
+l_string|&quot;UDMA66&quot;
+comma
+l_string|&quot;UDMA100&quot;
+comma
+l_string|&quot;UDMA133&quot;
+)brace
+suffix:semicolon
 DECL|variable|amd_cyc2udma
 r_static
 r_int
@@ -255,6 +275,10 @@ comma
 l_int|7
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * AMD /proc entry.&n; */
+macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|amd_udma2cyc
 r_static
 r_int
@@ -281,30 +305,6 @@ comma
 l_int|15
 )brace
 suffix:semicolon
-DECL|variable|amd_dma
-r_static
-r_char
-op_star
-id|amd_dma
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;MWDMA16&quot;
-comma
-l_string|&quot;UDMA33&quot;
-comma
-l_string|&quot;UDMA66&quot;
-comma
-l_string|&quot;UDMA100&quot;
-comma
-l_string|&quot;UDMA133&quot;
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * AMD /proc entry.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|amd_base
 r_static
 r_int

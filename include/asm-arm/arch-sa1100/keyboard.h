@@ -20,14 +20,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|cerf_kbd_init_hw
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|kbd_init_hw
 r_static
 r_inline
@@ -64,21 +56,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
-r_if
-c_cond
-(paren
-id|machine_is_cerf
-c_func
-(paren
-)paren
-)paren
-id|cerf_kbd_init_hw
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#endif  /* _SA1100_KEYBOARD_H */
 eof

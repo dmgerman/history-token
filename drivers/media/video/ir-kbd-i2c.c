@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * keyboard input driver for i2c IR remote controls&n; *&n; * Copyright (c) 2000-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; * modified for PixelView (BT878P+W/FM) by&n; *      Michal Kochanowicz &lt;mkochano@pld.org.pl&gt;&n; *      Christoph Bartelmus &lt;lirc@bartelmus.de&gt;&n; * modified for KNC ONE TV Station/Anubis Typhoon TView Tuner by&n; *      Ulrich Mueller &lt;ulrich.mueller42@web.de&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -77,18 +78,18 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* debug level (0,1,2) */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
+multiline_comment|/* debug level (0,1,2) */
 DECL|macro|DEVNAME
 mdefine_line|#define DEVNAME &quot;ir-kbd-i2c&quot;
 DECL|macro|dprintk

@@ -1232,6 +1232,11 @@ id|aiptek-&gt;dev.id.version
 op_assign
 id|dev-&gt;descriptor.bcdDevice
 suffix:semicolon
+id|aiptek-&gt;dev.dev
+op_assign
+op_amp
+id|intf-&gt;dev
+suffix:semicolon
 id|aiptek-&gt;usbdev
 op_assign
 id|dev

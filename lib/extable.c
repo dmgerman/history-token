@@ -17,6 +17,7 @@ id|__stop___ex_table
 (braket
 )braket
 suffix:semicolon
+macro_line|#ifndef ARCH_HAS_SORT_EXTABLE
 multiline_comment|/*&n; * The exception table needs to be sorted so that the binary&n; * search that we use to find entries in it works properly.&n; * This is used both for the kernel exception table and for&n; * the exception tables of modules that get loaded.&n; */
 DECL|function|sort_extable
 r_void
@@ -136,6 +137,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
+macro_line|#ifndef ARCH_HAS_SEARCH_EXTABLE
 multiline_comment|/*&n; * Search one exception table for an entry corresponding to the&n; * given instruction address, and return the address of the entry,&n; * or NULL if none is found.&n; * We use a binary search, and thus we assume that the table is&n; * already sorted.&n; */
 r_const
 r_struct
@@ -176,9 +179,6 @@ id|exception_table_entry
 op_star
 id|mid
 suffix:semicolon
-r_int
-id|diff
-suffix:semicolon
 id|mid
 op_assign
 (paren
@@ -191,28 +191,13 @@ l_int|2
 op_plus
 id|first
 suffix:semicolon
-id|diff
-op_assign
+multiline_comment|/*&n;&t;&t; * careful, the distance between entries can be&n;&t;&t; * larger than 2GB:&n;&t;&t; */
+r_if
+c_cond
+(paren
 id|mid-&gt;insn
-op_minus
-id|value
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|diff
-op_eq
-l_int|0
-)paren
-r_return
-id|mid
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|diff
 OL
-l_int|0
+id|value
 )paren
 id|first
 op_assign
@@ -221,15 +206,27 @@ op_plus
 l_int|1
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|mid-&gt;insn
+OG
+id|value
+)paren
 id|last
 op_assign
 id|mid
 op_minus
 l_int|1
 suffix:semicolon
+r_else
+r_return
+id|mid
+suffix:semicolon
 )brace
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

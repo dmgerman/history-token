@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &quot;xattr.h&quot;
-DECL|macro|XATTR_SECURITY_PREFIX
-mdefine_line|#define XATTR_SECURITY_PREFIX &quot;security.&quot;
 r_static
 r_int
 DECL|function|devpts_xattr_security_list

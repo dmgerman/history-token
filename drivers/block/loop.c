@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -2747,6 +2748,11 @@ id|lo_flags
 op_or_assign
 id|LO_FLAGS_READ_ONLY
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2823,11 +2829,6 @@ op_assign
 id|mapping-&gt;a_ops
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we can&squot;t read - sorry. If we only can&squot;t write - well,&n;&t;&t; * it&squot;s going to be read-only.&n;&t;&t; */
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2857,10 +2858,6 @@ suffix:semicolon
 id|lo_flags
 op_or_assign
 id|LO_FLAGS_DO_BMAP
-suffix:semicolon
-id|error
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -4895,6 +4892,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|LOOP_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|LOOP_MAJOR
 )paren
 suffix:semicolon
 DECL|function|loop_register_transfer

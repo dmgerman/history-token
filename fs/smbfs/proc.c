@@ -5051,25 +5051,9 @@ c_cond
 (paren
 id|result
 )paren
-(brace
-id|PARANOIA
-c_func
-(paren
-l_string|&quot;%s/%s open failed, result=%d&bslash;n&quot;
-comma
-id|DENTRY_PATH
-c_func
-(paren
-id|dentry
-)paren
-comma
-id|result
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * A successful open means the path is still valid ...&n;&t;&t; */
 id|smb_renew_times
 c_func

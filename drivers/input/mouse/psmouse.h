@@ -252,6 +252,11 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+id|psmouse_rate
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|psmouse_resetafter
 suffix:semicolon
 macro_line|#endif /* _PSMOUSE_H */

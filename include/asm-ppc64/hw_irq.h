@@ -31,8 +31,18 @@ id|irq
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 r_extern
+r_int
+r_int
+id|local_get_flags
+c_func
+(paren
 r_void
-id|__no_use_sti
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|local_irq_disable
 c_func
 (paren
 r_void
@@ -40,58 +50,21 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__no_use_cli
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__no_use_restore_flags
+id|local_irq_restore
 c_func
 (paren
 r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|__no_use_save_flags
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__no_use_set_lost
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__no_lpq_restore_flags
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;&t;__no_use_cli()
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;&t;&t;__no_use_sti()
+mdefine_line|#define local_irq_enable()&t;local_irq_restore(1)
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(flags)&t;((flags) = __no_use_save_flags())
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__no_use_restore_flags((unsigned long)flags)
+mdefine_line|#define local_save_flags(flags)&t;((flags) = local_get_flags())
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;({local_save_flags(flags);local_irq_disable();})
+mdefine_line|#define local_irq_save(flags)&t;((flags) = local_irq_disable())
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;(local_get_flags() == 0)
 macro_line|#else
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(flags)&t;((flags) = mfmsr())
@@ -238,6 +211,8 @@ suffix:semicolon
 )brace
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)          __do_save_and_cli(&amp;flags)
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&bslash;&n;&t;!(flags &amp; MSR_EE);&t;&t;&t;&bslash;&n;})
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|macro|mask_irq
 mdefine_line|#define mask_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;disable) irq_desc[irq].handler-&gt;disable(irq);})

@@ -1,10 +1,4 @@
 multiline_comment|/*&n; *  NSA Security-Enhanced Linux (SELinux) security module&n; *&n; *  This file contains the SELinux hook function implementations.&n; *&n; *  Authors:  Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; *            Chris Vance, &lt;cvance@nai.com&gt;&n; *            Wayne Salamon, &lt;wsalamon@nai.com&gt;&n; *            James Morris &lt;jmorris@redhat.com&gt;&n; *&n; *  Copyright (C) 2001,2002 Networks Associates Technology, Inc.&n; *  Copyright (C) 2003 Red Hat, Inc., James Morris &lt;jmorris@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License version 2,&n; *      as published by the Free Software Foundation.&n; */
-DECL|macro|XATTR_SECURITY_PREFIX
-mdefine_line|#define XATTR_SECURITY_PREFIX &quot;security.&quot;
-DECL|macro|XATTR_SELINUX_SUFFIX
-mdefine_line|#define XATTR_SELINUX_SUFFIX &quot;selinux&quot;
-DECL|macro|XATTR_NAME_SELINUX
-mdefine_line|#define XATTR_NAME_SELINUX XATTR_SECURITY_PREFIX XATTR_SELINUX_SUFFIX
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -48,6 +42,10 @@ macro_line|#include &lt;net/af_unix.h&gt;&t;/* for Unix socket types */
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;objsec.h&quot;
 macro_line|#include &quot;netif.h&quot;
+DECL|macro|XATTR_SELINUX_SUFFIX
+mdefine_line|#define XATTR_SELINUX_SUFFIX &quot;selinux&quot;
+DECL|macro|XATTR_NAME_SELINUX
+mdefine_line|#define XATTR_NAME_SELINUX XATTR_SECURITY_PREFIX XATTR_SELINUX_SUFFIX
 macro_line|#ifdef CONFIG_SECURITY_SELINUX_DEVELOP
 DECL|variable|selinux_enforcing
 r_int

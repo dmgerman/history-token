@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/irq.h&gt;
+macro_line|#include &lt;asm/arch/udc.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|variable|lubbock_irq_enabled
@@ -323,6 +324,45 @@ id|IRQT_FALLING
 )paren
 suffix:semicolon
 )brace
+DECL|function|lubbock_udc_is_connected
+r_static
+r_int
+id|lubbock_udc_is_connected
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+id|LUB_MISC_RD
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|9
+)paren
+)paren
+op_eq
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|__initdata
+r_static
+r_struct
+id|pxa2xx_udc_mach_info
+id|udc_info
+id|__initdata
+op_assign
+(brace
+dot
+id|udc_is_connected
+op_assign
+id|lubbock_udc_is_connected
+comma
+singleline_comment|// no D+ pullup; lubbock can&squot;t connect/disconnect in software
+)brace
+suffix:semicolon
 DECL|variable|sa1111_resources
 r_static
 r_struct
@@ -429,7 +469,7 @@ comma
 suffix:semicolon
 DECL|function|lubbock_init
 r_static
-r_int
+r_void
 id|__init
 id|lubbock_init
 c_func
@@ -437,7 +477,16 @@ c_func
 r_void
 )paren
 (brace
-r_return
+id|pxa_set_udc_info
+c_func
+(paren
+op_amp
+id|udc_info
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
 id|platform_add_devices
 c_func
 (paren
@@ -451,13 +500,6 @@ id|devices
 )paren
 suffix:semicolon
 )brace
-DECL|variable|lubbock_init
-id|subsys_initcall
-c_func
-(paren
-id|lubbock_init
-)paren
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -642,6 +684,11 @@ id|INITIRQ
 c_func
 (paren
 id|lubbock_init_irq
+)paren
+id|INIT_MACHINE
+c_func
+(paren
+id|lubbock_init
 )paren
 id|MACHINE_END
 eof

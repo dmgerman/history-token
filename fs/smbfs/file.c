@@ -184,25 +184,9 @@ id|result
 OL
 l_int|0
 )paren
-(brace
-id|PARANOIA
-c_func
-(paren
-l_string|&quot;%s/%s open failed, error=%d&bslash;n&quot;
-comma
-id|DENTRY_PATH
-c_func
-(paren
-id|dentry
-)paren
-comma
-id|result
-)paren
-suffix:semicolon
 r_goto
 id|io_error
 suffix:semicolon
-)brace
 r_do
 (brace
 r_if

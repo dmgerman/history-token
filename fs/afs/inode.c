@@ -611,19 +611,13 @@ suffix:semicolon
 id|_leave
 c_func
 (paren
-l_string|&quot; = 0 [CB { v=%u x=%lu t=%u } c=%p]&quot;
+l_string|&quot; = 0 [CB { v=%u x=%lu t=%u }]&quot;
 comma
 id|vnode-&gt;cb_version
 comma
 id|vnode-&gt;cb_timeout.timo_jif
 comma
 id|vnode-&gt;cb_type
-comma
-macro_line|#ifdef AFS_CACHING_SUPPORT
-id|vnode-&gt;cache
-macro_line|#else
-l_int|NULL
-macro_line|#endif
 )paren
 suffix:semicolon
 r_return

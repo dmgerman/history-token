@@ -48,6 +48,8 @@ DECL|macro|SONY_CLIE_NZ90V_ID
 mdefine_line|#define SONY_CLIE_NZ90V_ID&t;&t;0x00E9
 DECL|macro|SONY_CLIE_UX50_ID
 mdefine_line|#define SONY_CLIE_UX50_ID&t;&t;0x0144
+DECL|macro|SONY_CLIE_TJ25_ID
+mdefine_line|#define SONY_CLIE_TJ25_ID&t;&t;0x0169
 DECL|macro|SAMSUNG_VENDOR_ID
 mdefine_line|#define SAMSUNG_VENDOR_ID&t;&t;0x04E8
 DECL|macro|SAMSUNG_SCH_I330_ID

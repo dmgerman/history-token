@@ -10709,6 +10709,11 @@ id|bprm
 suffix:semicolon
 id|out_mm
 suffix:colon
+r_if
+c_cond
+(paren
+id|bprm.mm
+)paren
 id|mmdrop
 c_func
 (paren

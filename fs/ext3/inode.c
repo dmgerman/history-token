@@ -11257,6 +11257,12 @@ op_and_assign
 op_complement
 id|EXT3_JOURNAL_DATA_FL
 suffix:semicolon
+id|ext3_set_aops
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|journal_unlock_updates
 c_func
 (paren
