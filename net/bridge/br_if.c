@@ -1401,6 +1401,12 @@ id|dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
+op_logical_and
+id|netif_carrier_ok
+c_func
+(paren
+id|dev
+)paren
 )paren
 id|br_stp_enable_port
 c_func
