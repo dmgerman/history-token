@@ -325,26 +325,24 @@ id|kdev_t
 id|dev
 )paren
 suffix:semicolon
-r_extern
+DECL|function|get_start_sect
+r_static
+r_inline
 r_int
 r_int
 id|get_start_sect
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
+(brace
+r_return
+id|bdev-&gt;bd_offset
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|get_nr_sects
-c_func
-(paren
-id|kdev_t
-id|dev
-)paren
-suffix:semicolon
+)brace
 macro_line|#endif  /*  __KERNEL__  */
 macro_line|#ifdef CONFIG_SOLARIS_X86_PARTITION
 DECL|macro|SOLARIS_X86_NUMSLICE

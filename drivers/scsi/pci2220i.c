@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -12841,7 +12840,9 @@ id|Scsi_Disk
 op_star
 id|disk
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|dev
 comma
 r_int

@@ -6409,6 +6409,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|speedo_tx_buffer_gc

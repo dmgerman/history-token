@@ -3618,9 +3618,6 @@ multiline_comment|/*&n;&t; * update_process_times() expects us to have done irq_
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|smp_local_timer_interrupt
@@ -3633,9 +3630,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if

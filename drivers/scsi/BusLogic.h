@@ -1,11 +1,6 @@
 multiline_comment|/*&n;&n;  Linux Driver for BusLogic MultiMaster and FlashPoint SCSI Host Adapters&n;&n;  Copyright 1995-1998 by Leonard N. Zubkoff &lt;lnz@dandelion.com&gt;&n;&n;  This program is free software; you may redistribute and/or modify it under&n;  the terms of the GNU General Public License Version 2 as published by the&n;  Free Software Foundation.&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY&n;  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n;  for complete details.&n;&n;  The author respectfully requests that any modifications to this software be&n;  sent directly to him for evaluation and testing.&n;&n;  Special thanks to Wayne Yen, Jin-Lon Hon, and Alex Win of BusLogic, whose&n;  advice has been invaluable, to David Gentzel, for writing the original Linux&n;  BusLogic driver, and to Paul Gortmaker, for being such a dedicated test site.&n;&n;  Finally, special thanks to Mylex/BusLogic for making the FlashPoint SCCB&n;  Manager available as freely redistributable source code.&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n;  Define types for some of the structures that interface with the rest&n;  of the Linux Kernel and SCSI Subsystem.&n;*/
-DECL|typedef|KernelDevice_T
-r_typedef
-id|kdev_t
-id|KernelDevice_T
-suffix:semicolon
 DECL|typedef|ProcessorFlags_T
 r_typedef
 r_int
@@ -143,7 +138,9 @@ c_func
 id|SCSI_Disk_T
 op_star
 comma
-id|KernelDevice_T
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star

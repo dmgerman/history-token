@@ -352,13 +352,10 @@ id|hfs_cat_entry
 id|entry
 suffix:semicolon
 multiline_comment|/* Fake catalog entry */
-DECL|member|lock
-r_int
-id|lock
-suffix:semicolon
-DECL|member|wait
-id|hfs_wait_queue
-id|wait
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
 suffix:semicolon
 DECL|member|dirt
 r_int

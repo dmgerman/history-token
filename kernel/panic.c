@@ -265,7 +265,7 @@ id|caller
 )paren
 suffix:semicolon
 macro_line|#endif
-id|sti
+id|__sti
 c_func
 (paren
 )paren
