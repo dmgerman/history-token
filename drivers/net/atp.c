@@ -1,5 +1,5 @@
 multiline_comment|/* atp.c: Attached (pocket) ethernet adapter driver for linux. */
-multiline_comment|/*&n;&t;This is a driver for commonly OEM pocket (parallel port)&n;&t;ethernet adapters based on the Realtek RTL8002 and RTL8012 chips.&n;&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;Copyright 1993 United States Government as represented by the Director,&n;&t;National Security Agency.  Copyright 1994-2000 retained by the original&n;&t;author, Donald Becker. The timer-based reset code was supplied in 1995&n;&t;by Bill Carlson, wwc@super.org.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/atp.html&n;&n;&n;&t;Modular support/softnet added by Alan Cox.&n;&n;*/
+multiline_comment|/*&n;&t;This is a driver for commonly OEM pocket (parallel port)&n;&t;ethernet adapters based on the Realtek RTL8002 and RTL8012 chips.&n;&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;Copyright 1993 United States Government as represented by the Director,&n;&t;National Security Agency.  Copyright 1994-2000 retained by the original&n;&t;author, Donald Becker. The timer-based reset code was supplied in 1995&n;&t;by Bill Carlson, wwc@super.org.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/atp.html&n;&n;&n;&t;Modular support/softnet added by Alan Cox.&n;&t;_bit abuse fixed up by Alan Cox&n;&n;*/
 DECL|variable|versionA
 r_static
 r_const
@@ -8,7 +8,7 @@ id|versionA
 (braket
 )braket
 op_assign
-l_string|&quot;atp.c:v1.09 8/9/2000 Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+l_string|&quot;atp.c:v1.09=ac 2002/10/01 Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
 suffix:semicolon
 DECL|variable|versionB
 r_static
@@ -211,8 +211,6 @@ comma
 l_string|&quot;ATP tranceiver(s) (0=internal, 1=external)&quot;
 )paren
 suffix:semicolon
-DECL|macro|RUN_AT
-mdefine_line|#define RUN_AT(x) (jiffies + (x))
 multiline_comment|/* The number of low I/O ports used by the ethercard. */
 DECL|macro|ETHERCARD_TOTAL_SIZE
 mdefine_line|#define ETHERCARD_TOTAL_SIZE&t;3
@@ -542,7 +540,7 @@ id|net_device
 op_star
 id|root_atp_dev
 suffix:semicolon
-multiline_comment|/* Check for a network adapter of this type, and return &squot;0&squot; iff one exists.&n;   If dev-&gt;base_addr == 0, probe all likely locations.&n;   If dev-&gt;base_addr == 1, always return failure.&n;   If dev-&gt;base_addr == 2, allocate space for the device and return success&n;   (detachable devices only).&n;   */
+multiline_comment|/* Check for a network adapter of this type, and return &squot;0&squot; iff one exists.&n;   If dev-&gt;base_addr == 0, probe all likely locations.&n;   If dev-&gt;base_addr == 1, always return failure.&n;   If dev-&gt;base_addr == 2, allocate space for the device and return success&n;   (detachable devices only).&n;   &n;   FIXME: we should use the parport layer for this&n;   */
 DECL|function|atp_init
 r_static
 r_int
@@ -1510,8 +1508,7 @@ c_func
 r_int
 id|ioaddr
 comma
-r_int
-r_int
+id|u32
 id|cmd
 )paren
 (brace
@@ -1537,13 +1534,14 @@ l_int|0
 r_char
 id|outval
 op_assign
-id|test_bit
-c_func
 (paren
-id|num_bits
-comma
-op_amp
 id|cmd
+op_amp
+(paren
+l_int|1
+op_lshift
+id|num_bits
+)paren
 )paren
 ques
 c_cond
@@ -1682,11 +1680,9 @@ id|lp-&gt;timer
 suffix:semicolon
 id|lp-&gt;timer.expires
 op_assign
-id|RUN_AT
-c_func
-(paren
+id|jiffies
+op_plus
 id|TIMED_CHECKER
-)paren
 suffix:semicolon
 id|lp-&gt;timer.data
 op_assign
@@ -3067,11 +3063,9 @@ c_func
 op_amp
 id|lp-&gt;timer
 comma
-id|RUN_AT
-c_func
-(paren
+id|jiffies
+op_plus
 id|TIMED_CHECKER
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3361,11 +3355,9 @@ id|lp-&gt;lock
 suffix:semicolon
 id|lp-&gt;timer.expires
 op_assign
-id|RUN_AT
-c_func
-(paren
+id|jiffies
+op_plus
 id|TIMED_CHECKER
-)paren
 suffix:semicolon
 id|add_timer
 c_func
@@ -4225,9 +4217,10 @@ id|mclist
 op_assign
 id|mclist-&gt;next
 )paren
-id|set_bit
-c_func
-(paren
+(brace
+r_int
+id|filterbit
+op_assign
 id|ether_crc_le
 c_func
 (paren
@@ -4237,10 +4230,27 @@ id|mclist-&gt;dmi_addr
 )paren
 op_amp
 l_int|0x3f
-comma
+suffix:semicolon
 id|mc_filter
+(braket
+id|filterbit
+op_rshift
+l_int|5
+)braket
+op_or_assign
+id|cpu_to_le32
+c_func
+(paren
+l_int|1
+op_lshift
+(paren
+id|filterbit
+op_amp
+l_int|31
+)paren
 )paren
 suffix:semicolon
+)brace
 id|new_mode
 op_assign
 id|CMR2h_Normal
