@@ -16,6 +16,6 @@ r_int
 id|cycles_t
 suffix:semicolon
 DECL|macro|get_cycles
-mdefine_line|#define get_cycles() &bslash;&n;({&t;cycles_t ret; &bslash;&n;&t;__asm__(&quot;rd&t;%%tick, %0&quot; : &quot;=r&quot; (ret)); &bslash;&n;&t;ret; &bslash;&n;})
+mdefine_line|#define get_cycles() &bslash;&n;({&t;cycles_t ret; &bslash;&n;&t;__asm__ __volatile__(&quot;rd&t;%%tick, %0&quot; : &quot;=r&quot; (ret)); &bslash;&n;&t;ret; &bslash;&n;})
 macro_line|#endif
 eof
