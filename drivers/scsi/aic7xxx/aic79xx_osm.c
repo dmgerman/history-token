@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#153 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#154 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -444,33 +444,31 @@ suffix:semicolon
 multiline_comment|/*&n; * Certain PCI motherboards will scan PCI devices from highest to lowest,&n; * others scan from lowest to highest, and they tend to do all kinds of&n; * strange things when they come into contact with PCI bridge chips.  The&n; * net result of all this is that the PCI card that is actually used to boot&n; * the machine is very hard to detect.  Most motherboards go from lowest&n; * PCI slot number to highest, and the first SCSI controller found is the&n; * one you boot from.  The only exceptions to this are when a controller&n; * has its BIOS disabled.  So, we by default sort all of our SCSI controllers&n; * from lowest PCI slot number to highest PCI slot number.  We also force&n; * all controllers with their BIOS disabled to the end of the list.  This&n; * works on *almost* all computers.  Where it doesn&squot;t work, we have this&n; * option.  Setting this option to non-0 will reverse the order of the sort&n; * to highest first, then lowest, but will still leave cards with their BIOS&n; * disabled at the very end.  That should fix everyone up unless there are&n; * really strange cirumstances.&n; */
 DECL|variable|aic79xx_reverse_scan
 r_static
-r_int
+r_uint32
 id|aic79xx_reverse_scan
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Should we force EXTENDED translation on a controller.&n; *     0 == Use whatever is in the SEEPROM or default to off&n; *     1 == Use whatever is in the SEEPROM or default to on&n; */
 DECL|variable|aic79xx_extended
 r_static
 r_uint32
 id|aic79xx_extended
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/*&n; * PCI bus parity checking of the Adaptec controllers.  This is somewhat&n; * dubious at best.  To my knowledge, this option has never actually&n; * solved a PCI parity problem, but on certain machines with broken PCI&n; * chipset configurations, it can generate tons of false error messages.&n; * It&squot;s included in the driver for completeness.&n; *   0 = Shut off PCI parity check&n; *  -1 = Normal polarity pci parity checking&n; *   1 = reverse polarity pci parity checking&n; *&n; * NOTE: you can&squot;t actually pass -1 on the lilo prompt.  So, to set this&n; * variable to -1 you would actually want to simply pass the variable&n; * name without a number.  That will invert the 0 which will result in&n; * -1.&n; */
+multiline_comment|/*&n; * PCI bus parity checking of the Adaptec controllers.  This is somewhat&n; * dubious at best.  To my knowledge, this option has never actually&n; * solved a PCI parity problem, but on certain machines with broken PCI&n; * chipset configurations, it can generate tons of false error messages.&n; * It&squot;s included in the driver for completeness.&n; *   0&t;   = Shut off PCI parity check&n; *   non-0 = Enable PCI parity check&n; *&n; * NOTE: you can&squot;t actually pass -1 on the lilo prompt.  So, to set this&n; * variable to -1 you would actually want to simply pass the variable&n; * name without a number.  That will invert the 0 which will result in&n; * -1.&n; */
 DECL|variable|aic79xx_pci_parity
 r_static
-r_int
+r_uint32
 id|aic79xx_pci_parity
 op_assign
+op_complement
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * There are lots of broken chipsets in the world.  Some of them will&n; * violate the PCI spec when we issue byte sized memory writes to our&n; * controller.  I/O mapped register access, if allowed by the given&n; * platform, will work in almost all cases.&n; */
 DECL|variable|aic79xx_allow_memio
-r_int
+r_uint32
 id|aic79xx_allow_memio
 op_assign
-l_int|1
+op_complement
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * aic79xx_detect() has been run, so register all device arrivals&n; * immediately with the system rather than deferring to the sorted&n; * attachment performed by aic79xx_detect().&n; */
 DECL|variable|aic79xx_detect_complete
@@ -480,14 +478,12 @@ suffix:semicolon
 multiline_comment|/*&n; * So that we can set how long each device is given as a selection timeout.&n; * The table of values goes like this:&n; *   0 - 256ms&n; *   1 - 128ms&n; *   2 - 64ms&n; *   3 - 32ms&n; * We default to 256ms because some older devices need a longer time&n; * to respond to initial selection.&n; */
 DECL|variable|aic79xx_seltime
 r_static
-r_int
+r_uint32
 id|aic79xx_seltime
-op_assign
-l_int|0x00
 suffix:semicolon
 multiline_comment|/*&n; * Certain devices do not perform any aging on commands.  Should the&n; * device be saturated by commands in one portion of the disk, it is&n; * possible for transactions on far away sectors to never be serviced.&n; * To handle these devices, we can periodically send an ordered tag to&n; * force all outstanding transactions to be serviced prior to a new&n; * transaction.&n; */
 DECL|variable|aic79xx_periodic_otag
-r_int
+r_uint32
 id|aic79xx_periodic_otag
 suffix:semicolon
 multiline_comment|/*&n; * Module information and settable options.&n; */
@@ -7733,19 +7729,8 @@ id|i
 dot
 id|flag
 )paren
-op_assign
-op_complement
-(paren
-op_star
-(paren
-id|options
-(braket
-id|i
-)braket
-dot
-id|flag
-)paren
-)paren
+op_xor_assign
+l_int|0xFFFFFFFF
 suffix:semicolon
 )brace
 )brace
@@ -7764,7 +7749,7 @@ id|aic79xx_setup
 suffix:semicolon
 macro_line|#endif
 DECL|variable|aic79xx_verbose
-r_int
+r_uint32
 id|aic79xx_verbose
 suffix:semicolon
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.c#215 $&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Sources include the Adaptec 1740 driver (aha1740.c), the Ultrastor 24F&n; * driver (ultrastor.c), various Linux kernel source, the Adaptec EISA&n; * config file (!adp7771.cfg), the Adaptec AHA-2740A Series User&squot;s Guide,&n; * the Linux Kernel Hacker&squot;s Guide, Writing a SCSI Device Driver for Linux,&n; * the Adaptec 1542 driver (aha1542.c), the Adaptec EISA overlay file&n; * (adp7770.ovl), the Adaptec AHA-2740 Series Technical Reference Manual,&n; * the Adaptec AIC-7770 Data Book, the ANSI SCSI specification, the&n; * ANSI SCSI-2 specification (draft 10c), ...&n; *&n; * --------------------------------------------------------------------------&n; *&n; *  Modifications by Daniel M. Eischen (deischen@iworks.InterWorks.org):&n; *&n; *  Substantially modified to include support for wide and twin bus&n; *  adapters, DMAing of SCBs, tagged queueing, IRQ sharing, bug fixes,&n; *  SCB paging, and other rework of the code.&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; *---------------------------------------------------------------------------&n; *&n; *  Thanks also go to (in alphabetical order) the following:&n; *&n; *    Rory Bolt     - Sequencer bug fixes&n; *    Jay Estabrook - Initial DEC Alpha support&n; *    Doug Ledford  - Much needed abort/reset bug fixes&n; *    Kai Makisara  - DMAing of SCBs&n; *&n; *  A Boot time option was also added for not resetting the scsi bus.&n; *&n; *    Form:  aic7xxx=extended&n; *           aic7xxx=no_reset&n; *           aic7xxx=verbose&n; *&n; *  Daniel M. Eischen, deischen@iworks.InterWorks.org, 1/23/97&n; *&n; *  Id: aic7xxx.c,v 4.1 1997/06/12 08:23:42 deang Exp&n; */
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.c#216 $&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Sources include the Adaptec 1740 driver (aha1740.c), the Ultrastor 24F&n; * driver (ultrastor.c), various Linux kernel source, the Adaptec EISA&n; * config file (!adp7771.cfg), the Adaptec AHA-2740A Series User&squot;s Guide,&n; * the Linux Kernel Hacker&squot;s Guide, Writing a SCSI Device Driver for Linux,&n; * the Adaptec 1542 driver (aha1542.c), the Adaptec EISA overlay file&n; * (adp7770.ovl), the Adaptec AHA-2740 Series Technical Reference Manual,&n; * the Adaptec AIC-7770 Data Book, the ANSI SCSI specification, the&n; * ANSI SCSI-2 specification (draft 10c), ...&n; *&n; * --------------------------------------------------------------------------&n; *&n; *  Modifications by Daniel M. Eischen (deischen@iworks.InterWorks.org):&n; *&n; *  Substantially modified to include support for wide and twin bus&n; *  adapters, DMAing of SCBs, tagged queueing, IRQ sharing, bug fixes,&n; *  SCB paging, and other rework of the code.&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; *---------------------------------------------------------------------------&n; *&n; *  Thanks also go to (in alphabetical order) the following:&n; *&n; *    Rory Bolt     - Sequencer bug fixes&n; *    Jay Estabrook - Initial DEC Alpha support&n; *    Doug Ledford  - Much needed abort/reset bug fixes&n; *    Kai Makisara  - DMAing of SCBs&n; *&n; *  A Boot time option was also added for not resetting the scsi bus.&n; *&n; *    Form:  aic7xxx=extended&n; *           aic7xxx=no_reset&n; *           aic7xxx=verbose&n; *&n; *  Daniel M. Eischen, deischen@iworks.InterWorks.org, 1/23/97&n; *&n; *  Id: aic7xxx.c,v 4.1 1997/06/12 08:23:42 deang Exp&n; */
 multiline_comment|/*&n; * Further driver modifications made by Doug Ledford &lt;dledford@redhat.com&gt;&n; *&n; * Copyright (c) 1997-1999 Doug Ledford&n; *&n; * These changes are released under the same licensing terms as the FreeBSD&n; * driver written by Justin Gibbs.  Please see his Copyright notice above&n; * for the exact terms and conditions covering my changes as well as the&n; * warranty statement.&n; *&n; * Modifications made to the aic7xxx.c,v 4.1 driver from Dan Eischen include&n; * but are not limited to:&n; *&n; *  1: Import of the latest FreeBSD sequencer code for this driver&n; *  2: Modification of kernel code to accommodate different sequencer semantics&n; *  3: Extensive changes throughout kernel portion of driver to improve&n; *     abort/reset processing and error hanndling&n; *  4: Other work contributed by various people on the Internet&n; *  5: Changes to printk information and verbosity selection code&n; *  6: General reliability related changes, especially in IRQ management&n; *  7: Modifications to the default probe/attach order for supported cards&n; *  8: SMP friendliness has been improved&n; *&n; */
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
@@ -324,25 +324,22 @@ suffix:semicolon
 multiline_comment|/*&n; * Certain PCI motherboards will scan PCI devices from highest to lowest,&n; * others scan from lowest to highest, and they tend to do all kinds of&n; * strange things when they come into contact with PCI bridge chips.  The&n; * net result of all this is that the PCI card that is actually used to boot&n; * the machine is very hard to detect.  Most motherboards go from lowest&n; * PCI slot number to highest, and the first SCSI controller found is the&n; * one you boot from.  The only exceptions to this are when a controller&n; * has its BIOS disabled.  So, we by default sort all of our SCSI controllers&n; * from lowest PCI slot number to highest PCI slot number.  We also force&n; * all controllers with their BIOS disabled to the end of the list.  This&n; * works on *almost* all computers.  Where it doesn&squot;t work, we have this&n; * option.  Setting this option to non-0 will reverse the order of the sort&n; * to highest first, then lowest, but will still leave cards with their BIOS&n; * disabled at the very end.  That should fix everyone up unless there are&n; * really strange cirumstances.&n; */
 DECL|variable|aic7xxx_reverse_scan
 r_static
-r_int
+r_uint32
 id|aic7xxx_reverse_scan
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Should we force EXTENDED translation on a controller.&n; *     0 == Use whatever is in the SEEPROM or default to off&n; *     1 == Use whatever is in the SEEPROM or default to on&n; */
 DECL|variable|aic7xxx_extended
 r_static
 r_uint32
 id|aic7xxx_extended
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/*&n; * PCI bus parity checking of the Adaptec controllers.  This is somewhat&n; * dubious at best.  To my knowledge, this option has never actually&n; * solved a PCI parity problem, but on certain machines with broken PCI&n; * chipset configurations, it can generate tons of false error messages.&n; * It&squot;s included in the driver for completeness.&n; *   0 = Shut off PCI parity check&n; *  -1 = Normal polarity pci parity checking&n; *   1 = reverse polarity pci parity checking&n; *&n; * NOTE: you can&squot;t actually pass -1 on the lilo prompt.  So, to set this&n; * variable to -1 you would actually want to simply pass the variable&n; * name without a number.  That will invert the 0 which will result in&n; * -1.&n; */
+multiline_comment|/*&n; * PCI bus parity checking of the Adaptec controllers.  This is somewhat&n; * dubious at best.  To my knowledge, this option has never actually&n; * solved a PCI parity problem, but on certain machines with broken PCI&n; * chipset configurations where stray PCI transactions with bad parity are&n; * the norm rather than the exception, the error messages can be overwelming.&n; * It&squot;s included in the driver for completeness.&n; *   0&t;   = Shut off PCI parity check&n; *   non-0 = reverse polarity pci parity checking&n; */
 DECL|variable|aic7xxx_pci_parity
 r_static
-r_int
+r_uint32
 id|aic7xxx_pci_parity
 op_assign
+op_complement
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Certain newer motherboards have put new PCI based devices into the&n; * IO spaces that used to typically be occupied by VLB or EISA cards.&n; * This overlap can cause these newer motherboards to lock up when scanned&n; * for older EISA and VLB devices.  Setting this option to non-0 will&n; * cause the driver to skip scanning for any VLB or EISA controllers and&n; * only support the PCI controllers.  NOTE: this means that if the kernel&n; * os compiled with PCI support disabled, then setting this to non-0&n; * would result in never finding any devices :)&n; */
@@ -351,26 +348,28 @@ DECL|macro|CONFIG_AIC7XXX_PROBE_EISA_VL
 mdefine_line|#define CONFIG_AIC7XXX_PROBE_EISA_VL n
 macro_line|#endif
 macro_line|#if CONFIG_AIC7XXX_PROBE_EISA_VL == n
-DECL|variable|aic7xxx_no_probe
+DECL|variable|aic7xxx_probe_eisa_vl
 r_static
-r_int
-id|aic7xxx_no_probe
-op_assign
-l_int|1
+r_uint32
+id|aic7xxx_probe_eisa_vl
 suffix:semicolon
 macro_line|#else
-DECL|variable|aic7xxx_no_probe
+DECL|variable|aic7xxx_probe_eisa_vl
 r_static
-r_int
-id|aic7xxx_no_probe
+r_uint32
+id|aic7xxx_probe_eisa_vl
+op_assign
+op_complement
+l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * There are lots of broken chipsets in the world.  Some of them will&n; * violate the PCI spec when we issue byte sized memory writes to our&n; * controller.  I/O mapped register access, if allowed by the given&n; * platform, will work in almost all cases.&n; */
 DECL|variable|aic7xxx_allow_memio
-r_int
+r_uint32
 id|aic7xxx_allow_memio
 op_assign
-l_int|1
+op_complement
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * aic7xxx_detect() has been run, so register all device arrivals&n; * immediately with the system rather than deferring to the sorted&n; * attachment performed by aic7xxx_detect().&n; */
 DECL|variable|aic7xxx_detect_complete
@@ -380,14 +379,12 @@ suffix:semicolon
 multiline_comment|/*&n; * So that we can set how long each device is given as a selection timeout.&n; * The table of values goes like this:&n; *   0 - 256ms&n; *   1 - 128ms&n; *   2 - 64ms&n; *   3 - 32ms&n; * We default to 256ms because some older devices need a longer time&n; * to respond to initial selection.&n; */
 DECL|variable|aic7xxx_seltime
 r_static
-r_int
+r_uint32
 id|aic7xxx_seltime
-op_assign
-l_int|0x00
 suffix:semicolon
 multiline_comment|/*&n; * Certain devices do not perform any aging on commands.  Should the&n; * device be saturated by commands in one portion of the disk, it is&n; * possible for transactions on far away sectors to never be serviced.&n; * To handle these devices, we can periodically send an ordered tag to&n; * force all outstanding transactions to be serviced prior to a new&n; * transaction.&n; */
 DECL|variable|aic7xxx_periodic_otag
-r_int
+r_uint32
 id|aic7xxx_periodic_otag
 suffix:semicolon
 multiline_comment|/*&n; * Module information and settable options.&n; */
@@ -448,7 +445,8 @@ l_string|&quot;period delimited, options string.&bslash;n&quot;
 l_string|&quot;&t;verbose&t;&t;&t;Enable verbose/diagnostic logging&bslash;n&quot;
 l_string|&quot;&t;allow_memio&t;&t;Allow device registers to be memory mapped&bslash;n&quot;
 l_string|&quot;&t;debug&t;&t;&t;Bitmask of debug values to enable&bslash;n&quot;
-l_string|&quot;&t;no_probe&t;&t;Disable EISA/VLB controller probing&bslash;n&quot;
+l_string|&quot;&t;no_probe&t;&t;Toggle EISA/VLB controller probing&bslash;n&quot;
+l_string|&quot;&t;eisa_vl_probe&t;&t;Toggle EISA/VLB controller probing&bslash;n&quot;
 l_string|&quot;&t;no_reset&t;&t;Supress initial bus resets&bslash;n&quot;
 l_string|&quot;&t;extended&t;&t;Enable extended geometry on all controllers&bslash;n&quot;
 l_string|&quot;&t;periodic_otag&t;&t;Send an ordered tagged transaction&bslash;n&quot;
@@ -465,10 +463,10 @@ l_string|&quot;&t;&t;&t;&t;(0/256ms,1/128ms,2/64ms,3/32ms)&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;Sample /etc/modules.conf line:&bslash;n&quot;
 l_string|&quot;&t;&t;Toggle EISA/VLB probing&bslash;n&quot;
-l_string|&quot;&t;&t;Set tag depth on Controller 1/Target 2 to 10 tags&bslash;n&quot;
+l_string|&quot;&t;&t;Set tag depth on Controller 1/Target 1 to 10 tags&bslash;n&quot;
 l_string|&quot;&t;&t;Shorten the selection timeout to 128ms&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;&t;options aic7xxx &squot;aic7xxx=no_probe.tag_info:{{}.{..10}}.seltime:1&squot;&bslash;n&quot;
+l_string|&quot;&t;options aic7xxx &squot;aic7xxx=eisa_vl_probe.tag_info:{{}.{.10}}.seltime:1&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2525,8 +2523,8 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|aic7xxx_no_probe
-op_eq
+id|aic7xxx_probe_eisa_vl
+op_ne
 l_int|0
 )paren
 id|aic7770_linux_probe
@@ -5547,7 +5545,14 @@ comma
 l_string|&quot;no_probe&quot;
 comma
 op_amp
-id|aic7xxx_no_probe
+id|aic7xxx_probe_eisa_vl
+)brace
+comma
+(brace
+l_string|&quot;probe_eisa_vlb&quot;
+comma
+op_amp
+id|aic7xxx_probe_eisa_vl
 )brace
 comma
 (brace
@@ -5881,19 +5886,8 @@ id|i
 dot
 id|flag
 )paren
-op_assign
-op_complement
-(paren
-op_star
-(paren
-id|options
-(braket
-id|i
-)braket
-dot
-id|flag
-)paren
-)paren
+op_xor_assign
+l_int|0xFFFFFFFF
 suffix:semicolon
 )brace
 )brace
@@ -5912,7 +5906,7 @@ id|aic7xxx_setup
 suffix:semicolon
 macro_line|#endif
 DECL|variable|aic7xxx_verbose
-r_int
+r_uint32
 id|aic7xxx_verbose
 suffix:semicolon
 r_int
