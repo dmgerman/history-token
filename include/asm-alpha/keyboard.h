@@ -126,8 +126,9 @@ multiline_comment|/* Some stoneage hardware needs delays after some operations. 
 DECL|macro|kbd_pause
 mdefine_line|#define kbd_pause() do { } while(0)
 multiline_comment|/*&n; * Machine specific bits for the PS/2 driver&n; */
+multiline_comment|/* Jensen puts this at 9, everyone else at the standard 12.  */
 DECL|macro|AUX_IRQ
-mdefine_line|#define AUX_IRQ 12
+mdefine_line|#define AUX_IRQ  (RTC_PORT(0) == 0x170 ? 9 : 12)
 DECL|macro|aux_request_irq
 mdefine_line|#define aux_request_irq(hand, dev_id)                                  &bslash;&n;       request_irq(AUX_IRQ, hand, SA_SHIRQ, &quot;PS/2 Mouse&quot;, dev_id)
 DECL|macro|aux_free_irq

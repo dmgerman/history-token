@@ -3,9 +3,6 @@ DECL|macro|__ALPHA_JENSEN_H
 mdefine_line|#define __ALPHA_JENSEN_H
 macro_line|#include &lt;asm/compiler.h&gt;
 multiline_comment|/*&n; * Defines for the AlphaPC EISA IO and memory address space.&n; */
-multiline_comment|/* The Jensen is strange */
-DECL|macro|AUX_IRQ
-mdefine_line|#define AUX_IRQ (9)
 multiline_comment|/*&n; * NOTE! The memory operations do not set any memory barriers, as it&squot;s&n; * not needed for cases like a frame buffer that is essentially memory-like.&n; * You need to do them by hand if the operations depend on ordering.&n; *&n; * Similarly, the port IO operations do a &quot;mb&quot; only after a write operation:&n; * if an mb is needed before (as in the case of doing memory mapped IO&n; * first, and then a port IO operation to the same device), it needs to be&n; * done by hand.&n; *&n; * After the above has bitten me 100 times, I&squot;ll give up and just do the&n; * mb all the time, but right now I&squot;m hoping this will work out.  Avoiding&n; * mb&squot;s may potentially be a noticeable speed improvement, but I can&squot;t&n; * honestly say I&squot;ve tested it.&n; *&n; * Handling interrupts that need to do mb&squot;s to synchronize to non-interrupts&n; * is another fun race area.  Don&squot;t do it (because if you do, I&squot;ll have to&n; * do *everything* with interrupts disabled, ugh).&n; */
 multiline_comment|/*&n; * EISA Interrupt Acknowledge address&n; */
 DECL|macro|EISA_INTA
