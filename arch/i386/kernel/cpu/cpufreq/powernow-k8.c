@@ -94,7 +94,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Return 1 if the pending bit is set. Unless we just instructed the processor&n; * to transition to a new state, seeing this bit set is really bad news.&n; */
 DECL|function|pending_bit_stuck
 r_static
-r_inline
 r_int
 id|pending_bit_stuck
 c_func
@@ -214,7 +213,6 @@ suffix:semicolon
 multiline_comment|/* the isochronous relief time */
 DECL|function|count_off_irt
 r_static
-r_inline
 r_void
 id|count_off_irt
 c_func
@@ -243,7 +241,6 @@ suffix:semicolon
 multiline_comment|/* the voltage stabalization time */
 DECL|function|count_off_vst
 r_static
-r_inline
 r_void
 id|count_off_vst
 c_func

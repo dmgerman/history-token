@@ -239,7 +239,6 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
 r_static
-r_inline
 r_int
 id|core_voltage_pre_transition
 c_func
@@ -254,7 +253,6 @@ id|reqvid
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|core_voltage_post_transition
 c_func
@@ -269,7 +267,6 @@ id|reqvid
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|core_frequency_transition
 c_func
