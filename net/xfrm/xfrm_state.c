@@ -1472,6 +1472,15 @@ op_logical_and
 id|tmpl-&gt;id.proto
 op_eq
 id|x-&gt;id.proto
+op_logical_and
+(paren
+id|tmpl-&gt;id.spi
+op_eq
+id|x-&gt;id.spi
+op_logical_or
+op_logical_neg
+id|tmpl-&gt;id.spi
+)paren
 )paren
 (brace
 multiline_comment|/* Resolution logic:&n;&t;&t;&t;   1. There is a valid state with matching selector.&n;&t;&t;&t;      Done.&n;&t;&t;&t;   2. Valid state with inappropriate selector. Skip.&n;&n;&t;&t;&t;   Entering area of &quot;sysdeps&quot;.&n;&n;&t;&t;&t;   3. If state is not valid, selector is temporary,&n;&t;&t;&t;      it selects only session which triggered&n;&t;&t;&t;      previous resolution. Key manager will do&n;&t;&t;&t;      something to install a state with proper&n;&t;&t;&t;      selector.&n;&t;&t;&t; */
