@@ -2796,7 +2796,7 @@ l_string|&quot;dis&quot;
 suffix:semicolon
 id|shpnt
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -3040,7 +3040,7 @@ comma
 id|SLOTSIZE
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 (paren
 id|shpnt
 )paren
