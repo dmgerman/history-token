@@ -774,14 +774,6 @@ op_amp
 id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|data-&gt;task.tk_rpcwait
-op_eq
-op_amp
-id|nfs_delete_queue
-)paren
 id|rpc_wake_up_task
 c_func
 (paren

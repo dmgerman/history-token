@@ -5105,9 +5105,6 @@ id|kstatfs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Return value for VFS lock functions - tells locks.c to lock conventionally&n; * REALLY kosha for root NFS and nfs_lock&n; */
-DECL|macro|LOCK_USE_CLNT
-mdefine_line|#define LOCK_USE_CLNT 1
 DECL|macro|FLOCK_VERIFY_READ
 mdefine_line|#define FLOCK_VERIFY_READ  1
 DECL|macro|FLOCK_VERIFY_WRITE

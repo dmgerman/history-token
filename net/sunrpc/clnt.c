@@ -3639,11 +3639,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rpcauth_deadcred
-c_func
-(paren
-id|task
-)paren
+id|status
+op_eq
+op_minus
+id|EACCES
 )paren
 (brace
 id|rpc_exit
@@ -3854,6 +3853,12 @@ id|iov-&gt;iov_base
 comma
 id|n
 suffix:semicolon
+r_int
+id|error
+op_assign
+op_minus
+id|EACCES
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3866,7 +3871,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|garbage
+id|out_overflow
 suffix:semicolon
 id|p
 op_add_assign
@@ -3901,7 +3906,7 @@ id|n
 )paren
 suffix:semicolon
 r_goto
-id|garbage
+id|out_retry
 suffix:semicolon
 )brace
 r_if
@@ -3922,12 +3927,6 @@ op_ne
 id|RPC_MSG_ACCEPTED
 )paren
 (brace
-r_int
-id|error
-op_assign
-op_minus
-id|EACCES
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3937,9 +3936,9 @@ OL
 l_int|0
 )paren
 r_goto
-id|garbage
+id|out_overflow
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 (paren
@@ -3953,21 +3952,45 @@ id|p
 op_increment
 )paren
 )paren
-op_ne
-id|RPC_AUTH_ERROR
 )paren
 (brace
+r_case
+id|RPC_AUTH_ERROR
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+id|RPC_MISMATCH
+suffix:colon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;call_verify: RPC call rejected: %x&bslash;n&quot;
+l_string|&quot;%s: RPC call version mismatch!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_goto
+id|out_eio
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: RPC call rejected, unknown error: %x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|n
 )paren
 suffix:semicolon
+r_goto
+id|out_eio
+suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -3976,6 +3999,9 @@ id|len
 OL
 l_int|0
 )paren
+r_goto
+id|out_overflow
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4099,10 +4125,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-r_else
-r_goto
-id|garbage
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -4113,16 +4135,8 @@ comma
 id|n
 )paren
 suffix:semicolon
-id|rpc_exit
-c_func
-(paren
-id|task
-comma
-id|error
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 r_if
@@ -4150,7 +4164,7 @@ l_string|&quot;call_verify: auth check failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|garbage
+id|out_retry
 suffix:semicolon
 multiline_comment|/* bad verifier, retry */
 )brace
@@ -4174,7 +4188,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|garbage
+id|out_overflow
 suffix:semicolon
 r_switch
 c_cond
@@ -4270,6 +4284,16 @@ suffix:semicolon
 r_case
 id|RPC_GARBAGE_ARGS
 suffix:colon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4d %s: server saw garbage&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* retry */
@@ -4286,16 +4310,8 @@ id|n
 suffix:semicolon
 multiline_comment|/* Also retry */
 )brace
-id|garbage
+id|out_retry
 suffix:colon
-id|dprintk
-c_func
-(paren
-l_string|&quot;RPC: %4d call_verify: server saw garbage&bslash;n&quot;
-comma
-id|task-&gt;tk_pid
-)paren
-suffix:semicolon
 id|task-&gt;tk_client-&gt;cl_stats-&gt;rpcgarbage
 op_increment
 suffix:semicolon
@@ -4312,7 +4328,9 @@ id|dprintk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;RPC: garbage, retrying %4d&bslash;n&quot;
+l_string|&quot;RPC %s: retrying %4d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|task-&gt;tk_pid
 )paren
@@ -4329,22 +4347,44 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;RPC: garbage, exit EIO&bslash;n&quot;
+l_string|&quot;RPC %s: retry failed, exit EIO&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|out_eio
+suffix:colon
+id|error
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+id|out_err
 suffix:colon
 id|rpc_exit
 c_func
 (paren
 id|task
 comma
-op_minus
-id|EIO
+id|error
 )paren
 suffix:semicolon
 r_return
 l_int|NULL
+suffix:semicolon
+id|out_overflow
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;RPC %s: server reply was truncated.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_goto
+id|out_retry
 suffix:semicolon
 )brace
 eof

@@ -94,8 +94,6 @@ DECL|macro|RPCAUTH_CRED_LOCKED
 mdefine_line|#define RPCAUTH_CRED_LOCKED&t;0x0001
 DECL|macro|RPCAUTH_CRED_UPTODATE
 mdefine_line|#define RPCAUTH_CRED_UPTODATE&t;0x0002
-DECL|macro|RPCAUTH_CRED_DEAD
-mdefine_line|#define RPCAUTH_CRED_DEAD&t;0x0004
 DECL|macro|RPCAUTH_CRED_MAGIC
 mdefine_line|#define RPCAUTH_CRED_MAGIC&t;0x0f4aa4f0
 multiline_comment|/*&n; * Client authentication handle&n; */
@@ -589,15 +587,6 @@ op_star
 suffix:semicolon
 r_int
 id|rpcauth_uptodatecred
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
-)paren
-suffix:semicolon
-r_int
-id|rpcauth_deadcred
 c_func
 (paren
 r_struct
