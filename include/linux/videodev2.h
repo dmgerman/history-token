@@ -456,6 +456,9 @@ DECL|macro|V4L2_PIX_FMT_YYUV
 mdefine_line|#define V4L2_PIX_FMT_YYUV    v4l2_fourcc(&squot;Y&squot;,&squot;Y&squot;,&squot;U&squot;,&squot;V&squot;) /* 16  YUV 4:2:2     */
 DECL|macro|V4L2_PIX_FMT_HI240
 mdefine_line|#define V4L2_PIX_FMT_HI240   v4l2_fourcc(&squot;H&squot;,&squot;I&squot;,&squot;2&squot;,&squot;4&squot;) /*  8  8-bit color   */
+multiline_comment|/* see http://www.siliconimaging.com/RGB%20Bayer.htm */
+DECL|macro|V4L2_PIX_FMT_SBGGR8
+mdefine_line|#define V4L2_PIX_FMT_SBGGR8  v4l2_fourcc(&squot;B&squot;,&squot;A&squot;,&squot;8&squot;,&squot;1&squot;) /*  8  BGBG.. GRGR.. */
 multiline_comment|/* compressed formats */
 DECL|macro|V4L2_PIX_FMT_MJPEG
 mdefine_line|#define V4L2_PIX_FMT_MJPEG    v4l2_fourcc(&squot;M&squot;,&squot;J&squot;,&squot;P&squot;,&squot;G&squot;) /* Motion-JPEG   */
@@ -747,12 +750,13 @@ DECL|member|length
 id|__u32
 id|length
 suffix:semicolon
+DECL|member|input
+id|__u32
+id|input
+suffix:semicolon
 DECL|member|reserved
 id|__u32
 id|reserved
-(braket
-l_int|2
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -771,6 +775,8 @@ DECL|macro|V4L2_BUF_FLAG_BFRAME
 mdefine_line|#define V4L2_BUF_FLAG_BFRAME&t;0x0020&t;/* Image is a B-frame */
 DECL|macro|V4L2_BUF_FLAG_TIMECODE
 mdefine_line|#define V4L2_BUF_FLAG_TIMECODE&t;0x0100&t;/* timecode field is valid */
+DECL|macro|V4L2_BUF_FLAG_INPUT
+mdefine_line|#define V4L2_BUF_FLAG_INPUT     0x0200  /* input field is valid */
 multiline_comment|/*&n; *&t;O V E R L A Y   P R E V I E W&n; */
 DECL|struct|v4l2_framebuffer
 r_struct
@@ -1055,12 +1061,16 @@ DECL|macro|V4L2_STD_PAL
 mdefine_line|#define V4L2_STD_PAL&t;&t;(V4L2_STD_PAL_BG&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_PAL_DK&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_PAL_H&t;&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_PAL_I)
 DECL|macro|V4L2_STD_NTSC
 mdefine_line|#define V4L2_STD_NTSC           (V4L2_STD_NTSC_M&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_NTSC_M_JP)
+DECL|macro|V4L2_STD_SECAM_DK
+mdefine_line|#define V4L2_STD_SECAM_DK      &t;(V4L2_STD_SECAM_D&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_K&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_K1)
 DECL|macro|V4L2_STD_SECAM
-mdefine_line|#define V4L2_STD_SECAM&t;&t;(V4L2_STD_SECAM_B&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_D&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_G&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_H&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_K&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_K1&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_L)
+mdefine_line|#define V4L2_STD_SECAM&t;&t;(V4L2_STD_SECAM_B&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_G&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_H&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_DK&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM_L)
 DECL|macro|V4L2_STD_525_60
 mdefine_line|#define V4L2_STD_525_60&t;&t;(V4L2_STD_PAL_M&t;&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_PAL_60&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_NTSC)
 DECL|macro|V4L2_STD_625_50
 mdefine_line|#define V4L2_STD_625_50&t;&t;(V4L2_STD_PAL&t;&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_PAL_N&t;&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_PAL_Nc&t;|&bslash;&n;&t;&t;&t;&t; V4L2_STD_SECAM)
+DECL|macro|V4L2_STD_ATSC
+mdefine_line|#define V4L2_STD_ATSC           (V4L2_STD_ATSC_8_VSB    |&bslash;&n;&t;&t;                 V4L2_STD_ATSC_16_VSB)
 DECL|macro|V4L2_STD_UNKNOWN
 mdefine_line|#define V4L2_STD_UNKNOWN        0
 DECL|macro|V4L2_STD_ALL
