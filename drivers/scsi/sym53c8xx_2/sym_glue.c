@@ -752,19 +752,11 @@ id|u_long
 id|bus_addr_t
 suffix:semicolon
 macro_line|#else
-macro_line|#if&t;SYM_CONF_DMA_ADDRESSING_MODE &gt; 0
-DECL|typedef|bus_addr_t
-r_typedef
-id|dma64_addr_t
-id|bus_addr_t
-suffix:semicolon
-macro_line|#else
 DECL|typedef|bus_addr_t
 r_typedef
 id|dma_addr_t
 id|bus_addr_t
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; *  Used by the eh thread to wait for command completion.&n; *  It is allocated on the eh thread stack.&n; */
 DECL|struct|sym_eh_wait
