@@ -13970,6 +13970,14 @@ comma
 id|autodma
 )paren
 suffix:semicolon
+multiline_comment|/* PnP ports, skip detection if SuperIO already found them */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|count
+)paren
+(brace
 id|r
 op_assign
 id|pnp_register_driver
@@ -13994,6 +14002,7 @@ id|count
 op_add_assign
 id|r
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* ISA ports and whatever (see asm/parport.h). */
 id|count
