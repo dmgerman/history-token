@@ -5078,7 +5078,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;security:  policydb string length %d does not &quot;
-l_string|&quot;match expected length %d&bslash;n&quot;
+l_string|&quot;match expected length %Zd&bslash;n&quot;
 comma
 id|len
 comma
