@@ -4154,10 +4154,6 @@ id|drive-&gt;revalidate
 op_assign
 l_int|1
 suffix:semicolon
-id|drive-&gt;suspend_reset
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
