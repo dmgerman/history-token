@@ -8316,18 +8316,38 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|buflen
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|local_acl
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+multiline_comment|/* used to query ACL EA size */
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|size
 OG
 id|buflen
 )paren
 (brace
-multiline_comment|/* BB should we fill in as much data as we can first? */
-multiline_comment|/* seems odd that API was not designed so one could query ACL size */
 r_return
 op_minus
 id|ERANGE
 suffix:semicolon
 )brace
+r_else
+multiline_comment|/* buffer big enough */
+(brace
 id|local_acl-&gt;a_version
 op_assign
 id|POSIX_ACL_XATTR_VERSION
@@ -8362,6 +8382,7 @@ suffix:semicolon
 id|pACE
 op_increment
 suffix:semicolon
+)brace
 )brace
 r_return
 id|size
