@@ -132,8 +132,9 @@ id|ipmi_user_hndl
 id|ipmi_poweroff_handler
 op_assign
 (brace
+dot
 id|ipmi_recv_hndl
-suffix:colon
+op_assign
 id|receive_handler
 )brace
 suffix:semicolon
