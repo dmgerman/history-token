@@ -11,9 +11,9 @@ macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs4_acl.h&gt;
 multiline_comment|/* mode bit translations: */
 DECL|macro|NFS4_READ_MODE
-mdefine_line|#define NFS4_READ_MODE (NFS4_ACE_READ_DATA | NFS4_ACE_READ_NAMED_ATTRS)
+mdefine_line|#define NFS4_READ_MODE (NFS4_ACE_READ_DATA)
 DECL|macro|NFS4_WRITE_MODE
-mdefine_line|#define NFS4_WRITE_MODE (NFS4_ACE_WRITE_DATA | NFS4_ACE_WRITE_NAMED_ATTRS | NFS4_ACE_APPEND_DATA)
+mdefine_line|#define NFS4_WRITE_MODE (NFS4_ACE_WRITE_DATA | NFS4_ACE_APPEND_DATA)
 DECL|macro|NFS4_EXECUTE_MODE
 mdefine_line|#define NFS4_EXECUTE_MODE NFS4_ACE_EXECUTE
 DECL|macro|NFS4_ANYONE_MODE
@@ -22,7 +22,7 @@ DECL|macro|NFS4_OWNER_MODE
 mdefine_line|#define NFS4_OWNER_MODE (NFS4_ACE_WRITE_ATTRIBUTES | NFS4_ACE_WRITE_ACL)
 multiline_comment|/* We don&squot;t support these bits; insist they be neither allowed nor denied */
 DECL|macro|NFS4_MASK_UNSUPP
-mdefine_line|#define NFS4_MASK_UNSUPP (NFS4_ACE_DELETE | NFS4_ACE_WRITE_OWNER)
+mdefine_line|#define NFS4_MASK_UNSUPP (NFS4_ACE_DELETE | NFS4_ACE_WRITE_OWNER &bslash;&n;&t;&t;| NFS4_ACE_READ_NAMED_ATTRS | NFS4_ACE_WRITE_NAMED_ATTRS)
 multiline_comment|/* flags used to simulate posix default ACLs */
 DECL|macro|NFS4_INHERITANCE_FLAGS
 mdefine_line|#define NFS4_INHERITANCE_FLAGS (NFS4_ACE_FILE_INHERIT_ACE &bslash;&n;&t;&t;| NFS4_ACE_DIRECTORY_INHERIT_ACE | NFS4_ACE_INHERIT_ONLY_ACE)
