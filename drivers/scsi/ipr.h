@@ -10,9 +10,9 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 multiline_comment|/*&n; * Literals&n; */
 DECL|macro|IPR_DRIVER_VERSION
-mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.11&quot;
+mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.12&quot;
 DECL|macro|IPR_DRIVER_DATE
-mdefine_line|#define IPR_DRIVER_DATE &quot;(August 3, 2004)&quot;
+mdefine_line|#define IPR_DRIVER_DATE &quot;(December 14, 2004)&quot;
 multiline_comment|/*&n; * IPR_DBG_TRACE: Setting this to 1 will turn on some general function tracing&n; *&t;&t;&t;resulting in a bunch of extra debugging printks to the console&n; *&n; * IPR_DEBUG:&t;Setting this to 1 will turn on some error path tracing.&n; *&t;&t;&t;Enables the ipr_trace macro.&n; */
 macro_line|#ifdef IPR_DEBUG_ALL
 DECL|macro|IPR_DEBUG
