@@ -293,6 +293,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|clear_IO_APIC_pin
+r_static
 r_void
 id|clear_IO_APIC_pin
 c_func
@@ -541,6 +542,7 @@ multiline_comment|/*&n; * support for broken MP BIOSs, enables hand-redirection 
 DECL|macro|MAX_PIRQS
 mdefine_line|#define MAX_PIRQS 8
 DECL|variable|pirq_entries
+r_static
 r_int
 id|pirq_entries
 (braket
@@ -548,6 +550,7 @@ id|MAX_PIRQS
 )braket
 suffix:semicolon
 DECL|variable|pirqs_enabled
+r_static
 r_int
 id|pirqs_enabled
 suffix:semicolon
@@ -2640,6 +2643,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|setup_IO_APIC_irqs
+r_static
 r_void
 id|__init
 id|setup_IO_APIC_irqs
@@ -3040,6 +3044,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up the 8259A-master output pin as broadcast to all&n; * CPUs.&n; */
 DECL|function|setup_ExtINT_IRQ0_pin
+r_static
 r_void
 id|__init
 id|setup_ExtINT_IRQ0_pin
@@ -3921,7 +3926,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|print_APIC_bitfield
+macro_line|#if 0
 r_static
 id|__apicdebuginit
 r_void
@@ -4032,7 +4037,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-DECL|function|print_local_APIC
 r_void
 id|__apicdebuginit
 id|print_local_APIC
@@ -4570,7 +4574,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|print_all_local_APICs
 r_void
 id|print_all_local_APICs
 (paren
@@ -4590,7 +4593,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|print_PIC
 r_void
 id|__apicdebuginit
 id|print_PIC
@@ -4778,6 +4780,7 @@ id|v
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|enable_IO_APIC
 r_static
 r_void
