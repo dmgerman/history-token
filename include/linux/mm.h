@@ -797,6 +797,8 @@ DECL|macro|VM_FAULT_MINOR
 mdefine_line|#define VM_FAULT_MINOR&t;1
 DECL|macro|VM_FAULT_MAJOR
 mdefine_line|#define VM_FAULT_MAJOR&t;2
+DECL|macro|offset_in_page
+mdefine_line|#define offset_in_page(p)&t;((unsigned long)(p) &amp; ~PAGE_MASK)
 r_extern
 r_void
 id|show_free_areas
