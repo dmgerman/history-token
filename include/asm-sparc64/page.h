@@ -4,8 +4,21 @@ DECL|macro|_SPARC64_PAGE_H
 mdefine_line|#define _SPARC64_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/const.h&gt;
+macro_line|#if defined(CONFIG_SPARC64_PAGE_SIZE_8KB)
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT   13
+macro_line|#elif defined(CONFIG_SPARC64_PAGE_SIZE_64KB)
+DECL|macro|PAGE_SHIFT
+mdefine_line|#define PAGE_SHIFT   16
+macro_line|#elif defined(CONFIG_SPARC64_PAGE_SIZE_512KB)
+DECL|macro|PAGE_SHIFT
+mdefine_line|#define PAGE_SHIFT   19
+macro_line|#elif defined(CONFIG_SPARC64_PAGE_SIZE_4MB)
+DECL|macro|PAGE_SHIFT
+mdefine_line|#define PAGE_SHIFT   22
+macro_line|#else
+macro_line|#error No page size specified in kernel configuration
+macro_line|#endif
 DECL|macro|PAGE_SIZE
 mdefine_line|#define PAGE_SIZE    (_AC(1,UL) &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
