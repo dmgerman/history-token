@@ -98,7 +98,7 @@ DECL|macro|RXRPC_MSG_MAX_IOCS
 mdefine_line|#define RXRPC_MSG_MAX_IOCS 8
 DECL|member|data
 r_struct
-id|iovec
+id|kvec
 id|data
 (braket
 id|RXRPC_MSG_MAX_IOCS
@@ -191,10 +191,9 @@ r_int
 id|count
 comma
 r_struct
-id|iovec
+id|kvec
+op_star
 id|diov
-(braket
-)braket
 comma
 r_int
 id|alloc_flags

@@ -1999,7 +1999,7 @@ op_star
 id|msg
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|diov
 (braket
 l_int|3
@@ -3013,7 +3013,7 @@ id|rxrpc_ackpacket
 id|ack
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|diov
 (braket
 l_int|2
@@ -3494,7 +3494,7 @@ op_star
 id|msg
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|diov
 (braket
 l_int|1
@@ -7592,10 +7592,9 @@ r_int
 id|sioc
 comma
 r_struct
-id|iovec
+id|kvec
+op_star
 id|siov
-(braket
-)braket
 comma
 id|u8
 id|rxhdr_flags
@@ -7617,7 +7616,7 @@ op_star
 id|msg
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|sptr
 suffix:semicolon

@@ -427,7 +427,7 @@ op_star
 id|call
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|piov
 (braket
 l_int|1
@@ -790,7 +790,7 @@ op_star
 id|call
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|piov
 (braket
 l_int|3
@@ -1489,7 +1489,7 @@ op_star
 id|call
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|piov
 (braket
 l_int|1
@@ -2184,7 +2184,7 @@ op_star
 id|call
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|piov
 (braket
 l_int|1

@@ -665,6 +665,10 @@ suffix:semicolon
 multiline_comment|/* read the contents of the AFS special symlink */
 id|filler
 op_assign
+(paren
+id|filler_t
+op_star
+)paren
 id|mntpt-&gt;d_inode-&gt;i_mapping-&gt;a_ops-&gt;readpage
 suffix:semicolon
 id|page
