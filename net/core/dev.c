@@ -2125,7 +2125,7 @@ id|nb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;call_netdevice_notifiers - call all network notifier blocks&n; *&n; *&t;Call all network notifier blocks.  Parameters and return value&n; *&t;are as for notifier_call_chain().&n; */
+multiline_comment|/**&n; *&t;call_netdevice_notifiers - call all network notifier blocks&n; *      @val: value passed unmodified to notifier function&n; *      @v:   pointer passed unmodified to notifier function&n; *&n; *&t;Call all network notifier blocks.  Parameters and return value&n; *&t;are as for notifier_call_chain().&n; */
 DECL|function|call_netdevice_notifiers
 r_int
 id|call_netdevice_notifiers

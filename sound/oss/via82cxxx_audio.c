@@ -5912,7 +5912,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *&n; * Interrupt-related code&n; *&n; */
-multiline_comment|/**&n; *&t;via_intr_channel - handle an interrupt for a single channel&n; *&t;@chan: handle interrupt for this channel&n; *&n; *&t;This is the &quot;meat&quot; of the interrupt handler,&n; *&t;containing the actions taken each time an interrupt&n; *&t;occurs.  All communication and coordination with&n; *&t;userspace takes place here.&n; *&n; *&t;Locking: inside card-&gt;lock&n; */
+multiline_comment|/**&n; *&t;via_intr_channel - handle an interrupt for a single channel&n; *      @card: unused&n; *&t;@chan: handle interrupt for this channel&n; *&n; *&t;This is the &quot;meat&quot; of the interrupt handler,&n; *&t;containing the actions taken each time an interrupt&n; *&t;occurs.  All communication and coordination with&n; *&t;userspace takes place here.&n; *&n; *&t;Locking: inside card-&gt;lock&n; */
 DECL|function|via_intr_channel
 r_static
 r_void

@@ -836,7 +836,7 @@ c_func
 id|clear_inode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Dispose-list gets a local list with local inodes in it, so it doesn&squot;t&n; * need to worry about list corruption and SMP locks.&n; */
+multiline_comment|/*&n; * dispose_list - dispose of the contents of a local list&n; * @head: the head of the list to free&n; *&n; * Dispose-list gets a local list with local inodes in it, so it doesn&squot;t&n; * need to worry about list corruption and SMP locks.&n; */
 DECL|function|dispose_list
 r_static
 r_void
@@ -2661,7 +2661,7 @@ c_func
 id|igrab
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * ifind - internal function, you want ilookup5() or iget5().&n; * @sb:&t;&t;super block of file system to search&n; * @hashval:&t;hash value (usually inode number) to search for&n; * @test:&t;callback used for comparisons between inodes&n; * @data:&t;opaque data pointer to pass to @test&n; *&n; * ifind() searches for the inode specified by @hashval and @data in the inode&n; * cache. This is a generalized version of ifind_fast() for file systems where&n; * the inode number is not sufficient for unique identification of an inode.&n; *&n; * If the inode is in the cache, the inode is returned with an incremented&n; * reference count.&n; *&n; * Otherwise NULL is returned.&n; *&n; * Note, @test is called with the inode_lock held, so can&squot;t sleep.&n; */
+multiline_comment|/**&n; * ifind - internal function, you want ilookup5() or iget5().&n; * @sb:&t;&t;super block of file system to search&n; * @head:       the head of the list to search&n; * @test:&t;callback used for comparisons between inodes&n; * @data:&t;opaque data pointer to pass to @test&n; *&n; * ifind() searches for the inode specified by @data in the inode&n; * cache. This is a generalized version of ifind_fast() for file systems where&n; * the inode number is not sufficient for unique identification of an inode.&n; *&n; * If the inode is in the cache, the inode is returned with an incremented&n; * reference count.&n; *&n; * Otherwise NULL is returned.&n; *&n; * Note, @test is called with the inode_lock held, so can&squot;t sleep.&n; */
 DECL|function|ifind
 r_static
 r_inline
@@ -2766,7 +2766,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ifind_fast - internal function, you want ilookup() or iget().&n; * @sb:&t;&t;super block of file system to search&n; * @ino:&t;inode number to search for&n; *&n; * ifind_fast() searches for the inode @ino in the inode cache. This is for&n; * file systems where the inode number is sufficient for unique identification&n; * of an inode.&n; *&n; * If the inode is in the cache, the inode is returned with an incremented&n; * reference count.&n; *&n; * Otherwise NULL is returned.&n; */
+multiline_comment|/**&n; * ifind_fast - internal function, you want ilookup() or iget().&n; * @sb:&t;&t;super block of file system to search&n; * @head:       head of the list to search&n; * @ino:&t;inode number to search for&n; *&n; * ifind_fast() searches for the inode @ino in the inode cache. This is for&n; * file systems where the inode number is sufficient for unique identification&n; * of an inode.&n; *&n; * If the inode is in the cache, the inode is returned with an incremented&n; * reference count.&n; *&n; * Otherwise NULL is returned.&n; */
 DECL|function|ifind_fast
 r_static
 r_inline
