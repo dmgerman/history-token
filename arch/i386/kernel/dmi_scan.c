@@ -1379,6 +1379,54 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The Microstar 6163-2 (a.k.a Pro) mainboard will hang shortly after&n; * resumes, and also at what appears to be asynchronous APM events,&n; * if the local APIC is enabled.&n; */
+DECL|function|apm_kills_local_apic
+r_static
+r_int
+id|__init
+id|apm_kills_local_apic
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+r_extern
+r_int
+id|dont_enable_local_apic
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apm_info.bios.version
+op_logical_and
+op_logical_neg
+id|dont_enable_local_apic
+)paren
+(brace
+id|dont_enable_local_apic
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s with broken BIOS detected. &quot;
+l_string|&quot;Refusing to enable the local APIC.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The Intel AL440LX mainboard will hang randomly if the local APIC&n; * timer is running and the APM BIOS hasn&squot;t been disabled.&n; */
 DECL|function|apm_kills_local_apic_timer
 r_static
