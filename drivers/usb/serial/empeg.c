@@ -291,7 +291,7 @@ id|unthrottle
 suffix:colon
 id|empeg_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|empeg_startup
 comma

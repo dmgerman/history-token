@@ -349,7 +349,7 @@ id|set_termios
 suffix:colon
 id|ir_set_termios
 comma
-id|startup
+id|attach
 suffix:colon
 id|ir_startup
 comma

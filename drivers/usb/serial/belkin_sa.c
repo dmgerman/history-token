@@ -279,7 +279,7 @@ id|break_ctl
 suffix:colon
 id|belkin_sa_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|belkin_sa_startup
 comma

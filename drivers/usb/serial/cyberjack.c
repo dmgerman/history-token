@@ -208,7 +208,7 @@ id|num_ports
 suffix:colon
 l_int|1
 comma
-id|startup
+id|attach
 suffix:colon
 id|cyberjack_startup
 comma

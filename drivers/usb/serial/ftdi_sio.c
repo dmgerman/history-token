@@ -406,7 +406,7 @@ id|break_ctl
 suffix:colon
 id|ftdi_sio_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|ftdi_sio_startup
 comma
@@ -487,7 +487,7 @@ id|break_ctl
 suffix:colon
 id|ftdi_sio_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|ftdi_8U232AM_startup
 comma

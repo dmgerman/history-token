@@ -364,7 +364,7 @@ id|write_bulk_callback
 suffix:colon
 id|pl2303_write_bulk_callback
 comma
-id|startup
+id|attach
 suffix:colon
 id|pl2303_startup
 comma

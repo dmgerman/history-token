@@ -323,7 +323,7 @@ id|break_ctl
 suffix:colon
 id|mct_u232_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|mct_u232_startup
 comma

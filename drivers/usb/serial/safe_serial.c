@@ -1870,7 +1870,7 @@ id|read_bulk_callback
 suffix:colon
 id|safe_read_bulk_callback
 comma
-id|startup
+id|attach
 suffix:colon
 id|safe_startup
 comma

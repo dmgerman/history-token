@@ -322,7 +322,7 @@ suffix:colon
 id|klsi_105_set_termios
 comma
 multiline_comment|/*break_ctl:&t;     klsi_105_break_ctl,*/
-id|startup
+id|attach
 suffix:colon
 id|klsi_105_startup
 comma

@@ -881,7 +881,7 @@ id|break_ctl
 suffix:colon
 id|digi_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|digi_startup
 comma
@@ -974,7 +974,7 @@ id|break_ctl
 suffix:colon
 id|digi_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|digi_startup
 comma

@@ -728,7 +728,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma
@@ -813,7 +813,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma
@@ -898,7 +898,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma
@@ -983,7 +983,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma

@@ -3026,7 +3026,7 @@ id|num_ports
 suffix:colon
 l_int|1
 comma
-id|startup
+id|attach
 suffix:colon
 id|keyspan_pda_fake_startup
 comma
@@ -3069,7 +3069,7 @@ id|num_ports
 suffix:colon
 l_int|1
 comma
-id|startup
+id|attach
 suffix:colon
 id|keyspan_pda_fake_startup
 comma
@@ -3159,7 +3159,7 @@ id|break_ctl
 suffix:colon
 id|keyspan_pda_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|keyspan_pda_startup
 comma

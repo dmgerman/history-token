@@ -303,7 +303,7 @@ id|close
 suffix:colon
 id|ipaq_close
 comma
-id|startup
+id|attach
 suffix:colon
 id|ipaq_startup
 comma
