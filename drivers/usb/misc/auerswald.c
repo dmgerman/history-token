@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *      auerswald.c  --  Auerswald PBX/System Telephone usb driver.&n; *&n; *      Copyright (C) 2001  Wolfgang M&#xfffd;es (wmues@nexgo.de)&n; *&n; *      Very much code of this driver is borrowed from dabusb.c (Deti Fliegl)&n; *      and from the USB Skeleton driver (Greg Kroah-Hartman). Thank you.&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *      auerswald.c  --  Auerswald PBX/System Telephone usb driver.&n; *&n; *      Copyright (C) 2001  Wolfgang M&#xfffd;es (wolfgang@iksw-muees.de)&n; *&n; *      Very much code of this driver is borrowed from dabusb.c (Deti Fliegl)&n; *      and from the USB Skeleton driver (Greg Kroah-Hartman). Thank you.&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/* Standard Linux module include files */
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -25,7 +25,7 @@ multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.9.11&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR  &quot;Wolfgang M&#xfffd;es &lt;wmues@nexgo.de&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR  &quot;Wolfgang M&#xfffd;es &lt;wolfgang@iksw-muees.de&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC    &quot;Auerswald PBX/System Telephone usb driver&quot;
 multiline_comment|/*-------------------------------------------------------------------*/
