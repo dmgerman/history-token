@@ -57,7 +57,7 @@ r_int
 id|num_slots
 suffix:semicolon
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;0.2&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;0.3&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -441,12 +441,25 @@ comma
 id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENODEV
+r_switch
+c_cond
+(paren
+id|value
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* Specify a test here */
+r_break
 suffix:semicolon
-multiline_comment|/* Or specify a test if you have one */
+r_case
+l_int|1
+suffix:colon
+multiline_comment|/* Specify another test here */
+r_break
+suffix:semicolon
+)brace
 r_return
 id|retval
 suffix:semicolon
@@ -631,10 +644,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|release_slots
+DECL|function|release_slot
 r_static
 r_void
-id|release_slots
+id|release_slot
 c_func
 (paren
 r_struct
@@ -651,11 +664,6 @@ op_assign
 id|hotplug_slot
 op_member_access_from_pointer
 r_private
-suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|dbg
 c_func
@@ -697,7 +705,6 @@ mdefine_line|#define SLOT_NAME_SIZE&t;10
 DECL|function|make_slot_name
 r_static
 r_void
-id|__init
 id|make_slot_name
 c_func
 (paren
@@ -721,6 +728,7 @@ id|slot-&gt;number
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * init_slots - initialize &squot;struct slot&squot; structures for each slot&n; *&n; */
 DECL|function|init_slots
 r_static
 r_int
@@ -1012,6 +1020,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* add slot to our internal list */
 id|list_add
+c_func
 (paren
 op_amp
 id|slot-&gt;slot_list
@@ -1089,6 +1098,7 @@ id|slot
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unregister all of our slots with the pci_hotplug subsystem.&n;&t; * Memory will be freed in release_slot() callback after slot&squot;s&n;&t; * lifespan is finished.&n;&t; */
 id|list_for_each_safe
+c_func
 (paren
 id|tmp
 comma
@@ -1112,6 +1122,7 @@ id|slot_list
 )paren
 suffix:semicolon
 id|list_del
+c_func
 (paren
 op_amp
 id|slot-&gt;slot_list
@@ -1138,27 +1149,8 @@ r_void
 r_int
 id|retval
 suffix:semicolon
-multiline_comment|/*&n;&t; * Do specific initialization stuff for your driver here&n;&t; * Like initilizing your controller hardware (if any) and&n;&t; * determining the number of slots you have in the system&n;&t; * right now.&n;&t; */
-id|num_slots
-op_assign
-l_int|5
-suffix:semicolon
-id|retval
-op_assign
-id|init_slots
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-r_return
-id|retval
-suffix:semicolon
 id|info
+c_func
 (paren
 id|DRIVER_DESC
 l_string|&quot; version: &quot;
@@ -1166,8 +1158,16 @@ id|DRIVER_VERSION
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Do specific initialization stuff for your driver here&n;&t; * Like initializing your controller hardware (if any) and&n;&t; * determining the number of slots you have in the system&n;&t; * right now.&n;&t; */
+id|num_slots
+op_assign
+l_int|5
+suffix:semicolon
 r_return
-l_int|0
+id|init_slots
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|pcihp_skel_exit
