@@ -1491,6 +1491,13 @@ c_func
 id|read_cache_page
 )paren
 suffix:semicolon
+DECL|variable|read_cache_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_cache_pages
+)paren
+suffix:semicolon
 DECL|variable|mark_page_accessed
 id|EXPORT_SYMBOL
 c_func
