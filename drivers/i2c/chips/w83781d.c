@@ -5106,6 +5106,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Initialize the chip */
+id|w83781d_init_client
+c_func
+(paren
+id|new_client
+)paren
+suffix:semicolon
+multiline_comment|/* Register sysfs hooks */
 id|device_create_file_in
 c_func
 (paren
@@ -5485,13 +5493,6 @@ l_int|3
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Initialize the chip */
-id|w83781d_init_client
-c_func
-(paren
-id|new_client
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
