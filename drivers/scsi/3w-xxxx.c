@@ -18,15 +18,8 @@ macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &quot;3w-xxxx.h&quot;
 multiline_comment|/* Globals */
-DECL|variable|tw_driver_version
-r_static
-r_const
-r_char
-op_star
-id|tw_driver_version
-op_assign
-l_string|&quot;1.26.02.000&quot;
-suffix:semicolon
+DECL|macro|TW_DRIVER_VERSION
+mdefine_line|#define TW_DRIVER_VERSION &quot;1.26.02.000&quot;
 DECL|variable|tw_device_extension_list
 r_static
 id|TW_Device_Extension
@@ -70,6 +63,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|TW_DRIVER_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|TW_DRIVER_VERSION
+)paren
+suffix:semicolon
 multiline_comment|/* Function prototypes */
 r_static
 r_int
@@ -87,6 +87,7 @@ suffix:semicolon
 multiline_comment|/* Functions */
 multiline_comment|/* This function will check the status register for unexpected bits */
 DECL|function|tw_check_bits
+r_static
 r_int
 id|tw_check_bits
 c_func
@@ -1414,7 +1415,7 @@ l_string|&quot;Max sector count:          %4d&bslash;n&quot;
 l_string|&quot;SCSI Host Resets:          %4d&bslash;n&quot;
 l_string|&quot;AEN&squot;s:                     %4d&bslash;n&quot;
 comma
-id|tw_driver_version
+id|TW_DRIVER_VERSION
 comma
 id|tw_dev-&gt;posted_request_count
 comma
@@ -3435,8 +3436,6 @@ id|arg
 )paren
 (brace
 r_int
-id|error
-comma
 id|request_id
 suffix:semicolon
 id|dma_addr_t
@@ -3532,8 +3531,9 @@ op_minus
 id|EINTR
 suffix:semicolon
 multiline_comment|/* First copy down the buffer length */
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3548,11 +3548,6 @@ r_int
 r_int
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_goto
 id|out
@@ -3592,10 +3587,11 @@ suffix:semicolon
 multiline_comment|/* Now allocate ioctl buf memory */
 id|cpu_addr
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
-id|tw_dev-&gt;tw_pci_dev
+op_amp
+id|tw_dev-&gt;tw_pci_dev-&gt;dev
 comma
 id|data_buffer_length_adjusted
 op_plus
@@ -3608,6 +3604,8 @@ l_int|1
 comma
 op_amp
 id|dma_handle
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3636,8 +3634,9 @@ op_star
 id|cpu_addr
 suffix:semicolon
 multiline_comment|/* Now copy down the entire ioctl */
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3654,11 +3653,6 @@ id|TW_New_Ioctl
 op_minus
 l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_goto
 id|out2
@@ -4205,8 +4199,9 @@ id|out2
 suffix:semicolon
 )brace
 multiline_comment|/* Now copy the response to userspace */
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -4223,14 +4218,10 @@ id|data_buffer_length
 op_minus
 l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_eq
-l_int|0
 )paren
+r_goto
+id|out2
+suffix:semicolon
 id|retval
 op_assign
 l_int|0
@@ -4238,10 +4229,11 @@ suffix:semicolon
 id|out2
 suffix:colon
 multiline_comment|/* Now free ioctl buf memory */
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
-id|tw_dev-&gt;tw_pci_dev
+op_amp
+id|tw_dev-&gt;tw_pci_dev-&gt;dev
 comma
 id|data_buffer_length_adjusted
 op_plus
@@ -6589,7 +6581,7 @@ id|request_buffer
 l_int|32
 )braket
 comma
-id|tw_driver_version
+id|TW_DRIVER_VERSION
 comma
 l_int|3
 )paren
@@ -11200,7 +11192,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;3ware Storage Controller device driver for Linux v%s.&bslash;n&quot;
 comma
-id|tw_driver_version
+id|TW_DRIVER_VERSION
 )paren
 suffix:semicolon
 r_return
