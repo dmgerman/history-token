@@ -1,8 +1,8 @@
-macro_line|#ifndef __I386_LITHIUM_H
-DECL|macro|__I386_LITHIUM_H
-mdefine_line|#define __I386_LITHIUM_H
-macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * Lithium is the I/O ASIC on the SGI 320 and 540 Visual Workstations&n; */
+macro_line|#ifndef __I386_SGI_LITHIUM_H
+DECL|macro|__I386_SGI_LITHIUM_H
+mdefine_line|#define __I386_SGI_LITHIUM_H
+macro_line|#include &lt;asm/fixmap.h&gt;
+multiline_comment|/*&n; * Lithium is the SGI Visual Workstation I/O ASIC&n; */
 DECL|macro|LI_PCI_A_PHYS
 mdefine_line|#define&t;LI_PCI_A_PHYS&t;&t;0xfc000000&t;/* Enet is dev 3 */
 DECL|macro|LI_PCI_B_PHYS
@@ -17,10 +17,26 @@ DECL|macro|LI_PCI_BUSNUM
 mdefine_line|#define&t;LI_PCI_BUSNUM&t;0x44&t;&t;&t;/* lo8: primary, hi8: sub */
 DECL|macro|LI_PCI_INTEN
 mdefine_line|#define LI_PCI_INTEN    0x46
-macro_line|#ifdef CONFIG_X86_VISWS_APIC
+multiline_comment|/* LI_PCI_INTENT bits */
+DECL|macro|LI_INTA_0
+mdefine_line|#define&t;LI_INTA_0&t;0x0001
+DECL|macro|LI_INTA_1
+mdefine_line|#define&t;LI_INTA_1&t;0x0002
+DECL|macro|LI_INTA_2
+mdefine_line|#define&t;LI_INTA_2&t;0x0004
+DECL|macro|LI_INTA_3
+mdefine_line|#define&t;LI_INTA_3&t;0x0008
+DECL|macro|LI_INTA_4
+mdefine_line|#define&t;LI_INTA_4&t;0x0010
+DECL|macro|LI_INTB
+mdefine_line|#define&t;LI_INTB&t;&t;0x0020
+DECL|macro|LI_INTC
+mdefine_line|#define&t;LI_INTC&t;&t;0x0040
+DECL|macro|LI_INTD
+mdefine_line|#define&t;LI_INTD&t;&t;0x0080
 multiline_comment|/* More special purpose macros... */
 DECL|function|li_pcia_write16
-r_static
+r_extern
 id|__inline
 r_void
 id|li_pcia_write16
@@ -54,7 +70,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|li_pcia_read16
-r_static
+r_extern
 id|__inline
 r_int
 r_int
@@ -84,7 +100,7 @@ id|reg
 suffix:semicolon
 )brace
 DECL|function|li_pcib_write16
-r_static
+r_extern
 id|__inline
 r_void
 id|li_pcib_write16
@@ -118,7 +134,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|li_pcib_read16
-r_static
+r_extern
 id|__inline
 r_int
 r_int
@@ -147,6 +163,5 @@ id|reg
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif
 eof
