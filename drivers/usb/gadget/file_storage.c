@@ -368,7 +368,7 @@ mdefine_line|#define DBG(fsg,fmt,args...) &bslash;&n;&t;xprintk(fsg , KERN_DEBUG
 DECL|macro|LDBG
 mdefine_line|#define LDBG(lun,fmt,args...) &bslash;&n;&t;yprintk(lun , KERN_DEBUG , fmt , ## args)
 DECL|macro|MDBG
-mdefine_line|#define MDBG(fmt,args...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot;: &quot; fmt, ## args)
+mdefine_line|#define MDBG(fmt,args...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot;: &quot; fmt , ## args)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fsg,fmt,args...) &bslash;&n;&t;do { } while (0)
@@ -405,7 +405,7 @@ mdefine_line|#define INFO(fsg,fmt,args...) &bslash;&n;&t;xprintk(fsg , KERN_INFO
 DECL|macro|LINFO
 mdefine_line|#define LINFO(lun,fmt,args...) &bslash;&n;&t;yprintk(lun , KERN_INFO , fmt , ## args)
 DECL|macro|MINFO
-mdefine_line|#define MINFO(fmt,args...) &bslash;&n;&t;printk(KERN_INFO DRIVER_NAME &quot;: &quot; fmt, ## args)
+mdefine_line|#define MINFO(fmt,args...) &bslash;&n;&t;printk(KERN_INFO DRIVER_NAME &quot;: &quot; fmt , ## args)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* Encapsulate the module parameter settings */
 DECL|macro|MAX_LUNS
