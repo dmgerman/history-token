@@ -130,7 +130,7 @@ c_func
 id|jh
 )paren
 suffix:semicolon
-id|__journal_remove_journal_head
+id|journal_remove_journal_head
 c_func
 (paren
 id|bh
@@ -468,7 +468,7 @@ c_func
 id|jh
 )paren
 suffix:semicolon
-id|__journal_remove_journal_head
+id|journal_remove_journal_head
 c_func
 (paren
 id|bh

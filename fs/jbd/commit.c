@@ -517,7 +517,7 @@ id|jh-&gt;b_transaction
 op_assign
 l_int|NULL
 suffix:semicolon
-id|__journal_remove_journal_head
+id|journal_remove_journal_head
 c_func
 (paren
 id|bh
@@ -2394,7 +2394,7 @@ id|jh-&gt;b_transaction
 op_assign
 l_int|0
 suffix:semicolon
-id|__journal_remove_journal_head
+id|journal_remove_journal_head
 c_func
 (paren
 id|bh
