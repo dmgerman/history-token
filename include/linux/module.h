@@ -42,11 +42,10 @@ r_int
 id|value
 suffix:semicolon
 DECL|member|name
+r_const
 r_char
+op_star
 id|name
-(braket
-id|MODULE_NAME_LEN
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -219,11 +218,11 @@ DECL|macro|symbol_get
 mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(MODULE_SYMBOL_PREFIX #x)))
 multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
 DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, MODULE_SYMBOL_PREFIX #sym }
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
 DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__gpl_ksymtab&quot;)))&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__gpl_ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|struct|module_ref
 r_struct
 id|module_ref
