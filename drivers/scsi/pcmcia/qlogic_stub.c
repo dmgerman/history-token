@@ -15,8 +15,6 @@ macro_line|#include &lt;../drivers/scsi/scsi.h&gt;
 macro_line|#include &lt;../drivers/scsi/hosts.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;../drivers/scsi/qlogicfas.h&gt;
-DECL|macro|qlogic_reset
-mdefine_line|#define qlogic_reset(h) qlogicfas_reset(h, 0)
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -59,7 +57,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;qlogic_cs.c 1.79 2000/06/12 21:27:26 (David Hinds)&quot;
+l_string|&quot;qlogic_cs.c 1.79-ac 2002/10/26 (David Hinds)&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -70,7 +68,8 @@ multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 multiline_comment|/* Bit map of interrupts to choose from */
 DECL|variable|irq_mask
 r_static
-id|u_int
+r_int
+r_int
 id|irq_mask
 op_assign
 l_int|0xdeb8
@@ -115,7 +114,8 @@ id|dev_link_t
 id|link
 suffix:semicolon
 DECL|member|manf_id
-id|u_short
+r_int
+r_int
 id|manf_id
 suffix:semicolon
 DECL|member|ndev
@@ -176,13 +176,13 @@ id|dev_link_t
 op_star
 )paren
 suffix:semicolon
-DECL|variable|driver_template
-r_static
+multiline_comment|/* Import our driver template */
+r_extern
 id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|QLOGICFAS
+id|qlogicfas_driver_template
 suffix:semicolon
+DECL|macro|driver_template
+mdefine_line|#define driver_template qlogicfas_driver_template
 DECL|variable|dev_list
 r_static
 id|dev_link_t
@@ -570,7 +570,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -677,7 +677,8 @@ id|last_ret
 comma
 id|last_fn
 suffix:semicolon
-id|u_short
+r_int
+r_int
 id|tuple_data
 (braket
 l_int|32
@@ -1666,7 +1667,10 @@ l_int|0xd
 )paren
 suffix:semicolon
 )brace
-id|qlogic_reset
+multiline_comment|/* Ugggglllyyyy!!! */
+id|driver_template
+dot
+id|eh_bus_reset_handler
 c_func
 (paren
 l_int|NULL

@@ -2842,33 +2842,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#if 0 /* Not yet */
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-l_int|3
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;, port 0x%x busy&bslash;n&quot;
-comma
-id|dev-&gt;base_addr
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren

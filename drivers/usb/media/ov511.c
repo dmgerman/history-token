@@ -20,7 +20,7 @@ macro_line|#endif
 macro_line|#include &quot;ov511.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.62 for Linux 2.5&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.63 for Linux 2.5&quot;
 DECL|macro|EMAIL
 mdefine_line|#define EMAIL &quot;mark@alpha.dyndns.org&quot;
 DECL|macro|DRIVER_AUTHOR
@@ -244,6 +244,11 @@ DECL|variable|mirror
 r_static
 r_int
 id|mirror
+suffix:semicolon
+DECL|variable|ov518_color
+r_static
+r_int
+id|ov518_color
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -763,6 +768,22 @@ comma
 l_string|&quot;Reverse image horizontally&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|ov518_color
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ov518_color
+comma
+l_string|&quot;Enable OV518 color (experimental)&quot;
+)paren
+suffix:semicolon
 DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
@@ -1060,6 +1081,12 @@ l_string|&quot;MediaForte MV300&quot;
 comma
 multiline_comment|/* or OV7110 evaluation kit */
 (brace
+l_int|134
+comma
+l_string|&quot;Ezonics EZCam II&quot;
+)brace
+comma
+(brace
 l_int|192
 comma
 l_string|&quot;Webeye 2000B&quot;
@@ -1234,6 +1261,7 @@ l_int|NULL
 )brace
 )brace
 suffix:semicolon
+macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 DECL|variable|senlist
 r_static
 r_struct
@@ -1323,6 +1351,7 @@ l_int|NULL
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* URB error codes: */
 DECL|variable|urb_errlist
 r_static
@@ -1383,78 +1412,6 @@ l_int|NULL
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/**********************************************************************&n; * Prototypes&n; **********************************************************************/
-r_static
-r_void
-id|ov51x_clear_snapshot
-c_func
-(paren
-r_struct
-id|usb_ov511
-op_star
-)paren
-suffix:semicolon
-r_static
-r_inline
-r_int
-id|sensor_get_picture
-c_func
-(paren
-r_struct
-id|usb_ov511
-op_star
-comma
-r_struct
-id|video_picture
-op_star
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
-r_static
-r_int
-id|sensor_get_exposure
-c_func
-(paren
-r_struct
-id|usb_ov511
-op_star
-comma
-r_int
-r_char
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|ov51x_control_ioctl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_static
-r_int
-id|ov51x_check_snapshot
-c_func
-(paren
-r_struct
-id|usb_ov511
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/**********************************************************************&n; * Memory management&n; **********************************************************************/
 multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the area.&n; */
 r_static
@@ -1695,7 +1652,7 @@ id|mem
 suffix:semicolon
 )brace
 multiline_comment|/**********************************************************************&n; * /proc interface&n; * Based on the CPiA driver version 0.7.4 -claudio&n; **********************************************************************/
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 DECL|variable|ov511_proc_entry
 r_static
 r_struct
@@ -1710,6 +1667,75 @@ r_struct
 id|proc_dir_entry
 op_star
 id|video_proc_entry
+suffix:semicolon
+multiline_comment|/* Prototypes */
+r_static
+r_void
+id|ov51x_clear_snapshot
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|sensor_get_picture
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+comma
+r_struct
+id|video_picture
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|sensor_get_exposure
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+comma
+r_int
+r_char
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ov51x_check_snapshot
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ov51x_control_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
 suffix:semicolon
 DECL|variable|ov511_control_fops
 r_static
@@ -2197,6 +2223,30 @@ comma
 l_string|&quot;framebuffer     : 0x%p&bslash;n&quot;
 comma
 id|ov-&gt;fbuf
+)paren
+suffix:semicolon
+id|out
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;packet_numbering: %d&bslash;n&quot;
+comma
+id|ov-&gt;packet_numbering
+)paren
+suffix:semicolon
+id|out
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;topology        : %s&bslash;n&quot;
+comma
+id|ov-&gt;usb_path
 )paren
 suffix:semicolon
 id|len
@@ -2877,7 +2927,58 @@ id|video_proc_entry
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PROC_FS &amp;&amp; CONFIG_VIDEO_PROC_FS */
+macro_line|#else
+DECL|function|create_proc_ov511_cam
+r_static
+r_inline
+r_void
+id|create_proc_ov511_cam
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+id|ov
+)paren
+(brace
+)brace
+DECL|function|destroy_proc_ov511_cam
+r_static
+r_inline
+r_void
+id|destroy_proc_ov511_cam
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+id|ov
+)paren
+(brace
+)brace
+DECL|function|proc_ov511_create
+r_static
+r_inline
+r_void
+id|proc_ov511_create
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|proc_ov511_destroy
+r_static
+r_inline
+r_void
+id|proc_ov511_destroy
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif /* #ifdef CONFIG_VIDEO_PROC_FS */
 multiline_comment|/**********************************************************************&n; *&n; * Register I/O&n; *&n; **********************************************************************/
 multiline_comment|/* Write an OV51x register */
 r_static
@@ -4976,7 +5077,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set the read and write slave IDs. The &quot;slave&quot; argument is the write slave,&n; * and the read slave will be set to (slave + 1). ov-&gt;i2c_lock should be held&n; * when calling this. This should not be called from outside the i2c I/O&n; * functions.&n; */
 r_static
-r_inline
 r_int
 DECL|function|i2c_set_slave_internal
 id|i2c_set_slave_internal
@@ -6160,7 +6260,7 @@ l_string|&quot;clear snap: invalid bridge type&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 multiline_comment|/* Checks the status of the snapshot button. Returns 1 if it was pressed since&n; * it was last cleared, and zero in all other cases (including errors) */
 r_static
 r_int
@@ -8872,7 +8972,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* -------------------------------------------------------------------------- */
 r_static
-r_inline
 r_int
 DECL|function|sensor_set_picture
 id|sensor_set_picture
@@ -8998,7 +9097,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|sensor_get_picture
 id|sensor_get_picture
@@ -9137,7 +9235,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 singleline_comment|// FIXME: Exposure range is only 0x00-0x7f in interlace mode
 multiline_comment|/* Sets current exposure for sensor. This only has an effect if auto-exposure&n; * is off */
 r_static
@@ -9436,7 +9534,6 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS &amp;&amp; CONFIG_VIDEO_PROC_FS */
 multiline_comment|/* Turns on or off the LED. Only has an effect with OV511+/OV518(+) */
 r_static
-r_inline
 r_void
 DECL|function|ov51x_led_control
 id|ov51x_led_control
@@ -9787,7 +9884,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* If enable is true, turn on the sensor&squot;s banding filter, otherwise turn it&n; * off. This filter tries to reduce the pattern of horizontal light/dark bands&n; * caused by some (usually fluorescent) lighting. The light frequency must be&n; * set either before or after enabling it with ov51x_set_light_freq().&n; *&n; * Tested with: OV7610, OV7620, OV76BE, OV6620.&n; * Unsupported: KS0127, KS0127B, SAA7111A&n; * Returns: 0 for success&n; */
 r_static
-r_inline
 r_int
 DECL|function|sensor_set_banding_filter
 id|sensor_set_banding_filter
@@ -9888,7 +9984,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* If enable is true, turn on the sensor&squot;s auto brightness control, otherwise&n; * turn it off.&n; *&n; * Unsupported: KS0127, KS0127B, SAA7111A&n; * Returns: 0 for success&n; */
 r_static
-r_inline
 r_int
 DECL|function|sensor_set_auto_brightness
 id|sensor_set_auto_brightness
@@ -9989,7 +10084,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* If enable is true, turn on the sensor&squot;s auto exposure control, otherwise&n; * turn it off.&n; *&n; * Unsupported: KS0127, KS0127B, SAA7111A&n; * Returns: 0 for success&n; */
 r_static
-r_inline
 r_int
 DECL|function|sensor_set_auto_exposure
 id|sensor_set_auto_exposure
@@ -10399,7 +10493,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|sensor_set_mirror
 id|sensor_set_mirror
@@ -11008,9 +11101,9 @@ comma
 id|qvga
 ques
 c_cond
-l_int|0xa4
+l_int|0xa0
 suffix:colon
-l_int|0x84
+l_int|0x80
 )paren
 suffix:semicolon
 r_break
@@ -11063,6 +11156,47 @@ l_int|0x40
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ov-&gt;sensor
+op_eq
+id|SEN_OV6630
+op_logical_and
+id|ov-&gt;bridge
+op_eq
+id|BRG_OV518
+op_logical_and
+id|ov518_color
+)paren
+(brace
+id|i2c_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x12
+comma
+l_int|0x00
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+id|i2c_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x13
+comma
+l_int|0x00
+comma
+l_int|0x20
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|i2c_w_mask
 c_func
 (paren
@@ -11075,6 +11209,7 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -11104,6 +11239,48 @@ l_int|0x40
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* The OV518 needs special treatment. Although both the OV518&n;&t;&t; * and the OV6630 support a 16-bit video bus, only the 8 bit Y&n;&t;&t; * bus is actually used. The UV bus is tied to ground.&n;&t;&t; * Therefore, the OV6630 needs to be in 8-bit multiplexed&n;&t;&t; * output mode */
+r_if
+c_cond
+(paren
+id|ov-&gt;sensor
+op_eq
+id|SEN_OV6630
+op_logical_and
+id|ov-&gt;bridge
+op_eq
+id|BRG_OV518
+op_logical_and
+id|ov518_color
+)paren
+(brace
+id|i2c_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x12
+comma
+l_int|0x10
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+id|i2c_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x13
+comma
+l_int|0x20
+comma
+l_int|0x20
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|i2c_w_mask
 c_func
 (paren
@@ -11116,6 +11293,7 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/******** Clock programming ********/
 singleline_comment|// FIXME: Test this with OV6630
@@ -12698,6 +12876,120 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ov-&gt;bridge
+op_eq
+id|BRG_OV518
+op_logical_and
+id|ov518_color
+)paren
+(brace
+multiline_comment|/* OV518 needs U and V swapped */
+id|i2c_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x15
+comma
+l_int|0x00
+comma
+l_int|0x01
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mode
+op_eq
+id|VIDEO_PALETTE_GREY
+)paren
+(brace
+multiline_comment|/* Set 16-bit input format (UV data are ignored) */
+id|reg_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x20
+comma
+l_int|0x00
+comma
+l_int|0x08
+)paren
+suffix:semicolon
+multiline_comment|/* Set 8-bit (4:0:0) output format */
+id|reg_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x28
+comma
+l_int|0x00
+comma
+l_int|0xf0
+)paren
+suffix:semicolon
+id|reg_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x38
+comma
+l_int|0x00
+comma
+l_int|0xf0
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Set 8-bit (YVYU) input format */
+id|reg_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x20
+comma
+l_int|0x08
+comma
+l_int|0x08
+)paren
+suffix:semicolon
+multiline_comment|/* Set 12-bit (4:2:0) output format */
+id|reg_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x28
+comma
+l_int|0x80
+comma
+l_int|0xf0
+)paren
+suffix:semicolon
+id|reg_w_mask
+c_func
+(paren
+id|ov
+comma
+l_int|0x38
+comma
+l_int|0x80
+comma
+l_int|0xf0
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
 id|reg_w
 c_func
 (paren
@@ -12736,6 +13028,7 @@ suffix:colon
 l_int|0x80
 )paren
 suffix:semicolon
+)brace
 id|hsegs
 op_assign
 id|width
@@ -14157,7 +14450,7 @@ id|w
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * For RAW BW (YUV400) images, data shows up in 256 byte segments.&n; * The segments represent 4 squares of 8x8 pixels as follows:&n; *&n; *      0  1 ...  7    64  65 ...  71   ...  192 193 ... 199&n; *      8  9 ... 15    72  73 ...  79        200 201 ... 207&n; *           ...              ...                    ...&n; *     56 57 ... 63   120 121 ... 127        248 249 ... 255&n; *&n; */
+multiline_comment|/*&n; * For RAW BW (YUV 4:0:0) images, data show up in 256 byte segments.&n; * The segments represent 4 squares of 8x8 pixels as follows:&n; *&n; *      0  1 ...  7    64  65 ...  71   ...  192 193 ... 199&n; *      8  9 ... 15    72  73 ...  79        200 201 ... 207&n; *           ...              ...                    ...&n; *     56 57 ... 63   120 121 ... 127        248 249 ... 255&n; *&n; */
 r_static
 r_void
 DECL|function|yuv400raw_to_yuv400p
@@ -14272,7 +14565,7 @@ id|frame-&gt;rawwidth
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * For YUV4:2:0 images, the data shows up in 384 byte segments.&n; * The first 64 bytes of each segment are U, the next 64 are V.  The U and&n; * V are arranged as follows:&n; *&n; *      0  1 ...  7&n; *      8  9 ... 15&n; *           ...   &n; *     56 57 ... 63&n; *&n; * U and V are shipped at half resolution (1 U,V sample -&gt; one 2x2 block).&n; *&n; * The next 256 bytes are full resolution Y data and represent 4 squares&n; * of 8x8 pixels as follows:&n; *&n; *      0  1 ...  7    64  65 ...  71   ...  192 193 ... 199&n; *      8  9 ... 15    72  73 ...  79        200 201 ... 207&n; *           ...              ...                    ...&n; *     56 57 ... 63   120 121 ... 127   ...  248 249 ... 255&n; *&n; * Note that the U and V data in one segment represents a 16 x 16 pixel&n; * area, but the Y data represents a 32 x 8 pixel area. If the width is not an&n; * even multiple of 32, the extra 8x8 blocks within a 32x8 block belong to the&n; * next horizontal stripe.&n; *&n; * If dumppix module param is set, _parse_data just dumps the incoming segments,&n; * verbatim, in order, into the frame. When used with vidcat -f ppm -s 640x480&n; * this puts the data on the standard output and can be analyzed with the&n; * parseppm.c utility I wrote.  That&squot;s a much faster way for figuring out how&n; * this data is scrambled.&n; */
+multiline_comment|/*&n; * For YUV 4:2:0 images, the data show up in 384 byte segments.&n; * The first 64 bytes of each segment are U, the next 64 are V.  The U and&n; * V are arranged as follows:&n; *&n; *      0  1 ...  7&n; *      8  9 ... 15&n; *           ...   &n; *     56 57 ... 63&n; *&n; * U and V are shipped at half resolution (1 U,V sample -&gt; one 2x2 block).&n; *&n; * The next 256 bytes are full resolution Y data and represent 4 squares&n; * of 8x8 pixels as follows:&n; *&n; *      0  1 ...  7    64  65 ...  71   ...  192 193 ... 199&n; *      8  9 ... 15    72  73 ...  79        200 201 ... 207&n; *           ...              ...                    ...&n; *     56 57 ... 63   120 121 ... 127   ...  248 249 ... 255&n; *&n; * Note that the U and V data in one segment represent a 16 x 16 pixel&n; * area, but the Y data represent a 32 x 8 pixel area. If the width is not an&n; * even multiple of 32, the extra 8x8 blocks within a 32x8 block belong to the&n; * next horizontal stripe.&n; *&n; * If dumppix module param is set, _parse_data just dumps the incoming segments,&n; * verbatim, in order, into the frame. When used with vidcat -f ppm -s 640x480&n; * this puts the data on the standard output and can be analyzed with the&n; * parseppm.c utility I wrote.  That&squot;s a much faster way for figuring out how&n; * these data are scrambled.&n; */
 multiline_comment|/* Converts from raw, uncompressed segments at pIn0 to a YUV420P frame at pOut0.&n; *&n; * FIXME: Currently only handles width and height that are multiples of 16&n; */
 r_static
 r_void
@@ -21618,7 +21911,6 @@ id|rc
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|ov51x_v4l1_read
 id|ov51x_v4l1_read
@@ -22201,7 +22493,7 @@ comma
 id|frame-&gt;bytes_read
 )paren
 suffix:semicolon
-multiline_comment|/* If all data has been read... */
+multiline_comment|/* If all data have been read... */
 r_if
 c_cond
 (paren
@@ -22583,7 +22875,7 @@ id|ov511_fops
 comma
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 r_static
 r_int
 DECL|function|ov51x_control_ioctl
@@ -25063,9 +25355,9 @@ comma
 l_int|0x00
 )brace
 comma
+multiline_comment|/* END MARKER */
 )brace
 suffix:semicolon
-multiline_comment|/* This chip is undocumented so many of these are guesses. OK=verified,&n;&t; * A=Added since 6620, U=unknown function (not a 6620 reg) */
 r_static
 r_struct
 id|ov511_regvals
@@ -25084,13 +25376,12 @@ l_int|0x80
 )brace
 comma
 multiline_comment|/* reset */
-multiline_comment|/*00?*/
 (brace
 id|OV511_I2C_BUS
 comma
 l_int|0x11
 comma
-l_int|0x01
+l_int|0x00
 )brace
 comma
 multiline_comment|/*OK*/
@@ -25148,19 +25439,13 @@ comma
 l_int|0x20
 )brace
 comma
-singleline_comment|//&t;/*24?*/&t;{ OV511_I2C_BUS, 0x12, 0x28 }, /* Enable AGC */
-singleline_comment|//&t;&t;{ OV511_I2C_BUS, 0x12, 0x24 }, /* Enable AGC */
-singleline_comment|//&t;/*A*/&t;{ OV511_I2C_BUS, 0x13, 0x21 },
-singleline_comment|//&t;/*A*/&t;{ OV511_I2C_BUS, 0x13, 0x25 }, /* Tristate Y and UV busses */
 singleline_comment|//&t;/*04?*/&t;{ OV511_I2C_BUS, 0x14, 0x80 },
-multiline_comment|/* 0x16: 0x06 helps frame stability with moving objects */
-multiline_comment|/*03?*/
 (brace
 id|OV511_I2C_BUS
 comma
 l_int|0x16
 comma
-l_int|0x06
+l_int|0x03
 )brace
 comma
 singleline_comment|//&t;/*OK*/&t;{ OV511_I2C_BUS, 0x20, 0x30 }, /* Aperture correction enable */
@@ -25199,7 +25484,6 @@ l_int|0x04
 comma
 multiline_comment|/* Disable framerate adjust */
 singleline_comment|//&t;/*OK*/&t;{ OV511_I2C_BUS, 0x2b, 0xac }, /* Framerate; Set 2a[7] first */
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x2c, 0xa0 },
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25210,14 +25494,11 @@ l_int|0x99
 comma
 singleline_comment|//&t;/*A*/&t;{ OV511_I2C_BUS, 0x33, 0x26 }, // Reserved bits on 6620
 singleline_comment|//&t;/*d2?*/&t;{ OV511_I2C_BUS, 0x34, 0x03 }, /* Max A/D range */
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x36, 0x8f }, // May not be necessary
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x37, 0x80 }, // May not be necessary
 singleline_comment|//&t;/*8b?*/&t;{ OV511_I2C_BUS, 0x38, 0x83 },
 singleline_comment|//&t;/*40?*/&t;{ OV511_I2C_BUS, 0x39, 0xc0 }, // 6630 adds bit 7
 singleline_comment|//&t;&t;{ OV511_I2C_BUS, 0x3c, 0x39 }, /* Enable AEC mode changing */
 singleline_comment|//&t;&t;{ OV511_I2C_BUS, 0x3c, 0x3c }, /* Change AEC mode */
 singleline_comment|//&t;&t;{ OV511_I2C_BUS, 0x3c, 0x24 }, /* Disable AEC mode changing */
-multiline_comment|/*OK*/
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25227,21 +25508,9 @@ l_int|0x80
 )brace
 comma
 singleline_comment|//&t;/*A*/&t;{ OV511_I2C_BUS, 0x3f, 0x0e },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x40, 0x00 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x41, 0x00 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x42, 0x80 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x43, 0x3f },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x44, 0x80 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x45, 0x20 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x46, 0x20 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x47, 0x80 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x48, 0x7f },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x49, 0x00 },
 multiline_comment|/* These next two registers (0x4a, 0x4b) are undocumented. They&n;&t;&t; * control the color balance */
 singleline_comment|//&t;/*OK?*/&t;{ OV511_I2C_BUS, 0x4a, 0x80 }, // Check these
 singleline_comment|//&t;/*OK?*/&t;{ OV511_I2C_BUS, 0x4b, 0x80 },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x4c, 0xd0 },
-multiline_comment|/*d2?*/
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25250,7 +25519,7 @@ comma
 l_int|0x10
 )brace
 comma
-multiline_comment|/* This reduces noise a bit */
+multiline_comment|/* U = 0.563u, V = 0.714v */
 multiline_comment|/*c1?*/
 (brace
 id|OV511_I2C_BUS
@@ -25260,7 +25529,7 @@ comma
 l_int|0x40
 )brace
 comma
-multiline_comment|/*04?*/
+multiline_comment|/* UV average mode, color killer: strongest */
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25269,8 +25538,6 @@ comma
 l_int|0x07
 )brace
 comma
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x50, 0xff },
-multiline_comment|/*U*/
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25279,9 +25546,7 @@ comma
 l_int|0x23
 )brace
 comma
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x55, 0xff },
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x56, 0x12 },
-multiline_comment|/*U*/
+multiline_comment|/* Max AGC gain: 18dB */
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25290,8 +25555,7 @@ comma
 l_int|0x81
 )brace
 comma
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x58, 0x75 },
-multiline_comment|/*U*/
+multiline_comment|/* (default) */
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25300,7 +25564,7 @@ comma
 l_int|0x01
 )brace
 comma
-multiline_comment|/*U*/
+multiline_comment|/* AGC dark current comp: +1 */
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25309,7 +25573,7 @@ comma
 l_int|0x2c
 )brace
 comma
-multiline_comment|/*U*/
+multiline_comment|/* (undocumented) */
 (brace
 id|OV511_I2C_BUS
 comma
@@ -25318,7 +25582,8 @@ comma
 l_int|0x0f
 )brace
 comma
-singleline_comment|//&t;/*U*/&t;{ OV511_I2C_BUS, 0x5c, 0x10 },
+multiline_comment|/* AWB chrominance levels */
+singleline_comment|//&t;&t;{ OV511_I2C_BUS, 0x5c, 0x10 },
 (brace
 id|OV511_DONE_BUS
 comma
@@ -25327,6 +25592,7 @@ comma
 l_int|0x00
 )brace
 comma
+multiline_comment|/* END MARKER */
 )brace
 suffix:semicolon
 id|PDEBUG
@@ -25419,10 +25685,18 @@ l_int|3
 op_eq
 l_int|0
 )paren
+(brace
 id|ov-&gt;sensor
 op_assign
 id|SEN_OV6630
 suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Sensor is an OV6630&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -25435,10 +25709,18 @@ l_int|3
 op_eq
 l_int|1
 )paren
+(brace
 id|ov-&gt;sensor
 op_assign
 id|SEN_OV6620
 suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Sensor is an OV6620&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -25451,10 +25733,18 @@ l_int|3
 op_eq
 l_int|2
 )paren
+(brace
 id|ov-&gt;sensor
 op_assign
 id|SEN_OV6630
 suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Sensor is an OV6630AE&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -25467,6 +25757,7 @@ l_int|3
 op_eq
 l_int|3
 )paren
+(brace
 id|ov-&gt;sensor
 op_assign
 id|SEN_OV6630
@@ -25474,17 +25765,10 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;Sensor is an %s&quot;
-comma
-id|symbolic
-c_func
-(paren
-id|senlist
-comma
-id|ov-&gt;sensor
-)paren
+l_string|&quot;Sensor is an OV6630AF&quot;
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Set sensor-specific vars */
 id|ov-&gt;maxwidth
 op_assign
@@ -27278,7 +27562,6 @@ comma
 l_int|0x00
 )brace
 comma
-multiline_comment|/* Was 0x08 */
 (brace
 id|OV511_REG_BUS
 comma
@@ -27371,7 +27654,6 @@ comma
 l_int|0x60
 )brace
 comma
-multiline_comment|/* Was 0x08 */
 (brace
 id|OV511_REG_BUS
 comma
@@ -28291,6 +28573,32 @@ id|ov-&gt;buf_state
 op_assign
 id|BUF_NOT_ALLOCATED
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_make_path
+c_func
+(paren
+id|dev
+comma
+id|ov-&gt;usb_path
+comma
+id|OV511_USB_PATH_LEN
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;usb_make_path error&quot;
+)paren
+suffix:semicolon
+r_goto
+id|error_dealloc
+suffix:semicolon
+)brace
 multiline_comment|/* Allocate control transfer buffer. */
 multiline_comment|/* Must be kmalloc()&squot;ed, for DMA compatibility */
 id|ov-&gt;cbuf
@@ -28589,19 +28897,19 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;Device registered on minor %d&quot;
+l_string|&quot;Device at %s registered to minor %d&quot;
+comma
+id|ov-&gt;usb_path
 comma
 id|ov-&gt;vdev.minor
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 id|create_proc_ov511_cam
 c_func
 (paren
 id|ov
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dev_set_drvdata
 (paren
 op_amp
@@ -28615,15 +28923,12 @@ l_int|0
 suffix:semicolon
 id|error
 suffix:colon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
-multiline_comment|/* Safe to call even if entry doesn&squot;t exist */
 id|destroy_proc_ov511_cam
 c_func
 (paren
 id|ov
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -28854,14 +29159,12 @@ c_func
 id|ov
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 id|destroy_proc_ov511_cam
 c_func
 (paren
 id|ov
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ov-&gt;dev
 op_assign
 l_int|NULL
@@ -29230,13 +29533,11 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 id|proc_ov511_create
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -29288,13 +29589,11 @@ c_func
 l_string|&quot;driver deregistered&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 id|proc_ov511_destroy
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|usb_ov511_init
 id|module_init

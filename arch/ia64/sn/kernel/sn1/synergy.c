@@ -1892,8 +1892,9 @@ id|file_operations
 id|synergy_mon_fops
 op_assign
 (brace
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|synergy_perf_ioctl
 comma
 )brace

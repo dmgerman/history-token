@@ -14,8 +14,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -337,7 +335,6 @@ suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
-id|__init
 DECL|function|NCR_700_detect
 id|NCR_700_detect
 c_func
@@ -9192,5 +9189,7 @@ c_func
 (paren
 id|NCR_700_intr
 )paren
+suffix:semicolon
+id|no_module_init
 suffix:semicolon
 eof

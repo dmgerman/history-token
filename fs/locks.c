@@ -4092,10 +4092,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_file_lock
@@ -4105,7 +4101,11 @@ id|filp
 comma
 id|arg
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_return
 id|error
@@ -4506,10 +4506,6 @@ id|error
 r_goto
 id|out_putf
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_file_lock
@@ -4519,7 +4515,11 @@ id|filp
 comma
 id|cmd
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_goto
 id|out_free
@@ -5008,7 +5008,6 @@ id|inode
 op_assign
 id|filp-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-macro_line|#ifdef CONFIG_MMU
 multiline_comment|/* Don&squot;t allow mandatory locks on files that may be memory mapped&n;&t; * and shared.&n;&t; */
 r_if
 c_cond
@@ -5061,7 +5060,6 @@ id|out
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 id|error
 op_assign
 id|flock_to_posix_lock
@@ -5159,10 +5157,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_file_lock
@@ -5172,7 +5166,11 @@ id|filp
 comma
 id|file_lock-&gt;fl_type
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_goto
 id|out
@@ -5793,10 +5791,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_file_lock
@@ -5806,7 +5800,11 @@ id|filp
 comma
 id|file_lock-&gt;fl_type
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_goto
 id|out

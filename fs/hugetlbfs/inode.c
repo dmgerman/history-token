@@ -912,9 +912,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|inode_delete
+id|security_inode_delete
 c_func
 (paren
 id|inode
@@ -1508,9 +1506,7 @@ id|out
 suffix:semicolon
 id|error
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|inode_setattr
+id|security_inode_setattr
 c_func
 (paren
 id|dentry

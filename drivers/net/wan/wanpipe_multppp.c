@@ -5153,6 +5153,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 id|rx_exit
 suffix:colon
@@ -7172,6 +7176,10 @@ c_func
 id|new_skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -8196,6 +8204,10 @@ c_func
 (paren
 id|new_skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 )brace
 )brace
