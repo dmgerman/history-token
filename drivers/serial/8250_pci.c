@@ -4669,15 +4669,6 @@ comma
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifndef __devexit_p
-macro_line|#if defined(MODULE) || defined(CONFIG_HOTPLUG)
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x) x
-macro_line|#else
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x) NULL
-macro_line|#endif
-macro_line|#endif
 DECL|variable|serial_pci_driver
 r_static
 r_struct
