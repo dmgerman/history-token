@@ -211,13 +211,6 @@ op_amp
 id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|sap-&gt;mac_pdu_q
-)paren
-suffix:semicolon
 )brace
 r_return
 id|sap

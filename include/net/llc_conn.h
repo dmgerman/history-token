@@ -224,9 +224,6 @@ multiline_comment|/* used for saving header of last pdu&n;&t;&t;&t;&t;&t;      r
 suffix:semicolon
 DECL|macro|llc_sk
 mdefine_line|#define llc_sk(__sk) ((struct llc_opt *)(__sk)-&gt;protinfo)
-r_struct
-id|llc_conn_state_ev
-suffix:semicolon
 r_extern
 r_struct
 id|sock

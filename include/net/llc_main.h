@@ -94,9 +94,6 @@ id|mac_pdu_q
 suffix:semicolon
 )brace
 suffix:semicolon
-r_struct
-id|llc_station_state_ev
-suffix:semicolon
 r_extern
 r_struct
 id|llc_sap
