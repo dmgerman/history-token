@@ -259,6 +259,9 @@ DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(_pte)&t;&t;((pte_val(_pte) &amp; _PFN_MASK) &gt;&gt; PAGE_SHIFT)
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
+multiline_comment|/* This takes a physical page address that is used by the remapping functions */
+DECL|macro|mk_pte_phys
+mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = physpage + pgprot_val(pgprot); __pte; })
 DECL|macro|pte_modify
 mdefine_line|#define pte_modify(_pte, newprot) &bslash;&n;&t;(__pte((pte_val(_pte) &amp; ~_PAGE_CHG_MASK) | (pgprot_val(newprot) &amp; _PAGE_CHG_MASK)))
 DECL|macro|page_pte_prot

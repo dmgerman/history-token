@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
+macro_line|#include &lt;asm/mca.h&gt;
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -998,6 +999,11 @@ id|tlb_init
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_MCA
+r_int
+id|cpu
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_DISABLE_VHPT
 DECL|macro|VHPT_ENABLE_BIT
 macro_line|#&t;define VHPT_ENABLE_BIT&t;0
@@ -1156,6 +1162,123 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_IA64_MCA
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* mca handler uses cr.lid as key to pick the right entry */
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|cr_lid
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_CR_LID
+)paren
+suffix:semicolon
+multiline_comment|/* insert this percpu data information into our list for MCA recovery purposes */
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|percpu_paddr
+op_assign
+id|pte_val
+c_func
+(paren
+id|mk_pte_phys
+c_func
+(paren
+id|__pa
+c_func
+(paren
+id|my_cpu_data
+)paren
+comma
+id|PAGE_KERNEL
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Also save per-cpu tlb flush recipe for use in physical mode mca handler */
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|ptce_base
+op_assign
+id|local_cpu_data-&gt;ptce_base
+suffix:semicolon
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|ptce_count
+(braket
+l_int|0
+)braket
+op_assign
+id|local_cpu_data-&gt;ptce_count
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|ptce_count
+(braket
+l_int|1
+)braket
+op_assign
+id|local_cpu_data-&gt;ptce_count
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|ptce_stride
+(braket
+l_int|0
+)braket
+op_assign
+id|local_cpu_data-&gt;ptce_stride
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|ptce_stride
+(braket
+l_int|1
+)braket
+op_assign
+id|local_cpu_data-&gt;ptce_stride
+(braket
+l_int|1
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
 r_int

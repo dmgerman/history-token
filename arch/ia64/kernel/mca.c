@@ -115,20 +115,13 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-DECL|variable|ia64_mca_sal_data_area
-id|u64
-id|ia64_mca_sal_data_area
-(braket
-l_int|1356
-)braket
-suffix:semicolon
-DECL|variable|ia64_tlb_functional
-id|u64
-id|ia64_tlb_functional
-suffix:semicolon
 DECL|variable|ia64_os_mca_recovery_successful
 id|u64
 id|ia64_os_mca_recovery_successful
+suffix:semicolon
+DECL|variable|ia64_mca_serialize
+id|u64
+id|ia64_mca_serialize
 suffix:semicolon
 r_static
 r_void
@@ -195,6 +188,14 @@ r_extern
 r_struct
 id|hw_interrupt_type
 id|irq_type_iosapic_level
+suffix:semicolon
+DECL|variable|ia64_mca_tlb_list
+r_struct
+id|ia64_mca_tlb_info
+id|ia64_mca_tlb_list
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 DECL|variable|cmci_irqaction
 r_static
@@ -3123,6 +3124,17 @@ c_func
 r_void
 )paren
 (brace
+id|pal_processor_state_info_t
+op_star
+id|psp
+op_assign
+(paren
+id|pal_processor_state_info_t
+op_star
+)paren
+op_amp
+id|ia64_sal_to_os_handoff_state.proc_state_param
+suffix:semicolon
 multiline_comment|/* Copy over some relevant stuff from the sal_to_os_mca_handoff&n;&t; * so that it can be used at the time of os_mca_to_sal_handoff&n;&t; */
 id|ia64_os_to_sal_handoff_state.imots_sal_gp
 op_assign
@@ -3132,10 +3144,34 @@ id|ia64_os_to_sal_handoff_state.imots_sal_check_ra
 op_assign
 id|ia64_sal_to_os_handoff_state.imsto_sal_check_ra
 suffix:semicolon
-multiline_comment|/* Cold Boot for uncorrectable MCA */
+multiline_comment|/*&n;&t; * Did we correct the error? At the moment the only error that&n;&t; * we fix is a TLB error, if any other kind of error occurred&n;&t; * we must reboot.&n;&t; */
+r_if
+c_cond
+(paren
+id|psp-&gt;cc
+op_eq
+l_int|1
+op_logical_and
+id|psp-&gt;bc
+op_eq
+l_int|1
+op_logical_and
+id|psp-&gt;rc
+op_eq
+l_int|1
+op_logical_and
+id|psp-&gt;uc
+op_eq
+l_int|1
+)paren
 id|ia64_os_to_sal_handoff_state.imots_os_status
 op_assign
 id|IA64_MCA_COLD_BOOT
+suffix:semicolon
+r_else
+id|ia64_os_to_sal_handoff_state.imots_os_status
+op_assign
+id|IA64_MCA_CORRECTED
 suffix:semicolon
 multiline_comment|/* Default = tell SAL to return to same context */
 id|ia64_os_to_sal_handoff_state.imots_context
@@ -4040,27 +4076,8 @@ id|prfunc_t
 id|prfunc
 )paren
 (brace
-r_char
-id|out
-(braket
-l_int|40
-)braket
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;GUID = %s&bslash;n&quot;
-comma
-id|efi_guid_unparse
-c_func
-(paren
-id|p_guid
-comma
-id|out
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//char out[40];
+singleline_comment|//printk(KERN_DEBUG &quot;GUID = %s&bslash;n&quot;, efi_guid_unparse(p_guid, out));
 )brace
 r_static
 r_void
