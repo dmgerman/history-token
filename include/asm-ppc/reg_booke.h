@@ -35,10 +35,6 @@ macro_line|#endif
 multiline_comment|/* Special Purpose Registers (SPRNs)*/
 DECL|macro|SPRN_DECAR
 mdefine_line|#define SPRN_DECAR&t;0x036&t;/* Decrementer Auto Reload Register */
-DECL|macro|SPRN_CSRR0
-mdefine_line|#define SPRN_CSRR0&t;0x03A&t;/* Critical Save and Restore Register 0 */
-DECL|macro|SPRN_CSRR1
-mdefine_line|#define SPRN_CSRR1&t;0x03B&t;/* Critical Save and Restore Register 1 */
 DECL|macro|SPRN_IVPR
 mdefine_line|#define SPRN_IVPR&t;0x03F&t;/* Interrupt Vector Prefix Register */
 DECL|macro|SPRN_USPRG0
@@ -131,6 +127,10 @@ multiline_comment|/*&n; * SPRs which have conflicting definitions on true Book E
 macro_line|#ifdef CONFIG_BOOKE
 DECL|macro|SPRN_PID
 mdefine_line|#define SPRN_PID&t;0x030&t;/* Process ID */
+DECL|macro|SPRN_CSRR0
+mdefine_line|#define SPRN_CSRR0&t;0x03A&t;/* Critical Save and Restore Register 0 */
+DECL|macro|SPRN_CSRR1
+mdefine_line|#define SPRN_CSRR1&t;0x03B&t;/* Critical Save and Restore Register 1 */
 DECL|macro|SPRN_DEAR
 mdefine_line|#define SPRN_DEAR&t;0x03D&t;/* Data Error Address Register */
 DECL|macro|SPRN_ESR

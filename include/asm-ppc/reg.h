@@ -801,8 +801,12 @@ DECL|macro|PVR_440GP_RC1
 mdefine_line|#define PVR_440GP_RC1&t;0x40120481
 DECL|macro|PVR_440GP_RC2
 mdefine_line|#define PVR_440GP_RC2&t;0x40200481
-DECL|macro|PVR_440GX_RC1
-mdefine_line|#define PVR_440GX_RC1&t;0x51b21850
+DECL|macro|PVR_440GX_RA
+mdefine_line|#define PVR_440GX_RA&t;0x51b21850
+DECL|macro|PVR_440GX_RB
+mdefine_line|#define PVR_440GX_RB&t;0x51b21851
+DECL|macro|PVR_440GX_RB1
+mdefine_line|#define PVR_440GX_RB1&t;0x51b21852
 DECL|macro|PVR_601
 mdefine_line|#define PVR_601&t;&t;0x00010000
 DECL|macro|PVR_602

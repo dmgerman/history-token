@@ -32,7 +32,7 @@ macro_line|#ifdef MODULE
 id|asm
 c_func
 (paren
-l_string|&quot;.section .got,&bslash;&quot;aws&bslash;&quot;,@nobits; .align 3; .previous&quot;
+l_string|&quot;.section .got,&bslash;&quot;aws&bslash;&quot;,@progbits; .align 3; .previous&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

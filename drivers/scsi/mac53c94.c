@@ -16,8 +16,10 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/macio.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;mac53c94.h&quot;
 DECL|enum|fsc_phase
 r_enum
@@ -75,17 +77,20 @@ op_star
 id|host
 suffix:semicolon
 DECL|member|request_q
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|request_q
 suffix:semicolon
 DECL|member|request_qtail
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|request_qtail
 suffix:semicolon
 DECL|member|current_req
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_req
 suffix:semicolon
@@ -198,7 +203,8 @@ r_struct
 id|fsc_state
 op_star
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -208,7 +214,8 @@ r_int
 id|mac53c94_queue
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -218,7 +225,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -234,7 +242,7 @@ c_cond
 (paren
 id|cmd-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 (brace
 r_int
@@ -354,13 +362,14 @@ r_int
 id|mac53c94_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
 (brace
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
 DECL|function|mac53c94_host_reset
@@ -369,7 +378,8 @@ r_int
 id|mac53c94_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -615,7 +625,8 @@ op_star
 id|state
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -666,7 +677,8 @@ suffix:semicolon
 id|state-&gt;request_q
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -933,7 +945,8 @@ id|dma
 op_assign
 id|state-&gt;dma
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -951,9 +964,6 @@ suffix:semicolon
 r_static
 r_int
 id|mac53c94_errors
-suffix:semicolon
-r_int
-id|dma_dir
 suffix:semicolon
 multiline_comment|/*&n;&t; * Apparently, reading the interrupt register unlatches&n;&t; * the status and sequence step registers.&n;&t; */
 id|seq
@@ -1613,14 +1623,6 @@ id|dma-&gt;control
 )paren
 suffix:semicolon
 multiline_comment|/* stop dma */
-id|dma_dir
-op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|cmd-&gt;sc_data_direction
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1643,7 +1645,7 @@ id|cmd-&gt;request_buffer
 comma
 id|cmd-&gt;use_sg
 comma
-id|dma_dir
+id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 )brace
@@ -1658,7 +1660,7 @@ id|state-&gt;dma_addr
 comma
 id|cmd-&gt;request_bufflen
 comma
-id|dma_dir
+id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 )brace
@@ -1819,7 +1821,8 @@ r_int
 id|result
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -1875,7 +1878,8 @@ id|fsc_state
 op_star
 id|state
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -1903,20 +1907,11 @@ suffix:semicolon
 id|u32
 id|dma_len
 suffix:semicolon
-r_int
-id|dma_dir
-op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|cmd-&gt;sc_data_direction
-)paren
-suffix:semicolon
 id|dma_cmd
 op_assign
 id|cmd-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 ques
 c_cond
 id|OUTPUT_MORE
@@ -1962,7 +1957,7 @@ id|scl
 comma
 id|cmd-&gt;use_sg
 comma
-id|dma_dir
+id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 r_for
@@ -2082,7 +2077,7 @@ id|cmd-&gt;request_buffer
 comma
 id|total
 comma
-id|dma_dir
+id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 id|state-&gt;dma_addr
@@ -2152,7 +2147,8 @@ suffix:semicolon
 )brace
 DECL|variable|mac53c94_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|mac53c94_template
 op_assign
 (brace

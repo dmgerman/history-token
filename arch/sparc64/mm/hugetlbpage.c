@@ -2475,6 +2475,13 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hugetlb_total_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hugetlb_total_pages
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We cannot handle pagefaults against hugetlb pages at all.  They cause&n; * handle_mm_fault() to try to instantiate regular-sized pages in the&n; * hugegpage VMA.  do_page_fault() is supposed to trap this, so BUG is we get&n; * this far.&n; */
 DECL|function|hugetlb_nopage
 r_static

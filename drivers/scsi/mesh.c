@@ -24,8 +24,10 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/macio.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;mesh.h&quot;
 macro_line|#if 1
 DECL|macro|KERN_DEBUG
@@ -335,7 +337,8 @@ id|data_goes_out
 suffix:semicolon
 multiline_comment|/* guess as to data direction */
 DECL|member|current_req
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_req
 suffix:semicolon
@@ -402,12 +405,14 @@ op_star
 id|next
 suffix:semicolon
 DECL|member|request_q
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|request_q
 suffix:semicolon
 DECL|member|request_qtail
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|request_qtail
 suffix:semicolon
@@ -428,7 +433,8 @@ id|conn_tgt
 suffix:semicolon
 multiline_comment|/* target we&squot;re connected to */
 DECL|member|current_req
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_req
 suffix:semicolon
@@ -601,7 +607,8 @@ id|mesh_state
 op_star
 id|ms
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -1369,7 +1376,8 @@ id|mesh_state
 op_star
 id|ms
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -1668,7 +1676,8 @@ id|mesh_state
 op_star
 id|ms
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -1703,7 +1712,7 @@ id|data_goes_out
 op_assign
 id|cmd-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 id|ms-&gt;tgts
 (braket
@@ -2483,7 +2492,8 @@ op_star
 id|ms
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -2542,7 +2552,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -2579,7 +2590,8 @@ suffix:semicolon
 id|next
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -2640,7 +2652,8 @@ r_int
 id|start_next
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -3196,7 +3209,8 @@ id|md
 op_assign
 id|ms-&gt;dma
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -4188,7 +4202,8 @@ id|mr
 op_assign
 id|ms-&gt;mesh
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -4860,7 +4875,8 @@ id|mesh_target
 op_star
 id|tp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -4964,7 +4980,8 @@ l_int|NULL
 id|ms-&gt;request_q
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -5775,7 +5792,8 @@ id|i
 comma
 id|code
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -6295,7 +6313,8 @@ id|mesh_state
 op_star
 id|ms
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -6392,13 +6411,7 @@ id|scl
 comma
 id|cmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|cmd
-op_member_access_from_pointer
-id|sc_data_direction
-)paren
+id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 r_for
@@ -6711,7 +6724,8 @@ id|mr
 op_assign
 id|ms-&gt;mesh
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -6961,11 +6975,7 @@ id|sg
 comma
 id|cmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7354,7 +7364,8 @@ id|mr
 op_assign
 id|ms-&gt;mesh
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -8155,7 +8166,8 @@ r_int
 id|mesh_queue
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -8165,7 +8177,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -8409,7 +8422,8 @@ r_int
 id|mesh_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -8456,7 +8470,7 @@ id|ms
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by the midlayer with the lock held to reset the&n; * SCSI host and bus.&n; * The midlayer will wait for devices to come back, we don&squot;t need&n; * to do that ourselves&n; */
@@ -8466,7 +8480,8 @@ r_int
 id|mesh_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -9107,7 +9122,8 @@ suffix:semicolon
 )brace
 DECL|variable|mesh_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|mesh_template
 op_assign
 (brace

@@ -1800,6 +1800,56 @@ comma
 multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
+(brace
+multiline_comment|/* 440GX Rev. B */
+l_int|0xf0000fff
+comma
+l_int|0x50000851
+comma
+l_string|&quot;440GX Rev. B&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+comma
+id|PPC_FEATURE_32
+op_or
+id|PPC_FEATURE_HAS_MMU
+comma
+l_int|32
+comma
+l_int|32
+comma
+l_int|0
+comma
+multiline_comment|/*__setup_cpu_440 */
+)brace
+comma
+(brace
+multiline_comment|/* 440GX Rev. B1 (2.1) */
+l_int|0xf0000fff
+comma
+l_int|0x50000852
+comma
+l_string|&quot;440GX Rev. B1 (2.1)&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+comma
+id|PPC_FEATURE_32
+op_or
+id|PPC_FEATURE_HAS_MMU
+comma
+l_int|32
+comma
+l_int|32
+comma
+l_int|0
+comma
+multiline_comment|/*__setup_cpu_440 */
+)brace
+comma
 macro_line|#endif /* CONFIG_44x */
 macro_line|#if !CLASSIC_PPC
 (brace
