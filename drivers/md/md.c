@@ -2308,12 +2308,7 @@ id|next_spare
 op_assign
 id|mddev-&gt;raid_disks
 suffix:semicolon
-multiline_comment|/* make rdev-&gt;sb match mddev data..&n;&t; *&n;&t; * 1/ zero out disks&n;&t; * 2/ Add info for each disk, keeping track of highest desc_nr&n;&t; * 3/ any empty disks &lt; highest become removed&n;&t; *&n;&t; * disks[0] gets initialised to REMOVED because&n;&t; * we cannot be sure from other fields if it has&n;&t; * been initialised or not.&n;&t; */
-r_int
-id|highest
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* make rdev-&gt;sb match mddev data..&n;&t; *&n;&t; * 1/ zero out disks&n;&t; * 2/ Add info for each disk, keeping track of highest desc_nr (next_spare);&n;&t; * 3/ any empty disks &lt; next_spare become removed&n;&t; *&n;&t; * disks[0] gets initialised to REMOVED because&n;&t; * we cannot be sure from other fields if it has&n;&t; * been initialised or not.&n;&t; */
 r_int
 id|i
 suffix:semicolon
@@ -2702,19 +2697,8 @@ id|working
 op_increment
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|rdev2-&gt;desc_nr
-OG
-id|highest
-)paren
-id|highest
-op_assign
-id|rdev2-&gt;desc_nr
-suffix:semicolon
 )brace
-multiline_comment|/* now set the &quot;removed&quot; bit on any non-trailing holes */
+multiline_comment|/* now set the &quot;removed&quot; and &quot;faulty&quot; bits on any missing devices */
 r_for
 c_loop
 (paren
@@ -2724,7 +2708,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|highest
+id|mddev-&gt;raid_disks
 suffix:semicolon
 id|i
 op_increment
@@ -2767,6 +2751,17 @@ l_int|1
 op_lshift
 id|MD_DISK_REMOVED
 )paren
+suffix:semicolon
+id|d-&gt;state
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|MD_DISK_FAULTY
+)paren
+suffix:semicolon
+id|failed
+op_increment
 suffix:semicolon
 )brace
 )brace
