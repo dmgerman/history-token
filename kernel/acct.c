@@ -856,6 +856,10 @@ r_int
 r_int
 id|vsize
 suffix:semicolon
+r_int
+r_int
+id|flim
+suffix:semicolon
 multiline_comment|/*&n;&t; * First check to see if there is enough free_space to continue&n;&t; * the process accounting system.&n;&t; */
 r_if
 c_cond
@@ -1149,6 +1153,25 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/*&n; &t; * Accounting records are not subject to resource limits.&n; &t; */
+id|flim
+op_assign
+id|current-&gt;rlim
+(braket
+id|RLIMIT_FSIZE
+)braket
+dot
+id|rlim_cur
+suffix:semicolon
+id|current-&gt;rlim
+(braket
+id|RLIMIT_FSIZE
+)braket
+dot
+id|rlim_cur
+op_assign
+id|RLIM_INFINITY
+suffix:semicolon
 id|file-&gt;f_op
 op_member_access_from_pointer
 id|write
@@ -1172,6 +1195,15 @@ comma
 op_amp
 id|file-&gt;f_pos
 )paren
+suffix:semicolon
+id|current-&gt;rlim
+(braket
+id|RLIMIT_FSIZE
+)braket
+dot
+id|rlim_cur
+op_assign
+id|flim
 suffix:semicolon
 id|set_fs
 c_func
