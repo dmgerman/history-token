@@ -52,6 +52,8 @@ DECL|macro|TGA_CURSOR_XY_REG
 mdefine_line|#define&t;TGA_CURSOR_XY_REG&t;&t;0x0074
 DECL|macro|TGA_INTR_STAT_REG
 mdefine_line|#define&t;TGA_INTR_STAT_REG&t;&t;0x007c
+DECL|macro|TGA_DATA_REG
+mdefine_line|#define TGA_DATA_REG&t;&t;&t;0x0080
 DECL|macro|TGA_RAMDAC_SETUP_REG
 mdefine_line|#define&t;TGA_RAMDAC_SETUP_REG&t;&t;0x00c0
 DECL|macro|TGA_BLOCK_COLOR0_REG
