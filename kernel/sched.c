@@ -7145,9 +7145,13 @@ multiline_comment|/*&n;&t;&t; * Reschedule if we are currently running on this r
 r_if
 c_cond
 (paren
-id|rq-&gt;curr
-op_eq
+id|task_running
+c_func
+(paren
+id|rq
+comma
 id|p
+)paren
 )paren
 (brace
 r_if
