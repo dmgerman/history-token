@@ -1882,9 +1882,6 @@ id|si
 dot
 id|lcn
 OL
-(paren
-id|LCN
-)paren
 id|LCN_HOLE
 )paren
 id|si
@@ -2062,9 +2059,6 @@ id|send
 dot
 id|lcn
 op_eq
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 )paren
 id|marker_vcn
@@ -2551,9 +2545,6 @@ id|ds
 dot
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 suffix:semicolon
 r_goto
@@ -2571,9 +2562,6 @@ id|ds
 dot
 id|lcn
 op_eq
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 )paren
 (brace
@@ -2595,9 +2583,6 @@ id|ds
 dot
 id|lcn
 op_ne
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 )paren
 (brace
@@ -2681,9 +2666,6 @@ id|ds
 dot
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 multiline_comment|/* We now used up a slot. */
@@ -2759,9 +2741,6 @@ id|ds
 dot
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 suffix:semicolon
 id|drl
@@ -3031,16 +3010,10 @@ id|vcn
 (brace
 id|rl-&gt;vcn
 op_assign
-(paren
-id|VCN
-)paren
 l_int|0
 suffix:semicolon
 id|rl-&gt;lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 id|rl-&gt;length
@@ -3305,9 +3278,6 @@ id|rlpos
 dot
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_HOLE
 suffix:semicolon
 r_else
@@ -3655,9 +3625,6 @@ id|rlpos
 dot
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 id|rlpos
@@ -3711,9 +3678,6 @@ id|rlpos
 dot
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 suffix:semicolon
 )brace
@@ -3726,9 +3690,6 @@ id|rlpos
 dot
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 multiline_comment|/* Setup terminating runlist element. */
@@ -3888,9 +3849,6 @@ id|rl
 )paren
 )paren
 r_return
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 multiline_comment|/* Catch out of lower bounds vcn. */
@@ -3911,9 +3869,6 @@ id|vcn
 )paren
 )paren
 r_return
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 suffix:semicolon
 r_for
@@ -4035,9 +3990,6 @@ id|lcn
 suffix:semicolon
 multiline_comment|/* Just in case... We could replace this with BUG() some day. */
 r_return
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 suffix:semicolon
 )brace

@@ -408,9 +408,6 @@ c_func
 (paren
 id|rl-&gt;lcn
 op_ge
-(paren
-id|LCN
-)paren
 id|LCN_HOLE
 )paren
 )paren
@@ -440,9 +437,6 @@ c_func
 (paren
 id|rl-&gt;lcn
 op_ne
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 )paren
 )paren
@@ -455,9 +449,6 @@ c_func
 (paren
 id|rl-&gt;lcn
 op_eq
-(paren
-id|LCN
-)paren
 id|LCN_ENOENT
 )paren
 )paren

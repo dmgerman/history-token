@@ -3131,9 +3131,6 @@ c_func
 (paren
 id|rl-&gt;lcn
 OL
-(paren
-id|LCN
-)paren
 id|LCN_HOLE
 )paren
 )paren
@@ -3311,9 +3308,6 @@ c_func
 (paren
 id|rl-&gt;lcn
 OL
-(paren
-id|LCN
-)paren
 id|LCN_HOLE
 )paren
 )paren
@@ -3445,9 +3439,6 @@ c_func
 (paren
 id|rl-&gt;lcn
 OL
-(paren
-id|LCN
-)paren
 id|LCN_HOLE
 )paren
 )paren
