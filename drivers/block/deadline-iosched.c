@@ -208,9 +208,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_static
-r_inline
 r_void
-id|deadline_move_to_dispatch
+id|deadline_move_request
 c_func
 (paren
 r_struct
@@ -683,7 +682,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|deadline_move_to_dispatch
+id|deadline_move_request
 c_func
 (paren
 id|dd
