@@ -335,5 +335,17 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|VSYSCALL_BASE
+comma
+id|__fix_to_virt
+c_func
+(paren
+id|FIX_VSYSCALL
+)paren
+)paren
+suffix:semicolon
 )brace
 eof

@@ -2275,7 +2275,7 @@ c_func
 id|grab_cache_page_nowait
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is a generic file read routine, and uses the&n; * mapping-&gt;a_ops-&gt;readpage() function for the actual low-level&n; * stuff.&n; *&n; * This is really ugly. But the goto&squot;s actually try to clarify some&n; * of the logic when it comes to error handling etc.&n; * - note the struct file * is only passed for the use of readpage&n; */
+multiline_comment|/*&n; * This is a generic file read routine, and uses the&n; * mapping-&gt;a_ops-&gt;readpage() function for the actual low-level&n; * stuff.&n; *&n; * This is really ugly. But the goto&squot;s actually try to clarify some&n; * of the logic when it comes to error handling etc.&n; *&n; * Note the struct file* is only passed for the use of readpage.  It may be&n; * NULL.&n; */
 DECL|function|do_generic_mapping_read
 r_void
 id|do_generic_mapping_read
@@ -2886,6 +2886,11 @@ c_func
 id|cached_page
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|filp
+)paren
 id|file_accessed
 c_func
 (paren
@@ -5304,7 +5309,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|generic_file_vm_ops
-r_static
 r_struct
 id|vm_operations_struct
 id|generic_file_vm_ops

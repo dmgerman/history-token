@@ -554,6 +554,11 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

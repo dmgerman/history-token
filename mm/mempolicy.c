@@ -2023,13 +2023,11 @@ l_int|0
 (brace
 id|err
 op_assign
-id|page_zone
+id|page_to_nid
 c_func
 (paren
 id|p
 )paren
-op_member_access_from_pointer
-id|zone_pgdat-&gt;node_id
 suffix:semicolon
 id|put_page
 c_func

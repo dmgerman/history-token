@@ -676,6 +676,16 @@ id|ints
 l_int|3
 )braket
 suffix:semicolon
+id|get_options
+c_func
+(paren
+id|str
+comma
+l_int|3
+comma
+id|ints
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

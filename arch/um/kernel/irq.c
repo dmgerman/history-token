@@ -539,6 +539,9 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Force the &quot;do bottom halves&quot; bit */
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -556,10 +559,8 @@ c_func
 suffix:semicolon
 r_do
 (brace
-id|status
-op_or_assign
-id|action-&gt;flags
-suffix:semicolon
+id|ret
+op_assign
 id|action
 op_member_access_from_pointer
 id|handler
@@ -571,6 +572,17 @@ id|action-&gt;dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|IRQ_HANDLED
+)paren
+id|status
+op_or_assign
+id|action-&gt;flags
 suffix:semicolon
 id|action
 op_assign

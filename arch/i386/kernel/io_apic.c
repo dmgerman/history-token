@@ -4534,7 +4534,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI_MSI
 DECL|function|assign_irq_vector
 r_int
 id|assign_irq_vector
@@ -4543,16 +4542,6 @@ c_func
 r_int
 id|irq
 )paren
-macro_line|#else
-r_int
-id|__init
-id|assign_irq_vector
-c_func
-(paren
-r_int
-id|irq
-)paren
-macro_line|#endif
 (brace
 r_static
 r_int

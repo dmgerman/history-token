@@ -3,6 +3,36 @@ macro_line|#ifndef _ASM_THREAD_INFO_H
 DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * Size of kernel stack for each process&n; */
+macro_line|#ifndef __s390x__
+macro_line|#ifndef __SMALL_STACK
+DECL|macro|THREAD_ORDER
+mdefine_line|#define THREAD_ORDER 1
+DECL|macro|ASYNC_ORDER
+mdefine_line|#define ASYNC_ORDER  1
+macro_line|#else
+DECL|macro|THREAD_ORDER
+mdefine_line|#define THREAD_ORDER 0
+DECL|macro|ASYNC_ORDER
+mdefine_line|#define ASYNC_ORDER  0
+macro_line|#endif
+macro_line|#else /* __s390x__ */
+macro_line|#ifndef __SMALL_STACK_STACK
+DECL|macro|THREAD_ORDER
+mdefine_line|#define THREAD_ORDER 2
+DECL|macro|ASYNC_ORDER
+mdefine_line|#define ASYNC_ORDER  2
+macro_line|#else
+DECL|macro|THREAD_ORDER
+mdefine_line|#define THREAD_ORDER 1
+DECL|macro|ASYNC_ORDER
+mdefine_line|#define ASYNC_ORDER  1
+macro_line|#endif
+macro_line|#endif /* __s390x__ */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (PAGE_SIZE &lt;&lt; THREAD_ORDER)
+DECL|macro|ASYNC_SIZE
+mdefine_line|#define ASYNC_SIZE  (PAGE_SIZE &lt;&lt; ASYNC_ORDER)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
@@ -57,22 +87,6 @@ DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
-multiline_comment|/*&n; * Size of kernel stack for each process&n; */
-macro_line|#ifndef __s390x__
-DECL|macro|THREAD_ORDER
-mdefine_line|#define THREAD_ORDER 1
-DECL|macro|ASYNC_ORDER
-mdefine_line|#define ASYNC_ORDER  1
-macro_line|#else /* __s390x__ */
-DECL|macro|THREAD_ORDER
-mdefine_line|#define THREAD_ORDER 2
-DECL|macro|ASYNC_ORDER
-mdefine_line|#define ASYNC_ORDER  2
-macro_line|#endif /* __s390x__ */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (PAGE_SIZE &lt;&lt; THREAD_ORDER)
-DECL|macro|ASYNC_SIZE
-mdefine_line|#define ASYNC_SIZE  (PAGE_SIZE &lt;&lt; ASYNC_ORDER)
 multiline_comment|/* how to get the thread information struct from C */
 DECL|function|current_thread_info
 r_static

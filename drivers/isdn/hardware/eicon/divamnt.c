@@ -595,7 +595,7 @@ id|filep-&gt;private_data
 suffix:semicolon
 id|filep-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* clear &squot;used&squot; flag */

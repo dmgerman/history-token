@@ -332,12 +332,10 @@ id|eth
 op_assign
 id|skb-&gt;mac.ethernet
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
 id|skb-&gt;input_dev
 op_assign
 id|dev
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

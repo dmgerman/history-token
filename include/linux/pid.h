@@ -25,57 +25,27 @@ DECL|struct|pid
 r_struct
 id|pid
 (brace
+multiline_comment|/* Try to keep pid_chain in the same cacheline as nr for find_pid */
 DECL|member|nr
 r_int
 id|nr
 suffix:semicolon
-DECL|member|count
-id|atomic_t
-id|count
-suffix:semicolon
-DECL|member|task
-r_struct
-id|task_struct
-op_star
-id|task
-suffix:semicolon
-DECL|member|task_list
-r_struct
-id|list_head
-id|task_list
-suffix:semicolon
-DECL|member|hash_chain
-r_struct
-id|list_head
-id|hash_chain
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|pid_link
-r_struct
-id|pid_link
-(brace
 DECL|member|pid_chain
 r_struct
-id|list_head
+id|hlist_node
 id|pid_chain
 suffix:semicolon
-DECL|member|pidptr
+multiline_comment|/* list of pids with the same nr, only one of them is in the hash */
+DECL|member|pid_list
 r_struct
-id|pid
-op_star
-id|pidptr
-suffix:semicolon
-DECL|member|pid
-r_struct
-id|pid
-id|pid
+id|list_head
+id|pid_list
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|pid_task
-mdefine_line|#define pid_task(elem, type) &bslash;&n;&t;list_entry(elem, struct task_struct, pids[type].pid_chain)
-multiline_comment|/*&n; * attach_pid() and link_pid() must be called with the tasklist_lock&n; * write-held.&n; */
+mdefine_line|#define pid_task(elem, type) &bslash;&n;&t;list_entry(elem, struct task_struct, pids[type].pid_list)
+multiline_comment|/*&n; * attach_pid() and detach_pid() must be called with the tasklist_lock&n; * write-held.&n; */
 r_extern
 r_int
 id|FASTCALL
@@ -98,32 +68,6 @@ id|nr
 )paren
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|link_pid
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_struct
-id|pid_link
-op_star
-id|link
-comma
-r_struct
-id|pid
-op_star
-id|pid
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * detach_pid() must be called with the tasklist_lock write-held.&n; */
 r_extern
 r_void
 id|FASTCALL
@@ -196,7 +140,9 @@ op_star
 id|thread
 )paren
 suffix:semicolon
-DECL|macro|for_each_task_pid
-mdefine_line|#define for_each_task_pid(who, type, task, elem, pid)&t;&t;&bslash;&n;&t;if ((pid = find_pid(type, who)))&t;&t;&t;&bslash;&n;&t;        for (elem = pid-&gt;task_list.next,&t;&t;&t;&bslash;&n;&t;&t;&t;prefetch(elem-&gt;next),&t;&t;&t;&t;&bslash;&n;&t;&t;&t;task = pid_task(elem, type);&t;&t;&t;&bslash;&n;&t;&t;&t;elem != &amp;pid-&gt;task_list;&t;&t;&t;&bslash;&n;&t;&t;&t;elem = elem-&gt;next, prefetch(elem-&gt;next), &t;&bslash;&n;&t;&t;&t;task = pid_task(elem, type))
+DECL|macro|do_each_task_pid
+mdefine_line|#define do_each_task_pid(who, type, task)&t;&t;&t;&t;&bslash;&n;&t;if ((task = find_task_by_pid_type(type, who))) {&t;&t;&bslash;&n;&t;&t;prefetch((task)-&gt;pids[type].pid_list.next);&t;&t;&bslash;&n;&t;&t;do {
+DECL|macro|while_each_task_pid
+mdefine_line|#define while_each_task_pid(who, type, task)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;task = pid_task((task)-&gt;pids[type].pid_list.next,&bslash;&n;&t;&t;&t;&t;&t;&t;type);&t;&t;&t;&bslash;&n;&t;&t;&t;prefetch((task)-&gt;pids[type].pid_list.next);&t;&bslash;&n;&t;&t;} while (hlist_unhashed(&amp;(task)-&gt;pids[type].pid_chain));&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
 macro_line|#endif /* _LINUX_PID_H */
 eof

@@ -1138,6 +1138,14 @@ id|skb
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|ipfrag_flush
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|ip_frag_nqueues
 suffix:semicolon

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -213,6 +214,9 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Force the &quot;do bottom halves&quot; bit */
+r_int
+id|ret
+suffix:semicolon
 r_do
 (brace
 r_if
@@ -236,10 +240,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|status
-op_or_assign
-id|action-&gt;flags
-suffix:semicolon
+id|ret
+op_assign
 id|action
 op_member_access_from_pointer
 id|handler
@@ -251,6 +253,17 @@ id|action-&gt;dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|IRQ_HANDLED
+)paren
+id|status
+op_or_assign
+id|action-&gt;flags
 suffix:semicolon
 id|action
 op_assign
@@ -1246,13 +1259,6 @@ id|init_irq_proc
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-r_struct
-id|proc_dir_entry
-op_star
-id|entry
-suffix:semicolon
-macro_line|#endif
 r_int
 id|i
 suffix:semicolon

@@ -6350,7 +6350,7 @@ c_func
 (paren
 id|adapter-&gt;name
 comma
-l_string|&quot;Technisat SkyStar2 driver&quot;
+l_string|&quot;SkyStar2&quot;
 )paren
 op_eq
 l_int|0

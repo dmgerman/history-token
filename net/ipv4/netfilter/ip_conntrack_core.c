@@ -5214,6 +5214,10 @@ id|ip_conntrack_lock
 suffix:semicolon
 )brace
 )brace
+DECL|variable|ip_ct_no_defrag
+r_int
+id|ip_ct_no_defrag
+suffix:semicolon
 multiline_comment|/* Returns new sk_buff, or NULL */
 r_struct
 id|sk_buff
@@ -5243,6 +5247,26 @@ op_assign
 id|skb-&gt;nf_debug
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ip_ct_no_defrag
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -2087,6 +2087,26 @@ l_int|0
 op_plus
 id|ASYNC_SIZE
 suffix:semicolon
+macro_line|#ifdef CONFIG_CHECK_STACK
+id|lc-&gt;panic_stack
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|__alloc_bootmem
+c_func
+(paren
+id|PAGE_SIZE
+comma
+id|PAGE_SIZE
+comma
+l_int|0
+)paren
+op_plus
+id|PAGE_SIZE
+suffix:semicolon
+macro_line|#endif
 id|lc-&gt;current_task
 op_assign
 (paren

@@ -1,16 +1,17 @@
-multiline_comment|/*&n; * hvconsole.c&n; * Copyright (C) 2004 Hollis Blanchard, IBM Corporation&n; *&n; * LPAR console support.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; * hvconsole.c&n; * Copyright (C) 2004 Hollis Blanchard, IBM Corporation&n; * Copyright (C) 2004 IBM Corporation&n; *&n; * Additional Author(s):&n; *  Ryan S. Arnold &lt;rsa@us.ibm.com&gt;&n; *&n; * LPAR console support.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
-macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/hvconsole.h&gt;
+macro_line|#include &lt;asm/prom.h&gt;
+multiline_comment|/**&n; * hvc_get_chars - retrieve characters from firmware for denoted vterm adatper&n; * @vtermno: The vtermno or unit_address of the adapter from which to fetch the&n; *&t;data.&n; * @buf: The character buffer into which to put the character data fetched from&n; *&t;firmware.&n; * @count: not used?&n; */
 DECL|function|hvc_get_chars
 r_int
 id|hvc_get_chars
 c_func
 (paren
-r_int
-id|index
+r_uint32
+id|vtermno
 comma
 r_char
 op_star
@@ -32,7 +33,7 @@ c_func
 (paren
 id|H_GET_TERM_CHAR
 comma
-id|index
+id|vtermno
 comma
 l_int|0
 comma
@@ -160,13 +161,14 @@ c_func
 id|hvc_get_chars
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * hvc_put_chars: send characters to firmware for denoted vterm adapter&n; * @vtermno: The vtermno or unit_address of the adapter from which the data&n; *&t;originated.&n; * @buf: The character buffer that contains the character data to send to&n; *&t;firmware.&n; * @count: Send this number of characters.&n; */
 DECL|function|hvc_put_chars
 r_int
 id|hvc_put_chars
 c_func
 (paren
-r_int
-id|index
+r_uint32
+id|vtermno
 comma
 r_const
 r_char
@@ -199,7 +201,7 @@ c_func
 (paren
 id|H_PUT_TERM_CHAR
 comma
-id|index
+id|vtermno
 comma
 id|count
 comma
@@ -236,7 +238,7 @@ l_int|0
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EIO
 suffix:semicolon
 )brace
 DECL|variable|hvc_put_chars
@@ -246,16 +248,13 @@ c_func
 id|hvc_put_chars
 )paren
 suffix:semicolon
-multiline_comment|/* return the number of client vterms present */
-multiline_comment|/* XXX this requires an interface change to handle multiple discontiguous&n; * vterms */
-DECL|function|hvc_count
+multiline_comment|/*&n; * We hope/assume that the first vty found corresponds to the first console&n; * device.&n; */
+DECL|function|hvc_find_vtys
 r_int
-id|hvc_count
+id|hvc_find_vtys
 c_func
 (paren
-r_int
-op_star
-id|start_termno
+r_void
 )paren
 (brace
 r_struct
@@ -268,7 +267,9 @@ id|num_found
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* consider only the first vty node.&n;&t; * we should _always_ be able to find one. */
+r_for
+c_loop
+(paren
 id|vty
 op_assign
 id|of_find_node_by_name
@@ -279,26 +280,39 @@ comma
 l_string|&quot;vty&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|vty
-op_logical_and
-id|device_is_compatible
+op_ne
+l_int|NULL
+suffix:semicolon
+id|vty
+op_assign
+id|of_find_node_by_name
 c_func
 (paren
 id|vty
 comma
-l_string|&quot;hvterm1&quot;
+l_string|&quot;vty&quot;
 )paren
 )paren
 (brace
-id|u32
+r_uint32
 op_star
-id|termno
+id|vtermno
+suffix:semicolon
+multiline_comment|/* We have statically defined space for only a certain number of&n;&t;&t; * console adapters. */
+r_if
+c_cond
+(paren
+id|num_found
+op_ge
+id|MAX_NR_HVC_CONSOLES
+)paren
+r_break
+suffix:semicolon
+id|vtermno
 op_assign
 (paren
-id|u32
+r_uint32
 op_star
 )paren
 id|get_property
@@ -314,26 +328,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|termno
-op_logical_and
-id|start_termno
+op_logical_neg
+id|vtermno
 )paren
-op_star
-id|start_termno
-op_assign
-op_star
-id|termno
+r_continue
 suffix:semicolon
-id|num_found
-op_assign
-l_int|1
-suffix:semicolon
-id|of_node_put
+r_if
+c_cond
+(paren
+id|device_is_compatible
 c_func
 (paren
 id|vty
+comma
+l_string|&quot;hvterm1&quot;
+)paren
+)paren
+(brace
+id|hvc_instantiate
+c_func
+(paren
+op_star
+id|vtermno
+comma
+id|num_found
 )paren
 suffix:semicolon
+op_increment
+id|num_found
+suffix:semicolon
+)brace
 )brace
 r_return
 id|num_found

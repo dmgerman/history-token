@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *   fs/cifs/link.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;cifsfs.h&quot;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
@@ -296,6 +297,13 @@ suffix:semicolon
 r_char
 op_star
 id|target_path
+op_assign
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 r_struct
 id|cifs_sb_info
@@ -339,22 +347,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|full_path
-op_eq
-l_int|NULL
 )paren
-(brace
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
+r_goto
+id|out_no_free
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|cFYI
 c_func
 (paren
@@ -394,35 +392,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|target_path
-op_eq
-l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|full_path
-)paren
-id|kfree
+id|target_path
+op_assign
+id|ERR_PTR
 c_func
 (paren
-id|full_path
-)paren
-suffix:semicolon
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
-suffix:semicolon
-r_return
 op_minus
 id|ENOMEM
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
-multiline_comment|/* can not call the following line due to EFAULT in vfs_readlink which is presumably expecting a user space buffer */
-multiline_comment|/* length = cifs_readlink(direntry,target_path, sizeof(target_path) - 1);    */
 multiline_comment|/* BB add read reparse point symlink code and Unix extensions symlink code here BB */
 r_if
 c_cond
@@ -455,9 +441,8 @@ r_else
 (brace
 multiline_comment|/* rc = CIFSSMBQueryReparseLinkInfo */
 multiline_comment|/* BB Add code to Query ReparsePoint info */
+multiline_comment|/* BB Add MAC style xsymlink check here if enabled */
 )brace
-multiline_comment|/* BB Anything else to do to handle recursive links? */
-multiline_comment|/* BB Should we be using page symlink ops here? */
 r_if
 c_cond
 (paren
@@ -476,9 +461,41 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-id|rc
+)brace
+r_else
+(brace
+id|kfree
+c_func
+(paren
+id|target_path
+)paren
+suffix:semicolon
+id|target_path
 op_assign
-id|vfs_follow_link
+id|ERR_PTR
+c_func
+(paren
+id|rc
+)paren
+suffix:semicolon
+)brace
+id|out
+suffix:colon
+id|kfree
+c_func
+(paren
+id|full_path
+)paren
+suffix:semicolon
+id|out_no_free
+suffix:colon
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+id|nd_set_link
 c_func
 (paren
 id|nd
@@ -486,38 +503,8 @@ comma
 id|target_path
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* else EACCESS */
-r_if
-c_cond
-(paren
-id|target_path
-)paren
-id|kfree
-c_func
-(paren
-id|target_path
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|full_path
-)paren
-id|kfree
-c_func
-(paren
-id|full_path
-)paren
-suffix:semicolon
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
-suffix:semicolon
 r_return
-id|rc
+l_int|0
 suffix:semicolon
 )brace
 r_int
@@ -1358,6 +1345,49 @@ id|xid
 suffix:semicolon
 r_return
 id|rc
+suffix:semicolon
+)brace
+DECL|function|cifs_put_link
+r_void
+id|cifs_put_link
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|direntry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
+)paren
+(brace
+r_char
+op_star
+id|p
+op_assign
+id|nd_get_link
+c_func
+(paren
+id|nd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|p
+)paren
+)paren
+id|kfree
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 )brace
 eof

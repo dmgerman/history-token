@@ -1002,29 +1002,7 @@ suffix:semicolon
 multiline_comment|/* duplicate correlation  */
 )brace
 suffix:semicolon
-DECL|struct|tc_netem_dist
-r_struct
-id|tc_netem_dist
-(brace
-DECL|member|size
-id|__u32
-id|size
-suffix:semicolon
-multiline_comment|/* table size */
-DECL|member|factor
-id|__u32
-id|factor
-suffix:semicolon
-multiline_comment|/* table scaling factor */
-DECL|member|data
-id|__s16
-id|data
-(braket
-l_int|0
-)braket
-suffix:semicolon
-multiline_comment|/* distribution table values */
-)brace
-suffix:semicolon
+DECL|macro|NETEM_DIST_SCALE
+mdefine_line|#define NETEM_DIST_SCALE&t;8192
 macro_line|#endif
 eof

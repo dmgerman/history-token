@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/ramfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* some random number */
 DECL|macro|RAMFS_MAGIC
@@ -23,12 +24,6 @@ r_static
 r_struct
 id|address_space_operations
 id|ramfs_aops
-suffix:semicolon
-DECL|variable|ramfs_file_operations
-r_static
-r_struct
-id|file_operations
-id|ramfs_file_operations
 suffix:semicolon
 DECL|variable|ramfs_file_inode_operations
 r_static
@@ -64,7 +59,6 @@ multiline_comment|/* Does not contribute to dirty memory */
 )brace
 suffix:semicolon
 DECL|function|ramfs_get_inode
-r_static
 r_struct
 id|inode
 op_star
@@ -548,7 +542,6 @@ id|simple_commit_write
 )brace
 suffix:semicolon
 DECL|variable|ramfs_file_operations
-r_static
 r_struct
 id|file_operations
 id|ramfs_file_operations
@@ -782,7 +775,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ramfs_get_sb
-r_static
 r_struct
 id|super_block
 op_star

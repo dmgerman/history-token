@@ -12486,6 +12486,12 @@ id|com.len
 )paren
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|new_firmware
+)paren
+suffix:semicolon
 id|rc
 op_assign
 op_minus

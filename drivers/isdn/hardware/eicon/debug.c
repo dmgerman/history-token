@@ -2596,7 +2596,7 @@ op_star
 id|format
 comma
 id|va_list
-id|argument_list
+id|ap
 )paren
 (brace
 id|diva_os_spin_lock_magic_t
@@ -2641,9 +2641,6 @@ suffix:semicolon
 r_int
 r_int
 id|code
-suffix:semicolon
-id|va_list
-id|ap
 suffix:semicolon
 r_if
 c_cond
@@ -2697,10 +2694,6 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-id|ap
-op_assign
-id|argument_list
-suffix:semicolon
 id|diva_os_get_time
 (paren
 op_amp
@@ -4574,6 +4567,14 @@ op_amp
 id|old_irql1
 comma
 l_string|&quot;register&quot;
+)paren
+suffix:semicolon
+id|diva_os_free
+c_func
+(paren
+l_int|0
+comma
+id|pmem
 )paren
 suffix:semicolon
 r_return
@@ -9812,7 +9813,7 @@ r_char
 op_star
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|ch_value
@@ -11637,7 +11638,7 @@ l_int|1
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_address
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_magic
 op_assign
@@ -11751,7 +11752,7 @@ id|nr
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_address
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_magic
 op_assign

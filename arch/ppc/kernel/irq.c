@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1583,6 +1584,9 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1600,10 +1604,8 @@ c_func
 suffix:semicolon
 r_do
 (brace
-id|status
-op_or_assign
-id|action-&gt;flags
-suffix:semicolon
+id|ret
+op_assign
 id|action
 op_member_access_from_pointer
 id|handler
@@ -1615,6 +1617,17 @@ id|action-&gt;dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|IRQ_HANDLED
+)paren
+id|status
+op_or_assign
+id|action-&gt;flags
 suffix:semicolon
 id|action
 op_assign

@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_SCSI
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_SCSI_REVISION
-mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.66 $&quot;
+mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.68 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_void
@@ -763,7 +763,7 @@ id|scpnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * zfcp_scsi_command_async - worker for zfcp_scsi_queuecommand and&n; *&t;zfcp_scsi_command_sync&n; * @adapter: adapter for where scsi command is issued&n; * @unit: unit to which scsi command is sent&n; * @scpnt: scsi command to be sent&n; *&n; * Note: In scsi_done function must be set in scpnt.&n; */
+multiline_comment|/**&n; * zfcp_scsi_command_async - worker for zfcp_scsi_queuecommand and&n; *&t;zfcp_scsi_command_sync&n; * @adapter: adapter where scsi command is issued&n; * @unit: unit to which scsi command is sent&n; * @scpnt: scsi command to be sent&n; * @timer: timer to be started if request is successfully initiated&n; *&n; * Note: In scsi_done function must be set in scpnt.&n; */
 r_int
 DECL|function|zfcp_scsi_command_async
 id|zfcp_scsi_command_async
@@ -783,6 +783,11 @@ r_struct
 id|scsi_cmnd
 op_star
 id|scpnt
+comma
+r_struct
+id|timer_list
+op_star
+id|timer
 )paren
 (brace
 r_int
@@ -953,6 +958,8 @@ id|unit
 comma
 id|scpnt
 comma
+id|timer
+comma
 id|ZFCP_REQ_AUTO_CLEANUP
 )paren
 suffix:semicolon
@@ -1015,7 +1022,7 @@ id|wait
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * zfcp_scsi_command_sync - send a SCSI command and wait for completion&n; * returns 0, errors are indicated by scsi_cmnd-&gt;result&n; */
+multiline_comment|/**&n; * zfcp_scsi_command_sync - send a SCSI command and wait for completion&n; * @unit: unit where command is sent to&n; * @scpnt: scsi command to be sent&n; * @timer: timer to be started if request is successfully initiated&n; * Return: 0&n; *&n; * Errors are indicated in scpnt-&gt;result&n; */
 r_int
 DECL|function|zfcp_scsi_command_sync
 id|zfcp_scsi_command_sync
@@ -1030,8 +1037,16 @@ r_struct
 id|scsi_cmnd
 op_star
 id|scpnt
+comma
+r_struct
+id|timer_list
+op_star
+id|timer
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|DECLARE_COMPLETION
 c_func
 (paren
@@ -1048,10 +1063,12 @@ op_amp
 id|wait
 suffix:semicolon
 multiline_comment|/* silent re-use */
-id|scpnt-&gt;done
+id|scpnt-&gt;scsi_done
 op_assign
 id|zfcp_scsi_command_sync_handler
 suffix:semicolon
+id|ret
+op_assign
 id|zfcp_scsi_command_async
 c_func
 (paren
@@ -1060,14 +1077,35 @@ comma
 id|unit
 comma
 id|scpnt
+comma
+id|timer
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|scpnt-&gt;result
+op_eq
+l_int|0
+)paren
+)paren
 id|wait_for_completion
 c_func
 (paren
 op_amp
 id|wait
 )paren
+suffix:semicolon
+id|scpnt-&gt;SCp.ptr
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -1150,6 +1188,8 @@ comma
 id|unit
 comma
 id|scpnt
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

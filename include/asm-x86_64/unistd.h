@@ -2242,8 +2242,17 @@ id|__NR_kexec_load
 comma
 id|sys_ni_syscall
 )paren
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;(253)
+id|__SYSCALL
+c_func
+(paren
+id|__NR_waitid
+comma
+id|sys_waitid
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_kexec_load
+mdefine_line|#define __NR_syscall_max __NR_waitid
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

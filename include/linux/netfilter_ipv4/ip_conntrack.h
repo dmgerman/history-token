@@ -622,6 +622,10 @@ r_struct
 id|ip_conntrack
 id|ip_conntrack_untracked
 suffix:semicolon
+r_extern
+r_int
+id|ip_ct_no_defrag
+suffix:semicolon
 multiline_comment|/* Returns new sk_buff, or NULL */
 r_struct
 id|sk_buff

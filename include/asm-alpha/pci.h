@@ -648,6 +648,18 @@ id|dev
 )paren
 (brace
 )brace
+r_struct
+id|pci_dev
+op_star
+id|alpha_gendev_to_pci
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Values for the `which&squot; argument to sys_pciconfig_iobase.  */
 DECL|macro|IOBASE_HOSE

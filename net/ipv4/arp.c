@@ -2514,6 +2514,12 @@ op_star
 id|skb
 )paren
 (brace
+id|nf_reset
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|arp_rcv
 c_func
 (paren

@@ -35,169 +35,8 @@ DECL|typedef|sigval_t32
 )brace
 id|sigval_t32
 suffix:semicolon
-DECL|struct|siginfo32
-r_typedef
 r_struct
 id|siginfo32
-(brace
-DECL|member|si_signo
-r_int
-id|si_signo
-suffix:semicolon
-DECL|member|si_errno
-r_int
-id|si_errno
-suffix:semicolon
-DECL|member|si_code
-r_int
-id|si_code
-suffix:semicolon
-r_union
-(brace
-DECL|member|_pad
-r_int
-id|_pad
-(braket
-id|SI_PAD_SIZE32
-)braket
-suffix:semicolon
-multiline_comment|/* kill() */
-r_struct
-(brace
-DECL|member|_pid
-id|compat_pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* sender&squot;s pid */
-DECL|member|_uid
-r_int
-r_int
-id|_uid
-suffix:semicolon
-multiline_comment|/* sender&squot;s uid */
-DECL|member|_kill
-)brace
-id|_kill
-suffix:semicolon
-multiline_comment|/* POSIX.1b timers */
-r_struct
-(brace
-DECL|member|_tid
-id|timer_t
-id|_tid
-suffix:semicolon
-multiline_comment|/* timer id */
-DECL|member|_overrun
-r_int
-id|_overrun
-suffix:semicolon
-multiline_comment|/* overrun count */
-DECL|member|_sigval
-id|sigval_t32
-id|_sigval
-suffix:semicolon
-multiline_comment|/* same as below */
-DECL|member|_sys_private
-r_int
-id|_sys_private
-suffix:semicolon
-multiline_comment|/* not to be passed to user */
-DECL|member|_timer
-)brace
-id|_timer
-suffix:semicolon
-multiline_comment|/* POSIX.1b signals */
-r_struct
-(brace
-DECL|member|_pid
-id|compat_pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* sender&squot;s pid */
-DECL|member|_uid
-r_int
-r_int
-id|_uid
-suffix:semicolon
-multiline_comment|/* sender&squot;s uid */
-DECL|member|_sigval
-id|sigval_t32
-id|_sigval
-suffix:semicolon
-DECL|member|_rt
-)brace
-id|_rt
-suffix:semicolon
-multiline_comment|/* SIGCHLD */
-r_struct
-(brace
-DECL|member|_pid
-id|compat_pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* which child */
-DECL|member|_uid
-r_int
-r_int
-id|_uid
-suffix:semicolon
-multiline_comment|/* sender&squot;s uid */
-DECL|member|_status
-r_int
-id|_status
-suffix:semicolon
-multiline_comment|/* exit code */
-DECL|member|_utime
-id|compat_clock_t
-id|_utime
-suffix:semicolon
-DECL|member|_stime
-id|compat_clock_t
-id|_stime
-suffix:semicolon
-DECL|member|_sigchld
-)brace
-id|_sigchld
-suffix:semicolon
-multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, SIGBUS, SIGEMT */
-r_struct
-(brace
-DECL|member|_addr
-id|u32
-id|_addr
-suffix:semicolon
-multiline_comment|/* faulting insn/memory ref. */
-DECL|member|_trapno
-r_int
-id|_trapno
-suffix:semicolon
-DECL|member|_sigfault
-)brace
-id|_sigfault
-suffix:semicolon
-multiline_comment|/* SIGPOLL */
-r_struct
-(brace
-DECL|member|_band
-r_int
-id|_band
-suffix:semicolon
-multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
-DECL|member|_fd
-r_int
-id|_fd
-suffix:semicolon
-DECL|member|_sigpoll
-)brace
-id|_sigpoll
-suffix:semicolon
-DECL|member|_sifields
-)brace
-id|_sifields
-suffix:semicolon
-DECL|typedef|siginfo_t32
-)brace
-id|siginfo_t32
 suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* __KERNEL__ */
@@ -264,12 +103,29 @@ r_int
 id|copy_siginfo_to_user32
 c_func
 (paren
-id|siginfo_t32
+r_struct
+id|siginfo32
 id|__user
 op_star
 id|to
 comma
 id|siginfo_t
+op_star
+id|from
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|copy_siginfo_to_kernel32
+c_func
+(paren
+id|siginfo_t
+op_star
+id|to
+comma
+r_struct
+id|siginfo32
+id|__user
 op_star
 id|from
 )paren

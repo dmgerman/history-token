@@ -287,17 +287,7 @@ comma
 op_star
 id|target
 suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
-r_struct
-id|pid
-op_star
-id|pid
-suffix:semicolon
-id|for_each_task_pid
+id|do_each_task_pid
 c_func
 (paren
 id|pgrp
@@ -305,10 +295,6 @@ comma
 id|PIDTYPE_PGID
 comma
 id|g
-comma
-id|l
-comma
-id|pid
 )paren
 (brace
 id|target
@@ -335,6 +321,16 @@ id|permitted
 )paren
 suffix:semicolon
 )brace
+id|while_each_task_pid
+c_func
+(paren
+id|pgrp
+comma
+id|PIDTYPE_PGID
+comma
+id|g
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * cap_set_all - set capabilities for all processes other than init&n; * and self.  We call this holding task_capability_lock and tasklist_lock.&n; */
 DECL|function|cap_set_all

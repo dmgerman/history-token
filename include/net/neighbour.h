@@ -33,6 +33,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 DECL|macro|NUD_IN_TIMER
@@ -85,6 +86,11 @@ DECL|member|sysctl_table
 r_void
 op_star
 id|sysctl_table
+suffix:semicolon
+DECL|member|rcu_head
+r_struct
+id|rcu_head
+id|rcu_head
 suffix:semicolon
 DECL|member|base_reachable_time
 r_int

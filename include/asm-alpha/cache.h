@@ -21,6 +21,6 @@ mdefine_line|#define L1_CACHE_ALIGN(x)  (((x)+(L1_CACHE_BYTES-1))&amp;~(L1_CACHE
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES    L1_CACHE_BYTES
 DECL|macro|L1_CACHE_SHIFT_MAX
-mdefine_line|#define L1_CACHE_SHIFT_MAX 6&t;/* largest L1 which this arch supports */
+mdefine_line|#define L1_CACHE_SHIFT_MAX L1_CACHE_SHIFT
 macro_line|#endif
 eof

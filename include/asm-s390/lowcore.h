@@ -94,6 +94,8 @@ DECL|macro|__LC_KERNEL_ASCE
 mdefine_line|#define __LC_KERNEL_ASCE&t;&t;0xC4C
 DECL|macro|__LC_USER_ASCE
 mdefine_line|#define __LC_USER_ASCE&t;&t;&t;0xC50
+DECL|macro|__LC_PANIC_STACK
+mdefine_line|#define __LC_PANIC_STACK                0xC54
 DECL|macro|__LC_CPUID
 mdefine_line|#define __LC_CPUID                      0xC60
 DECL|macro|__LC_CPUADDR
@@ -117,6 +119,8 @@ DECL|macro|__LC_KERNEL_ASCE
 mdefine_line|#define __LC_KERNEL_ASCE&t;&t;0xD58
 DECL|macro|__LC_USER_ASCE
 mdefine_line|#define __LC_USER_ASCE&t;&t;&t;0xD60
+DECL|macro|__LC_PANIC_STACK
+mdefine_line|#define __LC_PANIC_STACK                0xD68
 DECL|macro|__LC_CPUID
 mdefine_line|#define __LC_CPUID                      0xD90
 DECL|macro|__LC_CPUADDR
@@ -544,16 +548,21 @@ id|__u32
 id|user_asce
 suffix:semicolon
 multiline_comment|/* 0xc50 */
+DECL|member|panic_stack
+id|__u32
+id|panic_stack
+suffix:semicolon
+multiline_comment|/* 0xc54 */
 DECL|member|pad10
 id|__u8
 id|pad10
 (braket
 l_int|0xc60
 op_minus
-l_int|0xc54
+l_int|0xc58
 )braket
 suffix:semicolon
-multiline_comment|/* 0xc54 */
+multiline_comment|/* 0xc58 */
 multiline_comment|/* entry.S sensitive area start */
 DECL|member|cpu_data
 r_struct
@@ -917,15 +926,19 @@ id|__u64
 id|user_asce
 suffix:semicolon
 multiline_comment|/* 0xd60 */
+id|__u64
+id|panic_stack
+suffix:semicolon
+multiline_comment|/* 0xd68 */
 id|__u8
 id|pad10
 (braket
 l_int|0xd80
 op_minus
-l_int|0xd68
+l_int|0xd70
 )braket
 suffix:semicolon
-multiline_comment|/* 0xd68 */
+multiline_comment|/* 0xd70 */
 multiline_comment|/* entry.S sensitive area start */
 r_struct
 id|cpuinfo_S390

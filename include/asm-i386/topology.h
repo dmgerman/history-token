@@ -113,7 +113,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Node-to-Node distance */
 DECL|macro|node_distance
-mdefine_line|#define node_distance(from, to) (from != to)
+mdefine_line|#define node_distance(from, to) ((from) != (to))
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 100

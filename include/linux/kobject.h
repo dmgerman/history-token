@@ -1,7 +1,8 @@
 multiline_comment|/*&n; * kobject.h - generic kernel object infrastructure.&n; *&n; * Copyright (c) 2002-2003&t;Patrick Mochel&n; * Copyright (c) 2002-2003&t;Open Source Development Labs&n; *&n; * This file is released under the GPLv2.&n; *&n; * &n; * Please read Documentation/kobject.txt before using the kobject&n; * interface, ESPECIALLY the parts about reference counts and object&n; * destructors. &n; */
-macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(_KOBJECT_H_)
+macro_line|#ifndef _KOBJECT_H_
 DECL|macro|_KOBJECT_H_
 mdefine_line|#define _KOBJECT_H_
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
@@ -754,5 +755,6 @@ id|subsys_attribute
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _KOBJECT_H_ */
 eof

@@ -1244,7 +1244,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: pos = %d, size = %d&bslash;n&quot;
+l_string|&quot;%s: pos = %d, size = %zd&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1448,14 +1448,10 @@ id|IBM_HARDWARE_ID2
 id|dbg
 c_func
 (paren
-l_string|&quot;found hardware: %s, handle: %x&bslash;n&quot;
+l_string|&quot;found hardware: %s, handle: %p&bslash;n&quot;
 comma
 id|info.hardware_id.value
 comma
-(paren
-r_int
-r_int
-)paren
 id|handle
 )paren
 suffix:semicolon

@@ -215,6 +215,8 @@ DECL|macro|CHIPREV_ID_5750_A0
 mdefine_line|#define  CHIPREV_ID_5750_A0&t;&t; 0x4000
 DECL|macro|CHIPREV_ID_5750_A1
 mdefine_line|#define  CHIPREV_ID_5750_A1&t;&t; 0x4001
+DECL|macro|CHIPREV_ID_5750_A3
+mdefine_line|#define  CHIPREV_ID_5750_A3&t;&t; 0x4003
 DECL|macro|GET_ASIC_REV
 mdefine_line|#define  GET_ASIC_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 12)
 DECL|macro|ASIC_REV_5700
@@ -4295,6 +4297,12 @@ DECL|macro|TG3_FLG2_ASF_NEW_HANDSHAKE
 mdefine_line|#define TG3_FLG2_ASF_NEW_HANDSHAKE&t;0x00000400
 DECL|macro|TG3_FLG2_HW_AUTONEG
 mdefine_line|#define TG3_FLG2_HW_AUTONEG&t;&t;0x00000800
+DECL|macro|TG3_FLG2_PHY_JUST_INITTED
+mdefine_line|#define TG3_FLG2_PHY_JUST_INITTED&t;0x00001000
+DECL|macro|TG3_FLG2_PHY_SERDES
+mdefine_line|#define TG3_FLG2_PHY_SERDES&t;&t;0x00002000
+DECL|macro|TG3_FLG2_CAPACITIVE_COUPLING
+mdefine_line|#define TG3_FLG2_CAPACITIVE_COUPLING&t;0x00004000
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
@@ -4435,8 +4443,6 @@ DECL|macro|PHY_ID_BCM5750
 mdefine_line|#define PHY_ID_BCM5750&t;&t;&t;0x60008180
 DECL|macro|PHY_ID_BCM8002
 mdefine_line|#define PHY_ID_BCM8002&t;&t;&t;0x60010140
-DECL|macro|PHY_ID_SERDES
-mdefine_line|#define PHY_ID_SERDES&t;&t;&t;0xfeedbee0
 DECL|macro|PHY_ID_INVALID
 mdefine_line|#define PHY_ID_INVALID&t;&t;&t;0xffffffff
 DECL|macro|PHY_ID_REV_MASK
@@ -4476,7 +4482,7 @@ id|pdev_peer
 suffix:semicolon
 multiline_comment|/* This macro assumes the passed PHY ID is already masked&n;&t; * with PHY_ID_MASK.&n;&t; */
 DECL|macro|KNOWN_PHY_ID
-mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM5705 || (X) == PHY_ID_BCM5750 || &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
+mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM5705 || (X) == PHY_ID_BCM5750 || &bslash;&n;&t; (X) == PHY_ID_BCM8002)
 DECL|member|hw_stats
 r_struct
 id|tg3_hw_stats

@@ -370,6 +370,11 @@ DECL|member|_stime
 id|compat_clock_t
 id|_stime
 suffix:semicolon
+DECL|member|_rusage
+r_struct
+id|compat_rusage
+id|_rusage
+suffix:semicolon
 DECL|member|_sigchld
 )brace
 id|_sigchld

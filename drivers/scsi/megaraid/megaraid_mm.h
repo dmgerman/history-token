@@ -62,6 +62,7 @@ suffix:semicolon
 macro_line|#if BITS_PER_LONG == 32
 DECL|member|buffer
 r_uint8
+id|__user
 op_star
 id|buffer
 suffix:semicolon
@@ -76,6 +77,7 @@ macro_line|#endif
 macro_line|#if BITS_PER_LONG == 64
 DECL|member|buffer
 r_uint8
+id|__user
 op_star
 id|buffer
 suffix:semicolon
@@ -119,6 +121,7 @@ suffix:semicolon
 macro_line|#if BITS_PER_LONG == 32
 DECL|member|data
 r_char
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -134,6 +137,7 @@ macro_line|#endif
 macro_line|#if BITS_PER_LONG == 64
 DECL|member|data
 r_char
+id|__user
 op_star
 id|data
 suffix:semicolon

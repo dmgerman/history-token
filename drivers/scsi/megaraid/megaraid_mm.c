@@ -41,6 +41,7 @@ id|mimd_to_kioc
 c_func
 (paren
 id|mimd_t
+id|__user
 op_star
 comma
 id|mraid_mmadp_t
@@ -59,6 +60,7 @@ id|uioc_t
 op_star
 comma
 id|mimd_t
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -68,8 +70,9 @@ r_int
 id|handle_drvrcmd
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 comma
 r_uint8
 comma
@@ -126,6 +129,7 @@ id|mraid_mm_get_adapter
 c_func
 (paren
 id|mimd_t
+id|__user
 op_star
 comma
 r_int
@@ -425,6 +429,18 @@ suffix:semicolon
 r_int
 id|drvrcmd_rval
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure only USCSICMD are issued through this interface.&n;&t; * MIMD application would still fire different command.&n;&t; */
 r_if
 c_cond
@@ -462,11 +478,7 @@ c_func
 (paren
 id|signature
 comma
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|EXT_IOCTL_SIGN_SZ
 )paren
@@ -533,7 +545,7 @@ op_assign
 id|handle_drvrcmd
 c_func
 (paren
-id|arg
+id|argp
 comma
 id|old_ioctl
 comma
@@ -575,11 +587,7 @@ op_assign
 id|mraid_mm_get_adapter
 c_func
 (paren
-(paren
-id|mimd_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|rval
@@ -612,11 +620,7 @@ op_assign
 id|mimd_to_kioc
 c_func
 (paren
-(paren
-id|mimd_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|adp
 comma
@@ -678,11 +682,7 @@ c_func
 (paren
 id|kioc
 comma
-(paren
-id|mimd_t
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the kioc to free pool&n;&t; */
@@ -707,6 +707,7 @@ id|mraid_mm_get_adapter
 c_func
 (paren
 id|mimd_t
+id|__user
 op_star
 id|umimd
 comma
@@ -840,8 +841,9 @@ DECL|function|handle_drvrcmd
 id|handle_drvrcmd
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 r_uint8
@@ -853,6 +855,7 @@ id|rval
 )paren
 (brace
 id|mimd_t
+id|__user
 op_star
 id|umimd
 suffix:semicolon
@@ -894,10 +897,6 @@ l_int|0
 suffix:semicolon
 id|umimd
 op_assign
-(paren
-id|mimd_t
-op_star
-)paren
 id|arg
 suffix:semicolon
 r_if
@@ -1030,6 +1029,7 @@ id|mimd_to_kioc
 c_func
 (paren
 id|mimd_t
+id|__user
 op_star
 id|umimd
 comma
@@ -1482,9 +1482,6 @@ c_func
 (paren
 id|pthru32
 comma
-(paren
-id|caddr_t
-)paren
 id|kioc-&gt;user_pthru
 comma
 r_sizeof
@@ -1582,7 +1579,7 @@ l_int|1
 suffix:semicolon
 id|kioc-&gt;buf_vaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kioc-&gt;buf_paddr
 op_assign
@@ -1925,7 +1922,7 @@ id|mraid_passthru_t
 suffix:semicolon
 id|kioc-&gt;buf_vaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kioc-&gt;buf_paddr
 op_assign
@@ -1942,7 +1939,7 @@ l_int|0
 suffix:semicolon
 id|kioc-&gt;user_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kioc-&gt;user_data_len
 op_assign
@@ -1950,7 +1947,7 @@ l_int|0
 suffix:semicolon
 id|kioc-&gt;user_pthru
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|kioc
@@ -2310,6 +2307,7 @@ op_star
 id|kioc
 comma
 id|mimd_t
+id|__user
 op_star
 id|mimd
 )paren
@@ -2328,6 +2326,7 @@ op_star
 id|mbox64
 suffix:semicolon
 id|mraid_passthru_t
+id|__user
 op_star
 id|upthru32
 suffix:semicolon
@@ -2482,17 +2481,9 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|upthru32-&gt;scsistatus
 comma
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|kpthru32-&gt;scsistatus
 comma
@@ -2545,20 +2536,12 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|mimd-&gt;mbox
 (braket
 l_int|17
 )braket
 comma
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|mbox64-&gt;mbox32.status
 comma
@@ -3478,7 +3461,7 @@ id|pool-&gt;handle
 suffix:semicolon
 id|pool-&gt;handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -84,13 +84,11 @@ id|page
 r_int
 id|nid
 op_assign
-id|page_zone
+id|page_to_nid
 c_func
 (paren
 id|page
 )paren
-op_member_access_from_pointer
-id|zone_pgdat-&gt;node_id
 suffix:semicolon
 id|list_add
 c_func

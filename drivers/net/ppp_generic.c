@@ -6758,6 +6758,10 @@ id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;data
 suffix:semicolon
+id|skb-&gt;input_dev
+op_assign
+id|ppp-&gt;dev
+suffix:semicolon
 id|netif_rx
 c_func
 (paren

@@ -1746,7 +1746,7 @@ suffix:semicolon
 op_star
 id|urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -1822,7 +1822,7 @@ id|subs-&gt;tmpbuf
 suffix:semicolon
 id|subs-&gt;tmpbuf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -3776,7 +3776,7 @@ id|capsubs
 suffix:semicolon
 id|capsubs-&gt;completed_urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (brace
 id|DECLARE_WAITQUEUE
@@ -4057,7 +4057,7 @@ suffix:semicolon
 )brace
 id|subs-&gt;completed_urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|subs-&gt;next_urb_complete
 op_assign

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/console.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
@@ -654,7 +655,21 @@ c_func
 id|pci_dac_dma_to_offset
 )paren
 suffix:semicolon
+DECL|variable|alpha_gendev_to_pci
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|alpha_gendev_to_pci
+)paren
+suffix:semicolon
 macro_line|#endif
+DECL|variable|dma_set_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dma_set_mask
+)paren
+suffix:semicolon
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
 c_func

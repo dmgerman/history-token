@@ -123,7 +123,7 @@ macro_line|#endif /* !(CONFIG_SMP) */
 DECL|macro|get_hard_smp_processor_id
 mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].hw_cpu_id)
 DECL|macro|set_hard_smp_processor_id
-mdefine_line|#define set_hard_smp_processor_id(CPU, VAL) &bslash;&n;&t;do { (paca[(CPU)].hw_proc_num = (VAL)); } while (0)
+mdefine_line|#define set_hard_smp_processor_id(CPU, VAL) &bslash;&n;&t;do { (paca[(CPU)].hw_cpu_id = (VAL)); } while (0)
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* !(_PPC64_SMP_H) */
 macro_line|#endif /* __KERNEL__ */

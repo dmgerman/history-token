@@ -567,8 +567,10 @@ DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;(__NR_mq_open+5)
 DECL|macro|__NR_sys_kexec_load
 mdefine_line|#define __NR_sys_kexec_load&t;283
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;284
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 284
+mdefine_line|#define NR_syscalls 285
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

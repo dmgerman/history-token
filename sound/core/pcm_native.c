@@ -13,6 +13,7 @@ macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; *  Compatibility&n; */
 DECL|struct|sndrv_pcm_hw_params_old
 r_struct

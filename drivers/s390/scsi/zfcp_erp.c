@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.62 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.65 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -746,6 +746,40 @@ id|zfcp_erp_action
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * zfcp_fsf_request_timeout_handler - called if a request timed out&n; * @data: pointer to adapter for handler function&n; *&n; * This function needs to be called if requests (ELS, Generic Service,&n; * or SCSI commands) exceed a certain time limit. The assumption is&n; * that after the time limit the adapter get stuck. So we trigger a reopen of&n; * the adapter. This should not be used for error recovery, SCSI abort&n; * commands and SCSI requests from SCSI mid-layer.&n; */
+r_void
+DECL|function|zfcp_fsf_request_timeout_handler
+id|zfcp_fsf_request_timeout_handler
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+(brace
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+suffix:semicolon
+id|adapter
+op_assign
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+id|data
+suffix:semicolon
+id|zfcp_erp_adapter_reopen
+c_func
+(paren
+id|adapter
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * function:&t;zfcp_fsf_scsi_er_timeout_handler&n; *&n; * purpose:     This function needs to be called whenever a SCSI error recovery&n; *              action (abort/reset) does not return.&n; *              Re-opening the adapter means that the command can be returned&n; *              by zfcp (it is guarranteed that it does not return via the&n; *              adapter anymore). The buffer can then be used again.&n; *    &n; * returns:     sod all&n; */
 r_void
 DECL|function|zfcp_fsf_scsi_er_timeout_handler
@@ -2500,7 +2534,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:&t;&n; *&n; * purpose:&t;Wrappper for zfcp_erp_port_reopen_internal&n; *              used to ensure the correct locking&n; *&n; * returns:&t;0&t;- initiated action succesfully&n; *&t;&t;&lt;0&t;- failed to initiate action&n; */
+multiline_comment|/**&n; * zfcp_erp_port_reopen - initiate reopen of a remote port&n; * @port: port to be reopened&n; * @clear_mask: specifies flags in port status to be cleared&n; * Return: 0 on success, &lt; 0 on error&n; *&n; * This is a wrappper function for zfcp_erp_port_reopen_internal. It ensures&n; * correct locking. An error recovery task is initiated to do the reopen.&n; * To wait for the completion of the reopen zfcp_erp_wait should be used.&n; */
 r_int
 DECL|function|zfcp_erp_port_reopen
 id|zfcp_erp_port_reopen
@@ -2737,7 +2771,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:&t;&n; *&n; * purpose:&t;Wrappper for zfcp_erp_unit_reopen_internal&n; *              used to ensure the correct locking&n; *&n; * returns:&t;0&t;- initiated action succesfully&n; *&t;&t;&lt;0&t;- failed to initiate action&n; */
+multiline_comment|/**&n; * zfcp_erp_unit_reopen - initiate reopen of a unit&n; * @unit: unit to be reopened&n; * @clear_mask: specifies flags in unit status to be cleared&n; * Return: 0 on success, &lt; 0 on error&n; *&n; * This is a wrappper for zfcp_erp_unit_reopen_internal. It ensures correct&n; * locking. An error recovery task is initiated to do the reopen.&n; * To wait for the completion of the reopen zfcp_erp_wait should be used.&n; */
 r_int
 DECL|function|zfcp_erp_unit_reopen
 id|zfcp_erp_unit_reopen
@@ -6559,7 +6593,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:&t;&n; *&n; * purpose:&t;&n; *&n; * returns:&n; */
+multiline_comment|/**&n; * zfcp_erp_wait - wait for completion of error recovery on an adapter&n; * @adapter: adapter for which to wait for completion of its error recovery&n; * Return: 0&n; */
 r_int
 DECL|function|zfcp_erp_wait
 id|zfcp_erp_wait
@@ -7120,7 +7154,7 @@ op_logical_neg
 id|atomic_test_mask
 c_func
 (paren
-id|ZFCP_STATUS_PORT_NAMESERVER
+id|ZFCP_STATUS_PORT_WKA
 comma
 op_amp
 id|port-&gt;status
@@ -8968,7 +9002,7 @@ c_cond
 id|atomic_test_mask
 c_func
 (paren
-id|ZFCP_STATUS_PORT_NAMESERVER
+id|ZFCP_STATUS_PORT_WKA
 comma
 op_amp
 id|erp_action-&gt;port-&gt;status
@@ -9438,7 +9472,7 @@ id|port-&gt;status
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;nameserver port is open&bslash;n&quot;
+l_string|&quot;WKA port is open&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -9451,7 +9485,7 @@ r_else
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;open failed for nameserver port&bslash;n&quot;
+l_string|&quot;open failed for WKA port&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval

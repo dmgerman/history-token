@@ -1287,6 +1287,34 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* MSR 0x3F0 seems to have a default value of 0xFC00, but current&n;&t;   docs doesn&squot;t fully define it, so leave it alone for now. */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.x86_model
+op_ge
+l_int|0x3
+)paren
+(brace
+multiline_comment|/* MSR_P4_IQ_ESCR0/1 (0x3ba/0x3bb) removed */
+id|clear_msr_range
+c_func
+(paren
+l_int|0x3A0
+comma
+l_int|26
+)paren
+suffix:semicolon
+id|clear_msr_range
+c_func
+(paren
+l_int|0x3BC
+comma
+l_int|3
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|clear_msr_range
 c_func
 (paren
@@ -1295,6 +1323,7 @@ comma
 l_int|31
 )paren
 suffix:semicolon
+)brace
 id|clear_msr_range
 c_func
 (paren

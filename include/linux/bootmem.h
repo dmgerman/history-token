@@ -258,6 +258,18 @@ DECL|macro|alloc_bootmem_low_pages_node
 mdefine_line|#define alloc_bootmem_low_pages_node(pgdat, x) &bslash;&n;&t;__alloc_bootmem_node((pgdat), (x), PAGE_SIZE, 0)
 macro_line|#endif /* !CONFIG_HAVE_ARCH_BOOTMEM_NODE */
 r_extern
+r_int
+r_int
+id|__initdata
+id|nr_kernel_pages
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|__initdata
+id|nr_all_pages
+suffix:semicolon
+r_extern
 r_void
 op_star
 id|__init

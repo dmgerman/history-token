@@ -149,6 +149,11 @@ DECL|member|_stime
 id|clock_t
 id|_stime
 suffix:semicolon
+DECL|member|_rusage
+r_struct
+id|rusage
+id|_rusage
+suffix:semicolon
 DECL|member|_sigchld
 )brace
 id|_sigchld

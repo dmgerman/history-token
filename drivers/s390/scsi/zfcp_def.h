@@ -4,7 +4,7 @@ DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.83 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.91 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
@@ -38,6 +39,7 @@ multiline_comment|/********************* GENERAL DEFINES ***********************
 multiline_comment|/* zfcp version number, it consists of major, minor, and patch-level number */
 DECL|macro|ZFCP_VERSION
 mdefine_line|#define ZFCP_VERSION&t;&t;&quot;4.1.3&quot;
+multiline_comment|/**&n; * zfcp_sg_to_address - determine kernel address from struct scatterlist&n; * @list: struct scatterlist&n; * Return: kernel address&n; */
 r_static
 r_inline
 r_void
@@ -68,6 +70,7 @@ id|list-&gt;offset
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * zfcp_address_to_sg - set up struct scatterlist from kernel address&n; * @address: kernel address&n; * @list: struct scatterlist&n; */
 r_static
 r_inline
 r_void
@@ -189,6 +192,9 @@ DECL|macro|ZFCP_EXCHANGE_CONFIG_DATA_RETRIES
 mdefine_line|#define ZFCP_EXCHANGE_CONFIG_DATA_RETRIES&t;6
 DECL|macro|ZFCP_EXCHANGE_CONFIG_DATA_SLEEP
 mdefine_line|#define ZFCP_EXCHANGE_CONFIG_DATA_SLEEP&t;&t;50
+multiline_comment|/* timeout value for &quot;default timer&quot; for fsf requests */
+DECL|macro|ZFCP_FSF_REQUEST_TIMEOUT
+mdefine_line|#define ZFCP_FSF_REQUEST_TIMEOUT (60*HZ);
 multiline_comment|/*************** FIBRE CHANNEL PROTOCOL SPECIFIC DEFINES ********************/
 DECL|typedef|wwn_t
 r_typedef
@@ -222,8 +228,6 @@ mdefine_line|#define ZFCP_FC_SERVICE_CLASS_DEFAULT&t;FSF_CLASS_3
 multiline_comment|/* timeout for name-server lookup (in seconds) */
 DECL|macro|ZFCP_NS_GID_PN_TIMEOUT
 mdefine_line|#define ZFCP_NS_GID_PN_TIMEOUT&t;&t;10
-DECL|macro|ZFCP_NS_GA_NXT_TIMEOUT
-mdefine_line|#define ZFCP_NS_GA_NXT_TIMEOUT&t;&t;120
 multiline_comment|/* largest SCSI command we can process */
 multiline_comment|/* FCP-2 (FCP_CMND IU) allows up to (255-3+16) */
 DECL|macro|ZFCP_MAX_SCSI_CMND_LENGTH
@@ -579,10 +583,6 @@ DECL|macro|R_A_TOV
 mdefine_line|#define R_A_TOV&t;&t;&t;&t;10 /* seconds */
 DECL|macro|ZFCP_ELS_TIMEOUT
 mdefine_line|#define ZFCP_ELS_TIMEOUT&t;&t;(2 * R_A_TOV)
-DECL|macro|ZFCP_LS_RJT
-mdefine_line|#define ZFCP_LS_RJT&t;&t;&t;0x01
-DECL|macro|ZFCP_LS_ACC
-mdefine_line|#define ZFCP_LS_ACC&t;&t;&t;0x02
 DECL|macro|ZFCP_LS_RTV
 mdefine_line|#define ZFCP_LS_RTV&t;&t;&t;0x0E
 DECL|macro|ZFCP_LS_RLS
@@ -591,29 +591,8 @@ DECL|macro|ZFCP_LS_PDISC
 mdefine_line|#define ZFCP_LS_PDISC&t;&t;&t;0x50
 DECL|macro|ZFCP_LS_ADISC
 mdefine_line|#define ZFCP_LS_ADISC&t;&t;&t;0x52
-DECL|macro|ZFCP_LS_RSCN
-mdefine_line|#define ZFCP_LS_RSCN&t;&t;&t;0x61
-DECL|macro|ZFCP_LS_RNID
-mdefine_line|#define ZFCP_LS_RNID&t;&t;&t;0x78
-DECL|macro|ZFCP_LS_RLIR
-mdefine_line|#define ZFCP_LS_RLIR&t;&t;&t;0x7A
 DECL|macro|ZFCP_LS_RTV_E_D_TOV_FLAG
 mdefine_line|#define ZFCP_LS_RTV_E_D_TOV_FLAG&t;0x04000000
-multiline_comment|/* LS_ACC Reason Codes */
-DECL|macro|ZFCP_LS_RJT_INVALID_COMMAND_CODE
-mdefine_line|#define ZFCP_LS_RJT_INVALID_COMMAND_CODE&t;0x01
-DECL|macro|ZFCP_LS_RJT_LOGICAL_ERROR
-mdefine_line|#define ZFCP_LS_RJT_LOGICAL_ERROR&t;&t;0x03
-DECL|macro|ZFCP_LS_RJT_LOGICAL_BUSY
-mdefine_line|#define ZFCP_LS_RJT_LOGICAL_BUSY&t;&t;0x05
-DECL|macro|ZFCP_LS_RJT_PROTOCOL_ERROR
-mdefine_line|#define ZFCP_LS_RJT_PROTOCOL_ERROR&t;&t;0x07
-DECL|macro|ZFCP_LS_RJT_UNABLE_TO_PERFORM
-mdefine_line|#define ZFCP_LS_RJT_UNABLE_TO_PERFORM&t;&t;0x09
-DECL|macro|ZFCP_LS_RJT_COMMAND_NOT_SUPPORTED
-mdefine_line|#define ZFCP_LS_RJT_COMMAND_NOT_SUPPORTED&t;0x0B
-DECL|macro|ZFCP_LS_RJT_VENDOR_UNIQUE_ERROR
-mdefine_line|#define ZFCP_LS_RJT_VENDOR_UNIQUE_ERROR&t;&t;0xFF
 DECL|struct|zfcp_ls_rjt_par
 r_struct
 id|zfcp_ls_rjt_par
@@ -1010,176 +989,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|struct|zfcp_ls_rnid
-r_struct
-id|zfcp_ls_rnid
-(brace
-DECL|member|code
-id|u8
-id|code
-suffix:semicolon
-DECL|member|field
-id|u8
-id|field
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|node_id_format
-id|u8
-id|node_id_format
-suffix:semicolon
-DECL|member|reserved
-id|u8
-id|reserved
-(braket
-l_int|3
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* common identification data */
-DECL|struct|zfcp_ls_rnid_common_id
-r_struct
-id|zfcp_ls_rnid_common_id
-(brace
-DECL|member|n_port_name
-id|u64
-id|n_port_name
-suffix:semicolon
-DECL|member|node_name
-id|u64
-id|node_name
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* general topology specific identification data */
-DECL|struct|zfcp_ls_rnid_general_topology_id
-r_struct
-id|zfcp_ls_rnid_general_topology_id
-(brace
-DECL|member|vendor_unique
-id|u8
-id|vendor_unique
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|associated_type
-id|u32
-id|associated_type
-suffix:semicolon
-DECL|member|physical_port_number
-id|u32
-id|physical_port_number
-suffix:semicolon
-DECL|member|nr_attached_nodes
-id|u32
-id|nr_attached_nodes
-suffix:semicolon
-DECL|member|node_management
-id|u8
-id|node_management
-suffix:semicolon
-DECL|member|ip_version
-id|u8
-id|ip_version
-suffix:semicolon
-DECL|member|port_number
-id|u16
-id|port_number
-suffix:semicolon
-DECL|member|ip_address
-id|u8
-id|ip_address
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|reserved
-id|u8
-id|reserved
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|vendor_specific
-id|u16
-id|vendor_specific
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|struct|zfcp_ls_rnid_acc
-r_struct
-id|zfcp_ls_rnid_acc
-(brace
-DECL|member|code
-id|u8
-id|code
-suffix:semicolon
-DECL|member|field
-id|u8
-id|field
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|node_id_format
-id|u8
-id|node_id_format
-suffix:semicolon
-DECL|member|common_id_length
-id|u8
-id|common_id_length
-suffix:semicolon
-DECL|member|reserved
-id|u8
-id|reserved
-suffix:semicolon
-DECL|member|specific_id_length
-id|u8
-id|specific_id_length
-suffix:semicolon
-r_struct
-id|zfcp_ls_rnid_common_id
-DECL|member|common_id
-id|common_id
-suffix:semicolon
-r_struct
-id|zfcp_ls_rnid_general_topology_id
-DECL|member|specific_id
-id|specific_id
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|struct|zfcp_rc_entry
 r_struct
 id|zfcp_rc_entry
@@ -1307,20 +1116,20 @@ multiline_comment|/* logging routine for zfcp */
 DECL|macro|_ZFCP_LOG
 mdefine_line|#define _ZFCP_LOG(fmt, args...) &bslash;&n;&t;printk(KERN_ERR ZFCP_NAME&quot;: %s(%d): &quot; fmt, __FUNCTION__, &bslash;&n;&t;       __LINE__ , ##args);
 DECL|macro|ZFCP_LOG
-mdefine_line|#define ZFCP_LOG(level, fmt, args...) &bslash;&n;&t;if (ZFCP_LOG_CHECK(level)) &bslash;&n;&t;&t;_ZFCP_LOG(fmt , ##args)
+mdefine_line|#define ZFCP_LOG(level, fmt, args...) &bslash;&n;do { &bslash;&n;&t;if (ZFCP_LOG_CHECK(level)) &bslash;&n;&t;&t;_ZFCP_LOG(fmt, ##args); &bslash;&n;} while (0)
 macro_line|#if ZFCP_LOG_LEVEL_LIMIT &lt; ZFCP_LOG_LEVEL_NORMAL
 DECL|macro|ZFCP_LOG_NORMAL
 macro_line|# define ZFCP_LOG_NORMAL(fmt, args...)
 macro_line|#else
 DECL|macro|ZFCP_LOG_NORMAL
-macro_line|# define ZFCP_LOG_NORMAL(fmt, args...) &bslash;&n;&t;if (ZFCP_LOG_CHECK(ZFCP_LOG_LEVEL_NORMAL)) &bslash;&n;&t;&t;printk(KERN_ERR ZFCP_NAME&quot;: &quot; fmt , ##args);
+macro_line|# define ZFCP_LOG_NORMAL(fmt, args...) &bslash;&n;do { &bslash;&n;&t;if (ZFCP_LOG_CHECK(ZFCP_LOG_LEVEL_NORMAL)) &bslash;&n;&t;&t;printk(KERN_ERR ZFCP_NAME&quot;: &quot; fmt, ##args); &bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#if ZFCP_LOG_LEVEL_LIMIT &lt; ZFCP_LOG_LEVEL_INFO
 DECL|macro|ZFCP_LOG_INFO
 macro_line|# define ZFCP_LOG_INFO(fmt, args...)
 macro_line|#else
 DECL|macro|ZFCP_LOG_INFO
-macro_line|# define ZFCP_LOG_INFO(fmt, args...) &bslash;&n;&t;if (ZFCP_LOG_CHECK(ZFCP_LOG_LEVEL_INFO)) &bslash;&n;&t;&t;printk(KERN_ERR ZFCP_NAME&quot;: &quot; fmt , ##args);
+macro_line|# define ZFCP_LOG_INFO(fmt, args...) &bslash;&n;do { &bslash;&n;&t;if (ZFCP_LOG_CHECK(ZFCP_LOG_LEVEL_INFO)) &bslash;&n;&t;&t;printk(KERN_ERR ZFCP_NAME&quot;: &quot; fmt, ##args); &bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#if ZFCP_LOG_LEVEL_LIMIT &lt; ZFCP_LOG_LEVEL_DEBUG
 DECL|macro|ZFCP_LOG_DEBUG
@@ -1345,7 +1154,7 @@ id|u32
 id|flags_dump
 suffix:semicolon
 DECL|macro|ZFCP_LOG_FLAGS
-macro_line|# define ZFCP_LOG_FLAGS(level, fmt, args...) &bslash;&n;&t;if (level &lt;= flags_dump) &bslash;&n;&t;&t;_ZFCP_LOG(fmt , ##args)
+macro_line|# define ZFCP_LOG_FLAGS(level, fmt, args...) &bslash;&n;do { &bslash;&n;&t;if (level &lt;= flags_dump) &bslash;&n;&t;&t;_ZFCP_LOG(fmt, ##args); &bslash;&n;} while (0)
 macro_line|#endif
 multiline_comment|/*************** ADAPTER/PORT/UNIT AND FSF_REQ STATUS FLAGS ******************/
 multiline_comment|/* &n; * Note, the leftmost status byte is common among adapter, port &n; * and unit&n; */
@@ -1389,8 +1198,17 @@ DECL|macro|ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED
 mdefine_line|#define ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED&t;0x00000200
 DECL|macro|ZFCP_STATUS_ADAPTER_SCSI_UP
 mdefine_line|#define ZFCP_STATUS_ADAPTER_SCSI_UP&t;&t;&t;&bslash;&n;&t;&t;(ZFCP_STATUS_COMMON_UNBLOCKED |&t;&bslash;&n;&t;&t; ZFCP_STATUS_ADAPTER_REGISTERED)
-DECL|macro|ZFCP_DID_NAMESERVER
-mdefine_line|#define ZFCP_DID_NAMESERVER&t;&t;&t;0xFFFFFC
+multiline_comment|/* FC-PH/FC-GS well-known address identifiers for generic services */
+DECL|macro|ZFCP_DID_MANAGEMENT_SERVICE
+mdefine_line|#define ZFCP_DID_MANAGEMENT_SERVICE&t;&t;0xFFFFFA
+DECL|macro|ZFCP_DID_TIME_SERVICE
+mdefine_line|#define ZFCP_DID_TIME_SERVICE&t;&t;&t;0xFFFFFB
+DECL|macro|ZFCP_DID_DIRECTORY_SERVICE
+mdefine_line|#define ZFCP_DID_DIRECTORY_SERVICE&t;&t;0xFFFFFC
+DECL|macro|ZFCP_DID_ALIAS_SERVICE
+mdefine_line|#define ZFCP_DID_ALIAS_SERVICE&t;&t;&t;0xFFFFF8
+DECL|macro|ZFCP_DID_KEY_DISTRIBUTION_SERVICE
+mdefine_line|#define ZFCP_DID_KEY_DISTRIBUTION_SERVICE&t;0xFFFFF7
 multiline_comment|/* remote port status */
 DECL|macro|ZFCP_STATUS_PORT_PHYS_OPEN
 mdefine_line|#define ZFCP_STATUS_PORT_PHYS_OPEN&t;&t;0x00000001
@@ -1404,8 +1222,9 @@ DECL|macro|ZFCP_STATUS_PORT_NO_SCSI_ID
 mdefine_line|#define ZFCP_STATUS_PORT_NO_SCSI_ID&t;&t;0x00000010
 DECL|macro|ZFCP_STATUS_PORT_INVALID_WWPN
 mdefine_line|#define ZFCP_STATUS_PORT_INVALID_WWPN&t;&t;0x00000020
-DECL|macro|ZFCP_STATUS_PORT_NAMESERVER
-mdefine_line|#define ZFCP_STATUS_PORT_NAMESERVER &bslash;&n;&t;&t;(ZFCP_STATUS_PORT_NO_WWPN | &bslash;&n;&t;&t; ZFCP_STATUS_PORT_NO_SCSI_ID)
+multiline_comment|/* for ports with well known addresses */
+DECL|macro|ZFCP_STATUS_PORT_WKA
+mdefine_line|#define ZFCP_STATUS_PORT_WKA &bslash;&n;&t;&t;(ZFCP_STATUS_PORT_NO_WWPN | &bslash;&n;&t;&t; ZFCP_STATUS_PORT_NO_SCSI_ID)
 multiline_comment|/* logical unit status */
 DECL|macro|ZFCP_STATUS_UNIT_NOTSUPPUNITRESET
 mdefine_line|#define ZFCP_STATUS_UNIT_NOTSUPPUNITRESET&t;0x00000001
@@ -1834,28 +1653,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* nameserver request CT_IU -- for requests where&n; * a port identifier is required */
-DECL|struct|ct_iu_ga_nxt_req
-r_struct
-id|ct_iu_ga_nxt_req
-(brace
-DECL|member|header
-r_struct
-id|ct_hdr
-id|header
-suffix:semicolon
-DECL|member|d_id
-id|fc_id_t
-id|d_id
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* FS_ACC IU and data unit for GID_PN nameserver request */
 DECL|struct|ct_iu_gid_pn_resp
 r_struct
@@ -1878,109 +1675,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* FS_ACC IU and data unit for GA_NXT nameserver request */
-DECL|struct|ct_iu_ga_nxt_resp
-r_struct
-id|ct_iu_ga_nxt_resp
-(brace
-DECL|member|header
-r_struct
-id|ct_hdr
-id|header
-suffix:semicolon
-DECL|member|port_type
-id|u8
-id|port_type
-suffix:semicolon
-DECL|member|port_id
-id|u8
-id|port_id
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|port_wwn
-id|u64
-id|port_wwn
-suffix:semicolon
-DECL|member|port_symbolic_name_length
-id|u8
-id|port_symbolic_name_length
-suffix:semicolon
-DECL|member|port_symbolic_name
-id|u8
-id|port_symbolic_name
-(braket
-l_int|255
-)braket
-suffix:semicolon
-DECL|member|node_wwn
-id|u64
-id|node_wwn
-suffix:semicolon
-DECL|member|node_symbolic_name_length
-id|u8
-id|node_symbolic_name_length
-suffix:semicolon
-DECL|member|node_symbolic_name
-id|u8
-id|node_symbolic_name
-(braket
-l_int|255
-)braket
-suffix:semicolon
-DECL|member|initial_process_associator
-id|u64
-id|initial_process_associator
-suffix:semicolon
-DECL|member|node_ip
-id|u8
-id|node_ip
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|cos
-id|u32
-id|cos
-suffix:semicolon
-DECL|member|fc4_types
-id|u8
-id|fc4_types
-(braket
-l_int|32
-)braket
-suffix:semicolon
-DECL|member|port_ip
-id|u8
-id|port_ip
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|fabric_wwn
-id|u64
-id|fabric_wwn
-suffix:semicolon
-DECL|member|reserved
-id|u8
-id|reserved
-suffix:semicolon
-DECL|member|hard_address
-id|u8
-id|hard_address
-(braket
-l_int|3
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|typedef|zfcp_send_ct_handler_t
 r_typedef
 r_void
@@ -1993,7 +1687,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* used to pass parameters to zfcp_send_ct() */
+multiline_comment|/**&n; * struct zfcp_send_ct - used to pass parameters to function zfcp_fsf_send_ct&n; * @port: port where the request is sent to&n; * @req: scatter-gather list for request&n; * @resp: scatter-gather list for response&n; * @req_count: number of elements in request scatter-gather list&n; * @resp_count: number of elements in response scatter-gather list&n; * @handler: handler function (called for response to the request)&n; * @handler_data: data passed to handler function&n; * @pool: pointer to memory pool for ct request structure&n; * @timeout: FSF timeout for this request&n; * @timer: timer (e.g. for request initiated by erp)&n; * @completion: completion for synchronization purposes&n; * @status: used to pass error status to calling function&n; */
 DECL|struct|zfcp_send_ct
 r_struct
 id|zfcp_send_ct
@@ -2040,7 +1734,6 @@ id|mempool_t
 op_star
 id|pool
 suffix:semicolon
-multiline_comment|/* mempool for ct not for fsf_req */
 DECL|member|timeout
 r_int
 id|timeout
@@ -2113,8 +1806,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* used to pass parameters to zfcp_send_els() */
-multiline_comment|/* ToDo merge send_ct() and send_els() and corresponding structs */
+multiline_comment|/**&n; * struct zfcp_send_els - used to pass parameters to function zfcp_fsf_send_els&n; * @port: port where the request is sent to&n; * @req: scatter-gather list for request&n; * @resp: scatter-gather list for response&n; * @req_count: number of elements in request scatter-gather list&n; * @resp_count: number of elements in response scatter-gather list&n; * @handler: handler function (called for response to the request)&n; * @handler_data: data passed to handler function&n; * @timer: timer (e.g. for request initiated by erp)&n; * @completion: completion for synchronization purposes&n; * @ls_code: hex code of ELS command&n; * @status: used to pass error status to calling function&n; */
 DECL|struct|zfcp_send_els
 r_struct
 id|zfcp_send_els
@@ -2155,6 +1847,12 @@ DECL|member|handler_data
 r_int
 r_int
 id|handler_data
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+op_star
+id|timer
 suffix:semicolon
 DECL|member|completion
 r_struct
@@ -2266,6 +1964,12 @@ DECL|member|status_read
 r_struct
 id|zfcp_status_read
 id|status_read
+suffix:semicolon
+DECL|member|port_data
+r_struct
+id|fsf_qtcb_bottom_port
+op_star
+id|port_data
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2635,6 +2339,12 @@ id|qdio_initialize
 id|qdio_init_data
 suffix:semicolon
 multiline_comment|/* for qdio_establish */
+DECL|member|generic_services
+r_struct
+id|device
+id|generic_services
+suffix:semicolon
+multiline_comment|/* directory for WKA ports */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * the struct device sysfs_device must be at the beginning of this structure.&n; * pointer to struct device is used to free port structure in release function&n; * of the device. don&squot;t change!&n; */
@@ -3005,6 +2715,7 @@ id|init_fcp_lun
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * struct zfcp_sg_list - struct describing a scatter-gather list&n; * @sg: pointer to array of (struct scatterlist)&n; * @count: number of elements in scatter-gather list&n; */
 DECL|struct|zfcp_sg_list
 r_struct
 id|zfcp_sg_list

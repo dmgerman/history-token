@@ -773,6 +773,11 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
+multiline_comment|/* 1 if group stopped since last SIGCONT, -1 if SIGCONT since report */
+DECL|member|stop_state
+r_int
+id|stop_state
+suffix:semicolon
 multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|posix_timers
 r_struct
@@ -804,6 +809,49 @@ op_star
 id|tty
 suffix:semicolon
 multiline_comment|/* NULL if no tty */
+multiline_comment|/*&n;&t; * Cumulative resource counters for dead threads in the group,&n;&t; * and for reaped dead child processes forked by this group.&n;&t; * Live threads maintain their own counters and add to these&n;&t; * in __exit_signal, except for the group leader.&n;&t; */
+DECL|member|utime
+DECL|member|stime
+DECL|member|cutime
+DECL|member|cstime
+r_int
+r_int
+id|utime
+comma
+id|stime
+comma
+id|cutime
+comma
+id|cstime
+suffix:semicolon
+DECL|member|nvcsw
+DECL|member|nivcsw
+DECL|member|cnvcsw
+DECL|member|cnivcsw
+r_int
+r_int
+id|nvcsw
+comma
+id|nivcsw
+comma
+id|cnvcsw
+comma
+id|cnivcsw
+suffix:semicolon
+DECL|member|min_flt
+DECL|member|maj_flt
+DECL|member|cmin_flt
+DECL|member|cmaj_flt
+r_int
+r_int
+id|min_flt
+comma
+id|maj_flt
+comma
+id|cmin_flt
+comma
+id|cmaj_flt
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
@@ -1319,7 +1367,7 @@ multiline_comment|/* threadgroup leader */
 multiline_comment|/* PID/PID hash table linkage. */
 DECL|member|pids
 r_struct
-id|pid_link
+id|pid
 id|pids
 (braket
 id|PIDTYPE_MAX
@@ -1385,31 +1433,19 @@ id|real_timer
 suffix:semicolon
 DECL|member|utime
 DECL|member|stime
-DECL|member|cutime
-DECL|member|cstime
 r_int
 r_int
 id|utime
 comma
 id|stime
-comma
-id|cutime
-comma
-id|cstime
 suffix:semicolon
 DECL|member|nvcsw
 DECL|member|nivcsw
-DECL|member|cnvcsw
-DECL|member|cnivcsw
 r_int
 r_int
 id|nvcsw
 comma
 id|nivcsw
-comma
-id|cnvcsw
-comma
-id|cnivcsw
 suffix:semicolon
 multiline_comment|/* context switch counts */
 DECL|member|start_time
@@ -1419,17 +1455,11 @@ suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
 DECL|member|min_flt
 DECL|member|maj_flt
-DECL|member|cmin_flt
-DECL|member|cmaj_flt
 r_int
 r_int
 id|min_flt
 comma
 id|maj_flt
-comma
-id|cmin_flt
-comma
-id|cmaj_flt
 suffix:semicolon
 multiline_comment|/* process credentials */
 DECL|member|uid
@@ -2005,13 +2035,18 @@ r_struct
 id|mm_struct
 id|init_mm
 suffix:semicolon
+DECL|macro|find_task_by_pid
+mdefine_line|#define find_task_by_pid(nr)&t;find_task_by_pid_type(PIDTYPE_PID, nr)
 r_extern
 r_struct
 id|task_struct
 op_star
-id|find_task_by_pid
+id|find_task_by_pid_type
 c_func
 (paren
+r_int
+id|type
+comma
 r_int
 id|pid
 )paren
@@ -3239,23 +3274,18 @@ op_star
 id|p
 )paren
 (brace
-r_struct
-id|pid
-op_star
-id|pid
-op_assign
+r_return
+id|list_empty
+c_func
+(paren
+op_amp
 id|p-&gt;pids
 (braket
 id|PIDTYPE_TGID
 )braket
 dot
-id|pidptr
-suffix:semicolon
-r_return
-id|pid-&gt;task_list.next-&gt;next
-op_eq
-op_amp
-id|pid-&gt;task_list
+id|pid_list
+)paren
 suffix:semicolon
 )brace
 DECL|macro|delay_group_leader
