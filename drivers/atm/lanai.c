@@ -11257,9 +11257,9 @@ r_return
 id|result
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/* ioctl operations for card */
 multiline_comment|/* NOTE: these are all DEBUGGING ONLY currently */
-DECL|function|lanai_ioctl
 r_static
 r_int
 id|lanai_ioctl
@@ -11279,7 +11279,6 @@ op_star
 id|arg
 )paren
 (brace
-macro_line|#if 0
 r_int
 id|result
 op_assign
@@ -11857,29 +11856,11 @@ suffix:semicolon
 r_return
 id|result
 suffix:semicolon
-macro_line|#else /* !0 */
-(paren
-r_void
-)paren
-id|atmdev
-suffix:semicolon
-(paren
-r_void
-)paren
-id|cmd
-suffix:semicolon
-(paren
-r_void
-)paren
-id|arg
-suffix:semicolon
-multiline_comment|/* no compiler warnings */
-r_return
-op_minus
-id|ENOIOCTLCMD
-suffix:semicolon
-macro_line|#endif /* 0 */
 )brace
+macro_line|#else /* !0 */
+DECL|macro|lanai_ioctl
+mdefine_line|#define lanai_ioctl NULL
+macro_line|#endif /* 0 */
 DECL|function|lanai_send
 r_static
 r_int
