@@ -387,6 +387,16 @@ op_star
 )paren
 suffix:semicolon
 r_int
+id|remove_inode_buffers
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_int
 id|fsync_buffers_list
 c_func
 (paren
