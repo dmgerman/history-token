@@ -5401,7 +5401,8 @@ id|p
 op_assign
 id|dev-&gt;mc_list
 suffix:semicolon
-id|hermes_multicast_t
+r_struct
+id|hermes_multicast
 id|mclist
 suffix:semicolon
 r_int

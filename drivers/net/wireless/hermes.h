@@ -501,7 +501,6 @@ id|packed
 )paren
 suffix:semicolon
 DECL|struct|hermes_response
-r_typedef
 r_struct
 id|hermes_response
 (brace
@@ -518,9 +517,7 @@ id|resp1
 comma
 id|resp2
 suffix:semicolon
-DECL|typedef|hermes_response_t
 )brace
-id|hermes_response_t
 suffix:semicolon
 multiline_comment|/* &quot;ID&quot; structure - used for ESSID and station nickname */
 DECL|struct|hermes_idstring
@@ -547,7 +544,6 @@ id|packed
 )paren
 suffix:semicolon
 DECL|struct|hermes_multicast
-r_typedef
 r_struct
 id|hermes_multicast
 (brace
@@ -561,7 +557,6 @@ id|HERMES_MAX_MULTICAST
 id|ETH_ALEN
 )braket
 suffix:semicolon
-DECL|typedef|hermes_multicast_t
 )brace
 id|__attribute__
 (paren
@@ -569,7 +564,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|hermes_multicast_t
 suffix:semicolon
 singleline_comment|// #define HERMES_DEBUG_BUFFER 1
 DECL|macro|HERMES_DEBUG_BUFSIZE
@@ -712,7 +706,8 @@ comma
 id|u16
 id|parm0
 comma
-id|hermes_response_t
+r_struct
+id|hermes_response
 op_star
 id|resp
 )paren

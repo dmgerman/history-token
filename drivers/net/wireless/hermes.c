@@ -581,7 +581,8 @@ comma
 id|u16
 id|parm0
 comma
-id|hermes_response_t
+r_struct
+id|hermes_response
 op_star
 id|resp
 )paren
