@@ -4069,8 +4069,12 @@ c_func
 (paren
 id|ch-&gt;dev.bus_id
 comma
-l_string|&quot;%04x&quot;
+l_string|&quot;%04lx&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ch-&gt;io_ports
 (braket
 id|IDE_DATA_OFFSET

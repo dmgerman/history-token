@@ -42,9 +42,9 @@ mdefine_line|#define clear_page(page)&t; memset((void *)(page), 0, PAGE_SIZE)
 DECL|macro|copy_page
 mdefine_line|#define copy_page(to,from) &t;memcpy((void *)(to), (void *)(from), PAGE_SIZE)
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
+mdefine_line|#define clear_user_page(addr, vaddr, page)&t;clear_page(addr)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;copy_page(to, from)
+mdefine_line|#define copy_user_page(to, from, vaddr, page)&t;copy_page(to, from)
 multiline_comment|/* The following structure is used to hold the physical&n; * memory configuration of the machine.  This is filled in&n; * probe_memory() and is later used by mem_init() to set up&n; * mem_map[].  We statically allocate SPARC_PHYS_BANKS of&n; * these structs, this is arbitrary.  The entry after the&n; * last valid one has num_bytes==0.&n; */
 DECL|struct|sparc_phys_banks
 r_struct

@@ -136,6 +136,8 @@ DECL|macro|X86_VENDOR_TRANSMETA
 mdefine_line|#define X86_VENDOR_TRANSMETA 7
 DECL|macro|X86_VENDOR_NSC
 mdefine_line|#define X86_VENDOR_NSC 8
+DECL|macro|X86_VENDOR_NUM
+mdefine_line|#define X86_VENDOR_NUM 9
 DECL|macro|X86_VENDOR_UNKNOWN
 mdefine_line|#define X86_VENDOR_UNKNOWN 0xff
 multiline_comment|/*&n; * capabilities of CPUs&n; */

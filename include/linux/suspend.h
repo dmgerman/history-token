@@ -177,6 +177,18 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|nr_copy_pages
+id|__nosavedata
+suffix:semicolon
+r_extern
+id|suspend_pagedir_t
+op_star
+id|pagedir_nosave
+id|__nosavedata
+suffix:semicolon
 macro_line|#else
 DECL|macro|software_suspend
 mdefine_line|#define software_suspend()&t;&t;do { } while(0)

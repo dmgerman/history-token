@@ -782,7 +782,7 @@ id|pci_bus_type
 suffix:semicolon
 )brace
 DECL|variable|pci_driver_init
-id|subsys_initcall
+id|postcore_initcall
 c_func
 (paren
 id|pci_driver_init

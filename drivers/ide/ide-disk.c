@@ -4367,8 +4367,16 @@ l_string|&quot;%s: setmax_ext LBA %llu, native  %llu&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
+(paren
+r_int
+r_int
+)paren
 id|set_max_ext
 comma
+(paren
+r_int
+r_int
+)paren
 id|capacity_2
 )paren
 suffix:semicolon

@@ -10989,7 +10989,11 @@ comma
 macro_line|#endif
 id|stop
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|uhci_stop
+)paren
 comma
 id|hcd_alloc
 suffix:colon

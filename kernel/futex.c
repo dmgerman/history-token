@@ -9,8 +9,9 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/* These mutexes are a very simple counter: the winner is the one who&n;   decrements from 1 to 0.  The counter starts at 1 when the lock is&n;   free.  A value other than 0 or 1 means someone may be sleeping.&n;   This is simple enough to work on all architectures, but has the&n;   problem that if we never &quot;up&quot; the semaphore it could eventually&n;   wrap around. */
+multiline_comment|/* Simple &quot;sleep if unchanged&quot; interface. */
 multiline_comment|/* FIXME: This may be way too small. --RR */
 DECL|macro|FUTEX_HASHBITS
 mdefine_line|#define FUTEX_HASHBITS 6
@@ -24,11 +25,9 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
-DECL|member|task
-r_struct
-id|task_struct
-op_star
-id|task
+DECL|member|waiters
+id|wait_queue_head_t
+id|waiters
 suffix:semicolon
 multiline_comment|/* Page struct and offset within it. */
 DECL|member|page
@@ -109,6 +108,27 @@ comma
 id|FUTEX_HASHBITS
 )paren
 )braket
+suffix:semicolon
+)brace
+DECL|function|tell_waiter
+r_static
+r_inline
+r_void
+id|tell_waiter
+c_func
+(paren
+r_struct
+id|futex_q
+op_star
+id|q
+)paren
+(brace
+id|wake_up_all
+c_func
+(paren
+op_amp
+id|q-&gt;waiters
+)paren
 suffix:semicolon
 )brace
 DECL|function|futex_wake
@@ -199,10 +219,10 @@ c_func
 id|i
 )paren
 suffix:semicolon
-id|wake_up_process
+id|tell_waiter
 c_func
 (paren
-id|this-&gt;task
+id|this
 )paren
 suffix:semicolon
 id|num_woken
@@ -243,6 +263,10 @@ id|list_head
 op_star
 id|head
 comma
+id|wait_queue_t
+op_star
+id|wait
+comma
 r_struct
 id|futex_q
 op_star
@@ -258,9 +282,14 @@ r_int
 id|offset
 )paren
 (brace
-id|q-&gt;task
-op_assign
-id|current
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|q-&gt;waiters
+comma
+id|wait
+)paren
 suffix:semicolon
 id|q-&gt;page
 op_assign
@@ -481,6 +510,14 @@ r_struct
 id|futex_q
 id|q
 suffix:semicolon
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -498,6 +535,9 @@ c_func
 id|head
 comma
 op_amp
+id|wait
+comma
+op_amp
 id|q
 comma
 id|page
@@ -505,7 +545,7 @@ comma
 id|offset
 )paren
 suffix:semicolon
-multiline_comment|/* Page is pinned, can&squot;t fail */
+multiline_comment|/* Page is pinned, but may no longer be in this address space. */
 r_if
 c_cond
 (paren
@@ -519,11 +559,16 @@ id|uaddr
 op_ne
 l_int|0
 )paren
-id|BUG
-c_func
-(paren
-)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -536,12 +581,6 @@ id|ret
 op_assign
 op_minus
 id|EWOULDBLOCK
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
 suffix:semicolon
 r_goto
 id|out
@@ -593,6 +632,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
 multiline_comment|/* Were we woken up anyway? */
 r_if
 c_cond
@@ -840,7 +885,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page

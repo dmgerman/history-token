@@ -428,6 +428,9 @@ mdefine_line|#define sigev_notify_function&t;_sigev_un._sigev_thread._function
 DECL|macro|sigev_notify_attributes
 mdefine_line|#define sigev_notify_attributes&t;_sigev_un._sigev_thread._attribute
 macro_line|#ifdef __KERNEL__
+r_struct
+id|siginfo
+suffix:semicolon
 macro_line|#ifndef HAVE_ARCH_COPY_SIGINFO
 macro_line|#include &lt;linux/string.h&gt;
 DECL|function|copy_siginfo

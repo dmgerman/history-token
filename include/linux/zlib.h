@@ -2,7 +2,7 @@ multiline_comment|/* zlib.h -- interface of the &squot;zlib&squot; general purpo
 macro_line|#ifndef _ZLIB_H
 DECL|macro|_ZLIB_H
 mdefine_line|#define _ZLIB_H
-macro_line|#include &quot;zconf.h&quot;
+macro_line|#include &lt;linux/zconf.h&gt;
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;
