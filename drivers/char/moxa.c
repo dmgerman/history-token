@@ -1435,11 +1435,6 @@ id|moxa_str
 op_star
 id|ch
 suffix:semicolon
-r_int
-id|ret1
-comma
-id|ret2
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2948,7 +2943,6 @@ id|ASYNC_CLOSING
 suffix:semicolon
 id|ch-&gt;cflag
 op_assign
-op_star
 id|tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
 r_if
