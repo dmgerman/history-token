@@ -108,6 +108,16 @@ r_int
 r_int
 id|__kernel_gid16_t
 suffix:semicolon
+DECL|typedef|__kernel_clockid_t
+r_typedef
+r_int
+id|__kernel_clockid_t
+suffix:semicolon
+DECL|typedef|__kernel_timer_t
+r_typedef
+r_int
+id|__kernel_timer_t
+suffix:semicolon
 DECL|typedef|__kernel_old_uid_t
 r_typedef
 id|__kernel_uid_t
