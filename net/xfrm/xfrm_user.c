@@ -6078,11 +6078,9 @@ id|xfrm_nl
 op_eq
 l_int|NULL
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;xfrm_user_init: cannot initialize xfrm_nl&bslash;n&quot;
-)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|xfrm_register_km
 c_func
