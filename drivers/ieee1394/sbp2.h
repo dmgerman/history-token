@@ -1226,12 +1226,6 @@ id|u32
 id|max_payload_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Values pulled from the device&squot;s unit directory&n;&t; */
-DECL|member|ud
-r_struct
-id|unit_directory
-op_star
-id|ud
-suffix:semicolon
 DECL|member|sbp2_command_set_spec_id
 id|u32
 id|sbp2_command_set_spec_id
@@ -1272,6 +1266,11 @@ r_struct
 id|list_head
 id|sbp2_command_orb_completed
 suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 multiline_comment|/* Node entry, as retrieved from NodeMgr entries */
 DECL|member|ne
 r_struct
@@ -1290,6 +1289,18 @@ multiline_comment|/* Device specific workarounds/brokeness */
 DECL|member|workarounds
 id|u32
 id|workarounds
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Describes a per-ud scsi_id group */
+DECL|struct|scsi_id_group
+r_struct
+id|scsi_id_group
+(brace
+DECL|member|scsi_id_list
+r_struct
+id|list_head
+id|scsi_id_list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1488,7 +1499,7 @@ id|ud
 suffix:semicolon
 r_static
 r_int
-id|sbp2_start_device
+id|sbp2_start_ud
 c_func
 (paren
 r_struct
@@ -1500,6 +1511,17 @@ r_struct
 id|unit_directory
 op_star
 id|ud
+)paren
+suffix:semicolon
+r_static
+r_int
+id|sbp2_start_device
+c_func
+(paren
+r_struct
+id|scsi_id_instance_data
+op_star
+id|scsi_id
 )paren
 suffix:semicolon
 r_static
@@ -1792,9 +1814,14 @@ id|sbp2_parse_unit_directory
 c_func
 (paren
 r_struct
-id|scsi_id_instance_data
+id|scsi_id_group
 op_star
-id|scsi_id
+id|scsi_group
+comma
+r_struct
+id|unit_directory
+op_star
+id|ud
 )paren
 suffix:semicolon
 r_static
