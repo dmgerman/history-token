@@ -33,10 +33,8 @@ id|font_vga_8x16
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FONT_6x11
-macro_line|#if defined(CONFIG_FBCON_ACCEL) || defined(CONFIG_FB_SBUS)
 DECL|macro|NO_FONTS
 macro_line|#undef NO_FONTS
-macro_line|#endif
 op_amp
 id|font_vga_6x11
 comma
@@ -49,10 +47,8 @@ id|font_sun_8x16
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FONT_SUN12x22
-macro_line|#if defined(CONFIG_FB_SBUS) || defined(CONFIG_FBCON_CFB8) || defined(CONFIG_FBCON_CFB16) || defined(CONFIG_FBCON_CFB24) || defined(CONFIG_FBCON_CFB32) || defined(CONFIG_FBCON_ACCEL)
 DECL|macro|NO_FONTS
 macro_line|#undef NO_FONTS
-macro_line|#endif
 op_amp
 id|font_sun_12x22
 comma
