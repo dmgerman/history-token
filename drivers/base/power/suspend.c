@@ -37,6 +37,9 @@ c_cond
 id|dev-&gt;bus
 op_logical_and
 id|dev-&gt;bus-&gt;suspend
+op_logical_and
+op_logical_neg
+id|dev-&gt;power.power_state
 )paren
 id|error
 op_assign
