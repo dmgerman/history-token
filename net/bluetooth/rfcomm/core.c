@@ -20,7 +20,7 @@ macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;0.3&quot;
-macro_line|#ifndef CONFIG_RFCOMM_DEBUG
+macro_line|#ifndef CONFIG_BLUEZ_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -8196,11 +8196,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLUEZ_RFCOMM_TTY
 id|rfcomm_init_ttys
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|BT_INFO
 c_func
 (paren
@@ -8263,11 +8265,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLUEZ_RFCOMM_TTY
 id|rfcomm_cleanup_ttys
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|rfcomm_cleanup_sockets
 c_func
 (paren
