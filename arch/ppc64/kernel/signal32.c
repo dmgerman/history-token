@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
@@ -22,20 +23,6 @@ multiline_comment|/*&n; * glibc tries to set FE0/FE1 via a signal handler. Since
 DECL|macro|MSR_USERCHANGE
 mdefine_line|#define MSR_USERCHANGE&t;0
 macro_line|#endif
-DECL|struct|timespec32
-r_struct
-id|timespec32
-(brace
-DECL|member|tv_sec
-id|s32
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_nsec
-id|s32
-id|tv_nsec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|sigregs32
 r_struct
 id|sigregs32
@@ -2704,7 +2691,7 @@ id|sigset32_t
 op_star
 id|set
 comma
-id|__kernel_size_t32
+id|compat_size_t
 id|sigsetsize
 )paren
 (brace
@@ -3197,11 +3184,11 @@ op_star
 id|uinfo
 comma
 r_struct
-id|timespec32
+id|compat_timespec
 op_star
 id|uts
 comma
-id|__kernel_size_t32
+id|compat_size_t
 id|sigsetsize
 )paren
 (brace

@@ -1,6 +1,7 @@
 macro_line|#ifndef _PPC64_PPC32_H
 DECL|macro|_PPC64_PPC32_H
 mdefine_line|#define _PPC64_PPC32_H
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 multiline_comment|/*&n; * Data types and macros for providing 32b PowerPC support.&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
@@ -19,26 +20,10 @@ mdefine_line|#define A(__x) ((unsigned long)(__x))
 DECL|macro|AA
 mdefine_line|#define AA(__x)&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __ret;&t;&t;&bslash;&n;&t;__asm__ (&quot;clrldi&t;%0, %0, 32&quot;&t;&bslash;&n;&t;&t; : &quot;=r&quot; (__ret)&t;&t;&bslash;&n;&t;&t; : &quot;0&quot; (__x));&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* These are here to support 32-bit syscalls on a 64-bit kernel. */
-DECL|typedef|__kernel_size_t32
-r_typedef
-r_int
-r_int
-id|__kernel_size_t32
-suffix:semicolon
-DECL|typedef|__kernel_ssize_t32
-r_typedef
-r_int
-id|__kernel_ssize_t32
-suffix:semicolon
 DECL|typedef|__kernel_ptrdiff_t32
 r_typedef
 r_int
 id|__kernel_ptrdiff_t32
-suffix:semicolon
-DECL|typedef|__kernel_time_t32
-r_typedef
-r_int
-id|__kernel_time_t32
 suffix:semicolon
 DECL|typedef|__kernel_clock_t32
 r_typedef
@@ -432,7 +417,7 @@ r_int
 id|ss_flags
 suffix:semicolon
 DECL|member|ss_size
-id|__kernel_size_t32
+id|compat_size_t
 id|ss_size
 suffix:semicolon
 DECL|typedef|stack_32_t
@@ -524,7 +509,7 @@ id|st_blocks
 suffix:semicolon
 multiline_comment|/* 4 */
 DECL|member|st_atime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_atime
 suffix:semicolon
 multiline_comment|/* 4 */
@@ -535,7 +520,7 @@ id|__unused1
 suffix:semicolon
 multiline_comment|/* 4 */
 DECL|member|st_mtime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_mtime
 suffix:semicolon
 multiline_comment|/* 4 */
@@ -546,7 +531,7 @@ id|__unused2
 suffix:semicolon
 multiline_comment|/* 4 */
 DECL|member|st_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_ctime
 suffix:semicolon
 multiline_comment|/* 4 */
