@@ -12,31 +12,6 @@ macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
-DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT&t;&t;ACPI_PROCESSOR_COMPONENT
-id|ACPI_MODULE_NAME
-(paren
-l_string|&quot;acpi_processor&quot;
-)paren
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Paul Diefenbaugh&quot;
-)paren
-suffix:semicolon
-DECL|variable|ACPI_PROCESSOR_DRIVER_NAME
-id|MODULE_DESCRIPTION
-c_func
-(paren
-id|ACPI_PROCESSOR_DRIVER_NAME
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|macro|ACPI_PROCESSOR_COMPONENT
 mdefine_line|#define ACPI_PROCESSOR_COMPONENT&t;0x01000000
 DECL|macro|ACPI_PROCESSOR_CLASS
@@ -108,6 +83,31 @@ DECL|macro|ACPI_PROCESSOR_LIMIT_USER
 mdefine_line|#define ACPI_PROCESSOR_LIMIT_USER&t;0
 DECL|macro|ACPI_PROCESSOR_LIMIT_THERMAL
 mdefine_line|#define ACPI_PROCESSOR_LIMIT_THERMAL&t;1
+DECL|macro|_COMPONENT
+mdefine_line|#define _COMPONENT&t;&t;ACPI_PROCESSOR_COMPONENT
+id|ACPI_MODULE_NAME
+(paren
+l_string|&quot;acpi_processor&quot;
+)paren
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Paul Diefenbaugh&quot;
+)paren
+suffix:semicolon
+DECL|variable|ACPI_PROCESSOR_DRIVER_NAME
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|ACPI_PROCESSOR_DRIVER_NAME
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|acpi_processor_add

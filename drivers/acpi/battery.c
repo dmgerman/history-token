@@ -7,31 +7,6 @@ macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
-DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT&t;&t;ACPI_BATTERY_COMPONENT
-id|ACPI_MODULE_NAME
-(paren
-l_string|&quot;acpi_battery&quot;
-)paren
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Paul Diefenbaugh&quot;
-)paren
-suffix:semicolon
-DECL|variable|ACPI_BATTERY_DRIVER_NAME
-id|MODULE_DESCRIPTION
-c_func
-(paren
-id|ACPI_BATTERY_DRIVER_NAME
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|macro|ACPI_BATTERY_VALUE_UNKNOWN
 mdefine_line|#define ACPI_BATTERY_VALUE_UNKNOWN 0xFFFFFFFF
 DECL|macro|ACPI_BATTERY_FORMAT_BIF
@@ -62,6 +37,31 @@ DECL|macro|ACPI_BATTERY_UNITS_WATTS
 mdefine_line|#define ACPI_BATTERY_UNITS_WATTS&t;&quot;mW&quot;
 DECL|macro|ACPI_BATTERY_UNITS_AMPS
 mdefine_line|#define ACPI_BATTERY_UNITS_AMPS&t;&t;&quot;mA&quot;
+DECL|macro|_COMPONENT
+mdefine_line|#define _COMPONENT&t;&t;ACPI_BATTERY_COMPONENT
+id|ACPI_MODULE_NAME
+(paren
+l_string|&quot;acpi_battery&quot;
+)paren
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Paul Diefenbaugh&quot;
+)paren
+suffix:semicolon
+DECL|variable|ACPI_BATTERY_DRIVER_NAME
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|ACPI_BATTERY_DRIVER_NAME
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|acpi_battery_add
