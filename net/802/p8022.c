@@ -6,8 +6,8 @@ macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/p8022.h&gt;
-macro_line|#include &lt;net/llc_sap.h&gt;
 DECL|function|p8022_request
 r_static
 r_int

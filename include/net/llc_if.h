@@ -7,6 +7,7 @@ multiline_comment|/* Available primitives */
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/llc.h&gt;
+macro_line|#include &lt;net/llc.h&gt;
 DECL|macro|LLC_DATAUNIT_PRIM
 mdefine_line|#define LLC_DATAUNIT_PRIM&t;1
 DECL|macro|LLC_CONN_PRIM
@@ -75,25 +76,6 @@ DECL|macro|LLC_STATUS_CONFLICT
 mdefine_line|#define LLC_STATUS_CONFLICT&t;7 /* disconnect conn */
 DECL|macro|LLC_STATUS_RESET_DONE
 mdefine_line|#define LLC_STATUS_RESET_DONE&t;8 /*  */
-multiline_comment|/* Structures and types */
-multiline_comment|/* SAP/MAC Address pair */
-DECL|struct|llc_addr
-r_struct
-id|llc_addr
-(brace
-DECL|member|lsap
-id|u8
-id|lsap
-suffix:semicolon
-DECL|member|mac
-id|u8
-id|mac
-(braket
-id|IFHWADDRLEN
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 r_extern
 id|u8
 id|llc_mac_null_var

@@ -13,7 +13,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/llc_c_ev.h&gt;
 macro_line|#include &lt;net/llc_c_ac.h&gt;
 macro_line|#include &lt;net/llc_c_st.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
 DECL|variable|llc_mac_null_var
 id|u8
 id|llc_mac_null_var

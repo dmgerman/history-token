@@ -3,14 +3,13 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
-macro_line|#include &lt;net/llc_mac.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#include &lt;net/llc_proc.h&gt;
-macro_line|#include &lt;linux/rtnetlink.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* remember: uninitialized global data is zeroed because its in .bss */
 DECL|variable|llc_ui_sap_last_autoport
 r_static
@@ -4396,6 +4395,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|llc_station_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|llc_ui_sap_last_autoport
 op_assign
 id|LLC_SAP_DYN_START
@@ -4452,6 +4456,11 @@ c_func
 r_void
 )paren
 (brace
+id|llc_station_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 id|llc_remove_pack
 c_func
 (paren
