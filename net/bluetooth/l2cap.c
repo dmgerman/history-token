@@ -3349,6 +3349,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -3478,6 +3479,7 @@ id|opt
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|optval
@@ -3542,10 +3544,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -3692,6 +3696,7 @@ id|link_mode
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|optval
