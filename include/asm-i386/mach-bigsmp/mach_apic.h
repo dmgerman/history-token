@@ -76,6 +76,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* we don&squot;t use the phys_cpu_present_map to indicate apicid presence */
 DECL|function|check_apicid_present
 r_static
 r_inline
@@ -89,13 +90,7 @@ id|bit
 )paren
 (brace
 r_return
-id|physid_isset
-c_func
-(paren
-id|bit
-comma
-id|phys_cpu_present_map
-)paren
+l_int|1
 suffix:semicolon
 )brace
 DECL|macro|apicid_cluster
