@@ -2082,7 +2082,7 @@ id|sn_device_sysdata
 op_star
 id|device_sysdata
 suffix:semicolon
-id|pciio_intr_t
+id|pcibr_intr_t
 id|intr_handle
 suffix:semicolon
 r_int
@@ -2566,7 +2566,7 @@ id|device_dev
 suffix:semicolon
 id|intr_handle
 op_assign
-id|pciio_intr_alloc
+id|pcibr_intr_alloc
 c_func
 (paren
 id|device_vertex
@@ -2580,7 +2580,7 @@ id|device_vertex
 suffix:semicolon
 id|irq
 op_assign
-id|intr_handle-&gt;pi_irq
+id|intr_handle-&gt;bi_irq
 suffix:semicolon
 id|irqpdaindr-&gt;device_dev
 (braket
@@ -2591,9 +2591,9 @@ id|device_dev
 suffix:semicolon
 id|cpuid
 op_assign
-id|intr_handle-&gt;pi_cpu
+id|intr_handle-&gt;bi_cpu
 suffix:semicolon
-id|pciio_intr_connect
+id|pcibr_intr_connect
 c_func
 (paren
 id|intr_handle
@@ -2618,9 +2618,6 @@ c_func
 (paren
 id|irq
 comma
-(paren
-id|pcibr_intr_t
-)paren
 id|intr_handle
 )paren
 suffix:semicolon
@@ -2642,14 +2639,7 @@ op_increment
 r_int
 id|ibits
 op_assign
-(paren
-(paren
-id|pcibr_intr_t
-)paren
-id|intr_handle
-)paren
-op_member_access_from_pointer
-id|bi_ibits
+id|intr_handle-&gt;bi_ibits
 suffix:semicolon
 r_int
 id|i
