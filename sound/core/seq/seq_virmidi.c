@@ -120,6 +120,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|ev-&gt;type
+op_assign
+id|SNDRV_SEQ_EVENT_NONE
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * decode input event and put to read buffer of each opened file&n; */
 DECL|function|snd_virmidi_dev_receive_event
@@ -459,6 +463,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|vmidi-&gt;seq_mode
+op_eq
+id|SNDRV_VIRMIDI_SEQ_DISPATCH
+op_logical_and
 op_logical_neg
 (paren
 id|vmidi-&gt;rdev-&gt;flags
@@ -504,7 +512,7 @@ l_int|0
 comma
 l_int|0
 )paren
-op_le
+OL
 l_int|0
 )paren
 r_return
@@ -627,7 +635,7 @@ l_int|0
 comma
 l_int|0
 )paren
-op_le
+OL
 l_int|0
 )paren
 r_return

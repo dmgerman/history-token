@@ -192,8 +192,6 @@ DECL|macro|snd_seq_ev_is_instr_type
 mdefine_line|#define snd_seq_ev_is_instr_type&t;sndrv_seq_ev_is_instr_type      
 DECL|macro|snd_seq_ev_is_variable_type
 mdefine_line|#define snd_seq_ev_is_variable_type&t;sndrv_seq_ev_is_variable_type   
-DECL|macro|snd_seq_ev_is_varipc_type
-mdefine_line|#define snd_seq_ev_is_varipc_type&t;sndrv_seq_ev_is_varipc_type     
 DECL|macro|snd_seq_ev_is_reserved
 mdefine_line|#define snd_seq_ev_is_reserved&t;&t;sndrv_seq_ev_is_reserved        
 DECL|macro|snd_seq_ev_is_direct
@@ -208,8 +206,6 @@ DECL|macro|snd_seq_ev_is_variable
 mdefine_line|#define snd_seq_ev_is_variable&t;&t;sndrv_seq_ev_is_variable        
 DECL|macro|snd_seq_ev_is_varusr
 mdefine_line|#define snd_seq_ev_is_varusr&t;&t;sndrv_seq_ev_is_varusr          
-DECL|macro|snd_seq_ev_is_varipc
-mdefine_line|#define snd_seq_ev_is_varipc&t;&t;sndrv_seq_ev_is_varipc          
 DECL|macro|snd_seq_ev_timestamp_type
 mdefine_line|#define snd_seq_ev_timestamp_type&t;sndrv_seq_ev_timestamp_type     
 DECL|macro|snd_seq_ev_is_tick

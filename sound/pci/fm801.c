@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -2203,6 +2204,8 @@ id|status
 op_amp
 id|FM801_IRQ_PLAYBACK
 )paren
+op_logical_and
+id|chip-&gt;playback_substream
 )paren
 (brace
 id|spin_lock
@@ -2302,6 +2305,8 @@ id|status
 op_amp
 id|FM801_IRQ_CAPTURE
 )paren
+op_logical_and
+id|chip-&gt;capture_substream
 )paren
 (brace
 id|spin_lock

@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -4989,6 +4990,13 @@ op_ne
 id|nval
 )paren
 (brace
+id|reg
+(braket
+l_int|1
+)braket
+op_assign
+id|nval
+suffix:semicolon
 r_if
 c_cond
 (paren

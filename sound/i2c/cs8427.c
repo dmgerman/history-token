@@ -857,9 +857,8 @@ op_or
 id|CS8427_REG_AUTOINC
 comma
 multiline_comment|/* CS8427_REG_RECVERRMASK: unmask the input PLL clock, V, confidence, biphase, parity status bits */
+multiline_comment|/* CS8427_UNLOCK | CS8427_V | CS8427_CONF | CS8427_BIP | CS8427_PAR,&n;&t;  Why setting CS8427_V causes clicks and glitches? */
 id|CS8427_UNLOCK
-op_or
-id|CS8427_V
 op_or
 id|CS8427_CONF
 op_or
@@ -1103,10 +1102,10 @@ id|buf
 comma
 l_int|0
 comma
-l_int|8
+l_int|7
 )paren
 suffix:semicolon
-multiline_comment|/* from address 9 to 16 */
+multiline_comment|/* from address 9 to 15 */
 id|buf
 (braket
 l_int|0
@@ -1128,11 +1127,11 @@ id|device
 comma
 id|buf
 comma
-l_int|8
+l_int|7
 )paren
 )paren
 op_ne
-l_int|8
+l_int|7
 )paren
 r_goto
 id|__fail

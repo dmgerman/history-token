@@ -308,6 +308,8 @@ DECL|macro|A_GPINPUT_MASK
 mdefine_line|#define A_GPINPUT_MASK&t;&t;0xff00
 DECL|macro|A_GPOUTPUT_MASK
 mdefine_line|#define A_GPOUTPUT_MASK&t;&t;0x00ff
+DECL|macro|A_IOCFG_GPOUT0
+mdefine_line|#define A_IOCFG_GPOUT0&t;&t;0x0040&t;&t;/* analog/digital? */
 DECL|macro|TIMER
 mdefine_line|#define TIMER&t;&t;&t;0x1a&t;&t;/* Timer terminal count register&t;&t;*/
 multiline_comment|/* NOTE: After the rate is changed, a maximum&t;*/
@@ -1923,8 +1925,7 @@ id|silent_page_dmaaddr
 suffix:semicolon
 DECL|member|ptb_pages
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 id|ptb_pages
 suffix:semicolon
