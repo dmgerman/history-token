@@ -4953,7 +4953,11 @@ id|rq-&gt;current_nr_sectors
 suffix:semicolon
 id|rq-&gt;buffer
 op_assign
-l_int|NULL
+id|bio_data
+c_func
+(paren
+id|rq-&gt;bio
+)paren
 suffix:semicolon
 id|out
 suffix:colon
