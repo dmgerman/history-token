@@ -24,7 +24,6 @@ id|loops
 )paren
 (brace
 r_int
-r_int
 id|bclock
 comma
 id|now
