@@ -1330,6 +1330,14 @@ id|new_bdev-&gt;bd_inode
 op_assign
 id|inode
 suffix:semicolon
+id|new_bdev-&gt;bd_block_size
+op_assign
+(paren
+l_int|1
+op_lshift
+id|inode-&gt;i_blkbits
+)paren
+suffix:semicolon
 id|new_bdev-&gt;bd_part_count
 op_assign
 l_int|0
