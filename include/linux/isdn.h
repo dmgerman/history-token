@@ -385,7 +385,6 @@ macro_line|#  include &lt;net/slhc_vj.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
-macro_line|#include &lt;linux/if_pppvar.h&gt;
 macro_line|#include &lt;linux/isdn_ppp.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_X25

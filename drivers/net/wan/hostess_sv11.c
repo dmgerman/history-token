@@ -1047,8 +1047,14 @@ comma
 id|d-&gt;name
 )paren
 suffix:semicolon
+id|sppp_detach
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
 r_goto
-id|fail
+id|dmafail2
 suffix:semicolon
 )brace
 id|z8530_describe

@@ -4595,7 +4595,7 @@ c_cond
 id|err
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

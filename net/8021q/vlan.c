@@ -1867,7 +1867,7 @@ id|out_put_dev
 suffix:semicolon
 id|out_free_newdev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|new_dev

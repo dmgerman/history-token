@@ -784,7 +784,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -4422,7 +4422,7 @@ id|ip6ip6_fb_tnl_dev
 )paren
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|ip6ip6_fb_tnl_dev

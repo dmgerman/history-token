@@ -10679,7 +10679,7 @@ comma
 id|intf
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev-&gt;net
@@ -11217,7 +11217,7 @@ id|udev
 suffix:semicolon
 id|out2
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|net
