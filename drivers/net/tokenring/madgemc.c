@@ -1455,6 +1455,10 @@ id|tmsdev_init
 c_func
 (paren
 id|dev
+comma
+id|ISA_MAX_ADDRESS
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1481,11 +1485,6 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * The MC16 is physically a 32bit card.  However, Madge&n;&t;&t; * insists on calling it 16bit, so I&squot;ll assume here that&n;&t;&t; * they know what they&squot;re talking about.  Cut off DMA&n;&t;&t; * at 16mb.&n;&t;&t; */
-id|tp-&gt;dmalimit
-op_assign
-id|ISA_MAX_ADDRESS
-suffix:semicolon
-multiline_comment|/* XXX: ?? */
 id|tp-&gt;setnselout
 op_assign
 id|madgemc_setnselout_pins
@@ -1573,10 +1572,10 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|kfree
+id|tmsdev_term
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|kfree
@@ -3053,10 +3052,10 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|tmsdev_term
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|kfree

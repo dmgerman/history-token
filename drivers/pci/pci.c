@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;&t;&t;/* for hotplug_path */
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;&t;/* isa_dma_bridge_buggy */

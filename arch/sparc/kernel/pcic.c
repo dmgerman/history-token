@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pcic.c,v 1.21 2001/01/18 00:23:00 davem Exp $&n; * pcic.c: Sparc/PCI controller support&n; *&n; * Copyright (C) 1998 V. Roganov and G. Raiko&n; *&n; * Code is derived from Ultra/PCI PSYCHO controller support, see that&n; * for author info.&n; *&n; * Support for diverse IIep based platforms by Pete Zaitcev.&n; * CP-1200 by Eric Brower.&n; */
+multiline_comment|/* $Id: pcic.c,v 1.22 2001/02/13 01:16:43 davem Exp $&n; * pcic.c: Sparc/PCI controller support&n; *&n; * Copyright (C) 1998 V. Roganov and G. Raiko&n; *&n; * Code is derived from Ultra/PCI PSYCHO controller support, see that&n; * for author info.&n; *&n; * Support for diverse IIep based platforms by Pete Zaitcev.&n; * CP-1200 by Eric Brower.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

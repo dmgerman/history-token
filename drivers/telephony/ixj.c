@@ -42,7 +42,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_PCMCIA
+macro_line|#if defined(CONFIG_PCMCIA) || defined(CONFIG_PCMCIA_MODULE)
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -802,7 +802,7 @@ r_int
 id|depth
 )paren
 suffix:semicolon
-multiline_comment|/************************************************************************&n;CT8020/CT8021 Host Programmers Model&n;Host address&t;Function&t;&t;&t;&t;&t;Access&n;DSPbase +&n;0-1&t;&t;Aux Software Status Register (reserved)&t;&t;Read Only&n;2-3&t;&t;Software Status Register&t;&t;&t;Read Only&n;4-5&t;&t;Aux Software Control Register (reserved)&t;Read Write&n;6-7&t;&t;Software Control Register&t;&t;&t;Read Write&n;8-9&t;&t;Hardware Status Register&t;&t;&t;Read Only&n;A-B&t;&t;Hardware Control Register&t;&t;&t;Read Write&n;C-D Host Transmit (Write) Data Buffer Access Port (buffer input)Write Only&n;E-F Host Recieve (Read) Data Buffer Access Port (buffer input)&t;Read Only&n;************************************************************************/
+multiline_comment|/************************************************************************&n;CT8020/CT8021 Host Programmers Model&n;Host address&t;Function&t;&t;&t;&t;&t;Access&n;DSPbase +&n;0-1&t;&t;Aux Software Status Register (reserved)&t;&t;Read Only&n;2-3&t;&t;Software Status Register&t;&t;&t;Read Only&n;4-5&t;&t;Aux Software Control Register (reserved)&t;Read Write&n;6-7&t;&t;Software Control Register&t;&t;&t;Read Write&n;8-9&t;&t;Hardware Status Register&t;&t;&t;Read Only&n;A-B&t;&t;Hardware Control Register&t;&t;&t;Read Write&n;C-D Host Transmit (Write) Data Buffer Access Port (buffer input)Write Only&n;E-F Host Receive (Read) Data Buffer Access Port (buffer input)&t;Read Only&n;************************************************************************/
 DECL|function|ixj_read_HSR
 r_extern
 id|__inline__
@@ -29550,7 +29550,7 @@ c_func
 l_string|&quot;Ed Okerson &lt;eokerson@quicknet.net&gt;&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCMCIA
+macro_line|#if defined(CONFIG_PCMCIA) || defined(CONFIG_PCMCIA_MODULE)
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
 r_static
@@ -30468,6 +30468,10 @@ op_star
 id|link
 )paren
 (brace
+id|IXJ
+op_star
+id|j
+suffix:semicolon
 id|client_handle_t
 id|handle
 suffix:semicolon

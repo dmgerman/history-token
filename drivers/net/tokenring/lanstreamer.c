@@ -608,6 +608,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif
 id|dev-&gt;priv
 op_assign
@@ -3575,8 +3581,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4474,9 +4478,7 @@ id|streamer_priv-&gt;tx_ring_last_status
 )braket
 )paren
 suffix:semicolon
-id|streamer_priv
-op_member_access_from_pointer
-id|streamer_tx_ring
+id|streamer_priv-&gt;streamer_tx_ring
 (braket
 id|streamer_priv-&gt;tx_ring_last_status
 )braket
@@ -5333,8 +5335,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -6881,6 +6881,11 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|mac_frame
 op_assign
 id|dev_alloc_skb
@@ -6888,7 +6893,22 @@ c_func
 (paren
 id|frame_len
 )paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Memory squeeze, dropping frame.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
 suffix:semicolon
+r_goto
+id|drop_frame
+suffix:semicolon
+)brace
 multiline_comment|/* Walk the buffer chain, creating the frame */
 r_do
 (brace
@@ -7158,6 +7178,8 @@ id|mac_frame
 )paren
 suffix:semicolon
 multiline_comment|/* Now tell the card we have dealt with the received frame */
+id|drop_frame
+suffix:colon
 multiline_comment|/* Set LISR Bit 1 */
 id|writel
 c_func
@@ -9019,6 +9041,15 @@ id|i
 )braket
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev_streamer
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 r_if

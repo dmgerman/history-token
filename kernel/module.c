@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-multiline_comment|/*&n; * Originally by Anonymous (as far as I know...)&n; * Linux version by Bas Laarhoven &lt;bas@vimec.nl&gt;&n; * 0.99.14 version by Jon Tombs &lt;jon@gtex02.us.es&gt;,&n; * Heavily modified by Bjorn Ekwall &lt;bj0rn@blox.se&gt; May 1994 (C)&n; * Rewritten by Richard Henderson &lt;rth@tamu.edu&gt; Dec 1996&n; * Add MOD_INITIALIZING Keith Owens &lt;kaos@ocs.com.au&gt; Nov 1999&n; * Add kallsyms support, Keith Owens &lt;kaos@ocs.com.au&gt; Apr 2000&n; * Add asm/module support, IA64 has special requirements.  Keith Owens &lt;kaos@ocs.com.au&gt; Sep 2000&n; * Fix assorted bugs in module verification.  Keith Owens &lt;kaos@ocs.com.au&gt; Sep 2000&n; * Fix sys_init_module race, Andrew Morton &lt;andrewm@uow.edu.au&gt; Oct 2000&n; *     http://www.uwsg.iu.edu/hypermail/linux/kernel/0008.3/0379.html&n; * Replace xxx_module_symbol with inter_module_xxx.  Keith Owens &lt;kaos@ocs.com.au&gt; Oct 2000&n; *&n; * This source is covered by the GNU GPL, the same as all kernel sources.&n; */
+multiline_comment|/*&n; * Originally by Anonymous (as far as I know...)&n; * Linux version by Bas Laarhoven &lt;bas@vimec.nl&gt;&n; * 0.99.14 version by Jon Tombs &lt;jon@gtex02.us.es&gt;,&n; * Heavily modified by Bjorn Ekwall &lt;bj0rn@blox.se&gt; May 1994 (C)&n; * Rewritten by Richard Henderson &lt;rth@tamu.edu&gt; Dec 1996&n; * Add MOD_INITIALIZING Keith Owens &lt;kaos@ocs.com.au&gt; Nov 1999&n; * Add kallsyms support, Keith Owens &lt;kaos@ocs.com.au&gt; Apr 2000&n; * Add asm/module support, IA64 has special requirements.  Keith Owens &lt;kaos@ocs.com.au&gt; Sep 2000&n; * Fix assorted bugs in module verification.  Keith Owens &lt;kaos@ocs.com.au&gt; Sep 2000&n; * Fix sys_init_module race, Andrew Morton &lt;andrewm@uow.edu.au&gt; Oct 2000&n; *     http://www.uwsg.iu.edu/hypermail/linux/kernel/0008.3/0379.html&n; * Replace xxx_module_symbol with inter_module_xxx.  Keith Owens &lt;kaos@ocs.com.au&gt; Oct 2000&n; * Add a module list lock for kernel fault race fixing. Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This source is covered by the GNU GPL, the same as all kernel sources.&n; */
 macro_line|#if defined(CONFIG_MODULES) || defined(CONFIG_KALLSYMS)
 r_extern
 r_struct
@@ -156,6 +156,13 @@ DECL|variable|kmalloc_failed
 r_static
 r_int
 id|kmalloc_failed
+suffix:semicolon
+multiline_comment|/*&n; *&t;This lock prevents modifications that might race the kernel fault&n; *&t;fixups. It does not prevent reader walks that the modules code&n; *&t;does. The kernel lock does that.&n; *&n; *&t;Since vmalloc fault fixups occur in any context this lock is taken&n; *&t;irqsave at all times.&n; */
+DECL|variable|modlist_lock
+id|spinlock_t
+id|modlist_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/**&n; * inter_module_register - register a new set of inter module data.&n; * @im_name: an arbitrary string to identify the data, must be unique&n; * @owner: module that is registering the data, always use THIS_MODULE&n; * @userdata: pointer to arbitrary userdata to be registered&n; *&n; * Description: Check that the im_name has not already been registered,&n; * complain if it has.  For new data, add it to the inter_module_entry&n; * list.&n; */
 DECL|function|inter_module_register
@@ -1004,6 +1011,10 @@ id|module
 op_star
 id|mod
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1146,10 +1157,6 @@ op_star
 id|mod
 )paren
 suffix:semicolon
-id|mod-&gt;next
-op_assign
-id|module_list
-suffix:semicolon
 id|mod-&gt;name
 op_assign
 (paren
@@ -1192,11 +1199,33 @@ c_func
 id|name
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|mod-&gt;next
+op_assign
+id|module_list
+suffix:semicolon
 id|module_list
 op_assign
 id|mod
 suffix:semicolon
 multiline_comment|/* link it in */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|error
 op_assign
 (paren
@@ -4620,6 +4649,10 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* Let the module clean up.  */
 r_if
 c_cond
@@ -4723,6 +4756,15 @@ id|MOD_JUST_FREED
 suffix:semicolon
 )brace
 multiline_comment|/* And from the main module list.  */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4765,6 +4807,15 @@ op_assign
 id|mod-&gt;next
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* And free the memory.  */
 id|module_unmap
 c_func

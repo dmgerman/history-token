@@ -363,7 +363,7 @@ op_assign
 l_int|0x7fff
 suffix:semicolon
 macro_line|#ifdef CONFIG_APUS
-multiline_comment|/* Clear any inter-CPU interupt requests. Circumvents bug in&n;           Blizzard IPL emulation HW (or so it appears). */
+multiline_comment|/* Clear any inter-CPU interrupt requests. Circumvents bug in&n;           Blizzard IPL emulation HW (or so it appears). */
 id|APUS_WRITE
 c_func
 (paren

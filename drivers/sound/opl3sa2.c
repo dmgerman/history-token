@@ -3659,11 +3659,17 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* If a user wants an I/O then assume they meant it */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|isapnp
+op_logical_and
+id|io
+op_eq
+op_minus
+l_int|1
 )paren
 (brace
 r_if

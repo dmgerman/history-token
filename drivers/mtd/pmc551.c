@@ -1427,7 +1427,7 @@ comma
 l_int|0x00bf
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Wait untill command has gone through&n;         * FIXME: register spinning issue&n;         */
+multiline_comment|/*&n;         * Wait until command has gone through&n;         * FIXME: register spinning issue&n;         */
 r_do
 (brace
 id|pci_read_config_word
@@ -2641,7 +2641,7 @@ comma
 id|PCI_Device-&gt;irq
 )paren
 suffix:semicolon
-multiline_comment|/*&n;                 * The PMC551 device acts VERY wierd if you don&squot;t init it&n;                 * first.  i.e. it will not correctly report devsel.  If for&n;                 * some reason the sdram is in a wrote-protected state the&n;                 * device will DEVSEL when it is written to causing problems&n;                 * with the oldproc.c driver in&n;                 * some kernels (2.2.*)&n;                 */
+multiline_comment|/*&n;                 * The PMC551 device acts VERY weird if you don&squot;t init it&n;                 * first.  i.e. it will not correctly report devsel.  If for&n;                 * some reason the sdram is in a wrote-protected state the&n;                 * device will DEVSEL when it is written to causing problems&n;                 * with the oldproc.c driver in&n;                 * some kernels (2.2.*)&n;                 */
 r_if
 c_cond
 (paren

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/drivers/ide/hd.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-multiline_comment|/*&n; * This is the low-level hd interrupt support. It traverses the&n; * request-list, using interrupts to jump between functions. As&n; * all the functions are called within interrupts, we may not&n; * sleep. Special care is recommended.&n; * &n; *  modified by Drew Eckhardt to check nr of hd&squot;s from the CMOS.&n; *&n; *  Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  in the early extended-partition checks and added DM partitions&n; *&n; *  IRQ-unmask, drive-id, multiple-mode, support for &quot;&gt;16 heads&quot;,&n; *  and general streamlining by Mark Lord.&n; *&n; *  Removed 99% of above. Use Mark&squot;s ide driver for those options.&n; *  This is now a lightweight ST-506 driver. (Paul Gortmaker)&n; *&n; *  Modified 1995 Russell King for ARM processor.&n; */
+multiline_comment|/*&n; * This is the low-level hd interrupt support. It traverses the&n; * request-list, using interrupts to jump between functions. As&n; * all the functions are called within interrupts, we may not&n; * sleep. Special care is recommended.&n; * &n; *  modified by Drew Eckhardt to check nr of hd&squot;s from the CMOS.&n; *&n; *  Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  in the early extended-partition checks and added DM partitions&n; *&n; *  IRQ-unmask, drive-id, multiple-mode, support for &quot;&gt;16 heads&quot;,&n; *  and general streamlining by Mark Lord.&n; *&n; *  Removed 99% of above. Use Mark&squot;s ide driver for those options.&n; *  This is now a lightweight ST-506 driver. (Paul Gortmaker)&n; *&n; *  Modified 1995 Russell King for ARM processor.&n; *&n; *  Bugfix: max_sectors must be &lt;= 255 or the wheels tend to come&n; *  off in a hurry once you queue things up - Paul G. 02/2001&n; */
 multiline_comment|/* Uncomment the following if you want verbose error reports. */
 multiline_comment|/* #define VERBOSE_ERRORS */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -238,6 +238,16 @@ DECL|variable|hd_hardsectsizes
 r_static
 r_int
 id|hd_hardsectsizes
+(braket
+id|MAX_HD
+op_lshift
+l_int|6
+)braket
+suffix:semicolon
+DECL|variable|hd_maxsect
+r_static
+r_int
+id|hd_maxsect
 (braket
 id|MAX_HD
 op_lshift
@@ -3478,6 +3488,13 @@ id|drive
 op_assign
 l_int|512
 suffix:semicolon
+id|hd_maxsect
+(braket
+id|drive
+)braket
+op_assign
+l_int|255
+suffix:semicolon
 )brace
 id|blksize_size
 (braket
@@ -3492,6 +3509,13 @@ id|MAJOR_NR
 )braket
 op_assign
 id|hd_hardsectsizes
+suffix:semicolon
+id|max_sectors
+(braket
+id|MAJOR_NR
+)braket
+op_assign
+id|hd_maxsect
 suffix:semicolon
 macro_line|#ifdef __i386__
 r_if

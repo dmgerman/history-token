@@ -291,9 +291,7 @@ l_int|1
 )paren
 (brace
 r_int
-id|item_len
-comma
-id|first_direct
+id|tail_size
 suffix:semicolon
 multiline_comment|/* end_key.k_offset is set so, that we will always have found&n;           last item of the file */
 r_if
@@ -344,15 +342,17 @@ id|reiserfs_panic
 id|sb
 comma
 l_string|&quot;vs-14055: direct2indirect: &quot;
-l_string|&quot;direct item expected, found %h&quot;
+l_string|&quot;direct item expected(%k), found %h&quot;
+comma
+op_amp
+id|end_key
 comma
 id|p_le_ih
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
+id|tail_size
+op_assign
 (paren
 id|le_ih_k_offset
 (paren
@@ -365,24 +365,14 @@ op_minus
 l_int|1
 )paren
 )paren
-op_eq
-l_int|1
-)paren
-id|first_direct
-op_assign
-l_int|1
-suffix:semicolon
-r_else
-id|first_direct
-op_assign
-l_int|0
-suffix:semicolon
-id|item_len
-op_assign
-id|le16_to_cpu
+op_plus
+id|ih_item_len
+c_func
 (paren
-id|p_le_ih-&gt;ih_item_len
+id|p_le_ih
 )paren
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* we only send the unbh pointer if the buffer is not up to date.&n;&t;** this avoids overwriting good data from writepage() with old data&n;&t;** from the disk or buffer cache&n;&t;*/
 r_if
@@ -432,9 +422,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|first_direct
-op_logical_and
-id|item_len
+id|tail_size
 op_eq
 id|n_retval
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: rtc.c,v 1.24 2001/01/11 15:07:09 davem Exp $&n; *&n; * Linux/SPARC Real Time Clock Driver&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * This is a little driver that lets a user-level program access&n; * the SPARC Mostek real time clock chip. It is no use unless you&n; * use the modified clock utility.&n; *&n; * Get the modified clock utility from:&n; *   ftp://vger.kernel.org/pub/linux/Sparc/userland/clock.c&n; */
+multiline_comment|/* $Id: rtc.c,v 1.25 2001/02/13 01:17:00 davem Exp $&n; *&n; * Linux/SPARC Real Time Clock Driver&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * This is a little driver that lets a user-level program access&n; * the SPARC Mostek real time clock chip. It is no use unless you&n; * use the modified clock utility.&n; *&n; * Get the modified clock utility from:&n; *   ftp://vger.kernel.org/pub/linux/Sparc/userland/clock.c&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

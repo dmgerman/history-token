@@ -1244,7 +1244,7 @@ c_func
 (paren
 (paren
 l_string|&quot;vfc%d: &quot;
-l_string|&quot;Reciever ended transmission with &quot;
+l_string|&quot;Receiver ended transmission with &quot;
 l_string|&quot; %d bytes remaining&bslash;n&quot;
 comma
 id|dev-&gt;instance

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * iobuf.c&n; *&n; * Keep track of the general-purpose IO-buffer structures used to track&n; * abstract kernel-space io buffers.&n; * &n; */
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 DECL|variable|kiobuf_cachep
 r_static
 id|kmem_cache_t

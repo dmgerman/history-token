@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/cpm_8260.h&gt;
 multiline_comment|/* The transmitter timeout&n; */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT&t;(2*HZ)
-multiline_comment|/* The number of Tx and Rx buffers.  These are allocated from the page&n; * pool.  The code may assume these are power of two, so it it best&n; * to keep them that size.&n; * We don&squot;t need to allocate pages for the transmitter.  We just use&n; * the skbuffer directly.&n; */
+multiline_comment|/* The number of Tx and Rx buffers.  These are allocated from the page&n; * pool.  The code may assume these are power of two, so it is best&n; * to keep them that size.&n; * We don&squot;t need to allocate pages for the transmitter.  We just use&n; * the skbuffer directly.&n; */
 DECL|macro|FCC_ENET_RX_PAGES
 mdefine_line|#define FCC_ENET_RX_PAGES&t;16
 DECL|macro|FCC_ENET_RX_FRSIZE

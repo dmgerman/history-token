@@ -2203,7 +2203,7 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_XMON */
 )brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
-multiline_comment|/*&n; * These procedures are used in implementing sleep on the powerbooks.&n; * sleep_save_intrs() saves the states of all interrupt enables&n; * and disables all interupts except for the nominated one.&n; * sleep_restore_intrs() restores the states of all interrupt enables.&n; */
+multiline_comment|/*&n; * These procedures are used in implementing sleep on the powerbooks.&n; * sleep_save_intrs() saves the states of all interrupt enables&n; * and disables all interrupts except for the nominated one.&n; * sleep_restore_intrs() restores the states of all interrupt enables.&n; */
 DECL|variable|sleep_save_mask
 r_int
 r_int

@@ -849,7 +849,7 @@ mdefine_line|#define NS_CFG_SMBUFSIZE NS_CFG_SMBUFSIZE_48
 macro_line|#elif (NS_SMBUFSIZE == 96)
 DECL|macro|NS_CFG_SMBUFSIZE
 mdefine_line|#define NS_CFG_SMBUFSIZE NS_CFG_SMBUFSIZE_96
-macro_line|#eliif (NS_SMBUFSIZE == 240)
+macro_line|#elif (NS_SMBUFSIZE == 240)
 DECL|macro|NS_CFG_SMBUFSIZE
 mdefine_line|#define NS_CFG_SMBUFSIZE NS_CFG_SMBUFSIZE_240
 macro_line|#elif (NS_SMBUFSIZE == 2048)

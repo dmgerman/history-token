@@ -3,25 +3,25 @@ macro_line|#ifndef _TUNER_H
 DECL|macro|_TUNER_H
 mdefine_line|#define _TUNER_H
 DECL|macro|TUNER_TEMIC_PAL
-mdefine_line|#define TUNER_TEMIC_PAL     0  /*  Miro Gpio Coding -1 */
+mdefine_line|#define TUNER_TEMIC_PAL     0        /* 4002 FH5_9483 */
 DECL|macro|TUNER_PHILIPS_PAL_I
 mdefine_line|#define TUNER_PHILIPS_PAL_I 1
 DECL|macro|TUNER_PHILIPS_NTSC
 mdefine_line|#define TUNER_PHILIPS_NTSC  2
 DECL|macro|TUNER_PHILIPS_SECAM
-mdefine_line|#define TUNER_PHILIPS_SECAM 3
+mdefine_line|#define TUNER_PHILIPS_SECAM 3&t;&t;/* you must actively select B/G, L, L` */
 DECL|macro|TUNER_ABSENT
 mdefine_line|#define TUNER_ABSENT        4
 DECL|macro|TUNER_PHILIPS_PAL
 mdefine_line|#define TUNER_PHILIPS_PAL   5
 DECL|macro|TUNER_TEMIC_NTSC
-mdefine_line|#define TUNER_TEMIC_NTSC    6
+mdefine_line|#define TUNER_TEMIC_NTSC    6        /* 4032 FY5_7004 */
 DECL|macro|TUNER_TEMIC_PAL_I
-mdefine_line|#define TUNER_TEMIC_PAL_I   7
+mdefine_line|#define TUNER_TEMIC_PAL_I   7        /* 4062 FY5_9957 */
 DECL|macro|TUNER_TEMIC_4036FY5_NTSC
-mdefine_line|#define TUNER_TEMIC_4036FY5_NTSC&t;8
+mdefine_line|#define TUNER_TEMIC_4036FY5_NTSC 8   /* 4036 FY5      */
 DECL|macro|TUNER_ALPS_TSBH1_NTSC
-mdefine_line|#define TUNER_ALPS_TSBH1_NTSC &t;9
+mdefine_line|#define TUNER_ALPS_TSBH1_NTSC &t; 9
 DECL|macro|TUNER_ALPS_TSBE1_PAL
 mdefine_line|#define TUNER_ALPS_TSBE1_PAL &t;10
 DECL|macro|TUNER_ALPS_TSBB5_PAL_I
@@ -31,9 +31,27 @@ mdefine_line|#define TUNER_ALPS_TSBE5_PAL &t;12
 DECL|macro|TUNER_ALPS_TSBC5_PAL
 mdefine_line|#define TUNER_ALPS_TSBC5_PAL &t;13
 DECL|macro|TUNER_TEMIC_4006FH5_PAL
-mdefine_line|#define TUNER_TEMIC_4006FH5_PAL&t;14
+mdefine_line|#define TUNER_TEMIC_4006FH5_PAL&t;14   /* 4006 FH5      */
 DECL|macro|TUNER_ALPS_TSHC6_NTSC
 mdefine_line|#define TUNER_ALPS_TSHC6_NTSC &t;15
+DECL|macro|TUNER_TEMIC_PAL_DK
+mdefine_line|#define TUNER_TEMIC_PAL_DK&t;16   /* 4016 FY5      */
+DECL|macro|TUNER_PHILIPS_NTSC_M
+mdefine_line|#define TUNER_PHILIPS_NTSC_M&t;17
+DECL|macro|TUNER_TEMIC_4066FY5_PAL_I
+mdefine_line|#define TUNER_TEMIC_4066FY5_PAL_I       18
+DECL|macro|TUNER_TEMIC_4006FN5_MULTI_PAL
+mdefine_line|#define TUNER_TEMIC_4006FN5_MULTI_PAL   19  /* B/G, I and D/K autodetected */
+DECL|macro|TUNER_TEMIC_4009FR5_PAL
+mdefine_line|#define TUNER_TEMIC_4009FR5_PAL         20  /* incl. FM radio */
+DECL|macro|TUNER_TEMIC_4039FR5_NTSC
+mdefine_line|#define TUNER_TEMIC_4039FR5_NTSC        21  /* incl. FM radio */
+DECL|macro|TUNER_TEMIC_4046FM5
+mdefine_line|#define TUNER_TEMIC_4046FM5             22  /* you must actively select B/G, D/K, I, L, L` !  */
+DECL|macro|TUNER_PHILIPS_PAL_DK
+mdefine_line|#define TUNER_PHILIPS_PAL_DK&t;&t;23
+DECL|macro|TUNER_PHILIPS_FQ1216ME
+mdefine_line|#define TUNER_PHILIPS_FQ1216ME&t;&t;24  /* you must actively select B/G/D/K, I, L, L` */
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL

@@ -445,7 +445,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The first mb is necessary to safely close the critical section opened by the&n; * TryLockPage(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page).&n; */
 DECL|macro|UnlockPage
-mdefine_line|#define UnlockPage(page)&t;do { &bslash;&n;&t;&t;&t;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (!test_and_clear_bit(PG_locked, &amp;(page)-&gt;flags)) BUG(); &bslash;&n;&t;&t;&t;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (waitqueue_active(&amp;page-&gt;wait)) &bslash;&n;&t;&t;&t;&t;&t;&t;wake_up(&amp;page-&gt;wait); &bslash;&n;&t;&t;&t;&t;} while (0)
+mdefine_line|#define UnlockPage(page)&t;do { &bslash;&n;&t;&t;&t;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (!test_and_clear_bit(PG_locked, &amp;(page)-&gt;flags)) BUG(); &bslash;&n;&t;&t;&t;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (waitqueue_active(&amp;(page)-&gt;wait)) &bslash;&n;&t;&t;&t;&t;&t;&t;wake_up(&amp;(page)-&gt;wait); &bslash;&n;&t;&t;&t;&t;} while (0)
 DECL|macro|PageError
 mdefine_line|#define PageError(page)&t;&t;test_bit(PG_error, &amp;(page)-&gt;flags)
 DECL|macro|SetPageError

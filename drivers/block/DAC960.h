@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;  Linux Driver for Mylex DAC960/AcceleRAID/eXtremeRAID PCI RAID Controllers&n;&n;  Copyright 1998-2000 by Leonard N. Zubkoff &lt;lnz@dandelion.com&gt;&n;&n;  This program is free software; you may redistribute and/or modify it under&n;  the terms of the GNU General Public License Version 2 as published by the&n;  Free Software Foundation.&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY&n;  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n;  for complete details.&n;&n;  The author respectfully requests that any modifications to this software be&n;  sent directly to him for evaluation and testing.&n;&n;*/
+multiline_comment|/*&n;&n;  Linux Driver for Mylex DAC960/AcceleRAID/eXtremeRAID PCI RAID Controllers&n;&n;  Copyright 1998-2001 by Leonard N. Zubkoff &lt;lnz@dandelion.com&gt;&n;&n;  This program is free software; you may redistribute and/or modify it under&n;  the terms of the GNU General Public License Version 2 as published by the&n;  Free Software Foundation.&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY&n;  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n;  for complete details.&n;&n;  The author respectfully requests that any modifications to this software be&n;  sent directly to him for evaluation and testing.&n;&n;*/
 multiline_comment|/*&n;  Define the maximum number of DAC960 Controllers supported by this driver.&n;*/
 DECL|macro|DAC960_MaxControllers
 mdefine_line|#define DAC960_MaxControllers&t;&t;&t;8
@@ -721,6 +721,11 @@ id|DAC960_V1_AddCapacityAsync
 op_assign
 l_int|0x2A
 comma
+DECL|enumerator|DAC960_V1_BackgroundInitializationControl
+id|DAC960_V1_BackgroundInitializationControl
+op_assign
+l_int|0x2B
+comma
 multiline_comment|/* Configuration Related Commands */
 DECL|enumerator|DAC960_V1_ReadConfig2
 id|DAC960_V1_ReadConfig2
@@ -1439,20 +1444,25 @@ r_struct
 (brace
 r_enum
 (brace
-DECL|enumerator|DAC960_V1_DRAM
-id|DAC960_V1_DRAM
+DECL|enumerator|DAC960_V1_RamType_DRAM
+id|DAC960_V1_RamType_DRAM
 op_assign
 l_int|0x0
 comma
-DECL|enumerator|DAC960_V1_EDO
-id|DAC960_V1_EDO
+DECL|enumerator|DAC960_V1_RamType_EDO
+id|DAC960_V1_RamType_EDO
 op_assign
 l_int|0x1
 comma
-DECL|enumerator|DAC960_V1_SDRAM
-id|DAC960_V1_SDRAM
+DECL|enumerator|DAC960_V1_RamType_SDRAM
+id|DAC960_V1_RamType_SDRAM
 op_assign
 l_int|0x2
+comma
+DECL|enumerator|DAC960_V1_RamType_Last
+id|DAC960_V1_RamType_Last
+op_assign
+l_int|0x7
 DECL|member|RamType
 )brace
 id|__attribute__
@@ -1468,20 +1478,25 @@ suffix:semicolon
 multiline_comment|/* Byte 40 Bits 0-2 */
 r_enum
 (brace
-DECL|enumerator|DAC960_V1_None
-id|DAC960_V1_None
+DECL|enumerator|DAC960_V1_ErrorCorrection_None
+id|DAC960_V1_ErrorCorrection_None
 op_assign
 l_int|0x0
 comma
-DECL|enumerator|DAC960_V1_Parity
-id|DAC960_V1_Parity
+DECL|enumerator|DAC960_V1_ErrorCorrection_Parity
+id|DAC960_V1_ErrorCorrection_Parity
 op_assign
 l_int|0x1
 comma
-DECL|enumerator|DAC960_V1_ECC
-id|DAC960_V1_ECC
+DECL|enumerator|DAC960_V1_ErrorCorrection_ECC
+id|DAC960_V1_ErrorCorrection_ECC
 op_assign
 l_int|0x2
+comma
+DECL|enumerator|DAC960_V1_ErrorCorrection_Last
+id|DAC960_V1_ErrorCorrection_Last
+op_assign
+l_int|0x7
 DECL|member|ErrorCorrection
 )brace
 id|__attribute__
@@ -1864,10 +1879,24 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Byte 116 Bit 1 */
+DECL|member|ReadAhead
+id|boolean
+id|ReadAhead
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Byte 116 Bit 2 */
+DECL|member|BackgroundInitialization
+id|boolean
+id|BackgroundInitialization
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Byte 116 Bit 3 */
 r_int
 r_int
 suffix:colon
-l_int|30
+l_int|28
 suffix:semicolon
 multiline_comment|/* Bytes 116-119 */
 DECL|member|FirmwareFeatures
@@ -3777,6 +3806,11 @@ DECL|enumerator|DAC960_V2_MemoryType_SDRAM
 id|DAC960_V2_MemoryType_SDRAM
 op_assign
 l_int|0x04
+comma
+DECL|enumerator|DAC960_V2_MemoryType_Last
+id|DAC960_V2_MemoryType_Last
+op_assign
+l_int|0x1F
 DECL|member|MemoryType
 )brace
 id|__attribute__
@@ -5143,6 +5177,11 @@ DECL|enumerator|DAC960_V2_IntelligentReadAheadEnabled
 id|DAC960_V2_IntelligentReadAheadEnabled
 op_assign
 l_int|0x3
+comma
+DECL|enumerator|DAC960_V2_ReadCache_Last
+id|DAC960_V2_ReadCache_Last
+op_assign
+l_int|0x7
 DECL|member|ReadCache
 )brace
 id|__attribute__
@@ -5177,6 +5216,11 @@ DECL|enumerator|DAC960_V2_IntelligentWriteCacheEnabled
 id|DAC960_V2_IntelligentWriteCacheEnabled
 op_assign
 l_int|0x3
+comma
+DECL|enumerator|DAC960_V2_WriteCache_Last
+id|DAC960_V2_WriteCache_Last
+op_assign
+l_int|0x7
 DECL|member|WriteCache
 )brace
 id|__attribute__
@@ -8825,6 +8869,10 @@ DECL|member|NeedConsistencyCheckProgress
 id|boolean
 id|NeedConsistencyCheckProgress
 suffix:semicolon
+DECL|member|StartDeviceStateScan
+id|boolean
+id|StartDeviceStateScan
+suffix:semicolon
 DECL|member|RebuildProgressFirst
 id|boolean
 id|RebuildProgressFirst
@@ -9008,6 +9056,14 @@ DECL|member|NeedDeviceSerialNumberInformation
 id|boolean
 id|NeedDeviceSerialNumberInformation
 suffix:semicolon
+DECL|member|StartLogicalDeviceInformationScan
+id|boolean
+id|StartLogicalDeviceInformationScan
+suffix:semicolon
+DECL|member|StartPhysicalDeviceInformationScan
+id|boolean
+id|StartPhysicalDeviceInformationScan
+suffix:semicolon
 DECL|member|FirstCommandMailbox
 id|DAC960_V2_CommandMailbox_T
 op_star
@@ -9103,6 +9159,13 @@ suffix:semicolon
 DECL|member|Event
 id|DAC960_V2_Event_T
 id|Event
+suffix:semicolon
+DECL|member|LogicalDriveFoundDuringScan
+id|boolean
+id|LogicalDriveFoundDuringScan
+(braket
+id|DAC960_MaxLogicalDrives
+)braket
 suffix:semicolon
 DECL|member|V2
 )brace
@@ -9323,12 +9386,12 @@ id|ProcessorFlags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  Virtual_to_Bus maps from Kernel Virtual Addresses to PCI Bus Addresses.&n;*/
-DECL|function|Virtual_to_Bus
+multiline_comment|/*&n;  Virtual_to_Bus32 maps from Kernel Virtual Addresses to 32 Bit PCI Bus&n;  Addresses.&n;*/
+DECL|function|Virtual_to_Bus32
 r_static
 r_inline
 id|DAC960_BusAddress32_T
-id|Virtual_to_Bus
+id|Virtual_to_Bus32
 c_func
 (paren
 r_void
@@ -9347,13 +9410,13 @@ id|VirtualAddress
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  Bus_to_Virtual maps from PCI Bus Addresses to Kernel Virtual Addresses.&n;*/
-DECL|function|Bus_to_Virtual
+multiline_comment|/*&n;  Bus32_to_Virtual maps from 32 Bit PCI Bus Addresses to Kernel Virtual&n;  Addresses.&n;*/
+DECL|function|Bus32_to_Virtual
 r_static
 r_inline
 r_void
 op_star
-id|Bus_to_Virtual
+id|Bus32_to_Virtual
 c_func
 (paren
 id|DAC960_BusAddress32_T
@@ -9369,6 +9432,30 @@ id|bus_to_virt
 c_func
 (paren
 id|BusAddress
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;  Virtual_to_Bus64 maps from Kernel Virtual Addresses to 64 Bit PCI Bus&n;  Addresses.&n;*/
+DECL|function|Virtual_to_Bus64
+r_static
+r_inline
+id|DAC960_BusAddress64_T
+id|Virtual_to_Bus64
+c_func
+(paren
+r_void
+op_star
+id|VirtualAddress
+)paren
+(brace
+r_return
+(paren
+id|DAC960_BusAddress64_T
+)paren
+id|virt_to_bus
+c_func
+(paren
+id|VirtualAddress
 )paren
 suffix:semicolon
 )brace
@@ -10239,10 +10326,11 @@ op_star
 id|CommandMailbox
 )paren
 (brace
-id|writel
+macro_line|#ifdef __ia64__
+id|writeq
 c_func
 (paren
-id|Virtual_to_Bus
+id|Virtual_to_Bus64
 c_func
 (paren
 id|CommandMailbox
@@ -10253,6 +10341,22 @@ op_plus
 id|DAC960_BA_CommandMailboxBusAddressOffset
 )paren
 suffix:semicolon
+macro_line|#else
+id|writel
+c_func
+(paren
+id|Virtual_to_Bus32
+c_func
+(paren
+id|CommandMailbox
+)paren
+comma
+id|ControllerBaseAddress
+op_plus
+id|DAC960_BA_CommandMailboxBusAddressOffset
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 r_inline
@@ -11248,10 +11352,11 @@ op_star
 id|CommandMailbox
 )paren
 (brace
-id|writel
+macro_line|#ifdef __ia64__
+id|writeq
 c_func
 (paren
-id|Virtual_to_Bus
+id|Virtual_to_Bus64
 c_func
 (paren
 id|CommandMailbox
@@ -11262,6 +11367,22 @@ op_plus
 id|DAC960_LP_CommandMailboxBusAddressOffset
 )paren
 suffix:semicolon
+macro_line|#else
+id|writel
+c_func
+(paren
+id|Virtual_to_Bus32
+c_func
+(paren
+id|CommandMailbox
+)paren
+comma
+id|ControllerBaseAddress
+op_plus
+id|DAC960_LP_CommandMailboxBusAddressOffset
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 r_inline

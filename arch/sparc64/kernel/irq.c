@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.94 2000/09/21 06:27:10 anton Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: irq.c,v 1.95 2001/02/13 01:16:44 davem Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

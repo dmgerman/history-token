@@ -6999,7 +6999,7 @@ id|board_info
 op_star
 id|bd
 suffix:semicolon
-multiline_comment|/* -------------------------------------------------------------------&n;&t;&t;This routine is called upon every timer interrupt.  Even though&n;&t;&t;the Digi series cards are capable of generating interupts this &n;&t;&t;method of non-looping polling is more efficient.  This routine&n;&t;&t;checks for card generated events (Such as receive data, are transmit&n;&t;&t;buffer empty) and acts on those events.&n;&t;----------------------------------------------------------------------- */
+multiline_comment|/* -------------------------------------------------------------------&n;&t;&t;This routine is called upon every timer interrupt.  Even though&n;&t;&t;the Digi series cards are capable of generating interrupts this &n;&t;&t;method of non-looping polling is more efficient.  This routine&n;&t;&t;checks for card generated events (Such as receive data, are transmit&n;&t;&t;buffer empty) and acts on those events.&n;&t;----------------------------------------------------------------------- */
 id|save_flags
 c_func
 (paren

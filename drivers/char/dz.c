@@ -501,7 +501,7 @@ id|status
 )paren
 suffix:semicolon
 multiline_comment|/* grab the char */
-macro_line|#ifdef 0
+macro_line|#if 0
 r_if
 c_cond
 (paren

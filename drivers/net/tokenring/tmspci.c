@@ -591,8 +591,13 @@ id|tmsdev_init
 c_func
 (paren
 id|dev
+comma
+l_int|0
+comma
+id|pdev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX: should be the max PCI32 DMA max */
 r_if
 c_cond
 (paren
@@ -615,11 +620,6 @@ id|tp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|tp-&gt;dmalimit
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* XXX: should be the max PCI32 DMA max */
 id|tp-&gt;setnselout
 op_assign
 id|tms_pci_setnselout_pins
@@ -694,10 +694,10 @@ l_int|0
 suffix:semicolon
 id|err_out_tmsdev
 suffix:colon
-id|kfree
+id|tmsdev_term
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|err_out_irq
@@ -931,10 +931,10 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|tmsdev_term
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|kfree

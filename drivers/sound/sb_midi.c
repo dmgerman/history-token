@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * sound/sb_dsp.c&n; *&n; * The low level driver for the Sound Blaster DS chips.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; */
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;sb.h&quot;
 DECL|macro|SB_TEST_IRQ
@@ -67,15 +68,13 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -84,9 +83,12 @@ c_cond
 id|devc-&gt;opened
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -99,9 +101,12 @@ id|devc-&gt;opened
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -201,15 +206,13 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sb_dsp_reset
@@ -230,9 +233,12 @@ id|devc-&gt;opened
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -413,15 +419,13 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|data
@@ -447,9 +451,12 @@ comma
 id|data
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

@@ -83,8 +83,8 @@ DECL|macro|BTTV_PXELVWPLTVPRO
 mdefine_line|#define BTTV_PXELVWPLTVPRO 0x25
 DECL|macro|BTTV_MAGICTVIEW063
 mdefine_line|#define BTTV_MAGICTVIEW063 0x26
-DECL|macro|BTTV_PINNACLERAVE
-mdefine_line|#define BTTV_PINNACLERAVE  0x27
+DECL|macro|BTTV_PINNACLE
+mdefine_line|#define BTTV_PINNACLE      0x27
 DECL|macro|BTTV_STB2
 mdefine_line|#define BTTV_STB2          0x28
 DECL|macro|BTTV_AVPHONE98
@@ -109,8 +109,16 @@ DECL|macro|BTTV_PXELVWPLTVPAK
 mdefine_line|#define BTTV_PXELVWPLTVPAK 0x32
 DECL|macro|BTTV_EAGLE
 mdefine_line|#define BTTV_EAGLE         0x33
-DECL|macro|BTTV_PINNACLESTUDIO
-mdefine_line|#define BTTV_PINNACLESTUDIO 0x34
+DECL|macro|BTTV_PINNACLEPRO
+mdefine_line|#define BTTV_PINNACLEPRO   0x34
+DECL|macro|BTTV_TVIEW_RDS_FM
+mdefine_line|#define BTTV_TVIEW_RDS_FM  0x35
+DECL|macro|BTTV_LIVETEC_9415
+mdefine_line|#define BTTV_LIVETEC_9415  0x36
+DECL|macro|BTTV_BESTBUY_EASYTV
+mdefine_line|#define BTTV_BESTBUY_EASYTV 0x37
+DECL|macro|BTTV_FLYVIDEO_98FM
+mdefine_line|#define BTTV_FLYVIDEO_98FM 0x38
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -456,21 +464,7 @@ suffix:semicolon
 multiline_comment|/* i2c */
 DECL|macro|I2C_CLIENTS_MAX
 mdefine_line|#define I2C_CLIENTS_MAX 8
-DECL|variable|bttv_i2c_algo_template
-r_struct
-id|i2c_algo_bit_data
-id|bttv_i2c_algo_template
-suffix:semicolon
-DECL|variable|bttv_i2c_adap_template
-r_struct
-id|i2c_adapter
-id|bttv_i2c_adap_template
-suffix:semicolon
-DECL|variable|bttv_i2c_client_template
-r_struct
-id|i2c_client
-id|bttv_i2c_client_template
-suffix:semicolon
+r_extern
 r_void
 id|bttv_bit_setscl
 c_func
@@ -483,6 +477,7 @@ r_int
 id|state
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|bttv_bit_setsda
 c_func
@@ -495,6 +490,7 @@ r_int
 id|state
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|bttv_call_i2c_clients
 c_func
@@ -513,6 +509,7 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|bttv_I2CRead
 c_func
@@ -531,6 +528,7 @@ op_star
 id|probe_for
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|bttv_I2CWrite
 c_func
@@ -556,6 +554,7 @@ r_int
 id|both
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|bttv_readee
 c_func

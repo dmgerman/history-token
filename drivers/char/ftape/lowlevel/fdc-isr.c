@@ -843,7 +843,7 @@ c_func
 (paren
 id|ft_t_flow
 comma
-l_string|&quot;%d Sector(s) transfered&quot;
+l_string|&quot;%d Sector(s) transferred&quot;
 comma
 id|buff-&gt;sector_count
 )paren

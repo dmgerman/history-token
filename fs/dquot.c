@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__DQUOT_VERSION__
 mdefine_line|#define __DQUOT_VERSION__&t;&quot;dquot_6.4.0&quot;

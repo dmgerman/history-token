@@ -228,6 +228,11 @@ comma
 id|second
 suffix:semicolon
 multiline_comment|/* sound carrier */
+DECL|member|scart
+r_int
+id|scart
+suffix:semicolon
+multiline_comment|/* input is scart */
 DECL|member|muted
 r_int
 id|muted
@@ -3811,6 +3816,14 @@ id|msp-&gt;norm
 r_continue
 suffix:semicolon
 multiline_comment|/* nothing to do */
+r_if
+c_cond
+(paren
+id|msp-&gt;scart
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* nothing to do */
 id|msp-&gt;active
 op_assign
 l_int|1
@@ -3861,6 +3874,22 @@ id|done
 suffix:semicolon
 id|restart
 suffix:colon
+r_if
+c_cond
+(paren
+id|msp-&gt;scart
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|VIDEO_MODE_RADIO
+op_eq
+id|msp-&gt;norm
+)paren
+r_continue
+suffix:semicolon
 id|msp-&gt;restart
 op_assign
 l_int|0
@@ -4747,12 +4776,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|up_and_exit
+id|up
 c_func
 (paren
 id|msp-&gt;notify
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -5286,6 +5313,13 @@ id|current
 r_goto
 id|done
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|msp-&gt;scart
+)paren
+r_continue
+suffix:semicolon
 id|msp-&gt;active
 op_assign
 l_int|1
@@ -5336,6 +5370,13 @@ id|done
 suffix:semicolon
 id|restart
 suffix:colon
+r_if
+c_cond
+(paren
+id|msp-&gt;scart
+)paren
+r_continue
+suffix:semicolon
 id|msp-&gt;restart
 op_assign
 l_int|0
@@ -5358,46 +5399,6 @@ c_func
 id|client
 )paren
 suffix:semicolon
-multiline_comment|/* set various prescales */
-id|msp3400c_write
-c_func
-(paren
-id|client
-comma
-id|I2C_MSP3400C_DFP
-comma
-l_int|0x0d
-comma
-l_int|0x1900
-)paren
-suffix:semicolon
-multiline_comment|/* scart */
-id|msp3400c_write
-c_func
-(paren
-id|client
-comma
-id|I2C_MSP3400C_DFP
-comma
-l_int|0x0e
-comma
-l_int|0x2403
-)paren
-suffix:semicolon
-multiline_comment|/* FM */
-id|msp3400c_write
-c_func
-(paren
-id|client
-comma
-id|I2C_MSP3400C_DFP
-comma
-l_int|0x10
-comma
-l_int|0x5a00
-)paren
-suffix:semicolon
-multiline_comment|/* nicam */
 multiline_comment|/* start autodetect */
 r_switch
 c_cond
@@ -5786,6 +5787,46 @@ id|val
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* set various prescales */
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DFP
+comma
+l_int|0x0d
+comma
+l_int|0x1900
+)paren
+suffix:semicolon
+multiline_comment|/* scart */
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DFP
+comma
+l_int|0x0e
+comma
+l_int|0x2403
+)paren
+suffix:semicolon
+multiline_comment|/* FM */
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DFP
+comma
+l_int|0x10
+comma
+l_int|0x5a00
+)paren
+suffix:semicolon
+multiline_comment|/* nicam */
 multiline_comment|/* set stereo */
 r_switch
 c_cond
@@ -6944,7 +6985,21 @@ r_case
 id|AUDC_SET_INPUT
 suffix:colon
 macro_line|#if 1
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;msp34xx: AUDC_SET_INPUT(%d)&bslash;n&quot;
+comma
+op_star
+id|sarg
+)paren
+suffix:semicolon
 multiline_comment|/* hauppauge 44xxx scart switching */
+id|msp-&gt;scart
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6970,6 +7025,10 @@ suffix:semicolon
 r_case
 id|AUDIO_EXTERN
 suffix:colon
+id|msp-&gt;scart
+op_assign
+l_int|1
+suffix:semicolon
 id|msp3400c_set_scart
 c_func
 (paren
@@ -6978,6 +7037,18 @@ comma
 id|SCART_IN1
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DFP
+comma
+l_int|0x0008
+comma
+l_int|0x0220
 )paren
 suffix:semicolon
 r_break
@@ -7007,6 +7078,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|msp-&gt;active
+)paren
+id|msp-&gt;restart
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#endif
 r_break
 suffix:semicolon
@@ -7052,15 +7132,6 @@ l_int|0
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|msp-&gt;active
-)paren
-id|msp-&gt;restart
-op_assign
-l_int|1
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -7112,6 +7183,15 @@ id|msp-&gt;right
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|msp-&gt;active
+)paren
+id|msp-&gt;restart
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* --- v4l ioctls --- */

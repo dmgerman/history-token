@@ -71,7 +71,7 @@ r_char
 op_star
 id|buffer
 op_assign
-id|page_address
+id|kmap
 c_func
 (paren
 id|page
@@ -257,6 +257,12 @@ l_int|0
 suffix:semicolon
 id|io_error
 suffix:colon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|UnlockPage
 c_func
 (paren
@@ -294,18 +300,6 @@ op_star
 id|dentry
 op_assign
 id|file-&gt;f_dentry
-suffix:semicolon
-id|DEBUG1
-c_func
-(paren
-l_string|&quot;readpage %p&bslash;n&quot;
-comma
-id|page_address
-c_func
-(paren
-id|page
-)paren
-)paren
 suffix:semicolon
 id|get_page
 c_func
@@ -359,11 +353,11 @@ r_int
 id|count
 )paren
 (brace
-id|u8
+r_char
 op_star
 id|buffer
 op_assign
-id|page_address
+id|kmap
 c_func
 (paren
 id|page
@@ -515,7 +509,7 @@ id|inode-&gt;i_size
 op_assign
 id|offset
 suffix:semicolon
-id|inode-&gt;u.smbfs_i.cache_valid
+id|inode-&gt;u.smbfs_i.flags
 op_or_assign
 id|SMB_F_LOCALWRITE
 suffix:semicolon
@@ -524,6 +518,12 @@ r_while
 c_loop
 (paren
 id|count
+)paren
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 r_return

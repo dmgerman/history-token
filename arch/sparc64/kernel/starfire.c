@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: starfire.c,v 1.8 2000/10/27 18:36:47 anton Exp $&n; * starfire.c: Starfire/E10000 support.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2000 Anton Blanchard (anton@linuxcare.com)&n; */
+multiline_comment|/* $Id: starfire.c,v 1.9 2001/02/13 01:16:44 davem Exp $&n; * starfire.c: Starfire/E10000 support.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2000 Anton Blanchard (anton@linuxcare.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/page.h&gt;

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/arch/i386/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_const
@@ -114,6 +115,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_extern
+id|spinlock_t
+id|modlist_lock
+suffix:semicolon
 r_int
 r_int
 DECL|function|search_exception_table
@@ -128,6 +133,12 @@ id|addr
 r_int
 r_int
 id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 macro_line|#ifndef CONFIG_MODULES
 multiline_comment|/* There is only the kernel to search.  */
@@ -145,11 +156,6 @@ comma
 id|addr
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
 r_return
 id|ret
 suffix:semicolon
@@ -159,6 +165,15 @@ r_struct
 id|module
 op_star
 id|mp
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -204,13 +219,21 @@ c_cond
 (paren
 id|ret
 )paren
+r_break
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-)brace
 macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof

@@ -49,6 +49,25 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+r_int
+id|dmalimit
+comma
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_void
+id|tmsdev_term
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_void
@@ -331,68 +350,57 @@ suffix:semicolon
 multiline_comment|/* Initialize with burst mode;&n;&t;&t;&t;&t;&t; * LLC disabled. (MAC only)&n;&t;&t;&t;&t;&t; */
 multiline_comment|/* Interrupt vectors the adapter places on attached system bus. */
 DECL|member|CMD_Status_IV
-r_int
-r_char
+id|u_int8_t
 id|CMD_Status_IV
 suffix:semicolon
 multiline_comment|/* Interrupt vector: command status. */
 DECL|member|TX_IV
-r_int
-r_char
+id|u_int8_t
 id|TX_IV
 suffix:semicolon
 multiline_comment|/* Interrupt vector: transmit. */
 DECL|member|RX_IV
-r_int
-r_char
+id|u_int8_t
 id|RX_IV
 suffix:semicolon
 multiline_comment|/* Interrupt vector: receive. */
 DECL|member|Ring_Status_IV
-r_int
-r_char
+id|u_int8_t
 id|Ring_Status_IV
 suffix:semicolon
 multiline_comment|/* Interrupt vector: ring status. */
 DECL|member|SCB_Clear_IV
-r_int
-r_char
+id|u_int8_t
 id|SCB_Clear_IV
 suffix:semicolon
 multiline_comment|/* Interrupt vector: SCB clear. */
 DECL|member|Adapter_CHK_IV
-r_int
-r_char
+id|u_int8_t
 id|Adapter_CHK_IV
 suffix:semicolon
 multiline_comment|/* Interrupt vector: adapter check. */
 DECL|member|RX_Burst_Size
-r_int
-r_int
+id|u_int16_t
 id|RX_Burst_Size
 suffix:semicolon
 multiline_comment|/* Max. number of transfer cycles. */
 DECL|member|TX_Burst_Size
-r_int
-r_int
+id|u_int16_t
 id|TX_Burst_Size
 suffix:semicolon
 multiline_comment|/* During DMA burst; even value! */
 DECL|member|DMA_Abort_Thrhld
-r_int
-r_int
+id|u_int16_t
 id|DMA_Abort_Thrhld
 suffix:semicolon
 multiline_comment|/* Number of DMA retries. */
 DECL|member|SCB_Addr
-r_int
-r_int
+id|u_int32_t
 id|SCB_Addr
 suffix:semicolon
 multiline_comment|/* SCB address: even, word aligned, high-low */
 DECL|member|SSB_Addr
-r_int
-r_int
+id|u_int32_t
 id|SSB_Addr
 suffix:semicolon
 multiline_comment|/* SSB address: even, word aligned, high-low */
@@ -468,74 +476,62 @@ r_typedef
 r_struct
 (brace
 DECL|member|OPENOptions
-r_int
-r_int
+id|u_int16_t
 id|OPENOptions
 suffix:semicolon
 DECL|member|NodeAddr
-r_int
-r_char
+id|u_int8_t
 id|NodeAddr
 (braket
 l_int|6
 )braket
 suffix:semicolon
-multiline_comment|/* Adapter node address; use ROM &n;&t;&t;&t;&t;&t; * address&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Adapter node address; use ROM &n;&t;&t;&t;&t; * address&n;&t;&t;&t;&t; */
 DECL|member|GroupAddr
-r_int
-r_int
+id|u_int32_t
 id|GroupAddr
 suffix:semicolon
-multiline_comment|/* Multicast: high order&n;&t;&t;&t;&t;&t; * bytes = 0xC000&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Multicast: high order&n;&t;&t;&t;&t; * bytes = 0xC000&n;&t;&t;&t;&t; */
 DECL|member|FunctAddr
-r_int
-r_int
+id|u_int32_t
 id|FunctAddr
 suffix:semicolon
 multiline_comment|/* High order bytes = 0xC000 */
 DECL|member|RxListSize
-r_int
-r_int
+id|u_int16_t
 id|RxListSize
 suffix:semicolon
-multiline_comment|/* RPL size: 0 (=26), 14, 20 or&n;&t;&t;&t;&t;&t; * 26 bytes read by the adapter.&n;&t;&t;&t;&t;&t; * (Depending on the number of &n;&t;&t;&t;&t;&t; * fragments/list)&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* RPL size: 0 (=26), 14, 20 or&n;&t;&t;&t;&t; * 26 bytes read by the adapter.&n;&t;&t;&t;&t; * (Depending on the number of &n;&t;&t;&t;&t; * fragments/list)&n;&t;&t;&t;&t; */
 DECL|member|TxListSize
-r_int
-r_int
+id|u_int16_t
 id|TxListSize
 suffix:semicolon
 multiline_comment|/* TPL size */
 DECL|member|BufSize
-r_int
-r_int
+id|u_int16_t
 id|BufSize
 suffix:semicolon
-multiline_comment|/* Is automatically rounded up to the&n;&t;&t;&t;&t;&t; * nearest nK boundary.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Is automatically rounded up to the&n;&t;&t;&t;&t; * nearest nK boundary.&n;&t;&t;&t;&t; */
 DECL|member|FullDuplex
-r_int
-r_int
+id|u_int16_t
 id|FullDuplex
 suffix:semicolon
 DECL|member|Reserved
-r_int
-r_int
+id|u_int16_t
 id|Reserved
 suffix:semicolon
 DECL|member|TXBufMin
-r_int
-r_char
+id|u_int8_t
 id|TXBufMin
 suffix:semicolon
-multiline_comment|/* Number of adapter buffers reserved&n;&t;&t;&t;&t;&t; * for transmission a minimum of 2&n;&t;&t;&t;&t;&t; * buffers must be allocated.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Number of adapter buffers reserved&n;&t;&t;&t;&t; * for transmission a minimum of 2&n;&t;&t;&t;&t; * buffers must be allocated.&n;&t;&t;&t;&t; */
 DECL|member|TXBufMax
-r_int
-r_char
+id|u_int8_t
 id|TXBufMax
 suffix:semicolon
-multiline_comment|/* Maximum number of adapter buffers&n;&t;&t;&t;&t;&t; * for transmit; a minimum of 2 buffers&n;&t;&t;&t;&t;&t; * must be available for receive.&n;&t;&t;&t;&t;&t; * Default: 6&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Maximum number of adapter buffers&n;&t;&t;&t;&t; * for transmit; a minimum of 2 buffers&n;&t;&t;&t;&t; * must be available for receive.&n;&t;&t;&t;&t; * Default: 6&n;&t;&t;&t;&t; */
 DECL|member|ProdIDAddr
-r_int
-r_int
+id|u_int16_t
 id|ProdIDAddr
 (braket
 l_int|2
@@ -557,14 +553,12 @@ r_typedef
 r_struct
 (brace
 DECL|member|CMD
-r_int
-r_int
+id|u_int16_t
 id|CMD
 suffix:semicolon
 multiline_comment|/* Command code */
 DECL|member|Parm
-r_int
-r_int
+id|u_int16_t
 id|Parm
 (braket
 l_int|2
@@ -583,14 +577,12 @@ r_typedef
 r_struct
 (brace
 DECL|member|STS
-r_int
-r_int
+id|u_int16_t
 id|STS
 suffix:semicolon
 multiline_comment|/* Status code */
 DECL|member|Parm
-r_int
-r_int
+id|u_int16_t
 id|Parm
 (braket
 l_int|3
@@ -664,83 +656,69 @@ r_typedef
 r_struct
 (brace
 DECL|member|Line_Error
-r_int
-r_char
+id|u_int8_t
 id|Line_Error
 suffix:semicolon
 multiline_comment|/* Line error: code violation in&n;&t;&t;&t;&t;&t; * frame or in a token, or FCS error.&n;&t;&t;&t;&t;&t; */
 DECL|member|Internal_Error
-r_int
-r_char
+id|u_int8_t
 id|Internal_Error
 suffix:semicolon
 multiline_comment|/* IBM specific. (Reserved_1) */
 DECL|member|Burst_Error
-r_int
-r_char
+id|u_int8_t
 id|Burst_Error
 suffix:semicolon
 DECL|member|ARI_FCI_Error
-r_int
-r_char
+id|u_int8_t
 id|ARI_FCI_Error
 suffix:semicolon
 multiline_comment|/* ARI/FCI bit zero in AMP or&n;&t;&t;&t;&t;&t; * SMP MAC frame.&n;&t;&t;&t;&t;&t; */
 DECL|member|AbortDelimeters
-r_int
-r_char
+id|u_int8_t
 id|AbortDelimeters
 suffix:semicolon
 multiline_comment|/* IBM specific. (Reserved_2) */
 DECL|member|Reserved_3
-r_int
-r_char
+id|u_int8_t
 id|Reserved_3
 suffix:semicolon
 DECL|member|Lost_Frame_Error
-r_int
-r_char
+id|u_int8_t
 id|Lost_Frame_Error
 suffix:semicolon
 multiline_comment|/* Receive of end of transmitted&n;&t;&t;&t;&t;&t; * frame failed.&n;&t;&t;&t;&t;&t; */
 DECL|member|Rx_Congest_Error
-r_int
-r_char
+id|u_int8_t
 id|Rx_Congest_Error
 suffix:semicolon
 multiline_comment|/* Adapter in repeat mode has not&n;&t;&t;&t;&t;&t; * enough buffer space to copy incoming&n;&t;&t;&t;&t;&t; * frame.&n;&t;&t;&t;&t;&t; */
 DECL|member|Frame_Copied_Error
-r_int
-r_char
+id|u_int8_t
 id|Frame_Copied_Error
 suffix:semicolon
 multiline_comment|/* ARI bit not zero in frame&n;&t;&t;&t;&t;&t; * addressed to adapter.&n;&t;&t;&t;&t;&t; */
 DECL|member|Frequency_Error
-r_int
-r_char
+id|u_int8_t
 id|Frequency_Error
 suffix:semicolon
 multiline_comment|/* IBM specific. (Reserved_4) */
 DECL|member|Token_Error
-r_int
-r_char
+id|u_int8_t
 id|Token_Error
 suffix:semicolon
 multiline_comment|/* (active only in monitor station) */
 DECL|member|Reserved_5
-r_int
-r_char
+id|u_int8_t
 id|Reserved_5
 suffix:semicolon
 DECL|member|DMA_Bus_Error
-r_int
-r_char
+id|u_int8_t
 id|DMA_Bus_Error
 suffix:semicolon
 multiline_comment|/* DMA bus errors not exceeding the&n;&t;&t;&t;&t;&t; * abort thresholds.&n;&t;&t;&t;&t;&t; */
 DECL|member|DMA_Parity_Error
-r_int
-r_char
+id|u_int8_t
 id|DMA_Parity_Error
 suffix:semicolon
 multiline_comment|/* DMA parity errors not exceeding&n;&t;&t;&t;&t;&t; * the abort thresholds.&n;&t;&t;&t;&t;&t; */
@@ -756,17 +734,15 @@ r_typedef
 r_struct
 (brace
 DECL|member|DataCount
-r_int
-r_int
+id|u_int16_t
 id|DataCount
 suffix:semicolon
-multiline_comment|/* Value 0, even and odd values are&n;&t;&t;&t;&t;&t; * permitted; value is unaltered most&n;&t;&t;&t;&t;&t; * significant bit set: following&n;&t;&t;&t;&t;&t; * fragments last fragment: most&n;&t;&t;&t;&t;&t; * significant bit is not evaluated.&n;&t;&t;&t;&t;&t; * (???)&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Value 0, even and odd values are&n;&t;&t;&t;&t; * permitted; value is unaltered most&n;&t;&t;&t;&t; * significant bit set: following&n;&t;&t;&t;&t; * fragments last fragment: most&n;&t;&t;&t;&t; * significant bit is not evaluated.&n;&t;&t;&t;&t; * (???)&n;&t;&t;&t;&t; */
 DECL|member|DataAddr
-r_int
-r_int
+id|u_int32_t
 id|DataAddr
 suffix:semicolon
-multiline_comment|/* Pointer to frame data fragment;&n;&t;&t;&t;&t;&t; * even or odd.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Pointer to frame data fragment;&n;&t;&t;&t;&t; * even or odd.&n;&t;&t;&t;&t; */
 DECL|typedef|Fragment
 )brace
 id|Fragment
@@ -844,21 +820,18 @@ id|s_TPL
 (brace
 multiline_comment|/* Transmit Parameter List (align on even word boundaries) */
 DECL|member|NextTPLAddr
-r_int
-r_int
+id|u_int32_t
 id|NextTPLAddr
 suffix:semicolon
 multiline_comment|/* Pointer to next TPL in chain; if&n;&t;&t;&t;&t;&t; * pointer is odd: this is the last&n;&t;&t;&t;&t;&t; * TPL. Pointing to itself can cause&n;&t;&t;&t;&t;&t; * problems!&n;&t;&t;&t;&t;&t; */
 DECL|member|Status
 r_volatile
-r_int
-r_int
+id|u_int16_t
 id|Status
 suffix:semicolon
 multiline_comment|/* Initialized by the adapter:&n;&t;&t;&t;&t;&t; * CSTAT_REQUEST important: update least&n;&t;&t;&t;&t;&t; * significant bit first! Set by the&n;&t;&t;&t;&t;&t; * adapter: CSTAT_COMPLETE status.&n;&t;&t;&t;&t;&t; */
 DECL|member|FrameSize
-r_int
-r_int
+id|u_int16_t
 id|FrameSize
 suffix:semicolon
 multiline_comment|/* Number of bytes to be transmitted&n;&t;&t;&t;&t;&t; * as a frame including AC/FC,&n;&t;&t;&t;&t;&t; * Destination, Source, Routing field&n;&t;&t;&t;&t;&t; * not including CRC, FS, End Delimiter&n;&t;&t;&t;&t;&t; * (valid only if START_FRAME bit in &n;&t;&t;&t;&t;&t; * CSTAT nonzero) must not be zero in&n;&t;&t;&t;&t;&t; * any list; maximum value: (BUFFER_SIZE&n;&t;&t;&t;&t;&t; * - 8) * TX_BUF_MAX sum of DataCount&n;&t;&t;&t;&t;&t; * values in FragmentList must equal&n;&t;&t;&t;&t;&t; * Frame_Size value in START_FRAME TPL!&n;&t;&t;&t;&t;&t; * frame data fragment list.&n;&t;&t;&t;&t;&t; */
@@ -903,6 +876,11 @@ r_char
 id|BusyFlag
 suffix:semicolon
 multiline_comment|/* Flag: TPL busy? */
+DECL|member|DMABuff
+id|dma_addr_t
+id|DMABuff
+suffix:semicolon
+multiline_comment|/* DMA IO bus address from pci_map */
 )brace
 suffix:semicolon
 multiline_comment|/* ---------------------Receive Functions-------------------------------*&n; * define RECEIVE_CSTAT_REQUEST (R) and RECEIVE_CSTAT_COMPLETE (C) values.&n; * (high-low)&n; */
@@ -1139,22 +1117,19 @@ id|s_RPL
 (brace
 multiline_comment|/* Receive Parameter List */
 DECL|member|NextRPLAddr
-r_int
-r_int
+id|u_int32_t
 id|NextRPLAddr
 suffix:semicolon
 multiline_comment|/* Pointer to next RPL in chain&n;&t;&t;&t;&t;&t; * (normalized = physical 32 bit&n;&t;&t;&t;&t;&t; * address) if pointer is odd: this&n;&t;&t;&t;&t;&t; * is last RPL. Pointing to itself can&n;&t;&t;&t;&t;&t; * cause problems!&n;&t;&t;&t;&t;&t; */
 DECL|member|Status
 r_volatile
-r_int
-r_int
+id|u_int16_t
 id|Status
 suffix:semicolon
 multiline_comment|/* Set by creation of Receive Parameter&n;&t;&t;&t;&t;&t; * List RECEIVE_CSTAT_COMPLETE set by&n;&t;&t;&t;&t;&t; * adapter in lists that start or end&n;&t;&t;&t;&t;&t; * a frame.&n;&t;&t;&t;&t;&t; */
 DECL|member|FrameSize
 r_volatile
-r_int
-r_int
+id|u_int16_t
 id|FrameSize
 suffix:semicolon
 multiline_comment|/* Number of bytes received as a&n;&t;&t;&t;&t;&t; * frame including AC/FC, Destination,&n;&t;&t;&t;&t;&t; * Source, Routing field not including &n;&t;&t;&t;&t;&t; * CRC, FS (Frame Status), End Delimiter&n;&t;&t;&t;&t;&t; * (valid only if START_FRAME bit in &n;&t;&t;&t;&t;&t; * CSTAT nonzero) must not be zero in&n;&t;&t;&t;&t;&t; * any list; maximum value: (BUFFER_SIZE&n;&t;&t;&t;&t;&t; * - 8) * TX_BUF_MAX sum of DataCount&n;&t;&t;&t;&t;&t; * values in FragmentList must equal&n;&t;&t;&t;&t;&t; * Frame_Size value in START_FRAME TPL!&n;&t;&t;&t;&t;&t; * frame data fragment list&n;&t;&t;&t;&t;&t; */
@@ -1195,6 +1170,11 @@ DECL|member|RPLIndex
 r_int
 id|RPLIndex
 suffix:semicolon
+DECL|member|DMABuff
+id|dma_addr_t
+id|DMABuff
+suffix:semicolon
+multiline_comment|/* DMA IO bus address from pci_map */
 )brace
 suffix:semicolon
 multiline_comment|/* Information that need to be kept for each board. */
@@ -1296,6 +1276,12 @@ id|RPL_NUM
 (braket
 id|DEFAULT_PACKET_SIZE
 )braket
+suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
 suffix:semicolon
 DECL|member|DataRate
 r_int
@@ -1421,6 +1407,11 @@ r_int
 id|dmalimit
 suffix:semicolon
 multiline_comment|/* the max DMA address (ie, ISA) */
+DECL|member|dmabuffer
+id|dma_addr_t
+id|dmabuffer
+suffix:semicolon
+multiline_comment|/* the DMA bus address corresponding to&n;&t;&t;&t;&t;    priv. Might be different from virt_to_bus()&n;&t;&t;&t;&t;    for architectures with IO MMU (Alpha) */
 DECL|member|timer
 r_struct
 id|timer_list

@@ -6029,7 +6029,7 @@ id|card-&gt;index
 )paren
 suffix:semicolon
 macro_line|#endif /* RCQ_SUPPORT */
-multiline_comment|/* NOTE: the following procedure may keep a raw cell pending untill the&n;               next interrupt. As this preliminary support is only meant to&n;               avoid buffer leakage, this is not an issue. */
+multiline_comment|/* NOTE: the following procedure may keep a raw cell pending until the&n;               next interrupt. As this preliminary support is only meant to&n;               avoid buffer leakage, this is not an issue. */
 r_while
 c_loop
 (paren

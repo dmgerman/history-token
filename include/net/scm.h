@@ -300,5 +300,5 @@ id|scm
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif __LINUX_NET_SCM_H
+macro_line|#endif /* __LINUX_NET_SCM_H */
 eof

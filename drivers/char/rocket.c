@@ -13,7 +13,7 @@ macro_line|#ifdef LOCAL_ROCKET_H&t;&t;/* We&squot;re building standalone */
 DECL|macro|MODULE
 mdefine_line|#define MODULE
 macro_line|#endif
-macro_line|#ifdef NEW_MODULES
+macro_line|#if defined(NEW_MODULES) &amp;&amp; defined(LOCAL_ROCKET_H)
 macro_line|#ifdef MODVERSIONS
 macro_line|#include &lt;linux/modversions.h&gt;
 macro_line|#endif

@@ -88,6 +88,11 @@ DECL|member|flags
 id|u32
 id|flags
 suffix:semicolon
+multiline_comment|/* maximum age in jiffies (inode, dentry and dircache) */
+DECL|member|ttl
+r_int
+id|ttl
+suffix:semicolon
 DECL|member|codepage
 r_struct
 id|smb_nls_codepage

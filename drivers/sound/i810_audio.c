@@ -3296,6 +3296,19 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|dmabuf-&gt;count
+OL
+(paren
+r_int
+)paren
+id|dmabuf-&gt;dmasize
+op_div
+l_int|2
+)paren
+(brace
 id|wake_up
 c_func
 (paren
@@ -3303,6 +3316,7 @@ op_amp
 id|dmabuf-&gt;wait
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* error handling and process wake up for DAC */
@@ -3366,13 +3380,27 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;DMA overrun on send&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;i810_audio: DMA overrun on send&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dmabuf-&gt;error
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dmabuf-&gt;count
+OL
+(paren
+r_int
+)paren
+id|dmabuf-&gt;dmasize
+op_div
+l_int|2
+)paren
+(brace
 id|wake_up
 c_func
 (paren
@@ -3380,6 +3408,7 @@ op_amp
 id|dmabuf-&gt;wait
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -4037,7 +4066,7 @@ id|dmabuf-&gt;swptr
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* a buffer overrun, we delay the recovery untill next time the&n;&t;&t;&t;&t;   while loop begin and we REALLY have space to record */
+multiline_comment|/* a buffer overrun, we delay the recovery until next time the&n;&t;&t;&t;&t;   while loop begin and we REALLY have space to record */
 )brace
 r_if
 c_cond
@@ -4467,7 +4496,7 @@ id|dmabuf-&gt;swptr
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* a buffer underrun, we delay the recovery untill next time the&n;&t;&t;&t;&t;   while loop begin and we REALLY have data to play */
+multiline_comment|/* a buffer underrun, we delay the recovery until next time the&n;&t;&t;&t;&t;   while loop begin and we REALLY have data to play */
 )brace
 r_if
 c_cond
@@ -8022,7 +8051,7 @@ r_return
 id|num_ac97
 suffix:semicolon
 )brace
-multiline_comment|/* install the driver, we do not allocate hardware channel nor DMA buffer now, they are defered &n;   untill &quot;ACCESS&quot; time (in prog_dmabuf called by open/read/write/ioctl/mmap) */
+multiline_comment|/* install the driver, we do not allocate hardware channel nor DMA buffer now, they are defered &n;   until &quot;ACCESS&quot; time (in prog_dmabuf called by open/read/write/ioctl/mmap) */
 DECL|function|i810_probe
 r_static
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Linux 1.3.x&n; *&n; *&t;(c) Copyright 1995&t;CymruNET Ltd&n; *&t;&t;&t;&t;Innovation Centre&n; *&t;&t;&t;&t;Singleton Park&n; *&t;&t;&t;&t;Swansea&n; *&t;&t;&t;&t;Wales&n; *&t;&t;&t;&t;UK&n; *&t;&t;&t;&t;SA2 8PP&n; *&n; *&t;http://www.cymru.net&n; *&n; *&t;This driver is provided under the GNU public license, incorporated&n; *&t;herein by reference. The driver is provided without warranty or &n; *&t;support.&n; *&n; *&t;Release 0.04.&n; *&n; */
+multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Linux 1.3.x&n; *&n; *&t;(c) Copyright 1995&t;CymruNET Ltd&n; *&t;&t;&t;&t;Innovation Centre&n; *&t;&t;&t;&t;Singleton Park&n; *&t;&t;&t;&t;Swansea&n; *&t;&t;&t;&t;Wales&n; *&t;&t;&t;&t;UK&n; *&t;&t;&t;&t;SA2 8PP&n; *&n; *&t;http://www.cymru.net&n; *&n; *&t;This driver is provided under the GNU General Public License, incorporated&n; *&t;herein by reference. The driver is provided without warranty or &n; *&t;support.&n; *&n; *&t;Release 0.04.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|WDT_COUNT0
 mdefine_line|#define WDT_COUNT0&t;&t;(io+0)

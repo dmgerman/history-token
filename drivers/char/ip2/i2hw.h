@@ -32,7 +32,7 @@ singleline_comment|// information between the host and board.
 singleline_comment|//
 DECL|macro|FIFO_DATA
 mdefine_line|#define FIFO_DATA 0
-singleline_comment|// Another way of passing information between the the board and the host is
+singleline_comment|// Another way of passing information between the board and the host is
 singleline_comment|// through &quot;mailboxes&quot;. Unlike a FIFO, a mailbox holds only a single byte of
 singleline_comment|// data.  Writing data to the mailbox causes a status bit to be set, and
 singleline_comment|// potentially interrupting the intended receiver. The sender has some way to

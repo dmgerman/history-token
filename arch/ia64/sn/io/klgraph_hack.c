@@ -731,7 +731,7 @@ id|u32
 op_star
 id|tmp32
 suffix:semicolon
-macro_line|#ifdef 0
+macro_line|#if 0
 multiline_comment|/* Preset some values */
 multiline_comment|/* Write IOERR clear to clear the CRAZY bit in the status */
 id|tmp

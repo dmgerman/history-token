@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: flash.c,v 1.21 2001/01/11 15:29:36 davem Exp $&n; * flash.c: Allow mmap access to the OBP Flash, for OBP updates.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: flash.c,v 1.22 2001/02/13 01:17:00 davem Exp $&n; * flash.c: Allow mmap access to the OBP Flash, for OBP updates.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -607,7 +607,7 @@ r_if
 c_cond
 (paren
 id|lid
-OG
+op_ge
 id|ids-&gt;size
 )paren
 (brace

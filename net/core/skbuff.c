@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/ip.h&gt;

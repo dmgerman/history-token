@@ -1752,7 +1752,7 @@ suffix:colon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;Cannot initialize VAC - wierd sun4 model idprom-&gt;id_machtype = %d&quot;
+l_string|&quot;Cannot initialize VAC - weird sun4 model idprom-&gt;id_machtype = %d&quot;
 comma
 id|idprom-&gt;id_machtype
 )paren

@@ -52,7 +52,7 @@ mdefine_line|#define CD186x_MRAR      0x75    /* Modem Request Acknowlege regist
 DECL|macro|CD186x_TRAR
 mdefine_line|#define CD186x_TRAR      0x76    /* Transmit Request Acknowlege register    */
 DECL|macro|CD186x_RRAR
-mdefine_line|#define CD186x_RRAR      0x77    /* Recieve Request Acknowlege register     */
+mdefine_line|#define CD186x_RRAR      0x77    /* Receive Request Acknowlege register     */
 DECL|macro|CD186x_SRCR
 mdefine_line|#define CD186x_SRCR      0x66    /* Service Request Configuration register  */
 multiline_comment|/* Channel Registers */

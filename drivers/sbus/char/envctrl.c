@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: envctrl.c,v 1.19 2000/11/03 00:37:40 davem Exp $&n; * envctrl.c: Temperature and Fan monitoring on Machines providing it.&n; *&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 2000  Vinh Truong    (vinh.truong@eng.sun.com)&n; * VT - The implementation is to support Sun Microelectronics (SME) platform&n; *      environment monitoring.  SME platforms use pcf8584 as the i2c bus &n; *      controller to access pcf8591 (8-bit A/D and D/A converter) and &n; *      pcf8571 (256 x 8-bit static low-voltage RAM with I2C-bus interface).&n; *      At board level, it follows SME Firmware I2C Specification. Reference:&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8584P&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8574AP&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8591P&n; *&n; * EB - Added support for CP1500 Global Address and PS/Voltage monitoring.&n; * &t;&t;Eric Brower &lt;ebrower@usa.net&gt;&n; */
+multiline_comment|/* $Id: envctrl.c,v 1.21 2001/02/13 04:07:38 davem Exp $&n; * envctrl.c: Temperature and Fan monitoring on Machines providing it.&n; *&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 2000  Vinh Truong    (vinh.truong@eng.sun.com)&n; * VT - The implementation is to support Sun Microelectronics (SME) platform&n; *      environment monitoring.  SME platforms use pcf8584 as the i2c bus &n; *      controller to access pcf8591 (8-bit A/D and D/A converter) and &n; *      pcf8571 (256 x 8-bit static low-voltage RAM with I2C-bus interface).&n; *      At board level, it follows SME Firmware I2C Specification. Reference:&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8584P&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8574AP&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8591P&n; *&n; * EB - Added support for CP1500 Global Address and PS/Voltage monitoring.&n; * &t;&t;Eric Brower &lt;ebrower@usa.net&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -539,7 +539,7 @@ l_string|&quot;envctrl: Busy bit will not clear.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function Description: Send the adress for a read access.&n; * Return : 0 if not acknowledged, otherwise acknowledged.&n; */
+multiline_comment|/* Function Description: Send the address for a read access.&n; * Return : 0 if not acknowledged, otherwise acknowledged.&n; */
 DECL|function|envctrl_i2c_read_addr
 r_static
 r_int
@@ -630,7 +630,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Function Description: Send the adress for write mode.  &n; * Return : None.&n; */
+multiline_comment|/* Function Description: Send the address for write mode.  &n; * Return : None.&n; */
 DECL|function|envctrl_i2c_write_addr
 r_static
 r_void

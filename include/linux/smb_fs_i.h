@@ -31,11 +31,11 @@ id|__u16
 id|access
 suffix:semicolon
 multiline_comment|/* Access mode */
-DECL|member|cache_valid
+DECL|member|flags
 id|__u16
-id|cache_valid
+id|flags
 suffix:semicolon
-multiline_comment|/* dircache valid? */
+multiline_comment|/* status flags */
 DECL|member|oldmtime
 r_int
 r_int

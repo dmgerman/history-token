@@ -6692,7 +6692,19 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#if defined(REAL_DMA) || defined(REAL_DMA_POLL)
-macro_line|#ifdef READ_OVERRUNS if (p &amp; SR_IO) { c -= 2;
+macro_line|#ifdef READ_OVERRUNS 
+r_if
+c_cond
+(paren
+id|p
+op_amp
+id|SR_IO
+)paren
+(brace
+id|c
+op_sub_assign
+l_int|2
+suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if (NDEBUG &amp; NDEBUG_DMA)
@@ -7783,7 +7795,6 @@ op_amp
 id|PHASE_MASK
 suffix:semicolon
 macro_line|#if 0
-DECL|variable|instance
 id|NCR5380_print_phase
 c_func
 (paren
@@ -7792,7 +7803,6 @@ id|instance
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(PSEUDO_DMA) &amp;&amp; !defined(UNSAFE)
-DECL|variable|flags
 id|restore_flags
 c_func
 (paren
@@ -7807,6 +7817,7 @@ macro_line|#endif&t;&t;&t;&t;/* def REAL_DMA */
 )brace
 macro_line|#endif&t;&t;&t;&t;/* defined(REAL_DMA) | defined(PSEUDO_DMA) */
 multiline_comment|/*&n; * Function : NCR5380_information_transfer (struct Scsi_Host *instance)&n; *&n; * Purpose : run through the various SCSI phases and do as the target &n; *      directs us to.  Operates on the currently connected command, &n; *      instance-&gt;connected.&n; *&n; * Inputs : instance, instance for which we are doing commands&n; *&n; * Side effects : SCSI things happen, the disconnected queue will be &n; *      modified if a command disconnects, *instance-&gt;connected will&n; *      change.&n; *&n; * XXX Note : we need to watch for bus free or a reset condition here &n; *      to recover from an unexpected bus free condition.&n; */
+DECL|function|NCR5380_information_transfer
 r_static
 r_void
 id|NCR5380_information_transfer
@@ -9590,6 +9601,7 @@ macro_line|#endif
 multiline_comment|/* while (1) */
 )brace
 multiline_comment|/*&n; * Function : void NCR5380_reselect (struct Scsi_Host *instance)&n; *&n; * Purpose : does reselection, initializing the instance-&gt;connected &n; *      field to point to the Scsi_Cmnd for which the I_T_L or I_T_L_Q &n; *      nexus has been reestablished,&n; *      &n; * Inputs : instance - this instance of the NCR5380.&n; *&n; */
+DECL|function|NCR5380_reselect
 r_static
 r_void
 id|NCR5380_reselect
@@ -10030,6 +10042,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * Function : void NCR5380_dma_complete (struct Scsi_Host *instance)&n; *&n; * Purpose : called by interrupt handler when DMA finishes or a phase&n; *      mismatch occurs (which would finish the DMA transfer).  &n; *&n; * Inputs : instance - this instance of the NCR5380.&n; *&n; * Returns : pointer to the Scsi_Cmnd structure for which the I_T_L&n; *      nexus has been reestablished, on failure NULL is returned.&n; */
 macro_line|#ifdef REAL_DMA
+DECL|function|NCR5380_dma_complete
 r_static
 r_void
 id|NCR5380_dma_complete
@@ -10131,6 +10144,7 @@ multiline_comment|/*&n; * Function : int NCR5380_abort (Scsi_Cmnd *cmd)&n; *&n; 
 macro_line|#ifndef NCR5380_abort
 r_static
 macro_line|#endif
+DECL|function|NCR5380_abort
 r_int
 id|NCR5380_abort
 c_func
@@ -10688,6 +10702,7 @@ multiline_comment|/* &n; * Function : int NCR5380_reset (Scsi_Cmnd *cmd, unsigne
 macro_line|#ifndef NCR5380_reset
 r_static
 macro_line|#endif
+DECL|function|NCR5380_reset
 r_int
 id|NCR5380_reset
 c_func

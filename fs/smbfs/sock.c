@@ -373,6 +373,8 @@ l_int|4
 suffix:semicolon
 r_int
 id|result
+op_assign
+l_int|0
 suffix:semicolon
 id|mm_segment_t
 id|fs
@@ -2039,20 +2041,6 @@ r_goto
 id|success
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|parm_tot
-OG
-id|TRANS2_MAX_TRANSFER
-op_logical_or
-id|data_tot
-OG
-id|TRANS2_MAX_TRANSFER
-)paren
-r_goto
-id|out_too_long
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Save the total parameter and data length.&n;&t;&t;&t; */
 id|total_d
 op_assign
@@ -2086,6 +2074,16 @@ c_func
 (paren
 id|buf_len
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|buf_len
+OG
+id|SMB_MAX_PACKET_SIZE
+)paren
+r_goto
+id|out_too_long
 suffix:semicolon
 id|rcv_buf
 op_assign
@@ -2858,6 +2856,11 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_int
+id|mparam
+comma
+id|mdata
+suffix:semicolon
 multiline_comment|/* I know the following is very ugly, but I want to build the&n;&t;   smb packet as efficiently as possible. */
 r_const
 r_int
@@ -2954,7 +2957,7 @@ r_struct
 id|msghdr
 id|msg
 suffix:semicolon
-multiline_comment|/* N.B. This test isn&squot;t valid! packet_size may be &lt; max_xmit */
+multiline_comment|/* FIXME! this test needs to include SMB overhead too, I think ... */
 r_if
 c_cond
 (paren
@@ -2966,12 +2969,10 @@ id|oparam
 OG
 id|server-&gt;opt.max_xmit
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|p
 op_assign
 id|smb_setup_header
@@ -2986,6 +2987,36 @@ comma
 id|bcc
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * max parameters + max data + max setup == max_xmit to make NT4 happy&n;&t; * and not abort the transfer or split into multiple responses.&n;&t; *&n;&t; * -100 is to make room for headers, which OS/2 seems to include in the&n;&t; * size calculation while NT4 does not?&n;&t; */
+id|mparam
+op_assign
+id|SMB_TRANS2_MAX_PARAM
+suffix:semicolon
+id|mdata
+op_assign
+id|server-&gt;opt.max_xmit
+op_minus
+id|mparam
+op_minus
+l_int|100
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mdata
+OL
+l_int|1024
+)paren
+(brace
+id|mdata
+op_assign
+l_int|1024
+suffix:semicolon
+id|mparam
+op_assign
+l_int|20
+suffix:semicolon
+)brace
 id|WSET
 c_func
 (paren
@@ -3006,7 +3037,6 @@ comma
 id|ldata
 )paren
 suffix:semicolon
-multiline_comment|/* N.B. these values should reflect out current packet size */
 id|WSET
 c_func
 (paren
@@ -3014,7 +3044,7 @@ id|server-&gt;packet
 comma
 id|smb_mprcnt
 comma
-id|TRANS2_MAX_TRANSFER
+id|mparam
 )paren
 suffix:semicolon
 id|WSET
@@ -3024,7 +3054,7 @@ id|server-&gt;packet
 comma
 id|smb_mdrcnt
 comma
-id|TRANS2_MAX_TRANSFER
+id|mdata
 )paren
 suffix:semicolon
 id|WSET
@@ -3037,6 +3067,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* max setup always 0 ? */
 id|WSET
 c_func
 (paren

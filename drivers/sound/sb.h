@@ -391,6 +391,10 @@ op_star
 id|midi_irq_cookie
 suffix:semicolon
 multiline_comment|/* IRQ cookie for the midi */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|sbmo
 r_struct
 id|sb_module_options

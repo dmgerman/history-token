@@ -6481,7 +6481,7 @@ id|mem_used
 op_add_assign
 l_int|1L
 suffix:semicolon
-multiline_comment|/* CALCULATE NUMBER OF NON-MAC RX BDB&squot;S&n;         * AND NON-MAC RX DATA BUFFERS&n;         *&n;         * Make sure the mem_used offset at this point is the&n;         * same as in allocate_shared memory or the following&n;         * boundry adjustment will be incorrect (i.e. not allocating&n;         * the non-mac recieve buffers above cannot change the 256&n;         * byte offset).&n;         *&n;         * Since this cannot be guaranteed, adding the full 256 bytes&n;         * to the amount of shared memory used at this point will guaranteed&n;         * that the rx data buffers do not overflow shared memory.&n;         */
+multiline_comment|/* CALCULATE NUMBER OF NON-MAC RX BDB&squot;S&n;         * AND NON-MAC RX DATA BUFFERS&n;         *&n;         * Make sure the mem_used offset at this point is the&n;         * same as in allocate_shared memory or the following&n;         * boundry adjustment will be incorrect (i.e. not allocating&n;         * the non-mac receive buffers above cannot change the 256&n;         * byte offset).&n;         *&n;         * Since this cannot be guaranteed, adding the full 256 bytes&n;         * to the amount of shared memory used at this point will guaranteed&n;         * that the rx data buffers do not overflow shared memory.&n;         */
 id|mem_used
 op_add_assign
 l_int|0x100

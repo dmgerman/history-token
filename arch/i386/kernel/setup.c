@@ -4059,7 +4059,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Cx86_dir0_msb is a HACK needed by check_cx686_cpuid/slop in bugs.h in&n; * order to identify the Cyrix CPU model after we&squot;re out of setup.c&n; */
+multiline_comment|/*&n; * Cx86_dir0_msb is a HACK needed by check_cx686_cpuid/slop in bugs.h in&n; * order to identify the Cyrix CPU model after we&squot;re out of setup.c&n; *&n; * Actually since bugs.h doesnt even reference this perhaps someone should&n; * fix the documentation ???&n; */
 DECL|variable|__initdata
 r_int
 r_char
@@ -4202,7 +4202,7 @@ id|__initdata
 op_assign
 l_string|&quot;12233445&quot;
 suffix:semicolon
-multiline_comment|/*&n; * Reset the slow-loop (SLOP) bit on the 686(L) which is set by some old&n; * BIOSes for compatability with DOS games.  This makes the udelay loop&n; * work correctly, and improves performance.&n; */
+multiline_comment|/*&n; * Reset the slow-loop (SLOP) bit on the 686(L) which is set by some old&n; * BIOSes for compatability with DOS games.  This makes the udelay loop&n; * work correctly, and improves performance.&n; *&n; * FIXME: our newer udelay uses the tsc. We dont need to frob with SLOP&n; */
 r_extern
 r_void
 id|calibrate_delay
@@ -5477,6 +5477,15 @@ op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|X86_FEATURE_3DNOW
+comma
+op_amp
+id|c-&gt;x86_capability
+)paren
+suffix:semicolon
 id|get_model_name
 c_func
 (paren
@@ -6323,12 +6332,6 @@ id|dl
 )paren
 (brace
 multiline_comment|/* P4 family */
-r_if
-c_cond
-(paren
-id|dl
-)paren
-(brace
 multiline_comment|/* L3 cache */
 id|cs
 op_assign
@@ -6346,7 +6349,6 @@ id|cs
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* else same as 8 - fall through */
 r_case
@@ -7660,6 +7662,12 @@ c_func
 )paren
 )paren
 (brace
+r_int
+r_char
+id|dir0
+comma
+id|dir1
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -7672,6 +7680,110 @@ id|c-&gt;x86_vendor
 op_assign
 id|X86_VENDOR_CYRIX
 suffix:semicolon
+multiline_comment|/* Actually enable cpuid on the older cyrix */
+multiline_comment|/* Retrieve CPU revisions */
+id|do_cyrix_devid
+c_func
+(paren
+op_amp
+id|dir0
+comma
+op_amp
+id|dir1
+)paren
+suffix:semicolon
+id|dir0
+op_rshift_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* Check it is an affected model */
+r_if
+c_cond
+(paren
+id|dir0
+op_eq
+l_int|5
+op_logical_or
+id|dir0
+op_eq
+l_int|3
+)paren
+(brace
+r_int
+r_char
+id|ccr3
+comma
+id|ccr4
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Enabling CPUID on Cyrix processor.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ccr3
+op_assign
+id|getCx86
+c_func
+(paren
+id|CX86_CCR3
+)paren
+suffix:semicolon
+id|setCx86
+c_func
+(paren
+id|CX86_CCR3
+comma
+(paren
+id|ccr3
+op_amp
+l_int|0x0f
+)paren
+op_or
+l_int|0x10
+)paren
+suffix:semicolon
+multiline_comment|/* enable MAPEN  */
+id|ccr4
+op_assign
+id|getCx86
+c_func
+(paren
+id|CX86_CCR4
+)paren
+suffix:semicolon
+id|setCx86
+c_func
+(paren
+id|CX86_CCR4
+comma
+id|ccr4
+op_or
+l_int|0x80
+)paren
+suffix:semicolon
+multiline_comment|/* enable cpuid  */
+id|setCx86
+c_func
+(paren
+id|CX86_CCR3
+comma
+id|ccr3
+)paren
+suffix:semicolon
+multiline_comment|/* disable MAPEN */
+id|sti
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 multiline_comment|/* Detect NexGen with old hypercode */

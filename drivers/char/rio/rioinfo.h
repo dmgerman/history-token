@@ -36,7 +36,7 @@ DECL|member|mode
 r_int
 id|mode
 suffix:semicolon
-multiline_comment|/* pointer to host mode - INTERUPT / POLLED */
+multiline_comment|/* pointer to host mode - INTERRUPT / POLLED */
 r_struct
 id|old_sgttyb
 DECL|member|Sg

@@ -68,6 +68,7 @@ id|dentry_stat_t
 id|dentry_stat
 suffix:semicolon
 multiline_comment|/* Name hashing routines. Initial hash value */
+multiline_comment|/* Hash courtesy of the R5 hash in reiserfs modulo sign bits */
 DECL|macro|init_name_hash
 mdefine_line|#define init_name_hash()&t;&t;0
 multiline_comment|/* partial hash update function. Assume roughly 4 bits per character */
@@ -88,34 +89,24 @@ r_int
 id|prevhash
 )paren
 (brace
-id|prevhash
-op_assign
+r_return
 (paren
 id|prevhash
+op_plus
+(paren
+id|c
 op_lshift
 l_int|4
 )paren
-op_or
+op_plus
 (paren
-id|prevhash
+id|c
 op_rshift
-(paren
-l_int|8
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-op_minus
 l_int|4
 )paren
 )paren
-suffix:semicolon
-r_return
-id|prevhash
-op_xor
-id|c
+op_star
+l_int|11
 suffix:semicolon
 )brace
 multiline_comment|/* Finally: cut down the number of bits to a int value (and try to avoid losing bits) */
@@ -132,31 +123,6 @@ r_int
 id|hash
 )paren
 (brace
-r_if
-c_cond
-(paren
-r_sizeof
-(paren
-id|hash
-)paren
-OG
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-id|hash
-op_add_assign
-id|hash
-op_rshift
-l_int|4
-op_star
-r_sizeof
-(paren
-id|hash
-)paren
-suffix:semicolon
 r_return
 (paren
 r_int

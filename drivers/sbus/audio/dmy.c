@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dmy.c,v 1.6 2000/12/13 05:06:26 davem Exp $&n; * drivers/sbus/audio/dummy.c&n; *&n; * Copyright 1998 Derrick J Brashear (shadow@andrew.cmu.edu)&n; *&n; * This is a dummy lowlevel driver. Consider it a distant cousin of &n; * /proc/audio; It pretends to be a piece of audio hardware, and writes&n; * to a file instead. (or will shortly)&n; */
+multiline_comment|/* $Id: dmy.c,v 1.7 2001/02/13 01:16:59 davem Exp $&n; * drivers/sbus/audio/dummy.c&n; *&n; * Copyright 1998 Derrick J Brashear (shadow@andrew.cmu.edu)&n; *&n; * This is a dummy lowlevel driver. Consider it a distant cousin of &n; * /proc/audio; It pretends to be a piece of audio hardware, and writes&n; * to a file instead. (or will shortly)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

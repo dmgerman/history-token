@@ -44,13 +44,6 @@ r_int
 suffix:semicolon
 singleline_comment|// ref into ip2main.c
 macro_line|#ifdef MODULE
-macro_line|#if defined(CONFIG_MODVERSIONS) &amp;&amp; !defined(MODVERSIONS)
-DECL|macro|MODVERSIONS
-macro_line|#&t;define MODVERSIONS
-macro_line|#endif
-macro_line|#ifdef MODVERSIONS
-macro_line|#&t;include &lt;linux/modversions.h&gt;
-macro_line|#endif
 DECL|variable|io
 r_static
 r_int

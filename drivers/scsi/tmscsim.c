@@ -12015,13 +12015,5 @@ op_assign
 id|DC390_T
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#elif defined(MODULE)
-DECL|variable|driver_template
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|DC390_T
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
 macro_line|#endif
 eof

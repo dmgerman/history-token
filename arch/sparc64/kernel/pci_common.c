@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_common.c,v 1.12 2000/05/01 06:32:49 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_common.c,v 1.13 2001/02/13 01:16:44 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

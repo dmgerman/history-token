@@ -132,7 +132,7 @@ macro_line|#endif
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * disk_name() is used by genhd.c and blkpg.c.&n; * It formats the devicename of the indicated disk into&n; * the supplied buffer (of size at least 32), and returns&n; * a pointer to that same buffer (for convenience).&n; */
+multiline_comment|/*&n; * disk_name() is used by partition check code and the md driver.&n; * It formats the devicename of the indicated disk into&n; * the supplied buffer (of size at least 32), and returns&n; * a pointer to that same buffer (for convenience).&n; */
 DECL|function|disk_name
 r_char
 op_star

@@ -136,6 +136,18 @@ r_int
 id|stop_a_enabled
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_S390
+macro_line|#ifdef CONFIG_IEEEFPU_EMULATION
+r_extern
+r_int
+id|sysctl_ieee_emulation_warnings
+suffix:semicolon
+macro_line|#endif
+r_extern
+r_int
+id|sysctl_userprocess_debug
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef __powerpc__
 r_extern
 r_int
@@ -1298,6 +1310,52 @@ op_amp
 id|maxolduid
 )brace
 comma
+macro_line|#ifdef CONFIG_ARCH_S390
+macro_line|#ifdef CONFIG_IEEEFPU_EMULATION
+(brace
+id|KERN_IEEE_EMULATION_WARNINGS
+comma
+l_string|&quot;ieee_emulation_warnings&quot;
+comma
+op_amp
+id|sysctl_ieee_emulation_warnings
+comma
+r_sizeof
+(paren
+r_int
+)paren
+comma
+l_int|0644
+comma
+l_int|NULL
+comma
+op_amp
+id|proc_dointvec
+)brace
+comma
+macro_line|#endif
+(brace
+id|KERN_S390_USER_DEBUG_LOGGING
+comma
+l_string|&quot;userprocess_debug&quot;
+comma
+op_amp
+id|sysctl_userprocess_debug
+comma
+r_sizeof
+(paren
+r_int
+)paren
+comma
+l_int|0644
+comma
+l_int|NULL
+comma
+op_amp
+id|proc_dointvec
+)brace
+comma
+macro_line|#endif
 (brace
 l_int|0
 )brace
@@ -1960,20 +2018,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_int
-)paren
-id|newlen
-OL
-l_int|0
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|oldval
 )paren
 (brace
@@ -2492,7 +2536,8 @@ op_assign
 l_int|0
 comma
 id|rc
-comma
+suffix:semicolon
+r_int
 id|len
 suffix:semicolon
 r_if
@@ -2707,6 +2752,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * register_sysctl_table - register a sysctl heirarchy&n; * @table: the top-level table structure&n; * @insert_at_head: whether the entry should be inserted in front or at the end&n; *&n; * Register a sysctl table heirarchy. @table should be a filled in ctl_table&n; * array. An entry with a ctl_name of 0 terminates the table. &n; *&n; * The members of the &amp;ctl_table structure are used as follows:&n; *&n; * ctl_name - This is the numeric sysctl value used by sysctl(2). The number&n; *            must be unique within that level of sysctl&n; *&n; * procname - the name of the sysctl file under /proc/sys. Set to %NULL to not&n; *            enter a sysctl file&n; *&n; * data - a pointer to data for use by proc_handler&n; *&n; * maxlen - the maximum size in bytes of the data&n; *&n; * mode - the file permissions for the /proc/sys file, and for sysctl(2)&n; *&n; * child - a pointer to the child sysctl table if this entry is a directory, or&n; *         %NULL.&n; *&n; * proc_handler - the text handler routine (described below)&n; *&n; * strategy - the strategy routine (described below)&n; *&n; * de - for internal use by the sysctl routines&n; *&n; * extra1, extra2 - extra pointers usable by the proc handler routines&n; *&n; * Leaf nodes in the sysctl tree will be represented by a single file&n; * under /proc; non-leaf nodes will be represented by directories.&n; *&n; * sysctl(2) can automatically manage read and write requests through&n; * the sysctl table.  The data and maxlen fields of the ctl_table&n; * struct enable minimal validation of the values being written to be&n; * performed, and the mode field allows minimal authentication.&n; *&n; * More sophisticated management can be enabled by the provision of a&n; * strategy routine with the table entry.  This will be called before&n; * any automatic read or write of the data is performed.&n; *&n; * The strategy routine may return&n; *&n; * &lt; 0 - Error occurred (error is passed to user process)&n; *&n; * 0   - OK - proceed with automatic read or write.&n; *&n; * &gt; 0 - OK - read or write has been done by the strategy routine, so&n; *       return immediately.&n; *&n; * There must be a proc_handler routine for any terminal nodes&n; * mirrored under /proc/sys (non-terminals are handled by a built-in&n; * directory handler).  Several default handlers are available to&n; * cover common cases -&n; *&n; * proc_dostring(), proc_dointvec(), proc_dointvec_jiffies(),&n; * proc_dointvec_minmax(), proc_doulongvec_ms_jiffies_minmax(),&n; * proc_doulongvec_minmax()&n; *&n; * It is the handler&squot;s job to read the input buffer from user memory&n; * and process it. The handler should return 0 on success.&n; *&n; * This routine returns %NULL on a failure to register, and a pointer&n; * to the table header on success.&n; */
 DECL|function|register_sysctl_table
 r_struct
 id|ctl_table_header
@@ -2748,7 +2794,7 @@ op_logical_neg
 id|tmp
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tmp-&gt;ctl_table
 op_assign
@@ -2801,7 +2847,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unlink and free a ctl_table.&n; */
+multiline_comment|/**&n; * unregister_sysctl_table - unregister a sysctl table heirarchy&n; * @header: the header returned from register_sysctl_table&n; *&n; * Unregisters the sysctl table and all children. proc entries may not&n; * actually be removed until they are no longer used by anyone.&n; */
 DECL|function|unregister_sysctl_table
 r_void
 id|unregister_sysctl_table
@@ -3417,6 +3463,7 @@ id|op
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * proc_dostring - read a string sysctl&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes a string from/to the user buffer. If the kernel&n; * buffer provided is not large enough to hold the string, the&n; * string is truncated. The copied string is %NULL-terminated.&n; * If the string is being read by the user process, it is copied&n; * and a newline &squot;&bslash;n&squot; is added. It is truncated if the buffer is&n; * not large enough.&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dostring
 r_int
 id|proc_dostring
@@ -3860,13 +3907,14 @@ id|first
 op_assign
 l_int|1
 comma
-id|len
-comma
-id|left
-comma
 id|neg
 comma
 id|val
+suffix:semicolon
+r_int
+id|left
+comma
+id|len
 suffix:semicolon
 DECL|macro|TMPBUFLEN
 mdefine_line|#define TMPBUFLEN 20
@@ -4447,6 +4495,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * proc_dointvec - read a vector of integers&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string. &n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dointvec
 r_int
 id|proc_dointvec
@@ -4565,6 +4614,7 @@ id|OP_AND
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * proc_dointvec_minmax - read a vector of integers with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dointvec_minmax
 r_int
 id|proc_dointvec_minmax
@@ -4607,13 +4657,14 @@ id|first
 op_assign
 l_int|1
 comma
-id|len
-comma
-id|left
-comma
 id|neg
 comma
 id|val
+suffix:semicolon
+r_int
+id|len
+comma
+id|left
 suffix:semicolon
 DECL|macro|TMPBUFLEN
 mdefine_line|#define TMPBUFLEN 20
@@ -5158,7 +5209,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * an unsigned long function version&n; */
 DECL|function|do_proc_doulongvec_minmax
 r_static
 r_int
@@ -5216,11 +5266,12 @@ id|first
 op_assign
 l_int|1
 comma
+id|neg
+suffix:semicolon
+r_int
 id|len
 comma
 id|left
-comma
-id|neg
 suffix:semicolon
 r_char
 id|buf
@@ -5788,6 +5839,7 @@ suffix:semicolon
 DECL|macro|TMPBUFLEN
 macro_line|#undef TMPBUFLEN
 )brace
+multiline_comment|/**&n; * proc_doulongvec_minmax - read a vector of long integers with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned long) unsigned long&n; * values from/to the user buffer, treated as an ASCII string.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_doulongvec_minmax
 r_int
 id|proc_doulongvec_minmax
@@ -5834,6 +5886,7 @@ l_int|1l
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * proc_doulongvec_ms_jiffies_minmax - read a vector of millisecond values with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned long) unsigned long&n; * values from/to the user buffer, treated as an ASCII string. The values&n; * are treated as milliseconds, and converted to jiffies when they are stored.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_doulongvec_ms_jiffies_minmax
 r_int
 id|proc_doulongvec_ms_jiffies_minmax
@@ -5880,7 +5933,7 @@ l_int|1000l
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Like proc_dointvec, but converts seconds to jiffies */
+multiline_comment|/**&n; * proc_dointvec_jiffies - read a vector of integers as seconds&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string. &n; * The values read are assumed to be in seconds, and are converted into&n; * jiffies.&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dointvec_jiffies
 r_int
 id|proc_dointvec_jiffies
@@ -6470,8 +6523,6 @@ id|context
 r_int
 id|i
 comma
-id|length
-comma
 op_star
 id|vec
 comma
@@ -6480,6 +6531,9 @@ id|min
 comma
 op_star
 id|max
+suffix:semicolon
+r_int
+id|length
 suffix:semicolon
 r_if
 c_cond

@@ -35,7 +35,6 @@ macro_line|#include &quot;capicmd.h&quot;
 macro_line|#if defined(CONFIG_ISDN_CAPI_CAPIFS) || defined(CONFIG_ISDN_CAPI_CAPIFS_MODULE)
 macro_line|#include &quot;capifs.h&quot;
 macro_line|#endif
-macro_line|#include &lt;linux/slab.h&gt;
 DECL|variable|revision
 r_static
 r_char

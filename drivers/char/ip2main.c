@@ -37,15 +37,6 @@ multiline_comment|/* Includes */
 multiline_comment|/************/
 macro_line|#include &lt;linux/config.h&gt;
 singleline_comment|// Uncomment the following if you want it compiled with modversions
-macro_line|#ifdef MODULE
-macro_line|#&t;if defined(CONFIG_MODVERSIONS) &amp;&amp; !defined(MODVERSIONS)
-DECL|macro|MODVERSIONS
-macro_line|#&t;&t;define MODVERSIONS
-macro_line|#&t;endif
-macro_line|#&t;ifdef MODVERSIONS
-macro_line|#&t;&t;include &lt;linux/modversions.h&gt;
-macro_line|#&t;endif
-macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

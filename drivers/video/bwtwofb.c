@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bwtwofb.c,v 1.13 2000/02/14 02:50:25 davem Exp $&n; * bwtwofb.c: BWtwo frame buffer driver&n; *&n; * Copyright (C) 1998 Jakub Jelinek   (jj@ultra.linux.cz)&n; * Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; * Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1998 Pavel Machek    (pavel@ucw.cz)&n; */
+multiline_comment|/* $Id: bwtwofb.c,v 1.14 2001/02/13 01:17:14 davem Exp $&n; * bwtwofb.c: BWtwo frame buffer driver&n; *&n; * Copyright (C) 1998 Jakub Jelinek   (jj@ultra.linux.cz)&n; * Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; * Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1998 Pavel Machek    (pavel@ucw.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

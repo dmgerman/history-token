@@ -100,7 +100,7 @@ DECL|typedef|phy_info_t
 )brace
 id|phy_info_t
 suffix:semicolon
-multiline_comment|/* The number of Tx and Rx buffers.  These are allocated from the page&n; * pool.  The code may assume these are power of two, so it it best&n; * to keep them that size.&n; * We don&squot;t need to allocate pages for the transmitter.  We just use&n; * the skbuffer directly.&n; */
+multiline_comment|/* The number of Tx and Rx buffers.  These are allocated from the page&n; * pool.  The code may assume these are power of two, so it is best&n; * to keep them that size.&n; * We don&squot;t need to allocate pages for the transmitter.  We just use&n; * the skbuffer directly.&n; */
 macro_line|#if 1
 DECL|macro|FEC_ENET_RX_PAGES
 mdefine_line|#define FEC_ENET_RX_PAGES&t;4
@@ -3149,7 +3149,7 @@ DECL|macro|MII_LXT971_LCR
 mdefine_line|#define MII_LXT971_LCR       20  /* LED Control Register      */
 DECL|macro|MII_LXT971_TCR
 mdefine_line|#define MII_LXT971_TCR       30  /* Transmit Control Register */
-multiline_comment|/* &n; * I had some nice ideas of running the MDIO faster...&n; * The 971 should support 8MHz and I tried it, but things acted really&n; * wierd, so 2.5 MHz ought to be enough for anyone...&n; */
+multiline_comment|/* &n; * I had some nice ideas of running the MDIO faster...&n; * The 971 should support 8MHz and I tried it, but things acted really&n; * weird, so 2.5 MHz ought to be enough for anyone...&n; */
 DECL|function|mii_parse_lxt971_sr2
 r_static
 r_void

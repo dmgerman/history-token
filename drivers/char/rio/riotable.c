@@ -2822,7 +2822,7 @@ r_return
 id|ENXIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    ** Now we have a host we need to allocate an ID&n;&t;    ** if the the entry does not already have one.&n;&t;    */
+multiline_comment|/*&n;&t;    ** Now we have a host we need to allocate an ID&n;&t;    ** if the entry does not already have one.&n;&t;    */
 r_if
 c_cond
 (paren

@@ -2596,6 +2596,16 @@ l_int|0x0002
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0813
+comma
+l_int|0x0001
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace

@@ -204,7 +204,7 @@ mdefine_line|#define&t;RIO_IPL&t;5
 DECL|macro|RIO_PRI
 mdefine_line|#define&t;RIO_PRI&t;(PZERO+10)
 DECL|macro|RIO_CLOSE_PRI
-mdefine_line|#define RIO_CLOSE_PRI&t;PZERO-1&t;/* uninteruptible sleeps for close */
+mdefine_line|#define RIO_CLOSE_PRI&t;PZERO-1&t;/* uninterruptible sleeps for close */
 DECL|struct|DbInf
 r_typedef
 r_struct

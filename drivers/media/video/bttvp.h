@@ -3,7 +3,7 @@ macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,7,50)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,7,57)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -15,6 +15,10 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-driver.c                                              */
 multiline_comment|/* insmod options / kernel args */
+r_extern
+r_int
+id|no_overlay
+suffix:semicolon
 r_extern
 r_int
 r_int
@@ -45,6 +49,19 @@ op_star
 id|comment
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|init_bttv_i2c
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk&t;&t;if (bttv_debug) printk
 multiline_comment|/* Anybody who uses more than four? */
 DECL|macro|BTTV_MAX
 mdefine_line|#define BTTV_MAX 4
@@ -389,6 +406,35 @@ multiline_comment|/* set to one of the chips supported by bttv.c */
 DECL|member|radio
 r_int
 id|radio
+suffix:semicolon
+DECL|member|has_radio
+r_int
+id|has_radio
+suffix:semicolon
+multiline_comment|/* miro/pinnacle + Aimslab VHX&n;&t;   philips matchbox (tea5757 radio tuner) support */
+DECL|member|has_matchbox
+r_int
+id|has_matchbox
+suffix:semicolon
+DECL|member|mbox_we
+r_int
+id|mbox_we
+suffix:semicolon
+DECL|member|mbox_data
+r_int
+id|mbox_data
+suffix:semicolon
+DECL|member|mbox_clk
+r_int
+id|mbox_clk
+suffix:semicolon
+DECL|member|mbox_most
+r_int
+id|mbox_most
+suffix:semicolon
+DECL|member|mbox_mask
+r_int
+id|mbox_mask
 suffix:semicolon
 DECL|member|risc_jmp
 id|u32

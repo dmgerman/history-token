@@ -163,6 +163,14 @@ id|addr
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|pal
+r_static
+r_char
+op_star
+id|pal
+op_assign
+l_string|&quot;b&quot;
+suffix:semicolon
 DECL|variable|this_adap
 r_static
 r_int
@@ -192,6 +200,14 @@ c_func
 id|addr
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|pal
+comma
+l_string|&quot;s&quot;
 )paren
 suffix:semicolon
 DECL|struct|tuner
@@ -235,6 +251,35 @@ r_struct
 id|i2c_client
 id|client_template
 suffix:semicolon
+multiline_comment|/* tv standard selection for Temic 4046 FM5&n;   this value takes the low bits of control byte 2&n;   from datasheet Rev.01, Feb.00 &n;     standard     BG      I       L       L2      D&n;     picture IF   38.9    38.9    38.9    33.95   38.9&n;     sound 1      33.4    32.9    32.4    40.45   32.4&n;     sound 2      33.16   &n;     NICAM        33.05   32.348  33.05           33.05&n; */
+DECL|macro|TEMIC_SET_PAL_I
+mdefine_line|#define TEMIC_SET_PAL_I         0x05
+DECL|macro|TEMIC_SET_PAL_DK
+mdefine_line|#define TEMIC_SET_PAL_DK        0x09
+DECL|macro|TEMIC_SET_PAL_L
+mdefine_line|#define TEMIC_SET_PAL_L         0x0a 
+singleline_comment|// SECAM ?
+DECL|macro|TEMIC_SET_PAL_L2
+mdefine_line|#define TEMIC_SET_PAL_L2        0x0b 
+singleline_comment|// change IF !
+DECL|macro|TEMIC_SET_PAL_BG
+mdefine_line|#define TEMIC_SET_PAL_BG        0x0c
+multiline_comment|/* tv tuner system standard selection for Philips FQ1216ME&n;   this value takes the low bits of control byte 2&n;   from datasheet &quot;1999 Nov 16&quot; (supersedes &quot;1999 Mar 23&quot;)&n;     standard &t;&t;BG&t;DK&t;I&t;L&t;L`&n;     picture carrier&t;38.90&t;38.90&t;38.90&t;38.90&t;33.95&n;     colour&t;&t;34.47&t;34.47&t;34.47&t;34.47&t;38.38&n;     sound 1&t;&t;33.40&t;32.40&t;32.90&t;32.40&t;40.45&n;     sound 2&t;&t;33.16&t;-&t;-&t;-&t;-&n;     NICAM&t;&t;33.05&t;33.05&t;32.35&t;33.05&t;39.80&n; */
+DECL|macro|PHILIPS_SET_PAL_I
+mdefine_line|#define PHILIPS_SET_PAL_I&t;0x01 /* Bit 2 always zero !*/
+DECL|macro|PHILIPS_SET_PAL_BGDK
+mdefine_line|#define PHILIPS_SET_PAL_BGDK&t;0x09
+DECL|macro|PHILIPS_SET_PAL_L2
+mdefine_line|#define PHILIPS_SET_PAL_L2&t;0x0a
+DECL|macro|PHILIPS_SET_PAL_L
+mdefine_line|#define PHILIPS_SET_PAL_L&t;0x0b&t;
+multiline_comment|/* system switching for Philips FI1216MF MK2&n;   from datasheet &quot;1996 Jul 09&quot;,&n; */
+DECL|macro|PHILIPS_MF_SET_BG
+mdefine_line|#define PHILIPS_MF_SET_BG&t;0x01 /* Bit 2 must be zero, Bit 3 is system output */
+DECL|macro|PHILIPS_MF_SET_PAL_L
+mdefine_line|#define PHILIPS_MF_SET_PAL_L&t;0x03
+DECL|macro|PHILIPS_MF_SET_PAL_L2
+mdefine_line|#define PHILIPS_MF_SET_PAL_L2&t;0x02
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|struct|tunertype
 r_struct
@@ -260,12 +305,13 @@ r_int
 r_int
 id|thresh1
 suffix:semicolon
-multiline_comment|/* frequency Range for UHF,VHF-L, VHF_H */
+multiline_comment|/*  band switch VHF_LO &lt;=&gt; VHF_HI  */
 DECL|member|thresh2
 r_int
 r_int
 id|thresh2
 suffix:semicolon
+multiline_comment|/*  band switch VHF_HI &lt;=&gt; UHF     */
 DECL|member|VHF_L
 r_int
 r_char
@@ -291,19 +337,7 @@ r_int
 r_int
 id|IFPCoff
 suffix:semicolon
-DECL|member|mode
-r_int
-r_char
-id|mode
-suffix:semicolon
-multiline_comment|/* mode change value (tested PHILIPS_SECAM only) */
-multiline_comment|/* 0x01 -&gt; ??? no change ??? */
-multiline_comment|/* 0x02 -&gt; PAL BDGHI / SECAM L */
-multiline_comment|/* 0x04 -&gt; ??? PAL others / SECAM others ??? */
-DECL|member|capability
-r_int
-id|capability
-suffix:semicolon
+multiline_comment|/* 622.4=16*38.90 MHz PAL, 732=16*45.75 NTSC */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;The floats in the tuner struct are computed at compile time&n; *&t;by gcc and cast back to integers. Thus we don&squot;t violate the&n; *&t;&quot;no float in kernel&quot; rule.&n; */
@@ -317,7 +351,7 @@ id|tuners
 op_assign
 (brace
 (brace
-l_string|&quot;Temic PAL&quot;
+l_string|&quot;Temic PAL (4002 FH5)&quot;
 comma
 id|TEMIC
 comma
@@ -418,8 +452,6 @@ comma
 l_int|0x8e
 comma
 l_int|623
-comma
-l_int|0x02
 )brace
 comma
 (brace
@@ -442,8 +474,6 @@ comma
 l_int|0x00
 comma
 l_int|0x00
-comma
-l_int|000
 )brace
 comma
 (brace
@@ -473,7 +503,7 @@ l_int|623
 )brace
 comma
 (brace
-l_string|&quot;Temic NTSC&quot;
+l_string|&quot;Temic NTSC (4032 FY5)&quot;
 comma
 id|TEMIC
 comma
@@ -499,7 +529,7 @@ l_int|732
 )brace
 comma
 (brace
-l_string|&quot;Temic PAL_I&quot;
+l_string|&quot;Temic PAL_I (4062 FY5)&quot;
 comma
 id|TEMIC
 comma
@@ -525,7 +555,7 @@ l_int|623
 )brace
 comma
 (brace
-l_string|&quot;Temic 4036 FY5 NTSC&quot;
+l_string|&quot;Temic NTSC (4036 FY5)&quot;
 comma
 id|TEMIC
 comma
@@ -684,7 +714,7 @@ l_int|608
 )brace
 comma
 (brace
-l_string|&quot;Temic 4006FH5&quot;
+l_string|&quot;Temic PAL_I (4006FH5)&quot;
 comma
 id|TEMIC
 comma
@@ -735,6 +765,239 @@ comma
 l_int|732
 )brace
 comma
+(brace
+l_string|&quot;Temic PAL_DK (4016 FY5)&quot;
+comma
+id|TEMIC
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|136.25
+comma
+l_int|16
+op_star
+l_float|456.25
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Philips NTSC_M (MK2)&quot;
+comma
+id|Philips
+comma
+id|NTSC
+comma
+l_int|16
+op_star
+l_float|160.00
+comma
+l_int|16
+op_star
+l_float|454.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|732
+)brace
+comma
+(brace
+l_string|&quot;Temic PAL_I (4066 FY5)&quot;
+comma
+id|TEMIC
+comma
+id|PAL_I
+comma
+l_int|16
+op_star
+l_float|169.00
+comma
+l_int|16
+op_star
+l_float|454.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Temic PAL* auto (4006 FN5)&quot;
+comma
+id|TEMIC
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|169.00
+comma
+l_int|16
+op_star
+l_float|454.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Temic PAL (4009 FR5)&quot;
+comma
+id|TEMIC
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|141.00
+comma
+l_int|16
+op_star
+l_float|464.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Temic NTSC (4039 FR5)&quot;
+comma
+id|TEMIC
+comma
+id|NTSC
+comma
+l_int|16
+op_star
+l_float|158.00
+comma
+l_int|16
+op_star
+l_float|453.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|732
+)brace
+comma
+(brace
+l_string|&quot;Temic PAL/SECAM multi (4046 FM5)&quot;
+comma
+id|TEMIC
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|169.00
+comma
+l_int|16
+op_star
+l_float|454.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Philips PAL_DK&quot;
+comma
+id|Philips
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|170.00
+comma
+l_int|16
+op_star
+l_float|450.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Philips PAL/SECAM multi (FQ1216ME)&quot;
+comma
+id|Philips
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|170.00
+comma
+l_int|16
+op_star
+l_float|450.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
 )brace
 suffix:semicolon
 DECL|macro|TUNERS
@@ -911,6 +1174,7 @@ l_int|3
 suffix:semicolon
 )brace
 macro_line|#endif
+singleline_comment|// Set tuner frequency,  freq in Units of 62.5kHz = 1/16MHz
 DECL|function|set_tv_freq
 r_static
 r_void
@@ -954,6 +1218,26 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|freq
+template_param
+l_int|890
+op_star
+l_int|16
+)paren
+(brace
+multiline_comment|/* FIXME: better do that chip-specific, but&n;&t;&t;   right now we don&squot;t have that in the config&n;&t;&t;   struct and this way is still better than no&n;&t;&t;   check at all */
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: TV freq out of range&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1008,42 +1292,187 @@ id|config
 op_assign
 id|tun-&gt;UHF
 suffix:semicolon
-macro_line|#if 1   
-singleline_comment|// Fix colorstandard mode change
-r_if
+multiline_comment|/* tv norm specific stuff for multi-norm tuners */
+r_switch
 c_cond
 (paren
 id|t-&gt;type
-op_eq
+)paren
+(brace
+r_case
 id|TUNER_PHILIPS_SECAM
-op_logical_and
+suffix:colon
+multiline_comment|/* 0x01 -&gt; ??? no change ??? */
+multiline_comment|/* 0x02 -&gt; PAL BDGHI / SECAM L */
+multiline_comment|/* 0x04 -&gt; ??? PAL others / SECAM others ??? */
+id|config
+op_and_assign
+op_complement
+l_int|0x02
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|t-&gt;mode
 )paren
 id|config
 op_or_assign
-id|tun-&gt;mode
+l_int|0x02
 suffix:semicolon
-r_else
+r_break
+suffix:semicolon
+r_case
+id|TUNER_TEMIC_4046FM5
+suffix:colon
 id|config
 op_and_assign
 op_complement
-id|tun-&gt;mode
+l_int|0x0f
 suffix:semicolon
-macro_line|#else
+r_switch
+c_cond
+(paren
+id|pal
+(braket
+l_int|0
+)braket
+)paren
+(brace
+r_case
+l_char|&squot;i&squot;
+suffix:colon
+r_case
+l_char|&squot;I&squot;
+suffix:colon
+id|config
+op_or_assign
+id|TEMIC_SET_PAL_I
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;d&squot;
+suffix:colon
+r_case
+l_char|&squot;D&squot;
+suffix:colon
+id|config
+op_or_assign
+id|TEMIC_SET_PAL_DK
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;l&squot;
+suffix:colon
+r_case
+l_char|&squot;L&squot;
+suffix:colon
+id|config
+op_or_assign
+id|TEMIC_SET_PAL_L
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;b&squot;
+suffix:colon
+r_case
+l_char|&squot;B&squot;
+suffix:colon
+r_case
+l_char|&squot;g&squot;
+suffix:colon
+r_case
+l_char|&squot;G&squot;
+suffix:colon
+r_default
+suffix:colon
+id|config
+op_or_assign
+id|TEMIC_SET_PAL_BG
+suffix:semicolon
+r_break
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+id|TUNER_PHILIPS_FQ1216ME
+suffix:colon
 id|config
 op_and_assign
 op_complement
-id|tun-&gt;mode
+l_int|0x0f
 suffix:semicolon
-macro_line|#endif
+r_switch
+c_cond
+(paren
+id|pal
+(braket
+l_int|0
+)braket
+)paren
+(brace
+r_case
+l_char|&squot;i&squot;
+suffix:colon
+r_case
+l_char|&squot;I&squot;
+suffix:colon
+id|config
+op_or_assign
+id|PHILIPS_SET_PAL_I
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;l&squot;
+suffix:colon
+r_case
+l_char|&squot;L&squot;
+suffix:colon
+id|config
+op_or_assign
+id|PHILIPS_SET_PAL_L
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;d&squot;
+suffix:colon
+r_case
+l_char|&squot;D&squot;
+suffix:colon
+r_case
+l_char|&squot;b&squot;
+suffix:colon
+r_case
+l_char|&squot;B&squot;
+suffix:colon
+r_case
+l_char|&squot;g&squot;
+suffix:colon
+r_case
+l_char|&squot;G&squot;
+suffix:colon
+id|config
+op_or_assign
+id|PHILIPS_SET_PAL_BGDK
+suffix:semicolon
+r_break
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Philips FI1216MK2 remark from specification :&n;&t; * for channel selection involving band switching, and to ensure&n;&t; * smooth tuning to the desired channel without causing&n;&t; * unnecessary charge pump action, it is recommended to consider&n;&t; * the difference between wanted channel frequency and the&n;&t; * current channel frequency.  Unnecessary charge pump action&n;&t; * will result in very low tuning voltage which may drive the&n;&t; * oscillator to extreme conditions.&n;&t; *&n;&t; * Progfou: specification says to send config data before&n;&t; * frequency in case (wanted frequency &lt; current frequency).&n;&t; */
 id|div
 op_assign
 id|freq
 op_plus
 id|tun-&gt;IFPCoff
 suffix:semicolon
-multiline_comment|/*&n;     * Philips FI1216MK2 remark from specification :&n;     * for channel selection involving band switching, and to ensure&n;     * smooth tuning to the desired channel without causing&n;     * unnecessary charge pump action, it is recommended to consider&n;     * the difference between wanted channel frequency and the&n;     * current channel frequency.  Unnecessary charge pump action&n;     * will result in very low tuning voltage which may drive the&n;     * oscillator to extreme conditions.&n;     */
-multiline_comment|/*&n;     * Progfou: specification says to send config data before&n;     * frequency in case (wanted frequency &lt; current frequency).&n;     */
 r_if
 c_cond
 (paren
@@ -1208,6 +1637,25 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|freq
+template_param
+l_int|108
+op_star
+l_int|16
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: radio freq out of range&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1916,11 +2364,6 @@ id|v
 op_assign
 id|arg
 suffix:semicolon
-id|t-&gt;freq
-op_assign
-op_star
-id|v
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1956,7 +2399,8 @@ c_func
 (paren
 id|client
 comma
-id|t-&gt;freq
+op_star
+id|v
 )paren
 suffix:semicolon
 )brace
@@ -1991,10 +2435,16 @@ c_func
 (paren
 id|client
 comma
-id|t-&gt;freq
+op_star
+id|v
 )paren
 suffix:semicolon
 )brace
+id|t-&gt;freq
+op_assign
+op_star
+id|v
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

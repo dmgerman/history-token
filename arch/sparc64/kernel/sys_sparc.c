@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc.c,v 1.47 2000/11/29 05:56:12 anton Exp $&n; * linux/arch/sparc64/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
+multiline_comment|/* $Id: sys_sparc.c,v 1.48 2001/02/13 01:16:44 davem Exp $&n; * linux/arch/sparc64/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

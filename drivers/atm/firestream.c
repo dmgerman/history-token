@@ -5255,7 +5255,7 @@ id|fp-&gt;n
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* Check if this gets going again if a pool ever runs out.  -- Yes, it&n;   does. I&squot;ve seen &quot;recieve abort: no buffers&quot; and things started&n;   working again after that...  -- REW */
+multiline_comment|/* Check if this gets going again if a pool ever runs out.  -- Yes, it&n;   does. I&squot;ve seen &quot;receive abort: no buffers&quot; and things started&n;   working again after that...  -- REW */
 DECL|function|top_off_fp
 r_static
 r_void

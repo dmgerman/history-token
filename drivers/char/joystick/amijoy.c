@@ -512,11 +512,7 @@ l_int|2
 comma
 l_int|2
 comma
-id|amijoy
-(braket
-id|Denise
-)braket
-"&quot;"
+l_string|&quot;amijoy [Denise]&quot;
 )paren
 )paren
 (brace
@@ -781,6 +777,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|amijoy_exit
 r_static
 r_void
 id|_exit
@@ -840,12 +837,14 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
+DECL|variable|amijoy_init
 id|module_init
 c_func
 (paren
 id|amijoy_init
 )paren
 suffix:semicolon
+DECL|variable|amijoy_exit
 id|module_exit
 c_func
 (paren

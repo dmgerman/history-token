@@ -13800,7 +13800,7 @@ id|vname
 id|MAXDEVNAME
 )braket
 suffix:semicolon
-multiline_comment|/* Set the Bridge&squot;s 32-bit PCI to XTalk&n;&t; * Direct Map register to the most useful&n;&t; * value we can determine.  Note that we&n;&t; * must use a single xid for all of:&n;&t; *      direct-mapped 32-bit DMA accesses&n;&t; *      direct-mapped 64-bit DMA accesses&n;&t; *      DMA accesses through the PMU&n;&t; *      interrupts&n;&t; * This is the only way to guarantee that&n;&t; * completion interrupts will reach a CPU&n;&t; * after all DMA data has reached memory.&n;&t; * (Of course, there may be a few special&n;&t; * drivers/controlers that explicitly manage&n;&t; * this ordering problem.)&n;&t; */
+multiline_comment|/* Set the Bridge&squot;s 32-bit PCI to XTalk&n;&t; * Direct Map register to the most useful&n;&t; * value we can determine.  Note that we&n;&t; * must use a single xid for all of:&n;&t; *      direct-mapped 32-bit DMA accesses&n;&t; *      direct-mapped 64-bit DMA accesses&n;&t; *      DMA accesses through the PMU&n;&t; *      interrupts&n;&t; * This is the only way to guarantee that&n;&t; * completion interrupts will reach a CPU&n;&t; * after all DMA data has reached memory.&n;&t; * (Of course, there may be a few special&n;&t; * drivers/controllers that explicitly manage&n;&t; * this ordering problem.)&n;&t; */
 id|cnodeid
 op_assign
 l_int|0

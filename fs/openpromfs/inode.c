@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: inode.c,v 1.13 2000/08/12 13:25:46 davem Exp $&n; * openpromfs.c: /proc/openprom handling routines&n; *&n; * Copyright (C) 1996-1999 Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998      Eddie C. Dost  (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: inode.c,v 1.14 2001/02/13 01:17:17 davem Exp $&n; * openpromfs.c: /proc/openprom handling routines&n; *&n; * Copyright (C) 1996-1999 Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998      Eddie C. Dost  (ecd@skynet.be)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

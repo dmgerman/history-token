@@ -16,17 +16,8 @@ DECL|macro|LVM_HD_NAME
 macro_line|#undef LVM_HD_NAME /* display nice names in /proc/partitions */
 multiline_comment|/* lots of debugging output (see driver source)&n;   #define DEBUG_LVM_GET_INFO&n;   #define DEBUG&n;   #define DEBUG_MAP&n;   #define DEBUG_MAP_SIZE&n;   #define DEBUG_IOCTL&n;   #define DEBUG_READ&n;   #define DEBUG_GENDISK&n;   #define DEBUG_VG_CREATE&n;   #define DEBUG_LVM_BLK_OPEN&n;   #define DEBUG_KFREE&n; */
 macro_line|#endif&t;&t;&t;&t;/* #ifdef __KERNEL__ */
-macro_line|#ifndef __KERNEL__
-DECL|macro|__KERNEL__
-mdefine_line|#define __KERNEL__
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-DECL|macro|__KERNEL__
-macro_line|#undef __KERNEL__
-macro_line|#else
-macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
-macro_line|#endif&t;&t;&t;&t;/* #ifndef __KERNEL__ */
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#ifdef __KERNEL__

@@ -6,6 +6,7 @@ multiline_comment|/*&n; * tabs should be 4 spaces, in vi(m): set tabstop=4&n; *&
 multiline_comment|/*&n; * About the documentation&n; *&n; * I don&squot;t know if the chips all are OK, but the documentation is buggy. &squot;cause&n; * I don&squot;t have all the cips myself, there&squot;s a lot I cannot verify. I&squot;ll try to&n; * keep track of my latest insights about his here. If you have additional info,&n; * please enlighten me (fokkensr@vertis.nl)!&n; *&n; * I had the impression that ES1688 also has 6 bit master volume control. The&n; * documentation about ES1888 (rev C, october &squot;95) claims that ES1888 has&n; * the following features ES1688 doesn&squot;t have:&n; * - 6 bit master volume&n; * - Full Duplex&n; * So ES1688 apparently doesn&squot;t have 6 bit master volume control, but the&n; * ES1688 does have RECLEV control. Makes me wonder: does ES688 have it too?&n; * Without RECLEV ES688 won&squot;t be much fun I guess.&n; *&n; * From the ES1888 (rev C, october &squot;95) documentation I got the impression&n; * that registers 0x68 to 0x6e don&squot;t exist which means: no recording volume&n; * controls. To my surprise the ES888 documentation (1/14/96) claims that&n; * ES888 does have these record mixer registers, but that ES1888 doesn&squot;t have&n; * 0x69 and 0x6b. So the rest should be there.&n; *&n; * I&squot;m trying to get ES1887 Full Duplex. Audio 2 is playback only, while Audio 2&n; * is both record and playback. I think I should use Audio 2 for all playback.&n; *&n; * The documentation is an adventure: it&squot;s close but not fully accurate. I&n; * found out that after a reset some registers are *NOT* reset, though the&n; * docs say the would be. Interresting ones are 0x7f, 0x7d and 0x7a. They are&n; * related to the Audio 2 channel. I also was suprised about the consequenses&n; * of writing 0x00 to 0x7f (which should be done by reset): The ES1887 moves&n; * into ES1888 mode. This means that it claims IRQ 11, which happens to be my&n; * ISDN adapter. Needless to say it no longer worked. I now understand why&n; * after rebooting 0x7f already was 0x05, the value of my choice: the BIOS&n; * did it.&n; *&n; * Oh, and this is another trap: in ES1887 docs mixer register 0x70 is decribed&n; * as if it&squot;s exactly the same as register 0xa1. This is *NOT* true. The&n; * description of 0x70 in ES1869 docs is accurate however.&n; * Well, the assumption about ES1869 was wrong: register 0x70 is very much&n; * like register 0xa1, except that bit 7 is allways 1, whatever you want&n; * it to be.&n; *&n; * When using audio 2 mixer register 0x72 seems te be meaningless. Only 0xa2&n; * has effect.&n; *&n; * Software reset not being able to reset all registers is great! Especially&n; * the fact that register 0x78 isn&squot;t reset is great when you wanna change back&n; * to single dma operation (simplex): audio 2 is still operation, and uses the&n; * same dma as audio 1: your ess changes into a funny echo machine.&n; *&n; * Received the new that ES1688 is detected as a ES1788. Did some thinking:&n; * the ES1887 detection scheme suggests in step 2 to try if bit 3 of register&n; * 0x64 can be changed. This is inaccurate, first I inverted the * check: &quot;If&n; * can be modified, it&squot;s a 1688&quot;, which lead to a correct detection&n; * of my ES1887. It resulted however in bad detection of 1688 (reported by mail)&n; * and 1868 (if no PnP detection first): they result in a 1788 being detected.&n; * I don&squot;t have docs on 1688, but I do have docs on 1868: The documentation is&n; * probably inaccurate in the fact that I should check bit 2, not bit 3. This&n; * is what I do now.&n; */
 multiline_comment|/*&n; * About recognition of ESS chips&n; *&n; * The distinction of ES688, ES1688, ES1788, ES1887 and ES1888 is described in&n; * a (preliminary ??) datasheet on ES1887. It&squot;s aim is to identify ES1887, but&n; * during detection the text claims that &quot;this chip may be ...&quot; when a step&n; * fails. This scheme is used to distinct between the above chips.&n; * It appears however that some PnP chips like ES1868 are recognized as ES1788&n; * by the ES1887 detection scheme. These PnP chips can be detected in another&n; * way however: ES1868, ES1869 and ES1878 can be recognized (full proof I think)&n; * by repeatedly reading mixer register 0x40. This is done by ess_identify in&n; * sb_common.c.&n; * This results in the following detection steps:&n; * - distinct between ES688 and ES1688+ (as always done in this driver)&n; *   if ES688 we&squot;re ready&n; * - try to detect ES1868, ES1869 or ES1878&n; *   if successful we&squot;re ready&n; * - try to detect ES1888, ES1887 or ES1788&n; *   if successful we&squot;re ready&n; * - Dunno. Must be 1688. Will do in general&n; *&n; * About RECLEV support:&n; *&n; * The existing ES1688 support didn&squot;t take care of the ES1688+ recording&n; * levels very well. Whenever a device was selected (recmask) for recording&n; * it&squot;s recording level was loud, and it couldn&squot;t be changed. The fact that&n; * internal register 0xb4 could take care of RECLEV, didn&squot;t work meaning until&n; * it&squot;s value was restored every time the chip was reset; this reset the&n; * value of 0xb4 too. I guess that&squot;s what 4front also had (have?) trouble with.&n; *&n; * About ES1887 support:&n; *&n; * The ES1887 has separate registers to control the recording levels, for all&n; * inputs. The ES1887 specific software makes these levels the same as their&n; * corresponding playback levels, unless recmask says they aren&squot;t recorded. In&n; * the latter case the recording volumes are 0.&n; * Now recording levels of inputs can be controlled, by changing the playback&n; * levels. Futhermore several devices can be recorded together (which is not&n; * possible with the ES1688.&n; * Besides the separate recording level control for each input, the common&n; * recordig level can also be controlled by RECLEV as described above.&n; *&n; * Not only ES1887 have this recording mixer. I know the following from the&n; * documentation:&n; * ES688&t;no&n; * ES1688&t;no&n; * ES1868&t;no&n; * ES1869&t;yes&n; * ES1878&t;no&n; * ES1879&t;yes&n; * ES1888&t;no/yes&t;Contradicting documentation; most recent: yes&n; * ES1946&t;yes&t;&t;This is a PCI chip; not handled by this driver&n; */
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;sb_mixer.h&quot;
 macro_line|#include &quot;sb.h&quot;
@@ -1633,15 +1634,13 @@ id|dev
 op_member_access_from_pointer
 id|devc
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sb_dsp_reset
@@ -1650,9 +1649,12 @@ c_func
 id|devc
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3430,15 +3432,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -3495,9 +3495,12 @@ c_func
 l_int|20
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6990,15 +6993,13 @@ id|value
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -7071,9 +7072,12 @@ l_int|20
 suffix:semicolon
 )brace
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7100,15 +7104,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -7170,9 +7172,12 @@ l_int|20
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

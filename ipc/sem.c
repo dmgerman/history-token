@@ -1781,7 +1781,7 @@ r_if
 c_cond
 (paren
 id|semid
-OG
+op_ge
 id|sem_ids.size
 )paren
 (brace
@@ -4044,10 +4044,9 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|queue.status
+id|queue.prev
 op_ne
-op_minus
-id|EIDRM
+l_int|NULL
 )paren
 (brace
 id|BUG

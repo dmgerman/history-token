@@ -1932,7 +1932,7 @@ id|kgs
 comma
 id|pkgs
 suffix:semicolon
-macro_line|#if defined(DEBUG) &amp;&amp; (defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1 || defined(CONFIG_IA64_GENERIC))) &amp;&amp; defined(BRINGUP)
+macro_line|#if defined(DEBUG) &amp;&amp; (defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)) &amp;&amp; defined(BRINGUP)
 id|printf
 c_func
 (paren

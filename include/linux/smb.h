@@ -220,32 +220,6 @@ id|f_blocks
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|smb_dirent
-r_struct
-id|smb_dirent
-(brace
-DECL|member|attr
-r_struct
-id|smb_fattr
-id|attr
-suffix:semicolon
-DECL|member|f_pos
-r_int
-id|f_pos
-suffix:semicolon
-DECL|member|len
-r_int
-id|len
-suffix:semicolon
-DECL|member|name
-id|__u8
-id|name
-(braket
-id|SMB_MAXNAMELEN
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|enum|smb_conn_state
 r_enum
 id|smb_conn_state
@@ -274,13 +248,13 @@ DECL|macro|SMB_INOP
 mdefine_line|#define SMB_INOP(inode)      (&amp;(inode-&gt;u.smbfs_i))
 DECL|macro|SMB_HEADER_LEN
 mdefine_line|#define SMB_HEADER_LEN   37     /* includes everything up to, but not&n;                                 * including smb_bcc */
-DECL|macro|SMB_DEF_MAX_XMIT
-mdefine_line|#define SMB_DEF_MAX_XMIT 32768
 DECL|macro|SMB_INITIAL_PACKET_SIZE
-mdefine_line|#define SMB_INITIAL_PACKET_SIZE 4000
-multiline_comment|/* Allocate max. 1 page */
-DECL|macro|TRANS2_MAX_TRANSFER
-mdefine_line|#define TRANS2_MAX_TRANSFER (4096-17)
+mdefine_line|#define SMB_INITIAL_PACKET_SIZE&t;&t;4000
+DECL|macro|SMB_MAX_PACKET_SIZE
+mdefine_line|#define SMB_MAX_PACKET_SIZE&t;&t;32768
+multiline_comment|/* reserve this much space for trans2 parameters. Shouldn&squot;t have to be more&n;   than 10 or so, but OS/2 seems happier like this. */
+DECL|macro|SMB_TRANS2_MAX_PARAM
+mdefine_line|#define SMB_TRANS2_MAX_PARAM 64
 macro_line|#endif
 macro_line|#endif
 eof

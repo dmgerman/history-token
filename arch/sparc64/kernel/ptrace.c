@@ -1,4 +1,4 @@
-multiline_comment|/* ptrace.c: Sparc process tracing support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *&n; * Based upon code written by Ross Biro, Linus Torvalds, Bob Manson,&n; * and David Mosberger.&n; *&n; * Added Linux support -miguel (wierd, eh?, the orignal code was meant&n; * to emulate SunOS).&n; */
+multiline_comment|/* ptrace.c: Sparc process tracing support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *&n; * Based upon code written by Ross Biro, Linus Torvalds, Bob Manson,&n; * and David Mosberger.&n; *&n; * Added Linux support -miguel (weird, eh?, the orignal code was meant&n; * to emulate SunOS).&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: socksys.c,v 1.17 2000/10/19 00:49:53 davem Exp $&n; * socksys.c: /dev/inet/ stuff for Solaris emulation.&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997, 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; */
+multiline_comment|/* $Id: socksys.c,v 1.18 2001/02/13 01:16:44 davem Exp $&n; * socksys.c: /dev/inet/ stuff for Solaris emulation.&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997, 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

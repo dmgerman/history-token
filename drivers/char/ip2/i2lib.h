@@ -247,7 +247,7 @@ singleline_comment|// The outgoing ring-buffer: Holds Data and command packets. 
 singleline_comment|// though these are in the channel structure, the channel is also written
 singleline_comment|// here, the easier to send it to the fifo when ready. HOWEVER, individual
 singleline_comment|// packets here are NOT padded to even length: the routines for writing
-singleline_comment|// blocks to the the fifo will pad to even byte counts.
+singleline_comment|// blocks to the fifo will pad to even byte counts.
 singleline_comment|//
 DECL|member|Obuf
 id|UCHAR

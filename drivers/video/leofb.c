@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: leofb.c,v 1.11 2000/07/26 23:02:52 davem Exp $&n; * leofb.c: Leo (ZX) 24/8bit frame buffer driver&n; *&n; * Copyright (C) 1996-1999 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1997 Michal Rehacek (Michal.Rehacek@st.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: leofb.c,v 1.12 2001/02/13 01:17:15 davem Exp $&n; * leofb.c: Leo (ZX) 24/8bit frame buffer driver&n; *&n; * Copyright (C) 1996-1999 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1997 Michal Rehacek (Michal.Rehacek@st.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

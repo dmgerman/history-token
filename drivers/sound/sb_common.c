@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * sound/sb_common.c&n; *&n; * Common routines for Sound Blaster compatible cards.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Daniel J. Rodriksson: Modified sbintr to handle 8 and 16 bit interrupts&n; *                       for full duplex support ( only sb16 by now )&n; * Rolf Fokkens:&t; Added (BETA?) support for ES1887 chips.&n; * (fokkensr@vertis.nl)&t; Which means: You can adjust the recording levels.&n; *&n; * 2000/01/18 - separated sb_card and sb_common -&n; * Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; *&n; * 2000/09/18 - got rid of attach_uart401&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; */
+multiline_comment|/*&n; * sound/sb_common.c&n; *&n; * Common routines for Sound Blaster compatible cards.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Daniel J. Rodriksson: Modified sbintr to handle 8 and 16 bit interrupts&n; *                       for full duplex support ( only sb16 by now )&n; * Rolf Fokkens:&t; Added (BETA?) support for ES1887 chips.&n; * (fokkensr@vertis.nl)&t; Which means: You can adjust the recording levels.&n; *&n; * 2000/01/18 - separated sb_card and sb_common -&n; * Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; *&n; * 2000/09/18 - got rid of attach_uart401&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * 2001/01/26 - replaced CLI/STI with spinlocks&n; * Chris Rankin &lt;rankinc@zipworld.com.au&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;sound_firmware.h&quot;
 macro_line|#include &quot;mpu401.h&quot;
@@ -127,6 +128,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* I/O relocation bits */
+DECL|variable|jazz16_lock
+r_static
+id|spinlock_t
+id|jazz16_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/*&n; * Logitech Soundman Wave specific initialization code&n; */
 macro_line|#ifdef SMW_MIDI0001_INCLUDED
 macro_line|#include &quot;smw-midi0001.h&quot;
@@ -797,15 +805,13 @@ l_string|&quot;Entered dsp_get_vers()&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|devc-&gt;major
@@ -878,6 +884,15 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|devc-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|DDB
 c_func
 (paren
@@ -890,12 +905,6 @@ id|devc-&gt;major
 comma
 id|devc-&gt;minor
 )paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1259,15 +1268,13 @@ op_assign
 id|hw_config-&gt;io_base
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Magic wake up sequence by writing to 0x201 (aka Joystick port)&n;&t; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -1300,9 +1307,12 @@ comma
 l_int|0x201
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1882,6 +1892,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|devc-&gt;lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 id|devc-&gt;type
 op_assign
 id|hw_config-&gt;card_subtype
@@ -1969,9 +1983,17 @@ c_cond
 id|devc-&gt;sbmo.acer
 )paren
 (brace
-id|cli
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|inb
@@ -2062,9 +2084,13 @@ op_plus
 l_int|0x00
 )paren
 suffix:semicolon
-id|sti
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2354,16 +2380,8 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|detected_devc
 comma
-(paren
-r_char
-op_star
-)paren
 id|devc
 comma
 r_sizeof
@@ -3727,15 +3745,13 @@ comma
 id|value
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -3786,9 +3802,12 @@ c_func
 l_int|20
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3831,15 +3850,13 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -3880,9 +3897,12 @@ c_func
 l_int|20
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3976,17 +3996,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* NOT the SB card? */
 id|outb
 c_func
 (paren
@@ -4028,9 +4047,12 @@ id|base
 )paren
 suffix:semicolon
 multiline_comment|/* Data */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4061,17 +4083,16 @@ r_int
 r_char
 id|val
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* NOT the SB card? */
 id|outb
 c_func
 (paren
@@ -4111,9 +4132,12 @@ id|base
 )paren
 suffix:semicolon
 multiline_comment|/* Data */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4729,15 +4753,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Magic wake up sequence by writing to 0x201 (aka Joystick port)&n;&t; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -4764,9 +4786,12 @@ comma
 l_int|0x201
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jazz16_lock
+comma
 id|flags
 )paren
 suffix:semicolon
