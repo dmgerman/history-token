@@ -94,6 +94,12 @@ id|bus_attribute
 op_star
 id|bus_attrs
 suffix:semicolon
+DECL|member|dev_attrs
+r_struct
+id|device_attribute
+op_star
+id|dev_attrs
+suffix:semicolon
 DECL|member|match
 r_int
 (paren
