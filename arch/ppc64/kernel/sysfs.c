@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/lppaca.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 r_static
 id|DEFINE_PER_CPU
 c_func
@@ -1667,15 +1668,12 @@ id|cpu
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;&t; * For now, we just see if the system supports making&n;&t;&t; * the RTAS calls for CPU hotplug.  But, there may be a&n;&t;&t; * more comprehensive way to do this for an individual&n;&t;&t; * CPU.  For instance, the boot cpu might never be valid&n;&t;&t; * for hotplugging.&n;&t;&t; */
-macro_line|#ifdef CONFIG_HOTPLUG_CPU
 r_if
 c_cond
 (paren
-id|systemcfg-&gt;platform
-op_ne
-id|PLATFORM_PSERIES_LPAR
+op_logical_neg
+id|ppc_md.cpu_die
 )paren
-macro_line|#endif
 id|c-&gt;no_control
 op_assign
 l_int|1
