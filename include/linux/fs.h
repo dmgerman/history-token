@@ -1545,6 +1545,7 @@ r_void
 op_star
 id|private_data
 suffix:semicolon
+macro_line|#ifdef CONFIG_EPOLL
 multiline_comment|/* Used by fs/eventpoll.c to link all the hooks to this file */
 DECL|member|f_ep_links
 r_struct
@@ -1555,6 +1556,7 @@ DECL|member|f_ep_lock
 id|spinlock_t
 id|f_ep_lock
 suffix:semicolon
+macro_line|#endif /* #ifdef CONFIG_EPOLL */
 DECL|member|f_mapping
 r_struct
 id|address_space
