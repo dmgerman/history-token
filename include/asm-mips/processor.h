@@ -345,6 +345,8 @@ DECL|typedef|mm_segment_t
 )brace
 id|mm_segment_t
 suffix:semicolon
+DECL|macro|ARCH_MIN_TASKALIGN
+mdefine_line|#define ARCH_MIN_TASKALIGN&t;8
 multiline_comment|/*&n; * If you change thread_struct remember to change the #defines below too!&n; */
 DECL|struct|thread_struct
 r_struct

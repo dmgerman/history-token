@@ -6,10 +6,81 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 multiline_comment|/*&n; * Shortcut&n; */
+macro_line|#ifdef CONFIG_SOC_AU1500
 DECL|macro|INTA
-mdefine_line|#define INTA&t;AU1000_PCI_INTA
+mdefine_line|#define INTA AU1000_PCI_INTA
 DECL|macro|INTB
-mdefine_line|#define INTB&t;AU1000_PCI_INTB
+mdefine_line|#define INTB AU1000_PCI_INTB
+DECL|macro|INTC
+mdefine_line|#define INTC AU1000_PCI_INTC
+DECL|macro|INTD
+mdefine_line|#define INTD AU1000_PCI_INTD
+macro_line|#endif
+macro_line|#ifdef CONFIG_SOC_AU1550
+DECL|macro|INTA
+mdefine_line|#define INTA AU1550_PCI_INTA
+DECL|macro|INTB
+mdefine_line|#define INTB AU1550_PCI_INTB
+DECL|macro|INTC
+mdefine_line|#define INTC AU1550_PCI_INTC
+DECL|macro|INTD
+mdefine_line|#define INTD AU1550_PCI_INTD
+macro_line|#endif
+DECL|macro|INTX
+mdefine_line|#define INTX    0xFF /* not valid */
+macro_line|#ifdef CONFIG_MIPS_DB1500
+DECL|variable|__initdata
+r_static
+r_char
+id|irq_tab_alchemy
+(braket
+)braket
+(braket
+l_int|5
+)braket
+id|__initdata
+op_assign
+(brace
+(braket
+l_int|12
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTA
+comma
+id|INTX
+comma
+id|INTX
+comma
+id|INTX
+)brace
+comma
+multiline_comment|/* IDSEL 12 - HPT371   */
+(braket
+l_int|13
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTA
+comma
+id|INTB
+comma
+id|INTC
+comma
+id|INTD
+)brace
+comma
+multiline_comment|/* IDSEL 13 - PCI slot */
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_BOSPORUS
 DECL|variable|__initdata
 r_static
 r_char
@@ -32,13 +103,14 @@ l_int|1
 comma
 id|INTA
 comma
-id|INTA
+id|INTB
 comma
-id|INTA
+id|INTX
 comma
-id|INTA
+id|INTX
 )brace
 comma
+multiline_comment|/* IDSEL 11 - miniPCI  */
 (braket
 l_int|12
 )braket
@@ -49,14 +121,14 @@ l_int|1
 comma
 id|INTA
 comma
-id|INTA
+id|INTX
 comma
-id|INTA
+id|INTX
 comma
-id|INTA
+id|INTX
 )brace
 comma
-macro_line|#if defined( CONFIG_SOC_AU1550 )
+multiline_comment|/* IDSEL 12 - SN1741   */
 (braket
 l_int|13
 )braket
@@ -65,17 +137,263 @@ op_assign
 op_minus
 l_int|1
 comma
-id|INTB
+id|INTA
 comma
 id|INTB
 comma
-id|INTB
+id|INTC
 comma
-id|INTB
+id|INTD
 )brace
-macro_line|#endif
+comma
+multiline_comment|/* IDSEL 13 - PCI slot */
 )brace
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_MIRAGE
+DECL|variable|__initdata
+r_static
+r_char
+id|irq_tab_alchemy
+(braket
+)braket
+(braket
+l_int|5
+)braket
+id|__initdata
+op_assign
+(brace
+(braket
+l_int|11
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTD
+comma
+id|INTX
+comma
+id|INTX
+comma
+id|INTX
+)brace
+comma
+multiline_comment|/* IDSEL 11 - SMI VGX */
+(braket
+l_int|12
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTX
+comma
+id|INTX
+comma
+id|INTC
+comma
+id|INTX
+)brace
+comma
+multiline_comment|/* IDSEL 12 - PNX1300 */
+(braket
+l_int|13
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTA
+comma
+id|INTB
+comma
+id|INTX
+comma
+id|INTX
+)brace
+comma
+multiline_comment|/* IDSEL 13 - miniPCI */
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_DB1550
+DECL|variable|__initdata
+r_static
+r_char
+id|irq_tab_alchemy
+(braket
+)braket
+(braket
+l_int|5
+)braket
+id|__initdata
+op_assign
+(brace
+(braket
+l_int|11
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTC
+comma
+id|INTX
+comma
+id|INTX
+comma
+id|INTX
+)brace
+comma
+multiline_comment|/* IDSEL 11 - on-board HPT371    */
+(braket
+l_int|12
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTB
+comma
+id|INTC
+comma
+id|INTD
+comma
+id|INTA
+)brace
+comma
+multiline_comment|/* IDSEL 12 - PCI slot 2 (left)  */
+(braket
+l_int|13
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTA
+comma
+id|INTB
+comma
+id|INTC
+comma
+id|INTD
+)brace
+comma
+multiline_comment|/* IDSEL 13 - PCI slot 1 (right) */
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_PB1500
+DECL|variable|__initdata
+r_static
+r_char
+id|irq_tab_alchemy
+(braket
+)braket
+(braket
+l_int|5
+)braket
+id|__initdata
+op_assign
+(brace
+(braket
+l_int|12
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTA
+comma
+id|INTX
+comma
+id|INTX
+comma
+id|INTX
+)brace
+comma
+multiline_comment|/* IDSEL 12 - HPT370   */
+(braket
+l_int|13
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTA
+comma
+id|INTB
+comma
+id|INTC
+comma
+id|INTD
+)brace
+comma
+multiline_comment|/* IDSEL 13 - PCI slot */
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_PB1550
+DECL|variable|__initdata
+r_static
+r_char
+id|irq_tab_alchemy
+(braket
+)braket
+(braket
+l_int|5
+)braket
+id|__initdata
+op_assign
+(brace
+(braket
+l_int|12
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTB
+comma
+id|INTC
+comma
+id|INTD
+comma
+id|INTA
+)brace
+comma
+multiline_comment|/* IDSEL 12 - PCI slot 2 (left)  */
+(braket
+l_int|13
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+id|INTA
+comma
+id|INTB
+comma
+id|INTC
+comma
+id|INTD
+)brace
+comma
+multiline_comment|/* IDSEL 13 - PCI slot 1 (right) */
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|function|pcibios_map_irq
 r_int
 id|__init

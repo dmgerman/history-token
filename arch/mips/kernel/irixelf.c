@@ -5160,7 +5160,7 @@ id|psinfo.pr_sid
 op_assign
 id|prstatus.pr_sid
 op_assign
-id|current-&gt;session
+id|current-&gt;signal-&gt;session
 suffix:semicolon
 id|prstatus.pr_utime.tv_sec
 op_assign

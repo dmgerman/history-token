@@ -118,6 +118,8 @@ DECL|macro|TIF_SIGPENDING
 mdefine_line|#define TIF_SIGPENDING&t;&t;2&t;/* signal pending */
 DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
+DECL|macro|TIF_SYSCALL_AUDIT
+mdefine_line|#define TIF_SYSCALL_AUDIT&t;4&t;/* syscall auditing active */
 DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG
@@ -132,14 +134,16 @@ DECL|macro|_TIF_SIGPENDING
 mdefine_line|#define _TIF_SIGPENDING&t;&t;(1&lt;&lt;TIF_SIGPENDING)
 DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
+DECL|macro|_TIF_SYSCALL_AUDIT
+mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1&lt;&lt;TIF_SYSCALL_AUDIT)
 DECL|macro|_TIF_USEDFPU
 mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_WORK_MASK
-mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000fffe&t;/* work to do on&n;                                                   interrupt/exception return */
+mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000ffef&t;/* work to do on&n;                                                   interrupt/exception return */
 DECL|macro|_TIF_ALLWORK_MASK
-mdefine_line|#define _TIF_ALLWORK_MASK&t;0x8000fffe&t;/* work to do on any return to&n;                                                   u-space */
+mdefine_line|#define _TIF_ALLWORK_MASK&t;0x8000ffff&t;/* work to do on any return to&n;                                                   u-space */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_THREAD_INFO_H */
 eof

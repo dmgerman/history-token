@@ -171,17 +171,22 @@ op_assign
 id|IO_PORT_RESOURCE_END
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_8250
-id|vr41xx_dsiu_init
+id|vr41xx_select_siu_interface
 c_func
 (paren
+id|SIU_RS232C
+comma
+id|IRDA_NONE
 )paren
 suffix:semicolon
 id|vr41xx_siu_init
 c_func
 (paren
-id|SIU_RS232C
-comma
-l_int|0
+)paren
+suffix:semicolon
+id|vr41xx_dsiu_init
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -352,7 +352,6 @@ id|csum
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented&n; */
 DECL|function|csum_tcpudp_nofold
 r_static
 r_inline

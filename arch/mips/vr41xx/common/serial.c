@@ -10,14 +10,8 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-multiline_comment|/* VR4111 and VR4121 SIU Registers */
-DECL|macro|SIURB_TYPE1
-mdefine_line|#define SIURB_TYPE1&t;&t;KSEG1ADDR(0x0c000000)
 DECL|macro|SIUIRSEL_TYPE1
 mdefine_line|#define SIUIRSEL_TYPE1&t;&t;KSEG1ADDR(0x0c000008)
-multiline_comment|/* VR4122, VR4131 and VR4133 SIU Registers */
-DECL|macro|SIURB_TYPE2
-mdefine_line|#define SIURB_TYPE2&t;&t;KSEG1ADDR(0x0f000800)
 DECL|macro|SIUIRSEL_TYPE2
 mdefine_line|#define SIUIRSEL_TYPE2&t;&t;KSEG1ADDR(0x0f000808)
 DECL|macro|USE_RS232C
@@ -38,15 +32,19 @@ DECL|macro|TMICTX
 mdefine_line|#define TMICTX&t;&t;&t;0x10
 DECL|macro|TMICMODE
 mdefine_line|#define TMICMODE&t;&t;0x20
+DECL|macro|SIU_BASE_TYPE1
+mdefine_line|#define SIU_BASE_TYPE1&t;&t;0x0c000000UL&t;/* VR4111 and VR4121 */
+DECL|macro|SIU_BASE_TYPE2
+mdefine_line|#define SIU_BASE_TYPE2&t;&t;0x0f000800UL&t;/* VR4122, VR4131 and VR4133 */
+DECL|macro|SIU_SIZE
+mdefine_line|#define SIU_SIZE&t;&t;0x8UL
 DECL|macro|SIU_BASE_BAUD
 mdefine_line|#define SIU_BASE_BAUD&t;&t;1152000
-multiline_comment|/* VR4122 and VR4131 DSIU Registers */
-DECL|macro|DSIURB
-mdefine_line|#define DSIURB&t;&t;&t;KSEG1ADDR(0x0f000820)
-DECL|macro|MDSIUINTREG
-mdefine_line|#define MDSIUINTREG&t;&t;KSEG1ADDR(0x0f000096)
-DECL|macro|INTDSIU
-mdefine_line|#define INTDSIU&t;&t;0x0800
+multiline_comment|/* VR4122, VR4131 and VR4133 DSIU Registers */
+DECL|macro|DSIU_BASE
+mdefine_line|#define DSIU_BASE&t;&t;0x0f000820UL
+DECL|macro|DSIU_SIZE
+mdefine_line|#define DSIU_SIZE&t;&t;0x8UL
 DECL|macro|DSIU_BASE_BAUD
 mdefine_line|#define DSIU_BASE_BAUD&t;&t;1152000
 DECL|variable|vr41xx_serial_ports
@@ -55,19 +53,19 @@ id|vr41xx_serial_ports
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|vr41xx_siu_ifselect
+DECL|function|vr41xx_select_siu_interface
 r_void
-id|vr41xx_siu_ifselect
+id|vr41xx_select_siu_interface
 c_func
 (paren
-r_int
+id|siu_interface_t
 id|interface
 comma
-r_int
+id|irda_module_t
 id|module
 )paren
 (brace
-id|u16
+r_uint16
 id|val
 op_assign
 id|USE_RS232C
@@ -114,6 +112,17 @@ op_assign
 id|IRDA_MODULE_HP
 suffix:semicolon
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SIU: unknown IrDA module&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 id|val
@@ -169,8 +178,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Unexpected CPU of NEC VR4100 series&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;SIU: unsupported CPU of NEC VR4100 series&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -183,24 +192,12 @@ id|__init
 id|vr41xx_siu_init
 c_func
 (paren
-r_int
-id|interface
-comma
-r_int
-id|module
+r_void
 )paren
 (brace
 r_struct
 id|uart_port
 id|port
-suffix:semicolon
-id|vr41xx_siu_ifselect
-c_func
-(paren
-id|interface
-comma
-id|module
-)paren
 suffix:semicolon
 id|memset
 c_func
@@ -223,6 +220,8 @@ suffix:semicolon
 id|port.uartclk
 op_assign
 id|SIU_BASE_BAUD
+op_star
+l_int|16
 suffix:semicolon
 id|port.irq
 op_assign
@@ -230,6 +229,8 @@ id|SIU_IRQ
 suffix:semicolon
 id|port.flags
 op_assign
+id|UPF_RESOURCES
+op_or
 id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_SKIP_TEST
@@ -246,13 +247,9 @@ suffix:colon
 r_case
 id|CPU_VR4121
 suffix:colon
-id|port.membase
+id|port.mapbase
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|SIURB_TYPE1
+id|SIU_BASE_TYPE1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -265,25 +262,22 @@ suffix:colon
 r_case
 id|CPU_VR4133
 suffix:colon
-id|port.membase
+id|port.mapbase
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|SIURB_TYPE2
+id|SIU_BASE_TYPE2
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;Unexpected CPU of NEC VR4100 series&quot;
+id|KERN_ERR
+l_string|&quot;SIU: unsupported CPU of NEC VR4100 series&bslash;n&quot;
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 )brace
 id|port.regshift
@@ -294,6 +288,24 @@ id|port.iotype
 op_assign
 id|UPIO_MEM
 suffix:semicolon
+id|port.membase
+op_assign
+id|ioremap
+c_func
+(paren
+id|port.mapbase
+comma
+id|SIU_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|port.membase
+op_ne
+l_int|NULL
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -303,16 +315,10 @@ c_func
 op_amp
 id|port
 )paren
-op_ne
+op_eq
 l_int|0
 )paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;SIU setup failed!&bslash;n&quot;
-)paren
-suffix:semicolon
+(brace
 id|vr41xx_supply_clock
 c_func
 (paren
@@ -321,6 +327,17 @@ id|SIU_CLOCK
 suffix:semicolon
 id|vr41xx_serial_ports
 op_increment
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SIU: setup failed!&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 DECL|function|vr41xx_dsiu_init
@@ -351,8 +368,17 @@ id|current_cpu_data.cputype
 op_ne
 id|CPU_VR4133
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;DSIU: unsupported CPU of NEC VR4100 series&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -374,6 +400,8 @@ suffix:semicolon
 id|port.uartclk
 op_assign
 id|DSIU_BASE_BAUD
+op_star
+l_int|16
 suffix:semicolon
 id|port.irq
 op_assign
@@ -381,17 +409,15 @@ id|DSIU_IRQ
 suffix:semicolon
 id|port.flags
 op_assign
+id|UPF_RESOURCES
+op_or
 id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_SKIP_TEST
 suffix:semicolon
-id|port.membase
+id|port.mapbase
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|DSIURB
+id|DSIU_BASE
 suffix:semicolon
 id|port.regshift
 op_assign
@@ -401,6 +427,24 @@ id|port.iotype
 op_assign
 id|UPIO_MEM
 suffix:semicolon
+id|port.membase
+op_assign
+id|ioremap
+c_func
+(paren
+id|port.mapbase
+comma
+id|DSIU_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|port.membase
+op_ne
+l_int|NULL
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -410,32 +454,34 @@ c_func
 op_amp
 id|port
 )paren
-op_ne
+op_eq
 l_int|0
 )paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;DSIU setup failed!&bslash;n&quot;
-)paren
-suffix:semicolon
+(brace
 id|vr41xx_supply_clock
 c_func
 (paren
 id|DSIU_CLOCK
 )paren
 suffix:semicolon
-id|writew
+id|vr41xx_enable_dsiuint
 c_func
 (paren
-id|INTDSIU
-comma
-id|MDSIUINTREG
 )paren
 suffix:semicolon
 id|vr41xx_serial_ports
 op_increment
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;DSIU: setup failed!&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 eof
