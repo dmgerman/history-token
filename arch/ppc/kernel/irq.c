@@ -1849,7 +1849,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_PPC_ISERIES&t;/* iSeries version is in iSeries_pic.c */
 DECL|function|do_IRQ
-r_int
+r_void
 id|do_IRQ
 c_func
 (paren
@@ -1859,14 +1859,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|irq
 comma
@@ -1930,24 +1922,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* lets ret_from_int know we can do checks */
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|function|probe_irq_on
@@ -2035,6 +2009,20 @@ r_int
 id|irq
 )paren
 (brace
+multiline_comment|/* is there anything to synchronize with? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|action
+)paren
+r_return
+suffix:semicolon
 r_while
 c_loop
 (paren

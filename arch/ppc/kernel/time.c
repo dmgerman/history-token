@@ -282,7 +282,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * timer_interrupt - gets called when the decrementer overflows,&n; * with interrupts disabled.&n; * We set it up to overflow again in 1/HZ seconds.&n; */
 DECL|function|timer_interrupt
-r_int
+r_void
 id|timer_interrupt
 c_func
 (paren
@@ -555,24 +555,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* lets ret_from_int know we can do checks */
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution.&n; */
