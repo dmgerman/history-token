@@ -10214,6 +10214,13 @@ op_amp
 id|page_dir
 )paren
 suffix:semicolon
+id|serverworks_free_page_map
+c_func
+(paren
+op_amp
+id|serverworks_private.scratch_dir
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -1525,7 +1525,7 @@ r_if
 c_cond
 (paren
 id|inode-&gt;i_size
-OL
+op_le
 (paren
 id|loff_t
 )paren

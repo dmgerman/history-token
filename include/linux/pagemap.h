@@ -140,7 +140,7 @@ id|mapping
 comma
 r_int
 r_int
-id|offset
+id|index
 comma
 r_struct
 id|page
@@ -149,6 +149,8 @@ op_star
 id|hash
 )paren
 suffix:semicolon
+DECL|macro|find_get_page
+mdefine_line|#define find_get_page(mapping, index) &bslash;&n;&t;__find_get_page(mapping, index, page_hash(mapping, index))
 r_extern
 r_struct
 id|page

@@ -298,6 +298,11 @@ id|dev
 )paren
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -317,6 +322,12 @@ id|s
 comma
 op_amp
 id|sbuf
+)paren
+suffix:semicolon
+id|drop_super
+c_func
+(paren
+id|s
 )paren
 suffix:semicolon
 r_if
@@ -391,11 +402,6 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon

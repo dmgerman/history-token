@@ -33,12 +33,6 @@ op_star
 id|mnt_root
 suffix:semicolon
 multiline_comment|/* root of the mounted tree */
-DECL|member|mnt_instances
-r_struct
-id|list_head
-id|mnt_instances
-suffix:semicolon
-multiline_comment|/* other vfsmounts of the same fs */
 DECL|member|mnt_sb
 r_struct
 id|super_block

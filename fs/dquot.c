@@ -7265,6 +7265,17 @@ id|addr
 suffix:semicolon
 id|out
 suffix:colon
+r_if
+c_cond
+(paren
+id|sb
+)paren
+id|drop_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|unlock_kernel
 c_func
 (paren

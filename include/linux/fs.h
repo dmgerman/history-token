@@ -89,12 +89,6 @@ id|inodes_stat
 suffix:semicolon
 r_extern
 r_int
-id|max_super_blocks
-comma
-id|nr_super_blocks
-suffix:semicolon
-r_extern
-r_int
 id|leases_enable
 comma
 id|dir_notify_enable
@@ -1981,6 +1975,10 @@ r_struct
 id|list_head
 id|super_blocks
 suffix:semicolon
+r_extern
+id|spinlock_t
+id|sb_lock
+suffix:semicolon
 DECL|macro|sb_entry
 mdefine_line|#define sb_entry(list)&t;list_entry((list), struct super_block, s_list)
 DECL|struct|super_block
@@ -2063,6 +2061,14 @@ r_struct
 id|semaphore
 id|s_lock
 suffix:semicolon
+DECL|member|s_count
+r_int
+id|s_count
+suffix:semicolon
+DECL|member|s_active
+id|atomic_t
+id|s_active
+suffix:semicolon
 DECL|member|s_dirty
 r_struct
 id|list_head
@@ -2086,12 +2092,6 @@ id|block_device
 op_star
 id|s_bdev
 suffix:semicolon
-DECL|member|s_mounts
-r_struct
-id|list_head
-id|s_mounts
-suffix:semicolon
-multiline_comment|/* vfsmount(s) of this one */
 DECL|member|s_dquot
 r_struct
 id|quota_mount_options
@@ -4864,6 +4864,14 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|fsync_no_super
+c_func
+(paren
+id|kdev_t
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|sync_inodes_sb
 c_func
@@ -6298,6 +6306,17 @@ c_func
 id|kdev_t
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|drop_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
 DECL|function|is_mounted
 r_static
 r_inline
@@ -6326,7 +6345,12 @@ c_cond
 id|sb
 )paren
 (brace
-multiline_comment|/* drop_super(sb); will go here */
+id|drop_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

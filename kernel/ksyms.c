@@ -459,6 +459,13 @@ c_func
 id|get_super
 )paren
 suffix:semicolon
+DECL|variable|drop_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drop_super
+)paren
+suffix:semicolon
 DECL|variable|getname
 id|EXPORT_SYMBOL
 c_func
@@ -1271,6 +1278,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ROOT_DEV
+)paren
+suffix:semicolon
+DECL|variable|__find_get_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__find_get_page
 )paren
 suffix:semicolon
 DECL|variable|__find_lock_page
