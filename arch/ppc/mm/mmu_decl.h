@@ -132,8 +132,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|macro|mmu_mapin_ram
-mdefine_line|#define mmu_mapin_ram()&t;&t;(0UL)
+r_extern
+r_int
+r_int
+id|mmu_mapin_ram
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else
 multiline_comment|/* anything except 4xx or 8xx */
 r_extern
