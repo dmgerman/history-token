@@ -2260,6 +2260,7 @@ id|capi_ctr
 op_star
 id|ctrl
 op_assign
+op_amp
 id|cinfo-&gt;capi_ctrl
 suffix:semicolon
 r_struct
@@ -2455,9 +2456,7 @@ comma
 id|DataB3Len
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|handle_capimsg
+id|capi_ctr_handle_message
 c_func
 (paren
 id|ctrl
@@ -2573,9 +2572,7 @@ id|skb-&gt;data
 )paren
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|handle_capimsg
+id|capi_ctr_handle_message
 c_func
 (paren
 id|ctrl
@@ -2700,9 +2697,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|resume_output
+id|capi_ctr_resume_output
 c_func
 (paren
 id|ctrl
@@ -2713,9 +2708,7 @@ suffix:semicolon
 r_case
 id|RECEIVE_STOP
 suffix:colon
-id|ctrl
-op_member_access_from_pointer
-id|suspend_output
+id|capi_ctr_suspend_output
 c_func
 (paren
 id|ctrl
@@ -2762,9 +2755,7 @@ id|VER_DRIVER
 )braket
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|ready
+id|capi_ctr_ready
 c_func
 (paren
 id|ctrl
@@ -3865,9 +3856,7 @@ op_amp
 id|cinfo-&gt;ncci_head
 )paren
 suffix:semicolon
-id|ctrl
-op_member_access_from_pointer
-id|reseted
+id|capi_ctr_reseted
 c_func
 (paren
 id|ctrl
