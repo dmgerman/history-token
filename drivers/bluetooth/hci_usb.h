@@ -12,8 +12,10 @@ DECL|macro|HCI_CTRL_REQ
 mdefine_line|#define HCI_CTRL_REQ&t;     0x20
 DECL|macro|HCI_DIGI_REQ
 mdefine_line|#define HCI_DIGI_REQ&t;     0x40
+DECL|macro|HCI_IGNORE
+mdefine_line|#define HCI_IGNORE           0x01
 DECL|macro|HCI_DIGIANSWER
-mdefine_line|#define HCI_DIGIANSWER       0x01
+mdefine_line|#define HCI_DIGIANSWER       0x02
 DECL|macro|HCI_MAX_IFACE_NUM
 mdefine_line|#define HCI_MAX_IFACE_NUM&t;3 
 DECL|macro|HCI_MAX_BULK_TX

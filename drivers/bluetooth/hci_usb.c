@@ -49,6 +49,21 @@ id|bluetooth_ids
 )braket
 op_assign
 (brace
+multiline_comment|/* Broadcom BCM2033 without firmware */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0a5c
+comma
+l_int|0x2033
+)paren
+comma
+id|driver_info
+suffix:colon
+id|HCI_IGNORE
+)brace
+comma
 multiline_comment|/* Digianswer device */
 (brace
 id|USB_DEVICE
@@ -121,31 +136,6 @@ id|usb
 comma
 id|bluetooth_ids
 )paren
-suffix:semicolon
-DECL|variable|ignore_ids
-r_static
-r_struct
-id|usb_device_id
-id|ignore_ids
-(braket
-)braket
-op_assign
-(brace
-multiline_comment|/* Broadcom BCM2033 without firmware */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x0a5c
-comma
-l_int|0x2033
-)paren
-)brace
-comma
-(brace
-)brace
-multiline_comment|/* Terminating entry */
-)brace
 suffix:semicolon
 DECL|function|_urb_alloc
 r_struct
@@ -3707,21 +3697,27 @@ id|udev-&gt;actconfig-&gt;interface
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* Check our black list */
 r_if
 c_cond
 (paren
-id|usb_match_id
-c_func
-(paren
-id|intf
-comma
-id|ignore_ids
-)paren
+id|id-&gt;driver_info
+op_amp
+id|HCI_IGNORE
 )paren
 r_return
 op_minus
-id|EIO
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+OG
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* Check number of endpoints */
 r_if
