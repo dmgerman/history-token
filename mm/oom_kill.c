@@ -436,7 +436,13 @@ c_func
 l_string|&quot;Out of memory and no killable processes...&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* kill all processes that share the -&gt;mm (i.e. all threads) */
+id|oom_kill_task
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * kill all processes that share the -&gt;mm (i.e. all threads),&n;&t; * but are in a different thread group&n;&t; */
 id|do_each_thread
 c_func
 (paren
@@ -450,6 +456,10 @@ c_cond
 id|q-&gt;mm
 op_eq
 id|p-&gt;mm
+op_logical_and
+id|q-&gt;tgid
+op_ne
+id|p-&gt;tgid
 )paren
 id|oom_kill_task
 c_func
