@@ -3776,7 +3776,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* current btree block */
-r_int
+id|__int64_t
 id|diff
 suffix:semicolon
 multiline_comment|/* difference for the current key */
@@ -4208,7 +4208,7 @@ multiline_comment|/*&n;&t;&t;&t;&t; * Compute difference to get next direction.&
 id|diff
 op_assign
 (paren
-r_int
+id|__int64_t
 )paren
 id|startino
 op_minus
