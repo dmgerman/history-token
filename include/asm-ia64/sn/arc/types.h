@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright 1999 Ralf Baechle (ralf@gnu.org)&n; * Copyright 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright 1999 Ralf Baechle (ralf@gnu.org)&n; * Copyright 1999,2001 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SN_ARC_TYPES_H
 DECL|macro|_ASM_SN_ARC_TYPES_H
 mdefine_line|#define _ASM_SN_ARC_TYPES_H

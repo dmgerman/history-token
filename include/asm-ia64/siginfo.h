@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SIGINFO_H
 DECL|macro|_ASM_IA64_SIGINFO_H
 mdefine_line|#define _ASM_IA64_SIGINFO_H
-multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 DECL|union|sigval
 r_typedef
@@ -154,10 +154,12 @@ r_int
 id|_imm
 suffix:semicolon
 multiline_comment|/* immediate value for &quot;break&quot; */
-DECL|member|_pad0
+DECL|member|_flags
 r_int
-id|_pad0
+r_int
+id|_flags
 suffix:semicolon
+multiline_comment|/* see below */
 DECL|member|_isr
 r_int
 r_int
@@ -201,6 +203,9 @@ DECL|member|_pfm_ovfl_counters
 r_int
 r_int
 id|_pfm_ovfl_counters
+(braket
+l_int|4
+)braket
 suffix:semicolon
 multiline_comment|/* which PMU counter overflowed */
 DECL|member|_sigprof
@@ -236,14 +241,22 @@ DECL|macro|si_addr
 mdefine_line|#define si_addr&t;&t;_sifields._sigfault._addr
 DECL|macro|si_imm
 mdefine_line|#define si_imm&t;&t;_sifields._sigfault._imm&t;/* as per UNIX SysV ABI spec */
+DECL|macro|si_flags
+mdefine_line|#define si_flags&t;_sifields._sigfault._flags
+multiline_comment|/*&n; * si_isr is valid for SIGILL, SIGFPE, SIGSEGV, SIGBUS, and SIGTRAP provided that&n; * si_code is non-zero and __ISR_VALID is set in si_flags.&n; */
 DECL|macro|si_isr
-mdefine_line|#define si_isr&t;&t;_sifields._sigfault._isr&t;/* valid if si_code==FPE_FLTxxx */
+mdefine_line|#define si_isr&t;&t;_sifields._sigfault._isr
 DECL|macro|si_band
 mdefine_line|#define si_band&t;&t;_sifields._sigpoll._band
 DECL|macro|si_fd
 mdefine_line|#define si_fd&t;&t;_sifields._sigpoll._fd
 DECL|macro|si_pfm_ovfl
 mdefine_line|#define si_pfm_ovfl&t;_sifields._sigprof._pfm_ovfl_counters
+multiline_comment|/*&n; * Flag values for si_flags:&n; */
+DECL|macro|__ISR_VALID_BIT
+mdefine_line|#define __ISR_VALID_BIT&t;0
+DECL|macro|__ISR_VALID
+mdefine_line|#define __ISR_VALID&t;(1 &lt;&lt; __ISR_VALID_BIT)
 multiline_comment|/*&n; * si_code values&n; * Positive values for kernel-generated signals.&n; */
 macro_line|#ifdef __KERNEL__
 DECL|macro|__SI_MASK
@@ -285,17 +298,17 @@ mdefine_line|#define SI_USER&t;&t;0&t;&t;/* sent by kill, sigsend, raise */
 DECL|macro|SI_KERNEL
 mdefine_line|#define SI_KERNEL&t;0x80&t;&t;/* sent by the kernel from somewhere */
 DECL|macro|SI_QUEUE
-mdefine_line|#define SI_QUEUE&t;-1&t;&t;/* sent by sigqueue */
+mdefine_line|#define SI_QUEUE&t;(-1)&t;&t;/* sent by sigqueue */
 DECL|macro|SI_TIMER
 mdefine_line|#define SI_TIMER __SI_CODE(__SI_TIMER,-2) /* sent by timer expiration */
 DECL|macro|SI_MESGQ
-mdefine_line|#define SI_MESGQ&t;-3&t;&t;/* sent by real time mesq state change */
+mdefine_line|#define SI_MESGQ&t;(-3)&t;&t;/* sent by real time mesq state change */
 DECL|macro|SI_ASYNCIO
-mdefine_line|#define SI_ASYNCIO&t;-4&t;&t;/* sent by AIO completion */
+mdefine_line|#define SI_ASYNCIO&t;(-4)&t;&t;/* sent by AIO completion */
 DECL|macro|SI_SIGIO
-mdefine_line|#define SI_SIGIO&t;-5&t;&t;/* sent by queued SIGIO */
+mdefine_line|#define SI_SIGIO&t;(-5)&t;&t;/* sent by queued SIGIO */
 DECL|macro|SI_TKILL
-mdefine_line|#define SI_TKILL&t;-6&t;&t;/* sent by tkill system call */
+mdefine_line|#define SI_TKILL&t;(-6)&t;&t;/* sent by tkill system call */
 DECL|macro|SI_FROMUSER
 mdefine_line|#define SI_FROMUSER(siptr)&t;((siptr)-&gt;si_code &lt;= 0)
 DECL|macro|SI_FROMKERNEL

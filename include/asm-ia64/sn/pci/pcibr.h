@@ -1,10 +1,10 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIBR_H
 DECL|macro|_ASM_SN_PCI_PCIBR_H
 mdefine_line|#define _ASM_SN_PCI_PCIBR_H
 macro_line|#if defined(__KERNEL__)
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
+macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/pio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
@@ -19,7 +19,7 @@ DECL|macro|PCIBR_INTR_BLOCKED
 mdefine_line|#define PCIBR_INTR_BLOCKED&t;&t;0x40000000
 DECL|macro|PCIBR_INTR_BUSY
 mdefine_line|#define PCIBR_INTR_BUSY&t;&t;&t;0x80000000
-macro_line|#if LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* =====================================================================&n; *    opaque types used by pcibr&squot;s xtalk bus provider&n; */
 DECL|typedef|pcibr_piomap_t
 r_typedef
@@ -397,16 +397,6 @@ c_func
 (paren
 id|pcibr_intr_t
 id|intr
-comma
-id|intr_func_t
-id|intr_func
-comma
-id|intr_arg_t
-id|intr_arg
-comma
-r_void
-op_star
-id|thread
 )paren
 suffix:semicolon
 r_extern
@@ -829,7 +819,7 @@ c_func
 id|devfs_handle_t
 )paren
 suffix:semicolon
-macro_line|#endif &t;/* _LANGUAGE_C */
+macro_line|#endif &t;/* __ASSEMBLY__ */
 macro_line|#endif&t;/* #if defined(__KERNEL__) */
 multiline_comment|/* &n; * Some useful ioctls into the pcibr driver&n; */
 DECL|macro|PCIBR
@@ -867,12 +857,26 @@ mdefine_line|#define FUNC_IS_VALID           0x01
 DECL|macro|FUNC_IS_SYS_CRITICAL
 mdefine_line|#define FUNC_IS_SYS_CRITICAL    0x02
 multiline_comment|/*&n; * Structures for requesting PCI bridge information and receiving a response&n; */
-DECL|typedef|pcibr_slot_info_req_t
+DECL|typedef|pcibr_slot_req_t
 r_typedef
 r_struct
-id|pcibr_slot_info_req_s
+id|pcibr_slot_req_s
 op_star
-id|pcibr_slot_info_req_t
+id|pcibr_slot_req_t
+suffix:semicolon
+DECL|typedef|pcibr_slot_up_resp_t
+r_typedef
+r_struct
+id|pcibr_slot_up_resp_s
+op_star
+id|pcibr_slot_up_resp_t
+suffix:semicolon
+DECL|typedef|pcibr_slot_down_resp_t
+r_typedef
+r_struct
+id|pcibr_slot_down_resp_s
+op_star
+id|pcibr_slot_down_resp_t
 suffix:semicolon
 DECL|typedef|pcibr_slot_info_resp_t
 r_typedef
@@ -887,6 +891,83 @@ r_struct
 id|pcibr_slot_func_info_resp_s
 op_star
 id|pcibr_slot_func_info_resp_t
+suffix:semicolon
+DECL|macro|L1_QSIZE
+mdefine_line|#define L1_QSIZE                128      /* our L1 message buffer size */
+DECL|struct|pcibr_slot_req_s
+r_struct
+id|pcibr_slot_req_s
+(brace
+DECL|member|req_slot
+r_int
+id|req_slot
+suffix:semicolon
+r_union
+(brace
+DECL|member|up
+id|pcibr_slot_up_resp_t
+id|up
+suffix:semicolon
+DECL|member|down
+id|pcibr_slot_down_resp_t
+id|down
+suffix:semicolon
+DECL|member|query
+id|pcibr_slot_info_resp_t
+id|query
+suffix:semicolon
+DECL|member|any
+r_void
+op_star
+id|any
+suffix:semicolon
+DECL|member|req_respp
+)brace
+id|req_respp
+suffix:semicolon
+DECL|member|req_size
+r_int
+id|req_size
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pcibr_slot_up_resp_s
+r_struct
+id|pcibr_slot_up_resp_s
+(brace
+DECL|member|resp_sub_errno
+r_int
+id|resp_sub_errno
+suffix:semicolon
+DECL|member|resp_l1_msg
+r_char
+id|resp_l1_msg
+(braket
+id|L1_QSIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pcibr_slot_down_resp_s
+r_struct
+id|pcibr_slot_down_resp_s
+(brace
+DECL|member|resp_sub_errno
+r_int
+id|resp_sub_errno
+suffix:semicolon
+DECL|member|resp_l1_msg
+r_char
+id|resp_l1_msg
+(braket
+id|L1_QSIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|struct|pcibr_slot_info_req_s
 r_struct
@@ -1134,5 +1215,52 @@ l_int|8
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * PCI specific errors, interpreted by pciconfig command&n; */
+multiline_comment|/* EPERM                          1    */
+DECL|macro|PCI_SLOT_ALREADY_UP
+mdefine_line|#define PCI_SLOT_ALREADY_UP       2     /* slot already up */
+DECL|macro|PCI_SLOT_ALREADY_DOWN
+mdefine_line|#define PCI_SLOT_ALREADY_DOWN     3     /* slot already down */
+DECL|macro|PCI_IS_SYS_CRITICAL
+mdefine_line|#define PCI_IS_SYS_CRITICAL       4     /* slot is system critical */
+multiline_comment|/* EIO                            5    */
+multiline_comment|/* ENXIO                          6    */
+DECL|macro|PCI_L1_ERR
+mdefine_line|#define PCI_L1_ERR                7     /* L1 console command error */
+DECL|macro|PCI_NOT_A_BRIDGE
+mdefine_line|#define PCI_NOT_A_BRIDGE          8     /* device is not a bridge */
+DECL|macro|PCI_SLOT_IN_SHOEHORN
+mdefine_line|#define PCI_SLOT_IN_SHOEHORN      9     /* slot is in a shorhorn */
+DECL|macro|PCI_NOT_A_SLOT
+mdefine_line|#define PCI_NOT_A_SLOT           10     /* slot is invalid */
+DECL|macro|PCI_RESP_AREA_TOO_SMALL
+mdefine_line|#define PCI_RESP_AREA_TOO_SMALL  11     /* slot is invalid */
+multiline_comment|/* ENOMEM                        12    */
+DECL|macro|PCI_NO_DRIVER
+mdefine_line|#define PCI_NO_DRIVER            13     /* no driver for device */
+multiline_comment|/* EFAULT                        14    */
+DECL|macro|PCI_EMPTY_33MHZ
+mdefine_line|#define PCI_EMPTY_33MHZ          15     /* empty 33 MHz bus */
+multiline_comment|/* EBUSY                         16    */
+DECL|macro|PCI_SLOT_RESET_ERR
+mdefine_line|#define PCI_SLOT_RESET_ERR       17     /* slot reset error */
+DECL|macro|PCI_SLOT_INFO_INIT_ERR
+mdefine_line|#define PCI_SLOT_INFO_INIT_ERR   18     /* slot info init error */
+multiline_comment|/* ENODEV                        19    */
+DECL|macro|PCI_SLOT_ADDR_INIT_ERR
+mdefine_line|#define PCI_SLOT_ADDR_INIT_ERR   20     /* slot addr space init error */
+DECL|macro|PCI_SLOT_DEV_INIT_ERR
+mdefine_line|#define PCI_SLOT_DEV_INIT_ERR    21     /* slot device init error */
+multiline_comment|/* EINVAL                        22    */
+DECL|macro|PCI_SLOT_GUEST_INIT_ERR
+mdefine_line|#define PCI_SLOT_GUEST_INIT_ERR  23     /* slot guest info init error */
+DECL|macro|PCI_SLOT_RRB_ALLOC_ERR
+mdefine_line|#define PCI_SLOT_RRB_ALLOC_ERR   24     /* slot initial rrb alloc error */
+DECL|macro|PCI_SLOT_DRV_ATTACH_ERR
+mdefine_line|#define PCI_SLOT_DRV_ATTACH_ERR  25     /* driver attach error */
+DECL|macro|PCI_SLOT_DRV_DETACH_ERR
+mdefine_line|#define PCI_SLOT_DRV_DETACH_ERR  26     /* driver detach error */
+multiline_comment|/* ERANGE                        34    */
+multiline_comment|/* EUNATCH                       42    */
 macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIBR_H */
 eof

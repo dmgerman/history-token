@@ -1,8 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
+macro_line|#include &lt;asm/sn/driver.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
@@ -31,7 +32,6 @@ id|xtalk_registry
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#include &lt;asm/sn/agent.h&gt;
 DECL|macro|DEV_FUNC
 mdefine_line|#define&t;DEV_FUNC(dev,func)&t;hub_##func
 DECL|macro|CAST_PIOMAP
@@ -298,14 +298,7 @@ c_func
 (paren
 id|xtalk_intr_t
 comma
-id|intr_func_t
-comma
-id|intr_arg_t
-comma
 id|xtalk_intr_setfunc_t
-comma
-r_void
-op_star
 comma
 r_void
 op_star
@@ -600,18 +593,6 @@ id|xwidget_unregister
 c_func
 (paren
 id|devfs_handle_t
-)paren
-suffix:semicolon
-r_void
-id|xwidget_error_register
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|error_handler_f
-op_star
-comma
-id|error_handler_arg_t
 )paren
 suffix:semicolon
 r_void
@@ -1608,14 +1589,6 @@ id|xtalk_intr_t
 id|intr_hdl
 comma
 multiline_comment|/* xtalk intr resource handle */
-id|intr_func_t
-id|intr_func
-comma
-multiline_comment|/* xtalk intr handler */
-id|intr_arg_t
-id|intr_arg
-comma
-multiline_comment|/* arg to intr handler */
 id|xtalk_intr_setfunc_t
 id|setfunc
 comma
@@ -1623,14 +1596,9 @@ multiline_comment|/* func to set intr hw */
 r_void
 op_star
 id|setfunc_arg
-comma
-multiline_comment|/* arg to setfunc */
-r_void
-op_star
-id|thread
 )paren
+multiline_comment|/* arg to setfunc */
 (brace
-multiline_comment|/* intr thread to use */
 r_return
 id|INTR_FUNC
 c_func
@@ -1646,15 +1614,9 @@ c_func
 id|intr_hdl
 )paren
 comma
-id|intr_func
-comma
-id|intr_arg
-comma
 id|setfunc
 comma
 id|setfunc_arg
-comma
-id|thread
 )paren
 suffix:semicolon
 )brace
@@ -1708,173 +1670,6 @@ c_func
 (paren
 id|intr_hdl
 )paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * =====================================================================&n; *                      ERROR MANAGEMENT&n; */
-multiline_comment|/*&n; * xtalk_error_handler:&n; * pass this error on to the handler registered&n; * at the specified xtalk connecdtion point,&n; * or complain about it here if there is no handler.&n; *&n; * This routine plays two roles during error delivery&n; * to most widgets: first, the external agent (heart,&n; * hub, or whatever) calls in with the error and the&n; * connect point representing the crosstalk switch,&n; * or whatever crosstalk device is directly connected&n; * to the agent.&n; *&n; * If there is a switch, it will generally look at the&n; * widget number stashed in the ioerror structure; and,&n; * if the error came from some widget other than the&n; * switch, it will call back into xtalk_error_handler&n; * with the connection point of the offending port.&n; */
-r_int
-DECL|function|xtalk_error_handler
-id|xtalk_error_handler
-c_func
-(paren
-id|devfs_handle_t
-id|xconn
-comma
-r_int
-id|error_code
-comma
-id|ioerror_mode_t
-id|mode
-comma
-id|ioerror_t
-op_star
-id|ioerror
-)paren
-(brace
-id|xwidget_info_t
-id|xwidget_info
-suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; ERROR_DEBUG
-macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
-id|printk
-c_func
-(paren
-l_string|&quot;%v: xtalk_error_handler&bslash;n&quot;
-comma
-id|xconn
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;%x: xtalk_error_handler&bslash;n&quot;
-comma
-id|xconn
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-id|xwidget_info
-op_assign
-id|xwidget_info_get
-c_func
-(paren
-id|xconn
-)paren
-suffix:semicolon
-multiline_comment|/* Make sure that xwidget_info is a valid pointer before derefencing it.&n;     * We could come in here during very early initialization. &n;     */
-r_if
-c_cond
-(paren
-id|xwidget_info
-op_logical_and
-id|xwidget_info-&gt;w_efunc
-)paren
-r_return
-id|xwidget_info-&gt;w_efunc
-(paren
-id|xwidget_info-&gt;w_einfo
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
-suffix:semicolon
-multiline_comment|/*&n;     * no error handler registered for&n;     * the offending port. it&squot;s not clear&n;     * what needs to be done, but reporting&n;     * it would be a good thing, unless it&n;     * is a mode that requires nothing.&n;     */
-r_if
-c_cond
-(paren
-(paren
-id|mode
-op_eq
-id|MODE_DEVPROBE
-)paren
-op_logical_or
-(paren
-id|mode
-op_eq
-id|MODE_DEVUSERERROR
-)paren
-op_logical_or
-(paren
-id|mode
-op_eq
-id|MODE_DEVREENABLE
-)paren
-)paren
-r_return
-id|IOERROR_HANDLED
-suffix:semicolon
-macro_line|#ifdef&t;LATER
-macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
-id|PRINT_WARNING
-c_func
-(paren
-l_string|&quot;Xbow at %v encountered Fatal error&quot;
-comma
-id|xconn
-)paren
-suffix:semicolon
-macro_line|#else
-id|PRINT_WARNING
-c_func
-(paren
-l_string|&quot;Xbow at %x encountered Fatal error&quot;
-comma
-id|xconn
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif&t;/* LATER */
-id|ioerror_dump
-c_func
-(paren
-l_string|&quot;xtalk&quot;
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
-suffix:semicolon
-r_return
-id|IOERROR_UNHANDLED
-suffix:semicolon
-)brace
-r_int
-DECL|function|xtalk_error_devenable
-id|xtalk_error_devenable
-c_func
-(paren
-id|devfs_handle_t
-id|xconn_vhdl
-comma
-r_int
-id|devnum
-comma
-r_int
-id|error_code
-)paren
-(brace
-r_return
-id|DEV_FUNC
-c_func
-(paren
-id|xconn_vhdl
-comma
-id|error_devenable
-)paren
-(paren
-id|xconn_vhdl
-comma
-id|devnum
-comma
-id|error_code
 )paren
 suffix:semicolon
 )brace
@@ -2888,7 +2683,7 @@ id|widget_info-&gt;w_einfo
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;     * get the name of this xwidget vertex and keep the info.&n;     * This is needed during errors and interrupts, but as&n;     * long as we have it, we can use it elsewhere.&n;     */
+multiline_comment|/*&n;     * get the name of this xwidget vertex and keep the info.&n;     * This is needed during errors and interupts, but as&n;     * long as we have it, we can use it elsewhere.&n;     */
 id|s
 op_assign
 id|dev_to_name
@@ -3092,50 +2887,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
-DECL|function|xwidget_error_register
-id|xwidget_error_register
-c_func
-(paren
-id|devfs_handle_t
-id|xwidget
-comma
-id|error_handler_f
-op_star
-id|efunc
-comma
-id|error_handler_arg_t
-id|einfo
-)paren
-(brace
-id|xwidget_info_t
-id|xwidget_info
-suffix:semicolon
-id|xwidget_info
-op_assign
-id|xwidget_info_get
-c_func
-(paren
-id|xwidget
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|xwidget_info
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-id|xwidget_info-&gt;w_efunc
-op_assign
-id|efunc
-suffix:semicolon
-id|xwidget_info-&gt;w_einfo
-op_assign
-id|einfo
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Issue a link reset to a widget.&n; */
 r_void
 DECL|function|xwidget_reset
@@ -3319,41 +3070,6 @@ id|xwidget_unregister
 c_func
 (paren
 id|widget_vhdl
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * xtalk_device_inquiry&n; *&t;Find out hardware information about the xtalk widget.&n; */
-r_int
-DECL|function|xtalk_device_inquiry
-id|xtalk_device_inquiry
-c_func
-(paren
-id|devfs_handle_t
-id|xbus_vhdl
-comma
-id|xwidgetnum_t
-id|widget
-)paren
-(brace
-r_extern
-r_void
-id|hub_device_inquiry
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|xwidgetnum_t
-)paren
-suffix:semicolon
-id|hub_device_inquiry
-c_func
-(paren
-id|xbus_vhdl
-comma
-id|widget
 )paren
 suffix:semicolon
 r_return

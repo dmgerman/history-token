@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_SLOTNUM_H
-DECL|macro|_ASM_SN_SN1_SLOTNUM_H
-mdefine_line|#define _ASM_SN_SN1_SLOTNUM_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_SLOTNUM_H
+DECL|macro|_ASM_IA64_SN_SN1_SLOTNUM_H
+mdefine_line|#define _ASM_IA64_SN_SN1_SLOTNUM_H
 DECL|macro|SLOTNUM_MAXLENGTH
 mdefine_line|#define SLOTNUM_MAXLENGTH&t;16
 multiline_comment|/*&n; * This file attempts to define a slot number space across all slots.&n; *&n; *&t;Node slots&n; *&t;Router slots&n; *&t;Crosstalk slots&n; *&n; *&t;Other slots are children of their parent crosstalk slot:&n; *&t;&t;PCI slots&n; *&t;&t;VME slots&n; *&n; *&t;The PCI class has been added since the XBridge ASIC on SN-MIPS&n; *&t;has built-in PCI bridges (2). On IBricks, widget E &amp; F serve&n; *&t;PCI busses, and on PBricks all widgets serve as PCI busses&n; *&t;with the use of the super-bridge mode of the XBridge ASIC.&n; */
@@ -208,5 +208,5 @@ mdefine_line|#define MAX_NODE_SLOT_NUM&t;4
 DECL|macro|MAX_ROUTER_SLOTNUM
 mdefine_line|#define MAX_ROUTER_SLOTNUM&t;2
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _ASM_SN_SN1_SLOTNUM_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_SLOTNUM_H */
 eof

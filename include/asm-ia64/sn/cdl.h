@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_CDL_H
-DECL|macro|_ASM_SN_CDL_H
-mdefine_line|#define _ASM_SN_CDL_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_CDL_H
+DECL|macro|_ASM_IA64_SN_CDL_H
+mdefine_line|#define _ASM_IA64_SN_CDL_H
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 multiline_comment|/*&n; *&t;cdl: connection/driver list&n; *&n; *&t;support code for bus infrastructure for busses&n; *&t;that have self-identifying devices; initially&n; *&t;constructed for xtalk, pciio and gioio modules.&n; */
 DECL|typedef|cdl_p
@@ -257,5 +257,5 @@ c_func
 id|async_attach_t
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* _ASM_SN_CDL_H */
+macro_line|#endif /* _ASM_IA64_SN_CDL_H */
 eof

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -28,19 +29,20 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
-multiline_comment|/* The &squot;big kernel lock&squot; */
-DECL|variable|__cacheline_aligned_in_smp
+multiline_comment|/*&n; * The Big Kernel Lock.  It&squot;s not supposed to be used for performance critical stuff&n; * anymore.  But we still need to align it because certain workloads are still affected by&n; * it.  For example, llseek() and various other filesystem related routines still use the&n; * BKL.&n; */
+DECL|variable|__cacheline_aligned
 id|spinlock_t
 id|kernel_flag
-id|__cacheline_aligned_in_smp
+id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise static memory&n; * requirements. It also looks cleaner.&n; */
-DECL|variable|call_lock
+DECL|variable|__cacheline_aligned
 r_static
 id|spinlock_t
 id|call_lock
+id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -87,10 +89,25 @@ id|call_data_struct
 op_star
 id|call_data
 suffix:semicolon
+DECL|variable|migration_lock
+r_static
+id|spinlock_t
+id|migration_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|migrating_task
+r_static
+id|task_t
+op_star
+id|migrating_task
+suffix:semicolon
 DECL|macro|IPI_CALL_FUNC
 mdefine_line|#define IPI_CALL_FUNC&t;&t;0
 DECL|macro|IPI_CPU_STOP
 mdefine_line|#define IPI_CPU_STOP&t;&t;1
+DECL|macro|IPI_MIGRATE_TASK
+mdefine_line|#define IPI_MIGRATE_TASK&t;2
 r_static
 r_void
 DECL|function|stop_this_cpu
@@ -297,7 +314,7 @@ op_amp
 id|data-&gt;started
 )paren
 suffix:semicolon
-multiline_comment|/* At this point the structure may be gone unless wait is true.  */
+multiline_comment|/*&n;&t;&t;&t;&t;       * At this point the structure may be gone unless&n;&t;&t;&t;&t;       * wait is true.&n;&t;&t;&t;&t;       */
 (paren
 op_star
 id|func
@@ -322,6 +339,32 @@ c_func
 (paren
 op_amp
 id|data-&gt;finished
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|IPI_MIGRATE_TASK
+suffix:colon
+(brace
+id|task_t
+op_star
+id|p
+op_assign
+id|migrating_task
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|migration_lock
+)paren
+suffix:semicolon
+id|sched_task_migrated
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 )brace
@@ -353,7 +396,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Switch */
 )brace
 r_while
 c_loop
@@ -537,6 +579,48 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This function sends a reschedule IPI to all (other) CPUs.  This should only be used if&n; * some &squot;global&squot; task became runnable, such as a RT task, that must be handled now. The&n; * first CPU that manages to grab the task will run it.&n; */
+r_void
+DECL|function|smp_send_reschedule_all
+id|smp_send_reschedule_all
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|smp_num_cpus
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|i
+op_ne
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+id|smp_send_reschedule
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+)brace
 r_void
 DECL|function|smp_flush_tlb_all
 id|smp_flush_tlb_all
@@ -545,6 +629,7 @@ r_void
 )paren
 (brace
 id|smp_call_function
+c_func
 (paren
 (paren
 r_void
@@ -968,6 +1053,39 @@ suffix:semicolon
 id|smp_num_cpus
 op_assign
 l_int|1
+suffix:semicolon
+)brace
+r_void
+DECL|function|smp_migrate_task
+id|smp_migrate_task
+(paren
+r_int
+id|cpu
+comma
+id|task_t
+op_star
+id|p
+)paren
+(brace
+multiline_comment|/* The target CPU will unlock the migration spinlock: */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|migration_lock
+)paren
+suffix:semicolon
+id|migrating_task
+op_assign
+id|p
+suffix:semicolon
+id|send_IPI_single
+c_func
+(paren
+id|cpu
+comma
+id|IPI_MIGRATE_TASK
+)paren
 suffix:semicolon
 )brace
 r_int

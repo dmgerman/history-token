@@ -1,8 +1,11 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_IOERROR_HANDLING_H
-DECL|macro|_ASM_SN_IOERROR_HANDLING_H
-mdefine_line|#define _ASM_SN_IOERROR_HANDLING_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_IOERROR_HANDLING_H
+DECL|macro|_ASM_IA64_SN_IOERROR_HANDLING_H
+mdefine_line|#define _ASM_IA64_SN_IOERROR_HANDLING_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#if __KERNEL__
 multiline_comment|/*&n; * Basic types required for io error handling interfaces.&n; */
 multiline_comment|/*&n; * Return code from the io error handling interfaces.&n; */
@@ -448,7 +451,7 @@ id|GRAPH_SUCCESS
 (brace
 id|error_env
 op_assign
-id|kmem_zalloc
+id|snia_kmem_zalloc
 c_func
 (paren
 r_sizeof
@@ -574,5 +577,5 @@ DECL|macro|IS_DEVICE_SHUTDOWN
 mdefine_line|#define IS_DEVICE_SHUTDOWN(_d) &t;(is_device_shutdown(_d))
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _ASM_SN_IOERROR_HANDLING_H */
+macro_line|#endif /* _ASM_IA64_SN_IOERROR_HANDLING_H */
 eof

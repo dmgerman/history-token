@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBNI_NEXT_H
-DECL|macro|_ASM_SN_SN1_HUBNI_NEXT_H
-mdefine_line|#define _ASM_SN_SN1_HUBNI_NEXT_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBNI_NEXT_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBNI_NEXT_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBNI_NEXT_H
 DECL|macro|NI_LOCAL_ENTRIES
 mdefine_line|#define NI_LOCAL_ENTRIES        128
 DECL|macro|NI_META_ENTRIES
@@ -75,7 +75,7 @@ DECL|macro|NPE_COUNT_MAX
 mdefine_line|#define NPE_COUNT_MAX&t;&t;0xff
 DECL|macro|NPE_FATAL_ERRORS
 mdefine_line|#define NPE_FATAL_ERRORS&t;(NPE_LINKRESET | NPE_INTLONG_MASK |&bslash;&n;&t;&t;&t;&t; NPE_INTSHORT_MASK | NPE_EXTBADHEADER_MASK |&bslash;&n;&t;&t;&t;&t; NPE_EXTLONG_MASK | NPE_EXTSHORT_MASK |&bslash;&n;&t;&t;&t;&t; NPE_FIFOOVFLOW_MASK | NPE_TAILTO_MASK)
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* NI_PORT_HEADER[AB] registers (not automatically generated) */
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|ni_port_header_a_u
@@ -394,5 +394,5 @@ DECL|macro|NPP_MAX_BURST_MASK
 mdefine_line|#define NPP_MAX_BURST_MASK&t;(0x3ff &lt;&lt; NPP_MAX_BURST_SHFT)
 DECL|macro|NPP_RESET_DEFAULTS
 mdefine_line|#define NPP_RESET_DEFAULTS&t;(0xf &lt;&lt; NPP_VCH_ERR_EN_SHFT |   &bslash;&n;&t;&t;&t;&t; 0x1 &lt;&lt; NPP_FIRST_ERR_EN_SHFT | &bslash;&n;&t;&t;&t;&t; 0x3ff &lt;&lt; NPP_MAX_RETRY_SHFT |  &bslash;&n;&t;&t;&t;&t; 0x6 &lt;&lt; NPP_NULL_TIMEOUT_SHFT | &bslash;&n;&t;&t;&t;&t; 0x3f0 &lt;&lt; NPP_MAX_BURST_SHFT)
-macro_line|#endif  /* _ASM_SN_SN1_HUBNI_NEXT_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBNI_NEXT_H */
 eof

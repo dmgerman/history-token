@@ -128,6 +128,13 @@ c_func
 id|strtok
 )paren
 suffix:semicolon
+DECL|variable|strpbrk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strpbrk
+)paren
+suffix:semicolon
 macro_line|#include &lt;linux/irq.h&gt;
 DECL|variable|isa_irq_to_vector_map
 id|EXPORT_SYMBOL

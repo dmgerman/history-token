@@ -1,7 +1,4 @@
 multiline_comment|/*&n; * File:&t;mca.h&n; * Purpose:&t;Machine check handling specific defines&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander (vijay@engr.sgi.com)&n; * Copyright (C) Srinivasa Thirumalachar (sprasad@engr.sgi.com)&n; */
-multiline_comment|/* XXX use this temporary define for MP systems trying to INIT */
-DECL|macro|SAL_MPINIT_WORKAROUND
-macro_line|#undef SAL_MPINIT_WORKAROUND
 macro_line|#ifndef _ASM_IA64_MCA_H
 DECL|macro|_ASM_IA64_MCA_H
 mdefine_line|#define _ASM_IA64_MCA_H
@@ -256,6 +253,22 @@ l_int|3
 multiline_comment|/* System to be halted by SAL */
 )brace
 suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|IA64_MCA_SAME_CONTEXT
+id|IA64_MCA_SAME_CONTEXT
+op_assign
+l_int|0x0
+comma
+multiline_comment|/* SAL to return to same context */
+DECL|enumerator|IA64_MCA_NEW_CONTEXT
+id|IA64_MCA_NEW_CONTEXT
+op_assign
+op_minus
+l_int|1
+multiline_comment|/* SAL to return to new context */
+)brace
+suffix:semicolon
 DECL|struct|ia64_mca_os_to_sal_state_s
 r_typedef
 r_struct
@@ -271,8 +284,14 @@ id|u64
 id|imots_sal_gp
 suffix:semicolon
 multiline_comment|/* GP of the SAL - physical */
+DECL|member|imots_context
+id|u64
+id|imots_context
+suffix:semicolon
+multiline_comment|/* 0 if return to same context&n;&t;&t;&t;&t;&t;&t;   1 if return to new context */
 DECL|member|imots_new_min_state
 id|u64
+op_star
 id|imots_new_min_state
 suffix:semicolon
 multiline_comment|/* Pointer to structure containing&n;&t;&t;&t;&t;&t;&t; * new values of registers in the min state&n;&t;&t;&t;&t;&t;&t; * save area.&n;&t;&t;&t;&t;&t;&t; */
@@ -412,7 +431,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|ia64_log_print
 c_func
 (paren
@@ -449,6 +468,18 @@ id|prfunc_t
 suffix:semicolon
 DECL|macro|PLATFORM_CALL
 mdefine_line|#define PLATFORM_CALL(fn, args)&t;printk(&quot;Platform call TBD&bslash;n&quot;)
+DECL|macro|platform_mem_dev_err_print
+mdefine_line|#define platform_mem_dev_err_print ia64_log_prt_oem_data
+DECL|macro|platform_pci_bus_err_print
+mdefine_line|#define platform_pci_bus_err_print ia64_log_prt_oem_data
+DECL|macro|platform_pci_comp_err_print
+mdefine_line|#define platform_pci_comp_err_print ia64_log_prt_oem_data
+DECL|macro|platform_plat_specific_err_print
+mdefine_line|#define platform_plat_specific_err_print ia64_log_prt_oem_data
+DECL|macro|platform_host_ctlr_err_print
+mdefine_line|#define platform_host_ctlr_err_print ia64_log_prt_oem_data
+DECL|macro|platform_plat_bus_err_print
+mdefine_line|#define platform_plat_bus_err_print ia64_log_prt_oem_data
 DECL|macro|MCA_TEST
 macro_line|#undef&t;MCA_TEST
 DECL|macro|IA64_MCA_DEBUG_INFO

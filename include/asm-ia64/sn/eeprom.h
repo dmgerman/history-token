@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Public interface for reading Atmel EEPROMs via L1 system controllers&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_EEPROM_H
-DECL|macro|_ASM_SN_EEPROM_H
-mdefine_line|#define _ASM_SN_EEPROM_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Public interface for reading Atmel EEPROMs via L1 system controllers&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_EEPROM_H
+DECL|macro|_ASM_IA64_SN_EEPROM_H
+mdefine_line|#define _ASM_IA64_SN_EEPROM_H
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/vector.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
@@ -935,15 +935,11 @@ DECL|macro|HUB_VERTEX_MFG_INFO
 mdefine_line|#define HUB_VERTEX_MFG_INFO(v) &bslash;&n;    eeprom_vertex_info_set( C_BRICK, get_nasid(), (v), 0 )
 DECL|macro|BRIDGE_VERTEX_MFG_INFO
 mdefine_line|#define BRIDGE_VERTEX_MFG_INFO(v, r) &bslash;&n;    ( IS_IOBRICK((r)) ? eeprom_vertex_info_set &bslash;&n;&t;&t;          ( IO_BRICK, NASID_GET((r)), (v), 0 ) &bslash;&n;&t;&t;      : nic_bridge_vertex_info((v), (r)) )
-macro_line|#ifdef BRINGUP /* will we read mfg info from IOC3&squot;s that aren&squot;t&n;&t;&t;* part of IO7 cards, or aren&squot;t in I/O bricks? */
-DECL|macro|IOC3_VERTEX_MFG_INFO
-mdefine_line|#define IOC3_VERTEX_MFG_INFO(v, r, e) &bslash;&n;    eeprom_vertex_info_set( IO_IO7, NASID_GET((r)), (v), 0 )
-macro_line|#endif /* BRINGUP */
 DECL|macro|HUB_UID_GET
 mdefine_line|#define HUB_UID_GET(n,v,p)&t;cbrick_uid_get((n),(p))
 DECL|macro|ROUTER_UID_GET
 mdefine_line|#define ROUTER_UID_GET(d,p)&t;rbrick_uid_get(get_nasid(),(d),(p))
 DECL|macro|XBOW_UID_GET
 mdefine_line|#define XBOW_UID_GET(n,p)&t;iobrick_uid_get((n),(p))
-macro_line|#endif /* _ASM_SN_EEPROM_H */
+macro_line|#endif /* _ASM_IA64_SN_EEPROM_H */
 eof

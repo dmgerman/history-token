@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IA32 Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999, 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 2000 VA Linux Co&n; * Copyright (C) 2000 Don Dugger &lt;n0ano@valinux.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
+multiline_comment|/*&n; * IA32 Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999, 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 2000 VA Linux Co&n; * Copyright (C) 2000 Don Dugger &lt;n0ano@valinux.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -2663,6 +2663,18 @@ id|regs
 )paren
 (brace
 r_struct
+id|exec_domain
+op_star
+id|ed
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain
+suffix:semicolon
+r_struct
 id|sigframe_ia32
 op_star
 id|frame
@@ -2715,9 +2727,9 @@ id|__put_user
 c_func
 (paren
 (paren
-id|current-&gt;exec_domain
+id|ed
 op_logical_and
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
@@ -2728,7 +2740,7 @@ c_cond
 r_int
 )paren
 (paren
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 (braket
 id|sig
 )braket
@@ -3055,6 +3067,18 @@ id|regs
 )paren
 (brace
 r_struct
+id|exec_domain
+op_star
+id|ed
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain
+suffix:semicolon
+r_struct
 id|rt_sigframe_ia32
 op_star
 id|frame
@@ -3107,16 +3131,16 @@ id|__put_user
 c_func
 (paren
 (paren
-id|current-&gt;exec_domain
+id|ed
 op_logical_and
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
 l_int|32
 ques
 c_cond
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 (braket
 id|sig
 )braket

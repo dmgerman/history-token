@@ -1,7 +1,7 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Jack Steiner (steiner@sgi.com)&n; */
-macro_line|#ifndef _ASM_SN_SGI_H
-DECL|macro|_ASM_SN_SGI_H
-mdefine_line|#define _ASM_SN_SGI_H
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SGI_H
+DECL|macro|_ASM_IA64_SN_SGI_H
+mdefine_line|#define _ASM_IA64_SN_SGI_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* for copy_??_user */
@@ -278,14 +278,6 @@ suffix:semicolon
 multiline_comment|/*  This is just a dummy: the allocated array is&n;&t;&t;&t;&t; bigger. This is NULL-terminated  */
 )brace
 suffix:semicolon
-DECL|macro|MIN
-mdefine_line|#define MIN(_a,_b)&t;&t;((_a)&lt;(_b)?(_a):(_b))
-DECL|typedef|app32_ptr_t
-r_typedef
-r_uint32
-id|app32_ptr_t
-suffix:semicolon
-multiline_comment|/* needed by edt.h */
 DECL|typedef|__psint_t
 r_typedef
 r_int64
@@ -308,11 +300,6 @@ DECL|macro|ctob
 mdefine_line|#define ctob(x)&t;&t;&t;((uint64_t)(x)*NBPC)
 DECL|macro|btoc
 mdefine_line|#define btoc(x)&t;&t;&t;(((uint64_t)(x)+(NBPC-1))/NBPC)
-DECL|typedef|nic_data_t
-r_typedef
-id|__psunsigned_t
-id|nic_data_t
-suffix:semicolon
 multiline_comment|/*&n;** Possible return values from graph routines.&n;*/
 DECL|enum|graph_error_e
 r_typedef
@@ -362,10 +349,6 @@ DECL|macro|VM_NOSLEEP
 mdefine_line|#define VM_NOSLEEP 0x0001&t;&t;/* needed kmem_alloc_node(), kmem_zalloc_node&n;&t;&t;&t;&t;&t; * calls */
 DECL|macro|XG_WIDGET_PART_NUM
 mdefine_line|#define XG_WIDGET_PART_NUM      0xC102          /* KONA/xt_regs.h     XG_XT_PART_NUM_VALUE */
-macro_line|#ifndef TO_PHYS_MASK
-DECL|macro|TO_PHYS_MASK
-mdefine_line|#define TO_PHYS_MASK 0x0000000fffffffff
-macro_line|#endif
 DECL|typedef|vhandl_t
 r_typedef
 r_uint64
@@ -400,7 +383,7 @@ multiline_comment|/* needed by devsupport.c */
 DECL|macro|HUB_PIO_CONVEYOR
 mdefine_line|#define HUB_PIO_CONVEYOR 0x1
 DECL|macro|CNODEID_NONE
-mdefine_line|#define CNODEID_NONE (cnodeid_t)-1
+mdefine_line|#define CNODEID_NONE ((cnodeid_t)-1)
 DECL|macro|XTALK_PCI_PART_NUM
 mdefine_line|#define XTALK_PCI_PART_NUM &quot;030-1275-&quot;
 DECL|macro|kdebug
@@ -427,7 +410,7 @@ id|cpuid_t
 id|cpu_cookie_t
 suffix:semicolon
 DECL|macro|CPU_NONE
-mdefine_line|#define CPU_NONE&t;&t;-1
+mdefine_line|#define CPU_NONE&t;&t;(-1)
 multiline_comment|/*&n; * mutext support mapping&n; */
 DECL|macro|mutex_spinlock_init
 mdefine_line|#define mutex_spinlock_init(s)&t;spin_lock_init(s)
@@ -491,12 +474,6 @@ mdefine_line|#define ASSERT(expr)  do {&t;&bslash;&n;        if(!(expr)) { &bsla
 DECL|macro|ASSERT_ALWAYS
 mdefine_line|#define ASSERT_ALWAYS(expr)&t;do {&bslash;&n;        if(!(expr)) { &bslash;&n;&t;&t;printk( &quot;Assertion [%s] failed! %s:%s(line=%d)&bslash;n&quot;,&bslash;&n;&t;&t;&t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;&t;panic(&quot;Assertion always panic&bslash;n&quot;); &t;&bslash;&n;        } } while(0)
 macro_line|#endif&t;/* DISABLE_ASSERT */
-DECL|macro|PRINT_WARNING
-mdefine_line|#define PRINT_WARNING(x...)&t;do { printk(&quot;WARNING : &quot;); printk(x); } while(0)
-DECL|macro|PRINT_NOTICE
-mdefine_line|#define PRINT_NOTICE(x...)&t;do { printk(&quot;NOTICE : &quot;); printk(x); } while(0)
-DECL|macro|PRINT_ALERT
-mdefine_line|#define PRINT_ALERT(x...)&t;do { printk(&quot;ALERT : &quot;); printk(x); } while(0)
 DECL|macro|PRINT_PANIC
 mdefine_line|#define PRINT_PANIC&t;&t;panic
 macro_line|#ifdef CONFIG_SMP
@@ -507,5 +484,5 @@ DECL|macro|cpu_enabled
 mdefine_line|#define cpu_enabled(cpu)&t;(1)
 macro_line|#endif
 macro_line|#include &lt;asm/sn/hack.h&gt;&t;/* for now */
-macro_line|#endif&t;/* _ASM_SN_SGI_H */
+macro_line|#endif /* _ASM_IA64_SN_SGI_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*  labelcl - SGI&squot;s Hwgraph Compatibility Layer.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Colin Ngam may be reached by email at cngam@sgi.com&n;&n;*/
+multiline_comment|/*  labelcl - SGI&squot;s Hwgraph Compatibility Layer.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001 Silicon Graphics, Inc.  All rights reserved.&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -630,6 +630,10 @@ l_string|&quot;labelcl_info_add_LBL: Duplicate label name %s for vertex 0x%p&bsl
 comma
 id|info_name
 comma
+(paren
+r_void
+op_star
+)paren
 id|de
 )paren
 suffix:semicolon

@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 1999-2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Patrick Gefre&n; */
-macro_line|#ifndef _ASM_SN_SN_FRU_H
-DECL|macro|_ASM_SN_SN_FRU_H
-mdefine_line|#define _ASM_SN_SN_FRU_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 1999-2001 Silicon Graphics, Inc. &n; * All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN_FRU_H
+DECL|macro|_ASM_IA64_SN_SN_FRU_H
+mdefine_line|#define _ASM_IA64_SN_SN_FRU_H
 DECL|macro|MAX_DIMMS
 mdefine_line|#define MAX_DIMMS&t;&t;&t;8&t; /* max # of dimm banks */
 DECL|macro|MAX_PCIDEV
@@ -90,5 +90,5 @@ DECL|typedef|kf_pci_bus_t
 )brace
 id|kf_pci_bus_t
 suffix:semicolon
-macro_line|#endif&t;/* _ASM_SN_SN_FRU_H */
+macro_line|#endif /* _ASM_IA64_SN_SN_FRU_H */
 eof

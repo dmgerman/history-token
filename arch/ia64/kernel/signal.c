@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
+multiline_comment|/*&n; * Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
@@ -33,21 +35,6 @@ macro_line|# define PUT_SIGSET(k,u)&t;__put_user((k)-&gt;sig[0], &amp;(u)-&gt;si
 DECL|macro|GET_SIGSET
 macro_line|# define GET_SIGSET(k,u)&t;__get_user((k)-&gt;sig[0], &amp;(u)-&gt;sig[0])
 macro_line|#endif
-r_extern
-r_int
-id|ia64_do_signal
-(paren
-id|sigset_t
-op_star
-comma
-r_struct
-id|sigscratch
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* forward decl */
 r_int
 DECL|function|ia64_rt_sigsuspend
 id|ia64_rt_sigsuspend
@@ -779,6 +766,17 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|from-&gt;si_flags
+comma
+op_amp
+id|to-&gt;si_flags
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
 id|from-&gt;si_isr
 comma
 op_amp
@@ -879,17 +877,83 @@ op_amp
 id|to-&gt;si_pid
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|from-&gt;si_code
+op_eq
+id|PROF_OVFL
+)paren
+(brace
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
 id|from-&gt;si_pfm_ovfl
+(braket
+l_int|0
+)braket
 comma
 op_amp
 id|to-&gt;si_pfm_ovfl
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|from-&gt;si_pfm_ovfl
+(braket
+l_int|1
+)braket
+comma
+op_amp
+id|to-&gt;si_pfm_ovfl
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|from-&gt;si_pfm_ovfl
+(braket
+l_int|2
+)braket
+comma
+op_amp
+id|to-&gt;si_pfm_ovfl
+(braket
+l_int|2
+)braket
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|from-&gt;si_pfm_ovfl
+(braket
+l_int|3
+)braket
+comma
+op_amp
+id|to-&gt;si_pfm_ovfl
+(braket
+l_int|3
+)braket
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -1131,9 +1195,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;ptrace
-op_amp
-id|PT_TRACESYS
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SYSCALL_TRACE
+)paren
 )paren
 multiline_comment|/*&n;&t;&t; * strace expects to be notified after sigreturn returns even though the&n;&t;&t; * context to which we return may not be in the middle of a syscall.&n;&t;&t; * Thus, the return-value that strace displays for sigreturn is&n;&t;&t; * meaningless.&n;&t;&t; */
 id|retval

@@ -75,6 +75,22 @@ macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
 mdefine_line|#define __ia64_mf_a()&t;__asm__ __volatile__ (&quot;mf.a&quot; ::: &quot;memory&quot;)
+multiline_comment|/**&n; * __ia64_mmiob - I/O space memory barrier&n; *&n; * Acts as a memory mapped I/O barrier for platforms that queue writes to&n; * I/O space.  This ensures that subsequent writes to I/O space arrive after&n; * all previous writes.  For most ia64 platforms, this is a simple&n; * &squot;mf.a&squot; instruction, so the address is ignored.  For other platforms,&n; * the address may be required to ensure proper ordering of writes to I/O space&n; * since a &squot;dummy&squot; read might be necessary to barrier the write operation.&n; */
+r_static
+r_inline
+r_void
+DECL|function|__ia64_mmiob
+id|__ia64_mmiob
+(paren
+r_void
+)paren
+(brace
+id|__ia64_mf_a
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_static
 r_inline
 r_const
@@ -933,6 +949,8 @@ DECL|macro|__outw
 mdefine_line|#define __outw&t;&t;platform_outw
 DECL|macro|__outl
 mdefine_line|#define __outl&t;&t;platform_outl
+DECL|macro|__mmiob
+mdefine_line|#define __mmiob         platform_mmiob
 DECL|macro|inb
 mdefine_line|#define inb&t;&t;__inb
 DECL|macro|inw
@@ -957,6 +975,8 @@ DECL|macro|outsw
 mdefine_line|#define outsw&t;&t;__outsw
 DECL|macro|outsl
 mdefine_line|#define outsl&t;&t;__outsl
+DECL|macro|mmiob
+mdefine_line|#define mmiob           __mmiob
 multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; */
 r_static
 r_inline
@@ -1306,6 +1326,12 @@ DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(to,from,len) &bslash;&n;  __ia64_memcpy_toio((unsigned long)(to),(from),(len))
 DECL|macro|memset_io
 mdefine_line|#define memset_io(addr,c,len) &bslash;&n;  __ia64_memset_c_io((unsigned long)(addr),0x0101010101010101UL*(u8)(c),(len))
+DECL|macro|dma_cache_inv
+mdefine_line|#define dma_cache_inv(_start,_size)             do { } while (0)
+DECL|macro|dma_cache_wback
+mdefine_line|#define dma_cache_wback(_start,_size)           do { } while (0)
+DECL|macro|dma_cache_wback_inv
+mdefine_line|#define dma_cache_wback_inv(_start,_size)       do { } while (0)
 macro_line|# endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_IO_H */
 eof

@@ -1,8 +1,9 @@
-macro_line|#ifndef _ASM_IA64_SN_SAL_H
-DECL|macro|_ASM_IA64_SN_SAL_H
-mdefine_line|#define _ASM_IA64_SN_SAL_H
-multiline_comment|/*&n; * System Abstraction Layer definitions for IA64&n; *&n; *&n; * Copyright (C) 2000, Silicon Graphics.&n; * Copyright (C) 2000. Jack Steiner (steiner@sgi.com)&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN_SAL_H
+DECL|macro|_ASM_IA64_SN_SN_SAL_H
+mdefine_line|#define _ASM_IA64_SN_SN_SAL_H
+multiline_comment|/*&n; * System Abstraction Layer definitions for IA64&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 singleline_comment|// SGI Specific Calls
 DECL|macro|SN_SAL_POD_MODE
 mdefine_line|#define  SN_SAL_POD_MODE                           0x02000001
@@ -10,6 +11,14 @@ DECL|macro|SN_SAL_SYSTEM_RESET
 mdefine_line|#define  SN_SAL_SYSTEM_RESET                       0x02000002
 DECL|macro|SN_SAL_PROBE
 mdefine_line|#define  SN_SAL_PROBE                              0x02000003
+DECL|macro|SN_SAL_GET_CONSOLE_NASID
+mdefine_line|#define  SN_SAL_GET_CONSOLE_NASID                  0x02000004
+DECL|macro|SN_SAL_GET_KLCONFIG_ADDR
+mdefine_line|#define&t; SN_SAL_GET_KLCONFIG_ADDR&t;&t;   0x02000005
+DECL|macro|SN_SAL_LOG_CE
+mdefine_line|#define  SN_SAL_LOG_CE&t;&t;&t;&t;   0x02000006
+DECL|macro|SN_SAL_REGISTER_CE
+mdefine_line|#define  SN_SAL_REGISTER_CE&t;&t;&t;   0x02000007
 id|u64
 id|ia64_sn_probe_io_slot
 c_func
@@ -25,5 +34,214 @@ op_star
 id|data_ptr
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_IA64_SN_SN1_SAL_H */
+multiline_comment|/*&n; * Returns the master console nasid, if the call fails, return an illegal&n; * value.&n; */
+r_static
+r_inline
+id|u64
+DECL|function|ia64_sn_get_console_nasid
+id|ia64_sn_get_console_nasid
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|ret_stuff
+suffix:semicolon
+id|ret_stuff.status
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|ret_stuff.v0
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|ret_stuff.v1
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|ret_stuff.v2
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|SAL_CALL
+c_func
+(paren
+id|ret_stuff
+comma
+id|SN_SAL_GET_CONSOLE_NASID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret_stuff.status
+OL
+l_int|0
+)paren
+r_return
+id|ret_stuff.status
+suffix:semicolon
+multiline_comment|/* Master console nasid is in &squot;v0&squot; */
+r_return
+id|ret_stuff.v0
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u64
+DECL|function|ia64_sn_get_klconfig_addr
+id|ia64_sn_get_klconfig_addr
+c_func
+(paren
+id|nasid_t
+id|nasid
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|ret_stuff
+suffix:semicolon
+r_extern
+id|u64
+id|klgraph_addr
+(braket
+)braket
+suffix:semicolon
+r_int
+id|cnodeid
+suffix:semicolon
+id|cnodeid
+op_assign
+id|nasid_to_cnodeid
+c_func
+(paren
+id|nasid
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|klgraph_addr
+(braket
+id|cnodeid
+)braket
+op_eq
+l_int|0
+)paren
+(brace
+id|ret_stuff.status
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|ret_stuff.v0
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|ret_stuff.v1
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|ret_stuff.v2
+op_assign
+(paren
+r_uint64
+)paren
+l_int|0
+suffix:semicolon
+id|SAL_CALL
+c_func
+(paren
+id|ret_stuff
+comma
+id|SN_SAL_GET_KLCONFIG_ADDR
+comma
+(paren
+id|u64
+)paren
+id|nasid
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; &t;* We should panic if a valid cnode nasid does not produce&n;&t; &t;* a klconfig address.&n;&t; &t;*/
+r_if
+c_cond
+(paren
+id|ret_stuff.status
+op_ne
+l_int|0
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;ia64_sn_get_klconfig_addr: Returned error %lx&bslash;n&quot;
+comma
+id|ret_stuff.status
+)paren
+suffix:semicolon
+)brace
+id|klgraph_addr
+(braket
+id|cnodeid
+)braket
+op_assign
+id|ret_stuff.v0
+suffix:semicolon
+)brace
+r_return
+id|klgraph_addr
+(braket
+id|cnodeid
+)braket
+suffix:semicolon
+)brace
+macro_line|#endif /* _ASM_IA64_SN_SN_SAL_H */
 eof

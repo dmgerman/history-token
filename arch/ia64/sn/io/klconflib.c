@@ -1,13 +1,15 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/agent.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
@@ -40,6 +42,13 @@ c_func
 id|lboard_t
 op_star
 )paren
+suffix:semicolon
+DECL|variable|klgraph_addr
+id|u64
+id|klgraph_addr
+(braket
+id|MAX_COMPACT_NODES
+)braket
 suffix:semicolon
 id|lboard_t
 op_star
@@ -811,8 +820,8 @@ id|lboard_t
 op_star
 id|board
 suffix:semicolon
-macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC
-multiline_comment|/* BRINGUP: If this works then look for callers of is_master_baseio()&n; * (e.g. iograph.c) and let them pass in a slot if they want&n; */
+macro_line|#if defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
+multiline_comment|/* If this works then look for callers of is_master_baseio()&n; * (e.g. iograph.c) and let them pass in a slot if they want&n; */
 id|board
 op_assign
 id|find_lboard_module
@@ -882,7 +891,7 @@ op_ne
 id|INVALID_NASID
 )paren
 )paren
-macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC
+macro_line|#if defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 id|board
 op_assign
 id|find_lboard_module
@@ -1152,42 +1161,6 @@ r_return
 id|brd
 suffix:semicolon
 )brace
-r_int
-DECL|function|get_cpu_slice
-id|get_cpu_slice
-c_func
-(paren
-id|cpuid_t
-id|cpu
-)paren
-(brace
-id|klcpu_t
-op_star
-id|acpu
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|acpu
-op_assign
-id|get_cpuinfo
-c_func
-(paren
-id|cpu
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-id|acpu-&gt;cpu_info.physid
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * get_actual_nasid&n; *&n; *&t;Completely disabled brds have their klconfig on &n; *&t;some other nasid as they have no memory. But their&n; *&t;actual nasid is hidden in the klconfig. Use this&n; *&t;routine to get it. Works for normal boards too.&n; */
 id|nasid_t
 DECL|function|get_actual_nasid
@@ -1389,17 +1362,6 @@ r_char
 op_star
 id|board_name
 suffix:semicolon
-macro_line|#if !defined(CONFIG_SGI_IP35) &amp;&amp; !defined(CONFIG_IA64_SGI_SN1) &amp;&amp; !defined(CONFIG_IA64_GENERIC)
-id|slotid_t
-id|slot
-suffix:semicolon
-r_char
-id|slot_name
-(braket
-id|SLOTNUM_MAXLENGTH
-)braket
-suffix:semicolon
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -1640,7 +1602,7 @@ c_func
 id|nasid
 )paren
 comma
-id|KLTYPE_IP27
+id|KLTYPE_SNIA
 )paren
 suffix:semicolon
 r_if
@@ -2063,8 +2025,8 @@ id|hub-&gt;hub_mfg_nic
 comma
 id|serial_number
 comma
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
-l_string|&quot;IP35&quot;
+macro_line|#if defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
+l_string|&quot;IP37&quot;
 )paren
 )paren
 macro_line|#else
@@ -2087,7 +2049,7 @@ comma
 l_string|&quot;IP31&quot;
 )paren
 )paren
-macro_line|#endif /* CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 */
+macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
 r_return
 l_int|1
 suffix:semicolon
@@ -3180,7 +3142,6 @@ id|name
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 DECL|variable|brick_types
 r_char
 id|brick_types
@@ -3192,6 +3153,7 @@ l_int|1
 op_assign
 l_string|&quot;crikxdp789012345&quot;
 suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 multiline_comment|/*&n; * Format a module id for printing.&n; */
 r_void
 DECL|function|format_module_id
@@ -3872,7 +3834,7 @@ r_int
 id|m
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 */
+macro_line|#else /* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/*&n; * Format a module id for printing.&n; */
 r_void
 DECL|function|format_module_id
@@ -3971,20 +3933,25 @@ id|EDGE_LBL_MODULE
 l_string|&quot;/&quot;
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|m
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|c
-op_assign
 op_star
+id|buffer
+suffix:semicolon
 id|buffer
 op_increment
 )paren
 (brace
+id|c
+op_assign
+op_star
+id|buffer
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4024,5 +3991,5 @@ r_int
 id|m
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 */
+macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
 eof

@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBPI_NEXT_H
-DECL|macro|_ASM_SN_SN1_HUBPI_NEXT_H
-mdefine_line|#define _ASM_SN_SN1_HUBPI_NEXT_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBPI_NEXT_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBPI_NEXT_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBPI_NEXT_H
 multiline_comment|/* define for remote PI_1 space. It is always half of a node_addressspace&n; * from PI_0. The normal REMOTE_HUB space for PI registers access&n; * the PI_0 space, unless they are qualified by PI_1.&n; */
 DECL|macro|PI_0
 mdefine_line|#define PI_0(x)&t;&t;&t;(x)
@@ -49,7 +49,7 @@ mdefine_line|#define PI_CRB_STS_E&t;(0x3)&t;&t;/* &quot;E&quot; (coherent read t
 multiline_comment|/* When the &quot;P&quot; bit is set in the sk_crb_sts field of an error stack&n; * entry, the &quot;R,&quot; &quot;A,&quot; &quot;H,&quot; and &quot;I&quot; bits are actually bits 6..3 of&n; * the address.  This macro extracts those address bits and shifts&n; * them to their proper positions, ready to be ORed in to the rest of&n; * the address (which is calculated as sk_addr &lt;&lt; 7).&n; */
 DECL|macro|PI_CRB_STS_ADDR_BITS
 mdefine_line|#define PI_CRB_STS_ADDR_BITS(sts) &bslash;&n;    ((sts) &amp; (PI_CRB_STS_I | PI_CRB_STS_H) | &bslash;&n;     ((sts) &amp; (PI_CRB_STS_A | PI_CRB_STS_R)) &gt;&gt; 1)
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * format of error stack and error status registers.&n; */
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|struct|err_stack_format
@@ -640,5 +640,5 @@ mdefine_line|#define PI_ERR_WRB&t;1
 multiline_comment|/* Error stack address shift, for use with pi_stk_fmt.sk_addr */
 DECL|macro|ERR_STK_ADDR_SHFT
 mdefine_line|#define ERR_STK_ADDR_SHFT&t;3
-macro_line|#endif /* _ASM_SN_SN1_HUBPI_NEXT_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBPI_NEXT_H */
 eof

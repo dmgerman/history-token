@@ -1,13 +1,16 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/hack.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/sn/pio.h&gt;
@@ -17,22 +20,20 @@ macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
-macro_line|#include &lt;asm/sn/agent.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
-singleline_comment|// #include &lt;sys/ql.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
+macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
+macro_line|#include &lt;asm/sn/simulator.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 r_extern
 r_int
 id|bridge_rev_b_data_check_disable
 suffix:semicolon
-macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
-DECL|macro|MAX_PCI_XWIDGET
-mdefine_line|#define MAX_PCI_XWIDGET 256
 DECL|variable|busnum_to_pcibr_vhdl
 id|devfs_handle_t
 id|busnum_to_pcibr_vhdl
@@ -111,6 +112,14 @@ c_func
 r_int
 r_int
 id|pci_address
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sn1_init_irq_desc
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * pci_bus_cvlink_init() - To be called once during initialization before &n; *&t;SGI IO Infrastructure init is called.&n; */
@@ -253,6 +262,9 @@ suffix:semicolon
 id|devfs_handle_t
 id|device_vertex
 op_assign
+(paren
+id|devfs_handle_t
+)paren
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Go get the pci bus vertex.&n;&t; */
@@ -306,6 +318,7 @@ c_func
 id|devfn
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * For a NON Multi-function card the name of the device looks like:&n;&t; * ../pci/1, ../pci/2 ..&n;&t; */
 r_if
 c_cond
 (paren
@@ -313,6 +326,7 @@ id|func
 op_eq
 l_int|0
 )paren
+(brace
 id|sprintf
 c_func
 (paren
@@ -323,7 +337,36 @@ comma
 id|slot
 )paren
 suffix:semicolon
-r_else
+r_if
+c_cond
+(paren
+id|hwgraph_traverse
+c_func
+(paren
+id|pci_bus
+comma
+id|name
+comma
+op_amp
+id|device_vertex
+)paren
+op_eq
+id|GRAPH_SUCCESS
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|device_vertex
+)paren
+(brace
+r_return
+id|device_vertex
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/*&n;&t; * This maybe a multifunction card.  It&squot;s names look like:&n;&t; * ../pci/1a, ../pci/1b, etc.&n;&t; */
 id|sprintf
 c_func
 (paren
@@ -370,6 +413,144 @@ suffix:semicolon
 r_return
 id|device_vertex
 suffix:semicolon
+)brace
+multiline_comment|/*&n; * For the given device, initialize the addresses for both the Device(x) Flush &n; * Write Buffer register and the Xbow Flush Register for the port the PCI bus &n; * is connected.&n; */
+r_static
+r_void
+DECL|function|set_flush_addresses
+id|set_flush_addresses
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|device_dev
+comma
+r_struct
+id|sn1_device_sysdata
+op_star
+id|device_sysdata
+)paren
+(brace
+id|pciio_info_t
+id|pciio_info
+op_assign
+id|pciio_info_get
+c_func
+(paren
+id|device_sysdata-&gt;vhdl
+)paren
+suffix:semicolon
+id|pciio_slot_t
+id|pciio_slot
+op_assign
+id|pciio_info_slot_get
+c_func
+(paren
+id|pciio_info
+)paren
+suffix:semicolon
+id|pcibr_soft_t
+id|pcibr_soft
+op_assign
+(paren
+id|pcibr_soft_t
+)paren
+id|pciio_info_mfast_get
+c_func
+(paren
+id|pciio_info
+)paren
+suffix:semicolon
+id|bridge_t
+op_star
+id|bridge
+op_assign
+id|pcibr_soft-&gt;bs_base
+suffix:semicolon
+id|device_sysdata-&gt;dma_buf_sync
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+op_amp
+(paren
+id|bridge-&gt;b_wr_req_buf
+(braket
+id|pciio_slot
+)braket
+dot
+id|reg
+)paren
+suffix:semicolon
+id|device_sysdata-&gt;xbow_buf_sync
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|XBOW_PRIO_LINKREGS_PTR
+c_func
+(paren
+id|NODE_SWIN_BASE
+c_func
+(paren
+id|get_nasid
+c_func
+(paren
+)paren
+comma
+l_int|0
+)paren
+comma
+id|pcibr_soft-&gt;bs_xid
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;set_flush_addresses: dma_buf_sync %p xbow_buf_sync %p&bslash;n&quot;
+comma
+id|device_sysdata-&gt;dma_buf_sync
+comma
+id|device_sysdata-&gt;xbow_buf_sync
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+r_volatile
+r_int
+r_int
+)paren
+op_star
+id|device_sysdata-&gt;dma_buf_sync
+)paren
+(brace
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+r_volatile
+r_int
+r_int
+)paren
+op_star
+id|device_sysdata-&gt;xbow_buf_sync
+)paren
+(brace
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Most drivers currently do not properly tell the arch specific pci dma&n; * interfaces whether they can handle A64. Here is where we privately&n; * keep track of this.&n; */
 r_static
@@ -465,7 +646,7 @@ r_int
 r_int
 id|sn1_ioport_num
 op_assign
-l_int|0x100
+l_int|0x1000
 suffix:semicolon
 multiline_comment|/* Reserve room for Legacy stuff */
 r_int
@@ -515,15 +696,6 @@ id|ioports_to_tlbs
 id|ioport_index
 )braket
 dot
-id|ppn
-op_assign
-id|pci_address
-suffix:semicolon
-id|ioports_to_tlbs
-(braket
-id|ioport_index
-)braket
-dot
 id|p
 op_assign
 l_int|1
@@ -534,11 +706,21 @@ id|ioports_to_tlbs
 id|ioport_index
 )braket
 dot
+id|rv_1
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* 1 Bit */
+id|ioports_to_tlbs
+(braket
+id|ioport_index
+)braket
+dot
 id|ma
 op_assign
-l_int|5
+l_int|4
 suffix:semicolon
-multiline_comment|/* Memory Attributes */
+multiline_comment|/* Memory Attributes 3 bits*/
 id|ioports_to_tlbs
 (braket
 id|ioport_index
@@ -546,9 +728,9 @@ id|ioport_index
 dot
 id|a
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
-multiline_comment|/* Set Data Access Bit Fault */
+multiline_comment|/* Set Data Access Bit Fault 1 Bit*/
 id|ioports_to_tlbs
 (braket
 id|ioport_index
@@ -556,7 +738,7 @@ id|ioport_index
 dot
 id|d
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 multiline_comment|/* Dirty Bit */
 id|ioports_to_tlbs
@@ -566,7 +748,7 @@ id|ioport_index
 dot
 id|pl
 op_assign
-l_int|3
+l_int|0
 suffix:semicolon
 multiline_comment|/* Privilege Level - All levels can R/W*/
 id|ioports_to_tlbs
@@ -576,9 +758,21 @@ id|ioport_index
 dot
 id|ar
 op_assign
-l_int|2
+l_int|3
 suffix:semicolon
 multiline_comment|/* Access Rights - R/W only*/
+id|ioports_to_tlbs
+(braket
+id|ioport_index
+)braket
+dot
+id|ppn
+op_assign
+id|pci_address
+op_rshift
+l_int|12
+suffix:semicolon
+multiline_comment|/* 4K page size */
 id|ioports_to_tlbs
 (braket
 id|ioport_index
@@ -599,21 +793,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Ignored */
-id|printk
-c_func
-(paren
-l_string|&quot;sn1_allocate_ioports: ioport_index 0x%x ioports_to_tlbs 0x%p&bslash;n&quot;
-comma
-id|ioport_index
-comma
-id|ioports_to_tlbs
-(braket
-id|ioport_index
-)braket
-dot
-id|ppn
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;sn1_allocate_ioports: ioport_index 0x%x ioports_to_tlbs 0x%p&bslash;n&quot;, ioport_index, ioports_to_tlbs[ioport_index]); */
 id|sn1_ioport_num
 op_add_assign
 id|SN1_IOPORTS_UNIT
@@ -663,10 +843,12 @@ id|sn1_device_sysdata
 op_star
 id|device_sysdata
 suffix:semicolon
+macro_line|#ifdef SN1_IOPORTS
 r_int
 r_int
 id|ioport
 suffix:semicolon
+macro_line|#endif
 id|pciio_intr_t
 id|intr_handle
 suffix:semicolon
@@ -676,7 +858,6 @@ comma
 id|bit
 suffix:semicolon
 id|devfs_handle_t
-op_star
 id|device_vertex
 suffix:semicolon
 id|pciio_intr_line_t
@@ -690,10 +871,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+r_extern
 r_int
-r_int
-id|res
+id|numnodes
 suffix:semicolon
+r_int
+id|cnode
+suffix:semicolon
+macro_line|#endif /* CONFIG_IA64_SGI_SN2 */
 r_if
 c_cond
 (paren
@@ -702,11 +888,62 @@ op_eq
 l_int|0
 )paren
 (brace
+id|sn1_init_irq_desc
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sn1_pci_find_bios
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+r_for
+c_loop
+(paren
+id|cnode
+op_assign
+l_int|0
+suffix:semicolon
+id|cnode
+OL
+id|numnodes
+suffix:semicolon
+id|cnode
+op_increment
+)paren
+(brace
+r_extern
+r_void
+id|intr_init_vecblk
+c_func
+(paren
+id|nodepda_t
+op_star
+id|npda
+comma
+id|cnodeid_t
+comma
+r_int
+)paren
+suffix:semicolon
+id|intr_init_vecblk
+c_func
+(paren
+id|NODEPDA
+c_func
+(paren
+id|cnode
+)paren
+comma
+id|cnode
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_IA64_SGI_SN2 */
 r_return
 suffix:semicolon
 )brace
@@ -855,25 +1092,6 @@ id|done_probing
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_RUNNING_ON_SIMULATOR
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;sn1_pci_fixup not supported on simulator.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#ifdef REAL_HARDWARE
 multiline_comment|/*&n;&t; * Initialize the pci bus vertex in the pci_bus struct.&n;&t; */
 r_for
 c_loop
@@ -932,10 +1150,42 @@ id|widget_sysdata
 suffix:semicolon
 )brace
 multiline_comment|/*&n; &t; * set the root start and end so that drivers calling check_region()&n;&t; * won&squot;t see a conflict&n;&t; */
+macro_line|#ifdef SN1_IOPORTS
+id|ioport_resource.start
+op_assign
+id|sn1_ioport_num
+suffix:semicolon
+id|ioport_resource.end
+op_assign
+l_int|0xffff
+suffix:semicolon
+macro_line|#else
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
+r_if
+c_cond
+(paren
+id|IS_RUNNING_ON_SIMULATOR
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * IDE legacy IO PORTs are supported in Medusa.&n;&t;&t; * Just open up IO PORTs from 0 .. ioport_resource.end.&n;&t;&t; */
+id|ioport_resource.start
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * We do not support Legacy IO PORT numbers.&n;&t;&t; */
 id|ioport_resource.start
 op_or_assign
 id|IO_SWIZ_BASE
+op_or
+id|__IA64_UNCACHED_OFFSET
 suffix:semicolon
+)brace
 id|ioport_resource.end
 op_or_assign
 (paren
@@ -943,6 +1193,21 @@ id|HSPEC_SWIZ_BASE
 op_minus
 l_int|1
 )paren
+op_or
+id|__IA64_UNCACHED_OFFSET
+suffix:semicolon
+macro_line|#else
+singleline_comment|// Need something here for sn2.... ZXZXZX
+macro_line|#endif
+macro_line|#endif
+multiline_comment|/*&n;&t; * Set the root start and end for Mem Resource.&n;&t; */
+id|iomem_resource.start
+op_assign
+l_int|0
+suffix:semicolon
+id|iomem_resource.end
+op_assign
+l_int|0xffffffffffffffff
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the device vertex in the pci_dev struct.&n;&t; */
 id|pci_for_each_dev
@@ -967,6 +1232,14 @@ suffix:semicolon
 r_int
 r_int
 id|size
+suffix:semicolon
+r_extern
+r_int
+id|bit_pos_to_irq
+c_func
+(paren
+r_int
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1026,6 +1299,18 @@ suffix:semicolon
 id|device_sysdata-&gt;isa64
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Set the xbridge Device(X) Write Buffer Flush and Xbow Flush &n;&t;&t; * register addresses.&n;&t;&t; */
+(paren
+r_void
+)paren
+id|set_flush_addresses
+c_func
+(paren
+id|device_dev
+comma
+id|device_sysdata
+)paren
 suffix:semicolon
 id|device_dev-&gt;sysdata
 op_assign
@@ -1098,27 +1383,6 @@ c_cond
 id|size
 )paren
 (brace
-id|res
-op_assign
-l_int|0
-suffix:semicolon
-id|res
-op_assign
-id|pciio_config_get
-c_func
-(paren
-id|vhdl
-comma
-(paren
-r_int
-)paren
-id|PCI_BASE_ADDRESS_0
-op_plus
-id|idx
-comma
-l_int|4
-)paren
-suffix:semicolon
 id|device_dev-&gt;resource
 (braket
 id|idx
@@ -1152,7 +1416,15 @@ comma
 id|PCIIO_BYTE_STREAM
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;sn1_pci_fixup: Mapped Address = 0x%p size = 0x%x&bslash;n&quot;, device_dev-&gt;resource[idx].start, size); */
+id|device_dev-&gt;resource
+(braket
+id|idx
+)braket
+dot
+id|start
+op_or_assign
+id|__IA64_UNCACHED_OFFSET
+suffix:semicolon
 )brace
 r_else
 r_continue
@@ -1173,6 +1445,7 @@ id|start
 op_plus
 id|size
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 multiline_comment|/*&n;&t;&t;&t; * Adjust the addresses to go to the SWIZZLE ..&n;&t;&t;&t; */
 id|device_dev-&gt;resource
 (braket
@@ -1206,27 +1479,7 @@ id|end
 op_amp
 l_int|0xfffff7ffffffffff
 suffix:semicolon
-id|res
-op_assign
-l_int|0
-suffix:semicolon
-id|res
-op_assign
-id|pciio_config_get
-c_func
-(paren
-id|vhdl
-comma
-(paren
-r_int
-)paren
-id|PCI_BASE_ADDRESS_0
-op_plus
-id|idx
-comma
-l_int|4
-)paren
-suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1244,6 +1497,7 @@ id|cmd
 op_or_assign
 id|PCI_COMMAND_IO
 suffix:semicolon
+macro_line|#ifdef SN1_IOPORTS
 id|ioport
 op_assign
 id|sn1_allocate_ioports
@@ -1257,10 +1511,96 @@ dot
 id|start
 )paren
 suffix:semicolon
-multiline_comment|/* device_dev-&gt;resource[idx].start = ioport; */
-multiline_comment|/* device_dev-&gt;resource[idx].end = ioport + SN1_IOPORTS_UNIT */
+r_if
+c_cond
+(paren
+id|ioport
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;sn1_pci_fixup: PCI Device 0x%x on PCI Bus %d not mapped to IO PORTs .. IO PORTs exhausted&bslash;n&quot;
+comma
+id|device_dev-&gt;devfn
+comma
+id|device_dev-&gt;bus-&gt;number
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
+id|pciio_config_set
+c_func
+(paren
+id|vhdl
+comma
+(paren
+r_int
+)paren
+id|PCI_BASE_ADDRESS_0
+op_plus
+(paren
+id|idx
+op_star
+l_int|4
+)paren
+comma
+l_int|4
+comma
+(paren
+id|res
+op_plus
+(paren
+id|ioport
+op_amp
+l_int|0xfff
+)paren
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;sn1_pci_fixup: ioport number %d mapped to pci address 0x%lx&bslash;n&quot;
+comma
+id|ioport
+comma
+(paren
+id|res
+op_plus
+(paren
+id|ioport
+op_amp
+l_int|0xfff
+)paren
+)paren
+)paren
+suffix:semicolon
+id|device_dev-&gt;resource
+(braket
+id|idx
+)braket
+dot
+id|start
+op_assign
+id|ioport
+suffix:semicolon
+id|device_dev-&gt;resource
+(braket
+id|idx
+)braket
+dot
+id|end
+op_assign
+id|ioport
+op_plus
+id|SN1_IOPORTS_UNIT
+suffix:semicolon
+macro_line|#endif
+)brace
 r_if
 c_cond
 (paren
@@ -1295,6 +1635,12 @@ id|PCI_ROM_RESOURCE
 dot
 id|start
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+)paren
+(brace
 id|device_dev-&gt;resource
 (braket
 id|PCI_ROM_RESOURCE
@@ -1329,6 +1675,15 @@ id|device_dev-&gt;resource
 id|PCI_ROM_RESOURCE
 )braket
 dot
+id|start
+op_or_assign
+id|__IA64_UNCACHED_OFFSET
+suffix:semicolon
+id|device_dev-&gt;resource
+(braket
+id|PCI_ROM_RESOURCE
+)braket
+dot
 id|end
 op_assign
 id|device_dev-&gt;resource
@@ -1340,7 +1695,8 @@ id|start
 op_plus
 id|size
 suffix:semicolon
-multiline_comment|/*&n;                 * go through synergy swizzled space&n;                 */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+multiline_comment|/*&n;                 &t; * go through synergy swizzled space&n;                 &t; */
 id|device_dev-&gt;resource
 (braket
 id|PCI_ROM_RESOURCE
@@ -1359,6 +1715,8 @@ id|end
 op_and_assign
 l_int|0xfffff7ffffffffffUL
 suffix:semicolon
+macro_line|#endif
+)brace
 multiline_comment|/*&n;&t;&t; * Update the Command Word on the Card.&n;&t;&t; */
 id|cmd
 op_or_assign
@@ -1383,11 +1741,15 @@ id|device_dev
 comma
 id|PCI_INTERRUPT_PIN
 comma
+(paren
+r_int
+r_char
+op_star
+)paren
 op_amp
 id|lines
 )paren
 suffix:semicolon
-macro_line|#ifdef BRINGUP
 r_if
 c_cond
 (paren
@@ -1405,7 +1767,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 id|device_sysdata
 op_assign
 (paren
@@ -1441,6 +1802,7 @@ id|cpuid
 op_assign
 id|intr_handle-&gt;pi_cpu
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|irq
 op_assign
 id|bit_pos_to_irq
@@ -1449,6 +1811,12 @@ c_func
 id|bit
 )paren
 suffix:semicolon
+macro_line|#else /* SN2 */
+id|irq
+op_assign
+id|bit
+suffix:semicolon
+macro_line|#endif
 id|irq
 op_assign
 id|irq
@@ -1463,20 +1831,101 @@ id|pciio_intr_connect
 c_func
 (paren
 id|intr_handle
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|device_dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
+macro_line|#ifdef ajmtestintr
+(brace
+r_int
+id|slot
+op_assign
+id|PCI_SLOT
+c_func
+(paren
+id|device_dev-&gt;devfn
+)paren
+suffix:semicolon
+r_static
+r_int
+id|timer_set
+op_assign
+l_int|0
+suffix:semicolon
+id|pcibr_intr_t
+id|pcibr_intr
+op_assign
+(paren
+id|pcibr_intr_t
+)paren
+id|intr_handle
+suffix:semicolon
+id|pcibr_soft_t
+id|pcibr_soft
+op_assign
+id|pcibr_intr-&gt;bi_soft
+suffix:semicolon
+r_extern
+r_void
+id|intr_test_handle_intr
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timer_set
+)paren
+(brace
+id|intr_test_set_timer
+c_func
+(paren
+)paren
+suffix:semicolon
+id|timer_set
+op_assign
+l_int|1
+suffix:semicolon
 )brace
-macro_line|#endif&t;/* REAL_HARDWARE */
+id|intr_test_register_irq
+c_func
+(paren
+id|irq
+comma
+id|pcibr_soft
+comma
+id|slot
+)paren
+suffix:semicolon
+id|request_irq
+c_func
+(paren
+id|irq
+comma
+id|intr_test_handle_intr
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
 macro_line|#if 0
 (brace
 id|devfs_handle_t
@@ -1617,6 +2066,38 @@ id|reg
 )paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;testing Big Window: 0xC0000200c0000000 %p&bslash;n&quot;
+comma
+op_star
+(paren
+(paren
+r_volatile
+r_uint64
+op_star
+)paren
+l_int|0xc0000200a0000000
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;testing Big Window: 0xC0000200c0000008 %p&bslash;n&quot;
+comma
+op_star
+(paren
+(paren
+r_volatile
+r_uint64
+op_star
+)paren
+l_int|0xc0000200a0000008
+)paren
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * pci_bus_map_create() - Called by pci_bus_to_hcl_cvlink() to finish the job.&n; *&n; *&t;Linux PCI Bus numbers are assigned from lowest module_id numbers&n; *&t;(rack/slot etc.) starting from HUB_WIDGET_ID_MAX down to &n; *&t;HUB_WIDGET_ID_MIN:&n; *&t;&t;widgetnum 15 gets lower Bus Number than widgetnum 14 etc.&n; *&n; *&t;Given 2 modules 001c01 and 001c02 we get the following mappings:&n; *&t;&t;001c01, widgetnum 15 = Bus number 0&n; *&t;&t;001c01, widgetnum 14 = Bus number 1&n; *&t;&t;001c02, widgetnum 15 = Bus number 3&n; *&t;&t;001c02, widgetnum 14 = Bus number 4&n; *&t;&t;etc.&n; *&n; * The rational for starting Bus Number 0 with Widget number 15 is because &n; * the system boot disks are always connected via Widget 15 Slot 0 of the &n; * I-brick.  Linux creates /dev/sd* devices(naming) strating from Bus Number 0 &n; * Therefore, /dev/sda1 will be the first disk, on Widget 15 of the lowest &n; * module id(Master Cnode) of the system.&n; *&t;&n; */
@@ -1678,6 +2159,7 @@ id|widgetnum
 op_decrement
 )paren
 (brace
+macro_line|#if 0
 (brace
 r_int
 id|pos
@@ -1715,6 +2197,7 @@ id|pos
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|sprintf
 c_func
 (paren
@@ -1835,6 +2318,10 @@ c_func
 (paren
 l_string|&quot;WARNING: pci_bus_map_create: Unable to get .master for vertex 0x%p&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|xwidget
 )paren
 suffix:semicolon
@@ -1860,6 +2347,10 @@ c_func
 (paren
 l_string|&quot;WARNING: pci_bus_map_create: Unable to get hubinfo for master node vertex 0x%p&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|master_node_vertex
 )paren
 suffix:semicolon
@@ -1900,7 +2391,7 @@ r_struct
 id|sn1_dma_maps_s
 )paren
 op_star
-l_int|512
+id|MAX_ATE_MAPS
 comma
 id|GFP_KERNEL
 )paren
@@ -1925,6 +2416,10 @@ id|num_bridges
 op_minus
 l_int|1
 comma
+(paren
+r_void
+op_star
+)paren
 id|xwidget
 )paren
 suffix:semicolon
@@ -1946,7 +2441,7 @@ r_struct
 id|sn1_dma_maps_s
 )paren
 op_star
-l_int|512
+id|MAX_ATE_MAPS
 )paren
 suffix:semicolon
 )brace
@@ -1969,24 +2464,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|devfs_handle_t
-id|module_comp
-op_assign
-l_int|NULL
-suffix:semicolon
-id|devfs_handle_t
-id|node
-op_assign
-l_int|NULL
-suffix:semicolon
-id|devfs_handle_t
 id|xtalk
 op_assign
 l_int|NULL
-suffix:semicolon
-id|graph_vertex_place_t
-id|placeptr
-op_assign
-id|EDGE_PLACE_WANT_REAL_EDGES
 suffix:semicolon
 r_int
 id|rv
@@ -2001,9 +2481,6 @@ l_int|256
 suffix:semicolon
 r_int
 id|master_iobrick
-suffix:semicolon
-id|moduleid_t
-id|iobrick_id
 suffix:semicolon
 r_int
 id|i
@@ -2236,242 +2713,6 @@ id|xtalk
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * sgi_pci_intr_support -&n; */
-r_int
-DECL|function|sgi_pci_intr_support
-id|sgi_pci_intr_support
-(paren
-r_int
-r_int
-id|requested_irq
-comma
-id|device_desc_t
-op_star
-id|dev_desc
-comma
-id|devfs_handle_t
-op_star
-id|bus_vertex
-comma
-id|pciio_intr_line_t
-op_star
-id|lines
-comma
-id|devfs_handle_t
-op_star
-id|device_vertex
-)paren
-(brace
-r_int
-r_int
-id|bus
-suffix:semicolon
-r_int
-r_int
-id|devfn
-suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-suffix:semicolon
-r_int
-r_char
-id|intr_pin
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|sn1_widget_sysdata
-op_star
-id|widget_sysdata
-suffix:semicolon
-r_struct
-id|sn1_device_sysdata
-op_star
-id|device_sysdata
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev_desc
-op_logical_or
-op_logical_neg
-id|bus_vertex
-op_logical_or
-op_logical_neg
-id|device_vertex
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;WARNING: sgi_pci_intr_support: Invalid parameter dev_desc 0x%p, bus_vertex 0x%p, device_vertex 0x%p&bslash;n&quot;
-comma
-id|dev_desc
-comma
-id|bus_vertex
-comma
-id|device_vertex
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|devfn
-op_assign
-(paren
-id|requested_irq
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xff
-suffix:semicolon
-id|bus
-op_assign
-(paren
-id|requested_irq
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xffff
-suffix:semicolon
-id|pci_dev
-op_assign
-id|pci_find_slot
-c_func
-(paren
-id|bus
-comma
-id|devfn
-)paren
-suffix:semicolon
-id|widget_sysdata
-op_assign
-(paren
-r_struct
-id|sn1_widget_sysdata
-op_star
-)paren
-id|pci_dev-&gt;bus-&gt;sysdata
-suffix:semicolon
-op_star
-id|bus_vertex
-op_assign
-id|widget_sysdata-&gt;vhdl
-suffix:semicolon
-id|device_sysdata
-op_assign
-(paren
-r_struct
-id|sn1_device_sysdata
-op_star
-)paren
-id|pci_dev-&gt;sysdata
-suffix:semicolon
-op_star
-id|device_vertex
-op_assign
-id|device_sysdata-&gt;vhdl
-suffix:semicolon
-macro_line|#if 0
-(brace
-r_int
-id|pos
-suffix:semicolon
-r_char
-id|dname
-(braket
-l_int|256
-)braket
-suffix:semicolon
-id|pos
-op_assign
-id|devfs_generate_path
-c_func
-(paren
-op_star
-id|device_vertex
-comma
-id|dname
-comma
-l_int|256
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s : path= %s pos %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-op_amp
-id|dname
-(braket
-id|pos
-)braket
-comma
-id|pos
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* BRINGUP */
-multiline_comment|/*&n;&t; * Get the Interrupt PIN.&n;&t; */
-id|pci_read_config_byte
-c_func
-(paren
-id|pci_dev
-comma
-id|PCI_INTERRUPT_PIN
-comma
-op_amp
-id|intr_pin
-)paren
-suffix:semicolon
-op_star
-id|lines
-op_assign
-(paren
-id|pciio_intr_line_t
-)paren
-id|intr_pin
-suffix:semicolon
-macro_line|#ifdef BRINGUP
-multiline_comment|/*&n;&t; * ioc3 can&squot;t decode the PCI_INTERRUPT_PIN field of its config&n;&t; * space so we have to set it here&n;&t; */
-r_if
-c_cond
-(paren
-id|pci_dev-&gt;vendor
-op_eq
-id|PCI_VENDOR_ID_SGI
-op_logical_and
-id|pci_dev-&gt;device
-op_eq
-id|PCI_DEVICE_ID_SGI_IOC3
-)paren
-(brace
-op_star
-id|lines
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif /* BRINGUP */
-multiline_comment|/* Not supported currently */
-op_star
-id|dev_desc
-op_assign
-l_int|NULL
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

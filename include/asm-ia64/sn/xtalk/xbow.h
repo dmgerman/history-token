@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
 macro_line|#ifndef _ASM_SN_SN_XTALK_XBOW_H
 DECL|macro|_ASM_SN_SN_XTALK_XBOW_H
 mdefine_line|#define _ASM_SN_SN_XTALK_XBOW_H
@@ -6,7 +6,7 @@ multiline_comment|/*&n; * xbow.h - header file for crossbow chip and xbow sectio
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
-macro_line|#ifdef LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/xtalk/xbow_info.h&gt;
 macro_line|#endif
 DECL|macro|XBOW_DRV_PREFIX
@@ -42,7 +42,7 @@ DECL|macro|XBOW_CREDIT
 mdefine_line|#define&t;XBOW_CREDIT&t;4
 DECL|macro|MAX_XBOW_NAME
 mdefine_line|#define MAX_XBOW_NAME &t;16
-macro_line|#if LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|xbowreg_t
 r_typedef
 r_uint32
@@ -616,7 +616,7 @@ mdefine_line|#define XBOW_ARB_IS_LOWER(wid) &t;((wid) &gt;= XBOW_PORT_C &amp;&am
 multiline_comment|/* offset of arbitration register, given source widget id */
 DECL|macro|XBOW_ARB_OFF
 mdefine_line|#define XBOW_ARB_OFF(wid) &t;(XBOW_ARB_IS_UPPER(wid) ? 0x1c : 0x24)
-macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 DECL|macro|XBOW_WID_ID
 mdefine_line|#define&t;XBOW_WID_ID&t;&t;WIDGET_ID
 DECL|macro|XBOW_WID_STAT
@@ -862,7 +862,7 @@ DECL|macro|XBOW_WID_ARB_RELOAD_INT
 mdefine_line|#define&t;XBOW_WID_ARB_RELOAD_INT&t;0x3f&t;/* GBR reload interval */
 DECL|macro|nasid_has_xbridge
 mdefine_line|#define nasid_has_xbridge(nasid)&t;&bslash;&n;&t;(XWIDGET_PART_NUM(XWIDGET_ID_READ(nasid, 0)) == XXBOW_WIDGET_PART_NUM)
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * XBOW Widget 0 Register formats.&n; * Format for many of these registers are similar to the standard&n; * widget register format described as part of xtalk specification&n; * Standard widget register field format description is available in&n; * xwidget.h&n; * Following structures define the format for xbow widget 0 registers&n; */
 multiline_comment|/*&n; * Xbow Widget 0 Command error word&n; */
 macro_line|#ifdef LITTLE_ENDIAN
@@ -2921,6 +2921,6 @@ l_int|0xF
 suffix:semicolon
 multiline_comment|/* xbow_macrofield[] */
 macro_line|#endif&t;&t;&t;&t;/* MACROFIELD_LINE */
-macro_line|#endif&t;&t;&t;&t;/* _LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 macro_line|#endif                          /* _ASM_SN_SN_XTALK_XBOW_H */
 eof

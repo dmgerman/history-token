@@ -1,10 +1,10 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
 multiline_comment|/* Implementation of Address/Length Lists. */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
-macro_line|#include &lt;asm/sn/mmzone_sn1.h&gt;
 multiline_comment|/*&n; * Logically, an Address/Length List is a list of Pairs, where each pair&n; * holds an Address and a Length, all in some Address Space.  In this&n; * context, &quot;Address Space&quot; is a particular Crosstalk Widget address&n; * space, a PCI device address space, a VME bus address space, a&n; * physical memory address space, etc.&n; *&n; * The main use for these Lists is to provide a single mechanism that&n; * describes where in an address space a DMA occurs.  This allows the&n; * various I/O Bus support layers to provide a single interface for&n; * DMA mapping and DMA translation without regard to how the DMA target&n; * was specified by upper layers.  The upper layers commonly specify a &n; * DMA target via a buf structure page list, a kernel virtual address,&n; * a user virtual address, a vector of addresses (a la uio and iov), &n; * or possibly a pfn list.&n; *&n; * Address/Length Lists also enable drivers to take advantage of their&n; * inate scatter/gather capabilities in systems where some address&n; * translation may be required between bus adapters.  The driver forms&n; * a List that represents physical memory targets.  This list is passed&n; * to the various adapters, which apply various translations.  The final&n; * list that&squot;s returned to the driver is in terms of its local address&n; * address space -- addresses which can be passed off to a scatter/gather&n; * capable DMA controller.&n; *&n; * The current implementation is intended to be useful both in kernels&n; * that support interrupt threads (INTR_KTHREAD) and in systems that do&n; * not support interrupt threads.  Of course, in the latter case, some&n; * interfaces can be called only within a suspendable context.&n; *&n; * Basic operations on Address/Length Lists include:&n; *&t;alenlist_create&t;&t;Create a list&n; *&t;alenlist_clear&t;&t;Clear a list&n; *&t;alenlist_destroy&t;Destroy a list&n; *&t;alenlist_append&t;&t;Append a Pair to the end of a list&n; *&t;alenlist_replace&t;Replace a Pair in the middle of a list&n; *&t;alenlist_get&t;&t;Get an Address/Length Pair from a list&n; *&t;alenlist_size&t;&t;Return the number of Pairs in a list&n; *&t;alenlist_concat&t;&t;Append one list to the end of another&n; *&t;alenlist_clone&t;&t;Create a new copy of a list&n; *&n; * Operations that convert from upper-level specifications to Address/&n; * Length Lists currently include:&n; *&t;kvaddr_to_alenlist&t;Convert from a kernel virtual address&n; *&t;uvaddr_to_alenlist&t;Convert from a user virtual address&n; *&t;buf_to_alenlist&t;&t;Convert from a buf structure&n; *&t;alenlist_done&t;&t;Tell system that we&squot;re done with an alenlist&n; *&t;&t;&t;&t;obtained from a conversion.&n; * Additional convenience operations:&n; *&t;alenpair_init&t;&t;Create a list and initialize it with a Pair&n; *&t;alenpair_get&t;&t;Peek at the first pair on a List&n; *&n; * A supporting type for Address/Length Lists is an alenlist_cursor_t.  A&n; * cursor marks a position in a List, and determines which Pair is fetched&n; * by alenlist_get.&n; *&t;alenlist_cursor_create&t;Allocate and initialize a cursor&n; *&t;alenlist_cursor_destroy&t;Free space consumed by a cursor&n; *&t;alenlist_cursor_init&t;(Re-)Initialize a cursor to point &n; *&t;&t;&t;&t;to the start of a list&n; *&t;alenlist_cursor_clone&t;Clone a cursor (at the current offset)&n; *&t;alenlist_cursor_offset&t;Return the number of bytes into&n; *&t;&t;&t;&t;a list that this cursor marks&n; * Multiple cursors can point at various points into a List.  Also, each&n; * list maintains one &quot;internal cursor&quot; which may be updated by alenlist_clear&n; * and alenlist_get.  If calling code simply wishes to scan sequentially&n; * through a list starting at the beginning, and if it is the only user of&n; * a list, it can rely on this internal cursor rather than managing a &n; * separate explicit cursor.&n; *&n; * The current implementation allows callers to allocate both cursors and&n; * the lists as local stack (structure) variables.  This allows for some&n; * extra efficiency at the expense of forward binary compatibility.  It &n; * is recommended that customer drivers refrain from local allocation.&n; * In fact, we likely will choose to move the structures out of the public &n; * header file into a private place in order to discourage this usage.&n; *&n; * Currently, no locking is provided by the alenlist implementation.&n; *&n; * Implementation notes:&n; * For efficiency, Pairs are grouped into &quot;chunks&quot; of, say, 32 Pairs&n; * and a List consists of some number of these chunks.  Chunks are completely&n; * invisible to calling code.  Chunks should be large enough to hold most&n; * standard-sized DMA&squot;s, but not so large that they consume excessive space.&n; *&n; * It is generally expected that Lists will be constructed at one time and&n; * scanned at a later time.  It is NOT expected that drivers will scan&n; * a List while the List is simultaneously extended, although this is&n; * theoretically possible with sufficient upper-level locking.&n; *&n; * In order to support demands of Real-Time drivers and in order to support&n; * swapping under low-memory conditions, we support the concept of a&n; * &quot;pre-allocated fixed-sized List&quot;.  After creating a List with &n; * alenlist_create, a driver may explicitly grow the list (via &quot;alenlist_grow&quot;)&n; * to a specific number of Address/Length pairs.  It is guaranteed that future &n; * operations involving this list will never automatically grow the list &n; * (i.e. if growth is ever required, the operation will fail).  Additionally, &n; * operations that use alenlist&squot;s (e.g. DMA operations) accept a flag which &n; * causes processing to take place &quot;in-situ&quot;; that is, the input alenlist &n; * entries are replaced with output alenlist entries.  The combination of &n; * pre-allocated Lists and in-situ processing allows us to avoid the &n; * potential deadlock scenario where we sleep (waiting for memory) in the &n; * swap out path.&n; *&n; * For debugging, we track the number of allocated Lists in alenlist_count&n; * the number of allocated chunks in alenlist_chunk_count, and the number&n; * of allocate cursors in alenlist_cursor_count.  We also provide a debug &n; * routine, alenlist_show, which dumps the contents of an Address/Length List.&n; *&n; * Currently, Lists are formed by drivers on-demand.  Eventually, we may&n; * associate an alenlist with a buf structure and keep it up to date as&n; * we go along.  In that case, buf_to_alenlist simply returns a pointer&n; * to the existing List, and increments the Lists&squot;s reference count.&n; * alenlist_done would decrement the reference count and destroys the List&n; * if it was the last reference.&n; *&n; * Eventually alenlist&squot;s may allow better support for user-level scatter/&n; * gather operations (e.g. via readv/writev):  With proper support, we&n; * could potentially handle a vector of reads with a single scatter/gather&n; * DMA operation.  This could be especially useful on NUMA systems where&n; * there&squot;s more of a reason for users to use vector I/O operations.&n; *&n; * Eventually, alenlist&squot;s may replace kaio lists, vhand page lists,&n; * buffer cache pfdat lists, DMA page lists, etc.&n; */
 multiline_comment|/* Opaque data types */
 multiline_comment|/* An Address/Length pair.  */
@@ -179,7 +179,7 @@ r_void
 (brace
 id|alenlist_zone
 op_assign
-id|kmem_zone_init
+id|snia_kmem_zone_init
 c_func
 (paren
 r_sizeof
@@ -193,7 +193,7 @@ l_string|&quot;alenlist&quot;
 suffix:semicolon
 id|alenlist_chunk_zone
 op_assign
-id|kmem_zone_init
+id|snia_kmem_zone_init
 c_func
 (paren
 r_sizeof
@@ -207,7 +207,7 @@ l_string|&quot;alchunk&quot;
 suffix:semicolon
 id|alenlist_cursor_zone
 op_assign
-id|kmem_zone_init
+id|snia_kmem_zone_init
 c_func
 (paren
 r_sizeof
@@ -281,7 +281,7 @@ id|alenlist
 suffix:semicolon
 id|alenlist
 op_assign
-id|kmem_zone_alloc
+id|snia_kmem_zone_alloc
 c_func
 (paren
 id|alenlist_zone
@@ -470,7 +470,7 @@ id|chunk
 op_assign
 id|chunk-&gt;alc_next
 suffix:semicolon
-id|kmem_zone_free
+id|snia_kmem_zone_free
 c_func
 (paren
 id|alenlist_chunk_zone
@@ -663,7 +663,7 @@ id|alenlist
 )paren
 suffix:semicolon
 multiline_comment|/* Now, free the alenlist itself */
-id|kmem_zone_free
+id|snia_kmem_zone_free
 c_func
 (paren
 id|alenlist_zone
@@ -843,7 +843,7 @@ id|new_chunk
 suffix:semicolon
 id|new_chunk
 op_assign
-id|kmem_zone_alloc
+id|snia_kmem_zone_alloc
 c_func
 (paren
 id|alenlist_chunk_zone
@@ -1371,7 +1371,7 @@ l_int|NULL
 suffix:semicolon
 id|cursorp
 op_assign
-id|kmem_zone_alloc
+id|snia_kmem_zone_alloc
 c_func
 (paren
 id|alenlist_cursor_zone
@@ -1431,7 +1431,7 @@ op_amp
 id|alenlist_cursor_count
 )paren
 suffix:semicolon
-id|kmem_zone_free
+id|snia_kmem_zone_free
 c_func
 (paren
 id|alenlist_cursor_zone
@@ -1704,7 +1704,7 @@ id|maxlen1
 suffix:semicolon
 id|length
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|maxlength
@@ -1978,12 +1978,17 @@ suffix:semicolon
 multiline_comment|/* Handle first page */
 id|piece_length
 op_assign
-id|MIN
+id|min
 c_func
+(paren
+(paren
+r_int
+)paren
 (paren
 id|NBPP
 op_minus
 id|offset
+)paren
 comma
 id|length
 )paren
