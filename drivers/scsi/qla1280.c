@@ -1,7 +1,7 @@
 multiline_comment|/******************************************************************************&n;*                  QLOGIC LINUX SOFTWARE&n;*&n;* QLogic  QLA1280 (Ultra2)  and  QLA12160 (Ultra3) SCSI driver&n;* Copyright (C) 2000 Qlogic Corporation (www.qlogic.com)&n;* Copyright (C) 2001-2004 Jes Sorensen, Wild Open Source Inc.&n;* Copyright (C) 2003 Christoph Hellwig&n;*&n;* This program is free software; you can redistribute it and/or modify it&n;* under the terms of the GNU General Public License as published by the&n;* Free Software Foundation; either version 2, or (at your option) any&n;* later version.&n;*&n;* This program is distributed in the hope that it will be useful, but&n;* WITHOUT ANY WARRANTY; without even the implied warranty of&n;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;* General Public License for more details.&n;*&n;******************************************************************************/
 DECL|macro|QLA1280_VERSION
-mdefine_line|#define QLA1280_VERSION      &quot;3.24.1&quot;
-multiline_comment|/*****************************************************************************&n;    Revision History:&n;    Rev  3.24.1 January 5, 2004, Jes Sorensen&n;&t;- Initialize completion queue to avoid OOPS on probe&n;&t;- Handle interrupts during mailbox testing&n;    Rev  3.24 November 17, 2003, Christoph Hellwig&n;    &t;- use struct list_head for completion queue&n;&t;- avoid old Scsi_FOO typedefs&n;&t;- cleanup 2.4 compat glue a bit&n;&t;- use &lt;scsi/scsi_*.h&gt; headers on 2.6 instead of &quot;scsi.h&quot;&n;&t;- make initialization for memory mapped vs port I/O more similar&n;&t;- remove broken pci config space manipulation&n;&t;- kill more cruft&n;&t;- this is an almost perfect 2.6 scsi driver now! ;)&n;    Rev  3.23.39 December 17, 2003, Jes Sorensen&n;&t;- Delete completion queue from srb if mailbox command failed to&n;&t;  to avoid qla1280_done completeting qla1280_error_action&squot;s&n;&t;  obsolete context&n;&t;- Reduce arguments for qla1280_done&n;    Rev  3.23.38 October 18, 2003, Christoph Hellwig&n;&t;- Convert to new-style hotplugable driver for 2.6&n;&t;- Fix missing scsi_unregister/scsi_host_put on HBA removal&n;&t;- Kill some more cruft&n;    Rev  3.23.37 October 1, 2003, Jes Sorensen&n;&t;- Make MMIO depend on CONFIG_X86_VISWS instead of yet another&n;&t;  random CONFIG option&n;&t;- Clean up locking in probe path&n;    Rev  3.23.36 October 1, 2003, Christoph Hellwig&n;&t;- queuecommand only ever receives new commands - clear flags&n;&t;- Reintegrate lost fixes from Linux 2.5&n;    Rev  3.23.35 August 14, 2003, Jes Sorensen&n;&t;- Build against 2.6&n;    Rev  3.23.34 July 23, 2003, Jes Sorensen&n;&t;- Remove pointless TRUE/FALSE macros&n;&t;- Clean up vchan handling&n;    Rev  3.23.33 July 3, 2003, Jes Sorensen&n;&t;- Don&squot;t define register access macros before define determining MMIO.&n;&t;  This just happend to work out on ia64 but not elsewhere.&n;&t;- Don&squot;t try and read from the card while it is in reset as&n;&t;  it won&squot;t respond and causes an MCA&n;    Rev  3.23.32 June 23, 2003, Jes Sorensen&n;&t;- Basic support for boot time arguments&n;    Rev  3.23.31 June 8, 2003, Jes Sorensen&n;&t;- Reduce boot time messages&n;    Rev  3.23.30 June 6, 2003, Jes Sorensen&n;&t;- Do not enable sync/wide/ppr before it has been determined&n;&t;  that the target device actually supports it&n;&t;- Enable DMA arbitration for multi channel controllers&n;    Rev  3.23.29 June 3, 2003, Jes Sorensen&n;&t;- Port to 2.5.69&n;    Rev  3.23.28 June 3, 2003, Jes Sorensen&n;&t;- Eliminate duplicate marker commands on bus resets&n;&t;- Handle outstanding commands appropriately on bus/device resets&n;    Rev  3.23.27 May 28, 2003, Jes Sorensen&n;&t;- Remove bogus input queue code, let the Linux SCSI layer do the work&n;&t;- Clean up NVRAM handling, only read it once from the card&n;&t;- Add a number of missing default nvram parameters&n;    Rev  3.23.26 Beta May 28, 2003, Jes Sorensen&n;&t;- Use completion queue for mailbox commands instead of busy wait&n;    Rev  3.23.25 Beta May 27, 2003, James Bottomley&n;&t;- Migrate to use new error handling code&n;    Rev  3.23.24 Beta May 21, 2003, James Bottomley&n;&t;- Big endian support&n;&t;- Cleanup data direction code&n;    Rev  3.23.23 Beta May 12, 2003, Jes Sorensen&n;&t;- Switch to using MMIO instead of PIO&n;    Rev  3.23.22 Beta April 15, 2003, Jes Sorensen&n;&t;- Fix PCI parity problem with 12160 during reset.&n;    Rev  3.23.21 Beta April 14, 2003, Jes Sorensen&n;&t;- Use pci_map_page()/pci_unmap_page() instead of map_single version.&n;    Rev  3.23.20 Beta April 9, 2003, Jes Sorensen&n;&t;- Remove &lt; 2.4.x support&n;&t;- Introduce HOST_LOCK to make the spin lock changes portable.&n;&t;- Remove a bunch of idiotic and unnecessary typedef&squot;s&n;&t;- Kill all leftovers of target-mode support which never worked anyway&n;    Rev  3.23.19 Beta April 11, 2002, Linus Torvalds&n;&t;- Do qla1280_pci_config() before calling request_irq() and&n;&t;  request_region()&n;&t;- Use pci_dma_hi32() to handle upper word of DMA addresses instead&n;&t;  of large shifts&n;&t;- Hand correct arguments to free_irq() in case of failure&n;    Rev  3.23.18 Beta April 11, 2002, Jes Sorensen&n;&t;- Run source through Lindent and clean up the output&n;    Rev  3.23.17 Beta April 11, 2002, Jes Sorensen&n;&t;- Update SCSI firmware to qla1280 v8.15.00 and qla12160 v10.04.32&n;    Rev  3.23.16 Beta March 19, 2002, Jes Sorensen&n;&t;- Rely on mailbox commands generating interrupts - do not&n;&t;  run qla1280_isr() from ql1280_mailbox_command()&n;&t;- Remove device_reg_t&n;&t;- Integrate ql12160_set_target_parameters() with 1280 version&n;&t;- Make qla1280_setup() non static&n;&t;- Do not call qla1280_check_for_dead_scsi_bus() on every I/O request&n;&t;  sent to the card - this command pauses the firmare!!!&n;    Rev  3.23.15 Beta March 19, 2002, Jes Sorensen&n;&t;- Clean up qla1280.h - remove obsolete QL_DEBUG_LEVEL_x definitions&n;&t;- Remove a pile of pointless and confusing (srb_t **) and&n;&t;  (scsi_lu_t *) typecasts&n;&t;- Explicit mark that we do not use the new error handling (for now)&n;&t;- Remove scsi_qla_host_t and use &squot;struct&squot; instead&n;&t;- Remove in_abort, watchdog_enabled, dpc, dpc_sched, bios_enabled,&n;&t;  pci_64bit_slot flags which weren&squot;t used for anything anyway&n;&t;- Grab host-&gt;host_lock while calling qla1280_isr() from abort()&n;&t;- Use spin_lock()/spin_unlock() in qla1280_intr_handler() - we&n;&t;  do not need to save/restore flags in the interrupt handler&n;&t;- Enable interrupts early (before any mailbox access) in preparation&n;&t;  for cleaning up the mailbox handling&n;    Rev  3.23.14 Beta March 14, 2002, Jes Sorensen&n;&t;- Further cleanups. Remove all trace of QL_DEBUG_LEVEL_x and replace&n;&t;  it with proper use of dprintk().&n;&t;- Make qla1280_print_scsi_cmd() and qla1280_dump_buffer() both take&n;&t;  a debug level argument to determine if data is to be printed&n;&t;- Add KERN_* info to printk()&n;    Rev  3.23.13 Beta March 14, 2002, Jes Sorensen&n;&t;- Significant cosmetic cleanups&n;&t;- Change debug code to use dprintk() and remove #if mess&n;    Rev  3.23.12 Beta March 13, 2002, Jes Sorensen&n;&t;- More cosmetic cleanups, fix places treating return as function&n;&t;- use cpu_relax() in qla1280_debounce_register()&n;    Rev  3.23.11 Beta March 13, 2002, Jes Sorensen&n;&t;- Make it compile under 2.5.5&n;    Rev  3.23.10 Beta October 1, 2001, Jes Sorensen&n;&t;- Do no typecast short * to long * in QL1280BoardTbl, this&n;&t;  broke miserably on big endian boxes&n;    Rev  3.23.9 Beta September 30, 2001, Jes Sorensen&n;&t;- Remove pre 2.2 hack for checking for reentrance in interrupt handler&n;&t;- Make data types used to receive from SCSI_{BUS,TCN,LUN}_32&n;&t;  unsigned int to match the types from struct scsi_cmnd&n;    Rev  3.23.8 Beta September 29, 2001, Jes Sorensen&n;&t;- Remove bogus timer_t typedef from qla1280.h&n;&t;- Remove obsolete pre 2.2 PCI setup code, use proper #define&squot;s&n;&t;  for PCI_ values, call pci_set_master()&n;&t;- Fix memleak of qla1280_buffer on module unload&n;&t;- Only compile module parsing code #ifdef MODULE - should be&n;&t;  changed to use individual MODULE_PARM&squot;s later&n;&t;- Remove dummy_buffer that was never modified nor printed&n;&t;- ENTER()/LEAVE() are noops unless QL_DEBUG_LEVEL_3, hence remove&n;&t;  #ifdef QL_DEBUG_LEVEL_3/#endif around ENTER()/LEAVE() calls&n;&t;- Remove &bslash;r from print statements, this is Linux, not DOS&n;&t;- Remove obsolete QLA1280_{SCSILU,INTR,RING}_{LOCK,UNLOCK}&n;&t;  dummy macros&n;&t;- Remove C++ compile hack in header file as Linux driver are not&n;&t;  supposed to be compiled as C++&n;&t;- Kill MS_64BITS macro as it makes the code more readable&n;&t;- Remove unnecessary flags.in_interrupts bit&n;    Rev  3.23.7 Beta August 20, 2001, Jes Sorensen&n;&t;- Dont&squot; check for set flags on q-&gt;q_flag one by one in qla1280_next()&n;        - Check whether the interrupt was generated by the QLA1280 before&n;          doing any processing&n;&t;- qla1280_status_entry(): Only zero out part of sense_buffer that&n;&t;  is not being copied into&n;&t;- Remove more superflouous typecasts&n;&t;- qla1280_32bit_start_scsi() replace home-brew memcpy() with memcpy()&n;    Rev  3.23.6 Beta August 20, 2001, Tony Luck, Intel&n;        - Don&squot;t walk the entire list in qla1280_putq_t() just to directly&n;&t;  grab the pointer to the last element afterwards&n;    Rev  3.23.5 Beta August 9, 2001, Jes Sorensen&n;&t;- Don&squot;t use SA_INTERRUPT, it&squot;s use is deprecated for this kinda driver&n;    Rev  3.23.4 Beta August 8, 2001, Jes Sorensen&n;&t;- Set dev-&gt;max_sectors to 1024&n;    Rev  3.23.3 Beta August 6, 2001, Jes Sorensen&n;&t;- Provide compat macros for pci_enable_device(), pci_find_subsys()&n;&t;  and scsi_set_pci_device()&n;&t;- Call scsi_set_pci_device() for all devices&n;&t;- Reduce size of kernel version dependent device probe code&n;&t;- Move duplicate probe/init code to separate function&n;&t;- Handle error if qla1280_mem_alloc() fails&n;&t;- Kill OFFSET() macro and use Linux&squot;s PCI definitions instead&n;        - Kill private structure defining PCI config space (struct config_reg)&n;&t;- Only allocate I/O port region if not in MMIO mode&n;&t;- Remove duplicate (unused) sanity check of sife of srb_t&n;    Rev  3.23.2 Beta August 6, 2001, Jes Sorensen&n;&t;- Change home-brew memset() implementations to use memset()&n;        - Remove all references to COMTRACE() - accessing a PC&squot;s COM2 serial&n;          port directly is not legal under Linux.&n;    Rev  3.23.1 Beta April 24, 2001, Jes Sorensen&n;        - Remove pre 2.2 kernel support&n;        - clean up 64 bit DMA setting to use 2.4 API (provide backwards compat)&n;        - Fix MMIO access to use readl/writel instead of directly&n;          dereferencing pointers&n;        - Nuke MSDOS debugging code&n;        - Change true/false data types to int from uint8_t&n;        - Use int for counters instead of uint8_t etc.&n;        - Clean up size &amp; byte order conversion macro usage&n;    Rev  3.23 Beta January 11, 2001 BN Qlogic&n;        - Added check of device_id when handling non&n;          QLA12160s during detect().&n;    Rev  3.22 Beta January 5, 2001 BN Qlogic&n;        - Changed queue_task() to schedule_task()&n;          for kernels 2.4.0 and higher.&n;          Note: 2.4.0-testxx kernels released prior to&n;                the actual 2.4.0 kernel release on January 2001&n;                will get compile/link errors with schedule_task().&n;                Please update your kernel to released 2.4.0 level,&n;                or comment lines in this file flagged with  3.22&n;                to resolve compile/link error of schedule_task().&n;        - Added -DCONFIG_SMP in addition to -D__SMP__&n;          in Makefile for 2.4.0 builds of driver as module.&n;    Rev  3.21 Beta January 4, 2001 BN Qlogic&n;        - Changed criteria of 64/32 Bit mode of HBA&n;          operation according to BITS_PER_LONG rather&n;          than HBA&squot;s NVRAM setting of &gt;4Gig memory bit;&n;          so that the HBA auto-configures without the need&n;          to setup each system individually.&n;    Rev  3.20 Beta December 5, 2000 BN Qlogic&n;        - Added priority handling to IA-64  onboard SCSI&n;          ISP12160 chip for kernels greater than 2.3.18.&n;        - Added irqrestore for qla1280_intr_handler.&n;        - Enabled /proc/scsi/qla1280 interface.&n;        - Clear /proc/scsi/qla1280 counters in detect().&n;    Rev  3.19 Beta October 13, 2000 BN Qlogic&n;        - Declare driver_template for new kernel&n;          (2.4.0 and greater) scsi initialization scheme.&n;        - Update /proc/scsi entry for 2.3.18 kernels and&n;          above as qla1280&n;    Rev  3.18 Beta October 10, 2000 BN Qlogic&n;        - Changed scan order of adapters to map&n;          the QLA12160 followed by the QLA1280.&n;    Rev  3.17 Beta September 18, 2000 BN Qlogic&n;        - Removed warnings for 32 bit 2.4.x compiles&n;        - Corrected declared size for request and response&n;          DMA addresses that are kept in each ha&n;    Rev. 3.16 Beta  August 25, 2000   BN  Qlogic&n;        - Corrected 64 bit addressing issue on IA-64&n;          where the upper 32 bits were not properly&n;          passed to the RISC engine.&n;    Rev. 3.15 Beta  August 22, 2000   BN  Qlogic&n;        - Modified qla1280_setup_chip to properly load&n;          ISP firmware for greater that 4 Gig memory on IA-64&n;    Rev. 3.14 Beta  August 16, 2000   BN  Qlogic&n;        - Added setting of dma_mask to full 64 bit&n;          if flags.enable_64bit_addressing is set in NVRAM&n;    Rev. 3.13 Beta  August 16, 2000   BN  Qlogic&n;        - Use new PCI DMA mapping APIs for 2.4.x kernel&n;    Rev. 3.12       July 18, 2000    Redhat &amp; BN Qlogic&n;        - Added check of pci_enable_device to detect() for 2.3.x&n;        - Use pci_resource_start() instead of&n;          pdev-&gt;resource[0].start in detect() for 2.3.x&n;        - Updated driver version&n;    Rev. 3.11       July 14, 2000    BN  Qlogic&n;&t;- Updated SCSI Firmware to following versions:&n;&t;  qla1x80:   8.13.08&n;&t;  qla1x160:  10.04.08&n;&t;- Updated driver version to 3.11&n;    Rev. 3.10    June 23, 2000   BN Qlogic&n;        - Added filtering of AMI SubSys Vendor ID devices&n;    Rev. 3.9&n;        - DEBUG_QLA1280 undefined and  new version  BN Qlogic&n;    Rev. 3.08b      May 9, 2000    MD Dell&n;        - Added logic to check against AMI subsystem vendor ID&n;&t;Rev. 3.08       May 4, 2000    DG  Qlogic&n;        - Added logic to check for PCI subsystem ID.&n;&t;Rev. 3.07       Apr 24, 2000    DG &amp; BN  Qlogic&n;&t;   - Updated SCSI Firmware to following versions:&n;&t;     qla12160:   10.01.19&n;&t;&t; qla1280:     8.09.00&n;&t;Rev. 3.06       Apr 12, 2000    DG &amp; BN  Qlogic&n;&t;   - Internal revision; not released&n;    Rev. 3.05       Mar 28, 2000    DG &amp; BN  Qlogic&n;       - Edit correction for virt_to_bus and PROC.&n;    Rev. 3.04       Mar 28, 2000    DG &amp; BN  Qlogic&n;       - Merge changes from ia64 port.&n;    Rev. 3.03       Mar 28, 2000    BN  Qlogic&n;       - Increase version to reflect new code drop with compile fix&n;         of issue with inclusion of linux/spinlock for 2.3 kernels&n;    Rev. 3.02       Mar 15, 2000    BN  Qlogic&n;       - Merge qla1280_proc_info from 2.10 code base&n;    Rev. 3.01       Feb 10, 2000    BN  Qlogic&n;       - Corrected code to compile on a 2.2.x kernel.&n;    Rev. 3.00       Jan 17, 2000    DG  Qlogic&n;&t;   - Added 64-bit support.&n;    Rev. 2.07       Nov 9, 1999     DG  Qlogic&n;&t;   - Added new routine to set target parameters for ISP12160.&n;    Rev. 2.06       Sept 10, 1999     DG  Qlogic&n;       - Added support for ISP12160 Ultra 3 chip.&n;    Rev. 2.03       August 3, 1999    Fred Lewis, Intel DuPont&n;&t;- Modified code to remove errors generated when compiling with&n;&t;  Cygnus IA64 Compiler.&n;        - Changed conversion of pointers to unsigned longs instead of integers.&n;        - Changed type of I/O port variables from uint32_t to unsigned long.&n;        - Modified OFFSET macro to work with 64-bit as well as 32-bit.&n;        - Changed sprintf and printk format specifiers for pointers to %p.&n;        - Changed some int to long type casts where needed in sprintf &amp; printk.&n;        - Added l modifiers to sprintf and printk format specifiers for longs.&n;        - Removed unused local variables.&n;    Rev. 1.20       June 8, 1999      DG,  Qlogic&n;         Changes to support RedHat release 6.0 (kernel 2.2.5).&n;       - Added SCSI exclusive access lock (io_request_lock) when accessing&n;         the adapter.&n;       - Added changes for the new LINUX interface template. Some new error&n;         handling routines have been added to the template, but for now we&n;         will use the old ones.&n;    -   Initial Beta Release.&n;*****************************************************************************/
+mdefine_line|#define QLA1280_VERSION      &quot;3.24.3&quot;
+multiline_comment|/*****************************************************************************&n;    Revision History:&n;    Rev  3.24.3 January 19, 2004, Jes Sorensen&n;&t;- Handle PCI DMA mask settings correctly&n;&t;- Correct order of error handling in probe_one, free_irq should not&n;&t;  be called if request_irq failed&n;    Rev  3.24.2 January 19, 2004, James Bottomley &amp; Andrew Vasquez&n;&t;- Big endian fixes (James)&n;&t;- Remove bogus IOCB content on zero data transfer commands (Andrew)&n;    Rev  3.24.1 January 5, 2004, Jes Sorensen&n;&t;- Initialize completion queue to avoid OOPS on probe&n;&t;- Handle interrupts during mailbox testing&n;    Rev  3.24 November 17, 2003, Christoph Hellwig&n;    &t;- use struct list_head for completion queue&n;&t;- avoid old Scsi_FOO typedefs&n;&t;- cleanup 2.4 compat glue a bit&n;&t;- use &lt;scsi/scsi_*.h&gt; headers on 2.6 instead of &quot;scsi.h&quot;&n;&t;- make initialization for memory mapped vs port I/O more similar&n;&t;- remove broken pci config space manipulation&n;&t;- kill more cruft&n;&t;- this is an almost perfect 2.6 scsi driver now! ;)&n;    Rev  3.23.39 December 17, 2003, Jes Sorensen&n;&t;- Delete completion queue from srb if mailbox command failed to&n;&t;  to avoid qla1280_done completeting qla1280_error_action&squot;s&n;&t;  obsolete context&n;&t;- Reduce arguments for qla1280_done&n;    Rev  3.23.38 October 18, 2003, Christoph Hellwig&n;&t;- Convert to new-style hotplugable driver for 2.6&n;&t;- Fix missing scsi_unregister/scsi_host_put on HBA removal&n;&t;- Kill some more cruft&n;    Rev  3.23.37 October 1, 2003, Jes Sorensen&n;&t;- Make MMIO depend on CONFIG_X86_VISWS instead of yet another&n;&t;  random CONFIG option&n;&t;- Clean up locking in probe path&n;    Rev  3.23.36 October 1, 2003, Christoph Hellwig&n;&t;- queuecommand only ever receives new commands - clear flags&n;&t;- Reintegrate lost fixes from Linux 2.5&n;    Rev  3.23.35 August 14, 2003, Jes Sorensen&n;&t;- Build against 2.6&n;    Rev  3.23.34 July 23, 2003, Jes Sorensen&n;&t;- Remove pointless TRUE/FALSE macros&n;&t;- Clean up vchan handling&n;    Rev  3.23.33 July 3, 2003, Jes Sorensen&n;&t;- Don&squot;t define register access macros before define determining MMIO.&n;&t;  This just happend to work out on ia64 but not elsewhere.&n;&t;- Don&squot;t try and read from the card while it is in reset as&n;&t;  it won&squot;t respond and causes an MCA&n;    Rev  3.23.32 June 23, 2003, Jes Sorensen&n;&t;- Basic support for boot time arguments&n;    Rev  3.23.31 June 8, 2003, Jes Sorensen&n;&t;- Reduce boot time messages&n;    Rev  3.23.30 June 6, 2003, Jes Sorensen&n;&t;- Do not enable sync/wide/ppr before it has been determined&n;&t;  that the target device actually supports it&n;&t;- Enable DMA arbitration for multi channel controllers&n;    Rev  3.23.29 June 3, 2003, Jes Sorensen&n;&t;- Port to 2.5.69&n;    Rev  3.23.28 June 3, 2003, Jes Sorensen&n;&t;- Eliminate duplicate marker commands on bus resets&n;&t;- Handle outstanding commands appropriately on bus/device resets&n;    Rev  3.23.27 May 28, 2003, Jes Sorensen&n;&t;- Remove bogus input queue code, let the Linux SCSI layer do the work&n;&t;- Clean up NVRAM handling, only read it once from the card&n;&t;- Add a number of missing default nvram parameters&n;    Rev  3.23.26 Beta May 28, 2003, Jes Sorensen&n;&t;- Use completion queue for mailbox commands instead of busy wait&n;    Rev  3.23.25 Beta May 27, 2003, James Bottomley&n;&t;- Migrate to use new error handling code&n;    Rev  3.23.24 Beta May 21, 2003, James Bottomley&n;&t;- Big endian support&n;&t;- Cleanup data direction code&n;    Rev  3.23.23 Beta May 12, 2003, Jes Sorensen&n;&t;- Switch to using MMIO instead of PIO&n;    Rev  3.23.22 Beta April 15, 2003, Jes Sorensen&n;&t;- Fix PCI parity problem with 12160 during reset.&n;    Rev  3.23.21 Beta April 14, 2003, Jes Sorensen&n;&t;- Use pci_map_page()/pci_unmap_page() instead of map_single version.&n;    Rev  3.23.20 Beta April 9, 2003, Jes Sorensen&n;&t;- Remove &lt; 2.4.x support&n;&t;- Introduce HOST_LOCK to make the spin lock changes portable.&n;&t;- Remove a bunch of idiotic and unnecessary typedef&squot;s&n;&t;- Kill all leftovers of target-mode support which never worked anyway&n;    Rev  3.23.19 Beta April 11, 2002, Linus Torvalds&n;&t;- Do qla1280_pci_config() before calling request_irq() and&n;&t;  request_region()&n;&t;- Use pci_dma_hi32() to handle upper word of DMA addresses instead&n;&t;  of large shifts&n;&t;- Hand correct arguments to free_irq() in case of failure&n;    Rev  3.23.18 Beta April 11, 2002, Jes Sorensen&n;&t;- Run source through Lindent and clean up the output&n;    Rev  3.23.17 Beta April 11, 2002, Jes Sorensen&n;&t;- Update SCSI firmware to qla1280 v8.15.00 and qla12160 v10.04.32&n;    Rev  3.23.16 Beta March 19, 2002, Jes Sorensen&n;&t;- Rely on mailbox commands generating interrupts - do not&n;&t;  run qla1280_isr() from ql1280_mailbox_command()&n;&t;- Remove device_reg_t&n;&t;- Integrate ql12160_set_target_parameters() with 1280 version&n;&t;- Make qla1280_setup() non static&n;&t;- Do not call qla1280_check_for_dead_scsi_bus() on every I/O request&n;&t;  sent to the card - this command pauses the firmare!!!&n;    Rev  3.23.15 Beta March 19, 2002, Jes Sorensen&n;&t;- Clean up qla1280.h - remove obsolete QL_DEBUG_LEVEL_x definitions&n;&t;- Remove a pile of pointless and confusing (srb_t **) and&n;&t;  (scsi_lu_t *) typecasts&n;&t;- Explicit mark that we do not use the new error handling (for now)&n;&t;- Remove scsi_qla_host_t and use &squot;struct&squot; instead&n;&t;- Remove in_abort, watchdog_enabled, dpc, dpc_sched, bios_enabled,&n;&t;  pci_64bit_slot flags which weren&squot;t used for anything anyway&n;&t;- Grab host-&gt;host_lock while calling qla1280_isr() from abort()&n;&t;- Use spin_lock()/spin_unlock() in qla1280_intr_handler() - we&n;&t;  do not need to save/restore flags in the interrupt handler&n;&t;- Enable interrupts early (before any mailbox access) in preparation&n;&t;  for cleaning up the mailbox handling&n;    Rev  3.23.14 Beta March 14, 2002, Jes Sorensen&n;&t;- Further cleanups. Remove all trace of QL_DEBUG_LEVEL_x and replace&n;&t;  it with proper use of dprintk().&n;&t;- Make qla1280_print_scsi_cmd() and qla1280_dump_buffer() both take&n;&t;  a debug level argument to determine if data is to be printed&n;&t;- Add KERN_* info to printk()&n;    Rev  3.23.13 Beta March 14, 2002, Jes Sorensen&n;&t;- Significant cosmetic cleanups&n;&t;- Change debug code to use dprintk() and remove #if mess&n;    Rev  3.23.12 Beta March 13, 2002, Jes Sorensen&n;&t;- More cosmetic cleanups, fix places treating return as function&n;&t;- use cpu_relax() in qla1280_debounce_register()&n;    Rev  3.23.11 Beta March 13, 2002, Jes Sorensen&n;&t;- Make it compile under 2.5.5&n;    Rev  3.23.10 Beta October 1, 2001, Jes Sorensen&n;&t;- Do no typecast short * to long * in QL1280BoardTbl, this&n;&t;  broke miserably on big endian boxes&n;    Rev  3.23.9 Beta September 30, 2001, Jes Sorensen&n;&t;- Remove pre 2.2 hack for checking for reentrance in interrupt handler&n;&t;- Make data types used to receive from SCSI_{BUS,TCN,LUN}_32&n;&t;  unsigned int to match the types from struct scsi_cmnd&n;    Rev  3.23.8 Beta September 29, 2001, Jes Sorensen&n;&t;- Remove bogus timer_t typedef from qla1280.h&n;&t;- Remove obsolete pre 2.2 PCI setup code, use proper #define&squot;s&n;&t;  for PCI_ values, call pci_set_master()&n;&t;- Fix memleak of qla1280_buffer on module unload&n;&t;- Only compile module parsing code #ifdef MODULE - should be&n;&t;  changed to use individual MODULE_PARM&squot;s later&n;&t;- Remove dummy_buffer that was never modified nor printed&n;&t;- ENTER()/LEAVE() are noops unless QL_DEBUG_LEVEL_3, hence remove&n;&t;  #ifdef QL_DEBUG_LEVEL_3/#endif around ENTER()/LEAVE() calls&n;&t;- Remove &bslash;r from print statements, this is Linux, not DOS&n;&t;- Remove obsolete QLA1280_{SCSILU,INTR,RING}_{LOCK,UNLOCK}&n;&t;  dummy macros&n;&t;- Remove C++ compile hack in header file as Linux driver are not&n;&t;  supposed to be compiled as C++&n;&t;- Kill MS_64BITS macro as it makes the code more readable&n;&t;- Remove unnecessary flags.in_interrupts bit&n;    Rev  3.23.7 Beta August 20, 2001, Jes Sorensen&n;&t;- Dont&squot; check for set flags on q-&gt;q_flag one by one in qla1280_next()&n;        - Check whether the interrupt was generated by the QLA1280 before&n;          doing any processing&n;&t;- qla1280_status_entry(): Only zero out part of sense_buffer that&n;&t;  is not being copied into&n;&t;- Remove more superflouous typecasts&n;&t;- qla1280_32bit_start_scsi() replace home-brew memcpy() with memcpy()&n;    Rev  3.23.6 Beta August 20, 2001, Tony Luck, Intel&n;        - Don&squot;t walk the entire list in qla1280_putq_t() just to directly&n;&t;  grab the pointer to the last element afterwards&n;    Rev  3.23.5 Beta August 9, 2001, Jes Sorensen&n;&t;- Don&squot;t use SA_INTERRUPT, it&squot;s use is deprecated for this kinda driver&n;    Rev  3.23.4 Beta August 8, 2001, Jes Sorensen&n;&t;- Set dev-&gt;max_sectors to 1024&n;    Rev  3.23.3 Beta August 6, 2001, Jes Sorensen&n;&t;- Provide compat macros for pci_enable_device(), pci_find_subsys()&n;&t;  and scsi_set_pci_device()&n;&t;- Call scsi_set_pci_device() for all devices&n;&t;- Reduce size of kernel version dependent device probe code&n;&t;- Move duplicate probe/init code to separate function&n;&t;- Handle error if qla1280_mem_alloc() fails&n;&t;- Kill OFFSET() macro and use Linux&squot;s PCI definitions instead&n;        - Kill private structure defining PCI config space (struct config_reg)&n;&t;- Only allocate I/O port region if not in MMIO mode&n;&t;- Remove duplicate (unused) sanity check of sife of srb_t&n;    Rev  3.23.2 Beta August 6, 2001, Jes Sorensen&n;&t;- Change home-brew memset() implementations to use memset()&n;        - Remove all references to COMTRACE() - accessing a PC&squot;s COM2 serial&n;          port directly is not legal under Linux.&n;    Rev  3.23.1 Beta April 24, 2001, Jes Sorensen&n;        - Remove pre 2.2 kernel support&n;        - clean up 64 bit DMA setting to use 2.4 API (provide backwards compat)&n;        - Fix MMIO access to use readl/writel instead of directly&n;          dereferencing pointers&n;        - Nuke MSDOS debugging code&n;        - Change true/false data types to int from uint8_t&n;        - Use int for counters instead of uint8_t etc.&n;        - Clean up size &amp; byte order conversion macro usage&n;    Rev  3.23 Beta January 11, 2001 BN Qlogic&n;        - Added check of device_id when handling non&n;          QLA12160s during detect().&n;    Rev  3.22 Beta January 5, 2001 BN Qlogic&n;        - Changed queue_task() to schedule_task()&n;          for kernels 2.4.0 and higher.&n;          Note: 2.4.0-testxx kernels released prior to&n;                the actual 2.4.0 kernel release on January 2001&n;                will get compile/link errors with schedule_task().&n;                Please update your kernel to released 2.4.0 level,&n;                or comment lines in this file flagged with  3.22&n;                to resolve compile/link error of schedule_task().&n;        - Added -DCONFIG_SMP in addition to -D__SMP__&n;          in Makefile for 2.4.0 builds of driver as module.&n;    Rev  3.21 Beta January 4, 2001 BN Qlogic&n;        - Changed criteria of 64/32 Bit mode of HBA&n;          operation according to BITS_PER_LONG rather&n;          than HBA&squot;s NVRAM setting of &gt;4Gig memory bit;&n;          so that the HBA auto-configures without the need&n;          to setup each system individually.&n;    Rev  3.20 Beta December 5, 2000 BN Qlogic&n;        - Added priority handling to IA-64  onboard SCSI&n;          ISP12160 chip for kernels greater than 2.3.18.&n;        - Added irqrestore for qla1280_intr_handler.&n;        - Enabled /proc/scsi/qla1280 interface.&n;        - Clear /proc/scsi/qla1280 counters in detect().&n;    Rev  3.19 Beta October 13, 2000 BN Qlogic&n;        - Declare driver_template for new kernel&n;          (2.4.0 and greater) scsi initialization scheme.&n;        - Update /proc/scsi entry for 2.3.18 kernels and&n;          above as qla1280&n;    Rev  3.18 Beta October 10, 2000 BN Qlogic&n;        - Changed scan order of adapters to map&n;          the QLA12160 followed by the QLA1280.&n;    Rev  3.17 Beta September 18, 2000 BN Qlogic&n;        - Removed warnings for 32 bit 2.4.x compiles&n;        - Corrected declared size for request and response&n;          DMA addresses that are kept in each ha&n;    Rev. 3.16 Beta  August 25, 2000   BN  Qlogic&n;        - Corrected 64 bit addressing issue on IA-64&n;          where the upper 32 bits were not properly&n;          passed to the RISC engine.&n;    Rev. 3.15 Beta  August 22, 2000   BN  Qlogic&n;        - Modified qla1280_setup_chip to properly load&n;          ISP firmware for greater that 4 Gig memory on IA-64&n;    Rev. 3.14 Beta  August 16, 2000   BN  Qlogic&n;        - Added setting of dma_mask to full 64 bit&n;          if flags.enable_64bit_addressing is set in NVRAM&n;    Rev. 3.13 Beta  August 16, 2000   BN  Qlogic&n;        - Use new PCI DMA mapping APIs for 2.4.x kernel&n;    Rev. 3.12       July 18, 2000    Redhat &amp; BN Qlogic&n;        - Added check of pci_enable_device to detect() for 2.3.x&n;        - Use pci_resource_start() instead of&n;          pdev-&gt;resource[0].start in detect() for 2.3.x&n;        - Updated driver version&n;    Rev. 3.11       July 14, 2000    BN  Qlogic&n;&t;- Updated SCSI Firmware to following versions:&n;&t;  qla1x80:   8.13.08&n;&t;  qla1x160:  10.04.08&n;&t;- Updated driver version to 3.11&n;    Rev. 3.10    June 23, 2000   BN Qlogic&n;        - Added filtering of AMI SubSys Vendor ID devices&n;    Rev. 3.9&n;        - DEBUG_QLA1280 undefined and  new version  BN Qlogic&n;    Rev. 3.08b      May 9, 2000    MD Dell&n;        - Added logic to check against AMI subsystem vendor ID&n;&t;Rev. 3.08       May 4, 2000    DG  Qlogic&n;        - Added logic to check for PCI subsystem ID.&n;&t;Rev. 3.07       Apr 24, 2000    DG &amp; BN  Qlogic&n;&t;   - Updated SCSI Firmware to following versions:&n;&t;     qla12160:   10.01.19&n;&t;&t; qla1280:     8.09.00&n;&t;Rev. 3.06       Apr 12, 2000    DG &amp; BN  Qlogic&n;&t;   - Internal revision; not released&n;    Rev. 3.05       Mar 28, 2000    DG &amp; BN  Qlogic&n;       - Edit correction for virt_to_bus and PROC.&n;    Rev. 3.04       Mar 28, 2000    DG &amp; BN  Qlogic&n;       - Merge changes from ia64 port.&n;    Rev. 3.03       Mar 28, 2000    BN  Qlogic&n;       - Increase version to reflect new code drop with compile fix&n;         of issue with inclusion of linux/spinlock for 2.3 kernels&n;    Rev. 3.02       Mar 15, 2000    BN  Qlogic&n;       - Merge qla1280_proc_info from 2.10 code base&n;    Rev. 3.01       Feb 10, 2000    BN  Qlogic&n;       - Corrected code to compile on a 2.2.x kernel.&n;    Rev. 3.00       Jan 17, 2000    DG  Qlogic&n;&t;   - Added 64-bit support.&n;    Rev. 2.07       Nov 9, 1999     DG  Qlogic&n;&t;   - Added new routine to set target parameters for ISP12160.&n;    Rev. 2.06       Sept 10, 1999     DG  Qlogic&n;       - Added support for ISP12160 Ultra 3 chip.&n;    Rev. 2.03       August 3, 1999    Fred Lewis, Intel DuPont&n;&t;- Modified code to remove errors generated when compiling with&n;&t;  Cygnus IA64 Compiler.&n;        - Changed conversion of pointers to unsigned longs instead of integers.&n;        - Changed type of I/O port variables from uint32_t to unsigned long.&n;        - Modified OFFSET macro to work with 64-bit as well as 32-bit.&n;        - Changed sprintf and printk format specifiers for pointers to %p.&n;        - Changed some int to long type casts where needed in sprintf &amp; printk.&n;        - Added l modifiers to sprintf and printk format specifiers for longs.&n;        - Removed unused local variables.&n;    Rev. 1.20       June 8, 1999      DG,  Qlogic&n;         Changes to support RedHat release 6.0 (kernel 2.2.5).&n;       - Added SCSI exclusive access lock (io_request_lock) when accessing&n;         the adapter.&n;       - Added changes for the new LINUX interface template. Some new error&n;         handling routines have been added to the template, but for now we&n;         will use the old ones.&n;    -   Initial Beta Release.&n;*****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -466,6 +466,7 @@ id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef QLA_64BIT_PTR
 r_static
 r_int
 id|qla1280_64bit_start_scsi
@@ -480,6 +481,7 @@ id|srb
 op_star
 )paren
 suffix:semicolon
+macro_line|#else
 r_static
 r_int
 id|qla1280_32bit_start_scsi
@@ -494,6 +496,7 @@ id|srb
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|qla1280_nv_write
@@ -1564,6 +1567,8 @@ id|chksum
 suffix:semicolon
 r_int
 id|cnt
+comma
+id|i
 suffix:semicolon
 r_struct
 id|nvram
@@ -1800,6 +1805,75 @@ id|ha-&gt;nvram_valid
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* The firmware interface is, um, interesting, in that the&n;&t; * actual firmware image on the chip is little endian, thus,&n;&t; * the process of taking that image to the CPU would end up&n;&t; * little endian.  However, the firmare interface requires it&n;&t; * to be read a word (two bytes) at a time.&n;&t; *&n;&t; * The net result of this would be that the word (and&n;&t; * doubleword) quantites in the firmware would be correct, but&n;&t; * the bytes would be pairwise reversed.  Since most of the&n;&t; * firmware quantites are, in fact, bytes, we do an extra&n;&t; * le16_to_cpu() in the firmware read routine.&n;&t; *&n;&t; * The upshot of all this is that the bytes in the firmware&n;&t; * are in the correct places, but the 16 and 32 bit quantites&n;&t; * are still in little endian format.  We fix that up below by&n;&t; * doing extra reverses on them */
+id|nv-&gt;isp_parameter
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|nv-&gt;isp_parameter
+)paren
+suffix:semicolon
+id|nv-&gt;firmware_feature.w
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|nv-&gt;firmware_feature.w
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_BUSES
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|nv-&gt;bus
+(braket
+id|i
+)braket
+dot
+id|selection_timeout
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|nv-&gt;bus
+(braket
+id|i
+)braket
+dot
+id|selection_timeout
+)paren
+suffix:semicolon
+id|nv-&gt;bus
+(braket
+id|i
+)braket
+dot
+id|max_queue_depth
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|nv-&gt;bus
+(braket
+id|i
+)braket
+dot
+id|max_queue_depth
+)paren
+suffix:semicolon
+)brace
 id|dprintk
 c_func
 (paren
@@ -1983,6 +2057,9 @@ op_star
 op_amp
 id|cmd-&gt;SCp
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|cmd-&gt;scsi_done
 op_assign
 id|fn
@@ -2003,12 +2080,10 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ha-&gt;flags.enable_64bit_addressing
-)paren
-r_return
+macro_line|#ifdef QLA_64BIT_PTR
+multiline_comment|/*&n;&t; * Using 64 bit commands if the PCI bridge doesn&squot;t support it is a&n;&t; * bit wasteful, however this should really only happen if one&squot;s&n;&t; * PCI controller is completely broken, like the BCM1250. For&n;&t; * sane hardware this is not an issue.&n;&t; */
+id|status
+op_assign
 id|qla1280_64bit_start_scsi
 c_func
 (paren
@@ -2017,7 +2092,9 @@ comma
 id|sp
 )paren
 suffix:semicolon
-r_return
+macro_line|#else
+id|status
+op_assign
 id|qla1280_32bit_start_scsi
 c_func
 (paren
@@ -2025,6 +2102,10 @@ id|ha
 comma
 id|sp
 )paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|status
 suffix:semicolon
 )brace
 DECL|enum|action
@@ -4765,6 +4846,42 @@ id|host_status
 op_assign
 id|DID_ERROR
 suffix:semicolon
+r_uint16
+id|comp_status
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|sts-&gt;comp_status
+)paren
+suffix:semicolon
+r_uint16
+id|state_flags
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|sts-&gt;state_flags
+)paren
+suffix:semicolon
+r_uint16
+id|residual_length
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|sts-&gt;residual_length
+)paren
+suffix:semicolon
+r_uint16
+id|scsi_status
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|sts-&gt;scsi_status
+)paren
+suffix:semicolon
 macro_line|#if DEBUG_QLA1280_INTR
 r_static
 r_char
@@ -4803,12 +4920,12 @@ l_string|&quot;qla1280_return_status&quot;
 )paren
 suffix:semicolon
 macro_line|#if DEBUG_QLA1280_INTR
-multiline_comment|/*&n;&t;  dprintk(1, &quot;qla1280_return_status: compl status = 0x%04x&bslash;n&quot;,&n;&t;  sts-&gt;comp_status);&n;&t;*/
+multiline_comment|/*&n;&t;  dprintk(1, &quot;qla1280_return_status: compl status = 0x%04x&bslash;n&quot;,&n;&t;  comp_status);&n;&t;*/
 macro_line|#endif
 r_switch
 c_cond
 (paren
-id|sts-&gt;comp_status
+id|comp_status
 )paren
 (brace
 r_case
@@ -4828,7 +4945,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sts-&gt;state_flags
+id|state_flags
 op_amp
 id|SF_GOT_BUS
 )paren
@@ -4843,7 +4960,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sts-&gt;state_flags
+id|state_flags
 op_amp
 id|SF_GOT_TARGET
 )paren
@@ -4858,7 +4975,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sts-&gt;state_flags
+id|state_flags
 op_amp
 id|SF_SENT_CDB
 )paren
@@ -4873,7 +4990,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sts-&gt;state_flags
+id|state_flags
 op_amp
 id|SF_TRANSFERRED_DATA
 )paren
@@ -4888,7 +5005,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sts-&gt;state_flags
+id|state_flags
 op_amp
 id|SF_GOT_STATUS
 )paren
@@ -4903,7 +5020,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sts-&gt;state_flags
+id|state_flags
 op_amp
 id|SF_GOT_SENSE
 )paren
@@ -4951,7 +5068,7 @@ l_int|2
 comma
 l_string|&quot;Data overrun 0x%x&bslash;n&quot;
 comma
-id|sts-&gt;residual_length
+id|residual_length
 )paren
 suffix:semicolon
 id|dprintk
@@ -4991,7 +5108,7 @@ c_cond
 (paren
 id|cp-&gt;request_bufflen
 op_minus
-id|sts-&gt;residual_length
+id|residual_length
 )paren
 OL
 id|cp-&gt;underflow
@@ -5039,7 +5156,7 @@ id|reason
 id|host_status
 )braket
 comma
-id|sts-&gt;scsi_status
+id|scsi_status
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5051,7 +5168,7 @@ l_string|&quot;qla1280_return_status&quot;
 suffix:semicolon
 r_return
 (paren
-id|sts-&gt;scsi_status
+id|scsi_status
 op_amp
 l_int|0xff
 )paren
@@ -8353,50 +8470,6 @@ id|ha-&gt;flags.disable_risc_code_load
 op_assign
 id|nv-&gt;cntr_flags_1.disable_loading_risc_code
 suffix:semicolon
-macro_line|#ifdef QLA_64BIT_PTR
-multiline_comment|/* Enable 64bit addressing for OS/System combination supporting it   */
-multiline_comment|/* actual NVRAM bit is: nv-&gt;cntr_flags_1.enable_64bit_addressing     */
-multiline_comment|/* but we will ignore it and use BITS_PER_LONG macro to setup for    */
-multiline_comment|/* 64 or 32 bit access of host memory in all x86/ia-64/Alpha systems */
-id|ha-&gt;flags.enable_64bit_addressing
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-id|ha-&gt;flags.enable_64bit_addressing
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|ha-&gt;flags.enable_64bit_addressing
-)paren
-(brace
-id|dprintk
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;scsi(%li): 64 Bit PCI Addressing Enabled&bslash;n&quot;
-comma
-id|ha-&gt;host_no
-)paren
-suffix:semicolon
-id|pci_set_dma_mask
-c_func
-(paren
-id|ha-&gt;pdev
-comma
-(paren
-id|dma_addr_t
-)paren
-op_complement
-l_int|0ULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Set ISP hardware DMA burst */
 id|mb
 (braket
@@ -12584,10 +12657,11 @@ suffix:semicolon
 op_star
 id|dword_ptr
 op_assign
+id|cpu_to_le32
+c_func
 (paren
-r_uint32
-)paren
 id|cmd-&gt;request_bufflen
+)paren
 suffix:semicolon
 id|dprintk
 c_func
@@ -12636,35 +12710,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* No data transfer */
-id|dword_ptr
-op_assign
-(paren
-r_uint32
-op_star
-)paren
-(paren
-id|pkt
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-op_star
-id|dword_ptr
-op_increment
-op_assign
-l_int|0
-suffix:semicolon
-op_star
-id|dword_ptr
-op_increment
-op_assign
-l_int|0
-suffix:semicolon
-op_star
-id|dword_ptr
-op_assign
-l_int|0
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -12785,6 +12830,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
+macro_line|#ifndef QLA_64BIT_PTR
 multiline_comment|/*&n; * qla1280_32bit_start_scsi&n; *      The start SCSI is responsible for building request packets on&n; *      request ring and modifying ISP input pointer.&n; *&n; *      The Qlogic firmware interface allows every queue slot to have a SCSI&n; *      command and up to 4 scatter/gather (SG) entries.  If we need more&n; *      than 4 SG entries, then continuation entries are used that can&n; *      hold another 7 entries each.  The start routine determines if there&n; *      is eought empty slots then build the combination of requests to&n; *      fulfill the OS request.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      sp = SCSI Request Block structure pointer.&n; *&n; * Returns:&n; *      0 = success, was able to issue command.&n; */
 r_static
 r_int
@@ -13829,29 +13875,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* No data transfer at all */
-id|dword_ptr
-op_assign
-(paren
-r_uint32
-op_star
-)paren
-(paren
-id|pkt
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-op_star
-id|dword_ptr
-op_increment
-op_assign
-l_int|0
-suffix:semicolon
-op_star
-id|dword_ptr
-op_assign
-l_int|0
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -13974,6 +13997,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * qla1280_req_pkt&n; *      Function is responsible for locking ring and&n; *      getting a zeroed out request packet.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; *&n; * Returns:&n; *      0 = failed to get slot.&n; */
 r_static
 id|request_t
@@ -18192,6 +18216,99 @@ op_assign
 id|devnum
 suffix:semicolon
 multiline_comment|/* specifies microcode load address */
+macro_line|#ifdef QLA_64BIT_PTR
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+(paren
+id|dma_addr_t
+)paren
+op_complement
+l_int|0ULL
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;scsi(%li): Unable to set a &quot;
+l_string|&quot; suitable DMA mask - aboring&bslash;n&quot;
+comma
+id|ha-&gt;host_no
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|error_free_irq
+suffix:semicolon
+)brace
+)brace
+r_else
+id|dprintk
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;scsi(%li): 64 Bit PCI Addressing Enabled&bslash;n&quot;
+comma
+id|ha-&gt;host_no
+)paren
+suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;scsi(%li): Unable to set a &quot;
+l_string|&quot; suitable DMA mask - aboring&bslash;n&quot;
+comma
+id|ha-&gt;host_no
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|error_free_irq
+suffix:semicolon
+)brace
+macro_line|#endif
 id|ha-&gt;request_ring
 op_assign
 id|pci_alloc_consistent
@@ -18581,6 +18698,16 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+id|error_free_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|pdev-&gt;irq
+comma
+id|ha
+)paren
+suffix:semicolon
 id|error_release_region
 suffix:colon
 macro_line|#if MEMORY_MAPPED_IO
@@ -18600,16 +18727,6 @@ l_int|0xff
 )paren
 suffix:semicolon
 macro_line|#endif
-id|error_free_irq
-suffix:colon
-id|free_irq
-c_func
-(paren
-id|pdev-&gt;irq
-comma
-id|ha
-)paren
-suffix:semicolon
 id|error_free_response_ring
 suffix:colon
 id|pci_free_consistent

@@ -2295,15 +2295,16 @@ DECL|member|standard
 r_uint8
 id|standard
 suffix:semicolon
-suffix:semicolon
+DECL|member|id
 )brace
+id|id
 suffix:semicolon
 DECL|typedef|target_id_t
 )brace
 id|target_id_t
 suffix:semicolon
 DECL|macro|SET_TARGET_ID
-mdefine_line|#define SET_TARGET_ID(ha, to, from)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (HAS_EXTENDED_IDS(ha))&t;&t;&t;&bslash;&n;&t;&t;to.extended = cpu_to_le16(from);&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;to.standard = (uint8_t)from;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_TARGET_ID(ha, to, from)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (HAS_EXTENDED_IDS(ha))&t;&t;&t;&bslash;&n;&t;&t;to.extended = cpu_to_le16(from);&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;to.id.standard = (uint8_t)from;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * ISP queue - command entry structure definition.&n; */
 DECL|macro|COMMAND_TYPE
 mdefine_line|#define COMMAND_TYPE&t;0x11&t;&t;/* Command entry */
