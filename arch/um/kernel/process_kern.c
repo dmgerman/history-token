@@ -12,6 +12,7 @@ macro_line|#include &quot;linux/smp_lock.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/capability.h&quot;
+macro_line|#include &quot;linux/spinlock.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/mman.h&quot;
 macro_line|#include &quot;asm/segment.h&quot;
@@ -19,7 +20,6 @@ macro_line|#include &quot;asm/stat.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/tlbflush.h&quot;
-macro_line|#include &quot;asm/spinlock.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/user.h&quot;
 macro_line|#include &quot;user_util.h&quot;
@@ -84,14 +84,7 @@ id|require
 r_struct
 id|task_struct
 op_star
-id|task
-comma
-op_star
 id|ret
-suffix:semicolon
-id|ret
-op_assign
-l_int|NULL
 suffix:semicolon
 id|read_lock
 c_func
@@ -100,30 +93,14 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-(def_block
-id|for_each_process
-c_func
-(paren
-id|task
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|task-&gt;pid
-op_eq
-id|pid
-)paren
-(brace
 id|ret
 op_assign
-id|task
+id|find_task_by_pid
+c_func
+(paren
+id|pid
+)paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-)def_block
 id|read_unlock
 c_func
 (paren
@@ -293,10 +270,6 @@ op_or_assign
 id|GFP_ATOMIC
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|page
 op_assign
 id|__get_free_pages
@@ -306,7 +279,11 @@ id|flags
 comma
 id|order
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|page
 op_eq
 l_int|0
 )paren
@@ -349,10 +326,8 @@ r_int
 id|flags
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|p
+r_int
+id|pid
 suffix:semicolon
 id|current-&gt;thread.request.u.thread.proc
 op_assign
@@ -362,12 +337,14 @@ id|current-&gt;thread.request.u.thread.arg
 op_assign
 id|arg
 suffix:semicolon
-id|p
+id|pid
 op_assign
 id|do_fork
 c_func
 (paren
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 op_or
 id|flags
 comma
@@ -385,22 +362,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_ERR
-c_func
-(paren
-id|p
-)paren
+id|pid
+OL
+l_int|0
 )paren
 (brace
 id|panic
 c_func
 (paren
-l_string|&quot;do_fork failed in kernel_thread&quot;
+l_string|&quot;do_fork failed in kernel_thread, errno = %d&quot;
+comma
+id|pid
 )paren
 suffix:semicolon
 )brace
 r_return
-id|p-&gt;pid
+id|pid
 suffix:semicolon
 )brace
 DECL|function|switch_mm
@@ -497,10 +474,10 @@ id|task
 )paren
 suffix:semicolon
 )brace
-DECL|function|switch_to
+DECL|function|_switch_to
 r_void
 op_star
-id|switch_to
+id|_switch_to
 c_func
 (paren
 r_void
@@ -638,7 +615,7 @@ c_func
 r_int
 r_int
 )paren
-id|current-&gt;thread_info
+id|current_thread
 )paren
 suffix:semicolon
 )brace
@@ -654,6 +631,18 @@ r_void
 r_return
 id|current
 suffix:semicolon
+)brace
+DECL|function|prepare_to_copy
+r_void
+id|prepare_to_copy
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
 )brace
 DECL|function|copy_thread
 r_int
@@ -817,7 +806,7 @@ c_func
 r_void
 )paren
 (brace
-id|idle_timer
+id|uml_idle_timer
 c_func
 (paren
 )paren
@@ -1587,6 +1576,24 @@ id|size
 )paren
 suffix:semicolon
 )brace
+DECL|function|strlen_user_proc
+r_int
+id|strlen_user_proc
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_return
+id|strlen_user
+c_func
+(paren
+id|str
+)paren
+suffix:semicolon
+)brace
 DECL|function|smp_sigio_handler
 r_int
 id|smp_sigio_handler
@@ -1599,7 +1606,7 @@ macro_line|#ifdef CONFIG_SMP
 r_int
 id|cpu
 op_assign
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 suffix:semicolon
 id|IPI_handler
 c_func
@@ -1648,7 +1655,7 @@ r_void
 )paren
 (brace
 r_return
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

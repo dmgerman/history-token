@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;chan_kern.h&quot;
@@ -1350,6 +1351,32 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chan
+op_eq
+l_int|NULL
+)paren
+(brace
+id|CONFIG_CHUNK
+c_func
+(paren
+id|str
+comma
+id|size
+comma
+id|n
+comma
+l_string|&quot;none&quot;
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
 id|CONFIG_CHUNK
 c_func
 (paren
@@ -2177,10 +2204,6 @@ id|chans
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|out
 op_assign
 id|strchr
@@ -2190,7 +2213,11 @@ id|str
 comma
 l_char|&squot;,&squot;
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|out
 op_ne
 l_int|NULL
 )paren

@@ -1,5 +1,18 @@
-multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
+macro_line|#include &quot;linux/percpu.h&quot;
+macro_line|#include &quot;asm/pgalloc.h&quot;
+macro_line|#include &quot;asm/tlb.h&quot;
+multiline_comment|/* For some reason, mmu_gathers are referenced when CONFIG_SMP is off. */
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|mmu_gather
+comma
+id|mmu_gathers
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
@@ -21,11 +34,7 @@ r_int
 r_int
 id|cpu_online_map
 op_assign
-id|cpumask_of_cpu
-c_func
-(paren
-l_int|0
-)paren
+id|CPU_MASK_NONE
 suffix:semicolon
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
@@ -108,7 +117,7 @@ r_int
 id|cpu
 )paren
 (brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|cpu_data
@@ -288,13 +297,13 @@ c_cond
 (paren
 id|i
 op_eq
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 )paren
 (brace
 r_continue
 suffix:semicolon
 )brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|cpu_data
@@ -324,11 +333,13 @@ DECL|variable|smp_commenced_mask
 r_static
 id|cpumask_t
 id|smp_commenced_mask
+op_assign
+id|CPU_MASK_NONE
 suffix:semicolon
-DECL|variable|smp_callin_map
+DECL|variable|cpu_callin_map
 r_static
 id|cpumask_t
-id|smp_callin_map
+id|cpu_callin_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
@@ -374,12 +385,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|panic
 c_func
 (paren
-l_string|&quot;CPU#%d failed to create IPI pipe, errno = %d&quot;
+l_string|&quot;CPU#%d failed to create IPI pipe, err = %d&quot;
 comma
 id|cpu
 comma
@@ -417,8 +430,7 @@ c_func
 (paren
 id|cpu
 comma
-op_amp
-id|smp_callin_map
+id|cpu_callin_map
 )paren
 )paren
 (brace
@@ -445,7 +457,6 @@ c_func
 (paren
 id|cpu
 comma
-op_amp
 id|smp_commenced_mask
 )paren
 )paren
@@ -506,7 +517,7 @@ id|cpu
 suffix:semicolon
 id|new_task
 op_assign
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -537,7 +548,13 @@ id|new_task
 id|panic
 c_func
 (paren
-l_string|&quot;do_fork failed in idle_thread&quot;
+l_string|&quot;copy_process failed in idle_thread, error = %ld&quot;
+comma
+id|PTR_ERR
+c_func
+(paren
+id|new_task
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -574,7 +591,7 @@ suffix:semicolon
 id|CHOOSE_MODE
 c_func
 (paren
-id|write
+id|os_write_file
 c_func
 (paren
 id|new_task-&gt;thread.mode.tt.switch_pipe
@@ -601,6 +618,12 @@ l_string|&quot;skas mode doesn&squot;t support SMP&quot;
 suffix:semicolon
 )brace
 )paren
+)paren
+suffix:semicolon
+id|wake_up_forked_process
+c_func
+(paren
+id|new_task
 )paren
 suffix:semicolon
 r_return
@@ -630,11 +653,18 @@ r_int
 id|err
 comma
 id|cpu
-suffix:semicolon
-id|cpu_set
+comma
+id|me
+op_assign
+id|smp_processor_id
 c_func
 (paren
-l_int|0
+)paren
+suffix:semicolon
+id|cpu_clear
+c_func
+(paren
+id|me
 comma
 id|cpu_online_map
 )paren
@@ -642,9 +672,17 @@ suffix:semicolon
 id|cpu_set
 c_func
 (paren
-l_int|0
+id|me
 comma
-id|smp_callin_map
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|me
+comma
+id|cpu_callin_map
 )paren
 suffix:semicolon
 id|err
@@ -654,7 +692,7 @@ c_func
 (paren
 id|cpu_data
 (braket
-l_int|0
+id|me
 )braket
 dot
 id|ipi_pipe
@@ -668,6 +706,8 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|panic
@@ -685,7 +725,7 @@ c_func
 (paren
 id|cpu_data
 (braket
-l_int|0
+id|me
 )braket
 dot
 id|ipi_pipe
@@ -757,7 +797,7 @@ c_func
 (paren
 id|cpu
 comma
-id|smp_callin_map
+id|cpu_callin_map
 )paren
 )paren
 id|cpu_relax
@@ -773,7 +813,7 @@ c_func
 (paren
 id|cpu
 comma
-id|smp_callin_map
+id|cpu_callin_map
 )paren
 )paren
 id|printk
@@ -910,7 +950,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|read
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -1193,7 +1233,7 @@ c_cond
 (paren
 id|i
 op_ne
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 )paren
 op_logical_and
 id|cpu_isset
@@ -1205,7 +1245,7 @@ id|cpu_online_map
 )paren
 )paren
 (brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|cpu_data

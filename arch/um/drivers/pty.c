@@ -3,12 +3,12 @@ macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;termios.h&gt;
 macro_line|#include &quot;chan_user.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;os.h&quot;
 DECL|struct|pty_chan
 r_struct
 id|pty_chan
@@ -77,10 +77,6 @@ id|pty_chan
 op_star
 id|data
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|data
 op_assign
 id|um_kmalloc
@@ -92,7 +88,11 @@ op_star
 id|data
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data
 op_eq
 l_int|NULL
 )paren
@@ -169,17 +169,17 @@ suffix:semicolon
 r_int
 id|fd
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|fd
 op_assign
 id|get_pty
 c_func
 (paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fd
 OL
 l_int|0
 )paren
@@ -273,10 +273,6 @@ op_star
 id|line
 )paren
 (brace
-r_struct
-id|stat
-id|stb
-suffix:semicolon
 r_char
 op_star
 id|pty
@@ -289,6 +285,8 @@ id|cp
 suffix:semicolon
 r_int
 id|master
+comma
+id|err
 suffix:semicolon
 id|pty
 op_assign
@@ -336,13 +334,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
+id|os_stat_file
 c_func
 (paren
 id|line
 comma
-op_amp
-id|stb
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -371,12 +368,21 @@ id|cp
 suffix:semicolon
 id|master
 op_assign
-id|open
+id|os_open_file
 c_func
 (paren
 id|line
 comma
-id|O_RDWR
+id|of_rdwr
+c_func
+(paren
+id|OPENFLAGS
+c_func
+(paren
+)paren
+)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -401,28 +407,21 @@ l_string|&quot;/dev/&quot;
 )paren
 )braket
 suffix:semicolon
-r_int
-id|ok
-suffix:semicolon
 multiline_comment|/* verify slave side is usable */
 op_star
 id|tp
 op_assign
 l_char|&squot;t&squot;
 suffix:semicolon
-id|ok
+id|err
 op_assign
-id|access
+id|os_access
 c_func
 (paren
 id|line
 comma
-id|R_OK
-op_or
-id|W_OK
+id|OS_ACC_RW_OK
 )paren
-op_eq
-l_int|0
 suffix:semicolon
 op_star
 id|tp
@@ -432,15 +431,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ok
+id|err
+op_eq
+l_int|0
 )paren
+(brace
 r_return
 id|master
 suffix:semicolon
+)brace
 (paren
 r_void
 )paren
-id|close
+id|os_close_file
 c_func
 (paren
 id|master

@@ -4,6 +4,7 @@ macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;signal.h&gt;
+macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/resource.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/user.h&gt;
@@ -494,10 +495,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|new_argv
 op_assign
 id|malloc
@@ -515,7 +512,11 @@ r_char
 op_star
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_argv
 op_eq
 l_int|NULL
 )paren
@@ -547,10 +548,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|new_argv
 (braket
 id|i
@@ -564,7 +561,14 @@ id|argv
 id|i
 )braket
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_argv
+(braket
+id|i
+)braket
 op_eq
 l_int|NULL
 )paren

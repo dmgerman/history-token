@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Lennert Buytenhek (buytenh@gnu.org)&n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 Lennert Buytenhek (buytenh@gnu.org)&n; * Copyright (C) 2001 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;errno.h&gt;
@@ -25,7 +25,7 @@ l_string|&quot;version&quot;
 comma
 id|mconsole_version
 comma
-l_int|1
+id|MCONSOLE_INTR
 )brace
 comma
 (brace
@@ -33,7 +33,7 @@ l_string|&quot;halt&quot;
 comma
 id|mconsole_halt
 comma
-l_int|0
+id|MCONSOLE_PROC
 )brace
 comma
 (brace
@@ -41,7 +41,7 @@ l_string|&quot;reboot&quot;
 comma
 id|mconsole_reboot
 comma
-l_int|0
+id|MCONSOLE_PROC
 )brace
 comma
 (brace
@@ -49,7 +49,7 @@ l_string|&quot;config&quot;
 comma
 id|mconsole_config
 comma
-l_int|0
+id|MCONSOLE_PROC
 )brace
 comma
 (brace
@@ -57,7 +57,7 @@ l_string|&quot;remove&quot;
 comma
 id|mconsole_remove
 comma
-l_int|0
+id|MCONSOLE_PROC
 )brace
 comma
 (brace
@@ -65,7 +65,7 @@ l_string|&quot;sysrq&quot;
 comma
 id|mconsole_sysrq
 comma
-l_int|1
+id|MCONSOLE_INTR
 )brace
 comma
 (brace
@@ -73,7 +73,7 @@ l_string|&quot;help&quot;
 comma
 id|mconsole_help
 comma
-l_int|1
+id|MCONSOLE_INTR
 )brace
 comma
 (brace
@@ -81,7 +81,7 @@ l_string|&quot;cad&quot;
 comma
 id|mconsole_cad
 comma
-l_int|1
+id|MCONSOLE_INTR
 )brace
 comma
 (brace
@@ -89,7 +89,7 @@ l_string|&quot;stop&quot;
 comma
 id|mconsole_stop
 comma
-l_int|0
+id|MCONSOLE_PROC
 )brace
 comma
 (brace
@@ -97,7 +97,23 @@ l_string|&quot;go&quot;
 comma
 id|mconsole_go
 comma
-l_int|1
+id|MCONSOLE_INTR
+)brace
+comma
+(brace
+l_string|&quot;log&quot;
+comma
+id|mconsole_log
+comma
+id|MCONSOLE_INTR
+)brace
+comma
+(brace
+l_string|&quot;proc&quot;
+comma
+id|mconsole_proc
+comma
+id|MCONSOLE_PROC
 )brace
 comma
 )brace
@@ -616,6 +632,10 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|total
 op_sub_assign
+id|len
+suffix:semicolon
+id|str
+op_add_assign
 id|len
 suffix:semicolon
 id|reply.len

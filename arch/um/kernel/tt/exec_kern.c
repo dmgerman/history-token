@@ -13,6 +13,7 @@ macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;tlb.h&quot;
+macro_line|#include &quot;mode.h&quot;
 DECL|function|exec_tramp
 r_static
 r_int
@@ -144,7 +145,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 op_eq
 l_int|0
 )paren
@@ -171,7 +172,7 @@ c_func
 r_int
 r_int
 )paren
-id|current-&gt;thread_info
+id|current_thread
 )paren
 suffix:semicolon
 id|os_usr1_process
@@ -219,7 +220,7 @@ c_func
 r_int
 r_int
 )paren
-id|current-&gt;thread_info
+id|current_thread
 )paren
 suffix:semicolon
 id|force_flush_all

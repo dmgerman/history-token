@@ -3,7 +3,6 @@ macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;termios.h&gt;
 macro_line|#include &lt;pty.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;string.h&gt;
@@ -32,6 +31,7 @@ suffix:semicolon
 multiline_comment|/* Used as a flag during SIGIO testing early in boot */
 DECL|variable|got_sigio
 r_static
+r_volatile
 r_int
 id|got_sigio
 op_assign
@@ -114,6 +114,7 @@ l_int|NULL
 (brace
 id|info-&gt;err
 op_assign
+op_minus
 id|errno
 suffix:semicolon
 )brace
@@ -169,7 +170,7 @@ id|master
 comma
 id|slave
 comma
-id|flags
+id|err
 suffix:semicolon
 id|initial_thread_cb
 c_func
@@ -191,6 +192,7 @@ c_func
 (paren
 l_string|&quot;openpty failed, errno = %d&bslash;n&quot;
 comma
+op_minus
 id|pty.err
 )paren
 suffix:semicolon
@@ -232,6 +234,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* XXX These can fail with EINTR */
 r_if
 c_cond
 (paren
@@ -289,108 +292,31 @@ id|errno
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|flags
+id|err
 op_assign
-id|fcntl
+id|os_sigio_async
 c_func
 (paren
 id|master
 comma
-id|F_GETFL
-)paren
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;tty_fds : fcntl F_GETFL failed, errno = %d&bslash;n&quot;
-comma
-id|errno
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|fcntl
-c_func
-(paren
-id|master
-comma
-id|F_SETFL
-comma
-id|flags
-op_or
-id|O_NONBLOCK
-op_or
-id|O_ASYNC
-)paren
-OL
-l_int|0
-)paren
-op_logical_or
-(paren
-id|fcntl
-c_func
-(paren
-id|master
-comma
-id|F_SETOWN
-comma
-id|os_getpid
-c_func
-(paren
-)paren
-)paren
-OL
-l_int|0
-)paren
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;check_sigio : fcntl F_SETFL or F_SETOWN failed, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
-comma
-id|errno
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|fcntl
-c_func
-(paren
 id|slave
-comma
-id|F_SETFL
-comma
-id|flags
-op_or
-id|O_NONBLOCK
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
-)paren
 )paren
 (brace
 id|panic
 c_func
 (paren
-l_string|&quot;check_sigio : fcntl F_SETFL failed, errno = %d&bslash;n&quot;
+l_string|&quot;tty_fds : sigio_async failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|err
 )paren
 suffix:semicolon
 )brace
@@ -470,13 +396,13 @@ comma
 id|slave
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|master
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|slave
@@ -553,7 +479,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|write
+id|os_write_file
 c_func
 (paren
 id|master
@@ -595,7 +521,7 @@ c_loop
 (paren
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|slave
@@ -639,8 +565,9 @@ r_else
 r_if
 c_cond
 (paren
-id|errno
+id|n
 op_eq
+op_minus
 id|EAGAIN
 )paren
 (brace
@@ -655,9 +582,9 @@ r_else
 id|panic
 c_func
 (paren
-l_string|&quot;check_sigio : read failed, errno = %d&bslash;n&quot;
+l_string|&quot;check_sigio : read failed, err = %d&bslash;n&quot;
 comma
-id|errno
+id|n
 )paren
 suffix:semicolon
 )brace
@@ -680,7 +607,7 @@ c_func
 l_string|&quot;Checking that host ptys support SIGIO on close...&quot;
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|slave
@@ -723,20 +650,28 @@ r_void
 r_if
 c_cond
 (paren
-id|access
+(paren
+id|os_access
 c_func
 (paren
 l_string|&quot;/dev/ptmx&quot;
 comma
-id|R_OK
+id|OS_ACC_R_OK
+)paren
+OL
+l_int|0
 )paren
 op_logical_and
-id|access
+(paren
+id|os_access
 c_func
 (paren
 l_string|&quot;/dev/ptyp0&quot;
 comma
-id|R_OK
+id|OS_ACC_R_OK
+)paren
+OL
+l_int|0
 )paren
 )paren
 (brace
@@ -1005,7 +940,7 @@ l_int|1
 (brace
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|sigio_private
@@ -1037,9 +972,10 @@ id|printk
 c_func
 (paren
 l_string|&quot;write_sigio_thread : &quot;
-l_string|&quot;read failed, errno = %d&bslash;n&quot;
+l_string|&quot;read failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
@@ -1108,7 +1044,7 @@ suffix:semicolon
 )brace
 id|n
 op_assign
-id|write
+id|os_write_file
 c_func
 (paren
 id|respond_fd
@@ -1137,9 +1073,10 @@ id|printk
 c_func
 (paren
 l_string|&quot;write_sigio_thread : write failed, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
@@ -1269,7 +1206,7 @@ l_int|0
 suffix:semicolon
 id|n
 op_assign
-id|write
+id|os_write_file
 c_func
 (paren
 id|sigio_private
@@ -1300,9 +1237,10 @@ id|c
 id|printk
 c_func
 (paren
-l_string|&quot;update_thread : write failed, errno = %d&bslash;n&quot;
+l_string|&quot;update_thread : write failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 r_goto
@@ -1311,7 +1249,7 @@ suffix:semicolon
 )brace
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|sigio_private
@@ -1342,9 +1280,10 @@ id|c
 id|printk
 c_func
 (paren
-l_string|&quot;update_thread : read failed, errno = %d&bslash;n&quot;
+l_string|&quot;update_thread : read failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 r_goto
@@ -1389,7 +1328,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|sigio_private
@@ -1398,7 +1337,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|sigio_private
@@ -1407,7 +1346,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|write_sigio_fds
@@ -1416,7 +1355,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|write_sigio_fds
@@ -1939,13 +1878,15 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 l_string|&quot;write_sigio_workaround - os_pipe 1 failed, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -1971,13 +1912,15 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 l_string|&quot;write_sigio_workaround - os_pipe 2 failed, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -2078,7 +2021,7 @@ l_int|1
 suffix:semicolon
 id|out_close2
 suffix:colon
-id|close
+id|os_close_file
 c_func
 (paren
 id|sigio_private
@@ -2087,7 +2030,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|sigio_private
@@ -2098,7 +2041,7 @@ l_int|1
 suffix:semicolon
 id|out_close1
 suffix:colon
-id|close
+id|os_close_file
 c_func
 (paren
 id|write_sigio_fds
@@ -2107,7 +2050,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|write_sigio_fds
@@ -2139,7 +2082,7 @@ id|c
 suffix:semicolon
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -2164,18 +2107,42 @@ id|c
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|n
+OL
+l_int|0
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;read_sigio_fd - read failed, errno = %d&bslash;n&quot;
+l_string|&quot;read_sigio_fd - read failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
+)paren
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;read_sigio_fd - short read, bytes = %d&bslash;n&quot;
+comma
+id|n
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|errno
+id|EIO
 suffix:semicolon
+)brace
 )brace
 r_return
 id|n

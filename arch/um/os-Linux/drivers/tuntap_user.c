@@ -4,7 +4,6 @@ macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/socket.h&gt;
 macro_line|#include &lt;sys/un.h&gt;
@@ -204,7 +203,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|data-&gt;close_me
@@ -354,7 +353,7 @@ op_minus
 id|pid
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|remote
@@ -461,6 +460,7 @@ id|errno
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|errno
 suffix:semicolon
 )brace
@@ -498,6 +498,7 @@ l_string|&quot;tuntap_open_tramp : didn&squot;t receive a message&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -524,6 +525,7 @@ l_string|&quot;tuntap_open_tramp : didn&squot;t receive a descriptor&bslash;n&qu
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -604,6 +606,8 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 r_return
@@ -616,20 +620,29 @@ c_cond
 id|pri-&gt;fixed_config
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|pri-&gt;fd
 op_assign
-id|open
+id|os_open_file
 c_func
 (paren
 l_string|&quot;/dev/net/tun&quot;
 comma
-id|O_RDWR
+id|of_rdwr
+c_func
+(paren
+id|OPENFLAGS
+c_func
+(paren
 )paren
 )paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pri-&gt;fd
 OL
 l_int|0
 )paren
@@ -637,14 +650,14 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Failed to open /dev/net/tun, errno = %d&bslash;n&quot;
+l_string|&quot;Failed to open /dev/net/tun, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|pri-&gt;fd
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|errno
+id|pri-&gt;fd
 suffix:semicolon
 )brace
 id|memset
@@ -664,6 +677,8 @@ suffix:semicolon
 id|ifr.ifr_flags
 op_assign
 id|IFF_TAP
+op_or
+id|IFF_NO_PI
 suffix:semicolon
 id|strlcpy
 c_func
@@ -702,12 +717,12 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;TUNSETIFF failed, errno = %d&quot;
+l_string|&quot;TUNSETIFF failed, errno = %d&bslash;n&quot;
 comma
 id|errno
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;fd
@@ -737,12 +752,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;tuntap_open : os_pipe failed - errno = %d&bslash;n&quot;
+l_string|&quot;tuntap_open : os_pipe failed - err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -813,10 +830,37 @@ r_if
 c_cond
 (paren
 id|err
-op_eq
+OL
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s&quot;
+comma
+id|output
+)paren
+suffix:semicolon
+id|free_output_buffer
+c_func
+(paren
+id|buffer
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;tuntap_open_tramp failed - err = %d&bslash;n&quot;
+comma
+op_minus
+id|err
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 id|pri-&gt;dev_name
 op_assign
 id|uml_strdup
@@ -832,44 +876,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|output
-)paren
-suffix:semicolon
-id|free_output_buffer
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|output
-)paren
-suffix:semicolon
-id|free_output_buffer
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;tuntap_open_tramp failed - errno = %d&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
-id|err
+id|output
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|err
+id|free_output_buffer
+c_func
+(paren
+id|buffer
+)paren
 suffix:semicolon
-)brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fds
@@ -932,7 +950,7 @@ id|pri-&gt;dev_name
 )paren
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd

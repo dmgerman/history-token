@@ -80,7 +80,7 @@ macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|KERNEL_CALL
-mdefine_line|#define KERNEL_CALL(ret_t, sys, args...)&t;&bslash;&n;&t;mm_segment_t fs = get_fs();&t;&t;&bslash;&n;&t;ret_t ret;&t;&t;&t;&t;&bslash;&n;&t;set_fs(KERNEL_DS);&t;&t;&t;&bslash;&n;&t;ret = sys(args);&t;&t;&t;&bslash;&n;&t;set_fs(fs);&t;&t;&t;&t;&bslash;&n;&t;return ret;
+mdefine_line|#define KERNEL_CALL(ret_t, sys, args...)&t;&bslash;&n;&t;mm_segment_t fs = get_fs();&t;&t;&bslash;&n;&t;ret_t ret;&t;&t;&t;&t;&bslash;&n;&t;set_fs(KERNEL_DS);&t;&t;&t;&bslash;&n;&t;ret = sys(args);&t;&t;&t;&bslash;&n;&t;set_fs(fs);&t;&t;&t;&t;&bslash;&n;&t;if (ret &gt;= 0)&t;&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&bslash;&n;&t;errno = -(long)ret;&t;&t;&t;&bslash;&n;&t;return -1;
 DECL|function|open
 r_static
 r_inline

@@ -85,9 +85,9 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(flags) do { (flags) = get_signals(); } while(0)
+mdefine_line|#define local_save_flags(flags) do { typecheck(unsigned long, flags); &bslash;&n;&t;&t;&t;&t;     (flags) = get_signals(); } while(0)
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags) do { set_signals(flags); } while(0)
+mdefine_line|#define local_irq_restore(flags) do { typecheck(unsigned long, flags); &bslash;&n;&t;&t;&t;&t;      set_signals(flags); } while(0)
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags) do { local_save_flags(flags); &bslash;&n;                                   local_irq_disable(); } while(0)
 DECL|macro|local_irq_enable
@@ -96,5 +96,26 @@ DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable() block_signals()
 DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()                 &bslash;&n;({                                      &bslash;&n;        unsigned long flags;            &bslash;&n;        local_save_flags(flags);        &bslash;&n;        (flags == 0);                   &bslash;&n;})
+r_extern
+r_void
+op_star
+id|_switch_to
+c_func
+(paren
+r_void
+op_star
+id|prev
+comma
+r_void
+op_star
+id|next
+comma
+r_void
+op_star
+id|last
+)paren
+suffix:semicolon
+DECL|macro|switch_to
+mdefine_line|#define switch_to(prev, next, last) prev = _switch_to(prev, next, last)
 macro_line|#endif
 eof

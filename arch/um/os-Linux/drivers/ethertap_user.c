@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (C) 2001 Lennert Buytenhek (buytenh@gnu.org)
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stddef.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;sys/errno.h&gt;
 macro_line|#include &lt;sys/socket.h&gt;
@@ -107,6 +106,9 @@ r_void
 op_star
 id|output
 suffix:semicolon
+r_int
+id|n
+suffix:semicolon
 id|change.what
 op_assign
 id|op
@@ -137,10 +139,9 @@ id|change.netmask
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|write
+id|n
+op_assign
+id|os_write_file
 c_func
 (paren
 id|fd
@@ -153,6 +154,11 @@ r_sizeof
 id|change
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 op_ne
 r_sizeof
 (paren
@@ -163,9 +169,10 @@ id|change
 id|printk
 c_func
 (paren
-l_string|&quot;etap_change - request failed, errno = %d&bslash;n&quot;
+l_string|&quot;etap_change - request failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
@@ -358,13 +365,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|data-&gt;data_me
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|data-&gt;control_me
@@ -408,6 +415,8 @@ comma
 id|status
 comma
 id|err
+comma
+id|n
 suffix:semicolon
 r_char
 id|version_buf
@@ -572,25 +581,24 @@ l_int|0
 (brace
 id|err
 op_assign
-id|errno
+id|pid
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|data_remote
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|control_remote
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|read
+id|n
+op_assign
+id|os_read_file
 c_func
 (paren
 id|control_me
@@ -603,6 +611,11 @@ r_sizeof
 id|c
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 op_ne
 r_sizeof
 (paren
@@ -613,12 +626,14 @@ id|c
 id|printk
 c_func
 (paren
-l_string|&quot;etap_tramp : read of status failed, errno = %d&bslash;n&quot;
+l_string|&quot;etap_tramp : read of status failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -638,6 +653,7 @@ l_string|&quot;etap_tramp : uml_net failed&bslash;n&quot;
 suffix:semicolon
 id|err
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -659,6 +675,7 @@ l_int|0
 (brace
 id|err
 op_assign
+op_minus
 id|errno
 suffix:semicolon
 )brace
@@ -769,12 +786,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;data os_pipe failed - errno = %d&bslash;n&quot;
+l_string|&quot;data os_pipe failed - err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -800,12 +819,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;control os_pipe failed - errno = %d&bslash;n&quot;
+l_string|&quot;control os_pipe failed - err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -909,20 +930,20 @@ r_if
 c_cond
 (paren
 id|err
-op_ne
+OL
 l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;etap_tramp failed - errno = %d&bslash;n&quot;
+l_string|&quot;etap_tramp failed - err = %d&bslash;n&quot;
 comma
+op_minus
 id|err
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|err
 suffix:semicolon
 )brace
@@ -990,7 +1011,7 @@ op_amp
 id|pri-&gt;control_fd
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -1006,7 +1027,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;data_fd
@@ -1017,7 +1038,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;control_fd

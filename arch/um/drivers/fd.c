@@ -131,10 +131,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|data
 op_assign
 id|um_kmalloc
@@ -146,7 +142,11 @@ op_star
 id|data
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data
 op_eq
 l_int|NULL
 )paren

@@ -6,6 +6,7 @@ macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
+macro_line|#include &quot;asm/tlbflush.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;os.h&quot;

@@ -5,12 +5,10 @@ macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;sys/ioctl.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -139,6 +137,7 @@ id|SA_ONSTACK
 suffix:colon
 l_int|0
 suffix:semicolon
+multiline_comment|/* NODEFER is set here because SEGV isn&squot;t turned back on when the&n;&t; * handler is ready to receive signals.  This causes any segfault&n;&t; * during a copy_user to kill the process because the fault is blocked.&n;&t; */
 id|set_handler
 c_func
 (paren
@@ -150,6 +149,8 @@ id|__sighandler_t
 id|sig_handler
 comma
 id|flags
+op_or
+id|SA_NODEFER
 comma
 id|SIGUSR1
 comma
@@ -311,27 +312,6 @@ id|flags
 comma
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|CHOOSE_MODE
-c_func
-(paren
-id|signal
-c_func
-(paren
-id|SIGCHLD
-comma
-id|SIG_IGN
-)paren
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|0
 )paren
 suffix:semicolon
 id|signal
@@ -589,6 +569,7 @@ r_while
 c_loop
 (paren
 (paren
+(paren
 id|err
 op_assign
 id|waitpid
@@ -600,6 +581,7 @@ op_amp
 id|status
 comma
 l_int|0
+)paren
 )paren
 OL
 l_int|0
@@ -655,7 +637,10 @@ id|SIGKILL
 id|panic
 c_func
 (paren
-l_string|&quot;outer trampoline didn&squot;t exit with SIGKILL&quot;
+l_string|&quot;outer trampoline didn&squot;t exit with SIGKILL, &quot;
+l_string|&quot;status = %d&quot;
+comma
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -687,7 +672,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|read
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -1335,9 +1320,12 @@ id|buf
 suffix:semicolon
 id|n
 op_assign
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|buf
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1542,13 +1530,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|access
+id|os_access
 c_func
 (paren
 l_string|&quot;/proc/mm&quot;
 comma
-id|W_OK
+id|OS_ACC_W_OK
 )paren
+OL
+l_int|0
 )paren
 (brace
 id|printf

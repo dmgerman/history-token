@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#ifndef __UM_UACCESS_H
 DECL|macro|__UM_UACCESS_H
 mdefine_line|#define __UM_UACCESS_H
+macro_line|#include &quot;linux/sched.h&quot;
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ 0
 DECL|macro|VERIFY_WRITE

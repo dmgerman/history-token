@@ -182,18 +182,26 @@ comma
 id|current-&gt;thread.mode.skas.fork_buf
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|current-&gt;thread.prev_sched
+op_ne
+l_int|NULL
+)paren
+(brace
 id|schedule_tail
 c_func
 (paren
-l_int|NULL
+id|current-&gt;thread.prev_sched
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 id|current-&gt;thread.prev_sched
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* The return value is 1 if the kernel thread execs a process,&n;&t; * 0 if it just exits&n;&t; */
 id|n
 op_assign
 id|run_kernel_thread
@@ -321,22 +329,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|current-&gt;thread.prev_sched
+op_eq
+l_int|NULL
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;blech&quot;
+)paren
+suffix:semicolon
+)brace
 id|schedule_tail
 c_func
 (paren
 id|current-&gt;thread.prev_sched
 )paren
 suffix:semicolon
-macro_line|#endif
 id|current-&gt;thread.prev_sched
 op_assign
 l_int|NULL
-suffix:semicolon
-id|unblock_signals
-c_func
-(paren
-)paren
 suffix:semicolon
 id|userspace
 c_func
@@ -519,7 +535,7 @@ r_void
 (brace
 id|cpu_tasks
 (braket
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 )braket
 dot
 id|pid
@@ -617,9 +633,15 @@ r_void
 id|start_userspace
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|capture_signal_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+id|uml_idle_timer
 c_func
 (paren
 )paren
@@ -628,11 +650,6 @@ id|init_new_thread_signals
 c_func
 (paren
 l_int|1
-)paren
-suffix:semicolon
-id|idle_timer
-c_func
-(paren
 )paren
 suffix:semicolon
 id|init_task.thread.request.u.thread.proc
@@ -672,8 +689,12 @@ op_star
 id|task
 )paren
 (brace
+macro_line|#warning Need to look up userspace_pid by cpu
 r_return
 id|userspace_pid
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 DECL|function|thread_pid_skas
@@ -687,8 +708,12 @@ op_star
 id|task
 )paren
 (brace
+macro_line|#warning Need to look up userspace_pid by cpu
 r_return
 id|userspace_pid
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

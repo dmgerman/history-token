@@ -7,13 +7,6 @@ macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/fixmap.h&quot;
 r_extern
-id|pgd_t
-id|swapper_pg_dir
-(braket
-l_int|1024
-)braket
-suffix:semicolon
-r_extern
 r_void
 op_star
 id|um_virt_to_phys
@@ -73,6 +66,13 @@ DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;        printk(&quot;%s:%d: bad pmd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(e))
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;        printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
+r_extern
+id|pgd_t
+id|swapper_pg_dir
+(braket
+id|PTRS_PER_PGD
+)braket
+suffix:semicolon
 multiline_comment|/*&n; * pgd entries used up by user/kernel:&n; */
 DECL|macro|USER_PGD_PTRS
 mdefine_line|#define USER_PGD_PTRS (TASK_SIZE &gt;&gt; PGDIR_SHIFT)
@@ -83,12 +83,12 @@ multiline_comment|/* Just any arbitrary offset to the start of the vmalloc VM ar
 r_extern
 r_int
 r_int
-id|high_physmem
+id|end_iomem
 suffix:semicolon
 DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET&t;(__va_space)
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;(((unsigned long) high_physmem + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1))
+mdefine_line|#define VMALLOC_START&t;((end_iomem + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1))
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|macro|VMALLOC_END
 macro_line|# define VMALLOC_END&t;(PKMAP_BASE-2*PAGE_SIZE)
@@ -100,18 +100,20 @@ DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001
 DECL|macro|_PAGE_NEWPAGE
 mdefine_line|#define _PAGE_NEWPAGE&t;0x002
-DECL|macro|_PAGE_PROTNONE
-mdefine_line|#define _PAGE_PROTNONE&t;0x004&t;/* If not present */
-DECL|macro|_PAGE_RW
-mdefine_line|#define _PAGE_RW&t;0x008
-DECL|macro|_PAGE_USER
-mdefine_line|#define _PAGE_USER&t;0x010
-DECL|macro|_PAGE_ACCESSED
-mdefine_line|#define _PAGE_ACCESSED&t;0x020
-DECL|macro|_PAGE_DIRTY
-mdefine_line|#define _PAGE_DIRTY&t;0x040
 DECL|macro|_PAGE_NEWPROT
-mdefine_line|#define _PAGE_NEWPROT   0x080
+mdefine_line|#define _PAGE_NEWPROT   0x004
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x008   /* set:pagecache unset:swap */
+DECL|macro|_PAGE_PROTNONE
+mdefine_line|#define _PAGE_PROTNONE&t;0x010&t;/* If not present */
+DECL|macro|_PAGE_RW
+mdefine_line|#define _PAGE_RW&t;0x020
+DECL|macro|_PAGE_USER
+mdefine_line|#define _PAGE_USER&t;0x040
+DECL|macro|_PAGE_ACCESSED
+mdefine_line|#define _PAGE_ACCESSED&t;0x080
+DECL|macro|_PAGE_DIRTY
+mdefine_line|#define _PAGE_DIRTY&t;0x100
 DECL|macro|REGION_MASK
 mdefine_line|#define REGION_MASK&t;0xf0000000
 DECL|macro|REGION_SHIFT
@@ -202,7 +204,7 @@ mdefine_line|#define BAD_PAGETABLE __bad_pagetable()
 DECL|macro|BAD_PAGE
 mdefine_line|#define BAD_PAGE __bad_page()
 DECL|macro|ZERO_PAGE
-mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+mdefine_line|#define ZERO_PAGE(vaddr) virt_to_page(empty_zero_page)
 multiline_comment|/* number of bits that fit into a memory pointer */
 DECL|macro|BITS_PER_PTR
 mdefine_line|#define BITS_PER_PTR&t;&t;&t;(8*sizeof(unsigned long))
@@ -222,10 +224,6 @@ DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(xp)&t;do { pte_val(*(xp)) = _PAGE_NEWPAGE; } while (0)
-DECL|macro|phys_region_index
-mdefine_line|#define phys_region_index(x) (((x) &amp; REGION_MASK) &gt;&gt; REGION_SHIFT)
-DECL|macro|pte_region_index
-mdefine_line|#define pte_region_index(x) phys_region_index(pte_val(x))
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!(pmd_val(x) &amp; ~_PAGE_NEWPAGE))
 DECL|macro|pmd_bad
@@ -299,67 +297,49 @@ id|pgdp
 )brace
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
+DECL|macro|pte_page
+mdefine_line|#define pte_page(pte) phys_to_page(pte_val(pte))
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd) phys_to_page(pmd_val(pmd) &amp; PAGE_MASK)
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x) phys_to_pfn(pte_val(x))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot) __pte(pfn_to_phys(pfn) | pgprot_val(prot))
 r_extern
 r_struct
 id|page
 op_star
-id|pte_mem_map
+id|phys_to_page
 c_func
 (paren
-id|pte_t
-id|pte
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|page
-op_star
-id|phys_mem_map
-c_func
-(paren
+r_const
 r_int
 r_int
 id|phys
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|phys_to_pfn
+r_struct
+id|page
+op_star
+id|__virt_to_page
 c_func
 (paren
+r_const
 r_int
 r_int
-id|p
+id|virt
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|pfn_to_phys
-c_func
-(paren
-r_int
-r_int
-id|pfn
-)paren
-suffix:semicolon
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x) pfn_to_page(pte_pfn(x))
-DECL|macro|pte_address
-mdefine_line|#define pte_address(x) (__va(pte_val(x) &amp; PAGE_MASK))
-DECL|macro|mk_phys
-mdefine_line|#define mk_phys(a, r) ((a) + (r &lt;&lt; REGION_SHIFT))
-DECL|macro|phys_addr
-mdefine_line|#define phys_addr(p) ((p) &amp; ~REGION_MASK)
-DECL|macro|phys_page
-mdefine_line|#define phys_page(p) (phys_mem_map(p) + ((phys_addr(p)) &gt;&gt; PAGE_SHIFT))
-DECL|macro|pte_pfn
-mdefine_line|#define pte_pfn(x) phys_to_pfn(pte_val(x))
-DECL|macro|pfn_pte
-mdefine_line|#define pfn_pte(pfn, prot) __pte(pfn_to_phys(pfn) | pgprot_val(prot))
-DECL|macro|pfn_pmd
-mdefine_line|#define pfn_pmd(pfn, prot) __pmd(pfn_to_phys(pfn) | pgprot_val(prot))
+DECL|macro|virt_to_page
+mdefine_line|#define virt_to_page(addr) __virt_to_page((const unsigned long) addr)
+multiline_comment|/*&n; * Bits 0 through 3 are taken&n; */
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;28
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte) ((pte).pte_low &gt;&gt; 4)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { ((off) &lt;&lt; 4) + _PAGE_FILE })
 DECL|function|pte_mknewprot
 r_static
 r_inline
@@ -460,6 +440,40 @@ mdefine_line|#define set_pmd(pmdptr, pmdval) (*(pmdptr) = pmdval)
 DECL|macro|set_pgd
 mdefine_line|#define set_pgd(pgdptr, pgdval) (*(pgdptr) = pgdval)
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
+DECL|function|pte_user
+r_static
+r_inline
+r_int
+id|pte_user
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_USER
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_PROTNONE
+)paren
+suffix:semicolon
+)brace
 DECL|function|pte_read
 r_static
 r_inline
@@ -562,6 +576,28 @@ id|pte
 op_amp
 id|_PAGE_PROTNONE
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * The following only works if pte_present() is not true.&n; */
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+(paren
+id|pte
+)paren
+dot
+id|pte_low
+op_amp
+id|_PAGE_FILE
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
@@ -972,8 +1008,20 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
-DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot) &bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;                    &bslash;&n;                                        &bslash;&n;&t;pte_val(__pte) = page_to_phys(page) + pgprot_val(pgprot);&bslash;&n;&t;if(pte_present(__pte)) pte_mknewprot(pte_mknewpage(__pte)); &bslash;&n;&t;__pte;                          &bslash;&n;})
+r_extern
+id|pte_t
+id|mk_pte
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+id|pgprot_t
+id|pgprot
+)paren
+suffix:semicolon
 DECL|function|pte_modify
 r_static
 r_inline
@@ -1039,15 +1087,13 @@ suffix:semicolon
 )brace
 DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
-DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) (phys_mem_map(pmd_val(pmd) &amp; PAGE_MASK) + &bslash;&n;&t;&t;       ((phys_addr(pmd_val(pmd)) &gt;&gt; PAGE_SHIFT)))
-multiline_comment|/* to find an entry in a page-table-directory. */
+multiline_comment|/*&n; * the pgd page can be thought of an array like this: pgd_t[PTRS_PER_PGD]&n; *&n; * this macro returns the index of the entry in the pgd page which would&n; * control the given virtual address&n; */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
-multiline_comment|/* to find an entry in a page-table-directory */
+multiline_comment|/*&n; * pgd_offset() returns a (pgd_t *)&n; * pgd_index() is used get the offset into the pgd page&squot;s array of pgd_t&squot;s;&n; */
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) &bslash;&n;((mm)-&gt;pgd + ((address) &gt;&gt; PGDIR_SHIFT))
-multiline_comment|/* to find an entry in a kernel page-table-directory */
+multiline_comment|/*&n; * a shortcut which implies the use of the kernel&squot;s pgd, instead&n; * of a process&squot;s&n; */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 DECL|macro|pmd_index
@@ -1078,7 +1124,7 @@ op_star
 id|dir
 suffix:semicolon
 )brace
-multiline_comment|/* Find an entry in the third-level page table.. */
+multiline_comment|/*&n; * the pte page can be thought of an array like this: pte_t[PTRS_PER_PTE]&n; *&n; * this macro returns the index of the entry in the pte page which would&n; * control the given virtual address&n; */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(address) (((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
@@ -1095,11 +1141,11 @@ DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do ; while (0)
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 3) &amp; 0x7f)
+mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 4) &amp; 0x3f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 10)
+mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 11)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset) &bslash;&n;&t;((swp_entry_t) { ((type) &lt;&lt; 3) | ((offset) &lt;&lt; 10) })
+mdefine_line|#define __swp_entry(type, offset) &bslash;&n;&t;((swp_entry_t) { ((type) &lt;&lt; 4) | ((offset) &lt;&lt; 11) })
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte) &bslash;&n;&t;((swp_entry_t) { pte_val(pte_mkuptodate(pte)) })
 DECL|macro|__swp_entry_to_pte

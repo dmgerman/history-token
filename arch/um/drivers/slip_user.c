@@ -4,11 +4,9 @@ macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;string.h&gt;
-macro_line|#include &lt;sys/fcntl.h&gt;
 macro_line|#include &lt;sys/errno.h&gt;
 macro_line|#include &lt;sys/termios.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
-macro_line|#include &lt;sys/ioctl.h&gt;
 macro_line|#include &lt;sys/signal.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -236,9 +234,8 @@ r_if
 c_cond
 (paren
 id|data-&gt;stdin
-op_ne
-op_minus
-l_int|1
+op_ge
+l_int|0
 )paren
 (brace
 id|dup2
@@ -262,12 +259,11 @@ r_if
 c_cond
 (paren
 id|data-&gt;close_me
-op_ne
-op_minus
-l_int|1
+op_ge
+l_int|0
 )paren
 (brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|data-&gt;close_me
@@ -328,12 +324,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;slip_tramp : pipe failed, errno = %d&bslash;n&quot;
+l_string|&quot;slip_tramp : pipe failed, err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -426,7 +424,7 @@ l_string|&quot;buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fds
@@ -528,6 +526,7 @@ l_int|0
 suffix:semicolon
 id|err
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -597,23 +596,19 @@ id|sfd
 comma
 id|mfd
 comma
-id|disc
-comma
-id|sencap
-comma
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|mfd
 op_assign
 id|get_pty
 c_func
 (paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mfd
 OL
 l_int|0
 )paren
@@ -621,18 +616,16 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;umn : Failed to open pty&bslash;n&quot;
+l_string|&quot;umn : Failed to open pty, err = %d&bslash;n&quot;
+comma
+op_minus
+id|mfd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|mfd
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|sfd
 op_assign
 id|os_open_file
@@ -655,7 +648,11 @@ c_func
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sfd
 OL
 l_int|0
 )paren
@@ -663,12 +660,14 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Couldn&squot;t open tty for slip line&bslash;n&quot;
+l_string|&quot;Couldn&squot;t open tty for slip line, err = %d&bslash;n&quot;
+comma
+op_minus
+id|sfd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|sfd
 suffix:semicolon
 )brace
 r_if
@@ -738,35 +737,6 @@ r_if
 c_cond
 (paren
 id|err
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;slip_tramp failed - errno = %d&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|err
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ioctl
-c_func
-(paren
-id|pri-&gt;slave
-comma
-id|SIOCGIFNAME
-comma
-id|pri-&gt;name
-)paren
 OL
 l_int|0
 )paren
@@ -774,14 +744,45 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;SIOCGIFNAME failed, errno = %d&bslash;n&quot;
+l_string|&quot;slip_tramp failed - err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|err
 )paren
 suffix:semicolon
 r_return
+id|err
+suffix:semicolon
+)brace
+id|err
+op_assign
+id|os_get_ifname
+c_func
+(paren
+id|pri-&gt;slave
+comma
+id|pri-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;get_ifname failed, err = %d&bslash;n&quot;
+comma
 op_minus
-id|errno
+id|err
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 id|iter_addresses
@@ -797,23 +798,18 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|disc
+id|err
 op_assign
-id|N_SLIP
+id|os_set_slip
+c_func
+(paren
+id|sfd
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioctl
-c_func
-(paren
-id|sfd
-comma
-id|TIOCSETD
-comma
-op_amp
-id|disc
-)paren
+id|err
 OL
 l_int|0
 )paren
@@ -821,50 +817,15 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Failed to set slip line discipline - &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;Failed to set slip discipline encapsulation - &quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|err
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|errno
-suffix:semicolon
-)brace
-id|sencap
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ioctl
-c_func
-(paren
-id|sfd
-comma
-id|SIOCSIFENCAP
-comma
-op_amp
-id|sencap
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Failed to set slip encapsulation - &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
-comma
-id|errno
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|errno
+id|err
 suffix:semicolon
 )brace
 )brace
@@ -978,17 +939,18 @@ c_func
 (paren
 l_string|&quot;slip_tramp failed - errno = %d&bslash;n&quot;
 comma
+op_minus
 id|err
 )paren
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;slave
@@ -1367,9 +1329,8 @@ r_if
 c_cond
 (paren
 id|pri-&gt;slave
-op_eq
-op_minus
-l_int|1
+OL
+l_int|0
 )paren
 (brace
 r_return
@@ -1418,9 +1379,8 @@ r_if
 c_cond
 (paren
 id|pri-&gt;slave
-op_eq
-op_minus
-l_int|1
+OL
+l_int|0
 )paren
 (brace
 r_return

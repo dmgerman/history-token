@@ -1,13 +1,6 @@
 macro_line|#ifndef __UM_IRQ_H
 DECL|macro|__UM_IRQ_H
 mdefine_line|#define __UM_IRQ_H
-multiline_comment|/* The i386 irq.h has a struct task_struct in a prototype without including&n; * sched.h.  This forward declaration kills the resulting warning.&n; */
-r_struct
-id|task_struct
-suffix:semicolon
-macro_line|#include &quot;asm/ptrace.h&quot;
-DECL|macro|NR_IRQS
-macro_line|#undef NR_IRQS
 DECL|macro|TIMER_IRQ
 mdefine_line|#define TIMER_IRQ&t;&t;0
 DECL|macro|UMN_IRQ
@@ -40,72 +33,5 @@ DECL|macro|LAST_IRQ
 mdefine_line|#define LAST_IRQ XTERM_IRQ
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS (LAST_IRQ + 1)
-r_extern
-r_int
-id|um_request_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-comma
-r_int
-id|fd
-comma
-r_int
-id|type
-comma
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-id|irqflags
-comma
-r_const
-r_char
-op_star
-id|devname
-comma
-r_void
-op_star
-id|dev_id
-)paren
-suffix:semicolon
-r_struct
-id|irqaction
-suffix:semicolon
-r_struct
-id|pt_regs
-suffix:semicolon
-r_int
-id|handle_IRQ_event
-c_func
-(paren
-r_int
-r_int
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_struct
-id|irqaction
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

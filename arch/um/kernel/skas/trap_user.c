@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2002 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
@@ -134,12 +134,6 @@ op_assign
 id|save_errno
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|missed_ticks
-(braket
-)braket
-suffix:semicolon
 DECL|function|user_signal
 r_void
 id|user_signal
@@ -159,24 +153,6 @@ id|signal_info
 op_star
 id|info
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sig
-op_eq
-id|SIGVTALRM
-)paren
-(brace
-id|missed_ticks
-(braket
-id|cpu
-c_func
-(paren
-)paren
-)braket
-op_increment
-suffix:semicolon
-)brace
 id|regs-&gt;skas.is_user
 op_assign
 l_int|1

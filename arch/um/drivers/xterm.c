@@ -4,7 +4,6 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;termios.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sched.h&gt;
@@ -81,10 +80,6 @@ id|xterm_chan
 op_star
 id|data
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|data
 op_assign
 id|malloc
@@ -96,7 +91,11 @@ op_star
 id|data
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data
 op_eq
 l_int|NULL
 )paren
@@ -394,7 +393,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|access
+id|os_access
 c_func
 (paren
 id|argv
@@ -402,8 +401,10 @@ id|argv
 l_int|4
 )braket
 comma
-id|X_OK
+id|OS_ACC_X_OK
 )paren
+OL
+l_int|0
 )paren
 (brace
 id|argv
@@ -466,7 +467,7 @@ op_minus
 id|errno
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -474,7 +475,7 @@ id|fd
 suffix:semicolon
 id|fd
 op_assign
-id|create_unix_socket
+id|os_create_unix_socket
 c_func
 (paren
 id|file
@@ -483,6 +484,8 @@ r_sizeof
 (paren
 id|file
 )paren
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -503,7 +506,6 @@ id|fd
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|fd
 suffix:semicolon
 )brace
@@ -594,10 +596,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|err
 op_assign
 id|os_set_fd_block
@@ -607,8 +605,12 @@ id|fd
 comma
 l_int|0
 )paren
-)paren
-op_ne
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
 l_int|0
 )paren
 (brace
@@ -616,8 +618,9 @@ id|printk
 c_func
 (paren
 l_string|&quot;xterm_open : failed to set descriptor &quot;
-l_string|&quot;non-blocking, errno = %d&bslash;n&quot;
+l_string|&quot;non-blocking, err = %d&bslash;n&quot;
 comma
+op_minus
 id|err
 )paren
 suffix:semicolon
@@ -648,7 +651,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;xterm_open : os_rcv_fd failed, errno = %d&bslash;n&quot;
+l_string|&quot;xterm_open : os_rcv_fd failed, err = %d&bslash;n&quot;
 comma
 op_minus
 r_new
@@ -769,7 +772,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd

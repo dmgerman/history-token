@@ -1386,8 +1386,6 @@ r_int
 r_int
 id|top
 comma
-id|sig_top
-comma
 id|base
 suffix:semicolon
 id|stack
@@ -1485,16 +1483,6 @@ r_sizeof
 r_void
 op_star
 )paren
-suffix:semicolon
-id|sig_top
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|sigstack
-op_plus
-id|PAGE_SIZE
 suffix:semicolon
 multiline_comment|/* Get the sigcontext, no sigrestorer layout */
 id|raw_sc.restorer

@@ -8,15 +8,15 @@ macro_line|#include &quot;sysdep/ptrace_user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
-r_extern
-r_int
-id|userspace_pid
-suffix:semicolon
+macro_line|#include &quot;mode.h&quot;
 DECL|function|copy_sc_from_user_skas
 r_int
 id|copy_sc_from_user_skas
 c_func
 (paren
+r_int
+id|pid
+comma
 r_union
 id|uml_pt_regs
 op_star
@@ -194,13 +194,6 @@ id|sc.eflags
 suffix:semicolon
 id|regs-&gt;skas.regs
 (braket
-id|UESP
-)braket
-op_assign
-id|sc.esp_at_signal
-suffix:semicolon
-id|regs-&gt;skas.regs
-(braket
 id|SS
 )braket
 op_assign
@@ -229,7 +222,7 @@ c_func
 (paren
 id|PTRACE_SETFPREGS
 comma
-id|userspace_pid
+id|pid
 comma
 l_int|0
 comma
@@ -266,6 +259,9 @@ r_int
 id|copy_sc_to_user_skas
 c_func
 (paren
+r_int
+id|pid
+comma
 r_void
 op_star
 id|to_ptr
@@ -453,7 +449,7 @@ c_func
 (paren
 id|PTRACE_GETFPREGS
 comma
-id|userspace_pid
+id|pid
 comma
 l_int|0
 comma

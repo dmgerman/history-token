@@ -158,10 +158,6 @@ id|n
 comma
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|pri-&gt;control
 op_assign
 id|socket
@@ -173,7 +169,11 @@ id|SOCK_STREAM
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pri-&gt;control
 OL
 l_int|0
 )paren
@@ -233,10 +233,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|fd
 op_assign
 id|socket
@@ -248,7 +244,11 @@ id|SOCK_DGRAM
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fd
 OL
 l_int|0
 )paren
@@ -366,7 +366,7 @@ id|local_addr
 suffix:semicolon
 id|n
 op_assign
-id|write
+id|os_write_file
 c_func
 (paren
 id|pri-&gt;control
@@ -394,12 +394,10 @@ id|req
 id|printk
 c_func
 (paren
-l_string|&quot;daemon_open : control setup request returned %d, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;daemon_open : control setup request failed, err = %d&bslash;n&quot;
 comma
+op_minus
 id|n
-comma
-id|errno
 )paren
 suffix:semicolon
 id|err
@@ -413,7 +411,7 @@ suffix:semicolon
 )brace
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|pri-&gt;control
@@ -442,12 +440,10 @@ id|sun
 id|printk
 c_func
 (paren
-l_string|&quot;daemon_open : read of data socket returned %d, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;daemon_open : read of data socket failed, err = %d&bslash;n&quot;
 comma
+op_minus
 id|n
-comma
-id|errno
 )paren
 suffix:semicolon
 id|err
@@ -468,7 +464,7 @@ id|fd
 suffix:semicolon
 id|out_close
 suffix:colon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -476,7 +472,7 @@ id|fd
 suffix:semicolon
 id|out
 suffix:colon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;control
@@ -666,13 +662,13 @@ id|pri
 op_assign
 id|data
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;fd
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;control

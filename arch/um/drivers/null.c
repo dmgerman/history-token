@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &quot;chan_user.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|variable|null_chan

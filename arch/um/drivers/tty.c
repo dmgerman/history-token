@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;termios.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &quot;chan_user.h&quot;
@@ -75,10 +74,6 @@ suffix:semicolon
 id|str
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|data
 op_assign
 id|um_kmalloc
@@ -90,7 +85,11 @@ op_star
 id|data
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data
 op_eq
 l_int|NULL
 )paren

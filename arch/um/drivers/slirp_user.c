@@ -4,7 +4,6 @@ macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;string.h&gt;
-macro_line|#include &lt;sys/fcntl.h&gt;
 macro_line|#include &lt;sys/errno.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/signal.h&gt;
@@ -160,6 +159,7 @@ r_return
 id|pid
 suffix:semicolon
 )brace
+multiline_comment|/* XXX This is just a trivial wrapper around os_pipe */
 DECL|function|slirp_datachan
 r_static
 r_int
@@ -199,12 +199,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;slirp_datachan: Failed to open pipe, errno = %d&bslash;n&quot;
+l_string|&quot;slirp_datachan: Failed to open pipe, err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -306,6 +308,7 @@ c_func
 (paren
 l_string|&quot;slirp_tramp failed - errno = %d&bslash;n&quot;
 comma
+op_minus
 id|pid
 )paren
 suffix:semicolon
@@ -371,13 +374,13 @@ id|status
 comma
 id|err
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|pri-&gt;slave

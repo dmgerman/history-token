@@ -1,9 +1,8 @@
-multiline_comment|/* &n; * Copyright (C) 2000, 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;termios.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
@@ -30,7 +29,7 @@ op_star
 id|unused
 )paren
 (brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -59,7 +58,7 @@ id|n
 suffix:semicolon
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -77,25 +76,13 @@ r_if
 c_cond
 (paren
 id|n
-OL
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|errno
 op_eq
+op_minus
 id|EAGAIN
 )paren
 (brace
 r_return
 l_int|0
-suffix:semicolon
-)brace
-r_return
-op_minus
-id|errno
 suffix:semicolon
 )brace
 r_else
@@ -113,9 +100,10 @@ id|EIO
 suffix:semicolon
 )brace
 r_return
-l_int|1
+id|n
 suffix:semicolon
 )brace
+multiline_comment|/* XXX Trivial wrapper around os_write_file */
 DECL|function|generic_write
 r_int
 id|generic_write
@@ -137,12 +125,8 @@ op_star
 id|unused
 )paren
 (brace
-r_int
-id|count
-suffix:semicolon
-id|count
-op_assign
-id|write
+r_return
+id|os_write_file
 c_func
 (paren
 id|fd
@@ -151,22 +135,6 @@ id|buf
 comma
 id|n
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-OL
-l_int|0
-)paren
-(brace
-r_return
-op_minus
-id|errno
-suffix:semicolon
-)brace
-r_return
-id|count
 suffix:semicolon
 )brace
 DECL|function|generic_console_write
@@ -303,32 +271,40 @@ op_star
 id|cols_out
 )paren
 (brace
-r_struct
-id|winsize
-id|size
+r_int
+id|rows
+comma
+id|cols
 suffix:semicolon
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ioctl
+id|ret
+op_assign
+id|os_window_size
 c_func
 (paren
 id|fd
 comma
-id|TIOCGWINSZ
+op_amp
+id|rows
 comma
 op_amp
-id|size
+id|cols
 )paren
-op_eq
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
 l_int|0
 )paren
 (brace
+r_return
+id|ret
+suffix:semicolon
+)brace
 id|ret
 op_assign
 (paren
@@ -336,28 +312,27 @@ op_assign
 op_star
 id|rows_out
 op_ne
-id|size.ws_row
+id|rows
 )paren
 op_logical_or
 (paren
 op_star
 id|cols_out
 op_ne
-id|size.ws_col
+id|cols
 )paren
 )paren
 suffix:semicolon
 op_star
 id|rows_out
 op_assign
-id|size.ws_row
+id|rows
 suffix:semicolon
 op_star
 id|cols_out
 op_assign
-id|size.ws_col
+id|cols
 suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
@@ -434,12 +409,17 @@ id|pty_fd
 comma
 id|pipe_fd
 suffix:semicolon
+r_int
+id|count
+comma
+id|err
+suffix:semicolon
 r_char
 id|c
 op_assign
 l_int|1
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|data-&gt;close_me
@@ -453,10 +433,9 @@ id|pipe_fd
 op_assign
 id|data-&gt;pipe_fd
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|write
+id|count
+op_assign
+id|os_write_file
 c_func
 (paren
 id|pipe_fd
@@ -469,6 +448,11 @@ r_sizeof
 id|c
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
 op_ne
 r_sizeof
 (paren
@@ -480,9 +464,10 @@ id|printk
 c_func
 (paren
 l_string|&quot;winch_thread : failed to write synchronization &quot;
-l_string|&quot;byte, errno = %d&bslash;n&quot;
+l_string|&quot;byte, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|count
 )paren
 suffix:semicolon
 )brace
@@ -566,40 +551,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|ioctl
-c_func
-(paren
-id|pty_fd
-comma
-id|TIOCSCTTY
-comma
-l_int|0
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;winch_thread : TIOCSCTTY failed, errno = %d&bslash;n&quot;
-comma
-id|errno
-)paren
-suffix:semicolon
-m_exit
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|tcsetpgrp
+id|err
+op_assign
+id|os_new_tty_pgrp
 c_func
 (paren
 id|pty_fd
@@ -609,6 +563,11 @@ c_func
 (paren
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
@@ -616,9 +575,10 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;winch_thread : tcsetpgrp failed, errno = %d&bslash;n&quot;
+l_string|&quot;winch_thread : new_tty_pgrp failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|err
 )paren
 suffix:semicolon
 m_exit
@@ -627,10 +587,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|read
+id|count
+op_assign
+id|os_read_file
 c_func
 (paren
 id|pipe_fd
@@ -643,6 +602,11 @@ r_sizeof
 id|c
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
 op_ne
 r_sizeof
 (paren
@@ -654,9 +618,10 @@ id|printk
 c_func
 (paren
 l_string|&quot;winch_thread : failed to read synchronization byte, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|count
 )paren
 suffix:semicolon
 )brace
@@ -671,10 +636,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|write
+id|count
+op_assign
+id|os_write_file
 c_func
 (paren
 id|pipe_fd
@@ -687,6 +651,11 @@ r_sizeof
 id|c
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
 op_ne
 r_sizeof
 (paren
@@ -697,9 +666,10 @@ id|c
 id|printk
 c_func
 (paren
-l_string|&quot;winch_thread : write failed, errno = %d&bslash;n&quot;
+l_string|&quot;winch_thread : write failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|count
 )paren
 suffix:semicolon
 )brace
@@ -762,12 +732,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;winch_tramp : os_pipe failed, errno = %d&bslash;n&quot;
+l_string|&quot;winch_tramp : os_pipe failed, err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -846,7 +818,7 @@ r_return
 id|pid
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fds
@@ -865,7 +837,7 @@ l_int|0
 suffix:semicolon
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|fds
@@ -902,11 +874,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;read returned %d, errno = %d&bslash;n&quot;
+l_string|&quot;read failed, err = %d&bslash;n&quot;
 comma
+op_minus
 id|n
-comma
-id|errno
 )paren
 suffix:semicolon
 id|printk
@@ -948,6 +919,9 @@ id|thread
 comma
 id|thread_fd
 suffix:semicolon
+r_int
+id|count
+suffix:semicolon
 r_char
 id|c
 op_assign
@@ -979,20 +953,18 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|CHOOSE_MODE
+id|CHOOSE_MODE_PROC
 c_func
 (paren
 id|is_tracer_winch
-c_func
-(paren
+comma
+id|is_skas_winch
+comma
 id|pid
 comma
 id|fd
 comma
 id|device_data
-)paren
-comma
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -1037,10 +1009,9 @@ comma
 id|device_data
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|write
+id|count
+op_assign
+id|os_write_file
 c_func
 (paren
 id|thread_fd
@@ -1053,6 +1024,11 @@ r_sizeof
 id|c
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
 op_ne
 r_sizeof
 (paren
@@ -1064,7 +1040,10 @@ id|printk
 c_func
 (paren
 l_string|&quot;register_winch : failed to write &quot;
-l_string|&quot;synchronization byte&bslash;n&quot;
+l_string|&quot;synchronization byte, err = %d&bslash;n&quot;
+comma
+op_minus
+id|count
 )paren
 suffix:semicolon
 )brace

@@ -3,6 +3,30 @@ macro_line|#ifndef __MODE_TT_H__
 DECL|macro|__MODE_TT_H__
 mdefine_line|#define __MODE_TT_H__
 macro_line|#include &quot;sysdep/ptrace.h&quot;
+DECL|enumerator|OP_NONE
+DECL|enumerator|OP_EXEC
+DECL|enumerator|OP_FORK
+DECL|enumerator|OP_TRACE_ON
+DECL|enumerator|OP_REBOOT
+DECL|enumerator|OP_HALT
+DECL|enumerator|OP_CB
+r_enum
+(brace
+id|OP_NONE
+comma
+id|OP_EXEC
+comma
+id|OP_FORK
+comma
+id|OP_TRACE_ON
+comma
+id|OP_REBOOT
+comma
+id|OP_HALT
+comma
+id|OP_CB
+)brace
+suffix:semicolon
 r_extern
 r_int
 id|tracing_pid

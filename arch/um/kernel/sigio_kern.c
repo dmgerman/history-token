@@ -2,10 +2,12 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/list.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
-macro_line|#include &quot;asm/irq.h&quot;
+macro_line|#include &quot;linux/signal.h&quot;
+macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;sigio.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
+macro_line|#include &quot;irq_kern.h&quot;
 multiline_comment|/* Protected by sigio_lock() called from write_sigio_workaround */
 DECL|variable|sigio_irq_fd
 r_static
@@ -16,7 +18,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|function|sigio_interrupt
-r_void
+id|irqreturn_t
 id|sigio_interrupt
 c_func
 (paren
@@ -46,6 +48,9 @@ id|sigio_irq_fd
 comma
 id|SIGIO_WRITE_IRQ
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|write_sigio_irq

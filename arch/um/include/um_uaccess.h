@@ -120,6 +120,7 @@ id|n
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * strncpy_from_user: - Copy a NUL terminated string from userspace.&n; * @dst:   Destination address, in kernel space.  This buffer must be at&n; *         least @count bytes long.&n; * @src:   Source address, in user space.&n; * @count: Maximum number of bytes to copy, including the trailing NUL.&n; *&n; * Copies a NUL-terminated string from userspace to kernel space.&n; *&n; * On success, returns the length of the string (not including the trailing&n; * NUL).&n; *&n; * If access to userspace fails, returns -EFAULT (some data may have been&n; * copied).&n; *&n; * If @count is smaller than the length of the string, copies @count bytes&n; * and returns @count.&n; */
 DECL|function|strncpy_from_user
 r_static
 r_inline
@@ -156,6 +157,7 @@ id|count
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * __clear_user: - Zero a block of memory in user space, with less checking.&n; * @to:   Destination address, in user space.&n; * @n:    Number of bytes to zero.&n; *&n; * Zero a block of memory in user space.  Caller must check&n; * the specified block with access_ok() before calling this function.&n; *&n; * Returns number of bytes that could not be cleared.&n; * On success, this will be zero.&n; */
 DECL|function|__clear_user
 r_static
 r_inline
@@ -185,6 +187,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * clear_user: - Zero a block of memory in user space.&n; * @to:   Destination address, in user space.&n; * @n:    Number of bytes to zero.&n; *&n; * Zero a block of memory in user space.&n; *&n; * Returns number of bytes that could not be cleared.&n; * On success, this will be zero.&n; */
 DECL|function|clear_user
 r_static
 r_inline
@@ -214,6 +217,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * strlen_user: - Get the size of a string in user space.&n; * @str: The string to measure.&n; * @n:   The maximum valid length&n; *&n; * Get the size of a NUL-terminated string in user space.&n; *&n; * Returns the size of the string INCLUDING the terminating NUL.&n; * On exception, returns 0.&n; * If the string is too long, returns a value greater than @n.&n; */
 DECL|function|strnlen_user
 r_static
 r_inline
