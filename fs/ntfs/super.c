@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2001,2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2001,2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -306,11 +306,11 @@ id|old_nls
 suffix:semicolon
 multiline_comment|/* I am lazy... (-8 */
 DECL|macro|NTFS_GETOPT_WITH_DEFAULT
-mdefine_line|#define NTFS_GETOPT_WITH_DEFAULT(option, variable, default_value)&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = default_value;&t;&t;&t;&bslash;&n;&t;&t;else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&bslash;&n;&t;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} 
+mdefine_line|#define NTFS_GETOPT_WITH_DEFAULT(option, variable, default_value)&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = default_value;&t;&t;&t;&bslash;&n;&t;&t;else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&bslash;&n;&t;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|NTFS_GETOPT
-mdefine_line|#define NTFS_GETOPT(option, variable)&t;&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_arg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&t;&bslash;&n;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&t;&bslash;&n;&t;} 
+mdefine_line|#define NTFS_GETOPT(option, variable)&t;&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_arg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&t;&bslash;&n;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|NTFS_GETOPT_BOOL
-mdefine_line|#define NTFS_GETOPT_BOOL(option, variable)&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;BOOL val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!simple_getbool(v, &amp;val))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_bool;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} 
+mdefine_line|#define NTFS_GETOPT_BOOL(option, variable)&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;BOOL val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!simple_getbool(v, &amp;val))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_bool;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|NTFS_GETOPT_OPTIONS_ARRAY
 mdefine_line|#define NTFS_GETOPT_OPTIONS_ARRAY(option, variable, opt_array)&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int _i;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_arg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ov = v;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (variable == -1)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;for (_i = 0; opt_array[_i].str &amp;&amp; *opt_array[_i].str; _i++) &bslash;&n;&t;&t;&t;if (!strcmp(opt_array[_i].str, v)) {&t;&t;&bslash;&n;&t;&t;&t;&t;variable |= opt_array[_i].val;&t;&t;&bslash;&n;&t;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!opt_array[_i].str || !*opt_array[_i].str)&t;&t;&bslash;&n;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 r_if
@@ -2059,7 +2059,7 @@ r_return
 id|bh_backup
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; * &n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol. Return TRUE on success and FALSE on error.&n; */
+multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; *&n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol. Return TRUE on success and FALSE on error.&n; */
 DECL|function|parse_ntfs_boot_sector
 r_static
 id|BOOL
@@ -2647,6 +2647,39 @@ r_int
 id|vol-&gt;mftmirr_lcn
 )paren
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
+multiline_comment|/*&n;&t; * Work out the size of the mft mirror in number of mft records. If the&n;&t; * cluster size is less than or equal to the size taken by four mft&n;&t; * records, the mft mirror stores the first four mft records. If the&n;&t; * cluster size is bigger than the size taken by four mft records, the&n;&t; * mft mirror contains as many mft records as will fit into one&n;&t; * cluster.&n;&t; */
+r_if
+c_cond
+(paren
+id|vol-&gt;cluster_size
+op_le
+(paren
+l_int|4
+op_lshift
+id|vol-&gt;mft_record_size_bits
+)paren
+)paren
+id|vol-&gt;mftmirr_size
+op_assign
+l_int|4
+suffix:semicolon
+r_else
+id|vol-&gt;mftmirr_size
+op_assign
+id|vol-&gt;cluster_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;mftmirr_size = %i&quot;
+comma
+id|vol-&gt;mftmirr_size
+)paren
+suffix:semicolon
+macro_line|#endif /* NTFS_RW */
 id|vol-&gt;serial_no
 op_assign
 id|le64_to_cpu
@@ -2784,21 +2817,741 @@ r_int
 id|vol-&gt;mft_zone_end
 )paren
 suffix:semicolon
-multiline_comment|/* And another misplaced defaults setting. */
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+macro_line|#ifdef NTFS_RW
+multiline_comment|/**&n; * load_and_init_mft_mirror - load and setup the mft mirror inode for a volume&n; * @vol:&t;ntfs super block describing device whose mft mirror to load&n; *&n; * Return TRUE on success or FALSE on error.&n; */
+DECL|function|load_and_init_mft_mirror
+r_static
+id|BOOL
+id|load_and_init_mft_mirror
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|tmp_ino
+suffix:semicolon
+id|ntfs_inode
+op_star
+id|tmp_ni
+suffix:semicolon
+multiline_comment|/* Get mft mirror inode. */
+id|tmp_ino
+op_assign
+id|ntfs_iget
+c_func
+(paren
+id|vol-&gt;sb
+comma
+id|FILE_MFTMirr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|tmp_ino
+)paren
+op_logical_or
+id|is_bad_inode
+c_func
+(paren
+id|tmp_ino
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|vol-&gt;on_errors
+id|IS_ERR
+c_func
+(paren
+id|tmp_ino
 )paren
-id|vol-&gt;on_errors
+)paren
+id|iput
+c_func
+(paren
+id|tmp_ino
+)paren
+suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Failed to load $MFTMirr.&quot;
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Re-initialize some specifics about $MFTMirr&squot;s inode as&n;&t; * ntfs_read_inode() will have set up the default ones.&n;&t; */
+multiline_comment|/* Set uid and gid to root. */
+id|tmp_ino-&gt;i_uid
 op_assign
-id|ON_ERRORS_PANIC
+id|tmp_ino-&gt;i_gid
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Regular file.  No access for anyone. */
+id|tmp_ino-&gt;i_mode
+op_assign
+id|S_IFREG
+suffix:semicolon
+multiline_comment|/* No VFS initiated operations allowed for $MFTMirr. */
+id|tmp_ino-&gt;i_op
+op_assign
+op_amp
+id|ntfs_empty_inode_ops
+suffix:semicolon
+id|tmp_ino-&gt;i_fop
+op_assign
+op_amp
+id|ntfs_empty_file_ops
+suffix:semicolon
+multiline_comment|/* Put back our special address space operations. */
+id|tmp_ino-&gt;i_mapping-&gt;a_ops
+op_assign
+op_amp
+id|ntfs_mft_aops
+suffix:semicolon
+id|tmp_ni
+op_assign
+id|NTFS_I
+c_func
+(paren
+id|tmp_ino
+)paren
+suffix:semicolon
+multiline_comment|/* The $MFTMirr, like the $MFT is multi sector transfer protected. */
+id|NInoSetMstProtected
+c_func
+(paren
+id|tmp_ni
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set up our little cheat allowing us to reuse the async io&n;&t; * completion handler for directories.&n;&t; */
+id|tmp_ni-&gt;itype.index.block_size
+op_assign
+id|vol-&gt;mft_record_size
+suffix:semicolon
+id|tmp_ni-&gt;itype.index.block_size_bits
+op_assign
+id|vol-&gt;mft_record_size_bits
+suffix:semicolon
+id|vol-&gt;mftmirr_ino
+op_assign
+id|tmp_ino
 suffix:semicolon
 r_return
 id|TRUE
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * check_mft_mirror - compare contents of the mft mirror with the mft&n; * @vol:&t;ntfs super block describing device whose mft mirror to check&n; *&n; * Return TRUE on success or FALSE on error.&n; */
+DECL|function|check_mft_mirror
+r_static
+id|BOOL
+id|check_mft_mirror
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+)paren
+(brace
+r_int
+r_int
+id|index
+suffix:semicolon
+r_struct
+id|super_block
+op_star
+id|sb
+op_assign
+id|vol-&gt;sb
+suffix:semicolon
+id|ntfs_inode
+op_star
+id|mirr_ni
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|mft_page
+comma
+op_star
+id|mirr_page
+suffix:semicolon
+id|u8
+op_star
+id|kmft
+comma
+op_star
+id|kmirr
+suffix:semicolon
+id|run_list_element
+op_star
+id|rl
+comma
+id|rl2
+(braket
+l_int|2
+)braket
+suffix:semicolon
+r_int
+id|mrecs_per_page
+comma
+id|i
+suffix:semicolon
+multiline_comment|/* Compare contents of $MFT and $MFTMirr. */
+id|mrecs_per_page
+op_assign
+id|PAGE_CACHE_SIZE
+op_div
+id|vol-&gt;mft_record_size
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|mrecs_per_page
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|vol-&gt;mftmirr_size
+)paren
+suffix:semicolon
+id|mft_page
+op_assign
+id|mirr_page
+op_assign
+l_int|NULL
+suffix:semicolon
+id|kmft
+op_assign
+id|kmirr
+op_assign
+l_int|NULL
+suffix:semicolon
+id|index
+op_assign
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_do
+(brace
+id|u32
+id|bytes
+suffix:semicolon
+multiline_comment|/* Switch pages if necessary. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|i
+op_mod
+id|mrecs_per_page
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|index
+)paren
+(brace
+id|ntfs_unmap_page
+c_func
+(paren
+id|mft_page
+)paren
+suffix:semicolon
+id|ntfs_unmap_page
+c_func
+(paren
+id|mirr_page
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Get the $MFT page. */
+id|mft_page
+op_assign
+id|ntfs_map_page
+c_func
+(paren
+id|vol-&gt;mft_ino-&gt;i_mapping
+comma
+id|index
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|mft_page
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to read $MFT.&quot;
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+id|kmft
+op_assign
+id|page_address
+c_func
+(paren
+id|mft_page
+)paren
+suffix:semicolon
+multiline_comment|/* Get the $MFTMirr page. */
+id|mirr_page
+op_assign
+id|ntfs_map_page
+c_func
+(paren
+id|vol-&gt;mftmirr_ino-&gt;i_mapping
+comma
+id|index
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|mirr_page
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to read $MFTMirr.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|mft_unmap_out
+suffix:semicolon
+)brace
+id|kmirr
+op_assign
+id|page_address
+c_func
+(paren
+id|mirr_page
+)paren
+suffix:semicolon
+op_increment
+id|index
+suffix:semicolon
+)brace
+multiline_comment|/* Make sure the record is ok. */
+r_if
+c_cond
+(paren
+id|is_baad_recordp
+c_func
+(paren
+id|kmft
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Incomplete multi sector transfer &quot;
+l_string|&quot;detected in mft record %i.&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|mm_unmap_out
+suffix:colon
+id|ntfs_unmap_page
+c_func
+(paren
+id|mirr_page
+)paren
+suffix:semicolon
+id|mft_unmap_out
+suffix:colon
+id|ntfs_unmap_page
+c_func
+(paren
+id|mft_page
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|is_baad_recordp
+c_func
+(paren
+id|kmirr
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Incomplete multi sector transfer &quot;
+l_string|&quot;detected in mft mirror record %i.&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+r_goto
+id|mm_unmap_out
+suffix:semicolon
+)brace
+multiline_comment|/* Get the amount of data in the current record. */
+id|bytes
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+(paren
+(paren
+id|MFT_RECORD
+op_star
+)paren
+id|kmft
+)paren
+op_member_access_from_pointer
+id|bytes_in_use
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bytes
+op_logical_or
+id|bytes
+OG
+id|vol-&gt;mft_record_size
+)paren
+(brace
+id|bytes
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+(paren
+(paren
+id|MFT_RECORD
+op_star
+)paren
+id|kmirr
+)paren
+op_member_access_from_pointer
+id|bytes_in_use
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bytes
+op_logical_or
+id|bytes
+OG
+id|vol-&gt;mft_record_size
+)paren
+id|bytes
+op_assign
+id|vol-&gt;mft_record_size
+suffix:semicolon
+)brace
+multiline_comment|/* Compare the two records. */
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|kmft
+comma
+id|kmirr
+comma
+id|bytes
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;$MFT and $MFTMirr (record %i) do not &quot;
+l_string|&quot;match. Run ntfsfix or chkdsk.&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+r_goto
+id|mm_unmap_out
+suffix:semicolon
+)brace
+id|kmft
+op_add_assign
+id|vol-&gt;mft_record_size
+suffix:semicolon
+id|kmirr
+op_add_assign
+id|vol-&gt;mft_record_size
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_increment
+id|i
+OL
+id|vol-&gt;mftmirr_size
+)paren
+suffix:semicolon
+multiline_comment|/* Release the last pages. */
+id|ntfs_unmap_page
+c_func
+(paren
+id|mft_page
+)paren
+suffix:semicolon
+id|ntfs_unmap_page
+c_func
+(paren
+id|mirr_page
+)paren
+suffix:semicolon
+multiline_comment|/* Construct the mft mirror run list by hand. */
+id|rl2
+(braket
+l_int|0
+)braket
+dot
+id|vcn
+op_assign
+l_int|0
+suffix:semicolon
+id|rl2
+(braket
+l_int|0
+)braket
+dot
+id|lcn
+op_assign
+id|vol-&gt;mftmirr_lcn
+suffix:semicolon
+id|rl2
+(braket
+l_int|0
+)braket
+dot
+id|length
+op_assign
+(paren
+id|vol-&gt;mftmirr_size
+op_star
+id|vol-&gt;mft_record_size
+op_plus
+id|vol-&gt;cluster_size
+op_minus
+l_int|1
+)paren
+op_div
+id|vol-&gt;cluster_size
+suffix:semicolon
+id|rl2
+(braket
+l_int|1
+)braket
+dot
+id|vcn
+op_assign
+id|rl2
+(braket
+l_int|0
+)braket
+dot
+id|length
+suffix:semicolon
+id|rl2
+(braket
+l_int|1
+)braket
+dot
+id|lcn
+op_assign
+id|LCN_ENOENT
+suffix:semicolon
+id|rl2
+(braket
+l_int|1
+)braket
+dot
+id|length
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * Because we have just read all of the mft mirror, we know we have&n;&t; * mapped the full run list for it.&n;&t; */
+id|mirr_ni
+op_assign
+id|NTFS_I
+c_func
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mirr_ni-&gt;run_list.lock
+)paren
+suffix:semicolon
+id|rl
+op_assign
+id|mirr_ni-&gt;run_list.rl
+suffix:semicolon
+multiline_comment|/* Compare the two run lists.  They must be identical. */
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|rl2
+(braket
+id|i
+)braket
+dot
+id|vcn
+op_ne
+id|rl
+(braket
+id|i
+)braket
+dot
+id|vcn
+op_logical_or
+id|rl2
+(braket
+id|i
+)braket
+dot
+id|lcn
+op_ne
+id|rl
+(braket
+id|i
+)braket
+dot
+id|lcn
+op_logical_or
+id|rl2
+(braket
+id|i
+)braket
+dot
+id|length
+op_ne
+id|rl
+(braket
+id|i
+)braket
+dot
+id|length
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;$MFTMirr location mismatch. &quot;
+l_string|&quot;Run chkdsk.&quot;
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|mirr_ni-&gt;run_list.lock
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+)brace
+r_while
+c_loop
+(paren
+id|rl2
+(braket
+id|i
+op_increment
+)braket
+dot
+id|length
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|mirr_ni-&gt;run_list.lock
+)paren
+suffix:semicolon
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+macro_line|#endif /* NTFS_RW */
 multiline_comment|/**&n; * load_and_init_upcase - load the upcase table for an ntfs volume&n; * @vol:&t;ntfs super block describing device whose upcase to load&n; *&n; * Return TRUE on success or FALSE on error.&n; */
 DECL|function|load_and_init_upcase
 r_static
@@ -3343,6 +4096,157 @@ c_func
 l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
+multiline_comment|/* Get mft mirror inode compare the contents of $MFT and $MFTMirr. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|load_and_init_mft_mirror
+c_func
+(paren
+id|vol
+)paren
+op_logical_or
+op_logical_neg
+id|check_mft_mirror
+c_func
+(paren
+id|vol
+)paren
+)paren
+(brace
+r_static
+r_const
+r_char
+op_star
+id|es1
+op_assign
+l_string|&quot;Failed to load $MFTMirr&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es2
+op_assign
+l_string|&quot;$MFTMirr does not match $MFT&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es3
+op_assign
+l_string|&quot;.  Run ntfsfix and/or chkdsk.&quot;
+suffix:semicolon
+multiline_comment|/* If a read-write mount, convert it to a read-only mount. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|vol-&gt;on_errors
+op_amp
+(paren
+id|ON_ERRORS_REMOUNT_RO
+op_or
+id|ON_ERRORS_CONTINUE
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s and neither on_errors=&quot;
+l_string|&quot;continue nor on_errors=&quot;
+l_string|&quot;remount-ro was specified%s&quot;
+comma
+op_logical_neg
+id|vol-&gt;mftmirr_ino
+ques
+c_cond
+id|es1
+suffix:colon
+id|es2
+comma
+id|es3
+)paren
+suffix:semicolon
+r_goto
+id|iput_mirr_err_out
+suffix:semicolon
+)brace
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Mounting read-only%s&quot;
+comma
+op_logical_neg
+id|vol-&gt;mftmirr_ino
+ques
+c_cond
+id|es1
+suffix:colon
+id|es2
+comma
+id|es3
+)paren
+suffix:semicolon
+)brace
+r_else
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Will not be able to remount &quot;
+l_string|&quot;read-write%s&quot;
+comma
+op_logical_neg
+id|vol-&gt;mftmirr_ino
+ques
+c_cond
+id|es1
+suffix:colon
+id|es2
+comma
+id|es3
+)paren
+suffix:semicolon
+multiline_comment|/* This will prevent a read-write remount. */
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* NTFS_RW */
 multiline_comment|/* Get mft bitmap attribute inode. */
 id|vol-&gt;mftbmp_ino
 op_assign
@@ -3376,68 +4280,11 @@ comma
 l_string|&quot;Failed to load $MFT/$BITMAP attribute.&quot;
 )paren
 suffix:semicolon
-r_return
-id|FALSE
-suffix:semicolon
-)brace
-multiline_comment|/* Get mft mirror inode. */
-id|vol-&gt;mftmirr_ino
-op_assign
-id|ntfs_iget
-c_func
-(paren
-id|sb
-comma
-id|FILE_MFTMirr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|vol-&gt;mftmirr_ino
-)paren
-op_logical_or
-id|is_bad_inode
-c_func
-(paren
-id|vol-&gt;mftmirr_ino
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_ERR
-c_func
-(paren
-id|vol-&gt;mftmirr_ino
-)paren
-)paren
-id|iput
-c_func
-(paren
-id|vol-&gt;mftmirr_ino
-)paren
-suffix:semicolon
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Failed to load $MFTMirr.&quot;
-)paren
-suffix:semicolon
 r_goto
-id|iput_mftbmp_err_out
+id|iput_mirr_err_out
 suffix:semicolon
 )brace
-singleline_comment|// FIXME: Compare mftmirr with mft and repair if appropriate and not
-singleline_comment|// a read-only mount.
-multiline_comment|/* Read upcase table and setup vol-&gt;upcase and vol-&gt;upcase_len. */
+multiline_comment|/* Read upcase table and setup @vol-&gt;upcase and @vol-&gt;upcase_len. */
 r_if
 c_cond
 (paren
@@ -3449,7 +4296,7 @@ id|vol
 )paren
 )paren
 r_goto
-id|iput_mirr_err_out
+id|iput_mftbmp_err_out
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the cluster allocation bitmap inode and verify the size, no&n;&t; * need for any locking at this stage as we are already running&n;&t; * exclusively as we are mount in progress task.&n;&t; */
 id|vol-&gt;lcnbmp_ino
@@ -4146,14 +4993,6 @@ c_func
 id|vol-&gt;lcnbmp_ino
 )paren
 suffix:semicolon
-id|iput_mirr_err_out
-suffix:colon
-id|iput
-c_func
-(paren
-id|vol-&gt;mftmirr_ino
-)paren
-suffix:semicolon
 id|iput_mftbmp_err_out
 suffix:colon
 id|iput
@@ -4162,6 +5001,21 @@ c_func
 id|vol-&gt;mftbmp_ino
 )paren
 suffix:semicolon
+id|iput_mirr_err_out
+suffix:colon
+macro_line|#ifdef NTFS_RW
+r_if
+c_cond
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+id|iput
+c_func
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+suffix:semicolon
+macro_line|#endif /* NTFS_RW */
 r_return
 id|FALSE
 suffix:semicolon
@@ -4266,6 +5120,13 @@ op_amp
 id|vol-&gt;lcnbmp_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
+r_if
+c_cond
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+(brace
 id|iput
 c_func
 (paren
@@ -4276,6 +5137,8 @@ id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
+macro_line|#endif /* NTFS_RW */
 id|down_write
 c_func
 (paren
@@ -5260,27 +6123,37 @@ op_assign
 id|ntfs_destroy_big_inode
 comma
 multiline_comment|/* VFS: Deallocate inode. */
-singleline_comment|//.dirty_inode&t;= ntfs_dirty_inode,&t;  /* VFS: Called from
-singleline_comment|//&t;&t;&t;&t;&t;     __mark_inode_dirty(). */
-singleline_comment|//.write_inode&t;= NULL,&t;&t;  /* VFS: Write dirty inode to disk. */
 dot
 id|put_inode
 op_assign
 id|ntfs_put_inode
 comma
-multiline_comment|/* VFS: Called just before the inode&n;&t;&t;&t;&t;&t;     reference count is decreased. */
-singleline_comment|//.delete_inode&t;= NULL,&t;&t;  /* VFS: Delete inode from disk. Called
-singleline_comment|//&t;&t;&t;&t;     when i_count becomes 0 and i_nlink
-singleline_comment|//&t;&t;&t;&t;     is also 0. */
+multiline_comment|/* VFS: Called just before&n;&t;&t;&t;&t;&t;&t;     the inode reference count&n;&t;&t;&t;&t;&t;&t;     is decreased. */
+macro_line|#ifdef NTFS_RW
+singleline_comment|//.dirty_inode&t;= NULL,&t;&t;&t;/* VFS: Called from
+singleline_comment|//&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
+singleline_comment|//.write_inode&t;= NULL,&t;&t;&t;/* VFS: Write dirty inode to
+singleline_comment|//&t;&t;&t;&t;&t;   disk. */
+singleline_comment|//.drop_inode&t;= NULL,&t;&t;&t;/* VFS: Called just after the
+singleline_comment|//&t;&t;&t;&t;&t;   inode reference count has
+singleline_comment|//&t;&t;&t;&t;&t;   been decreased to zero.
+singleline_comment|//&t;&t;&t;&t;&t;   NOTE: The inode lock is
+singleline_comment|//&t;&t;&t;&t;&t;   held. See fs/inode.c::
+singleline_comment|//&t;&t;&t;&t;&t;   generic_drop_inode(). */
+singleline_comment|//.delete_inode&t;= NULL,&t;&t;&t;/* VFS: Delete inode from disk.
+singleline_comment|//&t;&t;&t;&t;&t;   Called when i_count becomes
+singleline_comment|//&t;&t;&t;&t;&t;   0 and i_nlink is also 0. */
+singleline_comment|//.write_super&t;= NULL,&t;&t;&t;/* Flush dirty super block to
+singleline_comment|//&t;&t;&t;&t;&t;   disk. */
+singleline_comment|//.write_super_lockfs&t;= NULL,&t;&t;/* ? */
+singleline_comment|//.unlockfs&t;= NULL,&t;&t;&t;/* ? */
+macro_line|#endif /* NTFS_RW */
 dot
 id|put_super
 op_assign
 id|ntfs_put_super
 comma
 multiline_comment|/* Syscall: umount. */
-singleline_comment|//write_super&t;= NULL,&t;&t;  /* Flush dirty super block to disk. */
-singleline_comment|//write_super_lockfs&t;= NULL,&t;  /* ? */
-singleline_comment|//unlockfs&t;= NULL,&t;&t;  /* ? */
 dot
 id|statfs
 op_assign
@@ -5299,13 +6172,13 @@ op_assign
 id|ntfs_clear_big_inode
 comma
 multiline_comment|/* VFS: Called when an inode is&n;&t;&t;&t;&t;&t;&t;   removed from memory. */
-singleline_comment|//.umount_begin&t;= NULL,&t;&t;     /* Forced umount. */
+singleline_comment|//.umount_begin&t;= NULL,&t;&t;&t;/* Forced umount. */
 dot
 id|show_options
 op_assign
 id|ntfs_show_options
 comma
-multiline_comment|/* Show mount options in proc. */
+multiline_comment|/* Show mount options in&n;&t;&t;&t;&t;&t;&t;   proc. */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * Declarations for NTFS specific export operations (fs/ntfs/namei.c).&n; */
@@ -5510,10 +6383,12 @@ op_amp
 id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
 id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif /* NTFS_RW */
 id|vol-&gt;lcnbmp_ino
 op_assign
 l_int|NULL
@@ -5741,13 +6616,13 @@ r_goto
 id|err_out_now
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * TODO: When we start coping with sector sizes different from&n;&t; * NTFS_BLOCK_SIZE, we now probably need to set the blocksize of the&n;&t; * device (probably to NTFS_BLOCK_SIZE).&n;&t; */
+multiline_comment|/*&n;&t; * TODO: When we start coping with sector sizes different from&n;&t; * NTFS_BLOCK_SIZE, we now probably need to set the blocksize of the&n;&t; * device (probably to NTFS_BLOCK_SIZE).&n;&t; */
 multiline_comment|/* Setup remaining fields in the super block. */
 id|sb-&gt;s_magic
 op_assign
 id|NTFS_SB_MAGIC
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ntfs allows 63 bits for the file size, i.e. correct would be:&n;&t; * &t;sb-&gt;s_maxbytes = ~0ULL &gt;&gt; 1;&n;&t; * But the kernel uses a long as the page cache page index which on&n;&t; * 32-bit architectures is only 32-bits. MAX_LFS_FILESIZE is kernel&n;&t; * defined to the maximum the page cache page index can cope with&n;&t; * without overflowing the index or to 2^63 - 1, whichever is smaller.&n;&t; */
+multiline_comment|/*&n;&t; * Ntfs allows 63 bits for the file size, i.e. correct would be:&n;&t; *&t;sb-&gt;s_maxbytes = ~0ULL &gt;&gt; 1;&n;&t; * But the kernel uses a long as the page cache page index which on&n;&t; * 32-bit architectures is only 32-bits. MAX_LFS_FILESIZE is kernel&n;&t; * defined to the maximum the page cache page index can cope with&n;&t; * without overflowing the index or to 2^63 - 1, whichever is smaller.&n;&t; */
 id|sb-&gt;s_maxbytes
 op_assign
 id|MAX_LFS_FILESIZE
@@ -6077,6 +6952,7 @@ id|vol-&gt;lcnbmp_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
 id|iput
 c_func
 (paren
@@ -6087,6 +6963,7 @@ id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif /* NTFS_RW */
 id|iput
 c_func
 (paren
