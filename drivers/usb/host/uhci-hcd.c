@@ -4855,6 +4855,8 @@ id|td
 suffix:semicolon
 id|err
 suffix:colon
+multiline_comment|/* &n;&t; * Enable this chunk of code if you want to see some more debugging.&n;&t; * But be careful, it has the tendancy to starve out khubd and prevent&n;&t; * disconnects from happening successfully if you have a slow debug&n;&t; * log interface (like a serial console.&n;&t; */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -4910,6 +4912,7 @@ id|errbuf
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
