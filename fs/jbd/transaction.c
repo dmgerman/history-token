@@ -14,13 +14,11 @@ r_static
 id|transaction_t
 op_star
 id|get_transaction
+c_func
 (paren
 id|journal_t
 op_star
 id|journal
-comma
-r_int
-id|is_try
 )paren
 (brace
 id|transaction_t
@@ -30,10 +28,12 @@ suffix:semicolon
 id|transaction
 op_assign
 id|jbd_kmalloc
+c_func
 (paren
 r_sizeof
 (paren
-id|transaction_t
+op_star
+id|transaction
 )paren
 comma
 id|GFP_NOFS
@@ -49,6 +49,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|transaction
 comma
@@ -56,7 +57,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|transaction_t
+op_star
+id|transaction
 )paren
 )paren
 suffix:semicolon
@@ -279,8 +281,6 @@ id|get_transaction
 c_func
 (paren
 id|journal
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* @@@ Error? */
@@ -3675,9 +3675,11 @@ op_star
 id|jcb
 )paren
 (brace
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|handle-&gt;h_transaction-&gt;t_jcb_lock
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -3690,14 +3692,16 @@ op_amp
 id|handle-&gt;h_jcb
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|handle-&gt;h_transaction-&gt;t_jcb_lock
+)paren
+suffix:semicolon
 id|jcb-&gt;jcb_func
 op_assign
 id|func
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * int journal_stop() - complete a transaction&n; * @handle: tranaction to complete.&n; * &n; * All done for a particular handle.&n; *&n; * There is not much action needed here.  We just return any remaining&n; * buffer credits to the transaction and remove the handle.  The only&n; * complication is that we need to start a commit operation if the&n; * filesystem is marked for synchronous update.&n; *&n; * journal_stop itself will not usually return an error, but it may&n; * do so in unusual circumstances.  In particular, expect it to &n; * return -EIO if a journal_abort has been executed since the&n; * transaction began.&n; */
@@ -3897,6 +3901,13 @@ id|journal-&gt;j_wait_transaction_locked
 suffix:semicolon
 )brace
 multiline_comment|/* Move callbacks from the handle to the transaction. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_jcb_lock
+)paren
+suffix:semicolon
 id|list_splice
 c_func
 (paren
@@ -3905,6 +3916,13 @@ id|handle-&gt;h_jcb
 comma
 op_amp
 id|transaction-&gt;t_jcb
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_jcb_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the handle is marked SYNC, we need to set another commit&n;&t; * going!  We also want to force a commit if the current&n;&t; * transaction is occupying too much of the log, or if the&n;&t; * transaction is too old now.&n;&t; */

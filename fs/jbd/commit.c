@@ -2052,7 +2052,14 @@ id|journal
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Call any callbacks that had been registered for handles in this&n;&t; * transaction.  It is up to the callback to free any allocated&n;&t; * memory.&n;&t; */
+multiline_comment|/*&n;&t; * Call any callbacks that had been registered for handles in this&n;&t; * transaction.  It is up to the callback to free any allocated&n;&t; * memory.&n;&t; *&n;&t; * The spinlocking (t_jcb_lock) here is surely unnecessary...&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|commit_transaction-&gt;t_jcb_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2117,6 +2124,13 @@ c_func
 id|p
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|commit_transaction-&gt;t_jcb_lock
+)paren
+suffix:semicolon
 id|jcb
 op_member_access_from_pointer
 id|jcb_func
@@ -2127,8 +2141,22 @@ comma
 id|error
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|commit_transaction-&gt;t_jcb_lock
+)paren
+suffix:semicolon
 )brace
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|commit_transaction-&gt;t_jcb_lock
+)paren
+suffix:semicolon
 id|lock_journal
 c_func
 (paren
