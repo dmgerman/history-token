@@ -147,6 +147,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|__put_user_unaligned
+mdefine_line|#define __put_user_unaligned __put_user
+DECL|macro|__get_user_unaligned
+mdefine_line|#define __get_user_unaligned __get_user
 r_extern
 r_int
 id|__copy_to_user_asm
