@@ -1269,10 +1269,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 id|security_ptrace
@@ -1282,7 +1278,11 @@ id|current-&gt;parent
 comma
 id|current
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|pt_error_return
