@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
