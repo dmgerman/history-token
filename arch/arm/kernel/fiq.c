@@ -8,6 +8,11 @@ macro_line|#include &lt;asm/fiq.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 4)
+macro_line|#warning This file requires GCC 3.3.x or older to build.  Alternatively,
+macro_line|#warning please talk to GCC people to resolve the issues with the
+macro_line|#warning assembly clobber list.
+macro_line|#endif
 DECL|variable|no_fiq_insn
 r_static
 r_int
