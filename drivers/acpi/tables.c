@@ -327,7 +327,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 id|PREFIX
 l_string|&quot;%.4s (v%3.3d %6.6s %8.8s 0x%08x %.4s 0x%08x) @ 0x%p&bslash;n&quot;
 comma
@@ -2377,9 +2377,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 id|PREFIX
-l_string|&quot;RSDP (v%3.3d %6.6s                                    ) @ 0x%p&bslash;n&quot;
+l_string|&quot;RSDP (v%3.3d %6.6s                                ) @ 0x%p&bslash;n&quot;
 comma
 id|rsdp-&gt;revision
 comma

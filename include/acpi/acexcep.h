@@ -189,7 +189,7 @@ mdefine_line|#define AE_AML_CIRCULAR_REFERENCE       (acpi_status) (0x0020 | AE_
 DECL|macro|AE_AML_BAD_RESOURCE_LENGTH
 mdefine_line|#define AE_AML_BAD_RESOURCE_LENGTH      (acpi_status) (0x0021 | AE_CODE_AML)
 DECL|macro|AE_CODE_AML_MAX
-mdefine_line|#define AE_CODE_AML_MAX                 0x0020
+mdefine_line|#define AE_CODE_AML_MAX                 0x0021
 multiline_comment|/*&n; * Internal exceptions used for control&n; */
 DECL|macro|AE_CTRL_RETURN_VALUE
 mdefine_line|#define AE_CTRL_RETURN_VALUE            (acpi_status) (0x0001 | AE_CODE_CONTROL)

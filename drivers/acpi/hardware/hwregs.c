@@ -527,7 +527,7 @@ id|register_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_register&n; *&n; * PARAMETERS:  register_id     - ID of ACPI bit_register to access&n; *              return_value    - Value that was read from the register&n; *              Flags           - Lock the hardware or not&n; *&n; * RETURN:      Value is read from specified Register.  Value returned is&n; *              normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI bit_register read function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_register&n; *&n; * PARAMETERS:  register_id     - ID of ACPI bit_register to access&n; *              return_value    - Value that was read from the register&n; *              Flags           - Lock the hardware or not&n; *&n; * RETURN:      Status and the value read from specified Register.  Value&n; *              returned is normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI bit_register read function.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_register
 id|acpi_get_register
@@ -613,6 +613,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Read from the register */
 id|status
 op_assign
 id|acpi_hw_register_read
@@ -689,7 +690,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_set_register&n; *&n; * PARAMETERS:  register_id     - ID of ACPI bit_register to access&n; *              Value           - (only used on write) value to write to the&n; *                                Register, NOT pre-normalized to the bit pos.&n; *              Flags           - Lock the hardware or not&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: ACPI Bit Register write function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_set_register&n; *&n; * PARAMETERS:  register_id     - ID of ACPI bit_register to access&n; *              Value           - (only used on write) value to write to the&n; *                                Register, NOT pre-normalized to the bit pos&n; *              Flags           - Lock the hardware or not&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: ACPI Bit Register write function.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_set_register
 id|acpi_set_register
@@ -1082,7 +1083,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_register_read&n; *&n; * PARAMETERS:  use_lock               - Mutex hw access.&n; *              register_id            - register_iD + Offset.&n; *&n; * RETURN:      Value read or written.&n; *&n; * DESCRIPTION: Acpi register read function.  Registers are read at the&n; *              given offset.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_register_read&n; *&n; * PARAMETERS:  use_lock            - Mutex hw access&n; *              register_id         - register_iD + Offset&n; *              return_value        - Value that was read from the register&n; *&n; * RETURN:      Status and the value read.&n; *&n; * DESCRIPTION: Acpi register read function.  Registers are read at the&n; *              given offset.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_register_read
 id|acpi_hw_register_read
@@ -1418,7 +1419,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_register_write&n; *&n; * PARAMETERS:  use_lock               - Mutex hw access.&n; *              register_id            - register_iD + Offset.&n; *&n; * RETURN:      Value read or written.&n; *&n; * DESCRIPTION: Acpi register Write function.  Registers are written at the&n; *              given offset.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_register_write&n; *&n; * PARAMETERS:  use_lock            - Mutex hw access&n; *              register_id         - register_iD + Offset&n; *              Value               - The value to write&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acpi register Write function.  Registers are written at the&n; *              given offset.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_register_write
 id|acpi_hw_register_write
@@ -1733,7 +1734,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_read&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - Where the value is returned&n; *              Register            - GAS register structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_read&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - Where the value is returned&n; *              Reg                 - GAS register structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read from either memory or IO space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_low_level_read
 id|acpi_hw_low_level_read
@@ -1751,13 +1752,6 @@ op_star
 id|reg
 )paren
 (brace
-r_struct
-id|acpi_pci_id
-id|pci_id
-suffix:semicolon
-id|u16
-id|pci_register
-suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
@@ -1792,7 +1786,7 @@ id|value
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Three address spaces supported:&n;&t; * Memory, IO, or PCI_Config.&n;&t; */
+multiline_comment|/*&n;&t; * Two address spaces supported: Memory or IO.&n;&t; * PCI_Config is not supported here because the GAS struct is insufficient&n;&t; */
 r_switch
 c_cond
 (paren
@@ -1829,57 +1823,6 @@ id|acpi_os_read_port
 id|acpi_io_address
 )paren
 id|reg-&gt;address
-comma
-id|value
-comma
-id|width
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_ADR_SPACE_PCI_CONFIG
-suffix:colon
-id|pci_id.segment
-op_assign
-l_int|0
-suffix:semicolon
-id|pci_id.bus
-op_assign
-l_int|0
-suffix:semicolon
-id|pci_id.device
-op_assign
-id|ACPI_PCI_DEVICE
-(paren
-id|reg-&gt;address
-)paren
-suffix:semicolon
-id|pci_id.function
-op_assign
-id|ACPI_PCI_FUNCTION
-(paren
-id|reg-&gt;address
-)paren
-suffix:semicolon
-id|pci_register
-op_assign
-(paren
-id|u16
-)paren
-id|ACPI_PCI_REGISTER
-(paren
-id|reg-&gt;address
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|acpi_os_read_pci_configuration
-(paren
-op_amp
-id|pci_id
-comma
-id|pci_register
 comma
 id|value
 comma
@@ -1937,7 +1880,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_write&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - To be written&n; *              Register            - GAS register structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Write to either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_write&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - To be written&n; *              Reg                 - GAS register structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Write to either memory or IO space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_low_level_write
 id|acpi_hw_low_level_write
@@ -1954,13 +1897,6 @@ op_star
 id|reg
 )paren
 (brace
-r_struct
-id|acpi_pci_id
-id|pci_id
-suffix:semicolon
-id|u16
-id|pci_register
-suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
@@ -1990,7 +1926,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Three address spaces supported:&n;&t; * Memory, IO, or PCI_Config.&n;&t; */
+multiline_comment|/*&n;&t; * Two address spaces supported: Memory or IO.&n;&t; * PCI_Config is not supported here because the GAS struct is insufficient&n;&t; */
 r_switch
 c_cond
 (paren
@@ -2028,60 +1964,6 @@ id|acpi_io_address
 )paren
 id|reg-&gt;address
 comma
-id|value
-comma
-id|width
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_ADR_SPACE_PCI_CONFIG
-suffix:colon
-id|pci_id.segment
-op_assign
-l_int|0
-suffix:semicolon
-id|pci_id.bus
-op_assign
-l_int|0
-suffix:semicolon
-id|pci_id.device
-op_assign
-id|ACPI_PCI_DEVICE
-(paren
-id|reg-&gt;address
-)paren
-suffix:semicolon
-id|pci_id.function
-op_assign
-id|ACPI_PCI_FUNCTION
-(paren
-id|reg-&gt;address
-)paren
-suffix:semicolon
-id|pci_register
-op_assign
-(paren
-id|u16
-)paren
-id|ACPI_PCI_REGISTER
-(paren
-id|reg-&gt;address
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|acpi_os_write_pci_configuration
-(paren
-op_amp
-id|pci_id
-comma
-id|pci_register
-comma
-(paren
-id|acpi_integer
-)paren
 id|value
 comma
 id|width

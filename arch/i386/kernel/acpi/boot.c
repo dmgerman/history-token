@@ -114,6 +114,13 @@ DECL|variable|acpi_strict
 r_int
 id|acpi_strict
 suffix:semicolon
+DECL|variable|acpi_strict
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_strict
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 id|acpi_interrupt_flags
 id|acpi_sci_flags
