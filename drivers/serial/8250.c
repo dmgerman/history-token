@@ -157,6 +157,11 @@ r_int
 r_char
 id|lcr
 suffix:semicolon
+DECL|member|mcr
+r_int
+r_char
+id|mcr
+suffix:semicolon
 DECL|member|mcr_mask
 r_int
 r_char
@@ -412,7 +417,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 id|outb
 c_func
@@ -436,7 +441,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_return
 id|readb
@@ -490,7 +495,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 id|outb
 c_func
@@ -517,7 +522,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 id|writeb
 c_func
@@ -2124,7 +2129,7 @@ suffix:semicolon
 id|DEBUG_AUTOCONF
 c_func
 (paren
-l_string|&quot;ttyS%d: autoconf (0x%04x, 0x%08lx): &quot;
+l_string|&quot;ttyS%d: autoconf (0x%04x, 0x%p): &quot;
 comma
 id|up-&gt;port.line
 comma
@@ -4856,6 +4861,8 @@ id|up-&gt;mcr_mask
 )paren
 op_or
 id|up-&gt;mcr_force
+op_or
+id|up-&gt;mcr
 suffix:semicolon
 id|serial_out
 c_func
@@ -4985,6 +4992,10 @@ id|up-&gt;port.type
 )braket
 dot
 id|flags
+suffix:semicolon
+id|up-&gt;mcr
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5990,6 +6001,7 @@ op_or
 id|UART_FCR_TRIGGER_8
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * TI16C750: hardware flow control and 64 byte FIFOs. When AFE is&n;&t; * enabled, RTS will be deasserted when the receive FIFO contains&n;&t; * more characters than the trigger, or the MCR RTS bit is cleared.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5997,10 +6009,28 @@ id|up-&gt;port.type
 op_eq
 id|PORT_16750
 )paren
+(brace
+id|up-&gt;mcr
+op_and_assign
+op_complement
+id|UART_MCR_AFE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|termios-&gt;c_cflag
+op_amp
+id|CRTSCTS
+)paren
+id|up-&gt;mcr
+op_or_assign
+id|UART_MCR_AFE
+suffix:semicolon
 id|fcr
 op_or_assign
 id|UART_FCR7_64BYTE
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Ok, we&squot;re now changing the port state.  Do it with&n;&t; * interrupts disabled.&n;&t; */
 id|spin_lock_irqsave
 c_func
@@ -6247,6 +6277,7 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* MS of divisor */
+multiline_comment|/*&n;&t; * LCR DLAB must be set to enable 64-byte FIFO mode. If the FCR&n;&t; * is written without DLAB set, this mode will be disabled.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6264,7 +6295,6 @@ comma
 id|fcr
 )paren
 suffix:semicolon
-multiline_comment|/* set fcr */
 id|serial_outp
 c_func
 (paren
@@ -6321,6 +6351,15 @@ id|fcr
 suffix:semicolon
 multiline_comment|/* set fcr */
 )brace
+id|serial8250_set_mctrl
+c_func
+(paren
+op_amp
+id|up-&gt;port
+comma
+id|up-&gt;port.mctrl
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -6730,7 +6769,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -6767,10 +6806,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 op_star
 id|res
@@ -6846,7 +6885,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -6893,10 +6932,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 id|start
 op_assign
@@ -6979,6 +7018,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|up-&gt;port.flags
+op_amp
+id|UPF_RESOURCES
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|up-&gt;port.type
 op_eq
 id|PORT_RSA
@@ -7006,7 +7057,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -7058,10 +7109,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 id|start
 op_assign

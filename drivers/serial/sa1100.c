@@ -3591,6 +3591,15 @@ id|res-&gt;start
 )paren
 r_continue
 suffix:semicolon
+id|sa1100_ports
+(braket
+id|i
+)braket
+dot
+id|port.dev
+op_assign
+id|_dev
+suffix:semicolon
 id|uart_add_one_port
 c_func
 (paren
