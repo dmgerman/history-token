@@ -28,10 +28,10 @@ r_uint32
 id|dev_loss_tmo
 suffix:semicolon
 multiline_comment|/* Remote Port loss timeout in seconds. */
-DECL|member|dev_loss_timer
+DECL|member|dev_loss_work
 r_struct
-id|timer_list
-id|dev_loss_timer
+id|work_struct
+id|dev_loss_work
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -43,8 +43,8 @@ DECL|macro|fc_starget_port_name
 mdefine_line|#define fc_starget_port_name(x)&t;&bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;port_name)
 DECL|macro|fc_starget_dev_loss_tmo
 mdefine_line|#define fc_starget_dev_loss_tmo(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;dev_loss_tmo)
-DECL|macro|fc_starget_dev_loss_timer
-mdefine_line|#define fc_starget_dev_loss_timer(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;dev_loss_timer)
+DECL|macro|fc_starget_dev_loss_work
+mdefine_line|#define fc_starget_dev_loss_work(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;dev_loss_work)
 DECL|struct|fc_host_attrs
 r_struct
 id|fc_host_attrs
@@ -54,17 +54,17 @@ r_uint32
 id|link_down_tmo
 suffix:semicolon
 multiline_comment|/* Link Down timeout in seconds. */
-DECL|member|link_down_timer
+DECL|member|link_down_work
 r_struct
-id|timer_list
-id|link_down_timer
+id|work_struct
+id|link_down_work
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|fc_host_link_down_tmo
 mdefine_line|#define fc_host_link_down_tmo(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_tmo)
-DECL|macro|fc_host_link_down_timer
-mdefine_line|#define fc_host_link_down_timer(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_timer)
+DECL|macro|fc_host_link_down_work
+mdefine_line|#define fc_host_link_down_work(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_work)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|fc_function_template
 r_struct
