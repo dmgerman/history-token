@@ -973,6 +973,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Using %s for high-res timesource&bslash;n&quot;
+comma
+id|cur_timer-&gt;name
+)paren
+suffix:semicolon
 id|time_init_hook
 c_func
 (paren
@@ -1044,6 +1053,15 @@ op_assign
 id|select_timer
 c_func
 (paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Using %s for high-res timesource&bslash;n&quot;
+comma
+id|cur_timer-&gt;name
 )paren
 suffix:semicolon
 id|time_init_hook

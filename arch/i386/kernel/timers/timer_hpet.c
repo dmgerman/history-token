@@ -644,6 +644,11 @@ id|timer_hpet
 op_assign
 (brace
 dot
+id|name
+op_assign
+l_string|&quot;hpet&quot;
+comma
+dot
 id|init
 op_assign
 id|init_hpet

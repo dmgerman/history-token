@@ -1101,6 +1101,11 @@ id|timer_cyclone
 op_assign
 (brace
 dot
+id|name
+op_assign
+l_string|&quot;cyclone&quot;
+comma
+dot
 id|init
 op_assign
 id|init_cyclone
