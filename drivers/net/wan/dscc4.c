@@ -2971,11 +2971,6 @@ id|err_iounmap_3
 suffix:semicolon
 id|priv
 op_assign
-(paren
-r_struct
-id|dscc4_pci_priv
-op_star
-)paren
 id|pci_get_drvdata
 c_func
 (paren
@@ -3666,11 +3661,6 @@ id|ENOMEM
 suffix:semicolon
 id|root
 op_assign
-(paren
-r_struct
-id|dscc4_dev_priv
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -3768,11 +3758,6 @@ suffix:semicolon
 )brace
 id|ppriv
 op_assign
-(paren
-r_struct
-id|dscc4_pci_priv
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
