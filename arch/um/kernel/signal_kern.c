@@ -12,6 +12,7 @@ macro_line|#include &quot;linux/tty.h&quot;
 macro_line|#include &quot;linux/binfmts.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
+macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;signal_kern.h&quot;
@@ -253,6 +254,19 @@ c_cond
 id|error
 )paren
 (brace
+r_case
+op_minus
+id|ERESTART_RESTARTBLOCK
+suffix:colon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 r_case
 op_minus
 id|ERESTARTNOHAND
@@ -709,6 +723,35 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+id|PT_REGS_RESTART_SYSCALL
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|PT_REGS_SYSCALL_RET
+c_func
+(paren
+id|regs
+)paren
+op_eq
+op_minus
+id|ERESTART_RESTARTBLOCK
+)paren
+(brace
+id|PT_REGS_SYSCALL_RET
+c_func
+(paren
+id|regs
+)paren
+op_assign
+id|__NR_restart_syscall
 suffix:semicolon
 id|PT_REGS_RESTART_SYSCALL
 c_func

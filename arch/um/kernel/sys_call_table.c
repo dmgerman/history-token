@@ -4,9 +4,14 @@ macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/version.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;
 macro_line|#include &quot;linux/swap.h&quot;
+macro_line|#include &quot;linux/sysctl.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;sysdep/syscalls.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+r_extern
+id|syscall_handler_t
+id|sys_restart_syscall
+suffix:semicolon
 r_extern
 id|syscall_handler_t
 id|sys_ni_syscall
@@ -928,10 +933,10 @@ id|sys_call_table
 op_assign
 (brace
 (braket
-l_int|0
+id|__NR_restart_syscall
 )braket
 op_assign
-id|sys_ni_syscall
+id|sys_restart_syscall
 comma
 (braket
 id|__NR_exit
