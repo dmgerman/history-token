@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 id|STATIC
 r_void
@@ -44,15 +44,6 @@ id|STATIC
 id|uuid_t
 op_star
 id|xfs_uuidtab
-suffix:semicolon
-id|STATIC
-r_void
-id|xfs_uuid_unmount
-c_func
-(paren
-id|xfs_mount_t
-op_star
-)paren
 suffix:semicolon
 r_void
 id|xfs_xlatesb
@@ -694,15 +685,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mp-&gt;m_cxfstype
-op_assign
-id|XFS_CXFS_NOT
-suffix:semicolon
 r_return
 id|mp
 suffix:semicolon
 )brace
-multiline_comment|/* xfs_mount_init */
 multiline_comment|/*&n; * Free up the resources associated with a mount structure.  Assume that&n; * the structure was initially zeroed, so we can tell which fields got&n; * initialized.&n; */
 r_void
 DECL|function|xfs_mount_free
@@ -804,39 +790,6 @@ id|mp-&gt;m_sb.sb_agcount
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/*&n;&t; * XXXdpd - Doesn&squot;t work now for shutdown case.&n;&t; * Should at least free the memory.&n;&t; */
-id|ASSERT
-c_func
-(paren
-id|mp-&gt;m_ail.ail_back
-op_eq
-(paren
-id|xfs_log_item_t
-op_star
-)paren
-op_amp
-(paren
-id|mp-&gt;m_ail
-)paren
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|mp-&gt;m_ail.ail_forw
-op_eq
-(paren
-id|xfs_log_item_t
-op_star
-)paren
-op_amp
-(paren
-id|mp-&gt;m_ail
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|AIL_LOCK_DESTROY
 c_func
 (paren
@@ -903,14 +856,29 @@ c_cond
 id|remove_bhv
 )paren
 (brace
-id|VFS_REMOVEBHV
-c_func
-(paren
+r_struct
+id|vfs
+op_star
+id|vfsp
+op_assign
 id|XFS_MTOVFS
 c_func
 (paren
 id|mp
 )paren
+suffix:semicolon
+id|bhv_remove_all_vfsops
+c_func
+(paren
+id|vfsp
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|VFS_REMOVEBHV
+c_func
+(paren
+id|vfsp
 comma
 op_amp
 id|mp-&gt;m_bhv
@@ -2689,11 +2657,6 @@ op_amp
 id|mp-&gt;m_sb
 )paren
 suffix:semicolon
-r_int
-id|error
-op_assign
-l_int|0
-suffix:semicolon
 id|xfs_inode_t
 op_star
 id|rip
@@ -2706,8 +2669,7 @@ l_int|0
 suffix:semicolon
 r_int
 id|readio_log
-suffix:semicolon
-r_int
+comma
 id|writeio_log
 suffix:semicolon
 id|vmap_t
@@ -2716,11 +2678,6 @@ suffix:semicolon
 id|xfs_daddr_t
 id|d
 suffix:semicolon
-r_extern
-id|xfs_ioops_t
-id|xfs_iocore_xfs
-suffix:semicolon
-multiline_comment|/* from xfs_iocore.c */
 id|__uint64_t
 id|ret64
 suffix:semicolon
@@ -2751,6 +2708,11 @@ id|noio
 suffix:semicolon
 r_int
 id|uuid_mounted
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|error
 op_assign
 l_int|0
 suffix:semicolon
@@ -3755,11 +3717,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize the I/O function vector with XFS functions */
-id|mp-&gt;m_io_ops
-op_assign
-id|xfs_iocore_xfs
-suffix:semicolon
 multiline_comment|/*&n;&t; *  Copies the low order bits of the timestamp and the randomly&n;&t; *  set &quot;sequence&quot; number out of a UUID.&n;&t; */
 id|uuid_getnodeuniq
 c_func
@@ -4686,6 +4643,17 @@ op_star
 id|cr
 )paren
 (brace
+r_struct
+id|vfs
+op_star
+id|vfsp
+op_assign
+id|XFS_MTOVFS
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
 r_int
 id|ndquots
 suffix:semicolon
@@ -4859,15 +4827,7 @@ op_amp
 id|fsid
 comma
 op_amp
-(paren
-id|XFS_MTOVFS
-c_func
-(paren
-id|mp
-)paren
-op_member_access_from_pointer
-id|vfs_fsid
-)paren
+id|vfsp-&gt;vfs_fsid
 comma
 r_sizeof
 (paren
@@ -4875,9 +4835,6 @@ r_int64
 )paren
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
 id|xfs_errortag_clearall_umount
 c_func
 (paren
@@ -4889,6 +4846,12 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+id|XFS_IODONE
+c_func
+(paren
+id|vfsp
+)paren
+suffix:semicolon
 id|xfs_mount_free
 c_func
 (paren

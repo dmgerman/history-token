@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_MOUNT_H__
 DECL|macro|__XFS_MOUNT_H__
 mdefine_line|#define __XFS_MOUNT_H__
@@ -195,7 +195,6 @@ id|xfs_mount_args
 op_star
 comma
 r_int
-op_star
 )paren
 suffix:semicolon
 DECL|typedef|xfs_bmapi_t
@@ -529,7 +528,6 @@ DECL|macro|XFS_SIZE
 mdefine_line|#define XFS_SIZE(mp, io) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_size_func)((io)-&gt;io_obj)
 DECL|macro|XFS_IODONE
 mdefine_line|#define XFS_IODONE(vfsp) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_iodone)(vfsp)
-multiline_comment|/*&n; * Prototypes and functions for the XFS realtime subsystem.&n; */
 DECL|struct|xfs_mount
 r_typedef
 r_struct
@@ -1107,8 +1105,7 @@ mdefine_line|#define XFS_MOUNT_RETERR&t;0x00000040&t;/* return alignment errors 
 DECL|macro|XFS_MOUNT_NOALIGN
 mdefine_line|#define XFS_MOUNT_NOALIGN&t;0x00000080&t;/* turn off stripe alignment&n;&t;&t;&t;&t;&t;&t;   allocations */
 multiline_comment|/* 0x00000100&t;-- currently unused */
-DECL|macro|XFS_MOUNT_REGISTERED
-mdefine_line|#define XFS_MOUNT_REGISTERED&t;0x00000200&t;/* registered with cxfs master&n;&t;&t;&t;&t;&t;&t;   cell logic */
+multiline_comment|/*&t;0x00000200&t;-- currently unused */
 DECL|macro|XFS_MOUNT_NORECOVERY
 mdefine_line|#define XFS_MOUNT_NORECOVERY&t;0x00000400&t;/* no recovery - dirty fs */
 DECL|macro|XFS_MOUNT_SHARED
@@ -1124,15 +1121,6 @@ DECL|macro|XFS_MOUNT_32BITINODES
 mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00008000&t;/* do not create inodes above&n;&t;&t;&t;&t;&t;&t; * 32 bits in size */
 DECL|macro|XFS_MOUNT_NOLOGFLUSH
 mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00010000
-multiline_comment|/*&n; * Flags for m_cxfstype&n; */
-DECL|macro|XFS_CXFS_NOT
-mdefine_line|#define XFS_CXFS_NOT&t;&t;0x00000001&t;/* local mount */
-DECL|macro|XFS_CXFS_SERVER
-mdefine_line|#define XFS_CXFS_SERVER&t;&t;0x00000002&t;/* we&squot;re the CXFS server */
-DECL|macro|XFS_CXFS_CLIENT
-mdefine_line|#define XFS_CXFS_CLIENT&t;&t;0x00000004&t;/* We&squot;re a CXFS client */
-DECL|macro|XFS_CXFS_REC_ENABLED
-mdefine_line|#define XFS_CXFS_REC_ENABLED&t;0x00000008&t;/* recovery is enabled */
 DECL|macro|XFS_FORCED_SHUTDOWN
 mdefine_line|#define XFS_FORCED_SHUTDOWN(mp) ((mp)-&gt;m_flags &amp; XFS_MOUNT_FS_SHUTDOWN)
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
@@ -1154,7 +1142,7 @@ mdefine_line|#define XFS_WSYNC_READIO_LOG&t;15&t;/* 32K */
 DECL|macro|XFS_WSYNC_WRITEIO_LOG
 mdefine_line|#define XFS_WSYNC_WRITEIO_LOG&t;14&t;/* 16K */
 DECL|macro|xfs_force_shutdown
-mdefine_line|#define xfs_force_shutdown(m,f)&t;VFS_FORCE_SHUTDOWN(XFS_MTOVFS(m),f)
+mdefine_line|#define xfs_force_shutdown(m,f)&t;&bslash;&n;&t;VFS_FORCE_SHUTDOWN((XFS_MTOVFS(m)), f, __FILE__, __LINE__)
 multiline_comment|/*&n; * Flags sent to xfs_force_shutdown.&n; */
 DECL|macro|XFS_METADATA_IO_ERROR
 mdefine_line|#define XFS_METADATA_IO_ERROR&t;0x1
@@ -1163,17 +1151,15 @@ mdefine_line|#define XFS_LOG_IO_ERROR&t;0x2
 DECL|macro|XFS_FORCE_UMOUNT
 mdefine_line|#define XFS_FORCE_UMOUNT&t;0x4
 DECL|macro|XFS_CORRUPT_INCORE
-mdefine_line|#define XFS_CORRUPT_INCORE&t;0x8&t;/* corrupt in-memory data structures */
+mdefine_line|#define XFS_CORRUPT_INCORE&t;0x8&t;/* Corrupt in-memory data structures */
 DECL|macro|XFS_SHUTDOWN_REMOTE_REQ
-mdefine_line|#define XFS_SHUTDOWN_REMOTE_REQ 0x10&t;/* shutdown came from remote cell */
+mdefine_line|#define XFS_SHUTDOWN_REMOTE_REQ 0x10&t;/* Shutdown came from remote cell */
 multiline_comment|/*&n; * xflags for xfs_syncsub&n; */
 DECL|macro|XFS_XSYNC_RELOC
 mdefine_line|#define XFS_XSYNC_RELOC&t;&t;0x01
 multiline_comment|/*&n; * Flags for xfs_mountfs&n; */
 DECL|macro|XFS_MFSI_SECOND
-mdefine_line|#define XFS_MFSI_SECOND&t;&t;0x01&t;/* Is a cxfs secondary mount -- skip */
-multiline_comment|/* stuff which should only be done */
-multiline_comment|/* once. */
+mdefine_line|#define XFS_MFSI_SECOND&t;&t;0x01&t;/* Secondary mount -- skip stuff */
 DECL|macro|XFS_MFSI_CLIENT
 mdefine_line|#define XFS_MFSI_CLIENT&t;&t;0x02&t;/* Is a client -- skip lots of stuff */
 DECL|macro|XFS_MFSI_NOUNLINK
@@ -1214,6 +1200,23 @@ mdefine_line|#define XFS_BHVTOM(bdp) xfs_bhvtom(bdp)
 macro_line|#else
 DECL|macro|XFS_BHVTOM
 mdefine_line|#define XFS_BHVTOM(bdp)&t;&t;((xfs_mount_t *)BHV_PDATA(bdp))
+macro_line|#endif
+macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_VFSTOM)
+id|xfs_mount_t
+op_star
+id|xfs_vfstom
+c_func
+(paren
+id|vfs_t
+op_star
+id|vfs
+)paren
+suffix:semicolon
+DECL|macro|XFS_VFSTOM
+mdefine_line|#define XFS_VFSTOM(vfs) xfs_vfstom(vfs)
+macro_line|#else
+DECL|macro|XFS_VFSTOM
+mdefine_line|#define XFS_VFSTOM(vfs)&t;&t;&bslash;&n;&t;(XFS_BHVTOM(bhv_lookup(VFS_BHVHEAD(vfs), &amp;xfs_vfsops)))
 macro_line|#endif
 multiline_comment|/*&n; * Moved here from xfs_ag.h to avoid reordering header files&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DADDR_TO_AGNO)
@@ -1345,7 +1348,7 @@ DECL|member|msb_delta
 r_int
 id|msb_delta
 suffix:semicolon
-multiline_comment|/* change to make to the specified field */
+multiline_comment|/* Change to make to specified field */
 DECL|typedef|xfs_mod_sb_t
 )brace
 id|xfs_mod_sb_t
@@ -1358,6 +1361,16 @@ DECL|macro|XFS_SB_LOCK
 mdefine_line|#define XFS_SB_LOCK(mp)&t;&t;mutex_spinlock(&amp;(mp)-&gt;m_sb_lock)
 DECL|macro|XFS_SB_UNLOCK
 mdefine_line|#define XFS_SB_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_sb_lock,(s))
+r_extern
+id|xfs_mount_t
+op_star
+id|xfs_mount_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|xfs_mod_sb
 c_func
@@ -1368,14 +1381,7 @@ comma
 id|__int64_t
 )paren
 suffix:semicolon
-id|xfs_mount_t
-op_star
-id|xfs_mount_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+r_extern
 r_void
 id|xfs_mount_free
 c_func
@@ -1388,6 +1394,7 @@ r_int
 id|remove_bhv
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_mountfs
 c_func
@@ -1405,6 +1412,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_unmountfs
 c_func
@@ -1417,6 +1425,7 @@ id|cred
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_unmountfs_close
 c_func
@@ -1429,6 +1438,7 @@ id|cred
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_unmountfs_writesb
 c_func
@@ -1437,6 +1447,7 @@ id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_unmount_flush
 c_func
@@ -1447,6 +1458,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_mod_incore_sb
 c_func
@@ -1461,6 +1473,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_mod_incore_sb_batch
 c_func
@@ -1476,15 +1489,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_int
-id|xfs_readsb
-c_func
-(paren
-id|xfs_mount_t
-op_star
-id|mp
-)paren
-suffix:semicolon
+r_extern
 r_struct
 id|xfs_buf
 op_star
@@ -1497,6 +1502,17 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|xfs_readsb
+c_func
+(paren
+id|xfs_mount_t
+op_star
+id|mp
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|xfs_freesb
 c_func
@@ -1505,6 +1521,7 @@ id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_do_force_shutdown
 c_func
@@ -1520,6 +1537,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_syncsub
 c_func
@@ -1535,6 +1553,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_initialize_perag
 c_func
@@ -1545,6 +1564,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_xlatesb
 c_func
@@ -1568,6 +1588,7 @@ DECL|macro|XFS_FREEZE_WRITE
 mdefine_line|#define XFS_FREEZE_WRITE&t;1
 DECL|macro|XFS_FREEZE_TRANS
 mdefine_line|#define XFS_FREEZE_TRANS&t;2
+r_extern
 r_void
 id|xfs_start_freeze
 c_func
@@ -1578,6 +1599,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_finish_freeze
 c_func
@@ -1586,6 +1608,7 @@ id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_check_frozen
 c_func
@@ -1603,6 +1626,42 @@ r_extern
 r_struct
 id|vfsops
 id|xfs_vfsops
+suffix:semicolon
+r_extern
+r_struct
+id|vnodeops
+id|xfs_vnodeops
+suffix:semicolon
+r_extern
+r_struct
+id|xfs_ioops
+id|xfs_iocore_xfs
+suffix:semicolon
+r_extern
+r_struct
+id|vfsops
+id|xfs_qmops_xfs
+suffix:semicolon
+r_extern
+r_struct
+id|vfsops
+id|xfs_dmops_xfs
+suffix:semicolon
+r_extern
+r_int
+id|xfs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_cleanup
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_MOUNT_H__ */
