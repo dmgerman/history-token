@@ -2603,6 +2603,13 @@ comma
 l_int|NULL
 )paren
 op_logical_or
+op_logical_neg
+id|S_ISREG
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+op_logical_or
 id|get_write_access
 c_func
 (paren

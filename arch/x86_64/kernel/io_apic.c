@@ -4388,7 +4388,7 @@ r_union
 id|IO_APIC_reg_00
 id|reg_00
 suffix:semicolon
-id|cpumask_t
+id|physid_mask_t
 id|phys_id_present_map
 op_assign
 id|phys_cpu_present_map
@@ -4521,7 +4521,7 @@ multiline_comment|/*&n;&t;&t; * Sanity check, is the ID really free? Every APIC 
 r_if
 c_cond
 (paren
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|mp_ioapics
@@ -4569,7 +4569,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|i
@@ -4601,7 +4601,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|i
@@ -4635,7 +4635,7 @@ dot
 id|mpc_apicid
 )paren
 suffix:semicolon
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|mp_ioapics
@@ -6628,7 +6628,7 @@ id|IO_APIC_reg_00
 id|reg_00
 suffix:semicolon
 r_static
-id|cpumask_t
+id|physid_mask_t
 id|apic_id_map
 suffix:semicolon
 r_int
@@ -6645,7 +6645,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpus_empty
+id|physids_empty
 c_func
 (paren
 id|apic_id_map
@@ -6714,7 +6714,7 @@ multiline_comment|/*&n;&t; * Every APIC in a system must have a unique ID or we 
 r_if
 c_cond
 (paren
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|apic_id
@@ -6742,7 +6742,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|i
@@ -6785,7 +6785,7 @@ op_assign
 id|i
 suffix:semicolon
 )brace
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|apic_id

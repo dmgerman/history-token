@@ -8931,7 +8931,7 @@ c_func
 (paren
 id|tty
 comma
-id|inode-&gt;i_rdev
+id|inode
 comma
 l_string|&quot;tty_ioctl&quot;
 )paren

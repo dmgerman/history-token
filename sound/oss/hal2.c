@@ -4082,10 +4082,10 @@ op_assign
 id|hal2_mixer_find_card
 c_func
 (paren
-id|MINOR
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon
@@ -6005,10 +6005,10 @@ op_assign
 id|hal2_dsp_find_card
 c_func
 (paren
-id|MINOR
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon

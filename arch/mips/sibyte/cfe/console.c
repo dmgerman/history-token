@@ -9,11 +9,6 @@ r_extern
 r_int
 id|cfe_cons_handle
 suffix:semicolon
-DECL|variable|cfe_consdev
-r_static
-id|kdev_t
-id|cfe_consdev
-suffix:semicolon
 DECL|function|cfe_console_write
 r_static
 r_void
@@ -282,7 +277,6 @@ c_func
 l_string|&quot;u0cn&quot;
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, SB1250_DUART_MINOR_BASE + 0);
 )brace
 r_else
 r_if
@@ -304,7 +298,6 @@ c_func
 l_string|&quot;u1cn&quot;
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, SB1250_DUART_MINOR_BASE + 1);
 macro_line|#endif
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 )brace
@@ -328,7 +321,6 @@ c_func
 l_string|&quot;pccn&quot;
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, 0);
 macro_line|#endif
 )brace
 r_else

@@ -1073,10 +1073,10 @@ id|file
 r_switch
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 (brace
@@ -1166,10 +1166,10 @@ id|file
 r_if
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_eq
 id|WATCHDOG_MINOR

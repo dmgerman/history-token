@@ -212,27 +212,6 @@ suffix:semicolon
 multiline_comment|/* successful OPEN_CONFIRM? */
 )brace
 suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|dev
-id|u32
-id|dev
-suffix:semicolon
-multiline_comment|/* super_block-&gt;s_dev */
-DECL|member|ino
-r_int
-r_int
-id|ino
-suffix:semicolon
-DECL|member|generation
-id|u32
-id|generation
-suffix:semicolon
-DECL|typedef|nfs4_ino_desc_t
-)brace
-id|nfs4_ino_desc_t
-suffix:semicolon
 multiline_comment|/*&n;*  nfs4_file: a file opened by some number of (open) nfs4_stateowners.&n;*    o fi_perfile list is used to search for conflicting &n;*      share_acces, share_deny on the file.&n;*/
 DECL|struct|nfs4_file
 r_struct
@@ -243,16 +222,18 @@ r_struct
 id|list_head
 id|fi_hash
 suffix:semicolon
-multiline_comment|/* hash by nfs4_ino_desc_t fields */
+multiline_comment|/* hash by &quot;struct inode *&quot; */
 DECL|member|fi_perfile
 r_struct
 id|list_head
 id|fi_perfile
 suffix:semicolon
 multiline_comment|/* list: nfs4_stateid */
-DECL|member|fi_ino
-id|nfs4_ino_desc_t
-id|fi_ino
+DECL|member|fi_inode
+r_struct
+id|inode
+op_star
+id|fi_inode
 suffix:semicolon
 DECL|member|fi_id
 id|u32

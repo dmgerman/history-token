@@ -13463,10 +13463,10 @@ suffix:semicolon
 macro_line|#endif
 id|brdnr
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|ip-&gt;i_rdev
+id|ip
 )paren
 suffix:semicolon
 r_if

@@ -37,7 +37,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/* default maximum number of failures */
 DECL|macro|IDE_DEFAULT_MAX_FAILURES
 mdefine_line|#define IDE_DEFAULT_MAX_FAILURES &t;1
@@ -103,12 +102,14 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|variable|ide_scan_direction
 r_static
 r_int
 id|ide_scan_direction
 suffix:semicolon
 multiline_comment|/* THIS was formerly 2.2.x pci=reverse */
+macro_line|#endif
 macro_line|#ifdef CONFIG_IDEDMA_AUTO
 DECL|variable|noautodma
 r_int
@@ -131,16 +132,15 @@ c_func
 id|noautodma
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_modules keeps track of the available IDE chipset/probe/driver modules.&n; */
-DECL|variable|ide_chipsets
-id|ide_module_t
-op_star
-id|ide_chipsets
-suffix:semicolon
 DECL|variable|ide_probe
-id|ide_module_t
+r_int
+(paren
 op_star
 id|ide_probe
+)paren
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * This is declared extern in ide.h, for access by other IDE modules:&n; */
 DECL|variable|ide_hwifs
@@ -1431,8 +1431,6 @@ r_else
 r_void
 )paren
 id|ide_probe
-op_member_access_from_pointer
-id|init
 c_func
 (paren
 )paren
@@ -3734,67 +3732,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ide_register_hw
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Compatibility function with existing drivers.  If you want&n; * something different, use the function above.&n; */
-DECL|function|ide_register
-r_int
-id|ide_register
-(paren
-r_int
-id|arg1
-comma
-r_int
-id|arg2
-comma
-r_int
-id|irq
-)paren
-(brace
-id|hw_regs_t
-id|hw
-suffix:semicolon
-id|ide_init_hwif_ports
-c_func
-(paren
-op_amp
-id|hw
-comma
-(paren
-r_int
-r_int
-)paren
-id|arg1
-comma
-(paren
-r_int
-r_int
-)paren
-id|arg2
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|hw.irq
-op_assign
-id|irq
-suffix:semicolon
-r_return
-id|ide_register_hw
-c_func
-(paren
-op_amp
-id|hw
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-DECL|variable|ide_register
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_register
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Locks for IDE setting functionality&n; */
@@ -6732,6 +6669,9 @@ r_case
 id|HDIO_SCAN_HWIF
 suffix:colon
 (brace
+id|hw_regs_t
+id|hw
+suffix:semicolon
 r_int
 id|args
 (braket
@@ -6778,26 +6718,50 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ide_register
+id|ide_init_hwif_ports
 c_func
 (paren
+op_amp
+id|hw
+comma
+(paren
+r_int
+r_int
+)paren
 id|args
 (braket
 l_int|0
 )braket
 comma
+(paren
+r_int
+r_int
+)paren
 id|args
 (braket
 l_int|1
 )braket
 comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|hw.irq
+op_assign
 id|args
 (braket
 l_int|2
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_register_hw
+c_func
+(paren
+op_amp
+id|hw
+comma
+l_int|NULL
 )paren
 op_eq
 op_minus

@@ -726,7 +726,7 @@ id|bdev
 )paren
 (brace
 r_return
-id|bdev-&gt;bd_offset
+id|bdev-&gt;bd_part-&gt;start_sect
 suffix:semicolon
 )brace
 DECL|function|get_capacity
