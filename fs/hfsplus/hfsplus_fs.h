@@ -403,6 +403,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|HFSPLUS_SB_WRITEBACKUP
 mdefine_line|#define HFSPLUS_SB_WRITEBACKUP&t;0x0001
+DECL|macro|HFSPLUS_SB_NODECOMPOSE
+mdefine_line|#define HFSPLUS_SB_NODECOMPOSE&t;0x0002
 DECL|struct|hfsplus_inode_info
 r_struct
 id|hfsplus_inode_info
@@ -1444,7 +1446,19 @@ suffix:semicolon
 multiline_comment|/* tables.c */
 r_extern
 id|u16
-id|case_fold_table
+id|hfsplus_case_fold_table
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|u16
+id|hfsplus_decompose_table
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|u16
+id|hfsplus_compose_table
 (braket
 )braket
 suffix:semicolon
