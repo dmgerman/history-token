@@ -79,5 +79,46 @@ DECL|macro|SCM_TIMESTAMP
 mdefine_line|#define SCM_TIMESTAMP&t;&t;SO_TIMESTAMP
 DECL|macro|SO_PEERSEC
 mdefine_line|#define SO_PEERSEC&t;&t;30
+multiline_comment|/** sock_type - Socket types&n; *&n; * Please notice that for binary compat reasons MIPS has to&n; * override the enum sock_type in include/linux/net.h, so&n; * we define ARCH_HAS_SOCKET_TYPES here.&n; *&n; * @SOCK_DGRAM - datagram (conn.less) socket&n; * @SOCK_STREAM - stream (connection) socket&n; * @SOCK_RAW - raw socket&n; * @SOCK_RDM - reliably-delivered message&n; * @SOCK_SEQPACKET - sequential packet socket &n; * @SOCK_PACKET - linux specific way of getting packets at the dev level.&n; *&t;&t;  For writing rarp and other similar things on the user level.&n; */
+DECL|enum|sock_type
+r_enum
+id|sock_type
+(brace
+DECL|enumerator|SOCK_DGRAM
+id|SOCK_DGRAM
+op_assign
+l_int|1
+comma
+DECL|enumerator|SOCK_STREAM
+id|SOCK_STREAM
+op_assign
+l_int|2
+comma
+DECL|enumerator|SOCK_RAW
+id|SOCK_RAW
+op_assign
+l_int|3
+comma
+DECL|enumerator|SOCK_RDM
+id|SOCK_RDM
+op_assign
+l_int|4
+comma
+DECL|enumerator|SOCK_SEQPACKET
+id|SOCK_SEQPACKET
+op_assign
+l_int|5
+comma
+DECL|enumerator|SOCK_PACKET
+id|SOCK_PACKET
+op_assign
+l_int|10
+comma
+)brace
+suffix:semicolon
+DECL|macro|SOCK_MAX
+mdefine_line|#define SOCK_MAX (SOCK_PACKET + 1)
+DECL|macro|ARCH_HAS_SOCKET_TYPES
+mdefine_line|#define ARCH_HAS_SOCKET_TYPES
 macro_line|#endif /* _ASM_SOCKET_H */
 eof
