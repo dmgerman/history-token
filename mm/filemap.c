@@ -4169,15 +4169,6 @@ id|blocksize_mask
 r_goto
 id|out_free
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mapping-&gt;a_ops-&gt;direct_IO
-)paren
-r_goto
-id|out_free
-suffix:semicolon
 multiline_comment|/*&n;&t; * Flush to disk exclusively the _data_, metadata must remain&n;&t; * completly asynchronous or performance will go to /dev/null.&n;&t; */
 id|retval
 op_assign
