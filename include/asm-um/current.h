@@ -9,7 +9,7 @@ suffix:semicolon
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 DECL|macro|CURRENT_THREAD
-mdefine_line|#define CURRENT_THREAD(dummy) (((unsigned long) &amp;dummy) &amp; (PAGE_MASK &lt;&lt; 2))
+mdefine_line|#define CURRENT_THREAD(dummy) (((unsigned long) &amp;dummy) &amp; &bslash;&n;&t;&t;&t;        (PAGE_MASK &lt;&lt; CONFIG_KERNEL_STACK_ORDER))
 DECL|macro|current
 mdefine_line|#define current ({ int dummy; &bslash;&n;                   ((struct thread_info *) CURRENT_THREAD(dummy))-&gt;task; })
 macro_line|#endif /* __ASSEMBLY__ */

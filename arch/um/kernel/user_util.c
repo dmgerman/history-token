@@ -25,6 +25,7 @@ macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;helper.h&quot;
+macro_line|#include &quot;uml-config.h&quot;
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE _POSIX_ARG_MAX
 multiline_comment|/* Changed in linux_main and setup_arch, which run before SMP is started */
@@ -393,7 +394,10 @@ r_int
 id|prot
 op_assign
 l_int|0
+comma
+id|pages
 suffix:semicolon
+macro_line|#ifdef notdef
 r_if
 c_cond
 (paren
@@ -426,6 +430,17 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+id|pages
+op_assign
+(paren
+l_int|1
+op_lshift
+id|UML_CONFIG_KERNEL_STACK_ORDER
+)paren
+op_minus
+l_int|2
+suffix:semicolon
 id|prot
 op_assign
 id|PROT_READ
@@ -446,7 +461,7 @@ op_star
 )paren
 id|stack
 comma
-l_int|2
+id|pages
 op_star
 id|page_size
 c_func

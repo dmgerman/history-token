@@ -34,8 +34,8 @@ macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#ifdef UML_CONFIG_MODE_SKAS
-macro_line|#include &quot;skas_ptrace.h&quot;
 macro_line|#include &quot;skas.h&quot;
+macro_line|#include &quot;skas_ptrace.h&quot;
 macro_line|#endif
 DECL|function|init_new_thread_stack
 r_void
@@ -60,6 +60,8 @@ r_int
 id|flags
 op_assign
 l_int|0
+comma
+id|pages
 suffix:semicolon
 r_if
 c_cond
@@ -69,12 +71,22 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|pages
+op_assign
+(paren
+l_int|1
+op_lshift
+id|UML_CONFIG_KERNEL_STACK_ORDER
+)paren
+op_minus
+l_int|2
+suffix:semicolon
 id|set_sigstack
 c_func
 (paren
 id|sig_stack
 comma
-l_int|2
+id|pages
 op_star
 id|page_size
 c_func
