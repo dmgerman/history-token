@@ -507,23 +507,4 @@ r_return
 id|fpvalid
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
-DECL|function|dump_smp_unlazy_fpu
-r_void
-id|dump_smp_unlazy_fpu
-c_func
-(paren
-r_void
-)paren
-(brace
-id|unlazy_fpu
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 eof

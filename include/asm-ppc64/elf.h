@@ -314,18 +314,6 @@ op_star
 suffix:semicolon
 DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|dump_smp_unlazy_fpu
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|ELF_CORE_SYNC
-mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This could be done in userspace,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
 DECL|macro|ELF_HWCAP
