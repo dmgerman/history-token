@@ -9485,6 +9485,16 @@ c_func
 id|vp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_NEW
+)paren
+)paren
 id|mark_inode_dirty_sync
 c_func
 (paren
