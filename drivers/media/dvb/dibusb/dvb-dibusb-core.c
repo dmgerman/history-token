@@ -778,7 +778,7 @@ comma
 dot
 id|urb_count
 op_assign
-l_int|3
+l_int|5
 comma
 dot
 id|urb_buffer_size
@@ -816,7 +816,7 @@ l_int|0x01
 comma
 l_int|0x02
 comma
-l_int|3
+l_int|5
 comma
 l_int|4096
 comma
@@ -902,7 +902,6 @@ id|dibusb_demod
 id|DIBUSB_MT352
 )braket
 comma
-singleline_comment|//&t;  &amp;dibusb_tuner[DIBUSB_TUNER_COFDM_PANASONIC_ENV77H11D5],
 op_amp
 id|dibusb_tuner
 (braket
