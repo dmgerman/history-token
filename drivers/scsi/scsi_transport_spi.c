@@ -3418,7 +3418,7 @@ OG
 id|SPI_HOST_ATTRS
 )paren
 suffix:semicolon
-id|i-&gt;attrs
+id|i-&gt;host_attrs
 (braket
 id|count
 )braket
