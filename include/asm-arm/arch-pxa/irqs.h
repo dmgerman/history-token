@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|PXA_IRQ_SKIP
 mdefine_line|#define PXA_IRQ_SKIP&t;7&t;/* The first 7 IRQs are not yet used */
 DECL|macro|PXA_IRQ
-mdefine_line|#define PXA_IRQ(x)&t;&t;((x) - PXA_IRQ_SKIP)
+mdefine_line|#define PXA_IRQ(x)&t;((x) - PXA_IRQ_SKIP)
 DECL|macro|IRQ_HWUART
 mdefine_line|#define IRQ_HWUART&t;PXA_IRQ(7)&t;/* HWUART Transmit/Receive/Error */
 DECL|macro|IRQ_GPIO0
@@ -61,7 +61,7 @@ mdefine_line|#define IRQ_GPIO(x)&t;(((x) &lt; 2) ? (IRQ_GPIO0 + (x)) : GPIO_2_80
 DECL|macro|IRQ_TO_GPIO_2_80
 mdefine_line|#define IRQ_TO_GPIO_2_80(i)&t;&bslash;&n;&t;&t;&t;((i) - PXA_IRQ(32) + 2)
 DECL|macro|IRQ_TO_GPIO
-mdefine_line|#define IRQ_TO_GPIO(i)&t;((i) - (((i) &gt; IRQ_GPIO1) ? IRQ_GPIO(2) : IRQ_GPIO(0)))
+mdefine_line|#define IRQ_TO_GPIO(i)&t;((i) - (((i) &gt; IRQ_GPIO1) ? IRQ_GPIO(2) - 2 : IRQ_GPIO(0)))
 multiline_comment|/*&n; * The next 16 interrupts are for board specific purposes.  Since&n; * the kernel can only run on one machine at a time, we can re-use&n; * these.  If you need more, increase IRQ_BOARD_END, but keep it&n; * within sensible limits.&n; */
 DECL|macro|IRQ_BOARD_START
 mdefine_line|#define IRQ_BOARD_START&t;&t;(IRQ_GPIO(80) + 1)
@@ -188,11 +188,15 @@ mdefine_line|#define LUBBOCK_SD_IRQ&t;&t;LUBBOCK_IRQ(0)
 DECL|macro|LUBBOCK_SA1111_IRQ
 mdefine_line|#define LUBBOCK_SA1111_IRQ&t;LUBBOCK_IRQ(1)
 DECL|macro|LUBBOCK_USB_IRQ
-mdefine_line|#define LUBBOCK_USB_IRQ&t;&t;LUBBOCK_IRQ(2)
+mdefine_line|#define LUBBOCK_USB_IRQ&t;&t;LUBBOCK_IRQ(2)  /* usb connect */
 DECL|macro|LUBBOCK_ETH_IRQ
 mdefine_line|#define LUBBOCK_ETH_IRQ&t;&t;LUBBOCK_IRQ(3)
 DECL|macro|LUBBOCK_UCB1400_IRQ
 mdefine_line|#define LUBBOCK_UCB1400_IRQ&t;LUBBOCK_IRQ(4)
 DECL|macro|LUBBOCK_BB_IRQ
 mdefine_line|#define LUBBOCK_BB_IRQ&t;&t;LUBBOCK_IRQ(5)
+DECL|macro|LUBBOCK_USB_DISC_IRQ
+mdefine_line|#define LUBBOCK_USB_DISC_IRQ&t;LUBBOCK_IRQ(6)  /* usb disconnect */
+DECL|macro|LUBBOCK_LAST_IRQ
+mdefine_line|#define LUBBOCK_LAST_IRQ&t;LUBBOCK_IRQ(6)
 eof
