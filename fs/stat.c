@@ -1830,6 +1830,7 @@ id|loff_t
 id|bytes
 )paren
 (brace
+multiline_comment|/* Caller is here responsible for sufficient locking&n;&t; * (ie. inode-&gt;i_lock) */
 id|inode-&gt;i_blocks
 op_assign
 id|bytes

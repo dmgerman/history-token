@@ -8454,6 +8454,10 @@ op_plus
 id|EXT3_INDEX_EXTRA_TRANS_BLOCKS
 op_plus
 l_int|3
+op_plus
+l_int|2
+op_star
+id|EXT3_QUOTA_INIT_BLOCKS
 )paren
 suffix:semicolon
 r_if
@@ -8614,6 +8618,10 @@ op_plus
 id|EXT3_INDEX_EXTRA_TRANS_BLOCKS
 op_plus
 l_int|3
+op_plus
+l_int|2
+op_star
+id|EXT3_QUOTA_INIT_BLOCKS
 )paren
 suffix:semicolon
 r_if
@@ -8780,6 +8788,10 @@ op_plus
 id|EXT3_INDEX_EXTRA_TRANS_BLOCKS
 op_plus
 l_int|3
+op_plus
+l_int|2
+op_star
+id|EXT3_QUOTA_INIT_BLOCKS
 )paren
 suffix:semicolon
 r_if
@@ -10233,6 +10245,13 @@ id|handle_t
 op_star
 id|handle
 suffix:semicolon
+multiline_comment|/* Initialize quotas before so that eventual writes go in&n;&t; * separate transaction */
+id|DQUOT_INIT
+c_func
+(paren
+id|dentry-&gt;d_inode
+)paren
+suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -10299,12 +10318,6 @@ suffix:semicolon
 id|inode
 op_assign
 id|dentry-&gt;d_inode
-suffix:semicolon
-id|DQUOT_INIT
-c_func
-(paren
-id|inode
-)paren
 suffix:semicolon
 id|retval
 op_assign
@@ -10491,6 +10504,13 @@ id|handle_t
 op_star
 id|handle
 suffix:semicolon
+multiline_comment|/* Initialize quotas before so that eventual writes go&n;&t; * in separate transaction */
+id|DQUOT_INIT
+c_func
+(paren
+id|dentry-&gt;d_inode
+)paren
+suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -10557,12 +10577,6 @@ suffix:semicolon
 id|inode
 op_assign
 id|dentry-&gt;d_inode
-suffix:semicolon
-id|DQUOT_INIT
-c_func
-(paren
-id|inode
-)paren
 suffix:semicolon
 id|retval
 op_assign
@@ -10768,6 +10782,10 @@ op_plus
 id|EXT3_INDEX_EXTRA_TRANS_BLOCKS
 op_plus
 l_int|5
+op_plus
+l_int|2
+op_star
+id|EXT3_QUOTA_INIT_BLOCKS
 )paren
 suffix:semicolon
 r_if
@@ -11173,6 +11191,18 @@ id|dir_bh
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Initialize quotas before so that eventual writes go&n;&t; * in separate transaction */
+r_if
+c_cond
+(paren
+id|new_dentry-&gt;d_inode
+)paren
+id|DQUOT_INIT
+c_func
+(paren
+id|new_dentry-&gt;d_inode
+)paren
+suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -11296,15 +11326,6 @@ suffix:semicolon
 id|new_bh
 op_assign
 l_int|NULL
-suffix:semicolon
-)brace
-r_else
-(brace
-id|DQUOT_INIT
-c_func
-(paren
-id|new_inode
-)paren
 suffix:semicolon
 )brace
 )brace

@@ -4943,7 +4943,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * acpiphp_check_bridge - re-enumerate devices&n; */
+multiline_comment|/**&n; * acpiphp_check_bridge - re-enumerate devices&n; *&n; * Iterate over all slots under this bridge and make sure that if a&n; * card is present they are enabled, and if not they are disabled.&n; */
 DECL|function|acpiphp_check_bridge
 r_int
 id|acpiphp_check_bridge
@@ -4959,10 +4959,6 @@ r_struct
 id|acpiphp_slot
 op_star
 id|slot
-suffix:semicolon
-r_int
-r_int
-id|sta
 suffix:semicolon
 r_int
 id|retval
@@ -4994,7 +4990,9 @@ op_assign
 id|slot-&gt;next
 )paren
 (brace
-id|sta
+r_int
+r_int
+id|status
 op_assign
 id|get_slot_status
 c_func
@@ -5010,15 +5008,15 @@ op_amp
 id|SLOT_ENABLED
 )paren
 (brace
-multiline_comment|/* if enabled but not present, disable */
 r_if
 c_cond
 (paren
-id|sta
-op_ne
+id|status
+op_eq
 id|ACPI_STA_ALL
 )paren
-(brace
+r_continue
+suffix:semicolon
 id|retval
 op_assign
 id|acpiphp_disable_slot
@@ -5036,14 +5034,7 @@ id|retval
 id|err
 c_func
 (paren
-l_string|&quot;Error occurred in enabling&bslash;n&quot;
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|slot-&gt;crit_sect
+l_string|&quot;Error occurred in disabling&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5054,18 +5045,17 @@ id|disabled
 op_increment
 suffix:semicolon
 )brace
-)brace
 r_else
 (brace
-multiline_comment|/* if disabled but present, enable */
 r_if
 c_cond
 (paren
-id|sta
-op_eq
+id|status
+op_ne
 id|ACPI_STA_ALL
 )paren
-(brace
+r_continue
+suffix:semicolon
 id|retval
 op_assign
 id|acpiphp_enable_slot
@@ -5086,13 +5076,6 @@ c_func
 l_string|&quot;Error occurred in enabling&bslash;n&quot;
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|slot-&gt;crit_sect
-)paren
-suffix:semicolon
 r_goto
 id|err_exit
 suffix:semicolon
@@ -5100,7 +5083,6 @@ suffix:semicolon
 id|enabled
 op_increment
 suffix:semicolon
-)brace
 )brace
 )brace
 id|dbg

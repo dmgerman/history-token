@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/pci/pci-sysfs.c&n; *&n; * (C) Copyright 2002 Greg Kroah-Hartman&n; * (C) Copyright 2002 IBM Corp.&n; * (C) Copyright 2003 Matthew Wilcox&n; * (C) Copyright 2003 Hewlett-Packard&n; *&n; * File attributes for PCI devices&n; *&n; * Modeled after usb&squot;s driverfs.c &n; *&n; */
+multiline_comment|/*&n; * drivers/pci/pci-sysfs.c&n; *&n; * (C) Copyright 2002-2004 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; * (C) Copyright 2002-2004 IBM Corp.&n; * (C) Copyright 2003 Matthew Wilcox&n; * (C) Copyright 2003 Hewlett-Packard&n; *&n; * File attributes for PCI devices&n; *&n; * Modeled after usb&squot;s driverfs.c &n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -243,7 +243,7 @@ id|CAP_SYS_ADMIN
 (brace
 id|size
 op_assign
-l_int|256
+id|dev-&gt;cfg_size
 suffix:semicolon
 )brace
 r_else
@@ -537,7 +537,7 @@ c_cond
 (paren
 id|off
 OG
-l_int|256
+id|dev-&gt;cfg_size
 )paren
 r_return
 l_int|0
@@ -549,12 +549,12 @@ id|off
 op_plus
 id|count
 OG
-l_int|256
+id|dev-&gt;cfg_size
 )paren
 (brace
 id|size
 op_assign
-l_int|256
+id|dev-&gt;cfg_size
 op_minus
 id|off
 suffix:semicolon
@@ -770,6 +770,53 @@ id|pci_write_config
 comma
 )brace
 suffix:semicolon
+DECL|variable|pcie_config_attr
+r_static
+r_struct
+id|bin_attribute
+id|pcie_config_attr
+op_assign
+(brace
+dot
+id|attr
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;config&quot;
+comma
+dot
+id|mode
+op_assign
+id|S_IRUGO
+op_or
+id|S_IWUSR
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+)brace
+comma
+dot
+id|size
+op_assign
+l_int|4096
+comma
+dot
+id|read
+op_assign
+id|pci_read_config
+comma
+dot
+id|write
+op_assign
+id|pci_write_config
+comma
+)brace
+suffix:semicolon
 DECL|function|pci_create_sysfs_dev_files
 r_void
 id|pci_create_sysfs_dev_files
@@ -845,6 +892,13 @@ op_amp
 id|dev_attr_resource
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;cfg_size
+OL
+l_int|4096
+)paren
 id|sysfs_create_bin_file
 c_func
 (paren
@@ -853,6 +907,17 @@ id|dev-&gt;kobj
 comma
 op_amp
 id|pci_config_attr
+)paren
+suffix:semicolon
+r_else
+id|sysfs_create_bin_file
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+comma
+op_amp
+id|pcie_config_attr
 )paren
 suffix:semicolon
 multiline_comment|/* add platform-specific attributes */

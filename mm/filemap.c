@@ -1694,7 +1694,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Like find_get_pages, except we only return pages which are tagged with&n; * `tag&squot;.   We update *start to index the next page for the traversal.&n; */
+multiline_comment|/*&n; * Like find_get_pages, except we only return pages which are tagged with&n; * `tag&squot;.   We update *index to index the next page for the traversal.&n; */
 DECL|function|find_get_pages_tag
 r_int
 id|find_get_pages_tag

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
-multiline_comment|/*&n; * Radix tree node definition.&n; *&n; * RADIX_TREE_MAP_SHIFT must be &gt;= log2(BITS_PER_LONG).  Otherwise the tags&n; * array will have zero size and the set_tag() arithmetic will go wrong.&n; */
 macro_line|#ifdef __KERNEL__
 DECL|macro|RADIX_TREE_MAP_SHIFT
 mdefine_line|#define RADIX_TREE_MAP_SHIFT&t;6

@@ -2942,6 +2942,28 @@ suffix:semicolon
 multiline_comment|/* port 1 */
 )brace
 macro_line|#endif /* CONFIG_SCSI_SATA */
+DECL|variable|pciehp_msi_quirk
+r_int
+id|pciehp_msi_quirk
+suffix:semicolon
+DECL|function|quirk_pciehp_msi
+r_static
+r_void
+id|__devinit
+id|quirk_pciehp_msi
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+id|pciehp_msi_quirk
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *  The main table of quirks.&n; *&n; *  Note: any hooks for hotpluggable devices in this table must _NOT_&n; *        be declared __init.&n; */
 DECL|variable|__devinitdata
 r_static
@@ -3742,6 +3764,16 @@ id|quirk_intel_ide_combined
 comma
 macro_line|#endif /* CONFIG_SCSI_SATA */
 (brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_SMCH
+comma
+id|quirk_pciehp_msi
+)brace
+comma
+(brace
 l_int|0
 )brace
 )brace
@@ -3872,4 +3904,11 @@ id|pci_fixups
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pciehp_msi_quirk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pciehp_msi_quirk
+)paren
+suffix:semicolon
 eof

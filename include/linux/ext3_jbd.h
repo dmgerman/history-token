@@ -15,7 +15,7 @@ DECL|macro|EXT3_XATTR_TRANS_BLOCKS
 mdefine_line|#define EXT3_XATTR_TRANS_BLOCKS&t;&t;6U
 multiline_comment|/* Define the minimum size for a transaction which modifies data.  This&n; * needs to take into account the fact that we may end up modifying two&n; * quota files too (one for the group, one for the user quota).  The&n; * superblock only gets updated once, of course, so don&squot;t bother&n; * counting that again for the quota updates. */
 DECL|macro|EXT3_DATA_TRANS_BLOCKS
-mdefine_line|#define EXT3_DATA_TRANS_BLOCKS&t;&t;(3 * EXT3_SINGLEDATA_TRANS_BLOCKS + &bslash;&n;&t;&t;&t;&t;&t; EXT3_XATTR_TRANS_BLOCKS - 2)
+mdefine_line|#define EXT3_DATA_TRANS_BLOCKS&t;&t;(EXT3_SINGLEDATA_TRANS_BLOCKS + &bslash;&n;&t;&t;&t;&t;&t; EXT3_XATTR_TRANS_BLOCKS - 2 + &bslash;&n;&t;&t;&t;&t;&t; 2*EXT3_QUOTA_TRANS_BLOCKS)
 r_extern
 r_int
 id|ext3_writepage_trans_blocks
@@ -38,6 +38,19 @@ DECL|macro|EXT3_RESERVE_TRANS_BLOCKS
 mdefine_line|#define EXT3_RESERVE_TRANS_BLOCKS&t;12U
 DECL|macro|EXT3_INDEX_EXTRA_TRANS_BLOCKS
 mdefine_line|#define EXT3_INDEX_EXTRA_TRANS_BLOCKS&t;8
+macro_line|#ifdef CONFIG_QUOTA
+multiline_comment|/* Amount of blocks needed for quota update - we know that the structure was&n; * allocated so we need to update only inode+data */
+DECL|macro|EXT3_QUOTA_TRANS_BLOCKS
+mdefine_line|#define EXT3_QUOTA_TRANS_BLOCKS 2
+multiline_comment|/* Amount of blocks needed for quota insert/delete - we do some block writes&n; * but inode, sb and group updates are done only once */
+DECL|macro|EXT3_QUOTA_INIT_BLOCKS
+mdefine_line|#define EXT3_QUOTA_INIT_BLOCKS (DQUOT_MAX_WRITES*&bslash;&n;&t;&t;&t;&t;(EXT3_SINGLEDATA_TRANS_BLOCKS-3)+3)
+macro_line|#else
+DECL|macro|EXT3_QUOTA_TRANS_BLOCKS
+mdefine_line|#define EXT3_QUOTA_TRANS_BLOCKS 0
+DECL|macro|EXT3_QUOTA_INIT_BLOCKS
+mdefine_line|#define EXT3_QUOTA_INIT_BLOCKS 0
+macro_line|#endif
 r_int
 id|ext3_mark_iloc_dirty
 c_func

@@ -66,12 +66,12 @@ r_int
 r_int
 id|offset
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 )brace
 id|cards
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace

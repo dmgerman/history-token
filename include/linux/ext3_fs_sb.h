@@ -219,6 +219,22 @@ id|ro_wait_queue
 suffix:semicolon
 multiline_comment|/* For people waiting for the fs to go read-only */
 macro_line|#endif
+macro_line|#ifdef CONFIG_QUOTA
+DECL|member|s_qf_names
+r_char
+op_star
+id|s_qf_names
+(braket
+id|MAXQUOTAS
+)braket
+suffix:semicolon
+multiline_comment|/* Names of quota files with journalled quota */
+DECL|member|s_jquota_fmt
+r_int
+id|s_jquota_fmt
+suffix:semicolon
+multiline_comment|/* Format of quota to use */
+macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* _LINUX_EXT3_FS_SB */

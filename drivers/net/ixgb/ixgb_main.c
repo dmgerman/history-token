@@ -1309,7 +1309,7 @@ c_func
 (paren
 id|pdev
 comma
-id|PCI_DMA_64BIT
+id|DMA_64BIT_MASK
 )paren
 )paren
 )paren
@@ -1332,7 +1332,7 @@ c_func
 (paren
 id|pdev
 comma
-id|PCI_DMA_32BIT
+id|DMA_32BIT_MASK
 )paren
 )paren
 )paren

@@ -279,9 +279,14 @@ id|dquot-&gt;dq_dqb.dqb_isoftlimit
 op_eq
 l_int|0
 )paren
+id|set_bit
+c_func
+(paren
+id|DQ_FAKE_B
+comma
+op_amp
 id|dquot-&gt;dq_flags
-op_or_assign
-id|DQ_FAKE
+)paren
 suffix:semicolon
 id|dqstats.reads
 op_increment
@@ -359,7 +364,6 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Note: clear the DQ_MOD flag unconditionally,&n;&t; * so we don&squot;t loop forever on failure.&n;&t; */
 id|v1_mem2disk_dqblk
 c_func
 (paren
@@ -369,11 +373,6 @@ comma
 op_amp
 id|dquot-&gt;dq_dqb
 )paren
-suffix:semicolon
-id|dquot-&gt;dq_flags
-op_and_assign
-op_complement
-id|DQ_MOD
 suffix:semicolon
 r_if
 c_cond

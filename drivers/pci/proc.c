@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-DECL|macro|PCI_CFG_SPACE_SIZE
-mdefine_line|#define PCI_CFG_SPACE_SIZE 256
 DECL|variable|proc_initialized
 r_static
 r_int
@@ -39,11 +37,18 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
 id|down
 c_func
 (paren
 op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
+id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_switch
@@ -77,7 +82,7 @@ l_int|2
 suffix:colon
 r_new
 op_assign
-id|PCI_CFG_SPACE_SIZE
+id|inode-&gt;i_size
 op_plus
 id|off
 suffix:semicolon
@@ -89,7 +94,7 @@ c_cond
 (paren
 r_new
 template_param
-id|PCI_CFG_SPACE_SIZE
+id|inode-&gt;i_size
 )paren
 r_new
 op_assign
@@ -105,7 +110,7 @@ id|up
 c_func
 (paren
 op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
+id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -188,7 +193,7 @@ id|CAP_SYS_ADMIN
 )paren
 id|size
 op_assign
-id|PCI_CFG_SPACE_SIZE
+id|dev-&gt;cfg_size
 suffix:semicolon
 r_else
 r_if
@@ -582,6 +587,11 @@ op_star
 id|ppos
 suffix:semicolon
 r_int
+id|size
+op_assign
+id|dev-&gt;cfg_size
+suffix:semicolon
+r_int
 id|cnt
 suffix:semicolon
 r_if
@@ -589,7 +599,7 @@ c_cond
 (paren
 id|pos
 op_ge
-id|PCI_CFG_SPACE_SIZE
+id|size
 )paren
 r_return
 l_int|0
@@ -599,11 +609,11 @@ c_cond
 (paren
 id|nbytes
 op_ge
-id|PCI_CFG_SPACE_SIZE
+id|size
 )paren
 id|nbytes
 op_assign
-id|PCI_CFG_SPACE_SIZE
+id|size
 suffix:semicolon
 r_if
 c_cond
@@ -612,11 +622,11 @@ id|pos
 op_plus
 id|nbytes
 OG
-id|PCI_CFG_SPACE_SIZE
+id|size
 )paren
 id|nbytes
 op_assign
-id|PCI_CFG_SPACE_SIZE
+id|size
 op_minus
 id|pos
 suffix:semicolon
@@ -1843,7 +1853,7 @@ id|dev
 suffix:semicolon
 id|e-&gt;size
 op_assign
-id|PCI_CFG_SPACE_SIZE
+id|dev-&gt;cfg_size
 suffix:semicolon
 r_return
 l_int|0

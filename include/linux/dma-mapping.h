@@ -28,6 +28,10 @@ l_int|3
 comma
 )brace
 suffix:semicolon
+DECL|macro|DMA_64BIT_MASK
+mdefine_line|#define DMA_64BIT_MASK&t;0xffffffffffffffffULL
+DECL|macro|DMA_32BIT_MASK
+mdefine_line|#define DMA_32BIT_MASK&t;0x00000000ffffffffULL
 macro_line|#include &lt;asm/dma-mapping.h&gt;
 multiline_comment|/* Backwards compat, remove in 2.7.x */
 DECL|macro|dma_sync_single

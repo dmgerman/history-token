@@ -676,16 +676,6 @@ op_amp
 id|ID
 )paren
 suffix:semicolon
-id|dbg
-c_func
-(paren
-l_string|&quot;%s: ID = %x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|ID
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1358,14 +1348,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s: End of For loop&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* End of FOR loop */
 id|dbg

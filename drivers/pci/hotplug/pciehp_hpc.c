@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pciehp.h&quot;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG_K_TRACE_ENTRY
@@ -880,6 +881,16 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: Before hp_register_write_word SLOT_CTRL %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|cmd
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|hp_register_write_word
@@ -890,6 +901,8 @@ comma
 id|SLOT_CTRL
 comma
 id|cmd
+op_or
+id|CMD_CMPL_INTR_ENABLE
 )paren
 suffix:semicolon
 r_if
@@ -918,6 +931,8 @@ comma
 id|__FUNCTION__
 comma
 id|cmd
+op_or
+id|CMD_CMPL_INTR_ENABLE
 )paren
 suffix:semicolon
 id|dbg
@@ -3451,6 +3466,24 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: Set Mask Hot-plug Interrupt Enable&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_read_word SLOT_CTRL with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|temp_word
+)paren
+suffix:semicolon
 id|temp_word
 op_assign
 (paren
@@ -3458,6 +3491,9 @@ id|temp_word
 op_amp
 op_complement
 id|HP_INTR_ENABLE
+op_amp
+op_complement
+id|CMD_CMPL_INTR_ENABLE
 )paren
 op_or
 l_int|0x00
@@ -3492,6 +3528,101 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_write_word SLOT_CTRL with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|temp_word
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|hp_register_read_word
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+comma
+id|SLOT_STATUS
+comma
+id|slot_status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s : hp_register_read_word SLOT_STATUS failed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_read_word SLOT_STATUS with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|slot_status
+)paren
+suffix:semicolon
+multiline_comment|/* Clear command complete interrupt caused by this write */
+id|temp_word
+op_assign
+l_int|0x1f
+suffix:semicolon
+id|rc
+op_assign
+id|hp_register_write_word
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+comma
+id|SLOT_STATUS
+comma
+id|temp_word
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s : hp_register_write_word SLOT_STATUS failed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_write_word SLOT_STATUS with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|temp_word
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3621,9 +3752,7 @@ suffix:semicolon
 multiline_comment|/* Clear all events after serving them */
 id|temp_word
 op_assign
-id|slot_status
-op_or
-l_int|0xff
+l_int|0x1F
 suffix:semicolon
 id|rc
 op_assign
@@ -3693,6 +3822,24 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: Unmask Hot-plug Interrupt Enable&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_read_word SLOT_CTRL with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|temp_word
+)paren
+suffix:semicolon
 id|temp_word
 op_assign
 (paren
@@ -3734,6 +3881,101 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_write_word SLOT_CTRL with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|temp_word
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|hp_register_read_word
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+comma
+id|SLOT_STATUS
+comma
+id|slot_status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s : hp_register_read_word SLOT_STATUS failed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_read_word SLOT_STATUS with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|slot_status
+)paren
+suffix:semicolon
+multiline_comment|/* Clear command complete interrupt caused by this write */
+id|temp_word
+op_assign
+l_int|0x1F
+suffix:semicolon
+id|rc
+op_assign
+id|hp_register_write_word
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+comma
+id|SLOT_STATUS
+comma
+id|temp_word
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s : hp_register_write_word SLOT_STATUS failed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: hp_register_write_word SLOT_STATUS with value %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|temp_word
+)paren
+suffix:semicolon
 )brace
 r_return
 id|IRQ_HANDLED
@@ -5237,6 +5479,9 @@ id|temp_word
 op_amp
 op_complement
 id|HP_INTR_ENABLE
+op_amp
+op_complement
+id|CMD_CMPL_INTR_ENABLE
 )paren
 op_or
 l_int|0x00
@@ -5323,6 +5568,11 @@ comma
 id|slot_status
 )paren
 suffix:semicolon
+id|temp_word
+op_assign
+l_int|0x1F
+suffix:semicolon
+multiline_comment|/* Clear all events */
 id|rc
 op_assign
 id|hp_register_write_word
@@ -5332,7 +5582,7 @@ id|php_ctlr-&gt;pci_dev
 comma
 id|SLOT_STATUS
 comma
-id|slot_status
+id|temp_word
 )paren
 suffix:semicolon
 r_if
@@ -5362,7 +5612,7 @@ id|__FUNCTION__
 comma
 id|SLOT_STATUS
 comma
-id|slot_status
+id|temp_word
 )paren
 suffix:semicolon
 r_if
@@ -5393,7 +5643,23 @@ multiline_comment|/* start with 10 second delay */
 r_else
 (brace
 multiline_comment|/* Installs the interrupt handler */
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR 
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: pciehp_msi_quirk = %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|pciehp_msi_quirk
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pciehp_msi_quirk
+)paren
+(brace
 id|rc
 op_assign
 id|pci_enable_msi
@@ -5408,10 +5674,16 @@ c_cond
 id|rc
 )paren
 (brace
-id|err
+id|info
 c_func
 (paren
 l_string|&quot;Can&squot;t get msi for the hotplug controller&bslash;n&quot;
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Use INTx for the hotplug controller&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
@@ -5424,15 +5696,13 @@ comma
 id|rc
 )paren
 suffix:semicolon
-r_goto
-id|abort_free_ctlr
-suffix:semicolon
 )brace
+r_else
 id|php_ctlr-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-macro_line|#endif&t;&t;
+)brace
 id|rc
 op_assign
 id|request_irq
@@ -5537,8 +5807,6 @@ op_or
 id|MRL_DETECT_ENABLE
 op_or
 id|PRSN_DETECT_ENABLE
-op_or
-id|CMD_CMPL_INTR_ENABLE
 suffix:semicolon
 id|temp_word
 op_assign
@@ -5630,6 +5898,95 @@ c_func
 l_string|&quot;%s : Unmask HPIE hp_register_write_word SLOT_CTRL with %x&bslash;n&quot;
 comma
 id|__FUNCTION__
+comma
+id|temp_word
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|hp_register_read_word
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+comma
+id|SLOT_STATUS
+comma
+id|slot_status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s : hp_register_read_word SLOT_STATUS failed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_goto
+id|abort_free_ctlr
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: Unmask HPIE SLOT_STATUS offset %x reads slot_status %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|SLOT_STATUS
+comma
+id|slot_status
+)paren
+suffix:semicolon
+id|temp_word
+op_assign
+l_int|0x1F
+suffix:semicolon
+multiline_comment|/* Clear all events */
+id|rc
+op_assign
+id|hp_register_write_word
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+comma
+id|SLOT_STATUS
+comma
+id|temp_word
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s : hp_register_write_word SLOT_STATUS failed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_goto
+id|abort_free_ctlr
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: SLOT_STATUS offset %x writes slot_status %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|SLOT_STATUS
 comma
 id|temp_word
 )paren

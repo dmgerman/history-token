@@ -2143,9 +2143,98 @@ id|__NR_vserver
 comma
 id|sys_ni_syscall
 )paren
-multiline_comment|/* 237,238,239 reserved for NUMA API */
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;236
+id|__SYSCALL
+c_func
+(paren
+id|__NR_vserver
+comma
+id|sys_ni_syscall
+)paren
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind &t;&t;&t;237
+id|__SYSCALL
+c_func
+(paren
+id|__NR_mbind
+comma
+id|sys_ni_syscall
+)paren
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy &t;238
+id|__SYSCALL
+c_func
+(paren
+id|__NR_set_mempolicy
+comma
+id|sys_ni_syscall
+)paren
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy &t;239
+id|__SYSCALL
+c_func
+(paren
+id|__NR_get_mempolicy
+comma
+id|sys_ni_syscall
+)paren
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open &t;&t;240
+id|__SYSCALL
+c_func
+(paren
+id|__NR_mq_open
+comma
+id|sys_mq_open
+)paren
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink &t;&t;241
+id|__SYSCALL
+c_func
+(paren
+id|__NR_mq_unlink
+comma
+id|sys_mq_unlink
+)paren
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend &t;242
+id|__SYSCALL
+c_func
+(paren
+id|__NR_mq_timedsend
+comma
+id|sys_mq_timedsend
+)paren
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive 243
+id|__SYSCALL
+c_func
+(paren
+id|__NR_mq_timedreceive
+comma
+id|sys_mq_timedreceive
+)paren
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify &t;&t;244
+id|__SYSCALL
+c_func
+(paren
+id|__NR_mq_notify
+comma
+id|sys_mq_notify
+)paren
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr &t;245
+id|__SYSCALL
+c_func
+(paren
+id|__NR_mq_getsetattr
+comma
+id|sys_mq_getsetattr
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_vserver
+mdefine_line|#define __NR_syscall_max __NR_mq_getsetattr
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

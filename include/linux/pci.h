@@ -484,30 +484,155 @@ DECL|macro|PCI_X_CMD_MAX_READ
 mdefine_line|#define  PCI_X_CMD_MAX_READ&t;0x000c&t;/* Max Memory Read Byte Count */
 DECL|macro|PCI_X_CMD_MAX_SPLIT
 mdefine_line|#define  PCI_X_CMD_MAX_SPLIT&t;0x0070&t;/* Max Outstanding Split Transactions */
-DECL|macro|PCI_X_DEVFN
-mdefine_line|#define PCI_X_DEVFN&t;&t;4&t;/* A copy of devfn. */
-DECL|macro|PCI_X_BUSNR
-mdefine_line|#define PCI_X_BUSNR&t;&t;5&t;/* Bus segment number */
+DECL|macro|PCI_X_CMD_VERSION
+mdefine_line|#define  PCI_X_CMD_VERSION(x) &t;(((x) &gt;&gt; 12) &amp; 3) /* Version */
 DECL|macro|PCI_X_STATUS
-mdefine_line|#define PCI_X_STATUS&t;&t;6&t;/* PCI-X capabilities */
+mdefine_line|#define PCI_X_STATUS&t;&t;4&t;/* PCI-X capabilities */
+DECL|macro|PCI_X_STATUS_DEVFN
+mdefine_line|#define  PCI_X_STATUS_DEVFN&t;0x000000ff&t;/* A copy of devfn */
+DECL|macro|PCI_X_STATUS_BUS
+mdefine_line|#define  PCI_X_STATUS_BUS&t;0x0000ff00&t;/* A copy of bus nr */
 DECL|macro|PCI_X_STATUS_64BIT
-mdefine_line|#define  PCI_X_STATUS_64BIT&t;0x0001&t;/* 64-bit device */
+mdefine_line|#define  PCI_X_STATUS_64BIT&t;0x00010000&t;/* 64-bit device */
 DECL|macro|PCI_X_STATUS_133MHZ
-mdefine_line|#define  PCI_X_STATUS_133MHZ&t;0x0002&t;/* 133 MHz capable */
+mdefine_line|#define  PCI_X_STATUS_133MHZ&t;0x00020000&t;/* 133 MHz capable */
 DECL|macro|PCI_X_STATUS_SPL_DISC
-mdefine_line|#define  PCI_X_STATUS_SPL_DISC&t;0x0004&t;/* Split Completion Discarded */
+mdefine_line|#define  PCI_X_STATUS_SPL_DISC&t;0x00040000&t;/* Split Completion Discarded */
 DECL|macro|PCI_X_STATUS_UNX_SPL
-mdefine_line|#define  PCI_X_STATUS_UNX_SPL&t;0x0008&t;/* Unexpected Split Completion */
+mdefine_line|#define  PCI_X_STATUS_UNX_SPL&t;0x00080000&t;/* Unexpected Split Completion */
 DECL|macro|PCI_X_STATUS_COMPLEX
-mdefine_line|#define  PCI_X_STATUS_COMPLEX&t;0x0010&t;/* Device Complexity */
+mdefine_line|#define  PCI_X_STATUS_COMPLEX&t;0x00100000&t;/* Device Complexity */
 DECL|macro|PCI_X_STATUS_MAX_READ
-mdefine_line|#define  PCI_X_STATUS_MAX_READ&t;0x0060&t;/* Designed Maximum Memory Read Count */
+mdefine_line|#define  PCI_X_STATUS_MAX_READ&t;0x00600000&t;/* Designed Max Memory Read Count */
 DECL|macro|PCI_X_STATUS_MAX_SPLIT
-mdefine_line|#define  PCI_X_STATUS_MAX_SPLIT&t;0x0380&t;/* Design Max Outstanding Split Trans */
+mdefine_line|#define  PCI_X_STATUS_MAX_SPLIT&t;0x03800000&t;/* Designed Max Outstanding Split Transactions */
 DECL|macro|PCI_X_STATUS_MAX_CUM
-mdefine_line|#define  PCI_X_STATUS_MAX_CUM&t;0x1c00&t;/* Designed Max Cumulative Read Size */
+mdefine_line|#define  PCI_X_STATUS_MAX_CUM&t;0x1c000000&t;/* Designed Max Cumulative Read Size */
 DECL|macro|PCI_X_STATUS_SPL_ERR
-mdefine_line|#define  PCI_X_STATUS_SPL_ERR&t;0x2000&t;/* Rcvd Split Completion Error Msg */
+mdefine_line|#define  PCI_X_STATUS_SPL_ERR&t;0x20000000&t;/* Rcvd Split Completion Error Msg */
+DECL|macro|PCI_X_STATUS_266MHZ
+mdefine_line|#define  PCI_X_STATUS_266MHZ&t;0x40000000&t;/* 266 MHz capable */
+DECL|macro|PCI_X_STATUS_533MHZ
+mdefine_line|#define  PCI_X_STATUS_533MHZ&t;0x80000000&t;/* 533 MHz capable */
+multiline_comment|/* Extended Capabilities (PCI-X 2.0 and Express) */
+DECL|macro|PCI_EXT_CAP_ID
+mdefine_line|#define PCI_EXT_CAP_ID(header)&t;&t;(header &amp; 0x0000ffff)
+DECL|macro|PCI_EXT_CAP_VER
+mdefine_line|#define PCI_EXT_CAP_VER(header)&t;&t;((header &gt;&gt; 16) &amp; 0xf)
+DECL|macro|PCI_EXT_CAP_NEXT
+mdefine_line|#define PCI_EXT_CAP_NEXT(header)&t;((header &gt;&gt; 20) &amp; 0xffc)
+DECL|macro|PCI_EXT_CAP_ID_ERR
+mdefine_line|#define PCI_EXT_CAP_ID_ERR&t;1
+DECL|macro|PCI_EXT_CAP_ID_VC
+mdefine_line|#define PCI_EXT_CAP_ID_VC&t;2
+DECL|macro|PCI_EXT_CAP_ID_DSN
+mdefine_line|#define PCI_EXT_CAP_ID_DSN&t;3
+DECL|macro|PCI_EXT_CAP_ID_PWR
+mdefine_line|#define PCI_EXT_CAP_ID_PWR&t;4
+multiline_comment|/* Advanced Error Reporting */
+DECL|macro|PCI_ERR_UNCOR_STATUS
+mdefine_line|#define PCI_ERR_UNCOR_STATUS&t;4&t;/* Uncorrectable Error Status */
+DECL|macro|PCI_ERR_UNC_TRAIN
+mdefine_line|#define  PCI_ERR_UNC_TRAIN&t;0x00000001&t;/* Training */
+DECL|macro|PCI_ERR_UNC_DLP
+mdefine_line|#define  PCI_ERR_UNC_DLP&t;0x00000010&t;/* Data Link Protocol */
+DECL|macro|PCI_ERR_UNC_POISON_TLP
+mdefine_line|#define  PCI_ERR_UNC_POISON_TLP&t;0x00001000&t;/* Poisoned TLP */
+DECL|macro|PCI_ERR_UNC_FCP
+mdefine_line|#define  PCI_ERR_UNC_FCP&t;0x00002000&t;/* Flow Control Protocol */
+DECL|macro|PCI_ERR_UNC_COMP_TIME
+mdefine_line|#define  PCI_ERR_UNC_COMP_TIME&t;0x00004000&t;/* Completion Timeout */
+DECL|macro|PCI_ERR_UNC_COMP_ABORT
+mdefine_line|#define  PCI_ERR_UNC_COMP_ABORT&t;0x00008000&t;/* Completer Abort */
+DECL|macro|PCI_ERR_UNC_UNX_COMP
+mdefine_line|#define  PCI_ERR_UNC_UNX_COMP&t;0x00010000&t;/* Unexpected Completion */
+DECL|macro|PCI_ERR_UNC_RX_OVER
+mdefine_line|#define  PCI_ERR_UNC_RX_OVER&t;0x00020000&t;/* Receiver Overflow */
+DECL|macro|PCI_ERR_UNC_MALF_TLP
+mdefine_line|#define  PCI_ERR_UNC_MALF_TLP&t;0x00040000&t;/* Malformed TLP */
+DECL|macro|PCI_ERR_UNC_ECRC
+mdefine_line|#define  PCI_ERR_UNC_ECRC&t;0x00080000&t;/* ECRC Error Status */
+DECL|macro|PCI_ERR_UNC_UNSUP
+mdefine_line|#define  PCI_ERR_UNC_UNSUP&t;0x00100000&t;/* Unsupported Request */
+DECL|macro|PCI_ERR_UNCOR_MASK
+mdefine_line|#define PCI_ERR_UNCOR_MASK&t;8&t;/* Uncorrectable Error Mask */
+multiline_comment|/* Same bits as above */
+DECL|macro|PCI_ERR_UNCOR_SEVER
+mdefine_line|#define PCI_ERR_UNCOR_SEVER&t;12&t;/* Uncorrectable Error Severity */
+multiline_comment|/* Same bits as above */
+DECL|macro|PCI_ERR_COR_STATUS
+mdefine_line|#define PCI_ERR_COR_STATUS&t;16&t;/* Correctable Error Status */
+DECL|macro|PCI_ERR_COR_RCVR
+mdefine_line|#define  PCI_ERR_COR_RCVR&t;0x00000001&t;/* Receiver Error Status */
+DECL|macro|PCI_ERR_COR_BAD_TLP
+mdefine_line|#define  PCI_ERR_COR_BAD_TLP&t;0x00000040&t;/* Bad TLP Status */
+DECL|macro|PCI_ERR_COR_BAD_DLLP
+mdefine_line|#define  PCI_ERR_COR_BAD_DLLP&t;0x00000080&t;/* Bad DLLP Status */
+DECL|macro|PCI_ERR_COR_REP_ROLL
+mdefine_line|#define  PCI_ERR_COR_REP_ROLL&t;0x00000100&t;/* REPLAY_NUM Rollover */
+DECL|macro|PCI_ERR_COR_REP_TIMER
+mdefine_line|#define  PCI_ERR_COR_REP_TIMER&t;0x00001000&t;/* Replay Timer Timeout */
+DECL|macro|PCI_ERR_COR_MASK
+mdefine_line|#define PCI_ERR_COR_MASK&t;20&t;/* Correctable Error Mask */
+multiline_comment|/* Same bits as above */
+DECL|macro|PCI_ERR_CAP
+mdefine_line|#define PCI_ERR_CAP&t;&t;24&t;/* Advanced Error Capabilities */
+DECL|macro|PCI_ERR_CAP_FEP
+mdefine_line|#define  PCI_ERR_CAP_FEP(x)&t;((x) &amp; 31)&t;/* First Error Pointer */
+DECL|macro|PCI_ERR_CAP_ECRC_GENC
+mdefine_line|#define  PCI_ERR_CAP_ECRC_GENC&t;0x00000020&t;/* ECRC Generation Capable */
+DECL|macro|PCI_ERR_CAP_ECRC_GENE
+mdefine_line|#define  PCI_ERR_CAP_ECRC_GENE&t;0x00000040&t;/* ECRC Generation Enable */
+DECL|macro|PCI_ERR_CAP_ECRC_CHKC
+mdefine_line|#define  PCI_ERR_CAP_ECRC_CHKC&t;0x00000080&t;/* ECRC Check Capable */
+DECL|macro|PCI_ERR_CAP_ECRC_CHKE
+mdefine_line|#define  PCI_ERR_CAP_ECRC_CHKE&t;0x00000100&t;/* ECRC Check Enable */
+DECL|macro|PCI_ERR_HEADER_LOG
+mdefine_line|#define PCI_ERR_HEADER_LOG&t;28&t;/* Header Log Register (16 bytes) */
+DECL|macro|PCI_ERR_ROOT_COMMAND
+mdefine_line|#define PCI_ERR_ROOT_COMMAND&t;44&t;/* Root Error Command */
+DECL|macro|PCI_ERR_ROOT_STATUS
+mdefine_line|#define PCI_ERR_ROOT_STATUS&t;48
+DECL|macro|PCI_ERR_ROOT_COR_SRC
+mdefine_line|#define PCI_ERR_ROOT_COR_SRC&t;52
+DECL|macro|PCI_ERR_ROOT_SRC
+mdefine_line|#define PCI_ERR_ROOT_SRC&t;54
+multiline_comment|/* Virtual Channel */
+DECL|macro|PCI_VC_PORT_REG1
+mdefine_line|#define PCI_VC_PORT_REG1&t;4
+DECL|macro|PCI_VC_PORT_REG2
+mdefine_line|#define PCI_VC_PORT_REG2&t;8
+DECL|macro|PCI_VC_PORT_CTRL
+mdefine_line|#define PCI_VC_PORT_CTRL&t;12
+DECL|macro|PCI_VC_PORT_STATUS
+mdefine_line|#define PCI_VC_PORT_STATUS&t;14
+DECL|macro|PCI_VC_RES_CAP
+mdefine_line|#define PCI_VC_RES_CAP&t;&t;16
+DECL|macro|PCI_VC_RES_CTRL
+mdefine_line|#define PCI_VC_RES_CTRL&t;&t;20
+DECL|macro|PCI_VC_RES_STATUS
+mdefine_line|#define PCI_VC_RES_STATUS&t;26
+multiline_comment|/* Power Budgeting */
+DECL|macro|PCI_PWR_DSR
+mdefine_line|#define PCI_PWR_DSR&t;&t;4&t;/* Data Select Register */
+DECL|macro|PCI_PWR_DATA
+mdefine_line|#define PCI_PWR_DATA&t;&t;8&t;/* Data Register */
+DECL|macro|PCI_PWR_DATA_BASE
+mdefine_line|#define  PCI_PWR_DATA_BASE(x)&t;((x) &amp; 0xff)&t;    /* Base Power */
+DECL|macro|PCI_PWR_DATA_SCALE
+mdefine_line|#define  PCI_PWR_DATA_SCALE(x)&t;(((x) &gt;&gt; 8) &amp; 3)    /* Data Scale */
+DECL|macro|PCI_PWR_DATA_PM_SUB
+mdefine_line|#define  PCI_PWR_DATA_PM_SUB(x)&t;(((x) &gt;&gt; 10) &amp; 7)   /* PM Sub State */
+DECL|macro|PCI_PWR_DATA_PM_STATE
+mdefine_line|#define  PCI_PWR_DATA_PM_STATE(x) (((x) &gt;&gt; 13) &amp; 3) /* PM State */
+DECL|macro|PCI_PWR_DATA_TYPE
+mdefine_line|#define  PCI_PWR_DATA_TYPE(x)&t;(((x) &gt;&gt; 15) &amp; 7)   /* Type */
+DECL|macro|PCI_PWR_DATA_RAIL
+mdefine_line|#define  PCI_PWR_DATA_RAIL(x)&t;(((x) &gt;&gt; 18) &amp; 7)   /* Power Rail */
+DECL|macro|PCI_PWR_CAP
+mdefine_line|#define PCI_PWR_CAP&t;&t;12&t;/* Capability */
+DECL|macro|PCI_PWR_CAP_BUDGET
+mdefine_line|#define  PCI_PWR_CAP_BUDGET(x)&t;((x) &amp; 1)&t;/* Included in system budget */
 multiline_comment|/* Include the ID list */
 macro_line|#include &lt;linux/pci_ids.h&gt;
 multiline_comment|/*&n; * The PCI interface treats multi-function devices as independent&n; * devices.  The slot/function address of each device is encoded&n; * in a single byte as follows:&n; *&n; *&t;7:3 = slot&n; *&t;2:0 = function&n; */
@@ -686,6 +811,11 @@ id|device_compatible
 id|DEVICE_COUNT_COMPATIBLE
 )braket
 suffix:semicolon
+DECL|member|cfg_size
+r_int
+id|cfg_size
+suffix:semicolon
+multiline_comment|/* Size of configuration space */
 multiline_comment|/*&n;&t; * Instead of touching interrupt line and base address registers&n;&t; * directly, use the values stored here. They might be different!&n;&t; */
 DECL|member|irq
 r_int
@@ -1585,6 +1715,18 @@ id|devfn
 suffix:semicolon
 r_int
 id|pci_find_capability
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|cap
+)paren
+suffix:semicolon
+r_int
+id|pci_find_ext_capability
 (paren
 r_struct
 id|pci_dev
@@ -2942,6 +3084,25 @@ r_static
 r_inline
 r_int
 id|pci_find_capability
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|cap
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|pci_find_ext_capability
+r_static
+r_inline
+r_int
+id|pci_find_ext_capability
 (paren
 r_struct
 id|pci_dev
