@@ -868,9 +868,25 @@ id|value
 op_ge
 l_int|0
 )paren
+(brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;Read 0x%02x from register &quot;
+l_string|&quot;0x%02x.&bslash;n&quot;
+comma
+id|value
+comma
+id|reg
+)paren
+suffix:semicolon
 r_return
 id|value
 suffix:semicolon
+)brace
 id|dev_dbg
 c_func
 (paren
@@ -895,8 +911,10 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;Couldn&squot;t read value from register. &quot;
+l_string|&quot;Couldn&squot;t read value from register 0x%02x. &quot;
 l_string|&quot;Please report.&bslash;n&quot;
+comma
+id|reg
 )paren
 suffix:semicolon
 r_return
