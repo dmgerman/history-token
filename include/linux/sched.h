@@ -144,8 +144,8 @@ DECL|macro|set_current_state
 mdefine_line|#define set_current_state(state_value)&t;&t;&bslash;&n;&t;__set_current_state(state_value)
 macro_line|#endif
 multiline_comment|/*&n; * Scheduling policies&n; */
-DECL|macro|SCHED_OTHER
-mdefine_line|#define SCHED_OTHER&t;&t;0
+DECL|macro|SCHED_NORMAL
+mdefine_line|#define SCHED_NORMAL&t;&t;0
 DECL|macro|SCHED_FIFO
 mdefine_line|#define SCHED_FIFO&t;&t;1
 DECL|macro|SCHED_RR
@@ -497,7 +497,7 @@ id|siglock
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_OTHER tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_RT_USER_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
+multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_RT_USER_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
 DECL|macro|MAX_USER_RT_PRIO
 mdefine_line|#define MAX_USER_RT_PRIO&t;100
 DECL|macro|MAX_RT_PRIO
@@ -624,9 +624,12 @@ r_int
 id|cpus_allowed
 suffix:semicolon
 DECL|member|time_slice
+DECL|member|first_time_slice
 r_int
 r_int
 id|time_slice
+comma
+id|first_time_slice
 suffix:semicolon
 DECL|member|tasks
 r_struct
@@ -1066,6 +1069,11 @@ multiline_comment|/* Protection of (de-)allocation: mm, files, fs, tty */
 DECL|member|alloc_lock
 id|spinlock_t
 id|alloc_lock
+suffix:semicolon
+multiline_comment|/* context-switch lock */
+DECL|member|switch_lock
+id|spinlock_t
+id|switch_lock
 suffix:semicolon
 multiline_comment|/* journalling filesystem info */
 DECL|member|journal_info

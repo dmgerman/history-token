@@ -633,7 +633,7 @@ c_cond
 (paren
 id|current-&gt;policy
 op_eq
-id|SCHED_OTHER
+id|SCHED_NORMAL
 )paren
 op_logical_and
 (paren

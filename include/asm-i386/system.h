@@ -30,14 +30,6 @@ id|next
 )paren
 )paren
 suffix:semicolon
-DECL|macro|prepare_arch_schedule
-mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|finish_arch_schedule
-mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|prepare_arch_switch
-mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
-DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;pushl %%esi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;pushl %%edi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;pushl %%ebp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;movl %%esp,%0&bslash;n&bslash;t&quot;&t;/* save ESP */&t;&t;&bslash;&n;&t;&t;     &quot;movl %2,%%esp&bslash;n&bslash;t&quot;&t;/* restore ESP */&t;&bslash;&n;&t;&t;     &quot;movl $1f,%1&bslash;n&bslash;t&quot;&t;&t;/* save EIP */&t;&t;&bslash;&n;&t;&t;     &quot;pushl %3&bslash;n&bslash;t&quot;&t;&t;/* restore EIP */&t;&bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popl %%ebp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popl %%edi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popl %%esi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     :&quot;=m&quot; (prev-&gt;thread.esp),&quot;=m&quot; (prev-&gt;thread.eip)&t;&bslash;&n;&t;&t;     :&quot;m&quot; (next-&gt;thread.esp),&quot;m&quot; (next-&gt;thread.eip),&t;&bslash;&n;&t;&t;      &quot;a&quot; (prev), &quot;d&quot; (next));&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|_set_base

@@ -319,14 +319,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-DECL|macro|prepare_arch_schedule
-mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|finish_arch_schedule
-mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|prepare_arch_switch
-mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
-DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 r_struct
 id|task_struct
 suffix:semicolon

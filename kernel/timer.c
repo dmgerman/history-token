@@ -3036,7 +3036,7 @@ l_int|2000000L
 op_logical_and
 id|current-&gt;policy
 op_ne
-id|SCHED_OTHER
+id|SCHED_NORMAL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Short delay requests up to 2 ms will be handled with&n;&t;&t; * high precision by a busy wait for all real-time processes.&n;&t;&t; *&n;&t;&t; * Its important on SMP not to do this holding locks.&n;&t;&t; */

@@ -618,6 +618,8 @@ id|tmpsig
 suffix:semicolon
 r_int
 id|i
+comma
+id|ret
 suffix:semicolon
 r_static
 id|atomic_t
@@ -634,6 +636,16 @@ mdefine_line|#define MAX_KMOD_CONCURRENT 50&t;/* Completely arbitrary value - KA
 r_static
 r_int
 id|kmod_loop_msg
+suffix:semicolon
+r_int
+r_int
+id|saved_policy
+op_assign
+id|current-&gt;policy
+suffix:semicolon
+id|current-&gt;policy
+op_assign
+id|SCHED_NORMAL
 suffix:semicolon
 multiline_comment|/* Don&squot;t allow request_module() before the root fs is mounted!  */
 r_if
@@ -652,9 +664,13 @@ comma
 id|module_name
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EPERM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* If modprobe needs a service that is in a module, we get a recursive&n;&t; * loop.  Limit the number of running kmod threads to max_threads/2 or&n;&t; * MAX_KMOD_CONCURRENT, whichever is the smaller.  A cleaner method&n;&t; * would be to run the parents of this process, counting how many times&n;&t; * kmod was invoked.  That would mean accessing the internals of the&n;&t; * process tables to get the command line, proc_pid_cmdline is static&n;&t; * and it is not worth changing the proc code just to handle this case. &n;&t; * KAO.&n;&t; */
@@ -717,9 +733,13 @@ op_amp
 id|kmod_concurrent
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|pid
@@ -765,8 +785,12 @@ op_amp
 id|kmod_concurrent
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|pid
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Block everything but SIGKILL/SIGSTOP */
@@ -878,8 +902,18 @@ id|waitpid_result
 )paren
 suffix:semicolon
 )brace
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+id|current-&gt;policy
+op_assign
+id|saved_policy
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_KMOD */

@@ -209,14 +209,10 @@ DECL|macro|flush_user_windows
 mdefine_line|#define flush_user_windows flushw_user
 DECL|macro|flush_register_windows
 mdefine_line|#define flush_register_windows flushw_all
-DECL|macro|prepare_arch_schedule
-mdefine_line|#define prepare_arch_schedule(prev)&t;task_lock(prev)
-DECL|macro|finish_arch_schedule
-mdefine_line|#define finish_arch_schedule(prev)&t;task_unlock(prev)
 DECL|macro|prepare_arch_switch
-mdefine_line|#define prepare_arch_switch(rq)&t;&t;&bslash;&n;do {&t;spin_unlock(&amp;(rq)-&gt;lock);&t;&bslash;&n;&t;flushw_all();&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define prepare_arch_switch(rq, next)&t;&t;&bslash;&n;do {&t;spin_lock(&amp;(next)-&gt;switch_lock);&t;&bslash;&n;&t;spin_unlock(&amp;(rq)-&gt;lock);&t;&t;&bslash;&n;&t;flushw_all();&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq)&t;&t;local_irq_enable()
+mdefine_line|#define finish_arch_switch(rq, prev)&t;&t;&bslash;&n;do {&t;spin_unlock_irq(&amp;(prev)-&gt;switch_lock);&t;&bslash;&n;} while (0)
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|macro|CHECK_LOCKS
 mdefine_line|#define CHECK_LOCKS(PREV)&t;do { } while(0)

@@ -2446,10 +2446,6 @@ id|stack_size
 r_int
 id|retval
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|task_struct
 op_star
@@ -2713,6 +2709,13 @@ c_func
 (paren
 op_amp
 id|p-&gt;alloc_lock
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|p-&gt;switch_lock
 )paren
 suffix:semicolon
 id|clear_tsk_thread_flag
@@ -3001,10 +3004,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Share the timeslice between parent and child, thus the&n;&t; * total amount of pending timeslices in the system doesnt change,&n;&t; * resulting in more scheduling fairness.&n;&t; */
-id|local_irq_save
+id|local_irq_disable
 c_func
 (paren
-id|flags
 )paren
 suffix:semicolon
 id|p-&gt;time_slice
@@ -3015,6 +3017,11 @@ op_plus
 l_int|1
 )paren
 op_rshift
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * The remainder of the first timeslice might be recovered by&n;&t; * the parent if the child exits early enough.&n;&t; */
+id|p-&gt;first_time_slice
+op_assign
 l_int|1
 suffix:semicolon
 id|current-&gt;time_slice
@@ -3050,10 +3057,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|local_irq_enable
 c_func
 (paren
-id|flags
 )paren
 suffix:semicolon
 id|preempt_enable
@@ -3063,10 +3069,9 @@ c_func
 suffix:semicolon
 )brace
 r_else
-id|local_irq_restore
+id|local_irq_enable
 c_func
 (paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, add it to the run-queues and make it&n;&t; * visible to the rest of the system.&n;&t; *&n;&t; * Let it rip!&n;&t; */

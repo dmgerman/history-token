@@ -12,14 +12,6 @@ macro_line|#else
 DECL|macro|LOCK_PREFIX
 mdefine_line|#define LOCK_PREFIX &quot;&quot;
 macro_line|#endif
-DECL|macro|prepare_arch_schedule
-mdefine_line|#define prepare_arch_schedule(prev)            do { } while(0)
-DECL|macro|finish_arch_schedule
-mdefine_line|#define finish_arch_schedule(prev)             do { } while(0)
-DECL|macro|prepare_arch_switch
-mdefine_line|#define prepare_arch_switch(rq)                        do { } while(0)
-DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq)                 spin_unlock_irq(&amp;(rq)-&gt;lock)
 DECL|macro|__STR
 mdefine_line|#define __STR(x) #x
 DECL|macro|STR

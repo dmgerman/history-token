@@ -1820,25 +1820,13 @@ comma
 id|TIF_SIGPENDING
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * If the task is running on a different CPU &n;&t; * force a reschedule on the other CPU to make&n;&t; * it notice the new signal quickly.&n;&t; *&n;&t; * The code below is a tad loose and might occasionally&n;&t; * kick the wrong CPU if we catch the process in the&n;&t; * process of changing - but no harm is done by that&n;&t; * other than doing an extra (lightweight) IPI interrupt.&n;&t; */
 r_if
 c_cond
 (paren
-(paren
 id|t-&gt;state
 op_eq
 id|TASK_RUNNING
-)paren
-op_logical_and
-(paren
-id|t-&gt;thread_info-&gt;cpu
-op_ne
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
 )paren
 id|kick_if_running
 c_func
@@ -1846,7 +1834,6 @@ c_func
 id|t
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
