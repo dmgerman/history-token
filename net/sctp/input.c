@@ -425,6 +425,26 @@ id|skb
 r_goto
 id|discard_release
 suffix:semicolon
+id|ret
+op_assign
+id|sk_filter
+c_func
+(paren
+id|sk
+comma
+id|skb
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_goto
+id|discard_release
+suffix:semicolon
 multiline_comment|/* Create an SCTP packet structure. */
 id|chunk
 op_assign

@@ -2368,6 +2368,26 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dummy_socket_sock_rcv_skb
+r_static
+r_int
+id|dummy_socket_sock_rcv_skb
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif&t;/* CONFIG_SECURITY_NETWORK */
 DECL|function|dummy_register_security
 r_static
@@ -3379,6 +3399,14 @@ c_func
 id|ops
 comma
 id|socket_shutdown
+)paren
+suffix:semicolon
+id|set_to_dummy_if_null
+c_func
+(paren
+id|ops
+comma
+id|socket_sock_rcv_skb
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_SECURITY_NETWORK */
