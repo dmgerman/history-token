@@ -731,6 +731,11 @@ DECL|member|recovery_wait
 id|wait_queue_head_t
 id|recovery_wait
 suffix:semicolon
+DECL|member|queue
+id|request_queue_t
+id|queue
+suffix:semicolon
+multiline_comment|/* for plugging ... */
 DECL|member|all_mddevs
 r_struct
 id|list_head

@@ -139,7 +139,7 @@ DECL|macro|STRIPE_PREREAD_ACTIVE
 mdefine_line|#define&t;STRIPE_PREREAD_ACTIVE&t;5
 DECL|macro|STRIPE_DELAYED
 mdefine_line|#define&t;STRIPE_DELAYED&t;&t;6
-multiline_comment|/*&n; * Plugging:&n; *&n; * To improve write throughput, we need to delay the handling of some&n; * stripes until there has been a chance that several write requests&n; * for the one stripe have all been collected.&n; * In particular, any write request that would require pre-reading&n; * is put on a &quot;delayed&quot; queue until there are no stripes currently&n; * in a pre-read phase.  Further, if the &quot;delayed&quot; queue is empty when&n; * a stripe is put on it then we &quot;plug&quot; the queue and do not process it&n; * until an unplg call is made. (the tq_disk list is run).&n; *&n; * When preread is initiated on a stripe, we set PREREAD_ACTIVE and add&n; * it to the count of prereading stripes.&n; * When write is initiated, or the stripe refcnt == 0 (just in case) we&n; * clear the PREREAD_ACTIVE flag and decrement the count&n; * Whenever the delayed queue is empty and the device is not plugged, we&n; * move any strips from delayed to handle and clear the DELAYED flag and set PREREAD_ACTIVE.&n; * In stripe_handle, if we find pre-reading is necessary, we do it if&n; * PREREAD_ACTIVE is set, else we set DELAYED which will send it to the delayed queue.&n; * HANDLE gets cleared if stripe_handle leave nothing locked.&n; */
+multiline_comment|/*&n; * Plugging:&n; *&n; * To improve write throughput, we need to delay the handling of some&n; * stripes until there has been a chance that several write requests&n; * for the one stripe have all been collected.&n; * In particular, any write request that would require pre-reading&n; * is put on a &quot;delayed&quot; queue until there are no stripes currently&n; * in a pre-read phase.  Further, if the &quot;delayed&quot; queue is empty when&n; * a stripe is put on it then we &quot;plug&quot; the queue and do not process it&n; * until an unplug call is made. (blk_run_queues is run).&n; *&n; * When preread is initiated on a stripe, we set PREREAD_ACTIVE and add&n; * it to the count of prereading stripes.&n; * When write is initiated, or the stripe refcnt == 0 (just in case) we&n; * clear the PREREAD_ACTIVE flag and decrement the count&n; * Whenever the delayed queue is empty and the device is not plugged, we&n; * move any strips from delayed to handle and clear the DELAYED flag and set PREREAD_ACTIVE.&n; * In stripe_handle, if we find pre-reading is necessary, we do it if&n; * PREREAD_ACTIVE is set, else we set DELAYED which will send it to the delayed queue.&n; * HANDLE gets cleared if stripe_handle leave nothing locked.&n; */
 DECL|struct|disk_info
 r_struct
 id|disk_info
@@ -299,15 +299,6 @@ multiline_comment|/* release of inactive stripes blocked,&n;&t;&t;&t;&t;&t;&t;&t
 DECL|member|device_lock
 id|spinlock_t
 id|device_lock
-suffix:semicolon
-DECL|member|plugged
-r_int
-id|plugged
-suffix:semicolon
-DECL|member|plug_tq
-r_struct
-id|tq_struct
-id|plug_tq
 suffix:semicolon
 )brace
 suffix:semicolon
