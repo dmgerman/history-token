@@ -206,11 +206,11 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Clock ratio tables. Div/Mod by 10 to get ratio.&n; * The eblcr ones specify the ratio read from the CPU.&n; * The clock_ratio ones specify what to write to the CPU.&n; */
 multiline_comment|/*&n; * VIA C3 Samuel 1  &amp; Samuel 2 (stepping 0)&n; */
-DECL|variable|longhaul1_clock_ratio
+DECL|variable|samuel1_clock_ratio
 r_static
 r_int
 id|__initdata
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 (braket
 l_int|16
 )braket

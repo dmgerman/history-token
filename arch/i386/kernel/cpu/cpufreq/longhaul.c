@@ -1537,11 +1537,11 @@ id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 )paren
 )paren
 suffix:semicolon
@@ -1584,11 +1584,11 @@ id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 )paren
 )paren
 suffix:semicolon
