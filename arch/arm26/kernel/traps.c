@@ -661,10 +661,11 @@ id|task-&gt;thread_info
 suffix:semicolon
 )brace
 DECL|variable|die_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|die_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * This function is protected against re-entrancy.&n; */
 DECL|function|die

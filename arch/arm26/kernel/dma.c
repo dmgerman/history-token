@@ -8,10 +8,11 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 DECL|variable|dma_spin_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dma_spin_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dma_chan
 r_static
