@@ -327,8 +327,8 @@ DECL|macro|KEY_F11
 mdefine_line|#define KEY_F11&t;&t;&t;87
 DECL|macro|KEY_F12
 mdefine_line|#define KEY_F12&t;&t;&t;88
-DECL|macro|KEY_ROMAJI
-mdefine_line|#define KEY_ROMAJI&t;&t;89
+DECL|macro|KEY_RO
+mdefine_line|#define KEY_RO&t;&t;&t;89
 DECL|macro|KEY_KATAKANA
 mdefine_line|#define KEY_KATAKANA&t;&t;90
 DECL|macro|KEY_HIRAGANA
