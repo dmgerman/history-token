@@ -2319,8 +2319,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|clnt-&gt;cl_xprt-&gt;stream
+id|xprt_connected
+c_func
+(paren
+id|clnt-&gt;cl_xprt
+)paren
 )paren
 (brace
 id|task-&gt;tk_action
