@@ -292,7 +292,7 @@ macro_line|#endif
 suffix:semicolon
 macro_line|#if SMC_DEBUG &gt; 0
 DECL|macro|DBG
-mdefine_line|#define DBG(n, args...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (SMC_DEBUG &gt;= (n))&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG args);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define DBG(n, args...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (SMC_DEBUG &gt;= (n))&t;&t;&t;&bslash;&n;&t;&t;&t;printk(args);&t;&bslash;&n;&t;} while (0)
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(args...)   printk(args)
 macro_line|#else
@@ -595,18 +595,24 @@ op_or
 id|CTL_LE_ENABLE
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the control register to automatically release successfully&n;&t; * transmitted packets, to make the best use out of our limited&n;&t; * memory&n;&t; */
-macro_line|#if ! THROTTLE_TX_PKTS
+r_if
+c_cond
+(paren
+op_logical_neg
+id|THROTTLE_TX_PKTS
+)paren
+(brace
 id|ctl
 op_or_assign
 id|CTL_AUTO_RELEASE
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
 id|ctl
 op_and_assign
 op_complement
 id|CTL_AUTO_RELEASE
 suffix:semicolon
-macro_line|#endif
 id|SMC_SET_CTL
 c_func
 (paren
@@ -1231,6 +1237,10 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|lp-&gt;saved_skb
+op_assign
+l_int|NULL
+suffix:semicolon
 id|packet_no
 op_assign
 id|SMC_GET_AR
@@ -1257,10 +1267,6 @@ l_string|&quot;%s: Memory allocation failed.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
-suffix:semicolon
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
 suffix:semicolon
 id|lp-&gt;stats.tx_errors
 op_increment
@@ -1400,10 +1406,6 @@ c_func
 (paren
 id|skb
 )paren
-suffix:semicolon
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
 suffix:semicolon
 id|lp-&gt;stats.tx_packets
 op_increment
@@ -1637,14 +1639,17 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * Allocation succeeded: push packet to the chip&squot;s own memory&n;&t;&t; * immediately.&n;&t;&t; *&n;&t;&t; * If THROTTLE_TX_PKTS is selected that means we don&squot;t want&n;&t;&t; * more than a single TX packet taking up space in the chip&squot;s&n;&t;&t; * internal memory at all time, in which case we stop the&n;&t;&t; * queue right here until we&squot;re notified of TX completion.&n;&t;&t; *&n;&t;&t; * Otherwise we&squot;re quite happy to feed more TX packets right&n;&t;&t; * away for better TX throughput, in which case the queue is&n;&t;&t; * left active.&n;&t;&t; */
-macro_line|#if THROTTLE_TX_PKTS
+r_if
+c_cond
+(paren
+id|THROTTLE_TX_PKTS
+)paren
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 id|smc_hardware_send_packet
 c_func
 (paren
@@ -3803,7 +3808,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s: IRQ 0x%02x MASK 0x%02x MEM 0x%04x FIFO 0x%04x&bslash;n&quot;
+l_string|&quot;%s: INT 0x%02x MASK 0x%02x MEM 0x%04x FIFO 0x%04x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3921,14 +3926,17 @@ c_func
 id|IM_TX_INT
 )paren
 suffix:semicolon
-macro_line|#if THROTTLE_TX_PKTS
+r_if
+c_cond
+(paren
+id|THROTTLE_TX_PKTS
+)paren
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -3968,14 +3976,18 @@ op_and_assign
 op_complement
 id|IM_ALLOC_INT
 suffix:semicolon
-macro_line|#if ! THROTTLE_TX_PKTS
+r_if
+c_cond
+(paren
+op_logical_neg
+id|THROTTLE_TX_PKTS
+)paren
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -4714,15 +4726,12 @@ id|dev-&gt;dev_addr
 )paren
 )paren
 (brace
-id|DBG
+id|PRINTK
 c_func
 (paren
-l_int|2
+l_string|&quot;%s: no valid ethernet hw addr&bslash;n&quot;
 comma
-(paren
-id|KERN_DEBUG
-l_string|&quot;smc_open: no valid ethernet hw addr&bslash;n&quot;
-)paren
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -4785,7 +4794,7 @@ c_func
 id|dev-&gt;dev_addr
 )paren
 suffix:semicolon
-multiline_comment|/* Configure the PHY */
+multiline_comment|/* Configure the PHY, initialize the link state */
 r_if
 c_cond
 (paren
@@ -4824,7 +4833,6 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * make sure to initialize the link state with netif_carrier_off()&n;&t; * somewhere, too --jgarzik&n;&t; *&n;&t; * smc_phy_configure() and smc_10bt_check_media() does that. --rmk&n;&t; */
 id|netif_start_queue
 c_func
 (paren

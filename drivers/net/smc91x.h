@@ -333,7 +333,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 op_assign
 id|SMC_inl
 c_func
@@ -342,6 +341,10 @@ id|ioaddr
 comma
 id|reg
 )paren
+suffix:semicolon
+id|buf
+op_add_assign
+l_int|4
 suffix:semicolon
 id|len
 op_decrement
@@ -434,6 +437,10 @@ id|dma
 op_amp
 id|DCSR_STOPSTATE
 )paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|DCSR
@@ -542,7 +549,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 op_assign
 id|SMC_inw
 c_func
@@ -551,6 +557,10 @@ id|ioaddr
 comma
 id|reg
 )paren
+suffix:semicolon
+id|buf
+op_add_assign
+l_int|2
 suffix:semicolon
 id|len
 op_decrement
@@ -643,6 +653,10 @@ id|dma
 op_amp
 id|DCSR_STOPSTATE
 )paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|DCSR
