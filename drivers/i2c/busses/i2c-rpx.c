@@ -109,6 +109,9 @@ suffix:semicolon
 multiline_comment|/* Allocate space for two transmit and two receive buffer&n;&t; * descriptors in the DP ram.&n;&t; */
 id|data-&gt;dp_addr
 op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
 id|m8xx_cpm_dpalloc
 c_func
 (paren
@@ -118,6 +121,7 @@ id|cbd_t
 )paren
 op_star
 l_int|4
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* ptr to i2c area */
