@@ -4171,14 +4171,12 @@ l_int|0
 suffix:semicolon
 id|skb_prev-&gt;csum
 op_assign
-id|csum_block_sub
+id|csum_sub
 c_func
 (paren
 id|skb_prev-&gt;csum
 comma
 id|skb-&gt;csum
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|data
