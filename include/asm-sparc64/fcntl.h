@@ -61,14 +61,6 @@ DECL|macro|F_SETSIG
 mdefine_line|#define F_SETSIG&t;10&t;/*  for sockets. */
 DECL|macro|F_GETSIG
 mdefine_line|#define F_GETSIG&t;11&t;/*  for sockets. */
-macro_line|#ifdef __KERNEL__
-DECL|macro|F_GETLK64
-mdefine_line|#define F_GETLK64&t;12
-DECL|macro|F_SETLK64
-mdefine_line|#define F_SETLK64&t;13
-DECL|macro|F_SETLKW64
-mdefine_line|#define F_SETLKW64&t;14
-macro_line|#endif
 multiline_comment|/* for F_[GET|SET]FL */
 DECL|macro|FD_CLOEXEC
 mdefine_line|#define FD_CLOEXEC&t;1&t;/* actually anything with low bit set goes */
@@ -134,10 +126,6 @@ id|__unused
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|macro|flock64
-mdefine_line|#define flock64&t;flock
-macro_line|#endif
 DECL|macro|F_LINUX_SPECIFIC_BASE
 mdefine_line|#define F_LINUX_SPECIFIC_BASE&t;1024
 macro_line|#endif /* !(_SPARC64_FCNTL_H) */

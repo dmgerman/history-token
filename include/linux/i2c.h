@@ -718,10 +718,15 @@ multiline_comment|/* some data fields that are used by all types&t;*/
 multiline_comment|/* these data fields are readonly to the public&t;*/
 multiline_comment|/* and can be set via the i2c_ioctl call&t;*/
 multiline_comment|/* data fields that are valid for all devices&t;*/
-DECL|member|lock
+DECL|member|bus
 r_struct
 id|semaphore
-id|lock
+id|bus
+suffix:semicolon
+DECL|member|list
+r_struct
+id|semaphore
+id|list
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -737,10 +742,6 @@ id|clients
 (braket
 id|I2C_CLIENT_MAX
 )braket
-suffix:semicolon
-DECL|member|client_count
-r_int
-id|client_count
 suffix:semicolon
 DECL|member|timeout
 r_int

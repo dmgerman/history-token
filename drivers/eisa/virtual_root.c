@@ -4,12 +4,26 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/* The default EISA device parent (virtual root device). */
+multiline_comment|/* The default EISA device parent (virtual root device).&n; * Now use a platform device, since that&squot;s the obvious choice. */
 DECL|variable|eisa_root_dev
 r_static
 r_struct
-id|device
+id|platform_device
 id|eisa_root_dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;eisa&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|dev
 op_assign
 (brace
 dot
@@ -17,10 +31,7 @@ id|name
 op_assign
 l_string|&quot;Virtual EISA Bridge&quot;
 comma
-dot
-id|bus_id
-op_assign
-l_string|&quot;eisa&quot;
+)brace
 comma
 )brace
 suffix:semicolon
@@ -35,7 +46,7 @@ dot
 id|dev
 op_assign
 op_amp
-id|eisa_root_dev
+id|eisa_root_dev.dev
 comma
 dot
 id|bus_base_addr
@@ -72,7 +83,7 @@ c_cond
 (paren
 id|r
 op_assign
-id|device_register
+id|platform_device_register
 (paren
 op_amp
 id|eisa_root_dev
@@ -84,7 +95,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-id|eisa_root_dev.driver_data
+id|eisa_root_dev.dev.driver_data
 op_assign
 op_amp
 id|eisa_bus_root
@@ -100,7 +111,7 @@ id|eisa_bus_root
 )paren
 (brace
 multiline_comment|/* A real bridge may have been registered before&n;&t;&t; * us. So quietly unregister. */
-id|device_unregister
+id|platform_device_unregister
 (paren
 op_amp
 id|eisa_root_dev

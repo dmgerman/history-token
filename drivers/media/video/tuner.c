@@ -11,8 +11,8 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;tuner.h&quot;
-macro_line|#include &quot;audiochip.h&quot;
+macro_line|#include &lt;media/tuner.h&gt;
+macro_line|#include &lt;media/audiochip.h&gt;
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static

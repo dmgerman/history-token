@@ -24,18 +24,7 @@ mdefine_line|#define DEBSTAT(x) if (i2c_debug&gt;=3) x; /* print several statist
 DECL|macro|DEBPROTO
 mdefine_line|#define DEBPROTO(x) if (i2c_debug&gt;=9) { x; }
 multiline_comment|/* debug the protocol by showing transferred bits */
-multiline_comment|/* debugging - slow down transfer to have a look at the data .. &t;*/
-multiline_comment|/* I use this with two leds&amp;resistors, each one connected to sda,scl &t;*/
-multiline_comment|/* respectively. This makes sure that the algorithm works. Some chips   */
-multiline_comment|/* might not like this, as they have an internal timeout of some mils&t;*/
-multiline_comment|/*&n;#define SLO_IO      jif=jiffies;while(time_before_eq(jiffies, jif+i2c_table[minor].veryslow))&bslash;&n;                        cond_resched();&n;*/
 multiline_comment|/* ----- global variables ---------------------------------------------&t;*/
-macro_line|#ifdef SLO_IO
-DECL|variable|jif
-r_int
-id|jif
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* module parameters:&n; */
 DECL|variable|i2c_debug
 r_static
@@ -48,12 +37,6 @@ r_int
 id|bit_test
 suffix:semicolon
 multiline_comment|/* see if the line-setting functions work&t;*/
-DECL|variable|bit_scan
-r_static
-r_int
-id|bit_scan
-suffix:semicolon
-multiline_comment|/* have a look at what&squot;s hanging &squot;round&t;&t;*/
 multiline_comment|/* --- setting states on the bus with the right timing: ---------------&t;*/
 DECL|macro|setsda
 mdefine_line|#define setsda(adap,val) adap-&gt;setsda(adap-&gt;data, val)
@@ -146,9 +129,6 @@ c_func
 id|adap-&gt;udelay
 )paren
 suffix:semicolon
-macro_line|#ifdef SLO_IO
-id|SLO_IO
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Raise scl line, and do checking for delays. This is necessary for slower&n; * devices.&n; */
 DECL|function|sclhi
@@ -165,9 +145,8 @@ id|adap
 )paren
 (brace
 r_int
+r_int
 id|start
-op_assign
-id|jiffies
 suffix:semicolon
 id|setscl
 c_func
@@ -175,12 +154,6 @@ c_func
 id|adap
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-id|adap-&gt;udelay
 )paren
 suffix:semicolon
 multiline_comment|/* Not all adapters have scl sense line... */
@@ -194,6 +167,10 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+id|start
+op_assign
+id|jiffies
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -206,14 +183,6 @@ id|adap
 )paren
 (brace
 multiline_comment|/* the hw knows how to read the clock line,&n; &t;&t; * so we wait until it actually gets high.&n; &t;&t; * This is safer as some chips may hold it low&n; &t;&t; * while they are processing data internally. &n; &t;&t; */
-id|setscl
-c_func
-(paren
-id|adap
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -254,9 +223,12 @@ id|start
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef SLO_IO
-id|SLO_IO
-macro_line|#endif
+id|udelay
+c_func
+(paren
+id|adap-&gt;udelay
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -430,21 +402,6 @@ op_assign
 id|i2c_adap-&gt;algo_data
 suffix:semicolon
 multiline_comment|/* assert: scl is low */
-id|DEB2
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot; i2c_outb:%2.2X&bslash;n&quot;
-comma
-id|c
-op_amp
-l_int|0xff
-)paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -519,6 +476,23 @@ id|adap
 )paren
 suffix:semicolon
 multiline_comment|/* we don&squot;t want to block the net */
+id|DEB2
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot; i2c_outb: 0x%02x, timeout at bit #%d&bslash;n&quot;
+comma
+id|c
+op_amp
+l_int|0xff
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ETIMEDOUT
@@ -560,6 +534,21 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* timeout */
+id|DEB2
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot; i2c_outb: 0x%02x, timeout at ack&bslash;n&quot;
+comma
+id|c
+op_amp
+l_int|0xff
+)paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ETIMEDOUT
@@ -583,9 +572,12 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; i2c_outb: getsda() =  0x%2.2x&bslash;n&quot;
+l_string|&quot; i2c_outb: 0x%02x , getsda() = %d&bslash;n&quot;
 comma
-op_complement
+id|c
+op_amp
+l_int|0xff
+comma
 id|ack
 )paren
 )paren
@@ -677,17 +669,6 @@ op_assign
 id|i2c_adap-&gt;algo_data
 suffix:semicolon
 multiline_comment|/* assert: scl is low */
-id|DEB2
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c_inb.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|sdahi
 c_func
 (paren
@@ -722,6 +703,21 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* timeout */
+id|DEB2
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot; i2c_inb: timeout at bit #%d&bslash;n&quot;
+comma
+l_int|7
+op_minus
+id|i
+)paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ETIMEDOUT
@@ -753,6 +749,21 @@ id|adap
 suffix:semicolon
 )brace
 multiline_comment|/* assert: scl is low */
+id|DEB2
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;i2c_inb: 0x%02x&bslash;n&quot;
+comma
+id|indata
+op_amp
+l_int|0xff
+)paren
+)paren
+suffix:semicolon
 id|DEBPROTO
 c_func
 (paren
@@ -760,7 +771,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; %2.2x&quot;
+l_string|&quot; 0x%02x&quot;
 comma
 id|indata
 op_amp
@@ -1354,11 +1365,40 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o: needed %d retries for %d&bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: Used %d tries to %s client at 0x%02x : %s&bslash;n&quot;
 comma
 id|i
+op_plus
+l_int|1
 comma
 id|addr
+op_amp
+l_int|1
+ques
+c_cond
+l_string|&quot;read&quot;
+suffix:colon
+l_string|&quot;write&quot;
+comma
+id|addr
+op_rshift
+l_int|1
+comma
+id|ret
+op_eq
+l_int|1
+ques
+c_cond
+l_string|&quot;success&quot;
+suffix:colon
+id|ret
+op_eq
+l_int|0
+ques
+c_cond
+l_string|&quot;no ack&quot;
+suffix:colon
+l_string|&quot;failed, timeout?&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1377,13 +1417,10 @@ id|i2c_adapter
 op_star
 id|i2c_adap
 comma
-r_const
-r_char
+r_struct
+id|i2c_msg
 op_star
-id|buf
-comma
-r_int
-id|count
+id|msg
 )paren
 (brace
 r_struct
@@ -1401,7 +1438,20 @@ r_char
 op_star
 id|temp
 op_assign
-id|buf
+id|msg-&gt;buf
+suffix:semicolon
+r_int
+id|count
+op_assign
+id|msg-&gt;len
+suffix:semicolon
+r_int
+r_int
+id|nak_ok
+op_assign
+id|msg-&gt;flags
+op_amp
+id|I2C_M_IGNORE_NAK
 suffix:semicolon
 r_int
 id|retval
@@ -1431,7 +1481,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o: %s i2c_write: writing %2.2X&bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: %s sendbytes: writing %2.2X&bslash;n&quot;
 comma
 id|i2c_adap-&gt;name
 comma
@@ -1454,11 +1504,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|retval
 OG
 l_int|0
 )paren
+op_logical_or
+(paren
+id|nak_ok
+op_logical_and
+(paren
+id|retval
+op_eq
+l_int|0
+)paren
+)paren
+)paren
 (brace
+multiline_comment|/* ok or ignored NAK */
 id|count
 op_decrement
 suffix:semicolon
@@ -1476,7 +1539,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2c-algo-bit.o: %s i2c_write: error - bailout.&bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: %s sendbytes: error - bailout.&bslash;n&quot;
 comma
 id|i2c_adap-&gt;name
 )paren
@@ -1534,20 +1597,12 @@ id|i2c_adapter
 op_star
 id|i2c_adap
 comma
-r_char
+r_struct
+id|i2c_msg
 op_star
-id|buf
-comma
-r_int
-id|count
+id|msg
 )paren
 (brace
-r_char
-op_star
-id|temp
-op_assign
-id|buf
-suffix:semicolon
 r_int
 id|inval
 suffix:semicolon
@@ -1563,6 +1618,17 @@ op_star
 id|adap
 op_assign
 id|i2c_adap-&gt;algo_data
+suffix:semicolon
+r_char
+op_star
+id|temp
+op_assign
+id|msg-&gt;buf
+suffix:semicolon
+r_int
+id|count
+op_assign
+id|msg-&gt;len
 suffix:semicolon
 r_while
 c_loop
@@ -1605,7 +1671,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2c-algo-bit.o: i2c_read: i2c_inb timed out.&bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: readbytes: i2c_inb timed out.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1680,7 +1746,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2c-algo-bit.o: i2c_read: Timeout at ack&bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: readbytes: Timeout at ack&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1712,7 +1778,7 @@ r_return
 id|rdcount
 suffix:semicolon
 )brace
-multiline_comment|/* doAddress initiates the transfer by generating the start condition (in&n; * try_address) and transmits the address in the necessary format to handle&n; * reads, writes as well as 10bit-addresses.&n; * returns:&n; *  0 everything went okay, the chip ack&squot;ed&n; * -x an error occurred (like: -EREMOTEIO if the device did not answer, or&n; *&t;-ETIMEDOUT, for example if the lines are stuck...) &n; */
+multiline_comment|/* doAddress initiates the transfer by generating the start condition (in&n; * try_address) and transmits the address in the necessary format to handle&n; * reads, writes as well as 10bit-addresses.&n; * returns:&n; *  0 everything went okay, the chip ack&squot;ed, or IGNORE_NAK flag was set&n; * -x an error occurred (like: -EREMOTEIO if the device did not answer, or&n; *&t;-ETIMEDOUT, for example if the lines are stuck...) &n; */
 DECL|function|bit_doAddress
 r_static
 r_inline
@@ -1729,9 +1795,6 @@ r_struct
 id|i2c_msg
 op_star
 id|msg
-comma
-r_int
-id|retries
 )paren
 (brace
 r_int
@@ -1739,6 +1802,14 @@ r_int
 id|flags
 op_assign
 id|msg-&gt;flags
+suffix:semicolon
+r_int
+r_int
+id|nak_ok
+op_assign
+id|msg-&gt;flags
+op_amp
+id|I2C_M_IGNORE_NAK
 suffix:semicolon
 r_struct
 id|i2c_algo_bit_data
@@ -1753,6 +1824,17 @@ id|addr
 suffix:semicolon
 r_int
 id|ret
+comma
+id|retries
+suffix:semicolon
+id|retries
+op_assign
+id|nak_ok
+ques
+c_cond
+l_int|0
+suffix:colon
+id|i2c_adap-&gt;retries
 suffix:semicolon
 r_if
 c_cond
@@ -1808,9 +1890,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ret
 op_ne
 l_int|1
+)paren
+op_logical_and
+op_logical_neg
+id|nak_ok
 )paren
 (brace
 id|printk
@@ -1841,9 +1928,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ret
 op_ne
 l_int|1
+)paren
+op_logical_and
+op_logical_neg
+id|nak_ok
 )paren
 (brace
 multiline_comment|/* the chip did not ack / xmission error occurred */
@@ -1893,9 +1985,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ret
 op_ne
 l_int|1
+)paren
+op_logical_and
+op_logical_neg
+id|nak_ok
 )paren
 (brace
 id|printk
@@ -1960,16 +2057,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ret
 op_ne
 l_int|1
 )paren
-(brace
+op_logical_and
+op_logical_neg
+id|nak_ok
+)paren
 r_return
 op_minus
 id|EREMOTEIO
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
@@ -2013,6 +2113,10 @@ id|i
 comma
 id|ret
 suffix:semicolon
+r_int
+r_int
+id|nak_ok
+suffix:semicolon
 id|i2c_start
 c_func
 (paren
@@ -2041,6 +2145,12 @@ id|msgs
 (braket
 id|i
 )braket
+suffix:semicolon
+id|nak_ok
+op_assign
+id|pmsg-&gt;flags
+op_amp
+id|I2C_M_IGNORE_NAK
 suffix:semicolon
 r_if
 c_cond
@@ -2074,16 +2184,19 @@ c_func
 id|i2c_adap
 comma
 id|pmsg
-comma
-id|i2c_adap-&gt;retries
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ret
 op_ne
 l_int|0
+)paren
+op_logical_and
+op_logical_neg
+id|nak_ok
 )paren
 (brace
 id|DEB2
@@ -2093,7 +2206,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o: NAK from device adr %#2x msg #%d&bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: NAK from device addr %2.2x msg #%d&bslash;n&quot;
 comma
 id|msgs
 (braket
@@ -2137,9 +2250,7 @@ c_func
 (paren
 id|i2c_adap
 comma
-id|pmsg-&gt;buf
-comma
-id|pmsg-&gt;len
+id|pmsg
 )paren
 suffix:semicolon
 id|DEB2
@@ -2188,9 +2299,7 @@ c_func
 (paren
 id|i2c_adap
 comma
-id|pmsg-&gt;buf
-comma
-id|pmsg-&gt;len
+id|pmsg
 )paren
 suffix:semicolon
 id|DEB2
@@ -2240,30 +2349,6 @@ r_return
 id|num
 suffix:semicolon
 )brace
-DECL|function|algo_control
-r_static
-r_int
-id|algo_control
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adapter
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|bit_func
 r_static
 id|u32
@@ -2308,11 +2393,6 @@ op_assign
 id|bit_xfer
 comma
 dot
-id|algo_control
-op_assign
-id|algo_control
-comma
-dot
 id|functionality
 op_assign
 id|bit_func
@@ -2331,9 +2411,6 @@ op_star
 id|adap
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|i2c_algo_bit_data
 op_star
@@ -2403,97 +2480,6 @@ op_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* be replaced by defines&t;*/
-multiline_comment|/* scan bus */
-r_if
-c_cond
-(paren
-id|bit_scan
-)paren
-(brace
-r_int
-id|ack
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; i2c-algo-bit.o: scanning bus %s.&bslash;n&quot;
-comma
-id|adap-&gt;name
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0x00
-suffix:semicolon
-id|i
-OL
-l_int|0xff
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-id|i2c_start
-c_func
-(paren
-id|bit_adap
-)paren
-suffix:semicolon
-id|ack
-op_assign
-id|i2c_outb
-c_func
-(paren
-id|adap
-comma
-id|i
-)paren
-suffix:semicolon
-id|i2c_stop
-c_func
-(paren
-id|bit_adap
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ack
-OG
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;(%02x)&quot;
-comma
-id|i
-op_rshift
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|i2c_add_adapter
 c_func
 (paren
@@ -2515,42 +2501,12 @@ op_star
 id|adap
 )paren
 (brace
-r_int
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
+r_return
 id|i2c_del_adapter
 c_func
 (paren
 id|adap
 )paren
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|res
-suffix:semicolon
-id|DEB2
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o: adapter unregistered: %s&bslash;n&quot;
-comma
-id|adap-&gt;name
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|i2c_bit_add_bus
@@ -2596,14 +2552,6 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|bit_scan
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|i2c_debug
 comma
 l_string|&quot;i&quot;
@@ -2615,14 +2563,6 @@ c_func
 id|bit_test
 comma
 l_string|&quot;Test the lines of the bus to see if it is stuck&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|bit_scan
-comma
-l_string|&quot;Scan for active chips on the bus&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

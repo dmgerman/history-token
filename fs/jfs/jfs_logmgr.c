@@ -1824,23 +1824,10 @@ id|tblk-&gt;xflag
 op_amp
 id|COMMIT_LAZY
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * Lazy transactions can leave now&n;&t;&t; */
 id|tblk-&gt;flag
 op_or_assign
 id|tblkGC_LAZY
 suffix:semicolon
-id|LOGGC_UNLOCK
-c_func
-(paren
-id|log
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * group commit pageout in progress&n;&t; */
 r_if
 c_cond
 (paren
@@ -1854,9 +1841,27 @@ id|logGC_PAGEOUT
 )paren
 op_logical_and
 id|log-&gt;cqueue.head
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|tblk-&gt;xflag
+op_amp
+id|COMMIT_LAZY
+)paren
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|log_FLUSH
+comma
+op_amp
+id|log-&gt;flag
+)paren
+)paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * only transaction in the commit queue:&n;&t;&t; *&n;&t;&t; * start one-transaction group commit as&n;&t;&t; * its group leader.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * No pageout in progress&n;&t;&t; *&n;&t;&t; * start group commit as its group leader.&n;&t;&t; */
 id|log-&gt;cflag
 op_or_assign
 id|logGC_PAGEOUT
@@ -1868,6 +1873,25 @@ id|log
 comma
 l_int|0
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tblk-&gt;xflag
+op_amp
+id|COMMIT_LAZY
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Lazy transactions can leave now&n;&t;&t; */
+id|LOGGC_UNLOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* lmGCwrite gives up LOGGC_LOCK, check again */
@@ -2437,28 +2461,11 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* no transaction are ready yet (transactions are only just&n;&t; * queued (GC_QUEUE) and not entered for group commit yet).&n;&t; * the first transaction entering group commit&n;&t; * will elect herself as new group leader.&n;&t; */
 r_else
-(brace
 id|log-&gt;cflag
 op_and_assign
 op_complement
 id|logGC_PAGEOUT
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|log_FLUSH
-comma
-op_amp
-id|log-&gt;flag
-)paren
-suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-id|log-&gt;flush_tblk
-)paren
-suffix:semicolon
-)brace
 singleline_comment|//LOGGC_UNLOCK(log);
 id|spin_unlock_irqrestore
 c_func

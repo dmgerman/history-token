@@ -228,13 +228,13 @@ id|freq
 op_assign
 id|data
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_int
 r_int
 id|cpu
 op_assign
 id|freq-&gt;cpu
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren

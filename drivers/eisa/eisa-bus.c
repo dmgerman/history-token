@@ -388,9 +388,15 @@ comma
 id|edev-&gt;id.sig
 )paren
 )paren
+(brace
+id|edev-&gt;id.driver_data
+op_assign
+id|eids-&gt;driver_data
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 id|eids
 op_increment
 suffix:semicolon
