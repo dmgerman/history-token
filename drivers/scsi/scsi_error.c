@@ -1319,7 +1319,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|254
+l_int|252
 comma
 l_int|0
 )brace
@@ -1353,7 +1353,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-l_int|254
+l_int|252
 comma
 id|GFP_ATOMIC
 op_or
@@ -1412,7 +1412,7 @@ id|scsi_result
 comma
 l_int|0
 comma
-l_int|254
+l_int|252
 )paren
 suffix:semicolon
 id|saved_result
@@ -1425,7 +1425,7 @@ id|scsi_result
 suffix:semicolon
 id|scmd-&gt;request_bufflen
 op_assign
-l_int|254
+l_int|252
 suffix:semicolon
 id|scmd-&gt;use_sg
 op_assign
