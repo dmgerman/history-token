@@ -23,32 +23,6 @@ macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
-r_extern
-r_int
-id|fix_alignment
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bad_page_fault
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-id|sig
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
 DECL|variable|debugger
 r_void
