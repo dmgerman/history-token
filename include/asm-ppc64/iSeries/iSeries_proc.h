@@ -2,36 +2,12 @@ multiline_comment|/*&n; * iSeries_proc.h&n; * Copyright (C) 2001  Kyle A. Lucke 
 macro_line|#ifndef _ISERIES_PROC_H
 DECL|macro|_ISERIES_PROC_H
 mdefine_line|#define _ISERIES_PROC_H
-macro_line|#include &lt;linux/proc_fs.h&gt;
 r_extern
 r_void
 id|iSeries_proc_early_init
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-DECL|typedef|iSeriesProcFunction
-r_typedef
-r_void
-(paren
-op_star
-id|iSeriesProcFunction
-)paren
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|iSeries_proc
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|iSeries_proc_callback
-c_func
-(paren
-id|iSeriesProcFunction
-id|initFunction
 )paren
 suffix:semicolon
 macro_line|#endif /* _iSeries_PROC_H */

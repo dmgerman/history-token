@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/ItSpCommArea.h&gt;
-macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
@@ -2594,13 +2593,6 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;mf.c: iSeries Linux LPAR Machine Facilities initialized&bslash;n&quot;
-)paren
-suffix:semicolon
-id|iSeries_proc_callback
-c_func
-(paren
-op_amp
-id|mf_proc_init
 )paren
 suffix:semicolon
 )brace

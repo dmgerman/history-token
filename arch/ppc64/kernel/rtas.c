@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;

@@ -32,7 +32,6 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
-macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
 macro_line|#endif
@@ -668,13 +667,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|paca
-)paren
-suffix:semicolon
-DECL|variable|proc_ppc64
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_ppc64
 )paren
 suffix:semicolon
 DECL|variable|cur_cpu_spec

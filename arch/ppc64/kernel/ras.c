@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
