@@ -369,7 +369,7 @@ suffix:semicolon
 r_int
 id|off
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enable all FSB flashed interrupts.&n;&t; * ZZZ - I&squot;d really like defines for this......&n;&t; */
+multiline_comment|/*&n;&t; * Enable all FSB flashed interrupts.&n;&t; * I&squot;d really like defines for this......&n;&t; */
 id|base
 op_assign
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id:$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 - 2001 Silicon Graphics, Inc.&n; * All rights reserved.&n; */
+multiline_comment|/* $Id: hubcounters.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2002 Silicon Graphics, Inc.&n; * All rights reserved.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -49,9 +49,8 @@ id|file_operations
 id|hub_mon_fops
 op_assign
 (brace
-dot
 id|ioctl
-op_assign
+suffix:colon
 id|hubstats_ioctl
 comma
 )brace

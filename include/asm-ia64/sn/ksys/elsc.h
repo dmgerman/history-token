@@ -2,7 +2,9 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_KSYS_ELSC_H
 DECL|macro|_ASM_SN_KSYS_ELSC_H
 mdefine_line|#define _ASM_SN_KSYS_ELSC_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|ELSC_ACP_MAX
 mdefine_line|#define ELSC_ACP_MAX&t;&t;86&t;&t;/* 84+cr+lf */
 DECL|macro|ELSC_LINE_MAX
@@ -532,22 +534,6 @@ id|e
 )paren
 suffix:semicolon
 r_int
-id|elsc_nic_get
-c_func
-(paren
-id|elsc_t
-op_star
-id|e
-comma
-r_uint64
-op_star
-id|nic
-comma
-r_int
-id|verbose
-)paren
-suffix:semicolon
-r_int
 id|_elsc_hbt
 c_func
 (paren
@@ -576,6 +562,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/*&n; * Error codes&n; *&n; *   The possible ELSC error codes are a superset of the I2C error codes,&n; *   so ELSC error codes begin at -100.&n; */
 DECL|macro|ELSC_ERROR_NONE
 mdefine_line|#define ELSC_ERROR_NONE&t;&t;&t;0

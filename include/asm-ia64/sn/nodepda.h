@@ -74,11 +74,18 @@ DECL|member|slotdesc
 id|slotid_t
 id|slotdesc
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+DECL|member|geoid
+id|geoid_t
+id|geoid
+suffix:semicolon
+macro_line|#else
 DECL|member|module_id
 id|moduleid_t
 id|module_id
 suffix:semicolon
 multiline_comment|/* Module ID (redundant local copy) */
+macro_line|#endif
 DECL|member|module
 id|module_t
 op_star
@@ -131,12 +138,23 @@ op_star
 id|npda_rip_last
 suffix:semicolon
 multiline_comment|/*&n;&t; * The BTEs on this node are shared by the local cpus&n;&t; */
-DECL|member|node_bte_info
+DECL|member|bte_if
 id|bteinfo_t
-id|node_bte_info
+id|bte_if
 (braket
 id|BTES_PER_NODE
 )braket
+suffix:semicolon
+multiline_comment|/* Virtual Interface */
+DECL|member|____cacheline_aligned
+r_char
+id|bte_cleanup
+(braket
+l_int|5
+op_star
+id|L1_CACHE_BYTES
+)braket
+id|____cacheline_aligned
 suffix:semicolon
 macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 DECL|member|snpda
@@ -222,6 +240,8 @@ id|nodepda_s
 id|nodepda_t
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_SGI_SN2
+DECL|macro|NR_IVECS
+mdefine_line|#define NR_IVECS 256
 DECL|struct|irqpda_s
 r_struct
 id|irqpda_s
@@ -234,7 +254,7 @@ DECL|member|irq_flags
 r_char
 id|irq_flags
 (braket
-id|NR_IRQS
+id|NR_IVECS
 )braket
 suffix:semicolon
 )brace
@@ -248,7 +268,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IA64_SGI_SN2 */
 multiline_comment|/*&n; * Access Functions for node PDA.&n; * Since there is one nodepda for each node, we need a convenient mechanism&n; * to access these nodepdas without cluttering code with #ifdefs.&n; * The next set of definitions provides this.&n; * Routines are expected to use &n; *&n; *&t;nodepda&t;&t;&t;-&gt; to access node PDA for the node on which code is running&n; *&t;subnodepda&t;&t;-&gt; to access subnode PDA for the subnode on which code is running&n; *&n; *&t;NODEPDA(cnode)&t;&t;-&gt; to access node PDA for cnodeid &n; *&t;SUBNODEPDA(cnode,sn)&t;-&gt; to access subnode PDA for cnodeid/subnode&n; */
 DECL|macro|nodepda
-mdefine_line|#define&t;nodepda&t;&t;pda.p_nodepda&t;&t;/* Ptr to this node&squot;s PDA */
+mdefine_line|#define&t;nodepda&t;&t;pda-&gt;p_nodepda&t;&t;/* Ptr to this node&squot;s PDA */
 DECL|macro|NODEPDA
 mdefine_line|#define&t;NODEPDA(cnode)&t;&t;(nodepda-&gt;pernode_pdaindr[cnode])
 macro_line|#if defined(CONFIG_IA64_SGI_SN1)
@@ -260,8 +280,13 @@ DECL|macro|SNPDA
 mdefine_line|#define&t;SNPDA(npda,sn)&t;&t;(&amp;(npda)-&gt;snpda[sn])
 macro_line|#endif
 multiline_comment|/*&n; * Macros to access data structures inside nodepda &n; */
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+DECL|macro|NODE_MODULEID
+mdefine_line|#define NODE_MODULEID(cnode)    geo_module((NODEPDA(cnode)-&gt;geoid))
+macro_line|#else
 DECL|macro|NODE_MODULEID
 mdefine_line|#define NODE_MODULEID(cnode)&t;(NODEPDA(cnode)-&gt;module_id)
+macro_line|#endif
 DECL|macro|NODE_SLOTID
 mdefine_line|#define NODE_SLOTID(cnode)&t;(NODEPDA(cnode)-&gt;slotdesc)
 multiline_comment|/*&n; * Quickly convert a compact node ID into a hwgraph vertex&n; */
@@ -269,7 +294,7 @@ DECL|macro|cnodeid_to_vertex
 mdefine_line|#define cnodeid_to_vertex(cnodeid) (NODEPDA(cnodeid)-&gt;node_vertex)
 multiline_comment|/*&n; * Check if given a compact node id the corresponding node has all the&n; * cpus disabled. &n; */
 DECL|macro|is_headless_node
-mdefine_line|#define is_headless_node(cnode)&t;&t;((cnode == CNODEID_NONE) ||&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (node_data(cnode)-&gt;active_cpu_count == 0))
+mdefine_line|#define is_headless_node(cnode)&t;&t;0 /*((cnode == CNODEID_NONE) ||&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;    (node_data(cnode)-&gt;active_cpu_count == 0)) */
 multiline_comment|/*&n; * Check if given a node vertex handle the corresponding node has all the&n; * cpus disabled. &n; */
 DECL|macro|is_headless_node_vertex
 mdefine_line|#define is_headless_node_vertex(_nodevhdl) &bslash;&n;&t;&t;&t;is_headless_node(nodevertex_to_cnodeid(_nodevhdl))

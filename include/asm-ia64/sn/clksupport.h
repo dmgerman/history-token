@@ -13,28 +13,40 @@ id|clkreg_t
 suffix:semicolon
 r_extern
 r_int
+r_int
 id|sn_rtc_cycles_per_second
 suffix:semicolon
 macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 macro_line|#include &lt;asm/sn/sn1/bedrock.h&gt;
 macro_line|#include &lt;asm/sn/sn1/hubpi_next.h&gt;
+r_extern
+id|nasid_t
+id|master_nasid
+suffix:semicolon
+DECL|macro|RTC_MASK
+mdefine_line|#define RTC_MASK&t;&t;(0x007fffffffffffff)
 multiline_comment|/* clocks are not synchronized yet on SN1  - used node 0 (problem if no NASID 0) */
 DECL|macro|RTC_COUNTER_ADDR
-mdefine_line|#define RTC_COUNTER_ADDR&t;((clkreg_t*)REMOTE_HUB_ADDR(0, PI_RT_COUNTER))
+mdefine_line|#define RTC_COUNTER_ADDR&t;((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_COUNTER))
 DECL|macro|RTC_COMPARE_A_ADDR
-mdefine_line|#define RTC_COMPARE_A_ADDR      ((clkreg_t*)REMOTE_HUB_ADDR(0, PI_RT_COMPARE_A))
+mdefine_line|#define RTC_COMPARE_A_ADDR      ((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_COMPARE_A))
 DECL|macro|RTC_COMPARE_B_ADDR
-mdefine_line|#define RTC_COMPARE_B_ADDR      ((clkreg_t*)REMOTE_HUB_ADDR(0, PI_RT_COMPARE_B))
+mdefine_line|#define RTC_COMPARE_B_ADDR      ((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_COMPARE_B))
 DECL|macro|RTC_INT_PENDING_A_ADDR
-mdefine_line|#define RTC_INT_PENDING_A_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(0, PI_RT_INT_PEND_A))
+mdefine_line|#define RTC_INT_PENDING_A_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_INT_PEND_A))
 DECL|macro|RTC_INT_PENDING_B_ADDR
-mdefine_line|#define RTC_INT_PENDING_B_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(0, PI_RT_INT_PEND_B))
+mdefine_line|#define RTC_INT_PENDING_B_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_INT_PEND_B))
 DECL|macro|RTC_INT_ENABLED_A_ADDR
-mdefine_line|#define RTC_INT_ENABLED_A_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(0, PI_RT_INT_EN_A))
+mdefine_line|#define RTC_INT_ENABLED_A_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_INT_EN_A))
 DECL|macro|RTC_INT_ENABLED_B_ADDR
-mdefine_line|#define RTC_INT_ENABLED_B_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(0, PI_RT_INT_EN_B))
-macro_line|#else
+mdefine_line|#define RTC_INT_ENABLED_B_ADDR  ((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_INT_EN_B))
+macro_line|#else&t;/* !CONFIG_IA64_SGI_SN1 */
+macro_line|#include &lt;asm/sn/addrs.h&gt;
+macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
+DECL|macro|RTC_MASK
+mdefine_line|#define RTC_MASK&t;&t;(SH_RTC_MASK)
 DECL|macro|RTC_COUNTER_ADDR
 mdefine_line|#define RTC_COUNTER_ADDR&t;((clkreg_t*)LOCAL_MMR_ADDR(SH_RTC))
 DECL|macro|RTC_COMPARE_A_ADDR
@@ -49,7 +61,7 @@ DECL|macro|RTC_INT_ENABLED_A_ADDR
 mdefine_line|#define RTC_INT_ENABLED_A_ADDR  ((clkreg_t*)LOCAL_MMR_ADDR(SH_RTC))
 DECL|macro|RTC_INT_ENABLED_B_ADDR
 mdefine_line|#define RTC_INT_ENABLED_B_ADDR  ((clkreg_t*)LOCAL_MMR_ADDR(SH_RTC))
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 DECL|macro|GET_RTC_COUNTER
 mdefine_line|#define GET_RTC_COUNTER()&t;(*RTC_COUNTER_ADDR)
 DECL|macro|rtc_time

@@ -34,6 +34,8 @@ DECL|macro|EDGE_LBL_CPU
 mdefine_line|#define EDGE_LBL_CPU&t;&t;&t;&quot;cpu&quot;
 DECL|macro|EDGE_LBL_CPUNUM
 mdefine_line|#define EDGE_LBL_CPUNUM&t;&t;&t;&quot;cpunum&quot;
+DECL|macro|EDGE_LBL_DIRECT
+mdefine_line|#define EDGE_LBL_DIRECT&t;&t;&t;&quot;direct&quot;
 DECL|macro|EDGE_LBL_DISABLED
 mdefine_line|#define EDGE_LBL_DISABLED&t;&t;&quot;disabled&quot;
 DECL|macro|EDGE_LBL_DISK
@@ -100,6 +102,8 @@ DECL|macro|EDGE_LBL_GFX
 mdefine_line|#define EDGE_LBL_GFX&t;&t;&t;&quot;gfx&quot;
 DECL|macro|EDGE_LBL_HUB
 mdefine_line|#define EDGE_LBL_HUB&t;&t;&t;&quot;hub&quot;&t;&t;/* For SN0 */
+DECL|macro|EDGE_LBL_HW
+mdefine_line|#define EDGE_LBL_HW&t;&t;&t;&quot;hw&quot;
 DECL|macro|EDGE_LBL_SYNERGY
 mdefine_line|#define EDGE_LBL_SYNERGY&t;&t;&quot;synergy&quot;&t;/* For SNIA only */
 DECL|macro|EDGE_LBL_IBUS
@@ -114,6 +118,10 @@ DECL|macro|EDGE_LBL_IOC3
 mdefine_line|#define EDGE_LBL_IOC3&t;&t;&t;&quot;ioc3&quot;
 DECL|macro|EDGE_LBL_LUN
 mdefine_line|#define EDGE_LBL_LUN                    &quot;lun&quot;
+DECL|macro|EDGE_LBL_LINUX
+mdefine_line|#define EDGE_LBL_LINUX                  &quot;linux&quot;
+DECL|macro|EDGE_LBL_LINUX_BUS
+mdefine_line|#define EDGE_LBL_LINUX_BUS              EDGE_LBL_LINUX &quot;/busnum&quot;
 DECL|macro|EDGE_LBL_MACE
 mdefine_line|#define EDGE_LBL_MACE                   &quot;mace&quot; &t;&t;/* O2 mace */
 DECL|macro|EDGE_LBL_MACHDEP
@@ -138,6 +146,12 @@ DECL|macro|EDGE_LBL_PARTITION
 mdefine_line|#define EDGE_LBL_PARTITION&t;&t;&quot;partition&quot;
 DECL|macro|EDGE_LBL_PCI
 mdefine_line|#define EDGE_LBL_PCI&t;&t;&t;&quot;pci&quot;
+DECL|macro|EDGE_LBL_PCIX
+mdefine_line|#define EDGE_LBL_PCIX&t;&t;&t;&quot;pci-x&quot;
+DECL|macro|EDGE_LBL_PCIX_0
+mdefine_line|#define EDGE_LBL_PCIX_0&t;&t;&t;EDGE_LBL_PCIX &quot;/0&quot;
+DECL|macro|EDGE_LBL_PCIX_1
+mdefine_line|#define EDGE_LBL_PCIX_1&t;&t;&t;EDGE_LBL_PCIX &quot;/1&quot;
 DECL|macro|EDGE_LBL_PORT
 mdefine_line|#define EDGE_LBL_PORT&t;&t;&t;&quot;port&quot;
 DECL|macro|EDGE_LBL_PROM
@@ -190,6 +204,8 @@ DECL|macro|EDGE_LBL_XPLINK_NET
 mdefine_line|#define&t;EDGE_LBL_XPLINK_NET&t;&t;&quot;net&quot; &t;&t;/* XP network devs */
 DECL|macro|EDGE_LBL_XPLINK_RAW
 mdefine_line|#define&t;EDGE_LBL_XPLINK_RAW&t;&t;&quot;raw&quot;&t;&t;/* XP Raw devs */
+DECL|macro|EDGE_LBL_SLAB
+mdefine_line|#define EDGE_LBL_SLAB&t;&t;&t;&quot;slab&quot;&t;&t;/* Slab of a module */
 DECL|macro|EDGE_LBL_XPLINK_KERNEL
 mdefine_line|#define&t;EDGE_LBL_XPLINK_KERNEL&t;&t;&quot;kernel&quot;&t;/* XP kernel devs */
 DECL|macro|EDGE_LBL_XPLINK_ADMIN
@@ -336,7 +352,7 @@ r_int
 id|io_brick_map_widget
 c_func
 (paren
-r_char
+r_int
 comma
 r_int
 )paren
@@ -354,11 +370,10 @@ r_struct
 id|io_brick_map_s
 (brace
 DECL|member|ibm_type
-r_char
+r_int
 id|ibm_type
 suffix:semicolon
-multiline_comment|/* brick type, e.g. */
-multiline_comment|/* &squot;I&squot; for Ibrick   */
+multiline_comment|/* brick type */
 DECL|member|ibm_map_wid
 r_int
 id|ibm_map_wid

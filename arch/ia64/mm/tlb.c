@@ -230,7 +230,7 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|__flush_tlb_all
+id|local_flush_tlb_all
 c_func
 (paren
 )paren
@@ -318,8 +318,8 @@ id|ptcg_lock
 suffix:semicolon
 )brace
 r_void
-DECL|function|__flush_tlb_all
-id|__flush_tlb_all
+DECL|function|local_flush_tlb_all
+id|local_flush_tlb_all
 (paren
 r_void
 )paren
@@ -725,7 +725,7 @@ id|ptce_info.stride
 l_int|1
 )braket
 suffix:semicolon
-id|__flush_tlb_all
+id|local_flush_tlb_all
 c_func
 (paren
 )paren

@@ -11,7 +11,7 @@ macro_line|#include &quot;../drivers/scsi/scsi.h&quot;
 macro_line|#include &quot;../drivers/scsi/hosts.h&quot;
 macro_line|#include &quot;simscsi.h&quot;
 DECL|macro|DEBUG_SIMSCSI
-mdefine_line|#define DEBUG_SIMSCSI&t;1
+mdefine_line|#define DEBUG_SIMSCSI&t;0
 multiline_comment|/* Simulator system calls: */
 DECL|macro|SSC_OPEN
 mdefine_line|#define SSC_OPEN&t;&t;&t;50
@@ -1737,6 +1737,24 @@ c_func
 (paren
 op_amp
 id|simscsi_tasklet
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_int
+DECL|function|simscsi_host_reset
+id|simscsi_host_reset
+(paren
+id|Scsi_Cmnd
+op_star
+id|sc
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;simscsi_host_reset: not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

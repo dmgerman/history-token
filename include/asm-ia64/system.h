@@ -508,6 +508,13 @@ macro_line|#else
 DECL|macro|switch_to
 macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(next))-&gt;dfh = (ia64_get_fpu_owner() != (next));&t;&bslash;&n;&t;__switch_to(prev,next,last);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
+multiline_comment|/*&n; * On IA-64, we don&squot;t want to hold the runqueue&squot;s lock during the low-level context-switch,&n; * because that could cause a deadlock.  Here is an example by Erich Focht:&n; *&n; * Example:&n; * CPU#0:&n; * schedule()&n; *    -&gt; spin_lock_irq(&amp;rq-&gt;lock)&n; *    -&gt; context_switch()&n; *       -&gt; wrap_mmu_context()&n; *          -&gt; read_lock(&amp;tasklist_lock)&n; *&n; * CPU#1:&n; * sys_wait4() or release_task() or forget_original_parent()&n; *    -&gt; write_lock(&amp;tasklist_lock)&n; *    -&gt; do_notify_parent()&n; *       -&gt; wake_up_parent()&n; *          -&gt; try_to_wake_up()&n; *             -&gt; spin_lock_irq(&amp;parent_rq-&gt;lock)&n; *&n; * If the parent&squot;s rq happens to be on CPU#0, we&squot;ll wait for the rq-&gt;lock&n; * of that CPU which will not be released, because there we wait for the&n; * tasklist_lock to become available.&n; */
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq, next)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock(&amp;(next)-&gt;switch_lock);&t;&bslash;&n;&t;spin_unlock(&amp;(rq)-&gt;lock);&t;&t;&bslash;&n;} while (0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq, prev)&t;spin_unlock_irq(&amp;(prev)-&gt;switch_lock)
+DECL|macro|task_running
+mdefine_line|#define task_running(rq, p) &t;&t;((rq)-&gt;curr == (p) || spin_is_locked(&amp;(p)-&gt;switch_lock))
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SYSTEM_H */

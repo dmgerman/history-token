@@ -60,6 +60,15 @@ DECL|macro|PCIIOCDMAALLOC
 mdefine_line|#define&t;PCIIOCDMAALLOC&t;&t;_IOWR(0,1,uint64_t)
 DECL|macro|PCIIOCDMAFREE
 mdefine_line|#define&t;PCIIOCDMAFREE&t;&t;_IOW(0,1,uint64_t)
+multiline_comment|/* pio cache-mode ioctl defines.  current only uncached accelerated */
+DECL|macro|PCIBA_CACHE_MODE_SET
+mdefine_line|#define PCIBA_CACHE_MODE_SET&t;1
+DECL|macro|PCIBA_CACHE_MODE_CLEAR
+mdefine_line|#define PCIBA_CACHE_MODE_CLEAR&t;2
+macro_line|#ifdef PIOMAP_UNC_ACC
+DECL|macro|PCIBA_UNCACHED_ACCEL
+mdefine_line|#define PCIBA_UNCACHED_ACCEL&t;PIOMAP_UNC_ACC
+macro_line|#endif
 multiline_comment|/* The parameter for PCIIOCDMAALLOC needs to contain&n; * both the size of the request and the flag values&n; * to be used in setting up the DMA.&n; *&n;&n;FIXME chadt: gonna have to revisit this: what flags would an IRIXer like to&n; have available?&n;&n; * Any flags normally useful in pciio_dmamap&n; * or pciio_dmatrans function calls can6 be used here.  */
 DECL|macro|PCIIOCDMAALLOC_REQUEST_PACK
 mdefine_line|#define&t;PCIIOCDMAALLOC_REQUEST_PACK(flags,size)&t;&t;&bslash;&n;&t;((((uint64_t)(flags))&lt;&lt;32)|&t;&t;&t;&bslash;&n;&t; (((uint64_t)(size))&amp;0xFFFFFFFF))

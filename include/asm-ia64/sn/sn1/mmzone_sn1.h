@@ -55,8 +55,8 @@ mdefine_line|#define PLAT_VALID_MEM_KADDR(kaddr)&t;(((unsigned long)(kaddr) &amp
 multiline_comment|/*&n; * Memory is conceptually divided into chunks. A chunk is either&n; * completely present, or else the kernel assumes it is completely&n; * absent. Each node consists of a number of possibly discontiguous chunks.&n; */
 DECL|macro|SN1_CHUNKSHIFT
 mdefine_line|#define SN1_CHUNKSHIFT&t;&t;&t;26&t;&t;&t;/* 64 MB */
-DECL|macro|SN1_CHUNKSIZE
-mdefine_line|#define SN1_CHUNKSIZE&t;&t;&t;(1UL &lt;&lt; SN1_CHUNKSHIFT)
+DECL|macro|PLAT_CHUNKSIZE
+mdefine_line|#define PLAT_CHUNKSIZE&t;&t;&t;(1UL &lt;&lt; SN1_CHUNKSHIFT)
 DECL|macro|PLAT_CHUNKNUM
 mdefine_line|#define PLAT_CHUNKNUM(addr)&t;&t;(((addr) &amp; (PLAT_MAX_PHYS_MEMORY-1)) &gt;&gt; SN1_CHUNKSHIFT)
 multiline_comment|/*&n; * Given a kaddr, find the nid (compact nodeid)&n; */
@@ -74,7 +74,7 @@ DECL|macro|PLAT_CLUMP_MEM_MAP_INDEX
 mdefine_line|#define PLAT_CLUMP_MEM_MAP_INDEX(kaddr)&t;&t;({long _kmmi=(long)(kaddr);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;KVADDR_TO_NID(_kmmi) * PLAT_CLUMPS_PER_NODE +&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;SN1_NODE_CLUMP_NUMBER(_kmmi);})
 multiline_comment|/*&n; * Calculate a &quot;goal&quot; value to be passed to __alloc_bootmem_node for allocating structures on&n; * nodes so that they dont alias to the same line in the cache as the previous allocated structure.&n; * This macro takes an address of the end of previous allocation, rounds it to a page boundary &amp; &n; * changes the node number.&n; */
 DECL|macro|PLAT_BOOTMEM_ALLOC_GOAL
-mdefine_line|#define PLAT_BOOTMEM_ALLOC_GOAL(cnode,kaddr)&t;SN1_KADDR(PLAT_PXM_TO_PHYS_NODE_NUMBER(nid_to_pxm_map[cnodeid]),&t;&bslash;&n;&t;&t;&t;&t;&t;&t;  (SN1_NODE_OFFSET(kaddr) + PAGE_SIZE - 1) &gt;&gt; PAGE_SHIFT &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define PLAT_BOOTMEM_ALLOC_GOAL(cnode,kaddr)&t;__pa(SN1_KADDR(PLAT_PXM_TO_PHYS_NODE_NUMBER(nid_to_pxm_map[cnode]),&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;  (SN1_NODE_OFFSET(kaddr) + PAGE_SIZE - 1) &gt;&gt; PAGE_SHIFT &lt;&lt; PAGE_SHIFT))
 multiline_comment|/*&n; * Convert a proximity domain number (from the ACPI tables) into a physical node number.&n; */
 DECL|macro|PLAT_PXM_TO_PHYS_NODE_NUMBER
 mdefine_line|#define PLAT_PXM_TO_PHYS_NODE_NUMBER(pxm)&t;(pxm)

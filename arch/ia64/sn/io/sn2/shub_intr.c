@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: shub_intr.c,v 1.2 2001/06/26 14:02:43 pfg Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/* $Id: shub_intr.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
@@ -17,19 +17,8 @@ macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-r_extern
-r_void
-id|hub_device_desc_update
-c_func
-(paren
-id|device_desc_t
-comma
-id|ilvl_t
-comma
-id|cpuid_t
-)paren
-suffix:semicolon
 multiline_comment|/* ARGSUSED */
 r_void
 DECL|function|hub_intr_init
@@ -40,61 +29,6 @@ id|devfs_handle_t
 id|hubv
 )paren
 (brace
-r_extern
-r_void
-id|sn_cpei_handler
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sn_init_cpei_timer
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|SGI_SHUB_ERROR_VECTOR
-comma
-id|sn_cpei_handler
-comma
-l_int|0
-comma
-l_string|&quot;SN hub error&quot;
-comma
-l_int|NULL
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;hub_intr_init: Couldn&squot;t register SGI_SHUB_ERROR_VECTOR = %x&bslash;n&quot;
-comma
-id|SGI_SHUB_ERROR_VECTOR
-)paren
-suffix:semicolon
-)brace
-id|sn_init_cpei_timer
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 id|xwidgetnum_t
 DECL|function|hub_widget_id
@@ -252,11 +186,10 @@ id|cpuphys
 suffix:semicolon
 id|cnode
 op_assign
-id|cpuid_to_cnodeid
-c_func
-(paren
+id|cpu_to_node_map
+(braket
 id|cpu
-)paren
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -267,8 +200,6 @@ id|slice
 id|xtalk_addr
 op_assign
 id|SH_II_INT1
-op_or
-id|GLOBAL_MMR_SPACE
 op_or
 (paren
 (paren
@@ -292,8 +223,6 @@ r_else
 id|xtalk_addr
 op_assign
 id|SH_II_INT0
-op_or
-id|GLOBAL_MMR_SPACE
 op_or
 (paren
 (paren
@@ -389,16 +318,6 @@ suffix:semicolon
 id|intr_hdl-&gt;i_flags
 op_or_assign
 id|HUB_INTR_IS_ALLOCED
-suffix:semicolon
-id|hub_device_desc_update
-c_func
-(paren
-id|dev_desc
-comma
-id|intr_swlevel
-comma
-id|cpu
-)paren
 suffix:semicolon
 r_return
 id|intr_hdl
@@ -499,7 +418,7 @@ id|intr_hdl-&gt;i_xtalk_info
 suffix:semicolon
 id|xtalk_info-&gt;xi_dev
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 id|xtalk_info-&gt;xi_vector
 op_assign
@@ -548,6 +467,15 @@ c_func
 id|hub_intr_t
 id|intr_hdl
 comma
+id|intr_func_t
+id|intr_func
+comma
+multiline_comment|/* xtalk intr handler */
+r_void
+op_star
+id|intr_arg
+comma
+multiline_comment|/* arg to intr handler */
 id|xtalk_intr_setfunc_t
 id|setfunc
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifdef STANDALONE
 macro_line|#include &quot;lock.h&quot;
 macro_line|#endif
@@ -234,9 +234,6 @@ id|llsc_main
 (paren
 r_int
 id|cpuid
-comma
-r_int
-id|mbasex
 )paren
 suffix:semicolon
 eof
