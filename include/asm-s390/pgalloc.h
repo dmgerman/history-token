@@ -114,8 +114,8 @@ DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)                     do { } while (0)
-DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)      BUG()
 r_static
@@ -445,8 +445,8 @@ id|pte
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pte_free_tlb
-mdefine_line|#define pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
+DECL|macro|__pte_free_tlb
+mdefine_line|#define __pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
 multiline_comment|/*&n; * This establishes kernel virtual mappings (e.g., as a result of a&n; * vmalloc call).  Since s390-esame uses a separate kernel page table,&n; * there is nothing to do here... :)&n; */
 DECL|macro|set_pgdir
 mdefine_line|#define set_pgdir(addr,entry) do { } while(0)

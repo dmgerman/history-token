@@ -942,13 +942,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* flag: do not probe bios for drive */
-DECL|member|revalidate
-r_int
-id|revalidate
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* request revalidation */
 DECL|member|atapi_overlap
 r_int
 id|atapi_overlap
@@ -1261,6 +1254,11 @@ r_int
 id|max_failures
 suffix:semicolon
 multiline_comment|/* maximum allowed failure count */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
@@ -2766,6 +2764,12 @@ r_typedef
 r_struct
 id|ide_driver_s
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_const
 r_char
@@ -3044,16 +3048,6 @@ id|ide_proc_entry_t
 op_star
 id|proc
 suffix:semicolon
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|reinit
 r_int
 (paren
@@ -3087,6 +3081,16 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+DECL|member|drives
+r_struct
+id|list_head
+id|drives
+suffix:semicolon
+DECL|member|drivers
+r_struct
+id|list_head
+id|drivers
+suffix:semicolon
 DECL|typedef|ide_driver_t
 )brace
 id|ide_driver_t
@@ -3098,8 +3102,6 @@ DECL|macro|IDE_CHIPSET_MODULE
 mdefine_line|#define IDE_CHIPSET_MODULE&t;&t;0&t;/* not supported yet */
 DECL|macro|IDE_PROBE_MODULE
 mdefine_line|#define IDE_PROBE_MODULE&t;&t;1
-DECL|macro|IDE_DRIVER_MODULE
-mdefine_line|#define IDE_DRIVER_MODULE&t;&t;2
 DECL|typedef|ide_module_init_proc
 r_typedef
 r_int
@@ -3148,11 +3150,6 @@ id|ide_hwifs
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
-r_extern
-id|ide_module_t
-op_star
-id|ide_modules
-suffix:semicolon
 r_extern
 id|ide_module_t
 op_star
@@ -4182,7 +4179,8 @@ id|generic_subdriver_entries
 suffix:semicolon
 macro_line|#endif
 r_int
-id|ide_reinit_drive
+id|ata_attach
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -4198,121 +4196,23 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDE */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
-r_int
-id|idedisk_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_int
-id|idedisk_init
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
-macro_line|#ifdef CONFIG_BLK_DEV_IDECD
-r_int
-id|ide_cdrom_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_int
-id|ide_cdrom_init
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
-macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
-r_int
-id|idetape_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_int
-id|idetape_init
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
-r_int
-id|idefloppy_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_int
-id|idefloppy_init
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
-macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
-r_int
-id|idescsi_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_int
-id|idescsi_init
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
 macro_line|#endif /* _IDE_C */
 r_int
-id|ide_register_module
+id|ide_register_driver
+c_func
 (paren
-id|ide_module_t
-op_star
-id|module
-)paren
-suffix:semicolon
-r_void
-id|ide_unregister_module
-(paren
-id|ide_module_t
-op_star
-id|module
-)paren
-suffix:semicolon
-id|ide_drive_t
-op_star
-id|ide_scan_devices
-(paren
-id|byte
-id|media
-comma
-r_const
-r_char
-op_star
-id|name
-comma
 id|ide_driver_t
 op_star
 id|driver
-comma
-r_int
-id|n
+)paren
+suffix:semicolon
+r_void
+id|ide_unregister_driver
+c_func
+(paren
+id|ide_driver_t
+op_star
+id|driver
 )paren
 suffix:semicolon
 r_int

@@ -73,11 +73,11 @@ id|ppc64_tlb_batch
 id|NR_CPUS
 )braket
 suffix:semicolon
-DECL|function|tlb_remove_tlb_entry
+DECL|function|__tlb_remove_tlb_entry
 r_static
 r_inline
 r_void
-id|tlb_remove_tlb_entry
+id|__tlb_remove_tlb_entry
 c_func
 (paren
 id|mmu_gather_t

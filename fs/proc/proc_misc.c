@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -24,6 +25,8 @@ macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 DECL|macro|LOAD_INT
 mdefine_line|#define LOAD_INT(x) ((x) &gt;&gt; FSHIFT)
 DECL|macro|LOAD_FRAC
@@ -546,11 +549,78 @@ r_struct
 id|page_state
 id|ps
 suffix:semicolon
+r_int
+id|cpu
+suffix:semicolon
+r_int
+r_int
+id|inactive
+suffix:semicolon
+r_int
+r_int
+id|active
+suffix:semicolon
+r_int
+r_int
+id|flushes
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|non_flushes
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|NR_CPUS
+suffix:semicolon
+id|cpu
+op_increment
+)paren
+(brace
+id|flushes
+op_add_assign
+id|mmu_gathers
+(braket
+id|cpu
+)braket
+dot
+id|flushes
+suffix:semicolon
+id|non_flushes
+op_add_assign
+id|mmu_gathers
+(braket
+id|cpu
+)braket
+dot
+id|avoided_flushes
+suffix:semicolon
+)brace
 id|get_page_state
 c_func
 (paren
 op_amp
 id|ps
+)paren
+suffix:semicolon
+id|get_zone_counts
+c_func
+(paren
+op_amp
+id|active
+comma
+op_amp
+id|inactive
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * display in kilobytes.&n; */
@@ -605,6 +675,8 @@ l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
 l_string|&quot;Committed_AS: %8u kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
 l_string|&quot;ReverseMaps:  %8lu&bslash;n&quot;
+l_string|&quot;TLB flushes:  %8lu&bslash;n&quot;
+l_string|&quot;non flushes:  %8lu&bslash;n&quot;
 comma
 id|K
 c_func
@@ -641,13 +713,13 @@ comma
 id|K
 c_func
 (paren
-id|ps.nr_active
+id|active
 )paren
 comma
 id|K
 c_func
 (paren
-id|ps.nr_inactive
+id|inactive
 )paren
 comma
 id|K
@@ -715,6 +787,10 @@ id|ps.nr_page_table_pages
 )paren
 comma
 id|ps.nr_reverse_maps
+comma
+id|flushes
+comma
+id|non_flushes
 )paren
 suffix:semicolon
 r_return

@@ -44,5 +44,14 @@ DECL|macro|__cacheline_aligned_in_smp
 mdefine_line|#define __cacheline_aligned_in_smp
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif
+macro_line|#if !defined(____cacheline_maxaligned_in_smp)
+macro_line|#if defined(CONFIG_SMP)
+DECL|macro|____cacheline_maxaligned_in_smp
+mdefine_line|#define ____cacheline_maxaligned_in_smp &bslash;&n;&t;__attribute__((__aligned__(1 &lt;&lt; (L1_CACHE_SHIFT_MAX))))
+macro_line|#else
+DECL|macro|____cacheline_maxaligned_in_smp
+mdefine_line|#define ____cacheline_maxaligned_in_smp
+macro_line|#endif
+macro_line|#endif
 macro_line|#endif /* __LINUX_CACHE_H */
 eof

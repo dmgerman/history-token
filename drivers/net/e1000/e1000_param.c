@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  This software program is available to you under a choice of one of two&n;  licenses. You may choose to be licensed under either the GNU General Public&n;  License 2.0, June 1991, available at http://www.fsf.org/copyleft/gpl.html,&n;  or the Intel BSD + Patent License, the text of which follows:&n;  &n;  Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;  to grant a license for the software entitled Linux Base Driver for the&n;  Intel(R) PRO/1000 Family of Adapters (e1000) (the &quot;Software&quot;) being provided&n;  by Intel Corporation. The following definitions apply to this license:&n;  &n;  &quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which&n;  are necessarily infringed by the use of sale of the Software alone or when&n;  combined with the operating system referred to below.&n;  &n;  &quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;  &n;  &quot;Licensee&quot; means Recipient and those third parties that receive a license to&n;  any operating system available under the GNU General Public License 2.0 or&n;  later.&n;  &n;  Copyright (c) 1999 - 2002 Intel Corporation.&n;  All rights reserved.&n;  &n;  The license is provided to Recipient and Recipient&squot;s Licensees under the&n;  following terms.&n;  &n;  Redistribution and use in source and binary forms of the Software, with or&n;  without modification, are permitted provided that the following conditions&n;  are met:&n;  &n;  Redistributions of source code of the Software may retain the above&n;  copyright notice, this list of conditions and the following disclaimer.&n;  &n;  Redistributions in binary form of the Software may reproduce the above&n;  copyright notice, this list of conditions and the following disclaimer in&n;  the documentation and/or materials provided with the distribution.&n;  &n;  Neither the name of Intel Corporation nor the names of its contributors&n;  shall be used to endorse or promote products derived from this Software&n;  without specific prior written permission.&n;  &n;  Intel hereby grants Recipient and Licensees a non-exclusive, worldwide,&n;  royalty-free patent license under Licensed Patents to make, use, sell, offer&n;  to sell, import and otherwise transfer the Software, if any, in source code&n;  and object code form. This license shall include changes to the Software&n;  that are error corrections or other minor changes to the Software that do&n;  not add functionality or features when the Software is incorporated in any&n;  version of an operating system that has been distributed under the GNU&n;  General Public License 2.0 or later. This patent license shall apply to the&n;  combination of the Software and any operating system licensed under the GNU&n;  General Public License 2.0 or later if, at the time Intel provides the&n;  Software to Recipient, such addition of the Software to the then publicly&n;  available versions of such operating systems available under the GNU General&n;  Public License 2.0 or later (whether in gold, beta or alpha form) causes&n;  such combination to be covered by the Licensed Patents. The patent license&n;  shall not apply to any other combinations which include the Software. NO&n;  hardware per se is licensed hereunder.&n;  &n;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&n;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n;  IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;  ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY&n;  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;  (INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;&n;  ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED&n;  AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR&n;  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&n;  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2002 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
 multiline_comment|/* This is the only thing that needs to be changed to adjust the&n; * maximum number of ports that the driver can manage.&n; */
 DECL|macro|E1000_MAX_NIC
@@ -78,6 +78,24 @@ comma
 l_string|&quot;Disable or enable Receive Checksum offload&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Transmit Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|TxIntDelay
+comma
+l_string|&quot;Transmit Interrupt Delay&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Transmit Absolute Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|TxAbsIntDelay
+comma
+l_string|&quot;Transmit Absolute Interrupt Delay&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0/128&n; */
 id|E1000_PARAM
 c_func
@@ -85,6 +103,15 @@ c_func
 id|RxIntDelay
 comma
 l_string|&quot;Receive Interrupt Delay&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Receive Absolute Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 128&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|RxAbsIntDelay
+comma
+l_string|&quot;Receive Absolute Interrupt Delay&quot;
 )paren
 suffix:semicolon
 DECL|macro|AUTONEG_ADV_DEFAULT
@@ -110,13 +137,31 @@ mdefine_line|#define MIN_RXD                       80
 DECL|macro|MAX_82544_RXD
 mdefine_line|#define MAX_82544_RXD               4096
 DECL|macro|DEFAULT_RDTR
-mdefine_line|#define DEFAULT_RDTR                   0
-DECL|macro|DEFAULT_RADV
-mdefine_line|#define DEFAULT_RADV                 128
+mdefine_line|#define DEFAULT_RDTR                 128
+DECL|macro|DEFAULT_RDTR_82544
+mdefine_line|#define DEFAULT_RDTR_82544             0
 DECL|macro|MAX_RXDELAY
 mdefine_line|#define MAX_RXDELAY               0xFFFF
 DECL|macro|MIN_RXDELAY
 mdefine_line|#define MIN_RXDELAY                    0
+DECL|macro|DEFAULT_RADV
+mdefine_line|#define DEFAULT_RADV                 128
+DECL|macro|MAX_RXABSDELAY
+mdefine_line|#define MAX_RXABSDELAY            0xFFFF
+DECL|macro|MIN_RXABSDELAY
+mdefine_line|#define MIN_RXABSDELAY                 0
+DECL|macro|DEFAULT_TIDV
+mdefine_line|#define DEFAULT_TIDV                  64
+DECL|macro|MAX_TXDELAY
+mdefine_line|#define MAX_TXDELAY               0xFFFF
+DECL|macro|MIN_TXDELAY
+mdefine_line|#define MIN_TXDELAY                    0
+DECL|macro|DEFAULT_TADV
+mdefine_line|#define DEFAULT_TADV                  64
+DECL|macro|MAX_TXABSDELAY
+mdefine_line|#define MAX_TXABSDELAY            0xFFFF
+DECL|macro|MIN_TXABSDELAY
+mdefine_line|#define MIN_TXABSDELAY                 0
 DECL|struct|e1000_option
 r_struct
 id|e1000_option
@@ -850,6 +895,150 @@ id|fc
 suffix:semicolon
 )brace
 (brace
+multiline_comment|/* Transmit Interrupt Delay */
+r_char
+op_star
+id|tidv
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TIDV
+)paren
+suffix:semicolon
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Transmit Interrupt Delay&quot;
+comma
+dot
+id|arg
+op_assign
+(brace
+id|r
+suffix:colon
+(brace
+id|min
+suffix:colon
+id|MIN_TXDELAY
+comma
+id|max
+suffix:colon
+id|MAX_TXDELAY
+)brace
+)brace
+)brace
+suffix:semicolon
+id|opt.def
+op_assign
+id|DEFAULT_TIDV
+suffix:semicolon
+id|opt.err
+op_assign
+id|tidv
+suffix:semicolon
+id|adapter-&gt;tx_int_delay
+op_assign
+id|TxIntDelay
+(braket
+id|bd
+)braket
+suffix:semicolon
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_int_delay
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
+(brace
+multiline_comment|/* Transmit Absolute Interrupt Delay */
+r_char
+op_star
+id|tadv
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TADV
+)paren
+suffix:semicolon
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Transmit Absolute Interrupt Delay&quot;
+comma
+dot
+id|arg
+op_assign
+(brace
+id|r
+suffix:colon
+(brace
+id|min
+suffix:colon
+id|MIN_TXABSDELAY
+comma
+id|max
+suffix:colon
+id|MAX_TXABSDELAY
+)brace
+)brace
+)brace
+suffix:semicolon
+id|opt.def
+op_assign
+id|DEFAULT_TADV
+suffix:semicolon
+id|opt.err
+op_assign
+id|tadv
+suffix:semicolon
+id|adapter-&gt;tx_abs_int_delay
+op_assign
+id|TxAbsIntDelay
+(braket
+id|bd
+)braket
+suffix:semicolon
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_abs_int_delay
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
+(brace
 multiline_comment|/* Receive Interrupt Delay */
 r_char
 op_star
@@ -864,13 +1053,13 @@ id|DEFAULT_RDTR
 suffix:semicolon
 r_char
 op_star
-id|radv
+id|rdtr_82544
 op_assign
 l_string|&quot;using default of &quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|DEFAULT_RADV
+id|DEFAULT_RDTR_82544
 )paren
 suffix:semicolon
 r_struct
@@ -914,24 +1103,24 @@ suffix:semicolon
 id|opt.def
 op_assign
 id|mac_type
-OL
-id|e1000_82540
+OG
+id|e1000_82544
 ques
 c_cond
 id|DEFAULT_RDTR
 suffix:colon
-id|DEFAULT_RADV
+l_int|0
 suffix:semicolon
 id|opt.err
 op_assign
 id|mac_type
-OL
-id|e1000_82540
+OG
+id|e1000_82544
 ques
 c_cond
 id|rdtr
 suffix:colon
-id|radv
+id|rdtr_82544
 suffix:semicolon
 id|adapter-&gt;rx_int_delay
 op_assign
@@ -945,6 +1134,78 @@ c_func
 (paren
 op_amp
 id|adapter-&gt;rx_int_delay
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
+(brace
+multiline_comment|/* Receive Absolute Interrupt Delay */
+r_char
+op_star
+id|radv
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RADV
+)paren
+suffix:semicolon
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Receive Absolute Interrupt Delay&quot;
+comma
+dot
+id|arg
+op_assign
+(brace
+id|r
+suffix:colon
+(brace
+id|min
+suffix:colon
+id|MIN_RXABSDELAY
+comma
+id|max
+suffix:colon
+id|MAX_RXABSDELAY
+)brace
+)brace
+)brace
+suffix:semicolon
+id|opt.def
+op_assign
+id|DEFAULT_RADV
+suffix:semicolon
+id|opt.err
+op_assign
+id|radv
+suffix:semicolon
+id|adapter-&gt;rx_abs_int_delay
+op_assign
+id|RxAbsIntDelay
+(braket
+id|bd
+)braket
+suffix:semicolon
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;rx_abs_int_delay
 comma
 op_amp
 id|opt

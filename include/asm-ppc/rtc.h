@@ -85,7 +85,7 @@ multiline_comment|/* Set the current date and time in the real time clock. */
 DECL|function|set_rtc_time
 r_static
 r_inline
-r_void
+r_int
 id|set_rtc_time
 c_func
 (paren
