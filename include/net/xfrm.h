@@ -675,7 +675,6 @@ id|output
 r_struct
 id|sk_buff
 op_star
-op_star
 id|pskb
 )paren
 suffix:semicolon
