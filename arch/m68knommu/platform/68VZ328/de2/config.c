@@ -29,7 +29,7 @@ DECL|function|dragen2_sched_init
 id|dragen2_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine
@@ -627,7 +627,7 @@ op_star
 id|command
 comma
 r_int
-id|len
+id|size
 )paren
 (brace
 id|printk
@@ -636,14 +636,38 @@ c_func
 l_string|&quot;68VZ328 DragonBallVZ support (c) 2001 Lineo, Inc.&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BOOTPARAM)
+id|strncpy
+c_func
+(paren
+id|command
+comma
+id|CONFIG_BOOTPARAM_STRING
+comma
+id|size
+)paren
+suffix:semicolon
 id|command
 (braket
-l_int|0
+id|size
+op_minus
+l_int|1
 )braket
 op_assign
-l_char|&squot;&bslash;0&squot;
+l_int|0
 suffix:semicolon
-multiline_comment|/* no specific boot option */
+macro_line|#else
+id|memset
+c_func
+(paren
+id|command
+comma
+l_int|0
+comma
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 id|init_hardware
 c_func
 (paren
@@ -651,6 +675,10 @@ c_func
 suffix:semicolon
 id|mach_sched_init
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|dragen2_sched_init
 suffix:semicolon
 id|mach_tick
