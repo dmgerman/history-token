@@ -18141,7 +18141,7 @@ id|option
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

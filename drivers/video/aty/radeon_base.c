@@ -11345,7 +11345,7 @@ id|option
 suffix:semicolon
 macro_line|#endif
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|radeonfb_driver
