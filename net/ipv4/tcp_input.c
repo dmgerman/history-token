@@ -37,19 +37,10 @@ id|sysctl_tcp_reordering
 op_assign
 id|TCP_FASTRETRANS_THRESH
 suffix:semicolon
-macro_line|#ifdef CONFIG_INET_ECN
-DECL|variable|sysctl_tcp_ecn
-r_int
-id|sysctl_tcp_ecn
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
 DECL|variable|sysctl_tcp_ecn
 r_int
 id|sysctl_tcp_ecn
 suffix:semicolon
-macro_line|#endif
 DECL|variable|sysctl_tcp_dsack
 r_int
 id|sysctl_tcp_dsack

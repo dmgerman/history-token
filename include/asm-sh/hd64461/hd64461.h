@@ -1,8 +1,25 @@
 macro_line|#ifndef __ASM_SH_HD64461
 DECL|macro|__ASM_SH_HD64461
 mdefine_line|#define __ASM_SH_HD64461
-multiline_comment|/*&n; *&t;$Id: hd64461.h,v 1.4 2004/02/01 19:46:04 lethal Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
+multiline_comment|/*&n; *&t;$Id: hd64461.h,v 1.5 2004/03/16 00:07:51 lethal Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* Constants for PCMCIA mappings */
+DECL|macro|HD64461_PCC_WINDOW
+mdefine_line|#define HD64461_PCC_WINDOW&t;0x01000000
+DECL|macro|HD64461_PCC0_BASE
+mdefine_line|#define HD64461_PCC0_BASE&t;0xb8000000&t;/* area 6 */
+DECL|macro|HD64461_PCC0_ATTR
+mdefine_line|#define HD64461_PCC0_ATTR&t;(HD64461_PCC0_BASE)
+DECL|macro|HD64461_PCC0_COMM
+mdefine_line|#define HD64461_PCC0_COMM&t;(HD64461_PCC0_BASE+HD64461_PCC_WINDOW)
+DECL|macro|HD64461_PCC0_IO
+mdefine_line|#define HD64461_PCC0_IO&t;&t;(HD64461_PCC0_BASE+2*HD64461_PCC_WINDOW)
+DECL|macro|HD64461_PCC1_BASE
+mdefine_line|#define HD64461_PCC1_BASE&t;0xb4000000&t;/* area 5 */
+DECL|macro|HD64461_PCC1_ATTR
+mdefine_line|#define HD64461_PCC1_ATTR&t;(HD64461_PCC1_BASE)
+DECL|macro|HD64461_PCC1_COMM
+mdefine_line|#define HD64461_PCC1_COMM&t;(HD64461_PCC1_BASE+HD64461_PCC_WINDOW)
 DECL|macro|HD64461_STBCR
 mdefine_line|#define HD64461_STBCR&t;0x10000
 DECL|macro|HD64461_STBCR_CKIO_STBY
@@ -31,8 +48,8 @@ DECL|macro|HD64461_STBCR_STM1ST
 mdefine_line|#define HD64461_STBCR_STM1ST&t;&t;&t;0x0004
 DECL|macro|HD64461_STBCR_SIRST
 mdefine_line|#define HD64461_STBCR_SIRST&t;&t;&t;&t;0x0002
-DECL|macro|HD64461_STBCR_SURTSD
-mdefine_line|#define HD64461_STBCR_SURTSD&t;&t;&t;0x0001
+DECL|macro|HD64461_STBCR_SURTST
+mdefine_line|#define HD64461_STBCR_SURTST&t;&t;&t;0x0001
 DECL|macro|HD64461_SYSCR
 mdefine_line|#define HD64461_SYSCR&t;0x10002
 DECL|macro|HD64461_SCPUCR
@@ -127,26 +144,118 @@ DECL|macro|HD64461_BBTROPR
 mdefine_line|#define HD64461_BBTROPR&t;&t;0x11068
 DECL|macro|HD64461_BBTMDR
 mdefine_line|#define HD64461_BBTMDR&t;&t;0x1106a
+multiline_comment|/* PC Card Controller Registers */
 DECL|macro|HD64461_PCC0ISR
-mdefine_line|#define HD64461_PCC0ISR         0x12000
+mdefine_line|#define HD64461_PCC0ISR         0x12000 /* socket 0 interface status */
 DECL|macro|HD64461_PCC0GCR
-mdefine_line|#define HD64461_PCC0GCR         0x12002
+mdefine_line|#define HD64461_PCC0GCR         0x12002 /* socket 0 general control */
 DECL|macro|HD64461_PCC0CSCR
-mdefine_line|#define HD64461_PCC0CSCR        0x12004
+mdefine_line|#define HD64461_PCC0CSCR        0x12004 /* socket 0 card status change */
 DECL|macro|HD64461_PCC0CSCIER
-mdefine_line|#define HD64461_PCC0CSCIER      0x12006
+mdefine_line|#define HD64461_PCC0CSCIER      0x12006 /* socket 0 card status change interrupt enable */
 DECL|macro|HD64461_PCC0SCR
-mdefine_line|#define HD64461_PCC0SCR         0x12008
+mdefine_line|#define HD64461_PCC0SCR         0x12008 /* socket 0 software control */
 DECL|macro|HD64461_PCC1ISR
-mdefine_line|#define HD64461_PCC1ISR         0x12010
+mdefine_line|#define HD64461_PCC1ISR         0x12010 /* socket 1 interface status */
 DECL|macro|HD64461_PCC1GCR
-mdefine_line|#define HD64461_PCC1GCR         0x12012
+mdefine_line|#define HD64461_PCC1GCR         0x12012 /* socket 1 general control */
 DECL|macro|HD64461_PCC1CSCR
-mdefine_line|#define HD64461_PCC1CSCR        0x12014
+mdefine_line|#define HD64461_PCC1CSCR        0x12014 /* socket 1 card status change */
 DECL|macro|HD64461_PCC1CSCIER
-mdefine_line|#define HD64461_PCC1CSCIER      0x12016
+mdefine_line|#define HD64461_PCC1CSCIER      0x12016 /* socket 1 card status change interrupt enable */
 DECL|macro|HD64461_PCC1SCR
-mdefine_line|#define HD64461_PCC1SCR         0x12018
+mdefine_line|#define HD64461_PCC1SCR         0x12018 /* socket 1 software control */
+multiline_comment|/* PCC Interface Status Register */
+DECL|macro|HD64461_PCCISR_READY
+mdefine_line|#define HD64461_PCCISR_READY&t;&t;0x80&t;/* card ready */
+DECL|macro|HD64461_PCCISR_MWP
+mdefine_line|#define HD64461_PCCISR_MWP&t;&t;0x40&t;/* card write-protected */
+DECL|macro|HD64461_PCCISR_VS2
+mdefine_line|#define HD64461_PCCISR_VS2&t;&t;0x20&t;/* voltage select pin 2 */
+DECL|macro|HD64461_PCCISR_VS1
+mdefine_line|#define HD64461_PCCISR_VS1&t;&t;0x10&t;/* voltage select pin 1 */
+DECL|macro|HD64461_PCCISR_CD2
+mdefine_line|#define HD64461_PCCISR_CD2&t;&t;0x08&t;/* card detect 2 */
+DECL|macro|HD64461_PCCISR_CD1
+mdefine_line|#define HD64461_PCCISR_CD1&t;&t;0x04&t;/* card detect 1 */
+DECL|macro|HD64461_PCCISR_BVD2
+mdefine_line|#define HD64461_PCCISR_BVD2&t;&t;0x02&t;/* battery 1 */
+DECL|macro|HD64461_PCCISR_BVD1
+mdefine_line|#define HD64461_PCCISR_BVD1&t;&t;0x01&t;/* battery 1 */
+DECL|macro|HD64461_PCCISR_PCD_MASK
+mdefine_line|#define HD64461_PCCISR_PCD_MASK&t;&t;0x0c    /* card detect */
+DECL|macro|HD64461_PCCISR_BVD_MASK
+mdefine_line|#define HD64461_PCCISR_BVD_MASK&t;0x03    /* battery voltage */
+DECL|macro|HD64461_PCCISR_BVD_BATGOOD
+mdefine_line|#define HD64461_PCCISR_BVD_BATGOOD&t;0x03    /* battery good */
+DECL|macro|HD64461_PCCISR_BVD_BATWARN
+mdefine_line|#define HD64461_PCCISR_BVD_BATWARN&t;0x01    /* battery low warning */
+DECL|macro|HD64461_PCCISR_BVD_BATDEAD1
+mdefine_line|#define HD64461_PCCISR_BVD_BATDEAD1&t;0x02    /* battery dead */
+DECL|macro|HD64461_PCCISR_BVD_BATDEAD2
+mdefine_line|#define HD64461_PCCISR_BVD_BATDEAD2&t;0x00    /* battery dead */
+multiline_comment|/* PCC General Control Register */
+DECL|macro|HD64461_PCCGCR_DRVE
+mdefine_line|#define HD64461_PCCGCR_DRVE&t;&t;0x80    /* output drive */
+DECL|macro|HD64461_PCCGCR_PCCR
+mdefine_line|#define HD64461_PCCGCR_PCCR&t;&t;0x40    /* PC card reset */
+DECL|macro|HD64461_PCCGCR_PCCT
+mdefine_line|#define HD64461_PCCGCR_PCCT&t;&t;0x20    /* PC card type, 1=IO&amp;mem, 0=mem */
+DECL|macro|HD64461_PCCGCR_VCC0
+mdefine_line|#define HD64461_PCCGCR_VCC0&t;&t;0x10    /* voltage control pin VCC0SEL0 */
+DECL|macro|HD64461_PCCGCR_PMMOD
+mdefine_line|#define HD64461_PCCGCR_PMMOD&t;&t;0x08    /* memory mode */
+DECL|macro|HD64461_PCCGCR_PA25
+mdefine_line|#define HD64461_PCCGCR_PA25&t;&t;0x04    /* pin A25 */
+DECL|macro|HD64461_PCCGCR_PA24
+mdefine_line|#define HD64461_PCCGCR_PA24&t;&t;0x02    /* pin A24 */
+DECL|macro|HD64461_PCCGCR_REG
+mdefine_line|#define HD64461_PCCGCR_REG&t;&t;0x01    /* pin PCC0REG# */
+multiline_comment|/* PCC Card Status Change Register */
+DECL|macro|HD64461_PCCCSCR_SCDI
+mdefine_line|#define HD64461_PCCCSCR_SCDI&t;&t;0x80    /* sw card detect intr */
+DECL|macro|HD64461_PCCCSCR_SRV1
+mdefine_line|#define HD64461_PCCCSCR_SRV1&t;&t;0x40    /* reserved */
+DECL|macro|HD64461_PCCCSCR_IREQ
+mdefine_line|#define HD64461_PCCCSCR_IREQ&t;&t;0x20    /* IREQ intr req */
+DECL|macro|HD64461_PCCCSCR_SC
+mdefine_line|#define HD64461_PCCCSCR_SC&t;&t;0x10    /* STSCHG (status change) pin */
+DECL|macro|HD64461_PCCCSCR_CDC
+mdefine_line|#define HD64461_PCCCSCR_CDC&t;&t;0x08    /* CD (card detect) change */
+DECL|macro|HD64461_PCCCSCR_RC
+mdefine_line|#define HD64461_PCCCSCR_RC&t;&t;0x04    /* READY change */
+DECL|macro|HD64461_PCCCSCR_BW
+mdefine_line|#define HD64461_PCCCSCR_BW&t;&t;0x02    /* battery warning change */
+DECL|macro|HD64461_PCCCSCR_BD
+mdefine_line|#define HD64461_PCCCSCR_BD&t;&t;0x01    /* battery dead change */
+multiline_comment|/* PCC Card Status Change Interrupt Enable Register */
+DECL|macro|HD64461_PCCCSCIER_CRE
+mdefine_line|#define HD64461_PCCCSCIER_CRE&t;&t;0x80    /* change reset enable */
+DECL|macro|HD64461_PCCCSCIER_IREQE_MASK
+mdefine_line|#define HD64461_PCCCSCIER_IREQE_MASK   &t;0x60   /* IREQ enable */
+DECL|macro|HD64461_PCCCSCIER_IREQE_DISABLED
+mdefine_line|#define HD64461_PCCCSCIER_IREQE_DISABLED&t;0x00   /* IREQ disabled */
+DECL|macro|HD64461_PCCCSCIER_IREQE_LEVEL
+mdefine_line|#define HD64461_PCCCSCIER_IREQE_LEVEL  &t;0x20   /* IREQ level-triggered */
+DECL|macro|HD64461_PCCCSCIER_IREQE_FALLING
+mdefine_line|#define HD64461_PCCCSCIER_IREQE_FALLING&t;0x40   /* IREQ falling-edge-trig */
+DECL|macro|HD64461_PCCCSCIER_IREQE_RISING
+mdefine_line|#define HD64461_PCCCSCIER_IREQE_RISING &t;0x60   /* IREQ rising-edge-trig */
+DECL|macro|HD64461_PCCCSCIER_SCE
+mdefine_line|#define HD64461_PCCCSCIER_SCE&t;&t;0x10    /* status change enable */
+DECL|macro|HD64461_PCCCSCIER_CDE
+mdefine_line|#define HD64461_PCCCSCIER_CDE&t;&t;0x08    /* card detect change enable */
+DECL|macro|HD64461_PCCCSCIER_RE
+mdefine_line|#define HD64461_PCCCSCIER_RE&t;&t;0x04    /* ready change enable */
+DECL|macro|HD64461_PCCCSCIER_BWE
+mdefine_line|#define HD64461_PCCCSCIER_BWE&t;&t;0x02    /* battery warn change enable */
+DECL|macro|HD64461_PCCCSCIER_BDE
+mdefine_line|#define HD64461_PCCCSCIER_BDE&t;&t;0x01    /* battery dead change enable*/
+multiline_comment|/* PCC Software Control Register */
+DECL|macro|HD64461_PCCSCR_VCC1
+mdefine_line|#define HD64461_PCCSCR_VCC1&t;&t;0x02&t;/* voltage control pin 1 */
+DECL|macro|HD64461_PCCSCR_SWP
+mdefine_line|#define HD64461_PCCSCR_SWP&t;&t;0x01    /* write protect */
 DECL|macro|HD64461_P0OCR
 mdefine_line|#define HD64461_P0OCR           0x1202a
 DECL|macro|HD64461_P1OCR
@@ -201,5 +310,21 @@ DECL|macro|HD64461_IRQBASE
 mdefine_line|#define HD64461_IRQBASE&t;&t;OFFCHIP_IRQ_BASE
 DECL|macro|HD64461_IRQ_NUM
 mdefine_line|#define HD64461_IRQ_NUM &t;16
+DECL|macro|HD64461_IRQ_UART
+mdefine_line|#define HD64461_IRQ_UART    &t;(HD64461_IRQBASE+5)
+DECL|macro|HD64461_IRQ_IRDA
+mdefine_line|#define HD64461_IRQ_IRDA    &t;(HD64461_IRQBASE+6)
+DECL|macro|HD64461_IRQ_TMU1
+mdefine_line|#define HD64461_IRQ_TMU1   &t;(HD64461_IRQBASE+9)
+DECL|macro|HD64461_IRQ_TMU0
+mdefine_line|#define HD64461_IRQ_TMU0  &t;(HD64461_IRQBASE+10)
+DECL|macro|HD64461_IRQ_GPIO
+mdefine_line|#define HD64461_IRQ_GPIO    &t;(HD64461_IRQBASE+11)
+DECL|macro|HD64461_IRQ_AFE
+mdefine_line|#define HD64461_IRQ_AFE     &t;(HD64461_IRQBASE+12)
+DECL|macro|HD64461_IRQ_PCC1
+mdefine_line|#define HD64461_IRQ_PCC1 &t;(HD64461_IRQBASE+13)
+DECL|macro|HD64461_IRQ_PCC0
+mdefine_line|#define HD64461_IRQ_PCC0 &t;(HD64461_IRQBASE+14)
 macro_line|#endif
 eof

@@ -17,10 +17,10 @@ id|gapspci_dma_used
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|pci_alloc_consistent
+DECL|function|__pci_alloc_consistent
 r_void
 op_star
-id|pci_alloc_consistent
+id|__pci_alloc_consistent
 c_func
 (paren
 r_struct
@@ -105,9 +105,9 @@ op_star
 id|buf
 suffix:semicolon
 )brace
-DECL|function|pci_free_consistent
+DECL|function|__pci_free_consistent
 r_void
-id|pci_free_consistent
+id|__pci_free_consistent
 c_func
 (paren
 r_struct

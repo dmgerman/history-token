@@ -156,7 +156,7 @@ id|u32
 id|address
 comma
 id|u32
-id|irq_base
+id|gsi_base
 )paren
 suffix:semicolon
 r_extern
@@ -173,7 +173,7 @@ id|u8
 id|trigger
 comma
 id|u32
-id|global_irq
+id|gsi
 )paren
 suffix:semicolon
 r_extern
@@ -190,30 +190,6 @@ id|mp_parse_prt
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_IO_APIC
-r_extern
-r_void
-id|mp_config_ioapic_for_sci
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|function|mp_config_ioapic_for_sci
-r_static
-r_inline
-r_void
-id|mp_config_ioapic_for_sci
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-)brace
-macro_line|#endif
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 DECL|macro|PHYSID_ARRAY_SIZE
 mdefine_line|#define PHYSID_ARRAY_SIZE&t;BITS_TO_LONGS(MAX_APICS)

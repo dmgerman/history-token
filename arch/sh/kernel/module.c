@@ -93,7 +93,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|COPY_UNALIGNED_WORD
-mdefine_line|#define COPY_UNALIGNED_WORD(sw, tw, align) &bslash;&n;{ &bslash;&n;&t;void *__s = &amp;(sw), *__t = &amp;(tw); &bslash;&n;&t;switch ((align)) &bslash;&n;&t;{ &bslash;&n;&t;case 0: &bslash;&n;&t;&t;*(unsigned long *) __t = *(unsigned long *) __s; &bslash;&n;&t;&t;break; &bslash;&n;&t;case 2: &bslash;&n;&t;&t;*((unsigned short *) __t)++ = *((unsigned short *) __s)++; &bslash;&n;&t;&t;*((unsigned short *) __t) = *((unsigned short *) __s); &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;*((unsigned char *) __t)++ = *((unsigned char *) __s)++; &bslash;&n;&t;&t;*((unsigned char *) __t)++ = *((unsigned char *) __s)++; &bslash;&n;&t;&t;*((unsigned char *) __t)++ = *((unsigned char *) __s)++; &bslash;&n;&t;&t;*((unsigned char *) __t) = *((unsigned char *) __s); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define COPY_UNALIGNED_WORD(sw, tw, align) &bslash;&n;{ &bslash;&n;&t;void *__s = &amp;(sw), *__t = &amp;(tw); &bslash;&n;&t;unsigned short *__s2 = __s, *__t2 = __t; &bslash;&n;&t;unsigned char *__s1 = __s, *__t1 = __t; &bslash;&n;&t;switch ((align)) &bslash;&n;&t;{ &bslash;&n;&t;case 0: &bslash;&n;&t;&t;*(unsigned long *) __t = *(unsigned long *) __s; &bslash;&n;&t;&t;break; &bslash;&n;&t;case 2: &bslash;&n;&t;&t;*__t2++ = *__s2++; &bslash;&n;&t;&t;*__t2 = *__s2; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;*__t1++ = *__s1++; &bslash;&n;&t;&t;*__t1++ = *__s1++; &bslash;&n;&t;&t;*__t1++ = *__s1++; &bslash;&n;&t;&t;*__t1 = *__s1; &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;}
 DECL|function|apply_relocate_add
 r_int
 id|apply_relocate_add

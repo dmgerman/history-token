@@ -7,6 +7,14 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acmacros.h&gt;
+DECL|macro|ACPI_NUMA
+mdefine_line|#define ACPI_NUMA&t;0x80000000
+DECL|macro|_COMPONENT
+mdefine_line|#define _COMPONENT&t;ACPI_NUMA
+id|ACPI_MODULE_NAME
+(paren
+l_string|&quot;numa&quot;
+)paren
 r_extern
 r_int
 id|__init
@@ -41,6 +49,11 @@ op_star
 id|header
 )paren
 (brace
+id|ACPI_FUNCTION_NAME
+(paren
+l_string|&quot;acpi_table_print_srat_entry&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -76,6 +89,7 @@ c_func
 (paren
 (paren
 id|ACPI_DB_INFO
+comma
 l_string|&quot;SRAT Processor (id[0x%02x] eid[0x%02x]) in proximity domain %d %s&bslash;n&quot;
 comma
 id|p-&gt;apic_id
@@ -117,6 +131,7 @@ c_func
 (paren
 (paren
 id|ACPI_DB_INFO
+comma
 l_string|&quot;SRAT Memory (0x%08x%08x length 0x%08x%08x type 0x%x) in proximity domain %d %s%s&bslash;n&quot;
 comma
 id|p-&gt;base_addr_hi

@@ -3161,6 +3161,10 @@ id|up-&gt;id
 )paren
 )paren
 suffix:semicolon
+id|up-&gt;family
+op_assign
+id|xp-&gt;family
+suffix:semicolon
 id|memcpy
 c_func
 (paren

@@ -179,6 +179,10 @@ id|vio_handler
 id|VIO_MAX_SUBTYPES
 )braket
 suffix:semicolon
+DECL|macro|VIOPATH_KERN_WARN
+mdefine_line|#define VIOPATH_KERN_WARN&t;KERN_WARNING &quot;viopath: &quot;
+DECL|macro|VIOPATH_KERN_INFO
+mdefine_line|#define VIOPATH_KERN_INFO&t;KERN_INFO &quot;viopath: &quot;
 DECL|function|e2a
 r_static
 r_int
@@ -562,7 +566,8 @@ id|HvLpEvent_Rc_Good
 id|printk
 c_func
 (paren
-l_string|&quot;viopath hv error on op %d&bslash;n&quot;
+id|VIOPATH_KERN_WARN
+l_string|&quot;hv error on op %d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1008,7 +1013,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;could not connect to partition %d&bslash;n&quot;
 comma
 id|remoteLp
@@ -1119,7 +1124,7 @@ id|mTargetInst
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;ignoring ack....mismatched instances&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1129,7 +1134,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;partition %d ended&bslash;n&quot;
 comma
 id|remoteLp
@@ -1350,7 +1355,7 @@ id|HvLpEvent_Function_Int
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;unexpected config request from partition %d&quot;
 comma
 id|event-&gt;xSourceLp
@@ -1525,7 +1530,7 @@ id|mTargetInst
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;message from invalid partition. &quot;
 l_string|&quot;int msg rcvd, source inst (%d) doesnt match (%d)&bslash;n&quot;
 comma
@@ -1567,7 +1572,7 @@ id|mSourceInst
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;message from invalid partition. &quot;
 l_string|&quot;int msg rcvd, target inst (%d) doesnt match (%d)&bslash;n&quot;
 comma
@@ -1607,7 +1612,7 @@ id|mSourceInst
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;message from invalid partition. &quot;
 l_string|&quot;ack msg rcvd, source inst (%d) doesnt match (%d)&bslash;n&quot;
 comma
@@ -1640,7 +1645,7 @@ id|mTargetInst
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;message from invalid partition. &quot;
 l_string|&quot;viopath: ack msg rcvd, target inst (%d) doesnt match (%d)&bslash;n&quot;
 comma
@@ -1672,7 +1677,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;unexpected virtual io event subtype %d from partition %d&bslash;n&quot;
 comma
 id|event-&gt;xSubtype
@@ -2174,8 +2179,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
-l_string|&quot;Opening connection to partition %d, setting sinst %d, tinst %d&bslash;n&quot;
+id|VIOPATH_KERN_INFO
+l_string|&quot;opening connection to partition %d, &quot;
+l_string|&quot;setting sinst %d, tinst %d&bslash;n&quot;
 comma
 id|remoteLp
 comma
@@ -2469,8 +2475,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
-l_string|&quot;Closing connection to partition %d&quot;
+id|VIOPATH_KERN_INFO
+l_string|&quot;closing connection to partition %d&quot;
 comma
 id|remoteLp
 )paren
@@ -2660,7 +2666,7 @@ id|VIO_MAX_SUBTYPES
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;unexpected subtype %d freeing event buffer&bslash;n&quot;
 comma
 id|subtype
@@ -2688,7 +2694,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;freeing unallocated event buffer, subtype %d&bslash;n&quot;
 comma
 id|subtype
@@ -2714,7 +2720,7 @@ l_int|256
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOPATH_KERN_WARN
 l_string|&quot;freeing invalid event buffer, subtype %d&bslash;n&quot;
 comma
 id|subtype

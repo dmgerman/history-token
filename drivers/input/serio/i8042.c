@@ -2589,6 +2589,19 @@ l_string|&quot;i8042.c: Warning: Keylock active.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * If the chip is configured into nontranslated mode by the BIOS, don&squot;t&n; * bother enabling translating and be happy.&n; */
+r_if
+c_cond
+(paren
+op_complement
+id|i8042_ctr
+op_amp
+id|I8042_CTR_XLATE
+)paren
+id|i8042_direct
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n; * Set nontranslated mode for the kbd interface if requested by an option.&n; * After this the kbd interface becomes a simple serial in/out, like the aux&n; * interface is. We don&squot;t do this by default, since it can confuse notebook&n; * BIOSes.&n; */
 r_if
 c_cond

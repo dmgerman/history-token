@@ -52,6 +52,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &quot;ibmveth.h&quot;
+macro_line|#warning remove NO_TCE usage from ibmveth.c
+DECL|macro|NO_TCE
+mdefine_line|#define NO_TCE PCI_DMA_ERROR_CODE
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
 DECL|macro|ibmveth_printk

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: maplemouse.c,v 1.1 2001/11/02 17:27:32 jsimmons Exp $&n; * &t;SEGA Dreamcast mouse driver&n; *&t;Based on drivers/usb/usbmouse.c&n; */
+multiline_comment|/*&n; *&t;$Id: maplemouse.c,v 1.2 2004/03/22 01:18:15 lethal Exp $&n; * &t;SEGA Dreamcast mouse driver&n; *&t;Based on drivers/usb/usbmouse.c&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
@@ -404,6 +404,13 @@ c_func
 id|REL_WHEEL
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|mouse-&gt;dev
+)paren
+suffix:semicolon
 id|mouse-&gt;dev
 dot
 r_private
@@ -426,7 +433,7 @@ id|mouse-&gt;dev.name
 op_assign
 id|dev-&gt;product_name
 suffix:semicolon
-id|mouse-&gt;dev.idbus
+id|mouse-&gt;dev.id.bustype
 op_assign
 id|BUS_MAPLE
 suffix:semicolon
@@ -453,16 +460,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: mouse(0x%lx): %s&bslash;n&quot;
-comma
-id|mouse-&gt;dev.number
+l_string|&quot;input: mouse(0x%lx): %s&bslash;n&quot;
 comma
 id|data
 comma
 id|mouse-&gt;dev.name
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -499,8 +502,6 @@ c_func
 (paren
 id|mouse
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|variable|dc_mouse_driver

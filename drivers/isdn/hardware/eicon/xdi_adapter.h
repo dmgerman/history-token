@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: xdi_adapter.h,v 1.6 2003/12/05 18:45:05 armin Exp $ */
+multiline_comment|/* $Id: xdi_adapter.h,v 1.7 2004/03/21 17:26:01 armin Exp $ */
 macro_line|#ifndef __DIVA_OS_XDI_ADAPTER_H__
 DECL|macro|__DIVA_OS_XDI_ADAPTER_H__
 mdefine_line|#define __DIVA_OS_XDI_ADAPTER_H__
@@ -186,7 +186,8 @@ r_struct
 id|_diva_os_xdi_adapter
 (brace
 DECL|member|link
-id|diva_entity_link_t
+r_struct
+id|list_head
 id|link
 suffix:semicolon
 DECL|member|CardIndex

@@ -1,12 +1,12 @@
-multiline_comment|/* $Id: divasproc.c,v 1.18 2003/09/09 06:46:29 schindler Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasproc.c,v 1.19 2004/03/21 17:26:01 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
-macro_line|#include &quot;dlist.h&quot;
 DECL|macro|ID_MASK
 macro_line|#undef ID_MASK
 DECL|macro|N_DATA
@@ -26,10 +26,6 @@ id|IoAdapters
 (braket
 id|MAX_ADAPTER
 )braket
-suffix:semicolon
-r_extern
-id|diva_entity_queue_t
-id|adapter_queue
 suffix:semicolon
 r_extern
 r_void

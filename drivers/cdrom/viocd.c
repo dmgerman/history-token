@@ -1378,7 +1378,25 @@ l_int|NULL
 )paren
 )paren
 (brace
-multiline_comment|/* check for any kind of error */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|blk_fs_request
+c_func
+(paren
+id|req
+)paren
+)paren
+id|end_request
+c_func
+(paren
+id|req
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren

@@ -760,6 +760,13 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* K56 par,VV,Voice,Speakphone,AudioSpan,PnP */
+(brace
+l_string|&quot;RSS0250&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* SupraExpress 28.8 Data/Fax PnP modem */
 (brace
 l_string|&quot;SUP1310&quot;
@@ -808,6 +815,13 @@ multiline_comment|/* 3Com Corp. */
 multiline_comment|/* Gateway Telepath IIvi 33.6 */
 (brace
 l_string|&quot;USR0000&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* U.S. Robotics Sporster 33.6K Fax INT PnP */
+(brace
+l_string|&quot;USR0002&quot;
 comma
 l_int|0
 )brace
@@ -920,6 +934,13 @@ comma
 multiline_comment|/* U.S. Robotics 56K Voice INT PnP*/
 (brace
 l_string|&quot;USR9190&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* Rockwell&squot;s (PORALiNK) 33600 INT PNP */
+(brace
+l_string|&quot;WCI0003&quot;
 comma
 l_int|0
 )brace

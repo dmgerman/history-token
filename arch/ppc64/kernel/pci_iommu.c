@@ -160,7 +160,7 @@ r_return
 r_void
 op_star
 )paren
-id|NO_TCE
+id|PCI_DMA_ERROR_CODE
 suffix:semicolon
 )brace
 id|tbl
@@ -234,7 +234,7 @@ c_cond
 (paren
 id|mapping
 op_eq
-id|NO_TCE
+id|PCI_DMA_ERROR_CODE
 )paren
 (brace
 id|free_pages
@@ -380,7 +380,7 @@ suffix:semicolon
 id|dma_addr_t
 id|dma_handle
 op_assign
-id|NO_TCE
+id|PCI_DMA_ERROR_CODE
 suffix:semicolon
 r_int
 r_int
@@ -459,7 +459,7 @@ c_cond
 (paren
 id|dma_handle
 op_eq
-id|NO_TCE
+id|PCI_DMA_ERROR_CODE
 )paren
 (brace
 r_if

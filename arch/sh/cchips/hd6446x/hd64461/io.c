@@ -1,7 +1,9 @@
-multiline_comment|/*&n; *&t;$Id: io.c,v 1.5 2004/02/01 19:46:04 lethal Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Typical I/O routines for HD64461 system.&n; */
+multiline_comment|/*&n; *&t;$Id: io.c,v 1.6 2004/03/16 00:07:50 lethal Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Typical I/O routines for HD64461 system.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hd64461/hd64461.h&gt;
+DECL|macro|MEM_BASE
+mdefine_line|#define MEM_BASE (CONFIG_HD64461_IOBASE - HD64461_STBCR)
 DECL|function|PORT2ADDR
 r_static
 id|__inline__
@@ -168,12 +170,27 @@ c_cond
 (paren
 id|port
 OL
-l_int|0x10000
+l_int|0xf000
 )paren
 r_return
 l_int|0xa0000000
 op_plus
 id|port
+suffix:semicolon
+multiline_comment|/* PCMCIA channel 0, I/O (0xba000000) */
+r_if
+c_cond
+(paren
+id|port
+OL
+l_int|0x10000
+)paren
+r_return
+l_int|0xba000000
+op_plus
+id|port
+op_minus
+l_int|0xf000
 suffix:semicolon
 multiline_comment|/* HD64461 internal devices (0xb0000000) */
 r_if
@@ -847,5 +864,61 @@ id|buf
 op_increment
 suffix:semicolon
 )brace
+)brace
+DECL|function|hd64461_readw
+r_int
+r_int
+id|hd64461_readw
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+(paren
+id|MEM_BASE
+op_plus
+id|addr
+)paren
+suffix:semicolon
+)brace
+DECL|function|hd64461_writew
+r_void
+id|hd64461_writew
+c_func
+(paren
+r_int
+r_int
+id|b
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+(paren
+id|MEM_BASE
+op_plus
+id|addr
+)paren
+op_assign
+id|b
+suffix:semicolon
 )brace
 eof

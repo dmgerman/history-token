@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.48 2004/02/24 17:46:28 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.52 2004/03/21 17:26:01 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &quot;platform.h&quot;
@@ -20,7 +21,6 @@ macro_line|#undef ID_MASK
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 macro_line|#include &quot;pc.h&quot;
-macro_line|#include &quot;dlist.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;diva.h&quot;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.48 $&quot;
+l_string|&quot;$Revision: 1.52 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
@@ -185,7 +185,7 @@ id|_diva_os_thread_dpc
 (brace
 DECL|member|divas_task
 r_struct
-id|work_struct
+id|tasklet_struct
 id|divas_task
 suffix:semicolon
 DECL|member|trap_script_task
@@ -2345,8 +2345,8 @@ r_void
 id|diva_os_dpc_proc
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|context
 )paren
 (brace
@@ -2473,7 +2473,7 @@ comma
 id|pdpc
 )paren
 suffix:semicolon
-id|INIT_WORK
+id|tasklet_init
 c_func
 (paren
 op_amp
@@ -2481,6 +2481,10 @@ id|pdpc-&gt;divas_task
 comma
 id|diva_os_dpc_proc
 comma
+(paren
+r_int
+r_int
+)paren
 id|pdpc
 )paren
 suffix:semicolon
@@ -2518,7 +2522,7 @@ op_star
 )paren
 id|psoft_isr-&gt;object
 suffix:semicolon
-id|schedule_work
+id|tasklet_schedule
 c_func
 (paren
 op_amp
@@ -2542,6 +2546,32 @@ op_star
 id|psoft_isr
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|psoft_isr
+op_logical_and
+id|psoft_isr-&gt;object
+)paren
+(brace
+id|diva_os_thread_dpc_t
+op_star
+id|pdpc
+op_assign
+(paren
+id|diva_os_thread_dpc_t
+op_star
+)paren
+id|psoft_isr-&gt;object
+suffix:semicolon
+id|tasklet_kill
+c_func
+(paren
+op_amp
+id|pdpc-&gt;divas_task
+)paren
+suffix:semicolon
+)brace
 r_return
 (paren
 l_int|0
@@ -2566,9 +2596,26 @@ op_logical_and
 id|psoft_isr-&gt;object
 )paren
 (brace
+id|diva_os_thread_dpc_t
+op_star
+id|pdpc
+op_assign
+(paren
+id|diva_os_thread_dpc_t
+op_star
+)paren
+id|psoft_isr-&gt;object
+suffix:semicolon
 r_void
 op_star
 id|mem
+suffix:semicolon
+id|tasklet_kill
+c_func
+(paren
+op_amp
+id|pdpc-&gt;divas_task
+)paren
 suffix:semicolon
 id|flush_scheduled_work
 c_func

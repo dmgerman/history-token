@@ -618,8 +618,8 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|pci_dma_error
-id|pci_dma_error
+DECL|function|pci_dma_mapping_error
+id|pci_dma_mapping_error
 c_func
 (paren
 id|dma_addr_t
@@ -627,7 +627,7 @@ id|dma_addr
 )paren
 (brace
 r_return
-id|dma_error
+id|dma_mapping_error
 c_func
 (paren
 id|dma_addr

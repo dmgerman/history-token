@@ -295,23 +295,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Optional, may be NULL. */
-DECL|member|setup_residual
-r_void
-(paren
-op_star
-id|setup_residual
-)paren
-(paren
-r_struct
-id|seq_file
-op_star
-id|m
-comma
-r_int
-id|cpu_id
-)paren
-suffix:semicolon
-multiline_comment|/* Optional, may be NULL. */
 DECL|member|get_cpuinfo
 r_void
 (paren

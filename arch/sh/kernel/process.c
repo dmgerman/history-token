@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.25 2004/01/13 05:52:11 kkojima Exp $&n; *&n; *  linux/arch/sh/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
+multiline_comment|/* $Id: process.c,v 1.26 2004/02/06 14:14:14 kkojima Exp $&n; *&n; *  linux/arch/sh/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -941,6 +941,31 @@ id|pt_regs
 op_star
 id|childregs
 suffix:semicolon
+macro_line|#if defined(CONFIG_CPU_SH4)
+r_struct
+id|task_struct
+op_star
+id|tsk
+op_assign
+id|current
+suffix:semicolon
+id|unlazy_fpu
+c_func
+(paren
+id|tsk
+comma
+id|regs
+)paren
+suffix:semicolon
+id|p-&gt;thread.fpu
+op_assign
+id|tsk-&gt;thread.fpu
+suffix:semicolon
+id|p-&gt;used_math
+op_assign
+id|tsk-&gt;used_math
+suffix:semicolon
+macro_line|#endif
 id|childregs
 op_assign
 (paren
@@ -1066,41 +1091,6 @@ id|p-&gt;thread.ubc_pc
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SH4)
-(brace
-r_struct
-id|task_struct
-op_star
-id|tsk
-op_assign
-id|current
-suffix:semicolon
-id|unlazy_fpu
-c_func
-(paren
-id|tsk
-comma
-id|regs
-)paren
-suffix:semicolon
-id|p-&gt;thread.fpu
-op_assign
-id|tsk-&gt;thread.fpu
-suffix:semicolon
-id|p-&gt;used_math
-op_assign
-id|tsk-&gt;used_math
-suffix:semicolon
-id|clear_ti_thread_flag
-c_func
-(paren
-id|p-&gt;thread_info
-comma
-id|TIF_USEDFPU
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

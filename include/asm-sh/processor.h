@@ -13,6 +13,8 @@ mdefine_line|#define current_text_addr() ({ void *pc; __asm__(&quot;mova&t;1f, %
 multiline_comment|/* Core Processor Version Register */
 DECL|macro|CCN_PVR
 mdefine_line|#define CCN_PVR&t;&t;0xff000030
+DECL|macro|CCN_CVR
+mdefine_line|#define CCN_CVR&t;&t;0xff000040
 DECL|macro|CCN_PRR
 mdefine_line|#define CCN_PRR&t;&t;0xff000044
 multiline_comment|/*&n; *  CPU type and hardware bug flags. Kept separately for each CPU.&n; *&n; *  Each one of these also needs a CONFIG_CPU_SUBTYPE_xxx entry&n; *  in arch/sh/Kconfig, as well as an entry in arch/sh/kernel/setup.c&n; *  for parsing the subtype in get_cpu_subtype().&n; */

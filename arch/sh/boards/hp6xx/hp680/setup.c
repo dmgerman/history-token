@@ -2,6 +2,9 @@ multiline_comment|/*&n; * linux/arch/sh/boards/hp6xx/hp680/setup.c&n; *&n; * Cop
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hd64461/hd64461.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/hp6xx/hp6xx.h&gt;
+macro_line|#include &lt;asm/cpu/dac.h&gt;
 DECL|function|get_system_type
 r_const
 r_char
@@ -25,12 +28,71 @@ c_func
 r_void
 )paren
 (brace
-id|__set_io_port_base
+id|u16
+id|v
+suffix:semicolon
+id|v
+op_assign
+id|inw
 c_func
 (paren
-id|CONFIG_HD64461_IOBASE
-op_minus
 id|HD64461_STBCR
+)paren
+suffix:semicolon
+id|v
+op_or_assign
+id|HD64461_STBCR_SURTST
+op_or
+id|HD64461_STBCR_SIRST
+op_or
+id|HD64461_STBCR_STM1ST
+op_or
+id|HD64461_STBCR_STM0ST
+op_or
+id|HD64461_STBCR_SAFEST
+op_or
+id|HD64461_STBCR_SPC0ST
+op_or
+id|HD64461_STBCR_SMIAST
+op_or
+id|HD64461_STBCR_SAFECKE_OST
+op_or
+id|HD64461_STBCR_SAFECKE_IST
+suffix:semicolon
+id|outw
+c_func
+(paren
+id|v
+comma
+id|HD64461_STBCR
+)paren
+suffix:semicolon
+id|v
+op_assign
+id|inw
+c_func
+(paren
+id|HD64461_GPADR
+)paren
+suffix:semicolon
+id|v
+op_or_assign
+id|HD64461_GPADR_SPEAKER
+op_or
+id|HD64461_GPADR_PCMCIA0
+suffix:semicolon
+id|outw
+c_func
+(paren
+id|v
+comma
+id|HD64461_GPADR
+)paren
+suffix:semicolon
+id|sh_dac_disable
+c_func
+(paren
+id|DAC_SPEAKER_VOLUME
 )paren
 suffix:semicolon
 r_return

@@ -41,6 +41,11 @@ r_int
 r_int
 id|ppc_tb_freq
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|ppc_proc_freq
+suffix:semicolon
 multiline_comment|/* Apparently the RTC stores seconds since 1 Jan 1904 */
 DECL|macro|RTC_OFFSET
 mdefine_line|#define RTC_OFFSET&t;2082844800
@@ -643,6 +648,41 @@ suffix:semicolon
 id|ppc_tb_freq
 op_assign
 id|freq
+suffix:semicolon
+id|fp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|get_property
+c_func
+(paren
+id|cpu
+comma
+l_string|&quot;clock-frequency&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fp
+op_eq
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;can&squot;t get cpu processor frequency&quot;
+)paren
+suffix:semicolon
+id|ppc_proc_freq
+op_assign
+op_star
+id|fp
 suffix:semicolon
 id|setup_default_decr
 c_func

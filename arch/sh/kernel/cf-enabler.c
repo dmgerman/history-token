@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cf-enabler.c,v 1.3 2003/05/04 19:29:52 lethal Exp $&n; *&n; *  linux/drivers/block/cf-enabler.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2000  Toshiharu Nozawa&n; *  Copyright (C) 2001  A&amp;D Co., Ltd.&n; *&n; *  Enable the CF configuration.&n; */
+multiline_comment|/* $Id: cf-enabler.c,v 1.4 2004/02/22 22:44:36 kkojima Exp $&n; *&n; *  linux/drivers/block/cf-enabler.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2000  Toshiharu Nozawa&n; *  Copyright (C) 2001  A&amp;D Co., Ltd.&n; *&n; *  Enable the CF configuration.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -163,7 +163,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_SH_SOLUTION_ENGINE)
-macro_line|#include &lt;asm/hitachi_se.h&gt;
+macro_line|#include &lt;asm/se/se.h&gt;
 multiline_comment|/*&n; * SolutionEngine&n; *&n; * 0xB8400000 : Common Memory&n; * 0xB8500000 : Attribute&n; * 0xB8600000 : I/O&n; */
 DECL|function|cf_init_se
 r_static

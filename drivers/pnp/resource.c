@@ -845,9 +845,9 @@ suffix:semicolon
 multiline_comment|/*&n; * resource validity checking&n; */
 DECL|macro|length
 mdefine_line|#define length(start, end) (*(end) - *(start) + 1)
-multiline_comment|/* ranged_conflict - used to determine if two resource ranges conflict&n; * condition 1: check if the start of a is within b&n; * condition 2: check if the end of a is within b&n; * condition 3: check if b is engulfed by a */
+multiline_comment|/* Two ranges conflict if one doesn&squot;t end before the other starts */
 DECL|macro|ranged_conflict
-mdefine_line|#define ranged_conflict(starta, enda, startb, endb) &bslash;&n;((*(starta) &gt;= *(startb) &amp;&amp; *(starta) &lt;= *(endb)) || &bslash;&n; (*(enda) &gt;= *(startb) &amp;&amp; *(enda) &lt;= *(endb)) || &bslash;&n; (*(starta) &lt; *(startb) &amp;&amp; *(enda) &gt; *(endb)))
+mdefine_line|#define ranged_conflict(starta, enda, startb, endb) &bslash;&n;&t;!((*(enda) &lt; *(startb)) || (*(endb) &lt; *(starta)))
 DECL|macro|cannot_compare
 mdefine_line|#define cannot_compare(flags) &bslash;&n;((flags) &amp; (IORESOURCE_UNSET | IORESOURCE_DISABLED))
 DECL|function|pnp_check_port

@@ -3157,11 +3157,6 @@ op_star
 id|fl
 comma
 r_struct
-id|rtable
-op_star
-id|rt
-comma
-r_struct
 id|xfrm_policy
 op_star
 id|policy
@@ -3214,8 +3209,6 @@ id|find_bundle
 c_func
 (paren
 id|fl
-comma
-id|rt
 comma
 id|policy
 )paren
@@ -3657,8 +3650,6 @@ id|xfrm_find_bundle
 c_func
 (paren
 id|fl
-comma
-id|rt
 comma
 id|policy
 comma

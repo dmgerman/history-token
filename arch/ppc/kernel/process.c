@@ -25,20 +25,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-r_int
-id|dump_fpu
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-id|elf_fpregset_t
-op_star
-id|fpregs
-)paren
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -663,14 +649,14 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 )brace
 r_int
-DECL|function|dump_fpu
-id|dump_fpu
+DECL|function|dump_task_fpu
+id|dump_task_fpu
 c_func
 (paren
 r_struct
-id|pt_regs
+id|task_struct
 op_star
-id|regs
+id|tsk
 comma
 id|elf_fpregset_t
 op_star
@@ -680,14 +666,16 @@ id|fpregs
 r_if
 c_cond
 (paren
-id|regs-&gt;msr
+id|tsk-&gt;thread.regs
+op_logical_and
+id|tsk-&gt;thread.regs-&gt;msr
 op_amp
 id|MSR_FP
 )paren
 id|giveup_fpu
 c_func
 (paren
-id|current
+id|tsk
 )paren
 suffix:semicolon
 id|memcpy
@@ -696,7 +684,7 @@ c_func
 id|fpregs
 comma
 op_amp
-id|current-&gt;thread.fpr
+id|tsk-&gt;thread.fpr
 (braket
 l_int|0
 )braket

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: init.c,v 1.18 2003/10/31 09:26:59 kkojima Exp $&n; *&n; *  linux/arch/sh/mm/init.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2002  Paul Mundt&n; *&n; *  Based on linux/arch/i386/mm/init.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
+multiline_comment|/* $Id: init.c,v 1.19 2004/02/21 04:42:16 kkojima Exp $&n; *&n; *  linux/arch/sh/mm/init.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2002  Paul Mundt&n; *&n; *  Based on linux/arch/i386/mm/init.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -563,6 +563,11 @@ suffix:semicolon
 r_int
 id|tmp
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|memory_start
+suffix:semicolon
 macro_line|#ifdef CONFIG_MMU
 id|high_memory
 op_assign
@@ -605,6 +610,12 @@ id|MAP_NR
 c_func
 (paren
 id|high_memory
+)paren
+op_minus
+id|MAP_NR
+c_func
+(paren
+id|memory_start
 )paren
 suffix:semicolon
 multiline_comment|/* clear the zero-page */

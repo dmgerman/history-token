@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  toshiba_acpi.c - Toshiba Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002-2004 John Belmonte&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The devolpment page for this driver is located at&n; *  http://memebeam.org/toys/ToshibaAcpiDriver.&n; *&n; *  Credits:&n; *&t;Jonathan A. Buzzard - Toshiba HCI info, and critical tips on reverse&n; *&t;&t;engineering the Windows drivers&n; *&t;Yasushi Nagato - changes for linux kernel 2.4 -&gt; 2.5&n; *&t;Rob Miller - TV out and hotkeys help&n; *&n; *&n; *  TODO&n; *&n; */
 DECL|macro|TOSHIBA_ACPI_VERSION
-mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.17&quot;
+mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.18&quot;
 DECL|macro|PROC_INTERFACE_VERSION
 mdefine_line|#define PROC_INTERFACE_VERSION&t;1
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -120,115 +121,6 @@ id|mask
 op_star
 id|value
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* an sscanf that takes explicit string length */
-r_static
-r_int
-DECL|function|snscanf
-id|snscanf
-c_func
-(paren
-r_const
-r_char
-op_star
-id|str
-comma
-r_int
-id|n
-comma
-r_const
-r_char
-op_star
-id|format
-comma
-dot
-dot
-dot
-)paren
-(brace
-id|va_list
-id|args
-suffix:semicolon
-r_int
-id|result
-suffix:semicolon
-r_char
-op_star
-id|str2
-op_assign
-id|kmalloc
-c_func
-(paren
-id|n
-op_plus
-l_int|1
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|str2
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* NOTE: don&squot;t even _think_ about replacing this with strlcpy */
-id|strncpy
-c_func
-(paren
-id|str2
-comma
-id|str
-comma
-id|n
-)paren
-suffix:semicolon
-id|str2
-(braket
-id|n
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|va_start
-c_func
-(paren
-id|args
-comma
-id|format
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|vsscanf
-c_func
-(paren
-id|str2
-comma
-id|format
-comma
-id|args
-)paren
-suffix:semicolon
-id|va_end
-c_func
-(paren
-id|args
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|str2
-)paren
-suffix:semicolon
-r_return
-id|result
 suffix:semicolon
 )brace
 multiline_comment|/* acpi interface wrappers&n; */
@@ -997,6 +889,7 @@ id|file
 op_star
 id|file
 comma
+id|__user
 r_const
 r_char
 op_star
@@ -1011,16 +904,76 @@ op_star
 id|item
 )paren
 (brace
-r_return
+r_int
+id|result
+suffix:semicolon
+r_char
+op_star
+id|tmp_buffer
+suffix:semicolon
+multiline_comment|/* Arg buffer points to userspace memory, which can&squot;t be accessed&n;&t; * directly.  Since we&squot;re making a copy, zero-terminate the&n;&t; * destination so that sscanf can be used on it safely.&n;&t; */
+id|tmp_buffer
+op_assign
+id|kmalloc
+c_func
+(paren
+id|count
+op_plus
+l_int|1
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+id|tmp_buffer
+comma
+id|buffer
+comma
+id|count
+)paren
+)paren
+(brace
+id|result
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_else
+(brace
+id|tmp_buffer
+(braket
+id|count
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|result
+op_assign
 id|item
 op_member_access_from_pointer
 id|write_func
 c_func
 (paren
-id|buffer
+id|tmp_buffer
 comma
 id|count
 )paren
+suffix:semicolon
+)brace
+id|kfree
+c_func
+(paren
+id|tmp_buffer
+)paren
+suffix:semicolon
+r_return
+id|result
 suffix:semicolon
 )brace
 r_static
@@ -1132,12 +1085,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snscanf
+id|sscanf
 c_func
 (paren
 id|buffer
-comma
-id|count
 comma
 l_string|&quot; brightness : %i&quot;
 comma
@@ -1386,12 +1337,10 @@ id|remain
 r_if
 c_cond
 (paren
-id|snscanf
+id|sscanf
 c_func
 (paren
 id|buffer
-comma
-id|remain
 comma
 l_string|&quot; lcd_out : %i&quot;
 comma
@@ -1411,12 +1360,10 @@ r_else
 r_if
 c_cond
 (paren
-id|snscanf
+id|sscanf
 c_func
 (paren
 id|buffer
-comma
-id|remain
 comma
 l_string|&quot; crt_out : %i&quot;
 comma
@@ -1436,12 +1383,10 @@ r_else
 r_if
 c_cond
 (paren
-id|snscanf
+id|sscanf
 c_func
 (paren
 id|buffer
-comma
-id|remain
 comma
 l_string|&quot; tv_out : %i&quot;
 comma
@@ -1700,12 +1645,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snscanf
+id|sscanf
 c_func
 (paren
 id|buffer
-comma
-id|count
 comma
 l_string|&quot; force_on : %i&quot;
 comma
@@ -1924,12 +1867,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snscanf
+id|sscanf
 c_func
 (paren
 id|buffer
-comma
-id|count
 comma
 l_string|&quot; hotkey_ready : %i&quot;
 comma

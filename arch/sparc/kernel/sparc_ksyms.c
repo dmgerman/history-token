@@ -469,6 +469,13 @@ c_func
 id|phys_base
 )paren
 suffix:semicolon
+DECL|variable|pfn_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfn_base
+)paren
+suffix:semicolon
 multiline_comment|/* Atomic operations. */
 DECL|variable|___atomic24_add
 id|EXPORT_SYMBOL
@@ -531,18 +538,18 @@ id|__cpu_logical_map
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|udelay
+DECL|variable|__udelay
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|udelay
+id|__udelay
 )paren
 suffix:semicolon
-DECL|variable|ndelay
+DECL|variable|__ndelay
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ndelay
+id|__ndelay
 )paren
 suffix:semicolon
 DECL|variable|rtc_lock

@@ -1681,11 +1681,9 @@ suffix:semicolon
 macro_line|#ifdef&t;CONFIG_ACPI_BOOT
 r_extern
 r_int
-id|acpi_disabled
-comma
 id|acpi_force
 suffix:semicolon
-DECL|function|disable_acpi
+DECL|function|dmi_disable_acpi
 r_static
 id|__init
 id|__attribute__
@@ -1696,7 +1694,7 @@ id|unused
 )paren
 )paren
 r_int
-id|disable_acpi
+id|dmi_disable_acpi
 c_func
 (paren
 r_struct
@@ -1721,9 +1719,10 @@ comma
 id|d-&gt;ident
 )paren
 suffix:semicolon
-id|acpi_disabled
-op_assign
-l_int|1
+id|disable_acpi
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -1740,10 +1739,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|acpi_ht
-suffix:semicolon
 multiline_comment|/*&n; * Limit ACPI to CPU enumeration for HT&n; */
 DECL|function|force_acpi_ht
 r_static
@@ -1781,9 +1776,10 @@ comma
 id|d-&gt;ident
 )paren
 suffix:semicolon
-id|acpi_disabled
-op_assign
-l_int|1
+id|disable_acpi
+c_func
+(paren
+)paren
 suffix:semicolon
 id|acpi_ht
 op_assign
@@ -1985,13 +1981,10 @@ id|KERN_NOTICE
 l_string|&quot;You can enable it with acpi=force&bslash;n&quot;
 )paren
 suffix:semicolon
-id|acpi_disabled
-op_assign
-l_int|1
-suffix:semicolon
-id|acpi_ht
-op_assign
-l_int|0
+id|disable_acpi
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace

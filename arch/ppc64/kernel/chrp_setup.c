@@ -174,8 +174,8 @@ r_int
 r_int
 id|ppc_tb_freq
 suffix:semicolon
-r_void
 DECL|function|chrp_get_cpuinfo
+r_void
 id|chrp_get_cpuinfo
 c_func
 (paren
@@ -196,16 +196,6 @@ op_star
 id|model
 op_assign
 l_string|&quot;&quot;
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;timebase&bslash;t: %lu&bslash;n&quot;
-comma
-id|ppc_tb_freq
-)paren
 suffix:semicolon
 id|root
 op_assign
@@ -668,7 +658,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_PSERIES&t;/* This ifdef should go away */
 r_void
 op_star
 id|comport
@@ -678,6 +667,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppc64_iommu_off
+)paren
+id|pci_dma_init_direct
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
 id|tce_init_pSeries
 c_func
 (paren
@@ -725,7 +725,6 @@ id|ppc_md.udbg_getc_poll
 op_assign
 id|udbg_getc_poll
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 id|__init
@@ -800,10 +799,6 @@ macro_line|#endif
 id|ppc_md.setup_arch
 op_assign
 id|chrp_setup_arch
-suffix:semicolon
-id|ppc_md.setup_residual
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ppc_md.get_cpuinfo
 op_assign
@@ -1535,6 +1530,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Some sane defaults: 125 MHz timebase, 1GHz processor */
+DECL|macro|DEFAULT_TB_FREQ
+mdefine_line|#define DEFAULT_TB_FREQ&t;&t;125000000UL
+DECL|macro|DEFAULT_PROC_FREQ
+mdefine_line|#define DEFAULT_PROC_FREQ&t;(DEFAULT_TB_FREQ * 8)
 DECL|function|pSeries_calibrate_decr
 r_void
 id|__init
@@ -1554,21 +1554,14 @@ id|div_result
 id|divres
 suffix:semicolon
 r_int
+r_int
 op_star
 id|fp
 suffix:semicolon
 r_int
-r_int
-id|freq
-comma
-id|processor_freq
+id|node_found
 suffix:semicolon
 multiline_comment|/*&n;&t; * The cpu node should have a timebase-frequency property&n;&t; * to tell us the rate at which the decrementer counts.&n;&t; */
-id|freq
-op_assign
-l_int|16666000
-suffix:semicolon
-multiline_comment|/* hardcoded default */
 id|cpu
 op_assign
 id|of_find_node_by_type
@@ -1578,6 +1571,15 @@ l_int|NULL
 comma
 l_string|&quot;cpu&quot;
 )paren
+suffix:semicolon
+id|ppc_tb_freq
+op_assign
+id|DEFAULT_TB_FREQ
+suffix:semicolon
+multiline_comment|/* hardcoded default */
+id|node_found
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1590,6 +1592,7 @@ l_int|0
 id|fp
 op_assign
 (paren
+r_int
 r_int
 op_star
 )paren
@@ -1610,19 +1613,39 @@ id|fp
 op_ne
 l_int|0
 )paren
-id|freq
+(brace
+id|node_found
+op_assign
+l_int|1
+suffix:semicolon
+id|ppc_tb_freq
 op_assign
 op_star
 id|fp
 suffix:semicolon
 )brace
-id|ppc_tb_freq
-op_assign
-id|freq
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node_found
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;WARNING: Estimating decrementer frequency &quot;
+l_string|&quot;(not found)&bslash;n&quot;
+)paren
 suffix:semicolon
-id|processor_freq
+id|ppc_proc_freq
 op_assign
-id|freq
+id|DEFAULT_PROC_FREQ
+suffix:semicolon
+id|node_found
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1635,6 +1658,7 @@ l_int|0
 id|fp
 op_assign
 (paren
+r_int
 r_int
 op_star
 )paren
@@ -1655,15 +1679,31 @@ id|fp
 op_ne
 l_int|0
 )paren
-id|processor_freq
+(brace
+id|node_found
+op_assign
+l_int|1
+suffix:semicolon
+id|ppc_proc_freq
 op_assign
 op_star
 id|fp
 suffix:semicolon
 )brace
-id|ppc_proc_freq
-op_assign
-id|processor_freq
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node_found
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;WARNING: Estimating processor frequency &quot;
+l_string|&quot;(not found)&bslash;n&quot;
+)paren
 suffix:semicolon
 id|of_node_put
 c_func
@@ -1674,13 +1714,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;time_init: decrementer frequency = %lu.%.6lu MHz&bslash;n&quot;
 comma
-id|freq
+id|ppc_tb_freq
 op_div
 l_int|1000000
 comma
-id|freq
+id|ppc_tb_freq
 op_mod
 l_int|1000000
 )paren
@@ -1688,20 +1729,21 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;time_init: processor frequency   = %lu.%.6lu MHz&bslash;n&quot;
 comma
-id|processor_freq
+id|ppc_proc_freq
 op_div
 l_int|1000000
 comma
-id|processor_freq
+id|ppc_proc_freq
 op_mod
 l_int|1000000
 )paren
 suffix:semicolon
 id|tb_ticks_per_jiffy
 op_assign
-id|freq
+id|ppc_tb_freq
 op_div
 id|HZ
 suffix:semicolon
@@ -1713,7 +1755,7 @@ id|HZ
 suffix:semicolon
 id|tb_ticks_per_usec
 op_assign
-id|freq
+id|ppc_tb_freq
 op_div
 l_int|1000000
 suffix:semicolon
@@ -1722,7 +1764,7 @@ op_assign
 id|mulhwu_scale_factor
 c_func
 (paren
-id|freq
+id|ppc_tb_freq
 comma
 l_int|1000000
 )paren

@@ -257,8 +257,13 @@ comma
 op_mod
 id|rsp
 )paren
-id|CFI_OFFSET
+DECL|variable|r11
+id|CFI_REL_OFFSET
 id|r11
+comma
+l_int|0
+op_star
+l_int|8
 dot
 id|endif
 dot

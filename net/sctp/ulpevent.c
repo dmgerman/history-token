@@ -1293,11 +1293,7 @@ suffix:semicolon
 multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_ppid: 32 bits (unsigned integer)&n;&t; *&n;&t; * In recvmsg() this value is&n;&t; * the same information that was passed by the upper layer in the peer&n;&t; * application.  Please note that byte order issues are NOT accounted&n;&t; * for and this information is passed opaquely by the SCTP stack from&n;&t; * one end to the other.&n;&t; */
 id|info-&gt;sinfo_ppid
 op_assign
-id|ntohl
-c_func
-(paren
 id|chunk-&gt;subh.data_hdr-&gt;ppid
-)paren
 suffix:semicolon
 multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_flags: 16 bits (unsigned integer)&n;&t; *&n;&t; * This field may contain any of the following flags and is composed of&n;&t; * a bitwise OR of these values.&n;&t; *&n;&t; * recvmsg() flags:&n;&t; *&n;&t; * MSG_UNORDERED - This flag is present when the message was sent&n;&t; *                 non-ordered.&n;&t; */
 r_if

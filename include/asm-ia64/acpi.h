@@ -188,8 +188,21 @@ DECL|macro|ACPI_ACQUIRE_GLOBAL_LOCK
 mdefine_line|#define ACPI_ACQUIRE_GLOBAL_LOCK(GLptr, Acq)&t;&t;&t;&t;&bslash;&n;&t;((Acq) = ia64_acpi_acquire_global_lock((unsigned int *) GLptr))
 DECL|macro|ACPI_RELEASE_GLOBAL_LOCK
 mdefine_line|#define ACPI_RELEASE_GLOBAL_LOCK(GLptr, Acq)&t;&t;&t;&t;&bslash;&n;&t;((Acq) = ia64_acpi_release_global_lock((unsigned int *) GLptr))
+DECL|macro|acpi_disabled
+mdefine_line|#define acpi_disabled 0&t;/* ACPI always enabled on IA64 */
 DECL|macro|acpi_strict
 mdefine_line|#define acpi_strict 1&t;/* no ACPI spec workarounds on IA64 */
+DECL|function|disable_acpi
+r_static
+r_inline
+r_void
+id|disable_acpi
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 r_const
 r_char
 op_star

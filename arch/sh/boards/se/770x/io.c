@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: io.c,v 1.4 2003/08/03 03:05:10 lethal Exp $&n; *&n; * linux/arch/sh/kernel/io_se.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * I/O routine for Hitachi SolutionEngine.&n; *&n; */
+multiline_comment|/* $Id: io.c,v 1.5 2004/02/22 23:08:43 kkojima Exp $&n; *&n; * linux/arch/sh/kernel/io_se.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * I/O routine for Hitachi SolutionEngine.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -678,6 +678,12 @@ c_func
 id|port
 )paren
 suffix:semicolon
+id|__u8
+op_star
+id|ap
+op_assign
+id|addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -714,13 +720,7 @@ id|count
 op_decrement
 )paren
 op_star
-(paren
-(paren
-id|__u8
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 op_assign
 op_star
@@ -745,13 +745,7 @@ id|count
 op_decrement
 )paren
 op_star
-(paren
-(paren
-id|__u8
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 op_assign
 op_star
@@ -769,13 +763,7 @@ id|count
 op_decrement
 )paren
 op_star
-(paren
-(paren
-id|__u8
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 op_assign
 op_star
@@ -812,6 +800,12 @@ c_func
 id|port
 )paren
 suffix:semicolon
+id|__u16
+op_star
+id|ap
+op_assign
+id|addr
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -819,13 +813,7 @@ id|count
 op_decrement
 )paren
 op_star
-(paren
-(paren
-id|__u16
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 op_assign
 op_star
@@ -889,6 +877,13 @@ c_func
 id|port
 )paren
 suffix:semicolon
+r_const
+id|__u8
+op_star
+id|ap
+op_assign
+id|addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -926,13 +921,7 @@ op_star
 id|bp
 op_assign
 op_star
-(paren
-(paren
-id|__u8
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 suffix:semicolon
 )brace
@@ -957,13 +946,7 @@ op_star
 id|p
 op_assign
 op_star
-(paren
-(paren
-id|__u8
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 op_lshift
 l_int|8
@@ -981,13 +964,7 @@ op_star
 id|p
 op_assign
 op_star
-(paren
-(paren
-id|__u8
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 suffix:semicolon
 )brace
@@ -1022,6 +999,13 @@ c_func
 id|port
 )paren
 suffix:semicolon
+r_const
+id|__u16
+op_star
+id|ap
+op_assign
+id|addr
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1032,13 +1016,7 @@ op_star
 id|p
 op_assign
 op_star
-(paren
-(paren
-id|__u16
-op_star
-)paren
-id|addr
-)paren
+id|ap
 op_increment
 suffix:semicolon
 )brace

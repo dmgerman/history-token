@@ -27,8 +27,6 @@ DECL|macro|SM_INC
 mdefine_line|#define SM_INC&t;0x00001000
 DECL|macro|SM_DEC
 mdefine_line|#define SM_DEC&t;0x00002000
-DECL|macro|RS_DUAL
-mdefine_line|#define RS_DUAL&t;0x00000000
 DECL|macro|RS_IN
 mdefine_line|#define RS_IN&t;0x00000200
 DECL|macro|RS_OUT
@@ -51,6 +49,9 @@ DECL|macro|CHCR_TE
 mdefine_line|#define CHCR_TE 0x00000002
 DECL|macro|CHCR_IE
 mdefine_line|#define CHCR_IE 0x00000004
+multiline_comment|/* Define the default configuration for dual address memory-memory transfer.&n; * The 0x400 value represents auto-request, external-&gt;external.&n; */
+DECL|macro|RS_DUAL
+mdefine_line|#define RS_DUAL&t;(DM_INC | SM_INC | 0x400 | TS_32)
 DECL|macro|DMAOR_COD
 mdefine_line|#define DMAOR_COD&t;0x00000008
 DECL|macro|DMAOR_AE

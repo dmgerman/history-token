@@ -2571,7 +2571,7 @@ id|s-&gt;s_flags
 op_assign
 id|flags
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|s-&gt;s_id
