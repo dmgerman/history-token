@@ -843,6 +843,11 @@ id|__uint8_t
 id|m_inode_quiesce
 suffix:semicolon
 multiline_comment|/* call quiesce on new inodes.&n;&t;&t;&t;&t;&t;&t;   field governed by m_ilock */
+DECL|member|m_sectbb_log
+id|__uint8_t
+id|m_sectbb_log
+suffix:semicolon
+multiline_comment|/* sectlog - BBSHIFT */
 DECL|member|m_dirversion
 id|__uint8_t
 id|m_dirversion

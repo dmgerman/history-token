@@ -15,14 +15,10 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &lt;support/kmem.h&gt;
 macro_line|#include &quot;page_buf_internal.h&quot;
-DECL|macro|SECTOR_SHIFT
-mdefine_line|#define SECTOR_SHIFT&t;9
-DECL|macro|SECTOR_SIZE
-mdefine_line|#define SECTOR_SIZE&t;(1&lt;&lt;SECTOR_SHIFT)
-DECL|macro|SECTOR_MASK
-mdefine_line|#define SECTOR_MASK&t;(SECTOR_SIZE - 1)
+DECL|macro|BBSHIFT
+mdefine_line|#define BBSHIFT&t;&t;9
 DECL|macro|BN_ALIGN_MASK
-mdefine_line|#define BN_ALIGN_MASK&t;((1 &lt;&lt; (PAGE_CACHE_SHIFT - SECTOR_SHIFT)) - 1)
+mdefine_line|#define BN_ALIGN_MASK&t;((1 &lt;&lt; (PAGE_CACHE_SHIFT - BBSHIFT)) - 1)
 macro_line|#ifndef GFP_READAHEAD
 DECL|macro|GFP_READAHEAD
 mdefine_line|#define GFP_READAHEAD&t;0
@@ -1451,8 +1447,12 @@ comma
 id|nbytes
 suffix:semicolon
 r_int
+r_int
 id|blocksize
 comma
+id|sectorshift
+suffix:semicolon
+r_int
 id|size
 comma
 id|offset
@@ -1626,7 +1626,11 @@ l_int|0
 suffix:semicolon
 id|blocksize
 op_assign
-id|pb-&gt;pb_target-&gt;pbr_blocksize
+id|pb-&gt;pb_target-&gt;pbr_bsize
+suffix:semicolon
+id|sectorshift
+op_assign
+id|pb-&gt;pb_target-&gt;pbr_sshift
 suffix:semicolon
 id|size
 op_assign
@@ -1852,15 +1856,8 @@ r_int
 id|i
 comma
 id|range
-op_assign
-(paren
-id|offset
-op_plus
-id|nbytes
-)paren
-op_rshift
-id|SECTOR_SHIFT
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * In this case page-&gt;private holds a bitmap&n;&t;&t;&t;&t; * of uptodate sectors within the page&n;&t;&t;&t;&t; */
 id|ASSERT
 c_func
 (paren
@@ -1869,18 +1866,16 @@ OL
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
+id|range
+op_assign
 (paren
-op_logical_neg
-(paren
-id|pb-&gt;pb_flags
-op_amp
-id|_PBF_PRIVATE_BH
+id|offset
+op_plus
+id|nbytes
 )paren
-)paren
+op_rshift
+id|sectorshift
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * In this case page-&gt;private holds a bitmap&n;&t;&t;&t;&t; * of uptodate sectors (512) within the page&n;&t;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1888,7 +1883,7 @@ id|i
 op_assign
 id|offset
 op_rshift
-id|SECTOR_SHIFT
+id|sectorshift
 suffix:semicolon
 id|i
 OL
@@ -2189,7 +2184,7 @@ op_assign
 (paren
 id|ioff
 op_lshift
-id|SECTOR_SHIFT
+id|BBSHIFT
 )paren
 suffix:semicolon
 id|range_length
@@ -2197,7 +2192,32 @@ op_assign
 (paren
 id|isize
 op_lshift
-id|SECTOR_SHIFT
+id|BBSHIFT
+)paren
+suffix:semicolon
+multiline_comment|/* Ensure we never do IOs smaller than the sector size */
+id|BUG_ON
+c_func
+(paren
+id|range_length
+OL
+(paren
+l_int|1
+op_lshift
+id|target-&gt;pbr_sshift
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Ensure we never do IOs that are not sector aligned */
+id|BUG_ON
+c_func
+(paren
+id|range_base
+op_amp
+(paren
+id|loff_t
+)paren
+id|target-&gt;pbr_smask
 )paren
 suffix:semicolon
 id|hval
@@ -3437,7 +3457,6 @@ op_lshift_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* double the size and try again */
-multiline_comment|/*&n;&t;&t;&t;printk(&n;&t;&t;&t;&quot;pb_get_no_daddr NOT block 0x%p mask 0x%p len %d&bslash;n&quot;,&n;&t;&t;&t;&t;rmem, ((size_t)rmem &amp; (size_t)~SECTOR_MASK),&n;&t;&t;&t;&t;len);&n;&t;&t;&t;*/
 )brace
 r_if
 c_cond
@@ -3482,11 +3501,8 @@ r_int
 )paren
 id|rmem
 op_amp
-(paren
-r_int
-)paren
 op_complement
-id|SECTOR_MASK
+id|target-&gt;pbr_smask
 )paren
 )paren
 suffix:semicolon
@@ -4455,20 +4471,14 @@ op_or
 id|PBF_READ_AHEAD
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|pb-&gt;pb_bn
 op_eq
 id|PAGE_BUF_DADDR_NULL
 )paren
-(brace
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-)brace
 multiline_comment|/* For writes call internal function which checks for&n;&t; * filesystem specific callout function and execute it.&n;&t; */
 r_if
 c_cond
@@ -4566,7 +4576,13 @@ id|i
 comma
 id|blocksize
 op_assign
-id|pb-&gt;pb_target-&gt;pbr_blocksize
+id|pb-&gt;pb_target-&gt;pbr_bsize
+suffix:semicolon
+r_int
+r_int
+id|sectorshift
+op_assign
+id|pb-&gt;pb_target-&gt;pbr_sshift
 suffix:semicolon
 r_struct
 id|bio_vec
@@ -4680,17 +4696,6 @@ OL
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-op_logical_neg
-(paren
-id|pb-&gt;pb_flags
-op_amp
-id|_PBF_PRIVATE_BH
-)paren
-)paren
-suffix:semicolon
 id|range
 op_assign
 (paren
@@ -4699,7 +4704,7 @@ op_plus
 id|bvec-&gt;bv_len
 )paren
 op_rshift
-id|SECTOR_SHIFT
+id|sectorshift
 suffix:semicolon
 r_for
 c_loop
@@ -4708,7 +4713,7 @@ id|j
 op_assign
 id|bvec-&gt;bv_offset
 op_rshift
-id|SECTOR_SHIFT
+id|sectorshift
 suffix:semicolon
 id|j
 OL
@@ -4870,9 +4875,16 @@ op_assign
 id|pb-&gt;pb_bn
 suffix:semicolon
 r_int
+r_int
+id|sectorshift
+op_assign
+id|pb-&gt;pb_target-&gt;pbr_sshift
+suffix:semicolon
+r_int
+r_int
 id|blocksize
 op_assign
-id|pb-&gt;pb_target-&gt;pbr_blocksize
+id|pb-&gt;pb_target-&gt;pbr_bsize
 suffix:semicolon
 r_int
 id|locking
@@ -4993,7 +5005,7 @@ op_minus
 (paren
 id|offset
 op_rshift
-id|SECTOR_SHIFT
+id|BBSHIFT
 )paren
 suffix:semicolon
 id|bio-&gt;bi_end_io
@@ -5176,7 +5188,7 @@ op_rshift
 (paren
 id|PAGE_SHIFT
 op_minus
-id|SECTOR_SHIFT
+id|BBSHIFT
 )paren
 suffix:semicolon
 r_if
@@ -5294,7 +5306,7 @@ id|sector
 op_add_assign
 id|nbytes
 op_rshift
-id|SECTOR_SHIFT
+id|BBSHIFT
 suffix:semicolon
 id|size
 op_sub_assign
