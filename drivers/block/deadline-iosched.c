@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
-multiline_comment|/*&n; * See Documentation/deadline-iosched.txt&n; */
+multiline_comment|/*&n; * See Documentation/block/deadline-iosched.txt&n; */
 DECL|variable|read_expire
 r_static
 r_int

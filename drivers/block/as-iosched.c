@@ -16,7 +16,7 @@ DECL|macro|REQ_SYNC
 mdefine_line|#define REQ_SYNC&t;1
 DECL|macro|REQ_ASYNC
 mdefine_line|#define REQ_ASYNC&t;0
-multiline_comment|/*&n; * See Documentation/as-iosched.txt&n; */
+multiline_comment|/*&n; * See Documentation/block/as-iosched.txt&n; */
 multiline_comment|/*&n; * max time before a read is submitted.&n; */
 DECL|macro|default_read_expire
 mdefine_line|#define default_read_expire (HZ / 8)
