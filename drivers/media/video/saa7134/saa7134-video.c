@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: saa7134-video.c,v 1.15 2004/10/11 14:53:13 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * video4linux video interface&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-video.c,v 1.19 2004/11/07 14:44:59 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * video4linux video interface&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -57,12 +57,14 @@ l_int|576
 op_star
 l_int|4
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|video_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -73,12 +75,14 @@ comma
 l_string|&quot;enable debug messages [video]&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|gbuffers
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -89,12 +93,14 @@ comma
 l_string|&quot;number of capture buffers, range 2-32&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|noninterlaced
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4937,9 +4943,10 @@ r_int
 id|buffer_prepare
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -4956,7 +4963,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -4970,12 +4977,16 @@ id|saa7134_buf
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|saa7134_buf
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -5211,9 +5222,10 @@ DECL|function|buffer_setup
 id|buffer_setup
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_int
 r_int
@@ -5231,7 +5243,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 op_star
 id|size
@@ -5280,9 +5292,10 @@ r_void
 id|buffer_queue
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -5295,19 +5308,23 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7134_buf
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|saa7134_buf
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 id|saa7134_buffer_queue
 c_func
@@ -5327,9 +5344,10 @@ r_void
 id|buffer_release
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -5342,19 +5360,23 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7134_buf
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|saa7134_buf
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 id|saa7134_dma_free
 c_func
@@ -6310,7 +6332,6 @@ id|fh-&gt;height
 op_assign
 l_int|576
 suffix:semicolon
-macro_line|#ifdef VIDIOC_G_PRIORITY
 id|v4l2_prio_open
 c_func
 (paren
@@ -6321,7 +6342,6 @@ op_amp
 id|fh-&gt;prio
 )paren
 suffix:semicolon
-macro_line|#endif
 id|videobuf_queue_init
 c_func
 (paren
@@ -6345,22 +6365,8 @@ r_sizeof
 r_struct
 id|saa7134_buf
 )paren
-)paren
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|fh-&gt;cap.lock
-)paren
-suffix:semicolon
-id|saa7134_pgtable_alloc
-c_func
-(paren
-id|dev-&gt;pci
 comma
-op_amp
-id|fh-&gt;pt_cap
+id|fh
 )paren
 suffix:semicolon
 id|videobuf_queue_init
@@ -6386,13 +6392,17 @@ r_sizeof
 r_struct
 id|saa7134_buf
 )paren
+comma
+id|fh
 )paren
 suffix:semicolon
-id|init_MUTEX
+id|saa7134_pgtable_alloc
 c_func
 (paren
+id|dev-&gt;pci
+comma
 op_amp
-id|fh-&gt;vbi.lock
+id|fh-&gt;pt_cap
 )paren
 suffix:semicolon
 id|saa7134_pgtable_alloc
@@ -6512,8 +6522,6 @@ r_return
 id|videobuf_read_one
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|saa7134_queue
 c_func
 (paren
@@ -6556,8 +6564,6 @@ r_return
 id|videobuf_read_stream
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|saa7134_queue
 c_func
 (paren
@@ -6635,8 +6641,6 @@ id|videobuf_poll_stream
 c_func
 (paren
 id|file
-comma
-id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;vbi
@@ -6732,7 +6736,8 @@ op_member_access_from_pointer
 id|buf_prepare
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;cap
 comma
 id|fh-&gt;cap.read_buf
 comma
@@ -6756,7 +6761,8 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;cap
 comma
 id|fh-&gt;cap.read_buf
 )paren
@@ -6919,8 +6925,6 @@ id|RESOURCE_VIDEO
 id|videobuf_streamoff
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;cap
 )paren
@@ -6945,7 +6949,8 @@ id|fh-&gt;cap.read_buf
 id|buffer_release
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;cap
 comma
 id|fh-&gt;cap.read_buf
 )paren
@@ -6978,8 +6983,6 @@ id|fh-&gt;vbi.streaming
 id|videobuf_streamoff
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;vbi
 )paren
@@ -6992,8 +6995,6 @@ id|fh-&gt;vbi.reading
 id|videobuf_read_stop
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;vbi
 )paren
@@ -7027,7 +7028,6 @@ op_amp
 id|fh-&gt;pt_vbi
 )paren
 suffix:semicolon
-macro_line|#ifdef VIDIOC_G_PRIORITY
 id|v4l2_prio_close
 c_func
 (paren
@@ -7038,7 +7038,6 @@ op_amp
 id|fh-&gt;prio
 )paren
 suffix:semicolon
-macro_line|#endif
 id|file-&gt;private_data
 op_assign
 l_int|NULL
@@ -7081,13 +7080,13 @@ r_return
 id|videobuf_mmap_mapper
 c_func
 (paren
-id|vma
-comma
 id|saa7134_queue
 c_func
 (paren
 id|fh
 )paren
+comma
+id|vma
 )paren
 suffix:semicolon
 )brace
@@ -8283,6 +8282,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|saa7134_common_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|saa7134_common_ioctl
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function is _not_ called directly, but from&n; * video_generic_ioctl (and maybe others).  userspace&n; * copying is done already, arg is a kernel pointer.&n; */
 DECL|function|video_do_ioctl
 r_static
@@ -8345,7 +8351,6 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#ifdef VIDIOC_G_PRIORITY
 r_switch
 c_cond
 (paren
@@ -8390,7 +8395,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -9515,7 +9519,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef VIDIOC_G_PRIORITY
 r_case
 id|VIDIOC_G_PRIORITY
 suffix:colon
@@ -9567,7 +9570,6 @@ id|prio
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* --- preview ioctls ---------------------------------------- */
 r_case
 id|VIDIOC_ENUM_FMT
@@ -10121,8 +10123,6 @@ op_assign
 id|videobuf_reqbufs
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|q
 comma
 op_amp
@@ -10209,8 +10209,6 @@ r_return
 id|videobuf_reqbufs
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|saa7134_queue
 c_func
 (paren
@@ -10243,8 +10241,6 @@ r_return
 id|videobuf_qbuf
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|saa7134_queue
 c_func
 (paren
@@ -10261,8 +10257,6 @@ r_return
 id|videobuf_dqbuf
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|saa7134_queue
 c_func
 (paren
@@ -10311,8 +10305,6 @@ r_return
 id|videobuf_streamon
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|saa7134_queue
 c_func
 (paren
@@ -10339,8 +10331,6 @@ op_assign
 id|videobuf_streamoff
 c_func
 (paren
-id|file-&gt;private_data
-comma
 id|saa7134_queue
 c_func
 (paren

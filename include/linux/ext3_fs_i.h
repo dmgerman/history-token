@@ -5,9 +5,9 @@ mdefine_line|#define _LINUX_EXT3_FS_I
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
-DECL|struct|reserve_window
+DECL|struct|ext3_reserve_window
 r_struct
-id|reserve_window
+id|ext3_reserve_window
 (brace
 DECL|member|_rsv_start
 id|__u32
@@ -21,9 +21,9 @@ suffix:semicolon
 multiline_comment|/* Last byte reserved or 0 */
 )brace
 suffix:semicolon
-DECL|struct|reserve_window_node
+DECL|struct|ext3_reserve_window_node
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 (brace
 DECL|member|rsv_node
 r_struct
@@ -44,7 +44,7 @@ id|rsv_seqlock
 suffix:semicolon
 DECL|member|rsv_window
 r_struct
-id|reserve_window
+id|ext3_reserve_window
 id|rsv_window
 suffix:semicolon
 )brace
@@ -119,7 +119,7 @@ suffix:semicolon
 multiline_comment|/* block reservation window */
 DECL|member|i_rsv_window
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 id|i_rsv_window
 suffix:semicolon
 DECL|member|i_dir_start_lookup

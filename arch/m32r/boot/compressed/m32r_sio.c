@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * arch/m32r/boot/compressed/m32r_sio.c&n; *&n; * 2003-02-12:&t;Takeo Takahashi&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/m32r.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
+r_static
 r_void
 id|putc
 c_func
@@ -11,6 +10,7 @@ id|c
 )paren
 suffix:semicolon
 DECL|function|puts
+r_static
 r_int
 id|puts
 c_func
@@ -46,6 +46,8 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_PLAT_M32700UT_Alpha) || defined(CONFIG_PLAT_M32700UT)
+macro_line|#include &lt;asm/m32r.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|USE_FPGA_MAP
 mdefine_line|#define USE_FPGA_MAP&t;0
 macro_line|#if USE_FPGA_MAP
@@ -65,6 +67,7 @@ DECL|macro|BOOT_SIO0TXB
 mdefine_line|#define BOOT_SIO0TXB&t;PLD_ESIO0TXB
 macro_line|#endif
 DECL|function|putc
+r_static
 r_void
 id|putc
 c_func
@@ -120,7 +123,12 @@ id|c
 suffix:semicolon
 )brace
 macro_line|#else
+DECL|macro|SIO0STS
+mdefine_line|#define SIO0STS&t;(volatile unsigned short *)(0xa0efd000 + 14)
+DECL|macro|SIO0TXB
+mdefine_line|#define SIO0TXB&t;(volatile unsigned short *)(0xa0efd000 + 30)
 DECL|function|putc
+r_static
 r_void
 id|putc
 c_func
@@ -129,7 +137,51 @@ r_char
 id|c
 )paren
 (brace
-multiline_comment|/* do nothing */
+r_while
+c_loop
+(paren
+(paren
+op_star
+id|SIO0STS
+op_amp
+l_int|0x1
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot;&bslash;n&squot;
+)paren
+(brace
+op_star
+id|SIO0TXB
+op_assign
+l_char|&squot;&bslash;r&squot;
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+op_star
+id|SIO0STS
+op_amp
+l_int|0x1
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
+op_star
+id|SIO0TXB
+op_assign
+id|c
+suffix:semicolon
 )brace
 macro_line|#endif
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Direct MTD block device access&n; *&n; * $Id: mtdblock.c,v 1.64 2003/10/04 17:14:14 dwmw2 Exp $&n; *&n; * (C) 2000-2003 Nicolas Pitre &lt;nico@cam.org&gt;&n; * (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; */
+multiline_comment|/* &n; * Direct MTD block device access&n; *&n; * $Id: mtdblock.c,v 1.65 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * (C) 2000-2003 Nicolas Pitre &lt;nico@cam.org&gt;&n; * (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1436,6 +1436,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|variable|mtdblock_tr
+r_static
 r_struct
 id|mtd_blktrans_ops
 id|mtdblock_tr
@@ -1499,6 +1500,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|init_mtdblock
+r_static
 r_int
 id|__init
 id|init_mtdblock

@@ -445,16 +445,16 @@ op_star
 id|rdev
 suffix:semicolon
 r_int
-id|size
-comma
 id|i
 comma
 id|nb_zone
 comma
 id|cnt
 suffix:semicolon
-r_int
-r_int
+id|sector_t
+id|start
+suffix:semicolon
+id|sector_t
 id|curr_offset
 suffix:semicolon
 r_struct
@@ -731,7 +731,7 @@ id|table
 op_assign
 id|conf-&gt;hash_table
 suffix:semicolon
-id|size
+id|start
 op_assign
 l_int|0
 suffix:semicolon
@@ -762,22 +762,13 @@ id|conf-&gt;disks
 op_plus
 id|i
 suffix:semicolon
-id|disk-&gt;offset
-op_assign
-id|curr_offset
-suffix:semicolon
-id|curr_offset
-op_add_assign
-id|disk-&gt;size
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|size
-OL
-l_int|0
+id|start
+OG
+id|curr_offset
 )paren
-(brace
 id|table
 (braket
 op_minus
@@ -788,17 +779,21 @@ id|dev1
 op_assign
 id|disk
 suffix:semicolon
-)brace
-id|size
+id|disk-&gt;offset
+op_assign
+id|curr_offset
+suffix:semicolon
+id|curr_offset
 op_add_assign
 id|disk-&gt;size
 suffix:semicolon
+multiline_comment|/* &squot;curr_offset&squot; is the end of this disk&n;&t;&t; * &squot;start&squot; is the start of table&n;&t;&t; */
 r_while
 c_loop
 (paren
-id|size
-OG
-l_int|0
+id|start
+OL
+id|curr_offset
 )paren
 (brace
 id|table-&gt;dev0
@@ -809,8 +804,8 @@ id|table-&gt;dev1
 op_assign
 l_int|NULL
 suffix:semicolon
-id|size
-op_sub_assign
+id|start
+op_add_assign
 id|conf-&gt;smallest-&gt;size
 suffix:semicolon
 id|table
@@ -888,6 +883,13 @@ c_func
 id|mddev
 )paren
 suffix:semicolon
+id|blk_sync_queue
+c_func
+(paren
+id|mddev-&gt;queue
+)paren
+suffix:semicolon
+multiline_comment|/* the unplug fn references &squot;conf&squot;*/
 id|kfree
 c_func
 (paren
@@ -1074,7 +1076,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;linear_make_request: Block %llu out of bounds on &quot;
-l_string|&quot;dev %s size %ld offset %ld&bslash;n&quot;
+l_string|&quot;dev %s size %llu offset %llu&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1091,8 +1093,18 @@ comma
 id|b
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|tmp_dev-&gt;size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|tmp_dev-&gt;offset
 )paren
 suffix:semicolon

@@ -1542,16 +1542,16 @@ multiline_comment|/* Macros */
 DECL|macro|TW_CONTROL_REG_ADDR
 mdefine_line|#define TW_CONTROL_REG_ADDR(x) (x-&gt;base_addr)
 DECL|macro|TW_STATUS_REG_ADDR
-mdefine_line|#define TW_STATUS_REG_ADDR(x) ((unsigned char *)x-&gt;base_addr + 0x4)
+mdefine_line|#define TW_STATUS_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0x4)
 macro_line|#if BITS_PER_LONG &gt; 32
 DECL|macro|TW_COMMAND_QUEUE_REG_ADDR
-mdefine_line|#define TW_COMMAND_QUEUE_REG_ADDR(x) ((unsigned char *)x-&gt;base_addr + 0x20)
+mdefine_line|#define TW_COMMAND_QUEUE_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0x20)
 macro_line|#else
 DECL|macro|TW_COMMAND_QUEUE_REG_ADDR
-mdefine_line|#define TW_COMMAND_QUEUE_REG_ADDR(x) ((unsigned char *)x-&gt;base_addr + 0x8)
+mdefine_line|#define TW_COMMAND_QUEUE_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0x8)
 macro_line|#endif
 DECL|macro|TW_RESPONSE_QUEUE_REG_ADDR
-mdefine_line|#define TW_RESPONSE_QUEUE_REG_ADDR(x) ((unsigned char *)x-&gt;base_addr + 0xC)
+mdefine_line|#define TW_RESPONSE_QUEUE_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0xC)
 DECL|macro|TW_CLEAR_ALL_INTERRUPTS
 mdefine_line|#define TW_CLEAR_ALL_INTERRUPTS(x) (writel(TW_STATUS_VALID_INTERRUPT, TW_CONTROL_REG_ADDR(x)))
 DECL|macro|TW_CLEAR_ATTENTION_INTERRUPT
@@ -2246,6 +2246,7 @@ id|TAG_TW_Device_Extension
 (brace
 DECL|member|base_addr
 id|u32
+id|__iomem
 op_star
 id|base_addr
 suffix:semicolon

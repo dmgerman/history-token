@@ -5459,9 +5459,13 @@ id|blank_mode
 )paren
 (brace
 r_case
-id|VESA_NO_BLANKING
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Screen: On, HSync: On, VSync: On */
+r_case
+id|FB_BLANK_NORMAL
+suffix:colon
+multiline_comment|/* Screen: Off, HSync: On, VSync: On */
 id|PMCont
 op_or_assign
 l_int|0x03
@@ -5473,7 +5477,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* Screen: Off, HSync: Off, VSync: On */
 id|PMCont
@@ -5487,7 +5491,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* Screen: Off, HSync: On, VSync: Off */
 id|PMCont
@@ -5501,7 +5505,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* Screen: Off, HSync: Off, VSync: Off */
 id|PMCont
@@ -5545,7 +5549,17 @@ c_func
 l_string|&quot;exit&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* let fbcon do a softblank for us */
 r_return
+(paren
+id|blank_mode
+op_eq
+id|FB_BLANK_NORMAL
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace

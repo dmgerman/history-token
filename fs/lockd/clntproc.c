@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/fs/lockd/clntproc.c&n; *&n; * RPC procedures for the client side NLM implementation&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1352,6 +1353,13 @@ r_return
 id|status
 suffix:semicolon
 )brace
+DECL|variable|nlmclnt_proc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nlmclnt_proc
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Allocate an NLM RPC call struct&n; */
 r_struct
 id|nlm_rqst

@@ -27,6 +27,7 @@ r_static
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|via
 suffix:semicolon
@@ -544,12 +545,6 @@ suffix:semicolon
 )brace
 id|via
 op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren

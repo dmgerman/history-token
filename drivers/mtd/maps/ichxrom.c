@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ichxrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: ichxrom.c,v 1.14 2004/09/18 01:59:56 eric Exp $&n; */
+multiline_comment|/*&n; * ichxrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: ichxrom.c,v 1.15 2004/11/16 18:29:02 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -317,7 +317,7 @@ id|ichxrom_map_info
 op_star
 id|map
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -1168,7 +1168,7 @@ id|map-&gt;mtd
 suffix:semicolon
 id|map-&gt;mtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|out
@@ -1192,7 +1192,7 @@ id|window-&gt;maps
 suffix:semicolon
 id|map
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|out
@@ -1376,6 +1376,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 DECL|function|init_ichxrom
+r_static
 r_int
 id|__init
 id|init_ichxrom

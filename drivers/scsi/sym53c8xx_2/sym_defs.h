@@ -3,45 +3,42 @@ macro_line|#ifndef SYM_DEFS_H
 DECL|macro|SYM_DEFS_H
 mdefine_line|#define SYM_DEFS_H
 DECL|macro|SYM_VERSION
-mdefine_line|#define SYM_VERSION &quot;2.1.18k&quot;
+mdefine_line|#define SYM_VERSION &quot;2.1.18m&quot;
 DECL|macro|SYM_DRIVER_NAME
 mdefine_line|#define SYM_DRIVER_NAME&t;&quot;sym-&quot; SYM_VERSION
-multiline_comment|/*&n; *  Vendor.&n; */
-DECL|macro|PCI_VENDOR_NCR
-mdefine_line|#define PCI_VENDOR_NCR&t;&t;0x1000
 multiline_comment|/*&n; *  PCI device identifier of SYMBIOS chips.&n; */
 DECL|macro|PCI_ID_SYM53C810
-mdefine_line|#define PCI_ID_SYM53C810&t;1
+mdefine_line|#define PCI_ID_SYM53C810&t;PCI_DEVICE_ID_NCR_53C810
 DECL|macro|PCI_ID_SYM53C810AP
-mdefine_line|#define PCI_ID_SYM53C810AP&t;5
+mdefine_line|#define PCI_ID_SYM53C810AP&t;PCI_DEVICE_ID_LSI_53C810AP
 DECL|macro|PCI_ID_SYM53C815
-mdefine_line|#define PCI_ID_SYM53C815&t;4
+mdefine_line|#define PCI_ID_SYM53C815&t;PCI_DEVICE_ID_NCR_53C815
 DECL|macro|PCI_ID_SYM53C820
-mdefine_line|#define PCI_ID_SYM53C820&t;2
+mdefine_line|#define PCI_ID_SYM53C820&t;PCI_DEVICE_ID_NCR_53C820
 DECL|macro|PCI_ID_SYM53C825
-mdefine_line|#define PCI_ID_SYM53C825&t;3
+mdefine_line|#define PCI_ID_SYM53C825&t;PCI_DEVICE_ID_NCR_53C825
 DECL|macro|PCI_ID_SYM53C860
-mdefine_line|#define PCI_ID_SYM53C860&t;6
+mdefine_line|#define PCI_ID_SYM53C860&t;PCI_DEVICE_ID_NCR_53C860
 DECL|macro|PCI_ID_SYM53C875
-mdefine_line|#define PCI_ID_SYM53C875&t;0xf
+mdefine_line|#define PCI_ID_SYM53C875&t;PCI_DEVICE_ID_NCR_53C875
 DECL|macro|PCI_ID_SYM53C875_2
-mdefine_line|#define PCI_ID_SYM53C875_2&t;0x8f
+mdefine_line|#define PCI_ID_SYM53C875_2&t;PCI_DEVICE_ID_NCR_53C875J
 DECL|macro|PCI_ID_SYM53C885
-mdefine_line|#define PCI_ID_SYM53C885&t;0xd
+mdefine_line|#define PCI_ID_SYM53C885&t;PCI_DEVICE_ID_NCR_53C885
 DECL|macro|PCI_ID_SYM53C895
-mdefine_line|#define PCI_ID_SYM53C895&t;0xc
+mdefine_line|#define PCI_ID_SYM53C895&t;PCI_DEVICE_ID_NCR_53C895
 DECL|macro|PCI_ID_SYM53C896
-mdefine_line|#define PCI_ID_SYM53C896&t;0xb
+mdefine_line|#define PCI_ID_SYM53C896&t;PCI_DEVICE_ID_NCR_53C896
 DECL|macro|PCI_ID_SYM53C895A
-mdefine_line|#define PCI_ID_SYM53C895A&t;0x12
+mdefine_line|#define PCI_ID_SYM53C895A&t;PCI_DEVICE_ID_LSI_53C895A
 DECL|macro|PCI_ID_SYM53C875A
-mdefine_line|#define PCI_ID_SYM53C875A&t;0x13
+mdefine_line|#define PCI_ID_SYM53C875A&t;PCI_DEVICE_ID_LSI_53C875A
 DECL|macro|PCI_ID_LSI53C1010_33
-mdefine_line|#define PCI_ID_LSI53C1010_33&t;0x20
+mdefine_line|#define PCI_ID_LSI53C1010_33&t;PCI_DEVICE_ID_LSI_53C1010_33
 DECL|macro|PCI_ID_LSI53C1010_66
-mdefine_line|#define PCI_ID_LSI53C1010_66&t;0x21
+mdefine_line|#define PCI_ID_LSI53C1010_66&t;PCI_DEVICE_ID_LSI_53C1010_66
 DECL|macro|PCI_ID_LSI53C1510D
-mdefine_line|#define PCI_ID_LSI53C1510D&t;0xa
+mdefine_line|#define PCI_ID_LSI53C1510D&t;PCI_DEVICE_ID_LSI_53C1510
 multiline_comment|/*&n; *&t;SYM53C8XX device features descriptor.&n; */
 DECL|struct|sym_pci_chip
 r_struct
@@ -1227,57 +1224,55 @@ mdefine_line|#define CARRYSET       (0x00200000)
 multiline_comment|/*-----------------------------------------------------------&n; *&n; *&t;SCSI  constants.&n; *&n; *-----------------------------------------------------------&n; */
 multiline_comment|/*&n; *&t;Messages&n; */
 DECL|macro|M_COMPLETE
-mdefine_line|#define&t;M_COMPLETE&t;(0x00)
+mdefine_line|#define&t;M_COMPLETE&t;COMMAND_COMPLETE
 DECL|macro|M_EXTENDED
-mdefine_line|#define&t;M_EXTENDED&t;(0x01)
+mdefine_line|#define&t;M_EXTENDED&t;EXTENDED_MESSAGE
 DECL|macro|M_SAVE_DP
-mdefine_line|#define&t;M_SAVE_DP&t;(0x02)
+mdefine_line|#define&t;M_SAVE_DP&t;SAVE_POINTERS
 DECL|macro|M_RESTORE_DP
-mdefine_line|#define&t;M_RESTORE_DP&t;(0x03)
+mdefine_line|#define&t;M_RESTORE_DP&t;RESTORE_POINTERS
 DECL|macro|M_DISCONNECT
-mdefine_line|#define&t;M_DISCONNECT&t;(0x04)
+mdefine_line|#define&t;M_DISCONNECT&t;DISCONNECT
 DECL|macro|M_ID_ERROR
-mdefine_line|#define&t;M_ID_ERROR&t;(0x05)
+mdefine_line|#define&t;M_ID_ERROR&t;INITIATOR_ERROR
 DECL|macro|M_ABORT
-mdefine_line|#define&t;M_ABORT&t;&t;(0x06)
+mdefine_line|#define&t;M_ABORT&t;&t;ABORT
 DECL|macro|M_REJECT
-mdefine_line|#define&t;M_REJECT&t;(0x07)
+mdefine_line|#define&t;M_REJECT&t;MESSAGE_REJECT
 DECL|macro|M_NOOP
-mdefine_line|#define&t;M_NOOP&t;&t;(0x08)
+mdefine_line|#define&t;M_NOOP&t;&t;NOP
 DECL|macro|M_PARITY
-mdefine_line|#define&t;M_PARITY&t;(0x09)
+mdefine_line|#define&t;M_PARITY&t;MSG_PARITY_ERROR
 DECL|macro|M_LCOMPLETE
-mdefine_line|#define&t;M_LCOMPLETE&t;(0x0a)
+mdefine_line|#define&t;M_LCOMPLETE&t;LINKED_CMD_COMPLETE
 DECL|macro|M_FCOMPLETE
-mdefine_line|#define&t;M_FCOMPLETE&t;(0x0b)
+mdefine_line|#define&t;M_FCOMPLETE&t;LINKED_FLG_CMD_COMPLETE
 DECL|macro|M_RESET
-mdefine_line|#define&t;M_RESET&t;&t;(0x0c)
+mdefine_line|#define&t;M_RESET&t;&t;BUS_DEVICE_RESET
 DECL|macro|M_ABORT_TAG
 mdefine_line|#define&t;M_ABORT_TAG&t;(0x0d)
 DECL|macro|M_CLEAR_QUEUE
 mdefine_line|#define&t;M_CLEAR_QUEUE&t;(0x0e)
 DECL|macro|M_INIT_REC
-mdefine_line|#define&t;M_INIT_REC&t;(0x0f)
+mdefine_line|#define&t;M_INIT_REC&t;INITIATE_RECOVERY
 DECL|macro|M_REL_REC
-mdefine_line|#define&t;M_REL_REC&t;(0x10)
+mdefine_line|#define&t;M_REL_REC&t;RELEASE_RECOVERY
 DECL|macro|M_TERMINATE
 mdefine_line|#define&t;M_TERMINATE&t;(0x11)
 DECL|macro|M_SIMPLE_TAG
-mdefine_line|#define&t;M_SIMPLE_TAG&t;(0x20)
+mdefine_line|#define&t;M_SIMPLE_TAG&t;SIMPLE_QUEUE_TAG
 DECL|macro|M_HEAD_TAG
-mdefine_line|#define&t;M_HEAD_TAG&t;(0x21)
+mdefine_line|#define&t;M_HEAD_TAG&t;HEAD_OF_QUEUE_TAG
 DECL|macro|M_ORDERED_TAG
-mdefine_line|#define&t;M_ORDERED_TAG&t;(0x22)
+mdefine_line|#define&t;M_ORDERED_TAG&t;ORDERED_QUEUE_TAG
 DECL|macro|M_IGN_RESIDUE
 mdefine_line|#define&t;M_IGN_RESIDUE&t;(0x23)
-DECL|macro|M_IDENTIFY
-mdefine_line|#define&t;M_IDENTIFY   &t;(0x80)
 DECL|macro|M_X_MODIFY_DP
-mdefine_line|#define&t;M_X_MODIFY_DP&t;(0x00)
+mdefine_line|#define&t;M_X_MODIFY_DP&t;EXTENDED_MODIFY_DATA_POINTER
 DECL|macro|M_X_SYNC_REQ
-mdefine_line|#define&t;M_X_SYNC_REQ&t;(0x01)
+mdefine_line|#define&t;M_X_SYNC_REQ&t;EXTENDED_SDTR
 DECL|macro|M_X_WIDE_REQ
-mdefine_line|#define&t;M_X_WIDE_REQ&t;(0x03)
+mdefine_line|#define&t;M_X_WIDE_REQ&t;EXTENDED_WDTR
 DECL|macro|M_X_PPR_REQ
 mdefine_line|#define&t;M_X_PPR_REQ&t;(0x04)
 multiline_comment|/*&n; *&t;PPR protocol options&n; */
@@ -1291,23 +1286,23 @@ DECL|macro|PPR_OPT_MASK
 mdefine_line|#define PPR_OPT_MASK&t;(0x07)
 multiline_comment|/*&n; *&t;Status&n; */
 DECL|macro|S_GOOD
-mdefine_line|#define&t;S_GOOD&t;&t;(0x00)
+mdefine_line|#define&t;S_GOOD&t;&t;SAM_STAT_GOOD
 DECL|macro|S_CHECK_COND
-mdefine_line|#define&t;S_CHECK_COND&t;(0x02)
+mdefine_line|#define&t;S_CHECK_COND&t;SAM_STAT_CHECK_CONDITION
 DECL|macro|S_COND_MET
-mdefine_line|#define&t;S_COND_MET&t;(0x04)
+mdefine_line|#define&t;S_COND_MET&t;SAM_STAT_CONDITION_MET
 DECL|macro|S_BUSY
-mdefine_line|#define&t;S_BUSY&t;&t;(0x08)
+mdefine_line|#define&t;S_BUSY&t;&t;SAM_STAT_BUSY
 DECL|macro|S_INT
-mdefine_line|#define&t;S_INT&t;&t;(0x10)
+mdefine_line|#define&t;S_INT&t;&t;SAM_STAT_INTERMEDIATE
 DECL|macro|S_INT_COND_MET
-mdefine_line|#define&t;S_INT_COND_MET&t;(0x14)
+mdefine_line|#define&t;S_INT_COND_MET&t;SAM_STAT_INTERMEDIATE_CONDITION_MET
 DECL|macro|S_CONFLICT
-mdefine_line|#define&t;S_CONFLICT&t;(0x18)
+mdefine_line|#define&t;S_CONFLICT&t;SAM_STAT_RESERVATION_CONFLICT
 DECL|macro|S_TERMINATED
-mdefine_line|#define&t;S_TERMINATED&t;(0x20)
+mdefine_line|#define&t;S_TERMINATED&t;SAM_STAT_COMMAND_TERMINATED
 DECL|macro|S_QUEUE_FULL
-mdefine_line|#define&t;S_QUEUE_FULL&t;(0x28)
+mdefine_line|#define&t;S_QUEUE_FULL&t;SAM_STAT_TASK_SET_FULL
 DECL|macro|S_ILLEGAL
 mdefine_line|#define&t;S_ILLEGAL&t;(0xff)
 macro_line|#endif /* defined SYM_DEFS_H */

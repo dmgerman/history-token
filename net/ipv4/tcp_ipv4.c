@@ -11176,6 +11176,11 @@ op_assign
 l_string|&quot;TCP&quot;
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|close
 op_assign
 id|tcp_close

@@ -766,7 +766,7 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * d_find_alias - grab a hashed alias of inode&n; * @inode: inode in question&n; *&n; * If inode has a hashed alias - acquire the reference to alias and&n; * return it. Otherwise return NULL. Notice that if inode is a directory&n; * there can be only one alias and it can be unhashed only if it has&n; * no children.&n; *&n; * If the inode has a DCACHE_DISCONNECTED alias, then prefer&n; * any other hashed alias over that one.&n; */
+multiline_comment|/**&n; * d_find_alias - grab a hashed alias of inode&n; * @inode: inode in question&n; * @want_discon:  flag, used by d_splice_alias, to request&n; *          that only a DISCONNECTED alias be returned.&n; *&n; * If inode has a hashed alias, or is a directory and has any alias,&n; * acquire the reference to alias and return it. Otherwise return NULL.&n; * Notice that if inode is a directory there can be only one alias and&n; * it can be unhashed only if it has no children, or if it is the root&n; * of a filesystem.&n; *&n; * If the inode has a DCACHE_DISCONNECTED alias, then prefer&n; * any other hashed alias over that one unless @want_discon is set,&n; * in which case only return a DCACHE_DISCONNECTED alias.&n; */
 DECL|function|__d_find_alias
 r_static
 r_struct
@@ -852,6 +852,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|S_ISDIR
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+op_logical_or
 op_logical_neg
 id|d_unhashed
 c_func

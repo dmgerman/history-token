@@ -52,6 +52,17 @@ id|cpu_cur_freq
 id|NR_CPUS
 )braket
 suffix:semicolon
+multiline_comment|/* current CPU freq */
+DECL|variable|cpu_set_freq
+r_static
+r_int
+r_int
+id|cpu_set_freq
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+multiline_comment|/* CPU freq desired by userspace */
 DECL|variable|cpu_is_managed
 r_static
 r_int
@@ -76,6 +87,8 @@ id|DECLARE_MUTEX
 id|userspace_sem
 )paren
 suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_GOVERNOR, &quot;userspace&quot;, msg)
 multiline_comment|/* keep track of frequency transitions */
 r_static
 r_int
@@ -104,23 +117,17 @@ id|freq
 op_assign
 id|data
 suffix:semicolon
-multiline_comment|/* Don&squot;t update cur_freq if CPU is managed and we&squot;re&n;&t; * waking up: else we won&squot;t remember what frequency &n;&t; * we need to set the CPU to.&n;&t; */
-r_if
-c_cond
+id|dprintk
+c_func
 (paren
-id|cpu_is_managed
-(braket
+l_string|&quot;saving cpu_cur_freq of cpu %u to be %u kHz&bslash;n&quot;
+comma
 id|freq-&gt;cpu
-)braket
-op_logical_and
-(paren
-id|val
-op_eq
-id|CPUFREQ_RESUMECHANGE
+comma
+id|freq
+op_member_access_from_pointer
+r_new
 )paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|cpu_cur_freq
 (braket
@@ -148,10 +155,11 @@ op_assign
 id|userspace_cpufreq_notifier
 )brace
 suffix:semicolon
-multiline_comment|/** &n; * cpufreq_set - set the CPU frequency&n; * @freq: target frequency in kHz&n; * @cpu: CPU for which the frequency is to be set&n; *&n; * Sets the CPU frequency to freq.&n; */
-DECL|function|cpufreq_set
+multiline_comment|/** &n; * _cpufreq_set - set the CPU frequency&n; * @freq: target frequency in kHz&n; * @cpu: CPU for which the frequency is to be set&n; *&n; * Sets the CPU frequency to freq.&n; */
+DECL|function|_cpufreq_set
+r_static
 r_int
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 r_int
@@ -168,6 +176,16 @@ id|ret
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;_cpufreq_set for cpu %u, freq %u kHz&bslash;n&quot;
+comma
+id|cpu
+comma
+id|freq
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -187,6 +205,13 @@ id|cpu
 )paren
 r_goto
 id|err
+suffix:semicolon
+id|cpu_set_freq
+(braket
+id|cpu
+)braket
+op_assign
+id|freq
 suffix:semicolon
 r_if
 c_cond
@@ -252,6 +277,41 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CPU_FREQ_24_API
+macro_line|#warning The /proc/sys/cpu/ and sysctl interface to cpufreq will be removed from the 2.6. kernel series soon after 2005-01-01
+DECL|variable|warning_print
+r_static
+r_int
+r_int
+id|warning_print
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|cpufreq_set
+r_int
+id|__deprecated
+id|cpufreq_set
+c_func
+(paren
+r_int
+r_int
+id|freq
+comma
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_return
+id|_cpufreq_set
+c_func
+(paren
+id|freq
+comma
+id|cpu
+)paren
+suffix:semicolon
+)brace
 DECL|variable|cpufreq_set
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -262,6 +322,7 @@ suffix:semicolon
 multiline_comment|/** &n; * cpufreq_setmax - set the CPU to the maximum frequency&n; * @cpu - affected cpu;&n; *&n; * Sets the CPU frequency to the maximum frequency supported by&n; * this CPU.&n; */
 DECL|function|cpufreq_setmax
 r_int
+id|__deprecated
 id|cpufreq_setmax
 c_func
 (paren
@@ -291,7 +352,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|cpu_max_freq
@@ -309,16 +370,6 @@ c_func
 (paren
 id|cpufreq_setmax
 )paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-macro_line|#warning The /proc/sys/cpu/ and sysctl interface to cpufreq will be removed from the 2.6. kernel series soon after 2005-01-01
-DECL|variable|warning_print
-r_static
-r_int
-r_int
-id|warning_print
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*********************** cpufreq_sysctl interface ********************/
 r_static
@@ -503,7 +554,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|freq
@@ -784,7 +835,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|freq
@@ -1376,6 +1427,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|cpufreq_sysctl_table
+r_static
 r_struct
 id|ctl_table_header
 op_star
@@ -1507,7 +1559,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|freq
@@ -1539,6 +1591,11 @@ dot
 id|mode
 op_assign
 l_int|0644
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 comma
 dot
@@ -1640,6 +1697,13 @@ id|cpu
 op_assign
 id|policy-&gt;cur
 suffix:semicolon
+id|cpu_set_freq
+(braket
+id|cpu
+)braket
+op_assign
+id|policy-&gt;cur
+suffix:semicolon
 id|sysfs_create_file
 (paren
 op_amp
@@ -1664,6 +1728,29 @@ r_sizeof
 r_struct
 id|cpufreq_policy
 )paren
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;managing cpu %u started (%u - %u kHz, currently %u kHz)&bslash;n&quot;
+comma
+id|cpu
+comma
+id|cpu_min_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_max_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_cur_freq
+(braket
+id|cpu
+)braket
 )paren
 suffix:semicolon
 id|up
@@ -1706,6 +1793,13 @@ id|cpu
 op_assign
 l_int|0
 suffix:semicolon
+id|cpu_set_freq
+(braket
+id|cpu
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 id|sysfs_remove_file
 (paren
 op_amp
@@ -1713,6 +1807,14 @@ id|policy-&gt;kobj
 comma
 op_amp
 id|freq_attr_scaling_setspeed.attr
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;managing cpu %u stopped&bslash;n&quot;
+comma
+id|cpu
 )paren
 suffix:semicolon
 id|up
@@ -1748,16 +1850,45 @@ id|cpu
 op_assign
 id|policy-&gt;max
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;limit event for cpu %u: %u - %u kHz, currently %u kHz, last set to %u kHz&bslash;n&quot;
+comma
+id|cpu
+comma
+id|cpu_min_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_max_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_cur_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_set_freq
+(braket
+id|cpu
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|policy-&gt;max
 OL
-id|cpu_cur_freq
+id|cpu_set_freq
 (braket
 id|cpu
 )braket
 )paren
+(brace
 id|__cpufreq_driver_target
 c_func
 (paren
@@ -1772,17 +1903,19 @@ comma
 id|CPUFREQ_RELATION_H
 )paren
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
 (paren
 id|policy-&gt;min
 OG
-id|cpu_cur_freq
+id|cpu_set_freq
 (braket
 id|cpu
 )braket
 )paren
+(brace
 id|__cpufreq_driver_target
 c_func
 (paren
@@ -1797,7 +1930,9 @@ comma
 id|CPUFREQ_RELATION_L
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|__cpufreq_driver_target
 c_func
 (paren
@@ -1807,7 +1942,7 @@ id|current_policy
 id|cpu
 )braket
 comma
-id|cpu_cur_freq
+id|cpu_set_freq
 (braket
 id|cpu
 )braket
@@ -1815,6 +1950,7 @@ comma
 id|CPUFREQ_RELATION_L
 )paren
 suffix:semicolon
+)brace
 id|memcpy
 (paren
 op_amp

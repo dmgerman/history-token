@@ -448,18 +448,21 @@ suffix:semicolon
 multiline_comment|/* Controller list */
 DECL|member|post_port
 r_void
+id|__iomem
 op_star
 id|post_port
 suffix:semicolon
 multiline_comment|/* Inbout port address */
 DECL|member|reply_port
 r_void
+id|__iomem
 op_star
 id|reply_port
 suffix:semicolon
 multiline_comment|/* Outbound port address */
 DECL|member|irq_mask
 r_void
+id|__iomem
 op_star
 id|irq_mask
 suffix:semicolon
@@ -741,6 +744,7 @@ op_star
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 )paren
@@ -756,6 +760,7 @@ op_star
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 comma
@@ -923,16 +928,6 @@ multiline_comment|/* IOP functions */
 r_extern
 r_int
 id|i2o_status_get
-c_func
-(paren
-r_struct
-id|i2o_controller
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|i2o_hrt_get
 c_func
 (paren
 r_struct
@@ -1455,18 +1450,6 @@ id|i2o_controller
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|i2o_exec_lct_notify
-c_func
-(paren
-r_struct
-id|i2o_controller
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
 multiline_comment|/* device to i2o_device and driver to i2o_driver convertion functions */
 DECL|macro|to_i2o_driver
 mdefine_line|#define to_i2o_driver(drv) container_of(drv,struct i2o_driver, driver)
@@ -1667,6 +1650,7 @@ id|c
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 id|msg
@@ -1811,10 +1795,8 @@ id|u32
 id|m
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|unlikely
+id|BUG_ON
+c_func
 (paren
 id|m
 OL
@@ -1825,11 +1807,6 @@ op_ge
 id|c-&gt;out_queue.phys
 op_plus
 id|c-&gt;out_queue.len
-)paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -1849,6 +1826,7 @@ r_static
 r_inline
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|i2o_msg_in_to_virt
 c_func
@@ -2117,25 +2095,6 @@ mdefine_line|#define i2o_raw_writel(val, mem)&t;__raw_writel(cpu_to_le32(val), m
 r_extern
 r_int
 id|i2o_parm_field_get
-c_func
-(paren
-r_struct
-id|i2o_device
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|i2o_parm_field_set
 c_func
 (paren
 r_struct

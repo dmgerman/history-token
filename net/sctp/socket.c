@@ -8924,7 +8924,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_getsockopt_sctp_status(%d): %d %d %p&bslash;n&quot;
+l_string|&quot;sctp_getsockopt_sctp_status(%d): %d %d %d&bslash;n&quot;
 comma
 id|len
 comma
@@ -16278,6 +16278,11 @@ op_assign
 l_string|&quot;SCTP&quot;
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|close
 op_assign
 id|sctp_close
@@ -16384,6 +16389,11 @@ dot
 id|name
 op_assign
 l_string|&quot;SCTPv6&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|close

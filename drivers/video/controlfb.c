@@ -317,6 +317,7 @@ suffix:semicolon
 DECL|member|cmap_regs
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 suffix:semicolon
@@ -328,6 +329,7 @@ suffix:semicolon
 DECL|member|control_regs
 r_struct
 id|control_regs
+id|__iomem
 op_star
 id|control_regs
 suffix:semicolon
@@ -343,6 +345,7 @@ id|control_regs_size
 suffix:semicolon
 DECL|member|frame_buffer
 id|__u8
+id|__iomem
 op_star
 id|frame_buffer
 suffix:semicolon
@@ -1354,12 +1357,10 @@ r_switch
 c_cond
 (paren
 id|blank_mode
-op_minus
-l_int|1
 )paren
 (brace
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 id|ctrl
 op_and_assign
@@ -1369,7 +1370,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|ctrl
 op_and_assign
@@ -1379,7 +1380,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|ctrl
 op_and_assign
@@ -1388,7 +1389,7 @@ l_int|0x33
 suffix:semicolon
 multiline_comment|/* fall through */
 r_case
-id|VESA_NO_BLANKING
+id|FB_BLANK_NORMAL
 suffix:colon
 id|ctrl
 op_or_assign
@@ -2117,6 +2118,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|preg
+id|__iomem
 op_star
 id|rp
 suffix:semicolon
@@ -4641,10 +4643,6 @@ id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|p-&gt;frame_buffer
 op_plus
 id|CTRLFB_OFF

@@ -1,20 +1,21 @@
 multiline_comment|/* drivers/serial/serial_lh7a40x.c&n; *&n; *  Copyright (C) 2004 Coastal Environmental Systems&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  version 2 as published by the Free Software Foundation.&n; *&n; */
 multiline_comment|/* Driver for Sharp LH7A40X embedded serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *  Based on drivers/serial/amba.c, by Deep Blue Solutions Ltd.&n; *&n; *  ---&n; *&n; * This driver supports the embedded UARTs of the Sharp LH7A40X series&n; * CPUs.  While similar to the 16550 and other UART chips, there is&n; * nothing close to register compatibility.  Moreover, some of the&n; * modem control lines are not available, either in the chip or they&n; * are lacking in the board-level implementation.&n; *&n; * - Use of SIRDIS&n; *   For simplicity, we disable the IR functions of any UART whenever&n; *   we enable it.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_LH7A40X_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|DEV_MAJOR
 mdefine_line|#define DEV_MAJOR&t;204
 DECL|macro|DEV_MINOR
@@ -265,6 +266,8 @@ multiline_comment|/* (Gross) limit on receive */
 r_int
 r_int
 id|data
+comma
+id|flag
 suffix:semicolon
 multiline_comment|/* Received data and status */
 r_while
@@ -294,36 +297,18 @@ op_ge
 id|TTY_FLIPBUF_SIZE
 )paren
 (brace
-id|tty-&gt;flip.work
-dot
-id|func
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|tty
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;flip.count
-op_ge
-id|TTY_FLIPBUF_SIZE
+id|tty-&gt;low_latency
 )paren
-(brace
-id|printk
+id|tty_flip_buffer_push
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;TTY_DONT_FLIP set&bslash;n&quot;
+id|tty
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t;&t;&t; * If this failed then we will throw away the&n;&t;&t;&t; * bytes but must do so to clear interrupts&n;&t;&t;&t; */
 )brace
 id|data
 op_assign
@@ -334,17 +319,7 @@ comma
 id|UART_R_DATA
 )paren
 suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_assign
-(paren
-r_int
-r_char
-)paren
-id|data
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_NORMAL
 suffix:semicolon
@@ -437,8 +412,7 @@ id|data
 op_amp
 id|RxBreak
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_BREAK
 suffix:semicolon
@@ -450,8 +424,7 @@ id|data
 op_amp
 id|RxParityError
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_PARITY
 suffix:semicolon
@@ -463,8 +436,7 @@ id|data
 op_amp
 id|RxFramingError
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_FRAME
 suffix:semicolon
@@ -499,14 +471,15 @@ op_eq
 l_int|0
 )paren
 (brace
-op_increment
-id|tty-&gt;flip.flag_buf_ptr
-suffix:semicolon
-op_increment
-id|tty-&gt;flip.char_buf_ptr
-suffix:semicolon
-op_increment
-id|tty-&gt;flip.count
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+id|data
+comma
+id|flag
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -524,20 +497,15 @@ id|TTY_FLIPBUF_SIZE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Overrun is special, since it&squot;s reported&n;&t;&t;&t; * immediately, and doesn&squot;t affect the current&n;&t;&t;&t; * character&n;&t;&t;&t; */
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
 l_int|0
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
+comma
 id|TTY_OVERRUN
-suffix:semicolon
-op_increment
-id|tty-&gt;flip.count
+)paren
 suffix:semicolon
 )brace
 )brace

@@ -255,10 +255,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|pci_enable_device
 c_func
 (paren
 id|dev
+)paren
 )paren
 )paren
 (brace
@@ -276,8 +280,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* allocate memory for the board structure */
@@ -408,10 +411,6 @@ op_logical_neg
 (paren
 id|card-&gt;bar0
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -460,10 +459,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|0x01800008
 comma
 l_int|0x00000030
@@ -474,10 +469,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|0x01800010
 comma
 l_int|0x00000030
@@ -488,10 +479,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|0x01800014
 comma
 l_int|0x42240822
@@ -502,10 +489,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|0x01800018
 comma
 l_int|0x07114000
@@ -516,10 +499,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|0x0180001c
 comma
 l_int|0x00000400
@@ -530,10 +509,6 @@ c_func
 (paren
 id|card
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|0x01840070
 comma
 l_int|0x00000010
@@ -831,10 +806,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;bar0
 )paren
 suffix:semicolon
@@ -920,10 +891,6 @@ multiline_comment|/* release mapped memory */
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;bar0
 )paren
 suffix:semicolon

@@ -25,6 +25,8 @@ id|id
 )paren
 (brace
 r_int
+id|err
+comma
 id|result
 op_assign
 op_minus
@@ -38,10 +40,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|pci_enable_device
 c_func
 (paren
 id|pdev
+)paren
 )paren
 )paren
 (brace
@@ -61,8 +67,7 @@ id|pdev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|err
 suffix:semicolon
 )brace
 id|sp

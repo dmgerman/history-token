@@ -6105,10 +6105,6 @@ c_func
 (paren
 id|av7110
 comma
-(paren
-id|u32
-op_star
-)paren
 id|dc-&gt;data
 comma
 id|dc-&gt;color
@@ -6134,13 +6130,10 @@ op_plus
 l_int|1
 suffix:semicolon
 id|u8
+id|__user
 op_star
 id|colors
 op_assign
-(paren
-id|u8
-op_star
-)paren
 id|dc-&gt;data
 suffix:semicolon
 id|u8

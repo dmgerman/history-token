@@ -36,6 +36,7 @@ macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/IoHriMainStore.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
+macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 r_extern
 r_void
 id|hvlog
@@ -2686,7 +2687,7 @@ c_func
 r_void
 )paren
 (brace
-id|mf_powerOff
+id|mf_power_off
 c_func
 (paren
 )paren
@@ -2701,7 +2702,7 @@ c_func
 r_void
 )paren
 (brace
-id|mf_powerOff
+id|mf_power_off
 c_func
 (paren
 )paren
@@ -2855,14 +2856,14 @@ id|code
 op_ne
 l_int|0xffff
 )paren
-id|mf_displayProgress
+id|mf_display_progress
 c_func
 (paren
 id|code
 )paren
 suffix:semicolon
 r_else
-id|mf_clearSrc
+id|mf_clear_src
 c_func
 (paren
 )paren

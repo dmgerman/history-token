@@ -2748,7 +2748,7 @@ id|dev
 )paren
 (brace
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 DECL|variable|netdev_ethtool_ops

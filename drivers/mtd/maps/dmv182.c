@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/mtd/maps/svme182.c&n; * &n; * Flash map driver for the Dy4 SVME182 board&n; * &n; * $Id: dmv182.c,v 1.4 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * Copyright 2003-2004, TimeSys Corporation&n; *&n; * Based on the SVME181 flash map, by Tom Nelson, Dot4, Inc. for TimeSys Corp.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * drivers/mtd/maps/svme182.c&n; * &n; * Flash map driver for the Dy4 SVME182 board&n; * &n; * $Id: dmv182.c,v 1.5 2004/11/04 13:24:14 gleixner Exp $&n; *&n; * Copyright 2003-2004, TimeSys Corporation&n; *&n; * Based on the SVME181 flash map, by Tom Nelson, Dot4, Inc. for TimeSys Corp.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -220,11 +220,6 @@ id|svme182_partitions
 suffix:semicolon
 id|svme182_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

@@ -34,6 +34,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|cs5520_pio_clocks
+r_static
 r_struct
 id|pio_clocks
 id|cs5520_pio_clocks

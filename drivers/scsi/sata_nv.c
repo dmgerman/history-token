@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&t;&quot;sata_nv&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.03&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.5&quot;
 DECL|macro|NV_PORTS
 mdefine_line|#define NV_PORTS&t;&t;&t;2
 DECL|macro|NV_PIO_MASK
@@ -825,6 +825,13 @@ c_func
 id|pci
 comma
 id|nv_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|function|nv_interrupt
@@ -1843,6 +1850,17 @@ op_star
 id|probe_ent
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|probe_ent-&gt;dev
+)paren
+suffix:semicolon
 id|u8
 id|intr_mask
 suffix:semicolon
@@ -1852,7 +1870,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|probe_ent-&gt;pdev
+id|pdev
 comma
 id|NV_MCP_SATA_CFG_20
 comma
@@ -1867,7 +1885,7 @@ suffix:semicolon
 id|pci_write_config_byte
 c_func
 (paren
-id|probe_ent-&gt;pdev
+id|pdev
 comma
 id|NV_MCP_SATA_CFG_20
 comma
@@ -1921,6 +1939,17 @@ op_star
 id|host_set
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|host_set-&gt;dev
+)paren
+suffix:semicolon
 id|u8
 id|intr_mask
 suffix:semicolon
@@ -1957,7 +1986,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|host_set-&gt;pdev
+id|pdev
 comma
 id|NV_MCP_SATA_CFG_20
 comma
@@ -1973,7 +2002,7 @@ suffix:semicolon
 id|pci_write_config_byte
 c_func
 (paren
-id|host_set-&gt;pdev
+id|pdev
 comma
 id|NV_MCP_SATA_CFG_20
 comma

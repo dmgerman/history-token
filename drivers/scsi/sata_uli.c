@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_uli&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.11&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.2&quot;
 r_enum
 (brace
 DECL|enumerator|uli_5289
@@ -418,6 +418,13 @@ comma
 id|uli_pci_tbl
 )paren
 suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
+)paren
+suffix:semicolon
 DECL|function|get_scr_cfg_addr
 r_static
 r_int
@@ -517,6 +524,17 @@ r_int
 id|sc_reg
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
+suffix:semicolon
 r_int
 r_int
 id|cfg_addr
@@ -535,7 +553,7 @@ suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
-id|ap-&gt;host_set-&gt;pdev
+id|pdev
 comma
 id|cfg_addr
 comma
@@ -565,6 +583,17 @@ id|u32
 id|val
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
+suffix:semicolon
 r_int
 r_int
 id|cfg_addr
@@ -580,7 +609,7 @@ suffix:semicolon
 id|pci_write_config_dword
 c_func
 (paren
-id|ap-&gt;host_set-&gt;pdev
+id|pdev
 comma
 id|cfg_addr
 comma

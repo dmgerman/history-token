@@ -60,7 +60,7 @@ id|mmcfg_last_accessed_device
 op_assign
 id|dev_base
 suffix:semicolon
-id|set_fixmap
+id|set_fixmap_nocache
 c_func
 (paren
 id|FIX_PCIE_MCFG
@@ -336,13 +336,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Dummy read to flush PCI write */
-id|readl
-c_func
-(paren
-id|mmcfg_virt_addr
-)paren
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren

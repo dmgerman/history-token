@@ -1557,7 +1557,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -1603,7 +1603,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -1643,7 +1643,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WINBOND
@@ -1692,7 +1692,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WINBOND
@@ -1731,6 +1731,12 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|pplus_set_VIA_IDE_legacy
 r_void

@@ -36,7 +36,7 @@ macro_line|#endif
 DECL|macro|MB_FCR32
 mdefine_line|#define MB_FCR32(bay, r)&t;((bay)-&gt;base + ((r) &gt;&gt; 2))
 DECL|macro|MB_FCR8
-mdefine_line|#define MB_FCR8(bay, r)&t;&t;(((volatile u8*)((bay)-&gt;base)) + (r))
+mdefine_line|#define MB_FCR8(bay, r)&t;&t;(((volatile u8 __iomem *)((bay)-&gt;base)) + (r))
 DECL|macro|MB_IN32
 mdefine_line|#define MB_IN32(bay,r)&t;&t;(in_le32(MB_FCR32(bay,r)))
 DECL|macro|MB_OUT32
@@ -152,8 +152,8 @@ r_struct
 id|media_bay_info
 (brace
 DECL|member|base
-r_volatile
 id|u32
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -208,8 +208,9 @@ id|lock
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
 DECL|member|cd_base
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|cd_base
 suffix:semicolon
 DECL|member|cd_index
@@ -1690,6 +1691,10 @@ id|mdev
 op_logical_and
 id|base
 op_eq
+(paren
+r_int
+r_int
+)paren
 id|media_bays
 (braket
 id|i
@@ -1821,6 +1826,11 @@ id|bay-&gt;lock
 suffix:semicolon
 id|bay-&gt;cd_base
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|base
 suffix:semicolon
 id|bay-&gt;cd_irq
@@ -2230,7 +2240,7 @@ c_cond
 (paren
 id|bay-&gt;cd_base
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|bay-&gt;timer
@@ -2692,8 +2702,8 @@ id|media_bay_info
 op_star
 id|bay
 suffix:semicolon
-r_volatile
 id|u32
+id|__iomem
 op_star
 id|regbase
 suffix:semicolon
@@ -2743,8 +2753,8 @@ multiline_comment|/* Media bay registers are located at the beginning of the&n; 
 id|regbase
 op_assign
 (paren
-r_volatile
 id|u32
+id|__iomem
 op_star
 )paren
 id|ioremap
@@ -2981,11 +2991,11 @@ c_cond
 (paren
 id|state
 op_ne
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_logical_and
 id|state
-op_ge
-l_int|2
+op_eq
+id|PM_SUSPEND_MEM
 )paren
 (brace
 id|down
@@ -3020,7 +3030,7 @@ c_func
 id|MB_POLL_DELAY
 )paren
 suffix:semicolon
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -3056,12 +3066,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_ne
 l_int|0
 )paren
 (brace
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon

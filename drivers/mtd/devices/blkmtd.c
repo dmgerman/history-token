@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: blkmtd.c,v 1.23 2004/08/09 14:03:19 dwmw2 Exp $&n; *&n; * blkmtd.c - use a block device as a fake MTD&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2001,2002 Simon Evans&n; *&n; * Licence: GPL&n; *&n; * How it works:&n; *&t;The driver uses raw/io to read/write the device and the page&n; *&t;cache to cache access. Writes update the page cache with the&n; *&t;new data and mark it dirty and add the page into a BIO which&n; *&t;is then written out.&n; *&n; *&t;It can be loaded Read-Only to prevent erases and writes to the&n; *&t;medium.&n; *&n; */
+multiline_comment|/*&n; * $Id: blkmtd.c,v 1.24 2004/11/16 18:29:01 dwmw2 Exp $&n; *&n; * blkmtd.c - use a block device as a fake MTD&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2001,2002 Simon Evans&n; *&n; * Licence: GPL&n; *&n; * How it works:&n; *&t;The driver uses raw/io to read/write the device and the page&n; *&t;cache to cache access. Writes update the page cache with the&n; *&t;new data and mark it dirty and add the page into a BIO which&n; *&t;is then written out.&n; *&n; *&t;It can be loaded Read-Only to prevent erases and writes to the&n; *&t;medium.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -20,7 +20,7 @@ multiline_comment|/* Default erase size in K, always make it a multiple of PAGE_
 DECL|macro|CONFIG_MTD_BLKDEV_ERASESIZE
 mdefine_line|#define CONFIG_MTD_BLKDEV_ERASESIZE (128 &lt;&lt; 10)&t;/* 128KiB */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;$Revision: 1.23 $&quot;
+mdefine_line|#define VERSION &quot;$Revision: 1.24 $&quot;
 multiline_comment|/* Info for the block device */
 DECL|struct|blkmtd_dev
 r_struct
@@ -72,6 +72,7 @@ DECL|macro|MAX_DEVICES
 mdefine_line|#define MAX_DEVICES 4
 multiline_comment|/* Module parameters passed by insmod/modprobe */
 DECL|variable|device
+r_static
 r_char
 op_star
 id|device
@@ -81,6 +82,7 @@ id|MAX_DEVICES
 suffix:semicolon
 multiline_comment|/* the block device to use */
 DECL|variable|erasesz
+r_static
 r_int
 id|erasesz
 (braket
@@ -89,6 +91,7 @@ id|MAX_DEVICES
 suffix:semicolon
 multiline_comment|/* optional default erase size */
 DECL|variable|ro
+r_static
 r_int
 id|ro
 (braket
@@ -97,6 +100,7 @@ id|MAX_DEVICES
 suffix:semicolon
 multiline_comment|/* optional read only flag */
 DECL|variable|sync
+r_static
 r_int
 id|sync
 suffix:semicolon

@@ -13,8 +13,8 @@ macro_line|#endif
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;May 11, 2002&quot;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

@@ -34,6 +34,7 @@ suffix:semicolon
 multiline_comment|/* contains context of appropriate BAR Register */
 DECL|member|addr
 r_void
+id|__iomem
 op_star
 id|addr
 (braket

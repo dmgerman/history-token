@@ -29,11 +29,15 @@ id|u_long
 id|base_2_c
 suffix:semicolon
 DECL|member|base_v
-id|u_long
+r_void
+id|__iomem
+op_star
 id|base_v
 suffix:semicolon
 DECL|member|base_2_v
-id|u_long
+r_void
+id|__iomem
+op_star
 id|base_2_v
 suffix:semicolon
 DECL|member|irq
@@ -45,6 +49,7 @@ DECL|member|reg
 r_volatile
 r_struct
 id|ncr_reg
+id|__iomem
 op_star
 id|reg
 suffix:semicolon

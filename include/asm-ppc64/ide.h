@@ -6,7 +6,7 @@ mdefine_line|#define __ASMPPC64_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
-macro_line|# define MAX_HWIFS&t;4
+macro_line|# define MAX_HWIFS&t;10
 macro_line|#endif
 DECL|macro|IDE_ARCH_OBSOLETE_INIT
 mdefine_line|#define IDE_ARCH_OBSOLETE_INIT

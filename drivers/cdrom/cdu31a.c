@@ -174,12 +174,14 @@ id|cdu31a_port
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cdu31a_port
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The following are I/O addresses of the various registers for the drive.  The&n; * comment for the base address also applies here.&n; */
@@ -429,12 +431,14 @@ id|cdu31a_irq
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cdu31a_irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* The interrupt handler will wake this queue up when it gets an&n;   interrupts. */

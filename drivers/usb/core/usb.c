@@ -3577,15 +3577,6 @@ id|usb_driver
 op_star
 id|driver
 suffix:semicolon
-multiline_comment|/* there&squot;s only one USB suspend state */
-r_if
-c_cond
-(paren
-id|dev-&gt;power.power_state
-)paren
-r_return
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3640,6 +3631,15 @@ c_func
 (paren
 id|dev-&gt;driver
 )paren
+suffix:semicolon
+multiline_comment|/* there&squot;s only one USB suspend state */
+r_if
+c_cond
+(paren
+id|intf-&gt;dev.power.power_state
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -344,11 +344,14 @@ comma
 id|pBA1phys
 suffix:semicolon
 DECL|member|pBA0
-DECL|member|pBA1
 r_char
+id|__iomem
 op_star
 id|pBA0
-comma
+suffix:semicolon
+DECL|member|pBA1
+r_char
+id|__iomem
 op_star
 id|pBA1
 suffix:semicolon

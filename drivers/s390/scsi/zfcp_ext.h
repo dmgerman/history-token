@@ -4,7 +4,7 @@ DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.58 $&quot;
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.61 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct
@@ -1127,6 +1127,56 @@ c_func
 (paren
 r_struct
 id|zfcp_port
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_erp_port_access_denied
+c_func
+(paren
+r_struct
+id|zfcp_port
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_erp_unit_access_denied
+c_func
+(paren
+r_struct
+id|zfcp_unit
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_erp_adapter_access_changed
+c_func
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_erp_port_access_changed
+c_func
+(paren
+r_struct
+id|zfcp_port
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_erp_unit_access_changed
+c_func
+(paren
+r_struct
+id|zfcp_unit
 op_star
 )paren
 suffix:semicolon

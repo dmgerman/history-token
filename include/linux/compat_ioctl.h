@@ -611,6 +611,11 @@ id|DM_LIST_VERSIONS_32
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|DM_TARGET_MSG_32
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|DM_VERSION
 )paren
 id|COMPATIBLE_IOCTL
@@ -677,6 +682,11 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|DM_LIST_VERSIONS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_TARGET_MSG
 )paren
 multiline_comment|/* Big K */
 id|COMPATIBLE_IOCTL

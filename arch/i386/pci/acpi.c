@@ -51,6 +51,10 @@ id|busnum
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|pci_routeirq
+suffix:semicolon
 DECL|function|pci_acpi_init
 r_static
 r_int
@@ -103,14 +107,48 @@ id|pcibios_enable_irq
 op_assign
 id|acpi_pci_irq_enable
 suffix:semicolon
-multiline_comment|/*&n;&t; * PCI IRQ routing is set up by pci_enable_device(), but we&n;&t; * also do it here in case there are still broken drivers that&n;&t; * don&squot;t use pci_enable_device().&n;&t; */
+r_if
+c_cond
+(paren
+id|pci_routeirq
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * PCI IRQ routing is set up by pci_enable_device(), but we&n;&t;&t; * also do it here in case there are still broken drivers that&n;&t;&t; * don&squot;t use pci_enable_device().&n;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** Routing PCI interrupts for all devices because &bslash;&quot;pci=routeirq&bslash;&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** was specified.  If this was required to make a driver work,&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** please email the output of &bslash;&quot;lspci&bslash;&quot; to bjorn.helgaas@hp.com&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** so I can fix the driver.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_ANY_ID
@@ -129,6 +167,59 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** PCI interrupts are no longer routed automatically.  If this&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** causes a device to stop working, it is probably because the&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** driver failed to call pci_enable_device().  As a temporary&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** workaround, the &bslash;&quot;pci=routeirq&bslash;&quot; argument restores the old&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** behavior.  If this argument makes the device work again,&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** please email the output of &bslash;&quot;lspci&bslash;&quot; to bjorn.helgaas@hp.com&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;** so I can fix the driver.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_X86_IO_APIC
 r_if
 c_cond

@@ -491,7 +491,16 @@ id|SIGUSR1
 )paren
 suffix:semicolon
 )brace
-DECL|function|os_getpid
+multiline_comment|/*Don&squot;t use the glibc version, which caches the result in TLS. It misses some&n; * syscalls, and also breaks with clone(), which does not unshare the TLS.*/
+DECL|function|_syscall0
+r_inline
+id|_syscall0
+c_func
+(paren
+id|pid_t
+comma
+id|getpid
+)paren
 r_int
 id|os_getpid
 c_func

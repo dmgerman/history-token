@@ -50,5 +50,11 @@ DECL|macro|IXDP2X01_FLASH_WINDOW_MASK
 mdefine_line|#define IXDP2X01_FLASH_WINDOW_MASK &t;(IXDP2X01_FLASH_WINDOW_SIZE - 1)
 DECL|macro|IXDP2X01_UART_CLK
 mdefine_line|#define&t;IXDP2X01_UART_CLK&t;&t;1843200
+DECL|macro|IXDP2X01_GPIO_I2C_ENABLE
+mdefine_line|#define&t;IXDP2X01_GPIO_I2C_ENABLE&t;0x02
+DECL|macro|IXDP2X01_GPIO_SCL
+mdefine_line|#define&t;IXDP2X01_GPIO_SCL&t;&t;0x07
+DECL|macro|IXDP2X01_GPIO_SDA
+mdefine_line|#define&t;IXDP2X01_GPIO_SDA&t;&t;0x06
 macro_line|#endif /* __IXDP2x01_H__ */
 eof

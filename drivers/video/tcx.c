@@ -325,24 +325,28 @@ suffix:semicolon
 DECL|member|bt
 r_struct
 id|bt_regs
+id|__iomem
 op_star
 id|bt
 suffix:semicolon
 DECL|member|thc
 r_struct
 id|tcx_thc
+id|__iomem
 op_star
 id|thc
 suffix:semicolon
 DECL|member|tec
 r_struct
 id|tcx_tec
+id|__iomem
 op_star
 id|tec
 suffix:semicolon
 DECL|member|cplane
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|cplane
 suffix:semicolon
@@ -401,6 +405,7 @@ id|par
 (brace
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|p
 comma
@@ -561,6 +566,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|bt_regs
+id|__iomem
 op_star
 id|bt
 op_assign
@@ -688,6 +694,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|tcx_thc
+id|__iomem
 op_star
 id|thc
 op_assign
@@ -725,7 +732,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Unblanking */
 id|val
@@ -749,7 +756,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* Normal blanking */
 id|val
@@ -764,7 +771,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (vsync off) */
 id|val
@@ -774,7 +781,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (hsync off) */
 id|val
@@ -784,7 +791,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* Poweroff */
 r_break
@@ -1372,11 +1379,6 @@ id|all-&gt;info.var.yres
 suffix:semicolon
 id|all-&gt;par.tec
 op_assign
-(paren
-r_struct
-id|tcx_tec
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -1399,11 +1401,6 @@ l_string|&quot;tcx tec&quot;
 suffix:semicolon
 id|all-&gt;par.thc
 op_assign
-(paren
-r_struct
-id|tcx_thc
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -1426,11 +1423,6 @@ l_string|&quot;tcx thc&quot;
 suffix:semicolon
 id|all-&gt;par.bt
 op_assign
-(paren
-r_struct
-id|bt_regs
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -1475,11 +1467,6 @@ id|all-&gt;par.lowdepth
 (brace
 id|all-&gt;par.cplane
 op_assign
-(paren
-r_volatile
-id|u32
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -1631,6 +1618,7 @@ id|all-&gt;info.screen_base
 op_assign
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|prom_getintdefault
@@ -1652,10 +1640,6 @@ id|all-&gt;info.screen_base
 )paren
 id|all-&gt;info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren

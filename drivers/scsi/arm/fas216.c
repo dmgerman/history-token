@@ -48,12 +48,14 @@ id|level_mask
 op_assign
 id|LOG_ERROR
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|level_mask
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 DECL|function|fas216_log_setup

@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: jedec_probe.c,v 1.57 2004/09/17 11:45:05 eric Exp $&n;   See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)&n;   for the standard this probe goes back to.&n;&n;   Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n;*/
+multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: jedec_probe.c,v 1.58 2004/11/16 18:29:00 dwmw2 Exp $&n;   See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)&n;   for the standard this probe goes back to.&n;&n;   Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7269,6 +7269,7 @@ op_star
 id|cfi
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|mtd_info
 op_star
@@ -9097,6 +9098,7 @@ id|jedec_probe_chip
 )brace
 suffix:semicolon
 DECL|function|jedec_probe
+r_static
 r_struct
 id|mtd_info
 op_star
@@ -9145,6 +9147,7 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|function|jedec_probe_init
+r_static
 r_int
 id|__init
 id|jedec_probe_init

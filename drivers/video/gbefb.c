@@ -1606,7 +1606,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* unblank */
 id|gbe_turn_on
@@ -1617,7 +1617,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* blank */
 id|gbe_turn_off
@@ -4598,7 +4598,7 @@ suffix:semicolon
 macro_line|#ifndef MODULE
 r_char
 op_star
-id|option
+id|options
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4611,7 +4611,7 @@ c_func
 l_string|&quot;gbefb&quot;
 comma
 op_amp
-id|option
+id|options
 )paren
 )paren
 r_return

@@ -650,9 +650,12 @@ id|queue-&gt;cur
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|queue-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|tasklet_init
 c_func

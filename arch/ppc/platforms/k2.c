@@ -496,7 +496,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Enable DMA support on hdc&n;&t; */
 id|ide_dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_AL
@@ -544,6 +544,12 @@ comma
 id|ide_dma_base
 op_plus
 l_int|0xa
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|ide_dev
 )paren
 suffix:semicolon
 )brace

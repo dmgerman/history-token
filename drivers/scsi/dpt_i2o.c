@@ -3569,15 +3569,19 @@ id|hba_map1_area_size
 op_assign
 l_int|0
 suffix:semicolon
-id|ulong
+r_void
+id|__iomem
+op_star
 id|base_addr_virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
-id|ulong
+r_void
+id|__iomem
+op_star
 id|msg_addr_virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|raptorFlag
@@ -3727,9 +3731,6 @@ suffix:semicolon
 )brace
 id|base_addr_virt
 op_assign
-(paren
-id|ulong
-)paren
 id|ioremap
 c_func
 (paren
@@ -3741,9 +3742,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|base_addr_virt
-op_eq
-l_int|0
 )paren
 (brace
 id|PERROR
@@ -3767,9 +3767,6 @@ id|TRUE
 (brace
 id|msg_addr_virt
 op_assign
-(paren
-id|ulong
-)paren
 id|ioremap
 c_func
 (paren
@@ -3781,9 +3778,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|msg_addr_virt
-op_eq
-l_int|0
 )paren
 (brace
 id|PERROR
@@ -3795,10 +3791,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|base_addr_virt
 )paren
 suffix:semicolon
@@ -3848,10 +3840,6 @@ id|base_addr_virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|msg_addr_virt
 )paren
 suffix:semicolon
@@ -3859,10 +3847,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|base_addr_virt
 )paren
 suffix:semicolon
@@ -4011,36 +3995,21 @@ id|msg_addr_virt
 suffix:semicolon
 id|pHba-&gt;irq_mask
 op_assign
-(paren
-id|ulong
-)paren
-(paren
 id|base_addr_virt
 op_plus
 l_int|0x30
-)paren
 suffix:semicolon
 id|pHba-&gt;post_port
 op_assign
-(paren
-id|ulong
-)paren
-(paren
 id|base_addr_virt
 op_plus
 l_int|0x40
-)paren
 suffix:semicolon
 id|pHba-&gt;reply_port
 op_assign
-(paren
-id|ulong
-)paren
-(paren
 id|base_addr_virt
 op_plus
 l_int|0x44
-)paren
 suffix:semicolon
 id|pHba-&gt;hrt
 op_assign
@@ -4101,7 +4070,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Adaptec I2O RAID controller %d at %lx size=%x irq=%d&bslash;n&quot;
+l_string|&quot;Adaptec I2O RAID controller %d at %p size=%x irq=%d&bslash;n&quot;
 comma
 id|hba_count
 op_minus
@@ -4134,7 +4103,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;     BAR0 %lx - size= %x&bslash;n&quot;
+l_string|&quot;     BAR0 %p - size= %x&bslash;n&quot;
 comma
 id|base_addr_virt
 comma
@@ -4145,7 +4114,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;     BAR1 %lx - size= %x&bslash;n&quot;
+l_string|&quot;     BAR1 %p - size= %x&bslash;n&quot;
 comma
 id|msg_addr_virt
 comma
@@ -4365,10 +4334,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|pHba-&gt;base_addr_virt
 )paren
 suffix:semicolon
@@ -4383,10 +4348,6 @@ id|pHba-&gt;base_addr_virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|pHba-&gt;msg_addr_virt
 )paren
 suffix:semicolon
@@ -5225,6 +5186,7 @@ op_assign
 id|EMPTY_QUEUE
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -5314,15 +5276,9 @@ suffix:semicolon
 )brace
 id|msg
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|pHba-&gt;msg_addr_virt
 op_plus
 id|m
-)paren
 suffix:semicolon
 id|memcpy_toio
 c_func
@@ -12096,6 +12052,7 @@ id|m
 )paren
 (brace
 id|u32
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -12182,6 +12139,7 @@ id|msg
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -12274,6 +12232,7 @@ op_star
 id|status
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|msg
 op_assign
@@ -12381,6 +12340,7 @@ id|msg
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -12832,6 +12792,7 @@ id|u32
 id|m
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -13012,6 +12973,7 @@ id|msg
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren

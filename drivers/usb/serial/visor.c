@@ -3925,8 +3925,8 @@ op_eq
 l_int|0
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|generic_startup
 suffix:semicolon
 id|dbg
 c_func
@@ -4005,6 +4005,8 @@ c_func
 id|swap_port
 )paren
 suffix:semicolon
+id|generic_startup
+suffix:colon
 r_return
 id|generic_startup
 c_func

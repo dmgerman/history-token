@@ -22,6 +22,7 @@ macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;time_user.h&quot;
+macro_line|#include &quot;os.h&quot;
 multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.&n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
 DECL|variable|stacksizelim
 r_int
@@ -740,7 +741,7 @@ id|uml_exitcode
 suffix:semicolon
 )brace
 DECL|macro|CAN_KMALLOC
-mdefine_line|#define CAN_KMALLOC() &bslash;&n;&t;(kmalloc_ok &amp;&amp; CHOOSE_MODE((getpid() != tracing_pid), 1))
+mdefine_line|#define CAN_KMALLOC() &bslash;&n;&t;(kmalloc_ok &amp;&amp; CHOOSE_MODE((os_getpid() != tracing_pid), 1))
 r_extern
 r_void
 op_star

@@ -2903,7 +2903,7 @@ l_int|1
 suffix:semicolon
 id|ncci
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -3901,7 +3901,7 @@ dot
 id|function
 c_func
 (paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -7528,7 +7528,7 @@ id|length
 (brace
 id|ch
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|ai_parms
@@ -7691,7 +7691,7 @@ l_int|36
 (brace
 id|dir
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|ai_parms
@@ -8182,7 +8182,7 @@ l_int|8
 suffix:semicolon
 id|CIP
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -8221,7 +8221,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -8244,7 +8244,7 @@ id|BC
 comma
 id|cip_bc
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -8269,7 +8269,7 @@ id|HLC
 comma
 id|cip_hlc
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -8854,7 +8854,7 @@ l_int|0
 dot
 id|length
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|ai_parms
@@ -8886,7 +8886,7 @@ id|length
 (brace
 id|ch
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|ai_parms
@@ -9053,7 +9053,7 @@ id|plci
 suffix:semicolon
 id|Reject
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -10231,7 +10231,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|parms
@@ -10249,7 +10249,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|parms
@@ -10270,7 +10270,7 @@ c_func
 (paren
 l_string|&quot;CIP_MASK=0x%lx&quot;
 comma
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|parms
@@ -10316,7 +10316,7 @@ id|Id
 op_amp
 id|EXT_CONTROLLER
 op_logical_and
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|parms
@@ -11519,7 +11519,7 @@ suffix:semicolon
 )brace
 id|selector
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|msg
@@ -11586,7 +11586,7 @@ suffix:semicolon
 )brace
 id|SSreq
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -11603,7 +11603,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -11695,7 +11695,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -11821,7 +11821,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|ss_parms
@@ -12596,7 +12596,7 @@ id|CALL_HELD
 (brace
 id|d
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|ss_parms
@@ -12932,7 +12932,7 @@ suffix:semicolon
 )brace
 id|relatedPLCIvalue
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|ss_parms
@@ -13468,7 +13468,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -13691,7 +13691,7 @@ id|Number
 suffix:semicolon
 id|appl-&gt;S_Handle
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -13725,7 +13725,7 @@ op_or
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -13751,7 +13751,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14094,7 +14094,7 @@ op_or
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14155,7 +14155,7 @@ op_or
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14291,7 +14291,7 @@ suffix:semicolon
 )brace
 id|appl-&gt;S_Handle
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -14349,7 +14349,7 @@ l_int|0
 op_assign
 l_int|3
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -14358,7 +14358,7 @@ id|cai
 l_int|2
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14398,7 +14398,7 @@ l_int|0
 op_assign
 l_int|3
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -14407,7 +14407,7 @@ id|cai
 l_int|2
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14469,7 +14469,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14709,7 +14709,7 @@ op_assign
 id|ACTIVATION_MWI
 suffix:semicolon
 multiline_comment|/* Function */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -14718,7 +14718,7 @@ id|cai
 l_int|2
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14737,7 +14737,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Basic Service */
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -14746,7 +14746,7 @@ id|cai
 l_int|4
 )braket
 comma
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -14765,7 +14765,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Number of Messages */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -14774,7 +14774,7 @@ id|cai
 l_int|8
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14793,7 +14793,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Message Status */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -14802,7 +14802,7 @@ id|cai
 l_int|10
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -14821,7 +14821,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Message Reference */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -14830,7 +14830,7 @@ id|cai
 l_int|12
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -15115,7 +15115,7 @@ op_assign
 id|DEACTIVATION_MWI
 suffix:semicolon
 multiline_comment|/* Function */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -15124,7 +15124,7 @@ id|cai
 l_int|2
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -15143,7 +15143,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Basic Service */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -15152,7 +15152,7 @@ id|cai
 l_int|4
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -15826,7 +15826,7 @@ id|plci-&gt;nl_remove_id
 (brace
 id|fax_control_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -15843,7 +15843,7 @@ id|control_bits_low
 suffix:semicolon
 id|fax_feature_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -15909,7 +15909,7 @@ l_int|4
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -16055,7 +16055,7 @@ l_int|6
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -16124,7 +16124,7 @@ id|PRIVATE_FAX_SUB_SEP_PWD
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -16162,7 +16162,7 @@ id|PRIVATE_FAX_NONSTANDARD
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -16625,7 +16625,7 @@ l_int|2
 )paren
 id|plci-&gt;nsf_control_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -16732,7 +16732,7 @@ c_cond
 (paren
 id|fax_control_bits
 op_ne
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -16748,7 +16748,7 @@ id|control_bits_low
 )paren
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 (paren
@@ -17053,7 +17053,7 @@ id|INC_CON_PENDING
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|parms
@@ -17378,7 +17378,7 @@ l_int|2
 )paren
 id|plci-&gt;nsf_control_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -18803,7 +18803,7 @@ id|info
 suffix:semicolon
 id|data-&gt;Length
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -18816,7 +18816,7 @@ id|info
 suffix:semicolon
 id|data-&gt;Handle
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -18829,7 +18829,7 @@ id|info
 suffix:semicolon
 id|data-&gt;Flags
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -19025,7 +19025,7 @@ id|Number
 comma
 l_string|&quot;ww&quot;
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -19114,7 +19114,7 @@ id|ncci
 (brace
 id|n
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -20561,7 +20561,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|parms
@@ -20582,7 +20582,7 @@ suffix:semicolon
 )brace
 id|command
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|parms
@@ -20649,7 +20649,7 @@ suffix:semicolon
 )brace
 id|codec
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|m_parms
@@ -21976,7 +21976,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|m_parms
 (braket
@@ -22004,7 +22004,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|m_parms
 (braket
@@ -22143,7 +22143,7 @@ l_int|0
 )paren
 op_logical_or
 (paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|msg
@@ -22164,7 +22164,7 @@ suffix:semicolon
 )brace
 id|indication
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|msg
@@ -22454,7 +22454,7 @@ l_int|2
 )paren
 id|plci-&gt;nsf_control_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -24914,7 +24914,7 @@ multiline_comment|/* command supported, wait for indication */
 r_break
 suffix:semicolon
 )brace
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -25947,7 +25947,7 @@ l_string|&quot;MWI_REQ not supported&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* 0x3010: Request not allowed in this state */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -25969,7 +25969,7 @@ op_eq
 id|MWI_ACTIVATE_REQ_PEND
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -25983,7 +25983,7 @@ id|S_MWI_ACTIVATE
 suffix:semicolon
 )brace
 r_else
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -27800,7 +27800,7 @@ l_int|8
 op_or
 id|a-&gt;Id
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -28428,7 +28428,7 @@ id|UnMapController
 id|a-&gt;Id
 )paren
 comma
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28437,7 +28437,7 @@ l_int|6
 )braket
 )paren
 comma
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28446,7 +28446,7 @@ l_int|10
 )braket
 )paren
 comma
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28455,7 +28455,7 @@ l_int|14
 )braket
 )paren
 comma
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28464,7 +28464,7 @@ l_int|18
 )braket
 )paren
 comma
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28493,7 +28493,7 @@ l_int|0x000000b7L
 suffix:semicolon
 id|a-&gt;profile.Global_Options
 op_and_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28506,7 +28506,7 @@ id|GL_BCHANNEL_OPERATION_SUPPORTED
 suffix:semicolon
 id|a-&gt;profile.B1_Protocols
 op_and_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28517,7 +28517,7 @@ l_int|10
 suffix:semicolon
 id|a-&gt;profile.B2_Protocols
 op_and_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28528,7 +28528,7 @@ l_int|14
 suffix:semicolon
 id|a-&gt;profile.B3_Protocols
 op_and_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28539,7 +28539,7 @@ l_int|18
 suffix:semicolon
 id|a-&gt;manufacturer_features
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28586,7 +28586,7 @@ id|PRIVATE_RTP
 suffix:semicolon
 id|a-&gt;man_profile.rtp_primary_payloads
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28597,7 +28597,7 @@ l_int|50
 suffix:semicolon
 id|a-&gt;man_profile.rtp_additional_payloads
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 op_amp
 id|esc_profile
@@ -28989,7 +28989,7 @@ op_eq
 l_int|4
 )paren
 (brace
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -28998,7 +28998,7 @@ id|CF_Ind
 l_int|6
 )braket
 comma
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -29012,7 +29012,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -29027,7 +29027,7 @@ id|MASK_HOLD_RETRIEVE
 )paren
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|CF_Ind
@@ -29038,7 +29038,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|CF_Ind
@@ -29182,7 +29182,7 @@ op_eq
 id|ECT_EXECUTE
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29205,7 +29205,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29234,7 +29234,7 @@ op_ne
 l_int|0xff
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29257,7 +29257,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29312,7 +29312,7 @@ op_ne
 l_int|0xff
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29335,7 +29335,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29348,7 +29348,7 @@ l_int|0x300E
 )paren
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29484,7 +29484,7 @@ op_ne
 l_int|0xff
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29507,7 +29507,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29558,7 +29558,7 @@ l_int|3
 op_assign
 l_int|0x6
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29601,7 +29601,7 @@ l_int|3
 op_assign
 l_int|0x6
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29650,7 +29650,7 @@ l_int|3
 op_assign
 l_int|0x7
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29693,7 +29693,7 @@ l_int|3
 op_assign
 l_int|0x7
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29736,7 +29736,7 @@ l_int|3
 op_assign
 l_int|0xa
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29779,7 +29779,7 @@ l_int|3
 op_assign
 l_int|0x6
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29822,7 +29822,7 @@ l_int|3
 op_assign
 l_int|0x8
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29837,7 +29837,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -29894,7 +29894,7 @@ op_eq
 id|ACTIVATION_MWI
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29908,7 +29908,7 @@ id|S_MWI_ACTIVATE
 suffix:semicolon
 )brace
 r_else
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29931,7 +29931,7 @@ op_ne
 l_int|0xff
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -29954,7 +29954,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30065,7 +30065,7 @@ l_int|5
 r_case
 id|CONF_BEGIN
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30100,7 +30100,7 @@ l_int|3
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30135,7 +30135,7 @@ l_int|3
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30170,7 +30170,7 @@ l_int|3
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30191,7 +30191,7 @@ suffix:semicolon
 r_case
 id|CONF_ADD
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30240,7 +30240,7 @@ op_ne
 l_int|0xff
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30263,7 +30263,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30277,7 +30277,7 @@ l_int|0x3303
 suffix:semicolon
 multiline_comment|/* Time-out: network did not respond&n;                                            within the required time */
 )brace
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -30328,7 +30328,7 @@ l_string|&quot;Service_Ind&quot;
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|CF_Ind
@@ -30406,7 +30406,7 @@ op_eq
 id|ECT_EXECUTE
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30529,7 +30529,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30570,7 +30570,7 @@ suffix:semicolon
 r_case
 id|CALL_DEFLECTION
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30674,7 +30674,7 @@ id|plci-&gt;appl
 r_break
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30691,7 +30691,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -30792,7 +30792,7 @@ l_string|&quot;Interr_Div&quot;
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30834,7 +30834,7 @@ l_string|&quot;Interr_Num&quot;
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30876,7 +30876,7 @@ l_string|&quot;CCBS Request&quot;
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30918,7 +30918,7 @@ l_string|&quot;CCBS Deactivate&quot;
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30960,7 +30960,7 @@ l_string|&quot;CCBS Interrogate&quot;
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -30988,7 +30988,7 @@ multiline_comment|/* Supplementary Service-specific parameter len */
 r_break
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31001,7 +31001,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Supplementary Service Reason */
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -31058,7 +31058,7 @@ op_eq
 id|ACTIVATION_MWI
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31072,7 +31072,7 @@ id|S_MWI_ACTIVATE
 suffix:semicolon
 )brace
 r_else
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31154,7 +31154,7 @@ op_ge
 l_int|0x12
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31502,7 +31502,7 @@ l_int|5
 r_case
 id|CONF_BEGIN
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31532,7 +31532,7 @@ id|pty_cai
 l_int|6
 )braket
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -31548,7 +31548,7 @@ multiline_comment|/* PartyID */
 )brace
 r_else
 (brace
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -31566,7 +31566,7 @@ suffix:semicolon
 r_case
 id|CONF_ISOLATE
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31597,7 +31597,7 @@ suffix:semicolon
 r_case
 id|CONF_REATTACH
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31628,7 +31628,7 @@ suffix:semicolon
 r_case
 id|CONF_DROP
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31659,7 +31659,7 @@ suffix:semicolon
 r_case
 id|CONF_ADD
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31678,7 +31678,7 @@ id|pty_cai
 l_int|6
 )braket
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -31725,7 +31725,7 @@ l_int|3
 op_assign
 l_int|4
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31744,7 +31744,7 @@ id|pty_cai
 l_int|6
 )braket
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 op_amp
@@ -31819,7 +31819,7 @@ l_int|5
 r_case
 id|CCBS_INFO_RETAIN
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31836,7 +31836,7 @@ suffix:semicolon
 r_case
 id|CCBS_STOP_ALERTING
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31853,7 +31853,7 @@ suffix:semicolon
 r_case
 id|CCBS_ERASECALLLINKAGEID
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -31903,7 +31903,7 @@ id|pty_cai
 l_int|6
 )braket
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -32059,7 +32059,7 @@ op_assign
 l_int|0x3603
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -32071,7 +32071,7 @@ comma
 id|S_HOLD
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -32200,7 +32200,7 @@ op_assign
 l_int|0x3603
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -32212,7 +32212,7 @@ comma
 id|S_RETRIEVE
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -32268,7 +32268,7 @@ suffix:semicolon
 r_case
 id|CALL_RETRIEVE_ACK
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -33896,7 +33896,7 @@ id|tplci-&gt;tel
 op_assign
 id|ADV_VOICE
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -34257,7 +34257,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -34718,7 +34718,7 @@ op_eq
 id|RESUMING
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -37565,7 +37565,7 @@ suffix:semicolon
 multiline_comment|/* connected norm */
 id|conn_opt
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|data
@@ -37576,7 +37576,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* connected options */
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 (paren
@@ -37590,7 +37590,7 @@ comma
 id|word
 )paren
 (paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|data
@@ -37647,7 +37647,7 @@ op_or_assign
 id|MDM_NCPI_COMPRESSED
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 (paren
@@ -38485,7 +38485,7 @@ id|len
 op_assign
 l_int|9
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -38511,7 +38511,7 @@ l_int|2400
 suffix:semicolon
 id|fax_feature_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -38635,7 +38635,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -38649,7 +38649,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -38925,7 +38925,7 @@ id|len
 suffix:semicolon
 id|fax_feature_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -38940,7 +38940,7 @@ op_member_access_from_pointer
 id|feature_bits_low
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -39441,7 +39441,7 @@ id|OUTG_CON_PENDING
 op_logical_and
 op_logical_neg
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -40397,7 +40397,7 @@ id|rate_div_2400
 op_star
 l_int|2400
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;ncpi_buffer
@@ -40408,7 +40408,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;ncpi_buffer
@@ -40431,7 +40431,7 @@ id|plci-&gt;fax_connect_info_buffer
 op_member_access_from_pointer
 id|data_format
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;ncpi_buffer
@@ -40442,7 +40442,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;ncpi_buffer
@@ -42910,7 +42910,7 @@ l_int|1
 op_assign
 id|plci-&gt;B1_resource
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|voice_cai
@@ -43210,7 +43210,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|global_config
@@ -43274,7 +43274,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43363,7 +43363,7 @@ l_int|4
 op_assign
 l_int|0
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -43445,7 +43445,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43535,7 +43535,7 @@ l_int|4
 op_assign
 l_int|0
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -43572,7 +43572,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43592,7 +43592,7 @@ op_logical_neg
 (paren
 l_int|1L
 op_lshift
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43609,7 +43609,7 @@ id|plci-&gt;adapter-&gt;profile.B1_Protocols
 op_logical_and
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43647,7 +43647,7 @@ l_int|0
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -43666,7 +43666,7 @@ l_int|0
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -43700,7 +43700,7 @@ id|plci
 comma
 id|resource
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43782,7 +43782,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43797,7 +43797,7 @@ id|B1_MODEM_ALL_NEGOTIATE
 )paren
 op_logical_or
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43812,7 +43812,7 @@ id|B1_MODEM_ASYNC
 )paren
 op_logical_or
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -43919,7 +43919,7 @@ c_func
 (paren
 l_string|&quot;MDM Max Bit Rate:&lt;%d&gt;&quot;
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|mdm_cfg
@@ -43932,7 +43932,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|cai
@@ -43944,7 +43944,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Min Tx speed */
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|cai
@@ -43952,7 +43952,7 @@ id|cai
 l_int|15
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|mdm_cfg
@@ -43965,7 +43965,7 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/* Max Tx speed */
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|cai
@@ -43977,7 +43977,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Min Rx speed */
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|cai
@@ -43985,7 +43985,7 @@ id|cai
 l_int|19
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|mdm_cfg
@@ -44009,7 +44009,7 @@ multiline_comment|/* Async framing parameters */
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44099,7 +44099,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44156,7 +44156,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44328,7 +44328,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44364,7 +44364,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44402,7 +44402,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44439,7 +44439,7 @@ r_else
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44476,7 +44476,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44517,7 +44517,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44558,7 +44558,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|mdm_cfg
 (braket
@@ -44615,7 +44615,7 @@ id|PRIVATE_V18
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|mdm_cfg
@@ -44641,7 +44641,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|mdm_cfg
@@ -44745,7 +44745,7 @@ l_int|4
 (brace
 id|d
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -44832,7 +44832,7 @@ l_int|8
 (brace
 id|d
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -44887,7 +44887,7 @@ l_int|12
 (brace
 id|d
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -44982,7 +44982,7 @@ l_int|14
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45004,7 +45004,7 @@ id|w
 op_ne
 l_int|0
 )paren
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -45032,7 +45032,7 @@ l_int|16
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45054,7 +45054,7 @@ id|w
 op_ne
 l_int|0
 )paren
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -45082,7 +45082,7 @@ l_int|18
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45104,7 +45104,7 @@ id|w
 op_ne
 l_int|0
 )paren
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -45132,7 +45132,7 @@ l_int|20
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45154,7 +45154,7 @@ id|w
 op_ne
 l_int|0
 )paren
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -45182,7 +45182,7 @@ l_int|22
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45231,7 +45231,7 @@ l_int|24
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45469,7 +45469,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -45483,7 +45483,7 @@ op_eq
 l_int|2
 op_logical_or
 multiline_comment|/* V.110 async */
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -45519,7 +45519,7 @@ c_func
 (paren
 l_string|&quot;V.110,%d&quot;
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45539,7 +45539,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -45565,7 +45565,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -45618,7 +45618,7 @@ r_else
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -45962,7 +45962,7 @@ l_int|8
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|bp_parms
@@ -46018,7 +46018,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|bp_parms
@@ -46072,7 +46072,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|bp_parms
@@ -46116,7 +46116,7 @@ l_int|1
 op_eq
 l_int|8
 op_logical_or
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -46187,7 +46187,7 @@ l_int|5
 suffix:semicolon
 )brace
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -46898,7 +46898,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -46995,7 +46995,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -47177,7 +47177,7 @@ multiline_comment|/* transparent B on advanced voice */
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47190,7 +47190,7 @@ id|info
 op_ne
 l_int|1
 op_logical_or
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47228,7 +47228,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47243,7 +47243,7 @@ id|B2_RTP
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47283,7 +47283,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47299,7 +47299,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47354,7 +47354,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -47554,7 +47554,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47574,7 +47574,7 @@ op_logical_neg
 (paren
 l_int|1L
 op_lshift
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47591,7 +47591,7 @@ id|plci-&gt;adapter-&gt;profile.B2_Protocols
 op_logical_and
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47627,7 +47627,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47646,7 +47646,7 @@ op_logical_neg
 (paren
 l_int|1L
 op_lshift
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47670,7 +47670,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47686,7 +47686,7 @@ id|B2_SDLC
 op_logical_and
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47701,7 +47701,7 @@ id|B1_MODEM_ALL_NEGOTIATE
 )paren
 op_logical_or
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47716,7 +47716,7 @@ id|B1_MODEM_ASYNC
 )paren
 op_logical_or
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47758,7 +47758,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47774,7 +47774,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47850,7 +47850,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|global_config
@@ -47945,7 +47945,7 @@ ques
 c_cond
 id|llc2_out
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47959,7 +47959,7 @@ id|info
 suffix:colon
 id|llc2_in
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -47979,7 +47979,7 @@ l_int|2
 op_assign
 id|llc3
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -48008,7 +48008,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -48021,7 +48021,7 @@ id|plci-&gt;appl-&gt;MaxDataLength
 op_plus
 id|header
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -48160,7 +48160,7 @@ op_assign
 id|byte
 )paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -48235,7 +48235,7 @@ r_return
 id|_WRONG_MESSAGE_FORMAT
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -48609,7 +48609,7 @@ l_int|0
 op_assign
 l_int|6
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|dlc
@@ -48617,7 +48617,7 @@ id|dlc
 l_int|1
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|dlc
@@ -49790,7 +49790,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -49919,7 +49919,7 @@ suffix:semicolon
 )brace
 id|i
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 (paren
@@ -49974,7 +49974,7 @@ op_logical_and
 id|byte
 )paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 (paren
@@ -50020,7 +50020,7 @@ op_assign
 id|byte
 )paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 (paren
@@ -50310,7 +50310,7 @@ id|recording_properties
 suffix:semicolon
 id|fax_control_bits
 op_or_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -50861,7 +50861,7 @@ id|PRIVATE_FAX_SUB_SEP_PWD
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 (paren
@@ -50902,7 +50902,7 @@ id|PRIVATE_FAX_NONSTANDARD
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 (paren
@@ -51194,7 +51194,7 @@ l_int|2
 )paren
 id|plci-&gt;nsf_control_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -51316,7 +51316,7 @@ l_int|2
 )paren
 id|plci-&gt;nsf_control_bits
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -51431,7 +51431,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -51610,7 +51610,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -51622,7 +51622,7 @@ l_int|13
 op_ne
 l_int|8
 op_logical_and
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -51652,7 +51652,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -51884,7 +51884,7 @@ c_cond
 (paren
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -51899,7 +51899,7 @@ id|B1_MODEM_ALL_NEGOTIATE
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -51916,7 +51916,7 @@ id|B2_MODEM_EC_COMPRESSION
 op_logical_or
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -51931,7 +51931,7 @@ id|B1_MODEM_ALL_NEGOTIATE
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -51957,7 +51957,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -51972,7 +51972,7 @@ id|B3_MODEM
 )paren
 op_logical_and
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -51998,7 +51998,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -52014,7 +52014,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -52029,7 +52029,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -52091,7 +52091,7 @@ suffix:semicolon
 )brace
 id|b2_config
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|mdm_config
@@ -52364,7 +52364,7 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|dlc
@@ -52382,7 +52382,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|bp_parms
@@ -52746,7 +52746,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -52904,7 +52904,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -53038,7 +53038,7 @@ suffix:semicolon
 )brace
 id|l
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -57804,7 +57804,7 @@ l_int|0
 op_assign
 id|DTMF_UDATA_REQUEST_ENABLE_RECEIVER
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;internal_req_buffer
@@ -57815,7 +57815,7 @@ comma
 id|min_digit_duration
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;internal_req_buffer
@@ -57835,7 +57835,7 @@ id|PLength
 op_assign
 l_int|5
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;internal_req_buffer
@@ -58008,7 +58008,7 @@ l_int|40
 suffix:colon
 id|plci-&gt;dtmf_send_pulse_ms
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;internal_req_buffer
@@ -58032,7 +58032,7 @@ l_int|40
 suffix:colon
 id|plci-&gt;dtmf_send_pause_ms
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|plci-&gt;internal_req_buffer
@@ -58635,7 +58635,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -59351,7 +59351,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -59468,7 +59468,7 @@ r_if
 c_cond
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -59482,7 +59482,7 @@ id|DTMF_GET_SUPPORTED_DETECT_CODES
 )paren
 op_logical_or
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -59541,7 +59541,7 @@ id|FILE_
 comma
 id|__LINE__
 comma
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -59553,7 +59553,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -59593,7 +59593,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -59837,7 +59837,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;dtmf_cmd
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -59926,7 +59926,7 @@ id|FILE_
 comma
 id|__LINE__
 comma
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -59938,7 +59938,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -60058,7 +60058,7 @@ r_else
 (brace
 id|plci-&gt;dtmf_rec_pulse_ms
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -60070,7 +60070,7 @@ id|info
 suffix:semicolon
 id|plci-&gt;dtmf_rec_pause_ms
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -60159,7 +60159,7 @@ id|FILE_
 comma
 id|__LINE__
 comma
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -60171,7 +60171,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -60259,7 +60259,7 @@ id|DTMF_LISTEN_ACTIVE_FLAG
 (brace
 id|plci-&gt;dtmf_send_pulse_ms
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -60271,7 +60271,7 @@ id|info
 suffix:semicolon
 id|plci-&gt;dtmf_send_pause_ms
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|dtmf_parms
 (braket
@@ -60414,7 +60414,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -60532,7 +60532,7 @@ id|plci-&gt;dtmf_cmd
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -60636,7 +60636,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -67827,7 +67827,7 @@ id|a-&gt;adv_voice_coef_length
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|a-&gt;adv_voice_coef_buffer
 op_plus
@@ -68738,7 +68738,7 @@ id|a-&gt;adv_voice_coef_length
 (brace
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|a-&gt;adv_voice_coef_buffer
 op_plus
@@ -69523,7 +69523,7 @@ l_int|0
 op_assign
 l_int|3
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 (paren
@@ -73505,7 +73505,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -73655,7 +73655,7 @@ id|plci_b_id
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -73740,7 +73740,7 @@ id|plci_b_id
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -73842,7 +73842,7 @@ id|plci_b_id
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -73912,7 +73912,7 @@ id|plci_b-&gt;B1_resource
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -74012,7 +74012,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -74162,7 +74162,7 @@ id|plci_b_id
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -74264,7 +74264,7 @@ id|plci_b_id
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -74351,7 +74351,7 @@ id|plci_b_id
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -74421,7 +74421,7 @@ id|plci_b-&gt;B1_resource
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p_result
 comma
@@ -74678,7 +74678,7 @@ l_int|0
 op_assign
 l_int|3
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result_buffer
@@ -74686,7 +74686,7 @@ id|result_buffer
 l_int|1
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 (paren
 id|li_parms
 (braket
@@ -74707,7 +74707,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|li_parms
 (braket
@@ -74743,7 +74743,7 @@ l_int|3
 op_assign
 l_int|14
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result_buffer
@@ -74804,7 +74804,7 @@ id|d
 op_or_assign
 id|LI_CROSS_CONTROLLER_SUPPORTED
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -74897,7 +74897,7 @@ suffix:colon
 id|MIXER_BCHANNELS_BRI
 suffix:semicolon
 )brace
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -74910,7 +74910,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -74938,7 +74938,7 @@ l_int|3
 op_assign
 l_int|22
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result_buffer
@@ -75005,7 +75005,7 @@ id|d
 op_or_assign
 id|LI2_CROSS_CONTROLLER_SUPPORTED
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -75025,7 +75025,7 @@ id|a-&gt;li_channels
 suffix:colon
 id|MIXER_BCHANNELS_BRI
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -75038,7 +75038,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -75121,7 +75121,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -75134,7 +75134,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -75233,7 +75233,7 @@ suffix:semicolon
 )brace
 id|plci_b_id
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_req_parms
 (braket
@@ -75247,7 +75247,7 @@ l_int|0xffff
 suffix:semicolon
 id|li_flags
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_req_parms
 (braket
@@ -75280,7 +75280,7 @@ l_int|3
 op_assign
 l_int|6
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -75291,7 +75291,7 @@ comma
 id|plci_b_id
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result_buffer
@@ -75490,7 +75490,7 @@ suffix:semicolon
 )brace
 id|li_flags
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_req_parms
 (braket
@@ -75530,7 +75530,7 @@ l_int|3
 op_assign
 l_int|4
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result_buffer
@@ -75642,7 +75642,7 @@ id|result_pos
 op_add_assign
 l_int|7
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result
@@ -75655,7 +75655,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -75731,7 +75731,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -75801,7 +75801,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -75819,7 +75819,7 @@ suffix:semicolon
 )brace
 id|plci_b_id
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_participant_parms
 (braket
@@ -75833,7 +75833,7 @@ l_int|0xffff
 suffix:semicolon
 id|li_flags
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_participant_parms
 (braket
@@ -75843,7 +75843,7 @@ dot
 id|info
 )paren
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result
@@ -75894,7 +75894,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -76215,7 +76215,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;li_cmd
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|li_parms
 (braket
@@ -76322,7 +76322,7 @@ suffix:semicolon
 )brace
 id|plci_b_id
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_req_parms
 (braket
@@ -76357,7 +76357,7 @@ l_int|3
 op_assign
 l_int|6
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result_buffer
@@ -76365,7 +76365,7 @@ id|result_buffer
 l_int|4
 )braket
 comma
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_req_parms
 (braket
@@ -76376,7 +76376,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result_buffer
@@ -76598,7 +76598,7 @@ l_int|3
 op_assign
 l_int|4
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result_buffer
@@ -76692,7 +76692,7 @@ id|result_pos
 op_add_assign
 l_int|7
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result
@@ -76705,7 +76705,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -76781,7 +76781,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -76851,7 +76851,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -76869,7 +76869,7 @@ suffix:semicolon
 )brace
 id|plci_b_id
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 (paren
 id|li_participant_parms
 (braket
@@ -76881,7 +76881,7 @@ id|info
 op_amp
 l_int|0xffff
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result
@@ -76932,7 +76932,7 @@ id|__LINE__
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -77234,7 +77234,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;li_cmd
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|li_parms
 (braket
@@ -77486,7 +77486,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;li_cmd
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|li_parms
 (braket
@@ -77535,7 +77535,7 @@ id|FILE_
 comma
 id|__LINE__
 comma
-id|READ_WORD
+id|GET_WORD
 (paren
 id|li_parms
 (braket
@@ -77688,7 +77688,7 @@ l_int|0
 op_assign
 l_int|5
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -77706,7 +77706,7 @@ l_int|3
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -77727,7 +77727,7 @@ l_int|0
 op_assign
 l_int|7
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -77745,7 +77745,7 @@ l_int|3
 op_assign
 l_int|4
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result
@@ -77778,7 +77778,7 @@ l_int|0
 op_assign
 l_int|9
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -77796,7 +77796,7 @@ l_int|3
 op_assign
 l_int|6
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result
@@ -77810,7 +77810,7 @@ op_complement
 id|LI_PLCI_B_FLAG_MASK
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -77831,7 +77831,7 @@ l_int|0
 op_assign
 l_int|7
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -77849,7 +77849,7 @@ l_int|3
 op_assign
 l_int|4
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 (paren
 op_amp
 id|result
@@ -78880,7 +78880,7 @@ l_int|1
 op_assign
 id|DSP_CTRL_SET_LEC_PARAMETERS
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|parameter_buffer
@@ -78909,7 +78909,7 @@ l_int|128
 suffix:colon
 id|plci-&gt;ec_tail_length
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|parameter_buffer
@@ -79334,7 +79334,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -79355,7 +79355,7 @@ l_int|0
 op_assign
 l_int|5
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -79373,7 +79373,7 @@ l_int|3
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80091,7 +80091,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;ec_cmd
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|ec_parms
 (braket
@@ -80117,7 +80117,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80143,7 +80143,7 @@ l_int|4
 (brace
 id|opt
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|ec_parms
@@ -80222,7 +80222,7 @@ l_int|6
 (brace
 id|plci-&gt;ec_tail_length
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|ec_parms
@@ -80386,7 +80386,7 @@ id|plci-&gt;ec_cmd
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80467,7 +80467,7 @@ r_else
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 (paren
 id|ec_parms
 (braket
@@ -80487,7 +80487,7 @@ l_int|0
 op_assign
 l_int|11
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80505,7 +80505,7 @@ l_int|3
 op_assign
 l_int|8
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80516,7 +80516,7 @@ comma
 id|GOOD
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80527,7 +80527,7 @@ comma
 l_int|0x0007
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80538,7 +80538,7 @@ comma
 id|LEC_MAX_SUPPORTED_TAIL_LENGTH
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80640,7 +80640,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;ec_cmd
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|ec_parms
 (braket
@@ -80666,7 +80666,7 @@ l_int|0
 op_assign
 l_int|5
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80684,7 +80684,7 @@ l_int|3
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -80725,7 +80725,7 @@ l_int|2
 (brace
 id|opt
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|ec_parms
@@ -80790,7 +80790,7 @@ l_int|4
 (brace
 id|plci-&gt;ec_tail_length
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 op_amp
 id|ec_parms
@@ -80890,7 +80890,7 @@ id|plci-&gt;ec_cmd
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81021,7 +81021,7 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81044,7 +81044,7 @@ l_int|1
 r_case
 id|LEC_DISABLE_TYPE_CONTIGNUOUS_2100HZ
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81060,7 +81060,7 @@ suffix:semicolon
 r_case
 id|LEC_DISABLE_TYPE_REVERSED_2100HZ
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81076,7 +81076,7 @@ suffix:semicolon
 r_case
 id|LEC_DISABLE_RELEASED
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81100,7 +81100,7 @@ l_int|0
 op_assign
 l_int|5
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81118,7 +81118,7 @@ l_int|3
 op_assign
 l_int|2
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81141,7 +81141,7 @@ l_int|1
 r_case
 id|LEC_DISABLE_TYPE_CONTIGNUOUS_2100HZ
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81157,7 +81157,7 @@ suffix:semicolon
 r_case
 id|LEC_DISABLE_TYPE_REVERSED_2100HZ
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81173,7 +81173,7 @@ suffix:semicolon
 r_case
 id|LEC_DISABLE_RELEASED
 suffix:colon
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 op_amp
 id|result
@@ -81341,11 +81341,11 @@ op_le
 id|a-&gt;adv_voice_coef_length
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p
 comma
-id|READ_WORD
+id|GET_WORD
 (paren
 id|a-&gt;adv_voice_coef_buffer
 op_plus
@@ -81375,7 +81375,7 @@ id|word
 )paren
 )paren
 (brace
-id|WRITE_WORD
+id|PUT_WORD
 (paren
 id|p
 comma
@@ -81988,7 +81988,7 @@ id|a-&gt;adv_voice_coef_length
 )paren
 id|w
 op_assign
-id|READ_WORD
+id|GET_WORD
 (paren
 id|a-&gt;adv_voice_coef_buffer
 op_plus

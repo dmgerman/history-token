@@ -1163,14 +1163,25 @@ c_func
 id|ln
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bus-&gt;self
+)paren
 id|busdn
 op_assign
-id|PCI_GET_DN
+id|pci_device_to_OF_node
 c_func
 (paren
-id|bus
+id|bus-&gt;self
 )paren
 suffix:semicolon
+r_else
+id|busdn
+op_assign
+id|bus-&gt;sysdata
+suffix:semicolon
+multiline_comment|/* must be a phb */
 id|dma_window
 op_assign
 (paren
@@ -1262,34 +1273,6 @@ op_star
 )paren
 id|phb-&gt;arch_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_property
-c_func
-(paren
-id|node
-comma
-l_string|&quot;linux,has-tce-table&quot;
-comma
-l_int|NULL
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;PCI_DMA: iommu_table_setparms: %s has no tce table !&bslash;n&quot;
-comma
-id|dn-&gt;full_name
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|basep
 op_assign
 (paren
@@ -1340,8 +1323,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI_DMA: iommu_table_setparms: %s has missing tce&quot;
-l_string|&quot; entries !&bslash;n&quot;
+l_string|&quot;PCI_DMA: iommu_table_setparms: %s has &quot;
+l_string|&quot;missing tce entries !&bslash;n&quot;
 comma
 id|dn-&gt;full_name
 )paren
@@ -1349,6 +1332,19 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|tbl-&gt;it_base
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|__va
+c_func
+(paren
+op_star
+id|basep
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -1356,10 +1352,7 @@ c_func
 r_void
 op_star
 )paren
-(paren
-op_star
-id|basep
-)paren
+id|tbl-&gt;it_base
 comma
 l_int|0
 comma
@@ -1430,11 +1423,6 @@ c_func
 (paren
 l_string|&quot;PCI_DMA: Unexpected number of IOAs under this PHB.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|tbl-&gt;it_base
-op_assign
-op_star
-id|basep
 suffix:semicolon
 id|tbl-&gt;it_index
 op_assign
@@ -1741,7 +1729,7 @@ id|mydn
 op_assign
 id|dn
 op_assign
-id|PCI_GET_DN
+id|pci_device_to_OF_node
 c_func
 (paren
 id|dev

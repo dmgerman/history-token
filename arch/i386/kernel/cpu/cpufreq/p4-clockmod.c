@@ -13,6 +13,8 @@ macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&quot;p4-clockmod: &quot;
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;p4-clockmod&quot;, msg)
 multiline_comment|/*&n; * Duty Cycle (3bits), note DC_DISABLE is not specified in&n; * intel docs i just use it to mean disable&n; */
 r_enum
 (brace
@@ -133,7 +135,6 @@ comma
 id|h
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -141,17 +142,14 @@ id|l
 op_amp
 l_int|0x01
 )paren
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;CPU#%d currently thermal throttled&bslash;n&quot;
 comma
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -192,7 +190,14 @@ op_eq
 id|DC_DISABLE
 )paren
 (brace
-multiline_comment|/* printk(KERN_INFO PFX &quot;CPU#%d disabling modulation&bslash;n&quot;, cpu); */
+id|dprintk
+c_func
+(paren
+l_string|&quot;CPU#%d disabling modulation&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 id|wrmsr
 c_func
 (paren
@@ -213,7 +218,24 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* printk(KERN_INFO PFX &quot;CPU#%d setting duty cycle to %d%%&bslash;n&quot;,&n;&t;&t;&t;cpu, ((125 * newstate) / 10)); */
+id|dprintk
+c_func
+(paren
+l_string|&quot;CPU#%d setting duty cycle to %d%%&bslash;n&quot;
+comma
+id|cpu
+comma
+(paren
+(paren
+l_int|125
+op_star
+id|newstate
+)paren
+op_div
+l_int|10
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* bits 63 - 5&t;: reserved &n;&t;&t; * bit  4&t;: enable/disable&n;&t;&t; * bits 3-1&t;: duty cycle&n;&t;&t; * bit  0&t;: reserved&n;&t;&t; */
 id|l
 op_assign
@@ -803,6 +825,12 @@ id|policy-&gt;cpu
 op_assign
 l_int|1
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;has errata -- disabling low frequencies&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* get max frequency */
 id|stock_freq
@@ -1138,6 +1166,9 @@ id|c
 op_assign
 id|cpu_data
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/*&n;&t; * THERM_CONTROL is architectural for IA32 now, so &n;&t; * we can rely on the capability checks&n;&t; */
 r_if
 c_cond
@@ -1175,6 +1206,21 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|ret
+op_assign
+id|cpufreq_register_driver
+c_func
+(paren
+op_amp
+id|p4clockmod_driver
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
 id|printk
 c_func
 (paren
@@ -1184,11 +1230,8 @@ l_string|&quot;P4/Xeon(TM) CPU On-Demand Clock Modulation available&bslash;n&quo
 )paren
 suffix:semicolon
 r_return
-id|cpufreq_register_driver
-c_func
 (paren
-op_amp
-id|p4clockmod_driver
+id|ret
 )paren
 suffix:semicolon
 )brace

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * DECnet       An implementation of the DECnet protocol suite for the LINUX&n; *              operating system.  DECnet is implemented using the  BSD Socket&n; *              interface as the means of communication with the user level.&n; *&n; *              DECnet Neighbour Functions (Adjacency Database and &n; *                                                        On-Ethernet Cache)&n; *&n; * Author:      Steve Whitehouse &lt;SteveW@ACM.org&gt;&n; *&n; *&n; * Changes:&n; *     Steve Whitehouse     : Fixed router listing routine&n; *     Steve Whitehouse     : Added error_report functions&n; *     Steve Whitehouse     : Added default router detection&n; *     Steve Whitehouse     : Hop counts in outgoing messages&n; *     Steve Whitehouse     : Fixed src/dst in outgoing messages so&n; *                            forwarding now stands a good chance of&n; *                            working.&n; *     Steve Whitehouse     : Fixed neighbour states (for now anyway).&n; *     Steve Whitehouse     : Made error_report functions dummies. This&n; *                            is not the right place to return skbs.&n; *     Steve Whitehouse     : Convert to seq_file&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;

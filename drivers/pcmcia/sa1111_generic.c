@@ -639,26 +639,8 @@ op_plus
 id|SA1111_PCCR
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SA1100_ADSBITSY
-id|pcmcia_adsbitsy_init
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_BADGE4
 id|pcmcia_badge4_init
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_GRAPHICSMASTER
-id|pcmcia_graphicsmaster_init
 c_func
 (paren
 op_amp
@@ -688,33 +670,6 @@ id|pcmcia_neponset_init
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PFS168
-id|pcmcia_pfs_init
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PT_SYSTEM3
-id|pcmcia_system3_init
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_XP860
-id|pcmcia_xp860_init
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif

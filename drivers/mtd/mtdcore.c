@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdcore.c,v 1.43 2004/07/23 15:20:46 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdcore.c,v 1.44 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1489,6 +1489,7 @@ macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Init code */
 DECL|function|init_mtd
+r_static
 r_int
 id|__init
 id|init_mtd

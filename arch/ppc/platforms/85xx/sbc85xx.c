@@ -509,14 +509,10 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;bus freq&bslash;t: %u.%.6u MHz&bslash;n&quot;
+l_string|&quot;clock&bslash;t&bslash;t: %dMHz&bslash;n&quot;
 comma
 id|freq
 op_div
-l_int|1000000
-comma
-id|freq
-op_mod
 l_int|1000000
 )paren
 suffix:semicolon

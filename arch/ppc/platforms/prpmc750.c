@@ -351,7 +351,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_CIRRUS
@@ -429,6 +429,12 @@ c_func
 l_int|0xdf
 comma
 l_int|0x3c5
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace

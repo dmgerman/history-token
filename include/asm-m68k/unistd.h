@@ -554,8 +554,14 @@ DECL|macro|__NR_waitid
 mdefine_line|#define __NR_waitid&t;&t;277
 DECL|macro|__NR_vserver
 mdefine_line|#define __NR_vserver&t;&t;278
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;279
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;280
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;281
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls&t;&t;279
+mdefine_line|#define NR_syscalls&t;&t;282
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see&n;   &lt;asm-m68k/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;/* avoid using res which is declared to be in register d0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Internal header file for device mapper&n; *&n; * Copyright (C) 2001, 2002 Sistina Software&n; *&n; * This file is released under the LGPL.&n; */
+multiline_comment|/*&n; * Internal header file for device mapper&n; *&n; * Copyright (C) 2001, 2002 Sistina Software&n; * Copyright (C) 2004 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the LGPL.&n; */
 macro_line|#ifndef DM_INTERNAL_H
 DECL|macro|DM_INTERNAL_H
 mdefine_line|#define DM_INTERNAL_H
@@ -83,6 +83,29 @@ id|mapped_device
 op_star
 op_star
 id|md
+)paren
+suffix:semicolon
+r_void
+id|dm_set_mdptr
+c_func
+(paren
+r_struct
+id|mapped_device
+op_star
+id|md
+comma
+r_void
+op_star
+id|ptr
+)paren
+suffix:semicolon
+r_void
+op_star
+id|dm_get_mdptr
+c_func
+(paren
+id|dev_t
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Reference counting for md.&n; */
@@ -662,6 +685,25 @@ l_int|9
 )paren
 suffix:semicolon
 )brace
+r_int
+id|dm_split_args
+c_func
+(paren
+r_int
+op_star
+id|argc
+comma
+r_char
+op_star
+op_star
+op_star
+id|argvp
+comma
+r_char
+op_star
+id|input
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The device-mapper can be driven through one of two interfaces;&n; * ioctl or filesystem, depending which patch you have applied.&n; */
 r_int
 id|dm_interface_init

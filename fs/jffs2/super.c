@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.100 2004/10/21 00:03:50 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.102 2004/11/12 02:42:17 tpoynor Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -166,6 +166,56 @@ id|ei-&gt;vfs_inode
 suffix:semicolon
 )brace
 )brace
+DECL|function|jffs2_sync_fs
+r_static
+r_int
+id|jffs2_sync_fs
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|wait
+)paren
+(brace
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+op_assign
+id|JFFS2_SB_INFO
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
+)paren
+suffix:semicolon
+id|jffs2_flush_wbuf_pad
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|jffs2_super_operations
 r_static
 r_struct
@@ -217,6 +267,11 @@ dot
 id|dirty_inode
 op_assign
 id|jffs2_dirty_inode
+comma
+dot
+id|sync_fs
+op_assign
+id|jffs2_sync_fs
 comma
 )brace
 suffix:semicolon

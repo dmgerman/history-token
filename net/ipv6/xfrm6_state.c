@@ -254,8 +254,7 @@ id|spi
 op_eq
 id|x-&gt;id.spi
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 (paren
@@ -362,8 +361,7 @@ id|x-&gt;props.family
 op_eq
 id|AF_INET6
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 (paren
@@ -389,8 +387,7 @@ id|proto
 op_eq
 id|x-&gt;id.proto
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 (paren

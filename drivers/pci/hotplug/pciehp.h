@@ -389,13 +389,9 @@ id|u8
 id|slot_bus
 suffix:semicolon
 multiline_comment|/* Bus where the slots handled by this controller sit */
-DECL|member|push_flag
+DECL|member|ctrlcap
 id|u8
-id|push_flag
-suffix:semicolon
-DECL|member|ctlrcap
-id|u16
-id|ctlrcap
+id|ctrlcap
 suffix:semicolon
 DECL|member|vendor_id
 id|u16
@@ -515,6 +511,31 @@ DECL|macro|REMOVE_NOT_SUPPORTED
 mdefine_line|#define REMOVE_NOT_SUPPORTED&t;&t;0x00000003
 DECL|macro|DISABLE_CARD
 mdefine_line|#define DISABLE_CARD&t;&t;&t;1
+multiline_comment|/* Field definitions in Slot Capabilities Register */
+DECL|macro|ATTN_BUTTN_PRSN
+mdefine_line|#define ATTN_BUTTN_PRSN&t;0x00000001
+DECL|macro|PWR_CTRL_PRSN
+mdefine_line|#define&t;PWR_CTRL_PRSN&t;0x00000002
+DECL|macro|MRL_SENS_PRSN
+mdefine_line|#define MRL_SENS_PRSN&t;0x00000004
+DECL|macro|ATTN_LED_PRSN
+mdefine_line|#define ATTN_LED_PRSN&t;0x00000008
+DECL|macro|PWR_LED_PRSN
+mdefine_line|#define PWR_LED_PRSN&t;0x00000010
+DECL|macro|HP_SUPR_RM_SUP
+mdefine_line|#define HP_SUPR_RM_SUP&t;0x00000020
+DECL|macro|ATTN_BUTTN
+mdefine_line|#define ATTN_BUTTN(cap)&t;&t;(cap &amp; ATTN_BUTTN_PRSN)
+DECL|macro|POWER_CTRL
+mdefine_line|#define POWER_CTRL(cap)&t;&t;(cap &amp; PWR_CTRL_PRSN)
+DECL|macro|MRL_SENS
+mdefine_line|#define MRL_SENS(cap)&t;&t;(cap &amp; MRL_SENS_PRSN)
+DECL|macro|ATTN_LED
+mdefine_line|#define ATTN_LED(cap)&t;&t;(cap &amp; ATTN_LED_PRSN)
+DECL|macro|PWR_LED
+mdefine_line|#define PWR_LED(cap)&t;&t;(cap &amp; PWR_LED_PRSN) 
+DECL|macro|HP_SUPR_RM
+mdefine_line|#define HP_SUPR_RM(cap)&t;&t;(cap &amp; HP_SUPR_RM_SUP)
 multiline_comment|/*&n; * error Messages&n; */
 DECL|macro|msg_initialization_err
 mdefine_line|#define msg_initialization_err&t;&quot;Initialization failure, error=%d&bslash;n&quot;
@@ -534,17 +555,6 @@ DECL|macro|msg_button_cancel
 mdefine_line|#define msg_button_cancel&t;&quot;PCI slot #%d - action canceled due to button press.&bslash;n&quot;
 DECL|macro|msg_button_ignore
 mdefine_line|#define msg_button_ignore&t;&quot;PCI slot #%d - button press ignored.  (action in progress...)&bslash;n&quot;
-multiline_comment|/* sysfs function for the hotplug controller info */
-r_extern
-r_void
-id|pciehp_create_ctrl_files
-(paren
-r_struct
-id|controller
-op_star
-id|ctrl
-)paren
-suffix:semicolon
 multiline_comment|/* controller functions */
 r_extern
 r_int
@@ -1181,13 +1191,9 @@ r_int
 op_star
 id|physical_slot_num
 comma
-r_int
+id|u8
 op_star
-id|updown
-comma
-r_int
-op_star
-id|flags
+id|ctrlcap
 )paren
 suffix:semicolon
 DECL|struct|hpc_ops

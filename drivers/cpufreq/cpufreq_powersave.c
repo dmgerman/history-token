@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_GOVERNOR, &quot;powersave&quot;, msg)
 DECL|function|cpufreq_governor_powersave
 r_static
 r_int
@@ -31,6 +33,16 @@ suffix:colon
 r_case
 id|CPUFREQ_GOV_LIMITS
 suffix:colon
+id|dprintk
+c_func
+(paren
+l_string|&quot;setting to %u kHz because of event %u&bslash;n&quot;
+comma
+id|policy-&gt;min
+comma
+id|event
+)paren
+suffix:semicolon
 id|__cpufreq_driver_target
 c_func
 (paren

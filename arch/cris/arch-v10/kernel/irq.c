@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.1 2002/12/11 15:42:02 starvik Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000-2002 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; *      This file contains the interrupt vectors and some &n; *      helper functions&n; *&n; */
+multiline_comment|/* $Id: irq.c,v 1.2 2004/06/09 05:30:27 starvik Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000-2002 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; *      This file contains the interrupt vectors and some &n; *      helper functions&n; *&n; */
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -22,19 +22,8 @@ id|n
 comma
 id|irqvectptr
 id|addr
-comma
-id|irqvectptr
-id|saddr
 )paren
 (brace
-multiline_comment|/* remember the shortcut entry point, after the prologue */
-id|irq_shortcuts
-(braket
-id|n
-)braket
-op_assign
-id|saddr
-suffix:semicolon
 id|etrax_irv-&gt;v
 (braket
 id|n
@@ -388,86 +377,6 @@ comma
 id|IRQ31_interrupt
 )brace
 suffix:semicolon
-DECL|variable|sinterrupt
-r_static
-r_void
-(paren
-op_star
-id|sinterrupt
-(braket
-id|NR_IRQS
-)braket
-)paren
-(paren
-r_void
-)paren
-op_assign
-(brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-id|sIRQ2_interrupt
-comma
-id|sIRQ3_interrupt
-comma
-id|sIRQ4_interrupt
-comma
-id|sIRQ5_interrupt
-comma
-id|sIRQ6_interrupt
-comma
-id|sIRQ7_interrupt
-comma
-id|sIRQ8_interrupt
-comma
-id|sIRQ9_interrupt
-comma
-id|sIRQ10_interrupt
-comma
-id|sIRQ11_interrupt
-comma
-id|sIRQ12_interrupt
-comma
-id|sIRQ13_interrupt
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-id|sIRQ16_interrupt
-comma
-id|sIRQ17_interrupt
-comma
-id|sIRQ18_interrupt
-comma
-id|sIRQ19_interrupt
-comma
-id|sIRQ20_interrupt
-comma
-id|sIRQ21_interrupt
-comma
-id|sIRQ22_interrupt
-comma
-id|sIRQ23_interrupt
-comma
-id|sIRQ24_interrupt
-comma
-id|sIRQ25_interrupt
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-id|sIRQ31_interrupt
-)brace
-suffix:semicolon
 DECL|variable|bad_interrupt
 r_static
 r_void
@@ -566,11 +475,6 @@ id|interrupt
 (braket
 id|irq
 )braket
-comma
-id|sinterrupt
-(braket
-id|irq
-)braket
 )paren
 suffix:semicolon
 )brace
@@ -592,8 +496,6 @@ id|bad_interrupt
 (braket
 id|irq
 )braket
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -756,8 +658,6 @@ id|bad_interrupt
 (braket
 id|i
 )braket
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* except IRQ 15 which is the multiple-IRQ handler on Etrax100 */
@@ -767,8 +667,6 @@ c_func
 l_int|15
 comma
 id|multiple_interrupt
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* 0 and 1 which are special breakpoint/NMI traps */
@@ -778,8 +676,6 @@ c_func
 l_int|0
 comma
 id|hwbreakpoint
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|set_int_vector
@@ -788,8 +684,6 @@ c_func
 l_int|1
 comma
 id|IRQ1_interrupt
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* and irq 14 which is the mmu bus fault handler */
@@ -799,8 +693,6 @@ c_func
 l_int|14
 comma
 id|mmu_bus_fault
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* setup the system-call trap, which is reached by BREAK 13 */

@@ -12,6 +12,7 @@ macro_line|#undef HPT_DELAY_INTERRUPT
 DECL|macro|HPT_SERIALIZE_IO
 macro_line|#undef HPT_SERIALIZE_IO
 DECL|variable|quirk_drives
+r_static
 r_const
 r_char
 op_star
@@ -32,6 +33,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata100_5
+r_static
 r_const
 r_char
 op_star
@@ -74,6 +76,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata66_4
+r_static
 r_const
 r_char
 op_star
@@ -116,6 +119,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata66_3
+r_static
 r_const
 r_char
 op_star
@@ -130,6 +134,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|bad_ata33
+r_static
 r_const
 r_char
 op_star
@@ -236,6 +241,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* key for bus clock timings&n; * bit&n; * 0:3    data_high_time. inactive time of DIOW_/DIOR_ for PIO and MW&n; *        DMA. cycles = value + 1&n; * 4:8    data_low_time. active time of DIOW_/DIOR_ for PIO and MW&n; *        DMA. cycles = value + 1&n; * 9:12   cmd_high_time. inactive time of DIOW_/DIOR_ during task file&n; *        register access.&n; * 13:17  cmd_low_time. active time of DIOW_/DIOR_ during task file&n; *        register access.&n; * 18:21  udma_cycle_time. clock freq and clock cycles for UDMA xfer.&n; *        during task file register access.&n; * 22:24  pre_high_time. time to initialize 1st cycle for PIO and MW DMA&n; *        xfer.&n; * 25:27  cmd_pre_high_time. time to initialize 1st PIO cycle for task&n; *        register access.&n; * 28     UDMA enable&n; * 29     DMA enable&n; * 30     PIO_MST enable. if set, the chip is in bus master mode during&n; *        PIO.&n; * 31     FIFO enable.&n; */
 DECL|variable|forty_base_hpt366
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|forty_base_hpt366
@@ -329,6 +335,7 @@ l_int|0x0120d9d9
 )brace
 suffix:semicolon
 DECL|variable|thirty_three_base_hpt366
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt366
@@ -425,6 +432,7 @@ l_int|0x0120a7a7
 )brace
 suffix:semicolon
 DECL|variable|twenty_five_base_hpt366
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|twenty_five_base_hpt366
@@ -519,6 +527,7 @@ l_int|0x01208585
 suffix:semicolon
 multiline_comment|/* from highpoint documentation. these are old values */
 DECL|variable|thirty_three_base_hpt370
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt370
@@ -619,6 +628,7 @@ l_int|0x06514e57
 )brace
 suffix:semicolon
 DECL|variable|sixty_six_base_hpt370
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt370
@@ -719,6 +729,7 @@ l_int|0x06514e57
 suffix:semicolon
 multiline_comment|/* these are the current (4 sep 2001) timings from highpoint */
 DECL|variable|thirty_three_base_hpt370a
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt370a
@@ -819,6 +830,7 @@ l_int|0x06814ea7
 suffix:semicolon
 multiline_comment|/* 2x 33MHz timings */
 DECL|variable|sixty_six_base_hpt370a
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt370a
@@ -918,6 +930,7 @@ l_int|0x0d02bf5f
 )brace
 suffix:semicolon
 DECL|variable|fifty_base_hpt370a
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|fifty_base_hpt370a
@@ -1017,6 +1030,7 @@ l_int|0x0ac1f48a
 )brace
 suffix:semicolon
 DECL|variable|thirty_three_base_hpt372
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt372
@@ -1127,6 +1141,7 @@ l_int|0x0d029d5e
 )brace
 suffix:semicolon
 DECL|variable|fifty_base_hpt372
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|fifty_base_hpt372
@@ -1226,6 +1241,7 @@ l_int|0x0a81f443
 )brace
 suffix:semicolon
 DECL|variable|sixty_six_base_hpt372
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt372
@@ -1331,6 +1347,7 @@ l_int|0x0d029d26
 )brace
 suffix:semicolon
 DECL|variable|thirty_three_base_hpt374
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|thirty_three_base_hpt374
@@ -1436,6 +1453,7 @@ l_int|0x06814e93
 )brace
 suffix:semicolon
 macro_line|#if 0
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|fifty_base_hpt374
@@ -1526,6 +1544,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|sixty_six_base_hpt374

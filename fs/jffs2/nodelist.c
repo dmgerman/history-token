@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.86 2003/10/31 15:37:51 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.87 2004/11/14 17:07:07 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -491,9 +491,6 @@ id|jffs2_sb_info
 op_star
 id|c
 comma
-id|ino_t
-id|ino
-comma
 r_struct
 id|jffs2_inode_info
 op_star
@@ -573,9 +570,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;jffs2_get_inode_nodes(): ino #%lu&bslash;n&quot;
+l_string|&quot;jffs2_get_inode_nodes(): ino #%u&bslash;n&quot;
 comma
-id|ino
+id|f-&gt;inocache-&gt;ino
 )paren
 )paren
 suffix:semicolon
@@ -590,13 +587,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Eep. no nodes for ino #%lu&bslash;n&quot;
+l_string|&quot;Eep. no nodes for ino #%u&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-id|ino
+id|f-&gt;inocache-&gt;ino
 )paren
 suffix:semicolon
 )brace

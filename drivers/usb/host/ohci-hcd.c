@@ -32,7 +32,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2004 Feb 02&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2004 Nov 08&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -2135,17 +2135,6 @@ c_cond
 id|udev
 )paren
 (brace
-id|udev-&gt;dev.power.power_state
-op_assign
-l_int|0
-suffix:semicolon
-id|usb_set_device_state
-(paren
-id|udev
-comma
-id|USB_STATE_CONFIGURED
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2757,6 +2746,13 @@ id|urb_priv
 op_star
 id|priv
 suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|root
+op_assign
+id|ohci-&gt;hcd.self.root_hub
+suffix:semicolon
 multiline_comment|/* mark any devices gone, so they do nothing till khubd disconnects.&n;&t; * recycle any &quot;live&quot; eds/tds (and urbs) right away.&n;&t; * later, khubd disconnect processing will recycle the other state,&n;&t; * (either as disconnect/reconnect, or maybe someday as a reset).&n;&t; */
 id|spin_lock_irq
 c_func
@@ -2770,13 +2766,40 @@ id|disable
 id|ohci
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|root-&gt;maxchild
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|root-&gt;children
+(braket
+id|i
+)braket
+)paren
 id|usb_set_device_state
 (paren
-id|ohci-&gt;hcd.self.root_hub
+id|root-&gt;children
+(braket
+id|i
+)braket
 comma
 id|USB_STATE_NOTATTACHED
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3044,10 +3067,6 @@ id|ohci
 comma
 l_string|&quot;restart complete&bslash;n&quot;
 )paren
-suffix:semicolon
-id|ohci-&gt;hcd.state
-op_assign
-id|USB_STATE_RUNNING
 suffix:semicolon
 )brace
 r_return

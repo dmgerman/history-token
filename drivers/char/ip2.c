@@ -102,18 +102,16 @@ c_func
 l_string|&quot;Computone IntelliPort Plus Driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|IP2_MAX_BOARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -124,18 +122,16 @@ comma
 l_string|&quot;Interrupts for IntelliPort Cards&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|io
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|IP2_MAX_BOARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -146,12 +142,14 @@ comma
 l_string|&quot;I/O ports for IntelliPort Cards&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|poll_only
 comma
-l_string|&quot;1i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

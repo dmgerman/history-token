@@ -864,14 +864,6 @@ c_func
 id|CALL_FUNCTION_VECTOR
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|wait
-)paren
-r_return
-suffix:semicolon
 multiline_comment|/* Wait for response */
 r_while
 c_loop
@@ -885,10 +877,18 @@ id|data.started
 op_ne
 id|cpus
 )paren
-id|barrier
+id|cpu_relax
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wait
+)paren
+r_return
 suffix:semicolon
 r_while
 c_loop
@@ -902,7 +902,7 @@ id|data.finished
 op_ne
 id|cpus
 )paren
-id|barrier
+id|cpu_relax
 c_func
 (paren
 )paren
