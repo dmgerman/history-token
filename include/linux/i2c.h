@@ -1073,6 +1073,26 @@ id|i2c_client
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* call the i2c_client-&gt;command() of all attached clients with&n; * the given arguments */
+r_extern
+r_void
+id|i2c_clients_command
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|adap
+comma
+r_int
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|arg
+)paren
+suffix:semicolon
 multiline_comment|/* returns -EBUSY if address has been taken, 0 if not. Note that the only&n;   other place at which this is called is within i2c_attach_client; so&n;   you can cheat by simply not registering. Not recommended, of course! */
 r_extern
 r_int
