@@ -1,5 +1,5 @@
 multiline_comment|/* eepro.c: Intel EtherExpress Pro/10 device driver for Linux. */
-multiline_comment|/*&n;&t;Written 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;Copyright (C) 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;This software may be used and distributed&n;&t;according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;The author may be reached at bao.ha@srs.gov&n;&t;or 418 Hastings Place, Martinez, GA 30907.&n;&n;&t;Things remaining to do:&n;&t;Better record keeping of errors.&n;&t;Eliminate transmit interrupt to reduce overhead.&n;&t;Implement &quot;concurrent processing&quot;. I won&squot;t be doing it!&n;&n;&t;Bugs:&n;&n;&t;If you have a problem of not detecting the 82595 during a&n;&t;reboot (warm reset), disable the FLASH memory should fix it.&n;&t;This is a compatibility hardware problem.&n;&n;&t;Versions:&n;&t;0.13a   in memory shortage, drop packets also in board&n;&t;&t;(Michael Westermann &lt;mw@microdata-pos.de&gt;, 07/30/2002)&n;&t;0.13    irq sharing, rewrote probe function, fixed a nasty bug in&n;&t;&t;hardware_send_packet and a major cleanup (aris, 11/08/2001)&n;&t;0.12d&t;fixing a problem with single card detected as eight eth devices&n;&t;&t;fixing a problem with sudden drop in card performance&n;&t;&t;(chris (asdn@go2.pl), 10/29/2001)&n;&t;0.12c&t;fixing some problems with old cards (aris, 01/08/2001)&n;&t;0.12b&t;misc fixes (aris, 06/26/2000)&n;&t;0.12a   port of version 0.12a of 2.2.x kernels to 2.3.x&n;&t;&t;(aris (aris@conectiva.com.br), 05/19/2000)&n;&t;0.11e   some tweaks about multiple cards support (PdP, jul/aug 1999)&n;&t;0.11d&t;added __initdata, __init stuff; call spin_lock_init&n;&t;        in eepro_probe1. Replaced &quot;eepro&quot; by dev-&gt;name. Augmented&n;&t;&t;the code protected by spin_lock in interrupt routine&n;&t;&t;(PdP, 12/12/1998)&n;&t;0.11c   minor cleanup (PdP, RMC, 09/12/1998)&n;&t;0.11b   Pascal Dupuis (dupuis@lei.ucl.ac.be): works as a module&n;&t;        under 2.1.xx. Debug messages are flagged as KERN_DEBUG to&n;&t;&t;avoid console flooding. Added locking at critical parts. Now&n;&t;&t;the dawn thing is SMP safe.&n;&t;0.11a   Attempt to get 2.1.xx support up (RMC)&n;&t;0.11&t;Brian Candler added support for multiple cards. Tested as&n;&t;&t;a module, no idea if it works when compiled into kernel.&n;&n;&t;0.10e&t;Rick Bressler notified me that ifconfig up;ifconfig down fails&n;&t;&t;because the irq is lost somewhere. Fixed that by moving&n;&t;&t;request_irq and free_irq to eepro_open and eepro_close respectively.&n;&t;0.10d&t;Ugh! Now Wakeup works. Was seriously broken in my first attempt.&n;&t;&t;I&squot;ll need to find a way to specify an ioport other than&n;&t;&t;the default one in the PnP case. PnP definitively sucks.&n;&t;&t;And, yes, this is not the only reason.&n;&t;0.10c&t;PnP Wakeup Test for 595FX. uncomment #define PnPWakeup;&n;&t;&t;to use.&n;&t;0.10b&t;Should work now with (some) Pro/10+. At least for&n;&t;&t;me (and my two cards) it does. _No_ guarantee for&n;&t;&t;function with non-Pro/10+ cards! (don&squot;t have any)&n;&t;&t;(RMC, 9/11/96)&n;&n;&t;0.10&t;Added support for the Etherexpress Pro/10+.  The&n;&t;&t;IRQ map was changed significantly from the old&n;&t;&t;pro/10.  The new interrupt map was provided by&n;&t;&t;Rainer M. Canavan (Canavan@Zeus.cs.bonn.edu).&n;&t;&t;(BCH, 9/3/96)&n;&n;&t;0.09&t;Fixed a race condition in the transmit algorithm,&n;&t;&t;which causes crashes under heavy load with fast&n;&t;&t;pentium computers.  The performance should also&n;&t;&t;improve a bit.  The size of RX buffer, and hence&n;&t;&t;TX buffer, can also be changed via lilo or insmod.&n;&t;&t;(BCH, 7/31/96)&n;&n;&t;0.08&t;Implement 32-bit I/O for the 82595TX and 82595FX&n;&t;&t;based lan cards.  Disable full-duplex mode if TPE&n;&t;&t;is not used.  (BCH, 4/8/96)&n;&n;&t;0.07a&t;Fix a stat report which counts every packet as a&n;&t;&t;heart-beat failure. (BCH, 6/3/95)&n;&n;&t;0.07&t;Modified to support all other 82595-based lan cards.&n;&t;&t;The IRQ vector of the EtherExpress Pro will be set&n;&t;&t;according to the value saved in the EEPROM.  For other&n;&t;&t;cards, I will do autoirq_request() to grab the next&n;&t;&t;available interrupt vector. (BCH, 3/17/95)&n;&n;&t;0.06a,b&t;Interim released.  Minor changes in the comments and&n;&t;&t;print out format. (BCH, 3/9/95 and 3/14/95)&n;&n;&t;0.06&t;First stable release that I am comfortable with. (BCH,&n;&t;&t;3/2/95)&n;&n;&t;0.05&t;Complete testing of multicast. (BCH, 2/23/95)&n;&n;&t;0.04&t;Adding multicast support. (BCH, 2/14/95)&n;&n;&t;0.03&t;First widely alpha release for public testing.&n;&t;&t;(BCH, 2/14/95)&n;&n;*/
+multiline_comment|/*&n;&t;Written 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;Copyright (C) 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;This software may be used and distributed&n;&t;according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;The author may be reached at bao.ha@srs.gov&n;&t;or 418 Hastings Place, Martinez, GA 30907.&n;&n;&t;Things remaining to do:&n;&t;Better record keeping of errors.&n;&t;Eliminate transmit interrupt to reduce overhead.&n;&t;Implement &quot;concurrent processing&quot;. I won&squot;t be doing it!&n;&n;&t;Bugs:&n;&n;&t;If you have a problem of not detecting the 82595 during a&n;&t;reboot (warm reset), disable the FLASH memory should fix it.&n;&t;This is a compatibility hardware problem.&n;&n;&t;Versions:&n;&t;0.13b&t;basic ethtool support (aris, 09/13/2004)&n;&t;0.13a   in memory shortage, drop packets also in board&n;&t;&t;(Michael Westermann &lt;mw@microdata-pos.de&gt;, 07/30/2002)&n;&t;0.13    irq sharing, rewrote probe function, fixed a nasty bug in&n;&t;&t;hardware_send_packet and a major cleanup (aris, 11/08/2001)&n;&t;0.12d&t;fixing a problem with single card detected as eight eth devices&n;&t;&t;fixing a problem with sudden drop in card performance&n;&t;&t;(chris (asdn@go2.pl), 10/29/2001)&n;&t;0.12c&t;fixing some problems with old cards (aris, 01/08/2001)&n;&t;0.12b&t;misc fixes (aris, 06/26/2000)&n;&t;0.12a   port of version 0.12a of 2.2.x kernels to 2.3.x&n;&t;&t;(aris (aris@conectiva.com.br), 05/19/2000)&n;&t;0.11e   some tweaks about multiple cards support (PdP, jul/aug 1999)&n;&t;0.11d&t;added __initdata, __init stuff; call spin_lock_init&n;&t;        in eepro_probe1. Replaced &quot;eepro&quot; by dev-&gt;name. Augmented&n;&t;&t;the code protected by spin_lock in interrupt routine&n;&t;&t;(PdP, 12/12/1998)&n;&t;0.11c   minor cleanup (PdP, RMC, 09/12/1998)&n;&t;0.11b   Pascal Dupuis (dupuis@lei.ucl.ac.be): works as a module&n;&t;        under 2.1.xx. Debug messages are flagged as KERN_DEBUG to&n;&t;&t;avoid console flooding. Added locking at critical parts. Now&n;&t;&t;the dawn thing is SMP safe.&n;&t;0.11a   Attempt to get 2.1.xx support up (RMC)&n;&t;0.11&t;Brian Candler added support for multiple cards. Tested as&n;&t;&t;a module, no idea if it works when compiled into kernel.&n;&n;&t;0.10e&t;Rick Bressler notified me that ifconfig up;ifconfig down fails&n;&t;&t;because the irq is lost somewhere. Fixed that by moving&n;&t;&t;request_irq and free_irq to eepro_open and eepro_close respectively.&n;&t;0.10d&t;Ugh! Now Wakeup works. Was seriously broken in my first attempt.&n;&t;&t;I&squot;ll need to find a way to specify an ioport other than&n;&t;&t;the default one in the PnP case. PnP definitively sucks.&n;&t;&t;And, yes, this is not the only reason.&n;&t;0.10c&t;PnP Wakeup Test for 595FX. uncomment #define PnPWakeup;&n;&t;&t;to use.&n;&t;0.10b&t;Should work now with (some) Pro/10+. At least for&n;&t;&t;me (and my two cards) it does. _No_ guarantee for&n;&t;&t;function with non-Pro/10+ cards! (don&squot;t have any)&n;&t;&t;(RMC, 9/11/96)&n;&n;&t;0.10&t;Added support for the Etherexpress Pro/10+.  The&n;&t;&t;IRQ map was changed significantly from the old&n;&t;&t;pro/10.  The new interrupt map was provided by&n;&t;&t;Rainer M. Canavan (Canavan@Zeus.cs.bonn.edu).&n;&t;&t;(BCH, 9/3/96)&n;&n;&t;0.09&t;Fixed a race condition in the transmit algorithm,&n;&t;&t;which causes crashes under heavy load with fast&n;&t;&t;pentium computers.  The performance should also&n;&t;&t;improve a bit.  The size of RX buffer, and hence&n;&t;&t;TX buffer, can also be changed via lilo or insmod.&n;&t;&t;(BCH, 7/31/96)&n;&n;&t;0.08&t;Implement 32-bit I/O for the 82595TX and 82595FX&n;&t;&t;based lan cards.  Disable full-duplex mode if TPE&n;&t;&t;is not used.  (BCH, 4/8/96)&n;&n;&t;0.07a&t;Fix a stat report which counts every packet as a&n;&t;&t;heart-beat failure. (BCH, 6/3/95)&n;&n;&t;0.07&t;Modified to support all other 82595-based lan cards.&n;&t;&t;The IRQ vector of the EtherExpress Pro will be set&n;&t;&t;according to the value saved in the EEPROM.  For other&n;&t;&t;cards, I will do autoirq_request() to grab the next&n;&t;&t;available interrupt vector. (BCH, 3/17/95)&n;&n;&t;0.06a,b&t;Interim released.  Minor changes in the comments and&n;&t;&t;print out format. (BCH, 3/9/95 and 3/14/95)&n;&n;&t;0.06&t;First stable release that I am comfortable with. (BCH,&n;&t;&t;3/2/95)&n;&n;&t;0.05&t;Complete testing of multicast. (BCH, 2/23/95)&n;&n;&t;0.04&t;Adding multicast support. (BCH, 2/14/95)&n;&n;&t;0.03&t;First widely alpha release for public testing.&n;&t;&t;(BCH, 2/14/95)&n;&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -8,7 +8,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;eepro.c: v0.13 11/08/2001 aris@cathedrallabs.org&bslash;n&quot;
+l_string|&quot;eepro.c: v0.13b 09/13/2004 aris@cathedrallabs.org&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n;  Sources:&n;&n;&t;This driver wouldn&squot;t have been written without the availability&n;&t;of the Crynwr&squot;s Lan595 driver source code.  It helps me to&n;&t;familiarize with the 82595 chipset while waiting for the Intel&n;&t;documentation.  I also learned how to detect the 82595 using&n;&t;the packet driver&squot;s technique.&n;&n;&t;This driver is written by cutting and pasting the skeleton.c driver&n;&t;provided by Donald Becker.  I also borrowed the EEPROM routine from&n;&t;Donald Becker&squot;s 82586 driver.&n;&n;&t;Datasheet for the Intel 82595 (including the TX and FX version). It&n;&t;provides just enough info that the casual reader might think that it&n;&t;documents the i82595.&n;&n;&t;The User Manual for the 82595.  It provides a lot of the missing&n;&t;information.&n;&n;*/
@@ -28,11 +28,14 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME &quot;eepro&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION &quot;0.13b&quot;
 DECL|macro|compat_dev_kfree_skb
 mdefine_line|#define compat_dev_kfree_skb( skb, mode ) dev_kfree_skb( (skb) )
 multiline_comment|/* I had reports of looong delays with SLOW_DOWN defined as udelay(2) */
@@ -41,6 +44,26 @@ mdefine_line|#define SLOW_DOWN inb(0x80)
 multiline_comment|/* udelay(2) */
 DECL|macro|compat_init_data
 mdefine_line|#define compat_init_data     __initdata
+DECL|enum|iftype
+DECL|enumerator|AUI
+DECL|enumerator|BNC
+DECL|enumerator|TPE
+r_enum
+id|iftype
+(brace
+id|AUI
+op_assign
+l_int|0
+comma
+id|BNC
+op_assign
+l_int|1
+comma
+id|TPE
+op_assign
+l_int|2
+)brace
+suffix:semicolon
 multiline_comment|/* First, a few definitions that the brave might change. */
 multiline_comment|/* A zero-terminated list of I/O addresses to be probed. */
 DECL|variable|compat_init_data
@@ -2003,6 +2026,12 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+DECL|variable|eepro_ethtool_ops
+r_static
+r_struct
+id|ethtool_ops
+id|eepro_ethtool_ops
+suffix:semicolon
 multiline_comment|/* This is the real probe routine.  Linux has a history of friendly device&n;   probes on the ISA bus.  A good device probe avoids doing writes, and&n;   verifies that the correct device exists and functions.  */
 DECL|function|eepro_probe1
 r_static
@@ -2024,7 +2053,7 @@ r_int
 r_int
 id|station_addr
 (braket
-l_int|6
+l_int|3
 )braket
 comma
 id|id
@@ -2038,22 +2067,6 @@ r_struct
 id|eepro_local
 op_star
 id|lp
-suffix:semicolon
-r_enum
-id|iftype
-(brace
-id|AUI
-op_assign
-l_int|0
-comma
-id|BNC
-op_assign
-l_int|1
-comma
-id|TPE
-op_assign
-l_int|2
-)brace
 suffix:semicolon
 r_int
 id|ioaddr
@@ -2557,6 +2570,11 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
+suffix:semicolon
+id|dev-&gt;ethtool_ops
+op_assign
+op_amp
+id|eepro_ethtool_ops
 suffix:semicolon
 multiline_comment|/* print boot time info */
 id|eepro_print_info
@@ -3755,22 +3773,6 @@ op_eq
 id|ee_FX_INT2IRQ
 )paren
 (brace
-r_enum
-id|iftype
-(brace
-id|AUI
-op_assign
-l_int|0
-comma
-id|BNC
-op_assign
-l_int|1
-comma
-id|TPE
-op_assign
-l_int|2
-)brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6824,6 +6826,249 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|function|eepro_ethtool_get_settings
+r_static
+r_int
+id|eepro_ethtool_get_settings
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ethtool_cmd
+op_star
+id|cmd
+)paren
+(brace
+r_struct
+id|eepro_local
+op_star
+id|lp
+op_assign
+(paren
+r_struct
+id|eepro_local
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|cmd-&gt;supported
+op_assign
+id|SUPPORTED_10baseT_Half
+op_or
+id|SUPPORTED_10baseT_Full
+op_or
+id|SUPPORTED_Autoneg
+suffix:semicolon
+id|cmd-&gt;advertising
+op_assign
+id|ADVERTISED_10baseT_Half
+op_or
+id|ADVERTISED_10baseT_Full
+op_or
+id|ADVERTISED_Autoneg
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|GetBit
+c_func
+(paren
+id|lp-&gt;word
+(braket
+l_int|5
+)braket
+comma
+id|ee_PortTPE
+)paren
+)paren
+(brace
+id|cmd-&gt;supported
+op_or_assign
+id|SUPPORTED_TP
+suffix:semicolon
+id|cmd-&gt;advertising
+op_or_assign
+id|ADVERTISED_TP
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|GetBit
+c_func
+(paren
+id|lp-&gt;word
+(braket
+l_int|5
+)braket
+comma
+id|ee_PortBNC
+)paren
+)paren
+(brace
+id|cmd-&gt;supported
+op_or_assign
+id|SUPPORTED_BNC
+suffix:semicolon
+id|cmd-&gt;advertising
+op_or_assign
+id|ADVERTISED_BNC
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|GetBit
+c_func
+(paren
+id|lp-&gt;word
+(braket
+l_int|5
+)braket
+comma
+id|ee_PortAUI
+)paren
+)paren
+(brace
+id|cmd-&gt;supported
+op_or_assign
+id|SUPPORTED_AUI
+suffix:semicolon
+id|cmd-&gt;advertising
+op_or_assign
+id|ADVERTISED_AUI
+suffix:semicolon
+)brace
+id|cmd-&gt;speed
+op_assign
+id|SPEED_10
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;if_port
+op_eq
+id|TPE
+op_logical_and
+id|lp-&gt;word
+(braket
+l_int|1
+)braket
+op_amp
+id|ee_Duplex
+)paren
+(brace
+id|cmd-&gt;duplex
+op_assign
+id|DUPLEX_FULL
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cmd-&gt;duplex
+op_assign
+id|DUPLEX_HALF
+suffix:semicolon
+)brace
+id|cmd-&gt;port
+op_assign
+id|dev-&gt;if_port
+suffix:semicolon
+id|cmd-&gt;phy_address
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+id|cmd-&gt;transceiver
+op_assign
+id|XCVR_INTERNAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;word
+(braket
+l_int|0
+)braket
+op_amp
+id|ee_AutoNeg
+)paren
+(brace
+id|cmd-&gt;autoneg
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|eepro_ethtool_get_drvinfo
+r_static
+r_void
+id|eepro_ethtool_get_drvinfo
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ethtool_drvinfo
+op_star
+id|drvinfo
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|drvinfo-&gt;driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|drvinfo-&gt;version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|drvinfo-&gt;bus_info
+comma
+l_string|&quot;ISA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+)brace
+DECL|variable|eepro_ethtool_ops
+r_static
+r_struct
+id|ethtool_ops
+id|eepro_ethtool_ops
+op_assign
+(brace
+dot
+id|get_settings
+op_assign
+id|eepro_ethtool_get_settings
+comma
+dot
+id|get_drvinfo
+op_assign
+id|eepro_ethtool_get_drvinfo
+comma
+)brace
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|macro|MAX_EEPRO
 mdefine_line|#define MAX_EEPRO 8
@@ -6892,7 +7137,7 @@ multiline_comment|/* For linux 2.1.xx */
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Pascal Dupuis, and aris@cathedrallabs.org&quot;
+l_string|&quot;Pascal Dupuis and others&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
