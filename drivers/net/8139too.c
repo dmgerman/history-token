@@ -2827,12 +2827,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|pci_disable_device
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|pci_set_drvdata
 (paren
 id|pdev
@@ -2943,6 +2937,10 @@ id|tmp8
 suffix:semicolon
 r_int
 id|rc
+comma
+id|disable_dev_on_err
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -3301,6 +3299,10 @@ id|rc
 )paren
 r_goto
 id|err_out
+suffix:semicolon
+id|disable_dev_on_err
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* enable PCI bus-mastering */
 id|pci_set_master
@@ -3718,6 +3720,16 @@ suffix:colon
 id|__rtl8139_cleanup_dev
 (paren
 id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|disable_dev_on_err
+)paren
+id|pci_disable_device
+(paren
+id|pdev
 )paren
 suffix:semicolon
 r_return
@@ -4571,6 +4583,11 @@ id|__rtl8139_cleanup_dev
 id|dev
 )paren
 suffix:semicolon
+id|pci_disable_device
+(paren
+id|pdev
+)paren
+suffix:semicolon
 r_return
 id|i
 suffix:semicolon
@@ -4612,6 +4629,11 @@ suffix:semicolon
 id|__rtl8139_cleanup_dev
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|pci_disable_device
+(paren
+id|pdev
 )paren
 suffix:semicolon
 )brace
