@@ -197,6 +197,78 @@ r_char
 op_star
 id|execute_command
 suffix:semicolon
+multiline_comment|/* Setup configured maximum number of CPUs to activate */
+DECL|variable|max_cpus
+r_static
+r_int
+r_int
+id|max_cpus
+op_assign
+id|UINT_MAX
+suffix:semicolon
+multiline_comment|/*&n; * Setup routine for controlling SMP activation&n; *&n; * Command-line option of &quot;nosmp&quot; or &quot;maxcpus=0&quot; will disable SMP&n; * activation entirely (the MPS table probe still happens, though).&n; *&n; * Command-line option of &quot;maxcpus=&lt;NUM&gt;&quot;, where &lt;NUM&gt; is an integer&n; * greater than 0, limits the maximum number of CPUs activated in&n; * SMP mode to &lt;NUM&gt;.&n; */
+DECL|function|nosmp
+r_static
+r_int
+id|__init
+id|nosmp
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|max_cpus
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;nosmp&quot;
+comma
+id|nosmp
+)paren
+suffix:semicolon
+DECL|function|maxcpus
+r_static
+r_int
+id|__init
+id|maxcpus
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|max_cpus
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;maxcpus=&quot;
+comma
+id|maxcpus
+)paren
+suffix:semicolon
 DECL|variable|argv_init
 r_static
 r_char
@@ -945,6 +1017,19 @@ r_void
 )paren
 (brace
 )brace
+DECL|function|smp_prepare_cpus
+r_static
+r_inline
+r_void
+id|smp_prepare_cpus
+c_func
+(paren
+r_int
+r_int
+id|maxcpus
+)paren
+(brace
+)brace
 macro_line|#else
 macro_line|#ifdef __GENERIC_PER_CPU
 DECL|variable|__per_cpu_offset
@@ -1069,12 +1154,88 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Get other processors into their bootup holding patterns. */
-id|smp_boot_cpus
+r_int
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* FIXME: This should be done in userspace --RR */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|num_online_cpus
 c_func
 (paren
 )paren
+op_ge
+id|max_cpus
+)paren
+r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_possible
+c_func
+(paren
+id|i
+)paren
+op_logical_and
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Bringing up %i&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|cpu_up
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* Any cleanup work */
+id|printk
+c_func
+(paren
+l_string|&quot;CPUS done %u&bslash;n&quot;
+comma
+id|max_cpus
+)paren
+suffix:semicolon
+id|smp_cpus_done
+c_func
+(paren
+id|max_cpus
+)paren
+suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* Get other processors into their bootup holding patterns. */
 id|smp_threads_ready
 op_assign
 l_int|1
@@ -1084,6 +1245,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * We need to finalize in a non-__init function or else race conditions&n; * between the root thread and the init thread may cause start_kernel to&n; * be reaped by free_initmem before the root thread has proceeded to&n; * cpu_idle.&n; */
@@ -1413,6 +1575,7 @@ c_func
 l_string|&quot;POSIX conformance testing by UNIFIX&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; *&t;We count on the initial thread going ok &n;&t; *&t;Like idlers init is an unlocked kernel thread, which will&n;&t; *&t;make syscalls (and thus be locked).&n;&t; */
 id|init_idle
 c_func
 (paren
@@ -1422,12 +1585,6 @@ id|smp_processor_id
 c_func
 (paren
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t; *&t;We count on the initial thread going ok &n;&t; *&t;Like idlers init is an unlocked kernel thread, which will&n;&t; *&t;make syscalls (and thus be locked).&n;&t; */
-id|smp_init
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Do the rest non-__init&squot;ed, we&squot;re now alive */
@@ -1505,14 +1662,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * Let the per-CPU migration threads start up:&n;&t; */
-macro_line|#if CONFIG_SMP
-id|migration_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Tell the world that we&squot;re going to be the grim&n;&t; * reaper of innocent orphaned children.&n;&t; *&n;&t; * We don&squot;t want people to have to make incorrect&n;&t; * assumptions about where in the task array this&n;&t; * can be found.&n;&t; */
 id|child_reaper
 op_assign
@@ -1596,7 +1745,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Sets up cpus_possible() */
+id|smp_prepare_cpus
+c_func
+(paren
+id|max_cpus
+)paren
+suffix:semicolon
 id|do_basic_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|smp_init
 c_func
 (paren
 )paren

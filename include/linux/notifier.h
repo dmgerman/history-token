@@ -133,6 +133,8 @@ DECL|macro|SYS_POWER_OFF
 mdefine_line|#define SYS_POWER_OFF&t;0x0003&t;/* Notify of system power off */
 DECL|macro|NETLINK_URELEASE
 mdefine_line|#define NETLINK_URELEASE&t;0x0001&t;/* Unicast netlink socket released */
+DECL|macro|CPU_ONLINE
+mdefine_line|#define CPU_ONLINE&t;0x0002 /* CPU (unsigned)v coming up */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_NOTIFIER_H */
 eof
