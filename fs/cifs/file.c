@@ -169,7 +169,7 @@ id|current-&gt;pid
 )paren
 )paren
 (brace
-multiline_comment|/* set mode ?? */
+multiline_comment|/* mode set in cifs_create */
 id|pCifsFile-&gt;pfile
 op_assign
 id|file
@@ -813,7 +813,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_EXCLUSIVE
 )paren
@@ -843,7 +847,11 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_READ
 )paren
@@ -874,9 +882,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_flags
+id|oplock
 op_amp
-id|O_CREAT
+id|CIFS_CREATE_ACTION
 )paren
 (brace
 multiline_comment|/* time to set mode which we can not set earlier due&n;&t;&t;&t;&t; to problems creating new read-only files */
@@ -1419,7 +1427,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_EXCLUSIVE
 )paren
@@ -1449,7 +1461,11 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_READ
 )paren
@@ -8536,8 +8552,8 @@ id|pfindData-&gt;NextEntryOffset
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* works also for Unix find struct since this is the first field of both */
-multiline_comment|/* BB also should check to make sure that pointer is not beyond the end of the SMB */
+multiline_comment|/* works also for Unix find struct since first field of both */
+multiline_comment|/* BB also should check to ensure pointer not beyond end of SMB */
 )brace
 multiline_comment|/* end for loop */
 r_if
@@ -8564,7 +8580,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* unless parent directory disappeared - do not return error here (eg Access Denied or no more files) */
+multiline_comment|/* unless parent directory disappeared - do not&n;&t;&t;&t;&t;return error here (eg Access Denied or no more files) */
 )brace
 )brace
 )brace

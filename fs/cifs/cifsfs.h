@@ -614,5 +614,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _CIFSSMB_H */
+DECL|macro|CIFS_VERSION
+mdefine_line|#define CIFS_VERSION   &quot;1.13&quot;
+macro_line|#endif&t;&t;&t;&t;/* _CIFSFS_H */
 eof

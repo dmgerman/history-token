@@ -1031,7 +1031,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Peek length rcvd: %d with smb length: %d&quot;
+l_string|&quot;Peek length rcvd: 0x%x beginning 0x%x)&quot;
 comma
 id|length
 comma
@@ -5068,6 +5068,7 @@ id|ses_init_buf-&gt;trailer.session_req.calling_len
 op_assign
 l_int|32
 suffix:semicolon
+multiline_comment|/* calling name ends in null (byte 16) from old smb&n;&t;&t;&t;convention. */
 r_if
 c_cond
 (paren
@@ -5115,7 +5116,6 @@ id|ses_init_buf-&gt;trailer.session_req.scope2
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* BB fixme ensure calling space padded w/null terminate*/
 id|smb_buf
 op_assign
 (paren

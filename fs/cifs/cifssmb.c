@@ -2716,7 +2716,26 @@ op_assign
 id|pSMBr-&gt;Fid
 suffix:semicolon
 multiline_comment|/* cifs fid stays in le */
-multiline_comment|/* Do we care about the CreateAction in any cases? */
+multiline_comment|/* Let caller know file was created so we can set the mode. */
+multiline_comment|/* Do we care about the CreateAction in any other cases? */
+r_if
+c_cond
+(paren
+id|cpu_to_le32
+c_func
+(paren
+id|FILE_CREATE
+)paren
+op_eq
+id|pSMBr-&gt;CreateAction
+)paren
+(brace
+op_star
+id|pOplock
+op_or_assign
+id|CIFS_CREATE_ACTION
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
