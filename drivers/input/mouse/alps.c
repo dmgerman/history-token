@@ -2212,7 +2212,7 @@ id|ABS_Y
 comma
 l_int|0
 comma
-l_int|1023
+l_int|767
 comma
 l_int|0
 comma
