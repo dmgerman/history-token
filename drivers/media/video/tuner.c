@@ -5497,9 +5497,11 @@ id|tuner_command
 comma
 )brace
 suffix:semicolon
-DECL|variable|structi2c_clientclient_template
+DECL|variable|client_template
 r_static
-id|structi2c_clientclient_template
+r_struct
+id|i2c_client
+id|client_template
 op_assign
 (brace
 dot
