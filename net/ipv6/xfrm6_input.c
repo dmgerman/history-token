@@ -917,14 +917,6 @@ suffix:semicolon
 id|x-&gt;curlft.packets
 op_increment
 suffix:semicolon
-id|x-&gt;curlft.use_time
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|xtime.tv_sec
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
