@@ -8376,7 +8376,7 @@ c_func
 (paren
 id|adapter
 )paren
-op_logical_and
+op_amp
 op_logical_neg
 id|e1000_clean_tx_irq
 c_func
