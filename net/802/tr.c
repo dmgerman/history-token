@@ -830,6 +830,8 @@ r_char
 op_star
 id|olddata
 suffix:semicolon
+r_static
+r_const
 r_int
 r_char
 id|mcast_func_addr
