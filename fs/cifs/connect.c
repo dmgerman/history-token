@@ -648,7 +648,7 @@ l_string|&quot;&bslash;nUnknown RFC 1001 frame received not 0x00 nor 0x85&quot;
 )paren
 )paren
 suffix:semicolon
-id|dump_mem
+id|cifs_dump_mem
 c_func
 (paren
 l_string|&quot; Received Data is: &quot;
@@ -3622,7 +3622,7 @@ id|ntlm_session_key
 )paren
 suffix:semicolon
 multiline_comment|/* Removed following few lines to not send old style password &n;                  hash ever - for better security */
-multiline_comment|/* toUpper(cifs_sb-&gt;local_nls, password_with_pad);&n;&t;&t;&t;&t;   SMBencrypt(password_with_pad, cryptKey,session_key); &n;&t;&t;&t;&t;   dump_mem(&quot;&bslash;nCIFS (Samba encrypt): &quot;, session_key,CIFS_SESSION_KEY_SIZE); */
+multiline_comment|/* toUpper(cifs_sb-&gt;local_nls, password_with_pad);&n;&t;&t;&t;&t;   SMBencrypt(password_with_pad, cryptKey,session_key); */
 id|rc
 op_assign
 id|CIFSSessSetup
@@ -4770,7 +4770,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* dump_mem(&quot;&bslash;nSessSetup response is: &quot;, smb_buffer_response, 92);*/
 r_if
 c_cond
 (paren
@@ -6170,7 +6169,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* dump_mem(&quot;&bslash;nSessSetup response is: &quot;, smb_buffer_response, 92);  */
 r_if
 c_cond
 (paren
