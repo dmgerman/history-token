@@ -1,6 +1,6 @@
 DECL|macro|_VERSION
-mdefine_line|#define _VERSION &quot;0.17&quot;
-multiline_comment|/* ns83820.c by Benjamin LaHaise &lt;bcrl@redhat.com&gt; with contributions.&n; *&n; * $Revision: 1.34.2.14 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011204&t;0.13a - optical transceiver support added&n; *&t;&t;&t;&t;by Michael Clark &lt;michael@metaparadigm.com&gt;&n; *&t;20011205&t;0.13b - call register_netdev earlier in initialization&n; *&t;&t;&t;&t;suppress duplicate link status messages&n; *&t;20011117 &t;0.14 - ethtool GDRVINFO, GLINK support&n; *&t;20011204 &t;0.15&t;get ppc (big endian) working&n; *&t;20011218&t;0.16&t;various cleanups&n; *&t;20020310&t;0.17&t;speedups&n; *&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&t;Netgear&t;&t;GA621&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
+mdefine_line|#define _VERSION &quot;0.18&quot;
+multiline_comment|/* ns83820.c by Benjamin LaHaise with contributions.&n; *&n; * Questions/comments/discussion to linux-ns83820@kvack.org.&n; *&n; * $Revision: 1.34.2.16 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001, 2002 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011204&t;0.13a - optical transceiver support added&n; *&t;&t;&t;&t;by Michael Clark &lt;michael@metaparadigm.com&gt;&n; *&t;20011205&t;0.13b - call register_netdev earlier in initialization&n; *&t;&t;&t;&t;suppress duplicate link status messages&n; *&t;20011117 &t;0.14 - ethtool GDRVINFO, GLINK support from jgarzik&n; *&t;20011204 &t;0.15&t;get ppc (big endian) working&n; *&t;20011218&t;0.16&t;various cleanups&n; *&t;20020310&t;0.17&t;speedups&n; *&t;20020610&t;0.18 -&t;actually use the pci dma api for highmem&n; *&t;&t;&t;     -&t;remove pci latency register fiddling&n; *&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&t;Netgear&t;&t;GA621&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
 singleline_comment|//#define dprintk&t;&t;printk
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)&t;&t;do { } while (0)
@@ -26,150 +26,20 @@ DECL|macro|Dprintk
 macro_line|#undef Dprintk
 DECL|macro|Dprintk
 mdefine_line|#define&t;Dprintk&t;&t;&t;dprintk
-macro_line|#ifdef CONFIG_HIGHMEM64G
+macro_line|#if defined(CONFIG_HIGHMEM64G) || defined(__ia64__)
 DECL|macro|USE_64BIT_ADDR
 mdefine_line|#define USE_64BIT_ADDR&t;&quot;+&quot;
-macro_line|#elif defined(__ia64__)
-DECL|macro|USE_64BIT_ADDR
-mdefine_line|#define USE_64BIT_ADDR&t;&quot;+&quot;
-macro_line|#endif
-multiline_comment|/* Tell davem to fix the pci dma api.  Grrr. */
-multiline_comment|/* stolen from acenic.c */
-macro_line|#if 0 
-singleline_comment|//def CONFIG_HIGHMEM
-macro_line|#if defined(CONFIG_X86)
-mdefine_line|#define DMAADDR_OFFSET  0
-macro_line|#if defined(CONFIG_HIGHMEM64G)
-r_typedef
-id|u64
-id|dmaaddr_high_t
-suffix:semicolon
-macro_line|#else
-r_typedef
-id|u32
-id|dmaaddr_high_t
-suffix:semicolon
-macro_line|#endif
-macro_line|#elif defined(CONFIG_PPC)
-mdefine_line|#define DMAADDR_OFFSET PCI_DRAM_OFFSET
-r_typedef
-r_int
-r_int
-id|dmaaddr_high_t
-suffix:semicolon
-macro_line|#endif
-r_static
-r_inline
-id|dmaaddr_high_t
-id|pci_map_single_high
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-id|offset
-comma
-r_int
-id|size
-comma
-r_int
-id|dir
-)paren
-(brace
-id|u64
-id|phys
-suffix:semicolon
-id|phys
-op_assign
-id|page
-op_minus
-id|mem_map
-suffix:semicolon
-id|phys
-op_lshift_assign
-id|PAGE_SHIFT
-suffix:semicolon
-id|phys
-op_add_assign
-id|offset
-suffix:semicolon
-id|phys
-op_add_assign
-id|DMAADDR_OFFSET
-suffix:semicolon
-r_return
-id|phys
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|typedef|dmaaddr_high_t
-r_typedef
-r_int
-r_int
-id|dmaaddr_high_t
-suffix:semicolon
-r_static
-r_inline
-id|dmaaddr_high_t
-DECL|function|pci_map_single_high
-id|pci_map_single_high
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-id|offset
-comma
-r_int
-id|size
-comma
-r_int
-id|dir
-)paren
-(brace
-r_return
-id|pci_map_single
-c_func
-(paren
-id|hwdev
-comma
-id|page_address
-c_func
-(paren
-id|page
-)paren
-op_plus
-id|offset
-comma
-id|size
-comma
-id|dir
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 macro_line|#if defined(USE_64BIT_ADDR)
 DECL|macro|VERSION
 mdefine_line|#define&t;VERSION&t;_VERSION USE_64BIT_ADDR
+DECL|macro|TRY_DAC
+mdefine_line|#define TRY_DAC&t;1
 macro_line|#else
 DECL|macro|VERSION
 mdefine_line|#define&t;VERSION&t;_VERSION
+DECL|macro|TRY_DAC
+mdefine_line|#define TRY_DAC&t;0
 macro_line|#endif
 multiline_comment|/* tunables */
 DECL|macro|RX_BUF_SIZE
@@ -550,20 +420,20 @@ mdefine_line|#define __kick_rx(dev)&t;writel(CR_RXE, dev-&gt;base + CR)
 DECL|macro|kick_rx
 mdefine_line|#define kick_rx(dev) do { &bslash;&n;&t;dprintk(&quot;kick_rx: maybe kicking&bslash;n&quot;); &bslash;&n;&t;if (test_and_clear_bit(0, &amp;dev-&gt;rx_info.idle)) { &bslash;&n;&t;&t;dprintk(&quot;actually kicking&bslash;n&quot;); &bslash;&n;&t;&t;writel(dev-&gt;rx_info.phy_descs + (4 * DESC_SIZE * dev-&gt;rx_info.next_rx), dev-&gt;base + RXDP); &bslash;&n;&t;&t;if (dev-&gt;rx_info.next_rx == dev-&gt;rx_info.next_empty) &bslash;&n;&t;&t;&t;printk(KERN_DEBUG &quot;%s: uh-oh: next_rx == next_empty???&bslash;n&quot;, dev-&gt;net_dev.name);&bslash;&n;&t;&t;__kick_rx(dev); &bslash;&n;&t;} &bslash;&n;} while(0)
 macro_line|#ifdef USE_64BIT_ADDR
-DECL|typedef|hw_addr_t
-r_typedef
-id|u64
-id|hw_addr_t
-suffix:semicolon
-macro_line|#else
-DECL|typedef|hw_addr_t
-r_typedef
-id|u32
-id|hw_addr_t
-suffix:semicolon
-macro_line|#endif
 DECL|macro|HW_ADDR_LEN
-mdefine_line|#define HW_ADDR_LEN&t;(sizeof(hw_addr_t))
+mdefine_line|#define HW_ADDR_LEN&t;8
+DECL|macro|desc_addr_set
+mdefine_line|#define desc_addr_set(desc, addr)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;u64 __addr = (addr);&t;&t;&t;&t;&bslash;&n;&t;&t;desc[BUFPTR] = cpu_to_le32(__addr);&t;&t;&bslash;&n;&t;&t;desc[BUFPTR+1] = cpu_to_le32(__addr &gt;&gt; 32);&t;&bslash;&n;&t;} while(0)
+DECL|macro|desc_addr_get
+mdefine_line|#define desc_addr_get(desc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(((u64)le32_to_cpu(desc[BUFPTR+1]) &lt;&lt; 32)&t;&bslash;&n;&t;&t;     | le32_to_cpu(desc[BUFPTR]))
+macro_line|#else
+DECL|macro|HW_ADDR_LEN
+mdefine_line|#define HW_ADDR_LEN&t;4
+DECL|macro|desc_addr_set
+mdefine_line|#define desc_addr_set(desc, addr)&t;(desc[BUFPTR] = cpu_to_le32(addr))
+DECL|macro|desc_addr_get
+mdefine_line|#define desc_addr_get(desc)&t;&t;(le32_to_cpu(desc[BUFPTR]))
+macro_line|#endif
 DECL|macro|LINK
 mdefine_line|#define LINK&t;&t;0
 DECL|macro|BUFPTR
@@ -584,6 +454,8 @@ DECL|macro|CMDSTS_ERR
 mdefine_line|#define CMDSTS_ERR&t;0x10000000
 DECL|macro|CMDSTS_OK
 mdefine_line|#define CMDSTS_OK&t;0x08000000
+DECL|macro|CMDSTS_LEN_MASK
+mdefine_line|#define CMDSTS_LEN_MASK&t;0x0000ffff
 DECL|macro|CMDSTS_DEST_MASK
 mdefine_line|#define CMDSTS_DEST_MASK&t;0x01800000
 DECL|macro|CMDSTS_DEST_SELF
@@ -975,7 +847,7 @@ id|u32
 op_star
 id|sg
 suffix:semicolon
-id|hw_addr_t
+id|dma_addr_t
 id|buf
 suffix:semicolon
 id|next_empty
@@ -2725,16 +2597,13 @@ id|EXTSTS
 )braket
 )paren
 suffix:semicolon
-id|dmaaddr_high_t
+id|dma_addr_t
 id|bufptr
 op_assign
-id|le32_to_cpu
+id|desc_addr_get
 c_func
 (paren
 id|desc
-(braket
-id|BUFPTR
-)braket
 )paren
 suffix:semicolon
 id|dprintk
@@ -3201,6 +3070,12 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
+id|dma_addr_t
+id|addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3268,6 +3143,20 @@ comma
 id|skb
 )paren
 suffix:semicolon
+id|len
+op_assign
+id|cmdsts
+op_amp
+id|CMDSTS_LEN_MASK
+suffix:semicolon
+id|addr
+op_assign
+id|desc_addr_get
+c_func
+(paren
+id|desc
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3279,16 +3168,9 @@ c_func
 (paren
 id|dev-&gt;pci_dev
 comma
-id|le32_to_cpu
-c_func
-(paren
-id|desc
-(braket
-id|BUFPTR
-)braket
-)paren
+id|addr
 comma
-id|skb-&gt;len
+id|len
 comma
 id|PCI_DMA_TODEVICE
 )paren
@@ -3300,6 +3182,19 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+r_else
+id|pci_unmap_page
+c_func
+(paren
+id|dev-&gt;pci_dev
+comma
+id|addr
+comma
+id|len
+comma
+id|PCI_DMA_TODEVICE
+)paren
+suffix:semicolon
 id|tx_done_idx
 op_assign
 (paren
@@ -3511,7 +3406,7 @@ suffix:semicolon
 r_int
 id|tx_done_idx
 suffix:semicolon
-id|dmaaddr_high_t
+id|dma_addr_t
 id|buf
 suffix:semicolon
 r_int
@@ -3901,14 +3796,11 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-id|desc
-(braket
-id|BUFPTR
-)braket
-op_assign
-id|cpu_to_le32
+id|desc_addr_set
 c_func
 (paren
+id|desc
+comma
 id|buf
 )paren
 suffix:semicolon
@@ -3998,7 +3890,7 @@ r_break
 suffix:semicolon
 id|buf
 op_assign
-id|pci_map_single_high
+id|pci_map_page
 c_func
 (paren
 id|dev-&gt;pci_dev
@@ -4015,7 +3907,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;frag: buf=%08Lx  page=%08lx&bslash;n&quot;
+l_string|&quot;frag: buf=%08Lx  page=%08lx offset=%08lx&bslash;n&quot;
 comma
 (paren
 r_int
@@ -4031,6 +3923,8 @@ id|frag-&gt;page
 op_minus
 id|mem_map
 )paren
+comma
+id|frag-&gt;page_offset
 )paren
 suffix:semicolon
 id|len
@@ -5651,6 +5545,64 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_int
+id|using_dac
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|TRY_DAC
+op_logical_and
+op_logical_neg
+id|pci_set_dma_mask
+c_func
+(paren
+id|pci_dev
+comma
+l_int|0xffffffffffffffff
+)paren
+)paren
+(brace
+id|using_dac
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_set_dma_mask
+c_func
+(paren
+id|pci_dev
+comma
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|using_dac
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ns83820.c: pci_set_dma_mask failed!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|dev
 op_assign
 (paren
@@ -6226,6 +6178,15 @@ op_or_assign
 id|CFG_M64ADDR
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|using_dac
+)paren
+id|dev-&gt;CFG_cache
+op_or_assign
+id|CFG_T64ADDR
+suffix:semicolon
 multiline_comment|/* Big endian mode does not seem to do what the docs suggest */
 id|dev-&gt;CFG_cache
 op_and_assign
@@ -6338,7 +6299,7 @@ comma
 id|dev-&gt;CFG_cache
 )paren
 suffix:semicolon
-macro_line|#if 1&t;/* Huh?  This sets the PCI latency register.  Should be done via &n;&t; * the PCI layer.  FIXME.&n;&t; */
+macro_line|#if 0&t;/* Huh?  This sets the PCI latency register.  Should be done via &n;&t; * the PCI layer.  FIXME.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6530,15 +6491,10 @@ id|dev-&gt;net_dev.features
 op_or_assign
 id|NETIF_F_IP_CSUM
 suffix:semicolon
-macro_line|#if defined(USE_64BIT_ADDR) || defined(CONFIG_HIGHMEM4G)
 r_if
 c_cond
 (paren
-(paren
-id|dev-&gt;CFG_cache
-op_amp
-id|CFG_T64ADDR
-)paren
+id|using_dac
 )paren
 (brace
 id|printk
@@ -6555,7 +6511,6 @@ op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
 )brace
-macro_line|#endif
 id|printk
 c_func
 (paren
