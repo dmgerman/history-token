@@ -715,12 +715,12 @@ id|ZONES_SHIFT
 )paren
 suffix:semicolon
 )brace
-DECL|function|page_nodenum
+DECL|function|page_to_nid
 r_static
 r_inline
 r_int
 r_int
-id|page_nodenum
+id|page_to_nid
 c_func
 (paren
 r_struct
