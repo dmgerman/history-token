@@ -17,43 +17,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
-r_extern
-r_void
-(paren
-op_star
-id|debugger
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|debugger_fault_handler
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|debugger_dabr_match
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 DECL|variable|debugger_kernel_faults
 r_int
 id|debugger_kernel_faults
@@ -136,7 +100,7 @@ id|error_code
 op_and_assign
 l_int|0x48200000
 suffix:semicolon
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -183,7 +147,7 @@ id|regs
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_XMON || CONFIG_KGDB */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -662,7 +626,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* kernel has accessed a bad area */
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren

@@ -40,6 +40,8 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* This is true if we are using the firmware NMI handler (typically LPAR) */
@@ -47,171 +49,7 @@ r_extern
 r_int
 id|fwnmi_active
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_extern
-r_void
-id|xmon
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_bpt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_sstep
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_iabr_match
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xmon_dabr_match
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|xmon_fault_handler
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_XMON
-DECL|macro|CONFIG_DEBUGGER
-mdefine_line|#define CONFIG_DEBUGGER
-DECL|variable|debugger
-r_void
-(paren
-op_star
-id|debugger
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-op_assign
-id|xmon
-suffix:semicolon
-DECL|variable|debugger_bpt
-r_int
-(paren
-op_star
-id|debugger_bpt
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-op_assign
-id|xmon_bpt
-suffix:semicolon
-DECL|variable|debugger_sstep
-r_int
-(paren
-op_star
-id|debugger_sstep
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-op_assign
-id|xmon_sstep
-suffix:semicolon
-DECL|variable|debugger_iabr_match
-r_int
-(paren
-op_star
-id|debugger_iabr_match
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-op_assign
-id|xmon_iabr_match
-suffix:semicolon
-DECL|variable|debugger_dabr_match
-r_int
-(paren
-op_star
-id|debugger_dabr_match
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-op_assign
-id|xmon_dabr_match
-suffix:semicolon
-DECL|variable|debugger_fault_handler
-r_void
-(paren
-op_star
-id|debugger_fault_handler
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#ifdef CONFIG_KGDB
-DECL|macro|CONFIG_DEBUGGER
-mdefine_line|#define CONFIG_DEBUGGER
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 DECL|variable|debugger
 r_void
 (paren
@@ -290,7 +128,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Trap &amp; Exception support&n; */
 multiline_comment|/* Should we panic on bad kernel exceptions or try to recover */
@@ -429,7 +266,6 @@ id|regs
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEBUGGER
 r_if
 c_cond
 (paren
@@ -441,7 +277,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 id|die
 c_func
 (paren
@@ -690,7 +525,6 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEBUGGER
 r_if
 c_cond
 (paren
@@ -702,7 +536,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef PANIC_ON_ERROR
 id|panic
 c_func
@@ -830,7 +663,6 @@ id|regs
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEBUGGER
 r_if
 c_cond
 (paren
@@ -857,7 +689,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 id|console_verbose
 c_func
 (paren
@@ -1031,7 +862,6 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUGGER
 r_if
 c_cond
 (paren
@@ -1045,7 +875,6 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 id|info.si_signo
 op_assign
 id|SIGTRAP
@@ -1344,7 +1173,6 @@ l_int|0x20000
 )paren
 (brace
 multiline_comment|/* trap exception */
-macro_line|#ifdef CONFIG_DEBUGGER
 r_if
 c_cond
 (paren
@@ -1358,7 +1186,6 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 id|info.si_signo
 op_assign
 id|SIGTRAP
@@ -1447,7 +1274,6 @@ op_complement
 id|MSR_SE
 suffix:semicolon
 multiline_comment|/* Turn off &squot;trace&squot; bit */
-macro_line|#ifdef CONFIG_DEBUGGER
 r_if
 c_cond
 (paren
@@ -1461,7 +1287,6 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 id|info.si_signo
 op_assign
 id|SIGTRAP
@@ -1658,6 +1483,8 @@ c_func
 id|regs
 comma
 id|regs-&gt;dar
+comma
+id|SIGSEGV
 )paren
 suffix:semicolon
 )brace
