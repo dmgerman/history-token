@@ -69,7 +69,7 @@ comma
 l_string|&quot;Flow Control setting&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* XsumRX - Receive Checksum Offload Enable/Disable&n; *&n; * Valid Range: 0, 1&n; *  - 0 - disables all checksum offload&n; *  - 1 - enables receive IP/TCP/UDP checksum offload&n; *        on 82543 based NICs&n; *&n; * Default Value: 1&n; */
+multiline_comment|/* XsumRX - Receive Checksum Offload Enable/Disable&n; *&n; * Valid Range: 0, 1&n; *  - 0 - disables all checksum offload&n; *  - 1 - enables receive IP/TCP/UDP checksum offload&n; *        on 82543 and newer -based NICs&n; *&n; * Default Value: 1&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -1319,6 +1319,9 @@ id|adapter-&gt;hw.media_type
 r_case
 id|e1000_media_type_fiber
 suffix:colon
+r_case
+id|e1000_media_type_internal_serdes
+suffix:colon
 id|e1000_check_fiber_options
 c_func
 (paren
@@ -2027,6 +2030,8 @@ l_int|0
 suffix:colon
 id|adapter-&gt;hw.autoneg
 op_assign
+id|adapter-&gt;fc_autoneg
+op_assign
 l_int|1
 suffix:semicolon
 r_if
@@ -2076,6 +2081,8 @@ l_string|&quot;Using Autonegotiation at Half Duplex only&bslash;n&quot;
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
 op_assign
+id|adapter-&gt;fc_autoneg
+op_assign
 l_int|1
 suffix:semicolon
 id|adapter-&gt;hw.autoneg_advertised
@@ -2104,6 +2111,8 @@ l_string|&quot;Using Autonegotiation at Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
+op_assign
+id|adapter-&gt;fc_autoneg
 op_assign
 l_int|1
 suffix:semicolon
@@ -2136,6 +2145,8 @@ l_string|&quot;Using Autonegotiation at 10 Mbps only&bslash;n&quot;
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
 op_assign
+id|adapter-&gt;fc_autoneg
+op_assign
 l_int|1
 suffix:semicolon
 id|adapter-&gt;hw.autoneg_advertised
@@ -2159,6 +2170,8 @@ l_string|&quot;Forcing to 10 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
+op_assign
+id|adapter-&gt;fc_autoneg
 op_assign
 l_int|0
 suffix:semicolon
@@ -2185,6 +2198,8 @@ l_string|&quot;Forcing to 10 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
+op_assign
+id|adapter-&gt;fc_autoneg
 op_assign
 l_int|0
 suffix:semicolon
@@ -2217,6 +2232,8 @@ l_string|&quot;Using Autonegotiation at 100 Mbps only&bslash;n&quot;
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
 op_assign
+id|adapter-&gt;fc_autoneg
+op_assign
 l_int|1
 suffix:semicolon
 id|adapter-&gt;hw.autoneg_advertised
@@ -2240,6 +2257,8 @@ l_string|&quot;Forcing to 100 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
+op_assign
+id|adapter-&gt;fc_autoneg
 op_assign
 l_int|0
 suffix:semicolon
@@ -2266,6 +2285,8 @@ l_string|&quot;Forcing to 100 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
+op_assign
+id|adapter-&gt;fc_autoneg
 op_assign
 l_int|0
 suffix:semicolon
@@ -2298,6 +2319,8 @@ l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
 op_assign
+id|adapter-&gt;fc_autoneg
+op_assign
 l_int|1
 suffix:semicolon
 id|adapter-&gt;hw.autoneg_advertised
@@ -2327,6 +2350,8 @@ l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
 op_assign
+id|adapter-&gt;fc_autoneg
+op_assign
 l_int|1
 suffix:semicolon
 id|adapter-&gt;hw.autoneg_advertised
@@ -2348,6 +2373,8 @@ l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
+op_assign
+id|adapter-&gt;fc_autoneg
 op_assign
 l_int|1
 suffix:semicolon

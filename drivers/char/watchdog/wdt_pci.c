@@ -1525,7 +1525,7 @@ suffix:semicolon
 DECL|function|wdtpci_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|wdtpci_init_one
 (paren
 r_struct

@@ -2011,7 +2011,7 @@ comma
 id|NIPQUAD
 c_func
 (paren
-id|iph-&gt;saddr
+id|skb-&gt;nh.iph-&gt;saddr
 )paren
 comma
 id|icmph-&gt;type

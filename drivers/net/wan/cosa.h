@@ -78,19 +78,19 @@ DECL|macro|COSAIORSET
 mdefine_line|#define COSAIORSET&t;_IO(&squot;C&squot;,0xf0)
 multiline_comment|/* Start microcode at given address */
 DECL|macro|COSAIOSTRT
-mdefine_line|#define COSAIOSTRT&t;_IOW(&squot;C&squot;,0xf1,sizeof(int))
+mdefine_line|#define COSAIOSTRT&t;_IOW(&squot;C&squot;,0xf1, int)
 multiline_comment|/* Read the block from the device memory */
 DECL|macro|COSAIORMEM
-mdefine_line|#define COSAIORMEM&t;_IOR(&squot;C&squot;,0xf2,sizeof(struct cosa_download *))
+mdefine_line|#define COSAIORMEM&t;_IOWR(&squot;C&squot;,0xf2, struct cosa_download)
 multiline_comment|/* Write the block to the device memory (i.e. download the microcode) */
 DECL|macro|COSAIODOWNLD
-mdefine_line|#define COSAIODOWNLD&t;_IOW(&squot;C&squot;,0xf2,sizeof(struct cosa_download *))
+mdefine_line|#define COSAIODOWNLD&t;_IOW(&squot;C&squot;,0xf2, struct cosa_download)
 multiline_comment|/* Read the device type (one of &quot;srp&quot;, &quot;cosa&quot;, and &quot;cosa8&quot; for now) */
 DECL|macro|COSAIORTYPE
-mdefine_line|#define COSAIORTYPE&t;_IOR(&squot;C&squot;,0xf3,sizeof(char *))
+mdefine_line|#define COSAIORTYPE&t;_IOR(&squot;C&squot;,0xf3, char *)
 multiline_comment|/* Read the device identification string */
 DECL|macro|COSAIORIDSTR
-mdefine_line|#define COSAIORIDSTR&t;_IOR(&squot;C&squot;,0xf4,sizeof(char *))
+mdefine_line|#define COSAIORIDSTR&t;_IOR(&squot;C&squot;,0xf4, char *)
 multiline_comment|/* Maximum length of the identification string. */
 DECL|macro|COSA_MAX_ID_STRING
 mdefine_line|#define COSA_MAX_ID_STRING 128
@@ -105,7 +105,7 @@ DECL|macro|COSAIONRCHANS
 mdefine_line|#define COSAIONRCHANS&t;_IO(&squot;C&squot;,0xf8)
 multiline_comment|/* Set the driver for the bus-master operations */
 DECL|macro|COSAIOBMSET
-mdefine_line|#define COSAIOBMSET&t;_IOW(&squot;C&squot;, 0xf9, sizeof(unsigned short))
+mdefine_line|#define COSAIOBMSET&t;_IOW(&squot;C&squot;, 0xf9, unsigned short)
 DECL|macro|COSA_BM_OFF
 mdefine_line|#define COSA_BM_OFF&t;0&t;/* Bus-mastering off - use ISA DMA (default) */
 DECL|macro|COSA_BM_ON

@@ -251,7 +251,7 @@ multiline_comment|/* shortcut */
 DECL|function|i82092aa_pci_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|i82092aa_pci_probe
 c_func
 (paren

@@ -105,7 +105,12 @@ mdefine_line|#define E1000_RX_BUFFER_WRITE&t;16&t;/* Must be power of 2 */
 DECL|macro|AUTO_ALL_MODES
 mdefine_line|#define AUTO_ALL_MODES       0
 DECL|macro|E1000_EEPROM_APME
-mdefine_line|#define E1000_EEPROM_APME    4
+mdefine_line|#define E1000_EEPROM_APME    0x0400
+macro_line|#ifndef E1000_MASTER_SLAVE
+multiline_comment|/* Switch to override PHY master/slave setting */
+DECL|macro|E1000_MASTER_SLAVE
+mdefine_line|#define E1000_MASTER_SLAVE&t;e1000_ms_hw_default
+macro_line|#endif
 multiline_comment|/* only works for sizes that are powers of 2 */
 DECL|macro|E1000_ROUNDUP
 mdefine_line|#define E1000_ROUNDUP(i, size) ((i) = (((i) + (size) - 1) &amp; ~((size) - 1)))
@@ -266,6 +271,10 @@ r_struct
 id|work_struct
 id|tx_timeout_task
 suffix:semicolon
+DECL|member|fc_autoneg
+r_uint8
+id|fc_autoneg
+suffix:semicolon
 DECL|member|blink_timer
 r_struct
 id|timer_list
@@ -313,6 +322,10 @@ suffix:semicolon
 DECL|member|tx_fifo_stall
 id|atomic_t
 id|tx_fifo_stall
+suffix:semicolon
+DECL|member|pcix_82544
+id|boolean_t
+id|pcix_82544
 suffix:semicolon
 multiline_comment|/* RX */
 DECL|member|rx_ring
