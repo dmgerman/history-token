@@ -920,16 +920,6 @@ l_string|&quot;Ingress scheduler: Classifier actions prefered over netfilter&bsl
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|p
-)paren
-r_goto
-id|error
-suffix:semicolon
 macro_line|#ifndef CONFIG_NET_CLS_ACT
 macro_line|#ifdef CONFIG_NETFILTER
 r_if
@@ -979,24 +969,6 @@ id|p
 comma
 id|opt
 )paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|p
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-)paren
-suffix:semicolon
-id|p-&gt;filter_list
-op_assign
-l_int|NULL
 suffix:semicolon
 id|p-&gt;q
 op_assign
@@ -1117,24 +1089,6 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|p
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-)paren
-suffix:semicolon
-id|p-&gt;filter_list
-op_assign
-l_int|NULL
-suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* for future use */
 id|qdisc_destroy
