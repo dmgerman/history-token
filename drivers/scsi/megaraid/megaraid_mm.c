@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.0 (August 19 2004)&n; *&n; * Common management module&n; */
+multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.1 (Oct 06 2004)&n; *&n; * Common management module&n; */
 macro_line|#include &quot;megaraid_mm.h&quot;
 singleline_comment|// Entry points for char node driver
 r_static
@@ -296,7 +296,7 @@ r_static
 r_uint32
 id|drvr_ver
 op_assign
-l_int|0x02200100
+l_int|0x02200201
 suffix:semicolon
 DECL|variable|adapters_count_g
 r_static
@@ -3544,7 +3544,6 @@ op_amp
 id|adapters_list_g
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_COMPAT
 id|register_ioctl32_conversion
 c_func
 (paren
@@ -3553,7 +3552,6 @@ comma
 id|mraid_mm_compat_ioctl
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
