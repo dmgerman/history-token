@@ -2283,6 +2283,14 @@ id|unlikely
 c_func
 (paren
 id|p-&gt;array
+op_logical_or
+id|task_running
+c_func
+(paren
+id|rq
+comma
+id|p
+)paren
 )paren
 )paren
 (brace
@@ -2336,7 +2344,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***&n; * kick_process - kick a running thread to enter/exit the kernel&n; * @p: the to-be-kicked thread&n; *&n; * Cause a process which is running on another CPU to enter&n; * kernel-mode, without any delay. (to get signals handled.)&n; */
+multiline_comment|/***&n; * kick_process - kick a running thread to enter/exit the kernel&n; * @p: the to-be-kicked thread&n; *&n; * Cause a process which is running on another CPU to enter&n; * kernel-mode, without any delay. (to get signals handled.)&n; *&n; * NOTE: this function doesnt have to take the runqueue lock,&n; * because all it wants to ensure is that the remote task enters&n; * the kernel. If the IPI races and the task has been migrated&n; * to another CPU then no harm is done and the purpose has been&n; * achieved as well.&n; */
 DECL|function|kick_process
 r_void
 id|kick_process
