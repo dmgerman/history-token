@@ -843,7 +843,7 @@ suffix:semicolon
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;dt019x: found audio interface: port=0x%lx, irq=0x%lx, dma=0x%lx&bslash;n&quot;
+l_string|&quot;dt019x: found audio interface: port=0x%lx, irq=0x%x, dma=0x%x&bslash;n&quot;
 comma
 id|port
 (braket
@@ -1021,7 +1021,7 @@ suffix:semicolon
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;dt019x: found MPU-401: port=0x%lx, irq=0x%lx&bslash;n&quot;
+l_string|&quot;dt019x: found MPU-401: port=0x%lx, irq=0x%x&bslash;n&quot;
 comma
 id|mpu_port
 (braket
