@@ -1116,6 +1116,13 @@ c_func
 id|dir
 )paren
 suffix:semicolon
+id|validate_fields
+c_func
+(paren
+id|ip
+)paren
+suffix:semicolon
+multiline_comment|/* size needs update */
 id|mark_inode_dirty_sync
 c_func
 (paren
