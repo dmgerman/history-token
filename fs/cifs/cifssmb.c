@@ -10572,6 +10572,11 @@ r_char
 op_star
 id|temp
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 op_star
 id|number_of_UNC_in_array
 op_assign
@@ -10745,7 +10750,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;ParameterCount
+id|params
 op_assign
 l_int|2
 multiline_comment|/* level */
@@ -10830,9 +10835,9 @@ c_func
 id|TRANS2_GET_DFS_REFERRAL
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;ParameterCount
+id|params
 op_plus
 l_int|3
 multiline_comment|/* pad */
@@ -10842,7 +10847,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;TotalParameterCount
@@ -10859,14 +10864,14 @@ l_int|3
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
@@ -10921,7 +10926,8 @@ r_else
 (brace
 multiline_comment|/* decode response */
 multiline_comment|/* BB Add logic to parse referrals here */
-id|pSMBr-&gt;DataOffset
+id|__u16
+id|data_offset
 op_assign
 id|le16_to_cpu
 c_func
@@ -10929,7 +10935,8 @@ c_func
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
-id|pSMBr-&gt;DataCount
+id|__u16
+id|data_count
 op_assign
 id|le16_to_cpu
 c_func
@@ -10947,7 +10954,7 @@ l_string|&quot;Decoding GetDFSRefer response.  BCC: %d  Offset %d&quot;
 comma
 id|pSMBr-&gt;ByteCount
 comma
-id|pSMBr-&gt;DataOffset
+id|data_offset
 )paren
 )paren
 suffix:semicolon
@@ -10961,7 +10968,7 @@ l_int|17
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OG
 l_int|512
 )paren
@@ -10986,7 +10993,7 @@ op_star
 l_int|8
 multiline_comment|/* sizeof start of data block */
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 op_plus
 (paren
 r_char
@@ -11004,17 +11011,41 @@ comma
 (paren
 l_string|&quot;num_referrals: %d dfs flags: 0x%x ... &bslash;nfor referral one refer size: 0x%x srv type: 0x%x refer flags: 0x%x ttl: 0x%x&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|pSMBr-&gt;NumberOfReferrals
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|pSMBr-&gt;DFSFlags
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|referrals-&gt;ReferralSize
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|referrals-&gt;ServerType
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|referrals-&gt;ReferralFlags
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|referrals-&gt;TimeToLive
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -11066,7 +11097,8 @@ op_increment
 )paren
 (brace
 multiline_comment|/* make sure that DfsPathOffset not past end */
-id|referrals-&gt;DfsPathOffset
+id|__u16
+id|offset
 op_assign
 id|le16_to_cpu
 c_func
@@ -11077,9 +11109,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|referrals-&gt;DfsPathOffset
+id|offset
 OG
-id|pSMBr-&gt;DataCount
+id|data_count
 )paren
 (brace
 multiline_comment|/* if invalid referral, stop here and do &n;&t;&t;&t;&t;&t;not try to copy any more */
@@ -11101,7 +11133,7 @@ op_star
 id|referrals
 )paren
 op_plus
-id|referrals-&gt;DfsPathOffset
+id|offset
 suffix:semicolon
 r_if
 c_cond
@@ -11122,7 +11154,7 @@ op_star
 )paren
 id|temp
 comma
-id|pSMBr-&gt;DataCount
+id|data_count
 )paren
 suffix:semicolon
 )brace
@@ -11135,7 +11167,7 @@ c_func
 (paren
 id|temp
 comma
-id|pSMBr-&gt;DataCount
+id|data_count
 )paren
 suffix:semicolon
 )brace
@@ -11193,7 +11225,7 @@ op_star
 l_int|8
 multiline_comment|/* sizeof data hdr */
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 op_plus
 (paren
 r_char
@@ -11229,7 +11261,11 @@ op_star
 id|referrals
 )paren
 op_plus
+id|le16_to_cpu
+c_func
+(paren
 id|referrals-&gt;DfsPathOffset
+)paren
 suffix:semicolon
 r_if
 c_cond
