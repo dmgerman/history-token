@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.8 2004/11/04 13:24:15 gleixner Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
+multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.9 2004/11/16 18:29:02 dwmw2 Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -257,6 +257,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|init_scx200_docflash
+r_static
 r_int
 id|__init
 id|init_scx200_docflash

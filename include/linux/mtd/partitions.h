@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD partitioning layer definitions&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: partitions.h,v 1.15 2003/07/09 11:15:43 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * MTD partitioning layer definitions&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: partitions.h,v 1.16 2004/11/16 18:34:40 dwmw2 Exp $&n; */
 macro_line|#ifndef MTD_PARTITIONS_H
 DECL|macro|MTD_PARTITIONS_H
 mdefine_line|#define MTD_PARTITIONS_H
@@ -120,19 +120,6 @@ r_int
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
-r_extern
-r_struct
-id|mtd_part_parser
-op_star
-id|get_partition_parser
-c_func
-(paren
-r_const
-r_char
-op_star
-id|name
-)paren
 suffix:semicolon
 r_extern
 r_int

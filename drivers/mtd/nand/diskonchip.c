@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; * (C) 2004 Dan Brown &lt;dan_brown@ieee.org&gt;&n; * (C) 2004 Kalev Lember &lt;kalev@smartlink.ee&gt;&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Additional Diskonchip 2000 and Millennium support by Dan Brown &lt;dan_brown@ieee.org&gt;&n; * Diskonchip Millennium Plus support by Kalev Lember &lt;kalev@smartlink.ee&gt;&n; * &n; * Error correction code lifted from the old docecc code&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; * converted to the generic Reed-Solomon library by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *  &n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.41 2004/11/05 16:07:16 kalev Exp $&n; */
+multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; * (C) 2004 Dan Brown &lt;dan_brown@ieee.org&gt;&n; * (C) 2004 Kalev Lember &lt;kalev@smartlink.ee&gt;&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Additional Diskonchip 2000 and Millennium support by Dan Brown &lt;dan_brown@ieee.org&gt;&n; * Diskonchip Millennium Plus support by Kalev Lember &lt;kalev@smartlink.ee&gt;&n; * &n; * Error correction code lifted from the old docecc code&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; * converted to the generic Reed-Solomon library by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *  &n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.42 2004/11/16 18:29:03 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8878,6 +8878,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|init_nanddoc
+r_static
 r_int
 id|__init
 id|init_nanddoc
@@ -9035,6 +9036,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|cleanup_nanddoc
+r_static
 r_void
 id|__exit
 id|cleanup_nanddoc
