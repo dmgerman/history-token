@@ -3528,6 +3528,13 @@ r_struct
 id|work_struct
 id|event_task
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 15
+DECL|member|spy_data
+r_struct
+id|iw_spy_data
+id|spy_data
+suffix:semicolon
+macro_line|#else /* WIRELESS_EXT &gt; 15 */
 macro_line|#ifdef WIRELESS_SPY
 DECL|member|spy_number
 r_int
@@ -3552,6 +3559,7 @@ id|IW_MAX_SPY
 )braket
 suffix:semicolon
 macro_line|#endif /* WIRELESS_SPY */
+macro_line|#endif /* WIRELESS_EXT &gt; 15 */
 macro_line|#endif /* WIRELESS_EXT */
 multiline_comment|/* MIC stuff */
 DECL|member|mod
@@ -26150,7 +26158,7 @@ id|CAP_ESS
 (brace
 id|iwe.u.mode
 op_assign
-id|IW_MODE_INFRA
+id|IW_MODE_MASTER
 suffix:semicolon
 )brace
 r_else
