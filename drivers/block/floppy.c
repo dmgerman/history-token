@@ -9239,8 +9239,8 @@ r_int
 id|do_format
 c_func
 (paren
-id|kdev_t
-id|device
+r_int
+id|drive
 comma
 r_struct
 id|format_descr
@@ -9250,15 +9250,6 @@ id|tmp_format_req
 (brace
 r_int
 id|ret
-suffix:semicolon
-r_int
-id|drive
-op_assign
-id|DRIVE
-c_func
-(paren
-id|device
-)paren
 suffix:semicolon
 id|LOCK_FDC
 c_func
@@ -15115,7 +15106,7 @@ r_return
 id|do_format
 c_func
 (paren
-id|device
+id|drive
 comma
 op_amp
 id|inparam.f
