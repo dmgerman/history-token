@@ -7,20 +7,11 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;types.h&quot;
-macro_line|#include &quot;debug.h&quot;
-macro_line|#include &quot;malloc.h&quot;
-macro_line|#include &quot;endian.h&quot;
 macro_line|#include &quot;volume.h&quot;
-macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;layout.h&quot;
-macro_line|#include &quot;attrib.h&quot;
-macro_line|#include &quot;mft.h&quot;
 r_typedef
 r_enum
 (brace
@@ -146,135 +137,6 @@ r_return
 id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_unmap_page - release a page that was mapped using ntfs_map_page()&n; * @page:&t;the page to release&n; *&n; * Unpin, unmap and release a page that was obtained from ntfs_map_page().&n; */
-DECL|function|ntfs_unmap_page
-r_static
-r_inline
-r_void
-id|ntfs_unmap_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * ntfs_map_page - map a page into accessible memory, reading it if necessary&n; * @mapping:&t;address space for which to obtain the page&n; * @index:&t;index into the page cache for @mapping of the page to map&n; *&n; * Read a page from the page cache of the address space @mapping at position&n; * @index, where @index is in units of PAGE_CACHE_SIZE, and not in bytes.&n; *&n; * If the page is not in memory it is loaded from disk first using the readpage&n; * method defined in the address space operations of @mapping and the page is&n; * added to the page cache of @mapping in the process.&n; *&n; * If the page is in high memory it is mapped into memory directly addressible&n; * by the kernel.&n; *&n; * Finally the page count is incremented, thus pinning the page into place.&n; *&n; * The above means that page_address(page) can be used on all pages obtained&n; * with ntfs_map_page() to get the kernel virtual address of the page.&n; *&n; * When finished with the page, the caller has to call ntfs_unmap_page() to&n; * unpin, unmap and release the page.&n; *&n; * Note this does not grant exclusive access. If such is desired, the caller&n; * must provide it independently of the ntfs_{un}map_page() calls by using&n; * a {rw_}semaphore or other means of serialization. A spin lock cannot be&n; * used as ntfs_map_page() can block.&n; *&n; * The unlocked and uptodate page is returned on success or an encoded error&n; * on failure. Caller has to test for error using the IS_ERR() macro on the&n; * return value. If that evaluates to TRUE, the negative error code can be&n; * obtained using PTR_ERR() on the return value of ntfs_map_page().&n; */
-DECL|function|ntfs_map_page
-r_static
-r_inline
-r_struct
-id|page
-op_star
-id|ntfs_map_page
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_int
-r_int
-id|index
-)paren
-(brace
-r_struct
-id|page
-op_star
-id|page
-op_assign
-id|read_cache_page
-c_func
-(paren
-id|mapping
-comma
-id|index
-comma
-(paren
-id|filler_t
-op_star
-)paren
-id|mapping-&gt;a_ops-&gt;readpage
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_ERR
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|wait_on_page_locked
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|kmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PageUptodate
-c_func
-(paren
-id|page
-)paren
-op_logical_and
-op_logical_neg
-id|PageError
-c_func
-(paren
-id|page
-)paren
-)paren
-r_return
-id|page
-suffix:semicolon
-id|ntfs_unmap_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_return
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|EIO
-)paren
-suffix:semicolon
-)brace
-r_return
-id|page
-suffix:semicolon
-)brace
 multiline_comment|/* Declarations of functions and global variables. */
 multiline_comment|/* From fs/ntfs/compress.c */
 r_extern
@@ -286,6 +148,22 @@ r_struct
 id|page
 op_star
 id|page
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|allocate_compression_buffers
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|free_compression_buffers
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* From fs/ntfs/super.c */
@@ -328,23 +206,6 @@ id|option_t
 id|on_errors_arr
 (braket
 )braket
-suffix:semicolon
-multiline_comment|/* From fs/ntfs/compress.c */
-r_extern
-r_int
-id|allocate_compression_buffers
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|free_compression_buffers
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/* From fs/ntfs/mst.c */
 r_extern

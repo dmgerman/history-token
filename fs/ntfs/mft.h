@@ -3,6 +3,8 @@ macro_line|#ifndef _LINUX_NTFS_MFT_H
 DECL|macro|_LINUX_NTFS_MFT_H
 mdefine_line|#define _LINUX_NTFS_MFT_H
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;inode.h&quot;
 r_extern
 id|MFT_RECORD

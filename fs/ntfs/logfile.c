@@ -7,8 +7,10 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;logfile.h&quot;
 macro_line|#include &quot;volume.h&quot;
-macro_line|#include &quot;ntfs.h&quot;
+macro_line|#include &quot;aops.h&quot;
 macro_line|#include &quot;debug.h&quot;
+macro_line|#include &quot;malloc.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_check_restart_page_header - check the page header for consistency&n; * @vi:&t;&t;$LogFile inode to which the restart page header belongs&n; * @rp:&t;&t;restart page header to check&n; * @pos:&t;position in @vi at which the restart page header resides&n; *&n; * Check the restart page header @rp for consistency and return TRUE if it is&n; * consistent and FALSE otherwise.&n; *&n; * This function only needs NTFS_BLOCK_SIZE bytes in @rp, i.e. it does not&n; * require the full restart page.&n; */
 DECL|function|ntfs_check_restart_page_header
 r_static

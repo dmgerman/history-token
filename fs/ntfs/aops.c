@@ -5,6 +5,10 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;aops.h&quot;
+macro_line|#include &quot;debug.h&quot;
+macro_line|#include &quot;inode.h&quot;
+macro_line|#include &quot;mft.h&quot;
+macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_end_buffer_async_read - async io completion for reading attributes&n; * @bh:&t;&t;buffer head on which io is completed&n; * @uptodate:&t;whether @bh is now uptodate or not&n; *&n; * Asynchronous I/O completion handler for reading pages belonging to the&n; * attribute address space of an inode. The inodes can either be files or&n; * directories or they can be fake inodes describing some attribute.&n; *&n; * If NInoMstProtected(), perform the post read mst fixups when all IO on the&n; * page has been completed and mark the page uptodate or set the error bit on&n; * the page. To determine the size of the records that need fixing up, we cheat&n; * a little bit by setting the index_block_size in ntfs_inode to the ntfs&n; * record size, and index_block_size_bits, to the log(base 2) of the ntfs&n; * record size.&n; */
 DECL|function|ntfs_end_buffer_async_read

@@ -9,12 +9,15 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 macro_line|#include &quot;logfile.h&quot;
 macro_line|#include &quot;quota.h&quot;
 macro_line|#include &quot;dir.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;index.h&quot;
+macro_line|#include &quot;aops.h&quot;
+macro_line|#include &quot;malloc.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
 DECL|variable|ntfs_nr_compression_users
 r_static

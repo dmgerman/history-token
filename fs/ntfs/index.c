@@ -1,7 +1,9 @@
 multiline_comment|/*&n; * index.c - NTFS kernel index handling.  Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2004 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &quot;ntfs.h&quot;
+macro_line|#include &quot;aops.h&quot;
 macro_line|#include &quot;collate.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;index.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_index_ctx_get - allocate and initialize a new index context&n; * @idx_ni:&t;ntfs index inode with which to initialize the context&n; *&n; * Allocate a new index context, initialize it with @idx_ni and return it.&n; * Return NULL if allocation failed.&n; *&n; * Locking:  Caller must hold i_sem on the index inode.&n; */
 DECL|function|ntfs_index_ctx_get
 id|ntfs_index_context

@@ -1,7 +1,13 @@
 multiline_comment|/**&n; * mft.c - NTFS kernel mft record operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;bitmap.h&quot;
+macro_line|#include &quot;lcnalloc.h&quot;
+macro_line|#include &quot;aops.h&quot;
+macro_line|#include &quot;debug.h&quot;
+macro_line|#include &quot;mft.h&quot;
+macro_line|#include &quot;malloc.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * __format_mft_record - initialize an empty mft record&n; * @m:&t;&t;mapped, pinned and locked for writing mft record&n; * @size:&t;size of the mft record&n; * @rec_no:&t;mft record number / inode number&n; *&n; * Private function to initialize an empty mft record. Use one of the two&n; * provided format_mft_record() functions instead.&n; */
 DECL|function|__format_mft_record
 r_static

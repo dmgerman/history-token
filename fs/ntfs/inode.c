@@ -6,8 +6,11 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;attrib.h&quot;
+macro_line|#include &quot;malloc.h&quot;
+macro_line|#include &quot;mft.h&quot;
 macro_line|#include &quot;time.h&quot;
 multiline_comment|/**&n; * ntfs_test_inode - compare two (possibly fake) inodes for equality&n; * @vi:&t;&t;vfs inode which to test&n; * @na:&t;&t;ntfs attribute which is being tested with&n; *&n; * Compare the ntfs attribute embedded in the ntfs specific part of the vfs&n; * inode @vi for equality with the ntfs attribute @na.&n; *&n; * If searching for the normal file/directory inode, set @na-&gt;type to AT_UNUSED.&n; * @na-&gt;name and @na-&gt;name_len are then ignored.&n; *&n; * Return 1 if the attributes match and 0 if not.&n; *&n; * NOTE: This function runs with the inode_lock spin lock held so it is not&n; * allowed to sleep.&n; */
 DECL|function|ntfs_test_inode

@@ -2,9 +2,16 @@ multiline_comment|/*&n; * inode.h - Defines for inode structures NTFS Linux kern
 macro_line|#ifndef _LINUX_NTFS_INODE_H
 DECL|macro|_LINUX_NTFS_INODE_H
 mdefine_line|#define _LINUX_NTFS_INODE_H
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;layout.h&quot;
 macro_line|#include &quot;volume.h&quot;
+macro_line|#include &quot;types.h&quot;
+macro_line|#include &quot;runlist.h&quot;
 DECL|typedef|ntfs_inode
 r_typedef
 r_struct

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NTFS_LCNALLOC_H
 macro_line|#ifdef NTFS_RW
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;types.h&quot;
+macro_line|#include &quot;runlist.h&quot;
 macro_line|#include &quot;volume.h&quot;
 r_typedef
 r_enum

@@ -2,6 +2,8 @@ multiline_comment|/**&n; * compress.c - NTFS kernel compressed attributes handli
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &quot;inode.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_compression_constants - enum of constants used in the compression code&n; */
 r_typedef

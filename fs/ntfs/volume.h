@@ -2,6 +2,7 @@ multiline_comment|/*&n; * volume.h - Defines for volume structures in NTFS Linux
 macro_line|#ifndef _LINUX_NTFS_VOLUME_H
 DECL|macro|_LINUX_NTFS_VOLUME_H
 mdefine_line|#define _LINUX_NTFS_VOLUME_H
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;layout.h&quot;
 multiline_comment|/*&n; * The NTFS in memory super block structure.&n; */

@@ -5,6 +5,48 @@ mdefine_line|#define _LINUX_NTFS_RUNLIST_H
 macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;layout.h&quot;
 macro_line|#include &quot;volume.h&quot;
+multiline_comment|/**&n; * runlist_element - in memory vcn to lcn mapping array element&n; * @vcn:&t;starting vcn of the current array element&n; * @lcn:&t;starting lcn of the current array element&n; * @length:&t;length in clusters of the current array element&n; *&n; * The last vcn (in fact the last vcn + 1) is reached when length == 0.&n; *&n; * When lcn == -1 this means that the count vcns starting at vcn are not&n; * physically allocated (i.e. this is a hole / data is sparse).&n; */
+r_typedef
+r_struct
+(brace
+multiline_comment|/* In memory vcn to lcn mapping structure element. */
+DECL|member|vcn
+id|VCN
+id|vcn
+suffix:semicolon
+multiline_comment|/* vcn = Starting virtual cluster number. */
+DECL|member|lcn
+id|LCN
+id|lcn
+suffix:semicolon
+multiline_comment|/* lcn = Starting logical cluster number. */
+DECL|member|length
+id|s64
+id|length
+suffix:semicolon
+multiline_comment|/* Run length in clusters. */
+DECL|typedef|runlist_element
+)brace
+id|runlist_element
+suffix:semicolon
+multiline_comment|/**&n; * runlist - in memory vcn to lcn mapping array including a read/write lock&n; * @rl:&t;&t;pointer to an array of runlist elements&n; * @lock:&t;read/write spinlock for serializing access to @rl&n; *&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|rl
+id|runlist_element
+op_star
+id|rl
+suffix:semicolon
+DECL|member|lock
+r_struct
+id|rw_semaphore
+id|lock
+suffix:semicolon
+DECL|typedef|runlist
+)brace
+id|runlist
+suffix:semicolon
 DECL|function|ntfs_init_runlist
 r_static
 r_inline
