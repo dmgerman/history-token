@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     12-Jul-2004 BJD  Renamed machine&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     12-Jul-2004 BJD  Renamed machine&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -675,7 +675,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2401_init_time
+id|s3c2410_init_time
 c_func
 (paren
 )paren

@@ -200,7 +200,6 @@ id|pte
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 id|printk
 c_func
 (paren
@@ -217,7 +216,6 @@ id|PTRS_PER_PTE
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pte_unmap
 c_func
 (paren

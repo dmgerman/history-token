@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_ccw.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * CCW driver related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_CCW_C_REVISION
-mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.55 $&quot;
+mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.56 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA                   ZFCP_LOG_AREA_CONFIG
@@ -54,6 +54,16 @@ id|ccw_device
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_static
+r_void
+id|zfcp_ccw_shutdown
+c_func
+(paren
+r_struct
+id|device
+op_star
 )paren
 suffix:semicolon
 DECL|variable|zfcp_ccw_device_id
@@ -144,6 +154,17 @@ dot
 id|notify
 op_assign
 id|zfcp_ccw_notify
+comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|shutdown
+op_assign
+id|zfcp_ccw_shutdown
+comma
+)brace
 comma
 )brace
 suffix:semicolon
@@ -933,6 +954,47 @@ c_func
 (paren
 op_amp
 id|zfcp_ccw_driver
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * zfcp_ccw_shutdown - gets called on reboot/shutdown&n; *&n; * Makes sure that QDIO queues are down when the system gets stopped.&n; */
+r_static
+r_void
+DECL|function|zfcp_ccw_shutdown
+id|zfcp_ccw_shutdown
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+suffix:semicolon
+id|adapter
+op_assign
+id|dev_get_drvdata
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_shutdown
+c_func
+(paren
+id|adapter
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|zfcp_erp_wait
+c_func
+(paren
+id|adapter
 )paren
 suffix:semicolon
 )brace

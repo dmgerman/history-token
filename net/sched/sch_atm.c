@@ -44,7 +44,7 @@ mdefine_line|#define D2PRINTK(format,args...)
 macro_line|#endif
 multiline_comment|/*&n; * The ATM queuing discipline provides a framework for invoking classifiers&n; * (aka &quot;filters&quot;), which in turn select classes of this queuing discipline.&n; * Each class maps the flow(s) it is handling to a given VC. Multiple classes&n; * may share the same VC.&n; *&n; * When creating a class, VCs are specified by passing the number of the open&n; * socket descriptor by which the calling process references the VC. The kernel&n; * keeps the VC open at least until all classes using it are removed.&n; *&n; * In this file, most functions are named atm_tc_* to avoid confusion with all&n; * the atm_* in net/atm. This naming convention differs from what&squot;s used in the&n; * rest of net/sched.&n; *&n; * Known bugs:&n; *  - sometimes messes up the IP stack&n; *  - any manipulations besides the few operations described in the README, are&n; *    untested and likely to crash the system&n; *  - should lock the flow while there is data in the queue (?)&n; */
 DECL|macro|PRIV
-mdefine_line|#define PRIV(sch) ((struct atm_qdisc_data *) (sch)-&gt;data)
+mdefine_line|#define PRIV(sch) qdisc_priv(sch)
 DECL|macro|VCC2FLOW
 mdefine_line|#define VCC2FLOW(vcc) ((struct atm_flow_data *) ((vcc)-&gt;user_back))
 DECL|struct|atm_flow_data
@@ -262,6 +262,17 @@ id|classid
 )paren
 (brace
 r_struct
+id|atm_qdisc_data
+op_star
+id|p
+op_assign
+id|PRIV
+c_func
+(paren
+id|sch
+)paren
+suffix:semicolon
+r_struct
 id|atm_flow_data
 op_star
 id|flow
@@ -271,13 +282,7 @@ c_loop
 (paren
 id|flow
 op_assign
-id|PRIV
-c_func
-(paren
-id|sch
-)paren
-op_member_access_from_pointer
-id|flows
+id|p-&gt;flows
 suffix:semicolon
 id|flow
 suffix:semicolon

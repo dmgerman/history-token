@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.60 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.61 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -7478,10 +7478,6 @@ id|erp_action
 r_int
 id|retval
 suffix:semicolon
-r_int
-r_int
-id|timeout
-suffix:semicolon
 r_struct
 id|zfcp_adapter
 op_star
@@ -7580,20 +7576,14 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-id|timeout
-op_assign
+id|msleep
+c_func
+(paren
+id|jiffies_to_msecs
+c_func
+(paren
 id|ZFCP_TYPE2_RECOVERY_TIME
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
 )paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|timeout
 )paren
 suffix:semicolon
 )brace
@@ -8147,20 +8137,12 @@ op_eq
 op_minus
 id|EINPROGRESS
 )paren
-(brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
+l_int|1000
 )paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-)paren
-suffix:semicolon
-)brace
 id|debug_text_event
 c_func
 (paren
@@ -8298,20 +8280,12 @@ op_eq
 op_minus
 id|EINPROGRESS
 )paren
-(brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
+l_int|1000
 )paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-)paren
-suffix:semicolon
-)brace
 id|debug_text_event
 c_func
 (paren
@@ -8638,16 +8612,14 @@ l_string|&quot;waiting and retrying...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* sleep a little bit before retry */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|ZFCP_EXCHANGE_CONFIG_DATA_SLEEP
+)paren
 )paren
 suffix:semicolon
 )brace

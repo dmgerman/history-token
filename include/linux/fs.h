@@ -127,6 +127,13 @@ DECL|macro|FMODE_READ
 mdefine_line|#define FMODE_READ 1
 DECL|macro|FMODE_WRITE
 mdefine_line|#define FMODE_WRITE 2
+multiline_comment|/* Internal kernel extensions */
+DECL|macro|FMODE_LSEEK
+mdefine_line|#define FMODE_LSEEK&t;4
+DECL|macro|FMODE_PREAD
+mdefine_line|#define FMODE_PREAD&t;8
+DECL|macro|FMODE_PWRITE
+mdefine_line|#define FMODE_PWRITE&t;FMODE_PREAD&t;/* These go hand in hand */
 DECL|macro|RW_MASK
 mdefine_line|#define RW_MASK&t;&t;1
 DECL|macro|RWA_MASK

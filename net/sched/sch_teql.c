@@ -88,7 +88,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|NEXT_SLAVE
-mdefine_line|#define NEXT_SLAVE(q) (((struct teql_sched_data*)((q)-&gt;data))-&gt;next)
+mdefine_line|#define NEXT_SLAVE(q) (((struct teql_sched_data*)qdisc_priv(q))-&gt;next)
 DECL|macro|FMASK
 mdefine_line|#define FMASK (IFF_BROADCAST|IFF_POINTOPOINT|IFF_BROADCAST)
 multiline_comment|/* &quot;teql*&quot; qdisc routines */
@@ -121,12 +121,11 @@ id|teql_sched_data
 op_star
 id|q
 op_assign
+id|qdisc_priv
+c_func
 (paren
-r_struct
-id|teql_sched_data
-op_star
+id|sch
 )paren
-id|sch-&gt;data
 suffix:semicolon
 id|__skb_queue_tail
 c_func
@@ -200,12 +199,11 @@ id|teql_sched_data
 op_star
 id|q
 op_assign
+id|qdisc_priv
+c_func
 (paren
-r_struct
-id|teql_sched_data
-op_star
+id|sch
 )paren
-id|sch-&gt;data
 suffix:semicolon
 id|__skb_queue_head
 c_func
@@ -239,12 +237,11 @@ id|teql_sched_data
 op_star
 id|dat
 op_assign
+id|qdisc_priv
+c_func
 (paren
-r_struct
-id|teql_sched_data
-op_star
+id|sch
 )paren
-id|sch-&gt;data
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -345,12 +342,11 @@ id|teql_sched_data
 op_star
 id|dat
 op_assign
+id|qdisc_priv
+c_func
 (paren
-r_struct
-id|teql_sched_data
-op_star
+id|sch
 )paren
-id|sch-&gt;data
 suffix:semicolon
 id|skb_queue_purge
 c_func
@@ -402,12 +398,11 @@ id|teql_sched_data
 op_star
 id|dat
 op_assign
+id|qdisc_priv
+c_func
 (paren
-r_struct
-id|teql_sched_data
-op_star
+id|sch
 )paren
-id|sch-&gt;data
 suffix:semicolon
 r_struct
 id|teql_master
@@ -587,12 +582,11 @@ id|teql_sched_data
 op_star
 id|q
 op_assign
+id|qdisc_priv
+c_func
 (paren
-r_struct
-id|teql_sched_data
-op_star
+id|sch
 )paren
-id|sch-&gt;data
 suffix:semicolon
 r_if
 c_cond
@@ -830,11 +824,11 @@ id|teql_sched_data
 op_star
 id|q
 op_assign
+id|qdisc_priv
+c_func
 (paren
-r_void
-op_star
+id|dev-&gt;qdisc
 )paren
-id|dev-&gt;qdisc-&gt;data
 suffix:semicolon
 r_struct
 id|neighbour

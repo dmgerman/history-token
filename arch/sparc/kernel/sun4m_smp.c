@@ -248,11 +248,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unblock the master CPU _only_ when the scheduler state&n;&t; * of all secondary CPUs will be up-to-date, so after&n;&t; * the SMP initialization the master will be just allowed&n;&t; * to call the scheduler code.&n;&t; */
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Allow master to continue. */
 id|swap
 c_func
@@ -373,16 +368,6 @@ id|cpu_panic
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|start_secondary
-c_func
-(paren
-r_void
-op_star
-id|unused
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Cycle through the processors asking the PROM to start each one.&n; */
@@ -2018,7 +2003,7 @@ r_void
 id|BTFIXUPSET_BLACKBOX
 c_func
 (paren
-id|smp_processor_id
+id|hard_smp_processor_id
 comma
 id|smp4m_blackbox_id
 )paren
@@ -2054,7 +2039,7 @@ suffix:semicolon
 id|BTFIXUPSET_CALL
 c_func
 (paren
-id|__smp_processor_id
+id|__hard_smp_processor_id
 comma
 id|__smp4m_processor_id
 comma

@@ -1013,8 +1013,8 @@ id|cur_cpu_spec-&gt;firmware_features
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|chrp_progress
+r_void
 id|chrp_progress
 c_func
 (paren
@@ -1148,45 +1148,6 @@ op_eq
 id|RTAS_UNKNOWN_SERVICE
 )paren
 (brace
-multiline_comment|/* use hex display */
-r_if
-c_cond
-(paren
-id|set_indicator
-op_eq
-id|RTAS_UNKNOWN_SERVICE
-)paren
-r_return
-suffix:semicolon
-id|rtas_call
-c_func
-(paren
-id|set_indicator
-comma
-l_int|3
-comma
-l_int|1
-comma
-l_int|NULL
-comma
-l_int|6
-comma
-l_int|0
-comma
-id|hex
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|display_character
-op_eq
-id|RTAS_UNKNOWN_SERVICE
-)paren
-(brace
 multiline_comment|/* use hex display if available */
 r_if
 c_cond
@@ -1195,7 +1156,6 @@ id|set_indicator
 op_ne
 id|RTAS_UNKNOWN_SERVICE
 )paren
-(brace
 id|rtas_call
 c_func
 (paren
@@ -1214,7 +1174,6 @@ comma
 id|hex
 )paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -1225,7 +1184,7 @@ op_amp
 id|progress_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Last write ended with newline, but we didn&squot;t print it since&n;&t; * it would just clear the bottom line of output. Print it now&n;&t; * instead.&n;&t; *&n;&t; * If no newline is pending, print a CR to start output at the&n;&t; * beginning of the line.&n;&t; */
+multiline_comment|/*&n;&t; * Last write ended with newline, but we didn&squot;t print it since&n;&t; * it would just clear the bottom line of output. Print it now&n;&t; * instead.&n;&t; *&n;&t; * If no newline is pending, print a CR to start output at the&n;&t; * beginning of the line.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1266,6 +1225,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
+(brace
 id|rtas_call
 c_func
 (paren
@@ -1280,6 +1240,7 @@ comma
 l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
+)brace
 id|width
 op_assign
 id|max_width
@@ -1318,7 +1279,6 @@ op_decrement
 OG
 l_int|0
 )paren
-(brace
 id|rtas_call
 c_func
 (paren
@@ -1333,7 +1293,6 @@ comma
 l_char|&squot; &squot;
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If newline is the last character, save it&n;&t;&t;&t; * until next call to avoid bumping up the&n;&t;&t;&t; * display output.&n;&t;&t;&t; */
 r_if
 c_cond

@@ -103,6 +103,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* XXX */
+DECL|variable|cache_decay_ticks
+r_int
+r_int
+id|cache_decay_ticks
+op_assign
+l_int|100
+suffix:semicolon
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
@@ -946,6 +953,20 @@ id|page
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|smp_reschedule_irq
+r_void
+id|smp_reschedule_irq
+c_func
+(paren
+r_void
+)paren
+(brace
+id|set_need_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|smp_flush_page_to_ram
 r_void

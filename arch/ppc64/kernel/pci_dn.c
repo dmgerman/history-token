@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * pci_dn.c&n; *&n; * Copyright (C) 2001 Todd Inglett, IBM Corporation&n; *&n; * PCI manipulation via device_nodes.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *    &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -16,12 +15,12 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &quot;pci.h&quot;
-multiline_comment|/* Traverse_func that inits the PCI fields of the device node.&n; * NOTE: this *must* be done before read/write config to the device.&n; */
+multiline_comment|/*&n; * Traverse_func that inits the PCI fields of the device node.&n; * NOTE: this *must* be done before read/write config to the device.&n; */
+DECL|function|update_dn_pci_info
 r_static
 r_void
 op_star
 id|__init
-DECL|function|update_dn_pci_info
 id|update_dn_pci_info
 c_func
 (paren
@@ -35,17 +34,11 @@ op_star
 id|data
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_struct
 id|pci_controller
 op_star
 id|phb
 op_assign
-(paren
-r_struct
-id|pci_controller
-op_star
-)paren
 id|data
 suffix:semicolon
 id|u32
@@ -79,6 +72,7 @@ c_cond
 (paren
 id|device_type
 op_logical_and
+(paren
 id|strcmp
 c_func
 (paren
@@ -88,7 +82,9 @@ l_string|&quot;pci&quot;
 )paren
 op_eq
 l_int|0
+)paren
 op_logical_and
+(paren
 id|get_property
 c_func
 (paren
@@ -100,6 +96,7 @@ l_int|NULL
 )paren
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 multiline_comment|/* special case for PHB&squot;s.  Sigh. */
@@ -218,12 +215,11 @@ l_int|0xff
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************&n; * Traverse a device tree stopping each PCI device in the tree.&n; * This is done depth first.  As each node is processed, a &quot;pre&quot;&n; * function is called, the children are processed recursively, and&n; * then a &quot;post&quot; function is called.&n; *&n; * The &quot;pre&quot; and &quot;post&quot; funcs return a value.  If non-zero&n; * is returned from the &quot;pre&quot; func, the traversal stops and this&n; * value is returned.  The return value from &quot;post&quot; is not used.&n; * This return value is useful when using traverse as&n; * a method of finding a device.&n; *&n; * NOTE: we do not run the funcs for devices that do not appear to&n; * be PCI except for the start node which we assume (this is good&n; * because the start node is often a phb which may be missing PCI&n; * properties).&n; * We use the class-code as an indicator. If we run into&n; * one of these nodes we also assume its siblings are non-pci for&n; * performance.&n; *&n; ******************************************************************/
+multiline_comment|/*&n; * Traverse a device tree stopping each PCI device in the tree.&n; * This is done depth first.  As each node is processed, a &quot;pre&quot;&n; * function is called and the children are processed recursively.&n; *&n; * The &quot;pre&quot; func returns a value.  If non-zero is returned from&n; * the &quot;pre&quot; func, the traversal stops and this value is returned.&n; * This return value is useful when using traverse as a method of&n; * finding a device.&n; *&n; * NOTE: we do not run the func for devices that do not appear to&n; * be PCI except for the start node which we assume (this is good&n; * because the start node is often a phb which may be missing PCI&n; * properties).&n; * We use the class-code as an indicator. If we run into&n; * one of these nodes we also assume its siblings are non-pci for&n; * performance.&n; */
 DECL|function|traverse_pci_devices
 r_void
 op_star
@@ -237,9 +233,6 @@ id|start
 comma
 id|traverse_func
 id|pre
-comma
-id|traverse_func
-id|post
 comma
 r_void
 op_star
@@ -264,6 +257,7 @@ c_cond
 id|pre
 op_logical_and
 (paren
+(paren
 id|ret
 op_assign
 id|pre
@@ -276,6 +270,7 @@ id|data
 )paren
 op_ne
 l_int|NULL
+)paren
 )paren
 r_return
 id|ret
@@ -298,7 +293,6 @@ id|nextdn
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -319,6 +313,7 @@ c_cond
 id|pre
 op_logical_and
 (paren
+(paren
 id|ret
 op_assign
 id|pre
@@ -332,6 +327,7 @@ id|data
 op_ne
 l_int|NULL
 )paren
+)paren
 r_return
 id|ret
 suffix:semicolon
@@ -340,45 +336,23 @@ c_cond
 (paren
 id|dn-&gt;child
 )paren
-(brace
 multiline_comment|/* Depth first...do children */
 id|nextdn
 op_assign
 id|dn-&gt;child
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|dn-&gt;sibling
 )paren
-(brace
 multiline_comment|/* ok, try next sibling instead. */
 id|nextdn
 op_assign
 id|dn-&gt;sibling
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* no more children or siblings...call &quot;post&quot; */
-r_if
-c_cond
-(paren
-id|post
-)paren
-id|post
-c_func
-(paren
-id|dn
-comma
-id|data
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -422,8 +396,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Same as traverse_pci_devices except this does it for all phbs.&n; */
+multiline_comment|/*&n; * Same as traverse_pci_devices except this does it for all phbs.&n; */
 DECL|function|traverse_all_pci_devices
+r_static
 r_void
 op_star
 id|traverse_all_pci_devices
@@ -464,16 +439,9 @@ op_assign
 id|traverse_pci_devices
 c_func
 (paren
-(paren
-r_struct
-id|device_node
-op_star
-)paren
 id|phb-&gt;arch_data
 comma
 id|pre
-comma
-l_int|NULL
 comma
 id|phb
 )paren
@@ -488,11 +456,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Traversal func that looks for a &lt;busno,devfcn&gt; value.&n; * If found, the device_node is returned (thus terminating the traversal).&n; */
+multiline_comment|/*&n; * Traversal func that looks for a &lt;busno,devfcn&gt; value.&n; * If found, the device_node is returned (thus terminating the traversal).&n; */
+DECL|function|is_devfn_node
 r_static
 r_void
 op_star
-DECL|function|is_devfn_node
 id|is_devfn_node
 c_func
 (paren
@@ -536,13 +504,17 @@ l_int|0xff
 suffix:semicolon
 r_return
 (paren
+(paren
 id|devfn
 op_eq
 id|dn-&gt;devfn
+)paren
 op_logical_and
+(paren
 id|busno
 op_eq
 id|dn-&gt;busno
+)paren
 )paren
 ques
 c_cond
@@ -551,7 +523,7 @@ suffix:colon
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* This is the &quot;slow&quot; path for looking up a device_node from a&n; * pci_dev.  It will hunt for the device under its parent&squot;s&n; * phb and then update sysdata for a future fastpath.&n; *&n; * It may also do fixups on the actual device since this happens&n; * on the first read/write.&n; *&n; * Note that it also must deal with devices that don&squot;t exist.&n; * In this case it may probe for real hardware (&quot;just in case&quot;)&n; * and add a device_node to the device tree if necessary.&n; *&n; */
+multiline_comment|/*&n; * This is the &quot;slow&quot; path for looking up a device_node from a&n; * pci_dev.  It will hunt for the device under its parent&squot;s&n; * phb and then update sysdata for a future fastpath.&n; *&n; * It may also do fixups on the actual device since this happens&n; * on the first read/write.&n; *&n; * Note that it also must deal with devices that don&squot;t exist.&n; * In this case it may probe for real hardware (&quot;just in case&quot;)&n; * and add a device_node to the device tree if necessary.&n; *&n; */
 DECL|function|fetch_dev_dn
 r_struct
 id|device_node
@@ -570,11 +542,6 @@ id|device_node
 op_star
 id|orig_dn
 op_assign
-(paren
-r_struct
-id|device_node
-op_star
-)paren
 id|dev-&gt;sysdata
 suffix:semicolon
 r_struct
@@ -609,30 +576,16 @@ id|dev-&gt;devfn
 suffix:semicolon
 id|phb_dn
 op_assign
-(paren
-r_struct
-id|device_node
-op_star
-)paren
-(paren
 id|phb-&gt;arch_data
-)paren
 suffix:semicolon
 id|dn
 op_assign
-(paren
-r_struct
-id|device_node
-op_star
-)paren
 id|traverse_pci_devices
 c_func
 (paren
 id|phb_dn
 comma
 id|is_devfn_node
-comma
-l_int|NULL
 comma
 (paren
 r_void
@@ -664,10 +617,10 @@ c_func
 id|fetch_dev_dn
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************************&n; * Actually initialize the phbs.&n; * The buswalk on this phb has not happened yet.&n; ******************************************************************/
+multiline_comment|/*&n; * Actually initialize the phbs.&n; * The buswalk on this phb has not happened yet.&n; */
+DECL|function|pci_devs_phb_init
 r_void
 id|__init
-DECL|function|pci_devs_phb_init
 id|pci_devs_phb_init
 c_func
 (paren
@@ -682,10 +635,10 @@ id|update_dn_pci_info
 )paren
 suffix:semicolon
 )brace
+DECL|function|pci_fixup_bus_sysdata_list
 r_static
 r_void
 id|__init
-DECL|function|pci_fixup_bus_sysdata_list
 id|pci_fixup_bus_sysdata_list
 c_func
 (paren
@@ -747,10 +700,10 @@ id|bus-&gt;children
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/******************************************************************&n; * Fixup the bus-&gt;sysdata ptrs to point to the bus&squot; device_node.&n; * This is done late in pcibios_init().  We do this mostly for&n; * sanity, but pci_dma.c uses these at DMA time so they must be&n; * correct.&n; * To do this we recurse down the bus hierarchy.  Note that PHB&squot;s&n; * have bus-&gt;self == NULL, but fortunately bus-&gt;sysdata is already&n; * correct in this case.&n; ******************************************************************/
+multiline_comment|/*&n; * Fixup the bus-&gt;sysdata ptrs to point to the bus&squot; device_node.&n; * This is done late in pcibios_init().  We do this mostly for&n; * sanity, but pci_dma.c uses these at DMA time so they must be&n; * correct.&n; * To do this we recurse down the bus hierarchy.  Note that PHB&squot;s&n; * have bus-&gt;self == NULL, but fortunately bus-&gt;sysdata is already&n; * correct in this case.&n; */
+DECL|function|pci_fix_bus_sysdata
 r_void
 id|__init
-DECL|function|pci_fix_bus_sysdata
 id|pci_fix_bus_sysdata
 c_func
 (paren
