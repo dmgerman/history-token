@@ -180,7 +180,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|DEVICE_COUNT_IO
+id|PNP_MAX_PORT
 suffix:semicolon
 id|i
 op_increment

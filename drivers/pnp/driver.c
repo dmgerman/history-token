@@ -418,7 +418,7 @@ suffix:semicolon
 id|pnp_dbg
 c_func
 (paren
-l_string|&quot;pnp: match found with the PnP device &squot;%s&squot; and the driver &squot;%s&squot;&quot;
+l_string|&quot;match found with the PnP device &squot;%s&squot; and the driver &squot;%s&squot;&quot;
 comma
 id|dev-&gt;bus_id
 comma
@@ -468,8 +468,6 @@ id|pnp_activate_dev
 c_func
 (paren
 id|pnp_dev
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

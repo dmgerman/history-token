@@ -23,7 +23,7 @@ DECL|function|match_card
 r_static
 r_const
 r_struct
-id|pnp_card_device_id
+id|pnp_card_id
 op_star
 id|match_card
 c_func
@@ -41,7 +41,7 @@ id|card
 (brace
 r_const
 r_struct
-id|pnp_card_device_id
+id|pnp_card_id
 op_star
 id|drv_id
 op_assign
@@ -369,14 +369,6 @@ c_func
 (paren
 op_amp
 id|card-&gt;rdevs
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|card-&gt;dev.name
-comma
-id|card-&gt;name
 )paren
 suffix:semicolon
 id|card-&gt;dev.parent
@@ -888,8 +880,6 @@ id|pnp_activate_dev
 c_func
 (paren
 id|dev
-comma
-l_int|NULL
 )paren
 OL
 l_int|0
@@ -1187,7 +1177,7 @@ id|dev
 suffix:semicolon
 r_const
 r_struct
-id|pnp_card_device_id
+id|pnp_card_id
 op_star
 id|card_id
 op_assign
