@@ -21780,7 +21780,6 @@ id|i
 dot
 id|d.dev
 )paren
-suffix:semicolon
 id|free_netdev
 c_func
 (paren

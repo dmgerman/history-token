@@ -5551,7 +5551,6 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-suffix:semicolon
 r_goto
 id|error
 suffix:semicolon
@@ -5592,7 +5591,6 @@ id|retval
 op_assign
 op_minus
 id|EIO
-suffix:semicolon
 suffix:semicolon
 r_goto
 id|error
@@ -5636,7 +5634,6 @@ id|retval
 op_assign
 op_minus
 id|EIO
-suffix:semicolon
 suffix:semicolon
 r_goto
 id|error

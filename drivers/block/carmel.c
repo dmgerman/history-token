@@ -4475,6 +4475,11 @@ id|host-&gt;pdev
 comma
 id|port-&gt;port_no
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|port-&gt;capacity
 )paren
 suffix:semicolon

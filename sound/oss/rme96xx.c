@@ -5271,7 +5271,6 @@ id|dma-&gt;inchannels
 op_rshift
 id|dma-&gt;formatshift
 suffix:semicolon
-suffix:semicolon
 id|abinfo.fragstotal
 op_assign
 l_int|2
@@ -5420,7 +5419,6 @@ id|s-&gt;fragsize
 op_lshift
 l_int|1
 suffix:semicolon
-suffix:semicolon
 id|count
 op_assign
 id|val
@@ -5541,7 +5539,6 @@ op_assign
 id|s-&gt;fragsize
 op_lshift
 l_int|1
-suffix:semicolon
 suffix:semicolon
 id|count
 op_assign

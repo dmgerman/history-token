@@ -4465,7 +4465,6 @@ id|written
 op_add_assign
 id|mtd-&gt;oobblock
 suffix:semicolon
-suffix:semicolon
 multiline_comment|/* Increment page address */
 id|page
 op_increment
@@ -4983,7 +4982,6 @@ l_int|0
 suffix:colon
 op_minus
 id|EIO
-suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Do call back function */
 r_if

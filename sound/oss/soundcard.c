@@ -3437,7 +3437,6 @@ op_amp
 id|seq_timer
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|conf_printf
 r_void

@@ -1077,7 +1077,7 @@ c_func
 id|DevNode
 )paren
 comma
-id|REALADDR
+id|ISERIES_HV_ADDR
 c_func
 (paren
 id|BusVpdPtr

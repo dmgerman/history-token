@@ -74,7 +74,6 @@ r_static
 id|ahc_device_setup_t
 id|ahc_aic7770_EISA_setup
 suffix:semicolon
-suffix:semicolon
 DECL|variable|ahc_aic7770_setup
 r_static
 id|ahc_device_setup_t

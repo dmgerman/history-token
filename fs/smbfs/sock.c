@@ -1298,7 +1298,6 @@ id|MSG_DONTWAIT
 op_or
 id|MSG_NOSIGNAL
 suffix:semicolon
-suffix:semicolon
 id|msg.msg_flags
 op_assign
 id|flags

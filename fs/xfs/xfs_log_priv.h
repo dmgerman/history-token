@@ -48,21 +48,6 @@ DECL|macro|XLOG_BIG_RECORD_BSHIFT
 mdefine_line|#define XLOG_BIG_RECORD_BSHIFT&t;15&t;&t;/* 32k == 1 &lt;&lt; 15 */
 DECL|macro|XLOG_MAX_RECORD_BSHIFT
 mdefine_line|#define XLOG_MAX_RECORD_BSHIFT&t;18&t;&t;/* 256k == 1 &lt;&lt; 18 */
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XLOG_BTOLRBB)
-r_int
-id|xlog_btolrbb
-c_func
-(paren
-r_int
-id|b
-)paren
-suffix:semicolon
-DECL|macro|XLOG_BTOLRBB
-mdefine_line|#define XLOG_BTOLRBB(b)&t;&t;xlog_btolrbb(b)
-macro_line|#else
-DECL|macro|XLOG_BTOLRBB
-mdefine_line|#define XLOG_BTOLRBB(b)&t;&t;(((b)+XLOG_RECORD_BSIZE-1) &gt;&gt; XLOG_RECORD_BSHIFT)
-macro_line|#endif
 DECL|macro|XLOG_BTOLSUNIT
 mdefine_line|#define XLOG_BTOLSUNIT(log, b)  (((b)+(log)-&gt;l_mp-&gt;m_sb.sb_logsunit-1) / &bslash;&n;                                 (log)-&gt;l_mp-&gt;m_sb.sb_logsunit)
 DECL|macro|XLOG_LSUNITTOB
@@ -1038,6 +1023,7 @@ id|xfs_buf
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* iclog tracing */
 DECL|macro|XLOG_TRACE_GRAB_FLUSH
 mdefine_line|#define XLOG_TRACE_GRAB_FLUSH  1
 DECL|macro|XLOG_TRACE_REL_FLUSH

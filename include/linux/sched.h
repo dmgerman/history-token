@@ -382,8 +382,12 @@ r_struct
 r_namespace
 suffix:semicolon
 multiline_comment|/* Maximum number of active map areas.. This is a random (large) number */
-DECL|macro|MAX_MAP_COUNT
-mdefine_line|#define MAX_MAP_COUNT&t;(65536)
+DECL|macro|DEFAULT_MAX_MAP_COUNT
+mdefine_line|#define DEFAULT_MAX_MAP_COUNT&t;65536
+r_extern
+r_int
+id|sysctl_max_map_count
+suffix:semicolon
 macro_line|#include &lt;linux/aio.h&gt;
 DECL|struct|mm_struct
 r_struct

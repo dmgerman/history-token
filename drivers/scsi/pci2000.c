@@ -887,7 +887,6 @@ singleline_comment|// complete the op
 r_goto
 id|irq_return
 suffix:semicolon
-suffix:semicolon
 singleline_comment|// done, but, with what?
 id|unmapProceed
 suffix:colon

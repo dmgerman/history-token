@@ -90316,7 +90316,6 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-suffix:semicolon
 )brace
 r_for
 c_loop

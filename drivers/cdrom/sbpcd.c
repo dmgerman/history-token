@@ -26542,7 +26542,6 @@ id|s_not_data_ready
 )paren
 r_break
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

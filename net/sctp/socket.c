@@ -15682,7 +15682,6 @@ id|pd_mode
 op_assign
 id|assoc-&gt;ulpq.pd_mode
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
@@ -160,7 +161,7 @@ r_return
 r_void
 op_star
 )paren
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 suffix:semicolon
 )brace
 id|tbl
@@ -234,7 +235,7 @@ c_cond
 (paren
 id|mapping
 op_eq
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 )paren
 (brace
 id|free_pages
@@ -380,7 +381,7 @@ suffix:semicolon
 id|dma_addr_t
 id|dma_handle
 op_assign
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 suffix:semicolon
 r_int
 r_int
@@ -459,7 +460,7 @@ c_cond
 (paren
 id|dma_handle
 op_eq
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 )paren
 (brace
 r_if

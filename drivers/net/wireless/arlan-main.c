@@ -6395,7 +6395,6 @@ l_int|1000
 op_plus
 l_int|1
 suffix:semicolon
-suffix:semicolon
 )brace
 r_else
 (brace

@@ -2758,7 +2758,6 @@ suffix:semicolon
 r_return
 id|new_res-&gt;start
 suffix:semicolon
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free the specified window allocation back into the PCI window mapping&n; * resource.  As noted above, we keep page addresses offset by 1 ...&n; */
 r_void

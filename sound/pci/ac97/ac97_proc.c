@@ -1659,12 +1659,14 @@ id|idx
 )paren
 (brace
 multiline_comment|/* select single codec */
-id|snd_ac97_write_cache
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 id|ac97-&gt;spec.ad18xx.unchained
 (braket
@@ -1697,12 +1699,14 @@ l_string|&quot;&bslash;n&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* select all codecs */
-id|snd_ac97_write_cache
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 l_int|0x7000
 )paren
@@ -1924,12 +1928,14 @@ id|idx
 )paren
 (brace
 multiline_comment|/* select single codec */
-id|snd_ac97_write_cache
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 id|ac97-&gt;spec.ad18xx.unchained
 (braket
@@ -1954,12 +1960,14 @@ id|idx
 suffix:semicolon
 )brace
 multiline_comment|/* select all codecs */
-id|snd_ac97_write_cache
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 l_int|0x7000
 )paren

@@ -2145,6 +2145,18 @@ r_extern
 id|acpi_interrupt_flags
 id|acpi_sci_flags
 suffix:semicolon
+multiline_comment|/* compatible (0) means level (3) */
+r_if
+c_cond
+(paren
+id|acpi_sci_flags.trigger
+op_eq
+l_int|0
+)paren
+id|acpi_sci_flags.trigger
+op_assign
+l_int|3
+suffix:semicolon
 multiline_comment|/* Set PIC-mode SCI trigger type */
 id|acpi_pic_sci_set_trigger
 c_func

@@ -42,6 +42,7 @@ macro_line|#include &lt;linux/un.h&gt;&t;&t;/* for Unix socket types */
 macro_line|#include &lt;net/af_unix.h&gt;&t;/* for Unix socket types */
 macro_line|#include &lt;linux/parser.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;objsec.h&quot;
 macro_line|#include &quot;netif.h&quot;
@@ -5762,7 +5763,6 @@ comma
 id|FILE__QUOTAON
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|selinux_syslog
 r_static
@@ -6037,7 +6037,14 @@ suffix:semicolon
 )brace
 id|allowed
 op_assign
+(paren
 id|totalram_pages
+op_minus
+id|hugetlb_total_pages
+c_func
+(paren
+)paren
+)paren
 op_star
 id|sysctl_overcommit_ratio
 op_div

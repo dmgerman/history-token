@@ -9841,7 +9841,6 @@ id|host-&gt;irq
 op_assign
 id|pHba-&gt;pDev-&gt;irq
 suffix:semicolon
-suffix:semicolon
 multiline_comment|/* no IO ports, so don&squot;t have to set host-&gt;io_port and &n;&t; * host-&gt;n_io_port&n;&t; */
 id|host-&gt;io_port
 op_assign

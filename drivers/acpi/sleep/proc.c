@@ -417,7 +417,6 @@ c_func
 id|RTC_MONTH
 )paren
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

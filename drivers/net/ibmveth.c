@@ -34,6 +34,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -52,9 +53,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &quot;ibmveth.h&quot;
-macro_line|#warning remove NO_TCE usage from ibmveth.c
-DECL|macro|NO_TCE
-mdefine_line|#define NO_TCE PCI_DMA_ERROR_CODE
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
 DECL|macro|ibmveth_printk
@@ -1780,9 +1778,12 @@ l_int|NULL
 r_if
 c_cond
 (paren
+op_logical_neg
+id|vio_dma_mapping_error
+c_func
+(paren
 id|adapter-&gt;buffer_list_dma
-op_ne
-id|NO_TCE
+)paren
 )paren
 (brace
 id|vio_unmap_single
@@ -1799,7 +1800,7 @@ id|PCI_DMA_BIDIRECTIONAL
 suffix:semicolon
 id|adapter-&gt;buffer_list_dma
 op_assign
-id|NO_TCE
+id|DMA_ERROR_CODE
 suffix:semicolon
 )brace
 id|free_page
@@ -1828,9 +1829,12 @@ l_int|NULL
 r_if
 c_cond
 (paren
+op_logical_neg
+id|vio_dma_mapping_error
+c_func
+(paren
 id|adapter-&gt;filter_list_dma
-op_ne
-id|NO_TCE
+)paren
 )paren
 (brace
 id|vio_unmap_single
@@ -1847,7 +1851,7 @@ id|PCI_DMA_BIDIRECTIONAL
 suffix:semicolon
 id|adapter-&gt;filter_list_dma
 op_assign
-id|NO_TCE
+id|DMA_ERROR_CODE
 suffix:semicolon
 )brace
 id|free_page
@@ -1876,9 +1880,12 @@ l_int|NULL
 r_if
 c_cond
 (paren
+op_logical_neg
+id|vio_dma_mapping_error
+c_func
+(paren
 id|adapter-&gt;rx_queue.queue_dma
-op_ne
-id|NO_TCE
+)paren
 )paren
 (brace
 id|vio_unmap_single
@@ -1895,7 +1902,7 @@ id|PCI_DMA_BIDIRECTIONAL
 suffix:semicolon
 id|adapter-&gt;rx_queue.queue_dma
 op_assign
-id|NO_TCE
+id|DMA_ERROR_CODE
 suffix:semicolon
 )brace
 id|kfree
@@ -2156,21 +2163,27 @@ r_if
 c_cond
 (paren
 (paren
+id|vio_dma_mapping_error
+c_func
+(paren
 id|adapter-&gt;buffer_list_dma
-op_eq
-id|NO_TCE
+)paren
 )paren
 op_logical_or
+(paren
+id|vio_dma_mapping_error
+c_func
 (paren
 id|adapter-&gt;filter_list_dma
-op_eq
-id|NO_TCE
+)paren
 )paren
 op_logical_or
 (paren
+id|vio_dma_mapping_error
+c_func
+(paren
 id|adapter-&gt;rx_queue.queue_dma
-op_eq
-id|NO_TCE
+)paren
 )paren
 )paren
 (brace
@@ -2961,14 +2974,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|vio_dma_mapping_error
+c_func
+(paren
 id|desc
 (braket
 l_int|0
 )braket
 dot
 id|fields.address
-op_eq
-id|NO_TCE
+)paren
 )paren
 (brace
 id|ibmveth_error_printk
@@ -3073,6 +3088,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|vio_dma_mapping_error
+c_func
+(paren
 id|desc
 (braket
 id|curfrag
@@ -3081,8 +3099,7 @@ l_int|1
 )braket
 dot
 id|fields.address
-op_eq
-id|NO_TCE
+)paren
 )paren
 (brace
 id|ibmveth_error_printk
@@ -4411,15 +4428,15 @@ id|adapter
 suffix:semicolon
 id|adapter-&gt;buffer_list_dma
 op_assign
-id|NO_TCE
+id|DMA_ERROR_CODE
 suffix:semicolon
 id|adapter-&gt;filter_list_dma
 op_assign
-id|NO_TCE
+id|DMA_ERROR_CODE
 suffix:semicolon
 id|adapter-&gt;rx_queue.queue_dma
 op_assign
-id|NO_TCE
+id|DMA_ERROR_CODE
 suffix:semicolon
 id|atomic_set
 c_func

@@ -959,7 +959,7 @@ id|SubBus
 comma
 id|IdSel
 comma
-id|REALADDR
+id|ISERIES_HV_ADDR
 c_func
 (paren
 id|DevInfo
@@ -1181,7 +1181,7 @@ id|SubBus
 comma
 id|AgentId
 comma
-id|REALADDR
+id|ISERIES_HV_ADDR
 c_func
 (paren
 id|BridgeInfo

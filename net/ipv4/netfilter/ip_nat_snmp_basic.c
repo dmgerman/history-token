@@ -3756,7 +3756,6 @@ id|ASN1_INT
 r_goto
 id|err_addr_free
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3774,7 +3773,6 @@ id|trap-&gt;general
 )paren
 r_goto
 id|err_addr_free
-suffix:semicolon
 suffix:semicolon
 r_if
 c_cond

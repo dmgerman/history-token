@@ -76,6 +76,12 @@ op_assign
 l_int|50
 suffix:semicolon
 multiline_comment|/* default is 50% */
+DECL|variable|sysctl_max_map_count
+r_int
+id|sysctl_max_map_count
+op_assign
+id|DEFAULT_MAX_MAP_COUNT
+suffix:semicolon
 DECL|variable|vm_committed_space
 id|atomic_t
 id|vm_committed_space
@@ -98,6 +104,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sysctl_overcommit_ratio
+)paren
+suffix:semicolon
+DECL|variable|sysctl_max_map_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_max_map_count
 )paren
 suffix:semicolon
 DECL|variable|vm_committed_space
@@ -2079,6 +2092,11 @@ op_star
 id|rb_parent
 suffix:semicolon
 r_int
+id|accountable
+op_assign
+l_int|1
+suffix:semicolon
+r_int
 r_int
 id|charged
 op_assign
@@ -2090,6 +2108,19 @@ c_cond
 id|file
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|is_file_hugepages
+c_func
+(paren
+id|file
+)paren
+)paren
+id|accountable
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2181,7 +2212,7 @@ c_cond
 (paren
 id|mm-&gt;map_count
 OG
-id|MAX_MAP_COUNT
+id|sysctl_max_map_count
 )paren
 r_return
 op_minus
@@ -2584,6 +2615,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|accountable
+op_logical_and
+(paren
 op_logical_neg
 (paren
 id|flags
@@ -2594,6 +2628,7 @@ op_logical_or
 id|sysctl_overcommit_memory
 OG
 l_int|1
+)paren
 )paren
 (brace
 r_if
@@ -3452,10 +3487,10 @@ id|file
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Make sure that addr and length are properly aligned.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Check if the given range is hugepage aligned, and&n;&t;&t;&t; * can be made suitable for hugepages.&n;&t;&t;&t; */
 id|ret
 op_assign
-id|is_aligned_hugepage_range
+id|prepare_hugepage_range
 c_func
 (paren
 id|addr
@@ -5019,7 +5054,7 @@ c_cond
 (paren
 id|mm-&gt;map_count
 op_ge
-id|MAX_MAP_COUNT
+id|sysctl_max_map_count
 )paren
 r_return
 op_minus
@@ -5789,7 +5824,7 @@ c_cond
 (paren
 id|mm-&gt;map_count
 OG
-id|MAX_MAP_COUNT
+id|sysctl_max_map_count
 )paren
 r_return
 op_minus

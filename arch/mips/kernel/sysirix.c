@@ -5713,7 +5713,6 @@ id|ks.st_mtime.tv_nsec
 op_assign
 id|stat-&gt;mtime.tv_nsec
 suffix:semicolon
-suffix:semicolon
 id|ks.st_ctime.tv_sec
 op_assign
 (paren
@@ -5724,7 +5723,6 @@ suffix:semicolon
 id|ks.st_ctime.tv_nsec
 op_assign
 id|stat-&gt;ctime.tv_nsec
-suffix:semicolon
 suffix:semicolon
 id|ks.st_blksize
 op_assign

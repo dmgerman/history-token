@@ -38,8 +38,14 @@ DECL|macro|TASK_HPAGE_END_32
 mdefine_line|#define TASK_HPAGE_END_32&t;(0xc0000000UL)
 DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
 mdefine_line|#define ARCH_HAS_HUGEPAGE_ONLY_RANGE
+DECL|macro|ARCH_HAS_PREPARE_HUGEPAGE_RANGE
+mdefine_line|#define ARCH_HAS_PREPARE_HUGEPAGE_RANGE
+DECL|macro|is_hugepage_low_range
+mdefine_line|#define is_hugepage_low_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE_32-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END_32))
+DECL|macro|is_hugepage_high_range
+mdefine_line|#define is_hugepage_high_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END))
 DECL|macro|is_hugepage_only_range
-mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;( ((addr &gt; (TASK_HPAGE_BASE-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  (current-&gt;mm-&gt;context.low_hpages &amp;&amp; &bslash;&n;&t;   (addr &gt; (TASK_HPAGE_BASE_32-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END_32)) )
+mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;(is_hugepage_high_range((addr), (len)) || &bslash;&n;&t; (current-&gt;mm-&gt;context.low_hpages &bslash;&n;&t;  &amp;&amp; is_hugepage_low_range((addr), (len))))
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables free_pgtables
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
@@ -427,19 +433,6 @@ DECL|macro|__ba_to_bpn
 mdefine_line|#define __ba_to_bpn(x) ((((unsigned long)(x)) &amp; ~REGION_MASK) &gt;&gt; PAGE_SHIFT)
 DECL|macro|__va
 mdefine_line|#define __va(x) ((void *)((unsigned long)(x) + KERNELBASE))
-multiline_comment|/* Given that physical addresses do not map 1-1 to absolute addresses, we&n; * use these macros to better specify exactly what we want to do.&n; * The only restriction on their use is that the absolute address&n; * macros cannot be used until after the LMB structure has been&n; * initialized in prom.c.  -Peter&n; */
-DECL|macro|__v2p
-mdefine_line|#define __v2p(x) ((void *) __pa(x))
-DECL|macro|__v2a
-mdefine_line|#define __v2a(x) ((void *) phys_to_absolute(__pa(x)))
-DECL|macro|__p2a
-mdefine_line|#define __p2a(x) ((void *) phys_to_absolute(x))
-DECL|macro|__p2v
-mdefine_line|#define __p2v(x) ((void *) __va(x))
-DECL|macro|__a2p
-mdefine_line|#define __a2p(x) ((void *) absolute_to_phys(x))
-DECL|macro|__a2v
-mdefine_line|#define __a2v(x) ((void *) __va(absolute_to_phys(x)))
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;discontigmem_page_to_pfn(page)

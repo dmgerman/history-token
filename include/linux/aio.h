@@ -121,6 +121,7 @@ suffix:semicolon
 multiline_comment|/* the aio core uses this&n;&t;&t;&t;&t;&t;&t; * for cancellation */
 DECL|member|ki_user_obj
 r_void
+id|__user
 op_star
 id|ki_user_obj
 suffix:semicolon

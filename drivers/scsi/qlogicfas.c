@@ -2411,7 +2411,6 @@ l_int|0x430
 r_return
 l_int|NULL
 suffix:semicolon
-suffix:semicolon
 )brace
 r_else
 id|printk

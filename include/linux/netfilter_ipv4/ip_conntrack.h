@@ -295,7 +295,9 @@ id|help
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_helper.h&gt;
+r_struct
+id|ip_conntrack_helper
+suffix:semicolon
 DECL|struct|ip_conntrack
 r_struct
 id|ip_conntrack

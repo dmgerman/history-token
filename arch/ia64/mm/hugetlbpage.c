@@ -3006,6 +3006,26 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Return the number pages of memory we physically have, in PAGE_SIZE units. */
+DECL|function|hugetlb_total_pages
+r_int
+r_int
+id|hugetlb_total_pages
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|htlbzone_pages
+op_star
+(paren
+id|HPAGE_SIZE
+op_div
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+)brace
 DECL|function|hugetlb_nopage
 r_static
 r_struct

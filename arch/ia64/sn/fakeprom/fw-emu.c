@@ -1430,7 +1430,6 @@ suffix:semicolon
 r_return
 id|EFI_SUCCESS
 suffix:semicolon
-suffix:semicolon
 )brace
 r_void
 DECL|function|acpi_table_initx

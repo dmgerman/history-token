@@ -71,7 +71,6 @@ DECL|macro|sig_avoid_stop_race
 mdefine_line|#define sig_avoid_stop_race() &bslash;&n;&t;(sigtestsetmask(&amp;current-&gt;pending.signal, M(SIGCONT) | M(SIGKILL)) || &bslash;&n;&t; sigtestsetmask(&amp;current-&gt;signal-&gt;shared_pending.signal, &bslash;&n;&t;&t;&t;&t;&t;&t;  M(SIGCONT) | M(SIGKILL)))
 DECL|function|sig_ignored
 r_static
-r_inline
 r_int
 id|sig_ignored
 c_func
@@ -1683,7 +1682,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Tell a process that it has a new active signal..&n; *&n; * NOTE! we rely on the previous spin_lock to&n; * lock interrupts for us! We can only be called with&n; * &quot;siglock&quot; held, and the local interrupt must&n; * have been disabled when that got acquired!&n; *&n; * No need to set need_resched since signal event passing&n; * goes through -&gt;blocked&n; */
 DECL|function|signal_wake_up
-r_inline
 r_void
 id|signal_wake_up
 c_func
@@ -2830,7 +2828,6 @@ multiline_comment|/*&n; * Test if P wants to take SIG.  After we&squot;ve checke
 DECL|macro|wants_signal
 mdefine_line|#define wants_signal(sig, p, mask) &t;&t;&t;&bslash;&n;&t;(!sigismember(&amp;(p)-&gt;blocked, sig)&t;&t;&bslash;&n;&t; &amp;&amp; !((p)-&gt;state &amp; mask)&t;&t;&t;&bslash;&n;&t; &amp;&amp; !((p)-&gt;flags &amp; PF_EXITING)&t;&t;&t;&bslash;&n;&t; &amp;&amp; (task_curr(p) || !signal_pending(p)))
 r_static
-r_inline
 r_void
 DECL|function|__group_complete_signal
 id|__group_complete_signal
@@ -3145,7 +3142,6 @@ r_return
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|__group_send_sig_info
 id|__group_send_sig_info
@@ -4876,7 +4872,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Joy. Or not. Pthread wants us to wake up every thread&n; * in our parent group.&n; */
 DECL|function|__wake_up_parent
 r_static
-r_inline
 r_void
 id|__wake_up_parent
 c_func

@@ -3103,7 +3103,6 @@ id|stv680-&gt;scratch_next
 op_assign
 l_int|0
 suffix:semicolon
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace

@@ -1139,7 +1139,6 @@ id|tty
 op_assign
 id|info-&gt;tty
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

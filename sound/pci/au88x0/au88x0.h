@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  This program is free software; you can redistribute i
 macro_line|#ifndef __SOUND_AU88X0_H
 DECL|macro|__SOUND_AU88X0_H
 mdefine_line|#define __SOUND_AU88X0_H
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -13,23 +12,6 @@ macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
-macro_line|#ifndef&t;PCI_VENDOR_ID_AUREAL
-DECL|macro|PCI_VENDOR_ID_AUREAL
-mdefine_line|#define&t;PCI_VENDOR_ID_AUREAL 0x12eb
-macro_line|#endif
-macro_line|#ifndef&t;PCI_DEVICE_ID_AUREAL_VORTEX
-DECL|macro|PCI_DEVICE_ID_AUREAL_VORTEX
-mdefine_line|#define&t;PCI_DEVICE_ID_AUREAL_VORTEX 0x0001
-macro_line|#endif
-macro_line|#ifndef&t;PCI_DEVICE_ID_AUREAL_VORTEX2
-DECL|macro|PCI_DEVICE_ID_AUREAL_VORTEX2
-mdefine_line|#define&t;PCI_DEVICE_ID_AUREAL_VORTEX2 0x0002
-macro_line|#endif
-macro_line|#ifndef&t;PCI_DEVICE_ID_AUREAL_ADVANTAGE
-DECL|macro|PCI_DEVICE_ID_AUREAL_ADVANTAGE
-mdefine_line|#define&t;PCI_DEVICE_ID_AUREAL_ADVANTAGE 0x0003
-macro_line|#endif
-macro_line|#endif
 macro_line|#ifndef CHIP_AU8820
 macro_line|#include &quot;au88x0_eq.h&quot;
 macro_line|#include &quot;au88x0_a3d.h&quot;

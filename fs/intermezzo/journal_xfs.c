@@ -83,7 +83,6 @@ suffix:semicolon
 r_return
 id|sbp-&gt;sb_fdblocks
 suffix:semicolon
-suffix:semicolon
 macro_line|#endif
 r_return
 l_int|0x0fffffff

@@ -4248,7 +4248,6 @@ id|max_seg_size
 op_minus
 id|TTP_HEADER
 suffix:semicolon
-suffix:semicolon
 id|self-&gt;max_header_size
 op_assign
 id|max_header_size

@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/abs_addr.h&gt;
 multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; *&n; * Execution context:&n; *   htab_initialize is called with the MMU off (of course), but&n; *   the kernel has been copied down to zero so it can directly&n; *   reference global data.  At this point it is very difficult&n; *   to print debug info.&n; *&n; */
 macro_line|#ifdef CONFIG_PMAC_DART
 r_extern
@@ -251,11 +252,7 @@ id|hpteg
 comma
 id|va
 comma
-(paren
-r_int
-r_int
-)paren
-id|__v2a
+id|virt_to_abs
 c_func
 (paren
 id|addr
@@ -282,11 +279,7 @@ id|hpteg
 comma
 id|va
 comma
-(paren
-r_int
-r_int
-)paren
-id|__v2a
+id|virt_to_abs
 c_func
 (paren
 id|addr
@@ -445,11 +438,7 @@ suffix:semicolon
 )brace
 id|htab_data.htab
 op_assign
-(paren
-id|HPTE
-op_star
-)paren
-id|__a2v
+id|abs_to_virt
 c_func
 (paren
 id|table

@@ -10166,7 +10166,6 @@ op_or
 id|TCF_WDTR_DONE
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 r_return
 (paren

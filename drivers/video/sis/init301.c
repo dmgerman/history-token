@@ -11792,7 +11792,6 @@ comma
 l_int|0x01
 )paren
 suffix:semicolon
-suffix:semicolon
 multiline_comment|/* The following is nearly unpreditable and varies from machine&n;&t; * to machine. Especially the 301DH seems to be a real trouble&n;&t; * maker. Some BIOSes simply set the registers (like in the&n;&t; * NoLCD-if-statements here), some set them according to the&n;&t; * LCDA stuff. It is very likely that some machines are not&n;&t; * treated correctly in the following, very case-orientated&n;&t; * code. What do I do then...?&n;&t; */
 multiline_comment|/* 740 variants match for 30xB, 301B-DH, 30xLV */
 r_if

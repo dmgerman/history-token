@@ -726,7 +726,6 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-suffix:semicolon
 id|drive-&gt;waiting_for_dma
 op_assign
 l_int|0
