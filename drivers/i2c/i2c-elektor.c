@@ -12,12 +12,14 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
 macro_line|#include &lt;linux/i2c-elektor.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;i2c-pcf8584.h&quot;
 DECL|macro|DEFAULT_BASE
 mdefine_line|#define DEFAULT_BASE 0x330
@@ -25,15 +27,11 @@ DECL|variable|base
 r_static
 r_int
 id|base
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|irq
 r_static
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|clock
 r_static
@@ -53,15 +51,11 @@ DECL|variable|mmapped
 r_static
 r_int
 id|mmapped
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|i2c_debug
 r_static
 r_int
 id|i2c_debug
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* vdovikin: removed static struct i2c_pcf_isa gpi; code - &n;  this module in real supports only one device, due to missing arguments&n;  in some functions, called from the algo-pcf module. Sometimes it&squot;s&n;  need to be rewriten - but for now just remove this for simpler reading */
 DECL|variable|pcf_wait
@@ -636,25 +630,46 @@ id|i2c_algo_pcf_data
 id|pcf_isa_data
 op_assign
 (brace
-l_int|NULL
-comma
+dot
+id|setpcf
+op_assign
 id|pcf_isa_setbyte
 comma
+dot
+id|getpcf
+op_assign
 id|pcf_isa_getbyte
 comma
+dot
+id|getown
+op_assign
 id|pcf_isa_getown
 comma
+dot
+id|getclock
+op_assign
 id|pcf_isa_getclock
 comma
+dot
+id|waitforpin
+op_assign
 id|pcf_isa_waitforpin
 comma
+dot
+id|udelay
+op_assign
 l_int|10
 comma
+dot
+id|mdelay
+op_assign
 l_int|10
 comma
+dot
+id|timeout
+op_assign
 l_int|100
 comma
-multiline_comment|/*&t;waits, timeout */
 )brace
 suffix:semicolon
 DECL|variable|pcf_isa_ops
@@ -664,21 +679,40 @@ id|i2c_adapter
 id|pcf_isa_ops
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;PCF8584 ISA adapter&quot;
 comma
+dot
+id|id
+op_assign
 id|I2C_HW_P_ELEK
 comma
-l_int|NULL
-comma
+dot
+id|algo_data
+op_assign
 op_amp
 id|pcf_isa_data
 comma
+dot
+id|inc_use
+op_assign
 id|pcf_isa_inc_use
 comma
+dot
+id|dec_use
+op_assign
 id|pcf_isa_dec_use
 comma
+dot
+id|client_register
+op_assign
 id|pcf_isa_reg
 comma
+dot
+id|client_unregister
+op_assign
 id|pcf_isa_unreg
 comma
 )brace
