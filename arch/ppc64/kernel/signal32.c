@@ -8978,6 +8978,9 @@ suffix:colon
 r_case
 id|SIGWINCH
 suffix:colon
+r_case
+id|SIGURG
+suffix:colon
 r_continue
 suffix:semicolon
 r_case
