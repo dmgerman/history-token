@@ -1415,6 +1415,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#if CONFIG_ARCH_SA1100
 multiline_comment|/*&n;&t; * First, set up the 3.6864MHz clock on GPIO 27 for the SA-1111:&n;&t; * (SA-1110 Developer&squot;s Manual, section 9.1.2.1)&n;&t; */
 id|GAFR
 op_or_assign
@@ -1428,6 +1429,16 @@ id|TUCR
 op_assign
 id|TUCR_3_6864MHz
 suffix:semicolon
+macro_line|#elif CONFIG_ARCH_PXA
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO11_3_6MHz_MD
+)paren
+suffix:semicolon
+macro_line|#else
+macro_line|#error missing clock setup
+macro_line|#endif
 multiline_comment|/*&n;&t; * Turn VCO on, and disable PLL Bypass.&n;&t; */
 id|r
 op_assign
@@ -1522,6 +1533,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ARCH_SA1100
 multiline_comment|/*&n; * Configure the SA1111 shared memory controller.&n; */
 r_void
 DECL|function|sa1111_configure_smc
@@ -1583,6 +1595,7 @@ id|SA1111_SMCR
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_void
 DECL|function|sa1111_init_one_child
@@ -1928,6 +1941,7 @@ c_func
 id|sachip
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_SA1100
 multiline_comment|/*&n;&t; * The SDRAM configuration of the SA1110 and the SA1111 must&n;&t; * match.  This is very important to ensure that SA1111 accesses&n;&t; * don&squot;t corrupt the SDRAM.  Note that this ungates the SA1111&squot;s&n;&t; * MBGNT signal, so we must have called sa1110_mb_disable()&n;&t; * beforehand.&n;&t; */
 id|sa1111_configure_smc
 c_func
@@ -1982,6 +1996,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * The interrupt controller must be initialised before any&n;&t; * other device to ensure that the interrupts are available.&n;&t; */
 id|int_dev.irq
 (braket

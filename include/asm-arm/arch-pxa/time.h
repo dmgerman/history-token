@@ -110,7 +110,11 @@ r_int
 (paren
 id|elapsed
 op_star
-id|tick
+(paren
+id|tick_nsec
+op_div
+l_int|1000
+)paren
 )paren
 op_div
 id|LATCH
@@ -143,6 +147,12 @@ id|flags
 suffix:semicolon
 r_int
 id|next_match
+suffix:semicolon
+id|do_profile
+c_func
+(paren
+id|regs
+)paren
 suffix:semicolon
 multiline_comment|/* Loop until we get ahead of the free running timer.&n;&t; * This ensures an exact clock tick count and time accuracy.&n;&t; * IRQs are disabled inside the loop to ensure coherence between&n;&t; * lost_ticks (updated in do_timer()) and the match reg value, so we&n;&t; * can use do_gettimeofday() from interrupt handlers.&n;&t; */
 r_do

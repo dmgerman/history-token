@@ -5,8 +5,6 @@ DECL|macro|LUBBOCK_FPGA_VIRT
 mdefine_line|#define LUBBOCK_FPGA_VIRT&t;(0xf0000000)&t;/* phys 0x08000000 */
 DECL|macro|LUBBOCK_ETH_BASE
 mdefine_line|#define LUBBOCK_ETH_BASE&t;(0xf1000000)&t;/* phys 0x0c000000 */
-DECL|macro|LUBBOCK_SA1111_BASE
-mdefine_line|#define LUBBOCK_SA1111_BASE&t;(0xf4000000)&t;/* phys 0x10000000 */
 DECL|macro|LUB_P2V
 mdefine_line|#define LUB_P2V(x)&t;&t;((x) - LUBBOCK_FPGA_PHYS + LUBBOCK_FPGA_VIRT)
 DECL|macro|LUB_V2P

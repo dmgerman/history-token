@@ -244,8 +244,6 @@ c_cond
 id|nowayout
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* do not permit disabling the watchdog by writing 0 to reg. 0xF2 */
 r_if
 c_cond

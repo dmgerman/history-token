@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/char/shwdt.c&n; *&n; * Watchdog driver for integrated watchdog in the SuperH 3/4 processors.&n; *&n; * Copyright (C) 2001 Paul Mundt &lt;lethal@chaoticdreams.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * 14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *     Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; */
+multiline_comment|/*&n; * drivers/char/shwdt.c&n; *&n; * Watchdog driver for integrated watchdog in the SuperH processors.&n; *&n; * Copyright (C) 2001, 2002 Paul Mundt &lt;lethal@0xd6.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * 14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *     Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,7 +10,12 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_CPU_SH5)
+DECL|macro|WTCNT
+mdefine_line|#define WTCNT&t;&t;CPRC_BASE + 0x10
+DECL|macro|WTCSR
+mdefine_line|#define WTCSR&t;&t;CPRC_BASE + 0x18
+macro_line|#elif defined(CONFIG_CPU_SH4)
 DECL|macro|WTCNT
 mdefine_line|#define WTCNT&t;&t;0xffc00008
 DECL|macro|WTCSR
@@ -21,7 +26,7 @@ mdefine_line|#define WTCNT&t;&t;0xffffff84
 DECL|macro|WTCSR
 mdefine_line|#define WTCSR&t;&t;0xffffff86
 macro_line|#else
-macro_line|#error &quot;Can&squot;t use SH 3/4 watchdog on non-SH 3/4 processor.&quot;
+macro_line|#error &quot;Can&squot;t use SuperH watchdog on this platform&quot;
 macro_line|#endif
 DECL|macro|WTCNT_HIGH
 mdefine_line|#define WTCNT_HIGH&t;0x5a00
@@ -387,15 +392,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|nowayout
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 id|sh_wdt_start
 c_func
 (paren
@@ -1058,13 +1054,13 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Paul Mundt &lt;lethal@chaoticdreams.org&gt;&quot;
+l_string|&quot;Paul Mundt &lt;lethal@0xd6.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;SH 3/4 watchdog driver&quot;
+l_string|&quot;SuperH watchdog driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
