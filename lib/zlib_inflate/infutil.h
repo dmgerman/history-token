@@ -3,7 +3,7 @@ multiline_comment|/* WARNING: this file should *not* be used by applications. It
 macro_line|#ifndef _INFUTIL_H
 DECL|macro|_INFUTIL_H
 mdefine_line|#define _INFUTIL_H
-macro_line|#include &quot;zconf.h&quot;
+macro_line|#include &lt;linux/zconf.h&gt;
 macro_line|#include &quot;inftrees.h&quot;
 macro_line|#include &quot;infcodes.h&quot;
 r_typedef
