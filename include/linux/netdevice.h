@@ -828,6 +828,18 @@ r_struct
 id|list_head
 id|todo_list
 suffix:semicolon
+multiline_comment|/* device name hash chain */
+DECL|member|name_hlist
+r_struct
+id|hlist_node
+id|name_hlist
+suffix:semicolon
+multiline_comment|/* device index hash chain */
+DECL|member|index_hlist
+r_struct
+id|hlist_node
+id|index_hlist
+suffix:semicolon
 multiline_comment|/* register/unregister state machine */
 DECL|enumerator|NETREG_UNINITIALIZED
 r_enum

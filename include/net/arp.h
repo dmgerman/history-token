@@ -4,6 +4,8 @@ DECL|macro|_ARP_H
 mdefine_line|#define _ARP_H
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
+DECL|macro|HAVE_ARP_CREATE
+mdefine_line|#define HAVE_ARP_CREATE
 r_extern
 r_struct
 id|neigh_table
@@ -147,6 +149,57 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|sk_buff
+op_star
+id|arp_create
+c_func
+(paren
+r_int
+id|type
+comma
+r_int
+id|ptype
+comma
+id|u32
+id|dest_ip
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+id|u32
+id|src_ip
+comma
+r_int
+r_char
+op_star
+id|dest_hw
+comma
+r_int
+r_char
+op_star
+id|src_hw
+comma
+r_int
+r_char
+op_star
+id|target_hw
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|arp_xmit
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
 )paren
 suffix:semicolon
 r_extern
