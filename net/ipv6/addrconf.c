@@ -2991,6 +2991,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|ift
+op_logical_or
 id|IS_ERR
 c_func
 (paren
@@ -6425,6 +6428,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|ifp
+op_logical_or
 id|IS_ERR
 c_func
 (paren
