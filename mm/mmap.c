@@ -3368,7 +3368,7 @@ r_else
 multiline_comment|/*&n;&t;&t;&t; * Ensure that a normal request is not falling in a&n;&t;&t;&t; * reserved hugepage range.  For some archs like IA-64,&n;&t;&t;&t; * there is a separate region for hugepages.&n;&t;&t;&t; */
 id|ret
 op_assign
-id|check_valid_hugepage_range
+id|is_hugepage_only_range
 c_func
 (paren
 id|addr
