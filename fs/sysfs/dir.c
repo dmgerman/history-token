@@ -231,8 +231,7 @@ op_logical_neg
 id|sd
 )paren
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 id|sd-&gt;s_mode
 op_assign
