@@ -2939,10 +2939,8 @@ id|packet_filter_bitmap
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 (brace
 r_int
 id|result

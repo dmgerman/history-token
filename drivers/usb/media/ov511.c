@@ -4117,8 +4117,7 @@ id|rc
 OL
 l_int|0
 )paren
-r_return
-id|rc
+r_break
 suffix:semicolon
 multiline_comment|/* Write &quot;value&quot; to I2C data port of OV511 */
 id|rc
@@ -4140,8 +4139,7 @@ id|rc
 OL
 l_int|0
 )paren
-r_return
-id|rc
+r_break
 suffix:semicolon
 multiline_comment|/* Initiate 3-byte write cycle */
 id|rc
@@ -4163,9 +4161,9 @@ id|rc
 OL
 l_int|0
 )paren
-r_return
-id|rc
+r_break
 suffix:semicolon
+multiline_comment|/* Retry until idle */
 r_do
 id|rc
 op_assign
@@ -4195,7 +4193,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Retry until idle */
 r_if
 c_cond
 (paren
@@ -4203,9 +4200,9 @@ id|rc
 OL
 l_int|0
 )paren
-r_return
-id|rc
+r_break
 suffix:semicolon
+multiline_comment|/* Ack? */
 r_if
 c_cond
 (paren
@@ -4217,9 +4214,14 @@ l_int|2
 op_eq
 l_int|0
 )paren
-multiline_comment|/* Ack? */
+(brace
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 macro_line|#if 0
 multiline_comment|/* I2C abort */
 id|reg_w
@@ -4248,14 +4250,17 @@ c_func
 l_string|&quot;i2c write retries exhausted&quot;
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 l_int|1
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/* NOTE: Do not call this function directly!&n; * The OV518 I2C I/O procedure is different, hence, this function.&n; * This is normally only called from i2c_r(). Note that this function&n; * always succeeds regardless of whether the sensor is present and working.&n; */
@@ -4456,6 +4461,7 @@ l_int|0
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* Retry until idle */
 r_do
 id|rc
 op_assign
@@ -4485,7 +4491,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Retry until idle */
 r_if
 c_cond
 (paren
@@ -4576,6 +4581,7 @@ l_int|0
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* Retry until idle */
 r_do
 id|rc
 op_assign
@@ -4605,7 +4611,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Retry until idle */
 r_if
 c_cond
 (paren
@@ -5422,16 +5427,6 @@ id|ov
 comma
 id|OV511_RESET_NOREGS
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-OL
-l_int|0
-)paren
-r_goto
-id|out
 suffix:semicolon
 id|out
 suffix:colon
@@ -22894,6 +22889,8 @@ id|ularg
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -22972,12 +22969,12 @@ id|ver
 )paren
 )paren
 )paren
-r_return
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -23005,10 +23002,15 @@ id|opt
 )paren
 )paren
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -23031,14 +23033,6 @@ id|opt.val
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -23056,14 +23050,6 @@ op_amp
 id|opt.val
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -23083,14 +23069,6 @@ id|opt.val
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -23109,14 +23087,6 @@ id|opt.val
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -23127,11 +23097,21 @@ c_func
 l_string|&quot;Invalid get short option number&quot;
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+r_break
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -23149,12 +23129,12 @@ id|opt
 )paren
 )paren
 )paren
-r_return
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -23182,10 +23162,15 @@ id|opt
 )paren
 )paren
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -23205,14 +23190,6 @@ comma
 id|opt.val
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -23227,14 +23204,6 @@ id|ov
 comma
 id|opt.val
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -23251,14 +23220,6 @@ comma
 id|opt.val
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -23274,14 +23235,6 @@ comma
 id|opt.val
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -23292,13 +23245,13 @@ c_func
 l_string|&quot;Invalid set short option number&quot;
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -23326,10 +23279,15 @@ id|opt
 )paren
 )paren
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -23389,11 +23347,21 @@ c_func
 l_string|&quot;Invalid get int option number&quot;
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+r_break
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -23411,12 +23379,12 @@ id|opt
 )paren
 )paren
 )paren
-r_return
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -23444,10 +23412,15 @@ id|opt
 )paren
 )paren
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -23467,14 +23440,6 @@ comma
 id|opt.val
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -23489,14 +23454,6 @@ id|ov
 comma
 id|opt.val
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -23548,12 +23505,11 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
-(brace
-r_return
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -23571,7 +23527,8 @@ op_assign
 id|opt.val
 suffix:semicolon
 r_else
-r_return
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -23628,13 +23585,13 @@ c_func
 l_string|&quot;Invalid get int option number&quot;
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -23662,11 +23619,17 @@ id|w
 )paren
 )paren
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_return
+r_break
+suffix:semicolon
+)brace
+id|rc
+op_assign
 id|i2c_w_slave
 c_func
 (paren
@@ -23680,6 +23643,8 @@ id|w.value
 comma
 id|w.mask
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -23707,10 +23672,15 @@ id|r
 )paren
 )paren
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|i2c_r_slave
@@ -23730,8 +23700,7 @@ id|rc
 OL
 l_int|0
 )paren
-r_return
-id|rc
+r_break
 suffix:semicolon
 id|r.value
 op_assign
@@ -23754,24 +23723,25 @@ id|r
 )paren
 )paren
 )paren
-r_return
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_default
 suffix:colon
-r_return
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* end switch */
 r_return
-l_int|0
+id|rc
 suffix:semicolon
 )brace
 macro_line|#endif

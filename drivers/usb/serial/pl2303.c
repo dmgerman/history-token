@@ -2815,7 +2815,7 @@ id|usb_control_msg
 (paren
 id|serial-&gt;dev
 comma
-id|usb_rcvctrlpipe
+id|usb_sndctrlpipe
 (paren
 id|serial-&gt;dev
 comma
