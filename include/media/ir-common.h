@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ir-common.h,v 1.6 2004/09/15 16:15:24 kraxel Exp $&n; *&n; * some common structs and functions to handle infrared remotes via&n; * input layer ...&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * $Id: ir-common.h,v 1.8 2005/02/22 12:28:40 kraxel Exp $&n; *&n; * some common structs and functions to handle infrared remotes via&n; * input layer ...&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 DECL|macro|IR_TYPE_RC5
@@ -60,7 +60,21 @@ id|IR_KEYTAB_SIZE
 suffix:semicolon
 r_extern
 id|IR_KEYTAB_TYPE
+id|ir_codes_winfast
+(braket
+id|IR_KEYTAB_SIZE
+)braket
+suffix:semicolon
+r_extern
+id|IR_KEYTAB_TYPE
 id|ir_codes_empty
+(braket
+id|IR_KEYTAB_SIZE
+)braket
+suffix:semicolon
+r_extern
+id|IR_KEYTAB_TYPE
+id|ir_codes_hauppauge_new
 (braket
 id|IR_KEYTAB_SIZE
 )braket
@@ -132,6 +146,36 @@ id|data
 comma
 id|u32
 id|mask
+)paren
+suffix:semicolon
+r_int
+id|ir_dump_samples
+c_func
+(paren
+id|u32
+op_star
+id|samples
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+r_int
+id|ir_decode_biphase
+c_func
+(paren
+id|u32
+op_star
+id|samples
+comma
+r_int
+id|count
+comma
+r_int
+id|low
+comma
+r_int
+id|high
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
