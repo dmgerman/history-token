@@ -1315,6 +1315,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|edge_level
+op_eq
+id|ACPI_LEVEL_SENSITIVE
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|gsi
 OL
@@ -1357,6 +1365,7 @@ c_func
 id|gsi
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#endif
