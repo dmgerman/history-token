@@ -175,6 +175,7 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 r_static
 r_int
 r_char
@@ -203,6 +204,7 @@ op_star
 id|bdp
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 id|u16
 id|e100_get_ip_lbytes
@@ -14253,6 +14255,7 @@ id|SUPPORTED_MII
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PM
 r_static
 r_int
 r_char
@@ -14417,7 +14420,6 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PM
 r_static
 r_void
 DECL|function|e100_do_wol
