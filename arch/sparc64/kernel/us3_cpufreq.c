@@ -636,7 +636,6 @@ suffix:semicolon
 DECL|function|us3_freq_cpu_exit
 r_static
 r_int
-id|__exit
 id|us3_freq_cpu_exit
 c_func
 (paren
