@@ -1164,9 +1164,7 @@ id|sk
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|dst_entry
-op_star
+r_int
 id|ip6_dst_lookup
 c_func
 (paren
@@ -1174,6 +1172,12 @@ r_struct
 id|sock
 op_star
 id|sk
+comma
+r_struct
+id|dst_entry
+op_star
+op_star
+id|dst
 comma
 r_struct
 id|flowi
