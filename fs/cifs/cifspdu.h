@@ -28,6 +28,8 @@ DECL|macro|SMB_COM_TRANSACTION2
 mdefine_line|#define SMB_COM_TRANSACTION2&t;      0x32
 DECL|macro|SMB_COM_TRANSACTION2_SECONDARY
 mdefine_line|#define SMB_COM_TRANSACTION2_SECONDARY 0x33
+DECL|macro|SMB_COM_FIND_CLOSE2
+mdefine_line|#define SMB_COM_FIND_CLOSE2           0x34
 DECL|macro|SMB_COM_TREE_DISCONNECT
 mdefine_line|#define SMB_COM_TREE_DISCONNECT       0x71
 DECL|macro|SMB_COM_NEGOTIATE
@@ -1227,7 +1229,6 @@ DECL|member|FileID
 id|__u16
 id|FileID
 suffix:semicolon
-multiline_comment|/* target file attributes */
 DECL|member|LastWriteTime
 id|__u32
 id|LastWriteTime
@@ -1261,6 +1262,30 @@ multiline_comment|/* bct = 0 */
 DECL|typedef|CLOSE_RSP
 )brace
 id|CLOSE_RSP
+suffix:semicolon
+DECL|struct|smb_com_findclose_req
+r_typedef
+r_struct
+id|smb_com_findclose_req
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 1 */
+DECL|member|FileID
+id|__u16
+id|FileID
+suffix:semicolon
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|typedef|FINDCLOSE_REQ
+)brace
+id|FINDCLOSE_REQ
 suffix:semicolon
 multiline_comment|/* OpenFlags */
 DECL|macro|REQ_OPLOCK
@@ -3379,7 +3404,6 @@ id|ResumeFileName
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* will be null string actually since we set bit 3 - resume from previous ending place */
 DECL|typedef|TRANSACTION2_FNEXT_REQ
 )brace
 id|TRANSACTION2_FNEXT_REQ
