@@ -3,8 +3,10 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Simple hash strategy: index = code &amp; 0xff;&n; * ext_int_hash[index] is the start of the list for all external interrupts&n; * that hash to this index. With the current set of external interrupts &n; * (0x1202 external call, 0x1004 cpu timer, 0x2401 hwc console, 0x4000&n; * iucv and 0x2603 pfault) this is always the first element. &n; */
 DECL|variable|ext_int_hash
 id|ext_int_info_t
@@ -380,6 +382,30 @@ id|p-&gt;next
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|do_extint
+r_void
+id|do_extint
+c_func
+(paren
+r_void
+)paren
+(brace
+id|kstat_cpu
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+dot
+id|irqs
+(braket
+id|EXTERNAL_INTERRUPT
+)braket
+op_increment
 suffix:semicolon
 )brace
 DECL|variable|register_external_interrupt
