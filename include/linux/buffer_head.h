@@ -372,16 +372,6 @@ id|inode
 )paren
 suffix:semicolon
 r_int
-id|write_mapping_buffers
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-)paren
-suffix:semicolon
-r_int
 id|inode_has_buffers
 c_func
 (paren
