@@ -2170,10 +2170,10 @@ comma
 id|p-&gt;info.id.proto
 comma
 op_amp
-id|p-&gt;info.sel.daddr
+id|p-&gt;info.id.daddr
 comma
 op_amp
-id|p-&gt;info.sel.saddr
+id|p-&gt;info.saddr
 comma
 l_int|1
 comma
