@@ -684,7 +684,7 @@ id|EFI_MEMORY_WB
 id|trim_bottom
 c_func
 (paren
-id|md
+id|check_md
 comma
 id|granule_addr
 )paren
