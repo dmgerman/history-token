@@ -3002,7 +3002,7 @@ op_minus
 id|rc
 suffix:semicolon
 r_goto
-id|bdput
+id|free
 suffix:semicolon
 )brace
 r_if
@@ -3144,14 +3144,6 @@ c_func
 id|bdev
 comma
 id|BDEV_FS
-)paren
-suffix:semicolon
-id|bdput
-suffix:colon
-id|bdput
-c_func
-(paren
-id|bdev
 )paren
 suffix:semicolon
 id|free
@@ -4003,12 +3995,6 @@ c_func
 id|bdev
 comma
 id|BDEV_FS
-)paren
-suffix:semicolon
-id|bdput
-c_func
-(paren
-id|bdev
 )paren
 suffix:semicolon
 id|out
