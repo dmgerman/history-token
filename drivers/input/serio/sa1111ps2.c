@@ -66,7 +66,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Read all bytes waiting in the PS2 port.  There should be&n; * at the most one, but we loop for safety.  If there was a&n; * framing error, we have to manually clear the status.&n; */
 DECL|function|ps2_rxint
 r_static
-r_void
+id|irqreturn_t
 id|ps2_rxint
 c_func
 (paren
@@ -97,6 +97,11 @@ comma
 id|flag
 comma
 id|status
+suffix:semicolon
+r_int
+id|handled
+op_assign
+id|IRQ_NONE
 suffix:semicolon
 id|status
 op_assign
@@ -207,12 +212,19 @@ op_plus
 id|SA1111_PS2STAT
 )paren
 suffix:semicolon
+id|handled
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|handled
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Completion of ps2 write&n; */
 DECL|function|ps2_txint
 r_static
-r_void
+id|irqreturn_t
 id|ps2_txint
 c_func
 (paren
@@ -319,6 +331,9 @@ c_func
 op_amp
 id|ps2if-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write a byte to the PS2 port.  We have to wait for the&n; * port to indicate that the transmitter is empty.&n; */

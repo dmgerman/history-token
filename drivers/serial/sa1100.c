@@ -1014,7 +1014,7 @@ suffix:semicolon
 )brace
 DECL|function|sa1100_int
 r_static
-r_void
+id|irqreturn_t
 id|sa1100_int
 c_func
 (paren
@@ -1224,6 +1224,9 @@ c_func
 op_amp
 id|sport-&gt;port.lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return TIOCSER_TEMT when transmitter is not busy.&n; */
@@ -3298,6 +3301,7 @@ comma
 dot
 id|data
 op_assign
+op_amp
 id|sa1100_reg
 comma
 )brace

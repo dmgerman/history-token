@@ -282,7 +282,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Prototype: void eesoxscsi_intr(irq, *dev_id, *regs)&n; * Purpose  : handle interrupts from EESOX SCSI card&n; * Params   : irq    - interrupt number&n; *&t;      dev_id - user-defined (Scsi_Host structure)&n; *&t;      regs   - processor registers at interrupt&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|eesoxscsi_intr
 id|eesoxscsi_intr
 c_func
@@ -307,6 +307,7 @@ id|info
 op_assign
 id|dev_id
 suffix:semicolon
+r_return
 id|fas216_intr
 c_func
 (paren

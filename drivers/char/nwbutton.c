@@ -396,7 +396,7 @@ suffix:semicolon
 multiline_comment|/* &n; *  This handler is called when the orange button is pressed (GPIO 10 of the&n; *  SuperIO chip, which maps to logical IRQ 26). If the press_count is 0,&n; *  this is the first press, so it starts a timer and increments the counter.&n; *  If it is higher than 0, it deletes the old timer, starts a new one, and&n; *  increments the counter.&n; */
 DECL|function|button_handler
 r_static
-r_void
+id|irqreturn_t
 id|button_handler
 (paren
 r_int
@@ -451,6 +451,9 @@ id|add_timer
 op_amp
 id|button_timer
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is called when a user space program attempts to read&n; * /dev/nwbutton. It puts the device to sleep on the wait queue until&n; * button_sequence_finished writes some data to the buffer and flushes&n; * the queue, at which point it writes the data out to the device and&n; * returns the number of characters it has written. This function is&n; * reentrant, so that many processes can be attempting to read from the&n; * device at any one time.&n; */

@@ -192,7 +192,7 @@ id|port
 )brace
 DECL|function|serial21285_rx_chars
 r_static
-r_void
+id|irqreturn_t
 id|serial21285_rx_chars
 c_func
 (paren
@@ -289,7 +289,8 @@ id|KERN_WARNING
 l_string|&quot;TTY_DONT_FLIP set&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -452,10 +453,15 @@ c_func
 id|tty
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|serial21285_tx_chars
 r_static
-r_void
+id|irqreturn_t
 id|serial21285_tx_chars
 c_func
 (paren
@@ -510,7 +516,8 @@ id|port-&gt;x_char
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -537,7 +544,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_do
@@ -629,6 +637,11 @@ id|port
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|serial21285_tx_empty

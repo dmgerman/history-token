@@ -9411,8 +9411,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prototype: void acornscsi_intr(int irq, void *dev_id, struct pt_regs *regs)&n; * Purpose  : handle interrupts from Acorn SCSI card&n; * Params   : irq    - interrupt number&n; *&t;      dev_id - device specific data (AS_Host structure)&n; *&t;      regs   - processor registers when interrupt occurred&n; */
 r_static
+id|irqreturn_t
 DECL|function|acornscsi_intr
-r_void
 id|acornscsi_intr
 c_func
 (paren
@@ -9449,23 +9449,6 @@ r_int
 id|in_irq
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|host-&gt;scsi.interrupt
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;scsi%d: interrupt re-entered&bslash;n&quot;
-comma
-id|host-&gt;host-&gt;host_no
-)paren
-suffix:semicolon
-id|host-&gt;scsi.interrupt
-op_assign
-l_int|1
 suffix:semicolon
 r_do
 (brace
@@ -9561,9 +9544,8 @@ op_ne
 id|INTR_IDLE
 )paren
 suffix:semicolon
-id|host-&gt;scsi.interrupt
-op_assign
-l_int|0
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*=============================================================================================&n; * Interfaces between interrupt handler and rest of scsi code&n; */

@@ -61,7 +61,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|amba_kmi_int
 r_static
-r_void
+id|irqreturn_t
 id|amba_kmi_int
 c_func
 (paren
@@ -94,6 +94,11 @@ c_func
 (paren
 id|KMIIR
 )paren
+suffix:semicolon
+r_int
+id|handled
+op_assign
+id|IRQ_NONE
 suffix:semicolon
 r_while
 c_loop
@@ -128,7 +133,14 @@ c_func
 id|KMIIR
 )paren
 suffix:semicolon
+id|handled
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|handled
+suffix:semicolon
 )brace
 DECL|function|amba_kmi_write
 r_static
