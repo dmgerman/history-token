@@ -246,6 +246,14 @@ r_int
 id|active
 suffix:semicolon
 multiline_comment|/* status of the device */
+DECL|member|capabilities
+r_int
+id|capabilities
+suffix:semicolon
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
 DECL|member|global_list
 r_struct
 id|list_head
@@ -381,37 +389,8 @@ DECL|macro|to_pnp_dev
 mdefine_line|#define&t;to_pnp_dev(n) container_of(n, struct pnp_dev, dev)
 DECL|macro|pnp_for_each_dev
 mdefine_line|#define pnp_for_each_dev(dev) &bslash;&n;&t;for(dev = global_to_pnp_dev(pnp_global.next); &bslash;&n;&t;dev != global_to_pnp_dev(&amp;pnp_global); &bslash;&n;&t;dev = global_to_pnp_dev(dev-&gt;global_list.next))
-DECL|function|pnp_dev_has_driver
-r_static
-r_inline
-r_int
-id|pnp_dev_has_driver
-c_func
-(paren
-r_struct
-id|pnp_dev
-op_star
-id|pdev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pdev-&gt;driver
-op_logical_or
-(paren
-id|pdev-&gt;card
-op_logical_and
-id|pdev-&gt;card-&gt;driver
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|card_for_each_dev
+mdefine_line|#define card_for_each_dev(card,dev) &bslash;&n;&t;for((dev) = card_to_pnp_dev((card)-&gt;devices.next); &bslash;&n;&t;(dev) != card_to_pnp_dev(&amp;(card)-&gt;devices); &bslash;&n;&t;(dev) = card_to_pnp_dev((dev)-&gt;card_list.next))
 DECL|function|pnp_get_drvdata
 r_static
 r_inline
@@ -525,6 +504,36 @@ suffix:semicolon
 multiline_comment|/* fixup function */
 )brace
 suffix:semicolon
+multiline_comment|/* capabilities */
+DECL|macro|PNP_READ
+mdefine_line|#define PNP_READ&t;&t;0x0001
+DECL|macro|PNP_WRITE
+mdefine_line|#define PNP_WRITE&t;&t;0x0002
+DECL|macro|PNP_DISABLE
+mdefine_line|#define PNP_DISABLE&t;&t;0x0004
+DECL|macro|PNP_CONFIGURABLE
+mdefine_line|#define PNP_CONFIGURABLE&t;0x0008
+DECL|macro|PNP_REMOVABLE
+mdefine_line|#define PNP_REMOVABLE&t;&t;0x0010
+DECL|macro|pnp_can_read
+mdefine_line|#define pnp_can_read(dev)&t;(((dev)-&gt;protocol) &amp;&amp; ((dev)-&gt;protocol-&gt;get) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_READ))
+DECL|macro|pnp_can_write
+mdefine_line|#define pnp_can_write(dev)&t;(((dev)-&gt;protocol) &amp;&amp; ((dev)-&gt;protocol-&gt;set) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_WRITE))
+DECL|macro|pnp_can_disable
+mdefine_line|#define pnp_can_disable(dev)&t;(((dev)-&gt;protocol) &amp;&amp; ((dev)-&gt;protocol-&gt;disable) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_DISABLE))
+DECL|macro|pnp_can_configure
+mdefine_line|#define pnp_can_configure(dev)&t;((!(dev)-&gt;active) &amp;&amp; ((dev)-&gt;capabilities &amp; PNP_CONFIGURABLE))
+multiline_comment|/* status */
+DECL|macro|PNP_INIT
+mdefine_line|#define PNP_INIT&t;&t;0x0000
+DECL|macro|PNP_READY
+mdefine_line|#define PNP_READY&t;&t;0x0001
+DECL|macro|PNP_ATTACHED
+mdefine_line|#define PNP_ATTACHED&t;&t;0x0002
+DECL|macro|PNP_BUSY
+mdefine_line|#define PNP_BUSY&t;&t;0x0004
+DECL|macro|PNP_FAULTY
+mdefine_line|#define PNP_FAULTY&t;&t;0x0008
 multiline_comment|/*&n; * Driver Management&n; */
 DECL|struct|pnp_id
 r_struct
@@ -1084,10 +1093,6 @@ id|DEVICE_COUNT_IRQ
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|PNP_DYNAMIC
-mdefine_line|#define PNP_DYNAMIC&t;&t;0&t;/* get or set current resource */
-DECL|macro|PNP_STATIC
-mdefine_line|#define PNP_STATIC&t;&t;1&t;/* get or set resource for next boot */
 DECL|struct|pnp_cfg
 r_struct
 id|pnp_cfg
@@ -1182,9 +1187,6 @@ r_struct
 id|pnp_cfg
 op_star
 id|config
-comma
-r_char
-id|flags
 )paren
 suffix:semicolon
 DECL|member|disable
@@ -1460,9 +1462,6 @@ r_struct
 id|pnp_res_cfg
 op_star
 r_template
-comma
-r_int
-id|mode
 )paren
 suffix:semicolon
 r_void
@@ -1888,9 +1887,6 @@ r_struct
 id|pnp_res_cfg
 op_star
 r_template
-comma
-r_int
-id|mode
 )paren
 (brace
 r_return

@@ -248,7 +248,7 @@ op_amp
 id|pnp_lock
 )paren
 suffix:semicolon
-id|list_del_init
+id|list_del
 c_func
 (paren
 op_amp
@@ -432,6 +432,10 @@ op_assign
 op_amp
 id|pnp_release_device
 suffix:semicolon
+id|dev-&gt;status
+op_assign
+id|PNP_READY
+suffix:semicolon
 id|error
 op_assign
 id|device_register
@@ -564,14 +568,14 @@ op_amp
 id|pnp_lock
 )paren
 suffix:semicolon
-id|list_del_init
+id|list_del
 c_func
 (paren
 op_amp
 id|dev-&gt;global_list
 )paren
 suffix:semicolon
-id|list_del_init
+id|list_del
 c_func
 (paren
 op_amp
@@ -636,7 +640,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Linux Plug and Play Support v0.93 (c) Adam Belay&bslash;n&quot;
+l_string|&quot;Linux Plug and Play Support v0.94 (c) Adam Belay&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
