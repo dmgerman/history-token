@@ -3521,7 +3521,7 @@ id|err_out
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @fpos:&t;position in the directory&n; * @ndir:&t;ntfs inode of current directory&n; * @ia_page:&t;page in which the index allocation buffer @ie is in resides&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; *&n; * If @index_type is INDEX_TYPE_ALLOCATION, @ia_page is the locked page&n; * containing the index allocation block containing the index entry @ie.&n; * Otherwise, @ia_page is NULL.&n; *&n; * Note, we drop (and then reacquire) the page lock on @ia_page across the&n; * @filldir() call otherwise we would deadlock with NFSd when it calls -&gt;lookup&n; * since ntfs_lookup() will lock the same page.  As an optimization, we do not&n; * retake the lock if we are returning a non-zero value as ntfs_readdir()&n; * would need to drop the lock immediately anyway.&n; */
+multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @fpos:&t;position in the directory&n; * @ndir:&t;ntfs inode of current directory&n; * @ia_page:&t;page in which the index allocation buffer @ie is in resides&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; *&n; * If @ia_page is not NULL it is the locked page containing the index&n; * allocation block containing the index entry @ie.&n; *&n; * Note, we drop (and then reacquire) the page lock on @ia_page across the&n; * @filldir() call otherwise we would deadlock with NFSd when it calls -&gt;lookup&n; * since ntfs_lookup() will lock the same page.  As an optimization, we do not&n; * retake the lock if we are returning a non-zero value as ntfs_readdir()&n; * would need to drop the lock immediately anyway.&n; */
 DECL|function|ntfs_filldir
 r_static
 r_inline
@@ -3534,7 +3534,6 @@ op_star
 id|vol
 comma
 id|loff_t
-op_star
 id|fpos
 comma
 id|ntfs_inode
@@ -3740,7 +3739,6 @@ id|name
 comma
 id|name_len
 comma
-op_star
 id|fpos
 comma
 id|mref
@@ -3766,7 +3764,6 @@ id|name
 comma
 id|name_len
 comma
-op_star
 id|fpos
 comma
 id|mref
@@ -4495,7 +4492,6 @@ c_func
 (paren
 id|vol
 comma
-op_amp
 id|fpos
 comma
 id|ndir
@@ -5532,7 +5528,6 @@ c_func
 (paren
 id|vol
 comma
-op_amp
 id|fpos
 comma
 id|ndir
