@@ -7000,10 +7000,6 @@ id|isp_cfg1
 comma
 id|hwrev
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|isp1020_hostdata
 op_star
