@@ -252,6 +252,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* do path grouping */
+DECL|member|force
+r_int
+r_int
+id|force
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* allow forced online */
 DECL|member|options
 )brace
 id|__attribute__

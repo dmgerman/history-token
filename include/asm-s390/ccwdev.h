@@ -359,6 +359,9 @@ mdefine_line|#define CCWDEV_REPORT_ALL&t; &t;0x0002
 multiline_comment|/* Try to perform path grouping. */
 DECL|macro|CCWDEV_DO_PATHGROUP
 mdefine_line|#define CCWDEV_DO_PATHGROUP             0x0004
+multiline_comment|/* Allow forced onlining of boxed devices. */
+DECL|macro|CCWDEV_ALLOW_FORCE
+mdefine_line|#define CCWDEV_ALLOW_FORCE              0x0008
 multiline_comment|/*&n; * ccw_device_start()&n; *&n; *  Start a S/390 channel program. When the interrupt arrives, the&n; *  IRQ handler is called, either immediately, delayed (dev-end missing,&n; *  or sense required) or never (no IRQ handler registered).&n; *  Depending on the action taken, ccw_device_start() returns:  &n; *                           0&t;     - Success&n; *&t;&t;&t;     -EBUSY  - Device busy, or status pending&n; *&t;&t;&t;     -ENODEV - Device not operational&n; *                           -EINVAL - Device invalid for operation&n; */
 r_extern
 r_int
