@@ -6954,8 +6954,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|meye.pm_state
 )paren
 suffix:semicolon
 id|meye.pm_mchip_mode
@@ -6995,8 +6993,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|meye.pm_state
 )paren
 suffix:semicolon
 id|pci_write_config_word

@@ -1311,8 +1311,6 @@ id|pci_save_state
 c_func
 (paren
 id|pci_dev
-comma
-id|pci_dev-&gt;saved_config_space
 )paren
 suffix:semicolon
 r_return
@@ -1337,8 +1335,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pci_dev
-comma
-id|pci_dev-&gt;saved_config_space
 )paren
 suffix:semicolon
 multiline_comment|/* if the device was enabled before suspend, reenable */

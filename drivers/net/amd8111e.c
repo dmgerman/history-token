@@ -8232,8 +8232,6 @@ id|pci_save_state
 c_func
 (paren
 id|pci_dev
-comma
-id|lp-&gt;pm_state
 )paren
 suffix:semicolon
 id|pci_set_power_state
@@ -8307,8 +8305,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pci_dev
-comma
-id|lp-&gt;pm_state
 )paren
 suffix:semicolon
 id|pci_enable_wake

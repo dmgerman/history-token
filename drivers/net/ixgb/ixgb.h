@@ -313,13 +313,6 @@ r_struct
 id|ixgb_hw_stats
 id|stats
 suffix:semicolon
-DECL|member|pci_state
-r_uint32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _IXGB_H_ */

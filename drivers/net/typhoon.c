@@ -808,13 +808,6 @@ DECL|member|offload
 id|u32
 id|offload
 suffix:semicolon
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 multiline_comment|/* unused stuff (future use) */
 DECL|member|capabilities
 r_int
@@ -8256,8 +8249,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* Post 2.x.x versions of the Sleep Image require a reset before&n;&t; * we can download the Runtime Image. But let&squot;s not make users of&n;&t; * the old firmware pay for the reset.&n;&t; */
@@ -10339,8 +10330,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|err
@@ -10644,8 +10633,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* Init sequence:&n;&t; * 1) Reset the adapter to clear any bad juju&n;&t; * 2) Reload the sleep image&n;&t; * 3) Boot the sleep image&n;&t; * 4) Get the hardware address.&n;&t; * 5) Put the card to sleep.&n;&t; */
@@ -11411,8 +11398,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 id|typhoon_reset

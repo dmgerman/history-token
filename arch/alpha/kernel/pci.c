@@ -749,8 +749,6 @@ id|pci_save_state
 c_func
 (paren
 id|dev
-comma
-id|tmp-&gt;regs
 )paren
 suffix:semicolon
 id|srm_saved_configs
@@ -798,8 +796,6 @@ id|pci_restore_state
 c_func
 (paren
 id|tmp-&gt;dev
-comma
-id|tmp-&gt;regs
 )paren
 suffix:semicolon
 )brace

@@ -994,18 +994,6 @@ DECL|member|pm_suspended
 id|u16
 id|pm_suspended
 suffix:semicolon
-DECL|member|pm_save_state
-id|u32
-id|pm_save_state
-(braket
-l_int|64
-op_div
-r_sizeof
-(paren
-id|u32
-)paren
-)braket
-suffix:semicolon
 DECL|member|pm_saved_mixer_settings
 r_int
 id|pm_saved_mixer_settings
@@ -14833,8 +14821,6 @@ id|pci_save_state
 c_func
 (paren
 id|dev
-comma
-id|card-&gt;pm_save_state
 )paren
 suffix:semicolon
 multiline_comment|/* XXX do we need this? */
@@ -14897,8 +14883,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|dev
-comma
-id|card-&gt;pm_save_state
 )paren
 suffix:semicolon
 multiline_comment|/* observation of a toshiba portege 3440ct suggests that the &n;&t;   hardware has to be more or less completely reinitialized from&n;&t;   scratch after an apm suspend.  Works For Me.   -dan */

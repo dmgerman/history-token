@@ -7622,8 +7622,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|pdev-&gt;saved_config_space
 )paren
 suffix:semicolon
 r_if

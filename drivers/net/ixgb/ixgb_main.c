@@ -8369,8 +8369,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|adapter-&gt;pci_state
 )paren
 suffix:semicolon
 id|state

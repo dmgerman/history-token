@@ -8332,8 +8332,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|pdev-&gt;saved_config_space
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -8458,8 +8456,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|pdev-&gt;saved_config_space
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

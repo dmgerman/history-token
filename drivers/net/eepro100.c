@@ -1411,15 +1411,6 @@ id|u32
 id|msg_enable
 suffix:semicolon
 multiline_comment|/* debug message level */
-macro_line|#ifdef CONFIG_PM
-DECL|member|pm_state
-id|u32
-id|pm_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* The parameters for a CmdConfigure operation.&n;   There are so many options that it would be difficult to document each bit.&n;   We mostly use the default or recommended settings. */
@@ -11398,8 +11389,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|sp-&gt;pm_state
 )paren
 suffix:semicolon
 r_if
@@ -11485,8 +11474,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|sp-&gt;pm_state
 )paren
 suffix:semicolon
 r_if

@@ -7183,8 +7183,6 @@ id|pci_save_state
 c_func
 (paren
 id|dev
-comma
-id|par-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_set_power_state
@@ -7248,8 +7246,6 @@ id|pci_restore_state
 c_func
 (paren
 id|dev
-comma
-id|par-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_set_power_state

@@ -2361,10 +2361,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 suffix:semicolon
 r_int
@@ -2375,10 +2371,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 suffix:semicolon
 r_int
@@ -3324,10 +3316,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 (brace
 r_return
@@ -3345,10 +3333,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 (brace
 r_return

@@ -458,13 +458,6 @@ r_struct
 id|e1000_desc_ring
 id|test_rx_ring
 suffix:semicolon
-DECL|member|pci_state
-r_uint32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|msg_enable
 r_int
 id|msg_enable
