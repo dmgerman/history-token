@@ -206,7 +206,7 @@ mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif
 r_extern
 r_char
-id|ignore_irq13
+id|ignore_fpu_irq
 suffix:semicolon
 r_extern
 r_void
@@ -656,7 +656,7 @@ DECL|macro|getCx86
 mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
 DECL|macro|setCx86
 mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
-multiline_comment|/*&n; * Bus types (default is ISA, but people can check others with these..)&n; */
+multiline_comment|/*&n; * Bus types (default is ISA, but people can check others with these..)&n; * pc98 indicates PC98 systems (CBUS)&n; */
 macro_line|#ifdef CONFIG_EISA
 r_extern
 r_int
@@ -670,6 +670,13 @@ r_extern
 r_int
 id|MCA_bus
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PC9800
+DECL|macro|pc98
+mdefine_line|#define pc98 1
+macro_line|#else
+DECL|macro|pc98
+mdefine_line|#define pc98 0
+macro_line|#endif
 multiline_comment|/* from system description table in BIOS.  Mostly for MCA use, but&n;others may find it useful. */
 r_extern
 r_int
