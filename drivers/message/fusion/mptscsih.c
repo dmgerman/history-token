@@ -2533,12 +2533,20 @@ c_func
 id|pScsiReply-&gt;TransferCount
 )paren
 suffix:semicolon
+id|sc-&gt;resid
+op_assign
+id|sc-&gt;request_bufflen
+op_minus
+id|xfer_cnt
+suffix:semicolon
 id|dreplyprintk
 c_func
 (paren
 (paren
 id|KERN_NOTICE
-l_string|&quot; Reply (%d:%d:%d) mf=%p, mr=%p, sc=%p&bslash;n&quot;
+l_string|&quot;Reply ha=%d id=%d lun=%d:&bslash;n&quot;
+l_string|&quot;IOCStatus=%04xh SCSIState=%02xh SCSIStatus=%02xh&bslash;n&quot;
+l_string|&quot;resid=%d bufflen=%d xfer_cnt=%d&bslash;n&quot;
 comma
 id|ioc-&gt;id
 comma
@@ -2549,27 +2557,15 @@ id|pScsiReq-&gt;LUN
 l_int|1
 )braket
 comma
-id|mf
-comma
-id|mr
-comma
-id|sc
-)paren
-)paren
-suffix:semicolon
-id|dreplyprintk
-c_func
-(paren
-(paren
-id|KERN_NOTICE
-l_string|&quot;IOCStatus=%04xh SCSIState=%02xh&quot;
-l_string|&quot; SCSIStatus=%02xh xfer_cnt=%08xh&bslash;n&quot;
-comma
 id|status
 comma
 id|scsi_state
 comma
 id|scsi_status
+comma
+id|sc-&gt;resid
+comma
+id|sc-&gt;request_bufflen
 comma
 id|xfer_cnt
 )paren
@@ -2720,12 +2716,6 @@ r_case
 id|MPI_IOCSTATUS_SCSI_RESIDUAL_MISMATCH
 suffix:colon
 multiline_comment|/* 0x0049 */
-id|sc-&gt;resid
-op_assign
-id|sc-&gt;request_bufflen
-op_minus
-id|xfer_cnt
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2860,17 +2850,9 @@ r_else
 r_if
 c_cond
 (paren
-(paren
 id|xfer_cnt
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
+OL
 id|sc-&gt;underflow
-OG
-id|xfer_cnt
-)paren
 )paren
 (brace
 id|sc-&gt;result
@@ -2918,7 +2900,6 @@ l_int|16
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Give report and update residual count.&n;&t;&t;&t; */
 id|dreplyprintk
 c_func
 (paren
@@ -2938,23 +2919,6 @@ id|KERN_NOTICE
 l_string|&quot;  ActBytesXferd=%02xh&bslash;n&quot;
 comma
 id|xfer_cnt
-)paren
-)paren
-suffix:semicolon
-id|sc-&gt;resid
-op_assign
-id|sc-&gt;request_bufflen
-op_minus
-id|xfer_cnt
-suffix:semicolon
-id|dreplyprintk
-c_func
-(paren
-(paren
-id|KERN_NOTICE
-l_string|&quot;  SET sc-&gt;resid=%02xh&bslash;n&quot;
-comma
-id|sc-&gt;resid
 )paren
 )paren
 suffix:semicolon
