@@ -7135,7 +7135,7 @@ c_func
 id|vp
 )paren
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 multiline_comment|/* Go active */
@@ -15357,7 +15357,7 @@ c_func
 id|vp
 )paren
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 )brace
@@ -16323,7 +16323,7 @@ c_func
 id|vp
 )paren
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 )brace
@@ -16410,7 +16410,7 @@ c_func
 id|vp
 )paren
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 multiline_comment|/* Go active */

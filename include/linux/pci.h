@@ -597,6 +597,34 @@ DECL|macro|PCI_EXP_DEVSTA_AUXPD
 mdefine_line|#define  PCI_EXP_DEVSTA_AUXPD&t;0x10&t;/* AUX Power Detected */
 DECL|macro|PCI_EXP_DEVSTA_TRPND
 mdefine_line|#define  PCI_EXP_DEVSTA_TRPND&t;0x20&t;/* Transactions Pending */
+DECL|macro|PCI_EXP_LNKCAP
+mdefine_line|#define PCI_EXP_LNKCAP&t;&t;12&t;/* Link Capabilities */
+DECL|macro|PCI_EXP_LNKCTL
+mdefine_line|#define PCI_EXP_LNKCTL&t;&t;16&t;/* Link Control */
+DECL|macro|PCI_EXP_LNKSTA
+mdefine_line|#define PCI_EXP_LNKSTA&t;&t;18&t;/* Link Status */
+DECL|macro|PCI_EXP_SLTCAP
+mdefine_line|#define PCI_EXP_SLTCAP&t;&t;20&t;/* Slot Capabilities */
+DECL|macro|PCI_EXP_SLTCTL
+mdefine_line|#define PCI_EXP_SLTCTL&t;&t;24&t;/* Slot Control */
+DECL|macro|PCI_EXP_SLTSTA
+mdefine_line|#define PCI_EXP_SLTSTA&t;&t;26&t;/* Slot Status */
+DECL|macro|PCI_EXP_RTCTL
+mdefine_line|#define PCI_EXP_RTCTL&t;&t;28&t;/* Root Control */
+DECL|macro|PCI_EXP_RTCTL_SECEE
+mdefine_line|#define  PCI_EXP_RTCTL_SECEE&t;0x01&t;/* System Error on Correctable Error */
+DECL|macro|PCI_EXP_RTCTL_SENFEE
+mdefine_line|#define  PCI_EXP_RTCTL_SENFEE&t;0x02&t;/* System Error on Non-Fatal Error */
+DECL|macro|PCI_EXP_RTCTL_SEFEE
+mdefine_line|#define  PCI_EXP_RTCTL_SEFEE&t;0x04&t;/* System Error on Fatal Error */
+DECL|macro|PCI_EXP_RTCTL_PMEIE
+mdefine_line|#define  PCI_EXP_RTCTL_PMEIE&t;0x08&t;/* PME Interrupt Enable */
+DECL|macro|PCI_EXP_RTCTL_CRSSVE
+mdefine_line|#define  PCI_EXP_RTCTL_CRSSVE&t;0x10&t;/* CRS Software Visibility Enable */
+DECL|macro|PCI_EXP_RTCAP
+mdefine_line|#define PCI_EXP_RTCAP&t;&t;30&t;/* Root Capabilities */
+DECL|macro|PCI_EXP_RTSTA
+mdefine_line|#define PCI_EXP_RTSTA&t;&t;32&t;/* Root Status */
 multiline_comment|/* Extended Capabilities (PCI-X 2.0 and Express) */
 DECL|macro|PCI_EXT_CAP_ID
 mdefine_line|#define PCI_EXT_CAP_ID(header)&t;&t;(header &amp; 0x0000ffff)
@@ -768,6 +796,22 @@ DECL|macro|DEVICE_COUNT_COMPATIBLE
 mdefine_line|#define DEVICE_COUNT_COMPATIBLE&t;4
 DECL|macro|DEVICE_COUNT_RESOURCE
 mdefine_line|#define DEVICE_COUNT_RESOURCE&t;12
+DECL|typedef|pci_power_t
+r_typedef
+r_int
+id|__bitwise
+id|pci_power_t
+suffix:semicolon
+DECL|macro|PCI_D0
+mdefine_line|#define PCI_D0&t;((pci_power_t __force) 0)
+DECL|macro|PCI_D1
+mdefine_line|#define PCI_D1&t;((pci_power_t __force) 1)
+DECL|macro|PCI_D2
+mdefine_line|#define PCI_D2&t;((pci_power_t __force) 2)
+DECL|macro|PCI_D3hot
+mdefine_line|#define PCI_D3hot&t;((pci_power_t __force) 3)
+DECL|macro|PCI_D3cold
+mdefine_line|#define PCI_D3cold&t;((pci_power_t __force) 4)
 multiline_comment|/*&n; * The pci_dev structure is used to describe PCI devices.&n; */
 DECL|struct|pci_dev
 r_struct
@@ -867,7 +911,7 @@ id|dma_mask
 suffix:semicolon
 multiline_comment|/* Mask of the bits of bus address this&n;&t;&t;&t;&t;&t;   device implements.  Normally this is&n;&t;&t;&t;&t;&t;   0xffffffff.  You only need to change&n;&t;&t;&t;&t;&t;   this if your device has broken DMA&n;&t;&t;&t;&t;&t;   or supports 64-bit transfers.  */
 DECL|member|current_state
-id|u32
+id|pci_power_t
 id|current_state
 suffix:semicolon
 multiline_comment|/* Current operating state. In ACPI-speak,&n;&t;&t;&t;&t;&t;   this is D0-D3, D0 being fully functional,&n;&t;&t;&t;&t;&t;   and D3 being off. */
@@ -2476,7 +2520,20 @@ id|pci_dev
 op_star
 id|dev
 comma
-r_int
+id|pci_power_t
+id|state
+)paren
+suffix:semicolon
+id|pci_power_t
+id|pci_choose_state
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u32
 id|state
 )paren
 suffix:semicolon
@@ -2489,7 +2546,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pci_power_t
 id|state
 comma
 r_int
@@ -3408,12 +3465,32 @@ id|pci_dev
 op_star
 id|dev
 comma
-r_int
+id|pci_power_t
 id|state
 )paren
 (brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|pci_choose_state
+r_static
+r_inline
+id|pci_power_t
+id|pci_choose_state
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u32
+id|state
+)paren
+(brace
+r_return
+id|PCI_D0
 suffix:semicolon
 )brace
 DECL|function|pci_enable_wake
@@ -3428,7 +3505,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pci_power_t
 id|state
 comma
 r_int

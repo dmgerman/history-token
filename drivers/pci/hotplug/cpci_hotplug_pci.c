@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;cpci_hotplug.h&quot;
-macro_line|#if !defined(CONFIG_HOTPLUG_CPCI_MODULE)
+macro_line|#if !defined(MODULE)
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;&quot;cpci_hotplug&quot;
 macro_line|#else
