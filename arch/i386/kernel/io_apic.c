@@ -7123,7 +7123,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                          ACPI-based IOAPIC Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|macro|IO_APIC_MAX_ID
-mdefine_line|#define IO_APIC_MAX_ID&t;&t;15
+mdefine_line|#define IO_APIC_MAX_ID APIC_BROADCAST_ID
 DECL|function|io_apic_get_unique_id
 r_int
 id|__init

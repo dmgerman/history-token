@@ -6,10 +6,17 @@ DECL|macro|APIC_DEFAULT_PHYS_BASE
 mdefine_line|#define&t;&t;APIC_DEFAULT_PHYS_BASE&t;0xfee00000
 DECL|macro|APIC_ID
 mdefine_line|#define&t;&t;APIC_ID&t;&t;0x20
+macro_line|#ifdef CONFIG_X86_SUMMIT
 DECL|macro|APIC_ID_MASK
-mdefine_line|#define&t;&t;&t;APIC_ID_MASK&t;&t;(0x0F&lt;&lt;24)
+mdefine_line|#define&t;&t;APIC_ID_MASK&t;&t;(0xFF&lt;&lt;24)
 DECL|macro|GET_APIC_ID
-mdefine_line|#define&t;&t;&t;GET_APIC_ID(x)&t;&t;(((x)&gt;&gt;24)&amp;0x0F)
+mdefine_line|#define&t;&t;GET_APIC_ID(x)&t;&t;(((x)&gt;&gt;24)&amp;0xFF)
+macro_line|#else
+DECL|macro|APIC_ID_MASK
+mdefine_line|#define&t;&t;APIC_ID_MASK&t;&t;(0x0F&lt;&lt;24)
+DECL|macro|GET_APIC_ID
+mdefine_line|#define&t;&t;GET_APIC_ID(x)&t;&t;(((x)&gt;&gt;24)&amp;0x0F)
+macro_line|#endif
 DECL|macro|APIC_LVR
 mdefine_line|#define&t;&t;APIC_LVR&t;0x30
 DECL|macro|APIC_LVR_MASK

@@ -88,15 +88,28 @@ comma
 l_int|8
 )paren
 op_logical_and
+(paren
 op_logical_neg
 id|strncmp
 c_func
 (paren
-id|str
+id|productid
 comma
 l_string|&quot;VIGIL SMP&quot;
 comma
 l_int|9
+)paren
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|productid
+comma
+l_string|&quot;RUTHLESS SMP&quot;
+comma
+l_int|12
+)paren
 )paren
 )paren
 id|x86_summit
