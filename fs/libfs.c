@@ -86,7 +86,24 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Lookup the data. This is trivial - if the dentry didn&squot;t already&n; * exist, we know it is negative.&n; */
+multiline_comment|/*&n; * Retaining negative dentries for an in-memory filesystem just wastes&n; * memory and lookup time: arrange for them to be deleted immediately.&n; */
+DECL|function|simple_delete_dentry
+r_static
+r_int
+id|simple_delete_dentry
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Lookup the data. This is trivial - if the dentry didn&squot;t already&n; * exist, we know it is negative.  Set d_op to delete negative dentries.&n; */
 DECL|function|simple_lookup
 r_struct
 id|dentry
@@ -110,6 +127,19 @@ op_star
 id|nd
 )paren
 (brace
+r_static
+r_struct
+id|dentry_operations
+id|simple_dentry_operations
+op_assign
+(brace
+dot
+id|d_delete
+op_assign
+id|simple_delete_dentry
+comma
+)brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -124,6 +154,11 @@ c_func
 op_minus
 id|ENAMETOOLONG
 )paren
+suffix:semicolon
+id|dentry-&gt;d_op
+op_assign
+op_amp
+id|simple_dentry_operations
 suffix:semicolon
 id|d_add
 c_func
