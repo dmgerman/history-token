@@ -935,7 +935,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* No match at all */
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
@@ -962,7 +962,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* Matched a non-match */
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
@@ -973,7 +973,7 @@ id|cpu-&gt;x86_model_id
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_SPEEDSTEP_CENTRINO_ACPI
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
@@ -1565,7 +1565,7 @@ id|cpu
 )paren
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
@@ -2219,7 +2219,7 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
@@ -2391,7 +2391,7 @@ id|policy-&gt;cpu
 )braket
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
