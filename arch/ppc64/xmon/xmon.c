@@ -937,10 +937,6 @@ suffix:semicolon
 id|enter_rtas
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|__pa
 c_func
 (paren

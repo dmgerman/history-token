@@ -12281,7 +12281,6 @@ op_minus
 id|naddrc
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_IRQ
 r_if
 c_cond
 (paren
@@ -12289,6 +12288,8 @@ id|p
 op_eq
 l_int|NULL
 )paren
+(brace
+macro_line|#ifdef DEBUG_IRQ
 id|printk
 c_func
 (paren
@@ -12298,6 +12299,10 @@ id|np-&gt;full_name
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 op_star
 id|irq
 op_assign
@@ -12342,6 +12347,8 @@ r_int
 id|intlen
 comma
 id|intrcells
+comma
+id|intrcount
 suffix:semicolon
 r_int
 id|i
@@ -12408,10 +12415,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-id|np-&gt;n_intrs
-op_assign
-id|intlen
-suffix:semicolon
 id|np-&gt;intrs
 op_assign
 (paren
@@ -12439,6 +12442,10 @@ id|measure_only
 r_return
 id|mem_start
 suffix:semicolon
+id|intrcount
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -12452,26 +12459,12 @@ id|intlen
 suffix:semicolon
 op_increment
 id|i
+comma
+id|ints
+op_add_assign
+id|intrcells
 )paren
 (brace
-id|np-&gt;intrs
-(braket
-id|i
-)braket
-dot
-id|line
-op_assign
-l_int|0
-suffix:semicolon
-id|np-&gt;intrs
-(braket
-id|i
-)braket
-dot
-id|sense
-op_assign
-l_int|1
-suffix:semicolon
 id|n
 op_assign
 id|map_interrupt
@@ -12499,6 +12492,36 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* don&squot;t map IRQ numbers under a cascaded 8259 controller */
+r_if
+c_cond
+(paren
+id|ic
+op_logical_and
+id|device_is_compatible
+c_func
+(paren
+id|ic
+comma
+l_string|&quot;chrp,iic&quot;
+)paren
+)paren
+(brace
+id|np-&gt;intrs
+(braket
+id|intrcount
+)braket
+dot
+id|line
+op_assign
+id|irq
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+r_else
+(brace
 id|virq
 op_assign
 id|virt_irq_create_mapping
@@ -12522,17 +12545,18 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;Could not allocate interrupt &quot;
-l_string|&quot;number for %s&bslash;n&quot;
+l_string|&quot;Could not allocate interrupt&quot;
+l_string|&quot; number for %s&bslash;n&quot;
 comma
 id|np-&gt;full_name
 )paren
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
 id|np-&gt;intrs
 (braket
-id|i
+id|intrcount
 )braket
 dot
 id|line
@@ -12543,6 +12567,7 @@ c_func
 id|virq
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* We offset irq numbers for the u3 MPIC by 128 in PowerMac */
 r_if
 c_cond
@@ -12586,7 +12611,7 @@ l_string|&quot;u3&quot;
 )paren
 id|np-&gt;intrs
 (braket
-id|i
+id|intrcount
 )braket
 dot
 id|line
@@ -12594,6 +12619,15 @@ op_add_assign
 l_int|128
 suffix:semicolon
 )brace
+id|np-&gt;intrs
+(braket
+id|intrcount
+)braket
+dot
+id|sense
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12603,7 +12637,7 @@ l_int|1
 )paren
 id|np-&gt;intrs
 (braket
-id|i
+id|intrcount
 )braket
 dot
 id|sense
@@ -12663,11 +12697,14 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|ints
-op_add_assign
-id|intrcells
+op_increment
+id|intrcount
 suffix:semicolon
 )brace
+id|np-&gt;n_intrs
+op_assign
+id|intrcount
+suffix:semicolon
 r_return
 id|mem_start
 suffix:semicolon
