@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/mm-tbox.c&n; *&n; *  Copyright (C) 1998, 1999, 2000 Phil Blundell&n; *  Copyright (C) 1998-1999 Russell King&n; *&n; *  Extra MM routines for the Tbox architecture&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;

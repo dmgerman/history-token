@@ -118,6 +118,20 @@ r_int
 id|tag
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Function: queue_remove_all_target(queue, target)&n; * Purpose : remove all SCSI commands from the queue for a specified target&n; * Params  : queue  - queue to remove command from&n; *           target - target device id&n; * Returns : nothing&n; */
+r_extern
+r_void
+id|queue_remove_all_target
+c_func
+(paren
+id|Queue_t
+op_star
+id|queue
+comma
+r_int
+id|target
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function: int queue_probetgtlun (queue, target, lun)&n; * Purpose : check to see if we have a command in the queue for the specified&n; *&t;     target/lun.&n; * Params  : queue  - queue to look in&n; *&t;     target - target we want to probe&n; *&t;     lun    - lun on target&n; * Returns : 0 if not found, != 0 if found&n; */
 r_extern
 r_int

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/dma-ebsa285.c&n; *&n; *  Copyright (C) 1998 Phil Blundell&n; *&n; * DMA functions specific to EBSA-285/CATS architectures&n; *&n; *  Changelog:&n; *   09-Nov-1998 RMK&t;Split out ISA DMA functions to dma-isa.c&n; *   17-Mar-1999 RMK&t;Allow any EBSA285-like architecture to have&n; *&t;&t;&t;ISA DMA controllers.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

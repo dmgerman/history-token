@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-footbridge/netwinder-hw.c&n; *&n; * Netwinder machine fixup&n; *&n; * Copyright (C) 1998, 1999 Russell King, Phil Blundell&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
