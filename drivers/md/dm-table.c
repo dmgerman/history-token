@@ -2647,7 +2647,7 @@ suffix:semicolon
 id|DMERR
 c_func
 (paren
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|tgt-&gt;error
 )paren
@@ -2679,7 +2679,7 @@ suffix:semicolon
 id|DMERR
 c_func
 (paren
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|tgt-&gt;error
 )paren
@@ -2819,7 +2819,7 @@ suffix:colon
 id|DMERR
 c_func
 (paren
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|tgt-&gt;error
 )paren
