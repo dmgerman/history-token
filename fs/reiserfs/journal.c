@@ -8366,7 +8366,11 @@ id|p_s_sb
 )paren
 )paren
 comma
-id|p_s_sb-&gt;s_id
+id|reiserfs_bdevname
+c_func
+(paren
+id|p_s_sb
+)paren
 )paren
 suffix:semicolon
 id|start
@@ -10466,22 +10470,13 @@ id|rs
 )paren
 )paren
 (brace
-r_char
-id|jname
-(braket
-l_int|32
-)braket
-suffix:semicolon
-r_char
-id|fname
-(braket
-l_int|32
-)braket
-suffix:semicolon
-id|strcpy
+id|printk
 c_func
 (paren
-id|jname
+l_string|&quot;sh-460: journal header magic %x (device %s) does not match &quot;
+l_string|&quot;to magic found in super block %x (device %s)&bslash;n&quot;
+comma
+id|jh-&gt;jh_journal.jp_journal_magic
 comma
 id|kdevname
 c_func
@@ -10492,25 +10487,6 @@ c_func
 id|p_s_sb
 )paren
 )paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fname
-comma
-id|p_s_sb-&gt;s_id
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sh-460: journal header magic %x (device %s) does not match &quot;
-l_string|&quot;to magic found in super block %x (device %s)&bslash;n&quot;
-comma
-id|jh-&gt;jh_journal.jp_journal_magic
-comma
-id|jname
 comma
 id|sb_jp_journal_magic
 c_func
@@ -10518,7 +10494,10 @@ c_func
 id|rs
 )paren
 comma
-id|fname
+id|reiserfs_bdevname
+(paren
+id|p_s_sb
+)paren
 )paren
 suffix:semicolon
 id|brelse

@@ -1245,5 +1245,35 @@ DECL|macro|SB_JOURNAL_MAX_TRANS_AGE
 mdefine_line|#define SB_JOURNAL_MAX_TRANS_AGE(s)  (SB_JOURNAL(s)-&gt;s_journal_max_trans_age)
 DECL|macro|SB_JOURNAL_DEV
 mdefine_line|#define SB_JOURNAL_DEV(s)            (SB_JOURNAL(s)-&gt;j_dev)
+multiline_comment|/* A safe version of the &quot;bdevname&quot;, which returns the &quot;s_id&quot; field of&n; * a superblock or else &quot;Null superblock&quot; if the super block is NULL.&n; */
+DECL|function|reiserfs_bdevname
+r_static
+r_inline
+r_char
+op_star
+id|reiserfs_bdevname
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+)paren
+(brace
+r_return
+(paren
+id|s
+op_eq
+l_int|NULL
+)paren
+ques
+c_cond
+l_string|&quot;Null superblock&quot;
+suffix:colon
+id|s
+op_member_access_from_pointer
+id|s_id
+suffix:semicolon
+)brace
 macro_line|#endif&t;/* _LINUX_REISER_FS_SB */
 eof

@@ -430,7 +430,10 @@ l_string|&quot;block %lu is out of range on %s&bslash;n&quot;
 comma
 id|block
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -472,7 +475,10 @@ id|reiserfs_warning
 l_string|&quot;vs-4080: reiserfs_free_block: &quot;
 l_string|&quot;free_block (%s:%lu)[dev:blocknr]: bit already cleared&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 comma
 id|block
 )paren

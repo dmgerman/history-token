@@ -2467,7 +2467,10 @@ op_assign
 id|proc_mkdir
 c_func
 (paren
-id|sb-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|sb
+)paren
 comma
 id|proc_info_root
 )paren
@@ -2507,7 +2510,10 @@ l_string|&quot;reiserfs: cannot create /proc/%s/%s&bslash;n&quot;
 comma
 id|proc_info_root_name
 comma
-id|sb-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|sb
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2570,7 +2576,10 @@ id|proc_info_root
 id|remove_proc_entry
 c_func
 (paren
-id|sb-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|sb
+)paren
 comma
 id|proc_info_root
 )paren

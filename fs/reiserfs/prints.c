@@ -1407,12 +1407,10 @@ id|panic
 (paren
 l_string|&quot;REISERFS: panic (device %s): %s&bslash;n&quot;
 comma
+id|reiserfs_bdevname
+(paren
 id|sb
-ques
-c_cond
-id|sb-&gt;s_id
-suffix:colon
-l_string|&quot;sb == 0&quot;
+)paren
 comma
 id|error_buf
 )paren

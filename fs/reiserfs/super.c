@@ -3607,7 +3607,10 @@ id|printk
 l_string|&quot;sh-2006: read_super_block: &quot;
 l_string|&quot;bread failed (dev %s, block %lu, size %lu)&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 comma
 id|offset
 op_div
@@ -3691,7 +3694,10 @@ c_func
 l_string|&quot;sh-2007: read_super_block: &quot;
 l_string|&quot;bread failed (dev %s, block %lu, size %lu)&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 comma
 id|offset
 op_div
@@ -3730,7 +3736,10 @@ id|printk
 l_string|&quot;sh-2011: read_super_block: &quot;
 l_string|&quot;can&squot;t find a reiserfs filesystem on (dev %s, block %lu, size %lu)&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 comma
 id|bh-&gt;b_blocknr
 comma
@@ -3768,7 +3777,10 @@ l_string|&quot;dev %s: Unfinished reiserfsck --rebuild-tree run detected. Please
 l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fails&bslash;n&quot;
 l_string|&quot;get newer reiserfsprogs package&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -4358,7 +4370,10 @@ l_string|&quot;reiserfs: Unable to automatically detect hash&quot;
 l_string|&quot;function for device %s&bslash;n&quot;
 l_string|&quot;please mount with -o hash={tea,rupasov,r5}&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 )paren
 suffix:semicolon
 id|hash
@@ -4453,7 +4468,10 @@ c_func
 l_string|&quot;reiserfs: Unrecognised hash function for &quot;
 l_string|&quot;device %s&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 )paren
 suffix:semicolon
 id|hash
@@ -5041,7 +5059,10 @@ c_func
 (paren
 l_string|&quot;sh-2021: reiserfs_fill_super: can not find reiserfs on %s&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 )paren
 suffix:semicolon
 r_goto

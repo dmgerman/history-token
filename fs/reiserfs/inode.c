@@ -7359,7 +7359,10 @@ l_string|&quot;clm-6000: error reading block %lu on dev %s&bslash;n&quot;
 comma
 id|bh-&gt;b_blocknr
 comma
-id|p_s_inode-&gt;i_sb-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|p_s_inode-&gt;i_sb
+)paren
 )paren
 suffix:semicolon
 id|error
@@ -8191,7 +8194,10 @@ l_string|&quot;clm-6003: bad item inode %lu, device %s&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 comma
-id|inode-&gt;i_sb-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|inode-&gt;i_sb
+)paren
 )paren
 suffix:semicolon
 id|retval
