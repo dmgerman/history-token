@@ -116,40 +116,40 @@ DECL|macro|FILESYSTEM__QUOTAMOD
 mdefine_line|#define FILESYSTEM__QUOTAMOD                      0x00000100UL
 DECL|macro|FILESYSTEM__QUOTAGET
 mdefine_line|#define FILESYSTEM__QUOTAGET                      0x00000200UL
-DECL|macro|DIR__EXECUTE
-mdefine_line|#define DIR__EXECUTE                              0x00002000UL
-DECL|macro|DIR__UNLINK
-mdefine_line|#define DIR__UNLINK                               0x00000400UL
-DECL|macro|DIR__SETATTR
-mdefine_line|#define DIR__SETATTR                              0x00000020UL
-DECL|macro|DIR__QUOTAON
-mdefine_line|#define DIR__QUOTAON                              0x00008000UL
-DECL|macro|DIR__RELABELFROM
-mdefine_line|#define DIR__RELABELFROM                          0x00000080UL
-DECL|macro|DIR__LINK
-mdefine_line|#define DIR__LINK                                 0x00000800UL
-DECL|macro|DIR__WRITE
-mdefine_line|#define DIR__WRITE                                0x00000004UL
 DECL|macro|DIR__IOCTL
 mdefine_line|#define DIR__IOCTL                                0x00000001UL
-DECL|macro|DIR__RELABELTO
-mdefine_line|#define DIR__RELABELTO                            0x00000100UL
 DECL|macro|DIR__READ
 mdefine_line|#define DIR__READ                                 0x00000002UL
-DECL|macro|DIR__RENAME
-mdefine_line|#define DIR__RENAME                               0x00001000UL
-DECL|macro|DIR__APPEND
-mdefine_line|#define DIR__APPEND                               0x00000200UL
-DECL|macro|DIR__LOCK
-mdefine_line|#define DIR__LOCK                                 0x00000040UL
-DECL|macro|DIR__SWAPON
-mdefine_line|#define DIR__SWAPON                               0x00004000UL
-DECL|macro|DIR__GETATTR
-mdefine_line|#define DIR__GETATTR                              0x00000010UL
-DECL|macro|DIR__MOUNTON
-mdefine_line|#define DIR__MOUNTON                              0x00010000UL
+DECL|macro|DIR__WRITE
+mdefine_line|#define DIR__WRITE                                0x00000004UL
 DECL|macro|DIR__CREATE
 mdefine_line|#define DIR__CREATE                               0x00000008UL
+DECL|macro|DIR__GETATTR
+mdefine_line|#define DIR__GETATTR                              0x00000010UL
+DECL|macro|DIR__SETATTR
+mdefine_line|#define DIR__SETATTR                              0x00000020UL
+DECL|macro|DIR__LOCK
+mdefine_line|#define DIR__LOCK                                 0x00000040UL
+DECL|macro|DIR__RELABELFROM
+mdefine_line|#define DIR__RELABELFROM                          0x00000080UL
+DECL|macro|DIR__RELABELTO
+mdefine_line|#define DIR__RELABELTO                            0x00000100UL
+DECL|macro|DIR__APPEND
+mdefine_line|#define DIR__APPEND                               0x00000200UL
+DECL|macro|DIR__UNLINK
+mdefine_line|#define DIR__UNLINK                               0x00000400UL
+DECL|macro|DIR__LINK
+mdefine_line|#define DIR__LINK                                 0x00000800UL
+DECL|macro|DIR__RENAME
+mdefine_line|#define DIR__RENAME                               0x00001000UL
+DECL|macro|DIR__EXECUTE
+mdefine_line|#define DIR__EXECUTE                              0x00002000UL
+DECL|macro|DIR__SWAPON
+mdefine_line|#define DIR__SWAPON                               0x00004000UL
+DECL|macro|DIR__QUOTAON
+mdefine_line|#define DIR__QUOTAON                              0x00008000UL
+DECL|macro|DIR__MOUNTON
+mdefine_line|#define DIR__MOUNTON                              0x00010000UL
 DECL|macro|DIR__ADD_NAME
 mdefine_line|#define DIR__ADD_NAME                             0x00020000UL
 DECL|macro|DIR__REMOVE_NAME
@@ -160,304 +160,304 @@ DECL|macro|DIR__SEARCH
 mdefine_line|#define DIR__SEARCH                               0x00100000UL
 DECL|macro|DIR__RMDIR
 mdefine_line|#define DIR__RMDIR                                0x00200000UL
-DECL|macro|FILE__EXECUTE
-mdefine_line|#define FILE__EXECUTE                             0x00002000UL
-DECL|macro|FILE__UNLINK
-mdefine_line|#define FILE__UNLINK                              0x00000400UL
-DECL|macro|FILE__SETATTR
-mdefine_line|#define FILE__SETATTR                             0x00000020UL
-DECL|macro|FILE__QUOTAON
-mdefine_line|#define FILE__QUOTAON                             0x00008000UL
-DECL|macro|FILE__RELABELFROM
-mdefine_line|#define FILE__RELABELFROM                         0x00000080UL
-DECL|macro|FILE__LINK
-mdefine_line|#define FILE__LINK                                0x00000800UL
-DECL|macro|FILE__WRITE
-mdefine_line|#define FILE__WRITE                               0x00000004UL
 DECL|macro|FILE__IOCTL
 mdefine_line|#define FILE__IOCTL                               0x00000001UL
-DECL|macro|FILE__RELABELTO
-mdefine_line|#define FILE__RELABELTO                           0x00000100UL
 DECL|macro|FILE__READ
 mdefine_line|#define FILE__READ                                0x00000002UL
-DECL|macro|FILE__RENAME
-mdefine_line|#define FILE__RENAME                              0x00001000UL
-DECL|macro|FILE__APPEND
-mdefine_line|#define FILE__APPEND                              0x00000200UL
-DECL|macro|FILE__LOCK
-mdefine_line|#define FILE__LOCK                                0x00000040UL
-DECL|macro|FILE__SWAPON
-mdefine_line|#define FILE__SWAPON                              0x00004000UL
-DECL|macro|FILE__GETATTR
-mdefine_line|#define FILE__GETATTR                             0x00000010UL
-DECL|macro|FILE__MOUNTON
-mdefine_line|#define FILE__MOUNTON                             0x00010000UL
+DECL|macro|FILE__WRITE
+mdefine_line|#define FILE__WRITE                               0x00000004UL
 DECL|macro|FILE__CREATE
 mdefine_line|#define FILE__CREATE                              0x00000008UL
+DECL|macro|FILE__GETATTR
+mdefine_line|#define FILE__GETATTR                             0x00000010UL
+DECL|macro|FILE__SETATTR
+mdefine_line|#define FILE__SETATTR                             0x00000020UL
+DECL|macro|FILE__LOCK
+mdefine_line|#define FILE__LOCK                                0x00000040UL
+DECL|macro|FILE__RELABELFROM
+mdefine_line|#define FILE__RELABELFROM                         0x00000080UL
+DECL|macro|FILE__RELABELTO
+mdefine_line|#define FILE__RELABELTO                           0x00000100UL
+DECL|macro|FILE__APPEND
+mdefine_line|#define FILE__APPEND                              0x00000200UL
+DECL|macro|FILE__UNLINK
+mdefine_line|#define FILE__UNLINK                              0x00000400UL
+DECL|macro|FILE__LINK
+mdefine_line|#define FILE__LINK                                0x00000800UL
+DECL|macro|FILE__RENAME
+mdefine_line|#define FILE__RENAME                              0x00001000UL
+DECL|macro|FILE__EXECUTE
+mdefine_line|#define FILE__EXECUTE                             0x00002000UL
+DECL|macro|FILE__SWAPON
+mdefine_line|#define FILE__SWAPON                              0x00004000UL
+DECL|macro|FILE__QUOTAON
+mdefine_line|#define FILE__QUOTAON                             0x00008000UL
+DECL|macro|FILE__MOUNTON
+mdefine_line|#define FILE__MOUNTON                             0x00010000UL
 DECL|macro|FILE__EXECUTE_NO_TRANS
 mdefine_line|#define FILE__EXECUTE_NO_TRANS                    0x00020000UL
 DECL|macro|FILE__ENTRYPOINT
 mdefine_line|#define FILE__ENTRYPOINT                          0x00040000UL
-DECL|macro|LNK_FILE__EXECUTE
-mdefine_line|#define LNK_FILE__EXECUTE                         0x00002000UL
-DECL|macro|LNK_FILE__UNLINK
-mdefine_line|#define LNK_FILE__UNLINK                          0x00000400UL
-DECL|macro|LNK_FILE__SETATTR
-mdefine_line|#define LNK_FILE__SETATTR                         0x00000020UL
-DECL|macro|LNK_FILE__QUOTAON
-mdefine_line|#define LNK_FILE__QUOTAON                         0x00008000UL
-DECL|macro|LNK_FILE__RELABELFROM
-mdefine_line|#define LNK_FILE__RELABELFROM                     0x00000080UL
-DECL|macro|LNK_FILE__LINK
-mdefine_line|#define LNK_FILE__LINK                            0x00000800UL
-DECL|macro|LNK_FILE__WRITE
-mdefine_line|#define LNK_FILE__WRITE                           0x00000004UL
 DECL|macro|LNK_FILE__IOCTL
 mdefine_line|#define LNK_FILE__IOCTL                           0x00000001UL
-DECL|macro|LNK_FILE__RELABELTO
-mdefine_line|#define LNK_FILE__RELABELTO                       0x00000100UL
 DECL|macro|LNK_FILE__READ
 mdefine_line|#define LNK_FILE__READ                            0x00000002UL
-DECL|macro|LNK_FILE__RENAME
-mdefine_line|#define LNK_FILE__RENAME                          0x00001000UL
-DECL|macro|LNK_FILE__APPEND
-mdefine_line|#define LNK_FILE__APPEND                          0x00000200UL
-DECL|macro|LNK_FILE__LOCK
-mdefine_line|#define LNK_FILE__LOCK                            0x00000040UL
-DECL|macro|LNK_FILE__SWAPON
-mdefine_line|#define LNK_FILE__SWAPON                          0x00004000UL
-DECL|macro|LNK_FILE__GETATTR
-mdefine_line|#define LNK_FILE__GETATTR                         0x00000010UL
-DECL|macro|LNK_FILE__MOUNTON
-mdefine_line|#define LNK_FILE__MOUNTON                         0x00010000UL
+DECL|macro|LNK_FILE__WRITE
+mdefine_line|#define LNK_FILE__WRITE                           0x00000004UL
 DECL|macro|LNK_FILE__CREATE
 mdefine_line|#define LNK_FILE__CREATE                          0x00000008UL
-DECL|macro|CHR_FILE__EXECUTE
-mdefine_line|#define CHR_FILE__EXECUTE                         0x00002000UL
-DECL|macro|CHR_FILE__UNLINK
-mdefine_line|#define CHR_FILE__UNLINK                          0x00000400UL
-DECL|macro|CHR_FILE__SETATTR
-mdefine_line|#define CHR_FILE__SETATTR                         0x00000020UL
-DECL|macro|CHR_FILE__QUOTAON
-mdefine_line|#define CHR_FILE__QUOTAON                         0x00008000UL
-DECL|macro|CHR_FILE__RELABELFROM
-mdefine_line|#define CHR_FILE__RELABELFROM                     0x00000080UL
-DECL|macro|CHR_FILE__LINK
-mdefine_line|#define CHR_FILE__LINK                            0x00000800UL
-DECL|macro|CHR_FILE__WRITE
-mdefine_line|#define CHR_FILE__WRITE                           0x00000004UL
+DECL|macro|LNK_FILE__GETATTR
+mdefine_line|#define LNK_FILE__GETATTR                         0x00000010UL
+DECL|macro|LNK_FILE__SETATTR
+mdefine_line|#define LNK_FILE__SETATTR                         0x00000020UL
+DECL|macro|LNK_FILE__LOCK
+mdefine_line|#define LNK_FILE__LOCK                            0x00000040UL
+DECL|macro|LNK_FILE__RELABELFROM
+mdefine_line|#define LNK_FILE__RELABELFROM                     0x00000080UL
+DECL|macro|LNK_FILE__RELABELTO
+mdefine_line|#define LNK_FILE__RELABELTO                       0x00000100UL
+DECL|macro|LNK_FILE__APPEND
+mdefine_line|#define LNK_FILE__APPEND                          0x00000200UL
+DECL|macro|LNK_FILE__UNLINK
+mdefine_line|#define LNK_FILE__UNLINK                          0x00000400UL
+DECL|macro|LNK_FILE__LINK
+mdefine_line|#define LNK_FILE__LINK                            0x00000800UL
+DECL|macro|LNK_FILE__RENAME
+mdefine_line|#define LNK_FILE__RENAME                          0x00001000UL
+DECL|macro|LNK_FILE__EXECUTE
+mdefine_line|#define LNK_FILE__EXECUTE                         0x00002000UL
+DECL|macro|LNK_FILE__SWAPON
+mdefine_line|#define LNK_FILE__SWAPON                          0x00004000UL
+DECL|macro|LNK_FILE__QUOTAON
+mdefine_line|#define LNK_FILE__QUOTAON                         0x00008000UL
+DECL|macro|LNK_FILE__MOUNTON
+mdefine_line|#define LNK_FILE__MOUNTON                         0x00010000UL
 DECL|macro|CHR_FILE__IOCTL
 mdefine_line|#define CHR_FILE__IOCTL                           0x00000001UL
-DECL|macro|CHR_FILE__RELABELTO
-mdefine_line|#define CHR_FILE__RELABELTO                       0x00000100UL
 DECL|macro|CHR_FILE__READ
 mdefine_line|#define CHR_FILE__READ                            0x00000002UL
-DECL|macro|CHR_FILE__RENAME
-mdefine_line|#define CHR_FILE__RENAME                          0x00001000UL
-DECL|macro|CHR_FILE__APPEND
-mdefine_line|#define CHR_FILE__APPEND                          0x00000200UL
-DECL|macro|CHR_FILE__LOCK
-mdefine_line|#define CHR_FILE__LOCK                            0x00000040UL
-DECL|macro|CHR_FILE__SWAPON
-mdefine_line|#define CHR_FILE__SWAPON                          0x00004000UL
-DECL|macro|CHR_FILE__GETATTR
-mdefine_line|#define CHR_FILE__GETATTR                         0x00000010UL
-DECL|macro|CHR_FILE__MOUNTON
-mdefine_line|#define CHR_FILE__MOUNTON                         0x00010000UL
+DECL|macro|CHR_FILE__WRITE
+mdefine_line|#define CHR_FILE__WRITE                           0x00000004UL
 DECL|macro|CHR_FILE__CREATE
 mdefine_line|#define CHR_FILE__CREATE                          0x00000008UL
-DECL|macro|BLK_FILE__EXECUTE
-mdefine_line|#define BLK_FILE__EXECUTE                         0x00002000UL
-DECL|macro|BLK_FILE__UNLINK
-mdefine_line|#define BLK_FILE__UNLINK                          0x00000400UL
-DECL|macro|BLK_FILE__SETATTR
-mdefine_line|#define BLK_FILE__SETATTR                         0x00000020UL
-DECL|macro|BLK_FILE__QUOTAON
-mdefine_line|#define BLK_FILE__QUOTAON                         0x00008000UL
-DECL|macro|BLK_FILE__RELABELFROM
-mdefine_line|#define BLK_FILE__RELABELFROM                     0x00000080UL
-DECL|macro|BLK_FILE__LINK
-mdefine_line|#define BLK_FILE__LINK                            0x00000800UL
-DECL|macro|BLK_FILE__WRITE
-mdefine_line|#define BLK_FILE__WRITE                           0x00000004UL
+DECL|macro|CHR_FILE__GETATTR
+mdefine_line|#define CHR_FILE__GETATTR                         0x00000010UL
+DECL|macro|CHR_FILE__SETATTR
+mdefine_line|#define CHR_FILE__SETATTR                         0x00000020UL
+DECL|macro|CHR_FILE__LOCK
+mdefine_line|#define CHR_FILE__LOCK                            0x00000040UL
+DECL|macro|CHR_FILE__RELABELFROM
+mdefine_line|#define CHR_FILE__RELABELFROM                     0x00000080UL
+DECL|macro|CHR_FILE__RELABELTO
+mdefine_line|#define CHR_FILE__RELABELTO                       0x00000100UL
+DECL|macro|CHR_FILE__APPEND
+mdefine_line|#define CHR_FILE__APPEND                          0x00000200UL
+DECL|macro|CHR_FILE__UNLINK
+mdefine_line|#define CHR_FILE__UNLINK                          0x00000400UL
+DECL|macro|CHR_FILE__LINK
+mdefine_line|#define CHR_FILE__LINK                            0x00000800UL
+DECL|macro|CHR_FILE__RENAME
+mdefine_line|#define CHR_FILE__RENAME                          0x00001000UL
+DECL|macro|CHR_FILE__EXECUTE
+mdefine_line|#define CHR_FILE__EXECUTE                         0x00002000UL
+DECL|macro|CHR_FILE__SWAPON
+mdefine_line|#define CHR_FILE__SWAPON                          0x00004000UL
+DECL|macro|CHR_FILE__QUOTAON
+mdefine_line|#define CHR_FILE__QUOTAON                         0x00008000UL
+DECL|macro|CHR_FILE__MOUNTON
+mdefine_line|#define CHR_FILE__MOUNTON                         0x00010000UL
 DECL|macro|BLK_FILE__IOCTL
 mdefine_line|#define BLK_FILE__IOCTL                           0x00000001UL
-DECL|macro|BLK_FILE__RELABELTO
-mdefine_line|#define BLK_FILE__RELABELTO                       0x00000100UL
 DECL|macro|BLK_FILE__READ
 mdefine_line|#define BLK_FILE__READ                            0x00000002UL
-DECL|macro|BLK_FILE__RENAME
-mdefine_line|#define BLK_FILE__RENAME                          0x00001000UL
-DECL|macro|BLK_FILE__APPEND
-mdefine_line|#define BLK_FILE__APPEND                          0x00000200UL
-DECL|macro|BLK_FILE__LOCK
-mdefine_line|#define BLK_FILE__LOCK                            0x00000040UL
-DECL|macro|BLK_FILE__SWAPON
-mdefine_line|#define BLK_FILE__SWAPON                          0x00004000UL
-DECL|macro|BLK_FILE__GETATTR
-mdefine_line|#define BLK_FILE__GETATTR                         0x00000010UL
-DECL|macro|BLK_FILE__MOUNTON
-mdefine_line|#define BLK_FILE__MOUNTON                         0x00010000UL
+DECL|macro|BLK_FILE__WRITE
+mdefine_line|#define BLK_FILE__WRITE                           0x00000004UL
 DECL|macro|BLK_FILE__CREATE
 mdefine_line|#define BLK_FILE__CREATE                          0x00000008UL
-DECL|macro|SOCK_FILE__EXECUTE
-mdefine_line|#define SOCK_FILE__EXECUTE                        0x00002000UL
-DECL|macro|SOCK_FILE__UNLINK
-mdefine_line|#define SOCK_FILE__UNLINK                         0x00000400UL
-DECL|macro|SOCK_FILE__SETATTR
-mdefine_line|#define SOCK_FILE__SETATTR                        0x00000020UL
-DECL|macro|SOCK_FILE__QUOTAON
-mdefine_line|#define SOCK_FILE__QUOTAON                        0x00008000UL
-DECL|macro|SOCK_FILE__RELABELFROM
-mdefine_line|#define SOCK_FILE__RELABELFROM                    0x00000080UL
-DECL|macro|SOCK_FILE__LINK
-mdefine_line|#define SOCK_FILE__LINK                           0x00000800UL
-DECL|macro|SOCK_FILE__WRITE
-mdefine_line|#define SOCK_FILE__WRITE                          0x00000004UL
+DECL|macro|BLK_FILE__GETATTR
+mdefine_line|#define BLK_FILE__GETATTR                         0x00000010UL
+DECL|macro|BLK_FILE__SETATTR
+mdefine_line|#define BLK_FILE__SETATTR                         0x00000020UL
+DECL|macro|BLK_FILE__LOCK
+mdefine_line|#define BLK_FILE__LOCK                            0x00000040UL
+DECL|macro|BLK_FILE__RELABELFROM
+mdefine_line|#define BLK_FILE__RELABELFROM                     0x00000080UL
+DECL|macro|BLK_FILE__RELABELTO
+mdefine_line|#define BLK_FILE__RELABELTO                       0x00000100UL
+DECL|macro|BLK_FILE__APPEND
+mdefine_line|#define BLK_FILE__APPEND                          0x00000200UL
+DECL|macro|BLK_FILE__UNLINK
+mdefine_line|#define BLK_FILE__UNLINK                          0x00000400UL
+DECL|macro|BLK_FILE__LINK
+mdefine_line|#define BLK_FILE__LINK                            0x00000800UL
+DECL|macro|BLK_FILE__RENAME
+mdefine_line|#define BLK_FILE__RENAME                          0x00001000UL
+DECL|macro|BLK_FILE__EXECUTE
+mdefine_line|#define BLK_FILE__EXECUTE                         0x00002000UL
+DECL|macro|BLK_FILE__SWAPON
+mdefine_line|#define BLK_FILE__SWAPON                          0x00004000UL
+DECL|macro|BLK_FILE__QUOTAON
+mdefine_line|#define BLK_FILE__QUOTAON                         0x00008000UL
+DECL|macro|BLK_FILE__MOUNTON
+mdefine_line|#define BLK_FILE__MOUNTON                         0x00010000UL
 DECL|macro|SOCK_FILE__IOCTL
 mdefine_line|#define SOCK_FILE__IOCTL                          0x00000001UL
-DECL|macro|SOCK_FILE__RELABELTO
-mdefine_line|#define SOCK_FILE__RELABELTO                      0x00000100UL
 DECL|macro|SOCK_FILE__READ
 mdefine_line|#define SOCK_FILE__READ                           0x00000002UL
-DECL|macro|SOCK_FILE__RENAME
-mdefine_line|#define SOCK_FILE__RENAME                         0x00001000UL
-DECL|macro|SOCK_FILE__APPEND
-mdefine_line|#define SOCK_FILE__APPEND                         0x00000200UL
-DECL|macro|SOCK_FILE__LOCK
-mdefine_line|#define SOCK_FILE__LOCK                           0x00000040UL
-DECL|macro|SOCK_FILE__SWAPON
-mdefine_line|#define SOCK_FILE__SWAPON                         0x00004000UL
-DECL|macro|SOCK_FILE__GETATTR
-mdefine_line|#define SOCK_FILE__GETATTR                        0x00000010UL
-DECL|macro|SOCK_FILE__MOUNTON
-mdefine_line|#define SOCK_FILE__MOUNTON                        0x00010000UL
+DECL|macro|SOCK_FILE__WRITE
+mdefine_line|#define SOCK_FILE__WRITE                          0x00000004UL
 DECL|macro|SOCK_FILE__CREATE
 mdefine_line|#define SOCK_FILE__CREATE                         0x00000008UL
-DECL|macro|FIFO_FILE__EXECUTE
-mdefine_line|#define FIFO_FILE__EXECUTE                        0x00002000UL
-DECL|macro|FIFO_FILE__UNLINK
-mdefine_line|#define FIFO_FILE__UNLINK                         0x00000400UL
-DECL|macro|FIFO_FILE__SETATTR
-mdefine_line|#define FIFO_FILE__SETATTR                        0x00000020UL
-DECL|macro|FIFO_FILE__QUOTAON
-mdefine_line|#define FIFO_FILE__QUOTAON                        0x00008000UL
-DECL|macro|FIFO_FILE__RELABELFROM
-mdefine_line|#define FIFO_FILE__RELABELFROM                    0x00000080UL
-DECL|macro|FIFO_FILE__LINK
-mdefine_line|#define FIFO_FILE__LINK                           0x00000800UL
-DECL|macro|FIFO_FILE__WRITE
-mdefine_line|#define FIFO_FILE__WRITE                          0x00000004UL
+DECL|macro|SOCK_FILE__GETATTR
+mdefine_line|#define SOCK_FILE__GETATTR                        0x00000010UL
+DECL|macro|SOCK_FILE__SETATTR
+mdefine_line|#define SOCK_FILE__SETATTR                        0x00000020UL
+DECL|macro|SOCK_FILE__LOCK
+mdefine_line|#define SOCK_FILE__LOCK                           0x00000040UL
+DECL|macro|SOCK_FILE__RELABELFROM
+mdefine_line|#define SOCK_FILE__RELABELFROM                    0x00000080UL
+DECL|macro|SOCK_FILE__RELABELTO
+mdefine_line|#define SOCK_FILE__RELABELTO                      0x00000100UL
+DECL|macro|SOCK_FILE__APPEND
+mdefine_line|#define SOCK_FILE__APPEND                         0x00000200UL
+DECL|macro|SOCK_FILE__UNLINK
+mdefine_line|#define SOCK_FILE__UNLINK                         0x00000400UL
+DECL|macro|SOCK_FILE__LINK
+mdefine_line|#define SOCK_FILE__LINK                           0x00000800UL
+DECL|macro|SOCK_FILE__RENAME
+mdefine_line|#define SOCK_FILE__RENAME                         0x00001000UL
+DECL|macro|SOCK_FILE__EXECUTE
+mdefine_line|#define SOCK_FILE__EXECUTE                        0x00002000UL
+DECL|macro|SOCK_FILE__SWAPON
+mdefine_line|#define SOCK_FILE__SWAPON                         0x00004000UL
+DECL|macro|SOCK_FILE__QUOTAON
+mdefine_line|#define SOCK_FILE__QUOTAON                        0x00008000UL
+DECL|macro|SOCK_FILE__MOUNTON
+mdefine_line|#define SOCK_FILE__MOUNTON                        0x00010000UL
 DECL|macro|FIFO_FILE__IOCTL
 mdefine_line|#define FIFO_FILE__IOCTL                          0x00000001UL
-DECL|macro|FIFO_FILE__RELABELTO
-mdefine_line|#define FIFO_FILE__RELABELTO                      0x00000100UL
 DECL|macro|FIFO_FILE__READ
 mdefine_line|#define FIFO_FILE__READ                           0x00000002UL
-DECL|macro|FIFO_FILE__RENAME
-mdefine_line|#define FIFO_FILE__RENAME                         0x00001000UL
-DECL|macro|FIFO_FILE__APPEND
-mdefine_line|#define FIFO_FILE__APPEND                         0x00000200UL
-DECL|macro|FIFO_FILE__LOCK
-mdefine_line|#define FIFO_FILE__LOCK                           0x00000040UL
-DECL|macro|FIFO_FILE__SWAPON
-mdefine_line|#define FIFO_FILE__SWAPON                         0x00004000UL
-DECL|macro|FIFO_FILE__GETATTR
-mdefine_line|#define FIFO_FILE__GETATTR                        0x00000010UL
-DECL|macro|FIFO_FILE__MOUNTON
-mdefine_line|#define FIFO_FILE__MOUNTON                        0x00010000UL
+DECL|macro|FIFO_FILE__WRITE
+mdefine_line|#define FIFO_FILE__WRITE                          0x00000004UL
 DECL|macro|FIFO_FILE__CREATE
 mdefine_line|#define FIFO_FILE__CREATE                         0x00000008UL
+DECL|macro|FIFO_FILE__GETATTR
+mdefine_line|#define FIFO_FILE__GETATTR                        0x00000010UL
+DECL|macro|FIFO_FILE__SETATTR
+mdefine_line|#define FIFO_FILE__SETATTR                        0x00000020UL
+DECL|macro|FIFO_FILE__LOCK
+mdefine_line|#define FIFO_FILE__LOCK                           0x00000040UL
+DECL|macro|FIFO_FILE__RELABELFROM
+mdefine_line|#define FIFO_FILE__RELABELFROM                    0x00000080UL
+DECL|macro|FIFO_FILE__RELABELTO
+mdefine_line|#define FIFO_FILE__RELABELTO                      0x00000100UL
+DECL|macro|FIFO_FILE__APPEND
+mdefine_line|#define FIFO_FILE__APPEND                         0x00000200UL
+DECL|macro|FIFO_FILE__UNLINK
+mdefine_line|#define FIFO_FILE__UNLINK                         0x00000400UL
+DECL|macro|FIFO_FILE__LINK
+mdefine_line|#define FIFO_FILE__LINK                           0x00000800UL
+DECL|macro|FIFO_FILE__RENAME
+mdefine_line|#define FIFO_FILE__RENAME                         0x00001000UL
+DECL|macro|FIFO_FILE__EXECUTE
+mdefine_line|#define FIFO_FILE__EXECUTE                        0x00002000UL
+DECL|macro|FIFO_FILE__SWAPON
+mdefine_line|#define FIFO_FILE__SWAPON                         0x00004000UL
+DECL|macro|FIFO_FILE__QUOTAON
+mdefine_line|#define FIFO_FILE__QUOTAON                        0x00008000UL
+DECL|macro|FIFO_FILE__MOUNTON
+mdefine_line|#define FIFO_FILE__MOUNTON                        0x00010000UL
 DECL|macro|FD__USE
 mdefine_line|#define FD__USE                                   0x00000001UL
-DECL|macro|SOCKET__RELABELTO
-mdefine_line|#define SOCKET__RELABELTO                         0x00000100UL
-DECL|macro|SOCKET__RECV_MSG
-mdefine_line|#define SOCKET__RECV_MSG                          0x00080000UL
-DECL|macro|SOCKET__RELABELFROM
-mdefine_line|#define SOCKET__RELABELFROM                       0x00000080UL
-DECL|macro|SOCKET__SETOPT
-mdefine_line|#define SOCKET__SETOPT                            0x00008000UL
-DECL|macro|SOCKET__APPEND
-mdefine_line|#define SOCKET__APPEND                            0x00000200UL
-DECL|macro|SOCKET__SETATTR
-mdefine_line|#define SOCKET__SETATTR                           0x00000020UL
-DECL|macro|SOCKET__SENDTO
-mdefine_line|#define SOCKET__SENDTO                            0x00040000UL
-DECL|macro|SOCKET__GETOPT
-mdefine_line|#define SOCKET__GETOPT                            0x00004000UL
-DECL|macro|SOCKET__READ
-mdefine_line|#define SOCKET__READ                              0x00000002UL
-DECL|macro|SOCKET__SHUTDOWN
-mdefine_line|#define SOCKET__SHUTDOWN                          0x00010000UL
-DECL|macro|SOCKET__LISTEN
-mdefine_line|#define SOCKET__LISTEN                            0x00001000UL
-DECL|macro|SOCKET__BIND
-mdefine_line|#define SOCKET__BIND                              0x00000400UL
-DECL|macro|SOCKET__WRITE
-mdefine_line|#define SOCKET__WRITE                             0x00000004UL
-DECL|macro|SOCKET__ACCEPT
-mdefine_line|#define SOCKET__ACCEPT                            0x00002000UL
-DECL|macro|SOCKET__CONNECT
-mdefine_line|#define SOCKET__CONNECT                           0x00000800UL
-DECL|macro|SOCKET__LOCK
-mdefine_line|#define SOCKET__LOCK                              0x00000040UL
 DECL|macro|SOCKET__IOCTL
 mdefine_line|#define SOCKET__IOCTL                             0x00000001UL
+DECL|macro|SOCKET__READ
+mdefine_line|#define SOCKET__READ                              0x00000002UL
+DECL|macro|SOCKET__WRITE
+mdefine_line|#define SOCKET__WRITE                             0x00000004UL
 DECL|macro|SOCKET__CREATE
 mdefine_line|#define SOCKET__CREATE                            0x00000008UL
-DECL|macro|SOCKET__NAME_BIND
-mdefine_line|#define SOCKET__NAME_BIND                         0x00200000UL
-DECL|macro|SOCKET__SEND_MSG
-mdefine_line|#define SOCKET__SEND_MSG                          0x00100000UL
-DECL|macro|SOCKET__RECVFROM
-mdefine_line|#define SOCKET__RECVFROM                          0x00020000UL
 DECL|macro|SOCKET__GETATTR
 mdefine_line|#define SOCKET__GETATTR                           0x00000010UL
-DECL|macro|TCP_SOCKET__RELABELTO
-mdefine_line|#define TCP_SOCKET__RELABELTO                     0x00000100UL
-DECL|macro|TCP_SOCKET__RECV_MSG
-mdefine_line|#define TCP_SOCKET__RECV_MSG                      0x00080000UL
-DECL|macro|TCP_SOCKET__RELABELFROM
-mdefine_line|#define TCP_SOCKET__RELABELFROM                   0x00000080UL
-DECL|macro|TCP_SOCKET__SETOPT
-mdefine_line|#define TCP_SOCKET__SETOPT                        0x00008000UL
-DECL|macro|TCP_SOCKET__APPEND
-mdefine_line|#define TCP_SOCKET__APPEND                        0x00000200UL
-DECL|macro|TCP_SOCKET__SETATTR
-mdefine_line|#define TCP_SOCKET__SETATTR                       0x00000020UL
-DECL|macro|TCP_SOCKET__SENDTO
-mdefine_line|#define TCP_SOCKET__SENDTO                        0x00040000UL
-DECL|macro|TCP_SOCKET__GETOPT
-mdefine_line|#define TCP_SOCKET__GETOPT                        0x00004000UL
-DECL|macro|TCP_SOCKET__READ
-mdefine_line|#define TCP_SOCKET__READ                          0x00000002UL
-DECL|macro|TCP_SOCKET__SHUTDOWN
-mdefine_line|#define TCP_SOCKET__SHUTDOWN                      0x00010000UL
-DECL|macro|TCP_SOCKET__LISTEN
-mdefine_line|#define TCP_SOCKET__LISTEN                        0x00001000UL
-DECL|macro|TCP_SOCKET__BIND
-mdefine_line|#define TCP_SOCKET__BIND                          0x00000400UL
-DECL|macro|TCP_SOCKET__WRITE
-mdefine_line|#define TCP_SOCKET__WRITE                         0x00000004UL
-DECL|macro|TCP_SOCKET__ACCEPT
-mdefine_line|#define TCP_SOCKET__ACCEPT                        0x00002000UL
-DECL|macro|TCP_SOCKET__CONNECT
-mdefine_line|#define TCP_SOCKET__CONNECT                       0x00000800UL
-DECL|macro|TCP_SOCKET__LOCK
-mdefine_line|#define TCP_SOCKET__LOCK                          0x00000040UL
+DECL|macro|SOCKET__SETATTR
+mdefine_line|#define SOCKET__SETATTR                           0x00000020UL
+DECL|macro|SOCKET__LOCK
+mdefine_line|#define SOCKET__LOCK                              0x00000040UL
+DECL|macro|SOCKET__RELABELFROM
+mdefine_line|#define SOCKET__RELABELFROM                       0x00000080UL
+DECL|macro|SOCKET__RELABELTO
+mdefine_line|#define SOCKET__RELABELTO                         0x00000100UL
+DECL|macro|SOCKET__APPEND
+mdefine_line|#define SOCKET__APPEND                            0x00000200UL
+DECL|macro|SOCKET__BIND
+mdefine_line|#define SOCKET__BIND                              0x00000400UL
+DECL|macro|SOCKET__CONNECT
+mdefine_line|#define SOCKET__CONNECT                           0x00000800UL
+DECL|macro|SOCKET__LISTEN
+mdefine_line|#define SOCKET__LISTEN                            0x00001000UL
+DECL|macro|SOCKET__ACCEPT
+mdefine_line|#define SOCKET__ACCEPT                            0x00002000UL
+DECL|macro|SOCKET__GETOPT
+mdefine_line|#define SOCKET__GETOPT                            0x00004000UL
+DECL|macro|SOCKET__SETOPT
+mdefine_line|#define SOCKET__SETOPT                            0x00008000UL
+DECL|macro|SOCKET__SHUTDOWN
+mdefine_line|#define SOCKET__SHUTDOWN                          0x00010000UL
+DECL|macro|SOCKET__RECVFROM
+mdefine_line|#define SOCKET__RECVFROM                          0x00020000UL
+DECL|macro|SOCKET__SENDTO
+mdefine_line|#define SOCKET__SENDTO                            0x00040000UL
+DECL|macro|SOCKET__RECV_MSG
+mdefine_line|#define SOCKET__RECV_MSG                          0x00080000UL
+DECL|macro|SOCKET__SEND_MSG
+mdefine_line|#define SOCKET__SEND_MSG                          0x00100000UL
+DECL|macro|SOCKET__NAME_BIND
+mdefine_line|#define SOCKET__NAME_BIND                         0x00200000UL
 DECL|macro|TCP_SOCKET__IOCTL
 mdefine_line|#define TCP_SOCKET__IOCTL                         0x00000001UL
+DECL|macro|TCP_SOCKET__READ
+mdefine_line|#define TCP_SOCKET__READ                          0x00000002UL
+DECL|macro|TCP_SOCKET__WRITE
+mdefine_line|#define TCP_SOCKET__WRITE                         0x00000004UL
 DECL|macro|TCP_SOCKET__CREATE
 mdefine_line|#define TCP_SOCKET__CREATE                        0x00000008UL
-DECL|macro|TCP_SOCKET__NAME_BIND
-mdefine_line|#define TCP_SOCKET__NAME_BIND                     0x00200000UL
-DECL|macro|TCP_SOCKET__SEND_MSG
-mdefine_line|#define TCP_SOCKET__SEND_MSG                      0x00100000UL
-DECL|macro|TCP_SOCKET__RECVFROM
-mdefine_line|#define TCP_SOCKET__RECVFROM                      0x00020000UL
 DECL|macro|TCP_SOCKET__GETATTR
 mdefine_line|#define TCP_SOCKET__GETATTR                       0x00000010UL
+DECL|macro|TCP_SOCKET__SETATTR
+mdefine_line|#define TCP_SOCKET__SETATTR                       0x00000020UL
+DECL|macro|TCP_SOCKET__LOCK
+mdefine_line|#define TCP_SOCKET__LOCK                          0x00000040UL
+DECL|macro|TCP_SOCKET__RELABELFROM
+mdefine_line|#define TCP_SOCKET__RELABELFROM                   0x00000080UL
+DECL|macro|TCP_SOCKET__RELABELTO
+mdefine_line|#define TCP_SOCKET__RELABELTO                     0x00000100UL
+DECL|macro|TCP_SOCKET__APPEND
+mdefine_line|#define TCP_SOCKET__APPEND                        0x00000200UL
+DECL|macro|TCP_SOCKET__BIND
+mdefine_line|#define TCP_SOCKET__BIND                          0x00000400UL
+DECL|macro|TCP_SOCKET__CONNECT
+mdefine_line|#define TCP_SOCKET__CONNECT                       0x00000800UL
+DECL|macro|TCP_SOCKET__LISTEN
+mdefine_line|#define TCP_SOCKET__LISTEN                        0x00001000UL
+DECL|macro|TCP_SOCKET__ACCEPT
+mdefine_line|#define TCP_SOCKET__ACCEPT                        0x00002000UL
+DECL|macro|TCP_SOCKET__GETOPT
+mdefine_line|#define TCP_SOCKET__GETOPT                        0x00004000UL
+DECL|macro|TCP_SOCKET__SETOPT
+mdefine_line|#define TCP_SOCKET__SETOPT                        0x00008000UL
+DECL|macro|TCP_SOCKET__SHUTDOWN
+mdefine_line|#define TCP_SOCKET__SHUTDOWN                      0x00010000UL
+DECL|macro|TCP_SOCKET__RECVFROM
+mdefine_line|#define TCP_SOCKET__RECVFROM                      0x00020000UL
+DECL|macro|TCP_SOCKET__SENDTO
+mdefine_line|#define TCP_SOCKET__SENDTO                        0x00040000UL
+DECL|macro|TCP_SOCKET__RECV_MSG
+mdefine_line|#define TCP_SOCKET__RECV_MSG                      0x00080000UL
+DECL|macro|TCP_SOCKET__SEND_MSG
+mdefine_line|#define TCP_SOCKET__SEND_MSG                      0x00100000UL
+DECL|macro|TCP_SOCKET__NAME_BIND
+mdefine_line|#define TCP_SOCKET__NAME_BIND                     0x00200000UL
 DECL|macro|TCP_SOCKET__CONNECTTO
 mdefine_line|#define TCP_SOCKET__CONNECTTO                     0x00400000UL
 DECL|macro|TCP_SOCKET__NEWCONN
@@ -466,96 +466,96 @@ DECL|macro|TCP_SOCKET__ACCEPTFROM
 mdefine_line|#define TCP_SOCKET__ACCEPTFROM                    0x01000000UL
 DECL|macro|TCP_SOCKET__NODE_BIND
 mdefine_line|#define TCP_SOCKET__NODE_BIND                     0x02000000UL
-DECL|macro|UDP_SOCKET__RELABELTO
-mdefine_line|#define UDP_SOCKET__RELABELTO                     0x00000100UL
-DECL|macro|UDP_SOCKET__RECV_MSG
-mdefine_line|#define UDP_SOCKET__RECV_MSG                      0x00080000UL
-DECL|macro|UDP_SOCKET__RELABELFROM
-mdefine_line|#define UDP_SOCKET__RELABELFROM                   0x00000080UL
-DECL|macro|UDP_SOCKET__SETOPT
-mdefine_line|#define UDP_SOCKET__SETOPT                        0x00008000UL
-DECL|macro|UDP_SOCKET__APPEND
-mdefine_line|#define UDP_SOCKET__APPEND                        0x00000200UL
-DECL|macro|UDP_SOCKET__SETATTR
-mdefine_line|#define UDP_SOCKET__SETATTR                       0x00000020UL
-DECL|macro|UDP_SOCKET__SENDTO
-mdefine_line|#define UDP_SOCKET__SENDTO                        0x00040000UL
-DECL|macro|UDP_SOCKET__GETOPT
-mdefine_line|#define UDP_SOCKET__GETOPT                        0x00004000UL
-DECL|macro|UDP_SOCKET__READ
-mdefine_line|#define UDP_SOCKET__READ                          0x00000002UL
-DECL|macro|UDP_SOCKET__SHUTDOWN
-mdefine_line|#define UDP_SOCKET__SHUTDOWN                      0x00010000UL
-DECL|macro|UDP_SOCKET__LISTEN
-mdefine_line|#define UDP_SOCKET__LISTEN                        0x00001000UL
-DECL|macro|UDP_SOCKET__BIND
-mdefine_line|#define UDP_SOCKET__BIND                          0x00000400UL
-DECL|macro|UDP_SOCKET__WRITE
-mdefine_line|#define UDP_SOCKET__WRITE                         0x00000004UL
-DECL|macro|UDP_SOCKET__ACCEPT
-mdefine_line|#define UDP_SOCKET__ACCEPT                        0x00002000UL
-DECL|macro|UDP_SOCKET__CONNECT
-mdefine_line|#define UDP_SOCKET__CONNECT                       0x00000800UL
-DECL|macro|UDP_SOCKET__LOCK
-mdefine_line|#define UDP_SOCKET__LOCK                          0x00000040UL
 DECL|macro|UDP_SOCKET__IOCTL
 mdefine_line|#define UDP_SOCKET__IOCTL                         0x00000001UL
+DECL|macro|UDP_SOCKET__READ
+mdefine_line|#define UDP_SOCKET__READ                          0x00000002UL
+DECL|macro|UDP_SOCKET__WRITE
+mdefine_line|#define UDP_SOCKET__WRITE                         0x00000004UL
 DECL|macro|UDP_SOCKET__CREATE
 mdefine_line|#define UDP_SOCKET__CREATE                        0x00000008UL
-DECL|macro|UDP_SOCKET__NAME_BIND
-mdefine_line|#define UDP_SOCKET__NAME_BIND                     0x00200000UL
-DECL|macro|UDP_SOCKET__SEND_MSG
-mdefine_line|#define UDP_SOCKET__SEND_MSG                      0x00100000UL
-DECL|macro|UDP_SOCKET__RECVFROM
-mdefine_line|#define UDP_SOCKET__RECVFROM                      0x00020000UL
 DECL|macro|UDP_SOCKET__GETATTR
 mdefine_line|#define UDP_SOCKET__GETATTR                       0x00000010UL
+DECL|macro|UDP_SOCKET__SETATTR
+mdefine_line|#define UDP_SOCKET__SETATTR                       0x00000020UL
+DECL|macro|UDP_SOCKET__LOCK
+mdefine_line|#define UDP_SOCKET__LOCK                          0x00000040UL
+DECL|macro|UDP_SOCKET__RELABELFROM
+mdefine_line|#define UDP_SOCKET__RELABELFROM                   0x00000080UL
+DECL|macro|UDP_SOCKET__RELABELTO
+mdefine_line|#define UDP_SOCKET__RELABELTO                     0x00000100UL
+DECL|macro|UDP_SOCKET__APPEND
+mdefine_line|#define UDP_SOCKET__APPEND                        0x00000200UL
+DECL|macro|UDP_SOCKET__BIND
+mdefine_line|#define UDP_SOCKET__BIND                          0x00000400UL
+DECL|macro|UDP_SOCKET__CONNECT
+mdefine_line|#define UDP_SOCKET__CONNECT                       0x00000800UL
+DECL|macro|UDP_SOCKET__LISTEN
+mdefine_line|#define UDP_SOCKET__LISTEN                        0x00001000UL
+DECL|macro|UDP_SOCKET__ACCEPT
+mdefine_line|#define UDP_SOCKET__ACCEPT                        0x00002000UL
+DECL|macro|UDP_SOCKET__GETOPT
+mdefine_line|#define UDP_SOCKET__GETOPT                        0x00004000UL
+DECL|macro|UDP_SOCKET__SETOPT
+mdefine_line|#define UDP_SOCKET__SETOPT                        0x00008000UL
+DECL|macro|UDP_SOCKET__SHUTDOWN
+mdefine_line|#define UDP_SOCKET__SHUTDOWN                      0x00010000UL
+DECL|macro|UDP_SOCKET__RECVFROM
+mdefine_line|#define UDP_SOCKET__RECVFROM                      0x00020000UL
+DECL|macro|UDP_SOCKET__SENDTO
+mdefine_line|#define UDP_SOCKET__SENDTO                        0x00040000UL
+DECL|macro|UDP_SOCKET__RECV_MSG
+mdefine_line|#define UDP_SOCKET__RECV_MSG                      0x00080000UL
+DECL|macro|UDP_SOCKET__SEND_MSG
+mdefine_line|#define UDP_SOCKET__SEND_MSG                      0x00100000UL
+DECL|macro|UDP_SOCKET__NAME_BIND
+mdefine_line|#define UDP_SOCKET__NAME_BIND                     0x00200000UL
 DECL|macro|UDP_SOCKET__NODE_BIND
 mdefine_line|#define UDP_SOCKET__NODE_BIND                     0x00400000UL
-DECL|macro|RAWIP_SOCKET__RELABELTO
-mdefine_line|#define RAWIP_SOCKET__RELABELTO                   0x00000100UL
-DECL|macro|RAWIP_SOCKET__RECV_MSG
-mdefine_line|#define RAWIP_SOCKET__RECV_MSG                    0x00080000UL
-DECL|macro|RAWIP_SOCKET__RELABELFROM
-mdefine_line|#define RAWIP_SOCKET__RELABELFROM                 0x00000080UL
-DECL|macro|RAWIP_SOCKET__SETOPT
-mdefine_line|#define RAWIP_SOCKET__SETOPT                      0x00008000UL
-DECL|macro|RAWIP_SOCKET__APPEND
-mdefine_line|#define RAWIP_SOCKET__APPEND                      0x00000200UL
-DECL|macro|RAWIP_SOCKET__SETATTR
-mdefine_line|#define RAWIP_SOCKET__SETATTR                     0x00000020UL
-DECL|macro|RAWIP_SOCKET__SENDTO
-mdefine_line|#define RAWIP_SOCKET__SENDTO                      0x00040000UL
-DECL|macro|RAWIP_SOCKET__GETOPT
-mdefine_line|#define RAWIP_SOCKET__GETOPT                      0x00004000UL
-DECL|macro|RAWIP_SOCKET__READ
-mdefine_line|#define RAWIP_SOCKET__READ                        0x00000002UL
-DECL|macro|RAWIP_SOCKET__SHUTDOWN
-mdefine_line|#define RAWIP_SOCKET__SHUTDOWN                    0x00010000UL
-DECL|macro|RAWIP_SOCKET__LISTEN
-mdefine_line|#define RAWIP_SOCKET__LISTEN                      0x00001000UL
-DECL|macro|RAWIP_SOCKET__BIND
-mdefine_line|#define RAWIP_SOCKET__BIND                        0x00000400UL
-DECL|macro|RAWIP_SOCKET__WRITE
-mdefine_line|#define RAWIP_SOCKET__WRITE                       0x00000004UL
-DECL|macro|RAWIP_SOCKET__ACCEPT
-mdefine_line|#define RAWIP_SOCKET__ACCEPT                      0x00002000UL
-DECL|macro|RAWIP_SOCKET__CONNECT
-mdefine_line|#define RAWIP_SOCKET__CONNECT                     0x00000800UL
-DECL|macro|RAWIP_SOCKET__LOCK
-mdefine_line|#define RAWIP_SOCKET__LOCK                        0x00000040UL
 DECL|macro|RAWIP_SOCKET__IOCTL
 mdefine_line|#define RAWIP_SOCKET__IOCTL                       0x00000001UL
+DECL|macro|RAWIP_SOCKET__READ
+mdefine_line|#define RAWIP_SOCKET__READ                        0x00000002UL
+DECL|macro|RAWIP_SOCKET__WRITE
+mdefine_line|#define RAWIP_SOCKET__WRITE                       0x00000004UL
 DECL|macro|RAWIP_SOCKET__CREATE
 mdefine_line|#define RAWIP_SOCKET__CREATE                      0x00000008UL
-DECL|macro|RAWIP_SOCKET__NAME_BIND
-mdefine_line|#define RAWIP_SOCKET__NAME_BIND                   0x00200000UL
-DECL|macro|RAWIP_SOCKET__SEND_MSG
-mdefine_line|#define RAWIP_SOCKET__SEND_MSG                    0x00100000UL
-DECL|macro|RAWIP_SOCKET__RECVFROM
-mdefine_line|#define RAWIP_SOCKET__RECVFROM                    0x00020000UL
 DECL|macro|RAWIP_SOCKET__GETATTR
 mdefine_line|#define RAWIP_SOCKET__GETATTR                     0x00000010UL
+DECL|macro|RAWIP_SOCKET__SETATTR
+mdefine_line|#define RAWIP_SOCKET__SETATTR                     0x00000020UL
+DECL|macro|RAWIP_SOCKET__LOCK
+mdefine_line|#define RAWIP_SOCKET__LOCK                        0x00000040UL
+DECL|macro|RAWIP_SOCKET__RELABELFROM
+mdefine_line|#define RAWIP_SOCKET__RELABELFROM                 0x00000080UL
+DECL|macro|RAWIP_SOCKET__RELABELTO
+mdefine_line|#define RAWIP_SOCKET__RELABELTO                   0x00000100UL
+DECL|macro|RAWIP_SOCKET__APPEND
+mdefine_line|#define RAWIP_SOCKET__APPEND                      0x00000200UL
+DECL|macro|RAWIP_SOCKET__BIND
+mdefine_line|#define RAWIP_SOCKET__BIND                        0x00000400UL
+DECL|macro|RAWIP_SOCKET__CONNECT
+mdefine_line|#define RAWIP_SOCKET__CONNECT                     0x00000800UL
+DECL|macro|RAWIP_SOCKET__LISTEN
+mdefine_line|#define RAWIP_SOCKET__LISTEN                      0x00001000UL
+DECL|macro|RAWIP_SOCKET__ACCEPT
+mdefine_line|#define RAWIP_SOCKET__ACCEPT                      0x00002000UL
+DECL|macro|RAWIP_SOCKET__GETOPT
+mdefine_line|#define RAWIP_SOCKET__GETOPT                      0x00004000UL
+DECL|macro|RAWIP_SOCKET__SETOPT
+mdefine_line|#define RAWIP_SOCKET__SETOPT                      0x00008000UL
+DECL|macro|RAWIP_SOCKET__SHUTDOWN
+mdefine_line|#define RAWIP_SOCKET__SHUTDOWN                    0x00010000UL
+DECL|macro|RAWIP_SOCKET__RECVFROM
+mdefine_line|#define RAWIP_SOCKET__RECVFROM                    0x00020000UL
+DECL|macro|RAWIP_SOCKET__SENDTO
+mdefine_line|#define RAWIP_SOCKET__SENDTO                      0x00040000UL
+DECL|macro|RAWIP_SOCKET__RECV_MSG
+mdefine_line|#define RAWIP_SOCKET__RECV_MSG                    0x00080000UL
+DECL|macro|RAWIP_SOCKET__SEND_MSG
+mdefine_line|#define RAWIP_SOCKET__SEND_MSG                    0x00100000UL
+DECL|macro|RAWIP_SOCKET__NAME_BIND
+mdefine_line|#define RAWIP_SOCKET__NAME_BIND                   0x00200000UL
 DECL|macro|RAWIP_SOCKET__NODE_BIND
 mdefine_line|#define RAWIP_SOCKET__NODE_BIND                   0x00400000UL
 DECL|macro|NODE__TCP_RECV
@@ -584,232 +584,232 @@ DECL|macro|NETIF__RAWIP_RECV
 mdefine_line|#define NETIF__RAWIP_RECV                         0x00000010UL
 DECL|macro|NETIF__RAWIP_SEND
 mdefine_line|#define NETIF__RAWIP_SEND                         0x00000020UL
-DECL|macro|NETLINK_SOCKET__RELABELTO
-mdefine_line|#define NETLINK_SOCKET__RELABELTO                 0x00000100UL
-DECL|macro|NETLINK_SOCKET__RECV_MSG
-mdefine_line|#define NETLINK_SOCKET__RECV_MSG                  0x00080000UL
-DECL|macro|NETLINK_SOCKET__RELABELFROM
-mdefine_line|#define NETLINK_SOCKET__RELABELFROM               0x00000080UL
-DECL|macro|NETLINK_SOCKET__SETOPT
-mdefine_line|#define NETLINK_SOCKET__SETOPT                    0x00008000UL
-DECL|macro|NETLINK_SOCKET__APPEND
-mdefine_line|#define NETLINK_SOCKET__APPEND                    0x00000200UL
-DECL|macro|NETLINK_SOCKET__SETATTR
-mdefine_line|#define NETLINK_SOCKET__SETATTR                   0x00000020UL
-DECL|macro|NETLINK_SOCKET__SENDTO
-mdefine_line|#define NETLINK_SOCKET__SENDTO                    0x00040000UL
-DECL|macro|NETLINK_SOCKET__GETOPT
-mdefine_line|#define NETLINK_SOCKET__GETOPT                    0x00004000UL
-DECL|macro|NETLINK_SOCKET__READ
-mdefine_line|#define NETLINK_SOCKET__READ                      0x00000002UL
-DECL|macro|NETLINK_SOCKET__SHUTDOWN
-mdefine_line|#define NETLINK_SOCKET__SHUTDOWN                  0x00010000UL
-DECL|macro|NETLINK_SOCKET__LISTEN
-mdefine_line|#define NETLINK_SOCKET__LISTEN                    0x00001000UL
-DECL|macro|NETLINK_SOCKET__BIND
-mdefine_line|#define NETLINK_SOCKET__BIND                      0x00000400UL
-DECL|macro|NETLINK_SOCKET__WRITE
-mdefine_line|#define NETLINK_SOCKET__WRITE                     0x00000004UL
-DECL|macro|NETLINK_SOCKET__ACCEPT
-mdefine_line|#define NETLINK_SOCKET__ACCEPT                    0x00002000UL
-DECL|macro|NETLINK_SOCKET__CONNECT
-mdefine_line|#define NETLINK_SOCKET__CONNECT                   0x00000800UL
-DECL|macro|NETLINK_SOCKET__LOCK
-mdefine_line|#define NETLINK_SOCKET__LOCK                      0x00000040UL
 DECL|macro|NETLINK_SOCKET__IOCTL
 mdefine_line|#define NETLINK_SOCKET__IOCTL                     0x00000001UL
+DECL|macro|NETLINK_SOCKET__READ
+mdefine_line|#define NETLINK_SOCKET__READ                      0x00000002UL
+DECL|macro|NETLINK_SOCKET__WRITE
+mdefine_line|#define NETLINK_SOCKET__WRITE                     0x00000004UL
 DECL|macro|NETLINK_SOCKET__CREATE
 mdefine_line|#define NETLINK_SOCKET__CREATE                    0x00000008UL
-DECL|macro|NETLINK_SOCKET__NAME_BIND
-mdefine_line|#define NETLINK_SOCKET__NAME_BIND                 0x00200000UL
-DECL|macro|NETLINK_SOCKET__SEND_MSG
-mdefine_line|#define NETLINK_SOCKET__SEND_MSG                  0x00100000UL
-DECL|macro|NETLINK_SOCKET__RECVFROM
-mdefine_line|#define NETLINK_SOCKET__RECVFROM                  0x00020000UL
 DECL|macro|NETLINK_SOCKET__GETATTR
 mdefine_line|#define NETLINK_SOCKET__GETATTR                   0x00000010UL
-DECL|macro|PACKET_SOCKET__RELABELTO
-mdefine_line|#define PACKET_SOCKET__RELABELTO                  0x00000100UL
-DECL|macro|PACKET_SOCKET__RECV_MSG
-mdefine_line|#define PACKET_SOCKET__RECV_MSG                   0x00080000UL
-DECL|macro|PACKET_SOCKET__RELABELFROM
-mdefine_line|#define PACKET_SOCKET__RELABELFROM                0x00000080UL
-DECL|macro|PACKET_SOCKET__SETOPT
-mdefine_line|#define PACKET_SOCKET__SETOPT                     0x00008000UL
-DECL|macro|PACKET_SOCKET__APPEND
-mdefine_line|#define PACKET_SOCKET__APPEND                     0x00000200UL
-DECL|macro|PACKET_SOCKET__SETATTR
-mdefine_line|#define PACKET_SOCKET__SETATTR                    0x00000020UL
-DECL|macro|PACKET_SOCKET__SENDTO
-mdefine_line|#define PACKET_SOCKET__SENDTO                     0x00040000UL
-DECL|macro|PACKET_SOCKET__GETOPT
-mdefine_line|#define PACKET_SOCKET__GETOPT                     0x00004000UL
-DECL|macro|PACKET_SOCKET__READ
-mdefine_line|#define PACKET_SOCKET__READ                       0x00000002UL
-DECL|macro|PACKET_SOCKET__SHUTDOWN
-mdefine_line|#define PACKET_SOCKET__SHUTDOWN                   0x00010000UL
-DECL|macro|PACKET_SOCKET__LISTEN
-mdefine_line|#define PACKET_SOCKET__LISTEN                     0x00001000UL
-DECL|macro|PACKET_SOCKET__BIND
-mdefine_line|#define PACKET_SOCKET__BIND                       0x00000400UL
-DECL|macro|PACKET_SOCKET__WRITE
-mdefine_line|#define PACKET_SOCKET__WRITE                      0x00000004UL
-DECL|macro|PACKET_SOCKET__ACCEPT
-mdefine_line|#define PACKET_SOCKET__ACCEPT                     0x00002000UL
-DECL|macro|PACKET_SOCKET__CONNECT
-mdefine_line|#define PACKET_SOCKET__CONNECT                    0x00000800UL
-DECL|macro|PACKET_SOCKET__LOCK
-mdefine_line|#define PACKET_SOCKET__LOCK                       0x00000040UL
+DECL|macro|NETLINK_SOCKET__SETATTR
+mdefine_line|#define NETLINK_SOCKET__SETATTR                   0x00000020UL
+DECL|macro|NETLINK_SOCKET__LOCK
+mdefine_line|#define NETLINK_SOCKET__LOCK                      0x00000040UL
+DECL|macro|NETLINK_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_SOCKET__RELABELFROM               0x00000080UL
+DECL|macro|NETLINK_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_SOCKET__RELABELTO                 0x00000100UL
+DECL|macro|NETLINK_SOCKET__APPEND
+mdefine_line|#define NETLINK_SOCKET__APPEND                    0x00000200UL
+DECL|macro|NETLINK_SOCKET__BIND
+mdefine_line|#define NETLINK_SOCKET__BIND                      0x00000400UL
+DECL|macro|NETLINK_SOCKET__CONNECT
+mdefine_line|#define NETLINK_SOCKET__CONNECT                   0x00000800UL
+DECL|macro|NETLINK_SOCKET__LISTEN
+mdefine_line|#define NETLINK_SOCKET__LISTEN                    0x00001000UL
+DECL|macro|NETLINK_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_SOCKET__ACCEPT                    0x00002000UL
+DECL|macro|NETLINK_SOCKET__GETOPT
+mdefine_line|#define NETLINK_SOCKET__GETOPT                    0x00004000UL
+DECL|macro|NETLINK_SOCKET__SETOPT
+mdefine_line|#define NETLINK_SOCKET__SETOPT                    0x00008000UL
+DECL|macro|NETLINK_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_SOCKET__SHUTDOWN                  0x00010000UL
+DECL|macro|NETLINK_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_SOCKET__RECVFROM                  0x00020000UL
+DECL|macro|NETLINK_SOCKET__SENDTO
+mdefine_line|#define NETLINK_SOCKET__SENDTO                    0x00040000UL
+DECL|macro|NETLINK_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_SOCKET__RECV_MSG                  0x00080000UL
+DECL|macro|NETLINK_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_SOCKET__SEND_MSG                  0x00100000UL
+DECL|macro|NETLINK_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_SOCKET__NAME_BIND                 0x00200000UL
 DECL|macro|PACKET_SOCKET__IOCTL
 mdefine_line|#define PACKET_SOCKET__IOCTL                      0x00000001UL
+DECL|macro|PACKET_SOCKET__READ
+mdefine_line|#define PACKET_SOCKET__READ                       0x00000002UL
+DECL|macro|PACKET_SOCKET__WRITE
+mdefine_line|#define PACKET_SOCKET__WRITE                      0x00000004UL
 DECL|macro|PACKET_SOCKET__CREATE
 mdefine_line|#define PACKET_SOCKET__CREATE                     0x00000008UL
-DECL|macro|PACKET_SOCKET__NAME_BIND
-mdefine_line|#define PACKET_SOCKET__NAME_BIND                  0x00200000UL
-DECL|macro|PACKET_SOCKET__SEND_MSG
-mdefine_line|#define PACKET_SOCKET__SEND_MSG                   0x00100000UL
-DECL|macro|PACKET_SOCKET__RECVFROM
-mdefine_line|#define PACKET_SOCKET__RECVFROM                   0x00020000UL
 DECL|macro|PACKET_SOCKET__GETATTR
 mdefine_line|#define PACKET_SOCKET__GETATTR                    0x00000010UL
-DECL|macro|KEY_SOCKET__RELABELTO
-mdefine_line|#define KEY_SOCKET__RELABELTO                     0x00000100UL
-DECL|macro|KEY_SOCKET__RECV_MSG
-mdefine_line|#define KEY_SOCKET__RECV_MSG                      0x00080000UL
-DECL|macro|KEY_SOCKET__RELABELFROM
-mdefine_line|#define KEY_SOCKET__RELABELFROM                   0x00000080UL
-DECL|macro|KEY_SOCKET__SETOPT
-mdefine_line|#define KEY_SOCKET__SETOPT                        0x00008000UL
-DECL|macro|KEY_SOCKET__APPEND
-mdefine_line|#define KEY_SOCKET__APPEND                        0x00000200UL
-DECL|macro|KEY_SOCKET__SETATTR
-mdefine_line|#define KEY_SOCKET__SETATTR                       0x00000020UL
-DECL|macro|KEY_SOCKET__SENDTO
-mdefine_line|#define KEY_SOCKET__SENDTO                        0x00040000UL
-DECL|macro|KEY_SOCKET__GETOPT
-mdefine_line|#define KEY_SOCKET__GETOPT                        0x00004000UL
-DECL|macro|KEY_SOCKET__READ
-mdefine_line|#define KEY_SOCKET__READ                          0x00000002UL
-DECL|macro|KEY_SOCKET__SHUTDOWN
-mdefine_line|#define KEY_SOCKET__SHUTDOWN                      0x00010000UL
-DECL|macro|KEY_SOCKET__LISTEN
-mdefine_line|#define KEY_SOCKET__LISTEN                        0x00001000UL
-DECL|macro|KEY_SOCKET__BIND
-mdefine_line|#define KEY_SOCKET__BIND                          0x00000400UL
-DECL|macro|KEY_SOCKET__WRITE
-mdefine_line|#define KEY_SOCKET__WRITE                         0x00000004UL
-DECL|macro|KEY_SOCKET__ACCEPT
-mdefine_line|#define KEY_SOCKET__ACCEPT                        0x00002000UL
-DECL|macro|KEY_SOCKET__CONNECT
-mdefine_line|#define KEY_SOCKET__CONNECT                       0x00000800UL
-DECL|macro|KEY_SOCKET__LOCK
-mdefine_line|#define KEY_SOCKET__LOCK                          0x00000040UL
+DECL|macro|PACKET_SOCKET__SETATTR
+mdefine_line|#define PACKET_SOCKET__SETATTR                    0x00000020UL
+DECL|macro|PACKET_SOCKET__LOCK
+mdefine_line|#define PACKET_SOCKET__LOCK                       0x00000040UL
+DECL|macro|PACKET_SOCKET__RELABELFROM
+mdefine_line|#define PACKET_SOCKET__RELABELFROM                0x00000080UL
+DECL|macro|PACKET_SOCKET__RELABELTO
+mdefine_line|#define PACKET_SOCKET__RELABELTO                  0x00000100UL
+DECL|macro|PACKET_SOCKET__APPEND
+mdefine_line|#define PACKET_SOCKET__APPEND                     0x00000200UL
+DECL|macro|PACKET_SOCKET__BIND
+mdefine_line|#define PACKET_SOCKET__BIND                       0x00000400UL
+DECL|macro|PACKET_SOCKET__CONNECT
+mdefine_line|#define PACKET_SOCKET__CONNECT                    0x00000800UL
+DECL|macro|PACKET_SOCKET__LISTEN
+mdefine_line|#define PACKET_SOCKET__LISTEN                     0x00001000UL
+DECL|macro|PACKET_SOCKET__ACCEPT
+mdefine_line|#define PACKET_SOCKET__ACCEPT                     0x00002000UL
+DECL|macro|PACKET_SOCKET__GETOPT
+mdefine_line|#define PACKET_SOCKET__GETOPT                     0x00004000UL
+DECL|macro|PACKET_SOCKET__SETOPT
+mdefine_line|#define PACKET_SOCKET__SETOPT                     0x00008000UL
+DECL|macro|PACKET_SOCKET__SHUTDOWN
+mdefine_line|#define PACKET_SOCKET__SHUTDOWN                   0x00010000UL
+DECL|macro|PACKET_SOCKET__RECVFROM
+mdefine_line|#define PACKET_SOCKET__RECVFROM                   0x00020000UL
+DECL|macro|PACKET_SOCKET__SENDTO
+mdefine_line|#define PACKET_SOCKET__SENDTO                     0x00040000UL
+DECL|macro|PACKET_SOCKET__RECV_MSG
+mdefine_line|#define PACKET_SOCKET__RECV_MSG                   0x00080000UL
+DECL|macro|PACKET_SOCKET__SEND_MSG
+mdefine_line|#define PACKET_SOCKET__SEND_MSG                   0x00100000UL
+DECL|macro|PACKET_SOCKET__NAME_BIND
+mdefine_line|#define PACKET_SOCKET__NAME_BIND                  0x00200000UL
 DECL|macro|KEY_SOCKET__IOCTL
 mdefine_line|#define KEY_SOCKET__IOCTL                         0x00000001UL
+DECL|macro|KEY_SOCKET__READ
+mdefine_line|#define KEY_SOCKET__READ                          0x00000002UL
+DECL|macro|KEY_SOCKET__WRITE
+mdefine_line|#define KEY_SOCKET__WRITE                         0x00000004UL
 DECL|macro|KEY_SOCKET__CREATE
 mdefine_line|#define KEY_SOCKET__CREATE                        0x00000008UL
-DECL|macro|KEY_SOCKET__NAME_BIND
-mdefine_line|#define KEY_SOCKET__NAME_BIND                     0x00200000UL
-DECL|macro|KEY_SOCKET__SEND_MSG
-mdefine_line|#define KEY_SOCKET__SEND_MSG                      0x00100000UL
-DECL|macro|KEY_SOCKET__RECVFROM
-mdefine_line|#define KEY_SOCKET__RECVFROM                      0x00020000UL
 DECL|macro|KEY_SOCKET__GETATTR
 mdefine_line|#define KEY_SOCKET__GETATTR                       0x00000010UL
-DECL|macro|UNIX_STREAM_SOCKET__RELABELTO
-mdefine_line|#define UNIX_STREAM_SOCKET__RELABELTO             0x00000100UL
-DECL|macro|UNIX_STREAM_SOCKET__RECV_MSG
-mdefine_line|#define UNIX_STREAM_SOCKET__RECV_MSG              0x00080000UL
-DECL|macro|UNIX_STREAM_SOCKET__RELABELFROM
-mdefine_line|#define UNIX_STREAM_SOCKET__RELABELFROM           0x00000080UL
-DECL|macro|UNIX_STREAM_SOCKET__SETOPT
-mdefine_line|#define UNIX_STREAM_SOCKET__SETOPT                0x00008000UL
-DECL|macro|UNIX_STREAM_SOCKET__APPEND
-mdefine_line|#define UNIX_STREAM_SOCKET__APPEND                0x00000200UL
-DECL|macro|UNIX_STREAM_SOCKET__SETATTR
-mdefine_line|#define UNIX_STREAM_SOCKET__SETATTR               0x00000020UL
-DECL|macro|UNIX_STREAM_SOCKET__SENDTO
-mdefine_line|#define UNIX_STREAM_SOCKET__SENDTO                0x00040000UL
-DECL|macro|UNIX_STREAM_SOCKET__GETOPT
-mdefine_line|#define UNIX_STREAM_SOCKET__GETOPT                0x00004000UL
-DECL|macro|UNIX_STREAM_SOCKET__READ
-mdefine_line|#define UNIX_STREAM_SOCKET__READ                  0x00000002UL
-DECL|macro|UNIX_STREAM_SOCKET__SHUTDOWN
-mdefine_line|#define UNIX_STREAM_SOCKET__SHUTDOWN              0x00010000UL
-DECL|macro|UNIX_STREAM_SOCKET__LISTEN
-mdefine_line|#define UNIX_STREAM_SOCKET__LISTEN                0x00001000UL
-DECL|macro|UNIX_STREAM_SOCKET__BIND
-mdefine_line|#define UNIX_STREAM_SOCKET__BIND                  0x00000400UL
-DECL|macro|UNIX_STREAM_SOCKET__WRITE
-mdefine_line|#define UNIX_STREAM_SOCKET__WRITE                 0x00000004UL
-DECL|macro|UNIX_STREAM_SOCKET__ACCEPT
-mdefine_line|#define UNIX_STREAM_SOCKET__ACCEPT                0x00002000UL
-DECL|macro|UNIX_STREAM_SOCKET__CONNECT
-mdefine_line|#define UNIX_STREAM_SOCKET__CONNECT               0x00000800UL
-DECL|macro|UNIX_STREAM_SOCKET__LOCK
-mdefine_line|#define UNIX_STREAM_SOCKET__LOCK                  0x00000040UL
+DECL|macro|KEY_SOCKET__SETATTR
+mdefine_line|#define KEY_SOCKET__SETATTR                       0x00000020UL
+DECL|macro|KEY_SOCKET__LOCK
+mdefine_line|#define KEY_SOCKET__LOCK                          0x00000040UL
+DECL|macro|KEY_SOCKET__RELABELFROM
+mdefine_line|#define KEY_SOCKET__RELABELFROM                   0x00000080UL
+DECL|macro|KEY_SOCKET__RELABELTO
+mdefine_line|#define KEY_SOCKET__RELABELTO                     0x00000100UL
+DECL|macro|KEY_SOCKET__APPEND
+mdefine_line|#define KEY_SOCKET__APPEND                        0x00000200UL
+DECL|macro|KEY_SOCKET__BIND
+mdefine_line|#define KEY_SOCKET__BIND                          0x00000400UL
+DECL|macro|KEY_SOCKET__CONNECT
+mdefine_line|#define KEY_SOCKET__CONNECT                       0x00000800UL
+DECL|macro|KEY_SOCKET__LISTEN
+mdefine_line|#define KEY_SOCKET__LISTEN                        0x00001000UL
+DECL|macro|KEY_SOCKET__ACCEPT
+mdefine_line|#define KEY_SOCKET__ACCEPT                        0x00002000UL
+DECL|macro|KEY_SOCKET__GETOPT
+mdefine_line|#define KEY_SOCKET__GETOPT                        0x00004000UL
+DECL|macro|KEY_SOCKET__SETOPT
+mdefine_line|#define KEY_SOCKET__SETOPT                        0x00008000UL
+DECL|macro|KEY_SOCKET__SHUTDOWN
+mdefine_line|#define KEY_SOCKET__SHUTDOWN                      0x00010000UL
+DECL|macro|KEY_SOCKET__RECVFROM
+mdefine_line|#define KEY_SOCKET__RECVFROM                      0x00020000UL
+DECL|macro|KEY_SOCKET__SENDTO
+mdefine_line|#define KEY_SOCKET__SENDTO                        0x00040000UL
+DECL|macro|KEY_SOCKET__RECV_MSG
+mdefine_line|#define KEY_SOCKET__RECV_MSG                      0x00080000UL
+DECL|macro|KEY_SOCKET__SEND_MSG
+mdefine_line|#define KEY_SOCKET__SEND_MSG                      0x00100000UL
+DECL|macro|KEY_SOCKET__NAME_BIND
+mdefine_line|#define KEY_SOCKET__NAME_BIND                     0x00200000UL
 DECL|macro|UNIX_STREAM_SOCKET__IOCTL
 mdefine_line|#define UNIX_STREAM_SOCKET__IOCTL                 0x00000001UL
+DECL|macro|UNIX_STREAM_SOCKET__READ
+mdefine_line|#define UNIX_STREAM_SOCKET__READ                  0x00000002UL
+DECL|macro|UNIX_STREAM_SOCKET__WRITE
+mdefine_line|#define UNIX_STREAM_SOCKET__WRITE                 0x00000004UL
 DECL|macro|UNIX_STREAM_SOCKET__CREATE
 mdefine_line|#define UNIX_STREAM_SOCKET__CREATE                0x00000008UL
-DECL|macro|UNIX_STREAM_SOCKET__NAME_BIND
-mdefine_line|#define UNIX_STREAM_SOCKET__NAME_BIND             0x00200000UL
-DECL|macro|UNIX_STREAM_SOCKET__SEND_MSG
-mdefine_line|#define UNIX_STREAM_SOCKET__SEND_MSG              0x00100000UL
-DECL|macro|UNIX_STREAM_SOCKET__RECVFROM
-mdefine_line|#define UNIX_STREAM_SOCKET__RECVFROM              0x00020000UL
 DECL|macro|UNIX_STREAM_SOCKET__GETATTR
 mdefine_line|#define UNIX_STREAM_SOCKET__GETATTR               0x00000010UL
+DECL|macro|UNIX_STREAM_SOCKET__SETATTR
+mdefine_line|#define UNIX_STREAM_SOCKET__SETATTR               0x00000020UL
+DECL|macro|UNIX_STREAM_SOCKET__LOCK
+mdefine_line|#define UNIX_STREAM_SOCKET__LOCK                  0x00000040UL
+DECL|macro|UNIX_STREAM_SOCKET__RELABELFROM
+mdefine_line|#define UNIX_STREAM_SOCKET__RELABELFROM           0x00000080UL
+DECL|macro|UNIX_STREAM_SOCKET__RELABELTO
+mdefine_line|#define UNIX_STREAM_SOCKET__RELABELTO             0x00000100UL
+DECL|macro|UNIX_STREAM_SOCKET__APPEND
+mdefine_line|#define UNIX_STREAM_SOCKET__APPEND                0x00000200UL
+DECL|macro|UNIX_STREAM_SOCKET__BIND
+mdefine_line|#define UNIX_STREAM_SOCKET__BIND                  0x00000400UL
+DECL|macro|UNIX_STREAM_SOCKET__CONNECT
+mdefine_line|#define UNIX_STREAM_SOCKET__CONNECT               0x00000800UL
+DECL|macro|UNIX_STREAM_SOCKET__LISTEN
+mdefine_line|#define UNIX_STREAM_SOCKET__LISTEN                0x00001000UL
+DECL|macro|UNIX_STREAM_SOCKET__ACCEPT
+mdefine_line|#define UNIX_STREAM_SOCKET__ACCEPT                0x00002000UL
+DECL|macro|UNIX_STREAM_SOCKET__GETOPT
+mdefine_line|#define UNIX_STREAM_SOCKET__GETOPT                0x00004000UL
+DECL|macro|UNIX_STREAM_SOCKET__SETOPT
+mdefine_line|#define UNIX_STREAM_SOCKET__SETOPT                0x00008000UL
+DECL|macro|UNIX_STREAM_SOCKET__SHUTDOWN
+mdefine_line|#define UNIX_STREAM_SOCKET__SHUTDOWN              0x00010000UL
+DECL|macro|UNIX_STREAM_SOCKET__RECVFROM
+mdefine_line|#define UNIX_STREAM_SOCKET__RECVFROM              0x00020000UL
+DECL|macro|UNIX_STREAM_SOCKET__SENDTO
+mdefine_line|#define UNIX_STREAM_SOCKET__SENDTO                0x00040000UL
+DECL|macro|UNIX_STREAM_SOCKET__RECV_MSG
+mdefine_line|#define UNIX_STREAM_SOCKET__RECV_MSG              0x00080000UL
+DECL|macro|UNIX_STREAM_SOCKET__SEND_MSG
+mdefine_line|#define UNIX_STREAM_SOCKET__SEND_MSG              0x00100000UL
+DECL|macro|UNIX_STREAM_SOCKET__NAME_BIND
+mdefine_line|#define UNIX_STREAM_SOCKET__NAME_BIND             0x00200000UL
 DECL|macro|UNIX_STREAM_SOCKET__CONNECTTO
 mdefine_line|#define UNIX_STREAM_SOCKET__CONNECTTO             0x00400000UL
 DECL|macro|UNIX_STREAM_SOCKET__NEWCONN
 mdefine_line|#define UNIX_STREAM_SOCKET__NEWCONN               0x00800000UL
 DECL|macro|UNIX_STREAM_SOCKET__ACCEPTFROM
 mdefine_line|#define UNIX_STREAM_SOCKET__ACCEPTFROM            0x01000000UL
-DECL|macro|UNIX_DGRAM_SOCKET__RELABELTO
-mdefine_line|#define UNIX_DGRAM_SOCKET__RELABELTO              0x00000100UL
-DECL|macro|UNIX_DGRAM_SOCKET__RECV_MSG
-mdefine_line|#define UNIX_DGRAM_SOCKET__RECV_MSG               0x00080000UL
-DECL|macro|UNIX_DGRAM_SOCKET__RELABELFROM
-mdefine_line|#define UNIX_DGRAM_SOCKET__RELABELFROM            0x00000080UL
-DECL|macro|UNIX_DGRAM_SOCKET__SETOPT
-mdefine_line|#define UNIX_DGRAM_SOCKET__SETOPT                 0x00008000UL
-DECL|macro|UNIX_DGRAM_SOCKET__APPEND
-mdefine_line|#define UNIX_DGRAM_SOCKET__APPEND                 0x00000200UL
-DECL|macro|UNIX_DGRAM_SOCKET__SETATTR
-mdefine_line|#define UNIX_DGRAM_SOCKET__SETATTR                0x00000020UL
-DECL|macro|UNIX_DGRAM_SOCKET__SENDTO
-mdefine_line|#define UNIX_DGRAM_SOCKET__SENDTO                 0x00040000UL
-DECL|macro|UNIX_DGRAM_SOCKET__GETOPT
-mdefine_line|#define UNIX_DGRAM_SOCKET__GETOPT                 0x00004000UL
-DECL|macro|UNIX_DGRAM_SOCKET__READ
-mdefine_line|#define UNIX_DGRAM_SOCKET__READ                   0x00000002UL
-DECL|macro|UNIX_DGRAM_SOCKET__SHUTDOWN
-mdefine_line|#define UNIX_DGRAM_SOCKET__SHUTDOWN               0x00010000UL
-DECL|macro|UNIX_DGRAM_SOCKET__LISTEN
-mdefine_line|#define UNIX_DGRAM_SOCKET__LISTEN                 0x00001000UL
-DECL|macro|UNIX_DGRAM_SOCKET__BIND
-mdefine_line|#define UNIX_DGRAM_SOCKET__BIND                   0x00000400UL
-DECL|macro|UNIX_DGRAM_SOCKET__WRITE
-mdefine_line|#define UNIX_DGRAM_SOCKET__WRITE                  0x00000004UL
-DECL|macro|UNIX_DGRAM_SOCKET__ACCEPT
-mdefine_line|#define UNIX_DGRAM_SOCKET__ACCEPT                 0x00002000UL
-DECL|macro|UNIX_DGRAM_SOCKET__CONNECT
-mdefine_line|#define UNIX_DGRAM_SOCKET__CONNECT                0x00000800UL
-DECL|macro|UNIX_DGRAM_SOCKET__LOCK
-mdefine_line|#define UNIX_DGRAM_SOCKET__LOCK                   0x00000040UL
 DECL|macro|UNIX_DGRAM_SOCKET__IOCTL
 mdefine_line|#define UNIX_DGRAM_SOCKET__IOCTL                  0x00000001UL
+DECL|macro|UNIX_DGRAM_SOCKET__READ
+mdefine_line|#define UNIX_DGRAM_SOCKET__READ                   0x00000002UL
+DECL|macro|UNIX_DGRAM_SOCKET__WRITE
+mdefine_line|#define UNIX_DGRAM_SOCKET__WRITE                  0x00000004UL
 DECL|macro|UNIX_DGRAM_SOCKET__CREATE
 mdefine_line|#define UNIX_DGRAM_SOCKET__CREATE                 0x00000008UL
-DECL|macro|UNIX_DGRAM_SOCKET__NAME_BIND
-mdefine_line|#define UNIX_DGRAM_SOCKET__NAME_BIND              0x00200000UL
-DECL|macro|UNIX_DGRAM_SOCKET__SEND_MSG
-mdefine_line|#define UNIX_DGRAM_SOCKET__SEND_MSG               0x00100000UL
-DECL|macro|UNIX_DGRAM_SOCKET__RECVFROM
-mdefine_line|#define UNIX_DGRAM_SOCKET__RECVFROM               0x00020000UL
 DECL|macro|UNIX_DGRAM_SOCKET__GETATTR
 mdefine_line|#define UNIX_DGRAM_SOCKET__GETATTR                0x00000010UL
+DECL|macro|UNIX_DGRAM_SOCKET__SETATTR
+mdefine_line|#define UNIX_DGRAM_SOCKET__SETATTR                0x00000020UL
+DECL|macro|UNIX_DGRAM_SOCKET__LOCK
+mdefine_line|#define UNIX_DGRAM_SOCKET__LOCK                   0x00000040UL
+DECL|macro|UNIX_DGRAM_SOCKET__RELABELFROM
+mdefine_line|#define UNIX_DGRAM_SOCKET__RELABELFROM            0x00000080UL
+DECL|macro|UNIX_DGRAM_SOCKET__RELABELTO
+mdefine_line|#define UNIX_DGRAM_SOCKET__RELABELTO              0x00000100UL
+DECL|macro|UNIX_DGRAM_SOCKET__APPEND
+mdefine_line|#define UNIX_DGRAM_SOCKET__APPEND                 0x00000200UL
+DECL|macro|UNIX_DGRAM_SOCKET__BIND
+mdefine_line|#define UNIX_DGRAM_SOCKET__BIND                   0x00000400UL
+DECL|macro|UNIX_DGRAM_SOCKET__CONNECT
+mdefine_line|#define UNIX_DGRAM_SOCKET__CONNECT                0x00000800UL
+DECL|macro|UNIX_DGRAM_SOCKET__LISTEN
+mdefine_line|#define UNIX_DGRAM_SOCKET__LISTEN                 0x00001000UL
+DECL|macro|UNIX_DGRAM_SOCKET__ACCEPT
+mdefine_line|#define UNIX_DGRAM_SOCKET__ACCEPT                 0x00002000UL
+DECL|macro|UNIX_DGRAM_SOCKET__GETOPT
+mdefine_line|#define UNIX_DGRAM_SOCKET__GETOPT                 0x00004000UL
+DECL|macro|UNIX_DGRAM_SOCKET__SETOPT
+mdefine_line|#define UNIX_DGRAM_SOCKET__SETOPT                 0x00008000UL
+DECL|macro|UNIX_DGRAM_SOCKET__SHUTDOWN
+mdefine_line|#define UNIX_DGRAM_SOCKET__SHUTDOWN               0x00010000UL
+DECL|macro|UNIX_DGRAM_SOCKET__RECVFROM
+mdefine_line|#define UNIX_DGRAM_SOCKET__RECVFROM               0x00020000UL
+DECL|macro|UNIX_DGRAM_SOCKET__SENDTO
+mdefine_line|#define UNIX_DGRAM_SOCKET__SENDTO                 0x00040000UL
+DECL|macro|UNIX_DGRAM_SOCKET__RECV_MSG
+mdefine_line|#define UNIX_DGRAM_SOCKET__RECV_MSG               0x00080000UL
+DECL|macro|UNIX_DGRAM_SOCKET__SEND_MSG
+mdefine_line|#define UNIX_DGRAM_SOCKET__SEND_MSG               0x00100000UL
+DECL|macro|UNIX_DGRAM_SOCKET__NAME_BIND
+mdefine_line|#define UNIX_DGRAM_SOCKET__NAME_BIND              0x00200000UL
 DECL|macro|PROCESS__FORK
 mdefine_line|#define PROCESS__FORK                             0x00000001UL
 DECL|macro|PROCESS__TRANSITION
@@ -856,84 +856,84 @@ DECL|macro|PROCESS__SETRLIMIT
 mdefine_line|#define PROCESS__SETRLIMIT                        0x00200000UL
 DECL|macro|PROCESS__RLIMITINH
 mdefine_line|#define PROCESS__RLIMITINH                        0x00400000UL
+DECL|macro|IPC__CREATE
+mdefine_line|#define IPC__CREATE                               0x00000001UL
+DECL|macro|IPC__DESTROY
+mdefine_line|#define IPC__DESTROY                              0x00000002UL
+DECL|macro|IPC__GETATTR
+mdefine_line|#define IPC__GETATTR                              0x00000004UL
 DECL|macro|IPC__SETATTR
 mdefine_line|#define IPC__SETATTR                              0x00000008UL
 DECL|macro|IPC__READ
 mdefine_line|#define IPC__READ                                 0x00000010UL
-DECL|macro|IPC__ASSOCIATE
-mdefine_line|#define IPC__ASSOCIATE                            0x00000040UL
-DECL|macro|IPC__DESTROY
-mdefine_line|#define IPC__DESTROY                              0x00000002UL
-DECL|macro|IPC__UNIX_WRITE
-mdefine_line|#define IPC__UNIX_WRITE                           0x00000100UL
-DECL|macro|IPC__CREATE
-mdefine_line|#define IPC__CREATE                               0x00000001UL
-DECL|macro|IPC__UNIX_READ
-mdefine_line|#define IPC__UNIX_READ                            0x00000080UL
-DECL|macro|IPC__GETATTR
-mdefine_line|#define IPC__GETATTR                              0x00000004UL
 DECL|macro|IPC__WRITE
 mdefine_line|#define IPC__WRITE                                0x00000020UL
+DECL|macro|IPC__ASSOCIATE
+mdefine_line|#define IPC__ASSOCIATE                            0x00000040UL
+DECL|macro|IPC__UNIX_READ
+mdefine_line|#define IPC__UNIX_READ                            0x00000080UL
+DECL|macro|IPC__UNIX_WRITE
+mdefine_line|#define IPC__UNIX_WRITE                           0x00000100UL
+DECL|macro|SEM__CREATE
+mdefine_line|#define SEM__CREATE                               0x00000001UL
+DECL|macro|SEM__DESTROY
+mdefine_line|#define SEM__DESTROY                              0x00000002UL
+DECL|macro|SEM__GETATTR
+mdefine_line|#define SEM__GETATTR                              0x00000004UL
 DECL|macro|SEM__SETATTR
 mdefine_line|#define SEM__SETATTR                              0x00000008UL
 DECL|macro|SEM__READ
 mdefine_line|#define SEM__READ                                 0x00000010UL
-DECL|macro|SEM__ASSOCIATE
-mdefine_line|#define SEM__ASSOCIATE                            0x00000040UL
-DECL|macro|SEM__DESTROY
-mdefine_line|#define SEM__DESTROY                              0x00000002UL
-DECL|macro|SEM__UNIX_WRITE
-mdefine_line|#define SEM__UNIX_WRITE                           0x00000100UL
-DECL|macro|SEM__CREATE
-mdefine_line|#define SEM__CREATE                               0x00000001UL
-DECL|macro|SEM__UNIX_READ
-mdefine_line|#define SEM__UNIX_READ                            0x00000080UL
-DECL|macro|SEM__GETATTR
-mdefine_line|#define SEM__GETATTR                              0x00000004UL
 DECL|macro|SEM__WRITE
 mdefine_line|#define SEM__WRITE                                0x00000020UL
+DECL|macro|SEM__ASSOCIATE
+mdefine_line|#define SEM__ASSOCIATE                            0x00000040UL
+DECL|macro|SEM__UNIX_READ
+mdefine_line|#define SEM__UNIX_READ                            0x00000080UL
+DECL|macro|SEM__UNIX_WRITE
+mdefine_line|#define SEM__UNIX_WRITE                           0x00000100UL
+DECL|macro|MSGQ__CREATE
+mdefine_line|#define MSGQ__CREATE                              0x00000001UL
+DECL|macro|MSGQ__DESTROY
+mdefine_line|#define MSGQ__DESTROY                             0x00000002UL
+DECL|macro|MSGQ__GETATTR
+mdefine_line|#define MSGQ__GETATTR                             0x00000004UL
 DECL|macro|MSGQ__SETATTR
 mdefine_line|#define MSGQ__SETATTR                             0x00000008UL
 DECL|macro|MSGQ__READ
 mdefine_line|#define MSGQ__READ                                0x00000010UL
-DECL|macro|MSGQ__ASSOCIATE
-mdefine_line|#define MSGQ__ASSOCIATE                           0x00000040UL
-DECL|macro|MSGQ__DESTROY
-mdefine_line|#define MSGQ__DESTROY                             0x00000002UL
-DECL|macro|MSGQ__UNIX_WRITE
-mdefine_line|#define MSGQ__UNIX_WRITE                          0x00000100UL
-DECL|macro|MSGQ__CREATE
-mdefine_line|#define MSGQ__CREATE                              0x00000001UL
-DECL|macro|MSGQ__UNIX_READ
-mdefine_line|#define MSGQ__UNIX_READ                           0x00000080UL
-DECL|macro|MSGQ__GETATTR
-mdefine_line|#define MSGQ__GETATTR                             0x00000004UL
 DECL|macro|MSGQ__WRITE
 mdefine_line|#define MSGQ__WRITE                               0x00000020UL
+DECL|macro|MSGQ__ASSOCIATE
+mdefine_line|#define MSGQ__ASSOCIATE                           0x00000040UL
+DECL|macro|MSGQ__UNIX_READ
+mdefine_line|#define MSGQ__UNIX_READ                           0x00000080UL
+DECL|macro|MSGQ__UNIX_WRITE
+mdefine_line|#define MSGQ__UNIX_WRITE                          0x00000100UL
 DECL|macro|MSGQ__ENQUEUE
 mdefine_line|#define MSGQ__ENQUEUE                             0x00000200UL
 DECL|macro|MSG__SEND
 mdefine_line|#define MSG__SEND                                 0x00000001UL
 DECL|macro|MSG__RECEIVE
 mdefine_line|#define MSG__RECEIVE                              0x00000002UL
+DECL|macro|SHM__CREATE
+mdefine_line|#define SHM__CREATE                               0x00000001UL
+DECL|macro|SHM__DESTROY
+mdefine_line|#define SHM__DESTROY                              0x00000002UL
+DECL|macro|SHM__GETATTR
+mdefine_line|#define SHM__GETATTR                              0x00000004UL
 DECL|macro|SHM__SETATTR
 mdefine_line|#define SHM__SETATTR                              0x00000008UL
 DECL|macro|SHM__READ
 mdefine_line|#define SHM__READ                                 0x00000010UL
-DECL|macro|SHM__ASSOCIATE
-mdefine_line|#define SHM__ASSOCIATE                            0x00000040UL
-DECL|macro|SHM__DESTROY
-mdefine_line|#define SHM__DESTROY                              0x00000002UL
-DECL|macro|SHM__UNIX_WRITE
-mdefine_line|#define SHM__UNIX_WRITE                           0x00000100UL
-DECL|macro|SHM__CREATE
-mdefine_line|#define SHM__CREATE                               0x00000001UL
-DECL|macro|SHM__UNIX_READ
-mdefine_line|#define SHM__UNIX_READ                            0x00000080UL
-DECL|macro|SHM__GETATTR
-mdefine_line|#define SHM__GETATTR                              0x00000004UL
 DECL|macro|SHM__WRITE
 mdefine_line|#define SHM__WRITE                                0x00000020UL
+DECL|macro|SHM__ASSOCIATE
+mdefine_line|#define SHM__ASSOCIATE                            0x00000040UL
+DECL|macro|SHM__UNIX_READ
+mdefine_line|#define SHM__UNIX_READ                            0x00000080UL
+DECL|macro|SHM__UNIX_WRITE
+mdefine_line|#define SHM__UNIX_WRITE                           0x00000100UL
 DECL|macro|SHM__LOCK
 mdefine_line|#define SHM__LOCK                                 0x00000200UL
 DECL|macro|SECURITY__COMPUTE_AV
@@ -1026,5 +1026,595 @@ DECL|macro|PASSWD__CHFN
 mdefine_line|#define PASSWD__CHFN                              0x00000002UL
 DECL|macro|PASSWD__CHSH
 mdefine_line|#define PASSWD__CHSH                              0x00000004UL
+DECL|macro|PASSWD__ROOTOK
+mdefine_line|#define PASSWD__ROOTOK                            0x00000008UL
+DECL|macro|DRAWABLE__CREATE
+mdefine_line|#define DRAWABLE__CREATE                          0x00000001UL
+DECL|macro|DRAWABLE__DESTROY
+mdefine_line|#define DRAWABLE__DESTROY                         0x00000002UL
+DECL|macro|DRAWABLE__DRAW
+mdefine_line|#define DRAWABLE__DRAW                            0x00000004UL
+DECL|macro|DRAWABLE__COPY
+mdefine_line|#define DRAWABLE__COPY                            0x00000008UL
+DECL|macro|DRAWABLE__GETATTR
+mdefine_line|#define DRAWABLE__GETATTR                         0x00000010UL
+DECL|macro|GC__CREATE
+mdefine_line|#define GC__CREATE                                0x00000001UL
+DECL|macro|GC__FREE
+mdefine_line|#define GC__FREE                                  0x00000002UL
+DECL|macro|GC__GETATTR
+mdefine_line|#define GC__GETATTR                               0x00000004UL
+DECL|macro|GC__SETATTR
+mdefine_line|#define GC__SETATTR                               0x00000008UL
+DECL|macro|WINDOW__ADDCHILD
+mdefine_line|#define WINDOW__ADDCHILD                          0x00000001UL
+DECL|macro|WINDOW__CREATE
+mdefine_line|#define WINDOW__CREATE                            0x00000002UL
+DECL|macro|WINDOW__DESTROY
+mdefine_line|#define WINDOW__DESTROY                           0x00000004UL
+DECL|macro|WINDOW__MAP
+mdefine_line|#define WINDOW__MAP                               0x00000008UL
+DECL|macro|WINDOW__UNMAP
+mdefine_line|#define WINDOW__UNMAP                             0x00000010UL
+DECL|macro|WINDOW__CHSTACK
+mdefine_line|#define WINDOW__CHSTACK                           0x00000020UL
+DECL|macro|WINDOW__CHPROPLIST
+mdefine_line|#define WINDOW__CHPROPLIST                        0x00000040UL
+DECL|macro|WINDOW__CHPROP
+mdefine_line|#define WINDOW__CHPROP                            0x00000080UL
+DECL|macro|WINDOW__LISTPROP
+mdefine_line|#define WINDOW__LISTPROP                          0x00000100UL
+DECL|macro|WINDOW__GETATTR
+mdefine_line|#define WINDOW__GETATTR                           0x00000200UL
+DECL|macro|WINDOW__SETATTR
+mdefine_line|#define WINDOW__SETATTR                           0x00000400UL
+DECL|macro|WINDOW__SETFOCUS
+mdefine_line|#define WINDOW__SETFOCUS                          0x00000800UL
+DECL|macro|WINDOW__MOVE
+mdefine_line|#define WINDOW__MOVE                              0x00001000UL
+DECL|macro|WINDOW__CHSELECTION
+mdefine_line|#define WINDOW__CHSELECTION                       0x00002000UL
+DECL|macro|WINDOW__CHPARENT
+mdefine_line|#define WINDOW__CHPARENT                          0x00004000UL
+DECL|macro|WINDOW__CTRLLIFE
+mdefine_line|#define WINDOW__CTRLLIFE                          0x00008000UL
+DECL|macro|WINDOW__ENUMERATE
+mdefine_line|#define WINDOW__ENUMERATE                         0x00010000UL
+DECL|macro|WINDOW__TRANSPARENT
+mdefine_line|#define WINDOW__TRANSPARENT                       0x00020000UL
+DECL|macro|WINDOW__MOUSEMOTION
+mdefine_line|#define WINDOW__MOUSEMOTION                       0x00040000UL
+DECL|macro|WINDOW__CLIENTCOMEVENT
+mdefine_line|#define WINDOW__CLIENTCOMEVENT                    0x00080000UL
+DECL|macro|WINDOW__INPUTEVENT
+mdefine_line|#define WINDOW__INPUTEVENT                        0x00100000UL
+DECL|macro|WINDOW__DRAWEVENT
+mdefine_line|#define WINDOW__DRAWEVENT                         0x00200000UL
+DECL|macro|WINDOW__WINDOWCHANGEEVENT
+mdefine_line|#define WINDOW__WINDOWCHANGEEVENT                 0x00400000UL
+DECL|macro|WINDOW__WINDOWCHANGEREQUEST
+mdefine_line|#define WINDOW__WINDOWCHANGEREQUEST               0x00800000UL
+DECL|macro|WINDOW__SERVERCHANGEEVENT
+mdefine_line|#define WINDOW__SERVERCHANGEEVENT                 0x01000000UL
+DECL|macro|WINDOW__EXTENSIONEVENT
+mdefine_line|#define WINDOW__EXTENSIONEVENT                    0x02000000UL
+DECL|macro|FONT__LOAD
+mdefine_line|#define FONT__LOAD                                0x00000001UL
+DECL|macro|FONT__FREE
+mdefine_line|#define FONT__FREE                                0x00000002UL
+DECL|macro|FONT__GETATTR
+mdefine_line|#define FONT__GETATTR                             0x00000004UL
+DECL|macro|FONT__USE
+mdefine_line|#define FONT__USE                                 0x00000008UL
+DECL|macro|COLORMAP__CREATE
+mdefine_line|#define COLORMAP__CREATE                          0x00000001UL
+DECL|macro|COLORMAP__FREE
+mdefine_line|#define COLORMAP__FREE                            0x00000002UL
+DECL|macro|COLORMAP__INSTALL
+mdefine_line|#define COLORMAP__INSTALL                         0x00000004UL
+DECL|macro|COLORMAP__UNINSTALL
+mdefine_line|#define COLORMAP__UNINSTALL                       0x00000008UL
+DECL|macro|COLORMAP__LIST
+mdefine_line|#define COLORMAP__LIST                            0x00000010UL
+DECL|macro|COLORMAP__READ
+mdefine_line|#define COLORMAP__READ                            0x00000020UL
+DECL|macro|COLORMAP__STORE
+mdefine_line|#define COLORMAP__STORE                           0x00000040UL
+DECL|macro|COLORMAP__GETATTR
+mdefine_line|#define COLORMAP__GETATTR                         0x00000080UL
+DECL|macro|COLORMAP__SETATTR
+mdefine_line|#define COLORMAP__SETATTR                         0x00000100UL
+DECL|macro|PROPERTY__CREATE
+mdefine_line|#define PROPERTY__CREATE                          0x00000001UL
+DECL|macro|PROPERTY__FREE
+mdefine_line|#define PROPERTY__FREE                            0x00000002UL
+DECL|macro|PROPERTY__READ
+mdefine_line|#define PROPERTY__READ                            0x00000004UL
+DECL|macro|PROPERTY__WRITE
+mdefine_line|#define PROPERTY__WRITE                           0x00000008UL
+DECL|macro|CURSOR__CREATE
+mdefine_line|#define CURSOR__CREATE                            0x00000001UL
+DECL|macro|CURSOR__CREATEGLYPH
+mdefine_line|#define CURSOR__CREATEGLYPH                       0x00000002UL
+DECL|macro|CURSOR__FREE
+mdefine_line|#define CURSOR__FREE                              0x00000004UL
+DECL|macro|CURSOR__ASSIGN
+mdefine_line|#define CURSOR__ASSIGN                            0x00000008UL
+DECL|macro|CURSOR__SETATTR
+mdefine_line|#define CURSOR__SETATTR                           0x00000010UL
+DECL|macro|XCLIENT__KILL
+mdefine_line|#define XCLIENT__KILL                             0x00000001UL
+DECL|macro|XINPUT__LOOKUP
+mdefine_line|#define XINPUT__LOOKUP                            0x00000001UL
+DECL|macro|XINPUT__GETATTR
+mdefine_line|#define XINPUT__GETATTR                           0x00000002UL
+DECL|macro|XINPUT__SETATTR
+mdefine_line|#define XINPUT__SETATTR                           0x00000004UL
+DECL|macro|XINPUT__SETFOCUS
+mdefine_line|#define XINPUT__SETFOCUS                          0x00000008UL
+DECL|macro|XINPUT__WARPPOINTER
+mdefine_line|#define XINPUT__WARPPOINTER                       0x00000010UL
+DECL|macro|XINPUT__ACTIVEGRAB
+mdefine_line|#define XINPUT__ACTIVEGRAB                        0x00000020UL
+DECL|macro|XINPUT__PASSIVEGRAB
+mdefine_line|#define XINPUT__PASSIVEGRAB                       0x00000040UL
+DECL|macro|XINPUT__UNGRAB
+mdefine_line|#define XINPUT__UNGRAB                            0x00000080UL
+DECL|macro|XINPUT__BELL
+mdefine_line|#define XINPUT__BELL                              0x00000100UL
+DECL|macro|XINPUT__MOUSEMOTION
+mdefine_line|#define XINPUT__MOUSEMOTION                       0x00000200UL
+DECL|macro|XINPUT__RELABELINPUT
+mdefine_line|#define XINPUT__RELABELINPUT                      0x00000400UL
+DECL|macro|XSERVER__SCREENSAVER
+mdefine_line|#define XSERVER__SCREENSAVER                      0x00000001UL
+DECL|macro|XSERVER__GETHOSTLIST
+mdefine_line|#define XSERVER__GETHOSTLIST                      0x00000002UL
+DECL|macro|XSERVER__SETHOSTLIST
+mdefine_line|#define XSERVER__SETHOSTLIST                      0x00000004UL
+DECL|macro|XSERVER__GETFONTPATH
+mdefine_line|#define XSERVER__GETFONTPATH                      0x00000008UL
+DECL|macro|XSERVER__SETFONTPATH
+mdefine_line|#define XSERVER__SETFONTPATH                      0x00000010UL
+DECL|macro|XSERVER__GETATTR
+mdefine_line|#define XSERVER__GETATTR                          0x00000020UL
+DECL|macro|XSERVER__GRAB
+mdefine_line|#define XSERVER__GRAB                             0x00000040UL
+DECL|macro|XSERVER__UNGRAB
+mdefine_line|#define XSERVER__UNGRAB                           0x00000080UL
+DECL|macro|XEXTENSION__QUERY
+mdefine_line|#define XEXTENSION__QUERY                         0x00000001UL
+DECL|macro|XEXTENSION__USE
+mdefine_line|#define XEXTENSION__USE                           0x00000002UL
+DECL|macro|PAX__PAGEEXEC
+mdefine_line|#define PAX__PAGEEXEC                             0x00000001UL
+DECL|macro|PAX__EMUTRAMP
+mdefine_line|#define PAX__EMUTRAMP                             0x00000002UL
+DECL|macro|PAX__MPROTECT
+mdefine_line|#define PAX__MPROTECT                             0x00000004UL
+DECL|macro|PAX__RANDMMAP
+mdefine_line|#define PAX__RANDMMAP                             0x00000008UL
+DECL|macro|PAX__RANDEXEC
+mdefine_line|#define PAX__RANDEXEC                             0x00000010UL
+DECL|macro|PAX__SEGMEXEC
+mdefine_line|#define PAX__SEGMEXEC                             0x00000020UL
+DECL|macro|NETLINK_ROUTE_SOCKET__IOCTL
+mdefine_line|#define NETLINK_ROUTE_SOCKET__IOCTL               0x00000001UL
+DECL|macro|NETLINK_ROUTE_SOCKET__READ
+mdefine_line|#define NETLINK_ROUTE_SOCKET__READ                0x00000002UL
+DECL|macro|NETLINK_ROUTE_SOCKET__WRITE
+mdefine_line|#define NETLINK_ROUTE_SOCKET__WRITE               0x00000004UL
+DECL|macro|NETLINK_ROUTE_SOCKET__CREATE
+mdefine_line|#define NETLINK_ROUTE_SOCKET__CREATE              0x00000008UL
+DECL|macro|NETLINK_ROUTE_SOCKET__GETATTR
+mdefine_line|#define NETLINK_ROUTE_SOCKET__GETATTR             0x00000010UL
+DECL|macro|NETLINK_ROUTE_SOCKET__SETATTR
+mdefine_line|#define NETLINK_ROUTE_SOCKET__SETATTR             0x00000020UL
+DECL|macro|NETLINK_ROUTE_SOCKET__LOCK
+mdefine_line|#define NETLINK_ROUTE_SOCKET__LOCK                0x00000040UL
+DECL|macro|NETLINK_ROUTE_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_ROUTE_SOCKET__RELABELFROM         0x00000080UL
+DECL|macro|NETLINK_ROUTE_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_ROUTE_SOCKET__RELABELTO           0x00000100UL
+DECL|macro|NETLINK_ROUTE_SOCKET__APPEND
+mdefine_line|#define NETLINK_ROUTE_SOCKET__APPEND              0x00000200UL
+DECL|macro|NETLINK_ROUTE_SOCKET__BIND
+mdefine_line|#define NETLINK_ROUTE_SOCKET__BIND                0x00000400UL
+DECL|macro|NETLINK_ROUTE_SOCKET__CONNECT
+mdefine_line|#define NETLINK_ROUTE_SOCKET__CONNECT             0x00000800UL
+DECL|macro|NETLINK_ROUTE_SOCKET__LISTEN
+mdefine_line|#define NETLINK_ROUTE_SOCKET__LISTEN              0x00001000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_ROUTE_SOCKET__ACCEPT              0x00002000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__GETOPT
+mdefine_line|#define NETLINK_ROUTE_SOCKET__GETOPT              0x00004000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__SETOPT
+mdefine_line|#define NETLINK_ROUTE_SOCKET__SETOPT              0x00008000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_ROUTE_SOCKET__SHUTDOWN            0x00010000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_ROUTE_SOCKET__RECVFROM            0x00020000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__SENDTO
+mdefine_line|#define NETLINK_ROUTE_SOCKET__SENDTO              0x00040000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_ROUTE_SOCKET__RECV_MSG            0x00080000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_ROUTE_SOCKET__SEND_MSG            0x00100000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_ROUTE_SOCKET__NAME_BIND           0x00200000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__NLMSG_READ
+mdefine_line|#define NETLINK_ROUTE_SOCKET__NLMSG_READ          0x00400000UL
+DECL|macro|NETLINK_ROUTE_SOCKET__NLMSG_WRITE
+mdefine_line|#define NETLINK_ROUTE_SOCKET__NLMSG_WRITE         0x00800000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__IOCTL
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__IOCTL            0x00000001UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__READ
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__READ             0x00000002UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__WRITE
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__WRITE            0x00000004UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__CREATE
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__CREATE           0x00000008UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__GETATTR
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__GETATTR          0x00000010UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__SETATTR
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__SETATTR          0x00000020UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__LOCK
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__LOCK             0x00000040UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__RELABELFROM      0x00000080UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__RELABELTO        0x00000100UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__APPEND
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__APPEND           0x00000200UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__BIND
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__BIND             0x00000400UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__CONNECT
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__CONNECT          0x00000800UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__LISTEN
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__LISTEN           0x00001000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__ACCEPT           0x00002000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__GETOPT
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__GETOPT           0x00004000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__SETOPT
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__SETOPT           0x00008000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__SHUTDOWN         0x00010000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__RECVFROM         0x00020000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__SENDTO
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__SENDTO           0x00040000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__RECV_MSG         0x00080000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__SEND_MSG         0x00100000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__NAME_BIND        0x00200000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__NLMSG_READ
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__NLMSG_READ       0x00400000UL
+DECL|macro|NETLINK_FIREWALL_SOCKET__NLMSG_WRITE
+mdefine_line|#define NETLINK_FIREWALL_SOCKET__NLMSG_WRITE      0x00800000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__IOCTL
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__IOCTL             0x00000001UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__READ
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__READ              0x00000002UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__WRITE
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__WRITE             0x00000004UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__CREATE
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__CREATE            0x00000008UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__GETATTR
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__GETATTR           0x00000010UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__SETATTR
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__SETATTR           0x00000020UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__LOCK
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__LOCK              0x00000040UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__RELABELFROM       0x00000080UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__RELABELTO         0x00000100UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__APPEND
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__APPEND            0x00000200UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__BIND
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__BIND              0x00000400UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__CONNECT
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__CONNECT           0x00000800UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__LISTEN
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__LISTEN            0x00001000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__ACCEPT            0x00002000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__GETOPT
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__GETOPT            0x00004000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__SETOPT
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__SETOPT            0x00008000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__SHUTDOWN          0x00010000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__RECVFROM          0x00020000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__SENDTO
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__SENDTO            0x00040000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__RECV_MSG          0x00080000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__SEND_MSG          0x00100000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__NAME_BIND         0x00200000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__NLMSG_READ
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__NLMSG_READ        0x00400000UL
+DECL|macro|NETLINK_TCPDIAG_SOCKET__NLMSG_WRITE
+mdefine_line|#define NETLINK_TCPDIAG_SOCKET__NLMSG_WRITE       0x00800000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__IOCTL
+mdefine_line|#define NETLINK_NFLOG_SOCKET__IOCTL               0x00000001UL
+DECL|macro|NETLINK_NFLOG_SOCKET__READ
+mdefine_line|#define NETLINK_NFLOG_SOCKET__READ                0x00000002UL
+DECL|macro|NETLINK_NFLOG_SOCKET__WRITE
+mdefine_line|#define NETLINK_NFLOG_SOCKET__WRITE               0x00000004UL
+DECL|macro|NETLINK_NFLOG_SOCKET__CREATE
+mdefine_line|#define NETLINK_NFLOG_SOCKET__CREATE              0x00000008UL
+DECL|macro|NETLINK_NFLOG_SOCKET__GETATTR
+mdefine_line|#define NETLINK_NFLOG_SOCKET__GETATTR             0x00000010UL
+DECL|macro|NETLINK_NFLOG_SOCKET__SETATTR
+mdefine_line|#define NETLINK_NFLOG_SOCKET__SETATTR             0x00000020UL
+DECL|macro|NETLINK_NFLOG_SOCKET__LOCK
+mdefine_line|#define NETLINK_NFLOG_SOCKET__LOCK                0x00000040UL
+DECL|macro|NETLINK_NFLOG_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_NFLOG_SOCKET__RELABELFROM         0x00000080UL
+DECL|macro|NETLINK_NFLOG_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_NFLOG_SOCKET__RELABELTO           0x00000100UL
+DECL|macro|NETLINK_NFLOG_SOCKET__APPEND
+mdefine_line|#define NETLINK_NFLOG_SOCKET__APPEND              0x00000200UL
+DECL|macro|NETLINK_NFLOG_SOCKET__BIND
+mdefine_line|#define NETLINK_NFLOG_SOCKET__BIND                0x00000400UL
+DECL|macro|NETLINK_NFLOG_SOCKET__CONNECT
+mdefine_line|#define NETLINK_NFLOG_SOCKET__CONNECT             0x00000800UL
+DECL|macro|NETLINK_NFLOG_SOCKET__LISTEN
+mdefine_line|#define NETLINK_NFLOG_SOCKET__LISTEN              0x00001000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_NFLOG_SOCKET__ACCEPT              0x00002000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__GETOPT
+mdefine_line|#define NETLINK_NFLOG_SOCKET__GETOPT              0x00004000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__SETOPT
+mdefine_line|#define NETLINK_NFLOG_SOCKET__SETOPT              0x00008000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_NFLOG_SOCKET__SHUTDOWN            0x00010000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_NFLOG_SOCKET__RECVFROM            0x00020000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__SENDTO
+mdefine_line|#define NETLINK_NFLOG_SOCKET__SENDTO              0x00040000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_NFLOG_SOCKET__RECV_MSG            0x00080000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_NFLOG_SOCKET__SEND_MSG            0x00100000UL
+DECL|macro|NETLINK_NFLOG_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_NFLOG_SOCKET__NAME_BIND           0x00200000UL
+DECL|macro|NETLINK_XFRM_SOCKET__IOCTL
+mdefine_line|#define NETLINK_XFRM_SOCKET__IOCTL                0x00000001UL
+DECL|macro|NETLINK_XFRM_SOCKET__READ
+mdefine_line|#define NETLINK_XFRM_SOCKET__READ                 0x00000002UL
+DECL|macro|NETLINK_XFRM_SOCKET__WRITE
+mdefine_line|#define NETLINK_XFRM_SOCKET__WRITE                0x00000004UL
+DECL|macro|NETLINK_XFRM_SOCKET__CREATE
+mdefine_line|#define NETLINK_XFRM_SOCKET__CREATE               0x00000008UL
+DECL|macro|NETLINK_XFRM_SOCKET__GETATTR
+mdefine_line|#define NETLINK_XFRM_SOCKET__GETATTR              0x00000010UL
+DECL|macro|NETLINK_XFRM_SOCKET__SETATTR
+mdefine_line|#define NETLINK_XFRM_SOCKET__SETATTR              0x00000020UL
+DECL|macro|NETLINK_XFRM_SOCKET__LOCK
+mdefine_line|#define NETLINK_XFRM_SOCKET__LOCK                 0x00000040UL
+DECL|macro|NETLINK_XFRM_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_XFRM_SOCKET__RELABELFROM          0x00000080UL
+DECL|macro|NETLINK_XFRM_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_XFRM_SOCKET__RELABELTO            0x00000100UL
+DECL|macro|NETLINK_XFRM_SOCKET__APPEND
+mdefine_line|#define NETLINK_XFRM_SOCKET__APPEND               0x00000200UL
+DECL|macro|NETLINK_XFRM_SOCKET__BIND
+mdefine_line|#define NETLINK_XFRM_SOCKET__BIND                 0x00000400UL
+DECL|macro|NETLINK_XFRM_SOCKET__CONNECT
+mdefine_line|#define NETLINK_XFRM_SOCKET__CONNECT              0x00000800UL
+DECL|macro|NETLINK_XFRM_SOCKET__LISTEN
+mdefine_line|#define NETLINK_XFRM_SOCKET__LISTEN               0x00001000UL
+DECL|macro|NETLINK_XFRM_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_XFRM_SOCKET__ACCEPT               0x00002000UL
+DECL|macro|NETLINK_XFRM_SOCKET__GETOPT
+mdefine_line|#define NETLINK_XFRM_SOCKET__GETOPT               0x00004000UL
+DECL|macro|NETLINK_XFRM_SOCKET__SETOPT
+mdefine_line|#define NETLINK_XFRM_SOCKET__SETOPT               0x00008000UL
+DECL|macro|NETLINK_XFRM_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_XFRM_SOCKET__SHUTDOWN             0x00010000UL
+DECL|macro|NETLINK_XFRM_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_XFRM_SOCKET__RECVFROM             0x00020000UL
+DECL|macro|NETLINK_XFRM_SOCKET__SENDTO
+mdefine_line|#define NETLINK_XFRM_SOCKET__SENDTO               0x00040000UL
+DECL|macro|NETLINK_XFRM_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_XFRM_SOCKET__RECV_MSG             0x00080000UL
+DECL|macro|NETLINK_XFRM_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_XFRM_SOCKET__SEND_MSG             0x00100000UL
+DECL|macro|NETLINK_XFRM_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_XFRM_SOCKET__NAME_BIND            0x00200000UL
+DECL|macro|NETLINK_XFRM_SOCKET__NLMSG_READ
+mdefine_line|#define NETLINK_XFRM_SOCKET__NLMSG_READ           0x00400000UL
+DECL|macro|NETLINK_XFRM_SOCKET__NLMSG_WRITE
+mdefine_line|#define NETLINK_XFRM_SOCKET__NLMSG_WRITE          0x00800000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__IOCTL
+mdefine_line|#define NETLINK_SELINUX_SOCKET__IOCTL             0x00000001UL
+DECL|macro|NETLINK_SELINUX_SOCKET__READ
+mdefine_line|#define NETLINK_SELINUX_SOCKET__READ              0x00000002UL
+DECL|macro|NETLINK_SELINUX_SOCKET__WRITE
+mdefine_line|#define NETLINK_SELINUX_SOCKET__WRITE             0x00000004UL
+DECL|macro|NETLINK_SELINUX_SOCKET__CREATE
+mdefine_line|#define NETLINK_SELINUX_SOCKET__CREATE            0x00000008UL
+DECL|macro|NETLINK_SELINUX_SOCKET__GETATTR
+mdefine_line|#define NETLINK_SELINUX_SOCKET__GETATTR           0x00000010UL
+DECL|macro|NETLINK_SELINUX_SOCKET__SETATTR
+mdefine_line|#define NETLINK_SELINUX_SOCKET__SETATTR           0x00000020UL
+DECL|macro|NETLINK_SELINUX_SOCKET__LOCK
+mdefine_line|#define NETLINK_SELINUX_SOCKET__LOCK              0x00000040UL
+DECL|macro|NETLINK_SELINUX_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_SELINUX_SOCKET__RELABELFROM       0x00000080UL
+DECL|macro|NETLINK_SELINUX_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_SELINUX_SOCKET__RELABELTO         0x00000100UL
+DECL|macro|NETLINK_SELINUX_SOCKET__APPEND
+mdefine_line|#define NETLINK_SELINUX_SOCKET__APPEND            0x00000200UL
+DECL|macro|NETLINK_SELINUX_SOCKET__BIND
+mdefine_line|#define NETLINK_SELINUX_SOCKET__BIND              0x00000400UL
+DECL|macro|NETLINK_SELINUX_SOCKET__CONNECT
+mdefine_line|#define NETLINK_SELINUX_SOCKET__CONNECT           0x00000800UL
+DECL|macro|NETLINK_SELINUX_SOCKET__LISTEN
+mdefine_line|#define NETLINK_SELINUX_SOCKET__LISTEN            0x00001000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_SELINUX_SOCKET__ACCEPT            0x00002000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__GETOPT
+mdefine_line|#define NETLINK_SELINUX_SOCKET__GETOPT            0x00004000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__SETOPT
+mdefine_line|#define NETLINK_SELINUX_SOCKET__SETOPT            0x00008000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_SELINUX_SOCKET__SHUTDOWN          0x00010000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_SELINUX_SOCKET__RECVFROM          0x00020000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__SENDTO
+mdefine_line|#define NETLINK_SELINUX_SOCKET__SENDTO            0x00040000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_SELINUX_SOCKET__RECV_MSG          0x00080000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_SELINUX_SOCKET__SEND_MSG          0x00100000UL
+DECL|macro|NETLINK_SELINUX_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_SELINUX_SOCKET__NAME_BIND         0x00200000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__IOCTL
+mdefine_line|#define NETLINK_AUDIT_SOCKET__IOCTL               0x00000001UL
+DECL|macro|NETLINK_AUDIT_SOCKET__READ
+mdefine_line|#define NETLINK_AUDIT_SOCKET__READ                0x00000002UL
+DECL|macro|NETLINK_AUDIT_SOCKET__WRITE
+mdefine_line|#define NETLINK_AUDIT_SOCKET__WRITE               0x00000004UL
+DECL|macro|NETLINK_AUDIT_SOCKET__CREATE
+mdefine_line|#define NETLINK_AUDIT_SOCKET__CREATE              0x00000008UL
+DECL|macro|NETLINK_AUDIT_SOCKET__GETATTR
+mdefine_line|#define NETLINK_AUDIT_SOCKET__GETATTR             0x00000010UL
+DECL|macro|NETLINK_AUDIT_SOCKET__SETATTR
+mdefine_line|#define NETLINK_AUDIT_SOCKET__SETATTR             0x00000020UL
+DECL|macro|NETLINK_AUDIT_SOCKET__LOCK
+mdefine_line|#define NETLINK_AUDIT_SOCKET__LOCK                0x00000040UL
+DECL|macro|NETLINK_AUDIT_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_AUDIT_SOCKET__RELABELFROM         0x00000080UL
+DECL|macro|NETLINK_AUDIT_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_AUDIT_SOCKET__RELABELTO           0x00000100UL
+DECL|macro|NETLINK_AUDIT_SOCKET__APPEND
+mdefine_line|#define NETLINK_AUDIT_SOCKET__APPEND              0x00000200UL
+DECL|macro|NETLINK_AUDIT_SOCKET__BIND
+mdefine_line|#define NETLINK_AUDIT_SOCKET__BIND                0x00000400UL
+DECL|macro|NETLINK_AUDIT_SOCKET__CONNECT
+mdefine_line|#define NETLINK_AUDIT_SOCKET__CONNECT             0x00000800UL
+DECL|macro|NETLINK_AUDIT_SOCKET__LISTEN
+mdefine_line|#define NETLINK_AUDIT_SOCKET__LISTEN              0x00001000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_AUDIT_SOCKET__ACCEPT              0x00002000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__GETOPT
+mdefine_line|#define NETLINK_AUDIT_SOCKET__GETOPT              0x00004000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__SETOPT
+mdefine_line|#define NETLINK_AUDIT_SOCKET__SETOPT              0x00008000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_AUDIT_SOCKET__SHUTDOWN            0x00010000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_AUDIT_SOCKET__RECVFROM            0x00020000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__SENDTO
+mdefine_line|#define NETLINK_AUDIT_SOCKET__SENDTO              0x00040000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_AUDIT_SOCKET__RECV_MSG            0x00080000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_AUDIT_SOCKET__SEND_MSG            0x00100000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_AUDIT_SOCKET__NAME_BIND           0x00200000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__NLMSG_READ
+mdefine_line|#define NETLINK_AUDIT_SOCKET__NLMSG_READ          0x00400000UL
+DECL|macro|NETLINK_AUDIT_SOCKET__NLMSG_WRITE
+mdefine_line|#define NETLINK_AUDIT_SOCKET__NLMSG_WRITE         0x00800000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__IOCTL
+mdefine_line|#define NETLINK_IP6FW_SOCKET__IOCTL               0x00000001UL
+DECL|macro|NETLINK_IP6FW_SOCKET__READ
+mdefine_line|#define NETLINK_IP6FW_SOCKET__READ                0x00000002UL
+DECL|macro|NETLINK_IP6FW_SOCKET__WRITE
+mdefine_line|#define NETLINK_IP6FW_SOCKET__WRITE               0x00000004UL
+DECL|macro|NETLINK_IP6FW_SOCKET__CREATE
+mdefine_line|#define NETLINK_IP6FW_SOCKET__CREATE              0x00000008UL
+DECL|macro|NETLINK_IP6FW_SOCKET__GETATTR
+mdefine_line|#define NETLINK_IP6FW_SOCKET__GETATTR             0x00000010UL
+DECL|macro|NETLINK_IP6FW_SOCKET__SETATTR
+mdefine_line|#define NETLINK_IP6FW_SOCKET__SETATTR             0x00000020UL
+DECL|macro|NETLINK_IP6FW_SOCKET__LOCK
+mdefine_line|#define NETLINK_IP6FW_SOCKET__LOCK                0x00000040UL
+DECL|macro|NETLINK_IP6FW_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_IP6FW_SOCKET__RELABELFROM         0x00000080UL
+DECL|macro|NETLINK_IP6FW_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_IP6FW_SOCKET__RELABELTO           0x00000100UL
+DECL|macro|NETLINK_IP6FW_SOCKET__APPEND
+mdefine_line|#define NETLINK_IP6FW_SOCKET__APPEND              0x00000200UL
+DECL|macro|NETLINK_IP6FW_SOCKET__BIND
+mdefine_line|#define NETLINK_IP6FW_SOCKET__BIND                0x00000400UL
+DECL|macro|NETLINK_IP6FW_SOCKET__CONNECT
+mdefine_line|#define NETLINK_IP6FW_SOCKET__CONNECT             0x00000800UL
+DECL|macro|NETLINK_IP6FW_SOCKET__LISTEN
+mdefine_line|#define NETLINK_IP6FW_SOCKET__LISTEN              0x00001000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_IP6FW_SOCKET__ACCEPT              0x00002000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__GETOPT
+mdefine_line|#define NETLINK_IP6FW_SOCKET__GETOPT              0x00004000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__SETOPT
+mdefine_line|#define NETLINK_IP6FW_SOCKET__SETOPT              0x00008000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_IP6FW_SOCKET__SHUTDOWN            0x00010000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_IP6FW_SOCKET__RECVFROM            0x00020000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__SENDTO
+mdefine_line|#define NETLINK_IP6FW_SOCKET__SENDTO              0x00040000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_IP6FW_SOCKET__RECV_MSG            0x00080000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_IP6FW_SOCKET__SEND_MSG            0x00100000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__NAME_BIND
+mdefine_line|#define NETLINK_IP6FW_SOCKET__NAME_BIND           0x00200000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__NLMSG_READ
+mdefine_line|#define NETLINK_IP6FW_SOCKET__NLMSG_READ          0x00400000UL
+DECL|macro|NETLINK_IP6FW_SOCKET__NLMSG_WRITE
+mdefine_line|#define NETLINK_IP6FW_SOCKET__NLMSG_WRITE         0x00800000UL
+DECL|macro|NETLINK_DNRT_SOCKET__IOCTL
+mdefine_line|#define NETLINK_DNRT_SOCKET__IOCTL                0x00000001UL
+DECL|macro|NETLINK_DNRT_SOCKET__READ
+mdefine_line|#define NETLINK_DNRT_SOCKET__READ                 0x00000002UL
+DECL|macro|NETLINK_DNRT_SOCKET__WRITE
+mdefine_line|#define NETLINK_DNRT_SOCKET__WRITE                0x00000004UL
+DECL|macro|NETLINK_DNRT_SOCKET__CREATE
+mdefine_line|#define NETLINK_DNRT_SOCKET__CREATE               0x00000008UL
+DECL|macro|NETLINK_DNRT_SOCKET__GETATTR
+mdefine_line|#define NETLINK_DNRT_SOCKET__GETATTR              0x00000010UL
+DECL|macro|NETLINK_DNRT_SOCKET__SETATTR
+mdefine_line|#define NETLINK_DNRT_SOCKET__SETATTR              0x00000020UL
+DECL|macro|NETLINK_DNRT_SOCKET__LOCK
+mdefine_line|#define NETLINK_DNRT_SOCKET__LOCK                 0x00000040UL
+DECL|macro|NETLINK_DNRT_SOCKET__RELABELFROM
+mdefine_line|#define NETLINK_DNRT_SOCKET__RELABELFROM          0x00000080UL
+DECL|macro|NETLINK_DNRT_SOCKET__RELABELTO
+mdefine_line|#define NETLINK_DNRT_SOCKET__RELABELTO            0x00000100UL
+DECL|macro|NETLINK_DNRT_SOCKET__APPEND
+mdefine_line|#define NETLINK_DNRT_SOCKET__APPEND               0x00000200UL
+DECL|macro|NETLINK_DNRT_SOCKET__BIND
+mdefine_line|#define NETLINK_DNRT_SOCKET__BIND                 0x00000400UL
+DECL|macro|NETLINK_DNRT_SOCKET__CONNECT
+mdefine_line|#define NETLINK_DNRT_SOCKET__CONNECT              0x00000800UL
+DECL|macro|NETLINK_DNRT_SOCKET__LISTEN
+mdefine_line|#define NETLINK_DNRT_SOCKET__LISTEN               0x00001000UL
+DECL|macro|NETLINK_DNRT_SOCKET__ACCEPT
+mdefine_line|#define NETLINK_DNRT_SOCKET__ACCEPT               0x00002000UL
+DECL|macro|NETLINK_DNRT_SOCKET__GETOPT
+mdefine_line|#define NETLINK_DNRT_SOCKET__GETOPT               0x00004000UL
+DECL|macro|NETLINK_DNRT_SOCKET__SETOPT
+mdefine_line|#define NETLINK_DNRT_SOCKET__SETOPT               0x00008000UL
+DECL|macro|NETLINK_DNRT_SOCKET__SHUTDOWN
+mdefine_line|#define NETLINK_DNRT_SOCKET__SHUTDOWN             0x00010000UL
+DECL|macro|NETLINK_DNRT_SOCKET__RECVFROM
+mdefine_line|#define NETLINK_DNRT_SOCKET__RECVFROM             0x00020000UL
+DECL|macro|NETLINK_DNRT_SOCKET__SENDTO
+mdefine_line|#define NETLINK_DNRT_SOCKET__SENDTO               0x00040000UL
+DECL|macro|NETLINK_DNRT_SOCKET__RECV_MSG
+mdefine_line|#define NETLINK_DNRT_SOCKET__RECV_MSG             0x00080000UL
+DECL|macro|NETLINK_DNRT_SOCKET__SEND_MSG
+mdefine_line|#define NETLINK_DNRT_SOCKET__SEND_MSG             0x00100000UL
 multiline_comment|/* FLASK */
 eof
