@@ -38,13 +38,6 @@ id|sockaddr_in
 id|h_addr
 suffix:semicolon
 multiline_comment|/* peer address */
-DECL|member|h_exportent
-r_struct
-id|svc_client
-op_star
-id|h_exportent
-suffix:semicolon
-multiline_comment|/* NFS client */
 DECL|member|h_rpcclnt
 r_struct
 id|rpc_clnt
@@ -84,6 +77,12 @@ id|h_reclaiming
 suffix:colon
 l_int|1
 comma
+DECL|member|h_server
+id|h_server
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* server side, not client side */
 DECL|member|h_inuse
 id|h_inuse
 suffix:colon
@@ -519,9 +518,8 @@ op_star
 id|nlm_lookup_host
 c_func
 (paren
-r_struct
-id|svc_client
-op_star
+r_int
+id|server
 comma
 r_struct
 id|sockaddr_in

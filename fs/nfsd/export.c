@@ -3778,12 +3778,6 @@ c_func
 id|clp
 )paren
 suffix:semicolon
-id|nfsd_lockd_unexport
-c_func
-(paren
-id|clp
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|clp

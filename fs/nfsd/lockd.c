@@ -69,6 +69,32 @@ id|fh.fh_export
 op_assign
 l_int|NULL
 suffix:semicolon
+id|exp_readlock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rqstp-&gt;rq_client
+op_assign
+id|exp_getclient
+c_func
+(paren
+op_amp
+id|rqstp-&gt;rq_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rqstp-&gt;rq_client
+op_eq
+l_int|NULL
+)paren
+id|nfserr
+op_assign
+id|nfserr_stale
+suffix:semicolon
+r_else
 id|nfserr
 op_assign
 id|nfsd_open
@@ -111,6 +137,15 @@ c_func
 (paren
 op_amp
 id|fh
+)paren
+suffix:semicolon
+id|rqstp-&gt;rq_client
+op_assign
+l_int|NULL
+suffix:semicolon
+id|exp_readunlock
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* nlm and nfsd don&squot;t share error codes.&n;&t; * we invent: 0 = no error&n;&t; *            1 = stale file handle&n;&t; *&t;      2 = other error&n;&t; */
@@ -177,24 +212,6 @@ id|nfsd_nlm_ops
 op_assign
 (brace
 dot
-id|exp_readlock
-op_assign
-id|exp_readlock
-comma
-multiline_comment|/* lock export table for reading */
-dot
-id|exp_unlock
-op_assign
-id|exp_readunlock
-comma
-multiline_comment|/* unlock export table */
-dot
-id|exp_getclient
-op_assign
-id|exp_getclient
-comma
-multiline_comment|/* look up NFS client */
-dot
 id|fopen
 op_assign
 id|nlm_fopen
@@ -208,25 +225,6 @@ comma
 multiline_comment|/* close file */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * When removing an NFS client entry, notify lockd that it is gone.&n; * FIXME: We should do the same when unexporting an NFS volume.&n; */
-r_void
-DECL|function|nfsd_lockd_unexport
-id|nfsd_lockd_unexport
-c_func
-(paren
-r_struct
-id|svc_client
-op_star
-id|clnt
-)paren
-(brace
-id|nlmsvc_invalidate_client
-c_func
-(paren
-id|clnt
-)paren
-suffix:semicolon
-)brace
 r_void
 DECL|function|nfsd_lockd_init
 id|nfsd_lockd_init

@@ -15,8 +15,6 @@ DECL|macro|NLM_HOST_NRHASH
 mdefine_line|#define NLM_HOST_NRHASH&t;&t;32
 DECL|macro|NLM_ADDRHASH
 mdefine_line|#define NLM_ADDRHASH(addr)&t;(ntohl(addr) &amp; (NLM_HOST_NRHASH-1))
-DECL|macro|NLM_PTRHASH
-mdefine_line|#define NLM_PTRHASH(ptr)&t;((((u32)(unsigned long) ptr) / 32) &amp; (NLM_HOST_NRHASH-1))
 DECL|macro|NLM_HOST_REBIND
 mdefine_line|#define NLM_HOST_REBIND&t;&t;(60 * HZ)
 DECL|macro|NLM_HOST_EXPIRE
@@ -85,7 +83,7 @@ r_return
 id|nlm_lookup_host
 c_func
 (paren
-l_int|NULL
+l_int|0
 comma
 id|sin
 comma
@@ -113,7 +111,7 @@ r_return
 id|nlm_lookup_host
 c_func
 (paren
-id|rqstp-&gt;rq_client
+l_int|1
 comma
 op_amp
 id|rqstp-&gt;rq_addr
@@ -121,51 +119,6 @@ comma
 id|rqstp-&gt;rq_prot
 comma
 id|rqstp-&gt;rq_vers
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Match the given host against client/address&n; */
-r_static
-r_inline
-r_int
-DECL|function|nlm_match_host
-id|nlm_match_host
-c_func
-(paren
-r_struct
-id|nlm_host
-op_star
-id|host
-comma
-r_struct
-id|svc_client
-op_star
-id|clnt
-comma
-r_struct
-id|sockaddr_in
-op_star
-id|sin
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|clnt
-)paren
-r_return
-id|host-&gt;h_exportent
-op_eq
-id|clnt
-suffix:semicolon
-r_return
-id|nlm_cmp_addr
-c_func
-(paren
-op_amp
-id|host-&gt;h_addr
-comma
-id|sin
 )paren
 suffix:semicolon
 )brace
@@ -177,10 +130,8 @@ DECL|function|nlm_lookup_host
 id|nlm_lookup_host
 c_func
 (paren
-r_struct
-id|svc_client
-op_star
-id|clnt
+r_int
+id|server
 comma
 r_struct
 id|sockaddr_in
@@ -209,27 +160,6 @@ suffix:semicolon
 r_int
 id|hash
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|clnt
-op_logical_and
-op_logical_neg
-id|sin
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;lockd: no clnt or addr in lookup_host!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|dprintk
 c_func
 (paren
@@ -256,20 +186,6 @@ comma
 id|version
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|clnt
-)paren
-id|hash
-op_assign
-id|NLM_PTRHASH
-c_func
-(paren
-id|clnt
-)paren
-suffix:semicolon
-r_else
 id|hash
 op_assign
 id|NLM_ADDRHASH
@@ -329,8 +245,6 @@ id|host-&gt;h_next
 r_if
 c_cond
 (paren
-id|proto
-op_logical_and
 id|host-&gt;h_proto
 op_ne
 id|proto
@@ -340,8 +254,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|version
-op_logical_and
 id|host-&gt;h_version
 op_ne
 id|version
@@ -351,12 +263,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nlm_match_host
+id|host-&gt;h_server
+op_ne
+id|server
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nlm_cmp_addr
 c_func
 (paren
-id|host
-comma
-id|clnt
+op_amp
+id|host-&gt;h_addr
 comma
 id|sin
 )paren
@@ -410,17 +330,6 @@ id|host
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* special hack for nlmsvc_invalidate_client */
-r_if
-c_cond
-(paren
-id|sin
-op_eq
-l_int|NULL
-)paren
-r_goto
-id|nohost
-suffix:semicolon
 multiline_comment|/* Ooops, no host found, create it */
 id|dprintk
 c_func
@@ -604,9 +513,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* real NSM state */
-id|host-&gt;h_exportent
+id|host-&gt;h_server
 op_assign
-id|clnt
+id|server
 suffix:semicolon
 id|host-&gt;h_next
 op_assign
@@ -719,9 +628,7 @@ id|host-&gt;h_next
 r_if
 c_cond
 (paren
-id|host-&gt;h_exportent
-op_ne
-l_int|NULL
+id|host-&gt;h_server
 op_logical_and
 id|host-&gt;h_killed
 op_eq
