@@ -206,6 +206,20 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|member|shutdown
+r_void
+(paren
+op_star
+id|shutdown
+)paren
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 DECL|member|suspend
 r_int
 (paren
@@ -222,7 +236,6 @@ id|u32
 id|state
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
 DECL|member|resume
 r_int
 (paren
@@ -232,19 +245,6 @@ id|resume
 (paren
 r_struct
 id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-DECL|member|shutdown
-r_void
-(paren
-op_star
-id|shutdown
-)paren
-(paren
-r_struct
-id|device
 op_star
 id|dev
 )paren
