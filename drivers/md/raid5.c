@@ -683,13 +683,6 @@ id|buffer_head
 )paren
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|bh-&gt;b_wait
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

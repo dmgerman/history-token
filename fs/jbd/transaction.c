@@ -1868,17 +1868,14 @@ id|journal
 )paren
 suffix:semicolon
 multiline_comment|/* commit wakes up all shadow buffers after IO */
-id|sleep_on
+id|sleep_on_buffer
 c_func
 (paren
-op_amp
 id|jh2bh
 c_func
 (paren
 id|jh
 )paren
-op_member_access_from_pointer
-id|b_wait
 )paren
 suffix:semicolon
 id|lock_journal

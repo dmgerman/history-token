@@ -138,10 +138,6 @@ op_star
 id|b_private
 suffix:semicolon
 multiline_comment|/* reserved for b_end_io */
-DECL|member|b_wait
-id|wait_queue_head_t
-id|b_wait
-suffix:semicolon
 DECL|member|b_inode_buffers
 r_struct
 id|list_head
@@ -457,6 +453,26 @@ c_func
 r_struct
 id|buffer_head
 op_star
+)paren
+suffix:semicolon
+r_void
+id|sleep_on_buffer
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+suffix:semicolon
+r_void
+id|wake_up_buffer
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
 )paren
 suffix:semicolon
 r_int
