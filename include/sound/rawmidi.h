@@ -44,6 +44,8 @@ DECL|macro|SNDRV_RAWMIDI_LFLG_OPEN
 mdefine_line|#define SNDRV_RAWMIDI_LFLG_OPEN&t;&t;(3&lt;&lt;0)
 DECL|macro|SNDRV_RAWMIDI_LFLG_APPEND
 mdefine_line|#define SNDRV_RAWMIDI_LFLG_APPEND&t;(1&lt;&lt;2)
+DECL|macro|SNDRV_RAWMIDI_LFLG_NOOPENLOCK
+mdefine_line|#define&t;SNDRV_RAWMIDI_LFLG_NOOPENLOCK&t;(1&lt;&lt;3)
 DECL|typedef|snd_rawmidi_runtime_t
 r_typedef
 r_struct

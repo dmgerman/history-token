@@ -9708,6 +9708,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip_type
+op_ne
+id|TYPE_VIA8233A
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|dxs_support
 (braket
 id|dev
@@ -9726,7 +9734,7 @@ c_func
 id|pci
 )paren
 suffix:semicolon
-multiline_comment|/* force to use VIA8233 or 8233A model according to&n;&t;&t; * dxs_support module option&n;&t;&t; */
+multiline_comment|/* force to use VIA8233 or 8233A model according to&n;&t;&t;&t; * dxs_support module option&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9746,6 +9754,7 @@ id|chip_type
 op_assign
 id|TYPE_VIA8233
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

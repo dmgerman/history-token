@@ -48,6 +48,71 @@ DECL|macro|MAX_PCM_SUBSTREAMS
 mdefine_line|#define MAX_PCM_SUBSTREAMS&t;16
 DECL|macro|MAX_MIDI_DEVICES
 mdefine_line|#define MAX_MIDI_DEVICES&t;2
+macro_line|#if 0 /* emu10k1 emulation */
+mdefine_line|#define MAX_BUFFER_SIZE&t;&t;(128 * 1024)
+r_static
+r_int
+id|emu10k1_playback_constraints
+c_func
+(paren
+id|snd_pcm_runtime_t
+op_star
+id|runtime
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_pcm_hw_constraint_integer
+c_func
+(paren
+id|runtime
+comma
+id|SNDRV_PCM_HW_PARAM_PERIODS
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_pcm_hw_constraint_minmax
+c_func
+(paren
+id|runtime
+comma
+id|SNDRV_PCM_HW_PARAM_BUFFER_BYTES
+comma
+l_int|256
+comma
+id|UINT_MAX
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+mdefine_line|#define add_playback_constraints emu10k1_playback_constraints
+macro_line|#endif
 macro_line|#if 0 /* RME9652 emulation */
 mdefine_line|#define MAX_BUFFER_SIZE&t;&t;(26 * 64 * 1024)
 mdefine_line|#define USE_FORMATS&t;&t;SNDRV_PCM_FMTBIT_S32_LE
@@ -112,6 +177,14 @@ macro_line|#endif
 macro_line|#ifndef USE_PERIODS_MAX
 DECL|macro|USE_PERIODS_MAX
 mdefine_line|#define USE_PERIODS_MAX &t;1024
+macro_line|#endif
+macro_line|#ifndef add_playback_constraints
+DECL|macro|add_playback_constraints
+mdefine_line|#define add_playback_constraints(x) 0
+macro_line|#endif
+macro_line|#ifndef add_capture_constraints
+DECL|macro|add_capture_constraints
+mdefine_line|#define add_capture_constraints(x) 0
 macro_line|#endif
 DECL|variable|index
 r_static
@@ -1278,6 +1351,9 @@ id|snd_card_dummy_pcm_t
 op_star
 id|dpcm
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|dpcm
 op_assign
 id|snd_magic_kcalloc
@@ -1409,6 +1485,32 @@ op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|add_playback_constraints
+c_func
+(paren
+id|runtime
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_magic_kfree
+c_func
+(paren
+id|dpcm
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1433,6 +1535,9 @@ suffix:semicolon
 id|snd_card_dummy_pcm_t
 op_star
 id|dpcm
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|dpcm
 op_assign
@@ -1575,6 +1680,32 @@ op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|add_capture_constraints
+c_func
+(paren
+id|runtime
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_magic_kfree
+c_func
+(paren
+id|dpcm
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
