@@ -8805,8 +8805,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: called with no handle!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: called with no handle!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -9038,8 +9039,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: transactions do not match!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: transactions do not match!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

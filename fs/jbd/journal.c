@@ -1328,9 +1328,10 @@ id|new_bh
 id|printk
 (paren
 id|KERN_NOTICE
-id|__FUNCTION__
-l_string|&quot;: ENOMEM at alloc_buffer_head, &quot;
+l_string|&quot;%s: ENOMEM at alloc_buffer_head, &quot;
 l_string|&quot;trying again.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|yield
@@ -1691,8 +1692,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: error: j_commit_request=%d, tid=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: error: j_commit_request=%d, tid=%d&bslash;n&quot;
 comma
 id|journal-&gt;j_commit_request
 comma
@@ -1871,11 +1873,13 @@ suffix:semicolon
 r_else
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ALERT
-id|__FUNCTION__
-l_string|&quot;: journal block not found &quot;
+l_string|&quot;%s: journal block not found &quot;
 l_string|&quot;at offset %lu on %s&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|blocknr
 comma
@@ -2380,9 +2384,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: Cannnot locate journal superblock&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Cannnot locate journal &quot;
-l_string|&quot;superblock&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2640,8 +2644,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: creation of journal on external device!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: creation of journal on external device!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|BUG
@@ -5052,9 +5057,9 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ENOMEM in &quot;
+l_string|&quot;ENOMEM in %s, retrying.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;, retrying.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|last_warning
