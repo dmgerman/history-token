@@ -452,10 +452,6 @@ id|detect
 suffix:colon
 id|osst_detect
 comma
-id|init
-suffix:colon
-id|osst_init
-comma
 id|attach
 suffix:colon
 id|osst_attach
@@ -29167,6 +29163,11 @@ id|SDp
 )paren
 r_return
 l_int|1
+suffix:semicolon
+id|osst_init
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
