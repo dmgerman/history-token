@@ -140,7 +140,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|disk-&gt;minor_shift
+id|disk-&gt;minors
+OG
+l_int|1
 )paren
 id|list_add_tail
 c_func
@@ -364,11 +366,7 @@ c_cond
 (paren
 id|disk-&gt;first_minor
 op_plus
-(paren
-l_int|1
-op_lshift
-id|disk-&gt;minor_shift
-)paren
+id|disk-&gt;minors
 op_le
 id|minor
 )paren
@@ -671,11 +669,7 @@ l_int|0
 suffix:semicolon
 id|n
 OL
-(paren
-l_int|1
-op_lshift
-id|sgp-&gt;minor_shift
-)paren
+id|sgp-&gt;minors
 op_minus
 l_int|1
 suffix:semicolon

@@ -232,6 +232,10 @@ DECL|member|first_minor
 r_int
 id|first_minor
 suffix:semicolon
+DECL|member|minors
+r_int
+id|minors
+suffix:semicolon
 DECL|member|minor_shift
 r_int
 id|minor_shift

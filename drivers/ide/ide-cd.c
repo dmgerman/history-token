@@ -12987,6 +12987,10 @@ op_member_access_from_pointer
 id|busy
 op_increment
 suffix:semicolon
+id|g-&gt;minors
+op_assign
+l_int|1
+suffix:semicolon
 id|g-&gt;minor_shift
 op_assign
 l_int|0

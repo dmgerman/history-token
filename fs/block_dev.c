@@ -2485,7 +2485,9 @@ c_cond
 (paren
 id|disk
 op_logical_and
-id|disk-&gt;minor_shift
+id|disk-&gt;minors
+OG
+l_int|1
 )paren
 id|bdev-&gt;bd_invalidated
 op_assign
@@ -3718,8 +3720,9 @@ c_cond
 op_logical_neg
 id|disk
 op_logical_or
-op_logical_neg
-id|disk-&gt;minor_shift
+id|disk-&gt;minors
+op_eq
+l_int|1
 op_logical_or
 id|bdev
 op_ne
