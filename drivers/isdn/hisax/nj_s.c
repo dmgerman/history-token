@@ -16,13 +16,6 @@ id|NETjet_S_revision
 op_assign
 l_string|&quot;$Revision: 2.7.6.6 $&quot;
 suffix:semicolon
-DECL|variable|nj_s_lock
-r_static
-id|spinlock_t
-id|nj_s_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|function|dummyrr
 r_static
 id|u_char
@@ -98,27 +91,13 @@ id|val
 comma
 id|sval
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cs
-)paren
-(brace
-id|printk
+id|spin_lock
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;NETjet-S: Spurious interrupt!&bslash;n&quot;
+op_amp
+id|cs-&gt;lock
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -205,15 +184,6 @@ l_int|0x0
 suffix:semicolon
 )brace
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|nj_s_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* start new code 13/07/00 GE */
 multiline_comment|/* set bits in sval to indicate which page is free */
 r_if
@@ -302,30 +272,13 @@ id|cs-&gt;HW_Flags
 )paren
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|nj_s_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|unlock
 suffix:semicolon
 )brace
 id|cs-&gt;hw.njet.irqstat0
 op_assign
 id|sval
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|nj_s_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -382,17 +335,16 @@ id|cs-&gt;HW_Flags
 )paren
 suffix:semicolon
 )brace
-r_else
-id|spin_unlock_irqrestore
+multiline_comment|/*&t;if (!testcnt--) {&n;&t;&t;cs-&gt;hw.njet.dmactrl = 0;&n;&t;&t;byteout(cs-&gt;hw.njet.base + NETJET_DMACTRL,&n;&t;&t;&t;cs-&gt;hw.njet.dmactrl);&n;&t;&t;byteout(cs-&gt;hw.njet.base + NETJET_IRQMASK0, 0);&n;&t;}&n;*/
+id|unlock
+suffix:colon
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|nj_s_lock
-comma
-id|flags
+id|cs-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/*&t;if (!testcnt--) {&n;&t;&t;cs-&gt;hw.njet.dmactrl = 0;&n;&t;&t;byteout(cs-&gt;hw.njet.base + NETJET_DMACTRL,&n;&t;&t;&t;cs-&gt;hw.njet.dmactrl);&n;&t;&t;byteout(cs-&gt;hw.njet.base + NETJET_IRQMASK0, 0);&n;&t;}&n;*/
 )brace
 r_static
 r_void
@@ -406,20 +358,6 @@ op_star
 id|cs
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cs-&gt;hw.njet.ctrl_reg
 op_assign
 l_int|0xff
@@ -489,12 +427,6 @@ l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout 10ms */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|cs-&gt;hw.njet.auxd
 op_assign
 l_int|0
@@ -648,10 +580,6 @@ id|tmp
 (braket
 l_int|64
 )braket
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 macro_line|#ifdef __BIG_ENDIAN
 macro_line|#error &quot;not running on big endian machines now&quot;
@@ -877,17 +805,6 @@ id|cs-&gt;hw.njet.base
 op_or
 id|NETJET_ISAC_OFF
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cs-&gt;hw.njet.ctrl_reg
 op_assign
 l_int|0xff
@@ -956,12 +873,6 @@ l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout 10ms */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|cs-&gt;hw.njet.auxd
 op_assign
 l_int|0xC0

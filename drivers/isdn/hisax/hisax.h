@@ -1196,10 +1196,6 @@ DECL|member|rcvidx
 r_int
 id|rcvidx
 suffix:semicolon
-DECL|member|txcnt
-r_int
-id|txcnt
-suffix:semicolon
 DECL|member|mml
 r_int
 id|mml
